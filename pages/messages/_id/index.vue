@@ -16,14 +16,14 @@
           <div class="chat-container__chat-name">
             <template v-if="currChat">
               <div
-                v-if="currChat.type === 'quest'"
+                v-if="currChat.type === ChatType.QUEST"
                 class="chat-container__quest-link"
                 @click="goToQuest"
               >
                 {{ currChat && currChat.questChat && currChat.questChat.quest.title }}
               </div>
               <div
-                v-if="currChat.type === 'group'"
+                v-if="isGroupChat"
                 class="chat-container__group-chat-cont"
               >
                 <div class="chat-container__group-name">
@@ -43,14 +43,13 @@
             :can-i-leave="canLeave"
           />
         </div>
-        <div
+        <messages-list
+          :chat-id="chatId"
           class="chat-container__body"
           :class="[
             {'chat-container__body_small' : files.length},
             {'chat-container__body_big' : chatId === 'starred' || isClosedQuestChat}]"
-        >
-          <messages-list :chat-id="chatId" />
-        </div>
+        />
         <div class="chat-container__footer footer">
           <div
             v-show="chatId !== 'starred' && !isClosedQuestChat"
@@ -148,7 +147,7 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import ChatMenu from '~/components/ui/ChatMenu';
-import { questChatStatus } from '~/utils/enums';
+import { ChatType, QuestChatStatus } from '~/utils/enums';
 
 export default {
   name: 'Messages',
@@ -160,7 +159,6 @@ export default {
       messageText: '',
       files: [],
       chatId: this.$route.params.id,
-      isClosedQuestChat: false,
     };
   },
   computed: {
@@ -168,22 +166,31 @@ export default {
       userData: 'user/getUserData',
       currChat: 'chat/getCurrChatInfo',
     }),
+    ChatType() {
+      return ChatType;
+    },
+    isGroupChat() {
+      return this.currChat?.type === ChatType.GROUP;
+    },
     canShowMenu() {
-      const { isClosedQuestChat, currChat } = this;
-      return !isClosedQuestChat ? currChat?.type !== 'group'
-        || (currChat?.type === 'group' && !this.amIOwner) : false;
+      const { isClosedQuestChat, isGroupChat, amIOwner } = this;
+      return !isClosedQuestChat ? !isGroupChat
+        || (isGroupChat && !amIOwner) : false;
+    },
+    isClosedQuestChat() {
+      return this.currChat?.questChat?.status === QuestChatStatus.Closed;
     },
     canLeave() {
-      return this.currChat?.type === 'group' && !this.amIOwner;
+      return this.isGroupChat && !this.amIOwner;
     },
     amIOwner() {
-      return this.currChat?.owner.id === this.userData.id;
+      return this.currChat?.owner?.id === this.userData.id;
     },
   },
   async mounted() {
     this.SetLoader(true);
 
-    if (this.currChat?.questChat?.status === questChatStatus.Closed) this.isClosedQuestChat = true;
+    if (this.currChat?.questChat?.status === QuestChatStatus.Closed) this.isClosedQuestChat = true;
     this.SetLoader(false);
 
     const isChatNotificationShown = !!localStorage.getItem('isChatNotificationShown');
@@ -268,24 +275,21 @@ export default {
         reader.readAsDataURL(file);
 
         const { type } = file;
-        try {
-          // eslint-disable-next-line no-await-in-loop
-          const data = await this.$store.dispatch('chat/uploadFile', { contentType: type });
+        // eslint-disable-next-line no-await-in-loop
+        const data = await this.$store.dispatch('chat/uploadFile', { contentType: type });
 
-          const url = URL.createObjectURL(file);
+        if (!data) return;
 
-          this.files.push({
-            data, file, url, type: type.split('/')[0],
-          });
+        const url = URL.createObjectURL(file);
 
-          reader.onerror = (e) => {
-            console.log(e);
-            this.showToastError(e);
-          };
-        } catch (e) {
+        this.files.push({
+          data, file, url, type: type.split('/')[0],
+        });
+
+        reader.onerror = (e) => {
           console.log(e);
           this.showToastError(e);
-        }
+        };
       }
     },
     showNoticeModal() {
@@ -324,12 +328,7 @@ export default {
           url, id: i + 1, type,
         });
 
-        try {
-          await this.$store.dispatch('chat/setImage', cData);
-        } catch (e) {
-          console.log(e);
-          this.showToastError(e);
-        }
+        await this.$store.dispatch('chat/setImage', cData);
       }));
 
       const medias = files.map(({ data }) => data.mediaId);
@@ -343,12 +342,7 @@ export default {
         chatId,
       };
 
-      try {
-        await this.$store.dispatch('chat/handleSendMessage', payload);
-      } catch (e) {
-        console.log(e);
-        this.showToastError(e);
-      }
+      await this.$store.dispatch('chat/handleSendMessage', payload);
     },
     onEnter(e, callback) {
       if (!e.ctrlKey) {

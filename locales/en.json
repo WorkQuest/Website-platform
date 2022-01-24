@@ -167,7 +167,8 @@
     "resendSMS": "Resend SMS",
     "disable": "Disable",
     "remindLater": "Remind later",
-    "leave": "Leave"
+    "leave": "Leave",
+    "listIsEmpty": "List is empty"
   },
   "priority": {
     "title": "Select priority",
@@ -428,7 +429,6 @@
     "EstimatedPayment": "Estimated payment:",
     "createAQuest": "Create a quest",
     "editAQuest": "Edit a quest",
-    "activeQuests": "Active quests",
     "openedQuests": "Opened quests",
     "completedQuests": "Completed quests",
     "oneTime": "One time",

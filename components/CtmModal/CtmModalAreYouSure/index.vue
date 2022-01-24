@@ -6,28 +6,28 @@
     <div class="sure__content content">
       <img
         src="~assets/img/ui/message.svg"
-        alt="Are you sure to leave?"
+        alt="Are you sure to delete?"
         class="content__picture"
       >
       <div class="content__title">
         {{ $t('modals.areYouSure') }}
       </div>
       <div class="content__desc">
-        {{ $t('modals.sureLeaveChatText') }}
+        {{ options.title }}
       </div>
       <div class="content__action action">
         <base-btn
           class="action__button"
           mode="outline"
-          @click="hide()"
+          @click="hide"
         >
           {{ $t('meta.cancel') }}
         </base-btn>
         <base-btn
           class="action__button"
-          @click="leaveChat"
+          @click="handleApply"
         >
-          {{ $t('meta.leave') }}
+          {{ options.okBtnTitle }}
         </base-btn>
       </div>
     </div>
@@ -38,37 +38,19 @@
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'ModalAreYouSureLeaveChat',
+  name: 'ModalAreYouSure',
   computed: {
     ...mapGetters({
-      chat: 'chat/getCurrChatInfo',
+      options: 'modals/getOptions',
+      chatId: 'chat/getCurrChatId',
     }),
   },
   methods: {
     hide() {
       this.CloseModal();
     },
-    async leaveChat() {
-      const { id } = this.chat;
-
-      try {
-        const response = await this.$store.dispatch('chat/leaveFromChat', id);
-        if (response.ok) {
-          this.hide();
-          this.$router.push('/messages');
-        }
-      } catch (e) {
-        console.log(e);
-        this.showToastError(e);
-        this.hide();
-      }
-    },
-    showToastError(e) {
-      return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.error'),
-        variant: 'warning',
-        text: e.response?.data?.msg,
-      });
+    async handleApply() {
+      await this.options.okBtnFunc();
     },
   },
 };
@@ -100,6 +82,7 @@ export default {
     margin-left: auto;
     margin-right: auto;
   }
+
 }
 .action{
   display: grid;

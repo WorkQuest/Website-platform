@@ -23,17 +23,17 @@
         :class="[
           {'message_right' : message.itsMe},
           {'message_blink' : message.number === selStarredMessageNumber},
-          {'message_info' : message.type === 'info'}
+          {'message_info' : message.type === MessageType.INFO}
         ]"
       >
         <div
-          v-if="message.type === 'info' && message.infoMessage"
+          v-if="message.type === MessageType.INFO && message.infoMessage"
           class="info-message"
         >
           <div class="info-message__title">
             {{ setInfoMessageText(message.infoMessage.messageAction, message.itsMe) }}
           </div>
-          <template v-if="message.infoMessage.messageAction !== 'groupChatCreate' || (message.infoMessage.messageAction === 'groupChatCreate' && !message.itsMe)">
+          <template v-if="canShowActionUsers(message.infoMessage.messageAction, message.itsMe)">
             <div
               class="info-message__link"
               :class="{'info-message__link_left' : !message.itsMe}"
@@ -42,7 +42,7 @@
               {{ setFullName(message) }}
             </div>
             <div
-              v-if="!message.itsMe && ['groupChatAddUser', 'groupChatDeleteUser'].includes(message.infoMessage.messageAction) && message.infoMessage.user"
+              v-if="!message.itsMe && [MessageAction.GROUP_CHAT_ADD_USERS, MessageAction.GROUP_CHAT_DELETE_USER].includes(message.infoMessage.messageAction) && message.infoMessage.user"
               class="info-message__link"
               @click="openProfile(message.infoMessage.userId, message.itsMe)"
             >
@@ -177,6 +177,7 @@
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 import modals from '~/store/modals/modals';
+import { MessageAction, MessageType } from '~/utils/enums';
 
 export default {
   name: 'MessagesList',
@@ -196,7 +197,6 @@ export default {
       isBottomChatsLoading: false,
       selStarredMessageNumber: 0,
       today: moment(new Date()),
-      isReadingInProgress: false,
       isScrollBtnVis: false,
       minScrollDifference: 0,
     };
@@ -209,11 +209,21 @@ export default {
       userData: 'user/getUserData',
       currChat: 'chat/getCurrChatInfo',
       chats: 'chat/getChats',
+      currChatIsUnread: 'chat/currChatIsUnread',
     }),
+    MessageAction() {
+      return MessageAction;
+    },
+    MessageType() {
+      return MessageType;
+    },
   },
   watch: {
     lastMessageId(newVal, oldVal) {
       if (!this.isScrollBtnVis && oldVal) this.scrollToBottom();
+    },
+    currChatIsUnread(newVal, oldVal) {
+      if (newVal && this.lastMessageId) this.readMessages();
     },
   },
   async mounted() {
@@ -231,7 +241,6 @@ export default {
       localStorage.setItem('selStarredMessageNumber', '0');
     }
     await this.getMessages(direction, bottomOffset);
-    await this.readMessages();
     this.scrollToBottom(true);
   },
   destroyed() {
@@ -239,11 +248,16 @@ export default {
     this.$store.commit('chat/clearMessagesFilter');
   },
   methods: {
+    canShowActionUsers(messageAction, itsMe) {
+      const isGroupChatCreateAction = messageAction === MessageAction.GROUP_CHAT_CREATE;
+
+      return !isGroupChatCreateAction || (isGroupChatCreateAction && !itsMe);
+    },
     isPrevMessageSameSender(i, message) {
       const { list } = this.messages;
       const prevMessage = i ? list[i - 1] : null;
 
-      return prevMessage?.senderUserId === message.senderUserId && prevMessage?.type !== 'info';
+      return prevMessage?.senderUserId === message.senderUserId && prevMessage?.type !== MessageType.INFO;
     },
     setSenderAvatar({ sender }) {
       return sender?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
@@ -256,7 +270,7 @@ export default {
         }, chatId, messages: { list, count },
       } = this;
 
-      const offset = direction ? currBottomOffset || bottomOffset : topOffset || count - list[0]?.number + 1 || 0;
+      const offset = direction ? currBottomOffset || bottomOffset : topOffset || (count - list[0]?.number + 1) || 0;
 
       const payload = {
         config: {
@@ -298,9 +312,6 @@ export default {
           await this.getMessages(1);
           setTimeout(() => { this.isBottomChatsLoading = false; }, 300);
         }
-
-        await this.readMessages();
-
         return;
       }
 
@@ -313,39 +324,39 @@ export default {
     setInfoMessageText(action, itsMe) {
       let text = 'chat.systemMessages.';
       switch (action) {
-        case 'employerInviteOnQuest': {
+        case MessageAction.EMPLOYER_INVITE_ON_QUEST: {
           text += itsMe ? 'youInvitedToTheQuest' : 'invitedYouToAQuest';
           break;
         }
-        case 'workerResponseOnQuest': {
+        case MessageAction.WORKER_RESPONSE_ON_QUEST: {
           text += itsMe ? 'youHaveRespondedToTheQuest' : 'respondedToTheQuest';
           break;
         }
-        case 'employerRejectResponseOnQuest': {
+        case MessageAction.EMPLOYER_REJECT_RESPONSE_ON_QUEST: {
           text += itsMe ? 'youRejectTheResponseOnQuest' : 'rejectedTheResponseToTheQuest';
           break;
         }
-        case 'workerRejectInviteOnQuest': {
+        case MessageAction.WORKER_REJECT_INVITE_ON_QUEST: {
           text += itsMe ? 'youRejectedTheInviteToTheQuest' : 'rejectedTheInviteToTheQuest';
           break;
         }
-        case 'workerAcceptInviteOnQuest': {
+        case MessageAction.WORKER_ACCEPT_INVITE_ON_QUEST: {
           text += itsMe ? 'youAcceptedTheInviteToTheQuest' : 'acceptedTheInviteToTheQuest';
           break;
         }
-        case 'groupChatCreate': {
+        case MessageAction.GROUP_CHAT_CREATE: {
           text += itsMe ? 'youCreatedAGroupChat' : 'createdAGroupChat';
           break;
         }
-        case 'groupChatDeleteUser': {
+        case MessageAction.GROUP_CHAT_DELETE_USER: {
           text += itsMe ? 'youHaveRemovedFromChat' : 'removedFromChat';
           break;
         }
-        case 'groupChatAddUser': {
+        case MessageAction.GROUP_CHAT_ADD_USERS: {
           text += itsMe ? 'youAddedToChat' : 'addedToChat';
           break;
         }
-        case 'groupChatLeaveUser': {
+        case MessageAction.GROUP_CHAT_LEAVE_USER: {
           text += itsMe ? 'youLeftTheChat' : 'leftTheChat';
           break;
         }
@@ -404,47 +415,21 @@ export default {
     async handleChangeStarVal(message) {
       const messageId = message.id;
       const { chatId } = this;
-      try {
-        await this.$store.dispatch(`chat/${message.star ? 'removeStarForMessage' : 'setStarForMessage'}`, { messageId, chatId });
-        this.$forceUpdate();
-      } catch (e) {
-        console.log(e);
-        this.showToastError(e);
-      }
-    },
-    showToastError(e) {
-      return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.error'),
-        variant: 'warning',
-        text: e.response?.data?.msg,
-      });
+
+      await this.$store.dispatch(`chat/${message.star ? 'removeStarForMessage' : 'setStarForMessage'}`, { messageId, chatId });
+      this.$forceUpdate();
     },
     async readMessages() {
-      const {
-        messages: { list }, chatId, isReadingInProgress, currChat,
-      } = this;
-
-      if (isReadingInProgress || !list.length || !currChat?.isUnread) return;
-
-      const { id } = currChat.lastMessage;
-
-      this.isReadingInProgress = true;
+      const { chatId, lastMessageId } = this;
 
       const payload = {
         config: {
-          messageId: id,
+          messageId: lastMessageId,
         },
         chatId,
       };
 
-      try {
-        await this.$store.dispatch('chat/setMessageAsRead', payload);
-
-        this.isReadingInProgress = false;
-      } catch (e) {
-        console.log(e);
-        this.showToastError(e);
-      }
+      await this.$store.dispatch('chat/setMessageAsRead', payload);
     },
   },
 };
@@ -456,6 +441,8 @@ export default {
   height: inherit;
   overflow: auto;
   position: relative;
+  display: grid;
+  align-items: flex-end;
 
   &__no-msgs {
     display: flex;

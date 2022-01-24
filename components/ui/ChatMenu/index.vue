@@ -57,6 +57,7 @@
 
 <script>
 import ClickOutside from 'vue-click-outside';
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -78,6 +79,11 @@ export default {
     return {
       isShowChatMenu: false,
     };
+  },
+  computed: {
+    ...mapGetters({
+      currChat: 'chat/getCurrChatInfo',
+    }),
   },
   methods: {
     changeStarredVal() {
@@ -103,8 +109,16 @@ export default {
     tryLeaveChat() {
       this.closeChatMenu();
       this.ShowModal({
-        key: modals.areYouSureLeaveChat,
+        key: modals.areYouSure,
+        title: this.$t('modals.sureLeaveChatText'),
+        okBtnTitle: this.$t('meta.leave'),
+        okBtnFunc: async () => await this.leaveChat(),
       });
+    },
+    async leaveChat() {
+      if (await this.$store.dispatch('chat/leaveFromChat', this.currChat.id)) this.$router.push('/messages');
+
+      this.CloseModal();
     },
     showCreateChatModal() {
       this.closeChatMenu();
