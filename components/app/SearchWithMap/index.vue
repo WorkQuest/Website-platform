@@ -29,23 +29,19 @@
           @focus="isSearchFocus = true"
           @selector="getAddressInfo(search)"
         >
-          <template v-slot:left />
           <template v-slot:selector>
             <div
               v-if="addresses.length"
               class="selector"
-              :class="{'selector_hide': isSearchFocus === false}"
+              :class="{'selector_hide': !isSearchFocus}"
             >
-              <div class="selector__items">
-                <div
-                  v-for="(item, i) in addresses"
-                  :key="i"
-                  :data-selector="`ACTION-SELECT-ADDRESS-${item.key}`"
-                  class="selector__item"
-                  @click="selectAddress(item)"
-                >
-                  {{ item.formatted }}
-                </div>
+              <div
+                v-for="(item, i) in addresses"
+                :key="i"
+                class="selector__item"
+                @click="selectAddress(item)"
+              >
+                {{ item.formatted }}
               </div>
             </div>
           </template>
@@ -198,32 +194,25 @@ export default {
 
 .selector {
   @include box;
-  width: 100%;
-  z-index: 140;
+  max-height: 300px;
+  overflow: hidden scroll;
+  overscroll-behavior: contain;
 
   &_hide {
     display: none;
   }
 
-  &__items {
-    background: #FFFFFF;
-    display: grid;
-    grid-template-columns: 1fr;
-    width: 100%;
-  }
-
   &__item {
     @include text-simple;
-    padding: 15px 20px;
-    background: #FFFFFF;
     font-weight: 500;
     font-size: 16px;
-    color: $black800;
+    padding: 15px 20px;
+    background: $white;
     cursor: pointer;
     transition: .3s;
 
     &:hover {
-      background: #F3F7FA;
+      background: $black0;
     }
   }
 }
