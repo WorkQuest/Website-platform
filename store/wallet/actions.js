@@ -106,13 +106,14 @@ export default {
    * @param method
    * @param _abi
    * @param contractAddress
+   * @param data - Array []
    * @param recipient
-   * @param value
+   * @param amount - decimal value
    * @returns {Promise<{result: *, ok: boolean}|{msg: string, code: number, data: null, ok: boolean}|undefined>}
    */
   async getContractFeeData({ commit }, {
-    method, _abi, contractAddress, recipient, value,
+    method, _abi, contractAddress, data, recipient, amount,
   }) {
-    return await getContractFeeData(method, _abi, contractAddress, recipient, value);
+    return await getContractFeeData(method, _abi, contractAddress, data, recipient, amount);
   },
 };
