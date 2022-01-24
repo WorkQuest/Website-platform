@@ -276,7 +276,6 @@ export default {
     return {
       page: 1,
       itemsPerPage: 10,
-      isFetchingActions: false,
       walletAddress: null,
       currentChainName: null,
       isDeadline: false,
@@ -410,7 +409,6 @@ export default {
       } else {
         clearInterval(this.updateInterval);
         this.history = [];
-        this.isFetchingActions = false;
       }
     },
   },

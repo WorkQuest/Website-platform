@@ -250,30 +250,6 @@ export const getContractFeeData = async (_method, _abi, _contractAddress, data, 
     return error();
   }
 };
-// export const getContractFeeData = async (_method, _abi, _contractAddress, value, recipient = null) => {
-//   try {
-//     let data;
-//     if (!isNaN(value) && recipient) {
-//       value = new BigNumber(value).shiftedBy(18).toString();
-//       data = [recipient, value];
-//     } else {
-//       data = value;
-//     }
-//     const inst = new web3.eth.Contract(_abi, _contractAddress);
-//     const [gasPrice, gasEstimate] = await Promise.all([
-//       web3.eth.getGasPrice(),
-//       inst.methods[_method].apply(null, data).estimateGas({ from: wallet.address }),
-//     ]);
-//     return success({
-//       gasPrice,
-//       gasEstimate,
-//       fee: new BigNumber(gasPrice * gasEstimate).shiftedBy(-18).toString(),
-//     });
-//   } catch (e) {
-//     console.error(`Get contract fee data error: ${_method}.`, e.message);
-//     return error();
-//   }
-// };
 
 /** PENSION FUND */
 export const getPensionDefaultData = async () => {

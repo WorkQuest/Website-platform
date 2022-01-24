@@ -161,11 +161,6 @@ export default {
     else return feeOk;
     return depositOk && feeOk;
   },
-  async fetchPensionActions({ commit }, { callback, events, params }) { // lol
-    // const _abi = abi.WQPensionFund;
-    // const _pensionAddress = process.env.PENSION_FUND;
-    // await fetchActions(_abi, _pensionAddress, callback, events, params);
-  },
   async pensionExtendLockTime() {
     return await pensionExtendLockTime();
   },
