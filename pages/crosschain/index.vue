@@ -92,7 +92,8 @@
           <div class="crosschain-page__table">
             <b-table
               :items="crosschainTableData"
-              :fields="testFields"
+              :fields="tableFields"
+              show-empty
               borderless
               caption-top
               thead-class="table__header"
@@ -152,13 +153,15 @@
                   </base-btn>
                 </div>
               </template>
+              <template
+                v-if="crosschainTableData.length === 0"
+                slot="empty"
+              >
+                <!--                <div class="crosschain-page__empty-info">-->
+                <empty-data :description="$t('meta.listIsEmpty')" />
+                <!--                </div>-->
+              </template>
             </b-table>
-          </div>
-          <div
-            v-if="crosschainTableData.length === 0"
-            class="crosschain-page__empty-info"
-          >
-            {{ $t('meta.listIsEmpty') }}
           </div>
         </div>
       </div>
@@ -169,8 +172,10 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import EmptyData from '~/components/app/info/emptyData';
 
 export default {
+  components: { EmptyData },
   layout: 'guest',
   data() {
     return {
@@ -188,7 +193,7 @@ export default {
       crosschainTableData: 'defi/getCrosschainTokensData',
       statusBusy: 'web3/getStatusBusy',
     }),
-    testFields() {
+    tableFields() {
       const copyStyle = {
         thStyle: {
           padding: '0',
@@ -367,10 +372,10 @@ export default {
   justify-content: center;
 
   &__empty-info {
-    display: flex;
-    justify-content: center;
-    margin: 10px 0;
-    color: $black500;
+    .absence {
+      margin: 10px 0;
+      background: white;
+    }
   }
 
   &__container {
