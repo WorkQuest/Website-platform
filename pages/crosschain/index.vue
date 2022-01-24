@@ -194,7 +194,7 @@ export default {
       statusBusy: 'web3/getStatusBusy',
     }),
     tableFields() {
-      const copyStyle = {
+      const cellStyle = {
         thStyle: {
           padding: '0',
           height: '27px',
@@ -216,17 +216,17 @@ export default {
         {
           key: 'recipient',
           label: this.$t('crosschain.tableHead.recipient'),
-          ...copyStyle,
+          ...cellStyle,
         },
         {
           key: 'tx',
           label: this.$t('crosschain.tableHead.tx'),
-          ...copyStyle,
+          ...cellStyle,
         },
         {
           key: 'created',
           label: this.$t('crosschain.tableHead.created'),
-          ...copyStyle,
+          ...cellStyle,
         },
         {
           key: 'redeem',
