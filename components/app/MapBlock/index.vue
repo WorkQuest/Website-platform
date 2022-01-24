@@ -468,22 +468,8 @@ export default {
     object-fit: cover;
   }
 }
-@include _1199 {
-  .map__container {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-}
+
 @include _767 {
-  .map__container {
-    height: auto;
-    padding-top: 10px;
-    .gmap__search {
-      position: relative;
-      bottom: 0;
-      top: 10px;
-    }
-  }
   .gmap {
     &__search {
       width: 100%;

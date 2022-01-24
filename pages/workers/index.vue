@@ -1,10 +1,6 @@
 <template>
   <div class="employees">
-    <map-block
-      class="employees__map-block"
-      :is-show-map="isShowMap"
-    />
-    <search-block
+    <search-with-map
       class="employees__search"
       @isShowMap="isShowMap = $event"
     />
@@ -75,10 +71,7 @@ export default {
     totalPages() { return Math.ceil(this.employeeCount / this.query.limit); },
   },
   watch: {
-    async isShowMap(newVal) {
-      localStorage.setItem('isShowMap', newVal);
-      await this.fetchEmployeeList();
-    },
+    async isShowMap() { await this.fetchEmployeeList(true); },
     async mapBounds(newV, oldV) {
       if (!this.isShowMap || !Object.keys(oldV).length) return;
       if (
@@ -136,7 +129,6 @@ export default {
 
       this.isFetching = false;
     },
-
     async sortBySpec(value) {
       this.specFilter = value;
       await this.fetchEmployeeList(true);
@@ -167,7 +159,6 @@ export default {
       else this.query = { ...this.query, ...value };
       await this.fetchEmployeeList(true);
     },
-
     showDetails(worker) {
       this.$store.dispatch('quests/setCurrentWorker', worker);
       this.$router.push(`/profile/${worker.id}`);
@@ -180,11 +171,6 @@ export default {
 
 .employees {
   @include text-simple;
-
-  &__search {
-    max-width: 1180px;
-    margin: 30px auto;
-  }
 
   &__content {
     width: 100%;
@@ -217,43 +203,35 @@ export default {
   }
 }
 
-.map {
-  &__container {
-    position: relative;
-  }
-}
-
 @include _1199 {
   .employees {
 
     &__content {
       padding: 0 20px;
     }
-
     &__cards {
       grid-template-columns: repeat(3, 1fr);
     }
-
   }
 }
 
 @include _991 {
-  .employees {
-
-    &__cards {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
+  .employees__cards {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @include _575 {
   .employees {
 
-    &__cards {
-      grid-template-columns: 1fr;
+    &__content {
+      padding: 0 10px;
     }
 
+    &__cards {
+      grid-template-columns: 1fr;
+      grid-gap: 10px;
+    }
   }
 }
 </style>

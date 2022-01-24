@@ -213,32 +213,27 @@ export default {
 }
 
 @include _1199 {
-
   .filters-panel {
 
     &__item, &__item-btn {
       min-width: 160px;
     }
   }
-
 }
 
 @include _1099 {
-
   .filters-panel {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 43px);
   }
-
 }
 
 @include _575 {
-
   .filters-panel {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(3, 43px);
+    grid-gap: 10px;
   }
-
 }
 
 </style>
