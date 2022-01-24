@@ -297,7 +297,7 @@ export const getPensionWallet = async () => {
   try {
     const myPensionWallet = await fetchContractData('wallets', abi.WQPensionFund, process.env.PENSION_FUND, [wallet.address]);
     const {
-      unlockDate, fee, amount, createdAt,
+      unlockDate, fee, amount, createdAt, rewardAllowed, rewardDebt, rewardDistributed,
     } = myPensionWallet.result;
     const _amount = new BigNumber(amount).shiftedBy(-18);
     let _fee = new BigNumber(fee).shiftedBy(-18);
@@ -305,12 +305,14 @@ export const getPensionWallet = async () => {
       _fee = '>0.0000001';
     } else _fee = _fee.decimalPlaces(8).toString();
     return success({
-      ...myPensionWallet,
+      rewardAllowed,
+      rewardDebt,
+      rewardDistributed,
       isCreated: !!createdAt && createdAt !== '0',
       unlockDate: unlockDate ? new Date(unlockDate * 1000) : null,
       fee: _fee,
       amount: _amount.isGreaterThan('0') && _amount.isLessThan(min) ? `>${min.toString()}` : _amount.decimalPlaces(4).toString(),
-      _amount: _amount.toString(),
+      fullAmount: _amount.toString(),
     });
   } catch (e) {
     console.error(`PensionWallet: ${e}`);
@@ -358,9 +360,17 @@ export const pensionUpdateFee = async (fee) => {
 };
 export const pensionsWithdraw = async (_amount) => {
   try {
-    const contractInst = await createInstance(abi.WQPensionFund, process.env.PENSION_FUND);
     _amount = new BigNumber(_amount).shiftedBy(18).toString();
-    const res = await contractInst.withdraw(_amount);
+    const inst = new web3.eth.Contract(abi.WQPensionFund, process.env.PENSION_FUND);
+    const [gasPrice, gasEstimate] = await Promise.all([
+      web3.eth.getGasPrice(),
+      inst.methods.withdraw.apply(null, [_amount]).estimateGas({ from: wallet.address }),
+    ]);
+    const res = await inst.methods.withdraw(_amount).send({
+      from: wallet.address,
+      gas: gasEstimate,
+      gasPrice,
+    });
     return success(res);
   } catch (e) {
     console.error(`Withdraw: ${e}`);
@@ -369,8 +379,16 @@ export const pensionsWithdraw = async (_amount) => {
 };
 export const pensionExtendLockTime = async () => {
   try {
-    const contractInst = await createInstance(abi.WQPensionFund, process.env.PENSION_FUND);
-    const res = await contractInst.extendLockTime();
+    const inst = new web3.eth.Contract(abi.WQPensionFund, process.env.PENSION_FUND);
+    const [gasPrice, gasEstimate] = await Promise.all([
+      web3.eth.getGasPrice(),
+      inst.methods.extendLockTime.apply(null, []).estimateGas({ from: wallet.address }),
+    ]);
+    const res = await inst.methods.extendLockTime().send({
+      from: wallet.address,
+      gas: gasEstimate,
+      gasPrice,
+    });
     return success(res);
   } catch (e) {
     console.error(`ExtendLockTime: ${e}`);

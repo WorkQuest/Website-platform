@@ -41,6 +41,7 @@
               :placeholder="$t('modals.amount')"
               :rules="`required|decimal|is_not:0|max_bn:${maxAmount}|decimalPlaces:18`"
               :name="$t('modals.amountField')"
+              @input="replaceDot"
             >
               <template
                 v-slot:right-absolute
@@ -143,6 +144,9 @@ export default {
     this.isCanSubmit = true;
   },
   methods: {
+    replaceDot() {
+      this.amount = this.amount.replace(/,/g, '.');
+    },
     // Для просчета максимальной суммы транзакции от комиссии
     async updateMaxFee() {
       if (!this.isConnected) return;

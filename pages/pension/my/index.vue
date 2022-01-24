@@ -151,7 +151,7 @@
               <div
                 class="info-block__subtitle_red"
               >
-                {{ $t('pension.days', {count: 0}) }}
+                {{ $t('pension.days', { count: 0 }) }}
               </div>
             </div>
             <div
@@ -171,6 +171,7 @@
               </base-btn>
             </div>
           </div>
+          {{ pensionWallet }}
           <!--          <div class="info-block">-->
           <!--            <div class="info-block__name">-->
           <!--              {{ $t('pension.transactionHistory') }}-->
@@ -266,7 +267,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import BigNumber from 'bignumber.js';
+import { WQPensionFund } from '~/abi/abi';
 import modals from '~/store/modals/modals';
 import { getWalletAddress } from '~/utils/wallet';
 import { TokenSymbols } from '~/utils/enums';
@@ -341,6 +342,7 @@ export default {
       options: 'modals/getOptions',
       isWalletConnected: 'wallet/getIsWalletConnected',
       pensionWallet: 'wallet/getPensionWallet',
+      balanceData: 'wallet/getBalanceData',
     }),
     historyFields() {
       return [
@@ -352,9 +354,7 @@ export default {
             height: '27px',
             lineHeight: '27px',
           },
-          tdAttr: {
-            style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px',
-          },
+          tdAttr: { style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px' },
         },
         {
           key: 'txHash',
@@ -364,9 +364,7 @@ export default {
             height: '27px',
             lineHeight: '27px',
           },
-          tdAttr: {
-            style: 'padding: 0 0 0 0; height: 64px; line-height: 64px',
-          },
+          tdAttr: { style: 'padding: 0 0 0 0; height: 64px; line-height: 64px' },
         },
         {
           key: 'time',
@@ -376,9 +374,7 @@ export default {
             height: '27px',
             lineHeight: '27px',
           },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
+          tdAttr: { style: 'padding: 0; height: 64px; line-height: 64px' },
         },
         {
           key: 'amount',
@@ -388,9 +384,7 @@ export default {
             height: '27px',
             lineHeight: '27px',
           },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
+          tdAttr: { style: 'padding: 0; height: 64px; line-height: 64px' },
         },
       ];
     },
@@ -482,26 +476,54 @@ export default {
       this.ShowModal({
         key: modals.takeWithdraw,
         walletAddress: this.walletAddress,
-        maxValue: this.pensionWallet._amount,
-        symbol: this.currentChainName,
+        maxValue: this.pensionWallet.fullAmount,
         withdrawType: 'pension',
-        updateMethod: async () => await this.getWallet(),
       });
     },
     handleProlong() {
       this.ShowModal({
         key: modals.areYouSureNotification,
         text: this.$t('pension.prolongText'),
-        callback: async () => await this.extendLockTime(),
+        callback: async () => {
+          const [txFee] = await Promise.all([
+            this.$store.dispatch('wallet/getContractFeeData', {
+              _abi: WQPensionFund,
+              contractAddress: process.env.PENSION_FUND,
+              method: 'extendLockTime',
+            }),
+            this.$store.dispatch('wallet/getBalance'),
+          ]);
+          if (txFee.ok === false || this.balanceData.WUSD.balance === '0') {
+            await this.$store.dispatch('main/showToast', {
+              text: this.$t('errors.transaction.notEnoughFunds'),
+            });
+            return;
+          }
+          this.ShowModal({
+            key: modals.transactionReceipt,
+            fields: {
+              from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
+              to: { name: this.$t('modals.toAddress'), value: process.env.PENSION_FUND },
+              fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
+            },
+            submitMethod: async () => {
+              const res = await this.$store.dispatch('wallet/pensionExtendLockTime');
+              if (res.ok) {
+                await this.$store.dispatch('main/showToast', {
+                  title: this.$t('pension.prolong'),
+                  text: this.$t('modals.transactionSent'),
+                });
+                await this.getWallet();
+              } else {
+                await this.$store.dispatch('main/showToast', {
+                  title: this.$t('pension.prolong'),
+                  text: this.$t('modals.transactionFail'),
+                });
+              }
+            },
+          });
+        },
       });
-    },
-    async extendLockTime() {
-      this.SetLoader(true);
-      const ok = await this.$store.dispatch('web3/pensionExtendLockTime');
-      if (ok) {
-        await this.getWallet();
-      }
-      this.SetLoader(false);
     },
     openMakeDepositModal() {
       this.ShowModal({

@@ -60,7 +60,7 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { getWalletAddress } from '~/utils/wallet';
-import * as abi from '~/abi/abi';
+import { WQPensionFund } from '~/abi/abi';
 import { TokenSymbols } from '~/utils/enums';
 
 export default {
@@ -96,7 +96,7 @@ export default {
         const [fee] = await Promise.all([
           this.$store.dispatch('wallet/getContractFeeData', {
             method: 'updateFee',
-            _abi: abi.WQPensionFund,
+            _abi: WQPensionFund,
             contractAddress: process.env.PENSION_FUND,
             data: [new BigNumber(this.depositPercentFromAQuest).shiftedBy(18).toString()],
           }),
@@ -107,7 +107,7 @@ export default {
         const [fee] = await Promise.all([
           this.$store.dispatch('wallet/getContractFeeData', {
             method: 'contribute',
-            _abi: abi.WQPensionFund,
+            _abi: WQPensionFund,
             contractAddress: process.env.PENSION_FUND,
             data: [getWalletAddress()],
             amount: this.firstDepositAmount,

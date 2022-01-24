@@ -146,12 +146,6 @@ export default {
   async pensionContribute({ commit }, amount) {
     return await pensionContribute(amount);
   },
-  async getPensionWithdrawTxFee({ commit }, _amount) {
-    const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND;
-    _amount = new BigNumber(_amount).shiftedBy(18).toString();
-    return await getContractFeeData('withdraw', _abi, _pensionAddress, [_amount]);
-  },
   async pensionWithdraw({ commit }, amount) {
     return await pensionsWithdraw(amount);
   },

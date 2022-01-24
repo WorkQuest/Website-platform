@@ -15,8 +15,9 @@
             v-model="amount"
             :placeholder="'3 500'"
             class="content__input"
-            rules="required|decimal"
+            :rules="`required|decimal|is_not:0|max_bn:${balanceData.WUSD.fullBalance}|decimalPlaces:18`"
             :name="$t('modals.depositAmountField')"
+            @input="replaceDot"
           />
         </div>
         <div class="content__buttons">
@@ -43,7 +44,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import * as abi from '~/abi/abi';
+import { WQPensionFund } from '~/abi/abi';
 import { getWalletAddress } from '~/utils/wallet';
 import { TokenSymbols } from '~/utils/enums';
 
@@ -60,7 +61,13 @@ export default {
       balanceData: 'wallet/getBalanceData',
     }),
   },
+  mounted() {
+    this.$store.dispatch('wallet/getBalance');
+  },
   methods: {
+    replaceDot() {
+      this.amount = this.amount.replace(/,/g, '.');
+    },
     hide() {
       this.CloseModal();
     },
@@ -71,7 +78,7 @@ export default {
       const [txFee] = await Promise.all([
         this.$store.dispatch('wallet/getContractFeeData', {
           method: 'contribute',
-          _abi: abi.WQPensionFund,
+          _abi: WQPensionFund,
           contractAddress: process.env.PENSION_FUND,
           data: [getWalletAddress()],
           amount: this.amount,
