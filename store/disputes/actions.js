@@ -23,7 +23,8 @@ export default {
       commit('setUserDisputes', result);
       return result.ok;
     } catch (e) {
-      return console.log(e);
+      console.log(e);
+      return false;
     }
   },
 };

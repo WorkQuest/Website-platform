@@ -23,6 +23,7 @@ import SpecializationsSelector from '~/components/ui/SpecializationsSelector';
 import FilesUploader from '~/components/ui/FilesUploader';
 import FilesPreview from '~/components/ui/FilesPreview';
 import MessagesList from '~/components/app/pages/messages_id/messagesList';
+import quests from '~/components/app/pages/common/quests';
 
 Vue.component('ctm-modal', CtmModal);
 Vue.component('ctm-modal-box', CtmModalBox);
@@ -47,3 +48,4 @@ Vue.component('specializations-selector', SpecializationsSelector);
 Vue.component('files-uploader', FilesUploader);
 Vue.component('files-preview', FilesPreview);
 Vue.component('MessagesList', MessagesList);
+Vue.component('quests', quests);

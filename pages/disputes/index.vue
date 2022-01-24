@@ -16,25 +16,21 @@
             @click="toDisputes(item.id)"
           >
             <div class="page__card-body">
-              <div class="page__text">
-                {{ $t('disputes.dispute') }} <span class="page__text_blue">{{ item.disputeNumber }}</span>
+              <div
+                v-for="(card, key) in cardData(item)"
+                :key="key"
+                class="page__text"
+              >
+                {{ card.title }}
+                <span class="page__text_blue">
+                  {{ card.value }}
+                </span>
               </div>
               <div class="page__text">
-                {{ $t('disputes.quest') }} <span class="page__text_blue">{{ item.quest.title }}</span>
-              </div>
-              <div class="page__text">
-                {{ $t('disputes.employer') }} <span class="page__text_blue">{{ `${item.quest.user.firstName} ${item.quest.user.lastName}` }}</span>
-              </div>
-              <div class="page__text">
-                {{ $t('disputes.questSalary') }} <span class="page__text_blue">{{ item.quest.price }}</span>
-              </div>
-              <div class="page__text">
-                {{ $t('disputes.disputeTime') }} <span class="page__text_blue">{{ convertDate(item.quest.createdAt) }}</span>
-              </div>
-              <div class="page__text">
-                {{ $t('disputes.status') }} <span
-                  class="page__text_yellow"
-                >{{ disputeStatus(item.status) }}</span>
+                {{ $t('disputes.status') }}
+                <span class="page__text_yellow">
+                  {{ disputeStatus(item.status) }}
+                </span>
               </div>
             </div>
             <div class="page__vl" />
@@ -83,6 +79,30 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    cardData(item) {
+      return [
+        {
+          title: this.$t('disputes.dispute'),
+          value: item.disputeNumber,
+        },
+        {
+          title: this.$t('disputes.quest'),
+          value: item.quest.title,
+        },
+        {
+          title: this.$t('disputes.employer'),
+          value: `${item.quest.user.firstName} ${item.quest.user.lastName}`,
+        },
+        {
+          title: this.$t('disputes.questSalary'),
+          value: item.quest.price,
+        },
+        {
+          title: this.$t('disputes.disputeTime'),
+          value: this.convertDate(item.quest.createdAt),
+        },
+      ];
+    },
     toDisputes(item) {
       this.$router.push({ path: `/disputes/${item}` });
     },

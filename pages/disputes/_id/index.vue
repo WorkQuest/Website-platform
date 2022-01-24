@@ -45,14 +45,10 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import quests from '~/components/app/pages/common/quests';
 import { disputeStatues, InfoModeWorker } from '~/utils/enums';
 
 export default {
   name: 'Index',
-  components: {
-    quests,
-  },
   data() {
     return {
       disputeId: this.$route.params.id,
