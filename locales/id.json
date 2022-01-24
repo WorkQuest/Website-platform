@@ -167,7 +167,8 @@
     "resendSMS": "Kirim ulang SMS",
     "disable": "Nonaktifkan",
     "remindLater": "Ingatkan nanti",
-    "leave": "???"
+    "leave": "???",
+    "listIsEmpty": "List is empty"
   },
   "priority": {
     "title": "Pilih Prioritas",

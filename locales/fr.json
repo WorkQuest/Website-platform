@@ -167,7 +167,8 @@
     "resendSMS": "Renvoyer le SMS",
     "disable": "Désactiver",
     "remindLater": "Rappeler plus tard",
-    "leave": "???"
+    "leave": "???",
+    "listIsEmpty": "List is empty"
   },
   "priority": {
     "title": "Sélectionner la priorité",

@@ -167,7 +167,8 @@
     "resendSMS": "SMS फिर से भेजें",
     "disable": "अक्षम करें",
     "remindLater": "बाद में याद दिलाएं",
-    "leave": "???"
+    "leave": "???",
+    "listIsEmpty": "List is empty"
   },
   "priority": {
     "title": "प्राथमिकता चुनें",

@@ -167,7 +167,8 @@
     "resendSMS": "Resend SMS",
     "disable": "Disable",
     "remindLater": "Remind later",
-    "leave": "???"
+    "leave": "???",
+    "listIsEmpty": "List is empty"
   },
   "priority": {
     "title": "Select priority",

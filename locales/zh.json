@@ -167,7 +167,8 @@
     "resendSMS": "重新发送短信",
     "disable": "禁用",
     "remindLater": "稍后提醒",
-    "leave": "???"
+    "leave": "???",
+    "listIsEmpty": "List is empty"
   },
   "priority": {
     "title": "选择优先级",
