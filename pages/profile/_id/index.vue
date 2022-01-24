@@ -63,7 +63,7 @@
             v-if="selectedTab === 'commonInfo'"
             class="quests__title"
           >
-            {{ $t('quests.activeQuests') }}
+            {{ $t('profile.quests') }}
           </div>
           <quests
             v-if="questsCount !== 0"
