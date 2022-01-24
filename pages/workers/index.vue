@@ -160,7 +160,6 @@ export default {
       await this.fetchEmployeeList(true);
     },
     showDetails(worker) {
-      this.$store.dispatch('quests/setCurrentWorker', worker);
       this.$router.push(`/profile/${worker.id}`);
     },
   },

@@ -26,7 +26,7 @@ import FilesPreview from '~/components/ui/FilesPreview';
 import EmptyData from '~/components/app/info/emptyData';
 import EmployeeCard from '~/components/app/pages/common/employeeCard';
 import FiltersPanel from '~/components/app/panels/filters';
-import SearchBlock from '~/components/app/SearchWithMap';
+import SearchWithMap from '~/components/app/SearchWithMap';
 
 Vue.component('ctm-modal', CtmModal);
 Vue.component('ctm-modal-box', CtmModalBox);
@@ -54,4 +54,4 @@ Vue.component('map-block', MapBlock);
 Vue.component('empty-data', EmptyData);
 Vue.component('employee-card', EmployeeCard);
 Vue.component('filters-panel', FiltersPanel);
-Vue.component('search-with-map', SearchBlock);
+Vue.component('search-with-map', SearchWithMap);
