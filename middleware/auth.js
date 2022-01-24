@@ -20,6 +20,7 @@ export default async function ({ app, redirect, store }) {
     if (!Object.keys(userData).length) {
       await store.dispatch('user/getUserData');
       await store.dispatch('user/getStatistic');
+      await store.dispatch('user/getNotifications');
     }
     if (userStatus === 2) {
       return redirect('/role');

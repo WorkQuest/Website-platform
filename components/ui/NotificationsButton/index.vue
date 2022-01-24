@@ -120,6 +120,10 @@ export default {
     closePopUp() {
       this.isShowNotify = false;
     },
+    showNotifications() {
+      this.$router.push('/notifications');
+      this.isShowNotify = !this.isShowNotify;
+    },
   },
 };
 </script>
