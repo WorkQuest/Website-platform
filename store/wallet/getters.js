@@ -5,4 +5,6 @@ export default {
   getCallbackLayout: (state) => state.callbackLayout,
   getBalanceData: (state) => state.balance,
   getSelectedToken: (state) => state.selectedToken,
+  getStakingPoolsData: (state) => state.stakingPoolsData,
+  getStakingUserData: (state) => state.stakingUserData,
 };

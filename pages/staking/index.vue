@@ -71,15 +71,10 @@ import { Chains, NativeTokenSymbolByChainId, StakingTypes } from '~/utils/enums'
 
 export default {
   name: 'Staking',
-  data() {
-    return {
-      firstLoading: true,
-      poolsData: null,
-    };
-  },
   computed: {
     ...mapGetters({
-      isConnected: 'web3/isConnected',
+      isWalletConnected: 'wallet/getIsWalletConnected',
+      stakingPoolsData: 'wallet/getStakingPoolsData',
     }),
     fields() {
       return [
@@ -157,12 +152,13 @@ export default {
         },
       ];
     },
+    poolsData() {
+      return {};
+    },
   },
   watch: {
-    async isConnected(newValue) {
-      if (this.firstLoading) return;
-      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
-      if (newValue && rightChain) {
+    async isWalletConnected(newValue) {
+      if (newValue) {
         await this.getPoolsData();
       } else {
         this.poolsData = [];
@@ -171,23 +167,15 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    await this.checkMetamaskStatus();
+    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
     await this.getPoolsData();
     this.SetLoader(false);
-    this.firstLoading = false;
-  },
-  async beforeDestroy() {
-    await this.$store.dispatch('web3/unsubscribeActions');
   },
   methods: {
     async getPoolsData() {
-      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
-      if (!rightChain) {
-        this.poolsData = [];
-      }
       const [wqtPool, wusdPool] = await Promise.all([
-        this.$store.dispatch('web3/fetchStakingInfo', { stakingType: StakingTypes.WQT }),
-        this.$store.dispatch('web3/fetchStakingInfo', { stakingType: StakingTypes.WUSD }),
+        this.$store.dispatch('wallet/fetchStakingInfo', { stakingType: StakingTypes.WQT }),
+        this.$store.dispatch('wallet/fetchStakingInfo', { stakingType: StakingTypes.WUSD }),
       ]);
       if (wqtPool && wusdPool) {
         wqtPool.poolAddress = process.env.WQT_STAKING;
@@ -201,25 +189,6 @@ export default {
         wusdPool.link = StakingTypes.WUSD;
 
         this.poolsData = [wqtPool, wusdPool];
-      }
-    },
-    async checkMetamaskStatus() {
-      if (!this.isConnected) {
-        if (typeof window.ethereum === 'undefined') {
-          localStorage.setItem('metamaskStatus', 'notInstalled');
-          this.ShowModal({
-            key: modals.status,
-            img: '~assets/img/ui/cardHasBeenAdded.svg',
-            title: 'Please install Metamask!',
-            subtitle: 'Please click install...',
-            button: 'Install',
-            type: 'installMetamask',
-          });
-        } else {
-          localStorage.setItem('metamaskStatus', 'installed');
-          await this.$store.dispatch('web3/connectToMetaMask');
-          await this.$store.dispatch('web3/goToChain', { chain: Chains.ETHEREUM });
-        }
       }
     },
     handleOpenPool(el) {

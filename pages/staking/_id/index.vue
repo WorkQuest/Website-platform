@@ -43,7 +43,7 @@
             {{ $t('staking.stakeTokenAddress') }}
           </div>
           <a
-            :href="etherscanRef"
+            :href="explorerRef"
             target="_blank"
             type="button"
           >
@@ -62,7 +62,7 @@
             {{ $t('staking.rewardTokenAddress') }}
           </div>
           <a
-            :href="etherscanRef"
+            :href="explorerRef"
             target="_blank"
             type="button"
           >
@@ -181,14 +181,13 @@ export default {
     return {
       poolData: null,
       userInfo: null,
-      firstLoading: true,
       updateInterval: null,
     };
   },
   computed: {
     ...mapGetters({
-      options: 'modals/getOptions',
-      isConnected: 'web3/isConnected',
+      isWalletConnected: 'wallet/getIsWalletConnected',
+      balanceData: 'wallet/getBalanceData',
     }),
     slug() {
       return this.$route.params.id;
@@ -310,15 +309,9 @@ export default {
     stakeCards() {
       if (!this.poolData) {
         return [
-          {
-            name: this.$t('staking.stakeCards.stakeMin'),
-          },
-          {
-            name: this.$t('staking.stakeCards.stakeLimit'),
-          },
-          {
-            name: this.$t('staking.stakeCards.periodUpdate'),
-          },
+          { name: this.$t('staking.stakeCards.stakeMin') },
+          { name: this.$t('staking.stakeCards.stakeLimit') },
+          { name: this.$t('staking.stakeCards.periodUpdate') },
         ];
       }
       return [
@@ -336,17 +329,15 @@ export default {
         },
       ];
     },
-    etherscanRef() {
+    explorerRef() {
       if (!this.poolData) return '/';
-      return (process.env.PROD === 'true') ? `https://etherscan.io/address/${this.poolData.rewardTokenAddress}`
-        : `https://rinkeby.etherscan.io/address/${this.poolData.rewardTokenAddress}`;
+      return (process.env.PROD === 'true') ? `https://dev-explorer.workquest.co/address/${this.poolData.rewardTokenAddress}`
+        : `https://dev-explorer.workquest.co/address/${this.poolData.rewardTokenAddress}`;
     },
   },
   watch: {
     async isConnected(newValue) {
-      if (this.firstLoading) return;
-      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
-      if (newValue && rightChain) {
+      if (newValue) {
         await this.initPage();
       } else {
         this.userInfo = null;
@@ -368,40 +359,19 @@ export default {
       await this.checkMetamaskStatus();
       await this.getPoolData();
       await this.getUserInfo();
-      const events = this.slug === StakingTypes.WQT
-        ? ['tokensStaked', 'tokensClaimed', 'tokensUnstaked']
-        : ['Staked', 'Claimed', 'Unstaked'];
-      await this.$store.dispatch('web3/fetchStakingActions', {
-        stakingType: this.slug,
-        events,
-        callback: () => {
-          this.getPoolData();
-          this.getUserInfo();
-        },
-      });
+      // const events = this.slug === StakingTypes.WQT
+      //   ? ['tokensStaked', 'tokensClaimed', 'tokensUnstaked']
+      //   : ['Staked', 'Claimed', 'Unstaked'];
+      // await this.$store.dispatch('web3/fetchStakingActions', {
+      //   stakingType: this.slug,
+      //   events,
+      //   callback: () => {
+      //     this.getPoolData();
+      //     this.getUserInfo();
+      //   },
+      // });
       this.updateInterval = setInterval(() => this.getUserInfo(), 30000);
-      this.firstLoading = false;
       this.SetLoader(false);
-    },
-    async checkMetamaskStatus() {
-      if (!this.isConnected) {
-        if (typeof window.ethereum === 'undefined') {
-          localStorage.setItem('metamaskStatus', 'notInstalled');
-          this.ShowModal({
-            key: modals.status,
-            img: '~assets/img/ui/cardHasBeenAdded.svg',
-            title: 'Please install Metamask!',
-            subtitle: 'Please click install...',
-            button: 'Install',
-            type: 'installMetamask',
-          });
-        } else {
-          localStorage.setItem('metamaskStatus', 'installed');
-          const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
-          if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: Chains.ETHEREUM });
-          await this.$store.dispatch('web3/connectToMetaMask');
-        }
-      }
     },
     handleAutoRenewal() {
       if (new BigNumber(this.userInfo._staked).isGreaterThanOrEqualTo(this.poolData._maxStake)) {
@@ -449,7 +419,10 @@ export default {
       }
     },
     async getUserInfo() {
-      this.userInfo = await this.$store.dispatch('web3/fetchStakingUserInfo', { stakingType: this.slug, decimals: this.poolData.decimals });
+      this.userInfo = await this.$store.dispatch('web3/fetchStakingUserInfo', {
+        stakingType: this.slug,
+        decimals: this.poolData.decimals,
+      });
     },
     getPoolAddress() {
       if (this.slug === StakingTypes.WQT) return process.env.WQT_STAKING;

@@ -1,4 +1,4 @@
-import { StakingTypes as TokensSymbols } from '~/utils/enums';
+import { StakingTypes, StakingTypes as TokensSymbols } from '~/utils/enums';
 
 export default () => ({
   transactions: [],
@@ -16,4 +16,17 @@ export default () => ({
       fullBalance: 0,
     },
   },
+  stakingPoolsData: {
+    WQT: {
+      poolAddress: process.env.WQT_STAKING,
+      link: StakingTypes.WQT,
+      data: {},
+    },
+    WUSD: {
+      poolAddress: process.env.WQT_STAKING_NATIVE,
+      link: StakingTypes.WUSD,
+      data: {},
+    },
+  },
+  stakingUserData: null,
 });

@@ -279,10 +279,6 @@ export default {
       minStake: new BigNumber(minStake).shiftedBy(-decimals).decimalPlaces(4).toString(),
     };
   },
-  async fetchStakingActions({ commit }, { stakingType, callback, events }) {
-    const { stakingAbi, stakingAddress } = getStakingDataByType(stakingType);
-    await fetchActions(stakingAbi, stakingAddress, callback, events);
-  },
   unsubscribeActions() {
     unsubscirbeListeners();
   },

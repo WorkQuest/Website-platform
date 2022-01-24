@@ -116,4 +116,9 @@ export default {
   }) {
     return await getContractFeeData(method, _abi, contractAddress, data, recipient, amount);
   },
+
+  /** Staking */
+  async getStakingPoolsData({ commit }, pool) {
+
+  },
 };
