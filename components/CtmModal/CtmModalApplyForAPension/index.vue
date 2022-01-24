@@ -75,7 +75,6 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
-      isWalletConnected: 'wallet/getIsWalletConnected',
       balanceData: 'wallet/getBalanceData',
     }),
   },
