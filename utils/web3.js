@@ -4,7 +4,9 @@ import BigNumber from 'bignumber.js';
 import Web3Modal from 'web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import * as abi from '~/abi/abi';
-import { Chains, ChainsId, StakingTypes } from '~/utils/enums';
+import {
+  Chains, ChainsId, NetworksData, StakingTypes,
+} from '~/utils/enums';
 
 let bscRpcContract = null;
 let web3 = null;
@@ -64,6 +66,24 @@ export const getChainIdByChain = (chain) => {
       throw error(-1, `wrong chain name: ${chain} ${Chains.BINANCE} ${Chains.ETHEREUM}`);
   }
 };
+export const addedNetwork = async (chain) => {
+  try {
+    let networkParams = {};
+    if (chain === Chains.ETHEREUM) {
+      networkParams = process.env.PROD === 'true' ? NetworksData.ETH_MAIN : NetworksData.ETH_TEST;
+    } else if (chain === Chains.BNB) {
+      networkParams = process.env.PROD === 'true' ? NetworksData.BSC_MAIN : NetworksData.BSC_TEST;
+    }
+    await window.ethereum.request({
+      method: 'wallet_addEthereumChain',
+      params: [networkParams],
+    });
+    return { ok: true };
+  } catch (addError) {
+    showToast('Added chain error:', `${addError.message}`, 'danger');
+    return error(500, 'added chain error', addError);
+  }
+};
 export const goToChain = async (chain) => {
   const methodName = 'wallet_switchEthereumChain';
   const chainIdParam = [{ chainId: getChainIdByChain(chain) }];
@@ -74,13 +94,16 @@ export const goToChain = async (chain) => {
     });
     return { ok: true };
   } catch (e) {
+    if (e.code === 4902) {
+      return await addedNetwork(chain);
+    }
     if (typeof window.ethereum !== 'undefined') {
       showToast('Switch chain error:', `${e.message}`, 'danger');
+      return error(500, 'switch chain error', e);
     }
-    return error(500, 'switch chain error', e);
+    return { ok: false };
   }
 };
-
 export const getStakingDataByType = (stakingType) => {
   let _stakingAddress;
   let _stakingAbi;
