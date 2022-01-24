@@ -69,4 +69,14 @@ export default {
     state.statisticData = data;
     state.unreadChatsCount = data.chatsStatistic?.unreadCountChats || 0;
   },
+  setReducedNotifications(state, notifications) {
+    state.reducedNotifications = notifications;
+  },
+  setNotifications(state, { notifications, count }) {
+    state.notifications.list = notifications;
+    state.notifications.count = count;
+  },
+  setUnreadNotifsCount(state, count) {
+    state.unreadNotifsCount += count;
+  },
 };

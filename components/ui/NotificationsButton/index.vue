@@ -1,0 +1,274 @@
+<template>
+  <div
+    v-click-outside="closePopUp"
+    class="reduced-notifications"
+  >
+    <button
+      class="reduced-notifications__button"
+      :class="{'block' : !notificationsCount}"
+      @click="togglePopUp"
+    >
+      <template v-if="notificationsCount">
+        <img
+          v-if="unreadNotifsCount"
+          src="~assets/img/ui/notification_outline_red_dot.svg"
+          alt=""
+        >
+        <span
+          v-else
+          class="icon-notification_outline_dot"
+        />
+      </template>
+      <span
+        v-else
+        class="icon-notification_outline"
+      />
+    </button>
+    <transition name="fade">
+      <div
+        v-if="isShowNotify"
+        class="reduced-notifications__pop-up"
+      >
+        <div class="reduced-notifications__header">
+          <div class="reduced-notifications__title">
+            {{ $t('ui.notifications.title') }}
+          </div>
+          <span
+            class="icon-close_small"
+            @click="closePopUp"
+          />
+        </div>
+        <div class="reduced-notifications__list">
+          <div class="notify notify__content">
+            <div class="notify__top">
+              <div class="notify__user">
+                <div class="notify__avatar">
+                  <img
+                    src="~assets/img/app/fakeavatar.svg"
+                    alt=""
+                  >
+                </div>
+                <div class="notify__info">
+                  <div class="notify__text notify__text_name">
+                    Edward Cooper
+                  </div>
+                  <div class="notify__text notify__text_grey">
+                    CEO from Amazon
+                  </div>
+                </div>
+              </div>
+              <div class="notify__text notify__text_date">
+                14 January 2021, 14:54
+              </div>
+            </div>
+            <div class="notify__reason">
+              <div class="notify__text notify__text_blue">
+                {{ $t('ui.notifications.invite') }}:
+              </div>
+            </div>
+            <div class="notify__action">
+              <button
+                class="notify__btn"
+                @click="showNotifications"
+              >
+                <span class="notify__text notify__text_btn">
+                  Paint the garage quickly
+                </span>
+                <span class="icon-chevron_right" />
+              </button>
+            </div>
+          </div>
+        </div>
+        <base-btn
+          class="reduced-notifications__more-btn"
+          mode="outline"
+        >
+          {{ $t('meta.showAll') }}
+        </base-btn>
+      </div>
+    </transition>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from 'vuex';
+import ClickOutside from 'vue-click-outside';
+
+export default {
+  name: 'NotificationsButtonContainer',
+  directives: {
+    ClickOutside,
+  },
+  data() {
+    return {
+      isShowNotify: false,
+    };
+  },
+  computed: {
+    ...mapGetters({
+      unreadNotifsCount: 'user/getUnreadNotifsCount',
+      notifications: 'user/getNotificationsList',
+      notificationsCount: 'user/getNotificationsCount',
+    }),
+  },
+  methods: {
+    togglePopUp() {
+      // if (!this.notificationsCount) return;
+
+      this.isShowNotify = !this.isShowNotify;
+    },
+    closePopUp() {
+      this.isShowNotify = false;
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.icon-close_small {
+  cursor: pointer;
+}
+.reduced-notifications {
+  position: relative;
+
+  &__button {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 130%;
+    color: $black600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    width: 43px;
+    height: 43px;
+    border: 1px solid transparent;
+    position: relative;
+    &:hover {
+      border: 1px solid $black100;
+    }
+    span:before {
+      color: $black400;
+      font-size: 24px;
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    height: 64px;
+    border-bottom: 1px solid #F7F8FA;
+    span:before {
+      color: $shade700 !important;
+      font-size: 24px;
+    }
+  }
+
+  &__title {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 130%;
+    color: $black800;
+  }
+
+  &__pop-up {
+    position: absolute;
+    top: 57px;
+    right: calc(100% - 43px);
+    background: #FFFFFF;
+    box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.0325794), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
+    border-radius: 6px;
+    min-width: 441px;
+    z-index: 10000000;
+  }
+
+  &__more-btn {
+    width: 33%;
+    margin: 0 auto 20px;
+  }
+}
+
+.notify {
+  min-height: 167px;
+  width: 100%;
+
+  &__content {
+    padding: 20px;
+    border-bottom: 1px solid #F7F8FA;
+    display: grid;
+    gap: 12px;
+  }
+
+  &__btn {
+    background: #F7F8FA;
+    border-radius: 3px;
+    height: 44px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    transition: .5s;
+    span:before {
+      color: #0083C7;
+      font-size: 24px;
+    }
+    &:hover {
+      background: #dadade;
+    }
+  }
+  &__text {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 130%;
+    &_date {
+      font-size: 12px;
+      color: $black300;
+    }
+    &_name {
+      font-size: 16px;
+      color: $black800;
+    }
+    &_grey {
+      font-size: 12px;
+      color: $black500;
+    }
+    &_blue {
+      font-size: 16px;
+      color: $blue;
+      text-align: left;
+    }
+    &_btn {
+      font-size: 16px;
+      color: $black800;
+    }
+  }
+  &__user {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    grid-gap: 10px;
+  }
+  &__info {
+    grid-gap: 5px;
+    display: grid;
+    text-align: left;
+    align-items: center;
+  }
+  &__avatar {
+    max-height: 40px;
+    max-width: 40px;
+    border-radius: 100%;
+  }
+  &__top {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+</style>

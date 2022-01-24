@@ -17,7 +17,6 @@ export default {
   getUserCompany: (state) => state.userData?.additionalInfo?.company || '',
   getUserDesc: (state) => state.userData?.additionalInfo?.description || '',
   getUserEducations: (state) => state.userData?.additionalInfo?.educations || '',
-  getUserWorkExp: (state) => state.userData?.additionalInfo?.workExperiences || '',
   getUserAddress: (state) => state.userData?.additionalInfo?.address || '',
   getUserSecondMobileNumber: (state) => state.userData?.additionalInfo?.secondMobileNumber || '',
   getUserEmail: (state) => state.userData?.email || '',
@@ -31,4 +30,9 @@ export default {
   getAllUserReviews: (state) => state.userReviews || '',
   getUser2FA: (state) => state.userEnable2FA || '',
   getUnreadChatsCount: (state) => state.unreadChatsCount,
+  getUnreadNotifsCount: (state) => state.unreadNotifsCount,
+  getNotificationsList: (state) => state.notifications.list,
+  getNotificationsCount: (state) => state.notifications.count,
+  getReducedNotifications: (state) => state.reducedNotifications,
+
 };

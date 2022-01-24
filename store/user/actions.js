@@ -5,9 +5,24 @@ export default {
   async getStatistic({ commit }) {
     try {
       const { result } = await this.$axios.$get('/v1/profile/statistic/me');
+
       commit('setStatisticData', result);
     } catch (e) {
       console.log(e);
+    }
+  },
+  async getNotifications({ commit }, config) {
+    try {
+      const currConfig = config || { params: { limit: 2, offset: 0 } };
+      const { result, ok } = await this.$axios.get(`${process.env.NOTIFS_URL}notifications`, currConfig);
+
+      if (!config) commit('setReducedNotifications', result.notifications);
+
+      commit('setNotifications', result);
+      commit('setUnreadNotifsCount', result.unreadCount);
+      return ok;
+    } catch (e) {
+      return false;
     }
   },
   async getUserPortfolios({ commit }, { userId, query }) {
