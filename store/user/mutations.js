@@ -67,7 +67,10 @@ export default {
   },
   setStatisticData(state, data) {
     state.statisticData = data;
-    state.unreadChatsCount = data.chatsStatistic?.unreadCountChats || 0;
+    this.commit('user/changeUnreadChatsCount', { count: data.chatsStatistic?.unreadCountChats || 0, needAdd: false });
+  },
+  changeUnreadChatsCount(state, { count, needAdd }) {
+    state.unreadChatsCount = needAdd ? state.unreadChatsCount + count : count;
   },
   setReducedNotifications(state, notifications) {
     state.reducedNotifications = notifications;

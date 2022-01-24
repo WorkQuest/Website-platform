@@ -102,6 +102,7 @@ export default {
       commit('setTokens', response.result);
       if (response.result.userStatus === 1) {
         await dispatch('getUserData');
+        await dispatch('getStatistic');
       }
       return response;
     } catch (e) {
