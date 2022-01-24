@@ -171,7 +171,6 @@
               </base-btn>
             </div>
           </div>
-          {{ pensionWallet }}
           <!--          <div class="info-block">-->
           <!--            <div class="info-block__name">-->
           <!--              {{ $t('pension.transactionHistory') }}-->

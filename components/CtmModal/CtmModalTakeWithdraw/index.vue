@@ -177,8 +177,8 @@ export default {
           title: this.$t('modals.withdrawInfo'),
           fields: {
             to: { name: this.$t('modals.toAddress'), value: this.walletAddress },
-            amount: { name: 'amount', value: this.amount, symbol: TokenSymbols.WUSD },
-            fee: { name: 'fee', value: txFee.result.fee, symbol: TokenSymbols.WUSD },
+            amount: { name: this.$t('modals.amount'), value: this.amount, symbol: TokenSymbols.WUSD },
+            fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
           },
           submitMethod: async () => {
             const res = await this.$store.dispatch('wallet/pensionWithdraw', this.amount);
