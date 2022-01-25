@@ -19,7 +19,7 @@
         />
         <base-field
           v-model="search"
-          v-click-outside="toggleSearchFocus"
+          v-click-outside="deFocus"
           class="search__block-item"
           is-search
           is-hide-error
@@ -110,10 +110,7 @@ export default {
       localStorage.setItem('isShowMap', newVal);
       this.$emit('isShowMap', this.isShowMap);
     },
-    distanceIndex() {
-      const zoomVariants = { 0: 15, 1: 10, 2: 8 };
-      this.zoom = zoomVariants[this.distanceIndex];
-    },
+    distanceIndex() { this.zoom = { 0: 15, 1: 10, 2: 8 }[this.distanceIndex]; },
   },
   mounted() {
     const isShow = JSON.parse(localStorage.getItem('isShowMap'));
@@ -127,7 +124,7 @@ export default {
     this.geoCode = null;
   },
   methods: {
-    toggleSearchFocus() { this.isSearchFocus = false; },
+    deFocus() { this.isSearchFocus = false; },
     centerChange() { this.$store.dispatch('quests/setMapCenter', this.coordinates); },
     selectAddress(address) {
       this.addresses = [];

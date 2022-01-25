@@ -67,6 +67,7 @@ export default {
   computed: {
     userName() {
       const { firstName, lastName } = this.user;
+      if ((firstName && !lastName) || (!firstName && lastName)) return `${firstName || lastName}`;
       return firstName && lastName ? `${firstName} ${lastName}` : this.$t('quests.namelessWorker');
     },
     skills() {
