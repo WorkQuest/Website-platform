@@ -145,7 +145,7 @@
             </div>
           </div>
           <div class="quest__card">
-            <Quests
+            <quest-cards
               v-if="otherQuestsCount"
               :quests="sameQuest"
             />

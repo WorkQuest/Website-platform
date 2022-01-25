@@ -16,7 +16,7 @@
             {{ item.name }}
           </base-btn>
         </div>
-        <Quests
+        <quest-cards
           v-if="questsCount"
           :quests="questsData"
           @clickFavoriteStar="updateQuests"

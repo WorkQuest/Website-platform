@@ -48,4 +48,4 @@ Vue.component('specializations-selector', SpecializationsSelector);
 Vue.component('files-uploader', FilesUploader);
 Vue.component('files-preview', FilesPreview);
 Vue.component('MessagesList', MessagesList);
-Vue.component('Quests', Quests);
+Vue.component('quest-cards', Quests);

@@ -197,7 +197,7 @@
             </base-btn>
           </div>
         </div>
-        <Quests
+        <quest-cards
           v-if="questsData.length > 0"
           :quests="questsData"
           @clickFavoriteStar="clickFavoriteStarHandler"
