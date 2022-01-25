@@ -16,9 +16,6 @@ export default () => ({
       fullBalance: 0,
     },
   },
-  stakingPoolsData: {
-    WQT: {},
-    WUSD: {},
-  },
-  stakingUserData: null,
+  stakingPoolsData: { WQT: {}, WUSD: {} },
+  stakingUserData: { WQT: {}, WUSD: {} },
 });

@@ -21,4 +21,7 @@ export default {
   setStakingPoolData(state, { pool, data }) {
     state.stakingPoolsData[pool] = data;
   },
+  setStakingUserData(state, { pool, data }) {
+    state.stakingUserData[pool] = data;
+  },
 };

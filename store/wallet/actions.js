@@ -10,6 +10,7 @@ import {
 } from '~/utils/wallet';
 import * as abi from '~/abi/abi';
 import { StakingTypes, TokenSymbols } from '~/utils/enums';
+import { getAccountAddress, getStakingDataByType } from '~/utils/web3';
 
 export default {
   async getTransactions({ commit }, params) {
@@ -156,7 +157,7 @@ export default {
     }
 
     const min = new BigNumber(0.0001);
-    const fullMinStake = new BigNumber(minStake).shiftedBy(-decimals).isLessThan(min)
+    const _minStake = new BigNumber(minStake).shiftedBy(-decimals).isLessThan(min)
       ? min.toString() : new BigNumber(minStake).shiftedBy(-decimals).toString();
 
     commit('setStakingPoolData', {
@@ -167,6 +168,7 @@ export default {
         poolAddress: contractAddress,
         decimals,
         tokenSymbol,
+        isNative: tokenSymbol === StakingTypes.WUSD,
         stakeTokenSymbol: tokenSymbol,
         claimPeriod: new BigNumber(stakingInfo.claimPeriod / 60 / 60).decimalPlaces(3).toString(),
         stakePeriod: new BigNumber(stakingInfo.stakePeriod / 60 / 60).decimalPlaces(3).toString(),
@@ -176,8 +178,29 @@ export default {
         rewardTotal: new BigNumber(rewardTotal).shiftedBy(-decimals).decimalPlaces(4).toString(),
         maxStake: new BigNumber(maxStake).shiftedBy(-decimals).decimalPlaces(4).toString(),
         fullMaxStake: new BigNumber(maxStake).shiftedBy(-decimals).toString(),
-        minStake: new BigNumber(minStake).shiftedBy(-decimals).decimalPlaces(4).toString(),
-        fullMinStake,
+        minStake: _minStake,
+        fullMinStake: new BigNumber(minStake).shiftedBy(-decimals).toString(),
+      },
+    });
+  },
+  async getStakingUserInfo({ commit }, { pool, decimals }) {
+    const _abi = pool === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStakingNative;
+    const contractAddress = pool === StakingTypes.WUSD ? process.env.WQT_STAKING_NATIVE : process.env.WQT_STAKING;
+    const [userInfo, duration] = await Promise.all([
+      fetchContractData('getInfoByAddress', _abi, contractAddress, [getWalletAddress()]),
+      fetchContractData('stakes', _abi, contractAddress, [getWalletAddress()]),
+    ]);
+    console.log(userInfo);
+    commit('setStakingUserData', {
+      pool,
+      data: {
+        ...userInfo,
+        date: duration.unstakeTime ? new Date(duration.unstakeTime * 1000) : false,
+        claim: new BigNumber(userInfo.claim_).shiftedBy(-decimals).decimalPlaces(5).toString(),
+        staked: new BigNumber(userInfo.staked_).shiftedBy(-decimals).decimalPlaces(4).toString(),
+        fullStaked: new BigNumber(userInfo.staked_).shiftedBy(-decimals).toString(),
+        balance: new BigNumber(userInfo._balance).shiftedBy(-18).decimalPlaces(4).toString(),
+        fullBalance: new BigNumber(userInfo._balance).shiftedBy(-decimals).toString(),
       },
     });
   },

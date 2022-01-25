@@ -167,7 +167,6 @@ export default {
       ];
     },
     poolsData() {
-      console.log(this.stakingPoolsData.WQT.rewardTokenAddress, this.stakingPoolsData.WUSD.rewardTokenAddress);
       return [this.stakingPoolsData.WUSD, this.stakingPoolsData.WQT];
     },
     explorerRef() {

@@ -5,7 +5,7 @@
         <div class="head-btns">
           <base-btn
             class="btn"
-            @click="handleBackToMainstaking()"
+            @click="handleBackToMainStaking()"
           >
             <template v-slot:left>
               <span class="icon-chevron_left" />
@@ -25,7 +25,7 @@
           </div>
           <div class="link-cont">
             <div class="link-cont__link link-cont__link_gray">
-              {{ getPoolAddress() }}
+              {{ poolData ? poolData.poolAddress : '' }}
             </div>
             <button
               type="button"
@@ -179,8 +179,6 @@ export default {
   name: 'StakingPool',
   data() {
     return {
-      poolData: null,
-      userInfo: null,
       updateInterval: null,
     };
   },
@@ -188,9 +186,17 @@ export default {
     ...mapGetters({
       isWalletConnected: 'wallet/getIsWalletConnected',
       balanceData: 'wallet/getBalanceData',
+      stakingPoolsData: 'wallet/getStakingPoolsData',
+      stakingUserData: 'wallet/getStakingUserData',
     }),
     slug() {
-      return this.$route.params.id;
+      return this.$route.params.id.toUpperCase();
+    },
+    userInfo() {
+      return this.stakingUserData[this.slug];
+    },
+    poolData() {
+      return this.stakingPoolsData[this.slug];
     },
     stakeDurationIsOver() {
       return this.userInfo && moment.duration(moment(this.userInfo.date).diff(moment.now())).asMilliseconds() <= 0;
@@ -198,12 +204,8 @@ export default {
     cards() {
       if (!this.poolData) {
         return [
-          {
-            subtitle: this.$t('staking.totalStaked'),
-          },
-          {
-            subtitle: this.$t('staking.totalDistributed'),
-          },
+          { subtitle: this.$t('staking.totalStaked') },
+          { subtitle: this.$t('staking.totalDistributed') },
         ];
       }
       return [
@@ -220,18 +222,10 @@ export default {
     stakingCards() {
       if (!this.poolData) {
         return [
-          {
-            name: this.$t('staking.stakingCards.distributionTime'),
-          },
-          {
-            name: this.$t('staking.stakingCards.rewardTotal'),
-          },
-          {
-            name: this.$t('staking.stakingCards.takePeriod'),
-          },
-          {
-            name: this.$t('staking.stakingCards.claimPeriod'),
-          },
+          { name: this.$t('staking.stakingCards.distributionTime') },
+          { name: this.$t('staking.stakingCards.rewardTotal') },
+          { name: this.$t('staking.stakingCards.takePeriod') },
+          { name: this.$t('staking.stakingCards.claimPeriod') },
         ];
       }
       return [
@@ -256,29 +250,23 @@ export default {
     userInfoCards() {
       if (!this.userInfo) {
         return [
-          {
-            name: this.$t('staking.userInformationCards.staked'),
-          },
-          {
-            name: this.$t('staking.userInformationCards.yourBalance'),
-          },
-          {
-            name: this.$t('staking.userInformationCards.claimed'),
-          },
+          { name: this.$t('staking.userInformationCards.staked') },
+          { name: this.$t('staking.userInformationCards.yourBalance') },
+          { name: this.$t('staking.userInformationCards.claimed') },
         ];
       }
       const data = [
         {
           name: this.$t('staking.userInformationCards.staked'),
-          about: this.$tc(`staking.${this.poolData.stakeTokenSymbol || this.slug}Count`, this.userInfo.staked),
+          about: this.$tc(`staking.${this.slug}Count`, this.userInfo.staked),
         },
         {
           name: this.$t('staking.userInformationCards.yourBalance'),
-          about: this.$tc(`staking.${this.poolData.stakeTokenSymbol || this.slug}Count`, this.userInfo.balance),
+          about: this.$tc(`staking.${this.slug}Count`, this.userInfo.balance),
         },
         {
           name: this.$t('staking.userInformationCards.claimed'),
-          about: this.$tc(`staking.${this.poolData.tokenSymbol || this.slug}Count`, this.userInfo.claim),
+          about: this.$tc(`staking.${this.slug}Count`, this.userInfo.claim),
         },
       ];
       if (this.userInfo.date && this.userInfo.staked !== '0') {
@@ -317,11 +305,11 @@ export default {
       return [
         {
           name: this.$t('staking.stakeCards.stakeMin'),
-          about: this.$t(`staking.${this.poolData.stakeTokenSymbol || this.slug}Count`, { n: this.poolData.minStake }),
+          about: this.$t(`staking.${this.slug}Count`, { n: this.poolData.minStake }),
         },
         {
           name: this.$t('staking.stakeCards.stakeLimit'),
-          about: this.$t(`staking.${this.poolData.stakeTokenSymbol || this.slug}Count`, { n: this.poolData.maxStake }),
+          about: this.$t(`staking.${this.slug}Count`, { n: this.poolData.maxStake }),
         },
         {
           name: this.$t('staking.stakeCards.periodUpdate'),
@@ -335,46 +323,24 @@ export default {
         : `https://dev-explorer.workquest.co/address/${this.poolData.rewardTokenAddress}`;
     },
   },
-  watch: {
-    async isConnected(newValue) {
-      if (newValue) {
-        await this.initPage();
-      } else {
-        this.userInfo = null;
-        this.poolData = null;
-        clearInterval(this.updateInterval);
-      }
-    },
-  },
   async mounted() {
+    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+    if (!this.isWalletConnected) return;
     await this.initPage();
   },
   async beforeDestroy() {
-    await this.$store.dispatch('web3/unsubscribeActions');
     clearInterval(this.updateInterval);
   },
   methods: {
     async initPage() {
       this.SetLoader(true);
-      await this.checkMetamaskStatus();
-      await this.getPoolData();
+      await this.$store.dispatch('wallet/getStakingPoolsData', this.slug);
       await this.getUserInfo();
-      // const events = this.slug === StakingTypes.WQT
-      //   ? ['tokensStaked', 'tokensClaimed', 'tokensUnstaked']
-      //   : ['Staked', 'Claimed', 'Unstaked'];
-      // await this.$store.dispatch('web3/fetchStakingActions', {
-      //   stakingType: this.slug,
-      //   events,
-      //   callback: () => {
-      //     this.getPoolData();
-      //     this.getUserInfo();
-      //   },
-      // });
       this.updateInterval = setInterval(() => this.getUserInfo(), 30000);
       this.SetLoader(false);
     },
     handleAutoRenewal() {
-      if (new BigNumber(this.userInfo._staked).isGreaterThanOrEqualTo(this.poolData._maxStake)) {
+      if (new BigNumber(this.userInfo.fullStaked).isGreaterThanOrEqualTo(this.poolData.fullMaxStake)) {
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/warning.svg'),
@@ -384,8 +350,8 @@ export default {
         return;
       }
       let renewalValue;
-      if (this.userInfo.claim >= this.poolData._maxStake) {
-        renewalValue = new BigNumber(this.poolData._maxStake).minus(this.userInfo._staked).toString();
+      if (this.userInfo.claim >= this.poolData.fullMaxStake) {
+        renewalValue = new BigNumber(this.poolData.fullMaxStake).minus(this.userInfo.fullStaked).toString();
       } else {
         renewalValue = this.userInfo.claim;
       }
@@ -409,38 +375,24 @@ export default {
         },
       });
     },
-    async getPoolData() {
-      this.poolData = await this.$store.dispatch('web3/fetchStakingInfo', { stakingType: this.slug });
-      if (this.slug === StakingTypes.WUSD) {
-        const { netId } = await this.$store.dispatch('web3/getAccount');
-        this.poolData.stakeTokenSymbol = NativeTokenSymbolByChainId[netId];
-        this.poolData.tokenSymbol = NativeTokenSymbolByChainId[netId];
-        this.poolData.isNative = true;
-      }
-    },
     async getUserInfo() {
-      this.userInfo = await this.$store.dispatch('web3/fetchStakingUserInfo', {
+      await this.$store.dispatch('wallet/getStakingUserInfo', {
         stakingType: this.slug,
         decimals: this.poolData.decimals,
       });
     },
-    getPoolAddress() {
-      if (this.slug === StakingTypes.WQT) return process.env.WQT_STAKING;
-      if (this.slug === StakingTypes.WUSD) return process.env.WQT_STAKING_NATIVE;
-      return '';
-    },
-    handleBackToMainstaking() {
+    handleBackToMainStaking() {
       this.$router.push('/staking');
     },
     doCopy(ev) {
       ev.stopPropagation();
-      this.$copyText(this.getPoolAddress()).then(() => {});
+      this.$copyText(this.poolData.poolAddress.toLowerCase()).then(() => {});
       this.ShowModal({
         key: modals.copiedSuccess,
       });
     },
     async showClaimModal() {
-      if (!this.userInfo || !this.poolData) return;
+      if (!this.userInfo || !this.stakingPoolsData[this.slug]) return;
       await this.checkMetamaskStatus();
       if (this.userInfo.claim === '0') {
         this.ShowModal({
@@ -495,12 +447,12 @@ export default {
         key: modals.claimRewards,
         type: 2,
         stakingType,
-        decimals: this.poolData.decimals,
+        decimals: this.stakingPoolsData[this.slug].decimals,
         staked: this.userInfo._staked,
       });
     },
     async showStakeModal() {
-      if (!this.userInfo || !this.poolData) return;
+      if (!this.userInfo || !this.stakingPoolsData[this.slug]) return;
       if (+this.userInfo.balance === 0) {
         await this.ShowModal({
           key: modals.status,
@@ -510,7 +462,7 @@ export default {
         });
         return;
       }
-      if (new BigNumber(this.userInfo._staked).isGreaterThanOrEqualTo(this.poolData._maxStake)) {
+      if (new BigNumber(this.userInfo._staked).isGreaterThanOrEqualTo(this.poolData.fullMaxStake)) {
         await this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/warning.svg'),
@@ -526,8 +478,8 @@ export default {
         balance: this.userInfo._balance,
         decimals: this.poolData.decimals,
         stakingType: this.slug,
-        minStake: this.poolData.minStake === '0' ? this.poolData._minStake : this.poolData.minStake,
-        maxStake: this.poolData._maxStake,
+        minStake: this.poolData.minStake === '0' ? this.poolData.fullMinStake : this.poolData.minStake,
+        maxStake: this.poolData.fullMaxStake,
         staked: this.userInfo._staked,
         alreadyStaked: +this.userInfo.staked !== 0, // for duration selecting
       });
