@@ -167,7 +167,8 @@
     "resendSMS": "SMS फिर से भेजें",
     "disable": "अक्षम करें",
     "remindLater": "बाद में याद दिलाएं",
-    "leave": "???"
+    "leave": "???",
+    "listIsEmpty": "List is empty"
   },
   "priority": {
     "title": "प्राथमिकता चुनें",
@@ -428,7 +429,6 @@
     "EstimatedPayment": "अनुमानित भुगतान:",
     "createAQuest": "Quest बनाएं",
     "editAQuest": "???",
-    "activeQuests": "एक्टिव Quest",
     "openedQuests": "???",
     "completedQuests": "पूरी हुई Quests",
     "oneTime": "एकबारगी",

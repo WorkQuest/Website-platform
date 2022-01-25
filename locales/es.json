@@ -167,7 +167,8 @@
     "resendSMS": "Volver a enviar SMS",
     "disable": "Desactivar",
     "remindLater": "Recordármelo más tarde",
-    "leave": "???"
+    "leave": "???",
+    "listIsEmpty": "List is empty"
   },
   "priority": {
     "title": "Seleccionar prioridad",
@@ -428,7 +429,6 @@
     "EstimatedPayment": "Pago estimado:",
     "createAQuest": "Crear una oferta",
     "editAQuest": "???",
-    "activeQuests": "Ofertas activas",
     "openedQuests": "???",
     "completedQuests": "Ofertas completadas",
     "oneTime": "Una vez",

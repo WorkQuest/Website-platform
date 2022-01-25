@@ -167,7 +167,8 @@
     "resendSMS": "Kirim ulang SMS",
     "disable": "Nonaktifkan",
     "remindLater": "Ingatkan nanti",
-    "leave": "???"
+    "leave": "???",
+    "listIsEmpty": "List is empty"
   },
   "priority": {
     "title": "Pilih Prioritas",
@@ -428,7 +429,6 @@
     "EstimatedPayment": "Perkiraan pembayaran:",
     "createAQuest": "Buat quest",
     "editAQuest": "???",
-    "activeQuests": "Quest aktif",
     "openedQuests": "???",
     "completedQuests": "Quest selesai",
     "oneTime": "Satu kali",
