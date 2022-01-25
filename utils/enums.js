@@ -109,6 +109,22 @@ export const MessageAction = {
   WORKER_ACCEPT_INVITE_ON_QUEST: 'workerAcceptInviteOnQuest',
 };
 
+export const NotificationAction = {
+  QUEST_STARTED: 'questStarted',
+  WORKER_REJECTED_QUEST: 'workerRejectedQuest',
+  WORKER_ACCEPTED_QUEST: 'workerAcceptedQuest',
+  WORKER_COMPLETED_QUEST: 'workerCompletedQuest',
+  EMPLOYER_ACCEPTED_COMPLETED_QUEST: 'employerAcceptedCompletedQuest',
+  EMPLOYER_REJECTED_COMPLETED_QUEST: 'employerRejectedCompletedQuest',
+  WORKER_RESPONDED_TO_QUEST: 'workerRespondedToQuest',
+  EMPLOYER_INVITED_WORKER_TO_QUEST: 'employerInvitedWorkerToQuest',
+  WORKER_ACCEPTED_INVITATION_TO_QUEST: 'workerAcceptedInvitationToQuest',
+  WORKER_REJECTED_INVITATION_TO_QUEST: 'workerRejectedInvitationToQuest',
+  EMPLOYER_REJECTED_WORKERS_RESPONSE: 'employerRejectedWorkersResponse',
+
+  USER_LEFT_REVIEW_ABOUT_QUEST: 'userLeftReviewAboutQuest',
+};
+
 export const ChatType = {
   GROUP: 'group',
   QUEST: 'quest',

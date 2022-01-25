@@ -39,40 +39,43 @@
           />
         </div>
         <div class="reduced-notifications__list">
-          <div class="notify notify__content">
+          <div
+            v-for="notification in notifications"
+            :key="notification.id"
+            class="notify notify__content"
+          >
             <div class="notify__top">
               <div class="notify__user">
-                <div class="notify__avatar">
-                  <img
-                    src="~assets/img/app/fakeavatar.svg"
-                    alt=""
-                  >
-                </div>
+                <img
+                  class="notify__avatar"
+                  :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                  alt="avatar"
+                >
                 <div class="notify__info">
                   <div class="notify__text notify__text_name">
-                    Edward Cooper
+                    {{ `${notification.sender.firstName} ${notification.sender.firstName}` }}
                   </div>
-                  <div class="notify__text notify__text_grey">
-                    CEO from Amazon
-                  </div>
+                  <!--                  <div class="notify__text notify__text_grey">-->
+                  <!--                    CEO from Amazon-->
+                  <!--                  </div>-->
                 </div>
               </div>
               <div class="notify__text notify__text_date">
-                14 January 2021, 14:54
+                {{ notification.creatingDate }}
               </div>
             </div>
             <div class="notify__reason">
               <div class="notify__text notify__text_blue">
-                {{ $t('ui.notifications.invite') }}:
+                {{ $t(notification.actionNameKey) }}:
               </div>
             </div>
             <div class="notify__action">
               <button
                 class="notify__btn"
-                @click="showNotifications"
+                @click="goToEvent(notification.params.link)"
               >
                 <span class="notify__text notify__text_btn">
-                  Paint the garage quickly
+                  {{ notification.params.title }}
                 </span>
                 <span class="icon-chevron_right" />
               </button>
@@ -107,22 +110,20 @@ export default {
   computed: {
     ...mapGetters({
       unreadNotifsCount: 'user/getUnreadNotifsCount',
-      notifications: 'user/getNotificationsList',
+      notifications: 'user/getReducedNotifications',
       notificationsCount: 'user/getNotificationsCount',
     }),
   },
   methods: {
     togglePopUp() {
-      // if (!this.notificationsCount) return;
-
       this.isShowNotify = !this.isShowNotify;
     },
     closePopUp() {
       this.isShowNotify = false;
     },
-    showNotifications() {
-      this.$router.push('/notifications');
-      this.isShowNotify = !this.isShowNotify;
+    goToEvent(path) {
+      this.closePopUp();
+      this.$router.push(path);
     },
   },
 };
@@ -165,7 +166,6 @@ export default {
     justify-content: space-between;
     padding: 0 20px;
     height: 64px;
-    border-bottom: 1px solid #F7F8FA;
     span:before {
       color: $shade700 !important;
       font-size: 24px;
@@ -192,6 +192,12 @@ export default {
     z-index: 10000000;
   }
 
+  &__list {
+    display: grid;
+    gap: 20px;
+    padding-bottom: 20px;
+  }
+
   &__more-btn {
     width: 33%;
     margin: 0 auto 20px;
@@ -203,8 +209,8 @@ export default {
   width: 100%;
 
   &__content {
-    padding: 20px;
-    border-bottom: 1px solid #F7F8FA;
+    padding: 20px 20px 0;
+    border-top: 1px solid #F7F8FA;
     display: grid;
     gap: 12px;
   }
@@ -266,9 +272,11 @@ export default {
     align-items: center;
   }
   &__avatar {
-    max-height: 40px;
-    max-width: 40px;
-    border-radius: 100%;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    -o-object-fit: cover;
+    object-fit: cover;
   }
   &__top {
     display: flex;

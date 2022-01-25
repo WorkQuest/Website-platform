@@ -1,5 +1,7 @@
+import moment from 'moment';
 import { error } from '~/utils/web3';
 import { connectWithMnemonic } from '~/utils/wallet';
+import { NotificationAction, UserRole } from '~/utils/enums';
 
 export default {
   async getStatistic({ commit }) {
@@ -11,10 +13,12 @@ export default {
       console.log(e);
     }
   },
-  async getNotifications({ commit }, config) {
+  async getNotifications({ commit, dispatch }, config) {
     try {
       const currConfig = config || { params: { limit: 2, offset: 0 } };
-      const { result, ok } = await this.$axios.get(`${process.env.NOTIFS_URL}notifications`, currConfig);
+      const { data: { result, ok } } = await this.$axios.get(`${process.env.NOTIFS_URL}notifications`, currConfig);
+
+      if (result.notifications.length) result.notifications.map(async (notification) => await dispatch('setCurrNotificationObject', notification));
 
       if (!config) commit('setReducedNotifications', result.notifications);
 
@@ -24,6 +28,69 @@ export default {
     } catch (e) {
       return false;
     }
+  },
+  setCurrNotificationObject({ state: { userRole } }, notification) {
+    const {
+      action, data: {
+        user, title, id, assignedWorker,
+      },
+    } = notification.notification;
+
+    let keyName = 'notifications.';
+    const link = `/quests/${id}`;
+    const isItAnWorker = userRole === UserRole.WORKER;
+
+    switch (action) {
+      case NotificationAction.QUEST_STARTED: {
+        keyName += 'invitesYouToStartAQuest';
+        break;
+      }
+      case NotificationAction.WORKER_REJECTED_QUEST: {
+        keyName += 'rejectedTheQuest';
+        break;
+      }
+      case NotificationAction.WORKER_ACCEPTED_QUEST: {
+        keyName += 'acceptedTheQuest';
+        break;
+      }
+      case NotificationAction.WORKER_COMPLETED_QUEST: {
+        keyName += 'completedTheQuest';
+        break;
+      }
+      case NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST: {
+        keyName += 'acceptedAJobOnAQuest';
+        break;
+      }
+      case NotificationAction.WORKER_RESPONDED_TO_QUEST: {
+        keyName += 'respondedToQuest';
+        break;
+      }
+      case NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST: {
+        keyName += 'invitedYouToAQuest';
+        break;
+      }
+      case NotificationAction.WORKER_ACCEPTED_INVITATION_TO_QUEST: {
+        keyName += 'acceptedTheInvitationToTheQuest';
+        break;
+      }
+      case NotificationAction.WORKER_REJECTED_INVITATION_TO_QUEST: {
+        keyName += 'declinedTheInvitationToTheQuest';
+        break;
+      }
+      case NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE: {
+        keyName += 'declinedYourResponseToTheQuest';
+        break;
+      }
+      default: {
+        keyName = '';
+        break;
+      }
+    }
+
+    notification.actionNameKey = keyName;
+    notification.sender = isItAnWorker ? user : assignedWorker || user;
+    notification.params = { title, link };
+    notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, h:mm');
   },
   async getUserPortfolios({ commit }, { userId, query }) {
     try {
@@ -103,6 +170,7 @@ export default {
       if (response.result.userStatus === 1) {
         await dispatch('getUserData');
         await dispatch('getStatistic');
+        await dispatch('getNotifications');
       }
       return response;
     } catch (e) {

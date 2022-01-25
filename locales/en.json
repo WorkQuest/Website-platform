@@ -168,7 +168,7 @@
     "disable": "Disable",
     "remindLater": "Remind later",
     "leave": "Leave",
-    "showAll": "Show all"
+    "showAll": "Show all",
     "listIsEmpty": "List is empty"
   },
   "priority": {
@@ -1328,6 +1328,20 @@
         "manySkills": "You can only add 5 skills"
       }
     }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "invite": "Invites you to complete the quest",
+    "invitesYouToStartAQuest": "Invites you to start a quest",
+    "rejectedTheQuest": "Rejected the quest",
+    "acceptedTheQuest": "Accepted the quest",
+    "completedTheQuest": "Completed the quest",
+    "acceptedAJobOnAQuest": "Accepted a job on a quest",
+    "respondedToQuest": "Responded to quest",
+    "invitedYouToAQuest": "Invited you to a quest",
+    "acceptedTheInvitationToTheQuest": "Accepted the invitation to the quest",
+    "declinedTheInvitationToTheQuest": "Declined the invitation to the quest",
+    "declinedYourResponseToTheQuest": "Declined your response to the quest"
   },
   "wallet": {
     "WUSD": "WUSD wallet",
