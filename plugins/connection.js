@@ -74,14 +74,24 @@ export default class extends Client {
   }
 
   async $get(path, queries = null) {
-    let qPath = path;
-    if (queries) {
-      qPath += this.createQuery(queries);
+    if (queries) path += this.createQuery(queries);
+
+    try {
+      const response = await this.request({ method: 'GET', path });
+      return response;
+    } catch (e) {
+      console.dir(e);
+      throw e;
     }
-    return this.request({ method: 'GET', path: qPath });
   }
 
   async $post(path, payload = null) {
-    return this.request({ method: 'POST', path, payload });
+    try {
+      const response = await this.request({ method: 'POST', path, payload });
+      return response;
+    } catch (e) {
+      console.dir(e);
+      throw e;
+    }
   }
 }

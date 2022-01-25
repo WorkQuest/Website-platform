@@ -140,5 +140,8 @@ Vue.mixin({
       };
       this.$store.dispatch('user/setCurrentPosition', payload);
     },
+    EmptyAvatar() {
+      return require('~/assets/img/app/avatar_empty.png');
+    },
   },
 });

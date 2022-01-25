@@ -1,7 +1,8 @@
 export default {
   getChatInfoInviteOnQuest: (state) => state.chatInfoInviteOnQuest,
   getQuestListForInvitation: (state) => state.questListForInvitation || {},
-  getWorkersList: (state) => state.workersList,
+  getEmployeeList: (state) => state.employeeList,
+  getEmployeeCount: (state) => state.employeeCount,
   getCurrentWorker: (state) => state.currentWorker,
   getUserSpecializations: (state) => state.currentWorker?.userSpecializations,
   getQuestsStatistic: (state) => state.currentWorker?.questsStatistic,

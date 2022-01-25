@@ -167,7 +167,8 @@
     "resendSMS": "إعادة إرسال SMS",
     "disable": "إيقاف",
     "remindLater": "تذكيري لاحقًا",
-    "leave": "???"
+    "leave": "???",
+    "listIsEmpty": "List is empty"
   },
   "priority": {
     "title": "تحديد الأولوية",
@@ -428,7 +429,6 @@
     "EstimatedPayment": "الدفعة المقدَّرة:",
     "createAQuest": "إنشاء طلب عمل",
     "editAQuest": "???",
-    "activeQuests": "طلبات العمل النشطة",
     "openedQuests": "???",
     "completedQuests": "طلبات العمل المكتملة",
     "oneTime": "مرة واحدة",
@@ -1515,7 +1515,6 @@
     "disputeTime": "وقت فتح النزاع:"
   },
   "workers": {
-    "noWorkers": "???...",
     "searchQuests": "البحث في طلبات العمل",
     "searchWorkers": "البحث في الموظفين",
     "topWorkers": "أفضل الموظفين",
@@ -1977,7 +1976,8 @@
           "desc": "لم ترد على أي طلبات العمل بعد",
           "btnText": "الرد على طلب العمل!"
         }
-      }
+      },
+      "noEmployees": "Oops, there are no employees..."
     }
   },
   "sharing": {
@@ -2417,5 +2417,12 @@
       "title": "Bronze",
       "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
     }
+  },
+  "workPlaces": {
+    "title": "Workplace",
+    "all": "All workplaces",
+    "distant": "Distant work",
+    "office": "Work in office",
+    "both": "Both variants"
   }
 }

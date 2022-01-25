@@ -85,17 +85,41 @@ export const KeyCodes = {
 };
 
 // Filters
-export const workplaceFilter = ['', 'distant', 'office', 'both'];
-export const ratingFilter = ['', 'verified', 'reliable', 'topRanked'];
-export const typeOfJobFilter = ['', 'fullTime', 'partTime', 'fixedTerm'];
-export const priorityFilter = [
-  0, // all
-  3, // urgent
-  2, // shortTerm
-  1, // fixedDelivery
+export const WorkplaceFilter = ['all', 'distant', 'office', 'both'];
+export const RatingFilter = ['', 'verified', 'reliable', 'topRanked'];
+export const TypeOfJobFilter = ['', 'fullTime', 'partTime', 'fixedTerm'];
+export const PriorityFilter = [
+  { key: 'all', value: 0 },
+  { key: 'urgent', value: 3 },
+  { key: 'shortTerm', value: 2 },
+  { key: 'fixedDelivery', value: 1 },
 ];
 
-export const questChatStatus = {
+export const MessageAction = {
+  GROUP_CHAT_CREATE: 'groupChatCreate',
+  NEW_MESSAGE: 'newMessage',
+  MESSAGE_READ_BY_RECIPIENT: 'messageReadByRecipient',
+  GROUP_CHAT_ADD_USERS: 'groupChatAddUsers',
+  GROUP_CHAT_LEAVE_USER: 'groupChatLeaveUser',
+  GROUP_CHAT_DELETE_USER: 'groupChatDeleteUser',
+  EMPLOYER_INVITE_ON_QUEST: 'employerInviteOnQuest',
+  WORKER_RESPONSE_ON_QUEST: 'workerResponseOnQuest',
+  EMPLOYER_REJECT_RESPONSE_ON_QUEST: 'employerRejectResponseOnQuest',
+  WORKER_REJECT_INVITE_ON_QUEST: 'workerRejectInviteOnQuest',
+  WORKER_ACCEPT_INVITE_ON_QUEST: 'workerAcceptInviteOnQuest',
+};
+
+export const ChatType = {
+  GROUP: 'group',
+  QUEST: 'quest',
+};
+
+export const MessageType = {
+  INFO: 'info',
+  MESSAGE: 'message',
+};
+
+export const QuestChatStatus = {
   Active: 0,
   Closed: 1,
 };

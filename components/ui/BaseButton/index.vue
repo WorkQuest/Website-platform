@@ -23,11 +23,17 @@
     @click="$emit('click')"
   >
     {{ text }}
-    <span class="icon-btn_left">
+    <span
+      v-if="$slots.left"
+      class="icon-btn_left"
+    >
       <slot name="left" />
     </span>
     <slot />
-    <span class="icon-btn_right">
+    <span
+      v-if="$slots.right"
+      class="icon-btn_right"
+    >
       <slot name="right" />
     </span>
   </button>

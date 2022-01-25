@@ -89,12 +89,12 @@
       <CtmModalClaimRewards v-if="modals.claimRewards === currentModalKey" />
       <CtmModalSwapTokens v-if="modals.swapTokens === currentModalKey" />
       <CtmModalGallery v-if="modals.gallery === currentModalKey" />
-      <CtmModalAreYouSureDeleteMember v-if="modals.areYouSureDeleteMember === currentModalKey" />
-      <CtmModalAreYouSureLeaveChat v-if="modals.areYouSureLeaveChat === currentModalKey" />
       <CtmModalTransactionReceipt v-if="modals.transactionReceipt === currentModalKey" />
+      <CtmModalAreYouSure v-if="modals.areYouSure === currentModalKey" />
     </div>
   </transition>
 </template>
+
 <script>
 import { mapGetters } from 'vuex';
 import modals from '@/store/modals/modals';
@@ -176,8 +176,7 @@ import CtmModalDeleteCase from './CtmModalDeleteCase';
 import CtmModalClaimRewards from './CtmModalClaimRewards';
 import CtmModalSwapTokens from './CtmModalSwapTokens';
 import CtmModalGallery from './CtmModalGallery';
-import CtmModalAreYouSureDeleteMember from './CtmModalAreYouSureDeleteMember';
-import CtmModalAreYouSureLeaveChat from './CtmModalAreYouSureLeaveChat';
+import CtmModalAreYouSure from './CtmModalAreYouSure';
 
 export default {
   name: 'ModalBox',
@@ -260,8 +259,7 @@ export default {
     CtmModalClaimRewards,
     CtmModalSwapTokens,
     CtmModalGallery,
-    CtmModalAreYouSureDeleteMember,
-    CtmModalAreYouSureLeaveChat,
+    CtmModalAreYouSure,
   },
   data: () => ({
     modals,
