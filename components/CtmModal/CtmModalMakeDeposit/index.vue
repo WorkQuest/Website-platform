@@ -15,8 +15,9 @@
             v-model="amount"
             :placeholder="'3 500'"
             class="content__input"
-            rules="required|decimal"
+            :rules="`required|decimal|is_not:0|max_bn:${balanceData.WUSD.fullBalance}|decimalPlaces:18`"
             :name="$t('modals.depositAmountField')"
+            @input="replaceDot"
           />
         </div>
         <div class="content__buttons">
@@ -30,7 +31,7 @@
           <base-btn
             class="buttons__button"
             :disabled="!validated || !passed || invalid"
-            @click="handleSubmit(deposit)"
+            @click="handleSubmit(toDepositReceipt)"
           >
             {{ $t('meta.submit') }}
           </base-btn>
@@ -43,6 +44,9 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { WQPensionFund } from '~/abi/abi';
+import { getWalletAddress } from '~/utils/wallet';
+import { TokenSymbols } from '~/utils/enums';
 
 export default {
   name: 'ModalMakeDeposit',
@@ -54,21 +58,55 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      balanceData: 'wallet/getBalanceData',
     }),
   },
+  mounted() {
+    this.$store.dispatch('wallet/getBalance');
+  },
   methods: {
+    replaceDot() {
+      this.amount = this.amount.replace(/,/g, '.');
+    },
     hide() {
       this.CloseModal();
     },
-    async deposit() {
+    async toDepositReceipt() {
       const { updateMethod } = this.options;
       this.hide();
       this.SetLoader(true);
-      const ok = await this.$store.dispatch('web3/pensionContribute', this.amount);
-      if (ok) {
-        this.showPensionIsRegisteredModal();
-        if (updateMethod) await updateMethod();
+      const [txFee] = await Promise.all([
+        this.$store.dispatch('wallet/getContractFeeData', {
+          method: 'contribute',
+          _abi: WQPensionFund,
+          contractAddress: process.env.PENSION_FUND,
+          data: [getWalletAddress()],
+          amount: this.amount,
+          recipient: process.env.PENSION_FUND,
+        }),
+        this.$store.dispatch('wallet/getBalance'),
+      ]);
+
+      if (!txFee?.ok || +this.balanceData.WUSD.balance === 0) {
+        await this.$store.dispatch('main/showToast', {
+          text: this.$t('errors.transaction.notEnoughFunds'),
+        });
+        this.SetLoader(false);
+        return;
       }
+
+      const fields = {
+        from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
+        to: { name: this.$t('modals.toAddress'), value: process.env.PENSION_FUND },
+        fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
+        amount: { name: this.$t('modals.amount'), value: this.amount, symbol: TokenSymbols.WUSD },
+      };
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        fields,
+        submitMethod: async () => await this.$store.dispatch('wallet/pensionContribute', this.amount),
+        callback: updateMethod,
+      });
       this.SetLoader(false);
     },
     showPensionIsRegisteredModal() {
