@@ -1517,7 +1517,6 @@
     "completed": "???"
   },
   "workers": {
-    "noWorkers": "???...",
     "searchQuests": "Cari quest",
     "searchWorkers": "Cari pekerja",
     "topWorkers": "Karyawan unggulan",
@@ -1980,7 +1979,8 @@
           "desc": "Anda belum menanggapi quest",
           "btnText": "Tanggapi quest!"
         }
-      }
+      },
+      "noEmployees": "Oops, there are no employees..."
     }
   },
   "sharing": {
@@ -2420,5 +2420,12 @@
       "title": "Bronze",
       "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
     }
+  },
+  "workPlaces": {
+    "title": "Workplace",
+    "all": "All workplaces",
+    "distant": "Distant work",
+    "office": "Work in office",
+    "both": "Both variants"
   }
 }

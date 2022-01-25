@@ -1517,7 +1517,6 @@
     "completed": "???"
   },
   "workers": {
-    "noWorkers": "???...",
     "searchQuests": "Quest खोजें",
     "searchWorkers": "वर्कर्स खोजें",
     "topWorkers": "टॉप कर्मचारी",
@@ -1980,7 +1979,8 @@
           "desc": "आपने अभी तक Quest को रिस्पॉन्ड नहीं किया है",
           "btnText": "Quest को रिस्पॉन्ड करें!"
         }
-      }
+      },
+      "noEmployees": "Oops, there are no employees..."
     }
   },
   "sharing": {
@@ -2420,5 +2420,12 @@
       "title": "Bronze",
       "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
     }
+  },
+  "workPlaces": {
+    "title": "Workplace",
+    "all": "All workplaces",
+    "distant": "Distant work",
+    "office": "Work in office",
+    "both": "Both variants"
   }
 }

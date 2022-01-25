@@ -8,8 +8,9 @@ export default {
   setQuestListForInvitation(state, data) {
     state.questListForInvitation = data;
   },
-  setWorkersList(state, data) {
-    state.workersList = data;
+  setEmployeeList(state, { count, users }) {
+    state.employeeList = users;
+    state.employeeCount = count;
   },
   setCurrentWorker(state, data) {
     state.currentWorker = data;
