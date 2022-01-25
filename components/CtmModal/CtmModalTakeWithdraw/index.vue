@@ -166,7 +166,7 @@ export default {
           this.$store.dispatch('wallet/getBalance'),
         ]);
         this.SetLoader(false);
-        if (!txFee?.ok || this.balanceData.WUSD.fullBalance === '0') {
+        if (!txFee?.ok || +this.balanceData.WUSD.fullBalance === 0) {
           await this.$store.dispatch('main/showToast', {
             text: this.$t('errors.transaction.notEnoughFunds'),
           });

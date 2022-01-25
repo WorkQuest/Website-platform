@@ -87,7 +87,7 @@ export default {
         this.$store.dispatch('wallet/getBalance'),
       ]);
 
-      if (!txFee?.ok || this.balanceData.WUSD.balance === '0') {
+      if (!txFee?.ok || +this.balanceData.WUSD.balance === 0) {
         await this.$store.dispatch('main/showToast', {
           text: this.$t('errors.transaction.notEnoughFunds'),
         });
