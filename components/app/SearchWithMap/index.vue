@@ -27,7 +27,7 @@
           :placeholder="$t('quests.ui.search')"
           data-selector="INPUT-SEARCH"
           @focus="isSearchFocus = true"
-          @selector="getAddressInfo(search)"
+          @selector="$route.name === 'quests' ? getAddressInfo(search) : getWorkersInfo()"
         >
           <template v-slot:selector>
             <div
@@ -132,7 +132,7 @@ export default {
     },
     async getAddressInfo(address) {
       try {
-        if (address.length) {
+        if (this.search) {
           this.addresses = await this.geoCode.geolookup(address);
           this.coordinates = {
             lng: this.addresses[0].lng,
@@ -145,6 +145,17 @@ export default {
         await this.$store.dispatch('main/showToast', {
           text: 'Address is not correct',
         });
+      }
+    },
+    async getWorkersInfo() {
+      try {
+        await this.$store.dispatch('quests/employeeList', {
+          query: {
+            q: this.search,
+          },
+        });
+      } catch (e) {
+        console.error('Users founded error: ', e);
       }
     },
   },
