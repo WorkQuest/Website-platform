@@ -93,14 +93,14 @@ export const KeyCodes = {
 };
 
 // Filters
-export const workplaceFilter = ['', 'distant', 'office', 'both'];
-export const ratingFilter = ['', 'verified', 'reliable', 'topRanked'];
-export const typeOfJobFilter = ['', 'fullTime', 'partTime', 'fixedTerm'];
-export const priorityFilter = [
-  0, // all
-  3, // urgent
-  2, // shortTerm
-  1, // fixedDelivery
+export const WorkplaceFilter = ['all', 'distant', 'office', 'both'];
+export const RatingFilter = ['', 'verified', 'reliable', 'topRanked'];
+export const TypeOfJobFilter = ['', 'fullTime', 'partTime', 'fixedTerm'];
+export const PriorityFilter = [
+  { key: 'all', value: 0 },
+  { key: 'urgent', value: 3 },
+  { key: 'shortTerm', value: 2 },
+  { key: 'fixedDelivery', value: 1 },
 ];
 
 export const MessageAction = {
