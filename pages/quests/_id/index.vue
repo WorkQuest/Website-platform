@@ -427,11 +427,11 @@ export default {
         case Dispute: {
           arr = [{
             name: this.$t('btn.dispute'),
-            class: 'base-btn_dispute',
+            class: '',
             mode: '',
-            funcKey: '',
+            funcKey: 'openDispute',
             icon: '',
-            disabled: true,
+            disabled: false,
           }];
           break;
         }
@@ -520,9 +520,6 @@ export default {
           key: modals.openADispute,
           questId: this.questData.id,
         });
-        await this.getQuest();
-        await this.getResponsesToQuest();
-        await this.setActionBtnsArr();
       }
     },
     async acceptCompletedWorkOnQuest() {
