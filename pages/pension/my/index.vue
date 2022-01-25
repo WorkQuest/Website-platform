@@ -171,6 +171,7 @@
               </base-btn>
             </div>
           </div>
+          <!--          TODO: добавить сторию транзакций (нет на бэке) -->
           <!--          <div class="info-block">-->
           <!--            <div class="info-block__name">-->
           <!--              {{ $t('pension.transactionHistory') }}-->
@@ -343,6 +344,14 @@ export default {
       balanceData: 'wallet/getBalanceData',
     }),
     historyFields() {
+      const cellStyle = {
+        thStyle: {
+          padding: '0',
+          height: '27px',
+          lineHeight: '27px',
+        },
+        tdAttr: { style: 'padding: 0; height: 64px; line-height: 64px' },
+      };
       return [
         {
           key: 'operation',
@@ -367,22 +376,12 @@ export default {
         {
           key: 'time',
           label: this.$t('referral.tableHead.time'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: { style: 'padding: 0; height: 64px; line-height: 64px' },
+          ...cellStyle,
         },
         {
           key: 'amount',
           label: this.$t('referral.tableHead.amount'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: { style: 'padding: 0; height: 64px; line-height: 64px' },
+          ...cellStyle,
         },
       ];
     },

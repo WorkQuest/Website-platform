@@ -142,23 +142,11 @@ export default {
       isWalletConnected: 'wallet/getIsWalletConnected',
     }),
     documents() {
-      return [
-        {
-          name: this.$t('pension.docName'),
-          size: this.$tc('pension.mb', 1.2),
-          url: '',
-        },
-        {
-          name: this.$t('pension.docName'),
-          size: this.$tc('pension.mb', 1.2),
-          url: '',
-        },
-        {
-          name: this.$t('pension.docName'),
-          size: this.$tc('pension.mb', 1.2),
-          url: '',
-        },
-      ];
+      return Array(3).fill({
+        name: this.$t('pension.docName'),
+        size: this.$tc('pension.mb', 1.2),
+        url: '',
+      });
     },
     cards() {
       const p = this.percent;
