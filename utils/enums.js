@@ -9,6 +9,14 @@ export const ChainsId = {
   WUSD_TEST: '0x1346618',
 };
 
+export const ChainsIdByChainNumber = {
+  1: '0x1',
+  4: '0x4',
+  56: '0x38',
+  97: '0x61',
+  20211224: '0x1346618',
+};
+
 export const NativeTokenSymbolByChainId = {
   [+ChainsId.ETH_MAIN]: 'ETH',
   [+ChainsId.ETH_TEST]: 'ETH',
