@@ -162,7 +162,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import moment from 'moment';
 import {
   QuestStatuses, InfoModeWorker, InfoModeEmployer, UserRole, ResponseStatus,
 } from '~/utils/enums';
@@ -234,7 +233,7 @@ export default {
       return Math.floor(questSpecializations[Math.floor(Math.random() * questSpecializations.length)].path);
     },
     checkAvailabilityDispute() {
-      return !(moment().toISOString() >= moment(this.questData.startedAt).add(1, 'day').toISOString());
+      return !(this.$moment().toISOString() >= this.$moment(this.questData.startedAt).add(1, 'day').toISOString());
     },
   },
   watch: {
