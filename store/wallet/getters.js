@@ -5,4 +5,5 @@ export default {
   getCallbackLayout: (state) => state.callbackLayout,
   getBalanceData: (state) => state.balance,
   getSelectedToken: (state) => state.selectedToken,
+  getPensionWallet: (state) => state.pensionWallet,
 };
