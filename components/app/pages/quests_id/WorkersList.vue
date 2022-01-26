@@ -57,14 +57,10 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import itemRating from '~/components/app/info/item-rating';
 import { ResponseStatus } from '~/utils/enums';
 
 export default {
   name: 'WorkersList',
-  components: {
-    itemRating,
-  },
   props: {
     isInvited: {
       type: Boolean,

@@ -61,13 +61,8 @@
 </template>
 <script>
 
-import itemRating from '~/components/app/info/item-rating';
-
 export default {
   name: 'EmployeeCard',
-  components: {
-    itemRating,
-  },
   props: {
     user: {
       type: Object,
