@@ -135,7 +135,7 @@
             >
               <div class="block__star">
                 <star-rating
-                  :quest-index="quest.id"
+                  :quest-index="0"
                   :rating-type="'questPage'"
                   :stars-number="5"
                   :rating="getRating(quest)"

@@ -16,6 +16,7 @@
         @sortRating="sortByRating"
         @sortPriority="sortByPriority"
         @sortWorkplace="sortByWorkplace"
+        @sortTypeOfJob="sortTypeOfJob"
       />
       <div
         v-if="questsCount"
@@ -72,7 +73,7 @@ export default {
   watch: {
     async isShowMap() { await this.fetchQuestsList(true); },
     async mapBounds(newV, oldV) {
-      if (!this.isShowMap || !Object.keys(oldV).length) return;
+      if (!this.isShowMap) return;
       if (
         newV?.center?.lng === oldV?.center?.lng
         && newV?.center?.lat === oldV?.center?.lat
@@ -105,7 +106,11 @@ export default {
       if (this.isFetching) return;
       this.isFetching = true;
 
-      if (this.isShowMap && Object.keys(this.mapBounds).length) {
+      if (this.isShowMap) {
+        if (!Object.keys(this.mapBounds).length) {
+          this.isFetching = false;
+          return;
+        }
         this.query['north[longitude]'] = this.mapBounds.northEast.lng;
         this.query['north[latitude]'] = this.mapBounds.northEast.lat;
         this.query['south[longitude]'] = this.mapBounds.southWest.lng;
@@ -158,6 +163,11 @@ export default {
       else this.query = { ...this.query, ...value };
       await this.fetchQuestsList(true);
     },
+    async sortTypeOfJob(value) {
+      if (!Object.keys(value).length) delete this.query['employments[0]'];
+      else this.query = { ...this.query, ...value };
+      await this.fetchQuestsList(true);
+    },
     showDetails(quest) {
       this.$router.push(`/quests/${quest.id}`);
     },
@@ -191,7 +201,6 @@ export default {
   &__cards {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 360px;
     grid-gap: 20px;
     margin-top: 20px;
   }
@@ -203,19 +212,9 @@ export default {
 
 @include _1199 {
   .quests {
-
     &__content {
       padding: 0 20px;
     }
-    &__cards {
-      grid-template-columns: 1fr;
-    }
-  }
-}
-
-@include _991 {
-  .quests__cards {
-    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -227,7 +226,6 @@ export default {
     }
 
     &__cards {
-      grid-template-columns: 1fr;
       grid-gap: 10px;
     }
   }
