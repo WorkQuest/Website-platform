@@ -111,7 +111,7 @@ export default {
     },
     typeOfJobItems() {
       const items = [this.$t('quests.allVariants')];
-      TypeOfJobFilter.forEach((item) => { if (item.value) console.log(item); items.push(this.$t(`quests.employment.${item}`)); });
+      TypeOfJobFilter.forEach((item) => { if (item.value) items.push(this.$t(`quests.employment.${item}`)); });
       return items;
     },
     workplaceItems() { return WorkplaceFilter.map((item) => this.$t(`workPlaces.${item}`)); },
