@@ -8,17 +8,22 @@
         <div
           v-for="(item, i) of options.fields"
           :key="i"
-          class="field field__item"
+          class="content__items-container"
         >
-          <div class="field__title">
-            {{ item.name }}
-          </div>
           <div
-            class="field__subtitle"
-            :class="{field__subtitle_red: !canSend && item.name === $t('wallet.table.trxFee')}"
+            v-if="item != null"
+            class="field field__item"
           >
-            {{ item.value }}
-            <span v-if="item.symbol">{{ item.symbol }}</span>
+            <div class="field__title">
+              {{ item.name }}
+            </div>
+            <div
+              class="field__subtitle"
+              :class="{field__subtitle_red: !canSend && item.name === $t('wallet.table.trxFee')}"
+            >
+              {{ item.value }}
+              <span v-if="item.symbol">{{ item.symbol }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -85,16 +90,18 @@ export default {
     },
     async handleSubmit() {
       if (!this.canSend) return;
-      const { callback, submitMethod } = this.options;
+      const { callback, submitMethod, isShowSuccess } = this.options;
       this.hide();
       this.SetLoader(true);
       if (submitMethod) {
         const res = await submitMethod();
         if (res?.ok) {
           if (callback) await callback();
-          await this.$store.dispatch('modals/show', {
-            key: modals.transactionSend,
-          });
+          if (isShowSuccess !== false) {
+            await this.$store.dispatch('modals/show', {
+              key: modals.transactionSend,
+            });
+          }
         }
       }
       this.SetLoader(false);
@@ -107,7 +114,7 @@ export default {
 
 .field{
   &__item {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     &:last-child{
       margin-bottom: 0;
     }

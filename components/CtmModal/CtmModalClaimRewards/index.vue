@@ -66,6 +66,7 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
+import { StakingTypes } from '~/utils/enums';
 
 export default {
   name: 'CtmModalClaimRewards',
@@ -87,6 +88,7 @@ export default {
       userBalance: 'web3/getUserBalance',
       userStake: 'web3/getUserStake',
       isConnected: 'web3/isConnected',
+      walletUserBalanceData: 'wallet/getBalanceData',
     }),
   },
   mounted() {
@@ -104,7 +106,7 @@ export default {
       return min + max;
     },
     maxBalance() {
-      if (this.options.stakingType !== 'MINING') {
+      if (this.options.stakingType !== StakingTypes.MINING) {
         if (this.options.type === 1) {
           const max = new BigNumber(this.options.maxStake).minus(this.options.staked).toString();
           this.amount = new BigNumber(this.options.balance).isGreaterThanOrEqualTo(max)
@@ -117,7 +119,7 @@ export default {
       }
     },
     checkAmount() {
-      if (this.options.stakingType !== 'MINING') {
+      if (this.options.stakingType !== StakingTypes.MINING) {
         return this.options.type === 1
           ? new BigNumber(this.options.balance).isGreaterThanOrEqualTo(this.amount)
           : new BigNumber(this.amount).isLessThanOrEqualTo(this.options.staked);
@@ -128,6 +130,16 @@ export default {
       return new BigNumber(amount).isGreaterThanOrEqualTo(this.amount);
     },
     async staking() {
+      if (this.options.stakingType === StakingTypes.MINING) {
+        await this.miningStake();
+        return;
+      }
+      await this.stakingStake();
+    },
+    async stakingStake() {
+      console.log('staking stake');
+    },
+    async miningStake() {
       this.SetLoader(true);
       await this.checkMetamaskStatus();
       if (this.checkAmount()) {

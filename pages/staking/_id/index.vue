@@ -12,12 +12,6 @@
             </template>
             {{ $t('staking.back') }}
           </base-btn>
-          <base-btn
-            class="btn_wh"
-            @click="showClaimModal"
-          >
-            {{ $t('staking.claimRewards') }}
-          </base-btn>
         </div>
         <div class="head-cont">
           <div class="title">
@@ -25,7 +19,7 @@
           </div>
           <div class="link-cont">
             <div class="link-cont__link link-cont__link_gray">
-              {{ poolData ? poolData.poolAddress : '' }}
+              {{ poolAddress }}
             </div>
             <button
               type="button"
@@ -126,6 +120,14 @@
               </div>
             </div>
           </div>
+          <div class="info-block__btns-cont">
+            <base-btn
+              mode="outline"
+              @click="showClaimModal"
+            >
+              {{ $t('staking.claimRewards') }}
+            </base-btn>
+          </div>
         </div>
         <div class="info-block">
           <div class="info-block__name_bold">
@@ -198,6 +200,10 @@ export default {
     poolData() {
       return this.stakingPoolsData[this.slug];
     },
+    poolAddress() {
+      return this.poolData && this.poolData.poolAddress
+        ? this.poolData.poolAddress.toLowerCase() : '';
+    },
     stakeDurationIsOver() {
       return this.userInfo && moment.duration(moment(this.userInfo.date).diff(moment.now())).asMilliseconds() <= 0;
     },
@@ -210,11 +216,11 @@ export default {
       }
       return [
         {
-          title: this.$tc(`staking.${this.poolData.stakeTokenSymbol || this.slug}Count`, this.poolData.totalStaked),
+          title: this.$t(`staking.${this.poolData.stakeTokenSymbol || this.slug}Count`, { n: this.NumberWithSpaces(this.poolData.totalStaked) }),
           subtitle: this.$t('staking.totalStaked'),
         },
         {
-          title: this.$tc(`staking.${this.poolData.tokenSymbol || this.slug}Count`, this.poolData.totalDistributed),
+          title: this.$t(`staking.${this.poolData.tokenSymbol || this.slug}Count`, { n: this.NumberWithSpaces(this.poolData.totalDistributed) }),
           subtitle: this.$t('staking.totalDistributed'),
         },
       ];
@@ -235,7 +241,7 @@ export default {
         },
         {
           name: this.$t('staking.stakingCards.rewardTotal'),
-          about: `${this.poolData.rewardTotal} ${this.poolData.tokenSymbol}`,
+          about: `${this.NumberWithSpaces(this.poolData.rewardTotal)} ${this.poolData.tokenSymbol}`,
         },
         {
           name: this.$t('staking.stakingCards.takePeriod'),
@@ -258,15 +264,16 @@ export default {
       const data = [
         {
           name: this.$t('staking.userInformationCards.staked'),
-          about: this.$tc(`staking.${this.slug}Count`, this.userInfo.staked),
+          about: this.$t(`staking.${this.slug}Count`, { n: this.NumberWithSpaces(this.userInfo.staked || '') }),
         },
         {
           name: this.$t('staking.userInformationCards.yourBalance'),
-          about: this.$tc(`staking.${this.slug}Count`, this.userInfo.balance),
+          about: this.$t(`staking.${this.slug}Count`, { n: this.NumberWithSpaces(this.userInfo.balance || '') }),
         },
         {
-          name: this.$t('staking.userInformationCards.claimed'),
-          about: this.$tc(`staking.${this.slug}Count`, this.userInfo.claim),
+          // name: this.$t('staking.userInformationCards.claimed'),
+          name: this.$t('mining.reward'),
+          about: this.$t(`staking.${this.slug}Count`, { n: this.NumberWithSpaces(this.userInfo.claim || '') }),
         },
       ];
       if (this.userInfo.date && this.userInfo.staked !== '0') {
@@ -305,11 +312,11 @@ export default {
       return [
         {
           name: this.$t('staking.stakeCards.stakeMin'),
-          about: this.$t(`staking.${this.slug}Count`, { n: this.poolData.minStake }),
+          about: this.$t(`staking.${this.slug}Count`, { n: this.NumberWithSpaces(this.poolData.minStake || '') }),
         },
         {
           name: this.$t('staking.stakeCards.stakeLimit'),
-          about: this.$t(`staking.${this.slug}Count`, { n: this.poolData.maxStake }),
+          about: this.$t(`staking.${this.slug}Count`, { n: this.NumberWithSpaces(this.poolData.maxStake || '') }),
         },
         {
           name: this.$t('staking.stakeCards.periodUpdate'),
@@ -319,8 +326,9 @@ export default {
     },
     explorerRef() {
       if (!this.poolData) return '/';
-      return (process.env.PROD === 'true') ? `https://dev-explorer.workquest.co/address/${this.poolData.rewardTokenAddress}`
-        : `https://dev-explorer.workquest.co/address/${this.poolData.rewardTokenAddress}`;
+      return (process.env.PROD === 'true')
+        ? `https://dev-explorer.workquest.co/address/${this.poolData.rewardTokenAddress ? this.poolData.rewardTokenAddress.toLowerCase() : ''}`
+        : `https://dev-explorer.workquest.co/address/${this.poolData.rewardTokenAddress ? this.poolData.rewardTokenAddress.toLowerCase() : ''}`;
     },
   },
   async mounted() {
@@ -334,9 +342,11 @@ export default {
   methods: {
     async initPage() {
       this.SetLoader(true);
-      await this.$store.dispatch('wallet/getStakingPoolsData', this.slug);
-      await this.getUserInfo();
-      this.updateInterval = setInterval(() => this.getUserInfo(), 30000);
+      await Promise.all([
+        this.$store.dispatch('wallet/getStakingPoolsData', this.slug),
+        this.$store.dispatch('wallet/getStakingUserInfo', this.slug),
+      ]);
+      this.updateInterval = setInterval(() => this.getUserInfo(), 120000);
       this.SetLoader(false);
     },
     handleAutoRenewal() {
@@ -375,26 +385,20 @@ export default {
         },
       });
     },
-    async getUserInfo() {
-      await this.$store.dispatch('wallet/getStakingUserInfo', {
-        stakingType: this.slug,
-        decimals: this.poolData.decimals,
-      });
-    },
     handleBackToMainStaking() {
       this.$router.push('/staking');
     },
     doCopy(ev) {
       ev.stopPropagation();
-      this.$copyText(this.poolData.poolAddress.toLowerCase()).then(() => {});
-      this.ShowModal({
-        key: modals.copiedSuccess,
+      this.$copyText(this.poolAddress).then(() => {});
+      this.$store.dispatch('main/showToast', {
+        title: this.$t('modals.textCopy'),
+        text: this.poolAddress,
       });
     },
     async showClaimModal() {
       if (!this.userInfo || !this.stakingPoolsData[this.slug]) return;
-      await this.checkMetamaskStatus();
-      if (this.userInfo.claim === '0') {
+      if (+this.userInfo.claim === 0) {
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/warning.svg'),
@@ -441,7 +445,6 @@ export default {
         });
         return;
       }
-      await this.checkMetamaskStatus();
       const stakingType = this.slug === StakingTypes.WQT ? StakingTypes.WQT : StakingTypes.WUSD;
       this.ShowModal({
         key: modals.claimRewards,
@@ -471,17 +474,17 @@ export default {
         });
         return;
       }
-      await this.checkMetamaskStatus();
       this.ShowModal({
-        key: modals.claimRewards,
-        type: 1,
-        balance: this.userInfo._balance,
-        decimals: this.poolData.decimals,
+        key: modals.stake,
         stakingType: this.slug,
-        minStake: this.poolData.minStake === '0' ? this.poolData.fullMinStake : this.poolData.minStake,
-        maxStake: this.poolData.fullMaxStake,
-        staked: this.userInfo._staked,
-        alreadyStaked: +this.userInfo.staked !== 0, // for duration selecting
+        // type: 1,
+        // balance: this.userInfo.balance,
+        // decimals: this.poolData.decimals,
+        // stakingType: this.slug,
+        // minStake: +this.poolData.minStake === 0 ? this.poolData.fullMinStake : this.poolData.minStake,
+        // maxStake: this.poolData.fullMaxStake,
+        // staked: this.userInfo.staked,
+        // alreadyStaked: +this.userInfo.staked !== 0, // for duration selecting
       });
     },
   },
@@ -590,6 +593,11 @@ export default {
     .info-block {
       background-color: #fff;
       border-radius: 6px;
+
+      &__claim-btn {
+        display: flex;
+        justify-items: flex-end;
+      }
 
       &__btns-cont {
         padding: 0 20px 20px;
@@ -724,7 +732,7 @@ export default {
           grid-template-columns: 1fr;
         }
         &__btns-cont {
-          grid-template-columns: repeat(2, 1fr);
+          grid-template-columns: repeat(1, 1fr);
         }
       }
     }

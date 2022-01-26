@@ -155,15 +155,15 @@ export const fetchContractData = async (_method, _abi, _address, _params, _provi
     const Contract = new _provider.eth.Contract(_abi, _address);
     return await Contract.methods[_method].apply(this, _params).call();
   } catch (e) {
-    console.log(e.message);
+    console.error(`Fetch contract data [${_method}]: ${e.message}`);
     return false;
   }
 };
 
 export const sendTransaction = async (_method, payload, _provider = web3) => {
   let transactionData;
-  const inst = new web3.eth.Contract(payload.abi, payload.address);
-  const gasPrice = await web3.eth.getGasPrice();
+  const inst = new _provider.eth.Contract(payload.abi, payload.address);
+  const gasPrice = await _provider.eth.getGasPrice();
   const accountAddress = await getAccountAddress();
   if (_method === 'claim') {
     const data = inst.methods[_method].apply(null).encodeABI();
@@ -186,7 +186,8 @@ export const sendTransaction = async (_method, payload, _provider = web3) => {
       gas: gasEstimate,
     };
   }
-  return await web3.eth.sendTransaction(transactionData);
+  // noinspection ES6RedundantAwait
+  return await _provider.eth.sendTransaction(transactionData);
 };
 
 const getChainTypeById = (chainId) => {
@@ -416,6 +417,7 @@ export const getTxFee = async (_abi, _contractAddress, method, data = null) => {
   }
 };
 
+// TODO: DELETE
 export const staking = async (_decimals, _amount, _tokenAddress, _stakingAddress, _stakingAbi, duration, stakingType) => {
   let instance;
   const isNative = stakingType === StakingTypes.WUSD;
@@ -463,6 +465,7 @@ export const staking = async (_decimals, _amount, _tokenAddress, _stakingAddress
   }
 };
 
+// TODO: DELETE
 export const unStaking = async (_decimals, _amount, _stakingAddress, _stakingAbi) => {
   try {
     amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
@@ -482,6 +485,7 @@ export const unStaking = async (_decimals, _amount, _stakingAddress, _stakingAbi
   }
 };
 
+// TODO: DELETE
 export const claimRewards = async (_stakingAddress, _stakingAbi) => {
   try {
     showToast('Claiming', 'Claiming...', 'success');
@@ -502,6 +506,7 @@ export const claimRewards = async (_stakingAddress, _stakingAbi) => {
   }
 };
 
+// TODO: DELETE
 export const authRenewal = async (_stakingAddress, _stakingAbi) => {
   showToast('Auto renewal', 'Accepting...', 'success');
   try {

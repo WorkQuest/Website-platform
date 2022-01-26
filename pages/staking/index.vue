@@ -34,12 +34,12 @@
               </template>
               <template #cell(totalStaked)="el">
                 <div class="table__value">
-                  {{ el.item.totalStaked }} {{ el.item.stakeTokenSymbol }}
+                  {{ NumberWithSpaces(el.item.totalStaked) }} {{ el.item.stakeTokenSymbol }}
                 </div>
               </template>
               <template #cell(totalDistributed)="el">
                 <div class="table__value">
-                  {{ el.item.totalDistributed }} {{ el.item.tokenSymbol }}
+                  {{ NumberWithSpaces(el.item.totalDistributed) }} {{ el.item.tokenSymbol }}
                 </div>
               </template>
               <template #cell(stakeTokenAddress)="el">
@@ -189,7 +189,7 @@ export default {
       ]);
     },
     handleOpenPool(el) {
-      this.$router.push(`/staking/${el.item.link}`);
+      this.$router.push(`/staking/${el.item.link.toLowerCase()}`);
     },
     getFormattedAddress(address) {
       return !address ? '' : `${address.slice(0, 8)}...${address.slice(-4)}`;

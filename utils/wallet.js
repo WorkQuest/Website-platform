@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 import { AES, enc } from 'crypto-js';
 import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
-import { error, success } from '~/utils/web3';
+import { error, success, fetchContractData } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 
 const bip39 = require('bip39');
@@ -22,6 +22,7 @@ export const encryptStringWithKey = (toEncrypt, key) => AES.encrypt(toEncrypt, k
 export const decryptStringWitheKey = (toDecrypt, key) => AES.decrypt(toDecrypt, key).toString(enc.Utf8);
 
 let web3 = new Web3(process.env.WQ_PROVIDER);
+export const GetWalletProvider = () => web3;
 const wallet = {
   address: null,
   privateKey: null,
@@ -181,21 +182,24 @@ export const getTransferFeeData = async (recipient, value) => {
   }
 };
 
+// export const sendTransaction = async (_method, payload, _provider = web3) => {
+//   const inst = new web3.eth.Contract(payload.abi, payload.address);
+//   const data = inst.methods[_method].apply(null, payload.data).encodeABI();
+//   const [gasPrice, gasEstimate] = await Promise.all([
+//     web3.eth.getGasPrice(),
+//     inst.methods[_method].apply(null, payload.data).estimateGas({ from: wallet.address }),
+//   ]);
+//   // noinspection ES6RedundantAwait
+//   return await web3.eth.sendTransaction({
+//     to: payload.address,
+//     from: wallet.address,
+//     data,
+//     gasPrice,
+//     gas: gasEstimate,
+//   });
+// };
+
 /** CONTRACTS */
-export const fetchContractData = async (_method, _abi, _address, _params) => {
-  try {
-    if (!web3) {
-      console.error('_provider is undefined');
-      return {};
-    }
-    const Contract = new web3.eth.Contract(_abi, _address);
-    const res = await Contract.methods[_method].apply(this, _params).call();
-    return success(res);
-  } catch (e) {
-    console.error(e.message);
-    return error();
-  }
-};
 export const transferToken = async (recipient, value) => {
   try {
     value = new BigNumber(value).shiftedBy(18).toString();
@@ -247,7 +251,7 @@ export const getContractFeeData = async (_method, _abi, _contractAddress, data, 
     });
   } catch (e) {
     console.error(`Get contract fee data error: ${_method}.`, e.message);
-    return error();
+    return error(1000, e.message);
   }
 };
 
@@ -257,12 +261,12 @@ export const getPensionDefaultData = async () => {
     const _abi = abi.WQPensionFund;
     const _pensionAddress = process.env.PENSION_FUND;
     const [lockTime, defaultFee] = await Promise.all([
-      fetchContractData('lockTime', _abi, _pensionAddress),
-      fetchContractData('defaultFee', _abi, _pensionAddress),
+      fetchContractData('lockTime', _abi, _pensionAddress, null, web3),
+      fetchContractData('defaultFee', _abi, _pensionAddress, null, web3),
     ]);
     return success({
-      defaultFee: new BigNumber(defaultFee.result.toString()).shiftedBy(-18).toString(),
-      lockTime: lockTime.result,
+      defaultFee: new BigNumber(defaultFee.toString()).shiftedBy(-18).toString(),
+      lockTime,
     });
   } catch (e) {
     console.error(`PensionDefault: ${e}`);
@@ -271,10 +275,10 @@ export const getPensionDefaultData = async () => {
 };
 export const getPensionWallet = async () => {
   try {
-    const myPensionWallet = await fetchContractData('wallets', abi.WQPensionFund, process.env.PENSION_FUND, [wallet.address]);
+    const myPensionWallet = await fetchContractData('wallets', abi.WQPensionFund, process.env.PENSION_FUND, [wallet.address], web3);
     const {
       unlockDate, fee, amount, createdAt, rewardAllowed, rewardDebt, rewardDistributed,
-    } = myPensionWallet.result;
+    } = myPensionWallet;
     const _amount = new BigNumber(amount).shiftedBy(-18);
     let _fee = new BigNumber(fee).shiftedBy(-18);
     if (_fee.isGreaterThan('0') && _fee.isLessThan('0.0000001')) {

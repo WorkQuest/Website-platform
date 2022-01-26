@@ -25,20 +25,12 @@ import {
   swapWithBridge,
   getStakingDataByType,
   handleMetamaskStatus,
-  fetchActions,
   unsubscirbeListeners,
   getChainIdByChain,
   initProvider,
   authRenewal,
-  getPensionDefaultData,
-  getPensionWallet,
-  pensionUpdateFee,
-  pensionContribute,
-  pensionsWithdraw,
-  pensionExtendLockTime,
-  getTxFee,
   getPoolTotalSupplyBSC, getPoolTokensAmountBSC,
-  sendTransaction, createInstance, error,
+  error,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { StakingTypes } from '~/utils/enums';
@@ -214,26 +206,6 @@ export default {
     return payload;
   },
 
-  async fetchStakingUserInfo({ commit }, { stakingType, decimals }) {
-    const { stakingAbi, stakingAddress } = getStakingDataByType(stakingType);
-    const [userInfo, duration] = await Promise.all([
-      fetchContractData('getInfoByAddress', stakingAbi, stakingAddress, [getAccountAddress()]),
-      fetchContractData('stakes', stakingAbi, stakingAddress, [getAccountAddress()]),
-    ]);
-    return {
-      ...userInfo,
-      date: duration.unstakeTime ? new Date(duration.unstakeTime * 1000) : false,
-      claim: new BigNumber(userInfo.claim_).shiftedBy(-decimals).decimalPlaces(5).toString(),
-      staked: new BigNumber(userInfo.staked_).shiftedBy(-decimals).decimalPlaces(4).toString(),
-      _staked: new BigNumber(userInfo.staked_).shiftedBy(-decimals).toString(),
-      balance: new BigNumber(userInfo._balance).shiftedBy(-decimals).decimalPlaces(4).toString(),
-      _balance: new BigNumber(userInfo._balance).shiftedBy(-decimals).toString(),
-    };
-  },
-  getStakingRewardTxFee({ commit }, stakingType) {
-    const { stakingAbi, stakingAddress } = getStakingDataByType(stakingType);
-    return getTxFee(stakingAbi, stakingAddress, 'claim');
-  },
   unsubscribeActions() {
     unsubscirbeListeners();
   },

@@ -1,13 +1,15 @@
 import BigNumber from 'bignumber.js';
 import {
-  connectWallet, connectWithMnemonic,
+  connectWallet,
   disconnect,
-  fetchContractData,
   getBalance, getContractFeeData,
   getIsWalletConnected,
   getStyledAmount, getWalletAddress, getTransferFeeData,
-  transfer, transferToken,
+  transfer, transferToken, GetWalletProvider,
 } from '~/utils/wallet';
+import {
+  sendTransaction, fetchContractData, success, error,
+} from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { StakingTypes, TokenSymbols } from '~/utils/enums';
 import {
@@ -81,11 +83,17 @@ export default {
     });
   },
   async getBalanceWQT({ commit }, userAddress) {
-    const res = await fetchContractData('balanceOf', abi.ERC20, process.env.WQT_TOKEN, [userAddress]);
+    const res = await fetchContractData(
+      'balanceOf',
+      abi.ERC20,
+      process.env.WQT_TOKEN,
+      [userAddress],
+      GetWalletProvider(),
+    );
     commit('setBalance', {
       symbol: TokenSymbols.WQT,
-      balance: res.ok ? getStyledAmount(res.result) : 0,
-      fullBalance: res.ok ? getStyledAmount(res.result, true) : 0,
+      balance: res ? getStyledAmount(res) : 0,
+      fullBalance: res ? getStyledAmount(res, true) : 0,
     });
   },
   /**
@@ -123,6 +131,29 @@ export default {
     method, _abi, contractAddress, data, recipient, amount,
   }) {
     return await getContractFeeData(method, _abi, contractAddress, data, recipient, amount);
+  },
+
+  async approve({ commit }, { tokenAddress, spenderAddress, amount }) {
+    try {
+      amount = new BigNumber(amount).shiftedBy(18).toString();
+      return await sendTransaction(
+        'approve',
+        {
+          abi: abi.ERC20,
+          address: tokenAddress,
+          data: [spenderAddress, amount],
+        },
+        GetWalletProvider(),
+      );
+    } catch (e) {
+      console.error('Approve error', e.message);
+      return false;
+    }
+  },
+  async getAllowance({ commit }, { tokenAddress, spenderAddress }) {
+    const res = await fetchContractData('allowance', abi.ERC20, tokenAddress, [getWalletAddress(), spenderAddress], GetWalletProvider());
+    if (!res) return false;
+    return new BigNumber(res.toString()).shiftedBy(-18).toString();
   },
 
   /** PENSION PROGRAM */
@@ -177,14 +208,15 @@ export default {
       console.error(`Wrong pool: ${pool}`);
       return;
     }
-    const res = await fetchContractData('getStakingInfo', _abi, contractAddress, []);
-    if (!res.ok) commit('setStakingPoolData', { pool });
-
-    const stakingInfo = res.result;
+    const stakingInfo = await fetchContractData('getStakingInfo', _abi, contractAddress, null, GetWalletProvider());
+    if (!stakingInfo) {
+      commit('setStakingPoolData', { pool });
+      return;
+    }
 
     const {
       rewardTokenAddress, totalStaked, totalDistributed, rewardTotal, maxStake, minStake,
-    } = res.result;
+    } = stakingInfo;
 
     let decimals;
     let tokenSymbol;
@@ -193,15 +225,16 @@ export default {
       tokenSymbol = pool;
     } else {
       const [decimalsRes, tokenSymbolRes] = await Promise.all([
-        fetchContractData('decimals', abi.ERC20, rewardTokenAddress),
-        fetchContractData('symbol', abi.ERC20, rewardTokenAddress),
+        fetchContractData('decimals', abi.ERC20, rewardTokenAddress, null, GetWalletProvider()),
+        fetchContractData('symbol', abi.ERC20, rewardTokenAddress, null, GetWalletProvider()),
       ]);
-      decimals = decimalsRes.result;
-      tokenSymbol = tokenSymbolRes.result;
+      decimals = decimalsRes;
+      tokenSymbol = tokenSymbolRes;
     }
 
     const min = new BigNumber(0.0001);
-    const _minStake = new BigNumber(minStake).shiftedBy(-decimals).isLessThan(min)
+    // min stake amount to display for user & input
+    const minStakeDisplay = new BigNumber(minStake).shiftedBy(-decimals).isLessThan(min)
       ? min.toString() : new BigNumber(minStake).shiftedBy(-decimals).toString();
 
     commit('setStakingPoolData', {
@@ -222,30 +255,60 @@ export default {
         rewardTotal: new BigNumber(rewardTotal).shiftedBy(-decimals).decimalPlaces(4).toString(),
         maxStake: new BigNumber(maxStake).shiftedBy(-decimals).decimalPlaces(4).toString(),
         fullMaxStake: new BigNumber(maxStake).shiftedBy(-decimals).toString(),
-        minStake: _minStake,
+        minStake: minStakeDisplay,
         fullMinStake: new BigNumber(minStake).shiftedBy(-decimals).toString(),
       },
     });
   },
-  async getStakingUserInfo({ commit }, { pool, decimals }) {
+  async getStakingUserInfo({ commit }, pool) {
+    const decimals = 18;
     const _abi = pool === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStakingNative;
     const contractAddress = pool === StakingTypes.WUSD ? process.env.WQT_STAKING_NATIVE : process.env.WQT_STAKING;
-    const [userInfo, duration] = await Promise.all([
-      fetchContractData('getInfoByAddress', _abi, contractAddress, [getWalletAddress()]),
-      fetchContractData('stakes', _abi, contractAddress, [getWalletAddress()]),
+    const [userInfo, stakes] = await Promise.all([
+      fetchContractData('getInfoByAddress', _abi, contractAddress, [getWalletAddress()], GetWalletProvider()),
+      fetchContractData('stakes', _abi, contractAddress, [getWalletAddress()], GetWalletProvider()),
     ]);
-    console.log(userInfo);
+    const {
+      _balance, claim_, staked_,
+    } = userInfo;
+    const { unstakeTime } = stakes;
     commit('setStakingUserData', {
       pool,
       data: {
         ...userInfo,
-        date: duration.unstakeTime ? new Date(duration.unstakeTime * 1000) : false,
-        claim: new BigNumber(userInfo.claim_).shiftedBy(-decimals).decimalPlaces(5).toString(),
-        staked: new BigNumber(userInfo.staked_).shiftedBy(-decimals).decimalPlaces(4).toString(),
-        fullStaked: new BigNumber(userInfo.staked_).shiftedBy(-decimals).toString(),
-        balance: new BigNumber(userInfo._balance).shiftedBy(-18).decimalPlaces(4).toString(),
-        fullBalance: new BigNumber(userInfo._balance).shiftedBy(-decimals).toString(),
+        isStakingStarted: pool === StakingTypes.WUSD || +stakes.stakedAt !== 0,
+        date: unstakeTime ? new Date(unstakeTime * 1000) : false,
+        claim: +claim_ ? new BigNumber(claim_).shiftedBy(-decimals).decimalPlaces(5).toString() : '0',
+        staked: +staked_ ? new BigNumber(staked_).shiftedBy(-decimals).decimalPlaces(4).toString() : '0',
+        fullStaked: +staked_ ? new BigNumber(staked_).shiftedBy(-decimals).toString() : '0',
+        balance: +_balance ? new BigNumber(_balance).shiftedBy(-18).decimalPlaces(4).toString() : '0',
+        fullBalance: +_balance ? new BigNumber(_balance).shiftedBy(-decimals).toString() : '0',
       },
     });
+  },
+  async stake({ commit }, {
+    stakingType, amount, poolAddress, duration,
+  }) {
+    try {
+      amount = new BigNumber(amount).shiftedBy(18).toString();
+      const _abi = stakingType === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStaking;
+      const data = duration != null ? [amount, duration.toString()] : [{ value: amount }];
+      const res = await sendTransaction(
+        'stake',
+        {
+          abi: _abi,
+          address: poolAddress,
+          data,
+        },
+        GetWalletProvider(),
+      );
+      return success(res);
+    } catch (e) {
+      console.error('Stake error', e.message);
+      return error();
+    }
+  },
+  async stakingUnstake({ commit }, { decimals, amount, pool }) {
+    return null;
   },
 };
