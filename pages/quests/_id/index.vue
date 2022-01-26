@@ -168,7 +168,6 @@ import {
 import modals from '~/store/modals/modals';
 import info from '~/components/app/info/index.vue';
 import questPanel from '~/components/app/panels/questPanel';
-import itemRating from '~/components/app/info/item-rating';
 import emptyData from '~/components/app/info/emptyData';
 
 export default {
@@ -176,7 +175,6 @@ export default {
   components: {
     info,
     questPanel,
-    itemRating,
     emptyData,
   },
   data() {
@@ -372,6 +370,7 @@ export default {
       const {
         ADChat, Active, Created, Dispute, Invited, WaitWorker,
       } = InfoModeWorker;
+
       let arr = [];
 
       switch (infoDataMode) {
