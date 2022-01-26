@@ -93,8 +93,8 @@ export default {
       const response = await this.$store.dispatch('disputes/createDispute', payload);
       if (response.ok) {
         await this.$router.push(`/disputes/${this.response.result.id}`);
-        this.hide();
       }
+      this.hide();
     },
   },
 };
