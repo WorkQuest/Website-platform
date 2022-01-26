@@ -162,6 +162,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import moment from 'moment';
 import {
   QuestStatuses, InfoModeWorker, InfoModeEmployer, UserRole, ResponseStatus,
 } from '~/utils/enums';
@@ -231,6 +232,9 @@ export default {
     randomSpec() {
       const { questSpecializations } = this.questData;
       return Math.floor(questSpecializations[Math.floor(Math.random() * questSpecializations.length)].path);
+    },
+    checkAvailabilityDispute() {
+      return !(moment().toISOString() >= moment(this.questData.startedAt).add(1, 'day').toISOString());
     },
   },
   watch: {
@@ -369,7 +373,6 @@ export default {
       const {
         ADChat, Active, Created, Dispute, Invited, WaitWorker,
       } = InfoModeWorker;
-
       let arr = [];
 
       switch (infoDataMode) {
@@ -397,11 +400,11 @@ export default {
 
           arr = [{
             name: this.$t('btn.dispute'),
-            class: 'base-btn_dispute',
+            class: '',
             mode: '',
-            funcKey: '',
+            funcKey: 'openDispute',
             icon: '',
-            disabled: true,
+            disabled: this.checkAvailabilityDispute,
           },
           {
             name: this.$t('btn.completeWorkOnQuest'),
