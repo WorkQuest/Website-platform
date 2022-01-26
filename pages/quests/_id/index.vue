@@ -517,24 +517,22 @@ export default {
       this.SetLoader(false);
     },
     async openDispute() {
+      if (this.questData.status === 3) {
+        return await this.$router.push(`/disputes/${this.questData.openDispute.id}`);
+      }
       if (this.checkAvailabilityDispute) {
-        if (this.questData.status === 3) {
-          await this.$router.push(`/disputes/${this.questData.openDispute.id}`);
-        } else {
-          this.ShowModal({
-            key: modals.openADispute,
-            questId: this.questData.id,
-          });
-        }
-      } else {
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/deleteError.svg'),
-          title: this.$t('modals.error'),
-          subtitle: this.$t('modals.youCantCreateDispute'),
-          button: this.$t('modals.close'),
+        return this.ShowModal({
+          key: modals.openADispute,
+          questId: this.questData.id,
         });
       }
+      return this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/deleteError.svg'),
+        title: this.$t('modals.error'),
+        subtitle: this.$t('modals.youCantCreateDispute'),
+        button: this.$t('modals.close'),
+      });
     },
     async acceptCompletedWorkOnQuest() {
       const modalMode = 2;
