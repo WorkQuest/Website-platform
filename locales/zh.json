@@ -452,7 +452,8 @@
     },
     "ui": {
       "showMap": "显示地图",
-      "search": "城市/街道/地点"
+      "searchOnQuestsPage": "Employer / Title / Description / City",
+      "searchOnWorkersPage": "Employee/ City"
     },
     "worker": "工作者",
     "raiseViews": "提高浏览量",

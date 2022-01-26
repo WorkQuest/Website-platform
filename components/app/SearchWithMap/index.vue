@@ -24,10 +24,10 @@
           is-search
           is-hide-error
           :selector="isSearchFocus"
-          :placeholder="$t('quests.ui.search')"
+          :placeholder="isPageQuests ? $t('quests.ui.searchOnQuestsPage') : $t('quests.ui.searchOnWorkersPage')"
           data-selector="INPUT-SEARCH"
           @focus="isSearchFocus = true"
-          @selector="$route.name === 'quests' ? getAddressInfo(search) : getWorkersInfo()"
+          @selector="isPageQuests ? getAddressInfo(search) : getWorkersInfo()"
         >
           <template v-slot:selector>
             <div
@@ -57,7 +57,7 @@
             data-selector="ACTION-CHANGE-MAP-CENTER"
             @click="centerChange"
           >
-            {{ $t('workers.searchWorkers') }}
+            {{ isPageQuests ? $t('workers.searchQuests') : $t('workers.searchWorkers') }}
           </base-btn>
         </div>
       </div>
@@ -104,6 +104,9 @@ export default {
       const keys = Object.keys(this.$t('quests.distance'));
       return keys.map((d) => this.$t(`quests.distance.${d}`));
     },
+    isPageQuests() {
+      return this.$route.name === 'quests';
+    },
   },
   watch: {
     isShowMap(newVal) {
@@ -113,6 +116,7 @@ export default {
     distanceIndex() { this.zoom = { 0: 15, 1: 10, 2: 8 }[this.distanceIndex]; },
   },
   mounted() {
+    console.log(this.$route);
     const isShow = JSON.parse(localStorage.getItem('isShowMap'));
     if (typeof isShow === 'boolean') this.isShowMap = isShow;
     this.geoCode = new GeoCode('google', {
@@ -131,20 +135,32 @@ export default {
       this.search = address.formatted;
     },
     async getAddressInfo(address) {
-      try {
-        if (this.search) {
-          this.addresses = await this.geoCode.geolookup(address);
-          this.coordinates = {
-            lng: this.addresses[0].lng,
-            lat: this.addresses[0].lat,
-          };
-        } else this.addresses = [];
-      } catch (e) {
-        this.addresses = [];
-        console.error('Geo look up is failed', e);
-        await this.$store.dispatch('main/showToast', {
-          text: 'Address is not correct',
-        });
+      if (this.isShowMap) {
+        try {
+          if (this.search) {
+            this.addresses = await this.geoCode.geolookup(address);
+            this.coordinates = {
+              lng: this.addresses[0].lng,
+              lat: this.addresses[0].lat,
+            };
+          } else this.addresses = [];
+        } catch (e) {
+          this.addresses = [];
+          console.error('Geo look up is failed', e);
+          await this.$store.dispatch('main/showToast', {
+            text: 'Address is not correct',
+          });
+        }
+      } else {
+        try {
+          await this.$store.dispatch('quests/getAllQuests', {
+            query: {
+              q: address,
+            },
+          });
+        } catch (e) {
+          console.error('Quests founded error: ', e);
+        }
       }
     },
     async getWorkersInfo() {

@@ -452,7 +452,8 @@
     },
     "ui": {
       "showMap": "عرض الخريطة",
-      "search": "المدينة/الشارع/المكان"
+      "searchOnQuestsPage": "Employer / Title / Description / City",
+      "searchOnWorkersPage": "Employee/ City"
     },
     "worker": "الموظف",
     "raiseViews": "زيادة المشاهدات",
