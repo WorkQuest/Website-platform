@@ -163,14 +163,10 @@ import Vue from 'vue';
 import { mapGetters } from 'vuex';
 import { QuestStatuses, questPriority } from '~/utils/enums';
 import modals from '~/store/modals/modals';
-import itemRating from '~/components/app/info/item-rating';
 
 const value = new Vue();
 export default {
   name: 'QuestsTab',
-  components: {
-    itemRating,
-  },
   props: {
     quests: {
       type: Array,

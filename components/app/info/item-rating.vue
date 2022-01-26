@@ -30,15 +30,13 @@ export default {
     margin: 0 5px 0 0;
     align-items: center;
     border-radius: 3px;
-    color: $white;
   }
   &__level {
-    display: grid;
-    grid-template-columns: 20px auto;
-    grid-gap: 7px;
+    @include text-simple;
+    font-weight: 500;
+    color: $white;
     font-size: 12px;
-    justify-content: flex-start;
-    align-items: center;
+    line-height: 130%;
     height: 20px;
 
     &_topRanked {
