@@ -33,12 +33,12 @@ export default {
     color: $white;
   }
   &__level {
-    display: grid;
-    grid-template-columns: 20px auto;
-    grid-gap: 7px;
+    font-family: Inter,sans-serif;
+    text-transform: uppercase;
+    font-style: normal;
+    font-weight: 500;
     font-size: 12px;
-    justify-content: flex-start;
-    align-items: center;
+    line-height: 130%;
     height: 20px;
 
     &_topRanked {

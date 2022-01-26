@@ -12,7 +12,12 @@
         >
       </div>
       <div class="card__user">
-        <span class="card__name">{{ userName }}</span>
+        <span class="user__name">{{ userName }}</span>
+        <item-rating
+          v-if="ratingStatistic(user.ratingStatistic) !== 'noStatus'"
+          :rating="ratingStatistic(user.ratingStatistic)"
+          class="user__rating"
+        />
       </div>
     </div>
     <div class="card__title">
@@ -56,8 +61,13 @@
 </template>
 <script>
 
+import itemRating from '~/components/app/info/item-rating';
+
 export default {
   name: 'EmployeeCard',
+  components: {
+    itemRating,
+  },
   props: {
     user: {
       type: Object,
@@ -78,6 +88,11 @@ export default {
         string += `${i ? ', ' : ''}${name}`;
       });
       return string;
+    },
+  },
+  methods: {
+    ratingStatistic(ratingStatistic) {
+      return ratingStatistic?.status || 'noStatus';
     },
   },
 };
@@ -124,15 +139,6 @@ export default {
     grid-gap: 7px;
   }
 
-  &__name {
-    font-size: 18px;
-    font-weight: 500;
-
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
-
   &__title {
     margin-top: 15px;
     font-size: 14px;
@@ -164,6 +170,17 @@ export default {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+}
+
+.user {
+  &__name {
+    font-size: 18px;
+    font-weight: 500;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 }
 
