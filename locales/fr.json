@@ -1512,7 +1512,9 @@
     "Dispute": "Litige",
     "pending": "En attente",
     "chatHistory": "Historique des discussions",
-    "disputeTime": "Heure d'ouverture du litige :"
+    "disputeTime": "Heure d'ouverture du litige :",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
     "searchQuests": "Rechercher des quêtes",
@@ -1955,6 +1957,7 @@
     "incorrectPass": "Oups, un problème est survenu. Vérifiez les données et réessayez.",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {

@@ -1512,7 +1512,9 @@
     "Dispute": "विवाद",
     "pending": "पेंडिंग",
     "chatHistory": "चैट हिस्ट्री",
-    "disputeTime": "विवाद खुलने का समय:"
+    "disputeTime": "विवाद खुलने का समय:",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
     "searchQuests": "Quest खोजें",
@@ -1955,6 +1957,7 @@
     "incorrectPass": "ओह! कुछ गलत हो गया है। डेटा जांचें और फिर से कोशिश करें।",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {

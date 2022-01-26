@@ -69,18 +69,31 @@ export default {
         this.$t('modals.disputes.anotherReason'),
       ];
     },
+    itemsForPayload() {
+      return [
+        'noAnswer',
+        'poorlyDoneJob',
+        'additionalRequirement',
+        'requirementDoesNotMatch',
+        'noConfirmationOfComplete',
+        'anotherReason',
+      ];
+    },
   },
   methods: {
     hide() {
       this.CloseModal();
     },
-    showRequestSendModal() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/dispute.svg'),
-        title: this.$t('modals.requestSend'),
-        subtitle: this.$t('modals.openDisputeText'),
-      });
+    async showRequestSendModal() {
+      const payload = {
+        questId: this.options.questId,
+        reason: this.itemsForPayload[this.drop],
+        problemDescription: this.description,
+      };
+      const response = await this.$store.dispatch('disputes/createDispute', payload);
+      if (response.ok) {
+        await this.$router.push(`/disputes/${this.response.result.id}`);
+      }
     },
   },
 };
