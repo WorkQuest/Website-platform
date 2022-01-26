@@ -130,39 +130,37 @@ export default {
   data() {
     return {
       indexFAQ: [],
-      lockTime: '',
-      percent: '',
+      lockTime: {
+        y: 0, d: 0, h: 0, m: 0, s: 0,
+      },
+      percent: null,
     };
   },
   computed: {
     ...mapGetters({
-      isConnected: 'web3/isConnected',
+      pensionWallet: 'wallet/getPensionWallet',
+      isWalletConnected: 'wallet/getIsWalletConnected',
     }),
     documents() {
-      return [
-        {
-          name: this.$t('pension.docName'),
-          size: this.$tc('pension.mb', '1.2'),
-          url: '',
-        },
-        {
-          name: this.$t('pension.docName'),
-          size: this.$tc('pension.mb', '1.2'),
-          url: '',
-        },
-        {
-          name: this.$t('pension.docName'),
-          size: this.$tc('pension.mb', '1.2'),
-          url: '',
-        },
-      ];
+      return Array(3).fill({
+        name: this.$t('pension.docName'),
+        size: this.$tc('pension.mb', 1.2),
+        url: '',
+      });
     },
     cards() {
-      const percent = this.percent || '';
-      const time = this.lockTime || '';
+      const p = this.percent;
+      const t = this.lockTime;
+      let time;
+
+      if (t.y) time = this.$tx('pension.years', t.y);
+      else if (t.d) time = this.$tc('pension.days', t.d);
+      else if (t.h) time = this.$tc('pension.hours', t.h);
+      else if (t.m) time = this.$tc('pension.minutes', t.m);
+
       return [
         {
-          title: this.$tc('pension.percents', percent),
+          title: this.$tc('pension.percents', p),
           subtitle: this.$t('pension.annualPercent'),
         },
         {
@@ -170,7 +168,7 @@ export default {
           subtitle: this.$t('pension.optional'),
         },
         {
-          title: this.$tc('pension.years', time),
+          title: time,
           subtitle: this.$t('pension.term'),
         },
         {
@@ -225,14 +223,10 @@ export default {
     },
   },
   watch: {
-    async isConnected(newValue) {
-      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
-      if (newValue && rightChain) {
+    async isWalletConnected(newValue) {
+      if (newValue) {
         this.SetLoader(true);
-        await this.checkWalletExists();
-        const { lockTime, defaultFee } = await this.$store.dispatch('web3/getPensionDefaultData');
-        this.lockTime = lockTime;
-        this.percent = defaultFee;
+        await this.getInfo();
         this.SetLoader(false);
       } else {
         this.lockTime = '';
@@ -240,21 +234,45 @@ export default {
       }
     },
   },
+  async beforeCreate() {
+    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+  },
   async mounted() {
+    if (!this.isWalletConnected) return;
     this.SetLoader(true);
-    await this.$store.dispatch('web3/checkMetaMaskStatus', Chains.ETHEREUM);
-    if (this.isConnected) {
-      await this.checkWalletExists();
-      const { lockTime, defaultFee } = await this.$store.dispatch('web3/getPensionDefaultData');
-      this.lockTime = lockTime;
-      this.percent = defaultFee;
-    }
+    await this.getInfo();
     this.SetLoader(false);
   },
   methods: {
+    async getInfo() {
+      const [defaultDataRes] = await Promise.all([
+        this.$store.dispatch('wallet/pensionGetDefaultData'),
+        this.checkWalletExists(),
+      ]);
+      if (defaultDataRes.ok) {
+        const { lockTime, defaultFee } = defaultDataRes.result;
+        this.lockTime = this.getTime(lockTime);
+        this.percent = defaultFee;
+      }
+    },
+    getTime(seconds) {
+      seconds = Number(seconds);
+      const y = Math.floor((seconds / (3600 * 24) / 365));
+      const d = Math.floor(seconds / (3600 * 24));
+      const h = Math.floor((seconds % (3600 * 24)) / 3600);
+      const m = Math.floor((seconds % 3600) / 60);
+      const s = Math.floor(seconds / 60);
+
+      if (y > 0) return { y };
+      if (d > 0) return { d };
+      if (h > 0) return { h };
+      if (m > 0) return { m };
+      if (s > 0) return { m: '<1' };
+      return {};
+    },
     async checkWalletExists() {
-      const wallet = await this.$store.dispatch('web3/getPensionWallet');
-      if (wallet.createdAt !== '0') {
+      await this.$store.dispatch('wallet/pensionGetWalletInfo');
+      if (this.pensionWallet?.isCreated) {
         await this.$router.push('/pension/my');
       }
     },

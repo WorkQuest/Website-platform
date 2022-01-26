@@ -1530,7 +1530,6 @@
     "disputeTime": "Dispute opening time:"
   },
   "workers": {
-    "noWorkers": "There is no workers...",
     "searchQuests": "Search quests",
     "searchWorkers": "Search workers",
     "topWorkers": "Top employees",
@@ -1992,7 +1991,8 @@
           "desc": "You have not responded to quests yet",
           "btnText": "Respond to the quest !"
         }
-      }
+      },
+      "noEmployees": "Oops, there are no employees..."
     }
   },
   "sharing": {
@@ -2432,5 +2432,12 @@
       "title": "Bronze",
       "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
     }
+  },
+  "workPlaces": {
+    "title": "Workplace",
+    "all": "All workplaces",
+    "distant": "Distant work",
+    "office": "Work in office",
+    "both": "Both variants"
   }
 }

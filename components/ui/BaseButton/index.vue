@@ -23,11 +23,17 @@
     @click="$emit('click')"
   >
     {{ text }}
-    <span class="icon-btn_left">
+    <span
+      v-if="$slots.left"
+      class="icon icon-btn_left"
+    >
       <slot name="left" />
     </span>
     <slot />
-    <span class="icon-btn_right">
+    <span
+      v-if="$slots.right"
+      class="icon icon-btn_right"
+    >
       <slot name="right" />
     </span>
   </button>
@@ -96,6 +102,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .icon {
+  color: $black800;
+
   &-btn {
     &_left {
       padding-right: 5px;

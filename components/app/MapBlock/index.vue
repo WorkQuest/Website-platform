@@ -5,10 +5,6 @@
   >
     <div class="gmap__top">
       <transition name="fade-fast">
-        <!--          in GMAP-->
-        <!--          v-if="isShowMap && userPosition"-->
-        <!--          :cluster="{options: {styles: clusterStyle}}"-->
-        <!--          :center="{lat: userPosition.latitude, lng: userPosition.longitude}"-->
         <GmapMap
           ref="gMap"
           language="en"
@@ -80,7 +76,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'Index',
+  name: 'Map',
   props: {
     isShowMap: {
       type: Boolean,
@@ -472,22 +468,8 @@ export default {
     object-fit: cover;
   }
 }
-@include _1199 {
-  .map__container {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-}
+
 @include _767 {
-  .map__container {
-    height: auto;
-    padding-top: 10px;
-    .gmap__search {
-      position: relative;
-      bottom: 0;
-      top: 10px;
-    }
-  }
   .gmap {
     &__search {
       width: 100%;
