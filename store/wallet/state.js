@@ -1,4 +1,4 @@
-import { StakingTypes, StakingTypes as TokensSymbols } from '~/utils/enums';
+import { StakingTypes as TokensSymbols } from '~/utils/enums';
 
 export default () => ({
   transactions: [],
@@ -16,6 +16,7 @@ export default () => ({
       fullBalance: 0,
     },
   },
+  pensionWallet: null,
   stakingPoolsData: { WQT: {}, WUSD: {} },
   stakingUserData: { WQT: {}, WUSD: {} },
 });

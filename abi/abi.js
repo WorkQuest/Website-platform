@@ -8841,6 +8841,25 @@ export const WQPensionFund = [
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      }
+    ],
+    "name": "getRewards",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "bytes32",
         "name": "role",
         "type": "bytes32"
@@ -9059,6 +9078,19 @@ export const WQPensionFund = [
       }
     ],
     "name": "updateFee",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_lockTime",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateLockTime",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

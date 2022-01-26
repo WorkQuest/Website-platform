@@ -5,12 +5,18 @@ import {
   fetchContractData,
   getBalance, getContractFeeData,
   getIsWalletConnected,
-  getStyledAmount, getTransferFeeData, getWalletAddress,
+  getStyledAmount, getWalletAddress, getTransferFeeData,
   transfer, transferToken,
 } from '~/utils/wallet';
 import * as abi from '~/abi/abi';
-import { StakingTypes, TokenSymbols } from '~/utils/enums';
-import { getAccountAddress, getStakingDataByType } from '~/utils/web3';
+import { TokenSymbols } from '~/utils/enums';
+import {
+  getPensionDefaultData,
+  getPensionWallet,
+  pensionContribute, pensionExtendLockTime,
+  pensionsWithdraw,
+  pensionUpdateFee,
+} from '~/utils/wallet.js';
 
 export default {
   async getTransactions({ commit }, params) {
@@ -119,6 +125,46 @@ export default {
     return await getContractFeeData(method, _abi, contractAddress, data, recipient, amount);
   },
 
+  /** PENSION PROGRAM */
+  /**
+   * Get default lockTime & fee
+   */
+  async pensionGetDefaultData() {
+    return await getPensionDefaultData();
+  },
+  async pensionGetWalletInfo({ commit }) {
+    const res = await getPensionWallet();
+    if (res.ok === false) {
+      commit('setPensionWallet', null);
+      return;
+    }
+    commit('setPensionWallet', res.result);
+  },
+  async pensionUpdateFee({ commit }, fee) {
+    return await pensionUpdateFee(fee);
+  },
+  async pensionContribute({ commit }, amount) {
+    return await pensionContribute(amount);
+  },
+  async pensionWithdraw({ commit }, amount) {
+    return await pensionsWithdraw(amount);
+  },
+  async pensionStartProgram({ commit }, payload) {
+    const { firstDeposit, fee, defaultFee } = payload;
+    let feeOk = true;
+    let depositOk = false;
+    const equalsFee = new BigNumber(defaultFee).shiftedBy(-18).isEqualTo(new BigNumber(fee).shiftedBy(-18));
+    if (!firstDeposit || !equalsFee) {
+      feeOk = await pensionUpdateFee(fee);
+    }
+    if (firstDeposit) depositOk = await pensionContribute(firstDeposit);
+    else return feeOk;
+    return depositOk && feeOk;
+  },
+  async pensionExtendLockTime() {
+    return await pensionExtendLockTime();
+  },
+
   /** Staking */
   async getStakingPoolsData({ commit }, pool) {
     let _abi = null;
@@ -205,3 +251,4 @@ export default {
     });
   },
 };
+

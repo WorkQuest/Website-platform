@@ -181,7 +181,7 @@ export const getTransferFeeData = async (recipient, value) => {
   }
 };
 
-// Contracts
+/** CONTRACTS */
 export const fetchContractData = async (_method, _abi, _address, _params) => {
   try {
     if (!web3) {
@@ -249,6 +249,125 @@ export const getContractFeeData = async (_method, _abi, _contractAddress, data, 
     console.error(`Get contract fee data error: ${_method}.`, e.message);
     return error();
   }
+
+  /** PENSION FUND */
+export const getPensionDefaultData = async () => {
+  try {
+    const _abi = abi.WQPensionFund;
+    const _pensionAddress = process.env.PENSION_FUND;
+    const [lockTime, defaultFee] = await Promise.all([
+      fetchContractData('lockTime', _abi, _pensionAddress),
+      fetchContractData('defaultFee', _abi, _pensionAddress),
+    ]);
+    return success({
+      defaultFee: new BigNumber(defaultFee.result.toString()).shiftedBy(-18).toString(),
+      lockTime: lockTime.result,
+    });
+  } catch (e) {
+    console.error(`PensionDefault: ${e}`);
+    return error();
+  }
+};
+export const getPensionWallet = async () => {
+  try {
+    const myPensionWallet = await fetchContractData('wallets', abi.WQPensionFund, process.env.PENSION_FUND, [wallet.address]);
+    const {
+      unlockDate, fee, amount, createdAt, rewardAllowed, rewardDebt, rewardDistributed,
+    } = myPensionWallet.result;
+    const _amount = new BigNumber(amount).shiftedBy(-18);
+    let _fee = new BigNumber(fee).shiftedBy(-18);
+    if (_fee.isGreaterThan('0') && _fee.isLessThan('0.0000001')) {
+      _fee = '>0.0000001';
+    } else _fee = _fee.decimalPlaces(8).toString();
+    return success({
+      rewardAllowed,
+      rewardDebt,
+      rewardDistributed,
+      isCreated: !!createdAt && createdAt !== '0',
+      unlockDate: unlockDate ? new Date(unlockDate * 1000) : null,
+      fee: _fee,
+      amount: _amount.isGreaterThan('0') && _amount.isLessThan(min) ? `>${min.toString()}` : _amount.decimalPlaces(4).toString(),
+      fullAmount: _amount.toString(),
+    });
+  } catch (e) {
+    console.error(`PensionWallet: ${e}`);
+    return error();
+  }
+};
+export const pensionContribute = async (amount) => {
+  try {
+    const inst = new web3.eth.Contract(abi.WQPensionFund, process.env.PENSION_FUND);
+    amount = new BigNumber(amount).shiftedBy(18).toString();
+    const [gasPrice, gasEstimate] = await Promise.all([
+      web3.eth.getGasPrice(),
+      inst.methods.contribute.apply(null, [wallet.address]).estimateGas({ from: wallet.address, value: amount }),
+    ]);
+    const res = await inst.methods.contribute(wallet.address).send({
+      from: wallet.address,
+      gas: gasEstimate,
+      gasPrice,
+      value: amount,
+    });
+    return success(res);
+  } catch (e) {
+    console.error(`Contribute: ${e}`);
+    return error();
+  }
+};
+export const pensionUpdateFee = async (fee) => {
+  try {
+    const inst = new web3.eth.Contract(abi.WQPensionFund, process.env.PENSION_FUND);
+    fee = new BigNumber(fee).shiftedBy(18).toString();
+    const [gasPrice, gasEstimate] = await Promise.all([
+      web3.eth.getGasPrice(),
+      inst.methods.updateFee.apply(null, [fee]).estimateGas({ from: wallet.address }),
+    ]);
+    const res = await inst.methods.updateFee(fee).send({
+      from: wallet.address,
+      gas: gasEstimate,
+      gasPrice,
+    });
+    return success(res);
+  } catch (e) {
+    console.error(`UpdateFee: ${e}`);
+    return error();
+  }
+};
+export const pensionsWithdraw = async (_amount) => {
+  try {
+    _amount = new BigNumber(_amount).shiftedBy(18).toString();
+    const inst = new web3.eth.Contract(abi.WQPensionFund, process.env.PENSION_FUND);
+    const [gasPrice, gasEstimate] = await Promise.all([
+      web3.eth.getGasPrice(),
+      inst.methods.withdraw.apply(null, [_amount]).estimateGas({ from: wallet.address }),
+    ]);
+    const res = await inst.methods.withdraw(_amount).send({
+      from: wallet.address,
+      gas: gasEstimate,
+      gasPrice,
+    });
+    return success(res);
+  } catch (e) {
+    console.error(`Withdraw: ${e}`);
+    return error();
+  }
+};
+export const pensionExtendLockTime = async () => {
+  try {
+    const inst = new web3.eth.Contract(abi.WQPensionFund, process.env.PENSION_FUND);
+    const [gasPrice, gasEstimate] = await Promise.all([
+      web3.eth.getGasPrice(),
+      inst.methods.extendLockTime.apply(null, []).estimateGas({from: wallet.address}),
+    ]);
+    const res = await inst.methods.extendLockTime().send({
+      from: wallet.address,
+      gas: gasEstimate,
+      gasPrice,
+    });
+    return success(res);
+  } catch (e) {
+    console.error(`ExtendLockTime: ${e}`);
+    return error();
+  }
 };
 
-/** */
