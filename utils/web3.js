@@ -5,7 +5,7 @@ import Web3Modal from 'web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import * as abi from '~/abi/abi';
 import {
-  Chains, ChainsId, NetworksData, StakingTypes,
+  Chains, ChainsId, ChainsIdByChainNumber, NetworksData, StakingTypes,
 } from '~/utils/enums';
 
 let bscRpcContract = null;
@@ -86,11 +86,11 @@ export const addedNetwork = async (chain) => {
 };
 export const goToChain = async (chain) => {
   const methodName = 'wallet_switchEthereumChain';
-  const chainIdParam = [{ chainId: getChainIdByChain(chain) }];
+  const chainIdParam = typeof chain === 'string' ? getChainIdByChain(chain) : ChainsIdByChainNumber[chain];
   try {
     await window.ethereum.request({
       method: methodName,
-      params: chainIdParam,
+      params: [{ chainId: chainIdParam }],
     });
     return { ok: true };
   } catch (e) {
@@ -220,13 +220,34 @@ export const initMetaMaskWeb3 = async () => {
         web3.eth.getCoinbase(),
         web3.eth.net.getId(),
       ]);
-
+      let correctId = 0;
       if (process.env.PROD === 'true' && ![1, 56, 20211224].includes(+chainId)) {
-        return error(500, 'Wrong blockchain in metamask', 'Current site work on mainnet. Please change network.');
+        switch (chainId) {
+          case 4:
+            correctId = 1;
+            break;
+          case 97:
+            correctId = 56;
+            break;
+          default:
+            correctId = 20211224;
+            break;
+        }
       }
       if (process.env.PROD === 'false' && ![4, 97, 20211224].includes(+chainId)) {
-        return error(500, 'Wrong blockchain in metamask', 'Current site work on testnet. Please change network.');
+        switch (chainId) {
+          case 1:
+            correctId = 4;
+            break;
+          case 56:
+            correctId = 97;
+            break;
+          default:
+            correctId = 20211224;
+            break;
+        }
       }
+      if (correctId) await goToChain(correctId);
       account = {
         address: userAddress,
         netId: chainId,
@@ -325,12 +346,28 @@ export const initWeb3 = async (payload) => {
     if ((await web3.eth.getCoinbase()) === null) {
       await ethereum.request({ method: 'eth_requestAccounts' });
     }
+    let correctId = 0;
     if (process.env.PROD === 'true' && ![1, 56].includes(+chainId)) {
-      return error(500, 'Wrong blockchain in metamask', 'Current site work on mainnet. Please change network.');
+      // eslint-disable-next-line default-case
+      switch (chainId) {
+        case 4:
+          correctId = 1;
+          break;
+        case 97:
+          correctId = 56;
+      }
     }
     if (process.env.PROD === 'false' && ![4, 97].includes(+chainId)) {
-      return error(500, 'Wrong blockchain in metamask', 'Current site work on testnet. Please change network.');
+      // eslint-disable-next-line default-case
+      switch (chainId) {
+        case 1:
+          correctId = 4;
+          break;
+        case 56:
+          correctId = 97;
+      }
     }
+    if (correctId) await goToChain(correctId);
     account = {
       address: userAddress,
       netId: chainId,
@@ -656,100 +693,6 @@ export const getPoolTotalSupplyBSC = async () => {
     return new BigNumber(res).shiftedBy(-18).toString();
   } catch (e) {
     console.log(e);
-    return false;
-  }
-};
-
-export const getPensionDefaultData = async () => {
-  try {
-    const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND;
-    const [lockTime, defaultFee] = await Promise.all([
-      fetchContractData('lockTime', _abi, _pensionAddress),
-      fetchContractData('defaultFee', _abi, _pensionAddress),
-    ]);
-    return {
-      defaultFee: new BigNumber(defaultFee.toString()).shiftedBy(-18).toString(),
-      lockTime: Math.floor(lockTime / 365 / 24 / 60 / 60),
-    };
-  } catch (e) {
-    console.error(e);
-    return null;
-  }
-};
-export const getPensionWallet = async () => {
-  try {
-    const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND;
-    const wallet = await fetchContractData('wallets', _abi, _pensionAddress, [account.address]);
-    const {
-      unlockDate, fee,
-    } = wallet;
-    const _amount = new BigNumber(wallet.amount).shiftedBy(-18);
-    let _fee = new BigNumber(fee).shiftedBy(-18);
-    if (_fee.isGreaterThan('0') && _fee.isLessThan('0.0000001')) {
-      _fee = '>0.0000001';
-    } else _fee = _fee.decimalPlaces(8);
-    return {
-      ...wallet,
-      unlockDate: new Date(unlockDate * 1000),
-      fee: _fee.toString(),
-      amount: _amount.isGreaterThan('0') && _amount.isLessThan('0.0001') ? '>0.0001' : _amount.decimalPlaces(4).toString(),
-      _amount: _amount.toString(),
-    };
-  } catch (e) {
-    console.error(e);
-    return null;
-  }
-};
-export const pensionContribute = async (_amount) => {
-  try {
-    const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND;
-    const contractInst = await createInstance(_abi, _pensionAddress);
-    _amount = new BigNumber(_amount).shiftedBy(18).toString();
-    await contractInst.contribute(account.address, { value: _amount });
-    return true;
-  } catch (e) {
-    console.error(e);
-    return false;
-  }
-};
-export const pensionUpdateFee = async (_fee) => {
-  try {
-    const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND;
-    const contractInst = await createInstance(_abi, _pensionAddress);
-    _fee = new BigNumber(_fee).shiftedBy(18).toString();
-    await contractInst.updateFee(_fee);
-    return true;
-  } catch (e) {
-    console.error(e);
-    return false;
-  }
-};
-export const pensionsWithdraw = async (_amount) => {
-  try {
-    const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND;
-    const contractInst = await createInstance(_abi, _pensionAddress);
-    _amount = new BigNumber(_amount).shiftedBy(18).toString();
-    await contractInst.withdraw(_amount);
-    return true;
-  } catch (e) {
-    console.error(e);
-    return false;
-  }
-};
-export const pensionExtendLockTime = async () => {
-  try {
-    const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND;
-    const contractInst = await createInstance(_abi, _pensionAddress);
-    await contractInst.extendLockTime();
-    return true;
-  } catch (e) {
-    console.error(e);
     return false;
   }
 };
