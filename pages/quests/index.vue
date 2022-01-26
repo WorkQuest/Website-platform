@@ -205,10 +205,8 @@ export default {
 }
 
 @include _1199 {
-  .quests {
-    &__content {
-      padding: 0 20px;
-    }
+  .quests__content {
+    padding: 0 20px;
   }
 }
 
