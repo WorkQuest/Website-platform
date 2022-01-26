@@ -94,9 +94,11 @@ export default {
     },
     showOpenADisputeModal() {
       this.closeChatMenu();
-      this.ShowModal({
-        key: modals.openADispute,
-      });
+      // TODO: добавить вывод окна, на добавление диспута, после завершения логики на странице чата
+      // this.ShowModal({
+      //   key: modals.openADispute,
+      //   questId: this.questId,
+      // });
     },
     toggleChatMenu() {
       this.isShowChatMenu = !this.isShowChatMenu;

@@ -10,20 +10,31 @@
           <span class="dispute__back_text">{{ $t('disputes.Dispute') }}</span>
         </div>
         <div class="dispute__number">
-          № 87974121
+          {{ `№ ${disputeData.disputeNumber}` }}
         </div>
         <div class="dispute__status">
-          {{ $t('disputes.pending') }}
+          {{ disputeStatus }}
         </div>
       </div>
-      <div class="chat-history">
+      <quest-cards
+        class="dispute__quests"
+        :quests="disputeData.quest ? [disputeData.quest] : []"
+      />
+      <div class="dispute__chat-history">
         <div class="chat-history__container">
           <div class="chat-history__title">
             {{ $t('disputes.chatHistory') }}
           </div>
         </div>
-        <div class="messages__container">
-          <Messages />
+        <div
+          v-if="disputeData.quest && disputeData.quest.questChat.chatId"
+          class="messages__container"
+        >
+          <messages-list
+            class="messages__block"
+            :chat-id="disputeData.quest.questChat.chatId"
+            :is-hide-footer="false"
+          />
         </div>
       </div>
     </div>
@@ -31,16 +42,34 @@
 </template>
 
 <script>
-import Messages from '~/components/app/pages/common/messages';
+import { mapGetters } from 'vuex';
+import { DisputeStatues, InfoModeWorker } from '~/utils/enums';
 
 export default {
   name: 'Index',
-  components: {
-    Messages,
+  data() {
+    return {
+      disputeId: this.$route.params.id,
+    };
   },
-  async mounted() {
-    this.SetLoader(true);
-    this.SetLoader(false);
+  computed: {
+    ...mapGetters({
+      disputeData: 'disputes/getDispute',
+    }),
+    disputeStatus() {
+      const obj = {
+        [DisputeStatues.PENDING]: this.$t('disputes.pending'),
+        [DisputeStatues.IN_PROGRESS]: this.$t('disputes.inProgress'),
+        [DisputeStatues.COMPLETED]: this.$t('disputes.completed'),
+      };
+      return obj[this.disputeData.status];
+    },
+  },
+  async beforeMount() {
+    await this.$store.dispatch('disputes/getDispute', this.disputeId);
+  },
+  async beforeDestroy() {
+    await this.$store.commit('disputes/setDispute', {});
   },
   methods: {
     backToDisputes() {
@@ -69,12 +98,12 @@ export default {
     margin: 0 20px 20px 20px;
     padding: 0 0 20px 0;
   }
+  &__block {
+    max-height: 450px;
+  }
 }
 
 .chat-history {
-  background: $white;
-  border-radius: 6px;
-  margin: 20px 0 0 0;
   &__container {
     display: flex;
     align-items: flex-start;
@@ -121,6 +150,21 @@ export default {
     font-weight: 500;
     font-size: 16px;
     color: #E8D20D;
+  }
+  &__chat-history {
+    background: $white;
+    border-radius: 6px;
+    margin: 20px 0 0 0;
+  }
+}
+@include _1199() {
+  .dispute {
+    &__quests {
+      padding: 0 10px;
+    }
+    &__chat-history {
+      padding: 0 10px;
+    }
   }
 }
 </style>

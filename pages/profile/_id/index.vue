@@ -65,7 +65,7 @@
           >
             {{ $t('profile.quests') }}
           </div>
-          <quests
+          <quest-cards
             v-if="questsCount !== 0"
             :quests="questsData"
             @clickFavoriteStar="updateQuests"
@@ -200,7 +200,6 @@ import { mapGetters } from 'vuex';
 import reviewsTab from '~/components/app/pages/profile/tabs/reviews';
 import portfolioTab from '~/components/app/pages/profile/tabs/portfolio';
 import userInfo from '~/components/app/pages/common/userInfo';
-import quests from '~/components/app/pages/common/quests';
 import emptyData from '~/components/app/info/emptyData';
 import modals from '~/store/modals/modals';
 import skills from '~/components/app/pages/common/skills';
@@ -209,7 +208,6 @@ export default {
   name: 'Index',
   components: {
     reviewsTab,
-    quests,
     userInfo,
     emptyData,
     portfolioTab,
