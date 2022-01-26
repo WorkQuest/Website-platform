@@ -94,6 +94,7 @@ export default {
       if (response.ok) {
         await this.$router.push(`/disputes/${this.response.result.id}`);
       }
+      this.hide();
     },
   },
 };

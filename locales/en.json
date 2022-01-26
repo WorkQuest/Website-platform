@@ -954,6 +954,7 @@
     "edit": "Edit",
     "delete": "Delete",
     "youCan’tDeleteActiveQuest": "You can’t delete active quest",
+    "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest",
     "sureDeleteText": "Do you really want to delete this quest?",
     "sureDeleteMemberText": "Do you really want to delete this member?",
     "sureLeaveChatText": "Do you really want to leave this chat?",
