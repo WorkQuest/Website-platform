@@ -249,8 +249,9 @@ export const getContractFeeData = async (_method, _abi, _contractAddress, data, 
     console.error(`Get contract fee data error: ${_method}.`, e.message);
     return error();
   }
+};
 
-  /** PENSION FUND */
+/** PENSION FUND */
 export const getPensionDefaultData = async () => {
   try {
     const _abi = abi.WQPensionFund;
@@ -357,7 +358,7 @@ export const pensionExtendLockTime = async () => {
     const inst = new web3.eth.Contract(abi.WQPensionFund, process.env.PENSION_FUND);
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
-      inst.methods.extendLockTime.apply(null, []).estimateGas({from: wallet.address}),
+      inst.methods.extendLockTime.apply(null, []).estimateGas({ from: wallet.address }),
     ]);
     const res = await inst.methods.extendLockTime().send({
       from: wallet.address,
@@ -370,4 +371,3 @@ export const pensionExtendLockTime = async () => {
     return error();
   }
 };
-

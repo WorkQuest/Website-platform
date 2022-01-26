@@ -9,7 +9,7 @@ import {
   transfer, transferToken,
 } from '~/utils/wallet';
 import * as abi from '~/abi/abi';
-import { TokenSymbols } from '~/utils/enums';
+import { StakingTypes, TokenSymbols } from '~/utils/enums';
 import {
   getPensionDefaultData,
   getPensionWallet,
@@ -126,9 +126,7 @@ export default {
   },
 
   /** PENSION PROGRAM */
-  /**
-   * Get default lockTime & fee
-   */
+  /** Get default lockTime & fee */
   async pensionGetDefaultData() {
     return await getPensionDefaultData();
   },
@@ -251,4 +249,3 @@ export default {
     });
   },
 };
-
