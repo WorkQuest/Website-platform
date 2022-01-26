@@ -30,13 +30,11 @@ export default {
     margin: 0 5px 0 0;
     align-items: center;
     border-radius: 3px;
-    color: $white;
   }
   &__level {
-    font-family: Inter,sans-serif;
-    text-transform: uppercase;
-    font-style: normal;
+    @include text-simple;
     font-weight: 500;
+    color: $white;
     font-size: 12px;
     line-height: 130%;
     height: 20px;
