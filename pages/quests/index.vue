@@ -13,7 +13,6 @@
         @sortSpec="sortBySpec"
         @sortTime="sortByTime"
         @sortPrice="sortByPrice"
-        @sortRating="sortByRating"
         @sortPriority="sortByPriority"
         @sortWorkplace="sortByWorkplace"
         @sortTypeOfJob="sortTypeOfJob"
@@ -146,11 +145,6 @@ export default {
         delete this.query['betweenWagePerHour[from]'];
         delete this.query['betweenWagePerHour[to]'];
       } else this.query = { ...this.query, ...value };
-      await this.fetchQuestsList(true);
-    },
-    async sortByRating(value) {
-      if (!Object.keys(value).length) delete this.query['ratingStatus[0]'];
-      else this.query = { ...this.query, ...value };
       await this.fetchQuestsList(true);
     },
     async sortByPriority(value) {
