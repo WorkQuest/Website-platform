@@ -16,7 +16,7 @@ export default {
     }
   },
   async getMessagesList({ commit, rootState: { user, chat } }, {
-    config, chatId, direction, offset,
+    config, chatId, direction, offset, isHideFooter,
   }) {
     try {
       const method = `/v1/user/me/chat/${chatId === 'starred' ? 'messages/star' : `${chatId}/messages`}`;
@@ -54,8 +54,8 @@ export default {
       commit('setMessagesList', {
         ...result, direction, offset: offset + 25, canLoadToBottom, canLoadToTop,
       });
-      commit('setIsChatOpened', true);
-      return ok;
+      if (isHideFooter) commit('setIsChatOpened', true);
+      return result;
     } catch (e) {
       return false;
     }

@@ -145,7 +145,7 @@
             </div>
           </div>
           <div class="quest__card">
-            <quests
+            <quest-cards
               v-if="otherQuestsCount"
               :quests="sameQuest"
             />
@@ -168,7 +168,6 @@ import {
 import modals from '~/store/modals/modals';
 import info from '~/components/app/info/index.vue';
 import questPanel from '~/components/app/panels/questPanel';
-import quests from '~/components/app/pages/common/quests';
 import itemRating from '~/components/app/info/item-rating';
 import emptyData from '~/components/app/info/emptyData';
 
@@ -177,7 +176,6 @@ export default {
   components: {
     info,
     questPanel,
-    quests,
     itemRating,
     emptyData,
   },
@@ -233,6 +231,9 @@ export default {
     randomSpec() {
       const { questSpecializations } = this.questData;
       return Math.floor(questSpecializations[Math.floor(Math.random() * questSpecializations.length)].path);
+    },
+    checkAvailabilityDispute() {
+      return !(this.$moment().toISOString() >= this.$moment(this.questData.startedAt).add(1, 'day').toISOString());
     },
   },
   watch: {
@@ -342,11 +343,11 @@ export default {
           },
           {
             name: this.$t('btn.dispute'),
-            class: 'base-btn_dispute',
+            class: '',
             mode: '',
-            funcKey: '',
+            funcKey: 'openDispute',
             icon: '',
-            disabled: true,
+            disabled: false,
           }];
           break;
         }
@@ -371,7 +372,6 @@ export default {
       const {
         ADChat, Active, Created, Dispute, Invited, WaitWorker,
       } = InfoModeWorker;
-
       let arr = [];
 
       switch (infoDataMode) {
@@ -399,11 +399,11 @@ export default {
 
           arr = [{
             name: this.$t('btn.dispute'),
-            class: 'base-btn_dispute',
+            class: '',
             mode: '',
-            funcKey: '',
+            funcKey: 'openDispute',
             icon: '',
-            disabled: true,
+            disabled: this.checkAvailabilityDispute,
           },
           {
             name: this.$t('btn.completeWorkOnQuest'),
@@ -429,11 +429,11 @@ export default {
         case Dispute: {
           arr = [{
             name: this.$t('btn.dispute'),
-            class: 'base-btn_dispute',
+            class: '',
             mode: '',
-            funcKey: '',
+            funcKey: 'openDispute',
             icon: '',
-            disabled: true,
+            disabled: false,
           }];
           break;
         }
@@ -514,9 +514,15 @@ export default {
       await this.$router.push('/my');
       this.SetLoader(false);
     },
-    openDispute() {
-      const modalMode = 4;
-      this.showQuestModal(modalMode);
+    async openDispute() {
+      if (this.questData.status === 3) {
+        await this.$router.push(`/disputes/${this.questData.openDispute.id}`);
+      } else {
+        this.ShowModal({
+          key: modals.openADispute,
+          questId: this.questData.id,
+        });
+      }
     },
     async acceptCompletedWorkOnQuest() {
       const modalMode = 2;

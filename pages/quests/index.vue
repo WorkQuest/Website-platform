@@ -197,7 +197,7 @@
             </base-btn>
           </div>
         </div>
-        <quests
+        <quest-cards
           v-if="questsData.length > 0"
           :quests="questsData"
           @clickFavoriteStar="clickFavoriteStarHandler"
@@ -227,7 +227,6 @@ import ClickOutside from 'vue-click-outside';
 import { GeoCode } from 'geo-coder';
 import modals from '~/store/modals/modals';
 import MapBlock from '~/components/app/MapBlock';
-import quests from '~/components/app/pages/common/quests';
 import emptyData from '~/components/app/info/emptyData';
 import {
   PriorityFilter, TypeOfJobFilter, WorkplaceFilter, Path, UserRole,
@@ -240,7 +239,6 @@ export default {
   },
   components: {
     MapBlock,
-    quests,
     emptyData,
   },
   data() {

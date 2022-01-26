@@ -72,6 +72,11 @@ export const InfoModeWorker = {
   Responded: 10,
   Invited: 11,
 };
+export const DisputeStatues = {
+  PENDING: 0,
+  IN_PROGRESS: 1,
+  COMPLETED: 2,
+};
 export const questPriority = {
   Low: 1,
   Normal: 2,

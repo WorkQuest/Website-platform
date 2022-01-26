@@ -27,6 +27,8 @@ import EmptyData from '~/components/app/info/emptyData';
 import EmployeeCard from '~/components/app/pages/common/employeeCard';
 import FiltersPanel from '~/components/app/panels/filters';
 import SearchWithMap from '~/components/app/SearchWithMap';
+import MessagesList from '~/components/app/pages/messages_id/messagesList';
+import Quests from '~/components/app/pages/common/quests';
 
 Vue.component('ctm-modal', CtmModal);
 Vue.component('ctm-modal-box', CtmModalBox);
@@ -55,3 +57,5 @@ Vue.component('empty-data', EmptyData);
 Vue.component('employee-card', EmployeeCard);
 Vue.component('filters-panel', FiltersPanel);
 Vue.component('search-with-map', SearchWithMap);
+Vue.component('MessagesList', MessagesList);
+Vue.component('quest-cards', Quests);
