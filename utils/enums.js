@@ -100,7 +100,7 @@ export const KeyCodes = {
 // Filters
 export const WorkplaceFilter = ['all', 'distant', 'office', 'both'];
 export const RatingFilter = ['', 'verified', 'reliable', 'topRanked'];
-export const TypeOfJobFilter = ['', 'fullTime', 'partTime', 'fixedTerm'];
+export const TypeOfJobFilter = ['fullTime', 'partTime', 'fixedTerm'];
 export const PriorityFilter = [
   { key: 'all', value: 0 },
   { key: 'urgent', value: 3 },
