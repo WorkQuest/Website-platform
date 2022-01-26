@@ -283,6 +283,8 @@
     "employer": {
       "usersNotResponded": "???"
     },
+    "shortTerm": "???",
+    "fixedDelivery": "???",
     "companyNotListed": "???",
     "workersNotInvited": "???",
     "startChat": "???",
