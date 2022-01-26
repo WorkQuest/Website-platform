@@ -233,7 +233,10 @@ export default {
       return Math.floor(questSpecializations[Math.floor(Math.random() * questSpecializations.length)].path);
     },
     checkAvailabilityDispute() {
-      return !(this.$moment().toISOString() >= this.$moment(this.questData.startedAt).add(1, 'day').toISOString());
+      if (this.questData.startedAt) {
+        return this.$moment().toISOString() >= this.$moment(this.questData.startedAt).add(1, 'day').toISOString();
+      }
+      return false;
     },
   },
   watch: {
@@ -403,7 +406,7 @@ export default {
             mode: '',
             funcKey: 'openDispute',
             icon: '',
-            disabled: this.checkAvailabilityDispute,
+            disabled: false,
           },
           {
             name: this.$t('btn.completeWorkOnQuest'),
@@ -515,12 +518,22 @@ export default {
       this.SetLoader(false);
     },
     async openDispute() {
-      if (this.questData.status === 3) {
-        await this.$router.push(`/disputes/${this.questData.openDispute.id}`);
+      if (this.checkAvailabilityDispute) {
+        if (this.questData.status === 3) {
+          await this.$router.push(`/disputes/${this.questData.openDispute.id}`);
+        } else {
+          this.ShowModal({
+            key: modals.openADispute,
+            questId: this.questData.id,
+          });
+        }
       } else {
         this.ShowModal({
-          key: modals.openADispute,
-          questId: this.questData.id,
+          key: modals.status,
+          img: require('~/assets/img/ui/deleteError.svg'),
+          title: this.$t('modals.error'),
+          subtitle: this.$t('modals.youCantCreateDispute'),
+          button: this.$t('modals.close'),
         });
       }
     },

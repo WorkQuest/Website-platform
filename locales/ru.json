@@ -954,6 +954,7 @@
     "edit": "Edit",
     "delete": "Delete",
     "youCan’tDeleteActiveQuest": "You can’t delete active quest",
+    "youCantCreateDispute": "???",
     "sureDeleteText": "Do you really want to delete this quest?",
     "sureDeleteMemberText": "???",
     "sureLeaveChatText": "???",
