@@ -73,7 +73,7 @@ export default {
   watch: {
     async isShowMap() { await this.fetchEmployeeList(true); },
     async mapBounds(newV, oldV) {
-      if (!this.isShowMap || !Object.keys(oldV).length) return;
+      if (!this.isShowMap) return;
       if (
         newV?.center?.lng === oldV?.center?.lng
         && newV?.center?.lat === oldV?.center?.lat
@@ -106,7 +106,11 @@ export default {
       if (this.isFetching) return;
       this.isFetching = true;
 
-      if (this.isShowMap && Object.keys(this.mapBounds).length) {
+      if (this.isShowMap) {
+        if (!Object.keys(this.mapBounds).length) {
+          this.isFetching = false;
+          return;
+        }
         this.query['north[longitude]'] = this.mapBounds.northEast.lng;
         this.query['north[latitude]'] = this.mapBounds.northEast.lat;
         this.query['south[longitude]'] = this.mapBounds.southWest.lng;
