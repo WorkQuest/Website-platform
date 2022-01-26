@@ -1512,7 +1512,9 @@
     "Dispute": "النزاع",
     "pending": "قيد الانتظار",
     "chatHistory": "سجل الدردشة",
-    "disputeTime": "وقت فتح النزاع:"
+    "disputeTime": "وقت فتح النزاع:",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
     "searchQuests": "البحث في طلبات العمل",
@@ -1955,6 +1957,7 @@
     "incorrectPass": "عذرًا، حدث خطأ ما. تحقَّق من البيانات وحاول مرة أخرى.",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {

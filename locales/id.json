@@ -1512,7 +1512,9 @@
     "Dispute": "Sengketa",
     "pending": "Tertunda",
     "chatHistory": "Riwayat obrolan",
-    "disputeTime": "Waktu pembukaan sengketa:"
+    "disputeTime": "Waktu pembukaan sengketa:",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
     "searchQuests": "Cari quest",
@@ -1955,6 +1957,7 @@
     "incorrectPass": "Ups! Ada yang tidak beres. Periksa data dan coba lagi.",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {
