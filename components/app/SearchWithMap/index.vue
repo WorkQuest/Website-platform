@@ -141,22 +141,21 @@ export default {
       this.search = address.formatted;
     },
     async getAddressInfo(address) {
-      if (this.isShowMap) {
-        try {
-          if (this.search) {
-            this.addresses = await this.geoCode.geolookup(address);
-            this.coordinates = {
-              lng: this.addresses[0].lng,
-              lat: this.addresses[0].lat,
-            };
-          } else this.addresses = [];
-        } catch (e) {
-          this.addresses = [];
-          console.error('Geo look up is failed', e);
-          await this.$store.dispatch('main/showToast', {
-            text: 'Address is not correct',
-          });
-        }
+      if (!this.isShowMap) return;
+      try {
+        if (this.search) {
+          this.addresses = await this.geoCode.geolookup(address);
+          this.coordinates = {
+            lng: this.addresses[0].lng,
+            lat: this.addresses[0].lat,
+          };
+        } else this.addresses = [];
+      } catch (e) {
+        this.addresses = [];
+        console.error('Geo look up is failed', e);
+        await this.$store.dispatch('main/showToast', {
+          text: 'Address is not correct',
+        });
       }
     },
   },
