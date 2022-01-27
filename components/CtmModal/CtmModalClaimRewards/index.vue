@@ -56,6 +56,7 @@ import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { StakingTypes } from '~/utils/enums';
 import { WQStaking, WQStakingNative } from '~/abi/abi';
+import { getWalletAddress } from '~/utils/wallet';
 
 export default {
   name: 'CtmModalClaimRewards',
@@ -176,8 +177,21 @@ export default {
           }
           this.ShowModal({
             key: modals.transactionReceipt,
-            fields: {},
-            submitMethod: async () => await this.$store.dispatch('wallet/stakingUnstake', { }),
+            title: this.$t('mining.unstake'),
+            fields: {
+              from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
+              to: { name: this.$t('modals.toAddress'), value: poolAddress },
+              unstakeAmount: { name: this.$t('modals.amount'), value: amount },
+              fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: stakingType },
+            },
+            submitMethod: async () => await this.$store.dispatch('wallet/stakingUnstake', { amount, stakingType, poolAddress }),
+            callback: async () => {
+              await Promise.all([
+                this.$store.dispatch('wallet/getBalance'),
+                this.$store.dispatch('wallet/getStakingPoolsData', stakingType),
+                this.$store.dispatch('wallet/getStakingUserInfo', stakingType),
+              ]);
+            },
           });
           return;
         }

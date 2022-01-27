@@ -225,6 +225,7 @@ export default {
         },
         callback: async () => {
           await Promise.all([
+            this.$store.dispatch('wallet/getBalance'),
             this.$store.dispatch('wallet/getStakingPoolsData', stakingType),
             this.$store.dispatch('wallet/getStakingUserInfo', stakingType),
           ]);

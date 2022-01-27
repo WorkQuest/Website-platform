@@ -386,7 +386,7 @@ export const stake = async (stakingType, amount, poolAddress, duration) => {
       inst.methods.stake.apply(null, []).estimateGas({ from: wallet.address, value: amount }),
     ]);
     const data = inst.methods.stake.apply(null, null).encodeABI();
-    res = web3.eth.sendTransaction({
+    res = await web3.eth.sendTransaction({
       from: wallet.address,
       to: poolAddress,
       data,
