@@ -453,7 +453,8 @@
     "ui": {
       "showMap": "नक्शा दिखाएं",
       "searchOnQuestsPage": "Employer / Title / Description / City",
-      "searchOnWorkersPage": "Employee/ City"
+      "searchOnWorkersPage": "Employee / City",
+      "searchWithMap": "Locality / City"
     },
     "worker": "वर्कर",
     "raiseViews": "व्यू बढ़ाएं",

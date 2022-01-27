@@ -453,7 +453,8 @@
     "ui": {
       "showMap": "عرض الخريطة",
       "searchOnQuestsPage": "Employer / Title / Description / City",
-      "searchOnWorkersPage": "Employee/ City"
+      "searchOnWorkersPage": "Employee / City",
+      "searchWithMap": "Locality / City"
     },
     "worker": "الموظف",
     "raiseViews": "زيادة المشاهدات",

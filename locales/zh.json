@@ -453,7 +453,8 @@
     "ui": {
       "showMap": "显示地图",
       "searchOnQuestsPage": "Employer / Title / Description / City",
-      "searchOnWorkersPage": "Employee/ City"
+      "searchOnWorkersPage": "Employee / City",
+      "searchWithMap": "Locality / City"
     },
     "worker": "工作者",
     "raiseViews": "提高浏览量",

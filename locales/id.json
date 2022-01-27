@@ -453,7 +453,8 @@
     "ui": {
       "showMap": "Tampilkan peta",
       "searchOnQuestsPage": "Employer / Title / Description / City",
-      "searchOnWorkersPage": "Employee/ City"
+      "searchOnWorkersPage": "Employee / City",
+      "searchWithMap": "Locality / City"
     },
     "worker": "Pekerja",
     "raiseViews": "Tingkatkan tampilan",

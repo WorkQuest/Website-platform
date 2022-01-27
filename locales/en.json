@@ -453,7 +453,8 @@
     "ui": {
       "showMap": "Show map",
       "searchOnQuestsPage": "Employer / Title / Description / City",
-      "searchOnWorkersPage": "Employee/ City"
+      "searchOnWorkersPage": "Employee / City",
+      "searchWithMap": "Locality / City"
     },
     "worker": "Worker",
     "raiseViews": "Raise views",

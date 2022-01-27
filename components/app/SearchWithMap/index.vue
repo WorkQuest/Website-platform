@@ -24,10 +24,10 @@
           is-search
           is-hide-error
           :selector="isSearchFocus"
-          :placeholder="isPageQuests ? $t('quests.ui.searchOnQuestsPage') : $t('quests.ui.searchOnWorkersPage')"
+          :placeholder="searchPlaceholder"
           data-selector="INPUT-SEARCH"
           @focus="isSearchFocus = true"
-          @selector="isPageQuests ? getAddressInfo(search) : getWorkersInfo()"
+          @selector="getAddressInfo(search)"
         >
           <template v-slot:selector>
             <div
@@ -107,16 +107,22 @@ export default {
     isPageQuests() {
       return this.$route.name === 'quests';
     },
+    searchPlaceholder() {
+      if (this.isShowMap) return this.$t('quests.ui.searchWithMap');
+      return this.isPageQuests ? this.$t('quests.ui.searchOnQuestsPage') : this.$t('quests.ui.searchOnWorkersPage');
+    },
   },
   watch: {
     isShowMap(newVal) {
       localStorage.setItem('isShowMap', newVal);
       this.$emit('isShowMap', this.isShowMap);
     },
+    search() {
+      this.$emit('search', this.search);
+    },
     distanceIndex() { this.zoom = { 0: 15, 1: 10, 2: 8 }[this.distanceIndex]; },
   },
   mounted() {
-    console.log(this.$route);
     const isShow = JSON.parse(localStorage.getItem('isShowMap'));
     if (typeof isShow === 'boolean') this.isShowMap = isShow;
     this.geoCode = new GeoCode('google', {
@@ -151,27 +157,6 @@ export default {
             text: 'Address is not correct',
           });
         }
-      } else {
-        try {
-          await this.$store.dispatch('quests/getAllQuests', {
-            query: {
-              q: address,
-            },
-          });
-        } catch (e) {
-          console.error('Quests founded error: ', e);
-        }
-      }
-    },
-    async getWorkersInfo() {
-      try {
-        await this.$store.dispatch('quests/employeeList', {
-          query: {
-            q: this.search,
-          },
-        });
-      } catch (e) {
-        console.error('Users founded error: ', e);
       }
     },
   },

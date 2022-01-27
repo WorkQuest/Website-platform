@@ -3,6 +3,7 @@
     <search-with-map
       class="employees__search"
       @isShowMap="isShowMap = $event"
+      @search="search = $event"
     />
     <div class="employees__content">
       <h2 class="employees__title">
@@ -54,12 +55,14 @@ export default {
       query: {
         limit: 12,
         offset: 0,
+        q: '',
         'sort[createdAt]': 'desc',
       },
       specFilter: {},
       isShowMap: true,
       isFetching: false,
       boundsTimeout: null,
+      search: '',
     };
   },
   computed: {
@@ -84,6 +87,12 @@ export default {
       ) return;
       clearTimeout(this.boundsTimeout);
       this.boundsTimeout = setTimeout(async () => await this.fetchEmployeeList(true), 500);
+    },
+    async search() {
+      if (!this.isShowMap) {
+        this.query.q = this.search;
+        await this.fetchEmployeeList(true);
+      }
     },
   },
   async mounted() {
@@ -115,6 +124,7 @@ export default {
         this.query['north[latitude]'] = this.mapBounds.northEast.lat;
         this.query['south[longitude]'] = this.mapBounds.southWest.lng;
         this.query['south[latitude]'] = this.mapBounds.southWest.lat;
+        delete this.query.q;
       } else {
         delete this.query['north[longitude]'];
         delete this.query['north[latitude]'];
@@ -149,17 +159,17 @@ export default {
       await this.fetchEmployeeList(true);
     },
     async sortByRating(value) {
-      if (!Object.keys(value).length) delete this.query['ratingStatus[0]'];
+      if (!Object.keys(value).length) delete this.query['ratingStatuses[0]'];
       else this.query = { ...this.query, ...value };
       await this.fetchEmployeeList(true);
     },
     async sortByPriority(value) {
-      if (!Object.keys(value).length) delete this.query['priority[0]'];
+      if (!Object.keys(value).length) delete this.query['priorities[0]'];
       else this.query = { ...this.query, ...value };
       await this.fetchEmployeeList(true);
     },
     async sortByWorkplace(value) {
-      if (!Object.keys(value).length) delete this.query['workplace[0]'];
+      if (!Object.keys(value).length) delete this.query['workplaces[0]'];
       else this.query = { ...this.query, ...value };
       await this.fetchEmployeeList(true);
     },

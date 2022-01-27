@@ -453,7 +453,8 @@
     "ui": {
       "showMap": "মানচিত্র দেখান",
       "searchOnQuestsPage": "Employer / Title / Description / City",
-      "searchOnWorkersPage": "Employee/ City"
+      "searchOnWorkersPage": "Employee / City",
+      "searchWithMap": "Locality / City"
     },
     "worker": "কর্মী",
     "raiseViews": "মতামত দিন",
