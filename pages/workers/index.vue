@@ -91,9 +91,7 @@ export default {
       if (!this.isShowMap) {
         this.query.q = this.search;
         await this.fetchEmployeeList(true);
-      } else {
-        delete this.query.q;
-      }
+      } else delete this.query.q;
     },
   },
   async mounted() {
