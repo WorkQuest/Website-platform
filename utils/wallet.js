@@ -182,23 +182,6 @@ export const getTransferFeeData = async (recipient, value) => {
   }
 };
 
-// export const sendTransaction = async (_method, payload, _provider = web3) => {
-//   const inst = new web3.eth.Contract(payload.abi, payload.address);
-//   const data = inst.methods[_method].apply(null, payload.data).encodeABI();
-//   const [gasPrice, gasEstimate] = await Promise.all([
-//     web3.eth.getGasPrice(),
-//     inst.methods[_method].apply(null, payload.data).estimateGas({ from: wallet.address }),
-//   ]);
-//   // noinspection ES6RedundantAwait
-//   return await web3.eth.sendTransaction({
-//     to: payload.address,
-//     from: wallet.address,
-//     data,
-//     gasPrice,
-//     gas: gasEstimate,
-//   });
-// };
-
 /** CONTRACTS */
 export const transferToken = async (recipient, value) => {
   try {
