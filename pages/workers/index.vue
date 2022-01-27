@@ -52,17 +52,16 @@ export default {
   data() {
     return {
       page: 1,
+      search: '',
       query: {
         limit: 12,
         offset: 0,
-        q: '',
         'sort[createdAt]': 'desc',
       },
       specFilter: {},
       isShowMap: true,
       isFetching: false,
       boundsTimeout: null,
-      search: '',
     };
   },
   computed: {
@@ -92,6 +91,8 @@ export default {
       if (!this.isShowMap) {
         this.query.q = this.search;
         await this.fetchEmployeeList(true);
+      } else {
+        delete this.query.q;
       }
     },
   },
@@ -124,7 +125,6 @@ export default {
         this.query['northAndSouthCoordinates[north][latitude]'] = this.mapBounds.northEast.lat;
         this.query['northAndSouthCoordinates[south][longitude]'] = this.mapBounds.southWest.lng;
         this.query['northAndSouthCoordinates[south][latitude]'] = this.mapBounds.southWest.lat;
-        delete this.query.q;
       } else {
         delete this.query['northAndSouthCoordinates[north][longitude]'];
         delete this.query['northAndSouthCoordinates[north][latitude]'];
