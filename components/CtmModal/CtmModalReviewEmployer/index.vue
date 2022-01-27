@@ -87,13 +87,18 @@ export default {
       this.CloseModal();
     },
     async sendReviewForUser() {
-      const { ok } = await this.$store.dispatch('user/sendReviewForUser', {
-        questId: this.options.item.id,
-        message: this.textArea,
-        mark: this.rating,
-      });
-      if (ok) this.showThanksModal();
-      this.removeLocalStorageRating();
+      try {
+        await this.$store.dispatch('user/sendReviewForUser', {
+          questId: this.options.item.id,
+          message: this.textArea,
+          mark: this.rating,
+        });
+        this.showThanksModal();
+        await this.$store.dispatch('user/sendReviewForUser');
+        this.removeLocalStorageRating();
+      } catch (e) {
+        console.log(e);
+      }
     },
     showThanksModal() {
       this.ShowModal({
