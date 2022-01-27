@@ -157,6 +157,7 @@ export default {
       this.SetLoader(true);
       const { updateMethod, stakingType, decimals } = this.options;
       const { poolAddress, amount } = this;
+      // for staking
       if (stakingType !== StakingTypes.WQT && stakingType !== StakingTypes.WUSD) await this.checkMetamaskStatus();
       if (this.checkAmount()) {
         this.hide();
@@ -195,6 +196,7 @@ export default {
           });
           return;
         }
+        // for mining
         await this.$store.dispatch('web3/unstake', {
           decimals,
           amount: this.amount,

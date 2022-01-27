@@ -28,7 +28,6 @@ import {
   unsubscirbeListeners,
   getChainIdByChain,
   initProvider,
-  authRenewal,
   getPoolTotalSupplyBSC, getPoolTokensAmountBSC,
   error,
 } from '~/utils/web3';
