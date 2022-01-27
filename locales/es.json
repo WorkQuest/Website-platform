@@ -104,6 +104,7 @@
     "create": "Crear cuenta"
   },
   "profile": {
+    "defaultName": "Nameless User",
     "raiseViews": "Aumentar visualizaciones",
     "educations": "Educación",
     "prevWorkExp": "Experiencia laboral",

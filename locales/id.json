@@ -104,6 +104,7 @@
     "create": "Buat akun"
   },
   "profile": {
+    "defaultName": "Nameless User",
     "raiseViews": "Tingkatkan tampilan",
     "educations": "Pendidikan",
     "prevWorkExp": "Pengalaman kerja sebelumnya",

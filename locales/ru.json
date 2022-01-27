@@ -104,6 +104,7 @@
     "create": "Create account"
   },
   "profile": {
+    "defaultName": "Nameless User",
     "raiseViews": "Raise views",
     "educations": "Educations",
     "prevWorkExp": "Previous work experience",

@@ -38,20 +38,21 @@ export default {
     font-size: 12px;
     line-height: 130%;
     height: 20px;
+    text-transform: uppercase;
 
     &_topRanked {
       @extend .status__levels;
-      background-color: #F6CF00;
+      background-color: $yellow100;
     }
 
     &_verified {
       @extend .status__levels;
-      background-color: #BBC0C7;
+      background-color: $grey200;
     }
 
     &_reliable {
       @extend .status__levels;
-      background-color: #B79768;
+      background-color: $brown;
     }
 
     &_noStatus {
