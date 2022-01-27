@@ -279,6 +279,7 @@ export default {
   },
   data() {
     return {
+      geoCode: null,
       secondPhoneNumber: {
         fullPhone: null,
       },
@@ -399,6 +400,12 @@ export default {
         };
       },
     },
+  },
+  mounted() {
+    this.geoCode = new GeoCode('google', {
+      key: process.env.GMAPKEY,
+      lang: this.$i18n?.localeProperties?.code || 'en-US',
+    });
   },
   methods: {
     // UPDATE AVATAR

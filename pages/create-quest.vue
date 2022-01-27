@@ -276,6 +276,7 @@ export default {
       currency: ' WUSD',
       addresses: [],
       files: [],
+      geoCode: null,
     };
   },
   computed: {
@@ -408,6 +409,10 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    this.geoCode = new GeoCode('google', {
+      key: process.env.GMAPKEY,
+      lang: this.$i18n?.localeProperties?.code || 'en-US',
+    });
     this.SetLoader(false);
   },
   methods: {
