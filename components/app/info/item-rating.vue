@@ -38,6 +38,7 @@ export default {
     font-size: 12px;
     line-height: 130%;
     height: 20px;
+    text-transform: uppercase;
 
     &_topRanked {
       @extend .status__levels;

@@ -23,11 +23,17 @@
         </div>
       </div>
       <div class="info-grid__block block block_right">
-        <div
-          v-if="userData.firstName && userData.lastName"
-          class="block__title"
-        >
-          {{ `${userData.firstName} ${userData.lastName}` }}
+        <div class="block__data">
+          <div
+            v-if="userData.firstName && userData.lastName"
+            class="block__title"
+          >
+            {{ `${userData.firstName} ${userData.lastName}` }}
+          </div>
+          <item-rating
+            v-if="ratingStatistic(userData.ratingStatistic) !== 'noStatus'"
+            :rating="ratingStatistic(userData.ratingStatistic)"
+          />
         </div>
         <div
           v-if="userData.role === 'employer' && userData.company"
@@ -262,6 +268,9 @@ export default {
     },
   },
   methods: {
+    ratingStatistic(ratingStatistic) {
+      return ratingStatistic?.status || 'noStatus';
+    },
     initStarClass(star) {
       const reviewMark = this.userData?.ratingStatistic?.averageMark;
       const a = this.Floor(star - reviewMark, 2);
@@ -360,6 +369,11 @@ export default {
   }
 }
 .block {
+  &__data {
+    display: flex;
+    grid-gap: 10px;
+    align-items: center;
+  }
   &_left {
     align-self: flex-start;
     max-width: 142px;
