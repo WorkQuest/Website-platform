@@ -293,6 +293,7 @@ export default {
   },
   data() {
     return {
+      geoCode: null,
       firstPhone: null,
       secondPhoneNumber: { codeRegion: 'RU', phone: null, fullPhone: null },
       newEducation: { from: '', to: '', place: '' },
@@ -405,6 +406,12 @@ export default {
       },
     },
   },
+  mounted() {
+    this.geoCode = new GeoCode('google', {
+      key: process.env.GMAPKEY,
+      lang: this.$i18n?.localeProperties?.code || 'en-US',
+    });
+  },
   methods: {
     // UPDATE AVATAR
     // eslint-disable-next-line consistent-return
@@ -439,12 +446,20 @@ export default {
       this.addresses = [];
     },
     async getAddressInfo(address) {
-      let response = [];
-      const geoCode = new GeoCode('google', { key: process.env.GMAPKEY });
-      if (address.length) {
-        response = await geoCode.geolookup(address);
-        this.addresses = JSON.parse(JSON.stringify(response));
-        this.coordinates = JSON.parse(JSON.stringify({ lng: response[0].lng, lat: response[0].lat }));
+      try {
+        if (address.length) {
+          this.addresses = await this.geoCode.geolookup(address);
+          this.coordinates = {
+            lng: this.addresses[0].lng,
+            lat: this.addresses[0].lat,
+          };
+        } else this.addresses = [];
+      } catch (e) {
+        this.addresses = [];
+        console.error('Geo look up is failed', e);
+        await this.$store.dispatch('main/showToast', {
+          text: 'Address is not correct',
+        });
       }
     },
     hideSearchDD() {
