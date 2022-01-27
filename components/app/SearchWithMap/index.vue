@@ -143,7 +143,7 @@ export default {
     async getAddressInfo(address) {
       if (!this.isShowMap) return;
       try {
-        if (this.search) {
+        if (address.length) {
           this.addresses = await this.geoCode.geolookup(address);
           this.coordinates = {
             lng: this.addresses[0].lng,
