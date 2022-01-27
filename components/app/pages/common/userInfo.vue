@@ -25,10 +25,9 @@
       <div class="info-grid__block block block_right">
         <div class="block__data">
           <div
-            v-if="userData.firstName && userData.lastName"
             class="block__title"
           >
-            {{ `${userData.firstName} ${userData.lastName}` }}
+            {{ UserName(userData.firstName, userData.lastName) }}
           </div>
           <item-rating
             v-if="ratingStatistic(userData.ratingStatistic) !== 'noStatus'"
