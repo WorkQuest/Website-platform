@@ -384,7 +384,7 @@ export const stake = async (stakingType, amount, poolAddress, duration) => {
       web3.eth.getGasPrice(),
       inst.methods.stake.apply(null, []).estimateGas({ from: wallet.address, value: amount }),
     ]);
-    res = await inst.methods.stake.send({
+    res = await web3.eth.sendTransaction({
       from: wallet.address,
       to: poolAddress,
       value: amount,
