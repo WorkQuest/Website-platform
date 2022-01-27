@@ -228,7 +228,7 @@ export default {
       ];
     },
     stakingCards() {
-      if (!this.poolData) {
+      if (!this.poolData.rewardTotal) {
         return [
           { name: this.$t('staking.stakingCards.distributionTime') },
           { name: this.$t('staking.stakingCards.rewardTotal') },
@@ -256,7 +256,7 @@ export default {
       ];
     },
     userInfoCards() {
-      if (!this.userInfo) {
+      if (!this.userInfo.staked) {
         return [
           { name: this.$t('staking.userInformationCards.staked') },
           { name: this.$t('staking.userInformationCards.yourBalance') },
@@ -304,7 +304,7 @@ export default {
       return data;
     },
     stakeCards() {
-      if (!this.poolData) {
+      if (!this.poolData.minStake) {
         return [
           { name: this.$t('staking.stakeCards.stakeMin') },
           { name: this.$t('staking.stakeCards.stakeLimit') },
