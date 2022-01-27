@@ -480,12 +480,20 @@ export default {
       return workplaces[workplaceId];
     },
     async getAddressInfo(address) {
-      let response = [];
-      const geoCode = new GeoCode('google', { key: process.env.GMAPKEY });
-      if (address.length) {
-        response = await geoCode.geolookup(address);
-        this.addresses = JSON.parse(JSON.stringify(response));
-        this.coordinates = JSON.parse(JSON.stringify({ lng: response[0].lng, lat: response[0].lat }));
+      try {
+        if (address.length) {
+          this.addresses = await this.geoCode.geolookup(address);
+          this.coordinates = {
+            lng: this.addresses[0].lng,
+            lat: this.addresses[0].lat,
+          };
+        } else this.addresses = [];
+      } catch (e) {
+        this.addresses = [];
+        console.error('Geo look up is failed', e);
+        await this.$store.dispatch('main/showToast', {
+          text: 'Address is not correct',
+        });
       }
     },
     async createQuest() {
@@ -512,7 +520,7 @@ export default {
       };
       const response = await this.$store.dispatch('quests/questCreate', payload);
       this.SetLoader(false);
-      if (response?.ok) {
+      if (response.ok) {
         this.showModalCreatedQuest();
         this.showToastCreated();
         await this.$router.push(`/quests/${response.result.id}`);
