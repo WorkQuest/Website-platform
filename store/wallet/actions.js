@@ -279,6 +279,7 @@ export default {
         isStakingStarted: pool === StakingTypes.WUSD || +stakes.stakedAt !== 0,
         date: unstakeTime ? new Date(unstakeTime * 1000) : false,
         claim: +claim_ ? new BigNumber(claim_).shiftedBy(-decimals).decimalPlaces(5).toString() : '0',
+        fullClaim: +claim_ ? new BigNumber(claim_).shiftedBy(-decimals).toString() : '0',
         staked: +staked_ ? new BigNumber(staked_).shiftedBy(-decimals).decimalPlaces(4).toString() : '0',
         fullStaked: +staked_ ? new BigNumber(staked_).shiftedBy(-decimals).toString() : '0',
         balance: +_balance ? new BigNumber(_balance).shiftedBy(-18).decimalPlaces(4).toString() : '0',
@@ -308,7 +309,45 @@ export default {
       return error();
     }
   },
-  async stakingUnstake({ commit }, { decimals, amount, pool }) {
-    return null;
+  async stakingUnstake({ commit }, { amount, stakingType, poolAddress }) {
+    try {
+      amount = new BigNumber(amount).shiftedBy(18).toString();
+      const _abi = stakingType === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStaking;
+      const res = sendTransaction(
+        'unstake',
+        {
+          abi: _abi,
+          address: poolAddress,
+          data: [amount],
+        }, GetWalletProvider(),
+      );
+      return success(res);
+    } catch (e) {
+      console.error('Unstake error', e.message);
+      return error();
+    }
+  },
+  async stakingClaimRewardsFeeData({ commit }, { stakingType, poolAddress }) {
+    const _abi = stakingType === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStaking;
+    return await getContractFeeData('claim', _abi, poolAddress);
+  },
+  async stakingClaimRewards({ commit }, { stakingType, poolAddress }) {
+    try {
+      const _abi = stakingType === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStaking;
+      await sendTransaction('claim', { abi: _abi, address: poolAddress }, GetWalletProvider());
+      return success();
+    } catch (e) {
+      console.error('Claim error', e.message);
+      return error();
+    }
+  },
+  async stakingRenewal({ commit }, { stakingType, poolAddress }) {
+    try {
+      const _abi = stakingType === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStaking;
+      return success(await sendTransaction('autoRenewal', { abi: _abi, address: poolAddress }, GetWalletProvider()));
+    } catch (e) {
+      console.error('Renewal error', e.message);
+      return error();
+    }
   },
 };

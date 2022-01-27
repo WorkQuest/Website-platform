@@ -417,7 +417,7 @@ export const getTxFee = async (_abi, _contractAddress, method, data = null) => {
   }
 };
 
-// TODO: DELETE
+// TODO: DELETE if not using for mining page
 export const staking = async (_decimals, _amount, _tokenAddress, _stakingAddress, _stakingAbi, duration, stakingType) => {
   let instance;
   const isNative = stakingType === StakingTypes.WUSD;
@@ -465,7 +465,7 @@ export const staking = async (_decimals, _amount, _tokenAddress, _stakingAddress
   }
 };
 
-// TODO: DELETE
+// TODO: DELETE if not using for mining page
 export const unStaking = async (_decimals, _amount, _stakingAddress, _stakingAbi) => {
   try {
     amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
@@ -485,7 +485,7 @@ export const unStaking = async (_decimals, _amount, _stakingAddress, _stakingAbi
   }
 };
 
-// TODO: DELETE
+// TODO: DELETE if not using for mining page
 export const claimRewards = async (_stakingAddress, _stakingAbi) => {
   try {
     showToast('Claiming', 'Claiming...', 'success');

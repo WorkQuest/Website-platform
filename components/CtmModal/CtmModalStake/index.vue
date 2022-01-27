@@ -226,7 +226,6 @@ export default {
     async getStakeFeeForAmount(amount, stakingType, poolAddress, days) {
       amount = new BigNumber(amount).shiftedBy(18).toString();
       const isNative = stakingType === StakingTypes.WUSD;
-      console.log(amount);
       return await this.$store.dispatch('wallet/getContractFeeData', {
         _abi: isNative ? WQStakingNative : WQStaking,
         contractAddress: poolAddress,

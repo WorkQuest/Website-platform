@@ -1,11 +1,11 @@
 <template>
   <ctm-modal-box
     class="claim"
-    :title="options.type === 1 ? $t('mining.stake') : 'Unstake'"
+    :title="options.type === 1 ? $t('mining.stake') : $t('mining.unstake')"
   >
     <div class="claim__content content">
       <validation-observer
-        v-slot="{handleSubmit}"
+        v-slot="{handleSubmit, valid}"
       >
         <base-field
           id="amount"
@@ -30,18 +30,6 @@
             </base-btn>
           </template>
         </base-field>
-        <div
-          v-if="options.type === 1 && options.stakingType === 'WQT' && !options.alreadyStaked"
-          class="content__days"
-        >
-          {{ $t('staking.stakeDays') }}
-          <base-dd
-            v-model="daysValue"
-            class="content__dd"
-            :placeholder="30"
-            :items="stakeDays"
-          />
-        </div>
         <div class="content__container">
           <base-btn
             :mode="'outline'"
@@ -51,7 +39,7 @@
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
-            :disabled="statusBusy || !isConnected"
+            :disabled="statusBusy || !valid || (options.stakingType !== 'WQT' && options.stakingType !== 'WUSD' && !isConnected)"
             @click="handleSubmit(options.type === 1 ? staking : unstaking)"
           >
             {{ $t('meta.submit') }}
@@ -67,6 +55,7 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { StakingTypes } from '~/utils/enums';
+import { WQStaking, WQStakingNative } from '~/abi/abi';
 
 export default {
   name: 'CtmModalClaimRewards',
@@ -76,8 +65,6 @@ export default {
       amount: '',
       balance: 10,
       currency: 'WUSD',
-      daysValue: 0,
-      stakeDays: [30, 60, 90],
     };
   },
   computed: {
@@ -88,8 +75,20 @@ export default {
       userBalance: 'web3/getUserBalance',
       userStake: 'web3/getUserStake',
       isConnected: 'web3/isConnected',
-      walletUserBalanceData: 'wallet/getBalanceData',
+
+      stakingPoolsData: 'wallet/getStakingPoolsData',
+      stakingUserData: 'wallet/getStakingUserData',
     }),
+    userInfo() {
+      return this.stakingUserData[this.options.stakingType];
+    },
+    poolData() {
+      return this.stakingPoolsData[this.options.stakingType];
+    },
+    poolAddress() {
+      return this.poolData && this.poolData.poolAddress
+        ? this.poolData.poolAddress.toLowerCase() : '';
+    },
   },
   mounted() {
     this.balance = this.options.balance;
@@ -106,7 +105,7 @@ export default {
       return min + max;
     },
     maxBalance() {
-      if (this.options.stakingType !== StakingTypes.MINING) {
+      if (this.options.stakingType !== 'MINING') {
         if (this.options.type === 1) {
           const max = new BigNumber(this.options.maxStake).minus(this.options.staked).toString();
           this.amount = new BigNumber(this.options.balance).isGreaterThanOrEqualTo(max)
@@ -119,7 +118,7 @@ export default {
       }
     },
     checkAmount() {
-      if (this.options.stakingType !== StakingTypes.MINING) {
+      if (this.options.stakingType !== 'MINING') {
         return this.options.type === 1
           ? new BigNumber(this.options.balance).isGreaterThanOrEqualTo(this.amount)
           : new BigNumber(this.amount).isLessThanOrEqualTo(this.options.staked);
@@ -130,16 +129,6 @@ export default {
       return new BigNumber(amount).isGreaterThanOrEqualTo(this.amount);
     },
     async staking() {
-      if (this.options.stakingType === StakingTypes.MINING) {
-        await this.miningStake();
-        return;
-      }
-      await this.stakingStake();
-    },
-    async stakingStake() {
-      console.log('staking stake');
-    },
-    async miningStake() {
       this.SetLoader(true);
       await this.checkMetamaskStatus();
       if (this.checkAmount()) {
@@ -149,7 +138,6 @@ export default {
           decimals,
           amount: this.amount,
           stakingType,
-          duration: this.stakeDays[this.daysValue],
         });
         if (updateMethod) await updateMethod();
       } else {
@@ -166,10 +154,33 @@ export default {
     },
     async unstaking() {
       this.SetLoader(true);
-      await this.checkMetamaskStatus();
+      const { updateMethod, stakingType, decimals } = this.options;
+      const { poolAddress, amount } = this;
+      if (stakingType !== StakingTypes.WQT && stakingType !== StakingTypes.WUSD) await this.checkMetamaskStatus();
       if (this.checkAmount()) {
-        const { updateMethod, stakingType, decimals } = this.options;
         this.hide();
+        if (stakingType === StakingTypes.WQT || StakingTypes.WUSD) {
+          const [txFee] = await Promise.all([
+            this.$store.dispatch('wallet/getContractFeeData', {
+              method: 'unstake',
+              _abi: stakingType === StakingTypes.WUSD ? WQStakingNative : WQStaking,
+              contractAddress: poolAddress,
+              data: [new BigNumber(amount).shiftedBy(18).toString()],
+            }),
+            this.$store.dispatch('wallet/getBalance'),
+          ]);
+          this.SetLoader(false);
+          if (!txFee.ok) {
+            this.SetLoader(false);
+            return;
+          }
+          this.ShowModal({
+            key: modals.transactionReceipt,
+            fields: {},
+            submitMethod: async () => await this.$store.dispatch('wallet/stakingUnstake', { }),
+          });
+          return;
+        }
         await this.$store.dispatch('web3/unstake', {
           decimals,
           amount: this.amount,
@@ -247,10 +258,6 @@ export default {
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 20px;
     margin-top: 25px;
-  }
-  &__dd {
-    border-radius: 6px;
-    border: 1px solid $black0;
   }
 }
 </style>

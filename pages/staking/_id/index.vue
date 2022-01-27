@@ -175,7 +175,12 @@ import moment from 'moment';
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { Chains, NativeTokenSymbolByChainId, StakingTypes } from '~/utils/enums';
+import {
+  Chains, NativeTokenSymbolByChainId, StakingTypes, TokenSymbols,
+} from '~/utils/enums';
+import { getWalletAddress } from '~/utils/wallet';
+import * as abi from '~/abi/abi';
+import { WQStaking, WQStakingNative } from '~/abi/abi';
 
 export default {
   name: 'StakingPool',
@@ -203,9 +208,6 @@ export default {
     poolAddress() {
       return this.poolData && this.poolData.poolAddress
         ? this.poolData.poolAddress.toLowerCase() : '';
-    },
-    stakeDurationIsOver() {
-      return this.userInfo && moment.duration(moment(this.userInfo.date).diff(moment.now())).asMilliseconds() <= 0;
     },
     cards() {
       if (!this.poolData) {
@@ -334,56 +336,20 @@ export default {
   async mounted() {
     await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
     if (!this.isWalletConnected) return;
-    await this.initPage();
+    await this.loadData();
   },
   async beforeDestroy() {
     clearInterval(this.updateInterval);
   },
   methods: {
-    async initPage() {
+    async loadData() {
       this.SetLoader(true);
       await Promise.all([
         this.$store.dispatch('wallet/getStakingPoolsData', this.slug),
         this.$store.dispatch('wallet/getStakingUserInfo', this.slug),
       ]);
-      this.updateInterval = setInterval(() => this.getUserInfo(), 120000);
+      this.updateInterval = setInterval(() => this.getUserInfo(), 60000);
       this.SetLoader(false);
-    },
-    handleAutoRenewal() {
-      if (new BigNumber(this.userInfo.fullStaked).isGreaterThanOrEqualTo(this.poolData.fullMaxStake)) {
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/warning.svg'),
-          title: this.$t('staking.notification'),
-          subtitle: this.$t('staking.stakeLimitReached'),
-        });
-        return;
-      }
-      let renewalValue;
-      if (this.userInfo.claim >= this.poolData.fullMaxStake) {
-        renewalValue = new BigNumber(this.poolData.fullMaxStake).minus(this.userInfo.fullStaked).toString();
-      } else {
-        renewalValue = this.userInfo.claim;
-      }
-      if (!+renewalValue) {
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/warning.svg'),
-          title: this.$t('staking.notification'),
-          subtitle: this.$t('staking.notEnoughClaim'),
-        });
-        return;
-      }
-      this.ShowModal({
-        key: modals.areYouSureNotification,
-        title: this.$t('modals.areYouSure'),
-        text: this.$t('staking.renewalTokens', { n: renewalValue }),
-        callback: async () => {
-          this.SetLoader(true);
-          await this.$store.dispatch('web3/autoRenewal', { stakingType: this.slug });
-          this.SetLoader(false);
-        },
-      });
     },
     handleBackToMainStaking() {
       this.$router.push('/staking');
@@ -408,35 +374,49 @@ export default {
         });
         return;
       }
-      const txFeeData = await this.$store.dispatch('web3/getStakingRewardTxFee', this.slug);
-      if (txFeeData?.ok === false) {
-        await this.ShowModal({
-          key: modals.status,
-          title: this.$t('staking.notification'),
-          subtitle: this.$t('staking.cannotClaimYet'),
-        });
+      this.SetLoader(true);
+      const [txFee] = await Promise.all([
+        this.$store.dispatch('wallet/getContractFeeData', {
+          method: 'claim',
+          _abi: this.slug === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStaking,
+          contractAddress: this.poolData.poolAddress,
+        }),
+        this.$store.dispatch('wallet/getBalance'),
+      ]);
+      this.SetLoader(false);
+      if (!txFee.ok) {
+        if (txFee.msg.includes('You cannot claim tokens yet')) {
+          await this.ShowModal({
+            key: modals.status,
+            img: require('~/assets/img/ui/warning.svg'),
+            title: this.$t('staking.notification'),
+            subtitle: this.$t('staking.cannotClaimYet'),
+          });
+        } else {
+          await this.$store.dispatch('main/showToast', {
+            text: txFee.msg,
+          });
+        }
         return;
       }
       this.ShowModal({
-        key: modals.claim,
-        txFee: txFeeData.result,
-        stakingType: this.slug,
-        rewardAmount: this.userInfo.claim,
-        tokenSymbol: this.poolData.tokenSymbol,
+        key: modals.transactionReceipt,
+        title: this.$t('staking.claimRewards'),
+        fields: {
+          from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
+          to: { name: this.$t('modals.toAddress'), value: this.poolData.poolAddress },
+          fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
+        },
+        submitMethod: async () => await this.$store.dispatch('wallet/stakingClaimRewards', {
+          poolAddress: this.poolData.poolAddress,
+          stakingType: this.slug,
+        }),
+        callback: async () => await this.loadData(),
       });
     },
     async showUnstakeModal() {
       if (!this.userInfo || !this.poolData) return;
-      if (this.slug !== StakingTypes.WUSD && !this.stakeDurationIsOver) {
-        await this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/warning.svg'),
-          title: this.$t('staking.notification'),
-          subtitle: this.$t('staking.stakeDurationIsNotOver'),
-        });
-        return;
-      }
-      if (+this.userInfo.staked === 0) {
+      if (+this.userInfo.fullStaked === 0) {
         await this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/warning.svg'),
@@ -445,13 +425,36 @@ export default {
         });
         return;
       }
-      const stakingType = this.slug === StakingTypes.WQT ? StakingTypes.WQT : StakingTypes.WUSD;
+      if (this.slug !== StakingTypes.WUSD) {
+        this.SetLoader(true);
+        const txFee = await this.$store.dispatch('wallet/getContractFeeData', {
+          method: 'unstake',
+          _abi: this.slug === StakingTypes.WUSD ? WQStakingNative : WQStaking,
+          contractAddress: this.poolAddress,
+          data: ['1'],
+        });
+        this.SetLoader(false);
+        if (!txFee.ok) {
+          if (txFee.msg.includes('You cannot unstake token yet')) {
+            await this.ShowModal({
+              key: modals.status,
+              img: require('~/assets/img/ui/warning.svg'),
+              title: this.$t('staking.notification'),
+              subtitle: this.$t('staking.stakeDurationIsNotOver'),
+            });
+          } else {
+            await this.$store.dispatch('main/showToast', {
+              text: txFee.msg,
+            });
+          }
+          return;
+        }
+      }
       this.ShowModal({
         key: modals.claimRewards,
         type: 2,
-        stakingType,
-        decimals: this.stakingPoolsData[this.slug].decimals,
-        staked: this.userInfo._staked,
+        stakingType: this.slug,
+        staked: this.userInfo.fullStaked,
       });
     },
     async showStakeModal() {
@@ -465,7 +468,7 @@ export default {
         });
         return;
       }
-      if (new BigNumber(this.userInfo._staked).isGreaterThanOrEqualTo(this.poolData.fullMaxStake)) {
+      if (new BigNumber(this.userInfo.fullStaked).isGreaterThanOrEqualTo(this.poolData.fullMaxStake)) {
         await this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/warning.svg'),
@@ -477,14 +480,76 @@ export default {
       this.ShowModal({
         key: modals.stake,
         stakingType: this.slug,
-        // type: 1,
-        // balance: this.userInfo.balance,
-        // decimals: this.poolData.decimals,
-        // stakingType: this.slug,
-        // minStake: +this.poolData.minStake === 0 ? this.poolData.fullMinStake : this.poolData.minStake,
-        // maxStake: this.poolData.fullMaxStake,
-        // staked: this.userInfo.staked,
-        // alreadyStaked: +this.userInfo.staked !== 0, // for duration selecting
+      });
+    },
+    async handleAutoRenewal() {
+      this.SetLoader(true);
+      await this.loadData();
+      this.SetLoader(false);
+      if (new BigNumber(this.userInfo.fullStaked).isGreaterThanOrEqualTo(this.poolData.fullMaxStake)) {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('staking.notification'),
+          subtitle: this.$t('staking.stakeLimitReached'),
+        });
+        return;
+      }
+      let renewalValue;
+      if (new BigNumber(this.userInfo.fullClaim).isGreaterThanOrEqualTo(this.poolData.fullMaxStake)) {
+        renewalValue = new BigNumber(this.poolData.fullMaxStake).minus(this.userInfo.fullStaked).toString();
+      } else {
+        renewalValue = this.userInfo.claim;
+      }
+      if (!+renewalValue) {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('staking.notification'),
+          subtitle: this.$t('staking.notEnoughClaim'),
+        });
+        return;
+      }
+      this.ShowModal({
+        key: modals.areYouSureNotification,
+        title: this.$t('modals.areYouSure'),
+        text: this.$t('staking.renewalTokens', { n: renewalValue }),
+        callback: async () => {
+          this.SetLoader(true);
+          const [txFee] = await Promise.all([
+            this.$store.dispatch('wallet/getContractFeeData', {
+              method: 'autoRenewal',
+              _abi: this.slug === StakingTypes.WUSD ? WQStakingNative : WQStaking,
+              contractAddress: this.poolAddress,
+            }),
+            this.$store.dispatch('wallet/getBalance'),
+          ]);
+          this.SetLoader(false);
+          if (!txFee.ok) {
+            if (txFee.msg.includes('You cannot claim tokens yet') || txFee.msg.includes('You cannot stake tokens yet')) {
+              await this.$store.dispatch('main/showToast', {
+                title: this.$t('staking.autoRenewal'),
+                text: this.$t('staking.cannotClaimYet'),
+              });
+            } else {
+              await this.$store.dispatch('main/showToast', {
+                text: txFee.msg,
+              });
+            }
+            return;
+          }
+          this.ShowModal({
+            key: modals.transactionReceipt,
+            title: this.$t('staking.autoRenewal'),
+            fields: {
+              from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
+              to: { name: this.$t('modals.toAddress'), value: this.poolAddress },
+              fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
+            },
+            submitMethod: async () => await this.$store.dispatch('wallet/stakingRenewal', { stakingType: this.slug, poolAddress: this.poolAddress }),
+            callback: async () => await this.loadData(),
+          });
+        },
       });
     },
   },

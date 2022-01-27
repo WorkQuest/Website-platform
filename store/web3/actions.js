@@ -227,10 +227,6 @@ export default {
     const { stakingAddress, stakingAbi } = getStakingDataByType(stakingType);
     return await claimRewards(stakingAddress, stakingAbi);
   },
-  async autoRenewal({ commit }, { stakingType }) {
-    const { stakingAddress, stakingAbi } = getStakingDataByType(stakingType);
-    return await authRenewal(stakingAddress, stakingAbi);
-  },
   async swap({ commit }, { decimals, amount }) {
     return await swap(decimals, amount);
   },
