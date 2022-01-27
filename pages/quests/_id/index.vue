@@ -134,7 +134,7 @@
             <h2 class="quest__spec">
               {{ $t('quests.otherQuestsSpec') }}
               <nuxt-link
-                :to="`/quests?specialization=${randomSpec}&statuses=0`"
+                :to="`/quests?specializations=${randomSpec}&statuses=0`"
                 class="spec__link"
               >
                 "{{ $t(`filters.items.${randomSpec}.title`) }}"

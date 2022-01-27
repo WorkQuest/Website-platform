@@ -104,6 +104,7 @@
     "create": "অ্যাকাউন্ট তৈরি করুন"
   },
   "profile": {
+    "defaultName": "Nameless User",
     "raiseViews": "মতামত দিন",
     "educations": "শিক্ষা",
     "prevWorkExp": "কাজের পূর্ব অভিজ্ঞতা",
@@ -452,7 +453,9 @@
     },
     "ui": {
       "showMap": "মানচিত্র দেখান",
-      "search": "শহর / রাস্তা / স্থান"
+      "searchOnQuestsPage": "Employer / Title / Description / City",
+      "searchOnWorkersPage": "Employee / City",
+      "searchWithMap": "Locality / City"
     },
     "worker": "কর্মী",
     "raiseViews": "মতামত দিন",

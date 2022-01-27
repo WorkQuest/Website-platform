@@ -143,6 +143,10 @@ Vue.mixin({
     EmptyAvatar() {
       return require('~/assets/img/app/avatar_empty.png');
     },
+    UserName(firstName, lastName) {
+      if (firstName || lastName) return `${firstName || ''} ${lastName || ''}`;
+      return this.$t('profile.defaultName');
+    },
     NumberWithSpaces(value) {
       if (!value) return '';
       const parts = value.toString().split('.');

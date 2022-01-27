@@ -469,10 +469,10 @@ export default {
     padding: 2px 5px;
     text-align: center;
     &_reliable {
-      background: #BBC0C7 !important;
+      background: $grey200 !important;
     }
     &_checked {
-      background: #B79768 !important;
+      background: $brown !important;
     }
   }
   &__desc {
