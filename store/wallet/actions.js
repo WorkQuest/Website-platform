@@ -5,7 +5,7 @@ import {
   getBalance, getContractFeeData,
   getIsWalletConnected,
   getStyledAmount, getWalletAddress, getTransferFeeData,
-  transfer, transferToken, GetWalletProvider,
+  transfer, transferToken, GetWalletProvider, stake,
 } from '~/utils/wallet';
 import {
   sendTransaction, fetchContractData, success, error,
@@ -290,24 +290,7 @@ export default {
   async stake({ commit }, {
     stakingType, amount, poolAddress, duration,
   }) {
-    try {
-      amount = new BigNumber(amount).shiftedBy(18).toString();
-      const _abi = stakingType === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStaking;
-      const data = duration != null ? [amount, duration.toString()] : [{ value: amount }];
-      const res = await sendTransaction(
-        'stake',
-        {
-          abi: _abi,
-          address: poolAddress,
-          data,
-        },
-        GetWalletProvider(),
-      );
-      return success(res);
-    } catch (e) {
-      console.error('Stake error', e.message);
-      return error();
-    }
+    return stake(stakingType, amount, poolAddress, duration);
   },
   async stakingUnstake({ commit }, { amount, stakingType, poolAddress }) {
     try {

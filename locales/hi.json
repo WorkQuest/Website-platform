@@ -2035,6 +2035,7 @@
     "stakeDurationIsNotOver": "???",
     "claimRewards": "???",
     "cannotClaimYet": "???",
+    "cannotStakeYet": "You cannot stake tokens yet",
     "pool": "Pool",
     "stakeTokenAddress": "???",
     "rewardTokenAddress": "???",

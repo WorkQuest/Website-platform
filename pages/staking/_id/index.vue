@@ -348,7 +348,7 @@ export default {
         this.$store.dispatch('wallet/getStakingPoolsData', this.slug),
         this.$store.dispatch('wallet/getStakingUserInfo', this.slug),
       ]);
-      this.updateInterval = setInterval(() => this.getUserInfo(), 60000);
+      this.updateInterval = setInterval(() => this.$store.dispatch('wallet/getStakingUserInfo', this.slug), 60000);
       this.SetLoader(false);
     },
     handleBackToMainStaking() {

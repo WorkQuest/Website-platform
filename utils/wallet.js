@@ -2,8 +2,12 @@ import { ethers } from 'ethers';
 import { AES, enc } from 'crypto-js';
 import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
-import { error, success, fetchContractData } from '~/utils/web3';
+import {
+  error, success, fetchContractData, sendTransaction,
+} from '~/utils/web3';
 import * as abi from '~/abi/abi';
+import { StakingTypes } from '~/utils/enums';
+import { WQStakingNative } from '~/abi/abi';
 
 const bip39 = require('bip39');
 
@@ -355,6 +359,44 @@ export const pensionExtendLockTime = async () => {
     return success(res);
   } catch (e) {
     console.error(`ExtendLockTime: ${e}`);
+    return error();
+  }
+};
+
+export const stake = async (stakingType, amount, poolAddress, duration) => {
+  try {
+    amount = new BigNumber(amount).shiftedBy(18).toString();
+    let res;
+    if (stakingType === StakingTypes.WQT) {
+      res = await sendTransaction(
+        'stake',
+        {
+          abi: abi.WQStakingNative,
+          address: poolAddress,
+          data: [amount, duration.toString()],
+        },
+        GetWalletProvider(),
+      );
+      return success(res);
+    }
+    console.log('staking native ', amount);
+    const inst = new web3.eth.Contract(WQStakingNative, poolAddress);
+    const [gasPrice, gasEstimate] = await Promise.all([
+      web3.eth.getGasPrice(),
+      inst.methods.stake.apply(null, []).estimateGas({ from: wallet.address, value: amount }),
+    ]);
+    const data = inst.methods.stake.apply(null, null).encodeABI();
+    res = web3.eth.sendTransaction({
+      from: wallet.address,
+      to: poolAddress,
+      data,
+      value: amount,
+      gas: gasEstimate,
+      gasPrice,
+    });
+    return success(res);
+  } catch (e) {
+    console.error('Stake error', e.message);
     return error();
   }
 };

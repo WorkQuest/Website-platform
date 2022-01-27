@@ -191,7 +191,14 @@ export default {
       this.SetLoader(true);
       const txFee = await this.getStakeFeeForAmount(amount, stakingType, poolAddress, days);
       if (!txFee.ok) {
-        await this.$store.dispatch('main/showToast', { title: this.$t('staking.stake'), text: this.$t('modals.failed') });
+        if (txFee.msg.includes('You cannot stake tokens yet')) {
+          await this.$store.dispatch('main/showToast', {
+            title: this.$t('mining.stake'),
+            text: this.$t('staking.cannotStakeYet'),
+          });
+        } else {
+          await this.$store.dispatch('main/showToast', { title: this.$t('staking.stake'), text: this.$t('modals.failed') });
+        }
         this.SetLoader(false);
         return;
       }
@@ -203,13 +210,14 @@ export default {
           from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
           to: { name: this.$t('modals.toAddress'), value: poolAddress },
           days: days && !isStakingStarted ? { name: this.$t('staking.stakeDays'), value: days } : null,
-          amount: { name: this.$t('modals.amount'), value: amount, symbol: TokenSymbols.WQT },
+          amount: { name: this.$t('modals.amount'), value: amount, symbol: stakingType },
           fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
         },
         submitMethod: async () => {
           const res = await this.$store.dispatch('wallet/stake', {
             stakingType, amount, poolAddress, duration: days,
           });
+          console.log(res);
           if (!res.ok) {
             await this.$store.dispatch('main/showToast', { title: this.$t('staking.stake'), text: this.$t('modals.failed') });
           }
@@ -224,14 +232,13 @@ export default {
       });
     },
     async getStakeFeeForAmount(amount, stakingType, poolAddress, days) {
-      amount = new BigNumber(amount).shiftedBy(18).toString();
       const isNative = stakingType === StakingTypes.WUSD;
       return await this.$store.dispatch('wallet/getContractFeeData', {
         _abi: isNative ? WQStakingNative : WQStaking,
         contractAddress: poolAddress,
         method: 'stake',
         amount: isNative ? amount : null,
-        data: isNative ? null : [amount, days.toString()],
+        data: isNative ? null : [new BigNumber(amount).shiftedBy(18).toString(), days.toString()],
       });
     },
   },
