@@ -104,6 +104,7 @@
     "create": "अकाउंट बनाएं"
   },
   "profile": {
+    "defaultName": "Nameless User",
     "raiseViews": "व्यू बढ़ाएं",
     "educations": "शिक्षा",
     "prevWorkExp": "पिछला वर्क एक्सपीरिएंस",

@@ -604,10 +604,10 @@ export default {
     padding: 2px 5px;
     text-align: center;
     &_reliable {
-      background: #BBC0C7;
+      background: $grey200;
     }
     &_checked {
-      background: #B79768;
+      background: $brown;
     }
   }
   &__desc {

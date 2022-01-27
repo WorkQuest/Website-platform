@@ -104,6 +104,7 @@
     "create": "إنشاء حساب"
   },
   "profile": {
+    "defaultName": "Nameless User",
     "raiseViews": "زيادة المشاهدات",
     "educations": "التعليم",
     "prevWorkExp": "خبرة العمل السابقة",

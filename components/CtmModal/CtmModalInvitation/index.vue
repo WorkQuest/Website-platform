@@ -173,7 +173,7 @@ export default {
       display: block;
       margin: 0 0 0 7px;
       padding: 2px 4px 2px 4px;
-      background-color: #F6CF00;
+      background-color: $yellow100;
       border-radius: 3px;
       color: $white;
     }
@@ -181,7 +181,7 @@ export default {
       display: block;
       margin: 0 0 0 7px;
       padding: 2px 4px 2px 4px;
-      background-color: #BBC0C7;
+      background-color: $grey200;
       border-radius: 3px;
       color: $white;
     }
@@ -189,7 +189,7 @@ export default {
       display: block;
       margin: 0 0 0 7px;
       padding: 2px 4px 2px 4px;
-      background-color: #B79768;
+      background-color: $brown;
       border-radius: 3px;
       color: $white;
     }
