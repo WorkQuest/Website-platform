@@ -166,7 +166,7 @@ export default {
 
   &__block {
     display: grid;
-    grid-template-columns: 154px 1fr 143px 260px;
+    grid-template-columns: 155px 1fr 143px 260px;
 
     @include box;
   }
@@ -219,7 +219,7 @@ export default {
     padding: 0 20px;
 
     &__block {
-      grid-template-columns: 154px 1fr 143px 220px;
+      grid-template-columns: 155px 1fr 143px 220px;
     }
   }
 }

@@ -954,6 +954,7 @@
     "edit": "???",
     "delete": "???",
     "youCan’tDeleteActiveQuest": "???",
+    "youCantCreateDispute": "???",
     "sureDeleteText": "???",
     "sureDeleteMemberText": "???",
     "sureLeaveChatText": "???",
@@ -1512,7 +1513,9 @@
     "Dispute": "Disputa",
     "pending": "Pendiente",
     "chatHistory": "Historial de chats",
-    "disputeTime": "Hora de apertura de la disputa:"
+    "disputeTime": "Hora de apertura de la disputa:",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
     "searchQuests": "Buscar ofertas",
@@ -1955,6 +1958,7 @@
     "incorrectPass": "Vaya, se produjo un problema. Compruebe los datos y vuelva a intentarlo.",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {

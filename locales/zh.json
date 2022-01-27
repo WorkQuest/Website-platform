@@ -954,6 +954,7 @@
     "edit": "???",
     "delete": "???",
     "youCan’tDeleteActiveQuest": "???",
+    "youCantCreateDispute": "???",
     "sureDeleteText": "???",
     "sureDeleteMemberText": "???",
     "sureLeaveChatText": "???",
@@ -1512,7 +1513,9 @@
     "Dispute": "争议",
     "pending": "待办",
     "chatHistory": "聊天记录",
-    "disputeTime": "争议提交时间："
+    "disputeTime": "争议提交时间：",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
     "searchQuests": "搜索 Quest",
@@ -1955,6 +1958,7 @@
     "incorrectPass": "哎呀，出错了。检查数据并重试。",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {

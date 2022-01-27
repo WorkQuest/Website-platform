@@ -954,6 +954,7 @@
     "edit": "Edit",
     "delete": "Delete",
     "youCan’tDeleteActiveQuest": "You can’t delete active quest",
+    "youCantCreateDispute": "???",
     "sureDeleteText": "Do you really want to delete this quest?",
     "sureDeleteMemberText": "???",
     "sureLeaveChatText": "???",
@@ -1512,7 +1513,9 @@
     "Dispute": "Dispute",
     "pending": "Pending",
     "chatHistory": "Chat history",
-    "disputeTime": "Dispute opening time:"
+    "disputeTime": "Dispute opening time:",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
     "searchQuests": "Search quests",
@@ -1955,6 +1958,7 @@
     "incorrectPass": "Oops, something went wrong. Check the data and try again.",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {

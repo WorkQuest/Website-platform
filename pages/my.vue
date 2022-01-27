@@ -16,7 +16,7 @@
             {{ item.name }}
           </base-btn>
         </div>
-        <quests
+        <quest-cards
           v-if="questsCount"
           :quests="questsData"
           @clickFavoriteStar="updateQuests"
@@ -43,13 +43,11 @@
 
 import { mapGetters } from 'vuex';
 import { QuestStatuses, UserRole, Path } from '~/utils/enums';
-import quests from '~/components/app/pages/common/quests';
 import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'My',
   components: {
-    quests,
     emptyData,
   },
   data() {
