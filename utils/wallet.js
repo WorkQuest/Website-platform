@@ -379,7 +379,6 @@ export const stake = async (stakingType, amount, poolAddress, duration) => {
       );
       return success(res);
     }
-    console.log('staking native ', amount);
     const inst = new web3.eth.Contract(WQStakingNative, poolAddress);
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),

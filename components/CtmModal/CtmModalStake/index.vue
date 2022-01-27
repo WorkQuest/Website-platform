@@ -217,7 +217,6 @@ export default {
           const res = await this.$store.dispatch('wallet/stake', {
             stakingType, amount, poolAddress, duration: days,
           });
-          console.log(res);
           if (!res.ok) {
             await this.$store.dispatch('main/showToast', { title: this.$t('staking.stake'), text: this.$t('modals.failed') });
           }
