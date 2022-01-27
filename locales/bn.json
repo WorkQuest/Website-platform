@@ -167,7 +167,8 @@
     "resendSMS": "পুনরায় ক্ষুদে বার্তা পাঠান",
     "disable": "নিষ্ক্রিয় করুন",
     "remindLater": "পরে মনে করিয়ে দিন",
-    "leave": "???"
+    "leave": "???",
+    "listIsEmpty": "List is empty"
   },
   "priority": {
     "title": "অগ্রাধিকার নির্বাচন করুন",
@@ -428,7 +429,6 @@
     "EstimatedPayment": "আনুমানিক পেমেন্ট:",
     "createAQuest": "একটি quest তৈরি করুন",
     "editAQuest": "???",
-    "activeQuests": "সক্রিয় quest",
     "openedQuests": "???",
     "completedQuests": "সম্পন্ন quest",
     "oneTime": "একবার",
@@ -955,6 +955,7 @@
     "edit": "???",
     "delete": "???",
     "youCan’tDeleteActiveQuest": "???",
+    "youCantCreateDispute": "???",
     "sureDeleteText": "???",
     "sureDeleteMemberText": "???",
     "sureLeaveChatText": "???",
@@ -1517,10 +1518,11 @@
     "Dispute": "বিরোধ",
     "pending": "অনিষ্পন্ন",
     "chatHistory": "চ্যাটের ইতিহাস",
-    "disputeTime": "খোলার সময় নিয়ে বিরোধ :"
+    "disputeTime": "খোলার সময় নিয়ে বিরোধ :",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
-    "noWorkers": "???...",
     "searchQuests": "Quest অনুসন্ধান করুন",
     "searchWorkers": "কর্মী অনুসন্ধান করুন",
     "topWorkers": "শীর্ষ কর্মচারী",
@@ -1961,6 +1963,7 @@
     "incorrectPass": "আহ্, কোনো ভুল হয়েছে। ডেটা পরীক্ষা করে আবার চেষ্টা করুন।",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {
@@ -1982,7 +1985,8 @@
           "desc": "আপনি এখনও quest-এ সাড়া প্রদান করেননি",
           "btnText": "quest-এ সাড়া প্রদান করুন!"
         }
-      }
+      },
+      "noEmployees": "Oops, there are no employees..."
     }
   },
   "sharing": {
@@ -2422,5 +2426,12 @@
       "title": "Bronze",
       "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
     }
+  },
+  "workPlaces": {
+    "title": "Workplace",
+    "all": "All workplaces",
+    "distant": "Distant work",
+    "office": "Work in office",
+    "both": "Both variants"
   }
 }

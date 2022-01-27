@@ -7,8 +7,8 @@ export default () => ({
   messages: {
     list: [],
     count: 0,
-    chat: null,
   },
+  currChat: null,
   groupChatUsers: {
     count: 0,
     list: [],

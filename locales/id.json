@@ -167,7 +167,8 @@
     "resendSMS": "Kirim ulang SMS",
     "disable": "Nonaktifkan",
     "remindLater": "Ingatkan nanti",
-    "leave": "???"
+    "leave": "???",
+    "listIsEmpty": "List is empty"
   },
   "priority": {
     "title": "Pilih Prioritas",
@@ -428,7 +429,6 @@
     "EstimatedPayment": "Perkiraan pembayaran:",
     "createAQuest": "Buat quest",
     "editAQuest": "???",
-    "activeQuests": "Quest aktif",
     "openedQuests": "???",
     "completedQuests": "Quest selesai",
     "oneTime": "Satu kali",
@@ -955,6 +955,7 @@
     "edit": "???",
     "delete": "???",
     "youCan’tDeleteActiveQuest": "???",
+    "youCantCreateDispute": "???",
     "sureDeleteText": "???",
     "sureDeleteMemberText": "???",
     "sureLeaveChatText": "???",
@@ -1517,10 +1518,11 @@
     "Dispute": "Sengketa",
     "pending": "Tertunda",
     "chatHistory": "Riwayat obrolan",
-    "disputeTime": "Waktu pembukaan sengketa:"
+    "disputeTime": "Waktu pembukaan sengketa:",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
-    "noWorkers": "???...",
     "searchQuests": "Cari quest",
     "searchWorkers": "Cari pekerja",
     "topWorkers": "Karyawan unggulan",
@@ -1961,6 +1963,7 @@
     "incorrectPass": "Ups! Ada yang tidak beres. Periksa data dan coba lagi.",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {
@@ -1982,7 +1985,8 @@
           "desc": "Anda belum menanggapi quest",
           "btnText": "Tanggapi quest!"
         }
-      }
+      },
+      "noEmployees": "Oops, there are no employees..."
     }
   },
   "sharing": {
@@ -2422,5 +2426,12 @@
       "title": "Bronze",
       "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
     }
+  },
+  "workPlaces": {
+    "title": "Workplace",
+    "all": "All workplaces",
+    "distant": "Distant work",
+    "office": "Work in office",
+    "both": "Both variants"
   }
 }

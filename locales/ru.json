@@ -167,7 +167,8 @@
     "resendSMS": "Resend SMS",
     "disable": "Disable",
     "remindLater": "Remind later",
-    "leave": "???"
+    "leave": "???",
+    "listIsEmpty": "List is empty"
   },
   "priority": {
     "title": "Select priority",
@@ -428,7 +429,6 @@
     "EstimatedPayment": "Estimated payment:",
     "createAQuest": "Create a quest",
     "editAQuest": "Edit a quest",
-    "activeQuests": "Active quests",
     "openedQuests": "???",
     "completedQuests": "Completed quests",
     "oneTime": "One time",
@@ -955,6 +955,7 @@
     "edit": "Edit",
     "delete": "Delete",
     "youCan’tDeleteActiveQuest": "You can’t delete active quest",
+    "youCantCreateDispute": "???",
     "sureDeleteText": "Do you really want to delete this quest?",
     "sureDeleteMemberText": "???",
     "sureLeaveChatText": "???",
@@ -1517,10 +1518,11 @@
     "Dispute": "Dispute",
     "pending": "Pending",
     "chatHistory": "Chat history",
-    "disputeTime": "Dispute opening time:"
+    "disputeTime": "Dispute opening time:",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
-    "noWorkers": "???...",
     "searchQuests": "Search quests",
     "searchWorkers": "Search workers",
     "topWorkers": "Top employees",
@@ -1961,6 +1963,7 @@
     "incorrectPass": "Oops, something went wrong. Check the data and try again.",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {
@@ -1982,7 +1985,8 @@
           "desc": "You have not responded to quests yet",
           "btnText": "Respond to the quest !"
         }
-      }
+      },
+      "noEmployees": "Oops, there are no employees..."
     }
   },
   "sharing": {
@@ -2422,5 +2426,12 @@
       "title": "Bronze",
       "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
     }
+  },
+  "workPlaces": {
+    "title": "Workplace",
+    "all": "All workplaces",
+    "distant": "Distant work",
+    "office": "Work in office",
+    "both": "Both variants"
   }
 }

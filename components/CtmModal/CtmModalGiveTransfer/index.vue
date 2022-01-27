@@ -41,6 +41,7 @@
               :placeholder="$t('modals.amount')"
               :rules="`required|decimal|is_not:0|max_bn:${maxAmount}|decimalPlaces:18`"
               :name="$t('modals.amountField')"
+              @input="replaceDot"
             >
               <template
                 v-slot:right-absolute
@@ -82,6 +83,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { TokenSymbols } from '~/utils/enums';
 import { error, success } from '~/utils/web3';
@@ -142,6 +144,9 @@ export default {
     this.isCanSubmit = true;
   },
   methods: {
+    replaceDot() {
+      this.amount = this.amount.replace(/,/g, '.');
+    },
     // Для просчета максимальной суммы транзакции от комиссии
     async updateMaxFee() {
       if (!this.isConnected) return;
@@ -154,8 +159,7 @@ export default {
           method: 'transfer',
           _abi: abi.ERC20,
           contractAddress: process.env.WQT_TOKEN,
-          recipient: process.env.WQT_TOKEN,
-          value: this.balance.WQT.fullBalance,
+          data: [process.env.WQT_TOKEN, new BigNumber(this.balance.WQT.fullBalance).shiftedBy(18).toString()],
         }),
       ]);
       this.maxFee.WQT = wqt.ok ? wqt.result.fee : 0;
@@ -200,8 +204,7 @@ export default {
           method: 'transfer',
           _abi: abi.ERC20,
           contractAddress: process.env.WQT_TOKEN,
-          recipient: this.recipient,
-          value: this.amount,
+          data: [this.recipient, new BigNumber(this.amount).shiftedBy(18).toString()],
         });
       }
       this.SetLoader(false);

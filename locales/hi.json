@@ -167,7 +167,8 @@
     "resendSMS": "SMS फिर से भेजें",
     "disable": "अक्षम करें",
     "remindLater": "बाद में याद दिलाएं",
-    "leave": "???"
+    "leave": "???",
+    "listIsEmpty": "List is empty"
   },
   "priority": {
     "title": "प्राथमिकता चुनें",
@@ -428,7 +429,6 @@
     "EstimatedPayment": "अनुमानित भुगतान:",
     "createAQuest": "Quest बनाएं",
     "editAQuest": "???",
-    "activeQuests": "एक्टिव Quest",
     "openedQuests": "???",
     "completedQuests": "पूरी हुई Quests",
     "oneTime": "एकबारगी",
@@ -955,6 +955,7 @@
     "edit": "???",
     "delete": "???",
     "youCan’tDeleteActiveQuest": "???",
+    "youCantCreateDispute": "???",
     "sureDeleteText": "???",
     "sureDeleteMemberText": "???",
     "sureLeaveChatText": "???",
@@ -1517,10 +1518,11 @@
     "Dispute": "विवाद",
     "pending": "पेंडिंग",
     "chatHistory": "चैट हिस्ट्री",
-    "disputeTime": "विवाद खुलने का समय:"
+    "disputeTime": "विवाद खुलने का समय:",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
-    "noWorkers": "???...",
     "searchQuests": "Quest खोजें",
     "searchWorkers": "वर्कर्स खोजें",
     "topWorkers": "टॉप कर्मचारी",
@@ -1961,6 +1963,7 @@
     "incorrectPass": "ओह! कुछ गलत हो गया है। डेटा जांचें और फिर से कोशिश करें।",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {
@@ -1982,7 +1985,8 @@
           "desc": "आपने अभी तक Quest को रिस्पॉन्ड नहीं किया है",
           "btnText": "Quest को रिस्पॉन्ड करें!"
         }
-      }
+      },
+      "noEmployees": "Oops, there are no employees..."
     }
   },
   "sharing": {
@@ -2422,5 +2426,12 @@
       "title": "Bronze",
       "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
     }
+  },
+  "workPlaces": {
+    "title": "Workplace",
+    "all": "All workplaces",
+    "distant": "Distant work",
+    "office": "Work in office",
+    "both": "Both variants"
   }
 }

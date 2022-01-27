@@ -1,7 +1,7 @@
 export default {
   async getChatsList({ commit, rootState }, params) {
     try {
-      const { result } = await this.$axios.$get('/v1/user/me/chats', { params });
+      const { result, ok } = await this.$axios.$get('/v1/user/me/chats', { params });
 
       result.chats.forEach((chat) => {
         chat.userMembers = chat.userMembers.filter((member) => member.id !== rootState.user.userData.id);
@@ -10,16 +10,17 @@ export default {
       if (params.offset) result.chats = rootState.chat.chats.list.concat(result.chats);
 
       commit('setChatsList', result);
+      return ok;
     } catch (e) {
-      console.log(e);
+      return false;
     }
   },
   async getMessagesList({ commit, rootState: { user, chat } }, {
-    config, chatId, direction, offset,
+    config, chatId, direction, offset, isHideFooter,
   }) {
     try {
-      const method = chatId === 'starred' ? '/v1/user/me/chat/messages/star' : `/v1/user/me/chat/${chatId}/messages`;
-      const { result } = await this.$axios.$get(method, config);
+      const method = `/v1/user/me/chat/${chatId === 'starred' ? 'messages/star' : `${chatId}/messages`}`;
+      const { result, ok } = await this.$axios.$get(method, config);
       const myId = user.userData.id;
 
       result.messages.forEach((message) => {
@@ -53,104 +54,169 @@ export default {
       commit('setMessagesList', {
         ...result, direction, offset: offset + 25, canLoadToBottom, canLoadToTop,
       });
-      commit('setIsChatOpened', true);
+      if (isHideFooter) commit('setIsChatOpened', true);
       return result;
     } catch (e) {
-      return console.log(e);
+      return false;
     }
   },
-  async handleCreateGroupChat({ commit }, config) {
+  async getCurrChatData({ commit, rootState }, chatId) {
     try {
-      const response = await this.$wsChat.$post('/api/v1/user/me/chat/group/create', config);
-      return response;
+      const { ok, result } = await this.$axios.$get(`/v1/user/me/chat/${chatId}`);
+
+      result.isUnread = true;
+      result.userMembers = result.userMembers.filter((member) => member.id !== rootState.user.userData.id);
+
+      commit('updateChatsList', result);
+      return ok;
     } catch (e) {
-      return console.log(e);
+      return false;
     }
   },
-  async handleSendMessage({ commit, rootState: { chat: { messages, messagesFilter } } }, { chatId, config }) {
-    const { payload } = await this.$wsChat.$post(`/api/v1/chat/${chatId}/send-message`, config);
-
-    if (payload.ok && !messagesFilter.canLoadToBottom) {
-      const message = payload.result;
-      message.itsMe = true;
-
-      if (message.medias.length) {
-        message.medias.forEach((file) => {
-          // eslint-disable-next-line prefer-destructuring
-          file.type = file.contentType.split('/')[0];
-        });
-      }
-
-      await commit('addMessageToList', message);
+  async handleCreateGroupChat({ commit, dispatch }, config) {
+    try {
+      const { payload } = await this.$wsChat.$post('/api/v1/user/me/chat/group/create', config);
+      return payload;
+    } catch (e) {
+      await dispatch('main/showToast', {
+        title: 'Error',
+        text: e.data.msg,
+      }, { root: true });
+      return { ok: false };
     }
-    return payload;
   },
-  async uploadFile({ commit }, config) {
-    const { result } = await this.$axios.$post('/v1/storage/get-upload-link', config);
-    return result;
-  },
-  async setMessageAsRead({ commit }, { config, chatId }) {
-    const { result } = await this.$axios.$post(`/v1/read/message/${chatId}`, config);
-    return result;
-  },
-  async setStarForChat({ commit }, chatId) {
-    const { result } = await this.$axios.$post(`/v1/user/me/chat/${chatId}/star`);
-    commit('setChatStarVal', { chatId, val: true });
-    return result;
-  },
-  async removeStarForChat({ commit }, chatId) {
-    const { result } = await this.$axios.$delete(`/v1/user/me/chat/${chatId}/star`);
-    commit('setChatStarVal', { chatId, val: false });
-    return result;
-  },
-  async setStarForMessage({ commit }, { messageId, chatId }) {
-    const { result } = await this.$axios.$post(`/v1/user/me/chat/${chatId}/message/${messageId}/star`);
-    commit('setMessageStarVal', { messageId, val: true });
-    return result;
-  },
-  async removeStarForMessage({ commit }, { messageId }) {
-    const { result } = await this.$axios.$delete(`/v1/user/me/chat/message/${messageId}/star`);
-    commit('setMessageStarVal', { messageId, val: false });
-    return result;
-  },
-  async setImage({ commit }, { url, formData, type }) {
-    const response = await this.$axios.$put(url, formData, {
-      headers: {
-        'Content-Type': type,
-        'x-amz-acl': 'public-read',
-      },
-    });
-    return response;
-  },
-  async getUsersForGroupChat({ commit }, config) {
-    const { result } = await this.$axios.$get('/v1/user/me/chat/members/users-by-chats', config);
+  async handleSendMessage({ commit, state, dispatch }, { chatId, config }) {
+    try {
+      const { payload } = await this.$wsChat.$post(`/api/v1/chat/${chatId}/send-message`, config);
 
-    commit('setGroupChatUsers', result);
-  },
-  async removeMember({ commit, rootState: { chat: { messagesFilter } } }, { chatId, userId }) {
-    const response = await this.$axios.$delete(`/v1/user/me/chat/group/${chatId}/remove/${userId}`);
-
-    if (response.ok) {
-      const message = response.result;
-
-      if (!messagesFilter.canLoadToBottom) {
+      if (payload.ok && !state.messagesFilter.canLoadToBottom) {
+        const message = payload.result;
         message.itsMe = true;
+
+        if (message.medias.length) {
+          message.medias.forEach((file) => {
+            // eslint-disable-next-line prefer-destructuring
+            file.type = file.contentType.split('/')[0];
+          });
+        }
 
         await commit('addMessageToList', message);
       }
-
-      await commit('removeUserFromChat', message.infoMessage.user.id);
+      return payload.ok;
+    } catch (e) {
+      await dispatch('main/showToast', {
+        title: 'Error',
+        text: e.data.msg,
+      }, { root: true });
+      return false;
     }
-
-    return response;
   },
-  async addNewMembers({ commit, rootState: { chat: { messagesFilter } } }, { chatId, config }) {
+  async uploadFile({ commit }, config) {
+    try {
+      const { result } = await this.$axios.$post('/v1/storage/get-upload-link', config);
+      return result;
+    } catch (e) {
+      return false;
+    }
+  },
+  async setMessageAsRead({ commit }, { config, chatId }) {
+    try {
+      const { ok } = await this.$axios.$post(`/v1/read/message/${chatId}`, config);
+
+      commit('setChatAsRead');
+      commit('user/changeUnreadChatsCount', { needAdd: true, count: -1 }, { root: true });
+      return ok;
+    } catch (e) {
+      return false;
+    }
+  },
+  async setStarForChat({ commit }, chatId) {
+    try {
+      const { result } = await this.$axios.$post(`/v1/user/me/chat/${chatId}/star`);
+      commit('setChatStarVal', { chatId, val: true });
+      return result;
+    } catch (e) {
+      return false;
+    }
+  },
+  async removeStarForChat({ commit }, chatId) {
+    try {
+      const { result } = await this.$axios.$delete(`/v1/user/me/chat/${chatId}/star`);
+      commit('setChatStarVal', { chatId, val: false });
+      return result;
+    } catch (e) {
+      return false;
+    }
+  },
+  async setStarForMessage({ commit }, { messageId, chatId }) {
+    try {
+      const { result } = await this.$axios.$post(`/v1/user/me/chat/${chatId}/message/${messageId}/star`);
+      commit('setMessageStarVal', { messageId, val: true });
+      return result;
+    } catch (e) {
+      return false;
+    }
+  },
+  async removeStarForMessage({ commit }, { messageId }) {
+    try {
+      const { result } = await this.$axios.$delete(`/v1/user/me/chat/message/${messageId}/star`);
+      commit('setMessageStarVal', { messageId, val: false });
+      return result;
+    } catch (e) {
+      return false;
+    }
+  },
+  async setImage({ commit }, { url, formData, type }) {
+    try {
+      const response = await this.$axios.$put(url, formData, {
+        headers: {
+          'Content-Type': type,
+          'x-amz-acl': 'public-read',
+        },
+      });
+      return response;
+    } catch (e) {
+      return false;
+    }
+  },
+  async getUsersForGroupChat({ commit }, config) {
+    try {
+      const { result, ok } = await this.$axios.$get('/v1/user/me/chat/members/users-by-chats', config);
+
+      commit('setGroupChatUsers', result);
+      return ok;
+    } catch (e) {
+      return false;
+    }
+  },
+  async removeMember({ commit, state }, { chatId, userId }) {
+    try {
+      const { ok, result } = await this.$axios.$delete(`/v1/user/me/chat/group/${chatId}/remove/${userId}`);
+
+      if (ok) {
+        const message = result;
+
+        if (!state.messagesFilter.canLoadToBottom) {
+          message.itsMe = true;
+
+          await commit('addMessageToList', message);
+        }
+
+        await commit('removeUserFromChat', message.infoMessage.user.id);
+      }
+
+      return ok;
+    } catch (e) {
+      return false;
+    }
+  },
+  async addNewMembers({ commit, state }, { chatId, config }) {
     try {
       const response = await this.$axios.$post(`/v1/user/me/chat/group/${chatId}/add`, config);
 
       if (response.ok) {
         response.result.forEach((message) => {
-          if (!messagesFilter.canLoadToBottom) {
+          if (!state.messagesFilter.canLoadToBottom) {
             message.itsMe = true;
 
             commit('addMessageToList', message);
@@ -160,13 +226,17 @@ export default {
         });
       }
 
-      return response;
+      return response.ok;
     } catch (e) {
-      return console.log(e);
+      return false;
     }
   },
   async leaveFromChat({ commit }, chatId) {
-    const response = await this.$axios.$post(`/v1/user/me/chat/group/${chatId}/leave`);
-    return response;
+    try {
+      const { ok } = await this.$axios.$post(`/v1/user/me/chat/group/${chatId}/leave`);
+      return ok;
+    } catch (e) {
+      return false;
+    }
   },
 };

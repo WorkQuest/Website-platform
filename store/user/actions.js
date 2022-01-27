@@ -1,4 +1,5 @@
 import { error } from '~/utils/web3';
+import { connectWithMnemonic } from '~/utils/wallet';
 
 export default {
   async addEducation({ commit }, data) {
@@ -92,6 +93,7 @@ export default {
       commit('setTokens', response.result);
       if (response.result.userStatus === 1) {
         await dispatch('getUserData');
+        await dispatch('getStatistic');
       }
       return response;
     } catch (e) {
@@ -118,10 +120,12 @@ export default {
   async getUserData({ commit }) {
     try {
       const response = await this.$axios.$get('/v1/profile/me');
-      commit('setUserData', response.result);
+      const { result } = response;
+      commit('setUserData', result);
+      if (result.wallet?.address) connectWithMnemonic(result.wallet.address);
       return response;
     } catch (e) {
-      return console.log(e);
+      return console.error(e);
     }
   },
   async getAnotherUserData({ commit }, payload) {

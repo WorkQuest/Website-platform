@@ -197,6 +197,7 @@ export default {
       const wallet = createWallet(this.mnemonic);
       this.$emit('submit', {
         publicKey: wallet.publicKey,
+        privateKey: wallet.privateKey,
         address: wallet.address,
         mnemonic: { phrase: this.mnemonic },
       });
@@ -205,6 +206,7 @@ export default {
       const wallet = createWallet(this.mnemonicInput);
       this.$emit('import', {
         publicKey: wallet.publicKey,
+        privateKey: wallet.privateKey,
         address: wallet.address,
         mnemonic: { phrase: this.mnemonicInput },
       });

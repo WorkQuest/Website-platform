@@ -63,12 +63,12 @@
             v-if="selectedTab === 'commonInfo'"
             class="quests__title"
           >
-            {{ $t('quests.activeQuests') }}
+            {{ $t('profile.quests') }}
           </div>
-          <quests
+          <quest-cards
             v-if="questsCount !== 0"
             :quests="questsData"
-            page="quests"
+            @clickFavoriteStar="updateQuests"
           />
           <emptyData
             v-else
@@ -200,7 +200,6 @@ import { mapGetters } from 'vuex';
 import reviewsTab from '~/components/app/pages/profile/tabs/reviews';
 import portfolioTab from '~/components/app/pages/profile/tabs/portfolio';
 import userInfo from '~/components/app/pages/common/userInfo';
-import quests from '~/components/app/pages/common/quests';
 import emptyData from '~/components/app/info/emptyData';
 import modals from '~/store/modals/modals';
 import skills from '~/components/app/pages/common/skills';
@@ -209,7 +208,6 @@ export default {
   name: 'Index',
   components: {
     reviewsTab,
-    quests,
     userInfo,
     emptyData,
     portfolioTab,
@@ -374,6 +372,20 @@ export default {
     await this.$store.dispatch('user/clearAnotherUserData');
   },
   methods: {
+    async updateQuests(item) {
+      this.SetLoader(true);
+      if (!item.star) {
+        await this.$store.dispatch('quests/setStarOnQuest', item.id);
+      } else {
+        await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
+      }
+      if (this.selectedTab === 'quests') {
+        await this.changeQuestsData();
+      } else {
+        await this.changeQuestsData(2);
+      }
+      this.SetLoader(false);
+    },
     numberValidate(number) {
       const fixedNumber = number.toFixed(1);
       if (number - fixedNumber !== 0) {

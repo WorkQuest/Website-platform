@@ -407,54 +407,6 @@ export default {
     return providerData;
   },
 
-  /* Pension Program */
-  async getPensionDefaultData() {
-    return await getPensionDefaultData();
-  },
-  async getPensionContributed() {
-    const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND;
-    return await fetchContractData('contributed', _abi, _pensionAddress);
-  },
-  async getPensionWallet() {
-    return await getPensionWallet();
-  },
-  async pensionUpdateFee({ commit }, fee) {
-    return await pensionUpdateFee(fee);
-  },
-  async pensionContribute({ commit }, amount) {
-    return await pensionContribute(amount);
-  },
-  async getPensionWithdrawTxFee({ commit }, _amount) {
-    const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND;
-    _amount = new BigNumber(_amount).shiftedBy(18).toString();
-    return await getTxFee(_abi, _pensionAddress, 'withdraw', [_amount]);
-  },
-  async pensionWithdraw({ commit }, amount) {
-    return await pensionsWithdraw(amount);
-  },
-  async pensionStartProgram({ commit }, payload) {
-    const { firstDeposit, fee, defaultFee } = payload;
-    let feeOk = true;
-    let depositOk = false;
-    const equalsFee = new BigNumber(defaultFee).shiftedBy(-18).isEqualTo(new BigNumber(fee).shiftedBy(-18));
-    if (!firstDeposit || !equalsFee) {
-      feeOk = await pensionUpdateFee(fee);
-    }
-    if (firstDeposit) depositOk = await pensionContribute(firstDeposit);
-    else return feeOk;
-    return depositOk && feeOk;
-  },
-  async fetchPensionActions({ commit }, { callback, events, params }) {
-    const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND;
-    await fetchActions(_abi, _pensionAddress, callback, events, params);
-  },
-  async pensionExtendLockTime() {
-    return await pensionExtendLockTime();
-  },
-
   // добавленно только для страницы demo-blockchain
   async sendTransaction({ commit }, { address, amount, balance }) {
     try {

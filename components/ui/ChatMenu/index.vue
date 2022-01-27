@@ -57,6 +57,7 @@
 
 <script>
 import ClickOutside from 'vue-click-outside';
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -79,6 +80,11 @@ export default {
       isShowChatMenu: false,
     };
   },
+  computed: {
+    ...mapGetters({
+      currChat: 'chat/getCurrChatInfo',
+    }),
+  },
   methods: {
     changeStarredVal() {
       this.$emit('change');
@@ -88,9 +94,11 @@ export default {
     },
     showOpenADisputeModal() {
       this.closeChatMenu();
-      this.ShowModal({
-        key: modals.openADispute,
-      });
+      // TODO: добавить вывод окна, на добавление диспута, после завершения логики на странице чата
+      // this.ShowModal({
+      //   key: modals.openADispute,
+      //   questId: this.questId,
+      // });
     },
     toggleChatMenu() {
       this.isShowChatMenu = !this.isShowChatMenu;
@@ -101,8 +109,16 @@ export default {
     tryLeaveChat() {
       this.closeChatMenu();
       this.ShowModal({
-        key: modals.areYouSureLeaveChat,
+        key: modals.areYouSure,
+        title: this.$t('modals.sureLeaveChatText'),
+        okBtnTitle: this.$t('meta.leave'),
+        okBtnFunc: async () => await this.leaveChat(),
       });
+    },
+    async leaveChat() {
+      if (await this.$store.dispatch('chat/leaveFromChat', this.currChat.id)) this.$router.push('/messages');
+
+      this.CloseModal();
     },
     showCreateChatModal() {
       this.closeChatMenu();

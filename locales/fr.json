@@ -167,7 +167,8 @@
     "resendSMS": "Renvoyer le SMS",
     "disable": "Désactiver",
     "remindLater": "Rappeler plus tard",
-    "leave": "???"
+    "leave": "???",
+    "listIsEmpty": "List is empty"
   },
   "priority": {
     "title": "Sélectionner la priorité",
@@ -428,7 +429,6 @@
     "EstimatedPayment": "Paiement estimé :",
     "createAQuest": "Créer une quête",
     "editAQuest": "???",
-    "activeQuests": "Quêtes actives",
     "openedQuests": "???",
     "completedQuests": "Quêtes terminées",
     "oneTime": "Une fois",
@@ -955,6 +955,7 @@
     "edit": "???",
     "delete": "???",
     "youCan’tDeleteActiveQuest": "???",
+    "youCantCreateDispute": "???",
     "sureDeleteText": "???",
     "sureDeleteMemberText": "???",
     "sureLeaveChatText": "???",
@@ -1517,10 +1518,11 @@
     "Dispute": "Litige",
     "pending": "En attente",
     "chatHistory": "Historique des discussions",
-    "disputeTime": "Heure d'ouverture du litige :"
+    "disputeTime": "Heure d'ouverture du litige :",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
-    "noWorkers": "???...",
     "searchQuests": "Rechercher des quêtes",
     "searchWorkers": "Rechercher des travailleurs",
     "topWorkers": "Meilleurs employés",
@@ -1961,6 +1963,7 @@
     "incorrectPass": "Oups, un problème est survenu. Vérifiez les données et réessayez.",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {
@@ -1982,7 +1985,8 @@
           "desc": "Vous n'avez pas encore répondu aux quêtes",
           "btnText": "Répondez à la quête !"
         }
-      }
+      },
+      "noEmployees": "Oops, there are no employees..."
     }
   },
   "sharing": {
@@ -2422,5 +2426,12 @@
       "title": "Bronze",
       "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
     }
+  },
+  "workPlaces": {
+    "title": "Workplace",
+    "all": "All workplaces",
+    "distant": "Distant work",
+    "office": "Work in office",
+    "both": "Both variants"
   }
 }

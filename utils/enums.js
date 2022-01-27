@@ -9,6 +9,14 @@ export const ChainsId = {
   WUSD_TEST: '0x1346618',
 };
 
+export const ChainsIdByChainNumber = {
+  1: '0x1',
+  4: '0x4',
+  56: '0x38',
+  97: '0x61',
+  20211224: '0x1346618',
+};
+
 export const NativeTokenSymbolByChainId = {
   [+ChainsId.ETH_MAIN]: 'ETH',
   [+ChainsId.ETH_TEST]: 'ETH',
@@ -64,6 +72,11 @@ export const InfoModeWorker = {
   Responded: 10,
   Invited: 11,
 };
+export const DisputeStatues = {
+  PENDING: 0,
+  IN_PROGRESS: 1,
+  COMPLETED: 2,
+};
 export const questPriority = {
   Low: 1,
   Normal: 2,
@@ -85,17 +98,41 @@ export const KeyCodes = {
 };
 
 // Filters
-export const workplaceFilter = ['', 'distant', 'office', 'both'];
-export const ratingFilter = ['', 'verified', 'reliable', 'topRanked'];
-export const typeOfJobFilter = ['', 'fullTime', 'partTime', 'fixedTerm'];
-export const priorityFilter = [
-  0, // all
-  3, // urgent
-  2, // shortTerm
-  1, // fixedDelivery
+export const WorkplaceFilter = ['all', 'distant', 'office', 'both'];
+export const RatingFilter = ['', 'verified', 'reliable', 'topRanked'];
+export const TypeOfJobFilter = ['fullTime', 'partTime', 'fixedTerm'];
+export const PriorityFilter = [
+  { key: 'all', value: 0 },
+  { key: 'urgent', value: 3 },
+  { key: 'shortTerm', value: 2 },
+  { key: 'fixedDelivery', value: 1 },
 ];
 
-export const questChatStatus = {
+export const MessageAction = {
+  GROUP_CHAT_CREATE: 'groupChatCreate',
+  NEW_MESSAGE: 'newMessage',
+  MESSAGE_READ_BY_RECIPIENT: 'messageReadByRecipient',
+  GROUP_CHAT_ADD_USERS: 'groupChatAddUsers',
+  GROUP_CHAT_LEAVE_USER: 'groupChatLeaveUser',
+  GROUP_CHAT_DELETE_USER: 'groupChatDeleteUser',
+  EMPLOYER_INVITE_ON_QUEST: 'employerInviteOnQuest',
+  WORKER_RESPONSE_ON_QUEST: 'workerResponseOnQuest',
+  EMPLOYER_REJECT_RESPONSE_ON_QUEST: 'employerRejectResponseOnQuest',
+  WORKER_REJECT_INVITE_ON_QUEST: 'workerRejectInviteOnQuest',
+  WORKER_ACCEPT_INVITE_ON_QUEST: 'workerAcceptInviteOnQuest',
+};
+
+export const ChatType = {
+  GROUP: 'group',
+  QUEST: 'quest',
+};
+
+export const MessageType = {
+  INFO: 'info',
+  MESSAGE: 'message',
+};
+
+export const QuestChatStatus = {
   Active: 0,
   Closed: 1,
 };
@@ -135,3 +172,46 @@ export const TokenSymbols = Object.freeze({
   WQT: 'WQT',
   WUSD: 'WUSD',
 });
+
+export const NetworksData = {
+  ETH_MAIN: {
+    chainId: '0x1',
+    chainName: 'Ethereum Mainnet',
+    rpcUrls: ['https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
+  },
+  ETH_TEST: {
+    chainId: '0x4',
+    chainName: 'Ethereum Testnet',
+    rpcUrls: ['https://rinkey.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
+  },
+  BSC_MAIN: {
+    chainId: '0x38',
+    chainName: 'BSC Mainnet',
+    rpcUrls: ['https://bsc-dataseed1.binance.org/'],
+    nativeCurrency: {
+      name: 'BNB',
+      symbol: 'BNB',
+      decimals: 18,
+    },
+  },
+  BSC_TEST: {
+    chainId: '0x61',
+    chainName: 'BSC Testnet',
+    rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
+    nativeCurrency: {
+      name: 'BNB',
+      symbol: 'BNB',
+      decimals: 18,
+    },
+  },
+  WUSD_TEST: {
+    chainId: '0x1346618',
+    chainName: 'WorkQuest DEV',
+    rpcUrls: ['https://dev-node-nyc3.workquest.co'],
+    nativeCurrency: {
+      name: 'WUSD',
+      symbol: 'WUSD',
+      decimals: 18,
+    },
+  },
+};

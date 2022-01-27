@@ -1,15 +1,22 @@
+import BigNumber from 'bignumber.js';
 import {
-  connectWallet,
+  connectWallet, connectWithMnemonic,
   disconnect,
   fetchContractData,
   getBalance, getContractFeeData,
   getIsWalletConnected,
-  getStyledAmount, getTransferFeeData, getWalletAddress,
-  setWalletAddress,
+  getStyledAmount, getWalletAddress, getTransferFeeData,
   transfer, transferToken,
 } from '~/utils/wallet';
 import * as abi from '~/abi/abi';
 import { TokenSymbols } from '~/utils/enums';
+import {
+  getPensionDefaultData,
+  getPensionWallet,
+  pensionContribute, pensionExtendLockTime,
+  pensionsWithdraw,
+  pensionUpdateFee,
+} from '~/utils/wallet.js';
 
 export default {
   async getTransactions({ commit }, params) {
@@ -62,10 +69,6 @@ export default {
   disconnect() {
     disconnect();
   },
-  setUserAddress({ commit }, userAddress) {
-    commit('setUserAddress', userAddress);
-    setWalletAddress(userAddress);
-  },
   setSelectedToken({ commit }, token) {
     commit('setSelectedToken', token);
   },
@@ -111,13 +114,54 @@ export default {
    * @param method
    * @param _abi
    * @param contractAddress
+   * @param data - Array []
    * @param recipient
-   * @param value
+   * @param amount - decimal value
    * @returns {Promise<{result: *, ok: boolean}|{msg: string, code: number, data: null, ok: boolean}|undefined>}
    */
   async getContractFeeData({ commit }, {
-    method, _abi, contractAddress, recipient, value,
+    method, _abi, contractAddress, data, recipient, amount,
   }) {
-    return await getContractFeeData(method, _abi, contractAddress, recipient, value);
+    return await getContractFeeData(method, _abi, contractAddress, data, recipient, amount);
+  },
+
+  /** PENSION PROGRAM */
+  /**
+   * Get default lockTime & fee
+   */
+  async pensionGetDefaultData() {
+    return await getPensionDefaultData();
+  },
+  async pensionGetWalletInfo({ commit }) {
+    const res = await getPensionWallet();
+    if (res.ok === false) {
+      commit('setPensionWallet', null);
+      return;
+    }
+    commit('setPensionWallet', res.result);
+  },
+  async pensionUpdateFee({ commit }, fee) {
+    return await pensionUpdateFee(fee);
+  },
+  async pensionContribute({ commit }, amount) {
+    return await pensionContribute(amount);
+  },
+  async pensionWithdraw({ commit }, amount) {
+    return await pensionsWithdraw(amount);
+  },
+  async pensionStartProgram({ commit }, payload) {
+    const { firstDeposit, fee, defaultFee } = payload;
+    let feeOk = true;
+    let depositOk = false;
+    const equalsFee = new BigNumber(defaultFee).shiftedBy(-18).isEqualTo(new BigNumber(fee).shiftedBy(-18));
+    if (!firstDeposit || !equalsFee) {
+      feeOk = await pensionUpdateFee(fee);
+    }
+    if (firstDeposit) depositOk = await pensionContribute(firstDeposit);
+    else return feeOk;
+    return depositOk && feeOk;
+  },
+  async pensionExtendLockTime() {
+    return await pensionExtendLockTime();
   },
 };

@@ -167,7 +167,8 @@
     "resendSMS": "Reenviar SMS",
     "disable": "Desativar",
     "remindLater": "Lembrar mais tarde",
-    "leave": "???"
+    "leave": "???",
+    "listIsEmpty": "List is empty"
   },
   "priority": {
     "title": "Selecionar prioridade",
@@ -428,7 +429,6 @@
     "EstimatedPayment": "Pagamento estimado:",
     "createAQuest": "Criar uma busca",
     "editAQuest": "???",
-    "activeQuests": "Buscas ativas",
     "openedQuests": "???",
     "completedQuests": "Buscas concluídas",
     "oneTime": "Uma vez",
@@ -955,6 +955,7 @@
     "edit": "???",
     "delete": "???",
     "youCan’tDeleteActiveQuest": "???",
+    "youCantCreateDispute": "???",
     "sureDeleteText": "???",
     "sureDeleteMemberText": "???",
     "sureLeaveChatText": "???",
@@ -1517,10 +1518,11 @@
     "Dispute": "Disputa",
     "pending": "Pendente",
     "chatHistory": "Histórico de chat",
-    "disputeTime": "Hora de abertura da disputa:"
+    "disputeTime": "Hora de abertura da disputa:",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
-    "noWorkers": "???...",
     "searchQuests": "Pesquisa de buscas",
     "searchWorkers": "Pesquisar trabalhadores",
     "topWorkers": "Melhores empregados",
@@ -1961,6 +1963,7 @@
     "incorrectPass": "Ocorreu um erro. Verifique os dados e tente novamente.",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {
@@ -1982,7 +1985,8 @@
           "desc": "Ainda não respondeu a buscas",
           "btnText": "Responda à busca!"
         }
-      }
+      },
+      "noEmployees": "Oops, there are no employees..."
     }
   },
   "sharing": {
@@ -2422,5 +2426,12 @@
       "title": "Bronze",
       "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
     }
+  },
+  "workPlaces": {
+    "title": "Workplace",
+    "all": "All workplaces",
+    "distant": "Distant work",
+    "office": "Work in office",
+    "both": "Both variants"
   }
 }

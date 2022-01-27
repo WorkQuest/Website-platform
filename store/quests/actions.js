@@ -21,13 +21,20 @@ export default {
       return console.log(e);
     }
   },
-  async workersList({ commit }, payload) {
+  async employeeList({ commit }, { query, specFilter }) {
     try {
-      const response = await this.$axios.$get(`/v1/profile/workers?${payload}`);
-      commit('setWorkersList', response.result);
-      return response.result;
+      if (query.q === '') delete query.q;
+      const { ok, result } = await this.$axios.$get('/v1/profile/workers', {
+        params: {
+          ...query,
+          ...specFilter,
+        },
+      });
+      commit('setEmployeeList', result);
+      return { ok };
     } catch (e) {
-      return console.log(e);
+      console.log('quests/employeeList');
+      return false;
     }
   },
   async setCurrentWorker({ commit }, worker) {
@@ -53,15 +60,20 @@ export default {
       return console.log(e);
     }
   },
-  async getAllQuests({ commit }, payload) {
+  async getAllQuests({ commit }, { query, specFilter }) {
     try {
-      const response = await this.$axios.$get('/v1/quests', {
-        params: { ...payload },
+      if (query.q === '') delete query.q;
+      const { ok, result } = await this.$axios.$get('/v1/quests', {
+        params: {
+          ...query,
+          ...specFilter,
+        },
       });
-      commit('setAllQuests', response.result);
-      return response.result;
+      commit('setAllQuests', result);
+      return { ok };
     } catch (e) {
-      return console.log(e);
+      console.log('quests/getAllQuests');
+      return false;
     }
   },
   async getQuest({ commit, rootState }, payload) {

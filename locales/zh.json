@@ -167,7 +167,8 @@
     "resendSMS": "重新发送短信",
     "disable": "禁用",
     "remindLater": "稍后提醒",
-    "leave": "???"
+    "leave": "???",
+    "listIsEmpty": "List is empty"
   },
   "priority": {
     "title": "选择优先级",
@@ -428,7 +429,6 @@
     "EstimatedPayment": "预计付款：",
     "createAQuest": "创建 Quest",
     "editAQuest": "???",
-    "activeQuests": "有效 Quest",
     "openedQuests": "???",
     "completedQuests": "已完成的 Quest",
     "oneTime": "一次性",
@@ -955,6 +955,7 @@
     "edit": "???",
     "delete": "???",
     "youCan’tDeleteActiveQuest": "???",
+    "youCantCreateDispute": "???",
     "sureDeleteText": "???",
     "sureDeleteMemberText": "???",
     "sureLeaveChatText": "???",
@@ -1517,10 +1518,11 @@
     "Dispute": "争议",
     "pending": "待办",
     "chatHistory": "聊天记录",
-    "disputeTime": "争议提交时间："
+    "disputeTime": "争议提交时间：",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
-    "noWorkers": "???...",
     "searchQuests": "搜索 Quest",
     "searchWorkers": "搜索工作者",
     "topWorkers": "排名最高的工作者",
@@ -1961,6 +1963,7 @@
     "incorrectPass": "哎呀，出错了。检查数据并重试。",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {
@@ -1982,7 +1985,8 @@
           "desc": "您还没有响应 Quest",
           "btnText": "响应 Quest！"
         }
-      }
+      },
+      "noEmployees": "Oops, there are no employees..."
     }
   },
   "sharing": {
@@ -2422,5 +2426,12 @@
       "title": "Bronze",
       "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
     }
+  },
+  "workPlaces": {
+    "title": "Workplace",
+    "all": "All workplaces",
+    "distant": "Distant work",
+    "office": "Work in office",
+    "both": "Both variants"
   }
 }

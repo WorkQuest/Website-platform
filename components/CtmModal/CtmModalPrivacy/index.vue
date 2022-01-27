@@ -94,6 +94,7 @@ export default {
           await this.$store.dispatch('user/setUserRole', { role: this.options.role });
           const response = await this.$store.dispatch('user/getUserData');
           if (response?.ok) {
+            await this.$store.dispatch('user/getStatistic');
             if (this.userData.role === 'employer') {
               await this.$router.push('/workers');
             } else if (this.userData.role === 'worker') {

@@ -4,7 +4,6 @@ export default () => ({
   transactions: [],
   transactionsCount: 0,
   isWalletConnected: false,
-  userAddress: null,
   callbackLayout: 'default',
   selectedToken: TokensSymbols.WUSD,
   balance: {
@@ -17,4 +16,5 @@ export default () => ({
       fullBalance: 0,
     },
   },
+  pensionWallet: null,
 });
