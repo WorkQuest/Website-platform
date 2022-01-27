@@ -32,12 +32,12 @@ export default {
   setCurrNotificationObject({ state: { userRole } }, notification) {
     const {
       action, data: {
-        user, title, id, assignedWorker,
+        user, title, id, assignedWorker, worker, quest,
       },
     } = notification.notification;
 
     let keyName = 'notifications.';
-    const link = `/quests/${id}`;
+    const link = `/quests/${quest?.id || id}`;
     const isItAnWorker = userRole === UserRole.WORKER;
 
     switch (action) {
@@ -88,8 +88,8 @@ export default {
     }
 
     notification.actionNameKey = keyName;
-    notification.sender = isItAnWorker ? user : assignedWorker || user;
-    notification.params = { title, link };
+    notification.sender = isItAnWorker ? user : assignedWorker || worker;
+    notification.params = { title: quest?.title || title, link };
     notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, h:mm');
   },
   async getUserPortfolios({ commit }, { userId, query }) {

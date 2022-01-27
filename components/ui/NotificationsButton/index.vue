@@ -45,7 +45,10 @@
             class="notify notify__content"
           >
             <div class="notify__top">
-              <div class="notify__user">
+              <div
+                v-if="notification.sender"
+                class="notify__user"
+              >
                 <img
                   class="notify__avatar"
                   :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : require('~/assets/img/app/avatar_empty.png')"
@@ -53,7 +56,7 @@
                 >
                 <div class="notify__info">
                   <div class="notify__text notify__text_name">
-                    {{ `${notification.sender.firstName} ${notification.sender.firstName}` }}
+                    {{ `${notification.sender.firstName} ${notification.sender.lastName}` }}
                   </div>
                   <!--                  <div class="notify__text notify__text_grey">-->
                   <!--                    CEO from Amazon-->
@@ -85,6 +88,7 @@
         <base-btn
           class="reduced-notifications__more-btn"
           mode="outline"
+          @click="goToNotifsPage"
         >
           {{ $t('meta.showAll') }}
         </base-btn>
@@ -115,6 +119,9 @@ export default {
     }),
   },
   methods: {
+    goToNotifsPage() {
+      this.$router.push('/notifications');
+    },
     togglePopUp() {
       this.isShowNotify = !this.isShowNotify;
     },

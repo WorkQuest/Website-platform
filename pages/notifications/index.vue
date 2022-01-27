@@ -11,68 +11,50 @@
             {{ $t('ui.notifications.title') }}
           </div>
           <span
-            v-for="(item, i) in notifications"
+            v-for="(notification, i) in notifications"
             :key="i"
             class="notifications"
           >
             <div class="notification">
-              <div class="notification__avatar">
-                <img
-                  class="avatar"
-                  src="../../assets/img/temp/avatar.jpg"
-                  alt=""
-                >
-              </div>
-              <div class="notification__inviter inviter">
-                <span class="inviter__name">{{ item.firstName }} {{ item.lastName }}</span>
-                <span class="inviter__company">{{ item.company }}</span>
-              </div>
+              <template v-if="notification.sender">
+                <div class="notification__avatar">
+                  <img
+                    class="avatar"
+                    :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                    alt=""
+                  >
+                </div>
+                <div class="notification__inviter inviter">
+                  <span class="inviter__name">
+                    {{ notification.sender.firstName }} {{ notification.sender.lastName }}
+                  </span>
+                <!--                <span class="inviter__company">-->
+                <!--                  {{ notification.company }}-->
+                <!--                </span>-->
+                </div>
+              </template>
+
               <div class="notification__quest quest">
                 <span class="quest__invitation">
-                  {{ $t('ui.notifications.invite') }}:
+                  {{ $t(notification.actionNameKey) }}:
                 </span>
                 <span class="quest__title">
-                  {{ item.questTitle }}
+                  {{ notification.params.title }}
                 </span>
-                <div
-                  class="quest__link"
-                  @click="questDetail()"
-                >
-                  {{ item.questTitle }} <span class="icon-chevron_right" />
-                </div>
               </div>
-              <div class="notification__date">{{ item.date }}</div>
+              <div class="notification__date">{{ notification.creatingDate }}</div>
 
               <div class="notification__button button">
                 <base-btn
-                  :mode="'outline'"
+                  mode="outline"
                   class="button__view"
-                  @click="questDetail()"
-                >{{ $t('btn.view') }}</base-btn>
+                  @click="goToEvent(notification.params.link)"
+                >
+                  {{ $t('btn.view') }}
+                </base-btn>
               </div>
             </div>
           </span>
-          <div class="pagination">
-            <button
-              class="pagination__arrow"
-            >
-              <span class="icon-caret_left" />
-            </button>
-            <button
-              v-for="(item, i) in pages"
-              :key="i"
-              class="pagination__btn"
-              :class="[{'pagination__btn_active' :page === item}]"
-              @click="page = item"
-            >
-              {{ item }}
-            </button>
-            <button
-              class="pagination__arrow"
-            >
-              <span class="icon-caret_right" />
-            </button>
-          </div>
         </div>
       </div>
     </div>
@@ -137,22 +119,34 @@ export default {
           date: '14 January 2021, 14:54',
         },
       ],
-      page: 1,
-      pages: [1, 2, 3, 4, 5],
+      filter: {
+        limit: 10,
+        offset: 0,
+      },
     };
   },
   computed: {
     ...mapGetters({
       userRole: 'user/getUserRole',
+      notifications: 'user/getNotificationsList',
+      notifsCount: 'user/getNotificationsCount',
     }),
   },
   async mounted() {
     this.SetLoader(true);
+    await this.getNotifications();
     this.SetLoader(false);
   },
   methods: {
-    questDetail() {
-      this.$router.push('/quests/1');
+    async getNotifications() {
+      const config = {
+        params: this.filter,
+      };
+
+      await this.$store.dispatch('user/getNotifications', config);
+    },
+    goToEvent(path) {
+      this.$router.push(path);
     },
     navigateBack() {
       if (this.userRole === 'employer') {
@@ -410,19 +404,6 @@ export default {
     }
     &__title {
       display: none;
-    }
-    &__link {
-      display: flex;
-      justify-content: space-between;
-      background: $black0;
-      border-radius: 3px;
-      padding: 10px;
-      color: $black500;
-      letter-spacing: 0.04em;
-      &:hover{
-        text-decoration: none;
-        cursor: pointer;
-      }
     }
   }
   .icon-chevron_right {
