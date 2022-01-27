@@ -453,7 +453,9 @@
     },
     "ui": {
       "showMap": "মানচিত্র দেখান",
-      "search": "শহর / রাস্তা / স্থান"
+      "searchOnQuestsPage": "Employer / Title / Description / City",
+      "searchOnWorkersPage": "Employee / City",
+      "searchWithMap": "Locality / City"
     },
     "worker": "কর্মী",
     "raiseViews": "মতামত দিন",

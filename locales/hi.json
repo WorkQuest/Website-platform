@@ -453,7 +453,9 @@
     },
     "ui": {
       "showMap": "नक्शा दिखाएं",
-      "search": "शहर / मोहल्ला / स्थान"
+      "searchOnQuestsPage": "Employer / Title / Description / City",
+      "searchOnWorkersPage": "Employee / City",
+      "searchWithMap": "Locality / City"
     },
     "worker": "वर्कर",
     "raiseViews": "व्यू बढ़ाएं",

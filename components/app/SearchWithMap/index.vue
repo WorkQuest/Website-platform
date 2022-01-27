@@ -24,7 +24,7 @@
           is-search
           is-hide-error
           :selector="isSearchFocus"
-          :placeholder="$t('quests.ui.search')"
+          :placeholder="searchPlaceholder"
           data-selector="INPUT-SEARCH"
           @focus="isSearchFocus = true"
           @selector="getAddressInfo(search)"
@@ -57,7 +57,7 @@
             data-selector="ACTION-CHANGE-MAP-CENTER"
             @click="centerChange"
           >
-            {{ $t('workers.searchWorkers') }}
+            {{ isPageQuests ? $t('workers.searchQuests') : $t('workers.searchWorkers') }}
           </base-btn>
         </div>
       </div>
@@ -104,12 +104,18 @@ export default {
       const keys = Object.keys(this.$t('quests.distance'));
       return keys.map((d) => this.$t(`quests.distance.${d}`));
     },
+    isPageQuests() { return this.$route.name === 'quests'; },
+    searchPlaceholder() {
+      if (this.isShowMap) return this.$t('quests.ui.searchWithMap');
+      return this.isPageQuests ? this.$t('quests.ui.searchOnQuestsPage') : this.$t('quests.ui.searchOnWorkersPage');
+    },
   },
   watch: {
     isShowMap(newVal) {
       localStorage.setItem('isShowMap', newVal);
       this.$emit('isShowMap', this.isShowMap);
     },
+    search() { this.$emit('search', this.search); },
     distanceIndex() { this.zoom = { 0: 15, 1: 10, 2: 8 }[this.distanceIndex]; },
   },
   mounted() {
@@ -120,9 +126,7 @@ export default {
       lang: this.$i18n?.localeProperties?.code || 'en-US',
     });
   },
-  beforeDestroy() {
-    this.geoCode = null;
-  },
+  beforeDestroy() { this.geoCode = null; },
   methods: {
     deFocus() { this.isSearchFocus = false; },
     centerChange() { this.$store.dispatch('quests/setMapCenter', this.coordinates); },
@@ -131,6 +135,7 @@ export default {
       this.search = address.formatted;
     },
     async getAddressInfo(address) {
+      if (!this.isShowMap) return;
       try {
         if (address.length) {
           this.addresses = await this.geoCode.geolookup(address);

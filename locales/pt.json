@@ -453,7 +453,9 @@
     },
     "ui": {
       "showMap": "Mostrar mapa",
-      "search": "Cidade / Rua / Lugar"
+      "searchOnQuestsPage": "Employer / Title / Description / City",
+      "searchOnWorkersPage": "Employee / City",
+      "searchWithMap": "Locality / City"
     },
     "worker": "Trabalhador",
     "raiseViews": "Aumentar visualizações",

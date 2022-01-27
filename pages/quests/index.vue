@@ -3,6 +3,7 @@
     <search-with-map
       class="quests__search"
       @isShowMap="isShowMap = $event"
+      @search="search = $event"
     />
     <div class="quests__content">
       <h2 class="quests__title">
@@ -50,6 +51,7 @@ export default {
   data() {
     return {
       page: 1,
+      search: '',
       query: {
         limit: 5,
         offset: 0,
@@ -83,6 +85,12 @@ export default {
       ) return;
       clearTimeout(this.boundsTimeout);
       this.boundsTimeout = setTimeout(async () => await this.fetchQuestsList(true), 500);
+    },
+    async search() {
+      if (!this.isShowMap) {
+        this.query.q = this.search;
+        await this.fetchQuestsList(true);
+      } else delete this.query.q;
     },
   },
   async mounted() {
@@ -146,12 +154,12 @@ export default {
       await this.fetchQuestsList(true);
     },
     async sortByPriority(value) {
-      if (!Object.keys(value).length) delete this.query['priority[0]'];
+      if (!Object.keys(value).length) delete this.query['priorities[0]'];
       else this.query = { ...this.query, ...value };
       await this.fetchQuestsList(true);
     },
     async sortByWorkplace(value) {
-      if (!Object.keys(value).length) delete this.query['workplace[0]'];
+      if (!Object.keys(value).length) delete this.query['workplaces[0]'];
       else this.query = { ...this.query, ...value };
       await this.fetchQuestsList(true);
     },
