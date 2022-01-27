@@ -1,147 +1,149 @@
 <template>
   <!--  TODO: Refactoring needed !-->
-  <div class="card card__content">
-    <div class="card__block block">
-      <div
-        class="block__left"
-        :style="`background: url(${getQuestPreview(quest).url}) no-repeat`"
-      >
+  <div class="card">
+    <div class="card__content content">
+      <div class="content content__block block">
         <div
-          class="block__state"
-          :class="getStatusClass(quest.status)"
+          class="block__left"
+          :style="`background: url(${getQuestPreview(quest).url}) no-repeat`"
         >
-          {{ getStatusCard(quest.status) }}
-        </div>
-      </div>
-      <div class="block__right">
-        <div class="block__head">
           <div
-            class="block__title"
-            @click="showProfile(quest.userId)"
+            class="block__state"
+            :class="getStatusClass(quest.status)"
           >
-            <div class="block__avatar avatar">
-              <img
-                class="avatar__image"
-                :src=" quest.user.avatar ? quest.user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-                :alt="quest.user.firstName"
+            {{ getStatusCard(quest.status) }}
+          </div>
+        </div>
+        <div class="block__right">
+          <div class="block__head">
+            <div
+              class="block__title"
+              @click="showProfile(quest.userId)"
+            >
+              <div class="block__avatar avatar">
+                <img
+                  class="avatar__image"
+                  :src=" quest.user.avatar ? quest.user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                  :alt="quest.user.firstName"
+                  @click="goToProfile(quest.user.id)"
+                >
+              </div>
+              <div
+                class="block__text block__text_title"
                 @click="goToProfile(quest.user.id)"
               >
-            </div>
-            <div
-              class="block__text block__text_title"
-              @click="goToProfile(quest.user.id)"
-            >
-              {{ `${quest.user.firstName} ${quest.user.lastName}` }}
-            </div>
-          </div>
-          <div class="block__head-right">
-            <div
-              class="block__icon block__icon_fav star"
-              @click="clickFavoriteStar(quest)"
-            >
-              <img
-                class="star__hover"
-                src="~assets/img/ui/star_hover.svg"
-                alt="favorite star"
-              >
-              <img
-                :class="[{'star__default': !quest.star},{'star__checked': quest.star}]"
-                :src="!quest.star ? require('~/assets/img/ui/star_simple.svg') : require('~/assets/img/ui/star_checked.svg')"
-                alt=""
-              >
-            </div>
-            <div class="block__shared">
-              <quest-dd
-                v-if="quest.status === questStatuses.Created"
-                class="block__icon block__icon_fav"
-                mode="vertical"
-                :item-id="quest.id"
-              />
-            </div>
-          </div>
-        </div>
-        <div
-          v-if="quest.assignedWorkerId"
-          class="block__progress progress"
-        >
-          <div class="progress__title">
-            {{ progressQuestText(quest.status) }}
-          </div>
-          <div class="progress__container container">
-            <div class="container__user user">
-              <img
-                class="user__avatar"
-                :src="quest.assignedWorker.avatar ? quest.assignedWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-                :alt="`${quest.assignedWorker.firstName} ${quest.assignedWorker.lastName}`"
-                @click="goToProfile(quest.assignedWorker.id)"
-              >
-              <div
-                class="user__name"
-                @click="goToProfile(quest.assignedWorker.id)"
-              >
-                {{ quest.assignedWorker.firstName }} {{ quest.assignedWorker.lastName }}
+                {{ `${quest.user.firstName} ${quest.user.lastName}` }}
               </div>
             </div>
-            <itemRating :rating="getRatingValue(quest)" />
-          </div>
-        </div>
-        <div class="block__locate">
-          <span class="icon-location" />
-          <span class="block__text block__text_locate">
-            {{ showDistance(quest.location.latitude, quest.location.longitude) }}
-            {{ `${$t('distance.m')} ${$t('meta.fromYou')}` }}
-          </span>
-        </div>
-        <div class="block__text block__text_blue">
-          {{ cropTxt(quest.title) }}
-        </div>
-        <div class="block__text block__text_desc">
-          {{ cropTxt(quest.description) }}
-        </div>
-        <div class="block__text block__publication">
-          <span class="block__publication_bold">{{ $t('quests.publicationDate') }}</span>
-          <span class="block__publication_thin">{{ $moment(quest.createdAt).format('Do MMMM YYYY, hh:mm a') }}</span>
-        </div>
-        <div class="block__actions">
-          <div class="block__status">
-            <div
-              v-if="quest.priority !== 0 && quest.status !== questStatuses.Done"
-              class="block__priority"
-              :class="getPriorityClass(quest.priority)"
-            >
-              {{ getPriority(quest.priority) }}
-            </div>
-            <div
-              class="block__amount"
-              :class="getAmountStyles(quest)"
-            >
-              {{ `${quest.price}  ${currency}` }}
-            </div>
-          </div>
-          <div class="block__details">
-            <base-btn
-              v-if="quest.type !== 3"
-              mode="borderless-right"
-              @click="showDetails(quest.id)"
-            >
-              {{ $t('meta.details') }}
-              <template v-slot:right>
-                <span class="icon-short_right" />
-              </template>
-            </base-btn>
-            <div
-              v-if="quest.status === questStatuses.Done && quest.assignedWorkerId === userData.id"
-              class="block__rating"
-            >
-              <div class="block__star">
-                <star-rating
-                  :quest-index="0"
-                  :rating-type="'questPage'"
-                  :stars-number="5"
-                  :rating="getRating(quest)"
-                  :is-disabled="quest.yourReview !== null"
-                  @input="showReviewModal($event, quest)"
+            <div class="block__head-right">
+              <div
+                class="block__icon block__icon_fav star"
+                @click="clickFavoriteStar(quest)"
+              >
+                <img
+                  class="star__hover"
+                  src="~assets/img/ui/star_hover.svg"
+                  alt="favorite star"
+                >
+                <img
+                  :class="[{'star__default': !quest.star},{'star__checked': quest.star}]"
+                  :src="!quest.star ? require('~/assets/img/ui/star_simple.svg') : require('~/assets/img/ui/star_checked.svg')"
+                  alt=""
+                >
+              </div>
+              <div class="block__shared">
+                <quest-dd
+                  v-if="quest.status === questStatuses.Created"
+                  class="block__icon block__icon_fav"
+                  mode="vertical"
+                  :item-id="quest.id"
                 />
+              </div>
+            </div>
+          </div>
+          <div
+            v-if="quest.assignedWorkerId"
+            class="block__progress progress"
+          >
+            <div class="progress__title">
+              {{ progressQuestText(quest.status) }}
+            </div>
+            <div class="progress__container container">
+              <div class="container__user user">
+                <img
+                  class="user__avatar"
+                  :src="quest.assignedWorker.avatar ? quest.assignedWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                  :alt="`${quest.assignedWorker.firstName} ${quest.assignedWorker.lastName}`"
+                  @click="goToProfile(quest.assignedWorker.id)"
+                >
+                <div
+                  class="user__name"
+                  @click="goToProfile(quest.assignedWorker.id)"
+                >
+                  {{ quest.assignedWorker.firstName }} {{ quest.assignedWorker.lastName }}
+                </div>
+              </div>
+              <itemRating :rating="getRatingValue(quest)" />
+            </div>
+          </div>
+          <div class="block__locate">
+            <span class="icon-location" />
+            <span class="block__text block__text_locate">
+              {{ showDistance(quest.location.latitude, quest.location.longitude) }}
+              {{ `${$t('distance.m')} ${$t('meta.fromYou')}` }}
+            </span>
+          </div>
+          <div class="block__text block__text_blue">
+            {{ cropTxt(quest.title) }}
+          </div>
+          <div class="block__text block__text_desc">
+            {{ cropTxt(quest.description) }}
+          </div>
+          <div class="block__text block__publication">
+            <span class="block__publication_bold">{{ $t('quests.publicationDate') }}</span>
+            <span class="block__publication_thin">{{ $moment(quest.createdAt).format('Do MMMM YYYY, hh:mm a') }}</span>
+          </div>
+          <div class="block__actions">
+            <div class="block__status">
+              <div
+                v-if="quest.priority !== 0 && quest.status !== questStatuses.Done"
+                class="block__priority"
+                :class="getPriorityClass(quest.priority)"
+              >
+                {{ getPriority(quest.priority) }}
+              </div>
+              <div
+                class="block__amount"
+                :class="getAmountStyles(quest)"
+              >
+                {{ `${quest.price}  ${currency}` }}
+              </div>
+            </div>
+            <div class="block__details">
+              <base-btn
+                v-if="quest.type !== 3"
+                mode="borderless-right"
+                @click="showDetails(quest.id)"
+              >
+                {{ $t('meta.details') }}
+                <template v-slot:right>
+                  <span class="icon-short_right" />
+                </template>
+              </base-btn>
+              <div
+                v-if="quest.status === questStatuses.Done && quest.assignedWorkerId === userData.id"
+                class="block__rating"
+              >
+                <div class="block__star">
+                  <star-rating
+                    :quest-index="0"
+                    :rating-type="'questPage'"
+                    :stars-number="5"
+                    :rating="getRating(quest)"
+                    :is-disabled="quest.yourReview !== null"
+                    @input="showReviewModal($event, quest)"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -282,7 +284,7 @@ export default {
       });
     },
     isHideStar(type) {
-      return type !== 4 || type !== 3;
+      return ![4, 3].includes(type);
     },
     isRating(type) {
       return type === 3;
