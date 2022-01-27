@@ -104,6 +104,7 @@
     "create": "创建帐户"
   },
   "profile": {
+    "defaultName": "Nameless User",
     "raiseViews": "提高浏览量",
     "educations": "教育背景",
     "prevWorkExp": "过去的工作经验",
@@ -453,7 +454,9 @@
     },
     "ui": {
       "showMap": "显示地图",
-      "search": "城市/街道/地点"
+      "searchOnQuestsPage": "Employer / Title / Description / City",
+      "searchOnWorkersPage": "Employee / City",
+      "searchWithMap": "Locality / City"
     },
     "worker": "工作者",
     "raiseViews": "提高浏览量",
@@ -955,6 +958,7 @@
     "edit": "???",
     "delete": "???",
     "youCan’tDeleteActiveQuest": "???",
+    "youCantCreateDispute": "???",
     "sureDeleteText": "???",
     "sureDeleteMemberText": "???",
     "sureLeaveChatText": "???",
@@ -1513,7 +1517,9 @@
     "Dispute": "争议",
     "pending": "待办",
     "chatHistory": "聊天记录",
-    "disputeTime": "争议提交时间："
+    "disputeTime": "争议提交时间：",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
     "searchQuests": "搜索 Quest",
@@ -1956,6 +1962,7 @@
     "incorrectPass": "哎呀，出错了。检查数据并重试。",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {

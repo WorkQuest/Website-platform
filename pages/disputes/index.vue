@@ -5,74 +5,49 @@
         <h2 class="page__title">
           {{ $t('disputes.disputes') }}
         </h2>
-        <span
-          v-for="(item, i) in disputes"
-          :key="i"
+        <div
+          v-if="disputesCount > 0"
+          class="page__dispute-cards"
         >
           <div
-            v-if="item.number.length === 0"
-            class="page__none"
-          >
-            <img src="~assets/img/ui/youAreHaven'tDisputs.svg">
-          </div>
-        </span>
-        <div class="page__grid">
-          <span
             v-for="(item, i) in disputes"
             :key="i"
+            class="page__card"
+            @click="toDisputes(item.id)"
           >
-            <div
-              class="page__card"
-              @click="toDisputes(item.number)"
-            >
-              <div class="page__card-body">
-                <div class="page__text">
-                  {{ $t('disputes.dispute') }} <span class="page__text_blue">{{ item.number }}</span>
-                </div>
-                <div class="page__text">
-                  {{ $t('disputes.quest') }} <span class="page__text_blue">{{ item.quest }}</span>
-                </div>
-                <div class="page__text">
-                  {{ $t('disputes.employer') }} <span class="page__text_blue">{{ item.employer }}</span>
-                </div>
-                <div class="page__text">
-                  {{ $t('disputes.questSalary') }} <span class="page__text_blue">{{ item.questSalary }}</span>
-                </div>
-                <div class="page__text">
-                  {{ $t('disputes.disputeTime') }} <span class="page__text_blue">{{ item.time }}</span>
-                </div>
-                <div class="page__text">
-                  {{ $t('disputes.status') }} <span
-                    v-if="item.status === 'Pending'"
-                    class="page__text_yellow"
-                  >{{ item.status }}</span>
-                  <span
-                    v-if="item.status === 'Completed'"
-                    class="page__text_green"
-                  >{{ item.status }}</span>
-                </div>
+            <div class="page__card-body">
+              <div
+                v-for="(card, key) in cardData(item)"
+                :key="key"
+                class="page__text"
+              >
+                {{ card.title }}
+                <span class="page__text_blue">
+                  {{ card.value }}
+                </span>
               </div>
-              <div class="page__vl" />
-              <div class="page__card-body">
-                <div class="page__text">
-                  {{ $t('disputes.decision') }}
-                  <div
-                    v-if="item.decision.length === 0"
-                    class="page__decision"
-                  >
-                    -
-                  </div>
-                  <div
-                    v-if="item.decision.length !== 0"
-                    class="page__decision"
-                  >
-                    {{ item.decision }}
-                  </div>
+              <div class="page__text">
+                {{ $t('disputes.status') }}
+                <span class="page__text_yellow">
+                  {{ disputeStatus(item.status) }}
+                </span>
+              </div>
+            </div>
+            <div class="page__vl" />
+            <div class="page__card-body">
+              <div class="page__text">
+                {{ $t('disputes.decision') }}
+                <div class="page__decision">
+                  {{ item.decisionDescription ? item.decisionDescription : '-' }}
                 </div>
               </div>
             </div>
-          </span>
+          </div>
         </div>
+        <emptyData
+          v-else
+          :description="$t(`errors.emptyData.emptyDisputes`)"
+        />
       </div>
     </div>
   </div>
@@ -80,24 +55,67 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import moment from 'moment';
+import emptyData from '~/components/app/info/emptyData';
+import { DisputeStatues } from '~/utils/enums';
 
 export default {
   name: 'Disputes',
+  components: {
+    emptyData,
+  },
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
-      disputes: 'data/getDisputes',
+      disputes: 'disputes/getUserDisputes',
+      disputesCount: 'disputes/getUserDisputesCount',
     }),
   },
   async mounted() {
     this.SetLoader(true);
+    await this.$store.dispatch('disputes/getUserDisputes');
     this.SetLoader(false);
   },
   methods: {
+    cardData(item) {
+      return [
+        {
+          title: this.$t('disputes.dispute'),
+          value: item.disputeNumber,
+        },
+        {
+          title: this.$t('disputes.quest'),
+          value: item.quest.title,
+        },
+        {
+          title: this.$t('disputes.employer'),
+          value: `${item.quest.user.firstName} ${item.quest.user.lastName}`,
+        },
+        {
+          title: this.$t('disputes.questSalary'),
+          value: item.quest.price,
+        },
+        {
+          title: this.$t('disputes.disputeTime'),
+          value: this.convertDate(item.quest.createdAt),
+        },
+      ];
+    },
     toDisputes(item) {
       this.$router.push({ path: `/disputes/${item}` });
+    },
+    convertDate(createdAt) {
+      return createdAt ? moment(createdAt).format('MMMM Do YYYY, h:mm') : '';
+    },
+    disputeStatus(status) {
+      const obj = {
+        [DisputeStatues.PENDING]: this.$t('disputes.pending'),
+        [DisputeStatues.IN_PROGRESS]: this.$t('disputes.inProgress'),
+        [DisputeStatues.COMPLETED]: this.$t('disputes.completed'),
+      };
+      return obj[status];
     },
   },
 };
@@ -136,7 +154,7 @@ export default {
   &__card-body {
     margin: 20px;
   }
-  &__grid {
+  &__dispute-cards {
     display: grid;
     width: 100%;
     grid-template-columns: repeat(2, 1fr);
@@ -182,7 +200,7 @@ export default {
     }
   }
   .page {
-    &__grid {
+    &__dispute-cards {
       grid-template-columns: 1fr;
       grid-gap: 15px;
     }
@@ -198,7 +216,7 @@ export default {
     }
   }
   .page {
-    &__grid {
+    &__dispute-cards {
       grid-gap: 15px;
     }
     &__text {

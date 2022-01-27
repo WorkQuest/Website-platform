@@ -104,6 +104,7 @@
     "create": "अकाउंट बनाएं"
   },
   "profile": {
+    "defaultName": "Nameless User",
     "raiseViews": "व्यू बढ़ाएं",
     "educations": "शिक्षा",
     "prevWorkExp": "पिछला वर्क एक्सपीरिएंस",
@@ -453,7 +454,9 @@
     },
     "ui": {
       "showMap": "नक्शा दिखाएं",
-      "search": "शहर / मोहल्ला / स्थान"
+      "searchOnQuestsPage": "Employer / Title / Description / City",
+      "searchOnWorkersPage": "Employee / City",
+      "searchWithMap": "Locality / City"
     },
     "worker": "वर्कर",
     "raiseViews": "व्यू बढ़ाएं",
@@ -955,6 +958,7 @@
     "edit": "???",
     "delete": "???",
     "youCan’tDeleteActiveQuest": "???",
+    "youCantCreateDispute": "???",
     "sureDeleteText": "???",
     "sureDeleteMemberText": "???",
     "sureLeaveChatText": "???",
@@ -1513,7 +1517,9 @@
     "Dispute": "विवाद",
     "pending": "पेंडिंग",
     "chatHistory": "चैट हिस्ट्री",
-    "disputeTime": "विवाद खुलने का समय:"
+    "disputeTime": "विवाद खुलने का समय:",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
     "searchQuests": "Quest खोजें",
@@ -1956,6 +1962,7 @@
     "incorrectPass": "ओह! कुछ गलत हो गया है। डेटा जांचें और फिर से कोशिश करें।",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {

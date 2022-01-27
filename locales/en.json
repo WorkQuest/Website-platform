@@ -104,6 +104,7 @@
     "create": "Create account"
   },
   "profile": {
+    "defaultName": "Nameless User",
     "raiseViews": "Raise views",
     "educations": "Educations",
     "prevWorkExp": "Previous work experience",
@@ -453,7 +454,9 @@
     },
     "ui": {
       "showMap": "Show map",
-      "search": "City / Street / Place"
+      "searchOnQuestsPage": "Employer / Title / Description / City",
+      "searchOnWorkersPage": "Employee / City",
+      "searchWithMap": "Locality / City"
     },
     "worker": "Worker",
     "raiseViews": "Raise views",
@@ -955,6 +958,7 @@
     "edit": "Edit",
     "delete": "Delete",
     "youCan’tDeleteActiveQuest": "You can’t delete active quest",
+    "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest",
     "sureDeleteText": "Do you really want to delete this quest?",
     "sureDeleteMemberText": "Do you really want to delete this member?",
     "sureLeaveChatText": "Do you really want to leave this chat?",
@@ -1527,7 +1531,9 @@
     "Dispute": "Dispute",
     "pending": "Pending",
     "chatHistory": "Chat history",
-    "disputeTime": "Dispute opening time:"
+    "disputeTime": "Dispute opening time:",
+    "inProgress": "In progress",
+    "completed": "Completed"
   },
   "workers": {
     "searchQuests": "Search quests",
@@ -1970,6 +1976,7 @@
     "incorrectPass": "Oops, something went wrong. Check the data and try again.",
     "emptyData": {
       "emptyQuests": "Oops, there's no quests here yet",
+      "emptyDisputes": "Oops, there are no disputes here yet",
       "emptyPortfolios": "Oops, there's no portfolio here yet",
       "emptyReviews": "Oops, there are no reviews here yet",
       "employer": {

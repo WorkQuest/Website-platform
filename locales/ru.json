@@ -104,6 +104,7 @@
     "create": "Create account"
   },
   "profile": {
+    "defaultName": "Nameless User",
     "raiseViews": "Raise views",
     "educations": "Educations",
     "prevWorkExp": "Previous work experience",
@@ -453,7 +454,9 @@
     },
     "ui": {
       "showMap": "Show map",
-      "search": "City / Street / Place"
+      "searchOnQuestsPage": "Employer / Title / Description / City",
+      "searchOnWorkersPage": "Employee / City",
+      "searchWithMap": "Locality / City"
     },
     "worker": "Worker",
     "raiseViews": "Raise views",
@@ -955,6 +958,7 @@
     "edit": "Edit",
     "delete": "Delete",
     "youCan’tDeleteActiveQuest": "You can’t delete active quest",
+    "youCantCreateDispute": "???",
     "sureDeleteText": "Do you really want to delete this quest?",
     "sureDeleteMemberText": "???",
     "sureLeaveChatText": "???",
@@ -1513,7 +1517,9 @@
     "Dispute": "Dispute",
     "pending": "Pending",
     "chatHistory": "Chat history",
-    "disputeTime": "Dispute opening time:"
+    "disputeTime": "Dispute opening time:",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
     "searchQuests": "Search quests",
@@ -1956,6 +1962,7 @@
     "incorrectPass": "Oops, something went wrong. Check the data and try again.",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {

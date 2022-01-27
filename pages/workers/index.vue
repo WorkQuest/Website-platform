@@ -3,6 +3,7 @@
     <search-with-map
       class="employees__search"
       @isShowMap="isShowMap = $event"
+      @search="search = $event"
     />
     <div class="employees__content">
       <h2 class="employees__title">
@@ -51,6 +52,7 @@ export default {
   data() {
     return {
       page: 1,
+      search: '',
       query: {
         limit: 12,
         offset: 0,
@@ -85,6 +87,12 @@ export default {
       clearTimeout(this.boundsTimeout);
       this.boundsTimeout = setTimeout(async () => await this.fetchEmployeeList(true), 500);
     },
+    async search() {
+      if (!this.isShowMap) {
+        this.query.q = this.search;
+        await this.fetchEmployeeList(true);
+      } else delete this.query.q;
+    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -111,15 +119,15 @@ export default {
           this.isFetching = false;
           return;
         }
-        this.query['north[longitude]'] = this.mapBounds.northEast.lng;
-        this.query['north[latitude]'] = this.mapBounds.northEast.lat;
-        this.query['south[longitude]'] = this.mapBounds.southWest.lng;
-        this.query['south[latitude]'] = this.mapBounds.southWest.lat;
+        this.query['northAndSouthCoordinates[north][longitude]'] = this.mapBounds.northEast.lng;
+        this.query['northAndSouthCoordinates[north][latitude]'] = this.mapBounds.northEast.lat;
+        this.query['northAndSouthCoordinates[south][longitude]'] = this.mapBounds.southWest.lng;
+        this.query['northAndSouthCoordinates[south][latitude]'] = this.mapBounds.southWest.lat;
       } else {
-        delete this.query['north[longitude]'];
-        delete this.query['north[latitude]'];
-        delete this.query['south[longitude]'];
-        delete this.query['south[latitude]'];
+        delete this.query['northAndSouthCoordinates[north][longitude]'];
+        delete this.query['northAndSouthCoordinates[north][latitude]'];
+        delete this.query['northAndSouthCoordinates[south][longitude]'];
+        delete this.query['northAndSouthCoordinates[south][latitude]'];
       }
 
       if (isResetPage) this.page = 1;
@@ -149,17 +157,17 @@ export default {
       await this.fetchEmployeeList(true);
     },
     async sortByRating(value) {
-      if (!Object.keys(value).length) delete this.query['ratingStatus[0]'];
+      if (!Object.keys(value).length) delete this.query['ratingStatuses[0]'];
       else this.query = { ...this.query, ...value };
       await this.fetchEmployeeList(true);
     },
     async sortByPriority(value) {
-      if (!Object.keys(value).length) delete this.query['priority[0]'];
+      if (!Object.keys(value).length) delete this.query['priorities[0]'];
       else this.query = { ...this.query, ...value };
       await this.fetchEmployeeList(true);
     },
     async sortByWorkplace(value) {
-      if (!Object.keys(value).length) delete this.query['workplace[0]'];
+      if (!Object.keys(value).length) delete this.query['workplaces[0]'];
       else this.query = { ...this.query, ...value };
       await this.fetchEmployeeList(true);
     },

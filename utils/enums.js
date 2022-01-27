@@ -72,6 +72,11 @@ export const InfoModeWorker = {
   Responded: 10,
   Invited: 11,
 };
+export const DisputeStatues = {
+  PENDING: 0,
+  IN_PROGRESS: 1,
+  COMPLETED: 2,
+};
 export const questPriority = {
   Low: 1,
   Normal: 2,
@@ -95,7 +100,7 @@ export const KeyCodes = {
 // Filters
 export const WorkplaceFilter = ['all', 'distant', 'office', 'both'];
 export const RatingFilter = ['', 'verified', 'reliable', 'topRanked'];
-export const TypeOfJobFilter = ['', 'fullTime', 'partTime', 'fixedTerm'];
+export const TypeOfJobFilter = ['fullTime', 'partTime', 'fixedTerm'];
 export const PriorityFilter = [
   { key: 'all', value: 0 },
   { key: 'urgent', value: 3 },

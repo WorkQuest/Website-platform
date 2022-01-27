@@ -104,6 +104,7 @@
     "create": "Créer un compte"
   },
   "profile": {
+    "defaultName": "Nameless User",
     "raiseViews": "Augmenter les vues",
     "educations": "Éducation",
     "prevWorkExp": "Précédente expérience professionnelle",
@@ -453,7 +454,9 @@
     },
     "ui": {
       "showMap": "Afficher la carte",
-      "search": "Ville / Rue / Emplacement"
+      "searchOnQuestsPage": "Employer / Title / Description / City",
+      "searchOnWorkersPage": "Employee / City",
+      "searchWithMap": "Locality / City"
     },
     "worker": "Travailleur(se)",
     "raiseViews": "Augmenter les vues",
@@ -955,6 +958,7 @@
     "edit": "???",
     "delete": "???",
     "youCan’tDeleteActiveQuest": "???",
+    "youCantCreateDispute": "???",
     "sureDeleteText": "???",
     "sureDeleteMemberText": "???",
     "sureLeaveChatText": "???",
@@ -1513,7 +1517,9 @@
     "Dispute": "Litige",
     "pending": "En attente",
     "chatHistory": "Historique des discussions",
-    "disputeTime": "Heure d'ouverture du litige :"
+    "disputeTime": "Heure d'ouverture du litige :",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
     "searchQuests": "Rechercher des quêtes",
@@ -1956,6 +1962,7 @@
     "incorrectPass": "Oups, un problème est survenu. Vérifiez les données et réessayez.",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {

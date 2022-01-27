@@ -147,14 +147,12 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import ChatMenu from '~/components/ui/ChatMenu';
-import MessagesList from '~/components/app/pages/messages_id/messagesList';
 import { ChatType, QuestChatStatus } from '~/utils/enums';
 
 export default {
   name: 'Messages',
   components: {
     ChatMenu,
-    MessagesList,
   },
   data() {
     return {
@@ -192,6 +190,7 @@ export default {
   async mounted() {
     this.SetLoader(true);
 
+    if (this.currChat?.questChat?.status === QuestChatStatus.Closed) this.isClosedQuestChat = true;
     this.SetLoader(false);
 
     const isChatNotificationShown = !!localStorage.getItem('isChatNotificationShown');
