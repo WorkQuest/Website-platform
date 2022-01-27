@@ -80,6 +80,22 @@
             </div>
           </div>
           <div class="worker-data__priority">
+            <div
+              v-if="starRating(questData)"
+              class="worker-data__rating rating"
+            >
+              <div class="rating__star">
+                <!--                TODO: Ожидаем поле yourReview-->
+                <star-rating
+                  :quest-index="1"
+                  :rating-type="'questPage'"
+                  :stars-number="5"
+                  :rating="getRating(questData)"
+                  :is-disabled="questData.yourReview !== null"
+                  @input="showReviewModal($event, questData)"
+                />
+              </div>
+            </div>
             <span class="worker-data__price">
               {{ questData.price }} {{ $t('quests.wusd') }}
             </span>
@@ -141,7 +157,7 @@
               </nuxt-link>
             </h2>
             <div class="quest__count">
-              {{ `${otherQuestsCount} ${$t('quests.questsSmall')}` }}
+              {{ `${otherQuestsCount > 0 ? otherQuestsCount : 0} ${$t('quests.questsSmall')}` }}
             </div>
           </div>
           <div class="quest__card">
@@ -206,6 +222,9 @@ export default {
       otherQuestsCount: 'quests/getAllQuestsCount',
       otherQuests: 'quests/getAllQuests',
     }),
+    questStatuses() {
+      return QuestStatuses;
+    },
     InfoModeEmployer() {
       return InfoModeEmployer;
     },
@@ -259,6 +278,24 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    getRating(item) {
+      return item?.yourReview?.mark || 0;
+    },
+    starRating(item) {
+      if (this.userRole === 'worker') {
+        return item.status === this.questStatuses.Done
+          && item.assignedWorkerId === this.userData.id;
+      }
+      return item.status === this.questStatuses.Done
+        && this.userData.id === item.userId;
+    },
+    showReviewModal(rating, item) {
+      this.ShowModal({
+        key: modals.review,
+        item,
+        rating,
+      });
+    },
     async getSameQuests() {
       const skills = Object.keys(this.$t(`filters.items.${this.randomSpec}.sub`));
       const query = {
@@ -705,6 +742,11 @@ export default {
     &_small {
       font-size: 16px;
     }
+  }
+
+  &__rating {
+    display: flex;
+    align-self: center;
   }
 
   &__container {
