@@ -24,9 +24,7 @@
       </div>
       <div class="info-grid__block block block_right">
         <div class="block__data">
-          <div
-            class="block__title"
-          >
+          <div class="block__title">
             {{ UserName(userData.firstName, userData.lastName) }}
           </div>
           <item-rating
