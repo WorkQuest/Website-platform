@@ -120,16 +120,16 @@ export default {
           this.isFetching = false;
           return;
         }
-        this.query['north[longitude]'] = this.mapBounds.northEast.lng;
-        this.query['north[latitude]'] = this.mapBounds.northEast.lat;
-        this.query['south[longitude]'] = this.mapBounds.southWest.lng;
-        this.query['south[latitude]'] = this.mapBounds.southWest.lat;
+        this.query['northAndSouthCoordinates[north][longitude]'] = this.mapBounds.northEast.lng;
+        this.query['northAndSouthCoordinates[north][latitude]'] = this.mapBounds.northEast.lat;
+        this.query['northAndSouthCoordinates[south][longitude]'] = this.mapBounds.southWest.lng;
+        this.query['northAndSouthCoordinates[south][latitude]'] = this.mapBounds.southWest.lat;
         delete this.query.q;
       } else {
-        delete this.query['north[longitude]'];
-        delete this.query['north[latitude]'];
-        delete this.query['south[longitude]'];
-        delete this.query['south[latitude]'];
+        delete this.query['northAndSouthCoordinates[north][longitude]'];
+        delete this.query['northAndSouthCoordinates[north][latitude]'];
+        delete this.query['northAndSouthCoordinates[south][longitude]'];
+        delete this.query['northAndSouthCoordinates[south][latitude]'];
       }
 
       if (isResetPage) this.page = 1;

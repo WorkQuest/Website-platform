@@ -276,6 +276,7 @@ export default {
       currency: ' WUSD',
       addresses: [],
       files: [],
+      geoCode: null,
     };
   },
   computed: {
@@ -408,6 +409,10 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    this.geoCode = new GeoCode('google', {
+      key: process.env.GMAPKEY,
+      lang: this.$i18n?.localeProperties?.code || 'en-US',
+    });
     this.SetLoader(false);
   },
   methods: {
@@ -418,26 +423,16 @@ export default {
       this.selectedSpecAndSkills = specAndSkills;
     },
     cardStatus(item) {
-      let style;
-      if (item.code === 1) {
-        style = 'level__card_gold';
-      } if (item.code === 3) {
-        style = 'card__level_reliable';
-      } if (item.code === 4) {
-        style = 'card__level_checked';
-      }
-      return style;
+      if (item.code === 1) return 'level__card_gold';
+      if (item.code === 3) return 'card__level_reliable';
+      if (item.code === 4) return 'card__level_checked';
+      return '';
     },
     periods(period) {
-      let val;
-      if (period === 1) {
-        val = this.days;
-      } if (period === 2) {
-        val = this.weeks;
-      } if (period === 3) {
-        val = this.months;
-      }
-      return val;
+      if (period === 1) return this.days;
+      if (period === 2) return this.weeks;
+      if (period === 3) return this.months;
+      return '';
     },
     selectRadio(idx) {
       const radio = this.$refs[`radio${idx}`];
@@ -478,11 +473,7 @@ export default {
       this.address = address.formatted;
     },
     convertEmployment(employmentId) {
-      const employments = [
-        'fullTime',
-        'partTime',
-        'fixedTerm',
-      ];
+      const employments = ['fullTime', 'partTime', 'fixedTerm'];
       return employments[employmentId];
     },
     convertWorkplace(workplaceId) {
@@ -494,16 +485,20 @@ export default {
       return workplaces[workplaceId];
     },
     async getAddressInfo(address) {
-      let response = [];
-      const geoCode = new GeoCode('google', { key: process.env.GMAPKEY });
       try {
         if (address.length) {
-          response = await geoCode.geolookup(address);
-          this.addresses = JSON.parse(JSON.stringify(response));
-          this.coordinates = JSON.parse(JSON.stringify({ lng: response[0].lng, lat: response[0].lat }));
-        }
+          this.addresses = await this.geoCode.geolookup(address);
+          this.coordinates = {
+            lng: this.addresses[0].lng,
+            lat: this.addresses[0].lat,
+          };
+        } else this.addresses = [];
       } catch (e) {
-        console.log(e);
+        this.addresses = [];
+        console.error('Geo look up is failed', e);
+        await this.$store.dispatch('main/showToast', {
+          text: 'Address is not correct',
+        });
       }
     },
     async createQuest() {
@@ -519,11 +514,13 @@ export default {
         price: this.price,
         medias,
         adType: 0,
-        locationPlaceName: this.address,
         specializationKeys: this.selectedSpecAndSkills,
-        location: {
-          longitude: this.coordinates.lng,
-          latitude: this.coordinates.lat,
+        locationFull: {
+          location: {
+            longitude: this.coordinates.lng,
+            latitude: this.coordinates.lat,
+          },
+          locationPlaceName: this.address,
         },
       };
       const response = await this.$store.dispatch('quests/questCreate', payload);
