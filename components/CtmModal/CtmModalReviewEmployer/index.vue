@@ -86,19 +86,14 @@ export default {
     hide() {
       this.CloseModal();
     },
-    sendReviewForUser() {
-      const payload = {
+    async sendReviewForUser() {
+      const { ok } = await this.$store.dispatch('user/sendReviewForUser', {
         questId: this.options.item.id,
         message: this.textArea,
         mark: this.rating,
-      };
-      try {
-        this.$store.dispatch('user/sendReviewForUser', payload);
-        this.showThanksModal();
-        this.removeLocalStorageRating();
-      } catch (e) {
-        console.log(e);
-      }
+      });
+      if (ok) this.showThanksModal();
+      this.removeLocalStorageRating();
     },
     showThanksModal() {
       this.ShowModal({
