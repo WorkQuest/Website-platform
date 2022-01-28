@@ -30,10 +30,7 @@
           />
         </ValidationProvider>
         <div class="profile__personal-info">
-          <verified
-            v-if="userRole === 'worker'"
-            class="profile__status"
-          />
+          <verified class="profile__status" />
           <base-field
             v-for="main in mainInputs"
             :key="main.index"
@@ -82,12 +79,29 @@
               </div>
             </template>
           </base-field>
+          <div
+            v-if="userRole === 'employer'"
+            class="profile__phone-input"
+          >
+            <label for="phone2">
+              {{ $t('settings.mainPhoneNumber') }}
+            </label>
+            <vue-phone-number-input
+              id="phone2"
+              v-model="firstPhone"
+              class="profile__phone-input"
+              error-color="#EB5757"
+              size="lg"
+              color="#ccc"
+              disabled
+            />
+          </div>
           <div class="profile__phone-input">
             <label
               v-if="userRole === 'employer'"
               for="phone1"
             >
-              {{ $t('settings.mainPhoneNumber') }}
+              {{ $t('settings.additionalPhoneNumber') }}
             </label>
             <vue-phone-number-input
               id="phone1"
@@ -107,23 +121,6 @@
             >
               {{ $t('messages.invalidPhone') }}
             </span>
-          </div>
-          <div
-            v-if="userRole === 'employer'"
-            class="profile__phone-input"
-          >
-            <label for="phone2">
-              {{ $t('settings.additionalPhoneNumber') }}
-            </label>
-            <vue-phone-number-input
-              id="phone2"
-              v-model="firstPhone"
-              class="profile__phone-input"
-              error-color="#EB5757"
-              size="lg"
-              color="#ccc"
-              disabled
-            />
           </div>
         </div>
         <div
@@ -215,7 +212,6 @@
             ref="work"
             tag="div"
             class="profile__validation"
-            mode="passive"
           >
             <add-form
               :item="newWorkExp"

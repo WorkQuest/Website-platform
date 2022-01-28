@@ -8,7 +8,8 @@
       class="settings__body"
       tag="div"
     >
-      <verification-card v-if="userRole === 'worker' && isShowInfo === true" />
+      <!--      TODO: Вынести в enum -->
+      <verification-card v-if="userRole === 'worker' && isShowInfo === true && userData.statusKYC === 0" />
       <profile
         :profile="profile"
         :new-education="newEducation"
@@ -43,7 +44,7 @@ import VerificationCard from '~/components/app/pages/settings/VerificationCard.v
 import Profile from '~/components/app/pages/settings/Profile.vue';
 import Skills from '~/components/app/pages/settings/Skills.vue';
 import Advanced from '~/components/app/pages/settings/Advanced.vue';
-import { workplaceIndex } from '~/utils/enums';
+import { workplaceIndex, sumsubStatuses } from '~/utils/enums';
 
 export default {
   name: 'Settings',
@@ -247,8 +248,8 @@ export default {
     },
 
     async checkValidate() {
-      const validateEducation = await this.validateKnowledge('education', this.newEducation);
-      const validateWorkExp = await this.validateKnowledge('work', this.newWorkExp);
+      const validateEducation = this.userRole === 'employer' ? true : await this.validateKnowledge('education', this.newEducation);
+      const validateWorkExp = this.userRole === 'employer' ? true : await this.validateKnowledge('work', this.newWorkExp);
       const validateSettings = await this.$refs.settings.validate();
       if (validateSettings === false
         || validateEducation === false

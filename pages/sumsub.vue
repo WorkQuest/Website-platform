@@ -24,42 +24,27 @@ export default {
   async mounted() {
     this.SetLoader(true);
     await this.createAccessToken();
-    // await this.getApiHealthStatus();
     this.initSumSub();
     this.SetLoader(false);
   },
   methods: {
     async createAccessToken() {
-      try {
-        const payload = {
-          userId: this.accessToken.userId,
-        };
-        await this.$store.dispatch('sumsub/createAccessTokenBackend', payload);
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    async getApiHealthStatus() {
-      try {
-        const response = await this.$store.dispatch('sumsub/apiHealth');
-      } catch (e) {
-        console.log(e);
-      }
+      await this.$store.dispatch('sumsub/createAccessTokenBackend', {
+        userId: this.accessToken.userId,
+      });
     },
     initSumSub() {
       const accessToken = this.accessToken.token;
       const applicantEmail = this.userData.email;
-      const applicantPhone = this.userData.phone;
-
+      const applicantPhone = this.userData.phone.fullPhone;
       const snsWebSdkInstance = snsWebSdk.Builder('https://test-api.sumsub.com', 'basic-kyc')
-        .withAccessToken(accessToken, () => {
-        })
+        .withAccessToken(accessToken, () => {})
         .withConf({
           lang: 'en',
           email: applicantEmail,
-          phone: applicantPhone, // if available
+          phone: applicantPhone,
           onMessage: (type, payload) => {
-            console.log('WebSDK onMessage', type, payload);
+            // console.log('WebSDK onMessage', type, payload);
           },
           onError: (error) => {
             console.log('WebSDK onError', error);
