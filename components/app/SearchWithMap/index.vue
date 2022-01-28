@@ -31,10 +31,11 @@
           data-selector="INPUT-SEARCH"
           @focus="isSearchFocus = true"
           @selector="getAddressInfo(search)"
+          @enter="emitItem('search')"
         >
           <template v-slot:selector>
             <div
-              v-if="addresses.length"
+              v-if="addresses.length && isShowMap"
               class="selector"
               :class="{'selector_hide': !isSearchFocus}"
             >
@@ -116,10 +117,10 @@ export default {
   },
   watch: {
     isShowMap(newVal) {
+      this.search = '';
       localStorage.setItem('isShowMap', newVal);
-      this.$emit('isShowMap', this.isShowMap);
+      this.emitItem('isShowMap');
     },
-    search() { this.$emit('search', this.search); },
     distanceIndex() { this.zoom = { 0: 15, 1: 10, 2: 8 }[this.distanceIndex]; },
   },
   mounted() {
@@ -133,7 +134,13 @@ export default {
   beforeDestroy() { this.geoCode = null; },
   methods: {
     deFocus() { this.isSearchFocus = false; },
-    centerChange() { this.$store.dispatch('quests/setMapCenter', this.coordinates); },
+    centerChange() {
+      if (this.isShowMap && this.search) this.$store.dispatch('quests/setMapCenter', this.coordinates);
+      else this.emitItem('search');
+    },
+    emitItem(item) {
+      this.$emit(item, this[item]);
+    },
     selectAddress(address) {
       this.addresses = [];
       this.search = address.formatted;

@@ -132,7 +132,7 @@ export default {
     },
     selectedPriority() {
       const { selectedPriority } = this;
-      const query = selectedPriority ? { 'priority[0]': PriorityFilter[selectedPriority].value } : {};
+      const query = selectedPriority ? { 'priorities[0]': PriorityFilter[selectedPriority].value } : {};
       this.$emit('sortPriority', query);
     },
     selectedTypeOfJob() {
