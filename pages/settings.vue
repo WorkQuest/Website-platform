@@ -247,10 +247,8 @@ export default {
     },
 
     async checkValidate() {
-      const validateEducation = true;
-      const validateWorkExp = true;
-      // const validateEducation = await this.validateKnowledge('education', this.newEducation);
-      // const validateWorkExp = await this.validateKnowledge('work', this.newWorkExp);
+      const validateEducation = await this.validateKnowledge('education', this.newEducation);
+      const validateWorkExp = await this.validateKnowledge('work', this.newWorkExp);
       const validateSettings = await this.$refs.settings.validate();
       if (validateSettings === false
         || validateEducation === false
@@ -262,15 +260,16 @@ export default {
       return false;
     },
 
-    // async validateKnowledge(observerName, value) {
-    //   let isDirty;
-    //   if (value) {
-    //     isDirty = Object.keys(value).some((field) => value[field] !== '' && value[field] !== null);
-    //     if (observerName === 'education' && isDirty) return this.$refs.settings.$children[1].$refs.education.validate();
-    //     if (observerName === 'work' && isDirty) return this.$refs.settings.$children[1].$refs.work.validate();
-    //   }
-    //   return false;
-    // },
+    async validateKnowledge(observerName, value) {
+      let isDirty;
+      const valueObj = { ...value };
+      if (valueObj) {
+        isDirty = Object.keys(valueObj).some((field) => valueObj[field] !== '' && valueObj[field] !== null);
+        if (observerName === 'education' && isDirty) return this.$refs.settings.$children[1].$refs.education.validate();
+        if (observerName === 'work' && isDirty) return this.$refs.settings.$children[1].$refs.work.validate();
+      }
+      return false;
+    },
 
     async setAvatar() {
       const formData = new FormData();
