@@ -9,7 +9,10 @@
       class="search-with-map__search search"
       :class="{'search_on-map': isShowMap}"
     >
-      <div class="search__block">
+      <div
+        class="search__block"
+        :class="{'search__block_without-map': !isShowMap}"
+      >
         <base-checkbox
           v-model="isShowMap"
           :label="$t('quests.ui.showMap')"
@@ -28,6 +31,7 @@
           data-selector="INPUT-SEARCH"
           @focus="isSearchFocus = true"
           @selector="getAddressInfo(search)"
+          @enter="$emit('search', search)"
         >
           <template v-slot:selector>
             <div
@@ -47,6 +51,7 @@
           </template>
         </base-field>
         <base-dd
+          v-if="isShowMap"
           v-model="distanceIndex"
           class="search__block-item search__distances"
           data-selector="ACTION-CHANGE-DISTANCE"
@@ -55,7 +60,7 @@
         <div class="search__block-item">
           <base-btn
             data-selector="ACTION-CHANGE-MAP-CENTER"
-            @click="centerChange"
+            @click="searchHandler"
           >
             {{ isPageQuests ? $t('workers.searchQuests') : $t('workers.searchWorkers') }}
           </base-btn>
@@ -112,10 +117,11 @@ export default {
   },
   watch: {
     isShowMap(newVal) {
+      this.search = '';
+      this.addresses = [];
       localStorage.setItem('isShowMap', newVal);
       this.$emit('isShowMap', this.isShowMap);
     },
-    search() { this.$emit('search', this.search); },
     distanceIndex() { this.zoom = { 0: 15, 1: 10, 2: 8 }[this.distanceIndex]; },
   },
   mounted() {
@@ -129,7 +135,10 @@ export default {
   beforeDestroy() { this.geoCode = null; },
   methods: {
     deFocus() { this.isSearchFocus = false; },
-    centerChange() { this.$store.dispatch('quests/setMapCenter', this.coordinates); },
+    searchHandler() {
+      if (this.isShowMap && this.search) this.$store.dispatch('quests/setMapCenter', this.coordinates);
+      else this.$emit('search', this.search);
+    },
     selectAddress(address) {
       this.addresses = [];
       this.search = address.formatted;
@@ -174,6 +183,9 @@ export default {
     grid-template-columns: 155px 1fr 143px 260px;
 
     @include box;
+    &_without-map {
+      grid-template-columns: 155px 1fr 260px;
+    }
   }
 
   &__block-item {
@@ -225,6 +237,9 @@ export default {
 
     &__block {
       grid-template-columns: 155px 1fr 143px 220px;
+      &_without-map {
+        grid-template-columns: 155px 1fr 220px;
+      }
     }
   }
 }
