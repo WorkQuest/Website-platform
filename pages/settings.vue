@@ -144,7 +144,6 @@ export default {
         },
         locationPlaceName: addInfo.address,
       },
-      // TODO: Починить валидацию в настройках
     };
     this.skills = {
       priorityIndex: this.userData.priority,
@@ -250,7 +249,7 @@ export default {
       const validateEducation = await this.validateKnowledge('education', this.newEducation);
       const validateWorkExp = await this.validateKnowledge('work', this.newWorkExp);
       const validateSettings = await this.$refs.settings.validate();
-      if (validateSettings === false && validateEducation === false && validateWorkExp === false && this.isValidPhoneNumber === false) {
+      if (validateSettings === false || validateEducation === false || validateWorkExp === false || this.isValidPhoneNumber === false) {
         return true;
       }
       this.validationError = false;
