@@ -102,13 +102,19 @@
           </span>
         </div>
         <div class="block__contacts contacts">
-          <div class="contacts__contact contact">
+          <div
+            class="contacts__contact contact"
+            :class="(contactData.length > 3 || userData.additionalInfo.address) ? 'contact_column' : ''"
+          >
             <div
               v-for="(data, key) in contactData"
               :key="key"
               class="contact__container"
             >
-              <span :class="data.icon" />
+              <span
+                class="contact__icon"
+                :class="data.icon"
+              />
               <a
                 :href="data.href"
                 target="_blank"
@@ -120,9 +126,7 @@
       </div>
     </div>
     <div class="info-grid__right right">
-      <div
-        class="right__header"
-      >
+      <div class="right__header">
         <div
           v-if="userData.role === 'worker' && userData.wagePerHour"
           class="right__price"
@@ -327,7 +331,7 @@ export default {
     flex-direction: row;
     justify-content: center;
     display: flex;
-    grid-gap: 15px;
+    grid-gap: 30px;
   }
   &__right {
     display: flex;
@@ -397,6 +401,7 @@ export default {
     font-style: normal;
     font-weight: 500;
     font-size: 20px;
+    line-height: 130%;
     color: $black800;
   }
   &__description {
@@ -438,10 +443,11 @@ export default {
 .contact {
   display: flex;
   flex-wrap: wrap;
+  margin: -5px 0;
   &__container {
     display: flex;
-    align-items: baseline;
-    grid-gap: 5px;
+    align-items: flex-end;
+    margin: 5px 0;
   }
   &__link {
     text-decoration: none;
@@ -458,6 +464,12 @@ export default {
     align-items: flex-end;
     height: 43px;
   }
+}
+.contact__icon {
+  @extend .icon;
+  color: $black500;
+  font-size: 20px;
+  margin-right: 5px;
 }
 .rating {
   &__star {
