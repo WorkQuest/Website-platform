@@ -82,7 +82,4 @@ export default {
 };
 </script>
 <style>
-.GMap__Marker{
-  display: none;
-}
 </style>

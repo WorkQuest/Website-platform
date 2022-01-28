@@ -1,75 +1,66 @@
 <template>
-  <div
-    class="map__container gmap"
-    :class="!isShowMap ? 'map__container_small' : ''"
+  <GmapMap
+    ref="gMap"
+    language="en"
+    :cluster="{options: {styles: clusterStyle}}"
+    :options="{fullscreenControl: false, styles: clusterStyle}"
+    :center="userLocation"
+    :zoom="zoom"
   >
-    <div class="gmap__top">
-      <transition name="fade-fast">
-        <GmapMap
-          ref="gMap"
-          language="en"
-          :cluster="{options: {styles: clusterStyle}}"
-          :options="{fullscreenControl: false, styles: clusterStyle}"
-          :center="userLocation"
-          :zoom="zoom"
-        >
-          <GMapMarker
-            v-for="(item, key) in locations"
-            :key="key"
-            :position="{lat: item.coordinates[1], lng: item.coordinates[0]}"
-            :options="item.type !== 'cluster' ? getPriorityMarker(item) : { icon: pins.quest.blue, show: item === currentLocation} "
-            @click="coordinatesChange(item)"
-          >
-            <GMapInfoWindow
-              v-if="hiddenWindowInfo"
-              :options="{maxWidth: 280}"
-            >
-              <div class="info-window__content">
-                <div class="info-window__block">
-                  <div class="info-window__user">
-                    <div
-                      class="info-window__avatar avatar"
-                    >
-                      <img
-                        class="avatar__image"
-                        :src="item.userAvatarUrl ? item.userAvatarUrl : '~/assets/img/app/avatar_empty.png'"
-                        :alt="item.userFirstName"
-                      >
-                    </div>
-                    <div class="info-window__name">
-                      {{ `${item.userFirstName} ${item.userLastName}` }}
-                    </div>
-                  </div>
-                  <div
-                    class="info-window__status"
-                    :class="getPriorityClass(item.questPriority)"
-                  >
-                    {{ getPriority(item.questPriority) }}
-                  </div>
-                </div>
-                <div class="info-window__block">
-                  <div class="info-window__cost">
-                    <p class="info-window__text">
-                      Cost per hour
-                    </p>
-                    <p class="info-window__value">
-                      {{ `${item.questPrice} WUSD` }}
-                    </p>
-                  </div>
-                  <button
-                    class="info-window__switch"
-                    @click="showDetails(item.questId)"
-                  >
-                    <span class="icon-caret_right" />
-                  </button>
-                </div>
+    <GMapMarker
+      v-for="(item, key) in locations"
+      :key="key"
+      :position="{lat: item.coordinates[1], lng: item.coordinates[0]}"
+      :options="item.type !== 'cluster' ? getPriorityMarker(item) : { icon: pins.quest.blue, show: item === currentLocation} "
+      @click="coordinatesChange(item)"
+    >
+      <GMapInfoWindow
+        v-if="hiddenWindowInfo"
+        :options="{maxWidth: 280}"
+      >
+        <div class="info-window__content">
+          <div class="info-window__block">
+            <div class="info-window__user">
+              <div
+                class="info-window__avatar avatar"
+              >
+                <img
+                  class="avatar__image"
+                  :src="item.userAvatarUrl ? item.userAvatarUrl : '~/assets/img/app/avatar_empty.png'"
+                  :alt="item.userFirstName"
+                >
               </div>
-            </GMapInfoWindow>
-          </GMapMarker>
-        </GmapMap>
-      </transition>
-    </div>
-  </div>
+              <div class="info-window__name">
+                {{ `${item.userFirstName} ${item.userLastName}` }}
+              </div>
+            </div>
+            <div
+              class="info-window__status"
+              :class="getPriorityClass(item.questPriority)"
+            >
+              {{ getPriority(item.questPriority) }}
+            </div>
+          </div>
+          <div class="info-window__block">
+            <div class="info-window__cost">
+              <p class="info-window__text">
+                Cost per hour
+              </p>
+              <p class="info-window__value">
+                {{ `${item.questPrice} WUSD` }}
+              </p>
+            </div>
+            <button
+              class="info-window__switch"
+              @click="showDetails(item.questId)"
+            >
+              <span class="icon-caret_right" />
+            </button>
+          </div>
+        </div>
+      </GMapInfoWindow>
+    </GMapMarker>
+  </GmapMap>
 </template>
 
 <script>
@@ -196,190 +187,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.map__container::v-deep {
-  .GMap__Wrapper {
-    height: 435px;
-    display: block;
-  }
-  .ctm-field__left {
-    padding-top: 6px;
-  }
-  button.gm-ui-hover-effect {
-    display: none !important;
-  }
-}
-.map__container_small::v-deep {
-  .GMap__Wrapper {
-    display: none;
-  }
-}
-.gmap {
-  &__top {
-    height: 435px;
-  }
-  &__search {
-    position: relative;
-    max-width: 1180px;
-    height: 83px;
-    bottom: 100px;
-    left: 0;
-    right: 0;
-    margin: auto;
-    z-index: 1200;
-    @include box;
-  }
-  &__filter {
-    display: none;
-  }
-  &__search, &__filter {
-    transition: all 0.5s ease;
-  }
-}
-.search {
-  display: grid;
-  grid-template-columns: 154px 1fr 143px 260px;
-  align-items: center;
-  height: 100%;
-  justify-items: center;
-  &__dd {
-    display: flex;
-    border-left: 1px solid #F7F8FA;
-    justify-items: center;
-    align-items: center;
-    height: 100%;
-    width: 144px;
-  }
-  &__icon {
-    margin-bottom: -10px;
-    &::before {
-      font-size: 24px;
-      color: $blue;
-    }
-  }
-  &__inputs {
-    padding: 0 20px;
-    width: 100%;
-    display: grid;
-    align-items: center;
-  }
-  &__input {
-    display: flex;
-    align-items: center;
-  }
-  &__btn {
-    max-width: 220px;
-  }
-  &__toggle {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-right: 1px solid #F7F8FA;
-  }
-  &__actions {
-    height: 100%;
-    border-left: 1px solid #F7F8FA;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-  }
-}
-.selector {
-  @include box;
-  width: 100%;
-  z-index: 140;
-  &__items {
-    background: #FFFFFF;
-    display: grid;
-    grid-template-columns: 1fr;
-    width: 100%;
-  }
-  &__item {
-    @include text-simple;
-    padding: 15px 20px;
-    background: #FFFFFF;
-    font-weight: 500;
-    font-size: 16px;
-    color: $black800;
-    cursor: pointer;
-    transition: .3s;
-    &:hover {
-      background: #F3F7FA;
-    }
-  }
-}
-.checkbox {
-  &__isShowMap {
-    margin: 30px 50px 0 10px;
-    display: flex;
-    flex-direction: row;
-    height: 25px;
-    align-items: center;
-  }
-  &-input {
-    width: 24px;
-    height: 24px;
-  }
-  &__label {
-    display: flex;
-    flex-direction: row;
-    flex-shrink: 0;
-    margin: 0 0 0 5px;
-    font-size: 16px;
-  }
-}
-.search-bar {
-  left: 18%;
-  bottom: 30px;
-  margin: 10px 0 0 0;
-  position: absolute;
-  max-width: 1180px;
-  width: 100%;
-  height: 84px;
-  display: flex;
-  flex-direction: column;
-  border-radius: 6px;
-  background-color: $white;
-  z-index: 10;
-  box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.0325794), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
-  &__body {
-    display: flex;
-    flex-direction: row;
-    flex-shrink: 0;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
-    height: 40px;
-  }
-  &__input {
-    margin: 30px 10px 0 0;
-    height: 25px;
-    width: 510px;
-  }
-  &__btn {
-    margin: 30px 10px 0 0;
-    flex-shrink: 0;
-  }
-  &__btn-search {
-    margin: 30px 10px 0 0;
-    width: 220px;
-  }
-}
-.map__container {
-  &_small {
-    .gmap {
-      &__top {
-        height: 100%;
-      }
-      &__search {
-        top: 1px;
-        max-width: 1180px;
-      }
-    }
-  }
-}
+
 .info-window {
   &__content {
     max-width: 280px;
@@ -469,68 +277,4 @@ export default {
   }
 }
 
-@include _767 {
-  .gmap {
-    &__search {
-      width: 100%;
-    }
-  }
-  .search {
-    grid-template-columns: 1fr 0.5fr;
-    padding: 0 10px;
-    grid-gap: 10px;
-    &__toggle, &__dd {
-      display: none;
-    }
-    &__actions {
-      border: none;
-    }
-    &__inputs {
-      padding: 0 10px;
-    }
-  }
-  .dd__btn {
-    justify-content: center;
-    padding: 0 0;
-  }
-  .gmap {
-    &__filter {
-      display: flex;
-      flex-direction: row;
-      position: relative;
-      justify-content: space-between;
-      top: 20px;
-      align-content: center;
-    }
-  }
-  .filter {
-    &__toggle {
-      text-align: center;
-      display: flex;
-      padding: 10px;
-      border-radius: 6px;
-      background: #FFFFFF;
-    }
-  }
-}
-
-@include _575 {
-  .main {
-    .menu {
-      display: flex;
-      flex-direction: column;
-      grid-template-columns: auto;
-    }
-    .menu__left {
-      display: flex;
-      flex-direction: column;
-    }
-    .content {
-      grid-template-columns: 1fr;
-    }
-    .menu__right {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-}
 </style>
