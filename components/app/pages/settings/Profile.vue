@@ -186,7 +186,7 @@
             ref="education"
             tag="div"
             class="profile__validation"
-            :mode="'passive'"
+            mode="passive"
           >
             <add-form
               :item="newEducation"
@@ -216,7 +216,7 @@
             ref="work"
             tag="div"
             class="profile__validation"
-            :mode="'passive'"
+            mode="passive"
           >
             <add-form
               :item="newWorkExp"
@@ -300,6 +300,7 @@ export default {
       newWorkExp: { from: '', to: '', place: '' },
       isSearchDDStatus: false,
       addresses: [],
+      coordinates: { lng: '', lat: '', address: '' },
       mainInputs: [
         {
           model: 'firstName',
@@ -444,15 +445,13 @@ export default {
     selectAddress(address) {
       this.profile.additionalInfo.address = address.formatted;
       this.addresses = [];
+      this.$emit('updateCoordinates', this.coordinates);
     },
     async getAddressInfo(address) {
       try {
         if (address.length) {
           this.addresses = await this.geoCode.geolookup(address);
-          this.coordinates = {
-            lng: this.addresses[0].lng,
-            lat: this.addresses[0].lat,
-          };
+          this.coordinates = { lng: this.addresses[0].lng, lat: this.addresses[0].lat, address: this.addresses[0].formatted };
         } else this.addresses = [];
       } catch (e) {
         this.addresses = [];

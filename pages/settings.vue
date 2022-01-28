@@ -21,6 +21,7 @@
         @showModalStatus="showModalStatus"
         @checkValidate="checkValidate"
         @updateEducation="addEducation"
+        @updateCoordinates="updateCoordinates"
       />
       <skills
         v-if="userRole === 'worker'"
@@ -72,7 +73,13 @@ export default {
           company: null,
           website: null,
         },
-        location: { longitude: 0, latitude: 0 },
+        locationFull: {
+          location: {
+            longitude: 0,
+            latitude: 0,
+          },
+          locationPlaceName: '',
+        },
       },
       skills: {
         perHour: 0,
@@ -130,7 +137,14 @@ export default {
         company: addInfo.company,
         website: addInfo.website,
       },
-      location: this.userData.location,
+      locationFull: {
+        location: {
+          longitude: this.coordinates ? this.coordinates.lng : this.profile.locationFull.location?.longitude || 0,
+          latitude: this.coordinates ? this.coordinates.lat : this.profile.locationFull.location?.latitude || 0,
+        },
+        locationPlaceName: addInfo.address,
+      },
+      // TODO: Починить валидацию в настройках
     };
     this.skills = {
       priorityIndex: this.userData.priority,
@@ -141,6 +155,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    updateCoordinates(coordinates) {
+      this.profile.locationFull.location.longitude = +coordinates.lng;
+      this.profile.locationFull.location.latitude = +coordinates.lat;
+      this.profile.locationFull.locationPlaceName = coordinates.address;
+    },
     distantIndexByWorkplace(workplace) {
       if (workplace === 'distance') return workplaceIndex.Distance;
       if (workplace === 'office') return workplaceIndex.Office;
@@ -270,9 +289,12 @@ export default {
         avatarId: checkAvatarID,
         firstName: this.profile.firstName,
         lastName: this.profile.lastName,
-        location: {
-          longitude: this.coordinates ? this.coordinates.lng : this.profile.location?.longitude || 0,
-          latitude: this.coordinates ? this.coordinates.lat : this.profile.location?.latitude || 0,
+        locationFull: {
+          location: {
+            longitude: this.coordinates ? this.coordinates.lng : this.profile.locationFull.location?.longitude || 0,
+            latitude: this.coordinates ? this.coordinates.lat : this.profile.locationFull.location?.latitude || 0,
+          },
+          locationPlaceName: 'Tomsk',
         },
         additionalInfo: {
           secondMobileNumber: this.updatedSecondPhone,
