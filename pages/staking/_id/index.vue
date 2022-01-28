@@ -96,7 +96,10 @@
               <div class="info-card__name">
                 {{ item.name }}
               </div>
-              <div class="info-card__about">
+              <div
+                v-if="poolData.rewardTotal"
+                class="info-card__about"
+              >
                 {{ item.about }}
               </div>
             </div>
@@ -210,7 +213,7 @@ export default {
         ? this.poolData.poolAddress.toLowerCase() : '';
     },
     cards() {
-      if (!this.poolData) {
+      if (!this.poolData) { // TODO: move to template
         return [
           { subtitle: this.$t('staking.totalStaked') },
           { subtitle: this.$t('staking.totalDistributed') },
@@ -228,14 +231,6 @@ export default {
       ];
     },
     stakingCards() {
-      if (!this.poolData.rewardTotal) {
-        return [
-          { name: this.$t('staking.stakingCards.distributionTime') },
-          { name: this.$t('staking.stakingCards.rewardTotal') },
-          { name: this.$t('staking.stakingCards.takePeriod') },
-          { name: this.$t('staking.stakingCards.claimPeriod') },
-        ];
-      }
       return [
         {
           name: this.$t('staking.stakingCards.distributionTime'),
@@ -256,7 +251,7 @@ export default {
       ];
     },
     userInfoCards() {
-      if (!this.userInfo.staked) {
+      if (!this.userInfo.staked) { // TODO: move to template
         return [
           { name: this.$t('staking.userInformationCards.staked') },
           { name: this.$t('staking.userInformationCards.yourBalance') },
@@ -519,7 +514,7 @@ export default {
           const [txFee] = await Promise.all([
             this.$store.dispatch('wallet/getContractFeeData', {
               method: 'autoRenewal',
-              _abi: this.slug === StakingTypes.WUSD ? WQStakingNative : WQStaking,
+              _abi: this.slug === StakingTypes.WUSD ? WQStakingNative : WQStaking, // TODO: вынести в абстрактные методы
               contractAddress: this.poolAddress,
             }),
             this.$store.dispatch('wallet/getBalance'),

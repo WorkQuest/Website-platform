@@ -124,6 +124,8 @@ export default {
       const isNative = stakingType === StakingTypes.WUSD;
       const days = this.stakeDays[this.daysValue];
 
+      // TODO: разбить на составляющие
+
       this.hide();
       if (!isNative) { // Staking WQT
         this.SetLoader(true);
