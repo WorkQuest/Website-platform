@@ -118,9 +118,9 @@ export default {
   watch: {
     isShowMap(newVal) {
       this.search = '';
+      this.addresses = [];
       localStorage.setItem('isShowMap', newVal);
       this.$emit('isShowMap', this.isShowMap);
-      this.addresses = [];
     },
     distanceIndex() { this.zoom = { 0: 15, 1: 10, 2: 8 }[this.distanceIndex]; },
   },
