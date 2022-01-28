@@ -144,6 +144,7 @@ export default {
         },
         locationPlaceName: addInfo.address,
       },
+      // TODO: Починить валидацию в настройках
     };
     this.skills = {
       priorityIndex: this.userData.priority,
@@ -246,23 +247,30 @@ export default {
     },
 
     async checkValidate() {
-      const validateEducation = await this.validateKnowledge('education', this.newEducation);
-      const validateWorkExp = await this.validateKnowledge('work', this.newWorkExp);
+      const validateEducation = true;
+      const validateWorkExp = true;
+      // const validateEducation = await this.validateKnowledge('education', this.newEducation);
+      // const validateWorkExp = await this.validateKnowledge('work', this.newWorkExp);
       const validateSettings = await this.$refs.settings.validate();
-      if (validateSettings === false || validateEducation === false || validateWorkExp === false || this.isValidPhoneNumber === false) {
+      if (validateSettings === false
+        || validateEducation === false
+        || validateWorkExp === false
+        || this.isValidPhoneNumber === false) {
         return true;
       }
       this.validationError = false;
       return false;
     },
 
-    async validateKnowledge(observerName, value) {
-      const isDirty = Object.keys(value).some((field) => value[field] !== '' && value[field] !== null);
-      const refs = this.$refs.settings.$children[1].$refs;
-      if (isDirty && observerName === 'education') return refs.education.validate();
-      if (isDirty && observerName === 'work') return refs.work.validate();
-      return true;
-    },
+    // async validateKnowledge(observerName, value) {
+    //   let isDirty;
+    //   if (value) {
+    //     isDirty = Object.keys(value).some((field) => value[field] !== '' && value[field] !== null);
+    //     if (observerName === 'education' && isDirty) return this.$refs.settings.$children[1].$refs.education.validate();
+    //     if (observerName === 'work' && isDirty) return this.$refs.settings.$children[1].$refs.work.validate();
+    //   }
+    //   return false;
+    // },
 
     async setAvatar() {
       const formData = new FormData();
