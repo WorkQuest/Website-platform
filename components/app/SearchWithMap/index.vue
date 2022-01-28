@@ -60,7 +60,7 @@
         <div class="search__block-item">
           <base-btn
             data-selector="ACTION-CHANGE-MAP-CENTER"
-            @click="centerChange"
+            @click="searchHandler"
           >
             {{ isPageQuests ? $t('workers.searchQuests') : $t('workers.searchWorkers') }}
           </base-btn>
@@ -120,7 +120,7 @@ export default {
       this.search = '';
       localStorage.setItem('isShowMap', newVal);
       this.$emit('isShowMap', this.isShowMap);
-      if (!this.isShowMap) this.addresses = [];
+      this.addresses = [];
     },
     distanceIndex() { this.zoom = { 0: 15, 1: 10, 2: 8 }[this.distanceIndex]; },
   },
@@ -135,7 +135,7 @@ export default {
   beforeDestroy() { this.geoCode = null; },
   methods: {
     deFocus() { this.isSearchFocus = false; },
-    centerChange() {
+    searchHandler() {
       if (this.isShowMap && this.search) this.$store.dispatch('quests/setMapCenter', this.coordinates);
       else this.$emit('search', this.search);
     },
