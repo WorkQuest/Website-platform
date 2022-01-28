@@ -104,6 +104,7 @@
     "create": "Créer un compte"
   },
   "profile": {
+    "defaultName": "Nameless User",
     "raiseViews": "Augmenter les vues",
     "educations": "Éducation",
     "prevWorkExp": "Précédente expérience professionnelle",
@@ -452,7 +453,9 @@
     },
     "ui": {
       "showMap": "Afficher la carte",
-      "search": "Ville / Rue / Emplacement"
+      "searchOnQuestsPage": "Employer / Title / Description / City",
+      "searchOnWorkersPage": "Employee / City",
+      "searchWithMap": "Locality / City"
     },
     "worker": "Travailleur(se)",
     "raiseViews": "Augmenter les vues",

@@ -3,6 +3,7 @@
     <search-with-map
       class="employees__search"
       @isShowMap="isShowMap = $event"
+      @search="search = $event"
     />
     <div class="employees__content">
       <h2 class="employees__title">
@@ -51,6 +52,7 @@ export default {
   data() {
     return {
       page: 1,
+      search: '',
       query: {
         limit: 12,
         offset: 0,
@@ -84,6 +86,12 @@ export default {
       ) return;
       clearTimeout(this.boundsTimeout);
       this.boundsTimeout = setTimeout(async () => await this.fetchEmployeeList(true), 500);
+    },
+    async search() {
+      if (!this.isShowMap) {
+        this.query.q = this.search;
+        await this.fetchEmployeeList(true);
+      } else delete this.query.q;
     },
   },
   async mounted() {
@@ -149,17 +157,17 @@ export default {
       await this.fetchEmployeeList(true);
     },
     async sortByRating(value) {
-      if (!Object.keys(value).length) delete this.query['ratingStatus[0]'];
+      if (!Object.keys(value).length) delete this.query['ratingStatuses[0]'];
       else this.query = { ...this.query, ...value };
       await this.fetchEmployeeList(true);
     },
     async sortByPriority(value) {
-      if (!Object.keys(value).length) delete this.query['priority[0]'];
+      if (!Object.keys(value).length) delete this.query['priorities[0]'];
       else this.query = { ...this.query, ...value };
       await this.fetchEmployeeList(true);
     },
     async sortByWorkplace(value) {
-      if (!Object.keys(value).length) delete this.query['workplace[0]'];
+      if (!Object.keys(value).length) delete this.query['workplaces[0]'];
       else this.query = { ...this.query, ...value };
       await this.fetchEmployeeList(true);
     },

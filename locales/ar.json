@@ -104,6 +104,7 @@
     "create": "إنشاء حساب"
   },
   "profile": {
+    "defaultName": "Nameless User",
     "raiseViews": "زيادة المشاهدات",
     "educations": "التعليم",
     "prevWorkExp": "خبرة العمل السابقة",
@@ -452,7 +453,9 @@
     },
     "ui": {
       "showMap": "عرض الخريطة",
-      "search": "المدينة/الشارع/المكان"
+      "searchOnQuestsPage": "Employer / Title / Description / City",
+      "searchOnWorkersPage": "Employee / City",
+      "searchWithMap": "Locality / City"
     },
     "worker": "الموظف",
     "raiseViews": "زيادة المشاهدات",

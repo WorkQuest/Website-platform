@@ -96,7 +96,7 @@ export default {
     selectedSpec() {
       const specs = this.selectedSpecializations?.query || [];
       const query = {};
-      specs.forEach((item, i) => { query[`specialization[${i}]`] = item; });
+      specs.forEach((item, i) => { query[`specializations[${i}]`] = item; });
       return query;
     },
     ratingItems() {
@@ -127,7 +127,7 @@ export default {
     selectedSpec() { this.$emit('sortSpec', this.selectedSpec); },
     selectedRating() {
       const { selectedRating } = this;
-      const query = selectedRating ? { 'ratingStatus[0]': RatingFilter[selectedRating] } : {};
+      const query = selectedRating ? { 'ratingStatuses[0]': RatingFilter[selectedRating] } : {};
       this.$emit('sortRating', query);
     },
     selectedPriority() {
@@ -142,7 +142,7 @@ export default {
     },
     selectedWorkplace() {
       const { selectedWorkplace } = this;
-      const query = selectedWorkplace ? { 'workplace[0]': WorkplaceFilter[selectedWorkplace] } : {};
+      const query = selectedWorkplace ? { 'workplaces[0]': WorkplaceFilter[selectedWorkplace] } : {};
       this.$emit('sortWorkplace', query);
     },
     selectedPrice() {

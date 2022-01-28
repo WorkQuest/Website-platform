@@ -82,7 +82,7 @@
                 {{ quest.assignedWorker.firstName }} {{ quest.assignedWorker.lastName }}
               </div>
             </div>
-            <itemRating :rating="getRatingValue(quest)" />
+            <item-rating :rating="getRatingValue(quest)" />
           </div>
         </div>
         <div class="block__locate">
@@ -156,14 +156,10 @@ import Vue from 'vue';
 import { mapGetters } from 'vuex';
 import { QuestStatuses, questPriority } from '~/utils/enums';
 import modals from '~/store/modals/modals';
-import itemRating from '~/components/app/info/item-rating';
 
 const value = new Vue();
 export default {
   name: 'QuestsTab',
-  components: {
-    itemRating,
-  },
   props: {
     quest: {
       type: Object,
@@ -440,15 +436,15 @@ export default {
     height: 20px;
     &_higher {
       @extend .status__levels;
-      background-color: #F6CF00;
+      background-color: $yellow100;
     }
     &_reliable {
       @extend .status__levels;
-      background-color: #BBC0C7;
+      background-color: $grey200;
     }
     &_checked {
       @extend .status__levels;
-      background-color: #B79768;
+      background-color: $brown;
     }
     &_disabled {
       display: none;
