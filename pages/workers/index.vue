@@ -114,7 +114,7 @@ export default {
       if (this.isFetching) return;
       this.isFetching = true;
 
-      if (this.isShowMap) {
+      if (this.isShowMap && this.search) {
         if (!Object.keys(this.mapBounds).length) {
           this.isFetching = false;
           return;

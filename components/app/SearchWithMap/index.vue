@@ -9,7 +9,10 @@
       class="search-with-map__search search"
       :class="{'search_on-map': isShowMap}"
     >
-      <div class="search__block">
+      <div
+        class="search__block"
+        :class="{'search__block_without-map': !isShowMap}"
+      >
         <base-checkbox
           v-model="isShowMap"
           :label="$t('quests.ui.showMap')"
@@ -47,6 +50,7 @@
           </template>
         </base-field>
         <base-dd
+          v-if="isShowMap"
           v-model="distanceIndex"
           class="search__block-item search__distances"
           data-selector="ACTION-CHANGE-DISTANCE"
@@ -174,6 +178,9 @@ export default {
     grid-template-columns: 155px 1fr 143px 260px;
 
     @include box;
+    &_without-map {
+      grid-template-columns: 155px 1fr 260px;
+    }
   }
 
   &__block-item {
@@ -225,6 +232,9 @@ export default {
 
     &__block {
       grid-template-columns: 155px 1fr 143px 220px;
+      &_without-map {
+        grid-template-columns: 155px 1fr 220px;
+      }
     }
   }
 }
