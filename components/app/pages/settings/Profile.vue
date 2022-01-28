@@ -186,7 +186,6 @@
             ref="education"
             tag="div"
             class="profile__validation"
-            mode="passive"
           >
             <add-form
               :item="newEducation"
