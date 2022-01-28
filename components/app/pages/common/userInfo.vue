@@ -464,12 +464,12 @@ export default {
     align-items: flex-end;
     height: 43px;
   }
-}
-.contact__icon {
-  @extend .icon;
-  color: $black500;
-  font-size: 20px;
-  margin-right: 5px;
+  &__icon {
+    @extend .icon;
+    color: $black500;
+    font-size: 20px;
+    margin-right: 5px;
+  }
 }
 .rating {
   &__star {
