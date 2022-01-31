@@ -136,8 +136,8 @@ export default {
   &_share-user-info {
     @include share-user;
     transition: .5s;
-    height: 24px;
-    width: 24px;
+    height: 35px;
+    width: 35px;
     &:hover {
       @include share-user;
       filter: brightness(70%);

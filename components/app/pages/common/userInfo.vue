@@ -535,7 +535,7 @@ export default {
     }
   }
 }
-@include _575 {
+@include _767 {
   .info-grid {
     flex-direction: column;
     align-items: center;
