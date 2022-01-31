@@ -148,9 +148,10 @@ export default {
     selectedPrice() {
       const { selectedPrice: { from, to } } = this;
       const query = {};
+      const queryName = this.userRole === UserRole.EMPLOYER ? 'betweenWagePerHour' : 'priceBetween';
       if (from || to) {
-        query['betweenWagePerHour[from]'] = from || 0;
-        query['betweenWagePerHour[to]'] = to || 99999999999999;
+        query[`${queryName}[from]`] = from || 0;
+        query[`${queryName}[to]`] = to || 99999999999999;
       }
       this.$emit('sortPrice', query);
     },
