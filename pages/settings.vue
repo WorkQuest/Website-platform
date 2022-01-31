@@ -158,7 +158,6 @@ export default {
   },
   methods: {
     validationRefs(data) {
-      console.log('validationRef', data);
       this.valRefs = data;
       return this.valRefs;
     },
