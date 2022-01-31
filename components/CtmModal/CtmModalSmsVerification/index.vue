@@ -4,7 +4,7 @@
     class="verification"
   >
     <div class="verification__content content">
-      <div v-if="numberIsVerified()">
+      <div v-if="numberIsVerified() === true">
         <img
           src="~assets/img/ui/warning.svg"
           alt="Already Verified!"
@@ -41,7 +41,7 @@
         </div>
       </div>
       <validation-observer
-        v-if="numberNotVerified()"
+        v-if="numberIsVerified() === false"
         v-slot="{handleSubmit, validated, passed, invalid}"
       >
         <div class="content__subtitle">
@@ -126,6 +126,7 @@ export default {
     return {
       confirmCode: '',
       step: 1,
+      isVerified: '',
     };
   },
   computed: {
@@ -139,15 +140,15 @@ export default {
     this.confirmCode = this.currentConfirmCode;
   },
   methods: {
-    numberNotVerified() {
-      if (this.secondNumber && this.userData.tempPhone && this.userData.tempPhone.fullPhone
-        !== this.secondNumber.fullPhone) return true;
-      return this.secondNumber.fullPhone !== this.userData.phone.fullPhone;
-    },
     numberIsVerified() {
-      if (this.secondNumber && this.userData.tempPhone && this.userData.tempPhone.fullPhone
-        === this.secondNumber.fullPhone) return true;
-      return this.secondNumber.fullPhone === this.userData.phone.fullPhone;
+      if (this.secondNumber && this.userData.tempPhone) {
+        if (this.userData.tempPhone.fullPhone === this.secondNumber.fullPhone
+          && this.secondNumber.fullPhone === this.userData.phone.fullPhone) {
+          this.isVerified = true; return this.isVerified;
+        }
+        this.isVerified = false; return this.isVerified;
+      }
+      return '';
     },
     hide() {
       this.CloseModal();
