@@ -442,15 +442,15 @@ export default {
     height: 20px;
     &_higher {
       @extend .status__levels;
-      background-color: #F6CF00;
+      background-color: $yellow100;
     }
     &_reliable {
       @extend .status__levels;
-      background-color: #BBC0C7;
+      background-color: $grey200;
     }
     &_checked {
       @extend .status__levels;
-      background-color: #B79768;
+      background-color: $brown;
     }
     &_disabled {
       display: none;

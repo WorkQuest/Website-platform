@@ -3,6 +3,7 @@
     <search-with-map
       class="quests__search"
       @isShowMap="isShowMap = $event"
+      @search="search = $event"
     />
     <div class="quests__content">
       <h2 class="quests__title">
@@ -50,6 +51,7 @@ export default {
   data() {
     return {
       page: 1,
+      search: '',
       query: {
         limit: 5,
         offset: 0,
@@ -59,6 +61,7 @@ export default {
       isShowMap: true,
       isFetching: false,
       boundsTimeout: null,
+      searchTimeout: null,
     };
   },
   computed: {
@@ -84,6 +87,13 @@ export default {
       clearTimeout(this.boundsTimeout);
       this.boundsTimeout = setTimeout(async () => await this.fetchQuestsList(true), 500);
     },
+    async search() {
+      if (!this.isShowMap) {
+        this.query.q = this.search;
+        clearTimeout(this.searchTimeout);
+        this.searchTimeout = setTimeout(async () => await this.fetchQuestsList(true), 300);
+      } else delete this.query.q;
+    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -94,6 +104,7 @@ export default {
   },
   beforeDestroy() {
     clearTimeout(this.boundsTimeout);
+    clearTimeout(this.searchTimeout);
     this.$store.commit('quests/setAllQuests', { count: null, quests: [] });
   },
   methods: {
@@ -110,21 +121,19 @@ export default {
           this.isFetching = false;
           return;
         }
-        this.query['north[longitude]'] = this.mapBounds.northEast.lng;
-        this.query['north[latitude]'] = this.mapBounds.northEast.lat;
-        this.query['south[longitude]'] = this.mapBounds.southWest.lng;
-        this.query['south[latitude]'] = this.mapBounds.southWest.lat;
+        this.query['northAndSouthCoordinates[north][longitude]'] = this.mapBounds.northEast.lng;
+        this.query['northAndSouthCoordinates[north][latitude]'] = this.mapBounds.northEast.lat;
+        this.query['northAndSouthCoordinates[south][longitude]'] = this.mapBounds.southWest.lng;
+        this.query['northAndSouthCoordinates[south][latitude]'] = this.mapBounds.southWest.lat;
       } else {
-        delete this.query['north[longitude]'];
-        delete this.query['north[latitude]'];
-        delete this.query['south[longitude]'];
-        delete this.query['south[latitude]'];
+        delete this.query['northAndSouthCoordinates[north][longitude]'];
+        delete this.query['northAndSouthCoordinates[north][latitude]'];
+        delete this.query['northAndSouthCoordinates[south][longitude]'];
+        delete this.query['northAndSouthCoordinates[south][latitude]'];
       }
-
       if (isResetPage) this.page = 1;
       const { query: { limit }, page } = this;
       this.query.offset = (page - 1) * limit;
-
       await this.$store.dispatch('quests/getAllQuests', {
         query: this.query,
         specFilter: this.specFilter,
@@ -148,12 +157,12 @@ export default {
       await this.fetchQuestsList(true);
     },
     async sortByPriority(value) {
-      if (!Object.keys(value).length) delete this.query['priority[0]'];
+      if (!Object.keys(value).length) delete this.query['priorities[0]'];
       else this.query = { ...this.query, ...value };
       await this.fetchQuestsList(true);
     },
     async sortByWorkplace(value) {
-      if (!Object.keys(value).length) delete this.query['workplace[0]'];
+      if (!Object.keys(value).length) delete this.query['workplaces[0]'];
       else this.query = { ...this.query, ...value };
       await this.fetchQuestsList(true);
     },

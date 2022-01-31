@@ -96,7 +96,7 @@ export default {
     selectedSpec() {
       const specs = this.selectedSpecializations?.query || [];
       const query = {};
-      specs.forEach((item, i) => { query[`specialization[${i}]`] = item; });
+      specs.forEach((item, i) => { query[`specializations[${i}]`] = item; });
       return query;
     },
     ratingItems() {
@@ -127,12 +127,12 @@ export default {
     selectedSpec() { this.$emit('sortSpec', this.selectedSpec); },
     selectedRating() {
       const { selectedRating } = this;
-      const query = selectedRating ? { 'ratingStatus[0]': RatingFilter[selectedRating] } : {};
+      const query = selectedRating ? { 'ratingStatuses[0]': RatingFilter[selectedRating] } : {};
       this.$emit('sortRating', query);
     },
     selectedPriority() {
       const { selectedPriority } = this;
-      const query = selectedPriority ? { 'priority[0]': PriorityFilter[selectedPriority].value } : {};
+      const query = selectedPriority ? { 'priorities[0]': PriorityFilter[selectedPriority].value } : {};
       this.$emit('sortPriority', query);
     },
     selectedTypeOfJob() {
@@ -142,15 +142,16 @@ export default {
     },
     selectedWorkplace() {
       const { selectedWorkplace } = this;
-      const query = selectedWorkplace ? { 'workplace[0]': WorkplaceFilter[selectedWorkplace] } : {};
+      const query = selectedWorkplace ? { 'workplaces[0]': WorkplaceFilter[selectedWorkplace] } : {};
       this.$emit('sortWorkplace', query);
     },
     selectedPrice() {
       const { selectedPrice: { from, to } } = this;
       const query = {};
+      const queryName = this.userRole === UserRole.EMPLOYER ? 'betweenWagePerHour' : 'priceBetween';
       if (from || to) {
-        query['betweenWagePerHour[from]'] = from || 0;
-        query['betweenWagePerHour[to]'] = to || 99999999999999;
+        query[`${queryName}[from]`] = from || 0;
+        query[`${queryName}[to]`] = to || 99999999999999;
       }
       this.$emit('sortPrice', query);
     },

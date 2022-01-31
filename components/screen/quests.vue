@@ -101,6 +101,7 @@
               <button
                 v-if="item.type !== 3"
                 class="block__btn"
+                data-selector="ACTION-SHOW-DETAILS"
               >
                 <div class="block__text block__text_details">
                   {{ $t('meta.details') }}
