@@ -102,8 +102,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .icon {
-  color: $black800;
-
   &-btn {
     &_left {
       padding-right: 5px;
