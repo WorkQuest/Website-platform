@@ -3,52 +3,57 @@
     class="stake"
     :title="$t('mining.stake')"
   >
-    <div class="stake__content content">
-      <validation-observer v-slot="{handleSubmit, valid}">
-        <base-field
-          v-model="amount"
-          :placeholder="1000"
-          class="content__field"
-          type="number"
-          :label="$t('modals.amount')"
-          :name="$t('modals.amount')"
-          :rules="`required|decimal|decimalPlaces:18|is_not:0|max_value:${stakeAmountLimit}|min_value:${minStakeAmount}`"
+    <validation-observer
+      v-slot="{handleSubmit, valid}"
+      tag="div"
+      class="stake__content content"
+    >
+      <base-field
+        v-model="amount"
+        :placeholder="1000"
+        class="content__field"
+        type="number"
+        :label="$t('modals.amount')"
+        :name="$t('modals.amount')"
+        :rules="`required|decimal|decimalPlaces:18|is_not:0|max_value:${stakeAmountLimit}|min_value:${minStakeAmount}`"
+      >
+        <template v-slot:right-absolute>
+          <base-btn
+            mode="max"
+            class="content__max-button"
+            @click="maxAmount()"
+          >
+            <span class="max__text">{{ $t('modals.maximum') }}</span>
+          </base-btn>
+        </template>
+      </base-field>
+      <div
+        v-if="!isStakingStarted"
+        class="content__field&quot;"
+      >
+        {{ $t('staking.stakeDays') }}
+        <base-dd
+          v-model="daysValue"
+          class="content__days-dd"
+          :placeholder="30"
+          :items="stakeDays"
+        />
+      </div>
+      <div class="content__actions">
+        <base-btn
+          :mode="'outline'"
+          @click="hide()"
         >
-          <template v-slot:right-absolute>
-            <base-btn
-              mode="max"
-              class="content__max-button"
-              @click="maxAmount()"
-            >
-              <span class="max__text">{{ $t('modals.maximum') }}</span>
-            </base-btn>
-          </template>
-        </base-field>
-        <div v-if="!isStakingStarted">
-          {{ $t('staking.stakeDays') }}
-          <base-dd
-            v-model="daysValue"
-            class="content__days-dd"
-            :placeholder="30"
-            :items="stakeDays"
-          />
-        </div>
-        <div class="content__actions">
-          <base-btn
-            :mode="'outline'"
-            @click="hide()"
-          >
-            {{ $t('meta.cancel') }}
-          </base-btn>
-          <base-btn
-            :disabled="!valid"
-            @click="handleSubmit(onSubmit)"
-          >
-            {{ $t('meta.submit') }}
-          </base-btn>
-        </div>
-      </validation-observer>
-    </div>
+          {{ $t('meta.cancel') }}
+        </base-btn>
+        <base-btn
+          :disabled="!valid"
+          @click="handleSubmit(onSubmit)"
+        >
+          {{ $t('meta.submit') }}
+        </base-btn>
+      </div>
+    </validation-observer>
   </ctm-modal-box>
 </template>
 
@@ -76,21 +81,11 @@ export default {
       stakingPoolsData: 'wallet/getStakingPoolsData',
       stakingUserData: 'wallet/getStakingUserData',
     }),
-    isStakingStarted() {
-      return this.userInfo.isStakingStarted;
-    },
-    stakingType() {
-      return this.options.stakingType;
-    },
-    userInfo() {
-      return this.stakingUserData[this.stakingType];
-    },
-    poolData() {
-      return this.stakingPoolsData[this.stakingType];
-    },
-    minStakeAmount() {
-      return this.stakingPoolsData[this.stakingType].fullMinStake;
-    },
+    isStakingStarted() { return this.userInfo.isStakingStarted; },
+    stakingType() { return this.options.stakingType; },
+    userInfo() { return this.stakingUserData[this.stakingType]; },
+    poolData() { return this.stakingPoolsData[this.stakingType]; },
+    minStakeAmount() { return this.stakingPoolsData[this.stakingType].fullMinStake; },
     stakeAmountLimit() {
       const balance = this.balanceData[this.stakingType].fullBalance;
       const max = this.poolData.fullMaxStake;
@@ -108,12 +103,8 @@ export default {
     await this.updateBalances();
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
-    maxAmount() {
-      this.amount = this.stakeAmountLimit;
-    },
+    hide() { this.CloseModal(); },
+    maxAmount() { this.amount = this.stakeAmountLimit; },
     async updateBalances() {
       await Promise.all([
         this.$store.dispatch('wallet/getBalance'),

@@ -201,19 +201,10 @@ export default {
       stakingPoolsData: 'wallet/getStakingPoolsData',
       stakingUserData: 'wallet/getStakingUserData',
     }),
-    slug() {
-      return this.$route.params.id.toUpperCase();
-    },
-    userInfo() {
-      return this.stakingUserData[this.slug];
-    },
-    poolData() {
-      return this.stakingPoolsData[this.slug];
-    },
-    poolAddress() {
-      return this.poolData && this.poolData.poolAddress
-        ? this.poolData.poolAddress.toLowerCase() : '';
-    },
+    slug() { return this.$route.params.id.toUpperCase(); },
+    userInfo() { return this.stakingUserData[this.slug]; },
+    poolData() { return this.stakingPoolsData[this.slug]; },
+    poolAddress() { return this?.poolData?.poolAddress ? this.poolData.poolAddress.toLowerCase() : ''; },
     cards() {
       return [
         {

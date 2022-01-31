@@ -79,24 +79,16 @@ export default {
       stakingPoolsData: 'wallet/getStakingPoolsData',
       stakingUserData: 'wallet/getStakingUserData',
     }),
-    userInfo() {
-      return this.stakingUserData[this.options.stakingType];
-    },
-    poolData() {
-      return this.stakingPoolsData[this.options.stakingType];
-    },
+    userInfo() { return this.stakingUserData[this.options.stakingType]; },
+    poolData() { return this.stakingPoolsData[this.options.stakingType]; },
     poolAddress() {
       return this.poolData && this.poolData.poolAddress
         ? this.poolData.poolAddress.toLowerCase() : '';
     },
   },
-  mounted() {
-    this.balance = this.options.balance;
-  },
+  mounted() { this.balance = this.options.balance; },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
+    hide() { this.CloseModal(); },
     getInputRules() {
       const min = this.options.minStake ? `|min_value:${this.options.minStake}` : '|min_value:0.00001';
       let max = '';
