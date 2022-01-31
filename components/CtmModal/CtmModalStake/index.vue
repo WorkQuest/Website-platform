@@ -12,7 +12,7 @@
           type="number"
           :label="$t('modals.amount')"
           :name="$t('modals.amount')"
-          :rules="`required|decimal|decimalPlaces:18|is_not:0|max_value:${stakeAmountLimit}`"
+          :rules="`required|decimal|decimalPlaces:18|is_not:0|max_value:${stakeAmountLimit}|min_value:${minStakeAmount}`"
         >
           <template v-slot:right-absolute>
             <base-btn
@@ -55,7 +55,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
-import { WQStaking, WQStakingNative, ERC20 } from '~/abi/abi';
 import { StakingTypes, TokenSymbols } from '~/utils/enums';
 import { getWalletAddress } from '~/utils/wallet';
 import modals from '~/store/modals/modals';
@@ -88,6 +87,9 @@ export default {
     },
     poolData() {
       return this.stakingPoolsData[this.stakingType];
+    },
+    minStakeAmount() {
+      return this.stakingPoolsData[this.stakingType].fullMinStake;
     },
     stakeAmountLimit() {
       const balance = this.balanceData[this.stakingType].fullBalance;
@@ -124,74 +126,80 @@ export default {
       const isNative = stakingType === StakingTypes.WUSD;
       const days = this.stakeDays[this.daysValue];
 
-      // TODO: разбить на составляющие
-
       this.hide();
-      if (!isNative) { // Staking WQT
+
+      // Staking WQT
+      if (!isNative) {
         this.SetLoader(true);
-        const [allowance] = await Promise.all([
-          this.$store.dispatch('wallet/getAllowance', {
-            tokenAddress: stakeTokenAddress,
-            spenderAddress: poolAddress,
-          }),
-          this.updateBalances(),
-        ]);
-        if (allowance === false) {
-          await this.$store.dispatch('main/showToast', { text: 'get allowance error' });
-          this.SetLoader(false);
-          return;
-        }
+        const allowance = await this.getAllowance(stakeTokenAddress, poolAddress);
+        if (!allowance) return;
         if (new BigNumber(allowance).isLessThan(amount)) {
-          const txFee = await this.$store.dispatch('wallet/getContractFeeData', {
-            _abi: ERC20,
-            method: 'approve',
-            contractAddress: stakeTokenAddress,
-            data: [poolAddress, new BigNumber(fullMaxStake).shiftedBy(18).toString()],
-          });
-          if (!txFee.ok) {
-            await this.$store.dispatch('main/showToast', {
-              text: txFee.message,
-            });
-            this.SetLoader(false);
-            this.CloseModal();
-            return;
-          }
-          this.SetLoader(false);
-          this.ShowModal({
-            key: modals.transactionReceipt,
-            title: this.$t('mining.approve'),
-            fields: {
-              from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-              to: { name: this.$t('modals.toAddress'), value: poolAddress },
-              fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
-            },
-            isShowSuccess: false,
-            submitMethod: async () => {
-              const successApprove = await this.$store.dispatch('wallet/approve', {
-                tokenAddress: stakeTokenAddress,
-                spenderAddress: poolAddress,
-                amount: fullMaxStake,
-              });
-              if (!successApprove) {
-                await this.$store.dispatch('main/showToast', { title: this.$t('mining.approve'), text: this.$t('modals.failed') });
-                this.SetLoader(false);
-                return error();
-              }
-              await this.$store.dispatch('main/showToast', { title: this.$t('mining.approve'), text: this.$t('modals.success') });
-              return success();
-            },
-            callback: async () => await this.stake(stakeTokenAddress, poolAddress, amount, stakingType, days, isStakingStarted),
-          });
+          await this.approveThenStake(stakeTokenAddress, poolAddress, fullMaxStake, amount, stakingType, days, isStakingStarted);
         } else {
           await this.stake(stakeTokenAddress, poolAddress, amount, stakingType, days, isStakingStarted);
         }
         return;
       }
+
+      // Staking WUSD
       await this.stake(stakeTokenAddress, poolAddress, amount, stakingType);
+    },
+    async getAllowance(stakeTokenAddress, poolAddress) {
+      const [allowance] = await Promise.all([
+        this.$store.dispatch('wallet/getAllowance', {
+          tokenAddress: stakeTokenAddress,
+          spenderAddress: poolAddress,
+        }),
+        this.updateBalances(),
+      ]);
+      if (allowance === false) {
+        await this.$store.dispatch('main/showToast', { text: 'get allowance error' });
+        this.SetLoader(false);
+        return null;
+      }
+      return allowance;
+    },
+    async approveThenStake(stakeTokenAddress, poolAddress, fullMaxStake, amount, stakingType, days, isStakingStarted) {
+      const txFee = await this.$store.dispatch('wallet/getStakingApproveFeeData', {
+        stakeTokenAddress, poolAddress, fullMaxStake,
+      });
+      if (!txFee.ok) {
+        await this.$store.dispatch('main/showToast', { text: txFee.message });
+        this.SetLoader(false);
+        this.CloseModal();
+        return;
+      }
+      this.SetLoader(false);
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        title: this.$t('mining.approve'),
+        fields: {
+          from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
+          to: { name: this.$t('modals.toAddress'), value: poolAddress },
+          fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
+        },
+        isShowSuccess: false,
+        submitMethod: async () => {
+          const successApprove = await this.$store.dispatch('wallet/approve', {
+            tokenAddress: stakeTokenAddress,
+            spenderAddress: poolAddress,
+            amount: fullMaxStake,
+          });
+          if (!successApprove) {
+            await this.$store.dispatch('main/showToast', { title: this.$t('mining.approve'), text: this.$t('modals.failed') });
+            this.SetLoader(false);
+            return error();
+          }
+          await this.$store.dispatch('main/showToast', { title: this.$t('mining.approve'), text: this.$t('modals.success') });
+          return success();
+        },
+        callback: async () => await this.stake(stakeTokenAddress, poolAddress, amount, stakingType, days, isStakingStarted),
+      });
     },
     async stake(stakeTokenAddress, poolAddress, amount, stakingType, days, isStakingStarted) {
       this.SetLoader(true);
       const txFee = await this.getStakeFeeForAmount(amount, stakingType, poolAddress, days);
+      this.SetLoader(false);
       if (!txFee.ok) {
         if (txFee.msg.includes('You cannot stake tokens yet')) {
           await this.$store.dispatch('main/showToast', {
@@ -201,10 +209,9 @@ export default {
         } else {
           await this.$store.dispatch('main/showToast', { title: this.$t('staking.stake'), text: this.$t('modals.failed') });
         }
-        this.SetLoader(false);
         return;
       }
-      this.SetLoader(false);
+
       this.ShowModal({
         key: modals.transactionReceipt,
         title: `${this.$t('staking.stake')} ${stakingType}`,
@@ -234,13 +241,8 @@ export default {
       });
     },
     async getStakeFeeForAmount(amount, stakingType, poolAddress, days) {
-      const isNative = stakingType === StakingTypes.WUSD;
-      return await this.$store.dispatch('wallet/getContractFeeData', {
-        _abi: isNative ? WQStakingNative : WQStaking,
-        contractAddress: poolAddress,
-        method: 'stake',
-        amount: isNative ? amount : null,
-        data: isNative ? null : [new BigNumber(amount).shiftedBy(18).toString(), days.toString()],
+      return this.$store.dispatch('wallet/getStakeFeeForAmount', {
+        amount, stakingType, poolAddress, days,
       });
     },
   },

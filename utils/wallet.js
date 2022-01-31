@@ -363,6 +363,7 @@ export const pensionExtendLockTime = async () => {
   }
 };
 
+/** Staking */
 export const stake = async (stakingType, amount, poolAddress, duration) => {
   try {
     amount = new BigNumber(amount).shiftedBy(18).toString();
@@ -371,7 +372,7 @@ export const stake = async (stakingType, amount, poolAddress, duration) => {
       res = await sendTransaction(
         'stake',
         {
-          abi: abi.WQStakingNative,
+          abi: abi.WQStaking,
           address: poolAddress,
           data: [amount, duration.toString()],
         },
@@ -379,12 +380,12 @@ export const stake = async (stakingType, amount, poolAddress, duration) => {
       );
       return success(res);
     }
-    const inst = new web3.eth.Contract(WQStakingNative, poolAddress);
+    const inst = new web3.eth.Contract(abi.WQStakingNative, poolAddress);
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
       inst.methods.stake.apply(null, []).estimateGas({ from: wallet.address, value: amount }),
     ]);
-    res = await web3.eth.sendTransaction({
+    res = await inst.methods.stake().send({
       from: wallet.address,
       to: poolAddress,
       value: amount,

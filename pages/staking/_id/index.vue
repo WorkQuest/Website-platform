@@ -75,7 +75,10 @@
             :key="i"
             class="info-block__half"
           >
-            <div class="info-block__title_big info-block__title_blue">
+            <div
+              v-if="poolData.poolAddress"
+              class="info-block__title_big info-block__title_blue"
+            >
               {{ item.title }}
             </div>
             <div class="info-block__title_small">
@@ -97,7 +100,7 @@
                 {{ item.name }}
               </div>
               <div
-                v-if="poolData.rewardTotal"
+                v-if="poolData.poolAddress"
                 class="info-card__about"
               >
                 {{ item.about }}
@@ -118,7 +121,10 @@
               <div class="info-card__name">
                 {{ item.name }}
               </div>
-              <div class="info-card__about">
+              <div
+                v-if="userInfo.staked"
+                class="info-card__about"
+              >
                 {{ item.about }}
               </div>
             </div>
@@ -178,12 +184,8 @@ import moment from 'moment';
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import {
-  Chains, NativeTokenSymbolByChainId, StakingTypes, TokenSymbols,
-} from '~/utils/enums';
+import { StakingTypes, TokenSymbols } from '~/utils/enums';
 import { getWalletAddress } from '~/utils/wallet';
-import * as abi from '~/abi/abi';
-import { WQStaking, WQStakingNative } from '~/abi/abi';
 
 export default {
   name: 'StakingPool',
@@ -213,12 +215,6 @@ export default {
         ? this.poolData.poolAddress.toLowerCase() : '';
     },
     cards() {
-      if (!this.poolData) { // TODO: move to template
-        return [
-          { subtitle: this.$t('staking.totalStaked') },
-          { subtitle: this.$t('staking.totalDistributed') },
-        ];
-      }
       return [
         {
           title: this.$t(`staking.${this.poolData.stakeTokenSymbol || this.slug}Count`, { n: this.NumberWithSpaces(this.poolData.totalStaked) }),
@@ -251,13 +247,6 @@ export default {
       ];
     },
     userInfoCards() {
-      if (!this.userInfo.staked) { // TODO: move to template
-        return [
-          { name: this.$t('staking.userInformationCards.staked') },
-          { name: this.$t('staking.userInformationCards.yourBalance') },
-          { name: this.$t('staking.userInformationCards.claimed') },
-        ];
-      }
       const data = [
         {
           name: this.$t('staking.userInformationCards.staked'),
@@ -268,7 +257,6 @@ export default {
           about: this.$t(`staking.${this.slug}Count`, { n: this.NumberWithSpaces(this.userInfo.balance || '') }),
         },
         {
-          // name: this.$t('staking.userInformationCards.claimed'),
           name: this.$t('mining.reward'),
           about: this.$t(`staking.${this.slug}Count`, { n: this.NumberWithSpaces(this.userInfo.claim || '') }),
         },
@@ -371,16 +359,15 @@ export default {
       }
       this.SetLoader(true);
       const [txFee] = await Promise.all([
-        this.$store.dispatch('wallet/getContractFeeData', {
-          method: 'claim',
-          _abi: this.slug === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStaking,
-          contractAddress: this.poolData.poolAddress,
+        this.$store.dispatch('wallet/getStakingClaimFeeData', {
+          stakingType: this.slug,
+          poolAddress: this.poolAddress,
         }),
         this.$store.dispatch('wallet/getBalance'),
       ]);
       this.SetLoader(false);
       if (!txFee.ok) {
-        if (txFee.msg.includes('You cannot claim tokens yet')) {
+        if (txFee.msg.includes('You cannot claim tokens yet') || txFee.msg.includes('You cannot stake tokens yet')) {
           await this.ShowModal({
             key: modals.status,
             img: require('~/assets/img/ui/warning.svg'),
@@ -420,13 +407,12 @@ export default {
         });
         return;
       }
+      // For not native token exists lock duration
       if (this.slug !== StakingTypes.WUSD) {
         this.SetLoader(true);
-        const txFee = await this.$store.dispatch('wallet/getContractFeeData', {
-          method: 'unstake',
-          _abi: this.slug === StakingTypes.WUSD ? WQStakingNative : WQStaking,
-          contractAddress: this.poolAddress,
-          data: ['1'],
+        const txFee = await this.$store.dispatch('wallet/getStakingUnstakeFeeData', {
+          poolAddress: this.poolAddress,
+          stakingType: this.slug,
         });
         this.SetLoader(false);
         if (!txFee.ok) {
@@ -438,9 +424,7 @@ export default {
               subtitle: this.$t('staking.stakeDurationIsNotOver'),
             });
           } else {
-            await this.$store.dispatch('main/showToast', {
-              text: txFee.msg,
-            });
+            await this.$store.dispatch('main/showToast', { text: txFee.msg });
           }
           return;
         }
@@ -512,10 +496,9 @@ export default {
         callback: async () => {
           this.SetLoader(true);
           const [txFee] = await Promise.all([
-            this.$store.dispatch('wallet/getContractFeeData', {
-              method: 'autoRenewal',
-              _abi: this.slug === StakingTypes.WUSD ? WQStakingNative : WQStaking, // TODO: вынести в абстрактные методы
-              contractAddress: this.poolAddress,
+            this.$store.dispatch('wallet/getStakingRenewalFeeData', {
+              stakingType: this.slug,
+              poolAddress: this.poolAddress,
             }),
             this.$store.dispatch('wallet/getBalance'),
           ]);
@@ -524,7 +507,7 @@ export default {
             if (txFee.msg.includes('You cannot claim tokens yet') || txFee.msg.includes('You cannot stake tokens yet')) {
               await this.$store.dispatch('main/showToast', {
                 title: this.$t('staking.autoRenewal'),
-                text: this.$t('staking.cannotClaimYet'),
+                text: this.$t('staking.cannotStakeYet'),
               });
             } else {
               await this.$store.dispatch('main/showToast', {

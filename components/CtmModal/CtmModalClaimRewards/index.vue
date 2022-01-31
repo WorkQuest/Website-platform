@@ -55,7 +55,6 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { StakingTypes } from '~/utils/enums';
-import { WQStaking, WQStakingNative } from '~/abi/abi';
 import { getWalletAddress } from '~/utils/wallet';
 
 export default {
@@ -157,17 +156,15 @@ export default {
       this.SetLoader(true);
       const { updateMethod, stakingType, decimals } = this.options;
       const { poolAddress, amount } = this;
-      // for staking
       if (stakingType !== StakingTypes.WQT && stakingType !== StakingTypes.WUSD) await this.checkMetamaskStatus();
       if (this.checkAmount()) {
         this.hide();
-        if (stakingType === StakingTypes.WQT || StakingTypes.WUSD) {
+        if (stakingType === StakingTypes.WQT || stakingType === StakingTypes.WUSD) {
           const [txFee] = await Promise.all([
-            this.$store.dispatch('wallet/getContractFeeData', {
-              method: 'unstake',
-              _abi: stakingType === StakingTypes.WUSD ? WQStakingNative : WQStaking,
-              contractAddress: poolAddress,
-              data: [new BigNumber(amount).shiftedBy(18).toString()],
+            this.$store.dispatch('wallet/getStakingUnstakeFeeData', {
+              stakingType,
+              poolAddress,
+              amount,
             }),
             this.$store.dispatch('wallet/getBalance'),
           ]);

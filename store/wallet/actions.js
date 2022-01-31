@@ -290,13 +290,59 @@ export default {
   async stake({ commit }, {
     stakingType, amount, poolAddress, duration,
   }) {
-    return stake(stakingType, amount, poolAddress, duration);
+    return await stake(stakingType, amount, poolAddress, duration);
+  },
+  async getStakingUnstakeFeeData({ dispatch }, { stakingType, poolAddress, amount }) {
+    const _abi = stakingType === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStaking;
+    return await dispatch('getContractFeeData', {
+      method: 'unstake',
+      _abi,
+      contractAddress: poolAddress,
+      data: [amount ? new BigNumber(amount).shiftedBy(18).toString() : '1'],
+    });
+  },
+  async getStakingRenewalFeeData({ dispatch }, { stakingType, poolAddress }) {
+    const _abi = stakingType === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStaking;
+    return await dispatch('getContractFeeData', {
+      method: 'autoRenewal',
+      _abi,
+      contractAddress: poolAddress,
+    });
+  },
+  async getStakingClaimFeeData({ dispatch }, { stakingType, poolAddress }) {
+    const _abi = stakingType === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStaking;
+    return await dispatch('getContractFeeData', {
+      method: 'claim',
+      _abi,
+      contractAddress: poolAddress,
+    });
+  },
+  async getStakeFeeForAmount({ dispatch }, {
+    amount, stakingType, poolAddress, days,
+  }) {
+    const isNative = stakingType === StakingTypes.WUSD;
+    return await dispatch('getContractFeeData', {
+      _abi: isNative ? abi.WQStakingNative : abi.WQStaking,
+      contractAddress: poolAddress,
+      method: 'stake',
+      amount: isNative ? amount : null,
+      data: isNative ? null : [new BigNumber(amount).shiftedBy(18).toString(), days.toString()],
+    });
+  },
+  async getStakingApproveFeeData({ dispatch }, { stakeTokenAddress, poolAddress, fullMaxStake }) {
+    fullMaxStake = new BigNumber(fullMaxStake).shiftedBy(18).toString();
+    return await dispatch('getContractFeeData', {
+      _abi: abi.ERC20,
+      method: 'approve',
+      contractAddress: stakeTokenAddress,
+      data: [poolAddress, fullMaxStake],
+    });
   },
   async stakingUnstake({ commit }, { amount, stakingType, poolAddress }) {
     try {
       amount = new BigNumber(amount).shiftedBy(18).toString();
       const _abi = stakingType === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStaking;
-      const res = sendTransaction(
+      const res = await sendTransaction(
         'unstake',
         {
           abi: _abi,
@@ -309,10 +355,6 @@ export default {
       console.error('Unstake error', e.message);
       return error();
     }
-  },
-  async stakingClaimRewardsFeeData({ commit }, { stakingType, poolAddress }) {
-    const _abi = stakingType === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStaking;
-    return await getContractFeeData('claim', _abi, poolAddress);
   },
   async stakingClaimRewards({ commit }, { stakingType, poolAddress }) {
     try {
