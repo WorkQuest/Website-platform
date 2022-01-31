@@ -127,6 +127,7 @@
                 <base-btn
                   v-if="item.type !== 3"
                   mode="borderless-right"
+                  data-selector="ACTION-SHOW-DETAILS"
                   @click="showDetails(item.id)"
                 >
                   {{ $t('meta.details') }}
