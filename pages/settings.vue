@@ -23,6 +23,7 @@
         @checkValidate="checkValidate"
         @updateEducation="addEducation"
         @updateCoordinates="updateCoordinates"
+        @validationRef="validationRefs"
       />
       <skills
         v-if="userRole === 'worker'"
@@ -95,6 +96,7 @@ export default {
       isValidPhoneNumber: true,
       newEducation: [],
       newWorkExp: [],
+      valRefs: {},
     };
   },
   computed: {
@@ -155,6 +157,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    validationRefs(data) {
+      console.log('validationRef', data);
+      this.valRefs = data;
+      return this.valRefs;
+    },
     updateCoordinates(coordinates) {
       this.profile.locationFull.location.longitude = +coordinates.lng;
       this.profile.locationFull.location.latitude = +coordinates.lat;
@@ -263,8 +270,8 @@ export default {
       if (value === 'validated') return true;
       if (value !== 'validated') {
         const isDirty = Object.keys(value).some((field) => value[field] !== '' && value[field] !== null);
-        if (observerName === 'education' && isDirty) return this.$refs.settings.$children[1].$refs.education.validate();
-        if (observerName === 'work' && isDirty) return this.$refs.settings.$children[1].$refs.work.validate();
+        if (observerName === 'education' && isDirty) return this.valRefs.education.validate();
+        if (observerName === 'work' && isDirty) return this.valRefs.work.validate();
       }
       return false;
     },

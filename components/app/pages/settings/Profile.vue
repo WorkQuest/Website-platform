@@ -409,6 +409,7 @@ export default {
       key: process.env.GMAPKEY,
       lang: this.$i18n?.localeProperties?.code || 'en-US',
     });
+    this.validationRefs();
   },
   methods: {
     // UPDATE AVATAR
@@ -436,6 +437,10 @@ export default {
     // UPDATE PHONE NUMBERS
     updateSecondPhone(value) {
       this.$emit('updateSecondPhone', value);
+    },
+    validationRefs() {
+      const refs = { work: this.$refs.work, education: this.$refs.education };
+      this.$emit('validationRef', refs);
     },
 
     // GEOPOSITION METHODS
