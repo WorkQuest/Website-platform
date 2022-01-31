@@ -40,6 +40,7 @@
     />
     <base-btn
       class="knowledge__btn"
+      :disabled="!item.from || !item.to || !item.place"
       @click="$emit('click')"
     >
       {{ isAdding ? $t('settings.add') : $t('settings.delete') }}
