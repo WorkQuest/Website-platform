@@ -144,7 +144,7 @@ export default {
         this.updateBalances(),
       ]);
       if (allowance === false) {
-        await this.$store.dispatch('main/showToast', { text: 'get allowance error' });
+        this.ShowToast('get allowance error');
         this.SetLoader(false);
         return null;
       }
@@ -155,7 +155,7 @@ export default {
         stakeTokenAddress, poolAddress, fullMaxStake,
       });
       if (!txFee.ok) {
-        await this.$store.dispatch('main/showToast', { text: txFee.message });
+        this.ShowToast(txFee.message);
         this.SetLoader(false);
         this.CloseModal();
         return;
@@ -177,7 +177,7 @@ export default {
             amount: fullMaxStake,
           });
           if (!successApprove) {
-            await this.$store.dispatch('main/showToast', { title: this.$t('mining.approve'), text: this.$t('modals.failed') });
+            this.ShowToast(this.$t('modals.failed'), this.$t('mining.approve'));
             this.SetLoader(false);
             return error();
           }
@@ -193,12 +193,9 @@ export default {
       this.SetLoader(false);
       if (!txFee.ok) {
         if (txFee.msg.includes('You cannot stake tokens yet')) {
-          await this.$store.dispatch('main/showToast', {
-            title: this.$t('mining.stake'),
-            text: this.$t('staking.cannotStakeYet'),
-          });
+          this.ShowToast(this.$t('staking.cannotStakeYet'), this.$t('mining.stake'));
         } else {
-          await this.$store.dispatch('main/showToast', { title: this.$t('staking.stake'), text: this.$t('modals.failed') });
+          this.ShowToast(this.$t('modals.failed'), this.$t('mining.stake'));
         }
         return;
       }

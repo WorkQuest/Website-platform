@@ -366,9 +366,7 @@ export default {
             subtitle: this.$t('staking.cannotClaimYet'),
           });
         } else {
-          await this.$store.dispatch('main/showToast', {
-            text: txFee.msg,
-          });
+          this.ShowToast(txFee.msg);
         }
         return;
       }
@@ -415,7 +413,7 @@ export default {
               subtitle: this.$t('staking.stakeDurationIsNotOver'),
             });
           } else {
-            await this.$store.dispatch('main/showToast', { text: txFee.msg });
+            this.ShowToast(txFee.msg);
           }
           return;
         }
@@ -496,14 +494,9 @@ export default {
           this.SetLoader(false);
           if (!txFee.ok) {
             if (txFee.msg.includes('You cannot claim tokens yet') || txFee.msg.includes('You cannot stake tokens yet')) {
-              await this.$store.dispatch('main/showToast', {
-                title: this.$t('staking.autoRenewal'),
-                text: this.$t('staking.cannotStakeYet'),
-              });
+              this.ShowToast(this.$t('staking.cannotStakeYet'), this.$t('staking.autoRenewal'));
             } else {
-              await this.$store.dispatch('main/showToast', {
-                text: txFee.msg,
-              });
+              this.ShowToast(txFee.msg);
             }
             return;
           }
