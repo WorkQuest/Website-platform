@@ -9,11 +9,15 @@
       class="search-with-map__search search"
       :class="{'search_on-map': isShowMap}"
     >
-      <div class="search__block">
+      <div
+        class="search__block"
+        :class="{'search__block_without-map': !isShowMap}"
+      >
         <base-checkbox
           v-model="isShowMap"
           :label="$t('quests.ui.showMap')"
           class="search__block-item search__checkbox"
+          :class="{'search__checkbox_without-map': !isShowMap}"
           name="map"
           data-selector="ACTION-SHOW-MAP"
         />
@@ -28,6 +32,8 @@
           data-selector="INPUT-SEARCH"
           @focus="isSearchFocus = true"
           @selector="getAddressInfo(search)"
+          @input="$emit('search', search)"
+          @enter="$emit('search', search)"
         >
           <template v-slot:selector>
             <div
@@ -47,21 +53,28 @@
           </template>
         </base-field>
         <base-dd
+          v-if="isShowMap"
           v-model="distanceIndex"
           class="search__block-item search__distances"
           data-selector="ACTION-CHANGE-DISTANCE"
           :items="distanceItems"
         />
-        <div class="search__block-item">
+        <div
+          v-if="isShowMap"
+          class="search__block-item"
+        >
           <base-btn
             data-selector="ACTION-CHANGE-MAP-CENTER"
-            @click="centerChange"
+            @click="searchHandler"
           >
             {{ isPageQuests ? $t('workers.searchQuests') : $t('workers.searchWorkers') }}
           </base-btn>
         </div>
       </div>
-      <div class="search__filters filters">
+      <div
+        v-if="isShowMap"
+        class="search__filters filters"
+      >
         <base-checkbox
           v-model="isShowMap"
           :label="$t('quests.ui.showMap')"
@@ -93,8 +106,8 @@ export default {
       isSearchFocus: false,
       geoCode: null,
       coordinates: null,
-      search: '',
       addresses: [],
+      search: '',
       zoom: 15,
       distanceIndex: 0,
     };
@@ -112,10 +125,11 @@ export default {
   },
   watch: {
     isShowMap(newVal) {
+      this.search = '';
+      this.clearSearchResult();
       localStorage.setItem('isShowMap', newVal);
       this.$emit('isShowMap', this.isShowMap);
     },
-    search() { this.$emit('search', this.search); },
     distanceIndex() { this.zoom = { 0: 15, 1: 10, 2: 8 }[this.distanceIndex]; },
   },
   mounted() {
@@ -129,28 +143,35 @@ export default {
   beforeDestroy() { this.geoCode = null; },
   methods: {
     deFocus() { this.isSearchFocus = false; },
-    centerChange() { this.$store.dispatch('quests/setMapCenter', this.coordinates); },
+    searchHandler() {
+      if (!this.search || !this.coordinates) return;
+      this.$store.dispatch('quests/setMapCenter', this.coordinates);
+    },
     selectAddress(address) {
-      this.addresses = [];
       this.search = address.formatted;
+      this.addresses = [];
+      this.coordinates = {
+        lat: address.lat,
+        lng: address.lng,
+      };
     },
     async getAddressInfo(address) {
       if (!this.isShowMap) return;
       try {
         if (address.length) {
           this.addresses = await this.geoCode.geolookup(address);
-          this.coordinates = {
-            lng: this.addresses[0].lng,
-            lat: this.addresses[0].lat,
-          };
-        } else this.addresses = [];
+          this.coordinates = { lat: this.addresses[0].lat, lng: this.addresses[0].lng };
+          return;
+        }
       } catch (e) {
-        this.addresses = [];
         console.error('Geo look up is failed', e);
-        await this.$store.dispatch('main/showToast', {
-          text: 'Address is not correct',
-        });
+        await this.$store.dispatch('main/showToast', { text: 'Address is not correct' });
       }
+      this.clearSearchResult();
+    },
+    clearSearchResult() {
+      this.addresses = [];
+      this.coordinates = null;
     },
   },
 };
@@ -174,6 +195,9 @@ export default {
     grid-template-columns: 155px 1fr 143px 260px;
 
     @include box;
+    &_without-map {
+      grid-template-columns: 155px 1fr;
+    }
   }
 
   &__block-item {
@@ -225,6 +249,9 @@ export default {
 
     &__block {
       grid-template-columns: 155px 1fr 143px 220px;
+      &_without-map {
+        grid-template-columns: 155px 1fr;
+      }
     }
   }
 }
@@ -233,14 +260,24 @@ export default {
   .search {
     position: inherit;
     height: 100%;
-    margin-top: 20px;
+    margin-top: 30px;
 
     &__block {
       grid-template-columns: 1fr 180px;
+      &_without-map {
+        grid-template-columns: 155px 1fr;
+      }
     }
 
-    &__checkbox, &__distances {
+    &__checkbox {
       display: none !important;
+      &_without-map {
+        display: flex !important;
+      }
+    }
+
+    &__distances {
+      display: none;
     }
 
     &__filters {
@@ -266,16 +303,14 @@ export default {
     margin-top: 10px;
 
     &__block {
-      grid-template-columns: 1fr 0.5fr;
+      grid-template-columns: 1fr 143px;
+      &_without-map {
+        grid-template-columns: 135px 1fr;
+      }
     }
 
     &__block-item {
       padding: 10px;
-      border-right: none;
-
-      &:last-child {
-        padding-left: 0;
-      }
     }
 
     &__filters {
