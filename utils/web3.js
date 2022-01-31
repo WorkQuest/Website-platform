@@ -24,6 +24,7 @@ if (process.browser) {
     axios = $axios;
   });
 }
+const isProd = process.env.PROD;
 
 export const getAccountAddress = () => account?.address;
 export const getAccount = () => account;
@@ -49,16 +50,15 @@ export const error = (code = 90000, msg = '', data = null) => ({
 });
 
 export const getChainIdByChain = (chain) => {
-  const isProd = process.env.PROD === 'true';
   switch (chain) {
     case Chains.ETHEREUM:
-      if (!isProd) return ChainsId.ETH_TEST;
+      if (isProd === 'false') return ChainsId.ETH_TEST;
       return ChainsId.ETH_MAIN;
     case Chains.BINANCE:
-      if (!isProd) return ChainsId.BSC_TEST;
+      if (isProd === 'false') return ChainsId.BSC_TEST;
       return ChainsId.BSC_MAIN;
     case Chains.BNB:
-      if (!isProd) return ChainsId.BSC_TEST;
+      if (isProd === 'false') return ChainsId.BSC_TEST;
       return ChainsId.BSC_MAIN;
     case Chains.WUSD:
       return ChainsId.WUSD_TEST;
@@ -70,9 +70,9 @@ export const addedNetwork = async (chain) => {
   try {
     let networkParams = {};
     if (chain === Chains.ETHEREUM) {
-      networkParams = process.env.PROD === 'true' ? NetworksData.ETH_MAIN : NetworksData.ETH_TEST;
+      networkParams = isProd === 'true' ? NetworksData.ETH_MAIN : NetworksData.ETH_TEST;
     } else if (chain === Chains.BNB) {
-      networkParams = process.env.PROD === 'true' ? NetworksData.BSC_MAIN : NetworksData.BSC_TEST;
+      networkParams = isProd === 'true' ? NetworksData.BSC_MAIN : NetworksData.BSC_TEST;
     }
     await window.ethereum.request({
       method: 'wallet_addEthereumChain',
@@ -85,36 +85,33 @@ export const addedNetwork = async (chain) => {
   }
 };
 export const goToChain = async (chain) => {
-  web3 = new Web3(window.ethereum);
   const chainId = await web3.eth.net.getId();
-  if (!chain) {
-    let correctId = 0;
-    if (process.env.PROD === 'true' && ![1, 56].includes(+chainId)) {
-      // eslint-disable-next-line default-case
-      switch (chainId) {
-        case 4:
-          correctId = 1;
-          break;
-        case 97:
-          correctId = 56;
-      }
-    } else if (process.env.PROD === 'false' && ![4, 97].includes(+chainId)) {
-      // eslint-disable-next-line default-case
-      switch (chainId) {
-        case 1:
-          correctId = 4;
-          break;
-        case 56:
-          correctId = 97;
-      }
-    } else {
-      return { ok: false };
+  let correctId = 0;
+  console.log(isProd, chainId, chain);
+  if (isProd === 'true' && ![1, 56].includes(+chainId)) {
+    // eslint-disable-next-line default-case
+    switch (chainId) {
+      case 4:
+        correctId = 1;
+        break;
+      case 97:
+        correctId = 56;
     }
-    chain = correctId;
+  } else if (isProd === 'false' && ![4, 97].includes(+chainId)) {
+    // eslint-disable-next-line default-case
+    switch (chainId) {
+      case 1:
+        correctId = 4;
+        break;
+      case 56:
+        correctId = 97;
+    }
   }
-
+  if (correctId) chain = correctId;
+  console.log(chain);
   const methodName = 'wallet_switchEthereumChain';
   const chainIdParam = typeof chain === 'string' ? getChainIdByChain(chain) : ChainsIdByChainNumber[chain];
+  console.log(chainIdParam);
   try {
     await window.ethereum.request({
       method: methodName,
@@ -249,7 +246,7 @@ export const initMetaMaskWeb3 = async () => {
         web3.eth.net.getId(),
       ]);
       let correctId = 0;
-      if (process.env.PROD === 'true' && ![1, 56, 20211224].includes(+chainId)) {
+      if (isProd === 'true' && ![1, 56, 20211224].includes(+chainId)) {
         switch (chainId) {
           case 4:
             correctId = 1;
@@ -262,7 +259,7 @@ export const initMetaMaskWeb3 = async () => {
             break;
         }
       }
-      if (process.env.PROD === 'false' && ![4, 97, 20211224].includes(+chainId)) {
+      if (isProd === 'false' && ![4, 97, 20211224].includes(+chainId)) {
         switch (chainId) {
           case 1:
             correctId = 4;
@@ -295,7 +292,7 @@ export const initProvider = async (payload) => {
   const { chain } = payload;
   try {
     let walletOptions;
-    if (process.env.PROD === 'false') {
+    if (isProd === 'false') {
       if (chain === 'ETH') {
         walletOptions = {
           rpc: {
@@ -312,7 +309,7 @@ export const initProvider = async (payload) => {
         };
       }
     }
-    if (process.env.PROD === 'true') {
+    if (isProd === 'true') {
       if (chain === 'ETH') {
         walletOptions = {
           rpc: {
@@ -644,10 +641,10 @@ export const initStackingContract = async (chain) => {
   let stakingAddress;
   let websocketProvider;
   if (chain === 'ETH') {
-    stakingAddress = process.env.PROD === 'true' ? process.env.ETHEREUM_MINING : '0x85fCeFe4b3646E74218793e8721275D3448b76F4';
+    stakingAddress = isProd === 'true' ? process.env.ETHEREUM_MINING : '0x85fCeFe4b3646E74218793e8721275D3448b76F4';
     websocketProvider = process.env.ETHEREUM_WS_INFURA;
   } else {
-    stakingAddress = process.env.PROD === 'true' ? process.env.BSC_MINING : '0x7F31d9c6Cf99DDB89E2a068fE7B96d230b9D19d1';
+    stakingAddress = isProd === 'true' ? process.env.BSC_MINING : '0x7F31d9c6Cf99DDB89E2a068fE7B96d230b9D19d1';
     websocketProvider = process.env.BSC_WS_MORALIS;
   }
   const liquidityMiningProvider = new Web3(new Web3.providers.WebsocketProvider(websocketProvider, {
@@ -668,7 +665,7 @@ export const initStackingContract = async (chain) => {
 export const getBinanceContractRPC = async () => {
   if (bscRpcContract) return bscRpcContract;
   try {
-    const address = process.env.PROD === 'true' ? process.env.BSC_LP_TOKEN : '0x3ea2de549ae9dcb7992f91227e8d6629a22c3b40';
+    const address = isProd === 'true' ? process.env.BSC_LP_TOKEN : '0x3ea2de549ae9dcb7992f91227e8d6629a22c3b40';
     const provider = await new Web3.providers.HttpProvider(process.env.BSC_RPC_URL);
     const web3Bsc = await new Web3(provider);
     bscRpcContract = await new web3Bsc.eth.Contract(abi.BSCPool, address);
