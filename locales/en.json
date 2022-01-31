@@ -455,7 +455,7 @@
       "showMap": "Show map",
       "searchOnQuestsPage": "Employer / Title / Description / City",
       "searchOnWorkersPage": "Employee / City",
-      "searchWithMap": "Locality / City"
+      "searchWithMap": "City / Street / Place"
     },
     "worker": "Worker",
     "raiseViews": "Raise views",

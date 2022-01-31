@@ -273,6 +273,7 @@ import { getWalletAddress } from '~/utils/wallet';
 import { TokenSymbols } from '~/utils/enums';
 
 export default {
+  name: 'MyPension',
   data() {
     return {
       page: 1,

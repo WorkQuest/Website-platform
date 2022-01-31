@@ -453,9 +453,9 @@
     },
     "ui": {
       "showMap": "Show map",
-      "searchOnQuestsPage": "Employer / Title / Description / City",
-      "searchOnWorkersPage": "Employee / City",
-      "searchWithMap": "Locality / City"
+      "searchOnQuestsPage": "Работодатель / Название / Описание / Город",
+      "searchOnWorkersPage": "Работник / Город",
+      "searchWithMap": "Город / Улица / Место"
     },
     "worker": "Worker",
     "raiseViews": "Raise views",

@@ -62,6 +62,7 @@ export default {
       isShowMap: true,
       isFetching: false,
       boundsTimeout: null,
+      searchTimeout: null,
     };
   },
   computed: {
@@ -90,7 +91,8 @@ export default {
     async search() {
       if (!this.isShowMap) {
         this.query.q = this.search;
-        await this.fetchEmployeeList(true);
+        clearTimeout(this.searchTimeout);
+        this.searchTimeout = setTimeout(async () => await this.fetchEmployeeList(true), 300);
       } else delete this.query.q;
     },
   },
@@ -103,6 +105,7 @@ export default {
   },
   beforeDestroy() {
     clearTimeout(this.boundsTimeout);
+    clearTimeout(this.searchTimeout);
     this.$store.commit('quests/setEmployeeList', { count: null, users: [] });
   },
   methods: {
