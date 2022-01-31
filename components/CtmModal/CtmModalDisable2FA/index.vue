@@ -71,8 +71,8 @@ export default {
       const response = await this.$store.dispatch('user/disable2FA', {
         totp: this.twoFACode,
       });
-      if (response.ok) this.hide(); this.showModalSuccess();
-      if (!response.ok) this.hide();
+      this.hide();
+      if (response.ok) this.showModalSuccess();
     },
     showModalSuccess() {
       this.ShowModal({

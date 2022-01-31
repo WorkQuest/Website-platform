@@ -1,13 +1,10 @@
 <template>
   <ctm-modal-box
-    :title="!secondNumber ? 'Error SMS verification' : $t('modals.smsVerification')"
+    :title="!secondNumber ? $t('modals.errorSmsVer') : $t('modals.smsVerification')"
     class="verification"
   >
     <div class="verification__content content">
-      <div
-        v-if="secondNumber && userData.tempPhone && userData.tempPhone.fullPhone === secondNumber.fullPhone
-          || secondNumber.fullPhone === userData.phone.fullPhone"
-      >
+      <div v-if="numberIsVerified()">
         <img
           src="~assets/img/ui/warning.svg"
           alt="Already Verified!"
@@ -44,8 +41,7 @@
         </div>
       </div>
       <validation-observer
-        v-if="secondNumber && userData.tempPhone && userData.tempPhone.fullPhone !== secondNumber.fullPhone
-          || secondNumber.fullPhone !== userData.phone.fullPhone"
+        v-if="numberNotVerified()"
         v-slot="{handleSubmit, validated, passed, invalid}"
       >
         <div class="content__subtitle">
@@ -143,6 +139,16 @@ export default {
     this.confirmCode = this.currentConfirmCode;
   },
   methods: {
+    numberNotVerified() {
+      if (this.secondNumber && this.userData.tempPhone && this.userData.tempPhone.fullPhone
+        !== this.secondNumber.fullPhone) return true;
+      return this.secondNumber.fullPhone !== this.userData.phone.fullPhone;
+    },
+    numberIsVerified() {
+      if (this.secondNumber && this.userData.tempPhone && this.userData.tempPhone.fullPhone
+        === this.secondNumber.fullPhone) return true;
+      return this.secondNumber.fullPhone === this.userData.phone.fullPhone;
+    },
     hide() {
       this.CloseModal();
     },
