@@ -65,7 +65,7 @@
           >
             {{ $t('profile.quests') }}
           </div>
-          <quest-cards
+          <card-quest
             v-if="questsCount !== 0"
             :quests="questsData"
             @clickFavoriteStar="updateQuests"

@@ -16,7 +16,7 @@
           {{ disputeStatus }}
         </div>
       </div>
-      <quest-cards
+      <cards-quest
         class="dispute__quests"
         :quests="disputeData.quest ? [disputeData.quest] : []"
       />

@@ -1,5 +1,4 @@
 <template>
-  <!--  TODO: Refactoring needed !-->
   <div class="card">
     <div class="card__content content">
       <div class="content content__block block">
