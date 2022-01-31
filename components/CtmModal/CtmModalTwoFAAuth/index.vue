@@ -4,7 +4,10 @@
     :title="$t('modals.twoFAAuth')"
   >
     <div class="ctm-modal__content">
-      <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
+        tag="div"
+      >
         <div class="step-panel">
           <div
             v-for="(item, i) in stepPanel"
@@ -64,7 +67,7 @@
         >
           <div class="ctm-modal__content-field">
             <span class="content__text">{{ $t('modals.useYourGoogleAuth') }}</span>
-            <div class="qr__container">
+            <div class="content qr qr__container">
               <qrcode
                 :value="qrLink || 1"
                 :options="{ width: 200 }"
@@ -76,17 +79,15 @@
                 v-model="twoFACode"
                 :placeholder="twoFACode"
               />
-              <div>
-                <button
-                  v-clipboard:copy="twoFACode"
-                  v-clipboard:success="ClipboardSuccessHandler"
-                  v-clipboard:error="ClipboardErrorHandler"
-                  class="btn__copy"
-                  type="button"
-                >
-                  <span class="icon-copy" />
-                </button>
-              </div>
+              <button
+                v-clipboard:copy="twoFACode"
+                v-clipboard:success="ClipboardSuccessHandler"
+                v-clipboard:error="ClipboardErrorHandler"
+                class="btn__copy"
+                type="button"
+              >
+                <span class="icon-copy" />
+              </button>
             </div>
           </div>
         </div>
@@ -101,17 +102,15 @@
                 v-model="twoFACode"
                 :placeholder="twoFACode"
               />
-              <div>
-                <button
-                  v-clipboard:success="ClipboardSuccessHandler"
-                  v-clipboard:error="ClipboardErrorHandler"
-                  v-clipboard:copy="twoFACode"
-                  class="btn__copy"
-                  type="button"
-                >
-                  <span class="icon-copy" />
-                </button>
-              </div>
+              <button
+                v-clipboard:success="ClipboardSuccessHandler"
+                v-clipboard:error="ClipboardErrorHandler"
+                v-clipboard:copy="twoFACode"
+                class="btn__copy"
+                type="button"
+              >
+                <span class="icon-copy" />
+              </button>
             </div>
           </div>
         </div>
@@ -157,7 +156,7 @@
             v-if="step > 1"
             class="btn__wrapper"
           >
-            <span
+            <div
               v-for="(item, i) in stepBtns"
               :key="i"
               class="step__container"
@@ -169,7 +168,7 @@
               >
                 {{ item.text }}
               </base-btn>
-            </span>
+            </div>
             <span
               v-if="step === 4"
               class="step__container"
@@ -289,7 +288,10 @@ export default {
         confirmCode: this.confirmEmailCode,
         totp: this.authCode,
       });
-      if (response.ok) this.hide(); this.showModalSuccess();
+      this.hide();
+      if (response.ok) {
+        this.showModalSuccess();
+      }
     },
     showModalSuccess() {
       this.ShowModal({
@@ -317,17 +319,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .message {
   &__action {
     width: 100% !important;
   }
 }
-  .flex {
-    &__two-cols {
-      display: flex;
-      justify-content: space-between;
-    }
-  }
 
   .content {
     &__text {
@@ -352,13 +349,11 @@ export default {
     }
   }
 
-  .qr {
-    &__container {
+  .qr__container {
       width: 100%;
       display: flex;
       justify-content: center;
       margin: 20px 0;
-    }
   }
 
   .code {
@@ -368,6 +363,7 @@ export default {
       grid-template-columns: 6fr 1fr;
       grid-gap: 10px;
     }
+
     &__container {
       display: flex;
       border: 1px solid $black0;
@@ -377,6 +373,7 @@ export default {
       margin: 33px 10px 0 0;
       width: 100%;
     }
+
     &__text {
       font-weight: 400;
       font-size: 16px;
@@ -388,32 +385,13 @@ export default {
     display: none;
   }
 
-  .grid {
-    &__2col {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      justify-content: space-between;
-      align-items: flex-end;
-      grid-gap: 10px;
-    }
-    &__3col {
-      display: grid;
-      grid-template-columns: 6fr 1fr 6fr;
-      justify-content: space-between;
-      align-items: flex-end;
-    }
-  }
-
   .step {
     &__number {
       padding: 10px;
     }
+
     &__container {
       width: 100%;
-      &_grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-      }
     }
   }
 
@@ -421,14 +399,17 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
+
     &__container {
       display: flex;
       flex-direction: row;
       align-items: flex-start;
     }
+
     &__block {
       white-space: nowrap;
     }
+
     &__step {
       @include text-simple;
       background: rgba(0, 131, 199, 0.1);
@@ -438,11 +419,13 @@ export default {
       color: $black500;
       padding: 10px;
       text-align: center;
+
       &_active {
         @extend .step-panel__step;
         color: $white;
         background: $blue;
       }
+
     }
   }
   .line {
@@ -452,6 +435,7 @@ export default {
     margin: auto 0;
     padding: 0;
     width: 33px;
+
     &__active {
       @extend .line;
       border-top: 1px solid $blue;
@@ -461,6 +445,7 @@ export default {
     &__content-field {
       margin: 15px 0 0 0;
     }
+
     &__equal {
       margin: 0 0 35px 10px;
     }
@@ -490,13 +475,16 @@ export default {
       flex-direction: row-reverse;
       justify-content: space-between;
     }
+
     &__wrapper {
       width: 45%;
     }
+
     &__store {
       width: 47%;
       margin-bottom: 25px;
     }
+
     &__copy {
       background: $white;
       border: 1px solid $black0;
@@ -507,14 +495,5 @@ export default {
 
   .messageSend {
     max-width: 430px !important;
-    &__content {
-      display: grid;
-      grid-template-columns: 1fr;
-      justify-items: center;
-      grid-gap: 20px;
-    }
-    &__action {
-      margin-top: 10px;
-    }
   }
 </style>

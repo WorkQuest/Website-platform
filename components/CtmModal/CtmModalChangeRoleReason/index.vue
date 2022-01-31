@@ -2,21 +2,21 @@
   <ctm-modal-box
     :is-unclosable="true"
     :title="step === 1 ? $t('modals.reason') : $t('modals.securityCheck')"
-    class="messageSend"
+    class="modal ctm-modal"
   >
-    <div class="ctm-modal__content">
+    <div class="ctm-modal ctm-modal__content modal">
       <div
         v-if="step === 1"
-        class="messageSend"
+        class="modal"
       >
-        <span class="messageSend__title">{{ $t('modals.pleaseDescribe') }}</span>
-        <div class="messageSend__content">
+        <span class="modal__title">{{ $t('modals.pleaseDescribe') }}</span>
+        <div class="modal__content message">
           <base-field
             v-model="reasonInput"
-            class="message__action"
+            class="message message__action btn"
             :placeholder="$t('modals.reason')"
           />
-          <div class="btn__container">
+          <div class="btn btn__container">
             <div class="btn__wrapper">
               <base-btn
                 class="message__action"
@@ -39,21 +39,21 @@
       </div>
       <div
         v-if="step === 2"
-        class="messageSend"
+        class="modal"
       >
-        <div class="messageSend__content">
+        <div class="modal modal__content">
           <base-field
             v-model="codeInput"
             :label="$t('modals.googleConfCode')"
-            class="message__action"
+            class="content message__action"
             :placeholder="$t('modals.googleConfCode')"
           />
-          <div class="message__sub">
+          <div class="content message__sub">
             {{ $t('modals.enterCode') }}
           </div>
-          <div class="btn__container">
+          <div class="content btn__container">
             <base-btn
-              class="message__action"
+              class="content message__action"
               @click="success()"
             >
               {{ $t('meta.send') }}
@@ -105,6 +105,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .ctm-modal {
   @include modalKit;
 }
@@ -123,32 +124,38 @@ export default {
     margin: 0;
     width: 100%;
   }
+
   &__wrapper {
     width: 45%;
   }
+
 }
 
-.messageSend {
+.modal {
   max-width: 400px !important;
   display: flex;
   flex-direction: column;
+
   &__title {
     letter-spacing: -0.025em;
     margin-bottom: 13px;
     color: #212529;
   }
+
   &__content {
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;
     grid-gap: 10px;
   }
+
   &__action {
     margin-top: 10px;
     width: 100%;
   }
 }
-.messageSend__content div div {
+
+.modal__content div div {
   height: auto !important;
 }
 </style>

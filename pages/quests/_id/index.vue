@@ -282,7 +282,12 @@ export default {
 
       if (questChat?.workerId === userData.id || (questChat?.employerId === userData.id && assignedWorkerId)) {
         arr.push({
-          name: this.$t('btn.goToChat'), class: 'base-btn_goToChat', mode: '', funcKey: 'goToChat', icon: 'icon-chat icon_fs-20', disabled: false,
+          name: this.$t('btn.goToChat'),
+          class: 'base-btn_goToChat',
+          mode: '',
+          funcKey: 'goToChat',
+          icon: 'icon-chat icon_fs-20',
+          disabled: false,
         });
       }
 

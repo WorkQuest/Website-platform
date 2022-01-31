@@ -8,8 +8,7 @@
       class="settings__body"
       tag="div"
     >
-      <!--      TODO: Вынести в enum -->
-      <verification-card v-if="userRole === 'worker' && isShowInfo === true && userData.statusKYC === 0" />
+      <verification-card v-if="userRole === UserRole.WORKER && isShowInfo === true && userData.statusKYC === 0" />
       <profile
         :profile="profile"
         :new-education="newEducation"
@@ -26,7 +25,7 @@
         @validationRef="validationRefs"
       />
       <skills
-        v-if="userRole === 'worker'"
+        v-if="userRole === UserRole.WORKER"
         :skills="skills"
         :validation-error="validationError"
         @click="editUserData"
@@ -45,7 +44,7 @@ import VerificationCard from '~/components/app/pages/settings/VerificationCard.v
 import Profile from '~/components/app/pages/settings/Profile.vue';
 import Skills from '~/components/app/pages/settings/Skills.vue';
 import Advanced from '~/components/app/pages/settings/Advanced.vue';
-import { workplaceIndex } from '~/utils/enums';
+import { UserRole, workplaceIndex } from '~/utils/enums';
 
 export default {
   name: 'Settings',
@@ -65,7 +64,10 @@ export default {
           secondMobileNumber: { codeRegion: null, phone: null, fullPhone: null },
           address: null,
           socialNetwork: {
-            instagram: null, twitter: null, linkedin: null, facebook: null,
+            instagram: null,
+            twitter: null,
+            linkedin: null,
+            facebook: null,
           },
           description: null,
           skills: [],
@@ -107,6 +109,9 @@ export default {
       filters: 'quests/getFilters',
       secondNumber: 'user/getUserSecondMobileNumber',
     }),
+    UserRole() {
+      return UserRole;
+    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -142,8 +147,8 @@ export default {
       },
       locationFull: {
         location: {
-          longitude: this.coordinates ? this.coordinates.lng : this.profile.locationFull.location?.longitude || 0,
-          latitude: this.coordinates ? this.coordinates.lat : this.profile.locationFull.location?.latitude || 0,
+          longitude: this.coordinates?.lng || this.profile.locationFull.location?.longitude || 0,
+          latitude: this.coordinates?.lat || this.profile.locationFull.location?.latitude || 0,
         },
         locationPlaceName: addInfo.address,
       },
@@ -253,9 +258,9 @@ export default {
     },
 
     async checkValidate() {
-      const validateEducation = this.userRole === 'employer' ? true : await this.validateKnowledge('education',
+      const validateEducation = this.userRole === UserRole.EMPLOYER ? true : await this.validateKnowledge('education',
         this.newEducation.length > 0 ? this.newEducation : 'validated');
-      const validateWorkExp = this.userRole === 'employer' ? true : await this.validateKnowledge('work',
+      const validateWorkExp = this.userRole === UserRole.EMPLOYER ? true : await this.validateKnowledge('work',
         this.newWorkExp.length > 0 ? this.newWorkExp : 'validated');
       const validateSettings = await this.$refs.settings.validate();
       if (validateSettings === false || validateEducation === false || validateWorkExp === false || this.isValidPhoneNumber === false) {
@@ -267,11 +272,9 @@ export default {
 
     async validateKnowledge(observerName, value) {
       if (value === 'validated') return true;
-      if (value !== 'validated') {
-        const isDirty = Object.keys(value).some((field) => value[field] !== '' && value[field] !== null);
-        if (observerName === 'education' && isDirty) return this.valRefs.education.validate();
-        if (observerName === 'work' && isDirty) return this.valRefs.work.validate();
-      }
+      const isDirty = Object.keys(value).some((field) => value[field] !== '' && value[field] !== null);
+      if (observerName === 'education' && isDirty) return this.valRefs.education.validate();
+      if (observerName === 'work' && isDirty) return this.valRefs.work.validate();
       return false;
     },
 
@@ -287,7 +290,7 @@ export default {
       }
     },
     editProfileRoute() {
-      if (this.userRole === 'worker') return 'editWorkerData';
+      if (this.userRole === UserRole.WORKER) return 'editWorkerData';
       return 'editEmployerData';
     },
     async editProfile(checkAvatarID) {
@@ -317,7 +320,7 @@ export default {
           },
         },
       };
-      await this.editProfileResponse(`user/${this.editProfileRoute()}`, this.userRole === 'worker' ? {
+      await this.editProfileResponse(`user/${this.editProfileRoute()}`, this.userRole === UserRole.WORKER ? {
         ...payload,
         additionalInfo: {
           ...payload.additionalInfo,

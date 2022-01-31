@@ -159,11 +159,10 @@ export default {
       this.$emit('showModalKey', modalKey);
     },
     smsVerErrorModal() {
-      // TODO: Localization
       this.ShowModal({
         key: modals.status,
-        title: 'Error sms verification',
-        subtitle: 'Please, fill phone number in settings',
+        title: this.$t('modals.errorSmsVer'),
+        subtitle: this.$t('modals.fillNumber'),
       });
     },
   },

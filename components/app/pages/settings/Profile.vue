@@ -50,7 +50,7 @@
             v-model="profile.additionalInfo.address"
             v-click-outside="hideSearchDD"
             :placeholder="$t('settings.addressInput')"
-            rules="max:100||required"
+            rules="max:100|required"
             mode="icon"
             :selector="isSearchDDStatus"
             :name="$t('settings.address')"
@@ -80,7 +80,7 @@
             </template>
           </base-field>
           <div
-            v-if="userRole === 'employer'"
+            v-if="userRole === UserRole.EMPLOYER"
             class="profile__phone-input"
           >
             <label for="phone2">
@@ -98,7 +98,7 @@
           </div>
           <div class="profile__phone-input">
             <label
-              v-if="userRole === 'employer'"
+              v-if="userRole === UserRole.EMPLOYER"
               for="phone1"
             >
               {{ $t('settings.additionalPhoneNumber') }}
@@ -124,7 +124,7 @@
           </div>
         </div>
         <div
-          v-if="userRole === 'employer'"
+          v-if="userRole === UserRole.EMPLOYER"
           class="profile__company"
         >
           <base-field
@@ -160,7 +160,7 @@
         </ValidationProvider>
       </div>
       <div
-        v-show="userRole === 'worker'"
+        v-show="userRole === UserRole.WORKER"
         class="profile__knowledge"
       >
         <div class="profile__knowledge-container">
@@ -189,7 +189,7 @@
               :is-adding="true"
               @click="addNewKnowledge(profile.additionalInfo.educations, 'newEducation', 'education', 'education')"
               @blur="clearError(newEducation ? newEducation
-                : profile.additionalInfo.educations[+profile.additionalInfo.educations.length - 1], 'education')"
+                : profile.additionalInfo.educations[profile.additionalInfo.educations.length - 1], 'education')"
             />
           </ValidationProvider>
         </div>
@@ -219,7 +219,7 @@
               :is-adding="true"
               @click="addNewKnowledge(profile.additionalInfo.workExperiences, 'newWorkExp', 'work', 'work')"
               @blur="clearError(newWorkExp ? newWorkExp
-                : profile.additionalInfo.workExperiences[+profile.additionalInfo.workExperiences.length - 1], 'work')"
+                : profile.additionalInfo.workExperiences[profile.additionalInfo.workExperiences.length - 1], 'work')"
             />
           </ValidationProvider>
         </div>
@@ -240,7 +240,7 @@
         </base-field>
       </div>
       <div
-        v-if="userRole === 'employer'"
+        v-if="userRole === UserRole.EMPLOYER"
         class="profile__save"
       >
         <base-btn
@@ -263,6 +263,7 @@ import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import Verified from '~/components/app/pages/settings/Verified.vue';
 import AddForm from './AddForm.vue';
+import { UserRole } from '~/utils/enums';
 
 export default {
   name: 'SettingsProfile',
@@ -384,6 +385,9 @@ export default {
       imageData: 'user/getImageData',
       userRole: 'user/getUserRole',
     }),
+    UserRole() {
+      return UserRole;
+    },
     getEducation() {
       return this.profile.additionalInfo.educations.length !== 0;
     },
@@ -439,8 +443,7 @@ export default {
       this.$emit('updateSecondPhone', value);
     },
     validationRefs() {
-      const refs = { work: this.$refs.work, education: this.$refs.education };
-      this.$emit('validationRef', refs);
+      this.$emit('validationRef', { work: this.$refs.work, education: this.$refs.education });
     },
 
     // GEOPOSITION METHODS

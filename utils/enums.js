@@ -48,7 +48,7 @@ export const QuestStatuses = {
   WaitConfirm: 5,
   Done: 6,
 };
-export const SumSubStatuses = { notVerified: 0, verified: 1 };
+export const SumSubStatuses = { NOT_VERIFIED: 0, VERIFIED: 1 };
 export const InfoModeEmployer = {
   Rejected: -1,
   Created: 0,

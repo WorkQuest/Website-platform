@@ -4,7 +4,7 @@
     class="verification"
   >
     <div class="verification__content content">
-      <div v-if="numberIsVerified() === true">
+      <div v-if="isVerified">
         <img
           src="~assets/img/ui/warning.svg"
           alt="Already Verified!"
@@ -41,7 +41,7 @@
         </div>
       </div>
       <validation-observer
-        v-if="numberIsVerified() === false"
+        v-if="!isVerified"
         v-slot="{handleSubmit, validated, passed, invalid}"
       >
         <div class="content__subtitle">
@@ -126,7 +126,7 @@ export default {
     return {
       confirmCode: '',
       step: 1,
-      isVerified: '',
+      isVerified: false,
     };
   },
   computed: {
@@ -139,16 +139,20 @@ export default {
   async beforeMount() {
     this.confirmCode = this.currentConfirmCode;
   },
+  mounted() {
+    this.numberIsVerified();
+  },
   methods: {
     numberIsVerified() {
       if (this.secondNumber && this.userData.tempPhone) {
         if (this.userData.tempPhone.fullPhone === this.secondNumber.fullPhone
-          && this.secondNumber.fullPhone === this.userData.phone.fullPhone) {
-          this.isVerified = true; return this.isVerified;
+          || this.secondNumber.fullPhone === this.userData.phone.fullPhone) {
+          this.isVerified = true;
+          return this.isVerified;
         }
-        this.isVerified = false; return this.isVerified;
       }
-      return '';
+      this.isVerified = false;
+      return this.isVerified;
     },
     hide() {
       this.CloseModal();
@@ -183,7 +187,7 @@ export default {
 .verification {
   max-width: 382px !important;
   &__content {
-    padding: 0 28px 30px 28px !important;
+    padding: 0 28px 30px 28px;
   }
 }
 .content {
@@ -214,7 +218,7 @@ export default {
     width: 100%;
   }
   &__icon:before {
-    font-size: 25px !important;
+    font-size: 25px;
     color: $blue;
   }
   &__bottom {
