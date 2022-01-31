@@ -160,7 +160,7 @@
         </ValidationProvider>
       </div>
       <div
-        v-if="userRole === 'worker'"
+        v-show="userRole === 'worker'"
         class="profile__knowledge"
       >
         <div class="profile__knowledge-container">
@@ -188,7 +188,8 @@
               :item="newEducation"
               :is-adding="true"
               @click="addNewKnowledge(profile.additionalInfo.educations, 'newEducation', 'education', 'education')"
-              @blur="clearError(newEducation, 'education')"
+              @blur="clearError(newEducation ? newEducation
+                : profile.additionalInfo.educations[+profile.additionalInfo.educations.length - 1], 'education')"
             />
           </ValidationProvider>
         </div>
@@ -217,7 +218,8 @@
               :item="newWorkExp"
               :is-adding="true"
               @click="addNewKnowledge(profile.additionalInfo.workExperiences, 'newWorkExp', 'work', 'work')"
-              @blur="clearError(newWorkExp, 'work')"
+              @blur="clearError(newWorkExp ? newWorkExp
+                : profile.additionalInfo.workExperiences[+profile.additionalInfo.workExperiences.length - 1], 'work')"
             />
           </ValidationProvider>
         </div>

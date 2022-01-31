@@ -44,7 +44,7 @@ import VerificationCard from '~/components/app/pages/settings/VerificationCard.v
 import Profile from '~/components/app/pages/settings/Profile.vue';
 import Skills from '~/components/app/pages/settings/Skills.vue';
 import Advanced from '~/components/app/pages/settings/Advanced.vue';
-import { workplaceIndex, sumsubStatuses } from '~/utils/enums';
+import { workplaceIndex } from '~/utils/enums';
 
 export default {
   name: 'Settings',
@@ -145,7 +145,6 @@ export default {
         },
         locationPlaceName: addInfo.address,
       },
-      // TODO: Починить валидацию в настройках
     };
     this.skills = {
       priorityIndex: this.userData.priority,
@@ -248,13 +247,12 @@ export default {
     },
 
     async checkValidate() {
-      const validateEducation = this.userRole === 'employer' ? true : await this.validateKnowledge('education', this.newEducation);
-      const validateWorkExp = this.userRole === 'employer' ? true : await this.validateKnowledge('work', this.newWorkExp);
+      const validateEducation = this.userRole === 'employer' ? true : await this.validateKnowledge('education',
+        this.newEducation.length > 0 ? this.newEducation : 'validated');
+      const validateWorkExp = this.userRole === 'employer' ? true : await this.validateKnowledge('work',
+        this.newWorkExp.length > 0 ? this.newWorkExp : 'validated');
       const validateSettings = await this.$refs.settings.validate();
-      if (validateSettings === false
-        || validateEducation === false
-        || validateWorkExp === false
-        || this.isValidPhoneNumber === false) {
+      if (validateSettings === false || validateEducation === false || validateWorkExp === false || this.isValidPhoneNumber === false) {
         return true;
       }
       this.validationError = false;
@@ -262,10 +260,9 @@ export default {
     },
 
     async validateKnowledge(observerName, value) {
-      let isDirty;
-      const valueObj = { ...value };
-      if (valueObj) {
-        isDirty = Object.keys(valueObj).some((field) => valueObj[field] !== '' && valueObj[field] !== null);
+      if (value === 'validated') return true;
+      if (value !== 'validated') {
+        const isDirty = Object.keys(value).some((field) => value[field] !== '' && value[field] !== null);
         if (observerName === 'education' && isDirty) return this.$refs.settings.$children[1].$refs.education.validate();
         if (observerName === 'work' && isDirty) return this.$refs.settings.$children[1].$refs.work.validate();
       }
