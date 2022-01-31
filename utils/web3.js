@@ -85,6 +85,34 @@ export const addedNetwork = async (chain) => {
   }
 };
 export const goToChain = async (chain) => {
+  web3 = new Web3(window.ethereum);
+  const chainId = await web3.eth.net.getId();
+  if (!chain) {
+    let correctId = 0;
+    if (process.env.PROD === 'true' && ![1, 56].includes(+chainId)) {
+      // eslint-disable-next-line default-case
+      switch (chainId) {
+        case 4:
+          correctId = 1;
+          break;
+        case 97:
+          correctId = 56;
+      }
+    } else if (process.env.PROD === 'false' && ![4, 97].includes(+chainId)) {
+      // eslint-disable-next-line default-case
+      switch (chainId) {
+        case 1:
+          correctId = 4;
+          break;
+        case 56:
+          correctId = 97;
+      }
+    } else {
+      return { ok: false };
+    }
+    chain = correctId;
+  }
+
   const methodName = 'wallet_switchEthereumChain';
   const chainIdParam = typeof chain === 'string' ? getChainIdByChain(chain) : ChainsIdByChainNumber[chain];
   try {
@@ -346,28 +374,7 @@ export const initWeb3 = async (payload) => {
     if ((await web3.eth.getCoinbase()) === null) {
       await ethereum.request({ method: 'eth_requestAccounts' });
     }
-    let correctId = 0;
-    if (process.env.PROD === 'true' && ![1, 56].includes(+chainId)) {
-      // eslint-disable-next-line default-case
-      switch (chainId) {
-        case 4:
-          correctId = 1;
-          break;
-        case 97:
-          correctId = 56;
-      }
-    }
-    if (process.env.PROD === 'false' && ![4, 97].includes(+chainId)) {
-      // eslint-disable-next-line default-case
-      switch (chainId) {
-        case 1:
-          correctId = 4;
-          break;
-        case 56:
-          correctId = 97;
-      }
-    }
-    if (correctId) await goToChain(correctId);
+
     account = {
       address: userAddress,
       netId: chainId,

@@ -316,8 +316,8 @@ export default {
   }) {
     return await swapWithBridge(_decimals, _amount, chain, chainTo, userAddress, recipient, symbol);
   },
-  async goToChain({ commit }, { chain }) {
-    return await goToChain(chain);
+  async goToChain({ commit }, payload) {
+    return await goToChain(payload?.chain);
   },
   async redeemSwap({ commit }, payload) {
     return await redeemSwap(payload);
