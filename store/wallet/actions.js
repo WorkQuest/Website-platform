@@ -200,10 +200,10 @@ export default {
     let contractAddress = null;
     if (pool === StakingTypes.WQT) {
       _abi = abi.WQStaking;
-      contractAddress = process.env.WROKNET_STAKING_WQT;
+      contractAddress = process.env.WORKNET_STAKING_WQT;
     } else if (pool === StakingTypes.WUSD) {
       _abi = abi.WQStakingNative;
-      contractAddress = process.env.WROKNET_STAKING_WUSD;
+      contractAddress = process.env.WORKNET_STAKING_WUSD;
     } else {
       console.error(`Wrong pool: ${pool}`);
       return;
@@ -254,7 +254,7 @@ export default {
   async getStakingUserInfo({ commit }, pool) {
     const decimals = 18;
     const _abi = pool === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStakingNative;
-    const contractAddress = pool === StakingTypes.WUSD ? process.env.WROKNET_STAKING_WUSD : process.env.WROKNET_STAKING_WQT;
+    const contractAddress = pool === StakingTypes.WUSD ? process.env.WORKNET_STAKING_WUSD : process.env.WORKNET_STAKING_WQT;
     const [userInfo, stakes] = await Promise.all([
       fetchContractData('getInfoByAddress', _abi, contractAddress, [getWalletAddress()], GetWalletProvider()),
       fetchContractData('stakes', _abi, contractAddress, [getWalletAddress()], GetWalletProvider()),
