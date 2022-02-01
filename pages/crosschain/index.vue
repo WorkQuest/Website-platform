@@ -307,7 +307,8 @@ export default {
     async connectToMetamask(chainName) {
       if (!this.isConnected) {
         await this.$store.dispatch('web3/connect', { chain: chainName });
-        await this.$store.dispatch('web3/goToChain', { chain: chainName });
+        const switchStatus = await this.$store.dispatch('web3/goToChain', { chain: chainName });
+        if (!switchStatus.ok) await this.disconnectFromWallet();
       }
       await this.swapsTableData(this.account.address, this.isConnected);
       await localStorage.setItem('miningPoolId', chainName);

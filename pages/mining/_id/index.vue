@@ -419,7 +419,8 @@ export default {
       this.SetLoader(true);
       await this.connectToWallet();
       if (localStorage.getItem('isMetaMask') === 'true') {
-        await this.$store.dispatch('web3/goToChain', { chain: currentPool });
+        const switchStatus = await this.$store.dispatch('web3/goToChain', { chain: currentPool });
+        if (!switchStatus.ok) await this.disconnectFromWallet();
       } else {
         const walletConnectData = JSON.parse(localStorage.getItem('walletconnect'));
         switch (walletConnectData.chainId) {
