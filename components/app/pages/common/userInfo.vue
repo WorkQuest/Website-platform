@@ -339,9 +339,9 @@ export default {
 }
 .right {
   &__header {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto auto;
     grid-gap: 30px;
-    flex-direction: row;
     justify-content: space-between;
     align-items: center;
   }
@@ -526,13 +526,14 @@ export default {
   .right {
     &__header {
       grid-gap: 15px;
+      grid-template-columns: 110px auto;
     }
     &__footer {
       width: 100%;
     }
   }
 }
-@include _767 {
+@include _991 {
   .info-grid {
     flex-direction: column;
     align-items: center;
