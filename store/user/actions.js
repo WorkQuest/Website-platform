@@ -13,6 +13,16 @@ export default {
       console.log(e);
     }
   },
+  async readNotifications({ commit }, payload) {
+    try {
+      const { ok } = await this.$axios.$put(`${process.env.NOTIFS_URL}notifications/mark-read`, payload);
+
+      commit('setNotificationsAsRead', payload.notificationIds);
+      return ok;
+    } catch (e) {
+      return false;
+    }
+  },
   async getNotifications({ commit, dispatch }, config) {
     try {
       const currConfig = config || { params: { limit: 2, offset: 0 } };
@@ -89,7 +99,7 @@ export default {
 
     notification.actionNameKey = keyName;
     notification.sender = isItAnWorker ? user : assignedWorker || worker;
-    notification.params = { title: quest?.title || title, link };
+    if (quest?.title || title) notification.params = { title: quest?.title || title, link };
     notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, h:mm');
   },
   async getUserPortfolios({ commit }, { userId, query }) {

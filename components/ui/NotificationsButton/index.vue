@@ -75,10 +75,10 @@
             <div class="notify__action">
               <button
                 class="notify__btn"
-                @click="goToEvent(notification.params.link)"
+                @click="goToEvent(notification.params ? notification.params.link : '')"
               >
                 <span class="notify__text notify__text_btn">
-                  {{ notification.params.title }}
+                  {{ notification.params ? notification.params.title : '' }}
                 </span>
                 <span class="icon-chevron_right" />
               </button>

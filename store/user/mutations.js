@@ -82,4 +82,9 @@ export default {
   setUnreadNotifsCount(state, count) {
     state.unreadNotifsCount += count;
   },
+  setNotificationsAsRead(state, ids) {
+    state.notifications.forEach((notif) => {
+      if (ids.indexOf(notif.id) >= 0) notif.seen = true;
+    });
+  },
 };

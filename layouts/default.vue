@@ -3,9 +3,7 @@
     ref="templateScroll"
     class="primary"
   >
-    <div
-      class="primary__template template"
-    >
+    <div class="primary__template template">
       <div
         class="template__content"
         :class="{'template__content_rows' : isChatOpened}"

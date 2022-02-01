@@ -1,61 +1,74 @@
 <template>
-  <div class="main">
-    <div class="main-white">
-      <div class="main__body">
-        <div class="page__container">
-          <div class="page__title">
-            <span
-              class="icon-chevron_left back"
-              @click="navigateBack"
-            />
-            {{ $t('ui.notifications.title') }}
-          </div>
-          <span
+  <div class="notifications-page">
+    <div class="notifications-page__main-container">
+      <div class="info-block info-block__container">
+        <div class="info-block__title">
+          {{ $t('ui.notifications.title') }}
+        </div>
+        <div class="info-block__list">
+          <div
             v-for="(notification, i) in notifications"
             :key="i"
-            class="notifications"
+            :ref="`${notification.id}|${notification.seen}`"
+            v-observe-visibility="(isVisible) => checkUnseenNotifs(isVisible, notification)"
+            class="notification"
           >
-            <div class="notification">
-              <template v-if="notification.sender">
-                <div class="notification__avatar">
-                  <img
-                    class="avatar"
-                    :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-                    alt=""
-                  >
-                </div>
-                <div class="notification__inviter inviter">
-                  <span class="inviter__name">
-                    {{ notification.sender.firstName }} {{ notification.sender.lastName }}
-                  </span>
+            <template v-if="notification.sender">
+              <div class="notification__avatar">
+                <img
+                  class="avatar"
+                  :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                  alt=""
+                >
+              </div>
+              <div class="notification__inviter inviter">
+                <span class="inviter__name">
+                  {{ notification.sender.firstName }} {{ notification.sender.lastName }}
+                </span>
                 <!--                <span class="inviter__company">-->
                 <!--                  {{ notification.company }}-->
                 <!--                </span>-->
-                </div>
-              </template>
-
-              <div class="notification__quest quest">
-                <span class="quest__invitation">
-                  {{ $t(notification.actionNameKey) }}:
-                </span>
-                <span class="quest__title">
-                  {{ notification.params.title }}
-                </span>
               </div>
-              <div class="notification__date">{{ notification.creatingDate }}</div>
+            </template>
 
-              <div class="notification__button button">
-                <base-btn
-                  mode="outline"
-                  class="button__view"
-                  @click="goToEvent(notification.params.link)"
-                >
-                  {{ $t('btn.view') }}
-                </base-btn>
-              </div>
+            <div class="notification__quest quest">
+              <span class="quest__invitation">
+                {{ $t(notification.actionNameKey) }}:
+              </span>
+              <span
+                v-if="notification.params"
+                class="quest__title"
+              >
+                {{ notification.params.title }}
+              </span>
             </div>
-          </span>
+            <div class="notification__date">
+              {{ notification.creatingDate }}
+            </div>
+
+            <div
+              v-if="!notification.seen"
+              class="notification__unread-dot"
+            />
+
+            <div class="notification__button button">
+              <base-btn
+                mode="outline"
+                class="button__view"
+                @click="goToEvent(notification.params ? notification.params.link : '')"
+              >
+                {{ $t('btn.view') }}
+              </base-btn>
+            </div>
+          </div>
         </div>
+        <base-pager
+          v-if="totalPages"
+          v-model="page"
+          class="info-block__pager"
+          :total-pages="totalPages"
+          @input="setPage"
+        />
       </div>
     </div>
   </div>
@@ -68,61 +81,13 @@ export default {
   name: 'Notifications',
   data() {
     return {
-      notifications: [
-        {
-          firstName: 'Edward',
-          lastName: 'Cooper',
-          company: 'from Amazon',
-          questTitle: 'Paint the garage quickly',
-          date: '14 January 2021, 14:54',
-        },
-        {
-          firstName: 'Edward',
-          lastName: 'Cooper',
-          company: 'from Amazon',
-          questTitle: 'Paint the garage quickly',
-          date: '14 January 2021, 14:54',
-        },
-        {
-          firstName: 'Edward',
-          lastName: 'Cooper',
-          company: 'from Amazon',
-          questTitle: 'Paint the garage quickly',
-          date: '14 January 2021, 14:54',
-        },
-        {
-          firstName: 'Edward',
-          lastName: 'Cooper',
-          company: 'from Amazon',
-          questTitle: 'Paint the garage quickly',
-          date: '14 January 2021, 14:54',
-        },
-        {
-          firstName: 'Edward',
-          lastName: 'Cooper',
-          company: 'from Amazon',
-          questTitle: 'Paint the garage quickly',
-          date: '14 January 2021, 14:54',
-        },
-        {
-          firstName: 'Edward',
-          lastName: 'Cooper',
-          company: 'from Amazon',
-          questTitle: 'Paint the garage quickly',
-          date: '14 January 2021, 14:54',
-        },
-        {
-          firstName: 'Edward',
-          lastName: 'Cooper',
-          company: 'from Amazon',
-          questTitle: 'Paint the garage quickly',
-          date: '14 January 2021, 14:54',
-        },
-      ],
       filter: {
         limit: 10,
         offset: 0,
       },
+      page: 1,
+      notificationIdsForRead: [],
+      delay: 0,
     };
   },
   computed: {
@@ -131,13 +96,46 @@ export default {
       notifications: 'user/getNotificationsList',
       notifsCount: 'user/getNotificationsCount',
     }),
+    totalPages() {
+      return Math.ceil(this.notifsCount / this.filter.limit);
+    },
   },
   async mounted() {
     this.SetLoader(true);
     await this.getNotifications();
     this.SetLoader(false);
   },
+  destroyed() {
+    this.$store.commit('user/setNotifications', { notifications: [], count: 0 });
+  },
   methods: {
+    checkUnseenNotifs(isVisible, { id, seen }) {
+      if (!isVisible || seen || this.notificationIdsForRead.indexOf(id) >= 0) return;
+
+      this.notificationIdsForRead.push(id);
+
+      this.setDelay(async () => {
+        const config = {
+          notificationIds: this.notificationIdsForRead,
+        };
+
+        await this.$store.dispatch('user/readNotifications', config);
+
+        this.notificationIdsForRead = [];
+
+        this.$forceUpdate();
+      }, 1000);
+    },
+    setDelay(f, t) {
+      clearTimeout(this.delay);
+      this.delay = setTimeout(f, t);
+    },
+    async setPage() {
+      this.filter.offset = (this.page - 1) * this.filter.limit;
+      this.SetLoader(true);
+      await this.getNotifications();
+      this.SetLoader(false);
+    },
     async getNotifications() {
       const config = {
         params: this.filter,
@@ -163,108 +161,58 @@ export default {
 
 <style lang="scss" scoped>
 
-.main {
-  @include main;
-  &-white {
-    @include main;
-    background: $white;
-    background: #FFFFFF;
-    margin: 30px 0 20px 0;
-    border-radius: 6px;
-    justify-content: center;
-  }
-  &__body {
-    max-width: 1180px;
-    height: 100%;
-  }
-}
-.icon {
-  &-caret_left:before {
-    content: "\ea49";
-    color: $black400;
-    font-size: 25px;
-  }
-  &-caret_right:before {
-    font-size: 25px;
-    color: $black600;
-    content: "\ea4a";
-  }
-}
-.pagination {
+.notifications-page {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  margin: 0 20px 0 0;
-  &__btn {
-    width: 43px;
-    height: 43px;
-    border-right: 1px solid $black0;
-    color: $black600;
-    font-size: 16px;
-    transition: .5s;
-    &:first-child {
-      color: $black400;
-    }
-    &:last-child {
-      border: none;
-    }
-    &:hover {
-      background-color: rgb(123, 201, 246);
-      color: $blue;
-    }
-    &_active {
-      background-color: #E6F3F9;
-      color: #0083c7;
-    }
-  }
-  &__arrow {
-    @extend .pagination__btn;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-}
-.img {
-  &__container {
-    display: flex;
-    margin: 15px 0 10px 0;
+  flex-direction: column;
+  align-items: center;
+
+  &__main-container {
+    max-width: 1180px;
+    width: 100%;
+    padding-top: 30px;
   }
 }
 
-.btn {
+.info-block {
+  background: #fff;
+  border-radius: 6px;
+
   &__container {
-    display: flex;
-    align-items: center;
+    display: grid;
+    gap: 20px;
+    padding: 20px;
   }
-}
-.notifications {
-  margin: 20px 20px 0 20px;
-  border-bottom: 1px solid $black100;
-  &:last-of-type {
-    border-bottom: 1px solid white;
-  }
-}
-.page {
-  &__container {
-    margin: 20px 0 20px 0;
-    display: flex;
-    flex-direction: column;
-    justify-items: flex-start;
-    max-width: 780px;
-    width: 780px;
-  }
+
   &__title {
     @include text-simple;
     font-weight: 500;
     font-size: 18px;
     color: $black800;
-    margin: 0 0 0 20px;
     letter-spacing: 0.05em;
   }
+
+  &__list {
+    display: grid;
+    gap: 20px;
+  }
+
+  &__pager {
+    float: unset;
+    justify-self: flex-end;
+  }
 }
-.back {
-  display: none;
+
+.icon-chevron_left {
+  display: block;
+  margin-bottom: 10px;
+  margin-left: -8px;
+  cursor: pointer;
+  &:before {
+    color: $blue;
+    font-size: 40px;
+  }
 }
+
 .notification {
   display: grid;
   grid-template-columns: 52px auto 150px;
@@ -276,6 +224,21 @@ export default {
     "avatar date button";
   width: 100%;
   padding-bottom: 5px;
+
+  &__unread-dot {
+    grid-column: 3;
+    grid-row: 1;
+    height: 8px;
+    width: 8px;
+    border-radius: 50%;
+    background-color: #0083C7;
+    justify-self: flex-end;
+    margin-right: 10px;
+  }
+
+  &:not(:last-child) {
+    border-bottom: 1px solid $black100;
+  }
 
   &__avatar {
     grid-area: avatar;
@@ -302,9 +265,7 @@ export default {
     margin-bottom: 10px;
   }
 }
-.icon-chevron_right {
-  display: none;
-}
+
 .avatar {
   width: 50px;
   height: 50px;
@@ -406,14 +367,7 @@ export default {
       display: none;
     }
   }
-  .icon-chevron_right {
-    display: inline-block;
 
-    &:before {
-      color: $blue;
-      font-size: 24px;
-    }
-  }
   .page {
     &__title {
       font-weight: bold;
@@ -421,16 +375,6 @@ export default {
       line-height: 39px;
       letter-spacing: 0.03em;
       margin-bottom: 5px;
-    }
-  }
-  .back {
-    display: block;
-    margin-bottom: 10px;
-    margin-left: -8px;
-    cursor: pointer;
-    &:before {
-      color: $blue;
-      font-size: 40px;
     }
   }
 }
