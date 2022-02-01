@@ -99,9 +99,7 @@ export default {
         const diff = new BigNumber(maxBalance).minus(this.feeForMaxWUSDValue);
         maxBalance = diff.isLessThan(0) ? '0' : diff.toString();
       }
-      if (!this.isStakingStarted) {
-        return new BigNumber(maxBalance).isLessThan(maxStake) ? maxBalance : maxStake;
-      }
+      if (!this.isStakingStarted) return new BigNumber(maxBalance).isLessThan(maxStake) ? maxBalance : maxStake;
       const possible = new BigNumber(maxStake).minus(this.userInfo.fullStaked);
       if (new BigNumber(possible).isGreaterThan(maxBalance)) {
         return maxBalance;
