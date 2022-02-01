@@ -80,27 +80,29 @@ export default {
       stakingUserData: 'wallet/getStakingUserData',
     }),
     canSubmit() {
-      return this.statusBusy || (this.options.stakingType === StakingTypes.WUSD && this.options.stakingType !== StakingTypes.WQT && !this.isConnected);
+      const { stakingType, isConnected, statusBusy } = this;
+      return statusBusy || (stakingType === StakingTypes.WUSD && stakingType !== StakingTypes.WQT && !isConnected);
     },
-    userInfo() { return this.stakingUserData[this.options.stakingType]; },
-    poolData() { return this.stakingPoolsData[this.options.stakingType]; },
-    poolAddress() {
-      return this.poolData && this.poolData.poolAddress
-        ? this.poolData.poolAddress.toLowerCase() : '';
-    },
+    stakingType() { return this.options.stakingType; },
+    userInfo() { return this.stakingUserData[this.stakingType]; },
+    poolData() { return this.stakingPoolsData[this.stakingType]; },
+    poolAddress() { return this.poolData?.poolAddress ? this.poolData.poolAddress.toLowerCase() : ''; },
   },
   mounted() { this.balance = this.options.balance; },
   methods: {
     hide() { this.CloseModal(); },
     getInputRules() {
-      const min = this.options.minStake ? `|min_value:${this.options.minStake}` : '|min_value:0.00001';
+      const {
+        staked, minStake, maxStake, type,
+      } = this.options;
+      const min = `|min_value:${minStake || '0.00001'}`;
       let max = '';
-      if (this.options.type === 1) max = this.options.maxStake ? `|max_value:${(new BigNumber(this.options.maxStake).minus(this.options.staked)).toString()}` : '';
-      else max = this.options.staked ? `|max_value:${this.options.staked}` : '';
+      if (type === 1) max = maxStake ? `|max_value:${(new BigNumber(maxStake).minus(staked)).toString()}` : '';
+      else max = staked ? `|max_value:${staked}` : '';
       return min + max;
     },
     maxBalance() {
-      if (this.options.stakingType !== 'MINING') {
+      if (this.stakingType !== StakingTypes.MINING) {
         if (this.options.type === 1) {
           const max = new BigNumber(this.options.maxStake).minus(this.options.staked).toString();
           this.amount = new BigNumber(this.options.balance).isGreaterThanOrEqualTo(max)
@@ -113,7 +115,7 @@ export default {
       }
     },
     checkAmount() {
-      if (this.options.stakingType !== 'MINING') {
+      if (this.stakingType !== StakingTypes.MINING) {
         return this.options.type === 1
           ? new BigNumber(this.options.balance).isGreaterThanOrEqualTo(this.amount)
           : new BigNumber(this.amount).isLessThanOrEqualTo(this.options.staked);
@@ -231,7 +233,7 @@ export default {
         });
       } else {
         localStorage.setItem('metamaskStatus', 'installed');
-        if (this.options.stakingType === 'MINING') {
+        if (this.stakingType === StakingTypes.MINING) {
           await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
         } else {
           await this.$store.dispatch('web3/goToChain', { chain: 'ETH' });

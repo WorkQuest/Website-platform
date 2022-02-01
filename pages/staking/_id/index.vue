@@ -187,7 +187,7 @@ import moment from 'moment';
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { StakingTypes, TokenSymbols } from '~/utils/enums';
+import { ExplorerUrl, StakingTypes, TokenSymbols } from '~/utils/enums';
 import { getWalletAddress } from '~/utils/wallet';
 
 export default {
@@ -297,10 +297,8 @@ export default {
       ];
     },
     explorerRef() {
-      if (!this.poolData) return '/';
-      return (process.env.PROD === 'true')
-        ? `https://dev-explorer.workquest.co/address/${this.poolData.rewardTokenAddress ? this.poolData.rewardTokenAddress.toLowerCase() : ''}`
-        : `https://dev-explorer.workquest.co/address/${this.poolData.rewardTokenAddress ? this.poolData.rewardTokenAddress.toLowerCase() : ''}`;
+      if (!this.poolData || !this.poolData.rewardTokenAddress) return '/';
+      return `${ExplorerUrl}/address/${this.poolData.rewardTokenAddress.toLowerCase()}`;
     },
   },
   async mounted() {

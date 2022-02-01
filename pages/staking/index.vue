@@ -25,7 +25,7 @@
             >
               <template #cell(poolAddress)="el">
                 <a
-                  :href="`${explorerRef}/address/${el.item.poolAddress ? el.item.poolAddress.toLowerCase() : ''}`"
+                  :href="`${getExplorerRef(el.item.poolAddress)}}`"
                   target="_blank"
                   class="table__value table__value_gray"
                 >
@@ -44,7 +44,7 @@
               </template>
               <template #cell(stakeTokenAddress)="el">
                 <a
-                  :href="`${explorerRef}/address/${el.item.rewardTokenAddress ? el.item.rewardTokenAddress.toLowerCase() : ''}`"
+                  :href="getExplorerRef(el.item.rewardTokenAddress)"
                   target="_blank"
                   class="table__value table__value_blue"
                 >
@@ -54,7 +54,7 @@
               <template #cell(rewardTokenAddress)="el">
                 <div class="table__value table__value_blue">
                   <a
-                    :href="`${explorerRef}/address/${el.item.rewardTokenAddress ? el.item.rewardTokenAddress.toLowerCase() : ''}`"
+                    :href="getExplorerRef(el.item.rewardTokenAddress)"
                     target="_blank"
                     class="table__value table__value_blue"
                   >
@@ -81,7 +81,9 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { Chains, NativeTokenSymbolByChainId, StakingTypes } from '~/utils/enums';
+import {
+  Chains, ExplorerUrl, NativeTokenSymbolByChainId, StakingTypes,
+} from '~/utils/enums';
 
 export default {
   name: 'Staking',
@@ -169,10 +171,6 @@ export default {
     poolsData() {
       return [this.stakingPoolsData.WUSD, this.stakingPoolsData.WQT];
     },
-    explorerRef() {
-      if (process.env.PROD === 'true') return 'https://dev-explorer.workquest.co';
-      return 'https://dev-explorer.workquest.co';
-    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -182,6 +180,10 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    getExplorerRef(address) {
+      if (!address) return ExplorerUrl;
+      return `${ExplorerUrl}/address/${address.toLowerCase()}`;
+    },
     async getPoolsData() {
       await Promise.all([
         this.$store.dispatch('wallet/getStakingPoolsData', StakingTypes.WQT),

@@ -115,9 +115,7 @@ export default {
   },
   methods: {
     hide() { this.CloseModal(); },
-    maxAmount() {
-      this.amount = this.stakeAmountLimit;
-    },
+    maxAmount() { this.amount = this.stakeAmountLimit; },
     async updateMaxFee() {
       this.canSubmit = false;
       if (this.stakingType !== StakingTypes.WUSD) {
