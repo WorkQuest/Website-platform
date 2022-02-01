@@ -91,7 +91,7 @@ export default {
       if (!this.isShowMap) {
         this.query.q = this.search;
         clearTimeout(this.searchTimeout);
-        this.searchTimeout = setTimeout(async () => await this.fetchEmployeeList(true), 300);
+        this.searchTimeout = setTimeout(async () => await this.fetchQuestsList(true), 300);
       } else delete this.query.q;
     },
   },

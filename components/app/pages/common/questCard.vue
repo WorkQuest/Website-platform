@@ -122,6 +122,7 @@
             <base-btn
               v-if="quest.type !== 3"
               mode="borderless-right"
+              data-selector="ACTION-SHOW-DETAILS"
               @click="showDetails(quest.id)"
             >
               {{ $t('meta.details') }}
