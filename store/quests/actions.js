@@ -47,12 +47,6 @@ export default {
   async getCurrentStepCreateQuest({ commit }, data) {
     commit('setCurrentStepCreateQuest', data);
   },
-  setMapBounds({ commit }, payload) {
-    commit('setMapBounds', payload);
-  },
-  setMapCenter({ commit }, payload) {
-    commit('setMapCenter', payload);
-  },
   async questCreate({ commit }, payload) {
     try {
       return await this.$axios.$post('/v1/quest/create', payload);
@@ -117,26 +111,6 @@ export default {
         params: { ...query },
       });
       commit('setUserQuests', response.result);
-      return response.result;
-    } catch (e) {
-      return console.log(e);
-    }
-  },
-  async getQuestsOnMap({ commit }, payload) {
-    try {
-      const response = await this.$axios.$get(`/v1/quests/map/list-points?${payload}`);
-      commit('setAllQuests', response.result);
-      return response.result;
-    } catch (e) {
-      return console.log(e);
-    }
-  },
-  async getQuestsLocation({ commit }, payload) {
-    try {
-      const response = await this.$axios.$get('/v1/quests/map/points', {
-        params: { ...payload },
-      });
-      commit('setQuestsLocation', response.result);
       return response.result;
     } catch (e) {
       return console.log(e);

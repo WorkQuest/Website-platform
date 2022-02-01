@@ -92,6 +92,15 @@ Vue.mixin({
     deg2rad(deg) {
       return deg * (Math.PI / 180);
     },
+    ShowMessage(title, label) {
+      this.$bvToast.toast(label, {
+        title: title || 'Ошибка',
+        variant: 'warning',
+        solid: true,
+        toaster: 'b-toaster-bottom-right',
+        appendToast: true,
+      });
+    },
     ShowError(label) {
       this.$bvToast.toast(label, {
         title: 'Ошибка',

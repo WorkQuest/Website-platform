@@ -33,9 +33,6 @@ export default {
   setUserQuests(state, data) {
     state.userInfoQuests = data;
   },
-  setQuestsLocation(state, data) {
-    state.questsLocation = data;
-  },
   setQuestData(state, data) {
     state.questData = data;
   },
@@ -49,12 +46,6 @@ export default {
   },
   setResponsesMy(state, data) {
     state.responsesMy = data;
-  },
-  setMapBounds(state, data) {
-    state.mapBounds = data;
-  },
-  setMapCenter(state, data) {
-    state.mapCenter = data;
   },
   setFilters(state, data) {
     state.filters = data;

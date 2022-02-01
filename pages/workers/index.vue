@@ -67,7 +67,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      mapBounds: 'quests/getMapBounds',
+      mapBounds: 'google-map/getBounds',
       employeeList: 'quests/getEmployeeList',
       employeeCount: 'quests/getEmployeeCount',
     }),
