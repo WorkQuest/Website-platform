@@ -17,4 +17,6 @@ export default () => ({
     },
   },
   pensionWallet: null,
+  stakingPoolsData: { WQT: {}, WUSD: {} },
+  stakingUserData: { WQT: {}, WUSD: {} },
 });

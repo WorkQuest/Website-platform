@@ -6,4 +6,6 @@ export default {
   getBalanceData: (state) => state.balance,
   getSelectedToken: (state) => state.selectedToken,
   getPensionWallet: (state) => state.pensionWallet,
+  getStakingPoolsData: (state) => state.stakingPoolsData,
+  getStakingUserData: (state) => state.stakingUserData,
 };

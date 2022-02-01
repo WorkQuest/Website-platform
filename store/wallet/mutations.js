@@ -21,4 +21,10 @@ export default {
   setPensionWallet(state, pensionWallet) {
     state.pensionWallet = pensionWallet;
   },
+  setStakingPoolData(state, { pool, data }) {
+    state.stakingPoolsData[pool] = data;
+  },
+  setStakingUserData(state, { pool, data }) {
+    state.stakingUserData[pool] = data;
+  },
 };
