@@ -172,9 +172,9 @@ export default {
       this.profile.locationFull.locationPlaceName = coordinates.address;
     },
     distantIndexByWorkplace(workplace) {
-      if (workplace === 'distance') return workplaceIndex.Distance;
-      if (workplace === 'office') return workplaceIndex.Office;
-      if (workplace === 'both') return workplaceIndex.Both;
+      if (workplace === 'distance') return 0;
+      if (workplace === 'office') return 1;
+      if (workplace === 'both') return 2;
       return null;
     },
 

@@ -147,12 +147,6 @@ export const Path = {
   CREATE_QUEST: '/create-quest',
 };
 
-export const workplaceIndex = {
-  Distance: 0,
-  Office: 1,
-  Both: 2,
-};
-
 export const LinksWorker = {
   QUESTS: '/quests',
   MY: '/my',
