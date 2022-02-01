@@ -1,6 +1,12 @@
 <template>
   <div class="info-grid">
     <div class="info-grid__left">
+      <div class="info-grid__share-left">
+        <base-btn
+          mode="share-btn"
+          @click="shareModal()"
+        />
+      </div>
       <div class="info-grid__block block block_left">
         <div class="block__avatar avatar">
           <img
@@ -123,7 +129,10 @@
       </div>
     </div>
     <div class="info-grid__right right">
-      <div class="right__header">
+      <div
+        class="right__header"
+        :class="userData.role === 'worker' ? 'right__header_employee' : ''"
+      >
         <div
           v-if="userData.role === 'worker' && userData.wagePerHour"
           class="right__price"
@@ -135,10 +144,12 @@
             {{ $tc('saving.wusdCount', userData.wagePerHour) }}
           </div>
         </div>
-        <base-btn
-          mode="share-btn"
-          @click="shareModal()"
-        />
+        <div class="right__share-btn">
+          <base-btn
+            mode="share-btn"
+            @click="shareModal()"
+          />
+        </div>
       </div>
       <div class="right__footer">
         <div
@@ -328,7 +339,6 @@ export default {
     flex-direction: row;
     justify-content: center;
     display: flex;
-    grid-gap: 30px;
   }
   &__right {
     display: flex;
@@ -336,14 +346,19 @@ export default {
     justify-content: space-between;
     align-items: flex-end;
   }
+  &__share-left {
+    display: none;
+  }
 }
 .right {
   &__header {
     display: grid;
-    grid-template-columns: auto auto;
-    grid-gap: 30px;
     justify-content: space-between;
     align-items: center;
+    &_employee {
+      grid-template-columns: auto auto;
+      grid-gap: 30px;
+    }
   }
   &__footer {
     width: 280px;
@@ -378,6 +393,7 @@ export default {
   }
   &_right {
     align-self: flex-start;
+    margin-left: 30px;
   }
   &__rating {
     height: 20px;
@@ -525,8 +541,11 @@ export default {
   }
   .right {
     &__header {
-      grid-gap: 15px;
-      grid-template-columns: 110px auto;
+      justify-items: end;
+      &_employee {
+        grid-gap: 15px;
+        grid-template-columns: 110px auto;
+      }
     }
     &__footer {
       width: 100%;
@@ -537,17 +556,39 @@ export default {
   .info-grid {
     flex-direction: column;
     align-items: center;
+    grid-gap: 0;
     &__left {
       flex-direction: column;
+      width: 100%;
     }
     &__right {
       grid-gap:20px;
       width: 100%;
     }
+    &__share-left {
+      display: flex;
+      height: 0;
+      justify-content: flex-end;
+    }
   }
   .block {
     &_left {
       align-self: center;
+    }
+    &_right {
+      margin-left: 0;
+      margin-top: 30px;
+    }
+  }
+  .right {
+    &__share-btn {
+      display: none;
+    }
+    &__header {
+      &_employee {
+        grid-gap: 0;
+        grid-template-columns: auto;
+      }
     }
   }
 }
