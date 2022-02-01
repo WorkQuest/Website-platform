@@ -5,11 +5,13 @@
   >
     <validation-observer
       v-slot="{handleSubmit, valid}"
+      ref="input"
       tag="div"
       class="stake__content content"
     >
       <base-field
         v-model="amount"
+        validation-mode="aggressive"
         :placeholder="1000"
         class="content__field"
         type="number"
@@ -29,7 +31,7 @@
       </base-field>
       <div
         v-if="!isStakingStarted"
-        class="content__field&quot;"
+        class="content__field"
       >
         {{ $t('staking.stakeDays') }}
         <base-dd
@@ -47,7 +49,7 @@
           {{ $t('meta.cancel') }}
         </base-btn>
         <base-btn
-          :disabled="!valid"
+          :disabled="!valid || !canSubmit"
           @click="handleSubmit(onSubmit)"
         >
           {{ $t('meta.submit') }}
@@ -72,6 +74,8 @@ export default {
       amount: '',
       daysValue: 0,
       stakeDays: [30, 60, 90],
+      feeForMaxWUSDValue: 0,
+      canSubmit: true,
     };
   },
   computed: {
@@ -81,30 +85,58 @@ export default {
       stakingPoolsData: 'wallet/getStakingPoolsData',
       stakingUserData: 'wallet/getStakingUserData',
     }),
+    userStakeBalance() { return this.balanceData[TokenSymbols.WUSD].fullBalance; },
     isStakingStarted() { return this.userInfo.isStakingStarted; },
     stakingType() { return this.options.stakingType; },
     userInfo() { return this.stakingUserData[this.stakingType]; },
     poolData() { return this.stakingPoolsData[this.stakingType]; },
     minStakeAmount() { return this.stakingPoolsData[this.stakingType].fullMinStake; },
     stakeAmountLimit() {
-      const balance = this.balanceData[this.stakingType].fullBalance;
-      const max = this.poolData.fullMaxStake;
+      const maxStake = this.poolData.fullMaxStake;
+      let maxBalance = this.balanceData[this.stakingType].fullBalance;
+      // If we use WUSD - calc max value with max tx fee
+      if (this.stakingType === StakingTypes.WUSD) {
+        const diff = new BigNumber(maxBalance).minus(this.feeForMaxWUSDValue);
+        maxBalance = diff.isLessThan(0) ? '0' : diff.toString();
+      }
       if (!this.isStakingStarted) {
-        return new BigNumber(balance).isLessThan(max) ? balance : max;
+        return new BigNumber(maxBalance).isLessThan(maxStake) ? maxBalance : maxStake;
       }
-      const possible = new BigNumber(max).minus(this.userInfo.fullStaked).toString();
-      if (new BigNumber(possible).isGreaterThan(balance)) {
-        return balance;
+      const possible = new BigNumber(maxStake).minus(this.userInfo.fullStaked);
+      if (new BigNumber(possible).isGreaterThan(maxBalance)) {
+        return maxBalance;
       }
-      return possible;
+      return possible.isLessThan(0) ? possible.toString() : '0';
     },
   },
-  async beforeMount() {
+  async created() {
     await this.updateBalances();
+    await this.updateMaxFee();
   },
   methods: {
     hide() { this.CloseModal(); },
-    maxAmount() { this.amount = this.stakeAmountLimit; },
+    maxAmount() {
+      this.amount = this.stakeAmountLimit;
+    },
+    async updateMaxFee() {
+      this.canSubmit = false;
+      if (this.stakingType !== StakingTypes.WUSD) {
+        this.feeForMaxWUSDValue = 0;
+        return;
+      }
+      const balance = this.userStakeBalance;
+      if (new BigNumber(balance).isLessThan(this.poolData.fullMinStake)) {
+        this.feeForMaxWUSDValue = 0;
+        return;
+      }
+      const txFee = await this.getStakeFeeForAmount(
+        balance,
+        this.stakingType, this.poolData.poolAddress, this.stakeDays[this.daysValue],
+      );
+      if (!txFee.ok) this.feeForMaxWUSDValue = 0;
+      else this.feeForMaxWUSDValue = txFee.result.fee;
+      this.canSubmit = true;
+    },
     async updateBalances() {
       await Promise.all([
         this.$store.dispatch('wallet/getBalance'),
@@ -123,7 +155,10 @@ export default {
       if (!isNative) {
         this.SetLoader(true);
         const allowance = await this.getAllowance(stakeTokenAddress, poolAddress);
-        if (!allowance) return;
+        if (!allowance) {
+          this.SetLoader(false);
+          return;
+        }
         if (new BigNumber(allowance).isLessThan(amount)) {
           await this.approveThenStake(stakeTokenAddress, poolAddress, fullMaxStake, amount, stakingType, days, isStakingStarted);
         } else {
@@ -154,13 +189,12 @@ export default {
       const txFee = await this.$store.dispatch('wallet/getStakingApproveFeeData', {
         stakeTokenAddress, poolAddress, fullMaxStake,
       });
+      this.SetLoader(false);
       if (!txFee.ok) {
         this.ShowToast(txFee.message);
-        this.SetLoader(false);
         this.CloseModal();
         return;
       }
-      this.SetLoader(false);
       this.ShowModal({
         key: modals.transactionReceipt,
         title: this.$t('mining.approve'),

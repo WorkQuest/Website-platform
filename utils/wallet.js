@@ -7,7 +7,6 @@ import {
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { StakingTypes } from '~/utils/enums';
-import { WQStakingNative } from '~/abi/abi';
 
 const bip39 = require('bip39');
 

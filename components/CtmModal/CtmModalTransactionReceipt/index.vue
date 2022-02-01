@@ -76,12 +76,14 @@ export default {
   },
   mounted() {
     const { fields } = this.options;
-    if (fields && fields.fee && fields.amount) {
+    if (fields?.fee?.value && fields?.amount?.value) {
       if (fields.amount.symbol === TokenSymbols.WUSD) { // If we send WUSD
         this.canSend = new BigNumber(fields.amount.value).plus(fields.fee.value).isLessThanOrEqualTo(this.balance.WUSD.fullBalance);
       } else {
         this.canSend = new BigNumber(fields.fee.value).isLessThanOrEqualTo(this.balance.WUSD.fullBalance);
       }
+    } else if (fields?.fee?.value) {
+      this.canSend = new BigNumber(fields.fee.value).isLessThanOrEqualTo(this.balance.WUSD.fullBalance);
     }
   },
   methods: {

@@ -218,18 +218,13 @@ export default {
       rewardTokenAddress, totalStaked, totalDistributed, rewardTotal, maxStake, minStake,
     } = stakingInfo;
 
-    let decimals;
-    let tokenSymbol;
-    if (!rewardTokenAddress) {
-      decimals = 18;
-      tokenSymbol = pool;
-    } else {
-      const [decimalsRes, tokenSymbolRes] = await Promise.all([
+    let decimals = 18;
+    let tokenSymbol = TokenSymbols.WUSD;
+    if (pool !== StakingTypes.WUSD) {
+      [decimals, tokenSymbol] = await Promise.all([
         fetchContractData('decimals', abi.ERC20, rewardTokenAddress, null, GetWalletProvider()),
         fetchContractData('symbol', abi.ERC20, rewardTokenAddress, null, GetWalletProvider()),
       ]);
-      decimals = decimalsRes;
-      tokenSymbol = tokenSymbolRes;
     }
 
     const min = new BigNumber(0.0001);
@@ -247,8 +242,8 @@ export default {
         tokenSymbol,
         isNative: tokenSymbol === StakingTypes.WUSD,
         stakeTokenSymbol: tokenSymbol,
-        claimPeriod: new BigNumber(stakingInfo.claimPeriod / 60 / 60).decimalPlaces(3).toString(),
-        stakePeriod: new BigNumber(stakingInfo.stakePeriod / 60 / 60).decimalPlaces(3).toString(),
+        claimPeriod: new BigNumber(stakingInfo.claimPeriod / 60).decimalPlaces(3).toString(),
+        stakePeriod: new BigNumber(stakingInfo.stakePeriod / 60).decimalPlaces(3).toString(),
         distributionTime: new BigNumber(stakingInfo.distributionTime / 60).decimalPlaces(3).toString(),
         totalStaked: new BigNumber(totalStaked).shiftedBy(-decimals).decimalPlaces(4).toString(),
         totalDistributed: new BigNumber(totalDistributed).shiftedBy(-decimals).decimalPlaces(4).toString(),
@@ -282,7 +277,7 @@ export default {
         fullClaim: +claim_ ? new BigNumber(claim_).shiftedBy(-decimals).toString() : '0',
         staked: +staked_ ? new BigNumber(staked_).shiftedBy(-decimals).decimalPlaces(4).toString() : '0',
         fullStaked: +staked_ ? new BigNumber(staked_).shiftedBy(-decimals).toString() : '0',
-        balance: +_balance ? new BigNumber(_balance).shiftedBy(-18).decimalPlaces(4).toString() : '0',
+        balance: +_balance ? getStyledAmount(_balance, false, decimals) : '0',
         fullBalance: +_balance ? new BigNumber(_balance).shiftedBy(-decimals).toString() : '0',
       },
     });
@@ -353,7 +348,7 @@ export default {
       return success(res);
     } catch (e) {
       console.error('Unstake error', e.message);
-      return error();
+      return error(9000, e.message);
     }
   },
   async stakingClaimRewards({ commit }, { stakingType, poolAddress }) {

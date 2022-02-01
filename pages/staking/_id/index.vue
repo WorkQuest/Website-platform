@@ -151,7 +151,10 @@
               <div class="info-card__name">
                 {{ item.name }}
               </div>
-              <div class="info-card__about">
+              <div
+                v-if="poolData.minStake"
+                class="info-card__about"
+              >
                 {{ item.about }}
               </div>
             </div>
@@ -221,7 +224,7 @@ export default {
       return [
         {
           name: this.$t('staking.stakingCards.distributionTime'),
-          about: this.$t('staking.min', { n: this.poolData.distributionTime }),
+          about: this.getTimeFromMin(this.poolData.distributionTime),
         },
         {
           name: this.$t('staking.stakingCards.rewardTotal'),
@@ -229,11 +232,11 @@ export default {
         },
         {
           name: this.$t('staking.stakingCards.takePeriod'),
-          about: this.$t('staking.hours', { n: this.poolData.stakePeriod }),
+          about: this.getTimeFromMin(this.poolData.stakePeriod),
         },
         {
           name: this.$t('staking.stakingCards.claimPeriod'),
-          about: this.$t('staking.hours', { n: this.poolData.claimPeriod }),
+          about: this.getTimeFromMin(this.poolData.claimPeriod),
         },
       ];
     },
@@ -278,13 +281,6 @@ export default {
       return data;
     },
     stakeCards() {
-      if (!this.poolData.minStake) {
-        return [
-          { name: this.$t('staking.stakeCards.stakeMin') },
-          { name: this.$t('staking.stakeCards.stakeLimit') },
-          { name: this.$t('staking.stakeCards.periodUpdate') },
-        ];
-      }
       return [
         {
           name: this.$t('staking.stakeCards.stakeMin'),
@@ -296,7 +292,7 @@ export default {
         },
         {
           name: this.$t('staking.stakeCards.periodUpdate'),
-          about: this.$t('staking.hours', { n: this.poolData.stakePeriod }),
+          about: this.getTimeFromMin(this.poolData.stakePeriod),
         },
       ];
     },
@@ -316,6 +312,12 @@ export default {
     clearInterval(this.updateInterval);
   },
   methods: {
+    getTimeFromMin(min) {
+      if (!min) return '';
+      if (Math.floor(min / 60 / 24) > 0) return this.$t('staking.days', { n: min / 60 / 24 });
+      if (Math.floor(min / 60) > 0) return this.$t('staking.hours', { n: Math.floor(min / 60) });
+      return this.$t('staking.min', { n: min });
+    },
     async loadData() {
       this.SetLoader(true);
       await Promise.all([
@@ -493,11 +495,13 @@ export default {
           ]);
           this.SetLoader(false);
           if (!txFee.ok) {
+            let errorMessage;
             if (txFee.msg.includes('You cannot claim tokens yet') || txFee.msg.includes('You cannot stake tokens yet')) {
-              this.ShowToast(this.$t('staking.cannotStakeYet'), this.$t('staking.autoRenewal'));
+              errorMessage = this.$t('staking.cannotStakeYet');
             } else {
-              this.ShowToast(txFee.msg);
+              errorMessage = txFee.msg;
             }
+            this.ShowToast(errorMessage, this.$t('staking.autoRenewal'));
             return;
           }
           this.ShowModal({

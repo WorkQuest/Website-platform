@@ -39,7 +39,7 @@
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
-            :disabled="statusBusy || !valid || (options.stakingType !== 'WQT' && options.stakingType !== 'WUSD' && !isConnected)"
+            :disabled="!valid || !canSubmit"
             @click="handleSubmit(options.type === 1 ? staking : unstaking)"
           >
             {{ $t('meta.submit') }}
@@ -79,6 +79,9 @@ export default {
       stakingPoolsData: 'wallet/getStakingPoolsData',
       stakingUserData: 'wallet/getStakingUserData',
     }),
+    canSubmit() {
+      return this.statusBusy || (this.options.stakingType === StakingTypes.WUSD && this.options.stakingType !== StakingTypes.WQT && !this.isConnected);
+    },
     userInfo() { return this.stakingUserData[this.options.stakingType]; },
     poolData() { return this.stakingPoolsData[this.options.stakingType]; },
     poolAddress() {
@@ -162,7 +165,7 @@ export default {
           ]);
           this.SetLoader(false);
           if (!txFee.ok) {
-            this.SetLoader(false);
+            this.ShowToast(this.$t('modals.failed'), this.$t('mining.unstake'));
             return;
           }
           this.ShowModal({
@@ -174,7 +177,13 @@ export default {
               unstakeAmount: { name: this.$t('modals.amount'), value: amount },
               fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: stakingType },
             },
-            submitMethod: async () => await this.$store.dispatch('wallet/stakingUnstake', { amount, stakingType, poolAddress }),
+            submitMethod: async () => {
+              const res = await this.$store.dispatch('wallet/stakingUnstake', { amount, stakingType, poolAddress });
+              if (!res.ok && res.msg.includes('insufficient funds: insufficient funds')) {
+                this.ShowToast(this.$t('errors.transaction.notEnoughFunds'), this.$t('mining.unstake'));
+              }
+              return res;
+            },
             callback: async () => {
               await Promise.all([
                 this.$store.dispatch('wallet/getBalance'),
