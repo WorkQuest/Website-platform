@@ -175,7 +175,7 @@ export default {
       this.profile.locationFull.locationPlaceName = coordinates.address;
     },
     distantIndexByWorkplace(workplace) {
-      return WorkplaceIndex.indexOf(workplace);
+      return WorkplaceIndex[workplace];
     },
     // MODALS METHODS
     addEducation(knowledge, data) {
