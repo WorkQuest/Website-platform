@@ -102,7 +102,7 @@ export default {
         const res = await submitMethod();
         if (res?.ok) {
           if (callback) await callback();
-          if (isShowSuccess !== false) {
+          if (isShowSuccess) {
             await this.$store.dispatch('modals/show', {
               key: modals.transactionSend,
             });

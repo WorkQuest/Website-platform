@@ -276,7 +276,6 @@ export default {
   }
 }
 .content {
-  &__field {}
   &__days-dd {
     border-radius: 6px;
     border: 1px solid $black0;
