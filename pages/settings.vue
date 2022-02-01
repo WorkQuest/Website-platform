@@ -44,7 +44,7 @@ import VerificationCard from '~/components/app/pages/settings/VerificationCard.v
 import Profile from '~/components/app/pages/settings/Profile.vue';
 import Skills from '~/components/app/pages/settings/Skills.vue';
 import Advanced from '~/components/app/pages/settings/Advanced.vue';
-import { UserRole, workplaceIndex } from '~/utils/enums';
+import { UserRole, WorkplaceIndex } from '~/utils/enums';
 
 export default {
   name: 'Settings',
@@ -109,6 +109,9 @@ export default {
       filters: 'quests/getFilters',
       secondNumber: 'user/getUserSecondMobileNumber',
     }),
+    WorkplaceIndex() {
+      return WorkplaceIndex;
+    },
     UserRole() {
       return UserRole;
     },
@@ -172,12 +175,8 @@ export default {
       this.profile.locationFull.locationPlaceName = coordinates.address;
     },
     distantIndexByWorkplace(workplace) {
-      if (workplace === 'distance') return 0;
-      if (workplace === 'office') return 1;
-      if (workplace === 'both') return 2;
-      return null;
+      return WorkplaceIndex.indexOf(workplace);
     },
-
     // MODALS METHODS
     addEducation(knowledge, data) {
       const { educations, workExperiences } = this.profile.additionalInfo;
