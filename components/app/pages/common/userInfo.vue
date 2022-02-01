@@ -102,10 +102,7 @@
           </span>
         </div>
         <div class="block__contacts contacts">
-          <div
-            class="contacts__contact contact"
-            :class="(contactData.length > 3 || userData.additionalInfo.address) ? 'contact_column' : ''"
-          >
+          <div class="contacts__contact contact">
             <div
               v-for="(data, key) in contactData"
               :key="key"
