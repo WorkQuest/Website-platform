@@ -128,15 +128,6 @@ export const getStakingDataByType = (stakingType) => {
         ? process.env.ETHEREUM_WQT_TOKEN
         : process.env.BSC_WQT_TOKEN;
       break;
-    case StakingTypes.WQT:
-      _tokenAddress = process.env.ETHEREUM_WQT_TOKEN;
-      _stakingAbi = abi.WQStaking;
-      _stakingAddress = process.env.WQT_STAKING;
-      break;
-    case StakingTypes.WUSD:
-      _stakingAbi = abi.WQStakingNative;
-      _stakingAddress = process.env.WQT_STAKING_NATIVE;
-      break;
     default:
       console.error('[getStakingDataByType] wrong staking type: ', stakingType);
       return false;
@@ -157,15 +148,19 @@ export const fetchContractData = async (_method, _abi, _address, _params, _provi
     const Contract = new _provider.eth.Contract(_abi, _address);
     return await Contract.methods[_method].apply(this, _params).call();
   } catch (e) {
-    console.log(e.message);
+    console.error(`Fetch contract data [${_method}]: ${e.message}`);
     return false;
   }
 };
 
 export const sendTransaction = async (_method, payload, _provider = web3) => {
+  if (!_provider) {
+    console.error('_provider is undefined');
+    return false;
+  }
   let transactionData;
-  const inst = new web3.eth.Contract(payload.abi, payload.address);
-  const gasPrice = await web3.eth.getGasPrice();
+  const inst = new _provider.eth.Contract(payload.abi, payload.address);
+  const gasPrice = await _provider.eth.getGasPrice();
   const accountAddress = await getAccountAddress();
   if (_method === 'claim') {
     const data = inst.methods[_method].apply(null).encodeABI();
@@ -188,7 +183,8 @@ export const sendTransaction = async (_method, payload, _provider = web3) => {
       gas: gasEstimate,
     };
   }
-  return await web3.eth.sendTransaction(transactionData);
+  // noinspection ES6RedundantAwait
+  return await _provider.eth.sendTransaction(transactionData);
 };
 
 const getChainTypeById = (chainId) => {
@@ -462,6 +458,7 @@ export const claimRewards = async (_stakingAddress, _stakingAbi) => {
   }
 };
 
+// TODO: DELETE
 export const authRenewal = async (_stakingAddress, _stakingAbi) => {
   showToast('Auto renewal', 'Accepting...', 'success');
   try {
