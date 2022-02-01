@@ -17,6 +17,7 @@
         :validation-error="validationError"
         :is-valid-phone-number="isValidPhoneNumber"
         @click="editUserData"
+        @updateFirstPhone="updateFirstPhone($event)"
         @updateSecondPhone="updateSecondPhone($event)"
         @showModalStatus="showModalStatus"
         @checkValidate="checkValidate"
@@ -58,7 +59,7 @@ export default {
         firstName: null,
         lastName: null,
         skillFilters: null,
-        firstPhone: null,
+        firstPhone: { codeRegion: null, phone: null, fullPhone: null },
         tempPhone: { codeRegion: null, phone: null, fullPhone: null },
         additionalInfo: {
           secondMobileNumber: { codeRegion: null, phone: null, fullPhone: null },
@@ -94,6 +95,7 @@ export default {
       isShowInfo: true,
       avatarChange: { data: {}, file: {} },
       updatedSecondPhone: { codeRegion: null, phone: null, fullPhone: null },
+      updatedFirstPhone: { codeRegion: null, phone: null, fullPhone: null },
       validationError: false,
       isValidPhoneNumber: true,
       newEducation: [],
@@ -118,6 +120,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    console.log('userData', this.userData);
     if (!this.filters) await this.$store.dispatch('quests/getFilters');
     if (!this.profile.firstName) await this.$store.dispatch('user/getUserData');
     const addInfo = this.userData.additionalInfo;
@@ -126,12 +129,16 @@ export default {
       firstName: this.userData.firstName,
       lastName: this.userData.lastName,
       email: this.userData.email,
-      firstPhone: this.userData.tempPhone || this.userData.phone || {},
+      firstPhone: {
+        codeRegion: this.userData.tempPhone?.codeRegion || this.userData.phone?.codeRegion || null,
+        phone: this.userData.tempPhone?.phone || this.userData.phone?.phone || null,
+        fullPhone: this.userData.tempPhone?.fullPhone || this.userData.tempPhone?.fullPhone || null,
+      },
       additionalInfo: {
         secondMobileNumber: {
-          codeRegion: this.secondNumber ? this.secondNumber.codeRegion : 'RU',
-          phone: this.secondNumber ? this.secondNumber.phone : null,
-          fullPhone: this.secondNumber ? this.secondNumber.fullPhone : null,
+          codeRegion: this.secondNumber?.codeRegion || null,
+          phone: this.secondNumber?.phone || null,
+          fullPhone: this.secondNumber?.fullPhone || null,
         },
         address: addInfo.address,
         socialNetwork: {
@@ -234,8 +241,17 @@ export default {
     },
 
     // UPDATE PHONE
-    updateSecondPhone(value) {
+    updateFirstPhone(value) {
       this.isValidPhoneNumber = value.isValid;
+      this.updatedFirstPhone = {
+        phone: value?.nationalNumber || null,
+        fullPhone: value?.formatInternational ? value.formatInternational.replace(/\s/g, '') : null,
+        codeRegion: value?.countryCode || null,
+      };
+    },
+
+    updateSecondPhone(value) {
+      this.isValidPhoneNumber = true;
       this.updatedSecondPhone = {
         phone: value?.nationalNumber || null,
         fullPhone: value?.formatInternational ? value.formatInternational.replace(/\s/g, '') : null,
@@ -250,10 +266,10 @@ export default {
         return;
       }
       const checkAvatarID = this.avatarChange.data.ok ? this.avatarChange.data.result.mediaId : this.userData.avatarId;
-      const secondMobileNumber = this.updatedSecondPhone.fullPhone;
+      const firstMobileNumber = +this.updatedFirstPhone.fullPhone;
       await this.setAvatar();
-      if (secondMobileNumber) await this.editProfile(checkAvatarID);
-      if (!secondMobileNumber) this.showModalStatus('enterPhoneNumber');
+      if (firstMobileNumber) await this.editProfile(checkAvatarID);
+      if (!firstMobileNumber) this.showModalStatus('enterPhoneNumber');
     },
 
     async checkValidate() {
@@ -286,10 +302,12 @@ export default {
         });
       }
     },
+
     editProfileRoute() {
       if (this.userRole === UserRole.WORKER) return 'editWorkerData';
       return 'editEmployerData';
     },
+
     async editProfile(checkAvatarID) {
       const addInfo = this.profile.additionalInfo;
       const {
@@ -299,6 +317,11 @@ export default {
         avatarId: checkAvatarID,
         firstName: this.profile.firstName,
         lastName: this.profile.lastName,
+        phoneNumber: {
+          codeRegion: this.updatedFirstPhone.codeRegion || null,
+          phone: this.updatedFirstPhone.phone || null,
+          fullPhone: this.updatedFirstPhone.fullPhone || null,
+        },
         locationFull: {
           location: {
             longitude: this.coordinates ? this.coordinates.lng : this.profile.locationFull.location?.longitude || 0,
@@ -307,7 +330,6 @@ export default {
           locationPlaceName: 'Tomsk',
         },
         additionalInfo: {
-          secondMobileNumber: this.updatedSecondPhone,
           address: addInfo.address,
           socialNetwork: {
             instagram: instagram || null,
@@ -333,6 +355,11 @@ export default {
         ...payload,
         additionalInfo: {
           ...payload.additionalInfo,
+          secondMobileNumber: {
+            codeRegion: this.updatedSecondPhone.codeRegion !== null ? this.updatedSecondPhone.codeRegion : null,
+            phone: this.updatedSecondPhone.phone !== null ? this.updatedSecondPhone.phone : null,
+            fullPhone: this.updatedSecondPhone.fullPhone !== null ? this.updatedSecondPhone.fullPhone : null,
+          },
           description: addInfo.description || null,
           company: addInfo.company || null,
           CEO: addInfo.CEO || null,

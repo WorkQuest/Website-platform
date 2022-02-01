@@ -83,35 +83,38 @@
             v-if="userRole === UserRole.EMPLOYER"
             class="profile__phone-input"
           >
-            <label for="phone2">
+            <label for="phone1">
               {{ $t('settings.mainPhoneNumber') }}
             </label>
             <vue-phone-number-input
-              id="phone2"
-              v-model="firstPhone"
+              id="phone1"
+              v-model="firstPhone.fullPhone"
+              :default-country-code="firstPhone.codeRegion"
+              :error="!isValidPhoneNumber"
               class="profile__phone-input"
               error-color="#EB5757"
+              clearable
+              show-code-on-list
+              required
               size="lg"
               color="#ccc"
-              disabled
+              @update="updateFirstPhone($event)"
             />
           </div>
           <div class="profile__phone-input">
             <label
               v-if="userRole === UserRole.EMPLOYER"
-              for="phone1"
+              for="phone2"
             >
               {{ $t('settings.additionalPhoneNumber') }}
             </label>
             <vue-phone-number-input
-              id="phone1"
+              id="phone2"
               v-model="secondPhoneNumber.fullPhone"
               :default-country-code="secondPhoneNumber.codeRegion"
-              :error="!isValidPhoneNumber"
               error-color="#EB5757"
               clearable
               show-code-on-list
-              required
               size="lg"
               @update="updateSecondPhone($event)"
             />
@@ -293,7 +296,7 @@ export default {
     return {
       selectedAddressIndex: null,
       geoCode: null,
-      firstPhone: null,
+      firstPhone: { codeRegion: 'RU', phone: null, fullPhone: null },
       secondPhoneNumber: { codeRegion: 'RU', phone: null, fullPhone: null },
       newEducation: { from: '', to: '', place: '' },
       newWorkExp: { from: '', to: '', place: '' },
@@ -402,14 +405,19 @@ export default {
       handler() {
         this.secondPhoneNumber = {
           codeRegion: this.profile?.additionalInfo?.secondMobileNumber?.codeRegion || null,
-          phone: null,
+          phone: this.profile?.additionalInfo?.secondMobileNumber?.phone || null,
           fullPhone: this.profile?.additionalInfo?.secondMobileNumber?.fullPhone || null,
         };
-        if (this.userRole === 'employer') this.firstPhone = this.profile.firstPhone.phone || null;
+        this.firstPhone = {
+          codeRegion: this.profile.firstPhone?.codeRegion || null,
+          phone: this.profile.firstPhone?.phone || null,
+          fullPhone: this.profile.firstPhone?.fullPhone || null,
+        };
       },
     },
   },
   mounted() {
+    console.log('profile', this.profile);
     this.geoCode = new GeoCode('google', {
       key: process.env.GMAPKEY,
       lang: this.$i18n?.localeProperties?.code || 'en-US',
@@ -442,6 +450,9 @@ export default {
     // UPDATE PHONE NUMBERS
     updateSecondPhone(value) {
       this.$emit('updateSecondPhone', value);
+    },
+    updateFirstPhone(value) {
+      this.$emit('updateFirstPhone', value);
     },
     validationRefs() {
       this.$emit('validationRef', { work: this.$refs.work, education: this.$refs.education });
