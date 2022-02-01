@@ -132,7 +132,7 @@ export default {
     BSC_WS_MORALIS: process.env.BSC_WS_MORALIS,
 
     WORKNET_STAKING_WQT: process.env.WORKNET_STAKING_WQT,
-    WROKNET_STAKING_WUSD: process.env.WORKNET_STAKING_WUSD,
+    WORKNET_STAKING_WUSD: process.env.WORKNET_STAKING_WUSD,
 
     WETH_TOKEN: process.env.WETH_TOKEN,
     WBNB_TOKEN: process.env.WBNB_TOKEN,
