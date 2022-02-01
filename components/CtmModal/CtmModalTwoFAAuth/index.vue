@@ -3,201 +3,200 @@
     class="messageSend"
     :title="$t('modals.twoFAAuth')"
   >
-    <div class="ctm-modal__content">
-      <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
-        tag="div"
-      >
-        <div class="step-panel">
+    <validation-observer
+      v-slot="{handleSubmit, validated, passed, invalid}"
+      tag="div"
+      class="ctm-modal__content"
+    >
+      <div class="step-panel">
+        <div
+          v-for="(item, i) in stepPanel"
+          :key="i"
+          class="step-panel__container"
+        >
           <div
-            v-for="(item, i) in stepPanel"
-            :key="i"
-            class="step-panel__container"
+            class="step-panel__step"
+            :class="[{'step-panel__step_active': item.stepActive.includes(step)}]"
           >
+            <span class="step-panel__block">
+              <span :class="[{'hide': item.hideStepWord.includes(step)}]">{{ $t('modals.step') }}</span>
+              <span :class="[{'step__number': item.stepNumber.includes(step)}]">{{ item.step }}</span>
+            </span>
+          </div>
+          <div
+            v-if="item.step !== 4"
+            class="line"
+            :class="[{'line__active': item.line.includes(step)}]"
+          />
+        </div>
+      </div>
+      <!-- Steps -->
+      <div
+        v-if="step === 1"
+        class="step__container"
+      >
+        <div class="ctm-modal__content-field">
+          <div class="content__text">
+            {{ $t('modals.installGoogleAuth') }}
+          </div>
+          <div class="btn__container">
             <div
-              class="step-panel__step"
-              :class="[{'step-panel__step_active': item.stepActive.includes(step)}]"
+              v-for="(item, i) in shopBtns"
+              :key="i"
+              class="btn__store"
             >
-              <span class="step-panel__block">
-                <span :class="[{'hide': item.hideStepWord.includes(step)}]">{{ $t('modals.step') }}</span>
-                <span :class="[{'step__number': item.stepNumber.includes(step)}]">{{ item.step }}</span>
-              </span>
+              <base-btn
+                :mode="'black'"
+                @click="item.click"
+              >
+                {{ item.text }}
+                <template v-slot:left>
+                  <img
+                    :alt="item.text"
+                    :src="item.img"
+                  >
+                </template>
+              </base-btn>
             </div>
-            <div
-              v-if="item.step !== 4"
-              class="line"
-              :class="[{'line__active': item.line.includes(step)}]"
-            />
           </div>
         </div>
-        <!-- Steps -->
+      </div>
+      <div
+        v-if="step === 2"
+        class="step__container"
+      >
+        <div class="ctm-modal__content-field">
+          <span class="content__text">{{ $t('modals.useYourGoogleAuth') }}</span>
+          <div class="content qr qr__container">
+            <qrcode
+              :value="qrLink || 1"
+              :options="{ width: 200 }"
+            />
+          </div>
+          <span class="content__text">{{ $t('modals.ifYouCantScanBarcode') }}</span>
+          <div class="code__input">
+            <base-field
+              v-model="twoFACode"
+              :placeholder="twoFACode"
+            />
+            <button
+              v-clipboard:copy="twoFACode"
+              v-clipboard:success="ClipboardSuccessHandler"
+              v-clipboard:error="ClipboardErrorHandler"
+              class="btn__copy"
+              type="button"
+            >
+              <span class="icon-copy" />
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        v-if="step === 3"
+        class="step__container"
+      >
+        <div class="ctm-modal__content-field">
+          <span class="content__text">{{ $t('modals.pleaseSaveThisKey') }}</span>
+          <div class="code__input">
+            <base-field
+              v-model="twoFACode"
+              :placeholder="twoFACode"
+            />
+            <button
+              v-clipboard:success="ClipboardSuccessHandler"
+              v-clipboard:error="ClipboardErrorHandler"
+              v-clipboard:copy="twoFACode"
+              class="btn__copy"
+              type="button"
+            >
+              <span class="icon-copy" />
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        v-if="step === 4"
+        class="step__container"
+      >
+        <div class="ctm-modal__content-field">
+          <div class="content__text">
+            {{ $t('modals.switchOnGoogleAuth') }}
+          </div>
+          <div class="content__text_grey">
+            {{ $t('modals.toYourEmail') }} {{ userData.email }} {{ $t('modals.codeHasBeenSent') }}
+          </div>
+        </div>
+        <div class="ctm-modal__content-field">
+          <base-field
+            v-for="(item, i) in inputs"
+            :id="item.id"
+            :key="i"
+            v-model="item.model"
+            :label="item.label"
+            :placeholder="item.placeholder"
+            :rules="item.rules"
+            :name="item.name"
+          />
+        </div>
+      </div>
+      <!-- Steps btns -->
+      <div class="btn__container">
         <div
           v-if="step === 1"
           class="step__container"
         >
-          <div class="ctm-modal__content-field">
-            <div class="content__text">
-              {{ $t('modals.installGoogleAuth') }}
-            </div>
-            <div class="btn__container">
-              <div
-                v-for="(item, i) in shopBtns"
-                :key="i"
-                class="btn__store"
-              >
-                <base-btn
-                  :mode="'black'"
-                  @click="item.click"
-                >
-                  {{ item.text }}
-                  <template v-slot:left>
-                    <img
-                      :alt="item.text"
-                      :src="item.img"
-                    >
-                  </template>
-                </base-btn>
-              </div>
-            </div>
-          </div>
+          <base-btn
+            class="message__action"
+            @click="nextStepWithEnable2FA()"
+          >
+            {{ $t('meta.next') }}
+          </base-btn>
         </div>
         <div
-          v-if="step === 2"
-          class="step__container"
+          v-if="step > 1"
+          class="btn__wrapper"
         >
-          <div class="ctm-modal__content-field">
-            <span class="content__text">{{ $t('modals.useYourGoogleAuth') }}</span>
-            <div class="content qr qr__container">
-              <qrcode
-                :value="qrLink || 1"
-                :options="{ width: 200 }"
-              />
-            </div>
-            <span class="content__text">{{ $t('modals.ifYouCantScanBarcode') }}</span>
-            <div class="code__input">
-              <base-field
-                v-model="twoFACode"
-                :placeholder="twoFACode"
-              />
-              <button
-                v-clipboard:copy="twoFACode"
-                v-clipboard:success="ClipboardSuccessHandler"
-                v-clipboard:error="ClipboardErrorHandler"
-                class="btn__copy"
-                type="button"
-              >
-                <span class="icon-copy" />
-              </button>
-            </div>
-          </div>
-        </div>
-        <div
-          v-if="step === 3"
-          class="step__container"
-        >
-          <div class="ctm-modal__content-field">
-            <span class="content__text">{{ $t('modals.pleaseSaveThisKey') }}</span>
-            <div class="code__input">
-              <base-field
-                v-model="twoFACode"
-                :placeholder="twoFACode"
-              />
-              <button
-                v-clipboard:success="ClipboardSuccessHandler"
-                v-clipboard:error="ClipboardErrorHandler"
-                v-clipboard:copy="twoFACode"
-                class="btn__copy"
-                type="button"
-              >
-                <span class="icon-copy" />
-              </button>
-            </div>
-          </div>
-        </div>
-        <div
-          v-if="step === 4"
-          class="step__container"
-        >
-          <div class="ctm-modal__content-field">
-            <div class="content__text">
-              {{ $t('modals.switchOnGoogleAuth') }}
-            </div>
-            <div class="content__text_grey">
-              {{ $t('modals.toYourEmail') }} {{ userData.email }} {{ $t('modals.codeHasBeenSent') }}
-            </div>
-          </div>
-          <div class="ctm-modal__content-field">
-            <base-field
-              v-for="(item, i) in inputs"
-              :id="item.id"
-              :key="i"
-              v-model="item.model"
-              :label="item.label"
-              :placeholder="item.placeholder"
-              :rules="item.rules"
-              :name="item.name"
-            />
-          </div>
-        </div>
-        <!-- Steps btns -->
-        <div class="btn__container">
           <div
-            v-if="step === 1"
+            v-for="(item, i) in stepBtns"
+            :key="i"
+            class="step__container"
+          >
+            <base-btn
+              v-if="item.step.includes(step)"
+              class="message__action"
+              @click="item.click"
+            >
+              {{ item.text }}
+            </base-btn>
+          </div>
+          <span
+            v-if="step === 4"
             class="step__container"
           >
             <base-btn
               class="message__action"
-              @click="nextStepWithEnable2FA()"
+              :disabled="!validated || !passed || invalid"
+              @click="handleSubmit(confirmEnable2FA)"
             >
               {{ $t('meta.next') }}
             </base-btn>
-          </div>
-          <div
-            v-if="step > 1"
-            class="btn__wrapper"
-          >
-            <div
-              v-for="(item, i) in stepBtns"
-              :key="i"
-              class="step__container"
-            >
-              <base-btn
-                v-if="item.step.includes(step)"
-                class="message__action"
-                @click="item.click"
-              >
-                {{ item.text }}
-              </base-btn>
-            </div>
-            <span
-              v-if="step === 4"
-              class="step__container"
-            >
-              <base-btn
-                class="message__action"
-                :disabled="!validated || !passed || invalid"
-                @click="handleSubmit(confirmEnable2FA)"
-              >
-                {{ $t('meta.next') }}
-              </base-btn>
-            </span>
-          </div>
-
-          <div
-            v-if="step > 1"
-            class="btn__wrapper"
-          >
-            <base-btn
-              :mode="'outline'"
-              class="message__action"
-              @click="previousStep()"
-            >
-              {{ $t('meta.back') }}
-            </base-btn>
-          </div>
+          </span>
         </div>
-      </validation-observer>
-    </div>
+
+        <div
+          v-if="step > 1"
+          class="btn__wrapper"
+        >
+          <base-btn
+            :mode="'outline'"
+            class="message__action"
+            @click="previousStep()"
+          >
+            {{ $t('meta.back') }}
+          </base-btn>
+        </div>
+      </div>
+    </validation-observer>
   </ctm-modal-box>
 </template>
 
@@ -341,13 +340,10 @@ export default {
     }
   }
 
-  .icon {
-    &-copy:before {
-      content: "\e996";
+  .icon-copy {
       color: $blue;
       font-size: 20px;
     }
-  }
 
   .qr__container {
       width: 100%;

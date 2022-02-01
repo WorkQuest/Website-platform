@@ -48,6 +48,7 @@
           </div>
           <base-btn
             v-if="!button.isSwitcher"
+            :disabled="button.enable"
             @click="showModalKey(button.modal)"
           >
             {{ $t(button.buttonName) }}
@@ -138,6 +139,7 @@ export default {
           buttonName: 'settings.enable',
           modal: 'smsVerification',
           isSwitcher: false,
+          enable: this.secondNumber?.fullPhone,
         },
         {
           title: 'settings.changeRole',
@@ -152,6 +154,7 @@ export default {
     ...mapGetters({
       status2FA: 'user/getStatus2FA',
       secondNumber: 'user/getUserSecondMobileNumber',
+      userData: 'user/getUserData',
     }),
   },
   methods: {

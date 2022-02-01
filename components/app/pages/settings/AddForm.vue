@@ -8,7 +8,7 @@
       :disabled="!isAdding"
       class="knowledge__data"
       :placeholder="$t('settings.workExps.from')"
-      :rules="`required|between-date:${$moment().add(-100, 'years').format('yyyy/MM/DD')},${item.to}`"
+      :rules="`between-date:${$moment().add(-100, 'years').format('yyyy/MM/DD')},${item.to}`"
       :validation-mode="validationMode"
       @blur="$emit('blur')"
     />
@@ -23,7 +23,7 @@
       :disabled="!isAdding"
       class="knowledge__data"
       :placeholder="$t('settings.workExps.to')"
-      :rules="`required|between-date:${item.from},${$moment().add(10, 'years').format('yyyy/MM/DD')}`"
+      :rules="`between-date:${item.from},${$moment().add(10, 'years').format('yyyy/MM/DD')}`"
       :validation-mode="validationMode"
       @blur="$emit('blur')"
     />
@@ -35,7 +35,7 @@
       class="knowledge__data knowledge__data_big"
       :placeholder="$t('settings.education.educationalInstitution')"
       :validation-mode="validationMode"
-      rules="required|max:100|min:2"
+      rules="max:100|min:2"
       @blur="$emit('blur')"
     />
     <base-btn

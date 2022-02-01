@@ -153,6 +153,36 @@ export const workplaceIndex = {
   Both: 2,
 };
 
+export const LinksWorker = {
+  QUESTS: '/quests',
+  MY: '/my',
+  WALLET: '/wallet',
+};
+
+export const LinksEmployer = {
+  WORKERS: '/workers',
+  MY: '/my',
+  WALLET: '/wallet',
+};
+
+export const InstrumentDDLinks = {
+  PENSION: '/pension',
+  REFERRAL: '/referral',
+  INSURING: '/insuring',
+  SAVINGS: '/savings',
+  CREDITING: '/crediting',
+  MINING: '/mining',
+  CROSSCHAIN: '/crosschain',
+  STAKING: '/staking',
+};
+
+export const UserDDLinks = {
+  PROFILE: '/profile',
+  SETTINGS: '/settings',
+  DISPUTES: '/disputes',
+  LOGOUT: '/',
+};
+
 // WALLET
 export const WalletState = Object.freeze({
   SignPage: 1,

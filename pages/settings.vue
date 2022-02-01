@@ -263,9 +263,7 @@ export default {
       const validateWorkExp = this.userRole === UserRole.EMPLOYER ? true : await this.validateKnowledge('work',
         this.newWorkExp.length > 0 ? this.newWorkExp : 'validated');
       const validateSettings = await this.$refs.settings.validate();
-      if (validateSettings === false || validateEducation === false || validateWorkExp === false || this.isValidPhoneNumber === false) {
-        return true;
-      }
+      if (!validateSettings || !validateEducation || !validateWorkExp || !this.isValidPhoneNumber) return true;
       this.validationError = false;
       return false;
     },

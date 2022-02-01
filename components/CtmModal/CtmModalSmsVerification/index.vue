@@ -4,7 +4,10 @@
     class="verification"
   >
     <div class="verification__content content">
-      <div v-if="isVerified">
+      <div
+        v-show="isVerified === true"
+        class="content__verified"
+      >
         <img
           src="~assets/img/ui/warning.svg"
           alt="Already Verified!"
@@ -22,7 +25,10 @@
           </base-btn>
         </div>
       </div>
-      <div v-if="!secondNumber">
+      <div
+        v-if="isVerified === false"
+        class="content__verified"
+      >
         <img
           src="~assets/img/ui/warning.svg"
           alt="Please fill phone number!"
@@ -41,7 +47,7 @@
         </div>
       </div>
       <validation-observer
-        v-if="!isVerified"
+        v-if="isVerified === false"
         v-slot="{handleSubmit, validated, passed, invalid}"
       >
         <div class="content__subtitle">
@@ -137,22 +143,18 @@ export default {
     }),
   },
   async beforeMount() {
+    await this.numberIsVerified();
     this.confirmCode = this.currentConfirmCode;
   },
-  mounted() {
-    this.numberIsVerified();
-  },
   methods: {
-    numberIsVerified() {
+    async numberIsVerified() {
       if (this.secondNumber && this.userData.tempPhone) {
-        if (this.userData.tempPhone.fullPhone === this.secondNumber.fullPhone
-          || this.secondNumber.fullPhone === this.userData.phone.fullPhone) {
-          this.isVerified = true;
-          return this.isVerified;
-        }
+        // let num1 = parseInt(this.secondNumber.phone, 10);
+        // let num2 = parseInt(this.userData.tempPhone.phone, 10);
+        // console.log(this.secondNumber);
+        // console.log(this.userData.tempPhone);
+        this.isVerified = this.secondNumber.phone === this.userData.tempPhone.phone;
       }
-      this.isVerified = false;
-      return this.isVerified;
     },
     hide() {
       this.CloseModal();

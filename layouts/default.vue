@@ -3,9 +3,7 @@
     ref="templateScroll"
     class="primary"
   >
-    <div
-      class="primary__template template"
-    >
+    <div class="primary__template template">
       <div
         class="template__content"
         :class="{'template__content_rows' : isChatOpened}"
@@ -27,7 +25,7 @@
                 <span class="header__text">WorkQuest</span>
               </div>
               <div
-                v-if="userRole === 'employer'"
+                v-if="userRole === UserRole.EMPLOYER"
                 class="header__links"
               >
                 <nuxt-link
@@ -79,7 +77,7 @@
                 </button>
               </div>
               <div
-                v-if="userRole === 'worker'"
+                v-if="userRole === UserRole.WORKER"
                 class="header__links"
               >
                 <nuxt-link
@@ -342,13 +340,13 @@
                           {{ userData.firstName }} {{ userData.lastName }}
                         </div>
                         <div
-                          v-if="userRole === 'employer'"
+                          v-if="userRole === UserRole.EMPLOYER"
                           class="profile__text profile__text_blue"
                         >
                           {{ $t('role.employer') }}
                         </div>
                         <div
-                          v-if="userRole === 'worker'"
+                          v-if="userRole === UserRole.WORKER"
                           class="profile__text profile__text_green"
                         >
                           {{ $t('role.worker') }}
@@ -376,7 +374,7 @@
                 </transition>
               </button>
               <base-btn
-                v-if="userRole === 'employer'"
+                v-if="userRole === UserRole.EMPLOYER"
                 class="header__btn"
                 @click="createNewQuest('pc')"
               >
@@ -422,13 +420,13 @@
                         {{ userData.firstName }} {{ userData.lastName }}
                       </div>
                       <div
-                        v-if="userRole === 'employer'"
+                        v-if="userRole === UserRole.EMPLOYER"
                         class="user__role"
                       >
                         {{ $t('role.employer') }}
                       </div>
                       <div
-                        v-if="userRole === 'worker'"
+                        v-if="userRole === UserRole.WORKER"
                         class="user__role"
                       >
                         {{ $t('role.worker') }}
@@ -527,7 +525,7 @@
                 </div>
                 <div class="ctm__actions">
                   <base-btn
-                    v-if="userRole === 'employer'"
+                    v-if="userRole === UserRole.EMPLOYER"
                     class="ctm__btn"
                     @click="createNewQuest('mobile')"
                   >
@@ -562,7 +560,9 @@ import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import moment from 'moment';
 import Footer from '~/components/app/Footer';
-import { MessageAction } from '~/utils/enums';
+import {
+  InstrumentDDLinks, LinksEmployer, LinksWorker, MessageAction, UserDDLinks, UserRole,
+} from '~/utils/enums';
 
 export default {
   scrollToTop: true,
@@ -601,18 +601,33 @@ export default {
       unreadMessagesCount: 'user/getUnreadChatsCount',
       chats: 'chat/getChats',
     }),
+    UserRole() {
+      return UserRole;
+    },
+    LinksWorker() {
+      return LinksWorker;
+    },
+    LinksEmployer() {
+      return LinksEmployer;
+    },
+    InstrumentDDLinks() {
+      return InstrumentDDLinks;
+    },
+    UserDDLinks() {
+      return UserDDLinks;
+    },
     headerLinksWorker() {
       return [
-        { url: '/quests', title: this.$t('ui.quests') },
-        { url: '/my', title: this.$t('ui.myQuests') },
-        { url: '/wallet', title: this.$t('ui.wallet') },
+        { url: LinksWorker.QUESTS, title: this.$t('ui.quests') },
+        { url: LinksWorker.MY, title: this.$t('ui.myQuests') },
+        { url: LinksWorker.WALLET, title: this.$t('ui.wallet') },
       ];
     },
     headerLinksEmployer() {
       return [
-        { url: '/workers', title: this.$t('ui.jobQuestors') },
-        { url: '/my', title: this.$t('ui.myQuests') },
-        { url: '/wallet', title: this.$t('ui.wallet') },
+        { url: LinksEmployer.WORKERS, title: this.$t('ui.jobQuestors') },
+        { url: LinksEmployer.MY, title: this.$t('ui.myQuests') },
+        { url: LinksEmployer.WALLET, title: this.$t('ui.wallet') },
       ];
     },
     locales() {
@@ -623,48 +638,48 @@ export default {
     },
     instrumentDDLinks() {
       return [
-        { link: '/pension', title: this.$t('ui.menu.pension.title') },
-        { link: '/referral', title: this.$t('ui.menu.referral.title') },
-        { link: '/insuring', title: this.$t('ui.menu.p2p.title') },
-        { link: '/savings', title: this.$t('ui.menu.savings.title') },
-        { link: '/crediting', title: this.$t('ui.menu.crediting.title') },
-        { link: '/mining', title: this.$t('ui.menu.mining.title') },
-        { link: '/crosschain', title: this.$t('ui.menu.crosschain.title') },
-        { link: '/staking', title: this.$t('ui.menu.staking.title') },
+        { link: InstrumentDDLinks.PENSION, title: this.$t('ui.menu.pension.title') },
+        { link: InstrumentDDLinks.REFERRAL, title: this.$t('ui.menu.referral.title') },
+        { link: InstrumentDDLinks.INSURING, title: this.$t('ui.menu.p2p.title') },
+        { link: InstrumentDDLinks.SAVINGS, title: this.$t('ui.menu.savings.title') },
+        { link: InstrumentDDLinks.CREDITING, title: this.$t('ui.menu.crediting.title') },
+        { link: InstrumentDDLinks.MINING, title: this.$t('ui.menu.mining.title') },
+        { link: InstrumentDDLinks.CROSSCHAIN, title: this.$t('ui.menu.crosschain.title') },
+        { link: InstrumentDDLinks.STAKING, title: this.$t('ui.menu.staking.title') },
       ];
     },
     mobileMenuLinks() {
       return [
-        { path: '/quests', title: this.$t('ui.quests') },
-        { path: '/my', title: this.$t('ui.myQuests') },
-        { path: '/wallet', title: this.$t('ui.wallet') },
+        { path: LinksWorker.QUESTS, title: this.$t('ui.quests') },
+        { path: LinksWorker.MY, title: this.$t('ui.myQuests') },
+        { path: LinksWorker.WALLET, title: this.$t('ui.wallet') },
       ];
     },
     userDDLinks() {
       return [
-        { link: `/profile/${this.userData.id}`, title: this.$t('ui.profile.myProfile') },
-        { link: '/settings', title: this.$t('ui.profile.settings') },
-        { link: '/disputes', title: this.$t('ui.profile.disputes') },
-        { link: '/', title: this.$t('ui.profile.logout') },
+        { link: `${UserDDLinks.PROFILE}/${this.userData.id}`, title: this.$t('ui.profile.myProfile') },
+        { link: UserDDLinks.SETTINGS, title: this.$t('ui.profile.settings') },
+        { link: UserDDLinks.DISPUTES, title: this.$t('ui.profile.disputes') },
+        { link: UserDDLinks.LOGOUT, title: this.$t('ui.profile.logout') },
       ];
     },
     profileLinks() {
       return [
-        { title: this.$t('ui.profile.myProfile'), path: `/profile/${this.userData.id}` },
-        { title: this.$t('ui.profile.settings'), path: '/settings' },
-        { title: this.$t('ui.profile.disputes'), path: '/disputes' },
+        { title: this.$t('ui.profile.myProfile'), path: `${UserDDLinks.PROFILE}/${this.userData.id}` },
+        { title: this.$t('ui.profile.settings'), path: UserDDLinks.SETTINGS },
+        { title: this.$t('ui.profile.disputes'), path: UserDDLinks.DISPUTES },
       ];
     },
     additionalMenuLinks() {
       return [
-        { title: this.$t('ui.menu.pension.title'), desc: this.$t('ui.menu.pension.desc'), path: '/pension' },
-        { title: this.$t('ui.menu.referral.title'), desc: this.$t('ui.menu.referral.desc'), path: '/referral' },
-        { title: this.$t('ui.menu.p2p.title'), desc: this.$t('ui.menu.p2p.desc'), path: '/insuring' },
-        { title: this.$t('ui.menu.savings.title'), desc: this.$t('ui.menu.savings.desc'), path: '/savings' },
-        { title: this.$t('ui.menu.crediting.title'), desc: this.$t('ui.menu.crediting.desc'), path: '/crediting' },
-        { title: this.$t('ui.menu.mining.title'), desc: this.$t('ui.menu.mining.desc'), path: '/mining' },
-        { title: this.$t('ui.menu.crosschain.title'), desc: this.$t('ui.menu.crosschain.desc'), path: '/crosschain' },
-        { title: this.$t('ui.menu.staking.title'), desc: this.$t('ui.menu.staking.desc'), path: '/staking' },
+        { title: this.$t('ui.menu.pension.title'), desc: this.$t('ui.menu.pension.desc'), path: InstrumentDDLinks.PENSION },
+        { title: this.$t('ui.menu.referral.title'), desc: this.$t('ui.menu.referral.desc'), path: InstrumentDDLinks.REFERRAL },
+        { title: this.$t('ui.menu.p2p.title'), desc: this.$t('ui.menu.p2p.desc'), path: InstrumentDDLinks.INSURING },
+        { title: this.$t('ui.menu.savings.title'), desc: this.$t('ui.menu.savings.desc'), path: InstrumentDDLinks.SAVINGS },
+        { title: this.$t('ui.menu.crediting.title'), desc: this.$t('ui.menu.crediting.desc'), path: InstrumentDDLinks.CREDITING },
+        { title: this.$t('ui.menu.mining.title'), desc: this.$t('ui.menu.mining.desc'), path: InstrumentDDLinks.MINING },
+        { title: this.$t('ui.menu.crosschain.title'), desc: this.$t('ui.menu.crosschain.desc'), path: InstrumentDDLinks.CROSSCHAIN },
+        { title: this.$t('ui.menu.staking.title'), desc: this.$t('ui.menu.staking.desc'), path: InstrumentDDLinks.STAKING },
       ];
     },
   },
@@ -675,7 +690,6 @@ export default {
     },
   },
   async mounted() {
-    await this.$store.dispatch('user/getUserData');
     await this.initWSListeners();
     this.GetLocation();
     this.localUserData = JSON.parse(JSON.stringify(this.userData));
@@ -766,11 +780,11 @@ export default {
       this.closeAnother('mobile');
     },
     toMain() {
-      if (this.userData.role === 'worker') {
-        this.$router.push('/quests');
+      if (this.userData.role === UserRole.WORKER) {
+        this.$router.push(LinksWorker.QUESTS);
       }
-      if (this.userData.role === 'employer') {
-        this.$router.push('/workers');
+      if (this.userData.role === UserRole.EMPLOYER) {
+        this.$router.push(LinksEmployer.WORKERS);
       }
     },
     createNewQuest(platform) {
@@ -837,7 +851,7 @@ export default {
     },
     async logout() {
       await this.$store.dispatch('user/logout');
-      await this.$router.push('/');
+      await this.$router.push(UserDDLinks.LOGOUT);
     },
     closeAll() {
       this.isShowProfile = false;

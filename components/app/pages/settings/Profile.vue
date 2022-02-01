@@ -71,7 +71,7 @@
                     v-for="(item, i) in addresses"
                     :key="i"
                     class="selector__item"
-                    @click="selectAddress(item)"
+                    @click="selectAddress(item, i)"
                   >
                     {{ item.formatted }}
                   </div>
@@ -291,6 +291,7 @@ export default {
   },
   data() {
     return {
+      selectedAddressIndex: null,
       geoCode: null,
       firstPhone: null,
       secondPhoneNumber: { codeRegion: 'RU', phone: null, fullPhone: null },
@@ -447,7 +448,8 @@ export default {
     },
 
     // GEOPOSITION METHODS
-    selectAddress(address) {
+    selectAddress(address, i) {
+      this.selectedAddressIndex = i;
       this.profile.additionalInfo.address = address.formatted;
       this.addresses = [];
       this.$emit('updateCoordinates', this.coordinates);
@@ -456,7 +458,15 @@ export default {
       try {
         if (address.length) {
           this.addresses = await this.geoCode.geolookup(address);
-          this.coordinates = { lng: this.addresses[0].lng, lat: this.addresses[0].lat, address: this.addresses[0].formatted };
+          if (this.selectedAddressIndex) {
+            this.coordinates = {
+              lng: this.addresses[this.selectedAddressIndex].lng,
+              lat: this.addresses[this.selectedAddressIndex].lat,
+              address: this.addresses[this.selectedAddressIndex].formatted,
+            };
+          } else {
+            this.coordinates = { lng: this.addresses[0].lng, lat: this.addresses[0].lat, address: this.addresses[0].formatted };
+          }
         } else this.addresses = [];
       } catch (e) {
         this.addresses = [];

@@ -43,9 +43,6 @@ export default {
           lang: 'en',
           email: applicantEmail,
           phone: applicantPhone,
-          onMessage: (type, payload) => {
-            // console.log('WebSDK onMessage', type, payload);
-          },
           onError: (error) => {
             console.log('WebSDK onError', error);
           },
