@@ -126,15 +126,6 @@ export const getStakingDataByType = (stakingType) => {
         ? process.env.ETHEREUM_WQT_TOKEN
         : process.env.BSC_WQT_TOKEN;
       break;
-    case StakingTypes.WQT:
-      _tokenAddress = process.env.ETHEREUM_WQT_TOKEN;
-      _stakingAbi = abi.WQStaking;
-      _stakingAddress = process.env.WQT_STAKING;
-      break;
-    case StakingTypes.WUSD:
-      _stakingAbi = abi.WQStakingNative;
-      _stakingAddress = process.env.WQT_STAKING_NATIVE;
-      break;
     default:
       console.error('[getStakingDataByType] wrong staking type: ', stakingType);
       return false;
