@@ -69,10 +69,12 @@ export const getChainIdByChain = (chain) => {
 export const addedNetwork = async (chain) => {
   try {
     let networkParams = {};
-    if (chain === Chains.ETHEREUM) {
+    if (chain === Chains.ETHEREUM || [1, 4].includes(+chain)) {
       networkParams = isProd ? NetworksData.ETH_MAIN : NetworksData.ETH_TEST;
-    } else if (chain === Chains.BNB) {
+    } else if (chain === Chains.BNB || [56, 97].includes(+chain)) {
       networkParams = isProd ? NetworksData.BSC_MAIN : NetworksData.BSC_TEST;
+    } else if (chain === Chains.WUSD || chain === 20211224) {
+      networkParams = NetworksData.WUSD_TEST;
     }
     await window.ethereum.request({
       method: 'wallet_addEthereumChain',
@@ -85,33 +87,8 @@ export const addedNetwork = async (chain) => {
   }
 };
 export const goToChain = async (chain) => {
-  const chainId = await web3.eth.net.getId();
-  let correctId = 0;
-  console.log(isProd, chainId, chain);
-  if (isProd && ![1, 56].includes(+chainId)) {
-    // eslint-disable-next-line default-case
-    switch (chainId) {
-      case 4:
-        correctId = 1;
-        break;
-      case 97:
-        correctId = 56;
-    }
-  } else if (!isProd && ![4, 97].includes(+chainId)) {
-    // eslint-disable-next-line default-case
-    switch (chainId) {
-      case 1:
-        correctId = 4;
-        break;
-      case 56:
-        correctId = 97;
-    }
-  }
-  if (correctId) chain = correctId;
-  console.log(chain);
   const methodName = 'wallet_switchEthereumChain';
   const chainIdParam = typeof chain === 'string' ? getChainIdByChain(chain) : ChainsIdByChainNumber[chain];
-  console.log(chainIdParam);
   try {
     await window.ethereum.request({
       method: methodName,
@@ -245,34 +222,13 @@ export const initMetaMaskWeb3 = async () => {
         web3.eth.getCoinbase(),
         web3.eth.net.getId(),
       ]);
-      let correctId = 0;
-      if (isProd && ![1, 56, 20211224].includes(+chainId)) {
-        switch (chainId) {
-          case 4:
-            correctId = 1;
-            break;
-          case 97:
-            correctId = 56;
-            break;
-          default:
-            correctId = 20211224;
-            break;
-        }
+
+      if (process.env.PROD === 'true' && ![1, 56, 20211224].includes(+chainId)) {
+        return error(500, 'Wrong blockchain in metamask', 'Current site work on mainnet. Please change network.');
       }
-      if (!isProd && ![4, 97, 20211224].includes(+chainId)) {
-        switch (chainId) {
-          case 1:
-            correctId = 4;
-            break;
-          case 56:
-            correctId = 97;
-            break;
-          default:
-            correctId = 20211224;
-            break;
-        }
+      if (process.env.PROD === 'false' && ![4, 97, 20211224].includes(+chainId)) {
+        return error(500, 'Wrong blockchain in metamask', 'Current site work on testnet. Please change network.');
       }
-      if (correctId) await goToChain(correctId);
       account = {
         address: userAddress,
         netId: chainId,
