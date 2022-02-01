@@ -151,8 +151,7 @@ export default {
     },
     async unstaking() {
       this.SetLoader(true);
-      const { updateMethod, stakingType, decimals } = this.options;
-      const { poolAddress, amount } = this;
+      const { options: { updateMethod, stakingType, decimals }, poolAddress, amount } = this;
       if (stakingType !== StakingTypes.WQT && stakingType !== StakingTypes.WUSD) await this.checkMetamaskStatus();
       if (this.checkAmount()) {
         this.hide();

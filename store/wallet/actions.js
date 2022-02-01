@@ -214,7 +214,8 @@ export default {
       return;
     }
 
-    const {
+    let {
+      // eslint-disable-next-line prefer-const
       rewardTokenAddress, totalStaked, totalDistributed, rewardTotal, maxStake, minStake,
     } = stakingInfo;
 
@@ -226,11 +227,6 @@ export default {
         fetchContractData('symbol', abi.ERC20, rewardTokenAddress, null, GetWalletProvider()),
       ]);
     }
-
-    const min = new BigNumber(0.0001);
-    // min stake amount to display for user & input
-    const minStakeDisplay = new BigNumber(minStake).shiftedBy(-decimals).isLessThan(min)
-      ? min.toString() : new BigNumber(minStake).shiftedBy(-decimals).toString();
 
     commit('setStakingPoolData', {
       pool,
@@ -245,13 +241,13 @@ export default {
         claimPeriod: new BigNumber(stakingInfo.claimPeriod / 60).decimalPlaces(3).toString(),
         stakePeriod: new BigNumber(stakingInfo.stakePeriod / 60).decimalPlaces(3).toString(),
         distributionTime: new BigNumber(stakingInfo.distributionTime / 60).decimalPlaces(3).toString(),
-        totalStaked: new BigNumber(totalStaked).shiftedBy(-decimals).decimalPlaces(4).toString(),
-        totalDistributed: new BigNumber(totalDistributed).shiftedBy(-decimals).decimalPlaces(4).toString(),
-        rewardTotal: new BigNumber(rewardTotal).shiftedBy(-decimals).decimalPlaces(4).toString(),
-        maxStake: new BigNumber(maxStake).shiftedBy(-decimals).decimalPlaces(4).toString(),
-        fullMaxStake: new BigNumber(maxStake).shiftedBy(-decimals).toString(),
-        minStake: minStakeDisplay,
-        fullMinStake: new BigNumber(minStake).shiftedBy(-decimals).toString(),
+        totalStaked: getStyledAmount(totalStaked, false, decimals),
+        totalDistributed: getStyledAmount(totalDistributed, false, decimals),
+        rewardTotal: getStyledAmount(rewardTotal, false, decimals),
+        maxStake: getStyledAmount(maxStake, false, decimals),
+        fullMaxStake: getStyledAmount(maxStake, true, decimals),
+        minStake: getStyledAmount(minStake, false, decimals),
+        fullMinStake: getStyledAmount(minStake, true, decimals),
       },
     });
   },
@@ -263,22 +259,21 @@ export default {
       fetchContractData('getInfoByAddress', _abi, contractAddress, [getWalletAddress()], GetWalletProvider()),
       fetchContractData('stakes', _abi, contractAddress, [getWalletAddress()], GetWalletProvider()),
     ]);
-    const {
-      _balance, claim_, staked_,
-    } = userInfo;
+    const { _balance, claim_, staked_ } = userInfo;
     const { unstakeTime } = stakes;
+
     commit('setStakingUserData', {
       pool,
       data: {
         ...userInfo,
         isStakingStarted: pool === StakingTypes.WUSD || +stakes.stakedAt !== 0,
         date: unstakeTime ? new Date(unstakeTime * 1000) : false,
-        claim: +claim_ ? new BigNumber(claim_).shiftedBy(-decimals).decimalPlaces(5).toString() : '0',
-        fullClaim: +claim_ ? new BigNumber(claim_).shiftedBy(-decimals).toString() : '0',
-        staked: +staked_ ? new BigNumber(staked_).shiftedBy(-decimals).decimalPlaces(4).toString() : '0',
-        fullStaked: +staked_ ? new BigNumber(staked_).shiftedBy(-decimals).toString() : '0',
-        balance: +_balance ? getStyledAmount(_balance, false, decimals) : '0',
-        fullBalance: +_balance ? new BigNumber(_balance).shiftedBy(-decimals).toString() : '0',
+        claim: getStyledAmount(claim_, false, decimals),
+        fullClaim: getStyledAmount(claim_, true, decimals),
+        staked: getStyledAmount(staked_, false, decimals),
+        fullStaked: getStyledAmount(staked_, true, decimals),
+        balance: getStyledAmount(_balance, false, decimals),
+        fullBalance: getStyledAmount(_balance, true, decimals),
       },
     });
   },

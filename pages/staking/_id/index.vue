@@ -187,7 +187,9 @@ import moment from 'moment';
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { ExplorerUrl, StakingTypes, TokenSymbols } from '~/utils/enums';
+import {
+  ExplorerUrl, Path, StakingTypes, TokenSymbols,
+} from '~/utils/enums';
 import { getWalletAddress } from '~/utils/wallet';
 
 export default {
@@ -326,7 +328,7 @@ export default {
       this.SetLoader(false);
     },
     handleBackToMainStaking() {
-      this.$router.push('/staking');
+      this.$router.push(Path.STAKING);
     },
     doCopy(ev) {
       ev.stopPropagation();
@@ -365,9 +367,7 @@ export default {
             title: this.$t('staking.notification'),
             subtitle: this.$t('staking.cannotClaimYet'),
           });
-        } else {
-          this.ShowToast(txFee.msg);
-        }
+        } else this.ShowToast(txFee.msg);
         return;
       }
       this.ShowModal({
@@ -412,9 +412,7 @@ export default {
               title: this.$t('staking.notification'),
               subtitle: this.$t('staking.stakeDurationIsNotOver'),
             });
-          } else {
-            this.ShowToast(txFee.msg);
-          }
+          } else this.ShowToast(txFee.msg);
           return;
         }
       }

@@ -25,7 +25,7 @@
             >
               <template #cell(poolAddress)="el">
                 <a
-                  :href="`${getExplorerRef(el.item.poolAddress)}}`"
+                  :href="getExplorerRef(el.item.poolAddress)"
                   target="_blank"
                   class="table__value table__value_gray"
                 >
@@ -82,7 +82,7 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import {
-  Chains, ExplorerUrl, NativeTokenSymbolByChainId, StakingTypes,
+  Chains, ExplorerUrl, NativeTokenSymbolByChainId, Path, StakingTypes,
 } from '~/utils/enums';
 
 export default {
@@ -168,9 +168,7 @@ export default {
         },
       ];
     },
-    poolsData() {
-      return [this.stakingPoolsData.WUSD, this.stakingPoolsData.WQT];
-    },
+    poolsData() { return [this.stakingPoolsData.WUSD, this.stakingPoolsData.WQT]; },
   },
   async mounted() {
     this.SetLoader(true);
@@ -190,12 +188,8 @@ export default {
         this.$store.dispatch('wallet/getStakingPoolsData', StakingTypes.WUSD),
       ]);
     },
-    handleOpenPool(el) {
-      this.$router.push(`/staking/${el.item.link.toLowerCase()}`);
-    },
-    getFormattedAddress(address) {
-      return !address ? '' : `${address.slice(0, 8)}...${address.slice(-4)}`;
-    },
+    handleOpenPool(el) { this.$router.push(`${Path.STAKING}/${el.item.link.toLowerCase()}`); },
+    getFormattedAddress(address) { return !address ? '' : `${address.slice(0, 8)}...${address.slice(-4)}`; },
   },
 };
 </script>

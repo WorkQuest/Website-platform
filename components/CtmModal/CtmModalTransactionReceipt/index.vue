@@ -12,13 +12,13 @@
         >
           <div
             v-if="item != null"
-            class="field field__item"
+            class="item"
           >
-            <div class="field__title">
+            <div class="item__title">
               {{ item.name }}
             </div>
             <div
-              class="field__subtitle"
+              class="item__subtitle"
               :class="{field__subtitle_red: !canSend && item.name === $t('wallet.table.trxFee')}"
             >
               {{ item.value }}
@@ -76,20 +76,23 @@ export default {
   },
   mounted() {
     const { fields } = this.options;
-    if (fields?.fee?.value && fields?.amount?.value) {
-      if (fields.amount.symbol === TokenSymbols.WUSD) { // If we send WUSD
-        this.canSend = new BigNumber(fields.amount.value).plus(fields.fee.value).isLessThanOrEqualTo(this.balance.WUSD.fullBalance);
+    const amount = fields?.amount?.value;
+    const symbol = fields?.amount?.symbol;
+    const fee = fields?.fee?.value;
+    const wusdBalance = this.balance.WUSD.fullBalance;
+
+    if (fee && amount) {
+      if (symbol === TokenSymbols.WUSD) { // If we send WUSD
+        this.canSend = new BigNumber(amount).plus(fee).isLessThanOrEqualTo(wusdBalance);
       } else {
-        this.canSend = new BigNumber(fields.fee.value).isLessThanOrEqualTo(this.balance.WUSD.fullBalance);
+        this.canSend = new BigNumber(fee).isLessThanOrEqualTo(wusdBalance);
       }
-    } else if (fields?.fee?.value) {
-      this.canSend = new BigNumber(fields.fee.value).isLessThanOrEqualTo(this.balance.WUSD.fullBalance);
+    } else if (fee) { // Only need check transaction fee with user balance
+      this.canSend = new BigNumber(fee).isLessThanOrEqualTo(wusdBalance);
     }
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
+    hide() { this.CloseModal(); },
     async handleSubmit() {
       if (!this.canSend) return;
       const { callback, submitMethod, isShowSuccess } = this.options;
@@ -114,12 +117,10 @@ export default {
 
 <style lang="scss" scoped>
 
-.field{
-  &__item {
-    margin-bottom: 15px;
-    &:last-child{
-      margin-bottom: 0;
-    }
+.item {
+  margin-bottom: 15px;
+  &:last-child{
+    margin-bottom: 0;
   }
   &__title {
     color: $black500;
