@@ -86,7 +86,7 @@
               :quest-index="1"
               :rating-type="'questPage'"
               :stars-number="5"
-              :rating="questData.yourReview && checkQuestIdReviewMark() ? currentMark.mark : getRating(questData)"
+              :rating="!questData.yourReview ? currentMark.mark : questData.yourReview.mark || 0"
               :is-disabled="questData.yourReview !== null || currentMark.mark === Number"
               @input="showReviewModal($event, questData)"
             />
@@ -272,14 +272,8 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    checkQuestIdReviewMark() {
-      return this.questData.id === this.$route.params.id;
-    },
-    getRating(item) {
-      return item?.yourReview?.mark || 0;
-    },
     starRating(item) {
-      if (this.userRole === 'worker') {
+      if (this.userRole === UserRole.WORKER) {
         return item.status === this.questStatuses.Done
           && item.assignedWorkerId === this.userData.id;
       }
