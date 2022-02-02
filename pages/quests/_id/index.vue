@@ -87,7 +87,7 @@
               :rating-type="'questPage'"
               :stars-number="5"
               :rating="!questData.yourReview ? currentMark.mark : questData.yourReview.mark"
-              :is-disabled="questData.yourReview !== null || currentMark.mark !== Number"
+              :is-disabled="questData.yourReview !== null || currentMark.mark !== null"
               @input="showReviewModal($event, questData)"
             />
             <span class="worker-data__price">
@@ -272,7 +272,7 @@ export default {
     this.SetLoader(false);
   },
   async beforeDestroy() {
-    await this.$store.commit('user/setCurrentReviewMarkOnQuest', { questId: null, message: null, mark: 0 });
+    await this.$store.commit('user/setCurrentReviewMarkOnQuest', { questId: null, message: null, mark: null });
   },
   methods: {
     starRating(item) {
