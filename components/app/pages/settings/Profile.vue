@@ -80,10 +80,12 @@
             </template>
           </base-field>
           <div
-            v-if="userRole === UserRole.EMPLOYER"
             class="profile__phone-input"
           >
-            <label for="phone1">
+            <label
+              v-if="userRole === UserRole.EMPLOYER"
+              for="phone1"
+            >
               {{ $t('settings.mainPhoneNumber') }}
             </label>
             <vue-phone-number-input
@@ -109,6 +111,7 @@
               {{ $t('settings.additionalPhoneNumber') }}
             </label>
             <vue-phone-number-input
+              v-if="userRole === UserRole.EMPLOYER"
               id="phone2"
               v-model="secondPhoneNumber.fullPhone"
               :default-country-code="secondPhoneNumber.codeRegion"

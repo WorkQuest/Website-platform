@@ -327,10 +327,15 @@ export default {
             longitude: this.coordinates ? this.coordinates.lng : this.profile.locationFull.location?.longitude || 0,
             latitude: this.coordinates ? this.coordinates.lat : this.profile.locationFull.location?.latitude || 0,
           },
-          locationPlaceName: 'Tomsk',
+          locationPlaceName: addInfo.address,
         },
         additionalInfo: {
           address: addInfo.address,
+          secondMobileNumber: {
+            codeRegion: this.updatedSecondPhone?.codeRegion ? this.updatedSecondPhone?.codeRegion : null,
+            phone: this.updatedSecondPhone?.phone ? this.updatedSecondPhone?.phone : null,
+            fullPhone: this.updatedSecondPhone?.fullPhone ? this.updatedSecondPhone?.fullPhone : null,
+          },
           socialNetwork: {
             instagram: instagram || null,
             twitter: twitter || null,
@@ -339,6 +344,7 @@ export default {
           },
         },
       };
+      if (!this.updatedSecondPhone.fullPhone) payload.additionalInfo.secondMobileNumber = null;
       await this.editProfileResponse(`user/${this.editProfileRoute()}`, this.userRole === UserRole.WORKER ? {
         ...payload,
         additionalInfo: {
@@ -355,11 +361,6 @@ export default {
         ...payload,
         additionalInfo: {
           ...payload.additionalInfo,
-          secondMobileNumber: {
-            codeRegion: this.updatedSecondPhone.codeRegion !== null ? this.updatedSecondPhone.codeRegion : null,
-            phone: this.updatedSecondPhone.phone !== null ? this.updatedSecondPhone.phone : null,
-            fullPhone: this.updatedSecondPhone.fullPhone !== null ? this.updatedSecondPhone.fullPhone : null,
-          },
           description: addInfo.description || null,
           company: addInfo.company || null,
           CEO: addInfo.CEO || null,
