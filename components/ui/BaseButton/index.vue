@@ -135,7 +135,6 @@ export default {
   }
   &_share-user-info {
     @include share-user;
-    transition: .5s;
     height: 24px;
     width: 24px;
     &:hover {
@@ -352,15 +351,6 @@ export default {
     &:hover {
       background-color: $blue;
       color: $white;
-    }
-  }
-}
-@include _575 {
-  .base-btn  {
-    &_share-user-info {
-      position: absolute;
-      right: 20px;
-      top: 100px;
     }
   }
 }
