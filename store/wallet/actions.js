@@ -253,7 +253,7 @@ export default {
   },
   async getStakingUserInfo({ commit }, pool) {
     const decimals = 18;
-    const _abi = pool === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStakingNative;
+    const _abi = pool === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStaking;
     const contractAddress = pool === StakingTypes.WUSD ? process.env.WORKNET_STAKING_WUSD : process.env.WORKNET_STAKING_WQT;
     const [userInfo, stakes] = await Promise.all([
       fetchContractData('getInfoByAddress', _abi, contractAddress, [getWalletAddress()], GetWalletProvider()),
@@ -261,7 +261,6 @@ export default {
     ]);
     const { _balance, claim_, staked_ } = userInfo;
     const { unstakeTime } = stakes;
-
     commit('setStakingUserData', {
       pool,
       data: {

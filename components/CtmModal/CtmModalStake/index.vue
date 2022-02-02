@@ -115,11 +115,11 @@ export default {
     hide() { this.CloseModal(); },
     maxAmount() { this.amount = this.stakeAmountLimit; },
     async updateMaxFee() {
-      this.canSubmit = false;
       if (this.stakingType !== StakingTypes.WUSD) {
         this.feeForMaxWUSDValue = 0;
         return;
       }
+      this.canSubmit = false;
       const balance = this.userStakeBalance;
       if (new BigNumber(balance).isLessThan(this.poolData.fullMinStake)) {
         this.feeForMaxWUSDValue = 0;
