@@ -149,12 +149,12 @@ export default {
     },
   },
   async beforeMount() {
+    // TODO: Fix
     if (this.userData?.phone?.fullPhone && !this.userData?.tempPhone?.fullPhone) this.isVerified = true;
     if (!this.isVerified && this.userRole === UserRole.EMPLOYER) {
       if (this.userData?.tempPhone) this.phone = this.userData?.tempPhone?.fullPhone;
-      else this.phone = this.secondNumber?.fullPhone;
     } else {
-      this.phone = this.userData?.phone?.fullPhone;
+      this.phone = this.userData?.tempPhone?.fullPhone;
       this.confirmCode = this.currentConfirmCode;
     }
   },
