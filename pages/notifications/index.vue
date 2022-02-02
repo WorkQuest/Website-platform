@@ -12,6 +12,7 @@
             :ref="`${notification.id}|${notification.seen}`"
             v-observe-visibility="(isVisible) => checkUnseenNotifs(isVisible, notification)"
             class="notification"
+            :class="{'notification_gray' : !notification.seen}"
           >
             <template v-if="notification.sender">
               <div class="notification__avatar">
@@ -46,10 +47,17 @@
               {{ notification.creatingDate }}
             </div>
 
-            <div
-              v-if="!notification.seen"
-              class="notification__unread-dot"
-            />
+            <!--            <div-->
+            <!--              v-if="!notification.seen"-->
+            <!--              class="notification__unread-dot"-->
+            <!--            />-->
+
+            <img
+              class="notification__remove"
+              src="~assets/img/ui/close.svg"
+              alt="x"
+              @click="tryRemoveNotification(notification.id)"
+            >
 
             <div class="notification__button button">
               <base-btn
@@ -63,7 +71,7 @@
           </div>
         </div>
         <base-pager
-          v-if="totalPages"
+          v-if="totalPages > 1"
           v-model="page"
           class="info-block__pager"
           :total-pages="totalPages"
@@ -76,6 +84,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'Notifications',
@@ -106,9 +115,28 @@ export default {
     this.SetLoader(false);
   },
   destroyed() {
-    this.$store.commit('user/setNotifications', { notifications: [], count: 0 });
+    this.$store.commit('user/setNotifications', { notifications: [], count: this.notifsCount });
   },
   methods: {
+    tryRemoveNotification(notificationId) {
+      this.ShowModal({
+        key: modals.areYouSure,
+        title: this.$t('modals.sureDeleteNotification'),
+        okBtnTitle: this.$t('meta.delete'),
+        okBtnFunc: async () => await this.removeNotification(notificationId),
+      });
+    },
+    async removeNotification(notificationId) {
+      this.CloseModal();
+      const payload = {
+        config: {
+          params: this.filter,
+        },
+        notificationId,
+      };
+
+      await this.$store.dispatch('user/removeNotification', payload);
+    },
     checkUnseenNotifs(isVisible, { id, seen }) {
       if (!isVisible || seen || this.notificationIdsForRead.indexOf(id) >= 0) return;
 
@@ -122,8 +150,6 @@ export default {
         await this.$store.dispatch('user/readNotifications', config);
 
         this.notificationIdsForRead = [];
-
-        this.$forceUpdate();
       }, 1000);
     },
     setDelay(f, t) {
@@ -177,23 +203,13 @@ export default {
   background: #fff;
   border-radius: 6px;
 
-  &__container {
-    display: grid;
-    gap: 20px;
-    padding: 20px;
-  }
-
   &__title {
     @include text-simple;
     font-weight: 500;
     font-size: 18px;
     color: $black800;
     letter-spacing: 0.05em;
-  }
-
-  &__list {
-    display: grid;
-    gap: 20px;
+    padding: 20px 20px 0;
   }
 
   &__pager {
@@ -223,7 +239,11 @@ export default {
     "avatar quest button"
     "avatar date button";
   width: 100%;
-  padding-bottom: 5px;
+  padding: 20px;
+
+  &_gray {
+    background: #f7f8fabd;
+  }
 
   &__unread-dot {
     grid-column: 3;
@@ -254,7 +274,7 @@ export default {
   }
   &__button {
     grid-area: button;
-    align-self: center;
+    grid-row: 2/4;
   }
   &__date {
     grid-area: date;
@@ -262,7 +282,21 @@ export default {
     font-weight: 400;
     font-size: 12px;
     color: $black500;
-    margin-bottom: 10px;
+  }
+  &__remove {
+    display: none;
+    grid-column: 3;
+    grid-row: 1;
+    cursor: pointer;
+    align-self: center;
+    justify-self: flex-end;
+    margin-right: 4px;
+  }
+
+  &:hover {
+    .notification__remove {
+      display: block;
+    }
   }
 }
 
@@ -304,11 +338,7 @@ export default {
     letter-spacing: 0.03em;
   }
 }
-.button {
-  &__view {
-    margin-top: -16px;
-  }
-}
+
 @include _991 {
   .page {
     &__container {

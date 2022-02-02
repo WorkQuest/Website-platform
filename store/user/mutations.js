@@ -84,7 +84,11 @@ export default {
   },
   setNotificationsAsRead(state, ids) {
     state.notifications.forEach((notif) => {
+      console.log(notif.id, ids);
       if (ids.indexOf(notif.id) >= 0) notif.seen = true;
+      console.log(notif.seen);
+      return notif;
     });
+    console.log(state.notifications);
   },
 };

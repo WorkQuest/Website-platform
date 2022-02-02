@@ -120,6 +120,7 @@ export default {
   },
   methods: {
     goToNotifsPage() {
+      this.closePopUp();
       this.$router.push('/notifications');
     },
     togglePopUp() {
@@ -289,5 +290,9 @@ export default {
     display: flex;
     justify-content: space-between;
   }
+}
+
+.block {
+  pointer-events: none;
 }
 </style>

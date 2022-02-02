@@ -13,6 +13,18 @@ export default {
       console.log(e);
     }
   },
+  async removeNotification({ dispatch }, { config, notificationId }) {
+    try {
+      console.log(notificationId);
+      const { ok } = await this.$axios.$delete(`${process.env.NOTIFS_URL}notifications/delete/${notificationId}`);
+
+      await dispatch('getNotifications', config);
+
+      return ok;
+    } catch (e) {
+      return false;
+    }
+  },
   async readNotifications({ commit }, payload) {
     try {
       const { ok } = await this.$axios.$put(`${process.env.NOTIFS_URL}notifications/mark-read`, payload);
@@ -39,15 +51,16 @@ export default {
       return false;
     }
   },
-  setCurrNotificationObject({ state: { userRole } }, notification) {
+  setCurrNotificationObject({ getters }, notification) {
     const {
       action, data: {
-        user, title, id, assignedWorker, worker, quest,
+        user, title, id, assignedWorker, worker, quest, employer,
       },
     } = notification.notification;
 
     let keyName = 'notifications.';
     const link = `/quests/${quest?.id || id}`;
+    const userRole = getters.getUserRole;
     const isItAnWorker = userRole === UserRole.WORKER;
 
     switch (action) {
@@ -98,7 +111,7 @@ export default {
     }
 
     notification.actionNameKey = keyName;
-    notification.sender = isItAnWorker ? user : assignedWorker || worker;
+    notification.sender = isItAnWorker ? user || employer : assignedWorker || worker;
     if (quest?.title || title) notification.params = { title: quest?.title || title, link };
     notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, h:mm');
   },
