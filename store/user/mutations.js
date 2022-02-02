@@ -1,6 +1,9 @@
 /* eslint-disable no-param-reassign */
 
 export default {
+  setCurrentReviewMarkOnQuest(state, data) {
+    state.currentReviewMarkOnQuest = data;
+  },
   setUserPortfolioCases(state, data) {
     state.portfolios = data;
   },

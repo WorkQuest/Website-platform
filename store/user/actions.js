@@ -69,6 +69,7 @@ export default {
   async sendReviewForUser({ commit }, { questId, message, mark }) {
     try {
       const { ok, result } = await this.$axios.$post('/v1/review/send', { questId, message, mark });
+      commit('setCurrentReviewMarkOnQuest', { questId, message, mark });
       return { ok };
     } catch (e) {
       console.log('user/sendReviewForUser');

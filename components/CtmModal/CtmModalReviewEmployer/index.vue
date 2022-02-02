@@ -15,6 +15,7 @@
       <validation-observer
         v-slot="{handleSubmit, valid}"
         class="body__content content"
+        mode="aggressive"
         tag="div"
       >
         <div class="content__desc">
@@ -37,7 +38,7 @@
               <base-btn
                 class="buttons__action"
                 :disabled="!valid"
-                @click="handleSubmit(sendReviewForUser())"
+                @click="handleSubmit(sendReviewForUser)"
               >
                 {{ $t('meta.send') }}
               </base-btn>
@@ -86,9 +87,6 @@ export default {
     getQuestRating() {
       this.rating = this.options.rating;
     },
-    removeLocalStorageRating() {
-      localStorage.removeItem('questRating');
-    },
     hide() {
       this.CloseModal();
     },
@@ -99,7 +97,7 @@ export default {
         mark: this.rating,
       });
       if (ok) this.showThanksModal();
-      this.removeLocalStorageRating();
+      this.hide();
     },
     showThanksModal() {
       this.ShowModal({

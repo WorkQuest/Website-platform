@@ -85,12 +85,11 @@
               class="worker-data__rating rating"
             >
               <div class="rating__star">
-                <!--                TODO: Ожидаем поле yourReview-->
                 <star-rating
                   :quest-index="1"
                   :rating-type="'questPage'"
                   :stars-number="5"
-                  :rating="getRating(questData)"
+                  :rating="!questData.yourReview && checkQuestIdReviewMark(questData.id) ? currentMark.mark : getRating(questData)"
                   :is-disabled="questData.yourReview !== null"
                   @input="showReviewModal($event, questData)"
                 />
@@ -188,11 +187,7 @@ import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'Quests',
-  components: {
-    info,
-    questPanel,
-    emptyData,
-  },
+  components: { info, questPanel, emptyData },
   data() {
     return {
       questLocation: { lat: 0, lng: 0 },
@@ -221,6 +216,7 @@ export default {
       userData: 'user/getUserData',
       otherQuestsCount: 'quests/getAllQuestsCount',
       otherQuests: 'quests/getAllQuests',
+      currentMark: 'user/getCurrentReviewMarkOnQuest',
     }),
     questStatuses() {
       return QuestStatuses;
@@ -281,6 +277,10 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    checkQuestIdReviewMark(questId) {
+      if (questId) return this.questData.id === questId;
+      return '';
+    },
     getRating(item) {
       return item?.yourReview?.mark || 0;
     },
@@ -537,11 +537,8 @@ export default {
       }
     },
     coordinatesChange(item) {
-      if (Object.keys(this.currentLocation).length > 0) {
-        this.currentLocation = {};
-      } else {
-        this.currentLocation = item;
-      }
+      if (Object.keys(this.currentLocation).length > 0) this.currentLocation = {};
+      else this.currentLocation = item;
     },
     async closeQuest() {
       const modalMode = 1;

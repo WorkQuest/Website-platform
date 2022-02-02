@@ -1,4 +1,9 @@
 export default () => ({
+  currentReviewMarkOnQuest: {
+    questId: '',
+    message: '',
+    mark: 0,
+  },
   tokens: {
     access: '',
     refresh: '',
