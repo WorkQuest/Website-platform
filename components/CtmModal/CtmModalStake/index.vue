@@ -151,7 +151,6 @@ export default {
       if (!isNative) {
         this.SetLoader(true);
         const allowance = await this.getAllowance(stakeTokenAddress, poolAddress);
-        console.log(allowance);
         if (!allowance) {
           this.SetLoader(false);
           return;
