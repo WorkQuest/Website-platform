@@ -1,6 +1,11 @@
 export default () => ({
   twoFACode: '',
   verificationCode: '',
+  currentReviewMarkOnQuest: {
+    questId: '',
+    message: '',
+    mark: 0,
+  },
   tokens: {
     access: '',
     refresh: '',

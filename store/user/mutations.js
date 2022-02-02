@@ -13,6 +13,9 @@ export default {
   setTwoFACode(state, data) {
     state.twoFACode = data;
   },
+  setCurrentReviewMarkOnQuest(state, data) {
+    state.currentReviewMarkOnQuest = data;
+  },
   setUserPortfolioCases(state, data) {
     state.portfolios = data;
   },
