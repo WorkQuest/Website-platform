@@ -104,6 +104,7 @@
     "create": "Criar Conta"
   },
   "profile": {
+    "defaultName": "Nameless User",
     "raiseViews": "Aumentar visualizações",
     "educations": "Educação",
     "prevWorkExp": "Experiência de trabalho anterior",
@@ -452,7 +453,9 @@
     },
     "ui": {
       "showMap": "Mostrar mapa",
-      "search": "Cidade / Rua / Lugar"
+      "searchOnQuestsPage": "Employer / Title / Description / City",
+      "searchOnWorkersPage": "Employee / City",
+      "searchWithMap": "Cidade / Rua / Lugar"
     },
     "worker": "Trabalhador",
     "raiseViews": "Aumentar visualizações",
@@ -954,6 +957,7 @@
     "edit": "???",
     "delete": "???",
     "youCan’tDeleteActiveQuest": "???",
+    "youCantCreateDispute": "???",
     "sureDeleteText": "???",
     "sureDeleteMemberText": "???",
     "sureLeaveChatText": "???",
@@ -2034,6 +2038,7 @@
     "stakeDurationIsNotOver": "???",
     "claimRewards": "???",
     "cannotClaimYet": "???",
+    "cannotStakeYet": "You cannot stake tokens yet",
     "pool": "Pool",
     "stakeTokenAddress": "???",
     "rewardTokenAddress": "???",

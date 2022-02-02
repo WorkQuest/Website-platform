@@ -150,7 +150,7 @@
             <h2 class="quest__spec">
               {{ $t('quests.otherQuestsSpec') }}
               <nuxt-link
-                :to="`/quests?specialization=${randomSpec}&statuses=0`"
+                :to="`/quests?specializations=${randomSpec}&statuses=0`"
                 class="spec__link"
               >
                 "{{ $t(`filters.items.${randomSpec}.title`) }}"
@@ -250,7 +250,10 @@ export default {
       return Math.floor(questSpecializations[Math.floor(Math.random() * questSpecializations.length)].path);
     },
     checkAvailabilityDispute() {
-      return !(this.$moment().toISOString() >= this.$moment(this.questData.startedAt).add(1, 'day').toISOString());
+      if (this.questData.startedAt) {
+        return this.$moment().toISOString() >= this.$moment(this.questData.startedAt).add(1, 'day').toISOString();
+      }
+      return false;
     },
   },
   watch: {
@@ -439,7 +442,7 @@ export default {
             mode: '',
             funcKey: 'openDispute',
             icon: '',
-            disabled: this.checkAvailabilityDispute,
+            disabled: false,
           },
           {
             name: this.$t('btn.completeWorkOnQuest'),
@@ -552,13 +555,21 @@ export default {
     },
     async openDispute() {
       if (this.questData.status === 3) {
-        await this.$router.push(`/disputes/${this.questData.openDispute.id}`);
-      } else {
-        this.ShowModal({
+        return await this.$router.push(`/disputes/${this.questData.openDispute.id}`);
+      }
+      if (this.checkAvailabilityDispute) {
+        return this.ShowModal({
           key: modals.openADispute,
           questId: this.questData.id,
         });
       }
+      return this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/deleteError.svg'),
+        title: this.$t('modals.error'),
+        subtitle: this.$t('modals.youCantCreateDispute'),
+        button: this.$t('modals.close'),
+      });
     },
     async acceptCompletedWorkOnQuest() {
       const modalMode = 2;

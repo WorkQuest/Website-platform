@@ -91,6 +91,7 @@
       <CtmModalGallery v-if="modals.gallery === currentModalKey" />
       <CtmModalTransactionReceipt v-if="modals.transactionReceipt === currentModalKey" />
       <CtmModalAreYouSure v-if="modals.areYouSure === currentModalKey" />
+      <CtmModalStake v-if="modals.stake === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -98,6 +99,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '@/store/modals/modals';
+import CtmModalStake from './CtmModalStake';
 import CtmModalTransactionReceipt from './CtmModalTransactionReceipt';
 import CtmModalConfirmPassword from './CtmModalConfirmPassword';
 import CtmModalConfirmEmail from './CtmModalConfirmEmail';
@@ -181,6 +183,7 @@ import CtmModalAreYouSure from './CtmModalAreYouSure';
 export default {
   name: 'ModalBox',
   components: {
+    CtmModalStake,
     CtmModalTransactionReceipt,
     CtmModalConfirmPassword,
     CtmModalQuestFilterFull,

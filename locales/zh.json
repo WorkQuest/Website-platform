@@ -104,6 +104,7 @@
     "create": "创建帐户"
   },
   "profile": {
+    "defaultName": "Nameless User",
     "raiseViews": "提高浏览量",
     "educations": "教育背景",
     "prevWorkExp": "过去的工作经验",
@@ -452,7 +453,9 @@
     },
     "ui": {
       "showMap": "显示地图",
-      "search": "城市/街道/地点"
+      "searchOnQuestsPage": "Employer / Title / Description / City",
+      "searchOnWorkersPage": "Employee / City",
+      "searchWithMap": "城市/街道/地点"
     },
     "worker": "工作者",
     "raiseViews": "提高浏览量",
@@ -954,6 +957,7 @@
     "edit": "???",
     "delete": "???",
     "youCan’tDeleteActiveQuest": "???",
+    "youCantCreateDispute": "???",
     "sureDeleteText": "???",
     "sureDeleteMemberText": "???",
     "sureLeaveChatText": "???",
@@ -2034,6 +2038,7 @@
     "stakeDurationIsNotOver": "???",
     "claimRewards": "???",
     "cannotClaimYet": "???",
+    "cannotStakeYet": "You cannot stake tokens yet",
     "pool": "Pool",
     "stakeTokenAddress": "???",
     "rewardTokenAddress": "???",

@@ -107,6 +107,7 @@ export default {
         limit: 10,
         offset: 0,
         starred: false,
+        'sort[createdAt]': 'desc',
       },
     };
     await this.$store.dispatch('quests/getUserQuests', this.requestParams);
