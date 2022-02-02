@@ -36,13 +36,11 @@ export default {
     initSumSub() {
       const accessToken = this.accessToken.token;
       const applicantEmail = this.userData.email;
-      const applicantPhone = this.userData.phone.fullPhone;
       const snsWebSdkInstance = snsWebSdk.Builder('https://test-api.sumsub.com', 'basic-kyc')
         .withAccessToken(accessToken, () => {})
         .withConf({
           lang: 'en',
           email: applicantEmail,
-          phone: applicantPhone,
           onError: (error) => {
             console.log('WebSDK onError', error);
           },
