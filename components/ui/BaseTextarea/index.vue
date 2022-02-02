@@ -6,7 +6,7 @@
     :rules="rules"
     :name="name"
     :vid="vid"
-    mode="eager"
+    mode="aggressive"
     slim
   >
     <div

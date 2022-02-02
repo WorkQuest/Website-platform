@@ -230,10 +230,7 @@ export default {
         for (let i = 0; i < quest.medias.length; i += 1) {
           const media = quest.medias[i];
           if (media.contentType.split('/')[0] === 'image') {
-            return {
-              url: media.url,
-              alt: 'Quest preview',
-            };
+            return { url: media.url, alt: 'Quest preview' };
           }
         }
       }
