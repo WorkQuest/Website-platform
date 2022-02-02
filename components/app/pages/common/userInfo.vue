@@ -131,10 +131,10 @@
     <div class="info-grid__right right">
       <div
         class="right__header"
-        :class="userData.role === 'worker' ? 'right__header_employee' : ''"
+        :class="userData.role === UserRole.WORKER ? 'right__header_employee' : ''"
       >
         <div
-          v-if="userData.role === 'worker' && userData.wagePerHour"
+          v-if="userData.role === UserRole.WORKER && userData.wagePerHour"
           class="right__price"
         >
           <div class="price__text">
@@ -153,7 +153,7 @@
       </div>
       <div class="right__footer">
         <div
-          v-if="userRole === 'worker' && userId === mainUserData.id"
+          v-if="mainUser.role === UserRole.WORKER && userId === mainUserData.id"
           class="contact__btn"
         >
           <base-btn
@@ -163,7 +163,7 @@
           </base-btn>
         </div>
         <div
-          v-else-if="userRole === 'employer' && userData.role === 'worker'"
+          v-else-if="mainUser.role === UserRole.WORKER && userData.role === UserRole.WORKER"
           class="contact__btn"
         >
           <base-btn
@@ -181,6 +181,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { UserRole } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -190,12 +191,12 @@ export default {
       mainUser: 'user/getUserData',
       tags: 'ui/getTags',
       mainUserData: 'user/getUserData',
-      userRole: 'user/getUserRole',
       anotherUserData: 'user/getAnotherUserData',
     }),
     isEmptyUserData() {
       return !Object.keys(this.userData).length;
     },
+    UserRole() { return UserRole; },
     socialNetworks() {
       if (this.isEmptyUserData) return [];
       const socialNetworksData = this.userData.additionalInfo.socialNetwork;
