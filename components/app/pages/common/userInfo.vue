@@ -163,7 +163,7 @@
           </base-btn>
         </div>
         <div
-          v-else-if="mainUser.role === UserRole.WORKER && userData.role === UserRole.WORKER"
+          v-else-if="mainUser.role === UserRole.EMPLOYER && userData.role === UserRole.WORKER"
           class="contact__btn"
         >
           <base-btn
