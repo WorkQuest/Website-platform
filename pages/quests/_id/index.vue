@@ -80,21 +80,16 @@
             </div>
           </div>
           <div class="worker-data__priority">
-            <div
+            <star-rating
               v-if="starRating(questData)"
-              class="worker-data__rating rating"
-            >
-              <div class="rating__star">
-                <star-rating
-                  :quest-index="1"
-                  :rating-type="'questPage'"
-                  :stars-number="5"
-                  :rating="!questData.yourReview && checkQuestIdReviewMark(questData.id) ? currentMark.mark : getRating(questData)"
-                  :is-disabled="questData.yourReview !== null"
-                  @input="showReviewModal($event, questData)"
-                />
-              </div>
-            </div>
+              class="worker-data__rating rating rating__star"
+              :quest-index="1"
+              :rating-type="'questPage'"
+              :stars-number="5"
+              :rating="!questData.yourReview && checkQuestIdReviewMark(questData.id) ? currentMark.mark : getRating(questData)"
+              :is-disabled="questData.yourReview !== null"
+              @input="showReviewModal($event, questData)"
+            />
             <span class="worker-data__price">
               {{ questData.price }} {{ $t('quests.wusd') }}
             </span>
