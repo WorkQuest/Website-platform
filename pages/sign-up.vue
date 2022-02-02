@@ -1,14 +1,14 @@
 <template>
   <div class="auth">
     <div
-      v-if="step > walletState.SignPage"
+      v-if="step > walletState.Default"
       class="auth__back"
       @click="goStep(step - 1)"
     >
       <span class="icon-long_left" /> {{ $t('meta.back') }}
     </div>
     <ValidationObserver
-      v-if="step === walletState.SignPage"
+      v-if="step === walletState.Default"
       v-slot="{ handleSubmit, valid }"
       tag="div"
       class="auth__container"
@@ -144,7 +144,7 @@ export default {
   data() {
     return {
       error: '',
-      step: WalletState.SignPage,
+      step: WalletState.Default,
       model: {
         firstName: '',
         lastName: '',

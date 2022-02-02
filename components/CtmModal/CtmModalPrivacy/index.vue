@@ -56,7 +56,7 @@
         <base-btn
           class="privacy__action"
           :disabled="!isAllChecked"
-          @click="hide()"
+          @click="onSubmit()"
         >
           {{ $t('meta.ok') }}
         </base-btn>
@@ -67,6 +67,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { UserStatuses } from '~/utils/enums';
 
 export default {
   name: 'PrivacyModal',
@@ -87,12 +88,13 @@ export default {
     },
   },
   methods: {
-    async hide() {
-      if (this.$cookies.get('userStatus') === 2) {
+    async onSubmit() {
+      if (this.$cookies.get('userStatus') === UserStatuses.NeedSetRole) {
         this.$cookies.set('role', this.options.role);
         try {
           await this.$store.dispatch('user/setUserRole', { role: this.options.role });
           const response = await this.$store.dispatch('user/getUserData');
+          console.log(response);
           if (response?.ok) {
             await this.$store.dispatch('user/getStatistic');
             if (this.userData.role === 'employer') {

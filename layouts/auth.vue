@@ -83,6 +83,7 @@ export default {
     if (access && refresh && userStatus) {
       this.$store.commit('user/setTokens', { access, refresh, userStatus });
       if (parseInt(userStatus, 10) === 2) {
+        console.log('hrer??');
         await this.$router.push('/role');
       } else {
         await this.$store.dispatch('user/getUserData');

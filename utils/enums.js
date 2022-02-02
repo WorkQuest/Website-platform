@@ -150,7 +150,7 @@ export const Path = {
 
 // WALLET
 export const WalletState = Object.freeze({
-  SignPage: 1,
+  Default: 1,
   SaveMnemonic: 2,
   ConfirmMnemonic: 3,
   ImportOrCreate: 4,

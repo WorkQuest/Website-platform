@@ -227,6 +227,7 @@
     "create": "创建帐户"
   },
   "createWallet": {
+    "showSecretPhrase": "Show secret phrase",
     "savePhrase": "Save your secret phrase",
     "keptPhrase": "I have kept a secret phrase",
     "confirmSecretPhrase": "Confirm secret phrase",

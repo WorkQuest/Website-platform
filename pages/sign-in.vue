@@ -1,7 +1,7 @@
 <template>
   <div class="auth">
     <ValidationObserver
-      v-if="step === walletState.SignPage"
+      v-if="step === walletState.Default"
       v-slot="{ handleSubmit }"
       class="auth__container"
       tag="div"
@@ -119,7 +119,7 @@
       </div>
     </ValidationObserver>
     <div
-      v-if="step > walletState.SignPage"
+      v-if="step > walletState.Default"
       class="auth__back"
       @click="back"
     >
@@ -153,7 +153,7 @@ export default {
     return {
       addressAssigned: false,
       userAddress: null,
-      step: WalletState.SignPage,
+      step: WalletState.Default,
       model: {
         email: '',
         password: '',
@@ -179,11 +179,11 @@ export default {
   methods: {
     back() {
       if (this.step === WalletState.ImportOrCreate) {
-        this.step = WalletState.SignPage;
+        this.step = WalletState.Default;
         return;
       }
       if (this.step === WalletState.ImportMnemonic) {
-        this.step = !this.userAddress ? WalletState.ImportOrCreate : WalletState.SignPage;
+        this.step = !this.userAddress ? WalletState.ImportOrCreate : WalletState.Default;
         return;
       }
       if (this.step === WalletState.SaveMnemonic) {
