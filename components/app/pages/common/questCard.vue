@@ -122,6 +122,7 @@
             <base-btn
               v-if="quest.type !== 3"
               mode="borderless-right"
+              data-selector="ACTION-SHOW-DETAILS"
               @click="showDetails(quest.id)"
             >
               {{ $t('meta.details') }}
@@ -227,7 +228,7 @@ export default {
       this.$emit('clickFavoriteStar', item);
     },
     cropTxt(str) {
-      const maxLength = 120;
+      const maxLength = 98;
       if (str.length > maxLength) str = `${str.slice(0, maxLength)}...`;
       return str;
     },

@@ -161,6 +161,7 @@ export const UserRole = {
 export const Path = {
   ROOT: '/quests',
   CREATE_QUEST: '/create-quest',
+  STAKING: '/staking',
 };
 
 // WALLET
@@ -182,6 +183,8 @@ export const TokenSymbols = Object.freeze({
   WQT: 'WQT',
   WUSD: 'WUSD',
 });
+
+export const ExplorerUrl = Object.freeze('https://dev-explorer.workquest.co');
 
 export const NetworksData = {
   ETH_MAIN: {

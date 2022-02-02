@@ -456,7 +456,7 @@
       "showMap": "Mostrar mapa",
       "searchOnQuestsPage": "Employer / Title / Description / City",
       "searchOnWorkersPage": "Employee / City",
-      "searchWithMap": "Locality / City"
+      "searchWithMap": "Cidade / Rua / Lugar"
     },
     "worker": "Trabalhador",
     "raiseViews": "Aumentar visualizações",
@@ -2040,6 +2040,7 @@
     "stakeDurationIsNotOver": "???",
     "claimRewards": "???",
     "cannotClaimYet": "???",
+    "cannotStakeYet": "You cannot stake tokens yet",
     "pool": "Pool",
     "stakeTokenAddress": "???",
     "rewardTokenAddress": "???",

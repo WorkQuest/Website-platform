@@ -80,4 +80,5 @@ export default {
   confirmPassword: 'confirmPassword',
   transactionReceipt: 'transactionReceipt',
   areYouSure: 'areYouSure',
+  stake: 'stake',
 };

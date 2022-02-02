@@ -456,7 +456,7 @@
       "showMap": "Show map",
       "searchOnQuestsPage": "Employer / Title / Description / City",
       "searchOnWorkersPage": "Employee / City",
-      "searchWithMap": "Locality / City"
+      "searchWithMap": "City / Street / Place"
     },
     "worker": "Worker",
     "raiseViews": "Raise views",
@@ -2054,6 +2054,7 @@
     "stakeDurationIsNotOver": "Stake duration is not over",
     "claimRewards": "Claim rewards",
     "cannotClaimYet": "You cannot claim rewards yet",
+    "cannotStakeYet": "You cannot stake tokens yet",
     "pool": "Pool",
     "stakeTokenAddress": "Stake Token Address",
     "rewardTokenAddress": "Reward Token Address",

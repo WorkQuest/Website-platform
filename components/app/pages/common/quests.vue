@@ -1,4 +1,6 @@
 <template>
+  <!--  TODO: Удалить компонент, заменить на questCard-->
+  <!--  TODO: Добавить логику для отображения звездочек в карточке квеста-->
   <div class="quests">
     <div class="quests__card card">
       <div
@@ -127,6 +129,7 @@
                 <base-btn
                   v-if="item.type !== 3"
                   mode="borderless-right"
+                  data-selector="ACTION-SHOW-DETAILS"
                   @click="showDetails(item.id)"
                 >
                   {{ $t('meta.details') }}
@@ -135,7 +138,7 @@
                   </template>
                 </base-btn>
                 <div
-                  v-if="item.status === questStatuses.Done && item.assignedWorkerId === userData.id"
+                  v-if="starRating(item)"
                   class="block__rating"
                 >
                   <div class="block__star">
@@ -201,6 +204,17 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    getRating(item) {
+      return item?.yourReview?.mark || 0;
+    },
+    starRating(item) {
+      if (this.userRole === 'worker') {
+        return item.status === this.questStatuses.Done
+        && item.assignedWorkerId === this.userData.id;
+      }
+      return item.status === this.questStatuses.Done
+        && this.userData.id === item.userId;
+    },
     getRatingValue(item) {
       return item.assignedWorker?.ratingStatistic?.status || 'noStatus';
     },
@@ -218,10 +232,7 @@ export default {
         for (let i = 0; i < quest.medias.length; i += 1) {
           const media = quest.medias[i];
           if (media.contentType.split('/')[0] === 'image') {
-            return {
-              url: media.url,
-              alt: 'Quest preview',
-            };
+            return { url: media.url, alt: 'Quest preview' };
           }
         }
       }
@@ -234,7 +245,7 @@ export default {
       this.$emit('clickFavoriteStar', item);
     },
     cropTxt(str) {
-      const maxLength = 120;
+      const maxLength = 98;
       if (str.length > maxLength) str = `${str.slice(0, maxLength)}...`;
       return str;
     },
@@ -335,9 +346,6 @@ export default {
         [questPriority.Urgent]: 'block__priority_urgent',
       };
       return priority[index] || '';
-    },
-    getRating(item) {
-      return item?.yourReview?.mark || 0;
     },
   },
 };

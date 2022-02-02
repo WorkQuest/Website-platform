@@ -117,13 +117,10 @@ export default {
       return Object.keys(TokenSymbols);
     },
     maxAmount() {
-      return this.balance[this.selectedToken].fullBalance || 0;
+      return this.balance[this.selectedToken].fullBalance || '0';
     },
   },
   watch: {
-    selectedToken(val) {
-      this.maxAmount = this.balance[val].fullBalance;
-    },
     ddValue(val) {
       this.$store.dispatch('wallet/setSelectedToken', TokenSymbols[this.tokenSymbolsDd[val]]);
     },
@@ -169,7 +166,12 @@ export default {
       this.CloseModal();
     },
     maxBalance() {
-      this.amount = this.maxAmount - this.maxFee[this.selectedToken];
+      if (this.selectedToken === TokenSymbols.WUSD) {
+        const max = new BigNumber(this.maxAmount).minus(this.maxFee[this.selectedToken]);
+        this.amount = max.isGreaterThan(0) ? max.toString() : 0;
+        return;
+      }
+      this.amount = this.maxAmount;
     },
     async transfer() {
       let res;

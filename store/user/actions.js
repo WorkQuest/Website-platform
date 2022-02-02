@@ -171,12 +171,14 @@ export default {
       return console.log(e);
     }
   },
-  async sendReviewForUser({ commit }, payload) {
+  async sendReviewForUser({ commit }, { questId, message, mark }) {
     try {
-      const response = await this.$axios.$post('/v1/review/send', payload);
-      return response.result;
+      const { ok, result } = await this.$axios.$post('/v1/review/send', { questId, message, mark });
+      commit('setCurrentReviewMarkOnQuest', { questId, message, mark });
+      return { ok };
     } catch (e) {
-      return console.log(e);
+      console.log('user/sendReviewForUser');
+      return false;
     }
   },
   async registerWallet({ commit }, payload) {
