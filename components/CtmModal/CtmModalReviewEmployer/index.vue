@@ -96,8 +96,8 @@ export default {
         message: this.textArea,
         mark: this.rating,
       });
-      if (ok) this.showThanksModal();
       this.hide();
+      if (ok) this.showThanksModal();
     },
     showThanksModal() {
       this.ShowModal({
