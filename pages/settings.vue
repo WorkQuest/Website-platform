@@ -120,7 +120,6 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    console.log('userData', this.userData);
     if (!this.filters) await this.$store.dispatch('quests/getFilters');
     if (!this.profile.firstName) await this.$store.dispatch('user/getUserData');
     const addInfo = this.userData.additionalInfo;

@@ -1,11 +1,11 @@
 <template>
   <ctm-modal-box
-    :title="!secondNumber ? $t('modals.errorSmsVer') : $t('modals.smsVerification')"
+    :title="!phone ? $t('modals.errorSmsVer') : $t('modals.smsVerification')"
     class="verification"
   >
     <div class="verification__content content">
       <div
-        v-show="isVerified === true"
+        v-show="isVerified"
         class="content__verified"
       >
         <img
@@ -26,7 +26,7 @@
         </div>
       </div>
       <div
-        v-if="isVerified === false"
+        v-if="!phone"
         class="content__verified"
       >
         <img
@@ -47,7 +47,7 @@
         </div>
       </div>
       <validation-observer
-        v-if="isVerified === false"
+        v-if="!isVerified"
         v-slot="{handleSubmit, validated, passed, invalid}"
       >
         <div class="content__subtitle">
@@ -58,7 +58,7 @@
         </span>
         <base-field
           v-if="step === 1"
-          v-model="secondNumber.fullPhone"
+          v-model="phone"
           class="content__action"
           :placeholder="$t('modals.phoneNumber')"
           mode="icon"
@@ -125,6 +125,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { UserRole } from '~/utils/enums';
 
 export default {
   name: 'CtmModalSmsVerification',
@@ -133,29 +134,31 @@ export default {
       confirmCode: '',
       step: 1,
       isVerified: false,
+      phone: null,
     };
   },
   computed: {
     ...mapGetters({
+      userRole: 'user/getUserRole',
       userData: 'user/getUserData',
       secondNumber: 'user/getUserSecondMobileNumber',
       currentConfirmCode: 'user/getVerificationCode',
     }),
+    UserRole() {
+      return UserRole;
+    },
   },
   async beforeMount() {
-    await this.numberIsVerified();
-    this.confirmCode = this.currentConfirmCode;
+    if (this.userData?.phone?.fullPhone && !this.userData?.tempPhone?.fullPhone) this.isVerified = true;
+    if (!this.isVerified && this.userRole === UserRole.EMPLOYER) {
+      if (this.userData?.tempPhone) this.phone = this.userData?.tempPhone?.fullPhone;
+      else this.phone = this.secondNumber?.fullPhone;
+    } else {
+      this.phone = this.userData?.phone?.fullPhone;
+      this.confirmCode = this.currentConfirmCode;
+    }
   },
   methods: {
-    async numberIsVerified() {
-      if (this.secondNumber && this.userData.tempPhone) {
-        // let num1 = parseInt(this.secondNumber.phone, 10);
-        // let num2 = parseInt(this.userData.tempPhone.phone, 10);
-        // console.log(this.secondNumber);
-        // console.log(this.userData.tempPhone);
-        this.isVerified = this.secondNumber.phone === this.userData.tempPhone.phone;
-      }
-    },
     hide() {
       this.CloseModal();
     },
@@ -172,10 +175,10 @@ export default {
       this.confirmPhone();
     },
     async getCodeFromSms() {
-      if (this.secondNumber) await this.$store.dispatch('user/sendPhone', { phoneNumber: this.secondNumber });
+      if (this.phone) await this.$store.dispatch('user/sendPhone', { phoneNumber: this.phone });
     },
     async nextStep() {
-      if (this.secondNumber) {
+      if (this.phone) {
         await this.getCodeFromSms();
         this.step += 1;
       }

@@ -420,7 +420,6 @@ export default {
     },
   },
   mounted() {
-    console.log('profile', this.profile);
     this.geoCode = new GeoCode('google', {
       key: process.env.GMAPKEY,
       lang: this.$i18n?.localeProperties?.code || 'en-US',
