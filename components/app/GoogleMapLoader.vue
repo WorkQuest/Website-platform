@@ -2,13 +2,12 @@
   <g-map
     ref="gMap"
     :options="{
-      styles: clusterStyle,
       disableDefaultUI: true,
       minZoom: 1,
       maxZoom: 18,
       gestureHandling: isDraggable ? 'auto' : 'none'
     }"
-    :center="center"
+    :center="newCenter"
     :zoom="zoom"
   >
     <g-map-cluster
@@ -20,7 +19,7 @@
         :key="key"
         :position="{lat: item.location.latitude, lng: item.location.longitude}"
         :options="{ icon: pins.quest.blue, show: item === currentLocation} "
-        @click="coordinatesChange(item)"
+        @click="onMarkerClick(item)"
       >
         <g-map-info-window
           v-if="hiddenWindowInfo"
@@ -86,7 +85,6 @@ export default {
   },
   data() {
     return {
-      currentZoom: null,
       userLocation: { lat: 54.9833, lng: 82.8964 },
       currentLocation: {},
       pins: {
@@ -124,6 +122,7 @@ export default {
       bounds: 'google-map/getBounds',
       points: 'google-map/getPoints',
     }),
+    newCenter() { return this.center; },
   },
   async mounted() {
     await this.initMapListeners();
@@ -139,13 +138,12 @@ export default {
         await this.initMapListeners();
       }
     },
-    onBoundsChanged(event) {
+    async onBoundsChanged(event) {
       if (this.timeoutIdBoundsChange) {
         clearTimeout(this.timeoutIdBoundsChange);
         this.timeoutIdBoundsChange = null;
       }
       this.timeoutIdBoundsChange = setTimeout(async () => {
-        console.log('onBoundsChanged');
         const parsedData = event.toJSON();
         const coordinates = {
           northEast: { lat: parsedData.north, lng: parsedData.east },
@@ -165,16 +163,21 @@ export default {
     },
     async onZoomChanged(event) { await this.$store.dispatch('google-map/setNewZoom', event); },
     async onClusterClick(cluster) {
-      await this.$store.dispatch('google-map/setNewCenter', cluster.center_.toJSON());
-
+      const newCenter = cluster.center_.toJSON();
+      await this.$store.dispatch('google-map/setNewCenter', { lat: newCenter.lat, lng: newCenter.lng });
+      await this.setNewZoom();
+    },
+    async onMarkerClick(m) {
+      await this.$store.dispatch('google-map/setNewCenter', { lat: m.location.latitude, lng: m.location.longitude });
+      await this.setNewZoom();
+    },
+    async setNewZoom() {
+      if (this.zoom === 18) {
+        this.ShowMessage('Warning', 'Its maximum of zoom, look of result');
+        return;
+      }
       const newZoom = this.zoom + 3 <= 18 ? this.zoom + 3 : 18;
       await this.$store.dispatch('google-map/setNewZoom', newZoom);
-      if (newZoom !== 18) return;
-
-      this.ShowMessage(
-        'Warning',
-        'Its maximum of zoom, look of result',
-      );
     },
 
     checkUserCoordinates() {
@@ -183,14 +186,7 @@ export default {
         this.userLocation.lng = this.userData.location.longitude;
       }
     },
-    coordinatesChange(item) {
-      console.log(item);
-      if (Object.keys(this.currentLocation).length > 0) {
-        this.currentLocation = {};
-      } else {
-        this.currentLocation = item;
-      }
-    },
+
     showDetails(id) {
       this.$router.push(`/quests/${id}`);
     },
