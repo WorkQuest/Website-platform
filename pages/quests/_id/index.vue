@@ -86,8 +86,8 @@
               :quest-index="1"
               :rating-type="'questPage'"
               :stars-number="5"
-              :rating="!questData.yourReview && checkQuestIdReviewMark(questData.id) ? currentMark.mark : getRating(questData)"
-              :is-disabled="questData.yourReview !== null"
+              :rating="questData.yourReview && checkQuestIdReviewMark(questData.id) ? currentMark.mark : getRating(questData)"
+              :is-disabled="questData.yourReview !== null || currentMark.mark === Number"
               @input="showReviewModal($event, questData)"
             />
             <span class="worker-data__price">
