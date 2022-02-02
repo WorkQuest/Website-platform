@@ -144,15 +144,8 @@ export default {
   }
 
   &__textarea {
-    border-radius: 6px;
-    padding: 11px 20px 11px 15px;
     height: 214px;
     width: 100%;
-    border: 0;
-    resize: none;
-    &::placeholder {
-      color: $black200;
-    }
   }
 }
 
