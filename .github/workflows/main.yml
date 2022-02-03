@@ -32,6 +32,8 @@ jobs:
           echo NOTIFS_URL=${{ secrets.NOTIFS_URL }} >> .env
           echo WS_NOTIFS_URL=${{ secrets.WS_NOTIFS_URL }} >> .env
           echo WS_CHAT_URL=${{ secrets.WS_CHAT_URL }} >> .env
+          echo WS_CHAT_ACTIONS_URL=${{ secrets.WS_CHAT_ACTIONS_URL }} >> .env
+
 
           echo ETHEREUM_BRIDGE=${{ secrets.ETHEREUM_BRIDGE }} >> .env
           echo ETHEREUM_LP_TOKEN=${{ secrets.ETHEREUM_LP_TOKEN }} >> .env
@@ -100,6 +102,7 @@ jobs:
           echo NOTIFS_URL=${{ secrets.NOTIFS_URL }} >> .env
           echo WS_NOTIFS_URL=${{ secrets.WS_NOTIFS_URL }} >> .env
           echo WS_CHAT_URL=${{ secrets.WS_CHAT_URL }} >> .env
+          echo WS_CHAT_ACTIONS_URL=${{ secrets.WS_CHAT_ACTIONS_URL }} >> .env
 
           echo ETHEREUM_BRIDGE=${{ secrets.ETHEREUM_BRIDGE }} >> .env
           echo ETHEREUM_LP_TOKEN=${{ secrets.ETHEREUM_LP_TOKEN }} >> .env
@@ -168,6 +171,7 @@ jobs:
           echo NOTIFS_URL=${{ secrets.NOTIFS_URL }} >> .env
           echo WS_NOTIFS_URL=${{ secrets.WS_NOTIFS_URL }} >> .env
           echo WS_CHAT_URL=${{ secrets.WS_CHAT_URL }} >> .env
+          echo WS_CHAT_ACTIONS_URL=${{ secrets.WS_CHAT_ACTIONS_URL }} >> .env
 
           echo ETHEREUM_BRIDGE=${{ secrets.ETHEREUM_BRIDGE }} >> .env
           echo ETHEREUM_LP_TOKEN=${{ secrets.ETHEREUM_LP_TOKEN }} >> .env
