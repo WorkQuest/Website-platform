@@ -79,9 +79,7 @@
               </div>
             </template>
           </base-field>
-          <div
-            class="profile__phone-input"
-          >
+          <div class="profile__phone-input">
             <label
               v-if="userRole === UserRole.EMPLOYER"
               for="phone1"
