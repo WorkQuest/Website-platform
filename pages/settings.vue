@@ -124,7 +124,6 @@ export default {
     if (!this.profile.firstName) await this.$store.dispatch('user/getUserData');
     const addInfo = this.userData.additionalInfo;
     this.profile = {
-      workplace: !this.userData?.workplace ? 0 : this.userData?.workplace,
       avatarId: this.userData.avatarId,
       firstName: this.userData.firstName,
       lastName: this.userData.lastName,

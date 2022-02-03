@@ -26,6 +26,7 @@
         id="textarea"
         :value="mode === 'convertDate' ? convertDate(value) : value"
         class="ctm-field__textarea"
+        :class="[{'ctm-field__textarea_settings': type === 'settings'}]"
         :placeholder="placeholder"
         @input="input"
         @focus="$emit('focus')"
@@ -94,7 +95,7 @@ export default {
     },
     type: {
       type: String,
-      default: 'text',
+      default: '',
     },
     isSearch: {
       type: Boolean,
@@ -156,6 +157,9 @@ export default {
     color: $black700;
     background: #F3F7FA;
     resize: none;
+    &_settings {
+      height: 112px;
+    }
     &::placeholder {
       color: $black300;
     }
