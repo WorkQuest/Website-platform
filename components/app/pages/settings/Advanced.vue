@@ -10,7 +10,7 @@
         class="advanced__options advanced__options_left"
       >
         <div class="advanced__subtitle">
-          {{ $t('settings.whoCanSee') }}
+          {{ radio[0].id === 'allUsers' ? $t('settings.whoCanSee') : $t('settings.workProposals') }}
         </div>
         <div
           v-for="input in radio"
@@ -48,6 +48,7 @@
           </div>
           <base-btn
             v-if="!button.isSwitcher"
+            :disabled="button.enable"
             @click="showModalKey(button.modal)"
           >
             {{ $t(button.buttonName) }}
@@ -57,16 +58,9 @@
             class="advanced__option-buttons"
           >
             <base-btn
-              :disabled="status2FA === 0"
-              @click="showModalKey(button.firstModal)"
+              @click="status2FA === 0 ? showModalKey(button.secondModal) : showModalKey(button.firstModal)"
             >
-              {{ $t(button.firstButtonName) }}
-            </base-btn>
-            <base-btn
-              :disabled="status2FA === 1"
-              @click="showModalKey(button.secondModal)"
-            >
-              {{ $t(button.secondButtonName) }}
+              {{ status2FA === 0 ? $t(button.secondButtonName) : $t(button.firstButtonName) }}
             </base-btn>
           </div>
         </div>
@@ -77,13 +71,14 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'Advanced',
   data() {
     return {
       radioButtons: {
-        whoCanSeeeInputs: [
+        whoCanSeeInputs: [
           {
             id: 'allUsers',
             value: 'allUsers',
@@ -124,7 +119,6 @@ export default {
           },
         ],
       },
-
       rightSideButtons: [
         {
           title: 'settings.changePass',
@@ -138,8 +132,6 @@ export default {
           secondButtonName: 'settings.enable',
           firstModal: 'disable2FA',
           secondModal: 'twoFAAuth',
-          firstDisabled: this.status2FA === 0,
-          secondDisable: this.status2FA === 1,
           isSwitcher: true,
         },
         {
@@ -147,6 +139,7 @@ export default {
           buttonName: 'settings.enable',
           modal: 'smsVerification',
           isSwitcher: false,
+          enable: this.secondNumber?.fullPhone,
         },
         {
           title: 'settings.changeRole',
@@ -160,11 +153,20 @@ export default {
   computed: {
     ...mapGetters({
       status2FA: 'user/getStatus2FA',
+      secondNumber: 'user/getUserSecondMobileNumber',
+      userData: 'user/getUserData',
     }),
   },
   methods: {
     async showModalKey(modalKey) {
       this.$emit('showModalKey', modalKey);
+    },
+    smsVerErrorModal() {
+      this.ShowModal({
+        key: modals.status,
+        title: this.$t('modals.errorSmsVer'),
+        subtitle: this.$t('modals.fillNumber'),
+      });
     },
   },
 
@@ -258,10 +260,10 @@ export default {
 @include _575 {
   .advanced {
     &__left {
-      border-radius: 0px;
+      border-radius: 0;
     }
     &__right {
-      border-radius: 0px;
+      border-radius: 0;
     }
     &__option_blue {
       flex-direction: column;

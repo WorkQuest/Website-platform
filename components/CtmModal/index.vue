@@ -57,7 +57,6 @@
       <CtmModalCopiedSuccess v-if="modals.copiedSuccess === currentModalKey" />
       <CtmModalChangeRoleWarning v-if="modals.changeRoleWarning === currentModalKey" />
       <CtmModalChangeRoleReason v-if="modals.changeRoleReason === currentModalKey" />
-      <CtmModalChangeRoleSecureCheck v-if="modals.changeRoleSecureCheck === currentModalKey" />
       <CtmModalChooseNecessarySkills v-if="modals.chooseNecessarySkills === currentModalKey" />
       <CtmModalCreditingLoan v-if="modals.creditingLoan === currentModalKey" />
       <CtmModalConfirmLoanDetails v-if="modals.confirmLoanDetails === currentModalKey" />
@@ -91,6 +90,7 @@
       <CtmModalGallery v-if="modals.gallery === currentModalKey" />
       <CtmModalTransactionReceipt v-if="modals.transactionReceipt === currentModalKey" />
       <CtmModalAreYouSure v-if="modals.areYouSure === currentModalKey" />
+      <CtmModalStake v-if="modals.stake === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -98,6 +98,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '@/store/modals/modals';
+import CtmModalStake from './CtmModalStake';
 import CtmModalTransactionReceipt from './CtmModalTransactionReceipt';
 import CtmModalConfirmPassword from './CtmModalConfirmPassword';
 import CtmModalConfirmEmail from './CtmModalConfirmEmail';
@@ -147,7 +148,6 @@ import CtmModalCopiedSuccess from './CtmModalCopiedSuccess';
 import CtmModalChatCreate from './CtmModalChatCreate';
 import CtmModalChangeRoleWarning from './CtmModalChangeRoleWarning';
 import CtmModalChangeRoleReason from './CtmModalChangeRoleReason';
-import CtmModalChangeRoleSecureCheck from './CtmModalChangeRoleSecureCheck';
 import CtmModalChooseNecessarySkills from './CtmModalChooseNecessarySkills';
 import CtmModalSmsVerification from './CtmModalSmsVerification';
 import CtmModalReviewDetails from './CtmModalReviewDetails';
@@ -181,6 +181,7 @@ import CtmModalAreYouSure from './CtmModalAreYouSure';
 export default {
   name: 'ModalBox',
   components: {
+    CtmModalStake,
     CtmModalTransactionReceipt,
     CtmModalConfirmPassword,
     CtmModalQuestFilterFull,
@@ -230,7 +231,6 @@ export default {
     CtmModalCopiedSuccess,
     CtmModalChangeRoleWarning,
     CtmModalChangeRoleReason,
-    CtmModalChangeRoleSecureCheck,
     CtmModalChooseNecessarySkills,
     CtmModalSmsVerification,
     CtmModalReviewDetails,

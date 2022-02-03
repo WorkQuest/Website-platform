@@ -92,18 +92,9 @@ Vue.mixin({
     deg2rad(deg) {
       return deg * (Math.PI / 180);
     },
-    ShowMessage(title, label) {
-      this.$bvToast.toast(label, {
-        title: title || 'Ошибка',
-        variant: 'warning',
-        solid: true,
-        toaster: 'b-toaster-bottom-right',
-        appendToast: true,
-      });
-    },
-    ShowError(label) {
-      this.$bvToast.toast(label, {
-        title: 'Ошибка',
+    ShowToast(text, title = null) {
+      this.$bvToast.toast(text, {
+        title: title || this.$t('modals.error'),
         variant: 'warning',
         solid: true,
         toaster: 'b-toaster-bottom-right',
@@ -155,6 +146,12 @@ Vue.mixin({
     UserName(firstName, lastName) {
       if (firstName || lastName) return `${firstName || ''} ${lastName || ''}`;
       return this.$t('profile.defaultName');
+    },
+    NumberWithSpaces(value) {
+      if (!value) return '';
+      const parts = value.toString().split('.');
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+      return parts.join('.');
     },
   },
 });

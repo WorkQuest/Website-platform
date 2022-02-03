@@ -3,9 +3,7 @@
     ref="templateScroll"
     class="primary"
   >
-    <div
-      class="primary__template template"
-    >
+    <div class="primary__template template">
       <div
         class="template__content"
         :class="{'template__content_rows' : isChatOpened}"
@@ -183,116 +181,7 @@
                   class="icon-message"
                 />
               </button>
-              <button class="header__button header__button_notify">
-                <span
-                  v-if="notification"
-                  class="icon-notification_outline_dot"
-                  @click="showNotification()"
-                />
-                <span
-                  v-else
-                  class="icon-notification_outline"
-                />
-                <transition name="fade">
-                  <div
-                    v-if="isShowNotify"
-                    class="notify"
-                  >
-                    <div class="notify__header">
-                      <div class="notify__title">
-                        {{ $t('ui.notifications.title') }}
-                      </div>
-                      <span
-                        class="icon-close_small"
-                        @click="showNotification()"
-                      />
-                    </div>
-                    <div class="notify__body">
-                      <div class="notify__items">
-                        <div class="notify__item">
-                          <div class="notify__content">
-                            <div class="notify__top">
-                              <div class="notify__user">
-                                <div class="notify__avatar">
-                                  <img
-                                    src="~assets/img/app/fakeavatar.svg"
-                                    alt=""
-                                  >
-                                </div>
-                                <div class="notify__info">
-                                  <div class="notify__text notify__text_name">
-                                    Edward Cooper
-                                  </div>
-                                  <div class="notify__text notify__text_grey">
-                                    CEO from Amazon
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="notify__text notify__text_date">
-                                14 January 2021, 14:54
-                              </div>
-                            </div>
-                            <div class="notify__reason">
-                              <div class="notify__text notify__text_blue">
-                                {{ $t('ui.notifications.invite') }}:
-                              </div>
-                            </div>
-                            <div class="notify__action">
-                              <button
-                                class="notify__btn"
-                                @click="showNotifications"
-                              >
-                                <span class="notify__text notify__text_btn">
-                                  Paint the garage quickly
-                                </span>
-                                <span class="icon-chevron_right" />
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="notify__item">
-                          <div class="notify__content">
-                            <div class="notify__top">
-                              <div class="notify__user">
-                                <div class="notify__avatar">
-                                  <img
-                                    src="~assets/img/app/fakeavatar.svg"
-                                    alt=""
-                                  >
-                                </div>
-                                <div class="notify__info">
-                                  <div class="notify__text notify__text_name">
-                                    Samantha Sparks
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="notify__text notify__text_date">
-                                14 January 2021, 14:54
-                              </div>
-                            </div>
-                            <div class="notify__reason">
-                              <div class="notify__text notify__text_blue">
-                                {{ $t('ui.notifications.invite') }}:
-                              </div>
-                            </div>
-                            <div class="notify__action">
-                              <button
-                                class="notify__btn"
-                                @click="showNotifications"
-                              >
-                                <span class="notify__text notify__text_btn">
-                                  Paint the garage quickly
-                                </span>
-                                <span class="icon-chevron_right" />
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </transition>
-              </button>
+              <notifications-button />
               <div
                 class="ctm-menu__toggle"
                 @click="toggleMobileMenu()"
@@ -578,12 +467,11 @@ export default {
       isInstrumentDropdownOpened: false,
       isUserDDOpened: false,
       isShowProfile: false,
-      isShowNotify: false,
+
       isShowAdditionalMenu: false,
       isShowLocale: false,
       isMobileMenu: false,
       isNotFlexContainer: true,
-      notification: 1,
       currentLocale: '',
     };
   },
@@ -841,9 +729,7 @@ export default {
     kitcutDescription(text) {
       text = text.trim();
       if (text.length <= 120) return text;
-
       text = text.slice(0, 120);
-
       return `${text.trim()}...`;
     },
     userWindowChange() {
@@ -892,14 +778,6 @@ export default {
       this.closeAnother('profile');
       this.isShowProfile = !this.isShowProfile;
     },
-    showNotification() {
-      this.closeAnother('notify');
-      this.isShowNotify = !this.isShowNotify;
-    },
-    showNotifications() {
-      this.$router.push('/notifications');
-      this.isShowNotify = !this.isShowNotify;
-    },
     showAdditionalMenu() {
       this.closeAnother('instruments');
       this.isShowAdditionalMenu = !this.isShowAdditionalMenu;
@@ -912,29 +790,20 @@ export default {
       switch (value) {
         case 'mobile':
           this.isShowProfile = false;
-          this.isShowNotify = false;
           this.isShowLocale = false;
           this.isShowAdditionalMenu = false;
           break;
         case 'instruments':
           this.isShowProfile = false;
-          this.isShowNotify = false;
           this.isShowLocale = false;
           break;
         case 'profile':
           this.isShowAdditionalMenu = false;
-          this.isShowNotify = false;
           this.isShowLocale = false;
           break;
         case 'locale':
           this.isShowAdditionalMenu = false;
-          this.isShowNotify = false;
           this.isShowProfile = false;
-          break;
-        case 'notify':
-          this.isShowAdditionalMenu = false;
-          this.isShowProfile = false;
-          this.isShowLocale = false;
           break;
         default:
           break;
@@ -946,7 +815,6 @@ export default {
     },
     closeAll() {
       this.isShowProfile = false;
-      this.isShowNotify = false;
       this.isShowAdditionalMenu = false;
       this.isShowLocale = false;
     },
@@ -955,8 +823,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 
-.hidden {
-  display: none;
+.block {
+  //pointer-events: none;
 }
 .mobile {
   &-dropdown {
@@ -1143,125 +1011,6 @@ export default {
     }
   }
 }
-.notify {
-  position: absolute;
-  top: 57px;
-  right: calc(100% - 43px);
-  background: #FFFFFF;
-  box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.0325794), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
-  border-radius: 6px;
-  min-width: 441px;
-  z-index: 10000000;
-  &__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    height: 64px;
-    border-bottom: 1px solid #F7F8FA;
-    span:before {
-      color: $shade700 !important;
-      font-size: 24px;
-    }
-  }
-  &__title {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 18px;
-    line-height: 130%;
-    color: $black800;
-  }
-  &__btn {
-    background: #F7F8FA;
-    border-radius: 3px;
-    height: 44px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 10px;
-    transition: .5s;
-    span:before {
-      color: #0083C7;
-      font-size: 24px;
-    }
-    &:hover {
-      background: #dadade;
-    }
-  }
-  &__action {
-    padding-top: 12px;
-  }
-  &__content {
-    width: 100%;
-    height: 100%;
-    padding: 20px;
-  }
-  &__reason {
-    padding-top: 12px;
-  }
-  &__text {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    line-height: 130%;
-    &_date {
-      font-size: 12px;
-      text-align: right;
-      color: $black300;
-    }
-    &_name {
-      font-size: 16px;
-      color: $black800;
-    }
-    &_grey {
-      font-size: 12px;
-      color: $black500;
-    }
-    &_blue {
-      font-size: 16px;
-      color: $blue;
-      text-align: left;
-    }
-    &_btn {
-      font-size: 16px;
-      color: $black800;
-    }
-  }
-  &__items {
-    display: grid;
-    grid-template-columns: 1fr;
-  }
-  &__user {
-    display: grid;
-    grid-template-columns: 40px 1fr;
-    grid-gap: 10px;
-  }
-  &__info {
-    grid-gap: 5px;
-    display: grid;
-    text-align: left;
-    align-items: center;
-  }
-  &__avatar {
-    max-height: 40px;
-    max-width: 40px;
-    border-radius: 100%;
-  }
-  &__top {
-    display: flex;
-    justify-content: space-between;
-  }
-  &__item {
-    min-height: 167px;
-    border-bottom: 1px solid #F7F8FA;
-    width: 100%;
-    display: flex;
-    justify-items: flex-start;
-    align-items: center;
-  }
-}
 .profile {
   position: absolute;
   top: 57px;
@@ -1416,9 +1165,6 @@ export default {
     &_menu {
       position: relative;
       display: none;
-    }
-    &_notify {
-      position: relative;
     }
     &_locale {
       width: 86px;
@@ -1620,15 +1366,6 @@ export default {
     &__right {
       grid-gap: 2px;
     }
-  }
-  .notify {
-    min-width: 350px;
-  }
-}
-
-@include _380 {
-  .notify {
-    min-width: 250px;
   }
 }
 </style>

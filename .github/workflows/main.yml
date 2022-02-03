@@ -29,6 +29,7 @@ jobs:
           echo GMAPKEY=${{ secrets.GMAPKEY }} >> .env
           echo SECRET_SUMSUB=${{ secrets.SECRET_SUMSUB }} >> .env
 
+          echo NOTIFS_URL=${{ secrets.NOTIFS_URL }} >> .env
           echo WS_NOTIFS_URL=${{ secrets.WS_NOTIFS_URL }} >> .env
           echo WS_CHAT_URL=${{ secrets.WS_CHAT_URL }} >> .env
 
@@ -47,8 +48,8 @@ jobs:
           echo BSC_RPC_URL=${{ secrets.BSC_RPC_URL }} >> .env
           echo BSC_WS_MORALIS=${{ secrets.BSC_WS_MORALIS }} >> .env
 
-          echo WQT_STAKING=${{ secrets.WQT_STAKING }} >> .env
-          echo WQT_STAKING_NATIVE=${{ secrets.WQT_STAKING_NATIVE }} >> .env
+          echo WORKNET_STAKING_WQT=${{ secrets.WORKNET_STAKING_WQT }} >> .env
+          echo WORKNET_STAKING_WUSD=${{ secrets.WORKNET_STAKING_WUSD }} >> .env
 
           echo WQ_PROVIDER=${{ secrets.WQ_PROVIDER }} >> .env
           echo WQ_EXPLORER=${{ secrets.WQ_EXPLORER }} >> .env
@@ -96,6 +97,7 @@ jobs:
           echo GMAPKEY=${{ secrets.GMAPKEY }} >> .env
           echo SECRET_SUMSUB=${{ secrets.SECRET_SUMSUB }} >> .env
 
+          echo NOTIFS_URL=${{ secrets.NOTIFS_URL }} >> .env
           echo WS_NOTIFS_URL=${{ secrets.WS_NOTIFS_URL }} >> .env
           echo WS_CHAT_URL=${{ secrets.WS_CHAT_URL }} >> .env
 
@@ -114,8 +116,8 @@ jobs:
           echo BSC_RPC_URL=${{ secrets.BSC_RPC_URL }} >> .env
           echo BSC_WS_MORALIS=${{ secrets.BSC_WS_MORALIS }} >> .env
 
-          echo WQT_STAKING=${{ secrets.WQT_STAKING }} >> .env
-          echo WQT_STAKING_NATIVE=${{ secrets.WQT_STAKING_NATIVE }} >> .env
+          echo WORKNET_STAKING_WQT=${{ secrets.WORKNET_STAKING_WQT }} >> .env
+          echo WORKNET_STAKING_WUSD=${{ secrets.WORKNET_STAKING_WUSD }} >> .env
 
           echo WETH_TOKEN=${{ secrets.WETH_TOKEN }} >> .env
           echo WBNB_TOKEN=${{ secrets.WBNB_TOKEN }} >> .env
@@ -163,6 +165,7 @@ jobs:
           echo GMAPKEY=${{ secrets.GMAPKEY }} >> .env
           echo SECRET_SUMSUB=${{ secrets.SECRET_SUMSUB }} >> .env
 
+          echo NOTIFS_URL=${{ secrets.NOTIFS_URL }} >> .env
           echo WS_NOTIFS_URL=${{ secrets.WS_NOTIFS_URL }} >> .env
           echo WS_CHAT_URL=${{ secrets.WS_CHAT_URL }} >> .env
 
@@ -181,8 +184,8 @@ jobs:
           echo BSC_RPC_URL=${{ secrets.BSC_RPC_URL }} >> .env
           echo BSC_WS_MORALIS=${{ secrets.BSC_WS_MORALIS }} >> .env
 
-          echo WQT_STAKING=${{ secrets.WQT_STAKING }} >> .env
-          echo WQT_STAKING_NATIVE=${{ secrets.WQT_STAKING_NATIVE }} >> .env
+          echo WORKNET_STAKING_WQT=${{ secrets.WORKNET_STAKING_WQT }} >> .env
+          echo WORKNET_STAKING_WUSD=${{ secrets.WORKNET_STAKING_WUSD }} >> .env
 
           echo WQ_PROVIDER=${{ secrets.WQ_PROVIDER }} >> .env
           echo WQ_EXPLORER=${{ secrets.WQ_EXPLORER }} >> .env

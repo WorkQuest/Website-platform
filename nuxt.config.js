@@ -110,6 +110,7 @@ export default {
     GMAPKEY: process.env.GMAPKEY,
     SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
+    NOTIFS_URL: process.env.NOTIFS_URL,
     WS_NOTIFS_URL: process.env.WS_NOTIFS_URL,
     WS_CHAT_URL: process.env.WS_CHAT_URL,
 
@@ -128,8 +129,8 @@ export default {
     BSC_RPC_URL: process.env.BSC_RPC_URL,
     BSC_WS_MORALIS: process.env.BSC_WS_MORALIS,
 
-    WQT_STAKING: process.env.WQT_STAKING,
-    WQT_STAKING_NATIVE: process.env.WQT_STAKING_NATIVE,
+    WORKNET_STAKING_WQT: process.env.WORKNET_STAKING_WQT,
+    WORKNET_STAKING_WUSD: process.env.WORKNET_STAKING_WUSD,
 
     WETH_TOKEN: process.env.WETH_TOKEN,
     WBNB_TOKEN: process.env.WBNB_TOKEN,

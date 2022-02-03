@@ -48,7 +48,7 @@ export const QuestStatuses = {
   WaitConfirm: 5,
   Done: 6,
 };
-
+export const SumSubStatuses = { NOT_VERIFIED: 0, VERIFIED: 1 };
 export const InfoModeEmployer = {
   Rejected: -1,
   Created: 0,
@@ -99,6 +99,7 @@ export const KeyCodes = {
 
 // Filters
 export const WorkplaceFilter = ['all', 'distant', 'office', 'both'];
+export const WorkplaceIndex = ['distance', 'office', 'both'];
 export const RatingFilter = ['', 'verified', 'reliable', 'topRanked'];
 export const TypeOfJobFilter = ['fullTime', 'partTime', 'fixedTerm'];
 export const PriorityFilter = [
@@ -120,6 +121,22 @@ export const MessageAction = {
   EMPLOYER_REJECT_RESPONSE_ON_QUEST: 'employerRejectResponseOnQuest',
   WORKER_REJECT_INVITE_ON_QUEST: 'workerRejectInviteOnQuest',
   WORKER_ACCEPT_INVITE_ON_QUEST: 'workerAcceptInviteOnQuest',
+};
+
+export const NotificationAction = {
+  QUEST_STARTED: 'questStarted',
+  WORKER_REJECTED_QUEST: 'workerRejectedQuest',
+  WORKER_ACCEPTED_QUEST: 'workerAcceptedQuest',
+  WORKER_COMPLETED_QUEST: 'workerCompletedQuest',
+  EMPLOYER_ACCEPTED_COMPLETED_QUEST: 'employerAcceptedCompletedQuest',
+  EMPLOYER_REJECTED_COMPLETED_QUEST: 'employerRejectedCompletedQuest',
+  WORKER_RESPONDED_TO_QUEST: 'workerRespondedToQuest',
+  EMPLOYER_INVITED_WORKER_TO_QUEST: 'employerInvitedWorkerToQuest',
+  WORKER_ACCEPTED_INVITATION_TO_QUEST: 'workerAcceptedInvitationToQuest',
+  WORKER_REJECTED_INVITATION_TO_QUEST: 'workerRejectedInvitationToQuest',
+  EMPLOYER_REJECTED_WORKERS_RESPONSE: 'employerRejectedWorkersResponse',
+
+  USER_LEFT_REVIEW_ABOUT_QUEST: 'userLeftReviewAboutQuest',
 };
 
 export const ChatType = {
@@ -145,6 +162,7 @@ export const UserRole = {
 export const Path = {
   ROOT: '/quests',
   CREATE_QUEST: '/create-quest',
+  STAKING: '/staking',
 };
 
 // WALLET
@@ -166,6 +184,8 @@ export const TokenSymbols = Object.freeze({
   WQT: 'WQT',
   WUSD: 'WUSD',
 });
+
+export const ExplorerUrl = Object.freeze('https://dev-explorer.workquest.co');
 
 export const NetworksData = {
   ETH_MAIN: {
