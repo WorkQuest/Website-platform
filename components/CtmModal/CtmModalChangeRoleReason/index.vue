@@ -5,59 +5,57 @@
     :is-unclosable="true"
     :title="step === 1 ? $t('modals.reason') : $t('modals.securityCheck')"
   >
-    <div class="ctm-modal__content">
-      <div class="change-role">
-        <div
-          v-if="step === 1"
-          class="change-role__content"
-        >
-          <span class="change-role__describe">{{ $t('modals.pleaseDescribe') }}</span>
-          <base-field
-            v-model="reasonInput"
-            class="change-role__action"
-            :placeholder="$t('modals.reason')"
-          />
-          <div class="btn__container">
-            <div class="btn__wrapper">
-              <base-btn
-                class="message__action"
-                @click="nextStep()"
-              >
-                {{ $t('meta.change') }}
-              </base-btn>
-            </div>
-            <div class="btn__wrapper">
-              <base-btn
-                :mode="'outline'"
-                class="message__action"
-                @click="hide()"
-              >
-                {{ $t('meta.cancel') }}
-              </base-btn>
-            </div>
-          </div>
-        </div>
-        <div
-          v-if="step === 2"
-          class="change-role__content"
-        >
-          <base-field
-            v-model="codeInput"
-            :label="$t('modals.googleConfCode')"
-            class="change-role__action"
-            :placeholder="$t('modals.googleConfCode')"
-          />
-          <div class="change-role__sub">
-            {{ $t('modals.enterCode') }}
-          </div>
-          <div class="btn__container">
+    <div class="change-role__content">
+      <div
+        v-if="step === 1"
+        class="change-role__step"
+      >
+        <span class="change-role__describe">{{ $t('modals.pleaseDescribe') }}</span>
+        <base-field
+          v-model="reasonInput"
+          class="change-role__action"
+          :placeholder="$t('modals.reason')"
+        />
+        <div class="btn__container">
+          <div class="btn__wrapper">
             <base-btn
               class="message__action"
-              @click="success()"
+              @click="nextStep()"
             >
-              {{ $t('meta.send') }}
+              {{ $t('meta.change') }}
             </base-btn>
           </div>
+          <div class="btn__wrapper">
+            <base-btn
+              :mode="'outline'"
+              class="message__action"
+              @click="hide()"
+            >
+              {{ $t('meta.cancel') }}
+            </base-btn>
+          </div>
+        </div>
+      </div>
+      <div
+        v-if="step === 2"
+        class="change-role__step"
+      >
+        <base-field
+          v-model="codeInput"
+          :label="$t('modals.googleConfCode')"
+          class="change-role__action"
+          :placeholder="$t('modals.googleConfCode')"
+        />
+        <div class="change-role__sub">
+          {{ $t('modals.enterCode') }}
+        </div>
+        <div class="btn__container">
+          <base-btn
+            class="message__action"
+            @click="success()"
+          >
+            {{ $t('meta.send') }}
+          </base-btn>
         </div>
       </div>
     </div>
@@ -104,9 +102,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ctm-modal {
-  @include modalKit;
-}
 .change-role {
   max-width: 400px !important;
   &_wide {
