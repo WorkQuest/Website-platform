@@ -26,7 +26,7 @@
         </div>
       </div>
       <validation-observer
-        v-if="!isVerified"
+        v-if="phone"
         v-slot="{handleSubmit, validated, passed, invalid}"
       >
         <div class="content__subtitle">
@@ -112,7 +112,6 @@ export default {
     return {
       confirmCode: '',
       step: 1,
-      isVerified: false,
       phone: null,
     };
   },
@@ -120,7 +119,6 @@ export default {
     ...mapGetters({
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
-      secondNumber: 'user/getUserSecondMobileNumber',
       currentConfirmCode: 'user/getVerificationCode',
     }),
     UserRole() {
@@ -128,12 +126,8 @@ export default {
     },
   },
   async beforeMount() {
-    if (!this.isVerified && this.userRole === UserRole.EMPLOYER) {
-      if (this.userData?.tempPhone) this.phone = this.userData?.tempPhone?.fullPhone;
-    } else {
-      this.phone = this.userData?.tempPhone?.fullPhone;
-      this.confirmCode = this.currentConfirmCode;
-    }
+    if (this.userData?.tempPhone) this.phone = this.userData?.tempPhone?.fullPhone;
+    this.confirmCode = this.currentConfirmCode;
   },
   methods: {
     hide() {
@@ -152,7 +146,7 @@ export default {
       this.confirmPhone();
     },
     async getCodeFromSms() {
-      if (this.phone) await this.$store.dispatch('user/sendPhone', { phoneNumber: this.phone });
+      if (this.phone) await this.$store.dispatch('user/sendPhone');
     },
     async nextStep() {
       if (this.phone) {
