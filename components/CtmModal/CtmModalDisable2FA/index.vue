@@ -5,9 +5,7 @@
   >
     <div class="ctm-modal__content">
       <validation-observer v-slot="{ handleSubmit, validated, passed, invalid }">
-        <div
-          class="step__container"
-        >
+        <div class="step__container">
           <div class="ctm-modal__content-field">
             <base-field
               id="twoFACode"
@@ -20,12 +18,8 @@
           </div>
         </div>
         <div class="btn__container">
-          <div
-            class="btn__wrapper"
-          >
-            <span
-              class="step__container"
-            >
+          <div class="btn__wrapper">
+            <span class="step__container">
               <base-btn
                 class="message__action"
                 :disabled="!validated || !passed || invalid"
@@ -35,9 +29,7 @@
               </base-btn>
             </span>
           </div>
-          <div
-            class="btn__wrapper"
-          >
+          <div class="btn__wrapper">
             <base-btn
               :mode="'outline'"
               class="message__action"
@@ -75,19 +67,12 @@ export default {
       this.CloseModal();
     },
     async disable2FA() {
-      try {
-        const payload = {
-          totp: this.twoFACode,
-        };
-        this.twoFACode = '';
-        const response = await this.$store.dispatch('user/disable2FA', payload);
-        if (response.ok) {
-          this.hide();
-          this.showModalSuccess();
-        }
-      } catch (e) {
-        this.errorMessage = e.response.data.msg;
-      }
+      this.twoFACode = '';
+      const response = await this.$store.dispatch('user/disable2FA', {
+        totp: this.twoFACode,
+      });
+      this.hide();
+      if (response.ok) this.showModalSuccess();
     },
     showModalSuccess() {
       this.ShowModal({

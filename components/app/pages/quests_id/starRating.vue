@@ -1,7 +1,5 @@
 <template>
-  <ul
-    class="rating-area"
-  >
+  <ul class="rating-area">
     <li
       v-for="(star,index) in starsNumber"
       :key="index"
@@ -70,7 +68,7 @@ export default {
   display: flex;
   flex-direction: row-reverse;
   justify-content: flex-end;
-  &__star > input{
+  &__star > input {
     display: none;
   }
   &__star-label {

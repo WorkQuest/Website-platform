@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       isShowProfile: false,
-      isShowNotify: false,
+
       isShowAdditionalMenu: false,
       isShowLocale: false,
       isMobileMenu: false,
@@ -100,29 +100,20 @@ export default {
       switch (value) {
         case 'mobile':
           this.isShowProfile = false;
-          this.isShowNotify = false;
           this.isShowLocale = false;
           this.isShowAdditionalMenu = false;
           break;
         case 'instruments':
           this.isShowProfile = false;
-          this.isShowNotify = false;
           this.isShowLocale = false;
           break;
         case 'profile':
           this.isShowAdditionalMenu = false;
-          this.isShowNotify = false;
           this.isShowLocale = false;
           break;
         case 'locale':
           this.isShowAdditionalMenu = false;
-          this.isShowNotify = false;
           this.isShowProfile = false;
-          break;
-        case 'notify':
-          this.isShowAdditionalMenu = false;
-          this.isShowProfile = false;
-          this.isShowLocale = false;
           break;
         default:
           break;
@@ -130,7 +121,6 @@ export default {
     },
     closeAll() {
       this.isShowProfile = false;
-      this.isShowNotify = false;
       this.isShowAdditionalMenu = false;
       this.isShowLocale = false;
     },

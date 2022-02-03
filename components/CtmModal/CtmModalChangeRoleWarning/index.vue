@@ -1,11 +1,11 @@
 <template>
   <ctm-modal-box
-    class="messageSend"
+    class="change-role"
     :is-header="false"
   >
     <div class="ctm-modal__content">
-      <div class="messageSend">
-        <div class="messageSend__content">
+      <div class="change-role">
+        <div class="change-role__content">
           <img
             src="~assets/img/ui/warning.svg"
             alt="warning"
@@ -27,7 +27,7 @@
             </div>
             <div class="btn__wrapper">
               <base-btn
-                :mode="'outline'"
+                mode="outline"
                 class="message__action"
                 @click="hide()"
               >
@@ -60,10 +60,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ctm-modal {
-  @include modalKit;
-}
-
 .btn {
   &__container {
     display: flex;
@@ -77,7 +73,7 @@ export default {
   }
 }
 
-.messageSend {
+.change-role {
   max-width: 400px !important;
   &__content {
     display: grid;

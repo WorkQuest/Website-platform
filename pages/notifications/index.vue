@@ -1,79 +1,82 @@
 <template>
-  <div class="main">
-    <div class="main-white">
-      <div class="main__body">
-        <div class="page__container">
-          <div class="page__title">
-            <span
-              class="icon-chevron_left back"
-              @click="navigateBack"
-            />
-            {{ $t('ui.notifications.title') }}
-          </div>
-          <span
-            v-for="(item, i) in notifications"
+  <div class="notifications-page">
+    <div class="notifications-page__main-container">
+      <div class="info-block info-block__container">
+        <div class="info-block__title">
+          {{ $t('ui.notifications.title') }}
+        </div>
+        <div class="info-block__list">
+          <div
+            v-for="(notification, i) in notifications"
             :key="i"
-            class="notifications"
+            :ref="`${notification.id}|${notification.seen}`"
+            v-observe-visibility="(isVisible) => checkUnseenNotifs(isVisible, notification)"
+            class="notification"
+            :class="{'notification_gray' : !notification.seen}"
           >
-            <div class="notification">
+            <template v-if="notification.sender">
               <div class="notification__avatar">
                 <img
                   class="avatar"
-                  src="../../assets/img/temp/avatar.jpg"
+                  :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : EmptyAvatar"
                   alt=""
                 >
               </div>
               <div class="notification__inviter inviter">
-                <span class="inviter__name">{{ item.firstName }} {{ item.lastName }}</span>
-                <span class="inviter__company">{{ item.company }}</span>
-              </div>
-              <div class="notification__quest quest">
-                <span class="quest__invitation">
-                  {{ $t('ui.notifications.invite') }}:
+                <span class="inviter__name">
+                  {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
                 </span>
-                <span class="quest__title">
-                  {{ item.questTitle }}
-                </span>
-                <div
-                  class="quest__link"
-                  @click="questDetail()"
-                >
-                  {{ item.questTitle }} <span class="icon-chevron_right" />
-                </div>
+                <!--                <span class="inviter__company">-->
+                <!--                  {{ notification.company }}-->
+                <!--                </span>-->
               </div>
-              <div class="notification__date">{{ item.date }}</div>
+            </template>
 
-              <div class="notification__button button">
-                <base-btn
-                  :mode="'outline'"
-                  class="button__view"
-                  @click="questDetail()"
-                >{{ $t('btn.view') }}</base-btn>
-              </div>
+            <div class="notification__quest quest">
+              <span class="quest__invitation">
+                {{ $t(notification.actionNameKey) }}:
+              </span>
+              <span
+                v-if="notification.params"
+                class="quest__title"
+              >
+                {{ notification.params.title }}
+              </span>
             </div>
-          </span>
-          <div class="pagination">
-            <button
-              class="pagination__arrow"
-            >
-              <span class="icon-caret_left" />
-            </button>
-            <button
-              v-for="(item, i) in pages"
-              :key="i"
-              class="pagination__btn"
-              :class="[{'pagination__btn_active' :page === item}]"
-              @click="page = item"
-            >
-              {{ item }}
-            </button>
-            <button
-              class="pagination__arrow"
-            >
-              <span class="icon-caret_right" />
-            </button>
+            <div class="notification__date">
+              {{ notification.creatingDate }}
+            </div>
+
+            <!--            <div-->
+            <!--              v-if="!notification.seen"-->
+            <!--              class="notification__unread-dot"-->
+            <!--            />-->
+
+            <!--            <img-->
+            <!--              class="notification__remove"-->
+            <!--              src="~assets/img/ui/close.svg"-->
+            <!--              alt="x"-->
+            <!--              @click="tryRemoveNotification(notification.id)"-->
+            <!--            >-->
+
+            <div class="notification__button">
+              <base-btn
+                mode="outline"
+                class="button__view"
+                @click="goToEvent(notification.params ? notification.params.link : '')"
+              >
+                {{ $t('btn.view') }}
+              </base-btn>
+            </div>
           </div>
         </div>
+        <base-pager
+          v-if="totalPages > 1"
+          v-model="page"
+          class="info-block__pager"
+          :total-pages="totalPages"
+          @input="setPage"
+        />
       </div>
     </div>
   </div>
@@ -81,78 +84,94 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'Notifications',
   data() {
     return {
-      notifications: [
-        {
-          firstName: 'Edward',
-          lastName: 'Cooper',
-          company: 'from Amazon',
-          questTitle: 'Paint the garage quickly',
-          date: '14 January 2021, 14:54',
-        },
-        {
-          firstName: 'Edward',
-          lastName: 'Cooper',
-          company: 'from Amazon',
-          questTitle: 'Paint the garage quickly',
-          date: '14 January 2021, 14:54',
-        },
-        {
-          firstName: 'Edward',
-          lastName: 'Cooper',
-          company: 'from Amazon',
-          questTitle: 'Paint the garage quickly',
-          date: '14 January 2021, 14:54',
-        },
-        {
-          firstName: 'Edward',
-          lastName: 'Cooper',
-          company: 'from Amazon',
-          questTitle: 'Paint the garage quickly',
-          date: '14 January 2021, 14:54',
-        },
-        {
-          firstName: 'Edward',
-          lastName: 'Cooper',
-          company: 'from Amazon',
-          questTitle: 'Paint the garage quickly',
-          date: '14 January 2021, 14:54',
-        },
-        {
-          firstName: 'Edward',
-          lastName: 'Cooper',
-          company: 'from Amazon',
-          questTitle: 'Paint the garage quickly',
-          date: '14 January 2021, 14:54',
-        },
-        {
-          firstName: 'Edward',
-          lastName: 'Cooper',
-          company: 'from Amazon',
-          questTitle: 'Paint the garage quickly',
-          date: '14 January 2021, 14:54',
-        },
-      ],
+      filter: {
+        limit: 10,
+        offset: 0,
+      },
       page: 1,
-      pages: [1, 2, 3, 4, 5],
+      notificationIdsForRead: [],
+      delay: null,
     };
   },
   computed: {
     ...mapGetters({
       userRole: 'user/getUserRole',
+      notifications: 'user/getNotificationsList',
+      notifsCount: 'user/getNotificationsCount',
     }),
+    totalPages() {
+      return Math.ceil(this.notifsCount / this.filter.limit);
+    },
   },
   async mounted() {
     this.SetLoader(true);
+    await this.getNotifications();
     this.SetLoader(false);
   },
+  destroyed() {
+    this.$store.commit('user/setNotifications', { notifications: [], count: this.notifsCount });
+  },
   methods: {
-    questDetail() {
-      this.$router.push('/quests/1');
+    tryRemoveNotification(notificationId) {
+      // back-bug
+      this.ShowModal({
+        key: modals.areYouSure,
+        title: this.$t('modals.sureDeleteNotification'),
+        okBtnTitle: this.$t('meta.delete'),
+        okBtnFunc: async () => await this.removeNotification(notificationId),
+      });
+    },
+    async removeNotification(notificationId) {
+      this.CloseModal();
+      const payload = {
+        config: {
+          params: this.filter,
+        },
+        notificationId,
+      };
+
+      await this.$store.dispatch('user/removeNotification', payload);
+    },
+    checkUnseenNotifs(isVisible, { id, seen }) {
+      if (!isVisible || seen || this.notificationIdsForRead.indexOf(id) >= 0) return;
+
+      this.notificationIdsForRead.push(id);
+
+      this.setDelay(async () => {
+        const config = {
+          notificationIds: this.notificationIdsForRead,
+        };
+
+        await this.$store.dispatch('user/readNotifications', config);
+
+        this.notificationIdsForRead = [];
+      }, 1000);
+    },
+    setDelay(f, t) {
+      clearTimeout(this.delay);
+      this.delay = setTimeout(f, t);
+    },
+    async setPage() {
+      this.filter.offset = (this.page - 1) * this.filter.limit;
+      this.SetLoader(true);
+      await this.getNotifications();
+      this.SetLoader(false);
+    },
+    async getNotifications() {
+      const config = {
+        params: this.filter,
+      };
+
+      await this.$store.dispatch('user/getNotifications', config);
+    },
+    goToEvent(path) {
+      this.$router.push(path);
     },
     navigateBack() {
       if (this.userRole === 'employer') {
@@ -169,108 +188,48 @@ export default {
 
 <style lang="scss" scoped>
 
-.main {
-  @include main;
-  &-white {
-    @include main;
-    background: $white;
-    background: #FFFFFF;
-    margin: 30px 0 20px 0;
-    border-radius: 6px;
-    justify-content: center;
-  }
-  &__body {
-    max-width: 1180px;
-    height: 100%;
-  }
-}
-.icon {
-  &-caret_left:before {
-    content: "\ea49";
-    color: $black400;
-    font-size: 25px;
-  }
-  &-caret_right:before {
-    font-size: 25px;
-    color: $black600;
-    content: "\ea4a";
-  }
-}
-.pagination {
+.notifications-page {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  margin: 0 20px 0 0;
-  &__btn {
-    width: 43px;
-    height: 43px;
-    border-right: 1px solid $black0;
-    color: $black600;
-    font-size: 16px;
-    transition: .5s;
-    &:first-child {
-      color: $black400;
-    }
-    &:last-child {
-      border: none;
-    }
-    &:hover {
-      background-color: rgb(123, 201, 246);
-      color: $blue;
-    }
-    &_active {
-      background-color: #E6F3F9;
-      color: #0083c7;
-    }
-  }
-  &__arrow {
-    @extend .pagination__btn;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-}
-.img {
-  &__container {
-    display: flex;
-    margin: 15px 0 10px 0;
+  flex-direction: column;
+  align-items: center;
+
+  &__main-container {
+    max-width: 1180px;
+    width: 100%;
+    padding-top: 30px;
   }
 }
 
-.btn {
-  &__container {
-    display: flex;
-    align-items: center;
-  }
-}
-.notifications {
-  margin: 20px 20px 0 20px;
-  border-bottom: 1px solid $black100;
-  &:last-of-type {
-    border-bottom: 1px solid white;
-  }
-}
-.page {
-  &__container {
-    margin: 20px 0 20px 0;
-    display: flex;
-    flex-direction: column;
-    justify-items: flex-start;
-    max-width: 780px;
-    width: 780px;
-  }
+.info-block {
+  background: #fff;
+  border-radius: 6px;
+
   &__title {
     @include text-simple;
     font-weight: 500;
     font-size: 18px;
     color: $black800;
-    margin: 0 0 0 20px;
     letter-spacing: 0.05em;
+    padding: 20px 20px 0;
+  }
+
+  &__pager {
+    float: unset;
+    justify-self: flex-end;
   }
 }
-.back {
-  display: none;
+
+.icon-chevron_left {
+  display: block;
+  margin-bottom: 10px;
+  margin-left: -8px;
+  cursor: pointer;
+  &:before {
+    color: $blue;
+    font-size: 40px;
+  }
 }
+
 .notification {
   display: grid;
   grid-template-columns: 52px auto 150px;
@@ -281,7 +240,26 @@ export default {
     "avatar quest button"
     "avatar date button";
   width: 100%;
-  padding-bottom: 5px;
+  padding: 20px;
+
+  &_gray {
+    background: #f7f8fabd;
+  }
+
+  &__unread-dot {
+    grid-column: 3;
+    grid-row: 1;
+    height: 8px;
+    width: 8px;
+    border-radius: 50%;
+    background-color: #0083C7;
+    justify-self: flex-end;
+    margin-right: 10px;
+  }
+
+  &:not(:last-child) {
+    border-bottom: 1px solid $black100;
+  }
 
   &__avatar {
     grid-area: avatar;
@@ -297,7 +275,7 @@ export default {
   }
   &__button {
     grid-area: button;
-    align-self: center;
+    grid-row: 2/4;
   }
   &__date {
     grid-area: date;
@@ -305,12 +283,24 @@ export default {
     font-weight: 400;
     font-size: 12px;
     color: $black500;
-    margin-bottom: 10px;
+  }
+  &__remove {
+    display: none;
+    grid-column: 3;
+    grid-row: 1;
+    cursor: pointer;
+    align-self: center;
+    justify-self: flex-end;
+    margin-right: 4px;
+  }
+
+  &:hover {
+    .notification__remove {
+      display: block;
+    }
   }
 }
-.icon-chevron_right {
-  display: none;
-}
+
 .avatar {
   width: 50px;
   height: 50px;
@@ -349,11 +339,7 @@ export default {
     letter-spacing: 0.03em;
   }
 }
-.button {
-  &__view {
-    margin-top: -16px;
-  }
-}
+
 @include _991 {
   .page {
     &__container {
@@ -411,28 +397,8 @@ export default {
     &__title {
       display: none;
     }
-    &__link {
-      display: flex;
-      justify-content: space-between;
-      background: $black0;
-      border-radius: 3px;
-      padding: 10px;
-      color: $black500;
-      letter-spacing: 0.04em;
-      &:hover{
-        text-decoration: none;
-        cursor: pointer;
-      }
-    }
   }
-  .icon-chevron_right {
-    display: inline-block;
 
-    &:before {
-      color: $blue;
-      font-size: 24px;
-    }
-  }
   .page {
     &__title {
       font-weight: bold;
@@ -440,16 +406,6 @@ export default {
       line-height: 39px;
       letter-spacing: 0.03em;
       margin-bottom: 5px;
-    }
-  }
-  .back {
-    display: block;
-    margin-bottom: 10px;
-    margin-left: -8px;
-    cursor: pointer;
-    &:before {
-      color: $blue;
-      font-size: 40px;
     }
   }
 }

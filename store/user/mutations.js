@@ -1,6 +1,21 @@
 /* eslint-disable no-param-reassign */
 
 export default {
+  setEducations(state, data) {
+    state.userData.additionalInfo.educations = data;
+  },
+  setWorkExperiences(state, data) {
+    state.userData.additionalInfo.workExperiences = data;
+  },
+  setVerificationCode(state, data) {
+    state.verificationCode = data;
+  },
+  setTwoFACode(state, data) {
+    state.twoFACode = data;
+  },
+  setCurrentReviewMarkOnQuest(state, data) {
+    state.currentReviewMarkOnQuest = data;
+  },
   setUserPortfolioCases(state, data) {
     state.portfolios = data;
   },
@@ -71,5 +86,22 @@ export default {
   },
   changeUnreadChatsCount(state, { count, needAdd }) {
     state.unreadChatsCount = needAdd ? state.unreadChatsCount + count : count;
+  },
+  setReducedNotifications(state, notifications) {
+    state.reducedNotifications = notifications;
+  },
+  setNotifications(state, { notifications, count }) {
+    state.notifications.list = notifications;
+    state.notifications.count = count;
+  },
+  setUnreadNotifsCount(state, count) {
+    state.unreadNotifsCount += count;
+  },
+  setNotificationsAsRead(state, ids) {
+    state.notifications.list.forEach((notif) => {
+      if (ids.indexOf(notif.id) >= 0) notif.seen = true;
+      return notif;
+    });
+    this.commit('user/setUnreadNotifsCount', 0 - ids.length);
   },
 };
