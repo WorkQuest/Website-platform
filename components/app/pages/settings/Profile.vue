@@ -596,6 +596,12 @@ export default {
     display: grid;
     grid-column-start: 1;
     grid-column-end: 3;
+    background-color: $black0;
+    resize: none;
+    padding: 10px 10px 0 10px;
+    margin: 0;
+    border-radius: 6px;
+    border: 1px solid transparent;
     &::placeholder {
       color: $black200;
     }
