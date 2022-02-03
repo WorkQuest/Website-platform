@@ -104,9 +104,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ctm-modal {
-  @include modalKit;
-}
 .change-role {
   max-width: 400px !important;
   &_wide {

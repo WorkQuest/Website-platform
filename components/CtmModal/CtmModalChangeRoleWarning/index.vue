@@ -60,10 +60,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ctm-modal {
-  @include modalKit;
-}
-
 .btn {
   &__container {
     display: flex;
