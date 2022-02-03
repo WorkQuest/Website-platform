@@ -19,7 +19,7 @@
             :class="[{'step-panel__step_active': item.stepActive.includes(step)}]"
           >
             <span class="step-panel__block">
-              <span :class="[{'hide': item.hideStepWord.includes(step)}]">{{ $t('modals.step') }}</span>
+              <span :class="[{'step__text_hide': item.hideStepWord.includes(step)}]">{{ $t('modals.step') }}</span>
               <span :class="[{'step__number': item.stepNumber.includes(step)}]">{{ item.step }}</span>
             </span>
           </div>
@@ -377,11 +377,10 @@ export default {
     }
   }
 
-  .hide {
-    display: none;
-  }
-
   .step {
+    &__text_hide {
+      display: none;
+    }
     &__number {
       padding: 10px;
     }
