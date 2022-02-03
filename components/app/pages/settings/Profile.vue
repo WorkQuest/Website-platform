@@ -147,23 +147,13 @@
             </template>
           </base-field>
         </div>
-        <ValidationProvider
-          v-slot="{ errors }"
-          tag="div"
+        <base-textarea
+          id="textarea"
+          v-model="profile.additionalInfo.description"
+          :placeholder="$t('settings.userDesc')"
           class="profile__description"
           rules="max:650"
-        >
-          <textarea
-            id="textarea"
-            v-model="profile.additionalInfo.description"
-            :placeholder="$t('settings.userDesc')"
-            class="profile__description-textarea"
-            :class="{ 'profile__description-textarea_error': errors[0] }"
-          />
-          <span class="profile__error">
-            {{ errors[0] }}
-          </span>
-        </ValidationProvider>
+        />
       </div>
       <div
         v-show="userRole === UserRole.WORKER"
