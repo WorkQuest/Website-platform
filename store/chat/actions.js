@@ -75,7 +75,7 @@ export default {
   },
   async handleCreateGroupChat({ commit, dispatch }, config) {
     try {
-      const { payload } = await this.$wsChat.$post('/api/v1/user/me/chat/group/create', config);
+      const { payload } = await this.$wsChatActions.$post('/api/v1/user/me/chat/group/create', config);
       return payload;
     } catch (e) {
       await dispatch('main/showToast', {
@@ -87,7 +87,7 @@ export default {
   },
   async handleSendMessage({ commit, state, dispatch }, { chatId, config }) {
     try {
-      const { payload } = await this.$wsChat.$post(`/api/v1/chat/${chatId}/send-message`, config);
+      const { payload } = await this.$wsChatActions.$post(`/api/v1/chat/${chatId}/send-message`, config);
 
       if (payload.ok && !state.messagesFilter.canLoadToBottom) {
         const message = payload.result;
