@@ -539,7 +539,7 @@ import { MessageAction } from '~/utils/enums';
 
 export default {
   scrollToTop: true,
-  name: 'DefaultLayout',
+  name: 'Header',
   middleware: 'auth',
   directives: {
     ClickOutside,
