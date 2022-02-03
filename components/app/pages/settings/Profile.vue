@@ -147,23 +147,13 @@
             </template>
           </base-field>
         </div>
-        <ValidationProvider
-          v-slot="{ errors }"
-          tag="div"
+        <base-textarea
+          id="textarea"
+          v-model="profile.additionalInfo.description"
+          :placeholder="$t('settings.userDesc')"
           class="profile__description"
           rules="max:650"
-        >
-          <textarea
-            id="textarea"
-            v-model="profile.additionalInfo.description"
-            :placeholder="$t('settings.userDesc')"
-            class="profile__description-textarea"
-            :class="{ 'profile__description-textarea_error': errors[0] }"
-          />
-          <span class="profile__error">
-            {{ errors[0] }}
-          </span>
-        </ValidationProvider>
+        />
       </div>
       <div
         v-show="userRole === UserRole.WORKER"
@@ -407,14 +397,14 @@ export default {
       deep: true,
       handler() {
         this.secondPhoneNumber = {
-          codeRegion: this.profile?.additionalInfo?.secondMobileNumber?.codeRegion || null,
-          phone: this.profile?.additionalInfo?.secondMobileNumber?.phone || null,
-          fullPhone: this.profile?.additionalInfo?.secondMobileNumber?.fullPhone || null,
+          codeRegion: this.profile?.additionalInfo?.secondMobileNumber?.codeRegion,
+          phone: this.profile?.additionalInfo?.secondMobileNumber?.phone,
+          fullPhone: this.profile?.additionalInfo?.secondMobileNumber?.fullPhone,
         };
         this.firstPhone = {
-          codeRegion: this.profile.firstPhone?.codeRegion || null,
-          phone: this.profile.firstPhone?.phone || null,
-          fullPhone: this.profile.firstPhone?.fullPhone || null,
+          codeRegion: this.profile.firstPhone?.codeRegion,
+          phone: this.profile.firstPhone?.phone,
+          fullPhone: this.profile.firstPhone?.fullPhone,
         };
       },
     },
@@ -608,18 +598,6 @@ export default {
     grid-column-end: 3;
     &::placeholder {
       color: $black200;
-    }
-  }
-  &__description-textarea {
-    background-color: $black0;
-    resize: none;
-    padding: 10px 10px 0 10px;
-    margin: 0;
-    border-radius: 6px;
-    height: 114px;
-    border: 1px solid transparent;
-    &_error {
-      border: 1px solid red
     }
   }
   &__error {

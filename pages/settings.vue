@@ -124,14 +124,15 @@ export default {
     if (!this.profile.firstName) await this.$store.dispatch('user/getUserData');
     const addInfo = this.userData.additionalInfo;
     this.profile = {
+      workplace: !this.userData?.workplace ? 0 : this.userData?.workplace,
       avatarId: this.userData.avatarId,
       firstName: this.userData.firstName,
       lastName: this.userData.lastName,
       email: this.userData.email,
       firstPhone: {
-        codeRegion: this.userData.tempPhone?.codeRegion || this.userData.phone?.codeRegion || null,
-        phone: this.userData.tempPhone?.phone || this.userData.phone?.phone || null,
-        fullPhone: this.userData.tempPhone?.fullPhone || this.userData.tempPhone?.fullPhone || null,
+        codeRegion: this.userData.phone?.codeRegion || this.userData.tempPhone?.codeRegion,
+        phone: this.userData.phone?.phone || this.userData.tempPhone?.phone,
+        fullPhone: this.userData.phone?.fullPhone || this.userData.tempPhone?.fullPhone,
       },
       additionalInfo: {
         secondMobileNumber: {
