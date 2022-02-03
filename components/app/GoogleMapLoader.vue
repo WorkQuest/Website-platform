@@ -173,9 +173,10 @@ export default {
     },
     async setNewZoom() {
       if (this.zoom === 18) {
-        this.ShowMessage('Warning', 'Its maximum of zoom, look of result');
+        this.ShowToast('Its maximum of zoom, look of result');
         return;
       }
+      console.log(this.$refs.gMap);
       const newZoom = this.zoom + 3 <= 18 ? this.zoom + 3 : 18;
       await this.$store.dispatch('google-map/setNewZoom', newZoom);
     },
