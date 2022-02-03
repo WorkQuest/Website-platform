@@ -23,7 +23,7 @@
       :disabled="!isAdding"
       class="knowledge__data"
       :placeholder="$t('settings.workExps.to')"
-      :rules="`between-date:${item.from},${$moment().add(10, 'years').format('yyyy/MM/DD')}`"
+      :rules="`between-date:${item.from},${$moment().add(10, 'years').format('yyyy/MM/DD')},${item.from}`"
       :validation-mode="validationMode"
       @blur="$emit('blur')"
     />
@@ -40,7 +40,7 @@
     />
     <base-btn
       class="knowledge__btn"
-      :disabled="!item.from || !item.to || !item.place"
+      :disabled="!item.from || !item.to || !item.place || item.from > item.to"
       @click="$emit('click')"
     >
       {{ isAdding ? $t('settings.add') : $t('settings.delete') }}
