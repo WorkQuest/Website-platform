@@ -49,8 +49,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-
 export default {
   name: 'Skills',
   props: {
@@ -70,9 +68,10 @@ export default {
           model: 'priorityIndex',
           placeholder: 'priority.title',
           items: [
-            this.$t('settings.distantWork.distantWork'),
-            this.$t('settings.distantWork.workInOffice'),
-            this.$t('settings.distantWork.bothVariant'),
+            this.$t('priority.all'),
+            this.$t('priority.employee.low'),
+            this.$t('priority.employee.normal'),
+            this.$t('priority.employee.urgent'),
           ],
           label: 'settings.priority',
         },
@@ -80,20 +79,14 @@ export default {
           model: 'distantIndex',
           placeholder: 'settings.distantWork.select',
           items: [
-            this.$t('priority.all'),
-            this.$t('priority.employee.low'),
-            this.$t('priority.employee.normal'),
-            this.$t('priority.employee.urgent'),
+            this.$t('settings.distantWork.distantWork'),
+            this.$t('settings.distantWork.workInOffice'),
+            this.$t('settings.distantWork.bothVariant'),
           ],
           label: 'settings.distantWork.title',
         },
       ],
     };
-  },
-  computed: {
-    ...mapGetters({
-      userData: 'user/getUserData',
-    }),
   },
   methods: {
     updateSelectedSkills(specAndSkills) {

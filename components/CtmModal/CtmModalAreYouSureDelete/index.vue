@@ -73,21 +73,21 @@ export default {
     padding: 30px!important;
   }
 }
-.content{
-  &__title{
+.content {
+  &__title {
     font-weight: 500;
     font-size: 23px;
     line-height: 130%;
     margin: 30px 0 20px 0;
     text-align: center;
   }
-  &__desc{
+  &__desc {
     color: #4C5767;
     font-size: 16px;
     line-height: 130%;
     text-align: center;
   }
-  &__picture{
+  &__picture {
     margin-left: auto;
     margin-right: auto;
   }

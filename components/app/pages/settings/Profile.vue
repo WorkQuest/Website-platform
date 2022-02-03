@@ -30,10 +30,7 @@
           />
         </ValidationProvider>
         <div class="profile__personal-info">
-          <verified
-            v-if="userRole === 'worker'"
-            class="profile__status"
-          />
+          <verified class="profile__status" />
           <base-field
             v-for="main in mainInputs"
             :key="main.index"
@@ -53,7 +50,7 @@
             v-model="profile.additionalInfo.address"
             v-click-outside="hideSearchDD"
             :placeholder="$t('settings.addressInput')"
-            rules="max:100||required"
+            rules="max:100|required"
             mode="icon"
             :selector="isSearchDDStatus"
             :name="$t('settings.address')"
@@ -74,7 +71,7 @@
                     v-for="(item, i) in addresses"
                     :key="i"
                     class="selector__item"
-                    @click="selectAddress(item)"
+                    @click="selectAddress(item, i)"
                   >
                     {{ item.formatted }}
                   </div>
@@ -82,24 +79,45 @@
               </div>
             </template>
           </base-field>
-          <vue-phone-number-input
-            v-if="userRole === 'employer'"
-            v-model="profile.firstPhone"
+          <div
             class="profile__phone-input"
-            error-color="#EB5757"
-            size="lg"
-            color="#ccc"
-            disabled
-          />
-          <div class="profile__phone-input">
+          >
+            <label
+              v-if="userRole === UserRole.EMPLOYER"
+              for="phone1"
+            >
+              {{ $t('settings.mainPhoneNumber') }}
+            </label>
             <vue-phone-number-input
-              v-model="secondPhoneNumber.fullPhone"
-              :default-country-code="secondPhoneNumber.codeRegion"
+              id="phone1"
+              v-model="firstPhone.fullPhone"
+              :default-country-code="firstPhone.codeRegion"
               :error="!isValidPhoneNumber"
+              class="profile__phone-input"
               error-color="#EB5757"
               clearable
               show-code-on-list
               required
+              size="lg"
+              color="#ccc"
+              @update="updateFirstPhone($event)"
+            />
+          </div>
+          <div class="profile__phone-input">
+            <label
+              v-if="userRole === UserRole.EMPLOYER"
+              for="phone2"
+            >
+              {{ $t('settings.additionalPhoneNumber') }}
+            </label>
+            <vue-phone-number-input
+              v-if="userRole === UserRole.EMPLOYER"
+              id="phone2"
+              v-model="secondPhoneNumber.fullPhone"
+              :default-country-code="secondPhoneNumber.codeRegion"
+              error-color="#EB5757"
+              clearable
+              show-code-on-list
               size="lg"
               @update="updateSecondPhone($event)"
             />
@@ -112,7 +130,7 @@
           </div>
         </div>
         <div
-          v-if="userRole === 'employer'"
+          v-if="userRole === UserRole.EMPLOYER"
           class="profile__company"
         >
           <base-field
@@ -148,7 +166,7 @@
         </ValidationProvider>
       </div>
       <div
-        v-if="userRole === 'worker'"
+        v-show="userRole === UserRole.WORKER"
         class="profile__knowledge"
       >
         <div class="profile__knowledge-container">
@@ -167,20 +185,19 @@
               @click="deleteKnowledge(profile.additionalInfo.educations, index)"
             />
           </div>
-          <ValidationObserver
+          <ValidationProvider
             ref="education"
             tag="div"
             class="profile__validation"
-            disabled
           >
             <add-form
               :item="newEducation"
               :is-adding="true"
-              :validation-mode="'passive'"
               @click="addNewKnowledge(profile.additionalInfo.educations, 'newEducation', 'education', 'education')"
-              @blur="clearError(newEducation, 'education')"
+              @blur="clearError(newEducation ? newEducation
+                : profile.additionalInfo.educations[profile.additionalInfo.educations.length - 1], 'education')"
             />
-          </ValidationObserver>
+          </ValidationProvider>
         </div>
         <div class="profile__knowledge-container">
           <div class="profile__knowledge-title">
@@ -198,19 +215,19 @@
               @click="deleteKnowledge(profile.additionalInfo.workExperiences, index)"
             />
           </div>
-          <ValidationObserver
+          <ValidationProvider
             ref="work"
             tag="div"
             class="profile__validation"
-            disabled
           >
             <add-form
               :item="newWorkExp"
               :is-adding="true"
               @click="addNewKnowledge(profile.additionalInfo.workExperiences, 'newWorkExp', 'work', 'work')"
-              @blur="clearError(newWorkExp, 'work')"
+              @blur="clearError(newWorkExp ? newWorkExp
+                : profile.additionalInfo.workExperiences[profile.additionalInfo.workExperiences.length - 1], 'work')"
             />
-          </ValidationObserver>
+          </ValidationProvider>
         </div>
       </div>
       <div class="profile__socials">
@@ -229,7 +246,7 @@
         </base-field>
       </div>
       <div
-        v-if="userRole === 'employer'"
+        v-if="userRole === UserRole.EMPLOYER"
         class="profile__save"
       >
         <base-btn
@@ -252,6 +269,7 @@ import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import Verified from '~/components/app/pages/settings/Verified.vue';
 import AddForm from './AddForm.vue';
+import { UserRole } from '~/utils/enums';
 
 export default {
   name: 'SettingsProfile',
@@ -262,11 +280,11 @@ export default {
   props: {
     avatarChange: {
       type: Object,
-      default: null,
+      default: () => {},
     },
     profile: {
       type: Object,
-      default: null,
+      default: () => {},
     },
     validationError: {
       type: Boolean,
@@ -279,22 +297,15 @@ export default {
   },
   data() {
     return {
+      selectedAddressIndex: null,
       geoCode: null,
-      secondPhoneNumber: {
-        fullPhone: null,
-      },
-      newEducation: {
-        from: '',
-        to: '',
-        place: '',
-      },
-      newWorkExp: {
-        from: '',
-        to: '',
-        place: '',
-      },
+      firstPhone: { codeRegion: 'RU', phone: null, fullPhone: null },
+      secondPhoneNumber: { codeRegion: 'RU', phone: null, fullPhone: null },
+      newEducation: { from: '', to: '', place: '' },
+      newWorkExp: { from: '', to: '', place: '' },
       isSearchDDStatus: false,
       addresses: [],
+      coordinates: { lng: '', lat: '', address: '' },
       mainInputs: [
         {
           model: 'firstName',
@@ -343,7 +354,6 @@ export default {
           name: 'settings.websiteName',
           icon: 'icon-Earth',
         },
-
       ],
       socials: [
         {
@@ -382,11 +392,14 @@ export default {
       imageData: 'user/getImageData',
       userRole: 'user/getUserRole',
     }),
+    UserRole() {
+      return UserRole;
+    },
     getEducation() {
-      return this.profile.additionalInfo?.educations?.length !== 0;
+      return this.profile.additionalInfo.educations.length !== 0;
     },
     getWorkExp() {
-      return this.profile.additionalInfo?.workExperiences?.length !== 0;
+      return this.profile.additionalInfo.workExperiences.length !== 0;
     },
   },
   watch: {
@@ -395,8 +408,13 @@ export default {
       handler() {
         this.secondPhoneNumber = {
           codeRegion: this.profile?.additionalInfo?.secondMobileNumber?.codeRegion || null,
-          phone: null,
+          phone: this.profile?.additionalInfo?.secondMobileNumber?.phone || null,
           fullPhone: this.profile?.additionalInfo?.secondMobileNumber?.fullPhone || null,
+        };
+        this.firstPhone = {
+          codeRegion: this.profile.firstPhone?.codeRegion || null,
+          phone: this.profile.firstPhone?.phone || null,
+          fullPhone: this.profile.firstPhone?.fullPhone || null,
         };
       },
     },
@@ -406,6 +424,7 @@ export default {
       key: process.env.GMAPKEY,
       lang: this.$i18n?.localeProperties?.code || 'en-US',
     });
+    this.validationRefs();
   },
   methods: {
     // UPDATE AVATAR
@@ -415,26 +434,18 @@ export default {
       const reader = new FileReader();
       const file = e.target.files[0];
       if (isValid.valid) {
-        if (!file) {
-          return false;
-        }
+        if (!file) return false;
         reader.readAsDataURL(file);
         this.avatarChange.data = await this.$store.dispatch('user/imageType', { contentType: file.type });
         this.avatarChange.file = file;
         let output = document.getElementById('userAvatar');
         const modalMode = 'imageLoadedSuccessful';
-        if (!output) {
-          output = document.getElementById('userAvatarTwo');
-        }
+        if (!output) output = document.getElementById('userAvatarTwo');
         output.src = URL.createObjectURL(file);
         // eslint-disable-next-line func-names
-        output.onload = function () {
-          URL.revokeObjectURL(output.src);
-        };
+        output.onload = function () { URL.revokeObjectURL(output.src); };
         this.$emit('showModalStatus', modalMode);
-        reader.onerror = (evt) => {
-          console.error(evt);
-        };
+        reader.onerror = (evt) => { console.error(evt); };
       }
     },
 
@@ -442,20 +453,33 @@ export default {
     updateSecondPhone(value) {
       this.$emit('updateSecondPhone', value);
     },
+    updateFirstPhone(value) {
+      this.$emit('updateFirstPhone', value);
+    },
+    validationRefs() {
+      this.$emit('validationRef', { work: this.$refs.work, education: this.$refs.education });
+    },
 
     // GEOPOSITION METHODS
-    selectAddress(address) {
+    selectAddress(address, i) {
+      this.selectedAddressIndex = i;
       this.profile.additionalInfo.address = address.formatted;
       this.addresses = [];
+      this.$emit('updateCoordinates', this.coordinates);
     },
     async getAddressInfo(address) {
       try {
         if (address.length) {
           this.addresses = await this.geoCode.geolookup(address);
-          this.coordinates = {
-            lng: this.addresses[0].lng,
-            lat: this.addresses[0].lat,
-          };
+          if (this.selectedAddressIndex) {
+            this.coordinates = {
+              lng: this.addresses[this.selectedAddressIndex].lng,
+              lat: this.addresses[this.selectedAddressIndex].lat,
+              address: this.addresses[this.selectedAddressIndex].formatted,
+            };
+          } else {
+            this.coordinates = { lng: this.addresses[0].lng, lat: this.addresses[0].lat, address: this.addresses[0].formatted };
+          }
         } else this.addresses = [];
       } catch (e) {
         this.addresses = [];
@@ -471,29 +495,18 @@ export default {
 
     // ADD KNOWLEDGE METHODS
     async addNewKnowledge(knowledgeArray, newKnowledge, observerName, modalMsg) {
-      const validate = await this.$refs[observerName].validate();
-      if (validate) {
-        this.$emit('updateEducation', newKnowledge, this[newKnowledge]);
-        this[newKnowledge] = {
-          from: '',
-          to: '',
-          place: '',
-        };
-        const modalMode = modalMsg === 'education' ? 'educationAddSuccessful' : 'workExpAddSuccessful';
-        this.$emit('showModalStatus', modalMode);
-        this.$refs[observerName].reset();
-      }
+      this.$emit('updateEducation', newKnowledge, this[newKnowledge]);
+      this[newKnowledge] = { from: '', to: '', place: '' };
+      const modalMode = modalMsg === 'education' ? 'educationAddSuccessful' : 'workExpAddSuccessful';
+      this.$emit('showModalStatus', modalMode);
+      this.$refs[observerName].reset();
     },
     deleteKnowledge(knowledgeArray, index) {
       knowledgeArray.splice(index, 1);
     },
     clearError(value, observerName) {
-      const isClear = Object.keys(value).every(
-        (field) => value[field] === '' || value[field] === null,
-      );
-      if (isClear) {
-        this.$refs[observerName].reset();
-      }
+      const isClear = Object.keys(value).every((field) => value[field] === '' || value[field] === null);
+      if (isClear) this.$refs[observerName].reset();
     },
     checkValidate() {
       this.$emit('checkValidate');

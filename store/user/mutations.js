@@ -1,6 +1,18 @@
 /* eslint-disable no-param-reassign */
 
 export default {
+  setEducations(state, data) {
+    state.userData.additionalInfo.educations = data;
+  },
+  setWorkExperiences(state, data) {
+    state.userData.additionalInfo.workExperiences = data;
+  },
+  setVerificationCode(state, data) {
+    state.verificationCode = data;
+  },
+  setTwoFACode(state, data) {
+    state.twoFACode = data;
+  },
   setCurrentReviewMarkOnQuest(state, data) {
     state.currentReviewMarkOnQuest = data;
   },

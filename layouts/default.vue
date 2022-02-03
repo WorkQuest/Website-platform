@@ -729,9 +729,7 @@ export default {
     kitcutDescription(text) {
       text = text.trim();
       if (text.length <= 120) return text;
-
       text = text.slice(0, 120);
-
       return `${text.trim()}...`;
     },
     userWindowChange() {
