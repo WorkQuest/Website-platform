@@ -5,27 +5,6 @@
   >
     <div class="verification__content content">
       <div
-        v-show="isVerified"
-        class="content__verified"
-      >
-        <img
-          src="~assets/img/ui/warning.svg"
-          alt="Already Verified!"
-          class="content__picture"
-        >
-        <div class="content__subtitle content__subtitle_error">
-          {{ $t('settings.phoneVerified') }}
-        </div>
-        <div class="content__buttons buttons">
-          <base-btn
-            class="buttons__button"
-            @click="hide"
-          >
-            {{ $t('meta.confirm') }}
-          </base-btn>
-        </div>
-      </div>
-      <div
         v-if="!phone"
         class="content__verified"
       >
@@ -149,8 +128,6 @@ export default {
     },
   },
   async beforeMount() {
-    // TODO: Fix
-    if (this.userData?.phone?.fullPhone && !this.userData?.tempPhone?.fullPhone) this.isVerified = true;
     if (!this.isVerified && this.userRole === UserRole.EMPLOYER) {
       if (this.userData?.tempPhone) this.phone = this.userData?.tempPhone?.fullPhone;
     } else {
