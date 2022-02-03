@@ -29,6 +29,7 @@ jobs:
           echo GMAPKEY=${{ secrets.GMAPKEY }} >> .env
           echo SECRET_SUMSUB=${{ secrets.SECRET_SUMSUB }} >> .env
 
+          echo NOTIFS_URL=${{ secrets.NOTIFS_URL }} >> .env
           echo WS_NOTIFS_URL=${{ secrets.WS_NOTIFS_URL }} >> .env
           echo WS_CHAT_URL=${{ secrets.WS_CHAT_URL }} >> .env
 
@@ -96,6 +97,7 @@ jobs:
           echo GMAPKEY=${{ secrets.GMAPKEY }} >> .env
           echo SECRET_SUMSUB=${{ secrets.SECRET_SUMSUB }} >> .env
 
+          echo NOTIFS_URL=${{ secrets.NOTIFS_URL }} >> .env
           echo WS_NOTIFS_URL=${{ secrets.WS_NOTIFS_URL }} >> .env
           echo WS_CHAT_URL=${{ secrets.WS_CHAT_URL }} >> .env
 
@@ -163,6 +165,7 @@ jobs:
           echo GMAPKEY=${{ secrets.GMAPKEY }} >> .env
           echo SECRET_SUMSUB=${{ secrets.SECRET_SUMSUB }} >> .env
 
+          echo NOTIFS_URL=${{ secrets.NOTIFS_URL }} >> .env
           echo WS_NOTIFS_URL=${{ secrets.WS_NOTIFS_URL }} >> .env
           echo WS_CHAT_URL=${{ secrets.WS_CHAT_URL }} >> .env
 

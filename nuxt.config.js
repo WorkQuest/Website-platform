@@ -113,6 +113,7 @@ export default {
     GMAPKEY: process.env.GMAPKEY,
     SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
+    NOTIFS_URL: process.env.NOTIFS_URL,
     WS_NOTIFS_URL: process.env.WS_NOTIFS_URL,
     WS_CHAT_URL: process.env.WS_CHAT_URL,
 
