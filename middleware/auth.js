@@ -17,7 +17,7 @@ export default async function ({ app, redirect, store }) {
     if (!access || !refresh || !app.$cookies.get('userLogin')) {
       return redirect('/sign-in');
     }
-    if (!Object.keys(userData).length) {
+    if (userData.id === '') {
       await store.dispatch('user/getUserData');
       await store.dispatch('user/getStatistic');
       await store.dispatch('user/getNotifications');
