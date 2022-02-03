@@ -5,7 +5,7 @@
   >
     <button
       class="reduced-notifications__button"
-      :class="{'block' : !notificationsCount}"
+      :class="{'reduced-notifications__button_block' : !notificationsCount}"
       @click="togglePopUp"
     >
       <template v-if="notificationsCount">
@@ -51,12 +51,12 @@
               >
                 <img
                   class="notify__avatar"
-                  :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                  :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : EmptyAvatar"
                   alt="avatar"
                 >
                 <div class="notify__info">
                   <div class="notify__text notify__text_name">
-                    {{ `${notification.sender.firstName} ${notification.sender.lastName}` }}
+                    {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
                   </div>
                   <!--                  <div class="notify__text notify__text_grey">-->
                   <!--                    CEO from Amazon-->
@@ -73,7 +73,7 @@
               </div>
             </div>
             <div class="notify__action">
-              <button
+              <base-btn
                 class="notify__btn"
                 @click="goToEvent(notification.params ? notification.params.link : '')"
               >
@@ -81,7 +81,7 @@
                   {{ notification.params ? notification.params.title : '' }}
                 </span>
                 <span class="icon-chevron_right" />
-              </button>
+              </base-btn>
             </div>
           </div>
         </div>
@@ -148,7 +148,7 @@ export default {
     font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: normal;
-    font-size: 16px;
+    font-size: 24px;
     line-height: 130%;
     color: $black600;
     display: flex;
@@ -162,9 +162,12 @@ export default {
     &:hover {
       border: 1px solid $black100;
     }
-    span:before {
+    span {
       color: $black400;
-      font-size: 24px;
+    }
+
+    &_block {
+      pointer-events: none;
     }
   }
 
@@ -290,9 +293,5 @@ export default {
     display: flex;
     justify-content: space-between;
   }
-}
-
-.block {
-  pointer-events: none;
 }
 </style>

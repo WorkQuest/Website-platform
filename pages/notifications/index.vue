@@ -18,13 +18,13 @@
               <div class="notification__avatar">
                 <img
                   class="avatar"
-                  :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                  :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : EmptyAvatar"
                   alt=""
                 >
               </div>
               <div class="notification__inviter inviter">
                 <span class="inviter__name">
-                  {{ notification.sender.firstName }} {{ notification.sender.lastName }}
+                  {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
                 </span>
                 <!--                <span class="inviter__company">-->
                 <!--                  {{ notification.company }}-->
@@ -52,14 +52,14 @@
             <!--              class="notification__unread-dot"-->
             <!--            />-->
 
-            <img
-              class="notification__remove"
-              src="~assets/img/ui/close.svg"
-              alt="x"
-              @click="tryRemoveNotification(notification.id)"
-            >
+            <!--            <img-->
+            <!--              class="notification__remove"-->
+            <!--              src="~assets/img/ui/close.svg"-->
+            <!--              alt="x"-->
+            <!--              @click="tryRemoveNotification(notification.id)"-->
+            <!--            >-->
 
-            <div class="notification__button button">
+            <div class="notification__button">
               <base-btn
                 mode="outline"
                 class="button__view"
@@ -119,6 +119,7 @@ export default {
   },
   methods: {
     tryRemoveNotification(notificationId) {
+      // back-bug
       this.ShowModal({
         key: modals.areYouSure,
         title: this.$t('modals.sureDeleteNotification'),
