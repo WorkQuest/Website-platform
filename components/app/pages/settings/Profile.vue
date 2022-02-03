@@ -604,20 +604,20 @@ export default {
     display: grid;
     grid-column-start: 1;
     grid-column-end: 3;
-    &__description-textarea {
-      background-color: $black0;
-      resize: none;
-      padding: 10px 10px 0 10px;
-      margin: 0;
-      border-radius: 6px;
-      height: 114px;
-      border: 1px solid transparent;
-      &_error {
-        border: 1px solid red
-      }
-    }
     &::placeholder {
       color: $black200;
+    }
+  }
+  &__description-textarea {
+    background-color: $black0;
+    resize: none;
+    padding: 10px 10px 0 10px;
+    margin: 0;
+    border-radius: 6px;
+    height: 114px;
+    border: 1px solid transparent;
+    &_error {
+      border: 1px solid red
     }
   }
   &__error {
@@ -692,7 +692,7 @@ export default {
 
 @include _575 {
   .profile {
-    border-radius: 0px;
+    border-radius: 0;
     &__personal-main {
       display: block;
     }
