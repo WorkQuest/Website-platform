@@ -1,6 +1,7 @@
 <template>
   <ctm-modal-box
     class="change-role"
+    :class="[{'change-role_wide': step === 1}]"
     :is-unclosable="true"
     :title="step === 1 ? $t('modals.reason') : $t('modals.securityCheck')"
   >
@@ -10,7 +11,7 @@
           v-if="step === 1"
           class="change-role__content"
         >
-          <span class="change-role__title">{{ $t('modals.pleaseDescribe') }}</span>
+          <span class="change-role__describe">{{ $t('modals.pleaseDescribe') }}</span>
           <base-field
             v-model="reasonInput"
             class="change-role__action"
@@ -108,7 +109,15 @@ export default {
 }
 .change-role {
   max-width: 400px !important;
-
+  &_wide {
+    max-width: 413px !important;
+  }
+  &__describe {
+    @include text-simple;
+    font-weight: 400;
+    font-size: 16px;
+    color: $black600;
+  }
   &__title {
     @include text-simple;
     font-weight: 400;
@@ -129,7 +138,6 @@ export default {
   }
 
   &__action {
-    margin-top: 10px;
     width: 100%;
   }
 }
