@@ -90,7 +90,7 @@ export default {
 }
 @include _575 {
   .verification {
-    border-radius: 0px;
+    border-radius: 0;
   }
 }
 @include _480 {

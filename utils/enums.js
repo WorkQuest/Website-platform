@@ -48,7 +48,7 @@ export const QuestStatuses = {
   WaitConfirm: 5,
   Done: 6,
 };
-
+export const SumSubStatuses = { NOT_VERIFIED: 0, VERIFIED: 1 };
 export const InfoModeEmployer = {
   Rejected: -1,
   Created: 0,
@@ -99,6 +99,7 @@ export const KeyCodes = {
 
 // Filters
 export const WorkplaceFilter = ['all', 'distant', 'office', 'both'];
+export const WorkplaceIndex = ['distance', 'office', 'both'];
 export const RatingFilter = ['', 'verified', 'reliable', 'topRanked'];
 export const TypeOfJobFilter = ['fullTime', 'partTime', 'fixedTerm'];
 export const PriorityFilter = [

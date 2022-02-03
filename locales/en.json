@@ -925,6 +925,8 @@
     "error": "Error!"
   },
   "modals": {
+    "errorSmsVer": "Error SMS verification",
+    "fillNumber": "Please fill phone number in settings page...",
     "disputes": {
       "thereIsNoResponseFromTheEmployerOrEmployee": "There is no response from the employer / employee",
       "badlyDoneWork": "Badly done work",
@@ -1401,6 +1403,10 @@
     "loadMore": "Load more"
   },
   "settings": {
+    "additionalPhoneNumber": "Additional phone number",
+    "mainPhoneNumber": "Main phone number",
+    "workProposals": "Filter all work proposals",
+    "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
     "twitter": "twitter",
@@ -1489,7 +1495,7 @@
     "crediting": "Crediting",
     "liquidityMining": "Liquidity mining",
     "distantWork": {
-      "title": "Distant work",
+      "title": "Workplace",
       "select": "Select distant work",
       "allWorkplaces": "All workplaces",
       "distantWork": "Distant work",

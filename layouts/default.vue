@@ -3,9 +3,7 @@
     ref="templateScroll"
     class="primary"
   >
-    <div
-      class="primary__template template"
-    >
+    <div class="primary__template template">
       <div
         class="template__content"
         :class="{'template__content_rows' : isChatOpened}"
@@ -841,9 +839,7 @@ export default {
     kitcutDescription(text) {
       text = text.trim();
       if (text.length <= 120) return text;
-
       text = text.slice(0, 120);
-
       return `${text.trim()}...`;
     },
     userWindowChange() {
