@@ -34,7 +34,7 @@
             {{ $t('ui.notifications.title') }}
           </div>
           <span
-            class="icon-close_small"
+            class="icon icon-close_small"
             @click="closePopUp"
           />
         </div>
@@ -77,10 +77,10 @@
                 class="notify__btn"
                 @click="goToEvent(notification.params ? notification.params.link : '')"
               >
-                <span class="notify__text notify__text_btn">
+                <div class="notify__text notify__text_btn">
                   {{ notification.params ? notification.params.title : '' }}
-                </span>
-                <span class="icon-chevron_right" />
+                </div>
+                <span class="icon icon-chevron_right" />
               </base-btn>
             </div>
           </div>
@@ -138,19 +138,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.icon-close_small {
-  cursor: pointer;
+
+.icon-chevron_right {
+  color: #0083C7;
 }
+
+.icon-close_small {
+  color: $shade700;
+}
+
 .reduced-notifications {
   position: relative;
 
   &__button {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: normal;
     font-size: 24px;
-    line-height: 130%;
-    color: $black600;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -177,10 +178,6 @@ export default {
     justify-content: space-between;
     padding: 0 20px;
     height: 64px;
-    span:before {
-      color: $shade700 !important;
-      font-size: 24px;
-    }
   }
 
   &__title {
@@ -215,6 +212,11 @@ export default {
   }
 }
 
+.icon {
+  cursor: pointer;
+  font-size: 24px;
+}
+
 .notify {
   min-height: 167px;
   width: 100%;
@@ -236,10 +238,6 @@ export default {
     justify-content: space-between;
     padding: 0 10px;
     transition: .5s;
-    span:before {
-      color: #0083C7;
-      font-size: 24px;
-    }
     &:hover {
       background: #dadade;
     }

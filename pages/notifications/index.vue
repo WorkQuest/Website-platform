@@ -96,7 +96,7 @@ export default {
       },
       page: 1,
       notificationIdsForRead: [],
-      delay: 0,
+      delay: null,
     };
   },
   computed: {
