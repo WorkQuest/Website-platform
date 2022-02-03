@@ -352,6 +352,7 @@ export default () => ({
   connections: {
     notifsConnection: false,
     chatConnection: false,
+    chatActionsConnection: false,
   },
   transactions: [
     {
