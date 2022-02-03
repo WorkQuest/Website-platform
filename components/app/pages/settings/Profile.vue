@@ -79,9 +79,7 @@
               </div>
             </template>
           </base-field>
-          <div
-            class="profile__phone-input"
-          >
+          <div class="profile__phone-input">
             <label
               v-if="userRole === UserRole.EMPLOYER"
               for="phone1"
@@ -407,14 +405,14 @@ export default {
       deep: true,
       handler() {
         this.secondPhoneNumber = {
-          codeRegion: this.profile?.additionalInfo?.secondMobileNumber?.codeRegion || null,
-          phone: this.profile?.additionalInfo?.secondMobileNumber?.phone || null,
-          fullPhone: this.profile?.additionalInfo?.secondMobileNumber?.fullPhone || null,
+          codeRegion: this.profile?.additionalInfo?.secondMobileNumber?.codeRegion,
+          phone: this.profile?.additionalInfo?.secondMobileNumber?.phone,
+          fullPhone: this.profile?.additionalInfo?.secondMobileNumber?.fullPhone,
         };
         this.firstPhone = {
-          codeRegion: this.profile.firstPhone?.codeRegion || null,
-          phone: this.profile.firstPhone?.phone || null,
-          fullPhone: this.profile.firstPhone?.fullPhone || null,
+          codeRegion: this.profile.firstPhone?.codeRegion,
+          phone: this.profile.firstPhone?.phone,
+          fullPhone: this.profile.firstPhone?.fullPhone,
         };
       },
     },
@@ -694,7 +692,7 @@ export default {
 
 @include _575 {
   .profile {
-    border-radius: 0px;
+    border-radius: 0;
     &__personal-main {
       display: block;
     }

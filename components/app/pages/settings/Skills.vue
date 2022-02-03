@@ -19,7 +19,7 @@
             type="gray"
             :placeholder="$t(dd.placeholder)"
             :items="dd.items"
-            :mode="'small'"
+            mode="small"
             :label="$t(dd.label)"
           />
           <base-field
