@@ -1,8 +1,5 @@
 <template>
-  <validation-observer
-    class="knowledge"
-    tag="div"
-  >
+  <div class="knowledge">
     <base-field
       v-model="item.from"
       :name="$t('settings.workExps.from')"
@@ -49,7 +46,7 @@
     >
       {{ isAdding ? $t('settings.add') : $t('settings.delete') }}
     </base-btn>
-  </validation-observer>
+  </div>
 </template>
 
 <script>
