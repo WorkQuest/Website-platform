@@ -1,31 +1,43 @@
 <template>
   <ctm-modal-box
-    :title="$t('modals.smsVerification')"
+    :title="!phone ? $t('modals.errorSmsVer') : $t('modals.smsVerification')"
     class="verification"
   >
     <div class="verification__content content">
+      <div
+        v-if="!phone"
+        class="content__verified"
+      >
+        <img
+          src="~assets/img/ui/warning.svg"
+          alt="Please fill phone number!"
+          class="content__picture"
+        >
+        <div class="content__subtitle content__subtitle_error">
+          {{ this.$t('modals.fillNumber') }}
+        </div>
+        <div class="content__buttons buttons">
+          <base-btn
+            class="buttons__button"
+            @click="hide"
+          >
+            {{ $t('meta.confirm') }}
+          </base-btn>
+        </div>
+      </div>
       <validation-observer
+        v-if="phone"
         v-slot="{handleSubmit, validated, passed, invalid}"
       >
         <div class="content__subtitle">
-          <span v-if="step === 1">{{ $t('modals.enterPhone') }}</span>
-          <span v-if="step === 2">{{ $t('modals.enterSMSCode') }}</span>
+          {{ step === 1 ? $t('modals.enterPhone') : $t('modals.enterSMSCode') }}
         </div>
-        <span
-          v-if="step === 1"
-          class="content__top"
-        >
-          {{ $t('modals.phoneNumber') }}
-        </span>
-        <span
-          v-if="step === 2"
-          class="content__top"
-        >
-          {{ $t('modals.codeFromSMS') }}
+        <span class="content__top">
+          {{ step === 1 ? $t('modals.phoneNumber') : $t('modals.codeFromSMS') }}
         </span>
         <base-field
           v-if="step === 1"
-          v-model="secondMobileNumber"
+          v-model="phone"
           class="content__action"
           :placeholder="$t('modals.phoneNumber')"
           mode="icon"
@@ -60,7 +72,10 @@
           class="content__bottom"
         >
           {{ $t('modals.haventSMS') }}
-          <button class="content__resend">
+          <button
+            class="content__resend"
+            @click="getCodeFromSms()"
+          >
             {{ $t('meta.resendSMS') }}
           </button>
         </div>
@@ -89,6 +104,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { UserRole } from '~/utils/enums';
 
 export default {
   name: 'CtmModalSmsVerification',
@@ -96,40 +112,29 @@ export default {
     return {
       confirmCode: '',
       step: 1,
+      phone: null,
     };
   },
   computed: {
     ...mapGetters({
-      secondMobileNumber: 'user/getUserSecondMobileNumber',
+      userRole: 'user/getUserRole',
+      userData: 'user/getUserData',
+      currentConfirmCode: 'user/getVerificationCode',
     }),
+    UserRole() {
+      return UserRole;
+    },
+  },
+  async beforeMount() {
+    if (this.userData?.tempPhone) this.phone = this.userData?.tempPhone?.fullPhone;
+    this.confirmCode = this.currentConfirmCode;
   },
   methods: {
     hide() {
       this.CloseModal();
     },
-    async sendPhoneNumber() {
-      try {
-        const payload = {
-          phoneNumber: await this.secondMobileNumber,
-        };
-        const response = await this.$store.dispatch('user/sendPhone', payload);
-        if (response?.ok) {
-          console.log(response);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    },
-
     async confirmPhone() {
-      try {
-        const payload = {
-          confirmCode: this.confirmCode,
-        };
-        await this.$store.dispatch('user/confirmPhone', payload);
-      } catch (e) {
-        console.log(e);
-      }
+      await this.$store.dispatch('user/confirmPhone', { confirmCode: this.confirmCode });
     },
     success() {
       this.ShowModal({
@@ -140,10 +145,15 @@ export default {
       });
       this.confirmPhone();
     },
-    nextStep() {
-      this.sendPhoneNumber();
-      // eslint-disable-next-line no-plusplus
-      this.step++;
+    async getCodeFromSms() {
+      if (this.phone) await this.$store.dispatch('user/sendPhone');
+    },
+    async nextStep() {
+      if (this.phone) {
+        await this.getCodeFromSms();
+        this.step += 1;
+      }
+      if (!this.userData.tempPhone) this.hide();
     },
   },
 };
@@ -153,16 +163,27 @@ export default {
 .verification {
   max-width: 382px !important;
   &__content {
-    padding: 0 28px 30px 28px!important;
+    padding: 0 28px 30px 28px;
   }
 }
-.content{
+.content {
+  &__picture {
+    margin-top: 5px;
+    margin-left: auto;
+    margin-right: auto;
+  }
   &__subtitle {
     @include text-simple;
     font-weight: 400;
     color: $black400;
     font-size: 16px;
     margin-top: 10px;
+    &_error {
+      margin: 10px auto;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
   }
   &__top {
     margin: 25px 0 4px 0;
@@ -172,8 +193,8 @@ export default {
   &__action {
     width: 100%;
   }
-  &__icon:before{
-    font-size: 25px!important;
+  &__icon:before {
+    font-size: 25px;
     color: $blue;
   }
   &__bottom {

@@ -12,17 +12,24 @@
           @input="changeReview($event)"
         />
       </div>
-      <div class="body__content content">
+      <validation-observer
+        v-slot="{handleSubmit, valid}"
+        class="body__content content"
+        mode="aggressive"
+        tag="div"
+      >
         <div class="content__desc">
           <div class="content__wrapper">
             <p class="content__labelMessage">
               {{ $t('modals.couple') }}
             </p>
             <div class="content__body">
-              <textarea
+              <base-textarea
                 v-model="textArea"
                 class="content__textarea"
                 :placeholder="$t('modals.hello')"
+                rules="required|min:1|max:600"
+                name="review"
               />
             </div>
           </div>
@@ -30,7 +37,8 @@
             <div class="buttons__wrapper">
               <base-btn
                 class="buttons__action"
-                @click="sendReviewForUser()"
+                :disabled="!valid"
+                @click="handleSubmit(sendReviewForUser)"
               >
                 {{ $t('meta.send') }}
               </base-btn>
@@ -46,7 +54,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
@@ -58,7 +66,6 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalSendARequest',
-  components: {},
   data() {
     return {
       textArea: '',
@@ -80,25 +87,17 @@ export default {
     getQuestRating() {
       this.rating = this.options.rating;
     },
-    removeLocalStorageRating() {
-      localStorage.removeItem('questRating');
-    },
     hide() {
       this.CloseModal();
     },
-    sendReviewForUser() {
-      const payload = {
+    async sendReviewForUser() {
+      const { ok } = await this.$store.dispatch('user/sendReviewForUser', {
         questId: this.options.item.id,
         message: this.textArea,
         mark: this.rating,
-      };
-      try {
-        this.$store.dispatch('user/sendReviewForUser', payload);
-        this.showThanksModal();
-        this.removeLocalStorageRating();
-      } catch (e) {
-        console.log(e);
-      }
+      });
+      this.hide();
+      if (ok) this.showThanksModal();
     },
     showThanksModal() {
       this.ShowModal({
@@ -110,9 +109,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .review {
   max-width: 679px !important;
+
   &__desc {
     @include text-simple;
     width: 100%;
@@ -124,7 +123,8 @@ export default {
     color: $black800;
     padding: 0 0 5px 0;
   }
-  &__body{
+
+  &__body {
     padding: 15px 30px 15px 30px;
   }
 }
@@ -132,32 +132,28 @@ export default {
   &__wrapper {
     margin: 0 0 25px 0;
   }
-  &__buttons{
+
+  &__body {
+    padding-bottom: 10px;
+  }
+
+  &__buttons {
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
   }
+
   &__textarea {
-    border-radius: 6px;
-    padding: 11px 20px 11px 15px;
     height: 214px;
     width: 100%;
-    border: 0;
-    background-color: $black0;
-    resize: none;
-    &::placeholder {
-      color: $black200;
-    }
   }
 }
-.buttons{
-  &__wrapper {
-    width: 45%;
-  }
+
+.buttons__wrapper {
+  width: 45%;
 }
-.body{
-  &__rating{
-    padding-bottom: 15px;
-  }
+
+.body__rating {
+  padding-bottom: 15px;
 }
 </style>

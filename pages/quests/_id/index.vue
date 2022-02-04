@@ -47,7 +47,7 @@
               </div>
             </nuxt-link>
             <item-rating
-              v-if="assignedWorker.ratingStatistic.status !== 'noStatus'"
+              v-if="assignedWorker.ratingStatistic && assignedWorker.ratingStatistic.status !== 'noStatus'"
               :rating="assignedWorker.ratingStatistic.status"
             />
           </div>
@@ -80,6 +80,16 @@
             </div>
           </div>
           <div class="worker-data__priority">
+            <star-rating
+              v-if="starRating(questData)"
+              class="worker-data__rating rating rating__star"
+              :quest-index="1"
+              :rating-type="'questPage'"
+              :stars-number="5"
+              :rating="!questData.yourReview ? currentMark.mark : questData.yourReview.mark"
+              :is-disabled="questData.yourReview !== null || currentMark.mark !== null"
+              @input="showReviewModal($event, questData)"
+            />
             <span class="worker-data__price">
               {{ questData.price }} {{ $t('quests.wusd') }}
             </span>
@@ -141,7 +151,7 @@
               </nuxt-link>
             </h2>
             <div class="quest__count">
-              {{ `${otherQuestsCount} ${$t('quests.questsSmall')}` }}
+              {{ `${otherQuestsCount > 0 ? otherQuestsCount : 0} ${$t('quests.questsSmall')}` }}
             </div>
           </div>
           <div class="quest__card">
@@ -172,11 +182,7 @@ import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'Quests',
-  components: {
-    info,
-    questPanel,
-    emptyData,
-  },
+  components: { info, questPanel, emptyData },
   data() {
     return {
       questLocation: { lat: 0, lng: 0 },
@@ -205,7 +211,11 @@ export default {
       userData: 'user/getUserData',
       otherQuestsCount: 'quests/getAllQuestsCount',
       otherQuests: 'quests/getAllQuests',
+      currentMark: 'user/getCurrentReviewMarkOnQuest',
     }),
+    questStatuses() {
+      return QuestStatuses;
+    },
     InfoModeEmployer() {
       return InfoModeEmployer;
     },
@@ -261,7 +271,25 @@ export default {
     await this.setActionBtnsArr();
     this.SetLoader(false);
   },
+  async beforeDestroy() {
+    await this.$store.commit('user/setCurrentReviewMarkOnQuest', { questId: null, message: null, mark: null });
+  },
   methods: {
+    starRating(item) {
+      if (this.userRole === UserRole.WORKER) {
+        return item.status === this.questStatuses.Done
+          && item.assignedWorkerId === this.userData.id;
+      }
+      return item.status === this.questStatuses.Done
+        && this.userData.id === item.userId;
+    },
+    showReviewModal(rating, item) {
+      this.ShowModal({
+        key: modals.review,
+        item,
+        rating,
+      });
+    },
     async getSameQuests() {
       const skills = Object.keys(this.$t(`filters.items.${this.randomSpec}.sub`));
       const query = {
@@ -500,11 +528,8 @@ export default {
       }
     },
     coordinatesChange(item) {
-      if (Object.keys(this.currentLocation).length > 0) {
-        this.currentLocation = {};
-      } else {
-        this.currentLocation = item;
-      }
+      if (Object.keys(this.currentLocation).length > 0) this.currentLocation = {};
+      else this.currentLocation = item;
     },
     async closeQuest() {
       const modalMode = 1;
@@ -716,6 +741,11 @@ export default {
     &_small {
       font-size: 16px;
     }
+  }
+
+  &__rating {
+    display: flex;
+    align-self: center;
   }
 
   &__container {

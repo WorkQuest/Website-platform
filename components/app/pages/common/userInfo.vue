@@ -1,6 +1,12 @@
 <template>
   <div class="info-grid">
     <div class="info-grid__left">
+      <div class="info-grid__share-left">
+        <base-btn
+          mode="share-btn"
+          @click="shareModal()"
+        />
+      </div>
       <div class="info-grid__block block block_left">
         <div class="block__avatar avatar">
           <img
@@ -108,7 +114,10 @@
               :key="key"
               class="contact__container"
             >
-              <span :class="data.icon" />
+              <span
+                class="contact__icon"
+                :class="data.icon"
+              />
               <a
                 :href="data.href"
                 target="_blank"
@@ -122,9 +131,10 @@
     <div class="info-grid__right right">
       <div
         class="right__header"
+        :class="userData.role === UserRole.WORKER ? 'right__header_employee' : ''"
       >
         <div
-          v-if="userData.role === 'worker' && userData.wagePerHour"
+          v-if="userData.role === UserRole.WORKER && userData.wagePerHour"
           class="right__price"
         >
           <div class="price__text">
@@ -134,14 +144,16 @@
             {{ $tc('saving.wusdCount', userData.wagePerHour) }}
           </div>
         </div>
-        <base-btn
-          mode="share-btn"
-          @click="shareModal()"
-        />
+        <div class="right__share-btn">
+          <base-btn
+            mode="share-btn"
+            @click="shareModal()"
+          />
+        </div>
       </div>
       <div class="right__footer">
         <div
-          v-if="userRole === 'worker' && userId === mainUserData.id"
+          v-if="mainUser.role === UserRole.WORKER && userId === mainUserData.id"
           class="contact__btn"
         >
           <base-btn
@@ -151,7 +163,7 @@
           </base-btn>
         </div>
         <div
-          v-else-if="userRole === 'employer' && userData.role === 'worker'"
+          v-else-if="mainUser.role === UserRole.EMPLOYER && userData.role === UserRole.WORKER"
           class="contact__btn"
         >
           <base-btn
@@ -169,6 +181,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { UserRole } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -178,12 +191,12 @@ export default {
       mainUser: 'user/getUserData',
       tags: 'ui/getTags',
       mainUserData: 'user/getUserData',
-      userRole: 'user/getUserRole',
       anotherUserData: 'user/getAnotherUserData',
     }),
     isEmptyUserData() {
       return !Object.keys(this.userData).length;
     },
+    UserRole() { return UserRole; },
     socialNetworks() {
       if (this.isEmptyUserData) return [];
       const socialNetworksData = this.userData.additionalInfo.socialNetwork;
@@ -327,7 +340,6 @@ export default {
     flex-direction: row;
     justify-content: center;
     display: flex;
-    grid-gap: 15px;
   }
   &__right {
     display: flex;
@@ -335,14 +347,19 @@ export default {
     justify-content: space-between;
     align-items: flex-end;
   }
+  &__share-left {
+    display: none;
+  }
 }
 .right {
   &__header {
-    display: flex;
-    grid-gap: 30px;
-    flex-direction: row;
+    display: grid;
     justify-content: space-between;
     align-items: center;
+    &_employee {
+      grid-template-columns: auto auto;
+      grid-gap: 30px;
+    }
   }
   &__footer {
     width: 280px;
@@ -377,6 +394,7 @@ export default {
   }
   &_right {
     align-self: flex-start;
+    margin-left: 30px;
   }
   &__rating {
     height: 20px;
@@ -397,6 +415,7 @@ export default {
     font-style: normal;
     font-weight: 500;
     font-size: 20px;
+    line-height: 130%;
     color: $black800;
   }
   &__description {
@@ -438,10 +457,11 @@ export default {
 .contact {
   display: flex;
   flex-wrap: wrap;
+  margin: -5px 0;
   &__container {
     display: flex;
-    align-items: baseline;
-    grid-gap: 5px;
+    align-items: flex-end;
+    margin: 5px 0;
   }
   &__link {
     text-decoration: none;
@@ -457,6 +477,12 @@ export default {
     display: flex;
     align-items: flex-end;
     height: 43px;
+  }
+  &__icon {
+    @extend .icon;
+    color: $black500;
+    font-size: 20px;
+    margin-right: 5px;
   }
 }
 .rating {
@@ -516,28 +542,54 @@ export default {
   }
   .right {
     &__header {
-      grid-gap: 15px;
+      justify-items: end;
+      &_employee {
+        grid-gap: 15px;
+        grid-template-columns: 110px auto;
+      }
     }
     &__footer {
       width: 100%;
     }
   }
 }
-@include _575 {
+@include _991 {
   .info-grid {
     flex-direction: column;
     align-items: center;
+    grid-gap: 0;
     &__left {
       flex-direction: column;
+      width: 100%;
     }
     &__right {
       grid-gap:20px;
       width: 100%;
     }
+    &__share-left {
+      display: flex;
+      height: 0;
+      justify-content: flex-end;
+    }
   }
   .block {
     &_left {
       align-self: center;
+    }
+    &_right {
+      margin-left: 0;
+      margin-top: 30px;
+    }
+  }
+  .right {
+    &__share-btn {
+      display: none;
+    }
+    &__header {
+      &_employee {
+        grid-gap: 0;
+        grid-template-columns: auto;
+      }
     }
   }
 }
