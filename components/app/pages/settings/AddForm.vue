@@ -35,7 +35,7 @@
       type="grey"
       :disabled="!isAdding"
       class="knowledge__data knowledge__data_big"
-      :placeholder="$t('settings.education.educationalInstitution')"
+      :placeholder="educationWork === 'education' ? $t('settings.education.educationalInstitution') : $t('settings.workExps.companyName')"
       :validation-mode="validationMode"
       rules="max:100|min:2"
       @blur="$emit('blur')"
@@ -58,6 +58,10 @@ export default {
       type: Object,
       default: null,
     },
+    educationWork: {
+      type: String,
+      default: '',
+    },
     disabled: {
       type: Boolean,
       default: false,
@@ -78,7 +82,7 @@ export default {
   },
   methods: {
     validationDate(item) {
-      if (item.from > item.to && !this.error) this.error = 'Field value To more than field value From';
+      if (item.from > item.to) this.error = 'Field value To more than field value From';
       else this.error = null;
     },
   },

@@ -191,6 +191,7 @@
             <add-form
               :item="newEducation"
               :is-adding="true"
+              education-work="education"
               @click="addNewKnowledge(profile.additionalInfo.educations, 'newEducation', 'education', 'education')"
               @blur="clearError(newEducation ? newEducation
                 : profile.additionalInfo.educations[profile.additionalInfo.educations.length - 1], 'education')"
@@ -219,6 +220,7 @@
             class="profile__validation"
           >
             <add-form
+              education-work="work"
               :item="newWorkExp"
               :is-adding="true"
               @click="addNewKnowledge(profile.additionalInfo.workExperiences, 'newWorkExp', 'work', 'work')"
