@@ -79,7 +79,7 @@ export default {
   methods: {
     validationDate(item) {
       if (item.from > item.to) this.error = 'Field value To more than field value From';
-      this.error = null;
+      else this.error = null;
     },
   },
 };
