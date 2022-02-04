@@ -104,4 +104,11 @@ export default {
     });
     this.commit('user/setUnreadNotifsCount', 0 - ids.length);
   },
+  addNotification(state, notification) {
+    state.notifications.list.push(notification);
+    state.reducedNotifications.unshift(notification);
+    state.reducedNotifications.length = state.reducedNotifications.length === 1 ? 1 : 2;
+    state.notifications.count += 1;
+    this.commit('user/setUnreadNotifsCount', 1);
+  },
 };

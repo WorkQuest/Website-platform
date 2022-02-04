@@ -647,7 +647,7 @@ export default {
   },
   methods: {
     async initWSListeners() {
-      const { chatConnection, notifsConnection } = this.connections;
+      const { chatConnection, chatActionsConnection, notifsConnection } = this.connections;
       if (!chatConnection) {
         await this.$wsChat.connect(this.token);
         this.$wsChat.subscribe('/notifications/chat', async ({ data, action }) => {
@@ -681,6 +681,13 @@ export default {
               }
             }
           }
+        });
+      }
+      if (!chatActionsConnection) await this.$wsChatActions.connect(this.token);
+      if (!notifsConnection) {
+        await this.$wsNotifs.connect(this.token);
+        this.$wsNotifs.subscribe('/notifications/quest', async (ev) => {
+          await this.$store.dispatch('user/addNotification', ev);
         });
       }
     },

@@ -18,7 +18,7 @@
               <div class="notification__avatar">
                 <img
                   class="avatar"
-                  :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : EmptyAvatar"
+                  :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : EmptyAvatar()"
                   alt=""
                 >
               </div>
@@ -204,6 +204,10 @@ export default {
   background: #fff;
   border-radius: 6px;
 
+  &__container {
+    display: grid;
+  }
+
   &__title {
     @include text-simple;
     font-weight: 500;
@@ -216,6 +220,8 @@ export default {
   &__pager {
     float: unset;
     justify-self: flex-end;
+    margin: 20px;
+    border: 1px solid #F7F8FA
   }
 }
 

@@ -51,7 +51,7 @@
               >
                 <img
                   class="notify__avatar"
-                  :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : EmptyAvatar"
+                  :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : EmptyAvatar()"
                   alt="avatar"
                 >
                 <div class="notify__info">

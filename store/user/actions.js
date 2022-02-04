@@ -21,7 +21,6 @@ export default {
   },
   async removeNotification({ dispatch }, { config, notificationId }) {
     try {
-      console.log(notificationId);
       const { ok } = await this.$axios.$delete(`${process.env.NOTIFS_URL}notifications/delete/${notificationId}`);
 
       await dispatch('getNotifications', config);
@@ -48,24 +47,32 @@ export default {
 
       if (result.notifications.length) result.notifications.map(async (notification) => await dispatch('setCurrNotificationObject', notification));
 
-      if (!config) commit('setReducedNotifications', result.notifications);
+      if (!config) {
+        commit('setReducedNotifications', result.notifications);
+        commit('setUnreadNotifsCount', result.unreadCount);
+      }
 
       commit('setNotifications', result);
-      commit('setUnreadNotifsCount', result.unreadCount);
+
       return ok;
     } catch (e) {
       return false;
     }
   },
+  async addNotification({ commit, dispatch }, notification) {
+    const newNotification = await dispatch('setCurrNotificationObject', notification);
+    commit('addNotification', newNotification);
+  },
   setCurrNotificationObject({ getters }, notification) {
     const {
       action, data: {
-        user, title, id, assignedWorker, worker, quest, employer,
+        user, title, id, assignedWorker, worker, quest, employer, fromUser, message, toUserId,
       },
     } = notification.notification;
 
+    let currTitle = quest?.title || title;
     let keyName = 'notifications.';
-    const link = `/quests/${quest?.id || id}`;
+    let link = `/quests/${quest?.id || id}`;
     const userRole = getters.getUserRole;
     const isItAnWorker = userRole === UserRole.WORKER;
 
@@ -110,6 +117,16 @@ export default {
         keyName += 'declinedYourResponseToTheQuest';
         break;
       }
+      case NotificationAction.WAIT_WORKER: {
+        keyName += 'theQuestIsPending';
+        break;
+      }
+      case NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST: {
+        keyName += 'leftReviewAboutQuest';
+        link = `/profile/${toUserId}`;
+        currTitle = message;
+        break;
+      }
       default: {
         keyName = '';
         break;
@@ -117,9 +134,9 @@ export default {
     }
 
     notification.actionNameKey = keyName;
-    notification.sender = isItAnWorker ? user || employer : assignedWorker || worker;
-    if (quest?.title || title) notification.params = { title: quest?.title || title, link };
-    notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, h:mm');
+    notification.sender = fromUser || (isItAnWorker ? user || employer : assignedWorker || worker);
+    if (currTitle) notification.params = { title: currTitle, link };
+    notification.creatingDate = moment(new Date(notification.createdAt)).format('MMMM Do YYYY, HH:mm');
   },
   async getUserPortfolios({ commit }, { userId, query }) {
     try {

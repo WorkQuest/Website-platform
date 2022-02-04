@@ -1348,7 +1348,9 @@
     "invitedYouToAQuest": "Invited you to a quest",
     "acceptedTheInvitationToTheQuest": "Accepted the invitation to the quest",
     "declinedTheInvitationToTheQuest": "Declined the invitation to the quest",
-    "declinedYourResponseToTheQuest": "Declined your response to the quest"
+    "declinedYourResponseToTheQuest": "Declined your response to the quest",
+    "leftReviewAboutQuest": "Left review about quest",
+    "theQuestIsPending": "The quest is pending"
   },
   "wallet": {
     "WUSD": "Dompet WUSD",
