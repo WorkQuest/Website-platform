@@ -1,5 +1,10 @@
 <template>
-  <div class="knowledge">
+  <validation-observer
+    v-slot="{handleSubmit, invalid}"
+    tag="div"
+    class="knowledge"
+    :rules="`from-to:${item.from},${item.to}`"
+  >
     <base-field
       v-model="item.from"
       :name="$t('settings.workExps.from')"
@@ -8,9 +13,8 @@
       :disabled="!isAdding"
       class="knowledge__data"
       :placeholder="$t('settings.workExps.from')"
-      :rules="`between-date:${$moment().add(-100, 'years').format('yyyy/MM/DD')},${item.to}`"
+      :rules="`from-to:${item.from},${item.to}|between-date:${$moment().add(-100, 'years').format('yyyy/MM/DD')},${item.to}`"
       :validation-mode="validationMode"
-      :error="error"
       @blur="$emit('blur')"
     />
     <span class="knowledge__dash">
@@ -24,9 +28,8 @@
       :disabled="!isAdding"
       class="knowledge__data"
       :placeholder="$t('settings.workExps.to')"
-      :rules="`between-date:${item.from},${$moment().add(10, 'years').format('yyyy/MM/DD')}`"
+      :rules="`from-to:${item.from},${item.to}|between-date:${item.from},${$moment().add(10, 'years').format('yyyy/MM/DD')}`"
       :validation-mode="validationMode"
-      :error="error"
       @blur="$emit('blur')"
     />
     <base-field
@@ -42,12 +45,12 @@
     />
     <base-btn
       class="knowledge__btn"
-      :disabled="!item.from || !item.to || !item.place"
-      @click="item.from <= item.to ? $emit('click') : validationDate(item)"
+      :disabled="!item.from || !item.to || !item.place || invalid"
+      @click="handleSubmit($emit('click'))"
     >
       {{ isAdding ? $t('settings.add') : $t('settings.delete') }}
     </base-btn>
-  </div>
+  </validation-observer>
 </template>
 
 <script>
@@ -68,7 +71,7 @@ export default {
     },
     validationMode: {
       type: String,
-      default: 'passive',
+      default: 'aggressive',
     },
     isAdding: {
       type: Boolean,
@@ -79,12 +82,6 @@ export default {
     return {
       error: null,
     };
-  },
-  methods: {
-    validationDate(item) {
-      if (item.from > item.to) this.error = 'Field value To more than field value From';
-      else this.error = null;
-    },
   },
 };
 </script>

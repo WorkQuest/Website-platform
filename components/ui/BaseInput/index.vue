@@ -72,7 +72,7 @@
       v-if="!isHideError"
       class="ctm-field__err"
     >
-      {{ error || errors[0] }}
+      {{ errors[0] }}
     </div>
   </ValidationProvider>
 </template>
@@ -80,10 +80,6 @@
 
 export default {
   props: {
-    error: {
-      type: String,
-      default: '',
-    },
     autoFocus: {
       type: Boolean,
       default: () => false,
@@ -106,10 +102,6 @@ export default {
     },
     placeholder: {
       type: [String, Number],
-      default: '',
-    },
-    errorText: {
-      type: String,
       default: '',
     },
     label: {

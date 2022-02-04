@@ -187,9 +187,12 @@ export default {
     addEducation(knowledge, data) {
       const { educations, workExperiences } = this.profile.additionalInfo;
       if (knowledge === 'newEducation') {
+        this.newEducation = [];
         this.newEducation.push({ ...data });
         this.profile.additionalInfo.educations = educations.concat(this.newEducation);
+        console.log(this.newEducation);
       } else {
+        this.newWorkExp = [];
         this.newWorkExp.push({ ...data });
         this.profile.additionalInfo.workExperiences = workExperiences.concat(this.newWorkExp);
       }

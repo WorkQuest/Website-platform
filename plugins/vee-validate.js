@@ -90,6 +90,29 @@ extend('between-date', {
   message: 'Invalid date range',
 });
 
+extend('from-to', {
+  params: ['from', 'to'],
+  validate(value, { from, to }) {
+    if (
+      from === 'null'
+      || to === 'null'
+      || from === ''
+      || to === '') {
+      return {
+        required: true,
+        valid: true,
+      };
+    }
+    const f = new Date(from);
+    const t = new Date(to);
+    return {
+      required: true,
+      valid: f <= t,
+    };
+  },
+  message: 'Field value To more than field value From',
+});
+
 extend('decimal', {
   validate(value) {
     const regex = /^[0-9]*[.,]?[0-9]+$/;
