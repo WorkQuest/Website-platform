@@ -145,10 +145,6 @@ export default {
       this.closeAnother('notify');
       this.isShowNotify = !this.isShowNotify;
     },
-    showNotifications() {
-      this.$router.push('/notifications');
-      this.isShowNotify = !this.isShowNotify;
-    },
     showAdditionalMenu() {
       this.closeAnother('instruments');
       this.isShowAdditionalMenu = !this.isShowAdditionalMenu;

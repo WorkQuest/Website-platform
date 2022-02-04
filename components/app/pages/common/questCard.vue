@@ -228,7 +228,7 @@ export default {
       this.$emit('clickFavoriteStar', item);
     },
     cropTxt(str) {
-      const maxLength = 120;
+      const maxLength = 98;
       if (str.length > maxLength) str = `${str.slice(0, maxLength)}...`;
       return str;
     },

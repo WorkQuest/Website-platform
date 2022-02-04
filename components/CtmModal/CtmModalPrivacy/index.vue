@@ -94,8 +94,10 @@ export default {
         await this.$store.dispatch('user/setUserRole', { role: this.options.role });
         const response = await this.$store.dispatch('user/getUserData');
         if (response?.ok) {
-          await this.$store.dispatch('user/getStatistic'); // todo: что это?
-          await this.$store.dispatch('user/getUserData');
+          await Promise.all([
+            this.$store.dispatch('user/getStatistic'),
+            this.$store.dispatch('user/getNotifications'),
+          ]);
           if (!this.userData?.wallet?.address) {
             this.options.callback();
             this.CloseModal();

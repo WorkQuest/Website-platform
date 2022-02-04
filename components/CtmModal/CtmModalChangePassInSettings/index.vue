@@ -180,8 +180,8 @@ export default {
     padding: 0 28px 30px 28px;
   }
 }
-.content{
-  &__error{
+.content {
+  &__error {
     color:red;
   }
 }
@@ -194,16 +194,16 @@ export default {
 }
 
 .buttons {
-    &__group{
+    &__group {
       display: grid;
       grid-gap: 20px;
       gap: 20px;
       margin-top: 25px;
     }
 }
-.field{
-  &__button{
-    background-color: transparent!important;
+.field {
+  &__button {
+    background-color: transparent !important;
   }
 }
 
