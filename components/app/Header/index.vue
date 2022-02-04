@@ -16,7 +16,7 @@
           <span class="header__text">WorkQuest</span>
         </div>
         <div
-          v-if="userRole === 'employer'"
+          v-if="userData.role === UserRole.EMPLOYER"
           class="header__links"
         >
           <nuxt-link
@@ -68,7 +68,7 @@
           </button>
         </div>
         <div
-          v-if="userRole === 'worker'"
+          v-if="userData.role === UserRole.WORKER"
           class="header__links"
         >
           <nuxt-link
@@ -177,17 +177,8 @@
           class="ctm-menu__toggle"
           @click="toggleMobileMenu()"
         >
-          <button
-            class="header__button header__button_menu"
-          >
-            <span
-              v-if="!isMobileMenu"
-              class="icon-hamburger"
-            />
-            <span
-              v-if="isMobileMenu"
-              class="icon-close_big"
-            />
+          <button class="header__button header__button_menu">
+            <span :class="isMobileMenu ? 'icon-close_big' : 'icon-hamburger'" />
           </button>
         </div>
         <button
@@ -203,32 +194,24 @@
               <div class="profile__header">
                 <div class="profile__avatar">
                   <img
-                    v-if="imageData"
-                    id="userAvatarThree"
+                    id="userAvatarDesktop"
                     class="profile__img"
-                    :src="imageData"
-                    alt=""
-                  >
-                  <img
-                    v-if="!imageData"
-                    id="userAvatarTwo"
-                    class="profile__img"
-                    src="~/assets/img/app/avatar_empty.png"
+                    :src="imageData ? imageData : require('~/assets/img/app/avatar_empty.png')"
                     alt=""
                   >
                 </div>
                 <div class="profile__info">
                   <div class="profile__text">
-                    {{ userData.firstName }} {{ userData.lastName }}
+                    {{ `${userData.firstName} ${userData.lastName}` }}
                   </div>
                   <div
-                    v-if="userRole === 'employer'"
+                    v-if="userData.role === UserRole.EMPLOYER"
                     class="profile__text profile__text_blue"
                   >
                     {{ $t('role.employer') }}
                   </div>
                   <div
-                    v-if="userRole === 'worker'"
+                    v-if="userData.role === UserRole.WORKER"
                     class="profile__text profile__text_green"
                   >
                     {{ $t('role.worker') }}
@@ -256,7 +239,7 @@
           </transition>
         </button>
         <base-btn
-          v-if="userRole === 'employer'"
+          v-if="userData.role === UserRole.EMPLOYER"
           class="header__btn"
           @click="createNewQuest('pc')"
         >
@@ -278,57 +261,31 @@
             <div class="user__container">
               <div class="user-container__avatar">
                 <img
-                  v-if="imageData"
-                  id="userAvatarOne"
+                  id="userAvatarMobile"
                   class="profile__img"
-                  :src="imageData"
-                  alt=""
-                >
-                <img
-                  v-if="!imageData"
-                  id="userAvatar"
-                  class="profile__img"
-                  src="~/assets/img/app/avatar_empty.png"
+                  :src="imageData ? imageData : require('~/assets/img/app/avatar_empty.png')"
                   alt=""
                 >
               </div>
               <div class="user-container__user">
                 <div class="user__name">
-                  {{ userData.firstName }} {{ userData.lastName }}
+                  {{ `${userData.firstName} ${userData.lastName}` }}
                 </div>
-                <div
-                  v-if="userRole === 'employer'"
-                  class="user__role"
-                >
-                  {{ $t('role.employer') }}
-                </div>
-                <div
-                  v-if="userRole === 'worker'"
-                  class="user__role"
-                >
-                  {{ $t('role.worker') }}
+                <div class="user__role">
+                  {{ userData.role === UserRole.EMPLOYER ? $t('role.employer') : $t('role.worker') }}
                 </div>
               </div>
             </div>
             <div class="user-container__dropdown">
               <div class="user__container">
-                <div
-                  class="user__dropdown"
-                >
-                  <span
-                    v-if="!isUserDDOpened"
-                    class="icon-caret_down"
-                  />
-                  <span
-                    v-if="isUserDDOpened"
-                    class="icon-caret_up"
-                  />
+                <div class="user__dropdown">
+                  <span :class="isUserDDOpened ? 'icon-caret_up' : 'icon-caret_down'" />
                 </div>
               </div>
             </div>
           </div>
           <div
-            v-if="isUserDDOpened === true"
+            v-if="isUserDDOpened"
             class="user-dropdown__container"
           >
             <div
@@ -344,10 +301,7 @@
               </div>
             </div>
           </div>
-          <div
-            v-if="isMobileMenu"
-            class="mobile__links"
-          >
+          <div class="mobile__links">
             <div
               v-for="(item, i) in mobileMenuLinks"
               :key="i"
@@ -364,22 +318,12 @@
             class="mobile-dropdown"
             @click="toggleInstrumentDD()"
           >
-            <div
-              v-if="isMobileMenu"
-              class="mobile-dropdown__btn"
-            >
+            <div class="mobile-dropdown__btn">
               <div class="mobile-dropdown__title">
                 {{ $t('ui.profile.DeFi') }}
               </div>
               <div class="mobile-dropdown__arrow">
-                <span
-                  v-if="!isInstrumentDropdownOpened"
-                  class="icon-caret_down"
-                />
-                <span
-                  v-if="isInstrumentDropdownOpened"
-                  class="icon-caret_up"
-                />
+                <span :class="isInstrumentDropdownOpened ? 'icon-caret_up' : 'icon-caret_down'" />
               </div>
             </div>
           </div>
@@ -392,7 +336,6 @@
               :key="i"
             >
               <div
-                v-if="isMobileMenu"
                 class="instrument-dropdown__link"
                 @click="toRoute(item.link)"
               >
@@ -402,7 +345,7 @@
           </div>
           <div class="ctm__actions">
             <base-btn
-              v-if="userRole === 'employer'"
+              v-if="userData.role === UserRole.EMPLOYER"
               class="ctm__btn"
               @click="createNewQuest('mobile')"
             >
@@ -419,7 +362,7 @@
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import moment from 'moment';
-import { MessageAction } from '~/utils/enums';
+import { MessageAction, UserRole } from '~/utils/enums';
 
 export default {
   scrollToTop: true,
@@ -447,7 +390,6 @@ export default {
       isLoading: 'main/getIsLoading',
       userData: 'user/getUserData',
       imageData: 'user/getImageData',
-      userRole: 'user/getUserRole',
       token: 'user/accessToken',
       connections: 'data/notificationsConnectionStatus',
       chatId: 'chat/getCurrChatId',
@@ -456,6 +398,7 @@ export default {
       unreadMessagesCount: 'user/getUnreadChatsCount',
       chats: 'chat/getChats',
     }),
+    UserRole() { return UserRole; },
     headerLinksWorker() {
       return [
         {
