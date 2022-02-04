@@ -16,65 +16,12 @@
           <span class="header__text">WorkQuest</span>
         </div>
         <div
-          v-if="userData.role === UserRole.EMPLOYER"
           class="header__links"
         >
           <nuxt-link
-            v-for="(item, i) in headerLinksEmployer"
+            v-for="(item, i) in headerLinks"
             :key="i"
-            :to="item.url"
-            class="header__link"
-            :exact-active-class="'header__link_active'"
-          >
-            {{ item.title }}
-          </nuxt-link>
-          <button
-            class="header__link header__link_menu"
-            :class="{'header__link_active': isShowAdditionalMenu}"
-            @click="showAdditionalMenu()"
-          >
-            {{ $t('ui.profile.DeFi') }}
-            <span class="icon-caret_down" />
-            <transition name="fade">
-              <div
-                v-if="isShowAdditionalMenu"
-                class="menu"
-              >
-                <div class="menu__items">
-                  <n-link
-                    v-for="(item,i) in additionalMenuLinks"
-                    :key="`item-${i}`"
-                    :to="item.path"
-                    tag="div"
-                    class="menu__item"
-                  >
-                    <div class="menu__top">
-                      <div class="menu__text menu__text_header">
-                        {{ item.title }}
-                      </div>
-                      <span class="icon-chevron_right" />
-                    </div>
-                    <div class="menu__bottom">
-                      <div class="menu__text menu__text_grey">
-                        <span>
-                          {{ kitcutDescription(item.desc) }}
-                        </span>
-                      </div>
-                    </div>
-                  </n-link>
-                </div>
-              </div>
-            </transition>
-          </button>
-        </div>
-        <div
-          v-if="userData.role === UserRole.WORKER"
-          class="header__links"
-        >
-          <nuxt-link
-            v-for="(item, i) in headerLinksWorker"
-            :key="i"
-            :to="item.url"
+            :to="item.path"
             class="header__link"
             :exact-active-class="'header__link_active'"
           >
@@ -207,14 +154,9 @@
                   <div
                     v-if="userData.role === UserRole.EMPLOYER"
                     class="profile__text profile__text_blue"
+                    :class="userData.role === UserRole.EMPLOYER ? 'profile__text_blue' : 'profile__text_green'"
                   >
-                    {{ $t('role.employer') }}
-                  </div>
-                  <div
-                    v-if="userData.role === UserRole.WORKER"
-                    class="profile__text profile__text_green"
-                  >
-                    {{ $t('role.worker') }}
+                    {{ userData.role === UserRole.EMPLOYER ? $t('role.employer') : $t('role.worker') }}
                   </div>
                 </div>
               </div>
@@ -247,114 +189,102 @@
         </base-btn>
       </div>
     </div>
-    <template v-if="isMobileMenu">
-      <div
-        class="ctm-menu"
-        :class="{'ctm-menu_opened': isMobileMenu}"
-      >
-        <div class="ctm-menu__content">
-          <div
-            v-if="isMobileMenu"
-            class="user"
-            @click="toggleUserDD()"
-          >
+    <div
+      v-if="isMobileMenu"
+      class="header__ctm-menu ctm-menu_opened"
+    >
+      <div class="ctm-menu__content">
+        <div
+          class="ctm-menu__user"
+          @click="toggleUserDD()"
+        >
+          <div class="user__container">
+            <div class="user__avatar">
+              <img
+                id="userAvatarMobile"
+                class="profile__img"
+                :src="imageData ? imageData : require('~/assets/img/app/avatar_empty.png')"
+                alt=""
+              >
+            </div>
+            <div class="user__data">
+              <div class="user__name">
+                {{ `${userData.firstName} ${userData.lastName}` }}
+              </div>
+              <div class="user__role">
+                {{ userData.role === UserRole.EMPLOYER ? $t('role.employer') : $t('role.worker') }}
+              </div>
+            </div>
+          </div>
+          <div class="user__dropdown">
             <div class="user__container">
-              <div class="user-container__avatar">
-                <img
-                  id="userAvatarMobile"
-                  class="profile__img"
-                  :src="imageData ? imageData : require('~/assets/img/app/avatar_empty.png')"
-                  alt=""
-                >
-              </div>
-              <div class="user-container__user">
-                <div class="user__name">
-                  {{ `${userData.firstName} ${userData.lastName}` }}
-                </div>
-                <div class="user__role">
-                  {{ userData.role === UserRole.EMPLOYER ? $t('role.employer') : $t('role.worker') }}
-                </div>
+              <div class="user__dropdown-icon">
+                <span :class="isUserDDOpened ? 'icon-caret_up' : 'icon-caret_down'" />
               </div>
             </div>
-            <div class="user-container__dropdown">
-              <div class="user__container">
-                <div class="user__dropdown">
-                  <span :class="isUserDDOpened ? 'icon-caret_up' : 'icon-caret_down'" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            v-if="isUserDDOpened"
-            class="user-dropdown__container"
-          >
-            <div
-              v-for="(item, i) in userDDLinks"
-              :key="i"
-            >
-              <div
-                class="user-dropdown__link"
-                :class="item.title === 'Logout' ? 'user-dropdown__link_logout' : ''"
-                @click="toRoute(item.link)"
-              >
-                {{ item.title }}
-              </div>
-            </div>
-          </div>
-          <div class="mobile__links">
-            <div
-              v-for="(item, i) in mobileMenuLinks"
-              :key="i"
-            >
-              <div
-                class="mobile__link"
-                @click="toRoute(item.path)"
-              >
-                {{ item.title }}
-              </div>
-            </div>
-          </div>
-          <div
-            class="mobile-dropdown"
-            @click="toggleInstrumentDD()"
-          >
-            <div class="mobile-dropdown__btn">
-              <div class="mobile-dropdown__title">
-                {{ $t('ui.profile.DeFi') }}
-              </div>
-              <div class="mobile-dropdown__arrow">
-                <span :class="isInstrumentDropdownOpened ? 'icon-caret_up' : 'icon-caret_down'" />
-              </div>
-            </div>
-          </div>
-          <div
-            v-if="isInstrumentDropdownOpened"
-            class="mobile-dropdown__container"
-          >
-            <div
-              v-for="(item, i) in instrumentDDLinks"
-              :key="i"
-            >
-              <div
-                class="instrument-dropdown__link"
-                @click="toRoute(item.link)"
-              >
-                {{ item.title }}
-              </div>
-            </div>
-          </div>
-          <div class="ctm__actions">
-            <base-btn
-              v-if="userData.role === UserRole.EMPLOYER"
-              class="ctm__btn"
-              @click="createNewQuest('mobile')"
-            >
-              {{ $t('layout.create') }}
-            </base-btn>
           </div>
         </div>
+        <div
+          v-if="isUserDDOpened"
+          class="ctm-menu__dropdown"
+        >
+          <div
+            v-for="(item, i) in userDDLinks"
+            :key="i"
+            class="dropdown__link"
+            :class="item.title === 'Logout' ? 'user-dropdown__link_logout' : ''"
+            @click="toRoute(item.link)"
+          >
+            {{ item.title }}
+          </div>
+        </div>
+        <div class="ctm-menu__links">
+          <div
+            v-for="(item, i) in headerLinks"
+            :key="i"
+            class="ctm-menu__link"
+            @click="toRoute(item.path)"
+          >
+            {{ item.title }}
+          </div>
+        </div>
+        <div
+          class="ctm-menu__dropdown"
+          @click="toggleInstrumentDD()"
+        >
+          <div class="dropdown__btn">
+            <div class="dropdown__title">
+              {{ $t('ui.profile.DeFi') }}
+            </div>
+            <div class="dropdown__arrow">
+              <span :class="isInstrumentDropdownOpened ? 'icon-caret_up' : 'icon-caret_down'" />
+            </div>
+          </div>
+        </div>
+        <div
+          v-if="isInstrumentDropdownOpened"
+          class="ctm-menu__dropdown-data"
+        >
+          <div
+            v-for="(item, i) in instrumentDDLinks"
+            :key="i"
+            class="dropdown-data__link"
+            @click="toRoute(item.link)"
+          >
+            {{ item.title }}
+          </div>
+        </div>
+        <div class="ctm-menu__actions">
+          <base-btn
+            v-if="userData.role === UserRole.EMPLOYER"
+            class="ctm-menu__btn"
+            @click="createNewQuest('mobile')"
+          >
+            {{ $t('layout.create') }}
+          </base-btn>
+        </div>
       </div>
-    </template>
+    </div>
   </div>
 </template>
 
@@ -366,14 +296,13 @@ import { MessageAction, UserRole } from '~/utils/enums';
 
 export default {
   scrollToTop: true,
-  name: 'DefaultLayout',
+  name: 'Header',
   middleware: 'auth',
   directives: {
     ClickOutside,
   },
   data() {
     return {
-      localUserData: {},
       isInstrumentDropdownOpened: false,
       isUserDDOpened: false,
       isShowProfile: false,
@@ -383,54 +312,29 @@ export default {
       isMobileMenu: false,
       isNotFlexContainer: false,
       currentLocale: '',
+      headerLinks: [
+        {
+          path: '/my',
+          title: this.$t('ui.myQuests'),
+        },
+        {
+          path: '/wallet',
+          title: this.$t('ui.wallet'),
+        },
+      ],
     };
   },
   computed: {
     ...mapGetters({
-      isLoading: 'main/getIsLoading',
       userData: 'user/getUserData',
       imageData: 'user/getImageData',
       token: 'user/accessToken',
       connections: 'data/notificationsConnectionStatus',
       chatId: 'chat/getCurrChatId',
       messagesFilter: 'chat/getMessagesFilter',
-      isChatOpened: 'chat/isChatOpened',
       unreadMessagesCount: 'user/getUnreadChatsCount',
-      chats: 'chat/getChats',
     }),
     UserRole() { return UserRole; },
-    headerLinksWorker() {
-      return [
-        {
-          url: '/quests',
-          title: this.$t('ui.quests'),
-        },
-        {
-          url: '/my',
-          title: this.$t('ui.myQuests'),
-        },
-        {
-          url: '/wallet',
-          title: this.$t('ui.wallet'),
-        },
-      ];
-    },
-    headerLinksEmployer() {
-      return [
-        {
-          url: '/workers',
-          title: this.$t('ui.jobQuestors'),
-        },
-        {
-          url: '/my',
-          title: this.$t('ui.myQuests'),
-        },
-        {
-          url: '/wallet',
-          title: this.$t('ui.wallet'),
-        },
-      ];
-    },
     locales() {
       return this.$i18n.locales.map((item) => ({
         localeSrc: `${item}.svg`,
@@ -470,22 +374,6 @@ export default {
         {
           link: '/staking',
           title: this.$t('ui.menu.staking.title'),
-        },
-      ];
-    },
-    mobileMenuLinks() {
-      return [
-        {
-          path: '/quests',
-          title: this.$t('ui.quests'),
-        },
-        {
-          path: '/my',
-          title: this.$t('ui.myQuests'),
-        },
-        {
-          path: '/wallet',
-          title: this.$t('ui.wallet'),
         },
       ];
     },
@@ -578,8 +466,8 @@ export default {
   async mounted() {
     await this.initWSListeners();
     this.GetLocation();
-    this.localUserData = JSON.parse(JSON.stringify(this.userData));
     this.currentLocale = this.$i18n.localeProperties.code;
+    this.initHeaderLinks();
   },
   created() {
     window.addEventListener('resize', this.userWindowChange);
@@ -589,6 +477,19 @@ export default {
     this.$wsChat.disconnect();
   },
   methods: {
+    initHeaderLinks() {
+      if (this.userData.role === this.UserRole.EMPLOYER) {
+        this.headerLinks.unshift({
+          path: '/workers',
+          title: this.$t('ui.jobQuestors'),
+        });
+      } else {
+        this.headerLinks.unshift({
+          path: '/quests',
+          title: this.$t('ui.quests'),
+        });
+      }
+    },
     async initWSListeners() {
       const { chatConnection, chatActionsConnection, notifsConnection } = this.connections;
       if (!chatConnection) {
@@ -733,85 +634,18 @@ export default {
 </script>
 <style lang="scss" scoped>
 
-.block {
-  //pointer-events: none;
-}
-.mobile {
-  &-dropdown {
-    border-bottom: 1px solid $black0;
-    &__btn {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-    }
-    &__title {
-      padding: 16px 0 20px 20px;
-    }
-    &__arrow {
-      justify-self: flex-end;
-      padding: 16px 20px 0 0;
-    }
-    &__container {}
-  }
-  &__links {
-    display: flex;
-    flex-direction: column;
-  }
-  &__link {
-    padding: 16px 20px 16px 20px;
-    font-weight: 400;
-    font-size: 16px;
-    color: $black800;
-    border-bottom: 1px solid $black0;
-    transition: 1s;
-    text-decoration: none;
-    &:hover {
-      @extend .mobile__link;
-      background: $blue;
-      color: $white;
-      font-weight: 600;
-    }
-  }
-}
-.instrument-dropdown {
-  &__link {
-    @extend .mobile__link;
-    display: flex;
-    flex-direction: column;
-    color: $black600;
-    padding: 16px 0 20px 35px;
-  }
-}
 .user {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  &-dropdown {
-    &__link {
-      @extend .mobile__link;
-      display: flex;
-      flex-direction: column;
-      background: $black0;
-      padding: 16px 0 20px 20px;
-      &_logout {
-        color: $red;
-      }
-    }
+  &__data {
+    padding: 15px 0 0 0;
+    display: grid;
   }
-  &-container {
-    &__avatar {
-      padding: 15px;
-    }
-    &__user {
-      padding: 15px 0 0 0;
-      display: grid;
-    }
-  }
-  &__dropdown {
+  &__dropdown-icon {
     align-self: center;
   }
   &__container {
     display: flex;
     flex-direction: row;
+    align-items: center;
     background: $black0;
     max-height: 70px;
     height: 100%;
@@ -824,7 +658,9 @@ export default {
     max-width: 40px;
     height: 100%;
     width: 100%;
-    border-radius: 137px;
+    border-radius: 50%;
+    margin-left: 20px;
+    margin-right: 10px;
   }
   &__name {
     font-weight: 500;
@@ -854,152 +690,6 @@ export default {
     @extend .icon;
     content: "\e948";
     color: #2e3a59;
-  }
-}
-.ctm {
-  &-open {
-    display: flex;
-    width: 100%;
-  }
-  &__actions {
-    padding: 20px;
-  }
-  &-menu {
-    display: none;
-    transition: .2s;
-    &_opened {
-      box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
-      overflow-y: auto;
-      background: $white;
-      display: flex;
-      width: 100%;
-      position: fixed;
-      top: 73px;
-      bottom: 0;
-      right: 0;
-      left: 0;
-      z-index: 9999;
-    }
-    &__content {
-      height: 100%;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      background: $white;
-      border-radius: 0 0 5px 5px;
-      &_hide {
-        width: 0;
-      }
-    }
-  }
-}
-.primary {
-  height: 100vh;
-  overflow-y: auto;
-  background: #F7F8FA;
-}
-.template {
-  min-height: 100vh;
-  background: #F7F8FA;
-  &__content {
-    display: grid;
-    grid-template-rows: 72px 1fr auto;
-    min-height: 100vh;
-
-    &_rows {
-      grid-template-rows: 72px 1fr 72px;
-    }
-  }
-  &__main {
-    display: grid;
-    padding-bottom: 80px;
-    transition: 1s;
-    width: 100%;
-
-    &_padding {
-      padding-bottom: 0;
-    }
-  }
-}
-.profile {
-  position: absolute;
-  top: 57px;
-  right: calc(100% - 43px);
-  background: #FFFFFF;
-  box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
-  border-radius: 6px;
-  min-width: 223px;
-  width: 100%;
-  min-height: 235px;
-  z-index: 10000000;
-  &__img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-  &__header {
-    border-bottom: 1px solid #F7F8FA;
-    display: grid;
-    grid-template-columns: 40px 1fr;
-    padding: 15px;
-    grid-gap: 10px;
-  }
-  &__avatar {
-    max-width: 40px;
-    max-height: 40px;
-    border-radius: 100%;
-  }
-  &__items {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-items: flex-start;
-  }
-  &__item {
-    height: 41px;
-    background: #FFFFFF;
-    display: flex;
-    align-items: center;
-    padding: 0 15px;
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 130%;
-    color: $black800;
-    width: 100%;
-    transition: .3s;
-    border-radius: 6px;
-    &_red {
-      color: $red;
-    }
-    &:hover {
-      background: #F7F8FA;
-    }
-  }
-  &__text {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 130%;
-    color: $black800;
-    &_blue {
-      font-weight: normal;
-      font-size: 12px;
-      color: $blue;
-    }
-    &_green {
-      font-weight: normal;
-      font-size: 12px;
-      color: $green;
-    }
-  }
-  &__info {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 5px;
-    text-align: left;
   }
 }
 .header {
@@ -1114,6 +804,177 @@ export default {
       color: $black700;
     }
   }
+  &__ctm-menu {
+    transition: .2s;
+  }
+}
+.ctm-menu {
+  &_opened {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+    overflow-y: auto;
+    background: $white;
+    display: flex;
+    width: 100%;
+    position: fixed;
+    top: 73px;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 9999;
+  }
+  &__content {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background: $white;
+    border-radius: 0 0 5px 5px;
+    &_hide {
+      width: 0;
+    }
+  }
+  &__user {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  &__links {
+    display: flex;
+    flex-direction: column;
+  }
+  &__link {
+    padding: 16px 20px 16px 20px;
+    font-weight: 400;
+    font-size: 16px;
+    color: $black800;
+    border-bottom: 1px solid $black0;
+    transition: 1s;
+    text-decoration: none;
+    &:hover {
+      background: $blue;
+      color: $white;
+      font-weight: 600;
+    }
+  }
+  &__actions {
+    padding: 20px;
+  }
+  &__toggle {
+    display: none;
+  }
+}
+.dropdown {
+  &__link {
+    @extend .ctm-menu__link;
+    display: flex;
+    flex-direction: column;
+    background: $black0;
+    padding: 16px 0 20px 30px;
+    &_logout {
+      color: $red;
+    }
+  }
+  &__btn {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  &__title {
+    padding: 16px 0 20px 20px;
+  }
+  &__arrow {
+    justify-self: flex-end;
+    padding: 16px 20px 0 0;
+  }
+}
+.dropdown-data {
+  &__link {
+    @extend .ctm-menu__link;
+    display: flex;
+    flex-direction: column;
+    background: $white;
+    padding: 16px 0 20px 30px
+  }
+}
+.profile {
+  position: absolute;
+  top: 57px;
+  right: calc(100% - 43px);
+  background: #FFFFFF;
+  box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
+  border-radius: 6px;
+  min-width: 223px;
+  width: 100%;
+  min-height: 235px;
+  z-index: 10000000;
+  &__img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  &__header {
+    border-bottom: 1px solid #F7F8FA;
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    padding: 15px;
+    grid-gap: 10px;
+  }
+  &__avatar {
+    max-width: 40px;
+    max-height: 40px;
+    border-radius: 100%;
+  }
+  &__items {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: flex-start;
+  }
+  &__item {
+    height: 41px;
+    background: #FFFFFF;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 130%;
+    color: $black800;
+    width: 100%;
+    transition: .3s;
+    border-radius: 6px;
+    &_red {
+      color: $red;
+    }
+    &:hover {
+      background: #F7F8FA;
+    }
+  }
+  &__text {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 130%;
+    color: $black800;
+    &_blue {
+      font-weight: normal;
+      font-size: 12px;
+      color: $blue;
+    }
+    &_green {
+      font-weight: normal;
+      font-size: 12px;
+      color: $green;
+    }
+  }
+  &__info {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 5px;
+    text-align: left;
+  }
 }
 .menu {
   position: absolute;
@@ -1222,11 +1083,7 @@ export default {
     color: $black500;
   }
 }
-.ctm-menu {
-  &__toggle {
-    display: none;
-  }
-}
+
 @include _1199 {
   .ctm-menu {
     &__toggle {

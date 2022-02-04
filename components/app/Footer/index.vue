@@ -477,44 +477,50 @@ export default {
       height: 40px;
       transition: all 0.5s;
       &_twitter {
-        background-image: url('assets/img/social/footer_twitter.svg')
+        background-image: url('assets/img/social/footer_twitter.svg');
+        border-radius: 10px;
       }
       &_twitter:hover {
         background-image: url('assets/img/social/footer_twitter_active.svg')
       }
       &_youtube {
-        background-image: url('assets/img/social/footer_youtube.svg')
+        background-image: url('assets/img/social/footer_youtube.svg');
+        border-radius: 10px;
       }
       &_youtube:hover {
         background-image: url('assets/img/social/footer_youtube_active.svg')
       }
       &_reddit {
-        background-image: url('assets/img/social/footer_reddit.svg')
+        background-image: url('assets/img/social/footer_reddit.svg');
+        border-radius: 10px;
       }
       &_reddit:hover {
         background-image: url('assets/img/social/footer_reddit_active.svg')
       }
       &_facebook {
-        background-image: url('assets/img/social/footer_facebook.svg')
+        background-image: url('assets/img/social/footer_facebook.svg');
+        border-radius: 10px;
       }
       &_facebook:hover {
         background-image: url('assets/img/social/footer_facebook_active.svg')
       }
       &_linkedin {
-        background-image: url('assets/img/social/footer_linkedin.svg')
+        background-image: url('assets/img/social/footer_linkedin.svg');
+        border-radius: 10px;
       }
       &_linkedin:hover {
         background-image: url('assets/img/social/footer_linkedin_active.svg')
       }
       &_instagram {
-        background-image: url('assets/img/social/footer_instagram.svg')
+        background-image: url('assets/img/social/footer_instagram.svg');
+        border-radius: 10px;
       }
       &_instagram:hover {
         background-image: url('assets/img/social/footer_instagram_active.svg')
       }
       &_telegram {
         background-image: url('assets/img/social/footer_telegram.svg');
-        border-radius: 4px;
+        border-radius: 10px;
       }
       &_telegram:hover {
         background-image: url('assets/img/social/footer_telegram_active.svg')
