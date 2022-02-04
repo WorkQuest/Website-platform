@@ -41,52 +41,19 @@ export default {
   directives: {
     ClickOutside,
   },
-  data() {
-    return {
-      isShowProfile: false,
-
-      isShowAdditionalMenu: false,
-      isShowLocale: false,
-      isMobileMenu: false,
-      isNotFlexContainer: true,
-      currentLocale: '',
-    };
-  },
   computed: {
     ...mapGetters({
       isLoading: 'main/getIsLoading',
       userData: 'user/getUserData',
-      token: 'user/accessToken',
-      connections: 'data/notificationsConnectionStatus',
-      chatId: 'chat/getCurrChatId',
-      messagesFilter: 'chat/getMessagesFilter',
       isChatOpened: 'chat/isChatOpened',
     }),
   },
-  watch: {
-    $route() {
-      this.$refs.templateScroll.scrollTop = 0;
-      this.closeAll();
-    },
-  },
   async mounted() {
-    this.currentLocale = this.$i18n.localeProperties.code;
-  },
-  created() {
-    window.addEventListener('resize', this.userWindowChange);
-  },
-  destroyed() {
-    window.removeEventListener('resize', this.userWindowChange);
-    this.$wsChat.disconnect();
+    this.GetLocation();
   },
   methods: {
     async getStatistic() {
       await this.$store.dispatch('user/getStatistic');
-    },
-    userWindowChange() {
-      this.isMobileMenu = false;
-      this.isNotFlexContainer = false;
-      this.closeAnother('mobile');
     },
     toMain() {
       if (this.userData.role === 'worker') {
@@ -96,49 +63,18 @@ export default {
         this.$router.push('/workers');
       }
     },
-    closeAnother(value) {
-      switch (value) {
-        case 'mobile':
-          this.isShowProfile = false;
-          this.isShowLocale = false;
-          this.isShowAdditionalMenu = false;
-          break;
-        case 'instruments':
-          this.isShowProfile = false;
-          this.isShowLocale = false;
-          break;
-        case 'profile':
-          this.isShowAdditionalMenu = false;
-          this.isShowLocale = false;
-          break;
-        case 'locale':
-          this.isShowAdditionalMenu = false;
-          this.isShowProfile = false;
-          break;
-        default:
-          break;
-      }
-    },
-    closeAll() {
-      this.isShowProfile = false;
-      this.isShowAdditionalMenu = false;
-      this.isShowLocale = false;
-    },
   },
 };
 </script>
 <style lang="scss" scoped>
-
 .primary {
   height: 100vh;
   overflow-y: auto;
   background: #F7F8FA;
 }
-
 .template {
   min-height: 100vh;
   background: #F7F8FA;
-
   &__content {
     display: grid;
     grid-template-rows: 72px 1fr auto;
@@ -148,7 +84,6 @@ export default {
       grid-template-rows: 72px 1fr 72px;
     }
   }
-
   &__main {
     display: grid;
     padding-bottom: 80px;
