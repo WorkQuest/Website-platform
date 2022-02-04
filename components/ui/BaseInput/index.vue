@@ -72,7 +72,7 @@
       v-if="!isHideError"
       class="ctm-field__err"
     >
-      {{ error ? error : errors[0] }}
+      {{ error || errors[0] }}
     </div>
   </ValidationProvider>
 </template>
