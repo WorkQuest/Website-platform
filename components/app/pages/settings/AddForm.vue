@@ -72,13 +72,12 @@ export default {
   },
   data() {
     return {
-      error: '',
+      error: null,
     };
   },
   methods: {
     validationDate(item) {
       if (item.from > item.to) this.error = 'Field value To more than field value From';
-      else this.error = '';
     },
   },
 };
