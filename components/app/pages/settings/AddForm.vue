@@ -77,11 +77,6 @@ export default {
       default: true,
     },
   },
-  data() {
-    return {
-      error: null,
-    };
-  },
 };
 </script>
 
