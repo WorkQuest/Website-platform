@@ -47,7 +47,7 @@
               </div>
             </nuxt-link>
             <item-rating
-              v-if="assignedWorker.ratingStatistic.status !== 'noStatus'"
+              v-if="assignedWorker.ratingStatistic && assignedWorker.ratingStatistic.status !== 'noStatus'"
               :rating="assignedWorker.ratingStatistic.status"
             />
           </div>

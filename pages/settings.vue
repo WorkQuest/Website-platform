@@ -129,9 +129,9 @@ export default {
       lastName: this.userData.lastName,
       email: this.userData.email,
       firstPhone: {
-        codeRegion: this.userData.tempPhone?.codeRegion || this.userData.phone?.codeRegion || null,
-        phone: this.userData.tempPhone?.phone || this.userData.phone?.phone || null,
-        fullPhone: this.userData.tempPhone?.fullPhone || this.userData.tempPhone?.fullPhone || null,
+        codeRegion: this.userData.phone?.codeRegion || this.userData.tempPhone?.codeRegion,
+        phone: this.userData.phone?.phone || this.userData.tempPhone?.phone,
+        fullPhone: this.userData.phone?.fullPhone || this.userData.tempPhone?.fullPhone,
       },
       additionalInfo: {
         secondMobileNumber: {
