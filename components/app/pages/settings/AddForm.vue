@@ -10,6 +10,7 @@
       :placeholder="$t('settings.workExps.from')"
       :rules="`between-date:${$moment().add(-100, 'years').format('yyyy/MM/DD')},${item.to}`"
       :validation-mode="validationMode"
+      :error="error"
       @blur="$emit('blur')"
     />
     <span class="knowledge__dash">
