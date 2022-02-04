@@ -165,7 +165,6 @@ export default {
   },
   mounted() {
     this.focus();
-    this.error = this.errors;
   },
   methods: {
     focus() {
