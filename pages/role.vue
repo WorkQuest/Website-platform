@@ -104,8 +104,9 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { WalletState } from '~/utils/enums';
+import { UserStatuses, WalletState } from '~/utils/enums';
 import CreateWallet from '~/components/ui/CreateWallet';
 
 export default {
@@ -122,11 +123,22 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      userData: 'user/getUserData',
+    }),
     walletState() {
       return WalletState;
     },
   },
   async mounted() {
+    const access = this.$cookies.get('access');
+    const refresh = this.$cookies.get('refresh');
+    const userStatus = this.$cookies.get('userStatus');
+    if (!access || !refresh || !userStatus) {
+      await this.$router.push('/sign-in');
+      return;
+    }
+    if (userStatus === UserStatuses.Confirmed && !this.userData?.wallet?.address) this.step = WalletState.ImportOrCreate;
     const { left, right } = this.$refs;
     left.addEventListener('mouseover', () => right.classList.add('role__card_minimized'));
     left.addEventListener('mouseleave', () => right.classList.remove('role__card_minimized'));
@@ -136,20 +148,33 @@ export default {
   methods: {
     goStep(step) {
       if (this.step === WalletState.ImportMnemonic) this.step = WalletState.ImportOrCreate;
-      else if (this.step === WalletState.SaveMnemonic) this.step = WalletState.ImportOrCreate;
       else this.step = step;
     },
-    async assignWallet(wallet) {
-      console.log(wallet);
-    },
     showPrivacy(role) {
-      // this.ShowModal({
-      //   key: modals.privacy,
-      //   role,
-      // });
-
-      // TODO: move from privacy modal to create wallet
+      this.ShowModal({
+        key: modals.privacy,
+        callback: () => this.goToAssignWallet(),
+        role,
+      });
+    },
+    goToAssignWallet() {
       this.step = WalletState.ImportOrCreate;
+    },
+    async assignWallet(wallet) {
+      const res = await this.$store.dispatch('user/registerWallet', {
+        address: wallet.address.toLowerCase(),
+        publicKey: wallet.publicKey,
+      });
+      if (res.ok) {
+        // TODO: CONNECT WALLET HERE!
+        if (this.userData.role === 'employer') {
+          await this.$router.push('/workers');
+        } else if (this.userData.role === 'worker') {
+          await this.$router.push('/quests');
+        }
+        return;
+      }
+      this.ShowToast(res.msg);
     },
   },
 };

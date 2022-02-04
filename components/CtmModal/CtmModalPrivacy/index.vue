@@ -91,41 +91,33 @@ export default {
     async onSubmit() {
       if (this.$cookies.get('userStatus') === UserStatuses.NeedSetRole) {
         this.$cookies.set('role', this.options.role);
-        try {
-          await this.$store.dispatch('user/setUserRole', { role: this.options.role });
-          const response = await this.$store.dispatch('user/getUserData');
-          console.log(response);
-          if (response?.ok) {
-            await this.$store.dispatch('user/getStatistic');
-            if (this.userData.role === 'employer') {
-              await this.$router.push('/workers');
-            } else if (this.userData.role === 'worker') {
-              await this.$router.push('/quests');
-            }
+        await this.$store.dispatch('user/setUserRole', { role: this.options.role });
+        const response = await this.$store.dispatch('user/getUserData');
+        if (response?.ok) {
+          await this.$store.dispatch('user/getStatistic'); // todo: что это?
+          await this.$store.dispatch('user/getUserData');
+          if (!this.userData?.wallet?.address) {
+            this.options.callback();
+            this.CloseModal();
+            return;
           }
-        } catch (e) {
-          console.log(e);
         }
       } else {
-        try {
-          const payload = {
-            confirmCode: this.options.confirmCode,
-            role: this.options.role,
-          };
-          const response = await this.$store.dispatch('user/confirm', payload);
-          if (response?.ok) {
-            await this.$store.dispatch('main/showToast', {
-              title: this.$t('modals.success'),
-              text: this.$t('modals.yourAccountVerified'),
-            });
-            if (this.$cookies.get('role') === 'employer') {
-              this.$router.push('/workers');
-            } else if (this.$cookies.get('role') === 'worker') {
-              this.$router.push('/quests');
-            }
+        const payload = {
+          confirmCode: this.options.confirmCode,
+          role: this.options.role,
+        };
+        const response = await this.$store.dispatch('user/confirm', payload);
+        if (response?.ok) {
+          await this.$store.dispatch('main/showToast', {
+            title: this.$t('modals.success'),
+            text: this.$t('modals.yourAccountVerified'),
+          });
+          if (this.$cookies.get('role') === 'employer') {
+            await this.$router.push('/workers');
+          } else if (this.$cookies.get('role') === 'worker') {
+            await this.$router.push('/quests');
           }
-        } catch (e) {
-          console.log(e);
         }
       }
       this.CloseModal();

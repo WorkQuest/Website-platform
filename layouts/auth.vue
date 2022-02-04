@@ -36,6 +36,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { UserStatuses } from '~/utils/enums';
 
 export default {
   scrollToTop: true,
@@ -80,13 +81,23 @@ export default {
   },
   async mounted() {
     const { access, refresh, userStatus } = this.$route.query;
+    this.$cookies.set('access', access, { path: '/' });
+    this.$cookies.set('refresh', refresh, { path: '/' });
+    this.$cookies.set('userStatus', userStatus, { path: '/' });
     if (access && refresh && userStatus) {
-      this.$store.commit('user/setTokens', { access, refresh, userStatus });
-      if (parseInt(userStatus, 10) === 2) {
-        console.log('hrer??');
+      await this.$store.commit('user/setTokens', { access, refresh, userStatus });
+      if (+userStatus === UserStatuses.NeedSetRole) {
         await this.$router.push('/role');
       } else {
         await this.$store.dispatch('user/getUserData');
+        if (!this.userData?.wallet?.address) {
+          await this.$router.push('/role');
+        }
+
+        // TODO: if wallet is not imported => go to sign in page, import mnemonic
+        // TODO: check if wallet is connected (mnemonic is imported from session/local storage
+        // Then go next down
+
         await this.getStatistic();
         if (this.userData.role === 'employer') {
           await this.$router.push('/workers');

@@ -109,16 +109,14 @@
       </div>
       <div class="wallet__action">
         <base-btn @click="$emit('goStep', walletState.SaveMnemonic)">
-          save
-          <slot name="actionText">
+          <slot>
             {{ $t('createWallet.create') }}
           </slot>
         </base-btn>
       </div>
       <div class="wallet__action">
-        {{ $t('createWallet.importWallet') }}
         <base-btn @click="$emit('goStep', walletState.ImportMnemonic)">
-          <slot name="actionText">
+          <slot>
             {{ $t('createWallet.importWallet') }}
           </slot>
         </base-btn>

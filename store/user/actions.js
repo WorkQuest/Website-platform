@@ -107,9 +107,13 @@ export default {
     commit('logOut');
   },
   async confirm({ commit }, payload) {
-    commit('setTokens', { access: this.$cookies.get('access'), refresh: this.$cookies.get('refresh') });
-    this.$cookies.set('role', payload.role);
-    return await this.$axios.$post('/v1/auth/confirm-email', payload);
+    try {
+      commit('setTokens', { access: this.$cookies.get('access'), refresh: this.$cookies.get('refresh') });
+      this.$cookies.set('role', payload.role);
+      return await this.$axios.$post('/v1/auth/confirm-email', payload);
+    } catch (e) {
+      return false;
+    }
   },
   async getUserData({ commit }) {
     try {
@@ -119,7 +123,8 @@ export default {
       if (result.wallet?.address) connectWithMnemonic(result.wallet.address);
       return response;
     } catch (e) {
-      return console.error(e);
+      console.error(e);
+      return false;
     }
   },
   async getAnotherUserData({ commit }, payload) {
@@ -131,9 +136,13 @@ export default {
     commit('setAnotherUserData', {});
   },
   async setUserRole({ commit }, payload) {
-    const response = await this.$axios.$post('/v1/profile/set-role', payload);
-    commit('setUserRole', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$post('/v1/profile/set-role', payload);
+      commit('setUserRole', response.result);
+      return response;
+    } catch (e) {
+      return false;
+    }
   },
   async editEmployerData({ commit }, payload) {
     try {

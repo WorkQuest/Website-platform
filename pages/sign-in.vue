@@ -172,7 +172,7 @@ export default {
     },
   },
   beforeDestroy() {
-    if (!this.addressAssigned) {
+    if (!this.addressAssigned && !this.$cookies.get('access') && !this.$cookies.get('userStatus')) {
       this.$store.dispatch('user/logout');
     }
   },
