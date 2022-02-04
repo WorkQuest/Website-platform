@@ -25,7 +25,7 @@
       :placeholder="$t('settings.workExps.to')"
       :rules="`between-date:${item.from},${$moment().add(10, 'years').format('yyyy/MM/DD')}`"
       :validation-mode="validationMode"
-      :error="item.from > item.to ? error : ''"
+      :error="error"
       @blur="$emit('blur')"
     />
     <base-field
