@@ -23,8 +23,8 @@
             <base-dd
               v-model="skillIndex[key]"
               class="specialization__dd"
-              :type="specIndex[key] < 0 ? 'disabled' : 'gray'"
-              :disabled="specIndex[key] < 0"
+              :type="specIndex[key] < 0 || selectedSkills[key].length === 5 ? 'disabled' : 'gray'"
+              :disabled="specIndex[key] < 0 || selectedSkills[key].length === 5"
               :placeholder="$t('settings.selectSkills')"
               :items="skillsNames[displaySpecIndex[key]]"
               :mode="'small'"
