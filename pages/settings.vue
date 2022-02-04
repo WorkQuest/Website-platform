@@ -190,7 +190,6 @@ export default {
         this.newEducation = [];
         this.newEducation.push({ ...data });
         this.profile.additionalInfo.educations = educations.concat(this.newEducation);
-        console.log(this.newEducation);
       } else {
         this.newWorkExp = [];
         this.newWorkExp.push({ ...data });

@@ -3,7 +3,6 @@
     v-slot="{handleSubmit, invalid}"
     tag="div"
     class="knowledge"
-    :rules="`from-to:${item.from},${item.to}`"
   >
     <base-field
       v-model="item.from"
@@ -46,7 +45,7 @@
     <base-btn
       class="knowledge__btn"
       :disabled="!item.from || !item.to || !item.place || invalid"
-      @click="handleSubmit($emit('click'))"
+      @click="$emit('click')"
     >
       {{ isAdding ? $t('settings.add') : $t('settings.delete') }}
     </base-btn>
