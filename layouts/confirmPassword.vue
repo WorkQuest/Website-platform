@@ -5,7 +5,7 @@
         {{ $t('securityCheck.confirmAccess') }}
       </div>
       <div class="confirm__text">
-        {{ $t('securityCheck.confirmPassToContinue') }}
+        {{ isImportWallet ? $t('createWallet.typeSecretPhrase') : $t('securityCheck.confirmPassToContinue') }}
       </div>
       <ValidationObserver
         v-slot="{ handleSubmit, valid }"
@@ -13,6 +13,7 @@
         @submit.prevent="submit"
       >
         <base-field
+          v-if="!isImportWallet"
           v-model="password"
           :placeholder="$t('signUp.password')"
           :name="$t('signUp.password')"
@@ -22,7 +23,35 @@
           vid="confirmation"
           autocomplete="current-password"
         />
-        <base-btn :disabled="!valid || isLoading">
+        <base-field
+          v-else
+          v-model="mnemonic"
+          rules="required|mnemonic"
+          :placeholder="$t('createWallet.secretPhrase')"
+          :name="$t('createWallet.secretPhrase')"
+          :type="mnemonicInputType"
+        />
+        <div
+          v-if="isImportWallet"
+          class="confirm__visibility"
+        >
+          <input
+            id="showMnemonic"
+            v-model="isShowMnemonic"
+            type="checkbox"
+            class="confirm__visibility_box"
+          >
+          <label
+            for="showMnemonic"
+            class="confirm__visibility_label"
+          >
+            {{ $t('createWallet.showSecretPhrase') }}
+          </label>
+        </div>
+        <base-btn
+          class="confirm__submit"
+          :disabled="!valid || isLoading"
+        >
           {{ $t('meta.submit') }}
         </base-btn>
       </ValidationObserver>
@@ -32,6 +61,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { connectWithMnemonic } from '~/utils/wallet';
 
 export default {
   name: 'ConfirmPassword',
@@ -42,7 +72,17 @@ export default {
       context: 'default',
       toDecrypt: null,
       counter: 1,
+
+      isImportWallet: false,
+      isShowMnemonic: false,
+      mnemonic: '',
+      mnemonicInputType: 'password',
     };
+  },
+  watch: {
+    isShowMnemonic(newVal) {
+      this.mnemonicInputType = newVal ? 'text' : 'password';
+    },
   },
   computed: {
     ...mapGetters({
@@ -62,6 +102,12 @@ export default {
       this.disconnect();
       return;
     }
+
+    if (this.$cookies.get('socialNetwork')) {
+      this.isImportWallet = true;
+      return;
+    }
+
     // Try to find mnemonic in storage by user wallet address
     // Checking session storage
     const session = JSON.parse(sessionStorage.getItem('mnemonic'));
@@ -91,11 +137,19 @@ export default {
     this.CloseModal();
   },
   methods: {
+    allowAccess() {
+      this.$nuxt.setLayout(this.callbackLayout);
+    },
     async submit() {
+      if (this.isImportWallet) {
+        this.handleImport();
+        return;
+      }
+
       const check = await this.$store.dispatch('wallet/checkPassword', this.password);
       if (check) {
         const res = await this.$store.dispatch('wallet/connectWallet', { userAddress: this.userAddress, userPassword: this.password });
-        if (res?.ok) this.$nuxt.setLayout(this.callbackLayout);
+        if (res?.ok) this.allowAccess();
       } else {
         if (this.counter >= 5) {
           this.disconnect(false);
@@ -105,6 +159,16 @@ export default {
           text: 'Wrong password!',
         });
         this.counter += 1;
+      }
+    },
+    handleImport() {
+      sessionStorage.setItem('mnemonic', JSON.stringify({
+        ...JSON.parse(sessionStorage.getItem('mnemonic')),
+        [this.userAddress]: this.mnemonic,
+      }));
+      if (connectWithMnemonic(this.userAddress)) this.allowAccess();
+      else {
+        this.ShowToast(this.$t('messages.mnemonic'));
       }
     },
     disconnect(showToast = true) {
@@ -148,6 +212,24 @@ export default {
   }
   &__password {
     margin-top: 20px;
+  }
+  &__submit {
+    margin-top: 20px;
+  }
+
+  &__visibility {
+    display: flex;
+    align-items: center;
+    &_label {
+      color: $black700;
+      margin: 0 0 0 10px !important;
+      user-select: none;
+    }
+    &_box {
+      width: 20px !important;
+      height: 20px !important;
+      cursor: pointer;
+    }
   }
 }
 @include _767 {

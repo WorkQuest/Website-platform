@@ -4,11 +4,13 @@ export default async function ({ app, redirect, store }) {
     const access = app.$cookies.get('access');
     const refresh = app.$cookies.get('refresh');
     const userStatus = app.$cookies.get('userStatus');
+    const social = app.$cookies.get('socialNetwork');
     const userData = store.getters['user/getUserData'];
     const payload = {
       access,
       refresh,
       userData,
+      social,
     };
 
     if (access && refresh) {

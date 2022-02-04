@@ -95,13 +95,15 @@ export const connectWallet = (userAddress, userPassword) => {
  */
 export const connectWithMnemonic = (userAddress) => {
   const sessionData = JSON.parse(sessionStorage.getItem('mnemonic'));
-  if (!sessionData) return;
+  if (!sessionData) return false;
   const mnemonic = sessionData[userAddress];
-  if (!mnemonic) return;
+  if (!mnemonic) return false;
   const _walletTemp = createWallet(mnemonic);
   if (_walletTemp && _walletTemp.address.toLowerCase() === userAddress) {
     wallet.init(_walletTemp.address.toLowerCase(), _walletTemp.privateKey);
+    return true;
   }
+  return false;
 };
 
 export const disconnect = () => {

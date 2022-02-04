@@ -123,7 +123,7 @@
       class="auth__back"
       @click="back"
     >
-      <span class="icon-long_left" /> {{ $t('meta.back') }}
+      <span class="icon-chevron_big_left" /> <span>{{ $t('meta.back') }}</span>
     </div>
     <CreateWallet
       :step="step"
@@ -160,6 +160,7 @@ export default {
       },
       remember: false,
       userStatus: null,
+      isLoginWithSocial: false,
     };
   },
   computed: {
@@ -170,6 +171,22 @@ export default {
     walletState() {
       return WalletState;
     },
+  },
+  async mounted() {
+    this.isLoginWithSocial = this.$cookies.get('socialNetwork');
+    const access = this.$cookies.get('access');
+    const refresh = this.$cookies.get('refresh');
+    const userStatus = this.$cookies.get('userStatus');
+    if (this.isLoginWithSocial
+      && access
+      && +userStatus === UserStatuses.Confirmed) {
+      this.step = WalletState.ImportMnemonic;
+      await this.$store.commit('user/setTokens', {
+        access, refresh, userStatus, social: this.isLoginWithSocial,
+      });
+      await this.$store.dispatch('user/getUserData');
+      this.userAddress = this.userData.wallet?.address;
+    }
   },
   beforeDestroy() {
     if (!this.addressAssigned && !this.$cookies.get('access') && !this.$cookies.get('userStatus')) {
@@ -183,7 +200,10 @@ export default {
         return;
       }
       if (this.step === WalletState.ImportMnemonic) {
-        this.step = !this.userAddress ? WalletState.ImportOrCreate : WalletState.Default;
+        if (this.isLoginWithSocial) {
+          this.step = WalletState.Default;
+          this.$store.dispatch('user/logout');
+        } else this.step = !this.userAddress ? WalletState.ImportOrCreate : WalletState.Default;
         return;
       }
       if (this.step === WalletState.SaveMnemonic) {
@@ -363,7 +383,18 @@ export default {
 <style lang="scss" scoped>
 .auth {
   &__back {
+    //padding-bottom: 10px;
     cursor: pointer;
+    display: table-cell;
+    color: $black700;
+    & > span {
+      color: $black700;
+      vertical-align: middle;
+      font-size: 18px;
+      &:not(:last-of-type) {
+        margin-right: 5px;
+      }
+    }
   }
   &__container {
     display: grid;

@@ -130,7 +130,7 @@ export default {
       return WalletState;
     },
   },
-  async mounted() {
+  async beforeCreate() {
     const access = this.$cookies.get('access');
     const refresh = this.$cookies.get('refresh');
     const userStatus = this.$cookies.get('userStatus');
@@ -139,6 +139,8 @@ export default {
       return;
     }
     if (userStatus === UserStatuses.Confirmed && !this.userData?.wallet?.address) this.step = WalletState.ImportOrCreate;
+  },
+  async mounted() {
     const { left, right } = this.$refs;
     left.addEventListener('mouseover', () => right.classList.add('role__card_minimized'));
     left.addEventListener('mouseleave', () => right.classList.remove('role__card_minimized'));
@@ -217,6 +219,7 @@ export default {
     display: table-cell;
     color: $black700;
     & > span {
+      color: $black700;
       vertical-align: middle;
       font-size: 18px;
       &:not(:last-of-type) {
