@@ -131,7 +131,7 @@
             v-for="(item, i) in inputs"
             :id="item.id"
             :key="i"
-            v-model="item.model"
+            v-model="models[item.model]"
             :label="item.label"
             :placeholder="item.placeholder"
             :rules="item.rules"
@@ -209,9 +209,11 @@ export default {
   data() {
     return {
       step: 1,
-      confirmEmailCode: '',
+      models: {
+        confirmEmailCode: '',
+        authCode: '',
+      },
       qrLink: '',
-      authCode: '',
       shopBtns: [
         {
           click: this.goToAppleStore,
@@ -228,7 +230,7 @@ export default {
       inputs: [
         {
           id: 'confirmEmailCode',
-          model: this.confirmEmailCode,
+          model: 'confirmEmailCode',
           label: this.$t('modals.emailVerificationCode'),
           placeholder: this.$t('modals.emailPlaceholder'),
           rules: 'required|alpha_num',
@@ -236,7 +238,7 @@ export default {
         },
         {
           id: 'twoFACode',
-          model: this.authCode,
+          model: 'authCode',
           label: this.$t('modals.googleVerificationCode'),
           placeholder: this.$t('modals.codePlaceholder'),
           rules: 'required|alpha_num',
@@ -284,8 +286,8 @@ export default {
     },
     async confirmEnable2FA() {
       const response = await this.$store.dispatch('user/confirmEnable2FA', {
-        confirmCode: this.confirmEmailCode,
-        totp: this.authCode,
+        confirmCode: this.models.confirmEmailCode,
+        totp: this.models.authCode,
       });
       this.hide();
       if (response.ok) {
