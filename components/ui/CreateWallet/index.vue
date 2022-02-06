@@ -16,9 +16,8 @@
       >
         <div class="wallet__mnemonic">
           <input
-            ref="showMnemonic"
             v-model="mnemonic"
-            type="password"
+            :type="inputType"
             disabled
             class="wallet__phrase-input"
           >
@@ -139,7 +138,22 @@
           rules="required|mnemonic"
           :placeholder="$t('createWallet.typeSecretPhrase')"
           :name="$t('createWallet.secretPhrase')"
+          :type="inputType"
         />
+        <div class="wallet__confirm-phrase">
+          <input
+            id="showMnemonicImport"
+            v-model="isShowMnemonic"
+            type="checkbox"
+            class="wallet__confirm-phrase_box"
+          >
+          <label
+            for="showMnemonicImport"
+            class="wallet__confirm-phrase_label"
+          >
+            {{ $t('createWallet.showSecretPhrase') }}
+          </label>
+        </div>
         <div class="wallet__action">
           <base-btn :disabled="!valid || isLoading">
             <slot name="actionText">
@@ -182,6 +196,7 @@ export default {
         first: '',
         second: '',
       },
+      inputType: 'password',
     };
   },
   computed: {
@@ -197,7 +212,7 @@ export default {
       if (newVal === WalletState.Default) this.generate();
     },
     isShowMnemonic(newVal) {
-      this.$refs.showMnemonic.type = newVal ? 'text' : 'password';
+      this.inputType = newVal ? 'text' : 'password';
     },
   },
   mounted() {
@@ -298,6 +313,7 @@ export default {
     border-radius: 12px;
     font-weight: 500;
     min-height: 50px;
+    margin-bottom: 20px;
     ::before {
       color: $black600;
     }
@@ -317,10 +333,8 @@ export default {
     border: none;
     width: 100%;
     height: 100%;
-    background: transparent;
   }
   &__confirm-phrase {
-    margin-top: 20px;
     display: flex;
     align-items: center;
     &_label {

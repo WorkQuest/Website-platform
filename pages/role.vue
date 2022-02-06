@@ -108,6 +108,7 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import { UserStatuses, WalletState } from '~/utils/enums';
 import CreateWallet from '~/components/ui/CreateWallet';
+import { encryptStringWithKey, getCipherKey, initWallet } from '~/utils/wallet';
 
 export default {
   name: 'Role',
@@ -168,15 +169,18 @@ export default {
         publicKey: wallet.publicKey,
       });
       if (res.ok) {
-        // TODO: CONNECT WALLET HERE!
-        if (this.userData.role === 'employer') {
-          await this.$router.push('/workers');
-        } else if (this.userData.role === 'worker') {
-          await this.$router.push('/quests');
+        await this.$store.dispatch('user/getUserData');
+        const key = getCipherKey();
+        if (key !== null) {
+          const connectRes = await this.$store.dispatch('wallet/connectWallet', {
+            userAddress: wallet.address.toLowerCase(),
+            userPassword: key,
+          });
+          if (connectRes.ok) return;
         }
-        return;
+        await this.$store.dispatch('user/logout');
+        await this.$router.push('/sign-in');
       }
-      this.ShowToast(res.msg);
     },
   },
 };

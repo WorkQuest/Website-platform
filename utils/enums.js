@@ -163,6 +163,7 @@ export const Path = {
   ROOT: '/quests',
   CREATE_QUEST: '/create-quest',
   STAKING: '/staking',
+  ROLE: '/role',
 };
 
 // WALLET

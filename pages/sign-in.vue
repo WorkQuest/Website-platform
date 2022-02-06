@@ -138,10 +138,10 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import {
-  createWallet, decryptStringWitheKey, encryptStringWithKey, initWallet,
+  createWallet, decryptStringWitheKey, encryptStringWithKey, initWallet, setCipherKey,
 } from '~/utils/wallet';
 import CreateWallet from '~/components/ui/CreateWallet';
-import { UserStatuses, WalletState } from '~/utils/enums';
+import { Path, UserStatuses, WalletState } from '~/utils/enums';
 
 export default {
   name: 'SignIn',
@@ -334,6 +334,7 @@ export default {
       });
     },
     saveToStorage(wallet) {
+      setCipherKey(this.model.password);
       initWallet(wallet.address, wallet.privateKey);
       localStorage.setItem('mnemonic', JSON.stringify({
         ...JSON.parse(localStorage.getItem('mnemonic')),
@@ -360,7 +361,7 @@ export default {
       } else if (this.userData.role === 'worker') {
         this.$router.push('/quests');
       } else if (this.userStatus === UserStatuses.NeedSetRole) {
-        this.$router.push('/role');
+        this.$router.push(Path.ROLE);
       }
     },
     async redirectSocialLink(socialNetwork) {

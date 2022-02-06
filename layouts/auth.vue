@@ -36,51 +36,17 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { UserStatuses } from '~/utils/enums';
+import { Path, UserStatuses } from '~/utils/enums';
 import { getIsWalletConnected } from '~/utils/wallet';
 
 export default {
   scrollToTop: true,
   name: 'AuthLayout',
-  data: () => ({
-    getTokensFromMobileInterval: null,
-    accessTokenMobile: null,
-    refreshTokenMobile: null,
-  }),
   computed: {
     ...mapGetters({
       isLoading: 'main/getIsLoading',
       userData: 'user/getUserData',
     }),
-  },
-  watch: {
-    accessTokenMobile: {
-      immediate: true,
-      async handler() {
-        if (this.accessTokenMobile && this.refreshTokenMobile) {
-          try {
-            const payload = {
-              access: this.accessTokenMobile,
-              refresh: this.refreshTokenMobile,
-            };
-            this.$store.commit('user/setTokens', payload);
-            await this.$store.dispatch('user/getUserData');
-            await this.getStatistic();
-            await this.getNotifications();
-
-            if (this.userData.role === 'employer') {
-              await this.$router.push('/workers');
-            } else if (this.userData.role === 'worker') {
-              await this.$router.push('/quests');
-            } else if (this.userData.status === 2) {
-              await this.$router.push('/role');
-            }
-          } catch (e) {
-            console.log(e);
-          }
-        }
-      },
-    },
   },
   async beforeMount() {
     const { access, refresh, userStatus } = this.$route.query;
@@ -96,12 +62,12 @@ export default {
         }
       }
       if (+userStatus === UserStatuses.NeedSetRole) {
-        await this.$router.push('/role');
+        await this.$router.push(Path.ROLE);
       } else {
         await this.$store.dispatch('user/getUserData');
-        // Import or create new wallet
         if (!this.userData?.wallet?.address) {
-          await this.$router.push('/role');
+          // To import or create new wallet
+          await this.$router.push(Path.ROLE);
         }
 
         await this.getStatistic();
@@ -114,13 +80,6 @@ export default {
         }
       }
     }
-    this.getTokensFromMobile();
-  },
-  beforeDestroy() {
-    if (this.getTokensFromMobileInterval) {
-      clearInterval(this.getTokensFromMobileInterval);
-      this.getTokensFromMobileInterval = null;
-    }
   },
   methods: {
     async getStatistic() {
@@ -128,12 +87,6 @@ export default {
     },
     async getNotifications() {
       await this.$store.dispatch('user/getNotifications');
-    },
-    getTokensFromMobile() {
-      this.getTokensFromMobileInterval = setInterval(() => {
-        this.accessTokenMobile = localStorage.getItem('accessToken');
-        this.refreshTokenMobile = localStorage.getItem('refreshToken');
-      }, 500);
     },
     toMain() {
       this.$router.push('/sign-in');

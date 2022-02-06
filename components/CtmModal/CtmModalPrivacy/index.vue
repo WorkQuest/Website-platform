@@ -67,7 +67,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { UserStatuses } from '~/utils/enums';
+import { Path, UserStatuses } from '~/utils/enums';
 
 export default {
   name: 'PrivacyModal',
@@ -115,11 +115,10 @@ export default {
             title: this.$t('modals.success'),
             text: this.$t('modals.yourAccountVerified'),
           });
-          if (this.$cookies.get('role') === 'employer') {
-            await this.$router.push('/workers');
-          } else if (this.$cookies.get('role') === 'worker') {
-            await this.$router.push('/quests');
-          }
+          if (this.$route.path === 'confirm') {
+            await this.$store.dispatch('user/logout');
+            await this.$router.push('/sign-in');
+          } else await this.$router.push(Path.ROLE);
         }
       }
       this.CloseModal();

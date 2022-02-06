@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { error } from '~/utils/web3';
 import { connectWithMnemonic } from '~/utils/wallet';
-import { NotificationAction, UserRole } from '~/utils/enums';
+import { NotificationAction, UserRole, UserStatuses } from '~/utils/enums';
 
 export default {
   async addEducation({ commit }, data) {
@@ -222,7 +222,11 @@ export default {
   },
   async confirm({ commit }, payload) {
     try {
-      commit('setTokens', { access: this.$cookies.get('access'), refresh: this.$cookies.get('refresh') });
+      commit('setTokens', {
+        access: this.$cookies.get('access'),
+        refresh: this.$cookies.get('refresh'),
+        userStatus: UserStatuses.Confirmed,
+      });
       this.$cookies.set('role', payload.role);
       return await this.$axios.$post('/v1/auth/confirm-email', payload);
     } catch (e) {

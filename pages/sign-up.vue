@@ -1,14 +1,6 @@
 <template>
   <div class="auth">
-    <div
-      v-if="step > walletState.Default"
-      class="auth__back"
-      @click="goStep(step - 1)"
-    >
-      <span class="icon-long_left" /> {{ $t('meta.back') }}
-    </div>
     <ValidationObserver
-      v-if="step === walletState.Default"
       v-slot="{ handleSubmit, valid }"
       tag="div"
       class="auth__container"
@@ -28,7 +20,7 @@
       <form
         class="auth__fields"
         action=""
-        @submit.prevent="goStep(walletState.SaveMnemonic)"
+        @submit.prevent="signUp"
       >
         <base-field
           v-model="model.firstName"
@@ -108,43 +100,24 @@
         </base-field>
         <div class="auth__action">
           <base-btn :disabled="!valid || isLoading">
-            {{ $t('meta.next') }}
+            {{ $t('signUp.create') }}
           </base-btn>
         </div>
       </form>
     </ValidationObserver>
-    <CreateWallet
-      :step="step"
-      @goStep="goStep"
-      @submit="signUp"
-    >
-      <template slot="actionText">
-        {{ $t('signUp.create') }}
-      </template>
-    </CreateWallet>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import CreateWallet from '~/components/ui/CreateWallet';
-import {
-  encryptStringWithKey,
-  generateMnemonic,
-} from '~/utils/wallet';
-import { WalletState } from '~/utils/enums';
 
 export default {
   name: 'SignUp',
   layout: 'auth',
-  components: {
-    CreateWallet,
-  },
   data() {
     return {
       error: '',
-      step: WalletState.Default,
       model: {
         firstName: '',
         lastName: '',
@@ -152,39 +125,15 @@ export default {
         password: '',
         passwordConfirm: '',
       },
-      savedMnemonicValue: false,
-      mnemonic: '',
-      confirmMnemonic: {
-        first: '',
-        second: '',
-      },
-      confirmMnemonicData: {
-        first: '',
-        second: '',
-      },
     };
   },
   computed: {
     ...mapGetters({
       isLoading: 'main/getIsLoading',
     }),
-    walletState() {
-      return WalletState;
-    },
-  },
-  async mounted() {
-    this.mnemonic = generateMnemonic();
-    const s = this.mnemonic.split(' ');
-    this.confirmMnemonicData = {
-      first: s[2],
-      second: s[6],
-    };
   },
   methods: {
-    goStep(step) {
-      this.step = step;
-    },
-    async signUp(wallet) {
+    async signUp() {
       this.SetLoader(true);
       this.model.email = this.model.email.trim();
       this.model.firstName = this.model.firstName.trim();
@@ -196,23 +145,7 @@ export default {
         password: this.model.password,
       };
       const response = await this.$store.dispatch('user/signUp', payload);
-      if (response.ok) {
-        const res = await this.$store.dispatch('user/registerWallet', {
-          address: wallet.address.toLowerCase(),
-          publicKey: wallet.publicKey,
-        });
-        if (res.ok) {
-          localStorage.setItem('mnemonic', JSON.stringify({
-            ...JSON.parse(localStorage.getItem('mnemonic')),
-            [wallet.address.toLowerCase()]: encryptStringWithKey(wallet.mnemonic.phrase, this.model.password),
-          }));
-          sessionStorage.setItem('mnemonic', JSON.stringify({
-            ...JSON.parse(sessionStorage.getItem('mnemonic')),
-            [wallet.address.toLowerCase()]: wallet.mnemonic.phrase,
-          }));
-          this.showConfirmEmailModal();
-        }
-      }
+      if (response.ok) this.showConfirmEmailModal();
       this.SetLoader(false);
     },
     showConfirmEmailModal() {

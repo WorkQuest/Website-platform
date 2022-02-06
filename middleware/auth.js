@@ -1,4 +1,6 @@
 // eslint-disable-next-line func-names
+import { Path } from '~/utils/enums';
+
 export default async function ({ app, redirect, store }) {
   try {
     const access = app.$cookies.get('access');
@@ -25,7 +27,7 @@ export default async function ({ app, redirect, store }) {
       await store.dispatch('user/getNotifications');
     }
     if (userStatus === 2) {
-      return redirect('/role');
+      return redirect(Path.ROLE);
     }
     return true;
   } catch (e) {

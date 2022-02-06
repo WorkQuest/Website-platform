@@ -24,6 +24,11 @@ export const createWallet = (mnemonic) => {
 export const encryptStringWithKey = (toEncrypt, key) => AES.encrypt(toEncrypt, key).toString();
 export const decryptStringWitheKey = (toDecrypt, key) => AES.decrypt(toDecrypt, key).toString(enc.Utf8);
 
+let cipherKey = null;
+export const getCipherKey = () => cipherKey;
+// eslint-disable-next-line no-return-assign
+export const setCipherKey = (key) => cipherKey = key;
+
 let web3 = new Web3(process.env.WQ_PROVIDER);
 export const GetWalletProvider = () => web3;
 const wallet = {
