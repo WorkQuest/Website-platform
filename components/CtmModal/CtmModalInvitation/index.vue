@@ -59,7 +59,7 @@
           <div class="btn__wrapper">
             <base-btn
               class="message__action"
-              @click="inviteOnQuest(questIndex)"
+              @click="inviteOnQuest()"
             >
               {{ $t('meta.send') }}
             </base-btn>
@@ -102,7 +102,6 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
-      questList: 'quests/getQuestListForInvitation',
       userData: 'user/getUserData',
       availableQuests: 'quests/getAvailableQuests',
     }),
@@ -114,19 +113,12 @@ export default {
       ];
     },
   },
-  async beforeMount() {
-    await this.getQuestList();
-    await this.questFilter();
-  },
   methods: {
-    async getQuestList() {
-      await this.$store.dispatch('quests/questListForInvitation', this.userData.id);
-    },
     async questFilter() {
       this.questFiltered = this.questList.quests.filter((quest) => quest.status === 0);
     },
-    async inviteOnQuest(questIndex) {
-      const questId = this.questFiltered[questIndex].id || '';
+    async inviteOnQuest() {
+      const questId = this.availableQuests.quests[this.questIndex].id || '';
       const payload = {
         invitedUserId: this.options.userId || '',
         message: this.message_input || null,
