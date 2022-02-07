@@ -16,11 +16,15 @@
             {{ item.name }}
           </base-btn>
         </div>
-        <cards-quest
-          v-if="questsCount"
-          :quests="questsData"
-          @clickFavoriteStar="updateQuests"
-        />
+        <!--        TODO: Добавить класс, разобраться с clickFavoriteStar-->
+        <div v-if="questsCount">
+          <card-quest
+            v-for="(quest,id) in questsData"
+            :key="id"
+            :quest="quest"
+            @clickFavoriteStar="updateQuests"
+          />
+        </div>
         <emptyData
           v-else
           :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
