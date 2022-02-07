@@ -2436,15 +2436,15 @@
   },
   "rating": {
     "topRanked": {
-      "title": "Gold",
+      "title": "???",
       "desc": "Notifications for employees who were looking for quests with a direct offer to review the promoted quest based on the most recent search categories of the employee. Plus the ability to choose three categories and three locations to promote the quest."
     },
     "verified": {
-      "title": "Silver",
+      "title": "???",
       "desc": "Pin quest on the main page for three hours, with the ability to choose two categories and two locations for promotion the quest."
     },
     "reliable": {
-      "title": "Bronze",
+      "title": "???",
       "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
     }
   },
