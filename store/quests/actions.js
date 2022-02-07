@@ -1,3 +1,4 @@
+import { async } from 'vue-phone-number-input';
 import {
   InfoModeEmployer, InfoModeWorker, QuestStatuses, ResponsesType,
 } from '~/utils/enums';
@@ -323,5 +324,13 @@ export default {
   },
   setSelectedPriceFilter({ commit }, data) {
     commit('setSelectedPriceFilter', data);
+  },
+  async getAvailableQuests({ commit }, data) {
+    try {
+      const { result } = await this.$axios.$get(`/v1/worker/${data}/available-quests`);
+      commit('setAvailableQuests', result);
+    } catch (e) {
+      console.log(e);
+    }
   },
 };
