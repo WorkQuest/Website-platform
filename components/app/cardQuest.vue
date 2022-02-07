@@ -22,8 +22,8 @@
               <div class="block__avatar avatar">
                 <img
                   class="avatar__image"
-                  :src=" quest.user.avatar ? quest.user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-                  :alt="quest.user.firstName"
+                  :src="quest.user && quest.user.avatar ? quest.user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                  :alt="quest.user && quest.user.firstName ? quest.user.firstName : 'Nameless'"
                   @click="goToProfile(quest.user.id)"
                 >
               </div>
@@ -31,7 +31,7 @@
                 class="block__text block__text_title"
                 @click="goToProfile(quest.user.id)"
               >
-                {{ `${quest.user.firstName} ${quest.user.lastName}` }}
+                {{ `${quest.user && quest.user.firstName ? quest.user.firstName : 'Nameless'} ${quest.user && quest.user.lastName ? quest.user.lastName : ''}` }}
               </div>
             </div>
             <div class="block__head-right">
@@ -88,14 +88,21 @@
           <div class="block__locate">
             <span class="icon-location" />
             <span class="block__text block__text_locate">
-              {{ showDistance(quest.location.latitude, quest.location.longitude) }}
+              {{ showDistance(quest.location && quest.location.latitude ? quest.location.latitude : 0,
+                              quest.location && quest.location.longitude ? quest.location.latitude: 0) }}
               {{ `${$t('distance.m')} ${$t('meta.fromYou')}` }}
             </span>
           </div>
-          <div class="block__text block__text_blue">
+          <div
+            v-if="quest.title"
+            class="block__text block__text_blue"
+          >
             {{ cropTxt(quest.title) }}
           </div>
-          <div class="block__text block__text_desc">
+          <div
+            v-if="quest.description"
+            class="block__text block__text_desc"
+          >
             {{ cropTxt(quest.description) }}
           </div>
           <div class="block__text block__publication">
@@ -212,7 +219,7 @@ export default {
       this.$router.push(`/profile/${id}`);
     },
     getQuestPreview(quest) {
-      if (quest.medias.length) {
+      if (quest.medias && quest.medias.length) {
         for (let i = 0; i < quest.medias.length; i += 1) {
           const media = quest.medias[i];
           if (media.contentType.split('/')[0] === 'image') {
