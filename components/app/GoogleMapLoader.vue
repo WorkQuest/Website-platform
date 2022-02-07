@@ -9,6 +9,7 @@
     }"
     :center="center"
     :zoom="zoom"
+    @click="onCloseClick"
   >
     <g-map-cluster
       :styles="clusterStyle"
@@ -22,47 +23,59 @@
         @click="onMarkerClick(item)"
       >
         <g-map-info-window
-          v-if="hiddenWindowInfo"
           :options="{maxWidth: 280}"
+          :opened="openedMarkerID === item.id"
+          :closeclick="true"
+          @closeclick="onCloseClick"
         >
           <div class="info-window__content">
             <div class="info-window__block">
               <div class="info-window__user">
-                <div
-                  class="info-window__avatar avatar"
-                >
+                <div class="info-window__avatar avatar">
                   <img
                     class="avatar__image"
-                    :src="item.userAvatarUrl ? item.userAvatarUrl : '~/assets/img/app/avatar_empty.png'"
-                    :alt="item.userFirstName"
+                    :src="infoContent.avatar"
+                    :alt="infoContent.alt"
                   >
                 </div>
                 <div class="info-window__name">
-                  {{ `${item.userFirstName} ${item.userLastName}` }}
+                  {{ infoContent.userName }}
                 </div>
               </div>
               <div
                 class="info-window__status"
-                :class="getPriorityClass(item.questPriority)"
+                :class="infoContent.labelClass"
               >
-                {{ getPriority(item.questPriority) }}
+                {{ infoContent.label }}
               </div>
             </div>
             <div class="info-window__block">
+              {{ infoContent.title }}
+            </div>
+            <div class="info-window__block">
               <div class="info-window__cost">
-                <p class="info-window__text">
-                  Cost per hour
+                <p
+                  v-if="item.wagePerHour || item.price"
+                  class="info-window__text"
+                >
+                  {{ infoContent.priceTitle }}
                 </p>
-                <p class="info-window__value">
-                  {{ `${item.questPrice} WUSD` }}
+                <p
+                  v-if="item.wagePerHour || item.price"
+                  class="info-window__value"
+                >
+                  {{ infoContent.price }}
                 </p>
               </div>
-              <button
+              <base-btn
                 class="info-window__switch"
-                @click="showDetails(item.questId)"
+                mode="grey"
+                @click="showDetails(item.id)"
               >
-                <span class="icon-caret_right" />
-              </button>
+                <template>
+                  <span class="info-window__icon icon-caret_right" />
+                </template>
+              </base-btn>
             </div>
           </div>
         </g-map-info-window>
@@ -73,10 +86,12 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { UserRole } from '~/utils/enums';
+import { UserRole, TokenSymbols, Path } from '~/utils/enums';
 
 export default {
   name: 'MapBlock',
+  UserRole,
+  TokenSymbols,
   props: {
     isDraggable: {
       type: Boolean,
@@ -86,8 +101,6 @@ export default {
   data() {
     return {
       map: null,
-      userLocation: { lat: 54.9833, lng: 82.8964 },
-      currentLocation: {},
       pins: {
         employee: {
           red: '/img/app/employee_marker_red.svg',
@@ -111,15 +124,16 @@ export default {
           textColor: '#fff',
         },
       ],
-      coordinates: null,
-      hiddenWindowInfo: false,
       timeoutIdBoundsChange: null,
+      openedMarkerID: null,
+      infoContent: {},
     };
   },
   computed: {
     ...mapGetters({
       userData: 'user/getUserData',
       userPosition: 'user/getUserCurrentPosition',
+      userRole: 'user/getUserRole',
 
       zoom: 'google-map/getZoom',
       center: 'google-map/getCenter',
@@ -129,13 +143,12 @@ export default {
   },
   async mounted() {
     await this.initMapListeners();
-
-    this.checkUserCoordinates();
   },
   destroyed() {
     this.map.$off('bounds_changed', this.onBoundsChanged);
     this.map.$off('zoom_changed', this.onBoundsChanged);
     clearTimeout(this.timeoutIdBoundsChange);
+    this.infoContent = {};
     this.timeoutIdBoundsChange = null;
     this.map = null;
   },
@@ -164,42 +177,58 @@ export default {
     async onClusterClick(cluster) {
       const newCenter = cluster.center_.toJSON();
       this.map.$mapObject.setCenter({ lat: newCenter.lat, lng: newCenter.lng });
-      await this.setNewZoom();
+      await this.$store.dispatch('google-map/setNewZoom', this.zoom + 3 <= 18 ? this.zoom + 3 : 18);
     },
     async onMarkerClick(marker) {
+      this.setContent(marker);
+      this.openedMarkerID = marker.id;
       this.map.$mapObject.setCenter({ lat: marker.location.latitude, lng: marker.location.longitude });
-      await this.setNewZoom();
-    },
-    async setNewZoom() {
-      if (this.zoom === 18) {
-        this.ShowToast('Its maximum of zoom, look of result');
-        return;
-      }
-      await this.$store.dispatch('google-map/setNewZoom', this.zoom + 3 <= 18 ? this.zoom + 3 : 18);
     },
     getMarkerOptions(item) {
       if (item.role !== UserRole.WORKER) return { icon: this.pins.quest.blue };
       return { icon: this.pins.employee.blue };
     },
-
-    checkUserCoordinates() {
-      if (this.userData.location && this.userData.location.latitude && this.userData.location.longitude) {
-        this.userLocation.lat = this.userData.location.latitude;
-        this.userLocation.lng = this.userData.location.longitude;
+    setContent(item) {
+      if (this.userRole === UserRole.WORKER) {
+        this.infoContent = {
+          avatar: item.user.avatar ? item.user.avatar.url : this.EmptyAvatar(),
+          alt: this.UserName(item.user.firstName, item.user.lastName),
+          userName: this.UserName(item.user.firstName, item.user.lastName),
+          label: this.getPriority(item.priority),
+          labelClass: this.getPriorityClass(item.priority),
+          title: item.title,
+          priceTitle: this.$t('quests.price'),
+          price: `${item.price} ${TokenSymbols.WUSD}`,
+        };
+        return;
       }
+      this.infoContent = {
+        avatar: item.avatar ? item.avatar.url : this.EmptyAvatar(),
+        alt: this.UserName(item.firstName, item.lastName),
+        userName: this.UserName(item.firstName, item.lastName),
+        label: this.getStatus(item.status),
+        labelClass: this.getStatusClass(item.status),
+        title: item.email,
+        priceTitle: this.$t('settings.costPerHour'),
+        price: `${item.wagePerHour} ${TokenSymbols.WUSD}`,
+      };
     },
-
+    onCloseClick() {
+      this.openedMarkerID = null;
+      this.infoContent = {};
+    },
     showDetails(id) {
-      this.$router.push(`/quests/${id}`);
+      const path = this.userRole === UserRole.WORKER ? Path.QUESTS : Path.PROFILE;
+      this.$router.push(`${path}/${id}`);
     },
     getPriority(index) {
       const priority = {
-        0: this.$t('priority.all'),
+        0: '',
         1: this.$t('priority.low'),
         2: this.$t('priority.normal'),
         3: this.$t('priority.urgent'),
       };
-      return priority[MapBlock] || '';
+      return priority[index] || '';
     },
     getPriorityClass(index) {
       const priority = {
@@ -208,8 +237,9 @@ export default {
         2: 'info-window__status_normal',
         3: 'info-window__status_urgent',
       };
-      return priority[MapBlock] || '';
+      return priority[index] || '';
     },
+
     getPriorityMarker(item) {
       const priority = {
         0: {
@@ -231,6 +261,20 @@ export default {
       };
       return priority[item.questPriority] || '';
     },
+
+    getStatus(index) {
+      return '';
+    },
+    getStatusClass(index) {
+      return '';
+    },
+
+    checkUserCoordinates() {
+      if (this.userData.location && this.userData.location.latitude && this.userData.location.longitude) {
+        this.userLocation.lat = this.userData.location.latitude;
+        this.userLocation.lng = this.userData.location.longitude;
+      }
+    },
   },
 };
 </script>
@@ -247,17 +291,17 @@ export default {
 <style lang="scss" scoped>
 
 .info-window {
-  &__content {
-    max-width: 280px;
-    display: flex;
-    grid-gap: 10px;
-    flex-direction: column;
-  }
   &__block {
     display: flex;
     justify-content: space-between;
     align-items: center;
     grid-gap: 20px;
+  }
+  &__content {
+    max-width: 280px;
+    display: flex;
+    grid-gap: 10px;
+    flex-direction: column;
   }
   &__name {
     max-width: 115px;
@@ -294,11 +338,6 @@ export default {
     grid-gap: 5px;
     align-items: center;
   }
-  &__avatar {
-    max-width: 30px;
-    max-height: 30px;
-    border-radius: 100%;
-  }
   &__text {
     font-style: normal;
     font-weight: 500;
@@ -318,18 +357,21 @@ export default {
     color: #00AA5B;
   }
   &__switch {
-    display: block !important;
-    background: #F7F8FA;
-    border-radius: 6px;
-    width: 30px;
-    height: 30px;
+    width: 30px !important;
+    height: 30px !important;
+  }
+  &__icon {
+    color: $black400;
   }
 }
 .avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  overflow: hidden;
   &__image {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
+    width: 100%;
+    height: 100%;
     -o-object-fit: cover;
     object-fit: cover;
   }
