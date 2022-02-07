@@ -67,9 +67,6 @@ export default {
   setImageType(state, data) {
     state.imageLink = data;
   },
-  setImage(state, data) {
-    state.userData.avatar.url = data;
-  },
   setSendCode(state, data) {
     state.userSendCode = data;
   },
