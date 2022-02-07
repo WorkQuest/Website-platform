@@ -26,7 +26,7 @@ import FilesPreview from '~/components/ui/FilesPreview';
 import NotificationsButton from '~/components/ui/NotificationsButton';
 import EmptyData from '~/components/app/info/emptyData';
 import EmployeeCard from '~/components/app/pages/common/employeeCard';
-import CardQuest from '~/components/app/cardQuest';
+import CardQuest from '~/components/app/CardQuest';
 import FiltersPanel from '~/components/app/panels/filters';
 import SearchWithMap from '~/components/app/SearchWithMap';
 import ItemRating from '~/components/app/info/item-rating';
