@@ -25,10 +25,7 @@ export default {
     try {
       if (query.q === '') delete query.q;
       const { ok, result } = await this.$axios.$get('/v1/profile/workers', {
-        params: {
-          ...query,
-          ...specFilter,
-        },
+        params: { ...query, ...specFilter },
       });
       commit('setEmployeeList', result);
       return { ok };
@@ -58,10 +55,7 @@ export default {
     try {
       if (query.q === '') delete query.q;
       const { ok, result } = await this.$axios.$get('/v1/quests', {
-        params: {
-          ...query,
-          ...specFilter,
-        },
+        params: { ...query, ...specFilter },
       });
       commit('setAllQuests', result);
       return { ok };

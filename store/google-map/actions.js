@@ -8,9 +8,15 @@ export default {
   async setNewCenter({ commit }, payload) {
     commit('setCenter', payload);
   },
-  async getQuestsPoints({ commit }, params) {
+  async questsPoints({ commit }, { query, specFilter }) {
     try {
-      const { ok, result } = await this.$axios.$get('/v1/quests/map/list-points', { params });
+      delete query.q;
+      delete query.limit;
+      delete query.offset;
+      delete query['sort[createdAt]'];
+      const { ok, result } = await this.$axios.$get('/v1/quest/map/points', {
+        params: { ...query, ...specFilter },
+      });
       commit('setPoints', result.quests);
       return { ok };
     } catch (e) {
@@ -18,11 +24,16 @@ export default {
       return { ok: false };
     }
   },
-  async getEmployeesPoints({ commit }, params) {
+  async employeesPoints({ commit }, { query, specFilter }) {
     try {
-      console.log('need add route for employees points on our back');
-      const { ok, result } = await this.$axios.$get('/v1/quests/map/list-points', { params });
-      commit('setPoints', result.quests);
+      delete query.q;
+      delete query.limit;
+      delete query.offset;
+      delete query['sort[createdAt]'];
+      const { ok, result } = await this.$axios.$get('/v1/profile/worker/map/points', {
+        params: { ...query, ...specFilter },
+      });
+      commit('setPoints', result.users);
       return { ok };
     } catch (e) {
       console.error('map/getQuestsPoints');

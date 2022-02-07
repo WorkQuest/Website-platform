@@ -73,7 +73,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { UserRole } from '~/utils/enums';
 
 export default {
   name: 'MapBlock',
@@ -115,7 +114,6 @@ export default {
     ...mapGetters({
       userData: 'user/getUserData',
       userPosition: 'user/getUserCurrentPosition',
-      userRole: 'user/getUserRole',
 
       zoom: 'google-map/getZoom',
       center: 'google-map/getCenter',
@@ -126,6 +124,7 @@ export default {
   },
   async mounted() {
     await this.initMapListeners();
+
     this.checkUserCoordinates();
   },
   methods: {
@@ -139,26 +138,13 @@ export default {
       }
     },
     async onBoundsChanged(event) {
-      if (this.timeoutIdBoundsChange) {
-        clearTimeout(this.timeoutIdBoundsChange);
-        this.timeoutIdBoundsChange = null;
-      }
+      clearTimeout(this.timeoutIdBoundsChange);
       this.timeoutIdBoundsChange = setTimeout(async () => {
         const parsedData = event.toJSON();
-        const coordinates = {
+        await this.$store.dispatch('google-map/setNewBounds', {
           northEast: { lat: parsedData.north, lng: parsedData.east },
           southWest: { lat: parsedData.south, lng: parsedData.west },
-        };
-        await this.$store.dispatch('google-map/setNewBounds', coordinates);
-
-        const params = {
-          'northAndSouthCoordinates[north][longitude]': coordinates.northEast.lng,
-          'northAndSouthCoordinates[north][latitude]': coordinates.northEast.lat,
-          'northAndSouthCoordinates[south][longitude]': coordinates.southWest.lng,
-          'northAndSouthCoordinates[south][latitude]': coordinates.southWest.lat,
-        };
-        if (this.userRole === UserRole.WORKER) await this.$store.dispatch('google-map/getQuestsPoints', params);
-        else await this.$store.dispatch('google-map/getEmployeesPoints', params);
+        });
       }, 500);
     },
     async onZoomChanged(event) { await this.$store.dispatch('google-map/setNewZoom', event); },
@@ -167,8 +153,11 @@ export default {
       await this.$store.dispatch('google-map/setNewCenter', { lat: newCenter.lat, lng: newCenter.lng });
       await this.setNewZoom();
     },
-    async onMarkerClick(m) {
-      await this.$store.dispatch('google-map/setNewCenter', { lat: m.location.latitude, lng: m.location.longitude });
+    async onMarkerClick(marker) {
+      await this.$store.dispatch('google-map/setNewCenter', {
+        lat: marker.location.latitude,
+        lng: marker.location.longitude,
+      });
       await this.setNewZoom();
     },
     async setNewZoom() {
