@@ -192,6 +192,7 @@
               :item="newEducation"
               :is-adding="true"
               education-work="education"
+              :placeholder="$t('settings.education.educationalInstitution')"
               @click="addNewKnowledge(profile.additionalInfo.educations, 'newEducation', 'education', 'education')"
               @blur="clearError(newEducation ? newEducation
                 : profile.additionalInfo.educations[profile.additionalInfo.educations.length - 1], 'education')"
@@ -223,6 +224,7 @@
               education-work="work"
               :item="newWorkExp"
               :is-adding="true"
+              :placeholder="$t('settings.workExps.companyName')"
               @click="addNewKnowledge(profile.additionalInfo.workExperiences, 'newWorkExp', 'work', 'work')"
               @blur="clearError(newWorkExp ? newWorkExp
                 : profile.additionalInfo.workExperiences[profile.additionalInfo.workExperiences.length - 1], 'work')"

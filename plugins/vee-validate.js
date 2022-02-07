@@ -110,7 +110,7 @@ extend('from-to', {
       valid: f <= t,
     };
   },
-  message: 'Field value To more than field value From',
+  message: 'The field "To" is greater than the field "From"',
 });
 
 extend('decimal', {

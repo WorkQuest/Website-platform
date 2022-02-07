@@ -37,7 +37,7 @@
       type="grey"
       :disabled="!isAdding"
       class="knowledge__data knowledge__data_big"
-      :placeholder="educationWork === 'education' ? $t('settings.education.educationalInstitution') : $t('settings.workExps.companyName')"
+      :placeholder="placeholder"
       :validation-mode="validationMode"
       rules="max:100|min:2"
       @blur="$emit('blur')"
@@ -56,6 +56,10 @@
 export default {
   name: 'AddForm',
   props: {
+    placeholder: {
+      type: String,
+      default: '',
+    },
     item: {
       type: Object,
       default: null,
