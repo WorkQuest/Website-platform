@@ -1,5 +1,9 @@
 <template>
-  <div class="knowledge">
+  <validation-observer
+    v-slot="{handleSubmit, invalid}"
+    tag="div"
+    class="knowledge"
+  >
     <base-field
       v-model="item.from"
       :name="$t('settings.workExps.from')"
@@ -8,7 +12,7 @@
       :disabled="!isAdding"
       class="knowledge__data"
       :placeholder="$t('settings.workExps.from')"
-      :rules="`between-date:${$moment().add(-100, 'years').format('yyyy/MM/DD')},${item.to}`"
+      :rules="`from-to:${item.from},${item.to}|between-date:${$moment().add(-100, 'years').format('yyyy/MM/DD')},${item.to}`"
       :validation-mode="validationMode"
       @blur="$emit('blur')"
     />
@@ -23,7 +27,7 @@
       :disabled="!isAdding"
       class="knowledge__data"
       :placeholder="$t('settings.workExps.to')"
-      :rules="`between-date:${item.from},${$moment().add(10, 'years').format('yyyy/MM/DD')}`"
+      :rules="`from-to:${item.from},${item.to}|between-date:${item.from},${$moment().add(10, 'years').format('yyyy/MM/DD')}`"
       :validation-mode="validationMode"
       @blur="$emit('blur')"
     />
@@ -33,25 +37,29 @@
       type="grey"
       :disabled="!isAdding"
       class="knowledge__data knowledge__data_big"
-      :placeholder="$t('settings.education.educationalInstitution')"
+      :placeholder="placeholder"
       :validation-mode="validationMode"
       rules="max:100|min:2"
       @blur="$emit('blur')"
     />
     <base-btn
       class="knowledge__btn"
-      :disabled="!item.from || !item.to || !item.place"
+      :disabled="!item.from || !item.to || !item.place || invalid"
       @click="$emit('click')"
     >
       {{ isAdding ? $t('settings.add') : $t('settings.delete') }}
     </base-btn>
-  </div>
+  </validation-observer>
 </template>
 
 <script>
 export default {
   name: 'AddForm',
   props: {
+    placeholder: {
+      type: String,
+      default: '',
+    },
     item: {
       type: Object,
       default: null,
@@ -62,7 +70,7 @@ export default {
     },
     validationMode: {
       type: String,
-      default: 'passive',
+      default: 'aggressive',
     },
     isAdding: {
       type: Boolean,
