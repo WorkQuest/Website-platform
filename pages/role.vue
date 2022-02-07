@@ -107,7 +107,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { UserStatuses, WalletState } from '~/utils/enums';
+import { UserRole, UserStatuses, WalletState } from '~/utils/enums';
 import CreateWallet from '~/components/ui/CreateWallet';
 import { encryptStringWithKey, getCipherKey, initWallet } from '~/utils/wallet';
 
@@ -164,37 +164,37 @@ export default {
     goToAssignWallet() {
       this.step = WalletState.ImportOrCreate;
     },
+    redirectUser() {
+      if (this.userData.role === UserRole.EMPLOYER) {
+        this.$router.push('/workers');
+      } else if (this.userData.role === UserRole.WORKER) {
+        this.$router.push('/quests');
+      }
+    },
     async assignWallet(wallet) {
-      const res = await this.$store.dispatch('user/registerWallet', {
+      this.SetLoader(true);
+      await this.$store.dispatch('user/registerWallet', {
         address: wallet.address.toLowerCase(),
         publicKey: wallet.publicKey,
       });
-      if (res.ok) {
-        await this.$store.dispatch('user/getUserData');
-        const key = getCipherKey();
-        if (key !== null) {
-          initWallet(wallet.address, wallet.privateKey);
-          localStorage.setItem('mnemonic', JSON.stringify({
-            ...JSON.parse(localStorage.getItem('mnemonic')),
-            [wallet.address.toLowerCase()]: encryptStringWithKey(wallet.mnemonic.phrase, key),
-          }));
-          sessionStorage.setItem('mnemonic', JSON.stringify({
-            ...JSON.parse(sessionStorage.getItem('mnemonic')),
-            [wallet.address.toLowerCase()]: wallet.mnemonic.phrase,
-          }));
-          const connectRes = await this.$store.dispatch('wallet/connectWallet', {
-            userAddress: wallet.address.toLowerCase(),
-            userPassword: key,
-          });
-          if (connectRes.ok) {
-            if (this.userData.role === 'employer') {
-              await this.$router.push('/workers');
-            } else if (this.userData.role === 'worker') {
-              await this.$router.push('/quests');
-            }
-            return;
-          }
-        }
+      initWallet(wallet.address.toLowerCase(), wallet.privateKey);
+      this.SetLoader(false);
+      if (this.$cookies.get('socialNetwork')) {
+        this.redirectUser();
+        return;
+      }
+      const key = getCipherKey();
+      if (key !== null) {
+        localStorage.setItem('mnemonic', JSON.stringify({
+          ...JSON.parse(localStorage.getItem('mnemonic')),
+          [wallet.address.toLowerCase()]: encryptStringWithKey(wallet.mnemonic.phrase, key),
+        }));
+        sessionStorage.setItem('mnemonic', JSON.stringify({
+          ...JSON.parse(sessionStorage.getItem('mnemonic')),
+          [wallet.address.toLowerCase()]: wallet.mnemonic.phrase,
+        }));
+        this.redirectUser();
+      } else {
         await this.$store.dispatch('user/logout');
         await this.$router.push('/sign-in');
       }
