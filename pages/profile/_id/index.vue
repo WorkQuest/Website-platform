@@ -65,11 +65,15 @@
           >
             {{ $t('profile.quests') }}
           </div>
-          <card-quest
-            v-if="questsCount !== 0"
-            :quests="questsData"
-            @clickFavoriteStar="updateQuests"
-          />
+          <!--        TODO: Добавить класс -->
+          <div v-if="questsCount > 0">
+            <card-quest
+              v-for="(quest,id) in questsData"
+              :key="id"
+              :quest="quest"
+              @clickFavoriteStar="updateQuests"
+            />
+          </div>
           <emptyData
             v-else
             :description="$t('errors.emptyData.emptyQuests')"

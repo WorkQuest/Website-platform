@@ -31,7 +31,11 @@ import FiltersPanel from '~/components/app/panels/filters';
 import SearchWithMap from '~/components/app/SearchWithMap';
 import ItemRating from '~/components/app/info/item-rating';
 import MessagesList from '~/components/app/pages/messages_id/messagesList';
+import QuestPanel from '~/components/app/panels/questPanel';
+import Info from '~/components/app/info';
 
+Vue.component('info', Info);
+Vue.component('quest-panel', QuestPanel);
 Vue.component('ctm-modal', CtmModal);
 Vue.component('ctm-modal-box', CtmModalBox);
 Vue.component('Header', Header);

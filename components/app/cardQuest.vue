@@ -82,7 +82,7 @@
                   {{ quest.assignedWorker.firstName }} {{ quest.assignedWorker.lastName }}
                 </div>
               </div>
-              <itemRating :rating="getRatingValue(quest)" />
+              <item-rating :rating="getRatingValue(quest)" />
             </div>
           </div>
           <div class="block__locate">
@@ -162,16 +162,12 @@
 <script>
 import Vue from 'vue';
 import { mapGetters } from 'vuex';
-import { QuestStatuses, questPriority } from '~/utils/enums';
+import { QuestStatuses, questPriority, UserRole } from '~/utils/enums';
 import modals from '~/store/modals/modals';
-import itemRating from '~/components/app/info/item-rating';
 
 const value = new Vue();
 export default {
   name: 'QuestsTab',
-  components: {
-    itemRating,
-  },
   props: {
     quest: {
       type: Object,
@@ -194,6 +190,9 @@ export default {
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
     }),
+    UserRole() {
+      return UserRole;
+    },
     questStatuses() {
       return QuestStatuses;
     },
@@ -256,9 +255,7 @@ export default {
       }
     },
     async getResponsesToQuestForAuthUser() {
-      if (this.userRole === 'worker') {
-        this.questResponses = await this.$store.dispatch('quests/getResponsesToQuestForAuthUser');
-      }
+      if (this.userRole === UserRole.WORKER) this.questResponses = await this.$store.dispatch('quests/getResponsesToQuestForAuthUser');
     },
     showDistance(questLat, questLng) {
       return this.getDistanceFromLatLonInKm(

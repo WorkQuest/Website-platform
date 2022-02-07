@@ -6,7 +6,7 @@
     <info />
     <div class="main main-white">
       <div class="main__body main__body_20gap">
-        <questPanel :location="questLocation" />
+        <quest-panel :location="questLocation" />
 
         <div class="quest__container">
           <h2 class="quest__title">
@@ -132,12 +132,12 @@
             </GmapMap>
           </transition>
         </div>
-        <template v-if="userRole === 'employer' && infoDataMode === InfoModeEmployer.Created">
+        <template v-if="userRole === UserRole.EMPLOYER && infoDataMode === InfoModeEmployer.Created">
           <workers-list is-invited />
           <workers-list />
         </template>
         <div
-          v-if="userRole === 'worker'"
+          v-if="userRole === UserRole.WORKER"
           class="spec__container"
         >
           <div class="quest__group">
@@ -159,7 +159,7 @@
               v-if="otherQuestsCount"
               :quests="sameQuest"
             />
-            <emptyData
+            <empty-data
               v-else
               :description="$t(`errors.emptyData.emptyQuests`)"
             />
@@ -176,13 +176,9 @@ import {
   QuestStatuses, InfoModeWorker, InfoModeEmployer, UserRole, ResponseStatus,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
-import info from '~/components/app/info/index.vue';
-import questPanel from '~/components/app/panels/questPanel';
-import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'Quests',
-  components: { info, questPanel, emptyData },
   data() {
     return {
       questLocation: { lat: 0, lng: 0 },
@@ -213,6 +209,9 @@ export default {
       otherQuests: 'quests/getAllQuests',
       currentMark: 'user/getCurrentReviewMarkOnQuest',
     }),
+    UserRole() {
+      return UserRole;
+    },
     questStatuses() {
       return QuestStatuses;
     },

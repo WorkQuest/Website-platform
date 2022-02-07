@@ -16,7 +16,7 @@
             {{ item.name }}
           </base-btn>
         </div>
-        <!--        TODO: Добавить класс, разобраться с clickFavoriteStar-->
+        <!--        TODO: Добавить класс -->
         <div v-if="questsCount">
           <card-quest
             v-for="(quest,id) in questsData"
@@ -25,7 +25,7 @@
             @clickFavoriteStar="updateQuests"
           />
         </div>
-        <emptyData
+        <empty-data
           v-else
           :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
           :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
@@ -51,9 +51,6 @@ import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'My',
-  components: {
-    emptyData,
-  },
   data() {
     return {
       selectedTab: 0,
@@ -81,17 +78,13 @@ export default {
         { name: this.$t('myQuests.statuses.invited'), id: 4 },
         { name: this.$t('myQuests.statuses.performed'), id: 5 },
       ];
-      return this.userRole === UserRole.EMPLOYER
-        ? tabs.filter((tab) => (tab.id !== 2))
-        : tabs;
+      return this.userRole === UserRole.EMPLOYER ? tabs.filter((tab) => (tab.id !== 2)) : tabs;
     },
     totalPages() {
       return Math.ceil(this.questsCount / this.offset);
     },
     getEmptyLink() {
-      return this.userRole === UserRole.WORKER
-        ? ''
-        : Path.CREATE_QUEST;
+      return this.userRole === UserRole.WORKER ? '' : Path.CREATE_QUEST;
     },
   },
   watch: {
@@ -120,11 +113,8 @@ export default {
   methods: {
     async updateQuests(item) {
       this.SetLoader(true);
-      if (!item.star) {
-        await this.$store.dispatch('quests/setStarOnQuest', item.id);
-      } else {
-        await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
-      }
+      if (!item.star) await this.$store.dispatch('quests/setStarOnQuest', item.id);
+      else await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
       await this.$store.dispatch('quests/getUserQuests', this.requestParams);
       this.SetLoader(false);
     },

@@ -117,11 +117,9 @@ import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { TokenSymbols } from '~/utils/enums';
 import { getStyledAmount } from '~/utils/wallet';
-import EmptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'Wallet',
-  components: { EmptyData },
   data() {
     return {
       cardClosed: false,
