@@ -16,8 +16,10 @@
             {{ item.name }}
           </base-btn>
         </div>
-        <!--        TODO: Добавить класс -->
-        <div v-if="questsCount">
+        <div
+          v-if="questsCount"
+          class="quests__cards"
+        >
           <card-quest
             v-for="(quest,id) in questsData"
             :key="id"
@@ -145,6 +147,11 @@ export default {
   &__container {
     display: flex;
     justify-content: center;
+  }
+  &__cards {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
   }
   &__title {
     @include text-simple;

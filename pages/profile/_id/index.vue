@@ -65,8 +65,10 @@
           >
             {{ $t('profile.quests') }}
           </div>
-          <!--        TODO: Добавить класс -->
-          <div v-if="questsCount > 0">
+          <div
+            v-if="questsCount > 0"
+            class="quests__cards"
+          >
             <card-quest
               v-for="(quest,id) in questsData"
               :key="id"
@@ -74,7 +76,7 @@
               @clickFavoriteStar="updateQuests"
             />
           </div>
-          <emptyData
+          <empty-data
             v-else
             :description="$t('errors.emptyData.emptyQuests')"
           />
@@ -139,13 +141,13 @@
               </div>
             </div>
           </template>
-          <emptyData
+          <empty-data
             v-else
             :description="$t('errors.emptyData.emptyReviews')"
           />
         </div>
         <div
-          v-if="(selectedTab === 'commonInfo' || selectedTab === 'portfolio') && userData.role === 'worker'"
+          v-if="(selectedTab === 'commonInfo' || selectedTab === 'portfolio') && userData.role === UserRole.WORKER"
           class="block__portfolio portfolio"
         >
           <div
@@ -204,16 +206,15 @@ import { mapGetters } from 'vuex';
 import reviewsTab from '~/components/app/pages/profile/tabs/reviews';
 import portfolioTab from '~/components/app/pages/profile/tabs/portfolio';
 import userInfo from '~/components/app/pages/common/userInfo';
-import emptyData from '~/components/app/info/emptyData';
 import modals from '~/store/modals/modals';
 import skills from '~/components/app/pages/common/skills';
+import { UserRole } from '~/utils/enums';
 
 export default {
   name: 'Index',
   components: {
     reviewsTab,
     userInfo,
-    emptyData,
     portfolioTab,
     skills,
   },
@@ -246,6 +247,9 @@ export default {
       reviews: 'user/getAllUserReviews',
       anotherUserData: 'user/getAnotherUserData',
     }),
+    UserRole() {
+      return UserRole;
+    },
     cardLevelClass(idx) {
       const { cards } = this;
       return [
@@ -272,7 +276,7 @@ export default {
         },
       ];
 
-      if (this.userData.role === 'worker') {
+      if (this.userData.role === UserRole.WORKER) {
         tabs.push({
           number: 4,
           tabName: 'portfolio',
@@ -329,7 +333,7 @@ export default {
         this.pagePortfolios = 1;
         await this.changeQuestsData(2);
         await this.changeReviewsData(2);
-        if (this.userData.role === 'worker') {
+        if (this.userData.role === UserRole.WORKER) {
           await this.changePortfoliosData(3);
         }
       }
@@ -439,6 +443,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.quests__cards {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
 .routes {
   &__btn {
     color: $black500;
