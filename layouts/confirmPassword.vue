@@ -79,17 +79,17 @@ export default {
       mnemonicInputType: 'password',
     };
   },
-  watch: {
-    isShowMnemonic(newVal) {
-      this.mnemonicInputType = newVal ? 'text' : 'password';
-    },
-  },
   computed: {
     ...mapGetters({
       isLoading: 'main/getIsLoading',
       userAddress: 'user/getUserWalletAddress',
       callbackLayout: 'wallet/getCallbackLayout',
     }),
+  },
+  watch: {
+    isShowMnemonic(newVal) {
+      this.mnemonicInputType = newVal ? 'text' : 'password';
+    },
   },
   beforeCreate() {
     if (!this.$cookies.get('userLogin')) {

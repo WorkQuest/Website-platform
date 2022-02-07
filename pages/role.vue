@@ -1,5 +1,6 @@
 <template>
   <div class="confirm">
+    {{ step }}
     <div
       class="role"
       :class="{role_hidden: step !== walletState.Default}"
@@ -131,7 +132,7 @@ export default {
       return WalletState;
     },
   },
-  async beforeCreate() {
+  async beforeMount() {
     const access = this.$cookies.get('access');
     const refresh = this.$cookies.get('refresh');
     const userStatus = this.$cookies.get('userStatus');
@@ -172,11 +173,27 @@ export default {
         await this.$store.dispatch('user/getUserData');
         const key = getCipherKey();
         if (key !== null) {
+          initWallet(wallet.address, wallet.privateKey);
+          localStorage.setItem('mnemonic', JSON.stringify({
+            ...JSON.parse(localStorage.getItem('mnemonic')),
+            [wallet.address.toLowerCase()]: encryptStringWithKey(wallet.mnemonic.phrase, key),
+          }));
+          sessionStorage.setItem('mnemonic', JSON.stringify({
+            ...JSON.parse(sessionStorage.getItem('mnemonic')),
+            [wallet.address.toLowerCase()]: wallet.mnemonic.phrase,
+          }));
           const connectRes = await this.$store.dispatch('wallet/connectWallet', {
             userAddress: wallet.address.toLowerCase(),
             userPassword: key,
           });
-          if (connectRes.ok) return;
+          if (connectRes.ok) {
+            if (this.userData.role === 'employer') {
+              await this.$router.push('/workers');
+            } else if (this.userData.role === 'worker') {
+              await this.$router.push('/quests');
+            }
+            return;
+          }
         }
         await this.$store.dispatch('user/logout');
         await this.$router.push('/sign-in');

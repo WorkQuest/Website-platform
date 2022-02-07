@@ -115,7 +115,7 @@ export default {
             title: this.$t('modals.success'),
             text: this.$t('modals.yourAccountVerified'),
           });
-          if (this.$route.path === 'confirm') {
+          if (this.$route.name === 'confirm') {
             await this.$store.dispatch('user/logout');
             await this.$router.push('/sign-in');
           } else await this.$router.push(Path.ROLE);

@@ -1,6 +1,7 @@
 // eslint-disable-next-line func-names
 import { Path } from '~/utils/enums';
 
+// eslint-disable-next-line func-names
 export default async function ({ app, redirect, store }) {
   try {
     const access = app.$cookies.get('access');

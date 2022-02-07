@@ -236,7 +236,7 @@
     "secret": "Secret word #{a}",
     "create": "Create wallet",
     "importWallet": "Import wallet",
-    "createOrImport": "Create or import secret wallet",
+    "createOrImport": "Create or import wallet",
     "typeSecretPhrase": "Type secret phrase",
     "secretPhrase": "Secret phrase"
   },

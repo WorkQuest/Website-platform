@@ -242,7 +242,8 @@ export default {
 
         // Wallet is not assigned to this account
         if (!address) {
-          this.step = WalletState.ImportOrCreate;
+          setCipherKey(this.model.password);
+          await this.$router.push(Path.ROLE);
           this.SetLoader(false);
           return;
         }
@@ -334,7 +335,6 @@ export default {
       });
     },
     saveToStorage(wallet) {
-      setCipherKey(this.model.password);
       initWallet(wallet.address, wallet.privateKey);
       localStorage.setItem('mnemonic', JSON.stringify({
         ...JSON.parse(localStorage.getItem('mnemonic')),

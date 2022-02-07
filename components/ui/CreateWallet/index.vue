@@ -83,12 +83,14 @@
           :rules="`required|is:${confirmMnemonicData.first}`"
           :placeholder="$t('createWallet.typeSecret', { a: confirmMnemonicData.firstIndex })"
           :name="$t('createWallet.secret', { a: confirmMnemonicData.firstIndex })"
+          type="password"
         />
         <base-field
           v-model="confirmMnemonic.second"
           :rules="`required|is:${confirmMnemonicData.second}`"
           :placeholder="$t('createWallet.typeSecret', { a: confirmMnemonicData.secondIndex })"
           :name="$t('createWallet.secret', { a: confirmMnemonicData.secondIndex })"
+          type="password"
         />
         <div class="wallet__action">
           <base-btn :disabled="!valid || isLoading">
