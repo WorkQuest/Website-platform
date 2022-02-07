@@ -140,16 +140,16 @@
                 v-if="quest.status === questStatuses.Done && quest.assignedWorkerId === userData.id"
                 class="block__rating"
               >
-                <div class="block__star">
-                  <star-rating
-                    :quest-index="0"
-                    :rating-type="'questPage'"
-                    :stars-number="5"
-                    :rating="getRating(quest)"
-                    :is-disabled="quest.yourReview !== null"
-                    @input="showReviewModal($event, quest)"
-                  />
-                </div>
+                <star-rating
+                  v-if="starRating(quest)"
+                  class="block__star"
+                  :quest-index="0"
+                  rating-type="questPage"
+                  :stars-number="5"
+                  :rating="!quest.yourReview ? currentMark.mark : quest.yourReview.mark"
+                  :is-disabled="quest.yourReview !== null || currentMark.mark !== null"
+                  @input="showReviewModal($event, quest)"
+                />
               </div>
             </div>
           </div>
@@ -186,6 +186,7 @@ export default {
     ...mapGetters({
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
+      currentMark: 'user/getCurrentReviewMarkOnQuest',
     }),
     UserRole() {
       return UserRole;
@@ -202,6 +203,14 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    starRating(item) {
+      if (this.userRole === UserRole.WORKER) {
+        return item.status === this.questStatuses.Done
+          && item.assignedWorkerId === this.userData.id;
+      }
+      return item.status === this.questStatuses.Done
+        && this.userData.id === item.userId;
+    },
     getRatingValue(item) {
       return item.assignedWorker?.ratingStatistic?.status || 'noStatus';
     },

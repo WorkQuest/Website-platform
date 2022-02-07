@@ -84,7 +84,7 @@
               v-if="starRating(questData)"
               class="worker-data__rating rating rating__star"
               :quest-index="1"
-              :rating-type="'questPage'"
+              rating-type="questPage"
               :stars-number="5"
               :rating="!questData.yourReview ? currentMark.mark : questData.yourReview.mark"
               :is-disabled="questData.yourReview !== null || currentMark.mark !== null"

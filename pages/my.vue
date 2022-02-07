@@ -24,7 +24,7 @@
             v-for="(quest,id) in questsData"
             :key="id"
             :quest="quest"
-            @clickFavoriteStar="updateQuests"
+            @clickFavoriteStar="updateQuests(quest)"
           />
         </div>
         <empty-data
