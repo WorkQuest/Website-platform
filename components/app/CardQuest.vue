@@ -1,6 +1,6 @@
 <template>
-  <div class="card">
-    <div class="card__content content">
+  <div class="card-quest">
+    <div class="card-quest__content">
       <div class="content content__block block">
         <div
           class="block__left"
@@ -167,12 +167,9 @@ import modals from '~/store/modals/modals';
 
 const value = new Vue();
 export default {
-  name: 'QuestsTab',
+  name: 'CardQuest',
   props: {
-    quest: {
-      type: Object,
-      default: () => {},
-    },
+    quest: { type: Object, default: () => {} },
   },
   data() {
     return {
@@ -221,18 +218,10 @@ export default {
       if (quest.medias && quest.medias.length) {
         for (let i = 0; i < quest.medias.length; i += 1) {
           const media = quest.medias[i];
-          if (media.contentType.split('/')[0] === 'image') {
-            return {
-              url: media.url,
-              alt: 'Quest preview',
-            };
-          }
+          if (media.contentType.split('/')[0] === 'image') return { url: media.url, alt: 'Quest preview' };
         }
       }
-      return {
-        url: require('~/assets/img/temp/fake-card.svg'),
-        alt: 'Fake quest preview',
-      };
+      return { url: require('~/assets/img/temp/fake-card.svg'), alt: 'Fake quest preview' };
     },
     clickFavoriteStar(item) {
       this.$emit('clickFavoriteStar', item);
@@ -258,12 +247,7 @@ export default {
       if (this.userRole === UserRole.WORKER) this.questResponses = await this.$store.dispatch('quests/getResponsesToQuestForAuthUser');
     },
     showDistance(questLat, questLng) {
-      return this.getDistanceFromLatLonInKm(
-        questLat,
-        questLng,
-        this.userLat,
-        this.userLng,
-      );
+      return this.getDistanceFromLatLonInKm(questLat, questLng, this.userLat, this.userLng);
     },
     cardsLevels(idx) {
       const { cards } = this;
@@ -280,11 +264,7 @@ export default {
       this.$router.push(`/quests/${questId}`);
     },
     showReviewModal(rating, item) {
-      this.ShowModal({
-        key: modals.review,
-        item,
-        rating,
-      });
+      this.ShowModal({ key: modals.review, item, rating });
     },
     isHideStar(type) {
       return ![4, 3].includes(type);
@@ -296,9 +276,7 @@ export default {
       return type !== 4;
     },
     showMessageModal() {
-      this.ShowModal({
-        key: modals.sendARequest,
-      });
+      this.ShowModal({ key: modals.sendARequest });
     },
     getStatusCard(index) {
       const questStatus = {
@@ -360,9 +338,8 @@ export default {
 .icon {
   font-size: 20px;
   cursor: pointer;
-  &-short_right:before {
+  &-short_right {
     @extend .icon;
-    content: "\ea6e";
     color: #0083C7;
   }
 }
@@ -460,7 +437,7 @@ export default {
     }
   }
 }
-.quests {
+.card-quest {
   &__container {
     display: flex;
     justify-content: center;
@@ -481,7 +458,6 @@ export default {
   &__content {
     display: grid;
     align-items: center;
-    grid-template-columns: repeat(6, auto);
     grid-gap: 10px;
     margin-bottom: 20px;
     &_employer {
@@ -838,7 +814,8 @@ export default {
         padding: 10px;
       }
       &__amount_green {
-        font-size: 18px;
+        font-size: 14px;
+        align-self: center;
       }
     }
   }
@@ -847,7 +824,7 @@ export default {
   .quests {
     .block {
       &__amount_green {
-        font-size: 16px;
+        font-size: 12px;
       }
     }
   }
