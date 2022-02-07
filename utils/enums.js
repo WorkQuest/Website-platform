@@ -160,6 +160,18 @@ export const UserRole = {
 };
 
 export const Path = {
+  MY_QUESTS: '/my',
+  WALLET: '/wallet',
+  PENSION: '/pension',
+  REFERRAL: '/referral',
+  INSURING: '/insuring',
+  SAVINGS: '/savings',
+  CREDITING: '/crediting',
+  MINING: '/mining',
+  CROSSCHAIN: '/crosschain',
+  SETTINGS: '/settings',
+  DISPUTES: '/disputes',
+  WORKERS: '/workers',
   ROOT: '/quests',
   CREATE_QUEST: '/create-quest',
   STAKING: '/staking',

@@ -143,7 +143,7 @@
                   <img
                     id="userAvatarDesktop"
                     class="profile__img"
-                    :src="imageData ? imageData : require('~/assets/img/app/avatar_empty.png')"
+                    :src="imageData ? imageData : EmptyAvatar()"
                     alt=""
                   >
                 </div>
@@ -203,7 +203,7 @@
               <img
                 id="userAvatarMobile"
                 class="profile__img"
-                :src="imageData ? imageData : require('~/assets/img/app/avatar_empty.png')"
+                :src="imageData ? imageData : EmptyAvatar()"
                 alt=""
               >
             </div>
@@ -229,7 +229,7 @@
           class="ctm-menu__dropdown"
         >
           <div
-            v-for="(item, i) in userDDLinks"
+            v-for="(item, i) in profileLinks"
             :key="i"
             class="dropdown__link"
             :class="item.title === 'Logout' ? 'user-dropdown__link_logout' : ''"
@@ -237,6 +237,12 @@
           >
             {{ item.title }}
           </div>
+          <button
+            class="dropdown__link"
+            @click="logout()"
+          >
+            {{ $t('ui.profile.logout') }}
+          </button>
         </div>
         <div class="ctm-menu__links">
           <div
@@ -266,7 +272,7 @@
           class="ctm-menu__dropdown-data"
         >
           <div
-            v-for="(item, i) in instrumentDDLinks"
+            v-for="(item, i) in additionalMenuLinks"
             :key="i"
             class="dropdown-data__link"
             @click="toRoute(item.link)"
@@ -292,7 +298,7 @@
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import moment from 'moment';
-import { MessageAction, UserRole } from '~/utils/enums';
+import { MessageAction, UserRole, Path } from '~/utils/enums';
 
 export default {
   scrollToTop: true,
@@ -314,11 +320,11 @@ export default {
       currentLocale: '',
       headerLinks: [
         {
-          path: '/my',
+          path: Path.MY_QUESTS,
           title: this.$t('ui.myQuests'),
         },
         {
-          path: '/wallet',
+          path: Path.WALLET,
           title: this.$t('ui.wallet'),
         },
       ],
@@ -334,68 +340,14 @@ export default {
       messagesFilter: 'chat/getMessagesFilter',
       unreadMessagesCount: 'user/getUnreadChatsCount',
     }),
-    UserRole() { return UserRole; },
+    UserRole() {
+      return UserRole;
+    },
     locales() {
       return this.$i18n.locales.map((item) => ({
         localeSrc: `${item}.svg`,
         localeText: this.$t(`ui.locals.${item}`),
       }));
-    },
-    instrumentDDLinks() {
-      return [
-        {
-          link: '/pension',
-          title: this.$t('ui.menu.pension.title'),
-        },
-        {
-          link: '/referral',
-          title: this.$t('ui.menu.referral.title'),
-        },
-        {
-          link: '/insuring',
-          title: this.$t('ui.menu.p2p.title'),
-        },
-        {
-          link: '/savings',
-          title: this.$t('ui.menu.savings.title'),
-        },
-        {
-          link: '/crediting',
-          title: this.$t('ui.menu.crediting.title'),
-        },
-        {
-          link: '/mining',
-          title: this.$t('ui.menu.mining.title'),
-        },
-        {
-          link: '/crosschain',
-          title: this.$t('ui.menu.crosschain.title'),
-        },
-        {
-          link: '/staking',
-          title: this.$t('ui.menu.staking.title'),
-        },
-      ];
-    },
-    userDDLinks() {
-      return [
-        {
-          link: `/profile/${this.userData.id}`,
-          title: this.$t('ui.profile.myProfile'),
-        },
-        {
-          link: '/settings',
-          title: this.$t('ui.profile.settings'),
-        },
-        {
-          link: '/disputes',
-          title: this.$t('ui.profile.disputes'),
-        },
-        {
-          link: '/',
-          title: this.$t('ui.profile.logout'),
-        },
-      ];
     },
     profileLinks() {
       return [
@@ -405,11 +357,11 @@ export default {
         },
         {
           title: this.$t('ui.profile.settings'),
-          path: '/settings',
+          path: Path.SETTINGS,
         },
         {
           title: this.$t('ui.profile.disputes'),
-          path: '/disputes',
+          path: Path.DISPUTES,
         },
       ];
     },
@@ -418,42 +370,42 @@ export default {
         {
           title: this.$t('ui.menu.pension.title'),
           desc: this.$t('ui.menu.pension.desc'),
-          path: '/pension',
+          path: Path.PENSION,
         },
         {
           title: this.$t('ui.menu.referral.title'),
           desc: this.$t('ui.menu.referral.desc'),
-          path: '/referral',
+          path: Path.REFERRAL,
         },
         {
           title: this.$t('ui.menu.p2p.title'),
           desc: this.$t('ui.menu.p2p.desc'),
-          path: '/insuring',
+          path: Path.INSURING,
         },
         {
           title: this.$t('ui.menu.savings.title'),
           desc: this.$t('ui.menu.savings.desc'),
-          path: '/savings',
+          path: Path.SAVINGS,
         },
         {
           title: this.$t('ui.menu.crediting.title'),
           desc: this.$t('ui.menu.crediting.desc'),
-          path: '/crediting',
+          path: Path.CREDITING,
         },
         {
           title: this.$t('ui.menu.mining.title'),
           desc: this.$t('ui.menu.mining.desc'),
-          path: '/mining',
+          path: Path.MINING,
         },
         {
           title: this.$t('ui.menu.crosschain.title'),
           desc: this.$t('ui.menu.crosschain.desc'),
-          path: '/crosschain',
+          path: Path.CROSSCHAIN,
         },
         {
           title: this.$t('ui.menu.staking.title'),
           desc: this.$t('ui.menu.staking.desc'),
-          path: '/staking',
+          path: Path.STAKING,
         },
       ];
     },
@@ -463,14 +415,14 @@ export default {
       this.closeAll();
     },
   },
+  created() {
+    window.addEventListener('resize', this.userWindowChange);
+  },
   async mounted() {
     await this.initWSListeners();
     this.GetLocation();
     this.currentLocale = this.$i18n.localeProperties.code;
     this.initHeaderLinks();
-  },
-  created() {
-    window.addEventListener('resize', this.userWindowChange);
   },
   destroyed() {
     window.removeEventListener('resize', this.userWindowChange);
@@ -639,9 +591,11 @@ export default {
     padding: 15px 0 0 0;
     display: grid;
   }
+
   &__dropdown-icon {
     align-self: center;
   }
+
   &__container {
     display: flex;
     flex-direction: row;
@@ -653,6 +607,7 @@ export default {
     width: 100%;
     padding: 0 20px 0 0;
   }
+
   &__avatar {
     max-height: 40px;
     max-width: 40px;
@@ -662,11 +617,13 @@ export default {
     margin-left: 20px;
     margin-right: 10px;
   }
+
   &__name {
     font-weight: 500;
     font-size: 16px;
     color: $black800;
   }
+
   &__role {
     font-weight: 400;
     font-size: 12px;
@@ -674,24 +631,29 @@ export default {
     padding: 0 0 11px 0;
   }
 }
+
 .icon {
   font-size: 20px;
+
   &-caret_down:before {
     @extend .icon;
     content: "\ea48";
     color: #2e3a59;
   }
+
   &-caret_up:before {
     @extend .icon;
     content: "\ea4b";
     color: #2e3a59;
   }
+
   &-close_big:before {
     @extend .icon;
     content: "\e948";
     color: #2e3a59;
   }
 }
+
 .header {
   position: sticky;
   top: 0;
@@ -703,6 +665,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+
   &__body {
     max-width: 1180px;
     width: 100%;
@@ -710,12 +673,14 @@ export default {
     align-items: center;
     justify-content: space-between;
   }
+
   &__left {
     display: grid;
     align-items: center;
     grid-template-columns: auto 1fr;
     grid-gap: 35px;
   }
+
   &__link {
     font-family: 'Inter', sans-serif;
     font-style: normal;
@@ -724,13 +689,16 @@ export default {
     line-height: 130%;
     color: $black400;
     text-decoration: none;
+
     &_active {
       color: $black800;
     }
+
     &_menu {
       display: flex;
       align-items: center;
       position: relative;
+
       span::before {
         color: $black400;
         font-size: 24px;
@@ -738,6 +706,7 @@ export default {
       }
     }
   }
+
   &__button {
     font-family: 'Inter', sans-serif;
     font-style: normal;
@@ -752,49 +721,60 @@ export default {
     width: 43px;
     height: 43px;
     border: 1px solid transparent;
+
     &:hover {
       border: 1px solid $black100;
     }
+
     span:before {
       color: $black400;
       font-size: 24px;
     }
+
     &_profile {
       position: relative;
     }
+
     &_menu {
       position: relative;
       display: none;
     }
+
     &_locale {
       width: 86px;
       height: 46px;
     }
+
     &_locale-name {
       padding-left: 10px;
     }
   }
+
   &__links {
     display: grid;
     align-items: center;
     grid-template-columns: repeat(4, auto);
     grid-gap: 25px;
   }
+
   &__right {
     display: grid;
     grid-template-columns: repeat(5, auto);
     grid-gap: 10px;
     align-items: center;
   }
+
   &__btn {
     min-width: 163px;
   }
+
   &__logo {
     display: grid;
     align-items: center;
     grid-template-columns: 40px 1fr;
     grid-gap: 5px;
     cursor: pointer;
+
     span {
       font-family: 'Inter', sans-serif;
       font-style: normal;
@@ -804,10 +784,12 @@ export default {
       color: $black700;
     }
   }
+
   &__ctm-menu {
     transition: .2s;
   }
 }
+
 .ctm-menu {
   &_opened {
     box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
@@ -822,6 +804,7 @@ export default {
     left: 0;
     z-index: 9999;
   }
+
   &__content {
     height: 100%;
     width: 100%;
@@ -829,19 +812,23 @@ export default {
     flex-direction: column;
     background: $white;
     border-radius: 0 0 5px 5px;
+
     &_hide {
       width: 0;
     }
   }
+
   &__user {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
   }
+
   &__links {
     display: flex;
     flex-direction: column;
   }
+
   &__link {
     padding: 16px 20px 16px 20px;
     font-weight: 400;
@@ -850,19 +837,23 @@ export default {
     border-bottom: 1px solid $black0;
     transition: 1s;
     text-decoration: none;
+
     &:hover {
       background: $blue;
       color: $white;
       font-weight: 600;
     }
   }
+
   &__actions {
     padding: 20px;
   }
+
   &__toggle {
     display: none;
   }
 }
+
 .dropdown {
   &__link {
     @extend .ctm-menu__link;
@@ -870,22 +861,29 @@ export default {
     flex-direction: column;
     background: $black0;
     padding: 16px 0 20px 30px;
+    align-items: flex-start;
+    width: 100%;
+
     &_logout {
       color: $red;
     }
   }
+
   &__btn {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
   }
+
   &__title {
     padding: 16px 0 20px 20px;
   }
+
   &__arrow {
     justify-self: flex-end;
     padding: 16px 20px 0 0;
   }
 }
+
 .dropdown-data {
   &__link {
     @extend .ctm-menu__link;
@@ -895,6 +893,7 @@ export default {
     padding: 16px 0 20px 30px
   }
 }
+
 .profile {
   position: absolute;
   top: 57px;
@@ -906,12 +905,14 @@ export default {
   width: 100%;
   min-height: 235px;
   z-index: 10000000;
+
   &__img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
   }
+
   &__header {
     border-bottom: 1px solid #F7F8FA;
     display: grid;
@@ -919,16 +920,19 @@ export default {
     padding: 15px;
     grid-gap: 10px;
   }
+
   &__avatar {
     max-width: 40px;
     max-height: 40px;
     border-radius: 100%;
   }
+
   &__items {
     display: grid;
     grid-template-columns: 1fr;
     justify-items: flex-start;
   }
+
   &__item {
     height: 41px;
     background: #FFFFFF;
@@ -944,13 +948,16 @@ export default {
     width: 100%;
     transition: .3s;
     border-radius: 6px;
+
     &_red {
       color: $red;
     }
+
     &:hover {
       background: #F7F8FA;
     }
   }
+
   &__text {
     font-family: 'Inter', sans-serif;
     font-style: normal;
@@ -958,17 +965,20 @@ export default {
     font-size: 16px;
     line-height: 130%;
     color: $black800;
+
     &_blue {
       font-weight: normal;
       font-size: 12px;
       color: $blue;
     }
+
     &_green {
       font-weight: normal;
       font-size: 12px;
       color: $green;
     }
   }
+
   &__info {
     display: grid;
     grid-template-columns: 1fr;
@@ -976,6 +986,7 @@ export default {
     text-align: left;
   }
 }
+
 .menu {
   position: absolute;
   top: 50px;
@@ -987,11 +998,13 @@ export default {
   left: -100%;
   min-height: 230px;
   z-index: 10000000;
+
   &__top {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
+
     span::before {
       transition: .1s;
       visibility: hidden;
@@ -999,27 +1012,32 @@ export default {
       color: #2E3A59;
     }
   }
+
   &__text {
     font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: normal;
+
     &_header {
       font-size: 16px;
       line-height: 130%;
       color: $black800;
     }
+
     &_grey {
       font-size: 14px;
       line-height: 130%;
       color: $black500;
     }
   }
+
   &__items {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     padding: 20px;
     grid-gap: 10px;
   }
+
   &__item {
     transition: .3s;
     background: #FFFFFF;
@@ -1032,8 +1050,10 @@ export default {
     flex-direction: column;
     justify-content: flex-start;
     padding: 10px;
+
     &:hover {
       border: 1px solid $black100;
+
       .menu {
         &__top {
           span::before {
@@ -1044,6 +1064,7 @@ export default {
     }
   }
 }
+
 .locale {
   position: absolute;
   top: 73px;
@@ -1052,21 +1073,26 @@ export default {
   border-radius: 6px;
   z-index: 10000000;
   padding: 15px 20px;
+
   &__item {
     width: 46px;
     display: flex;
     align-items: center;
     opacity: 0.7;
+
     &_active {
       opacity: 1;
     }
+
     &:hover {
       opacity: 1;
     }
   }
+
   &__item:not(:last-child) {
     margin-bottom: 15px;
   }
+
   &__icon {
     display: block;
     margin-right: 10px;
@@ -1074,6 +1100,7 @@ export default {
     width: 15px;
     height: 15px;
   }
+
   &__text {
     font-family: 'Inter', sans-serif;
     font-style: normal;
@@ -1094,22 +1121,27 @@ export default {
     &__button_menu {
       display: flex;
     }
+
     &__body {
       margin: 0 20px 0 20px;
     }
+
     &__links {
       display: none;
     }
+
     &__button {
       &_profile {
         display: none;
       }
     }
+
     &__btn {
       display: none !important;
     }
   }
 }
+
 @include _991 {
   .template {
     &__content {
@@ -1117,6 +1149,7 @@ export default {
     }
   }
 }
+
 @include _575 {
   .header {
     &__logo {
@@ -1124,12 +1157,15 @@ export default {
         display: none;
       }
     }
+
     &__btn {
       display: none !important;
     }
+
     &__left {
       grid-gap: 15px;
     }
+
     &__right {
       grid-gap: 2px;
     }
