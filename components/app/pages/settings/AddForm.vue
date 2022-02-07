@@ -64,10 +64,6 @@ export default {
       type: Object,
       default: null,
     },
-    educationWork: {
-      type: String,
-      default: '',
-    },
     disabled: {
       type: Boolean,
       default: false,
