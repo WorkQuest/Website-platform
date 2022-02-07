@@ -487,6 +487,7 @@ export default {
       border: 1px solid $black0;
       padding: 11px;
       border-radius: 6px;
+      height: 46px;
     }
   }
 

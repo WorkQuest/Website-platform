@@ -67,7 +67,6 @@ export default {
       this.CloseModal();
     },
     async disable2FA() {
-      this.twoFACode = '';
       const response = await this.$store.dispatch('user/disable2FA', {
         totp: this.twoFACode,
       });
