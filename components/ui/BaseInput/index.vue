@@ -104,10 +104,6 @@ export default {
       type: [String, Number],
       default: '',
     },
-    errorText: {
-      type: String,
-      default: '',
-    },
     label: {
       type: String,
       default: '',

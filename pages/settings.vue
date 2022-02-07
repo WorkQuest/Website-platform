@@ -181,15 +181,17 @@ export default {
       this.profile.locationFull.locationPlaceName = coordinates.address;
     },
     distantIndexByWorkplace(workplace) {
-      return WorkplaceIndex[workplace];
+      return WorkplaceIndex.indexOf(workplace);
     },
     // MODALS METHODS
     addEducation(knowledge, data) {
       const { educations, workExperiences } = this.profile.additionalInfo;
       if (knowledge === 'newEducation') {
+        this.newEducation = [];
         this.newEducation.push({ ...data });
         this.profile.additionalInfo.educations = educations.concat(this.newEducation);
       } else {
+        this.newWorkExp = [];
         this.newWorkExp.push({ ...data });
         this.profile.additionalInfo.workExperiences = workExperiences.concat(this.newWorkExp);
       }

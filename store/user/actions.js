@@ -320,7 +320,6 @@ export default {
         'x-amz-acl': 'public-read',
       },
     });
-    commit('setImage', response.result);
     return response;
   },
   async getUploadFileLink({ commit }, config) {
