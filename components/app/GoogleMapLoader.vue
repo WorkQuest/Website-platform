@@ -7,7 +7,7 @@
       maxZoom: 18,
       gestureHandling: isDraggable ? 'auto' : 'none'
     }"
-    :center="newCenter"
+    :center="center"
     :zoom="zoom"
   >
     <g-map-cluster
@@ -18,7 +18,7 @@
         v-for="(item, key) in points"
         :key="key"
         :position="{lat: item.location.latitude, lng: item.location.longitude}"
-        :options="{ icon: pins.quest.blue, show: item === currentLocation} "
+        :options="getMarkerOptions(item) "
         @click="onMarkerClick(item)"
       >
         <g-map-info-window
@@ -73,6 +73,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { UserRole } from '~/utils/enums';
 
 export default {
   name: 'MapBlock',
@@ -84,23 +85,28 @@ export default {
   },
   data() {
     return {
+      map: null,
       userLocation: { lat: 54.9833, lng: 82.8964 },
       currentLocation: {},
       pins: {
-        quest: {
-          red: '/img/app/marker_red.svg',
-          green: '/img/app/marker_red.svg',
-          yellow: '/img/app/marker_red.svg',
-          blue: '/img/app/marker_blue.svg',
+        employee: {
+          red: '/img/app/employee_marker_red.svg',
+          green: '/img/app/employee_marker_green.svg',
+          yellow: '/img/app/employee_marker_yellow.svg',
+          blue: '/img/app/employee_marker_blue.svg',
         },
-        selected: '/img/app/marker_blue.svg',
-        notSelected: '/img/app/marker_red.svg',
+        quest: {
+          red: '/img/app/quest_marker_red.svg',
+          green: '/img/app/quest_marker_green.svg',
+          yellow: '/img/app/quest_marker_yellow.svg',
+          blue: '/img/app/quest_marker_blue.svg',
+        },
       },
       clusterStyle: [
         {
-          url: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m1.png',
-          width: 75,
-          height: 75,
+          url: '/img/app/cluster_marker.svg',
+          width: 50,
+          height: 50,
           textSize: 15,
           textColor: '#fff',
         },
@@ -120,18 +126,25 @@ export default {
       bounds: 'google-map/getBounds',
       points: 'google-map/getPoints',
     }),
-    newCenter() { return this.center; },
   },
   async mounted() {
     await this.initMapListeners();
 
     this.checkUserCoordinates();
   },
+  destroyed() {
+    this.map.$off('bounds_changed', this.onBoundsChanged);
+    this.map.$off('zoom_changed', this.onBoundsChanged);
+    clearTimeout(this.timeoutIdBoundsChange);
+    this.timeoutIdBoundsChange = null;
+    this.map = null;
+  },
   methods: {
     async initMapListeners() {
       try {
-        this.$refs.gMap.$on('bounds_changed', this.onBoundsChanged);
-        this.$refs.gMap.$on('zoom_changed', this.onZoomChanged);
+        this.map = this.$refs.gMap;
+        this.map.$on('bounds_changed', this.onBoundsChanged);
+        this.map.$on('zoom_changed', this.onZoomChanged);
       } catch (e) {
         console.log(this.$t('messages.mapNotLoaded'));
         await this.initMapListeners();
@@ -150,14 +163,11 @@ export default {
     async onZoomChanged(event) { await this.$store.dispatch('google-map/setNewZoom', event); },
     async onClusterClick(cluster) {
       const newCenter = cluster.center_.toJSON();
-      await this.$store.dispatch('google-map/setNewCenter', { lat: newCenter.lat, lng: newCenter.lng });
+      this.map.$mapObject.setCenter({ lat: newCenter.lat, lng: newCenter.lng });
       await this.setNewZoom();
     },
     async onMarkerClick(marker) {
-      await this.$store.dispatch('google-map/setNewCenter', {
-        lat: marker.location.latitude,
-        lng: marker.location.longitude,
-      });
+      this.map.$mapObject.setCenter({ lat: marker.location.latitude, lng: marker.location.longitude });
       await this.setNewZoom();
     },
     async setNewZoom() {
@@ -165,9 +175,11 @@ export default {
         this.ShowToast('Its maximum of zoom, look of result');
         return;
       }
-      console.log(this.$refs.gMap);
-      const newZoom = this.zoom + 3 <= 18 ? this.zoom + 3 : 18;
-      await this.$store.dispatch('google-map/setNewZoom', newZoom);
+      await this.$store.dispatch('google-map/setNewZoom', this.zoom + 3 <= 18 ? this.zoom + 3 : 18);
+    },
+    getMarkerOptions(item) {
+      if (item.role !== UserRole.WORKER) return { icon: this.pins.quest.blue };
+      return { icon: this.pins.employee.blue };
     },
 
     checkUserCoordinates() {

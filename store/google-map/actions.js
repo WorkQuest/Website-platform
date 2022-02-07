@@ -20,7 +20,7 @@ export default {
       commit('setPoints', result.quests);
       return { ok };
     } catch (e) {
-      console.error('map/getQuestsPoints');
+      console.error('map/questsPoints');
       return { ok: false };
     }
   },
@@ -36,7 +36,7 @@ export default {
       commit('setPoints', result.users);
       return { ok };
     } catch (e) {
-      console.error('map/getQuestsPoints');
+      console.error('map/employeesPoints');
       return { ok: false };
     }
   },
