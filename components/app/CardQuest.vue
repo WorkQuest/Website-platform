@@ -291,12 +291,12 @@ export default {
     },
     getStatusClass(index) {
       const questStatus = {
-        [QuestStatuses.Rejected]: 'quests__cards__state_clo',
-        [QuestStatuses.Active]: 'quests__cards__state_act',
-        [QuestStatuses.Done]: 'quests__cards__state_per',
-        [QuestStatuses.WaitConfirm]: 'quests__cards__state_req',
-        [QuestStatuses.WaitWorker]: 'quests__cards__state_inv',
-        [QuestStatuses.Closed]: 'quests__cards__state_clo',
+        [QuestStatuses.Rejected]: 'card-quest__cards__state_clo',
+        [QuestStatuses.Active]: 'card-quest__cards__state_act',
+        [QuestStatuses.Done]: 'card-quest__cards__state_per',
+        [QuestStatuses.WaitConfirm]: 'card-quest__cards__state_req',
+        [QuestStatuses.WaitWorker]: 'card-quest__cards__state_inv',
+        [QuestStatuses.Closed]: 'card-quest__cards__state_clo',
       };
       return questStatus[index] || '';
     },
