@@ -71,7 +71,7 @@ export default {
         totp: this.twoFACode,
       });
       this.hide();
-      if (response.ok) this.showModalSuccess();
+      if (response?.ok) this.showModalSuccess();
     },
     showModalSuccess() {
       this.ShowModal({

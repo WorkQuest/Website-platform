@@ -349,9 +349,13 @@ export default {
     }
   },
   async confirmEnable2FA({ commit }, payload) {
-    const response = await this.$axios.$post('/v1/totp/confirm', payload);
-    commit('setEnable2FA', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$post('/v1/totp/confirm', payload);
+      commit('setEnable2FA', response.result);
+      return response;
+    } catch (e) {
+      return console.log(e);
+    }
   },
 
   async sendPhone({ commit }, payload) {

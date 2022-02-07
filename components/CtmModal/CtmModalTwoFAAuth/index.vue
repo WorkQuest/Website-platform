@@ -290,7 +290,7 @@ export default {
         totp: this.models.authCode,
       });
       this.hide();
-      if (response.ok) {
+      if (response) {
         this.showModalSuccess();
       }
     },
