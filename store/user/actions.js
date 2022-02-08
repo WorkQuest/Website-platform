@@ -337,14 +337,11 @@ export default {
       console.log(response);
       return response;
     } catch (e) {
-      const {
-        ok, code, data, msg,
-      } = e.response.data;
       const response = {
-        ok,
-        code,
-        msg,
-        data,
+        ok: e.response.data.ok,
+        code: e.response.data.code,
+        msg: e.response.data.msg,
+        data: e.response.data.data,
       };
       return response;
     }
@@ -355,14 +352,11 @@ export default {
       commit('setTwoFACode', response.result);
       return response;
     } catch (e) {
-      const {
-        ok, code, data, msg,
-      } = e.response.data;
       const response = {
-        ok,
-        code,
-        msg,
-        data,
+        ok: e.response.data.ok,
+        code: e.response.data.code,
+        msg: e.response.data.msg,
+        data: e.response.data.data,
       };
       return response;
     }
@@ -373,14 +367,11 @@ export default {
       commit('setEnable2FA', response.result);
       return response;
     } catch (e) {
-      const {
-        ok, code, data, msg,
-      } = e.response.data;
       const response = {
-        ok,
-        code,
-        msg,
-        data,
+        ok: e.response.data.ok,
+        code: e.response.data.code,
+        msg: e.response.data.msg,
+        data: e.response.data.data,
       };
       return response;
     }
