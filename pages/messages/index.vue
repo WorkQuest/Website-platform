@@ -14,7 +14,7 @@
         </div>
         <div class="chats-container__search">
           <base-field
-            v-model="search"
+            v-model="filter.q"
             class="chats-container__search-input"
             is-search
             is-hide-error
@@ -23,7 +23,6 @@
             :placeholder="$t('chat.searchTitle')"
             data-selector="INPUT-SEARCH"
             @input="handleSetSearchValue"
-            @enter="$emit('search', search)"
           >
             <template v-slot:right-absolute>
               <div
@@ -160,8 +159,8 @@ export default {
         limit: 15,
         offset: 0,
         starred: false,
+        q: '',
       },
-      search: '',
       isChatsSearching: false,
       delay: null,
     };
@@ -186,16 +185,15 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    handleSetSearchValue(value) {
+    handleSetSearchValue() {
       this.isChatsSearching = true;
 
       this.setDelay(async () => {
-        try {
-          this.isChatsSearching = false;
-        } catch (e) {
-          console.log(e);
-          this.isChatsSearching = false;
-        }
+        this.isChatsSearching = false;
+        this.filter.offset = 0;
+        this.SetLoader(true);
+        await this.getChats();
+        this.SetLoader(false);
       }, 500);
     },
     setDelay(f, t) {
@@ -281,6 +279,7 @@ export default {
         limit: 15,
         offset: 0,
         starred: !this.filter.starred,
+        q: '',
       };
       this.$router.push(`?starred=${this.filter.starred}`);
       this.getChats();
@@ -292,7 +291,14 @@ export default {
       this.$store.dispatch(`chat/${chat.star ? 'removeStarForChat' : 'setStarForChat'}`, chatId);
     },
     async getChats() {
-      await this.$store.dispatch('chat/getChatsList', this.filter);
+      const { filter } = this;
+
+      const payload = {
+        ...filter,
+        q: filter.q || undefined,
+      };
+
+      await this.$store.dispatch('chat/getChatsList', payload);
     },
     handleSelChat(chatId) {
       this.$router.push(`/messages/${chatId}`);
