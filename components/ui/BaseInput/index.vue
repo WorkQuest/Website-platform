@@ -11,7 +11,6 @@
       {'ctm-field_smallError': mode === 'smallError'},
       {'ctm-field_white': mode === 'white'},
       {'ctm-field_chat': mode === 'chat'},
-      {'ctm-filed_border': needBorder}
     ]"
     :rules="rules"
     :name="name"
@@ -42,7 +41,8 @@
       <input
         ref="input"
         class="ctm-field__input"
-        :class="{'ctm-field__input_error': errors[0]}"
+        :class="[{'ctm-field__input_error': errors[0]},
+                 {'ctm-field__input_padding-r' : isWithLoader}]"
         :placeholder="placeholder"
         :value="mode === 'convertDate' ? convertDate(value) : value"
         :type="type"
@@ -54,7 +54,7 @@
         @blur="$emit('blur')"
       >
       <div
-        v-if="value && isSearch"
+        v-if="value && isSearch && !isSearchInProgress"
         class="ctm-field__clear"
         @click="clear()"
       >
@@ -130,6 +130,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isSearchInProgress: {
+      type: Boolean,
+      default: false,
+    },
     autocomplete: {
       type: String,
       default: 'on',
@@ -156,7 +160,7 @@ export default {
       type: String,
       default: 'aggressive',
     },
-    needBorder: {
+    isWithLoader: {
       type: Boolean,
       default: false,
     },
@@ -269,6 +273,9 @@ export default {
     &_error {
       border: 1px solid red !important
     }
+    &_padding-r {
+      padding-right: 40px !important;
+    }
   }
   &_disabled {
     .ctm-field__input {
@@ -339,11 +346,6 @@ export default {
         font-size: 25px;
         height: 84px;
       }
-    }
-  }
-  &_border {
-    .ctm-field__input {
-      border: 1px solid #F3F7FA;
     }
   }
 }

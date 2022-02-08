@@ -18,12 +18,25 @@
             class="chats-container__search-input"
             is-search
             is-hide-error
-            :need-border="true"
+            is-with-loader
+            :is-search-in-progress="isChatsSearching"
             :placeholder="$t('chat.searchTitle')"
             data-selector="INPUT-SEARCH"
-            @input="$emit('search', search)"
+            @input="handleSetSearchValue"
             @enter="$emit('search', search)"
-          />
+          >
+            <template v-slot:right-absolute>
+              <div
+                v-if="isChatsSearching"
+                class="loader-cont"
+              >
+                <loader
+                  class="loader-cont__loader"
+                  is-mini-loader
+                />
+              </div>
+            </template>
+          </base-field>
         </div>
         <div
           v-if="chats.list.length"
@@ -149,6 +162,8 @@ export default {
         starred: false,
       },
       search: '',
+      isChatsSearching: false,
+      delay: null,
     };
   },
   computed: {
@@ -171,6 +186,22 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    handleSetSearchValue(value) {
+      this.isChatsSearching = true;
+
+      this.setDelay(async () => {
+        try {
+          this.isChatsSearching = false;
+        } catch (e) {
+          console.log(e);
+          this.isChatsSearching = false;
+        }
+      }, 500);
+    },
+    setDelay(f, t) {
+      clearTimeout(this.delay);
+      this.delay = setTimeout(f, t);
+    },
     isItMyLastMessage(senderId) {
       return this.userData.id === senderId;
     },
@@ -290,6 +321,17 @@ export default {
   }
 }
 
+.loader-cont {
+  height: 20px;
+  width: 20px;
+  position: relative;
+
+  &__loader {
+    position: absolute !important;
+    background: transparent !important;
+  }
+}
+
 .chats-container {
   background-color: $white;
   border: 1px solid #E9EDF2;
@@ -310,6 +352,8 @@ export default {
   }
 
   &__search-input {
+    border: 1px solid #E9EDF2;
+    border-radius: 6px;
   }
 
   &__no-chats {
