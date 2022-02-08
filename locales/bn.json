@@ -1350,7 +1350,8 @@
     "declinedTheInvitationToTheQuest": "Declined the invitation to the quest",
     "declinedYourResponseToTheQuest": "Declined your response to the quest",
     "leftReviewAboutQuest": "Left review about quest",
-    "theQuestIsPending": "The quest is pending"
+    "theQuestIsPending": "The quest is pending",
+    "openDispute": "Open dispute"
   },
   "wallet": {
     "WUSD": "WUSD ওয়ালেট",
