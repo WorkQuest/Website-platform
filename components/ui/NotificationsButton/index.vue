@@ -51,7 +51,7 @@
               >
                 <img
                   class="notify__avatar"
-                  :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : EmptyAvatar"
+                  :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : EmptyAvatar()"
                   alt="avatar"
                 >
                 <div class="notify__info">
@@ -75,7 +75,7 @@
             <div class="notify__action">
               <base-btn
                 class="notify__btn"
-                @click="goToEvent(notification.params ? notification.params.link : '')"
+                @click="goToEvent(notification.params ? notification.params.path : '')"
               >
                 <div class="notify__text notify__text_btn">
                   {{ notification.params ? notification.params.title : '' }}
@@ -124,6 +124,11 @@ export default {
       this.$router.push('/notifications');
     },
     togglePopUp() {
+      if (document.body.offsetWidth <= 575) {
+        this.goToNotifsPage();
+        return;
+      }
+
       this.isShowNotify = !this.isShowNotify;
     },
     closePopUp() {

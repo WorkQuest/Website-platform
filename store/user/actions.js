@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { error } from '~/utils/web3';
 import { connectWithMnemonic } from '~/utils/wallet';
-import { NotificationAction, UserRole } from '~/utils/enums';
+import { NotificationAction, Path, UserRole } from '~/utils/enums';
 
 export default {
   async addEducation({ commit }, data) {
@@ -21,7 +21,6 @@ export default {
   },
   async removeNotification({ dispatch }, { config, notificationId }) {
     try {
-      console.log(notificationId);
       const { ok } = await this.$axios.$delete(`${process.env.NOTIFS_URL}notifications/delete/${notificationId}`);
 
       await dispatch('getNotifications', config);
@@ -48,24 +47,33 @@ export default {
 
       if (result.notifications.length) result.notifications.map(async (notification) => await dispatch('setCurrNotificationObject', notification));
 
-      if (!config) commit('setReducedNotifications', result.notifications);
+      if (!config) {
+        commit('setReducedNotifications', result.notifications);
+        commit('setUnreadNotifsCount', result.unreadCount);
+      }
 
       commit('setNotifications', result);
-      commit('setUnreadNotifsCount', result.unreadCount);
+
       return ok;
     } catch (e) {
       return false;
     }
   },
+  async addNotification({ commit, dispatch }, notification) {
+    const newNotification = await dispatch('setCurrNotificationObject', notification);
+    commit('addNotification', newNotification);
+  },
   setCurrNotificationObject({ getters }, notification) {
     const {
       action, data: {
-        user, title, id, assignedWorker, worker, quest, employer,
+        user, title, id, assignedWorker, worker, quest, employer, fromUser, message, toUserId,
+        problemDescription,
       },
     } = notification.notification;
 
+    let currTitle = quest?.title || title;
     let keyName = 'notifications.';
-    const link = `/quests/${quest?.id || id}`;
+    let path = `${Path.QUESTS}/${quest?.id || id}`;
     const userRole = getters.getUserRole;
     const isItAnWorker = userRole === UserRole.WORKER;
 
@@ -110,6 +118,21 @@ export default {
         keyName += 'declinedYourResponseToTheQuest';
         break;
       }
+      case NotificationAction.WAIT_WORKER: {
+        keyName += 'theQuestIsPending';
+        break;
+      }
+      case NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST: {
+        keyName += 'leftReviewAboutQuest';
+        path = `${Path.PROFILE}/${toUserId}`;
+        currTitle = message;
+        break;
+      }
+      case NotificationAction.OPEN_DISPUTE: {
+        keyName += 'openDispute';
+        currTitle = problemDescription;
+        break;
+      }
       default: {
         keyName = '';
         break;
@@ -117,9 +140,9 @@ export default {
     }
 
     notification.actionNameKey = keyName;
-    notification.sender = isItAnWorker ? user || employer : assignedWorker || worker;
-    if (quest?.title || title) notification.params = { title: quest?.title || title, link };
-    notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, h:mm');
+    notification.sender = fromUser || (isItAnWorker ? user || employer : assignedWorker || worker);
+    if (currTitle) notification.params = { title: currTitle, path };
+    notification.creatingDate = moment(new Date(notification.createdAt)).format('MMMM Do YYYY, HH:mm');
   },
   async getUserPortfolios({ commit }, { userId, query }) {
     try {
