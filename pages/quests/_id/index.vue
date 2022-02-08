@@ -240,10 +240,11 @@ export default {
       return Math.floor(questSpecializations[Math.floor(Math.random() * questSpecializations.length)].path);
     },
     checkAvailabilityDispute() {
-      if (this.questData.startedAt) {
-        return this.$moment().toISOString() >= this.$moment(this.questData.startedAt).add(1, 'day').toISOString();
-      }
-      return false;
+      const now = this.$moment().valueOf();
+      // TODO fixme Вернуть, нужно для тестов Роме
+      // const dateForStart = this.$moment(this.questData.startedAt).add(1, 'day').valueOf();
+      const dateForStart = this.$moment(this.questData.startedAt).add(1, 'm').valueOf();
+      return now >= dateForStart;
     },
   },
   watch: {
