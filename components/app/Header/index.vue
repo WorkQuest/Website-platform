@@ -1,7 +1,7 @@
 <template>
   <div
     v-click-outside="closeAll"
-    class="template__header header"
+    class="header"
   >
     <div class="header__body">
       <div class="header__left">
@@ -27,7 +27,7 @@
           >
             {{ item.title }}
           </nuxt-link>
-          <button
+          <div
             class="header__link header__link_menu"
             :class="{'header__link_active': isShowAdditionalMenu}"
             @click="showAdditionalMenu()"
@@ -40,7 +40,7 @@
                 class="menu"
               >
                 <div class="menu__items">
-                  <n-link
+                  <nuxt-link
                     v-for="item in additionalMenuLinks"
                     :key="`item-${item.title}`"
                     :to="item.path"
@@ -55,20 +55,18 @@
                     </div>
                     <div class="menu__bottom">
                       <div class="menu__text menu__text_grey">
-                        <span>
-                          {{ kitcutDescription(item.desc) }}
-                        </span>
+                        {{ kitcutDescription(item.desc) }}
                       </div>
                     </div>
-                  </n-link>
+                  </nuxt-link>
                 </div>
               </div>
             </transition>
-          </button>
+          </div>
         </div>
       </div>
       <div class="header__right">
-        <button
+        <div
           class="header__button header__button_locale"
           @click="showLocale()"
         >
@@ -105,30 +103,31 @@
               </li>
             </ul>
           </transition>
-        </button>
-        <button
+        </div>
+        <div
           class="header__button"
           @click="goToMessages()"
         >
           <img
             v-if="unreadMessagesCount"
             src="~assets/img/ui/message_unread.svg"
+            alt=""
           >
           <span
             v-else
             class="icon-message"
           />
-        </button>
+        </div>
         <notifications-button />
         <div
           class="ctm-menu__toggle"
           @click="toggleMobileMenu()"
         >
-          <button class="header__button header__button_menu">
+          <div class="header__button header__button_menu">
             <span :class="isMobileMenu ? 'icon-close_big' : 'icon-hamburger'" />
-          </button>
+          </div>
         </div>
-        <button
+        <div
           class="header__button header__button_profile"
           @click="showProfile()"
         >
@@ -170,16 +169,16 @@
                 >
                   {{ item.title }}
                 </nuxt-link>
-                <button
+                <div
                   class="profile__item profile__item_red"
                   @click="logout()"
                 >
                   {{ $t('ui.profile.logout') }}
-                </button>
+                </div>
               </div>
             </div>
           </transition>
-        </button>
+        </div>
         <base-btn
           v-if="userData.role === UserRole.EMPLOYER"
           class="header__btn"
@@ -237,12 +236,12 @@
           >
             {{ item.title }}
           </div>
-          <button
+          <div
             class="dropdown__link"
             @click="logout()"
           >
             {{ $t('ui.profile.logout') }}
-          </button>
+          </div>
         </div>
         <div class="ctm-menu__links">
           <div
@@ -275,7 +274,7 @@
             v-for="(item, i) in additionalMenuLinks"
             :key="i"
             class="dropdown-data__link"
-            @click="toRoute(item.link)"
+            @click="toRoute(item.path)"
           >
             {{ item.title }}
           </div>
@@ -432,12 +431,12 @@ export default {
     initHeaderLinks() {
       if (this.userData.role === this.UserRole.EMPLOYER) {
         this.headerLinks.unshift({
-          path: '/workers',
+          path: Path.WORKERS,
           title: this.$t('ui.jobQuestors'),
         });
       } else {
         this.headerLinks.unshift({
-          path: '/quests',
+          path: Path.ROOT,
           title: this.$t('ui.quests'),
         });
       }
@@ -698,6 +697,7 @@ export default {
       display: flex;
       align-items: center;
       position: relative;
+      cursor: pointer;
 
       span::before {
         color: $black400;
@@ -714,6 +714,7 @@ export default {
     font-size: 16px;
     line-height: 130%;
     color: $black600;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -835,7 +836,7 @@ export default {
     font-size: 16px;
     color: $black800;
     border-bottom: 1px solid $black0;
-    transition: 1s;
+    cursor: pointer;
     text-decoration: none;
 
     &:hover {
@@ -872,6 +873,12 @@ export default {
   &__btn {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+
+    &:hover {
+      background: $blue;
+      color: $white;
+      font-weight: 600;
+    }
   }
 
   &__title {

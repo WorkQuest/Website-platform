@@ -71,10 +71,14 @@ export default {
       employeeList: 'quests/getEmployeeList',
       employeeCount: 'quests/getEmployeeCount',
     }),
-    totalPages() { return Math.ceil(this.employeeCount / this.query.limit); },
+    totalPages() {
+      return Math.ceil(this.employeeCount / this.query.limit);
+    },
   },
   watch: {
-    async isShowMap() { await this.fetchEmployeeList(true); },
+    async isShowMap() {
+      await this.fetchEmployeeList(true);
+    },
     async mapBounds(newV, oldV) {
       if (!this.isShowMap) return;
       if (
@@ -188,7 +192,6 @@ export default {
 
   &__content {
     width: 100%;
-    height: 100%;
     max-width: 1180px;
     margin: 0 auto;
   }
@@ -223,6 +226,7 @@ export default {
     &__content {
       padding: 0 20px;
     }
+
     &__cards {
       grid-template-columns: repeat(3, 1fr);
     }
