@@ -67,12 +67,13 @@ export default {
     const {
       action, data: {
         user, title, id, assignedWorker, worker, quest, employer, fromUser, message, toUserId,
+        problemDescription,
       },
     } = notification.notification;
 
     let currTitle = quest?.title || title;
     let keyName = 'notifications.';
-    let path = `${Path.ROOT}/${quest?.id || id}`;
+    let path = `${Path.QUESTS}/${quest?.id || id}`;
     const userRole = getters.getUserRole;
     const isItAnWorker = userRole === UserRole.WORKER;
 
@@ -125,6 +126,11 @@ export default {
         keyName += 'leftReviewAboutQuest';
         path = `${Path.PROFILE}/${toUserId}`;
         currTitle = message;
+        break;
+      }
+      case NotificationAction.OPEN_DISPUTE: {
+        keyName += 'openDispute';
+        currTitle = problemDescription;
         break;
       }
       default: {

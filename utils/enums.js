@@ -138,6 +138,8 @@ export const NotificationAction = {
   WAIT_WORKER: 'waitWorker',
 
   USER_LEFT_REVIEW_ABOUT_QUEST: 'userLeftReviewAboutQuest',
+
+  OPEN_DISPUTE: 'openDispute',
 };
 
 export const ChatType = {
@@ -165,6 +167,7 @@ export const Path = {
   CREATE_QUEST: '/create-quest',
   STAKING: '/staking',
   PROFILE: '/profile',
+  QUESTS: '/quests',
 };
 
 // WALLET
