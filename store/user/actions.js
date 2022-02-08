@@ -334,18 +334,37 @@ export default {
     try {
       const response = await this.$axios.$post('/v1/totp/disable', payload);
       commit('setDisable2FA', response.result);
+      console.log(response);
       return response;
     } catch (e) {
-      return console.log(e);
+      const {
+        ok, code, data, msg,
+      } = e.response.data;
+      const response = {
+        ok,
+        code,
+        msg,
+        data,
+      };
+      return response;
     }
   },
   async enable2FA({ commit }, payload) {
     try {
       const response = await this.$axios.$post('/v1/totp/enable', payload);
       commit('setTwoFACode', response.result);
-      return response.result;
+      return response;
     } catch (e) {
-      return console.log(e);
+      const {
+        ok, code, data, msg,
+      } = e.response.data;
+      const response = {
+        ok,
+        code,
+        msg,
+        data,
+      };
+      return response;
     }
   },
   async confirmEnable2FA({ commit }, payload) {
@@ -354,7 +373,16 @@ export default {
       commit('setEnable2FA', response.result);
       return response;
     } catch (e) {
-      return console.log(e);
+      const {
+        ok, code, data, msg,
+      } = e.response.data;
+      const response = {
+        ok,
+        code,
+        msg,
+        data,
+      };
+      return response;
     }
   },
 
