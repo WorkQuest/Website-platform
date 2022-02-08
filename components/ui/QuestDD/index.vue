@@ -7,13 +7,7 @@
       class="quest__button quest__button_menu"
       @click="toggleQuestMenu()"
     >
-      <span
-        :class="[
-          { 'icon-more_horizontal': userRole === 'employer' && mode === null },
-          { 'icon-more_vertical': userRole === 'employer' && mode === 'vertical' },
-          { 'icon-share_outline': userRole === 'worker' },
-        ]"
-      />
+      <span class="icon-more_horizontal" />
     </button>
     <transition name="fade">
       <div
@@ -22,8 +16,8 @@
       >
         <div class="menu menu__items">
           <div class="menu__container">
+            <!--            v-if="['employer'].includes(userRole)"-->
             <div
-              v-if="['employer'].includes(userRole)"
               class="menu__item"
               @click="toRaisingViews"
             >
@@ -39,8 +33,8 @@
                 {{ $t('modals.share') }}
               </div>
             </div>
+            <!--            v-if="['employer'].includes(userRole)"-->
             <div
-              v-if="['employer'].includes(userRole)"
               class="menu__item"
               @click="toEditQuest()"
             >
@@ -48,8 +42,8 @@
                 {{ $t('modals.edit') }}
               </div>
             </div>
+            <!--            v-if="['employer'].includes(userRole)"-->
             <div
-              v-if="['employer'].includes(userRole)"
               class="menu__item"
               @click="showAreYouSureDeleteQuestModal()"
             >
@@ -71,19 +65,11 @@ import { QuestStatuses } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'ChatMenu',
-  directives: {
-    ClickOutside,
-  },
+  name: 'QuestDD',
+  directives: { ClickOutside },
   props: {
-    mode: {
-      type: [String],
-      default: null,
-    },
-    itemId: {
-      type: String,
-      default: '',
-    },
+    mode: { type: [String], default: null },
+    itemId: { type: String, default: '' },
   },
   data() {
     return {
@@ -101,18 +87,14 @@ export default {
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
         this.$router.push(`/edit-quest/${this.itemId}`);
         this.setCurrentStepEditQuest(1);
-      } else {
-        this.showToastWrongStatusEdit();
-      }
+      } else this.showToastWrongStatusEdit();
     },
     toRaisingViews() {
       // TODO: Добавить тост или модалку
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
         this.$router.push({ path: `/edit-quest/${this.itemId}`, query: { mode: 'raise' } });
         this.setCurrentStepEditQuest(2);
-      } else {
-        this.showToastWrongStatusRaisingViews();
-      }
+      } else this.showToastWrongStatusRaisingViews();
     },
     setCurrentStepEditQuest(step) {
       this.$store.commit('quests/setCurrentStepEditQuest', step);
@@ -132,23 +114,16 @@ export default {
       });
     },
     shareModal() {
-      this.ShowModal({
-        key: modals.sharingQuest,
-        itemId: this.itemId,
-      });
+      this.ShowModal({ key: modals.sharingQuest, itemId: this.itemId });
     },
     closeQuestMenu() {
       this.isShowQuestMenu = false;
     },
     showAreYouSureDeleteQuestModal() {
-      this.ShowModal({
-        key: modals.areYouSureDeleteQuest,
-      });
+      this.ShowModal({ key: modals.areYouSureDeleteQuest });
     },
     showOpenADisputeModal() {
-      this.ShowModal({
-        key: modals.openADispute,
-      });
+      this.ShowModal({ key: modals.openADispute });
     },
     toggleQuestMenu() {
       this.isShowQuestMenu = !this.isShowQuestMenu;
@@ -159,8 +134,13 @@ export default {
 
 <style lang="scss" scoped>
 .icon {
-  color: $black500;
+  color: $black200;
   font-size: 19px;
+  cursor: pointer;
+  transition: .5s;
+  &:hover {
+    color: $black500;
+  }
   &-more_horizontal {
     @extend .icon;
   }

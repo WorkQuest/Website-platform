@@ -35,6 +35,9 @@
               </div>
             </div>
             <div class="card-quest__head-right">
+              <!--              TODO: Выводить если квест платный-->
+              <span class="icon-circle_up" />
+              <!--              TODO: Только для людей имеющих отношения к квесту (создатель квеста и работник)-->
               <div
                 class="card-quest__icon card-quest__icon_fav star"
                 @click="clickFavoriteStar(quest)"
@@ -50,6 +53,14 @@
                   alt=""
                 >
               </div>
+              <!--              TODO: Только для создателя квеста и когда статус квеста created-->
+              <quest-dd
+                v-if="quest.status === questStatuses.Created"
+                class="card-quest__icon card-quest__icon_fav"
+                :item-id="quest.id"
+              />
+              <!--              TODO: Добавить роли-->
+              <!--              && userRole === UserRole.WORKER-->
               <button
                 v-if="quest.status === questStatuses.Created"
                 class="card-quest__shared"
@@ -139,6 +150,7 @@
                 v-if="quest.status === questStatuses.Done && quest.assignedWorkerId === userData.id"
                 class="card-quest__rating"
               >
+                <!--                TODO: Исправить высоту контейнера со звездами-->
                 <star-rating
                   v-if="starRating(quest)"
                   class="card-quest__star"
@@ -348,6 +360,10 @@ export default {
 }
 .right {
   justify-self: flex-end;
+}
+.icon-circle_up {
+  color: $black100;
+  font-size: 24px;
 }
 .icon-share_outline {
   color: $black100;
@@ -602,17 +618,17 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-  &__head-right {
-    display: flex;
-    width: 70px;
-    align-items: center;
-    justify-content: flex-end;
+    &-right {
+      display: flex;
+      width: auto;
+      align-items: baseline;
+      justify-content: flex-end;
+      gap: 5px;
+    }
   }
   &__shared {
     height: 24px;
     width: 24px;
-    margin-left: 10px;
   }
   &__icon {
     &_fav {
