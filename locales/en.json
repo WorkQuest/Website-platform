@@ -1419,7 +1419,8 @@
       "youLeftTheChat": "You left the chat"
     },
     "leaveChat": "Leave chat",
-    "loadMore": "Load more"
+    "loadMore": "Load more",
+    "searchTitle": "Name/Quest/Group"
   },
   "settings": {
     "additionalPhoneNumber": "Additional phone number",

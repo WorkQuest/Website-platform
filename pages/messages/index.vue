@@ -12,6 +12,19 @@
             @change="handleSortedChats"
           />
         </div>
+        <div class="chats-container__search">
+          <base-field
+            v-model="search"
+            class="chats-container__search-input"
+            is-search
+            is-hide-error
+            :need-border="true"
+            :placeholder="$t('chat.searchTitle')"
+            data-selector="INPUT-SEARCH"
+            @input="$emit('search', search)"
+            @enter="$emit('search', search)"
+          />
+        </div>
         <div
           v-if="chats.list.length"
           class="chats-container__list"
@@ -135,6 +148,7 @@ export default {
         offset: 0,
         starred: false,
       },
+      search: '',
     };
   },
   computed: {
@@ -289,6 +303,13 @@ export default {
     display: grid;
     grid-template-columns: 1fr max-content;
     align-items: center;
+  }
+
+  &__search {
+    padding: 20px 30px;
+  }
+
+  &__search-input {
   }
 
   &__no-chats {

@@ -10,7 +10,9 @@
       {'ctm-field_icon': mode === 'icon'},
       {'ctm-field_smallError': mode === 'smallError'},
       {'ctm-field_white': mode === 'white'},
-      {'ctm-field_chat': mode === 'chat'}]"
+      {'ctm-field_chat': mode === 'chat'},
+      {'ctm-filed_border': needBorder}
+    ]"
     :rules="rules"
     :name="name"
     :vid="vid"
@@ -153,6 +155,10 @@ export default {
     validationMode: {
       type: String,
       default: 'aggressive',
+    },
+    needBorder: {
+      type: Boolean,
+      default: false,
     },
   },
   mounted() {
@@ -333,6 +339,11 @@ export default {
         font-size: 25px;
         height: 84px;
       }
+    }
+  }
+  &_border {
+    .ctm-field__input {
+      border: 1px solid #F3F7FA;
     }
   }
 }
