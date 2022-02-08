@@ -5,7 +5,8 @@
       disableDefaultUI: true,
       minZoom: 1,
       maxZoom: 18,
-      gestureHandling: isDraggable ? 'auto' : 'none'
+      gestureHandling: isDraggable ? 'auto' : 'none',
+      clickableIcons: isDraggable,
     }"
     :center="center"
     :zoom="zoom"
@@ -19,7 +20,8 @@
         v-for="(item, key) in points"
         :key="key"
         :position="{lat: item.location.latitude, lng: item.location.longitude}"
-        :options="getMarkerOptions(item) "
+        :options="getMarkerOptions(item)"
+        :clickable="isDraggable"
         @click="onMarkerClick(item)"
       >
         <g-map-info-window

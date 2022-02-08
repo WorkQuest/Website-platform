@@ -8,6 +8,10 @@ export default {
   async setNewCenter({ commit }, payload) {
     commit('setCenter', payload);
   },
+  async resetMap({ commit }) {
+    commit('setZoom', 15);
+    commit('setPoints', []);
+  },
   async questsPoints({ commit }, { query, specFilter }) {
     try {
       delete query.q;

@@ -100,8 +100,9 @@ export default {
     await this.fetchEmployeeList();
     this.SetLoader(false);
   },
-  beforeDestroy() {
+  async beforeDestroy() {
     clearTimeout(this.searchTimeout);
+    await this.$store.dispatch('google-map/resetMap');
     this.$store.commit('quests/setEmployeeList', { count: null, users: [] });
   },
   methods: {

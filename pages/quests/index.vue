@@ -99,8 +99,9 @@ export default {
     await this.fetchQuestsList();
     this.SetLoader(false);
   },
-  beforeDestroy() {
+  async beforeDestroy() {
     clearTimeout(this.searchTimeout);
+    await this.$store.dispatch('google-map/resetMap');
     this.$store.commit('quests/setAllQuests', { count: null, quests: [] });
   },
   methods: {
