@@ -63,7 +63,7 @@
               <base-btn
                 mode="outline"
                 class="button__view"
-                @click="goToEvent(notification.params ? notification.params.link : '')"
+                @click="goToEvent(notification.params ? notification.params.path : '')"
               >
                 {{ $t('btn.view') }}
               </base-btn>

@@ -72,7 +72,7 @@ export default {
 
     let currTitle = quest?.title || title;
     let keyName = 'notifications.';
-    let link = `/quests/${quest?.id || id}`;
+    let path = `/quests/${quest?.id || id}`;
     const userRole = getters.getUserRole;
     const isItAnWorker = userRole === UserRole.WORKER;
 
@@ -123,7 +123,7 @@ export default {
       }
       case NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST: {
         keyName += 'leftReviewAboutQuest';
-        link = `/profile/${toUserId}`;
+        path = `/profile/${toUserId}`;
         currTitle = message;
         break;
       }
@@ -135,7 +135,7 @@ export default {
 
     notification.actionNameKey = keyName;
     notification.sender = fromUser || (isItAnWorker ? user || employer : assignedWorker || worker);
-    if (currTitle) notification.params = { title: currTitle, link };
+    if (currTitle) notification.params = { title: currTitle, path };
     notification.creatingDate = moment(new Date(notification.createdAt)).format('MMMM Do YYYY, HH:mm');
   },
   async getUserPortfolios({ commit }, { userId, query }) {

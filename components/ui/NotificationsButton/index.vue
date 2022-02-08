@@ -75,7 +75,7 @@
             <div class="notify__action">
               <base-btn
                 class="notify__btn"
-                @click="goToEvent(notification.params ? notification.params.link : '')"
+                @click="goToEvent(notification.params ? notification.params.path : '')"
               >
                 <div class="notify__text notify__text_btn">
                   {{ notification.params ? notification.params.title : '' }}
