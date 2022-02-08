@@ -334,7 +334,6 @@ export default {
     try {
       const response = await this.$axios.$post('/v1/totp/disable', payload);
       commit('setDisable2FA', response.result);
-      console.log(response);
       return response;
     } catch (e) {
       const response = {
