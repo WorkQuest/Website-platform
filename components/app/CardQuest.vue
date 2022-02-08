@@ -1,25 +1,25 @@
 <template>
   <div class="card-quest">
     <div class="card-quest__content">
-      <div class="content content__block block">
+      <div class="card-quest__blocks">
         <div
-          class="block__left"
+          class="card-quest__left"
           :style="`background: url(${getQuestPreview(quest).url}) no-repeat`"
         >
           <div
-            class="block__state"
+            class="card-quest__state"
             :class="getStatusClass(quest.status)"
           >
             {{ getStatusCard(quest.status) }}
           </div>
         </div>
-        <div class="block__right">
-          <div class="block__head">
+        <div class="card-quest__right">
+          <div class="card-quest__head">
             <div
-              class="block__title"
+              class="card-quest__title"
               @click="showProfile(quest.userId)"
             >
-              <div class="block__avatar avatar">
+              <div class="card-quest__avatar avatar">
                 <img
                   class="avatar__image"
                   :src="quest.user && quest.user.avatar ? quest.user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
@@ -28,15 +28,15 @@
                 >
               </div>
               <div
-                class="block__text block__text_title"
+                class="card-quest__text card-quest__text_title"
                 @click="goToProfile(quest.user.id)"
               >
                 {{ `${quest.user && quest.user.firstName ? quest.user.firstName : 'Nameless'} ${quest.user && quest.user.lastName ? quest.user.lastName : ''}` }}
               </div>
             </div>
-            <div class="block__head-right">
+            <div class="card-quest__head-right">
               <div
-                class="block__icon block__icon_fav star"
+                class="card-quest__icon card-quest__icon_fav star"
                 @click="clickFavoriteStar(quest)"
               >
                 <img
@@ -50,10 +50,10 @@
                   alt=""
                 >
               </div>
-              <div class="block__shared">
+              <div class="card-quest__shared">
                 <quest-dd
                   v-if="quest.status === questStatuses.Created"
-                  class="block__icon block__icon_fav"
+                  class="card-quest__icon card-quest__icon_fav"
                   mode="vertical"
                   :item-id="quest.id"
                 />
@@ -62,7 +62,7 @@
           </div>
           <div
             v-if="quest.assignedWorkerId"
-            class="block__progress progress"
+            class="card-quest__progress progress"
           >
             <div class="progress__title">
               {{ progressQuestText(quest.status) }}
@@ -85,9 +85,9 @@
               <item-rating :rating="getRatingValue(quest)" />
             </div>
           </div>
-          <div class="block__locate">
+          <div class="card-quest__locate">
             <span class="icon-location" />
-            <span class="block__text block__text_locate">
+            <span class="card-quest__text card-quest__text_locate">
               {{ showDistance(quest.location && quest.location.latitude ? quest.location.latitude : 0,
                               quest.location && quest.location.longitude ? quest.location.latitude: 0) }}
               {{ `${$t('distance.m')} ${$t('meta.fromYou')}` }}
@@ -95,37 +95,37 @@
           </div>
           <div
             v-if="quest.title"
-            class="block__text block__text_blue"
+            class="card-quest__text card-quest__text_blue"
           >
             {{ cropTxt(quest.title) }}
           </div>
           <div
             v-if="quest.description"
-            class="block__text block__text_desc"
+            class="card-quest__text card-quest__text_desc"
           >
             {{ cropTxt(quest.description) }}
           </div>
-          <div class="block__text block__publication">
-            <span class="block__publication_bold">{{ $t('quests.publicationDate') }}</span>
-            <span class="block__publication_thin">{{ $moment(quest.createdAt).format('Do MMMM YYYY, hh:mm a') }}</span>
+          <div class="card-quest__text card-quest__publication">
+            <span class="card-quest__publication_bold">{{ $t('quests.publicationDate') }}</span>
+            <span class="card-quest__publication_thin">{{ $moment(quest.createdAt).format('Do MMMM YYYY, hh:mm a') }}</span>
           </div>
-          <div class="block__actions">
-            <div class="block__status">
+          <div class="card-quest__actions">
+            <div class="card-quest__status">
               <div
                 v-if="quest.priority !== 0 && quest.status !== questStatuses.Done"
-                class="block__priority"
+                class="card-quest__priority"
                 :class="getPriorityClass(quest.priority)"
               >
                 {{ getPriority(quest.priority) }}
               </div>
               <div
-                class="block__amount"
+                class="card-quest__amount"
                 :class="getAmountStyles(quest)"
               >
                 {{ `${quest.price}  ${currency}` }}
               </div>
             </div>
-            <div class="block__details">
+            <div class="card-quest__details">
               <base-btn
                 v-if="quest.type !== 3"
                 mode="borderless-right"
@@ -138,11 +138,11 @@
               </base-btn>
               <div
                 v-if="quest.status === questStatuses.Done && quest.assignedWorkerId === userData.id"
-                class="block__rating"
+                class="card-quest__rating"
               >
                 <star-rating
                   v-if="starRating(quest)"
-                  class="block__star"
+                  class="card-quest__star"
                   :quest-index="0"
                   rating-type="questPage"
                   :stars-number="5"
@@ -216,8 +216,8 @@ export default {
     },
     getAmountStyles(item) {
       return [
-        { block__amount_green: item.status !== this.questStatuses.Done },
-        { block__amount_gray: item.status === this.questStatuses.Done },
+        { 'card-quest__amount_green': item.status !== this.questStatuses.Done },
+        { 'card-quest__amount_gray': item.status === this.questStatuses.Done },
       ];
     },
     goToProfile(id) {
@@ -319,9 +319,9 @@ export default {
     },
     getPriorityClass(index) {
       const priority = {
-        [questPriority.Low]: 'block__priority_low',
-        [questPriority.Normal]: 'block__priority_normal',
-        [questPriority.Urgent]: 'block__priority_urgent',
+        [questPriority.Low]: 'card-quest__priority_low',
+        [questPriority.Normal]: 'card-quest__priority_normal',
+        [questPriority.Urgent]: 'card-quest__priority_urgent',
       };
       return priority[index] || '';
     },
@@ -344,14 +344,11 @@ export default {
 .right {
   justify-self: flex-end;
 }
-.icon {
-  font-size: 20px;
-  cursor: pointer;
-  &-short_right {
-    @extend .icon;
-    color: #0083C7;
+.icon-short_right {
+    font-size: 20px;
+    cursor: pointer;
+    color: $blue;
   }
-}
 .progress {
   &__title {
     @include text-simple;
@@ -451,75 +448,6 @@ export default {
     display: flex;
     justify-content: center;
   }
-  &__title {
-    @include text-simple;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 25px;
-    line-height: 130%;
-    color: $black800;
-    margin: 20px 0 20px 0;
-  }
-  &__body {
-    @extend .styles__full;
-    max-width: 1180px;
-  }
-  &__content {
-    display: grid;
-    align-items: center;
-    grid-gap: 10px;
-    margin-bottom: 20px;
-    &_employer {
-      margin-bottom: 0;
-    }
-  }
-  &__cards {
-    &__state {
-      &_clo {
-        background: $red;
-      }
-      &_req {
-        background: $grey;
-        color: $black600 !important;
-      }
-      &_per {
-        background: $blue;
-      }
-      &_act {
-        background: $green;
-      }
-      &_inv {
-        background: $yellow;
-      }
-    }
-  }
-  &__card {
-    margin: 20px 0 0 0;
-    border: 0 solid;
-    border-radius: 6px;
-    background-color: #f6f8fa;
-    width: 100%;
-    display: grid;
-    justify-content: center;
-    grid-template-columns: 1fr;
-    grid-gap: 20px;
-    .card {
-      &__content {
-        border-radius: 6px 0 0 6px;
-        box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
-        &_per {
-          height: 244px;
-        }
-      }
-    }
-  }
-}
-.block {
-  background: #FFFFFF;
-  border-radius: 6px;
-  display: grid;
-  grid-template-columns: 210px 1fr;
-  min-height: 100%;
   &__publication {
     &_bold {
       @include text-simple;
@@ -533,6 +461,13 @@ export default {
       font-weight: 400;
       color: $black500;
     }
+  }
+  &__blocks {
+    background: #FFFFFF;
+    border-radius: 6px;
+    display: grid;
+    grid-template-columns: 210px 1fr;
+    min-height: 100%;
   }
   &__left {
     @extend .styles__full;
@@ -667,7 +602,9 @@ export default {
     }
   }
   &__btn {
-    @extend .block__head;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: 0 10px;
     min-width: 146px;
     height: 34px;
@@ -729,6 +666,68 @@ export default {
     grid-gap: 10px;
     align-items: center;
   }
+  &__title {
+    @include text-simple;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 25px;
+    line-height: 130%;
+    color: $black800;
+    margin: 20px 0 20px 0;
+  }
+  &__body {
+    @extend .styles__full;
+    max-width: 1180px;
+  }
+  &__content {
+    display: grid;
+    align-items: center;
+    grid-gap: 10px;
+    margin-bottom: 20px;
+    &_employer {
+      margin-bottom: 0;
+    }
+  }
+  &__cards {
+    &__state {
+      &_clo {
+        background: $red;
+      }
+      &_req {
+        background: $grey;
+        color: $black600 !important;
+      }
+      &_per {
+        background: $blue;
+      }
+      &_act {
+        background: $green;
+      }
+      &_inv {
+        background: $yellow;
+      }
+    }
+  }
+  &__card {
+    margin: 20px 0 0 0;
+    border: 0 solid;
+    border-radius: 6px;
+    background-color: #f6f8fa;
+    width: 100%;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+    .card {
+      &__content {
+        border-radius: 6px 0 0 6px;
+        box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
+        &_per {
+          height: 244px;
+        }
+      }
+    }
+  }
 }
 .star {
   &__default {
@@ -752,16 +751,15 @@ export default {
   }
 }
 @include _991 {
-  .quests {
-    .limit__container {
-      display: grid;
+  .card-quest {
+    &__blocks {
       grid-template-columns: auto;
     }
-    &__content {
-      grid-template-columns: repeat(3, auto);
-    }
-    .block {
-      &__left {
+    &__left {
+      height: 200px;
+      border-radius: 6px 6px 0 0;
+      img {
+        border-radius: 6px;
         height: 100%;
         width: 100%;
       }
@@ -774,67 +772,60 @@ export default {
   }
 }
 @include _767 {
-  .quests {
-    .block {
-      grid-template-columns: auto;
-      &__left {
-        height: 200px;
-        border-radius: 6px 6px 0 0;
-        img {
-          border-radius: 6px;
-          height: 100%;
-          width: 100%;
-        }
+  .card-quest {
+    &__left {
+      height: 200px;
+      border-radius: 6px 6px 0 0;
+      img {
+        border-radius: 6px;
+        height: 100%;
+        width: 100%;
       }
     }
   }
 }
 @include _575 {
-  .quests {
-    .block {
-      &__actions{
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-      }
-      &__btn {
-        margin-top: 10px;
-        padding: 0;
-      }
+  .card-quest {
+    &__actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    &__details {
+      display: flex;
+      flex-direction: column;
+      justify-self: flex-end;
+    }
+    &__btn {
+      margin-top: 10px;
+      padding: 0;
     }
   }
 }
 @include _480 {
-  .quests {
-    &__content {
-      grid-template-columns: repeat(2, auto);
+  .status {
+    &__level {
+      font-size: 12px;
     }
-    .avatar {
-      &__container {
-        grid-template-columns: repeat(3, auto);
-      }
+  }
+  .avatar {
+    &__container {
+      grid-template-columns: repeat(3, auto);
     }
-    .status {
-      &__level {
-        font-size: 12px;
-      }
+  }
+  .card-quest {
+    &__right {
+      padding: 10px;
     }
-    .block {
-      &__right {
-        padding: 10px;
-      }
-      &__amount_green {
-        font-size: 14px;
-        align-self: center;
-      }
+    &__amount_green {
+      font-size: 14px;
+      align-self: center;
     }
   }
 }
 @include _380 {
-  .quests {
-    .block {
-      &__amount_green {
-        font-size: 12px;
-      }
+  .card-quest {
+    &__amount_green {
+      font-size: 12px;
     }
   }
 }
