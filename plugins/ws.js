@@ -9,9 +9,6 @@ export default async ({ store, $axios }, inject) => {
         name: 'wsNotifs', url: process.env.WS_NOTIFS_URL, verboseName: 'notifsConnection',
       },
       {
-        name: 'wsChat', url: process.env.WS_CHAT_URL, verboseName: 'chatConnection',
-      },
-      {
         name: 'wsChatActions', url: process.env.WS_CHAT_ACTIONS_URL, verboseName: 'chatActionsConnection',
       },
     ],

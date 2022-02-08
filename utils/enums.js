@@ -99,7 +99,7 @@ export const KeyCodes = {
 
 // Filters
 export const WorkplaceFilter = ['all', 'distant', 'office', 'both'];
-export const WorkplaceIndex = ['distance', 'office', 'both'];
+export const WorkplaceIndex = ['distant', 'office', 'both'];
 export const RatingFilter = ['', 'verified', 'reliable', 'topRanked'];
 export const TypeOfJobFilter = ['fullTime', 'partTime', 'fixedTerm'];
 export const PriorityFilter = [
@@ -135,8 +135,11 @@ export const NotificationAction = {
   WORKER_ACCEPTED_INVITATION_TO_QUEST: 'workerAcceptedInvitationToQuest',
   WORKER_REJECTED_INVITATION_TO_QUEST: 'workerRejectedInvitationToQuest',
   EMPLOYER_REJECTED_WORKERS_RESPONSE: 'employerRejectedWorkersResponse',
+  WAIT_WORKER: 'waitWorker',
 
   USER_LEFT_REVIEW_ABOUT_QUEST: 'userLeftReviewAboutQuest',
+
+  OPEN_DISPUTE: 'openDispute',
 };
 
 export const ChatType = {
@@ -163,6 +166,8 @@ export const Path = {
   ROOT: '/quests',
   CREATE_QUEST: '/create-quest',
   STAKING: '/staking',
+  PROFILE: '/profile',
+  QUESTS: '/quests',
 };
 
 // WALLET

@@ -65,9 +65,6 @@ export default {
   setImageType(state, data) {
     state.imageLink = data;
   },
-  setImage(state, data) {
-    state.userData.avatar.url = data;
-  },
   setSendCode(state, data) {
     state.userSendCode = data;
   },
@@ -103,5 +100,12 @@ export default {
       return notif;
     });
     this.commit('user/setUnreadNotifsCount', 0 - ids.length);
+  },
+  addNotification(state, notification) {
+    state.notifications.list.push(notification);
+    state.reducedNotifications.unshift(notification);
+    state.reducedNotifications.length = state.reducedNotifications.length === 1 ? 1 : 2;
+    state.notifications.count += 1;
+    this.commit('user/setUnreadNotifsCount', 1);
   },
 };
