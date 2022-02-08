@@ -89,7 +89,6 @@ export default {
       });
     },
     validationErrorFields(data) {
-      console.log('data', data);
       data.forEach(async (obj) => {
         const { field } = obj;
         const { name } = this.$refs.totp.name;
