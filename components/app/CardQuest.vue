@@ -481,7 +481,7 @@ export default {
     }
   }
   &__blocks {
-    background: #FFFFFF;
+    background: $white;
     border-radius: 6px;
     display: grid;
     grid-template-columns: 210px 1fr;
@@ -554,13 +554,13 @@ export default {
     line-height: 130%;
     text-transform: uppercase;
     &_green {
-      color: #00AA5B;
+      color: $green;
     }
     &_gray {
-      color: #B0B3B9;
+      color: $black200;
     }
     &__performed {
-      color: #B0B3B9;
+      color: $black400;
     }
   }
   &__priority {
@@ -575,15 +575,15 @@ export default {
     padding: 0 5px;
     &_low {
       background: rgba(34, 204, 20, 0.1);
-      color: #22CC14;
+      color: $green;
     }
     &_urgent {
       background: rgba(223, 51, 51, 0.1);
-      color: #DF3333;
+      color: $red;
     }
     &_normal {
       background: rgba(232, 210, 13, 0.1);
-      color: #E8D20D;
+      color: $yellow;
     }
   }
   &__actions {
@@ -737,7 +737,7 @@ export default {
     margin: 20px 0 0 0;
     border: 0 solid;
     border-radius: 6px;
-    background-color: #f6f8fa;
+    background-color: $black200;
     width: 100%;
     display: grid;
     justify-content: center;
