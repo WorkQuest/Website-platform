@@ -22,8 +22,8 @@
               <div class="card-quest__avatar avatar">
                 <img
                   class="avatar__image"
-                  :src="quest.user && quest.user.avatar ? quest.user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-                  :alt="quest.user && quest.user.firstName ? quest.user.firstName : 'Nameless'"
+                  :src="quest.user && quest.user.avatar ? quest.user.avatar.url : EmptyAvatar()"
+                  :alt="quest.user && quest.user.firstName ? quest.user.firstName : new UserName(quest.user.firstName)"
                   @click="goToProfile(quest.user.id)"
                 >
               </div>
@@ -31,7 +31,7 @@
                 class="card-quest__text card-quest__text_title"
                 @click="goToProfile(quest.user.id)"
               >
-                {{ `${quest.user && quest.user.firstName ? quest.user.firstName : 'Nameless'} ${quest.user && quest.user.lastName ? quest.user.lastName : ''}` }}
+                {{ `${quest.user && quest.user.firstName ? quest.user.firstName : new UserName(quest.user.firstName)} ${quest.user && quest.user.lastName ? quest.user.lastName : ''}` }}
               </div>
             </div>
             <div class="card-quest__head-right">
@@ -50,14 +50,13 @@
                   alt=""
                 >
               </div>
-              <div class="card-quest__shared">
-                <quest-dd
-                  v-if="quest.status === questStatuses.Created"
-                  class="card-quest__icon card-quest__icon_fav"
-                  mode="vertical"
-                  :item-id="quest.id"
-                />
-              </div>
+              <button
+                v-if="quest.status === questStatuses.Created"
+                class="card-quest__shared"
+                @click="shareModal"
+              >
+                <span class="card-quest__icon card-quest__icon_fav icon-share_outline" />
+              </button>
             </div>
           </div>
           <div
@@ -71,7 +70,7 @@
               <div class="container__user user">
                 <img
                   class="user__avatar"
-                  :src="quest.assignedWorker.avatar ? quest.assignedWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                  :src="quest.assignedWorker.avatar ? quest.assignedWorker.avatar.url : EmptyAvatar()"
                   :alt="`${quest.assignedWorker.firstName} ${quest.assignedWorker.lastName}`"
                   @click="goToProfile(quest.assignedWorker.id)"
                 >
@@ -203,6 +202,12 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    shareModal() {
+      this.ShowModal({
+        key: modals.sharingQuest,
+        itemId: this.itemId,
+      });
+    },
     starRating(item) {
       if (this.userRole === UserRole.WORKER) {
         return item.status === this.questStatuses.Done
@@ -344,6 +349,10 @@ export default {
 .right {
   justify-self: flex-end;
 }
+.icon-share_outline {
+  color: $black100;
+  font-size: 24px;
+}
 .icon-short_right {
     font-size: 20px;
     cursor: pointer;
@@ -444,9 +453,18 @@ export default {
   }
 }
 .card-quest {
+  &__rating {
+    height: 28px;
+  }
   &__container {
     display: flex;
     justify-content: center;
+  }
+  &__details {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 10px;
   }
   &__publication {
     &_bold {
@@ -517,6 +535,8 @@ export default {
     grid-template-columns: 20px 1fr;
     grid-gap: 5px;
     align-items: center;
+    margin-top: 21px;
+    margin-bottom: 11px;
     span::before {
       font-size: 20px;
       color: $black500;
@@ -590,11 +610,17 @@ export default {
     justify-content: flex-end;
   }
   &__shared {
+    height: 24px;
+    width: 24px;
     margin-left: 10px;
   }
   &__icon {
     &_fav {
       cursor: pointer;
+      transition: .5s;
+      &:hover {
+        color: $black200;
+      }
     }
     &_perf {
       display: grid;
@@ -673,7 +699,6 @@ export default {
     font-size: 25px;
     line-height: 130%;
     color: $black800;
-    margin: 20px 0 20px 0;
   }
   &__body {
     @extend .styles__full;
