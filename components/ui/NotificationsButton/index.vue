@@ -124,6 +124,11 @@ export default {
       this.$router.push('/notifications');
     },
     togglePopUp() {
+      if (document.body.offsetWidth <= 575) {
+        this.goToNotifsPage();
+        return;
+      }
+
       this.isShowNotify = !this.isShowNotify;
     },
     closePopUp() {

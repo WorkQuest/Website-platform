@@ -164,6 +164,7 @@ export const Path = {
   ROOT: '/quests',
   CREATE_QUEST: '/create-quest',
   STAKING: '/staking',
+  PROFILE: '/profile',
 };
 
 // WALLET

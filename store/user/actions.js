@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { error } from '~/utils/web3';
 import { connectWithMnemonic } from '~/utils/wallet';
-import { NotificationAction, UserRole } from '~/utils/enums';
+import { NotificationAction, Path, UserRole } from '~/utils/enums';
 
 export default {
   async addEducation({ commit }, data) {
@@ -72,7 +72,7 @@ export default {
 
     let currTitle = quest?.title || title;
     let keyName = 'notifications.';
-    let path = `/quests/${quest?.id || id}`;
+    let path = `${Path.ROOT}/${quest?.id || id}`;
     const userRole = getters.getUserRole;
     const isItAnWorker = userRole === UserRole.WORKER;
 
@@ -123,7 +123,7 @@ export default {
       }
       case NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST: {
         keyName += 'leftReviewAboutQuest';
-        path = `/profile/${toUserId}`;
+        path = `${Path.PROFILE}/${toUserId}`;
         currTitle = message;
         break;
       }

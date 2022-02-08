@@ -13,6 +13,7 @@
             v-observe-visibility="(isVisible) => checkUnseenNotifs(isVisible, notification)"
             class="notification"
             :class="{'notification_gray' : !notification.seen}"
+            @click="goToEvent(notification.params ? notification.params.path : '', true)"
           >
             <template v-if="notification.sender">
               <div class="notification__avatar">
@@ -170,7 +171,9 @@ export default {
 
       await this.$store.dispatch('user/getNotifications', config);
     },
-    goToEvent(path) {
+    goToEvent(path, isNotifCont) {
+      if (isNotifCont && document.body.offsetWidth > 767) return;
+
       this.$router.push(path);
     },
     navigateBack() {
@@ -346,6 +349,15 @@ export default {
   }
 }
 
+@include _1199 {
+  .notifications-page {
+
+    &__main-container {
+      padding: 20px;
+    }
+  }
+}
+
 @include _991 {
   .page {
     &__container {
@@ -370,14 +382,13 @@ export default {
     &__date {
       align-self: flex-start;
     }
-    &__quest {
-      margin-bottom: 20px;
-    }
     &__button {
       display: none;
     }
 
-    width: 350px;
+    &__date {
+      justify-self: flex-end;
+    }
   }
   .inviter {
     align-self: center;
@@ -398,10 +409,6 @@ export default {
       font-size: 16px;
       line-height: 21px;
       color: $black500;
-      margin-bottom: 10px;
-    }
-    &__title {
-      display: none;
     }
   }
 
@@ -412,6 +419,28 @@ export default {
       line-height: 39px;
       letter-spacing: 0.03em;
       margin-bottom: 5px;
+    }
+  }
+}
+
+@include _575 {
+  .notifications-page {
+
+    &__main-container {
+      padding: 10px;
+    }
+  }
+
+  .notification {
+    grid-template-columns: 40px 1fr;
+    grid-template-rows: 40px max-content max-content;
+    grid-template-areas:
+      "avatar inviter"
+      "date date"
+      "quest quest";
+
+    &__date {
+      justify-self: flex-start;
     }
   }
 }

@@ -805,9 +805,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 
-.block {
-  //pointer-events: none;
-}
 .mobile {
   &-dropdown {
     border-bottom: 1px solid $black0;
