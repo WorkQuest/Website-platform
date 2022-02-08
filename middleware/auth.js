@@ -20,7 +20,8 @@ export default async function ({ app, redirect, store }) {
       store.commit('user/setTokens', payload);
     }
     if (!access || !refresh || !app.$cookies.get('userLogin')) {
-      return redirect('/sign-in');
+      await store.dispatch('user/logout');
+      return redirect(Path.SIGN_IN);
     }
     if (userData.id === '') {
       await store.dispatch('user/getUserData');

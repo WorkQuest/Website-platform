@@ -111,6 +111,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'SignUp',
@@ -145,7 +146,10 @@ export default {
         password: this.model.password,
       };
       const response = await this.$store.dispatch('user/signUp', payload);
-      if (response.ok) this.showConfirmEmailModal();
+      if (response.ok) {
+        this.showConfirmEmailModal();
+        await this.$router.push(Path.SIGN_IN);
+      }
       this.SetLoader(false);
     },
     showConfirmEmailModal() {

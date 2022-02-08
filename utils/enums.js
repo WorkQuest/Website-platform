@@ -160,10 +160,14 @@ export const UserRole = {
 };
 
 export const Path = {
+  SIGN_IN: '/sign-in',
+  SIGN_UP: '/sign-up',
   ROOT: '/quests',
   CREATE_QUEST: '/create-quest',
   STAKING: '/staking',
   ROLE: '/role',
+  WORKERS: '/workers',
+  QUESTS: '/quests',
 };
 
 // WALLET

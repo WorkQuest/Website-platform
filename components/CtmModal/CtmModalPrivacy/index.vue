@@ -89,36 +89,31 @@ export default {
   },
   methods: {
     async onSubmit() {
+      // Role page & select role
       if (this.$cookies.get('userStatus') === UserStatuses.NeedSetRole) {
         this.$cookies.set('role', this.options.role);
-        await this.$store.dispatch('user/setUserRole', { role: this.options.role });
-        const response = await this.$store.dispatch('user/getUserData');
+        const response = await this.$store.dispatch('user/setUserRole', { role: this.options.role });
         if (response?.ok) {
-          await Promise.all([
-            this.$store.dispatch('user/getStatistic'),
-            this.$store.dispatch('user/getNotifications'),
-          ]);
-          if (!this.userData?.wallet?.address) {
-            this.options.callback();
-            this.CloseModal();
-            return;
-          }
+          this.options.callback();
+          this.CloseModal();
+          return;
         }
-      } else {
+      } else { // Confirm account page
         const payload = {
           confirmCode: this.options.confirmCode,
           role: this.options.role,
         };
         const response = await this.$store.dispatch('user/confirm', payload);
         if (response?.ok) {
-          await this.$store.dispatch('main/showToast', {
-            title: this.$t('modals.success'),
-            text: this.$t('modals.yourAccountVerified'),
-          });
-          if (this.$route.name === 'confirm') {
-            await this.$store.dispatch('user/logout');
-            await this.$router.push('/sign-in');
-          } else await this.$router.push(Path.ROLE);
+          console.log('confirmed to status 1');
+          this.$cookies.set('userStatus', 1);
+          sessionStorage.removeItem('confirmToken');
+          await this.$router.push(Path.ROLE);
+          this.ShowToast(this.$t('modals.yourAccountVerified'), this.$t('modals.success'));
+        } else {
+          // Wrong confirm token
+          await this.$store.dispatch('user/logout');
+          await this.$router.push(Path.SIGN_IN);
         }
       }
       this.CloseModal();

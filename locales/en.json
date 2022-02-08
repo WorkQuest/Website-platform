@@ -66,7 +66,11 @@
     "formError": "Fill in all required fields",
     "is": "The values do not match",
     "is_not": "Incorrect value",
-    "mnemonic": "Incorrect secret phrase"
+    "mnemonic": "Incorrect secret phrase",
+    "attemptsExceeded": "Number of attempts exceeded",
+    "loginWithSecret": "Please login with secret phrase",
+    "invalidPassword": "Invalid password",
+    "loginToContinue": "Please login to continue"
   },
   "labels": {
     "firstName": "First name",

@@ -191,7 +191,6 @@ export default {
     try {
       return await this.$axios.$post('/v1/auth/register/wallet', payload);
     } catch (e) {
-      console.log('Assign wallet', e);
       return error(e.response.data.code, e.response.data.message);
     }
   },

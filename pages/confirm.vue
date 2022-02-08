@@ -72,6 +72,7 @@
 
 <script>
 import modals from '~/store/modals/modals';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'Role',
@@ -86,11 +87,12 @@ export default {
   mounted() {
     const { token } = this.$route.query;
     if (!token) {
-      this.$router.push('/sign-in');
+      this.$router.push(Path.SIGN_IN);
     } else {
       if (!this.$cookies.get('access') && !this.$cookies.get('refresh')) {
+        this.ShowToast(' ', this.$t('messages.loginToContinue'));
         sessionStorage.setItem('confirmToken', JSON.stringify(token));
-        this.$router.push('/sign-in');
+        this.$router.push(Path.SIGN_IN);
         return;
       }
       this.confirmCode = token;

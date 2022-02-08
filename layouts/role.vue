@@ -41,6 +41,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { Path } from '~/utils/enums';
 
 export default {
   scrollToTop: true,
@@ -64,7 +65,7 @@ export default {
   },
   methods: {
     toMain() {
-      this.$router.push('/sign-in');
+      this.$router.push(Path.SIGN_IN);
     },
   },
 };

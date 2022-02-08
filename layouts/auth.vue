@@ -36,7 +36,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { Path, UserStatuses } from '~/utils/enums';
+import { Path, UserRole, UserStatuses } from '~/utils/enums';
 import { getIsWalletConnected } from '~/utils/wallet';
 
 export default {
@@ -54,12 +54,10 @@ export default {
       await this.$store.commit('user/setTokens', {
         access, refresh, userStatus, social: true,
       });
-      if (+userStatus === UserStatuses.Confirmed) {
-        // Redirect to import mnemonic
-        if (!getIsWalletConnected()) {
-          await this.$router.push('/sign-in');
-          return;
-        }
+      // Redirect to import mnemonic
+      if (+userStatus === UserStatuses.Confirmed && !getIsWalletConnected()) {
+        await this.$router.push(Path.SIGN_IN);
+        return;
       }
       if (+userStatus === UserStatuses.NeedSetRole) {
         await this.$router.push(Path.ROLE);
@@ -73,10 +71,10 @@ export default {
         await this.getStatistic();
         await this.getNotifications();
 
-        if (this.userData.role === 'employer') {
-          await this.$router.push('/workers');
-        } else if (this.userData.role === 'worker') {
-          await this.$router.push('/quests');
+        if (this.userData.role === UserRole.EMPLOYER) {
+          await this.$router.push(Path.WORKERS);
+        } else if (this.userData.role === UserRole.WORKER) {
+          await this.$router.push(Path.QUESTS);
         }
       }
     }

@@ -1,6 +1,5 @@
 <template>
   <div class="confirm">
-    {{ step }}
     <div
       class="role"
       :class="{role_hidden: step !== walletState.Default}"
@@ -93,6 +92,7 @@
       <CreateWallet
         :step="step"
         :main-color-dark="false"
+        :disabled="isLoading"
         @goStep="goStep"
         @submit="assignWallet"
       >
@@ -107,9 +107,13 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { UserRole, UserStatuses, WalletState } from '~/utils/enums';
+import {
+  Path, UserRole, UserStatuses, WalletState,
+} from '~/utils/enums';
 import CreateWallet from '~/components/ui/CreateWallet';
-import { encryptStringWithKey, getCipherKey, initWallet } from '~/utils/wallet';
+import {
+  encryptStringWithKey, getCipherKey, initWallet,
+} from '~/utils/wallet';
 
 export default {
   name: 'Role',
@@ -122,11 +126,15 @@ export default {
       step: WalletState.Default,
       showLeftChoose: false,
       showRightChoose: false,
+      isLoginWithSocialNetwork: this.$cookies.get('socialNetwork'),
+      isWalletAssigned: false,
+      isConfirmingPass: false,
     };
   },
   computed: {
     ...mapGetters({
       userData: 'user/getUserData',
+      isLoading: 'main/getIsLoading',
     }),
     walletState() {
       return WalletState;
@@ -137,10 +145,17 @@ export default {
     const refresh = this.$cookies.get('refresh');
     const userStatus = this.$cookies.get('userStatus');
     if (!access || !refresh || !userStatus) {
-      await this.$router.push('/sign-in');
+      await this.$router.push(Path.SIGN_IN);
       return;
     }
-    if (userStatus === UserStatuses.Confirmed && !this.userData?.wallet?.address) this.step = WalletState.ImportOrCreate;
+    this.$cookies.set('userLogin', true);
+    if (userStatus === UserStatuses.Confirmed && !this.userData?.wallet?.address) {
+      this.step = WalletState.ImportOrCreate;
+      if (getCipherKey() == null && !this.isLoginWithSocialNetwork) {
+        this.isConfirmingPass = true;
+        await this.$store.dispatch('wallet/confirmPassword', { nuxt: this.$nuxt, callbackLayout: 'role' });
+      }
+    }
   },
   async mounted() {
     const { left, right } = this.$refs;
@@ -148,6 +163,9 @@ export default {
     left.addEventListener('mouseleave', () => right.classList.remove('role__card_minimized'));
     right.addEventListener('mouseover', () => left.classList.add('role__card_minimized'));
     right.addEventListener('mouseleave', () => left.classList.remove('role__card_minimized'));
+  },
+  beforeDestroy() {
+    if (!this.isWalletAssigned && !this.isConfirmingPass) this.$store.dispatch('user/logout');
   },
   methods: {
     goStep(step) {
@@ -165,39 +183,33 @@ export default {
       this.step = WalletState.ImportOrCreate;
     },
     redirectUser() {
-      if (this.userData.role === UserRole.EMPLOYER) {
-        this.$router.push('/workers');
-      } else if (this.userData.role === UserRole.WORKER) {
-        this.$router.push('/quests');
-      }
+      if (this.userData.role === UserRole.EMPLOYER) this.$router.push(Path.WORKERS);
+      else if (this.userData.role === UserRole.WORKER) this.$router.push(Path.QUESTS);
     },
     async assignWallet(wallet) {
+      this.isConfirmingPass = false;
       this.SetLoader(true);
-      await this.$store.dispatch('user/registerWallet', {
+      const res = await this.$store.dispatch('user/registerWallet', {
         address: wallet.address.toLowerCase(),
         publicKey: wallet.publicKey,
       });
-      initWallet(wallet.address.toLowerCase(), wallet.privateKey);
       this.SetLoader(false);
-      if (this.$cookies.get('socialNetwork')) {
+      if (!res.ok) return;
+      this.isWalletAssigned = true;
+      initWallet(wallet.address.toLowerCase(), wallet.privateKey);
+      if (this.isLoginWithSocialNetwork) {
         this.redirectUser();
         return;
       }
-      const key = getCipherKey();
-      if (key !== null) {
-        localStorage.setItem('mnemonic', JSON.stringify({
-          ...JSON.parse(localStorage.getItem('mnemonic')),
-          [wallet.address.toLowerCase()]: encryptStringWithKey(wallet.mnemonic.phrase, key),
-        }));
-        sessionStorage.setItem('mnemonic', JSON.stringify({
-          ...JSON.parse(sessionStorage.getItem('mnemonic')),
-          [wallet.address.toLowerCase()]: wallet.mnemonic.phrase,
-        }));
-        this.redirectUser();
-      } else {
-        await this.$store.dispatch('user/logout');
-        await this.$router.push('/sign-in');
-      }
+      localStorage.setItem('mnemonic', JSON.stringify({
+        ...JSON.parse(localStorage.getItem('mnemonic')),
+        [wallet.address.toLowerCase()]: encryptStringWithKey(wallet.mnemonic.phrase, getCipherKey()),
+      }));
+      sessionStorage.setItem('mnemonic', JSON.stringify({
+        ...JSON.parse(sessionStorage.getItem('mnemonic')),
+        [wallet.address.toLowerCase()]: wallet.mnemonic.phrase,
+      }));
+      this.redirectUser();
     },
   },
 };

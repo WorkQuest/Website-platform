@@ -5,6 +5,7 @@ export default () => ({
   transactionsCount: 0,
   isWalletConnected: false,
   callbackLayout: 'default',
+  isOnlyConfirm: false, // for confirm password layout
   selectedToken: TokensSymbols.WUSD,
   balance: {
     WQT: {

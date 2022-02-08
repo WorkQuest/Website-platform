@@ -61,7 +61,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { connectWithMnemonic } from '~/utils/wallet';
+import { connectWithMnemonic, setCipherKey } from '~/utils/wallet';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'ConfirmPassword',
@@ -82,8 +83,9 @@ export default {
   computed: {
     ...mapGetters({
       isLoading: 'main/getIsLoading',
-      userAddress: 'user/getUserWalletAddress',
+      userWalletAddress: 'user/getUserWalletAddress',
       callbackLayout: 'wallet/getCallbackLayout',
+      isOnlyConfirm: 'wallet/getIsOnlyConfirm',
     }),
   },
   watch: {
@@ -98,41 +100,38 @@ export default {
     }
   },
   mounted() {
-    if (!this.userAddress) {
+    if (this.isOnlyConfirm) return;
+    if (!this.userWalletAddress) {
       this.disconnect();
       return;
     }
-
     if (this.$cookies.get('socialNetwork')) {
       this.isImportWallet = true;
       return;
     }
-
     // Try to find mnemonic in storage by user wallet address
     // Checking session storage
     const session = JSON.parse(sessionStorage.getItem('mnemonic'));
     let mnemonic = null;
     if (session) {
-      mnemonic = session[this.userAddress];
+      mnemonic = session[this.userWalletAddress];
       if (mnemonic) {
         this.toDecrypt = mnemonic;
         return;
       }
     }
-
     // Checking local storage
     const storage = JSON.parse(localStorage.getItem('mnemonic'));
     if (!storage) {
       this.disconnect();
       return;
     }
-    mnemonic = storage[this.userAddress];
+    mnemonic = storage[this.userWalletAddress];
     if (!mnemonic) {
       this.disconnect();
       return;
     }
     this.toDecrypt = mnemonic;
-
     this.SetLoader(false);
     this.CloseModal();
   },
@@ -140,48 +139,53 @@ export default {
     allowAccess() {
       this.$nuxt.setLayout(this.callbackLayout);
     },
+    async checkPassword() {
+      const checked = await this.$store.dispatch('wallet/checkPassword', this.password);
+      if (!checked) {
+        if (this.counter >= 5) {
+          this.ShowToast(this.$t('messages.attemptsExceeded'));
+          this.disconnect(false);
+          return;
+        }
+        this.counter -= 1;
+        this.ShowToast(this.$t('messages.invalidPassword'));
+      }
+    },
     async submit() {
+      if (this.isOnlyConfirm) {
+        const ok = this.checkPassword();
+        if (ok) {
+          setCipherKey(this.password);
+          this.allowAccess();
+        }
+        return;
+      }
+
       if (this.isImportWallet) {
         this.handleImport();
         return;
       }
 
-      const check = await this.$store.dispatch('wallet/checkPassword', this.password);
-      if (check) {
-        const res = await this.$store.dispatch('wallet/connectWallet', { userAddress: this.userAddress, userPassword: this.password });
+      const checked = this.checkPassword();
+      if (checked) {
+        const res = await this.$store.dispatch('wallet/connectWallet', { userWalletAddress: this.userWalletAddress, userPassword: this.password });
         if (res?.ok) this.allowAccess();
-      } else {
-        if (this.counter >= 5) {
-          this.disconnect(false);
-        }
-        await this.$store.dispatch('main/showToast', {
-          title: 'Error',
-          text: 'Wrong password!',
-        });
-        this.counter += 1;
       }
     },
     handleImport() {
       sessionStorage.setItem('mnemonic', JSON.stringify({
         ...JSON.parse(sessionStorage.getItem('mnemonic')),
-        [this.userAddress]: this.mnemonic,
+        [this.userWalletAddress]: this.mnemonic,
       }));
-      if (connectWithMnemonic(this.userAddress)) this.allowAccess();
-      else {
-        this.ShowToast(this.$t('messages.mnemonic'));
-      }
+      if (connectWithMnemonic(this.userWalletAddress)) this.allowAccess();
+      else this.ShowToast(this.$t('messages.mnemonic'));
     },
-    disconnect(showToast = true) {
-      if (showToast) {
-        this.$store.dispatch('main/showToast', {
-          title: 'Secret phrase not found',
-          text: 'Please login with secret phrase',
-        });
-      }
+    disconnect(showMnemonicError = true) {
+      if (showMnemonicError) this.ShowToast(this.$t('messages.loginWithSecret'));
       this.$store.dispatch('user/logout');
       this.$store.dispatch('wallet/disconnect');
       this.$nuxt.setLayout('auth');
-      this.$router.push('sign-in');
+      this.$router.push(Path.SIGN_IN);
     },
   },
 };

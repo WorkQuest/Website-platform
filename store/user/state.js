@@ -58,9 +58,7 @@ export default () => ({
       skills: [],
       educations: [],
       workExperiences: [],
-      wallet: {
-        address: null,
-      },
+      wallet: { address: null },
     },
     avatar: {
       id: '',

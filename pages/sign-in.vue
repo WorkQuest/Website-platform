@@ -141,7 +141,9 @@ import {
   createWallet, decryptStringWitheKey, encryptStringWithKey, initWallet, setCipherKey,
 } from '~/utils/wallet';
 import CreateWallet from '~/components/ui/CreateWallet';
-import { Path, UserStatuses, WalletState } from '~/utils/enums';
+import {
+  Path, UserRole, UserStatuses, WalletState,
+} from '~/utils/enums';
 
 export default {
   name: 'SignIn',
@@ -152,12 +154,9 @@ export default {
   data() {
     return {
       addressAssigned: false,
-      userAddress: null,
+      userWalletAddress: null,
       step: WalletState.Default,
-      model: {
-        email: '',
-        password: '',
-      },
+      model: { email: '', password: '' },
       remember: false,
       userStatus: null,
       isLoginWithSocial: false,
@@ -177,15 +176,16 @@ export default {
     const access = this.$cookies.get('access');
     const refresh = this.$cookies.get('refresh');
     const userStatus = this.$cookies.get('userStatus');
-    if (this.isLoginWithSocial
-      && access
-      && +userStatus === UserStatuses.Confirmed) {
+    if (this.isLoginWithSocial && access && +userStatus === UserStatuses.Confirmed) {
       this.step = WalletState.ImportMnemonic;
       await this.$store.commit('user/setTokens', {
-        access, refresh, userStatus, social: this.isLoginWithSocial,
+        access,
+        refresh,
+        userStatus,
+        social: this.isLoginWithSocial,
       });
       await this.$store.dispatch('user/getUserData');
-      this.userAddress = this.userData.wallet?.address;
+      this.userWalletAddress = this.userData.wallet?.address;
     }
   },
   beforeDestroy() {
@@ -203,7 +203,7 @@ export default {
         if (this.isLoginWithSocial) {
           this.step = WalletState.Default;
           this.$store.dispatch('user/logout');
-        } else this.step = !this.userAddress ? WalletState.ImportOrCreate : WalletState.Default;
+        } else this.step = !this.userWalletAddress ? WalletState.ImportOrCreate : WalletState.Default;
         return;
       }
       if (this.step === WalletState.SaveMnemonic) {
@@ -228,12 +228,20 @@ export default {
       });
       if (response?.ok) {
         this.userStatus = response.result.userStatus;
+        const confirmToken = sessionStorage.getItem('confirmToken');
         // Unconfirmed account w/o confirm token
-        if (this.userStatus === UserStatuses.Unconfirmed && !sessionStorage.getItem('confirmToken')) {
+        if (this.userStatus === UserStatuses.Unconfirmed && !confirmToken) {
           await this.$store.dispatch('main/showToast', {
             title: this.$t('registration.emailConfirmTitle'),
             text: this.$t('registration.emailConfirm'),
           });
+          this.SetLoader(false);
+          return;
+        }
+
+        // Redirect to confirm account
+        if (confirmToken) {
+          this.redirectUser();
           this.SetLoader(false);
           return;
         }
@@ -247,7 +255,7 @@ export default {
           this.SetLoader(false);
           return;
         }
-        this.userAddress = address.toLowerCase();
+        this.userWalletAddress = address.toLowerCase();
 
         // Wallet assigned, checking storage
         const sessionData = JSON.parse(sessionStorage.getItem('mnemonic'));
@@ -269,7 +277,7 @@ export default {
         // Check in session if exists
         if (sessionMnemonic) {
           const wallet = createWallet(sessionMnemonic);
-          if (wallet && wallet.address.toLowerCase() === this.userAddress) {
+          if (wallet && wallet.address.toLowerCase() === this.userWalletAddress) {
             this.saveToStorage(wallet);
             this.redirectUser();
             this.SetLoader(false);
@@ -281,7 +289,7 @@ export default {
         if (storageMnemonic) {
           const mnemonic = decryptStringWitheKey(storageMnemonic, this.model.password);
           const wallet = createWallet(mnemonic);
-          if (wallet && wallet.address.toLowerCase() === this.userAddress) {
+          if (wallet && wallet.address.toLowerCase() === this.userWalletAddress) {
             this.saveToStorage(wallet);
             this.redirectUser();
             this.SetLoader(false);
@@ -318,12 +326,12 @@ export default {
     },
     async importWallet(wallet) {
       // Correct phrase, but not assigned to this account
-      if (!this.userAddress) {
+      if (!this.userWalletAddress) {
         await this.assignWallet(wallet);
         return;
       }
       // All ok
-      if (wallet.address.toLowerCase() === this.userAddress) {
+      if (wallet.address.toLowerCase() === this.userWalletAddress) {
         this.saveToStorage(wallet);
         this.redirectUser();
         return;
@@ -344,7 +352,7 @@ export default {
         ...JSON.parse(sessionStorage.getItem('mnemonic')),
         [wallet.address.toLowerCase()]: wallet.mnemonic.phrase,
       }));
-      this.$store.dispatch('wallet/connectWallet', { userAddress: wallet.address, userPassword: this.model.password });
+      this.$store.dispatch('wallet/connectWallet', { userWalletAddress: wallet.address, userPassword: this.model.password });
     },
     redirectUser() {
       this.addressAssigned = true;
@@ -356,13 +364,9 @@ export default {
         return;
       }
       sessionStorage.removeItem('confirmToken');
-      if (this.userData.role === 'employer') {
-        this.$router.push('/workers');
-      } else if (this.userData.role === 'worker') {
-        this.$router.push('/quests');
-      } else if (this.userStatus === UserStatuses.NeedSetRole) {
-        this.$router.push(Path.ROLE);
-      }
+      if (this.userData.role === UserRole.EMPLOYER) this.$router.push(Path.WORKERS);
+      else if (this.userData.role === UserRole.WORKER) this.$router.push(Path.QUESTS);
+      else if (this.userStatus === UserStatuses.NeedSetRole) this.$router.push(Path.ROLE);
     },
     async redirectSocialLink(socialNetwork) {
       window.location = `${process.env.BASE_URL}v1/auth/login/${socialNetwork}`;
@@ -384,7 +388,6 @@ export default {
 <style lang="scss" scoped>
 .auth {
   &__back {
-    //padding-bottom: 10px;
     cursor: pointer;
     display: table-cell;
     color: $black700;
