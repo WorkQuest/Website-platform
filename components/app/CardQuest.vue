@@ -544,8 +544,8 @@ export default {
   }
   &__status {
     display: grid;
-    grid-template-columns: auto 1fr;
-    grid-gap: 15px;
+    align-self: flex-start;
+    margin-top: 10px;
   }
   &__amount {
     font-style: normal;
