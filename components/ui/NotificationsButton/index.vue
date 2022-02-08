@@ -234,13 +234,12 @@ export default {
   }
 
   &__btn {
+    display: grid;
+    grid-template-columns: 1fr max-content;
     background: #F7F8FA;
     border-radius: 3px;
     height: 44px;
-    width: 100%;
-    display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: 0 10px;
     transition: .5s;
     &:hover {
@@ -272,6 +271,10 @@ export default {
     &_btn {
       font-size: 16px;
       color: $black800;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align: left;
     }
   }
   &__user {
