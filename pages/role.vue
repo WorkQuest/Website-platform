@@ -182,11 +182,13 @@ export default {
     goToAssignWallet() {
       this.step = WalletState.ImportOrCreate;
     },
-    redirectUser() {
-      if (this.userData.role === UserRole.EMPLOYER) this.$router.push(Path.WORKERS);
-      else if (this.userData.role === UserRole.WORKER) this.$router.push(Path.QUESTS);
+    async redirectUser() {
+      await this.$store.dispatch('user/getUserData');
+      if (this.userData.role === UserRole.EMPLOYER) await this.$router.push(Path.WORKERS);
+      else if (this.userData.role === UserRole.WORKER) await this.$router.push(Path.QUESTS);
     },
     async assignWallet(wallet) {
+      console.log('key', getCipherKey());
       this.isConfirmingPass = false;
       this.SetLoader(true);
       const res = await this.$store.dispatch('user/registerWallet', {
@@ -198,7 +200,7 @@ export default {
       this.isWalletAssigned = true;
       initWallet(wallet.address.toLowerCase(), wallet.privateKey);
       if (this.isLoginWithSocialNetwork) {
-        this.redirectUser();
+        await this.redirectUser();
         return;
       }
       localStorage.setItem('mnemonic', JSON.stringify({
@@ -209,7 +211,7 @@ export default {
         ...JSON.parse(sessionStorage.getItem('mnemonic')),
         [wallet.address.toLowerCase()]: wallet.mnemonic.phrase,
       }));
-      this.redirectUser();
+      await this.redirectUser();
     },
   },
 };
