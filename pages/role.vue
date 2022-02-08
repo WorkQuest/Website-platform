@@ -188,7 +188,6 @@ export default {
       else if (this.userData.role === UserRole.WORKER) await this.$router.push(Path.QUESTS);
     },
     async assignWallet(wallet) {
-      console.log('key', getCipherKey());
       this.isConfirmingPass = false;
       this.SetLoader(true);
       const res = await this.$store.dispatch('user/registerWallet', {

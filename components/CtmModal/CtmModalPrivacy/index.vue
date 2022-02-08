@@ -105,7 +105,6 @@ export default {
         };
         const response = await this.$store.dispatch('user/confirm', payload);
         if (response?.ok) {
-          console.log('confirmed to status 1');
           this.$cookies.set('userStatus', 1);
           sessionStorage.removeItem('confirmToken');
           await this.$router.push(Path.ROLE);
