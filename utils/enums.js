@@ -135,8 +135,11 @@ export const NotificationAction = {
   WORKER_ACCEPTED_INVITATION_TO_QUEST: 'workerAcceptedInvitationToQuest',
   WORKER_REJECTED_INVITATION_TO_QUEST: 'workerRejectedInvitationToQuest',
   EMPLOYER_REJECTED_WORKERS_RESPONSE: 'employerRejectedWorkersResponse',
+  WAIT_WORKER: 'waitWorker',
 
   USER_LEFT_REVIEW_ABOUT_QUEST: 'userLeftReviewAboutQuest',
+
+  OPEN_DISPUTE: 'openDispute',
 };
 
 export const ChatType = {
@@ -165,6 +168,7 @@ export const Path = {
   ROOT: '/quests',
   CREATE_QUEST: '/create-quest',
   STAKING: '/staking',
+  PROFILE: '/profile',
   ROLE: '/role',
   WORKERS: '/workers',
   QUESTS: '/quests',

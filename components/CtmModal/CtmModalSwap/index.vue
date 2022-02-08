@@ -28,7 +28,7 @@
                 type="number"
                 :placeholder="'0,05'"
                 class="grid__input"
-                rules="required|decimal|min_value:0.00001"
+                rules="required|decimal|decimalPlaces:18|min_value:0.00001"
                 :name="$t('modals.amountField')"
               >
                 <template
@@ -155,7 +155,6 @@ export default {
     },
     async showSwapInfoModal() {
       this.SetLoader(true);
-      // this.connectToMetamask();
       if (this.checkAmount()) {
         this.amount = this.amount.replace(/[,]/g, '.');
         this.ShowModal({
@@ -236,7 +235,11 @@ export default {
     margin-bottom: 23px;
   }
 }
-
+.max {
+  &__button {
+    background: transparent !important;
+  }
+}
 .buttons {
   display: grid;
   grid-template-columns: repeat(2, calc(50% - 10px));
