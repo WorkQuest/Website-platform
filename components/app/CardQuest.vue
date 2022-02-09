@@ -583,6 +583,7 @@ export default {
     line-height: 130%;
     height: 24px;
     padding: 0 5px;
+    margin-bottom: 5px;
     &_low {
       background: rgba(34, 204, 20, 0.1);
       color: $green;
