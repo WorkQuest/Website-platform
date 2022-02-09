@@ -153,14 +153,31 @@ export default {
   }
 }
 
+@include _1199 {
+ .template {
+  &__center {
+    padding: 20px;
+  }
+ }
+}
+
+@include _1199 {
+  .template {
+    &__footer {
+      padding: 20px;
+    }
+    &__top {
+      padding: 20px;
+    }
+  }
+}
+
 @include _575 {
   .template {
     &__container {
       grid-gap: 30px;
     }
-    &__top {
-      padding: 20px;
-    }
+
     &__footer {
       justify-content: center;
     }

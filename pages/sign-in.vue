@@ -177,15 +177,18 @@ export default {
     const refresh = this.$cookies.get('refresh');
     const userStatus = this.$cookies.get('userStatus');
     if (this.isLoginWithSocial && access && +userStatus === UserStatuses.Confirmed) {
+      this.SetLoader(true);
+      await this.$store.dispatch('user/getUserData');
+      this.userWalletAddress = this.userData?.wallet?.address;
+      this.SetLoader(false);
+      if (!this.userWalletAddress) return;
       this.step = WalletState.ImportMnemonic;
-      await this.$store.commit('user/setTokens', {
+      this.$store.commit('user/setTokens', {
         access,
         refresh,
         userStatus,
         social: this.isLoginWithSocial,
       });
-      await this.$store.dispatch('user/getUserData');
-      this.userWalletAddress = this.userData.wallet?.address;
     }
   },
   beforeDestroy() {
@@ -356,7 +359,7 @@ export default {
     },
     redirectUser() {
       this.addressAssigned = true;
-      this.$cookies.set('userLogin', true);
+      this.$cookies.set('userLogin', true, { path: '/' });
       // redirect to confirm access if token exists & unconfirmed account
       const confirmToken = JSON.parse(sessionStorage.getItem('confirmToken'));
       if (this.userStatus === UserStatuses.Unconfirmed && confirmToken) {

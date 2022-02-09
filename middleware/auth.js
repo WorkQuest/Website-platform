@@ -1,8 +1,10 @@
 // eslint-disable-next-line func-names
-import { Path } from '~/utils/enums';
+import { Path, UserStatuses } from '~/utils/enums';
 
 // eslint-disable-next-line func-names
-export default async function ({ app, redirect, store }) {
+export default async function ({
+  app, redirect, store, route,
+}) {
   try {
     const access = app.$cookies.get('access');
     const refresh = app.$cookies.get('refresh');
@@ -16,7 +18,7 @@ export default async function ({ app, redirect, store }) {
       social,
     };
 
-    if (access && refresh) {
+    if (access || refresh) {
       store.commit('user/setTokens', payload);
     }
     if (!access || !refresh || !app.$cookies.get('userLogin')) {
@@ -28,12 +30,12 @@ export default async function ({ app, redirect, store }) {
       await store.dispatch('user/getStatistic');
       await store.dispatch('user/getNotifications');
     }
-    if (userStatus === 2) {
+    if (userStatus === UserStatuses.NeedSetRole && route.path !== Path.ROLE) {
       return redirect(Path.ROLE);
     }
     return true;
   } catch (e) {
-    console.log(e);
+    console.error(e);
     await store.dispatch('user/logout');
     return redirect('/sign-in');
   }

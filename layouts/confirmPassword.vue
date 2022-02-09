@@ -21,7 +21,6 @@
           rules="required_if|min:8"
           type="password"
           vid="confirmation"
-          autocomplete="current-password"
         />
         <base-field
           v-else
@@ -145,30 +144,32 @@ export default {
         if (this.counter >= 5) {
           this.ShowToast(this.$t('messages.attemptsExceeded'));
           this.disconnect(false);
-          return;
-        }
+        } else this.ShowToast(this.$t('messages.invalidPassword'));
         this.counter -= 1;
-        this.ShowToast(this.$t('messages.invalidPassword'));
+        return false;
       }
+      return true;
     },
     async submit() {
-      if (this.isOnlyConfirm) {
-        const ok = this.checkPassword();
-        if (ok) {
-          setCipherKey(this.password);
-          this.allowAccess();
-        }
-        return;
-      }
-
       if (this.isImportWallet) {
         this.handleImport();
         return;
       }
 
       const checked = this.checkPassword();
+      if (this.isOnlyConfirm) {
+        if (checked) {
+          setCipherKey(this.password);
+          this.allowAccess();
+        }
+        return;
+      }
+
       if (checked) {
-        const res = await this.$store.dispatch('wallet/connectWallet', { userWalletAddress: this.userWalletAddress, userPassword: this.password });
+        const res = await this.$store.dispatch('wallet/connectWallet', {
+          userWalletAddress: this.userWalletAddress,
+          userPassword: this.password,
+        });
         if (res?.ok) this.allowAccess();
       }
     },

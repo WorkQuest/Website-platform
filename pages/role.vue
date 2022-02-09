@@ -95,6 +95,7 @@
         :disabled="isLoading"
         @goStep="goStep"
         @submit="assignWallet"
+        @import="assignWallet"
       >
         <template slot="actionText">
           {{ $t('signUp.create') }}
@@ -118,6 +119,7 @@ import {
 export default {
   name: 'Role',
   layout: 'role',
+  middleware: 'auth',
   components: {
     CreateWallet,
   },
@@ -148,7 +150,11 @@ export default {
       await this.$router.push(Path.SIGN_IN);
       return;
     }
-    this.$cookies.set('userLogin', true);
+    if (this.userData.wallet?.address && userStatus === UserStatuses.Confirmed) {
+      this.isConfirmingPass = true;
+      await this.redirectUser();
+      return;
+    }
     if (userStatus === UserStatuses.Confirmed && !this.userData?.wallet?.address) {
       this.step = WalletState.ImportOrCreate;
       if (getCipherKey() == null && !this.isLoginWithSocialNetwork) {
@@ -184,6 +190,7 @@ export default {
     },
     async redirectUser() {
       await this.$store.dispatch('user/getUserData');
+      console.log('redirect with role', this.userData.role);
       if (this.userData.role === UserRole.EMPLOYER) await this.$router.push(Path.WORKERS);
       else if (this.userData.role === UserRole.WORKER) await this.$router.push(Path.QUESTS);
     },
@@ -194,12 +201,18 @@ export default {
         address: wallet.address.toLowerCase(),
         publicKey: wallet.publicKey,
       });
-      this.SetLoader(false);
-      if (!res.ok) return;
+      if (!res.ok) {
+        console.log(res);
+        await this.$store.dispatch('user/logout');
+        await this.$router.push(Path.SIGN_IN);
+        this.SetLoader(false);
+        return;
+      }
       this.isWalletAssigned = true;
       initWallet(wallet.address.toLowerCase(), wallet.privateKey);
       if (this.isLoginWithSocialNetwork) {
         await this.redirectUser();
+        this.SetLoader(false);
         return;
       }
       localStorage.setItem('mnemonic', JSON.stringify({
@@ -211,6 +224,7 @@ export default {
         [wallet.address.toLowerCase()]: wallet.mnemonic.phrase,
       }));
       await this.redirectUser();
+      this.SetLoader(false);
     },
   },
 };
@@ -289,12 +303,23 @@ export default {
     right: -90px;
     bottom: 0;
     height: 100%;
+    z-index: -1;
   }
   &__card {
     transition: .2s;
     will-change: transform;
     min-height: 400px;
     cursor: pointer;
+    filter: drop-shadow(0px 47.1676px 61.4131px rgba(10, 27, 61, 0.078707))
+    drop-shadow(0px 26.7219px 32.8344px rgba(10, 27, 61, 0.0629546))
+    drop-shadow(0px 14.4955px 18.4067px rgba(10, 27, 61, 0.0598272))
+    drop-shadow(0px 6.96225px 9.77565px rgba(10, 27, 61, 0.0584222))
+    drop-shadow(0px 2.43911px 4.06787px rgba(10, 27, 61, 0.0492837));
+    -webkit-filter: drop-shadow(0px 47.1676px 61.4131px rgba(10, 27, 61, 0.078707))
+    drop-shadow(0px 26.7219px 32.8344px rgba(10, 27, 61, 0.0629546))
+    drop-shadow(0px 14.4955px 18.4067px rgba(10, 27, 61, 0.0598272))
+    drop-shadow(0px 6.96225px 9.77565px rgba(10, 27, 61, 0.0584222))
+    drop-shadow(0px 2.43911px 4.06787px rgba(10, 27, 61, 0.0492837));
     border-radius: 6px;
     background-size: cover;
     overflow: hidden;
@@ -388,27 +413,14 @@ export default {
   }
 }
 
-@include _1199 {
-  .role {
-    &__title {
-      margin: 0 20px;
-    }
-    &__cards {
-      margin: 0 20px;
-    }
-  }
-  .confirm {
-    margin: 0 20px;
-  }
-}
-@include _767 {
+@include _991 {
   .role {
     &__text_title {
-      font-size: 20px;
+      font-size: 28px;
     }
     &__text_desc {
       font-size: 16px;
-      max-width: 140px;
+      max-width: 220px;
     }
     &__cards {
       grid-template-columns: 1fr;

@@ -51,41 +51,32 @@ export default {
   async beforeMount() {
     const { access, refresh, userStatus } = this.$route.query;
     if (access && refresh && userStatus) {
-      await this.$store.commit('user/setTokens', {
+      this.$store.commit('user/setTokens', {
         access, refresh, userStatus, social: true,
       });
-      // Redirect to import mnemonic
+      await this.$store.dispatch('user/getUserData');
+      // To set role or assign wallet
+      if (+userStatus === UserStatuses.NeedSetRole || !this.userData?.wallet?.address) {
+        this.$cookies.set('userLogin', true, { path: '/' });
+        await this.$router.push(Path.ROLE);
+        return;
+      }
+      // To import mnemonic for login
       if (+userStatus === UserStatuses.Confirmed && !getIsWalletConnected()) {
         await this.$router.push(Path.SIGN_IN);
         return;
       }
-      if (+userStatus === UserStatuses.NeedSetRole) {
-        await this.$router.push(Path.ROLE);
-      } else {
-        await this.$store.dispatch('user/getUserData');
-        if (!this.userData?.wallet?.address) {
-          // To import or create new wallet
-          await this.$router.push(Path.ROLE);
-        }
+      await this.$store.dispatch('user/getStatistic');
+      await this.$store.dispatch('user/getNotifications');
 
-        await this.getStatistic();
-        await this.getNotifications();
-
-        if (this.userData.role === UserRole.EMPLOYER) {
-          await this.$router.push(Path.WORKERS);
-        } else if (this.userData.role === UserRole.WORKER) {
-          await this.$router.push(Path.QUESTS);
-        }
+      if (this.userData.role === UserRole.EMPLOYER) {
+        await this.$router.push(Path.WORKERS);
+      } else if (this.userData.role === UserRole.WORKER) {
+        await this.$router.push(Path.QUESTS);
       }
     }
   },
   methods: {
-    async getStatistic() {
-      await this.$store.dispatch('user/getStatistic');
-    },
-    async getNotifications() {
-      await this.$store.dispatch('user/getNotifications');
-    },
     toMain() {
       this.$router.push('/sign-in');
     },

@@ -91,9 +91,10 @@ export default {
     async onSubmit() {
       // Role page & select role
       if (this.$cookies.get('userStatus') === UserStatuses.NeedSetRole) {
-        this.$cookies.set('role', this.options.role);
         const response = await this.$store.dispatch('user/setUserRole', { role: this.options.role });
         if (response?.ok) {
+          this.$cookies.set('role', this.options.role, { path: '/' });
+          this.$cookies.set('userStatus', 1, { path: '/' });
           this.options.callback();
           this.CloseModal();
           return;
@@ -105,10 +106,11 @@ export default {
         };
         const response = await this.$store.dispatch('user/confirm', payload);
         if (response?.ok) {
-          this.$cookies.set('userStatus', 1);
+          this.$cookies.set('role', this.options.role, { path: '/' });
+          this.$cookies.set('userStatus', 1, { path: '/' });
           sessionStorage.removeItem('confirmToken');
-          await this.$router.push(Path.ROLE);
           this.ShowToast(this.$t('modals.yourAccountVerified'), this.$t('modals.success'));
+          await this.$router.push(Path.ROLE);
         } else {
           // Wrong confirm token
           await this.$store.dispatch('user/logout');
