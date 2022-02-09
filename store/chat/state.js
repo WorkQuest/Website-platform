@@ -19,4 +19,10 @@ export default () => ({
     canLoadToBottom: false,
     canLoadToTop: false,
   },
+  chatsFilter: {
+    limit: 15,
+    offset: 0,
+    starred: false,
+    q: undefined,
+  },
 });

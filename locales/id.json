@@ -227,6 +227,7 @@
     "lastName": "Nama belakang",
     "email": "Email",
     "password": "Kata sandi",
+    "totp":"???",
     "confirmPassword": "Masukkan kembali kata sandi",
     "create": "Buat akun"
   },
@@ -1423,7 +1424,8 @@
       "youLeftTheChat": "???"
     },
     "leaveChat": "???",
-    "loadMore": "???"
+    "loadMore": "???",
+    "searchTitle": "Name/Quest/Group"
   },
   "settings": {
     "additionalPhoneNumber": "???",

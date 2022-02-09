@@ -227,6 +227,7 @@
     "lastName": "নামের শেষাংশ",
     "email": "ইমেইল",
     "password": "পাসওয়ার্ড",
+    "totp":"???",
     "confirmPassword": "পুনরায় পাসওয়ার্ড",
     "create": "অ্যাকাউন্ট তৈরি করুন"
   },
@@ -1423,7 +1424,8 @@
       "youLeftTheChat": "???"
     },
     "leaveChat": "???",
-    "loadMore": "???"
+    "loadMore": "???",
+    "searchTitle": "Name/Quest/Group"
   },
   "settings": {
     "additionalPhoneNumber": "???",

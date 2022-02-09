@@ -227,6 +227,7 @@
     "lastName": "Apellidos",
     "email": "Correo electrónico",
     "password": "Contraseña",
+    "totp":"???",
     "confirmPassword": "Repetir contraseña",
     "create": "Crear cuenta"
   },
@@ -1423,7 +1424,8 @@
       "youLeftTheChat": "???"
     },
     "leaveChat": "???",
-    "loadMore": "???"
+    "loadMore": "???",
+    "searchTitle": "Name/Quest/Group"
   },
   "settings": {
     "additionalPhoneNumber": "???",
