@@ -12,6 +12,31 @@
             @change="handleSortedChats"
           />
         </div>
+        <div class="chats-container__search">
+          <base-field
+            v-model="searchValue"
+            class="chats-container__search-input"
+            is-search
+            is-hide-error
+            has-loader
+            :is-busy-search="isChatsSearching"
+            :placeholder="$t('chat.searchTitle')"
+            data-selector="INPUT-SEARCH"
+            @input="handleSetSearchValue"
+          >
+            <template v-slot:right-absolute>
+              <div
+                v-if="isChatsSearching"
+                class="loader-cont"
+              >
+                <loader
+                  class="loader-cont__loader"
+                  is-mini-loader
+                />
+              </div>
+            </template>
+          </base-field>
+        </div>
         <div
           v-if="chats.list.length"
           class="chats-container__list"
@@ -130,17 +155,16 @@ export default {
   },
   data() {
     return {
-      filter: {
-        limit: 15,
-        offset: 0,
-        starred: false,
-      },
+      searchValue: '',
+      isChatsSearching: false,
+      delayId: null,
     };
   },
   computed: {
     ...mapGetters({
       chats: 'chat/getChats',
       userData: 'user/getUserData',
+      filter: 'chat/getChatsFilter',
     }),
     ChatType() {
       return ChatType;
@@ -151,12 +175,36 @@ export default {
       return count > list.length;
     },
   },
+  destroyed() {
+    this.$store.commit('chat/changeChatsFilterValue', [
+      { key: 'offset', val: 0 },
+      { key: 'q', val: undefined },
+      { key: 'starred', val: false },
+    ]);
+  },
   async mounted() {
-    this.filter.starred = this.$route.query.starred === 'true';
+    await this.$store.commit('chat/changeChatsFilterValue', [{ key: 'starred', val: this.$route.query.starred === 'true' }]);
     await this.getChats();
     this.SetLoader(false);
   },
   methods: {
+    handleSetSearchValue() {
+      this.isChatsSearching = true;
+
+      this.delayId = this.SetDelay(async () => {
+        this.isChatsSearching = false;
+
+        await this.$store.commit('chat/changeChatsFilterValue',
+          [
+            { key: 'q', val: this.searchValue || undefined },
+            { key: 'offset', val: 0 },
+          ]);
+
+        this.SetLoader(true);
+        await this.getChats();
+        this.SetLoader(false);
+      }, 500, this.delayId);
+    },
     isItMyLastMessage(senderId) {
       return this.userData.id === senderId;
     },
@@ -167,7 +215,9 @@ export default {
       return chatType === ChatType.QUEST;
     },
     async loadMoreChats() {
-      this.filter.offset += this.filter.limit;
+      const { offset, limit } = this.filter;
+
+      await this.$store.commit('chat/changeChatsFilterValue', [{ key: 'offset', val: offset + limit }]);
 
       this.SetLoader(true);
       await this.getChats();
@@ -231,13 +281,18 @@ export default {
 
       this.$router.push(`/quests/${questId}`);
     },
-    handleSortedChats() {
-      this.filter = {
-        limit: 15,
-        offset: 0,
-        starred: !this.filter.starred,
-      };
-      this.$router.push(`?starred=${this.filter.starred}`);
+    async handleSortedChats() {
+      const { starred } = this.filter;
+
+      await this.$store.commit('chat/changeChatsFilterValue', [
+        { key: 'offset', val: 0 },
+        { key: 'q', val: undefined },
+        { key: 'starred', val: !starred },
+      ]);
+
+      this.searchValue = '';
+
+      this.$router.push(`?starred=${!starred}`);
       this.getChats();
     },
     handleChangeStarVal(ev, chat) {
@@ -247,7 +302,7 @@ export default {
       this.$store.dispatch(`chat/${chat.star ? 'removeStarForChat' : 'setStarForChat'}`, chatId);
     },
     async getChats() {
-      await this.$store.dispatch('chat/getChatsList', this.filter);
+      await this.$store.dispatch('chat/getChatsList');
     },
     handleSelChat(chatId) {
       this.$router.push(`/messages/${chatId}`);
@@ -276,6 +331,17 @@ export default {
   }
 }
 
+.loader-cont {
+  height: 20px;
+  width: 20px;
+  position: relative;
+
+  &__loader {
+    position: absolute !important;
+    background: transparent !important;
+  }
+}
+
 .chats-container {
   background-color: $white;
   border: 1px solid #E9EDF2;
@@ -289,6 +355,15 @@ export default {
     display: grid;
     grid-template-columns: 1fr max-content;
     align-items: center;
+  }
+
+  &__search {
+    padding: 20px 30px;
+  }
+
+  &__search-input {
+    border: 1px solid #E9EDF2;
+    border-radius: 6px;
   }
 
   &__no-chats {

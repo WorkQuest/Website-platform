@@ -296,7 +296,9 @@
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import moment from 'moment';
-import { MessageAction, UserRole, Path } from '~/utils/enums';
+import {
+  MessageAction, UserRole, Path, ChatType,
+} from '~/utils/enums';
 
 export default {
   scrollToTop: true,
@@ -309,7 +311,8 @@ export default {
     return {
       isInstrumentDropdownOpened: false,
       isUserDDOpened: false,
-      isShowProfile: false,
+      isShowProfile:
+false,
 
       isShowAdditionalMenu: false,
       isShowLocale: false,
@@ -337,6 +340,8 @@ export default {
       chatId: 'chat/getCurrChatId',
       messagesFilter: 'chat/getMessagesFilter',
       unreadMessagesCount: 'user/getUnreadChatsCount',
+      chats: 'chat/getChats',
+      searchValue: 'chat/getSearchValue',
     }),
     UserRole() {
       return UserRole;
@@ -431,6 +436,16 @@ export default {
     async chatAction({ data, action }) {
       if (this.$route.name === 'messages') {
         if (action === MessageAction.GROUP_CHAT_CREATE) {
+          const { searchValue } = this;
+
+          const isSearchValIncluded = (value) => value.toLowerCase().includes(searchValue);
+          const hasSearchedUser = () => data.userMembers.some(({ firstName, lastName }) => {
+            if (isSearchValIncluded(firstName) || isSearchValIncluded(lastName)) return true;
+            return false;
+          });
+
+          if (searchValue && !isSearchValIncluded(data.name) && !hasSearchedUser()) return;
+
           data.isUnread = true;
           data.userMembers = data.userMembers.filter((member) => member.id !== this.userData.id);
           this.$store.commit('chat/addChatToList', data);

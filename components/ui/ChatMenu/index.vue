@@ -136,6 +136,10 @@ export default {
 
 <style lang="scss" scoped>
 
+.icon-more_horizontal {
+  color: #2E3A59;
+}
+
 .chat {
   &__button {
     font-family: 'Inter', sans-serif;
