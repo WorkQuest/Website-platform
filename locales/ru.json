@@ -926,6 +926,8 @@
     "error": "Error!"
   },
   "modals": {
+    "errorQuests": "???",
+    "emptyOpenQuests": "???",
     "errorSmsVer": "???",
     "fillNumber": "???",
     "disputes": {

@@ -7,28 +7,21 @@
       <validation-observer tag="div">
         <div class="grid__field grid__field_top">
           <div class="ctm-modal__content-field">
-            <div class="avatar__container">
-              <div>
-                <img
-                  class="ctm-modal__img"
-                  :src="userData.avatar && userData.avatar.url ? userData.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-                  :alt="userData.avatar && userData.avatar.url ? userData.avatar.url : 'avatar_empty'"
-                >
-              </div>
-              <div>
+            <div class="ctm-modal__user-data">
+              <img
+                class="user-data__img"
+                :src="userData.avatar && userData.avatar.url ? userData.avatar.url : EmptyAvatar"
+                :alt="userData.avatar && userData.avatar.url ? userData.avatar.url : 'avatar_empty'"
+              >
+              <div class="user-data__name">
                 {{ userData.firstName ? userData.firstName : "Nameless worker" }}
                 {{ userData.lastName ? userData.lastName : "" }}
               </div>
-              <div>
-                <div
-                  class="card__level"
-                  :class="{'card__level_disabled': card.level.code === '0'}"
-                >
-                  <span
-                    class="card__level_higher"
-                    :class="cardsLevels()"
-                  >{{ card.level.title }}</span>
-                </div>
+              <div
+                v-if="getRatingValue() !== 'noStatus'"
+                class="user-data__status"
+              >
+                <item-rating :rating="getRatingValue()" />
               </div>
             </div>
           </div>
@@ -87,16 +80,9 @@ export default {
   name: 'ModalInvitation',
   data() {
     return {
-      questFiltered: [],
       questIndex: 0,
       message_input: '',
       chooseQuest_input: '',
-      card: {
-        level: {
-          title: 'HIGHER LEVEL',
-          code: '1',
-        },
-      },
     };
   },
   computed: {
@@ -105,17 +91,10 @@ export default {
       userData: 'user/getUserData',
       availableQuests: 'quests/getAvailableQuests',
     }),
-    cardLevelClass() {
-      const { code } = this.card.level;
-      return [
-        { card__level_reliable: code === '2' },
-        { card__level_checked: code === '3' },
-      ];
-    },
   },
   methods: {
-    async questFilter() {
-      this.questFiltered = this.questList.quests.filter((quest) => quest.status === 0);
+    getRatingValue() {
+      return this.userData?.ratingStatistic?.status || 'noStatus';
     },
     async inviteOnQuest() {
       const questId = this.availableQuests.quests[this.questIndex].id || '';
@@ -129,14 +108,6 @@ export default {
       } catch (e) {
         console.log(e);
       }
-    },
-    cardsLevels() {
-      const { card } = this;
-      return [
-        { card__level_reliable: card.level.code === '2' },
-        { card__level_checked: card.level.code === '3' },
-        { card__level_disabled: card.level.code === '0' },
-      ];
     },
     hide() {
       this.CloseModal();
@@ -198,14 +169,6 @@ export default {
   }
 }
 
-.avatar {
-  &__container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-}
-
 .message {
   &__textarea {
     border-radius: 6px;
@@ -228,15 +191,23 @@ export default {
   &__content-field {
     display: grid;
   }
-
+  &__user-data {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}
+.user-data {
   &__img {
     width: 61px;
     height: 61px;
     border-radius: 73px;
     margin: 0 10px 0 0;
   }
+  &__status {
+    margin-left: 10px;
+  }
 }
-
 .input {
   &_white {
     border-radius: 6px;

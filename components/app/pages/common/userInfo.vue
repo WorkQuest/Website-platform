@@ -168,7 +168,6 @@
         >
           <base-btn
             :mode="'approve'"
-            :disabled="mainUserData.questsStatistic ? mainUserData.questsStatistic.opened <= 0 : true"
             @click="sendInvite()"
           >
             {{ $t('workers.giveAQuest') }}
@@ -307,10 +306,19 @@ export default {
       this.$router.push('/raised-views');
     },
     sendInvite() {
-      this.ShowModal({
-        key: modals.invitation,
-        userId: this.userData.id,
-      });
+      if (this.mainUserData.questsStatistic && this.mainUserData.questsStatistic.opened > 0) {
+        this.ShowModal({
+          key: modals.invitation,
+          userId: this.userData.id,
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.errorQuests'),
+          subtitle: this.$t('modals.emptyOpenQuests'),
+        });
+      }
     },
   },
 };
