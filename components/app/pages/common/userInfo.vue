@@ -11,7 +11,7 @@
         <div class="block__avatar avatar">
           <img
             class="avatar__img"
-            :src="userData.avatar && userData.avatar.url ? userData.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+            :src="userData.avatar && userData.avatar.url ? userData.avatar.url : EmptyAvatar()"
             :alt="userData.avatar && userData.avatar.url ? userData.avatar.url : 'avatar_empty'"
             loading="lazy"
           >
@@ -39,7 +39,7 @@
           />
         </div>
         <div
-          v-if="userData.role === 'employer' && userData.company"
+          v-if="userData.role === UserRole.EMPLOYER && userData.company"
           class="block__subtitle"
         >
           {{ userData.company }}
@@ -193,7 +193,7 @@ export default {
       anotherUserData: 'user/getAnotherUserData',
     }),
     isEmptyUserData() {
-      return !Object.keys(this.userData).length;
+      return !this.userData.id;
     },
     UserRole() {
       return UserRole;
@@ -277,10 +277,13 @@ export default {
     userData() {
       return this.userId !== this.mainUser.id ? this.anotherUserData : this.mainUser;
     },
+    isHaveOpenQuests() {
+      return this.mainUserData.questsStatistic && this.mainUserData.questsStatistic.opened > 0;
+    },
   },
   watch: {
     async anotherUserData() {
-      if (this.mainUser.role === this.UserRole.EMPLOYER && this.userData.role === this.UserRole.WORKER) {
+      if (this.mainUser.role === this.UserRole.EMPLOYER && this.userData.role === this.UserRole.WORKER && this.isHaveOpenQuests) {
         await this.$store.dispatch('quests/getAvailableQuests', this.userId);
       }
     },
@@ -306,7 +309,7 @@ export default {
       this.$router.push('/raised-views');
     },
     sendInvite() {
-      if (this.mainUserData.questsStatistic && this.mainUserData.questsStatistic.opened > 0) {
+      if (this.isHaveOpenQuests) {
         this.ShowModal({
           key: modals.invitation,
           userId: this.userData.id,

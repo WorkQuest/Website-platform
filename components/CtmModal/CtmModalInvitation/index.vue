@@ -10,19 +10,18 @@
             <div class="ctm-modal__user-data">
               <img
                 class="user-data__img"
-                :src="userData.avatar && userData.avatar.url ? userData.avatar.url : EmptyAvatar"
+                :src="userData.avatar && userData.avatar.url ? userData.avatar.url : EmptyAvatar()"
                 :alt="userData.avatar && userData.avatar.url ? userData.avatar.url : 'avatar_empty'"
               >
               <div class="user-data__name">
                 {{ userData.firstName ? userData.firstName : "Nameless worker" }}
                 {{ userData.lastName ? userData.lastName : "" }}
               </div>
-              <div
+              <item-rating
                 v-if="getRatingValue() !== 'noStatus'"
                 class="user-data__status"
-              >
-                <item-rating :rating="getRatingValue()" />
-              </div>
+                :rating="getRatingValue()"
+              />
             </div>
           </div>
         </div>
@@ -34,7 +33,7 @@
               data-type="object"
               mode="small"
               class="base-dd_available-quests"
-              :items="availableQuests.quests"
+              :items="availableQuests"
               :label="$t('modals.chooseQuest')"
             />
           </div>
@@ -96,7 +95,7 @@ export default {
       return this.userData?.ratingStatistic?.status || 'noStatus';
     },
     async inviteOnQuest() {
-      const questId = this.availableQuests.quests[this.questIndex].id || '';
+      const questId = this.availableQuests[this.questIndex].id || '';
       const payload = {
         invitedUserId: this.options.userId || '',
         message: this.message_input || null,
