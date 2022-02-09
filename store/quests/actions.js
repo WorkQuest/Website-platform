@@ -324,4 +324,14 @@ export default {
   setSelectedPriceFilter({ commit }, data) {
     commit('setSelectedPriceFilter', data);
   },
+  async getAvailableQuests({ commit }, data) {
+    try {
+      const response = await this.$axios.$get(`/v1/worker/${data}/available-quests`);
+      commit('setAvailableQuests', response.result.quests);
+      return response.ok;
+    } catch (e) {
+      console.log('Error: getAvailableQuests');
+      return false;
+    }
+  },
 };
