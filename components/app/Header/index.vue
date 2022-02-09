@@ -493,7 +493,7 @@ export default {
       if (!chatActionsConnection) await this.$wsChatActions.connect(this.token);
     },
     initHeaderLinks() {
-      if (this.userData.role === this.UserRole.EMPLOYER) {
+      if (this.userData.role === this.$options.UserRole.EMPLOYER) {
         this.headerLinks.unshift({
           path: Path.WORKERS,
           title: this.$t('ui.jobQuestors'),

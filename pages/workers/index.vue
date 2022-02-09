@@ -71,14 +71,10 @@ export default {
       employeeList: 'quests/getEmployeeList',
       employeeCount: 'quests/getEmployeeCount',
     }),
-    totalPages() {
-      return Math.ceil(this.employeeCount / this.query.limit);
-    },
+    totalPages() { return Math.ceil(this.employeeCount / this.query.limit); },
   },
   watch: {
-    async isShowMap() {
-      await this.fetchEmployeeList(true);
-    },
+    async isShowMap() { await this.fetchEmployeeList(true); },
     async mapBounds(newV, oldV) {
       if (!this.isShowMap) return;
       if (
@@ -222,11 +218,9 @@ export default {
 
 @include _1199 {
   .employees {
-
     &__content {
       padding: 0 20px;
     }
-
     &__cards {
       grid-template-columns: repeat(3, 1fr);
     }
