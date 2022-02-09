@@ -87,40 +87,25 @@ export default {
 
   async getChartDataForWqtWethPool({ commit }) {
     try {
-      const response = await this.$axios.$get('/v1/pool-liquidity/wqt-weth/tokenDay?limit=10');
-      commit('setTotalLiquidityUSD', response.result[0].reserveUSD);
-      commit('setChartData', response.result.reverse());
-      return response;
+      const { ok, result } = await this.$axios.$get('/v1/pool-liquidity/wqt-weth/tokenDay?limit=10');
+      commit('setTotalLiquidityUSD', result[0].reserveUSD);
+      commit('setChartData', result.reverse());
+      return ok;
     } catch (e) {
-      console.error('error in getChartDataForWqtWethPool', e);
+      console.error('getChartDataForWqtWethPool');
       return false;
     }
   },
 
   async getChartDataForWqtWbnbPool({ commit }) {
     try {
-      const wqt_token = process.env.PROD === 'false'
-        ? '0xe89508d74579a06a65b907c91f697cf4f8d9fac7'
-        : process.env.BSC_WQT_TOKEN;
-      const wbnb_token = process.env.WBNB_TOKEN;
-
-      const apiWbnb = this.$axios.create({ baseURL: `https://api.pancakeswap.info/api/v2/tokens/${wbnb_token}` });
-      const apiWqt = this.$axios.create({ baseURL: `https://api.pancakeswap.info/api/v2/tokens/${wqt_token}` });
-
-      const [wbnbRes, wqtRes, tokensAmount, responseChartData] = await Promise.all([
-        apiWbnb.$get(''),
-        apiWqt.$get(''),
-        getPoolTokensAmountBSC(),
-        this.$axios.$get('/v1/pool-liquidity/wqt-wbnb/tokenDay?limit=10'),
-      ]);
-      const totalLiquidity = tokensAmount.wqtAmount * wbnbRes.data.price + tokensAmount.wbnbAmount * wqtRes.data.price;
+      const { ok, result } = await this.$axios.$get('/v1/pool-liquidity/wqt-wbnb/tokenDay?limit=10');
+      const totalLiquidity = result.infoPer10Days[0].reserveUSD;
       commit('setTotalLiquidityUSD', totalLiquidity);
-      const { count, infoPer10Days } = responseChartData.result;
-      if (count) infoPer10Days[0].reserveUSD = totalLiquidity;
-      commit('setChartData', infoPer10Days.reverse());
-      return responseChartData;
+      commit('setChartData', result.infoPer10Days.reverse());
+      return ok;
     } catch (e) {
-      console.error('error in getChartDataForWqtWbnbPool', e);
+      console.error('getChartDataForWqtWbnbPool');
       return false;
     }
   },
