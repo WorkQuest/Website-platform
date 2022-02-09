@@ -5,6 +5,7 @@
   >
     <validation-observer
       v-slot="{handleSubmit, validated, passed, invalid}"
+      ref="twoFA"
       tag="div"
       class="ctm-modal__content"
     >
@@ -131,7 +132,8 @@
             v-for="(item, i) in inputs"
             :id="item.id"
             :key="i"
-            v-model="item.model"
+            v-model="models[item.model]"
+            :vid="item.id"
             :label="item.label"
             :placeholder="item.placeholder"
             :rules="item.rules"
@@ -209,9 +211,11 @@ export default {
   data() {
     return {
       step: 1,
-      confirmEmailCode: '',
+      models: {
+        confirmCode: '',
+        totp: '',
+      },
       qrLink: '',
-      authCode: '',
       shopBtns: [
         {
           click: this.goToAppleStore,
@@ -227,16 +231,16 @@ export default {
       stepBtns: [{ step: [2, 3], click: this.nextStep, text: this.$t('meta.next') }],
       inputs: [
         {
-          id: 'confirmEmailCode',
-          model: this.confirmEmailCode,
+          id: 'confirmCode',
+          model: 'confirmCode',
           label: this.$t('modals.emailVerificationCode'),
           placeholder: this.$t('modals.emailPlaceholder'),
           rules: 'required|alpha_num',
           name: this.$t('modals.emailVerificationCodeField'),
         },
         {
-          id: 'twoFACode',
-          model: this.authCode,
+          id: 'totp',
+          model: 'totp',
           label: this.$t('modals.googleVerificationCode'),
           placeholder: this.$t('modals.codePlaceholder'),
           rules: 'required|alpha_num',
@@ -279,18 +283,20 @@ export default {
       window.location.href = 'https://apps.apple.com/ru/app/google-authenticator/id388497605';
     },
     async enable2FA() {
-      await this.$store.dispatch('user/enable2FA');
-      this.qrLink = `otpauth://totp/${this.userData.email}?secret=${this.twoFACode}&issuer=WorkQuest.co`;
+      const response = await this.$store.dispatch('user/enable2FA');
+      if (response.ok) {
+        this.qrLink = `otpauth://totp/${this.userData.email}?secret=${this.twoFACode}&issuer=WorkQuest.co`;
+      }
     },
     async confirmEnable2FA() {
       const response = await this.$store.dispatch('user/confirmEnable2FA', {
-        confirmCode: this.confirmEmailCode,
-        totp: this.authCode,
+        confirmCode: this.models.confirmCode,
+        totp: this.models.totp,
       });
-      this.hide();
       if (response.ok) {
+        this.hide();
         this.showModalSuccess();
-      }
+      } else this.validationErrorFields(response.data);
     },
     showModalSuccess() {
       this.ShowModal({
@@ -298,6 +304,16 @@ export default {
         img: require('~/assets/img/ui/questAgreed.svg'),
         title: this.$t('modals.2FAStatus'),
         subtitle: this.$t('modals.2FAEnabled'),
+      });
+    },
+    validationErrorFields(data) {
+      data.forEach(async (obj) => {
+        const { field } = obj;
+        const { name } = this.inputs.find((input) => input.id === field);
+        const err = {
+          [field]: [this.$t('messages.excluded', { _field_: name })],
+        };
+        await this.$refs.twoFA.setErrors(err);
       });
     },
     hide() {
@@ -485,6 +501,7 @@ export default {
       border: 1px solid $black0;
       padding: 11px;
       border-radius: 6px;
+      height: 46px;
     }
   }
 
