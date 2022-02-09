@@ -551,8 +551,6 @@ export default {
     grid-template-columns: 20px 1fr;
     grid-gap: 5px;
     align-items: center;
-    margin-top: 21px;
-    margin-bottom: 11px;
     span::before {
       font-size: 20px;
       color: $black500;
