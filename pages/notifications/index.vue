@@ -5,7 +5,10 @@
         <div class="info-block__title">
           {{ $t('ui.notifications.title') }}
         </div>
-        <div class="info-block__list">
+        <div
+          v-if="notifsCount"
+          class="info-block__list"
+        >
           <div
             v-for="(notification, i) in notifications"
             :key="i"
@@ -70,6 +73,12 @@
               </base-btn>
             </div>
           </div>
+        </div>
+        <div
+          v-else
+          class="info-block__no-notifs"
+        >
+          {{ $t('ui.notifications.noNotifications') }}
         </div>
         <base-pager
           v-if="totalPages > 1"
@@ -225,6 +234,13 @@ export default {
     justify-self: flex-end;
     margin: 20px;
     border: 1px solid #F7F8FA
+  }
+
+  &__no-notifs {
+    display: flex;
+    padding: 50px 10px;
+    justify-content: center;
+    color: #8D96A2;
   }
 }
 

@@ -2188,7 +2188,8 @@
           },
           "notifications": {
             "title": "Notifications",
-            "subtitle": "All important notifications related to your profile and platform updates."
+            "subtitle": "All important notifications related to your profile and platform updates.",
+            "noNotifications": "No notifications"
           },
           "menu": {
             "title": "Menu",
