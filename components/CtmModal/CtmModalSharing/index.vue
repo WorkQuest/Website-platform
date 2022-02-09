@@ -55,9 +55,12 @@ export default {
       options: 'modals/getOptions',
     }),
     sharingLink() {
-      const { itemId } = this.options;
-      return window.location.origin + itemId ? `/quests/${itemId}` : this.$route.fullPath;
+      // TODO: Добавить логику для my page, profile page квесты
+      return this.options.itemId ? `${`${window.location.origin}/quests/`}${this.options.itemId}` : window.location.origin + this.$route.fullPath;
     },
+  },
+  mounted() {
+    console.log(this.options);
   },
   methods: {
     hide() {

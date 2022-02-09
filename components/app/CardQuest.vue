@@ -61,7 +61,7 @@
                 :item="quest"
               />
               <button
-                v-if="userRole === UserRole.WORKER ? quest.status === questStatuses.Created : quest.status !== questStatuses.Created"
+                v-if="userRole === UserRole.WORKER ? quest.status : quest.status !== questStatuses.Created"
                 class="card-quest__shared"
                 @click="shareModal(quest.id)"
               >
@@ -460,6 +460,12 @@ export default {
   }
 }
 .card-quest {
+  transition: .5s;
+  border: 1px solid $white;
+  border-radius: 8px;
+  &:hover {
+    border: 1px solid $black100;
+  }
   &__btn-details {
     height: 28px !important;
   }
