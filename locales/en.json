@@ -927,6 +927,8 @@
     "error": "Error!"
   },
   "modals": {
+    "errorQuests": "Error with quests",
+    "emptyOpenQuests": "You don't have open quests, please create",
     "errorSmsVer": "Error SMS verification",
     "fillNumber": "Please fill phone number in settings page...",
     "disputes": {
