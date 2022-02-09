@@ -5,7 +5,6 @@
   >
     <button
       class="reduced-notifications__button"
-      :class="{'reduced-notifications__button_block' : !notificationsCount}"
       @click="togglePopUp"
     >
       <template v-if="notificationsCount">
@@ -178,10 +177,6 @@ export default {
     }
     span {
       color: $black400;
-    }
-
-    &_block {
-      pointer-events: none;
     }
   }
 
