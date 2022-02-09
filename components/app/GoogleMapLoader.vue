@@ -44,7 +44,12 @@
                   {{ infoContent.userName }}
                 </div>
               </div>
+              <item-rating
+                v-if="infoContent.status"
+                :rating="infoContent.status"
+              />
               <div
+                v-else
                 class="info-window__status"
                 :class="infoContent.labelClass"
               >
@@ -88,12 +93,12 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { UserRole, TokenSymbols, Path } from '~/utils/enums';
+import {
+  UserRole, TokenSymbols, Path, questPriority, RatingFilter,
+} from '~/utils/enums';
 
 export default {
-  name: 'MapBlock',
-  UserRole,
-  TokenSymbols,
+  name: 'GoogleMapLoader',
   props: {
     isDraggable: {
       type: Boolean,
@@ -187,8 +192,17 @@ export default {
       this.map.$mapObject.setCenter({ lat: marker.location.latitude, lng: marker.location.longitude });
     },
     getMarkerOptions(item) {
-      if (item.role !== UserRole.WORKER) return { icon: this.pins.quest.blue };
-      return { icon: this.pins.employee.blue };
+      if (item.role === UserRole.WORKER) return { icon: this.pins.employee.blue };
+      switch (item.priority) {
+        case (questPriority.Low):
+          return { icon: this.pins.quest.green };
+        case (questPriority.Normal):
+          return { icon: this.pins.quest.yellow };
+        case (questPriority.Urgent):
+          return { icon: this.pins.quest.red };
+        default:
+          return { icon: this.pins.quest.blue };
+      }
     },
     setContent(item) {
       if (this.userRole === UserRole.WORKER) {
@@ -208,8 +222,7 @@ export default {
         avatar: item.avatar ? item.avatar.url : this.EmptyAvatar(),
         alt: this.UserName(item.firstName, item.lastName),
         userName: this.UserName(item.firstName, item.lastName),
-        label: this.getStatus(item.status),
-        labelClass: this.getStatusClass(item.status),
+        status: item.ratingStatistic.status || 'noStatus',
         title: item.email,
         priceTitle: this.$t('settings.costPerHour'),
         price: `${item.wagePerHour} ${TokenSymbols.WUSD}`,
@@ -242,35 +255,6 @@ export default {
       return priority[index] || '';
     },
 
-    getPriorityMarker(item) {
-      const priority = {
-        0: {
-          icon: this.pins.quest.blue,
-          show: item === this.currentLocation,
-        },
-        1: {
-          icon: this.pins.quest.green,
-          show: item === this.currentLocation,
-        },
-        2: {
-          icon: this.pins.quest.yellow,
-          show: item === this.currentLocation,
-        },
-        3: {
-          icon: this.pins.quest.red,
-          show: item === this.currentLocation,
-        },
-      };
-      return priority[item.questPriority] || '';
-    },
-
-    getStatus(index) {
-      return '';
-    },
-    getStatusClass(index) {
-      return '';
-    },
-
     checkUserCoordinates() {
       if (this.userData.location && this.userData.location.latitude && this.userData.location.longitude) {
         this.userLocation.lat = this.userData.location.latitude;
@@ -297,10 +281,10 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    grid-gap: 20px;
   }
   &__content {
     max-width: 280px;
+    min-width: 200px;
     display: flex;
     grid-gap: 10px;
     flex-direction: column;
