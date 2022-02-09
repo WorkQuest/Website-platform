@@ -18,8 +18,8 @@
             class="chats-container__search-input"
             is-search
             is-hide-error
-            is-with-loader
-            :is-search-in-progress="isChatsSearching"
+            has-loader
+            :is-busy-search="isChatsSearching"
             :placeholder="$t('chat.searchTitle')"
             data-selector="INPUT-SEARCH"
             @input="handleSetSearchValue"
@@ -157,7 +157,7 @@ export default {
     return {
       searchValue: '',
       isChatsSearching: false,
-      delay: null,
+      delayId: null,
     };
   },
   computed: {
@@ -179,7 +179,8 @@ export default {
     this.$store.commit('chat/changeChatsFilterValue', [
       { key: 'offset', val: 0 },
       { key: 'q', val: undefined },
-      { key: 'starred', val: false }]);
+      { key: 'starred', val: false },
+    ]);
   },
   async mounted() {
     await this.$store.commit('chat/changeChatsFilterValue', [{ key: 'starred', val: this.$route.query.starred === 'true' }]);
@@ -190,20 +191,19 @@ export default {
     handleSetSearchValue() {
       this.isChatsSearching = true;
 
-      this.setDelay(async () => {
+      this.delayId = this.SetDelay(async () => {
         this.isChatsSearching = false;
+
         await this.$store.commit('chat/changeChatsFilterValue',
           [
             { key: 'q', val: this.searchValue || undefined },
-            { key: 'offset', val: 0 }]);
+            { key: 'offset', val: 0 },
+          ]);
+
         this.SetLoader(true);
         await this.getChats();
         this.SetLoader(false);
-      }, 500);
-    },
-    setDelay(f, t) {
-      clearTimeout(this.delay);
-      this.delay = setTimeout(f, t);
+      }, 500, this.delayId);
     },
     isItMyLastMessage(senderId) {
       return this.userData.id === senderId;
@@ -287,7 +287,8 @@ export default {
       await this.$store.commit('chat/changeChatsFilterValue', [
         { key: 'offset', val: 0 },
         { key: 'q', val: undefined },
-        { key: 'starred', val: !starred }]);
+        { key: 'starred', val: !starred },
+      ]);
 
       this.searchValue = '';
 

@@ -62,21 +62,22 @@ export default {
       return false;
     }
   },
-  async getCurrChatData({ commit, rootState, state: { chatsFilter: { q } } }, chatId) {
+  async getCurrChatData({ commit, rootState, getters: { getSearchValue } }, chatId) {
     try {
       const { ok, result } = await this.$axios.$get(`/v1/user/me/chat/${chatId}`);
 
-      const searchValue = q?.toLowerCase() || '';
-
-      const isSearchValIncluded = (value) => value.toLowerCase().includes(searchValue);
-      const hasSearchedUser = () => result.userMembers.some(({ firstName, lastName }) => isSearchValIncluded(firstName) || isSearchValIncluded(lastName));
+      const isSearchValIncluded = (value) => value.toLowerCase().includes(getSearchValue);
+      const hasSearchedUser = () => result.userMembers.some(({ firstName, lastName }) => {
+        if (isSearchValIncluded(firstName) || isSearchValIncluded(lastName)) return true;
+        return false;
+      });
       const isChatNameIncludesSearchVal = () => {
         if (result.type === ChatType.GROUP) return isSearchValIncluded(result.name);
         if (result.type === ChatType.QUEST) return isSearchValIncluded(result.questChat.quest.title);
         return false;
       };
 
-      if (q && !isChatNameIncludesSearchVal() && !hasSearchedUser()) return ok;
+      if (getSearchValue && !isChatNameIncludesSearchVal() && !hasSearchedUser()) return ok;
 
       result.isUnread = true;
       result.userMembers = result.userMembers.filter((member) => member.id !== rootState.user.userData.id);

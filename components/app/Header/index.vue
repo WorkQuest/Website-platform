@@ -455,7 +455,7 @@ export default {
       isChatOpened: 'chat/isChatOpened',
       unreadMessagesCount: 'user/getUnreadChatsCount',
       chats: 'chat/getChats',
-      chatsFilter: 'chat/getChatsFilter',
+      searchValue: 'chat/getSearchValue',
     }),
     headerLinksWorker() {
       return [
@@ -650,12 +650,14 @@ export default {
   methods: {
     async chatAction({ data, action }) {
       if (this.$route.name === 'messages') {
-        const searchValue = this.chatsFilter.q?.toLowerCase() || '';
-
-        const isSearchValIncluded = (value) => value.toLowerCase().includes(searchValue);
-
         if (action === MessageAction.GROUP_CHAT_CREATE) {
-          const hasSearchedUser = () => data.userMembers.some(({ firstName, lastName }) => isSearchValIncluded(firstName) || isSearchValIncluded(lastName));
+          const { searchValue } = this;
+
+          const isSearchValIncluded = (value) => value.toLowerCase().includes(searchValue);
+          const hasSearchedUser = () => data.userMembers.some(({ firstName, lastName }) => {
+            if (isSearchValIncluded(firstName) || isSearchValIncluded(lastName)) return true;
+            return false;
+          });
 
           if (searchValue && !isSearchValIncluded(data.name) && !hasSearchedUser()) return;
 

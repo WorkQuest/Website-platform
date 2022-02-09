@@ -42,7 +42,7 @@
         ref="input"
         class="ctm-field__input"
         :class="[{'ctm-field__input_error': errors[0]},
-                 {'ctm-field__input_padding-r' : isWithLoader}]"
+                 {'ctm-field__input_padding-r' : hasLoader}]"
         :placeholder="placeholder"
         :value="mode === 'convertDate' ? convertDate(value) : value"
         :type="type"
@@ -54,7 +54,7 @@
         @blur="$emit('blur')"
       >
       <div
-        v-if="value && isSearch && !isSearchInProgress"
+        v-if="value && isSearch && !isBusySearch"
         class="ctm-field__clear"
         @click="clear()"
       >
@@ -130,7 +130,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    isSearchInProgress: {
+    isBusySearch: {
       type: Boolean,
       default: false,
     },
@@ -160,7 +160,7 @@ export default {
       type: String,
       default: 'aggressive',
     },
-    isWithLoader: {
+    hasLoader: {
       type: Boolean,
       default: false,
     },

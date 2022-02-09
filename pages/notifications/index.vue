@@ -97,7 +97,7 @@ export default {
       },
       page: 1,
       notificationIdsForRead: [],
-      delay: null,
+      delayId: null,
     };
   },
   computed: {
@@ -144,7 +144,7 @@ export default {
 
       this.notificationIdsForRead.push(id);
 
-      this.setDelay(async () => {
+      this.delayId = this.SetDelay(async () => {
         const config = {
           notificationIds: this.notificationIdsForRead,
         };
@@ -152,11 +152,7 @@ export default {
         await this.$store.dispatch('user/readNotifications', config);
 
         this.notificationIdsForRead = [];
-      }, 1000);
-    },
-    setDelay(f, t) {
-      clearTimeout(this.delay);
-      this.delay = setTimeout(f, t);
+      }, 1000, this.delayId);
     },
     async setPage() {
       this.filter.offset = (this.page - 1) * this.filter.limit;
