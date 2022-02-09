@@ -61,7 +61,7 @@
                 :item="quest"
               />
               <button
-                v-if="quest.status === questStatuses.Created && userRole === UserRole.WORKER"
+                v-if="userRole === UserRole.WORKER ? quest.status === questStatuses.Created : quest.status !== questStatuses.Created"
                 class="card-quest__shared"
                 @click="shareModal(quest.id)"
               >
@@ -152,7 +152,7 @@
                   rating-type="questPage"
                   :stars-number="5"
                   :rating="!quest.yourReview ? currentMark.mark : quest.yourReview.mark"
-                  :is-disabled="quest.yourReview !== null || currentMark.mark !== null"
+                  :is-disabled="quest.yourReview === Object || currentMark.mark !== 0"
                   @input="showReviewModal($event, quest)"
                 />
               </div>
@@ -719,7 +719,6 @@ export default {
     display: grid;
     align-items: center;
     grid-gap: 10px;
-    margin-bottom: 20px;
     &_employer {
       margin-bottom: 0;
     }
