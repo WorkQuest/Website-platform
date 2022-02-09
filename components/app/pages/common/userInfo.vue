@@ -11,8 +11,8 @@
         <div class="block__avatar avatar">
           <img
             class="avatar__img"
-            :src="userData.avatar && userData.avatar.url ? userData.avatar.url : EmptyAvatar()"
-            :alt="userData.avatar && userData.avatar.url ? userData.avatar.url : 'avatar_empty'"
+            :src="userData.avatar && (userData.avatar.url || EmptyAvatar())"
+            :alt="userData.avatar && (userData.avatar.url || 'avatar_empty')"
             loading="lazy"
           >
         </div>

@@ -142,20 +142,20 @@
                   <img
                     id="userAvatarDesktop"
                     class="profile__img"
-                    :src="imageData ? imageData : EmptyAvatar()"
+                    :src="imageData || EmptyAvatar()"
                     alt=""
                   >
                 </div>
                 <div class="profile__info">
                   <div class="profile__text">
-                    {{ `${userData.firstName} ${userData.lastName}` }}
+                    {{ UserName(userData.firstName, userData.lastName) }}
                   </div>
                   <div
-                    v-if="userData.role === UserRole.EMPLOYER"
+                    v-if="userData.role === $options.UserRole.EMPLOYER"
                     class="profile__text profile__text_blue"
-                    :class="userData.role === UserRole.EMPLOYER ? 'profile__text_blue' : 'profile__text_green'"
+                    :class="userData.role === $options.UserRole.EMPLOYER ? 'profile__text_blue' : 'profile__text_green'"
                   >
-                    {{ userData.role === UserRole.EMPLOYER ? $t('role.employer') : $t('role.worker') }}
+                    {{ userData.role === $options.UserRole.EMPLOYER ? $t('role.employer') : $t('role.worker') }}
                   </div>
                 </div>
               </div>
@@ -180,7 +180,7 @@
           </transition>
         </div>
         <base-btn
-          v-if="userData.role === UserRole.EMPLOYER"
+          v-if="userData.role === $options.UserRole.EMPLOYER"
           class="header__btn"
           @click="createNewQuest('pc')"
         >
@@ -202,16 +202,16 @@
               <img
                 id="userAvatarMobile"
                 class="profile__img"
-                :src="imageData ? imageData : EmptyAvatar()"
+                :src="imageData || EmptyAvatar()"
                 alt=""
               >
             </div>
             <div class="user__data">
               <div class="user__name">
-                {{ `${userData.firstName} ${userData.lastName}` }}
+                {{ UserName(userData.firstName, userData.lastName) }}
               </div>
               <div class="user__role">
-                {{ userData.role === UserRole.EMPLOYER ? $t('role.employer') : $t('role.worker') }}
+                {{ userData.role === $options.UserRole.EMPLOYER ? $t('role.employer') : $t('role.worker') }}
               </div>
             </div>
           </div>
@@ -280,7 +280,7 @@
         </div>
         <div class="ctm-menu__actions">
           <base-btn
-            v-if="userData.role === UserRole.EMPLOYER"
+            v-if="userData.role === $options.UserRole.EMPLOYER"
             class="ctm-menu__btn"
             @click="createNewQuest('mobile')"
           >
@@ -311,9 +311,7 @@ export default {
     return {
       isInstrumentDropdownOpened: false,
       isUserDDOpened: false,
-      isShowProfile:
-false,
-
+      isShowProfile: false,
       isShowAdditionalMenu: false,
       isShowLocale: false,
       isMobileMenu: false,
@@ -343,9 +341,6 @@ false,
       chats: 'chat/getChats',
       searchValue: 'chat/getSearchValue',
     }),
-    UserRole() {
-      return UserRole;
-    },
     locales() {
       return this.$i18n.locales.map((item) => ({
         localeSrc: `${item}.svg`,
@@ -413,6 +408,7 @@ false,
       ];
     },
   },
+  UserRole,
   watch: {
     $route() {
       this.closeAll();
@@ -504,7 +500,7 @@ false,
         });
       } else {
         this.headerLinks.unshift({
-          path: Path.ROOT,
+          path: Path.QUESTS,
           title: this.$t('ui.quests'),
         });
       }

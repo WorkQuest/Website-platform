@@ -509,7 +509,7 @@ export default {
       &_twitter {
         background-image: url('assets/img/social/footer_twitter.svg');
         border-radius: 10px;
-        :hover {
+        &:hover {
           background-image: url('assets/img/social/footer_twitter_active.svg')
         }
       }
@@ -517,7 +517,7 @@ export default {
       &_youtube {
         background-image: url('assets/img/social/footer_youtube.svg');
         border-radius: 10px;
-        :hover {
+        &:hover {
           background-image: url('assets/img/social/footer_youtube_active.svg')
         }
       }
@@ -525,7 +525,7 @@ export default {
       &_reddit {
         background-image: url('assets/img/social/footer_reddit.svg');
         border-radius: 10px;
-        :hover {
+        &:hover {
           background-image: url('assets/img/social/footer_reddit_active.svg')
         }
       }
@@ -533,7 +533,7 @@ export default {
       &_facebook {
         background-image: url('assets/img/social/footer_facebook.svg');
         border-radius: 10px;
-        :hover {
+        &:hover {
           background-image: url('assets/img/social/footer_facebook_active.svg')
         }
       }
@@ -541,7 +541,7 @@ export default {
       &_linkedin {
         background-image: url('assets/img/social/footer_linkedin.svg');
         border-radius: 10px;
-        :hover {
+        &:hover {
           background-image: url('assets/img/social/footer_linkedin_active.svg')
         }
       }
@@ -549,7 +549,7 @@ export default {
       &_instagram {
         background-image: url('assets/img/social/footer_instagram.svg');
         border-radius: 10px;
-        :hover {
+        &:hover {
           background-image: url('assets/img/social/footer_instagram_active.svg')
         }
       }
@@ -557,7 +557,7 @@ export default {
       &_telegram {
         background-image: url('assets/img/social/footer_telegram.svg');
         border-radius: 10px;
-        :hover {
+        &:hover {
           background-image: url('assets/img/social/footer_telegram_active.svg')
         }
       }
