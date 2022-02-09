@@ -150,7 +150,6 @@
                 v-if="quest.status === questStatuses.Done"
                 class="card-quest__rating"
               >
-                <!--                TODO: Исправить высоту контейнера со звездами-->
                 <star-rating
                   v-if="userRole === UserRole.WORKER ? quest.assignedWorkerId === userData.id : quest.userId === userData.id"
                   class="card-quest__star"
