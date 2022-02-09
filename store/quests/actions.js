@@ -330,7 +330,7 @@ export default {
       commit('setAvailableQuests', response.result.quests);
       return response.ok;
     } catch (e) {
-      console.log(e);
+      console.log('Error: getAvailableQuests');
       return false;
     }
   },

@@ -18,7 +18,6 @@
                 {{ userData.lastName ? userData.lastName : "" }}
               </div>
               <item-rating
-                v-if="getRatingValue() !== 'noStatus'"
                 class="user-data__status"
                 :rating="getRatingValue()"
               />
