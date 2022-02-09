@@ -211,7 +211,10 @@ export default {
   },
   watch: {
     step(newVal) {
-      if (newVal === WalletState.Default) this.generate();
+      if (newVal === WalletState.Default) {
+        this.generate();
+        this.mnemonicInput = '';
+      }
     },
     isShowMnemonic(newVal) {
       this.inputType = newVal ? 'text' : 'password';

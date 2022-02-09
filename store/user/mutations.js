@@ -55,6 +55,7 @@ export default {
     this.$cookies.remove('role');
     this.$cookies.remove('userLogin');
     this.$cookies.remove('socialNetwork');
+    sessionStorage.clear();
     state.userData = {};
     state.tokens = { access: '', refresh: '' };
   },

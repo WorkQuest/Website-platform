@@ -365,29 +365,31 @@ export default {
     },
     saveToStorage(wallet) {
       initWallet(wallet.address, wallet.privateKey);
-      localStorage.setItem('mnemonic', JSON.stringify({
-        ...JSON.parse(localStorage.getItem('mnemonic')),
-        [wallet.address.toLowerCase()]: encryptStringWithKey(wallet.mnemonic.phrase, this.model.password),
-      }));
+      if (!this.isLoginWithSocial) {
+        localStorage.setItem('mnemonic', JSON.stringify({
+          ...JSON.parse(localStorage.getItem('mnemonic')),
+          [wallet.address.toLowerCase()]: encryptStringWithKey(wallet.mnemonic.phrase, this.model.password),
+        }));
+      }
       sessionStorage.setItem('mnemonic', JSON.stringify({
         ...JSON.parse(sessionStorage.getItem('mnemonic')),
         [wallet.address.toLowerCase()]: wallet.mnemonic.phrase,
       }));
       this.$store.dispatch('wallet/connectWallet', { userWalletAddress: wallet.address, userPassword: this.model.password });
     },
-    redirectUser() {
+    async redirectUser() {
       this.addressAssigned = true;
       this.$cookies.set('userLogin', true, { path: '/' });
       // redirect to confirm access if token exists & unconfirmed account
       const confirmToken = JSON.parse(sessionStorage.getItem('confirmToken'));
       if (this.userStatus === UserStatuses.Unconfirmed && confirmToken) {
-        this.$router.push(`/confirm/?token=${confirmToken}`);
+        await this.$router.push(`/confirm/?token=${confirmToken}`);
         return;
       }
       sessionStorage.removeItem('confirmToken');
-      if (this.userData.role === UserRole.EMPLOYER) this.$router.push(Path.WORKERS);
-      else if (this.userData.role === UserRole.WORKER) this.$router.push(Path.QUESTS);
-      else if (this.userStatus === UserStatuses.NeedSetRole) this.$router.push(Path.ROLE);
+      if (this.userData.role === UserRole.EMPLOYER) await this.$router.push(Path.WORKERS);
+      else if (this.userData.role === UserRole.WORKER) await this.$router.push(Path.QUESTS);
+      else if (this.userStatus === UserStatuses.NeedSetRole) await this.$router.push(Path.ROLE);
     },
     async redirectSocialLink(socialNetwork) {
       window.location = `${process.env.BASE_URL}v1/auth/login/${socialNetwork}`;

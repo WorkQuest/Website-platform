@@ -4,6 +4,13 @@
       class="role"
       :class="{role_hidden: step !== walletState.Default}"
     >
+      <div
+        v-if="step === walletState.ImportOrCreate || step === walletState.Default"
+        class="role__back"
+        @click="toSign"
+      >
+        <span class="icon-chevron_big_left" /><span>{{ $t('meta.back') }}</span>
+      </div>
       <div class="role__title">
         {{ $t('role.choose') }}
       </div>
@@ -174,6 +181,10 @@ export default {
     if (!this.isWalletAssigned && !this.isConfirmingPass) this.$store.dispatch('user/logout');
   },
   methods: {
+    toSign() {
+      this.$store.dispatch('user/logout');
+      this.$router.push(Path.SIGN_IN);
+    },
     goStep(step) {
       if (this.step === WalletState.ImportMnemonic) this.step = WalletState.ImportOrCreate;
       else this.step = step;
@@ -265,13 +276,11 @@ export default {
     cursor: pointer;
     display: table-cell;
     color: $black700;
-    & > span {
+    & > span:before {
       color: $black700;
       vertical-align: middle;
       font-size: 18px;
-      &:not(:last-of-type) {
-        margin-right: 5px;
-      }
+      margin-right: 5px;
     }
   }
 }
@@ -279,6 +288,19 @@ export default {
   width: 100%;
   &_hidden {
     display: none;
+  }
+  &__back {
+    padding-bottom: 10px;
+    cursor: pointer;
+    display: table-cell;
+    font-size: 18px;
+    color: $black0;
+    & > span:before {
+      color: $black0;
+      vertical-align: middle;
+      font-size: 18px;
+      margin-right: 5px;
+    }
   }
   &__title {
     padding-bottom: 30px;
