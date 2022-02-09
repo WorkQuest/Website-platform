@@ -55,6 +55,20 @@
             >
           </template>
         </base-field>
+        <base-field
+          v-model="model.totp"
+          :placeholder="$t('signUp.totp')"
+          :mode="'icon'"
+          :name="$t('signUp.totp')"
+          rules="min:6|max:6"
+        >
+          <template v-slot:left>
+            <img
+              src="~assets/img/icons/password.svg"
+              alt=""
+            >
+          </template>
+        </base-field>
         <div class="auth__tools">
           <base-checkbox
             v-model="remember"
@@ -157,6 +171,7 @@ export default {
       model: {
         email: '',
         password: '',
+        totp: '',
       },
       remember: false,
       userStatus: null,
@@ -201,11 +216,15 @@ export default {
       if (this.isLoading) return;
       this.SetLoader(true);
       this.model.email = this.model.email.trim();
-      const { email, password } = this.model;
-      const response = await this.$store.dispatch('user/signIn', {
+      const { email, password, totp } = this.model;
+      let payload = {
         email,
         password,
-      });
+      };
+      if (totp !== '') {
+        payload = { ...payload, totp };
+      }
+      const response = await this.$store.dispatch('user/signIn', payload);
       if (response?.ok) {
         this.userStatus = response.result.userStatus;
         // Unconfirmed account w/o confirm token

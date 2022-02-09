@@ -58,9 +58,9 @@
             class="advanced__option-buttons"
           >
             <base-btn
-              @click="status2FA === 0 ? showModalKey(button.secondModal) : showModalKey(button.firstModal)"
+              @click="!statusTotp ? showModalKey(button.secondModal) : showModalKey(button.firstModal)"
             >
-              {{ status2FA === 0 ? $t(button.secondButtonName) : $t(button.firstButtonName) }}
+              {{ !statusTotp ? $t(button.secondButtonName) : $t(button.firstButtonName) }}
             </base-btn>
           </div>
         </div>
@@ -152,6 +152,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      statusTotp: 'user/getStatusTotp',
       status2FA: 'user/getStatus2FA',
       secondNumber: 'user/getUserSecondMobileNumber',
       userData: 'user/getUserData',

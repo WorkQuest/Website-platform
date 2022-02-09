@@ -424,9 +424,63 @@ export default {
   },
   destroyed() {
     window.removeEventListener('resize', this.userWindowChange);
-    this.$wsChat.disconnect();
+    this.$wsNotifs.disconnect();
+    this.$wsChatActions.disconnect();
   },
   methods: {
+    async chatAction({ data, action }) {
+      if (this.$route.name === 'messages') {
+        if (action === MessageAction.GROUP_CHAT_CREATE) {
+          data.isUnread = true;
+          data.userMembers = data.userMembers.filter((member) => member.id !== this.userData.id);
+          this.$store.commit('chat/addChatToList', data);
+          this.$store.commit('user/changeUnreadChatsCount', { needAdd: true, count: 1 });
+        } else if (action === MessageAction.NEW_MESSAGE) {
+          await this.$store.dispatch('chat/getCurrChatData', data.chatId);
+          await this.getStatistic();
+        }
+        return;
+      }
+
+      await this.getStatistic();
+
+      if (data.chatId === this.chatId && !this.messagesFilter.canLoadToBottom) {
+        if (action === MessageAction.MESSAGE_READ_BY_RECIPIENT) return;
+        this.$store.commit('chat/addMessageToList', data);
+        this.$store.commit('chat/setChatAsUnread');
+
+        if (data.type === 'info') {
+          const { user } = data.infoMessage;
+
+          if (action === MessageAction.GROUP_CHAT_ADD_USERS) {
+            this.$store.commit('chat/addUserToChat', user);
+          } else if (action === MessageAction.GROUP_CHAT_DELETE_USER) {
+            this.$store.commit('chat/removeUserFromChat', user.id);
+          }
+        }
+      }
+    },
+    async  addNotification(ev) {
+      await this.$store.dispatch('user/addNotification', ev);
+    },
+    async initWSListeners() {
+      const { chatActionsConnection, notifsConnection } = this.connections;
+      if (!notifsConnection) {
+        await this.$wsNotifs.connect(this.token);
+        const subscribes = [
+          'chat',
+          'quest',
+        ];
+        await Promise.all(subscribes.map((path) => this.$wsNotifs.subscribe(`/notifications/${path}`, (ev) => {
+          if (path === 'chat') {
+            this.chatAction(ev);
+            return;
+          }
+          this.addNotification(ev);
+        })));
+      }
+      if (!chatActionsConnection) await this.$wsChatActions.connect(this.token);
+    },
     initHeaderLinks() {
       if (this.userData.role === this.UserRole.EMPLOYER) {
         this.headerLinks.unshift({
@@ -439,45 +493,6 @@ export default {
           title: this.$t('ui.quests'),
         });
       }
-    },
-    async initWSListeners() {
-      const { chatConnection, chatActionsConnection, notifsConnection } = this.connections;
-      if (!chatConnection) {
-        await this.$wsChat.connect(this.token);
-        this.$wsChat.subscribe('/notifications/chat', async ({ data, action }) => {
-          if (this.$route.name === 'messages') {
-            if (action === MessageAction.GROUP_CHAT_CREATE) {
-              data.isUnread = true;
-              data.userMembers = data.userMembers.filter((member) => member.id !== this.userData.id);
-              this.$store.commit('chat/addChatToList', data);
-              this.$store.commit('user/changeUnreadChatsCount', { needAdd: true, count: 1 });
-            } else if (action === MessageAction.NEW_MESSAGE) {
-              await this.$store.dispatch('chat/getCurrChatData', data.chatId);
-              await this.getStatistic();
-            }
-            return;
-          }
-
-          await this.getStatistic();
-
-          if (data.chatId === this.chatId && !this.messagesFilter.canLoadToBottom) {
-            if (action === MessageAction.MESSAGE_READ_BY_RECIPIENT) return;
-            this.$store.commit('chat/addMessageToList', data);
-            this.$store.commit('chat/setChatAsUnread');
-
-            if (data.type === 'info') {
-              const { user } = data.infoMessage;
-
-              if (action === MessageAction.GROUP_CHAT_ADD_USERS) {
-                this.$store.commit('chat/addUserToChat', user);
-              } else if (action === MessageAction.GROUP_CHAT_DELETE_USER) {
-                this.$store.commit('chat/removeUserFromChat', user.id);
-              }
-            }
-          }
-        });
-      }
-      if (!chatActionsConnection) await this.$wsChatActions.connect(this.token);
     },
     async getStatistic() {
       await this.$store.dispatch('user/getStatistic');
