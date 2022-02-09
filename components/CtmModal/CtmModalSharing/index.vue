@@ -55,7 +55,7 @@ export default {
       options: 'modals/getOptions',
     }),
     sharingLink() {
-      return this.options.itemId ? `${window.location.origin + this.$route.fullPath}/${this.options.itemId}` : window.location.origin + this.$route.fullPath;
+      return this.options.itemId ? `${`${window.location.origin}/quests/`}${this.options.itemId}` : window.location.origin + this.$route.fullPath;
     },
   },
   methods: {

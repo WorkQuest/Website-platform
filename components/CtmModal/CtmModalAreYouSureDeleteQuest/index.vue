@@ -47,32 +47,23 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
-      questData: 'quests/getQuest',
+      userRole: 'user/getUserRole',
+      userData: 'user/getUserData',
     }),
   },
   methods: {
     hide() {
       this.CloseModal();
     },
-    async getAllQuests() {
-      await this.$store.dispatch('quests/getAllQuests');
-    },
     async deleteQuest() {
-      const questId = this.questData.id;
-      const questStatus = this.questData.status;
+      const questId = this.options.item.id;
+      const questStatus = this.options.item.status;
       if ([QuestStatuses.Closed, QuestStatuses.Created].includes(questStatus)) {
         await this.$store.dispatch('quests/deleteQuest', { questId });
-        this.hide();
-        this.toMyQuests();
+        await this.$store.dispatch('quests/getUserQuests', { userId: this.userData.id, role: this.userRole, query: {} });
         this.showToastDeleted();
-        await this.getAllQuests();
-      } else {
-        this.hide();
-        this.showToastWrongStatus();
-      }
-    },
-    toMyQuests() {
-      this.$router.push('/my');
+      } else this.showToastWrongStatus();
+      this.hide();
     },
     showToastWrongStatus() {
       return this.$store.dispatch('main/showToast', {
@@ -110,39 +101,39 @@ export default {
 
 <style lang="scss" scoped>
 
-.sure{
+.sure {
   max-width: 337px !important;
   &__content {
     padding: 30px!important;
   }
 }
-.content{
-  &__title{
+.content {
+  &__title {
     font-weight: 500;
     font-size: 23px;
     line-height: 130%;
     margin: 30px 0 20px 0;
     text-align: center;
   }
-  &__desc{
+  &__desc {
     color: #4C5767;
     font-size: 16px;
     line-height: 130%;
     text-align: center;
   }
-  &__picture{
+  &__picture {
     margin-left: auto;
     margin-right: auto;
   }
 
 }
-.action{
+.action {
   display: grid;
   grid-gap: 20px;
   gap: 20px;
   margin-top: 30px;
   grid-auto-flow: column;
-  &__button{
+  &__button {
     max-width: 129px!important;
   }
 }

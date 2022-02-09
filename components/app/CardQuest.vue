@@ -35,10 +35,12 @@
               </div>
             </div>
             <div class="card-quest__head-right">
-              <!--              TODO: Выводить если квест платный-->
-              <span class="icon-circle_up" />
-              <!--              TODO: Только для людей имеющих отношения к квесту (создатель квеста и работник)-->
+              <span
+                v-if="quest.adType > 0"
+                class="icon-circle_up"
+              />
               <div
+                v-if="quest.userId === userData.id || quest.assignedWorkerId && quest.assignedWorkerId === userData.id"
                 class="card-quest__icon card-quest__icon_fav star"
                 @click="clickFavoriteStar(quest)"
               >
@@ -53,18 +55,15 @@
                   alt=""
                 >
               </div>
-              <!--              TODO: Только для создателя квеста и когда статус квеста created-->
               <quest-dd
-                v-if="quest.status === questStatuses.Created"
+                v-if="quest.status === questStatuses.Created && userRole === UserRole.EMPLOYER && quest.userId === userData.id"
                 class="card-quest__icon card-quest__icon_fav"
-                :item-id="quest.id"
+                :item="quest"
               />
-              <!--              TODO: Добавить роли-->
-              <!--              && userRole === UserRole.WORKER-->
               <button
-                v-if="quest.status === questStatuses.Created"
+                v-if="quest.status === questStatuses.Created && userRole === UserRole.WORKER"
                 class="card-quest__shared"
-                @click="shareModal"
+                @click="shareModal(quest.id)"
               >
                 <span class="card-quest__icon card-quest__icon_fav icon-share_outline" />
               </button>
@@ -138,6 +137,7 @@
             <div class="card-quest__details">
               <base-btn
                 v-if="quest.type !== 3"
+                class="card-quest__btn-details"
                 mode="borderless-right"
                 @click="showDetails(quest.id)"
               >
@@ -147,12 +147,12 @@
                 </template>
               </base-btn>
               <div
-                v-if="quest.status === questStatuses.Done && quest.assignedWorkerId === userData.id"
+                v-if="quest.status === questStatuses.Done"
                 class="card-quest__rating"
               >
                 <!--                TODO: Исправить высоту контейнера со звездами-->
                 <star-rating
-                  v-if="starRating(quest)"
+                  v-if="userRole === UserRole.WORKER ? quest.assignedWorkerId === userData.id : quest.userId === userData.id"
                   class="card-quest__star"
                   :quest-index="0"
                   rating-type="questPage"
@@ -214,19 +214,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    shareModal() {
+    shareModal(item) {
       this.ShowModal({
         key: modals.sharingQuest,
-        itemId: this.itemId,
+        itemId: item.id,
       });
-    },
-    starRating(item) {
-      if (this.userRole === UserRole.WORKER) {
-        return item.status === this.questStatuses.Done
-          && item.assignedWorkerId === this.userData.id;
-      }
-      return item.status === this.questStatuses.Done
-        && this.userData.id === item.userId;
     },
     getRatingValue(item) {
       return item.assignedWorker?.ratingStatistic?.status || 'noStatus';
@@ -469,6 +461,9 @@ export default {
   }
 }
 .card-quest {
+  &__btn-details {
+    height: 28px !important;
+  }
   &__rating {
     height: 28px;
   }

@@ -68,6 +68,7 @@ export default {
   display: flex;
   flex-direction: row-reverse;
   justify-content: flex-end;
+  height: 28px;
   &__star > input {
     display: none;
   }

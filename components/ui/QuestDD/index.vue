@@ -16,7 +16,6 @@
       >
         <div class="menu menu__items">
           <div class="menu__container">
-            <!--            v-if="['employer'].includes(userRole)"-->
             <div
               class="menu__item"
               @click="toRaisingViews"
@@ -33,7 +32,6 @@
                 {{ $t('modals.share') }}
               </div>
             </div>
-            <!--            v-if="['employer'].includes(userRole)"-->
             <div
               class="menu__item"
               @click="toEditQuest()"
@@ -42,7 +40,6 @@
                 {{ $t('modals.edit') }}
               </div>
             </div>
-            <!--            v-if="['employer'].includes(userRole)"-->
             <div
               class="menu__item"
               @click="showAreYouSureDeleteQuestModal()"
@@ -69,7 +66,7 @@ export default {
   directives: { ClickOutside },
   props: {
     mode: { type: [String], default: null },
-    itemId: { type: String, default: '' },
+    item: { type: Object, default: () => {} },
   },
   data() {
     return {
@@ -84,15 +81,14 @@ export default {
   },
   methods: {
     toEditQuest() {
-      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
-        this.$router.push(`/edit-quest/${this.itemId}`);
+      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.item.status)) {
+        this.$router.push(`/edit-quest/${this.item.id}`);
         this.setCurrentStepEditQuest(1);
       } else this.showToastWrongStatusEdit();
     },
     toRaisingViews() {
-      // TODO: Добавить тост или модалку
-      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
-        this.$router.push({ path: `/edit-quest/${this.itemId}`, query: { mode: 'raise' } });
+      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.item.status)) {
+        this.$router.push({ path: `/edit-quest/${this.item.id}`, query: { mode: 'raise' } });
         this.setCurrentStepEditQuest(2);
       } else this.showToastWrongStatusRaisingViews();
     },
@@ -114,13 +110,13 @@ export default {
       });
     },
     shareModal() {
-      this.ShowModal({ key: modals.sharingQuest, itemId: this.itemId });
+      this.ShowModal({ key: modals.sharingQuest, itemId: this.item.id });
     },
     closeQuestMenu() {
       this.isShowQuestMenu = false;
     },
     showAreYouSureDeleteQuestModal() {
-      this.ShowModal({ key: modals.areYouSureDeleteQuest });
+      this.ShowModal({ key: modals.areYouSureDeleteQuest, item: this.item });
     },
     showOpenADisputeModal() {
       this.ShowModal({ key: modals.openADispute });
