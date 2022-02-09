@@ -358,22 +358,44 @@ export default {
       commit('setDisable2FA', response.result);
       return response;
     } catch (e) {
-      return console.log(e);
+      const response = {
+        ok: e.response.data.ok,
+        code: e.response.data.code,
+        msg: e.response.data.msg,
+        data: e.response.data.data,
+      };
+      return response;
     }
   },
   async enable2FA({ commit }, payload) {
     try {
       const response = await this.$axios.$post('/v1/totp/enable', payload);
       commit('setTwoFACode', response.result);
-      return response.result;
+      return response;
     } catch (e) {
-      return console.log(e);
+      const response = {
+        ok: e.response.data.ok,
+        code: e.response.data.code,
+        msg: e.response.data.msg,
+        data: e.response.data.data,
+      };
+      return response;
     }
   },
   async confirmEnable2FA({ commit }, payload) {
-    const response = await this.$axios.$post('/v1/totp/confirm', payload);
-    commit('setEnable2FA', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$post('/v1/totp/confirm', payload);
+      commit('setEnable2FA', response.result);
+      return response;
+    } catch (e) {
+      const response = {
+        ok: e.response.data.ok,
+        code: e.response.data.code,
+        msg: e.response.data.msg,
+        data: e.response.data.data,
+      };
+      return response;
+    }
   },
 
   async sendPhone({ commit }, payload) {

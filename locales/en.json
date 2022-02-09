@@ -224,6 +224,7 @@
     "lastName": "Last name",
     "email": "Email",
     "password": "Password",
+    "totp":"TOTP",
     "confirmPassword": "Repeat password",
     "create": "Create account"
   },

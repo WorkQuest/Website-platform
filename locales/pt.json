@@ -224,6 +224,7 @@
     "lastName": "Último nome",
     "email": "E-mail",
     "password": "Palavra-passe",
+    "totp":"???",
     "confirmPassword": "Repetir palavra-passe",
     "create": "Criar conta"
   },

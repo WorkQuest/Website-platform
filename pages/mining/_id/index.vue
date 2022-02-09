@@ -355,7 +355,7 @@ export default {
       if (newValue && rightChain) {
         await this.$store.dispatch('web3/initContract');
         await this.tokensDataUpdate();
-        this.updateInterval = setInterval(() => this.tokensDataUpdate(), 30000);
+        this.updateInterval = setInterval(() => this.tokensDataUpdate(), 60000);
       } else {
         this.fullRewardAmount = 0;
         this.rewardAmount = 0;

@@ -224,6 +224,7 @@
     "lastName": "Nama belakang",
     "email": "Email",
     "password": "Kata sandi",
+    "totp":"???",
     "confirmPassword": "Masukkan kembali kata sandi",
     "create": "Buat akun"
   },

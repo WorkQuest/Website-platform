@@ -224,6 +224,7 @@
     "lastName": "姓氏",
     "email": "电子邮件",
     "password": "密码",
+    "totp":"???",
     "confirmPassword": "再次输入密码",
     "create": "创建帐户"
   },
