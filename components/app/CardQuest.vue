@@ -31,7 +31,7 @@
                 class="card-quest__text card-quest__text_title"
                 @click="goToProfile(quest.user.id)"
               >
-                {{ `${quest.user && quest.user.firstName ? quest.user.firstName : new UserName(quest.user.firstName)} ${quest.user && quest.user.lastName ? quest.user.lastName : ''}` }}
+                {{ `${quest.user && quest.user.firstName ? quest.user.firstName : new UserName(quest.user.firstName, quest.user.lastName)}` }}
               </div>
             </div>
             <div class="card-quest__head-right">
@@ -51,7 +51,7 @@
                 >
                 <img
                   :class="[{'star__default': !quest.star},{'star__checked': quest.star}]"
-                  :src="!quest.star ? require('~/assets/img/ui/star_simple.svg') : require('~/assets/img/ui/star_checked.svg')"
+                  :src="!quest.star ? require( '~/assets/img/ui/star_simple.svg') : require('~/assets/img/ui/star_checked.svg')"
                   alt=""
                 >
               </div>
@@ -77,17 +77,13 @@
               {{ progressQuestText(quest.status) }}
             </div>
             <div class="progress__container container">
-              <div class="container__user user">
+              <div class="container__user user" @click="goToProfile(quest.assignedWorker.id)">
                 <img
                   class="user__avatar"
                   :src="quest.assignedWorker.avatar ? quest.assignedWorker.avatar.url : EmptyAvatar()"
                   :alt="`${quest.assignedWorker.firstName} ${quest.assignedWorker.lastName}`"
-                  @click="goToProfile(quest.assignedWorker.id)"
                 >
-                <div
-                  class="user__name"
-                  @click="goToProfile(quest.assignedWorker.id)"
-                >
+                <div class="user__name">
                   {{ quest.assignedWorker.firstName }} {{ quest.assignedWorker.lastName }}
                 </div>
               </div>
@@ -97,8 +93,7 @@
           <div class="card-quest__locate">
             <span class="icon-location" />
             <span class="card-quest__text card-quest__text_locate">
-              {{ showDistance(quest.location && quest.location.latitude ? quest.location.latitude : 0,
-                              quest.location && quest.location.longitude ? quest.location.latitude: 0) }}
+              {{ showDistance(coordinates('latitude', quest.location), coordinates('longitude', quest.location)) }}
               {{ `${$t('distance.m')} ${$t('meta.fromYou')}` }}
             </span>
           </div>
@@ -213,6 +208,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    coordinates(mode, location) {
+      if (mode === 'latitude' && location) return location.latitude;
+      if (mode === 'longitude' && location) return location.longitude;
+      return 0;
+    },
     shareModal(item) {
       this.ShowModal({
         key: modals.sharingQuest,
@@ -284,13 +284,13 @@ export default {
       this.ShowModal({ key: modals.review, item, rating });
     },
     isHideStar(type) {
-      return ![4, 3].includes(type);
+      return ![QuestStatuses.WaitWorker, QuestStatuses.Dispute].includes(type);
     },
     isRating(type) {
-      return type === 3;
+      return type === QuestStatuses.Dispute;
     },
     isHideStatus(type) {
-      return type !== 4;
+      return type !== QuestStatuses.WaitWorker;
     },
     showMessageModal() {
       this.ShowModal({ key: modals.sendARequest });

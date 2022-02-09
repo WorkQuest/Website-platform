@@ -56,10 +56,9 @@ export default {
       this.CloseModal();
     },
     async deleteQuest() {
-      const questId = this.options.item.id;
-      const questStatus = this.options.item.status;
-      if ([QuestStatuses.Closed, QuestStatuses.Created].includes(questStatus)) {
-        await this.$store.dispatch('quests/deleteQuest', { questId });
+      const { id, status } = this.options.item;
+      if ([QuestStatuses.Closed, QuestStatuses.Created].includes(status)) {
+        await this.$store.dispatch('quests/deleteQuest', { id });
         await this.$store.dispatch('quests/getUserQuests', { userId: this.userData.id, role: this.userRole, query: {} });
         this.showToastDeleted();
       } else this.showToastWrongStatus();
