@@ -231,13 +231,12 @@
             v-for="(item, i) in profileLinks"
             :key="i"
             class="dropdown__link"
-            :class="item.title === 'Logout' ? 'user-dropdown__link_logout' : ''"
             @click="toRoute(item.link)"
           >
             {{ item.title }}
           </div>
           <div
-            class="dropdown__link"
+            class="dropdown__link dropdown__link_logout"
             @click="logout()"
           >
             {{ $t('ui.profile.logout') }}
