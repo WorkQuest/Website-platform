@@ -190,7 +190,6 @@ export default {
     },
     async redirectUser() {
       await this.$store.dispatch('user/getUserData');
-      console.log('redirect with role', this.userData.role);
       if (this.userData.role === UserRole.EMPLOYER) await this.$router.push(Path.WORKERS);
       else if (this.userData.role === UserRole.WORKER) await this.$router.push(Path.QUESTS);
     },
