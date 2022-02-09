@@ -82,7 +82,6 @@ export default {
     return {
       questIndex: 0,
       message_input: '',
-      chooseQuest_input: '',
     };
   },
   computed: {
