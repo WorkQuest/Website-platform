@@ -1,13 +1,15 @@
+import { ChatType } from '~/utils/enums';
+
 export default {
-  async getChatsList({ commit, rootState }, params) {
+  async getChatsList({ commit, rootState, state: { chatsFilter } }) {
     try {
-      const { result, ok } = await this.$axios.$get('/v1/user/me/chats', { params });
+      const { result, ok } = await this.$axios.$get('/v1/user/me/chats', { params: chatsFilter });
 
       result.chats.forEach((chat) => {
         chat.userMembers = chat.userMembers.filter((member) => member.id !== rootState.user.userData.id);
         chat.isUnread = chat.meMember.unreadCountMessages > 0;
       });
-      if (params.offset) result.chats = rootState.chat.chats.list.concat(result.chats);
+      if (chatsFilter.offset) result.chats = rootState.chat.chats.list.concat(result.chats);
 
       commit('setChatsList', result);
       return ok;
@@ -60,9 +62,21 @@ export default {
       return false;
     }
   },
-  async getCurrChatData({ commit, rootState }, chatId) {
+  async getCurrChatData({ commit, rootState, state: { chatsFilter: { q } } }, chatId) {
     try {
       const { ok, result } = await this.$axios.$get(`/v1/user/me/chat/${chatId}`);
+
+      const searchValue = q?.toLowerCase() || '';
+
+      const isSearchValIncluded = (value) => value.toLowerCase().includes(searchValue);
+      const hasSearchedUser = () => result.userMembers.some(({ firstName, lastName }) => isSearchValIncluded(firstName) || isSearchValIncluded(lastName));
+      const isChatNameIncludesSearchVal = () => {
+        if (result.type === ChatType.GROUP) return isSearchValIncluded(result.name);
+        if (result.type === ChatType.QUEST) return isSearchValIncluded(result.questChat.quest.title);
+        return false;
+      };
+
+      if (q && !isChatNameIncludesSearchVal() && !hasSearchedUser()) return ok;
 
       result.isUnread = true;
       result.userMembers = result.userMembers.filter((member) => member.id !== rootState.user.userData.id);

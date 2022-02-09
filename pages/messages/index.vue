@@ -14,7 +14,7 @@
         </div>
         <div class="chats-container__search">
           <base-field
-            v-model="filter.q"
+            v-model="searchValue"
             class="chats-container__search-input"
             is-search
             is-hide-error
@@ -155,12 +155,7 @@ export default {
   },
   data() {
     return {
-      filter: {
-        limit: 15,
-        offset: 0,
-        starred: false,
-        q: '',
-      },
+      searchValue: '',
       isChatsSearching: false,
       delay: null,
     };
@@ -169,6 +164,7 @@ export default {
     ...mapGetters({
       chats: 'chat/getChats',
       userData: 'user/getUserData',
+      filter: 'chat/getChatsFilter',
     }),
     ChatType() {
       return ChatType;
@@ -179,8 +175,14 @@ export default {
       return count > list.length;
     },
   },
+  destroyed() {
+    this.$store.commit('chat/changeChatsFilterValue', [
+      { key: 'offset', val: 0 },
+      { key: 'q', val: undefined },
+      { key: 'starred', val: false }]);
+  },
   async mounted() {
-    this.filter.starred = this.$route.query.starred === 'true';
+    await this.$store.commit('chat/changeChatsFilterValue', [{ key: 'starred', val: this.$route.query.starred === 'true' }]);
     await this.getChats();
     this.SetLoader(false);
   },
@@ -190,7 +192,10 @@ export default {
 
       this.setDelay(async () => {
         this.isChatsSearching = false;
-        this.filter.offset = 0;
+        await this.$store.commit('chat/changeChatsFilterValue',
+          [
+            { key: 'q', val: this.searchValue || undefined },
+            { key: 'offset', val: 0 }]);
         this.SetLoader(true);
         await this.getChats();
         this.SetLoader(false);
@@ -210,7 +215,9 @@ export default {
       return chatType === ChatType.QUEST;
     },
     async loadMoreChats() {
-      this.filter.offset += this.filter.limit;
+      const { offset, limit } = this.filter;
+
+      await this.$store.commit('chat/changeChatsFilterValue', [{ key: 'offset', val: offset + limit }]);
 
       this.SetLoader(true);
       await this.getChats();
@@ -274,14 +281,17 @@ export default {
 
       this.$router.push(`/quests/${questId}`);
     },
-    handleSortedChats() {
-      this.filter = {
-        limit: 15,
-        offset: 0,
-        starred: !this.filter.starred,
-        q: '',
-      };
-      this.$router.push(`?starred=${this.filter.starred}`);
+    async handleSortedChats() {
+      const { starred } = this.filter;
+
+      await this.$store.commit('chat/changeChatsFilterValue', [
+        { key: 'offset', val: 0 },
+        { key: 'q', val: undefined },
+        { key: 'starred', val: !starred }]);
+
+      this.searchValue = '';
+
+      this.$router.push(`?starred=${!starred}`);
       this.getChats();
     },
     handleChangeStarVal(ev, chat) {
@@ -291,14 +301,7 @@ export default {
       this.$store.dispatch(`chat/${chat.star ? 'removeStarForChat' : 'setStarForChat'}`, chatId);
     },
     async getChats() {
-      const { filter } = this;
-
-      const payload = {
-        ...filter,
-        q: filter.q || undefined,
-      };
-
-      await this.$store.dispatch('chat/getChatsList', payload);
+      await this.$store.dispatch('chat/getChatsList');
     },
     handleSelChat(chatId) {
       this.$router.push(`/messages/${chatId}`);
