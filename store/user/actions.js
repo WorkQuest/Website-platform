@@ -21,10 +21,11 @@ export default {
       console.log(e);
     }
   },
-  async removeNotification({ dispatch }, { config, notificationId }) {
+  async removeNotification({ dispatch, commit }, { config, notificationId }) {
     try {
       const { ok } = await this.$axios.$delete(`${process.env.NOTIFS_URL}notifications/delete/${notificationId}`);
 
+      await commit('removeNotification', notificationId);
       await dispatch('getNotifications', config);
 
       return ok;
@@ -54,7 +55,9 @@ export default {
         commit('setUnreadNotifsCount', result.unreadCount);
       }
 
-      commit('setNotifications', result);
+      const needPush = config?.params.limit === 1;
+
+      commit('setNotifications', { result, needPush });
 
       return ok;
     } catch (e) {

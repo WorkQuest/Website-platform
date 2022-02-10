@@ -1294,7 +1294,8 @@
     },
     "notifications": {
       "title": "Notifications",
-      "invite": "Vous invite à terminer la quête"
+      "invite": "Vous invite à terminer la quête",
+      "noNotifications": "No notifications"
     },
     "menu": {
       "unauthorized": "???",

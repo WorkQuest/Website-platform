@@ -198,7 +198,7 @@ export default {
 
   &__pop-up {
     position: absolute;
-    top: 60px;
+    top: 58px;
     right: calc(100% - 43px);
     background: #FFFFFF;
     box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.0325794), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);

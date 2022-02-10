@@ -1295,7 +1295,8 @@
     },
     "notifications": {
       "title": "Notifications",
-      "invite": "Invites you to complete the quest"
+      "invite": "Invites you to complete the quest",
+      "noNotifications": "No notifications"
     },
     "menu": {
       "unauthorized": "Not logged",
