@@ -66,7 +66,10 @@
     "formError": "???",
     "is": "The values do not match",
     "is_not": "Incorrect value",
-    "mnemonic": "Incorrect secret phrase"
+    "mnemonic": "Incorrect secret phrase",
+    "attemptsExceeded": "Number of attempts exceeded",
+    "loginWithSecret": "Please login with secret phrase",
+    "invalidPassword": "Invalid password"
   },
   "labels": {
     "firstName": "नाम का पहला शब्द",
@@ -229,6 +232,7 @@
     "create": "अकाउंट बनाएं"
   },
   "createWallet": {
+    "showSecretPhrase": "Show secret phrase",
     "savePhrase": "Save your secret phrase",
     "keptPhrase": "I have kept a secret phrase",
     "confirmSecretPhrase": "Confirm secret phrase",
@@ -236,7 +240,7 @@
     "secret": "Secret word #{a}",
     "create": "Create wallet",
     "importWallet": "Import wallet",
-    "createOrImport": "Create or import secret wallet",
+    "createOrImport": "Create or import wallet",
     "typeSecretPhrase": "Type secret phrase",
     "secretPhrase": "Secret phrase"
   },

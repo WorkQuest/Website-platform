@@ -1,131 +1,263 @@
 <template>
-  <div class="role">
-    <div class="btn__back">
-      <base-btn
-        mode="back"
-        @click="$router.go(-1)"
+  <div class="confirm">
+    <div
+      class="role"
+      :class="{role_hidden: step !== walletState.Default}"
+    >
+      <div
+        v-if="step === walletState.ImportOrCreate || step === walletState.Default"
+        class="role__back"
+        @click="toSign"
       >
-        <template v-slot:left>
-          <span class="icon-chevron_big_left" />
+        <span class="icon-chevron_big_left" /><span>{{ $t('meta.back') }}</span>
+      </div>
+      <div class="role__title">
+        {{ $t('role.choose') }}
+      </div>
+      <div class="role__cards">
+        <div
+          ref="left"
+          class="role__card role__card_left"
+          @mouseenter="showLeftChoose = true"
+          @mouseleave="showLeftChoose = false"
+          @click="showPrivacy('employer')"
+        >
+          <div class="role__content">
+            <div class="role__top">
+              <div class="role__text role__text_title">
+                {{ $t('role.employer') }}
+              </div>
+              <div class="role__text role__text_desc">
+                {{ $t('role.employerWant') }}
+              </div>
+            </div>
+            <div
+              :class="[{'role__bottom_show': showLeftChoose === true}]"
+              class="role__bottom role__bottom_left"
+            >
+              <div class="role__text role__text_desc">
+                {{ $t('role.chooseThis') }}
+              </div>
+              <div class="role__arrow role__arrow_left">
+                <span class="icon-short_right" />
+              </div>
+            </div>
+          </div>
+          <img
+            class="role__image"
+            src="~assets/img/app/employer.png"
+            alt=""
+          >
+        </div>
+        <div
+          ref="right"
+          class="role__card role__card_right"
+          @mouseenter="showRightChoose = true"
+          @mouseleave="showRightChoose = false"
+          @click="showPrivacy('worker')"
+        >
+          <div class="role__content">
+            <div class="role__top">
+              <div class="role__text role__text_title role__text_light">
+                {{ $t('role.worker') }}
+              </div>
+              <div class="role__text role__text_desc role__text_light">
+                {{ $t('role.workerWant') }}
+              </div>
+            </div>
+            <div
+              class="role__bottom role__bottom_right"
+              :class="[{'role__bottom_show': showRightChoose === true}]"
+            >
+              <div class="role__text role__text_desc role__text_light">
+                {{ $t('role.chooseThis') }}
+              </div>
+              <div class="role__arrow role__arrow_right">
+                <span class="icon-short_right" />
+              </div>
+            </div>
+          </div>
+          <img
+            class="role__image"
+            src="~assets/img/app/worker.png"
+            alt=""
+          >
+        </div>
+      </div>
+    </div>
+    <div
+      v-if="step > walletState.Default"
+      class="wallet-step"
+    >
+      <div
+        v-if="step !== walletState.ImportOrCreate || step === walletState.Default"
+        class="wallet-step__back"
+        @click="goStep(step - 1)"
+      >
+        <span class="icon-chevron_big_left" /><span>{{ $t('meta.back') }}</span>
+      </div>
+      <CreateWallet
+        :step="step"
+        :main-color-dark="false"
+        :disabled="isLoading"
+        @goStep="goStep"
+        @submit="assignWallet"
+        @import="assignWallet"
+      >
+        <template slot="actionText">
+          {{ $t('signUp.create') }}
         </template>
-        {{ $t('meta.back') }}
-      </base-btn>
-    </div>
-    <div class="role__title">
-      {{ $t('role.choose') }}
-    </div>
-    <div class="role__cards">
-      <div
-        id="left_card"
-        class="role__card role__card_left"
-        @mouseenter="showLeftChoose = true"
-        @mouseleave="showLeftChoose = false"
-        @click="showPrivacy('employer')"
-      >
-        <div class="role__content">
-          <div class="role__top">
-            <div class="role__text role__text_title">
-              {{ $t('role.employer') }}
-            </div>
-            <div class="role__text role__text_desc">
-              {{ $t('role.employerWant') }}
-            </div>
-          </div>
-          <div
-            :class="[{'role__bottom_show': showLeftChoose === true}]"
-            class="role__bottom role__bottom_left"
-          >
-            <div class="role__text role__text_desc">
-              {{ $t('role.chooseThis') }}
-            </div>
-            <div class="role__arrow role__arrow_left">
-              <span class="icon-short_right" />
-            </div>
-          </div>
-        </div>
-        <img
-          class="role__image"
-          src="~assets/img/app/employer.png"
-          alt=""
-        >
-      </div>
-      <div
-        id="right_card"
-        class="role__card role__card_right"
-        @mouseenter="showRightChoose = true"
-        @mouseleave="showRightChoose = false"
-        @click="showPrivacy('worker')"
-      >
-        <div class="role__content">
-          <div class="role__top">
-            <div class="role__text role__text_title role__text_light">
-              {{ $t('role.worker') }}
-            </div>
-            <div class="role__text role__text_desc role__text_light">
-              {{ $t('role.workerWant') }}
-            </div>
-          </div>
-          <div
-            class="role__bottom role__bottom_right"
-            :class="[{'role__bottom_show': showRightChoose === true}]"
-          >
-            <div class="role__text role__text_desc role__text_light">
-              {{ $t('role.chooseThis') }}
-            </div>
-            <div class="role__arrow role__arrow_right">
-              <span class="icon-short_right" />
-            </div>
-          </div>
-        </div>
-        <img
-          class="role__image"
-          src="~assets/img/app/worker.png"
-          alt=""
-        >
-      </div>
+      </CreateWallet>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import {
+  Path, UserRole, UserStatuses, WalletState,
+} from '~/utils/enums';
+import CreateWallet from '~/components/ui/CreateWallet';
+import {
+  encryptStringWithKey, getCipherKey, initWallet,
+} from '~/utils/wallet';
 
 export default {
   name: 'Role',
   layout: 'role',
+  middleware: 'auth',
+  components: {
+    CreateWallet,
+  },
   data() {
     return {
+      step: WalletState.Default,
       showLeftChoose: false,
       showRightChoose: false,
+      isLoginWithSocialNetwork: this.$cookies.get('socialNetwork'),
+      isWalletAssigned: false,
+      isClearOnDestroy: true,
     };
   },
+  computed: {
+    ...mapGetters({
+      userData: 'user/getUserData',
+      isLoading: 'main/getIsLoading',
+    }),
+    walletState() {
+      return WalletState;
+    },
+  },
+  created() {
+    window.addEventListener('beforeunload', this.clearCookies);
+  },
+  async beforeMount() {
+    const access = this.$cookies.get('access');
+    const refresh = this.$cookies.get('refresh');
+    const userStatus = this.$cookies.get('userStatus');
+    if (!access || !refresh || !userStatus) {
+      await this.$router.push(Path.SIGN_IN);
+      return;
+    }
+    if (!this.userData.id) await this.$store.dispatch('user/getUserData');
+    if (this.userData.wallet?.address && userStatus === UserStatuses.Confirmed) {
+      this.isWalletAssigned = true;
+      this.isClearOnDestroy = false;
+      await this.redirectUser();
+      return;
+    }
+    if (userStatus === UserStatuses.Confirmed && !this.userData?.wallet?.address) {
+      this.step = WalletState.ImportOrCreate;
+      if (getCipherKey() == null && !this.isLoginWithSocialNetwork) {
+        this.isClearOnDestroy = false;
+        await this.$store.dispatch('wallet/confirmPassword', { nuxt: this.$nuxt, callbackLayout: 'role' });
+      }
+    }
+  },
   async mounted() {
-    document.getElementById('left_card').addEventListener('mouseover', (_) => document.getElementById('right_card').classList.add('role__card_minimized'));
-    document.getElementById('left_card').addEventListener('mouseleave', (_) => document.getElementById('right_card').classList.remove('role__card_minimized'));
-    document.getElementById('right_card').addEventListener('mouseover', (_) => document.getElementById('left_card').classList.add('role__card_minimized'));
-    document.getElementById('right_card').addEventListener('mouseleave', (_) => document.getElementById('left_card').classList.remove('role__card_minimized'));
-    this.SetLoader(true);
-    this.SetLoader(false);
+    const { left, right } = this.$refs;
+    left.addEventListener('mouseover', () => right.classList.add('role__card_minimized'));
+    left.addEventListener('mouseleave', () => right.classList.remove('role__card_minimized'));
+    right.addEventListener('mouseover', () => left.classList.add('role__card_minimized'));
+    right.addEventListener('mouseleave', () => left.classList.remove('role__card_minimized'));
+  },
+  beforeDestroy() {
+    if (!this.isClearOnDestroy && this.isWalletAssigned) return;
+    this.$store.dispatch('user/logout');
   },
   methods: {
+    clearCookies(event) {
+      this.$cookies.remove('access');
+      this.$cookies.remove('refresh');
+      this.$cookies.remove('userLogin');
+      this.$cookies.remove('userStatus');
+    },
+    toSign() {
+      this.$store.dispatch('user/logout');
+      this.$router.push(Path.SIGN_IN);
+    },
+    goStep(step) {
+      if (this.step === WalletState.ImportMnemonic) this.step = WalletState.ImportOrCreate;
+      else if (this.step === WalletState.SaveMnemonic) this.step = WalletState.ImportOrCreate;
+      else this.step = step;
+    },
     showPrivacy(role) {
       this.ShowModal({
         key: modals.privacy,
+        callback: () => this.goToAssignWallet(),
         role,
       });
+    },
+    goToAssignWallet() {
+      this.isClearOnDestroy = true;
+      this.step = WalletState.ImportOrCreate;
+    },
+    async redirectUser() {
+      await this.$store.dispatch('user/getUserData');
+      if (this.userData.role === UserRole.EMPLOYER) await this.$router.push(Path.WORKERS);
+      else if (this.userData.role === UserRole.WORKER) await this.$router.push(Path.QUESTS);
+    },
+    async assignWallet(wallet) {
+      this.isClearOnDestroy = false;
+      this.SetLoader(true);
+      const res = await this.$store.dispatch('user/registerWallet', {
+        address: wallet.address.toLowerCase(),
+        publicKey: wallet.publicKey,
+      });
+      this.SetLoader(false);
+      if (!res.ok) {
+        if (res.msg.includes('Wallet already exists')) {
+          return;
+        }
+        this.isClearOnDestroy = true;
+        await this.$store.dispatch('user/logout');
+        await this.$router.push(Path.SIGN_IN);
+        return;
+      }
+      this.isWalletAssigned = true;
+      initWallet(wallet.address.toLowerCase(), wallet.privateKey);
+      if (this.isLoginWithSocialNetwork) {
+        await this.redirectUser();
+        this.SetLoader(false);
+        return;
+      }
+      localStorage.setItem('mnemonic', JSON.stringify({
+        ...JSON.parse(localStorage.getItem('mnemonic')),
+        [wallet.address.toLowerCase()]: encryptStringWithKey(wallet.mnemonic.phrase, getCipherKey()),
+      }));
+      sessionStorage.setItem('mnemonic', JSON.stringify({
+        ...JSON.parse(sessionStorage.getItem('mnemonic')),
+        [wallet.address.toLowerCase()]: wallet.mnemonic.phrase,
+      }));
+      await this.redirectUser();
+      this.SetLoader(false);
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@media screen and (min-width:1199px) {
-  .btn {
-    &__back {
-      display: none;
-    }
-  }
-}
 .btn {
   &__container {
     display: flex;
@@ -145,8 +277,48 @@ export default {
   color: $black500;
   font-size: 25px;
 }
+.confirm {
+  width: 100%;
+}
+.wallet-step {
+  max-width: 800px;
+  background: $white;
+  margin: 0 auto;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.1);
+
+  &__back {
+    padding-bottom: 10px;
+    cursor: pointer;
+    display: table-cell;
+    color: $black700;
+    & > span:before {
+      color: $black700;
+      vertical-align: middle;
+      font-size: 18px;
+      margin-right: 5px;
+    }
+  }
+}
 .role {
   width: 100%;
+  &_hidden {
+    display: none;
+  }
+  &__back {
+    padding-bottom: 10px;
+    cursor: pointer;
+    display: table-cell;
+    font-size: 18px;
+    color: $black0;
+    & > span:before {
+      color: $black0;
+      vertical-align: middle;
+      font-size: 18px;
+      margin-right: 5px;
+    }
+  }
   &__title {
     padding-bottom: 30px;
     font-family: 'Inter', sans-serif;
@@ -169,22 +341,23 @@ export default {
     right: -90px;
     bottom: 0;
     height: 100%;
+    z-index: -1;
   }
   &__card {
     transition: .2s;
     will-change: transform;
     min-height: 400px;
     cursor: pointer;
-    //filter: drop-shadow(0px 47.1676px 61.4131px rgba(10, 27, 61, 0.078707))
-    //drop-shadow(0px 26.7219px 32.8344px rgba(10, 27, 61, 0.0629546))
-    //drop-shadow(0px 14.4955px 18.4067px rgba(10, 27, 61, 0.0598272))
-    //drop-shadow(0px 6.96225px 9.77565px rgba(10, 27, 61, 0.0584222))
-    //drop-shadow(0px 2.43911px 4.06787px rgba(10, 27, 61, 0.0492837));
-    //-webkit-filter: drop-shadow(0px 47.1676px 61.4131px rgba(10, 27, 61, 0.078707))
-    //drop-shadow(0px 26.7219px 32.8344px rgba(10, 27, 61, 0.0629546))
-    //drop-shadow(0px 14.4955px 18.4067px rgba(10, 27, 61, 0.0598272))
-    //drop-shadow(0px 6.96225px 9.77565px rgba(10, 27, 61, 0.0584222))
-    //drop-shadow(0px 2.43911px 4.06787px rgba(10, 27, 61, 0.0492837));
+    filter: drop-shadow(0px 47.1676px 61.4131px rgba(10, 27, 61, 0.078707))
+    drop-shadow(0px 26.7219px 32.8344px rgba(10, 27, 61, 0.0629546))
+    drop-shadow(0px 14.4955px 18.4067px rgba(10, 27, 61, 0.0598272))
+    drop-shadow(0px 6.96225px 9.77565px rgba(10, 27, 61, 0.0584222))
+    drop-shadow(0px 2.43911px 4.06787px rgba(10, 27, 61, 0.0492837));
+    -webkit-filter: drop-shadow(0px 47.1676px 61.4131px rgba(10, 27, 61, 0.078707))
+    drop-shadow(0px 26.7219px 32.8344px rgba(10, 27, 61, 0.0629546))
+    drop-shadow(0px 14.4955px 18.4067px rgba(10, 27, 61, 0.0598272))
+    drop-shadow(0px 6.96225px 9.77565px rgba(10, 27, 61, 0.0584222))
+    drop-shadow(0px 2.43911px 4.06787px rgba(10, 27, 61, 0.0492837));
     border-radius: 6px;
     background-size: cover;
     overflow: hidden;
@@ -215,7 +388,7 @@ export default {
         width: 125% !important;
         .role {
           &__image {
-            right: 0;
+            right: -1px;
           }
         }
       }
@@ -278,25 +451,14 @@ export default {
   }
 }
 
-@include _1199 {
-  .role {
-    &__title {
-      color: $black800;
-      margin: 0 20px;
-    }
-    &__cards {
-      margin: 0 20px;
-    }
-  }
-}
-@include _767 {
+@include _991 {
   .role {
     &__text_title {
-      font-size: 20px;
+      font-size: 28px;
     }
     &__text_desc {
       font-size: 16px;
-      max-width: 140px;
+      max-width: 220px;
     }
     &__cards {
       grid-template-columns: 1fr;

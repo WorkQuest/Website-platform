@@ -77,7 +77,6 @@ export default {
   claimRewards: 'claimRewards',
   swapTokens: 'swapTokens',
   gallery: 'gallery',
-  confirmPassword: 'confirmPassword',
   transactionReceipt: 'transactionReceipt',
   areYouSure: 'areYouSure',
   stake: 'stake',

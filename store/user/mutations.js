@@ -34,6 +34,7 @@ export default {
   setTokens(state, payload) {
     state.tokens.access = payload.access;
     state.tokens.refresh = payload.refresh;
+    this.$cookies.set('socialNetwork', payload.social, { path: '/' });
     this.$cookies.set('access', payload.access, { path: '/' });
     this.$cookies.set('refresh', payload.refresh, { path: '/' });
     if (payload.userStatus) { this.$cookies.set('userStatus', payload.userStatus, { path: '/' }); }
@@ -53,6 +54,8 @@ export default {
     this.$cookies.remove('userStatus');
     this.$cookies.remove('role');
     this.$cookies.remove('userLogin');
+    this.$cookies.remove('socialNetwork');
+    sessionStorage.clear();
     state.userData = {};
     state.tokens = { access: '', refresh: '' };
   },

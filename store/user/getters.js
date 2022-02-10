@@ -6,7 +6,7 @@ export default {
   getUserData: (state) => state.userData,
   getTwoFACode: (state) => state.twoFACode,
   getVerificationCode: (state) => state.verificationCode,
-  getUserWalletAddress: (state) => state.userData.wallet.address,
+  getUserWalletAddress: (state) => state.userData?.wallet?.address,
   getStatus2FA: (state) => state.userData.statusKYC,
   getStatusTotp: (state) => state.userData.totpIsActive,
   getAnotherUserData: (state) => state.anotherUserData,
