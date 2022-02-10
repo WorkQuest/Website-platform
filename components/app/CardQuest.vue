@@ -107,7 +107,7 @@
           </div>
           <div
             v-if="quest.description"
-            class="card-quest__text card-quest__text_desc"
+            class="card-quest__text card-quest__text-description"
           >
             {{ cropTxt(quest.description, 68) }}
           </div>
@@ -309,7 +309,6 @@ export default {
       return questStatus[index] || '';
     },
     getStatusClass(index) {
-      console.log(index);
       const questStatus = {
         [QuestStatuses.Dispute]: 'card-quest__cards__state_dis',
         [QuestStatuses.Rejected]: 'card-quest__cards__state_clo',
@@ -319,7 +318,6 @@ export default {
         [QuestStatuses.WaitWorker]: 'card-quest__cards__state_inv',
         [QuestStatuses.Closed]: 'card-quest__cards__state_clo',
       };
-      console.log(questStatus[index]);
       return questStatus[index] || '';
     },
     getPriority(index) {
@@ -671,7 +669,7 @@ export default {
       line-height: 130%;
       color: $blue;
     }
-    &_desc {
+    &-description {
       font-size: 16px;
       line-height: 130%;
       color: $black700;
