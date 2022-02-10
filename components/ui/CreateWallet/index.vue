@@ -314,10 +314,10 @@ export default {
   &__mnemonic {
     position: relative;
     padding: 10px 40px 10px 10px;
-    background: $grey;
-    border-radius: 12px;
+    background: #F3F7FA;
+    border-radius: 6px;
     font-weight: 500;
-    min-height: 50px;
+    height: 50px;
     margin-bottom: 20px;
     ::before {
       color: $black600;
@@ -338,6 +338,8 @@ export default {
     border: none;
     width: 100%;
     height: 100%;
+    padding: 0 12px;
+    background: none;
   }
   &__confirm-phrase {
     display: flex;
