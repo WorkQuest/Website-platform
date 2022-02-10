@@ -110,7 +110,7 @@
             v-if="quest.description"
             class="card-quest__text card-quest__text-description"
           >
-            {{ cropTxt(quest.description, 68) }}
+            {{ cropTxt(quest.description, 98) }}
           </div>
           <div class="card-quest__text card-quest__publication">
             <span class="card-quest__publication_bold">{{ $t('quests.publicationDate') }}</span>
@@ -673,6 +673,8 @@ export default {
       font-size: 16px;
       line-height: 130%;
       color: $black700;
+      word-wrap: break-word;
+      word-break: break-all;
     }
     &_blue {
       font-weight: 500;
