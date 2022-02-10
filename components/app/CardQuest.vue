@@ -23,7 +23,7 @@
                 <img
                   class="avatar__image"
                   :src="quest.user && quest.user.avatar ? quest.user.avatar.url : EmptyAvatar()"
-                  :alt="quest.user && quest.user.firstName ? quest.user.firstName : new UserName(quest.user.firstName)"
+                  :alt="`${ UserName(quest.user.firstName, quest.user.lastName) }`"
                   @click="goToProfile(quest.user.id)"
                 >
               </div>
@@ -31,7 +31,7 @@
                 class="card-quest__text card-quest__text_title"
                 @click="goToProfile(quest.user.id)"
               >
-                {{ `${quest.user && quest.user.firstName ? quest.user.firstName : new UserName(quest.user.firstName, quest.user.lastName)}` }}
+                {{ `${UserName(quest.user.firstName, quest.user.lastName)}` }}
               </div>
             </div>
             <div class="card-quest__head-right">
@@ -56,12 +56,12 @@
                 >
               </div>
               <quest-dd
-                v-if="quest.status === questStatuses.Created && userRole === UserRole.EMPLOYER && quest.userId === userData.id"
+                v-if="quest.status === $options.QuestStatuses.Created && userRole === $options.UserRole.EMPLOYER && quest.userId === userData.id"
                 class="card-quest__icon card-quest__icon_fav"
                 :item="quest"
               />
               <button
-                v-if="userRole === UserRole.WORKER ? quest.status : quest.status !== questStatuses.Created"
+                v-if="userRole === $options.UserRole.WORKER ? quest.status : quest.status !== $options.QuestStatuses.Created"
                 class="card-quest__shared"
                 @click="shareModal(quest.id)"
               >
@@ -84,7 +84,7 @@
                 <img
                   class="user__avatar"
                   :src="quest.assignedWorker.avatar ? quest.assignedWorker.avatar.url : EmptyAvatar()"
-                  :alt="`${quest.assignedWorker.firstName} ${quest.assignedWorker.lastName}`"
+                  :alt="`${ UserName(quest.assignedWorker.firstName, quest.assignedWorker.lastName) }`"
                 >
                 <div class="user__name">
                   {{ quest.assignedWorker.firstName }} {{ quest.assignedWorker.lastName }}
@@ -119,7 +119,7 @@
           <div class="card-quest__actions">
             <div class="card-quest__status">
               <div
-                v-if="quest.priority !== 0 && quest.status !== questStatuses.Done"
+                v-if="quest.priority !== 0 && quest.status !== $options.QuestStatuses.Done"
                 class="card-quest__priority"
                 :class="getPriorityClass(quest.priority)"
               >
@@ -145,11 +145,11 @@
                 </template>
               </base-btn>
               <div
-                v-if="quest.status === questStatuses.Done"
+                v-if="quest.status === $options.QuestStatuses.Done"
                 class="card-quest__rating"
               >
                 <star-rating
-                  v-if="userRole === UserRole.WORKER ? quest.assignedWorkerId === userData.id : quest.userId === userData.id"
+                  v-if="userRole === $options.UserRole.WORKER ? quest.assignedWorkerId === userData.id : quest.userId === userData.id"
                   class="card-quest__star"
                   :quest-index="0"
                   rating-type="questPage"
@@ -176,8 +176,13 @@ import modals from '~/store/modals/modals';
 const value = new Vue();
 export default {
   name: 'CardQuest',
+  UserRole,
+  QuestStatuses,
   props: {
-    quest: { type: Object, default: () => {} },
+    quest: {
+      type: Object,
+      default: () => {},
+    },
   },
   data() {
     return {
@@ -196,12 +201,6 @@ export default {
       userData: 'user/getUserData',
       currentMark: 'user/getCurrentReviewMarkOnQuest',
     }),
-    UserRole() {
-      return UserRole;
-    },
-    questStatuses() {
-      return QuestStatuses;
-    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -227,8 +226,8 @@ export default {
     },
     getAmountStyles(item) {
       return [
-        { 'card-quest__amount_green': item.status !== this.questStatuses.Done },
-        { 'card-quest__amount_gray': item.status === this.questStatuses.Done },
+        { 'card-quest__amount_green': item.status !== this.$options.QuestStatuses.Done },
+        { 'card-quest__amount_gray': item.status === this.$options.QuestStatuses.Done },
       ];
     },
     goToProfile(id) {

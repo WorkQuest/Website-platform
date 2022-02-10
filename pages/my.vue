@@ -116,7 +116,9 @@ export default {
     async updateQuests(item) {
       this.SetLoader(true);
       if (!item.star) await this.$store.dispatch('quests/setStarOnQuest', item.id);
-      else await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
+      else {
+        await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
+      }
       await this.$store.dispatch('quests/getUserQuests', this.requestParams);
       this.SetLoader(false);
     },

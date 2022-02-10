@@ -65,8 +65,14 @@ export default {
   name: 'QuestDD',
   directives: { ClickOutside },
   props: {
-    mode: { type: [String], default: null },
-    item: { type: Object, default: () => {} },
+    mode: {
+      type: String,
+      default: null,
+    },
+    item: {
+      type: Object,
+      default: () => {},
+    },
   },
   data() {
     return {

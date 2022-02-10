@@ -147,7 +147,7 @@
           />
         </div>
         <div
-          v-if="(selectedTab === 'commonInfo' || selectedTab === 'portfolio') && userData.role === UserRole.WORKER"
+          v-if="(selectedTab === 'commonInfo' || selectedTab === 'portfolio') && userData.role === $options.UserRole.WORKER"
           class="block__portfolio portfolio"
         >
           <div
@@ -212,6 +212,7 @@ import { UserRole } from '~/utils/enums';
 
 export default {
   name: 'Index',
+  UserRole,
   components: {
     reviewsTab,
     userInfo,
@@ -247,9 +248,6 @@ export default {
       reviews: 'user/getAllUserReviews',
       anotherUserData: 'user/getAnotherUserData',
     }),
-    UserRole() {
-      return UserRole;
-    },
     cardLevelClass(idx) {
       const { cards } = this;
       return [
@@ -364,9 +362,7 @@ export default {
     }
     await this.changeQuestsData(2);
     await this.changeReviewsData(2);
-    if (this.userData.role === 'worker') {
-      await this.changePortfoliosData(3);
-    }
+    if (this.userData.role === UserRole.WORKER) await this.changePortfoliosData(3);
     const { ratingStatistic } = this.userData;
     const { questStatistic } = this.userData;
     this.userStatistics = {

@@ -59,9 +59,6 @@ export default {
       return this.options.itemId ? `${`${window.location.origin}/quests/`}${this.options.itemId}` : window.location.origin + this.$route.fullPath;
     },
   },
-  mounted() {
-    console.log(this.options);
-  },
   methods: {
     hide() {
       this.CloseModal();
