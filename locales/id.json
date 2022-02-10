@@ -1294,7 +1294,8 @@
     },
     "notifications": {
       "title": "Pemberitahuan",
-      "invite": "Mengundang Anda untuk menyelesaikan quest"
+      "invite": "Mengundang Anda untuk menyelesaikan quest",
+      "noNotifications": "No notifications"
     },
     "menu": {
       "unauthorized": "???",
