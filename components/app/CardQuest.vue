@@ -298,6 +298,7 @@ export default {
     },
     getStatusCard(index) {
       const questStatus = {
+        [QuestStatuses.Dispute]: this.$t('quests.dispute'),
         [QuestStatuses.Rejected]: this.$t('quests.rejected'),
         [QuestStatuses.Active]: this.$t('quests.active'),
         [QuestStatuses.Done]: this.$t('quests.performed'),
@@ -308,7 +309,9 @@ export default {
       return questStatus[index] || '';
     },
     getStatusClass(index) {
+      console.log(index);
       const questStatus = {
+        [QuestStatuses.Dispute]: 'card-quest__cards__state_dis',
         [QuestStatuses.Rejected]: 'card-quest__cards__state_clo',
         [QuestStatuses.Active]: 'card-quest__cards__state_act',
         [QuestStatuses.Done]: 'card-quest__cards__state_per',
@@ -316,6 +319,7 @@ export default {
         [QuestStatuses.WaitWorker]: 'card-quest__cards__state_inv',
         [QuestStatuses.Closed]: 'card-quest__cards__state_clo',
       };
+      console.log(questStatus[index]);
       return questStatus[index] || '';
     },
     getPriority(index) {
@@ -530,16 +534,16 @@ export default {
     left: 0;
     &_req {
       color: $black600;
-      background-color: #E9EFF5;
+      background-color: $black200;
     }
     &_per {
-      background-color: #0083C7;
+      background-color: $blue;
     }
     &_act {
-      background-color: #00AA5B;
+      background-color: $green;
     }
     &_inv {
-      background-color: #E8D20D;
+      background-color: $yellow100;
     }
   }
   &__progress {
@@ -740,6 +744,9 @@ export default {
     &__state {
       &_clo {
         background: $red;
+      }
+      &_dis {
+        background-color: $red;
       }
       &_req {
         background: $grey;
