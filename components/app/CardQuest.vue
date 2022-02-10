@@ -308,13 +308,13 @@ export default {
     },
     getStatusClass(index) {
       const questStatus = {
-        [QuestStatuses.Dispute]: 'card-quest__cards__state_dis',
-        [QuestStatuses.Rejected]: 'card-quest__cards__state_clo',
-        [QuestStatuses.Active]: 'card-quest__cards__state_act',
-        [QuestStatuses.Done]: 'card-quest__cards__state_per',
-        [QuestStatuses.WaitConfirm]: 'card-quest__cards__state_req',
-        [QuestStatuses.WaitWorker]: 'card-quest__cards__state_inv',
-        [QuestStatuses.Closed]: 'card-quest__cards__state_clo',
+        [QuestStatuses.Dispute]: 'card-quest__cards-state-dis',
+        [QuestStatuses.Rejected]: 'card-quest__cards-state-clo',
+        [QuestStatuses.Active]: 'card-quest__cards-state-act',
+        [QuestStatuses.Done]: 'card-quest__cards-state-per',
+        [QuestStatuses.WaitConfirm]: 'card-quest__cards-state-req',
+        [QuestStatuses.WaitWorker]: 'card-quest__cards-state-inv',
+        [QuestStatuses.Closed]: 'card-quest__cards-state-clo',
       };
       return questStatus[index] || '';
     },
@@ -714,14 +714,12 @@ export default {
     }
   }
   &__title {
+    @include text-simple;
     cursor: pointer;
     display: grid;
     grid-template-columns: 30px 1fr;
     grid-gap: 10px;
     align-items: center;
-  }
-  &__title {
-    @include text-simple;
     font-style: normal;
     font-weight: 500;
     font-size: 25px;
@@ -741,24 +739,24 @@ export default {
     }
   }
   &__cards {
-    &__state {
-      &_clo {
+    &-state {
+      &-clo {
         background: $red;
       }
-      &_dis {
+      &-dis {
         background-color: $red;
       }
-      &_req {
+      &-req {
         background: $grey;
         color: $black600 !important;
       }
-      &_per {
+      &-per {
         background: $blue;
       }
-      &_act {
+      &-act {
         background: $green;
       }
-      &_inv {
+      &-inv {
         background: $yellow;
       }
     }
@@ -773,13 +771,11 @@ export default {
     justify-content: center;
     grid-template-columns: 1fr;
     grid-gap: 20px;
-    .card {
-      &__content {
-        border-radius: 6px 0 0 6px;
-        box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
-        &_per {
-          height: 244px;
-        }
+    &__content {
+      border-radius: 6px 0 0 6px;
+      box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
+      &_per {
+        height: 244px;
       }
     }
   }
