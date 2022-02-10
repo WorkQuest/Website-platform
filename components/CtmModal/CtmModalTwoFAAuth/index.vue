@@ -70,7 +70,8 @@
           <span class="content__text">{{ $t('modals.useYourGoogleAuth') }}</span>
           <div class="content qr qr__container">
             <qrcode
-              :value="qrLink || 1"
+              v-if="qrLink"
+              :value="qrLink"
               :options="{ width: 200 }"
             />
           </div>
