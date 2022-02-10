@@ -326,7 +326,7 @@ export default {
   },
   async getAvailableQuests({ commit }, data) {
     try {
-      const response = await this.$axios.$get(`/v1/worker/${data}/available-quests`);
+      const response = await this.$axios.$get(`/v1/worker/${data}/available-quests?limit=100`);
       commit('setAvailableQuests', response.result.quests);
       return response.ok;
     } catch (e) {
