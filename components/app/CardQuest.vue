@@ -213,10 +213,8 @@ export default {
   },
   methods: {
     showDistance(location) {
-      if (location && location.latitude && location.longitude) {
-        return this.getDistanceFromLatLonInKm(location.latitude, location.longitude, this.userLat, this.userLng);
-      }
-      return 0;
+      if (!location?.latitude && !location?.longitude) return 0;
+      return this.getDistanceFromLatLonInKm(location.latitude, location.longitude, this.userLat, this.userLng);
     },
     shareModal(item) {
       this.ShowModal({
