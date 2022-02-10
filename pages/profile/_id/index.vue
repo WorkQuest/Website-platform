@@ -382,23 +382,15 @@ export default {
   methods: {
     async updateQuests(item) {
       this.SetLoader(true);
-      if (!item.star) {
-        await this.$store.dispatch('quests/setStarOnQuest', item.id);
-      } else {
-        await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
-      }
-      if (this.selectedTab === 'quests') {
-        await this.changeQuestsData();
-      } else {
-        await this.changeQuestsData(2);
-      }
+      if (!item.star) await this.$store.dispatch('quests/setStarOnQuest', item.id);
+      else await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
+      if (this.selectedTab === 'quests') await this.changeQuestsData();
+      else await this.changeQuestsData(2);
       this.SetLoader(false);
     },
     numberValidate(number) {
       const fixedNumber = number.toFixed(1);
-      if (number - fixedNumber !== 0) {
-        return fixedNumber;
-      }
+      if (number - fixedNumber !== 0) return fixedNumber;
       return number;
     },
     async changeQuestsData(limit) {
@@ -444,10 +436,11 @@ export default {
 
 <style lang="scss" scoped>
 .quests__cards {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 
 .routes {
   &__btn {
