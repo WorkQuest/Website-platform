@@ -67,7 +67,7 @@ export default {
   props: {
     mode: {
       type: String,
-      default: null,
+      default: '',
     },
     item: {
       type: Object,

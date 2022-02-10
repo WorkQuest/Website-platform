@@ -116,9 +116,8 @@ export default {
     async updateQuests(item) {
       this.SetLoader(true);
       if (!item.star) await this.$store.dispatch('quests/setStarOnQuest', item.id);
-      else {
-        await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
-      }
+      else await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
+
       await this.$store.dispatch('quests/getUserQuests', this.requestParams);
       this.SetLoader(false);
     },
@@ -134,7 +133,6 @@ export default {
       else if (id === 3) this.requestParams.query['statuses[0]'] = QuestStatuses.Active;
       else if (id === 4) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorker;
       else if (id === 5) this.requestParams.query['statuses[0]'] = QuestStatuses.Done;
-
       await this.$store.dispatch('quests/getUserQuests', this.requestParams);
       this.SetLoader(false);
     },

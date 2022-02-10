@@ -40,7 +40,7 @@
                 class="icon-circle_up"
               />
               <div
-                v-if="quest.userId === userData.id || quest.assignedWorkerId && quest.assignedWorkerId === userData.id"
+                v-if="quest.userId === userData.id || quest.assignedWorkerId === userData.id"
                 class="card-quest__icon card-quest__icon_fav star"
                 @click="clickFavoriteStar(quest)"
               >
