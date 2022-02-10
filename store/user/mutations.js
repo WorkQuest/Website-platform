@@ -90,9 +90,13 @@ export default {
   setReducedNotifications(state, notifications) {
     state.reducedNotifications = notifications;
   },
-  setNotifications(state, { notifications, count }) {
-    state.notifications.list = notifications;
+  setNotifications(state, { result: { notifications, count }, needPush }) {
+    state.notifications.list = needPush ? state.notifications.list.concat(notifications) : notifications;
+
     state.notifications.count = count;
+  },
+  removeNotification(state, notificationId) {
+    state.notifications.list = state.notifications.list.filter(({ id }) => notificationId !== id);
   },
   setUnreadNotifsCount(state, count) {
     state.unreadNotifsCount += count;

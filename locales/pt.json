@@ -1290,7 +1290,8 @@
     },
     "notifications": {
       "title": "Notificações",
-      "invite": "Convida-o para completar a busca"
+      "invite": "Convida-o para completar a busca",
+      "noNotifications": "No notifications"
     },
     "menu": {
       "unauthorized": "???",

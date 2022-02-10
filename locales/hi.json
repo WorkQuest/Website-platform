@@ -1290,7 +1290,8 @@
     },
     "notifications": {
       "title": "नोटिफिकेशन",
-      "invite": "आपको Quest पूरी करने के लिए इन्वाइट कर रहे हैं"
+      "invite": "आपको Quest पूरी करने के लिए इन्वाइट कर रहे हैं",
+      "noNotifications": "No notifications"
     },
     "menu": {
       "unauthorized": "???",

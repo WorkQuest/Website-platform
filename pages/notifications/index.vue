@@ -51,17 +51,12 @@
               {{ notification.creatingDate }}
             </div>
 
-            <!--            <div-->
-            <!--              v-if="!notification.seen"-->
-            <!--              class="notification__unread-dot"-->
-            <!--            />-->
-
-            <!--            <img-->
-            <!--              class="notification__remove"-->
-            <!--              src="~assets/img/ui/close.svg"-->
-            <!--              alt="x"-->
-            <!--              @click="tryRemoveNotification(notification.id)"-->
-            <!--            >-->
+            <img
+              class="notification__remove"
+              src="~assets/img/ui/close.svg"
+              alt="x"
+              @click="tryRemoveNotification(notification.id)"
+            >
 
             <div class="notification__button">
               <base-btn
@@ -128,7 +123,6 @@ export default {
   },
   methods: {
     tryRemoveNotification(notificationId) {
-      // back-bug
       this.ShowModal({
         key: modals.areYouSure,
         title: this.$t('modals.sureDeleteNotification'),
@@ -137,15 +131,25 @@ export default {
       });
     },
     async removeNotification(notificationId) {
+      const { limit, offset } = this.filter;
+
       this.CloseModal();
+
+      this.SetLoader(true);
+
       const payload = {
         config: {
-          params: this.filter,
+          params: {
+            limit: 1,
+            offset: limit + offset - 1,
+          },
         },
         notificationId,
       };
 
       await this.$store.dispatch('user/removeNotification', payload);
+
+      this.SetLoader(false);
     },
     checkUnseenNotifs(isVisible, { id, seen }) {
       if (!isVisible || seen || this.notificationIdsForRead.indexOf(id) >= 0) return;
@@ -262,17 +266,6 @@ export default {
 
   &_gray {
     background: #f7f8fabd;
-  }
-
-  &__unread-dot {
-    grid-column: 3;
-    grid-row: 1;
-    height: 8px;
-    width: 8px;
-    border-radius: 50%;
-    background-color: #0083C7;
-    justify-self: flex-end;
-    margin-right: 10px;
   }
 
   &:not(:last-child) {

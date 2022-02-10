@@ -1290,7 +1290,8 @@
     },
     "notifications": {
       "title": "通知",
-      "invite": "邀请您完成 Quest"
+      "invite": "邀请您完成 Quest",
+      "noNotifications": "No notifications"
     },
     "menu": {
       "unauthorized": "???",

@@ -1290,7 +1290,8 @@
     },
     "notifications": {
       "title": "Увкдомления",
-      "invite": "Приглашаем вас завершить задание"
+      "invite": "Приглашаем вас завершить задание",
+      "noNotifications": "No notifications"
     },
     "menu": {
       "unauthorized": "Не авторизирован",

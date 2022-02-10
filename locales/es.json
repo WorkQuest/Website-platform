@@ -1290,7 +1290,8 @@
     },
     "notifications": {
       "title": "Notificaciones",
-      "invite": "Le invita a completar la oferta"
+      "invite": "Le invita a completar la oferta",
+      "noNotifications": "No notifications"
     },
     "menu": {
       "unauthorized": "???",

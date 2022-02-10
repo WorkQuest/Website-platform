@@ -1290,7 +1290,8 @@
     },
     "notifications": {
       "title": "الإشعارات",
-      "invite": "يدعوك لإكمال طلب العمل"
+      "invite": "يدعوك لإكمال طلب العمل",
+      "noNotifications": "No notifications"
     },
     "menu": {
       "unauthorized": "???",
