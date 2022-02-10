@@ -137,7 +137,7 @@ export default {
       showRightChoose: false,
       isLoginWithSocialNetwork: this.$cookies.get('socialNetwork'),
       isWalletAssigned: false,
-      isConfirmingPass: false,
+      isClearOnDestroy: true,
     };
   },
   computed: {
@@ -149,6 +149,9 @@ export default {
       return WalletState;
     },
   },
+  created() {
+    window.addEventListener('beforeunload', this.clearCookies);
+  },
   async beforeMount() {
     const access = this.$cookies.get('access');
     const refresh = this.$cookies.get('refresh');
@@ -157,15 +160,17 @@ export default {
       await this.$router.push(Path.SIGN_IN);
       return;
     }
+    if (!this.userData.id) await this.$store.dispatch('user/getUserData');
     if (this.userData.wallet?.address && userStatus === UserStatuses.Confirmed) {
-      this.isConfirmingPass = true;
+      this.isWalletAssigned = true;
+      this.isClearOnDestroy = false;
       await this.redirectUser();
       return;
     }
     if (userStatus === UserStatuses.Confirmed && !this.userData?.wallet?.address) {
       this.step = WalletState.ImportOrCreate;
       if (getCipherKey() == null && !this.isLoginWithSocialNetwork) {
-        this.isConfirmingPass = true;
+        this.isClearOnDestroy = false;
         await this.$store.dispatch('wallet/confirmPassword', { nuxt: this.$nuxt, callbackLayout: 'role' });
       }
     }
@@ -178,15 +183,23 @@ export default {
     right.addEventListener('mouseleave', () => left.classList.remove('role__card_minimized'));
   },
   beforeDestroy() {
-    if (!this.isWalletAssigned && !this.isConfirmingPass) this.$store.dispatch('user/logout');
+    if (!this.isClearOnDestroy && this.isWalletAssigned) return;
+    this.$store.dispatch('user/logout');
   },
   methods: {
+    clearCookies(event) {
+      this.$cookies.remove('access');
+      this.$cookies.remove('refresh');
+      this.$cookies.remove('userLogin');
+      this.$cookies.remove('userStatus');
+    },
     toSign() {
       this.$store.dispatch('user/logout');
       this.$router.push(Path.SIGN_IN);
     },
     goStep(step) {
       if (this.step === WalletState.ImportMnemonic) this.step = WalletState.ImportOrCreate;
+      else if (this.step === WalletState.SaveMnemonic) this.step = WalletState.ImportOrCreate;
       else this.step = step;
     },
     showPrivacy(role) {
@@ -197,6 +210,7 @@ export default {
       });
     },
     goToAssignWallet() {
+      this.isClearOnDestroy = true;
       this.step = WalletState.ImportOrCreate;
     },
     async redirectUser() {
@@ -205,17 +219,20 @@ export default {
       else if (this.userData.role === UserRole.WORKER) await this.$router.push(Path.QUESTS);
     },
     async assignWallet(wallet) {
-      this.isConfirmingPass = false;
+      this.isClearOnDestroy = false;
       this.SetLoader(true);
       const res = await this.$store.dispatch('user/registerWallet', {
         address: wallet.address.toLowerCase(),
         publicKey: wallet.publicKey,
       });
+      this.SetLoader(false);
       if (!res.ok) {
-        console.log(res);
+        if (res.msg.includes('Wallet already exists')) {
+          return;
+        }
+        this.isClearOnDestroy = true;
         await this.$store.dispatch('user/logout');
         await this.$router.push(Path.SIGN_IN);
-        this.SetLoader(false);
         return;
       }
       this.isWalletAssigned = true;

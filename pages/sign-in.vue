@@ -272,6 +272,7 @@ export default {
         // Wallet is not assigned to this account
         if (!address) {
           setCipherKey(this.model.password);
+          this.$cookies.set('userLogin', true, { path: '/' });
           await this.$router.push(Path.ROLE);
           this.SetLoader(false);
           return;
@@ -377,19 +378,19 @@ export default {
       }));
       this.$store.dispatch('wallet/connectWallet', { userWalletAddress: wallet.address, userPassword: this.model.password });
     },
-    async redirectUser() {
+    redirectUser() {
       this.addressAssigned = true;
       this.$cookies.set('userLogin', true, { path: '/' });
       // redirect to confirm access if token exists & unconfirmed account
       const confirmToken = JSON.parse(sessionStorage.getItem('confirmToken'));
       if (this.userStatus === UserStatuses.Unconfirmed && confirmToken) {
-        await this.$router.push(`/confirm/?token=${confirmToken}`);
+        this.$router.push(`/confirm/?token=${confirmToken}`);
         return;
       }
       sessionStorage.removeItem('confirmToken');
-      if (this.userData.role === UserRole.EMPLOYER) await this.$router.push(Path.WORKERS);
-      else if (this.userData.role === UserRole.WORKER) await this.$router.push(Path.QUESTS);
-      else if (this.userStatus === UserStatuses.NeedSetRole) await this.$router.push(Path.ROLE);
+      if (this.userData.role === UserRole.EMPLOYER) this.$router.push(Path.WORKERS);
+      else if (this.userData.role === UserRole.WORKER) this.$router.push(Path.QUESTS);
+      else if (this.userStatus === UserStatuses.NeedSetRole) this.$router.push(Path.ROLE);
     },
     async redirectSocialLink(socialNetwork) {
       window.location = `${process.env.BASE_URL}v1/auth/login/${socialNetwork}`;

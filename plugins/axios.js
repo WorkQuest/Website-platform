@@ -16,8 +16,8 @@ export default function ({ $axios, store, app }, inject) {
     console.dir(error);
     const originalRequest = error.config;
     if (error.config.url === '/v1/auth/refresh-tokens') {
-      // await store.dispatch('user/logout');
-      // await app.$router.push(Path.SIGN_IN);
+      await store.dispatch('user/logout');
+      await app.$router.push(Path.SIGN_IN);
     } else if (error.response.status === 401) {
       await store.dispatch('user/refreshTokens');
       return $axios(originalRequest);
