@@ -51,17 +51,12 @@
               {{ notification.creatingDate }}
             </div>
 
-            <!--            <div-->
-            <!--              v-if="!notification.seen"-->
-            <!--              class="notification__unread-dot"-->
-            <!--            />-->
-
-            <!--            <img-->
-            <!--              class="notification__remove"-->
-            <!--              src="~assets/img/ui/close.svg"-->
-            <!--              alt="x"-->
-            <!--              @click="tryRemoveNotification(notification.id)"-->
-            <!--            >-->
+            <img
+              class="notification__remove"
+              src="~assets/img/ui/close.svg"
+              alt="x"
+              @click="tryRemoveNotification(notification.id)"
+            >
 
             <div class="notification__button">
               <base-btn
@@ -124,11 +119,10 @@ export default {
     this.SetLoader(false);
   },
   destroyed() {
-    this.$store.commit('user/setNotifications', { notifications: [], count: this.notifsCount });
+    this.$store.commit('user/setNotifications', { result: { notifications: [], count: this.notifsCount } });
   },
   methods: {
     tryRemoveNotification(notificationId) {
-      // back-bug
       this.ShowModal({
         key: modals.areYouSure,
         title: this.$t('modals.sureDeleteNotification'),
@@ -137,15 +131,25 @@ export default {
       });
     },
     async removeNotification(notificationId) {
+      const { limit, offset } = this.filter;
+
       this.CloseModal();
+
+      this.SetLoader(true);
+
       const payload = {
         config: {
-          params: this.filter,
+          params: {
+            limit: 1,
+            offset: limit + offset - 1,
+          },
         },
         notificationId,
       };
 
       await this.$store.dispatch('user/removeNotification', payload);
+
+      this.SetLoader(false);
     },
     checkUnseenNotifs(isVisible, { id, seen }) {
       if (!isVisible || seen || this.notificationIdsForRead.indexOf(id) >= 0) return;
@@ -264,17 +268,6 @@ export default {
     background: #f7f8fabd;
   }
 
-  &__unread-dot {
-    grid-column: 3;
-    grid-row: 1;
-    height: 8px;
-    width: 8px;
-    border-radius: 50%;
-    background-color: #0083C7;
-    justify-self: flex-end;
-    margin-right: 10px;
-  }
-
   &:not(:last-child) {
     border-bottom: 1px solid $black100;
   }
@@ -355,6 +348,16 @@ export default {
     font-size: 16px;
     color: $blue;
     letter-spacing: 0.03em;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: initial;
+
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+    box-orient: vertical;
+    -webkit-box-orient: vertical;
   }
 }
 

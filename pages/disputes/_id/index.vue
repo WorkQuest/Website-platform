@@ -16,9 +16,9 @@
           {{ disputeStatus }}
         </div>
       </div>
-      <quest-cards
+      <card-quest
         class="dispute__quests"
-        :quests="disputeData.quest ? [disputeData.quest] : []"
+        :quest="disputeData.quest ? disputeData.quest : {}"
       />
       <div class="dispute__chat-history">
         <div class="chat-history__container">

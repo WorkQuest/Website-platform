@@ -22,7 +22,7 @@
         v-if="questsCount"
         class="quests__cards"
       >
-        <quest-card
+        <card-quest
           v-for="(quest,id) in questsList"
           :key="id"
           :quest="quest"

@@ -12,7 +12,6 @@
           {{ options.text }}
         </div>
       </ctm-modal-box>
-      <CtmModalConfirmPassword v-if="modals.confirmPassword === currentModalKey" />
       <CtmModalConfirmEmail v-if="modals.emailConfirm === currentModalKey" />
       <CtmModalRestore v-if="modals.restore === currentModalKey" />
       <CtmModalChangePassword v-if="modals.changePassword === currentModalKey" />
@@ -100,7 +99,6 @@ import { mapGetters } from 'vuex';
 import modals from '@/store/modals/modals';
 import CtmModalStake from './CtmModalStake';
 import CtmModalTransactionReceipt from './CtmModalTransactionReceipt';
-import CtmModalConfirmPassword from './CtmModalConfirmPassword';
 import CtmModalConfirmEmail from './CtmModalConfirmEmail';
 import CtmModalChangePassword from './CtmModalChangePassword';
 import CtmModalRestore from './CtmModalRestore';
@@ -183,7 +181,6 @@ export default {
   components: {
     CtmModalStake,
     CtmModalTransactionReceipt,
-    CtmModalConfirmPassword,
     CtmModalQuestFilterFull,
     CtmModalConfirmEmail,
     CtmModalRestore,

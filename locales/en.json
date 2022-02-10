@@ -66,7 +66,11 @@
     "formError": "Fill in all required fields",
     "is": "The values do not match",
     "is_not": "Incorrect value",
-    "mnemonic": "Incorrect secret phrase"
+    "mnemonic": "Incorrect secret phrase",
+    "attemptsExceeded": "Number of attempts exceeded",
+    "loginWithSecret": "Please login with secret phrase",
+    "invalidPassword": "Invalid password",
+    "loginToContinue": "Please login to continue"
   },
   "labels": {
     "firstName": "First name",
@@ -229,6 +233,7 @@
     "create": "Create account"
   },
   "createWallet": {
+    "showSecretPhrase": "Show secret phrase",
     "savePhrase": "Save your secret phrase",
     "keptPhrase": "I have kept a secret phrase",
     "confirmSecretPhrase": "Confirm secret phrase",
@@ -236,7 +241,7 @@
     "secret": "Secret word #{a}",
     "create": "Create wallet",
     "importWallet": "Import wallet",
-    "createOrImport": "Create or import secret wallet",
+    "createOrImport": "Create or import wallet",
     "typeSecretPhrase": "Type secret phrase",
     "secretPhrase": "Secret phrase"
   },
@@ -1290,7 +1295,8 @@
     },
     "notifications": {
       "title": "Notifications",
-      "invite": "Invites you to complete the quest"
+      "invite": "Invites you to complete the quest",
+      "noNotifications": "No notifications"
     },
     "menu": {
       "unauthorized": "Not logged",

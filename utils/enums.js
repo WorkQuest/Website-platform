@@ -163,6 +163,8 @@ export const UserRole = {
 };
 
 export const Path = {
+  SIGN_IN: '/sign-in',
+  SIGN_UP: '/sign-up',
   MY_QUESTS: '/my',
   WALLET: '/wallet',
   PENSION: '/pension',
@@ -179,12 +181,14 @@ export const Path = {
   CREATE_QUEST: '/create-quest',
   STAKING: '/staking',
   PROFILE: '/profile',
+  ROLE: '/role',
   QUESTS: '/quests',
+  EDIT_QUEST: '/edit-quest',
 };
 
 // WALLET
 export const WalletState = Object.freeze({
-  SignPage: 1,
+  Default: 1,
   SaveMnemonic: 2,
   ConfirmMnemonic: 3,
   ImportOrCreate: 4,
