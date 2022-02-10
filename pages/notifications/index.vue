@@ -74,12 +74,10 @@
             </div>
           </div>
         </div>
-        <div
+        <emptyData
           v-else
-          class="info-block__no-notifs"
-        >
-          {{ $t('ui.notifications.noNotifications') }}
-        </div>
+          :description="$t('ui.notifications.noNotifications')"
+        />
         <base-pager
           v-if="totalPages > 1"
           v-model="page"
@@ -234,13 +232,6 @@ export default {
     justify-self: flex-end;
     margin: 20px;
     border: 1px solid #F7F8FA
-  }
-
-  &__no-notifs {
-    display: flex;
-    padding: 50px 10px;
-    justify-content: center;
-    color: #8D96A2;
   }
 }
 
