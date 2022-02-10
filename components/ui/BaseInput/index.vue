@@ -10,7 +10,8 @@
       {'ctm-field_icon': mode === 'icon'},
       {'ctm-field_smallError': mode === 'smallError'},
       {'ctm-field_white': mode === 'white'},
-      {'ctm-field_chat': mode === 'chat'}]"
+      {'ctm-field_chat': mode === 'chat'},
+    ]"
     :rules="rules"
     :name="name"
     :vid="vid"
@@ -40,7 +41,8 @@
       <input
         ref="input"
         class="ctm-field__input"
-        :class="{'ctm-field__input_error': errors[0]}"
+        :class="[{'ctm-field__input_error': errors[0]},
+                 {'ctm-field__input_padding-r' : hasLoader}]"
         :placeholder="placeholder"
         :value="mode === 'convertDate' ? convertDate(value) : value"
         :type="type"
@@ -52,7 +54,7 @@
         @blur="$emit('blur')"
       >
       <div
-        v-if="value && isSearch"
+        v-if="value && isSearch && !isBusySearch"
         class="ctm-field__clear"
         @click="clear()"
       >
@@ -128,6 +130,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isBusySearch: {
+      type: Boolean,
+      default: false,
+    },
     autocomplete: {
       type: String,
       default: 'on',
@@ -153,6 +159,10 @@ export default {
     validationMode: {
       type: String,
       default: 'aggressive',
+    },
+    hasLoader: {
+      type: Boolean,
+      default: false,
     },
   },
   mounted() {
@@ -262,6 +272,9 @@ export default {
     width: 100%;
     &_error {
       border: 1px solid red !important
+    }
+    &_padding-r {
+      padding-right: 40px !important;
     }
   }
   &_disabled {

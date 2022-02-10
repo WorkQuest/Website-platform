@@ -65,4 +65,7 @@ export default {
   setSelectedPriceFilter(state, data) {
     state.selectedPriceFilter = data;
   },
+  setAvailableQuests(state, data) {
+    state.availableQuests = data;
+  },
 };

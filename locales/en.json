@@ -927,6 +927,8 @@
     "error": "Error!"
   },
   "modals": {
+    "errorQuests": "Error with quests",
+    "emptyOpenQuests": "You don't have open quests, please create",
     "errorSmsVer": "Error SMS verification",
     "fillNumber": "Please fill phone number in settings page...",
     "disputes": {
@@ -1420,7 +1422,8 @@
       "youLeftTheChat": "You left the chat"
     },
     "leaveChat": "Leave chat",
-    "loadMore": "Load more"
+    "loadMore": "Load more",
+    "searchTitle": "Name/Quest/Group"
   },
   "settings": {
     "additionalPhoneNumber": "Additional phone number",
@@ -2188,7 +2191,8 @@
           },
           "notifications": {
             "title": "Notifications",
-            "subtitle": "All important notifications related to your profile and platform updates."
+            "subtitle": "All important notifications related to your profile and platform updates.",
+            "noNotifications": "No notifications"
           },
           "menu": {
             "title": "Menu",

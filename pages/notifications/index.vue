@@ -5,7 +5,10 @@
         <div class="info-block__title">
           {{ $t('ui.notifications.title') }}
         </div>
-        <div class="info-block__list">
+        <div
+          v-if="notifsCount"
+          class="info-block__list"
+        >
           <div
             v-for="(notification, i) in notifications"
             :key="i"
@@ -71,6 +74,11 @@
             </div>
           </div>
         </div>
+        <empty-data
+          v-else
+          class="info-block__no-content"
+          :description="$t('ui.notifications.noNotifications')"
+        />
         <base-pager
           v-if="totalPages > 1"
           v-model="page"
@@ -97,7 +105,7 @@ export default {
       },
       page: 1,
       notificationIdsForRead: [],
-      delay: null,
+      delayId: null,
     };
   },
   computed: {
@@ -144,7 +152,7 @@ export default {
 
       this.notificationIdsForRead.push(id);
 
-      this.setDelay(async () => {
+      this.delayId = this.SetDelay(async () => {
         const config = {
           notificationIds: this.notificationIdsForRead,
         };
@@ -152,11 +160,7 @@ export default {
         await this.$store.dispatch('user/readNotifications', config);
 
         this.notificationIdsForRead = [];
-      }, 1000);
-    },
-    setDelay(f, t) {
-      clearTimeout(this.delay);
-      this.delay = setTimeout(f, t);
+      }, 1000, this.delayId);
     },
     async setPage() {
       this.filter.offset = (this.page - 1) * this.filter.limit;
@@ -206,6 +210,11 @@ export default {
 .info-block {
   background: #fff;
   border-radius: 6px;
+
+  &__no-content {
+    margin: 0 0 20px;
+    background: transparent;
+  }
 
   &__container {
     display: grid;

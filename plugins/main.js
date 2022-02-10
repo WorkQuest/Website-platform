@@ -153,5 +153,9 @@ Vue.mixin({
       parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
       return parts.join('.');
     },
+    SetDelay(func, timeout, delayId) {
+      clearTimeout(delayId);
+      return setTimeout(func, timeout);
+    },
   },
 });

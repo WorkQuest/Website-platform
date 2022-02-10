@@ -927,6 +927,8 @@
     "error": "Error!"
   },
   "modals": {
+    "errorQuests": "???",
+    "emptyOpenQuests": "???",
     "errorSmsVer": "???",
     "fillNumber": "???",
     "disputes": {
@@ -1420,7 +1422,8 @@
       "youLeftTheChat": "???"
     },
     "leaveChat": "???",
-    "loadMore": "???"
+    "loadMore": "???",
+    "searchTitle": "Name/Quest/Group"
   },
   "settings": {
     "additionalPhoneNumber": "???",
@@ -2188,11 +2191,13 @@
           },
           "notifications": {
             "title": "???",
-            "subtitle": "???"
+            "subtitle": "???",
+            "noNotifications": "No notifications"
           },
           "menu": {
             "title": "???",
-            "subtitle": "???"
+            "subtitle": "???",
+            "noNotifications": "No notifications"
           }
         }
       },

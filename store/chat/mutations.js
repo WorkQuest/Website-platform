@@ -80,4 +80,9 @@ export default {
   setIsChatOpened(state, val) {
     state.isChatOpened = val;
   },
+  changeChatsFilterValue(state, changes) {
+    changes.forEach(({ key, val }) => {
+      state.chatsFilter[key] = val;
+    });
+  },
 };
