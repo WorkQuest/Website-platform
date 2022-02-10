@@ -119,7 +119,7 @@ export default {
     this.SetLoader(false);
   },
   destroyed() {
-    this.$store.commit('user/setNotifications', { notifications: [], count: this.notifsCount });
+    this.$store.commit('user/setNotifications', { result: { notifications: [], count: this.notifsCount } });
   },
   methods: {
     tryRemoveNotification(notificationId) {
@@ -348,6 +348,16 @@ export default {
     font-size: 16px;
     color: $blue;
     letter-spacing: 0.03em;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: initial;
+
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+    box-orient: vertical;
+    -webkit-box-orient: vertical;
   }
 }
 
