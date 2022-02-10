@@ -172,6 +172,7 @@ export const Path = {
   ROLE: '/role',
   WORKERS: '/workers',
   QUESTS: '/quests',
+  EDIT_QUEST: '/edit-quest',
 };
 
 // WALLET
