@@ -229,8 +229,8 @@ export default {
     },
     getAmountStyles(item) {
       return [
-        { 'card-quest__amount_green': item.status !== this.$options.QuestStatuses.Done },
-        { 'card-quest__amount_gray': item.status === this.$options.QuestStatuses.Done },
+        { 'card-quest__amount_green': item.status !== QuestStatuses.Done },
+        { 'card-quest__amount_gray': item.status === QuestStatuses.Done },
       ];
     },
     goToProfile(id) {
