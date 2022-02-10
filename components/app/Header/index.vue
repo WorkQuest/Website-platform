@@ -1083,7 +1083,7 @@ export default {
 
     &:hover {
       border: 1px solid $black100;
-
+      text-decoration: none;
       .menu {
         &__top {
           span::before {
