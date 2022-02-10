@@ -93,8 +93,9 @@
             {{ $t('meta.showAll') }}
           </base-btn>
         </template>
-        <emptyData
+        <empty-data
           v-else
+          class="reduced-notifications__no-content"
           :description="$t('ui.notifications.noNotifications')"
         />
       </div>
@@ -197,7 +198,7 @@ export default {
 
   &__pop-up {
     position: absolute;
-    top: 57px;
+    top: 60px;
     right: calc(100% - 43px);
     background: #FFFFFF;
     box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.0325794), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
@@ -215,6 +216,11 @@ export default {
   &__more-btn {
     width: 33%;
     margin: 0 auto 20px;
+  }
+
+  &__no-content {
+    margin: 0 0 20px;
+    background: transparent;
   }
 }
 
