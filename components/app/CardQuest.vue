@@ -154,7 +154,7 @@
                   rating-type="questPage"
                   :stars-number="5"
                   :rating="!quest.yourReview ? currentMark.mark : quest.yourReview.mark"
-                  :is-disabled="quest.yourReview === Object || currentMark.mark !== 0"
+                  :is-disabled="quest.yourReview !== null || currentMark.mark !== 0"
                   @input="showReviewModal($event, quest)"
                 />
               </div>
