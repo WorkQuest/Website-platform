@@ -26,6 +26,7 @@
           v-for="(quest,id) in questsList"
           :key="id"
           :quest="quest"
+          @clickFavoriteStar="updateQuests(quest)"
         />
       </div>
       <empty-data
@@ -108,6 +109,13 @@ export default {
     this.$store.commit('quests/setAllQuests', { count: null, quests: [] });
   },
   methods: {
+    async updateQuests(item) {
+      this.SetLoader(true);
+      if (!item?.star && item?.user?.id) await this.$store.dispatch('quests/setStarOnQuest', item.user.id);
+      else await this.$store.dispatch('quests/takeAwayStarOnQuest', item.user.id);
+      await this.fetchQuestsList();
+      this.SetLoader(false);
+    },
     async setPage(newPage) {
       this.page = newPage;
       await this.fetchQuestsList();

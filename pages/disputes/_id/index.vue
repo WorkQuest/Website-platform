@@ -17,8 +17,8 @@
         </div>
       </div>
       <card-quest
-        class="dispute__quests"
-        :quest="disputeData.quest ? disputeData.quest : {}"
+        :quest="disputeData.quest"
+        @clickFavoriteStar="updateQuests(disputeData.quest)"
       />
       <div class="dispute__chat-history">
         <div class="chat-history__container">
@@ -74,6 +74,14 @@ export default {
   methods: {
     backToDisputes() {
       this.$router.back();
+    },
+    async updateQuests(item) {
+      this.SetLoader(true);
+      if (!item.star) await this.$store.dispatch('quests/setStarOnQuest', item.id);
+      else await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
+
+      await this.$store.dispatch('quests/getUserQuests', this.requestParams);
+      this.SetLoader(false);
     },
   },
 };
