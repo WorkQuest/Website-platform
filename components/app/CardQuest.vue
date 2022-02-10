@@ -21,9 +21,9 @@
             >
               <div
                 class="card-quest__avatar avatar">
-                :alt="`${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}`"
                 <img
                   class="avatar__image"
+                  :alt="`${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}`"
                   :src="quest.user && quest.user.avatar ? quest.user.avatar.url : EmptyAvatar()"
                   @click="goToProfile(quest.user.id)"
                 >
