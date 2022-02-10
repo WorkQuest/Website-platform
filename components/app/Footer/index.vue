@@ -327,25 +327,21 @@ export default {
   height: 100%;
   display: flex;
   justify-content: center;
-
   &__items {
     display: grid;
     grid-template-columns: repeat(2, minmax(170px, auto));
     grid-gap: 50px;
-
     &_links {
       grid-template-columns: repeat(1, 1fr);
       grid-template-rows: repeat(5, 1fr);
       grid-gap: 10px;
     }
   }
-
   &__item {
     display: grid;
     grid-template-rows: auto 1fr;
     grid-gap: 15px;
   }
-
   &__body {
     max-width: 1180px;
     width: 100%;
@@ -354,17 +350,14 @@ export default {
     flex-direction: column;
     justify-content: space-between;
   }
-
   &__top {
     width: 100%;
     display: flex;
     justify-content: space-between;
-
     &_hidden {
       display: none;
     }
   }
-
   &__bottom {
     width: 100%;
     display: flex;
@@ -372,38 +365,30 @@ export default {
     height: 72px;
     align-items: center;
   }
-
   &__links {
     display: flex;
     grid-gap: 35px;
     flex-direction: column;
-
     &_mobile {
       display: none;
     }
   }
-
   &__link {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: normal;
+    @include text-simple;
     font-size: 16px;
     line-height: 130%;
     color: $blue;
     cursor: pointer;
     text-decoration: none;
   }
-
   &__logo {
     display: grid;
     align-items: center;
     grid-template-columns: 40px 1fr;
     grid-gap: 5px;
     cursor: pointer;
-
     span {
-      font-family: 'Inter', sans-serif;
-      font-style: normal;
+      @include text-simple;
       font-weight: bold;
       font-size: 23px;
       line-height: 130%;
@@ -412,16 +397,12 @@ export default {
   }
 
   &__text {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: normal;
-
+    @include text-simple;
     &_grey {
       font-weight: normal;
       font-size: 16px;
       color: $black500;
     }
-
     &_black {
       height: 24px;
       font-weight: 500;
@@ -429,83 +410,68 @@ export default {
       line-height: 130%;
       color: $black700;
     }
-
     &_rights {
       font-size: 14px;
       line-height: 130%;
       color: $black500;
     }
   }
-
   &__rights {
     display: grid;
     grid-template-columns: repeat(2, auto);
     grid-gap: 20px;
   }
-
   &__right {
     display: flex;
     align-items: flex-end;
   }
-
   &__left {
     display: flex;
     grid-gap: 20px;
     flex-direction: column;
   }
-
   &__block {
     display: grid;
     grid-template-columns: auto auto;
     grid-gap: 30px;
-
     &_links {
       display: flex;
       grid-gap: 25px;
     }
   }
-
   .links {
     &__block {
       display: flex;
       flex-direction: column;
       grid-gap: 10px;
     }
-
     &__title {
       font-style: normal;
       font-weight: 500;
       font-size: 16px;
     }
-
     &__big {
       display: flex;
       grid-gap: 10px;
     }
-
     &__small {
       display: flex;
       justify-content: space-between;
     }
-
     &__store {
       width: 170px;
       height: 56px;
-
       &_app-store {
         background-image: url('/img/app/app_store_button.svg');
       }
-
       &_play-market {
         background-image: url('/img/app/play_market_button.svg');
       }
     }
-
     &__social {
       width: 40px;
       height: 40px;
       transition: all 0.5s;
-
       &_twitter {
         background-image: url('assets/img/social/footer_twitter.svg');
         border-radius: 10px;
@@ -513,7 +479,6 @@ export default {
           background-image: url('assets/img/social/footer_twitter_active.svg')
         }
       }
-
       &_youtube {
         background-image: url('assets/img/social/footer_youtube.svg');
         border-radius: 10px;
@@ -521,7 +486,6 @@ export default {
           background-image: url('assets/img/social/footer_youtube_active.svg')
         }
       }
-
       &_reddit {
         background-image: url('assets/img/social/footer_reddit.svg');
         border-radius: 10px;
@@ -529,7 +493,6 @@ export default {
           background-image: url('assets/img/social/footer_reddit_active.svg')
         }
       }
-
       &_facebook {
         background-image: url('assets/img/social/footer_facebook.svg');
         border-radius: 10px;
@@ -537,7 +500,6 @@ export default {
           background-image: url('assets/img/social/footer_facebook_active.svg')
         }
       }
-
       &_linkedin {
         background-image: url('assets/img/social/footer_linkedin.svg');
         border-radius: 10px;
@@ -545,7 +507,6 @@ export default {
           background-image: url('assets/img/social/footer_linkedin_active.svg')
         }
       }
-
       &_instagram {
         background-image: url('assets/img/social/footer_instagram.svg');
         border-radius: 10px;
@@ -553,7 +514,6 @@ export default {
           background-image: url('assets/img/social/footer_instagram_active.svg')
         }
       }
-
       &_telegram {
         background-image: url('assets/img/social/footer_telegram.svg');
         border-radius: 10px;
@@ -568,26 +528,21 @@ export default {
 @include _1199 {
   .footer {
     padding: 0 20px;
-
     &__menus {
       width: 100%;
       margin: 20px 0;
     }
-
     &__top {
       flex-direction: column;
     }
-
     &__right {
       flex-direction: column;
       align-items: flex-start;
     }
-
     &__links {
       &_pc {
         display: none;
       }
-
       &_mobile {
         display: grid;
         grid-template-columns: auto auto;
@@ -596,7 +551,6 @@ export default {
         grid-gap: 35px;
       }
     }
-
     &__items {
       &_main {
         grid-template-columns: 350px auto;
@@ -605,7 +559,6 @@ export default {
         grid-gap: 35px;
       }
     }
-
     .links {
       &__small {
         grid-gap: 10px;
@@ -618,7 +571,6 @@ export default {
   .footer {
     &__links {
       width: auto;
-
       &_mobile {
         width: auto;
       }
@@ -634,13 +586,11 @@ export default {
         grid-gap: 25px;
       }
     }
-
     &__links {
       &_mobile {
         grid-gap: 25px;
       }
     }
-
     &__block {
       grid-gap: 20px;
     }
@@ -657,35 +607,28 @@ export default {
     &__bottom {
       display: grid;
     }
-
     &__left {
       grid-column: 1/2;
     }
-
     &__rights {
       grid-column: 1/2;
     }
-
     &__rights {
       display: flex;
     }
-
     &__top {
       display: grid;
       grid-template-columns: 1fr;
       grid-gap: 30px;
-
       &_hidden {
         display: none;
       }
     }
-
     &__links {
       &_mobile {
         grid-template-columns: auto;
       }
     }
-
     &__items {
       &_links {
         grid-template-columns: 1fr;
@@ -707,12 +650,10 @@ export default {
         flex-direction: column;
       }
     }
-
     .links {
       &__block {
         width: 100%;
       }
-
       &__small {
         display: flex;
         justify-content: flex-start;
@@ -734,13 +675,11 @@ export default {
       grid-template-columns: auto;
       grid-gap: 10px;
     }
-
     &__items {
       &_last-column {
         grid-template-rows: repeat(4, 1fr);
       }
     }
-
     &__text {
       &_block {
         display: none;
