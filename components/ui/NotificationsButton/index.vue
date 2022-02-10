@@ -5,7 +5,6 @@
   >
     <button
       class="reduced-notifications__button"
-      :class="{'reduced-notifications__button_block' : !notificationsCount}"
       @click="togglePopUp"
     >
       <template v-if="notificationsCount">
@@ -38,60 +37,66 @@
             @click="closePopUp"
           />
         </div>
-        <div class="reduced-notifications__list">
-          <div
-            v-for="notification in notifications"
-            :key="notification.id"
-            class="notify notify__content"
-          >
-            <div class="notify__top">
-              <div
-                v-if="notification.sender"
-                class="notify__user"
-              >
-                <img
-                  class="notify__avatar"
-                  :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : EmptyAvatar()"
-                  alt="avatar"
+        <template v-if="notificationsCount">
+          <div class="reduced-notifications__list">
+            <div
+              v-for="notification in notifications"
+              :key="notification.id"
+              class="notify notify__content"
+            >
+              <div class="notify__top">
+                <div
+                  v-if="notification.sender"
+                  class="notify__user"
                 >
-                <div class="notify__info">
-                  <div class="notify__text notify__text_name">
-                    {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
+                  <img
+                    class="notify__avatar"
+                    :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : EmptyAvatar()"
+                    alt="avatar"
+                  >
+                  <div class="notify__info">
+                    <div class="notify__text notify__text_name">
+                      {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
+                    </div>
+                    <!--                  <div class="notify__text notify__text_grey">-->
+                    <!--                    CEO from Amazon-->
+                    <!--                  </div>-->
                   </div>
-                  <!--                  <div class="notify__text notify__text_grey">-->
-                  <!--                    CEO from Amazon-->
-                  <!--                  </div>-->
+                </div>
+                <div class="notify__text notify__text_date">
+                  {{ notification.creatingDate }}
                 </div>
               </div>
-              <div class="notify__text notify__text_date">
-                {{ notification.creatingDate }}
-              </div>
-            </div>
-            <div class="notify__reason">
-              <div class="notify__text notify__text_blue">
-                {{ $t(notification.actionNameKey) }}:
-              </div>
-            </div>
-            <div class="notify__action">
-              <base-btn
-                class="notify__btn"
-                @click="goToEvent(notification.params ? notification.params.path : '')"
-              >
-                <div class="notify__text notify__text_btn">
-                  {{ notification.params ? notification.params.title : '' }}
+              <div class="notify__reason">
+                <div class="notify__text notify__text_blue">
+                  {{ $t(notification.actionNameKey) }}:
                 </div>
-                <span class="icon icon-chevron_right" />
-              </base-btn>
+              </div>
+              <div class="notify__action">
+                <base-btn
+                  class="notify__btn"
+                  @click="goToEvent(notification.params ? notification.params.path : '')"
+                >
+                  <div class="notify__text notify__text_btn">
+                    {{ notification.params ? notification.params.title : '' }}
+                  </div>
+                  <span class="icon icon-chevron_right" />
+                </base-btn>
+              </div>
             </div>
           </div>
-        </div>
-        <base-btn
-          class="reduced-notifications__more-btn"
-          mode="outline"
-          @click="goToNotifsPage"
-        >
-          {{ $t('meta.showAll') }}
-        </base-btn>
+          <base-btn
+            class="reduced-notifications__more-btn"
+            mode="outline"
+            @click="goToNotifsPage"
+          >
+            {{ $t('meta.showAll') }}
+          </base-btn>
+        </template>
+        <emptyData
+          v-else
+          :description="$t('ui.notifications.noNotifications')"
+        />
       </div>
     </transition>
   </div>
@@ -170,10 +175,6 @@ export default {
     }
     span {
       color: $black400;
-    }
-
-    &_block {
-      pointer-events: none;
     }
   }
 

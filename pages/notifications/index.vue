@@ -5,7 +5,10 @@
         <div class="info-block__title">
           {{ $t('ui.notifications.title') }}
         </div>
-        <div class="info-block__list">
+        <div
+          v-if="notifsCount"
+          class="info-block__list"
+        >
           <div
             v-for="(notification, i) in notifications"
             :key="i"
@@ -71,6 +74,10 @@
             </div>
           </div>
         </div>
+        <emptyData
+          v-else
+          :description="$t('ui.notifications.noNotifications')"
+        />
         <base-pager
           v-if="totalPages > 1"
           v-model="page"
