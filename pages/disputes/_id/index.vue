@@ -76,6 +76,7 @@ export default {
       this.$router.back();
     },
     async updateQuests(item) {
+      // TODO: Проверить логику
       this.SetLoader(true);
       if (!item.star) await this.$store.dispatch('quests/setStarOnQuest', item.id);
       else await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);

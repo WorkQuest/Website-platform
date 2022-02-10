@@ -110,6 +110,7 @@ export default {
   },
   methods: {
     async updateQuests(item) {
+      // TODO: Проверить логику
       this.SetLoader(true);
       if (!item?.star && item?.user?.id) await this.$store.dispatch('quests/setStarOnQuest', item.user.id);
       else await this.$store.dispatch('quests/takeAwayStarOnQuest', item.user.id);
