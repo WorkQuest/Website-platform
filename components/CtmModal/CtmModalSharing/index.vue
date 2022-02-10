@@ -47,7 +47,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-
 export default {
   name: 'ModalOpenADeposit',
   computed: {
@@ -55,8 +54,7 @@ export default {
       options: 'modals/getOptions',
     }),
     sharingLink() {
-      // TODO: Добавить логику для my page, profile page квесты
-      return this.options.itemId ? `${`${window.location.origin}/quests/`}${this.options.itemId}` : window.location.origin + this.$route.fullPath;
+      return this.options.itemId ? `${window.location.origin + this.$route.fullPath}/${this.options.itemId}` : window.location.origin + this.$route.fullPath;
     },
   },
   methods: {
@@ -77,13 +75,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .ctm-modal {
   @include modalKit;
   &__content {
     margin: 25px 0 0 0;
   }
-
   &__content-btns {
     .btn-group{
       display: grid;
@@ -91,7 +87,6 @@ export default {
       grid-gap: 20px;
       gap: 20px;
       margin-top: 25px;
-
       .btn {
         box-sizing: border-box;
         font-weight: 400;
@@ -101,18 +96,15 @@ export default {
         border-radius: 6px;
         transition: .3s;
         background-color: #fff;
-
         &:hover {
           background-color: #0083C71A;
           border: 0;
         }
-
         &_bl {
           @extend .btn;
           background-color: #0083C7;
           border: unset;
           color: #fff;
-
           &:hover {
             background-color: #103d7c;
           }
@@ -120,16 +112,13 @@ export default {
       }
     }
   }
-
   &__label {
     margin-bottom: 5px;
   }
-
   &__content {
     padding-top: 0 !important;
   }
 }
-
 .social {
   &__icons {
     display: grid;
@@ -212,7 +201,6 @@ export default {
     margin-top: 10px;
   }
 }
-
 .flex {
   &__two-cols {
     display: flex;
@@ -220,7 +208,6 @@ export default {
     align-items: flex-end;
   }
 }
-
 .content {
   &__text {
     @include text-simple;
@@ -235,7 +222,6 @@ export default {
     }
   }
 }
-
 .icon {
   &-copy:before {
     content: "\e996";
@@ -243,7 +229,6 @@ export default {
     font-size: 20px;
   }
 }
-
 .qr {
   &__container {
     width: 100%;
@@ -252,7 +237,6 @@ export default {
     margin: 20px 0;
   }
 }
-
 .code {
   &__container {
     display: flex;
@@ -269,11 +253,9 @@ export default {
     color: $black800;
   }
 }
-
 .hide {
   display: none;
 }
-
 .grid {
   &__2col {
     display: grid;
@@ -289,7 +271,6 @@ export default {
     align-items: flex-end;
   }
 }
-
 .step {
   &__number {
     padding: 10px;
@@ -301,7 +282,6 @@ export default {
     }
   }
 }
-
 .step-panel {
   display: flex;
   flex-direction: row;
@@ -341,11 +321,9 @@ export default {
     margin: 0 0 35px 10px;
   }
 }
-
 .ctm-modal {
   @include modalKit;
 }
-
 .input {
   &_white {
     border-radius: 6px;
@@ -380,7 +358,6 @@ export default {
     border-radius: 6px;
   }
 }
-
 .messageSend {
   max-width: 430px !important;
   &__content {
