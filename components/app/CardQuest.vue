@@ -77,8 +77,9 @@
               {{ progressQuestText(quest.status) }}
             </div>
             <div class="progress__container container">
-              <div class="container__user user"
-                   @click="goToProfile(quest.assignedWorker.id)"
+              <div
+                class="container__user user"
+                @click="goToProfile(quest.assignedWorker.id)"
               >
                 <img
                   class="user__avatar"
@@ -475,9 +476,11 @@ export default {
   }
   &__btn-details {
     height: 28px !important;
+    width: 100%;
+    min-width: 100px;
   }
   &__rating {
-    height: 28px;
+    height: 24px;
   }
   &__container {
     display: flex;
@@ -486,8 +489,8 @@ export default {
   &__details {
     display: flex;
     flex-direction: row-reverse;
-    align-items: center;
     gap: 10px;
+    height: 24px;
   }
   &__publication {
     &_bold {
@@ -566,13 +569,14 @@ export default {
   &__status {
     display: flex;
     align-self: flex-start;
+    align-items: center;
     gap: 10px;
   }
   &__amount {
     font-style: normal;
     font-weight: bold;
     font-size: 18px;
-    line-height: 130%;
+    height: 24px;
     text-transform: uppercase;
     &_green {
       color: $green;
@@ -594,7 +598,6 @@ export default {
     line-height: 130%;
     height: 24px;
     padding: 0 5px;
-    margin-bottom: 5px;
     &_low {
       background: rgba(34, 204, 20, 0.1);
       color: $green;
@@ -627,7 +630,7 @@ export default {
     &-right {
       display: flex;
       width: auto;
-      align-items: baseline;
+      align-items: flex-start;
       justify-content: flex-end;
       gap: 5px;
     }
@@ -783,6 +786,10 @@ export default {
   }
 }
 .star {
+  height: 30px;
+  width: 30px;
+  align-self: center;
+  justify-self: center;
   &__default {
     display: flex;
   }
@@ -807,6 +814,9 @@ export default {
   .card-quest {
     &__blocks {
       grid-template-columns: auto;
+    }
+    &__right {
+      padding-left: 20px;
     }
     &__left {
       height: 200px;
@@ -839,14 +849,13 @@ export default {
 }
 @include _575 {
   .card-quest {
+    &__btn-details {
+      height: 24px !important;
+      font-size: 13px !important;
+    }
     &__actions {
       display: grid;
       grid-template-columns: 1fr 1fr;
-    }
-    &__details {
-      display: flex;
-      flex-direction: column;
-      justify-self: flex-end;
     }
     &__btn {
       margin-top: 10px;
@@ -855,6 +864,11 @@ export default {
   }
 }
 @include _480 {
+  .card-quest {
+    &__actions {
+      grid-template-columns: 2fr 1fr;
+    }
+  }
   .user__name {
     font-size: 12px;
   }
@@ -871,17 +885,6 @@ export default {
   .card-quest {
     &__right {
       padding: 10px;
-    }
-    &__amount_green {
-      font-size: 14px;
-      align-self: center;
-    }
-  }
-}
-@include _380 {
-  .card-quest {
-    &__amount {
-      font-size: 12px;
     }
   }
 }

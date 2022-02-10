@@ -7,7 +7,7 @@
       class="quest__button quest__button_menu"
       @click="toggleQuestMenu()"
     >
-      <span class="icon-more_horizontal" />
+      <span class="icon-more_vertical" />
     </button>
     <transition name="fade">
       <div
@@ -131,13 +131,13 @@ export default {
 <style lang="scss" scoped>
 .icon {
   color: $black200;
-  font-size: 19px;
+  font-size: 25px;
   cursor: pointer;
   transition: .5s;
   &:hover {
     color: $black500;
   }
-  &-more_horizontal {
+  &-more_vertical {
     @extend .icon;
   }
   &-share_outline {
@@ -154,11 +154,11 @@ export default {
     line-height: 130%;
     color: $black600;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-content: center;
     border-radius: 6px;
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     border: 1px solid transparent;
     opacity: 0.5;
     &:hover {
@@ -167,9 +167,9 @@ export default {
     }
     &_menu {
       display: flex;
-      justify-self: flex-end;
       width: 30px;
       height: 30px;
+      align-items: flex-start;
     }
   }
   &__menu {
