@@ -7,29 +7,20 @@
       <validation-observer tag="div">
         <div class="grid__field grid__field_top">
           <div class="ctm-modal__content-field">
-            <div class="avatar__container">
-              <div>
-                <img
-                  class="ctm-modal__img"
-                  :src="userData.avatar && userData.avatar.url ? userData.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-                  :alt="userData.avatar && userData.avatar.url ? userData.avatar.url : 'avatar_empty'"
-                >
-              </div>
-              <div>
+            <div class="ctm-modal__user-data">
+              <img
+                class="user-data__img"
+                :src="userData.avatar && userData.avatar.url ? userData.avatar.url : EmptyAvatar()"
+                :alt="userData.avatar && userData.avatar.url ? userData.avatar.url : 'avatar_empty'"
+              >
+              <div class="user-data__name">
                 {{ userData.firstName ? userData.firstName : "Nameless worker" }}
                 {{ userData.lastName ? userData.lastName : "" }}
               </div>
-              <div>
-                <div
-                  class="card__level"
-                  :class="{'card__level_disabled': card.level.code === '0'}"
-                >
-                  <span
-                    class="card__level_higher"
-                    :class="cardsLevels()"
-                  >{{ card.level.title }}</span>
-                </div>
-              </div>
+              <item-rating
+                class="user-data__status"
+                :rating="getRatingValue()"
+              />
             </div>
           </div>
         </div>
@@ -39,7 +30,9 @@
               v-model="questIndex"
               type="gray"
               data-type="object"
-              :items="questFiltered"
+              mode="small"
+              class="base-dd_available-quests"
+              :items="availableQuests"
               :label="$t('modals.chooseQuest')"
             />
           </div>
@@ -57,7 +50,7 @@
           <div class="btn__wrapper">
             <base-btn
               class="message__action"
-              @click="inviteOnQuest(questIndex)"
+              @click="inviteOnQuest()"
             >
               {{ $t('meta.send') }}
             </base-btn>
@@ -85,45 +78,23 @@ export default {
   name: 'ModalInvitation',
   data() {
     return {
-      questFiltered: [],
       questIndex: 0,
       message_input: '',
-      chooseQuest_input: '',
-      card: {
-        level: {
-          title: 'HIGHER LEVEL',
-          code: '1',
-        },
-      },
     };
   },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
-      questList: 'quests/getQuestListForInvitation',
       userData: 'user/getUserData',
+      availableQuests: 'quests/getAvailableQuests',
     }),
-    cardLevelClass() {
-      const { code } = this.card.level;
-      return [
-        { card__level_reliable: code === '2' },
-        { card__level_checked: code === '3' },
-      ];
-    },
-  },
-  async beforeMount() {
-    await this.getQuestList();
-    await this.questFilter();
   },
   methods: {
-    async getQuestList() {
-      await this.$store.dispatch('quests/questListForInvitation', this.userData.id);
+    getRatingValue() {
+      return this.userData?.ratingStatistic?.status || 'noStatus';
     },
-    async questFilter() {
-      this.questFiltered = this.questList.quests.filter((quest) => quest.status === 0);
-    },
-    async inviteOnQuest(questIndex) {
-      const questId = this.questFiltered[questIndex].id || '';
+    async inviteOnQuest() {
+      const questId = this.availableQuests[this.questIndex].id || '';
       const payload = {
         invitedUserId: this.options.userId || '',
         message: this.message_input || null,
@@ -134,14 +105,6 @@ export default {
       } catch (e) {
         console.log(e);
       }
-    },
-    cardsLevels() {
-      const { card } = this;
-      return [
-        { card__level_reliable: card.level.code === '2' },
-        { card__level_checked: card.level.code === '3' },
-        { card__level_disabled: card.level.code === '0' },
-      ];
     },
     hide() {
       this.CloseModal();
@@ -169,6 +132,7 @@ export default {
     justify-content: center;
     align-items: center;
     display: flex;
+
     &_higher {
       display: block;
       margin: 0 0 0 7px;
@@ -177,6 +141,7 @@ export default {
       border-radius: 3px;
       color: $white;
     }
+
     &_reliable {
       display: block;
       margin: 0 0 0 7px;
@@ -185,6 +150,7 @@ export default {
       border-radius: 3px;
       color: $white;
     }
+
     &_checked {
       display: block;
       margin: 0 0 0 7px;
@@ -193,17 +159,10 @@ export default {
       border-radius: 3px;
       color: $white;
     }
+
     &_disabled {
       display: none;
     }
-  }
-}
-
-.avatar {
-  &__container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
   }
 }
 
@@ -225,17 +184,27 @@ export default {
 
 .ctm-modal {
   @include modalKit;
+
   &__content-field {
     display: grid;
   }
+  &__user-data {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}
+.user-data {
   &__img {
     width: 61px;
     height: 61px;
-    border-radius:73px;
+    border-radius: 73px;
     margin: 0 10px 0 0;
   }
+  &__status {
+    margin-left: 10px;
+  }
 }
-
 .input {
   &_white {
     border-radius: 6px;
@@ -245,20 +214,24 @@ export default {
     width: 100%;
     background-color: $white;
     resize: none;
+
     &::placeholder {
       color: $black800;
     }
   }
 }
+
 .grid {
   &__field {
     display: grid;
     margin-top: 25px;
+
     &_top {
       margin: 0;
     }
   }
 }
+
 .btn {
   &__container {
     display: flex;
@@ -266,6 +239,7 @@ export default {
     justify-content: space-between;
     margin-top: 25px;
   }
+
   &__wrapper {
     width: 45%;
   }
@@ -273,12 +247,14 @@ export default {
 
 .messageSend {
   max-width: 680px !important;
+
   &__content {
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;
     grid-gap: 20px;
   }
+
   &__action {
     margin-top: 10px;
   }

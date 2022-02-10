@@ -11,7 +11,7 @@
         <div class="block__avatar avatar">
           <img
             class="avatar__img"
-            :src="userData.avatar && userData.avatar.url ? userData.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+            :src="userData.avatar && userData.avatar.url ? userData.avatar.url : EmptyAvatar()"
             :alt="userData.avatar && userData.avatar.url ? userData.avatar.url : 'avatar_empty'"
             loading="lazy"
           >
@@ -39,7 +39,7 @@
           />
         </div>
         <div
-          v-if="userData.role === 'employer' && userData.company"
+          v-if="userData.role === UserRole.EMPLOYER && userData.company"
           class="block__subtitle"
         >
           {{ userData.company }}
@@ -168,7 +168,6 @@
         >
           <base-btn
             :mode="'approve'"
-            :disabled="mainUserData.questsStatistic ? mainUserData.questsStatistic.opened <= 0 : true"
             @click="sendInvite()"
           >
             {{ $t('workers.giveAQuest') }}
@@ -194,9 +193,11 @@ export default {
       anotherUserData: 'user/getAnotherUserData',
     }),
     isEmptyUserData() {
-      return !Object.keys(this.userData).length;
+      return !this.userData.id;
     },
-    UserRole() { return UserRole; },
+    UserRole() {
+      return UserRole;
+    },
     socialNetworks() {
       if (this.isEmptyUserData) return [];
       const socialNetworksData = this.userData.additionalInfo.socialNetwork;
@@ -276,6 +277,16 @@ export default {
     userData() {
       return this.userId !== this.mainUser.id ? this.anotherUserData : this.mainUser;
     },
+    isHaveOpenQuests() {
+      return this.mainUserData.questsStatistic && this.mainUserData.questsStatistic.opened > 0;
+    },
+  },
+  watch: {
+    async anotherUserData() {
+      if (this.mainUser.role === this.UserRole.EMPLOYER && this.userData.role === this.UserRole.WORKER && this.isHaveOpenQuests) {
+        await this.$store.dispatch('quests/getAvailableQuests', this.userId);
+      }
+    },
   },
   methods: {
     ratingStatistic(ratingStatistic) {
@@ -298,10 +309,19 @@ export default {
       this.$router.push('/raised-views');
     },
     sendInvite() {
-      this.ShowModal({
-        key: modals.invitation,
-        userId: this.userData.id,
-      });
+      if (this.isHaveOpenQuests) {
+        this.ShowModal({
+          key: modals.invitation,
+          userId: this.userData.id,
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.errorQuests'),
+          subtitle: this.$t('modals.emptyOpenQuests'),
+        });
+      }
     },
   },
 };
@@ -322,6 +342,7 @@ export default {
   padding: 25px 0 0 0;
   grid-gap: 20px;
   justify-content: space-between;
+
   &__block {
     @extend .styles__flex;
     -webkit-box-orient: vertical;
@@ -331,50 +352,60 @@ export default {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
-    grid-gap:15px;
+    grid-gap: 15px;
+
     &_left {
       max-width: 142px;
     }
   }
+
   &__left {
     flex-direction: row;
     justify-content: center;
     display: flex;
   }
+
   &__right {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-end;
   }
+
   &__share-left {
     display: none;
   }
 }
+
 .right {
   &__header {
     display: grid;
     justify-content: space-between;
     align-items: center;
+
     &_employee {
       grid-template-columns: auto auto;
       grid-gap: 30px;
     }
   }
+
   &__footer {
     width: 280px;
   }
+
   &__price {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
   }
 }
+
 .price {
   &__text {
     font-size: 14px;
     color: #353C47;
   }
+
   &__value {
     font-weight: 500;
     font-size: 18px;
@@ -382,25 +413,30 @@ export default {
     color: #00AA5B;
   }
 }
+
 .block {
   &__data {
     display: flex;
     grid-gap: 10px;
     align-items: center;
   }
+
   &_left {
     align-self: flex-start;
     max-width: 142px;
   }
+
   &_right {
     align-self: flex-start;
     margin-left: 30px;
   }
+
   &__rating {
     height: 20px;
     display: flex;
     width: 142px;
   }
+
   &__reviews {
     font-style: normal;
     font-weight: normal;
@@ -410,6 +446,7 @@ export default {
     color: #7C838D;
     text-align: center;
   }
+
   &__title {
     @include text-simple;
     font-style: normal;
@@ -418,35 +455,43 @@ export default {
     line-height: 130%;
     color: $black800;
   }
+
   &__description {
     font-weight: 400;
     font-size: 16px;
     color: $black600;
   }
+
   &__socials {
     display: flex;
     grid-gap: 5px;
+
     .icon {
       font-size: 20px;
       cursor: pointer;
+
       &-facebook::before {
         @extend .icon;
         color: #0A7EEA;
       }
+
       &-twitter::before {
         @extend .icon;
         color: #24CAFF;
       }
+
       &-instagram::before {
         @extend .icon;
         color: #C540F3;
       }
+
       &-linkedin:before {
         @extend .icon;
         content: "\e9ed";
         color: #57A6EF;
       }
     }
+
     .social {
       &__link {
         text-decoration: none;
@@ -454,15 +499,18 @@ export default {
     }
   }
 }
+
 .contact {
   display: flex;
   flex-wrap: wrap;
   margin: -5px 0;
+
   &__container {
     display: flex;
     align-items: flex-end;
     margin: 5px 0;
   }
+
   &__link {
     text-decoration: none;
     font-size: 14px;
@@ -472,12 +520,14 @@ export default {
     justify-content: center;
     align-items: center;
   }
+
   &__btn {
     width: 100%;
     display: flex;
     align-items: flex-end;
     height: 43px;
   }
+
   &__icon {
     @extend .icon;
     color: $black500;
@@ -485,20 +535,24 @@ export default {
     margin-right: 5px;
   }
 }
+
 .rating {
   &__star {
     width: inherit;
     background-image: url('~assets/img/ui/star-empty.svg');
     background-repeat: no-repeat;
     background-position: center;
+
     &_half {
       background-image: url('~assets/img/ui/star-half.svg');
     }
+
     &_full {
       background-image: url('~assets/img/ui/star-small.svg');
     }
   }
 }
+
 .avatar {
   &__img {
     width: 142px;
@@ -507,6 +561,7 @@ export default {
     border-radius: 50%;
   }
 }
+
 .work-exp, .knowledge {
   &__text {
     @include text-simple;
@@ -514,16 +569,19 @@ export default {
     font-size: 16px;
     color: $black700;
   }
+
   &__container {
     display: flex;
     flex-direction: column;
   }
+
   &__place {
     @include text-simple;
     font-weight: 400;
     font-size: 14px;
     color: $black500;
   }
+
   &__term {
     @include text-simple;
     font-weight: 400;
@@ -535,6 +593,7 @@ export default {
 @include _1199 {
   .contacts {
     margin: 0 0 20px 0;
+
     .contact {
       display: flex;
       flex-direction: column;
@@ -543,29 +602,35 @@ export default {
   .right {
     &__header {
       justify-items: end;
+
       &_employee {
         grid-gap: 15px;
         grid-template-columns: 110px auto;
       }
     }
+
     &__footer {
       width: 100%;
     }
   }
 }
+
 @include _991 {
   .info-grid {
     flex-direction: column;
     align-items: center;
     grid-gap: 0;
+
     &__left {
       flex-direction: column;
       width: 100%;
     }
+
     &__right {
-      grid-gap:20px;
+      grid-gap: 20px;
       width: 100%;
     }
+
     &__share-left {
       display: flex;
       height: 0;
@@ -576,6 +641,7 @@ export default {
     &_left {
       align-self: center;
     }
+
     &_right {
       margin-left: 0;
       margin-top: 30px;
@@ -585,6 +651,7 @@ export default {
     &__share-btn {
       display: none;
     }
+
     &__header {
       &_employee {
         grid-gap: 0;

@@ -931,6 +931,8 @@
     "error": "???"
   },
   "modals": {
+    "errorQuests": "???",
+    "emptyOpenQuests": "???",
     "errorSmsVer": "???",
     "fillNumber": "???",
     "disputes": {
@@ -2193,7 +2195,8 @@
           },
           "notifications": {
             "title": "???",
-            "subtitle": "???"
+            "subtitle": "???",
+            "noNotifications": "No notifications"
           },
           "menu": {
             "title": "???",

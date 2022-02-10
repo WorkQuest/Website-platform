@@ -80,6 +80,9 @@ export default {
   setDisable2FA(state, data) {
     state.userDisable2FA = data;
   },
+  setTwoFAStatus(state, data) {
+    state.userData.totpIsActive = data;
+  },
   setStatisticData(state, data) {
     state.statisticData = data;
     this.commit('user/changeUnreadChatsCount', { count: data.chatsStatistic?.unreadCountChats || 0, needAdd: false });
