@@ -20,10 +20,10 @@
               @click="showProfile(quest.userId)"
             >
               <div class="card-quest__avatar avatar">
+<!--                :alt="`${ UserName(quest.user.firstName, quest.user.lastName) }`"-->
                 <img
                   class="avatar__image"
                   :src="quest.user && quest.user.avatar ? quest.user.avatar.url : EmptyAvatar()"
-                  :alt="`${ UserName(quest.user.firstName, quest.user.lastName) }`"
                   @click="goToProfile(quest.user.id)"
                 >
               </div>
@@ -31,7 +31,7 @@
                 class="card-quest__text card-quest__text_title"
                 @click="goToProfile(quest.user.id)"
               >
-                {{ `${UserName(quest.user.firstName, quest.user.lastName)}` }}
+                {{ `${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}` }}
               </div>
             </div>
             <div class="card-quest__head-right">
@@ -84,7 +84,7 @@
                 <img
                   class="user__avatar"
                   :src="quest.assignedWorker.avatar ? quest.assignedWorker.avatar.url : EmptyAvatar()"
-                  :alt="`${ UserName(quest.assignedWorker.firstName, quest.assignedWorker.lastName) }`"
+                  :alt="`${ quest.assignedWorker ? UserName(quest.assignedWorker.firstName, quest.assignedWorker.lastName) : '' }`"
                 >
                 <div class="user__name">
                   {{ quest.assignedWorker.firstName }} {{ quest.assignedWorker.lastName }}
@@ -170,7 +170,9 @@
 <script>
 import Vue from 'vue';
 import { mapGetters } from 'vuex';
-import { QuestStatuses, questPriority, UserRole } from '~/utils/enums';
+import {
+  QuestStatuses, questPriority, UserRole, Path,
+} from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 const value = new Vue();
@@ -211,7 +213,7 @@ export default {
   },
   methods: {
     showDistance(location) {
-      if (location.latitude && location.longitude) {
+      if (location && location.latitude && location.longitude) {
         return this.getDistanceFromLatLonInKm(location.latitude, location.longitude, this.userLat, this.userLng);
       }
       return 0;
@@ -274,10 +276,10 @@ export default {
       ];
     },
     showProfile(profileId) {
-      this.$router.push(`/profile/${profileId}`);
+      this.$router.push(`${Path.PROFILE}/${profileId}`);
     },
     showDetails(questId) {
-      this.$router.push(`/quests/${questId}`);
+      this.$router.push(`${Path.QUESTS}/${questId}`);
     },
     showReviewModal(rating, item) {
       this.ShowModal({ key: modals.review, item, rating });
