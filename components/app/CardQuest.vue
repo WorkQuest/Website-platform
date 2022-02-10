@@ -61,7 +61,7 @@
                 :item="quest"
               />
               <button
-                v-if="userRole === $options.UserRole.WORKER ? quest.status : quest.status !== $options.QuestStatuses.Created"
+                v-if="userRole === $options.UserRole.WORKER || quest.status !== $options.QuestStatuses.Created"
                 class="card-quest__shared"
                 @click="shareModal(quest.id)"
               >
