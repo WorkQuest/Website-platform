@@ -93,8 +93,9 @@
             {{ $t('meta.showAll') }}
           </base-btn>
         </template>
-        <emptyData
+        <empty-data
           v-else
+          class="reduced-notifications__no-content"
           :description="$t('ui.notifications.noNotifications')"
         />
       </div>
@@ -215,6 +216,11 @@ export default {
   &__more-btn {
     width: 33%;
     margin: 0 auto 20px;
+  }
+
+  &__no-content {
+    margin: 0 0 20px;
+    background: transparent;
   }
 }
 

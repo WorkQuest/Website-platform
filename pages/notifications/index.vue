@@ -74,8 +74,9 @@
             </div>
           </div>
         </div>
-        <emptyData
+        <empty-data
           v-else
+          class="info-block__no-content"
           :description="$t('ui.notifications.noNotifications')"
         />
         <base-pager
@@ -209,6 +210,11 @@ export default {
 .info-block {
   background: #fff;
   border-radius: 6px;
+
+  &__no-content {
+    margin: 0 0 20px;
+    background: transparent;
+  }
 
   &__container {
     display: grid;
