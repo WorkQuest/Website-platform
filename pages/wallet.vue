@@ -5,9 +5,9 @@
         <div class="wallet__nav">
           <span class="wallet__title">{{ $t('wallet.wallet') }}</span>
           <div class="wallet__address">
-            <span class="user__wallet">{{ CutTxn(userAddress, 8, 8) }}</span>
+            <span class="user__wallet">{{ CutTxn(userWalletAddress, 8, 8) }}</span>
             <button
-              v-clipboard:copy="userAddress"
+              v-clipboard:copy="userWalletAddress"
               v-clipboard:success="ClipboardSuccessHandler"
               v-clipboard:error="ClipboardErrorHandler"
               type="button"
@@ -117,9 +117,12 @@ import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { TokenSymbols } from '~/utils/enums';
 import { getStyledAmount } from '~/utils/wallet';
+import EmptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'Wallet',
+  middleware: 'auth',
+  components: { EmptyData },
   data() {
     return {
       cardClosed: false,
@@ -137,7 +140,7 @@ export default {
       transactions: 'wallet/getTransactions',
       transactionsCount: 'wallet/getTransactionsCount',
       isWalletConnected: 'wallet/getIsWalletConnected',
-      userAddress: 'user/getUserWalletAddress',
+      userWalletAddress: 'user/getUserWalletAddress',
       balance: 'wallet/getBalanceData',
       selectedToken: 'wallet/getSelectedToken',
     }),
@@ -223,7 +226,7 @@ export default {
       this.SetLoader(false);
     },
     async updateBalanceWQT() {
-      await this.$store.dispatch('wallet/getBalanceWQT', this.userAddress);
+      await this.$store.dispatch('wallet/getBalanceWQT', this.userWalletAddress);
     },
     async updateBalanceWUSD() {
       await this.$store.dispatch('wallet/getBalance');

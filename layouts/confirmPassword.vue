@@ -5,7 +5,7 @@
         {{ $t('securityCheck.confirmAccess') }}
       </div>
       <div class="confirm__text">
-        {{ $t('securityCheck.confirmPassToContinue') }}
+        {{ isImportWallet ? $t('createWallet.typeSecretPhrase') : $t('securityCheck.confirmPassToContinue') }}
       </div>
       <ValidationObserver
         v-slot="{ handleSubmit, valid }"
@@ -13,6 +13,7 @@
         @submit.prevent="submit"
       >
         <base-field
+          v-if="!isImportWallet"
           v-model="password"
           :placeholder="$t('signUp.password')"
           :name="$t('signUp.password')"
@@ -20,9 +21,36 @@
           rules="required_if|min:8"
           type="password"
           vid="confirmation"
-          autocomplete="current-password"
         />
-        <base-btn :disabled="!valid || isLoading">
+        <base-field
+          v-else
+          v-model="mnemonic"
+          rules="required|mnemonic"
+          :placeholder="$t('createWallet.secretPhrase')"
+          :name="$t('createWallet.secretPhrase')"
+          :type="mnemonicInputType"
+        />
+        <div
+          v-if="isImportWallet"
+          class="confirm__visibility"
+        >
+          <input
+            id="showMnemonic"
+            v-model="isShowMnemonic"
+            type="checkbox"
+            class="confirm__visibility_box"
+          >
+          <label
+            for="showMnemonic"
+            class="confirm__visibility_label"
+          >
+            {{ $t('createWallet.showSecretPhrase') }}
+          </label>
+        </div>
+        <base-btn
+          class="confirm__submit"
+          :disabled="!valid || isLoading"
+        >
           {{ $t('meta.submit') }}
         </base-btn>
       </ValidationObserver>
@@ -32,6 +60,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { connectWithMnemonic, setCipherKey } from '~/utils/wallet';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'ConfirmPassword',
@@ -42,14 +72,25 @@ export default {
       context: 'default',
       toDecrypt: null,
       counter: 1,
+
+      isImportWallet: false,
+      isShowMnemonic: false,
+      mnemonic: '',
+      mnemonicInputType: 'password',
     };
   },
   computed: {
     ...mapGetters({
       isLoading: 'main/getIsLoading',
-      userAddress: 'user/getUserWalletAddress',
+      userWalletAddress: 'user/getUserWalletAddress',
       callbackLayout: 'wallet/getCallbackLayout',
+      isOnlyConfirm: 'wallet/getIsOnlyConfirm',
     }),
+  },
+  watch: {
+    isShowMnemonic(newVal) {
+      this.mnemonicInputType = newVal ? 'text' : 'password';
+    },
   },
   beforeCreate() {
     if (!this.$cookies.get('userLogin')) {
@@ -58,8 +99,13 @@ export default {
     }
   },
   mounted() {
-    if (!this.userAddress) {
+    if (this.isOnlyConfirm) return;
+    if (!this.userWalletAddress) {
       this.disconnect();
+      return;
+    }
+    if (this.$cookies.get('socialNetwork')) {
+      this.isImportWallet = true;
       return;
     }
     // Try to find mnemonic in storage by user wallet address
@@ -67,57 +113,80 @@ export default {
     const session = JSON.parse(sessionStorage.getItem('mnemonic'));
     let mnemonic = null;
     if (session) {
-      mnemonic = session[this.userAddress];
+      mnemonic = session[this.userWalletAddress];
       if (mnemonic) {
         this.toDecrypt = mnemonic;
         return;
       }
     }
-
     // Checking local storage
     const storage = JSON.parse(localStorage.getItem('mnemonic'));
     if (!storage) {
       this.disconnect();
       return;
     }
-    mnemonic = storage[this.userAddress];
+    mnemonic = storage[this.userWalletAddress];
     if (!mnemonic) {
       this.disconnect();
       return;
     }
     this.toDecrypt = mnemonic;
-
     this.SetLoader(false);
     this.CloseModal();
   },
   methods: {
-    async submit() {
-      const check = await this.$store.dispatch('wallet/checkPassword', this.password);
-      if (check) {
-        const res = await this.$store.dispatch('wallet/connectWallet', { userAddress: this.userAddress, userPassword: this.password });
-        if (res?.ok) this.$nuxt.setLayout(this.callbackLayout);
-      } else {
+    allowAccess() {
+      this.$nuxt.setLayout(this.callbackLayout);
+    },
+    async checkPassword() {
+      const checked = await this.$store.dispatch('wallet/checkPassword', this.password);
+      if (!checked) {
         if (this.counter >= 5) {
+          this.ShowToast(this.$t('messages.attemptsExceeded'));
           this.disconnect(false);
+        } else this.ShowToast(this.$t('messages.invalidPassword'));
+        this.counter -= 1;
+        return false;
+      }
+      return true;
+    },
+    async submit() {
+      if (this.isImportWallet) {
+        this.handleImport();
+        return;
+      }
+
+      const checked = this.checkPassword();
+      if (this.isOnlyConfirm) {
+        if (checked) {
+          setCipherKey(this.password);
+          this.allowAccess();
         }
-        await this.$store.dispatch('main/showToast', {
-          title: 'Error',
-          text: 'Wrong password!',
+        return;
+      }
+
+      if (checked) {
+        const res = await this.$store.dispatch('wallet/connectWallet', {
+          userWalletAddress: this.userWalletAddress,
+          userPassword: this.password,
         });
-        this.counter += 1;
+        if (res?.ok) this.allowAccess();
       }
     },
-    disconnect(showToast = true) {
-      if (showToast) {
-        this.$store.dispatch('main/showToast', {
-          title: 'Secret phrase not found',
-          text: 'Please login with secret phrase',
-        });
-      }
+    handleImport() {
+      sessionStorage.setItem('mnemonic', JSON.stringify({
+        ...JSON.parse(sessionStorage.getItem('mnemonic')),
+        [this.userWalletAddress]: this.mnemonic,
+      }));
+      if (connectWithMnemonic(this.userWalletAddress)) this.allowAccess();
+      else this.ShowToast(this.$t('messages.mnemonic'));
+    },
+    disconnect(showMnemonicError = true) {
+      if (showMnemonicError) this.ShowToast(this.$t('messages.loginWithSecret'));
       this.$store.dispatch('user/logout');
       this.$store.dispatch('wallet/disconnect');
       this.$nuxt.setLayout('auth');
-      this.$router.push('sign-in');
+      this.$router.push(Path.SIGN_IN);
     },
   },
 };
@@ -148,6 +217,24 @@ export default {
   }
   &__password {
     margin-top: 20px;
+  }
+  &__submit {
+    margin-top: 20px;
+  }
+
+  &__visibility {
+    display: flex;
+    align-items: center;
+    &_label {
+      color: $black700;
+      margin: 0 0 0 10px !important;
+      user-select: none;
+    }
+    &_box {
+      width: 20px !important;
+      height: 20px !important;
+      cursor: pointer;
+    }
   }
 }
 @include _767 {

@@ -1,7 +1,7 @@
 <template>
   <div class="auth">
     <ValidationObserver
-      v-if="step === walletState.SignPage"
+      v-if="step === walletState.Default"
       v-slot="{ handleSubmit }"
       class="auth__container"
       tag="div"
@@ -133,11 +133,11 @@
       </div>
     </ValidationObserver>
     <div
-      v-if="step > walletState.SignPage"
+      v-if="step > walletState.Default"
       class="auth__back"
       @click="back"
     >
-      <span class="icon-long_left" /> {{ $t('meta.back') }}
+      <span class="icon-chevron_big_left" /> <span>{{ $t('meta.back') }}</span>
     </div>
     <CreateWallet
       :step="step"
@@ -152,10 +152,12 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import {
-  createWallet, decryptStringWitheKey, encryptStringWithKey, initWallet,
+  createWallet, decryptStringWitheKey, encryptStringWithKey, initWallet, setCipherKey,
 } from '~/utils/wallet';
 import CreateWallet from '~/components/ui/CreateWallet';
-import { UserStatuses, WalletState } from '~/utils/enums';
+import {
+  Path, UserRole, UserStatuses, WalletState,
+} from '~/utils/enums';
 
 export default {
   name: 'SignIn',
@@ -166,15 +168,12 @@ export default {
   data() {
     return {
       addressAssigned: false,
-      userAddress: null,
-      step: WalletState.SignPage,
-      model: {
-        email: '',
-        password: '',
-        totp: '',
-      },
+      userWalletAddress: null,
+      step: WalletState.Default,
+      model: { email: '', password: '', totp: '' },
       remember: false,
       userStatus: null,
+      isLoginWithSocial: false,
     };
   },
   computed: {
@@ -186,19 +185,42 @@ export default {
       return WalletState;
     },
   },
+  async mounted() {
+    this.isLoginWithSocial = this.$cookies.get('socialNetwork');
+    const access = this.$cookies.get('access');
+    const refresh = this.$cookies.get('refresh');
+    const userStatus = this.$cookies.get('userStatus');
+    if (this.isLoginWithSocial && access && +userStatus === UserStatuses.Confirmed) {
+      this.SetLoader(true);
+      await this.$store.dispatch('user/getUserData');
+      this.userWalletAddress = this.userData?.wallet?.address;
+      this.SetLoader(false);
+      if (!this.userWalletAddress) return;
+      this.step = WalletState.ImportMnemonic;
+      this.$store.commit('user/setTokens', {
+        access,
+        refresh,
+        userStatus,
+        social: this.isLoginWithSocial,
+      });
+    }
+  },
   beforeDestroy() {
-    if (!this.addressAssigned) {
+    if (!this.addressAssigned && !this.$cookies.get('access') && !this.$cookies.get('userStatus')) {
       this.$store.dispatch('user/logout');
     }
   },
   methods: {
     back() {
       if (this.step === WalletState.ImportOrCreate) {
-        this.step = WalletState.SignPage;
+        this.step = WalletState.Default;
         return;
       }
       if (this.step === WalletState.ImportMnemonic) {
-        this.step = !this.userAddress ? WalletState.ImportOrCreate : WalletState.SignPage;
+        if (this.isLoginWithSocial) {
+          this.step = WalletState.Default;
+          this.$store.dispatch('user/logout');
+        } else this.step = !this.userWalletAddress ? WalletState.ImportOrCreate : WalletState.Default;
         return;
       }
       if (this.step === WalletState.SaveMnemonic) {
@@ -227,8 +249,9 @@ export default {
       const response = await this.$store.dispatch('user/signIn', payload);
       if (response?.ok) {
         this.userStatus = response.result.userStatus;
+        const confirmToken = sessionStorage.getItem('confirmToken');
         // Unconfirmed account w/o confirm token
-        if (this.userStatus === UserStatuses.Unconfirmed && !sessionStorage.getItem('confirmToken')) {
+        if (this.userStatus === UserStatuses.Unconfirmed && !confirmToken) {
           await this.$store.dispatch('main/showToast', {
             title: this.$t('registration.emailConfirmTitle'),
             text: this.$t('registration.emailConfirm'),
@@ -237,15 +260,24 @@ export default {
           return;
         }
 
+        // Redirect to confirm account
+        if (confirmToken) {
+          this.redirectUser();
+          this.SetLoader(false);
+          return;
+        }
+
         const { address } = response.result;
 
         // Wallet is not assigned to this account
         if (!address) {
-          this.step = WalletState.ImportOrCreate;
+          setCipherKey(this.model.password);
+          this.$cookies.set('userLogin', true, { path: '/' });
+          await this.$router.push(Path.ROLE);
           this.SetLoader(false);
           return;
         }
-        this.userAddress = address.toLowerCase();
+        this.userWalletAddress = address.toLowerCase();
 
         // Wallet assigned, checking storage
         const sessionData = JSON.parse(sessionStorage.getItem('mnemonic'));
@@ -267,7 +299,7 @@ export default {
         // Check in session if exists
         if (sessionMnemonic) {
           const wallet = createWallet(sessionMnemonic);
-          if (wallet && wallet.address.toLowerCase() === this.userAddress) {
+          if (wallet && wallet.address.toLowerCase() === this.userWalletAddress) {
             this.saveToStorage(wallet);
             this.redirectUser();
             this.SetLoader(false);
@@ -279,7 +311,7 @@ export default {
         if (storageMnemonic) {
           const mnemonic = decryptStringWitheKey(storageMnemonic, this.model.password);
           const wallet = createWallet(mnemonic);
-          if (wallet && wallet.address.toLowerCase() === this.userAddress) {
+          if (wallet && wallet.address.toLowerCase() === this.userWalletAddress) {
             this.saveToStorage(wallet);
             this.redirectUser();
             this.SetLoader(false);
@@ -316,12 +348,12 @@ export default {
     },
     async importWallet(wallet) {
       // Correct phrase, but not assigned to this account
-      if (!this.userAddress) {
+      if (!this.userWalletAddress) {
         await this.assignWallet(wallet);
         return;
       }
       // All ok
-      if (wallet.address.toLowerCase() === this.userAddress) {
+      if (wallet.address.toLowerCase() === this.userWalletAddress) {
         this.saveToStorage(wallet);
         this.redirectUser();
         return;
@@ -334,19 +366,21 @@ export default {
     },
     saveToStorage(wallet) {
       initWallet(wallet.address, wallet.privateKey);
-      localStorage.setItem('mnemonic', JSON.stringify({
-        ...JSON.parse(localStorage.getItem('mnemonic')),
-        [wallet.address.toLowerCase()]: encryptStringWithKey(wallet.mnemonic.phrase, this.model.password),
-      }));
+      if (!this.isLoginWithSocial) {
+        localStorage.setItem('mnemonic', JSON.stringify({
+          ...JSON.parse(localStorage.getItem('mnemonic')),
+          [wallet.address.toLowerCase()]: encryptStringWithKey(wallet.mnemonic.phrase, this.model.password),
+        }));
+      }
       sessionStorage.setItem('mnemonic', JSON.stringify({
         ...JSON.parse(sessionStorage.getItem('mnemonic')),
         [wallet.address.toLowerCase()]: wallet.mnemonic.phrase,
       }));
-      this.$store.dispatch('wallet/connectWallet', { userAddress: wallet.address, userPassword: this.model.password });
+      this.$store.dispatch('wallet/connectWallet', { userWalletAddress: wallet.address, userPassword: this.model.password });
     },
     redirectUser() {
       this.addressAssigned = true;
-      this.$cookies.set('userLogin', true);
+      this.$cookies.set('userLogin', true, { path: '/' });
       // redirect to confirm access if token exists & unconfirmed account
       const confirmToken = JSON.parse(sessionStorage.getItem('confirmToken'));
       if (this.userStatus === UserStatuses.Unconfirmed && confirmToken) {
@@ -354,13 +388,9 @@ export default {
         return;
       }
       sessionStorage.removeItem('confirmToken');
-      if (this.userData.role === 'employer') {
-        this.$router.push('/workers');
-      } else if (this.userData.role === 'worker') {
-        this.$router.push('/quests');
-      } else if (this.userStatus === UserStatuses.NeedSetRole) {
-        this.$router.push('/role');
-      }
+      if (this.userData.role === UserRole.EMPLOYER) this.$router.push(Path.WORKERS);
+      else if (this.userData.role === UserRole.WORKER) this.$router.push(Path.QUESTS);
+      else if (this.userStatus === UserStatuses.NeedSetRole) this.$router.push(Path.ROLE);
     },
     async redirectSocialLink(socialNetwork) {
       window.location = `${process.env.BASE_URL}v1/auth/login/${socialNetwork}`;
@@ -383,6 +413,16 @@ export default {
 .auth {
   &__back {
     cursor: pointer;
+    display: table-cell;
+    color: $black700;
+    & > span {
+      color: $black700;
+      vertical-align: middle;
+      font-size: 18px;
+      &:not(:last-of-type) {
+        margin-right: 5px;
+      }
+    }
   }
   &__container {
     display: grid;

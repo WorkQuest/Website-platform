@@ -11,6 +11,9 @@ export default {
   setCallbackLayout(state, layout) {
     state.callbackLayout = layout;
   },
+  setIsOnlyConfirm(state, value) {
+    state.isOnlyConfirm = value;
+  },
   setBalance(state, { symbol, balance, fullBalance }) {
     state.balance[symbol].balance = balance;
     state.balance[symbol].fullBalance = fullBalance;

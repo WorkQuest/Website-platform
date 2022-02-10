@@ -1,5 +1,8 @@
 <template>
-  <div class="wallet">
+  <div
+    class="wallet"
+    :class="{ wallet_hidden: step === walletState.Default }"
+  >
     <div
       v-if="step === walletState.SaveMnemonic"
       class="wallet__container"
@@ -12,15 +15,34 @@
         @submit.prevent="$emit('goStep', walletState.ConfirmMnemonic)"
       >
         <div class="wallet__mnemonic">
-          {{ mnemonic }}
+          <input
+            v-model="mnemonic"
+            :type="inputType"
+            disabled
+            class="wallet__phrase-input"
+          >
           <button
             v-clipboard:copy="mnemonic"
-            v-clipboard:success="ClipboardSuccessHandler"
             v-clipboard:error="ClipboardErrorHandler"
             type="button"
+            @click="showCopySuccess"
           >
             <span class="icon-copy wallet__mnemonic_copy" />
           </button>
+        </div>
+        <div class="wallet__confirm-phrase">
+          <input
+            id="showMnemonic"
+            v-model="isShowMnemonic"
+            type="checkbox"
+            class="wallet__confirm-phrase_box"
+          >
+          <label
+            for="showMnemonic"
+            class="wallet__confirm-phrase_label"
+          >
+            {{ $t('createWallet.showSecretPhrase') }}
+          </label>
         </div>
         <div class="wallet__confirm-phrase">
           <input
@@ -61,12 +83,14 @@
           :rules="`required|is:${confirmMnemonicData.first}`"
           :placeholder="$t('createWallet.typeSecret', { a: confirmMnemonicData.firstIndex })"
           :name="$t('createWallet.secret', { a: confirmMnemonicData.firstIndex })"
+          type="password"
         />
         <base-field
           v-model="confirmMnemonic.second"
           :rules="`required|is:${confirmMnemonicData.second}`"
           :placeholder="$t('createWallet.typeSecret', { a: confirmMnemonicData.secondIndex })"
           :name="$t('createWallet.secret', { a: confirmMnemonicData.secondIndex })"
+          type="password"
         />
         <div class="wallet__action">
           <base-btn :disabled="!valid || isLoading">
@@ -86,14 +110,14 @@
       </div>
       <div class="wallet__action">
         <base-btn @click="$emit('goStep', walletState.SaveMnemonic)">
-          <slot name="actionText">
+          <slot>
             {{ $t('createWallet.create') }}
           </slot>
         </base-btn>
       </div>
       <div class="wallet__action">
         <base-btn @click="$emit('goStep', walletState.ImportMnemonic)">
-          <slot name="actionText">
+          <slot>
             {{ $t('createWallet.importWallet') }}
           </slot>
         </base-btn>
@@ -116,7 +140,22 @@
           rules="required|mnemonic"
           :placeholder="$t('createWallet.typeSecretPhrase')"
           :name="$t('createWallet.secretPhrase')"
+          :type="inputType"
         />
+        <div class="wallet__confirm-phrase">
+          <input
+            id="showMnemonicImport"
+            v-model="isShowMnemonic"
+            type="checkbox"
+            class="wallet__confirm-phrase_box"
+          >
+          <label
+            for="showMnemonicImport"
+            class="wallet__confirm-phrase_label"
+          >
+            {{ $t('createWallet.showSecretPhrase') }}
+          </label>
+        </div>
         <div class="wallet__action">
           <base-btn :disabled="!valid || isLoading">
             <slot name="actionText">
@@ -145,6 +184,7 @@ export default {
   },
   data() {
     return {
+      isShowMnemonic: false,
       savedMnemonicValue: false,
       mnemonic: '',
       mnemonicInput: '',
@@ -158,6 +198,7 @@ export default {
         first: '',
         second: '',
       },
+      inputType: 'password',
     };
   },
   computed: {
@@ -170,13 +211,22 @@ export default {
   },
   watch: {
     step(newVal) {
-      if (newVal === WalletState.SignPage) this.generate();
+      if (newVal === WalletState.Default) {
+        this.generate();
+        this.mnemonicInput = '';
+      }
+    },
+    isShowMnemonic(newVal) {
+      this.inputType = newVal ? 'text' : 'password';
     },
   },
   mounted() {
     this.generate();
   },
   methods: {
+    showCopySuccess() {
+      this.ShowToast(this.$t('modals.textCopy'), this.$t('createWallet.secretPhrase'));
+    },
     generate() {
       this.mnemonic = generateMnemonic();
       const s = this.mnemonic.split(' ');
@@ -217,6 +267,12 @@ export default {
 
 <style lang="scss" scoped>
 .wallet {
+  &_hidden {
+    display: none;
+  }
+  &_light {
+    color: white !important;
+  }
   &__back {
     cursor: pointer;
   }
@@ -248,7 +304,7 @@ export default {
     }
   }
   &__fields {
-    padding-top: 40px;
+    padding-top: 30px;
     display: grid;
     grid-template-columns: 1fr;
   }
@@ -258,10 +314,11 @@ export default {
   &__mnemonic {
     position: relative;
     padding: 10px 40px 10px 10px;
-    background: $grey;
-    border-radius: 12px;
+    background: #F3F7FA;
+    border-radius: 6px;
     font-weight: 500;
-    min-height: 50px;
+    height: 50px;
+    margin-bottom: 20px;
     ::before {
       color: $black600;
     }
@@ -277,16 +334,25 @@ export default {
       }
     }
   }
+  &__phrase-input {
+    border: none;
+    width: 100%;
+    height: 100%;
+    padding: 0 12px;
+    background: none;
+  }
   &__confirm-phrase {
-    margin-top: 20px;
     display: flex;
     align-items: center;
     &_label {
+      color: $black700;
       margin: 0 0 0 10px !important;
+      user-select: none;
     }
     &_box {
       width: 20px !important;
       height: 20px !important;
+      cursor: pointer;
     }
   }
 }
