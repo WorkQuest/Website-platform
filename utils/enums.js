@@ -168,6 +168,7 @@ export const Path = {
   STAKING: '/staking',
   PROFILE: '/profile',
   QUESTS: '/quests',
+  EDIT_QUEST: '/edit-quest',
 };
 
 // WALLET

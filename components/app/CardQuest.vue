@@ -96,7 +96,7 @@
           <div class="card-quest__locate">
             <span class="icon-location" />
             <span class="card-quest__text card-quest__text_locate">
-              {{ showDistance(coordinates('latitude', quest.location), coordinates('longitude', quest.location)) }}
+              {{ showDistance(quest.location) }}
               {{ `${$t('distance.m')} ${$t('meta.fromYou')}` }}
             </span>
           </div>
@@ -210,9 +210,10 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    coordinates(mode, location) {
-      if (mode === 'latitude' && location) return location.latitude;
-      if (mode === 'longitude' && location) return location.longitude;
+    showDistance(location) {
+      if (location.latitude && location.longitude) {
+        return this.getDistanceFromLatLonInKm(location.latitude, location.longitude, this.userLat, this.userLng);
+      }
       return 0;
     },
     shareModal(item) {
@@ -263,9 +264,6 @@ export default {
     },
     async getResponsesToQuestForAuthUser() {
       if (this.userRole === UserRole.WORKER) this.questResponses = await this.$store.dispatch('quests/getResponsesToQuestForAuthUser');
-    },
-    showDistance(questLat, questLng) {
-      return this.getDistanceFromLatLonInKm(questLat, questLng, this.userLat, this.userLng);
     },
     cardsLevels(idx) {
       const { cards } = this;

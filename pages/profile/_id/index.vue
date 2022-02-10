@@ -379,9 +379,13 @@ export default {
     async updateQuests(item) {
       this.SetLoader(true);
       if (!item.star) await this.$store.dispatch('quests/setStarOnQuest', item.id);
-      else await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
+      else {
+        await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
+      }
       if (this.selectedTab === 'quests') await this.changeQuestsData();
-      else await this.changeQuestsData(2);
+      else {
+        await this.changeQuestsData(2);
+      }
       this.SetLoader(false);
     },
     numberValidate(number) {

@@ -58,7 +58,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import { QuestStatuses } from '~/utils/enums';
+import { QuestStatuses, Path } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -88,13 +88,13 @@ export default {
   methods: {
     toEditQuest() {
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.item.status)) {
-        this.$router.push(`/edit-quest/${this.item.id}`);
+        this.$router.push(`${Path.EDIT_QUEST}/${this.item.id}`);
         this.setCurrentStepEditQuest(1);
       } else this.showToastWrongStatusEdit();
     },
     toRaisingViews() {
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.item.status)) {
-        this.$router.push({ path: `/edit-quest/${this.item.id}`, query: { mode: 'raise' } });
+        this.$router.push({ path: `${Path.EDIT_QUEST}/${this.item.id}`, query: { mode: 'raise' } });
         this.setCurrentStepEditQuest(2);
       } else this.showToastWrongStatusRaisingViews();
     },

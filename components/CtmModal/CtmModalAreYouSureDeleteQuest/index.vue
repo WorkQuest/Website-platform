@@ -38,6 +38,7 @@
 import { mapGetters } from 'vuex';
 import { QuestStatuses } from '~/utils/enums';
 import modals from '~/store/modals/modals';
+
 export default {
   name: 'ModalAreYouSureDelete',
   data() {
@@ -106,14 +107,17 @@ export default {
   },
 };
 </script>
+
 <style lang="scss" scoped>
-.sure{
+
+.sure {
   max-width: 337px !important;
   &__content {
     padding: 30px!important;
   }
 }
-.content{
+
+.content {
   &__title{
     font-weight: 500;
     font-size: 23px;
@@ -121,24 +125,25 @@ export default {
     margin: 30px 0 20px 0;
     text-align: center;
   }
-  &__desc{
+  &__desc {
     color: #4C5767;
     font-size: 16px;
     line-height: 130%;
     text-align: center;
   }
-  &__picture{
+  &__picture {
     margin-left: auto;
     margin-right: auto;
   }
 }
-.action{
+
+.action {
   display: grid;
   grid-gap: 20px;
   gap: 20px;
   margin-top: 30px;
   grid-auto-flow: column;
-  &__button{
+  &__button {
     max-width: 129px!important;
   }
 }

@@ -47,6 +47,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+
 export default {
   name: 'ModalOpenADeposit',
   computed: {
@@ -81,7 +82,7 @@ export default {
     margin: 25px 0 0 0;
   }
   &__content-btns {
-    .btn-group{
+    .btn-group {
       display: grid;
       grid-template-columns: repeat(2, calc(50% - 10px));
       grid-gap: 20px;
