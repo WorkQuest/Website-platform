@@ -849,6 +849,9 @@ export default {
 }
 @include _575 {
   .card-quest {
+    &__amount {
+      font-size: 16px;
+    }
     &__btn-details {
       height: 24px !important;
       font-size: 13px !important;

@@ -100,11 +100,6 @@ export default {
 }
 @include _575 {
   .rating-area__star-label {
-      font-size: 25px;
-    }
-}
-@include _575 {
-  .rating-area__star-label {
       font-size: 20px;
     }
 }
