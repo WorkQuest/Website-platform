@@ -739,26 +739,24 @@ export default {
     }
   }
   &__cards {
-    &-state {
-      &-clo {
+    &-state-clo {
         background: $red;
       }
-      &-dis {
+    &-state-dis {
         background-color: $red;
       }
-      &-req {
+    &-state-req {
         background: $grey;
         color: $black600 !important;
       }
-      &-per {
+    &-state-per {
         background: $blue;
       }
-      &-act {
+    &-state-act {
         background: $green;
       }
-      &-inv {
-        background: $yellow;
-      }
+    &-state-inv {
+      background: $yellow;
     }
   }
   &__card {
