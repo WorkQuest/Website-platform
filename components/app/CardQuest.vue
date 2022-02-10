@@ -103,13 +103,13 @@
             v-if="quest.title"
             class="card-quest__text card-quest__text_blue"
           >
-            {{ cropTxt(quest.title) }}
+            {{ cropTxt(quest.title, 68) }}
           </div>
           <div
             v-if="quest.description"
             class="card-quest__text card-quest__text_desc"
           >
-            {{ cropTxt(quest.description) }}
+            {{ cropTxt(quest.description, 68) }}
           </div>
           <div class="card-quest__text card-quest__publication">
             <span class="card-quest__publication_bold">{{ $t('quests.publicationDate') }}</span>
@@ -245,8 +245,7 @@ export default {
     clickFavoriteStar(item) {
       this.$emit('clickFavoriteStar', item);
     },
-    cropTxt(str) {
-      const maxLength = 98;
+    cropTxt(str, maxLength) {
       if (str.length > maxLength) str = `${str.slice(0, maxLength)}...`;
       return str;
     },
@@ -563,9 +562,9 @@ export default {
     }
   }
   &__status {
-    display: grid;
+    display: flex;
     align-self: flex-start;
-    margin-top: 10px;
+    gap: 10px;
   }
   &__amount {
     font-style: normal;
@@ -851,6 +850,9 @@ export default {
   }
 }
 @include _480 {
+  .user__name {
+    font-size: 12px;
+  }
   .status {
     &__level {
       font-size: 12px;
@@ -873,7 +875,7 @@ export default {
 }
 @include _380 {
   .card-quest {
-    &__amount_green {
+    &__amount {
       font-size: 12px;
     }
   }
