@@ -44,7 +44,6 @@
                     v-for="item in additionalMenuLinks"
                     :key="`item-${item.title}`"
                     :to="item.path"
-                    tag="div"
                     class="menu__item"
                   >
                     <div class="menu__top">
@@ -163,7 +162,6 @@
                 <nuxt-link
                   v-for="item in profileLinks"
                   :key="`item-${item.title}`"
-                  tag="button"
                   class="profile__item"
                   :to="item.path"
                 >
