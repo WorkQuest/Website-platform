@@ -77,7 +77,9 @@
               {{ progressQuestText(quest.status) }}
             </div>
             <div class="progress__container container">
-              <div class="container__user user" @click="goToProfile(quest.assignedWorker.id)">
+              <div class="container__user user"
+                   @click="goToProfile(quest.assignedWorker.id)"
+              >
                 <img
                   class="user__avatar"
                   :src="quest.assignedWorker.avatar ? quest.assignedWorker.avatar.url : EmptyAvatar()"
@@ -347,6 +349,10 @@ export default {
     font-size: 16px;
     color: $black800;
     cursor: pointer;
+    transition: .5s;
+    &:hover {
+      color: $blue;
+    }
   }
 }
 .right {
@@ -679,6 +685,10 @@ export default {
       line-height: 130%;
       color: $black800;
       cursor: pointer;
+      transition: .5s;
+      &:hover {
+        color: $blue;
+      }
     }
     &_locate {
       font-size: 14px;
