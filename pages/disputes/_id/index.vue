@@ -68,6 +68,9 @@ export default {
   async created() {
     await this.$store.dispatch('disputes/getDispute', this.disputeId);
   },
+  async beforeDestroy() {
+    await this.$store.commit('disputes/resetDisputeCard');
+  },
   methods: {
     backToDisputes() {
       this.$router.back();
