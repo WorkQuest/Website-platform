@@ -1,9 +1,8 @@
 <template>
   <div class="search-with-map">
-    <map-block
+    <g-map-loader
       class="search-with-map__map-block"
-      :is-show-map="isShowMap"
-      :zoom="zoom"
+      :class="{'search-with-map__map-block_hidden' : !isShowMap}"
     />
     <div
       class="search-with-map__search search"
@@ -108,8 +107,7 @@ export default {
       coordinates: null,
       addresses: [],
       search: '',
-      zoom: 15,
-      distanceIndex: 0,
+      distanceIndex: 1,
     };
   },
   computed: {
@@ -130,7 +128,10 @@ export default {
       localStorage.setItem('isShowMap', newVal);
       this.$emit('isShowMap', this.isShowMap);
     },
-    distanceIndex() { this.zoom = { 0: 15, 1: 10, 2: 8 }[this.distanceIndex]; },
+    async distanceIndex() {
+      const newZoom = { 0: 18, 1: 15, 2: 10 }[this.distanceIndex];
+      await this.$store.dispatch('google-map/setNewZoom', newZoom);
+    },
   },
   mounted() {
     const isShow = JSON.parse(localStorage.getItem('isShowMap'));
@@ -145,7 +146,7 @@ export default {
     deFocus() { this.isSearchFocus = false; },
     searchHandler() {
       if (!this.search || !this.coordinates) return;
-      this.$store.dispatch('quests/setMapCenter', this.coordinates);
+      this.$store.dispatch('google-map/setNewCenter', this.coordinates);
     },
     selectAddress(address) {
       this.search = address.formatted;
@@ -178,6 +179,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.search-with-map__map-block {
+  height: 435px;
+  &_hidden {
+    display: none;
+  }
+}
 
 .search {
   max-width: 1180px;

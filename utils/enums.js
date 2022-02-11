@@ -163,6 +163,7 @@ export const UserRole = {
 };
 
 export const Path = {
+  ROOT: '/',
   SIGN_IN: '/sign-in',
   SIGN_UP: '/sign-up',
   MY_QUESTS: '/my',
@@ -177,7 +178,6 @@ export const Path = {
   SETTINGS: '/settings',
   DISPUTES: '/disputes',
   WORKERS: '/workers',
-  ROOT: '/quests',
   CREATE_QUEST: '/create-quest',
   STAKING: '/staking',
   PROFILE: '/profile',

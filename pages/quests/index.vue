@@ -50,6 +50,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'Quests',
@@ -65,13 +66,12 @@ export default {
       specFilter: {},
       isShowMap: true,
       isFetching: false,
-      boundsTimeout: null,
       searchTimeout: null,
     };
   },
   computed: {
     ...mapGetters({
-      mapBounds: 'quests/getMapBounds',
+      mapBounds: 'google-map/getBounds',
       questsList: 'quests/getAllQuests',
       questsCount: 'quests/getAllQuestsCount',
     }),
@@ -82,15 +82,12 @@ export default {
     async mapBounds(newV, oldV) {
       if (!this.isShowMap) return;
       if (
-        newV?.center?.lng === oldV?.center?.lng
-        && newV?.center?.lat === oldV?.center?.lat
-        && newV?.northEast?.lng === oldV?.northEast?.lng
+        newV?.northEast?.lng === oldV?.northEast?.lng
         && newV?.northEast?.lat === oldV?.northEast?.lat
         && newV?.southWest?.lng === oldV?.southWest?.lng
         && newV?.southWest?.lat === oldV?.southWest?.lat
       ) return;
-      clearTimeout(this.boundsTimeout);
-      this.boundsTimeout = setTimeout(async () => await this.fetchQuestsList(true), 500);
+      await this.fetchQuestsList(true);
     },
     async search() {
       if (!this.isShowMap) {
@@ -107,9 +104,9 @@ export default {
     await this.fetchQuestsList();
     this.SetLoader(false);
   },
-  beforeDestroy() {
-    clearTimeout(this.boundsTimeout);
+  async beforeDestroy() {
     clearTimeout(this.searchTimeout);
+    await this.$store.dispatch('google-map/resetMap');
     this.$store.commit('quests/setAllQuests', { count: null, quests: [] });
   },
   methods: {
@@ -130,7 +127,7 @@ export default {
       this.isFetching = true;
 
       if (this.isShowMap) {
-        if (!Object.keys(this.mapBounds).length) {
+        if (!this.mapBounds.northEast.lng) {
           this.isFetching = false;
           return;
         }
@@ -138,15 +135,22 @@ export default {
         this.query['northAndSouthCoordinates[north][latitude]'] = this.mapBounds.northEast.lat;
         this.query['northAndSouthCoordinates[south][longitude]'] = this.mapBounds.southWest.lng;
         this.query['northAndSouthCoordinates[south][latitude]'] = this.mapBounds.southWest.lat;
+
+        await this.$store.dispatch('google-map/questsPoints', {
+          query: { ...this.query },
+          specFilter: this.specFilter,
+        });
       } else {
         delete this.query['northAndSouthCoordinates[north][longitude]'];
         delete this.query['northAndSouthCoordinates[north][latitude]'];
         delete this.query['northAndSouthCoordinates[south][longitude]'];
         delete this.query['northAndSouthCoordinates[south][latitude]'];
       }
+
       if (isResetPage) this.page = 1;
       const { query: { limit }, page } = this;
       this.query.offset = (page - 1) * limit;
+
       await this.$store.dispatch('quests/getAllQuests', {
         query: this.query,
         specFilter: this.specFilter,
@@ -185,7 +189,7 @@ export default {
       await this.fetchQuestsList(true);
     },
     showDetails(quest) {
-      this.$router.push(`/quests/${quest.id}`);
+      this.$router.push(`${Path.QUESTS}/${quest.id}`);
     },
   },
 };

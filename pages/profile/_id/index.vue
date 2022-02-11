@@ -405,6 +405,7 @@ export default {
         query: {
           limit: limit || this.perPagerQuests,
           offset: (this.pageQuests - 1) * this.perPagerQuests,
+          'sort[createdAt]': 'desc',
         },
       };
       await this.$store.dispatch('quests/getUserQuests', payload);

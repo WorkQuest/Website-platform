@@ -50,6 +50,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'Employees',
@@ -65,13 +66,12 @@ export default {
       specFilter: {},
       isShowMap: true,
       isFetching: false,
-      boundsTimeout: null,
       searchTimeout: null,
     };
   },
   computed: {
     ...mapGetters({
-      mapBounds: 'quests/getMapBounds',
+      mapBounds: 'google-map/getBounds',
       employeeList: 'quests/getEmployeeList',
       employeeCount: 'quests/getEmployeeCount',
     }),
@@ -82,15 +82,12 @@ export default {
     async mapBounds(newV, oldV) {
       if (!this.isShowMap) return;
       if (
-        newV?.center?.lng === oldV?.center?.lng
-        && newV?.center?.lat === oldV?.center?.lat
-        && newV?.northEast?.lng === oldV?.northEast?.lng
-        && newV?.northEast?.lat === oldV?.northEast?.lat
-        && newV?.southWest?.lng === oldV?.southWest?.lng
-        && newV?.southWest?.lat === oldV?.southWest?.lat
+        newV.northEast.lng === oldV.northEast.lng
+        && newV.northEast.lat === oldV.northEast.lat
+        && newV.southWest.lng === oldV.southWest.lng
+        && newV.southWest.lat === oldV.southWest.lat
       ) return;
-      clearTimeout(this.boundsTimeout);
-      this.boundsTimeout = setTimeout(async () => await this.fetchEmployeeList(true), 500);
+      await this.fetchEmployeeList(true);
     },
     async search() {
       if (!this.isShowMap) {
@@ -107,9 +104,9 @@ export default {
     await this.fetchEmployeeList();
     this.SetLoader(false);
   },
-  beforeDestroy() {
-    clearTimeout(this.boundsTimeout);
+  async beforeDestroy() {
     clearTimeout(this.searchTimeout);
+    await this.$store.dispatch('google-map/resetMap');
     this.$store.commit('quests/setEmployeeList', { count: null, users: [] });
   },
   methods: {
@@ -122,14 +119,20 @@ export default {
       this.isFetching = true;
 
       if (this.isShowMap) {
-        if (!Object.keys(this.mapBounds).length) {
+        if (!this.mapBounds.northEast.lng) {
           this.isFetching = false;
           return;
         }
+
         this.query['northAndSouthCoordinates[north][longitude]'] = this.mapBounds.northEast.lng;
         this.query['northAndSouthCoordinates[north][latitude]'] = this.mapBounds.northEast.lat;
         this.query['northAndSouthCoordinates[south][longitude]'] = this.mapBounds.southWest.lng;
         this.query['northAndSouthCoordinates[south][latitude]'] = this.mapBounds.southWest.lat;
+
+        await this.$store.dispatch('google-map/employeesPoints', {
+          query: { ...this.query },
+          specFilter: this.specFilter,
+        });
       } else {
         delete this.query['northAndSouthCoordinates[north][longitude]'];
         delete this.query['northAndSouthCoordinates[north][latitude]'];
@@ -179,7 +182,7 @@ export default {
       await this.fetchEmployeeList(true);
     },
     showDetails(worker) {
-      this.$router.push(`/profile/${worker.id}`);
+      this.$router.push(`${Path.PROFILE}/${worker.id}`);
     },
   },
 };

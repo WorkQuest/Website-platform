@@ -108,33 +108,10 @@
     </div>
     <div class="main">
       <div class="main__body main__body_30gap">
-        <div class="main__map">
-          <transition name="fade-fast">
-            <GmapMap
-              ref="gMap"
-              class="quests__map"
-              language="en"
-              :center="questLocation"
-              :zoom="15"
-              :options="{scrollWheel: false, navigationControl: false, mapTypeControl: false, scaleControl: false, height: '205px'}"
-            >
-              <GMapMarker
-                v-for="(item, key) in locations"
-                :key="key"
-                :position="questLocation"
-                :options="{ icon: pins.quest.blue, show: true}"
-                @click="coordinatesChange(item)"
-              >
-                <GMapInfoWindow :options="{maxWidth: 280}">
-                  <template>
-                    <h3>{{ questData.title }}</h3>
-                    <span>{{ questData.description }}</span>
-                  </template>
-                </GMapInfoWindow>
-              </GMapMarker>
-            </GmapMap>
-          </transition>
-        </div>
+        <g-map-loader
+          class="main__map"
+          :is-draggable="false"
+        />
         <template v-if="userRole === UserRole.EMPLOYER && infoDataMode === InfoModeEmployer.Created">
           <workers-list is-invited />
           <workers-list />
@@ -161,7 +138,7 @@
           <div class="quest__card">
             <card-quest
               v-if="otherQuestsCount"
-              :quests="sameQuest"
+              :quest="sameQuest"
             />
             <empty-data
               v-else
@@ -187,20 +164,8 @@ export default {
   data() {
     return {
       questLocation: { lat: 0, lng: 0 },
-      locations: {},
-      currentLocation: {},
-      pins: {
-        quest: {
-          red: '/img/app/marker_red.svg',
-          green: '/img/app/marker_red.svg',
-          yellow: '/img/app/marker_red.svg',
-          blue: '/img/app/marker_blue.svg',
-        },
-        selected: '/img/app/marker_blue.svg',
-        notSelected: '/img/app/marker_red.svg',
-      },
       actionBtnsArr: [],
-      sameQuest: [],
+      sameQuest: {},
     };
   },
   computed: {
@@ -253,16 +218,6 @@ export default {
     },
   },
   watch: {
-    questData: {
-      deep: true,
-      async handler() {
-        this.questLocation = {
-          lat: this.questData.location.latitude,
-          lng: this.questData.location.longitude,
-        };
-        this.locations = this.questLocation;
-      },
-    },
     infoDataMode(newVal, oldVal) {
       if (oldVal === undefined || newVal === oldVal) return;
       this.setActionBtnsArr();
@@ -271,12 +226,15 @@ export default {
   async beforeMount() {
     this.SetLoader(true);
     await this.getQuest();
+    this.initMapData();
     if (this.userRole === UserRole.WORKER) await this.getSameQuests();
     await this.getResponsesToQuest();
     await this.setActionBtnsArr();
     this.SetLoader(false);
   },
   async beforeDestroy() {
+    await this.$store.dispatch('google-map/resetMap');
+    this.$store.commit('quests/setQuest', null);
     await this.$store.commit('user/setCurrentReviewMarkOnQuest', { questId: null, message: null, mark: null });
   },
   methods: {
@@ -297,16 +255,17 @@ export default {
     },
     async getSameQuests() {
       const skills = Object.keys(this.$t(`filters.items.${this.randomSpec}.sub`));
-      const query = {
-        limit: 10,
-        statuses: [0],
-      };
-      for (let i = 0; i < skills.length; i += 1) {
-        query[`specializations[${i}]`] = `${this.randomSpec}.${skills[i]}`;
-      }
-      await this.$store.dispatch('quests/getAllQuests', query);
+      const specFilter = {};
+      skills.forEach((skill, i) => {
+        specFilter[`specializations[${i}]`] = `${this.randomSpec}.${skills[i]}`;
+      });
+
+      await this.$store.dispatch('quests/getAllQuests', {
+        query: { limit: 10, statuses: [0] },
+        specFilter,
+      });
       const questsData = this.otherQuests.filter((quest) => quest.id !== this.questData.id);
-      if (questsData.length) this.sameQuest.push(questsData[Math.floor(Math.random() * questsData.length)]);
+      if (questsData.length) this.sameQuest = questsData[Math.floor(Math.random() * questsData.length)];
     },
     setActionBtnsArr() {
       const { questData: { questChat, assignedWorkerId }, userData, userRole } = this;
@@ -525,16 +484,21 @@ export default {
     async getQuest() {
       await this.$store.dispatch('quests/getQuest', this.$route.params.id);
     },
+    initMapData() {
+      this.$store.commit('google-map/setZoom', 15);
+      this.questLocation = {
+        lat: this.questData.location.latitude,
+        lng: this.questData.location.longitude,
+      };
+      this.$store.commit('google-map/setCenter', this.questLocation);
+      this.$store.commit('google-map/setPoints', [this.questData]);
+    },
     async getResponsesToQuest() {
       const { questData: { id, user }, userData } = this;
 
       if (this.userRole === UserRole.EMPLOYER && user.id === userData.id) {
         await this.$store.dispatch('quests/responsesToQuest', id);
       }
-    },
-    coordinatesChange(item) {
-      if (Object.keys(this.currentLocation).length > 0) this.currentLocation = {};
-      else this.currentLocation = item;
     },
     async closeQuest() {
       const modalMode = 1;
@@ -700,7 +664,7 @@ export default {
     font-size: 16px;
     line-height: 20px;
     color: $black700;
-    word-wrap: break-word
+    overflow-wrap: anywhere;
   }
   &__count {
     font-style: normal;
@@ -726,6 +690,10 @@ export default {
     &_20gap {
       gap: 20px;
     }
+  }
+
+  &__map {
+    height: 200px;
   }
 
   &__quest_materials {
