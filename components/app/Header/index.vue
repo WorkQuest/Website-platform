@@ -117,7 +117,12 @@
             class="icon icon-message"
           />
         </div>
-        <notifications-button />
+        <div
+          class="header__button header__button_notifications"
+          @click="closeAll()"
+        >
+          <notifications-button />
+        </div>
         <div
           class="ctm-menu__toggle"
           @click="toggleMobileMenu()"
@@ -469,7 +474,7 @@ export default {
         }
       }
     },
-    async  addNotification(ev) {
+    async addNotification(ev) {
       await this.$store.dispatch('user/addNotification', ev);
     },
     async initWSListeners() {
@@ -613,9 +618,11 @@ export default {
     padding: 15px 0 0 0;
     display: grid;
   }
+
   &__dropdown-icon {
     align-self: center;
   }
+
   &__container {
     display: flex;
     flex-direction: row;
@@ -627,6 +634,7 @@ export default {
     width: 100%;
     padding: 0 20px 0 0;
   }
+
   &__avatar {
     max-height: 40px;
     max-width: 40px;
@@ -636,11 +644,13 @@ export default {
     margin-left: 20px;
     margin-right: 10px;
   }
+
   &__name {
     font-weight: 500;
     font-size: 16px;
     color: $black800;
   }
+
   &__role {
     font-weight: 400;
     font-size: 12px;
@@ -652,10 +662,12 @@ export default {
 .icon {
   font-size: 20px;
   color: $shade700;
+
   &-chevron_right {
     transition: .1s;
     visibility: hidden;
   }
+
   &-message, &-hamburger {
     font-size: 24px;
     color: $black400;
@@ -673,6 +685,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+
   &__body {
     max-width: 1180px;
     width: 100%;
@@ -680,26 +693,31 @@ export default {
     align-items: center;
     justify-content: space-between;
   }
+
   &__left {
     display: grid;
     align-items: center;
     grid-template-columns: auto 1fr;
     grid-gap: 35px;
   }
+
   &__link {
     @include text-simple;
     font-size: 16px;
     line-height: 130%;
     color: $black400;
     text-decoration: none;
+
     &_active {
       color: $black800;
     }
+
     &_menu {
       display: flex;
       align-items: center;
       position: relative;
       cursor: pointer;
+
       span {
         color: $black400;
         font-size: 24px;
@@ -721,49 +739,60 @@ export default {
     width: 43px;
     height: 43px;
     border: 1px solid transparent;
+
     &:hover {
       border: 1px solid $black100;
     }
+
     .icon-caret_down {
       color: $black400;
       font-size: 24px;
     }
+
     &_profile {
       position: relative;
     }
+
     &_menu {
       position: relative;
       display: none;
     }
+
     &_locale {
       width: 86px;
       height: 46px;
     }
+
     &_locale-name {
       padding-left: 10px;
     }
   }
+
   &__links {
     display: grid;
     align-items: center;
     grid-template-columns: repeat(4, auto);
     grid-gap: 25px;
   }
+
   &__right {
     display: grid;
     grid-template-columns: repeat(5, auto);
     grid-gap: 10px;
     align-items: center;
   }
+
   &__btn {
     min-width: 163px;
   }
+
   &__logo {
     display: grid;
     align-items: center;
     grid-template-columns: 40px 1fr;
     grid-gap: 5px;
     cursor: pointer;
+
     span {
       @include text-simple;
       font-weight: bold;
@@ -772,6 +801,7 @@ export default {
       color: $black700;
     }
   }
+
   &__ctm-menu {
     transition: .2s;
   }
@@ -791,6 +821,7 @@ export default {
     left: 0;
     z-index: 9999;
   }
+
   &__content {
     height: 100%;
     width: 100%;
@@ -798,19 +829,23 @@ export default {
     flex-direction: column;
     background: $white;
     border-radius: 0 0 5px 5px;
+
     &_hide {
       width: 0;
     }
   }
+
   &__user {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
   }
+
   &__links {
     display: flex;
     flex-direction: column;
   }
+
   &__link {
     padding: 16px 20px 16px 20px;
     font-weight: 400;
@@ -819,15 +854,18 @@ export default {
     border-bottom: 1px solid $black0;
     cursor: pointer;
     text-decoration: none;
+
     &:hover {
       background: $blue;
       color: $white;
       font-weight: 600;
     }
   }
+
   &__actions {
     padding: 20px;
   }
+
   &__toggle {
     display: none;
   }
@@ -842,22 +880,27 @@ export default {
     padding: 16px 0 20px 30px;
     align-items: flex-start;
     width: 100%;
+
     &_logout {
       color: $red;
     }
   }
+
   &__btn {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+
     &:hover {
       background: $blue;
       color: $white;
       font-weight: 600;
     }
   }
+
   &__title {
     padding: 16px 0 20px 20px;
   }
+
   &__arrow {
     justify-self: flex-end;
     padding: 16px 20px 0 0;
@@ -885,12 +928,14 @@ export default {
   width: 100%;
   min-height: 235px;
   z-index: 10000000;
+
   &__img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
   }
+
   &__header {
     border-bottom: 1px solid #F7F8FA;
     display: grid;
@@ -898,16 +943,19 @@ export default {
     padding: 15px;
     grid-gap: 10px;
   }
+
   &__avatar {
     max-width: 40px;
     max-height: 40px;
     border-radius: 100%;
   }
+
   &__items {
     display: grid;
     grid-template-columns: 1fr;
     justify-items: flex-start;
   }
+
   &__item {
     @include text-simple;
     height: 41px;
@@ -921,29 +969,35 @@ export default {
     transition: .3s;
     border-radius: 6px;
     text-decoration: none;
+
     &_red {
       color: $red;
     }
+
     &:hover {
       background: $black0;
     }
   }
+
   &__text {
     @include text-simple;
     font-weight: 500;
     font-size: 16px;
     line-height: 130%;
+
     &_blue {
       font-weight: normal;
       font-size: 12px;
       color: $blue;
     }
+
     &_green {
       font-weight: normal;
       font-size: 12px;
       color: $green;
     }
   }
+
   &__info {
     display: grid;
     grid-template-columns: 1fr;
@@ -963,31 +1017,37 @@ export default {
   left: -100%;
   min-height: 230px;
   z-index: 10000000;
+
   &__top {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
   }
+
   &__text {
     @include text-simple;
+
     &_header {
       font-size: 16px;
       line-height: 130%;
       color: $black800;
     }
+
     &_grey {
       font-size: 14px;
       line-height: 130%;
       color: $black500;
     }
   }
+
   &__items {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     padding: 20px;
     grid-gap: 10px;
   }
+
   &__item {
     transition: .3s;
     background: $white;
@@ -1000,9 +1060,11 @@ export default {
     flex-direction: column;
     justify-content: flex-start;
     padding: 10px;
+
     &:hover {
       border: 1px solid $black100;
       text-decoration: none;
+
       span {
         visibility: visible;
       }
@@ -1018,21 +1080,26 @@ export default {
   border-radius: 6px;
   z-index: 10000000;
   padding: 15px 20px;
+
   &__item {
     width: 46px;
     display: flex;
     align-items: center;
     opacity: 0.7;
+
     &_active {
       opacity: 1;
     }
+
     &:hover {
       opacity: 1;
     }
   }
+
   &__item:not(:last-child) {
     margin-bottom: 15px;
   }
+
   &__icon {
     display: block;
     margin-right: 10px;
@@ -1040,6 +1107,7 @@ export default {
     width: 15px;
     height: 15px;
   }
+
   &__text {
     @include text-simple;
     font-weight: 500;
@@ -1059,17 +1127,21 @@ export default {
     &__button_menu {
       display: flex;
     }
+
     &__body {
       margin: 0 20px 0 20px;
     }
+
     &__links {
       display: none;
     }
+
     &__button {
       &_profile {
         display: none;
       }
     }
+
     &__btn {
       display: none !important;
     }
@@ -1091,12 +1163,15 @@ export default {
         display: none;
       }
     }
+
     &__btn {
       display: none !important;
     }
+
     &__left {
       grid-gap: 15px;
     }
+
     &__right {
       grid-gap: 2px;
     }
