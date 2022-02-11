@@ -92,8 +92,6 @@ export default {
       token: 0,
       fromToken: '',
       toToken: '',
-      recipientAddress: '',
-      userAddress: '',
       amount: '',
     };
   },
@@ -124,9 +122,12 @@ export default {
         },
       ];
     },
+    recipientAddress() {
+      return this.account.address;
+    },
   },
   async mounted() {
-    await this.fillAddress();
+    await this.connectToMetamask();
     await this.crosschainFlow();
   },
   methods: {
@@ -135,10 +136,6 @@ export default {
     },
     hide() {
       this.CloseModal();
-    },
-    fillAddress() {
-      this.recipientAddress = this.account.address;
-      this.userAddress = this.account.address;
     },
     async crosschainFlow() {
       if (this.options.crosschainId === 0) {
@@ -163,8 +160,6 @@ export default {
           chain: this.fromToken,
           amount: `${this.amount} WQT`,
           amountInt: this.amount,
-          sender: this.cropTxt(this.userAddress),
-          senderFull: this.userAddress,
           recepient: this.cropTxt(this.recipientAddress),
           recepientFull: this.recipientAddress,
           worknetFee: '0,5 WQT',
@@ -187,19 +182,9 @@ export default {
         this.$store.dispatch('web3/connect');
       }
     },
-    showGiveDeposit() {
-      this.ShowModal({
-        key: modals.giveDeposit,
-      });
-    },
     cropTxt(str) {
       if (str.length > 40) str = `${str.slice(0, 10)}...${str.slice(-10)}`;
       return str;
-    },
-    showAddingCard() {
-      this.ShowModal({
-        key: modals.addingCard,
-      });
     },
   },
 };
