@@ -73,7 +73,7 @@ export default {
         },
         {
           title: this.$t('modals.senderAddress'),
-          subtitle: this.options.sender,
+          subtitle: this.options.recepient,
         },
         {
           title: this.$t('modals.recepientAddress'),
@@ -113,7 +113,7 @@ export default {
           _amount: optionsData.amountInt,
           chain: optionsData.chain,
           chainTo,
-          userAddress: optionsData.senderFull,
+          userAddress: optionsData.recepientFull,
           recipient: optionsData.recepientFull,
           symbol: 'WQT',
         });
