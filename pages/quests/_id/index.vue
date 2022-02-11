@@ -134,7 +134,7 @@
           <div class="quest__card">
             <card-quest
               v-if="otherQuestsCount"
-              :quests="sameQuest"
+              :quest="sameQuest"
             />
             <empty-data
               v-else
@@ -160,7 +160,7 @@ export default {
     return {
       questLocation: { lat: 0, lng: 0 },
       actionBtnsArr: [],
-      sameQuest: [],
+      sameQuest: {},
     };
   },
   computed: {
@@ -260,7 +260,7 @@ export default {
         specFilter,
       });
       const questsData = this.otherQuests.filter((quest) => quest.id !== this.questData.id);
-      if (questsData.length) this.sameQuest.push(questsData[Math.floor(Math.random() * questsData.length)]);
+      if (questsData.length) this.sameQuest = questsData[Math.floor(Math.random() * questsData.length)];
     },
     setActionBtnsArr() {
       const { questData: { questChat, assignedWorkerId }, userData, userRole } = this;
