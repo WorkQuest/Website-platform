@@ -1,5 +1,8 @@
 <template>
-  <div class="employees">
+  <div
+    class="employees"
+    data-selector="PAGE-WORKERS"
+  >
     <search-with-map
       class="employees__search"
       @isShowMap="isShowMap = $event"
@@ -25,6 +28,7 @@
         <employee-card
           v-for="(user,id) in employeeList"
           :key="id"
+          :data-selector="`TO-WORKER-PROFILE-${user.id}`"
           :user="user"
           @click="showDetails(user)"
         />

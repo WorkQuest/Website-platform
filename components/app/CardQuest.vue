@@ -1,5 +1,8 @@
 <template>
-  <div class="card-quest">
+  <div
+    class="card-quest"
+    :data-selector="`COMPONENT-CARD-QUEST-${quest.id}`"
+  >
     <div
       class="card-quest__left"
       :style="`background: url(${getQuestPreview(quest).url}) no-repeat`"
@@ -16,11 +19,13 @@
       <div class="card-quest__head">
         <div
           class="card-quest__title"
+          :data-selector="`ACTION-BTN-TO-CREATOR-QUEST-PROFILE`"
           @click="showProfile(quest.userId)"
         >
           <div class="card-quest__avatar avatar">
             <img
               class="avatar__image"
+              :data-selector="`ACTION-BTN-TO-CREATOR-QUEST-PROFILE`"
               :alt="`${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}`"
               :src="quest.user && quest.user.avatar ? quest.user.avatar.url : EmptyAvatar()"
               @click="goToProfile(quest.user.id)"
@@ -28,6 +33,7 @@
           </div>
           <div
             class="card-quest__text card-quest__text_title"
+            :data-selector="`ACTION-BTN-TO-CREATOR-QUEST-PROFILE`"
             @click="goToProfile(quest.user.id)"
           >
             {{ `${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}` }}
@@ -42,6 +48,7 @@
             v-if="quest.userId === userData.id || quest.assignedWorkerId === userData.id"
             class="card-quest__icon card-quest__icon_fav star"
             :class="[{'star__hide': disputeId.length !== 0}]"
+            :data-selector="`ACTION-BTN-TOGGLE-FAVORITE-QUEST`"
             @click="clickFavoriteStar(quest)"
           >
             <img
@@ -62,6 +69,7 @@
           />
           <button
             v-if="userRole === $options.UserRole.WORKER || quest.status !== $options.QuestStatuses.Created"
+            :data-selector="`ACTION-BTN-TO-SHARE-QUEST`"
             class="card-quest__shared"
             @click="shareModal(quest.id)"
           >
@@ -79,6 +87,7 @@
         <div class="progress__container container">
           <div
             class="container__user user"
+            :data-selector="`ACTION-BTN-TO-ASSIGNED-WORKER-PROFILE`"
             @click="goToProfile(quest.assignedWorker.id)"
           >
             <img
@@ -137,6 +146,7 @@
             v-if="quest.type !== 3"
             class="card-quest__btn-details"
             mode="borderless-right"
+            :data-selector="`ACTION-BTN-TO-QUEST-DETAILS`"
             @click="showDetails(quest.id)"
           >
             {{ $t('meta.details') }}

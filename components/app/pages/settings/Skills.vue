@@ -1,5 +1,8 @@
 <template>
-  <div class="skills">
+  <div
+    class="skills"
+    :data-selector="`COMPONENT-SKILLS`"
+  >
     <div class="skills__container">
       <div class="skills__title">
         {{ $t("settings.employmentInfo") }}

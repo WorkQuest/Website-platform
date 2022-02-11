@@ -1,5 +1,8 @@
 <template>
-  <div class="reviews-grid reviews-grid__reviews-item">
+  <div
+    class="reviews-grid reviews-grid__reviews-item"
+    :data-selector="`COMPONENT-REVIEWS-TAB`"
+  >
     <span
       v-for="(reviewData, i) in object.reviews"
       :key="i"
@@ -13,12 +16,14 @@
                 :src="initAvatar(reviewData.fromUser)"
                 alt=""
                 loading="lazy"
+                :data-selector="`ACTION-BTN-GO-TO-REVIEWER-PROFILE-${reviewData.fromUser.id}`"
                 @click="goToProfile(reviewData.fromUser.id)"
               >
             </div>
             <div class="name__container">
               <div
                 class="card-subtitle__name"
+                :data-selector="`ACTION-BTN-GO-TO-REVIEWER-PROFILE-${reviewData.fromUser.id}`"
                 @click="goToProfile(reviewData.fromUser.id)"
               >
                 {{ `${reviewData.fromUser.firstName} ${reviewData.fromUser.lastName}` }}
@@ -33,6 +38,7 @@
               <div
                 v-for="(star,idx) in 5"
                 :key="idx"
+                :data-selector="`STAR-RATING-STAR-${idx}`"
                 class="star"
                 :class="initStarClass(star, reviewData.mark)"
               />
@@ -57,6 +63,7 @@
         </div>
         <base-btn
           mode="borderless-right"
+          :data-selector="`ACTION-BTN-SHOW-REVIEW-DETAILS`"
           @click="showReviewDetails(reviewData)"
         >
           {{ $t('quests.readCompletely') }}

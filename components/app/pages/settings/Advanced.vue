@@ -1,5 +1,8 @@
 <template>
-  <div class="advanced">
+  <div
+    class="advanced"
+    :data-selector="`COMPONENT-ADVANCED`"
+  >
     <div class="advanced__left">
       <div class="advanced__title">
         {{ $t('settings.settings') }}
@@ -7,6 +10,7 @@
       <div
         v-for="(radio) in radioButtons"
         :key="radio.index"
+        :data-selector="`ADVANCED-RADIOS`"
         class="advanced__options advanced__options_left"
       >
         <div class="advanced__subtitle">
@@ -15,11 +19,13 @@
         <div
           v-for="input in radio"
           :key="input.index"
+          :data-selector="`ADVANCED-WHO-CAN-SEE-RADIO`"
           class="advanced__option"
         >
           <input
             :id="input.id"
             :name="input.name"
+            :data-selector="`ADVANCED-WHO-CAN-SEE-RADIO-${input.id}`"
             type="radio"
             class="advanced__input"
             :value="input.value"
@@ -41,6 +47,7 @@
         <div
           v-for="(button, index) in rightSideButtons"
           :key="index"
+          :data-selector="`ADVANCED-SETTINGS-RIGHT-SIDE-BTNS`"
           class="advanced__option advanced__option_blue"
         >
           <div class="advanced__option-title">
@@ -49,6 +56,7 @@
           <base-btn
             v-if="!button.isSwitcher"
             :disabled="button.enable"
+            :data-selector="`ACTION-BTN-${button.modal}`"
             @click="showModalKey(button.modal)"
           >
             {{ $t(button.buttonName) }}
@@ -58,6 +66,7 @@
             class="advanced__option-buttons"
           >
             <base-btn
+              :data-selector="`ACTION-BTN-TOTP-${statusTotp}`"
               @click="!statusTotp ? showModalKey(button.secondModal) : showModalKey(button.firstModal)"
             >
               {{ !statusTotp ? $t(button.secondButtonName) : $t(button.firstButtonName) }}

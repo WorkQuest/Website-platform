@@ -1,11 +1,15 @@
 <template>
-  <div class="main">
+  <div
+    class="main"
+    data-selector="PAGE-RAISED-VIEWS"
+  >
     <div class="main__body page">
       <div class="page">
         <div class="page btn-container__left">
           <div class="btn-container__btn_back">
             <base-btn
               :mode="'back'"
+              data-selector="ACTION-BTN-BACK"
               @click="goBack()"
             >
               {{ $t('meta.back') }}
@@ -26,6 +30,7 @@
             <div
               v-for="(item, i) in periodTabs"
               :key="i"
+              :data-selector="`ACTION-BTN-SWITCH-PERIOD`"
               class="period__period"
               :class="{'period__period_active': period === item.number}"
               @click="switchPeriod(item, i)"
@@ -50,6 +55,7 @@
               <div
                 v-for="(item, i) in periods(period)"
                 :key="i"
+                :data-selector="`ACTION-BTN-SWITCH-PERIOD-LEVEL-${i}`"
                 class="level__card"
                 @click="selectRadio(i)"
               >
@@ -86,6 +92,7 @@
             <div class="btn-container__btn">
               <base-btn
                 :mode="'outline'"
+                :data-selector="`ACTION-BTN-SKIP-AND-END`"
                 @click="goBack()"
               >
                 {{ $t('meta.skipAndEnd') }}
@@ -93,6 +100,7 @@
             </div>
             <div class="btn-container__btn">
               <base-btn
+                :data-selector="`ACTION-BTN-PAY`"
                 :disabled="ads.currentAdPrice === ''"
                 @click="showPaymentModal"
               >

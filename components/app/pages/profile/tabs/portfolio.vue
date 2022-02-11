@@ -1,5 +1,8 @@
 <template>
-  <div class="portfolio">
+  <div
+    class="portfolio"
+    :data-selector="`COMPONENT-PORTFOLIO-TAB`"
+  >
     <emptyData
       v-if="object.count === 0"
       :description="$t('errors.emptyData.emptyPortfolios')"
@@ -7,10 +10,12 @@
     <div
       v-else
       class="portfolio__items"
+      :data-selector="`PORTFOLIO-CASES`"
     >
       <div
         v-for="(item) in object.cases"
         :key="item.id"
+        :data-selector="`PORTFOLIO-CASE-${item.id}`"
         class="portfolio__item"
       >
         <div class="portfolio__card">
@@ -22,6 +27,7 @@
               <base-btn
                 class="portfolio__close"
                 mode="portfolioClose"
+                :data-selector="`ACTION-BTN-DELETE-PORTFOLIO-CASE-${item.id}`"
                 @click="showDeleteCaseModal(item.id)"
               >
                 <span
@@ -31,6 +37,7 @@
               <base-btn
                 class="portfolio__edit"
                 mode="portfolioEdit"
+                :data-selector="`ACTION-BTN-EDIT-PORTFOLIO-CASE-${item.id}`"
                 @click="showEditCaseModal(item)"
               >
                 <span class="icon-edit" />
@@ -44,6 +51,7 @@
             >
               <img
                 class="portfolio__image"
+                :data-selector="`PORTFOLIO-CASE-IMAGE-${j}`"
                 :src="img.url"
                 :alt="item.title"
               >

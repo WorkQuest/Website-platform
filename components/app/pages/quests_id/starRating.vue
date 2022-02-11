@@ -1,5 +1,8 @@
 <template>
-  <ul class="rating-area">
+  <ul
+    class="rating-area"
+    :data-selector="`COMPONENT-STAR-RATING`"
+  >
     <li
       v-for="(star,index) in starsNumber"
       :key="index"
@@ -8,6 +11,7 @@
     >
       <input
         :id="`${ratingType}-star-${questIndex}-${starsNumber-index}`"
+        :data-selector="`STAR-RATING-STAR-${ratingType}-star-${questIndex}-${starsNumber-index}`"
         type="radio"
         name="rating"
         :checked="(starsNumber-index)===rating"

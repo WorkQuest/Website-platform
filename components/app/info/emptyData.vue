@@ -1,5 +1,8 @@
 <template>
-  <div class="absence">
+  <div
+    class="absence"
+    :data-selector="`COMPONENT-EMPTY-DATA`"
+  >
     <div class="absence__content">
       <img
         class="absence__img"
