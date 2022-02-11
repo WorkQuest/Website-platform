@@ -104,12 +104,12 @@ export default {
           chatId: '',
           status: '0',
         },
-        questSpecializations: [{ path: '1.501' }],
-        startedAt: '2021-05-12T05:24:47.322Z',
-        createdAt: '2021-05-12T05:24:47.322Z',
+        questSpecializations: [{ path: '' }],
+        startedAt: '',
+        createdAt: '',
       },
-      resolveAt: '2021-05-12T05:24:47.322Z',
-      createdAt: '2021-05-12T05:24:47.322Z',
+      resolveAt: '',
+      createdAt: '',
     };
   },
   setUserDisputes(state, data) {
