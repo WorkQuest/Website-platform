@@ -1,165 +1,163 @@
 <template>
   <div class="card-quest">
-    <div class="card-quest__content">
-      <div class="card-quest__blocks">
+    <div
+      class="card-quest__left"
+      :style="`background: url(${getQuestPreview(quest).url}) no-repeat`"
+    >
+      <div
+        v-if="quest.status"
+        class="card-quest__state"
+        :class="getStatusClass(quest.status)"
+      >
+        {{ getStatusCard(quest.status) }}
+      </div>
+    </div>
+    <div class="card-quest__right">
+      <div class="card-quest__head">
         <div
-          class="card-quest__left"
-          :style="`background: url(${getQuestPreview(quest).url}) no-repeat`"
+          class="card-quest__title"
+          @click="showProfile(quest.userId)"
         >
+          <div class="card-quest__avatar avatar">
+            <img
+              class="avatar__image"
+              :alt="`${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}`"
+              :src="quest.user && quest.user.avatar ? quest.user.avatar.url : EmptyAvatar()"
+              @click="goToProfile(quest.user.id)"
+            >
+          </div>
           <div
-            class="card-quest__state"
-            :class="getStatusClass(quest.status)"
+            class="card-quest__text card-quest__text_title"
+            @click="goToProfile(quest.user.id)"
           >
-            {{ getStatusCard(quest.status) }}
+            {{ `${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}` }}
           </div>
         </div>
-        <div class="card-quest__right">
-          <div class="card-quest__head">
-            <div
-              class="card-quest__title"
-              @click="showProfile(quest.userId)"
+        <div class="card-quest__head-right">
+          <span
+            v-if="quest.adType > 0"
+            class="icon-circle_up"
+          />
+          <div
+            v-if="quest.userId === userData.id || quest.assignedWorkerId === userData.id"
+            class="card-quest__icon card-quest__icon_fav star"
+            :class="[{'star__hide': disputeId.length !== 0}]"
+            @click="clickFavoriteStar(quest)"
+          >
+            <img
+              class="star__hover"
+              src="~assets/img/ui/star_hover.svg"
+              alt="favorite star"
             >
-              <div class="card-quest__avatar avatar">
-                <img
-                  class="avatar__image"
-                  :alt="`${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}`"
-                  :src="quest.user && quest.user.avatar ? quest.user.avatar.url : EmptyAvatar()"
-                  @click="goToProfile(quest.user.id)"
-                >
-              </div>
-              <div
-                class="card-quest__text card-quest__text_title"
-                @click="goToProfile(quest.user.id)"
-              >
-                {{ `${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}` }}
-              </div>
+            <img
+              :class="[{'star__default': !quest.star},{'star__checked': quest.star}]"
+              :src="!quest.star ? require( '~/assets/img/ui/star_simple.svg') : require('~/assets/img/ui/star_checked.svg')"
+              alt=""
+            >
+          </div>
+          <quest-dd
+            v-if="quest.status === $options.QuestStatuses.Created && userRole === $options.UserRole.EMPLOYER && quest.userId === userData.id"
+            class="card-quest__icon card-quest__icon_fav"
+            :item="quest"
+          />
+          <button
+            v-if="userRole === $options.UserRole.WORKER || quest.status !== $options.QuestStatuses.Created"
+            class="card-quest__shared"
+            @click="shareModal(quest.id)"
+          >
+            <span class="card-quest__icon card-quest__icon_fav icon-share_outline" />
+          </button>
+        </div>
+      </div>
+      <div
+        v-if="quest.assignedWorkerId"
+        class="card-quest__progress progress"
+      >
+        <div class="progress__title">
+          {{ progressQuestText(quest.status) }}
+        </div>
+        <div class="progress__container container">
+          <div
+            class="container__user user"
+            @click="goToProfile(quest.assignedWorker.id)"
+          >
+            <img
+              class="user__avatar"
+              :src="quest.assignedWorker.avatar ? quest.assignedWorker.avatar.url : EmptyAvatar()"
+              :alt="`${ quest.assignedWorker ? UserName(quest.assignedWorker.firstName, quest.assignedWorker.lastName) : '' }`"
+            >
+            <div class="user__name">
+              {{ quest.assignedWorker.firstName }} {{ quest.assignedWorker.lastName }}
             </div>
-            <div class="card-quest__head-right">
-              <span
-                v-if="quest.adType > 0"
-                class="icon-circle_up"
-              />
-              <div
-                v-if="quest.userId === userData.id || quest.assignedWorkerId === userData.id"
-                class="card-quest__icon card-quest__icon_fav star"
-                @click="clickFavoriteStar(quest)"
-              >
-                <img
-                  class="star__hover"
-                  src="~assets/img/ui/star_hover.svg"
-                  alt="favorite star"
-                >
-                <img
-                  :class="[{'star__default': !quest.star},{'star__checked': quest.star}]"
-                  :src="!quest.star ? require( '~/assets/img/ui/star_simple.svg') : require('~/assets/img/ui/star_checked.svg')"
-                  alt=""
-                >
-              </div>
-              <quest-dd
-                v-if="quest.status === $options.QuestStatuses.Created && userRole === $options.UserRole.EMPLOYER && quest.userId === userData.id"
-                class="card-quest__icon card-quest__icon_fav"
-                :item="quest"
-              />
-              <button
-                v-if="userRole === $options.UserRole.WORKER || quest.status !== $options.QuestStatuses.Created"
-                class="card-quest__shared"
-                @click="shareModal(quest.id)"
-              >
-                <span class="card-quest__icon card-quest__icon_fav icon-share_outline" />
-              </button>
-            </div>
+          </div>
+          <item-rating :rating="getRatingValue(quest)" />
+        </div>
+      </div>
+      <div class="card-quest__locate">
+        <span class="icon-location" />
+        <span class="card-quest__text card-quest__text_locate">
+          {{ showDistance(quest.location) }}
+          {{ `${$t('distance.m')} ${$t('meta.fromYou')}` }}
+        </span>
+      </div>
+      <div
+        v-if="quest.title"
+        class="card-quest__text card-quest__text_blue"
+      >
+        {{ cropTxt(quest.title, 68) }}
+      </div>
+      <div
+        v-if="quest.description"
+        class="card-quest__text card-quest__text-description"
+      >
+        {{ cropTxt(quest.description, 98) }}
+      </div>
+      <div class="card-quest__text card-quest__publication">
+        <span class="card-quest__publication_bold">{{ $t('quests.publicationDate') }}</span>
+        <span class="card-quest__publication_thin">{{ $moment(quest.createdAt).format('Do MMMM YYYY, hh:mm a') }}</span>
+      </div>
+      <div class="card-quest__actions">
+        <div class="card-quest__status">
+          <div
+            v-if="quest.priority !== 0 && quest.status !== $options.QuestStatuses.Done"
+            class="card-quest__priority"
+            :class="getPriorityClass(quest.priority)"
+          >
+            {{ getPriority(quest.priority) }}
           </div>
           <div
-            v-if="quest.assignedWorkerId"
-            class="card-quest__progress progress"
+            class="card-quest__amount"
+            :class="getAmountStyles(quest)"
           >
-            <div class="progress__title">
-              {{ progressQuestText(quest.status) }}
-            </div>
-            <div class="progress__container container">
-              <div
-                class="container__user user"
-                @click="goToProfile(quest.assignedWorker.id)"
-              >
-                <img
-                  class="user__avatar"
-                  :src="quest.assignedWorker.avatar ? quest.assignedWorker.avatar.url : EmptyAvatar()"
-                  :alt="`${ quest.assignedWorker ? UserName(quest.assignedWorker.firstName, quest.assignedWorker.lastName) : '' }`"
-                >
-                <div class="user__name">
-                  {{ quest.assignedWorker.firstName }} {{ quest.assignedWorker.lastName }}
-                </div>
-              </div>
-              <item-rating :rating="getRatingValue(quest)" />
-            </div>
+            {{ `${quest.price}  ${currency}` }}
           </div>
-          <div class="card-quest__locate">
-            <span class="icon-location" />
-            <span class="card-quest__text card-quest__text_locate">
-              {{ showDistance(quest.location) }}
-              {{ `${$t('distance.m')} ${$t('meta.fromYou')}` }}
-            </span>
-          </div>
+        </div>
+        <div class="card-quest__details">
+          <base-btn
+            v-if="quest.type !== 3"
+            class="card-quest__btn-details"
+            mode="borderless-right"
+            @click="showDetails(quest.id)"
+          >
+            {{ $t('meta.details') }}
+            <template v-slot:right>
+              <span class="icon-short_right" />
+            </template>
+          </base-btn>
           <div
-            v-if="quest.title"
-            class="card-quest__text card-quest__text_blue"
+            v-if="quest.status === $options.QuestStatuses.Done"
+            class="card-quest__rating"
           >
-            {{ cropTxt(quest.title, 68) }}
-          </div>
-          <div
-            v-if="quest.description"
-            class="card-quest__text card-quest__text-description"
-          >
-            {{ cropTxt(quest.description, 98) }}
-          </div>
-          <div class="card-quest__text card-quest__publication">
-            <span class="card-quest__publication_bold">{{ $t('quests.publicationDate') }}</span>
-            <span class="card-quest__publication_thin">{{ $moment(quest.createdAt).format('Do MMMM YYYY, hh:mm a') }}</span>
-          </div>
-          <div class="card-quest__actions">
-            <div class="card-quest__status">
-              <div
-                v-if="quest.priority !== 0 && quest.status !== $options.QuestStatuses.Done"
-                class="card-quest__priority"
-                :class="getPriorityClass(quest.priority)"
-              >
-                {{ getPriority(quest.priority) }}
-              </div>
-              <div
-                class="card-quest__amount"
-                :class="getAmountStyles(quest)"
-              >
-                {{ `${quest.price}  ${currency}` }}
-              </div>
-            </div>
-            <div class="card-quest__details">
-              <base-btn
-                v-if="quest.type !== 3"
-                class="card-quest__btn-details"
-                mode="borderless-right"
-                @click="showDetails(quest.id)"
-              >
-                {{ $t('meta.details') }}
-                <template v-slot:right>
-                  <span class="icon-short_right" />
-                </template>
-              </base-btn>
-              <div
-                v-if="quest.status === $options.QuestStatuses.Done"
-                class="card-quest__rating"
-              >
-                <star-rating
-                  v-if="userRole === $options.UserRole.WORKER ? quest.assignedWorkerId === userData.id : quest.userId === userData.id"
-                  class="card-quest__star"
-                  :quest-index="0"
-                  rating-type="questPage"
-                  :stars-number="5"
-                  :rating="!quest.yourReview ? currentMark.mark : quest.yourReview.mark"
-                  :is-disabled="quest.yourReview !== null || currentMark.mark !== 0"
-                  @input="showReviewModal($event, quest)"
-                />
-              </div>
-            </div>
+            <star-rating
+              v-if="userRole === $options.UserRole.WORKER ? quest.assignedWorkerId === userData.id : quest.userId === userData.id"
+              class="card-quest__star"
+              :quest-index="0"
+              rating-type="questPage"
+              :stars-number="5"
+              :rating="!quest.yourReview ? currentMark.mark : quest.yourReview.mark"
+              :is-disabled="quest.yourReview !== null || currentMark.mark !== 0"
+              @input="showReviewModal($event, quest)"
+            />
           </div>
         </div>
       </div>
@@ -181,6 +179,10 @@ export default {
   UserRole,
   QuestStatuses,
   props: {
+    disputeId: {
+      type: String,
+      default: '',
+    },
     quest: {
       type: Object,
       default: () => {},
@@ -235,7 +237,7 @@ export default {
       this.$router.push(`/profile/${id}`);
     },
     getQuestPreview(quest) {
-      if (quest.medias && quest.medias.length) {
+      if (quest?.medias?.length) {
         for (let i = 0; i < quest.medias.length; i += 1) {
           const media = quest.medias[i];
           if (media.contentType.split('/')[0] === 'image') return { url: media.url, alt: 'Quest preview' };
@@ -262,17 +264,6 @@ export default {
         default: return '';
       }
     },
-    async getResponsesToQuestForAuthUser() {
-      if (this.userRole === UserRole.WORKER) this.questResponses = await this.$store.dispatch('quests/getResponsesToQuestForAuthUser');
-    },
-    cardsLevels(idx) {
-      const { cards } = this;
-      return [
-        { card__level_checked: cards[idx].level.code === 3 },
-        { card__level_reliable: cards[idx].level.code === 2 },
-        { card__level_higher: cards[idx].level.code === 1 },
-      ];
-    },
     showProfile(profileId) {
       this.$router.push(`${Path.PROFILE}/${profileId}`);
     },
@@ -281,18 +272,6 @@ export default {
     },
     showReviewModal(rating, item) {
       this.ShowModal({ key: modals.review, item, rating });
-    },
-    isHideStar(type) {
-      return ![QuestStatuses.WaitWorker, QuestStatuses.Dispute].includes(type);
-    },
-    isRating(type) {
-      return type === QuestStatuses.Dispute;
-    },
-    isHideStatus(type) {
-      return type !== QuestStatuses.WaitWorker;
-    },
-    showMessageModal() {
-      this.ShowModal({ key: modals.sendARequest });
     },
     getStatusCard(index) {
       const questStatus = {
@@ -467,7 +446,10 @@ export default {
 .card-quest {
   transition: .5s;
   border: 1px solid $white;
-  border-radius: 8px;
+  background: $white;
+  border-radius: 6px;
+  display: grid;
+  grid-template-columns: 210px 1fr;
   &:hover {
     border: 1px solid $black100;
   }
@@ -502,13 +484,6 @@ export default {
       font-weight: 400;
       color: $black500;
     }
-  }
-  &__blocks {
-    background: $white;
-    border-radius: 6px;
-    display: grid;
-    grid-template-columns: 210px 1fr;
-    min-height: 100%;
   }
   &__left {
     @extend .styles__full;
@@ -726,18 +701,6 @@ export default {
     line-height: 130%;
     color: $black800;
   }
-  &__body {
-    @extend .styles__full;
-    max-width: 1180px;
-  }
-  &__content {
-    display: grid;
-    align-items: center;
-    grid-gap: 10px;
-    &_employer {
-      margin-bottom: 0;
-    }
-  }
   &__cards {
     &-state-clo {
         background: $red;
@@ -783,6 +746,9 @@ export default {
   width: 30px;
   align-self: center;
   justify-self: center;
+  &__hide {
+    display: none;
+  }
   &__default {
     display: flex;
   }
@@ -805,9 +771,7 @@ export default {
 }
 @include _991 {
   .card-quest {
-    &__blocks {
-      grid-template-columns: auto;
-    }
+    grid-template-columns: auto;
     &__right {
       padding-left: 20px;
     }
@@ -822,7 +786,7 @@ export default {
     }
     .avatar {
       &__container {
-        grid-template-columns: auto 3fr 3fr;
+        grid-template-columns: auto repeat(2, 3fr);
       }
     }
   }
@@ -864,6 +828,9 @@ export default {
     &__actions {
       grid-template-columns: 2fr 1fr;
     }
+    &__right {
+      padding: 10px;
+    }
   }
   .user__name {
     font-size: 12px;
@@ -876,11 +843,6 @@ export default {
   .avatar {
     &__container {
       grid-template-columns: repeat(3, auto);
-    }
-  }
-  .card-quest {
-    &__right {
-      padding: 10px;
     }
   }
 }
