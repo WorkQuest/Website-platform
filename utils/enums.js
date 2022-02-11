@@ -135,8 +135,11 @@ export const NotificationAction = {
   WORKER_ACCEPTED_INVITATION_TO_QUEST: 'workerAcceptedInvitationToQuest',
   WORKER_REJECTED_INVITATION_TO_QUEST: 'workerRejectedInvitationToQuest',
   EMPLOYER_REJECTED_WORKERS_RESPONSE: 'employerRejectedWorkersResponse',
+  WAIT_WORKER: 'waitWorker',
 
   USER_LEFT_REVIEW_ABOUT_QUEST: 'userLeftReviewAboutQuest',
+
+  OPEN_DISPUTE: 'openDispute',
 };
 
 export const ChatType = {
@@ -160,16 +163,32 @@ export const UserRole = {
 };
 
 export const Path = {
-  QUESTS: '/quests',
+  ROOT: '/',
+  SIGN_IN: '/sign-in',
+  SIGN_UP: '/sign-up',
+  MY_QUESTS: '/my',
+  WALLET: '/wallet',
+  PENSION: '/pension',
+  REFERRAL: '/referral',
+  INSURING: '/insuring',
+  SAVINGS: '/savings',
+  CREDITING: '/crediting',
+  MINING: '/mining',
+  CROSSCHAIN: '/crosschain',
+  SETTINGS: '/settings',
+  DISPUTES: '/disputes',
+  WORKERS: '/workers',
   CREATE_QUEST: '/create-quest',
   STAKING: '/staking',
   PROFILE: '/profile',
-  EMPLOYEES: '/workers',
+  ROLE: '/role',
+  QUESTS: '/quests',
+  EDIT_QUEST: '/edit-quest',
 };
 
 // WALLET
 export const WalletState = Object.freeze({
-  SignPage: 1,
+  Default: 1,
   SaveMnemonic: 2,
   ConfirmMnemonic: 3,
   ImportOrCreate: 4,

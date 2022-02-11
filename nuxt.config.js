@@ -112,7 +112,6 @@ export default {
 
     NOTIFS_URL: process.env.NOTIFS_URL,
     WS_NOTIFS_URL: process.env.WS_NOTIFS_URL,
-    WS_CHAT_URL: process.env.WS_CHAT_URL,
     WS_CHAT_ACTIONS_URL: process.env.WS_CHAT_ACTIONS_URL,
 
     ETHEREUM_BRIDGE: process.env.ETHEREUM_BRIDGE,

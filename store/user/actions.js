@@ -1,7 +1,9 @@
 import moment from 'moment';
 import { error } from '~/utils/web3';
 import { connectWithMnemonic } from '~/utils/wallet';
-import { NotificationAction, UserRole } from '~/utils/enums';
+import {
+  NotificationAction, UserRole, Path, UserStatuses,
+} from '~/utils/enums';
 
 export default {
   async addEducation({ commit }, data) {
@@ -19,11 +21,11 @@ export default {
       console.log(e);
     }
   },
-  async removeNotification({ dispatch }, { config, notificationId }) {
+  async removeNotification({ dispatch, commit }, { config, notificationId }) {
     try {
-      console.log(notificationId);
       const { ok } = await this.$axios.$delete(`${process.env.NOTIFS_URL}notifications/delete/${notificationId}`);
 
+      await commit('removeNotification', notificationId);
       await dispatch('getNotifications', config);
 
       return ok;
@@ -48,24 +50,35 @@ export default {
 
       if (result.notifications.length) result.notifications.map(async (notification) => await dispatch('setCurrNotificationObject', notification));
 
-      if (!config) commit('setReducedNotifications', result.notifications);
+      if (!config) {
+        commit('setReducedNotifications', result.notifications);
+        commit('setUnreadNotifsCount', result.unreadCount);
+      }
 
-      commit('setNotifications', result);
-      commit('setUnreadNotifsCount', result.unreadCount);
+      const needPush = config?.params.limit === 1;
+
+      commit('setNotifications', { result, needPush });
+
       return ok;
     } catch (e) {
       return false;
     }
   },
+  async addNotification({ commit, dispatch }, notification) {
+    const newNotification = await dispatch('setCurrNotificationObject', notification);
+    commit('addNotification', newNotification);
+  },
   setCurrNotificationObject({ getters }, notification) {
     const {
       action, data: {
-        user, title, id, assignedWorker, worker, quest, employer,
+        user, title, id, assignedWorker, worker, quest, employer, fromUser, message, toUserId,
+        problemDescription,
       },
     } = notification.notification;
 
+    let currTitle = quest?.title || title;
     let keyName = 'notifications.';
-    const link = `/quests/${quest?.id || id}`;
+    let path = `${Path.QUESTS}/${quest?.id || id}`;
     const userRole = getters.getUserRole;
     const isItAnWorker = userRole === UserRole.WORKER;
 
@@ -110,6 +123,21 @@ export default {
         keyName += 'declinedYourResponseToTheQuest';
         break;
       }
+      case NotificationAction.WAIT_WORKER: {
+        keyName += 'theQuestIsPending';
+        break;
+      }
+      case NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST: {
+        keyName += 'leftReviewAboutQuest';
+        path = `${Path.PROFILE}/${toUserId}`;
+        currTitle = message;
+        break;
+      }
+      case NotificationAction.OPEN_DISPUTE: {
+        keyName += 'openDispute';
+        currTitle = problemDescription;
+        break;
+      }
       default: {
         keyName = '';
         break;
@@ -117,9 +145,9 @@ export default {
     }
 
     notification.actionNameKey = keyName;
-    notification.sender = isItAnWorker ? user || employer : assignedWorker || worker;
-    if (quest?.title || title) notification.params = { title: quest?.title || title, link };
-    notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, h:mm');
+    notification.sender = fromUser || (isItAnWorker ? user || employer : assignedWorker || worker);
+    if (currTitle) notification.params = { title: currTitle, path };
+    notification.creatingDate = moment(new Date(notification.createdAt)).format('MMMM Do YYYY, HH:mm');
   },
   async getUserPortfolios({ commit }, { userId, query }) {
     try {
@@ -191,7 +219,7 @@ export default {
     try {
       return await this.$axios.$post('/v1/auth/register/wallet', payload);
     } catch (e) {
-      return error(e.response.data.code, e.response.data.message);
+      return error(e.response.data.code, e.response.data.msg);
     }
   },
   async signIn({ commit, dispatch }, payload) {
@@ -221,9 +249,17 @@ export default {
     commit('logOut');
   },
   async confirm({ commit }, payload) {
-    commit('setTokens', { access: this.$cookies.get('access'), refresh: this.$cookies.get('refresh') });
-    this.$cookies.set('role', payload.role);
-    return await this.$axios.$post('/v1/auth/confirm-email', payload);
+    try {
+      commit('setTokens', {
+        access: this.$cookies.get('access'),
+        refresh: this.$cookies.get('refresh'),
+        userStatus: UserStatuses.Confirmed,
+      });
+      this.$cookies.set('role', payload.role, { path: '/' });
+      return await this.$axios.$post('/v1/auth/confirm-email', payload);
+    } catch (e) {
+      return false;
+    }
   },
   async getUserData({ commit }) {
     try {
@@ -233,7 +269,8 @@ export default {
       if (result.wallet?.address) connectWithMnemonic(result.wallet.address);
       return response;
     } catch (e) {
-      return console.error(e);
+      console.error(e);
+      return false;
     }
   },
   async getAnotherUserData({ commit }, payload) {
@@ -245,9 +282,13 @@ export default {
     commit('setAnotherUserData', {});
   },
   async setUserRole({ commit }, payload) {
-    const response = await this.$axios.$post('/v1/profile/set-role', payload);
-    commit('setUserRole', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$post('/v1/profile/set-role', payload);
+      commit('setUserRole', response.result);
+      return response;
+    } catch (e) {
+      return false;
+    }
   },
   async editEmployerData({ commit }, payload) {
     try {
@@ -333,24 +374,48 @@ export default {
     try {
       const response = await this.$axios.$post('/v1/totp/disable', payload);
       commit('setDisable2FA', response.result);
+      commit('setTwoFAStatus', false);
       return response;
     } catch (e) {
-      return console.log(e);
+      const response = {
+        ok: e.response.data.ok,
+        code: e.response.data.code,
+        msg: e.response.data.msg,
+        data: e.response.data.data,
+      };
+      return response;
     }
   },
   async enable2FA({ commit }, payload) {
     try {
       const response = await this.$axios.$post('/v1/totp/enable', payload);
       commit('setTwoFACode', response.result);
-      return response.result;
+      return response;
     } catch (e) {
-      return console.log(e);
+      const response = {
+        ok: e.response.data.ok,
+        code: e.response.data.code,
+        msg: e.response.data.msg,
+        data: e.response.data.data,
+      };
+      return response;
     }
   },
   async confirmEnable2FA({ commit }, payload) {
-    const response = await this.$axios.$post('/v1/totp/confirm', payload);
-    commit('setEnable2FA', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$post('/v1/totp/confirm', payload);
+      commit('setEnable2FA', response.result);
+      commit('setTwoFAStatus', true);
+      return response;
+    } catch (e) {
+      const response = {
+        ok: e.response.data.ok,
+        code: e.response.data.code,
+        msg: e.response.data.msg,
+        data: e.response.data.data,
+      };
+      return response;
+    }
   },
 
   async sendPhone({ commit }, payload) {

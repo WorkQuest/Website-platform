@@ -161,7 +161,7 @@ export const sendTransaction = async (_method, payload, _provider = web3) => {
   let transactionData;
   const inst = new _provider.eth.Contract(payload.abi, payload.address);
   const gasPrice = await _provider.eth.getGasPrice();
-  const accountAddress = await getAccountAddress();
+  const accountAddress = await web3.eth.getCoinbase();
   if (_method === 'claim') {
     const data = inst.methods[_method].apply(null).encodeABI();
     const gasEstimate = await inst.methods[_method].apply(null).estimateGas({ from: accountAddress });

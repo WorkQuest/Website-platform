@@ -1,5 +1,5 @@
 import {
-  InfoModeEmployer, InfoModeWorker, QuestStatuses, ResponsesType,
+  InfoModeEmployer, InfoModeWorker, QuestStatuses, ResponsesType, UserRole,
 } from '~/utils/enums';
 
 export default {
@@ -73,7 +73,7 @@ export default {
 
       const questStatuses = Object.entries(QuestStatuses);
 
-      if (role === 'employer') {
+      if (role === UserRole.EMPLOYER) {
         questStatuses.some(([key, val]) => {
           if (val === status) {
             currStat = InfoModeEmployer[key];
@@ -81,7 +81,7 @@ export default {
           }
           return false;
         });
-      } else if (role === 'worker') {
+      } else if (role === UserRole.WORKER) {
         questStatuses.some(([key, val]) => {
           if (val === status) {
             if (val === QuestStatuses.Created && response) key = response.type ? 'Invited' : 'Responded';
@@ -291,5 +291,15 @@ export default {
   },
   setSelectedPriceFilter({ commit }, data) {
     commit('setSelectedPriceFilter', data);
+  },
+  async getAvailableQuests({ commit }, data) {
+    try {
+      const response = await this.$axios.$get(`/v1/worker/${data}/available-quests?limit=100`);
+      commit('setAvailableQuests', response.result.quests);
+      return response.ok;
+    } catch (e) {
+      console.log('Error: getAvailableQuests');
+      return false;
+    }
   },
 };

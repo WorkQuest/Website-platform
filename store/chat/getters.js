@@ -9,4 +9,6 @@ export default {
   getGroupChatUsers: (state) => state.groupChatUsers,
   getChatMembers: (state) => state.currChat?.members || [],
   isChatOpened: (state) => state.isChatOpened,
+  getChatsFilter: (state) => state.chatsFilter,
+  getSearchValue: (state) => state.chatsFilter.q?.toLowerCase() || '',
 };

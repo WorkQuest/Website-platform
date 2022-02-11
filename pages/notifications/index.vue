@@ -5,7 +5,10 @@
         <div class="info-block__title">
           {{ $t('ui.notifications.title') }}
         </div>
-        <div class="info-block__list">
+        <div
+          v-if="notifsCount"
+          class="info-block__list"
+        >
           <div
             v-for="(notification, i) in notifications"
             :key="i"
@@ -13,12 +16,13 @@
             v-observe-visibility="(isVisible) => checkUnseenNotifs(isVisible, notification)"
             class="notification"
             :class="{'notification_gray' : !notification.seen}"
+            @click="goToEvent(notification.params ? notification.params.path : '', true)"
           >
             <template v-if="notification.sender">
               <div class="notification__avatar">
                 <img
                   class="avatar"
-                  :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : EmptyAvatar"
+                  :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : EmptyAvatar()"
                   alt=""
                 >
               </div>
@@ -47,29 +51,29 @@
               {{ notification.creatingDate }}
             </div>
 
-            <!--            <div-->
-            <!--              v-if="!notification.seen"-->
-            <!--              class="notification__unread-dot"-->
-            <!--            />-->
-
-            <!--            <img-->
-            <!--              class="notification__remove"-->
-            <!--              src="~assets/img/ui/close.svg"-->
-            <!--              alt="x"-->
-            <!--              @click="tryRemoveNotification(notification.id)"-->
-            <!--            >-->
+            <img
+              class="notification__remove"
+              src="~assets/img/ui/close.svg"
+              alt="x"
+              @click="tryRemoveNotification($event, notification.id)"
+            >
 
             <div class="notification__button">
               <base-btn
                 mode="outline"
                 class="button__view"
-                @click="goToEvent(notification.params ? notification.params.link : '')"
+                @click="goToEvent(notification.params ? notification.params.path : '')"
               >
                 {{ $t('btn.view') }}
               </base-btn>
             </div>
           </div>
         </div>
+        <empty-data
+          v-else
+          class="info-block__no-content"
+          :description="$t('ui.notifications.noNotifications')"
+        />
         <base-pager
           v-if="totalPages > 1"
           v-model="page"
@@ -96,7 +100,7 @@ export default {
       },
       page: 1,
       notificationIdsForRead: [],
-      delay: null,
+      delayId: null,
     };
   },
   computed: {
@@ -115,11 +119,12 @@ export default {
     this.SetLoader(false);
   },
   destroyed() {
-    this.$store.commit('user/setNotifications', { notifications: [], count: this.notifsCount });
+    this.$store.commit('user/setNotifications', { result: { notifications: [], count: this.notifsCount } });
   },
   methods: {
-    tryRemoveNotification(notificationId) {
-      // back-bug
+    tryRemoveNotification(ev, notificationId) {
+      ev.stopPropagation();
+
       this.ShowModal({
         key: modals.areYouSure,
         title: this.$t('modals.sureDeleteNotification'),
@@ -128,22 +133,32 @@ export default {
       });
     },
     async removeNotification(notificationId) {
+      const { limit, offset } = this.filter;
+
       this.CloseModal();
+
+      this.SetLoader(true);
+
       const payload = {
         config: {
-          params: this.filter,
+          params: {
+            limit: 1,
+            offset: limit + offset - 1,
+          },
         },
         notificationId,
       };
 
       await this.$store.dispatch('user/removeNotification', payload);
+
+      this.SetLoader(false);
     },
     checkUnseenNotifs(isVisible, { id, seen }) {
       if (!isVisible || seen || this.notificationIdsForRead.indexOf(id) >= 0) return;
 
       this.notificationIdsForRead.push(id);
 
-      this.setDelay(async () => {
+      this.delayId = this.SetDelay(async () => {
         const config = {
           notificationIds: this.notificationIdsForRead,
         };
@@ -151,11 +166,7 @@ export default {
         await this.$store.dispatch('user/readNotifications', config);
 
         this.notificationIdsForRead = [];
-      }, 1000);
-    },
-    setDelay(f, t) {
-      clearTimeout(this.delay);
-      this.delay = setTimeout(f, t);
+      }, 1000, this.delayId);
     },
     async setPage() {
       this.filter.offset = (this.page - 1) * this.filter.limit;
@@ -170,7 +181,9 @@ export default {
 
       await this.$store.dispatch('user/getNotifications', config);
     },
-    goToEvent(path) {
+    goToEvent(path, isNotifCont) {
+      if (isNotifCont && document.body.offsetWidth > 767) return;
+
       this.$router.push(path);
     },
     navigateBack() {
@@ -204,6 +217,15 @@ export default {
   background: #fff;
   border-radius: 6px;
 
+  &__no-content {
+    margin: 0 0 20px;
+    background: transparent;
+  }
+
+  &__container {
+    display: grid;
+  }
+
   &__title {
     @include text-simple;
     font-weight: 500;
@@ -216,6 +238,8 @@ export default {
   &__pager {
     float: unset;
     justify-self: flex-end;
+    margin: 20px;
+    border: 1px solid #F7F8FA
   }
 }
 
@@ -244,17 +268,6 @@ export default {
 
   &_gray {
     background: #f7f8fabd;
-  }
-
-  &__unread-dot {
-    grid-column: 3;
-    grid-row: 1;
-    height: 8px;
-    width: 8px;
-    border-radius: 50%;
-    background-color: #0083C7;
-    justify-self: flex-end;
-    margin-right: 10px;
   }
 
   &:not(:last-child) {
@@ -337,6 +350,25 @@ export default {
     font-size: 16px;
     color: $blue;
     letter-spacing: 0.03em;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: initial;
+
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+    box-orient: vertical;
+    -webkit-box-orient: vertical;
+  }
+}
+
+@include _1199 {
+  .notifications-page {
+
+    &__main-container {
+      padding: 20px;
+    }
   }
 }
 
@@ -364,14 +396,19 @@ export default {
     &__date {
       align-self: flex-start;
     }
-    &__quest {
-      margin-bottom: 20px;
-    }
     &__button {
       display: none;
     }
 
-    width: 350px;
+    &__date {
+      justify-self: flex-end;
+    }
+
+    &__remove {
+      display: block;
+      grid-row: 2;
+      align-self: unset;
+    }
   }
   .inviter {
     align-self: center;
@@ -392,10 +429,6 @@ export default {
       font-size: 16px;
       line-height: 21px;
       color: $black500;
-      margin-bottom: 10px;
-    }
-    &__title {
-      display: none;
     }
   }
 
@@ -406,6 +439,34 @@ export default {
       line-height: 39px;
       letter-spacing: 0.03em;
       margin-bottom: 5px;
+    }
+  }
+}
+
+@include _575 {
+  .notifications-page {
+
+    &__main-container {
+      padding: 10px;
+    }
+  }
+
+  .notification {
+    grid-template-columns: 40px 1fr;
+    grid-template-rows: 40px max-content max-content;
+    grid-template-areas:
+      "avatar inviter"
+      "date date"
+      "quest quest";
+
+    &__date {
+      justify-self: flex-start;
+    }
+
+    &__remove {
+      display: block;
+      grid-row: 1;
+      align-self: center;
     }
   }
 }

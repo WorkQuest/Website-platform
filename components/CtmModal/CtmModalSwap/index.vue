@@ -28,7 +28,7 @@
                 type="number"
                 :placeholder="'0,05'"
                 class="grid__input"
-                rules="required|decimal|min_value:0.00001"
+                rules="required|decimal|decimalPlaces:18|min_value:0.00001"
                 :name="$t('modals.amountField')"
               >
                 <template
@@ -92,8 +92,6 @@ export default {
       token: 0,
       fromToken: '',
       toToken: '',
-      recipientAddress: '',
-      userAddress: '',
       amount: '',
     };
   },
@@ -124,9 +122,12 @@ export default {
         },
       ];
     },
+    recipientAddress() {
+      return this.account.address;
+    },
   },
   async mounted() {
-    await this.fillAddress();
+    await this.connectToMetamask();
     await this.crosschainFlow();
   },
   methods: {
@@ -135,10 +136,6 @@ export default {
     },
     hide() {
       this.CloseModal();
-    },
-    fillAddress() {
-      this.recipientAddress = this.account.address;
-      this.userAddress = this.account.address;
     },
     async crosschainFlow() {
       if (this.options.crosschainId === 0) {
@@ -155,7 +152,6 @@ export default {
     },
     async showSwapInfoModal() {
       this.SetLoader(true);
-      // this.connectToMetamask();
       if (this.checkAmount()) {
         this.amount = this.amount.replace(/[,]/g, '.');
         this.ShowModal({
@@ -164,8 +160,6 @@ export default {
           chain: this.fromToken,
           amount: `${this.amount} WQT`,
           amountInt: this.amount,
-          sender: this.cropTxt(this.userAddress),
-          senderFull: this.userAddress,
           recepient: this.cropTxt(this.recipientAddress),
           recepientFull: this.recipientAddress,
           worknetFee: '0,5 WQT',
@@ -188,19 +182,9 @@ export default {
         this.$store.dispatch('web3/connect');
       }
     },
-    showGiveDeposit() {
-      this.ShowModal({
-        key: modals.giveDeposit,
-      });
-    },
     cropTxt(str) {
       if (str.length > 40) str = `${str.slice(0, 10)}...${str.slice(-10)}`;
       return str;
-    },
-    showAddingCard() {
-      this.ShowModal({
-        key: modals.addingCard,
-      });
     },
   },
 };
@@ -236,7 +220,11 @@ export default {
     margin-bottom: 23px;
   }
 }
-
+.max {
+  &__button {
+    background: transparent !important;
+  }
+}
 .buttons {
   display: grid;
   grid-template-columns: repeat(2, calc(50% - 10px));

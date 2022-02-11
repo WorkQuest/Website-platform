@@ -6,7 +6,7 @@
     <info />
     <div class="main main-white">
       <div class="main__body main__body_20gap">
-        <questPanel :location="questLocation" />
+        <quest-panel :location="questLocation" />
 
         <div class="quest__container">
           <h2 class="quest__title">
@@ -84,7 +84,7 @@
               v-if="starRating(questData)"
               class="worker-data__rating rating rating__star"
               :quest-index="1"
-              :rating-type="'questPage'"
+              rating-type="questPage"
               :stars-number="5"
               :rating="!questData.yourReview ? currentMark.mark : questData.yourReview.mark"
               :is-disabled="questData.yourReview !== null || currentMark.mark !== null"
@@ -109,12 +109,12 @@
           class="main__map"
           :is-draggable="false"
         />
-        <template v-if="userRole === 'employer' && infoDataMode === InfoModeEmployer.Created">
+        <template v-if="userRole === UserRole.EMPLOYER && infoDataMode === InfoModeEmployer.Created">
           <workers-list is-invited />
           <workers-list />
         </template>
         <div
-          v-if="userRole === 'worker'"
+          v-if="userRole === UserRole.WORKER"
           class="spec__container"
         >
           <div class="quest__group">
@@ -132,11 +132,11 @@
             </div>
           </div>
           <div class="quest__card">
-            <quest-cards
+            <card-quest
               v-if="otherQuestsCount"
               :quests="sameQuest"
             />
-            <emptyData
+            <empty-data
               v-else
               :description="$t(`errors.emptyData.emptyQuests`)"
             />
@@ -153,13 +153,9 @@ import {
   QuestStatuses, InfoModeWorker, InfoModeEmployer, UserRole, ResponseStatus,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
-import info from '~/components/app/info/index.vue';
-import questPanel from '~/components/app/panels/questPanel';
-import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'Quests',
-  components: { info, questPanel, emptyData },
   data() {
     return {
       questLocation: { lat: 0, lng: 0 },
@@ -178,6 +174,9 @@ export default {
       otherQuests: 'quests/getAllQuests',
       currentMark: 'user/getCurrentReviewMarkOnQuest',
     }),
+    UserRole() {
+      return UserRole;
+    },
     questStatuses() {
       return QuestStatuses;
     },
@@ -206,10 +205,11 @@ export default {
       return Math.floor(questSpecializations[Math.floor(Math.random() * questSpecializations.length)].path);
     },
     checkAvailabilityDispute() {
-      if (this.questData.startedAt) {
-        return this.$moment().toISOString() >= this.$moment(this.questData.startedAt).add(1, 'day').toISOString();
-      }
-      return false;
+      const now = this.$moment().valueOf();
+      // TODO fixme Вернуть, нужно для тестов Роме
+      // const dateForStart = this.$moment(this.questData.startedAt).add(1, 'day').valueOf();
+      const dateForStart = this.$moment(this.questData.startedAt).add(1, 'm').valueOf();
+      return now >= dateForStart;
     },
   },
   watch: {

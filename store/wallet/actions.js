@@ -42,12 +42,18 @@ export default {
       return false;
     }
   },
+  confirmPassword({ commit, getters }, { nuxt, callbackLayout }) {
+    if (callbackLayout) commit('setCallbackLayout', callbackLayout);
+    commit('setIsOnlyConfirm', true);
+    nuxt.setLayout('confirmPassword');
+  },
   /**
    * Check wallet is connected
    * @returns boolean
    */
   checkWalletConnected({ commit, getters }, { nuxt, callbackLayout }) {
     const connected = getIsWalletConnected();
+    commit('setIsOnlyConfirm', false);
     if (!connected) {
       if (callbackLayout) commit('setCallbackLayout', callbackLayout);
       nuxt.setLayout('confirmPassword');
@@ -63,8 +69,8 @@ export default {
    * @param userAddress
    * @param userPassword
    */
-  connectWallet({ commit }, { userAddress, userPassword }) {
-    const res = connectWallet(userAddress, userPassword);
+  connectWallet({ commit }, { userWalletAddress, userPassword }) {
+    const res = connectWallet(userWalletAddress, userPassword);
     if (res?.ok) commit('setIsWalletConnected', true);
     return res;
   },

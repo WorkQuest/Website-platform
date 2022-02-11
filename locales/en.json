@@ -66,7 +66,11 @@
     "formError": "Fill in all required fields",
     "is": "The values do not match",
     "is_not": "Incorrect value",
-    "mnemonic": "Incorrect secret phrase"
+    "mnemonic": "Incorrect secret phrase",
+    "attemptsExceeded": "Number of attempts exceeded",
+    "loginWithSecret": "Please login with secret phrase",
+    "invalidPassword": "Invalid password",
+    "loginToContinue": "Please login to continue"
   },
   "labels": {
     "firstName": "First name",
@@ -224,10 +228,12 @@
     "lastName": "Last name",
     "email": "Email",
     "password": "Password",
+    "totp":"TOTP",
     "confirmPassword": "Repeat password",
     "create": "Create account"
   },
   "createWallet": {
+    "showSecretPhrase": "Show secret phrase",
     "savePhrase": "Save your secret phrase",
     "keptPhrase": "I have kept a secret phrase",
     "confirmSecretPhrase": "Confirm secret phrase",
@@ -235,7 +241,7 @@
     "secret": "Secret word #{a}",
     "create": "Create wallet",
     "importWallet": "Import wallet",
-    "createOrImport": "Create or import secret wallet",
+    "createOrImport": "Create or import wallet",
     "typeSecretPhrase": "Type secret phrase",
     "secretPhrase": "Secret phrase"
   },
@@ -926,6 +932,8 @@
     "error": "Error!"
   },
   "modals": {
+    "errorQuests": "Error with quests",
+    "emptyOpenQuests": "You don't have open quests, please create",
     "errorSmsVer": "Error SMS verification",
     "fillNumber": "Please fill phone number in settings page...",
     "disputes": {
@@ -1287,7 +1295,8 @@
     },
     "notifications": {
       "title": "Notifications",
-      "invite": "Invites you to complete the quest"
+      "invite": "Invites you to complete the quest",
+      "noNotifications": "No notifications"
     },
     "menu": {
       "unauthorized": "Not logged",
@@ -1348,7 +1357,10 @@
     "invitedYouToAQuest": "Invited you to a quest",
     "acceptedTheInvitationToTheQuest": "Accepted the invitation to the quest",
     "declinedTheInvitationToTheQuest": "Declined the invitation to the quest",
-    "declinedYourResponseToTheQuest": "Declined your response to the quest"
+    "declinedYourResponseToTheQuest": "Declined your response to the quest",
+    "leftReviewAboutQuest": "Left review about quest",
+    "theQuestIsPending": "The quest is pending",
+    "openDispute": "Open dispute"
   },
   "wallet": {
     "WUSD": "WUSD wallet",
@@ -1416,7 +1428,8 @@
       "youLeftTheChat": "You left the chat"
     },
     "leaveChat": "Leave chat",
-    "loadMore": "Load more"
+    "loadMore": "Load more",
+    "searchTitle": "Name/Quest/Group"
   },
   "settings": {
     "additionalPhoneNumber": "Additional phone number",
@@ -2184,7 +2197,8 @@
           },
           "notifications": {
             "title": "Notifications",
-            "subtitle": "All important notifications related to your profile and platform updates."
+            "subtitle": "All important notifications related to your profile and platform updates.",
+            "noNotifications": "No notifications"
           },
           "menu": {
             "title": "Menu",

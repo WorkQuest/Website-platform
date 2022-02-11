@@ -66,7 +66,10 @@
     "formError": "???",
     "is": "The values do not match",
     "is_not": "Incorrect value",
-    "mnemonic": "Incorrect secret phrase"
+    "mnemonic": "Incorrect secret phrase",
+    "attemptsExceeded": "Number of attempts exceeded",
+    "loginWithSecret": "Please login with secret phrase",
+    "invalidPassword": "Invalid password"
     },
   "labels": {
     "firstName": "名字",
@@ -224,10 +227,12 @@
     "lastName": "姓氏",
     "email": "电子邮件",
     "password": "密码",
+    "totp":"???",
     "confirmPassword": "再次输入密码",
     "create": "创建帐户"
   },
   "createWallet": {
+    "showSecretPhrase": "Show secret phrase",
     "savePhrase": "Save your secret phrase",
     "keptPhrase": "I have kept a secret phrase",
     "confirmSecretPhrase": "Confirm secret phrase",
@@ -235,7 +240,7 @@
     "secret": "Secret word #{a}",
     "create": "Create wallet",
     "importWallet": "Import wallet",
-    "createOrImport": "Create or import secret wallet",
+    "createOrImport": "Create or import wallet",
     "typeSecretPhrase": "Type secret phrase",
     "secretPhrase": "Secret phrase"
   },
@@ -926,6 +931,8 @@
     "error": "???"
   },
   "modals": {
+    "errorQuests": "???",
+    "emptyOpenQuests": "???",
     "errorSmsVer": "???",
     "fillNumber": "???",
     "disputes": {
@@ -1287,7 +1294,8 @@
     },
     "notifications": {
       "title": "通知",
-      "invite": "邀请您完成 Quest"
+      "invite": "邀请您完成 Quest",
+      "noNotifications": "No notifications"
     },
     "menu": {
       "unauthorized": "???",
@@ -1348,7 +1356,10 @@
     "invitedYouToAQuest": "Invited you to a quest",
     "acceptedTheInvitationToTheQuest": "Accepted the invitation to the quest",
     "declinedTheInvitationToTheQuest": "Declined the invitation to the quest",
-    "declinedYourResponseToTheQuest": "Declined your response to the quest"
+    "declinedYourResponseToTheQuest": "Declined your response to the quest",
+    "leftReviewAboutQuest": "Left review about quest",
+    "theQuestIsPending": "The quest is pending",
+    "openDispute": "Open dispute"
   },
   "wallet": {
     "WUSD": "WUSD 钱包",
@@ -1416,7 +1427,8 @@
       "youLeftTheChat": "???"
     },
     "leaveChat": "???",
-    "loadMore": "???"
+    "loadMore": "???",
+    "searchTitle": "Name/Quest/Group"
   },
   "settings": {
     "additionalPhoneNumber": "???",
@@ -2184,7 +2196,8 @@
           },
           "notifications": {
             "title": "???",
-            "subtitle": "???"
+            "subtitle": "???",
+            "noNotifications": "No notifications"
           },
           "menu": {
             "title": "???",

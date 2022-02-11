@@ -1,11 +1,12 @@
-import { StakingTypes as TokensSymbols } from '~/utils/enums';
+import { TokenSymbols } from '~/utils/enums';
 
 export default () => ({
   transactions: [],
   transactionsCount: 0,
   isWalletConnected: false,
   callbackLayout: 'default',
-  selectedToken: TokensSymbols.WUSD,
+  isOnlyConfirm: false, // for confirm password layout
+  selectedToken: TokenSymbols.WUSD,
   balance: {
     WQT: {
       balance: 0, // Display balance

@@ -65,12 +65,18 @@
           >
             {{ $t('profile.quests') }}
           </div>
-          <quest-cards
-            v-if="questsCount !== 0"
-            :quests="questsData"
-            @clickFavoriteStar="updateQuests"
-          />
-          <emptyData
+          <div
+            v-if="questsCount > 0"
+            class="quests__cards"
+          >
+            <card-quest
+              v-for="(quest,id) in questsData"
+              :key="id"
+              :quest="quest"
+              @clickFavoriteStar="updateQuests"
+            />
+          </div>
+          <empty-data
             v-else
             :description="$t('errors.emptyData.emptyQuests')"
           />
@@ -135,13 +141,13 @@
               </div>
             </div>
           </template>
-          <emptyData
+          <empty-data
             v-else
             :description="$t('errors.emptyData.emptyReviews')"
           />
         </div>
         <div
-          v-if="(selectedTab === 'commonInfo' || selectedTab === 'portfolio') && userData.role === 'worker'"
+          v-if="(selectedTab === 'commonInfo' || selectedTab === 'portfolio') && userData.role === $options.UserRole.WORKER"
           class="block__portfolio portfolio"
         >
           <div
@@ -200,16 +206,16 @@ import { mapGetters } from 'vuex';
 import reviewsTab from '~/components/app/pages/profile/tabs/reviews';
 import portfolioTab from '~/components/app/pages/profile/tabs/portfolio';
 import userInfo from '~/components/app/pages/common/userInfo';
-import emptyData from '~/components/app/info/emptyData';
 import modals from '~/store/modals/modals';
 import skills from '~/components/app/pages/common/skills';
+import { UserRole } from '~/utils/enums';
 
 export default {
   name: 'Index',
+  UserRole,
   components: {
     reviewsTab,
     userInfo,
-    emptyData,
     portfolioTab,
     skills,
   },
@@ -268,7 +274,7 @@ export default {
         },
       ];
 
-      if (this.userData.role === 'worker') {
+      if (this.userData.role === UserRole.WORKER) {
         tabs.push({
           number: 4,
           tabName: 'portfolio',
@@ -325,7 +331,7 @@ export default {
         this.pagePortfolios = 1;
         await this.changeQuestsData(2);
         await this.changeReviewsData(2);
-        if (this.userData.role === 'worker') {
+        if (this.userData.role === UserRole.WORKER) {
           await this.changePortfoliosData(3);
         }
       }
@@ -356,9 +362,7 @@ export default {
     }
     await this.changeQuestsData(2);
     await this.changeReviewsData(2);
-    if (this.userData.role === 'worker') {
-      await this.changePortfoliosData(3);
-    }
+    if (this.userData.role === UserRole.WORKER) await this.changePortfoliosData(3);
     const { ratingStatistic } = this.userData;
     const { questStatistic } = this.userData;
     this.userStatistics = {
@@ -374,23 +378,16 @@ export default {
   methods: {
     async updateQuests(item) {
       this.SetLoader(true);
-      if (!item.star) {
-        await this.$store.dispatch('quests/setStarOnQuest', item.id);
-      } else {
-        await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
-      }
-      if (this.selectedTab === 'quests') {
-        await this.changeQuestsData();
-      } else {
-        await this.changeQuestsData(2);
-      }
+      if (!item.star) await this.$store.dispatch('quests/setStarOnQuest', item.id);
+      else await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
+
+      if (this.selectedTab === 'quests') await this.changeQuestsData();
+      else await this.changeQuestsData(2);
       this.SetLoader(false);
     },
     numberValidate(number) {
       const fixedNumber = number.toFixed(1);
-      if (number - fixedNumber !== 0) {
-        return fixedNumber;
-      }
+      if (number - fixedNumber !== 0) return fixedNumber;
       return number;
     },
     async changeQuestsData(limit) {
@@ -435,6 +432,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.quests__cards {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .routes {
   &__btn {
     color: $black500;

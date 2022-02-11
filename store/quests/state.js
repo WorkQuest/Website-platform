@@ -26,4 +26,5 @@ export default () => ({
     query: '', selected: {}, visible: {}, selectedAll: {},
   },
   selectedPriceFilter: { from: null, to: null },
+  availableQuests: {},
 });

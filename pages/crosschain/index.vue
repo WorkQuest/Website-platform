@@ -296,6 +296,7 @@ export default {
         chainId: data.chainId,
       };
       const redeemObj = await this.$store.dispatch('web3/redeemSwap', payload);
+      await this.swapsTableData(this.account.address, this.isConnected);
       this.ShowModal({
         key: modals.status,
         img: redeemObj.code === 500 ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),

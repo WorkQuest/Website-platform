@@ -3,9 +3,7 @@
     class="loader"
     :class="{'loader_hider': isLoaderBackgroundHider}"
   >
-    <div
-      class="loader__body"
-    >
+    <div class="loader__body">
       <div
         v-if="checkPage()"
         class="loader__modal"
@@ -17,13 +15,13 @@
       <div
         v-else
         class="sk-chase"
+        :class="{'sk-chase_small' : isMiniLoader}"
       >
-        <div class="sk-chase-dot" />
-        <div class="sk-chase-dot" />
-        <div class="sk-chase-dot" />
-        <div class="sk-chase-dot" />
-        <div class="sk-chase-dot" />
-        <div class="sk-chase-dot" />
+        <div
+          v-for="(item, i) in ['', '', '', '', '', '']"
+          :key="i"
+          class="sk-chase-dot"
+        />
       </div>
     </div>
   </div>
@@ -33,6 +31,12 @@ import { mapGetters } from 'vuex';
 import loaderModes from '~/store/main/loaderModes';
 
 export default {
+  props: {
+    isMiniLoader: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data: () => ({
     loaderModes,
   }),
@@ -105,6 +109,11 @@ export default {
   position: relative;
   z-index: 1500;
   animation: sk-chase 2.5s infinite linear both;
+
+  &_small {
+    height: 20px;
+    width: 20px;
+  }
 }
 
 .sk-chase-dot {

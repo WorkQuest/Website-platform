@@ -5,7 +5,6 @@
   >
     <button
       class="reduced-notifications__button"
-      :class="{'reduced-notifications__button_block' : !notificationsCount}"
       @click="togglePopUp"
     >
       <template v-if="notificationsCount">
@@ -38,60 +37,67 @@
             @click="closePopUp"
           />
         </div>
-        <div class="reduced-notifications__list">
-          <div
-            v-for="notification in notifications"
-            :key="notification.id"
-            class="notify notify__content"
-          >
-            <div class="notify__top">
-              <div
-                v-if="notification.sender"
-                class="notify__user"
-              >
-                <img
-                  class="notify__avatar"
-                  :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : EmptyAvatar"
-                  alt="avatar"
+        <template v-if="notificationsCount">
+          <div class="reduced-notifications__list">
+            <div
+              v-for="notification in notifications"
+              :key="notification.id"
+              class="notify notify__content"
+            >
+              <div class="notify__top">
+                <div
+                  v-if="notification.sender"
+                  class="notify__user"
                 >
-                <div class="notify__info">
-                  <div class="notify__text notify__text_name">
-                    {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
+                  <img
+                    class="notify__avatar"
+                    :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : EmptyAvatar()"
+                    alt="avatar"
+                  >
+                  <div class="notify__info">
+                    <div class="notify__text notify__text_name">
+                      {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
+                    </div>
+                    <!--                  <div class="notify__text notify__text_grey">-->
+                    <!--                    CEO from Amazon-->
+                    <!--                  </div>-->
                   </div>
-                  <!--                  <div class="notify__text notify__text_grey">-->
-                  <!--                    CEO from Amazon-->
-                  <!--                  </div>-->
+                </div>
+                <div class="notify__text notify__text_date">
+                  {{ notification.creatingDate }}
                 </div>
               </div>
-              <div class="notify__text notify__text_date">
-                {{ notification.creatingDate }}
-              </div>
-            </div>
-            <div class="notify__reason">
-              <div class="notify__text notify__text_blue">
-                {{ $t(notification.actionNameKey) }}:
-              </div>
-            </div>
-            <div class="notify__action">
-              <base-btn
-                class="notify__btn"
-                @click="goToEvent(notification.params ? notification.params.link : '')"
-              >
-                <div class="notify__text notify__text_btn">
-                  {{ notification.params ? notification.params.title : '' }}
+              <div class="notify__reason">
+                <div class="notify__text notify__text_blue">
+                  {{ $t(notification.actionNameKey) }}:
                 </div>
-                <span class="icon icon-chevron_right" />
-              </base-btn>
+              </div>
+              <div class="notify__action">
+                <base-btn
+                  class="notify__btn"
+                  @click="goToEvent(notification.params ? notification.params.path : '')"
+                >
+                  <div class="notify__text notify__text_btn">
+                    {{ notification.params ? notification.params.title : '' }}
+                  </div>
+                  <span class="icon icon-chevron_right" />
+                </base-btn>
+              </div>
             </div>
           </div>
-        </div>
-        <base-btn
-          class="reduced-notifications__more-btn"
-          mode="outline"
-          @click="goToNotifsPage"
-        >
-          {{ $t('meta.showAll') }}
-        </base-btn>
+          <base-btn
+            class="reduced-notifications__more-btn"
+            mode="outline"
+            @click="goToNotifsPage"
+          >
+            {{ $t('meta.showAll') }}
+          </base-btn>
+        </template>
+        <empty-data
+          v-else
+          class="reduced-notifications__no-content"
+          :description="$t('ui.notifications.noNotifications')"
+        />
       </div>
     </transition>
   </div>
@@ -124,6 +130,11 @@ export default {
       this.$router.push('/notifications');
     },
     togglePopUp() {
+      if (document.body.offsetWidth <= 575) {
+        this.goToNotifsPage();
+        return;
+      }
+
       this.isShowNotify = !this.isShowNotify;
     },
     closePopUp() {
@@ -166,10 +177,6 @@ export default {
     span {
       color: $black400;
     }
-
-    &_block {
-      pointer-events: none;
-    }
   }
 
   &__header {
@@ -191,7 +198,7 @@ export default {
 
   &__pop-up {
     position: absolute;
-    top: 57px;
+    top: 58px;
     right: calc(100% - 43px);
     background: #FFFFFF;
     box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.0325794), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
@@ -209,6 +216,11 @@ export default {
   &__more-btn {
     width: 33%;
     margin: 0 auto 20px;
+  }
+
+  &__no-content {
+    margin: 0 0 20px;
+    background: transparent;
   }
 }
 
@@ -229,13 +241,12 @@ export default {
   }
 
   &__btn {
+    display: grid;
+    grid-template-columns: 1fr max-content;
     background: #F7F8FA;
     border-radius: 3px;
     height: 44px;
-    width: 100%;
-    display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: 0 10px;
     transition: .5s;
     &:hover {
@@ -267,6 +278,10 @@ export default {
     &_btn {
       font-size: 16px;
       color: $black800;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align: left;
     }
   }
   &__user {

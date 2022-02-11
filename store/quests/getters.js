@@ -26,4 +26,5 @@ export default {
   getSelectedSpecializationsFilters: (state) => state.selectedSpecializationsFilters,
   getSelectedPriceFilter: (state) => state.selectedPriceFilter,
   getAssignedWorker: (state) => state.quest.assignedWorker,
+  getAvailableQuests: (state) => state.availableQuests,
 };

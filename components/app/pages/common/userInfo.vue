@@ -11,7 +11,7 @@
         <div class="block__avatar avatar">
           <img
             class="avatar__img"
-            :src="userData.avatar && userData.avatar.url ? userData.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+            :src="userData.avatar && userData.avatar.url ? userData.avatar.url : EmptyAvatar()"
             :alt="userData.avatar && userData.avatar.url ? userData.avatar.url : 'avatar_empty'"
             loading="lazy"
           >
@@ -39,7 +39,7 @@
           />
         </div>
         <div
-          v-if="userData.role === 'employer' && userData.company"
+          v-if="userData.role === UserRole.EMPLOYER && userData.company"
           class="block__subtitle"
         >
           {{ userData.company }}
@@ -168,7 +168,6 @@
         >
           <base-btn
             :mode="'approve'"
-            :disabled="mainUserData.questsStatistic ? mainUserData.questsStatistic.opened <= 0 : true"
             @click="sendInvite()"
           >
             {{ $t('workers.giveAQuest') }}
@@ -194,9 +193,11 @@ export default {
       anotherUserData: 'user/getAnotherUserData',
     }),
     isEmptyUserData() {
-      return !Object.keys(this.userData).length;
+      return !this.userData.id;
     },
-    UserRole() { return UserRole; },
+    UserRole() {
+      return UserRole;
+    },
     socialNetworks() {
       if (this.isEmptyUserData) return [];
       const socialNetworksData = this.userData.additionalInfo.socialNetwork;
@@ -276,6 +277,16 @@ export default {
     userData() {
       return this.userId !== this.mainUser.id ? this.anotherUserData : this.mainUser;
     },
+    isHaveOpenQuests() {
+      return this.mainUserData.questsStatistic && this.mainUserData.questsStatistic.opened > 0;
+    },
+  },
+  watch: {
+    async anotherUserData() {
+      if (this.mainUser.role === this.UserRole.EMPLOYER && this.userData.role === this.UserRole.WORKER && this.isHaveOpenQuests) {
+        await this.$store.dispatch('quests/getAvailableQuests', this.userId);
+      }
+    },
   },
   methods: {
     ratingStatistic(ratingStatistic) {
@@ -298,10 +309,19 @@ export default {
       this.$router.push('/raised-views');
     },
     sendInvite() {
-      this.ShowModal({
-        key: modals.invitation,
-        userId: this.userData.id,
-      });
+      if (this.isHaveOpenQuests) {
+        this.ShowModal({
+          key: modals.invitation,
+          userId: this.userData.id,
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.errorQuests'),
+          subtitle: this.$t('modals.emptyOpenQuests'),
+        });
+      }
     },
   },
 };
@@ -331,7 +351,7 @@ export default {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
-    grid-gap:15px;
+    grid-gap: 15px;
     &_left {
       max-width: 142px;
     }
@@ -351,6 +371,7 @@ export default {
     display: none;
   }
 }
+
 .right {
   &__header {
     display: grid;
@@ -370,6 +391,7 @@ export default {
     align-items: flex-end;
   }
 }
+
 .price {
   &__text {
     font-size: 14px;
@@ -382,6 +404,7 @@ export default {
     color: #00AA5B;
   }
 }
+
 .block {
   &__data {
     display: flex;
@@ -426,6 +449,7 @@ export default {
   &__socials {
     display: flex;
     grid-gap: 5px;
+
     .icon {
       font-size: 20px;
       cursor: pointer;
@@ -454,6 +478,7 @@ export default {
     }
   }
 }
+
 .contact {
   display: flex;
   flex-wrap: wrap;
@@ -485,6 +510,7 @@ export default {
     margin-right: 5px;
   }
 }
+
 .rating {
   &__star {
     width: inherit;
@@ -499,6 +525,7 @@ export default {
     }
   }
 }
+
 .avatar {
   &__img {
     width: 142px;
@@ -507,6 +534,7 @@ export default {
     border-radius: 50%;
   }
 }
+
 .work-exp, .knowledge {
   &__text {
     @include text-simple;
@@ -553,6 +581,7 @@ export default {
     }
   }
 }
+
 @include _991 {
   .info-grid {
     flex-direction: column;
@@ -563,7 +592,7 @@ export default {
       width: 100%;
     }
     &__right {
-      grid-gap:20px;
+      grid-gap: 20px;
       width: 100%;
     }
     &__share-left {
@@ -593,5 +622,4 @@ export default {
     }
   }
 }
-
 </style>

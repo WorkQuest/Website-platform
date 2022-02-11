@@ -16,12 +16,18 @@
             {{ item.name }}
           </base-btn>
         </div>
-        <quest-cards
+        <div
           v-if="questsCount"
-          :quests="questsData"
-          @clickFavoriteStar="updateQuests"
-        />
-        <emptyData
+          class="quests__cards"
+        >
+          <card-quest
+            v-for="(quest,id) in questsData"
+            :key="id"
+            :quest="quest"
+            @clickFavoriteStar="updateQuests(quest)"
+          />
+        </div>
+        <empty-data
           v-else
           :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
           :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
@@ -47,9 +53,6 @@ import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'My',
-  components: {
-    emptyData,
-  },
   data() {
     return {
       selectedTab: 0,
@@ -77,17 +80,13 @@ export default {
         { name: this.$t('myQuests.statuses.invited'), id: 4 },
         { name: this.$t('myQuests.statuses.performed'), id: 5 },
       ];
-      return this.userRole === UserRole.EMPLOYER
-        ? tabs.filter((tab) => (tab.id !== 2))
-        : tabs;
+      return this.userRole === UserRole.EMPLOYER ? tabs.filter((tab) => (tab.id !== 2)) : tabs;
     },
     totalPages() {
       return Math.ceil(this.questsCount / this.offset);
     },
     getEmptyLink() {
-      return this.userRole === UserRole.WORKER
-        ? ''
-        : Path.CREATE_QUEST;
+      return this.userRole === UserRole.WORKER ? '' : Path.CREATE_QUEST;
     },
   },
   watch: {
@@ -116,11 +115,9 @@ export default {
   methods: {
     async updateQuests(item) {
       this.SetLoader(true);
-      if (!item.star) {
-        await this.$store.dispatch('quests/setStarOnQuest', item.id);
-      } else {
-        await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
-      }
+      if (!item.star) await this.$store.dispatch('quests/setStarOnQuest', item.id);
+      else await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
+
       await this.$store.dispatch('quests/getUserQuests', this.requestParams);
       this.SetLoader(false);
     },
@@ -136,7 +133,6 @@ export default {
       else if (id === 3) this.requestParams.query['statuses[0]'] = QuestStatuses.Active;
       else if (id === 4) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorker;
       else if (id === 5) this.requestParams.query['statuses[0]'] = QuestStatuses.Done;
-
       await this.$store.dispatch('quests/getUserQuests', this.requestParams);
       this.SetLoader(false);
     },
@@ -151,6 +147,11 @@ export default {
   &__container {
     display: flex;
     justify-content: center;
+  }
+  &__cards {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
   }
   &__title {
     @include text-simple;
