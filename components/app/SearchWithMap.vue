@@ -146,7 +146,7 @@ export default {
     deFocus() { this.isSearchFocus = false; },
     searchHandler() {
       if (!this.search || !this.coordinates) return;
-      this.$store.dispatch('quests/setMapCenter', this.coordinates);
+      this.$store.dispatch('google-map/setNewCenter', this.coordinates);
     },
     selectAddress(address) {
       this.search = address.formatted;
