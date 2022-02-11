@@ -33,7 +33,7 @@
             @click="showAdditionalMenu()"
           >
             {{ $t('ui.profile.DeFi') }}
-            <span class="icon-caret_down" />
+            <span class="icon icon-caret_down" />
             <transition name="fade">
               <div
                 v-if="isShowAdditionalMenu"
@@ -78,7 +78,7 @@
           <span v-else>
             {{ $t('ui.locals.en').toUpperCase() }}
           </span>
-          <span class="icon-caret_down" />
+          <span class="icon icon-caret_down" />
           <transition name="fade">
             <ul
               v-if="isShowLocale"
@@ -114,7 +114,7 @@
           >
           <span
             v-else
-            class="icon-message"
+            class="icon icon-message"
           />
         </div>
         <notifications-button />
@@ -123,14 +123,14 @@
           @click="toggleMobileMenu()"
         >
           <div class="header__button header__button_menu">
-            <span :class="`icon-${isMobileMenu ? 'close_big' : 'hamburger'}`" />
+            <span :class="`icon icon-${isMobileMenu ? 'close_big' : 'hamburger'}`" />
           </div>
         </div>
         <div
           class="header__button header__button_profile"
           @click="showProfile()"
         >
-          <span class="icon-hamburger" />
+          <span class="icon icon-hamburger" />
           <transition name="fade">
             <div
               v-if="isShowProfile"
@@ -216,7 +216,7 @@
           <div class="user__dropdown">
             <div class="user__container">
               <div class="user__dropdown-icon">
-                <span :class="`icon-caret_${isUserDDOpened ? 'up' : 'down'}`" />
+                <span :class="`icon icon-caret_${isUserDDOpened ? 'up' : 'down'}`" />
               </div>
             </div>
           </div>
@@ -259,7 +259,7 @@
               {{ $t('ui.profile.DeFi') }}
             </div>
             <div class="dropdown__arrow">
-              <span :class="`icon-caret_${isInstrumentDropdownOpened ? 'up' : 'down'}`" />
+              <span :class="`icon icon-caret_${isInstrumentDropdownOpened ? 'up' : 'down'}`" />
             </div>
           </div>
         </div>
@@ -652,19 +652,13 @@ export default {
 .icon {
   font-size: 20px;
   color: $shade700;
-  &-caret_down {
-    @extend .icon;
-  }
-  &-caret_up {
-    @extend .icon;
-  }
-  &-close_big {
-    @extend .icon;
-  }
   &-chevron_right {
-    @extend .icon;
     transition: .1s;
     visibility: hidden;
+  }
+  &-message, &-hamburger {
+    font-size: 24px;
+    color: $black400;
   }
 }
 
