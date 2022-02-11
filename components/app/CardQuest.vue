@@ -771,9 +771,7 @@ export default {
 }
 @include _991 {
   .card-quest {
-    &__blocks {
-      grid-template-columns: auto;
-    }
+    grid-template-columns: auto;
     &__right {
       padding-left: 20px;
     }
@@ -830,6 +828,9 @@ export default {
     &__actions {
       grid-template-columns: 2fr 1fr;
     }
+    &__right {
+      padding: 10px;
+    }
   }
   .user__name {
     font-size: 12px;
@@ -842,11 +843,6 @@ export default {
   .avatar {
     &__container {
       grid-template-columns: repeat(3, auto);
-    }
-  }
-  .card-quest {
-    &__right {
-      padding: 10px;
     }
   }
 }
