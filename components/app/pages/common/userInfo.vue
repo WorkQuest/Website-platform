@@ -342,7 +342,6 @@ export default {
   padding: 25px 0 0 0;
   grid-gap: 20px;
   justify-content: space-between;
-
   &__block {
     @extend .styles__flex;
     -webkit-box-orient: vertical;
@@ -353,25 +352,21 @@ export default {
     -ms-flex-pack: center;
     justify-content: center;
     grid-gap: 15px;
-
     &_left {
       max-width: 142px;
     }
   }
-
   &__left {
     flex-direction: row;
     justify-content: center;
     display: flex;
   }
-
   &__right {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-end;
   }
-
   &__share-left {
     display: none;
   }
@@ -382,17 +377,14 @@ export default {
     display: grid;
     justify-content: space-between;
     align-items: center;
-
     &_employee {
       grid-template-columns: auto auto;
       grid-gap: 30px;
     }
   }
-
   &__footer {
     width: 280px;
   }
-
   &__price {
     display: flex;
     flex-direction: column;
@@ -405,7 +397,6 @@ export default {
     font-size: 14px;
     color: #353C47;
   }
-
   &__value {
     font-weight: 500;
     font-size: 18px;
@@ -420,23 +411,19 @@ export default {
     grid-gap: 10px;
     align-items: center;
   }
-
   &_left {
     align-self: flex-start;
     max-width: 142px;
   }
-
   &_right {
     align-self: flex-start;
     margin-left: 30px;
   }
-
   &__rating {
     height: 20px;
     display: flex;
     width: 142px;
   }
-
   &__reviews {
     font-style: normal;
     font-weight: normal;
@@ -446,7 +433,6 @@ export default {
     color: #7C838D;
     text-align: center;
   }
-
   &__title {
     @include text-simple;
     font-style: normal;
@@ -455,13 +441,11 @@ export default {
     line-height: 130%;
     color: $black800;
   }
-
   &__description {
     font-weight: 400;
     font-size: 16px;
     color: $black600;
   }
-
   &__socials {
     display: flex;
     grid-gap: 5px;
@@ -469,29 +453,24 @@ export default {
     .icon {
       font-size: 20px;
       cursor: pointer;
-
       &-facebook::before {
         @extend .icon;
         color: #0A7EEA;
       }
-
       &-twitter::before {
         @extend .icon;
         color: #24CAFF;
       }
-
       &-instagram::before {
         @extend .icon;
         color: #C540F3;
       }
-
       &-linkedin:before {
         @extend .icon;
         content: "\e9ed";
         color: #57A6EF;
       }
     }
-
     .social {
       &__link {
         text-decoration: none;
@@ -504,13 +483,11 @@ export default {
   display: flex;
   flex-wrap: wrap;
   margin: -5px 0;
-
   &__container {
     display: flex;
     align-items: flex-end;
     margin: 5px 0;
   }
-
   &__link {
     text-decoration: none;
     font-size: 14px;
@@ -520,14 +497,12 @@ export default {
     justify-content: center;
     align-items: center;
   }
-
   &__btn {
     width: 100%;
     display: flex;
     align-items: flex-end;
     height: 43px;
   }
-
   &__icon {
     @extend .icon;
     color: $black500;
@@ -542,11 +517,9 @@ export default {
     background-image: url('~assets/img/ui/star-empty.svg');
     background-repeat: no-repeat;
     background-position: center;
-
     &_half {
       background-image: url('~assets/img/ui/star-half.svg');
     }
-
     &_full {
       background-image: url('~assets/img/ui/star-small.svg');
     }
@@ -569,19 +542,16 @@ export default {
     font-size: 16px;
     color: $black700;
   }
-
   &__container {
     display: flex;
     flex-direction: column;
   }
-
   &__place {
     @include text-simple;
     font-weight: 400;
     font-size: 14px;
     color: $black500;
   }
-
   &__term {
     @include text-simple;
     font-weight: 400;
@@ -593,7 +563,6 @@ export default {
 @include _1199 {
   .contacts {
     margin: 0 0 20px 0;
-
     .contact {
       display: flex;
       flex-direction: column;
@@ -602,13 +571,11 @@ export default {
   .right {
     &__header {
       justify-items: end;
-
       &_employee {
         grid-gap: 15px;
         grid-template-columns: 110px auto;
       }
     }
-
     &__footer {
       width: 100%;
     }
@@ -620,17 +587,14 @@ export default {
     flex-direction: column;
     align-items: center;
     grid-gap: 0;
-
     &__left {
       flex-direction: column;
       width: 100%;
     }
-
     &__right {
       grid-gap: 20px;
       width: 100%;
     }
-
     &__share-left {
       display: flex;
       height: 0;
@@ -641,7 +605,6 @@ export default {
     &_left {
       align-self: center;
     }
-
     &_right {
       margin-left: 0;
       margin-top: 30px;
@@ -651,7 +614,6 @@ export default {
     &__share-btn {
       display: none;
     }
-
     &__header {
       &_employee {
         grid-gap: 0;
@@ -660,5 +622,4 @@ export default {
     }
   }
 }
-
 </style>

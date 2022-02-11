@@ -188,7 +188,6 @@ export default {
 
   &__content {
     width: 100%;
-    height: 100%;
     max-width: 1180px;
     margin: 0 auto;
   }
@@ -219,7 +218,6 @@ export default {
 
 @include _1199 {
   .employees {
-
     &__content {
       padding: 0 20px;
     }

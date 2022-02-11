@@ -101,7 +101,7 @@
                 </div>
                 <div class="footer__item">
                   <div class="footer__text footer__text_black" />
-                  <div class="footer__items footer__items_links">
+                  <div class="footer__items footer__items_links footer__items_last-column">
                     <a
                       v-for="(item,key) in DeFiLinks.secondColumn"
                       :key="key"
@@ -374,9 +374,7 @@ export default {
     }
   }
   &__link {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: normal;
+    @include text-simple;
     font-size: 16px;
     line-height: 130%;
     color: $blue;
@@ -390,18 +388,16 @@ export default {
     grid-gap: 5px;
     cursor: pointer;
     span {
-      font-family: 'Inter', sans-serif;
-      font-style: normal;
+      @include text-simple;
       font-weight: bold;
       font-size: 23px;
       line-height: 130%;
       color: $black400;
     }
   }
+
   &__text {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: normal;
+    @include text-simple;
     &_grey {
       font-weight: normal;
       font-size: 16px;
@@ -436,7 +432,7 @@ export default {
   }
   &__block {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: auto auto;
     grid-gap: 30px;
     &_links {
       display: flex;
@@ -477,51 +473,58 @@ export default {
       height: 40px;
       transition: all 0.5s;
       &_twitter {
-        background-image: url('assets/img/social/footer_twitter.svg')
-      }
-      &_twitter:hover {
-        background-image: url('assets/img/social/footer_twitter_active.svg')
+        background-image: url('assets/img/social/footer_twitter.svg');
+        border-radius: 10px;
+        &:hover {
+          background-image: url('assets/img/social/footer_twitter_active.svg')
+        }
       }
       &_youtube {
-        background-image: url('assets/img/social/footer_youtube.svg')
-      }
-      &_youtube:hover {
-        background-image: url('assets/img/social/footer_youtube_active.svg')
+        background-image: url('assets/img/social/footer_youtube.svg');
+        border-radius: 10px;
+        &:hover {
+          background-image: url('assets/img/social/footer_youtube_active.svg')
+        }
       }
       &_reddit {
-        background-image: url('assets/img/social/footer_reddit.svg')
-      }
-      &_reddit:hover {
-        background-image: url('assets/img/social/footer_reddit_active.svg')
+        background-image: url('assets/img/social/footer_reddit.svg');
+        border-radius: 10px;
+        &:hover {
+          background-image: url('assets/img/social/footer_reddit_active.svg')
+        }
       }
       &_facebook {
-        background-image: url('assets/img/social/footer_facebook.svg')
-      }
-      &_facebook:hover {
-        background-image: url('assets/img/social/footer_facebook_active.svg')
+        background-image: url('assets/img/social/footer_facebook.svg');
+        border-radius: 10px;
+        &:hover {
+          background-image: url('assets/img/social/footer_facebook_active.svg')
+        }
       }
       &_linkedin {
-        background-image: url('assets/img/social/footer_linkedin.svg')
-      }
-      &_linkedin:hover {
-        background-image: url('assets/img/social/footer_linkedin_active.svg')
+        background-image: url('assets/img/social/footer_linkedin.svg');
+        border-radius: 10px;
+        &:hover {
+          background-image: url('assets/img/social/footer_linkedin_active.svg')
+        }
       }
       &_instagram {
-        background-image: url('assets/img/social/footer_instagram.svg')
-      }
-      &_instagram:hover {
-        background-image: url('assets/img/social/footer_instagram_active.svg')
+        background-image: url('assets/img/social/footer_instagram.svg');
+        border-radius: 10px;
+        &:hover {
+          background-image: url('assets/img/social/footer_instagram_active.svg')
+        }
       }
       &_telegram {
         background-image: url('assets/img/social/footer_telegram.svg');
-        border-radius: 4px;
-      }
-      &_telegram:hover {
-        background-image: url('assets/img/social/footer_telegram_active.svg')
+        border-radius: 10px;
+        &:hover {
+          background-image: url('assets/img/social/footer_telegram_active.svg')
+        }
       }
     }
   }
 }
+
 @include _1199 {
   .footer {
     padding: 0 20px;
@@ -541,18 +544,19 @@ export default {
         display: none;
       }
       &_mobile {
-        display: flex;
-        width: 80%;
+        display: grid;
+        grid-template-columns: auto auto;
         flex-direction: row;
         justify-content: space-between;
+        grid-gap: 35px;
       }
     }
     &__items {
       &_main {
-        grid-template-columns: auto auto;
-        width: 82%;
-        display: flex;
-        justify-content: space-between;
+        grid-template-columns: 350px auto;
+        display: grid;
+        justify-content: flex-start;
+        grid-gap: 35px;
       }
     }
     .links {
@@ -562,26 +566,42 @@ export default {
     }
   }
 }
+
 @include _991 {
   .footer {
     &__links {
+      width: auto;
       &_mobile {
         width: auto;
-        flex-direction: column;
       }
-      width: auto;
     }
   }
 }
+
 @include _767 {
   .footer {
     &__items {
       &_main {
-        width: 100%;
+        grid-template-columns: auto;
+        grid-gap: 25px;
       }
+    }
+    &__links {
+      &_mobile {
+        grid-gap: 25px;
+      }
+    }
+    &__block {
+      grid-gap: 20px;
+    }
+  }
+  .links {
+    &__big {
+      flex-direction: column;
     }
   }
 }
+
 @include _575 {
   .footer {
     &__bottom {
@@ -604,14 +624,22 @@ export default {
         display: none;
       }
     }
+    &__links {
+      &_mobile {
+        grid-template-columns: auto;
+      }
+    }
     &__items {
-      flex-direction: column;
       &_links {
         grid-template-columns: 1fr;
       }
     }
   }
+  .links__big {
+    flex-direction: row;
+  }
 }
+
 @include _480 {
   .footer {
     &__links {
@@ -624,15 +652,42 @@ export default {
       &__block {
         width: 100%;
       }
-      &__big {
-        flex-direction: column;
-        align-items: flex-start;
-      }
       &__small {
         display: flex;
         justify-content: flex-start;
         flex-wrap: wrap;
       }
+    }
+  }
+}
+
+@include _380 {
+  .footer {
+    padding: 0 10px;
+  }
+}
+
+@include _350 {
+  .footer {
+    &__block {
+      grid-template-columns: auto;
+      grid-gap: 10px;
+    }
+    &__items {
+      &_last-column {
+        grid-template-rows: repeat(4, 1fr);
+      }
+    }
+    &__text {
+      &_block {
+        display: none;
+      }
+    }
+  }
+  .links {
+    &__big {
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
 }
