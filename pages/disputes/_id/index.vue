@@ -65,11 +65,8 @@ export default {
       return obj[this.disputeData.status];
     },
   },
-  async beforeMount() {
+  async created() {
     await this.$store.dispatch('disputes/getDispute', this.disputeId);
-  },
-  async beforeDestroy() {
-    await this.$store.commit('disputes/setDispute', {});
   },
   methods: {
     backToDisputes() {
