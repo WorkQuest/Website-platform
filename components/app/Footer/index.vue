@@ -635,10 +635,8 @@ export default {
       }
     }
   }
-  .links {
-    &__big {
-      flex-direction: row;
-    }
+  .links__big {
+    flex-direction: row;
   }
 }
 

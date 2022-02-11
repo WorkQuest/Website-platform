@@ -123,7 +123,7 @@
           @click="toggleMobileMenu()"
         >
           <div class="header__button header__button_menu">
-            <span :class="isMobileMenu ? 'icon-close_big' : 'icon-hamburger'" />
+            <span :class="`icon-${isMobileMenu ? 'close_big' : 'hamburger'}`" />
           </div>
         </div>
         <div
@@ -216,7 +216,7 @@
           <div class="user__dropdown">
             <div class="user__container">
               <div class="user__dropdown-icon">
-                <span :class="isUserDDOpened ? 'icon-caret_up' : 'icon-caret_down'" />
+                <span :class="`icon-caret_${isUserDDOpened ? 'up' : 'down'}`" />
               </div>
             </div>
           </div>
@@ -259,7 +259,7 @@
               {{ $t('ui.profile.DeFi') }}
             </div>
             <div class="dropdown__arrow">
-              <span :class="isInstrumentDropdownOpened ? 'icon-caret_up' : 'icon-caret_down'" />
+              <span :class="`icon-caret_${isInstrumentDropdownOpened ? 'up' : 'down'}`" />
             </div>
           </div>
         </div>
@@ -302,6 +302,7 @@ export default {
   scrollToTop: true,
   name: 'Header',
   middleware: 'auth',
+  UserRole,
   directives: {
     ClickOutside,
   },
@@ -406,7 +407,6 @@ export default {
       ];
     },
   },
-  UserRole,
   watch: {
     $route() {
       this.closeAll();
@@ -651,7 +651,7 @@ export default {
 
 .icon {
   font-size: 20px;
-  color: #2e3a59;
+  color: $shade700;
   &-caret_down {
     @extend .icon;
   }
@@ -673,7 +673,7 @@ export default {
   top: 0;
   z-index: 99999;
   min-height: 72px;
-  background: #FFFFFF;
+  background: $white;
   box-shadow: 0 1px 0 #E6E9EC;
   width: 100%;
   display: flex;
@@ -884,7 +884,7 @@ export default {
   position: absolute;
   top: 57px;
   right: calc(100% - 43px);
-  background: #FFFFFF;
+  background: $white;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   border-radius: 6px;
   min-width: 223px;
@@ -917,7 +917,7 @@ export default {
   &__item {
     @include text-simple;
     height: 41px;
-    background: #FFFFFF;
+    background: $white;
     display: flex;
     align-items: center;
     padding: 0 15px;
@@ -931,7 +931,7 @@ export default {
       color: $red;
     }
     &:hover {
-      background: #F7F8FA;
+      background: $black0;
     }
   }
   &__text {
@@ -961,7 +961,7 @@ export default {
 .menu {
   position: absolute;
   top: 50px;
-  background: #FFFFFF;
+  background: $white;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   border-radius: 6px;
   min-width: 790px;
@@ -996,7 +996,7 @@ export default {
   }
   &__item {
     transition: .3s;
-    background: #FFFFFF;
+    background: $white;
     border-radius: 6px;
     border: 1px solid transparent;
     min-height: 90px;
@@ -1019,7 +1019,7 @@ export default {
 .locale {
   position: absolute;
   top: 73px;
-  background: #FFFFFF;
+  background: $white;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   border-radius: 6px;
   z-index: 10000000;
