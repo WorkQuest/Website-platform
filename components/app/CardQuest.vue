@@ -41,6 +41,7 @@
           <div
             v-if="quest.userId === userData.id || quest.assignedWorkerId === userData.id"
             class="card-quest__icon card-quest__icon_fav star"
+            :class="[{'star__hide': disputeId.length !== 0}]"
             @click="clickFavoriteStar(quest)"
           >
             <img
@@ -178,6 +179,10 @@ export default {
   UserRole,
   QuestStatuses,
   props: {
+    disputeId: {
+      type: String,
+      default: '',
+    },
     quest: {
       type: Object,
       default: () => {},
@@ -741,6 +746,9 @@ export default {
   width: 30px;
   align-self: center;
   justify-self: center;
+  &__hide {
+    display: none;
+  }
   &__default {
     display: flex;
   }

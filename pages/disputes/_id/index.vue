@@ -18,7 +18,7 @@
       </div>
       <card-quest
         :quest="disputeData.quest"
-        @clickFavoriteStar="updateQuests(disputeData.quest)"
+        :dispute-id="disputeData.id"
       />
       <div class="dispute__chat-history">
         <div class="chat-history__container">
@@ -76,12 +76,9 @@ export default {
       this.$router.back();
     },
     async updateQuests(item) {
-      // TODO: Проверить логику
       this.SetLoader(true);
       if (!item.star) await this.$store.dispatch('quests/setStarOnQuest', item.id);
       else await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
-
-      await this.$store.dispatch('quests/getUserQuests', this.requestParams);
       this.SetLoader(false);
     },
   },
