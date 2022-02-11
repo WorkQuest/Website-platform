@@ -353,6 +353,9 @@ export default {
       this.SetLoader(false);
     },
   },
+  destroyed() {
+    sessionStorage.removeItem('questsListFilter');
+  },
   async mounted() {
     if (this.userId !== this.mainUser.id) {
       await this.$store.dispatch('user/getAnotherUserData', this.userId);
@@ -399,6 +402,9 @@ export default {
           offset: (this.pageQuests - 1) * this.perPagerQuests,
         },
       };
+
+      sessionStorage.setItem('questsListFilter', JSON.stringify(payload));
+
       await this.$store.dispatch('quests/getUserQuests', payload);
     },
     async changeReviewsData(limit) {

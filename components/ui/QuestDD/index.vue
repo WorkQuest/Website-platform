@@ -26,7 +26,7 @@
             </div>
             <div
               class="menu__item"
-              @click="shareModal()"
+              @click="shareModal"
             >
               <div class="menu__text">
                 {{ $t('modals.share') }}
@@ -34,7 +34,7 @@
             </div>
             <div
               class="menu__item"
-              @click="toEditQuest()"
+              @click="toEditQuest"
             >
               <div class="menu__text">
                 {{ $t('modals.edit') }}
@@ -42,7 +42,7 @@
             </div>
             <div
               class="menu__item"
-              @click="showAreYouSureDeleteQuestModal()"
+              @click="showAreYouSureDeleteQuestModal"
             >
               <div class="menu__text">
                 {{ $t('modals.delete') }}
@@ -88,14 +88,14 @@ export default {
   methods: {
     toEditQuest() {
       // TODO: Исправить логику editQuest
-      // if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.item.status)) {
-      //   this.$router.push(`${Path.EDIT_QUEST}/${this.item.id}`);
-      //   this.setCurrentStepEditQuest(1);
-      // } else this.showToastWrongStatusEdit();
+      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.item.status)) {
+        this.$router.push(`${Path.EDIT_QUEST}/${this.item.id}`);
+        this.setCurrentStepEditQuest(1);
+      } else this.showToastWrongStatusEdit();
     },
     showAreYouSureDeleteQuestModal() {
       // TODO: Исправить логику deleteQuest
-      // this.ShowModal({ key: modals.areYouSureDeleteQuest, item: this.item });
+      this.ShowModal({ key: modals.areYouSureDeleteQuest, item: this.item });
     },
     toRaisingViews() {
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.item.status)) {

@@ -29,7 +29,7 @@
             </span>
             <quest-dd
               v-if="questData.status === questStatuses.Created"
-              :item-id="questData.id"
+              :item="questData"
             />
           </div>
         </div>

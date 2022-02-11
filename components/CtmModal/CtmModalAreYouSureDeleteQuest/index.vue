@@ -54,25 +54,31 @@ export default {
     hide() {
       this.CloseModal();
     },
-    async getAllQuests() {
-      await this.$store.dispatch('quests/getAllQuests');
-    },
     async deleteQuest() {
       const questId = this.questData.id;
       const questStatus = this.questData.status;
       if ([QuestStatuses.Closed, QuestStatuses.Created].includes(questStatus)) {
         await this.$store.dispatch('quests/deleteQuest', { questId });
         this.hide();
-        this.toMyQuests();
+
+        const routeName = this.$route.name;
+
+        if (routeName === 'quests-id') {
+          if (window.history.length > 2) {
+            this.$router.go(-1);
+          } else {
+            await this.$router.push('/my');
+          }
+        } else if (routeName === 'my' || routeName === 'profile-id') {
+          const payload = JSON.parse(sessionStorage.getItem('questsListFilter'));
+          await this.$store.dispatch('quests/getUserQuests', payload);
+        }
+
         this.showToastDeleted();
-        await this.getAllQuests();
       } else {
         this.hide();
         this.showToastWrongStatus();
       }
-    },
-    toMyQuests() {
-      this.$router.push('/my');
     },
     showToastWrongStatus() {
       return this.$store.dispatch('main/showToast', {
