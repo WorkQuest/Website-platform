@@ -8,7 +8,7 @@
         class="template__content"
         :class="{'template__content_rows' : isChatOpened}"
       >
-        <Header />
+        <Header class="template__header" />
         <div
           class="template__main"
           :class="{'template__main_padding' : isChatOpened}"
@@ -72,9 +72,11 @@ export default {
   overflow-y: auto;
   background: #F7F8FA;
 }
+
 .template {
   min-height: 100vh;
   background: #F7F8FA;
+
   &__content {
     display: grid;
     grid-template-rows: 72px 1fr auto;
@@ -84,6 +86,7 @@ export default {
       grid-template-rows: 72px 1fr 72px;
     }
   }
+
   &__main {
     display: grid;
     padding-bottom: 80px;
@@ -95,6 +98,7 @@ export default {
     }
   }
 }
+
 @include _991 {
   .template {
     &__content {
