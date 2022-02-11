@@ -55,7 +55,7 @@
               class="notification__remove"
               src="~assets/img/ui/close.svg"
               alt="x"
-              @click="tryRemoveNotification(notification.id)"
+              @click="tryRemoveNotification($event, notification.id)"
             >
 
             <div class="notification__button">
@@ -122,7 +122,9 @@ export default {
     this.$store.commit('user/setNotifications', { result: { notifications: [], count: this.notifsCount } });
   },
   methods: {
-    tryRemoveNotification(notificationId) {
+    tryRemoveNotification(ev, notificationId) {
+      ev.stopPropagation();
+
       this.ShowModal({
         key: modals.areYouSure,
         title: this.$t('modals.sureDeleteNotification'),
@@ -401,6 +403,12 @@ export default {
     &__date {
       justify-self: flex-end;
     }
+
+    &__remove {
+      display: block;
+      grid-row: 2;
+      align-self: unset;
+    }
   }
   .inviter {
     align-self: center;
@@ -453,6 +461,12 @@ export default {
 
     &__date {
       justify-self: flex-start;
+    }
+
+    &__remove {
+      display: block;
+      grid-row: 1;
+      align-self: center;
     }
   }
 }
