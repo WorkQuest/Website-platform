@@ -72,12 +72,6 @@ export default {
     backToDisputes() {
       this.$router.back();
     },
-    async updateQuests(item) {
-      this.SetLoader(true);
-      if (!item.star) await this.$store.dispatch('quests/setStarOnQuest', item.id);
-      else await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
-      this.SetLoader(false);
-    },
   },
 };
 </script>
