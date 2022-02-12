@@ -166,14 +166,12 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import { mapGetters } from 'vuex';
 import {
   QuestStatuses, questPriority, UserRole, Path,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
-const value = new Vue();
 export default {
   name: 'CardQuest',
   UserRole,

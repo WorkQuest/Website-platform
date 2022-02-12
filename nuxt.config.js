@@ -52,8 +52,8 @@ export default {
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/style-resources',
+    '@nuxtjs/i18n',
     'bootstrap-vue/nuxt',
-    'nuxt-i18n',
     'cookie-universal-nuxt',
   ],
   build: {

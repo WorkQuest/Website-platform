@@ -1,12 +1,14 @@
 import Vue from 'vue';
 
-import VuePhoneNumberInput from 'vue-phone-number-input';
+import VuePhoneNumberInput from '~/node_modules/vue-phone-number-input';
 import GMap from '~/node_modules/vue2-google-maps/src/components/map';
 import GMapMarker from '~/node_modules/vue2-google-maps/src/components/marker';
 import GMapCluster from '~/node_modules/vue2-google-maps/src/components/cluster';
 import GMapInfoWindow from '~/node_modules/vue2-google-maps/src/components/infoWindow';
 import GMapLoader from '~/components/app/GoogleMapLoader';
 import SearchWithMap from '~/components/app/SearchWithMap';
+
+import PanelFilters from '~/components/app/PanelFilters';
 
 import CtmModal from '~/components/CtmModal';
 import CtmModalBox from '~/components/CtmModal/CtmModalBox';
@@ -30,11 +32,21 @@ import NotificationsButton from '~/components/ui/NotificationsButton';
 import EmptyData from '~/components/app/info/emptyData';
 import EmployeeCard from '~/components/app/pages/common/employeeCard';
 import CardQuest from '~/components/app/CardQuest';
-import FiltersPanel from '~/components/app/panels/filters';
 import ItemRating from '~/components/app/info/item-rating';
 import MessagesList from '~/components/app/pages/messages_id/messagesList';
 import QuestPanel from '~/components/app/panels/questPanel';
 import Info from '~/components/app/info';
+
+Vue.component('vue-phone-number-input', VuePhoneNumberInput);
+
+Vue.component('g-map', GMap);
+Vue.component('g-map-marker', GMapMarker);
+Vue.component('g-map-cluster', GMapCluster);
+Vue.component('g-map-info-window', GMapInfoWindow);
+Vue.component('g-map-loader', GMapLoader);
+Vue.component('search-with-map', SearchWithMap);
+
+Vue.component('panel-filters', PanelFilters);
 
 Vue.component('info', Info);
 Vue.component('quest-panel', QuestPanel);
@@ -51,7 +63,6 @@ Vue.component('base-table', BaseTable);
 Vue.component('base-pager', BasePager);
 Vue.component('quest-dd', QuestDD);
 Vue.component('base-textarea', BaseTextarea);
-Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 Vue.component('workers-list', WorkersList);
 Vue.component('star-rating', StarRating);
 Vue.component('specializations-selector', SpecializationsSelector);
@@ -60,13 +71,6 @@ Vue.component('files-preview', FilesPreview);
 Vue.component('notifications-button', NotificationsButton);
 Vue.component('empty-data', EmptyData);
 Vue.component('employee-card', EmployeeCard);
-Vue.component('filters-panel', FiltersPanel);
 Vue.component('item-rating', ItemRating);
 Vue.component('MessagesList', MessagesList);
 Vue.component('card-quest', CardQuest);
-Vue.component('g-map', GMap);
-Vue.component('g-map-marker', GMapMarker);
-Vue.component('g-map-cluster', GMapCluster);
-Vue.component('g-map-info-window', GMapInfoWindow);
-Vue.component('g-map-loader', GMapLoader);
-Vue.component('search-with-map', SearchWithMap);

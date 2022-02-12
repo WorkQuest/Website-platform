@@ -9,7 +9,7 @@
       <h2 class="quests__title">
         {{ $t('ui.quests') }}
       </h2>
-      <filters-panel
+      <panel-filters
         class="quests__filters"
         @sortSpec="sortBySpec"
         @sortTime="sortByTime"

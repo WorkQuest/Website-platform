@@ -9,7 +9,7 @@
       <h2 class="employees__title">
         {{ $t('workers.topWorkers') }}
       </h2>
-      <filters-panel
+      <panel-filters
         class="employees__filters"
         @sortSpec="sortBySpec"
         @sortTime="sortByTime"

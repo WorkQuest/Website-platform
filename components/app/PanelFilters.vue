@@ -75,7 +75,7 @@ import { UserRole, Filters, Priority } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'FiltersPanel',
+  name: 'PanelFilters',
   UserRole,
   data() {
     return {
