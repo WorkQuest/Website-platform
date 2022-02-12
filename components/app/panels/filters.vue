@@ -133,7 +133,7 @@ export default {
     },
     selectedEmployment(index) {
       const query = index ? { 'employments[0]': Filters.EMPLOYMENTS[index] } : {};
-      this.$emit('sortTypeOfJob', query);
+      this.$emit('sortEmployment', query);
     },
     selectedWorkplace(index) {
       const query = index ? { 'workplaces[0]': Filters.WORKPLACES[index] } : {};

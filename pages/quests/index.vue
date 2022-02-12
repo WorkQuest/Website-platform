@@ -16,7 +16,7 @@
         @sortPrice="sortByPrice"
         @sortPriority="sortByPriority"
         @sortWorkplace="sortByWorkplace"
-        @sortTypeOfJob="sortTypeOfJob"
+        @sortEmployment="sortByEmployment"
       />
       <div
         v-if="questsCount"
@@ -179,7 +179,7 @@ export default {
       else this.query = { ...this.query, ...value };
       await this.fetchQuestsList(true);
     },
-    async sortTypeOfJob(value) {
+    async sortByEmployment(value) {
       if (!Object.keys(value).length) delete this.query['employments[0]'];
       else this.query = { ...this.query, ...value };
       await this.fetchQuestsList(true);
