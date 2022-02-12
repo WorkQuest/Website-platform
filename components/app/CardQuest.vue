@@ -129,7 +129,7 @@
             class="card-quest__amount"
             :class="getAmountStyles(quest)"
           >
-            {{ `${quest.price}  ${currency}` }}
+            {{ `${quest.price}  ${$options.TokenSymbols.WUSD}` }}
           </div>
         </div>
         <div class="card-quest__details">
@@ -166,17 +166,16 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import { mapGetters } from 'vuex';
 import {
-  QuestStatuses, questPriority, UserRole, Path,
+  QuestStatuses, questPriority, UserRole, Path, TokenSymbols,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
-const value = new Vue();
 export default {
   name: 'CardQuest',
   UserRole,
+  TokenSymbols,
   QuestStatuses,
   props: {
     disputeId: {
@@ -194,7 +193,6 @@ export default {
       questResponses: [],
       isFavorite: false,
       localUserData: {},
-      currency: 'WUSD',
       userLat: 0,
       userLng: 0,
     };
