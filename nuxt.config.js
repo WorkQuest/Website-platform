@@ -9,7 +9,7 @@ import localeId from './locales/id.json';
 import localePt from './locales/pt.json';
 import localeEs from './locales/es.json';
 
-require('dotenv').config();
+// require('dotenv').config();
 
 export default {
   ssr: false,
