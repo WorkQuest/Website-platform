@@ -97,6 +97,37 @@ export const KeyCodes = {
   ArrowRight: 39,
 };
 
+export const Workplace = {
+  DISTANT: 'distant',
+  OFFICE: 'office',
+  BOTH: 'both',
+};
+
+export const Employment = {
+  FULL: 'fullTime',
+  PART: 'partTime',
+  FIXED: 'fixedTerm',
+};
+
+export const Priority = {
+  LOW: { key: 1, value: 'low' },
+  NORMAL: { key: 2, value: 'normal' },
+  URGENT: { key: 3, value: 'urgent' },
+};
+
+export const EmployeeRating = {
+  VERIFIED: 'verified',
+  RELIABLE: 'reliable',
+  TOP: 'topRanked',
+};
+
+export const Filters = {
+  WORKPLACES: ['allWorkplaces', Workplace.DISTANT, Workplace.OFFICE, Workplace.BOTH],
+  EMPLOYMENTS: ['allEmployments', Employment.FULL, Employment.PART, Employment.FIXED],
+  PRIORITIES: ['allPriorities', Priority.LOW.value, Priority.NORMAL.value, Priority.URGENT.value],
+  EMPLOYEE_RATING: ['allRatings', EmployeeRating.VERIFIED, EmployeeRating.RELIABLE, EmployeeRating.TOP],
+};
+
 // Filters
 export const WorkplaceFilter = ['all', 'distant', 'office', 'both'];
 export const WorkplaceIndex = ['distant', 'office', 'both'];

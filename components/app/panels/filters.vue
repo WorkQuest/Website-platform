@@ -5,7 +5,7 @@
   >
     <base-filter-dd class="filters-panel__item" />
     <base-dd
-      v-if="userRole === UserRole.EMPLOYER"
+      v-if="userRole === $options.UserRole.EMPLOYER"
       v-model="selectedRating"
       class="filters-panel__item"
       mode="blackFont"
@@ -20,11 +20,11 @@
       :placeholder="$t('quests.priority.title')"
     />
     <base-dd
-      v-if="userRole === UserRole.WORKER"
-      v-model="selectedTypeOfJob"
+      v-if="userRole === $options.UserRole.WORKER"
+      v-model="selectedEmployment"
       class="filters-panel__item"
       mode="blackFont"
-      :items="typeOfJobItems"
+      :items="employmentItems"
       :placeholder="$t('quests.typeOfJob')"
     />
     <base-dd
@@ -59,29 +59,29 @@
       <span class="item-btn__text">
         {{ $t('quests.time') }}
       </span>
-      <span :class="`item-btn__icon icon icon-Sorting_${selectedSort === 'desc' ? 'descending' : 'ascending'}`" />
+      <template v-slot:right>
+        <span
+          class="item-btn__icon icon"
+          :class="`icon-Sorting_${selectedSort === 'desc' ? 'descending' : 'ascending'}`"
+        />
+      </template>
     </base-btn>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import {
-  UserRole,
-  RatingFilter,
-  PriorityFilter,
-  WorkplaceFilter,
-  TypeOfJobFilter,
-} from '~/utils/enums';
+import { UserRole, Filters, Priority } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
   name: 'FiltersPanel',
+  UserRole,
   data() {
     return {
       selectedRating: null,
       selectedPriority: null,
-      selectedTypeOfJob: null,
+      selectedEmployment: null,
       selectedWorkplace: null,
       selectedSort: 'desc',
     };
@@ -92,29 +92,18 @@ export default {
       selectedPrice: 'quests/getSelectedPriceFilter',
       selectedSpecializations: 'quests/getSelectedSpecializationsFilters',
     }),
-    UserRole() { return UserRole; },
-    selectedSpec() {
-      const specs = this.selectedSpecializations?.query || [];
-      const query = {};
-      specs.forEach((item, i) => { query[`specializations[${i}]`] = item; });
-      return query;
-    },
     ratingItems() {
-      const items = [this.$t('quests.allVariants')];
-      RatingFilter.forEach((item) => { if (item) items.push(this.$t(`quests.rating.${item}`)); });
-      return items;
+      return Filters.EMPLOYEE_RATING.map((item) => this.$t(`ratings.${item}`));
     },
     priorityItems() {
-      const items = [this.$t('quests.priority.all')];
-      PriorityFilter.forEach((item) => { if (item.value) items.push(this.$t(`quests.runtime.${item.key}`)); });
-      return items;
+      return Filters.PRIORITIES.map((item) => this.$t(`priorities.${item}`));
     },
-    typeOfJobItems() {
-      const items = [this.$t('quests.allVariants')];
-      TypeOfJobFilter.forEach((item) => { items.push(this.$t(`quests.employment.${item}`)); });
-      return items;
+    employmentItems() {
+      return Filters.EMPLOYMENTS.map((item) => this.$t(`employments.${item}`));
     },
-    workplaceItems() { return WorkplaceFilter.map((item) => this.$t(`workPlaces.${item}`)); },
+    workplaceItems() {
+      return Filters.WORKPLACES.map((item) => this.$t(`workplaces.${item}`));
+    },
     prices() {
       const { from, to } = this.selectedPrice;
       if (from && to) return { title: `${from} - ${to}`, hasPrice: true };
@@ -124,25 +113,30 @@ export default {
     },
   },
   watch: {
-    selectedSpec() { this.$emit('sortSpec', this.selectedSpec); },
-    selectedRating() {
-      const { selectedRating } = this;
-      const query = selectedRating ? { 'ratingStatuses[0]': RatingFilter[selectedRating] } : {};
+    selectedSpecializations: {
+      deep: true,
+      handler() {
+        const specs = this.selectedSpecializations?.query || [];
+        const query = {};
+        specs.forEach((item, i) => { query[`specializations[${i}]`] = item; });
+        this.$emit('sortSpec', query);
+      },
+    },
+    selectedRating(index) {
+      const query = index ? { 'ratingStatuses[0]': Filters.EMPLOYEE_RATING[index] } : {};
       this.$emit('sortRating', query);
     },
-    selectedPriority() {
-      const { selectedPriority } = this;
-      const query = selectedPriority ? { 'priorities[0]': PriorityFilter[selectedPriority].value } : {};
+    selectedPriority(index) {
+      const key = Filters.PRIORITIES[index].toUpperCase();
+      const query = index ? { 'priorities[0]': Priority[key].key } : {};
       this.$emit('sortPriority', query);
     },
-    selectedTypeOfJob() {
-      const { selectedTypeOfJob } = this;
-      const query = selectedTypeOfJob ? { 'employments[0]': TypeOfJobFilter[selectedTypeOfJob] } : {};
+    selectedEmployment(index) {
+      const query = index ? { 'employments[0]': Filters.EMPLOYMENTS[index] } : {};
       this.$emit('sortTypeOfJob', query);
     },
-    selectedWorkplace() {
-      const { selectedWorkplace } = this;
-      const query = selectedWorkplace ? { 'workplaces[0]': WorkplaceFilter[selectedWorkplace] } : {};
+    selectedWorkplace(index) {
+      const query = index ? { 'workplaces[0]': Filters.WORKPLACES[index] } : {};
       this.$emit('sortWorkplace', query);
     },
     selectedPrice() {
@@ -185,7 +179,6 @@ export default {
   &__item, &__item-btn {
     min-width: 180px;
   }
-
 }
 
 .item-btn {
@@ -200,7 +193,6 @@ export default {
       text-overflow: ellipsis;
     }
   }
-
 }
 
 .icon {
@@ -210,7 +202,6 @@ export default {
   &_blue {
     color: $blue;
   }
-
 }
 
 @include _1199 {
@@ -236,5 +227,4 @@ export default {
     grid-gap: 10px;
   }
 }
-
 </style>
