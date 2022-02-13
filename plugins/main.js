@@ -1,9 +1,8 @@
 import Vue from 'vue';
+import moment from 'moment';
 import VueTippy, { TippyComponent } from 'vue-tippy';
-import moment from '~/node_modules/@nuxtjs/moment';
 import modals from '~/store/modals/modals';
 
-Vue.use(moment);
 Vue.use(VueTippy);
 Vue.component('tippy', TippyComponent);
 
