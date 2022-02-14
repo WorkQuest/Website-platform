@@ -8,7 +8,7 @@
       class="settings__body"
       tag="div"
     >
-      <verification-card v-if="isShowInfo === true && userData.statusKYC === 0" />
+      <verification-card v-if="userData.statusKYC === 0" />
       <profile
         :profile="profile"
         :new-education="newEducation"
@@ -92,7 +92,6 @@ export default {
         distantIndex: -1,
         selectedSpecAndSkills: null,
       },
-      isShowInfo: true,
       avatarChange: { data: {}, file: {} },
       updatedSecondPhone: { codeRegion: null, phone: null, fullPhone: null },
       updatedFirstPhone: { codeRegion: null, phone: null, fullPhone: null },
