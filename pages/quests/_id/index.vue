@@ -659,7 +659,7 @@ export default {
     font-size: 16px;
     line-height: 20px;
     color: $black700;
-    word-wrap: break-word
+    overflow-wrap: anywhere;
   }
   &__count {
     font-style: normal;

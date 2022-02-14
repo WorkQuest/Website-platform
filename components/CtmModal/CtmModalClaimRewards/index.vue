@@ -81,7 +81,7 @@ export default {
     }),
     canSubmit() {
       const { stakingType, isConnected, statusBusy } = this;
-      return statusBusy || (stakingType === StakingTypes.WUSD && stakingType !== StakingTypes.WQT && !isConnected);
+      return !statusBusy || !(stakingType === StakingTypes.WUSD && stakingType !== StakingTypes.WQT && !isConnected);
     },
     stakingType() { return this.options.stakingType; },
     userInfo() { return this.stakingUserData[this.stakingType]; },
