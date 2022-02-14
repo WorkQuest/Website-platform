@@ -47,7 +47,7 @@
         <div
           v-for="(button, index) in rightSideButtons"
           :key="index"
-          :data-selector="`ADVANCED-SETTINGS-RIGHT-SIDE-BTNS`"
+          :data-selector="`ADVANCED-SETTINGS-RIGHT-SIDE-BTNS-${button.title}`"
           class="advanced__option advanced__option_blue"
         >
           <div class="advanced__option-title">
