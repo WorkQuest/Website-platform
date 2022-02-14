@@ -49,8 +49,8 @@
         <div class="block__skill skill">
           <div
             v-for="(item, i) in selectedSkills[key]"
-            :data-selector="`SELECTED-SKILLS-${i}`"
             :key="i"
+            :data-selector="`SELECTED-SKILLS-${i}`"
             class="skill__badge"
           >
             {{ item.name }}
