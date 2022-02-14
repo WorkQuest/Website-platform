@@ -154,8 +154,8 @@ export default {
       },
       locationFull: {
         location: {
-          longitude: this.profile.locationFull.location?.longitude || this.coordinates?.lng,
-          latitude: this.profile.locationFull.location?.latitude || this.coordinates?.lat,
+          longitude: this.profile.locationFull.location?.longitude || 0,
+          latitude: this.profile.locationFull.location?.latitude || 0,
         },
         locationPlaceName: this.userData.locationPlaceName,
       },
@@ -323,8 +323,8 @@ export default {
         },
         locationFull: {
           location: {
-            longitude: this.profile.locationFull.location?.longitude || this.coordinates.lng,
-            latitude: this.profile.locationFull.location?.latitude || this.coordinates.lat,
+            longitude: this.profile.locationFull.location?.longitude || this.userData.location?.longitude,
+            latitude: this.profile.locationFull.location?.latitude || this.userData.location?.latitude,
           },
           locationPlaceName: this.profile.locationFull.locationPlaceName || this.userData.locationPlaceName,
         },
