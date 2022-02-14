@@ -43,9 +43,7 @@ export default {
   },
   computed: {
     getStarStyles() {
-      return [
-        { disabled: this.isDisabled },
-      ];
+      return [{ disabled: this.isDisabled }];
     },
   },
   methods: {
