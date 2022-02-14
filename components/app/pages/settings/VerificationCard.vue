@@ -1,7 +1,7 @@
 <template>
   <div
     class="verification"
-    :data-selector="`COMPONENT-VER-CARD`"
+    data-selector="COMPONENT-VER-CARD"
   >
     <div class="verification__info">
       <div class="verification__title">
@@ -13,7 +13,7 @@
       <div class="verification__button">
         <base-btn
           mode="ver"
-          :data-selector="`ACTION-BTN-GO-TO-SUMSUB`"
+          data-selector="ACTION-BTN-GO-TO-SUMSUB"
           @click="goToSumSub"
         >
           {{ $t('settings.getVerification') }}

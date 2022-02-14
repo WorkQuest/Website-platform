@@ -1,7 +1,7 @@
 <template>
   <div
     class="selector__skills skills"
-    :data-selector="`COMPONENT-SPEC-SELECTOR`"
+    data-selector="COMPONENT-SPEC-SELECTOR"
   >
     <div
       v-for="key in specCount"
@@ -49,6 +49,7 @@
         <div class="block__skill skill">
           <div
             v-for="(item, i) in selectedSkills[key]"
+            :data-selector="`SELECTED-SKILLS-${i}`"
             :key="i"
             class="skill__badge"
           >
@@ -78,7 +79,7 @@
       :disabled="specCount === 3"
       class="skills__btn-add"
       :class="specCount === 3 ? 'skills__btn-add_disabled' : ''"
-      :data-selector="`ACTION-BTN-ADD-SPEC`"
+      data-selector="ACTION-BTN-ADD-SPEC"
       @click="addSpecialization"
     />
     <div

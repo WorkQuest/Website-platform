@@ -1,7 +1,7 @@
 <template>
   <div
     class="table"
-    :data-selector="`COMPONENT-BASE-TABLE`"
+    data-selector="COMPONENT-BASE-TABLE"
   >
     <b-table
       :items="items"

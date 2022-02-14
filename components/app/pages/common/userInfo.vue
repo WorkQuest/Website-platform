@@ -1,13 +1,13 @@
 <template>
   <div
     class="info-grid"
-    :data-selector="`COMPONENT-INFO-USER`"
+    data-selector="COMPONENT-INFO-USER"
   >
     <div class="info-grid__left">
       <div class="info-grid__share-left">
         <base-btn
           mode="share-btn"
-          :data-selector="`ACTION-BTN-SHARE-USER-PROFILE`"
+          data-selector="ACTION-BTN-SHARE-USER-PROFILE"
           @click="shareModal()"
         />
       </div>
@@ -168,7 +168,7 @@
           class="contact__btn"
         >
           <base-btn
-            :data-selector="`ACTION-BTN-TO-RAISE-VIEWS`"
+            data-selector="ACTION-BTN-TO-RAISE-VIEWS"
             @click="toRaisedViews()"
           >
             {{ $t('profile.raiseViews') }}
@@ -180,7 +180,7 @@
         >
           <base-btn
             :mode="'approve'"
-            :data-selector="`ACTION-BTN-GIVE-A-QUEST`"
+            data-selector="ACTION-BTN-GIVE-A-QUEST"
             @click="sendInvite()"
           >
             {{ $t('workers.giveAQuest') }}

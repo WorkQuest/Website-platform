@@ -1,7 +1,7 @@
 <template>
   <div
     class="reviews-grid reviews-grid__reviews-item"
-    :data-selector="`COMPONENT-REVIEWS-TAB`"
+    data-selector="COMPONENT-REVIEWS-TAB"
   >
     <span
       v-for="(reviewData, i) in object.reviews"
@@ -63,7 +63,7 @@
         </div>
         <base-btn
           mode="borderless-right"
-          :data-selector="`ACTION-BTN-SHOW-REVIEW-DETAILS`"
+          :data-selector="`ACTION-BTN-SHOW-REVIEW-DETAILS-${reviewData.id}`"
           @click="showReviewDetails(reviewData)"
         >
           {{ $t('quests.readCompletely') }}

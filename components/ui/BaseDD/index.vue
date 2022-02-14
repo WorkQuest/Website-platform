@@ -1,5 +1,5 @@
 <template>
-  <div :data-selector="`COMPONENT-BASE-DD`">
+  <div data-selector="COMPONENT-BASE-DD">
     <div
       v-if="label !== ''"
       :class="[{'ctm-field__header' : !tip}, {'ctm-field__header ctm-field__header_mar5' : tip}]"

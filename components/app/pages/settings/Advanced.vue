@@ -1,7 +1,7 @@
 <template>
   <div
     class="advanced"
-    :data-selector="`COMPONENT-ADVANCED`"
+    data-selector="COMPONENT-ADVANCED"
   >
     <div class="advanced__left">
       <div class="advanced__title">
@@ -10,7 +10,7 @@
       <div
         v-for="(radio) in radioButtons"
         :key="radio.index"
-        :data-selector="`ADVANCED-RADIOS`"
+        data-selector="ADVANCED-RADIOS"
         class="advanced__options advanced__options_left"
       >
         <div class="advanced__subtitle">
@@ -19,7 +19,7 @@
         <div
           v-for="input in radio"
           :key="input.index"
-          :data-selector="`ADVANCED-WHO-CAN-SEE-RADIO`"
+          data-selector="ADVANCED-WHO-CAN-SEE-RADIO"
           class="advanced__option"
         >
           <input

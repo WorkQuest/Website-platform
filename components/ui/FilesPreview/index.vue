@@ -1,7 +1,7 @@
 <template>
   <div
     class="preview"
-    :data-selector="`COMPONENT-FILES-PREVIEW`"
+    data-selector="COMPONENT-FILES-PREVIEW"
   >
     <div
       v-for="(item, i) of medias"

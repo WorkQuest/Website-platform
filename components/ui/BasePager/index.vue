@@ -1,13 +1,13 @@
 <template>
   <div
     class="pager"
-    :data-selector="`COMPONENT-BASE-PAGER`"
+    data-selector="COMPONENT-BASE-PAGER"
   >
     <button
       class="pager__icon"
       :class="{'pager__icon_disabled': value === 1}"
       :disabled="value === 1"
-      :data-selector="`ACTION-BTN-PREV-PAGE`"
+      data-selector="ACTION-BTN-PREV-PAGE"
       @click="prevPage"
     >
       <img
@@ -52,7 +52,7 @@
       class="pager__icon"
       :class="{'pager__icon_disabled': value === totalPages}"
       :disabled="value === totalPages"
-      :data-selector="`ACTION-BTN-NEXT-PAGE`"
+      data-selector="ACTION-BTN-NEXT-PAGE"
       @click="nextPage"
     >
       <img

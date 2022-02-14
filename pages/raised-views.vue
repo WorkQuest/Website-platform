@@ -30,7 +30,7 @@
             <div
               v-for="(item, i) in periodTabs"
               :key="i"
-              :data-selector="`ACTION-BTN-SWITCH-PERIOD`"
+              :data-selector="`ACTION-BTN-SWITCH-PERIOD-${i}`"
               class="period__period"
               :class="{'period__period_active': period === item.number}"
               @click="switchPeriod(item, i)"
@@ -92,7 +92,7 @@
             <div class="btn-container__btn">
               <base-btn
                 :mode="'outline'"
-                :data-selector="`ACTION-BTN-SKIP-AND-END`"
+                data-selector="ACTION-BTN-SKIP-AND-END"
                 @click="goBack()"
               >
                 {{ $t('meta.skipAndEnd') }}
@@ -100,7 +100,7 @@
             </div>
             <div class="btn-container__btn">
               <base-btn
-                :data-selector="`ACTION-BTN-PAY`"
+                data-selector="ACTION-BTN-PAY"
                 :disabled="ads.currentAdPrice === ''"
                 @click="showPaymentModal"
               >

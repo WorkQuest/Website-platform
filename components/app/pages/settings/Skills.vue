@@ -1,7 +1,7 @@
 <template>
   <div
     class="skills"
-    :data-selector="`COMPONENT-SKILLS`"
+    data-selector="COMPONENT-SKILLS"
   >
     <div class="skills__container">
       <div class="skills__title">
@@ -30,7 +30,7 @@
             v-model="skills.perHour"
             rules="max:7"
             class="skills__cost"
-            :data-selector="`SKILLS-PER-HOUR-FIELD`"
+            data-selector="SKILLS-PER-HOUR-FIELD"
             :placeholder="skills.perHour || $t('priority.title')"
             :label="$t('settings.costPerHour')"
             :name="$t('settings.costPerHour')"
@@ -40,7 +40,7 @@
         <div class="skills__save">
           <base-btn
             class="skills__btn"
-            :data-selector="`ACTION-BTN-SAVE`"
+            data-selector="ACTION-BTN-SAVE"
             @click="$emit('click')"
           >
             {{ $t("settings.save") }}

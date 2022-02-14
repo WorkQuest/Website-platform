@@ -1,7 +1,7 @@
 <template>
   <div
     class="portfolio"
-    :data-selector="`COMPONENT-PORTFOLIO-TAB`"
+    data-selector="COMPONENT-PORTFOLIO-TAB"
   >
     <emptyData
       v-if="object.count === 0"
@@ -10,7 +10,7 @@
     <div
       v-else
       class="portfolio__items"
-      :data-selector="`PORTFOLIO-CASES`"
+      data-selector="PORTFOLIO-CASES"
     >
       <div
         v-for="(item) in object.cases"

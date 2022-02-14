@@ -99,7 +99,7 @@
           >
             <div
               class="button__more"
-              :data-selector="`ACTION-BTN-TABS-SHOW-ALL-QUEST`"
+              data-selector="ACTION-BTN-TABS-SHOW-ALL-QUEST"
               @click="selectedTab = 'quests'"
             >
               {{ $t('meta.showAllQuests') }}
@@ -140,7 +140,7 @@
               <div
                 v-if="reviewsObject.count > 4"
                 class="button__more"
-                :data-selector="`ACTION-BTN-SHOW-ALL-REVIEWS`"
+                data-selector="ACTION-BTN-SHOW-ALL-REVIEWS"
                 @click="selectedTab = 'reviews'"
               >
                 {{ $t('meta.showAllReviews') }}
@@ -167,7 +167,7 @@
             class="portfolio__add-btn"
           >
             <base-btn
-              :data-selector="`ACTION-BTN-ADD-PORTFOLIO-CASE`"
+              data-selector="ACTION-BTN-ADD-PORTFOLIO-CASE"
               @click="showAddCaseModal()"
             >
               {{ $t('ui.profile.addCase') }}
@@ -197,7 +197,7 @@
           >
             <div
               class="button__more"
-              :data-selector="`ACTION-BTN-SHOW-ALL-PORTFOLIOS`"
+              data-selector="ACTION-BTN-SHOW-ALL-PORTFOLIOS"
               @click="selectedTab = 'portfolio'"
             >
               {{ $t('meta.showAllPortfolios') }}

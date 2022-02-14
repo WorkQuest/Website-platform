@@ -3,7 +3,7 @@
     ref="uploader"
     class="uploader"
     :class="uploaderStyles()"
-    :data-selector="`COMPONENT-FILE-UPLOADER`"
+    data-selector="COMPONENT-FILE-UPLOADER"
     @dragover="dragover"
     @dragleave="dragleave"
     @drop="drop"
@@ -55,14 +55,14 @@
     </div>
     <div
       class="uploader__input_handler"
-      :data-selector="`ACTION-BTN-OPEN-EXPLORER`"
+      data-selector="ACTION-BTN-OPEN-EXPLORER"
       @click="openExplorer"
     />
     <input
       ref="input"
       class="uploader__input"
       type="file"
-      :data-selector="`FILE-UPLOADER-INPUT`"
+      data-selector="FILE-UPLOADER-INPUT"
       :multiple="multiple"
       :accept="accept"
       @change="onChange"

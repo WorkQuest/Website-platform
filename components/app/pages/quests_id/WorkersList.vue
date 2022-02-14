@@ -1,7 +1,7 @@
 <template>
   <div
     class="worker__card"
-    :data-selector="`COMPONENT-WORKERS-LIST`"
+    data-selector="COMPONENT-WORKERS-LIST"
   >
     <div class="worker__title">
       {{ $t(`${isInvited ? 'quests.invited' : 'response.title'}`) }}

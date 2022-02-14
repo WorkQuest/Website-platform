@@ -1,12 +1,12 @@
 <template>
   <div
     v-click-outside="closeQuestMenu"
-    :data-selector="`COMPONENT-QUEST-DD`"
+    data-selector="COMPONENT-QUEST-DD"
     class="quest quest__menu"
   >
     <button
       class="quest__button quest__button_menu"
-      :data-selector="`ACTION-BTN-TOGGLE-QUEST-MENU`"
+      data-selector="ACTION-BTN-TOGGLE-QUEST-MENU"
       @click="toggleQuestMenu()"
     >
       <span class="icon-more_vertical" />
@@ -20,7 +20,7 @@
           <div class="menu__container">
             <div
               class="menu__item"
-              :data-selector="`ACTION-BTN-TO-RAISING-VIEWS`"
+              data-selector="ACTION-BTN-TO-RAISING-VIEWS"
               @click="toRaisingViews"
             >
               <div class="menu__text">
@@ -29,7 +29,7 @@
             </div>
             <div
               class="menu__item"
-              :data-selector="`ACTION-BTN-SHARE-MODAL`"
+              data-selector="ACTION-BTN-SHARE-MODAL"
               @click="shareModal()"
             >
               <div class="menu__text">
@@ -38,7 +38,7 @@
             </div>
             <div
               class="menu__item"
-              :data-selector="`ACTION-BTN-TO-EDIT-QUEST`"
+              data-selector="ACTION-BTN-TO-EDIT-QUEST"
               @click="toEditQuest()"
             >
               <div class="menu__text">
@@ -47,7 +47,7 @@
             </div>
             <div
               class="menu__item"
-              :data-selector="`ACTION-BTN-DELETE-QUEST`"
+              data-selector="ACTION-BTN-DELETE-QUEST"
               @click="showAreYouSureDeleteQuestModal()"
             >
               <div class="menu__text">

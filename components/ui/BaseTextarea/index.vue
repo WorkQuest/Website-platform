@@ -1,7 +1,7 @@
 <template>
   <ValidationProvider
     v-slot="{errors}"
-    :data-selector="`COMPONENT-BASE-TEXTAREA`"
+    data-selector="COMPONENT-BASE-TEXTAREA"
     tag="div"
     class="ctm-field ctm-field_default"
     :rules="rules"
@@ -25,7 +25,7 @@
     <div class="ctm-field__body">
       <textarea
         id="textarea"
-        :data-selector="`BASE-TEXTAREA-TEXTAREA`"
+        data-selector="BASE-TEXTAREA-TEXTAREA"
         :value="mode === 'convertDate' ? convertDate(value) : value"
         class="ctm-field__textarea"
         :placeholder="placeholder"

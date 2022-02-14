@@ -1,7 +1,7 @@
 <template>
   <div
     v-click-outside="hideDd"
-    :data-selector="`COMPONENT-BASE-FILTER-DD`"
+    data-selector="COMPONENT-BASE-FILTER-DD"
     class="dd"
   >
     <div
@@ -9,7 +9,7 @@
     >
       <button
         class="dd__btn"
-        :data-selector="`ACTION-BTN-TOGGLE-DD`"
+        data-selector="ACTION-BTN-TOGGLE-DD"
         @click="toggleDd"
       >
         {{ $t('filters.dd.1') }}
@@ -35,6 +35,7 @@
             <div class="filter__btn">
               <base-btn
                 mode="outline"
+                data-selector="ACTION-BTN-SHOW-FILTER-FULL"
                 @click="showFilterFull"
               >
                 {{ $t('filters.filterBtn') }}

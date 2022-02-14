@@ -1,7 +1,7 @@
 <template>
   <ul
     class="rating-area"
-    :data-selector="`COMPONENT-STAR-RATING`"
+    data-selector="COMPONENT-STAR-RATING"
   >
     <li
       v-for="(star,index) in starsNumber"

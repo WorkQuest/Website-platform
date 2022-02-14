@@ -38,7 +38,7 @@
             <div class="page__input">
               <base-field
                 v-model="price"
-                :data-selector="`PRICE-FIELD`"
+                data-selector="PRICE-FIELD"
                 :type="'number'"
                 :label="$t('quests.price')"
                 :placeholder="+0 + currency"
@@ -77,7 +77,7 @@
             <base-field
               v-model="address"
               :label="$t('quests.address')"
-              :data-selector="`ADDRESS-FIELD`"
+              data-selector="ADDRESS-FIELD"
               :placeholder="$t('quests.address')"
               mode="icon"
               :selector="true"
@@ -91,14 +91,14 @@
               <template v-slot:selector>
                 <div
                   v-if="addresses.length"
-                  :data-selector="`ADDRESS-SELECTOR`"
+                  data-selector="ADDRESS-SELECTOR"
                   class="selector"
                 >
                   <div class="selector__items">
                     <div
                       v-for="(item, i) in addresses"
                       :key="i"
-                      :data-selector="`ADDRESS-SELECTOR-ADDRESS-${item.id}`"
+                      :data-selector="`ACTION-BTN-ADDRESS-${i}`"
                       class="selector__item"
                       @click="selectAddress(item)"
                     >
@@ -112,7 +112,7 @@
           <div class="page__input">
             <base-field
               v-model="questTitle"
-              :data-selector="`QUEST-TITLE-FIELD`"
+              data-selector="QUEST-TITLE-FIELD"
               rules="required"
               :name="$t('quests.questTitle')"
               :placeholder="$t('quests.questTitle')"
@@ -122,7 +122,7 @@
             <textarea
               id="textarea"
               v-model="textarea"
-              :data-selector="`QUEST-DESC-TEXTAREA`"
+              data-selector="QUEST-DESC-TEXTAREA"
               class="page__textarea"
               :placeholder="$t('quests.questDesc')"
             />
@@ -144,7 +144,7 @@
           <div class="upload btn btn__container btn__container_right">
             <div class="btn__create">
               <base-btn
-                :data-selector="`ACTION-BTN-TO-RAISED-VIEWS`"
+                data-selector="ACTION-BTN-TO-RAISED-VIEWS"
                 :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
                 @click="handleSubmit(toRiseViews(2))"
               >

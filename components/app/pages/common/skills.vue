@@ -1,7 +1,7 @@
 <template>
   <div
     class="skills-spec"
-    :data-selector="`COMPONENT-SKILLS`"
+    data-selector="COMPONENT-SKILLS"
   >
     <div
       v-for="(skills, specialization) in getSkillTitle"

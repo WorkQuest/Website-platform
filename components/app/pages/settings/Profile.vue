@@ -1,7 +1,7 @@
 <template>
   <div
     class="profile"
-    :data-selector="`COMPONENT-PROFILE`"
+    data-selector="COMPONENT-PROFILE"
   >
     <div class="profile__title">
       {{ $t("settings.profileInfo") }}
@@ -25,7 +25,7 @@
             class="profile__avatar-input"
             type="file"
             accept="image/*"
-            :data-selector="`ACTION-BTN-UPLOAD-PROFILE-IMAGE`"
+            data-selector="ACTION-BTN-UPLOAD-PROFILE-IMAGE"
             @change="processFile($event, validate)"
           >
           <label
@@ -71,11 +71,11 @@
               <div
                 v-if="addresses.length && isSearchDDStatus"
                 class="profile__selector selector"
-                :data-selector="`ADDRESS-SELECTOR`"
+                data-selector="ADDRESS-SELECTOR"
               >
                 <div
                   class="selector__items"
-                  :data-selector="`ADDRESS-SELECTOR-ADDRESSES`"
+                  data-selector="ADDRESS-SELECTOR-ADDRESSES"
                 >
                   <div
                     v-for="(item, i) in addresses"
@@ -100,7 +100,7 @@
             <vue-phone-number-input
               id="phone1"
               v-model="firstPhone.fullPhone"
-              :data-selector="`MAIN-PHONE-FIELD`"
+              data-selector="MAIN-PHONE-FIELD"
               :default-country-code="firstPhone.codeRegion"
               :error="!isValidPhoneNumber"
               class="profile__phone-input"
@@ -124,7 +124,7 @@
               v-if="userRole === UserRole.EMPLOYER"
               id="phone2"
               v-model="secondPhoneNumber.fullPhone"
-              :data-selector="`SECOND-PHONE-FIELD`"
+              data-selector="SECOND-PHONE-FIELD"
               :default-country-code="secondPhoneNumber.codeRegion"
               error-color="#EB5757"
               clearable
@@ -169,7 +169,7 @@
             id="textarea"
             v-model="profile.additionalInfo.description"
             :placeholder="$t('settings.userDesc')"
-            :data-selector="`DESCRIPTION-FIELD`"
+            data-selector="DESCRIPTION-FIELD"
             class="profile__description-textarea"
             :class="{ 'profile__description-textarea_error': errors[0] }"
           />
@@ -180,7 +180,7 @@
       </div>
       <div
         v-show="userRole === UserRole.WORKER"
-        :data-selector="`PROFILE-EDUCATION-&-WORK-EXP`"
+        data-selector="PROFILE-EDUCATION-&-WORK-EXP"
         class="profile__knowledge"
       >
         <div
@@ -220,7 +220,7 @@
           </ValidationProvider>
         </div>
         <div
-          :data-selector="`PROFILE-WORK-EXP`"
+          data-selector="PROFILE-WORK-EXP"
           class="profile__knowledge-container"
         >
           <div class="profile__knowledge-title">
@@ -231,12 +231,12 @@
             class="profile__knowledge-added"
           >
             <add-form
-              v-for="(work, index) in profile.additionalInfo.workExperiences"
+              v-for="(work, i) in profile.additionalInfo.workExperiences"
               :key="work.id"
               :item="work"
-              :data-selector="`ACTION-BTN-DELETE-WORK-EXP-${index}`"
+              :data-selector="`ACTION-BTN-DELETE-WORK-EXP-${i}`"
               :is-adding="false"
-              @click="deleteKnowledge(profile.additionalInfo.workExperiences, index)"
+              @click="deleteKnowledge(profile.additionalInfo.workExperiences, i)"
             />
           </div>
           <ValidationProvider
@@ -281,7 +281,7 @@
       >
         <base-btn
           class="profile__btn"
-          :data-selector="`ACTION-BTN-SETTINGS-SAVE-CHANGES`"
+          data-selector="ACTION-BTN-SETTINGS-SAVE-CHANGES"
           @click="$emit('click')"
         >
           {{ $t("settings.save") }}

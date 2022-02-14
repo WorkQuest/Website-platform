@@ -1,4 +1,4 @@
-<template :data-selector="`COMPONENT-BASE-BTN`">
+<template data-selector="COMPONENT-BASE-BTN">
   <a
     v-if="link !== ''"
     class="base-btn"
@@ -22,7 +22,7 @@
     v-else
     class="base-btn"
     :class="btnClass"
-    :data-selector="`ACTION-BTN-CLICK`"
+    data-selector="ACTION-BTN-CLICK"
     @click="$emit('click')"
   >
     {{ text }}
