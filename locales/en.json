@@ -272,6 +272,7 @@
   },
   "layout": {
     "create": "Create a quest",
+    "createAccount": "Create account",
     "links": {
       "terms": "\t· Terms and conditions",
       "privacy": "\t· Privacy policy"

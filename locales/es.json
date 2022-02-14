@@ -271,6 +271,7 @@
   },
   "layout": {
     "create": "Crear una oferta",
+    "createAccount": "???",
     "links": {
       "terms": "\t· Términos y condiciones",
       "privacy": "\t· Política de privacidad"

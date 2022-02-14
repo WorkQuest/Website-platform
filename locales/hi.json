@@ -271,6 +271,7 @@
   },
   "layout": {
     "create": "Quest बनाएं",
+    "createAccount": "???",
     "links": {
       "terms": "\t· नियम एवं शर्तें",
       "privacy": "\t· गोपनीयता नीति"

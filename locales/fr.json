@@ -271,6 +271,7 @@
   },
   "layout": {
     "create": "Créer une quête",
+    "createAccount": "???",
     "links": {
       "terms": "\t· Conditions générales",
       "privacy": "\t· Politique de confidentialité"

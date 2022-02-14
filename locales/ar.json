@@ -271,6 +271,7 @@
   },
   "layout": {
     "create": "إنشاء طلب عمل",
+    "createAccount": "???",
     "links": {
       "terms": "\t· الشروط والأحكام",
       "privacy": "\t· سياسة الخصوصية"
