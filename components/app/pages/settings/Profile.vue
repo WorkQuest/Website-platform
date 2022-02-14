@@ -100,6 +100,12 @@
               color="#ccc"
               @update="updateFirstPhone($event)"
             />
+            <span
+              v-if="!isValidPhoneNumber"
+              class="profile__error"
+            >
+              {{ $t('messages.invalidPhone') }}
+            </span>
           </div>
           <div class="profile__phone-input">
             <label
@@ -119,12 +125,6 @@
               size="lg"
               @update="updateSecondPhone($event)"
             />
-            <span
-              v-if="!isValidPhoneNumber"
-              class="profile__error"
-            >
-              {{ $t('messages.invalidPhone') }}
-            </span>
           </div>
         </div>
         <div

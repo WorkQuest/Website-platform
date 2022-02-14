@@ -8,7 +8,7 @@
       class="settings__body"
       tag="div"
     >
-      <verification-card v-if="userRole === UserRole.WORKER && isShowInfo === true && userData.statusKYC === 0" />
+      <verification-card v-if="isShowInfo === true && userData.statusKYC === 0" />
       <profile
         :profile="profile"
         :new-education="newEducation"
