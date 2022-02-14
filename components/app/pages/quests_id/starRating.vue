@@ -1,40 +1,17 @@
 <template>
-  <!--  <ul class="rating-area">-->
-  <!--    <li-->
-  <!--      v-for="(star,index) in starsNumber"-->
-  <!--      :key="index"-->
-  <!--      class="rating-area__star"-->
-  <!--      :class="getStarStyles"-->
-  <!--    >-->
-  <!--      <input-->
-  <!--        :id="`${ratingType}-star-${questIndex}-${starsNumber-index}`"-->
-  <!--        type="radio"-->
-  <!--        name="rating"-->
-  <!--        :checked="(starsNumber-index)===rating"-->
-  <!--        :aria-label="`«${starsNumber-index}»`"-->
-  <!--        @click="$emit('input', starsNumber-index)"-->
-  <!--      >-->
-  <!--      <label-->
-  <!--        :for="`${ratingType}-star-${questIndex}-${starsNumber-index}`"-->
-  <!--        :title="`«${starsNumber-index}»`"-->
-  <!--        class="rating-area__star-label"-->
-  <!--        :class="fillGoldenStars(index)"-->
-  <!--      />-->
-  <!--    </li>-->
-  <!--  </ul>-->
   <fieldset class="rating">
     <div class="rating__group">
       <input
         v-for="(star, i) in starsNumber"
         :key="i"
-        :class="fillStars(i)"
-        :checked="(starsNumber-i)===rating"
-        :aria-label="`«${starsNumber-i}»`"
+        :class="fillStars(i + 1)"
+        :checked="(i + 1) === rating"
+        :aria-label="`«${i + 1}»`"
         type="radio"
         name="rating"
         :disabled="isDisabled"
         class="rating__star"
-        @click="$emit('input', starsNumber-i)"
+        @click="$emit('input', i + 1)"
       >
     </div>
   </fieldset>
@@ -73,7 +50,7 @@ export default {
   },
   methods: {
     fillStars(i) {
-      return (this.starsNumber - i) <= this.rating ? 'rating__star_checked' : '';
+      return (i + 1) <= this.rating ? 'rating__star_checked' : '';
     },
   },
 };
@@ -140,6 +117,9 @@ export default {
     }
     &:checked, &:hover {
       background-image: url('assets/img/ui/star.svg');
+    }
+    &:hover ~ .rating__star {
+      background-image: url('assets/img/ui/star-empty.svg');
     }
     &_checked {
       background-image: url('assets/img/ui/star.svg');
