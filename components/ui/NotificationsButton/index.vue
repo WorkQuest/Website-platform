@@ -92,6 +92,7 @@
           <base-btn
             class="reduced-notifications__more-btn"
             mode="outline"
+            :data-selector="`ACTION-BTN-GO-TO-NOTIFICATION-PAGE`"
             @click="goToNotifsPage"
           >
             {{ $t('meta.showAll') }}
