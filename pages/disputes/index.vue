@@ -1,5 +1,8 @@
 <template>
-  <div class="main">
+  <div
+    class="main"
+    data-selector="PAGE-DISPUTES"
+  >
     <div class="main__body">
       <div class="page">
         <h2 class="page__title">
@@ -12,6 +15,7 @@
           <div
             v-for="(item, i) in disputes"
             :key="i"
+            :data-selector="`TO-DISPUTES-ROUTE-${i}`"
             class="page__card"
             @click="toDisputes(item.id)"
           >
@@ -19,6 +23,7 @@
               <div
                 v-for="(card, key) in cardData(item)"
                 :key="key"
+                :data-selector="`DISPUTES-${key}`"
                 class="page__text"
               >
                 {{ card.title }}

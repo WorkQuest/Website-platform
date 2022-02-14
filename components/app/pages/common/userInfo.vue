@@ -1,9 +1,13 @@
 <template>
-  <div class="info-grid">
+  <div
+    class="info-grid"
+    data-selector="COMPONENT-INFO-USER"
+  >
     <div class="info-grid__left">
       <div class="info-grid__share-left">
         <base-btn
           mode="share-btn"
+          data-selector="ACTION-BTN-SHARE-USER-PROFILE"
           @click="shareModal()"
         />
       </div>
@@ -20,6 +24,7 @@
           <div
             v-for="(star,idx) in 5"
             :key="idx"
+            :data-selector="`STAR-RATING-STAR-${idx}`"
             class="rating__star"
             :class="initStarClass(star)"
           />
@@ -64,6 +69,7 @@
             <div
               v-for="(item, i) in userData.additionalInfo.educations"
               :key="i"
+              :data-selector="`EDUCATIONS-EDUCATION-${i}`"
               class="knowledge__item"
             >
               <span class="knowledge__place">{{ item.place }}</span>
@@ -82,6 +88,7 @@
             <div
               v-for="(item, i) in userData.additionalInfo.workExperiences"
               :key="i"
+              :data-selector="`WORK-EXP-EXP-${i}`"
               class="work-exp__item"
             >
               <span class="work-exp__place">{{ item.place }}</span>
@@ -96,10 +103,12 @@
           <span
             v-for="(i, key) in socialNetworks"
             :key="key"
+            :data-selector="`SOCIALS-SOCIAL-${key}`"
             class="social__container"
           >
             <a
               class="social__link"
+              :data-selector="`SOCIALS-LINK-https://${key}.com/${i}`"
               :href="`https://${key}.com/${i}`"
               target="_blank"
             >
@@ -112,6 +121,7 @@
             <div
               v-for="(data, key) in contactData"
               :key="key"
+              :data-selector="`CONTACT-DATA-${key}`"
               class="contact__container"
             >
               <span
@@ -120,6 +130,7 @@
               />
               <a
                 :href="data.href"
+                :data-selector="`CONTACT-DATA-LINK-${data.href}`"
                 target="_blank"
                 class="contact__link"
               >{{ data.name }}</a>
@@ -157,6 +168,7 @@
           class="contact__btn"
         >
           <base-btn
+            data-selector="ACTION-BTN-TO-RAISE-VIEWS"
             @click="toRaisedViews()"
           >
             {{ $t('profile.raiseViews') }}
@@ -168,6 +180,7 @@
         >
           <base-btn
             :mode="'approve'"
+            data-selector="ACTION-BTN-GIVE-A-QUEST"
             @click="sendInvite()"
           >
             {{ $t('workers.giveAQuest') }}

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div data-selector="PAGE-PROFILE">
     <div class="section section__container section__container_white">
       <div class="container container__block">
         <userInfo />
@@ -7,6 +7,7 @@
           <button
             v-for="(item, i) in pageTabs"
             :key="i"
+            :data-selector="`PAGE-TABS-${item.tabName}`"
             class="routes__btn"
             :class="{routes__btn_active: selectedTab === item.tabName}"
             @click="selectedTab = item.tabName"
@@ -20,11 +21,13 @@
       <div class="container container__block">
         <div
           v-if="selectedTab === 'commonInfo'"
+          :data-selector="`PAGE-TAB-${selectedTab}`"
           class="block__statistic statistic"
         >
           <div
             v-for="(item, key) in statisticsData"
             :key="key"
+            :data-selector="`PAGE-TAB-CARDS-${key}`"
             class="statistic__card card"
           >
             <div class="card__title">
@@ -72,6 +75,7 @@
             <card-quest
               v-for="(quest,id) in questsData"
               :key="id"
+              :data-selector="`QUEST-CARD-${quest.id}`"
               :quest="quest"
               @clickFavoriteStar="updateQuests"
             />
@@ -95,6 +99,7 @@
           >
             <div
               class="button__more"
+              data-selector="ACTION-BTN-TABS-SHOW-ALL-QUEST"
               @click="selectedTab = 'quests'"
             >
               {{ $t('meta.showAllQuests') }}
@@ -135,6 +140,7 @@
               <div
                 v-if="reviewsObject.count > 4"
                 class="button__more"
+                data-selector="ACTION-BTN-SHOW-ALL-REVIEWS"
                 @click="selectedTab = 'reviews'"
               >
                 {{ $t('meta.showAllReviews') }}
@@ -161,6 +167,7 @@
             class="portfolio__add-btn"
           >
             <base-btn
+              data-selector="ACTION-BTN-ADD-PORTFOLIO-CASE"
               @click="showAddCaseModal()"
             >
               {{ $t('ui.profile.addCase') }}
@@ -190,6 +197,7 @@
           >
             <div
               class="button__more"
+              data-selector="ACTION-BTN-SHOW-ALL-PORTFOLIOS"
               @click="selectedTab = 'portfolio'"
             >
               {{ $t('meta.showAllPortfolios') }}

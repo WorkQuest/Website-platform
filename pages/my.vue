@@ -1,5 +1,8 @@
 <template>
-  <div class="quests">
+  <div
+    class="quests"
+    data-selector="PAGE-MY-QUESTS"
+  >
     <div class="quests__container">
       <div class="quests__body">
         <div class="quests__title">
@@ -9,6 +12,7 @@
           <base-btn
             v-for="(item, i) in filterTabs"
             :key="i"
+            :data-selector="`ACTION-FILTER-BTNS-${item.name}`"
             :mode="selectedTab === item.id ? '' : 'light'"
             class="quests__btn"
             @click="filterByStatus(item.id)"

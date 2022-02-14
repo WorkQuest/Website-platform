@@ -1,10 +1,14 @@
 <template>
-  <div class="user">
+  <div
+    class="user"
+    :data-selector="`COMPONENT-QUEST-PANEL`"
+  >
     <div class="user__top">
       <div class="user__container">
         <div class="user__head">
           <div
             class="user__left"
+            :data-selector="`ACTION-BTN-SHOW-PROFILE`"
             @click="showProfile"
           >
             <img
@@ -30,6 +34,8 @@
             <quest-dd
               v-if="questData.status === questStatuses.Created"
               :item="questData"
+              :data-selector="`QUEST-DD-${questData.id}`"
+              :item-id="questData.id"
             />
           </div>
         </div>

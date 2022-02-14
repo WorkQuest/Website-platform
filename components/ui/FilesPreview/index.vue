@@ -1,8 +1,12 @@
 <template>
-  <div class="preview">
+  <div
+    class="preview"
+    data-selector="COMPONENT-FILES-PREVIEW"
+  >
     <div
       v-for="(item, i) of medias"
       :key="i"
+      :data-selector="`ACTION-BTN-OPEN-FILE-${i}`"
       @click="openFile(item)"
     >
       <img

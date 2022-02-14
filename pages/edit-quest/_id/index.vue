@@ -1,7 +1,9 @@
 <template>
+  <!--  TODO: исправить редактирование квеста-->
   <div
     v-if="questData"
     class="main"
+    data-selector="PAGE-MY-QUESTS"
     :class="{'main-white': step === 1}"
   >
     <div class="main__body page">
@@ -11,6 +13,7 @@
       >
         <div
           v-if="step === 1"
+          data-selector="PAGE-MY-QUESTS-STEP-1"
           class="page"
         >
           <h2 class="page__title">
@@ -22,6 +25,7 @@
                 <div class="runtime page__dd">
                   <base-dd
                     v-model="runtimeValue"
+                    :data-selector="`RUNTIME-DD-${runtime}-${runtimeValue}`"
                     :items="runtime"
                     type="gray"
                     :label="$t('quests.runtime.runtime')"
@@ -35,6 +39,7 @@
             <div class="page__input">
               <base-field
                 v-model="price"
+                data-selector="PRICE-FIELD"
                 :type="'number'"
                 :label="$t('quests.price')"
                 :placeholder="+0 + currency"
@@ -47,6 +52,7 @@
                 v-model="priorityIndex"
                 :label="$t('quests.employment.employment')"
                 type="gray"
+                :data-selector="`PRIORITY-DD-${employment}-${priorityIndex}`"
                 :items="employment"
                 rules="required"
                 :name="$t('quests.employment.employment')"
@@ -55,6 +61,7 @@
             <div class="page__dd">
               <base-dd
                 v-model="categoryIndex"
+                :data-selector="`CATEGORY-DD-${distantWork}-${categoryIndex}`"
                 :label="$t('quests.distantWork.distantWork')"
                 type="gray"
                 :items="distantWork"
@@ -71,6 +78,7 @@
             <base-field
               v-model="address"
               :label="$t('quests.address')"
+              data-selector="ADDRESS-FIELD"
               :placeholder="$t('quests.address')"
               mode="icon"
               :selector="true"
@@ -84,12 +92,14 @@
               <template v-slot:selector>
                 <div
                   v-if="addresses.length"
+                  data-selector="ADDRESS-SELECTOR"
                   class="selector"
                 >
                   <div class="selector__items">
                     <div
                       v-for="(item, i) in addresses"
                       :key="i"
+                      :data-selector="`ACTION-BTN-ADDRESS-${i}`"
                       class="selector__item"
                       @click="selectAddress(item)"
                     >
@@ -103,6 +113,7 @@
           <div class="page__input">
             <base-field
               v-model="questTitle"
+              data-selector="QUEST-TITLE-FIELD"
               rules="required"
               :name="$t('quests.questTitle')"
               :placeholder="$t('quests.questTitle')"
@@ -112,6 +123,7 @@
             <textarea
               id="textarea"
               v-model="textarea"
+              data-selector="QUEST-DESC-TEXTAREA"
               class="page__textarea"
               :placeholder="$t('quests.questDesc')"
             />
@@ -133,6 +145,7 @@
           <div class="upload btn btn__container btn__container_right">
             <div class="btn__create">
               <base-btn
+                data-selector="ACTION-BTN-TO-RAISED-VIEWS"
                 :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
                 @click="handleSubmit(toRiseViews(2))"
               >
@@ -143,6 +156,7 @@
         </div>
         <div
           v-if="step === 2"
+          data-selector="PAGE-MY-QUESTS-STEP-2"
           class="page"
         >
           <div class="page btn-container btn-container__left">

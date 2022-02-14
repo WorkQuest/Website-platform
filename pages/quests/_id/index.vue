@@ -2,6 +2,7 @@
   <div
     v-if="questData"
     class="quest-page"
+    data-selector="PAGE-QUESTS-ID"
   >
     <info />
     <div class="main main-white">
@@ -35,6 +36,7 @@
           <div class="worker-data__container">
             <nuxt-link
               :to="`/profile/${assignedWorker.id}`"
+              :data-selector="`TO-ASSIGNED-WORKER-PROFILE-${assignedWorker.id}`"
               class="worker-data__user-cont"
             >
               <img
@@ -66,6 +68,7 @@
               <base-btn
                 :class="btn.class"
                 :mode="btn.mode"
+                :data-selector="`ACTION-BUTTON-${btn.name}`"
                 :disabled="btn.disabled"
                 @click="handleClickSpecBtn(btn.funcKey)"
               >
@@ -121,6 +124,7 @@
             <h2 class="quest__spec">
               {{ $t('quests.otherQuestsSpec') }}
               <nuxt-link
+                :data-selector="`ACTION-TO-SPEC-${randomSpec}`"
                 :to="`/quests?specializations=${randomSpec}&statuses=0`"
                 class="spec__link"
               >
@@ -156,6 +160,7 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'Quests',
+  // TODO: Перенести в options переменные из enum, убрать из computed, добавить path из enum
   data() {
     return {
       questLocation: { lat: 0, lng: 0 },
