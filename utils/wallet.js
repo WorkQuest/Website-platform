@@ -3,7 +3,7 @@ import { AES, enc } from 'crypto-js';
 import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
 import {
-  error, success, fetchContractData, sendTransaction,
+  error, success, fetchContractData,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { StakingTypes } from '~/utils/enums';
@@ -193,6 +193,26 @@ export const getTransferFeeData = async (recipient, value) => {
 };
 
 /** CONTRACTS */
+export const sendWalletTransaction = async (_method, payload) => {
+  if (!web3) {
+    console.error('web3 is undefined');
+    return false;
+  }
+  const inst = new web3.eth.Contract(payload.abi, payload.address);
+  const gasPrice = await web3.eth.getGasPrice();
+  const accountAddress = getWalletAddress();
+  const data = inst.methods[_method].apply(null, payload.data).encodeABI();
+  const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress });
+  const transactionData = {
+    to: payload.address,
+    from: accountAddress,
+    data,
+    gasPrice,
+    gas: gasEstimate,
+  };
+  // noinspection ES6RedundantAwait
+  return await web3.eth.sendTransaction(transactionData);
+};
 export const transferToken = async (recipient, value) => {
   try {
     value = new BigNumber(value).shiftedBy(18).toString();
@@ -375,14 +395,13 @@ export const stake = async (stakingType, amount, poolAddress, duration) => {
     amount = new BigNumber(amount).shiftedBy(18).toString();
     let res;
     if (stakingType === StakingTypes.WQT) {
-      res = await sendTransaction(
+      res = await sendWalletTransaction(
         'stake',
         {
           abi: abi.WQStaking,
           address: poolAddress,
           data: [amount, duration.toString()],
         },
-        GetWalletProvider(),
       );
       return success(res);
     }
