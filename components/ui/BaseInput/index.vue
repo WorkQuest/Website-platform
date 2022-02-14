@@ -1,6 +1,7 @@
 <template>
   <ValidationProvider
     v-slot="{errors}"
+    data-selector="COMPONENT-BASE-INPUT"
     tag="div"
     class="ctm-field ctm-field_default"
     :class="[
@@ -44,6 +45,7 @@
         :class="[{'ctm-field__input_error': errors[0]},
                  {'ctm-field__input_padding-r' : hasLoader}]"
         :placeholder="placeholder"
+        data-selector="BASE-INPUT-FIELD"
         :value="mode === 'convertDate' ? convertDate(value) : value"
         :type="type"
         :autocomplete="autocomplete"
@@ -56,6 +58,7 @@
       <div
         v-if="value && isSearch && !isBusySearch"
         class="ctm-field__clear"
+        data-selector="ACTION-BTN-CLEAR"
         @click="clear()"
       >
         <span class="icon-close_small" />

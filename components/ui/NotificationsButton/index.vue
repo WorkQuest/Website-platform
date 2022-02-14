@@ -1,10 +1,12 @@
 <template>
   <div
     v-click-outside="closePopUp"
+    data-selector="COMPONENT-NOTIFICATION-BUTTONS"
     class="reduced-notifications"
   >
     <button
       class="reduced-notifications__button"
+      data-selector="ACTION-BTN-TOGGLE-POP-UP"
       @click="togglePopUp"
     >
       <template v-if="notificationsCount">
@@ -34,6 +36,7 @@
           </div>
           <span
             class="icon icon-close_small"
+            data-selector="ACTION-BTN-CLOSE-POP-UP"
             @click="closePopUp"
           />
         </div>
@@ -42,6 +45,7 @@
             <div
               v-for="notification in notifications"
               :key="notification.id"
+              :data-selector="`NOTIFICATION-BUTTONS-NOTIFICATION-${notification.id}`"
               class="notify notify__content"
             >
               <div class="notify__top">
@@ -88,6 +92,7 @@
           <base-btn
             class="reduced-notifications__more-btn"
             mode="outline"
+            data-selector="ACTION-BTN-GO-TO-NOTIFICATION-PAGE"
             @click="goToNotifsPage"
           >
             {{ $t('meta.showAll') }}

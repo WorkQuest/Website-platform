@@ -1,5 +1,8 @@
 <template>
-  <div class="settings">
+  <div
+    class="settings"
+    data-selector="PAGE-SETTINGS"
+  >
     <div class="settings__title">
       {{ $t('settings.settings') }}
     </div>

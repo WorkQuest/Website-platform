@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div data-selector="COMPONENT-BASE-DD">
     <div
       v-if="label !== ''"
       :class="[{'ctm-field__header' : !tip}, {'ctm-field__header ctm-field__header_mar5' : tip}]"
@@ -16,6 +16,7 @@
       <button
         class="dd__btn"
         :class="ddClass"
+        :data-selector="`ACTION-BTN-${isShown}`"
         :disabled="disabled || elementsIsEmpty"
         @click="isShown = !isShown"
       >
@@ -40,6 +41,7 @@
         <span
           v-else-if="items[value]"
           class="dd__title"
+          :data-selector="`BASE-DD-${items[value]}`"
           :class="[{'dd__title_white': type === 'blue' }, { 'dd__title_black': mode === 'blackFont' }]"
         >
           {{ dataType === 'array' ? items[value] : items[value].title }}
@@ -71,6 +73,7 @@
           <button
             v-for="(item, i) in items"
             :key="`dd__item-${i}`"
+            :data-selector="`ACTION-BTN-SELECT-ITEM-${i}`"
             class="dd__item dd__item_icon"
             @click="selectItem(i)"
           >
@@ -91,6 +94,7 @@
             v-for="(item, i) in items"
             :key="`dd__item-${i}`"
             class="dd__item"
+            :data-selector="`ACTION-BTN-SELECT-ITEM-${i}`"
             :class="{'dd__item_hide': isSelected(i)}"
             @click="selectItem(i)"
           >

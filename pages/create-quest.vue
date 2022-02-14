@@ -1,6 +1,7 @@
 <template>
   <div
     class="main"
+    data-selector="PAGE-CREATE-QUEST"
     :class="{'main-white': step === 1}"
   >
     <div class="main__body page">
@@ -9,6 +10,7 @@
       >
         <div
           v-if="step === 1"
+          data-selector="PAGE-CREATE-QUEST-STEP-1"
           class="page"
         >
           <h2 class="page__title">
@@ -33,6 +35,7 @@
               <base-field
                 v-model="price"
                 :type="'number'"
+                data-selector="PRICE-FIELD"
                 :label="$t('quests.price')"
                 :placeholder="+0 + currency"
                 rules="required|decimal"
@@ -66,6 +69,7 @@
               v-model="address"
               :label="$t('quests.address')"
               :placeholder="$t('quests.address')"
+              data-selector="ADDRESS-FIELD"
               mode="icon"
               :selector="true"
               rules="required"
@@ -78,6 +82,7 @@
               <template v-slot:selector>
                 <div
                   v-if="addresses.length"
+                  data-selector="ADDRESS-SELECTOR"
                   class="selector"
                 >
                   <div class="selector__items">
@@ -85,6 +90,7 @@
                       v-for="(item, i) in addresses"
                       :key="i"
                       class="selector__item"
+                      :data-selector="`ACTION-BTN-SELECT-ADDRESS-${item.id}`"
                       @click="selectAddress(item)"
                     >
                       {{ item.formatted }}
@@ -97,6 +103,7 @@
           <div class="page__input">
             <base-field
               v-model="questTitle"
+              data-selector="QUEST-TITLE-FIELD"
               rules="required"
               :name="$t('quests.questTitle')"
               :placeholder="$t('quests.questTitle')"
@@ -107,6 +114,7 @@
               id="textarea"
               v-model="textarea"
               rules="required"
+              data-selector="QUEST-DESC-TEXTAREA"
               class="page__textarea"
               :placeholder="$t('quests.questDesc')"
             />
@@ -127,6 +135,7 @@
           <div class="upload btn btn__container btn__container_right">
             <div class="btn__create">
               <base-btn
+                data-selector="ACTION-BTN-CREATE-A-QUEST"
                 :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
                 @click="handleSubmit(toRiseViews)"
               >
@@ -137,12 +146,14 @@
         </div>
         <div
           v-if="step === 2"
+          data-selector="PAGE-CREATE-QUEST-STEP-2"
           class="page"
         >
           <div class="page btn-container btn-container__left">
             <div class="btn-container__btn_back">
               <base-btn
                 mode="back"
+                data-selector="ACTION-BTN-BACK"
                 @click="goBack"
               >
                 {{ $t('meta.back') }}
@@ -163,6 +174,7 @@
               <div
                 v-for="(item, i) in periodTabs"
                 :key="i"
+                :data-selector="`ACTION-BTN-SWITCH-PERIOD-${i}`"
                 class="period__period"
                 :class="{'period__period_active': period === item.number}"
                 @click="switchPeriod(item, i)"
@@ -187,6 +199,7 @@
                 <div
                   v-for="(item, i) in periods(period)"
                   :key="i"
+                  :data-selector="`ACTION-BTN-SWITCH-PERIOD-LEVEL-${i}`"
                   class="level__card"
                   @click="selectRadio(i)"
                 >
@@ -223,6 +236,7 @@
               <div class="btn-container__btn">
                 <base-btn
                   :mode="'outline'"
+                  data-selector="ACTION-BTN-SKIP-AND-END"
                   @click="createQuest"
                 >
                   {{ $t('meta.skipAndEnd') }}
@@ -231,6 +245,7 @@
               <div class="btn-container__btn">
                 <base-btn
                   :disabled="ads.currentAdPrice === ''"
+                  data-selector="ACTION-BTN-PAY"
                   @click="showPaymentModal"
                 >
                   {{ $t('meta.pay') }}

@@ -1,5 +1,8 @@
 <template>
-  <div class="absence">
+  <div
+    class="absence"
+    data-selector="COMPONENT-EMPTY-DATA"
+  >
     <div class="absence__content">
       <img
         class="absence__img"
@@ -15,6 +18,7 @@
       <base-btn
         v-if="link !== ''"
         class="absence__button"
+        data-selector="ACTION-BTN-TO-CREATE-QUEST"
         @click="toCreateQuest"
       >
         {{ btnText }}

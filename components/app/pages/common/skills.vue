@@ -1,8 +1,12 @@
 <template>
-  <div class="skills-spec">
+  <div
+    class="skills-spec"
+    data-selector="COMPONENT-SKILLS"
+  >
     <div
       v-for="(skills, specialization) in getSkillTitle"
       :key="specialization"
+      :data-selector="`SPECS-${specialization}`"
       class="spec"
     >
       <div class="spec__title">
@@ -12,6 +16,7 @@
         <li
           v-for="(skill, key) in skills"
           :key="key"
+          :data-selector="`SKILLS-${skill}`"
           class="skills__item skills__item_blue"
         >
           {{ $t(`filters.items.${specialization}.sub.${skill}`) }}

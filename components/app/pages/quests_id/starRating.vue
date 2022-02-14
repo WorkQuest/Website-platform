@@ -7,6 +7,7 @@
         :class="fillStars(i + 1)"
         :checked="(i + 1) === rating"
         :aria-label="`«${i + 1}»`"
+        :data-selector="`STAR-RATING-STAR-${i}`"
         type="radio"
         name="rating"
         :disabled="isDisabled"
