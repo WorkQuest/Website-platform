@@ -146,44 +146,4 @@ export default {
     }
   }
 }
-//.rating-area {
-//  overflow: hidden;
-//  display: flex;
-//  flex-direction: row-reverse;
-//  justify-content: flex-end;
-//  height: 24px;
-//  &__star > input {
-//    display: none;
-//  }
-//  &__star-label {
-//    float: right;
-//    padding: 0;
-//    cursor: pointer;
-//    font-size: 25px;
-//    line-height: 25px;
-//    color: lightgrey;
-//    text-shadow: 1px 1px #bbb;
-//    &_golden {
-//      color: gold;
-//    }
-//  }
-//  &__star > label:before {
-//    content: '★';
-//  }
-//  &__star:hover > label {
-//    color: gold;
-//  }
-//  &__star:hover ~ &__star > label {
-//    color: gold;
-//    text-shadow: 1px 1px goldenrod;
-//  }
-//}
-//.disabled {
-//  pointer-events: none;
-//}
-//@include _575 {
-//  .rating-area__star-label {
-//      font-size: 20px;
-//    }
-//}
 </style>
