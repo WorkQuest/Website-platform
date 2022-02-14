@@ -9,8 +9,6 @@ import localeId from './locales/id.json';
 import localePt from './locales/pt.json';
 import localeEs from './locales/es.json';
 
-require('dotenv').config();
-
 export default {
   ssr: false,
   target: 'static',
@@ -52,8 +50,8 @@ export default {
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/style-resources',
+    '@nuxtjs/i18n',
     'bootstrap-vue/nuxt',
-    'nuxt-i18n',
     'cookie-universal-nuxt',
   ],
   build: {

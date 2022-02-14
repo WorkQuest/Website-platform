@@ -50,6 +50,7 @@
           <div class="btn__wrapper">
             <base-btn
               class="message__action"
+              :disabled="!message_input.trim()"
               @click="inviteOnQuest()"
             >
               {{ $t('meta.send') }}
