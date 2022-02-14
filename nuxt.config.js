@@ -9,8 +9,6 @@ import localeId from './locales/id.json';
 import localePt from './locales/pt.json';
 import localeEs from './locales/es.json';
 
-require('dotenv').config();
-
 export default {
   ssr: false,
   target: 'static',
@@ -36,6 +34,7 @@ export default {
     { src: '@plugins/clipboard.js' },
     { src: '@plugins/injectComponents.js' },
     { src: '@plugins/vue-qrcode.js' },
+    { src: '@plugins/vue-google-map.js' },
   ],
   components: true,
   buildModules: [
@@ -51,24 +50,20 @@ export default {
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/style-resources',
+    '@nuxtjs/i18n',
     'bootstrap-vue/nuxt',
-    'nuxt-i18n',
     'cookie-universal-nuxt',
-    ['nuxt-gmaps', {
-      key: process.env.GMAPKEY,
-    }],
   ],
   build: {
     productionSourceMap: false,
     productionGzip: true,
     productionGzipExtensions: ['js', 'css', 'svg'],
     extend(config) {
-      config.node = {
-        fs: 'empty',
-      };
+      config.node = { fs: 'empty' };
     },
     transpile: [
       'vee-validate/dist/rules',
+      /^vue2-google-maps($|\/)/,
     ],
     babel: {
       compact: false,
@@ -83,22 +78,22 @@ export default {
   //   icons: true,
   // },
   i18n: {
-    // locales: ['en', 'ru', 'bn', 'ar', 'fr', 'hi', 'id', 'pt', 'es', 'zh'],
-    locales: ['en'],
+    locales: ['en', 'ru', 'bn', 'ar', 'fr', 'hi', 'id', 'pt', 'es', 'zh'],
+    // locales: ['en'],
     defaultLocale: 'en',
     strategy: 'no_prefix',
     vueI18n: {
       messages: {
         en: localeEn,
-        // ru: localeRu,
-        // ar: localeAr,
-        // fr: localeFr,
-        // bn: localeBn,
-        // zh: localeZh,
-        // hi: localeHi,
-        // id: localeId,
-        // pt: localePt,
-        // es: localeEs,
+        ru: localeRu,
+        ar: localeAr,
+        fr: localeFr,
+        bn: localeBn,
+        zh: localeZh,
+        hi: localeHi,
+        id: localeId,
+        pt: localePt,
+        es: localeEs,
       },
     },
     detectBrowserLanguage: {

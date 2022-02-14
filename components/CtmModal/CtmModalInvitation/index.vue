@@ -50,6 +50,7 @@
           <div class="btn__wrapper">
             <base-btn
               class="message__action"
+              :disabled="!message_input.trim()"
               @click="inviteOnQuest()"
             >
               {{ $t('meta.send') }}
@@ -132,7 +133,6 @@ export default {
     justify-content: center;
     align-items: center;
     display: flex;
-
     &_higher {
       display: block;
       margin: 0 0 0 7px;
@@ -141,7 +141,6 @@ export default {
       border-radius: 3px;
       color: $white;
     }
-
     &_reliable {
       display: block;
       margin: 0 0 0 7px;
@@ -150,7 +149,6 @@ export default {
       border-radius: 3px;
       color: $white;
     }
-
     &_checked {
       display: block;
       margin: 0 0 0 7px;
@@ -159,7 +157,6 @@ export default {
       border-radius: 3px;
       color: $white;
     }
-
     &_disabled {
       display: none;
     }
@@ -175,7 +172,6 @@ export default {
     border: 0;
     background-color: $black0;
     resize: none;
-
     &::placeholder {
       color: $black200;
     }
@@ -184,7 +180,6 @@ export default {
 
 .ctm-modal {
   @include modalKit;
-
   &__content-field {
     display: grid;
   }
@@ -194,6 +189,7 @@ export default {
     align-items: center;
   }
 }
+
 .user-data {
   &__img {
     width: 61px;
@@ -205,6 +201,7 @@ export default {
     margin-left: 10px;
   }
 }
+
 .input {
   &_white {
     border-radius: 6px;
@@ -214,7 +211,6 @@ export default {
     width: 100%;
     background-color: $white;
     resize: none;
-
     &::placeholder {
       color: $black800;
     }
@@ -225,7 +221,6 @@ export default {
   &__field {
     display: grid;
     margin-top: 25px;
-
     &_top {
       margin: 0;
     }
@@ -239,7 +234,6 @@ export default {
     justify-content: space-between;
     margin-top: 25px;
   }
-
   &__wrapper {
     width: 45%;
   }
@@ -247,14 +241,12 @@ export default {
 
 .messageSend {
   max-width: 680px !important;
-
   &__content {
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;
     grid-gap: 20px;
   }
-
   &__action {
     margin-top: 10px;
   }

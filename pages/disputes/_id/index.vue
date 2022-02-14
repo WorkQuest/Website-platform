@@ -17,8 +17,8 @@
         </div>
       </div>
       <card-quest
-        class="dispute__quests"
-        :quest="disputeData.quest ? disputeData.quest : {}"
+        :quest="disputeData.quest"
+        :dispute-id="disputeData.id"
       />
       <div class="dispute__chat-history">
         <div class="chat-history__container">
@@ -65,11 +65,11 @@ export default {
       return obj[this.disputeData.status];
     },
   },
-  async beforeMount() {
+  async created() {
     await this.$store.dispatch('disputes/getDispute', this.disputeId);
   },
   async beforeDestroy() {
-    await this.$store.commit('disputes/setDispute', {});
+    await this.$store.commit('disputes/resetDisputeCard');
   },
   methods: {
     backToDisputes() {

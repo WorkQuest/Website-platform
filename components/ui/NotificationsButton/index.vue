@@ -136,6 +136,7 @@ export default {
       }
 
       this.isShowNotify = !this.isShowNotify;
+      this.$emit('closeAnotherPopUp');
     },
     closePopUp() {
       this.isShowNotify = false;

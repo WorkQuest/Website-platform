@@ -1,5 +1,5 @@
 import {
-  InfoModeEmployer, InfoModeWorker, QuestStatuses, ResponsesType,
+  InfoModeEmployer, InfoModeWorker, QuestStatuses, ResponsesType, UserRole,
 } from '~/utils/enums';
 
 export default {
@@ -25,10 +25,7 @@ export default {
     try {
       if (query.q === '') delete query.q;
       const { ok, result } = await this.$axios.$get('/v1/profile/workers', {
-        params: {
-          ...query,
-          ...specFilter,
-        },
+        params: { ...query, ...specFilter },
       });
       commit('setEmployeeList', result);
       return { ok };
@@ -47,12 +44,6 @@ export default {
   async getCurrentStepCreateQuest({ commit }, data) {
     commit('setCurrentStepCreateQuest', data);
   },
-  setMapBounds({ commit }, payload) {
-    commit('setMapBounds', payload);
-  },
-  setMapCenter({ commit }, payload) {
-    commit('setMapCenter', payload);
-  },
   async questCreate({ commit }, payload) {
     try {
       return await this.$axios.$post('/v1/quest/create', payload);
@@ -64,10 +55,7 @@ export default {
     try {
       if (query.q === '') delete query.q;
       const { ok, result } = await this.$axios.$get('/v1/quests', {
-        params: {
-          ...query,
-          ...specFilter,
-        },
+        params: { ...query, ...specFilter },
       });
       commit('setAllQuests', result);
       return { ok };
@@ -85,7 +73,7 @@ export default {
 
       const questStatuses = Object.entries(QuestStatuses);
 
-      if (role === 'employer') {
+      if (role === UserRole.EMPLOYER) {
         questStatuses.some(([key, val]) => {
           if (val === status) {
             currStat = InfoModeEmployer[key];
@@ -93,7 +81,7 @@ export default {
           }
           return false;
         });
-      } else if (role === 'worker') {
+      } else if (role === UserRole.WORKER) {
         questStatuses.some(([key, val]) => {
           if (val === status) {
             if (val === QuestStatuses.Created && response) key = response.type ? 'Invited' : 'Responded';
@@ -117,26 +105,6 @@ export default {
         params: { ...query },
       });
       commit('setUserQuests', response.result);
-      return response.result;
-    } catch (e) {
-      return console.log(e);
-    }
-  },
-  async getQuestsOnMap({ commit }, payload) {
-    try {
-      const response = await this.$axios.$get(`/v1/quests/map/list-points?${payload}`);
-      commit('setAllQuests', response.result);
-      return response.result;
-    } catch (e) {
-      return console.log(e);
-    }
-  },
-  async getQuestsLocation({ commit }, payload) {
-    try {
-      const response = await this.$axios.$get('/v1/quests/map/points', {
-        params: { ...payload },
-      });
-      commit('setQuestsLocation', response.result);
       return response.result;
     } catch (e) {
       return console.log(e);

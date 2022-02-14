@@ -163,14 +163,25 @@ export const UserRole = {
 };
 
 export const Path = {
+  ROOT: '/',
   SIGN_IN: '/sign-in',
   SIGN_UP: '/sign-up',
-  ROOT: '/quests',
+  MY_QUESTS: '/my',
+  WALLET: '/wallet',
+  PENSION: '/pension',
+  REFERRAL: '/referral',
+  INSURING: '/insuring',
+  SAVINGS: '/savings',
+  CREDITING: '/crediting',
+  MINING: '/mining',
+  CROSSCHAIN: '/crosschain',
+  SETTINGS: '/settings',
+  DISPUTES: '/disputes',
+  WORKERS: '/workers',
   CREATE_QUEST: '/create-quest',
   STAKING: '/staking',
   PROFILE: '/profile',
   ROLE: '/role',
-  WORKERS: '/workers',
   QUESTS: '/quests',
   EDIT_QUEST: '/edit-quest',
 };

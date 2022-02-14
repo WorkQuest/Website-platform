@@ -19,11 +19,10 @@
               <div class="runtime__container">
                 <div class="runtime page__dd">
                   <base-dd
-                    v-model="runtimeValue"
+                    v-model="runtimeIndex"
                     :items="runtime"
                     type="gray"
                     :label="$t('quests.runtime.runtime')"
-                    :placeholder="runtime[0]"
                     :name="$t('quests.runtime.runtime')"
                     rules="required"
                   />
@@ -248,6 +247,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { PriorityFilter, WorkplaceIndex, TypeOfJobFilter } from '~/utils/enums';
 
 const { GeoCode } = require('geo-coder');
 
@@ -265,7 +265,6 @@ export default {
       workplaceIndex: 0,
       runtimeIndex: 0,
       periodIndex: 0,
-      runtimeValue: '',
       questTitle: '',
       address: '',
       textarea: '',
@@ -472,18 +471,6 @@ export default {
       this.addresses = [];
       this.address = address.formatted;
     },
-    convertEmployment(employmentId) {
-      const employments = ['fullTime', 'partTime', 'fixedTerm'];
-      return employments[employmentId];
-    },
-    convertWorkplace(workplaceId) {
-      const workplaces = [
-        'distant',
-        'office',
-        'both',
-      ];
-      return workplaces[workplaceId];
-    },
     async getAddressInfo(address) {
       try {
         if (address.length) {
@@ -505,9 +492,10 @@ export default {
       this.SetLoader(true);
       const medias = await this.uploadFiles(this.files);
       const payload = {
-        workplace: this.convertWorkplace(this.workplaceIndex),
-        priority: this.runtimeIndex,
-        employment: this.convertEmployment(this.employmentIndex),
+        // TODO Это быстрый фикс ошибки, при рефакторе исправить
+        workplace: WorkplaceIndex[this.workplaceIndex],
+        priority: PriorityFilter[this.runtimeIndex + 1].value,
+        employment: TypeOfJobFilter[this.employmentIndex],
         category: 'Default',
         title: this.questTitle,
         description: this.textarea,

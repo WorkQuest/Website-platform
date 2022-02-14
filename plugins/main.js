@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import { mapGetters } from 'vuex';
 import moment from 'moment';
 import VueTippy, { TippyComponent } from 'vue-tippy';
 import modals from '~/store/modals/modals';
