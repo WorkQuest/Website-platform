@@ -117,12 +117,9 @@
             class="icon icon-message"
           />
         </div>
-        <div
-          class="header__button header__button_notifications"
-          @click="closeAll()"
-        >
-          <notifications-button />
-        </div>
+        <notifications-button
+          @closeAnotherPopUp="closeAll()"
+        />
         <div
           class="ctm-menu__toggle"
           @click="toggleMobileMenu()"
