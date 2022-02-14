@@ -117,7 +117,9 @@
             class="icon icon-message"
           />
         </div>
-        <notifications-button />
+        <notifications-button
+          @closeAnotherPopUp="closeAll()"
+        />
         <div
           class="ctm-menu__toggle"
           @click="toggleMobileMenu()"
@@ -469,7 +471,7 @@ export default {
         }
       }
     },
-    async  addNotification(ev) {
+    async addNotification(ev) {
       await this.$store.dispatch('user/addNotification', ev);
     },
     async initWSListeners() {
@@ -707,7 +709,6 @@ export default {
       }
     }
   }
-
   &__button {
     @include text-simple;
     font-size: 16px;
@@ -842,6 +843,7 @@ export default {
     padding: 16px 0 20px 30px;
     align-items: flex-start;
     width: 100%;
+
     &_logout {
       color: $red;
     }
@@ -954,7 +956,7 @@ export default {
 
 .menu {
   position: absolute;
-  top: 50px;
+  top: 49px;
   background: $white;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   border-radius: 6px;
