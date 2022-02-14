@@ -138,7 +138,6 @@ export default {
           phone: this.secondNumber?.phone || null,
           fullPhone: this.secondNumber?.fullPhone || null,
         },
-        address: addInfo.address,
         socialNetwork: {
           instagram: addInfo.socialNetwork.instagram,
           twitter: addInfo.socialNetwork.twitter,
@@ -155,10 +154,10 @@ export default {
       },
       locationFull: {
         location: {
-          longitude: this.coordinates?.lng || this.profile.locationFull.location?.longitude || 0,
-          latitude: this.coordinates?.lat || this.profile.locationFull.location?.latitude || 0,
+          longitude: this.profile.locationFull.location?.longitude || this.coordinates?.lng,
+          latitude: this.profile.locationFull.location?.latitude || this.coordinates?.lat,
         },
-        locationPlaceName: addInfo.address,
+        locationPlaceName: this.userData.locationPlaceName,
       },
     };
     this.skills = {
@@ -324,13 +323,12 @@ export default {
         },
         locationFull: {
           location: {
-            longitude: this.coordinates ? this.coordinates.lng : this.profile.locationFull.location?.longitude || 0,
-            latitude: this.coordinates ? this.coordinates.lat : this.profile.locationFull.location?.latitude || 0,
+            longitude: this.profile.locationFull.location?.longitude || this.coordinates.lng,
+            latitude: this.profile.locationFull.location?.latitude || this.coordinates.lat,
           },
-          locationPlaceName: addInfo.address,
+          locationPlaceName: this.profile.locationFull.locationPlaceName || this.userData.locationPlaceName,
         },
         additionalInfo: {
-          address: addInfo.address,
           secondMobileNumber: {
             codeRegion: this.updatedSecondPhone?.codeRegion ? this.updatedSecondPhone?.codeRegion : null,
             phone: this.updatedSecondPhone?.phone ? this.updatedSecondPhone?.phone : null,

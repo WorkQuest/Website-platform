@@ -47,7 +47,7 @@
             </template>
           </base-field>
           <base-field
-            v-model="profile.additionalInfo.address"
+            v-model="profile.locationFull.locationPlaceName"
             v-click-outside="hideSearchDD"
             :placeholder="$t('settings.addressInput')"
             rules="max:100|required"
@@ -56,7 +56,7 @@
             :name="$t('settings.address')"
             @focus="isSearchDDStatus = true"
             @blur="checkValidate"
-            @selector="getAddressInfo(profile.additionalInfo.address)"
+            @selector="getAddressInfo(profile.locationFull.locationPlaceName)"
           >
             <template v-slot:left>
               <span class="icon icon-location" />
@@ -463,7 +463,7 @@ export default {
     // GEOPOSITION METHODS
     selectAddress(address, i) {
       this.selectedAddressIndex = i;
-      this.profile.additionalInfo.address = address.formatted;
+      this.profile.locationFull.locationPlaceName = address.formatted;
       this.addresses = [];
       this.$emit('updateCoordinates', this.coordinates);
     },
