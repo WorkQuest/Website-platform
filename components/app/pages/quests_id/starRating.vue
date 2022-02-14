@@ -25,39 +25,16 @@
   <fieldset class="rating">
     <div class="rating__group">
       <input
+        v-for="(star, i) in starsNumber"
+        :key="i"
+        :class="fillStars(i)"
+        :checked="(starsNumber-i)===rating"
+        :aria-label="`«${starsNumber-i}»`"
         type="radio"
         name="rating"
+        :disabled="isDisabled"
         class="rating__star"
-        value="1"
-        aria-label="1"
-      >
-      <input
-        type="radio"
-        name="rating"
-        class="rating__star"
-        value="2"
-        aria-label="2"
-      >
-      <input
-        type="radio"
-        name="rating"
-        class="rating__star"
-        value="3"
-        aria-label="3"
-      >
-      <input
-        type="radio"
-        name="rating"
-        class="rating__star"
-        value="4"
-        aria-label="4"
-      >
-      <input
-        type="radio"
-        name="rating"
-        class="rating__star"
-        value="5"
-        aria-label="5"
+        @click="$emit('input', starsNumber-i)"
       >
     </div>
   </fieldset>
@@ -95,8 +72,8 @@ export default {
     },
   },
   methods: {
-    fillGoldenStars(index) {
-      return (this.starsNumber - index) <= this.rating ? 'rating-area__star-label_golden' : '';
+    fillStars(i) {
+      return (this.starsNumber - i) <= this.rating ? 'rating__star_checked' : '';
     },
   },
 };
@@ -164,8 +141,8 @@ export default {
     &:checked, &:hover {
       background-image: url('assets/img/ui/star.svg');
     }
-    &:hover ~ .rating__star {
-      background-image: url('assets/img/ui/star-empty.svg');
+    &_checked {
+      background-image: url('assets/img/ui/star.svg');
     }
   }
 }
