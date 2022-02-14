@@ -161,8 +161,6 @@
             <star-rating
               v-if="userRole === $options.UserRole.WORKER ? quest.assignedWorkerId === userData.id : quest.userId === userData.id"
               class="card-quest__star"
-              :quest-index="0"
-              rating-type="questPage"
               :stars-number="5"
               :data-selector="`ACTION-BTN-SHOW-REVIEW-MODAL-${quest.id}`"
               :rating="!quest.yourReview ? currentMark.mark : quest.yourReview.mark"

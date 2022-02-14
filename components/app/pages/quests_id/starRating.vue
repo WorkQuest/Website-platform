@@ -24,15 +24,7 @@ export default {
       type: Number,
       default: 0,
     },
-    ratingType: {
-      type: String,
-      default: '',
-    },
     starsNumber: {
-      type: Number,
-      default: 0,
-    },
-    questIndex: {
       type: Number,
       default: 0,
     },
@@ -41,6 +33,11 @@ export default {
       default: false,
     },
   },
+  data() {
+    return {
+      starRating: this.rating,
+    };
+  },
   computed: {
     getStarStyles() {
       return [{ disabled: this.isDisabled }];
@@ -48,7 +45,7 @@ export default {
   },
   methods: {
     fillStars(i) {
-      if ((i) <= this.rating) return 'rating__star rating__star_checked';
+      if ((i) <= this.rating && this.isDisabled) return 'rating__star rating__star_checked';
       if (!this.isDisabled) return 'rating__star rating__star-hover';
       return 'rating__star';
     },
