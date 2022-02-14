@@ -11,7 +11,6 @@
         type="radio"
         name="rating"
         :disabled="isDisabled"
-        class="rating__star"
         @click="$emit('input', i + 1)"
       >
     </div>
@@ -49,7 +48,9 @@ export default {
   },
   methods: {
     fillStars(i) {
-      return (i) <= this.rating ? 'rating__star_checked' : '';
+      if ((i) <= this.rating) return 'rating__star rating__star_checked';
+      if (!this.isDisabled) return 'rating__star rating__star-hover';
+      return 'rating__star';
     },
   },
 };
@@ -81,6 +82,14 @@ export default {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+    &-hover {
+      &:checked, &:hover {
+        background-image: url('assets/img/ui/star.svg');
+      }
+      &:hover ~ .rating__star {
+        background-image: url('assets/img/ui/star-empty.svg');
+      }
+    }
     &:nth-of-type(1) {
       z-index: 5;
       width: 1.5em;
@@ -113,12 +122,6 @@ export default {
       z-index: -1;
       outline: solid 0.2em $blue;
       outline-offset: 0.2em;
-    }
-    &:checked, &:hover {
-      background-image: url('assets/img/ui/star.svg');
-    }
-    &:hover ~ .rating__star {
-      background-image: url('assets/img/ui/star-empty.svg');
     }
     &_checked {
       background-image: url('assets/img/ui/star.svg');
