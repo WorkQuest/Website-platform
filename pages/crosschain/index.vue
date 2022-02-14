@@ -268,7 +268,7 @@ export default {
     },
   },
   mounted() {
-    this.$nuxt.setLayout(this.userData && this.userData.id ? 'default' : 'guest');
+    this.$nuxt.setLayout(this.userData.id ? 'default' : 'guest');
   },
   async beforeDestroy() {
     await this.disconnectFromWallet();
