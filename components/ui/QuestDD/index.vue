@@ -87,19 +87,21 @@ export default {
   },
   methods: {
     toEditQuest() {
-      // TODO: Исправить логику editQuest
-      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.item.status)) {
-        this.$router.push(`${Path.EDIT_QUEST}/${this.item.id}`);
+      const { status, id } = this.item;
+
+      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(status)) {
+        this.$router.push(`${Path.EDIT_QUEST}/${id}`);
         this.setCurrentStepEditQuest(1);
       } else this.showToastWrongStatusEdit();
     },
     showAreYouSureDeleteQuestModal() {
-      // TODO: Исправить логику deleteQuest
       this.ShowModal({ key: modals.areYouSureDeleteQuest, item: this.item });
     },
     toRaisingViews() {
-      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.item.status)) {
-        this.$router.push({ path: `${Path.EDIT_QUEST}/${this.item.id}`, query: { mode: 'raise' } });
+      const { status, id } = this.item;
+
+      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(status)) {
+        this.$router.push({ path: `${Path.EDIT_QUEST}/${id}`, query: { mode: 'raise' } });
         this.setCurrentStepEditQuest(2);
       } else this.showToastWrongStatusRaisingViews();
     },

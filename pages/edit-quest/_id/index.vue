@@ -288,11 +288,10 @@ export default {
     }),
     days() {
       const days = [];
-      let title = 'quests.levels.';
 
       // eslint-disable-next-line no-plusplus
       for (let i = 1; i < 5; i++) {
-        title += `${i}.`;
+        const title = `quests.levels.${i}.`;
 
         days.push({
           level: this.$t(`${title}title`),
@@ -306,11 +305,10 @@ export default {
     },
     weeks() {
       const weeks = [];
-      let title = 'quests.levels.';
 
       // eslint-disable-next-line no-plusplus
       for (let i = 1; i < 5; i++) {
-        title += `${i}.`;
+        const title = `quests.levels.${i}.`;
 
         weeks.push({
           level: this.$t(`${title}title`),
@@ -324,11 +322,10 @@ export default {
     },
     months() {
       const months = [];
-      let title = 'quests.levels.';
 
       // eslint-disable-next-line no-plusplus
       for (let i = 1; i < 5; i++) {
-        title += `${i}.`;
+        const title = `quests.levels.${i}.`;
 
         months.push({
           level: this.$t(`${title}title`),
