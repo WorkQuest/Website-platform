@@ -1,9 +1,13 @@
 <template>
-  <div class="pager">
+  <div
+    class="pager"
+    :data-selector="`COMPONENT-BASE-PAGER`"
+  >
     <button
       class="pager__icon"
       :class="{'pager__icon_disabled': value === 1}"
       :disabled="value === 1"
+      :data-selector="`ACTION-BTN-PREV-PAGE`"
       @click="prevPage"
     >
       <img
@@ -23,6 +27,7 @@
       <div
         v-for="(item, i) in formedPages"
         :key="`page-${i}`"
+        :data-selector="`BASE-PAGER-PAGE-${i}`"
         class="pager__item"
         :class="{'pager__item_active': value === item}"
       >
@@ -35,6 +40,7 @@
         <button
           v-else
           class="pager__cloud"
+          :data-selector="`ACTION-BTN-SET-PAGE-${i}`"
           :class="{'pager__cloud_active': value === item}"
           @click="setPage(item)"
         >
@@ -46,6 +52,7 @@
       class="pager__icon"
       :class="{'pager__icon_disabled': value === totalPages}"
       :disabled="value === totalPages"
+      :data-selector="`ACTION-BTN-NEXT-PAGE`"
       @click="nextPage"
     >
       <img

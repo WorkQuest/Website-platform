@@ -1,6 +1,7 @@
 <template>
   <div
     v-click-outside="hideDd"
+    :data-selector="`COMPONENT-BASE-FILTER-DD`"
     class="dd"
   >
     <div
@@ -8,6 +9,7 @@
     >
       <button
         class="dd__btn"
+        :data-selector="`ACTION-BTN-TOGGLE-DD`"
         @click="toggleDd"
       >
         {{ $t('filters.dd.1') }}
@@ -43,12 +45,14 @@
                 v-for="(item, specIdx) in searchFilters"
                 :id="specIdx"
                 :key="specIdx"
+                :data-selector="`SEARCH-FILTERS-${specIdx}`"
               >
                 <div
                   class="filter__item item"
                 >
                   <div
                     class="item"
+                    :data-selector="`ACTION-BTN-TOGGLE-CATEGORY-${specIdx}`"
                     @click="toggleCategory(specIdx)"
                   >
                     <span
@@ -70,11 +74,13 @@
                     >
                       <div
                         class="sub__item checkbox"
+                        :data-selector="`ACTION-BTN-SELECT-ALL-${specIdx}`"
                         @click="selectAll(specIdx)"
                       >
                         <input
                           :id="specIdx"
                           v-model="selectedAll[specIdx]"
+                          :data-selector="`SELECT-ALL-CHECKBOX-${specIdx}`"
                           class="checkbox checkbox__box sub"
                           type="checkbox"
                           :name="$t('filters.commonSub.selectAll')"
@@ -90,11 +96,13 @@
                         :id="skillIdx"
                         :key="skillIdx"
                         class="sub__item"
+                        :data-selector="`ACTION-BTN-SELECT-SUB-${skillIdx}`"
                         @click="selectSub(specIdx, skillIdx)"
                       >
                         <input
                           :id="sub.id"
                           v-model="selected[getPath(specIdx, skillIdx)]"
+                          :data-selector="`SUB-CHECKBOX-${sub.id}`"
                           class="checkbox checkbox__box sub"
                           type="checkbox"
                           :name="sub.title"
@@ -111,7 +119,10 @@
             </div>
           </div>
           <div class="dd__btn">
-            <base-btn @click="handleSubmit">
+            <base-btn
+              :data-selector="`ACTION-BTN-APPLY`"
+              @click="handleSubmit"
+            >
               {{ $t('meta.apply') }}
             </base-btn>
           </div>

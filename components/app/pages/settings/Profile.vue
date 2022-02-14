@@ -39,7 +39,7 @@
             v-for="main in mainInputs"
             :key="main.index"
             v-model="profile[main.model]"
-            :data-selector="`PROFILE-FIELD-${$t(main.name)}`"
+            :data-selector="`PROFILE-FIELD-${main.index}`"
             :rules="main.rules"
             :placeholder="$t(main.placeholder)"
             mode="icon"
@@ -80,7 +80,7 @@
                   <div
                     v-for="(item, i) in addresses"
                     :key="i"
-                    :data-selector="`ADDRESS-SELECTOR-ADDRESS-${item.formatted}`"
+                    :data-selector="`ADDRESS-SELECTOR-ADDRESS-${i}`"
                     class="selector__item"
                     @click="selectAddress(item, i)"
                   >
@@ -199,7 +199,7 @@
               :key="education.id"
               :item="education"
               :is-adding="false"
-              :data-selector="`ACTION-BTN-DELETE-EDUCATION-${education.id}`"
+              :data-selector="`ACTION-BTN-DELETE-EDUCATION-${index}`"
               @click="deleteKnowledge(profile.additionalInfo.educations, index)"
             />
           </div>
@@ -234,7 +234,7 @@
               v-for="(work, index) in profile.additionalInfo.workExperiences"
               :key="work.id"
               :item="work"
-              :data-selector="`ACTION-BTN-DELETE-WORK-EXP-${work.id}`"
+              :data-selector="`ACTION-BTN-DELETE-WORK-EXP-${index}`"
               :is-adding="false"
               @click="deleteKnowledge(profile.additionalInfo.workExperiences, index)"
             />

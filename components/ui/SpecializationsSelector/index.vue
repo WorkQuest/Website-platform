@@ -1,5 +1,8 @@
 <template>
-  <div class="selector__skills skills">
+  <div
+    class="selector__skills skills"
+    :data-selector="`COMPONENT-SPEC-SELECTOR`"
+  >
     <div
       v-for="key in specCount"
       :key="key"
@@ -13,6 +16,7 @@
             type="gray"
             :items="specializationsNames"
             :placeholder="$t('settings.selectSpec')"
+            :data-selector="`SPECIALIZATIONS-DD-${displaySpecIndex[key]}`"
             :mode="'small'"
             rules="required"
             :label="$t('settings.specialization')"
@@ -23,6 +27,7 @@
             <base-dd
               v-model="skillIndex[key]"
               class="specialization__dd"
+              :data-selector="`SKILLS-DD-${specIndex[key]}`"
               :type="specIndex[key] < 0 || selectedSkills[key].length === 5 ? 'disabled' : 'gray'"
               :disabled="specIndex[key] < 0 || selectedSkills[key].length === 5"
               :placeholder="$t('settings.selectSkills')"
@@ -50,6 +55,7 @@
             {{ item.name }}
             <button
               class="skill__remove"
+              :data-selector="`ACTION-BTN-REMOVE-SKILL-TO-BADGE-${i}`"
               @click="removeSkillToBadge(item, key)"
             >
               <img
@@ -63,6 +69,7 @@
       <base-btn
         :text="$t('settings.removeSpec')"
         class="specialization__btn specialization__btn_remove"
+        :data-selector="`ACTION-BTN-REMOVE-SKILL-TO-BADGE-${key}`"
         @click="removeSpecialization(key)"
       />
     </div>
@@ -71,6 +78,7 @@
       :disabled="specCount === 3"
       class="skills__btn-add"
       :class="specCount === 3 ? 'skills__btn-add_disabled' : ''"
+      :data-selector="`ACTION-BTN-ADD-SPEC`"
       @click="addSpecialization"
     />
     <div

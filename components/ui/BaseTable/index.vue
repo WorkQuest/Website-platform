@@ -1,5 +1,8 @@
 <template>
-  <div class="table">
+  <div
+    class="table"
+    :data-selector="`COMPONENT-BASE-TABLE`"
+  >
     <b-table
       :items="items"
       :fields="fields"

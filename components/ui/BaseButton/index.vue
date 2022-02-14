@@ -1,10 +1,11 @@
-<template>
+<template :data-selector="`COMPONENT-BASE-BTN`">
   <a
     v-if="link !== ''"
     class="base-btn"
     :class="btnClass"
     :href="link"
     target="_blank"
+    :data-selector="`BASE-BTN-LINK-${link}`"
   >
     <slot />
   </a>
@@ -12,6 +13,7 @@
     v-else-if="nuxtLink !==''"
     class="base-btn"
     :class="btnClass"
+    :data-selector="`BASE-BTN-NUXT-LINK-${nuxtLink}`"
     :to="nuxtLink"
   >
     <slot />
@@ -20,6 +22,7 @@
     v-else
     class="base-btn"
     :class="btnClass"
+    :data-selector="`ACTION-BTN-CLICK`"
     @click="$emit('click')"
   >
     {{ text }}
