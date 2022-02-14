@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     fillStars(i) {
-      return (i + 1) <= this.rating ? 'rating__star_checked' : '';
+      return (i) <= this.rating ? 'rating__star_checked' : '';
     },
   },
 };
