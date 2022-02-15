@@ -63,9 +63,9 @@
               </div>
               <base-btn
                 class="header__btn"
-                @click="$router.push('/sign-up')"
+                @click="$router.push('/sign-in')"
               >
-                {{ $t('layout.createAccount') }}
+                {{ $t('layout.signIn') }}
               </base-btn>
             </div>
           </div>

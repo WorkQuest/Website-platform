@@ -271,7 +271,7 @@
   },
   "layout": {
     "create": "Buat quest",
-    "createAccount": "???",
+    "signIn": "???",
     "links": {
       "terms": "\t· Syarat dan ketentuan",
       "privacy": "\t· Kebijakan privasi"
