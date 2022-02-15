@@ -56,7 +56,6 @@
       <CtmModalCopiedSuccess v-if="modals.copiedSuccess === currentModalKey" />
       <CtmModalChangeRoleWarning v-if="modals.changeRoleWarning === currentModalKey" />
       <CtmModalChangeRoleReason v-if="modals.changeRoleReason === currentModalKey" />
-      <CtmModalChangeRoleSecureCheck v-if="modals.changeRoleSecureCheck === currentModalKey" />
       <CtmModalChooseNecessarySkills v-if="modals.chooseNecessarySkills === currentModalKey" />
       <CtmModalCreditingLoan v-if="modals.creditingLoan === currentModalKey" />
       <CtmModalConfirmLoanDetails v-if="modals.confirmLoanDetails === currentModalKey" />
@@ -88,14 +87,18 @@
       <CtmModalClaimRewards v-if="modals.claimRewards === currentModalKey" />
       <CtmModalSwapTokens v-if="modals.swapTokens === currentModalKey" />
       <CtmModalGallery v-if="modals.gallery === currentModalKey" />
-      <CtmModalAreYouSureDeleteMember v-if="modals.areYouSureDeleteMember === currentModalKey" />
-      <CtmModalAreYouSureLeaveChat v-if="modals.areYouSureLeaveChat === currentModalKey" />
+      <CtmModalTransactionReceipt v-if="modals.transactionReceipt === currentModalKey" />
+      <CtmModalAreYouSure v-if="modals.areYouSure === currentModalKey" />
+      <CtmModalStake v-if="modals.stake === currentModalKey" />
     </div>
   </transition>
 </template>
+
 <script>
 import { mapGetters } from 'vuex';
 import modals from '@/store/modals/modals';
+import CtmModalStake from './CtmModalStake';
+import CtmModalTransactionReceipt from './CtmModalTransactionReceipt';
 import CtmModalConfirmEmail from './CtmModalConfirmEmail';
 import CtmModalChangePassword from './CtmModalChangePassword';
 import CtmModalRestore from './CtmModalRestore';
@@ -143,7 +146,6 @@ import CtmModalCopiedSuccess from './CtmModalCopiedSuccess';
 import CtmModalChatCreate from './CtmModalChatCreate';
 import CtmModalChangeRoleWarning from './CtmModalChangeRoleWarning';
 import CtmModalChangeRoleReason from './CtmModalChangeRoleReason';
-import CtmModalChangeRoleSecureCheck from './CtmModalChangeRoleSecureCheck';
 import CtmModalChooseNecessarySkills from './CtmModalChooseNecessarySkills';
 import CtmModalSmsVerification from './CtmModalSmsVerification';
 import CtmModalReviewDetails from './CtmModalReviewDetails';
@@ -172,12 +174,13 @@ import CtmModalDeleteCase from './CtmModalDeleteCase';
 import CtmModalClaimRewards from './CtmModalClaimRewards';
 import CtmModalSwapTokens from './CtmModalSwapTokens';
 import CtmModalGallery from './CtmModalGallery';
-import CtmModalAreYouSureDeleteMember from './CtmModalAreYouSureDeleteMember';
-import CtmModalAreYouSureLeaveChat from './CtmModalAreYouSureLeaveChat';
+import CtmModalAreYouSure from './CtmModalAreYouSure';
 
 export default {
   name: 'ModalBox',
   components: {
+    CtmModalStake,
+    CtmModalTransactionReceipt,
     CtmModalQuestFilterFull,
     CtmModalConfirmEmail,
     CtmModalRestore,
@@ -225,7 +228,6 @@ export default {
     CtmModalCopiedSuccess,
     CtmModalChangeRoleWarning,
     CtmModalChangeRoleReason,
-    CtmModalChangeRoleSecureCheck,
     CtmModalChooseNecessarySkills,
     CtmModalSmsVerification,
     CtmModalReviewDetails,
@@ -254,8 +256,7 @@ export default {
     CtmModalClaimRewards,
     CtmModalSwapTokens,
     CtmModalGallery,
-    CtmModalAreYouSureDeleteMember,
-    CtmModalAreYouSureLeaveChat,
+    CtmModalAreYouSure,
   },
   data: () => ({
     modals,

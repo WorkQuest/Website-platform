@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import { mapGetters } from 'vuex';
 import moment from 'moment';
 import VueTippy, { TippyComponent } from 'vue-tippy';
 import modals from '~/store/modals/modals';
@@ -92,9 +91,9 @@ Vue.mixin({
     deg2rad(deg) {
       return deg * (Math.PI / 180);
     },
-    ShowError(label) {
-      this.$bvToast.toast(label, {
-        title: 'Ошибка',
+    ShowToast(text, title = null) {
+      this.$bvToast.toast(text, {
+        title: title || this.$t('modals.error'),
         variant: 'warning',
         solid: true,
         toaster: 'b-toaster-bottom-right',
@@ -129,8 +128,9 @@ Vue.mixin({
         navigator.geolocation.getCurrentPosition(this.FormatPosition);
       }
     },
-    CutTxn(txn) {
-      return `${txn.slice(0, 10)}...${txn.slice(-10)}`;
+    CutTxn(txn, first = 10, second = 10) {
+      if (!txn) return '';
+      return `${txn.slice(0, first)}...${txn.slice(-second)}`;
     },
     FormatPosition(position) {
       const payload = {
@@ -138,6 +138,23 @@ Vue.mixin({
         longitude: position.coords.longitude,
       };
       this.$store.dispatch('user/setCurrentPosition', payload);
+    },
+    EmptyAvatar() {
+      return require('~/assets/img/app/avatar_empty.png');
+    },
+    UserName(firstName, lastName) {
+      if (firstName || lastName) return `${firstName || ''} ${lastName || ''}`;
+      return this.$t('profile.defaultName');
+    },
+    NumberWithSpaces(value) {
+      if (!value) return '';
+      const parts = value.toString().split('.');
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+      return parts.join('.');
+    },
+    SetDelay(func, timeout, delayId) {
+      clearTimeout(delayId);
+      return setTimeout(func, timeout);
     },
   },
 });

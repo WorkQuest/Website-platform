@@ -77,6 +77,7 @@ export default {
   claimRewards: 'claimRewards',
   swapTokens: 'swapTokens',
   gallery: 'gallery',
-  areYouSureDeleteMember: 'areYouSureDeleteMember',
-  areYouSureLeaveChat: 'areYouSureLeaveChat',
+  transactionReceipt: 'transactionReceipt',
+  areYouSure: 'areYouSure',
+  stake: 'stake',
 };

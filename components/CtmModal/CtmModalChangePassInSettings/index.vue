@@ -135,17 +135,27 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      email: 'user/getUserEmail',
     }),
   },
   methods: {
     async hide() {
+      if (this.newPasswordInput.trim() !== this.confirmNewPasswordInput.trim() || this.newPasswordInput === '') {
+        this.errorMsg = true;
+        return;
+      }
       const payload = {
-        oldPassword: this.currentPasswordInput,
-        newPassword: this.confirmNewPasswordInput,
+        oldPassword: this.currentPasswordInput.trim(),
+        newPassword: this.newPasswordInput.trim(),
       };
+      this.SetLoader(true);
       try {
         const response = await this.$store.dispatch('user/editUserPassword', payload);
         if (response?.ok) {
+          await this.$store.dispatch('user/signIn', {
+            email: this.email,
+            password: this.confirmNewPasswordInput,
+          });
           this.ShowModal({
             key: modals.changePassword,
           });
@@ -154,6 +164,7 @@ export default {
         this.errorMsg = e;
         console.log(e);
       }
+      this.SetLoader(false);
     },
   },
 };
@@ -169,8 +180,8 @@ export default {
     padding: 0 28px 30px 28px;
   }
 }
-.content{
-  &__error{
+.content {
+  &__error {
     color:red;
   }
 }
@@ -183,16 +194,16 @@ export default {
 }
 
 .buttons {
-    &__group{
+    &__group {
       display: grid;
       grid-gap: 20px;
       gap: 20px;
       margin-top: 25px;
     }
 }
-.field{
-  &__button{
-    background-color: transparent!important;
+.field {
+  &__button {
+    background-color: transparent !important;
   }
 }
 

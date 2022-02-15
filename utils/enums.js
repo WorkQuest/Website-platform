@@ -6,6 +6,15 @@ export const ChainsId = {
   BSC_TEST: '0x61',
   MATIC_MAIN: '0x13881',
   MUMBAI_TEST: '0x89',
+  WUSD_TEST: '0x1346618',
+};
+
+export const ChainsIdByChainNumber = {
+  1: '0x1',
+  4: '0x4',
+  56: '0x38',
+  97: '0x61',
+  20211224: '0x1346618',
 };
 
 export const NativeTokenSymbolByChainId = {
@@ -19,6 +28,7 @@ export const Chains = {
   ETHEREUM: 'ETH',
   BINANCE: 'BSC',
   BNB: 'BNB', // Same as bsc for bridge
+  WUSD: 'WUSD',
 };
 
 export const StakingTypes = {
@@ -38,49 +48,205 @@ export const QuestStatuses = {
   WaitConfirm: 5,
   Done: 6,
 };
-
+export const SumSubStatuses = { NOT_VERIFIED: 0, VERIFIED: 1 };
 export const InfoModeEmployer = {
-  RaiseViews: 1,
-  Active: 2,
-  Created: 3,
+  Rejected: -1,
+  Created: 0,
+  Active: 1,
+  Closed: 2,
+  Dispute: 3,
   WaitWorker: 4,
-  WaitConfirm: 6,
-  Dispute: 7,
-  Closed: 8,
-  Done: 9,
+  WaitConfirm: 5,
+  Done: 6,
 };
 export const InfoModeWorker = {
+  Created: 0,
   ADChat: 1,
   Active: 2,
   Rejected: 3,
-  WaitConfirm: 4,
-  Created: 5,
+  WaitWorker: 4,
+  WaitConfirm: 5,
   Dispute: 7,
   Closed: 8,
   Done: 9,
+  Responded: 10,
+  Invited: 11,
+};
+export const DisputeStatues = {
+  PENDING: 0,
+  IN_PROGRESS: 1,
+  COMPLETED: 2,
 };
 export const questPriority = {
   Low: 1,
   Normal: 2,
   Urgent: 3,
 };
-export const responsesType = {
+export const ResponsesType = {
   Responded: 0,
   Invited: 1,
 };
-export const keyCodes = {
+export const ResponseStatus = {
+  rejected: -1,
+  awaiting: 0,
+  accepted: 1,
+};
+export const KeyCodes = {
   Escape: 27,
   ArrowLeft: 37,
   ArrowRight: 39,
 };
 
 // Filters
-export const workplaceFilter = ['', 'distant', 'office', 'both'];
-export const ratingFilter = ['', 'verified', 'reliable', 'topRanked'];
-export const typeOfJobFilter = ['', 'fullTime', 'partTime', 'fixedTerm'];
-export const priorityFilter = [
-  0, // all
-  3, // urgent
-  2, // shortTerm
-  1, // fixedDelivery
+export const WorkplaceFilter = ['all', 'distant', 'office', 'both'];
+export const WorkplaceIndex = ['distant', 'office', 'both'];
+export const RatingFilter = ['', 'verified', 'reliable', 'topRanked'];
+export const TypeOfJobFilter = ['fullTime', 'partTime', 'fixedTerm'];
+export const PriorityFilter = [
+  { key: 'all', value: 0 },
+  { key: 'urgent', value: 3 },
+  { key: 'shortTerm', value: 2 },
+  { key: 'fixedDelivery', value: 1 },
 ];
+
+export const MessageAction = {
+  GROUP_CHAT_CREATE: 'groupChatCreate',
+  NEW_MESSAGE: 'newMessage',
+  MESSAGE_READ_BY_RECIPIENT: 'messageReadByRecipient',
+  GROUP_CHAT_ADD_USERS: 'groupChatAddUsers',
+  GROUP_CHAT_LEAVE_USER: 'groupChatLeaveUser',
+  GROUP_CHAT_DELETE_USER: 'groupChatDeleteUser',
+  EMPLOYER_INVITE_ON_QUEST: 'employerInviteOnQuest',
+  WORKER_RESPONSE_ON_QUEST: 'workerResponseOnQuest',
+  EMPLOYER_REJECT_RESPONSE_ON_QUEST: 'employerRejectResponseOnQuest',
+  WORKER_REJECT_INVITE_ON_QUEST: 'workerRejectInviteOnQuest',
+  WORKER_ACCEPT_INVITE_ON_QUEST: 'workerAcceptInviteOnQuest',
+};
+
+export const NotificationAction = {
+  QUEST_STARTED: 'questStarted',
+  WORKER_REJECTED_QUEST: 'workerRejectedQuest',
+  WORKER_ACCEPTED_QUEST: 'workerAcceptedQuest',
+  WORKER_COMPLETED_QUEST: 'workerCompletedQuest',
+  EMPLOYER_ACCEPTED_COMPLETED_QUEST: 'employerAcceptedCompletedQuest',
+  EMPLOYER_REJECTED_COMPLETED_QUEST: 'employerRejectedCompletedQuest',
+  WORKER_RESPONDED_TO_QUEST: 'workerRespondedToQuest',
+  EMPLOYER_INVITED_WORKER_TO_QUEST: 'employerInvitedWorkerToQuest',
+  WORKER_ACCEPTED_INVITATION_TO_QUEST: 'workerAcceptedInvitationToQuest',
+  WORKER_REJECTED_INVITATION_TO_QUEST: 'workerRejectedInvitationToQuest',
+  EMPLOYER_REJECTED_WORKERS_RESPONSE: 'employerRejectedWorkersResponse',
+  WAIT_WORKER: 'waitWorker',
+
+  USER_LEFT_REVIEW_ABOUT_QUEST: 'userLeftReviewAboutQuest',
+
+  OPEN_DISPUTE: 'openDispute',
+};
+
+export const ChatType = {
+  GROUP: 'group',
+  QUEST: 'quest',
+};
+
+export const MessageType = {
+  INFO: 'info',
+  MESSAGE: 'message',
+};
+
+export const QuestChatStatus = {
+  Active: 0,
+  Closed: 1,
+};
+
+export const UserRole = {
+  WORKER: 'worker',
+  EMPLOYER: 'employer',
+};
+
+export const Path = {
+  ROOT: '/',
+  SIGN_IN: '/sign-in',
+  SIGN_UP: '/sign-up',
+  MY_QUESTS: '/my',
+  WALLET: '/wallet',
+  PENSION: '/pension',
+  REFERRAL: '/referral',
+  INSURING: '/insuring',
+  SAVINGS: '/savings',
+  CREDITING: '/crediting',
+  MINING: '/mining',
+  CROSSCHAIN: '/crosschain',
+  SETTINGS: '/settings',
+  DISPUTES: '/disputes',
+  WORKERS: '/workers',
+  CREATE_QUEST: '/create-quest',
+  STAKING: '/staking',
+  PROFILE: '/profile',
+  ROLE: '/role',
+  QUESTS: '/quests',
+  EDIT_QUEST: '/edit-quest',
+};
+
+// WALLET
+export const WalletState = Object.freeze({
+  Default: 1,
+  SaveMnemonic: 2,
+  ConfirmMnemonic: 3,
+  ImportOrCreate: 4,
+  ImportMnemonic: 5,
+});
+
+export const UserStatuses = Object.freeze({
+  Unconfirmed: 0,
+  Confirmed: 1,
+  NeedSetRole: 2,
+});
+
+export const TokenSymbols = Object.freeze({
+  WQT: 'WQT',
+  WUSD: 'WUSD',
+});
+
+export const ExplorerUrl = Object.freeze('https://dev-explorer.workquest.co');
+
+export const NetworksData = {
+  ETH_MAIN: {
+    chainId: '0x1',
+    chainName: 'Ethereum Mainnet',
+    rpcUrls: ['https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
+  },
+  ETH_TEST: {
+    chainId: '0x4',
+    chainName: 'Ethereum Testnet',
+    rpcUrls: ['https://rinkey.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
+  },
+  BSC_MAIN: {
+    chainId: '0x38',
+    chainName: 'BSC Mainnet',
+    rpcUrls: ['https://bsc-dataseed1.binance.org/'],
+    nativeCurrency: {
+      name: 'BNB',
+      symbol: 'BNB',
+      decimals: 18,
+    },
+  },
+  BSC_TEST: {
+    chainId: '0x61',
+    chainName: 'BSC Testnet',
+    rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
+    nativeCurrency: {
+      name: 'BNB',
+      symbol: 'BNB',
+      decimals: 18,
+    },
+  },
+  WUSD_TEST: {
+    chainId: '0x1346618',
+    chainName: 'WorkQuest DEV',
+    rpcUrls: ['https://dev-node-nyc3.workquest.co'],
+    nativeCurrency: {
+      name: 'WUSD',
+      symbol: 'WUSD',
+      decimals: 18,
+    },
+  },
+};

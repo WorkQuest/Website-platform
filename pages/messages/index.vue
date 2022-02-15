@@ -12,6 +12,31 @@
             @change="handleSortedChats"
           />
         </div>
+        <div class="chats-container__search">
+          <base-field
+            v-model="searchValue"
+            class="chats-container__search-input"
+            is-search
+            is-hide-error
+            has-loader
+            :is-busy-search="isChatsSearching"
+            :placeholder="$t('chat.searchTitle')"
+            data-selector="INPUT-SEARCH"
+            @input="handleSetSearchValue"
+          >
+            <template v-slot:right-absolute>
+              <div
+                v-if="isChatsSearching"
+                class="loader-cont"
+              >
+                <loader
+                  class="loader-cont__loader"
+                  is-mini-loader
+                />
+              </div>
+            </template>
+          </base-field>
+        </div>
         <div
           v-if="chats.list.length"
           class="chats-container__list"
@@ -42,23 +67,26 @@
                     </div>
                   </div>
                   <div class="chat__title chat__title_bold">
-                    {{ chat.type === 'group' ? chat.name : (chat.userMembers[0].firstName || '') + ' ' + (chat.userMembers[0].lastName || '') }}
+                    {{ isGroupChat(chat.type) ? chat.name : (chat.userMembers[0].firstName || '') + ' ' + (chat.userMembers[0].lastName || '') }}
                   </div>
                   <div
-                    v-if="chat.type === 'group' || chat.type === 'quest'"
+                    v-if="isGroupChat(chat.type) || isQuestChat(chat.type)"
                     class="chat__title"
-                    :class="[{'chat__title_gray' : chat.type === 'group'}, {'chat__title_link' : chat.type === 'quest'}]"
-                    @click="chat.type === 'quest' ? goToQuest($event, chat.questChat.questId) : handleSelChat(chat.id)"
+                    :class="[
+                      {'chat__title_gray' : isGroupChat(chat.type)},
+                      {'chat__title_link' : isQuestChat(chat.type)}
+                    ]"
+                    @click="isQuestChat(chat.type) ? goToQuest($event, chat.questChat.questId) : handleSelChat(chat.id)"
                   >
-                    {{ chat.type === 'group' ? $t('chat.group') : (chat && chat.questChat && chat.questChat.quest.title) }}
+                    {{ isGroupChat(chat.type) ? $t('chat.group') : (chat.questChat && chat.questChat.quest.title) }}
                   </div>
                 </div>
                 <div class="chat__row">
                   <div
-                    v-if="userData.id === chat.lastMessage.sender.id || chat.type === 'group'"
+                    v-if="isItMyLastMessage(chat.lastMessage.sender.id) || isGroupChat(chat.type)"
                     class="chat__title"
                   >
-                    {{ userData.id === chat.lastMessage.sender.id ? $t('chat.you') : `${chat.lastMessage.sender.firstName || ''} ${chat.lastMessage.sender.lastName || ''}:` }}
+                    {{ isItMyLastMessage(chat.lastMessage.sender.id) ? $t('chat.you') : `${chat.lastMessage.sender.firstName || ''} ${chat.lastMessage.sender.lastName || ''}:` }}
                   </div>
                   <div class="chat__title chat__title_gray chat__title_ellipsis">
                     {{ setCurrMessageText(chat.lastMessage, userData.id === chat.lastMessage.sender.id) }}
@@ -118,6 +146,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import ChatMenu from '~/components/ui/ChatMenu';
+import { ChatType, MessageType, MessageAction } from '~/utils/enums';
 
 export default {
   name: 'Messages',
@@ -126,32 +155,69 @@ export default {
   },
   data() {
     return {
-      filter: {
-        limit: 15,
-        offset: 0,
-        starred: false,
-      },
+      searchValue: '',
+      isChatsSearching: false,
+      delayId: null,
     };
   },
   computed: {
     ...mapGetters({
       chats: 'chat/getChats',
       userData: 'user/getUserData',
+      filter: 'chat/getChatsFilter',
     }),
+    ChatType() {
+      return ChatType;
+    },
     canLoadMoreChats() {
       const { count, list } = this.chats;
 
       return count > list.length;
     },
   },
+  destroyed() {
+    this.$store.commit('chat/changeChatsFilterValue', [
+      { key: 'offset', val: 0 },
+      { key: 'q', val: undefined },
+      { key: 'starred', val: false },
+    ]);
+  },
   async mounted() {
-    this.filter.starred = this.$route.query.starred === 'true';
+    await this.$store.commit('chat/changeChatsFilterValue', [{ key: 'starred', val: this.$route.query.starred === 'true' }]);
     await this.getChats();
     this.SetLoader(false);
   },
   methods: {
+    handleSetSearchValue() {
+      this.isChatsSearching = true;
+
+      this.delayId = this.SetDelay(async () => {
+        this.isChatsSearching = false;
+
+        await this.$store.commit('chat/changeChatsFilterValue',
+          [
+            { key: 'q', val: this.searchValue || undefined },
+            { key: 'offset', val: 0 },
+          ]);
+
+        this.SetLoader(true);
+        await this.getChats();
+        this.SetLoader(false);
+      }, 500, this.delayId);
+    },
+    isItMyLastMessage(senderId) {
+      return this.userData.id === senderId;
+    },
+    isGroupChat(chatType) {
+      return chatType === ChatType.GROUP;
+    },
+    isQuestChat(chatType) {
+      return chatType === ChatType.QUEST;
+    },
     async loadMoreChats() {
-      this.filter.offset += this.filter.limit;
+      const { offset, limit } = this.filter;
+
+      await this.$store.commit('chat/changeChatsFilterValue', [{ key: 'offset', val: offset + limit }]);
 
       this.SetLoader(true);
       await this.getChats();
@@ -160,42 +226,42 @@ export default {
     setCurrMessageText({
       text, type, infoMessage, sender,
     }, itsMe) {
-      if (type === 'info') {
+      if (type === MessageType.INFO) {
         text = 'chat.systemMessages.';
         switch (infoMessage.messageAction) {
-          case 'employerInviteOnQuest': {
+          case MessageAction.EMPLOYER_INVITE_ON_QUEST: {
             text += itsMe ? 'youInvitedToTheQuest' : 'invitedYouToAQuest';
             break;
           }
-          case 'workerResponseOnQuest': {
+          case MessageAction.WORKER_RESPONSE_ON_QUEST: {
             text += itsMe ? 'youHaveRespondedToTheQuest' : 'respondedToTheQuest';
             break;
           }
-          case 'employerRejectResponseOnQuest': {
+          case MessageAction.EMPLOYER_REJECT_RESPONSE_ON_QUEST: {
             text += itsMe ? 'youRejectTheResponseOnQuest' : 'rejectedTheResponseToTheQuest';
             break;
           }
-          case 'workerRejectInviteOnQuest': {
+          case MessageAction.WORKER_REJECT_INVITE_ON_QUEST: {
             text += itsMe ? 'youRejectedTheInviteToTheQuest' : 'rejectedTheInviteToTheQuest';
             break;
           }
-          case 'workerAcceptInviteOnQuest': {
+          case MessageAction.WORKER_ACCEPT_INVITE_ON_QUEST: {
             text += itsMe ? 'youAcceptedTheInviteToTheQuest' : 'acceptedTheInviteToTheQuest';
             break;
           }
-          case 'groupChatCreate': {
+          case MessageAction.GROUP_CHAT_CREATE: {
             text += 'createdAGroupChat';
             break;
           }
-          case 'groupChatDeleteUser': {
+          case MessageAction.GROUP_CHAT_DELETE_USER: {
             text += 'userRemovedFromChat';
             break;
           }
-          case 'groupChatAddUser': {
+          case MessageAction.GROUP_CHAT_ADD_USERS: {
             text += 'userAddedToChat';
             break;
           }
-          case 'groupChatLeaveUser': {
+          case MessageAction.GROUP_CHAT_LEAVE_USER: {
             text += 'leftTheChat';
             break;
           }
@@ -215,42 +281,31 @@ export default {
 
       this.$router.push(`/quests/${questId}`);
     },
-    handleSortedChats() {
-      this.filter = {
-        limit: 15,
-        offset: 0,
-        starred: !this.filter.starred,
-      };
-      this.$router.push(`?starred=${this.filter.starred}`);
+    async handleSortedChats() {
+      const { starred } = this.filter;
+
+      await this.$store.commit('chat/changeChatsFilterValue', [
+        { key: 'offset', val: 0 },
+        { key: 'q', val: undefined },
+        { key: 'starred', val: !starred },
+      ]);
+
+      this.searchValue = '';
+
+      this.$router.push(`?starred=${!starred}`);
       this.getChats();
     },
     handleChangeStarVal(ev, chat) {
       ev.stopPropagation();
       const chatId = chat.id;
-      try {
-        this.$store.dispatch(`chat/${chat.star ? 'removeStarForChat' : 'setStarForChat'}`, chatId);
-      } catch (e) {
-        console.log(e);
-        this.showToastError(e);
-      }
+
+      this.$store.dispatch(`chat/${chat.star ? 'removeStarForChat' : 'setStarForChat'}`, chatId);
     },
     async getChats() {
-      try {
-        await this.$store.dispatch('chat/getChatsList', this.filter);
-      } catch (e) {
-        console.log(e);
-        this.showToastError(e);
-      }
+      await this.$store.dispatch('chat/getChatsList');
     },
     handleSelChat(chatId) {
       this.$router.push(`/messages/${chatId}`);
-    },
-    showToastError(e) {
-      return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.error'),
-        variant: 'warning',
-        text: e.response?.data?.msg,
-      });
     },
   },
 };
@@ -276,6 +331,17 @@ export default {
   }
 }
 
+.loader-cont {
+  height: 20px;
+  width: 20px;
+  position: relative;
+
+  &__loader {
+    position: absolute !important;
+    background: transparent !important;
+  }
+}
+
 .chats-container {
   background-color: $white;
   border: 1px solid #E9EDF2;
@@ -289,6 +355,15 @@ export default {
     display: grid;
     grid-template-columns: 1fr max-content;
     align-items: center;
+  }
+
+  &__search {
+    padding: 20px 30px;
+  }
+
+  &__search-input {
+    border: 1px solid #E9EDF2;
+    border-radius: 6px;
   }
 
   &__no-chats {

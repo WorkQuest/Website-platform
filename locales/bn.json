@@ -18,7 +18,6 @@
     "agree": "একমত",
     "disagree": "???",
     "completeWorkOnQuest": "???",
-    "rejectCompletedWorkOnQuest": "???",
     "acceptCompletedWorkOnQuest": "???",
     "closeQuest": "???",
     "goToChat": "চ্যাটে যান",
@@ -62,7 +61,15 @@
     "required": "{_field_} ঘর আবশ্যক",
     "size": "{_field_} ঘরের আকার অবশ্যই {size}KB এর ছোট হতে হবে",
     "decimal": "{_field_} ঘরে শুধুমাত্র দশমিক মান বসবে",
-    "decimalPlaces": "{_field_} ??? {places}"
+    "decimalPlaces": "{_field_} ??? {places}",
+    "invalidPhone":"???",
+    "formError": "???",
+    "is": "The values do not match",
+    "is_not": "Incorrect value",
+    "mnemonic": "Incorrect secret phrase",
+    "attemptsExceeded": "Number of attempts exceeded",
+    "loginWithSecret": "Please login with secret phrase",
+    "invalidPassword": "Invalid password"
   },
   "labels": {
     "firstName": "নামের প্রথম অংশ",
@@ -100,6 +107,7 @@
     "create": "অ্যাকাউন্ট তৈরি করুন"
   },
   "profile": {
+    "defaultName": "Nameless User",
     "raiseViews": "মতামত দিন",
     "educations": "শিক্ষা",
     "prevWorkExp": "কাজের পূর্ব অভিজ্ঞতা",
@@ -163,7 +171,9 @@
     "resendSMS": "পুনরায় ক্ষুদে বার্তা পাঠান",
     "disable": "নিষ্ক্রিয় করুন",
     "remindLater": "পরে মনে করিয়ে দিন",
-    "leave": "???"
+    "leave": "???",
+    "showAll": "Show all",
+    "listIsEmpty": "List is empty"
   },
   "priority": {
     "title": "অগ্রাধিকার নির্বাচন করুন",
@@ -205,7 +215,9 @@
     "confCode": "গুগল নিশ্চিতকরণ কোড",
     "placeholder": "স্থানধারী",
     "confCodeDesc": "Google প্রমাণীকরণ অ্যাপ থেকে 6-ডিজিটের কোড লিখুন",
-    "confCodeField": "???"
+    "confCodeField": "???",
+    "confirmAccess": "Confirm access",
+    "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
     "title": "নিবন্ধন করুন",
@@ -215,9 +227,22 @@
     "lastName": "নামের শেষাংশ",
     "email": "ইমেইল",
     "password": "পাসওয়ার্ড",
+    "totp":"???",
     "confirmPassword": "পুনরায় পাসওয়ার্ড",
-    "create": "অ্যাকাউন্ট তৈরি করুন",
-    "back": "পিছনে"
+    "create": "অ্যাকাউন্ট তৈরি করুন"
+  },
+  "createWallet": {
+    "showSecretPhrase": "Show secret phrase",
+    "savePhrase": "Save your secret phrase",
+    "keptPhrase": "I have kept a secret phrase",
+    "confirmSecretPhrase": "Confirm secret phrase",
+    "typeSecret": "Type secret word #{a}",
+    "secret": "Secret word #{a}",
+    "create": "Create wallet",
+    "importWallet": "Import wallet",
+    "createOrImport": "Create or import wallet",
+    "typeSecretPhrase": "Type secret phrase",
+    "secretPhrase": "Secret phrase"
   },
   "forgot": {
     "title": "পাসওয়ার্ড ভুলে গেছেন?",
@@ -273,7 +298,6 @@
     "questTitle": "???",
     "questDesc": "???",
     "questInfo": "???",
-    "questClosed!": "???",
     "closed": "???",
     "completed": "???",
     "rejected": "???",
@@ -283,6 +307,7 @@
     "workOnQuestRejected": "???",
     "pleaseWaitEmp": "???",
     "quests": "???",
+    "questsSmall": "quests",
     "publicationDate": "???",
     "urgent": "জরুরি",
     "specQuests": "???",
@@ -354,7 +379,10 @@
       "limit": "???"
     },
     "hours": "ঘণ্টা",
+    "responded": "???",
     "invited": "আমন্ত্রিত",
+    "acceptedTheInvitation": "???",
+    "declinedTheInvitation": "???",
     "active": "সক্রিয়",
     "performed": "সম্পাদিত",
     "requested": "অনুরোধ করা হয়েছে",
@@ -384,10 +412,9 @@
     "unknownAddress": "???...",
     "unknownPhoneNumber": "???...",
     "unknownEmailAddress": "???..",
-    "questActive:": "???:",
-    "questClosed:": "???:",
-    "questDispute:": "???:",
-    "questWaitConfirm:": "???:",
+    "questActive": "???:",
+    "questDispute": "???:",
+    "questWaitConfirm": "???:",
     "skillsNotSpecified": "???...",
     "proposal": "প্রস্তাব",
     "category": "একটি ধরন নির্বাচন করুন",
@@ -409,7 +436,6 @@
     "EstimatedPayment": "আনুমানিক পেমেন্ট:",
     "createAQuest": "একটি quest তৈরি করুন",
     "editAQuest": "???",
-    "activeQuests": "সক্রিয় quest",
     "openedQuests": "???",
     "completedQuests": "সম্পন্ন quest",
     "oneTime": "একবার",
@@ -419,7 +445,7 @@
     "showAllActiveQuests": "সমস্ত সক্রিয় quest দেখান",
     "performanceTimer": "যে পর্যন্ত সক্রিয়:",
     "questAmount": "quest",
-    "otherQuestsSpec": "বিশেষায়ন অনুযায়ী অন্যান্য quest",
+    "otherQuestsSpec": "???",
     "questMaterials": "অতিরিক্ত quest উপকরণ",
     "searchResults": "অনুসন্ধানের ফলাফল",
     "type": "কাজের ধরন",
@@ -433,7 +459,9 @@
     },
     "ui": {
       "showMap": "মানচিত্র দেখান",
-      "search": "শহর / রাস্তা / স্থান"
+      "searchOnQuestsPage": "Employer / Title / Description / City",
+      "searchOnWorkersPage": "Employee / City",
+      "searchWithMap": "শহর / রাস্তা / স্থান"
     },
     "worker": "কর্মী",
     "raiseViews": "মতামত দিন",
@@ -903,6 +931,10 @@
     "error": "???"
   },
   "modals": {
+    "errorQuests": "???",
+    "emptyOpenQuests": "???",
+    "errorSmsVer": "???",
+    "fillNumber": "???",
     "disputes": {
       "thereIsNoResponseFromTheEmployerOrEmployee": "???",
       "badlyDoneWork": "???",
@@ -935,8 +967,10 @@
     "edit": "???",
     "delete": "???",
     "youCan’tDeleteActiveQuest": "???",
+    "youCantCreateDispute": "???",
     "sureDeleteText": "???",
     "sureDeleteMemberText": "???",
+    "sureDeleteNotification": "???",
     "sureLeaveChatText": "???",
     "priceTitle": "???",
     "enterPriceRange": "???",
@@ -974,6 +1008,7 @@
     "pressSaveBtn": "অনুগ্রহ করে সংরক্ষণ বোতাম চাপুন",
     "imageLoadedSuccessful": "ছবি লোড করা সফল হয়েছে",
     "success": "সাফল্য",
+    "failed": "Failed",
     "yourRoleHasBeenChanged": "আপনার ভূমিকা পরিবর্তন করা হয়েছে",
     "chooseSkills": "প্রয়োজনীয় দক্ষতা নির্বাচন করুন",
     "securityCheck": "নিরাপত্তা পরীক্ষা",
@@ -1032,11 +1067,12 @@
     "messageSend": "বার্তা পাঠানো হয়েছে",
     "questAgreed": "Quest-এ সম্মত",
     "requestSend": "অনুরোধ পাঠানো হয়েছে",
+    "waitResponseFromEmployer": "Wait for a response from the employer",
     "sendARequest": "একটি অনুরোধ পাঠান",
     "message": "বার্তা",
     "bodyMessage": "হ্যালো",
     "areYouSure": "আপনি কি নিশ্চিত?",
-    "transactionSend": "লেনদেন পাঠান",
+    "transactionSent": "লেনদেন পাঠান",
     "transactionFail": "???",
     "transactionCheck": "???",
     "cardHasBeenAdded": "কার্ড যোগ করা হয়েছে",
@@ -1051,6 +1087,7 @@
     "addCard": "কার্ড যোগ করুন",
     "inviteSend": "আমন্ত্রণ পাঠানো হয়েছে",
     "questCreated": "Quest তৈরি করা হয়েছে",
+    "questUpdated": "???",
     "invitation": "আমন্ত্রণ",
     "chooseQuest": "Quest নির্বাচন করুন",
     "raiseViews": "মতামত দিন",
@@ -1221,7 +1258,11 @@
     "thanksText": "",
     "emailVerificationCodeField": "???",
     "youCanAttachUpToNFiles": "???",
-    "youTryToAttachUnsupportedFileFormat": "???"
+    "youTryToAttachUnsupportedFileFormat": "???",
+    "connectError": "Error connection",
+    "incorrectChain": "You choose incorrect chain!",
+    "selectToken": "Select token",
+    "txInfo": "Transaction info"
   },
   "ui": {
     "jobQuestors": "জব কোয়েস্টার",
@@ -1253,7 +1294,8 @@
     },
     "notifications": {
       "title": "বিজ্ঞপ্তি",
-      "invite": "আপনাকে quest সম্পন্ন করার আমন্ত্রণ জানাচ্ছে"
+      "invite": "আপনাকে quest সম্পন্ন করার আমন্ত্রণ জানাচ্ছে",
+      "noNotifications": "No notifications"
     },
     "menu": {
       "unauthorized": "???",
@@ -1302,6 +1344,23 @@
       }
     }
   },
+  "notifications": {
+    "title": "Notifications",
+    "invite": "Invites you to complete the quest",
+    "invitesYouToStartAQuest": "Invites you to start a quest",
+    "rejectedTheQuest": "Rejected the quest",
+    "acceptedTheQuest": "Accepted the quest",
+    "completedTheQuest": "Completed the quest",
+    "acceptedAJobOnAQuest": "Accepted a job on a quest",
+    "respondedToQuest": "Responded to quest",
+    "invitedYouToAQuest": "Invited you to a quest",
+    "acceptedTheInvitationToTheQuest": "Accepted the invitation to the quest",
+    "declinedTheInvitationToTheQuest": "Declined the invitation to the quest",
+    "declinedYourResponseToTheQuest": "Declined your response to the quest",
+    "leftReviewAboutQuest": "Left review about quest",
+    "theQuestIsPending": "The quest is pending",
+    "openDispute": "Open dispute"
+  },
   "wallet": {
     "WUSD": "WUSD ওয়ালেট",
     "cryptoWallet": "ক্রিপ্টো ওয়ালেট",
@@ -1323,12 +1382,13 @@
       "timestamp": "টাইমস্ট্যাম্প",
       "transferred": "স্থানান্তরিত টোকেন",
       "value": "পরিমাণ",
-      "trxFee": "লেনদেন ফি"
+      "trxFee": "লেনদেন ফি",
+      "empty": "Transactions list is empty"
     }
   },
   "chat": {
+    "reason": "???",
     "openDispute": "বিতর্ক শুরু করুন",
-    "approveQuest": "Quest অনুমোদন করুন",
     "starredMessages": "???",
     "starredChats": "???",
     "allChats": "???",
@@ -1367,9 +1427,14 @@
       "youLeftTheChat": "???"
     },
     "leaveChat": "???",
-    "loadMore": "???"
+    "loadMore": "???",
+    "searchTitle": "Name/Quest/Group"
   },
   "settings": {
+    "additionalPhoneNumber": "???",
+    "mainPhoneNumber": "???",
+    "workProposals": "???",
+    "phoneVerified": "???",
     "facebook": "facebook",
     "linkedin": "linkedin",
     "twitter": "twitter",
@@ -1377,6 +1442,9 @@
     "address": "???",
     "lastName": "???",
     "firstName": "???",
+    "companyName":"???",
+    "ceoName":"???",
+    "websiteName":"???",
     "enterPhoneNumber": "???",
     "enterCurrentLocation": "???",
     "placeOfStudying": "অধ্যয়নের স্থান",
@@ -1482,10 +1550,11 @@
     "Dispute": "বিরোধ",
     "pending": "অনিষ্পন্ন",
     "chatHistory": "চ্যাটের ইতিহাস",
-    "disputeTime": "খোলার সময় নিয়ে বিরোধ :"
+    "disputeTime": "খোলার সময় নিয়ে বিরোধ :",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
-    "noWorkers": "???...",
     "searchQuests": "Quest অনুসন্ধান করুন",
     "searchWorkers": "কর্মী অনুসন্ধান করুন",
     "topWorkers": "শীর্ষ কর্মচারী",
@@ -1920,9 +1989,13 @@
     }
   },
   "errors": {
+    "transaction": {
+      "notEnoughFunds": "Not enough funds"
+    },
     "incorrectPass": "আহ্, কোনো ভুল হয়েছে। ডেটা পরীক্ষা করে আবার চেষ্টা করুন।",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {
@@ -1944,7 +2017,8 @@
           "desc": "আপনি এখনও quest-এ সাড়া প্রদান করেননি",
           "btnText": "quest-এ সাড়া প্রদান করুন!"
         }
-      }
+      },
+      "noEmployees": "Oops, there are no employees..."
     }
   },
   "sharing": {
@@ -1998,6 +2072,7 @@
     "stakeDurationIsNotOver": "???",
     "claimRewards": "???",
     "cannotClaimYet": "???",
+    "cannotStakeYet": "You cannot stake tokens yet",
     "pool": "Pool",
     "stakeTokenAddress": "???",
     "rewardTokenAddress": "???",
@@ -2121,7 +2196,8 @@
           },
           "notifications": {
             "title": "???",
-            "subtitle": "???"
+            "subtitle": "???",
+            "noNotifications": "No notifications"
           },
           "menu": {
             "title": "???",
@@ -2370,5 +2446,26 @@
       "fileSizeLimit": "???: {n}",
       "filesLimit": "???: {n}"
     }
+  },
+  "rating": {
+    "topRanked": {
+      "title": "???",
+      "desc": "Notifications for employees who were looking for quests with a direct offer to review the promoted quest based on the most recent search categories of the employee. Plus the ability to choose three categories and three locations to promote the quest."
+    },
+    "verified": {
+      "title": "???",
+      "desc": "Pin quest on the main page for three hours, with the ability to choose two categories and two locations for promotion the quest."
+    },
+    "reliable": {
+      "title": "???",
+      "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
+    }
+  },
+  "workPlaces": {
+    "title": "Workplace",
+    "all": "All workplaces",
+    "distant": "Distant work",
+    "office": "Work in office",
+    "both": "Both variants"
   }
 }

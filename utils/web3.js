@@ -4,7 +4,9 @@ import BigNumber from 'bignumber.js';
 import Web3Modal from 'web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import * as abi from '~/abi/abi';
-import { Chains, ChainsId, StakingTypes } from '~/utils/enums';
+import {
+  Chains, ChainsId, ChainsIdByChainNumber, NetworksData, StakingTypes,
+} from '~/utils/enums';
 
 let bscRpcContract = null;
 let web3 = null;
@@ -22,6 +24,7 @@ if (process.browser) {
     axios = $axios;
   });
 }
+const isProd = process.env.PROD === 'true';
 
 export const getAccountAddress = () => account?.address;
 export const getAccount = () => account;
@@ -47,7 +50,6 @@ export const error = (code = 90000, msg = '', data = null) => ({
 });
 
 export const getChainIdByChain = (chain) => {
-  const isProd = process.env.PROD === 'true';
   switch (chain) {
     case Chains.ETHEREUM:
       if (!isProd) return ChainsId.ETH_TEST;
@@ -58,27 +60,52 @@ export const getChainIdByChain = (chain) => {
     case Chains.BNB:
       if (!isProd) return ChainsId.BSC_TEST;
       return ChainsId.BSC_MAIN;
+    case Chains.WUSD:
+      return ChainsId.WUSD_TEST;
     default:
       throw error(-1, `wrong chain name: ${chain} ${Chains.BINANCE} ${Chains.ETHEREUM}`);
   }
 };
+export const addedNetwork = async (chain) => {
+  try {
+    let networkParams = {};
+    if (chain === Chains.ETHEREUM || [1, 4].includes(+chain)) {
+      networkParams = isProd ? NetworksData.ETH_MAIN : NetworksData.ETH_TEST;
+    } else if (chain === Chains.BNB || [56, 97].includes(+chain)) {
+      networkParams = isProd ? NetworksData.BSC_MAIN : NetworksData.BSC_TEST;
+    } else if (chain === Chains.WUSD || chain === 20211224) {
+      networkParams = NetworksData.WUSD_TEST;
+    }
+    await window.ethereum.request({
+      method: 'wallet_addEthereumChain',
+      params: [networkParams],
+    });
+    return { ok: true };
+  } catch (addError) {
+    showToast('Added chain error:', `${addError.message}`, 'danger');
+    return error(500, 'added chain error', addError);
+  }
+};
 export const goToChain = async (chain) => {
   const methodName = 'wallet_switchEthereumChain';
-  const chainIdParam = [{ chainId: getChainIdByChain(chain) }];
+  const chainIdParam = typeof chain === 'string' ? getChainIdByChain(chain) : ChainsIdByChainNumber[chain];
   try {
     await window.ethereum.request({
       method: methodName,
-      params: chainIdParam,
+      params: [{ chainId: chainIdParam }],
     });
     return { ok: true };
   } catch (e) {
+    if (e.code === 4902) {
+      return await addedNetwork(chain);
+    }
     if (typeof window.ethereum !== 'undefined') {
       showToast('Switch chain error:', `${e.message}`, 'danger');
+      return error(500, 'switch chain error', e);
     }
-    return error(500, 'switch chain error', e);
+    return { ok: false };
   }
 };
-
 export const getStakingDataByType = (stakingType) => {
   let _stakingAddress;
   let _stakingAbi;
@@ -101,15 +128,6 @@ export const getStakingDataByType = (stakingType) => {
         ? process.env.ETHEREUM_WQT_TOKEN
         : process.env.BSC_WQT_TOKEN;
       break;
-    case StakingTypes.WQT:
-      _tokenAddress = process.env.ETHEREUM_WQT_TOKEN;
-      _stakingAbi = abi.WQStaking;
-      _stakingAddress = process.env.WQT_STAKING;
-      break;
-    case StakingTypes.WUSD:
-      _stakingAbi = abi.WQStakingNative;
-      _stakingAddress = process.env.WQT_STAKING_NATIVE;
-      break;
     default:
       console.error('[getStakingDataByType] wrong staking type: ', stakingType);
       return false;
@@ -130,16 +148,20 @@ export const fetchContractData = async (_method, _abi, _address, _params, _provi
     const Contract = new _provider.eth.Contract(_abi, _address);
     return await Contract.methods[_method].apply(this, _params).call();
   } catch (e) {
-    console.log(e.message);
+    console.error(`Fetch contract data [${_method}]: ${e.message}`);
     return false;
   }
 };
 
 export const sendTransaction = async (_method, payload, _provider = web3) => {
+  if (!_provider) {
+    console.error('_provider is undefined');
+    return false;
+  }
   let transactionData;
-  const inst = new web3.eth.Contract(payload.abi, payload.address);
-  const gasPrice = await web3.eth.getGasPrice();
-  const accountAddress = await getAccountAddress();
+  const inst = new _provider.eth.Contract(payload.abi, payload.address);
+  const gasPrice = await _provider.eth.getGasPrice();
+  const accountAddress = await web3.eth.getCoinbase();
   if (_method === 'claim') {
     const data = inst.methods[_method].apply(null).encodeABI();
     const gasEstimate = await inst.methods[_method].apply(null).estimateGas({ from: accountAddress });
@@ -161,7 +183,8 @@ export const sendTransaction = async (_method, payload, _provider = web3) => {
       gas: gasEstimate,
     };
   }
-  return await web3.eth.sendTransaction(transactionData);
+  // noinspection ES6RedundantAwait
+  return await _provider.eth.sendTransaction(transactionData);
 };
 
 const getChainTypeById = (chainId) => {
@@ -195,10 +218,11 @@ export const initMetaMaskWeb3 = async () => {
         web3.eth.getCoinbase(),
         web3.eth.net.getId(),
       ]);
-      if (process.env.PROD === 'true' && ![1, 56].includes(+chainId)) {
+
+      if (process.env.PROD === 'true' && ![1, 56, 20211224].includes(+chainId)) {
         return error(500, 'Wrong blockchain in metamask', 'Current site work on mainnet. Please change network.');
       }
-      if (process.env.PROD === 'false' && ![4, 97].includes(+chainId)) {
+      if (process.env.PROD === 'false' && ![4, 97, 20211224].includes(+chainId)) {
         return error(500, 'Wrong blockchain in metamask', 'Current site work on testnet. Please change network.');
       }
       account = {
@@ -220,7 +244,7 @@ export const initProvider = async (payload) => {
   const { chain } = payload;
   try {
     let walletOptions;
-    if (process.env.PROD === 'false') {
+    if (!isProd) {
       if (chain === 'ETH') {
         walletOptions = {
           rpc: {
@@ -237,7 +261,7 @@ export const initProvider = async (payload) => {
         };
       }
     }
-    if (process.env.PROD === 'true') {
+    if (isProd) {
       if (chain === 'ETH') {
         walletOptions = {
           rpc: {
@@ -299,12 +323,7 @@ export const initWeb3 = async (payload) => {
     if ((await web3.eth.getCoinbase()) === null) {
       await ethereum.request({ method: 'eth_requestAccounts' });
     }
-    if (process.env.PROD === 'true' && ![1, 56].includes(+chainId)) {
-      return error(500, 'Wrong blockchain in metamask', 'Current site work on mainnet. Please change network.');
-    }
-    if (process.env.PROD === 'false' && ![4, 97].includes(+chainId)) {
-      return error(500, 'Wrong blockchain in metamask', 'Current site work on testnet. Please change network.');
-    }
+
     account = {
       address: userAddress,
       netId: chainId,
@@ -439,6 +458,7 @@ export const claimRewards = async (_stakingAddress, _stakingAbi) => {
   }
 };
 
+// TODO: DELETE
 export const authRenewal = async (_stakingAddress, _stakingAbi) => {
   showToast('Auto renewal', 'Accepting...', 'success');
   try {
@@ -574,10 +594,10 @@ export const initStackingContract = async (chain) => {
   let stakingAddress;
   let websocketProvider;
   if (chain === 'ETH') {
-    stakingAddress = process.env.PROD === 'true' ? process.env.ETHEREUM_MINING : '0x85fCeFe4b3646E74218793e8721275D3448b76F4';
+    stakingAddress = isProd ? process.env.ETHEREUM_MINING : '0x85fCeFe4b3646E74218793e8721275D3448b76F4';
     websocketProvider = process.env.ETHEREUM_WS_INFURA;
   } else {
-    stakingAddress = process.env.PROD === 'true' ? process.env.BSC_MINING : '0x7F31d9c6Cf99DDB89E2a068fE7B96d230b9D19d1';
+    stakingAddress = isProd ? process.env.BSC_MINING : '0x7F31d9c6Cf99DDB89E2a068fE7B96d230b9D19d1';
     websocketProvider = process.env.BSC_WS_MORALIS;
   }
   const liquidityMiningProvider = new Web3(new Web3.providers.WebsocketProvider(websocketProvider, {
@@ -598,7 +618,7 @@ export const initStackingContract = async (chain) => {
 export const getBinanceContractRPC = async () => {
   if (bscRpcContract) return bscRpcContract;
   try {
-    const address = process.env.PROD === 'true' ? process.env.BSC_LP_TOKEN : '0x3ea2de549ae9dcb7992f91227e8d6629a22c3b40';
+    const address = isProd ? process.env.BSC_LP_TOKEN : '0x3ea2de549ae9dcb7992f91227e8d6629a22c3b40';
     const provider = await new Web3.providers.HttpProvider(process.env.BSC_RPC_URL);
     const web3Bsc = await new Web3(provider);
     bscRpcContract = await new web3Bsc.eth.Contract(abi.BSCPool, address);
@@ -630,100 +650,6 @@ export const getPoolTotalSupplyBSC = async () => {
     return new BigNumber(res).shiftedBy(-18).toString();
   } catch (e) {
     console.log(e);
-    return false;
-  }
-};
-
-export const getPensionDefaultData = async () => {
-  try {
-    const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND;
-    const [lockTime, defaultFee] = await Promise.all([
-      fetchContractData('lockTime', _abi, _pensionAddress),
-      fetchContractData('defaultFee', _abi, _pensionAddress),
-    ]);
-    return {
-      defaultFee: new BigNumber(defaultFee.toString()).shiftedBy(-18).toString(),
-      lockTime: Math.floor(lockTime / 365 / 24 / 60 / 60),
-    };
-  } catch (e) {
-    console.error(e);
-    return null;
-  }
-};
-export const getPensionWallet = async () => {
-  try {
-    const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND;
-    const wallet = await fetchContractData('wallets', _abi, _pensionAddress, [account.address]);
-    const {
-      unlockDate, fee,
-    } = wallet;
-    const _amount = new BigNumber(wallet.amount).shiftedBy(-18);
-    let _fee = new BigNumber(fee).shiftedBy(-18);
-    if (_fee.isGreaterThan('0') && _fee.isLessThan('0.0000001')) {
-      _fee = '>0.0000001';
-    } else _fee = _fee.decimalPlaces(8);
-    return {
-      ...wallet,
-      unlockDate: new Date(unlockDate * 1000),
-      fee: _fee.toString(),
-      amount: _amount.isGreaterThan('0') && _amount.isLessThan('0.0001') ? '>0.0001' : _amount.decimalPlaces(4).toString(),
-      _amount: _amount.toString(),
-    };
-  } catch (e) {
-    console.error(e);
-    return null;
-  }
-};
-export const pensionContribute = async (_amount) => {
-  try {
-    const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND;
-    const contractInst = await createInstance(_abi, _pensionAddress);
-    _amount = new BigNumber(_amount).shiftedBy(18).toString();
-    await contractInst.contribute(account.address, { value: _amount });
-    return true;
-  } catch (e) {
-    console.error(e);
-    return false;
-  }
-};
-export const pensionUpdateFee = async (_fee) => {
-  try {
-    const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND;
-    const contractInst = await createInstance(_abi, _pensionAddress);
-    _fee = new BigNumber(_fee).shiftedBy(18).toString();
-    await contractInst.updateFee(_fee);
-    return true;
-  } catch (e) {
-    console.error(e);
-    return false;
-  }
-};
-export const pensionsWithdraw = async (_amount) => {
-  try {
-    const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND;
-    const contractInst = await createInstance(_abi, _pensionAddress);
-    _amount = new BigNumber(_amount).shiftedBy(18).toString();
-    await contractInst.withdraw(_amount);
-    return true;
-  } catch (e) {
-    console.error(e);
-    return false;
-  }
-};
-export const pensionExtendLockTime = async () => {
-  try {
-    const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND;
-    const contractInst = await createInstance(_abi, _pensionAddress);
-    await contractInst.extendLockTime();
-    return true;
-  } catch (e) {
-    console.error(e);
     return false;
   }
 };

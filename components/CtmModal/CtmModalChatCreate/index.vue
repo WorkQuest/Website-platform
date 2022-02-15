@@ -149,8 +149,23 @@ export default {
     },
     tryRemoveUser(userId) {
       this.ShowModal({
-        key: modals.areYouSureDeleteMember,
-        userId,
+        key: modals.areYouSure,
+        title: this.$t('modals.sureDeleteMemberText'),
+        okBtnTitle: this.$t('meta.delete'),
+        okBtnFunc: async () => await this.removeMember(userId),
+      });
+    },
+    async removeMember(userId) {
+      await this.$store.dispatch('chat/removeMember', { userId, chatId: this.chatId });
+
+      this.CloseModal();
+
+      this.ShowModal({
+        key: modals.chatCreate,
+        itsOwner: true,
+        isCreating: false,
+        isMembersList: true,
+        isAdding: false,
       });
     },
     changeSelStatus({ target }, userId) {
@@ -170,20 +185,8 @@ export default {
         },
       };
 
-      try {
-        await this.$store.dispatch('chat/getUsersForGroupChat', config);
-        this.members = users.list;
-      } catch (e) {
-        console.log(e);
-        this.showToastError(e);
-      }
-    },
-    showToastError(e) {
-      return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.error'),
-        variant: 'warning',
-        text: e.response?.data?.msg,
-      });
+      await this.$store.dispatch('chat/getUsersForGroupChat', config);
+      this.members = users.list;
     },
     hide() {
       const { options: { isAdding }, chatMembers } = this;
@@ -210,8 +213,8 @@ export default {
           name,
           memberUserIds,
         };
-        const { payload } = await this.$store.dispatch('chat/handleCreateGroupChat', config);
-        if (payload.ok) this.$router.push(`/messages/${payload.result.id}`);
+        const { ok, result } = await this.$store.dispatch('chat/handleCreateGroupChat', config);
+        if (ok) this.$router.push(`/messages/${result.id}`);
       } else if (isAdding && memberUserIds.length) {
         const payload = {
           config: {
@@ -220,6 +223,7 @@ export default {
           chatId,
         };
 
+        this.memberUserIds = [];
         await this.$store.dispatch('chat/addNewMembers', payload);
       }
 

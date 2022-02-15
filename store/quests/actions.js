@@ -1,3 +1,7 @@
+import {
+  InfoModeEmployer, InfoModeWorker, QuestStatuses, ResponsesType, UserRole,
+} from '~/utils/enums';
+
 export default {
   async getWorkerData({ commit }, userId) {
     try {
@@ -17,13 +21,17 @@ export default {
       return console.log(e);
     }
   },
-  async workersList({ commit }, payload) {
+  async employeeList({ commit }, { query, specFilter }) {
     try {
-      const response = await this.$axios.$get(`/v1/profile/workers?${payload}`);
-      commit('setWorkersList', response.result);
-      return response.result;
+      if (query.q === '') delete query.q;
+      const { ok, result } = await this.$axios.$get('/v1/profile/workers', {
+        params: { ...query, ...specFilter },
+      });
+      commit('setEmployeeList', result);
+      return { ok };
     } catch (e) {
-      return console.log(e);
+      console.log('quests/employeeList');
+      return false;
     }
   },
   async setCurrentWorker({ commit }, worker) {
@@ -36,37 +44,57 @@ export default {
   async getCurrentStepCreateQuest({ commit }, data) {
     commit('setCurrentStepCreateQuest', data);
   },
-  async getCurrentStepEditQuest({ commit }, data) {
-    commit('setCurrentStepEditQuest', data);
-  },
-  setMapBounds({ commit }, payload) {
-    commit('setMapBounds', payload);
-  },
-  setMapCenter({ commit }, payload) {
-    commit('setMapCenter', payload);
-  },
   async questCreate({ commit }, payload) {
     try {
-      const response = await this.$axios.$post('/v1/quest/create', payload);
-      return response;
+      return await this.$axios.$post('/v1/quest/create', payload);
     } catch (e) {
       return console.log(e);
     }
   },
-  async getAllQuests({ commit }, payload) {
+  async getAllQuests({ commit }, { query, specFilter }) {
     try {
-      const response = await this.$axios.$get(`/v1/quests?${payload || ''}`);
-      commit('setAllQuests', response.result);
-      return response.result;
+      if (query.q === '') delete query.q;
+      const { ok, result } = await this.$axios.$get('/v1/quests', {
+        params: { ...query, ...specFilter },
+      });
+      commit('setAllQuests', result);
+      return { ok };
     } catch (e) {
-      return console.log(e);
+      console.log('quests/getAllQuests');
+      return false;
     }
   },
-  async getQuest({ commit }, payload) {
+  async getQuest({ commit, rootState }, payload) {
     try {
-      const response = await this.$axios.$get(`/v1/quest/${payload}`);
-      commit('setQuest', response.result);
-      return response.result;
+      const { result } = await this.$axios.$get(`/v1/quest/${payload}`);
+      const { role } = rootState.user.userData;
+      let currStat = 0;
+      const { status, response } = result;
+
+      const questStatuses = Object.entries(QuestStatuses);
+
+      if (role === UserRole.EMPLOYER) {
+        questStatuses.some(([key, val]) => {
+          if (val === status) {
+            currStat = InfoModeEmployer[key];
+            return true;
+          }
+          return false;
+        });
+      } else if (role === UserRole.WORKER) {
+        questStatuses.some(([key, val]) => {
+          if (val === status) {
+            if (val === QuestStatuses.Created && response) key = response.type ? 'Invited' : 'Responded';
+            currStat = InfoModeWorker[key];
+            return true;
+          }
+          return false;
+        });
+      }
+
+      commit('setInfoDataMode', currStat);
+      commit('setQuest', result);
+      return result;
     } catch (e) {
       return console.log(e);
     }
@@ -77,24 +105,6 @@ export default {
         params: { ...query },
       });
       commit('setUserQuests', response.result);
-      return response.result;
-    } catch (e) {
-      return console.log(e);
-    }
-  },
-  async getQuestsOnMap({ commit }, payload) {
-    try {
-      const response = await this.$axios.$get(`/v1/quests/map/list-points?${payload}`);
-      commit('setAllQuests', response.result);
-      return response.result;
-    } catch (e) {
-      return console.log(e);
-    }
-  },
-  async getQuestsLocation({ commit }, payload) {
-    try {
-      const response = await this.$axios.$get(`/v1/quests/map/points?${payload}`);
-      commit('setQuestsLocation', response.result);
       return response.result;
     } catch (e) {
       return console.log(e);
@@ -117,9 +127,10 @@ export default {
       return console.log(e);
     }
   },
-  async startQuest({ commit }, { questId, payload }) {
+  async startQuest({ commit }, { questId, config }) {
     try {
-      const response = await this.$axios.$post(`/v1/quest/${questId}/start`, payload);
+      const response = await this.$axios.$post(`/v1/quest/${questId}/start`, config);
+      commit('setInfoDataMode', 4);
       return response.result;
     } catch (e) {
       return console.log(e);
@@ -127,32 +138,32 @@ export default {
   },
   async completeWorkOnQuest({ commit }, questId) {
     try {
-      const response = await this.$axios.$post(`/v1/quest/${questId}/complete-work`, questId);
-      return response.result;
+      const { ok } = await this.$axios.$post(`/v1/quest/${questId}/complete-work`, questId);
+      return ok;
     } catch (e) {
       return console.log(e);
     }
   },
   async rejectWorkOnQuest({ commit }, questId) {
     try {
-      const response = await this.$axios.$post(`/v1/quest/${questId}/reject-work`, questId);
-      return response.result;
+      const { ok } = await this.$axios.$post(`/v1/quest/${questId}/reject-work`, questId);
+      return ok;
     } catch (e) {
       return console.log(e);
     }
   },
   async acceptCompletedWorkOnQuest({ commit }, questId) {
     try {
-      const response = await this.$axios.$post(`/v1/quest/${questId}/accept-completed-work`, questId);
-      return response.result;
+      const { ok } = await this.$axios.$post(`/v1/quest/${questId}/accept-completed-work`, questId);
+      return ok;
     } catch (e) {
       return console.log(e);
     }
   },
   async acceptWorkOnQuest({ commit }, questId) {
     try {
-      const response = await this.$axios.$post(`/v1/quest/${questId}/accept-work`);
-      return response.result;
+      const { ok } = await this.$axios.$post(`/v1/quest/${questId}/accept-work`);
+      return ok;
     } catch (e) {
       return console.log(e);
     }
@@ -175,9 +186,11 @@ export default {
   },
   async responsesToQuest({ commit }, questId) {
     try {
-      const response = await this.$axios.$get(`/v1/quest/${questId}/responses`);
-      commit('setResponses', response.result);
-      return response.result;
+      const { result } = await this.$axios.$get(`/v1/quest/${questId}/responses`);
+      const responded = result.responses.filter((response) => response.status === 0 && response.type === ResponsesType.Responded) || [];
+      const invited = result.responses.filter((response) => response.status >= 0 && response.type === ResponsesType.Invited) || [];
+      commit('setResponses', { result, responded, invited });
+      return result;
     } catch (e) {
       return console.log(e);
     }
@@ -247,10 +260,21 @@ export default {
 
   async rejectQuestInvitation({ commit }, responseId) {
     try {
-      const response = await this.$axios.$post(`/v1/quest/employer/${responseId}/reject`);
-      return response.result;
+      const { ok } = await this.$axios.$post(`/v1/quest/response/${responseId}/reject`);
+      return ok;
     } catch (e) {
-      return console.log(e);
+      console.log(e);
+      return false;
+    }
+  },
+
+  async rejectTheAnswerToTheQuest({ commit }, responseId) {
+    try {
+      const { ok } = await this.$axios.$post(`/v1/quest/employer/${responseId}/reject`);
+      return ok;
+    } catch (e) {
+      console.log(e);
+      return false;
     }
   },
 
@@ -267,5 +291,15 @@ export default {
   },
   setSelectedPriceFilter({ commit }, data) {
     commit('setSelectedPriceFilter', data);
+  },
+  async getAvailableQuests({ commit }, data) {
+    try {
+      const response = await this.$axios.$get(`/v1/worker/${data}/available-quests?limit=100`);
+      commit('setAvailableQuests', response.result.quests);
+      return response.ok;
+    } catch (e) {
+      console.log('Error: getAvailableQuests');
+      return false;
+    }
   },
 };

@@ -56,7 +56,7 @@
         <base-btn
           class="privacy__action"
           :disabled="!isAllChecked"
-          @click="hide()"
+          @click="onSubmit()"
         >
           {{ $t('meta.ok') }}
         </base-btn>
@@ -67,6 +67,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { Path, UserStatuses } from '~/utils/enums';
 
 export default {
   name: 'PrivacyModal',
@@ -87,42 +88,33 @@ export default {
     },
   },
   methods: {
-    async hide() {
-      if (this.$cookies.get('userStatus') === 2) {
-        this.$cookies.set('role', this.options.role);
-        try {
-          await this.$store.dispatch('user/setUserRole', { role: this.options.role });
-          const response = await this.$store.dispatch('user/getUserData');
-          if (response?.ok) {
-            if (this.userData.role === 'employer') {
-              await this.$router.push('/workers');
-            } else if (this.userData.role === 'worker') {
-              await this.$router.push('/quests');
-            }
-          }
-        } catch (e) {
-          console.log(e);
+    async onSubmit() {
+      // Role page & select role
+      if (this.$cookies.get('userStatus') === UserStatuses.NeedSetRole) {
+        const response = await this.$store.dispatch('user/setUserRole', { role: this.options.role });
+        if (response?.ok) {
+          this.$cookies.set('role', this.options.role, { path: '/' });
+          this.$cookies.set('userStatus', 1, { path: '/' });
+          this.options.callback();
+          this.CloseModal();
+          return;
         }
-      } else {
-        try {
-          const payload = {
-            confirmCode: this.options.confirmCode,
-            role: this.options.role,
-          };
-          const response = await this.$store.dispatch('user/confirm', payload);
-          if (response?.ok) {
-            await this.$store.dispatch('main/showToast', {
-              title: this.$t('modals.success'),
-              text: this.$t('modals.yourAccountVerified'),
-            });
-            if (this.$cookies.get('role') === 'employer') {
-              this.$router.push('/workers');
-            } else if (this.$cookies.get('role') === 'worker') {
-              this.$router.push('/quests');
-            }
-          }
-        } catch (e) {
-          console.log(e);
+      } else { // Confirm account page
+        const payload = {
+          confirmCode: this.options.confirmCode,
+          role: this.options.role,
+        };
+        const response = await this.$store.dispatch('user/confirm', payload);
+        if (response?.ok) {
+          this.$cookies.set('role', this.options.role, { path: '/' });
+          this.$cookies.set('userStatus', 1, { path: '/' });
+          sessionStorage.removeItem('confirmToken');
+          this.ShowToast(this.$t('modals.yourAccountVerified'), this.$t('modals.success'));
+          await this.$router.push(Path.ROLE);
+        } else {
+          // Wrong confirm token
+          await this.$store.dispatch('user/logout');
+          await this.$router.push(Path.SIGN_IN);
         }
       }
       this.CloseModal();

@@ -18,7 +18,6 @@
     "agree": "Agree",
     "disagree": "Disagree",
     "completeWorkOnQuest": "Complete work on Quest",
-    "rejectCompletedWorkOnQuest": "Reject completed work on quest",
     "acceptCompletedWorkOnQuest": "Accept completed work on quest",
     "closeQuest": "Close quest",
     "goToChat": "Go to chat",
@@ -62,7 +61,16 @@
     "required": "The {_field_} field is required",
     "size": "The {_field_} field size must be less than {size}KB",
     "decimal": "The {_field_} field must contain only decimal values",
-    "decimalPlaces": "The {_field_} field must contain maximum {places} decimal places"
+    "decimalPlaces": "The {_field_} field must contain maximum {places} decimal places",
+    "invalidPhone":"Invalid phone number",
+    "formError": "Fill in all required fields",
+    "is": "The values do not match",
+    "is_not": "Incorrect value",
+    "mnemonic": "Incorrect secret phrase",
+    "attemptsExceeded": "Number of attempts exceeded",
+    "loginWithSecret": "Please login with secret phrase",
+    "invalidPassword": "Invalid password",
+    "loginToContinue": "Please login to continue"
   },
   "labels": {
     "firstName": "First name",
@@ -100,6 +108,7 @@
     "create": "Create account"
   },
   "profile": {
+    "defaultName": "Nameless User",
     "raiseViews": "Raise views",
     "educations": "Educations",
     "prevWorkExp": "Previous work experience",
@@ -163,7 +172,9 @@
     "resendSMS": "Resend SMS",
     "disable": "Disable",
     "remindLater": "Remind later",
-    "leave": "Leave"
+    "leave": "Leave",
+    "showAll": "Show all",
+    "listIsEmpty": "List is empty"
   },
   "priority": {
     "title": "Select priority",
@@ -205,7 +216,9 @@
     "confCode": "Google confirmation code",
     "placeholder": "Placeholder",
     "confCodeDesc": "Enter the 6-digit code from the Google Authentication app",
-    "confCodeField": "google verification"
+    "confCodeField": "google verification",
+    "confirmAccess": "Confirm access",
+    "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
     "title": "Sign Up",
@@ -215,9 +228,22 @@
     "lastName": "Last name",
     "email": "Email",
     "password": "Password",
+    "totp":"TOTP",
     "confirmPassword": "Repeat password",
-    "create": "Create account",
-    "back": "back"
+    "create": "Create account"
+  },
+  "createWallet": {
+    "showSecretPhrase": "Show secret phrase",
+    "savePhrase": "Save your secret phrase",
+    "keptPhrase": "I have kept a secret phrase",
+    "confirmSecretPhrase": "Confirm secret phrase",
+    "typeSecret": "Type secret word #{a}",
+    "secret": "Secret word #{a}",
+    "create": "Create wallet",
+    "importWallet": "Import wallet",
+    "createOrImport": "Create or import wallet",
+    "typeSecretPhrase": "Type secret phrase",
+    "secretPhrase": "Secret phrase"
   },
   "forgot": {
     "title": "Forgot password?",
@@ -273,7 +299,6 @@
     "questTitle": "Quest title",
     "questDesc": "Quest description",
     "questInfo": "Quest info",
-    "questClosed!": "Quest closed!",
     "closed": "Closed",
     "completed": "Completed",
     "rejected": "Rejected",
@@ -283,6 +308,7 @@
     "workOnQuestRejected": "Work on quest rejected!",
     "pleaseWaitEmp": "Work on quest completed! Please, wait your employer!",
     "quests": "Quests",
+    "questsSmall": "quests",
     "publicationDate": "Publication date",
     "urgent": "Urgent",
     "specQuests": "Specialized quests",
@@ -354,7 +380,10 @@
       "limit": "You can choose up to 5 skills"
     },
     "hours": "hours",
+    "responded": "Responded",
     "invited": "Invited",
+    "acceptedTheInvitation": "Accepted the invitation",
+    "declinedTheInvitation": "Declined the invitation",
     "active": "Active",
     "performed": "Performed",
     "requested": "Requested",
@@ -384,10 +413,9 @@
     "unknownAddress": "Unknown address...",
     "unknownPhoneNumber": "Unknown phone number...",
     "unknownEmailAddress": "Unknown email address..",
-    "questActive:": "Quest Active:",
-    "questClosed:": "Quest Closed:",
-    "questDispute:": "Quest Dispute:",
-    "questWaitConfirm:": "Quest wait confirm:",
+    "questActive": "Quest Active:",
+    "questDispute": "Quest Dispute:",
+    "questWaitConfirm": "Quest wait confirm:",
     "skillsNotSpecified": "Skills not specified...",
     "proposal": "Proposal",
     "category": "Select a category",
@@ -409,7 +437,6 @@
     "EstimatedPayment": "Estimated payment:",
     "createAQuest": "Create a quest",
     "editAQuest": "Edit a quest",
-    "activeQuests": "Active quests",
     "openedQuests": "Opened quests",
     "completedQuests": "Completed quests",
     "oneTime": "One time",
@@ -419,7 +446,7 @@
     "showAllActiveQuests": "Show all active quests",
     "performanceTimer": "Active until:",
     "questAmount": "quests",
-    "otherQuestsSpec": "Other quests by specialization",
+    "otherQuestsSpec": "Other quests for the specialization",
     "questMaterials": "Quest materials",
     "searchResults": "Search results",
     "type": "Type of job",
@@ -433,7 +460,9 @@
     },
     "ui": {
       "showMap": "Show map",
-      "search": "City / Street / Place"
+      "searchOnQuestsPage": "Employer / Title / Description / City",
+      "searchOnWorkersPage": "Employee / City",
+      "searchWithMap": "City / Street / Place"
     },
     "worker": "Worker",
     "raiseViews": "Raise views",
@@ -903,6 +932,10 @@
     "error": "Error!"
   },
   "modals": {
+    "errorQuests": "Error with quests",
+    "emptyOpenQuests": "You don't have open quests, please create",
+    "errorSmsVer": "Error SMS verification",
+    "fillNumber": "Please fill phone number in settings page...",
     "disputes": {
       "thereIsNoResponseFromTheEmployerOrEmployee": "There is no response from the employer / employee",
       "badlyDoneWork": "Badly done work",
@@ -935,8 +968,10 @@
     "edit": "Edit",
     "delete": "Delete",
     "youCan’tDeleteActiveQuest": "You can’t delete active quest",
+    "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest",
     "sureDeleteText": "Do you really want to delete this quest?",
     "sureDeleteMemberText": "Do you really want to delete this member?",
+    "sureDeleteNotification": "Do you really want to delete this notification?",
     "sureLeaveChatText": "Do you really want to leave this chat?",
     "priceTitle": "Price",
     "enterPriceRange": "Enter price range",
@@ -974,6 +1009,7 @@
     "pressSaveBtn": "Please press save button",
     "imageLoadedSuccessful": "Image loaded successful",
     "success": "Success",
+    "failed": "Failed",
     "yourRoleHasBeenChanged": "Your role has been changed",
     "chooseSkills": "Choose necessary skills",
     "securityCheck": "Security check",
@@ -1037,7 +1073,7 @@
     "message": "Message",
     "bodyMessage": "Hello",
     "areYouSure": "Are You Sure?",
-    "transactionSend": "Transaction send",
+    "transactionSent": "Transaction sent",
     "transactionFail": "Transaction fail",
     "transactionCheck": "Check transaction",
     "cardHasBeenAdded": "Card has been added",
@@ -1052,6 +1088,7 @@
     "addCard": "Add Card",
     "inviteSend": "Invite sent",
     "questCreated": "Quest Created",
+    "questUpdated": "Quest Updated",
     "invitation": "Invitation",
     "chooseQuest": "Choose Quest",
     "raiseViews": "Raise views",
@@ -1224,7 +1261,9 @@
     "youCanAttachUpToNFiles": "You can attach up to {n} files",
     "youTryToAttachUnsupportedFileFormat": "You try to attach unsupported file format",
     "connectError": "Error connection",
-    "incorrectChain": "You choose incorrect chain !"
+    "incorrectChain": "You choose incorrect chain !",
+    "selectToken": "Select token",
+    "txInfo": "Transaction info"
   },
   "ui": {
     "jobQuestors": "Job Questors",
@@ -1256,7 +1295,8 @@
     },
     "notifications": {
       "title": "Notifications",
-      "invite": "Invites you to complete the quest"
+      "invite": "Invites you to complete the quest",
+      "noNotifications": "No notifications"
     },
     "menu": {
       "unauthorized": "Not logged",
@@ -1305,6 +1345,23 @@
       }
     }
   },
+  "notifications": {
+    "title": "Notifications",
+    "invite": "Invites you to complete the quest",
+    "invitesYouToStartAQuest": "Invites you to start a quest",
+    "rejectedTheQuest": "Rejected the quest",
+    "acceptedTheQuest": "Accepted the quest",
+    "completedTheQuest": "Completed the quest",
+    "acceptedAJobOnAQuest": "Accepted a job on a quest",
+    "respondedToQuest": "Responded to quest",
+    "invitedYouToAQuest": "Invited you to a quest",
+    "acceptedTheInvitationToTheQuest": "Accepted the invitation to the quest",
+    "declinedTheInvitationToTheQuest": "Declined the invitation to the quest",
+    "declinedYourResponseToTheQuest": "Declined your response to the quest",
+    "leftReviewAboutQuest": "Left review about quest",
+    "theQuestIsPending": "The quest is pending",
+    "openDispute": "Open dispute"
+  },
   "wallet": {
     "WUSD": "WUSD wallet",
     "cryptoWallet": "Crypto wallet",
@@ -1316,7 +1373,7 @@
     "deposit": "Receive",
     "withdraw": "Withdraw",
     "transfer": "Buy / Send",
-    "addCardProposal": "Add your own card for easy withdrawal",
+    "addCardProposal": "Add bank card for easy withdrawal",
     "addCard": "Add card",
     "table": {
       "trx": "Transactions",
@@ -1326,12 +1383,13 @@
       "timestamp": "Timestamp",
       "transferred": "Tokens Transferred",
       "value": "Quantity",
-      "trxFee": "Transaction fee"
+      "trxFee": "Transaction fee",
+      "empty": "Transactions list is empty"
     }
   },
   "chat": {
+    "reason": "Please add reason",
     "openDispute": "Open dispute",
-    "approveQuest": "Approve quest",
     "starredMessages": "Starred messages",
     "starredChats": "Starred chats",
     "allChats": "All chats",
@@ -1370,9 +1428,14 @@
       "youLeftTheChat": "You left the chat"
     },
     "leaveChat": "Leave chat",
-    "loadMore": "Load more"
+    "loadMore": "Load more",
+    "searchTitle": "Name/Quest/Group"
   },
   "settings": {
+    "additionalPhoneNumber": "Additional phone number",
+    "mainPhoneNumber": "Main phone number",
+    "workProposals": "Filter all work proposals",
+    "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
     "twitter": "twitter",
@@ -1380,6 +1443,9 @@
     "address": "address",
     "lastName": "last name",
     "firstName": "first name",
+    "companyName":"company",
+    "ceoName":"ceo",
+    "websiteName":"website",
     "enterPhoneNumber": "Please enter your phone number",
     "enterCurrentLocation": "Please select current location",
     "placeOfStudying": "Place of studying",
@@ -1458,7 +1524,7 @@
     "crediting": "Crediting",
     "liquidityMining": "Liquidity mining",
     "distantWork": {
-      "title": "Distant work",
+      "title": "Workplace",
       "select": "Select distant work",
       "allWorkplaces": "All workplaces",
       "distantWork": "Distant work",
@@ -1485,10 +1551,11 @@
     "Dispute": "Dispute",
     "pending": "Pending",
     "chatHistory": "Chat history",
-    "disputeTime": "Dispute opening time:"
+    "disputeTime": "Dispute opening time:",
+    "inProgress": "In progress",
+    "completed": "Completed"
   },
   "workers": {
-    "noWorkers": "There is no workers...",
     "searchQuests": "Search quests",
     "searchWorkers": "Search workers",
     "topWorkers": "Top employees",
@@ -1517,8 +1584,8 @@
     "costTitle": "Cost per hour"
   },
   "levels": {
-    "reliableEmp": "RELIABLE EMP.",
     "checkedByTime": "VERIFIED EMP.",
+    "reliableEmp": "RELIABLE EMP.",
     "disabled": "DISABLED",
     "higher": "HIGHER LEVEL EMP."
   },
@@ -1923,9 +1990,13 @@
     }
   },
   "errors": {
+    "transaction": {
+      "notEnoughFunds": "Not enough funds"
+    },
     "incorrectPass": "Oops, something went wrong. Check the data and try again.",
     "emptyData": {
       "emptyQuests": "Oops, there's no quests here yet",
+      "emptyDisputes": "Oops, there are no disputes here yet",
       "emptyPortfolios": "Oops, there's no portfolio here yet",
       "emptyReviews": "Oops, there are no reviews here yet",
       "employer": {
@@ -1947,7 +2018,8 @@
           "desc": "You have not responded to quests yet",
           "btnText": "Respond to the quest !"
         }
-      }
+      },
+      "noEmployees": "Oops, there are no employees..."
     }
   },
   "sharing": {
@@ -2001,6 +2073,7 @@
     "stakeDurationIsNotOver": "Stake duration is not over",
     "claimRewards": "Claim rewards",
     "cannotClaimYet": "You cannot claim rewards yet",
+    "cannotStakeYet": "You cannot stake tokens yet",
     "pool": "Pool",
     "stakeTokenAddress": "Stake Token Address",
     "rewardTokenAddress": "Reward Token Address",
@@ -2124,7 +2197,8 @@
           },
           "notifications": {
             "title": "Notifications",
-            "subtitle": "All important notifications related to your profile and platform updates."
+            "subtitle": "All important notifications related to your profile and platform updates.",
+            "noNotifications": "No notifications"
           },
           "menu": {
             "title": "Menu",
@@ -2373,5 +2447,26 @@
       "fileSizeLimit": "File size limit: {n}",
       "filesLimit": "Files limit: {n}"
     }
+  },
+  "rating": {
+    "topRanked": {
+      "title": "Top Ranked",
+      "desc": "Notifications for employees who were looking for quests with a direct offer to review the promoted quest based on the most recent search categories of the employee. Plus the ability to choose three categories and three locations to promote the quest."
+    },
+    "verified": {
+      "title": "Reliable",
+      "desc": "Pin quest on the main page for three hours, with the ability to choose two categories and two locations for promotion the quest."
+    },
+    "reliable": {
+      "title": "Verified",
+      "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
+    }
+  },
+  "workPlaces": {
+    "title": "Workplace",
+    "all": "All workplaces",
+    "distant": "Distant work",
+    "office": "Work in office",
+    "both": "Both variants"
   }
 }

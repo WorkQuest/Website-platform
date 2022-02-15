@@ -1,273 +1,1091 @@
 <template>
-  <div class="header">
-    <div class="header__container">
-      <div class="header__body">
-        <n-link
-          tag="div"
+  <div
+    v-click-outside="closeAll"
+    class="header"
+  >
+    <div class="header__body">
+      <div class="header__left">
+        <div
           class="header__logo"
-          to="/about"
+          @click="toMain()"
         >
           <img
             src="~assets/img/app/logo.svg"
+            alt="WorkQuest"
+          >
+          <span class="header__text">WorkQuest</span>
+        </div>
+        <div
+          class="header__links"
+        >
+          <nuxt-link
+            v-for="(item, i) in headerLinks"
+            :key="i"
+            :to="item.path"
+            class="header__link"
+            :exact-active-class="'header__link_active'"
+          >
+            {{ item.title }}
+          </nuxt-link>
+          <div
+            class="header__link header__link_menu"
+            :class="{'header__link_active': isShowAdditionalMenu}"
+            @click="showAdditionalMenu()"
+          >
+            {{ $t('ui.profile.DeFi') }}
+            <span class="icon icon-caret_down" />
+            <transition name="fade">
+              <div
+                v-if="isShowAdditionalMenu"
+                class="menu"
+              >
+                <div class="menu__items">
+                  <nuxt-link
+                    v-for="item in additionalMenuLinks"
+                    :key="`item-${item.title}`"
+                    :to="item.path"
+                    class="menu__item"
+                  >
+                    <div class="menu__top">
+                      <div class="menu__text menu__text_header">
+                        {{ item.title }}
+                      </div>
+                      <span class="icon icon-chevron_right" />
+                    </div>
+                    <div class="menu__bottom">
+                      <div class="menu__text menu__text_grey">
+                        {{ kitcutDescription(item.desc) }}
+                      </div>
+                    </div>
+                  </nuxt-link>
+                </div>
+              </div>
+            </transition>
+          </div>
+        </div>
+      </div>
+      <div class="header__right">
+        <div
+          class="header__button header__button_locale"
+          @click="showLocale()"
+        >
+          <span
+            v-if="currentLocale"
+            class="header__button_locale-name"
+          >
+            {{ currentLocale.toUpperCase() }}
+          </span>
+          <span v-else>
+            {{ $t('ui.locals.en').toUpperCase() }}
+          </span>
+          <span class="icon icon-caret_down" />
+          <transition name="fade">
+            <ul
+              v-if="isShowLocale"
+              class="locale"
+            >
+              <li
+                v-for="item in locales"
+                :key="item.localeText"
+                class="locale__item"
+                :class="[{'locale__item_active' : currentLocale === item.localeText}]"
+                @click="setLocale(item)"
+              >
+                <img
+                  :src="require(`assets/img/lang/${item.localeSrc}`)"
+                  :alt="item.localeText"
+                  class="locale__icon"
+                >
+                <span class="locale__text">
+                  {{ item.localeText.toUpperCase() }}
+                </span>
+              </li>
+            </ul>
+          </transition>
+        </div>
+        <div
+          class="header__button"
+          @click="goToMessages()"
+        >
+          <img
+            v-if="unreadMessagesCount"
+            src="~assets/img/ui/message_unread.svg"
             alt=""
           >
-        </n-link>
-        <div class="header__info">
-          <div
-            class="header__route"
-            :class="{'header__route_avatar': avatar}"
-          >
+          <span
+            v-else
+            class="icon icon-message"
+          />
+        </div>
+        <notifications-button
+          @closeAnotherPopUp="closeAll()"
+        />
+        <div
+          class="ctm-menu__toggle"
+          @click="toggleMobileMenu()"
+        >
+          <div class="header__button header__button_menu">
+            <span :class="`icon icon-${isMobileMenu ? 'close_big' : 'hamburger'}`" />
+          </div>
+        </div>
+        <div
+          class="header__button header__button_profile"
+          @click="showProfile()"
+        >
+          <span class="icon icon-hamburger" />
+          <transition name="fade">
             <div
-              v-if="avatar"
-              class="header__avatar"
+              v-if="isShowProfile"
+              class="profile"
             >
+              <div class="profile__header">
+                <div class="profile__avatar">
+                  <img
+                    id="userAvatarDesktop"
+                    class="profile__img"
+                    :src="imageData || EmptyAvatar()"
+                    alt=""
+                  >
+                </div>
+                <div class="profile__info">
+                  <div class="profile__text">
+                    {{ UserName(userData.firstName, userData.lastName) }}
+                  </div>
+                  <div
+                    v-if="userData.role === $options.UserRole.EMPLOYER"
+                    class="profile__text profile__text_blue"
+                    :class="userData.role === $options.UserRole.EMPLOYER ? 'profile__text_blue' : 'profile__text_green'"
+                  >
+                    {{ userData.role === $options.UserRole.EMPLOYER ? $t('role.employer') : $t('role.worker') }}
+                  </div>
+                </div>
+              </div>
+              <div class="profile__items">
+                <nuxt-link
+                  v-for="item in profileLinks"
+                  :key="`item-${item.title}`"
+                  class="profile__item"
+                  :to="item.path"
+                >
+                  {{ item.title }}
+                </nuxt-link>
+                <div
+                  class="profile__item profile__item_red"
+                  @click="logout()"
+                >
+                  {{ $t('ui.profile.logout') }}
+                </div>
+              </div>
+            </div>
+          </transition>
+        </div>
+        <base-btn
+          v-if="userData.role === $options.UserRole.EMPLOYER"
+          class="header__btn"
+          @click="createNewQuest('pc')"
+        >
+          {{ $t('layout.create') }}
+        </base-btn>
+      </div>
+    </div>
+    <div
+      v-if="isMobileMenu"
+      class="header__ctm-menu ctm-menu_opened"
+    >
+      <div class="ctm-menu__content">
+        <div
+          class="ctm-menu__user"
+          @click="toggleUserDD()"
+        >
+          <div class="user__container">
+            <div class="user__avatar">
               <img
-                v-if="imageData"
-                id="userAvatarOne"
+                id="userAvatarMobile"
                 class="profile__img"
-                :src="imageData"
-                alt=""
-              >
-              <img
-                v-if="!imageData"
-                id="userAvatar"
-                class="profile__img"
-                src="~/assets/img/app/avatar_empty.png"
+                :src="imageData || EmptyAvatar()"
                 alt=""
               >
             </div>
-            <div class="header__route">
-              <div class="header__title">
-                {{ title }}
+            <div class="user__data">
+              <div class="user__name">
+                {{ UserName(userData.firstName, userData.lastName) }}
               </div>
-              <div class="header__sub">
-                {{ subTitle }}
+              <div class="user__role">
+                {{ userData.role === $options.UserRole.EMPLOYER ? $t('role.employer') : $t('role.worker') }}
+              </div>
+            </div>
+          </div>
+          <div class="user__dropdown">
+            <div class="user__container">
+              <div class="user__dropdown-icon">
+                <span :class="`icon icon-caret_${isUserDDOpened ? 'up' : 'down'}`" />
               </div>
             </div>
           </div>
         </div>
-        <div class="header__links">
-          <n-link
-            v-for="(item, i) in headerLinks"
-            :key="`link-${i}`"
-            class="header__link"
-            exact-active-class="header__link_active"
-            :to="item.path"
+        <div
+          v-if="isUserDDOpened"
+          class="ctm-menu__dropdown"
+        >
+          <div
+            v-for="(item, i) in profileLinks"
+            :key="i"
+            class="dropdown__link"
+            @click="toRoute(item.link)"
           >
-            <div class="header__icon">
-              <img
-                :src="item.icon"
-                alt=""
-              >
+            {{ item.title }}
+          </div>
+          <div
+            class="dropdown__link dropdown__link_logout"
+            @click="logout()"
+          >
+            {{ $t('ui.profile.logout') }}
+          </div>
+        </div>
+        <div class="ctm-menu__links">
+          <div
+            v-for="(item, i) in headerLinks"
+            :key="i"
+            class="ctm-menu__link"
+            @click="toRoute(item.path)"
+          >
+            {{ item.title }}
+          </div>
+        </div>
+        <div
+          class="ctm-menu__dropdown"
+          @click="toggleInstrumentDD()"
+        >
+          <div class="dropdown__btn">
+            <div class="dropdown__title">
+              {{ $t('ui.profile.DeFi') }}
             </div>
-          </n-link>
+            <div class="dropdown__arrow">
+              <span :class="`icon icon-caret_${isInstrumentDropdownOpened ? 'up' : 'down'}`" />
+            </div>
+          </div>
+        </div>
+        <div
+          v-if="isInstrumentDropdownOpened"
+          class="ctm-menu__dropdown-data"
+        >
+          <div
+            v-for="(item, i) in additionalMenuLinks"
+            :key="i"
+            class="dropdown-data__link"
+            @click="toRoute(item.path)"
+          >
+            {{ item.title }}
+          </div>
+        </div>
+        <div class="ctm-menu__actions">
+          <base-btn
+            v-if="userData.role === $options.UserRole.EMPLOYER"
+            class="ctm-menu__btn"
+            @click="createNewQuest('mobile')"
+          >
+            {{ $t('layout.create') }}
+          </base-btn>
         </div>
       </div>
-    </div>
-    <div class="header__bottom">
-      <n-link
-        v-for="(item, i) in headerLinks"
-        :key="`link-${i}`"
-        class="header__link"
-        exact-active-class="header__link_active"
-        :to="item.path"
-      >
-        <div class="header__icon">
-          <img
-            :src="item.icon"
-            alt=""
-          >
-        </div>
-      </n-link>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import ClickOutside from 'vue-click-outside';
+import moment from 'moment';
+import {
+  MessageAction, UserRole, Path, ChatType,
+} from '~/utils/enums';
 
 export default {
+  scrollToTop: true,
   name: 'Header',
-  props: {
-    title: {
-      type: String,
-      default: '',
-    },
-    subTitle: {
-      type: String,
-      default: '',
-    },
-    avatar: {
-      type: String,
-      default: '',
-    },
+  middleware: 'auth',
+  UserRole,
+  directives: {
+    ClickOutside,
   },
   data() {
     return {
-      localUserData: {},
+      isInstrumentDropdownOpened: false,
+      isUserDDOpened: false,
+      isShowProfile: false,
+      isShowAdditionalMenu: false,
+      isShowLocale: false,
+      isMobileMenu: false,
+      isNotFlexContainer: false,
+      currentLocale: '',
     };
   },
   computed: {
     ...mapGetters({
-      userRole: 'user/getUserRole',
       userData: 'user/getUserData',
       imageData: 'user/getImageData',
+      token: 'user/accessToken',
+      connections: 'data/notificationsConnectionStatus',
+      chatId: 'chat/getCurrChatId',
+      messagesFilter: 'chat/getMessagesFilter',
+      unreadMessagesCount: 'user/getUnreadChatsCount',
+      chats: 'chat/getChats',
+      searchValue: 'chat/getSearchValue',
     }),
-    headerLinks() {
+    locales() {
+      return this.$i18n.locales.map((item) => ({
+        localeSrc: `${item}.svg`,
+        localeText: this.$t(`ui.locals.${item}`),
+      }));
+    },
+    profileLinks() {
       return [
         {
-          icon: require('~/assets/img/ui/home.svg'),
-          path: '/about',
+          title: this.$t('ui.profile.myProfile'),
+          path: `/profile/${this.userData.id}`,
         },
         {
-          icon: require('~/assets/img/ui/notification.svg'),
-          path: '/temp',
+          title: this.$t('ui.profile.settings'),
+          path: Path.SETTINGS,
         },
         {
-          icon: require('~/assets/img/ui/settings.svg'),
-          path: '/profile',
+          title: this.$t('ui.profile.disputes'),
+          path: Path.DISPUTES,
         },
       ];
+    },
+    additionalMenuLinks() {
+      return [
+        {
+          title: this.$t('ui.menu.pension.title'),
+          desc: this.$t('ui.menu.pension.desc'),
+          path: Path.PENSION,
+        },
+        {
+          title: this.$t('ui.menu.referral.title'),
+          desc: this.$t('ui.menu.referral.desc'),
+          path: Path.REFERRAL,
+        },
+        {
+          title: this.$t('ui.menu.p2p.title'),
+          desc: this.$t('ui.menu.p2p.desc'),
+          path: Path.INSURING,
+        },
+        {
+          title: this.$t('ui.menu.savings.title'),
+          desc: this.$t('ui.menu.savings.desc'),
+          path: Path.SAVINGS,
+        },
+        {
+          title: this.$t('ui.menu.crediting.title'),
+          desc: this.$t('ui.menu.crediting.desc'),
+          path: Path.CREDITING,
+        },
+        {
+          title: this.$t('ui.menu.mining.title'),
+          desc: this.$t('ui.menu.mining.desc'),
+          path: Path.MINING,
+        },
+        {
+          title: this.$t('ui.menu.crosschain.title'),
+          desc: this.$t('ui.menu.crosschain.desc'),
+          path: Path.CROSSCHAIN,
+        },
+        {
+          title: this.$t('ui.menu.staking.title'),
+          desc: this.$t('ui.menu.staking.desc'),
+          path: Path.STAKING,
+        },
+      ];
+    },
+    headerLinks() {
+      const links = [
+        { path: Path.MY_QUESTS, title: this.$t('ui.myQuests') },
+        { path: Path.WALLET, title: this.$t('ui.wallet') },
+      ];
+      if (this.userData.role === UserRole.EMPLOYER) links.unshift({ path: Path.WORKERS, title: this.$t('ui.jobQuestors') });
+      else links.unshift({ path: Path.QUESTS, title: this.$t('ui.quests') });
+      return links;
+    },
+  },
+  watch: {
+    $route() {
+      this.closeAll();
+    },
+  },
+  created() {
+    window.addEventListener('resize', this.userWindowChange);
+  },
+  async mounted() {
+    await this.initWSListeners();
+    this.GetLocation();
+    this.currentLocale = this.$i18n.localeProperties.code;
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.userWindowChange);
+    this.$wsNotifs.disconnect();
+    this.$wsChatActions.disconnect();
+  },
+  methods: {
+    async chatAction({ data, action }) {
+      if (this.$route.name === 'messages') {
+        if (action === MessageAction.GROUP_CHAT_CREATE) {
+          const { searchValue } = this;
+
+          const isSearchValIncluded = (value) => value.toLowerCase().includes(searchValue);
+          const hasSearchedUser = () => data.userMembers.some(({ firstName, lastName }) => {
+            if (isSearchValIncluded(firstName) || isSearchValIncluded(lastName)) return true;
+            return false;
+          });
+
+          if (searchValue && !isSearchValIncluded(data.name) && !hasSearchedUser()) return;
+
+          data.isUnread = true;
+          data.userMembers = data.userMembers.filter((member) => member.id !== this.userData.id);
+          this.$store.commit('chat/addChatToList', data);
+          this.$store.commit('user/changeUnreadChatsCount', { needAdd: true, count: 1 });
+        } else if (action === MessageAction.NEW_MESSAGE) {
+          await this.$store.dispatch('chat/getCurrChatData', data.chatId);
+          await this.getStatistic();
+        }
+        return;
+      }
+
+      await this.getStatistic();
+
+      if (data.chatId === this.chatId && !this.messagesFilter.canLoadToBottom) {
+        if (action === MessageAction.MESSAGE_READ_BY_RECIPIENT) return;
+        this.$store.commit('chat/addMessageToList', data);
+        this.$store.commit('chat/setChatAsUnread');
+
+        if (data.type === 'info') {
+          const { user } = data.infoMessage;
+
+          if (action === MessageAction.GROUP_CHAT_ADD_USERS) {
+            this.$store.commit('chat/addUserToChat', user);
+          } else if (action === MessageAction.GROUP_CHAT_DELETE_USER) {
+            this.$store.commit('chat/removeUserFromChat', user.id);
+          }
+        }
+      }
+    },
+    async addNotification(ev) {
+      await this.$store.dispatch('user/addNotification', ev);
+    },
+    async initWSListeners() {
+      const { chatActionsConnection, notifsConnection } = this.connections;
+      if (!notifsConnection) {
+        await this.$wsNotifs.connect(this.token);
+        const subscribes = [
+          'chat',
+          'quest',
+        ];
+        await Promise.all(subscribes.map((path) => this.$wsNotifs.subscribe(`/notifications/${path}`, (ev) => {
+          if (path === 'chat') {
+            this.chatAction(ev);
+            return;
+          }
+          this.addNotification(ev);
+        })));
+      }
+      if (!chatActionsConnection) await this.$wsChatActions.connect(this.token);
+    },
+    async getStatistic() {
+      await this.$store.dispatch('user/getStatistic');
+    },
+    setLocale(item) {
+      this.currentLocale = item.localeText;
+      this.$i18n.setLocale(item.localeText);
+      moment.locale(item.localeText);
+    },
+    kitcutDescription(text) {
+      text = text.trim();
+      if (text.length <= 120) return text;
+      text = text.slice(0, 120);
+      return `${text.trim()}...`;
+    },
+    userWindowChange() {
+      this.isMobileMenu = false;
+      this.isNotFlexContainer = false;
+      this.closeAnother('mobile');
+    },
+    toRoute(path) {
+      this.$router.push(path);
+      this.toggleMobileMenu();
+    },
+    toggleUserDD() {
+      this.isUserDDOpened = !this.isUserDDOpened;
+    },
+    toggleInstrumentDD() {
+      this.isInstrumentDropdownOpened = !this.isInstrumentDropdownOpened;
+    },
+    closeMenu() {
+      this.isMobileMenu = false;
+      this.closeAnother('mobile');
+    },
+    toggleMobileMenu() {
+      this.isMobileMenu = !this.isMobileMenu;
+      this.isNotFlexContainer = !this.isNotFlexContainer;
+      this.closeAnother('mobile');
+    },
+    toMain() {
+      if (this.userData.role === 'worker') {
+        this.$router.push('/quests');
+      }
+      if (this.userData.role === 'employer') {
+        this.$router.push('/workers');
+      }
+    },
+    createNewQuest(platform) {
+      this.$router.push('/create-quest');
+      if (platform === 'mobile') {
+        this.toggleMobileMenu();
+      }
+    },
+    goToMessages() {
+      this.$router.push('/messages');
+      this.closeAll();
+    },
+    showProfile() {
+      this.closeAnother('profile');
+      this.isShowProfile = !this.isShowProfile;
+    },
+    showAdditionalMenu() {
+      this.closeAnother('instruments');
+      this.isShowAdditionalMenu = !this.isShowAdditionalMenu;
+    },
+    showLocale() {
+      this.closeAnother('locale');
+      this.isShowLocale = !this.isShowLocale;
+    },
+    closeAnother(value) {
+      switch (value) {
+        case 'mobile':
+          this.isShowProfile = false;
+          this.isShowLocale = false;
+          this.isShowAdditionalMenu = false;
+          break;
+        case 'instruments':
+          this.isShowProfile = false;
+          this.isShowLocale = false;
+          break;
+        case 'profile':
+          this.isShowAdditionalMenu = false;
+          this.isShowLocale = false;
+          break;
+        case 'locale':
+          this.isShowAdditionalMenu = false;
+          this.isShowProfile = false;
+          break;
+        default:
+          break;
+      }
+    },
+    async logout() {
+      await this.$store.dispatch('user/logout');
+      await this.$router.push('/');
+    },
+    closeAll() {
+      this.isShowProfile = false;
+      this.isShowAdditionalMenu = false;
+      this.isShowLocale = false;
     },
   },
 };
 </script>
-
 <style lang="scss" scoped>
-.header {
-  background: #FFFFFF;
-  width: 100%;
-  height: 124px;
-  border-radius: 0 0 50px 50px;
-  box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
-  &__container {
-    height: 100%;
-    max-width: 1000px;
-    margin: 0 auto;
-  }
-  &__body {
-    height: 100%;
+
+.user {
+  &__data {
+    padding: 15px 0 0 0;
     display: grid;
-    grid-template-columns: 200px 1fr 1fr;
   }
-  &__logo {
-    background-color: #20253b;
+  &__dropdown-icon {
+    align-self: center;
+  }
+  &__container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: $black0;
+    max-height: 70px;
+    height: 100%;
+    max-width: 100%;
+    width: 100%;
+    padding: 0 20px 0 0;
+  }
+  &__avatar {
+    max-height: 40px;
+    max-width: 40px;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    margin-left: 20px;
+    margin-right: 10px;
+  }
+  &__name {
+    font-weight: 500;
+    font-size: 16px;
+    color: $black800;
+  }
+  &__role {
+    font-weight: 400;
+    font-size: 12px;
+    color: $blue;
+    padding: 0 0 11px 0;
+  }
+}
+
+.icon {
+  font-size: 20px;
+  color: $shade700;
+  &-chevron_right {
+    transition: .1s;
+    visibility: hidden;
+  }
+  &-message, &-hamburger {
+    font-size: 24px;
+    color: $black400;
+  }
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 99999;
+  min-height: 72px;
+  background: $white;
+  box-shadow: 0 1px 0 #E6E9EC;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &__body {
+    max-width: 1180px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__left {
+    display: grid;
+    align-items: center;
+    grid-template-columns: auto 1fr;
+    grid-gap: 35px;
+  }
+  &__link {
+    @include text-simple;
+    font-size: 16px;
+    line-height: 130%;
+    color: $black400;
+    text-decoration: none;
+    &_active {
+      color: $black800;
+    }
+    &_menu {
+      display: flex;
+      align-items: center;
+      position: relative;
+      cursor: pointer;
+      span {
+        color: $black400;
+        font-size: 24px;
+        padding-left: 5px;
+      }
+    }
+  }
+  &__button {
+    @include text-simple;
+    font-size: 16px;
+    line-height: 130%;
+    color: $black600;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    max-width: 200px;
-    border-radius: 0 0 30px 30px;
-    cursor: pointer;
-  }
-  &__title {
-    font-family: 'GothamProMedium', sans-serif;
-    color: #000000;
-    font-size: 27px;
-    font-weight: 500;
-    font-style: normal;
-    letter-spacing: normal;
-    line-height: normal;
-    text-align: left;
-  }
-  &__sub {
-    color: #27a860;
-    font-family: 'GothamProMedium', sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    font-style: normal;
-    letter-spacing: normal;
-    line-height: normal;
-    text-align: left;
-  }
-  &__info {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    padding-bottom: 20px;
-  }
-  &__route {
-    display: flex;
-    flex-direction: column;
-    grid-gap: 20px;
-    &_avatar {
-      display: grid;
-      grid-template-columns: 50px 1fr;
+    border-radius: 6px;
+    width: 43px;
+    height: 43px;
+    border: 1px solid transparent;
+    &:hover {
+      border: 1px solid $black100;
+    }
+    .icon-caret_down {
+      color: $black400;
+      font-size: 24px;
+    }
+    &_profile {
+      position: relative;
+    }
+    &_menu {
+      position: relative;
+      display: none;
+    }
+    &_locale {
+      width: 86px;
+      height: 46px;
+    }
+    &_locale-name {
+      padding-left: 10px;
     }
   }
   &__links {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
+    display: grid;
+    align-items: center;
+    grid-template-columns: repeat(4, auto);
+    grid-gap: 25px;
   }
-  &__link {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    height: 100%;
-    width: 80px;
-    padding-bottom: 20px;
-    border-radius: 0 0 30px 30px;
-    &_active {
-      background: #0c82c3;
-      .header {
-        &__icon {
-          filter: invert(1);
-        }
-      }
+  &__right {
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+    grid-gap: 10px;
+    align-items: center;
+  }
+  &__btn {
+    min-width: 163px;
+  }
+  &__logo {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 40px 1fr;
+    grid-gap: 5px;
+    cursor: pointer;
+    span {
+      @include text-simple;
+      font-weight: bold;
+      font-size: 23px;
+      line-height: 130%;
+      color: $black700;
     }
   }
-  &__bottom {
+  &__ctm-menu {
+    transition: .2s;
+  }
+}
+
+.ctm-menu {
+  &_opened {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+    overflow-y: auto;
+    background: $white;
+    display: flex;
+    width: 100%;
+    position: fixed;
+    top: 73px;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 9999;
+  }
+  &__content {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background: $white;
+    border-radius: 0 0 5px 5px;
+    &_hide {
+      width: 0;
+    }
+  }
+  &__user {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  &__links {
+    display: flex;
+    flex-direction: column;
+  }
+  &__link {
+    padding: 16px 20px 16px 20px;
+    font-weight: 400;
+    font-size: 16px;
+    color: $black800;
+    border-bottom: 1px solid $black0;
+    cursor: pointer;
+    text-decoration: none;
+    &:hover {
+      background: $blue;
+      color: $white;
+      font-weight: 600;
+    }
+  }
+  &__actions {
+    padding: 20px;
+  }
+  &__toggle {
     display: none;
   }
 }
-@include _575 {
-  .header {
-    height: 100px;
-    &__body {
-      grid-template-columns: 140px 1fr;
-      padding-left: 20px;
+
+.dropdown {
+  &__link {
+    @extend .ctm-menu__link;
+    display: flex;
+    flex-direction: column;
+    background: $black0;
+    padding: 16px 0 20px 30px;
+    align-items: flex-start;
+    width: 100%;
+
+    &_logout {
+      color: $red;
     }
-    &__router {
-      &_avatar {
-        grid-gap: 10px;
+  }
+  &__btn {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    &:hover {
+      background: $blue;
+      color: $white;
+      font-weight: 600;
+    }
+  }
+  &__title {
+    padding: 16px 0 20px 20px;
+  }
+  &__arrow {
+    justify-self: flex-end;
+    padding: 16px 20px 0 0;
+  }
+}
+
+.dropdown-data {
+  &__link {
+    @extend .ctm-menu__link;
+    display: flex;
+    flex-direction: column;
+    background: $white;
+    padding: 16px 0 20px 30px
+  }
+}
+
+.profile {
+  position: absolute;
+  top: 57px;
+  right: calc(100% - 43px);
+  background: $white;
+  box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
+  border-radius: 6px;
+  min-width: 223px;
+  width: 100%;
+  min-height: 235px;
+  z-index: 10000000;
+  &__img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  &__header {
+    border-bottom: 1px solid #F7F8FA;
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    padding: 15px;
+    grid-gap: 10px;
+  }
+  &__avatar {
+    max-width: 40px;
+    max-height: 40px;
+    border-radius: 100%;
+  }
+  &__items {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: flex-start;
+  }
+  &__item {
+    @include text-simple;
+    height: 41px;
+    background: $white;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    font-size: 16px;
+    line-height: 130%;
+    width: 100%;
+    transition: .3s;
+    border-radius: 6px;
+    text-decoration: none;
+    &_red {
+      color: $red;
+    }
+    &:hover {
+      background: $black0;
+    }
+  }
+  &__text {
+    @include text-simple;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 130%;
+    &_blue {
+      font-weight: normal;
+      font-size: 12px;
+      color: $blue;
+    }
+    &_green {
+      font-weight: normal;
+      font-size: 12px;
+      color: $green;
+    }
+  }
+  &__info {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 5px;
+    text-align: left;
+  }
+}
+
+.menu {
+  position: absolute;
+  top: 49px;
+  background: $white;
+  box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
+  border-radius: 6px;
+  min-width: 790px;
+  width: 100%;
+  left: -100%;
+  min-height: 230px;
+  z-index: 10000000;
+  &__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+  &__text {
+    @include text-simple;
+    &_header {
+      font-size: 16px;
+      line-height: 130%;
+      color: $black800;
+    }
+    &_grey {
+      font-size: 14px;
+      line-height: 130%;
+      color: $black500;
+    }
+  }
+  &__items {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 20px;
+    grid-gap: 10px;
+  }
+  &__item {
+    transition: .3s;
+    background: $white;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    min-height: 90px;
+    display: flex;
+    align-items: flex-start;
+    text-align: left;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 10px;
+    &:hover {
+      border: 1px solid $black100;
+      text-decoration: none;
+      span {
+        visibility: visible;
       }
+    }
+  }
+}
+
+.locale {
+  position: absolute;
+  top: 73px;
+  background: $white;
+  box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
+  border-radius: 6px;
+  z-index: 10000000;
+  padding: 15px 20px;
+  &__item {
+    width: 46px;
+    display: flex;
+    align-items: center;
+    opacity: 0.7;
+    &_active {
+      opacity: 1;
+    }
+    &:hover {
+      opacity: 1;
+    }
+  }
+  &__item:not(:last-child) {
+    margin-bottom: 15px;
+  }
+  &__icon {
+    display: block;
+    margin-right: 10px;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+  }
+  &__text {
+    @include text-simple;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 130%;
+    color: $black500;
+  }
+}
+
+@include _1199 {
+  .ctm-menu {
+    &__toggle {
+      display: flex;
+    }
+  }
+  .header {
+    &__button_menu {
+      display: flex;
+    }
+    &__body {
+      margin: 0 20px 0 20px;
     }
     &__links {
       display: none;
     }
-    &__link {
-      border-radius: 40px 40px 0 0;
-      width: 100px;
+    &__button {
+      &_profile {
+        display: none;
+      }
     }
+    &__btn {
+      display: none !important;
+    }
+  }
+}
+
+@include _991 {
+  .template {
+    &__content {
+      grid-template-rows: 72px 1fr auto;
+    }
+  }
+}
+
+@include _575 {
+  .header {
     &__logo {
-      border-radius: 0 0 50px 50px;
+      span {
+        display: none;
+      }
     }
-    &__container {
-      background: #FFFFFF;
-      width: 100%;
-      box-shadow: 0 0 4px rgba(0, 7, 5, 0.3);
-      border-radius: 0 0 50px 50px;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1000;
-      height: 100px;
+    &__btn {
+      display: none !important;
     }
-    &__title {
-      font-size: 22px;
+    &__left {
+      grid-gap: 15px;
     }
-    &__bottom {
-      padding-left: 20px;
-      display: flex;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      background: #FFFFFF;
-      width: 100%;
-      height: 100px;
-      z-index: 1000;
-      box-shadow: 0 0 7px rgba(0, 7, 5, 0.3);
-      border-radius: 40px 40px 0 0;
+    &__right {
+      grid-gap: 2px;
     }
   }
 }

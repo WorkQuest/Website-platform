@@ -1,14 +1,13 @@
 <template>
-  <div>
+  <div data-selector="PAGE-PROFILE">
     <div class="section section__container section__container_white">
       <div class="container container__block">
-        <userInfo
-          :user-info="userData"
-        />
+        <userInfo />
         <div class="block__routes routes">
           <button
             v-for="(item, i) in pageTabs"
             :key="i"
+            :data-selector="`PAGE-TABS-${item.tabName}`"
             class="routes__btn"
             :class="{routes__btn_active: selectedTab === item.tabName}"
             @click="selectedTab = item.tabName"
@@ -22,11 +21,13 @@
       <div class="container container__block">
         <div
           v-if="selectedTab === 'commonInfo'"
+          :data-selector="`PAGE-TAB-${selectedTab}`"
           class="block__statistic statistic"
         >
           <div
             v-for="(item, key) in statisticsData"
             :key="key"
+            :data-selector="`PAGE-TAB-CARDS-${key}`"
             class="statistic__card card"
           >
             <div class="card__title">
@@ -34,7 +35,7 @@
             </div>
             <div
               class="card__number"
-              :class="item.ratingMode ? 'card__number_rating' : ''"
+              :class="{'card__number_rating' : item.ratingMode}"
             >
               {{ numberValidate(item.number) }}
             </div>
@@ -53,25 +54,8 @@
           <div class="skills-spec__title">
             {{ $t('skills.title') }}
           </div>
-          <div class="skills-spec__container skills-spec__container_white">
-            <div
-              v-for="(skills, specialization) in getSkillTitle()"
-              :key="specialization"
-              class="skills-spec__spec skills-spec__spec_white spec"
-            >
-              <div class="spec__title">
-                {{ $t(`filters.items.${specialization}.title`) }}
-              </div>
-              <ul class="spec__skills">
-                <li
-                  v-for="(skill, key) in skills"
-                  :key="key"
-                  class="skills__item skills__item_blue"
-                >
-                  {{ $t(`filters.items.${specialization}.sub.${skill}`) }}
-                </li>
-              </ul>
-            </div>
+          <div class="skills-spec__container">
+            <skills :specializations="userData.userSpecializations" />
           </div>
         </div>
         <div
@@ -82,14 +66,21 @@
             v-if="selectedTab === 'commonInfo'"
             class="quests__title"
           >
-            {{ $t('quests.activeQuests') }}
+            {{ $t('profile.quests') }}
           </div>
-          <quests
-            v-if="questsObject.count !== 0"
-            :object="questsObject"
-            :page="'quests'"
-          />
-          <emptyData
+          <div
+            v-if="questsCount > 0"
+            class="quests__cards"
+          >
+            <card-quest
+              v-for="(quest,id) in questsData"
+              :key="id"
+              :data-selector="`QUEST-CARD-${quest.id}`"
+              :quest="quest"
+              @clickFavoriteStar="updateQuests"
+            />
+          </div>
+          <empty-data
             v-else
             :description="$t('errors.emptyData.emptyQuests')"
           />
@@ -103,11 +94,12 @@
             </div>
           </div>
           <div
-            v-if="selectedTab === 'commonInfo' && questsObject.count > 2"
+            v-if="selectedTab === 'commonInfo' && questsCount > 2"
             class="quests__button button"
           >
             <div
               class="button__more"
+              data-selector="ACTION-BTN-TABS-SHOW-ALL-QUEST"
               @click="selectedTab = 'quests'"
             >
               {{ $t('meta.showAllQuests') }}
@@ -148,19 +140,20 @@
               <div
                 v-if="reviewsObject.count > 4"
                 class="button__more"
+                data-selector="ACTION-BTN-SHOW-ALL-REVIEWS"
                 @click="selectedTab = 'reviews'"
               >
                 {{ $t('meta.showAllReviews') }}
               </div>
             </div>
           </template>
-          <emptyData
+          <empty-data
             v-else
             :description="$t('errors.emptyData.emptyReviews')"
           />
         </div>
         <div
-          v-if="(selectedTab === 'commonInfo' || selectedTab === 'portfolio') && userData.role === 'worker'"
+          v-if="(selectedTab === 'commonInfo' || selectedTab === 'portfolio') && userData.role === $options.UserRole.WORKER"
           class="block__portfolio portfolio"
         >
           <div
@@ -174,6 +167,7 @@
             class="portfolio__add-btn"
           >
             <base-btn
+              data-selector="ACTION-BTN-ADD-PORTFOLIO-CASE"
               @click="showAddCaseModal()"
             >
               {{ $t('ui.profile.addCase') }}
@@ -184,7 +178,7 @@
           </div>
           <portfolioTab
             class="profile__portfolio"
-            :object="portfolioObject"
+            :object="portfolios"
           />
           <div
             v-if="selectedTab === 'portfolio' && totalPortfoliosPages > 1"
@@ -198,11 +192,12 @@
             </div>
           </div>
           <div
-            v-if="selectedTab === 'commonInfo' && portfolioObject.count > 3"
+            v-if="selectedTab === 'commonInfo' && portfolios.count > 3"
             class="portfolio__button button"
           >
             <div
               class="button__more"
+              data-selector="ACTION-BTN-SHOW-ALL-PORTFOLIOS"
               @click="selectedTab = 'portfolio'"
             >
               {{ $t('meta.showAllPortfolios') }}
@@ -219,25 +214,23 @@ import { mapGetters } from 'vuex';
 import reviewsTab from '~/components/app/pages/profile/tabs/reviews';
 import portfolioTab from '~/components/app/pages/profile/tabs/portfolio';
 import userInfo from '~/components/app/pages/common/userInfo';
-import quests from '~/components/app/pages/common/quests';
-import emptyData from '~/components/app/info/emptyData';
 import modals from '~/store/modals/modals';
+import skills from '~/components/app/pages/common/skills';
+import { UserRole } from '~/utils/enums';
 
 export default {
   name: 'Index',
+  UserRole,
   components: {
     reviewsTab,
-    quests,
     userInfo,
-    emptyData,
     portfolioTab,
+    skills,
   },
   data() {
     return {
       selectedTab: 'commonInfo',
-      questsObject: {},
       reviewsObject: {},
-      portfolioObject: {},
       userStatistics: {
         reviewCount: 0,
         averageMark: 0,
@@ -257,9 +250,11 @@ export default {
   computed: {
     ...mapGetters({
       mainUser: 'user/getUserData',
-      questUserData: 'quests/getUserInfoQuests',
+      questsData: 'quests/getUserInfoQuests',
+      questsCount: 'quests/getUserInfoQuestsCount',
       portfolios: 'user/getUserPortfolios',
       reviews: 'user/getAllUserReviews',
+      anotherUserData: 'user/getAnotherUserData',
     }),
     cardLevelClass(idx) {
       const { cards } = this;
@@ -287,7 +282,7 @@ export default {
         },
       ];
 
-      if (this.userData.role === 'worker') {
+      if (this.userData.role === UserRole.WORKER) {
         tabs.push({
           number: 4,
           tabName: 'portfolio',
@@ -297,7 +292,7 @@ export default {
       return tabs;
     },
     totalQuestsPages() {
-      return Math.ceil(this.questsObject.count / this.perPagerQuests);
+      return Math.ceil(this.questsCount / this.perPagerQuests);
     },
     totalReviewsPages() {
       return Math.ceil(this.reviews.count / this.perPagerReviews);
@@ -344,7 +339,7 @@ export default {
         this.pagePortfolios = 1;
         await this.changeQuestsData(2);
         await this.changeReviewsData(2);
-        if (this.userData.role === 'worker') {
+        if (this.userData.role === UserRole.WORKER) {
           await this.changePortfoliosData(3);
         }
       }
@@ -368,16 +363,14 @@ export default {
   },
   async mounted() {
     if (this.userId !== this.mainUser.id) {
-      this.userData = await this.$store.dispatch('user/getAnotherUserData', this.userId);
-      this.userData = this.userData.result;
+      await this.$store.dispatch('user/getAnotherUserData', this.userId);
+      this.userData = this.anotherUserData;
     } else {
       this.userData = this.mainUser;
     }
     await this.changeQuestsData(2);
     await this.changeReviewsData(2);
-    if (this.userData.role === 'worker') {
-      await this.changePortfoliosData(3);
-    }
+    if (this.userData.role === UserRole.WORKER) await this.changePortfoliosData(3);
     const { ratingStatistic } = this.userData;
     const { questStatistic } = this.userData;
     this.userStatistics = {
@@ -391,11 +384,18 @@ export default {
     await this.$store.dispatch('user/clearAnotherUserData');
   },
   methods: {
+    async updateQuests(item) {
+      this.SetLoader(true);
+      if (!item.star) await this.$store.dispatch('quests/setStarOnQuest', item.id);
+      else await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
+
+      if (this.selectedTab === 'quests') await this.changeQuestsData();
+      else await this.changeQuestsData(2);
+      this.SetLoader(false);
+    },
     numberValidate(number) {
       const fixedNumber = number.toFixed(1);
-      if (number - fixedNumber !== 0) {
-        return fixedNumber;
-      }
+      if (number - fixedNumber !== 0) return fixedNumber;
       return number;
     },
     async changeQuestsData(limit) {
@@ -405,10 +405,10 @@ export default {
         query: {
           limit: limit || this.perPagerQuests,
           offset: (this.pageQuests - 1) * this.perPagerQuests,
+          'sort[createdAt]': 'desc',
         },
       };
       await this.$store.dispatch('quests/getUserQuests', payload);
-      this.questsObject = this.questUserData;
     },
     async changeReviewsData(limit) {
       const payload = {
@@ -421,19 +421,12 @@ export default {
     async changePortfoliosData(limit) {
       const payload = {
         userId: this.userId,
-        query: `limit=${limit || 0}&offset=${(this.pagePortfolios - 1) * limit}`,
+        query: {
+          limit: limit || this.perPagerPortfolios,
+          offset: (this.pagePortfolios - 1) * this.perPagerPortfolios,
+        },
       };
       await this.$store.dispatch('user/getUserPortfolios', payload);
-      this.portfolioObject = this.portfolios;
-    },
-    getSkillTitle() {
-      const specData = {};
-      this.userData.userSpecializations.forEach((data) => {
-        const [spec, skill] = data.path.split('.');
-        if (!specData[spec]) specData[spec] = [];
-        specData[spec].push(skill);
-      });
-      return specData;
     },
     isRating(type) {
       return (type === 3);
@@ -448,6 +441,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.quests__cards {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .routes {
   &__btn {
     color: $black500;
@@ -501,51 +501,14 @@ export default {
 .skills-spec {
   &__container {
     padding: 20px;
-    display: flex;
-    grid-gap: 20px;
     flex-direction: column;
-    &_white {
-      background: #FFFFFF;
-      border-radius: 6px;
-    }
+    background: #FFFFFF;
+    border-radius: 6px;
   }
   &__title {
     font-size: 16px;
     line-height: 130%;
     margin-bottom: 10px;
-  }
-  &__spec {
-    display: flex;
-    flex-direction: column;
-    grid-gap: 10px;
-  }
-  .spec {
-    &__container {
-      display: flex;
-      flex-direction: column;
-      grid-gap: 10px;
-    }
-    &__title {
-      font-size: 14px;
-      line-height: 130%;
-    }
-    &__skills {
-      display: flex;
-      grid-gap: 8px;
-      flex-wrap: wrap;
-    }
-  }
-  .skills {
-    &__item {
-      font-size: 16px;
-      line-height: 130%;
-      &_blue {
-        background-color: rgba(0, 131, 199, 0.1);
-        border-radius: 44px;
-        padding: 5px;
-        color: #0083C7;
-      }
-    }
   }
 }
 .statistic {

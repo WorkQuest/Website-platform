@@ -1,8 +1,12 @@
 <template>
-  <div class="preview">
+  <div
+    class="preview"
+    data-selector="COMPONENT-FILES-PREVIEW"
+  >
     <div
       v-for="(item, i) of medias"
       :key="i"
+      :data-selector="`ACTION-BTN-OPEN-FILE-${i}`"
       @click="openFile(item)"
     >
       <img
@@ -56,7 +60,7 @@ export default {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 20px;
-  margin: 0 0 20px 0;
+
   &__item {
     transition: 0.5s;
     border-radius: 6px;

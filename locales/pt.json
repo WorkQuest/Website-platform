@@ -18,7 +18,6 @@
     "agree": "Concordo",
     "disagree": "Disagree",
     "completeWorkOnQuest": "???",
-    "rejectCompletedWorkOnQuest": "???",
     "acceptCompletedWorkOnQuest": "???",
     "closeQuest": "???",
     "goToChat": "Ir para o chat",
@@ -62,7 +61,15 @@
     "required": "O campo {_field_} é obrigatório",
     "size": "O tamanho do campo {_field_} deve ser inferior a {size}KB",
     "decimal": "O campo {_field_} deve conter apenas valores decimais",
-    "decimalPlaces": "{_field_} ??? {places}"
+    "decimalPlaces": "{_field_} ??? {places}",
+    "invalidPhone":"???",
+    "formError": "???",
+    "is": "The values do not match",
+    "is_not": "Incorrect value",
+    "mnemonic": "Incorrect secret phrase",
+    "attemptsExceeded": "Number of attempts exceeded",
+    "loginWithSecret": "Please login with secret phrase",
+    "invalidPassword": "Invalid password"
   },
   "labels": {
     "firstName": "Primeiro nome",
@@ -100,6 +107,7 @@
     "create": "Criar Conta"
   },
   "profile": {
+    "defaultName": "Nameless User",
     "raiseViews": "Aumentar visualizações",
     "educations": "Educação",
     "prevWorkExp": "Experiência de trabalho anterior",
@@ -163,7 +171,9 @@
     "resendSMS": "Reenviar SMS",
     "disable": "Desativar",
     "remindLater": "Lembrar mais tarde",
-    "leave": "???"
+    "leave": "???",
+    "showAll": "Show all",
+    "listIsEmpty": "List is empty"
   },
   "priority": {
     "title": "Selecionar prioridade",
@@ -205,7 +215,9 @@
     "confCode": "Código de confirmação do Google",
     "placeholder": "Marcador de posição de texto",
     "confCodeDesc": "Introduza o código de 6 dígitos da aplicação Google Authentication",
-    "confCodeField": "???"
+    "confCodeField": "???",
+    "confirmAccess": "Confirm access",
+    "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
     "title": "Inscreva-se",
@@ -215,9 +227,22 @@
     "lastName": "Último nome",
     "email": "E-mail",
     "password": "Palavra-passe",
+    "totp":"???",
     "confirmPassword": "Repetir palavra-passe",
-    "create": "Criar conta",
-    "back": "voltar"
+    "create": "Criar conta"
+  },
+  "createWallet": {
+    "showSecretPhrase": "Show secret phrase",
+    "savePhrase": "Save your secret phrase",
+    "keptPhrase": "I have kept a secret phrase",
+    "confirmSecretPhrase": "Confirm secret phrase",
+    "typeSecret": "Type secret word #{a}",
+    "secret": "Secret word #{a}",
+    "create": "Create wallet",
+    "importWallet": "Import wallet",
+    "createOrImport": "Create or import wallet",
+    "typeSecretPhrase": "Type secret phrase",
+    "secretPhrase": "Secret phrase"
   },
   "forgot": {
     "title": "Esqueceu-se da palavra-passe?",
@@ -273,7 +298,6 @@
     "questTitle": "???",
     "questDesc": "???",
     "questInfo": "???",
-    "questClosed!": "???",
     "closed": "???",
     "completed": "???",
     "rejected": "???",
@@ -283,6 +307,7 @@
     "workOnQuestRejected": "???",
     "pleaseWaitEmp": "???",
     "quests": "Buscas",
+    "questsSmall": "quests",
     "publicationDate": "???",
     "urgent": "Urgente",
     "specQuests": "???",
@@ -354,7 +379,10 @@
       "limit": "???"
     },
     "hours": "horas",
+    "responded": "???",
     "invited": "Convidado",
+    "acceptedTheInvitation": "???",
+    "declinedTheInvitation": "???",
     "active": "Ativo",
     "performed": "Realizado",
     "requested": "Solicitado",
@@ -384,10 +412,9 @@
     "unknownAddress": "???...",
     "unknownPhoneNumber": "???...",
     "unknownEmailAddress": "???..",
-    "questActive:": "???:",
-    "questClosed:": "???:",
-    "questDispute:": "???:",
-    "questWaitConfirm:": "???:",
+    "questActive": "???:",
+    "questDispute": "???:",
+    "questWaitConfirm": "???:",
     "skillsNotSpecified": "???...",
     "proposal": "Proposta",
     "category": "Selecione uma categoria",
@@ -409,7 +436,6 @@
     "EstimatedPayment": "Pagamento estimado:",
     "createAQuest": "Criar uma busca",
     "editAQuest": "???",
-    "activeQuests": "Buscas ativas",
     "openedQuests": "???",
     "completedQuests": "Buscas concluídas",
     "oneTime": "Uma vez",
@@ -419,7 +445,7 @@
     "showAllActiveQuests": "Mostrar todas as buscas ativas",
     "performanceTimer": "Ativo até:",
     "questAmount": "buscas",
-    "otherQuestsSpec": "Outras buscas por especialização",
+    "otherQuestsSpec": "???",
     "questMaterials": "Materiais busca adicionais",
     "searchResults": "Resultados da pesquisa",
     "type": "Tipo de trabalho",
@@ -433,7 +459,9 @@
     },
     "ui": {
       "showMap": "Mostrar mapa",
-      "search": "Cidade / Rua / Lugar"
+      "searchOnQuestsPage": "Employer / Title / Description / City",
+      "searchOnWorkersPage": "Employee / City",
+      "searchWithMap": "Cidade / Rua / Lugar"
     },
     "worker": "Trabalhador",
     "raiseViews": "Aumentar visualizações",
@@ -903,6 +931,10 @@
     "error": "???"
   },
   "modals": {
+    "errorQuests": "???",
+    "emptyOpenQuests": "???",
+    "errorSmsVer": "???",
+    "fillNumber": "???",
     "disputes": {
       "thereIsNoResponseFromTheEmployerOrEmployee": "???",
       "badlyDoneWork": "???",
@@ -935,8 +967,10 @@
     "edit": "???",
     "delete": "???",
     "youCan’tDeleteActiveQuest": "???",
+    "youCantCreateDispute": "???",
     "sureDeleteText": "???",
     "sureDeleteMemberText": "???",
+    "sureDeleteNotification": "???",
     "sureLeaveChatText": "???",
     "priceTitle": "???",
     "enterPriceRange": "???",
@@ -974,6 +1008,7 @@
     "pressSaveBtn": "Prima o botão guardar",
     "imageLoadedSuccessful": "Imagem carregada com sucesso",
     "success": "Sucesso",
+    "failed": "Failed",
     "yourRoleHasBeenChanged": "A sua função foi alterada",
     "chooseSkills": "Escolha as competências necessárias",
     "securityCheck": "Verificação de segurança",
@@ -1032,11 +1067,12 @@
     "messageSend": "Mensagem enviada",
     "questAgreed": "Busca Acordada",
     "requestSend": "Pedido enviado",
+    "waitResponseFromEmployer": "Wait for a response from the employer",
     "sendARequest": "Enviar um pedido",
     "message": "Mensagem",
     "bodyMessage": "Olá",
     "areYouSure": "Tem a certeza?",
-    "transactionSend": "Enviar transação",
+    "transactionSent": "Enviar transação",
     "transactionFail": "???",
     "transactionCheck": "???",
     "cardHasBeenAdded": "Cartão foi adicionado",
@@ -1051,6 +1087,7 @@
     "addCard": "Adicionar Cartão",
     "inviteSend": "Convite enviado",
     "questCreated": "Busca criada",
+    "questUpdated": "???",
     "invitation": "Convite",
     "chooseQuest": "Escolher Busca",
     "raiseViews": "Aumentar visualizações",
@@ -1221,7 +1258,11 @@
     "thanksText": "",
     "emailVerificationCodeField": "???",
     "youCanAttachUpToNFiles": "???",
-    "youTryToAttachUnsupportedFileFormat": "???"
+    "youTryToAttachUnsupportedFileFormat": "???",
+    "connectError": "Error connection",
+    "incorrectChain": "You choose incorrect chain!",
+    "selectToken": "Select token",
+    "txInfo": "Transaction info"
   },
   "ui": {
     "jobQuestors": "Questores de emprego",
@@ -1253,7 +1294,8 @@
     },
     "notifications": {
       "title": "Notificações",
-      "invite": "Convida-o para completar a busca"
+      "invite": "Convida-o para completar a busca",
+      "noNotifications": "No notifications"
     },
     "menu": {
       "unauthorized": "???",
@@ -1302,6 +1344,23 @@
       }
     }
   },
+  "notifications": {
+    "title": "Notifications",
+    "invite": "Invites you to complete the quest",
+    "invitesYouToStartAQuest": "Invites you to start a quest",
+    "rejectedTheQuest": "Rejected the quest",
+    "acceptedTheQuest": "Accepted the quest",
+    "completedTheQuest": "Completed the quest",
+    "acceptedAJobOnAQuest": "Accepted a job on a quest",
+    "respondedToQuest": "Responded to quest",
+    "invitedYouToAQuest": "Invited you to a quest",
+    "acceptedTheInvitationToTheQuest": "Accepted the invitation to the quest",
+    "declinedTheInvitationToTheQuest": "Declined the invitation to the quest",
+    "declinedYourResponseToTheQuest": "Declined your response to the quest",
+    "leftReviewAboutQuest": "Left review about quest",
+    "theQuestIsPending": "The quest is pending",
+    "openDispute": "Open dispute"
+  },
   "wallet": {
     "WUSD": "Carteira WUSD",
     "cryptoWallet": "Carteira cripto",
@@ -1323,12 +1382,13 @@
       "timestamp": "Carimbo da hora",
       "transferred": "Tokens transferidos",
       "value": "Quantidade",
-      "trxFee": "Montante da transação"
+      "trxFee": "Montante da transação",
+      "empty": "Transactions list is empty"
     }
   },
   "chat": {
+    "reason": "???",
     "openDispute": "Abrir disputa",
-    "approveQuest": "Aprovar busca",
     "starredMessages": "???",
     "starredChats": "???",
     "allChats": "???",
@@ -1367,9 +1427,14 @@
       "youLeftTheChat": "???"
     },
     "leaveChat": "???",
-    "loadMore": "???"
+    "loadMore": "???",
+    "searchTitle": "Name/Quest/Group"
   },
   "settings": {
+    "additionalPhoneNumber": "???",
+    "mainPhoneNumber": "???",
+    "workProposals": "???",
+    "phoneVerified": "???",
     "facebook": "facebook",
     "linkedin": "linkedin",
     "twitter": "twitter",
@@ -1377,6 +1442,9 @@
     "address": "???",
     "lastName": "???",
     "firstName": "???",
+    "companyName":"???",
+    "ceoName":"???",
+    "websiteName":"???",
     "enterPhoneNumber": "???",
     "enterCurrentLocation": "???",
     "placeOfStudying": "Local de estudo",
@@ -1482,10 +1550,11 @@
     "Dispute": "Disputa",
     "pending": "Pendente",
     "chatHistory": "Histórico de chat",
-    "disputeTime": "Hora de abertura da disputa:"
+    "disputeTime": "Hora de abertura da disputa:",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
-    "noWorkers": "???...",
     "searchQuests": "Pesquisa de buscas",
     "searchWorkers": "Pesquisar trabalhadores",
     "topWorkers": "Melhores empregados",
@@ -1920,9 +1989,13 @@
     }
   },
   "errors": {
+    "transaction": {
+      "notEnoughFunds": "Not enough funds"
+    },
     "incorrectPass": "Ocorreu um erro. Verifique os dados e tente novamente.",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {
@@ -1944,7 +2017,8 @@
           "desc": "Ainda não respondeu a buscas",
           "btnText": "Responda à busca!"
         }
-      }
+      },
+      "noEmployees": "Oops, there are no employees..."
     }
   },
   "sharing": {
@@ -1998,6 +2072,7 @@
     "stakeDurationIsNotOver": "???",
     "claimRewards": "???",
     "cannotClaimYet": "???",
+    "cannotStakeYet": "You cannot stake tokens yet",
     "pool": "Pool",
     "stakeTokenAddress": "???",
     "rewardTokenAddress": "???",
@@ -2121,7 +2196,8 @@
           },
           "notifications": {
             "title": "???",
-            "subtitle": "???"
+            "subtitle": "???",
+            "noNotifications": "No notifications"
           },
           "menu": {
             "title": "???",
@@ -2370,5 +2446,26 @@
       "fileSizeLimit": "???: {n}",
       "filesLimit": "???: {n}"
     }
+  },
+  "rating": {
+    "topRanked": {
+      "title": "???",
+      "desc": "Notifications for employees who were looking for quests with a direct offer to review the promoted quest based on the most recent search categories of the employee. Plus the ability to choose three categories and three locations to promote the quest."
+    },
+    "verified": {
+      "title": "???",
+      "desc": "Pin quest on the main page for three hours, with the ability to choose two categories and two locations for promotion the quest."
+    },
+    "reliable": {
+      "title": "???",
+      "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
+    }
+  },
+  "workPlaces": {
+    "title": "Workplace",
+    "all": "All workplaces",
+    "distant": "Distant work",
+    "office": "Work in office",
+    "both": "Both variants"
   }
 }

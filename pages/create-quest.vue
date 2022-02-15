@@ -1,6 +1,7 @@
 <template>
   <div
     class="main"
+    data-selector="PAGE-CREATE-QUEST"
     :class="{'main-white': step === 1}"
   >
     <div class="main__body page">
@@ -9,6 +10,7 @@
       >
         <div
           v-if="step === 1"
+          data-selector="PAGE-CREATE-QUEST-STEP-1"
           class="page"
         >
           <h2 class="page__title">
@@ -19,11 +21,10 @@
               <div class="runtime__container">
                 <div class="runtime page__dd">
                   <base-dd
-                    v-model="runtimeValue"
+                    v-model="runtimeIndex"
                     :items="runtime"
                     type="gray"
                     :label="$t('quests.runtime.runtime')"
-                    :placeholder="runtime[0]"
                     :name="$t('quests.runtime.runtime')"
                     rules="required"
                   />
@@ -34,6 +35,7 @@
               <base-field
                 v-model="price"
                 :type="'number'"
+                data-selector="PRICE-FIELD"
                 :label="$t('quests.price')"
                 :placeholder="+0 + currency"
                 rules="required|decimal"
@@ -67,6 +69,7 @@
               v-model="address"
               :label="$t('quests.address')"
               :placeholder="$t('quests.address')"
+              data-selector="ADDRESS-FIELD"
               mode="icon"
               :selector="true"
               rules="required"
@@ -79,6 +82,7 @@
               <template v-slot:selector>
                 <div
                   v-if="addresses.length"
+                  data-selector="ADDRESS-SELECTOR"
                   class="selector"
                 >
                   <div class="selector__items">
@@ -86,6 +90,7 @@
                       v-for="(item, i) in addresses"
                       :key="i"
                       class="selector__item"
+                      :data-selector="`ACTION-BTN-SELECT-ADDRESS-${item.id}`"
                       @click="selectAddress(item)"
                     >
                       {{ item.formatted }}
@@ -98,6 +103,7 @@
           <div class="page__input">
             <base-field
               v-model="questTitle"
+              data-selector="QUEST-TITLE-FIELD"
               rules="required"
               :name="$t('quests.questTitle')"
               :placeholder="$t('quests.questTitle')"
@@ -108,6 +114,7 @@
               id="textarea"
               v-model="textarea"
               rules="required"
+              data-selector="QUEST-DESC-TEXTAREA"
               class="page__textarea"
               :placeholder="$t('quests.questDesc')"
             />
@@ -128,6 +135,7 @@
           <div class="upload btn btn__container btn__container_right">
             <div class="btn__create">
               <base-btn
+                data-selector="ACTION-BTN-CREATE-A-QUEST"
                 :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
                 @click="handleSubmit(toRiseViews)"
               >
@@ -138,13 +146,15 @@
         </div>
         <div
           v-if="step === 2"
+          data-selector="PAGE-CREATE-QUEST-STEP-2"
           class="page"
         >
-          <div class="page btn-container__left">
+          <div class="page btn-container btn-container__left">
             <div class="btn-container__btn_back">
               <base-btn
-                :mode="'back'"
-                @click="goBack()"
+                mode="back"
+                data-selector="ACTION-BTN-BACK"
+                @click="goBack"
               >
                 {{ $t('meta.back') }}
                 <template v-slot:left>
@@ -164,6 +174,7 @@
               <div
                 v-for="(item, i) in periodTabs"
                 :key="i"
+                :data-selector="`ACTION-BTN-SWITCH-PERIOD-${i}`"
                 class="period__period"
                 :class="{'period__period_active': period === item.number}"
                 @click="switchPeriod(item, i)"
@@ -188,6 +199,7 @@
                 <div
                   v-for="(item, i) in periods(period)"
                   :key="i"
+                  :data-selector="`ACTION-BTN-SWITCH-PERIOD-LEVEL-${i}`"
                   class="level__card"
                   @click="selectRadio(i)"
                 >
@@ -224,6 +236,7 @@
               <div class="btn-container__btn">
                 <base-btn
                   :mode="'outline'"
+                  data-selector="ACTION-BTN-SKIP-AND-END"
                   @click="createQuest"
                 >
                   {{ $t('meta.skipAndEnd') }}
@@ -232,6 +245,7 @@
               <div class="btn-container__btn">
                 <base-btn
                   :disabled="ads.currentAdPrice === ''"
+                  data-selector="ACTION-BTN-PAY"
                   @click="showPaymentModal"
                 >
                   {{ $t('meta.pay') }}
@@ -248,11 +262,13 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { PriorityFilter, WorkplaceIndex, TypeOfJobFilter } from '~/utils/enums';
 
 const { GeoCode } = require('geo-coder');
 
 export default {
   name: 'CreateQuest',
+  middleware: ['employer-role'],
   data() {
     return {
       ads: {
@@ -264,7 +280,6 @@ export default {
       workplaceIndex: 0,
       runtimeIndex: 0,
       periodIndex: 0,
-      runtimeValue: '',
       questTitle: '',
       address: '',
       textarea: '',
@@ -275,6 +290,7 @@ export default {
       currency: ' WUSD',
       addresses: [],
       files: [],
+      geoCode: null,
     };
   },
   computed: {
@@ -407,6 +423,10 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    this.geoCode = new GeoCode('google', {
+      key: process.env.GMAPKEY,
+      lang: this.$i18n?.localeProperties?.code || 'en-US',
+    });
     this.SetLoader(false);
   },
   methods: {
@@ -417,26 +437,16 @@ export default {
       this.selectedSpecAndSkills = specAndSkills;
     },
     cardStatus(item) {
-      let style;
-      if (item.code === 1) {
-        style = 'level__card_gold';
-      } if (item.code === 3) {
-        style = 'card__level_reliable';
-      } if (item.code === 4) {
-        style = 'card__level_checked';
-      }
-      return style;
+      if (item.code === 1) return 'level__card_gold';
+      if (item.code === 3) return 'card__level_reliable';
+      if (item.code === 4) return 'card__level_checked';
+      return '';
     },
     periods(period) {
-      let val;
-      if (period === 1) {
-        val = this.days;
-      } if (period === 2) {
-        val = this.weeks;
-      } if (period === 3) {
-        val = this.months;
-      }
-      return val;
+      if (period === 1) return this.days;
+      if (period === 2) return this.weeks;
+      if (period === 3) return this.months;
+      return '';
     },
     selectRadio(idx) {
       const radio = this.$refs[`radio${idx}`];
@@ -476,53 +486,44 @@ export default {
       this.addresses = [];
       this.address = address.formatted;
     },
-    convertEmployment(employmentId) {
-      const employments = [
-        'fullTime',
-        'partTime',
-        'fixedTerm',
-      ];
-      return employments[employmentId];
-    },
-    convertWorkplace(workplaceId) {
-      const workplaces = [
-        'distant',
-        'office',
-        'both',
-      ];
-      return workplaces[workplaceId];
-    },
     async getAddressInfo(address) {
-      let response = [];
-      const geoCode = new GeoCode('google', { key: process.env.GMAPKEY });
       try {
         if (address.length) {
-          response = await geoCode.geolookup(address);
-          this.addresses = JSON.parse(JSON.stringify(response));
-          this.coordinates = JSON.parse(JSON.stringify({ lng: response[0].lng, lat: response[0].lat }));
-        }
+          this.addresses = await this.geoCode.geolookup(address);
+          this.coordinates = {
+            lng: this.addresses[0].lng,
+            lat: this.addresses[0].lat,
+          };
+        } else this.addresses = [];
       } catch (e) {
-        console.log(e);
+        this.addresses = [];
+        console.error('Geo look up is failed', e);
+        await this.$store.dispatch('main/showToast', {
+          text: 'Address is not correct',
+        });
       }
     },
     async createQuest() {
       this.SetLoader(true);
       const medias = await this.uploadFiles(this.files);
       const payload = {
-        workplace: this.convertWorkplace(this.workplaceIndex),
-        priority: this.runtimeIndex,
-        employment: this.convertEmployment(this.employmentIndex),
+        // TODO Это быстрый фикс ошибки, при рефакторе исправить
+        workplace: WorkplaceIndex[this.workplaceIndex],
+        priority: PriorityFilter[this.runtimeIndex + 1].value,
+        employment: TypeOfJobFilter[this.employmentIndex],
         category: 'Default',
         title: this.questTitle,
         description: this.textarea,
         price: this.price,
         medias,
         adType: 0,
-        locationPlaceName: this.address,
         specializationKeys: this.selectedSpecAndSkills,
-        location: {
-          longitude: this.coordinates.lng,
-          latitude: this.coordinates.lat,
+        locationFull: {
+          location: {
+            longitude: this.coordinates.lng,
+            latitude: this.coordinates.lat,
+          },
+          locationPlaceName: this.address,
         },
       };
       const response = await this.$store.dispatch('quests/questCreate', payload);
@@ -536,10 +537,8 @@ export default {
     },
     showModalCreatedQuest() {
       this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('modals.yourSkillsHaveBeenAdded'),
-        subtitle: this.$t('modals.youCanUpdateThisInYourProfile'),
+        key: modals.questCreated,
+        title: this.$t('modals.questCreated'),
       });
     },
     showToastCreated() {
@@ -569,13 +568,20 @@ export default {
   margin: 20px 0 0 0;
   &__left {
     justify-content: flex-start;
-    margin: 35px 0 0 0;
+    margin: 30px 0 0 0;
   }
   &__btn {
     width: 200px;
     margin: 0 10px 0 0;
     &_back {
-      width: 50px;
+      display: flex;
+      justify-content: left;
+      align-items: center;
+
+      & .icon-chevron_big_left {
+        font-weight: 800;
+        font-size: 24px;
+      }
     }
     &:last-child {
       margin: 0;
@@ -601,10 +607,10 @@ export default {
     padding: 2px 5px;
     text-align: center;
     &_reliable {
-      background: #BBC0C7;
+      background: $grey200;
     }
     &_checked {
-      background: #B79768;
+      background: $brown;
     }
   }
   &__desc {
@@ -1023,6 +1029,8 @@ export default {
   .page {
     &__category {
       grid-template-columns: repeat(2, 1fr);
+      margin-bottom: 25px;
+      grid-gap:5px 20px;
     }
   }
 }

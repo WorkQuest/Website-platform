@@ -1,6 +1,7 @@
 <template>
   <ValidationProvider
     v-slot="{errors}"
+    data-selector="COMPONENT-BASE-INPUT"
     tag="div"
     class="ctm-field ctm-field_default"
     :class="[
@@ -10,11 +11,12 @@
       {'ctm-field_icon': mode === 'icon'},
       {'ctm-field_smallError': mode === 'smallError'},
       {'ctm-field_white': mode === 'white'},
-      {'ctm-field_chat': mode === 'chat'}]"
+      {'ctm-field_chat': mode === 'chat'},
+    ]"
     :rules="rules"
     :name="name"
     :vid="vid"
-    mode="eager"
+    :mode="validationMode"
     slim
   >
     <div
@@ -38,8 +40,12 @@
         <slot name="left" />
       </div>
       <input
+        ref="input"
         class="ctm-field__input"
+        :class="[{'ctm-field__input_error': errors[0]},
+                 {'ctm-field__input_padding-r' : hasLoader}]"
         :placeholder="placeholder"
+        data-selector="BASE-INPUT-FIELD"
         :value="mode === 'convertDate' ? convertDate(value) : value"
         :type="type"
         :autocomplete="autocomplete"
@@ -47,10 +53,12 @@
         @keyup.enter="enter"
         @keypress.enter="onEnterPress"
         @focus="$emit('focus')"
+        @blur="$emit('blur')"
       >
       <div
-        v-if="value && isSearch"
+        v-if="value && isSearch && !isBusySearch"
         class="ctm-field__clear"
+        data-selector="ACTION-BTN-CLEAR"
         @click="clear()"
       >
         <span class="icon-close_small" />
@@ -74,10 +82,13 @@
   </ValidationProvider>
 </template>
 <script>
-import moment from 'moment';
 
 export default {
   props: {
+    autoFocus: {
+      type: Boolean,
+      default: () => false,
+    },
     onEnterPress: {
       type: Function,
       default: () => {},
@@ -96,10 +107,6 @@ export default {
     },
     placeholder: {
       type: [String, Number],
-      default: '',
-    },
-    errorText: {
-      type: String,
       default: '',
     },
     label: {
@@ -126,6 +133,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isBusySearch: {
+      type: Boolean,
+      default: false,
+    },
     autocomplete: {
       type: String,
       default: 'on',
@@ -148,8 +159,22 @@ export default {
       type: Boolean,
       default: false,
     },
+    validationMode: {
+      type: String,
+      default: 'aggressive',
+    },
+    hasLoader: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  mounted() {
+    this.focus();
   },
   methods: {
+    focus() {
+      if (this.autoFocus) this.$refs.input.focus();
+    },
     enter($event) {
       this.$emit('enter', $event.target.value);
     },
@@ -163,7 +188,7 @@ export default {
       this.$emit('input', '');
     },
     convertDate(date) {
-      return moment(date).format('DD.MM.YYYY');
+      return this.$moment(date).format('DD.MM.YYYY');
     },
   },
 };
@@ -248,6 +273,12 @@ export default {
     padding: 0 20px;
     transition: .3s;
     width: 100%;
+    &_error {
+      border: 1px solid red !important
+    }
+    &_padding-r {
+      padding-right: 40px !important;
+    }
   }
   &_disabled {
     .ctm-field__input {

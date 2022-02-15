@@ -5,7 +5,7 @@
   >
     <div class="transfer__content content">
       <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
+        v-slot="{handleSubmit, invalid}"
       >
         <div
           class="content__container"
@@ -15,11 +15,20 @@
               {{ $t('modals.recepient') }}
             </span>
             <base-field
-              v-model="recepient"
+              v-model="recipient"
               class="input__field"
-              :placeholder="'Enter address'"
-              rules="required"
+              :placeholder="$t('modals.address')"
+              rules="required|address"
               :name="$t('modals.addressField')"
+            />
+          </div>
+          <div class="content__input input">
+            <span class="input__title">
+              {{ $t('modals.selectToken') }}
+            </span>
+            <base-dd
+              v-model="ddValue"
+              :items="tokenSymbolsDd"
             />
           </div>
           <div class="content__input input">
@@ -29,9 +38,10 @@
             <base-field
               v-model="amount"
               class="input__field"
-              :placeholder="'Enter amount'"
-              rules="required|decimal"
+              :placeholder="$t('modals.amount')"
+              :rules="`required|decimal|is_not:0|max_bn:${maxAmount}|decimalPlaces:18`"
               :name="$t('modals.amountField')"
+              @input="replaceDot"
             >
               <template
                 v-slot:right-absolute
@@ -40,6 +50,7 @@
                 <base-btn
                   mode="max"
                   class="max__button"
+                  @click="maxBalance"
                 >
                   <span class="max__text">
                     {{ $t('modals.maximum') }}
@@ -59,10 +70,10 @@
           </base-btn>
           <base-btn
             class="buttons__action"
-            :disabled="!validated || !passed || invalid"
+            :disabled="invalid || !isCanSubmit"
             @click="handleSubmit(showWithdrawInfo)"
           >
-            {{ $t('meta.next') }}
+            {{ $t('meta.send') }}
           </base-btn>
         </div>
       </validation-observer>
@@ -71,26 +82,148 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
+import { TokenSymbols } from '~/utils/enums';
+import { error, success } from '~/utils/web3';
+import * as abi from '~/abi/abi';
 
 export default {
   name: 'ModalTakeTransfer',
   data() {
     return {
-      recepient: '',
+      recipient: '',
       amount: '',
       step: 1,
+      ddValue: 0,
+      maxFee: {
+        WUSD: 0,
+        WQT: 0,
+      },
+      isCanSubmit: true,
     };
   },
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+      isLoading: 'main/getIsLoading',
+      balance: 'wallet/getBalanceData',
+      selectedToken: 'wallet/getSelectedToken',
+      userData: 'user/getUserData',
+      isConnected: 'wallet/getIsWalletConnected',
+    }),
+    tokenSymbolsDd() {
+      return Object.keys(TokenSymbols);
+    },
+    maxAmount() {
+      return this.balance[this.selectedToken].fullBalance || '0';
+    },
+  },
+  watch: {
+    ddValue(val) {
+      this.$store.dispatch('wallet/setSelectedToken', TokenSymbols[this.tokenSymbolsDd[val]]);
+    },
+    balance: {
+      deep: true,
+      handler: async () => {
+        this.isCanSubmit = false;
+        await this.updateMaxFee();
+        this.isCanSubmit = true;
+      },
+    },
+  },
+  async mounted() {
+    this.isCanSubmit = false;
+    const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
+    this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
+    await this.updateMaxFee();
+    this.isCanSubmit = true;
+  },
   methods: {
+    replaceDot() {
+      this.amount = this.amount.replace(/,/g, '.');
+    },
+    // Для просчета максимальной суммы транзакции от комиссии
+    async updateMaxFee() {
+      if (!this.isConnected) return;
+      const [wusd, wqt] = await Promise.all([
+        this.$store.dispatch('wallet/getTransferFeeData', {
+          recipient: this.userData.wallet.address,
+          value: this.balance.WUSD.fullBalance,
+        }),
+        this.$store.dispatch('wallet/getContractFeeData', {
+          method: 'transfer',
+          _abi: abi.ERC20,
+          contractAddress: process.env.WQT_TOKEN,
+          data: [process.env.WQT_TOKEN, new BigNumber(this.balance.WQT.fullBalance).shiftedBy(18).toString()],
+        }),
+      ]);
+      this.maxFee.WQT = wqt.ok ? wqt.result.fee : 0;
+      this.maxFee.WUSD = wusd.ok ? wusd.result.fee : 0;
+    },
     hide() {
       this.CloseModal();
     },
-    showWithdrawInfo() {
+    maxBalance() {
+      if (this.selectedToken === TokenSymbols.WUSD) {
+        const max = new BigNumber(this.maxAmount).minus(this.maxFee[this.selectedToken]);
+        this.amount = max.isGreaterThan(0) ? max.toString() : 0;
+        return;
+      }
+      this.amount = this.maxAmount;
+    },
+    async transfer() {
+      let res;
+      if (this.selectedToken === TokenSymbols.WUSD) {
+        res = await this.$store.dispatch('wallet/transfer', {
+          recipient: this.recipient,
+          value: this.amount,
+        });
+      } else if (this.selectedToken === TokenSymbols.WQT) {
+        res = await this.$store.dispatch('wallet/transferWQT', {
+          recipient: this.recipient,
+          value: this.amount,
+        });
+      }
+      if (res?.ok) {
+        return success();
+      }
+      return error();
+    },
+    async showWithdrawInfo() {
+      const { callback } = this.options;
+      this.SetLoader(true);
+      this.hide();
+      let feeRes;
+      if (this.selectedToken === TokenSymbols.WUSD) {
+        feeRes = await this.$store.dispatch('wallet/getTransferFeeData', {
+          recipient: this.recipient,
+          value: this.amount,
+        });
+      } else {
+        feeRes = await this.$store.dispatch('wallet/getContractFeeData', {
+          method: 'transfer',
+          _abi: abi.ERC20,
+          contractAddress: process.env.WQT_TOKEN,
+          data: [this.recipient, new BigNumber(this.amount).shiftedBy(18).toString()],
+        });
+      }
+      this.SetLoader(false);
       this.ShowModal({
-        key: modals.withdrawInfo,
-        title: this.$t('modals.transferInfo'),
-        recepientAddress: 'Recepient address',
+        key: modals.transactionReceipt,
+        fields: {
+          from: { name: this.$t('modals.fromAddress'), value: this.userData.wallet.address },
+          to: { name: this.$t('modals.toAddress'), value: this.recipient },
+          amount: {
+            name: this.$t('modals.amount'),
+            value: this.amount,
+            symbol: this.selectedToken, // REQUIRED!
+          },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WUSD },
+        },
+        submitMethod: async () => this.transfer(),
+        callback,
       });
     },
   },
@@ -111,6 +244,9 @@ export default {
   justify-content: space-between;
   &__action{
     width: 212px!important;
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
   }
 }
 

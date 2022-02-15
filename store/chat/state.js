@@ -7,8 +7,8 @@ export default () => ({
   messages: {
     list: [],
     count: 0,
-    chat: null,
   },
+  currChat: null,
   groupChatUsers: {
     count: 0,
     list: [],
@@ -18,5 +18,11 @@ export default () => ({
     bottomOffset: 0,
     canLoadToBottom: false,
     canLoadToTop: false,
+  },
+  chatsFilter: {
+    limit: 15,
+    offset: 0,
+    starred: false,
+    q: undefined,
   },
 });

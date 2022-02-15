@@ -1,19 +1,15 @@
 <template>
   <div
-    v-click-outside="hideDd"
+    v-click-outside="closeQuestMenu"
+    data-selector="COMPONENT-QUEST-DD"
     class="quest quest__menu"
   >
     <button
       class="quest__button quest__button_menu"
-      @click="showQuestMenu()"
+      data-selector="ACTION-BTN-TOGGLE-QUEST-MENU"
+      @click="toggleQuestMenu()"
     >
-      <span
-        :class="[
-          { 'icon-more_horizontal': userRole === 'employer' && mode === null },
-          { 'icon-more_vertical': userRole === 'employer' && mode === 'vertical' },
-          { 'icon-share_outline': userRole === 'worker' },
-        ]"
-      />
+      <span class="icon-more_vertical" />
     </button>
     <transition name="fade">
       <div
@@ -21,53 +17,44 @@
         class="quest menu"
       >
         <div class="menu menu__items">
-          <span
-            class="menu__container"
-          >
+          <div class="menu__container">
             <div
-              v-if="['employer'].includes(userRole)"
               class="menu__item"
-              @click="toRaisingViews()"
+              data-selector="ACTION-BTN-TO-RAISING-VIEWS"
+              @click="toRaisingViews"
             >
-              <div
-                class="menu__text"
-              >
+              <div class="menu__text">
                 {{ $t('modals.raiseViews') }}
               </div>
             </div>
             <div
               class="menu__item"
+              data-selector="ACTION-BTN-SHARE-MODAL"
               @click="shareModal()"
             >
-              <div
-                class="menu__text"
-              >
+              <div class="menu__text">
                 {{ $t('modals.share') }}
               </div>
             </div>
             <div
-              v-if="['employer'].includes(userRole)"
               class="menu__item"
+              data-selector="ACTION-BTN-TO-EDIT-QUEST"
+              @click="toEditQuest()"
             >
-              <div
-                class="menu__text"
-                @click="toEditQuest()"
-              >
+              <div class="menu__text">
                 {{ $t('modals.edit') }}
               </div>
             </div>
             <div
-              v-if="['employer'].includes(userRole)"
               class="menu__item"
+              data-selector="ACTION-BTN-DELETE-QUEST"
               @click="showAreYouSureDeleteQuestModal()"
             >
-              <div
-                class="menu__text"
-              >
+              <div class="menu__text">
                 {{ $t('modals.delete') }}
               </div>
             </div>
-          </span>
+          </div>
         </div>
       </div>
     </transition>
@@ -77,22 +64,20 @@
 <script>
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import { QuestStatuses } from '~/utils/enums';
+import { QuestStatuses, Path } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'ChatMenu',
-  directives: {
-    ClickOutside,
-  },
+  name: 'QuestDD',
+  directives: { ClickOutside },
   props: {
     mode: {
-      type: [String],
-      default: null,
-    },
-    itemId: {
       type: String,
       default: '',
+    },
+    item: {
+      type: Object,
+      default: () => {},
     },
   },
   data() {
@@ -108,21 +93,24 @@ export default {
   },
   methods: {
     toEditQuest() {
-      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
-        this.$router.push('/edit-quest');
-        this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
-      } else {
-        this.showToastWrongStatusEdit();
-      }
+      // TODO: Исправить логику editQuest
+      // if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.item.status)) {
+      //   this.$router.push(`${Path.EDIT_QUEST}/${this.item.id}`);
+      //   this.setCurrentStepEditQuest(1);
+      // } else this.showToastWrongStatusEdit();
+    },
+    showAreYouSureDeleteQuestModal() {
+      // TODO: Исправить логику deleteQuest
+      // this.ShowModal({ key: modals.areYouSureDeleteQuest, item: this.item });
     },
     toRaisingViews() {
-      // TODO: Добавить тост или модалку
-      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
-        this.$router.push('/edit-quest');
-        this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
-      } else {
-        this.showToastWrongStatusRaisingViews();
-      }
+      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.item.status)) {
+        this.$router.push({ path: `${Path.EDIT_QUEST}/${this.item.id}`, query: { mode: 'raise' } });
+        this.setCurrentStepEditQuest(2);
+      } else this.showToastWrongStatusRaisingViews();
+    },
+    setCurrentStepEditQuest(step) {
+      this.$store.commit('quests/setCurrentStepEditQuest', step);
     },
     showToastWrongStatusEdit() {
       return this.$store.dispatch('main/showToast', {
@@ -139,25 +127,15 @@ export default {
       });
     },
     shareModal() {
-      this.ShowModal({
-        key: modals.sharingQuest,
-        itemId: this.itemId,
-      });
+      this.ShowModal({ key: modals.sharingQuest, itemId: this.item.id });
     },
-    hideDd() {
+    closeQuestMenu() {
       this.isShowQuestMenu = false;
     },
-    showAreYouSureDeleteQuestModal() {
-      this.ShowModal({
-        key: modals.areYouSureDeleteQuest,
-      });
-    },
     showOpenADisputeModal() {
-      this.ShowModal({
-        key: modals.openADispute,
-      });
+      this.ShowModal({ key: modals.openADispute });
     },
-    showQuestMenu() {
+    toggleQuestMenu() {
       this.isShowQuestMenu = !this.isShowQuestMenu;
     },
   },
@@ -166,9 +144,14 @@ export default {
 
 <style lang="scss" scoped>
 .icon {
-  color: $black500;
-  font-size: 19px;
-  &-more_horizontal {
+  color: $black200;
+  font-size: 25px;
+  cursor: pointer;
+  transition: .5s;
+  &:hover {
+    color: $black500;
+  }
+  &-more_vertical {
     @extend .icon;
   }
   &-share_outline {
@@ -185,20 +168,22 @@ export default {
     line-height: 130%;
     color: $black600;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-content: center;
     border-radius: 6px;
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     border: 1px solid transparent;
+    opacity: 0.5;
     &:hover {
       color: $black800;
+      opacity: 1;
     }
     &_menu {
       display: flex;
-      justify-self: flex-end;
       width: 30px;
       height: 30px;
+      align-items: flex-start;
     }
   }
   &__menu {
@@ -212,7 +197,6 @@ export default {
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   border-radius: 6px;
   min-width: 120px;
-  z-index: 10000000;
   right: 2px;
   &__container {
     display: grid;
@@ -225,8 +209,14 @@ export default {
     flex-direction: column;
     align-items: flex-start;
     min-height: 20px;
+    cursor: pointer;
     width: 100%;
     border-bottom: 1px solid $black100;
+    &:hover {
+      .menu__text {
+        color: $black800;
+      }
+    }
   }
   &__text {
     font-family: 'Inter', sans-serif;
@@ -237,9 +227,6 @@ export default {
     color: $black500;
     transition: .5s;
     padding: 12px 15px;
-    &:hover {
-      color: $black800;
-    }
     &:last-child {
       border: none;
     }

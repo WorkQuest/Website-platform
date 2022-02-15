@@ -6,6 +6,7 @@ import {
   TokenAmount as TokenAmountUniswap,
 } from '@uniswap/sdk';
 
+import Web3 from 'web3';
 import {
   claimRewards,
   disconnectWeb3,
@@ -24,19 +25,11 @@ import {
   swapWithBridge,
   getStakingDataByType,
   handleMetamaskStatus,
-  fetchActions,
   unsubscirbeListeners,
   getChainIdByChain,
   initProvider,
-  authRenewal,
-  getPensionDefaultData,
-  getPensionWallet,
-  pensionUpdateFee,
-  pensionContribute,
-  pensionsWithdraw,
-  pensionExtendLockTime,
-  getTxFee,
   getPoolTotalSupplyBSC, getPoolTokensAmountBSC,
+  error,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { StakingTypes } from '~/utils/enums';
@@ -212,75 +205,6 @@ export default {
     return payload;
   },
 
-  async fetchStakingUserInfo({ commit }, { stakingType, decimals }) {
-    const { stakingAbi, stakingAddress } = getStakingDataByType(stakingType);
-    const [userInfo, duration] = await Promise.all([
-      fetchContractData('getInfoByAddress', stakingAbi, stakingAddress, [getAccountAddress()]),
-      fetchContractData('stakes', stakingAbi, stakingAddress, [getAccountAddress()]),
-    ]);
-    return {
-      ...userInfo,
-      date: duration.unstakeTime ? new Date(duration.unstakeTime * 1000) : false,
-      claim: new BigNumber(userInfo.claim_).shiftedBy(-decimals).decimalPlaces(5).toString(),
-      staked: new BigNumber(userInfo.staked_).shiftedBy(-decimals).decimalPlaces(4).toString(),
-      _staked: new BigNumber(userInfo.staked_).shiftedBy(-decimals).toString(),
-      balance: new BigNumber(userInfo._balance).shiftedBy(-decimals).decimalPlaces(4).toString(),
-      _balance: new BigNumber(userInfo._balance).shiftedBy(-decimals).toString(),
-    };
-  },
-  getStakingRewardTxFee({ commit }, stakingType) {
-    const { stakingAbi, stakingAddress } = getStakingDataByType(stakingType);
-    return getTxFee(stakingAbi, stakingAddress, 'claim');
-  },
-  async fetchStakingInfo({ commit }, { stakingType }) {
-    const { stakingAbi, stakingAddress } = getStakingDataByType(stakingType);
-    const stakingInfo = await fetchContractData('getStakingInfo', stakingAbi, stakingAddress);
-    if (!stakingInfo) {
-      return false;
-    }
-    const {
-      rewardTokenAddress, totalStaked, totalDistributed, rewardTotal, maxStake, minStake,
-    } = stakingInfo;
-
-    let decimals;
-    let tokenSymbol;
-    if (!rewardTokenAddress) {
-      decimals = 18;
-      tokenSymbol = null;
-    } else {
-      const [_decimals, _tokenSymbol] = await Promise.all([
-        fetchContractData('decimals', abi.ERC20, rewardTokenAddress),
-        fetchContractData('symbol', abi.ERC20, rewardTokenAddress),
-      ]);
-      decimals = _decimals;
-      tokenSymbol = _tokenSymbol;
-    }
-
-    const min = new BigNumber(0.0001);
-    const _minStake = new BigNumber(minStake).shiftedBy(-decimals).isLessThan(min)
-      ? min.toString() : new BigNumber(minStake).shiftedBy(-decimals).toString();
-
-    return {
-      ...stakingInfo,
-      decimals,
-      tokenSymbol,
-      stakeTokenSymbol: tokenSymbol,
-      claimPeriod: new BigNumber(stakingInfo.claimPeriod / 60 / 60).decimalPlaces(3).toString(),
-      stakePeriod: new BigNumber(stakingInfo.stakePeriod / 60 / 60).decimalPlaces(3).toString(),
-      distributionTime: new BigNumber(stakingInfo.distributionTime / 60).decimalPlaces(3).toString(),
-      totalStaked: new BigNumber(totalStaked).shiftedBy(-decimals).decimalPlaces(4).toString(),
-      totalDistributed: new BigNumber(totalDistributed).shiftedBy(-decimals).decimalPlaces(4).toString(),
-      rewardTotal: new BigNumber(rewardTotal).shiftedBy(-decimals).decimalPlaces(4).toString(),
-      maxStake: new BigNumber(maxStake).shiftedBy(-decimals).decimalPlaces(4).toString(),
-      _maxStake: new BigNumber(maxStake).shiftedBy(-decimals).toString(),
-      _minStake,
-      minStake: new BigNumber(minStake).shiftedBy(-decimals).decimalPlaces(4).toString(),
-    };
-  },
-  async fetchStakingActions({ commit }, { stakingType, callback, events }) {
-    const { stakingAbi, stakingAddress } = getStakingDataByType(stakingType);
-    await fetchActions(stakingAbi, stakingAddress, callback, events);
-  },
   unsubscribeActions() {
     unsubscirbeListeners();
   },
@@ -301,10 +225,6 @@ export default {
   async claimRewards({ commit }, { stakingType }) {
     const { stakingAddress, stakingAbi } = getStakingDataByType(stakingType);
     return await claimRewards(stakingAddress, stakingAbi);
-  },
-  async autoRenewal({ commit }, { stakingType }) {
-    const { stakingAddress, stakingAbi } = getStakingDataByType(stakingType);
-    return await authRenewal(stakingAddress, stakingAbi);
   },
   async swap({ commit }, { decimals, amount }) {
     return await swap(decimals, amount);
@@ -405,51 +325,66 @@ export default {
     return providerData;
   },
 
-  /* Pension Program */
-  async getPensionDefaultData() {
-    return await getPensionDefaultData();
-  },
-  async getPensionContributed() {
-    const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND;
-    return await fetchContractData('contributed', _abi, _pensionAddress);
-  },
-  async getPensionWallet() {
-    return await getPensionWallet();
-  },
-  async pensionUpdateFee({ commit }, fee) {
-    return await pensionUpdateFee(fee);
-  },
-  async pensionContribute({ commit }, amount) {
-    return await pensionContribute(amount);
-  },
-  async getPensionWithdrawTxFee({ commit }, _amount) {
-    const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND;
-    _amount = new BigNumber(_amount).shiftedBy(18).toString();
-    return await getTxFee(_abi, _pensionAddress, 'withdraw', [_amount]);
-  },
-  async pensionWithdraw({ commit }, amount) {
-    return await pensionsWithdraw(amount);
-  },
-  async pensionStartProgram({ commit }, payload) {
-    const { firstDeposit, fee, defaultFee } = payload;
-    let feeOk = true;
-    let depositOk = false;
-    const equalsFee = new BigNumber(defaultFee).shiftedBy(-18).isEqualTo(new BigNumber(fee).shiftedBy(-18));
-    if (!firstDeposit || !equalsFee) {
-      feeOk = await pensionUpdateFee(fee);
+  // добавленно только для страницы demo-blockchain
+  async sendTransaction({ commit }, { address, amount, balance }) {
+    try {
+      const { ethereum } = window;
+      const web3 = new Web3(ethereum);
+      const accountAddress = await getAccountAddress();
+
+      const _amount = new BigNumber(amount).shiftedBy(18);
+      const gasPrice = await web3.eth.getGasPrice();
+      const gasEstimate = await web3.eth.estimateGas({
+        from: accountAddress,
+        to: address,
+        value: _amount,
+      });
+
+      // const amountGas = new BigNumber(gasPrice).multipliedBy(gasEstimate).shiftedBy(-18);
+      // const amountGasPlusAmount = new BigNumber(amountGas).plus(amount).toNumber();
+      // if (new BigNumber(balance).isLessThan(amountGasPlusAmount)) _amount = new BigNumber(amount).minus(amountGas).shiftedBy(18).toNumber();
+
+      return await web3.eth.sendTransaction({
+        from: accountAddress,
+        to: address,
+        value: _amount,
+        gasPrice,
+        gas: gasEstimate,
+      });
+    } catch (err) {
+      showToast('Send transaction error', `${err.message}`, 'danger');
+      return error(500, 'send transaction error', err);
     }
-    if (firstDeposit) depositOk = await pensionContribute(firstDeposit);
-    else return feeOk;
-    return depositOk && feeOk;
   },
-  async fetchPensionActions({ commit }, { callback, events, params }) {
-    const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND;
-    await fetchActions(_abi, _pensionAddress, callback, events, params);
+  async showBalanceOnDemo() {
+    let balance = 0;
+    try {
+      const { ethereum } = window;
+      const web3 = new Web3(ethereum);
+      const accountAddress = await getAccountAddress();
+      await web3.eth.getBalance(accountAddress, (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          balance = result;
+        }
+      });
+      return new BigNumber(balance).shiftedBy(-18).toString();
+    } catch (err) {
+      showToast('Balance error', `${err.message}`, 'danger');
+      return error(500, 'balance error', err);
+    }
   },
-  async pensionExtendLockTime() {
-    return await pensionExtendLockTime();
+
+  // mobile browser check
+  // false - desktop, true - mobile && !metamask
+  checkIsMobileMetamaskNeed() {
+    if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      return false;
+    }
+    if (typeof window.ethereum === 'undefined') {
+      return true;
+    }
+    return false;
   },
 };

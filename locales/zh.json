@@ -18,7 +18,6 @@
     "agree": "同意",
     "disagree": "Disagree",
     "completeWorkOnQuest": "???",
-    "rejectCompletedWorkOnQuest": "???",
     "acceptCompletedWorkOnQuest": "???",
     "closeQuest": "???",
     "goToChat": "转到聊天",
@@ -62,7 +61,15 @@
     "required": "“{_field_}”字段为必填字段",
     "size": "“{_field_}”字段必须小于 {size}KB",
     "decimal": "“{_field_}”字段必须仅包含十进制值",
-    "decimalPlaces": "{_field_} ??? {places}"
+    "decimalPlaces": "{_field_} ??? {places}",
+    "invalidPhone":"???",
+    "formError": "???",
+    "is": "The values do not match",
+    "is_not": "Incorrect value",
+    "mnemonic": "Incorrect secret phrase",
+    "attemptsExceeded": "Number of attempts exceeded",
+    "loginWithSecret": "Please login with secret phrase",
+    "invalidPassword": "Invalid password"
     },
   "labels": {
     "firstName": "名字",
@@ -100,6 +107,7 @@
     "create": "创建帐户"
   },
   "profile": {
+    "defaultName": "Nameless User",
     "raiseViews": "提高浏览量",
     "educations": "教育背景",
     "prevWorkExp": "过去的工作经验",
@@ -163,7 +171,9 @@
     "resendSMS": "重新发送短信",
     "disable": "禁用",
     "remindLater": "稍后提醒",
-    "leave": "???"
+    "leave": "???",
+    "showAll": "Show all",
+    "listIsEmpty": "List is empty"
   },
   "priority": {
     "title": "选择优先级",
@@ -205,7 +215,9 @@
     "confCode": "Google 确认码",
     "placeholder": "占位符",
     "confCodeDesc": "输入来自 Google 身份验证器应用的 6 位代码",
-    "confCodeField": "???"
+    "confCodeField": "???",
+    "confirmAccess": "Confirm access",
+    "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
     "title": "注册",
@@ -215,9 +227,22 @@
     "lastName": "姓氏",
     "email": "电子邮件",
     "password": "密码",
+    "totp":"???",
     "confirmPassword": "再次输入密码",
-    "create": "创建帐户",
-    "back": "后退"
+    "create": "创建帐户"
+  },
+  "createWallet": {
+    "showSecretPhrase": "Show secret phrase",
+    "savePhrase": "Save your secret phrase",
+    "keptPhrase": "I have kept a secret phrase",
+    "confirmSecretPhrase": "Confirm secret phrase",
+    "typeSecret": "Type secret word #{a}",
+    "secret": "Secret word #{a}",
+    "create": "Create wallet",
+    "importWallet": "Import wallet",
+    "createOrImport": "Create or import wallet",
+    "typeSecretPhrase": "Type secret phrase",
+    "secretPhrase": "Secret phrase"
   },
   "forgot": {
     "title": "忘记了密码？",
@@ -273,7 +298,6 @@
     "questTitle": "???",
     "questDesc": "???",
     "questInfo": "???",
-    "questClosed!": "???",
     "closed": "???",
     "completed": "???",
     "rejected": "???",
@@ -283,6 +307,7 @@
     "workOnQuestRejected": "???",
     "pleaseWaitEmp": "???",
     "quests": "???",
+    "questsSmall": "quests",
     "publicationDate": "???",
     "urgent": "紧急",
     "specQuests": "???",
@@ -354,7 +379,10 @@
       "limit": "???"
     },
     "hours": "小时",
+    "responded": "???",
     "invited": "已邀请",
+    "acceptedTheInvitation": "???",
+    "declinedTheInvitation": "???",
     "active": "有效",
     "performed": "已执行",
     "requested": "已请求",
@@ -384,10 +412,9 @@
     "unknownAddress": "???...",
     "unknownPhoneNumber": "???...",
     "unknownEmailAddress": "???..",
-    "questActive:": "???:",
-    "questClosed:": "???:",
-    "questDispute:": "???:",
-    "questWaitConfirm:": "???:",
+    "questActive": "???:",
+    "questDispute": "???:",
+    "questWaitConfirm": "???:",
     "skillsNotSpecified": "???...",
     "proposal": "提议",
     "category": "选择类别",
@@ -409,7 +436,6 @@
     "EstimatedPayment": "预计付款：",
     "createAQuest": "创建 Quest",
     "editAQuest": "???",
-    "activeQuests": "有效 Quest",
     "openedQuests": "???",
     "completedQuests": "已完成的 Quest",
     "oneTime": "一次性",
@@ -419,7 +445,7 @@
     "showAllActiveQuests": "显示所有有效 Quest",
     "performanceTimer": "有效期至：",
     "questAmount": "Quest",
-    "otherQuestsSpec": "其他 Quest（按专业）",
+    "otherQuestsSpec": "???",
     "questMaterials": "额外 Quest 材料",
     "searchResults": "搜索结果",
     "type": "工作类型",
@@ -433,7 +459,9 @@
     },
     "ui": {
       "showMap": "显示地图",
-      "search": "城市/街道/地点"
+      "searchOnQuestsPage": "Employer / Title / Description / City",
+      "searchOnWorkersPage": "Employee / City",
+      "searchWithMap": "城市/街道/地点"
     },
     "worker": "工作者",
     "raiseViews": "提高浏览量",
@@ -903,6 +931,10 @@
     "error": "???"
   },
   "modals": {
+    "errorQuests": "???",
+    "emptyOpenQuests": "???",
+    "errorSmsVer": "???",
+    "fillNumber": "???",
     "disputes": {
       "thereIsNoResponseFromTheEmployerOrEmployee": "???",
       "badlyDoneWork": "???",
@@ -935,8 +967,10 @@
     "edit": "???",
     "delete": "???",
     "youCan’tDeleteActiveQuest": "???",
+    "youCantCreateDispute": "???",
     "sureDeleteText": "???",
     "sureDeleteMemberText": "???",
+    "sureDeleteNotification": "???",
     "sureLeaveChatText": "???",
     "priceTitle": "???",
     "enterPriceRange": "???",
@@ -974,6 +1008,7 @@
     "pressSaveBtn": "请按“保存”按钮",
     "imageLoadedSuccessful": "图片加载成功",
     "success": "成功",
+    "failed": "Failed",
     "yourRoleHasBeenChanged": "您的角色已更改",
     "chooseSkills": "选择必要的技能",
     "securityCheck": "安全检查",
@@ -1032,11 +1067,12 @@
     "messageSend": "已发送消息",
     "questAgreed": "已同意 Quest",
     "requestSend": "请求已发送",
+    "waitResponseFromEmployer": "Wait for a response from the employer",
     "sendARequest": "发送请求",
     "message": "消息",
     "bodyMessage": "您好",
     "areYouSure": "确定吗？",
-    "transactionSend": "已发送交易",
+    "transactionSent": "已发送交易",
     "transactionFail": "???",
     "transactionCheck": "???",
     "cardHasBeenAdded": "银行卡已添加",
@@ -1051,6 +1087,7 @@
     "addCard": "添加银行卡",
     "inviteSend": "邀请已发送",
     "questCreated": "已创建 Quest",
+    "questUpdated": "???",
     "invitation": "邀请",
     "chooseQuest": "选择 Quest",
     "raiseViews": "提高浏览量",
@@ -1221,7 +1258,11 @@
     "thanksText": "",
     "emailVerificationCodeField": "???",
     "youCanAttachUpToNFiles": "???",
-    "youTryToAttachUnsupportedFileFormat": "???"
+    "youTryToAttachUnsupportedFileFormat": "???",
+    "connectError": "Error connection",
+    "incorrectChain": "You choose incorrect chain!",
+    "selectToken": "Select token",
+    "txInfo": "Transaction info"
   },
   "ui": {
     "jobQuestors": "求职者",
@@ -1253,7 +1294,8 @@
     },
     "notifications": {
       "title": "通知",
-      "invite": "邀请您完成 Quest"
+      "invite": "邀请您完成 Quest",
+      "noNotifications": "No notifications"
     },
     "menu": {
       "unauthorized": "???",
@@ -1302,6 +1344,23 @@
       }
     }
   },
+  "notifications": {
+    "title": "Notifications",
+    "invite": "Invites you to complete the quest",
+    "invitesYouToStartAQuest": "Invites you to start a quest",
+    "rejectedTheQuest": "Rejected the quest",
+    "acceptedTheQuest": "Accepted the quest",
+    "completedTheQuest": "Completed the quest",
+    "acceptedAJobOnAQuest": "Accepted a job on a quest",
+    "respondedToQuest": "Responded to quest",
+    "invitedYouToAQuest": "Invited you to a quest",
+    "acceptedTheInvitationToTheQuest": "Accepted the invitation to the quest",
+    "declinedTheInvitationToTheQuest": "Declined the invitation to the quest",
+    "declinedYourResponseToTheQuest": "Declined your response to the quest",
+    "leftReviewAboutQuest": "Left review about quest",
+    "theQuestIsPending": "The quest is pending",
+    "openDispute": "Open dispute"
+  },
   "wallet": {
     "WUSD": "WUSD 钱包",
     "cryptoWallet": "加密钱包",
@@ -1323,12 +1382,13 @@
       "timestamp": "时间戳",
       "transferred": "已转移代币",
       "value": "数量",
-      "trxFee": "交易费用"
+      "trxFee": "交易费用",
+      "empty": "Transactions list is empty"
     }
   },
   "chat": {
+    "reason": "???",
     "openDispute": "发起争议",
-    "approveQuest": "批准 Quest",
     "starredMessages": "???",
     "starredChats": "???",
     "allChats": "???",
@@ -1367,9 +1427,14 @@
       "youLeftTheChat": "???"
     },
     "leaveChat": "???",
-    "loadMore": "???"
+    "loadMore": "???",
+    "searchTitle": "Name/Quest/Group"
   },
   "settings": {
+    "additionalPhoneNumber": "???",
+    "mainPhoneNumber": "???",
+    "workProposals": "???",
+    "phoneVerified": "???",
     "facebook": "facebook",
     "linkedin": "linkedin",
     "twitter": "twitter",
@@ -1377,6 +1442,9 @@
     "address": "???",
     "lastName": "???",
     "firstName": "???",
+    "companyName":"???",
+    "ceoName":"???",
+    "websiteName":"???",
     "enterPhoneNumber": "???",
     "enterCurrentLocation": "???",
     "placeOfStudying": "学习地点",
@@ -1482,10 +1550,11 @@
     "Dispute": "争议",
     "pending": "待办",
     "chatHistory": "聊天记录",
-    "disputeTime": "争议提交时间："
+    "disputeTime": "争议提交时间：",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
-    "noWorkers": "???...",
     "searchQuests": "搜索 Quest",
     "searchWorkers": "搜索工作者",
     "topWorkers": "排名最高的工作者",
@@ -1920,9 +1989,13 @@
     }
   },
   "errors": {
+    "transaction": {
+      "notEnoughFunds": "Not enough funds"
+    },
     "incorrectPass": "哎呀，出错了。检查数据并重试。",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {
@@ -1944,7 +2017,8 @@
           "desc": "您还没有响应 Quest",
           "btnText": "响应 Quest！"
         }
-      }
+      },
+      "noEmployees": "Oops, there are no employees..."
     }
   },
   "sharing": {
@@ -1998,6 +2072,7 @@
     "stakeDurationIsNotOver": "???",
     "claimRewards": "???",
     "cannotClaimYet": "???",
+    "cannotStakeYet": "You cannot stake tokens yet",
     "pool": "Pool",
     "stakeTokenAddress": "???",
     "rewardTokenAddress": "???",
@@ -2121,7 +2196,8 @@
           },
           "notifications": {
             "title": "???",
-            "subtitle": "???"
+            "subtitle": "???",
+            "noNotifications": "No notifications"
           },
           "menu": {
             "title": "???",
@@ -2370,5 +2446,26 @@
       "fileSizeLimit": "???: {n}",
       "filesLimit": "???: {n}"
     }
+  },
+  "rating": {
+    "topRanked": {
+      "title": "???",
+      "desc": "Notifications for employees who were looking for quests with a direct offer to review the promoted quest based on the most recent search categories of the employee. Plus the ability to choose three categories and three locations to promote the quest."
+    },
+    "verified": {
+      "title": "???",
+      "desc": "Pin quest on the main page for three hours, with the ability to choose two categories and two locations for promotion the quest."
+    },
+    "reliable": {
+      "title": "???",
+      "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
+    }
+  },
+  "workPlaces": {
+    "title": "Workplace",
+    "all": "All workplaces",
+    "distant": "Distant work",
+    "office": "Work in office",
+    "both": "Both variants"
   }
 }

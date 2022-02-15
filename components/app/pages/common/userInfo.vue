@@ -1,11 +1,21 @@
 <template>
-  <div class="info-grid">
+  <div
+    class="info-grid"
+    data-selector="COMPONENT-INFO-USER"
+  >
     <div class="info-grid__left">
+      <div class="info-grid__share-left">
+        <base-btn
+          mode="share-btn"
+          data-selector="ACTION-BTN-SHARE-USER-PROFILE"
+          @click="shareModal()"
+        />
+      </div>
       <div class="info-grid__block block block_left">
         <div class="block__avatar avatar">
           <img
             class="avatar__img"
-            :src="userData.avatar && userData.avatar.url ? userData.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+            :src="userData.avatar && userData.avatar.url ? userData.avatar.url : EmptyAvatar()"
             :alt="userData.avatar && userData.avatar.url ? userData.avatar.url : 'avatar_empty'"
             loading="lazy"
           >
@@ -14,6 +24,7 @@
           <div
             v-for="(star,idx) in 5"
             :key="idx"
+            :data-selector="`STAR-RATING-STAR-${idx}`"
             class="rating__star"
             :class="initStarClass(star)"
           />
@@ -23,20 +34,23 @@
         </div>
       </div>
       <div class="info-grid__block block block_right">
-        <div
-          v-if="userData.firstName && userData.lastName"
-          class="block__title"
-        >
-          {{ `${userData.firstName} ${userData.lastName}` }}
+        <div class="block__data">
+          <div class="block__title">
+            {{ UserName(userData.firstName, userData.lastName) }}
+          </div>
+          <item-rating
+            v-if="ratingStatistic(userData.ratingStatistic) !== 'noStatus'"
+            :rating="ratingStatistic(userData.ratingStatistic)"
+          />
         </div>
         <div
-          v-if="userData.role === 'employer' && userData.company"
+          v-if="userData.role === UserRole.EMPLOYER && userData.company"
           class="block__subtitle"
         >
           {{ userData.company }}
         </div>
         <div
-          v-if="userData.additionalInfo.description"
+          v-if="userData.additionalInfo && userData.additionalInfo.description"
           class="block__description"
         >
           {{ userData.additionalInfo.description }}
@@ -55,6 +69,7 @@
             <div
               v-for="(item, i) in userData.additionalInfo.educations"
               :key="i"
+              :data-selector="`EDUCATIONS-EDUCATION-${i}`"
               class="knowledge__item"
             >
               <span class="knowledge__place">{{ item.place }}</span>
@@ -73,6 +88,7 @@
             <div
               v-for="(item, i) in userData.additionalInfo.workExperiences"
               :key="i"
+              :data-selector="`WORK-EXP-EXP-${i}`"
               class="work-exp__item"
             >
               <span class="work-exp__place">{{ item.place }}</span>
@@ -87,10 +103,12 @@
           <span
             v-for="(i, key) in socialNetworks"
             :key="key"
+            :data-selector="`SOCIALS-SOCIAL-${key}`"
             class="social__container"
           >
             <a
               class="social__link"
+              :data-selector="`SOCIALS-LINK-https://${key}.com/${i}`"
               :href="`https://${key}.com/${i}`"
               target="_blank"
             >
@@ -103,11 +121,16 @@
             <div
               v-for="(data, key) in contactData"
               :key="key"
+              :data-selector="`CONTACT-DATA-${key}`"
               class="contact__container"
             >
-              <span :class="data.icon" />
+              <span
+                class="contact__icon"
+                :class="data.icon"
+              />
               <a
                 :href="data.href"
+                :data-selector="`CONTACT-DATA-LINK-${data.href}`"
                 target="_blank"
                 class="contact__link"
               >{{ data.name }}</a>
@@ -119,42 +142,46 @@
     <div class="info-grid__right right">
       <div
         class="right__header"
+        :class="userData.role === UserRole.WORKER ? 'right__header_employee' : ''"
       >
         <div
-          v-if="userData.role === 'worker' && userInfo.wagePerHour"
+          v-if="userData.role === UserRole.WORKER && userData.wagePerHour"
           class="right__price"
         >
           <div class="price__text">
             {{ $t('settings.costPerHour') }}
           </div>
           <div class="price__value">
-            {{ $tc('saving.wusdCount', userInfo.wagePerHour) }}
+            {{ $tc('saving.wusdCount', userData.wagePerHour) }}
           </div>
         </div>
-        <base-btn
-          mode="share-btn"
-          @click="shareModal()"
-        />
+        <div class="right__share-btn">
+          <base-btn
+            mode="share-btn"
+            @click="shareModal()"
+          />
+        </div>
       </div>
       <div class="right__footer">
         <div
-          v-if="userRole === 'worker' && userId === mainUserData.id"
+          v-if="mainUser.role === UserRole.WORKER && userId === mainUserData.id"
           class="contact__btn"
         >
           <base-btn
+            data-selector="ACTION-BTN-TO-RAISE-VIEWS"
             @click="toRaisedViews()"
           >
             {{ $t('profile.raiseViews') }}
           </base-btn>
         </div>
         <div
-          v-else-if="userRole === 'employer' && userData.role === 'worker'"
+          v-else-if="mainUser.role === UserRole.EMPLOYER && userData.role === UserRole.WORKER"
           class="contact__btn"
         >
           <base-btn
             :mode="'approve'"
-            :disabled="mainUserData.questsStatistic ? mainUserData.questsStatistic.opened <= 0 : true"
-            @click="sendInvait()"
+            data-selector="ACTION-BTN-GIVE-A-QUEST"
+            @click="sendInvite()"
           >
             {{ $t('workers.giveAQuest') }}
           </base-btn>
@@ -166,24 +193,26 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { UserRole } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
   name: 'UserInfo',
-  props: {
-    userInfo: {
-      type: Object,
-      default: () => {},
-    },
-  },
   computed: {
     ...mapGetters({
+      mainUser: 'user/getUserData',
       tags: 'ui/getTags',
       mainUserData: 'user/getUserData',
-      userRole: 'user/getUserRole',
+      anotherUserData: 'user/getAnotherUserData',
     }),
+    isEmptyUserData() {
+      return !this.userData.id;
+    },
+    UserRole() {
+      return UserRole;
+    },
     socialNetworks() {
-      if (!Object.keys(this.userData).length) return [];
+      if (this.isEmptyUserData) return [];
       const socialNetworksData = this.userData.additionalInfo.socialNetwork;
       const filledNetworks = {};
       if (socialNetworksData) {
@@ -196,82 +225,88 @@ export default {
       return filledNetworks;
     },
     contactData() {
-      if (!Object.keys(this.userData).length) return [];
+      if (this.isEmptyUserData) return [];
+      const {
+        email, tempPhone, phone, additionalInfo: {
+          secondMobileNumber, address, company, website,
+        },
+      } = this.userData;
       const userData = [];
-      if (this.userData.email) {
+      if (email) {
         userData.push({
-          name: this.userData.email,
+          name: email,
           icon: 'icon-mail',
-          href: `mailto:${this.userData.email}`,
+          href: `mailto:${email}`,
         });
       }
-      if (this.userData.phone) {
+      const mainPhone = tempPhone?.fullPhone || phone?.fullPhone;
+      if (mainPhone) {
         userData.push({
-          name: this.userData.phone,
+          name: mainPhone,
           icon: 'icon-phone',
-          href: `tel:${this.userData.phone}`,
+          href: `tel:${mainPhone}`,
         });
       }
-      if (this.userData.additionalInfo.address) {
+      if (secondMobileNumber?.fullPhone) {
         userData.push({
-          name: this.userData.additionalInfo.address,
+          name: secondMobileNumber.fullPhone,
+          icon: 'icon-phone',
+          href: `tel:${secondMobileNumber.fullPhone}`,
+        });
+      }
+      if (address) {
+        userData.push({
+          name: address,
           icon: 'icon-location',
-          href: `https://maps.google.com/?q=${this.userData.additionalInfo.address}`,
+          href: `https://maps.google.com/?q=${address}`,
         });
       }
-      if (this.userData.additionalInfo.company) {
+      if (company) {
         userData.push({
-          name: this.userData.additionalInfo.company,
+          name: company,
+          icon: 'icon-Case',
+        });
+      }
+      if (website) {
+        userData.push({
+          name: website,
           icon: 'icon-Earth',
-          href: `https://${this.userData.additionalInfo.company}`,
+          href: `https://${website}`,
         });
       }
       return userData;
     },
-    userData() {
-      if (!Object.keys(this.userInfo).length) {
-        return {
-          avatar: {
-            url: '',
-          },
-          additionalInfo: {
-            company: '',
-            address: '',
-            description: '',
-            educations: {
-              length: 0,
-            },
-            workExperiences: {
-              length: 0,
-            },
-          },
-          questsStatistic: {
-            opened: 0,
-          },
-          ratingStatistic: {
-            averageMark: 0,
-            reviewCount: 0,
-          },
-          role: 'employer',
-        };
-      }
-      return this.userInfo;
-    },
     isShowEducations() {
-      if (!Object.keys(this.userInfo).length) return false;
-      return this.userInfo.role === 'worker' && this.userInfo.additionalInfo.educations.length > 0;
+      if (this.isEmptyUserData) return false;
+      return this.userData.role === 'worker' && this.userData.additionalInfo.educations.length > 0;
     },
     isShowWorkExp() {
-      if (!Object.keys(this.userInfo).length) return false;
-      return this.userInfo.role === 'worker' && this.userInfo.additionalInfo.workExperiences.length > 0;
+      if (this.isEmptyUserData) return false;
+      return this.userData.role === 'worker' && this.userData.additionalInfo.workExperiences.length > 0;
     },
     userId() {
       return this.$route.params.id;
     },
+    userData() {
+      return this.userId !== this.mainUser.id ? this.anotherUserData : this.mainUser;
+    },
+    isHaveOpenQuests() {
+      return this.mainUserData.questsStatistic && this.mainUserData.questsStatistic.opened > 0;
+    },
+  },
+  watch: {
+    async anotherUserData() {
+      if (this.mainUser.role === this.UserRole.EMPLOYER && this.userData.role === this.UserRole.WORKER && this.isHaveOpenQuests) {
+        await this.$store.dispatch('quests/getAvailableQuests', this.userId);
+      }
+    },
   },
   methods: {
+    ratingStatistic(ratingStatistic) {
+      return ratingStatistic?.status || 'noStatus';
+    },
     initStarClass(star) {
-      const reviewMark = this.userInfo?.ratingStatistic?.averageMark;
+      const reviewMark = this.userData?.ratingStatistic?.averageMark;
       const a = this.Floor(star - reviewMark, 2);
       return [
         { rating__star_full: star <= reviewMark },
@@ -283,17 +318,23 @@ export default {
         key: modals.sharingQuest,
       });
     },
-    showMessages() {
-      this.$router.push('/messages/1');
-    },
     toRaisedViews() {
-      this.$router.push('/rised-views');
+      this.$router.push('/raised-views');
     },
-    sendInvait() {
-      this.ShowModal({
-        key: modals.invitation,
-        userId: this.userData.id,
-      });
+    sendInvite() {
+      if (this.isHaveOpenQuests) {
+        this.ShowModal({
+          key: modals.invitation,
+          userId: this.userData.id,
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.errorQuests'),
+          subtitle: this.$t('modals.emptyOpenQuests'),
+        });
+      }
     },
   },
 };
@@ -323,7 +364,7 @@ export default {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
-    grid-gap:15px;
+    grid-gap: 15px;
     &_left {
       max-width: 142px;
     }
@@ -332,7 +373,6 @@ export default {
     flex-direction: row;
     justify-content: center;
     display: flex;
-    grid-gap: 15px;
   }
   &__right {
     display: flex;
@@ -340,14 +380,20 @@ export default {
     justify-content: space-between;
     align-items: flex-end;
   }
+  &__share-left {
+    display: none;
+  }
 }
+
 .right {
   &__header {
-    display: flex;
-    grid-gap: 30px;
-    flex-direction: row;
+    display: grid;
     justify-content: space-between;
     align-items: center;
+    &_employee {
+      grid-template-columns: auto auto;
+      grid-gap: 30px;
+    }
   }
   &__footer {
     width: 280px;
@@ -358,6 +404,7 @@ export default {
     align-items: flex-end;
   }
 }
+
 .price {
   &__text {
     font-size: 14px;
@@ -370,13 +417,20 @@ export default {
     color: #00AA5B;
   }
 }
+
 .block {
+  &__data {
+    display: flex;
+    grid-gap: 10px;
+    align-items: center;
+  }
   &_left {
     align-self: flex-start;
     max-width: 142px;
   }
   &_right {
     align-self: flex-start;
+    margin-left: 30px;
   }
   &__rating {
     height: 20px;
@@ -397,6 +451,7 @@ export default {
     font-style: normal;
     font-weight: 500;
     font-size: 20px;
+    line-height: 130%;
     color: $black800;
   }
   &__description {
@@ -407,6 +462,7 @@ export default {
   &__socials {
     display: flex;
     grid-gap: 5px;
+
     .icon {
       font-size: 20px;
       cursor: pointer;
@@ -435,12 +491,15 @@ export default {
     }
   }
 }
+
 .contact {
   display: flex;
+  flex-wrap: wrap;
+  margin: -5px 0;
   &__container {
     display: flex;
-    align-items: baseline;
-    grid-gap: 5px;
+    align-items: flex-end;
+    margin: 5px 0;
   }
   &__link {
     text-decoration: none;
@@ -457,7 +516,14 @@ export default {
     align-items: flex-end;
     height: 43px;
   }
+  &__icon {
+    @extend .icon;
+    color: $black500;
+    font-size: 20px;
+    margin-right: 5px;
+  }
 }
+
 .rating {
   &__star {
     width: inherit;
@@ -472,6 +538,7 @@ export default {
     }
   }
 }
+
 .avatar {
   &__img {
     width: 142px;
@@ -480,6 +547,7 @@ export default {
     border-radius: 50%;
   }
 }
+
 .work-exp, .knowledge {
   &__text {
     @include text-simple;
@@ -515,30 +583,56 @@ export default {
   }
   .right {
     &__header {
-      grid-gap: 15px;
+      justify-items: end;
+      &_employee {
+        grid-gap: 15px;
+        grid-template-columns: 110px auto;
+      }
     }
     &__footer {
       width: 100%;
     }
   }
 }
-@include _575 {
+
+@include _991 {
   .info-grid {
     flex-direction: column;
     align-items: center;
+    grid-gap: 0;
     &__left {
       flex-direction: column;
+      width: 100%;
     }
     &__right {
-      grid-gap:20px;
+      grid-gap: 20px;
       width: 100%;
+    }
+    &__share-left {
+      display: flex;
+      height: 0;
+      justify-content: flex-end;
     }
   }
   .block {
     &_left {
       align-self: center;
     }
+    &_right {
+      margin-left: 0;
+      margin-top: 30px;
+    }
+  }
+  .right {
+    &__share-btn {
+      display: none;
+    }
+    &__header {
+      &_employee {
+        grid-gap: 0;
+        grid-template-columns: auto;
+      }
+    }
   }
 }
-
 </style>

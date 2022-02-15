@@ -1,28 +1,26 @@
 <template>
-  <ValidationObserver
-    v-slot="{ handleSubmit }"
-    class="auth"
-    tag="div"
-  >
-    <div class="auth__container">
-      <div
-        class="auth__text auth__text_title"
-      >
+  <div class="auth">
+    <ValidationObserver
+      v-slot="{ handleSubmit, valid }"
+      tag="div"
+      class="auth__container"
+    >
+      <div class="auth__text auth__text_title">
         <span>{{ $t('signUp.title') }}</span>
       </div>
       <div class="auth__text auth__text_simple">
         <span>{{ $t('signUp.haveAccount') }}</span>
-        <n-link
+        <nuxt-link
           class="auth__text auth__text_link"
           to="/sign-in"
         >
           {{ $t('signUp.auth') }}
-        </n-link>
+        </nuxt-link>
       </div>
       <form
         class="auth__fields"
         action=""
-        @submit.prevent="handleSubmit(signUp)"
+        @submit.prevent="signUp"
       >
         <base-field
           v-model="model.firstName"
@@ -101,23 +99,26 @@
           </template>
         </base-field>
         <div class="auth__action">
-          <base-btn>
+          <base-btn :disabled="!valid || isLoading">
             {{ $t('signUp.create') }}
           </base-btn>
         </div>
       </form>
-    </div>
-  </ValidationObserver>
+    </ValidationObserver>
+  </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'SignUp',
   layout: 'auth',
   data() {
     return {
+      error: '',
       model: {
         firstName: '',
         lastName: '',
@@ -127,26 +128,29 @@ export default {
       },
     };
   },
-  async mounted() {
-    this.SetLoader(true);
-    this.SetLoader(false);
+  computed: {
+    ...mapGetters({
+      isLoading: 'main/getIsLoading',
+    }),
   },
   methods: {
     async signUp() {
-      try {
-        const payload = {
-          firstName: this.model.firstName,
-          lastName: this.model.lastName,
-          email: this.model.email,
-          password: this.model.password,
-        };
-        const response = await this.$store.dispatch('user/signUp', payload);
-        if (response?.ok) {
-          this.showConfirmEmailModal();
-        }
-      } catch (e) {
-        console.log(e);
+      this.SetLoader(true);
+      this.model.email = this.model.email.trim();
+      this.model.firstName = this.model.firstName.trim();
+      this.model.lastName = this.model.lastName.trim();
+      const payload = {
+        firstName: this.model.firstName,
+        lastName: this.model.lastName,
+        email: this.model.email,
+        password: this.model.password,
+      };
+      const response = await this.$store.dispatch('user/signUp', payload);
+      if (response.ok) {
+        this.showConfirmEmailModal();
+        await this.$router.push(Path.SIGN_IN);
       }
+      this.SetLoader(false);
     },
     showConfirmEmailModal() {
       this.ShowModal({
@@ -159,6 +163,9 @@ export default {
 
 <style lang="scss" scoped>
 .auth {
+  &__back {
+    cursor: pointer;
+  }
   &__container {
     display: grid;
     grid-template-rows: auto;
@@ -193,6 +200,37 @@ export default {
   }
   &__action {
     padding-top: 30px;
+  }
+  &__mnemonic {
+    position: relative;
+    padding: 10px 40px 10px 10px;
+    background: $grey;
+    border-radius: 12px;
+    font-weight: 500;
+    min-height: 50px;
+    &_copy {
+      position: absolute;
+      right: 10px;
+      top: 25%;
+      height: 100%;
+      font-size: 28px;
+      cursor: pointer;
+      &:hover::before {
+        color: $blue;
+    }
+    }
+  }
+  &__confirm-phrase {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    &_label {
+      margin: 0 0 0 10px !important;
+    }
+    &_box {
+      width: 20px !important;
+      height: 20px !important;
+    }
   }
 }
 @include _1199 {

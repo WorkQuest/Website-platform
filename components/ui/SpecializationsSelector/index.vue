@@ -1,5 +1,8 @@
 <template>
-  <div class="selector__skills skills">
+  <div
+    class="selector__skills skills"
+    data-selector="COMPONENT-SPEC-SELECTOR"
+  >
     <div
       v-for="key in specCount"
       :key="key"
@@ -13,6 +16,7 @@
             type="gray"
             :items="specializationsNames"
             :placeholder="$t('settings.selectSpec')"
+            :data-selector="`SPECIALIZATIONS-DD-${displaySpecIndex[key]}`"
             :mode="'small'"
             rules="required"
             :label="$t('settings.specialization')"
@@ -23,8 +27,9 @@
             <base-dd
               v-model="skillIndex[key]"
               class="specialization__dd"
-              :type="specIndex[key] < 0 ? 'disabled' : 'gray'"
-              :disabled="specIndex[key] < 0"
+              :data-selector="`SKILLS-DD-${specIndex[key]}`"
+              :type="specIndex[key] < 0 || selectedSkills[key].length === 5 ? 'disabled' : 'gray'"
+              :disabled="specIndex[key] < 0 || selectedSkills[key].length === 5"
               :placeholder="$t('settings.selectSkills')"
               :items="skillsNames[displaySpecIndex[key]]"
               :mode="'small'"
@@ -45,11 +50,13 @@
           <div
             v-for="(item, i) in selectedSkills[key]"
             :key="i"
+            :data-selector="`SELECTED-SKILLS-${i}`"
             class="skill__badge"
           >
             {{ item.name }}
             <button
               class="skill__remove"
+              :data-selector="`ACTION-BTN-REMOVE-SKILL-TO-BADGE-${i}`"
               @click="removeSkillToBadge(item, key)"
             >
               <img
@@ -63,6 +70,7 @@
       <base-btn
         :text="$t('settings.removeSpec')"
         class="specialization__btn specialization__btn_remove"
+        :data-selector="`ACTION-BTN-REMOVE-SKILL-TO-BADGE-${key}`"
         @click="removeSpecialization(key)"
       />
     </div>
@@ -71,6 +79,7 @@
       :disabled="specCount === 3"
       class="skills__btn-add"
       :class="specCount === 3 ? 'skills__btn-add_disabled' : ''"
+      data-selector="ACTION-BTN-ADD-SPEC"
       @click="addSpecialization"
     />
     <div
@@ -176,6 +185,10 @@ export default {
           key += 1;
         }
         const displaySkillIndex = this.skillsIndexes[this.displaySpecIndex[specKeys[spec]]].indexOf(skill);
+
+        // eslint-disable-next-line no-continue
+        if (this.hideSelectedSkills[specKeys[spec]].indexOf(displaySkillIndex) !== -1) continue;
+
         if (!this.hideSelectedSkills[specKeys[spec]]) this.hideSelectedSkills[specKeys[spec]] = [displaySkillIndex];
         else this.hideSelectedSkills[specKeys[spec]].push(displaySkillIndex);
         this.selectedSkills[specKeys[spec]].push({
@@ -260,11 +273,12 @@ export default {
 .selector {
   &__skills {
     width: 100%;
+    display: grid;
+    gap: 20px;
     .block {
       display: flex;
       grid-gap: 20px;
       justify-content: space-between;
-      margin-top: 20px;
       &__skill-spec {
         width: 100%;
       }
@@ -339,7 +353,6 @@ export default {
   &__btn {
     &-add {
       text-align: center;
-      margin-top: 20px;
       width: 250px;
       background: #FFFFFF;
       color: #0083C7;
@@ -356,6 +369,50 @@ export default {
   &__error {
     color: #f36262;
     margin-bottom: 10px;
+  }
+}
+@include _767 {
+  .selector {
+    &__skills {
+      .block {
+        flex-direction: column;
+        &__specialization {
+          flex-direction: column;
+          grid-gap: 0;
+        }
+      }
+    }
+  }
+  .specialization {
+    &__btn {
+      &_remove {
+        margin-top: 0;
+      }
+    }
+  }
+  .skills {
+    &__add-info {
+      display: flex;
+      flex-wrap: nowrap;
+      grid-gap: 20px;
+      margin-top: 20px;
+    }
+  }
+}
+@include _575 {
+  .specialization {
+    &__btn {
+      &_remove {
+        width: 100%;
+      }
+    }
+  }
+  .skills {
+    &__btn {
+      &-add {
+        width: 100%;
+      }
+    }
   }
 }
 </style>

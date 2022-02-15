@@ -72,6 +72,7 @@
 
 <script>
 import modals from '~/store/modals/modals';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'Role',
@@ -83,15 +84,19 @@ export default {
       confirmCode: '',
     };
   },
-  async mounted() {
-    this.SetLoader(true);
+  mounted() {
     const { token } = this.$route.query;
     if (!token) {
-      this.$router.push('/sign-in');
+      this.$router.push(Path.SIGN_IN);
     } else {
+      if (!this.$cookies.get('access') && !this.$cookies.get('refresh')) {
+        this.ShowToast(' ', this.$t('messages.loginToContinue'));
+        sessionStorage.setItem('confirmToken', JSON.stringify(token));
+        this.$router.push(Path.SIGN_IN);
+        return;
+      }
       this.confirmCode = token;
     }
-    this.SetLoader(false);
   },
   methods: {
     showPrivacy(role) {
@@ -148,6 +153,7 @@ export default {
     right: -90px;
     bottom: 0;
     height: 100%;
+    z-index: -1;
   }
   &__card {
     transition: .2s;
@@ -239,36 +245,23 @@ export default {
     }
   }
 }
-@include _1199 {
-  .role {
-    &__cards {
-      margin: 0 20px;
-    }
-    &__image {
-      right: -170px !important;
-    }
-  }
-}
-@include _767 {
+
+@include _991 {
   .role {
     &__title {
-      font-size: 28px;
-      padding: 0 20px 20px;
-    }
-    &__card {
-      min-height: 270px;
+      font-size: 34px;
     }
     &__image {
-      right: -100px !important;
+      right: -122px;
     }
     &__text {
       &_title {
-        font-size: 18px;
+        font-size: 28px;
       }
     }
     &__text_desc {
       font-size: 16px;
-      max-width: 140px;
+      max-width: 220px;
     }
     &__cards {
       grid-template-columns: 1fr;

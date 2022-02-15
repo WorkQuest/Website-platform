@@ -48,8 +48,9 @@
               v-model="amount"
               class="input__field"
               :placeholder="'Enter amount'"
-              :rules="`required|decimal${maxValue ? '|max_value:' + maxValue : ''}`"
+              :rules="`required|decimal|is_not:0${maxValue ? '|max_value:' + maxValue : ''}|decimalPlaces:18`"
               :name="$t('modals.amountField')"
+              @input="replaceDot"
             >
               >
               <template
@@ -113,7 +114,11 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
+import { TokenSymbols } from '~/utils/enums';
+import { WQPensionFund } from '~/abi/abi';
+import { error, success } from '~/utils/web3';
 
 export default {
   name: 'ModalTakeWithdrawal',
@@ -129,7 +134,7 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
-      isConnected: 'web3/isConnected',
+      balanceData: 'wallet/getBalanceData',
     }),
   },
   mounted() {
@@ -138,6 +143,9 @@ export default {
     this.withdrawType = this.options.withdrawType;
   },
   methods: {
+    replaceDot() {
+      this.amount = this.amount.replace(/,/g, '.');
+    },
     hide() {
       this.CloseModal();
     },
@@ -146,20 +154,46 @@ export default {
     },
     async showWithdrawInfo() {
       if (this.withdrawType === 'pension') {
-        const txFeeData = await this.$store.dispatch('web3/getPensionWithdrawTxFee', this.amount);
-        if (!txFeeData?.ok) {
-          console.log('err', txFeeData);
+        this.hide();
+        this.SetLoader(true);
+        const [txFee] = await Promise.all([
+          this.$store.dispatch('wallet/getContractFeeData', {
+            _abi: WQPensionFund,
+            contractAddress: process.env.PENSION_FUND,
+            method: 'withdraw',
+            data: [new BigNumber(this.amount).shiftedBy(18).toString()],
+          }),
+          this.$store.dispatch('wallet/getBalance'),
+        ]);
+        this.SetLoader(false);
+        if (!txFee?.ok || +this.balanceData.WUSD.fullBalance === 0) {
+          await this.$store.dispatch('main/showToast', {
+            text: this.$t('errors.transaction.notEnoughFunds'),
+          });
           return;
         }
         this.ShowModal({
-          key: modals.withdrawInfo,
+          key: modals.transactionReceipt,
           title: this.$t('modals.withdrawInfo'),
-          amount: this.$t(`pension.${this.options.symbol || 'WUSD'}Count`, { count: this.amount }),
-          _amount: this.amount,
-          txFee: txFeeData.result,
-          walletAddress: this.walletAddress,
-          method: 'pensionWithdraw',
-          updateMethod: this.options.updateMethod,
+          fields: {
+            to: { name: this.$t('modals.toAddress'), value: this.walletAddress },
+            amount: { name: this.$t('modals.amount'), value: this.amount, symbol: TokenSymbols.WUSD },
+            fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
+          },
+          submitMethod: async () => {
+            const res = await this.$store.dispatch('wallet/pensionWithdraw', this.amount);
+            if (res.ok) return success();
+            await this.$store.dispatch('main/showToast', {
+              text: this.$t('modals.transactionFail'),
+            });
+            return error();
+          },
+          callback: () => {
+            Promise.all([
+              this.$store.dispatch('wallet/pensionGetWalletInfo'),
+              this.$store.dispatch('wallet/getBalance'),
+            ]);
+          },
         });
       }
     },

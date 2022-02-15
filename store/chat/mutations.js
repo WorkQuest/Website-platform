@@ -15,7 +15,7 @@ export default {
 
     state.messages.list = messages;
     state.messages.count = count;
-    state.messages.chat = chat;
+    state.currChat = chat;
   },
   clearMessagesFilter(state) {
     state.messagesFilter = {
@@ -28,6 +28,26 @@ export default {
   addMessageToList(state, message) {
     state.messages.count += 1;
     state.messages.list.push(message);
+  },
+  updateChatsList(state, chat) {
+    const chatIndex = state.chats.list.findIndex((chatList) => chatList.id === chat.id);
+
+    if (chatIndex >= 0) {
+      state.chats.list.splice(chatIndex, 1);
+      state.chats.count -= 1;
+    }
+
+    this.commit('chat/addChatToList', chat);
+  },
+  setChatAsRead(state) {
+    state.currChat.isUnread = false;
+  },
+  setChatAsUnread(state) {
+    state.currChat.isUnread = true;
+  },
+  addChatToList(state, chat) {
+    state.chats.count += 1;
+    state.chats.list.unshift(chat);
   },
   setChatStarVal(state, { chatId, val }) {
     state.chats.list.some((chat) => {
@@ -48,16 +68,21 @@ export default {
     state.groupChatUsers.count = count;
   },
   removeUserFromChat(state, userId) {
-    const { members, userMembers } = state.messages.chat;
+    const { members, userMembers } = state.currChat;
 
-    state.messages.chat.members = members.filter((member) => member.id !== userId);
-    state.messages.chat.userMembers = userMembers.filter((member) => member.id !== userId);
+    state.currChat.members = members.filter((member) => member.id !== userId);
+    state.currChat.userMembers = userMembers.filter((member) => member.id !== userId);
   },
   addUserToChat(state, user) {
-    state.messages.chat.members.push(user);
-    state.messages.chat.userMembers.push(user);
+    state.currChat.members.push(user);
+    state.currChat.userMembers.push(user);
   },
   setIsChatOpened(state, val) {
     state.isChatOpened = val;
+  },
+  changeChatsFilterValue(state, changes) {
+    changes.forEach(({ key, val }) => {
+      state.chatsFilter[key] = val;
+    });
   },
 };

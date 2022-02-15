@@ -1,5 +1,8 @@
 <template>
-  <div class="quests">
+  <div
+    class="quests"
+    data-selector="PAGE-MY-QUESTS"
+  >
     <div class="quests__container">
       <div class="quests__body">
         <div class="quests__title">
@@ -9,6 +12,7 @@
           <base-btn
             v-for="(item, i) in filterTabs"
             :key="i"
+            :data-selector="`ACTION-FILTER-BTNS-${item.name}`"
             :mode="selectedTab === item.id ? '' : 'light'"
             class="quests__btn"
             @click="filterByStatus(item.id)"
@@ -16,15 +20,22 @@
             {{ item.name }}
           </base-btn>
         </div>
-        <quests
-          v-if="questsData.count"
-          :object="questsData"
-        />
-        <emptyData
+        <div
+          v-if="questsCount"
+          class="quests__cards"
+        >
+          <card-quest
+            v-for="(quest,id) in questsData"
+            :key="id"
+            :quest="quest"
+            @clickFavoriteStar="updateQuests(quest)"
+          />
+        </div>
+        <empty-data
           v-else
           :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
           :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
-          link="/create-quest"
+          :link="getEmptyLink"
         />
         <div class="quests__pager">
           <base-pager
@@ -41,16 +52,11 @@
 <script>
 
 import { mapGetters } from 'vuex';
-import { QuestStatuses } from '~/utils/enums';
-import quests from '~/components/app/pages/common/quests';
+import { QuestStatuses, UserRole, Path } from '~/utils/enums';
 import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'My',
-  components: {
-    quests,
-    emptyData,
-  },
   data() {
     return {
       selectedTab: 0,
@@ -64,6 +70,7 @@ export default {
     ...mapGetters({
       userData: 'user/getUserData',
       questsData: 'quests/getUserInfoQuests',
+      questsCount: 'quests/getUserInfoQuestsCount',
     }),
     userRole() {
       return this.userData.role;
@@ -77,12 +84,13 @@ export default {
         { name: this.$t('myQuests.statuses.invited'), id: 4 },
         { name: this.$t('myQuests.statuses.performed'), id: 5 },
       ];
-      return this.userRole === 'employer'
-        ? tabs.filter((tab) => (tab.id < 1 || tab.id > 2))
-        : tabs;
+      return this.userRole === UserRole.EMPLOYER ? tabs.filter((tab) => (tab.id !== 2)) : tabs;
     },
     totalPages() {
-      return Math.ceil(this.questsData.count / this.offset);
+      return Math.ceil(this.questsCount / this.offset);
+    },
+    getEmptyLink() {
+      return this.userRole === UserRole.WORKER ? '' : Path.CREATE_QUEST;
     },
   },
   watch: {
@@ -102,12 +110,21 @@ export default {
         limit: 10,
         offset: 0,
         starred: false,
+        'sort[createdAt]': 'desc',
       },
     };
     await this.$store.dispatch('quests/getUserQuests', this.requestParams);
     this.SetLoader(false);
   },
   methods: {
+    async updateQuests(item) {
+      this.SetLoader(true);
+      if (!item.star) await this.$store.dispatch('quests/setStarOnQuest', item.id);
+      else await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
+
+      await this.$store.dispatch('quests/getUserQuests', this.requestParams);
+      this.SetLoader(false);
+    },
     async filterByStatus(id) {
       this.SetLoader(true);
       this.page = 1;
@@ -120,7 +137,6 @@ export default {
       else if (id === 3) this.requestParams.query['statuses[0]'] = QuestStatuses.Active;
       else if (id === 4) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorker;
       else if (id === 5) this.requestParams.query['statuses[0]'] = QuestStatuses.Done;
-
       await this.$store.dispatch('quests/getUserQuests', this.requestParams);
       this.SetLoader(false);
     },
@@ -135,6 +151,11 @@ export default {
   &__container {
     display: flex;
     justify-content: center;
+  }
+  &__cards {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
   }
   &__title {
     @include text-simple;
@@ -158,6 +179,21 @@ export default {
   }
   &__pager {
     margin-top: 25px;
+  }
+}
+@include _1199 {
+  .quests__body {
+    padding: 0 10px;
+  }
+}
+@include _767 {
+  .quests__content {
+    grid-template-columns: repeat(3, auto);
+  }
+}
+@include _480 {
+  .quests__content {
+    grid-template-columns: repeat(2, auto);
   }
 }
 </style>

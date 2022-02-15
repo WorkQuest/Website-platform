@@ -36,77 +36,47 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { Path, UserRole, UserStatuses } from '~/utils/enums';
+import { getIsWalletConnected } from '~/utils/wallet';
 
 export default {
   scrollToTop: true,
   name: 'AuthLayout',
-  data: () => ({
-    getTokensFromMobileInterval: null,
-    accessTokenMobile: null,
-    refreshTokenMobile: null,
-  }),
   computed: {
     ...mapGetters({
       isLoading: 'main/getIsLoading',
       userData: 'user/getUserData',
     }),
   },
-  watch: {
-    accessTokenMobile: {
-      immediate: true,
-      async handler() {
-        if (this.accessTokenMobile && this.refreshTokenMobile) {
-          try {
-            const payload = {
-              access: this.accessTokenMobile,
-              refresh: this.refreshTokenMobile,
-            };
-            this.$store.commit('user/setTokens', payload);
-            await this.$store.dispatch('user/getUserData');
-            if (this.userData.role === 'employer') {
-              await this.$router.push('/workers');
-            } else if (this.userData.role === 'worker') {
-              await this.$router.push('/quests');
-            } else if (this.userData.status === 2) {
-              await this.$router.push('/role');
-            }
-          } catch (e) {
-            console.log(e);
-          }
-        }
-      },
-    },
-  },
-  async mounted() {
+  async beforeMount() {
     const { access, refresh, userStatus } = this.$route.query;
     if (access && refresh && userStatus) {
-      this.$store.commit('user/setTokens', { access, refresh, userStatus });
-      if (parseInt(userStatus, 10) === 2) {
-        await this.$router.push('/role');
-      } else {
-        await this.$store.dispatch('user/getUserData');
-        if (this.userData.role === 'employer') {
-          await this.$router.push('/workers');
-        } else if (this.userData.role === 'worker') {
-          await this.$router.push('/quests');
-        }
+      this.$store.commit('user/setTokens', {
+        access, refresh, userStatus, social: true,
+      });
+      await this.$store.dispatch('user/getUserData');
+      // To set role or assign wallet
+      if (+userStatus === UserStatuses.NeedSetRole || !this.userData?.wallet?.address) {
+        this.$cookies.set('userLogin', true, { path: '/' });
+        await this.$router.push(Path.ROLE);
+        return;
       }
-    }
-    this.getTokensFromMobile();
-  },
-  beforeDestroy() {
-    if (this.getTokensFromMobileInterval) {
-      clearInterval(this.getTokensFromMobileInterval);
-      this.getTokensFromMobileInterval = null;
+      // To import mnemonic for login
+      if (+userStatus === UserStatuses.Confirmed && !getIsWalletConnected()) {
+        await this.$router.push(Path.SIGN_IN);
+        return;
+      }
+      await this.$store.dispatch('user/getStatistic');
+      await this.$store.dispatch('user/getNotifications');
+
+      if (this.userData.role === UserRole.EMPLOYER) {
+        await this.$router.push(Path.WORKERS);
+      } else if (this.userData.role === UserRole.WORKER) {
+        await this.$router.push(Path.QUESTS);
+      }
     }
   },
   methods: {
-    getTokensFromMobile() {
-      this.getTokensFromMobileInterval = setInterval(() => {
-        this.accessTokenMobile = localStorage.getItem('accessToken');
-        this.refreshTokenMobile = localStorage.getItem('refreshToken');
-      }, 500);
-    },
     toMain() {
       this.$router.push('/sign-in');
     },

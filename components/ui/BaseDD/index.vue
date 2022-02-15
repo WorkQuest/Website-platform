@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div data-selector="COMPONENT-BASE-DD">
     <div
       v-if="label !== ''"
       :class="[{'ctm-field__header' : !tip}, {'ctm-field__header ctm-field__header_mar5' : tip}]"
@@ -9,16 +9,19 @@
     <div
       v-click-outside="hideDd"
       class="dd"
-      :class="[{'dd__top': mode === 'top' }]"
+      :class="[{'dd__top': mode === 'top' }, {'dd_small' : isDotsView}]"
     >
       <slot name="card" />
 
       <button
         class="dd__btn"
         :class="ddClass"
+        :data-selector="`ACTION-BTN-${isShown}`"
         :disabled="disabled || elementsIsEmpty"
         @click="isShown = !isShown"
       >
+        <span class="icon-more_horizontal" />
+
         <div
           v-if="isIcon"
           class="dd__icon"
@@ -38,6 +41,7 @@
         <span
           v-else-if="items[value]"
           class="dd__title"
+          :data-selector="`BASE-DD-${items[value]}`"
           :class="[{'dd__title_white': type === 'blue' }, { 'dd__title_black': mode === 'blackFont' }]"
         >
           {{ dataType === 'array' ? items[value] : items[value].title }}
@@ -64,11 +68,12 @@
         <div
           v-if="isShown && isIcon"
           class="dd__items"
-          :class="mode === 'small' ? 'dd__items_small' : ''"
+          :class="{'dd__items_small' : mode === 'small'}"
         >
           <button
             v-for="(item, i) in items"
             :key="`dd__item-${i}`"
+            :data-selector="`ACTION-BTN-SELECT-ITEM-${i}`"
             class="dd__item dd__item_icon"
             @click="selectItem(i)"
           >
@@ -83,12 +88,13 @@
         <div
           v-if="isShown && !isIcon"
           class="dd__items"
-          :class="mode === 'small' ? 'dd__items_small' : ''"
+          :class="[{'dd__items_small' : mode === 'small'}, {'dd__items_wide' : isDotsView}]"
         >
           <button
             v-for="(item, i) in items"
             :key="`dd__item-${i}`"
             class="dd__item"
+            :data-selector="`ACTION-BTN-SELECT-ITEM-${i}`"
             :class="{'dd__item_hide': isSelected(i)}"
             @click="selectItem(i)"
           >
@@ -154,6 +160,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    isDotsView: {
+      type: Boolean,
+      default: false,
+    },
   },
   data: () => ({
     isShown: false,
@@ -163,13 +173,14 @@ export default {
       return this.items.length - this.hideSelected.length <= 0;
     },
     ddClass() {
-      const { type } = this;
+      const { type, isDotsView } = this;
       return [
         { dd__btn_dark: type === 'dark' },
         { dd__btn_disabled: type === 'disabled' || this.elementsIsEmpty },
         { dd__btn_gray: type === 'gray' },
         { dd__btn_blue: type === 'blue' },
         { dd__btn_border: type === 'border' },
+        { 'dd__dots-btn': isDotsView },
       ];
     },
   },
@@ -208,6 +219,11 @@ export default {
   min-width: 131px;
   position: relative;
   text-align: left;
+
+  &_small {
+  min-width: unset;
+  }
+
   &__title {
     color: $black500;
     &_white {
@@ -239,6 +255,11 @@ export default {
       grid-gap: 10px;
       overflow-y: auto;
       overscroll-behavior-y: contain;
+    }
+
+    &_wide {
+      min-width: 131px;
+      right: calc(100% - 30px);
     }
   }
   &__item {
@@ -311,6 +332,30 @@ export default {
     }
     &_border {
       border: 1px solid #F7F8FA;
+    }
+  }
+
+  .icon-more_horizontal {
+    display: none;
+  }
+
+  &__dots-btn {
+    display: flex;
+    justify-self: flex-end;
+    justify-content: center;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+
+    .dd__title,
+    .dd__caret {
+      display: none;
+    }
+
+    .icon-more_horizontal {
+      display: block;
+      color: #7c838d;
+      font-size: 19px;
     }
   }
 }

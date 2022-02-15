@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="info"
-    :title="options.title|| 'Withdrawal info'"
+    :title="options.title || 'Withdrawal info'"
   >
     <div class="info__content content">
       <div class="content__field field">
@@ -93,7 +93,7 @@ export default {
   data() {
     return {
       isCardNumberVisible: false,
-      walletAddress: '83479B2E7809F7D7C0A9184EEDA74CCF122ABF3147CB4572BDEBD252F8E352A8',
+      walletAddress: null,
       items: [
         {
           title: this.$t('modals.amount'),
@@ -136,21 +136,7 @@ export default {
       this.CloseModal();
     },
     async handleSubmit() {
-      const { method, updateMethod, _amount } = this.options;
-      this.hide();
-      this.SetLoader(true);
-      let ok = false;
-      switch (method) {
-        case 'pensionWithdraw':
-          ok = await this.$store.dispatch('web3/pensionWithdraw', _amount);
-          break;
-        default: break;
-      }
-      this.SetLoader(false);
-      if (ok) {
-        this.showTransactionSend();
-        if (updateMethod) await updateMethod();
-      }
+      this.showTransactionSend();
     },
     showTransactionSend() {
       this.ShowModal({

@@ -1,12 +1,13 @@
 <template>
   <ValidationProvider
     v-slot="{errors}"
+    data-selector="COMPONENT-BASE-TEXTAREA"
     tag="div"
     class="ctm-field ctm-field_default"
     :rules="rules"
     :name="name"
     :vid="vid"
-    mode="eager"
+    mode="aggressive"
     slim
   >
     <div
@@ -24,10 +25,13 @@
     <div class="ctm-field__body">
       <textarea
         id="textarea"
+        data-selector="BASE-TEXTAREA-TEXTAREA"
         :value="mode === 'convertDate' ? convertDate(value) : value"
         class="ctm-field__textarea"
         :placeholder="placeholder"
         @input="input"
+        @focus="$emit('focus')"
+        @blur="$emit('blur')"
       />
       <div class="ctm-field__selector">
         <slot name="selector" />
@@ -151,10 +155,15 @@ export default {
     height: 214px;
     width: 100%;
     border: 0;
-    background-color: $black0;
+    color: $black700;
+    background: #F3F7FA;
     resize: none;
     &::placeholder {
-      color: $black200;
+      color: $black300;
+    }
+    &:focus {
+      background: #FFFFFF;
+      border: 1px solid #0083C7;
     }
   }
     &__right {

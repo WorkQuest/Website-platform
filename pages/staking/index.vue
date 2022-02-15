@@ -24,28 +24,42 @@
               tbody-tr-class="table__row"
             >
               <template #cell(poolAddress)="el">
-                <div class="table__value table__value_gray">
-                  {{ getFormattedAddress(el.item.poolAddress) }}
-                </div>
+                <a
+                  :href="getExplorerRef(el.item.poolAddress)"
+                  target="_blank"
+                  class="table__value table__value_gray"
+                >
+                  {{ CutTxn(el.item.poolAddress, 8, 4) }}
+                </a>
               </template>
               <template #cell(totalStaked)="el">
                 <div class="table__value">
-                  {{ el.item.totalStaked }} {{ el.item.stakeTokenSymbol }}
+                  {{ NumberWithSpaces(el.item.totalStaked) }} {{ el.item.stakeTokenSymbol }}
                 </div>
               </template>
               <template #cell(totalDistributed)="el">
                 <div class="table__value">
-                  {{ el.item.totalDistributed }} {{ el.item.tokenSymbol }}
+                  {{ NumberWithSpaces(el.item.totalDistributed) }} {{ el.item.tokenSymbol }}
                 </div>
               </template>
               <template #cell(stakeTokenAddress)="el">
-                <div class="table__value table__value_blue">
-                  {{ getFormattedAddress(el.item.rewardTokenAddress) }}
-                </div>
+                <a
+                  :href="getExplorerRef(el.item.rewardTokenAddress)"
+                  target="_blank"
+                  class="table__value table__value_blue"
+                >
+                  {{ CutTxn(el.item.rewardTokenAddress, 8, 4) }}
+                </a>
               </template>
               <template #cell(rewardTokenAddress)="el">
                 <div class="table__value table__value_blue">
-                  {{ getFormattedAddress(el.item.rewardTokenAddress) }}
+                  <a
+                    :href="getExplorerRef(el.item.rewardTokenAddress)"
+                    target="_blank"
+                    class="table__value table__value_blue"
+                  >
+                    {{ CutTxn(el.item.rewardTokenAddress, 8, 4) }}
+                  </a>
                 </div>
               </template>
               <template #cell(open)="el">
@@ -67,19 +81,16 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { Chains, NativeTokenSymbolByChainId, StakingTypes } from '~/utils/enums';
+import {
+  Chains, ExplorerUrl, NativeTokenSymbolByChainId, Path, StakingTypes,
+} from '~/utils/enums';
 
 export default {
   name: 'Staking',
-  data() {
-    return {
-      firstLoading: true,
-      poolsData: null,
-    };
-  },
   computed: {
     ...mapGetters({
-      isConnected: 'web3/isConnected',
+      isWalletConnected: 'wallet/getIsWalletConnected',
+      stakingPoolsData: 'wallet/getStakingPoolsData',
     }),
     fields() {
       return [
@@ -157,77 +168,28 @@ export default {
         },
       ];
     },
-  },
-  watch: {
-    async isConnected(newValue) {
-      if (this.firstLoading) return;
-      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
-      if (newValue && rightChain) {
-        await this.getPoolsData();
-      } else {
-        this.poolsData = [];
-      }
-    },
+    poolsData() { return [this.stakingPoolsData.WUSD, this.stakingPoolsData.WQT]; },
   },
   async mounted() {
     this.SetLoader(true);
-    await this.checkMetamaskStatus();
+    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+    if (this.isWalletConnected === false) return;
     await this.getPoolsData();
     this.SetLoader(false);
-    this.firstLoading = false;
-  },
-  async beforeDestroy() {
-    await this.$store.dispatch('web3/unsubscribeActions');
   },
   methods: {
+    getExplorerRef(address) {
+      if (!address) return ExplorerUrl;
+      return `${ExplorerUrl}/address/${address.toLowerCase()}`;
+    },
     async getPoolsData() {
-      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
-      if (!rightChain) {
-        this.poolsData = [];
-      }
-      const [wqtPool, wusdPool] = await Promise.all([
-        this.$store.dispatch('web3/fetchStakingInfo', { stakingType: StakingTypes.WQT }),
-        this.$store.dispatch('web3/fetchStakingInfo', { stakingType: StakingTypes.WUSD }),
+      await Promise.all([
+        this.$store.dispatch('wallet/getStakingPoolsData', StakingTypes.WQT),
+        this.$store.dispatch('wallet/getStakingPoolsData', StakingTypes.WUSD),
       ]);
-      if (wqtPool && wusdPool) {
-        wqtPool.poolAddress = process.env.WQT_STAKING;
-        wqtPool.link = StakingTypes.WQT;
-
-        const { netId } = await this.$store.dispatch('web3/getAccount');
-        wusdPool.poolAddress = process.env.WQT_STAKING_NATIVE;
-        wusdPool.rewardTokenAddress = '';
-        wusdPool.stakeTokenSymbol = NativeTokenSymbolByChainId[netId];
-        wusdPool.tokenSymbol = NativeTokenSymbolByChainId[netId];
-        wusdPool.link = StakingTypes.WUSD;
-
-        this.poolsData = [wqtPool, wusdPool];
-      }
     },
-    async checkMetamaskStatus() {
-      if (!this.isConnected) {
-        if (typeof window.ethereum === 'undefined') {
-          localStorage.setItem('metamaskStatus', 'notInstalled');
-          this.ShowModal({
-            key: modals.status,
-            img: '~assets/img/ui/cardHasBeenAdded.svg',
-            title: 'Please install Metamask!',
-            subtitle: 'Please click install...',
-            button: 'Install',
-            type: 'installMetamask',
-          });
-        } else {
-          localStorage.setItem('metamaskStatus', 'installed');
-          await this.$store.dispatch('web3/connectToMetaMask');
-          await this.$store.dispatch('web3/goToChain', { chain: Chains.ETHEREUM });
-        }
-      }
-    },
-    handleOpenPool(el) {
-      this.$router.push(`/staking/${el.item.link}`);
-    },
-    getFormattedAddress(address) {
-      return !address ? '' : `${address.slice(0, 8)}...${address.slice(-4)}`;
-    },
+    handleOpenPool(el) { this.$router.push(`${Path.STAKING}/${el.item.link.toLowerCase()}`); },
+    getFormattedAddress(address) { return !address ? '' : `${address.slice(0, 8)}...${address.slice(-4)}`; },
   },
 };
 </script>

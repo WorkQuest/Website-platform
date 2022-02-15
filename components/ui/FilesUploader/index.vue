@@ -3,6 +3,7 @@
     ref="uploader"
     class="uploader"
     :class="uploaderStyles()"
+    data-selector="COMPONENT-FILE-UPLOADER"
     @dragover="dragover"
     @dragleave="dragleave"
     @drop="drop"
@@ -28,6 +29,7 @@
       <div
         v-for="(item, i) of files"
         :key="i"
+        :data-selector="`FILE-UPLOADER-FILE-${i}`"
         class="file"
       >
         <img
@@ -46,18 +48,21 @@
         </div>
         <span
           class="icon-close_big file__remover"
+          :data-selector="`ACTION-BTN-REMOVE-FILE-${item.id}`"
           @click="removeItem(item.id)"
         />
       </div>
     </div>
     <div
       class="uploader__input_handler"
+      data-selector="ACTION-BTN-OPEN-EXPLORER"
       @click="openExplorer"
     />
     <input
       ref="input"
       class="uploader__input"
       type="file"
+      data-selector="FILE-UPLOADER-INPUT"
       :multiple="multiple"
       :accept="accept"
       @change="onChange"
@@ -118,6 +123,7 @@ export default {
       });
       this.id += 1;
     }
+    this.$emit('change', this.files);
   },
   methods: {
     uploaderStyles() {
@@ -188,7 +194,8 @@ export default {
         if (!this.acceptDuplicates && this.files.filter((item) => !item.mediaId && item.file.size === file.size
           && item.file.lastModified === file.lastModified
           && item.file.name === file.name).length) {
-          return;
+          // eslint-disable-next-line no-continue
+          continue;
         }
         this.files.push({
           id: this.id,
@@ -198,8 +205,8 @@ export default {
         });
         this.id += 1;
       }
-      this.$emit('change', this.files);
       this.$refs.input.value = null;
+      this.$emit('change', this.files);
     },
     checkContentType(file) {
       return this.acceptedTypes.indexOf(file.type) !== -1;
@@ -240,6 +247,7 @@ export default {
     }
     &_hover {
       color: $blue !important;
+      background: $black0 !important;
     }
   }
   &__input {
@@ -261,6 +269,10 @@ export default {
   padding: 15px;
   display: flex;
   flex-wrap: wrap;
+  & >* {
+    margin: 5px;
+  }
+  margin: -5px;
 }
 .file {
   z-index: 1;
@@ -271,10 +283,10 @@ export default {
   border: 1px solid $black100;
   border-radius: 6px;
   cursor: default;
-  margin-left: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
+
   &__info {
     padding: 1px 3px;
     border-radius: 6px;
@@ -300,17 +312,14 @@ export default {
   }
   &__remover {
     position: absolute;
+    z-index: 10;
     font-size: 64px;
     cursor: pointer;
-    &::before {
-      opacity: 0;
-    }
-    &:hover::before {
-      color: $red;
-      background: $grey;
-      border-radius: 50%;
-      opacity: 75%;
-    }
+    opacity: 0;
+  }
+  &:hover .file__remover {
+    border-radius: 50%;
+    opacity: 100%;
   }
 }
 .error {
@@ -322,6 +331,7 @@ export default {
   color: $black0;
   padding: 5px;
   border-radius: 6px;
+  cursor: auto;
 }
 
 @include _575 {
@@ -331,6 +341,7 @@ export default {
     margin-left: 0;
     margin-bottom: 15px;
     &__remover {
+      opacity: 100% !important;
       &::before {
         opacity: 75%;
         color: $red;

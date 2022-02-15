@@ -335,10 +335,10 @@ export default {
       const arr = [];
       this.miningSwaps.forEach((data) => {
         arr.push({
-          totalValue: `${this.Floor(data.amountUSD, 2)} $`,
-          account: data.to,
-          accountView: this.CutTxn(data.to),
-          time: moment(new Date(data.transaction.timestamp * 1000)).startOf('hour').fromNow(),
+          totalValue: `${this.Floor(data.totalValue, 2)} $`,
+          account: data.account,
+          accountView: this.CutTxn(data.account),
+          time: moment(new Date(data.timestamp * 1000)).startOf('hour').fromNow(),
           ...this.getTokensAmount(data),
         });
       });
@@ -355,7 +355,7 @@ export default {
       if (newValue && rightChain) {
         await this.$store.dispatch('web3/initContract');
         await this.tokensDataUpdate();
-        this.updateInterval = setInterval(() => this.tokensDataUpdate(), 30000);
+        this.updateInterval = setInterval(() => this.tokensDataUpdate(), 60000);
       } else {
         this.fullRewardAmount = 0;
         this.rewardAmount = 0;
@@ -365,17 +365,15 @@ export default {
       }
     },
     async page() {
-      await this.$store.dispatch(
-        `mining/getTableDataForWqtW${this.currentPool.toLowerCase()}Pool`,
-        {
-          limit: this.perPager,
-          offset: (this.page - 1) * this.perPager,
-        },
-      );
+      await this.$store.dispatch(`mining/getTableDataForWqtW${this.currentPool.toLowerCase()}Pool`, {
+        limit: this.perPager,
+        offset: (this.page - 1) * this.perPager,
+      });
     },
   },
   async mounted() {
     this.SetLoader(true);
+    this.$nuxt.setLayout(this.userData.id ? 'default' : 'guest');
     localStorage.setItem('miningPoolId', this.currentPool);
     const currentPool = this.currentPool.toLowerCase();
     await this.$store.dispatch(`mining/getChartDataForWqtW${currentPool}Pool`);
@@ -393,18 +391,25 @@ export default {
   },
   methods: {
     getTokensAmount(data) {
+      const pools = {
+        ETH: {
+          tokenIn: data.isOut ? 'WQT' : 'WETH',
+          tokenOut: data.isOut ? 'WETH' : 'WQT',
+        },
+        BNB: {
+          tokenIn: data.isOut ? 'WQT' : 'WBNB',
+          tokenOut: data.isOut ? 'WBNB' : 'WQT',
+        },
+      };
+
+      const amount0 = this.Floor(data.isOut ? data.amount1 : data.amount0, 3);
+      const amount1 = this.Floor(data.isOut ? data.amount0 : data.amount1, 3);
+
       const { currentPool } = this;
-      if (data.amount0Out > 0) {
-        return {
-          poolAddress: currentPool === 'ETH' ? 'Swap WETH for WQT' : 'Swap WQT for WBNB',
-          tokenAmount0: `${this.Floor(data.amount1In, 3)} ${currentPool === 'ETH' ? 'WETH' : 'WQT'}`,
-          tokenAmount1: `${this.Floor(data.amount0Out, 3)} ${currentPool === 'ETH' ? 'WQT' : 'WBNB'}`,
-        };
-      }
       return {
-        poolAddress: currentPool === 'ETH' ? 'Swap WQT for WETH' : 'Swap WBNB for WQT',
-        tokenAmount0: `${this.Floor(data.amount0In, 3)} ${currentPool === 'ETH' ? 'WQT' : 'WBNB'}`,
-        tokenAmount1: `${this.Floor(data.amount1Out, 3)} ${currentPool === 'ETH' ? 'WETH' : 'WQT'}`,
+        poolAddress: `Swap ${pools[currentPool].tokenIn} for ${pools[currentPool].tokenOut}`,
+        tokenAmount0: `${amount0} ${pools[currentPool].tokenIn}`,
+        tokenAmount1: `${amount1} ${pools[currentPool].tokenOut}`,
       };
     },
 
@@ -414,33 +419,31 @@ export default {
       const { currentPool } = this;
       this.SetLoader(true);
       await this.connectToWallet();
-      if (this.isConnected) {
-        if (localStorage.getItem('isMetaMask') === 'true') {
-          const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', currentPool);
-          if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: currentPool });
-        } else {
-          const walletConnectData = JSON.parse(localStorage.getItem('walletconnect'));
-          switch (walletConnectData.chainId) {
-            case 1:
-              incorrectChain = this.currentPool !== 'ETH';
-              break;
-            case 56:
-              incorrectChain = this.currentPool !== 'BNB';
-              break;
-            default:
-              incorrectChain = false;
-              break;
-          }
-          if (incorrectChain) {
-            this.ShowModal({
-              key: modals.status,
-              img: require('~/assets/img/ui/warning.svg'),
-              title: this.$t('modals.connectError'),
-              recipient: '',
-              subtitle: this.$t('modals.incorrectChain'),
-            });
-            await this.disconnectFromWallet();
-          }
+      if (localStorage.getItem('isMetaMask') === 'true') {
+        const switchStatus = await this.$store.dispatch('web3/goToChain', { chain: currentPool });
+        if (!switchStatus.ok) await this.disconnectFromWallet();
+      } else {
+        const walletConnectData = JSON.parse(localStorage.getItem('walletconnect'));
+        switch (walletConnectData.chainId) {
+          case 1:
+            incorrectChain = this.currentPool !== 'ETH';
+            break;
+          case 56:
+            incorrectChain = this.currentPool !== 'BNB';
+            break;
+          default:
+            incorrectChain = false;
+            break;
+        }
+        if (incorrectChain) {
+          this.ShowModal({
+            key: modals.status,
+            img: require('~/assets/img/ui/warning.svg'),
+            title: this.$t('modals.connectError'),
+            recipient: '',
+            subtitle: this.$t('modals.incorrectChain'),
+          });
+          await this.disconnectFromWallet();
         }
       }
       this.SetLoader(false);

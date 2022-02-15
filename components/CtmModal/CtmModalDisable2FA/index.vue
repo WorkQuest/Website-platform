@@ -4,14 +4,17 @@
     :title="$t('modals.disable2Fa')"
   >
     <div class="ctm-modal__content">
-      <validation-observer v-slot="{ handleSubmit, validated, passed, invalid }">
-        <div
-          class="step__container"
-        >
+      <validation-observer
+        v-slot="{ handleSubmit, validated, passed, invalid }"
+        ref="twoFA"
+      >
+        <div class="step__container">
           <div class="ctm-modal__content-field">
             <base-field
               id="twoFACode"
+              ref="totp"
               v-model="twoFACode"
+              vid="totp"
               :placeholder="errorMessage || $t('modals.enterCode')"
               rules="required|min:6|numeric"
               name="disable 2FA"
@@ -20,12 +23,8 @@
           </div>
         </div>
         <div class="btn__container">
-          <div
-            class="btn__wrapper"
-          >
-            <span
-              class="step__container"
-            >
+          <div class="btn__wrapper">
+            <span class="step__container">
               <base-btn
                 class="message__action"
                 :disabled="!validated || !passed || invalid"
@@ -35,9 +34,7 @@
               </base-btn>
             </span>
           </div>
-          <div
-            class="btn__wrapper"
-          >
+          <div class="btn__wrapper">
             <base-btn
               :mode="'outline'"
               class="message__action"
@@ -75,19 +72,13 @@ export default {
       this.CloseModal();
     },
     async disable2FA() {
-      try {
-        const payload = {
-          totp: this.twoFACode,
-        };
-        this.twoFACode = '';
-        const response = await this.$store.dispatch('user/disable2FA', payload);
-        if (response.ok) {
-          this.hide();
-          this.showModalSuccess();
-        }
-      } catch (e) {
-        this.errorMessage = e.response.data.msg;
-      }
+      const response = await this.$store.dispatch('user/disable2FA', {
+        totp: this.twoFACode,
+      });
+      if (response.ok) {
+        this.hide();
+        this.showModalSuccess();
+      } else this.validationErrorFields(response.data);
     },
     showModalSuccess() {
       this.ShowModal({
@@ -95,6 +86,16 @@ export default {
         img: require('~/assets/img/ui/questAgreed.svg'),
         title: this.$t('modals.2FAStatus'),
         subtitle: this.$t('modals.2FADisabled'),
+      });
+    },
+    validationErrorFields(data) {
+      data.forEach(async (obj) => {
+        const { field } = obj;
+        const { name } = this.$refs.totp.name;
+        const err = {
+          [field]: [this.$t('messages.excluded', { _field_: name })],
+        };
+        await this.$refs.twoFA.setErrors(err);
       });
     },
   },
