@@ -52,7 +52,7 @@
             </template>
           </base-field>
           <base-field
-            v-model="profile.additionalInfo.address"
+            v-model="profile.locationFull.locationPlaceName"
             v-click-outside="hideSearchDD"
             :placeholder="$t('settings.addressInput')"
             :data-selector="`PROFILE-FIELD-${$t('settings.address')}`"
@@ -62,7 +62,7 @@
             :name="$t('settings.address')"
             @focus="isSearchDDStatus = true"
             @blur="checkValidate"
-            @selector="getAddressInfo(profile.additionalInfo.address)"
+            @selector="getAddressInfo(profile.locationFull.locationPlaceName)"
           >
             <template v-slot:left>
               <span class="icon icon-location" />
@@ -112,6 +112,12 @@
               color="#ccc"
               @update="updateFirstPhone($event)"
             />
+            <span
+              v-if="!isValidPhoneNumber"
+              class="profile__error"
+            >
+              {{ $t('messages.invalidPhone') }}
+            </span>
           </div>
           <div class="profile__phone-input">
             <label
@@ -125,6 +131,7 @@
               id="phone2"
               v-model="secondPhoneNumber.fullPhone"
               data-selector="SECOND-PHONE-FIELD"
+              :error="!isValidSecondPhoneNumber"
               :default-country-code="secondPhoneNumber.codeRegion"
               error-color="#EB5757"
               clearable
@@ -133,7 +140,7 @@
               @update="updateSecondPhone($event)"
             />
             <span
-              v-if="!isValidPhoneNumber"
+              v-if="!isValidSecondPhoneNumber"
               class="profile__error"
             >
               {{ $t('messages.invalidPhone') }}
@@ -325,6 +332,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isValidSecondPhoneNumber: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -437,15 +448,16 @@ export default {
     profile: {
       deep: true,
       handler() {
+        const { profile } = this;
         this.secondPhoneNumber = {
-          codeRegion: this.profile?.additionalInfo?.secondMobileNumber?.codeRegion,
-          phone: this.profile?.additionalInfo?.secondMobileNumber?.phone,
-          fullPhone: this.profile?.additionalInfo?.secondMobileNumber?.fullPhone,
+          codeRegion: profile.additionalInfo?.secondMobileNumber?.codeRegion,
+          phone: profile.additionalInfo?.secondMobileNumber?.phone,
+          fullPhone: profile.additionalInfo?.secondMobileNumber?.fullPhone,
         };
         this.firstPhone = {
-          codeRegion: this.profile.firstPhone?.codeRegion,
-          phone: this.profile.firstPhone?.phone,
-          fullPhone: this.profile.firstPhone?.fullPhone,
+          codeRegion: profile.firstPhone?.codeRegion,
+          phone: profile.firstPhone?.phone,
+          fullPhone: profile.firstPhone?.fullPhone,
         };
       },
     },
@@ -494,7 +506,7 @@ export default {
     // GEOPOSITION METHODS
     selectAddress(address, i) {
       this.selectedAddressIndex = i;
-      this.profile.additionalInfo.address = address.formatted;
+      this.profile.locationFull.locationPlaceName = address.formatted;
       this.addresses = [];
       this.$emit('updateCoordinates', this.coordinates);
     },
