@@ -294,18 +294,20 @@ export default {
     try {
       const response = await this.$axios.$put('/v1/employer/profile/edit', payload);
       commit('setUserData', response.result);
-      return response;
+      return response.ok;
     } catch (e) {
-      return console.log(e);
+      console.log(e);
+      return false;
     }
   },
   async editWorkerData({ commit }, payload) {
     try {
       const response = await this.$axios.$put('/v1/worker/profile/edit', payload);
       commit('setUserData', response.result);
-      return response;
+      return response.ok;
     } catch (e) {
-      return console.log(e);
+      console.log(e);
+      return false;
     }
   },
   async refreshTokens({ commit }) {

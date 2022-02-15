@@ -373,6 +373,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    this.$nuxt.setLayout(this.userData.id ? 'default' : 'guest');
     localStorage.setItem('miningPoolId', this.currentPool);
     const currentPool = this.currentPool.toLowerCase();
     await this.$store.dispatch(`mining/getChartDataForWqtW${currentPool}Pool`);
