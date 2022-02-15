@@ -443,23 +443,21 @@ export default {
     getWorkExp() {
       return this.profile.additionalInfo.workExperiences.length !== 0;
     },
-  },
-  watch: {
-    profile: {
-      deep: true,
-      handler() {
-        const { profile } = this;
-        this.secondPhoneNumber = {
-          codeRegion: profile.additionalInfo?.secondMobileNumber?.codeRegion,
-          phone: profile.additionalInfo?.secondMobileNumber?.phone,
-          fullPhone: profile.additionalInfo?.secondMobileNumber?.fullPhone,
-        };
-        this.firstPhone = {
-          codeRegion: profile.firstPhone?.codeRegion,
-          phone: profile.firstPhone?.phone,
-          fullPhone: profile.firstPhone?.fullPhone,
-        };
-      },
+    profileSecondPhone() {
+      const { profile } = this;
+      return {
+        codeRegion: profile.additionalInfo?.secondMobileNumber?.codeRegion,
+        phone: profile.additionalInfo?.secondMobileNumber?.phone,
+        fullPhone: profile.additionalInfo?.secondMobileNumber?.fullPhone,
+      };
+    },
+    profileFirstPhone() {
+      const { profile } = this;
+      return {
+        codeRegion: profile.firstPhone?.codeRegion,
+        phone: profile.firstPhone?.phone,
+        fullPhone: profile.firstPhone?.fullPhone,
+      };
     },
   },
   mounted() {
@@ -467,6 +465,8 @@ export default {
       key: process.env.GMAPKEY,
       lang: this.$i18n?.localeProperties?.code || 'en-US',
     });
+    this.secondPhoneNumber = this.profileSecondPhone;
+    this.firstPhone = this.profileFirstPhone;
     this.validationRefs();
   },
   methods: {
