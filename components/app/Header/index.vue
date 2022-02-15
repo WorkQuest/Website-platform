@@ -318,16 +318,6 @@ export default {
       isMobileMenu: false,
       isNotFlexContainer: false,
       currentLocale: '',
-      headerLinks: [
-        {
-          path: Path.MY_QUESTS,
-          title: this.$t('ui.myQuests'),
-        },
-        {
-          path: Path.WALLET,
-          title: this.$t('ui.wallet'),
-        },
-      ],
     };
   },
   computed: {
@@ -408,6 +398,15 @@ export default {
         },
       ];
     },
+    headerLinks() {
+      const links = [
+        { path: Path.MY_QUESTS, title: this.$t('ui.myQuests') },
+        { path: Path.WALLET, title: this.$t('ui.wallet') },
+      ];
+      if (this.userData.role === UserRole.EMPLOYER) links.unshift({ path: Path.WORKERS, title: this.$t('ui.jobQuestors') });
+      else links.unshift({ path: Path.QUESTS, title: this.$t('ui.quests') });
+      return links;
+    },
   },
   watch: {
     $route() {
@@ -421,7 +420,6 @@ export default {
     await this.initWSListeners();
     this.GetLocation();
     this.currentLocale = this.$i18n.localeProperties.code;
-    this.initHeaderLinks();
   },
   destroyed() {
     window.removeEventListener('resize', this.userWindowChange);
@@ -491,19 +489,6 @@ export default {
         })));
       }
       if (!chatActionsConnection) await this.$wsChatActions.connect(this.token);
-    },
-    initHeaderLinks() {
-      if (this.userData.role === this.$options.UserRole.EMPLOYER) {
-        this.headerLinks.unshift({
-          path: Path.WORKERS,
-          title: this.$t('ui.jobQuestors'),
-        });
-      } else {
-        this.headerLinks.unshift({
-          path: Path.QUESTS,
-          title: this.$t('ui.quests'),
-        });
-      }
     },
     async getStatistic() {
       await this.$store.dispatch('user/getStatistic');
