@@ -444,20 +444,25 @@ export default {
       return this.profile.additionalInfo.workExperiences.length !== 0;
     },
     profileSecondPhone() {
-      const { profile } = this;
+      const { secondMobileNumber } = this.profile.additionalInfo;
       return {
-        codeRegion: profile.additionalInfo?.secondMobileNumber?.codeRegion,
-        phone: profile.additionalInfo?.secondMobileNumber?.phone,
-        fullPhone: profile.additionalInfo?.secondMobileNumber?.fullPhone,
+        codeRegion: secondMobileNumber?.codeRegion,
+        phone: secondMobileNumber?.phone,
+        fullPhone: secondMobileNumber?.fullPhone,
       };
     },
     profileFirstPhone() {
-      const { profile } = this;
+      const { firstPhone } = this.profile;
       return {
-        codeRegion: profile.firstPhone?.codeRegion,
-        phone: profile.firstPhone?.phone,
-        fullPhone: profile.firstPhone?.fullPhone,
+        codeRegion: firstPhone?.codeRegion,
+        phone: firstPhone?.phone,
+        fullPhone: firstPhone?.fullPhone,
       };
+    },
+  },
+  watch: {
+    profile() {
+      this.initPhones();
     },
   },
   mounted() {
@@ -465,11 +470,13 @@ export default {
       key: process.env.GMAPKEY,
       lang: this.$i18n?.localeProperties?.code || 'en-US',
     });
-    this.secondPhoneNumber = this.profileSecondPhone;
-    this.firstPhone = this.profileFirstPhone;
     this.validationRefs();
   },
   methods: {
+    initPhones() {
+      this.secondPhoneNumber = this.profileSecondPhone;
+      this.firstPhone = this.profileFirstPhone;
+    },
     // UPDATE AVATAR
     // eslint-disable-next-line consistent-return
     async processFile(e, validate) {
