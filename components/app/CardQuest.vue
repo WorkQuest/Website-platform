@@ -17,23 +17,24 @@
     </div>
     <div class="card-quest__right">
       <div class="card-quest__head">
+        <!--        TODO: Добавить и протестить селекторы-->
+        <!--        :data-selector="`ACTION-BTN-TO-CREATOR-QUEST-PROFILE-${quest.userId}`"-->
         <div
           class="card-quest__title"
-          :data-selector="`ACTION-BTN-TO-CREATOR-QUEST-PROFILE-${quest.userId}`"
           @click="showProfile(quest.userId)"
         >
           <div class="card-quest__avatar avatar">
+            <!--              data-selector="ACTION-BTN-TO-CREATOR-QUEST-PROFILE"-->
             <img
               class="avatar__image"
-              data-selector="ACTION-BTN-TO-CREATOR-QUEST-PROFILE"
               :alt="`${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}`"
               :src="quest.user && quest.user.avatar ? quest.user.avatar.url : EmptyAvatar()"
               @click="goToProfile(quest.user.id)"
             >
           </div>
+          <!--          :data-selector="`ACTION-BTN-TO-CREATOR-QUEST-PROFILE-${quest.user.id}`"-->
           <div
             class="card-quest__text card-quest__text_title"
-            :data-selector="`ACTION-BTN-TO-CREATOR-QUEST-PROFILE-${quest.user.id}`"
             @click="goToProfile(quest.user.id)"
           >
             {{ `${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}` }}
