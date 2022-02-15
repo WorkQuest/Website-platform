@@ -127,7 +127,11 @@ export default {
       });
     },
     shareModal() {
-      this.ShowModal({ key: modals.sharingQuest, itemId: this.item.id, mode: 'quest' });
+      this.ShowModal({
+        key: modals.sharingQuest,
+        itemId: this.item.id,
+        mode: 'quest',
+      });
     },
     closeQuestMenu() {
       this.isShowQuestMenu = false;
