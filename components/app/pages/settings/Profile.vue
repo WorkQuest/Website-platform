@@ -118,6 +118,7 @@
               v-if="userRole === UserRole.EMPLOYER"
               id="phone2"
               v-model="secondPhoneNumber.fullPhone"
+              :error="!isValidSecondPhoneNumber"
               :default-country-code="secondPhoneNumber.codeRegion"
               error-color="#EB5757"
               clearable
@@ -125,6 +126,12 @@
               size="lg"
               @update="updateSecondPhone($event)"
             />
+            <span
+              v-if="!isValidSecondPhoneNumber"
+              class="profile__error"
+            >
+              {{ $t('messages.invalidPhone') }}
+            </span>
           </div>
         </div>
         <div
@@ -294,6 +301,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isValidSecondPhoneNumber: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -406,15 +417,16 @@ export default {
     profile: {
       deep: true,
       handler() {
+        const { profile } = this;
         this.secondPhoneNumber = {
-          codeRegion: this.profile?.additionalInfo?.secondMobileNumber?.codeRegion,
-          phone: this.profile?.additionalInfo?.secondMobileNumber?.phone,
-          fullPhone: this.profile?.additionalInfo?.secondMobileNumber?.fullPhone,
+          codeRegion: profile.additionalInfo?.secondMobileNumber?.codeRegion,
+          phone: profile.additionalInfo?.secondMobileNumber?.phone,
+          fullPhone: profile.additionalInfo?.secondMobileNumber?.fullPhone,
         };
         this.firstPhone = {
-          codeRegion: this.profile.firstPhone?.codeRegion,
-          phone: this.profile.firstPhone?.phone,
-          fullPhone: this.profile.firstPhone?.fullPhone,
+          codeRegion: profile.firstPhone?.codeRegion,
+          phone: profile.firstPhone?.phone,
+          fullPhone: profile.firstPhone?.fullPhone,
         };
       },
     },
