@@ -35,11 +35,10 @@
               v-if="questData.status === questStatuses.Created"
               :item="questData"
               :data-selector="`QUEST-DD-${questData.id}`"
-              :item-id="questData.id"
             />
           </div>
         </div>
-        <div
+        <divч
           v-if="questData"
           class="location__container"
         >
@@ -53,7 +52,7 @@
               {{ showDistance() }} {{ $t('distance.m') }} {{ $t('meta.fromYou') }}
             </span>
           </div>
-        </div>
+        </divч>
       </div>
     </div>
     <skills
