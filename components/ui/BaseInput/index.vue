@@ -45,7 +45,7 @@
         :class="[{'ctm-field__input_error': errors[0]},
                  {'ctm-field__input_padding-r' : hasLoader}]"
         :placeholder="placeholder"
-        data-selector="BASE-INPUT-FIELD"
+        :data-selector="`BASE-INPUT-FIELD-${placeholder}`"
         :value="mode === 'convertDate' ? convertDate(value) : value"
         :type="type"
         :autocomplete="autocomplete"

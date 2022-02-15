@@ -4,6 +4,7 @@
       v-if="step === walletState.Default"
       v-slot="{ handleSubmit }"
       class="auth__container"
+      data-selector="PAGE-SIGN-IN"
       tag="div"
     >
       <div class="auth__text auth__text_title">
@@ -12,6 +13,7 @@
       <div class="auth__text auth__text_simple">
         <span>{{ $t('signIn.account') }}</span>
         <nuxt-link
+          data-selector="ACTION-BTN-TO-REGISTRATION"
           class="auth__text auth__text_link"
           to="/sign-up"
         >
@@ -28,6 +30,7 @@
           rules="required|email"
           :name="$t('signUp.email')"
           :placeholder="$t('signUp.email')"
+          data-selector="SIGN-IN-EMAIL-FIELD"
           :mode="'icon'"
           autocomplete="username"
         >
@@ -44,6 +47,7 @@
           :mode="'icon'"
           :name="$t('signUp.password')"
           autocomplete="current-password"
+          data-selector="SIGN-IN-PASSWORD-FIELD"
           rules="required_if|min:8"
           type="password"
           vid="confirmation"
@@ -58,6 +62,7 @@
         <base-field
           v-model="model.totp"
           :placeholder="$t('signUp.totp')"
+          data-selector="SIGN-IN-TOTP-FIELD"
           :mode="'icon'"
           :name="$t('signUp.totp')"
           rules="min:6|max:6"
@@ -72,11 +77,13 @@
         <div class="auth__tools">
           <base-checkbox
             v-model="remember"
+            data-selector="CHECKBOX-REMEMBER"
             name="remember"
             :label="$t('signIn.remember')"
           />
           <div
             class="auth__text auth__text_link"
+            data-selector="ACTION-BTN-FORGOT-PASSWORD"
             @click="showRestoreModal()"
           >
             {{ $t('signIn.forgot') }}
