@@ -1,9 +1,13 @@
 <template>
-  <div class="main">
+  <div
+    class="main"
+    data-selector="PAGE-DISPUTES-ID"
+  >
     <div class="main__body">
       <div class="dispute__top">
         <div
           class="dispute__back"
+          data-selector="ACTION-DISPUTE-BACK-BTN"
           @click="backToDisputes()"
         >
           <span class="icon-chevron_big_left" />
@@ -18,6 +22,7 @@
       </div>
       <card-quest
         :quest="disputeData.quest"
+        :data-selector="`QUEST-CARD-${disputeData.quest.id}`"
         :dispute-id="disputeData.id"
       />
       <div class="dispute__chat-history">

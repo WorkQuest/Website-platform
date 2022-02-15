@@ -3,6 +3,7 @@
     ref="uploader"
     class="uploader"
     :class="uploaderStyles()"
+    data-selector="COMPONENT-FILE-UPLOADER"
     @dragover="dragover"
     @dragleave="dragleave"
     @drop="drop"
@@ -28,6 +29,7 @@
       <div
         v-for="(item, i) of files"
         :key="i"
+        :data-selector="`FILE-UPLOADER-FILE-${i}`"
         class="file"
       >
         <img
@@ -46,18 +48,21 @@
         </div>
         <span
           class="icon-close_big file__remover"
+          :data-selector="`ACTION-BTN-REMOVE-FILE-${item.id}`"
           @click="removeItem(item.id)"
         />
       </div>
     </div>
     <div
       class="uploader__input_handler"
+      data-selector="ACTION-BTN-OPEN-EXPLORER"
       @click="openExplorer"
     />
     <input
       ref="input"
       class="uploader__input"
       type="file"
+      data-selector="FILE-UPLOADER-INPUT"
       :multiple="multiple"
       :accept="accept"
       @change="onChange"

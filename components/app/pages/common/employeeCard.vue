@@ -1,6 +1,7 @@
 <template>
   <div
     class="card"
+    :data-selector="`COMPONENT-EMPLOYEE-CARD-${user.id}`"
     @click="$emit('click')"
   >
     <div class="card__header">
