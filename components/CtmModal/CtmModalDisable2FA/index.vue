@@ -28,6 +28,7 @@
               <base-btn
                 class="message__action"
                 :disabled="!validated || !passed || invalid"
+                selector="DISABLE-2FA"
                 @click="handleSubmit(disable2FA)"
               >
                 {{ $t('meta.disable') }}
@@ -38,6 +39,7 @@
             <base-btn
               :mode="'outline'"
               class="message__action"
+              selector="CANCEL"
               @click="hide"
             >
               {{ $t('meta.cancel') }}

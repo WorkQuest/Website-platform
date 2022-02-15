@@ -29,6 +29,7 @@
           >
             <base-btn
               mode="max"
+              selector="MAX"
               class="field__button"
               :disabled="currentPasswordInput===''"
               @click="isVisibleCurrent=!isVisibleCurrent"
@@ -62,6 +63,7 @@
         >
           <base-btn
             mode="max"
+            selector="MAX"
             class="field__button"
             :disabled="newPasswordInput===''"
             @click="isVisible=!isVisible"
@@ -90,6 +92,7 @@
         >
           <base-btn
             mode="max"
+            selector="MAX"
             class="field__button"
             :disabled="confirmNewPasswordInput===''"
             @click="isVisibleConfirm=!isVisibleConfirm"
@@ -105,6 +108,7 @@
         <div class="buttons__group">
           <base-btn
             class="buttons__button"
+            selector="CHANGE"
             @click="hide()"
           >
             {{ $t('modals.change') }}

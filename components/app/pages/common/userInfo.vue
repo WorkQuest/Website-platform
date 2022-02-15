@@ -7,7 +7,7 @@
       <div class="info-grid__share-left">
         <base-btn
           mode="share-btn"
-          data-selector="ACTION-BTN-SHARE-USER-PROFILE"
+          selector="SHARE-USER-PROFILE"
           @click="shareModal()"
         />
       </div>
@@ -157,6 +157,7 @@
         </div>
         <div class="right__share-btn">
           <base-btn
+            selector="SHARE-MODAL"
             mode="share-btn"
             @click="shareModal()"
           />

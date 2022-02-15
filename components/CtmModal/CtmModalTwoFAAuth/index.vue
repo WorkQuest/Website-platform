@@ -48,6 +48,7 @@
             >
               <base-btn
                 :mode="'black'"
+                :selector="item.text"
                 @click="item.click"
               >
                 {{ item.text }}
@@ -150,6 +151,7 @@
         >
           <base-btn
             class="message__action"
+            selector="NEXT-STEP-WITH-ENABLE-2FA"
             @click="nextStepWithEnable2FA()"
           >
             {{ $t('meta.next') }}
@@ -166,6 +168,7 @@
           >
             <base-btn
               v-if="item.step.includes(step)"
+              :selector="item.text"
               class="message__action"
               @click="item.click"
             >
@@ -178,6 +181,7 @@
           >
             <base-btn
               class="message__action"
+              selector="CONFIRM-ENABLE-2FA"
               :disabled="!validated || !passed || invalid"
               @click="handleSubmit(confirmEnable2FA)"
             >
@@ -191,7 +195,8 @@
           class="btn__wrapper"
         >
           <base-btn
-            :mode="'outline'"
+            mode="outline"
+            selector="PREVIOUS-STEP"
             class="message__action"
             @click="previousStep()"
           >

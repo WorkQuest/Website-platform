@@ -56,7 +56,7 @@
           <base-btn
             v-if="!button.isSwitcher"
             :disabled="button.enable"
-            :data-selector="`ACTION-BTN-${button.modal}`"
+            :selector="`${button.buttonName}`"
             @click="showModalKey(button.modal)"
           >
             {{ $t(button.buttonName) }}
@@ -66,7 +66,7 @@
             class="advanced__option-buttons"
           >
             <base-btn
-              :data-selector="`ACTION-BTN-TOTP-${statusTotp}`"
+              :selector="`${!statusTotp} ? ${$t(button.secondButtonName)} : ${$t(button.firstButtonName)}`"
               @click="!statusTotp ? showModalKey(button.secondModal) : showModalKey(button.firstModal)"
             >
               {{ !statusTotp ? $t(button.secondButtonName) : $t(button.firstButtonName) }}

@@ -135,6 +135,7 @@
             >
               <base-btn
                 class="message__action"
+                selector="NEXT-STEP"
                 :disabled="!validated || !passed || invalid"
                 @click="handleSubmit(nextStep)"
               >
@@ -146,6 +147,7 @@
               class="step__container"
             >
               <base-btn
+                selector="CONFIRM"
                 class="message__action"
                 :disabled="invalid"
                 @click="handleSubmit(nextStep)"
@@ -159,6 +161,7 @@
             >
               <base-btn
                 class="message__action"
+                selector="BUY"
                 @click="hide()"
               >
                 {{ $t('meta.buyWUSD') }}
@@ -168,6 +171,7 @@
           <div class="btn__wrapper">
             <base-btn
               :mode="'outline'"
+              selector="CANCEL"
               class="message__action"
               @click="hide()"
             >

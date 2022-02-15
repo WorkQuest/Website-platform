@@ -63,7 +63,7 @@
         </div>
         <base-btn
           mode="borderless-right"
-          :data-selector="`ACTION-BTN-SHOW-REVIEW-DETAILS-${reviewData.id}`"
+          :data-selector="`SHOW-REVIEW-DETAILS-${reviewData.id}`"
           @click="showReviewDetails(reviewData)"
         >
           {{ $t('quests.readCompletely') }}

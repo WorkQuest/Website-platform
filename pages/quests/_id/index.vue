@@ -68,7 +68,7 @@
               <base-btn
                 :class="btn.class"
                 :mode="btn.mode"
-                :data-selector="`ACTION-BUTTON-${btn.name}`"
+                :selector="`${btn.name}`"
                 :disabled="btn.disabled"
                 @click="handleClickSpecBtn(btn.funcKey)"
               >

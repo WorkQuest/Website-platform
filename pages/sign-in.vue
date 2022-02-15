@@ -83,7 +83,10 @@
           </div>
         </div>
         <div class="auth__action">
-          <base-btn :disabled="isLoading">
+          <base-btn
+            :disabled="isLoading"
+            selector="LOGIN"
+          >
             {{ $t('signIn.login') }}
           </base-btn>
         </div>

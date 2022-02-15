@@ -41,6 +41,7 @@
           <div class="btn__wrapper">
             <base-btn
               :mode="'outline'"
+              selector="CANCEL"
               class="btn__action"
               @click="hide()"
             >
@@ -50,6 +51,7 @@
           <div class="btn__wrapper">
             <base-btn
               class="btn__action"
+              selector="EDIT-USER-CASE"
               :disabled="invalid || files.length === 0"
               @click="editUserCase(options.id)"
             >

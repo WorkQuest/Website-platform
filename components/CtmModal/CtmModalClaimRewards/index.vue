@@ -23,6 +23,7 @@
           >
             <base-btn
               mode="max"
+              selector="MAX-BALANCE"
               class="max__button"
               @click="maxBalance()"
             >
@@ -33,12 +34,14 @@
         <div class="content__container">
           <base-btn
             :mode="'outline'"
+            selector="CANCEL"
             :disabled="statusBusy"
             @click="hide()"
           >
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
+            selector="SUBMIT"
             :disabled="!valid || !canSubmit"
             @click="handleSubmit(options.type === 1 ? staking : unstaking)"
           >

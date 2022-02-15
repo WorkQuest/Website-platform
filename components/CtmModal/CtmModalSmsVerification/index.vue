@@ -19,6 +19,7 @@
         <div class="content__buttons buttons">
           <base-btn
             class="buttons__button"
+            selector="CONFIRM"
             @click="hide"
           >
             {{ $t('meta.confirm') }}
@@ -82,6 +83,7 @@
         <div class="content__buttons buttons">
           <base-btn
             v-if="step === 1"
+            selector="NEXT-STEP"
             class="buttons__button"
             @click="handleSubmit(nextStep)"
           >
@@ -90,6 +92,7 @@
           <base-btn
             v-if="step === 2"
             class="buttons__button"
+            selector="CONFIRM"
             :disabled="!validated || !passed || invalid"
             @click="handleSubmit(success)"
           >

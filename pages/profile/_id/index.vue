@@ -167,7 +167,7 @@
             class="portfolio__add-btn"
           >
             <base-btn
-              data-selector="ACTION-BTN-ADD-PORTFOLIO-CASE"
+              selector="ADD-PORTFOLIO-CASE"
               @click="showAddCaseModal()"
             >
               {{ $t('ui.profile.addCase') }}
