@@ -36,7 +36,7 @@
       <div class="info-grid__block block block_right">
         <div class="block__data">
           <div class="block__title">
-            {{ UserName(userData.firstName, userData.lastName) }}
+            {{ new UserName(userData.firstName, userData.lastName) }}
           </div>
           <item-rating
             v-if="ratingStatistic(userData.ratingStatistic) !== 'noStatus'"
@@ -179,7 +179,7 @@
           class="contact__btn"
         >
           <base-btn
-            :mode="'approve'"
+            mode="approve"
             data-selector="ACTION-BTN-GIVE-A-QUEST"
             @click="sendInvite()"
           >
@@ -316,6 +316,8 @@ export default {
     shareModal() {
       this.ShowModal({
         key: modals.sharingQuest,
+        mode: 'profile',
+        itemId: this.userData.id,
       });
     },
     toRaisedViews() {

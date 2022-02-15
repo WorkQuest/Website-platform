@@ -27,7 +27,7 @@
             <!--              data-selector="ACTION-BTN-TO-CREATOR-QUEST-PROFILE"-->
             <img
               class="avatar__image"
-              :alt="`${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}`"
+              :alt="`${quest.user ? new UserName(quest.user.firstName, quest.user.lastName) : ''}`"
               :src="quest.user && quest.user.avatar ? quest.user.avatar.url : EmptyAvatar()"
               @click="goToProfile(quest.user.id)"
             >
@@ -37,7 +37,7 @@
             class="card-quest__text card-quest__text_title"
             @click="goToProfile(quest.user.id)"
           >
-            {{ `${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}` }}
+            {{ `${quest.user ? new UserName(quest.user.firstName, quest.user.lastName) : ''}` }}
           </div>
         </div>
         <div class="card-quest__head-right">
@@ -72,7 +72,7 @@
             v-if="userRole === $options.UserRole.WORKER || quest.status !== $options.QuestStatuses.Created"
             :data-selector="`ACTION-BTN-TO-SHARE-QUEST-${quest.id}`"
             class="card-quest__shared"
-            @click="shareModal(quest.id)"
+            @click="shareModal(quest)"
           >
             <span class="card-quest__icon card-quest__icon_fav icon-share_outline" />
           </button>
@@ -94,7 +94,7 @@
             <img
               class="user__avatar"
               :src="quest.assignedWorker.avatar ? quest.assignedWorker.avatar.url : EmptyAvatar()"
-              :alt="`${ quest.assignedWorker ? UserName(quest.assignedWorker.firstName, quest.assignedWorker.lastName) : '' }`"
+              :alt="`${ quest.assignedWorker ? new UserName(quest.assignedWorker.firstName, quest.assignedWorker.lastName) : '' }`"
             >
             <div class="user__name">
               {{ quest.assignedWorker.firstName }} {{ quest.assignedWorker.lastName }}
@@ -232,6 +232,7 @@ export default {
       this.ShowModal({
         key: modals.sharingQuest,
         itemId: item.id,
+        mode: 'quest',
       });
     },
     getRatingValue(item) {

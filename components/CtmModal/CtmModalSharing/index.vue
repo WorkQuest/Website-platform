@@ -46,6 +46,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { Path } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -55,7 +56,15 @@ export default {
       options: 'modals/getOptions',
     }),
     sharingLink() {
-      return this.options.itemId ? `${window.location.origin + this.$route.fullPath}/${this.options.itemId}` : window.location.origin + this.$route.fullPath;
+      if (this.options.mode === 'quest') {
+        if (this.$route.fullPath === Path.QUESTS) return `${window.location.origin + this.$route.fullPath}/${this.options.itemId}`;
+        if (this.$route.fullPath === Path.MY_QUESTS) return `${window.location.origin}${Path.QUESTS}/${this.options.itemId}`;
+        if (this.options.itemId) return `${window.location.origin}${Path.QUESTS}/${this.options.itemId}`;
+      }
+      if (this.options.mode === 'profile' && this.$route.fullPath === `${Path.PROFILE}/${this.options.itemId}`) {
+        return `${window.location.origin}${Path.PROFILE}/${this.options.itemId}`;
+      }
+      return 'error';
     },
   },
   methods: {
