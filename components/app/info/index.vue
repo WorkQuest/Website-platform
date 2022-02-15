@@ -1,39 +1,38 @@
 <template>
   <div
     class="info"
-
     :class="infoClass"
   >
     <div
-      v-if="userRole === 'employer' && infoDataMode !== InfoModeEmployer.Created"
+      v-if="userRole === $options.UserRole.EMPLOYER && infoDataMode !== $options.InfoModeEmployer.Created"
       class="info__body"
     >
       <div class="info__left">
         <div
           class="info__text"
-          :class="[{'info__text_white': ![InfoModeEmployer.Created, InfoModeEmployer.WaitConfirm].includes(infoDataMode)}]"
+          :class="[{'info__text_white': ![$options.InfoModeEmployer.Created, $options.InfoModeEmployer.WaitConfirm].includes(infoDataMode)}]"
         >
           {{ infoStatusText }}
         </div>
       </div>
     </div>
     <div
-      v-if="userRole === 'worker'"
+      v-if="userRole === $options.UserRole.WORKER"
       class="info__body"
     >
       <div class="info__left">
         <div
           class="info__text"
           :class="[
-            {'info__text_white': ![InfoModeWorker.Rejected, InfoModeWorker.Closed].includes(infoDataMode)},
-            {'info__text_black': [InfoModeWorker.Rejected, InfoModeWorker.Closed].includes(infoDataMode)}
+            {'info__text_white': ![$options.InfoModeWorker.Rejected].includes(infoDataMode)},
+            {'info__text_black': [$options.InfoModeWorker.Rejected].includes(infoDataMode)}
           ]"
         >
           {{ infoStatusText }}
         </div>
       </div>
       <div
-        v-if="infoDataMode === InfoModeWorker.Rejected"
+        v-if="infoDataMode === $options.InfoModeWorker.Rejected"
         class="info__right"
       >
         <base-btn
@@ -68,13 +67,17 @@
 
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import { InfoModeEmployer, InfoModeWorker, ResponseStatus } from '~/utils/enums';
+import {
+  InfoModeEmployer, InfoModeWorker, ResponseStatus, UserRole,
+} from '~/utils/enums';
 
 export default {
   name: 'InfoVue',
-  directives: {
-    ClickOutside,
-  },
+  directives: { ClickOutside },
+  UserRole,
+  InfoModeEmployer,
+  InfoModeWorker,
+  ResponseStatus,
   data() {
     return {
       isShowMessage: false,
@@ -87,17 +90,17 @@ export default {
       userRole: 'user/getUserRole',
       infoDataMode: 'quests/getInfoDataMode',
     }),
-    InfoModeEmployer() {
-      return InfoModeEmployer;
-    },
-    InfoModeWorker() {
-      return InfoModeWorker;
-    },
-    responseStatus() {
-      return ResponseStatus;
-    },
+    // InfoModeEmployer() {
+    //   return InfoModeEmployer;
+    // },
+    // InfoModeWorker() {
+    //   return InfoModeWorker;
+    // },
+    // responseStatus() {
+    //   return ResponseStatus;
+    // },
     infoStatusText() {
-      if (this.userRole === 'employer') {
+      if (this.userRole === UserRole.EMPLOYER) {
         const obj = {
           [InfoModeEmployer.Active]: 'quests.activeQuest',
           [InfoModeEmployer.WaitWorker]: 'quests.waitWorker',
@@ -108,7 +111,7 @@ export default {
         };
         return this.$t(`${obj[this.infoDataMode]}`);
       }
-      if (this.userRole === 'worker') {
+      if (this.userRole === UserRole.WORKER) {
         const { response } = this.questData;
         const { awaiting, accepted } = ResponseStatus;
         const obj = {
@@ -133,7 +136,7 @@ export default {
     },
     infoClass() {
       const { infoDataMode } = this;
-      if (this.userRole === 'worker') {
+      if (this.userRole === UserRole.WORKER) {
         const { response } = this.questData;
         return [
           { 'info-hide': infoDataMode === InfoModeWorker.Created },
@@ -144,7 +147,7 @@ export default {
           { 'info_bg-red': [InfoModeWorker.Dispute, InfoModeWorker.Closed].includes(infoDataMode) || (InfoModeWorker.Invited && response?.status === ResponseStatus.rejected) },
         ];
       }
-      if (this.userRole === 'employer') {
+      if (this.userRole === UserRole.EMPLOYER) {
         return [
           { 'info-hide': infoDataMode === InfoModeEmployer.Created },
           { 'info_bg-yellow': infoDataMode === InfoModeEmployer.WaitWorker },
