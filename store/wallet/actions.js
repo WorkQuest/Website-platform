@@ -5,10 +5,10 @@ import {
   getBalance, getContractFeeData,
   getIsWalletConnected,
   getStyledAmount, getWalletAddress, getTransferFeeData,
-  transfer, transferToken, GetWalletProvider, stake,
+  transfer, transferToken, GetWalletProvider, stake, sendWalletTransaction,
 } from '~/utils/wallet';
 import {
-  sendTransaction, fetchContractData, success, error,
+  fetchContractData, success, error,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { StakingTypes, TokenSymbols } from '~/utils/enums';
@@ -142,14 +142,13 @@ export default {
   async approve({ commit }, { tokenAddress, spenderAddress, amount }) {
     try {
       amount = new BigNumber(amount).shiftedBy(18).toString();
-      return await sendTransaction(
+      return await sendWalletTransaction(
         'approve',
         {
           abi: abi.ERC20,
           address: tokenAddress,
           data: [spenderAddress, amount],
         },
-        GetWalletProvider(),
       );
     } catch (e) {
       console.error('Approve error', e.message);
@@ -337,13 +336,13 @@ export default {
     try {
       amount = new BigNumber(amount).shiftedBy(18).toString();
       const _abi = stakingType === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStaking;
-      const res = await sendTransaction(
+      const res = await sendWalletTransaction(
         'unstake',
         {
           abi: _abi,
           address: poolAddress,
           data: [amount],
-        }, GetWalletProvider(),
+        },
       );
       return success(res);
     } catch (e) {
@@ -354,7 +353,7 @@ export default {
   async stakingClaimRewards({ commit }, { stakingType, poolAddress }) {
     try {
       const _abi = stakingType === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStaking;
-      await sendTransaction('claim', { abi: _abi, address: poolAddress }, GetWalletProvider());
+      await sendWalletTransaction('claim', { abi: _abi, address: poolAddress });
       return success();
     } catch (e) {
       console.error('Claim error', e.message);
@@ -364,7 +363,7 @@ export default {
   async stakingRenewal({ commit }, { stakingType, poolAddress }) {
     try {
       const _abi = stakingType === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStaking;
-      return success(await sendTransaction('autoRenewal', { abi: _abi, address: poolAddress }, GetWalletProvider()));
+      return success(await sendWalletTransaction('autoRenewal', { abi: _abi, address: poolAddress }));
     } catch (e) {
       console.error('Renewal error', e.message);
       return error();

@@ -1,6 +1,7 @@
 <template>
   <div
     class="info"
+
     :class="infoClass"
   >
     <div

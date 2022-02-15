@@ -1,5 +1,8 @@
 <template>
-  <div class="settings">
+  <div
+    class="settings"
+    data-selector="PAGE-SETTINGS"
+  >
     <div class="settings__title">
       {{ $t('settings.settings') }}
     </div>
@@ -8,7 +11,7 @@
       class="settings__body"
       tag="div"
     >
-      <verification-card v-if="userRole === UserRole.WORKER && isShowInfo === true && userData.statusKYC === 0" />
+      <verification-card v-if="userData.statusKYC === 0" />
       <profile
         :profile="profile"
         :new-education="newEducation"
@@ -16,6 +19,7 @@
         :avatar-change="avatarChange"
         :validation-error="validationError"
         :is-valid-phone-number="isValidPhoneNumber"
+        :is-valid-second-phone-number="isValidSecondPhoneNumber"
         @click="editUserData"
         @updateFirstPhone="updateFirstPhone($event)"
         @updateSecondPhone="updateSecondPhone($event)"
@@ -92,12 +96,12 @@ export default {
         distantIndex: -1,
         selectedSpecAndSkills: null,
       },
-      isShowInfo: true,
       avatarChange: { data: {}, file: {} },
       updatedSecondPhone: { codeRegion: null, phone: null, fullPhone: null },
       updatedFirstPhone: { codeRegion: null, phone: null, fullPhone: null },
       validationError: false,
       isValidPhoneNumber: true,
+      isValidSecondPhoneNumber: true,
       newEducation: [],
       newWorkExp: [],
       valRefs: {},
@@ -123,23 +127,24 @@ export default {
     if (!this.filters) await this.$store.dispatch('quests/getFilters');
     if (!this.profile.firstName) await this.$store.dispatch('user/getUserData');
     const addInfo = this.userData.additionalInfo;
+    const { userData, secondNumber } = this;
+    console.log(userData);
     this.profile = {
-      avatarId: this.userData.avatarId,
-      firstName: this.userData.firstName,
-      lastName: this.userData.lastName,
-      email: this.userData.email,
+      avatarId: userData.avatarId,
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      email: userData.email,
       firstPhone: {
-        codeRegion: this.userData.phone?.codeRegion || this.userData.tempPhone?.codeRegion,
-        phone: this.userData.phone?.phone || this.userData.tempPhone?.phone,
-        fullPhone: this.userData.phone?.fullPhone || this.userData.tempPhone?.fullPhone,
+        codeRegion: userData.phone?.codeRegion || userData.tempPhone?.codeRegion,
+        phone: userData.phone?.phone || userData.tempPhone?.phone,
+        fullPhone: userData.phone?.fullPhone || userData.tempPhone?.fullPhone,
       },
       additionalInfo: {
         secondMobileNumber: {
-          codeRegion: this.secondNumber?.codeRegion || null,
-          phone: this.secondNumber?.phone || null,
-          fullPhone: this.secondNumber?.fullPhone || null,
+          codeRegion: secondNumber?.codeRegion || null,
+          phone: secondNumber?.phone || null,
+          fullPhone: secondNumber?.fullPhone || null,
         },
-        address: addInfo.address,
         socialNetwork: {
           instagram: addInfo.socialNetwork.instagram,
           twitter: addInfo.socialNetwork.twitter,
@@ -156,17 +161,17 @@ export default {
       },
       locationFull: {
         location: {
-          longitude: this.coordinates?.lng || this.profile.locationFull.location?.longitude || 0,
-          latitude: this.coordinates?.lat || this.profile.locationFull.location?.latitude || 0,
+          longitude: userData.location?.longitude || 0,
+          latitude: userData.location?.latitude || 0,
         },
-        locationPlaceName: addInfo.address,
+        locationPlaceName: userData.locationPlaceName,
       },
     };
     this.skills = {
-      priorityIndex: this.userData.priority,
-      distantIndex: this.distantIndexByWorkplace(this.userData.workplace),
-      perHour: this.userData.wagePerHour,
-      selectedSpecAndSkills: this.userData.userSpecializations || [],
+      priorityIndex: userData.priority,
+      distantIndex: WorkplaceIndex.indexOf(userData.workplace),
+      perHour: userData.wagePerHour,
+      selectedSpecAndSkills: userData.userSpecializations || [],
     };
     this.SetLoader(false);
   },
@@ -180,9 +185,7 @@ export default {
       this.profile.locationFull.location.latitude = +coordinates.lat;
       this.profile.locationFull.locationPlaceName = coordinates.address;
     },
-    distantIndexByWorkplace(workplace) {
-      return WorkplaceIndex.indexOf(workplace);
-    },
+
     // MODALS METHODS
     addEducation(knowledge, data) {
       const { educations, workExperiences } = this.profile.additionalInfo;
@@ -204,6 +207,7 @@ export default {
         educationAddSuccessful: this.$t('modals.educationAddSuccessful'),
         workExpAddSuccessful: this.$t('modals.workExpAddSuccessful'),
         saved: this.$t('modals.saved'),
+        error: this.$t('modals.error'),
       };
       return titles[modalMode];
     },
@@ -215,6 +219,7 @@ export default {
         educationAddSuccessful: this.$t('modals.pressSaveBtn'),
         workExpAddSuccessful: this.$t('modals.pressSaveBtn'),
         saved: this.$t('modals.userDataHasBeenSaved'),
+        error: this.$t('modals.error'),
       };
       return subtitles[modalMode];
     },
@@ -235,7 +240,7 @@ export default {
     showModalStatus(modalMode) {
       this.ShowModal({
         key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
+        img: require(`~/assets/img/ui/${modalMode === 'error' ? 'error' : 'questAgreed'}.svg`),
         title: this.modalsStatusTitle(modalMode),
         subtitle: this.modalsStatusSubtitles(modalMode),
       });
@@ -252,7 +257,7 @@ export default {
     },
 
     updateSecondPhone(value) {
-      this.isValidPhoneNumber = true;
+      this.isValidSecondPhoneNumber = !value.nationalNumber || value.isValid;
       this.updatedSecondPhone = {
         phone: value?.nationalNumber || null,
         fullPhone: value?.formatInternational ? value.formatInternational.replace(/\s/g, '') : null,
@@ -279,7 +284,7 @@ export default {
       const validateWorkExp = this.userRole === UserRole.EMPLOYER ? true : await this.validateKnowledge('work',
         this.newWorkExp.length > 0 ? this.newWorkExp : 'validated');
       const validateSettings = await this.$refs.settings.validate();
-      if (!validateSettings || !validateEducation || !validateWorkExp || !this.isValidPhoneNumber) return true;
+      if (!validateSettings || !validateEducation || !validateWorkExp || !this.isValidPhoneNumber || !this.isValidSecondPhoneNumber) return true;
       this.validationError = false;
       return false;
     },
@@ -325,13 +330,12 @@ export default {
         },
         locationFull: {
           location: {
-            longitude: this.coordinates ? this.coordinates.lng : this.profile.locationFull.location?.longitude || 0,
-            latitude: this.coordinates ? this.coordinates.lat : this.profile.locationFull.location?.latitude || 0,
+            longitude: this.profile.locationFull.location?.longitude || this.userData.location?.longitude,
+            latitude: this.profile.locationFull.location?.latitude || this.userData.location?.latitude,
           },
-          locationPlaceName: addInfo.address,
+          locationPlaceName: this.profile.locationFull.locationPlaceName || this.userData.locationPlaceName,
         },
         additionalInfo: {
-          address: addInfo.address,
           secondMobileNumber: {
             codeRegion: this.updatedSecondPhone?.codeRegion ? this.updatedSecondPhone?.codeRegion : null,
             phone: this.updatedSecondPhone?.phone ? this.updatedSecondPhone?.phone : null,
@@ -379,8 +383,8 @@ export default {
     },
 
     async editProfileResponse(action, payload) {
-      await this.$store.dispatch(action, payload);
-      this.showModalStatus('saved');
+      const result = await this.$store.dispatch(action, payload);
+      this.showModalStatus(result ? 'saved' : 'error');
     },
   },
 };

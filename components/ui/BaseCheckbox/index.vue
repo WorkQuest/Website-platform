@@ -1,6 +1,7 @@
 <template>
   <div
     :class="checkboxClass"
+    data-selector="COMPONENT-BASE-CHECKBOX"
   >
     <label
       :for="name"
@@ -10,6 +11,7 @@
         :id="name"
         v-model="model"
         type="checkbox"
+        data-selector="BASE-CHECKBOX-INPUT"
         class="checkbox-input"
       >
       <span class="checkmark" />

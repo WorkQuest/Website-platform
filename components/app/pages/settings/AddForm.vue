@@ -2,6 +2,7 @@
   <validation-observer
     v-slot="{handleSubmit, invalid}"
     tag="div"
+    data-selector="COMPONENT-ADD-FORM"
     class="knowledge"
   >
     <base-field
@@ -9,6 +10,7 @@
       :name="$t('settings.workExps.from')"
       :type="isAdding ? 'date' : 'gray'"
       :mode="isAdding ? '': 'convertDate'"
+      data-selector="ADD-FORM-FROM-FIELD"
       :disabled="!isAdding"
       class="knowledge__data"
       :placeholder="$t('settings.workExps.from')"
@@ -24,6 +26,7 @@
       :name="$t('settings.workExps.to')"
       :type="isAdding ? 'date' : 'gray'"
       :mode="isAdding ? '': 'convertDate'"
+      data-selector="ADD-FORM-TO-FIELD"
       :disabled="!isAdding"
       class="knowledge__data"
       :placeholder="$t('settings.workExps.to')"
@@ -36,6 +39,7 @@
       :name="$t('settings.education.educationalInstitution')"
       type="grey"
       :disabled="!isAdding"
+      data-selector="ADD-FORM-PLACE-FIELD"
       class="knowledge__data knowledge__data_big"
       :placeholder="placeholder"
       :validation-mode="validationMode"

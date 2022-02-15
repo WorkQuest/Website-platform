@@ -1,5 +1,8 @@
 <template>
-  <div class="quests">
+  <div
+    class="quests"
+    data-selector="PAGE-QUESTS"
+  >
     <search-with-map
       class="quests__search"
       @isShowMap="isShowMap = $event"
@@ -25,6 +28,7 @@
         <card-quest
           v-for="(quest,id) in questsList"
           :key="id"
+          :data-selector="`QUEST-CARD-${quest.id}`"
           :quest="quest"
           @clickFavoriteStar="updateQuests(quest)"
         />
