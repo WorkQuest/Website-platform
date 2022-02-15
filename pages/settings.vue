@@ -169,7 +169,7 @@ export default {
     };
     this.skills = {
       priorityIndex: userData.priority,
-      distantIndex: this.distantIndexByWorkplace(userData.workplace),
+      distantIndex: WorkplaceIndex.indexOf(userData.workplace),
       perHour: userData.wagePerHour,
       selectedSpecAndSkills: userData.userSpecializations || [],
     };
@@ -185,9 +185,7 @@ export default {
       this.profile.locationFull.location.latitude = +coordinates.lat;
       this.profile.locationFull.locationPlaceName = coordinates.address;
     },
-    distantIndexByWorkplace(workplace) {
-      return WorkplaceIndex.indexOf(workplace);
-    },
+
     // MODALS METHODS
     addEducation(knowledge, data) {
       const { educations, workExperiences } = this.profile.additionalInfo;
