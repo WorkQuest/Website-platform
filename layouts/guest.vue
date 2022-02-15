@@ -65,7 +65,7 @@
                 class="header__btn"
                 @click="$router.push('/sign-in')"
               >
-                {{ $t('layout.signIn') }}
+                {{ $t('login.signIn') }}
               </base-btn>
             </div>
           </div>
