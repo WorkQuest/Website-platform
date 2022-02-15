@@ -90,15 +90,6 @@ export default {
       userRole: 'user/getUserRole',
       infoDataMode: 'quests/getInfoDataMode',
     }),
-    // InfoModeEmployer() {
-    //   return InfoModeEmployer;
-    // },
-    // InfoModeWorker() {
-    //   return InfoModeWorker;
-    // },
-    // responseStatus() {
-    //   return ResponseStatus;
-    // },
     infoStatusText() {
       if (this.userRole === UserRole.EMPLOYER) {
         const obj = {
