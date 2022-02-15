@@ -462,7 +462,8 @@ export default {
   },
   watch: {
     profile() {
-      this.initPhones();
+      this.secondPhoneNumber = this.profileSecondPhone;
+      this.firstPhone = this.profileFirstPhone;
     },
   },
   mounted() {
@@ -473,10 +474,6 @@ export default {
     this.validationRefs();
   },
   methods: {
-    initPhones() {
-      this.secondPhoneNumber = this.profileSecondPhone;
-      this.firstPhone = this.profileFirstPhone;
-    },
     // UPDATE AVATAR
     // eslint-disable-next-line consistent-return
     async processFile(e, validate) {
