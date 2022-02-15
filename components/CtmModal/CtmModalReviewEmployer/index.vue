@@ -6,7 +6,7 @@
     <div class="review__body body">
       <div class="body__rating">
         <star-rating
-          :rating-type="'modal'"
+          rating-type="modal"
           :rating="rating"
           :stars-number="5"
           @input="changeReview($event)"

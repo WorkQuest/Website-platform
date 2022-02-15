@@ -4,9 +4,7 @@
     :title="$t('modals.sendARequest')"
   >
     <div class="ctm-modal__content">
-      <validation-observer
-        v-slot="{handleSubmit}"
-      >
+      <validation-observer v-slot="{handleSubmit}">
         <div class="message">
           <div class="message__content">
             <div class="modal__desc">
@@ -39,6 +37,7 @@
               <div class="btn__container">
                 <div class="btn__wrapper">
                   <base-btn
+                    selector="SEND"
                     class="message__action"
                     :disabled="!text || isRespondActionInProgress"
                     @click="handleSubmit(showRequestSendModal)"
@@ -48,7 +47,8 @@
                 </div>
                 <div class="btn__wrapper">
                   <base-btn
-                    :mode="'outline'"
+                    mode="outline"
+                    selector="CANCEL"
                     class="message__action"
                     @click="hide()"
                   >

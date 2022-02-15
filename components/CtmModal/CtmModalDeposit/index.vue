@@ -26,9 +26,7 @@
           v-if="step === 1"
           class="step__container"
         >
-          <div
-            class="ctm-modal__content-field"
-          >
+          <div class="ctm-modal__content-field">
             <base-field
               v-model="amountInput"
               :placeholder="'0 WUSD'"
@@ -71,12 +69,8 @@
               name="Card number"
             />
           </div>
-          <div
-            class="grid__2col"
-          >
-            <div
-              class="ctm-modal__content-field"
-            >
+          <div class="grid__2col">
+            <div class="ctm-modal__content-field">
               <base-field
                 v-model="dateInput"
                 :placeholder="'02/24'"

@@ -4,21 +4,15 @@
     :title="$t('modals.withdrawal')"
   >
     <div class="withdraw__content content">
-      <validation-observer
-        v-slot="{handleSubmit, invalid}"
-      >
-        <div
-          class="content__step"
-        >
+      <validation-observer v-slot="{handleSubmit, invalid}">
+        <div class="content__step">
           <div
             class="content__panel"
             @click="showTakeWithdraw"
           >
             {{ $t('modals.walletAddress') }}
           </div>
-          <div
-            class="content__panel_active"
-          >
+          <div class="content__panel_active">
             {{ $t('wallet.bankCard') }}
           </div>
         </div>
@@ -92,6 +86,7 @@
         <div class="content__buttons buttons">
           <base-btn
             class="buttons__button"
+            selector="CANCEL"
             mode="outline"
             @click="hide"
           >
@@ -99,6 +94,7 @@
           </base-btn>
           <base-btn
             class="buttons__button"
+            selector="SUBMIT"
             :disabled="invalid||items.length===0"
             @click="handleSubmit(showTransactionSendModal)"
           >

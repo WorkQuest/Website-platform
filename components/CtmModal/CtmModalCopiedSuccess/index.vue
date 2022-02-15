@@ -14,6 +14,7 @@
       </div>
       <base-btn
         class="copied__action"
+        selector="OK"
         @click="hide"
       >
         {{ $t('meta.ok') }}

@@ -47,7 +47,7 @@
               class="btn__store"
             >
               <base-btn
-                :mode="'black'"
+                mode="black"
                 :selector="item.text"
                 @click="item.click"
               >
@@ -209,7 +209,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -282,10 +282,10 @@ export default {
     await this.$store.dispatch('user/getUserData');
   },
   methods: {
-    goToGooglePlay(to, from, next) {
+    goToGooglePlay() {
       window.location.href = 'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2';
     },
-    goToAppleStore(to, from, next) {
+    goToAppleStore() {
       window.location.href = 'https://apps.apple.com/ru/app/google-authenticator/id388497605';
     },
     async enable2FA() {

@@ -75,6 +75,7 @@
           {{ $t('modals.haventSMS') }}
           <button
             class="content__resend"
+            data-selector="RESEND-SMS"
             @click="getCodeFromSms()"
           >
             {{ $t('meta.resendSMS') }}
