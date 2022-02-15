@@ -168,7 +168,7 @@
           >
             <base-btn
               v-if="item.step.includes(step)"
-              :selector="item.text"
+              :selector="`${item.text}-${i}`"
               class="message__action"
               @click="item.click"
             >
