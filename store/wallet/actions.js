@@ -21,6 +21,19 @@ import {
 } from '~/utils/wallet.js';
 
 export default {
+  async getPensionTransactions({ commit }) {
+    try {
+      const [receive, update, withdraw] = await Promise.all([
+        await this.$axios.get('/v1/pension-fund/receive'),
+        await this.$axios.get('/v1/pension-fund/wallet-update'),
+        await this.$axios.get('/v1/pension-fund/withdraw'),
+      ]);
+      console.log(receive.data.result.events);
+      return receive;
+    } catch (e) {
+      return [];
+    }
+  },
   async getTransactions({ commit }, params) {
     try {
       const res = await this.$axios({ url: `/account/${getWalletAddress()}/txs`, baseURL: process.env.WQ_EXPLORER, params });
