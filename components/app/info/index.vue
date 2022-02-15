@@ -23,10 +23,7 @@
       <div class="info__left">
         <div
           class="info__text"
-          :class="[
-            {'info__text_white': ![$options.InfoModeWorker.Rejected].includes(infoDataMode)},
-            {'info__text_black': [$options.InfoModeWorker.Rejected].includes(infoDataMode)}
-          ]"
+          :class="infoStatusTextColor"
         >
           {{ infoStatusText }}
         </div>
@@ -90,6 +87,10 @@ export default {
       userRole: 'user/getUserRole',
       infoDataMode: 'quests/getInfoDataMode',
     }),
+    infoStatusTextColor() {
+      if ([InfoModeWorker.Rejected].includes(this.infoDataMode)) return 'info__text_black';
+      return 'info__text_white';
+    },
     infoStatusText() {
       if (this.userRole === UserRole.EMPLOYER) {
         const obj = {
