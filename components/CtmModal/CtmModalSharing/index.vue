@@ -56,10 +56,7 @@ export default {
       options: 'modals/getOptions',
     }),
     sharingLink() {
-      if (this.options.mode === 'quest') {
-        if (this.$route.fullPath === Path.QUESTS) return `${window.location.origin + this.$route.fullPath}/${this.options.itemId}`;
-        if (this.$route.fullPath === Path.MY_QUESTS || this.options.itemId) return `${window.location.origin}${Path.QUESTS}/${this.options.itemId}`;
-      }
+      if (this.options.mode === 'quest') return `${window.location.origin}${Path.QUESTS}/${this.options.itemId}`;
       if (this.options.mode === 'profile') return `${window.location.origin}${Path.PROFILE}/${this.options.itemId}`;
       return 'error';
     },
