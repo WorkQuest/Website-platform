@@ -192,6 +192,7 @@ export default {
       isConnected: 'web3/isConnected',
       crosschainTableData: 'defi/getCrosschainTokensData',
       statusBusy: 'web3/getStatusBusy',
+      userData: 'user/getUserData',
     }),
     tableFields() {
       const cellStyle = {
@@ -265,6 +266,9 @@ export default {
         }
       }
     },
+  },
+  mounted() {
+    this.$nuxt.setLayout(this.userData.id ? 'default' : 'guest');
   },
   async beforeDestroy() {
     await this.disconnectFromWallet();
