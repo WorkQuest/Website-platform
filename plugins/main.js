@@ -2,6 +2,7 @@ import Vue from 'vue';
 import moment from 'moment';
 import VueTippy, { TippyComponent } from 'vue-tippy';
 import modals from '~/store/modals/modals';
+import { QuestStatuses } from '~/utils/enums';
 
 Vue.use(VueTippy);
 Vue.component('tippy', TippyComponent);
@@ -155,6 +156,36 @@ Vue.mixin({
     SetDelay(func, timeout, delayId) {
       clearTimeout(delayId);
       return setTimeout(func, timeout);
+    },
+    async DeleteQuest({ id, status }) {
+      if ([QuestStatuses.Closed, QuestStatuses.Created].includes(status)) {
+        await this.$store.dispatch('quests/deleteQuest', { questId: id });
+
+        const routeName = this.$route.name;
+
+        if (routeName === 'quests-id') {
+          if (window.history.length > 2) {
+            this.$router.go(-1);
+          } else {
+            await this.$router.push('/my');
+          }
+        } else if (routeName === 'my' || routeName === 'profile-id') {
+          const payload = JSON.parse(sessionStorage.getItem('questsListFilter'));
+          await this.$store.dispatch('quests/getUserQuests', payload);
+        }
+
+        await this.$store.dispatch('main/showToast', {
+          title: this.$t('toasts.questDeleted'),
+          variant: 'success',
+          text: this.$t('toasts.questDeleted'),
+        });
+      } else {
+        await this.$store.dispatch('main/showToast', {
+          title: this.$t('toasts.questInfo'),
+          variant: 'warning',
+          text: this.$t('toasts.questCantDelete'),
+        });
+      }
     },
   },
 });

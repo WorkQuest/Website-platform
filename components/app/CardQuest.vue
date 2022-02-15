@@ -63,7 +63,7 @@
             >
           </div>
           <quest-dd
-            v-if="quest.status === $options.QuestStatuses.Created && userRole === $options.UserRole.EMPLOYER && quest.userId === userData.id"
+            v-if="quest && quest.status === $options.QuestStatuses.Created && userRole === $options.UserRole.EMPLOYER && quest.userId === userData.id"
             class="card-quest__icon card-quest__icon_fav"
             :item="quest"
           />

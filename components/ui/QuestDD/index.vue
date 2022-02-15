@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="Object.keys(item).length"
     v-click-outside="closeQuestMenu"
     data-selector="COMPONENT-QUEST-DD"
     class="quest quest__menu"
@@ -29,8 +30,8 @@
             </div>
             <div
               class="menu__item"
-              @click="shareModal"
               data-selector="ACTION-BTN-SHARE-MODAL"
+              @click="shareModal"
             >
               <div class="menu__text">
                 {{ $t('modals.share') }}
@@ -38,8 +39,8 @@
             </div>
             <div
               class="menu__item"
-              @click="toEditQuest"
               data-selector="ACTION-BTN-TO-EDIT-QUEST"
+              @click="toEditQuest"
             >
               <div class="menu__text">
                 {{ $t('modals.edit') }}
@@ -47,8 +48,8 @@
             </div>
             <div
               class="menu__item"
-              @click="showAreYouSureDeleteQuestModal"
               data-selector="ACTION-BTN-DELETE-QUEST"
+              @click="showAreYouSureDeleteQuestModal"
             >
               <div class="menu__text">
                 {{ $t('modals.delete') }}
@@ -101,7 +102,17 @@ export default {
       } else this.showToastWrongStatusEdit();
     },
     showAreYouSureDeleteQuestModal() {
-      this.ShowModal({ key: modals.areYouSureDeleteQuest, item: this.item });
+      this.ShowModal({
+        key: modals.areYouSure,
+        title: this.$t('modals.sureDeleteNotification'),
+        okBtnTitle: this.$t('meta.delete'),
+        okBtnFunc: () => this.deleteQuest(),
+      });
+    },
+    deleteQuest() {
+      this.CloseModal();
+
+      this.DeleteQuest(this.item);
     },
     toRaisingViews() {
       const { status, id } = this.item;
