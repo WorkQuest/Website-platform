@@ -128,7 +128,6 @@ export default {
     if (!this.profile.firstName) await this.$store.dispatch('user/getUserData');
     const addInfo = this.userData.additionalInfo;
     const { userData, secondNumber } = this;
-    console.log(userData);
     this.profile = {
       avatarId: userData.avatarId,
       firstName: userData.firstName,
