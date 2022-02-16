@@ -72,7 +72,7 @@
             v-if="userRole === $options.UserRole.WORKER || quest.status !== $options.QuestStatuses.Created"
             :data-selector="`ACTION-BTN-TO-SHARE-QUEST-${quest.id}`"
             class="card-quest__shared"
-            @click="shareModal(quest.id)"
+            @click="shareModal(quest)"
           >
             <span class="card-quest__icon card-quest__icon_fav icon-share_outline" />
           </button>
@@ -232,6 +232,7 @@ export default {
       this.ShowModal({
         key: modals.sharingQuest,
         itemId: item.id,
+        mode: 'quest',
       });
     },
     getRatingValue(item) {

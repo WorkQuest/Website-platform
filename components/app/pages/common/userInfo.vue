@@ -179,7 +179,7 @@
           class="contact__btn"
         >
           <base-btn
-            :mode="'approve'"
+            mode="approve"
             data-selector="ACTION-BTN-GIVE-A-QUEST"
             @click="sendInvite()"
           >
@@ -316,6 +316,8 @@ export default {
     shareModal() {
       this.ShowModal({
         key: modals.sharingQuest,
+        mode: 'profile',
+        itemId: this.userData.id,
       });
     },
     toRaisedViews() {
