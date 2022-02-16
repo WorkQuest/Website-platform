@@ -34,7 +34,7 @@
             <quest-dd
               v-if="questData.status === questStatuses.Created"
               :data-selector="`QUEST-DD-${questData.id}`"
-              :item-id="questData"
+              :item="questData"
             />
           </div>
         </div>
