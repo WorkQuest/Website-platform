@@ -2,12 +2,12 @@
   <div
     v-if="Object.keys(item).length"
     v-click-outside="closeQuestMenu"
-    data-selector="COMPONENT-QUEST-DD"
+    :data-selector="`COMPONENT-QUEST-DD-${questIndex}`"
     class="quest quest__menu"
   >
     <button
       class="quest__button quest__button_menu"
-      data-selector="ACTION-BTN-TOGGLE-QUEST-MENU"
+      :data-selector="`ACTION-BTN-TOGGLE-QUEST-MENU-${questIndex}`"
       @click="toggleQuestMenu()"
     >
       <span class="icon-more_vertical" />
@@ -21,7 +21,7 @@
           <div class="menu__container">
             <div
               class="menu__item"
-              data-selector="ACTION-BTN-TO-RAISING-VIEWS"
+              :data-selector="`ACTION-BTN-TO-RAISING-VIEWS-${questIndex}`"
               @click="toRaisingViews"
             >
               <div class="menu__text">
@@ -30,7 +30,7 @@
             </div>
             <div
               class="menu__item"
-              data-selector="ACTION-BTN-SHARE-MODAL"
+              :data-selector="`ACTION-BTN-SHARE-MODAL-${questIndex}`"
               @click="shareModal"
             >
               <div class="menu__text">
@@ -39,7 +39,7 @@
             </div>
             <div
               class="menu__item"
-              data-selector="ACTION-BTN-TO-EDIT-QUEST"
+              :data-selector="`ACTION-BTN-TO-EDIT-QUEST-${questIndex}`"
               @click="toEditQuest"
             >
               <div class="menu__text">
@@ -48,7 +48,7 @@
             </div>
             <div
               class="menu__item"
-              data-selector="ACTION-BTN-DELETE-QUEST"
+              :data-selector="`ACTION-BTN-DELETE-QUEST-${questIndex}`"
               @click="showAreYouSureDeleteQuestModal"
             >
               <div class="menu__text">
@@ -75,6 +75,10 @@ export default {
     mode: {
       type: String,
       default: '',
+    },
+    questIndex: {
+      type: Number,
+      default: 0,
     },
     item: {
       type: Object,
@@ -140,7 +144,11 @@ export default {
       });
     },
     shareModal() {
-      this.ShowModal({ key: modals.sharingQuest, itemId: this.item.id });
+      this.ShowModal({
+        key: modals.sharingQuest,
+        itemId: this.item.id,
+        mode: 'quest',
+      });
     },
     closeQuestMenu() {
       this.isShowQuestMenu = false;

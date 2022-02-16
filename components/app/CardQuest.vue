@@ -1,7 +1,7 @@
 <template>
   <div
     class="card-quest"
-    :data-selector="`COMPONENT-CARD-QUEST-${quest.id}`"
+    :data-selector="`COMPONENT-CARD-QUEST-${questIndex}`"
   >
     <div
       class="card-quest__left"
@@ -19,23 +19,17 @@
       <div class="card-quest__head">
         <div
           class="card-quest__title"
-          :data-selector="`ACTION-BTN-TO-CREATOR-QUEST-PROFILE-${quest.userId}`"
+          :data-selector="`ACTION-BTN-TO-CREATOR-QUEST-PROFILE-${questIndex}`"
           @click="showProfile(quest.userId)"
         >
           <div class="card-quest__avatar avatar">
             <img
               class="avatar__image"
-              data-selector="ACTION-BTN-TO-CREATOR-QUEST-PROFILE"
               :alt="`${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}`"
               :src="quest.user && quest.user.avatar ? quest.user.avatar.url : EmptyAvatar()"
-              @click="goToProfile(quest.user.id)"
             >
           </div>
-          <div
-            class="card-quest__text card-quest__text_title"
-            :data-selector="`ACTION-BTN-TO-CREATOR-QUEST-PROFILE-${quest.user.id}`"
-            @click="goToProfile(quest.user.id)"
-          >
+          <div class="card-quest__text card-quest__text_title">
             {{ `${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}` }}
           </div>
         </div>
@@ -48,7 +42,7 @@
             v-if="quest.userId === userData.id || quest.assignedWorkerId === userData.id"
             class="card-quest__icon card-quest__icon_fav star"
             :class="[{'star__hide': disputeId.length !== 0}]"
-            :data-selector="`ACTION-BTN-TOGGLE-FAVORITE-QUEST-${quest.id}`"
+            :data-selector="`ACTION-BTN-TOGGLE-FAVORITE-QUEST-${questIndex}`"
             @click="clickFavoriteStar(quest)"
           >
             <img
@@ -65,13 +59,14 @@
           <quest-dd
             v-if="quest && quest.status === $options.QuestStatuses.Created && userRole === $options.UserRole.EMPLOYER && quest.userId === userData.id"
             class="card-quest__icon card-quest__icon_fav"
+            :quest-index="questIndex"
             :item="quest"
           />
           <button
             v-if="userRole === $options.UserRole.WORKER || quest.status !== $options.QuestStatuses.Created"
-            :data-selector="`ACTION-BTN-TO-SHARE-QUEST-${quest.id}`"
+            :data-selector="`ACTION-BTN-TO-SHARE-QUEST-${questIndex}`"
             class="card-quest__shared"
-            @click="shareModal(quest.id)"
+            @click="shareModal(quest)"
           >
             <span class="card-quest__icon card-quest__icon_fav icon-share_outline" />
           </button>
@@ -87,7 +82,7 @@
         <div class="progress__container container">
           <div
             class="container__user user"
-            :data-selector="`ACTION-BTN-TO-ASSIGNED-WORKER-PROFILE-${quest.assignedWorker.id}`"
+            :data-selector="`ACTION-BTN-TO-ASSIGNED-WORKER-PROFILE-${questIndex}`"
             @click="goToProfile(quest.assignedWorker.id)"
           >
             <img
@@ -146,7 +141,7 @@
             v-if="quest.type !== 3"
             class="card-quest__btn-details"
             mode="borderless-right"
-            :data-selector="`ACTION-BTN-TO-QUEST-DETAILS-${quest.id}`"
+            :selector="`TO-QUEST-DETAILS-${questIndex}`"
             @click="showDetails(quest.id)"
           >
             {{ $t('meta.details') }}
@@ -164,7 +159,7 @@
               :quest-index="0"
               rating-type="questPage"
               :stars-number="5"
-              :data-selector="`ACTION-BTN-SHOW-REVIEW-MODAL-${quest.id}`"
+              :data-selector="`ACTION-BTN-SHOW-REVIEW-MODAL-${questIndex}`"
               :rating="!quest.yourReview ? currentMark.mark : quest.yourReview.mark"
               :is-disabled="quest.yourReview !== null || currentMark.mark !== 0"
               @input="showReviewModal($event, quest)"
@@ -192,6 +187,10 @@ export default {
     disputeId: {
       type: String,
       default: '',
+    },
+    questIndex: {
+      type: Number,
+      default: 0,
     },
     quest: {
       type: Object,
@@ -231,6 +230,7 @@ export default {
       this.ShowModal({
         key: modals.sharingQuest,
         itemId: item.id,
+        mode: 'quest',
       });
     },
     getRatingValue(item) {

@@ -4,9 +4,7 @@
     class="ctm-modal__box gallery-modal"
   >
     <div class="gallery-modal__container">
-      <div
-        class="gallery-modal__pager"
-      >
+      <div class="gallery-modal__pager">
         <video
           v-if="isVideo"
           :src="getUrl"

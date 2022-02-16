@@ -4,9 +4,7 @@
     :title="$t('mining.swapTokens.title')"
   >
     <div class="claim__content content">
-      <validation-observer
-        v-slot="{handleSubmit}"
-      >
+      <validation-observer v-slot="{handleSubmit}">
         <base-field
           v-model="oldTokens"
           class="content__field"
@@ -46,7 +44,8 @@
         />
         <div class="content__container">
           <base-btn
-            :mode="'outline'"
+            mode="outline"
+            selector="CANCEL"
             :disabled="statusBusy"
             @click="hide()"
           >
@@ -54,6 +53,7 @@
           </base-btn>
           <base-btn
             :disabled="statusBusy || !isConnected"
+            selector="SWAP"
             @click="handleSubmit(initSwap)"
           >
             {{ $t('mining.swapTokens.swap') }}

@@ -36,6 +36,7 @@
               <template #cell(choose)="el">
                 <base-btn
                   class="btn_bl"
+                  :selector="`${el.item.chooseBtn}`"
                   :disabled="el.item.disabled"
                   @click="handleOpenPool(el)"
                 >
@@ -177,6 +178,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    this.$nuxt.setLayout(this.userData.id ? 'default' : 'guest');
     this.SetLoader(false);
   },
   methods: {

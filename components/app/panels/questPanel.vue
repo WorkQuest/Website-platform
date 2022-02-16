@@ -8,7 +8,7 @@
         <div class="user__head">
           <div
             class="user__left"
-            :data-selector="`ACTION-BTN-SHOW-PROFILE`"
+            data-selector="ACTION-BTN-SHOW-PROFILE"
             @click="showProfile"
           >
             <img
@@ -33,12 +33,12 @@
             </span>
             <quest-dd
               v-if="questData.status === questStatuses.Created"
+              :data-selector="`QUEST-DD-${questData.id}`"
               :item="questData"
-              :data-selector="`QUEST-DD-${questData ? questData.id : ''}`"
             />
           </div>
         </div>
-        <divч
+        <div
           v-if="questData"
           class="location__container"
         >
@@ -52,7 +52,7 @@
               {{ showDistance() }} {{ $t('distance.m') }} {{ $t('meta.fromYou') }}
             </span>
           </div>
-        </divч>
+        </div>
       </div>
     </div>
     <skills

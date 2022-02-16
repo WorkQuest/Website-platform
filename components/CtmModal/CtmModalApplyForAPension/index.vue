@@ -38,12 +38,14 @@
           <base-btn
             class="buttons__button"
             mode="outline"
+            selector="CANCEL"
             @click="hide"
           >
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
+            selector="SUBMIT"
             :disabled="invalid || inProgress"
             @click="handleSubmit(submitPensionRegistration)"
           >

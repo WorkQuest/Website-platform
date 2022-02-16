@@ -8,18 +8,14 @@
         v-slot="{handleSubmit, validated, passed, invalid}"
         class="content__validator"
       >
-        <div
-          class="content__step"
-        >
+        <div class="content__step">
           <div
             class="content__panel"
             @click="showGiveDeposit"
           >
             {{ $t('modals.walletAddress') }}
           </div>
-          <div
-            class="content__panel content__panel_active"
-          >
+          <div class="content__panel content__panel_active">
             {{ $t('wallet.bankCard') }}
           </div>
         </div>
@@ -41,6 +37,7 @@
             >
               <base-btn
                 mode="add"
+                selector="SHOW-ADDING-CARD"
                 class="drop__button button"
                 @click="showAddingCard"
               >
@@ -104,6 +101,7 @@
           <base-btn
             class="buttons__button"
             mode="outline"
+            selector="CANCEL"
             @click="hide"
           >
             {{ $t('meta.cancel') }}
@@ -111,6 +109,7 @@
           <base-btn
             class="buttons__button"
             :disabled="invalid"
+            selector="BUY-WUSD"
             @click="handleSubmit(showTransactionSendModal)"
           >
             {{ $t('meta.buyWUSD') }}

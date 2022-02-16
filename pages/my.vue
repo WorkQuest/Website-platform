@@ -12,7 +12,7 @@
           <base-btn
             v-for="(item, i) in filterTabs"
             :key="i"
-            :data-selector="`ACTION-FILTER-BTNS-${item.name}`"
+            :selector="`${item.name}`"
             :mode="selectedTab === item.id ? '' : 'light'"
             class="quests__btn"
             @click="filterByStatus(item.id)"
@@ -25,9 +25,10 @@
           class="quests__cards"
         >
           <card-quest
-            v-for="(quest,id) in questsData"
-            :key="id"
+            v-for="(quest,i) in questsData"
+            :key="i"
             :quest="quest"
+            :quest-index="i"
             @clickFavoriteStar="updateQuests(quest)"
           />
         </div>
