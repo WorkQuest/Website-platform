@@ -17,6 +17,7 @@
       </div>
       <base-btn
         class="transaction__action"
+        selector="OK"
         @click="hide"
       >
         {{ $t('meta.ok') }}

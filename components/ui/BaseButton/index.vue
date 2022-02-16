@@ -22,7 +22,7 @@
     v-else
     class="base-btn"
     :class="btnClass"
-    data-selector="ACTION-BTN-CLICK"
+    :data-selector="`ACTION-BTN-CLICK-${selector}`"
     @click="$emit('click')"
   >
     {{ text }}
@@ -45,6 +45,10 @@
 export default {
   props: {
     link: {
+      type: String,
+      default: '',
+    },
+    selector: {
       type: String,
       default: '',
     },

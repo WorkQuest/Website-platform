@@ -19,12 +19,14 @@
         <base-btn
           class="action__button"
           mode="outline"
+          selector="CANCEL"
           @click="hide()"
         >
           {{ $t('meta.cancel') }}
         </base-btn>
         <base-btn
           class="action__button"
+          selector="DELETE"
           @click="deleteQuest()"
         >
           {{ $t('meta.delete') }}

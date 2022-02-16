@@ -26,9 +26,7 @@
           v-if="step === 1"
           class="step__container"
         >
-          <div
-            class="ctm-modal__content-field"
-          >
+          <div class="ctm-modal__content-field">
             <base-field
               v-model="amountInput"
               :placeholder="'0 WUSD'"
@@ -71,12 +69,8 @@
               name="Card number"
             />
           </div>
-          <div
-            class="grid__2col"
-          >
-            <div
-              class="ctm-modal__content-field"
-            >
+          <div class="grid__2col">
+            <div class="ctm-modal__content-field">
               <base-field
                 v-model="dateInput"
                 :placeholder="'02/24'"
@@ -135,6 +129,7 @@
             >
               <base-btn
                 class="message__action"
+                selector="NEXT-STEP"
                 :disabled="!validated || !passed || invalid"
                 @click="handleSubmit(nextStep)"
               >
@@ -146,6 +141,7 @@
               class="step__container"
             >
               <base-btn
+                selector="CONFIRM"
                 class="message__action"
                 :disabled="invalid"
                 @click="handleSubmit(nextStep)"
@@ -159,6 +155,7 @@
             >
               <base-btn
                 class="message__action"
+                selector="BUY"
                 @click="hide()"
               >
                 {{ $t('meta.buyWUSD') }}
@@ -167,7 +164,8 @@
           </div>
           <div class="btn__wrapper">
             <base-btn
-              :mode="'outline'"
+              mode="outline"
+              selector="CANCEL"
               class="message__action"
               @click="hide()"
             >

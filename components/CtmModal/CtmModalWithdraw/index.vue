@@ -68,12 +68,14 @@
           <div class="btn-group">
             <base-btn
               class="btn"
+              selector="CANCEL"
               @click="hide()"
             >
               {{ $t('meta.cancel') }}
             </base-btn>
             <base-btn
               class="btn_bl"
+              selector="CONFIRM"
               :disabled="!validated || !passed || invalid"
               @click="handleSubmit(showTransactionSendModal)"
             >

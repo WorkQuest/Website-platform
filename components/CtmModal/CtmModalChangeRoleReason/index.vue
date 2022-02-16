@@ -21,6 +21,7 @@
             <div class="btn__wrapper">
               <base-btn
                 class="message__action"
+                selector="NEXT-STEP"
                 @click="nextStep()"
               >
                 {{ $t('meta.change') }}
@@ -30,6 +31,7 @@
               <base-btn
                 mode="outline"
                 class="message__action"
+                selector="CANCEL"
                 @click="hide()"
               >
                 {{ $t('meta.cancel') }}
@@ -53,6 +55,7 @@
           <div class="btn__container">
             <base-btn
               class="message__action"
+              selector="SEND"
               @click="success()"
             >
               {{ $t('meta.send') }}

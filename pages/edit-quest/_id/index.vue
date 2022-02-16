@@ -144,7 +144,7 @@
           <div class="upload btn btn__container btn__container_right">
             <div class="btn__create">
               <base-btn
-                data-selector="ACTION-BTN-TO-RAISED-VIEWS"
+                selector="TO-RAISED-VIEWS"
                 :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
                 @click="handleSubmit(toRiseViews(2))"
               >
@@ -161,6 +161,7 @@
           <div class="page btn-container btn-container__left">
             <div class="btn-container__btn_back">
               <base-btn
+                selector="PREVIOUS-STEP"
                 mode="back"
                 @click="clickBackBtnHandler"
               >
@@ -241,6 +242,7 @@
             <div class="btn-container">
               <div class="btn-container__btn">
                 <base-btn
+                  selector="EDIT-QUEST"
                   mode="outline"
                   @click="editQuest"
                 >
@@ -249,6 +251,7 @@
               </div>
               <div class="btn-container__btn">
                 <base-btn
+                  selector="SHOW-PAYMENT-MODAl"
                   :disabled="ads.currentAdPrice === ''"
                   @click="showPaymentModal"
                 >

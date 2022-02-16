@@ -4,9 +4,7 @@
     :title="$t('modals.raiseViews')"
   >
     <div class="views__content content">
-      <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
-      >
+      <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
         <div class="content__field">
           <div class="field__subtitle">
             {{ $t('modals.priceOfAClick') }}
@@ -51,13 +49,15 @@
         <div class="content__buttons buttons">
           <base-btn
             class="buttons__action"
+            selector="OK"
             :disabled="!validated || !passed || invalid || period===''"
             @click="handleSubmit(showTransactionSendModal)"
           >
             {{ $t('meta.ok') }}
           </base-btn>
           <base-btn
-            :mode="'outline'"
+            mode="outline"
+            selector="CANCEL"
             class="buttons__action"
             @click="hide"
           >

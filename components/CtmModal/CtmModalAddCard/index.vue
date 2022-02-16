@@ -51,6 +51,7 @@
           <div class="btn__wrapper">
             <base-btn
               class="message__action"
+              selector="CONFIRM"
               :disabled="!validated || !passed || invalid"
               @click="handleSubmit(showCardHasBeenAddedModal)"
             >
@@ -59,7 +60,8 @@
           </div>
           <div class="btn__wrapper">
             <base-btn
-              :mode="'outline'"
+              mode="outline"
+              selector="CANCEL"
               class="message__action"
               @click="hide()"
             >
