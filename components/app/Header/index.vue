@@ -183,7 +183,7 @@
                 </nuxt-link>
                 <div
                   class="profile__item profile__item_red"
-                  data-selector="ACTION-BTN-LOGOUT-1"
+                  data-selector="ACTION-BTN-LOGOUT"
                   @click="logout()"
                 >
                   {{ $t('ui.profile.logout') }}
@@ -209,7 +209,7 @@
       <div class="ctm-menu__content">
         <div
           class="ctm-menu__user"
-          data-selector="TOGGLE-USER-DD"
+          data-selector="TOGGLE-USER-DD-MOBILE"
           @click="toggleUserDD()"
         >
           <div class="user__container">
@@ -253,7 +253,7 @@
           </div>
           <div
             class="dropdown__link dropdown__link_logout"
-            data-selector="ACTION-BTN-LOGOUT-2"
+            data-selector="ACTION-BTN-LOGOUT-MOBILE"
             @click="logout()"
           >
             {{ $t('ui.profile.logout') }}
