@@ -16,14 +16,14 @@
                 :src="initAvatar(reviewData.fromUser)"
                 alt=""
                 loading="lazy"
-                :data-selector="`ACTION-BTN-GO-TO-REVIEWER-PROFILE-${reviewData.fromUser.id}`"
+                :data-selector="`ACTION-BTN-GO-TO-REVIEWER-PROFILE-${i}`"
                 @click="goToProfile(reviewData.fromUser.id)"
               >
             </div>
             <div class="name__container">
               <div
                 class="card-subtitle__name"
-                :data-selector="`ACTION-BTN-GO-TO-REVIEWER-PROFILE-${reviewData.fromUser.id}`"
+                :data-selector="`ACTION-BTN-GO-TO-REVIEWER-PROFILE-${i}`"
                 @click="goToProfile(reviewData.fromUser.id)"
               >
                 {{ `${reviewData.fromUser.firstName} ${reviewData.fromUser.lastName}` }}
@@ -63,7 +63,7 @@
         </div>
         <base-btn
           mode="borderless-right"
-          :data-selector="`SHOW-REVIEW-DETAILS-${i}`"
+          :selector="`SHOW-REVIEW-DETAILS-${i}`"
           @click="showReviewDetails(reviewData)"
         >
           {{ $t('quests.readCompletely') }}

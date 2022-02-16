@@ -169,7 +169,7 @@
           class="contact__btn"
         >
           <base-btn
-            data-selector="ACTION-BTN-TO-RAISE-VIEWS"
+            selector="TO-RAISE-VIEWS"
             @click="toRaisedViews()"
           >
             {{ $t('profile.raiseViews') }}
@@ -181,7 +181,7 @@
         >
           <base-btn
             mode="approve"
-            data-selector="ACTION-BTN-GIVE-A-QUEST"
+            selector="GIVE-A-QUEST"
             @click="sendInvite()"
           >
             {{ $t('workers.giveAQuest') }}
