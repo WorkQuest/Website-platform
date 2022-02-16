@@ -7,7 +7,7 @@
       <div class="info-grid__share-left">
         <base-btn
           mode="share-btn"
-          data-selector="ACTION-BTN-SHARE-USER-PROFILE"
+          selector="SHARE-USER-PROFILE"
           @click="shareModal()"
         />
       </div>
@@ -157,6 +157,7 @@
         </div>
         <div class="right__share-btn">
           <base-btn
+            selector="SHARE-MODAL"
             mode="share-btn"
             @click="shareModal()"
           />
@@ -168,7 +169,7 @@
           class="contact__btn"
         >
           <base-btn
-            data-selector="ACTION-BTN-TO-RAISE-VIEWS"
+            selector="TO-RAISE-VIEWS"
             @click="toRaisedViews()"
           >
             {{ $t('profile.raiseViews') }}
@@ -180,7 +181,7 @@
         >
           <base-btn
             mode="approve"
-            data-selector="ACTION-BTN-GIVE-A-QUEST"
+            selector="GIVE-A-QUEST"
             @click="sendInvite()"
           >
             {{ $t('workers.giveAQuest') }}

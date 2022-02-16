@@ -38,6 +38,7 @@
         <div class="btn__wrapper">
           <base-btn
             class="message__action"
+            selector="CONFIRM"
             @click="showTransactionSendModal()"
           >
             {{ $t('meta.confirm') }}
@@ -45,7 +46,8 @@
         </div>
         <div class="btn__wrapper">
           <base-btn
-            :mode="'outline'"
+            mode="outline"
+            selector="CANCEL"
             class="message__action"
             @click="hide()"
           >

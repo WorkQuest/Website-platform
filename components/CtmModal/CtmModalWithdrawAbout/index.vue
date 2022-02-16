@@ -11,12 +11,14 @@
         <base-btn
           class="buttons__button"
           mode="outline"
+          selector="CANCEL"
           @click="hide"
         >
           {{ $t('meta.cancel') }}
         </base-btn>
         <base-btn
           class="buttons__button"
+          selector="SUBMIT"
           @click="hide"
         >
           {{ $t('meta.submit') }}
@@ -28,13 +30,9 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalWithdrawAbout',
-  data() {
-    return {};
-  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',

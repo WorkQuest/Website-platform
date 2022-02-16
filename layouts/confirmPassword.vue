@@ -49,6 +49,7 @@
         </div>
         <base-btn
           class="confirm__submit"
+          selector="SUBMIT"
           :disabled="!valid || isLoading"
         >
           {{ $t('meta.submit') }}

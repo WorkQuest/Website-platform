@@ -4,13 +4,12 @@
     :title="$t('modals.withdrawal')"
   >
     <div class="withdrawal__content content">
-      <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
-      >
+      <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
         <div class="content__step">
           <div
             class="content__panel"
             :class="{'content__panel_active': step === 1}"
+            data-selector="PREVIOUS-STEP"
             @click="previousStep"
           >
             {{ $t('modals.walletAddress') }}
@@ -59,6 +58,7 @@
               >
                 <base-btn
                   mode="max"
+                  selector="HANDLE-MAX-VALUE"
                   class="max__button"
                   @click="handleMaxValue"
                 >
@@ -85,8 +85,9 @@
         </div>
         <div class="content__buttons buttons">
           <base-btn
-            :mode="'outline'"
+            mode="outline"
             class="buttons__action"
+            selector="CANCEL"
             @click="hide"
           >
             {{ $t('meta.cancel') }}
@@ -95,6 +96,7 @@
             v-if="step=== 1"
             class="buttons__action"
             :disabled="invalid"
+            selector="SHOW-WITHDRAW-INFO"
             @click="handleSubmit(showWithdrawInfo)"
           >
             {{ $t('meta.confirm') }}
@@ -102,6 +104,7 @@
           <base-btn
             v-else-if="step=== 2"
             class="buttons__action"
+            selector="SHOW-ADDING-CARD"
             @click="showAddingCard"
           >
             {{ $t('modals.addCard') }}
