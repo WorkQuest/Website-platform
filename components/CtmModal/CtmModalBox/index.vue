@@ -1,7 +1,7 @@
 <template>
   <div class="ctm-modal__box">
     <div
-      v-if="isHeader === true"
+      v-if="isHeader"
       class="ctm-modal__header"
     >
       <div class="ctm-modal__title">
