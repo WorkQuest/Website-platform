@@ -82,9 +82,11 @@ export default {
     &-hover {
       &:checked, &:hover {
         background-image: url('assets/img/ui/star.svg');
+        cursor: pointer;
       }
       &:hover ~ .rating__star {
         background-image: url('assets/img/ui/star-empty.svg');
+        cursor: pointer;
       }
     }
     &:nth-of-type(1) {
