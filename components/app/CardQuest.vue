@@ -347,6 +347,7 @@ export default {
 .right {
   justify-self: flex-end;
 }
+//TODO Добавить класс card-quest__icon
 .icon-circle_up {
   color: $black100;
   font-size: 24px;
@@ -369,7 +370,8 @@ export default {
     color: $black500;
   }
   &__container {
-    @extend .styles__full;
+    width: 100%;
+    height: 100%;
     display: grid;
     align-items: center;
     grid-template-columns: auto 3fr;
@@ -396,14 +398,9 @@ export default {
     }
   }
 }
-.styles {
-  &__full {
-    width: 100%;
-    height: 100%;
-  }
-}
 .avatar {
-  @extend .styles__full;
+  width: 100%;
+  height: 100%;
   max-height: 30px;
   max-width: 30px;
   border-radius: 50%;
@@ -497,7 +494,8 @@ export default {
     }
   }
   &__left {
-    @extend .styles__full;
+    width: 100%;
+    height: 100%;
     position: relative;
     display: flex;
     background-size: cover !important;
