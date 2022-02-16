@@ -159,7 +159,7 @@
               :stars-number="5"
               :data-selector="`ACTION-BTN-SHOW-REVIEW-MODAL-${quest.id}`"
               :rating="addRating()"
-              :is-disabled="quest.yourReview !== null || currentMark.mark !== 0"
+              :is-disabled="quest.yourReview !== null || currentMark.mark === 0"
               @input="showReviewModal($event, quest)"
             />
           </div>
