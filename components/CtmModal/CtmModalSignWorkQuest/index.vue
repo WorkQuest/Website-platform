@@ -37,7 +37,7 @@
       <div class="ctm-modal__content-btns">
         <div class="btn-group">
           <base-btn
-            :selector="`${$t('signIn.title')}`"
+            selector="SIGN-IN"
             @click="hide()"
           >
             {{ $t('signIn.title') }}
