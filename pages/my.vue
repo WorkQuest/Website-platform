@@ -25,9 +25,10 @@
           class="quests__cards"
         >
           <card-quest
-            v-for="(quest,id) in questsData"
-            :key="id"
+            v-for="(quest,i) in questsData"
+            :key="i"
             :quest="quest"
+            :quest-index="i"
             @clickFavoriteStar="updateQuests(quest)"
           />
         </div>
