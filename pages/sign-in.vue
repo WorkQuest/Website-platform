@@ -4,6 +4,7 @@
       v-if="step === walletState.Default"
       v-slot="{ handleSubmit }"
       class="auth__container"
+      data-selector="PAGE-SIGN-IN"
       tag="div"
     >
       <div class="auth__text auth__text_title">
@@ -13,6 +14,7 @@
         <span>{{ $t('signIn.account') }}</span>
         <nuxt-link
           class="auth__text auth__text_link"
+          data-selector="ACTION-BTN-TO-REGISTRATION"
           to="/sign-up"
         >
           {{ $t('signIn.regs') }}
@@ -77,6 +79,7 @@
           />
           <div
             class="auth__text auth__text_link"
+            data-selector="ACTION-BTN-FORGOT-PASSWORD"
             @click="showRestoreModal()"
           >
             {{ $t('signIn.forgot') }}
