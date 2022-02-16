@@ -443,23 +443,27 @@ export default {
     getWorkExp() {
       return this.profile.additionalInfo.workExperiences.length !== 0;
     },
+    profileSecondPhone() {
+      const { secondMobileNumber } = this.profile.additionalInfo;
+      return {
+        codeRegion: secondMobileNumber?.codeRegion,
+        phone: secondMobileNumber?.phone,
+        fullPhone: secondMobileNumber?.fullPhone,
+      };
+    },
+    profileFirstPhone() {
+      const { firstPhone } = this.profile;
+      return {
+        codeRegion: firstPhone?.codeRegion,
+        phone: firstPhone?.phone,
+        fullPhone: firstPhone?.fullPhone,
+      };
+    },
   },
   watch: {
-    profile: {
-      deep: true,
-      handler() {
-        const { profile } = this;
-        this.secondPhoneNumber = {
-          codeRegion: profile.additionalInfo?.secondMobileNumber?.codeRegion,
-          phone: profile.additionalInfo?.secondMobileNumber?.phone,
-          fullPhone: profile.additionalInfo?.secondMobileNumber?.fullPhone,
-        };
-        this.firstPhone = {
-          codeRegion: profile.firstPhone?.codeRegion,
-          phone: profile.firstPhone?.phone,
-          fullPhone: profile.firstPhone?.fullPhone,
-        };
-      },
+    profile() {
+      this.secondPhoneNumber = this.profileSecondPhone;
+      this.firstPhone = this.profileFirstPhone;
     },
   },
   mounted() {

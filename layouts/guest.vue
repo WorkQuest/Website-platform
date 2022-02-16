@@ -94,10 +94,9 @@ import Footer from '~/components/app/Footer';
 export default {
   scrollToTop: true,
   name: 'GuestLayout',
+  middleware: 'guest',
   components: { Footer },
-  directives: {
-    ClickOutside,
-  },
+  directives: { ClickOutside },
   data() {
     return {
       isShowLocale: false,
