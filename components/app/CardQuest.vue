@@ -159,12 +159,13 @@
             v-if="quest.status === $options.QuestStatuses.Done"
             class="card-quest__rating"
           >
+            <!--            {{ currentMark }}-->
             <star-rating
               v-if="userRole === $options.UserRole.WORKER ? quest.assignedWorkerId === userData.id : quest.userId === userData.id"
               class="card-quest__star"
               :stars-number="5"
               :data-selector="`ACTION-BTN-SHOW-REVIEW-MODAL-${quest.id}`"
-              :rating="!quest.yourReview ? currentMark.mark : quest.yourReview.mark"
+              :rating="addRating()"
               :is-disabled="quest.yourReview !== null || currentMark.mark !== 0"
               @input="showReviewModal($event, quest)"
             />
@@ -222,6 +223,13 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    addRating() {
+      if (this.quest.yourReview) return this.quest.yourReview.mark;
+      if (!this.quest.yourReview) {
+        if (this.currentMark.questId === this.quest.id) return this.currentMark.mark;
+      }
+      return 0;
+    },
     showDistance(location) {
       if (!location?.latitude && !location?.longitude) return 0;
       return this.getDistanceFromLatLonInKm(location.latitude, location.longitude, this.userLat, this.userLng);
