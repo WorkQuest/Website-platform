@@ -9,6 +9,7 @@
         <div
           class="content__panel"
           :class="{'content__panel_active': step === 1}"
+          data-selector="PREVIOUS-STEP"
           @click="previousStep"
         >
           {{ $t('modals.walletAddress') }}
@@ -16,6 +17,7 @@
         <div
           class="content__panel"
           :class="{'content__panel_active': step === 2}"
+          data-selector="NEXT-STEP"
           @click="nextStep"
         >
           {{ $t('wallet.bankCard') }}
@@ -55,6 +57,7 @@
           <base-btn
             class="code__share"
             mode="share"
+            selector="SHOW-SHARE-MODAL"
             @click="showShareModal"
           >
             <span class="icon-share_outline code__chain" />
@@ -85,6 +88,7 @@
             >
               <base-btn
                 class="buttons__action"
+                selector="CLOSE"
                 @click="hide"
               >
                 {{ $t('modals.close') }}
@@ -97,12 +101,14 @@
               <base-btn
                 class="buttons__button"
                 mode="outline"
+                selector="CANCEL"
                 @click="hide"
               >
                 {{ $t('meta.cancel') }}
               </base-btn>
               <base-btn
                 class="buttons__button"
+                selector="CARD-ADD"
                 @click="showAddingCard"
               >
                 {{ $t('modals.cardAdd') }}

@@ -33,6 +33,7 @@
         <base-btn
           class="buttons__button"
           mode="outline"
+          selector="CANCEL"
           @click="hide"
         >
           {{ $t('meta.cancel') }}
@@ -44,7 +45,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalInsureCase',
@@ -76,7 +76,7 @@ export default {
   max-width: 537px !important;
 
   &__content {
-    padding: 0px 28px 30px 28px!important;
+    padding: 0 28px 30px 28px!important;
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;
@@ -115,7 +115,7 @@ export default {
     line-height: 130%;
     margin: 0 5px 0 15px;
   }
-  &__text{
+  &__text {
     weight: 400;
     font-size: 16px;
     color: $black500;

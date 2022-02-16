@@ -29,6 +29,7 @@
           >
             <base-btn
               mode="max"
+              :selector="`IS-VISIBLE-CURRENT-PASS-${isVisibleCurrent}`"
               class="field__button"
               :disabled="currentPasswordInput===''"
               @click="isVisibleCurrent=!isVisibleCurrent"
@@ -62,6 +63,7 @@
         >
           <base-btn
             mode="max"
+            :selector="`IS-VISIBLE-PASS-${isVisible}`"
             class="field__button"
             :disabled="newPasswordInput===''"
             @click="isVisible=!isVisible"
@@ -90,6 +92,7 @@
         >
           <base-btn
             mode="max"
+            :selector="`IS-VISIBLE-CONFIRM-PASS-${isVisibleConfirm}`"
             class="field__button"
             :disabled="confirmNewPasswordInput===''"
             @click="isVisibleConfirm=!isVisibleConfirm"
@@ -105,6 +108,7 @@
         <div class="buttons__group">
           <base-btn
             class="buttons__button"
+            selector="CHANGE"
             @click="hide()"
           >
             {{ $t('modals.change') }}
@@ -185,12 +189,14 @@ export default {
     color:red;
   }
 }
-.icon {
-  &-Lock:before {
+.icon-show, .icon-hide {
+  color: $blue;
+  font-size: 25px;
+}
+.icon-Lock:before {
     content: "\ea24";
     color: $blue;
     font-size: 25px;
-  }
 }
 
 .buttons {

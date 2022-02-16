@@ -43,13 +43,15 @@
       </div>
       <div class="content__actions">
         <base-btn
-          :mode="'outline'"
+          mode="outline"
+          selector="CANCEL"
           @click="hide()"
         >
           {{ $t('meta.cancel') }}
         </base-btn>
         <base-btn
           :disabled="!valid || !canSubmit"
+          selector="SUBMIT"
           @click="handleSubmit(onSubmit)"
         >
           {{ $t('meta.submit') }}

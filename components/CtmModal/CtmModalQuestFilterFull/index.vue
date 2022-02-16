@@ -11,16 +11,14 @@
           :key="specIdx"
           class="filter__items"
         >
-          <div
-            class="filter__item item"
-          >
+          <div class="filter__item item">
             <div
               class="item"
               @click="toggleCategory(specIdx)"
             >
-              <span
-                class="item__title"
-              >{{ item.title }}</span>
+              <span class="item__title">
+                {{ item.title }}
+              </span>
               <span
                 v-show="!visible[specIdx]"
                 class="icon-caret_down"
@@ -68,7 +66,7 @@
                       :name="sub.title"
                     >
                     <label
-                      :for="sub.title"
+                      :for="sub.id"
                       class="sub__label"
                     >{{ sub.title }}</label>
                   </div>
@@ -81,11 +79,15 @@
       <div class="filter__btns">
         <base-btn
           mode="outline"
+          selector="CLEAN-UP"
           @click="cleanUp()"
         >
           {{ $t('meta.cleanUp') }}
         </base-btn>
-        <base-btn @click="handleSubmit">
+        <base-btn
+          selector="APPLY"
+          @click="handleSubmit"
+        >
           {{ $t('meta.apply') }}
         </base-btn>
       </div>

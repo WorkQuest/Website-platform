@@ -4,9 +4,7 @@
     :title="$t('modals.removeLiquidity')"
   >
     <div class="remove__content content">
-      <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
-      >
+      <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
         <div class="content__grid">
           <div>
             <div class="content__field field">
@@ -64,12 +62,14 @@
           <base-btn
             class="buttons__button"
             mode="outline"
+            selector="CANCEL"
             @click="hide()"
           >
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
+            selector="REMOVE-LIQUIDITY"
             :disabled="!validated || !passed || invalid"
             @click="handleSubmit(hide)"
           >
@@ -177,7 +177,7 @@ export default {
     }
     }
     &__picture{
-      box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 4px 9px rgba(0, 0, 0, 0.15);
       border-radius: 50%;
     }
     &__name {

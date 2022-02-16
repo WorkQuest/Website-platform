@@ -9,22 +9,20 @@
         class="content__btns"
       >
         <base-btn
+          selector="SHOW-DELETE-CASE-MODAL"
           class="content portfolio__close"
           mode="portfolioClose"
           @click="showDeleteCaseModal(options.id)"
         >
-          <span
-            class="icon-close_big"
-          />
+          <span class="icon-close_big" />
         </base-btn>
         <base-btn
           class="content portfolio__edit"
+          selector="SHOW-EDIT-CASE-MODAL"
           mode="portfolioEdit"
           @click="showEditCaseModal(options.id)"
         >
-          <span
-            class="icon-edit"
-          />
+          <span class="icon-edit" />
         </base-btn>
       </div>
       <video

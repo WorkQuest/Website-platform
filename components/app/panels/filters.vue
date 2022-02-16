@@ -37,7 +37,7 @@
     <base-btn
       class="filters-panel__item-btn item-btn"
       mode="light"
-      data-selector="ACTION-SHOW-PRICE"
+      selector="SHOW-PRICE"
       @click="showPriceSearch"
     >
       <span
@@ -53,7 +53,7 @@
     <base-btn
       class="filters-panel__item-btn item-btn"
       mode="light"
-      data-selector="ACTION-TIME-SORT"
+      selector="TIME-SORT"
       @click="sortByTime"
     >
       <span class="item-btn__text">

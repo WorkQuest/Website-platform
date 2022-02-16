@@ -74,6 +74,7 @@
               <base-btn
                 mode="add"
                 class="drop__button button"
+                selector="SHOW-ADDING-CARD"
                 @click="showAddingCard"
               >
                 <span class="icon-plus_circle_outline button__icon" />
@@ -90,12 +91,14 @@
           <base-btn
             class="buttons__button"
             mode="outline"
+            selector="CANCEL"
             @click="hide"
           >
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
+            selector="SUBMIT"
             @click="showRaiseLevel"
           >
             {{ $t('meta.submit') }}

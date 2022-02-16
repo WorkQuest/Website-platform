@@ -18,6 +18,7 @@
           </div>
           <base-btn
             class="email__action"
+            selector="OK"
             @click="hide()"
           >
             {{ $t('meta.ok') }}
@@ -33,9 +34,6 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'ModalRequestSend',
-  data() {
-    return {};
-  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
