@@ -159,7 +159,6 @@
             v-if="quest.status === $options.QuestStatuses.Done"
             class="card-quest__rating"
           >
-            <!--            {{ currentMark }}-->
             <star-rating
               v-if="userRole === $options.UserRole.WORKER ? quest.assignedWorkerId === userData.id : quest.userId === userData.id"
               class="card-quest__star"
