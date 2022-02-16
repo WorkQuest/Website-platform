@@ -14,6 +14,7 @@
           </div>
           <div
             class="header__subtitle"
+            data-selector="SHOW-NUMBER"
             @click="showNumber"
           >
             {{ getCardNumber }}
