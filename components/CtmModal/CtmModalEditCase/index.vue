@@ -40,7 +40,7 @@
         <div class="content__btn btn">
           <div class="btn__wrapper">
             <base-btn
-              :mode="'outline'"
+              mode="outline"
               selector="CANCEL"
               class="btn__action"
               @click="hide()"

@@ -91,7 +91,7 @@
           <div class="btn-container">
             <div class="btn-container__btn">
               <base-btn
-                :mode="'outline'"
+                mode="outline"
                 data-selector="ACTION-BTN-SKIP-AND-END"
                 @click="goBack()"
               >

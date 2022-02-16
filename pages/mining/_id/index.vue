@@ -158,7 +158,7 @@
               </base-btn>
               <base-btn
                 selector="CLAIM-REWARDS"
-                :mode="'outline'"
+                mode="outline"
                 class="bnt__claim"
                 :disabled="!isConnected || statusBusy || disabled"
                 @click="claimRewards()"

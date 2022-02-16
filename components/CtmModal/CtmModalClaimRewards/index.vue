@@ -33,7 +33,7 @@
         </base-field>
         <div class="content__container">
           <base-btn
-            :mode="'outline'"
+            mode="outline"
             selector="CANCEL"
             :disabled="statusBusy"
             @click="hide()"
