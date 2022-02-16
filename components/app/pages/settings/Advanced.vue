@@ -169,7 +169,7 @@ export default {
   },
   methods: {
     async showModalKey(modalKey) {
-      this.$emit('showModalKey', modalKey);
+      await this.$emit('showModalKey', modalKey);
     },
     smsVerErrorModal() {
       this.ShowModal({
@@ -278,7 +278,7 @@ export default {
     &__option_blue {
       flex-direction: column;
       button {
-        min-width: none;
+        min-width: auto;
         max-width: none;
         width: 100%;
       }

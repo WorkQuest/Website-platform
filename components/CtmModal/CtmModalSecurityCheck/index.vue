@@ -42,6 +42,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalSecurityCheck',
@@ -58,7 +59,24 @@ export default {
   },
   methods: {
     async hide() {
-      this.CloseModal();
+      const result = await this.$store.dispatch('user/validateTOTP', { token: this.securityCode });
+      if (result) {
+        switch (this.options.action) {
+          case 'role':
+            await this.CloseModal();
+            await this.ShowModal({ key: modals.changeRoleWarning });
+            break;
+          case 'auth':
+            await this.$store.dispatch('user/getMainData');
+            await this.CloseModal();
+            break;
+          default:
+            await this.CloseModal();
+            break;
+        }
+      } else {
+        this.errorMsg = this.$t('errors.incorrectPass');
+      }
     },
   },
 };

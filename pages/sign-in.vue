@@ -55,20 +55,20 @@
             >
           </template>
         </base-field>
-        <base-field
-          v-model="model.totp"
-          :placeholder="$t('signUp.totp')"
-          :mode="'icon'"
-          :name="$t('signUp.totp')"
-          rules="min:6|max:6"
-        >
-          <template v-slot:left>
-            <img
-              src="~assets/img/icons/password.svg"
-              alt=""
-            >
-          </template>
-        </base-field>
+        <!--        <base-field-->
+        <!--          v-model="model.totp"-->
+        <!--          :placeholder="$t('signUp.totp')"-->
+        <!--          :mode="'icon'"-->
+        <!--          :name="$t('signUp.totp')"-->
+        <!--          rules="min:6|max:6"-->
+        <!--        >-->
+        <!--          <template v-slot:left>-->
+        <!--            <img-->
+        <!--              src="~assets/img/icons/password.svg"-->
+        <!--              alt=""-->
+        <!--            >-->
+        <!--          </template>-->
+        <!--        </base-field>-->
         <div class="auth__tools">
           <base-checkbox
             v-model="remember"
@@ -249,6 +249,12 @@ export default {
       const response = await this.$store.dispatch('user/signIn', payload);
       if (response?.ok) {
         this.userStatus = response.result.userStatus;
+        if (response.result.totpIsActive) {
+          await this.ShowModal({
+            key: modals.securityCheck,
+            action: 'auth',
+          });
+        }
         const confirmToken = sessionStorage.getItem('confirmToken');
         // Unconfirmed account w/o confirm token
         if (this.userStatus === UserStatuses.Unconfirmed && !confirmToken) {
