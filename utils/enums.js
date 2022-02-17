@@ -206,6 +206,11 @@ export const TokenSymbols = Object.freeze({
   WUSD: 'WUSD',
 });
 
+export const WalletTables = Object.freeze({
+  TXS: 'TXS',
+  COLLATERAL: 'COLLATERAL',
+});
+
 export const ExplorerUrl = Object.freeze('https://dev-explorer.workquest.co');
 
 export const NetworksData = {
