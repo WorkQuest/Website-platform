@@ -159,9 +159,9 @@
               class="card-quest__star"
               :stars-number="5"
               :data-selector="`ACTION-BTN-SHOW-REVIEW-MODAL-${quest.id}`"
-              :rating="addRating()"
+              :rating="rating"
               :is-disabled="starRatingStatus()"
-              @input="showReviewModal($event, quest)"
+              @input="showReviewModal($event, quest.id)"
             />
           </div>
         </div>
@@ -212,6 +212,9 @@ export default {
       userData: 'user/getUserData',
       currentMark: 'user/getCurrentReviewMarkOnQuest',
     }),
+    rating() {
+      return this.quest.yourReview?.mark || 0;
+    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -224,13 +227,6 @@ export default {
     starRatingStatus() {
       if (this.quest.yourReview !== null) return true;
       return this.currentMark.mark !== 0 && this.currentMark.questId === this.quest.id;
-    },
-    addRating() {
-      if (this.quest.yourReview?.mark) return this.quest.yourReview.mark;
-      if (!this.quest.yourReview?.mark) {
-        if (this.currentMark.questId === this.quest.id) return this.currentMark.mark;
-      }
-      return 0;
     },
     showDistance(location) {
       if (!location?.latitude && !location?.longitude) return 0;
@@ -289,8 +285,16 @@ export default {
     showDetails(questId) {
       this.$router.push(`${Path.QUESTS}/${questId}`);
     },
-    showReviewModal(rating, item) {
-      this.ShowModal({ key: modals.review, item, rating });
+    showReviewModal(rating, id) {
+      this.ShowModal({
+        key: modals.review,
+        questId: id,
+        rating,
+        callback: async (payload) => {
+          const ok = await this.$store.dispatch('user/sendReviewForUser', payload);
+          if (ok) { this.ShowModal({ key: modals.thanks }); }
+        },
+      });
     },
     getStatusCard(index) {
       const questStatus = {
