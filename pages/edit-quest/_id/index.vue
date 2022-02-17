@@ -1,6 +1,7 @@
 <template>
   <!--  TODO: исправить редактирование квеста-->
   <div
+    v-if="questData"
     class="main"
     data-selector="PAGE-MY-QUESTS"
     :class="{'main-white': step === 1}"
@@ -303,88 +304,55 @@ export default {
       step: 'quests/getCurrentStepEditQuest',
     }),
     days() {
-      return [
-        {
-          level: this.$t('quests.levels.1.title'),
-          code: 1,
-          desc: this.$t('quests.levels.1.desc'),
+      const days = [];
+
+      // eslint-disable-next-line no-plusplus
+      for (let i = 1; i < 5; i++) {
+        const title = `quests.levels.${i}.`;
+
+        days.push({
+          level: this.$t(`${title}title`),
+          code: i,
+          desc: this.$t(`${title}desc`),
           cost: '10',
-        },
-        {
-          level: this.$t('quests.levels.2.title'),
-          code: 2,
-          desc: this.$t('quests.levels.2.desc'),
-          cost: '10',
-        },
-        {
-          level: this.$t('quests.levels.3.title'),
-          code: 3,
-          desc: this.$t('quests.levels.3.desc'),
-          cost: '10',
-        },
-        {
-          level: this.$t('quests.levels.4.title'),
-          code: 4,
-          desc: this.$t('quests.levels.4.desc'),
-          cost: '10',
-        },
-      ];
+        });
+      }
+
+      return days;
     },
     weeks() {
-      return [
-        {
-          level: this.$t('quests.levels.1.title'),
-          code: 1,
-          desc: this.$t('quests.levels.1.desc'),
-          cost: '40',
-        },
-        {
-          level: this.$t('quests.levels.2.title'),
-          code: 2,
-          desc: this.$t('quests.levels.2.desc'),
-          cost: '10',
-        },
-        {
-          level: this.$t('quests.levels.3.title'),
-          code: 3,
-          desc: this.$t('quests.levels.3.desc'),
-          cost: '40',
-        },
-        {
-          level: this.$t('quests.levels.4.title'),
-          code: 4,
-          desc: this.$t('quests.levels.4.desc'),
-          cost: '40',
-        },
-      ];
+      const weeks = [];
+
+      // eslint-disable-next-line no-plusplus
+      for (let i = 1; i < 5; i++) {
+        const title = `quests.levels.${i}.`;
+
+        weeks.push({
+          level: this.$t(`${title}title`),
+          code: i,
+          desc: this.$t(`${title}desc`),
+          cost: i === 2 ? '10' : '40',
+        });
+      }
+
+      return weeks;
     },
     months() {
-      return [
-        {
-          level: this.$t('quests.levels.1.title'),
-          code: 1,
-          desc: this.$t('quests.levels.1.desc'),
-          cost: '70',
-        },
-        {
-          level: this.$t('quests.levels.2.title'),
-          code: 2,
-          desc: this.$t('quests.levels.2.desc'),
-          cost: '10',
-        },
-        {
-          level: this.$t('quests.levels.3.title'),
-          code: 3,
-          desc: this.$t('quests.levels.3.desc'),
-          cost: '70',
-        },
-        {
-          level: this.$t('quests.levels.4.title'),
-          code: 4,
-          desc: this.$t('quests.levels.4.desc'),
-          cost: '70',
-        },
-      ];
+      const months = [];
+
+      // eslint-disable-next-line no-plusplus
+      for (let i = 1; i < 5; i++) {
+        const title = `quests.levels.${i}.`;
+
+        months.push({
+          level: this.$t(`${title}title`),
+          code: i,
+          desc: this.$t(`${title}desc`),
+          cost: i === 2 ? '10' : '70',
+        });
+      }
+
+      return months;
     },
     periodTabs() {
       return [
@@ -442,19 +410,23 @@ export default {
       this.selectedSpecAndSkills = specAndSkills;
     },
     async editQuestFill() {
+      const {
+        title, locationPlaceName, price, description, location, employment,
+      } = this.questData;
+
       this.runtimeValue = 1;
-      this.employmentIndex = this.parseEmployment(this.questData.employment);
-      this.questTitle = this.questData.title;
-      this.address = this.questData.locationPlaceName;
-      this.price = this.questData.price;
-      this.textarea = this.questData.description;
-      this.coordinates.lng = this.questData.location.longitude;
-      this.coordinates.lat = this.questData.location.latitude;
+      this.employmentIndex = this.parseEmployment(employment);
+      this.questTitle = title;
+      this.address = locationPlaceName;
+      this.price = price;
+      this.textarea = description;
+      this.coordinates.lng = location.longitude;
+      this.coordinates.lat = location.latitude;
     },
-    cardStatus(item) {
-      if (item.code === 1) return 'level__card_gold';
-      if (item.code === 3) return 'card__level_reliable';
-      if (item.code === 4) return 'card__level_checked';
+    cardStatus({ code }) {
+      if (code === 1) return 'level__card_gold';
+      if (code === 3) return 'card__level_reliable';
+      if (code === 4) return 'card__level_checked';
       return '';
     },
     periods(period) {
