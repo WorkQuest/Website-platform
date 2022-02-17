@@ -13,6 +13,7 @@
       </div>
       <base-btn
         class="quest__action"
+        selector="OK"
         @click="hide"
       >
         {{ $t('meta.ok') }}
@@ -26,9 +27,6 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'ModalQuestCreated',
-  data() {
-    return {};
-  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',

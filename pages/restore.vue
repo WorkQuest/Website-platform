@@ -48,7 +48,7 @@
           </template>
         </base-field>
         <div class="restore__action">
-          <base-btn>
+          <base-btn selector="SAVE">
             {{ $t('meta.save') }}
           </base-btn>
         </div>

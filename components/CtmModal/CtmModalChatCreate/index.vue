@@ -21,6 +21,7 @@
         <base-btn
           v-if="options.isMembersList && options.itsOwner"
           class="button"
+          selector="ADD-NEW-MEMBERS"
           @click="addNewMembers"
         >
           {{ $t('modals.chatCreate.addNewMembers') }}
@@ -35,6 +36,7 @@
             <div class="friends__data">
               <img
                 class="friends__img"
+                alt=""
                 :src="user.avatar && user.avatar.url ? user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
               >
               <span class="friends__name">
@@ -75,12 +77,14 @@
         <div class="btn-group">
           <base-btn
             class="btn"
+            selector="CANCEL"
             @click="hide()"
           >
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
             class="btn_bl"
+            selector="APPLY"
             :disabled="options.isCreating && (!memberUserIds.length || !name)"
             @click="applyChanges"
           >
@@ -306,7 +310,7 @@ export default {
 
         &:hover {
           background-color: #0083C71A;
-          border: 0px;
+          border: 0;
         }
 
         &_bl {
@@ -342,7 +346,7 @@ export default {
 
       &:hover {
         background-color: #0083C71A;
-        border: 0px;
+        border: 0;
       }
     }
   }

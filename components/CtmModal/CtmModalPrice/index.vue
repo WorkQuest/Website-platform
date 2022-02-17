@@ -52,8 +52,9 @@
         </div>
         <div class="content__buttons buttons">
           <base-btn
-            :mode="'outline'"
+            mode="outline"
             class="buttons__action"
+            selector="CANCEL"
             @click="hide"
           >
             {{ $t('meta.cancel') }}
@@ -61,6 +62,7 @@
           <base-btn
             class="buttons__action"
             :disabled="invalid"
+            selector="SUBMIT"
             @click="handleSubmit(submit)"
           >
             {{ $t('meta.submit') }}
@@ -73,7 +75,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalPrice',

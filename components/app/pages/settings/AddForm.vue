@@ -48,6 +48,7 @@
     />
     <base-btn
       class="knowledge__btn"
+      :selector="`${isAdding} ? ${$t('settings.add')} : ${$t('settings.delete')}`"
       :disabled="!item.from || !item.to || !item.place || invalid"
       @click="$emit('click')"
     >

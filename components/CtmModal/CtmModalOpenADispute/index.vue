@@ -27,6 +27,7 @@
         <base-btn
           class="buttons__button"
           :disabled="drop === ''"
+          selector="SHOW-REQUEST-SEND"
           @click="showRequestSendModal"
         >
           {{ $t('meta.send') }}
@@ -34,6 +35,7 @@
         <base-btn
           mode="outline"
           class="buttons__button"
+          selector="CANCEL"
           @click="hide"
         >
           {{ $t('meta.cancel') }}

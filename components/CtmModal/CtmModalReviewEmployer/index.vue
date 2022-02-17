@@ -6,7 +6,7 @@
     <div class="review__body body">
       <div class="body__rating">
         <star-rating
-          :rating-type="'modal'"
+          rating-type="modal"
           :rating="rating"
           :stars-number="5"
           @input="changeReview($event)"
@@ -37,6 +37,7 @@
             <div class="buttons__wrapper">
               <base-btn
                 class="buttons__action"
+                selector="SEND-REVIEW-FOR-USER"
                 :disabled="!valid"
                 @click="handleSubmit(sendReviewForUser)"
               >
@@ -45,6 +46,7 @@
             </div>
             <div class="buttons__wrapper">
               <base-btn
+                selector="CANCEL"
                 class="buttons__action"
                 mode="outline"
                 @click="hide"

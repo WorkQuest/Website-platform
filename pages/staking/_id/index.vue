@@ -4,6 +4,7 @@
       <div class="staking-page__header">
         <div class="head-btns">
           <base-btn
+            selector="PREVIOUS-STEP"
             class="btn"
             @click="handleBackToMainStaking()"
           >
@@ -132,6 +133,7 @@
           <div class="info-block__btns-cont">
             <base-btn
               mode="outline"
+              selector="CLAIM-REWARDS"
               @click="showClaimModal"
             >
               {{ $t('staking.claimRewards') }}
@@ -160,16 +162,21 @@
             </div>
           </div>
           <div class="info-block__btns-cont">
-            <base-btn @click="handleAutoRenewal">
+            <base-btn
+              selector="AUTO-RENEWAL"
+              @click="handleAutoRenewal"
+            >
               {{ $t('staking.autoRenewal') }}
             </base-btn>
             <base-btn
               mode="outline"
+              selector="SHOW-UNSTAKE-MODAL"
               @click="showUnstakeModal"
             >
               {{ $t('staking.unstake') }}
             </base-btn>
             <base-btn
+              selector="SHOW-STAKE-MODAL"
               mode="outline"
               @click="showStakeModal"
             >

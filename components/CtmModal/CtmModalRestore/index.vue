@@ -4,9 +4,7 @@
     :title="$t('forgot.title')"
   >
     <div class="restore__content content">
-      <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
-      >
+      <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
         <div class="content__field">
           {{ $t('forgot.desc') }}
         </div>
@@ -21,6 +19,7 @@
         <base-btn
           class="content__action"
           :disabled="!validated || !passed || invalid"
+          selector="SEND"
           @click="handleSubmit(restore)"
         >
           {{ $t('meta.send') }}
