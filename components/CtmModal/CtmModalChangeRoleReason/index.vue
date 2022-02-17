@@ -5,7 +5,11 @@
     :is-unclosable="true"
     :title="step === 1 ? $t('modals.reason') : $t('modals.securityCheck')"
   >
-    <div class="ctm-modal__content">
+    <validation-observer
+      v-slot="{invalid}"
+      tag="div"
+      class="ctm-modal__content"
+    >
       <div class="change-role">
         <div
           v-if="step === 1"
@@ -13,7 +17,7 @@
         >
           <span class="change-role__describe">{{ $t('modals.pleaseDescribe') }}</span>
           <base-field
-            v-model="reasonInput"
+            v-model="reason"
             class="change-role__action"
             :placeholder="$t('modals.reason')"
           />
@@ -44,10 +48,12 @@
           class="change-role__content"
         >
           <base-field
-            v-model="codeInput"
+            v-model="totp"
             :label="$t('modals.googleConfCode')"
             class="change-role__action"
             :placeholder="$t('modals.googleConfCode')"
+            rules="min:6|numeric|max:6"
+            :name="$t('modals.googleConfCode')"
           />
           <div class="change-role__sub">
             {{ $t('modals.enterCode') }}
@@ -55,15 +61,16 @@
           <div class="btn__container">
             <base-btn
               class="message__action"
-              selector="SEND"
-              @click="success()"
+              selector="CHANGE-ROLE"
+              :disabled="invalid"
+              @click="changeRole()"
             >
               {{ $t('meta.send') }}
             </base-btn>
           </div>
         </div>
       </div>
-    </div>
+    </validation-observer>
   </ctm-modal-box>
 </template>
 
@@ -75,9 +82,9 @@ export default {
   name: 'CtmModalChangeRoleReason',
   data() {
     return {
-      step: 1,
-      reasonInput: '',
-      codeInput: '',
+      step: 2,
+      reason: '',
+      totp: '',
     };
   },
   computed: {
@@ -93,8 +100,8 @@ export default {
       this.CloseModal();
     },
     async changeRole() {
-      // TODO: Сделать смену роли
-      const response = await this.$store.dispatch('user/setUserRole');
+      const response = await this.$store.dispatch('user/changeRole', { totp: this.totp });
+      this.hide();
       if (response?.ok) this.success();
     },
     success() {

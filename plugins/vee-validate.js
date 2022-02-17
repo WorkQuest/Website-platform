@@ -124,6 +124,17 @@ extend('decimal', {
   message: 'Please enter correct {_field_}',
 });
 
+extend('numeric', {
+  validate(value) {
+    const regex = /^\d+$/;
+    return {
+      required: true,
+      valid: regex.test(value),
+    };
+  },
+  message: 'Please enter correct {_field_}',
+});
+
 extend('decimalPlaces', {
   validate(value, { places }) {
     const regex = new RegExp(`^\\d+\\.\\d{0,${places}}$`);
