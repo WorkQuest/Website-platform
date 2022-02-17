@@ -233,15 +233,8 @@ export default {
       };
       return keys[modalKey];
     },
-    async showModalKey(modalKey) {
-      if (this.modalsKey(modalKey) === 'changeRoleWarning') {
-        await this.ShowModal({
-          key: modals.securityCheck,
-          action: 'role',
-        });
-      } else {
-        await this.ShowModal({ key: this.modalsKey(modalKey) });
-      }
+    showModalKey(modalKey) {
+      this.ShowModal({ key: this.modalsKey(modalKey) });
     },
     showModalStatus(modalMode) {
       this.ShowModal({

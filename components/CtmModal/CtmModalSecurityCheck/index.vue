@@ -49,7 +49,7 @@ export default {
   data() {
     return {
       securityCode: '',
-      errorMsg: '',
+      errorMsg: false,
     };
   },
   computed: {
@@ -59,23 +59,21 @@ export default {
   },
   methods: {
     async hide() {
+      const { actionMethod, action } = this.options;
       const result = await this.$store.dispatch('user/validateTOTP', { token: this.securityCode });
       if (result) {
-        switch (this.options.action) {
-          case 'role':
-            await this.CloseModal();
-            await this.ShowModal({ key: modals.changeRoleWarning });
-            break;
+        switch (action) {
           case 'auth':
-            await this.$store.dispatch('user/getMainData');
             await this.CloseModal();
+            await this.$store.dispatch('user/getMainData');
+            await actionMethod();
             break;
           default:
             await this.CloseModal();
             break;
         }
       } else {
-        this.errorMsg = this.$t('errors.incorrectPass');
+        this.errorMsg = true;
       }
     },
   },
