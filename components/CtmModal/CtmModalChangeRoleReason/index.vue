@@ -101,6 +101,7 @@ export default {
     },
     async changeRole() {
       const response = await this.$store.dispatch('user/changeUserRole', { totp: this.totp });
+      this.hide();
       if (response?.ok) this.success();
     },
     success() {
