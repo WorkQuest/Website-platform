@@ -155,6 +155,7 @@ export default {
           buttonName: 'settings.change',
           modal: 'changeRoleWarning',
           isSwitcher: false,
+          enable: this.userData?.totpIsActive,
         },
       ],
     };
