@@ -164,11 +164,7 @@ Vue.mixin({
         const routeName = this.$route.name;
 
         if (routeName === 'quests-id') {
-          if (window.history.length > 2) {
-            this.$router.go(-1);
-          } else {
-            await this.$router.push('/my');
-          }
+          await this.$router.replace('/my');
         } else if (routeName === 'my' || routeName === 'profile-id') {
           const payload = JSON.parse(sessionStorage.getItem('questsListFilter'));
           await this.$store.dispatch('quests/getUserQuests', payload);
