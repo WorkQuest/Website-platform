@@ -37,6 +37,7 @@ export default {
         clearData,
         status,
         amount,
+        symbol: data.symbol,
         direction,
         recipient,
         tx,
