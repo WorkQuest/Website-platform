@@ -63,16 +63,9 @@ export default {
       const { actionMethod, action } = this.options;
       const result = await this.$store.dispatch('user/validateTOTP', { token: this.securityCode });
       if (result) {
-        switch (action) {
-          case 'auth':
-            await this.CloseModal();
-            await this.$store.dispatch('user/getMainData');
-            await actionMethod();
-            break;
-          default:
-            await this.CloseModal();
-            break;
-        }
+        await this.CloseModal();
+        await this.$store.dispatch('user/getMainData');
+        await actionMethod();
       } else {
         this.errorMsg = true;
       }

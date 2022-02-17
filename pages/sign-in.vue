@@ -257,7 +257,6 @@ export default {
         if (response.result.totpIsActive) {
           await this.ShowModal({
             key: modals.securityCheck,
-            action: 'auth',
             actionMethod: async () => await this.nextStepAction(),
           });
         } else {
