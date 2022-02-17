@@ -30,6 +30,7 @@
           <base-btn
             class="buttons__button"
             :disabled="!validated || !passed || invalid"
+            selector="SEND"
             @click="handleSubmit(hide)"
           >
             {{ $t('meta.send') }}

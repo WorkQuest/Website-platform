@@ -5,9 +5,7 @@
   >
     <div class="ctm-modal__content">
       <validation-observer>
-        <div
-          class="step__container"
-        >
+        <div class="step__container">
           <div class="ctm-modal__content-field">
             <base-field
               v-model="cardNumberInput"
@@ -24,12 +22,8 @@
               :label="$t('modals.cardHolder')"
             />
           </div>
-          <div
-            class="grid__2col"
-          >
-            <div
-              class="ctm-modal__content-field"
-            >
+          <div class="grid__2col">
+            <div class="ctm-modal__content-field">
               <base-field
                 v-model="dateInput"
                 :placeholder="'02/24'"
@@ -49,11 +43,10 @@
         </div>
         <div class="btn__container">
           <div class="btn__wrapper">
-            <span
-              class="step__container"
-            >
+            <span class="step__container">
               <base-btn
                 class="message__action"
+                selector="SUBMIT"
                 @click="showModalLevelRaised()"
               >
                 {{ $t('meta.submit') }}
@@ -62,7 +55,8 @@
           </div>
           <div class="btn__wrapper">
             <base-btn
-              :mode="'outline'"
+              mode="outline"
+              selector="CANCEL"
               class="message__action"
               @click="hide()"
             >

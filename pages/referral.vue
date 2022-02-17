@@ -25,6 +25,7 @@
               </div>
               <div class="info-block__btn-wrap">
                 <base-btn
+                  :selector="`${$t('modals.claim')}`"
                   @click="clickClaimBtnHandler"
                 >
                   {{ $t('modals.claim') }}

@@ -4,12 +4,8 @@
     :title="$t('modals.transfer')"
   >
     <div class="transfer__content content">
-      <validation-observer
-        v-slot="{handleSubmit, invalid}"
-      >
-        <div
-          class="content__container"
-        >
+      <validation-observer v-slot="{handleSubmit, invalid}">
+        <div class="content__container">
           <div class="content__input input">
             <span class="input__title">
               {{ $t('modals.recepient') }}
@@ -62,7 +58,8 @@
         </div>
         <div class="content__buttons buttons">
           <base-btn
-            :mode="'outline'"
+            mode="outline"
+            selector="CANCEL"
             class="buttons__action"
             @click="hide"
           >
@@ -70,6 +67,7 @@
           </base-btn>
           <base-btn
             class="buttons__action"
+            selector="SEND"
             :disabled="invalid || !isCanSubmit"
             @click="handleSubmit(showWithdrawInfo)"
           >

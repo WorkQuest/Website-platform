@@ -38,6 +38,7 @@
                   <base-btn
                     mode="max"
                     class="max__button"
+                    selector="SET-MAX-VAL"
                     @click="setMaxValue()"
                   >
                     <span class="max__text">{{ $t('modals.maximum') }}</span>
@@ -65,12 +66,14 @@
           <base-btn
             class="buttons__button"
             mode="outline"
+            selector="CANCEL"
             @click="hide"
           >
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
+            selector="CREATE-SWAP"
             @click="handleSubmit(showSwapInfoModal)"
           >
             {{ $t('modals.createSwap') }}

@@ -55,8 +55,8 @@
           </div>
           <base-btn
             v-if="!button.isSwitcher"
-            :disabled="button.enable"
-            :data-selector="`ACTION-BTN-${button.modal}`"
+            :disabled="button.disabled"
+            :selector="`RIGHT-SIDE-BTN-${index}`"
             @click="showModalKey(button.modal)"
           >
             {{ $t(button.buttonName) }}
@@ -66,7 +66,7 @@
             class="advanced__option-buttons"
           >
             <base-btn
-              :data-selector="`ACTION-BTN-TOTP-${statusTotp}`"
+              :selector="`${!statusTotp} ? ${$t(button.secondButtonName)}-${index} : ${$t(button.firstButtonName)}-${index}`"
               @click="!statusTotp ? showModalKey(button.secondModal) : showModalKey(button.firstModal)"
             >
               {{ !statusTotp ? $t(button.secondButtonName) : $t(button.firstButtonName) }}
@@ -148,13 +148,14 @@ export default {
           buttonName: 'settings.enable',
           modal: 'smsVerification',
           isSwitcher: false,
-          enable: this.userData?.tempPhone?.fullPhone,
+          disabled: this.userData?.tempPhone?.fullPhone,
         },
         {
           title: 'settings.changeRole',
           buttonName: 'settings.change',
           modal: 'changeRoleWarning',
           isSwitcher: false,
+          disabled: !this.userData?.totpIsActive,
         },
       ],
     };
