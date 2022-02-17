@@ -236,9 +236,7 @@ export default {
       const response = await this.$axios.$post('/v1/auth/login', payload);
       commit('setTokens', response.result);
       if (response.result.userStatus === 1 && !response.result.totpIsActive) {
-        await dispatch('getUserData');
-        await dispatch('getStatistic');
-        await dispatch('getNotifications');
+        await dispatch('getMainData');
       }
       return response;
     } catch (e) {
@@ -456,7 +454,7 @@ export default {
       const response = await this.$axios.$post('/v1/auth/validate-totp', payload);
       return response.result.isValid;
     } catch (e) {
-      console.log(e);
+      console.log('user/validateTOTP');
       return false;
     }
   },

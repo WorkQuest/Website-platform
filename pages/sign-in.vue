@@ -57,20 +57,6 @@
             >
           </template>
         </base-field>
-        <!--        <base-field-->
-        <!--          v-model="model.totp"-->
-        <!--          :placeholder="$t('signUp.totp')"-->
-        <!--          :mode="'icon'"-->
-        <!--          :name="$t('signUp.totp')"-->
-        <!--          rules="min:6|max:6"-->
-        <!--        >-->
-        <!--          <template v-slot:left>-->
-        <!--            <img-->
-        <!--              src="~assets/img/icons/password.svg"-->
-        <!--              alt=""-->
-        <!--            >-->
-        <!--          </template>-->
-        <!--        </base-field>-->
         <div class="auth__tools">
           <base-checkbox
             v-model="remember"
@@ -250,11 +236,11 @@ export default {
         email,
         password,
       };
-      const response = await this.$store.dispatch('user/signIn', payload);
-      if (response?.ok) {
-        this.userStatus = response.result.userStatus;
-        this.userAddress = response.result.address;
-        if (response.result.totpIsActive) {
+      const { ok, result } = await this.$store.dispatch('user/signIn', payload);
+      if (ok) {
+        this.userStatus = result.userStatus;
+        this.userAddress = result.address;
+        if (result.totpIsActive) {
           await this.ShowModal({
             key: modals.securityCheck,
             actionMethod: async () => await this.nextStepAction(),

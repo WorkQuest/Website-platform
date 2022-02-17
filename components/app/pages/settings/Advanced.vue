@@ -170,7 +170,7 @@ export default {
   },
   methods: {
     async showModalKey(modalKey) {
-      await this.$emit('showModalKey', modalKey);
+      this.$emit('showModalKey', modalKey);
     },
     smsVerErrorModal() {
       this.ShowModal({
