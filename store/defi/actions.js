@@ -10,9 +10,7 @@ export default {
       commit('swapsForCrosschain', items);
       return response;
     }
-    // TODO delete https://app-ver1.workquest.co/api,
-    // response = await this.$axios.$get(`/v1/bridge/recipient/${recipientAddress}/swaps?${query || ''}`);
-    response = await this.$axios.$get(`https://app-ver1.workquest.co/api/v1/bridge/recipient/${recipientAddress}/swaps?${query || ''}`);
+    response = await this.$axios.$get(`/v1/bridge/recipient/${recipientAddress}/swaps?${query || ''}`);
     response.result.swaps.forEach((data) => {
       let direction = [];
       if (data.chainFrom === 2) {
