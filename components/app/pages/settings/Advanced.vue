@@ -148,7 +148,7 @@ export default {
           buttonName: 'settings.enable',
           modal: 'smsVerification',
           isSwitcher: false,
-          disabled: this.userData?.tempPhone?.fullPhone === '',
+          disabled: this.userData?.tempPhone?.fullPhone,
         },
         {
           title: 'settings.changeRole',
