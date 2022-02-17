@@ -134,8 +134,13 @@
                     type="button"
                     @click="doCopy"
                   >
-                    <span class="icon-copy link-cont__icon" />
+                    <span class="icon-copy" />
                   </button>
+                </div>
+              </template>
+              <template #cell(amount)="el">
+                <div class="table__value">
+                  {{ `${el.item.amount} ${el.item.symbol}` }}
                 </div>
               </template>
               <template #cell(created)="el">
@@ -226,6 +231,11 @@ export default {
         {
           key: 'tx',
           label: this.$t('crosschain.tableHead.tx'),
+          ...cellStyle,
+        },
+        {
+          key: 'amount',
+          label: this.$t('modals.amount'),
           ...cellStyle,
         },
         {
@@ -370,6 +380,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.icon-copy {
+  color: $blue;
+}
+
 .swap-icon {
   transition: .3s ease-in-out;
   &:hover {
