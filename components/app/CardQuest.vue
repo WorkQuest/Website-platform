@@ -153,13 +153,14 @@
             v-if="quest.status === $options.QuestStatuses.Done"
             class="card-quest__rating"
           >
+            <!--            TODO: Починить при добавлении нескольких оценок, предыдущая оценка сбрасывается, сделать стили как в ревью!-->
             <star-rating
               v-if="userRole === $options.UserRole.WORKER ? quest.assignedWorkerId === userData.id : quest.userId === userData.id"
               class="card-quest__star"
               :stars-number="5"
               :data-selector="`ACTION-BTN-SHOW-REVIEW-MODAL-${quest.id}`"
               :rating="addRating()"
-              :is-disabled="quest.yourReview !== null || currentMark.mark === 0"
+              :is-disabled="starRatingStatus()"
               @input="showReviewModal($event, quest)"
             />
           </div>
@@ -220,9 +221,13 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    starRatingStatus() {
+      if (this.quest.yourReview !== null) return true;
+      return this.currentMark.mark !== 0 && this.currentMark.questId === this.quest.id;
+    },
     addRating() {
-      if (this.quest.yourReview) return this.quest.yourReview.mark;
-      if (!this.quest.yourReview) {
+      if (this.quest.yourReview?.mark) return this.quest.yourReview.mark;
+      if (!this.quest.yourReview?.mark) {
         if (this.currentMark.questId === this.quest.id) return this.currentMark.mark;
       }
       return 0;
