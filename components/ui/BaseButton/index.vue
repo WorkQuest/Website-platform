@@ -23,6 +23,7 @@
     class="base-btn"
     :class="btnClass"
     data-selector="ACTION-BTN-CLICK"
+    :type="isSubmit ? 'submit' : 'button'"
     @click="$emit('click')"
   >
     {{ text }}
@@ -47,6 +48,10 @@ export default {
     link: {
       type: String,
       default: '',
+    },
+    isSubmit: {
+      type: Boolean,
+      default: false,
     },
     nuxtLink: {
       type: String,
