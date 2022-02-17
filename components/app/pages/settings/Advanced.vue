@@ -55,7 +55,7 @@
           </div>
           <base-btn
             v-if="!button.isSwitcher"
-            :disabled="button.enable"
+            :disabled="button.disabled"
             :selector="`RIGHT-SIDE-BTN-${index}`"
             @click="showModalKey(button.modal)"
           >
@@ -148,14 +148,14 @@ export default {
           buttonName: 'settings.enable',
           modal: 'smsVerification',
           isSwitcher: false,
-          enable: this.userData?.tempPhone?.fullPhone,
+          disabled: this.userData?.tempPhone?.fullPhone === '',
         },
         {
           title: 'settings.changeRole',
           buttonName: 'settings.change',
           modal: 'changeRoleWarning',
           isSwitcher: false,
-          enable: this.userData?.totpIsActive,
+          disabled: !this.userData?.totpIsActive,
         },
       ],
     };
