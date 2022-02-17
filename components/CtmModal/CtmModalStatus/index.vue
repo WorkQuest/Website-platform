@@ -34,6 +34,7 @@
       <base-btn
         v-if="options.type === 'installMetamask'"
         class="status__action"
+        selector="INSTALL-METAMASK"
         @click="installMetamask()"
       >
         <span
@@ -56,6 +57,7 @@
         <base-btn
           class="status__action"
           mode="agree"
+          selector="GO-TO-CHAT"
           @click="goToChat()"
         >
           <span
@@ -69,6 +71,7 @@
       <base-btn
         v-else
         class="status__action"
+        selector="HIDE"
         @click="hide()"
       >
         <span

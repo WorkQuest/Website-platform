@@ -47,7 +47,8 @@
               class="btn__store"
             >
               <base-btn
-                :mode="'black'"
+                mode="black"
+                :selector="item.text"
                 @click="item.click"
               >
                 {{ item.text }}
@@ -150,6 +151,7 @@
         >
           <base-btn
             class="message__action"
+            selector="NEXT-STEP-WITH-ENABLE-2FA"
             @click="nextStepWithEnable2FA()"
           >
             {{ $t('meta.next') }}
@@ -166,6 +168,7 @@
           >
             <base-btn
               v-if="item.step.includes(step)"
+              :selector="`${item.text}-${i}`"
               class="message__action"
               @click="item.click"
             >
@@ -178,6 +181,7 @@
           >
             <base-btn
               class="message__action"
+              selector="CONFIRM-ENABLE-2FA"
               :disabled="!validated || !passed || invalid"
               @click="handleSubmit(confirmEnable2FA)"
             >
@@ -191,7 +195,8 @@
           class="btn__wrapper"
         >
           <base-btn
-            :mode="'outline'"
+            mode="outline"
+            selector="PREVIOUS-STEP"
             class="message__action"
             @click="previousStep()"
           >
@@ -204,7 +209,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -277,10 +282,10 @@ export default {
     await this.$store.dispatch('user/getUserData');
   },
   methods: {
-    goToGooglePlay(to, from, next) {
+    goToGooglePlay() {
       window.location.href = 'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2';
     },
-    goToAppleStore(to, from, next) {
+    goToAppleStore() {
       window.location.href = 'https://apps.apple.com/ru/app/google-authenticator/id388497605';
     },
     async enable2FA() {

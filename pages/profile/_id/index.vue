@@ -73,9 +73,10 @@
             class="quests__cards"
           >
             <card-quest
-              v-for="(quest,id) in questsData"
-              :key="id"
-              :data-selector="`QUEST-CARD-${quest.id}`"
+              v-for="(quest,i) in questsData"
+              :key="i"
+              :data-selector="`QUEST-CARD-${i}`"
+              :quest-index="i"
               :quest="quest"
               @clickFavoriteStar="updateQuests"
             />
@@ -167,7 +168,7 @@
             class="portfolio__add-btn"
           >
             <base-btn
-              data-selector="ACTION-BTN-ADD-PORTFOLIO-CASE"
+              selector="ADD-PORTFOLIO-CASE"
               @click="showAddCaseModal()"
             >
               {{ $t('ui.profile.addCase') }}
@@ -361,6 +362,9 @@ export default {
       this.SetLoader(false);
     },
   },
+  destroyed() {
+    sessionStorage.removeItem('questsListFilter');
+  },
   async mounted() {
     if (this.userId !== this.mainUser.id) {
       await this.$store.dispatch('user/getAnotherUserData', this.userId);
@@ -408,6 +412,9 @@ export default {
           'sort[createdAt]': 'desc',
         },
       };
+
+      sessionStorage.setItem('questsListFilter', JSON.stringify(payload));
+
       await this.$store.dispatch('quests/getUserQuests', payload);
     },
     async changeReviewsData(limit) {

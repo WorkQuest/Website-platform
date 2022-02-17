@@ -13,6 +13,7 @@
         <div class="header__right">
           <base-btn
             v-if="!isConnected"
+            selector="CONNECT-WALLET"
             mode="light"
             class="header__btn header__btn_connect"
             :disabled="statusBusy"
@@ -23,6 +24,7 @@
           <base-btn
             v-else
             mode="light"
+            selector="DISCONNECT-FROM-WALLET"
             class="header__btn header__btn_disconnect"
             :disabled="statusBusy"
             @click="disconnectFromWallet"
@@ -78,6 +80,7 @@
           </div>
           <div class="info-block__btns-cont">
             <base-btn
+              selector="SHOW-SWAP-MODAL"
               :disabled="metamaskStatus === 'notInstalled' || !isConnected"
               @click="showSwapModal"
             >
@@ -131,8 +134,13 @@
                     type="button"
                     @click="doCopy"
                   >
-                    <span class="icon-copy link-cont__icon" />
+                    <span class="icon-copy" />
                   </button>
+                </div>
+              </template>
+              <template #cell(amount)="el">
+                <div class="table__value">
+                  {{ `${el.item.amount} ${el.item.symbol}` }}
                 </div>
               </template>
               <template #cell(created)="el">
@@ -143,6 +151,7 @@
               <template #cell(redeem)="el">
                 <div class="table__value table__value_blue">
                   <base-btn
+                    selector="REDEEM"
                     class="btn__redeem"
                     :class="!el.item.status ? 'btn__redeem_disabled' : ''"
                     mode="outline"
@@ -222,6 +231,11 @@ export default {
         {
           key: 'tx',
           label: this.$t('crosschain.tableHead.tx'),
+          ...cellStyle,
+        },
+        {
+          key: 'amount',
+          label: this.$t('modals.amount'),
           ...cellStyle,
         },
         {
@@ -366,6 +380,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.icon-copy {
+  color: $blue;
+}
+
 .swap-icon {
   transition: .3s ease-in-out;
   &:hover {

@@ -8,7 +8,7 @@
         <div class="user__head">
           <div
             class="user__left"
-            :data-selector="`ACTION-BTN-SHOW-PROFILE`"
+            data-selector="ACTION-BTN-SHOW-PROFILE"
             @click="showProfile"
           >
             <img
@@ -34,7 +34,7 @@
             <quest-dd
               v-if="questData.status === questStatuses.Created"
               :data-selector="`QUEST-DD-${questData.id}`"
-              :item-id="questData.id"
+              :item="questData"
             />
           </div>
         </div>

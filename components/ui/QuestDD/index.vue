@@ -1,12 +1,13 @@
 <template>
   <div
+    v-if="Object.keys(item).length"
     v-click-outside="closeQuestMenu"
-    data-selector="COMPONENT-QUEST-DD"
+    :data-selector="`COMPONENT-QUEST-DD-${questIndex}`"
     class="quest quest__menu"
   >
     <button
       class="quest__button quest__button_menu"
-      data-selector="ACTION-BTN-TOGGLE-QUEST-MENU"
+      :data-selector="`ACTION-BTN-TOGGLE-QUEST-MENU-${questIndex}`"
       @click="toggleQuestMenu()"
     >
       <span class="icon-more_vertical" />
@@ -20,7 +21,7 @@
           <div class="menu__container">
             <div
               class="menu__item"
-              data-selector="ACTION-BTN-TO-RAISING-VIEWS"
+              :data-selector="`ACTION-BTN-TO-RAISING-VIEWS-${questIndex}`"
               @click="toRaisingViews"
             >
               <div class="menu__text">
@@ -29,8 +30,8 @@
             </div>
             <div
               class="menu__item"
-              data-selector="ACTION-BTN-SHARE-MODAL"
-              @click="shareModal()"
+              :data-selector="`ACTION-BTN-SHARE-MODAL-${questIndex}`"
+              @click="shareModal"
             >
               <div class="menu__text">
                 {{ $t('modals.share') }}
@@ -38,8 +39,8 @@
             </div>
             <div
               class="menu__item"
-              data-selector="ACTION-BTN-TO-EDIT-QUEST"
-              @click="toEditQuest()"
+              :data-selector="`ACTION-BTN-TO-EDIT-QUEST-${questIndex}`"
+              @click="toEditQuest"
             >
               <div class="menu__text">
                 {{ $t('modals.edit') }}
@@ -47,8 +48,8 @@
             </div>
             <div
               class="menu__item"
-              data-selector="ACTION-BTN-DELETE-QUEST"
-              @click="showAreYouSureDeleteQuestModal()"
+              :data-selector="`ACTION-BTN-DELETE-QUEST-${questIndex}`"
+              @click="showAreYouSureDeleteQuestModal"
             >
               <div class="menu__text">
                 {{ $t('modals.delete') }}
@@ -75,6 +76,10 @@ export default {
       type: String,
       default: '',
     },
+    questIndex: {
+      type: Number,
+      default: 0,
+    },
     item: {
       type: Object,
       default: () => {},
@@ -93,19 +98,31 @@ export default {
   },
   methods: {
     toEditQuest() {
-      // TODO: Исправить логику editQuest
-      // if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.item.status)) {
-      //   this.$router.push(`${Path.EDIT_QUEST}/${this.item.id}`);
-      //   this.setCurrentStepEditQuest(1);
-      // } else this.showToastWrongStatusEdit();
+      const { status, id } = this.item;
+
+      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(status)) {
+        this.$router.push(`${Path.EDIT_QUEST}/${id}`);
+        this.setCurrentStepEditQuest(1);
+      } else this.showToastWrongStatusEdit();
     },
     showAreYouSureDeleteQuestModal() {
-      // TODO: Исправить логику deleteQuest
-      // this.ShowModal({ key: modals.areYouSureDeleteQuest, item: this.item });
+      this.ShowModal({
+        key: modals.areYouSure,
+        title: this.$t('modals.sureDeleteNotification'),
+        okBtnTitle: this.$t('meta.delete'),
+        okBtnFunc: () => this.deleteQuest(),
+      });
+    },
+    deleteQuest() {
+      this.CloseModal();
+
+      this.DeleteQuest(this.item);
     },
     toRaisingViews() {
-      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.item.status)) {
-        this.$router.push({ path: `${Path.EDIT_QUEST}/${this.item.id}`, query: { mode: 'raise' } });
+      const { status, id } = this.item;
+
+      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(status)) {
+        this.$router.push({ path: `${Path.EDIT_QUEST}/${id}`, query: { mode: 'raise' } });
         this.setCurrentStepEditQuest(2);
       } else this.showToastWrongStatusRaisingViews();
     },
@@ -127,7 +144,11 @@ export default {
       });
     },
     shareModal() {
-      this.ShowModal({ key: modals.sharingQuest, itemId: this.item.id });
+      this.ShowModal({
+        key: modals.sharingQuest,
+        itemId: this.item.id,
+        mode: 'quest',
+      });
     },
     closeQuestMenu() {
       this.isShowQuestMenu = false;

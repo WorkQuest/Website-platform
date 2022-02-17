@@ -12,7 +12,7 @@
           <base-btn
             v-for="(item, i) in filterTabs"
             :key="i"
-            :data-selector="`ACTION-FILTER-BTNS-${item.name}`"
+            :selector="`${item.name}`"
             :mode="selectedTab === item.id ? '' : 'light'"
             class="quests__btn"
             @click="filterByStatus(item.id)"
@@ -25,9 +25,10 @@
           class="quests__cards"
         >
           <card-quest
-            v-for="(quest,id) in questsData"
-            :key="id"
+            v-for="(quest,i) in questsData"
+            :key="i"
             :quest="quest"
+            :quest-index="i"
             @clickFavoriteStar="updateQuests(quest)"
           />
         </div>
@@ -97,12 +98,16 @@ export default {
     async page() {
       this.SetLoader(true);
       this.requestParams.query.offset = (this.page - 1) * this.offset;
-      await this.$store.dispatch('quests/getUserQuests', this.requestParams);
+      await this.getQuests();
       this.SetLoader(false);
     },
   },
+  destroyed() {
+    sessionStorage.removeItem('questsListFilter');
+  },
   async mounted() {
     this.SetLoader(true);
+
     this.requestParams = {
       userId: this.userData.id,
       role: this.userRole,
@@ -113,16 +118,23 @@ export default {
         'sort[createdAt]': 'desc',
       },
     };
-    await this.$store.dispatch('quests/getUserQuests', this.requestParams);
+    await this.getQuests();
     this.SetLoader(false);
   },
   methods: {
+    async getQuests() {
+      const { requestParams } = this;
+
+      sessionStorage.setItem('questsListFilter', JSON.stringify(requestParams));
+
+      await this.$store.dispatch('quests/getUserQuests', requestParams);
+    },
     async updateQuests(item) {
       this.SetLoader(true);
       if (!item.star) await this.$store.dispatch('quests/setStarOnQuest', item.id);
       else await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
 
-      await this.$store.dispatch('quests/getUserQuests', this.requestParams);
+      await this.getQuests();
       this.SetLoader(false);
     },
     async filterByStatus(id) {
@@ -137,7 +149,7 @@ export default {
       else if (id === 3) this.requestParams.query['statuses[0]'] = QuestStatuses.Active;
       else if (id === 4) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorker;
       else if (id === 5) this.requestParams.query['statuses[0]'] = QuestStatuses.Done;
-      await this.$store.dispatch('quests/getUserQuests', this.requestParams);
+      await this.getQuests();
       this.SetLoader(false);
     },
   },

@@ -46,6 +46,7 @@
                 <div class="btn__wrapper">
                   <base-btn
                     class="message__action"
+                    selector="ADD-USER-CASE"
                     :disabled="!valid || !validated || !passed || invalid"
                     @click="addUserCase"
                   >
@@ -54,7 +55,8 @@
                 </div>
                 <div class="btn__wrapper">
                   <base-btn
-                    :mode="'outline'"
+                    mode="outline"
+                    selector="CANCEL"
                     class="message__action"
                     @click="hide()"
                   >
