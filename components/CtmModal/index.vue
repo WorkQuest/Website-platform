@@ -81,7 +81,6 @@
       <CtmModalSwap v-if="modals.swap === currentModalKey" />
       <CtmModalSwapInfo v-if="modals.swapInfo === currentModalKey" />
       <CtmModalClaim v-if="modals.claim === currentModalKey" />
-      <CtmModalAreYouSureDeleteQuest v-if="modals.areYouSureDeleteQuest === currentModalKey" />
       <CtmModalEditCase v-if="modals.editCase === currentModalKey" />
       <CtmModalDeleteCase v-if="modals.deleteCase === currentModalKey" />
       <CtmModalClaimRewards v-if="modals.claimRewards === currentModalKey" />
@@ -154,7 +153,6 @@ import CtmModalPayment from './CtmModalPayment';
 import CtmModalDisable2FA from './CtmModalDisable2FA';
 import CtmModalQuestFilterFull from './CtmModalQuestFilterFull';
 import CtmModalShowImage from './CtmModalShowImage';
-import CtmModalAreYouSureDeleteQuest from './CtmModalAreYouSureDeleteQuest';
 import CtmModalGiveDeposit from './CtmModalGiveDeposit';
 import CtmModalAddingCard from './CtmModalAddingCard';
 import CtmModalDepositOptions from './CtmModalDepositOptions';
@@ -252,7 +250,6 @@ export default {
     CtmModalSwapInfo,
     CtmModalAreYouSureNotification,
     CtmModalClaim,
-    CtmModalAreYouSureDeleteQuest,
     CtmModalPriceSearch,
     CtmModalEditCase,
     CtmModalDeleteCase,

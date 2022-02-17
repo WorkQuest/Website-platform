@@ -51,6 +51,7 @@
             <base-btn
               class="message__action"
               :disabled="!message_input.trim()"
+              selector="INVITE-ON-QUEST"
               @click="inviteOnQuest()"
             >
               {{ $t('meta.send') }}
@@ -59,7 +60,8 @@
           <div class="btn__wrapper">
             <base-btn
               class="message__action"
-              :mode="'outline'"
+              mode="outline"
+              selector="CANCEL"
               @click="hide()"
             >
               {{ $t('meta.cancel') }}

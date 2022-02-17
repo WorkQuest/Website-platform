@@ -135,7 +135,10 @@
         v-if="canLoadMoreChats"
         class="chats-page__footer"
       >
-        <base-btn @click="loadMoreChats">
+        <base-btn
+          :selector="`${$t('chat.loadMore')}`"
+          @click="loadMoreChats"
+        >
           {{ $t('chat.loadMore') }}
         </base-btn>
       </div>

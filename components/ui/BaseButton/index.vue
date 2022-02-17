@@ -22,8 +22,8 @@
     v-else
     class="base-btn"
     :class="btnClass"
-    data-selector="ACTION-BTN-CLICK"
     :type="isSubmit ? 'submit' : 'button'"
+    :data-selector="`ACTION-BTN-CLICK-${selector}`"
     @click="$emit('click')"
   >
     {{ text }}
@@ -52,6 +52,10 @@ export default {
     isSubmit: {
       type: Boolean,
       default: false,
+    },
+    selector: {
+      type: String,
+      default: '',
     },
     nuxtLink: {
       type: String,

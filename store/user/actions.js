@@ -6,6 +6,15 @@ import {
 } from '~/utils/enums';
 
 export default {
+  async changeRole({ commit }, { totp }) {
+    try {
+      const { ok, result } = await this.$axios.$put('/v1/profile/change-role', { totp });
+      return ok;
+    } catch (e) {
+      console.log('user/changeUserRole');
+      return false;
+    }
+  },
   async addEducation({ commit }, data) {
     commit('setEducations', data);
   },

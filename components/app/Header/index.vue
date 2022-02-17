@@ -2,11 +2,13 @@
   <div
     v-click-outside="closeAll"
     class="header"
+    data-selector="COMPONENT-HEADER"
   >
     <div class="header__body">
       <div class="header__left">
         <div
           class="header__logo"
+          data-selector="ACTION-BTN-TO-MAIN-PAGE"
           @click="toMain()"
         >
           <img
@@ -23,6 +25,7 @@
             :key="i"
             :to="item.path"
             class="header__link"
+            :data-selector="`HEADER-LINKS-${i}`"
             :exact-active-class="'header__link_active'"
           >
             {{ item.title }}
@@ -30,6 +33,7 @@
           <div
             class="header__link header__link_menu"
             :class="{'header__link_active': isShowAdditionalMenu}"
+            data-selector="ACTION-BTN-SHOW-ADDITIONAL-MENU"
             @click="showAdditionalMenu()"
           >
             {{ $t('ui.profile.DeFi') }}
@@ -41,8 +45,9 @@
               >
                 <div class="menu__items">
                   <nuxt-link
-                    v-for="item in additionalMenuLinks"
+                    v-for="(item, i) in additionalMenuLinks"
                     :key="`item-${item.title}`"
+                    :data-selector="`ADDITIONAL-MENU-LINKS-${i}`"
                     :to="item.path"
                     class="menu__item"
                   >
@@ -67,6 +72,7 @@
       <div class="header__right">
         <div
           class="header__button header__button_locale"
+          data-selector="ACTION-BTN-SHOW-LOCALE"
           @click="showLocale()"
         >
           <span
@@ -85,10 +91,11 @@
               class="locale"
             >
               <li
-                v-for="item in locales"
+                v-for="(item, i) in locales"
                 :key="item.localeText"
                 class="locale__item"
                 :class="[{'locale__item_active' : currentLocale === item.localeText}]"
+                :data-selector="`ACTION-BTN-SET-LOCALE-${i}`"
                 @click="setLocale(item)"
               >
                 <img
@@ -105,6 +112,7 @@
         </div>
         <div
           class="header__button"
+          data-selector="ACTION-BTN-GO-TO-MESSAGES"
           @click="goToMessages()"
         >
           <img
@@ -118,10 +126,12 @@
           />
         </div>
         <notifications-button
+          data-selector="ACTION-BTN-NOTIF-CLOSE-ALL"
           @closeAnotherPopUp="closeAll()"
         />
         <div
           class="ctm-menu__toggle"
+          data-selector="ACTION-BTN-TOGGLE-MOBILE-MENU"
           @click="toggleMobileMenu()"
         >
           <div class="header__button header__button_menu">
@@ -130,6 +140,7 @@
         </div>
         <div
           class="header__button header__button_profile"
+          data-selector="ACTION-BTN-SHOW-PROFILE"
           @click="showProfile()"
         >
           <span class="icon icon-hamburger" />
@@ -162,8 +173,9 @@
               </div>
               <div class="profile__items">
                 <nuxt-link
-                  v-for="item in profileLinks"
+                  v-for="(item, i) in profileLinks"
                   :key="`item-${item.title}`"
+                  :data-selector="`PROFILE-LINKS-${i}`"
                   class="profile__item"
                   :to="item.path"
                 >
@@ -171,6 +183,7 @@
                 </nuxt-link>
                 <div
                   class="profile__item profile__item_red"
+                  data-selector="ACTION-BTN-LOGOUT"
                   @click="logout()"
                 >
                   {{ $t('ui.profile.logout') }}
@@ -182,6 +195,7 @@
         <base-btn
           v-if="userData.role === $options.UserRole.EMPLOYER"
           class="header__btn"
+          selector="CREATE-NEW-QUEST"
           @click="createNewQuest('pc')"
         >
           {{ $t('layout.create') }}
@@ -195,6 +209,7 @@
       <div class="ctm-menu__content">
         <div
           class="ctm-menu__user"
+          data-selector="TOGGLE-USER-DD-MOBILE"
           @click="toggleUserDD()"
         >
           <div class="user__container">
@@ -231,12 +246,14 @@
             v-for="(item, i) in profileLinks"
             :key="i"
             class="dropdown__link"
+            :data-selector="`PROFILE-LINKS-MOBILE-${i}`"
             @click="toRoute(item.link)"
           >
             {{ item.title }}
           </div>
           <div
             class="dropdown__link dropdown__link_logout"
+            data-selector="ACTION-BTN-LOGOUT-MOBILE"
             @click="logout()"
           >
             {{ $t('ui.profile.logout') }}
@@ -246,6 +263,7 @@
           <div
             v-for="(item, i) in headerLinks"
             :key="i"
+            :data-selector="`HEADER-LINKS-MOBILE-${i}`"
             class="ctm-menu__link"
             @click="toRoute(item.path)"
           >
@@ -254,6 +272,7 @@
         </div>
         <div
           class="ctm-menu__dropdown"
+          data-selector="ACTION-BTN-TOGGLE-INSTRUMENT-DD"
           @click="toggleInstrumentDD()"
         >
           <div class="dropdown__btn">
@@ -272,6 +291,7 @@
           <div
             v-for="(item, i) in additionalMenuLinks"
             :key="i"
+            :data-selector="`ADDITIONAL-MENU-LINKS-MOBILE-${i}`"
             class="dropdown-data__link"
             @click="toRoute(item.path)"
           >
@@ -282,6 +302,7 @@
           <base-btn
             v-if="userData.role === $options.UserRole.EMPLOYER"
             class="ctm-menu__btn"
+            data-selector="ACTION-BTN-CREATE-NEW-QUEST-MOBILE"
             @click="createNewQuest('mobile')"
           >
             {{ $t('layout.create') }}

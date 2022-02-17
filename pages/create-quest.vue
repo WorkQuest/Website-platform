@@ -135,7 +135,7 @@
           <div class="upload btn btn__container btn__container_right">
             <div class="btn__create">
               <base-btn
-                data-selector="ACTION-BTN-CREATE-A-QUEST"
+                selector="CREATE-A-QUEST"
                 :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
                 @click="handleSubmit(toRiseViews)"
               >
@@ -153,7 +153,7 @@
             <div class="btn-container__btn_back">
               <base-btn
                 mode="back"
-                data-selector="ACTION-BTN-BACK"
+                selector="PREVIOUS-STEP"
                 @click="goBack"
               >
                 {{ $t('meta.back') }}
@@ -235,7 +235,7 @@
             <div class="btn-container">
               <div class="btn-container__btn">
                 <base-btn
-                  :mode="'outline'"
+                  mode="outline"
                   data-selector="ACTION-BTN-SKIP-AND-END"
                   @click="createQuest"
                 >

@@ -18,6 +18,7 @@
           </div>
           <base-btn
             class="email__action"
+            selector="OK"
             @click="hide()"
           >
             {{ $t('meta.ok') }}
