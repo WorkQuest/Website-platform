@@ -100,7 +100,7 @@ export default {
       this.CloseModal();
     },
     async changeRole() {
-      const response = await this.$store.dispatch('user/changeUserRole', { totp: this.totp });
+      const response = await this.$store.dispatch('user/changeRole', { totp: this.totp });
       this.hide();
       if (response?.ok) this.success();
     },
