@@ -61,16 +61,19 @@
         <div class="reviews-item__rating">
           {{ reviewData.reviewerRating }}
         </div>
-        <base-btn
-          mode="borderless-right"
-          :selector="`SHOW-REVIEW-DETAILS-${i}`"
-          @click="showReviewDetails(reviewData)"
-        >
-          {{ $t('quests.readCompletely') }}
-          <template v-slot:right>
-            <span class="icon-short_right" />
-          </template>
-        </base-btn>
+        <div class="reviews-item__btn-read-container">
+          <base-btn
+            class="reviews-item__btn-read"
+            mode="borderless-right"
+            :selector="`SHOW-REVIEW-DETAILS-${i}`"
+            @click="showReviewDetails(reviewData)"
+          >
+            {{ $t('quests.readCompletely') }}
+            <template v-slot:right>
+              <span class="icon-short_right" />
+            </template>
+          </base-btn>
+        </div>
       </div>
     </span>
   </div>
@@ -103,7 +106,7 @@ export default {
   },
   methods: {
     cropTxt(str) {
-      const maxLength = 120;
+      const maxLength = 60;
       if (str.length > maxLength) str = `${str.slice(0, maxLength)}...`;
       return str;
     },
@@ -206,14 +209,25 @@ export default {
   grid-template-columns: 1fr 1fr;
   grid-gap: 20px;
 }
-
 .reviews-item {
   width: 100%;
   background-color: #fff;
   border-radius: 6px;
   padding: 20px 20px 10px;
   position: relative;
-  box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.1);
+  transition: .5s;
+  border: 1px solid $white;
+  &:hover {
+    border: 1px solid $black100;
+  }
+  &__btn-read {
+    width: 151px;
+  }
+  &__btn-read-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
   &__header {
     @extend .styles__flex;
     justify-content: space-between;
