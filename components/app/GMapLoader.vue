@@ -81,6 +81,7 @@ export default {
           textColor: '#fff',
         },
       ],
+      counter: 1,
       timeoutIdBoundsChange: null,
       openedMarkerID: null,
       isOpenedClusterInfo: false,
@@ -102,12 +103,17 @@ export default {
   },
   async mounted() {
     await this.initMapListeners();
+    await this.checkUserCoordinates();
   },
   destroyed() {
     this.map.$off('bounds_changed', this.onBoundsChanged);
     this.map.$off('zoom_changed', this.onBoundsChanged);
     clearTimeout(this.timeoutIdBoundsChange);
     this.timeoutIdBoundsChange = null;
+    this.isOpenedClusterInfo = false;
+    this.itemsForInfoBlock = [];
+    this.openedMarkerID = null;
+    this.counter = null;
     this.map = null;
   },
   methods: {
@@ -118,7 +124,10 @@ export default {
         this.map.$on('zoom_changed', this.onZoomChanged);
       } catch (e) {
         console.log(this.$t('messages.mapNotLoaded'));
-        await this.initMapListeners();
+        if (this.counter < 3) {
+          this.counter += 1;
+          await this.initMapListeners();
+        }
       }
     },
     async onBoundsChanged(event) {
@@ -137,7 +146,7 @@ export default {
       this.clusterPosition = { ...newCenter };
       this.map.$mapObject.setCenter({ ...newCenter });
 
-      await this.$store.dispatch('google-map/setNewZoom', this.zoom + 5 <= 18 ? this.zoom + 5 : 18);
+      await this.$store.dispatch('google-map/setNewZoom', this.zoom + 3 <= 18 ? this.zoom + 3 : 18);
       if (this.zoom !== 18) return;
 
       this.isOpenedClusterInfo = true;
@@ -170,11 +179,12 @@ export default {
       this.isOpenedClusterInfo = false;
     },
 
-    checkUserCoordinates() {
-      if (this.userData.location && this.userData.location.latitude && this.userData.location.longitude) {
-        this.userLocation.lat = this.userData.location.latitude;
-        this.userLocation.lng = this.userData.location.longitude;
-      }
+    async checkUserCoordinates() {
+      const center = {
+        lat: this.userPosition?.latitude || this.userData.location?.latitude || 0,
+        lng: this.userPosition?.longitude || this.userData.location?.longitude || 0,
+      };
+      if (center.lat && center.lng) await this.$store.dispatch('google-map/setNewCenter', center);
     },
   },
 };
