@@ -1,14 +1,14 @@
 <template>
   <div class="collateral">
     <div class="collateral__title">
-      Collateral balance
+      {{ $t('wallet.collateral.balance') }}
     </div>
     <div class="collateral__header table_grid">
-      <div>coin</div>
-      <div>attention quotient</div>
-      <div>sum</div>
-      <div>amount in dollars</div>
-      <div>amount in dollars</div>
+      <div>{{ $t('wallet.collateral.coin') }}</div>
+      <div>{{ $t('wallet.collateral.attentionQuotient') }}</div>
+      <div>{{ $t('wallet.collateral.sum') }}</div>
+      <div>{{ $t('wallet.collateral.amountInDollars') }}</div>
+      <div>{{ $t('wallet.collateral.amountInDollars') }}</div>
     </div>
     <div
       v-for="(i) of 5"
@@ -28,16 +28,16 @@
       <div>000000</div>
       <div class="item__actions">
         <base-btn
-          selector=""
+          selector="ADD"
           @click="handleAdd"
         >
-          Add
+          {{ $t('modals.add') }}
         </base-btn>
         <base-btn
-          selector=""
+          selector="TAKE"
           @click="handleTake"
         >
-          Take
+          {{ $t('modals.take') }}
         </base-btn>
       </div>
     </div>
@@ -53,11 +53,13 @@ export default {
     handleAdd() {
       this.ShowModal({
         key: modals.collateralTransaction,
+        mode: 'take',
       });
     },
     handleTake() {
       this.ShowModal({
         key: modals.collateralTransaction,
+        mode: 'add',
       });
     },
   },
@@ -84,6 +86,11 @@ export default {
 }
 .table {
   &_grid {
+    background: red !important;
+    position: relative;
+    min-width: 1500px;
+    overflow-x: auto;
+
     display: grid;
     grid-template-columns: 160px repeat(4, 1fr) 260px;
     align-items: center;
