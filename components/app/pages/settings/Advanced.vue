@@ -152,9 +152,11 @@ export default {
         },
         {
           title: 'settings.changeRole',
-          buttonName: 'settings.change',
-          modal: 'changeRoleWarning',
-          isSwitcher: false,
+          firstButtonName: 'settings.change',
+          secondButtonName: 'settings.change',
+          firstModal: 'changeRoleWarning',
+          secondModal: 'enable2FA',
+          isSwitcher: true,
         },
       ],
     };
