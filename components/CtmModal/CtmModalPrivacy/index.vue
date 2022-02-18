@@ -109,7 +109,6 @@ export default {
           this.$cookies.set('userStatus', 1, { path: '/' });
           sessionStorage.removeItem('confirmToken');
           this.ShowToast(this.$t('modals.yourAccountVerified'), this.$t('modals.success'));
-          console.log('redirect to role');
           await this.$router.push(Path.ROLE);
         } else {
           // Wrong confirm token
