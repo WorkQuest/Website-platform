@@ -197,6 +197,7 @@ export default {
         social: this.isLoginWithSocial,
       });
     }
+    if (sessionStorage.getItem('confirmToken')) this.ShowToast(this.$t('messages.loginToContinue'), ' ');
   },
   beforeDestroy() {
     if (!this.addressAssigned && !this.$cookies.get('access') && !this.$cookies.get('userStatus')) {
@@ -265,6 +266,7 @@ export default {
 
       // Redirect to confirm account
       if (confirmToken) {
+        setCipherKey(this.model.password);
         this.redirectUser();
         this.SetLoader(false);
         return;
