@@ -110,7 +110,7 @@
             <base-btn
               class="buttons__button"
               :disabled="!validated || !passed || invalid"
-              is-submit
+              :is-submit="false"
             >
               {{ $t('meta.submit') }}
             </base-btn>
