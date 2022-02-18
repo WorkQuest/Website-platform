@@ -137,7 +137,7 @@ export default {
       userRole: 'user/getUserRole',
     }),
     content() {
-      // if (!Object.keys(this.item).length) return {};
+      if (!Object.keys(this.item).length) return {};
       if (this.userRole === UserRole.WORKER) {
         return {
           avatar: this.item.user.avatar ? this.item.user.avatar.url : this.EmptyAvatar(),
