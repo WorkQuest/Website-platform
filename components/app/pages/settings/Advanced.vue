@@ -279,7 +279,7 @@ export default {
     &__option_blue {
       flex-direction: column;
       button {
-        min-width: none;
+        min-width: auto;
         max-width: none;
         width: 100%;
       }

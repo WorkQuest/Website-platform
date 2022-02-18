@@ -92,25 +92,55 @@ export default {
   },
   computed: {
     ...mapGetters({
+      userData: 'user/getUserData',
       userRole: 'user/getUserRole',
       questData: 'quests/getQuest',
     }),
   },
   methods: {
     toEditQuest() {
-      const { status, id } = this.item;
+      if (!this.userData.totpIsActive) {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/deleteError.svg'),
+          title: this.$t('modals.error'),
+          subtitle: this.$t('modals.youCan’tEditQuest'),
+          button: this.$t('modals.close'),
+        });
+        return;
+      }
 
+      this.ShowModal({
+        key: modals.securityCheck,
+        actionMethod: async () => this.editAction(),
+      });
+    },
+    editAction() {
+      const { status, id } = this.item;
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(status)) {
         this.$router.push(`${Path.EDIT_QUEST}/${id}`);
         this.setCurrentStepEditQuest(1);
       } else this.showToastWrongStatusEdit();
     },
     showAreYouSureDeleteQuestModal() {
+      if (!this.userData.totpIsActive) {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/deleteError.svg'),
+          title: this.$t('modals.error'),
+          subtitle: this.$t('modals.youCan’tDeleteQuest'),
+          button: this.$t('modals.close'),
+        });
+        return;
+      }
       this.ShowModal({
-        key: modals.areYouSure,
-        title: this.$t('modals.sureDeleteNotification'),
-        okBtnTitle: this.$t('meta.delete'),
-        okBtnFunc: () => this.deleteQuest(),
+        key: modals.securityCheck,
+        actionMethod: async () => this.ShowModal({
+          key: modals.areYouSure,
+          title: this.$t('modals.sureDeleteNotification'),
+          okBtnTitle: this.$t('meta.delete'),
+          okBtnFunc: () => this.deleteQuest(),
+        }),
       });
     },
     deleteQuest() {
