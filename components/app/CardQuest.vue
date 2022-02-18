@@ -160,7 +160,7 @@
               rating-type="questPage"
               :stars-number="5"
               :data-selector="`ACTION-BTN-SHOW-REVIEW-MODAL-${questIndex}`"
-              :rating="addRating()"
+              :rating="!quest.yourReview ? currentMark.mark : quest.yourReview.mark"
               :is-disabled="quest.yourReview !== null || currentMark.mark !== 0"
               @input="showReviewModal($event, quest)"
             />
@@ -222,13 +222,6 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    addRating() {
-      if (this.quest.yourReview) return this.quest.yourReview.mark;
-      if (!this.quest.yourReview) {
-        if (this.currentMark.questId === this.quest.id) return this.currentMark.mark;
-      }
-      return 0;
-    },
     showDistance(location) {
       if (!location?.latitude && !location?.longitude) return 0;
       return this.getDistanceFromLatLonInKm(location.latitude, location.longitude, this.userLat, this.userLng);
@@ -352,7 +345,6 @@ export default {
 .right {
   justify-self: flex-end;
 }
-//TODO Добавить класс card-quest__icon
 .icon-circle_up {
   color: $black100;
   font-size: 24px;
@@ -375,8 +367,7 @@ export default {
     color: $black500;
   }
   &__container {
-    width: 100%;
-    height: 100%;
+    @extend .styles__full;
     display: grid;
     align-items: center;
     grid-template-columns: auto 3fr;
@@ -403,9 +394,14 @@ export default {
     }
   }
 }
+.styles {
+  &__full {
+    width: 100%;
+    height: 100%;
+  }
+}
 .avatar {
-  width: 100%;
-  height: 100%;
+  @extend .styles__full;
   max-height: 30px;
   max-width: 30px;
   border-radius: 50%;
@@ -499,8 +495,7 @@ export default {
     }
   }
   &__left {
-    width: 100%;
-    height: 100%;
+    @extend .styles__full;
     position: relative;
     display: flex;
     background-size: cover !important;
