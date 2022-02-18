@@ -235,10 +235,8 @@ export default {
     try {
       const response = await this.$axios.$post('/v1/auth/login', payload);
       commit('setTokens', response.result);
-      if (response.result.userStatus === 1) {
-        await dispatch('getUserData');
-        await dispatch('getStatistic');
-        await dispatch('getNotifications');
+      if (response.result.userStatus === 1 && !response.result.totpIsActive) {
+        await dispatch('getMainData');
       }
       return response;
     } catch (e) {
@@ -253,6 +251,11 @@ export default {
     } catch (e) {
       return error();
     }
+  },
+  async getMainData({ commit, dispatch }) {
+    await dispatch('getUserData');
+    await dispatch('getStatistic');
+    await dispatch('getNotifications');
   },
   async logout({ commit }) {
     commit('logOut');
@@ -444,6 +447,15 @@ export default {
       return response.result;
     } catch (e) {
       return console.log(e);
+    }
+  },
+  async validateTOTP({ commit }, payload) {
+    try {
+      const response = await this.$axios.$post('/v1/auth/validate-totp', payload);
+      return response.result.isValid;
+    } catch (e) {
+      console.log('user/validateTOTP');
+      return false;
     }
   },
 };
