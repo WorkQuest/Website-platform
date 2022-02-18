@@ -252,10 +252,12 @@ export default {
       return error();
     }
   },
-  async getMainData({ commit, dispatch }) {
-    await dispatch('getUserData');
-    await dispatch('getStatistic');
-    await dispatch('getNotifications');
+  async getMainData({ dispatch }) {
+    await Promise.all([
+      dispatch('getUserData'),
+      dispatch('getStatistic'),
+      dispatch('getNotifications'),
+    ]);
   },
   async logout({ commit }) {
     commit('logOut');
