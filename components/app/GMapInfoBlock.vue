@@ -189,7 +189,7 @@ export default {
 </script>
 
 <style lang="scss">
-//TODO .gm-style-iw and .gm-style-iw-d does not working, need to fix paddings right and bottom
+// .gm-style-iw and .gm-style-iw-d does not working, need to fix paddings right and bottom
 .gm-style-iw{
   padding: 0 !important;
 }
