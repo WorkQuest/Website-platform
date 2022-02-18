@@ -26,7 +26,9 @@
               :data-selector="`ACTION-BTN-GO-TO-REVIEWER-PROFILE-${i}`"
               @click="goToProfile(reviewData.fromUser.id)"
             >
-              {{ `${reviewData.fromUser.firstName} ${reviewData.fromUser.lastName}` }}
+              <!--              TODO: profile/9cfadf5f-1b6d-4a0d-93f9-0df3e3b9b12d-->
+              <!--              TODO: Обрезать с помощью css-->
+              {{ reviewData.fromUser.firstName }} {{ reviewData.fromUser.lastName }}
             </div>
             <div class="card-subtitle_green">
               {{ $t('role.worker') }}
@@ -106,6 +108,10 @@ export default {
     }),
   },
   methods: {
+    cropTxt(str, maxLength) {
+      if (str.length > maxLength) str = `${str.slice(0, maxLength)}...`;
+      return str;
+    },
     goToProfile(id) {
       this.$router.push(`/profile/${id}`);
     },

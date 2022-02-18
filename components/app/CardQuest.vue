@@ -30,6 +30,7 @@
             >
           </div>
           <div class="card-quest__text card-quest__text_title">
+            <!--              TODO: Обрезать с помощью css-->
             {{ `${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}` }}
           </div>
         </div>
@@ -90,7 +91,9 @@
               :src="quest.assignedWorker.avatar ? quest.assignedWorker.avatar.url : EmptyAvatar()"
               :alt="`${ quest.assignedWorker ? UserName(quest.assignedWorker.firstName, quest.assignedWorker.lastName) : '' }`"
             >
+            <!--              TODO: Обрезать с помощью css-->
             <div class="user__name">
+              <!--              TODO: Обрезать с помощью css-->
               {{ quest.assignedWorker.firstName }} {{ quest.assignedWorker.lastName }}
             </div>
           </div>
@@ -108,12 +111,14 @@
         v-if="quest.title"
         class="card-quest__text card-quest__text_blue"
       >
+        <!--              TODO: Обрезать с помощью css-->
         {{ cropTxt(quest.title, 68) }}
       </div>
       <div
         v-if="quest.description"
         class="card-quest__text card-quest__text-description"
       >
+        <!--              TODO: Обрезать с помощью css-->
         {{ cropTxt(quest.description, 98) }}
       </div>
       <div class="card-quest__text card-quest__publication">
