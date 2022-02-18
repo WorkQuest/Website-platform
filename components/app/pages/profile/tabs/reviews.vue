@@ -235,10 +235,12 @@ export default {
     justify-content: space-between;
   }
   &__img {
-    width: 40px;
+    max-width: 40px;
+    max-height: 40px;
     height: 40px;
+    width: 40px;
     border-radius: 50%;
-    object-fit: cover;
+    background-size: 40px 40px;
   }
   &__rating-block, &__user-data {
     grid-gap: 10px;
