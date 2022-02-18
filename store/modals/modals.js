@@ -79,5 +79,5 @@ export default {
   transactionReceipt: 'transactionReceipt',
   areYouSure: 'areYouSure',
   stake: 'stake',
-  enable2FA: 'enable2FA',
+  neededToEnable2FA: 'neededToEnable2FA',
 };

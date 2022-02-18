@@ -932,6 +932,8 @@
     "error": "Error!"
   },
   "modals": {
+    "settingsInfo": "Settings Info",
+    "pleaseEnable2FA": "Please, enable TWO-Step authentication",
     "errorQuests": "Error with quests",
     "emptyOpenQuests": "You don't have open quests, please create",
     "errorSmsVer": "Error SMS verification",

@@ -155,7 +155,7 @@ export default {
           firstButtonName: 'settings.change',
           secondButtonName: 'settings.change',
           firstModal: 'changeRoleWarning',
-          secondModal: 'enable2FA',
+          secondModal: 'neededToEnable2FA',
           isSwitcher: true,
         },
       ],
