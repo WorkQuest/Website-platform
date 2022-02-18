@@ -188,7 +188,6 @@ export default {
   },
   methods: {
     clearCookies() {
-      console.log('clear cookies??');
       this.$cookies.remove('access');
       this.$cookies.remove('refresh');
       this.$cookies.remove('userLogin');
