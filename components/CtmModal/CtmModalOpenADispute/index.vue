@@ -20,13 +20,14 @@
       <base-textarea
         v-model="description"
         :placeholder="$t('modals.description')"
-        is-hide-error
+        :error-text="description.length > 1000 ? $tc('modals.textLengthExceeded', 1000) : ''"
+        :is-hide-error="description.length <= 1000"
         rules="required|text-desc"
       />
       <div class="content__buttons buttons">
         <base-btn
           class="buttons__button"
-          :disabled="drop === ''"
+          :disabled="drop === '' || description.length > 1000"
           selector="SHOW-REQUEST-SEND"
           @click="showRequestSendModal"
         >
@@ -93,10 +94,17 @@ export default {
         problemDescription: this.description,
       };
       const response = await this.$store.dispatch('disputes/createDispute', payload);
-      if (response.ok) {
-        await this.$router.push(`/disputes/${this.response.result.id}`);
-      }
       this.hide();
+      if (response.ok) {
+        await this.$router.push(`/disputes/${response.result.id}`);
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.error'),
+          subtitle: this.$t('errors.incorrectPass'),
+        });
+      }
     },
   },
 };
