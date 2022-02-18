@@ -38,11 +38,6 @@ export default {
       starRating: this.rating,
     };
   },
-  computed: {
-    getStarStyles() {
-      return [{ disabled: this.isDisabled }];
-    },
-  },
   methods: {
     fillStars(i) {
       if (i <= this.rating && this.isDisabled) return 'rating__star rating__star_checked';

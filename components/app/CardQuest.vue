@@ -159,7 +159,7 @@
               :stars-number="5"
               :data-selector="`ACTION-BTN-SHOW-REVIEW-MODAL-${quest.id}`"
               :rating="rating"
-              :is-disabled="starRatingStatus()"
+              :is-disabled="!!rating"
               @input="showReviewModal($event, quest.id)"
             />
           </div>
@@ -209,7 +209,6 @@ export default {
     ...mapGetters({
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
-      currentMark: 'user/getCurrentReviewMarkOnQuest',
     }),
     rating() {
       return this.quest.yourReview?.mark || 0;
@@ -223,10 +222,6 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    starRatingStatus() {
-      if (this.quest.yourReview !== null) return true;
-      return this.currentMark.mark !== 0 && this.currentMark.questId === this.quest.id;
-    },
     showDistance(location) {
       if (!location?.latitude && !location?.longitude) return 0;
       return this.getDistanceFromLatLonInKm(location.latitude, location.longitude, this.userLat, this.userLng);
