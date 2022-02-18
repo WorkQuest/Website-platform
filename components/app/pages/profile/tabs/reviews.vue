@@ -240,7 +240,6 @@ export default {
     height: 40px;
     width: 40px;
     border-radius: 50%;
-    background-size: 40px 40px;
   }
   &__rating-block, &__user-data {
     grid-gap: 10px;
