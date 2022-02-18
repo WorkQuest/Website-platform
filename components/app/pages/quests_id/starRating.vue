@@ -53,7 +53,9 @@ export default {
   },
   computed: {
     getStarStyles() {
-      return [{ disabled: this.isDisabled }];
+      return [
+        { disabled: this.isDisabled },
+      ];
     },
   },
   methods: {
@@ -82,33 +84,27 @@ export default {
     line-height: 25px;
     color: lightgrey;
     text-shadow: 1px 1px #bbb;
-
     &_golden {
       color: gold;
     }
-
-    &__star > label:before {
-      content: '★';
-    }
-
-    &__star:hover > label {
-      color: gold;
-    }
-
-    &__star:hover ~ &__star > label {
-      color: gold;
-      text-shadow: 1px 1px goldenrod;
-    }
-
-    .disabled {
-      pointer-events: none;
-    }
-
-    @include _575 {
-      .rating-area__star-label {
-        font-size: 20px;
-      }
-    }
+  }
+  &__star > label:before {
+    content: '★';
+  }
+  &__star:hover > label {
+    color: gold;
+  }
+  &__star:hover ~ &__star > label {
+    color: gold;
+    text-shadow: 1px 1px goldenrod;
+  }
+}
+.disabled {
+  pointer-events: none;
+}
+@include _575 {
+  .rating-area__star-label {
+    font-size: 20px;
   }
 }
 </style>
