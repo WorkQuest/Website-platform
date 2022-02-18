@@ -235,7 +235,8 @@ export default {
   async beforeDestroy() {
     await this.$store.dispatch('google-map/resetMap');
     this.$store.commit('quests/setQuest', null);
-    await this.$store.commit('user/setCurrentReviewMarkOnQuest', { questId: null, message: null, mark: null });
+    this.$store.commit('quests/setAllQuests', { count: 0, quests: [] });
+    this.$store.commit('user/setCurrentReviewMarkOnQuest', { questId: null, message: null, mark: null });
   },
   methods: {
     starRating(item) {

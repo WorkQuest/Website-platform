@@ -11,6 +11,11 @@ export default {
   async resetMap({ commit }) {
     commit('setZoom', 15);
     commit('setPoints', []);
+    commit('setCenter', { lat: 0, lng: 0 });
+    commit('setBounds', {
+      northEast: { lat: 0, lng: 0 },
+      southWest: { lat: 0, lng: 0 },
+    });
   },
   async questsPoints({ commit }, { query, specFilter }) {
     try {
