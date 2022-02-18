@@ -477,12 +477,13 @@ export default {
     border: 1px solid $black100;
   }
   &__btn-details {
-    height: 28px !important;
+    height: 24px !important;
     width: 100%;
     min-width: 100px;
   }
   &__rating {
-    height: 24px;
+    height: 19px;
+    align-self: center;
   }
   &__container {
     display: flex;

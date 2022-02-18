@@ -60,10 +60,10 @@ export default {
   border: none;
   &__group {
     position: relative;
-    width: 7.5em;
-    height: 1.5em;
+    width: 6em;
+    height: 1.2em;
     background-image: url('assets/img/ui/star-empty.svg');
-    background-size: 1.5em auto;
+    background-size: 1.2em auto;
     background-repeat: repeat-x;
   }
   &__star {
@@ -71,9 +71,9 @@ export default {
     margin: 0;
     top: 0;
     left: 0;
-    width: 1.5em;
-    height: 1.5em;
-    background-size: 1.5em auto;
+    width: 1.2em;
+    height: 1.2em;
+    background-size: 1.2em auto;
     background-repeat: repeat-x;
     font-size: inherit;
     -webkit-appearance: none;
@@ -91,23 +91,23 @@ export default {
     }
     &:nth-of-type(1) {
       z-index: 5;
-      width: 1.5em;
+      width: 1.2em;
     }
     &:nth-of-type(2) {
       z-index: 4;
-      width: 3em;
+      width: 2.4em;
     }
     &:nth-of-type(3) {
       z-index: 3;
-      width: 4.5em;
+      width: 3.6em;
     }
     &:nth-of-type(4) {
       z-index: 2;
-      width: 6em;
+      width: 4.8em;
     }
     &:nth-of-type(5) {
       z-index: 1;
-      width: 7.5em;
+      width: 6em;
     }
     &:focus {
       outline: none;
