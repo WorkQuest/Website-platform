@@ -266,6 +266,7 @@ export default {
 
       // Redirect to confirm account
       if (confirmToken) {
+        setCipherKey(this.model.password);
         this.redirectUser();
         this.SetLoader(false);
         return;
