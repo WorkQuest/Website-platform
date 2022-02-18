@@ -90,9 +90,9 @@
       class="wallet-step"
     >
       <div
-        v-if="step !== walletState.ImportOrCreate || step === walletState.Default"
+        v-if="step !== walletState.ImportOrCreate && step !== walletState.Default"
         class="wallet-step__back"
-        @click="goStep(step - 1)"
+        @click="stepBack"
       >
         <span class="icon-chevron_big_left" /><span>{{ $t('meta.back') }}</span>
       </div>
@@ -197,10 +197,12 @@ export default {
       this.$store.dispatch('user/logout');
       this.$router.push(Path.SIGN_IN);
     },
-    goStep(step) {
-      if (this.step === WalletState.ImportMnemonic) this.step = WalletState.ImportOrCreate;
-      else if (this.step === WalletState.SaveMnemonic) this.step = WalletState.ImportOrCreate;
-      else this.step = step;
+    goStep(nextStep) {
+      this.step = nextStep;
+    },
+    stepBack() {
+      if (this.step === WalletState.ImportMnemonic || this.step === WalletState.SaveMnemonic) this.step = WalletState.ImportOrCreate;
+      else this.step -= 1;
     },
     showPrivacy(role) {
       this.ShowModal({
@@ -225,8 +227,8 @@ export default {
         address: wallet.address.toLowerCase(),
         publicKey: wallet.publicKey,
       });
-      this.SetLoader(false);
       if (!res.ok) {
+        this.SetLoader(false);
         if (res.msg.includes('Wallet already exists')) {
           return;
         }
