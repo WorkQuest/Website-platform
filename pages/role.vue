@@ -183,11 +183,12 @@ export default {
     right.addEventListener('mouseleave', () => left.classList.remove('role__card_minimized'));
   },
   beforeDestroy() {
-    if (!this.isClearOnDestroy && this.isWalletAssigned) return;
+    if (!this.isClearOnDestroy && !this.isWalletAssigned) return;
     this.$store.dispatch('user/logout');
   },
   methods: {
-    clearCookies(event) {
+    clearCookies() {
+      console.log('clear cookies??');
       this.$cookies.remove('access');
       this.$cookies.remove('refresh');
       this.$cookies.remove('userLogin');
