@@ -154,7 +154,7 @@ export default {
         avatar: this.item.avatar ? this.item.avatar.url : this.EmptyAvatar(),
         alt: this.UserName(this.item.firstName, this.item.lastName),
         userName: this.UserName(this.item.firstName, this.item.lastName),
-        status: this.item.ratingStatistic.status || 'noStatus',
+        status: this.item?.ratingStatistic?.status || 'noStatus',
         title: this.item.email,
         priceTitle: this.$t('settings.costPerHour'),
         price: `${this.item.wagePerHour} ${TokenSymbols.WUSD}`,
