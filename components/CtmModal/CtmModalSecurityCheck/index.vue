@@ -30,6 +30,7 @@
           <base-btn
             class="buttons__button"
             :disabled="!validated || !passed || invalid"
+            selector="SEND"
             @click="handleSubmit(hide)"
           >
             {{ $t('meta.send') }}
@@ -42,13 +43,14 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalSecurityCheck',
   data() {
     return {
       securityCode: '',
-      errorMsg: '',
+      errorMsg: false,
     };
   },
   computed: {
@@ -58,7 +60,15 @@ export default {
   },
   methods: {
     async hide() {
-      this.CloseModal();
+      const { actionMethod, action } = this.options;
+      const result = await this.$store.dispatch('user/validateTOTP', { token: this.securityCode });
+      if (result) {
+        await this.CloseModal();
+        await this.$store.dispatch('user/getMainData');
+        await actionMethod();
+      } else {
+        this.errorMsg = true;
+      }
     },
   },
 };

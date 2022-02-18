@@ -21,14 +21,12 @@ export default async function ({
     if (access || refresh) {
       store.commit('user/setTokens', payload);
     }
-    if (!access || !refresh || !app.$cookies.get('userLogin')) {
+    if ((!access && !refresh) || !app.$cookies.get('userLogin')) {
       await store.dispatch('user/logout');
       return redirect(Path.SIGN_IN);
     }
     if (userData.id === '') {
-      await store.dispatch('user/getUserData');
-      await store.dispatch('user/getStatistic');
-      await store.dispatch('user/getNotifications');
+      await store.dispatch('user/getMainData');
     }
     if (userStatus === UserStatuses.NeedSetRole && route.path !== Path.ROLE) {
       return redirect(Path.ROLE);

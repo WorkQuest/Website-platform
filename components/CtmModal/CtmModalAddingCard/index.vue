@@ -61,7 +61,8 @@
         </div>
         <div class="content__buttons buttons">
           <base-btn
-            :mode="'outline'"
+            mode="outline"
+            selector="CANCEL"
             class="buttons__action"
             @click="hide"
           >
@@ -69,6 +70,7 @@
           </base-btn>
           <base-btn
             class="buttons__action"
+            selector="SHOW-MODAL-ADD"
             :disabled="!validated || !passed || invalid"
             @click="handleSubmit(showCardHasBeenAddedModal)"
           >

@@ -46,6 +46,7 @@
             </div>
             <div class="balance__bottom">
               <base-btn
+                selector="SHOW-DEPOSIT-MODAL"
                 :disabled="true"
                 mode="outline"
                 class="balance__btn"
@@ -55,6 +56,7 @@
               </base-btn>
               <base-btn
                 :disabled="true"
+                selector="SHOW-WITHDRAW-MODAL"
                 mode="outline"
                 class="balance__btn"
                 @click="showWithdrawModal()"
@@ -62,8 +64,9 @@
                 {{ $t('wallet.withdraw') }}
               </base-btn>
               <base-btn
+                selector="SHOW-TRANSFER-MODAL"
                 class="balance__btn"
-                @click=" showTransferModal()"
+                @click="showTransferModal()"
               >
                 {{ $t('modals.transfer') }}
               </base-btn>
@@ -79,6 +82,7 @@
               @click="closeCard()"
             />
             <base-btn
+              selector="SHOW-ADD-CARD-MODAL"
               :disabled="true"
               class="card__btn"
               mode="outline"
