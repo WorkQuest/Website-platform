@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     fillStars(i) {
-      if ((i) <= this.rating && this.isDisabled) return 'rating__star rating__star_checked';
+      if (i <= this.rating && this.isDisabled) return 'rating__star rating__star_checked';
       if (!this.isDisabled || this.rating === 0) return 'rating__star rating__star-hover';
       return 'rating__star';
     },
