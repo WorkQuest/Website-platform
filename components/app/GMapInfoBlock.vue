@@ -1,13 +1,40 @@
 <template>
   <g-map-info-window
-    :options="{maxWidth: 280}"
+    class="info"
+    :options="{maxWidth: isCluster ? 320 : 280, padding: 0}"
     :position="windowPosition"
     :opened="isOpened"
     :closeclick="true"
     @closeclick="$emit('onCloseClick', $event)"
   >
-    <div v-if="isCluster">
-      {{ 1 }}
+    <div
+      v-if="isCluster"
+      class="info-window__content"
+      :class="{'info-window__content_multi' : isCluster}"
+    >
+      <div
+        v-for="row in items"
+        :key="row.id"
+        class="info-window__row"
+        @click="showDetails(row.id)"
+      >
+        <span class="row__user">
+          <template v-if="$options.UserRole.WORKER === userRole">
+            {{ `${$t('quests.fromBig')} ${UserName(row.user.firstName,row.user.lastName)}` }}
+          </template>
+          <template v-else>
+            {{ UserName(row.firstName,row.lastName) }}
+          </template>
+        </span>
+        <span class="row__price">
+          <template v-if="$options.UserRole.WORKER === userRole">
+            {{ `${row.price} ${$options.TokenSymbols.WUSD}` }}
+          </template>
+          <template v-else>
+            {{ row.wagePerHour ? `${row.wagePerHour} ${$options.TokenSymbols.WUSD}` : $t('worker.cost.notIndicated') }}
+          </template>
+        </span>
+      </div>
     </div>
     <div
       v-else
@@ -76,6 +103,8 @@ import { UserRole, TokenSymbols, Path } from '~/utils/enums';
 
 export default {
   name: 'GMapInfoBlock',
+  TokenSymbols,
+  UserRole,
   props: {
     options: {
       type: Object,
@@ -159,20 +188,51 @@ export default {
 };
 </script>
 
+<style lang="scss">
+//TODO .gm-style-iw and .gm-style-iw-d does not working, need to fix paddings right and bottom
+.gm-style-iw{
+  padding: 0 !important;
+}
+.gm-style-iw-c {
+  padding: 0 !important;
+}
+.gm-style-iw-d {
+  padding: 0 !important;
+}
+</style>
+
 <style lang="scss" scoped>
 
 .info-window {
-  &__block {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
   &__content {
     max-width: 280px;
     min-width: 200px;
     display: flex;
     grid-gap: 10px;
     flex-direction: column;
+    padding: 5px 0 0 13px;
+    &_multi {
+      gap: 0;
+      max-height: 200px;
+      padding: 0;
+      overflow: hidden scroll;
+      overscroll-behavior: contain;
+    }
+  }
+  &__row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 5px;
+    padding: 13px 0 13px 13px;
+    cursor: pointer;
+    &:hover {
+      background: $black0;
+    }
+  }
+  &__block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   &__name {
     max-width: 115px;
@@ -245,6 +305,22 @@ export default {
     height: 100%;
     -o-object-fit: cover;
     object-fit: cover;
+  }
+}
+.row {
+  &__user {
+    @extend .info-window__name;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  &__price {
+    @extend .info-window__value;
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 

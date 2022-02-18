@@ -17,7 +17,7 @@
       @click="onClusterClick"
     >
       <g-map-info-block
-        :items="[]"
+        :items="itemsForInfoBlock"
         :window-position="clusterPosition"
         :is-opened="isOpenedClusterInfo"
         :is-cluster="true"
@@ -84,6 +84,7 @@ export default {
       timeoutIdBoundsChange: null,
       openedMarkerID: null,
       isOpenedClusterInfo: false,
+      itemsForInfoBlock: [],
       clusterPosition: { lat: 0, lng: 0 },
     };
   },
@@ -132,10 +133,20 @@ export default {
     },
     async onZoomChanged(event) { await this.$store.dispatch('google-map/setNewZoom', event); },
     async onClusterClick(cluster) {
-      this.isOpenedClusterInfo = true;
       const newCenter = cluster.center_.toJSON();
       this.clusterPosition = { ...newCenter };
       this.map.$mapObject.setCenter({ ...newCenter });
+
+      await this.$store.dispatch('google-map/setNewZoom', this.zoom + 5 <= 18 ? this.zoom + 5 : 18);
+      if (this.zoom !== 18) return;
+
+      this.isOpenedClusterInfo = true;
+      this.itemsForInfoBlock = [];
+      this.points.forEach((point) => {
+        const isMatchLat = point.location.latitude === this.clusterPosition.lat;
+        const isMatchLng = point.location.latitude === this.clusterPosition.lat;
+        if (isMatchLng && isMatchLat) this.itemsForInfoBlock.push(point);
+      });
     },
     async onMarkerClick(marker) {
       this.openedMarkerID = marker.id;
