@@ -3,79 +3,80 @@
     class="reviews-grid reviews-grid__reviews-item"
     data-selector="COMPONENT-REVIEWS-TAB"
   >
-    <span
+    <div
       v-for="(reviewData, i) in object.reviews"
       :key="i"
+      class="reviews-item"
     >
-      <div class="reviews-item">
-        <div class="reviews-item__header">
-          <div class="reviews-item__user-data">
-            <div class="reviews-item__avatar">
-              <img
-                class="reviews-item__img"
-                :src="initAvatar(reviewData.fromUser)"
-                alt=""
-                loading="lazy"
-                :data-selector="`ACTION-BTN-GO-TO-REVIEWER-PROFILE-${i}`"
-                @click="goToProfile(reviewData.fromUser.id)"
-              >
+      <div class="reviews-item__header">
+        <div class="reviews-item__user-data">
+          <div class="reviews-item__avatar">
+            <img
+              class="reviews-item__img"
+              :src="initAvatar(reviewData.fromUser)"
+              alt=""
+              loading="lazy"
+              :data-selector="`ACTION-BTN-GO-TO-REVIEWER-PROFILE-${i}`"
+              @click="goToProfile(reviewData.fromUser.id)"
+            >
+          </div>
+          <div class="name__container">
+            <div
+              class="card-subtitle__name"
+              :data-selector="`ACTION-BTN-GO-TO-REVIEWER-PROFILE-${i}`"
+              @click="goToProfile(reviewData.fromUser.id)"
+            >
+              {{ `${reviewData.fromUser.firstName} ${reviewData.fromUser.lastName}` }}
             </div>
-            <div class="name__container">
-              <div
-                class="card-subtitle__name"
-                :data-selector="`ACTION-BTN-GO-TO-REVIEWER-PROFILE-${i}`"
-                @click="goToProfile(reviewData.fromUser.id)"
-              >
-                {{ `${reviewData.fromUser.firstName} ${reviewData.fromUser.lastName}` }}
-              </div>
-              <div class="card-subtitle_green">
-                {{ $t('role.worker') }}
-              </div>
+            <div class="card-subtitle_green">
+              {{ $t('role.worker') }}
             </div>
           </div>
-          <div class="reviews-item__rating-block">
-            <div class="rating">
-              <div
-                v-for="(star,idx) in 5"
-                :key="idx"
-                :data-selector="`STAR-RATING-STAR-${idx}`"
-                class="star"
-                :class="initStarClass(star, reviewData.mark)"
-              />
-            </div>
-            <div class="rating-mark">{{ reviewData.mark }}</div>
+        </div>
+        <div class="reviews-item__rating-block">
+          <div class="rating">
+            <div
+              v-for="(star,idx) in 5"
+              :key="idx"
+              :data-selector="`STAR-RATING-STAR-${idx}`"
+              class="star"
+              :class="initStarClass(star, reviewData.mark)"
+            />
           </div>
-        </div>
-        <div class="reviews-item__subheader">
-          <div class="card-subtitle">
-            {{ $t('quests.questBig') }}
+          <div class="rating-mark">
+            {{ reviewData.mark }}
           </div>
-          <div class="card-subtitle__title">
-            {{ reviewData.quest.title }}
-          </div>
-        </div>
-        <div class="description">
-          {{ cropTxt(reviewData.message) }}
-        </div>
-
-        <div class="reviews-item__rating">
-          {{ reviewData.reviewerRating }}
-        </div>
-        <div class="reviews-item__btn-read-container">
-          <base-btn
-            class="reviews-item__btn-read"
-            mode="borderless-right"
-            :selector="`SHOW-REVIEW-DETAILS-${i}`"
-            @click="showReviewDetails(reviewData)"
-          >
-            {{ $t('quests.readCompletely') }}
-            <template v-slot:right>
-              <span class="icon-short_right" />
-            </template>
-          </base-btn>
         </div>
       </div>
-    </span>
+      <div class="reviews-item__subheader">
+        <div class="card-subtitle">
+          {{ $t('quests.questBig') }}
+        </div>
+        <div class="card-subtitle__title">
+          {{ reviewData.quest.title }}
+        </div>
+      </div>
+      <div class="card-subtitle__description">
+        {{ reviewData.message }}
+      </div>
+
+      <div class="reviews-item__rating">
+        {{ reviewData.reviewerRating }}
+      </div>
+      <div class="reviews-item__btn-read-container">
+        <base-btn
+          class="reviews-item__btn-read"
+          mode="borderless-right"
+          :selector="`SHOW-REVIEW-DETAILS-${i}`"
+          @click="showReviewDetails(reviewData)"
+        >
+          {{ $t('quests.readCompletely') }}
+          <template v-slot:right>
+            <span class="icon-short_right" />
+          </template>
+        </base-btn>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -105,11 +106,6 @@ export default {
     }),
   },
   methods: {
-    cropTxt(str) {
-      const maxLength = 60;
-      if (str.length > maxLength) str = `${str.slice(0, maxLength)}...`;
-      return str;
-    },
     goToProfile(id) {
       this.$router.push(`/profile/${id}`);
     },
@@ -163,6 +159,11 @@ export default {
     font-size: 12px;
     color: $black500;
   }
+  &__description {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
 }
 .name {
   &__container {
@@ -208,9 +209,10 @@ export default {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 20px;
+  width: 100%;
 }
 .reviews-item {
-  width: 100%;
+  min-width: 0;
   background-color: #fff;
   border-radius: 6px;
   padding: 20px 20px 10px;
