@@ -239,6 +239,8 @@ export default {
   },
   methods: {
     starRating(item) {
+      if (!item) return false;
+
       if (this.userRole === UserRole.WORKER) {
         return item.status === this.questStatuses.Done
           && item.assignedWorkerId === this.userData.id;

@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="Object.keys(item).length"
     v-click-outside="closeQuestMenu"
     :data-selector="`COMPONENT-QUEST-DD-${questIndex}`"
     class="quest quest__menu"
@@ -30,7 +31,7 @@
             <div
               class="menu__item"
               :data-selector="`ACTION-BTN-SHARE-MODAL-${questIndex}`"
-              @click="shareModal()"
+              @click="shareModal"
             >
               <div class="menu__text">
                 {{ $t('modals.share') }}
@@ -39,7 +40,7 @@
             <div
               class="menu__item"
               :data-selector="`ACTION-BTN-TO-EDIT-QUEST-${questIndex}`"
-              @click="toEditQuest()"
+              @click="toEditQuest"
             >
               <div class="menu__text">
                 {{ $t('modals.edit') }}
@@ -48,7 +49,7 @@
             <div
               class="menu__item"
               :data-selector="`ACTION-BTN-DELETE-QUEST-${questIndex}`"
-              @click="showAreYouSureDeleteQuestModal()"
+              @click="showAreYouSureDeleteQuestModal"
             >
               <div class="menu__text">
                 {{ $t('modals.delete') }}
@@ -91,25 +92,67 @@ export default {
   },
   computed: {
     ...mapGetters({
+      userData: 'user/getUserData',
       userRole: 'user/getUserRole',
       questData: 'quests/getQuest',
     }),
   },
   methods: {
     toEditQuest() {
-      // TODO: Исправить логику editQuest
-      // if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.item.status)) {
-      //   this.$router.push(`${Path.EDIT_QUEST}/${this.item.id}`);
-      //   this.setCurrentStepEditQuest(1);
-      // } else this.showToastWrongStatusEdit();
+      if (!this.userData.totpIsActive) {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/deleteError.svg'),
+          title: this.$t('modals.error'),
+          subtitle: this.$t('modals.youCan’tEditQuest'),
+          button: this.$t('modals.close'),
+        });
+        return;
+      }
+
+      this.ShowModal({
+        key: modals.securityCheck,
+        actionMethod: async () => this.editAction(),
+      });
+    },
+    editAction() {
+      const { status, id } = this.item;
+      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(status)) {
+        this.$router.push(`${Path.EDIT_QUEST}/${id}`);
+        this.setCurrentStepEditQuest(1);
+      } else this.showToastWrongStatusEdit();
     },
     showAreYouSureDeleteQuestModal() {
-      // TODO: Исправить логику deleteQuest
-      // this.ShowModal({ key: modals.areYouSureDeleteQuest, item: this.item });
+      if (!this.userData.totpIsActive) {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/deleteError.svg'),
+          title: this.$t('modals.error'),
+          subtitle: this.$t('modals.youCan’tDeleteQuest'),
+          button: this.$t('modals.close'),
+        });
+        return;
+      }
+      this.ShowModal({
+        key: modals.securityCheck,
+        actionMethod: async () => this.ShowModal({
+          key: modals.areYouSure,
+          title: this.$t('modals.sureDeleteNotification'),
+          okBtnTitle: this.$t('meta.delete'),
+          okBtnFunc: () => this.deleteQuest(),
+        }),
+      });
+    },
+    deleteQuest() {
+      this.CloseModal();
+
+      this.DeleteQuest(this.item);
     },
     toRaisingViews() {
-      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.item.status)) {
-        this.$router.push({ path: `${Path.EDIT_QUEST}/${this.item.id}`, query: { mode: 'raise' } });
+      const { status, id } = this.item;
+
+      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(status)) {
+        this.$router.push({ path: `${Path.EDIT_QUEST}/${id}`, query: { mode: 'raise' } });
         this.setCurrentStepEditQuest(2);
       } else this.showToastWrongStatusRaisingViews();
     },
