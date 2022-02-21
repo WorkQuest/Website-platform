@@ -26,7 +26,7 @@
               :data-selector="`ACTION-BTN-GO-TO-REVIEWER-PROFILE-${i}`"
               @click="goToProfile(reviewData.fromUser.id)"
             >
-              {{ cropTxt(reviewData.fromUser.firstName, 10) }} {{ cropTxt(reviewData.fromUser.lastName, 10) }}
+              {{ CropTxt(reviewData.fromUser.firstName, 10) }} {{ CropTxt(reviewData.fromUser.lastName, 10) }}
             </div>
             <div class="card-subtitle_green">
               {{ $t('role.worker') }}
@@ -106,10 +106,6 @@ export default {
     }),
   },
   methods: {
-    cropTxt(str, maxLength) {
-      if (str.length > maxLength) str = `${str.slice(0, maxLength)}...`;
-      return str;
-    },
     goToProfile(id) {
       this.$router.push(`/profile/${id}`);
     },

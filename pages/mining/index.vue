@@ -182,7 +182,7 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    cropTxt(str) {
+    cutTxt(str) {
       if (str.length > 40) str = `${str.slice(0, 10)}...${str.slice(-10)}`;
       return str;
     },

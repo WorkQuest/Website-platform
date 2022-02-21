@@ -16,7 +16,7 @@
               </div>
               <div class="user-data__text">
                 <div class="user-data__name">
-                  {{ cropTxt(options.userFullName, 16) }}
+                  {{ CropTxt(options.userFullName, 16) }}
                 </div>
                 <div class="user-data__subtitle">
                   {{ $t('role.worker') }}
@@ -66,10 +66,6 @@ export default {
     }),
   },
   methods: {
-    cropTxt(str, maxLength) {
-      if (str.length > maxLength) str = `${str.slice(0, maxLength)}...`;
-      return str;
-    },
     initStarClass(star) {
       const { reviewMark } = this.options;
       const a = this.Floor(star - reviewMark, 2);
