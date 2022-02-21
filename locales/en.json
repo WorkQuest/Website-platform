@@ -932,6 +932,7 @@
     "error": "Error!"
   },
   "modals": {
+    "errorGetWUSD": "Something went wrong",
     "getWUSD": "Buy WUSD",
     "countOfRecievedWUSD": "How many WUSD do you want to receive",
     "fieldCountOf": "{countOf} amount",
