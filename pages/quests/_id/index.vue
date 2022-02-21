@@ -194,15 +194,13 @@ export default {
     getPriority() {
       const { priority } = this.questData;
 
-      const priorityLocale = ['low', 'normal', 'urgent'][priority];
-
+      const priorityLocale = ['all', 'low', 'normal', 'urgent'][priority];
       return priority !== null ? this.$t(`priority.${priorityLocale}`) : '';
     },
     getPriorityClass() {
       const { priority } = this.questData;
 
-      const priorityModifier = ['low', 'normal', 'urgent'][priority];
-
+      const priorityModifier = ['all', 'low', 'normal', 'urgent'][priority];
       return priority !== null ? `worker-data__priority-title_${priorityModifier}` : '';
     },
     randomSpec() {
@@ -363,6 +361,8 @@ export default {
       return arr;
     },
     setWorkerBtnsArr() {
+      if (this.userData.id !== this.questData.assignedWorker.id) return [];
+
       const { questData: { assignedWorkerId, response }, userData, infoDataMode } = this;
       const {
         ADChat, Active, Created, Dispute, Invited, WaitWorker,

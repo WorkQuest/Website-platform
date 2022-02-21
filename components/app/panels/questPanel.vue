@@ -32,9 +32,15 @@
               {{ convertDate }}
             </span>
             <quest-dd
-              v-if="questData.status === questStatuses.Created"
+              v-if="userData.id === questData.user.id && questData.status !== 3"
               :data-selector="`QUEST-DD-${questData.id}`"
               :item="questData"
+            />
+            <base-btn
+              v-else
+              mode="share-btn"
+              selector="SHARE-USER-PROFILE"
+              @click="shareModal()"
             />
           </div>
         </div>
@@ -67,6 +73,7 @@ import { mapGetters } from 'vuex';
 import moment from 'moment';
 import { InfoModeEmployer, InfoModeWorker, QuestStatuses } from '~/utils/enums';
 import skills from '~/components/app/pages/common/skills';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'QuestPanel',
@@ -106,6 +113,13 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    shareModal() {
+      this.ShowModal({
+        key: modals.sharingQuest,
+        itemId: this.questData.id,
+        mode: 'quest',
+      });
+    },
     getSkillTitle(path) {
       const [spec, skill] = path.split('.');
       return this.$t(`filters.items.${spec}.sub.${skill}`);
@@ -208,7 +222,7 @@ export default {
     font-style: normal;
     font-weight: normal;
     font-size: 12px;
-    margin: auto;
+    margin: auto 10px auto auto;
   }
   &__img{
     width:30px;
