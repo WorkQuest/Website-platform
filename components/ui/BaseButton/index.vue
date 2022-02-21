@@ -106,6 +106,7 @@ export default {
         { 'base-btn_portfolio-edit': mode === 'portfolioEdit' },
         { 'base-btn_portfolio-close': mode === 'portfolioClose' },
         { 'base-btn_share-user-info': mode === 'share-btn' },
+        { 'base-btn_active-tab': mode === 'activeTab' },
         { 'base-btn_padding': this.padding },
       ];
     },
@@ -363,6 +364,12 @@ export default {
     &:hover {
       background-color: $blue;
       color: $white;
+    }
+  }
+  &_active-tab {
+    &:hover {
+      background: $blue;
+      cursor: unset;
     }
   }
 }

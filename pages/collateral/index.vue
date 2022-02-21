@@ -145,6 +145,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -154,6 +155,9 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      userData: 'user/getUserData',
+    }),
     documents() {
       return [
         {
@@ -214,6 +218,9 @@ export default {
       ];
     },
   },
+  mounted() {
+    this.$nuxt.setLayout(this.userData.id ? 'default' : 'guest');
+  },
   methods: {
     openModalGetWUSD() {
       this.ShowModal({
@@ -222,7 +229,7 @@ export default {
       });
     },
     goAuction() {
-      this.$router.push('/workers');
+      this.$router.push('/auction');
     },
     handleClickFAQ(index) {
       if (this.indexFAQ.includes(index)) {
