@@ -19,6 +19,7 @@
           </div>
           <base-btn
             class="email__action"
+            selector="AGREE"
             @click="hide()"
           >
             {{ $t('meta.iAgree') }}

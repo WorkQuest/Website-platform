@@ -70,7 +70,7 @@
       <base-btn
         :text="$t('settings.removeSpec')"
         class="specialization__btn specialization__btn_remove"
-        :data-selector="`ACTION-BTN-REMOVE-SKILL-TO-BADGE-${key}`"
+        :selector="`REMOVE-SKILL-TO-BADGE-${key}`"
         @click="removeSpecialization(key)"
       />
     </div>
@@ -79,7 +79,7 @@
       :disabled="specCount === 3"
       class="skills__btn-add"
       :class="specCount === 3 ? 'skills__btn-add_disabled' : ''"
-      data-selector="ACTION-BTN-ADD-SPEC"
+      selector="ADD-SPEC"
       @click="addSpecialization"
     />
     <div

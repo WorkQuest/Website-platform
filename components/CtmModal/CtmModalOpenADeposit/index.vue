@@ -4,9 +4,7 @@
     :title="$t('saving.openADeposit')"
   >
     <div class="deposit__content content">
-      <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
-      >
+      <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
         <div class="content__field">
           <label
             for="deposit__input"
@@ -41,12 +39,14 @@
           <base-btn
             class="buttons__button"
             mode="outline"
+            selector="CANCEL"
             @click="hide"
           >
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
+            selector="SUBMIT"
             :disabled="!validated || !passed || invalid"
             @click="handleSubmit(showDepositIsOpenedModal)"
           >

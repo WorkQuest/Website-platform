@@ -967,6 +967,8 @@
     "edit": "???",
     "delete": "???",
     "youCan’tDeleteActiveQuest": "???",
+    "youCan’tEditQuest": "???",
+    "youCan’tDeleteQuest": "???",
     "youCantCreateDispute": "???",
     "sureDeleteText": "???",
     "sureDeleteMemberText": "???",

@@ -6,6 +6,15 @@ import {
 } from '~/utils/enums';
 
 export default {
+  async changeRole({ commit }, { totp }) {
+    try {
+      const { ok, result } = await this.$axios.$put('/v1/profile/change-role', { totp });
+      return ok;
+    } catch (e) {
+      console.log('user/changeUserRole');
+      return false;
+    }
+  },
   async addEducation({ commit }, data) {
     commit('setEducations', data);
   },
@@ -226,10 +235,8 @@ export default {
     try {
       const response = await this.$axios.$post('/v1/auth/login', payload);
       commit('setTokens', response.result);
-      if (response.result.userStatus === 1) {
-        await dispatch('getUserData');
-        await dispatch('getStatistic');
-        await dispatch('getNotifications');
+      if (response.result.userStatus === 1 && !response.result.totpIsActive) {
+        await dispatch('getMainData');
       }
       return response;
     } catch (e) {
@@ -244,6 +251,13 @@ export default {
     } catch (e) {
       return error();
     }
+  },
+  async getMainData({ dispatch }) {
+    await Promise.all([
+      dispatch('getUserData'),
+      dispatch('getStatistic'),
+      dispatch('getNotifications'),
+    ]);
   },
   async logout({ commit }) {
     commit('logOut');
@@ -435,6 +449,15 @@ export default {
       return response.result;
     } catch (e) {
       return console.log(e);
+    }
+  },
+  async validateTOTP({ commit }, payload) {
+    try {
+      const response = await this.$axios.$post('/v1/auth/validate-totp', payload);
+      return response.result.isValid;
+    } catch (e) {
+      console.log('user/validateTOTP');
+      return false;
     }
   },
 };

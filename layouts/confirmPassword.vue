@@ -49,6 +49,7 @@
         </div>
         <base-btn
           class="confirm__submit"
+          selector="SUBMIT"
           :disabled="!valid || isLoading"
         >
           {{ $t('meta.submit') }}
@@ -156,22 +157,20 @@ export default {
         return;
       }
 
-      const checked = this.checkPassword();
+      const checked = await this.checkPassword();
+      if (!checked) return;
+
       if (this.isOnlyConfirm) {
-        if (checked) {
-          setCipherKey(this.password);
-          this.allowAccess();
-        }
+        setCipherKey(this.password);
+        this.allowAccess();
         return;
       }
 
-      if (checked) {
-        const res = await this.$store.dispatch('wallet/connectWallet', {
-          userWalletAddress: this.userWalletAddress,
-          userPassword: this.password,
-        });
-        if (res?.ok) this.allowAccess();
-      }
+      const res = await this.$store.dispatch('wallet/connectWallet', {
+        userWalletAddress: this.userWalletAddress,
+        userPassword: this.password,
+      });
+      if (res?.ok) this.allowAccess();
     },
     handleImport() {
       sessionStorage.setItem('mnemonic', JSON.stringify({

@@ -8,8 +8,8 @@
         <div class="page btn-container__left">
           <div class="btn-container__btn_back">
             <base-btn
-              :mode="'back'"
-              data-selector="ACTION-BTN-BACK"
+              mode="back"
+              selector="PREVIOUS-STEP"
               @click="goBack()"
             >
               {{ $t('meta.back') }}
@@ -91,7 +91,7 @@
           <div class="btn-container">
             <div class="btn-container__btn">
               <base-btn
-                :mode="'outline'"
+                mode="outline"
                 data-selector="ACTION-BTN-SKIP-AND-END"
                 @click="goBack()"
               >

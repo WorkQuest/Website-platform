@@ -18,6 +18,7 @@
           </div>
           <base-btn
             class="email__action"
+            selector="OK"
             @click="hide()"
           >
             {{ $t('meta.ok') }}
@@ -29,14 +30,9 @@
 </template>
 
 <script>
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalThanksSend',
-  data() {
-    return {
-    };
-  },
   methods: {
     hide() {
       this.CloseModal();

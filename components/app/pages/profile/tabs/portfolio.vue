@@ -13,9 +13,9 @@
       data-selector="PORTFOLIO-CASES"
     >
       <div
-        v-for="(item) in object.cases"
+        v-for="(item, i) in object.cases"
         :key="item.id"
-        :data-selector="`PORTFOLIO-CASE-${item.id}`"
+        :data-selector="`PORTFOLIO-CASE-${i}`"
         class="portfolio__item"
       >
         <div class="portfolio__card">
@@ -27,7 +27,7 @@
               <base-btn
                 class="portfolio__close"
                 mode="portfolioClose"
-                :data-selector="`ACTION-BTN-DELETE-PORTFOLIO-CASE-${item.id}`"
+                :selector="`DELETE-PORTFOLIO-CASE-${i}`"
                 @click="showDeleteCaseModal(item.id)"
               >
                 <span
@@ -37,7 +37,7 @@
               <base-btn
                 class="portfolio__edit"
                 mode="portfolioEdit"
-                :data-selector="`ACTION-BTN-EDIT-PORTFOLIO-CASE-${item.id}`"
+                :selector="`EDIT-PORTFOLIO-CASE-${i}`"
                 @click="showEditCaseModal(item)"
               >
                 <span class="icon-edit" />
