@@ -196,9 +196,10 @@ export default {
     border-radius: 6px;
     cursor: pointer;
     position: relative;
-    transition: 0.3s;
+    transition: .5s;
+    border: 1px solid $white;
     &:hover {
-      box-shadow: 0 0 10px 2px rgba(34, 60, 80, 0.3);
+      border: 1px solid $black100;
     }
   }
   &__items {
@@ -209,7 +210,7 @@ export default {
   &__image {
     height: 350px;
     width: 100%;
-    border-radius: 6px;
+    border-radius: 8px;
     object-fit: cover;
   }
   &__footer {

@@ -471,7 +471,6 @@ export default {
     &__social {
       width: 40px;
       height: 40px;
-      transition: all 0.5s;
       border: 0.3px solid $black0;
       &_twitter {
         background-image: url('assets/img/social/footer_twitter.svg');
