@@ -20,14 +20,14 @@
       <base-textarea
         v-model="description"
         :placeholder="$t('modals.description')"
-        :error-text="description.length > 1000 ? $tc('modals.textLengthExceeded', 1000) : ''"
-        :is-hide-error="description.length <= 1000"
+        :error-text="isMoreCharacters ? $tc('modals.textLengthExceeded', 1000) : ''"
+        :is-hide-error="!isMoreCharacters"
         rules="required|text-desc"
       />
       <div class="content__buttons buttons">
         <base-btn
           class="buttons__button"
-          :disabled="drop === '' || description.length > 1000"
+          :disabled="drop === '' || isMoreCharacters"
           selector="SHOW-REQUEST-SEND"
           @click="showRequestSendModal"
         >
@@ -81,6 +81,9 @@ export default {
         'noConfirmationOfComplete',
         'anotherReason',
       ];
+    },
+    isMoreCharacters() {
+      return this.description.length > 1000;
     },
   },
   methods: {
