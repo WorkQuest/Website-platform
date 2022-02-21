@@ -30,8 +30,7 @@
             >
           </div>
           <div class="card-quest__text card-quest__text_title">
-            <!--              TODO: Обрезать с помощью css-->
-            {{ `${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}` }}
+            {{ `${quest.user ? UserName(cropTxt(quest.user.firstName, 10), cropTxt(quest.user.lastName, 10)) : ''}` }}
           </div>
         </div>
         <div class="card-quest__head-right">
