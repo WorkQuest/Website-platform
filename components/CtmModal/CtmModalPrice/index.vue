@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="price"
-    :title="$t('modals.priceTitle')"
+    :title="$t('meta.price')"
   >
     <div class="price__content content">
       <validation-observer
@@ -33,7 +33,7 @@
           </div>
           <div class="grid__field">
             <div class="grid__title">
-              {{ $t('modals.priceTo') }}
+              {{ $t('meta.toBig') }}
             </div>
             <div class="input__container">
               <base-field
@@ -41,7 +41,7 @@
                 class="grid__field"
                 :placeholder="$t('modals.priceToAmount')"
                 :rules="`decimal${priceFrom ? '|min_value:'+priceFrom : ''}|max_value:99999999999999`"
-                :name="$t('modals.priceFieldTo')"
+                :name="$t('meta.toBig')"
               />
               <span
                 class="icon-off_outline_close input__clear"

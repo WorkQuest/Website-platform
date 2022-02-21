@@ -1,8 +1,14 @@
 {
   "meta": {
+    "showAllCases": "Show all cases",
+    "addCase": "Add Case",
+    "addressBig": "Address",
+    "addressSmall": "address",
     "withdrawal": "Withdrawal",
     "skills": "Skills",
     "myQuests": "My quests",
+    "reviewsSmall": "reviews",
+    "reviewsBig": "Reviews",
     "questsSmall": "quests",
     "questsBig": "Quests",
     "codeFromSMS": "Code from SMS",
@@ -52,7 +58,12 @@
     "listIsEmpty": "List is empty",
     "agree": "Agree",
     "disagree": "Disagree",
-    "WUSDCount": "{count} WUSD"
+    "WUSDCount": "{count} WUSD",
+    "edit": "Edit",
+    "crediting": "Crediting",
+    "portfolio": "Portfolio",
+    "price": "Price",
+    "add": "Add"
   },
   "performed": {
     "title": "Performed"
@@ -135,7 +146,6 @@
     }
   },
   "registration": {
-    "edit": "Edit",
     "registration": "Registration",
     "emailConfirm": "A letter has been sent to your email address",
     "emailConfirmTitle": "Check your email"
@@ -167,8 +177,6 @@
     "add": "Add all the information and publication time  to find the right",
     "create": "Create",
     "writeAMessage": "Write a message",
-    "reviews": "Reviews",
-    "portfolio": "Portfolio",
     "common": "Common info",
     "sidebar": {
       "filter": "All Quests filter",
@@ -379,14 +387,10 @@
     "youInvited": "You Invited",
     "inProgressBy": "In progress by:",
     "finishedBy": "Finished by:",
-    "showAllCases": "Show all cases",
-    "portfolio": "Portfolio",
     "searchQuests": "Search quests",
     "readCompletely": "Read completely",
     "questBig": "Quest",
     "fromYou": "from you",
-    "reviews": "reviews",
-    "reviewsBig": "Reviews",
     "activeQuest": "Active quest",
     "waitWorker": "Wait worker",
     "pendingConsideration": "Pending consideration",
@@ -407,10 +411,6 @@
     "category": "Select a category",
     "address": "Add address",
     "uploadMaterials": "Upload quest materials",
-    "price": "Price",
-    "filter": {
-      "btn": "Filters"
-    },
     "ads": {
       "promoteYourQuest": "Promote your quest",
       "publishForFree": "Publish for free",
@@ -950,8 +950,6 @@
     "editCase": "Edit Case",
     "error": "Error",
     "share": "Share",
-    "edit": "Edit",
-    "delete": "Delete",
     "youCan’tDeleteActiveQuest": "You can’t delete active quest",
     "youCan’tEditQuest": "You can’t edit quest without connected 2FA",
     "youCan’tDeleteQuest": "You can’t delete quest without connected 2FA",
@@ -960,12 +958,9 @@
     "sureDeleteMemberText": "Do you really want to delete this member?",
     "sureDeleteNotification": "Do you really want to delete this notification?",
     "sureLeaveChatText": "Do you really want to leave this chat?",
-    "priceTitle": "Price",
     "enterPriceRange": "Enter price range",
     "priceFromAmount": "0 WUSD",
-    "priceTo": "To",
     "priceToAmount": "10 000 WUSD",
-    "priceFieldTo": "To",
     "changePercentDesc": "A percentage of the quest amount that will be automatically credited to your retirement account",
     "yourSkillsHaveBeenAdded": "Your skills have been successfully added.",
     "yourAccountVerified": "Your account has been successfully verified",
@@ -1030,7 +1025,6 @@
     "coding": "Coding",
     "uploadAImages": "Upload a images or videos",
     "description": "Description",
-    "addCase": "Add case",
     "openADispute": "Open a dispute",
     "reason": "Reason",
     "lorem": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,",
@@ -1039,10 +1033,8 @@
     "hello": "Hello...",
     "value": "Value",
     "withdrawCard": "Withdraw to bank card",
-    "address": "Address",
     "notice": "Important notice",
     "noticeDesc": "For your safety, the WorkQuest team asks you not to make any correspondence or contacts outside of the WorkQuest platform. Any contacts or conversation outside the platform can lead to failure in resolving controversial situations.",
-    "toAddress": "To",
     "welcomeToWorkQuest": "Welcome to the WorkQuest",
     "pleaseTellUsAboutSkills": "Please, tell us about your skills below. This will increase your ranking on the platform and make it easier for other users to find your account.",
     "amount": "Amount",
@@ -1148,7 +1140,6 @@
     "walletCopy": "Wallet number has been copied",
     "textCopy": "Text has been copied",
     "addingCard": "Adding card",
-    "add": "Add",
     "totalFee": "Total fee",
     "processing": "Processing time",
     "addNewCard": "Add new card",
@@ -1231,7 +1222,6 @@
     "addLiquidityAmountEth": "10 ETH",
     "addLiquidityAmountBnb": "10 BNB",
     "cardHolderField": "card holder",
-    "addressField": "address",
     "securityCheckField": "security check",
     "recepientAddressField": "recepient address",
     "walletAddressField": "wallet address",
@@ -1249,7 +1239,6 @@
     "workers": "Workers",
     "wallet": "Wallet",
     "profile": {
-      "addCase": "Add Case",
       "myProfile": "My profile",
       "settings": "Settings",
       "disputes": "Disputes",
@@ -1435,8 +1424,6 @@
     "description": "And you are beautiful",
     "imgLoaded": "Image loaded successful",
     "workExp": "Work experience",
-    "add": "Add",
-    "delete": "Delete",
     "educations": "Educations",
     "vacancy": "Vacancy",
     "term": "Term",
@@ -1494,7 +1481,6 @@
     "referralProgram": "Referral program",
     "p2pInsurance": "P2P insurance",
     "savingProduct": "Savings product",
-    "crediting": "Crediting",
     "liquidityMining": "Liquidity mining",
     "distantWork": {
       "title": "Workplace",
@@ -1544,14 +1530,11 @@
     "skills": "Skills",
     "completedQuests": "Completed quests",
     "openedQuests": "Opened quests",
-    "showAll": "Show all",
     "averageRating": "Average rating",
     "based": "Based",
     "reviews": "reviews",
     "noReviewsAdded": "No reviews added!",
-    "portfolio": "Portfolio",
     "noPortfoliosAdded": "No portfolios added!",
-    "showAllCases": "Show all cases",
     "costTitle": "Cost per hour"
   },
   "levels": {
@@ -1799,7 +1782,6 @@
   },
   "crediting": {
     "lending": "WorkQuest Lending Protocol",
-    "crediting": "Crediting",
     "templateText": "WorkQuest DeFi lending platform on the Work Net network with four exclusive money markets for volatile assets",
     "marketSize": "Market size",
     "deposit": "Deposit",

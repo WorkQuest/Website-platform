@@ -30,7 +30,7 @@
           />
         </div>
         <div class="block__reviews">
-          {{ `${userData.ratingStatistic ? userData.ratingStatistic.reviewCount : 0} ${$t('quests.reviews')}` }}
+          {{ `${userData.ratingStatistic ? userData.ratingStatistic.reviewCount : 0} ${$t('meta.reviewsSmall')}` }}
         </div>
       </div>
       <div class="info-grid__block block block_right">

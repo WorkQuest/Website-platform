@@ -13,9 +13,9 @@
             <base-field
               v-model="recipient"
               class="input__field"
-              :placeholder="$t('modals.address')"
+              :placeholder="$t('meta.addressBig')"
               rules="required|address"
-              :name="$t('modals.addressField')"
+              :name="$t('meta.addressSmall')"
             />
           </div>
           <div class="content__input input">

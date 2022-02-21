@@ -43,7 +43,7 @@
               @click="toEditQuest"
             >
               <div class="menu__text">
-                {{ $t('modals.edit') }}
+                {{ $t('meta.edit') }}
               </div>
             </div>
             <div
@@ -52,7 +52,7 @@
               @click="showAreYouSureDeleteQuestModal"
             >
               <div class="menu__text">
-                {{ $t('modals.delete') }}
+                {{ $t('meta.delete') }}
               </div>
             </div>
           </div>

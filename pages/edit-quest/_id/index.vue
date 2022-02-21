@@ -41,10 +41,10 @@
                 v-model="price"
                 data-selector="PRICE-FIELD"
                 :type="'number'"
-                :label="$t('quests.price')"
+                :label="$t('meta.price')"
                 :placeholder="+0 + currency"
                 rules="required|decimal"
-                :name="$t('quests.price')"
+                :name="$t('meta.price')"
               />
             </div>
             <div class="page__dd">

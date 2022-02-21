@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="message"
-    :title="$t('modals.addCase')"
+    :title="$t('meta.addCase')"
   >
     <div class="ctm-modal__content">
       <div class="message">

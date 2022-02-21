@@ -115,7 +115,7 @@
             v-if="selectedTab === 'commonInfo'"
             class="reviews__title"
           >
-            {{ $t('quests.reviewsBig') }}
+            {{ $t('meta.reviewsBig') }}
           </div>
           <template v-if="reviewsObject.count > 0">
             <div
@@ -161,7 +161,7 @@
             v-if="selectedTab === 'commonInfo'"
             class="portfolio__title"
           >
-            {{ $t('profile.portfolio') }}
+            {{ $t('meta.portfolio') }}
           </div>
           <div
             v-if="selectedTab === 'portfolio' && userId === mainUser.id"
@@ -171,7 +171,7 @@
               selector="ADD-PORTFOLIO-CASE"
               @click="showAddCaseModal()"
             >
-              {{ $t('ui.profile.addCase') }}
+              {{ $t('meta.addCase') }}
               <template v-slot:right>
                 <span class="icon-plus_white" />
               </template>
@@ -279,7 +279,7 @@ export default {
         {
           number: 3,
           tabName: 'reviews',
-          title: this.$t('profile.reviews'),
+          title: this.$t('meta.reviewsBig'),
         },
       ];
 
@@ -287,7 +287,7 @@ export default {
         tabs.push({
           number: 4,
           tabName: 'portfolio',
-          title: this.$t('profile.portfolio'),
+          title: this.$t('meta.portfolio'),
         });
       }
       return tabs;
@@ -319,7 +319,7 @@ export default {
           title: this.$t('quests.averageRating'),
           number: this.userData?.ratingStatistic?.averageMark || 0,
           ratingMode: true,
-          subtitle: `${this.$t('meta.fromBig')} ${this.userData?.ratingStatistic?.reviewCount || 0} ${this.$t('quests.reviews')}`,
+          subtitle: `${this.$t('meta.fromBig')} ${this.userData?.ratingStatistic?.reviewCount || 0} ${this.$t('meta.reviewsSmall')}`,
         },
       ];
     },

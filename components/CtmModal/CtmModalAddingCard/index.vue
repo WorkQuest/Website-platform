@@ -74,7 +74,7 @@
             :disabled="!validated || !passed || invalid"
             @click="handleSubmit(showCardHasBeenAddedModal)"
           >
-            {{ $t('modals.add') }}
+            {{ $t('meta.add') }}
           </base-btn>
         </div>
       </ValidationObserver>

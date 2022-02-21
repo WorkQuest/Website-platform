@@ -120,7 +120,7 @@ export default {
       if (from && to) return { title: `${from} - ${to}`, hasPrice: true };
       if (!from && to) return { title: `0 - ${to}`, hasPrice: true };
       if (from && !to) return { title: `> ${from}`, hasPrice: true };
-      return { title: this.$t('quests.price'), hasPrice: false };
+      return { title: this.$t('meta.price'), hasPrice: false };
     },
   },
   watch: {

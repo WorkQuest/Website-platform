@@ -213,7 +213,7 @@ export default {
           label: this.getPriority(item.priority),
           labelClass: this.getPriorityClass(item.priority),
           title: item.title,
-          priceTitle: this.$t('quests.price'),
+          priceTitle: this.$t('meta.price'),
           price: `${item.price} ${TokenSymbols.WUSD}`,
         };
         return;

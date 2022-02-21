@@ -9,7 +9,7 @@
           id="from"
           v-model="date"
           :label="$t('meta.fromBig')"
-          :placeholder="$t('modals.address')"
+          :placeholder="$t('meta.addressBig')"
         />
       </div>
       <div class="ctm-modal__content-field">
@@ -17,7 +17,7 @@
           id="to"
           v-model="date"
           :label="$t('meta.toBig')"
-          :placeholder="$t('modals.address')"
+          :placeholder="$t('meta.addressBig')"
         />
       </div>
       <base-dd
