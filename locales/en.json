@@ -214,7 +214,7 @@
   "securityCheck": {
     "title": "Security check",
     "confCode": "Google confirmation code",
-    "placeholder": "Placeholder",
+    "placeholder": "123456",
     "confCodeDesc": "Enter the 6-digit code from the Google Authentication app",
     "confCodeField": "google verification",
     "confirmAccess": "Confirm access",
@@ -938,6 +938,7 @@
     "emptyOpenQuests": "You don't have open quests, please create",
     "errorSmsVer": "Error SMS verification",
     "fillNumber": "Please fill phone number in settings page...",
+    "textLengthExceeded": "You can only write {count} characters",
     "disputes": {
       "thereIsNoResponseFromTheEmployerOrEmployee": "There is no response from the employer / employee",
       "badlyDoneWork": "Badly done work",
