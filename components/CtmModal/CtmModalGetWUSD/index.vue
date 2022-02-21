@@ -55,7 +55,7 @@
               <base-field
                 v-model="amountWUSD"
                 class="content__input"
-                :placeholder="'10 WUSD'"
+                placeholder="10 WUSD"
                 rules="required|decimal"
                 :name="$t('modals.fieldCountOf', { countOf: 'WUSD' })"
               />
@@ -87,7 +87,7 @@
                 ref="percentInput"
                 :value="conversionPercent"
                 class="content__input"
-                :placeholder="'150 %'"
+                placeholder="150 %"
                 rules="required"
                 :name="$t('modals.fieldPercentConversion')"
                 @input="calcConversionPercent"
@@ -103,6 +103,7 @@
             <base-btn
               class="buttons__button"
               mode="outline"
+              :is-submit="false"
               @click="hide"
             >
               {{ $t('meta.cancel') }}
@@ -110,7 +111,6 @@
             <base-btn
               class="buttons__button"
               :disabled="!validated || !passed || invalid"
-              :is-submit="false"
             >
               {{ $t('meta.submit') }}
             </base-btn>
@@ -133,18 +133,9 @@ export default {
       amountCollateral: '',
       conversionPercent: '',
       checkpoints: [
-        {
-          name: this.$t('modals.bnb'),
-          id: 1,
-        },
-        {
-          name: this.$t('modals.eth'),
-          id: 2,
-        },
-        {
-          name: this.$t('modals.wqt'),
-          id: 3,
-        },
+        { name: this.$t('modals.bnb'), id: 1 },
+        { name: this.$t('modals.eth'), id: 2 },
+        { name: this.$t('modals.wqt'), id: 3 },
       ],
     };
   },
@@ -154,11 +145,6 @@ export default {
     }),
     currentCurrency() {
       return this.checkpoints.find((el) => el.id === this.selCurrencyID).name;
-    },
-  },
-  watch: {
-    selCurrencyID() {
-      this.$refs.form.reset();
     },
   },
   methods: {
@@ -178,23 +164,12 @@ export default {
       };
       try {
         await this.requestMock();
-        await this.$store.dispatch('main/showToast', {
-          title: 'success', // TODO locale
-          variant: 'success',
-          text: 'success', // TODO locale
-        });
-      } catch (e) {
-        await this.$store.dispatch('main/showToast', {
-          title: this.$t('toasts.error'),
-          variant: 'warning',
-          text: `${e}`,
-        });
-      } finally {
         this.hide();
+      } catch (e) {
+        this.ShowToast(this.$t('modals.errorGetWUSD'));
       }
     },
     calcConversionPercent(value) {
-      // const input = [...[...this.$refs.percentInput?.$el.children].find((el) => el.className === 'ctm-field__body').children].find(((el) => el.nodeName.toLowerCase() === 'input'));
       const valueWithoutWords = value.replace(/[^0-9,.]/g, '');
       const isEmpty = valueWithoutWords.length === 0;
       const isDotFirst = valueWithoutWords[0] === '.' || valueWithoutWords[0] === '.';
