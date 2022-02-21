@@ -26,9 +26,7 @@
               :data-selector="`ACTION-BTN-GO-TO-REVIEWER-PROFILE-${i}`"
               @click="goToProfile(reviewData.fromUser.id)"
             >
-              <!--              TODO: profile/9cfadf5f-1b6d-4a0d-93f9-0df3e3b9b12d-->
-              <!--              TODO: Обрезать с помощью css-->
-              {{ reviewData.fromUser.firstName }} {{ reviewData.fromUser.lastName }}
+              {{ cropTxt(reviewData.fromUser.firstName, 10) }} {{ cropTxt(reviewData.fromUser.lastName, 10) }}
             </div>
             <div class="card-subtitle_green">
               {{ $t('role.worker') }}
@@ -154,6 +152,9 @@ export default {
   }
   &__name {
     @include text-simple;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-weight: 500;
     font-size: 20px;
     color: $black800;

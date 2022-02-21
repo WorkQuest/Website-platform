@@ -91,10 +91,8 @@
               :src="quest.assignedWorker.avatar ? quest.assignedWorker.avatar.url : EmptyAvatar()"
               :alt="`${ quest.assignedWorker ? UserName(quest.assignedWorker.firstName, quest.assignedWorker.lastName) : '' }`"
             >
-            <!--              TODO: Обрезать с помощью css-->
             <div class="user__name">
-              <!--              TODO: Обрезать с помощью css-->
-              {{ quest.assignedWorker.firstName }} {{ quest.assignedWorker.lastName }}
+              {{ cropTxt(quest.assignedWorker.firstName, 10) }} {{ cropTxt(quest.assignedWorker.lastName, 10) }}
             </div>
           </div>
           <item-rating :rating="getRatingValue(quest)" />
@@ -111,14 +109,12 @@
         v-if="quest.title"
         class="card-quest__text card-quest__text_blue"
       >
-        <!--              TODO: Обрезать с помощью css-->
         {{ cropTxt(quest.title, 68) }}
       </div>
       <div
         v-if="quest.description"
         class="card-quest__text card-quest__text-description"
       >
-        <!--              TODO: Обрезать с помощью css-->
         {{ cropTxt(quest.description, 98) }}
       </div>
       <div class="card-quest__text card-quest__publication">
