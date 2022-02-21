@@ -32,7 +32,7 @@
               {{ convertDate }}
             </span>
             <quest-dd
-              v-if="userData.id === questData.user.id && questData.status !== 3"
+              v-if="userData.id === questData.user.id && InfoModeEmployer.Dispute"
               :data-selector="`QUEST-DD-${questData.id}`"
               :item="questData"
             />
@@ -108,9 +108,6 @@ export default {
       const { createdAt } = this.questData;
       return createdAt ? moment(createdAt).format('MMMM Do YYYY, h:mm') : '';
     },
-  },
-  mounted() {
-    this.SetLoader(false);
   },
   methods: {
     shareModal() {
