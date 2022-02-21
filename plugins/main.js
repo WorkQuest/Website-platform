@@ -135,7 +135,7 @@ Vue.mixin({
     },
     CutTxn(txn, first = 10, second = 10) {
       if (txn > first + second) return `${txn.slice(0, first)}...${txn.slice(-second)}`;
-      return '';
+      return txn;
     },
     FormatPosition(position) {
       const payload = {
