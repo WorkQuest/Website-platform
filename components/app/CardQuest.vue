@@ -108,13 +108,13 @@
         v-if="quest.title"
         class="card-quest__text card-quest__text_blue"
       >
-        {{ CropTxt(quest.title, 68) }}
+        {{ cropTxt(quest.title, 68) }}
       </div>
       <div
         v-if="quest.description"
         class="card-quest__text card-quest__text-description"
       >
-        {{ CropTxt(quest.description, 98) }}
+        {{ cropTxt(quest.description, 98) }}
       </div>
       <div class="card-quest__text card-quest__publication">
         <span class="card-quest__publication_bold">{{ $t('quests.publicationDate') }}</span>
@@ -256,6 +256,10 @@ export default {
     },
     clickFavoriteStar(item) {
       this.$emit('clickFavoriteStar', item);
+    },
+    cropTxt(str, maxLength) {
+      if (str.length > maxLength) str = `${str.slice(0, maxLength)}...`;
+      return str;
     },
     progressQuestText(status) {
       if (!this.userRole) return '';
