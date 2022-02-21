@@ -44,7 +44,7 @@
       </div>
     </div>
     <div
-      v-if="errorText || !isHideError"
+      v-if="!isHideError"
       class="ctm-field__err"
     >
       {{ errorText || errors[0] }}

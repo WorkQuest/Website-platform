@@ -20,7 +20,7 @@
       <base-textarea
         v-model="description"
         :placeholder="$t('modals.description')"
-        :error-text="isMoreCharacters ? $tc('modals.textLengthExceeded', 1000) : ''"
+        :error-text="$tc('modals.textLengthExceeded', 1000)"
         :is-hide-error="!isMoreCharacters"
         rules="required|text-desc"
       />
