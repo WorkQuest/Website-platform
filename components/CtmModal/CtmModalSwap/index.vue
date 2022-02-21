@@ -163,7 +163,7 @@ export default {
           chain: this.fromToken,
           amount: `${this.amount} WQT`,
           amountInt: this.amount,
-          recepient: CutTxn(this.recipientAddress),
+          recepient: this.CutTxn(this.recipientAddress),
           recepientFull: this.recipientAddress,
           worknetFee: '0,5 WQT',
           binanceFee: '0,0009 BNB',
