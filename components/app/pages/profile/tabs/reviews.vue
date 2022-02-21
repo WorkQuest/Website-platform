@@ -57,7 +57,7 @@
         </div>
       </div>
       <div class="card-subtitle__description">
-        {{ reviewData.message }}
+        {{ CropTxt(reviewData.message, 120) }}
       </div>
 
       <div class="reviews-item__rating">
