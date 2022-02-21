@@ -27,7 +27,7 @@
       <div class="content__buttons buttons">
         <base-btn
           class="buttons__button"
-          :disabled="drop === '' || isMoreCharacters"
+          :disabled="!drop || isMoreCharacters"
           selector="SHOW-REQUEST-SEND"
           @click="showRequestSendModal"
         >
