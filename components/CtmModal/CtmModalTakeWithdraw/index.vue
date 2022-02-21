@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="withdrawal"
-    :title="$t('modals.withdrawal')"
+    :title="$t('meta.withdrawal')"
   >
     <div class="withdrawal__content content">
       <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
@@ -179,7 +179,7 @@ export default {
           key: modals.transactionReceipt,
           title: this.$t('modals.withdrawInfo'),
           fields: {
-            to: { name: this.$t('modals.toAddress'), value: this.walletAddress },
+            to: { name: this.$t('meta.toBig'), value: this.walletAddress },
             amount: { name: this.$t('modals.amount'), value: this.amount, symbol: TokenSymbols.WUSD },
             fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
           },

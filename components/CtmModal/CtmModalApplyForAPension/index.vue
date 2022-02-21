@@ -25,7 +25,7 @@
           </div>
           <base-field
             v-model="firstDepositAmount"
-            :placeholder="$tc('pension.WUSDCount', 130)"
+            :placeholder="$tc('meta.WUSDCount', 130)"
             class="content__input"
             :name="$t('modals.firstDepositAmountField')"
             rules="decimal"
@@ -128,8 +128,8 @@ export default {
       }
 
       const fields = {
-        from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-        to: { name: this.$t('modals.toAddress'), value: process.env.PENSION_FUND },
+        from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+        to: { name: this.$t('meta.toBig'), value: process.env.PENSION_FUND },
         fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
       };
       if (this.firstDepositAmount) {

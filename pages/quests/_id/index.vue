@@ -132,7 +132,7 @@
               </nuxt-link>
             </h2>
             <div class="quest__count">
-              {{ `${otherQuestsCount > 0 ? otherQuestsCount : 0} ${$t('quests.questsSmall')}` }}
+              {{ `${otherQuestsCount > 0 ? otherQuestsCount : 0} ${$t('meta.questsSmall')}` }}
             </div>
           </div>
           <div class="quest__card">
@@ -373,7 +373,7 @@ export default {
       switch (infoDataMode) {
         case ADChat: {
           arr = [{
-            name: this.$t('btn.agree'),
+            name: this.$t('meta.agree'),
             class: '',
             mode: '',
             funcKey: 'acceptWorkOnQuest',
@@ -381,7 +381,7 @@ export default {
             disabled: false,
           },
           {
-            name: this.$t('btn.disagree'),
+            name: this.$t('meta.disagree'),
             class: '',
             mode: 'outline',
             funcKey: 'rejectWorkOnQuest',
@@ -437,7 +437,7 @@ export default {
           if (response.status !== ResponseStatus.awaiting || (assignedWorkerId && assignedWorkerId !== userData.id)) break;
 
           arr = [{
-            name: this.$t('btn.agree'),
+            name: this.$t('meta.agree'),
             class: '',
             mode: '',
             funcKey: 'acceptQuestInvitation',
@@ -445,7 +445,7 @@ export default {
             disabled: false,
           },
           {
-            name: this.$t('btn.disagree'),
+            name: this.$t('meta.disagree'),
             class: '',
             mode: 'outline',
             funcKey: 'rejectQuestInvitation',
@@ -458,7 +458,7 @@ export default {
           if (assignedWorkerId !== userData.id) break;
 
           arr = [{
-            name: this.$t('btn.agree'),
+            name: this.$t('meta.agree'),
             class: '',
             mode: '',
             funcKey: 'acceptWorkOnQuest',
@@ -466,7 +466,7 @@ export default {
             disabled: false,
           },
           {
-            name: this.$t('btn.disagree'),
+            name: this.$t('meta.disagree'),
             class: '',
             mode: 'outline',
             funcKey: 'rejectWorkOnQuest',
@@ -548,7 +548,7 @@ export default {
     },
     showToastWrongStatusRaisingViews() {
       return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.questInfo'),
+        title: this.$t('meta.questInfo'),
         variant: 'warning',
         text: this.$t('toasts.questCantRaisingViews'),
       });
@@ -557,7 +557,7 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('quests.questInfo'),
+        title: this.$t('meta.questInfo'),
         subtitle: this.modalMode(modalMode),
       });
     },
@@ -595,7 +595,7 @@ export default {
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/questAgreed.svg'),
-          title: this.$t('quests.questInfo'),
+          title: this.$t('meta.questInfo'),
           subtitle: this.$t('quests.workOnQuestAccepted'),
         });
         await this.getQuest();
@@ -609,7 +609,7 @@ export default {
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/questAgreed.svg'),
-          title: this.$t('quests.questInfo'),
+          title: this.$t('meta.questInfo'),
           subtitle: this.$t('quests.workOnQuestRejected'),
         });
         await this.getQuest();
@@ -623,7 +623,7 @@ export default {
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/questAgreed.svg'),
-          title: this.$t('quests.questInfo'),
+          title: this.$t('meta.questInfo'),
           subtitle: this.$t('quests.pleaseWaitEmp'),
         });
       }

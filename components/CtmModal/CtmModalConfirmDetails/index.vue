@@ -58,7 +58,7 @@ export default {
         },
         {
           title: this.$t('modals.generatingDetails'),
-          subtitle: `${1000} ${this.$t('modals.wusd')}`,
+          subtitle: `${1000} ${this.$t('meta.wusd')}`,
         },
         {
           title: this.$t('modals.collateralizationRatio'),

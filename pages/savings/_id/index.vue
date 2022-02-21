@@ -16,7 +16,7 @@
               {{ $t('saving.depositAmount') }}
             </div>
             <div class="info-block__tokens">
-              {{ $tc('saving.wusdCount', "4 562") }}
+              {{ $tc('meta.WUSDCount', "4 562") }}
             </div>
           </div>
           <div class="info-block__small_right">

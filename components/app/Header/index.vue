@@ -421,11 +421,11 @@ export default {
     },
     headerLinks() {
       const links = [
-        { path: Path.MY_QUESTS, title: this.$t('ui.myQuests') },
+        { path: Path.MY_QUESTS, title: this.$t('meta.myQuests') },
         { path: Path.WALLET, title: this.$t('ui.wallet') },
       ];
       if (this.userData.role === UserRole.EMPLOYER) links.unshift({ path: Path.WORKERS, title: this.$t('ui.jobQuestors') });
-      else links.unshift({ path: Path.QUESTS, title: this.$t('ui.quests') });
+      else links.unshift({ path: Path.QUESTS, title: this.$t('meta.questsBig') });
       return links;
     },
   },

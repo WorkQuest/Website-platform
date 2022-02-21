@@ -197,8 +197,8 @@ export default {
         key: modals.transactionReceipt,
         title: this.$t('mining.approve'),
         fields: {
-          from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-          to: { name: this.$t('modals.toAddress'), value: poolAddress },
+          from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+          to: { name: this.$t('meta.toBig'), value: poolAddress },
           fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
         },
         isShowSuccess: false,
@@ -236,8 +236,8 @@ export default {
         key: modals.transactionReceipt,
         title: `${this.$t('staking.stake')} ${stakingType}`,
         fields: {
-          from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-          to: { name: this.$t('modals.toAddress'), value: poolAddress },
+          from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+          to: { name: this.$t('meta.toBig'), value: poolAddress },
           days: days && !isStakingStarted ? { name: this.$t('staking.stakeDays'), value: days } : null,
           amount: { name: this.$t('modals.amount'), value: amount, symbol: stakingType },
           fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },

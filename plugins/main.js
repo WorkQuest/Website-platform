@@ -181,7 +181,7 @@ Vue.mixin({
         });
       } else {
         await this.$store.dispatch('main/showToast', {
-          title: this.$t('toasts.questInfo'),
+          title: this.$t('meta.questInfo'),
           variant: 'warning',
           text: this.$t('toasts.questCantDelete'),
         });

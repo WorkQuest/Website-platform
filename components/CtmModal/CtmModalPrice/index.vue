@@ -15,7 +15,7 @@
         <div class="content__grid grid">
           <div class="grid__field">
             <div class="grid__title">
-              {{ $t('modals.priceForm') }}
+              {{ $t('meta.fromBig') }}
             </div>
             <div class="input__container">
               <base-field
@@ -23,7 +23,7 @@
                 class="grid__input"
                 :placeholder="$t('modals.priceFromAmount')"
                 rules="decimal|max_value:99999999999999"
-                :name="$t('modals.priceFieldFrom')"
+                :name="$t('meta.fromBig')"
               />
               <span
                 class="icon-off_outline_close input__clear"

@@ -11,7 +11,7 @@
             <template v-slot:left>
               <span class="icon-chevron_left" />
             </template>
-            {{ $t('staking.back') }}
+            {{ $t('meta.back') }}
           </base-btn>
         </div>
         <div class="head-cont">
@@ -381,8 +381,8 @@ export default {
         key: modals.transactionReceipt,
         title: this.$t('staking.claimRewards'),
         fields: {
-          from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-          to: { name: this.$t('modals.toAddress'), value: this.poolData.poolAddress },
+          from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+          to: { name: this.$t('meta.toBig'), value: this.poolData.poolAddress },
           fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
         },
         submitMethod: async () => await this.$store.dispatch('wallet/stakingClaimRewards', {
@@ -511,8 +511,8 @@ export default {
             key: modals.transactionReceipt,
             title: this.$t('staking.autoRenewal'),
             fields: {
-              from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-              to: { name: this.$t('modals.toAddress'), value: this.poolAddress },
+              from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+              to: { name: this.$t('meta.toBig'), value: this.poolAddress },
               fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
             },
             submitMethod: async () => await this.$store.dispatch('wallet/stakingRenewal', { stakingType: this.slug, poolAddress: this.poolAddress }),

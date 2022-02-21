@@ -25,7 +25,7 @@
                   {{ $t('insuring.yourFundBalance') }}
                 </div>
                 <div class="title_blue">
-                  {{ $tc('insuring.wusdCount', 0) }}
+                  {{ $tc('meta.WUSDCount', 0) }}
                 </div>
                 <div class="title_gray">
                   {{ $tc('insuring.dollarsCount', 0) }}
@@ -346,7 +346,7 @@ export default {
       isVotingDone: false,
       btns: [
         {
-          name: this.$t('insuring.notAgree'),
+          name: this.$t('meta.disagree'),
           class: 'btn_red',
         },
         {
@@ -354,19 +354,19 @@ export default {
           class: 'btn',
         },
         {
-          name: this.$t('insuring.agree'),
+          name: this.$t('meta.agree'),
           class: 'btn_bl',
         },
       ],
       results: [
         {
-          name: this.$t('insuring.agree'),
+          name: this.$t('meta.agree'),
           percents: 75,
           count: this.$tc('insuring.votesCount', 10),
           class: 'progress-green',
         },
         {
-          name: this.$t('insuring.notAgree'),
+          name: this.$t('meta.disagree'),
           percents: 20,
           count: this.$tc('insuring.votesCount', 10),
           class: 'progress-red',

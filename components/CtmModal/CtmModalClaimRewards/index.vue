@@ -176,8 +176,8 @@ export default {
             key: modals.transactionReceipt,
             title: this.$t('mining.unstake'),
             fields: {
-              from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-              to: { name: this.$t('modals.toAddress'), value: poolAddress },
+              from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+              to: { name: this.$t('meta.toBig'), value: poolAddress },
               unstakeAmount: { name: this.$t('modals.amount'), value: amount },
               fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: stakingType },
             },

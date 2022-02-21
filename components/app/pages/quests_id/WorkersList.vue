@@ -4,7 +4,7 @@
     data-selector="COMPONENT-WORKERS-LIST"
   >
     <div class="worker__title">
-      {{ $t(`${isInvited ? 'quests.invited' : 'response.title'}`) }}
+      {{ $t(`${isInvited ? 'meta.invited' : 'meta.responded'}`) }}
     </div>
     <div
       v-if="getCurrUsersArr.length"

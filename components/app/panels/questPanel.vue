@@ -24,7 +24,7 @@
               v-if="userRole === 'employer' && userCompany"
               class="user__company"
             >
-              {{ $t('company.from') }} {{ userCompany }}
+              {{ $t('meta.fromSmall') }} {{ userCompany }}
             </span>
           </div>
           <div class="user__right">

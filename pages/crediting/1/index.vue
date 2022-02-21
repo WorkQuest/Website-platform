@@ -160,7 +160,7 @@ export default {
         },
         {
           key: 'WUSD',
-          label: this.$t('crediting.tableHead.wusd'),
+          label: this.$t('meta.wusd'),
           thStyle: {
             padding: '0',
             height: '27px',
@@ -189,7 +189,7 @@ export default {
           subtitle: this.$t('crediting.totalCollateralLocked'),
         },
         {
-          title: this.$tc('crediting.wusdCount', '2,150.26'),
+          title: this.$tc('meta.WUSDCount', '2,150.26'),
           subtitle: this.$t('crediting.totalWusdDebt'),
         },
       ],

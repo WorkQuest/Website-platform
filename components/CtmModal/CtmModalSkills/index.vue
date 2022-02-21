@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="skills"
-    :title="$t('skills.title')"
+    :title="$t('meta.skills')"
   >
     <div class="ctm-modal__content">
       <div class="skills__body">

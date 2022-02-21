@@ -6,7 +6,7 @@
     <div class="quests__container">
       <div class="quests__body">
         <div class="quests__title">
-          {{ $t('quests.MyQuests') }}
+          {{ $t('meta.myQuests') }}
         </div>
         <div class="quests__content">
           <base-btn

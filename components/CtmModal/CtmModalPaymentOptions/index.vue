@@ -128,7 +128,7 @@ export default {
     }),
     currency() {
       return [
-        { title: this.$t('modals.wusd'), icon: require('~/assets/img/ui/wusd.svg') },
+        { title: this.$t('meta.wusd'), icon: require('~/assets/img/ui/wusd.svg') },
         { title: this.$t('modals.wqt'), icon: require('~/assets/img/ui/wqt.svg') },
       ];
     },

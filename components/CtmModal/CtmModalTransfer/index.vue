@@ -8,7 +8,7 @@
         <base-field
           id="from"
           v-model="date"
-          :label="$t('modals.fromAddress')"
+          :label="$t('meta.fromBig')"
           :placeholder="$t('modals.address')"
         />
       </div>
@@ -16,7 +16,7 @@
         <base-field
           id="to"
           v-model="date"
-          :label="$t('modals.toAddress')"
+          :label="$t('meta.toBig')"
           :placeholder="$t('modals.address')"
         />
       </div>

@@ -109,7 +109,7 @@ export default {
         const { awaiting, accepted } = ResponseStatus;
         const obj = {
           [InfoModeWorker.Created]: '',
-          [InfoModeWorker.ADChat]: 'invite.title',
+          [InfoModeWorker.ADChat]: 'meta.invited',
           [InfoModeWorker.Active]: 'quests.activeQuest',
           [InfoModeWorker.Rejected]: 'quests.requested',
           [InfoModeWorker.WaitWorker]: 'quests.pendingConsideration',
@@ -117,7 +117,7 @@ export default {
           [InfoModeWorker.Dispute]: 'quests.dispute',
           [InfoModeWorker.Closed]: 'quests.questClosed',
           [InfoModeWorker.Done]: 'quests.completed',
-          [InfoModeWorker.Responded]: 'quests.responded',
+          [InfoModeWorker.Responded]: 'meta.responded',
           [InfoModeWorker.Invited]: 'quests.invited',
         };
         if (this.infoDataMode === InfoModeWorker.Invited && response.status !== awaiting) {

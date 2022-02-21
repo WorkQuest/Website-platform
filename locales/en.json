@@ -1,22 +1,63 @@
 {
-  "invite": {
-    "title": "Invited"
-  },
-  "response": {
-    "title": "Responded"
-  },
-  "active": {
-    "title": "Responded"
-  },
-  "company": {
-    "from": "from"
+  "meta": {
+    "withdrawal": "Withdrawal",
+    "skills": "Skills",
+    "myQuests": "My quests",
+    "questsSmall": "quests",
+    "questsBig": "Quests",
+    "codeFromSMS": "Code from SMS",
+    "toBig": "To",
+    "toSmall": "to",
+    "fromBig": "From",
+    "fromSmall": "from",
+    "responded": "Responded",
+    "questInfo": "Quest info",
+    "wusd": "WUSD",
+    "invited": "Invited",
+    "showAll": "Show all",
+    "redeem": "Redeem",
+    "redeemed": "Redeemed",
+    "pay": "Pay",
+    "skipAndEnd": "Skip and end",
+    "cleanUp": "Clean up",
+    "close": "Close",
+    "connected": "Connected",
+    "disconnect": "Disconnect wallet",
+    "delete": "Delete",
+    "back": "Back",
+    "ok": "Ok",
+    "send": "Send",
+    "save": "Save",
+    "reset": "Reset",
+    "fromYou": "from you",
+    "details": "View details",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "buyWUSD": "Buy WUSD",
+    "submit": "Submit",
+    "showAllReviews": "Show all reviews",
+    "showAllQuests": "Show all quests",
+    "showAllPortfolios": "Show all portfolios",
+    "later": "Later",
+    "iAgree": "I agree",
+    "next": "Next",
+    "continue": "Continue",
+    "change": "Change",
+    "apply": "Apply",
+    "connectSMSVer": "Connect SMS Verification",
+    "resendSMS": "Resend SMS",
+    "disable": "Disable",
+    "remindLater": "Remind later",
+    "leave": "Leave",
+    "listIsEmpty": "List is empty",
+    "agree": "Agree",
+    "disagree": "Disagree",
+    "WUSDCount": "{count} WUSD"
   },
   "performed": {
     "title": "Performed"
   },
   "btn": {
-    "agree": "Agree",
-    "disagree": "Disagree",
     "completeWorkOnQuest": "Complete work on Quest",
     "acceptCompletedWorkOnQuest": "Accept completed work on quest",
     "closeQuest": "Close quest",
@@ -126,55 +167,13 @@
     "add": "Add all the information and publication time  to find the right",
     "create": "Create",
     "writeAMessage": "Write a message",
-    "quests": "Quests",
     "reviews": "Reviews",
     "portfolio": "Portfolio",
     "common": "Common info",
     "sidebar": {
       "filter": "All Quests filter",
-      "choose": "(Choose simple or \nspecialized category)",
-      "quests": "Quests",
-      "specialized": "SPECIALIZED QUESTS",
-      "find": "FIND A JOB"
+      "choose": "(Choose simple or \nspecialized category)"
     }
-  },
-  "meta": {
-    "redeem": "Redeem",
-    "redeemed": "Redeemed",
-    "pay": "Pay",
-    "skipAndEnd": "Skip and end",
-    "cleanUp": "Clean up",
-    "close": "Close",
-    "connected": "Connected",
-    "disconnect": "Disconnect wallet",
-    "delete": "Delete",
-    "back": "Back",
-    "ok": "Ok",
-    "send": "Send",
-    "save": "Save",
-    "reset": "Reset",
-    "fromYou": "from you",
-    "details": "View details",
-    "cancel": "Cancel",
-    "confirm": "Confirm",
-    "buyWUSD": "Buy WUSD",
-    "submit": "Submit",
-    "showAllReviews": "Show all reviews",
-    "showAllQuests": "Show all quests",
-    "showAllPortfolios": "Show all portfolios",
-    "later": "Later",
-    "iAgree": "I agree",
-    "next": "Next",
-    "continue": "Continue",
-    "change": "Change",
-    "apply": "Apply",
-    "connectSMSVer": "Connect SMS Verification",
-    "resendSMS": "Resend SMS",
-    "disable": "Disable",
-    "remindLater": "Remind later",
-    "leave": "Leave",
-    "showAll": "Show all",
-    "listIsEmpty": "List is empty"
   },
   "priority": {
     "title": "Select priority",
@@ -228,7 +227,7 @@
     "lastName": "Last name",
     "email": "Email",
     "password": "Password",
-    "totp":"TOTP",
+    "totp": "TOTP",
     "confirmPassword": "Repeat password",
     "create": "Create account"
   },
@@ -277,17 +276,12 @@
       "privacy": "\t· Privacy policy"
     }
   },
-  "skills": {
-    "title": "Skills"
-  },
   "worker": {
     "cost": {
       "notIndicated": "Not indicated..."
     }
   },
   "quests": {
-    "showAll": "Show all",
-    "wusd": "WUSD",
     "employer": {
       "usersNotResponded": "Users have not yet responded to the quest"
     },
@@ -298,7 +292,6 @@
     "decline": "Decline",
     "questTitle": "Quest title",
     "questDesc": "Quest description",
-    "questInfo": "Quest info",
     "closed": "Closed",
     "completed": "Completed",
     "rejected": "Rejected",
@@ -307,8 +300,6 @@
     "workOnQuestAccepted": "Work on quest accepted!",
     "workOnQuestRejected": "Work on quest rejected!",
     "pleaseWaitEmp": "Work on quest completed! Please, wait your employer!",
-    "quests": "Quests",
-    "questsSmall": "quests",
     "publicationDate": "Publication date",
     "urgent": "Urgent",
     "specQuests": "Specialized quests",
@@ -380,8 +371,6 @@
       "limit": "You can choose up to 5 skills"
     },
     "hours": "hours",
-    "responded": "Responded",
-    "invited": "Invited",
     "acceptedTheInvitation": "Accepted the invitation",
     "declinedTheInvitation": "Declined the invitation",
     "active": "Active",
@@ -395,12 +384,9 @@
     "searchQuests": "Search quests",
     "readCompletely": "Read completely",
     "questBig": "Quest",
-    "fromBig": "From",
-    "fromSmall": "from",
     "fromYou": "from you",
     "reviews": "reviews",
     "reviewsBig": "Reviews",
-    "MyQuests": "My quests",
     "activeQuest": "Active quest",
     "waitWorker": "Wait worker",
     "pendingConsideration": "Pending consideration",
@@ -445,7 +431,6 @@
     "averageRating": "Average rating",
     "showAllActiveQuests": "Show all active quests",
     "performanceTimer": "Active until:",
-    "questAmount": "quests",
     "otherQuestsSpec": "Other quests for the specialization",
     "questMaterials": "Quest materials",
     "searchResults": "Search results",
@@ -919,7 +904,6 @@
     }
   },
   "toasts": {
-    "questInfo": "Quest info",
     "questCantDelete": "You can't delete this quest on this stage!",
     "questCantEdit": "You can't edit this quest on this stage!",
     "questCantRaisingViews": "You can't go to raising views on this stage!",
@@ -978,9 +962,7 @@
     "sureLeaveChatText": "Do you really want to leave this chat?",
     "priceTitle": "Price",
     "enterPriceRange": "Enter price range",
-    "priceForm": "From",
     "priceFromAmount": "0 WUSD",
-    "priceFieldFrom": "From",
     "priceTo": "To",
     "priceToAmount": "10 000 WUSD",
     "priceFieldTo": "To",
@@ -1002,8 +984,6 @@
     "phoneNumberField": "phone number",
     "enterPhone": "Enter your phone number to confirm SMS verification",
     "enterSMSCode": "We have sent verification code to your phone number. Enter this code",
-    "codeFromSMS": "Code from SMS",
-    "codeFromSMSField": "Code from SMS",
     "smsVerification": "SMS verification",
     "saved": "Saved",
     "userDataHasBeenSaved": "User data has been saved",
@@ -1054,7 +1034,6 @@
     "openADispute": "Open a dispute",
     "reason": "Reason",
     "lorem": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,",
-    "withdraw": "Withdrawal",
     "sendTo": "Send To",
     "estimatedPayment": "Estimated payment:",
     "hello": "Hello...",
@@ -1064,7 +1043,6 @@
     "notice": "Important notice",
     "noticeDesc": "For your safety, the WorkQuest team asks you not to make any correspondence or contacts outside of the WorkQuest platform. Any contacts or conversation outside the platform can lead to failure in resolving controversial situations.",
     "toAddress": "To",
-    "fromAddress": "From",
     "welcomeToWorkQuest": "Welcome to the WorkQuest",
     "pleaseTellUsAboutSkills": "Please, tell us about your skills below. This will increase your ranking on the platform and make it easier for other users to find your account.",
     "amount": "Amount",
@@ -1132,7 +1110,6 @@
     "currentPoolSize": "Current pool size",
     "yourPoolShare": "Your pool share",
     "eth": "ETH",
-    "wusd": "WUSD",
     "howMuchEthWouldYouLikeToLock": "How much ETH would you like to lock into your account?",
     "smallTemp": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     "template": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt sed sed integer volutpat. Faucibus sit ultricies quam egestas nisl, aliquam vitae. Non ultrices tincidunt tristique semper. Proin tincidunt nullam nisi sed massa.",
@@ -1147,7 +1124,6 @@
     "depositing": "Depositing",
     "generating": "Amount",
     "liquidationFee": "Liquidation fee",
-    "withdrawal": "Withdrawal",
     "saveCardForNextPayment": "Save the card for next use",
     "insureCase": "Insure case",
     "connectWallet": "Connect wallet",
@@ -1272,8 +1248,6 @@
     "jobQuestors": "Job Questors",
     "workers": "Workers",
     "wallet": "Wallet",
-    "myQuests": "My quests",
-    "quests": "Quests",
     "profile": {
       "addCase": "Add Case",
       "myProfile": "My profile",
@@ -1474,13 +1448,9 @@
     "addSpec": "Add specialization",
     "removeSpec": "Remove specialization",
     "education": {
-      "from": "From",
-      "to": "To",
       "educationalInstitution": "Educational institution"
     },
     "workExps": {
-      "from": "From",
-      "to": "To",
       "companyName": "Company name"
     },
     "settings": "Settings",
@@ -1564,7 +1534,6 @@
     "topWorkers": "Top employees",
     "price": "Price",
     "addedTime": "Added time",
-    "quests": "Quests",
     "urgent": "Select the urgency level",
     "specialized": "Specialized",
     "typeOfJob": "Type of job",
@@ -1577,7 +1546,6 @@
     "openedQuests": "Opened quests",
     "showAll": "Show all",
     "averageRating": "Average rating",
-    "from": "From",
     "based": "Based",
     "reviews": "reviews",
     "noReviewsAdded": "No reviews added!",
@@ -1637,7 +1605,6 @@
     "optional": "Optional",
     "optionalFirstDeposit": "First deposit",
     "term": "Term",
-    "castomizable": "Castomizable",
     "configurablePercentage": "Configurable percentage",
     "depositsFromQuest": "Deposit from quests",
     "howToTakePart": "How to participate in the pension program?",
@@ -1670,7 +1637,6 @@
     "hours": "{count} hours",
     "years": "{count} years",
     "days": "{count} days",
-    "WUSDCount": "{count} WUSD",
     "ETHCount": "{count} ETH",
     "plusPercents": "+ {count}%",
     "faq1": {
@@ -1753,7 +1719,6 @@
     "smallPlug": "??",
     "possiblePlug": "Possible",
     "yearPlug": "1 year",
-    "wusdCount": "{count} WUSD",
     "plusPercents": "+ {count}%",
     "table": {
       "userName": "John Doe",
@@ -1811,7 +1776,6 @@
       "volume": "$4.5M"
     },
     "mb": "{count} MB",
-    "back": "Back",
     "wusdEthPool": "ETH/WQT pool",
     "wusdBnbPool": "BNB/WQT pool",
     "dollarsCount": "$ {count}",
@@ -1848,14 +1812,12 @@
     "openPositions": "Open positions",
     "usdCount": "{count} USD",
     "totalCollateralLocked": "Total collateral locked",
-    "wusdCount": "{count} WUSD",
     "totalWusdDebt": "Total WUSD debt",
     "tableHead": {
       "id": "ID",
       "currentRatio": "Current ratio",
       "deposited": "Deposited",
-      "availableToWithdraw": "Available to withdraw",
-      "wusd": "WUSD"
+      "availableToWithdraw": "Available to withdraw"
     },
     "table": {
       "id": "565464",
@@ -1865,7 +1827,6 @@
       "wusd": "532 WUSD",
       "manage": "Manage"
     },
-    "back": "Back",
     "tempName": "Lend #56546",
     "liquidationPrice": "Liquidation price",
     "collateralizationRatio": "Collateralization ratio",
@@ -1931,7 +1892,6 @@
     "standardProtectionPlan": "Standard protection plan",
     "maximumProtectionPlan": "Maximum protection plan",
     "yourFundBalance": "Insurance fund balance",
-    "wusdCount": "{count} WUSD",
     "dollarsCount": "$ {count}",
     "withdraw": "Withdrawal",
     "leaveFund": "Leave fund",
@@ -1948,9 +1908,7 @@
     "youWillCertifyTheInsuredEvent": "You will certify the insured event?",
     "studyTheInsuredEventThoroughly": "Study the insured event thoroughly",
     "insureCaseText": "",
-    "notAgree": "Disagree",
     "insuredEvent": "Insured event",
-    "agree": "Agree",
     "percentsCount": "{count} %",
     "votesCount": "{count} votes",
     "planPoints": {
@@ -2070,7 +2028,6 @@
       "rewardTokenAddress": "Reward Token Address"
     },
     "open": "Open",
-    "back": "Back",
     "unstake": "Unstake",
     "stakeIsEmpty": "Stake balance is empty",
     "stakeDurationIsNotOver": "Stake duration is not over",
@@ -2082,7 +2039,6 @@
     "rewardTokenAddress": "Reward Token Address",
     "totalStaked": "Total Staked",
     "WQTCount": "{n} WQT",
-    "WUSDCount": "{n} WUSD",
     "ETHCount": "{n} ETH",
     "BNBCount": "{n} BNB",
     "hours": "{n} hours",

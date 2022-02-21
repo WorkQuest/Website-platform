@@ -34,7 +34,7 @@
           {{ step === 1 ? $t('modals.enterPhone') : $t('modals.enterSMSCode') }}
         </div>
         <span class="content__top">
-          {{ step === 1 ? $t('modals.phoneNumber') : $t('modals.codeFromSMS') }}
+          {{ step === 1 ? $t('modals.phoneNumber') : $t('meta.codeFromSMS') }}
         </span>
         <base-field
           v-if="step === 1"
@@ -56,7 +56,7 @@
           v-if="step === 2"
           v-model="confirmCode"
           class="content__action"
-          :placeholder="$t('modals.codeFromSMSField')"
+          :placeholder="$t('meta.codeFromSMS')"
           mode="icon"
           rules="required|alpha_num"
           :name="$t('modals.codeFromSMS')"

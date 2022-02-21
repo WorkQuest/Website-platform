@@ -10,7 +10,7 @@
           <template v-slot:left>
             <span class="icon-chevron_left" />
           </template>
-          {{ $t('mining.back') }}
+          {{ $t('meta.back') }}
         </base-btn>
         <base-btn
           v-if="!isConnected"

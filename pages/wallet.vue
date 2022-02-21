@@ -182,8 +182,8 @@ export default {
         { key: 'status', label: this.$t('wallet.table.status'), sortable: true },
         { key: 'block', label: this.$t('wallet.table.block'), sortable: false },
         { key: 'timestamp', label: this.$t('wallet.table.timestamp'), sortable: true },
-        { key: 'from_address', label: this.$t('modals.fromAddress'), sortable: true },
-        { key: 'to_address', label: this.$t('modals.toAddress'), sortable: true },
+        { key: 'from_address', label: this.$t('meta.fromBig'), sortable: true },
+        { key: 'to_address', label: this.$t('meta.toBig'), sortable: true },
         { key: 'value', label: this.$t('wallet.table.transferred'), sortable: true },
         { key: 'transaction_fee', label: this.$t('wallet.table.trxFee'), sortable: false },
       ];

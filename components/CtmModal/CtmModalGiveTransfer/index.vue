@@ -211,8 +211,8 @@ export default {
       this.ShowModal({
         key: modals.transactionReceipt,
         fields: {
-          from: { name: this.$t('modals.fromAddress'), value: this.userData.wallet.address },
-          to: { name: this.$t('modals.toAddress'), value: this.recipient },
+          from: { name: this.$t('meta.fromBig'), value: this.userData.wallet.address },
+          to: { name: this.$t('meta.toBig'), value: this.recipient },
           amount: {
             name: this.$t('modals.amount'),
             value: this.amount,

@@ -52,7 +52,7 @@
           class="block__skills-spec skills-spec"
         >
           <div class="skills-spec__title">
-            {{ $t('skills.title') }}
+            {{ $t('meta.skills') }}
           </div>
           <div class="skills-spec__container">
             <skills :specializations="userData.userSpecializations" />
@@ -66,7 +66,7 @@
             v-if="selectedTab === 'commonInfo'"
             class="quests__title"
           >
-            {{ $t('profile.quests') }}
+            {{ $t('meta.questsBig') }}
           </div>
           <div
             v-if="questsCount > 0"
@@ -274,7 +274,7 @@ export default {
         {
           number: 2,
           tabName: 'quests',
-          title: this.$t('profile.quests'),
+          title: this.$t('meta.questsBig'),
         },
         {
           number: 3,
@@ -319,7 +319,7 @@ export default {
           title: this.$t('quests.averageRating'),
           number: this.userData?.ratingStatistic?.averageMark || 0,
           ratingMode: true,
-          subtitle: `${this.$t('quests.fromBig')} ${this.userData?.ratingStatistic?.reviewCount || 0} ${this.$t('quests.reviews')}`,
+          subtitle: `${this.$t('meta.fromBig')} ${this.userData?.ratingStatistic?.reviewCount || 0} ${this.$t('quests.reviews')}`,
         },
       ];
     },

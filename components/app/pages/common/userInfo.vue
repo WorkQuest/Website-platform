@@ -152,7 +152,7 @@
             {{ $t('settings.costPerHour') }}
           </div>
           <div class="price__value">
-            {{ $tc('saving.wusdCount', userData.wagePerHour) }}
+            {{ $tc('meta.WUSDCount', userData.wagePerHour) }}
           </div>
         </div>
         <div class="right__share-btn">

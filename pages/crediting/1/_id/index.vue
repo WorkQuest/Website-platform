@@ -9,7 +9,7 @@
           <template v-slot:left>
             <span class="icon-chevron_left" />
           </template>
-          {{ $t('crediting.back') }}
+          {{ $t('meta.back') }}
         </base-btn>
         <div class="title">
           {{ $t('crediting.tempName') }}
@@ -236,14 +236,14 @@ export default {
           blocks: [
             {
               name: this.$t('crediting.outstandingWusdDebt'),
-              about: this.$tc('crediting.wusdCount', '3.00'),
+              about: this.$tc('meta.WUSDCount', '3.00'),
               btn: {
                 name: this.$t('crediting.payback'),
               },
             },
             {
               name: this.$t('crediting.availableToGenerate'),
-              about: this.$tc('crediting.wusdCount', '5 6543.23'),
+              about: this.$tc('meta.WUSDCount', '5 6543.23'),
               btn: {
                 name: this.$t('crediting.generate'),
               },
