@@ -71,6 +71,14 @@ Vue.mixin({
         text: value,
       });
     },
+    CutTxn(txn, first = 10, second = 10) {
+      if (txn > first + second) return `${txn.slice(0, first)}...${txn.slice(-second)}`;
+      return '';
+    },
+    CropTxt(str, maxLength) {
+      if (str.length > maxLength) str = `${str.slice(0, maxLength)}...`;
+      return str;
+    },
     getDistanceFromLatLonInKm(lat1 = 0, lon1 = 0, lat2 = 0, lon2 = 0) {
       const R = 6371; // Radius of the earth in km
       const dLat = this.deg2rad(lat2 - lat1); // deg2rad below
@@ -128,10 +136,6 @@ Vue.mixin({
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(this.FormatPosition);
       }
-    },
-    CutTxn(txn, first = 10, second = 10) {
-      if (!txn) return '';
-      return `${txn.slice(0, first)}...${txn.slice(-second)}`;
     },
     FormatPosition(position) {
       const payload = {

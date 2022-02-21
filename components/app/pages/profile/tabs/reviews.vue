@@ -55,7 +55,7 @@
           </div>
         </div>
         <div class="description">
-          {{ cropTxt(reviewData.message) }}
+          {{ CropTxt(reviewData.message, 120) }}
         </div>
 
         <div class="reviews-item__rating">
@@ -102,11 +102,6 @@ export default {
     }),
   },
   methods: {
-    cropTxt(str) {
-      const maxLength = 120;
-      if (str.length > maxLength) str = `${str.slice(0, maxLength)}...`;
-      return str;
-    },
     goToProfile(id) {
       this.$router.push(`/profile/${id}`);
     },
