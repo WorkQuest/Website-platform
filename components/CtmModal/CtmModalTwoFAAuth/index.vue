@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.twoFAAuth')"
+    :title="$t('modals.2FA.auth')"
   >
     <validation-observer
       v-slot="{handleSubmit, validated, passed, invalid}"
@@ -308,8 +308,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('modals.2FAStatus'),
-        subtitle: this.$t('modals.2FAEnabled'),
+        title: this.$t('modals.2FA.status'),
+        subtitle: this.$t('modals.2FA.enabled'),
       });
     },
     validationErrorFields(data) {

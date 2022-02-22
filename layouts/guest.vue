@@ -65,7 +65,7 @@
                 class="header__btn"
                 @click="$router.push('/sign-in')"
               >
-                {{ $t('login.signIn') }}
+                {{ $t('meta.signIn') }}
               </base-btn>
             </div>
           </div>

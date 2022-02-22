@@ -77,7 +77,7 @@
               class="btn_bl"
               :disabled="statusBusy"
             >
-              {{ $t('mining.addLiquidity') }}
+              {{ $t('meta.addLiquidity') }}
             </base-btn>
             <base-btn
               v-if="currentPool === 'BNB'"
@@ -86,7 +86,7 @@
               class="btn_bl"
               :disabled="statusBusy"
             >
-              {{ $t('mining.addLiquidity') }}
+              {{ $t('meta.addLiquidity') }}
             </base-btn>
           </div>
         </div>

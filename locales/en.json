@@ -1,5 +1,7 @@
 {
   "meta": {
+    "performed": "Performed",
+    "contactUs": "Contact Us",
     "balance": "Balance",
     "userId": "455dad66544ss",
     "txHash": "sf998s...ss877d",
@@ -52,7 +54,6 @@
     "details": "View details",
     "cancel": "Cancel",
     "confirm": "Confirm",
-    "buyWUSD": "Buy WUSD",
     "submit": "Submit",
     "showAllReviews": "Show all reviews",
     "showAllQuests": "Show all quests",
@@ -71,15 +72,54 @@
     "listIsEmpty": "List is empty",
     "agree": "Agree",
     "disagree": "Disagree",
-    "WUSDCount": "{count} WUSD",
     "edit": "Edit",
     "crediting": "Crediting",
     "portfolio": "Portfolio",
     "price": "Price",
-    "add": "Add"
-  },
-  "performed": {
-    "title": "Performed"
+    "add": "Add",
+    "sendARequest": "Send a request",
+    "aboutUs": "About Us",
+    "registration": "Registration",
+    "signIn": "Sign In",
+    "account": "Haven’t account?",
+    "forgot": "Forgot password",
+    "raiseViews": "Raise views",
+    "educations": "Educations",
+    "priority": {
+      "all": "All priority",
+      "low": "Fixed delivery",
+      "normal": "Short term",
+      "urgent": "Urgent"
+    },
+    "login": "Login",
+    "signUp": "Sign Up",
+    "securityCheckBig": "Security check",
+    "securityCheckSmall": "security check",
+    "googleConfCode": "Google confirmation code",
+    "googleConfCodeDesc": "Enter the 6-digit code from the Google Authentication app",
+    "privacyPolicy": "Privacy policy",
+    "terms": "Terms & Conditions",
+    "aml": "AML & CTF Policy",
+    "createAQuest": "Create a quest",
+    "lorem": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor",
+    "completed": "Completed",
+    "typeOfJob": "Type of job",
+    "choosePeriod": "Choose period",
+    "verified": "Verified",
+    "minutes": "{count} minutes",
+    "hours": "{count} hours",
+    "years": "{count} years",
+    "days": "{count} days",
+    "dispute": "Dispute",
+    "approve": "Approve",
+    "openedQuests": "Opened quests",
+    "addLiquidity": "Add liquidity",
+    "buyWUSD": "Buy WUSD",
+    "WUSDCount": "{count} WUSD",
+    "WQTCount": "{count} WQT",
+    "ETHCount": "{count} ETH",
+    "BNBCount": "{count} BNB",
+    "smsVerification": "SMS verification"
   },
   "btn": {
     "completeWorkOnQuest": "Complete work on Quest",
@@ -87,7 +127,6 @@
     "closeQuest": "Close quest",
     "goToChat": "Go to chat",
     "responded": "Respond send",
-    "sendARequest": "Send a request",
     "view": "View"
   },
   "distance": {
@@ -145,29 +184,14 @@
     "password": "•••••••"
   },
   "about": {
-    "contact": "Contact us",
-    "content": {
-      "title": "About us",
-      "text": "Work Quest is a social project based on the blockchain technology for finding work and solving any tasks from the employer's side in quest mode. Are you looking for a job? A work quest will help you find a quest next to you and your city. Do you need workers to carry out the goals? Just create a quest on the site of the work quest. The service assumes the warranty obligations for performing quests. Employer funds are kept with us , if the employee gives a confirmation of the performance of work, he receives a deposit of funds on his account. The system of ratings, reviews and a list of completed quests will help to easily find honest people and the best specialists.\n\n          Our goal is to simplify the communication between the employer and the employee, to help employ millions of people, to improve their financial situation, to solve the lifelong problem of finding reliable professionals in all sectors to create a progressive digital economy built on the principles of trust, mutual respect and the well-being of all its participants."
-    }
+    "text": "Work Quest is a social project based on the blockchain technology for finding work and solving any tasks from the employer's side in quest mode. Are you looking for a job? A work quest will help you find a quest next to you and your city. Do you need workers to carry out the goals? Just create a quest on the site of the work quest. The service assumes the warranty obligations for performing quests. Employer funds are kept with us , if the employee gives a confirmation of the performance of work, he receives a deposit of funds on his account. The system of ratings, reviews and a list of completed quests will help to easily find honest people and the best specialists.\n\n          Our goal is to simplify the communication between the employer and the employee, to help employ millions of people, to improve their financial situation, to solve the lifelong problem of finding reliable professionals in all sectors to create a progressive digital economy built on the principles of trust, mutual respect and the well-being of all its participants."
   },
   "registration": {
-    "registration": "Registration",
     "emailConfirm": "A letter has been sent to your email address",
     "emailConfirmTitle": "Check your email"
   },
-  "login": {
-    "signIn": "Sign In",
-    "account": "Haven’t account?",
-    "remember": "Remember me",
-    "forgot": "Forgot password?",
-    "loginWith": "Login with your \nsocial media account",
-    "create": "Create account"
-  },
   "profile": {
     "defaultName": "Nameless User",
-    "raiseViews": "Raise views",
-    "educations": "Educations",
     "prevWorkExp": "Previous work experience",
     "active": "active proposals",
     "radius": "in your radius",
@@ -191,23 +215,12 @@
   },
   "priority": {
     "title": "Select priority",
-    "all": "All priority",
-    "low": "Fixed delivery",
-    "normal": "Short term",
-    "urgent": "Urgent",
     "employee": {
-      "low": "Fixed delivery",
-      "normal": "Short term",
       "urgent": "Urgent execution"
     }
   },
   "signIn": {
-    "title": "Sign in",
-    "account": "haven’t account?",
-    "regs": "Registration",
-    "login": "Login",
     "remember": "Remember me",
-    "forgot": "Forgot password",
     "or": "Or",
     "loginWith": "Login with",
     "welcomeToWorkQuest": "Welcome to WorkQuest",
@@ -215,7 +228,6 @@
     "workQuest": "WorkQuest",
     "makingMoneyIsFast": "WorkQuest:\n The World's\n Decentralized\n Job Market",
     "dontHaveAnAccount": "Don’t have an account?",
-    "signUp": "Sign Up",
     "forgotYourPass": "Forgot your password?"
   },
   "signWorkQuest": {
@@ -225,16 +237,12 @@
     "daoPass": "DAO password"
   },
   "securityCheck": {
-    "title": "Security check",
-    "confCode": "Google confirmation code",
     "placeholder": "123456",
-    "confCodeDesc": "Enter the 6-digit code from the Google Authentication app",
     "confCodeField": "google verification",
     "confirmAccess": "Confirm access",
     "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
-    "title": "Sign Up",
     "haveAccount": "Already have an account?",
     "auth": "Authorization",
     "email": "Email",
@@ -274,15 +282,9 @@
     "chooseThis": "Choose this role"
   },
   "privacy": {
-    "title": "Privacy policy",
-    "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor",
-    "agree": "I agree with",
-    "privacyLink": "Privacy policy",
-    "termsLink": "Terms & Conditions",
-    "amlLink": "AML & CTF Policy"
+    "agree": "I agree with"
   },
   "layout": {
-    "create": "Create a quest",
     "links": {
       "terms": "\t· Terms and conditions",
       "privacy": "\t· Privacy policy"
@@ -294,9 +296,6 @@
     }
   },
   "quests": {
-    "employer": {
-      "usersNotResponded": "Users have not yet responded to the quest"
-    },
     "companyNotListed": "Company not listed",
     "workersNotInvited": "Workers not invited!",
     "startChat": "Start chat",
@@ -305,7 +304,6 @@
     "questTitle": "Quest title",
     "questDesc": "Quest description",
     "closed": "Closed",
-    "completed": "Completed",
     "rejected": "Rejected",
     "completedWorkAccepted": "Completed work on quest accepted!",
     "completedWorkRejected": "Completed work on quest rejected!",
@@ -313,15 +311,15 @@
     "workOnQuestRejected": "Work on quest rejected!",
     "pleaseWaitEmp": "Work on quest completed! Please, wait your employer!",
     "publicationDate": "Publication date",
-    "urgent": "Urgent",
     "specQuests": "Specialized quests",
     "permanentJob": "Permanent job",
-    "typeOfJob": "Type of job",
     "partTime": "Part-time",
-    "fixedTerm": "Fixed term",
     "contract": "Contract",
     "remoteWork": "Remote work",
     "allVariants": "All variants",
+    "employer": {
+      "usersNotResponded": "Users have not yet responded to the quest"
+    },
     "levels": {
       "1": {
         "title": "Gold Plus Package",
@@ -339,9 +337,6 @@
         "title": "Bronze Package",
         "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
       }
-    },
-    "createQuest": {
-      "choosePeriod": "Choose period"
     },
     "distance": {
         "100": "+ 100 m",
@@ -367,38 +362,23 @@
       "partTime": "Part time",
       "fixedTerm": "Fixed term"
     },
-    "runtime": {
-      "runtime": "Runtime",
-      "urgent": "Urgent",
-      "shortTerm": "Short term",
-      "fixedDelivery": "Fixed delivery"
-    },
+    "runtime": "Runtime",
     "spec": {
       "spec": "Specialization",
       "addSpec": "Add specialization"
     },
-    "skills": {
-      "skills": "Skills",
-      "chooseSkills": "Choose skills",
-      "limit": "You can choose up to 5 skills"
-    },
-    "hours": "hours",
     "acceptedTheInvitation": "Accepted the invitation",
     "declinedTheInvitation": "Declined the invitation",
     "active": "Active",
-    "performed": "Performed",
     "requested": "Requested",
     "youInvited": "You Invited",
     "inProgressBy": "In progress by:",
     "finishedBy": "Finished by:",
-    "searchQuests": "Search quests",
     "readCompletely": "Read completely",
     "questBig": "Quest",
-    "fromYou": "from you",
     "activeQuest": "Active quest",
     "waitWorker": "Wait worker",
     "pendingConsideration": "Pending consideration",
-    "dispute": "Dispute",
     "questClosed": "Quest Closed",
     "questFinished": "Quest Completed",
     "dontHaveSpec": "Doesn`t have specializations...",
@@ -425,9 +405,7 @@
     "city": "City",
     "period": "Period of time",
     "EstimatedPayment": "Estimated payment:",
-    "createAQuest": "Create a quest",
     "editAQuest": "Edit a quest",
-    "openedQuests": "Opened quests",
     "completedQuests": "Completed quests",
     "oneTime": "One time",
     "fullTime": "Full time",
@@ -438,11 +416,9 @@
     "otherQuestsSpec": "Other quests for the specialization",
     "questMaterials": "Quest materials",
     "searchResults": "Search results",
-    "type": "Type of job",
     "time": "Added time",
     "priority": {
       "title": "Priority",
-      "all": "All priority",
       "low": "Low",
       "normal": "Normal",
       "urgent": "Urgent"
@@ -454,9 +430,7 @@
       "searchWithMap": "City / Street / Place"
     },
     "worker": "Worker",
-    "raiseViews": "Raise views",
     "deleteQuest": "Delete quest",
-    "approve": "Approve",
     "startQuest": "Start quest"
   },
   "filters": {
@@ -920,9 +894,26 @@
     "error": "Error!"
   },
   "modals": {
-    "errorQuests": "Error with quests",
-    "emptyOpenQuests": "You don't have open quests, please create",
-    "errorSmsVer": "Error SMS verification",
+    "errors": {
+      "errorQuests": "Error with quests",
+      "emptyOpenQuests": "You don't have open quests, please create",
+      "errorSmsVer": "Error SMS verification",
+      "error": "Error"
+    },
+    "chatCreate": {
+      "desc": "Create name of group chat and choose people from your chat list",
+      "chatName": "Chat name",
+      "members": "Members list",
+      "addNewMembers": "Add new members",
+      "addMember": "Add member"
+    },
+    "2FA": {
+      "auth": "2FA Authentication",
+      "enabled": "2FA enabled successfully!",
+      "disabled": "2FA disabled successfully!",
+      "status": "2FA Status",
+      "disable": "Disable 2FA"
+    },
     "fillNumber": "Please fill phone number in settings page...",
     "textLengthExceeded": "You can only write {count} characters",
     "disputes": {
@@ -939,20 +930,11 @@
     "pleaseWait": "Please, wait",
     "redeemSuccess": "Redeem success!",
     "redeemFail": "Redeem fail",
-    "chatCreate": {
-      "title": "Create group chat",
-      "desc": "Create name of group chat and choose people from your chat list",
-      "chatName": "Chat name",
-      "members": "Members list",
-      "addNewMembers": "Add new members",
-      "addMember": "Add member"
-    },
     "yourRewardBalance": "Your reward balance:",
     "deletePortfolio": "Are you sure delete portfolio?",
     "addTitle": "Please add title...",
     "addDesc": "Please add description...",
     "editCase": "Edit Case",
-    "error": "Error",
     "share": "Share",
     "youCan’tDeleteActiveQuest": "You can’t delete active quest",
     "youCan’tEditQuest": "You can’t edit quest without connected 2FA",
@@ -963,16 +945,10 @@
     "sureDeleteNotification": "Do you really want to delete this notification?",
     "sureLeaveChatText": "Do you really want to leave this chat?",
     "enterPriceRange": "Enter price range",
-    "priceFromAmount": "0 WUSD",
-    "priceToAmount": "10 000 WUSD",
     "changePercentDesc": "A percentage of the quest amount that will be automatically credited to your retirement account",
     "yourSkillsHaveBeenAdded": "Your skills have been successfully added.",
     "yourAccountVerified": "Your account has been successfully verified",
     "youCanUpdateThisInYourProfile": "You can easily update this in your profile.",
-    "disable2Fa": "Disable 2FA",
-    "2FAEnabled": "2FA enabled successfully!",
-    "2FADisabled": "2FA disabled successfully!",
-    "2FAStatus": "2FA Status",
     "yourLevelHasBeenRaised": "Your level has been raised",
     "payment": "Payment",
     "cardHolder": "Cardholder name",
@@ -983,7 +959,6 @@
     "phoneNumberField": "phone number",
     "enterPhone": "Enter your phone number to confirm SMS verification",
     "enterSMSCode": "We have sent verification code to your phone number. Enter this code",
-    "smsVerification": "SMS verification",
     "saved": "Saved",
     "userDataHasBeenSaved": "User data has been saved",
     "workExpAddSuccessful": "Work experience add successful",
@@ -994,9 +969,6 @@
     "failed": "Failed",
     "yourRoleHasBeenChanged": "Your role has been changed",
     "chooseSkills": "Choose necessary skills",
-    "securityCheck": "Security check",
-    "googleConfCode": "Google confirmation code",
-    "enterCode": "Enter the 6-digit code from the Google Authentication app",
     "warning": "Warning",
     "pleaseDescribe": "Please describe the reason to change the role",
     "ifYouChangeRole": "If you change role now, you can change this only one month later. Do you want to continue?",
@@ -1014,7 +986,6 @@
     "ifYouCantScanBarcode": "If you are unable to scan QR code enter the Secret Key manually.",
     "pleaseSaveThisKey": "Enter Google two-factor authentication key below. Please save your Google key, it will be used to recover your Google Authenticator.",
     "step": "Step",
-    "twoFAAuth": "2FA Authentication",
     "currentPassword": "Current password",
     "newPassword": "New password",
     "confirmNewPassword": "Confirm new password ",
@@ -1046,7 +1017,6 @@
     "questAgreed": "Quest Agreed",
     "requestSend": "Request sent",
     "waitResponseFromEmployer": "Wait for a response from the employer",
-    "sendARequest": "Send a request",
     "message": "Message",
     "bodyMessage": "Hello",
     "areYouSure": "Are You Sure?",
@@ -1068,7 +1038,6 @@
     "questUpdated": "Quest Updated",
     "invitation": "Invitation",
     "chooseQuest": "Choose Quest",
-    "raiseViews": "Raise views",
     "priceOfAClick": "Price of a click",
     "city": "City",
     "period": "Period",
@@ -1088,7 +1057,6 @@
     "lockedSavings": "Locked savings",
     "durationDays": "Duration (days)",
     "depositIsOpened": "Deposit is opened",
-    "addLiquidity": "Add liquidity",
     "amountOfWqt": "Amount of WQT",
     "amountOfEth": "Amount of ETH",
     "amountOfBnb": "Amount of BNB",
@@ -1105,7 +1073,6 @@
     "tempForRemove2": "1 BNB = ... WQT",
     "currentPoolSize": "Current pool size",
     "yourPoolShare": "Your pool share",
-    "eth": "ETH",
     "howMuchEthWouldYouLikeToLock": "How much ETH would you like to lock into your account?",
     "smallTemp": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     "template": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt sed sed integer volutpat. Faucibus sit ultricies quam egestas nisl, aliquam vitae. Non ultrices tincidunt tristique semper. Proin tincidunt nullam nisi sed massa.",
@@ -1125,6 +1092,7 @@
     "connectWallet": "Connect wallet",
     "howMuchWusdWouldYouLikeToGenerate": "How much WUSD would you like to generate?",
     "chooseTheCurrency": "Choose the currency",
+    "eth": "ETH",
     "bnb": "BNB",
     "wqt": "WQT",
     "howMuchETHWouldYouLikeToOpen": "How much ETH would you like to open into your account?",
@@ -1163,13 +1131,11 @@
     "generatingDetails": "Generating",
     "collateralizationRatio": "Collateralization ratio",
     "depositIsOpenedText": "",
-    "loanText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt sed sed integer volutpat. Faucibus sit ultricies quam egestas nisl, aliquam vitae. Non ultrices tincidunt tristique semper. Proin tincidunt nullam nisi sed massa.",
     "loanIsOpenedText": "",
     "firstDepositText": "* First deposit amount is optional. If you do not want to make a deposit, you may leave this field empty",
     "pensionIsRegistered": "Pension is registered!",
     "pensionIsRegisteredText": "",
     "changePercent": "Change percent",
-    "changePercentText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor",
     "currentPercentTitle": "Current percent",
     "depositIsDone": "Deposit is done",
     "makeDepositText": "",
@@ -1181,7 +1147,6 @@
     "chooseCurrency": "Choose currency",
     "wallet": "Wallet",
     "coinpaymebts": "Сoinpaymebts",
-    "errorDeleteText": "Do you really want to delete this quest?",
     "swapTitle": "Crosschain exchange",
     "coin": "Coin",
     "recepientBinance": "Recipient binance address",
@@ -1219,14 +1184,9 @@
     "durationDaysField": "duration days",
     "depositAmountField": "deposit amount",
     "claim": "Claim",
-    "estimatedPaymentField": "120 WUSD",
     "priceOfAClickField": "price of a click",
     "cityField": "city",
-    "addLiquidityAmountWqt": "1000 WQT",
-    "addLiquidityAmountEth": "10 ETH",
-    "addLiquidityAmountBnb": "10 BNB",
     "cardHolderField": "card holder",
-    "securityCheckField": "security check",
     "recepientAddressField": "recepient address",
     "walletAddressField": "wallet address",
     "thanksText": "",
@@ -1248,8 +1208,7 @@
       "disputes": "Disputes",
       "instruments": "Instruments",
       "DeFi": "DeFi functionality",
-      "logout": "Logout",
-      "login": "Login"
+      "logout": "Logout"
     },
     "locals": {
       "en": "en",
@@ -1415,19 +1374,16 @@
     "placeOfStudying": "Place of studying",
     "specialization": "Specialization",
     "selectSpec": "Select specialization",
-    "skillsInput": "Skills",
     "selectSkills": "Select skills",
     "priority": "Priority",
     "costPerHour": "Cost per hour",
     "description": "And you are beautiful",
     "imgLoaded": "Image loaded successful",
     "workExp": "Work experience",
-    "educations": "Educations",
     "vacancy": "Vacancy",
     "term": "Term",
     "getVerification": "Complete the verification",
     "notVerified": "Not verified",
-    "verified": "Verified",
     "more": "More",
     "employmentInfo": "Employment information",
     "addSpec": "Add specialization",
@@ -1471,8 +1427,6 @@
     "filterAllEmployeeProfiles": "Filter all employee profiles",
     "website": "Enter your company website",
     "changeRole": "Change role",
-    "2FA": "2FA",
-    "smsVerification2": "SMS verification",
     "instruments": "Instruments",
     "pensionProgram": "Pension program",
     "referralProgram": "Referral program",
@@ -1504,12 +1458,10 @@
     "questSalary": "Quest salary:",
     "status": "Status:",
     "decision": "Decision:",
-    "Dispute": "Dispute",
     "pending": "Pending",
     "chatHistory": "Chat history",
     "disputeTime": "Dispute opening time:",
-    "inProgress": "In progress",
-    "completed": "Completed"
+    "inProgress": "In progress"
   },
   "workers": {
     "searchQuests": "Search quests",
@@ -1519,14 +1471,12 @@
     "addedTime": "Added time",
     "urgent": "Select the urgency level",
     "specialized": "Specialized",
-    "typeOfJob": "Type of job",
     "specializations": "Specializations",
     "aboutMe": "About me",
     "giveAQuest": "Give a quest",
     "inviteQuestor": "Invite Questor",
     "skills": "Skills",
     "completedQuests": "Completed quests",
-    "openedQuests": "Opened quests",
     "averageRating": "Average rating",
     "based": "Based",
     "reviews": "reviews",
@@ -1599,10 +1549,6 @@
     "docName": "Some_document.pdf",
     "mb": "{count} MB",
     "percents": "{count} %",
-    "minutes": "{count} minutes",
-    "hours": "{count} hours",
-    "years": "{count} years",
-    "days": "{count} days",
     "ETHCount": "{count} ETH",
     "plusPercents": "+ {count}%",
     "faq1": {
@@ -1704,9 +1650,7 @@
       "newTokens": "You will get new tokens",
       "balance": "Your balance:"
     },
-    "approve": "Approve",
     "liquidityMiningSub": "Is a DeFi (decentralized finance) mechanism in which participants supply cryptocurrencies into liquidity pools, and being rewarded with fees and tokens based on their share of the total pool liquidity.",
-    "templateText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
     "pools": "Pools",
     "choose": "Choose",
     "information": "Information",
@@ -1740,7 +1684,6 @@
     "lpCount": "{count} LP",
     "wqtCount": "{count} WQT",
     "APY": "APY",
-    "addLiquidity": "Add liquidity",
     "removeLiquidity": "Remove liquidity",
     "liquidity": "Liquidity",
     "totalLiquidity": "Total liquidity",
@@ -1820,7 +1763,6 @@
   },
   "insuring": {
     "peerToPeerInsuring": "P2P insuring",
-    "templateText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
     "card1": {
       "title": "Minimal protection",
       "pointsText": {
@@ -1995,9 +1937,6 @@
     "WQTCount": "{n} WQT",
     "ETHCount": "{n} ETH",
     "BNBCount": "{n} BNB",
-    "hours": "{n} hours",
-    "days": "{n} days",
-    "min": "{n} min",
     "totalDistributed": "Total Distributed",
     "staking": "Staking",
     "stakingCards": {
@@ -2038,17 +1977,13 @@
     "company": {
       "title": "Company",
       "wqWiki": "WorkQuest Wiki",
-      "aboutUs": "About Us",
       "leadership": "Leadership",
-      "contactUs": "Contact Us",
       "support": "Help & Support"
     },
     "legalInfo": {
       "title": "Legal Info",
       "risks": "Risks Disclaimer",
       "privacyPolicy": "Privacy Policy",
-      "terms": "Terms & Conditions",
-      "aml": "AML & CTF Policy",
       "cookiePolicy": "Cookie Policy"
     },
     "DeFi": {

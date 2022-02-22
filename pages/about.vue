@@ -10,10 +10,10 @@
           <div class="about__row">
             <div class="about__description description">
               <div class="description__title">
-                {{ $t('about.content.title') }}
+                {{ $t('meta.aboutUs') }}
               </div>
               <div class="description__text">
-                <span>{{ $t('about.content.text') }}</span>
+                <span>{{ $t('about.text') }}</span>
               </div>
             </div>
             <div class="about__image">
@@ -29,7 +29,7 @@
         <div class="about__content">
           <div class="description__text description__text_normal">
             <div class="description__info">
-              {{ $t('about.contact') }}:
+              {{ $t('meta.contactUs') }}:
             </div>
             <div class="description__text description__text_link">
               <a

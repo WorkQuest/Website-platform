@@ -94,7 +94,7 @@ Vue.mixin({
     },
     ShowToast(text, title = null) {
       this.$bvToast.toast(text, {
-        title: title || this.$t('modals.error'),
+        title: title || this.$t('modals.errors.error'),
         variant: 'warning',
         solid: true,
         toaster: 'b-toaster-bottom-right',

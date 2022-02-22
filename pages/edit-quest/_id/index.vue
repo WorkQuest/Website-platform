@@ -28,9 +28,9 @@
                     :data-selector="`RUNTIME-DD-${runtime}-${runtimeValue}`"
                     :items="runtime"
                     type="gray"
-                    :label="$t('quests.runtime.runtime')"
+                    :label="$t('quests.runtime')"
                     :placeholder="runtime[0]"
-                    :name="$t('quests.runtime.runtime')"
+                    :name="$t('quests.runtime')"
                     rules="required"
                   />
                 </div>
@@ -372,9 +372,9 @@ export default {
     },
     runtime() {
       return [
-        this.$t('quests.runtime.urgent'),
-        this.$t('quests.runtime.shortTerm'),
-        this.$t('quests.runtime.fixedDelivery'),
+        this.$t('meta.priority.urgent'),
+        this.$t('meta.priority.normal'),
+        this.$t('meta.priority.low'),
       ];
     },
     employment() {

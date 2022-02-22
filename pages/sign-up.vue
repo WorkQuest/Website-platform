@@ -6,7 +6,7 @@
       class="auth__container"
     >
       <div class="auth__text auth__text_title">
-        <span>{{ $t('signUp.title') }}</span>
+        <span>{{ $t('meta.signUp') }}</span>
       </div>
       <div class="auth__text auth__text_simple">
         <span>{{ $t('signUp.haveAccount') }}</span>

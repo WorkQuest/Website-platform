@@ -153,10 +153,10 @@ export default {
       const t = this.lockTime;
       let time;
 
-      if (t.y) time = this.$tc('pension.years', t.y);
-      else if (t.d) time = this.$tc('pension.days', t.d);
-      else if (t.h) time = this.$tc('pension.hours', t.h);
-      else if (t.m) time = this.$tc('pension.minutes', t.m);
+      if (t.y) time = this.$tc('meta.years', t.y);
+      else if (t.d) time = this.$tc('meta.days', t.d);
+      else if (t.h) time = this.$tc('meta.hours', t.h);
+      else if (t.m) time = this.$tc('meta.minutes', t.m);
 
       return [
         {

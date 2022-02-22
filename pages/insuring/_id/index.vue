@@ -298,7 +298,7 @@ export default {
             name: this.$t('insuring.userName'),
             url: require('~/assets/img/temp/avatar-small.jpg'),
           },
-          text: this.$t('insuring.templateText'),
+          text: this.$t('meta.lorem'),
           time: '12.23',
         },
         {
@@ -306,7 +306,7 @@ export default {
             name: this.$t('insuring.userName'),
             url: require('~/assets/img/temp/avatar-small.jpg'),
           },
-          text: this.$t('insuring.templateText'),
+          text: this.$t('meta.lorem'),
           time: '12.23',
         },
         {
@@ -314,7 +314,7 @@ export default {
             name: this.$t('insuring.userName'),
             url: require('~/assets/img/temp/avatar-small.jpg'),
           },
-          text: this.$t('insuring.templateText'),
+          text: this.$t('meta.lorem'),
           time: '12.23',
         },
         {
@@ -322,7 +322,7 @@ export default {
             name: this.$t('insuring.userName'),
             url: require('~/assets/img/temp/avatar-small.jpg'),
           },
-          text: this.$t('insuring.templateText'),
+          text: this.$t('meta.lorem'),
           time: '12.23',
         },
         {
@@ -330,7 +330,7 @@ export default {
             name: this.$t('insuring.userName'),
             url: require('~/assets/img/temp/avatar-small.jpg'),
           },
-          text: this.$t('insuring.templateText'),
+          text: this.$t('meta.lorem'),
           time: '12.23',
         },
         {
@@ -338,7 +338,7 @@ export default {
             name: this.$t('insuring.userName'),
             url: require('~/assets/img/temp/avatar-small.jpg'),
           },
-          text: this.$t('insuring.templateText'),
+          text: this.$t('meta.lorem'),
           time: '12.23',
         },
       ],

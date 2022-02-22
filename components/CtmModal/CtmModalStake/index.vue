@@ -195,7 +195,7 @@ export default {
       }
       this.ShowModal({
         key: modals.transactionReceipt,
-        title: this.$t('mining.approve'),
+        title: this.$t('meta.approve'),
         fields: {
           from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
           to: { name: this.$t('meta.toBig'), value: poolAddress },
@@ -209,11 +209,11 @@ export default {
             amount: fullMaxStake,
           });
           if (!successApprove) {
-            this.ShowToast(this.$t('modals.failed'), this.$t('mining.approve'));
+            this.ShowToast(this.$t('modals.failed'), this.$t('meta.approve'));
             this.SetLoader(false);
             return error();
           }
-          await this.$store.dispatch('main/showToast', { title: this.$t('mining.approve'), text: this.$t('modals.success') });
+          await this.$store.dispatch('main/showToast', { title: this.$t('meta.approve'), text: this.$t('modals.success') });
           return success();
         },
         callback: async () => await this.stake(stakeTokenAddress, poolAddress, amount, stakingType, days, isStakingStarted),

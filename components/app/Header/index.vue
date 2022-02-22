@@ -198,7 +198,7 @@
           selector="CREATE-NEW-QUEST"
           @click="createNewQuest('pc')"
         >
-          {{ $t('layout.create') }}
+          {{ $t('meta.createAQuest') }}
         </base-btn>
       </div>
     </div>
@@ -305,7 +305,7 @@
             data-selector="ACTION-BTN-CREATE-NEW-QUEST-MOBILE"
             @click="createNewQuest('mobile')"
           >
-            {{ $t('layout.create') }}
+            {{ $t('meta.createAQuest') }}
           </base-btn>
         </div>
       </div>

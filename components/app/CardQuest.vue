@@ -280,10 +280,10 @@ export default {
     },
     getStatusCard(index) {
       const questStatus = {
-        [QuestStatuses.Dispute]: this.$t('quests.dispute'),
+        [QuestStatuses.Dispute]: this.$t('meta.dispute'),
         [QuestStatuses.Rejected]: this.$t('quests.rejected'),
         [QuestStatuses.Active]: this.$t('quests.active'),
-        [QuestStatuses.Done]: this.$t('quests.performed'),
+        [QuestStatuses.Done]: this.$t('meta.performed'),
         [QuestStatuses.WaitConfirm]: this.$t('quests.requested'),
         [QuestStatuses.WaitWorker]: this.$t('quests.invited'),
         [QuestStatuses.Closed]: this.$t('quests.closed'),
@@ -304,9 +304,9 @@ export default {
     },
     getPriority(index) {
       const priority = {
-        [questPriority.Low]: this.$t('priority.low'),
-        [questPriority.Normal]: this.$t('priority.normal'),
-        [questPriority.Urgent]: this.$t('priority.urgent'),
+        [questPriority.Low]: this.$t('meta.priority.low'),
+        [questPriority.Normal]: this.$t('meta.priority.normal'),
+        [questPriority.Urgent]: this.$t('meta.priority.urgent'),
       };
       return priority[index] || '';
     },

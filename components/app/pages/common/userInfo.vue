@@ -60,7 +60,7 @@
           class="block__knowledge knowledge"
         >
           <div class="knowledge__text">
-            {{ $t('profile.educations') }}
+            {{ $t('meta.educations') }}
           </div>
           <div
             v-if="userData.additionalInfo.educations"
@@ -172,7 +172,7 @@
             selector="TO-RAISE-VIEWS"
             @click="toRaisedViews()"
           >
-            {{ $t('profile.raiseViews') }}
+            {{ $t('meta.raiseViews') }}
           </base-btn>
         </div>
         <div
@@ -334,8 +334,8 @@ export default {
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/warning.svg'),
-          title: this.$t('modals.errorQuests'),
-          subtitle: this.$t('modals.emptyOpenQuests'),
+          title: this.$t('modals.errors.errorQuests'),
+          subtitle: this.$t('modals.errors.emptyOpenQuests'),
         });
       }
     },

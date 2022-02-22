@@ -3,7 +3,7 @@
     class="change-role"
     :class="[{'change-role_wide': step === 1}]"
     :is-unclosable="true"
-    :title="step === 1 ? $t('modals.reason') : $t('modals.securityCheck')"
+    :title="step === 1 ? $t('modals.reason') : $t('meta.securityCheckBig')"
   >
     <validation-observer
       v-slot="{invalid}"
@@ -49,14 +49,14 @@
         >
           <base-field
             v-model="totp"
-            :label="$t('modals.googleConfCode')"
+            :label="$t('meta.googleConfCode')"
             class="change-role__action"
-            :placeholder="$t('modals.googleConfCode')"
+            :placeholder="$t('meta.googleConfCode')"
             rules="min:6|numeric|max:6"
-            :name="$t('modals.googleConfCode')"
+            :name="$t('meta.googleConfCode')"
           />
           <div class="change-role__sub">
-            {{ $t('modals.enterCode') }}
+            {{ $t('meta.googleConfCodeDesc') }}
           </div>
           <div class="btn__container">
             <base-btn

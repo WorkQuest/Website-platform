@@ -441,12 +441,12 @@ export default {
 
       const minutes = ends.diff(now, 'minutes');
       if (minutes <= 60) {
-        return this.$t('pension.minutes', { count: minutes });
+        return this.$t('meta.minutes', { count: minutes });
       }
 
       const hours = ends.diff(now, 'hours');
       if (hours <= 24) {
-        return this.$t('pension.hours', { count: hours });
+        return this.$t('meta.hours', { count: hours });
       }
 
       const years = ends.diff(now, 'years');

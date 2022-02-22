@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="views"
-    :title="$t('modals.raiseViews')"
+    :title="$t('meta.raiseViews')"
   >
     <div class="views__content content">
       <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
@@ -43,7 +43,7 @@
             {{ $t('modals.estimatedPayment') }}
           </div>
           <div class="container__cost">
-            {{ $t('modals.estimatedPaymentField') }}
+            {{ $tc('meta.WUSDCount', 120) }}
           </div>
         </div>
         <div class="content__buttons buttons">

@@ -220,11 +220,11 @@ export default {
     cards() {
       return [
         {
-          title: this.$t(`staking.${this.poolData.stakeTokenSymbol || this.slug}Count`, { n: this.NumberWithSpaces(this.poolData.totalStaked) }),
+          title: this.$t(`meta.${this.poolData.stakeTokenSymbol || this.slug}Count`, { count: this.NumberWithSpaces(this.poolData.totalStaked) }),
           subtitle: this.$t('staking.totalStaked'),
         },
         {
-          title: this.$t(`staking.${this.poolData.tokenSymbol || this.slug}Count`, { n: this.NumberWithSpaces(this.poolData.totalDistributed) }),
+          title: this.$t(`meta.${this.poolData.tokenSymbol || this.slug}Count`, { count: this.NumberWithSpaces(this.poolData.totalDistributed) }),
           subtitle: this.$t('staking.totalDistributed'),
         },
       ];
@@ -253,15 +253,15 @@ export default {
       const data = [
         {
           name: this.$t('staking.userInformationCards.staked'),
-          about: this.$t(`staking.${this.slug}Count`, { n: this.NumberWithSpaces(this.userInfo.staked || '') }),
+          about: this.$t(`meta.${this.slug}Count`, { count: this.NumberWithSpaces(this.userInfo.staked || '') }),
         },
         {
           name: this.$t('staking.userInformationCards.yourBalance'),
-          about: this.$t(`staking.${this.slug}Count`, { n: this.NumberWithSpaces(this.userInfo.balance || '') }),
+          about: this.$t(`meta.${this.slug}Count`, { count: this.NumberWithSpaces(this.userInfo.balance || '') }),
         },
         {
           name: this.$t('mining.reward'),
-          about: this.$t(`staking.${this.slug}Count`, { n: this.NumberWithSpaces(this.userInfo.claim || '') }),
+          about: this.$t(`meta.${this.slug}Count`, { count: this.NumberWithSpaces(this.userInfo.claim || '') }),
         },
       ];
       if (this.userInfo.date && this.userInfo.staked !== '0') {
@@ -273,17 +273,17 @@ export default {
         if (minutes <= 60) {
           data.push({
             name: this.$t('staking.stakingCards.duration'),
-            about: this.$t('staking.min', { n: minutes >= 0 ? minutes : 0 }),
+            about: this.$t('meta.minutes', { count: minutes >= 0 ? minutes : 0 }),
           });
         } else if (hours <= 24) {
           data.push({
             name: this.$t('staking.stakingCards.duration'),
-            about: this.$t('staking.hours', { n: hours >= 0 ? hours : 0 }),
+            about: this.$t('meta.hours', { count: hours >= 0 ? hours : 0 }),
           });
         } else {
           data.push({
             name: this.$t('staking.stakingCards.duration'),
-            about: this.$t('staking.days', { n: days >= 0 ? days : 0 }),
+            about: this.$t('meta.days', { count: days >= 0 ? days : 0 }),
           });
         }
       }
@@ -293,11 +293,11 @@ export default {
       return [
         {
           name: this.$t('staking.stakeCards.stakeMin'),
-          about: this.$t(`staking.${this.slug}Count`, { n: this.NumberWithSpaces(this.poolData.minStake || '') }),
+          about: this.$t(`meta.${this.slug}Count`, { count: this.NumberWithSpaces(this.poolData.minStake || '') }),
         },
         {
           name: this.$t('staking.stakeCards.stakeLimit'),
-          about: this.$t(`staking.${this.slug}Count`, { n: this.NumberWithSpaces(this.poolData.maxStake || '') }),
+          about: this.$t(`meta.${this.slug}Count`, { count: this.NumberWithSpaces(this.poolData.maxStake || '') }),
         },
         {
           name: this.$t('staking.stakeCards.periodUpdate'),
@@ -321,9 +321,9 @@ export default {
   methods: {
     getTimeFromMin(min) {
       if (!min) return '';
-      if (Math.floor(min / 60 / 24) > 0) return this.$t('staking.days', { n: min / 60 / 24 });
-      if (Math.floor(min / 60) > 0) return this.$t('staking.hours', { n: Math.floor(min / 60) });
-      return this.$t('staking.min', { n: min });
+      if (Math.floor(min / 60 / 24) > 0) return this.$t('meta.days', { count: min / 60 / 24 });
+      if (Math.floor(min / 60) > 0) return this.$t('meta.hours', { count: Math.floor(min / 60) });
+      return this.$t('meta.hours', { count: min });
     },
     async loadData() {
       this.SetLoader(true);

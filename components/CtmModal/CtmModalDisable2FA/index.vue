@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.disable2Fa')"
+    :title="$t('modals.2FA.disable')"
   >
     <div class="ctm-modal__content">
       <validation-observer
@@ -15,7 +15,7 @@
               ref="totp"
               v-model="twoFACode"
               vid="totp"
-              :placeholder="errorMessage || $t('modals.enterCode')"
+              :placeholder="errorMessage || $t('meta.googleConfCodeDesc')"
               rules="required|min:6|numeric"
               name="disable 2FA"
               :is-hide-error="false"
@@ -86,8 +86,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('modals.2FAStatus'),
-        subtitle: this.$t('modals.2FADisabled'),
+        title: this.$t('modals.2FA.status'),
+        subtitle: this.$t('modals.2FA.disabled'),
       });
     },
     validationErrorFields(data) {

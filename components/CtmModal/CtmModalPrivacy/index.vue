@@ -1,11 +1,11 @@
 <template>
   <ctm-modal-box
     class="privacy"
-    :title="$t('privacy.title')"
+    :title="$t('meta.privacyPolicy')"
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__desc">
-        {{ $t('privacy.desc') }}
+        {{ $t('meta.lorem') }}
       </div>
       <div class="privacy__forms">
         <base-checkbox
@@ -19,7 +19,7 @@
               href="/docs/privacy.pdf"
               target="_blank"
             >
-              {{ $t('privacy.privacyLink') }}
+              {{ $t('meta.privacyPolicy') }}
             </a>
           </template>
         </base-checkbox>
@@ -34,7 +34,7 @@
               href="/docs/terms.pdf"
               target="_blank"
             >
-              {{ $t('privacy.termsLink') }}
+              {{ $t('meta.terms') }}
             </a>
           </template>
         </base-checkbox>
@@ -49,7 +49,7 @@
               href="/docs/aml.pdf"
               target="_blank"
             >
-              {{ $t('privacy.amlLink') }}
+              {{ $t('meta.aml') }}
             </a>
           </template>
         </base-checkbox>

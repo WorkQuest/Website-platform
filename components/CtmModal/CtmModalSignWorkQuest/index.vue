@@ -40,7 +40,7 @@
             selector="SIGN-IN"
             @click="hide()"
           >
-            {{ $t('signIn.title') }}
+            {{ $t('meta.signIn') }}
           </base-btn>
         </div>
       </div>

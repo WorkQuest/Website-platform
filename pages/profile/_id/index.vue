@@ -310,7 +310,7 @@ export default {
           subtitle: this.$t('quests.oneTime'),
         },
         {
-          title: this.$t('quests.openedQuests'),
+          title: this.$t('meta.openedQuests'),
           number: this.userData?.questsStatistic?.opened || 0,
           ratingMode: false,
           subtitle: '',

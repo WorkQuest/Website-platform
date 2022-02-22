@@ -188,11 +188,11 @@ export default {
           path: 'https://workquest.co/privacy_policy',
         },
         {
-          title: this.$t('footer.legalInfo.terms'),
+          title: this.$t('meta.terms'),
           path: 'https://workquest.co/terms_conditions',
         },
         {
-          title: this.$t('footer.legalInfo.aml'),
+          title: this.$t('meta.aml'),
           path: 'https://workquest.co/aml_ctf_policy',
         },
         {
@@ -208,7 +208,7 @@ export default {
           path: '#',
         },
         {
-          title: this.$t('footer.company.aboutUs'),
+          title: this.$t('meta.aboutUs'),
           path: '#',
         },
         {
@@ -216,7 +216,7 @@ export default {
           path: '#',
         },
         {
-          title: this.$t('footer.company.contactUs'),
+          title: this.$t('meta.contactUs'),
           path: '#',
         },
         {

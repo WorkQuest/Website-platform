@@ -104,7 +104,7 @@ export default {
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/warning.svg'),
-          title: this.$t('modals.error'),
+          title: this.$t('modals.errors.error'),
           subtitle: this.$t('errors.incorrectPass'),
         });
       }

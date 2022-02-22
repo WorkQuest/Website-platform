@@ -200,9 +200,9 @@ export default {
     },
     getPriority(index) {
       const priority = {
-        0: this.$t('priority.low'),
-        1: this.$t('priority.normal'),
-        2: this.$t('priority.urgent'),
+        0: this.$t('meta.priority.low'),
+        1: this.$t('meta.priority.normal'),
+        2: this.$t('meta.priority.urgent'),
       };
       return priority[index] || 'None';
     },

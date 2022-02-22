@@ -175,7 +175,7 @@ export default {
     smsVerErrorModal() {
       this.ShowModal({
         key: modals.status,
-        title: this.$t('modals.errorSmsVer'),
+        title: this.$t('modals.errors.errorSmsVer'),
         subtitle: this.$t('modals.fillNumber'),
       });
     },

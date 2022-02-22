@@ -8,16 +8,16 @@
       tag="div"
     >
       <div class="auth__text auth__text_title">
-        <span>{{ $t('signIn.title') }}</span>
+        <span>{{ $t('meta.signIn') }}</span>
       </div>
       <div class="auth__text auth__text_simple">
-        <span>{{ $t('signIn.account') }}</span>
+        <span>{{ $t('meta.account') }}</span>
         <nuxt-link
           class="auth__text auth__text_link"
           data-selector="ACTION-BTN-TO-REGISTRATION"
           to="/sign-up"
         >
-          {{ $t('signIn.regs') }}
+          {{ $t('meta.registration') }}
         </nuxt-link>
       </div>
       <form
@@ -68,7 +68,7 @@
             data-selector="ACTION-BTN-FORGOT-PASSWORD"
             @click="showRestoreModal()"
           >
-            {{ $t('signIn.forgot') }}
+            {{ $t('meta.forgot') }}
           </div>
         </div>
         <div class="auth__action">
@@ -76,7 +76,7 @@
             :disabled="isLoading"
             selector="LOGIN"
           >
-            {{ $t('signIn.login') }}
+            {{ $t('meta.login') }}
           </base-btn>
         </div>
         <div class="auth__text auth__text_wrap">

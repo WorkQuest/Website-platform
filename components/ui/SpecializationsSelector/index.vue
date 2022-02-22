@@ -34,7 +34,7 @@
               :items="skillsNames[displaySpecIndex[key]]"
               :mode="'small'"
               rules="required"
-              :label="$t('settings.skillsInput')"
+              :label="$t('meta.skills')"
               :hide-selected="hideSelectedSkills[key]"
               @input="addSkillToBadge($event, key)"
             />

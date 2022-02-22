@@ -1,6 +1,6 @@
 <template>
   <ctm-modal-box
-    :title="!phone ? $t('modals.errorSmsVer') : $t('modals.smsVerification')"
+    :title="!phone ? $t('modals.errors.errorSmsVer') : $t('meta.smsVerification')"
     class="verification"
   >
     <div class="verification__content content">

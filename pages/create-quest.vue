@@ -14,7 +14,7 @@
           class="page"
         >
           <h2 class="page__title">
-            {{ $t('quests.createAQuest') }}
+            {{ $t('meta.createAQuest') }}
           </h2>
           <div class="page__category">
             <div class="page runtime">
@@ -24,8 +24,8 @@
                     v-model="runtimeIndex"
                     :items="runtime"
                     type="gray"
-                    :label="$t('quests.runtime.runtime')"
-                    :name="$t('quests.runtime.runtime')"
+                    :label="$t('quests.runtime')"
+                    :name="$t('quests.runtime')"
                     rules="required"
                   />
                 </div>
@@ -139,7 +139,7 @@
                 :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
                 @click="handleSubmit(toRiseViews)"
               >
-                {{ $t('quests.createAQuest') }}
+                {{ $t('meta.createAQuest') }}
               </base-btn>
             </div>
           </div>
@@ -401,9 +401,9 @@ export default {
     },
     runtime() {
       return [
-        this.$t('quests.runtime.urgent'),
-        this.$t('quests.runtime.shortTerm'),
-        this.$t('quests.runtime.fixedDelivery'),
+        this.$t('meta.priority.urgent'),
+        this.$t('meta.priority.normal'),
+        this.$t('meta.priority.low'),
       ];
     },
     employment() {

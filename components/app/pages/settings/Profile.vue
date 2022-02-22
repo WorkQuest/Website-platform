@@ -195,7 +195,7 @@
           class="profile__knowledge-container"
         >
           <div class="profile__knowledge-title">
-            {{ $t("settings.educations") }}
+            {{ $t("meta.educations") }}
           </div>
           <div
             v-if="getEducation"

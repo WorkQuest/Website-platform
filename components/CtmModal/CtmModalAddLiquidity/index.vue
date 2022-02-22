@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="liquidity"
-    :title="$t('modals.addLiquidity')"
+    :title="$t('meta.addLiquidity')"
   >
     <div class="liquidity__content content">
       <validation-observer
@@ -15,7 +15,7 @@
             </div>
             <base-field
               v-model="amountOfWqt"
-              :placeholder="$t('modals.addLiquidityAmountWqt')"
+              :placeholder="$tc('meta.WQTCount', 1000)"
               class="field__input"
               rules="required|decimal"
               :name="$t('modals.amountOfWqtField')"
@@ -27,7 +27,7 @@
               <base-field
                 v-if="options.isBNB"
                 v-model="amountOfBnb"
-                :placeholder="$t('modals.addLiquidityAmountBnb')"
+                :placeholder="$tc('meta.BNBCount', 10)"
                 class="field__input"
                 rules="required|decimal"
                 :name="$t('modals.amountOfBnbField')"
@@ -35,7 +35,7 @@
               <base-field
                 v-else
                 v-model="amountOfEth"
-                :placeholder="$t('modals.addLiquidityAmountEth')"
+                :placeholder="$tc('meta.ETHCount', 10)"
                 class="field__input"
                 rules="required|decimal"
                 :name="$t('modals.amountOfEthField')"

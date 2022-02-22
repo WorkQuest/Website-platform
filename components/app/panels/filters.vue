@@ -25,7 +25,7 @@
       class="filters-panel__item"
       mode="blackFont"
       :items="typeOfJobItems"
-      :placeholder="$t('quests.typeOfJob')"
+      :placeholder="$t('meta.typeOfJob')"
     />
     <base-dd
       v-model="selectedWorkplace"
@@ -105,7 +105,7 @@ export default {
       return items;
     },
     priorityItems() {
-      const items = [this.$t('quests.priority.all')];
+      const items = [this.$t('meta.priority.all')];
       PriorityFilter.forEach((item) => { if (item.value) items.push(this.$t(`quests.runtime.${item.key}`)); });
       return items;
     },

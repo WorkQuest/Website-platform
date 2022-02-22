@@ -299,7 +299,7 @@ export default {
       switch (this.infoDataMode) {
         case Created: {
           arr = [{
-            name: this.$t('quests.raiseViews'),
+            name: this.$t('meta.raiseViews'),
             class: '',
             mode: '',
             funcKey: 'toRaisingViews',
@@ -318,7 +318,7 @@ export default {
         }
         case Active: {
           arr = [{
-            name: this.$t('quests.approve'),
+            name: this.$t('meta.approve'),
             class: '',
             mode: 'approve',
             funcKey: '',
@@ -413,7 +413,7 @@ export default {
         }
         case Created: {
           arr = [{
-            name: this.$t('btn.sendARequest'),
+            name: this.$t('meta.sendARequest'),
             class: '',
             mode: '',
             funcKey: 'sendARequestOnQuest',
@@ -525,7 +525,7 @@ export default {
       return this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/deleteError.svg'),
-        title: this.$t('modals.error'),
+        title: this.$t('modals.errors.error'),
         subtitle: this.$t('modals.youCantCreateDispute'),
         button: this.$t('modals.close'),
       });

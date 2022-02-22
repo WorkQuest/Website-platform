@@ -74,9 +74,9 @@ export default {
           model: 'priorityIndex',
           placeholder: 'priority.title',
           items: [
-            this.$t('priority.all'),
-            this.$t('priority.employee.low'),
-            this.$t('priority.employee.normal'),
+            this.$t('meta.priority.all'),
+            this.$t('meta.priority.low'),
+            this.$t('meta.priority.normal'),
             this.$t('priority.employee.urgent'),
           ],
           label: 'settings.priority',

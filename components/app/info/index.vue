@@ -98,9 +98,9 @@ export default {
           [InfoModeEmployer.Active]: 'quests.activeQuest',
           [InfoModeEmployer.WaitWorker]: 'quests.waitWorker',
           [InfoModeEmployer.WaitConfirm]: 'quests.pendingConsideration',
-          [InfoModeEmployer.Dispute]: 'quests.dispute',
+          [InfoModeEmployer.Dispute]: 'meta.dispute',
           [InfoModeEmployer.Closed]: 'quests.closed',
-          [InfoModeEmployer.Done]: 'performed.title',
+          [InfoModeEmployer.Done]: 'meta.performed',
         };
         return this.$t(`${obj[this.infoDataMode]}`);
       }
@@ -114,9 +114,9 @@ export default {
           [InfoModeWorker.Rejected]: 'quests.requested',
           [InfoModeWorker.WaitWorker]: 'quests.pendingConsideration',
           [InfoModeWorker.WaitConfirm]: 'quests.pendingConsideration',
-          [InfoModeWorker.Dispute]: 'quests.dispute',
+          [InfoModeWorker.Dispute]: 'meta.dispute',
           [InfoModeWorker.Closed]: 'quests.questClosed',
-          [InfoModeWorker.Done]: 'quests.completed',
+          [InfoModeWorker.Done]: 'meta.completed',
           [InfoModeWorker.Responded]: 'meta.responded',
           [InfoModeWorker.Invited]: 'quests.invited',
         };
