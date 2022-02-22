@@ -79,4 +79,5 @@ export default {
   transactionReceipt: 'transactionReceipt',
   areYouSure: 'areYouSure',
   stake: 'stake',
+  getWUSD: 'getWUSD',
 };

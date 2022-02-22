@@ -931,6 +931,17 @@
     "error": "???"
   },
   "modals": {
+    "errorGetWUSD": "Something went wrong",
+    "getWUSD": "Buy WUSD",
+    "countOfRecievedWUSD": "How many WUSD do you want to receive",
+    "fieldCountOf": "{countOf} amount",
+    "countOfCollateral": "How much collateral to leave?",
+    "percentageConversion": "Percentage conversion",
+    "conversionAdditionalInfo": "Information about 150% + risks",
+    "fieldPercentConversion": "Numder of percentage conversion",
+    "countOfRecievedWUSDDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+    "countOfCollateralDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+    "conversionPercentDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "errorQuests": "???",
     "emptyOpenQuests": "???",
     "errorSmsVer": "???",
@@ -1306,6 +1317,10 @@
       "crosschain": {
         "title": "???",
         "desc": "???"
+      },
+      "collateral": {
+        "title": "Collateral",
+        "desc": "Some amazing text here. Look at that!"
       },
       "staking": {
         "title": "???",
@@ -1831,6 +1846,78 @@
     "liquidityProvidersEarn": "लिक्विडिटी प्रदाता पूल के अपने शेयर के अनुपात में सभी ट्रेडों पर 0.3% शुल्क अर्जित करते हैं। शुल्क पूल में जोड़े जाते हैं, इनमें वृद्धि रियल टाइम में होती है और इन्हें लिक्विडिटी को विद्ड्रॉ करने के द्वारा क्लेम किया जा सकता है।",
     "transactions": "ट्रांजेक्शन",
     "connectWallet": "???"
+  },
+  "collateral": {
+    "lending": "Collateral",
+    "crediting": "Crediting",
+    "templateText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
+    "marketSize": "Market size",
+    "deposit": "Deposit",
+    "percent": "Percent",
+    "dollarsCount": "$ {count}",
+    "percentsCount": "{count}%",
+    "wantToGetWUSDTitle": "Wanna get WUSD?",
+    "wantToGetWUSDText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
+    "getWUSD": "Get WUSD",
+    "wantToGoAuctionTitle": "Auction",
+    "wantToGoAuctionText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
+    "goAuction": "Go to the auction",
+    "information": "Information",
+    "openPositions": "Open positions",
+    "usdCount": "{count} USD",
+    "totalCollateralLocked": "Total collateral locked",
+    "wusdCount": "{count} WUSD",
+    "totalWusdDebt": "Total WUSD debt",
+    "tableHead": {
+      "id": "ID",
+      "currentRatio": "Current ratio",
+      "deposited": "Deposited",
+      "availableToWithdraw": "Available to withdraw",
+      "wusd": "WUSD"
+    },
+    "table": {
+      "id": "565464",
+      "currentRatio": "500%",
+      "deposited": "531 ETH",
+      "availableToWithdraw": "531 ETH",
+      "wusd": "532 WUSD",
+      "manage": "Manage"
+    },
+    "back": "Back",
+    "tempName": "Lend #56546",
+    "liquidationPrice": "Liquidation price",
+    "collateralizationRatio": "Collateralization ratio",
+    "ethLocked": "ETH locked",
+    "ethCount": "{count} ETH",
+    "ableToWithdraw": "Able to withdraw",
+    "withdraw": "Withdraw",
+    "outstandingWusdDebt": "Outstanding WUSD debt",
+    "availableToGenerate": "Available to generate",
+    "payback": "Payback",
+    "generate": "Generate",
+    "history": "History",
+    "credTableHeader": {
+      "activity": "Activity",
+      "amount": "Amount",
+      "time": "Time",
+      "sender": "Sender",
+      "txHash": "Txn hash"
+    },
+    "credTable": {
+      "activity": "Paid back",
+      "amount": "100 WUSD",
+      "time": "Jun 12 2021",
+      "sender": "dfgd6...fs65ds",
+      "txHash": "dfgd6...fs65ds"
+    },
+    "faq1": "What are Locked Savings? Committed to holding your crypto?",
+    "faq2": "What happens to my funds on the day I subscribe to a Locked Savings product?",
+    "ans2": "On the day of subscription, WorkQuest Savings will deduct the funds for subscription from your WUSD wallet.\n",
+    "faq3": "What happens to my funds on the value date of a Locked Savings product?",
+    "faq4": "What happens to my funds on the redemption date of a Locked Savings product?",
+    "faq5": "How is the average annual return (APR) calculated?",
+    "faq": "FAQ",
+    "lend": "Lend"
   },
   "crediting": {
     "lending": "WorkQuest लेंडिंग प्रोटोकॉल",
