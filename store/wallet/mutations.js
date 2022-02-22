@@ -24,8 +24,18 @@ export default {
   setPensionWallet(state, pensionWallet) {
     state.pensionWallet = pensionWallet;
   },
+  addPensionHistory(state, pensionHistory) {
+    state.pensionHistory = [
+      ...state.pensionHistory,
+      ...pensionHistory,
+    ];
+    state.pensionHistory.sort((a, b) => (a.date > b.date ? 1 : 0));
+  },
   setStakingPoolData(state, { pool, data }) {
     state.stakingPoolsData[pool] = data;
+  },
+  setPensionHistoryData(state, payload) {
+    state.pensionHistoryData = payload;
   },
   setStakingUserData(state, { pool, data }) {
     state.stakingUserData[pool] = data;

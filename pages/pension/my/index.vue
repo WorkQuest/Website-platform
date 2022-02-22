@@ -125,41 +125,26 @@
               thead-class="table__header"
               tbody-tr-class="table__row"
             >
-              <template #cell(userName)="el">
-                <div class="user__info">
-                  <img
-                    class="ava"
-                    src="~/assets/img/temp/avatar-small.jpg"
-                    alt=""
-                  >
-                  <div class="user__name">
-                    {{ el.item.userName }}
-                  </div>
-                </div>
-              </template>
-              <template #cell(userID)="el">
-                <div class="user__value_gray">
-                  {{ el.item.userID }}
-                </div>
+              <template #cell(operation)="el">
+                {{ getOperationLocale(el.item.operation) }}
               </template>
               <template #cell(txHash)="el">
-                <div class="user__value_gray">
+                <a
+                  :href="getExplorerRef(el.item.txHash)"
+                  target="_blank"
+                  class="user__value_gray"
+                >
                   {{ CutTxn(el.item.txHash) }}
-                </div>
+                </a>
               </template>
               <template #cell(time)="el">
                 <div class="user__value_gray">
-                  {{ el.item.time }}
-                </div>
-              </template>
-              <template #cell(status)="el">
-                <div class="user__value_green">
-                  {{ el.item.status }}
+                  {{ $moment(el.item.time).format('lll') }}
                 </div>
               </template>
               <template #cell(amount)="el">
                 <div class="user__value">
-                  {{ $t(`pension.${currentChainName}Count`, { count: el.item.amount}) }}
+                  {{ el.item.amount }}
                 </div>
               </template>
             </b-table>
@@ -235,8 +220,6 @@ export default {
       walletAddress: null,
       currentChainName: null,
       isDeadline: false,
-      history: [],
-      updateInterval: null,
       FAQs: [
         {
           name: this.$t('pension.faq1.question'),
@@ -296,6 +279,8 @@ export default {
       options: 'modals/getOptions',
       isWalletConnected: 'wallet/getIsWalletConnected',
       pensionWallet: 'wallet/getPensionWallet',
+      pensionHistory: 'wallet/getPensionHistory',
+      pensionHistoryData: 'wallet/getPensionHistoryData',
       balanceData: 'wallet/getBalanceData',
     }),
     historyFields() {
@@ -321,11 +306,7 @@ export default {
         {
           key: 'txHash',
           label: this.$t('referral.tableHead.txHash'),
-          thStyle: {
-            padding: '0 0 0 23px',
-            height: '27px',
-            lineHeight: '27px',
-          },
+          ...cellStyle,
           tdAttr: { style: 'padding: 0 0 0 0; height: 64px; line-height: 64px' },
         },
         {
@@ -334,49 +315,56 @@ export default {
           ...cellStyle,
         },
         {
-          key: 'amount',
-          label: this.$t('referral.tableHead.amount'),
+          key: 'value',
+          label: this.$t('modals.value'),
           ...cellStyle,
         },
       ];
     },
     pensionBalance() {
       const balance = this.pensionWallet?.amount || 0;
-      return this.$t(`pension.${TokenSymbols.WUSD}Count`, { count: balance });
+      return this.$t('pension.WUSDCount', { count: balance });
     },
     totalPages() {
-      const len = this.history.length;
+      const len = this.pensionHistoryData.receive.count
+        + this.pensionHistoryData.withdraw.count
+        + this.pensionHistoryData.update.count;
       if (!len) return len;
       return Math.ceil(len / this.itemsPerPage);
     },
     historyByPage() {
-      if (!this.history.length) return [];
-      const temp = [...this.history];
+      if (!this.pensionHistory.length) return [];
+      const temp = [...this.pensionHistory];
       return temp.splice((this.page - 1) * this.itemsPerPage, this.itemsPerPage);
     },
   },
   watch: {
     async isWalletConnected(newValue) {
-      if (newValue) {
-        await this.getWallet();
-        this.updateInterval = setInterval(() => this.getWallet(), 60000);
-      } else {
-        clearInterval(this.updateInterval);
-        this.history = [];
-      }
+      if (!newValue) return;
+      await this.getWallet();
+    },
+    page() {
+      this.$store.dispatch('wallet/getMorePensionTransactions');
     },
   },
   async mounted() {
     this.SetLoader(true);
     await this.getWallet();
-    clearInterval(this.updateInterval);
-    this.updateInterval = setInterval(() => this.getWallet(), 30000);
     this.SetLoader(false);
   },
-  async beforeDestroy() {
-    clearInterval(this.updateInterval);
-  },
   methods: {
+    getOperationLocale(operation) {
+      if (operation === 'WalletUpdated') return this.$t('pension.changePercent');
+      if (operation === 'Received') return this.$t('wallet.deposit');
+      if (operation === 'Withdraw') return this.$t('wallet.withdraw');
+      return '';
+    },
+    getExplorerRef(hash) {
+      if (process.env.PROD === 'true') {
+        return `https://dev-explorer.workquest.co/transactions/${hash ? hash.toLowerCase() : ''}`;
+      }
+      return `https://dev-explorer.workquest.co/transactions/${hash ? hash.toLowerCase() : ''}`;
+    },
     checkIsDeadLine() {
       if (!this.pensionWallet) {
         this.isDeadline = false;
@@ -413,7 +401,6 @@ export default {
       return this.pensionWallet?.fee || '';
     },
     async getWallet() {
-      // TODO: get pension history
       await this.$store.dispatch('wallet/getPensionTransactions');
       await this.$store.dispatch('wallet/pensionGetWalletInfo');
       if (!this.pensionWallet || !this.pensionWallet.isCreated) {

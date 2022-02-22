@@ -21,19 +21,78 @@ import {
 } from '~/utils/wallet.js';
 
 export default {
-  async getPensionTransactions({ commit }) {
+  async getPensionTransactions({ commit, dispatch }) {
+    await commit('setPensionHistoryData', {
+      receive: { count: 0, curOffset: 0 },
+      withdraw: { count: 0, curOffset: 0 },
+      update: { count: 0, curOffset: 0 },
+    });
+    await dispatch('getMorePensionTransactions');
+  },
+  async getMorePensionTransactions({ commit, getters }) {
     try {
+      const prevData = getters.getPensionHistoryData;
+      const limit = 100;
       const [receive, update, withdraw] = await Promise.all([
-        await this.$axios.get('/v1/pension-fund/receive'),
-        await this.$axios.get('/v1/pension-fund/wallet-update'),
-        await this.$axios.get('/v1/pension-fund/withdraw'),
+        this.$axios.get('/v1/pension-fund/receive', {
+          params: {
+            userAddress: getWalletAddress(),
+            limit,
+            offset: prevData.receive.curOffset,
+          },
+        }),
+        this.$axios.get('/v1/pension-fund/wallet-update', {
+          params: {
+            userAddress: getWalletAddress(),
+            limit,
+            offset: prevData.update.curOffset,
+          },
+        }),
+        this.$axios.get('/v1/pension-fund/withdraw', {
+          params: {
+            userAddress: getWalletAddress(),
+            limit,
+            offset: prevData.withdraw.curOffset,
+          },
+        }),
       ]);
-      console.log(receive.data.result.events);
-      console.log(update.data.result.events);
-      console.log(withdraw.data.result.events);
-      return receive;
+      commit('setPensionHistoryData', {
+        receive: { count: receive.data.result.count, curOffset: prevData.receive.curOffset + limit + 1 },
+        withdraw: { count: withdraw.data.result.count, curOffset: prevData.withdraw.curOffset + limit + 1 },
+        update: { count: update.data.result.count, curOffset: prevData.receive.curOffset + limit + 1 },
+      });
+
+      const newData = [];
+      // eslint-disable-next-line no-restricted-syntax
+      for (const item of receive.data.result.events) {
+        newData.push({
+          operation: item.event,
+          txHash: item.transactionHash,
+          time: item.createdAt,
+          value: `${getStyledAmount(item.amount)} ${TokenSymbols.WUSD}`,
+        });
+      }
+      // eslint-disable-next-line no-restricted-syntax
+      for (const item of withdraw.data.result.events) {
+        newData.push({
+          operation: item.event,
+          txHash: item.transactionHash,
+          time: item.createdAt,
+          value: `${getStyledAmount(item.amount)} ${TokenSymbols.WUSD}`,
+        });
+      }
+      // eslint-disable-next-line no-restricted-syntax
+      for (const item of update.data.result.events) {
+        newData.push({
+          operation: item.event,
+          txHash: item.transactionHash,
+          time: item.createdAt,
+          value: `${getStyledAmount(item.newFee)}%`,
+        });
+      }
+      commit('addPensionHistory', newData);
     } catch (e) {
-      return [];
+      console.error(e);
     }
   },
   async getTransactions({ commit }, params) {
