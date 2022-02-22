@@ -932,6 +932,8 @@
     "error": "Error!"
   },
   "modals": {
+    "settingsInfo": "Settings Info",
+    "pleaseEnable2FA": "Please, enable TWO-Step authentication",
     "errorGetWUSD": "Something went wrong",
     "getWUSD": "Buy WUSD",
     "countOfRecievedWUSD": "How many WUSD do you want to receive",

@@ -156,13 +156,11 @@
             <star-rating
               v-if="userRole === $options.UserRole.WORKER ? quest.assignedWorkerId === userData.id : quest.userId === userData.id"
               class="card-quest__star"
-              :quest-index="0"
-              rating-type="questPage"
               :stars-number="5"
-              :data-selector="`ACTION-BTN-SHOW-REVIEW-MODAL-${questIndex}`"
-              :rating="!quest.yourReview ? currentMark.mark : quest.yourReview.mark"
-              :is-disabled="quest.yourReview !== null || currentMark.mark !== 0"
-              @input="showReviewModal($event, quest)"
+              :data-selector="`ACTION-BTN-SHOW-REVIEW-MODAL-${quest.id}`"
+              :rating="rating"
+              :is-disabled="!!rating"
+              @input="showReviewModal($event, quest.id)"
             />
           </div>
         </div>
@@ -211,8 +209,10 @@ export default {
     ...mapGetters({
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
-      currentMark: 'user/getCurrentReviewMarkOnQuest',
     }),
+    rating() {
+      return this.quest.yourReview?.mark || 0;
+    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -275,8 +275,16 @@ export default {
     showDetails(questId) {
       this.$router.push(`${Path.QUESTS}/${questId}`);
     },
-    showReviewModal(rating, item) {
-      this.ShowModal({ key: modals.review, item, rating });
+    showReviewModal(rating, id) {
+      this.ShowModal({
+        key: modals.review,
+        questId: id,
+        rating,
+        callback: async (payload) => {
+          const ok = await this.$store.dispatch('user/sendReviewForUser', payload);
+          if (ok) { this.ShowModal({ key: modals.thanks }); }
+        },
+      });
     },
     getStatusCard(index) {
       const questStatus = {
@@ -459,12 +467,13 @@ export default {
     border: 1px solid $black100;
   }
   &__btn-details {
-    height: 28px !important;
+    height: 24px !important;
     width: 100%;
     min-width: 100px;
   }
   &__rating {
-    height: 24px;
+    height: 19px;
+    align-self: center;
   }
   &__container {
     display: flex;
