@@ -195,7 +195,7 @@ export default {
       const { priority } = this.questData;
 
       const priorityLocale = ['all', 'low', 'normal', 'urgent'][priority];
-      return priority ? this.$t(`priority.${priorityLocale}`) : '';
+      return priority !== null ? this.$t(`priority.${priorityLocale}`) : '';
     },
     getPriorityClass() {
       const { priority } = this.questData;
