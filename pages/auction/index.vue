@@ -4,9 +4,7 @@
     data-selector="PAGE-AUCTION"
   >
     <div class="search">
-      <div
-        class="search__block"
-      >
+      <div class="search__block">
         <base-field
           v-model="searchValue"
           class="search__block-item"
@@ -17,9 +15,7 @@
           @input="goSearchDebounce"
           @enter="goSearch"
         />
-        <div
-          class="search__block-item"
-        >
+        <div class="search__block-item">
           <base-btn
             data-selector="ACTION-AUCTION-SEARCH"
             @click="goSearch"
