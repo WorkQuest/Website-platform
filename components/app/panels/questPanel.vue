@@ -32,7 +32,7 @@
               {{ convertDate }}
             </span>
             <quest-dd
-              v-if="userData.id === questData.user.id && InfoModeEmployer.Dispute"
+              v-if="userData.id === questData.user.id && InfoModeEmployer.Dispute !== questData.status"
               :data-selector="`QUEST-DD-${questData.id}`"
               :item="questData"
             />
