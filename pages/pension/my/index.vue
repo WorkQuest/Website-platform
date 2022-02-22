@@ -65,66 +65,6 @@
               </div>
             </div>
           </div>
-          <div class="info-block">
-            <div class="info-block__name">
-              {{ $t('pension.transactionHistory') }}
-            </div>
-            <div class="pension-page__table">
-              <b-table
-                :items="historyByPage"
-                :fields="historyFields"
-                borderless
-                caption-top
-                thead-class="table__header"
-                tbody-tr-class="table__row"
-              >
-                <template #cell(userName)="el">
-                  <div class="user__info">
-                    <img
-                      class="ava"
-                      src="~/assets/img/temp/avatar-small.jpg"
-                      alt=""
-                    >
-                    <div class="user__name">
-                      {{ el.item.userName }}
-                    </div>
-                  </div>
-                </template>
-                <template #cell(userID)="el">
-                  <div class="user__value_gray">
-                    {{ el.item.userID }}
-                  </div>
-                </template>
-                <template #cell(txHash)="el">
-                  <div class="user__value_gray">
-                    {{ CutTxn(el.item.txHash) }}
-                  </div>
-                </template>
-                <template #cell(time)="el">
-                  <div class="user__value_gray">
-                    {{ el.item.time }}
-                  </div>
-                </template>
-                <template #cell(status)="el">
-                  <div class="user__value_green">
-                    {{ el.item.status }}
-                  </div>
-                </template>
-                <template #cell(amount)="el">
-                  <div class="user__value">
-                    {{ $t(`pension.${currentChainName}Count`, { count: el.item.amount}) }}
-                  </div>
-                </template>
-              </b-table>
-            </div>
-          </div>
-          <div class="info-block__pager">
-            <base-pager
-              v-if="totalPages > 1"
-              v-model="page"
-              :total-pages="totalPages"
-            />
-          </div>
         </template>
         <template v-if="isDeadline">
           <div class="info-block__grid">
@@ -171,62 +111,77 @@
               </base-btn>
             </div>
           </div>
-          <div class="info-block">
-            <div class="info-block__name">
-              {{ $t('pension.transactionHistory') }}
-            </div>
-            <div class="pension-page__table">
-              <b-table
-                :items="historyByPage"
-                :fields="historyFields"
-                borderless
-                caption-top
-                thead-class="table__header"
-                tbody-tr-class="table__row"
-              >
-                <template #cell(userName)="el">
-                  <div class="user__info">
-                    <img
-                      class="ava"
-                      src="~/assets/img/temp/avatar-small.jpg"
-                      alt=""
-                    >
-                    <div class="user__name">
-                      {{ el.item.userName }}
-                    </div>
-                  </div>
-                </template>
-                <template #cell(userID)="el">
-                  <div class="user__value_gray">
-                    {{ el.item.userID }}
-                  </div>
-                </template>
-                <template #cell(txHash)="el">
-                  <div class="user__value_gray">
-                    {{ CutTxn(el.item.txHash) }}
-                  </div>
-                </template>
-                <template #cell(time)="el">
-                  <div class="user__value_gray">
-                    {{ el.item.time }}
-                  </div>
-                </template>
-                <template #cell(status)="el">
-                  <div class="user__value_green">
-                    {{ el.item.status }}
-                  </div>
-                </template>
-              </b-table>
-            </div>
+        </template>
+        <div class="info-block">
+          <div class="info-block__name">
+            {{ $t('pension.transactionHistory') }}
           </div>
-          <div class="info-block__pager">
-            <base-pager
-              v-if="totalPages > 1"
-              v-model="page"
-              :total-pages="totalPages"
+          <div class="pension-page__table">
+            <b-table
+              :items="historyByPage"
+              :fields="historyFields"
+              borderless
+              caption-top
+              thead-class="table__header"
+              tbody-tr-class="table__row"
+            >
+              <template #cell(userName)="el">
+                <div class="user__info">
+                  <img
+                    class="ava"
+                    src="~/assets/img/temp/avatar-small.jpg"
+                    alt=""
+                  >
+                  <div class="user__name">
+                    {{ el.item.userName }}
+                  </div>
+                </div>
+              </template>
+              <template #cell(userID)="el">
+                <div class="user__value_gray">
+                  {{ el.item.userID }}
+                </div>
+              </template>
+              <template #cell(txHash)="el">
+                <div class="user__value_gray">
+                  {{ CutTxn(el.item.txHash) }}
+                </div>
+              </template>
+              <template #cell(time)="el">
+                <div class="user__value_gray">
+                  {{ el.item.time }}
+                </div>
+              </template>
+              <template #cell(status)="el">
+                <div class="user__value_green">
+                  {{ el.item.status }}
+                </div>
+              </template>
+              <template #cell(amount)="el">
+                <div class="user__value">
+                  {{ $t(`pension.${currentChainName}Count`, { count: el.item.amount}) }}
+                </div>
+              </template>
+            </b-table>
+          </div>
+          <div
+            v-if="!historyByPage.length"
+            class="empty-info"
+          >
+            <empty-data
+              :description="$t('meta.listIsEmpty')"
             />
           </div>
-        </template>
+        </div>
+        <div
+          v-if="totalPages > 1"
+          class="info-block__pager"
+        >
+          <base-pager
+            v-model="page"
+            :total-pages="totalPages"
+          />
+        </div>
         <div
           v-if="FAQs.length"
           class="info-block"
@@ -935,7 +890,7 @@ export default {
     }
     &__table {
       overflow: auto;
-      width: calc(100vw - 20px);
+      width: calc(100vw - 37px);
 
       .table {
         width: 1180px;
@@ -948,6 +903,13 @@ export default {
     &__container {
       grid-template-rows: auto auto;
       gap: 15px;
+    }
+    &__table {
+      &__empty {
+        .absence {
+          margin-left: 10px;
+        }
+      }
     }
     &__header {
       .title {
@@ -1023,6 +985,12 @@ export default {
         }
       }
     }
+  }
+}
+.empty-info {
+  & .absence {
+    margin: 10px 0 !important;
+    background: transparent !important;
   }
 }
 </style>

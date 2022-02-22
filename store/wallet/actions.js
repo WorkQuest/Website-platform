@@ -29,6 +29,8 @@ export default {
         await this.$axios.get('/v1/pension-fund/withdraw'),
       ]);
       console.log(receive.data.result.events);
+      console.log(update.data.result.events);
+      console.log(withdraw.data.result.events);
       return receive;
     } catch (e) {
       return [];
