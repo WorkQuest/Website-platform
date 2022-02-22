@@ -427,38 +427,39 @@ export default {
       let incorrectChain = false;
       const { currentPool } = this;
       this.SetLoader(true);
-      await this.connectToWallet();
-      if (localStorage.getItem('isMetaMask') === 'true') {
-        const switchStatus = await this.$store.dispatch('web3/goToChain', { chain: currentPool });
-        if (!switchStatus.ok) await this.disconnectFromWallet();
-      } else {
-        const walletConnectData = JSON.parse(localStorage.getItem('walletconnect'));
-        switch (walletConnectData.chainId) {
-          case 1:
-            incorrectChain = this.currentPool !== 'ETH';
-            break;
-          case 56:
-            incorrectChain = this.currentPool !== 'BNB';
-            break;
-          default:
-            incorrectChain = false;
-            break;
-        }
-        if (incorrectChain) {
-          this.ShowModal({
-            key: modals.status,
-            img: require('~/assets/img/ui/warning.svg'),
-            title: this.$t('modals.connectError'),
-            recipient: '',
-            subtitle: this.$t('modals.incorrectChain'),
-          });
-          await this.disconnectFromWallet();
+      if (await this.connectToWallet()) {
+        if (localStorage.getItem('isMetaMask') === 'true') {
+          const switchStatus = await this.$store.dispatch('web3/goToChain', { chain: currentPool });
+          if (!switchStatus.ok) await this.disconnectFromWallet();
+        } else {
+          const walletConnectData = JSON.parse(localStorage.getItem('walletconnect'));
+          switch (walletConnectData.chainId) {
+            case 1:
+              incorrectChain = this.currentPool !== 'ETH';
+              break;
+            case 56:
+              incorrectChain = this.currentPool !== 'BNB';
+              break;
+            default:
+              incorrectChain = false;
+              break;
+          }
+          if (incorrectChain) {
+            this.ShowModal({
+              key: modals.status,
+              img: require('~/assets/img/ui/warning.svg'),
+              title: this.$t('modals.connectError'),
+              recipient: '',
+              subtitle: this.$t('modals.incorrectChain'),
+            });
+            await this.disconnectFromWallet();
+          }
         }
       }
       this.SetLoader(false);
     },
     async connectToWallet() {
-      await this.$store.dispatch('web3/connect', { chain: this.currentPool });
+      return await this.$store.dispatch('web3/connect', { chain: this.currentPool });
     },
 
     async tokensDataUpdate() {
