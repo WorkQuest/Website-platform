@@ -230,6 +230,7 @@ export default {
         twoFAAuth: modals.twoFAAuth,
         smsVerification: modals.smsVerification,
         changeRoleWarning: modals.changeRoleWarning,
+        neededToEnable2FA: modals.neededToEnable2FA,
       };
       return keys[modalKey];
     },
