@@ -16,7 +16,7 @@
               </div>
               <div class="user-data__text">
                 <div class="user-data__name">
-                  {{ options.userFullName }}
+                  {{ CropTxt(options.userFullName, 16) }}
                 </div>
                 <div class="user-data__subtitle">
                   {{ $t('role.worker') }}
