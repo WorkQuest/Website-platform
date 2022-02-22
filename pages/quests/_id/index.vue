@@ -88,7 +88,7 @@
               rating-type="questPage"
               :stars-number="5"
               :rating="rating"
-              :is-disabled="quest.yourReview !== null"
+              :is-disabled="!!quest.yourReview"
               @input="showReviewModal($event, quest)"
             />
             <span class="worker-data__price">
@@ -96,9 +96,9 @@
             </span>
             <div
               class="worker-data__priority-title"
-              :class="getPriorityClass"
+              :class="priorityClass"
             >
-              {{ getPriority }}
+              {{ priority }}
             </div>
           </div>
         </div>
@@ -185,7 +185,7 @@ export default {
     avatar() {
       return this.assignedWorker.avatar?.url || require('~/assets/img/app/avatar_empty.png');
     },
-    getPriority() {
+    priority() {
       const { priority } = this.quest;
       const priorities = {
         [questPriority.Low]: this.$t('priority.low'),
@@ -194,7 +194,7 @@ export default {
       };
       return priorities[priority] || '';
     },
-    getPriorityClass() {
+    priorityClass() {
       const { priority } = this.quest;
       const priorities = {
         [questPriority.Low]: 'worker-data__priority-title_low',
