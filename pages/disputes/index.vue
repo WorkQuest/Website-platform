@@ -6,7 +6,7 @@
     <div class="main__body">
       <div class="page">
         <h2 class="page__title">
-          {{ $t('disputes.disputes') }}
+          {{ $t('meta.disputes') }}
         </h2>
         <div
           v-if="disputesCount > 0"

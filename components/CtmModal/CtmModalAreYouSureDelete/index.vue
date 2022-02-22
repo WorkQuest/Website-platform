@@ -59,7 +59,7 @@ export default {
         key: modals.status,
         img: require('~/assets/img/ui/deleteError.svg'),
         title: this.$t('modals.errors.error'),
-        subtitle: this.$t('modals.youCan’tDeleteActiveQuest'),
+        subtitle: this.$t('modals.errors.youCan’tDeleteActiveQuest'),
         button: this.$t('modals.close'),
       });
     },

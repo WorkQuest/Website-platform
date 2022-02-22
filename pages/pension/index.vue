@@ -143,8 +143,8 @@ export default {
     }),
     documents() {
       return Array(3).fill({
-        name: this.$t('pension.docName'),
-        size: this.$tc('pension.mb', 1.2),
+        name: this.$tc('meta.docName', { file: 'Some_document.pdf' }),
+        size: this.$tc('meta.mb', 1.2),
         url: '',
       });
     },
@@ -160,7 +160,7 @@ export default {
 
       return [
         {
-          title: this.$tc('pension.percents', p),
+          title: this.$tc('meta.percents', p),
           subtitle: this.$t('pension.annualPercent'),
         },
         {

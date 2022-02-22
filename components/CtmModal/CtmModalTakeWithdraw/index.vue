@@ -20,7 +20,7 @@
           <!--            :class="{'content__panel_active': step === 2}"-->
           <!--            @click="nextStep"-->
           <!--          >-->
-          <!--            {{ $t('wallet.bankCard') }}-->
+          <!--            {{ $t('meta.bankCard') }}-->
           <!--          </div>-->
         </div>
         <div
@@ -107,7 +107,7 @@
             selector="SHOW-ADDING-CARD"
             @click="showAddingCard"
           >
-            {{ $t('modals.addCard') }}
+            {{ $t('meta.addCard') }}
           </base-btn>
         </div>
       </validation-observer>
@@ -177,7 +177,7 @@ export default {
         }
         this.ShowModal({
           key: modals.transactionReceipt,
-          title: this.$t('modals.withdrawInfo'),
+          title: this.$t('modals.info.withdrawInfo'),
           fields: {
             to: { name: this.$t('meta.toBig'), value: this.walletAddress },
             amount: { name: this.$t('modals.amount'), value: this.amount, symbol: TokenSymbols.WUSD },

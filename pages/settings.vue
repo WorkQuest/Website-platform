@@ -4,7 +4,7 @@
     data-selector="PAGE-SETTINGS"
   >
     <div class="settings__title">
-      {{ $t('settings.settings') }}
+      {{ $t('meta.settings') }}
     </div>
     <ValidationObserver
       ref="settings"

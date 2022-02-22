@@ -17,7 +17,7 @@
           </div>
           <base-field
             v-model="amount"
-            :placeholder="$tc('modals.percentsCount', 15)"
+            :placeholder="$tc('meta.percentsCount', 15)"
             class="content__input"
             :name="$t('modals.currentPercentErr')"
             rules="required|percent|decimalPlaces:18"
@@ -112,7 +112,7 @@ export default {
         key: modals.status,
         img: require('~/assets/img/ui/success.svg'),
         title: this.$t('modals.percentIsChanged'),
-        subtitle: this.$t('modals.percentIsChangedText'),
+        subtitle: this.$t('meta.empty'),
       });
     },
   },

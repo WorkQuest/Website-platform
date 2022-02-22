@@ -20,7 +20,7 @@
           data-selector="NEXT-STEP"
           @click="nextStep"
         >
-          {{ $t('wallet.bankCard') }}
+          {{ $t('meta.bankCard') }}
         </div>
       </div>
       <div
@@ -111,7 +111,7 @@
                 selector="CARD-ADD"
                 @click="showAddingCard"
               >
-                {{ $t('modals.cardAdd') }}
+                {{ $t('meta.cardAdd') }}
               </base-btn>
             </span>
           </div>

@@ -96,7 +96,7 @@
               <div class="third__wrapper">
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ $tc('mining.dollarsCount', !totalLiquidityUSD ? $t('mining.loading') : Floor(totalLiquidityUSD)) }}
+                    {{ $tc('meta.dollarsCount', !totalLiquidityUSD ? $t('mining.loading') : Floor(totalLiquidityUSD)) }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('mining.totalLiquidity') }}
@@ -104,7 +104,7 @@
                 </div>
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ isLoadingAPY ? $t('mining.loading') : $tc('mining.wqtCount', profitWQT) }}
+                    {{ isLoadingAPY ? $t('mining.loading') : $tc('meta.WQTCount', profitWQT) }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('mining.APY') }}
@@ -118,7 +118,7 @@
               <div class="third__wrapper">
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ $tc('mining.lpCount', stakedAmount) }}
+                    {{ $tc('meta.LPCount', stakedAmount) }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('meta.stake') }}
@@ -126,7 +126,7 @@
                 </div>
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ $tc('mining.wqtCount', rewardAmount) }}
+                    {{ $tc('meta.WQTCount', rewardAmount) }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('mining.reward') }}
@@ -448,7 +448,7 @@ export default {
           this.ShowModal({
             key: modals.status,
             img: require('~/assets/img/ui/warning.svg'),
-            title: this.$t('modals.connectError'),
+            title: this.$t('modals.errors.connect'),
             recipient: '',
             subtitle: this.$t('modals.incorrectChain'),
           });

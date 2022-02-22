@@ -93,19 +93,19 @@ export default {
     return {
       items: [
         {
-          id: this.$t('crediting.table.id'),
-          currentRatio: this.$t('crediting.table.currentRatio'),
-          deposited: this.$t('crediting.table.deposited'),
-          availableToWithdraw: this.$t('crediting.table.availableToWithdraw'),
-          wusd: this.$t('crediting.table.wusd'),
+          id: 565464,
+          currentRatio: this.$tc('meta.percentsCount', { count: '500%' }),
+          deposited: this.$tc('meta.ETHCount', { count: '531' }),
+          availableToWithdraw: this.$t('meta.ETHCount', { count: '531' }),
+          wusd: this.$t('meta.WUSDCount', { count: '532' }),
           manage: this.$t('crediting.table.manage'),
         },
         {
-          id: this.$t('crediting.table.id'),
-          currentRatio: this.$t('crediting.table.currentRatio'),
-          deposited: this.$t('crediting.table.deposited'),
-          availableToWithdraw: this.$t('crediting.table.availableToWithdraw'),
-          wusd: this.$t('crediting.table.wusd'),
+          id: 565465,
+          currentRatio: this.$tc('meta.percentsCount', { count: '500%' }),
+          deposited: this.$t('meta.ETHCount', { count: '531' }),
+          availableToWithdraw: this.$t('meta.ETHCount', { count: '531' }),
+          wusd: this.$t('meta.WUSDCount', { count: '532' }),
           manage: this.$t('crediting.table.manage'),
         },
       ],
@@ -185,11 +185,11 @@ export default {
       ],
       cards: [
         {
-          title: this.$tc('crediting.usdCount', '255.5'),
+          title: this.$tc('meta.USDCount', { count: '255.5' }),
           subtitle: this.$t('crediting.totalCollateralLocked'),
         },
         {
-          title: this.$tc('meta.WUSDCount', '2,150.26'),
+          title: this.$tc('meta.WUSDCount', { count: '2,150.26' }),
           subtitle: this.$t('crediting.totalWusdDebt'),
         },
       ],

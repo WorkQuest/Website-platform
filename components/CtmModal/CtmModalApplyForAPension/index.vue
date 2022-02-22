@@ -13,7 +13,7 @@
           </div>
           <base-field
             v-model="depositPercentFromAQuest"
-            :placeholder="$tc('modals.percentsCount', 13)"
+            :placeholder="$tc('meta.percentsCount', 13)"
             class="content__input"
             :name="$t('modals.depositPercent')"
             rules="required|percent|decimalPlaces:18"
@@ -156,7 +156,7 @@ export default {
         key: modals.status,
         img: require('~/assets/img/ui/document.svg'),
         title: this.$t('modals.pensionIsRegistered'),
-        subtitle: this.$t('modals.pensionIsRegisteredText'),
+        subtitle: this.$t('meta.empty'),
         path: '/pension/my',
       });
     },

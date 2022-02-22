@@ -17,7 +17,7 @@
           :class="{'content__panel_active': options.step === 2}"
           @click="nextStep"
         >
-          {{ $t('wallet.bankCard') }}
+          {{ $t('meta.bankCard') }}
         </div>
       </div>
       <div
@@ -38,7 +38,7 @@
         </div>
         <div class="content__drop drop">
           <div class="drop__title">
-            {{ $t('modals.wallet') }}
+            {{ $t('meta.wallet') }}
           </div>
           <base-dd
             v-model="method"
@@ -129,7 +129,7 @@ export default {
     currency() {
       return [
         { title: this.$t('meta.wusd'), icon: require('~/assets/img/ui/wusd.svg') },
-        { title: this.$t('modals.wqt'), icon: require('~/assets/img/ui/wqt.svg') },
+        { title: this.$t('meta.wqt'), icon: require('~/assets/img/ui/wqt.svg') },
       ];
     },
     wallet() {

@@ -526,7 +526,7 @@ export default {
         key: modals.status,
         img: require('~/assets/img/ui/deleteError.svg'),
         title: this.$t('modals.errors.error'),
-        subtitle: this.$t('modals.youCantCreateDispute'),
+        subtitle: this.$t('modals.errors.youCantCreateDispute'),
         button: this.$t('modals.close'),
       });
     },

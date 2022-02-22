@@ -141,18 +141,18 @@ export default {
     documents() {
       return [
         {
-          name: this.$t('pension.docName'),
-          size: this.$tc('pension.mb', '1.2'),
+          name: this.$tc('meta.docName', { file: 'Some_document.pdf' }),
+          size: this.$tc('meta.mb', '1.2'),
           url: '',
         },
         {
-          name: this.$t('pension.docName'),
-          size: this.$tc('pension.mb', '1.2'),
+          name: this.$tc('meta.docName', { file: 'Some_document.pdf' }),
+          size: this.$tc('meta.mb', '1.2'),
           url: '',
         },
         {
-          name: this.$t('pension.docName'),
-          size: this.$tc('pension.mb', '1.2'),
+          name: this.$tc('meta.docName', { file: 'Some_document.pdf' }),
+          size: this.$tc('meta.mb', '1.2'),
           url: '',
         },
       ];
@@ -160,15 +160,15 @@ export default {
     cards() {
       return [
         {
-          title: this.$tc('crediting.dollarsCount', '417.1M'),
+          title: this.$tc('meta.dollarsCount', { count: '417.1M' }),
           subtitle: this.$t('crediting.marketSize'),
         },
         {
-          title: this.$tc('crediting.percentsCount', '4.31'),
+          title: this.$tc('meta.percentsCount', { count: '4.31' }),
           subtitle: this.$t('crediting.deposit'),
         },
         {
-          title: this.$tc('crediting.percentsCount', 5),
+          title: this.$tc('meta.percentsCount', { count: 5 }),
           subtitle: this.$t('crediting.percent'),
         },
       ];

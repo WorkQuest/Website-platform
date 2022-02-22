@@ -18,7 +18,7 @@
       <!--          :class="{'content__panel_active': step === 2}"-->
       <!--          @click="nextStep"-->
       <!--        >-->
-      <!--          {{ $t('wallet.bankCard') }}-->
+      <!--          {{ $t('meta.bankCard') }}-->
       <!--        </div>-->
       <!--      </div>-->
       <div class="content__field field">
@@ -38,7 +38,7 @@
           class="field__header header"
         >
           <div class="header__title">
-            {{ $t('modals.bankCard') }}
+            {{ $t('meta.bankCard') }}
           </div>
           <div
             class="header__subtitle"

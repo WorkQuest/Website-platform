@@ -14,7 +14,7 @@
             {{ $t('modals.messageSend') }}
           </div>
           <div class="ctm-modal__desc">
-            {{ $t('modals.smallTemp') }}
+            {{ $t('meta.lorem') }}
           </div>
           <base-btn
             class="email__action"

@@ -21,7 +21,7 @@
           </div>
           <div class="info-block__small_right">
             <div class="info-block__perc">
-              {{ $tc('saving.plusPercents', "4,51") }}
+              {{ $tc('meta.plusPercents', { count: "4,51" }) }}
             </div>
             <div class="info-block__period">
               {{ $t('pension.everyYear') }}
@@ -118,7 +118,7 @@ export default {
           userID: this.$t('meta.userId'),
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
-          amount: this.$tc('referral.wqtCount', 12),
+          amount: this.$tc('meta.WQTCount', 12),
           status: this.$t('meta.status'),
         },
         {
@@ -127,7 +127,7 @@ export default {
           userID: this.$t('meta.userId'),
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
-          amount: this.$tc('referral.wqtCount', 12),
+          amount: this.$tc('meta.WQTCount', 12),
           status: this.$t('meta.status'),
         },
       ],

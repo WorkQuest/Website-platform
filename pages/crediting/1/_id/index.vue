@@ -12,7 +12,7 @@
           {{ $t('meta.back') }}
         </base-btn>
         <div class="title">
-          {{ $t('crediting.tempName') }}
+          Lend #56546
         </div>
       </div>
       <div class="crediting-page__content">
@@ -120,17 +120,17 @@ export default {
       return [
         {
           activity: this.$t('crediting.credTable.activity'),
-          amount: this.$t('crediting.credTable.amount'),
-          time: this.$t('crediting.credTable.time'),
-          sender: this.$t('crediting.credTable.sender'),
-          txHash: this.$t('crediting.credTable.txHash'),
+          amount: this.$t('meta.WUSDCount', { count: 100 }),
+          time: 'Jun 12 2021',
+          sender: 'dfgd6...fs65ds',
+          txHash: 'dfgd6...fs65ds',
         },
         {
           activity: this.$t('crediting.credTable.activity'),
-          amount: this.$t('crediting.credTable.amount'),
-          time: this.$t('crediting.credTable.time'),
-          sender: this.$t('crediting.credTable.sender'),
-          txHash: this.$t('crediting.credTable.txHash'),
+          amount: this.$t('meta.WUSDCount', { count: 100 }),
+          time: 'Jun 12 2021',
+          sender: 'dfgd6...fs65ds',
+          txHash: 'dfgd6...fs65ds',
         },
       ];
     },
@@ -201,11 +201,11 @@ export default {
     cards() {
       return [
         {
-          title: this.$tc('crediting.usdCount', '114.92'),
+          title: this.$tc('meta.USDCount', { count: '114.92' }),
           subtitle: this.$t('crediting.liquidationPrice'),
         },
         {
-          title: this.$tc('crediting.percentsCount', '171.65'),
+          title: this.$tc('meta.percentsCount', { count: '171.65' }),
           subtitle: this.$t('crediting.collateralizationRatio'),
         },
       ];
@@ -217,14 +217,14 @@ export default {
           blocks: [
             {
               name: this.$t('crediting.ethLocked'),
-              about: this.$tc('crediting.ethCount', '3.00'),
+              about: this.$tc('meta.ETHCount', { count: '3.00' }),
               btn: {
                 name: this.$t('crediting.deposit'),
               },
             },
             {
               name: this.$t('crediting.ableToWithdraw'),
-              about: this.$tc('crediting.ethCount', '3.00'),
+              about: this.$tc('meta.ETHCount', { count: '3.00' }),
               btn: {
                 name: this.$t('crediting.withdraw'),
               },

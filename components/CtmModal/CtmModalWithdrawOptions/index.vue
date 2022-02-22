@@ -13,7 +13,7 @@
             {{ $t('modals.walletAddress') }}
           </div>
           <div class="content__panel_active">
-            {{ $t('wallet.bankCard') }}
+            {{ $t('meta.bankCard') }}
           </div>
         </div>
         <div class="content__grid grid">
@@ -139,7 +139,7 @@ export default {
     showTransactionSendModal() {
       this.ShowModal({
         key: modals.withdrawInfo,
-        title: this.$t('modals.withdrawInfo'),
+        title: this.$t('modals.info.withdrawInfo'),
         cardNumber: this.options.cardNumber || '0000000000000000',
       });
     },

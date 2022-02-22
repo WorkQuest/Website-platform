@@ -16,7 +16,7 @@
             {{ $t('modals.walletAddress') }}
           </div>
           <div class="content__panel content__panel_active">
-            {{ $t('wallet.bankCard') }}
+            {{ $t('meta.bankCard') }}
           </div>
         </div>
         <div class="content__drop drop">
@@ -149,7 +149,7 @@ export default {
     showTransactionSendModal() {
       this.ShowModal({
         key: modals.withdrawInfo,
-        title: this.$t('modals.depositInfo'),
+        title: this.$t('modals.info.depositInfo'),
       });
     },
     showGiveDeposit() {

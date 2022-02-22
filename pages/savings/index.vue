@@ -201,23 +201,23 @@ export default {
     cards() {
       return [
         {
-          text: this.$t('saving.card1'),
+          text: this.$tc('saving.card', { rate: 4.51, duration: 7 }),
           sel: false,
         },
         {
-          text: this.$t('saving.card2'),
+          text: this.$t('saving.card', { rate: 4.67, duration: 14 }),
           sel: false,
         },
         {
-          text: this.$t('saving.card3'),
+          text: this.$t('saving.card', { rate: 4.82, duration: 30 }),
           sel: false,
         },
         {
-          text: this.$t('saving.card4'),
+          text: this.$t('saving.card', { rate: 5.11, duration: 90 }),
           sel: false,
         },
         {
-          text: this.$t('saving.card5'),
+          text: this.$t('saving.card', { rate: 5.23, duration: 180 }),
           sel: false,
         },
       ];
@@ -225,18 +225,18 @@ export default {
     documents() {
       return [
         {
-          name: this.$t('saving.docName'),
-          size: this.$tc('saving.mb', '1.2'),
+          name: this.$t('meta.docName', { file: 'Some_document.pdf' }),
+          size: this.$tc('meta.mb', { count: '1.2' }),
           url: '',
         },
         {
-          name: this.$t('saving.docName'),
-          size: this.$tc('saving.mb', '1.2'),
+          name: this.$t('meta.docName', { file: 'Some_document.pdf' }),
+          size: this.$tc('meta.mb', { count: '1.2' }),
           url: '',
         },
         {
-          name: this.$t('saving.docName'),
-          size: this.$tc('saving.mb', '1.2'),
+          name: this.$t('meta.docName', { file: 'Some_document.pdf' }),
+          size: this.$tc('meta.mb', { count: '1.2' }),
           url: '',
         },
       ];
@@ -244,24 +244,24 @@ export default {
     interestRate() {
       return [
         {
-          perc: this.$tc('saving.percents', '5.31'),
-          date: this.$tc('saving.days', 7),
+          perc: this.$tc('meta.percents', { count: '5.31' }),
+          date: this.$tc('meta.days', 7),
         },
         {
-          perc: this.$tc('saving.percents', '5.48'),
-          date: this.$tc('saving.days', 14),
+          perc: this.$tc('meta.percents', { count: '5.48' }),
+          date: this.$tc('meta.days', 14),
         },
         {
-          perc: this.$tc('saving.percents', '5.66'),
-          date: this.$tc('saving.days', 30),
+          perc: this.$tc('meta.percents', { count: '5.66' }),
+          date: this.$tc('meta.days', 30),
         },
         {
-          perc: this.$tc('saving.percents', 6),
-          date: this.$tc('saving.days', 90),
+          perc: this.$tc('meta.percents', { count: '6' }),
+          date: this.$tc('meta.days', 90),
         },
         {
-          perc: this.$tc('saving.percents', '6,5'),
-          date: this.$tc('saving.days', 180),
+          perc: this.$tc('meta.percents', { count: '6.5' }),
+          date: this.$tc('meta.days', 180),
         },
       ];
     },

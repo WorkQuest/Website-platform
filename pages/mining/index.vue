@@ -130,7 +130,7 @@ export default {
       return [
         {
           name: this.$t('mining.agreement'),
-          size: this.$tc('mining.kb', '47'),
+          size: this.$tc('meta.kb', { count: '47' }),
           url: '/docs/agreement.pdf',
         },
       ];

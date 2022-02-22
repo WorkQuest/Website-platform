@@ -10,7 +10,7 @@
           class="field__header header"
         >
           <div class="header__title">
-            {{ $t('modals.bankCard') }}
+            {{ $t('meta.bankCard') }}
           </div>
           <div
             class="header__subtitle"

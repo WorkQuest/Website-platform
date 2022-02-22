@@ -50,15 +50,15 @@ export default {
       abouts: [
         {
           title: this.$t('modals.currencyDetails'),
-          subtitle: this.$t('modals.eth'),
+          subtitle: this.$t('meta.eth'),
         },
         {
           title: this.$t('modals.loan'),
-          subtitle: `${1} ${this.$t('modals.eth')}`,
+          subtitle: this.$tc('meta.ETHCount', 1),
         },
         {
           title: this.$t('modals.percentage'),
-          subtitle: this.$tc('modals.percentsCount', 150),
+          subtitle: this.$tc('meta.percentsCount', 150),
         },
         {
           title: this.$t('modals.loanTerm'),
@@ -81,7 +81,7 @@ export default {
         key: modals.status,
         img: require('~/assets/img/ui/transactionSend.svg'),
         title: this.$t('modals.loanIsOpened'),
-        subtitle: this.$t('modals.loanIsOpenedText'),
+        subtitle: this.$t('meta.empty'),
         path: this.options.needChangeModal ? '/crediting/1' : undefined,
       });
     },

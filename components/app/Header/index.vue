@@ -366,11 +366,11 @@ export default {
           path: `/profile/${this.userData.id}`,
         },
         {
-          title: this.$t('ui.profile.settings'),
+          title: this.$t('meta.settings'),
           path: Path.SETTINGS,
         },
         {
-          title: this.$t('ui.profile.disputes'),
+          title: this.$t('meta.disputes'),
           path: Path.DISPUTES,
         },
       ];
@@ -422,7 +422,7 @@ export default {
     headerLinks() {
       const links = [
         { path: Path.MY_QUESTS, title: this.$t('meta.myQuests') },
-        { path: Path.WALLET, title: this.$t('ui.wallet') },
+        { path: Path.WALLET, title: this.$t('meta.wallet') },
       ];
       if (this.userData.role === UserRole.EMPLOYER) links.unshift({ path: Path.WORKERS, title: this.$t('ui.jobQuestors') });
       else links.unshift({ path: Path.QUESTS, title: this.$t('meta.questsBig') });

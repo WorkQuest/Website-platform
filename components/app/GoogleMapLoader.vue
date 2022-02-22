@@ -224,7 +224,7 @@ export default {
         userName: this.UserName(item.firstName, item.lastName),
         status: item.ratingStatistic.status || 'noStatus',
         title: item.email,
-        priceTitle: this.$t('settings.costPerHour'),
+        priceTitle: this.$t('meta.costPerHour'),
         price: `${item.wagePerHour} ${TokenSymbols.WUSD}`,
       };
     },

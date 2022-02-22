@@ -84,7 +84,7 @@ export default {
         key: modals.status,
         img: require('~/assets/img/ui/transactionSend.svg'),
         title: this.$t('modals.depositIsOpened'),
-        subtitle: this.$t('saving.depositIsOpenedText'),
+        subtitle: this.$t('meta.empty'),
         path: '/savings/1',
       });
     },

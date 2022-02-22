@@ -127,7 +127,7 @@ export default {
         },
         {
           url: require('~/assets/img/ui/wqt-logo.svg'),
-          name: this.$t('modals.wqt'),
+          name: this.$t('meta.wqt'),
           value: '25.0256',
         },
       ];

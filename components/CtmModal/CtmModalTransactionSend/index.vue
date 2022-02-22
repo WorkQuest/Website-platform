@@ -13,7 +13,7 @@
         {{ $t('modals.transactionSent') }}
       </div>
       <div class="transaction__desc">
-        {{ $t('modals.transactionSentText') }}
+        {{ $t('meta.empty') }}
       </div>
       <base-btn
         class="transaction__action"

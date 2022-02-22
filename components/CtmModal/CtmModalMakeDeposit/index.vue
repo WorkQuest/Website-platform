@@ -114,7 +114,7 @@ export default {
         key: modals.status,
         img: require('~/assets/img/ui/transactionSend.svg'),
         title: this.$t('modals.depositIsDone'),
-        subtitle: this.$t('modals.pensionIsRegisteredText'),
+        subtitle: this.$t('meta.empty'),
       });
     },
   },

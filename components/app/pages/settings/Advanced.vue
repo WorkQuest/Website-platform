@@ -5,7 +5,7 @@
   >
     <div class="advanced__left">
       <div class="advanced__title">
-        {{ $t('settings.settings') }}
+        {{ $t('meta.settings') }}
       </div>
       <div
         v-for="(radio) in radioButtons"
@@ -41,7 +41,7 @@
     </div>
     <div class="advanced__right">
       <div class="advanced__title">
-        {{ $t('settings.settings') }}
+        {{ $t('meta.settings') }}
       </div>
       <div class="advanced__options">
         <div

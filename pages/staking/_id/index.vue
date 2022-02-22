@@ -486,7 +486,7 @@ export default {
       this.ShowModal({
         key: modals.areYouSureNotification,
         title: this.$t('modals.areYouSure'),
-        text: this.$t('staking.renewalTokens', { n: renewalValue }),
+        text: this.$t('staking.renewalTokens', { count: renewalValue }),
         callback: async () => {
           this.SetLoader(true);
           const [txFee] = await Promise.all([

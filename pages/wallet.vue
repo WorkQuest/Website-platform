@@ -3,7 +3,7 @@
     <div class="wallet__container">
       <div class="wallet__body">
         <div class="wallet__nav">
-          <span class="wallet__title">{{ $t('wallet.wallet') }}</span>
+          <span class="wallet__title">{{ $t('meta.wallet') }}</span>
           <div class="wallet__address">
             <span class="user__wallet">{{ CutTxn(userWalletAddress, 8, 8) }}</span>
             <button

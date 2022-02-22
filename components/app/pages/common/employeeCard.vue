@@ -51,7 +51,7 @@
     </div>
     <div class="card__cost cost">
       <div class="cost__title">
-        {{ $t('workers.costTitle') }}
+        {{ $t('meta.costPerHour') }}
       </div>
       <div class="cost__value">
         {{ user.wagePerHour ? user.wagePerHour : $t('worker.cost.notIndicated') }}

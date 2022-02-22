@@ -13,7 +13,7 @@
         {{ $t('modals.cardHasBeenAdded') }}
       </div>
       <div class="cardAdded__desc">
-        {{ $t('modals.cardAddedText') }}
+        {{ $t('meta.empty') }}
       </div>
       <base-btn
         class="cardAdded__action"

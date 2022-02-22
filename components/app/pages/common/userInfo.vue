@@ -149,7 +149,7 @@
           class="right__price"
         >
           <div class="price__text">
-            {{ $t('settings.costPerHour') }}
+            {{ $t('meta.costPerHour') }}
           </div>
           <div class="price__value">
             {{ $tc('meta.WUSDCount', userData.wagePerHour) }}

@@ -50,23 +50,23 @@ export default {
       abouts: [
         {
           title: this.$t('modals.currencyDetails'),
-          subtitle: this.$t('modals.eth'),
+          subtitle: this.$t('meta.eth'),
         },
         {
           title: this.$t('modals.depositing'),
-          subtitle: `${1} ${this.$t('modals.eth')}`,
+          subtitle: this.$tc('meta.ETHCount', 1),
         },
         {
           title: this.$t('modals.generatingDetails'),
-          subtitle: `${1000} ${this.$t('meta.wusd')}`,
+          subtitle: this.$tc('meta.WUSDCount', 1000),
         },
         {
           title: this.$t('modals.collateralizationRatio'),
-          subtitle: this.$tc('modals.percentsCount', 0),
+          subtitle: this.$tc('meta.percentsCount', 0),
         },
         {
           title: this.$t('modals.liquidationRatio'),
-          subtitle: this.$tc('modals.percentsCount', 150),
+          subtitle: this.$tc('meta.percentsCount', 150),
         },
         {
           title: this.$t('modals.liquidationPrice'),
@@ -78,7 +78,7 @@ export default {
         },
         {
           title: this.$t('modals.stabilityFee'),
-          subtitle: this.$tc('modals.percentsCount', '5.85'),
+          subtitle: this.$tc('meta.percentsCount', '5.85'),
         },
       ],
     };
@@ -97,7 +97,7 @@ export default {
         key: modals.status,
         img: require('~/assets/img/ui/transactionSend.svg'),
         title: this.$t('modals.depositIsOpened'),
-        subtitle: this.$t('modals.depositIsOpenedText'),
+        subtitle: this.$t('meta.empty'),
         path: this.options.needChangeModal ? '/crediting/1' : undefined,
       });
     },

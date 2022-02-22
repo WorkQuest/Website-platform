@@ -28,7 +28,7 @@
                   {{ $tc('meta.WUSDCount', 0) }}
                 </div>
                 <div class="title_gray">
-                  {{ $tc('insuring.dollarsCount', 0) }}
+                  {{ $tc('meta.dollarsCount', 0) }}
                 </div>
               </div>
               <base-btn
@@ -149,7 +149,7 @@
                     <div class="name">
                       {{ res.name }}
                       <div class="percs">
-                        {{ $tc('insuring.percentsCount', res.percents) }}
+                        {{ $tc('meta.percents', res.percents) }}
                       </div>
                     </div>
                     <progress
@@ -258,9 +258,9 @@ export default {
     return {
       isMobileChatOpened: false,
       points: [
-        this.$t('insuring.pointTemplate'),
-        this.$t('insuring.pointTemplate'),
-        this.$t('insuring.pointTemplate'),
+        this.$t('meta.lorem'),
+        this.$t('meta.lorem'),
+        this.$t('meta.lorem'),
       ],
       cards: [
         {
@@ -362,13 +362,13 @@ export default {
         {
           name: this.$t('meta.agree'),
           percents: 75,
-          count: this.$tc('insuring.votesCount', 10),
+          count: this.$tc('meta.votesCount', 10),
           class: 'progress-green',
         },
         {
           name: this.$t('meta.disagree'),
           percents: 20,
-          count: this.$tc('insuring.votesCount', 10),
+          count: this.$tc('meta.votesCount', 10),
           class: 'progress-red',
         },
       ],

@@ -118,15 +118,15 @@ export default {
       percents: '',
       checkpoints: [
         {
-          name: this.$t('modals.bnb'),
+          name: this.$t('meta.bnb'),
           id: 1,
         },
         {
-          name: this.$t('modals.eth'),
+          name: this.$t('meta.eth'),
           id: 2,
         },
         {
-          name: this.$t('modals.wqt'),
+          name: this.$t('meta.wqt'),
           id: 3,
         },
       ],

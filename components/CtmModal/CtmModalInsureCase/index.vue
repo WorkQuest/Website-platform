@@ -18,7 +18,7 @@
         </span>
       </div>
       <div class="content__text">
-        {{ $t('insuring.insureCaseText') }}
+        {{ $t('meta.empty') }}
       </div>
       <div class="content__pictures">
         <img

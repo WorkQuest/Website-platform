@@ -32,8 +32,8 @@
             class="skills__cost"
             data-selector="SKILLS-PER-HOUR-FIELD"
             :placeholder="skills.perHour || $t('priority.title')"
-            :label="$t('settings.costPerHour')"
-            :name="$t('settings.costPerHour')"
+            :label="$t('meta.costPerHour')"
+            :name="$t('meta.costPerHour')"
             type="gray"
           />
         </div>

@@ -19,7 +19,7 @@
             class="step-panel__step"
             :class="[{'step-panel__step_active': step === 2}, {'hide': step === 3}]"
           >
-            {{ $t('wallet.bankCard') }}
+            {{ $t('meta.bankCard') }}
           </div>
         </div>
         <div

@@ -123,18 +123,18 @@ export default {
     documents() {
       return [
         {
-          name: this.$t('insuring.docName'),
-          size: this.$tc('insuring.mb', '1.2'),
+          name: this.$t('meta.docName', { file: 'Some_document.pdf' }),
+          size: this.$tc('meta.mb', { count: '1.2' }),
           url: '',
         },
         {
-          name: this.$t('insuring.docName'),
-          size: this.$tc('insuring.mb', '1.2'),
+          name: this.$t('meta.docName', { file: 'Some_document.pdf' }),
+          size: this.$tc('meta.mb', { count: '1.2' }),
           url: '',
         },
         {
-          name: this.$t('insuring.docName'),
-          size: this.$tc('insuring.mb', '1.2'),
+          name: this.$t('meta.docName', { file: 'Some_document.pdf' }),
+          size: this.$tc('meta.mb', { count: '1.2' }),
           url: '',
         },
       ];
