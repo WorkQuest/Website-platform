@@ -55,11 +55,11 @@
             v-model="profile.locationFull.locationPlaceName"
             v-click-outside="hideSearchDD"
             :placeholder="$t('settings.addressInput')"
-            :data-selector="`PROFILE-FIELD-${$t('settings.address')}`"
+            :data-selector="`PROFILE-FIELD-${$t('meta.addressSmall')}`"
             rules="max:100|required"
             mode="icon"
             :selector="isSearchDDStatus"
-            :name="$t('settings.address')"
+            :name="$t('meta.addressSmall')"
             @focus="isSearchDDStatus = true"
             @blur="checkValidate"
             @selector="getAddressInfo(profile.locationFull.locationPlaceName)"
@@ -291,7 +291,7 @@
           selector="SAVE-CHANGES"
           @click="$emit('click')"
         >
-          {{ $t("settings.save") }}
+          {{ $t("meta.save") }}
         </base-btn>
         <span v-if="validationError">
           {{ $t('messages.formError') }}
@@ -353,7 +353,7 @@ export default {
           model: 'firstName',
           rules: 'required||max:50',
           placeholder: 'settings.nameInput',
-          name: 'settings.firstName',
+          name: 'meta.firstNameSmall',
           icon: 'icon-user',
           isDisabled: false,
         },
@@ -361,7 +361,7 @@ export default {
           model: 'lastName',
           rules: 'required||max:50',
           placeholder: 'settings.lastNameInput',
-          name: 'settings.lastName',
+          name: 'meta.lastNameSmall',
           icon: 'icon-user',
           isDisabled: false,
         },

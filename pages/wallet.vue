@@ -22,7 +22,7 @@
         >
           <div class="wallet__balance balance">
             <div class="balance__top">
-              <span class="balance__title">{{ $t('wallet.balance') }}</span>
+              <span class="balance__title">{{ $t('meta.balance') }}</span>
               <span class="balance__currency">
                 <span class="balance__currency-text">
                   {{ balance[selectedToken].balance + ' ' + selectedToken }}

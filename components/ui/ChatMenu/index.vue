@@ -38,7 +38,7 @@
                 class="chat-menu__item"
                 @click="showOpenADisputeModal()"
               >
-                {{ $t('chat.openDispute') }}
+                {{ $t('meta.openDispute') }}
               </div>
               <div
                 v-if="canILeave"

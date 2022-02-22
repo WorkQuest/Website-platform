@@ -113,22 +113,22 @@ export default {
     return {
       items: [
         {
-          userName: this.$t('saving.table.userName'),
+          userName: this.$t('meta.userName'),
           avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('saving.table.userId'),
-          txHash: this.$t('saving.table.txHash'),
-          time: this.$t('saving.table.time'),
+          userID: this.$t('meta.userId'),
+          txHash: this.$t('meta.txHash'),
+          time: this.$t('meta.time'),
           amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('saving.table.status'),
+          status: this.$t('meta.status'),
         },
         {
-          userName: this.$t('saving.table.userName'),
+          userName: this.$t('meta.userName'),
           avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('saving.table.userId'),
-          txHash: this.$t('saving.table.txHash'),
-          time: this.$t('saving.table.time'),
+          userID: this.$t('meta.userId'),
+          txHash: this.$t('meta.txHash'),
+          time: this.$t('meta.time'),
           amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('saving.table.status'),
+          status: this.$t('meta.status'),
         },
       ],
       testFields: [

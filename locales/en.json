@@ -1,5 +1,18 @@
 {
   "meta": {
+    "balance": "Balance",
+    "userId": "455dad66544ss",
+    "txHash": "sf998s...ss877d",
+    "time": "Feb 1, 2021",
+    "status": "Success",
+    "userName":"John Doe",
+    "openDispute": "Open dispute",
+    "unstake": "Unstake",
+    "stake": "Stake",
+    "lastNameSmall": "last name",
+    "lastNameBig": "Last name",
+    "firstNameSmall": "first name",
+    "firstNameBig": "First name",
     "showAllCases": "Show all cases",
     "addCase": "Add Case",
     "addressBig": "Address",
@@ -73,7 +86,6 @@
     "acceptCompletedWorkOnQuest": "Accept completed work on quest",
     "closeQuest": "Close quest",
     "goToChat": "Go to chat",
-    "dispute": "Open dispute",
     "responded": "Respond send",
     "sendARequest": "Send a request",
     "view": "View"
@@ -123,12 +135,6 @@
     "loginWithSecret": "Please login with secret phrase",
     "invalidPassword": "Invalid password",
     "loginToContinue": "Please login to continue"
-  },
-  "labels": {
-    "firstName": "First name",
-    "lastName": "Last name",
-    "mail": "Mail",
-    "password": "Enter password"
   },
   "placeholders": {
     "default": "Placeholder",
@@ -231,8 +237,6 @@
     "title": "Sign Up",
     "haveAccount": "Already have an account?",
     "auth": "Authorization",
-    "firstName": "First name",
-    "lastName": "Last name",
     "email": "Email",
     "password": "Password",
     "totp": "TOTP",
@@ -1325,8 +1329,7 @@
     "declinedTheInvitationToTheQuest": "Declined the invitation to the quest",
     "declinedYourResponseToTheQuest": "Declined your response to the quest",
     "leftReviewAboutQuest": "Left review about quest",
-    "theQuestIsPending": "The quest is pending",
-    "openDispute": "Open dispute"
+    "theQuestIsPending": "The quest is pending"
   },
   "wallet": {
     "WUSD": "WUSD wallet",
@@ -1335,7 +1338,6 @@
     "send": "Send",
     "toThisAddress": "to this address",
     "wallet": "Wallet",
-    "balance": "Balance",
     "deposit": "Receive",
     "withdraw": "Withdraw",
     "transfer": "Buy / Send",
@@ -1355,7 +1357,6 @@
   },
   "chat": {
     "reason": "Please add reason",
-    "openDispute": "Open dispute",
     "starredMessages": "Starred messages",
     "starredChats": "Starred chats",
     "allChats": "All chats",
@@ -1406,9 +1407,6 @@
     "linkedin": "linkedin",
     "twitter": "twitter",
     "instagram": "instagram",
-    "address": "address",
-    "lastName": "last name",
-    "firstName": "first name",
     "companyName":"company",
     "ceoName":"ceo",
     "websiteName":"website",
@@ -1457,7 +1455,6 @@
     "twitterUsername": "Twitter username",
     "linkedInUsername": "LinkedIn username",
     "facebookUsername": "Facebook username",
-    "save": "Save",
     "skills": "Skills:",
     "whoCanSee": "Who can see my profile?",
     "allUsers": "All registered users",
@@ -1568,13 +1565,6 @@
       "time": "Time",
       "amount": "Amount",
       "status": "Status"
-    },
-    "table": {
-      "userName": "John Doe",
-      "userId": "455dad66544ss",
-      "txHash": "sf998s...ss877d",
-      "time": "Feb 1, 2021",
-      "status": "Success"
     }
   },
   "pension": {
@@ -1606,13 +1596,6 @@
     "prolong": "Prolong",
     "prolongText": "This will prolong pension program for 1 year",
     "templateText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac neque cum posuere in. Semper arcu purus eget faucibus.",
-    "table": {
-      "userName": "John Doe",
-      "userId": "455dad66544ss",
-      "txHash": "sf998s...ss877d",
-      "time": "Feb 1, 2021",
-      "status": "Success"
-    },
     "docName": "Some_document.pdf",
     "mb": "{count} MB",
     "percents": "{count} %",
@@ -1703,13 +1686,6 @@
     "possiblePlug": "Possible",
     "yearPlug": "1 year",
     "plusPercents": "+ {count}%",
-    "table": {
-      "userName": "John Doe",
-      "userId": "455dad66544ss",
-      "txHash": "sf998s...ss877d",
-      "time": "Feb 1, 2021",
-      "status": "Success"
-    },
     "depositModalBody": "Your crypto will lock for a specific period, and you will begin earning interest.",
     "depositIsOpened": "Transfer confirmed",
     "deposit": "Deposit",
@@ -1729,8 +1705,6 @@
       "balance": "Your balance:"
     },
     "approve": "Approve",
-    "stake": "Stake",
-    "unstake": "Unstake",
     "liquidityMiningSub": "Is a DeFi (decentralized finance) mechanism in which participants supply cryptocurrencies into liquidity pools, and being rewarded with fees and tokens based on their share of the total pool liquidity.",
     "templateText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
     "pools": "Pools",
@@ -1978,7 +1952,6 @@
     "blockchain": "Blockchain",
     "yourWQTAddress": "Your WQT address",
     "YourBSCAddress": "Your BSC address",
-    "balance": "Balance",
     "createSwap": "Create swap",
     "mySwaps": "My swaps",
     "eth": "ETH",
@@ -2010,7 +1983,6 @@
       "rewardTokenAddress": "Reward Token Address"
     },
     "open": "Open",
-    "unstake": "Unstake",
     "stakeIsEmpty": "Stake balance is empty",
     "stakeDurationIsNotOver": "Stake duration is not over",
     "claimRewards": "Claim rewards",
@@ -2047,7 +2019,6 @@
       "periodUpdate": "Period update"
     },
     "stakeDays": "Stake days",
-    "stake": "Stake",
     "autoRenewal": "Auto Renewal",
     "renewalTokens": "This will renewal {n} tokens"
   },

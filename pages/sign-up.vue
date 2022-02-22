@@ -24,10 +24,10 @@
       >
         <base-field
           v-model="model.firstName"
-          :placeholder="$t('signUp.firstName')"
+          :placeholder="$t('meta.firstNameBig')"
           :mode="'icon'"
           autocomplete="off"
-          :name="$t('signUp.firstName')"
+          :name="$t('meta.firstNameBig')"
           rules="required_if|alpha_spaces"
         >
           <template v-slot:left>
@@ -39,9 +39,9 @@
         </base-field>
         <base-field
           v-model="model.lastName"
-          :placeholder="$t('signUp.lastName')"
+          :placeholder="$t('meta.lastNameBig')"
           :mode="'icon'"
-          :name="$t('signUp.lastName')"
+          :name="$t('meta.lastNameBig')"
           rules="required_if|alpha_spaces"
         >
           <template v-slot:left>

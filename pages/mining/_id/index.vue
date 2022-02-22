@@ -121,7 +121,7 @@
                     {{ $tc('mining.lpCount', stakedAmount) }}
                   </div>
                   <div class="info-block__title_small">
-                    {{ $t('mining.stake') }}
+                    {{ $t('meta.stake') }}
                   </div>
                 </div>
                 <div class="third__container">
@@ -145,7 +145,7 @@
                 :disabled="!isConnected || statusBusy || disabled"
                 @click="openModalStaking()"
               >
-                {{ $t('mining.stake') }}
+                {{ $t('meta.stake') }}
               </base-btn>
               <base-btn
                 selector="UNSTAKE"
@@ -154,7 +154,7 @@
                 :disabled="!isConnected || statusBusy || disabled"
                 @click="openModalUnstaking()"
               >
-                {{ $t('mining.unstake') }}
+                {{ $t('meta.unstake') }}
               </base-btn>
               <base-btn
                 selector="CLAIM-REWARDS"

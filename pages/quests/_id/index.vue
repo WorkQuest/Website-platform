@@ -337,7 +337,7 @@ export default {
             disabled: false,
           },
           {
-            name: this.$t('btn.dispute'),
+            name: this.$t('meta.openDispute'),
             class: '',
             mode: '',
             funcKey: 'openDispute',
@@ -348,7 +348,7 @@ export default {
         }
         case Dispute: {
           arr = [{
-            name: this.$t('btn.dispute'),
+            name: this.$t('meta.openDispute'),
             class: '',
             mode: '',
             funcKey: 'openDispute',
@@ -394,7 +394,7 @@ export default {
           if (assignedWorkerId !== userData.id) break;
 
           arr = [{
-            name: this.$t('btn.dispute'),
+            name: this.$t('meta.openDispute'),
             class: '',
             mode: '',
             funcKey: 'openDispute',
@@ -424,7 +424,7 @@ export default {
         }
         case Dispute: {
           arr = [{
-            name: this.$t('btn.dispute'),
+            name: this.$t('meta.openDispute'),
             class: '',
             mode: '',
             funcKey: 'openDispute',

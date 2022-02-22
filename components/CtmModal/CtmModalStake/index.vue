@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="stake"
-    :title="$t('mining.stake')"
+    :title="$t('meta.stake')"
   >
     <validation-observer
       v-slot="{handleSubmit, valid}"
@@ -225,16 +225,16 @@ export default {
       this.SetLoader(false);
       if (!txFee.ok) {
         if (txFee.msg.includes('You cannot stake tokens yet')) {
-          this.ShowToast(this.$t('staking.cannotStakeYet'), this.$t('mining.stake'));
+          this.ShowToast(this.$t('staking.cannotStakeYet'), this.$t('meta.stake'));
         } else {
-          this.ShowToast(this.$t('modals.failed'), this.$t('mining.stake'));
+          this.ShowToast(this.$t('modals.failed'), this.$t('meta.stake'));
         }
         return;
       }
 
       this.ShowModal({
         key: modals.transactionReceipt,
-        title: `${this.$t('staking.stake')} ${stakingType}`,
+        title: `${this.$t('meta.stake')} ${stakingType}`,
         fields: {
           from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
           to: { name: this.$t('meta.toBig'), value: poolAddress },
@@ -247,7 +247,7 @@ export default {
             stakingType, amount, poolAddress, duration: days,
           });
           if (!res.ok) {
-            await this.$store.dispatch('main/showToast', { title: this.$t('staking.stake'), text: this.$t('modals.failed') });
+            await this.$store.dispatch('main/showToast', { title: this.$t('meta.stake'), text: this.$t('modals.failed') });
           }
           return res;
         },

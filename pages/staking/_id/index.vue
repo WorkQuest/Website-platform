@@ -142,7 +142,7 @@
         </div>
         <div class="info-block">
           <div class="info-block__name_bold">
-            {{ $t('staking.stake') }}
+            {{ $t('meta.stake') }}
           </div>
           <div class="info-block__info-cards">
             <div
@@ -173,14 +173,14 @@
               selector="SHOW-UNSTAKE-MODAL"
               @click="showUnstakeModal"
             >
-              {{ $t('staking.unstake') }}
+              {{ $t('meta.unstake') }}
             </base-btn>
             <base-btn
               selector="SHOW-STAKE-MODAL"
               mode="outline"
               @click="showStakeModal"
             >
-              {{ $t('staking.stake') }}
+              {{ $t('meta.stake') }}
             </base-btn>
           </div>
         </div>
