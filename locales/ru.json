@@ -933,6 +933,8 @@
   "modals": {
     "errorGetWUSD": "Something went wrong",
     "getWUSD": "Buy WUSD",
+    "buyAuction": "Transfer info",
+    "recipient": "Recipient address",
     "countOfRecievedWUSD": "How many WUSD do you want to receive",
     "fieldCountOf": "{countOf} amount",
     "countOfCollateral": "How much collateral to leave?",

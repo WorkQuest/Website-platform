@@ -76,6 +76,7 @@
 
 <script>
 import BigNumber from 'bignumber.js';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'AuctionCard',
@@ -103,7 +104,6 @@ export default {
       }
       if (new BigNumber(durationInSec).isGreaterThanOrEqualTo(60)) {
         returnedValue.minutes = new BigNumber(durationInSec).dividedToIntegerBy(60).toFixed();
-        // durationInSec -= new BigNumber(60).multipliedBy(returnedValue.minutes).toFixed();   IF NEEDED TO CONTINUE TO SECs
       }
       return returnedValue;
     },
@@ -138,7 +138,10 @@ export default {
   },
   methods: {
     openModalBuyAuction() {
-      alert('buy');
+      this.ShowModal({
+        key: modals.buyAuction,
+        auction: this.auction,
+      });
     },
   },
 };

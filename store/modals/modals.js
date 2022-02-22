@@ -80,4 +80,5 @@ export default {
   areYouSure: 'areYouSure',
   stake: 'stake',
   getWUSD: 'getWUSD',
+  buyAuction: 'buyAuction',
 };

@@ -105,6 +105,7 @@ export default {
       selectedSort: 'desc',
       auctionMock: [
         {
+          recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
           price: 11,
           currency: 'ETH',
           feePercent: 13,
@@ -114,6 +115,7 @@ export default {
           id: '25f1df1a3f971e4f56c9e559e2204fad',
         },
         {
+          recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
           price: 12,
           currency: 'WUSD',
           feePercent: 13,
@@ -123,6 +125,7 @@ export default {
           id: 'af974453e64ec88c33b0275d8bb6ac6c',
         },
         {
+          recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
           price: 15,
           currency: 'ETH',
           feePercent: 13,
@@ -132,6 +135,7 @@ export default {
           id: 'a1c47b0f29b31f59c2f15755f84c71ee',
         },
         {
+          recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
           price: 5,
           currency: 'WUSD',
           feePercent: 13,
@@ -141,6 +145,7 @@ export default {
           id: '99742ce9ab0fcc33df69babb39cfac52',
         },
         {
+          recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
           price: 20,
           currency: 'ETH',
           feePercent: 13,
@@ -150,6 +155,7 @@ export default {
           id: '31a40c78b0b98154ec9128be269bc593',
         },
         {
+          recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
           price: 100,
           currency: 'WUSD',
           feePercent: 20,
@@ -179,6 +185,7 @@ export default {
         if (value === 'current') {
           this.auctionMock = [
             {
+              recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
               price: 11,
               currency: 'ETH',
               feePercent: 13,
@@ -195,6 +202,7 @@ export default {
               startTime: 1645454143,
               endsIn: 1645464143,
               id: 'af974453e64ec88c33b0275d8bb6ac6c',
+              recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
             },
             {
               price: 15,
@@ -204,6 +212,7 @@ export default {
               startTime: 1645454143,
               endsIn: 1645464143,
               id: 'a1c47b0f29b31f59c2f15755f84c71ee',
+              recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
             },
             {
               price: 5,
@@ -213,6 +222,7 @@ export default {
               startTime: 1645454143,
               endsIn: 1645464143,
               id: '99742ce9ab0fcc33df69babb39cfac52',
+              recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
             },
             {
               price: 20,
@@ -222,6 +232,7 @@ export default {
               startTime: 1645454143,
               endsIn: 1645464143,
               id: '31a40c78b0b98154ec9128be269bc593',
+              recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
             },
             {
               price: 100,
@@ -231,6 +242,7 @@ export default {
               startTime: 1645454143,
               endsIn: 1645464143,
               id: '1faffc89f8e46865fb7b29307be6d68a',
+              recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
             },
           ];
         } else {
@@ -238,22 +250,26 @@ export default {
             {
               type: 'Deal',
               sender: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
+              recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
               lotSize: 30000,
               lotSizeCurrency: 'ETH',
               price: 30000,
               priceCurrency: 'WUSD',
               timestamp: 1645464243,
               txHash: '0xf147e37ba5120bb7ef511441dfb0fc7d0e8b85af7e5632cf2a6eb63e0220e9c9',
+              id: '25f1df1a3f971e4f56c9e559e2204fan',
             },
             {
               type: 'Deal',
               sender: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
+              recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
               lotSize: 10000,
               lotSizeCurrency: 'ETH',
               price: 10000,
               priceCurrency: 'WUSD',
               timestamp: 1645463243,
               txHash: '0x45e1a65f361e55c7b65c98ebb7d3f84e8bde230d50ad68023c69d4902930ad00',
+              id: '1faffc89f8e46865fb7b29307be6d68n',
             },
           ];
         }
@@ -266,12 +282,12 @@ export default {
   methods: {
     goSearch() {
       clearTimeout(this.searchTimeout);
-      alert('search');
+      console.log('search');// TODO search
     },
     goSearchDebounce() {
       clearTimeout(this.searchTimeout);
       this.searchTimeout = setTimeout(() => {
-        alert('search');
+        console.log('search'); // TODO search
       }, 600);
     },
     changeTimeSorting() {

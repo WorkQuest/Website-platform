@@ -90,6 +90,7 @@
       <CtmModalAreYouSure v-if="modals.areYouSure === currentModalKey" />
       <CtmModalStake v-if="modals.stake === currentModalKey" />
       <CtmModalGetWUSD v-if="modals.getWUSD === currentModalKey" />
+      <CtmModalBuyAuction v-if="modals.buyAuction === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -175,11 +176,13 @@ import CtmModalSwapTokens from './CtmModalSwapTokens';
 import CtmModalGallery from './CtmModalGallery';
 import CtmModalAreYouSure from './CtmModalAreYouSure';
 import CtmModalGetWUSD from './CtmModalGetWUSD';
+import CtmModalBuyAuction from './CtmModalBuyAuction';
 
 export default {
   name: 'ModalBox',
   components: {
     CtmModalGetWUSD,
+    CtmModalBuyAuction,
     CtmModalStake,
     CtmModalTransactionReceipt,
     CtmModalQuestFilterFull,
