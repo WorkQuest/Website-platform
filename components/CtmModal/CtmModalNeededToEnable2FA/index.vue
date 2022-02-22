@@ -18,7 +18,7 @@
       <base-btn
         class="transaction__action"
         selector="OK"
-        @click="hide"
+        @click="CloseModal()"
       >
         {{ $t('meta.ok') }}
       </base-btn>
@@ -36,11 +36,6 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
-  },
-  methods: {
-    hide() {
-      this.CloseModal();
-    },
   },
 };
 </script>
