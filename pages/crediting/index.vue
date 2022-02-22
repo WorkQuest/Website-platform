@@ -141,17 +141,17 @@ export default {
     documents() {
       return [
         {
-          name: this.$tc('meta.docName', { file: 'Some_document.pdf' }),
+          name: this.$tc('meta.docName'),
           size: this.$tc('meta.mb', '1.2'),
           url: '',
         },
         {
-          name: this.$tc('meta.docName', { file: 'Some_document.pdf' }),
+          name: this.$tc('meta.docName'),
           size: this.$tc('meta.mb', '1.2'),
           url: '',
         },
         {
-          name: this.$tc('meta.docName', { file: 'Some_document.pdf' }),
+          name: this.$tc('meta.docName'),
           size: this.$tc('meta.mb', '1.2'),
           url: '',
         },
@@ -160,15 +160,15 @@ export default {
     cards() {
       return [
         {
-          title: this.$tc('meta.dollarsCount', { count: '417.1M' }),
+          title: this.$tc('meta.dollarsCount', '417.1M'),
           subtitle: this.$t('crediting.marketSize'),
         },
         {
-          title: this.$tc('meta.percentsCount', { count: '4.31' }),
+          title: this.$tc('meta.percentsCount', '4.31'),
           subtitle: this.$t('crediting.deposit'),
         },
         {
-          title: this.$tc('meta.percentsCount', { count: 5 }),
+          title: this.$tc('meta.percentsCount', 5),
           subtitle: this.$t('crediting.percent'),
         },
       ];

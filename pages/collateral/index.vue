@@ -161,18 +161,18 @@ export default {
     documents() {
       return [
         {
-          name: this.$t('pension.docName'),
-          size: this.$tc('pension.mb', '1.2'),
+          name: this.$t('meta.docName'),
+          size: this.$tc('meta.mb', '1.2'),
           url: '',
         },
         {
-          name: this.$t('pension.docName'),
-          size: this.$tc('pension.mb', '1.2'),
+          name: this.$t('meta.docName'),
+          size: this.$tc('meta.mb', '1.2'),
           url: '',
         },
         {
-          name: this.$t('pension.docName'),
-          size: this.$tc('pension.mb', '1.2'),
+          name: this.$t('meta.docName'),
+          size: this.$tc('meta.mb', '1.2'),
           url: '',
         },
       ];
@@ -180,15 +180,15 @@ export default {
     cards() {
       return [
         {
-          title: this.$tc('collateral.dollarsCount', '417.1M'),
+          title: this.$tc('meta.dollarsCount', '417.1M'),
           subtitle: this.$t('collateral.marketSize'),
         },
         {
-          title: this.$tc('collateral.percentsCount', '4.31'),
+          title: this.$tc('meta.percentsCount', '4.31'),
           subtitle: this.$t('collateral.deposit'),
         },
         {
-          title: this.$tc('collateral.percentsCount', 5),
+          title: this.$tc('meta.percentsCount', 5),
           subtitle: this.$t('collateral.percent'),
         },
       ];
