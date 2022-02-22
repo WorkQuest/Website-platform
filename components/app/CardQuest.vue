@@ -30,7 +30,7 @@
             >
           </div>
           <div class="card-quest__text card-quest__text_title">
-            {{ `${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}` }}
+            {{ `${quest.user ? UserName(CropTxt(quest.user.firstName, 10), CropTxt(quest.user.lastName, 10)) : ''}` }}
           </div>
         </div>
         <div class="card-quest__head-right">
@@ -91,7 +91,7 @@
               :alt="`${ quest.assignedWorker ? UserName(quest.assignedWorker.firstName, quest.assignedWorker.lastName) : '' }`"
             >
             <div class="user__name">
-              {{ quest.assignedWorker.firstName }} {{ quest.assignedWorker.lastName }}
+              {{ CropTxt(quest.assignedWorker.firstName, 10) }} {{ CropTxt(quest.assignedWorker.lastName, 10) }}
             </div>
           </div>
           <item-rating :rating="getRatingValue(quest)" />
@@ -108,13 +108,13 @@
         v-if="quest.title"
         class="card-quest__text card-quest__text_blue"
       >
-        {{ cropTxt(quest.title, 68) }}
+        {{ CropTxt(quest.title, 68) }}
       </div>
       <div
         v-if="quest.description"
         class="card-quest__text card-quest__text-description"
       >
-        {{ cropTxt(quest.description, 98) }}
+        {{ CropTxt(quest.description, 98) }}
       </div>
       <div class="card-quest__text card-quest__publication">
         <span class="card-quest__publication_bold">{{ $t('quests.publicationDate') }}</span>
@@ -256,10 +256,6 @@ export default {
     },
     clickFavoriteStar(item) {
       this.$emit('clickFavoriteStar', item);
-    },
-    cropTxt(str, maxLength) {
-      if (str.length > maxLength) str = `${str.slice(0, maxLength)}...`;
-      return str;
     },
     progressQuestText(status) {
       if (!this.userRole) return '';

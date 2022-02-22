@@ -22,6 +22,7 @@
     v-else
     class="base-btn"
     :class="btnClass"
+    :type="isSubmit ? 'submit' : 'button'"
     :data-selector="`ACTION-BTN-CLICK-${selector}`"
     @click="$emit('click')"
   >
@@ -47,6 +48,10 @@ export default {
     link: {
       type: String,
       default: '',
+    },
+    isSubmit: {
+      type: Boolean,
+      default: true,
     },
     selector: {
       type: String,
@@ -321,15 +326,15 @@ export default {
     }
   }
   &_borderless {
-    background: #FFFFFF !important;
-    color: $blue !important;
+    background: #FFFFFF;
+    color: $blue;
     &-left {
       @extend .base-btn_borderless;
-      justify-content: flex-start !important;
+      justify-content: flex-start;
     }
     &-right {
       @extend .base-btn_borderless;
-      justify-content: flex-end !important;
+      justify-content: flex-end;
     }
     &:hover {
       color: #3992ff;

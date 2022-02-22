@@ -182,10 +182,6 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    cropTxt(str) {
-      if (str.length > 40) str = `${str.slice(0, 10)}...${str.slice(-10)}`;
-      return str;
-    },
     handleOpenPool(el) {
       this.$router.push(`/mining/${el.item.id}`);
     },
