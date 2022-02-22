@@ -74,11 +74,11 @@ export default {
       await commit('setAccount', response.result);
       await commit('setIsConnected', true);
       await commit('setPurseData', getAccountAddress());
-      if (!isReconnection) showToast('Connect to wallet', 'Connected', 'success');
-    } else {
-      commit('setIsConnected', false);
-      showToast('Error connect to wallet', `${response.data}`, 'danger');
+      if (!isReconnection) showToast('Connect to wallet', 'Connected', 'success'); return true;
     }
+    commit('setIsConnected', false);
+    showToast('Error connect to wallet', `${response.data}`, 'danger');
+    return false;
   },
   async handleConnectionStatusChanged({ dispatch }) {
     await dispatch('disconnect');

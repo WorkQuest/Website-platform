@@ -22,6 +22,7 @@
     v-else
     class="base-btn"
     :class="btnClass"
+    :type="isSubmit ? 'submit' : 'button'"
     :data-selector="`ACTION-BTN-CLICK-${selector}`"
     @click="$emit('click')"
   >
@@ -47,6 +48,10 @@ export default {
     link: {
       type: String,
       default: '',
+    },
+    isSubmit: {
+      type: Boolean,
+      default: true,
     },
     selector: {
       type: String,
