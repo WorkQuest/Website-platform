@@ -1,44 +1,42 @@
 <template>
   <div class="collateral">
-    <div class="collateral__title">
-      {{ $t('wallet.collateral.balance') }}
-    </div>
-    <div class="collateral__header table_grid">
-      <div>{{ $t('wallet.collateral.coin') }}</div>
-      <div>{{ $t('wallet.collateral.attentionQuotient') }}</div>
-      <div>{{ $t('wallet.collateral.sum') }}</div>
-      <div>{{ $t('wallet.collateral.amountInDollars') }}</div>
-      <div>{{ $t('wallet.collateral.amountInDollars') }}</div>
-    </div>
-    <div
-      v-for="(i) of 5"
-      :key="i"
-      class="table_grid item"
-    >
-      <div class="item__coin">
-        <img
-          src="/img/app/tokens/Ethereum.svg"
-          alt="Logo"
-        >
-        ETH
+    <div class="collateral__content">
+      <div class="collateral__title">
+        {{ $t('wallet.collateral.balance') }}
       </div>
-      <div>000000</div>
-      <div>000000</div>
-      <div>000000</div>
-      <div>000000</div>
-      <div class="item__actions">
-        <base-btn
-          selector="ADD"
-          @click="handleAdd"
-        >
-          {{ $t('modals.add') }}
-        </base-btn>
-        <base-btn
-          selector="TAKE"
-          @click="handleTake"
-        >
-          {{ $t('modals.take') }}
-        </base-btn>
+      <div class="collateral__header table_grid">
+        <div>{{ $t('wallet.collateral.coin') }}</div>
+        <div>{{ $t('wallet.collateral.attentionQuotient') }}</div>
+        <div>{{ $t('wallet.collateral.sum') }}</div>
+        <div>{{ $t('wallet.collateral.amountInDollars') }}</div>
+        <div>{{ $t('wallet.collateral.amountInDollars') }}</div>
+      </div>
+      <div class="table_grid item">
+        <div class="item__coin">
+          <img
+            src="/img/app/tokens/Ethereum.svg"
+            alt="Logo"
+          >
+          ETH
+        </div>
+        <div>0</div>
+        <div>0</div>
+        <div>0</div>
+        <div>0</div>
+        <div class="item__actions">
+          <base-btn
+            selector="ADD"
+            @click="handleAdd"
+          >
+            {{ $t('modals.add') }}
+          </base-btn>
+          <base-btn
+            selector="TAKE"
+            @click="handleTake"
+          >
+            {{ $t('modals.take') }}
+          </base-btn>
+        </div>
       </div>
     </div>
   </div>
@@ -53,13 +51,13 @@ export default {
     handleAdd() {
       this.ShowModal({
         key: modals.collateralTransaction,
-        mode: 'take',
+        mode: 'add',
       });
     },
     handleTake() {
       this.ShowModal({
         key: modals.collateralTransaction,
-        mode: 'add',
+        mode: 'take',
       });
     },
   },
@@ -68,6 +66,11 @@ export default {
 
 <style lang="scss" scoped>
 .collateral {
+  overflow-x: auto;
+  &__content {
+    min-width: 1180px;
+  }
+
   &__title {
     font-style: normal;
     font-weight: 500;
@@ -86,11 +89,6 @@ export default {
 }
 .table {
   &_grid {
-    background: red !important;
-    position: relative;
-    min-width: 1500px;
-    overflow-x: auto;
-
     display: grid;
     grid-template-columns: 160px repeat(4, 1fr) 260px;
     align-items: center;

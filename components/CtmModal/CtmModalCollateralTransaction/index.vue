@@ -5,7 +5,7 @@
   >
     <div class="collateral__content content">
       <div class="content__header">
-        Информация об eth или другом кошельке. Сколько это в %
+        Header
       </div>
       <div class="content__label">
         {{ $t('modals.eth') }}

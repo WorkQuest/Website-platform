@@ -190,14 +190,14 @@ export default {
       // eslint-disable-next-line no-restricted-syntax
       for (const t of txs) {
         res.push({
-          tx_hash: t.id,
-          block: t.blockNumber,
-          timestamp: this.$moment(t.timestamp).format('lll'),
+          tx_hash: t.block_hash,
+          block: t.block_number,
+          timestamp: this.$moment(t.inserted_at).format('lll'),
           status: !!t.status,
           value: getStyledAmount(t.value),
-          transaction_fee: new BigNumber(t.gasPrice).multipliedBy(t.gasUsed),
-          from_address: t.fromAddress,
-          to_address: t.toAddress,
+          transaction_fee: new BigNumber(t.gas_price).multipliedBy(t.gas_used),
+          from_address: t.from_address_hash.hex,
+          to_address: t.to_address_hash.hex,
         });
       }
       return res;
@@ -598,6 +598,9 @@ export default {
     &_mobile {
       display: block;
     }
+  }
+  .wallet__switch-table {
+    grid-template-columns: 1fr;
   }
 }
 @include _350 {
