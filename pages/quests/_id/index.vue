@@ -652,6 +652,7 @@ export default {
   &__container {
     display: flex;
     flex-direction: column;
+    min-width: 0;
   }
   &__title {
     @include text-simple;
@@ -669,6 +670,10 @@ export default {
     line-height: 20px;
     color: $black700;
     overflow-wrap: anywhere;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    word-break: break-word;
   }
   &__count {
     font-style: normal;
@@ -707,6 +712,7 @@ export default {
 }
 
 .worker-data {
+  min-width: 0;
   padding-top: 20px;
   border-top: 1px solid #F7F8FA;
 
@@ -714,6 +720,10 @@ export default {
     font-weight: 500;
     color: $black800;
     font-size: 18px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    word-break: break-word;
 
     &_small {
       font-size: 16px;
@@ -735,6 +745,7 @@ export default {
   }
 
   &__user-cont {
+    min-width: 0;
     display: grid;
     grid-auto-flow: column;
     gap: 10px;
@@ -743,6 +754,7 @@ export default {
   }
 
   &__avatar {
+    display: flex;
     border-radius: 50%;
     width: 40px;
     height: 40px;
