@@ -106,7 +106,7 @@ export default {
     },
     success() {
       this.ShowModal({
-        key: modals.status, img: require('~/assets/img/ui/success.svg'), title: 'Success', subtitle: 'Your role has been changed',
+        key: modals.status, img: require('~/assets/img/ui/success.svg'), title: 'Success', subtitle: 'Your role has been changed', isReloadModal: true,
       });
     },
   },
