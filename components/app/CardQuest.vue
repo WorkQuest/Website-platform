@@ -91,7 +91,7 @@
               :alt="`${ quest.assignedWorker ? UserName(quest.assignedWorker.firstName, quest.assignedWorker.lastName) : '' }`"
             >
             <div class="user__name">
-              {{ CropTxt(quest.assignedWorker.firstName, 10) }} {{ CropTxt(quest.assignedWorker.lastName, 10) }}
+              {{ quest.assignedWorker.firstName }} {{ quest.assignedWorker.lastName }}
             </div>
           </div>
           <item-rating :rating="getRatingValue(quest)" />
@@ -334,13 +334,19 @@ export default {
 </script>
 <style lang="scss" scoped>
 .user {
+  min-width: 0;
   &__name {
     @include text-simple;
+    width: 100%;
     font-weight: 500;
     font-size: 16px;
     color: $black800;
     cursor: pointer;
     transition: .5s;
+    text-overflow: ellipsis;
+    //overflow: hidden;
+    white-space: nowrap;
+    word-break: break-word;
     &:hover {
       color: $blue;
     }
@@ -372,6 +378,7 @@ export default {
   }
   &__container {
     @extend .styles__full;
+    min-width: 0;
     display: grid;
     align-items: center;
     grid-template-columns: auto 3fr;
