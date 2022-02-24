@@ -88,8 +88,8 @@
               rating-type="questPage"
               :stars-number="5"
               :rating="rating"
-              :is-disabled="!!quest.yourReview"
-              @input="showReviewModal($event, quest)"
+              :is-disabled="!!rating"
+              @input="showReviewModal($event, quest.id)"
             />
             <span class="worker-data__price">
               {{ quest.price }} {{ $t('quests.wusd') }}
@@ -246,11 +246,15 @@ export default {
       return item.status === QuestStatuses.Done
         && this.userData.id === item.userId;
     },
-    showReviewModal(rating, item) {
+    showReviewModal(rating, id) {
       this.ShowModal({
         key: modals.review,
-        item,
+        questId: id,
         rating,
+        callback: async (payload) => {
+          const ok = await this.$store.dispatch('user/sendReviewForUser', payload);
+          if (ok) { this.ShowModal({ key: modals.thanks }); }
+        },
       });
     },
     async getSameQuests() {
