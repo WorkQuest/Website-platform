@@ -129,9 +129,13 @@ Vue.mixin({
         navigator.geolocation.getCurrentPosition(this.FormatPosition);
       }
     },
+    CropTxt(str, maxLength) {
+      if (str.length > maxLength) str = `${str.slice(0, maxLength)}...`;
+      return str;
+    },
     CutTxn(txn, first = 10, second = 10) {
-      if (!txn) return '';
-      return `${txn.slice(0, first)}...${txn.slice(-second)}`;
+      if (txn > first + second) return `${txn.slice(0, first)}...${txn.slice(-second)}`;
+      return txn;
     },
     FormatPosition(position) {
       const payload = {

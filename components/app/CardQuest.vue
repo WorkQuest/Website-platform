@@ -30,7 +30,7 @@
             >
           </div>
           <div class="card-quest__text card-quest__text_title">
-            {{ `${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}` }}
+            {{ `${quest.user ? UserName(CropTxt(quest.user.firstName, 10), CropTxt(quest.user.lastName, 10)) : ''}` }}
           </div>
         </div>
         <div class="card-quest__head-right">
@@ -91,7 +91,7 @@
               :alt="`${ quest.assignedWorker ? UserName(quest.assignedWorker.firstName, quest.assignedWorker.lastName) : '' }`"
             >
             <div class="user__name">
-              {{ quest.assignedWorker.firstName }} {{ quest.assignedWorker.lastName }}
+              {{ CropTxt(quest.assignedWorker.firstName, 10) }} {{ CropTxt(quest.assignedWorker.lastName, 10) }}
             </div>
           </div>
           <item-rating :rating="getRatingValue(quest)" />
@@ -108,13 +108,13 @@
         v-if="quest.title"
         class="card-quest__text card-quest__text_blue"
       >
-        {{ cropTxt(quest.title, 68) }}
+        {{ CropTxt(quest.title, 68) }}
       </div>
       <div
         v-if="quest.description"
         class="card-quest__text card-quest__text-description"
       >
-        {{ cropTxt(quest.description, 98) }}
+        {{ CropTxt(quest.description, 98) }}
       </div>
       <div class="card-quest__text card-quest__publication">
         <span class="card-quest__publication_bold">{{ $t('quests.publicationDate') }}</span>
@@ -156,13 +156,11 @@
             <star-rating
               v-if="userRole === $options.UserRole.WORKER ? quest.assignedWorkerId === userData.id : quest.userId === userData.id"
               class="card-quest__star"
-              :quest-index="0"
-              rating-type="questPage"
               :stars-number="5"
-              :data-selector="`ACTION-BTN-SHOW-REVIEW-MODAL-${questIndex}`"
-              :rating="!quest.yourReview ? currentMark.mark : quest.yourReview.mark"
-              :is-disabled="quest.yourReview !== null || currentMark.mark !== 0"
-              @input="showReviewModal($event, quest)"
+              :data-selector="`ACTION-BTN-SHOW-REVIEW-MODAL-${quest.id}`"
+              :rating="rating"
+              :is-disabled="!!rating"
+              @input="showReviewModal($event, quest.id)"
             />
           </div>
         </div>
@@ -211,8 +209,10 @@ export default {
     ...mapGetters({
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
-      currentMark: 'user/getCurrentReviewMarkOnQuest',
     }),
+    rating() {
+      return this.quest.yourReview?.mark || 0;
+    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -257,10 +257,6 @@ export default {
     clickFavoriteStar(item) {
       this.$emit('clickFavoriteStar', item);
     },
-    cropTxt(str, maxLength) {
-      if (str.length > maxLength) str = `${str.slice(0, maxLength)}...`;
-      return str;
-    },
     progressQuestText(status) {
       if (!this.userRole) return '';
       switch (status) {
@@ -279,8 +275,16 @@ export default {
     showDetails(questId) {
       this.$router.push(`${Path.QUESTS}/${questId}`);
     },
-    showReviewModal(rating, item) {
-      this.ShowModal({ key: modals.review, item, rating });
+    showReviewModal(rating, id) {
+      this.ShowModal({
+        key: modals.review,
+        questId: id,
+        rating,
+        callback: async (payload) => {
+          const ok = await this.$store.dispatch('user/sendReviewForUser', payload);
+          if (ok) { this.ShowModal({ key: modals.thanks }); }
+        },
+      });
     },
     getStatusCard(index) {
       const questStatus = {
@@ -463,12 +467,13 @@ export default {
     border: 1px solid $black100;
   }
   &__btn-details {
-    height: 28px !important;
+    height: 24px !important;
     width: 100%;
     min-width: 100px;
   }
   &__rating {
-    height: 24px;
+    height: 19px;
+    align-self: center;
   }
   &__container {
     display: flex;

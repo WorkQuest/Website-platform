@@ -81,4 +81,5 @@ export default {
   stake: 'stake',
   getWUSD: 'getWUSD',
   buyAuction: 'buyAuction',
+  neededToEnable2FA: 'neededToEnable2FA',
 };

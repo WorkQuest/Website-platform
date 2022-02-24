@@ -43,7 +43,7 @@
           :href="`https://etherscan.io/${field.fieldName === 'sender' ? 'address' : 'tx'}/${auction[field.fieldName]}`"
           target="_blank"
         >
-          {{ `${auction[field.fieldName].substr(0,7)}...${auction[field.fieldName].substr(auction[field.fieldName].length - 4,4)}` }}
+          {{ CutTxn(auction[field.fieldName], 7, 4) }}
         </a>
         <p
           v-if="field.fieldName === 'lotSize'"

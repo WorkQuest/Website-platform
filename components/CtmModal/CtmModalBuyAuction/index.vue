@@ -35,7 +35,7 @@
           class="buttons__button"
           mode="outline"
           :is-submit="false"
-          @click="hide"
+          @click="CloseModal"
         >
           {{ $t('meta.cancel') }}
         </base-btn>
@@ -61,9 +61,6 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     confirmBuy() {
       console.log('buy');
     },

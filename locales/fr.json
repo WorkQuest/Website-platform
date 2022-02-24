@@ -931,6 +931,8 @@
     "error": "???"
   },
   "modals": {
+    "settingsInfo": "???",
+    "pleaseEnable2FA": "???",
     "errorGetWUSD": "Something went wrong",
     "getWUSD": "Buy WUSD",
     "buyAuction": "Transfer info",
@@ -948,6 +950,7 @@
     "emptyOpenQuests": "???",
     "errorSmsVer": "???",
     "fillNumber": "???",
+    "textLengthExceeded": "{count}",
     "disputes": {
       "thereIsNoResponseFromTheEmployerOrEmployee": "???",
       "badlyDoneWork": "???",
@@ -980,6 +983,8 @@
     "edit": "???",
     "delete": "???",
     "youCan’tDeleteActiveQuest": "???",
+    "youCan’tEditQuest": "???",
+    "youCan’tDeleteQuest": "???",
     "youCantCreateDispute": "???",
     "sureDeleteText": "???",
     "sureDeleteMemberText": "???",

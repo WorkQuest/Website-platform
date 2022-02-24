@@ -3,7 +3,7 @@
 import { Path } from '~/utils/enums';
 
 // eslint-disable-next-line
-export default function ({ $axios, store, app }, inject) {
+export default function ({ $axios, store, redirect }, inject) {
   $axios.onRequest((config) => {
     if (store.getters['user/isAuth'] && !config.url.includes('digitaloceanspaces.com')) {
       const urlName = config.url.split('/').pop();
@@ -17,7 +17,7 @@ export default function ({ $axios, store, app }, inject) {
     const originalRequest = error.config;
     if (error.config.url === '/v1/auth/refresh-tokens') {
       await store.dispatch('user/logout');
-      await app.$router.push(Path.SIGN_IN);
+      redirect(Path.SIGN_IN);
     } else if (error.response.status === 401) {
       await store.dispatch('user/refreshTokens');
       return $axios(originalRequest);

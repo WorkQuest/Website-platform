@@ -214,7 +214,7 @@
   "securityCheck": {
     "title": "Security check",
     "confCode": "Google confirmation code",
-    "placeholder": "Placeholder",
+    "placeholder": "123456",
     "confCodeDesc": "Enter the 6-digit code from the Google Authentication app",
     "confCodeField": "google verification",
     "confirmAccess": "Confirm access",
@@ -932,6 +932,8 @@
     "error": "Error!"
   },
   "modals": {
+    "settingsInfo": "Settings Info",
+    "pleaseEnable2FA": "Please, enable TWO-Step authentication",
     "errorGetWUSD": "Something went wrong",
     "getWUSD": "Buy WUSD",
     "buyAuction": "Transfer info",
@@ -949,6 +951,7 @@
     "emptyOpenQuests": "You don't have open quests, please create",
     "errorSmsVer": "Error SMS verification",
     "fillNumber": "Please fill phone number in settings page...",
+    "textLengthExceeded": "You can only write {count} characters",
     "disputes": {
       "thereIsNoResponseFromTheEmployerOrEmployee": "There is no response from the employer / employee",
       "badlyDoneWork": "Badly done work",
@@ -981,6 +984,8 @@
     "edit": "Edit",
     "delete": "Delete",
     "youCan’tDeleteActiveQuest": "You can’t delete active quest",
+    "youCan’tEditQuest": "You can’t edit quest without connected 2FA",
+    "youCan’tDeleteQuest": "You can’t delete quest without connected 2FA",
     "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest",
     "sureDeleteText": "Do you really want to delete this quest?",
     "sureDeleteMemberText": "Do you really want to delete this member?",

@@ -247,7 +247,7 @@
             :key="i"
             class="dropdown__link"
             :data-selector="`PROFILE-LINKS-MOBILE-${i}`"
-            @click="toRoute(item.link)"
+            @click="toRoute(item.path)"
           >
             {{ item.title }}
           </div>
@@ -946,6 +946,10 @@ export default {
     font-weight: 500;
     font-size: 16px;
     line-height: 130%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+    white-space: nowrap;
     &_blue {
       font-weight: normal;
       font-size: 12px;

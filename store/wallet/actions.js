@@ -34,10 +34,7 @@ export default {
   async checkPassword({ commit }, password) {
     try {
       const res = await this.$axios.$post('/v1/auth/validate-password', { password });
-      if (res.ok) {
-        return res.result.isValid;
-      }
-      return false;
+      return res?.result?.isValid;
     } catch (e) {
       return false;
     }

@@ -152,10 +152,11 @@ export default {
         },
         {
           title: 'settings.changeRole',
-          buttonName: 'settings.change',
-          modal: 'changeRoleWarning',
-          isSwitcher: false,
-          disabled: !this.userData?.totpIsActive,
+          firstButtonName: 'settings.change',
+          secondButtonName: 'settings.change',
+          firstModal: 'changeRoleWarning',
+          secondModal: 'neededToEnable2FA',
+          isSwitcher: true,
         },
       ],
     };
@@ -279,7 +280,7 @@ export default {
     &__option_blue {
       flex-direction: column;
       button {
-        min-width: none;
+        min-width: auto;
         max-width: none;
         width: 100%;
       }
