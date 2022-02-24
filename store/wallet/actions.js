@@ -21,18 +21,10 @@ import {
 } from '~/utils/wallet.js';
 
 export default {
-  async getPensionTransactions({ commit, dispatch }) {
-    await commit('setPensionHistoryData', {
-      receive: { count: 0, curOffset: 0 },
-      withdraw: { count: 0, curOffset: 0 },
-      update: { count: 0, curOffset: 0 },
-    });
-    await dispatch('getMorePensionTransactions');
-  },
-  async getMorePensionTransactions({ commit, getters }) {
+  async getPensionTransactions({ commit, getters }) {
     try {
       const prevData = getters.getPensionHistoryData;
-      const limit = 100;
+      const limit = 10;
       const [receive, update, withdraw] = await Promise.all([
         this.$axios.get('/v1/pension-fund/receive', {
           params: {
@@ -69,6 +61,7 @@ export default {
           operation: item.event,
           txHash: item.transactionHash,
           time: item.createdAt,
+          timestamp: item.timestamp,
           value: `${getStyledAmount(item.amount)} ${TokenSymbols.WUSD}`,
         });
       }
@@ -78,6 +71,7 @@ export default {
           operation: item.event,
           txHash: item.transactionHash,
           time: item.createdAt,
+          timestamp: item.timestamp,
           value: `${getStyledAmount(item.amount)} ${TokenSymbols.WUSD}`,
         });
       }
@@ -87,10 +81,11 @@ export default {
           operation: item.event,
           txHash: item.transactionHash,
           time: item.createdAt,
+          timestamp: item.timestamp,
           value: `${getStyledAmount(item.newFee)}%`,
         });
       }
-      commit('addPensionHistory', newData);
+      commit('setPensionHistory', newData);
     } catch (e) {
       console.error(e);
     }

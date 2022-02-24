@@ -193,6 +193,7 @@ export default {
           },
           callback: () => {
             Promise.all([
+              this.$store.dispatch('wallet/getPensionTransactions'),
               this.$store.dispatch('wallet/pensionGetWalletInfo'),
               this.$store.dispatch('wallet/getBalance'),
             ]);

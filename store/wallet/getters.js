@@ -8,7 +8,6 @@ export default {
   getSelectedToken: (state) => state.selectedToken,
   getPensionWallet: (state) => state.pensionWallet,
   getPensionHistory: (state) => state.pensionHistory,
-  getPensionHistoryData: (state) => state.pensionHistoryData,
   getStakingPoolsData: (state) => state.stakingPoolsData,
   getStakingUserData: (state) => state.stakingUserData,
 };

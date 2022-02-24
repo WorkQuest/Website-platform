@@ -158,15 +158,16 @@
             />
           </div>
         </div>
-        <div
-          v-if="totalPages > 1"
-          class="info-block__pager"
-        >
-          <base-pager
-            v-model="page"
-            :total-pages="totalPages"
-          />
-        </div>
+        <!--        TODO: вернуть как появится возможность объединить на бэке -->
+        <!--        <div-->
+        <!--          v-if="totalPages > 1"-->
+        <!--          class="info-block__pager"-->
+        <!--        >-->
+        <!--          <base-pager-->
+        <!--            v-model="page"-->
+        <!--            :total-pages="totalPages"-->
+        <!--          />-->
+        <!--        </div>-->
         <div
           v-if="FAQs.length"
           class="info-block"
@@ -342,9 +343,6 @@ export default {
     async isWalletConnected(newValue) {
       if (!newValue) return;
       await this.getWallet();
-    },
-    page() {
-      this.$store.dispatch('wallet/getMorePensionTransactions');
     },
   },
   async mounted() {
