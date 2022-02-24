@@ -184,7 +184,7 @@ export default {
   &__content {
     display: grid;
     align-items: center;
-    grid-template-columns: repeat(5, auto);
+    grid-template-columns: repeat(6, auto);
     grid-gap: 10px;
     margin-bottom: 20px;
   }
