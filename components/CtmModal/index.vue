@@ -89,7 +89,9 @@
       <CtmModalTransactionReceipt v-if="modals.transactionReceipt === currentModalKey" />
       <CtmModalAreYouSure v-if="modals.areYouSure === currentModalKey" />
       <CtmModalStake v-if="modals.stake === currentModalKey" />
+      <CtmModalNeededToEnable2FA v-if="modals.neededToEnable2FA === currentModalKey" />
       <CtmModalGetWUSD v-if="modals.getWUSD === currentModalKey" />
+      <CtmModalBuyAuction v-if="modals.buyAuction === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -175,11 +177,15 @@ import CtmModalSwapTokens from './CtmModalSwapTokens';
 import CtmModalGallery from './CtmModalGallery';
 import CtmModalAreYouSure from './CtmModalAreYouSure';
 import CtmModalGetWUSD from './CtmModalGetWUSD';
+import CtmModalBuyAuction from './CtmModalBuyAuction';
+import CtmModalNeededToEnable2FA from './CtmModalNeededToEnable2FA';
 
 export default {
   name: 'ModalBox',
   components: {
+    CtmModalNeededToEnable2FA,
     CtmModalGetWUSD,
+    CtmModalBuyAuction,
     CtmModalStake,
     CtmModalTransactionReceipt,
     CtmModalQuestFilterFull,

@@ -104,7 +104,7 @@ export default {
       const response = await this.$axios.$get(`/v1/${role}/${userId}/quests`, {
         params: { ...query },
       });
-      commit('setUserQuests', response.result);
+      commit('setAllQuests', response.result);
       return response.result;
     } catch (e) {
       return console.log(e);
