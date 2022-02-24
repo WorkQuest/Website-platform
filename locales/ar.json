@@ -175,18 +175,6 @@
     "showAll": "Show all",
     "listIsEmpty": "List is empty"
   },
-  "priority": {
-    "title": "تحديد الأولوية",
-    "all": "جميع درجات الأولوية",
-    "low": "موعد تسليم ثابت",
-    "normal": "فترة قصيرة",
-    "urgent": "عاجلة",
-    "employee": {
-      "low": "???",
-      "normal": "???",
-      "urgent": "???"
-    }
-  },
   "signIn": {
     "title": "تسجيل الدخول",
     "account": "ليس لديك حساب؟",
@@ -384,7 +372,6 @@
     "acceptedTheInvitation": "???",
     "declinedTheInvitation": "???",
     "active": "نشطة",
-    "performed": "تم تنفيذها",
     "requested": "تم طلبها",
     "youInvited": "أرسلت دعوة إليها",
     "inProgressBy": "قيد التنفيذ بواسطة:",
@@ -1023,7 +1010,6 @@
     "educationAddSuccessful": "تمت إضافة التعليم بنجاح",
     "pressSaveBtn": "يُرجى الضغط على زر الحفظ",
     "imageLoadedSuccessful": "تم تحميل الصورة بنجاح",
-    "success": "تم بنجاح",
     "failed": "Failed",
     "yourRoleHasBeenChanged": "تم تغيير دورك",
     "chooseSkills": "اختر المهارات الضرورية",
