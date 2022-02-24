@@ -1385,52 +1385,52 @@
     "notVerified": "Not verified",
     "more": "More",
     "employmentInfo": "Employment information",
-    "addSpec": "Add specialization",
-    "removeSpec": "Remove specialization",
+    "addSpec": "إضافة تخصُّص",
+    "removeSpec": "إزالة التخصُّص",
     "education": {
-      "educationalInstitution": "Educational institution"
+      "educationalInstitution": "مؤسسة تعليمية"
     },
     "workExps": {
-      "companyName": "Company name"
+      "companyName": "اسم الشركة"
     },
-    "urgentJobOffers": "Urgent job offers",
-    "shortTermJobOffers": "Short term job offers",
-    "fixedDeliveryJobOffers": "Fixed delivery job offers",
-    "addInfo": "You can add information about yourself, upload a profile photo and go through the KYC procedure to increase your rating. The rating depends on your profile data and reviews.",
-    "alsoRating": "The higher your ranking, the easier it is to find you in searches.",
-    "dontShow": "Don’t show again",
-    "profileInfo": "Profile information",
-    "nameInput": "Enter your name",
-    "lastNameInput": "Enter your last name",
-    "addressInput": "Enter your address",
-    "telInput": "Enter phone number",
-    "userDesc": "Add a short description about yourself",
-    "instagramUsername": "Instagram username",
-    "twitterUsername": "Twitter username",
-    "linkedInUsername": "LinkedIn username",
-    "facebookUsername": "Facebook username",
-    "skills": "Skills:",
-    "whoCanSee": "Who can see my profile?",
-    "allUsers": "All registered users",
-    "allInternet": "Internet users worldwide",
-    "onlyWhenSubmittedWork": "Only when submitting job offers",
-    "allRegistered": "All registered users",
-    "changePass": "Change password",
-    "change": "Change",
-    "enableTwoStepAuth": "Enable Two-Step authentication",
-    "enable": "Enable",
-    "smsVerification": "SMS profile verification",
-    "company": "Enter your company name",
-    "ceo": "Add a position",
-    "filterAllEmployeeProfiles": "Filter all employee profiles",
-    "website": "Enter your company website",
-    "changeRole": "Change role",
-    "instruments": "Instruments",
-    "pensionProgram": "Pension program",
-    "referralProgram": "Referral program",
-    "p2pInsurance": "P2P insurance",
-    "savingProduct": "Savings product",
-    "liquidityMining": "Liquidity mining",
+    "urgentJobOffers": "عروض عمل عاجلة",
+    "shortTermJobOffers": "عروض عمل قصيرة المدى",
+    "fixedDeliveryJobOffers": "عروض ذات موعد تسليم ثابت",
+    "addInfo": "يمكنك إضافة معلومات عنك، وتحميل صورة الملف التعريفي والخضوع لإجراء \"اعرف عميلك\" (KYC) لزيادة تقييمك. يعتمد التقييم على بيانات ملفك التعريفي والمراجعات.",
+    "alsoRating": "كلما ارتفع ترتيبك، كان من الأسهل العثور عليك في عمليات البحث.",
+    "dontShow": "عدم الإظهار مرة أخرى",
+    "profileInfo": "معلومات الملف التعريفي",
+    "nameInput": "أدخل اسمك",
+    "lastNameInput": "أدخل اسمك الأخير",
+    "addressInput": "أدخل عنوانك",
+    "telInput": "أدخل رقم الهاتف",
+    "userDesc": "أضف وصفًا موجزًا عن نفسك",
+    "instagramUsername": "اسم مستخدم Instagram",
+    "twitterUsername": "اسم مستخدم Twitter",
+    "linkedInUsername": "اسم مستخدم LinkedIn",
+    "facebookUsername": "اسم مستخدم Facebook",
+    "skills": "المهارات:",
+    "whoCanSee": "من يمكنه رؤية ملفي التعريفي؟",
+    "allUsers": "جميع المستخدمين المسجَّلين",
+    "allInternet": "مستخدمو الإنترنت في جميع أنحاء العالم",
+    "onlyWhenSubmittedWork": "عند تقديم عروض العمل فقط",
+    "allRegistered": "جميع المستخدمين المسجَّلين",
+    "changePass": "تغيير كلمة المرور",
+    "change": "تغيير",
+    "enableTwoStepAuth": "تمكين المصادقة الثنائية",
+    "enable": "تمكين",
+    "smsVerification": "التحقُّق من الملف التعريفي برسالة نصية قصيرة",
+    "company": "إدخال اسم شركتك",
+    "ceo": "إضافة مركز",
+    "filterAllEmployeeProfiles": "تصفية جميع ملفات تعريف الموظفين",
+    "website": "إدخال الموقع الإلكتروني لشركتك",
+    "changeRole": "تغيير الدور",
+    "instruments": "الأدوات",
+    "pensionProgram": "برنامج رواتب التقاعد",
+    "referralProgram": "برنامج الإحالة",
+    "p2pInsurance": "التأمين من نظير إلى نظير",
+    "savingProduct": "برنامج المدخرات",
+    "liquidityMining": "تعدين السيولة",
     "distantWork": {
       "title": "Workplace",
       "select": "Select distant work",
@@ -1441,186 +1441,186 @@
     }
   },
   "raising-views": {
-    "raisingViews": "Raising views",
-    "choosePeriod": "Choose period",
-    "forOneDay": "For 1 day",
-    "forOneWeek": "For 1 week",
-    "forOneMonth": "For 1 month",
-    "chooseLevel": "Choose level"
+    "raisingViews": "زيادة المشاهدات",
+    "choosePeriod": "اختيار الفترة",
+    "forOneDay": "لمدة يوم واحد",
+    "forOneWeek": "لمدة أسبوع واحد",
+    "forOneMonth": "لمدة شهر واحد",
+    "chooseLevel": "اختيار المستوى"
   },
   "disputes": {
-    "dispute": "Disputes №:",
-    "quest": "Quest:",
-    "employer": "Employer:",
-    "questSalary": "Quest salary:",
-    "status": "Status:",
-    "decision": "Decision:",
-    "pending": "Pending",
-    "chatHistory": "Chat history",
-    "disputeTime": "Dispute opening time:",
+    "dispute": "النزاعات №:",
+    "quest": "طلب العمل:",
+    "employer": "صاحب العمل:",
+    "questSalary": "راتب طلب العمل:",
+    "status": "الحالة:",
+    "decision": "القرار:",
+    "pending": "قيد الانتظار",
+    "chatHistory": "سجل الدردشة",
+    "disputeTime": "وقت فتح النزاع:",
     "inProgress": "In progress"
   },
   "workers": {
-    "searchQuests": "Search quests",
-    "searchWorkers": "Search workers",
-    "topWorkers": "Top employees",
-    "price": "Price",
-    "addedTime": "Added time",
-    "urgent": "Select the urgency level",
-    "specialized": "Specialized",
-    "specializations": "Specializations",
-    "aboutMe": "About me",
-    "giveAQuest": "Give a quest",
-    "inviteQuestor": "Invite Questor",
-    "skills": "Skills",
-    "completedQuests": "Completed quests",
-    "averageRating": "Average rating",
-    "based": "Based",
-    "reviews": "reviews",
+    "searchQuests": "البحث في طلبات العمل",
+    "searchWorkers": "البحث في الموظفين",
+    "topWorkers": "أفضل الموظفين",
+    "price": "السعر",
+    "addedTime": "الوقت المضاف",
+    "urgent": "تحديد مستوى الاستعجال",
+    "specialized": "متخصص",
+    "specializations": "التخصصات",
+    "aboutMe": "نبذة عني",
+    "giveAQuest": "منح طلب عمل",
+    "inviteQuestor": "دعوة صاحب الوظيفة",
+    "skills": "المهارات",
+    "completedQuests": "طلبات العمل المكتملة",
+    "averageRating": "متوسط التقييم",
+    "based": "في",
+    "reviews": "المراجعات",
     "noReviewsAdded": "No reviews added!",
     "noPortfoliosAdded": "No portfolios added!"
   },
   "levels": {
-    "checkedByTime": "VERIFIED EMP.",
-    "reliableEmp": "RELIABLE EMP.",
-    "disabled": "DISABLED",
-    "higher": "HIGHER LEVEL EMP."
+    "reliableEmp": "موظف موثوق",
+    "checkedByTime": "موظف تم التحقُّق منه",
+    "disabled": "غير نشط",
+    "higher": "موظف رفيع المستوى"
   },
   "referral": {
-    "inviteFriendsHead": "Invite friends.",
-    "earnCryptoTogether": "Earn crypto together",
-    "headerSubtitle": "Earn up to 35$ in WQT every time your friends register and make first Quest on Work Quest platform.",
-    "referralReward": "Referral reward",
-    "lastRefReward": "Last ref reward",
-    "yourRefers": "Your referrals",
-    "yourReferralLink": "Your referral link",
-    "howToInviteYourFriends": "How to invite your friends?",
-    "getLink": "Get Link",
-    "registerAndGenerate": "Register and generate referral links with a commission kickback rate.",
-    "inviteFriends": "Invite Friends",
-    "inviteYourFriends": "Invite your friends to register through the referral link and get rewards when they complete first Quest.",
-    "earnCrypto": "Earn Crypto",
-    "everyTimeYourFriends": "Every time your friends make a first Quest, you'll get up to $35 in WQT commission in real time!",
-    "historyOfRewards": "History of rewards",
+    "inviteFriendsHead": "دعوة الأصدقاء",
+    "earnCryptoTogether": "ربح العملات المشفرة معًا",
+    "headerSubtitle": "اربح ما يصل إلى 35 دولارًا في WQT في كل مرة يسجِّل فيها أصدقاؤك ويؤدون أول طلب عمل على منصة WorkQuest.",
+    "referralReward": "مكافأة الإحالة",
+    "lastRefReward": "مكافأة آخر إحالة",
+    "yourRefers": "إحالاتك",
+    "yourReferralLink": "رابط الإحالة الخاص بك",
+    "howToInviteYourFriends": "كيف تدعو أصدقاءك؟",
+    "getLink": "إنشاء رابط",
+    "registerAndGenerate": "سجِّل وأنشئ روابط إحالة بعمولة رجعية.",
+    "inviteFriends": "دعوة الأصدقاء",
+    "inviteYourFriends": "أرسل دعوة إلى أصدقائك للتسجيل من خلال رابط الإحالة واحصل على مكافآت عندما يكملون أول طلب عمل.",
+    "earnCrypto": "ربح العملات المشفرة",
+    "everyTimeYourFriends": "ستحصل على ما يصل إلى 35 دولارًا من عمولة WQT في الوقت الفعلي في كل مرة يكمل فيها أصدقاؤك أول طلب عمل!",
+    "historyOfRewards": "سجل المكافآت",
     "tableHead": {
-      "name": "Name",
-      "userID": "User ID",
-      "txHash": "Txn hash",
-      "time": "Time",
-      "amount": "Amount",
-      "status": "Status"
+      "name": "الاسم",
+      "userID": "معرِّف المستخدم",
+      "txHash": "تجزئة المعاملة",
+      "time": "الوقت",
+      "amount": "المبلغ",
+      "status": "الحالة"
     }
   },
   "pension": {
-    "pensionSavingsBalance": "Pension savings balance",
-    "retirementProgram": "Retirement program",
-    "faq": "FAQ",
-    "pensionProgram": "Pension program",
-    "applyForAPension": "Apply for a pension",
-    "applyForRetirement": "Apply for retirement",
-    "annualPercent": "Annual percent",
-    "optional": "Optional",
-    "optionalFirstDeposit": "First deposit",
-    "term": "Term",
-    "configurablePercentage": "Configurable percentage",
-    "depositsFromQuest": "Deposit from quests",
-    "howToTakePart": "How to participate in the pension program?",
-    "pensionPlanText": "A pension plan may allow a worker to contribute part of their current income from wages into an investment plan to help fund retirement.",
-    "information": "Detailed information",
-    "download": "Download",
-    "pensionBalance": "Pension savings balance",
-    "makeADeposit": "Make a deposit",
-    "currentPercentFromAQuest": "Current percentage from a quest",
-    "changePercent": "Change percentage",
-    "everyYear": "Annualized",
-    "year": "yearly",
-    "timeRemainsUntilTheEndOfThePeriod": "Time remains until the end of the period:",
-    "transactionHistory": "Transaction history",
-    "withdraw": "Withdraw",
-    "prolong": "Prolong",
+    "pensionSavingsBalance": "رصيد مدخرات راتب التقاعد",
+    "retirementProgram": "برنامج التقاعد",
+    "faq": "الأسئلة الشائعة",
+    "pensionProgram": "برنامج رواتب التقاعد",
+    "applyForAPension": "التقدم بطلب للحصول على راتب تقاعد",
+    "applyForRetirement": "التقدم بطلب للتقاعد",
+    "annualPercent": "النسبة السنوية",
+    "optional": "اختياري",
+    "optionalFirstDeposit": "أول إيداع",
+    "term": "المهلة",
+    "configurablePercentage": "نسبة قابلة للضبط",
+    "depositsFromQuest": "الإيداع من طلبات العمل",
+    "howToTakePart": "كيف يتم الاشتراك في برنامج رواتب التقاعد؟",
+    "pensionPlanText": "قد تسمح خطة رواتب التقاعد للموظف بالمساهمة بجزء من دخله الحالي من الأجور في خطة استثمارية للمساعدة في تمويل التقاعد.",
+    "information": "معلومات مفصَّلة",
+    "download": "تنزيل",
+    "pensionBalance": "رصيد مدخرات راتب التقاعد",
+    "makeADeposit": "إجراء إيداع",
+    "currentPercentFromAQuest": "النسبة المئوية الحالية من طلب العمل",
+    "changePercent": "تغيير النسبة المئوية",
+    "everyYear": "سنوي",
+    "year": "سنوي",
+    "timeRemainsUntilTheEndOfThePeriod": "يبقى الوقت حتى نهاية الفترة:",
+    "transactionHistory": "سجل المعاملات",
+    "withdraw": "سحب",
+    "prolong": "تمديد",
     "prolongText": "This will prolong pension program for 1 year",
     "faq1": {
-      "question": "How do you qualify for a pension?",
-      "answer": "You do not need to have worked for an employer for a certain number of years to be eligible for retirement benefits. Just select the percentage of each quest you want to accumulate in your account. Your retirement benefit usually increases as you accumulate funds. The additional percentage will be earned automated by using funds in the lending program."
+      "question": "كيف تتأهل للحصول على راتب تقاعد؟",
+      "answer": "لا تحتاج إلى أن تكون قد عملت لدى صاحب عمل لعدد معيَّن من السنوات لتكون مؤهلًا للحصول على استحقاقات التقاعد. ما عليك سوى تحديد النسبة المئوية لكل طلب عمل تريد جمعه في حسابك. عادةً ما تزداد استحقاقات التقاعد الخاصة بك كلما جمعت الأموال. سيتم ربح النسبة الإضافية تلقائيًا باستخدام الأموال في برنامج الإقراض."
     },
     "faq2": {
-      "question": "How is the 'additional percentage' calculated?",
-      "answer": "The funds of the pension fund will be blocked in the loan agreement. APY varies depending on changes in the credit protocol. The profit can make from 3-6%"
+      "question": "كيف يتم حساب \"النسبة الإضافية\"؟",
+      "answer": "سيتم تأمين أموال صندوق التقاعد في اتفاقية القرض. تختلف النسبة المئوية للعائد السنوي اعتمادًا على التغييرات في بروتوكول الائتمان. ويمكن تحقيق الربح من 3-6%"
     },
     "faq3": {
-      "question": "How do pension plans work?",
-      "answer": "You do not need to have worked for an employer for a certain number of years to be eligible for retirement benefits. Just select the percentage of each quest you want to accumulate in your account. Your retirement benefit usually increases as you accumulate funds. The additional percentage will be earned automated by using funds in the lending program."
+      "question": "كيف تعمل خطط رواتب التقاعد؟",
+      "answer": "لا تحتاج إلى أن تكون قد عملت لدى صاحب عمل لعدد معيَّن من السنوات لتكون مؤهلًا للحصول على استحقاقات التقاعد. ما عليك سوى تحديد النسبة المئوية لكل طلب عمل تريد جمعه في حسابك. عادةً ما تزداد استحقاقات التقاعد الخاصة بك كلما جمعت الأموال. سيتم ربح النسبة الإضافية تلقائيًا باستخدام الأموال في برنامج الإقراض."
     },
     "faq4": {
-      "question": "How many years do you need to work to be vested in the pension plan?",
-      "answer": "According to WorkQuest rules, anyone can open a private sector savings plan. After the first three years, you will have the opportunity to receive 100% of the accumulated funds.\nYou can continue to accumulate for another year or withdraw funds in full to your wallet."
+      "question": "كم عدد السنوات التي تحتاجها للعمل حتى يتم ضمك إلى خطة رواتب التقاعد؟",
+      "answer": "وفقًا لقواعد WorkQuest، يمكن لأي شخص فتح خطة مدخرات للقطاع الخاص. وبعد السنوات الثلاثة الأولى، ستتاح لك فرصة الحصول على 100% من الأموال المجموعة.\nيمكنك متابعة جمع الأموال لمدة عام آخر أو سحب الأموال بالكامل إلى محفظتك."
     },
     "faq5": {
-      "question": "What is a good pension?",
-      "answer": "What is a good pension amount? Some advisers recommend that you save up 10 times your average working-life salary by the time you retire. So if your average salary is $30,000 you should aim for a pension pot of around $300,000. Another top tip is that you should save 12.5 per cent of your monthly salary."
+      "question": "ما راتب التقاعد الجيد؟",
+      "answer": "ما راتب التقاعد الجيد؟ يوصي بعض المستشارين بأن تدخر 10 أضعاف متوسط ​​راتبك في الحياة العملية عند التقاعد. لذلك، إذا كان متوسط راتبك هو 30 ألف دولار، يجب أن تهدف إلى الوصول إلى وعاء تقاعد يبلغ حوالي 300 ألف دولار. نصيحة مهمة أخرى هي أنه يجب عليك توفير 12.5 في المائة من راتبك الشهري."
     },
     "faq6": {
-      "question": "Is monthly pension taxable?",
-      "answer": "Your monthly pension payment almost always counts as taxable income, and you'll need to make sure that you have enough taxes withheld from your pension payments to satisfy the Internal Revenue Service"
+      "question": "هل يخضع راتب التقاعد الشهري للضريبة؟",
+      "answer": "يتم احتساب دفعة راتب التقاعد الشهرية دائمًا على أنها دخل خاضع للضريبة، وستحتاج إلى التأكد من أن لديك ضرائب كافية مقتطعة من مدفوعات راتب التقاعد لإرضاء دائرة الإيرادات الداخلية"
     },
     "faq7": {
-      "question": "Can I take all my pension in one go?",
-      "answer": "After minimum period 3 years retirement program, you can withdraw some or all of your pension savings in one go."
+      "question": "هل يمكنني أخذ راتب تقاعدي دفعة واحدة؟",
+      "answer": "بعد 3 سنوات على الأقل في برنامج التقاعد، يمكنك سحب بعض مدخرات التقاعد أو كلها دفعة واحدة."
     },
     "faq8": {
-      "question": "Can I cancel my pension and get the money?",
-      "answer": "If you withdraw after the minimum 3 years has passed or on the day of the annual renewal, you will receive back all the money you have already paid. If you opt out later, you will not be able to receive a refund of your payments until the end of the extended period (usually 1 year)."
+      "question": "هل يمكنني إلغاء راتب تقاعدي والحصول على المال؟",
+      "answer": "إذا سحبت بعد مرور 3 سنوات على الأقل أو في يوم التجديد السنوي، فستسترد جميع الأموال التي دفعتها بالفعل. وإذا ألغيت الاشتراك لاحقًا، فلن تتمكن من استرداد مدفوعاتك حتى نهاية الفترة الممتدة (عام واحد عادةً)."
     },
     "faq9": {
-      "question": "Can I draw my pension and still work?",
-      "answer": "Can I take my pension early and continue to work? The short answer is yes. These days, there is no set retirement age. You can carry on working for as long as you like, and can also access to pensions program."
+      "question": "هل يمكنني سحب راتب تقاعدي وأنا ما زلت أعمل؟",
+      "answer": "هل يمكنني أخذ راتب تقاعدي مبكرًا والاستمرار في العمل؟ الإجابة القصيرة هي نعم. لا يوجد سن محددة للتقاعد في الوقت الحالي. يمكنك الاستمرار في العمل للمدة التي تريدها، ويمكنك أيضًا الدخول في برنامج رواتب التقاعد."
     },
     "faq10": {
-      "question": "What happens if I Overfund my pension?",
-      "answer": "We have no restrictions on the amount of savings. The entire accumulated amount will be at your disposal at the end of the program period."
+      "question": "ماذا يحدث إذا أفرطت في تمويل راتب تقاعدي؟",
+      "answer": "ليس لدينا قيود على مبلغ المدخرات. سيكون المبلغ المجمَّع بأكمله تحت تصرفك في نهاية فترة البرنامج."
     }
   },
   "saving": {
-    "withdrawModalBody": "The amount of locked funds and the accumulated interest will be credited to your wallet",
-    "workQuestSavings": "WorkQuest Savings",
-    "lendAndEarn": "Lend & Earn",
-    "conditions": "Conditions",
-    "maxMinSum": "Max/min sum",
-    "depositsAndWithdrawal": "Deposits and withdrawal",
-    "term": "Term",
-    "annualizedInterestRate": "Annualized interest rate",
-    "openADeposit": "Open a deposit",
-    "faq": "FAQ",
-    "information": "Information",
-    "historyOfDeposits": "History of deposits",
-    "depositAmount": "Locked Amount",
-    "card": "Annualized Interest Rate \n {rate} % \n Duration (days): {duration} days",
-    "templateText": "Committed to Holding your cryptocurrency?\nAn easy way to lend and earn with locked savings.",
-    "faq1": "What are Locked Savings? Committed to holding your crypto?",
-    "faq2": "What happens to my funds on the day I subscribe to a Locked Savings product?",
-    "faq3": "What happens to my funds on the value date of a Locked Savings product?",
-    "faq4": "What happens to my funds on the redemption date of a Locked Savings product?",
-    "faq5": "How is the average annual return (APR) calculated?",
-    "faq6": "Am I guaranteed to earn interest on WorkQuest Savings products even if the crypto markets go down?",
-    "ans1": "Now you can earn interest at the same time! Subscribe your crypto to locked savings periods for higher interest earnings.",
-    "ans2": "On the day of subscription, WorkQuest Savings will deduct the funds for subscription from your WUSD wallet.\n",
-    "ans3": "On the value date, WorkQuest Savings will distribute the Locked Savings product to your savings wallet, and your saving product will start to accrue interest.",
-    "ans4": "On the redemption date, you will see both the initial tokens committed to the subscription and the interest accrued in your WorkQuest account ‘balances’. This process will be automatic.",
-    "ans5": "The average annual return (APR) uses the average daily interest rate from the past 7 days, multiplied by 365.",
-    "ans6": "Yes. The interest rate on each product is guaranteed.",
-    "smallPlug": "??",
-    "possiblePlug": "Possible",
-    "yearPlug": "1 year",
-    "depositModalBody": "Your crypto will lock for a specific period, and you will begin earning interest.",
-    "depositIsOpened": "Transfer confirmed",
-    "deposit": "Deposit",
-    "withdraw": "Withdraw",
+    "withdrawModalBody": "ستتم إضافة مبلغ الأموال المؤمَّنة والفائدة المجمَّعة إلى محفظتك",
+    "workQuestSavings": "مدخرات WorkQuest",
+    "lendAndEarn": "الإقراض والربح",
+    "conditions": "الشروط",
+    "maxMinSum": "أدنى/أقصى مبلغ",
+    "depositsAndWithdrawal": "الإيداعات والسحب",
+    "term": "المهلة",
+    "annualizedInterestRate": "معدل الفائدة السنوي",
+    "openADeposit": "فتح إيداع",
+    "faq": "الأسئلة الشائعة",
+    "information": "المعلومات",
+    "historyOfDeposits": "سجل الإيداعات",
+    "depositAmount": "المبلغ المؤمَّن",
+    "card": "معدل الفائدة السنوي \n {rate}% \n المدة (بالأيام): {duration} أيام",
+    "templateText": "هل أنت ملتزم بالاحتفاظ بعملتك المشفرة؟\nطريقة سهلة للإقراض والربح من خلال المدخرات المؤمَّنة.",
+    "faq1": "ما المدخرات المؤمَّنة؟ هل أنت ملتزم بالاحتفاظ بعملاتك المشفرة؟",
+    "faq2": "ماذا يحدث لأموالي في اليوم الذي أشترك فيه في أحد برامج المدخرات المؤمَّنة؟",
+    "faq3": "ماذا يحدث لأموالي في تاريخ استحقاق أحد برامج المدخرات المؤمَّنة؟",
+    "faq4": "ماذا يحدث لأموالي في تاريخ استرداد أحد برامج المدخرات المؤمَّنة؟",
+    "faq5": "كيف يتم حساب متوسط العائد السنوي (APR)؟",
+    "faq6": "هل أضمن ربح الفائدة على برامج مدخرات WorkQuest حتى لو انخفضت أسواق العملات الرقمية؟",
+    "ans1": "يمكنك الآن ربح الفائدة في الوقت نفسه! أشرِك عملتك المشفرة في فترات المدخرات المؤمَّنة لتحقيق أرباح أعلى من الفوائد.",
+    "ans2": "في يوم الاشتراك، سيخصم برنامج مدخرات WorkQuest أموال الاشتراك من محفظة WUSD الخاصة بك.\n",
+    "ans3": "في تاريخ استحقاق القيمة، سيوزِّع برنامج مدخرات WorkQuest المدخرات المؤمَّنة على محفظة المدخرات الخاصة بك، وسيبدأ برنامج المدخرات في تحصيل الفائدة.",
+    "ans4": "في تاريخ الاسترداد، سترى كل من الرموز الأولية المخصصة للاشتراك والفائدة المحصَّلة في \"أرصدة\" حساب WorkQuest الخاص بك. ستكون هذه العملية تلقائية.",
+    "ans5": "يستخدم متوسط العائد السنوي (APR) متوسط معدل الفائدة اليومية من آخر 7 أيام، مضروبًا في 365.",
+    "ans6": "أجل. سعر الفائدة على كل منتج مضمون.",
+    "smallPlug": "؟؟",
+    "possiblePlug": "ممكن",
+    "yearPlug": "سنة واحدة",
+    "depositModalBody": "سيتم تأمين عملتك المشفرة لفترة محددة، وستبدأ في الحصول على الفائدة.",
+    "depositIsOpened": "تم تأكيد التحويل",
+    "deposit": "إيداع",
+    "withdraw": "سحب",
     "withdrawText": "The amount of locked funds and the accumulated interest will be credited to your wallet"
   },
   "mining": {
     "loading": "loading...",
     "claimRewards": "Claim rewards",
-    "liquidityMining": "Liquidity mining",
+    "liquidityMining": "تعدين السيولة",
     "swapTokens": {
       "title": "Swap tokens",
       "swap": "Swap",
@@ -1629,39 +1629,39 @@
       "balance": "Your balance:"
     },
     "liquidityMiningSub": "Is a DeFi (decentralized finance) mechanism in which participants supply cryptocurrencies into liquidity pools, and being rewarded with fees and tokens based on their share of the total pool liquidity.",
-    "pools": "Pools",
-    "choose": "Choose",
-    "information": "Information",
+    "pools": "التجمُّعات",
+    "choose": "اختيار",
+    "information": "المعلومات",
     "agreement": "WorkQuest Liquidity Mining User Agreement.pdf",
-    "download": "Download",
+    "download": "تنزيل",
     "tableHead": {
-      "poolAddress": "Pool address",
+      "poolAddress": "عنوان التجمُّع",
       "swaps": "Swaps",
       "totalValue": "Total value",
       "tokenAmount": "Token amount",
       "account": "Account",
       "time": "Time",
-      "assets": "Assets",
-      "volume": "Volume"
+      "assets": "الأصول",
+      "volume": "الحجم"
     },
     "table": {
       "assets": "50% WQT / 50% ETH",
       "assets2": "50% WQT / 50% BNB"
     },
-    "wusdEthPool": "ETH/WQT pool",
-    "wusdBnbPool": "BNB/WQT pool",
+    "wusdEthPool": "ETH/WQT تجمُّع",
+    "wusdBnbPool": "BNB/WQT تجمُّع",
     "APY": "APY",
-    "removeLiquidity": "Remove liquidity",
-    "liquidity": "Liquidity",
+    "removeLiquidity": "إزالة السيولة",
+    "liquidity": "السيولة",
     "totalLiquidity": "Total liquidity",
     "reward": "Reward",
     "claimReward": "Claim Reward",
     "totalReward": "Total reward",
-    "volume24h": "Volume (24h)",
-    "myPoolShare": "My pool share",
-    "liquidityPoolProviders": "Liquidity pool providers",
-    "liquidityProvidersEarn": "Liquidity providers earn a 0.3% fee on all trades proportional to their share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.",
-    "transactions": "Transactions",
+    "volume24h": "الحجم (24 ساعة)",
+    "myPoolShare": "حصتي في التجمُّع",
+    "liquidityPoolProviders": "موفِّرو تجمُّع السيولة",
+    "liquidityProvidersEarn": "يربح مقدِّمو السيولة رسومًا بنسبة 0.3% على جميع عمليات التداول بما يتناسب مع حصتهم في التجمُّع. وتتم إضافة الرسوم إلى التجمُّع وتحصيلها في الوقت الفعلي، ويمكن المطالبة بها عن طريق سحب السيولة الخاصة بك.",
+    "transactions": "المعاملات",
     "connectWallet": "Connect wallet"
   },
   "collateral": {
@@ -1684,140 +1684,140 @@
     "lend": "Lend"
   },
   "crediting": {
-    "lending": "WorkQuest Lending Protocol",
-    "templateText": "WorkQuest DeFi lending platform on the Work Net network with four exclusive money markets for volatile assets",
-    "marketSize": "Market size",
-    "deposit": "Deposit",
-    "percent": "Percent",
-    "wantToTakeALoan": "Want to take a loan?",
-    "borrow": "Borrow",
-    "information": "Information",
-    "openPositions": "Open positions",
-    "totalCollateralLocked": "Total collateral locked",
-    "totalWusdDebt": "Total WUSD debt",
+    "lending": "بروتوكول إقراض WorkQuest",
+    "templateText": "منصة الإقراض بالتمويل اللامركزي WorkQuest على شبكة Work Net مع أربع أسواق مالية حصرية للأصول المتقلبة",
+    "marketSize": "حجم السوق",
+    "deposit": "إيداع",
+    "percent": "النسبة المئوية",
+    "wantToTakeALoan": "هل تريد الحصول على قرض؟",
+    "borrow": "استعارة",
+    "information": "المعلومات",
+    "openPositions": "المراكز المفتوحة",
+    "totalCollateralLocked": "مجموع الضمانات المؤمَّنة",
+    "totalWusdDebt": "إجمالي مديونية WUSD",
     "tableHead": {
-      "id": "ID",
-      "currentRatio": "Current ratio",
-      "deposited": "Deposited",
-      "availableToWithdraw": "Available to withdraw"
+      "id": "المعرِّف",
+      "currentRatio": "النسبة الحالية",
+      "deposited": "تم الإيداع",
+      "availableToWithdraw": "المتاح للسحب"
     },
     "table": {
-      "manage": "Manage"
+      "manage": "إدارة"
     },
-    "liquidationPrice": "Liquidation price",
-    "collateralizationRatio": "Collateralization ratio",
-    "ethLocked": "ETH locked",
-    "ableToWithdraw": "Able to withdraw",
-    "withdraw": "Withdraw",
-    "outstandingWusdDebt": "Outstanding WUSD debt",
-    "availableToGenerate": "Available to generate",
-    "payback": "Payback",
-    "generate": "Generate",
-    "history": "History",
+    "liquidationPrice": "سعر التصفية",
+    "collateralizationRatio": "نسبة الضمان",
+    "ethLocked": "تم تأمين ETH",
+    "ableToWithdraw": "قادر على السحب",
+    "withdraw": "سحب",
+    "outstandingWusdDebt": "مديونية WUSD المعلَّقة",
+    "availableToGenerate": "متاح للتوليد",
+    "payback": "تسديد",
+    "generate": "توليد",
+    "history": "السجل",
     "credTableHeader": {
-      "activity": "Activity",
-      "amount": "Amount",
-      "time": "Time",
-      "sender": "Sender",
-      "txHash": "Txn hash"
+      "activity": "النشاط",
+      "amount": "المبلغ",
+      "time": "الوقت",
+      "sender": "المرسل",
+      "txHash": "تجزئة المعاملة"
     },
     "credTable": {
-      "activity": "Paid back"
+      "activity": "تم التسديد"
     },
-    "faq1": "What are Locked Savings? Committed to holding your crypto?",
-    "faq2": "What happens to my funds on the day I subscribe to a Locked Savings product?",
-    "ans2": "On the day of subscription, WorkQuest Savings will deduct the funds for subscription from your WUSD wallet.\n",
-    "faq3": "What happens to my funds on the value date of a Locked Savings product?",
-    "faq4": "What happens to my funds on the redemption date of a Locked Savings product?",
-    "faq5": "How is the average annual return (APR) calculated?",
-    "faq": "FAQ",
-    "lend": "Lend"
+    "faq1": "ما المدخرات المؤمَّنة؟ هل أنت ملتزم بالاحتفاظ بعملاتك المشفرة؟",
+    "faq2": "ماذا يحدث لأموالي في اليوم الذي أشترك فيه في أحد برامج المدخرات المؤمَّنة؟",
+    "ans2": "في يوم الاشتراك، سيخصم برنامج مدخرات WorkQuest أموال الاشتراك من محفظة WUSD الخاصة بك.\n",
+    "faq3": "ماذا يحدث لأموالي في تاريخ استحقاق أحد برامج المدخرات المؤمَّنة؟",
+    "faq4": "ماذا يحدث لأموالي في تاريخ استرداد أحد برامج المدخرات المؤمَّنة؟",
+    "faq5": "كيف يتم حساب متوسط العائد السنوي (APR)؟",
+    "faq": "الأسئلة الشائعة",
+    "lend": "إقراض"
   },
   "insuring": {
-    "peerToPeerInsuring": "P2P insuring",
+    "peerToPeerInsuring": "تأمين P2P",
     "card1": {
-      "title": "Minimal protection",
+      "title": "الحد الأدنى من الحماية",
       "pointsText": {
-        "point1": "An annual contribution of 1000 WUSD, payment in the event of an insured event 833.333333 WUSD."
+        "point1": "مساهمة سنوية قدرها 1000 WUSD، ويكون مبلغ الدفع في حال وقوع حدث مؤمَّن عليه هي 833.333333 WUSD."
       }
     },
     "card2": {
-      "title": "Standart protection",
+      "title": "الحماية القياسية",
       "pointsText": {
-        "point1": "Annual premium 2000 WUSD, payment in case of an insured event 1666.6667 WUSD."
+        "point1": "قسط سنوي قدره 2000 WUSD، ويكون مبلغ الدفع في حال وقوع حدث مؤمَّن عليه هي 1666.6667 WUSD."
       }
     },
     "card3": {
-      "title": "Maximum protection",
+      "title": "الحد الأقصى من الحماية",
       "pointsText": {
-        "point1": "An annual contribution of 3000 WUSD, payment in the event of an insured event of 2500 WUSD."
+        "point1": "مساهمة سنوية قدرها 3000 WUSD، ويكون مبلغ الدفع في حال وقوع حدث مؤمَّن عليه هي 2500 WUSD."
       }
     },
-    "buy": "Buy",
-    "information": "Information",
-    "minimalProtectionPlan": "Minimal protection plan",
-    "standardProtectionPlan": "Standard protection plan",
-    "maximumProtectionPlan": "Maximum protection plan",
-    "yourFundBalance": "Insurance fund balance",
-    "withdraw": "Withdrawal",
-    "leaveFund": "Leave fund",
-    "changePlan": "Change plan",
-    "fundParticipants": "Fund participants",
-    "userName": "Cody Fisher",
+    "buy": "شراء",
+    "information": "المعلومات",
+    "minimalProtectionPlan": "الحد الأدنى من الحماية",
+    "standardProtectionPlan": "الحماية القياسية",
+    "maximumProtectionPlan": "الحد الأقصى من الحماية",
+    "yourFundBalance": "رصيد صندوق التأمين",
+    "withdraw": "سحب",
+    "leaveFund": "مغادرة الصندوق",
+    "changePlan": "تغيير الخطة",
+    "fundParticipants": "المشاركون في الصندوق",
+    "userName": "هاني جمال",
     "userNameCase": "Cody Fisher :",
-    "voting": "Voting",
-    "noVoteAtTheMoment": "No vote at the moment",
-    "countPeoplesInChat": "{count} peoples in chat",
-    "writeSomething": "Write something",
-    "activeVoting": "Active voting",
-    "paymentOfInsurance": "Payment of insurance",
-    "youWillCertifyTheInsuredEvent": "You will certify the insured event?",
-    "studyTheInsuredEventThoroughly": "Study the insured event thoroughly",
-    "insuredEvent": "Insured event",
+    "voting": "التصويت",
+    "noVoteAtTheMoment": "لا يوجد تصويت في الوقت الراهن",
+    "countPeoplesInChat": "{count} شخص في الدردشة",
+    "writeSomething": "اكتب شيئًا",
+    "activeVoting": "التصويت النشط",
+    "paymentOfInsurance": "{value}: دفعة التأمين",
+    "youWillCertifyTheInsuredEvent": "ستعتمد الحدث المؤمَّن عليه؟",
+    "studyTheInsuredEventThoroughly": "دراسة الحدث المؤمَّن عليه بتعمُّق",
+    "insuredEvent": "الحدث المؤمَّن عليه",
     "planPoints": {
-      "point1": "Annual fee: {count} WUSD",
-      "point2": "Payment upon occurrence of an insured event: {count} WUSD",
-      "point3": "Duration of the contract: {count} year",
-      "point4": "Number of fund participants: {count} people"
+      "point1": "الرسوم السنوية: {count} WUSD",
+      "point2": "مبلغ الدفع عند وقوع حدث مؤمَّن عليه: {count} WUSD",
+      "point3": "مدة العقد: {count} سنة",
+      "point4": "عدد المشاركين في الصندوق: {count} شخص"
     },
     "faq1": {
-      "question": "What does P2P mean in insurance ?",
-      "answer": "Peer-to-peer (P2P) insurance is a product that allows a group of insureds to pool their capital, self-organize, and self-administer their own insurance"
+      "question": "ماذا يعني P2P في التأمين؟",
+      "answer": "التأمين من نظير إلى نظير (P2P) هو منتج يسمح لمجموعة من المؤمَّن عليهم بتجميع رؤوس أموالهم وتنظيم أنفسهم وإدارة تأمينهم بأنفسهم."
     },
     "faq2": {
-      "question": "How does p2p insurance work ?",
-      "answer": "Peer-to-peer insurance, or P2P insurance, enables groups of individuals to insure each other. The members of the group pool their money to insure against a risk affecting them. If a group member suffers an insurable loss, their claim is paid directly from the pool of money contributed by each member"
+      "question": "كيف يعمل تأمين p2p؟",
+      "answer": "يمكِّن التأمين من نظير إلى نظير، أو تأمين P2P، مجموعات الأفراد من تأمين بعضهم البعض. يقوم أعضاء المجموعة بتجميع أموالهم للتأمين ضد المخاطر التي تؤثر عليهم. إذا تعرض أحد أعضاء المجموعة لخسارة قابلة للتأمين، يتم دفع مطالبتهم مباشرة من تجمُّع الأموال التي يساهم بها كل عضو."
     },
     "faq3": {
-      "question": "How do you do peer to peer insurance ?",
-      "answer": "Ask for a “peer-to-peer” evaluation. In a peer-to-peer evaluation, your insurance fund will speak with another fund members about why the service or therapies are medically necessary. You can upload to the chat all the necessary documents and doctors' opinions, which will prove the legality of your case and create a vote for decision-making by the members of the foundation. If the majority of the fund votes in favor, you will receive the payout to your wallet."
+      "question": "كيف يمكن تفعيل التأمين من نظير إلى نظير؟",
+      "answer": "اطلب تقييم \"نظير إلى نظير\". في تقييم نظير إلى نظير، سيتحدث صندوق التأمين الخاص بك مع أعضاء الصندوق الآخرين حول سبب الاحتياج إلى الخدمة أو العلاجات الطبية. يمكنك تحميل جميع المستندات الضرورية وآراء الأطباء في الدردشة، والتي ستثبت أحقية حالتك وتنشئ تصويتًا لاتخاذ القرار من قِبل أعضاء المؤسسة. إذا صوَّت غالبية الصندوق لصالحك، فستتلقى العائد على محفظتك."
     },
     "faq4": {
-      "question": "What will happen to the fund if the insured event does not occur within a year ?",
-      "answer": "At the end of the year, all users will receive notifications with a vote where they will be asked to vote for the extension of the fund for another year, which will automatically double your fund and payments in the event of an insured event or divide the fund between the fund participants."
+      "question": "ماذا سيحدث للصندوق إذا لم يقع الحدث المؤمَّن عليه خلال عام؟",
+      "answer": "في نهاية العام، سيتلقى جميع المستخدمين إشعارات بالتصويت، حيث سيُطلب منهم التصويت لتمديد الصندوق لعام آخر، والذي سيضاعف تلقائيًا أموالك ومدفوعاتك في حال وقوع حدث مؤمَّن عليه أو يقسِّم التمويل بين المشاركين في الصندوق."
     },
     "faq5": {
-      "question": "Who is a fund administrator ?",
-      "answer": "To ensure that each fund participant does not waste time considering all insured events, he will be able to delegate his voting rights to the fund manager for a small fee"
+      "question": "من هو مدير الصندوق؟",
+      "answer": "للتأكد من ألا يضيع كل مشارك في الصندوق الوقت في التفكير في جميع الأحداث المؤمَّن عليها، سيكون المشارك قادرًا على تفويض حقوق التصويت الخاصة به إلى مدير الصندوق مقابل رسوم رمزية"
     },
     "faq6": {
-      "question": "What is the standard size of the insurance fund ?",
-      "answer": "Funds are formed by 10 users depending on the selected protection level"
+      "question": "ما الحجم القياسي لصندوق التأمين؟",
+      "answer": "يتم إنشاء الصناديق بواسطة 10 مستخدمين حسب مستوى الحماية المحدَّد"
     },
     "faq7": {
-      "question": "How is the amount of payment from the insurance fund calculated ?",
-      "answer": "An example of calculating the fund for the first year: Minimum protection - an annual premium of 1000 WUSD, payment in the event of an insured event 833.333333 WUSD.\n10 members of the fund * 1000 WUSD / 12 months = 833.333333 WUSD.\nIn case of continuation of the fund for the next year, the size of the fund and the insurance payment are doubled."
+      "question": "كيف يتم احتساب مبلغ السداد من صندوق التأمين؟",
+      "answer": "مثال على حساب الصندوق للسنة الأولى: الحد الأدنى من الحماية - قسط سنوي قدره 1000 دولار أمريكي، ويكون مبلغ الدفع في حال وقوع حدث مؤمَّن عليه هو 833.333333 دولار أمريكي.\n10 أعضاء في الصندوق * 1000 WUSD/12 شهرًا = 833.333333 دولار أمريكي.\nفي حال استمرار الصندوق للعام المقبل، تتم مضاعفة حجم الصندوق ودفع التأمين."
     },
     "faq8": {
-      "question": "What is the guarantee of security from withdrawals of funds by one member of the fund ?",
-      "answer": "All members of the fund will keep funds in a multi-signature wallet, where any decisions are made only by a majority vote."
+      "question": "ما الضمان عند سحب الأموال من قِبل عضو واحد في الصندوق؟",
+      "answer": "سيحتفظ جميع أعضاء الصندوق بالأموال في محفظة متعددة التوقيعات، حيث يتم اتخاذ أي قرارات بأغلبية الأصوات فقط."
     }
   },
   "errors": {
     "transaction": {
       "notEnoughFunds": "Not enough funds"
     },
-    "incorrectPass": "Oops, something went wrong. Check the data and try again.",
+    "incorrectPass": "عذرًا، حدث خطأ ما. تحقَّق من البيانات وحاول مرة أخرى.",
     "emptyData": {
       "emptyQuests": "Oops, there's no quests here yet",
       "emptyDisputes": "Oops, there are no disputes here yet",
@@ -1825,31 +1825,31 @@
       "emptyReviews": "Oops, there are no reviews here yet",
       "employer": {
         "myQuests": {
-          "desc": "You haven't done quests yet",
-          "btnText": "Create quest !"
+          "desc": "لم تنجز أي طلبات العمل بعد",
+          "btnText": "إنشاء طلب عمل!"
         },
         "allQuests": {
-          "desc": "You haven't done quests yet",
-          "btnText": "Create quest !"
+          "desc": "لم تنجز أي طلبات العمل بعد",
+          "btnText": "إنشاء طلب عمل!"
         }
       },
       "worker": {
         "myQuests": {
-          "desc": "You haven't done the quests yet",
-          "btnText": "Create quest !"
+          "desc": "لم تنجز أي طلبات العمل بعد",
+          "btnText": "إنشاء طلب عمل!"
         },
         "allQuests": {
-          "desc": "You have not responded to quests yet",
-          "btnText": "Respond to the quest !"
+          "desc": "لم ترد على أي طلبات العمل بعد",
+          "btnText": "الرد على طلب العمل!"
         }
       },
       "noEmployees": "Oops, there are no employees..."
     }
   },
   "sharing": {
-    "title": "Sharing",
-    "socialText": "Share in socials",
-    "share": "Share link"
+    "title": "المشاركة",
+    "socialText": "المشاركة على وسائل التواصل الاجتماعي",
+    "share": "رابط المشاركة"
   },
   "crosschain": {
     "pageName": "WorkQuest Bridge",
@@ -1921,12 +1921,12 @@
   },
   "myQuests": {
     "statuses": {
-      "all": "All quests",
-      "favorites": "Favorites",
-      "responded": "Responded quests",
-      "performed": "Performed quests",
-      "active": "Active quests",
-      "invited": "Invited quests"
+      "all": "جميع طلبات العمل",
+      "fav": "مفضَّلة",
+      "requested": "تم طلبها",
+      "completed": "طلبات العمل المكتملة",
+      "active": "طلبات العمل النشطة",
+      "invited": "طلبات العمل المدعو إليها"
     }
   },
   "footer": {
