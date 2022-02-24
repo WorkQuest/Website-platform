@@ -240,17 +240,13 @@ export default {
   .review {
     &__user-data {
       display: grid;
-      grid-template-columns: 40px 280px;
+      grid-template-columns: 50px 280px;
     }
     &__header {
       flex-direction: column;
     }
   }
   .user-data {
-    &__img {
-      height: 40px;
-      width: 40px;
-    }
     &__name, &__text {
       width: 100%;
     }
@@ -259,7 +255,7 @@ export default {
 @include _380() {
   .review {
     &__user-data {
-      grid-template-columns: 40px 200px;
+      grid-template-columns: 50px 200px;
     }
   }
 }
