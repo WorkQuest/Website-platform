@@ -59,4 +59,9 @@ export default {
   setAvailableQuests(state, data) {
     state.availableQuests = data;
   },
+  setMark(state, result) {
+    state.allQuests.quests.forEach((item) => {
+      if (item.id === result.questId) item.yourReview = result;
+    });
+  },
 };

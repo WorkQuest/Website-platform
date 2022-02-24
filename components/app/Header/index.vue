@@ -417,6 +417,11 @@ export default {
           desc: this.$t('ui.menu.staking.desc'),
           path: Path.STAKING,
         },
+        {
+          title: this.$t('ui.menu.collateral.title'),
+          desc: this.$t('ui.menu.collateral.desc'),
+          path: Path.COLLATERAL,
+        },
       ];
     },
     headerLinks() {

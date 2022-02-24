@@ -11,10 +11,6 @@ export default () => ({
   },
   quest: null,
   infoDataMode: 0,
-  userInfoQuests: {
-    count: 0,
-    quests: [],
-  },
   starredQuests: {},
   responses: {},
   responded: [],
