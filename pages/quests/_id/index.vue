@@ -922,6 +922,9 @@ export default {
 }
 @include _575 {
   .worker-data {
+    &__price {
+      font-size: 21px;
+    }
     &__btns {
       grid-auto-flow: row;
     }
