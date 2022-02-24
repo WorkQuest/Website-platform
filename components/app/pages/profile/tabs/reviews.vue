@@ -243,6 +243,7 @@ export default {
     height: 40px;
     width: 40px;
     border-radius: 50%;
+    object-fit: cover;
   }
   &__rating-block, &__user-data {
     grid-gap: 10px;

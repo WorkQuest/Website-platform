@@ -104,7 +104,7 @@
               class="buttons__button"
               mode="outline"
               :is-submit="false"
-              @click="hide"
+              @click="CloseModal"
             >
               {{ $t('meta.cancel') }}
             </base-btn>
@@ -148,9 +148,6 @@ export default {
     },
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     async requestMock() {
       // TODO async
       throw new Error('error');
@@ -164,7 +161,7 @@ export default {
       };
       try {
         await this.requestMock();
-        this.hide();
+        this.CloseModal();
       } catch (e) {
         this.ShowToast(this.$t('modals.errorGetWUSD'));
       }
