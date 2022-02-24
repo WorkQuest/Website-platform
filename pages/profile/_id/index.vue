@@ -73,7 +73,7 @@
             class="quests__cards"
           >
             <card-quest
-              v-for="(quest,i) in questsData"
+              v-for="(quest,i) in quests"
               :key="i"
               :data-selector="`QUEST-CARD-${i}`"
               :quest-index="i"
@@ -251,8 +251,8 @@ export default {
   computed: {
     ...mapGetters({
       mainUser: 'user/getUserData',
-      questsData: 'quests/getUserInfoQuests',
-      questsCount: 'quests/getUserInfoQuestsCount',
+      quests: 'quests/getAllQuests',
+      questsCount: 'quests/getAllQuestsCount',
       portfolios: 'user/getUserPortfolios',
       reviews: 'user/getAllUserReviews',
       anotherUserData: 'user/getAnotherUserData',

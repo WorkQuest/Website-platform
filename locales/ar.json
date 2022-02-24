@@ -942,6 +942,8 @@
     "countOfRecievedWUSDDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "countOfCollateralDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "conversionPercentDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+    "settingsInfo": "???",
+    "pleaseEnable2FA": "???",
     "errorQuests": "???",
     "emptyOpenQuests": "???",
     "errorSmsVer": "???",

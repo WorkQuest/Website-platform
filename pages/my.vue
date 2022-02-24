@@ -25,7 +25,7 @@
           class="quests__cards"
         >
           <card-quest
-            v-for="(quest,i) in questsData"
+            v-for="(quest,i) in quests"
             :key="i"
             :quest="quest"
             :quest-index="i"
@@ -54,7 +54,6 @@
 
 import { mapGetters } from 'vuex';
 import { QuestStatuses, UserRole, Path } from '~/utils/enums';
-import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'My',
@@ -70,8 +69,8 @@ export default {
   computed: {
     ...mapGetters({
       userData: 'user/getUserData',
-      questsData: 'quests/getUserInfoQuests',
-      questsCount: 'quests/getUserInfoQuestsCount',
+      quests: 'quests/getAllQuests',
+      questsCount: 'quests/getAllQuestsCount',
     }),
     userRole() {
       return this.userData.role;
