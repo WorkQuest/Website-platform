@@ -229,7 +229,7 @@ export default {
       });
     },
     goAuction() {
-      this.$router.push('/workers');
+      this.$router.push('/auction');
     },
     handleClickFAQ(index) {
       if (this.indexFAQ.includes(index)) {
