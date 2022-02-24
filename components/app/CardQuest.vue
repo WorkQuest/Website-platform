@@ -604,6 +604,7 @@ export default {
     justify-content: space-between;
   }
   &__right {
+    min-width: 0;
     padding: 20px 20px 20px 30px;
     display: grid;
     grid-template-columns: auto;
@@ -664,6 +665,9 @@ export default {
       color: $black700;
       word-wrap: break-word;
       word-break: break-all;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
     &_blue {
       font-weight: 500;
