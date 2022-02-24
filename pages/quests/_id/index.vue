@@ -669,10 +669,6 @@ export default {
     font-size: 16px;
     line-height: 20px;
     color: $black700;
-    overflow-wrap: anywhere;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
     word-break: break-word;
   }
   &__count {
