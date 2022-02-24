@@ -148,7 +148,7 @@ export default {
           buttonName: 'settings.enable',
           modal: 'smsVerification',
           isSwitcher: false,
-          disabled: this.userData?.tempPhone?.fullPhone,
+          disabled: !!this.userData?.phone?.fullPhone,
         },
         {
           title: 'settings.changeRole',
@@ -172,13 +172,6 @@ export default {
   methods: {
     async showModalKey(modalKey) {
       this.$emit('showModalKey', modalKey);
-    },
-    smsVerErrorModal() {
-      this.ShowModal({
-        key: modals.status,
-        title: this.$t('modals.errorSmsVer'),
-        subtitle: this.$t('modals.fillNumber'),
-      });
     },
   },
 

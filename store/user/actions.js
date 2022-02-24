@@ -446,9 +446,10 @@ export default {
   async confirmPhone({ commit }, payload) {
     try {
       const response = await this.$axios.$post('/v1/profile/phone/confirm', payload);
-      return response.result;
+      return response;
     } catch (e) {
-      return console.log(e);
+      console.log('user/confirmPhone');
+      return false;
     }
   },
   async validateTOTP({ commit }, payload) {
