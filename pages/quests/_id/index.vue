@@ -188,9 +188,9 @@ export default {
     priority() {
       const { priority } = this.quest;
       const priorities = {
-        [questPriority.Low]: this.$t('priority.low'),
-        [questPriority.Normal]: this.$t('priority.normal'),
-        [questPriority.Urgent]: this.$t('priority.urgent'),
+        [questPriority.Low]: this.$t('meta.priority.low'),
+        [questPriority.Normal]: this.$t('meta.priority.normal'),
+        [questPriority.Urgent]: this.$t('meta.priority.urgent'),
       };
       return priorities[priority] || '';
     },
