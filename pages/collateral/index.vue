@@ -6,7 +6,7 @@
           {{ $t('collateral.lending') }}
         </div>
         <div class="title_sub">
-          {{ $t('collateral.templateText') }}
+          {{ $t('meta.lorem') }}
         </div>
       </div>
       <div class="collateral-page__content">
@@ -30,7 +30,7 @@
           </div>
           <div class="info-block__about">
             <div class="info-block__subtitle">
-              {{ $t('collateral.wantToGetWUSDText') }}
+              {{ $t('meta.lorem') }}
             </div>
             <img
               class="calendar-img"
@@ -53,7 +53,7 @@
           </div>
           <div class="info-block__about">
             <div class="info-block__subtitle">
-              {{ $t('collateral.wantToGoAuctionText') }}
+              {{ $t('meta.lorem') }}
             </div>
             <img
               class="calendar-img"
