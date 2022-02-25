@@ -344,7 +344,6 @@ export default {
     cursor: pointer;
     transition: .5s;
     text-overflow: ellipsis;
-    //overflow: hidden;
     white-space: nowrap;
     word-break: break-word;
     &:hover {
