@@ -47,12 +47,12 @@ export default {
 
     &_verified {
       @extend .status__levels;
-      background-color: $grey200;
+      background-color: $brown;
     }
 
     &_reliable {
       @extend .status__levels;
-      background-color: $brown;
+      background-color: $grey200;
     }
 
     &_noStatus {
