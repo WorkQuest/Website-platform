@@ -425,7 +425,8 @@ export default {
   &__data {
     display: flex;
     grid-gap: 10px;
-    align-items: center;
+    align-items: flex-start;
+    flex-direction: column;
   }
   &_left {
     align-self: flex-start;
@@ -434,6 +435,8 @@ export default {
   &_right {
     align-self: flex-start;
     margin-left: 30px;
+    max-width: 630px;
+    word-wrap: break-word;
   }
   &__rating {
     height: 20px;
@@ -624,6 +627,7 @@ export default {
     &_right {
       margin-left: 0;
       margin-top: 30px;
+      max-width: 720px;
     }
   }
   .right {
@@ -635,6 +639,45 @@ export default {
         grid-gap: 0;
         grid-template-columns: auto;
       }
+    }
+  }
+}
+@include _767 {
+  .block {
+    &_right {
+      max-width: 540px;
+    }
+  }
+}
+@include _575 {
+  .block {
+    &_right, &__title {
+      max-width: 425px;
+    }
+    &__data {
+      flex-direction: column;
+      align-items: flex-end;
+    }
+  }
+}
+@include _480 {
+  .block {
+    &_right, &__title {
+      max-width: 380px;
+    }
+  }
+}
+@include _380 {
+  .block {
+    &_right, &__title {
+      max-width: 330px;
+    }
+  }
+}
+@include _350 {
+  .block {
+    &_right, &__title {
+      max-width: 283px;
     }
   }
 }
