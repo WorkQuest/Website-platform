@@ -47,9 +47,7 @@
           v-if="step === 2"
           class="change-role__content"
         >
-          <form
-            @submit.prevent="handleSubmit(changeRole)"
-          >
+          <form @submit.prevent="handleSubmit(changeRole)">
             <base-field
               v-model="totp"
               :label="$t('modals.googleConfCode')"
@@ -103,13 +101,13 @@ export default {
       this.CloseModal();
     },
     async changeRole() {
-      try {
-        await this.$store.dispatch('user/changeRole', { totp: this.totp });
+      const result = await this.$store.dispatch('user/changeRole', { totp: this.totp });
+      if (result.ok) {
         this.hide();
         this.success();
-      } catch (e) {
-        const date = new Date(e.response.data.data.endDateOfTimeout);
-        if (e.response.data.code === 403000) {
+      } else {
+        const date = new Date(result.response.data.data.endDateOfTimeout);
+        if (result.response.data.code === 403000) {
           this.ShowModal({
             key: modals.status,
             img: require('~/assets/img/ui/error.svg'),

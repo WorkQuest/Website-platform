@@ -7,7 +7,12 @@ import {
 
 export default {
   async changeRole({ commit }, { totp }) {
-    await this.$axios.$put('/v1/profile/change-role', { totp });
+    try {
+      const result = await this.$axios.$put('/v1/profile/change-role', { totp });
+      return result;
+    } catch (e) {
+      return e;
+    }
   },
   async addEducation({ commit }, data) {
     commit('setEducations', data);
