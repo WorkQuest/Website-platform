@@ -3,7 +3,8 @@
     <div class="rating__group">
       <input
         v-for="(star, i) in starsNumber"
-        :key="i"
+        :id="`star-${i + 1}`"
+        :key="i + 1"
         :class="fillStars(i + 1)"
         :checked="(i + 1) === rating"
         :aria-label="`«${i + 1}»`"
