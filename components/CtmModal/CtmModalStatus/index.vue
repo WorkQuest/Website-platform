@@ -72,7 +72,7 @@
         v-else
         class="status__action"
         selector="HIDE"
-        @click="isNeedToReload ? $router.go() : hide()"
+        @click="hide()"
       >
         <span
           v-if="options.button"
@@ -106,9 +106,6 @@ export default {
       options: 'modals/getOptions',
       chatInfoInviteOnQuest: 'quests/getChatInfoInviteOnQuest',
     }),
-    isNeedToReload() {
-      return !!this.options.isReloadModal;
-    },
   },
   async mounted() {
     this.initLink();

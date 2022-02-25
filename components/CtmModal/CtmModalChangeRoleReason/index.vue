@@ -105,8 +105,9 @@ export default {
       if (response?.ok) this.success();
     },
     success() {
+      this.$root.$emit('roleChanged');
       this.ShowModal({
-        key: modals.status, img: require('~/assets/img/ui/success.svg'), title: 'Success', subtitle: 'Your role has been changed', isReloadModal: true,
+        key: modals.status, img: require('~/assets/img/ui/success.svg'), title: 'Success', subtitle: 'Your role has been changed', isRoleChanged: true,
       });
     },
   },
