@@ -361,7 +361,6 @@ export default {
       return arr;
     },
     setWorkerBtnsArr() {
-      if (this.userData.id !== this.quest.assignedWorker.id) return [];
       const { quest: { assignedWorkerId, response }, userData, infoDataMode } = this;
       const {
         ADChat, Active, Created, Dispute, Invited, WaitWorker,
