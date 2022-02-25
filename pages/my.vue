@@ -8,7 +8,10 @@
         <div class="quests__title">
           {{ $t('meta.myQuests') }}
         </div>
-        <div class="quests__content">
+        <div
+          class="quests__content"
+          :class="{'quests__content-wide': userRole === UserRole.WORKER }"
+        >
           <base-btn
             v-for="(item, i) in filterTabs"
             :key="i"
@@ -69,11 +72,12 @@ export default {
   computed: {
     ...mapGetters({
       userData: 'user/getUserData',
+      userRole: 'user/getUserRole',
       quests: 'quests/getAllQuests',
       questsCount: 'quests/getAllQuestsCount',
     }),
-    userRole() {
-      return this.userData.role;
+    UserRole() {
+      return UserRole;
     },
     filterTabs() {
       const tabs = [
@@ -184,9 +188,12 @@ export default {
   &__content {
     display: grid;
     align-items: center;
-    grid-template-columns: repeat(6, auto);
+    grid-template-columns: repeat(5, auto);
     grid-gap: 10px;
     margin-bottom: 20px;
+    &-wide {
+      grid-template-columns: repeat(6, auto);
+    }
   }
   &__pager {
     margin-top: 25px;

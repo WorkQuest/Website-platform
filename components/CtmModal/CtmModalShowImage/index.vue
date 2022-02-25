@@ -122,7 +122,6 @@ export default {
   @include modalKit;
   &__box {
     max-width: 1200px !important;
-    max-height: 100% !important;
     width: 100% !important;
     height: auto !important;
     padding: 0 !important;
@@ -188,6 +187,24 @@ export default {
     width: 100%;
     word-break: break-word;
     white-space: pre-line;
+  }
+}
+
+@include _767 {
+  .content {
+    max-height: 600px !important;
+  }
+}
+
+@include _575 {
+  .content {
+    max-height: 400px !important;
+  }
+}
+
+@include _480 {
+  .content {
+    max-height: 300px !important;
   }
 }
 
