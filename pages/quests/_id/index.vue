@@ -92,7 +92,7 @@
               @input="showReviewModal($event, quest.id)"
             />
             <span class="worker-data__price">
-              {{ quest.price }} {{ $t('quests.wusd') }}
+              {{ quest.price }} {{ $t('meta.wusd') }}
             </span>
             <div
               class="worker-data__priority-title"
