@@ -446,7 +446,7 @@ export default {
   async confirmPhone({ commit }, payload) {
     try {
       const response = await this.$axios.$post('/v1/profile/phone/confirm', payload);
-      return response;
+      return response.ok;
     } catch (e) {
       console.log('user/confirmPhone');
       return false;
