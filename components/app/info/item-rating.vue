@@ -41,6 +41,7 @@ export default {
     text-transform: uppercase;
     width: 90px;
     display: flex;
+    justify-content: center;
 
     &_topRanked {
       @extend .status__levels;

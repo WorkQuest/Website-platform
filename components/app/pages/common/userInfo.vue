@@ -425,8 +425,8 @@ export default {
   &__data {
     display: flex;
     grid-gap: 10px;
-    align-items: flex-start;
-    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
   }
   &_left {
     align-self: flex-start;
@@ -639,14 +639,6 @@ export default {
         grid-gap: 0;
         grid-template-columns: auto;
       }
-    }
-  }
-}
-@include _575 {
-  .block {
-    &__data {
-      flex-direction: column;
-      align-items: flex-end;
     }
   }
 }
