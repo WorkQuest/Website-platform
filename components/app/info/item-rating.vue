@@ -39,6 +39,8 @@ export default {
     line-height: 130%;
     height: 20px;
     text-transform: uppercase;
+    width: 90px;
+    display: flex;
 
     &_topRanked {
       @extend .status__levels;
@@ -58,6 +60,11 @@ export default {
     &_noStatus {
       display: none;
     }
+  }
+}
+@include _991 {
+  .status__levels {
+    margin: 0;
   }
 }
 </style>

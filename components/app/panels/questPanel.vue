@@ -50,13 +50,15 @@
         >
           <div class="quest__location">
             <span class="icon icon-location icon_fs-20" />
-            <span
+            <div
               v-if="questData.locationPlaceName"
               class="quest__address"
-            >{{ questData.locationPlaceName }}</span>
-            <span class="user__distance">
+            >
+              {{ questData.locationPlaceName }}
+            </div>
+            <div class="user__distance">
               {{ showDistance() }} {{ $t('distance.m') }} {{ $t('meta.fromYou') }}
-            </span>
+            </div>
           </div>
         </div>
       </div>
@@ -209,11 +211,11 @@ export default {
   &__container {
     padding: 34px 0 25px 0;
   }
-  &__wrapper{
+  &__wrapper {
     display: flex;
     flex-direction: row;
   }
-  &__date{
+  &__date {
     @include text-simple;
     color: $black500;
     font-style: normal;
@@ -221,7 +223,7 @@ export default {
     font-size: 12px;
     margin: auto 10px auto auto;
   }
-  &__img{
+  &__img {
     width:30px;
     height: 30px;
     border-radius: 50%;
@@ -237,7 +239,7 @@ export default {
       color: $black600;
     }
   }
-  &__distance{
+  &__distance {
     @extend .user;
     font-size: 14px;
     display: flex;
