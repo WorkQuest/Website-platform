@@ -525,7 +525,6 @@ export default {
         workplace: 'distant',
         priority: this.priorityIndex,
         employment: this.convertEmployment(this.employmentIndex),
-        category: 'Default',
         title: this.questTitle,
         description: this.textarea,
         price: this.price,

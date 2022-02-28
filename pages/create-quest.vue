@@ -511,7 +511,6 @@ export default {
         workplace: WorkplaceIndex[this.workplaceIndex],
         priority: PriorityFilter[this.runtimeIndex + 1].value,
         employment: TypeOfJobFilter[this.employmentIndex],
-        category: 'Default',
         title: this.questTitle,
         description: this.textarea,
         price: this.price,
