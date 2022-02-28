@@ -436,7 +436,7 @@ export default {
     align-self: flex-start;
     margin-left: 30px;
     max-width: 630px;
-    word-wrap: break-word;
+    word-break: break-word;
   }
   &__rating {
     height: 20px;
@@ -642,42 +642,11 @@ export default {
     }
   }
 }
-@include _767 {
-  .block {
-    &_right {
-      max-width: 540px;
-    }
-  }
-}
 @include _575 {
   .block {
-    &_right, &__title {
-      max-width: 425px;
-    }
     &__data {
       flex-direction: column;
       align-items: flex-end;
-    }
-  }
-}
-@include _480 {
-  .block {
-    &_right, &__title {
-      max-width: 380px;
-    }
-  }
-}
-@include _380 {
-  .block {
-    &_right, &__title {
-      max-width: 330px;
-    }
-  }
-}
-@include _350 {
-  .block {
-    &_right, &__title {
-      max-width: 283px;
     }
   }
 }
