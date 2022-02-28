@@ -155,7 +155,7 @@ export default {
         },
         {
           title: 'settings.smsVerification',
-          buttonName: 'settings.enable',
+          buttonName: this.userData?.phone?.fullPhone ? 'settings.verified' : 'settings.enable',
           modal: 'smsVerification',
           isSwitcher: false,
           disabled: !!this.userData?.phone?.fullPhone,
