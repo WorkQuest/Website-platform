@@ -333,7 +333,9 @@ export default {
   border-radius: 6px;
   cursor: auto;
 }
-
+.icon-add_to_queue {
+  color: $blue;
+}
 @include _575 {
   .file {
     width: 70vw;
