@@ -8,11 +8,9 @@ import {
 export default {
   async changeRole({ commit }, { totp }) {
     try {
-      const { ok, result } = await this.$axios.$put('/v1/profile/change-role', { totp });
-      return ok;
+      return await this.$axios.$put('/v1/profile/change-role', { totp });
     } catch (e) {
-      console.log('user/changeUserRole');
-      return false;
+      return e;
     }
   },
   async addEducation({ commit }, data) {
