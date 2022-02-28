@@ -88,8 +88,8 @@
               rating-type="questPage"
               :stars-number="5"
               :rating="rating"
-              :is-disabled="!!quest.yourReview"
-              @input="showReviewModal($event, quest)"
+              :is-disabled="!!rating"
+              @input="showReviewModal($event, quest.id)"
             />
             <span class="worker-data__price">
               {{ quest.price }} {{ $t('quests.wusd') }}
@@ -246,11 +246,15 @@ export default {
       return item.status === QuestStatuses.Done
         && this.userData.id === item.userId;
     },
-    showReviewModal(rating, item) {
+    showReviewModal(rating, id) {
       this.ShowModal({
         key: modals.review,
-        item,
+        questId: id,
         rating,
+        callback: async (payload) => {
+          const ok = await this.$store.dispatch('user/sendReviewForUser', payload);
+          if (ok) { this.ShowModal({ key: modals.thanks }); }
+        },
       });
     },
     async getSameQuests() {
@@ -648,6 +652,7 @@ export default {
   &__container {
     display: flex;
     flex-direction: column;
+    min-width: 0;
   }
   &__title {
     @include text-simple;
@@ -664,7 +669,7 @@ export default {
     font-size: 16px;
     line-height: 20px;
     color: $black700;
-    overflow-wrap: anywhere;
+    word-break: break-word;
   }
   &__count {
     font-style: normal;
@@ -703,6 +708,7 @@ export default {
 }
 
 .worker-data {
+  min-width: 0;
   padding-top: 20px;
   border-top: 1px solid #F7F8FA;
 
@@ -710,6 +716,10 @@ export default {
     font-weight: 500;
     color: $black800;
     font-size: 18px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    word-break: break-word;
 
     &_small {
       font-size: 16px;
@@ -731,6 +741,7 @@ export default {
   }
 
   &__user-cont {
+    min-width: 0;
     display: grid;
     grid-auto-flow: column;
     gap: 10px;
@@ -739,6 +750,7 @@ export default {
   }
 
   &__avatar {
+    display: flex;
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -906,6 +918,9 @@ export default {
 }
 @include _575 {
   .worker-data {
+    &__price {
+      font-size: 21px;
+    }
     &__btns {
       grid-auto-flow: row;
     }
