@@ -6,7 +6,7 @@
     :title="step === 1 ? $t('modals.reason') : $t('meta.securityCheckBig')"
   >
     <validation-observer
-      v-slot="{invalid}"
+      v-slot="{invalid, handleSubmit}"
       tag="div"
       class="ctm-modal__content"
     >
@@ -47,27 +47,28 @@
           v-if="step === 2"
           class="change-role__content"
         >
-          <base-field
-            v-model="totp"
-            :label="$t('meta.googleConfCode')"
-            class="change-role__action"
-            :placeholder="$t('meta.googleConfCode')"
-            rules="min:6|numeric|max:6"
-            :name="$t('meta.googleConfCode')"
-          />
-          <div class="change-role__sub">
-            {{ $t('meta.googleConfCodeDesc') }}
-          </div>
-          <div class="btn__container">
-            <base-btn
-              class="message__action"
-              selector="CHANGE-ROLE"
-              :disabled="invalid"
-              @click="changeRole()"
-            >
-              {{ $t('meta.send') }}
-            </base-btn>
-          </div>
+          <form @submit.prevent="handleSubmit(changeRole)">
+            <base-field
+              v-model="totp"
+              :label="$t('meta.googleConfCode')"
+              class="change-role__action"
+              :placeholder="$t('meta.googleConfCode')"
+              rules="min:6|numeric|max:6|required"
+              :name="$t('meta.googleConfCode')"
+            />
+            <div class="change-role__sub">
+              {{ $t('meta.googleConfCodeDesc') }}
+            </div>
+            <div class="btn__container">
+              <base-btn
+                class="message__action"
+                selector="CHANGE-ROLE"
+                :disabled="invalid"
+              >
+                {{ $t('meta.send') }}
+              </base-btn>
+            </div>
+          </form>
         </div>
       </div>
     </validation-observer>
@@ -100,13 +101,27 @@ export default {
       this.CloseModal();
     },
     async changeRole() {
-      const response = await this.$store.dispatch('user/changeRole', { totp: this.totp });
-      this.hide();
-      if (response?.ok) this.success();
+      const result = await this.$store.dispatch('user/changeRole', { totp: this.totp });
+      if (result.ok) {
+        this.hide();
+        this.success();
+      } else {
+        const date = new Date(result.response.data.data.endDateOfTimeout);
+        if (result.response.data.code === 403000) {
+          this.ShowModal({
+            key: modals.status,
+            img: require('~/assets/img/ui/error.svg'),
+            title: this.$t('modals.warning'),
+            subtitle: this.$t('modals.waitRoleCooldown', { date: date.toLocaleDateString(this.$i18n.locale), time: date.toLocaleTimeString(this.$i18n.locale) }),
+            button: this.$t('modals.close'),
+          });
+        }
+      }
     },
     success() {
+      this.$root.$emit('roleChanged');
       this.ShowModal({
-        key: modals.status, img: require('~/assets/img/ui/success.svg'), title: 'Success', subtitle: 'Your role has been changed',
+        key: modals.status, img: require('~/assets/img/ui/success.svg'), title: 'Success', subtitle: 'Your role has been changed', isRoleChanged: true,
       });
     },
   },

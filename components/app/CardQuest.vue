@@ -91,7 +91,7 @@
               :alt="`${ quest.assignedWorker ? UserName(quest.assignedWorker.firstName, quest.assignedWorker.lastName) : '' }`"
             >
             <div class="user__name">
-              {{ quest.assignedWorker.firstName }} {{ quest.assignedWorker.lastName }}
+              {{ quest.assignedWorker ? UserName(CropTxt(quest.assignedWorker.firstName, 10), CropTxt(quest.assignedWorker.lastName, 10)) : '' }}
             </div>
           </div>
           <item-rating :rating="getRatingValue(quest)" />
@@ -839,7 +839,7 @@ export default {
     }
     &__actions {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
     }
     &__btn {
       margin-top: 10px;
@@ -850,7 +850,7 @@ export default {
 @include _480 {
   .card-quest {
     &__actions {
-      grid-template-columns: 2fr 1fr;
+      grid-template-columns: 1fr;
     }
     &__right {
       padding: 10px;
