@@ -235,6 +235,7 @@ export default {
     font-size: 16px;
     color: $black800;
     padding-left: 10px;
+    word-break: break-word;
     &:hover {
       color: $black600;
     }
