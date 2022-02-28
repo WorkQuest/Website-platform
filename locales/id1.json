@@ -1512,109 +1512,109 @@
     }
   },
   "pension": {
-    "pensionSavingsBalance": "Pension savings balance",
-    "retirementProgram": "Retirement program",
-    "faq": "FAQ",
-    "pensionProgram": "Pension program",
-    "applyForAPension": "Apply for a pension",
-    "applyForRetirement": "Apply for retirement",
-    "annualPercent": "Annual percent",
-    "optional": "Optional",
-    "optionalFirstDeposit": "First deposit",
-    "term": "Term",
-    "configurablePercentage": "Configurable percentage",
-    "depositsFromQuest": "Deposit from quests",
-    "howToTakePart": "How to participate in the pension program?",
-    "pensionPlanText": "A pension plan may allow a worker to contribute part of their current income from wages into an investment plan to help fund retirement.",
-    "information": "Detailed information",
-    "download": "Download",
-    "pensionBalance": "Pension savings balance",
-    "makeADeposit": "Make a deposit",
-    "currentPercentFromAQuest": "Current percentage from a quest",
-    "changePercent": "Change percentage",
-    "everyYear": "Annualized",
-    "year": "yearly",
-    "timeRemainsUntilTheEndOfThePeriod": "Time remains until the end of the period:",
-    "transactionHistory": "Transaction history",
-    "withdraw": "Withdraw",
-    "prolong": "Prolong",
+    "pensionSavingsBalance": "Saldo tabungan pensiun",
+    "retirementProgram": "Program pensiun",
+    "faq": "Pertanyaan Umum",
+    "pensionProgram": "Program pensiun",
+    "applyForAPension": "Mendaftar dana pensiun",
+    "applyForRetirement": "Mendaftar pensiun",
+    "annualPercent": "Persen tahunan",
+    "optional": "Opsional",
+    "optionalFirstDeposit": "Setoran pertama",
+    "term": "Jangka Waktu",
+    "configurablePercentage": "Persentase yang dapat dikonfigurasi",
+    "depositsFromQuest": "Setoran dari quest",
+    "howToTakePart": "Bagaimana cara mengikuti program pensiun?",
+    "pensionPlanText": "Program pensiun memungkinkan pekerja untuk menyumbangkan sebagian pendapatan mereka dari upah saat ini ke dalam rencana investasi untuk membantu mendanai pensiun.",
+    "information": "Informasi terperinci",
+    "download": "Unduh",
+    "pensionBalance": "Saldo tabungan pensiun",
+    "makeADeposit": "Lakukan penyetoran",
+    "currentPercentFromAQuest": "Persentase saat ini dari satu quest",
+    "changePercent": "Ubah persentase",
+    "everyYear": "Disetahunkan",
+    "year": "tahunan",
+    "timeRemainsUntilTheEndOfThePeriod": "Waktu tersisa hingga akhir periode:",
+    "transactionHistory": "Riwayat transaksi",
+    "withdraw": "Tarik",
+    "prolong": "Memperpanjang",
     "prolongText": "This will prolong pension program for 1 year",
     "faq1": {
-      "question": "How do you qualify for a pension?",
-      "answer": "You do not need to have worked for an employer for a certain number of years to be eligible for retirement benefits. Just select the percentage of each quest you want to accumulate in your account. Your retirement benefit usually increases as you accumulate funds. The additional percentage will be earned automated by using funds in the lending program."
+      "question": "Bagaimana cara memenuhi syarat untuk mengikuti dana pensiun?",
+      "answer": "Anda tidak perlu bekerja untuk pemberi kerja selama beberapa tahun untuk memenuhi syarat mendapatkan tunjangan pensiun. Cukup pilih persentase dari setiap quest yang ingin Anda kumpulkan di akun Anda. Tunjangan pensiun Anda biasanya meningkat seiring dengan akumulasi dana Anda. Persentase tambahan akan diperoleh secara otomatis dengan menggunakan dana dalam program pinjaman."
     },
     "faq2": {
-      "question": "How is the 'additional percentage' calculated?",
-      "answer": "The funds of the pension fund will be blocked in the loan agreement. APY varies depending on changes in the credit protocol. The profit can make from 3-6%"
+      "question": "Bagaimana 'persentase tambahan' dihitung?",
+      "answer": "Uang dana pensiun akan diblokir dalam perjanjian pinjaman. APY bervariasi tergantung pada perubahan protokol kredit. Keuntungannya bisa antara 3-6%"
     },
     "faq3": {
-      "question": "How do pension plans work?",
-      "answer": "You do not need to have worked for an employer for a certain number of years to be eligible for retirement benefits. Just select the percentage of each quest you want to accumulate in your account. Your retirement benefit usually increases as you accumulate funds. The additional percentage will be earned automated by using funds in the lending program."
+      "question": "Bagaimana cara kerja program pensiun?",
+      "answer": "Anda tidak perlu bekerja untuk pemberi kerja selama beberapa tahun untuk memenuhi syarat mendapatkan tunjangan pensiun. Cukup pilih persentase dari setiap quest yang ingin Anda kumpulkan di akun Anda. Tunjangan pensiun Anda biasanya meningkat seiring dengan akumulasi dana Anda. Persentase tambahan akan diperoleh secara otomatis dengan menggunakan dana dalam program pinjaman."
     },
     "faq4": {
-      "question": "How many years do you need to work to be vested in the pension plan?",
-      "answer": "According to WorkQuest rules, anyone can open a private sector savings plan. After the first three years, you will have the opportunity to receive 100% of the accumulated funds.\nYou can continue to accumulate for another year or withdraw funds in full to your wallet."
+      "question": "Berapa tahun Anda perlu bekerja untuk mendapatkan program pensiun?",
+      "answer": "Menurut aturan WorkQuest, siapa pun dapat membuka program tabungan sektor swasta. Setelah tiga tahun pertama, Anda akan memiliki kesempatan untuk menerima 100% akumulasi dana.\nAnda dapat terus mengumpulkan selama satu tahun lagi atau menarik dana secara penuh ke dompet Anda."
     },
     "faq5": {
-      "question": "What is a good pension?",
-      "answer": "What is a good pension amount? Some advisers recommend that you save up 10 times your average working-life salary by the time you retire. So if your average salary is $30,000 you should aim for a pension pot of around $300,000. Another top tip is that you should save 12.5 per cent of your monthly salary."
+      "question": "Apa itu program pensiun yang baik?",
+      "answer": "Berapa jumlah dana pensiun yang baik? Beberapa penasihat menyarankan agar Anda menabung 10 kali gaji rata-rata kehidupan kerja Anda pada saat Anda pensiun. Jadi, jika gaji rata-rata Anda adalah $30.000, Anda harus menargetkan tabungan pensiun $300.000. Tips jitu lainnya adalah Anda harus menabung 12,5 persen dari gaji bulanan Anda."
     },
     "faq6": {
-      "question": "Is monthly pension taxable?",
-      "answer": "Your monthly pension payment almost always counts as taxable income, and you'll need to make sure that you have enough taxes withheld from your pension payments to satisfy the Internal Revenue Service"
+      "question": "Apakah pensiun bulanan kena pajak?",
+      "answer": "Pembayaran pensiun bulanan Anda hampir selalu dihitung sebagai penghasilan kena pajak, dan Anda harus memastikan bahwa Anda memiliki cukup pajak yang dipotong dari pembayaran pensiun Anda untuk mematuhi lembaga pajak"
     },
     "faq7": {
-      "question": "Can I take all my pension in one go?",
-      "answer": "After minimum period 3 years retirement program, you can withdraw some or all of your pension savings in one go."
+      "question": "Bisakah saya mengambil semua pensiun saya sekaligus?",
+      "answer": "Setelah masa program pensiun minimal 3 tahun, Anda dapat menarik sebagian atau seluruh tabungan pensiun Anda sekaligus."
     },
     "faq8": {
-      "question": "Can I cancel my pension and get the money?",
-      "answer": "If you withdraw after the minimum 3 years has passed or on the day of the annual renewal, you will receive back all the money you have already paid. If you opt out later, you will not be able to receive a refund of your payments until the end of the extended period (usually 1 year)."
+      "question": "Bisakah saya membatalkan program pensiun saya dan mendapatkan uangnya?",
+      "answer": "Jika Anda menarik setelah minimal 3 tahun berlalu atau pada hari perpanjangan tahunan, Anda akan menerima kembali semua uang yang telah Anda bayarkan. Jika Anda memilih keluar nanti, Anda tidak akan dapat menerima pengembalian dana pembayaran Anda hingga akhir periode yang diperpanjang (biasanya 1 tahun)."
     },
     "faq9": {
-      "question": "Can I draw my pension and still work?",
-      "answer": "Can I take my pension early and continue to work? The short answer is yes. These days, there is no set retirement age. You can carry on working for as long as you like, and can also access to pensions program."
+      "question": "Bisakah saya menarik dana pensiun saya dan terus bekerja?",
+      "answer": "Bisakah saya mengambil dana pensiun saya lebih awal dan terus bekerja? Jawaban singkatnya adalah ya. Saat ini, tidak ada batasan usia pensiun. Anda dapat terus bekerja selama yang Anda inginkan, dan juga dapat mengakses program pensiun."
     },
     "faq10": {
-      "question": "What happens if I Overfund my pension?",
-      "answer": "We have no restrictions on the amount of savings. The entire accumulated amount will be at your disposal at the end of the program period."
+      "question": "Apa yang terjadi jika saya kelebihan dana pensiun saya?",
+      "answer": "Kami tidak memiliki batasan jumlah tabungan. Seluruh jumlah akumulasi akan tersedia untuk Anda di akhir periode program."
     }
   },
   "saving": {
-    "withdrawModalBody": "The amount of locked funds and the accumulated interest will be credited to your wallet",
+    "withdrawModalBody": "Jumlah dana terkunci dan akumulasi bunga akan dikreditkan ke dompet Anda",
     "workQuestSavings": "WorkQuest Savings",
-    "lendAndEarn": "Lend & Earn",
-    "conditions": "Conditions",
-    "maxMinSum": "Max/min sum",
-    "depositsAndWithdrawal": "Deposits and withdrawal",
-    "term": "Term",
-    "annualizedInterestRate": "Annualized interest rate",
-    "openADeposit": "Open a deposit",
-    "faq": "FAQ",
-    "information": "Information",
-    "historyOfDeposits": "History of deposits",
-    "depositAmount": "Locked Amount",
-    "card": "Annualized Interest Rate \n {rate} % \n Duration (days): {duration} days",
-    "templateText": "Committed to Holding your cryptocurrency?\nAn easy way to lend and earn with locked savings.",
-    "faq1": "What are Locked Savings? Committed to holding your crypto?",
-    "faq2": "What happens to my funds on the day I subscribe to a Locked Savings product?",
-    "faq3": "What happens to my funds on the value date of a Locked Savings product?",
-    "faq4": "What happens to my funds on the redemption date of a Locked Savings product?",
-    "faq5": "How is the average annual return (APR) calculated?",
-    "faq6": "Am I guaranteed to earn interest on WorkQuest Savings products even if the crypto markets go down?",
-    "ans1": "Now you can earn interest at the same time! Subscribe your crypto to locked savings periods for higher interest earnings.",
-    "ans2": "On the day of subscription, WorkQuest Savings will deduct the funds for subscription from your WUSD wallet.\n",
-    "ans3": "On the value date, WorkQuest Savings will distribute the Locked Savings product to your savings wallet, and your saving product will start to accrue interest.",
-    "ans4": "On the redemption date, you will see both the initial tokens committed to the subscription and the interest accrued in your WorkQuest account ‘balances’. This process will be automatic.",
-    "ans5": "The average annual return (APR) uses the average daily interest rate from the past 7 days, multiplied by 365.",
-    "ans6": "Yes. The interest rate on each product is guaranteed.",
+    "lendAndEarn": "Pinjamkan & Hasilkan",
+    "conditions": "Ketentuan",
+    "maxMinSum": "Jumlah maks/min",
+    "depositsAndWithdrawal": "Penyetoran dan penarikan",
+    "term": "Jangka Waktu",
+    "annualizedInterestRate": "Tingkat bunga yang disetahunkan",
+    "openADeposit": "Buka setoran",
+    "faq": "Pertanyaan Umum",
+    "information": "Informasi",
+    "historyOfDeposits": "Riwayat deposit",
+    "depositAmount": "Jumlah Terkunci",
+    "card": "Suku Bunga Disetahunkan \n {rate} % \n Durasi (hari): {duration} hari",
+    "templateText": "Berkomitmen untuk memegang mata uang kripto Anda?\nCara mudah meminjamkan dan menghasilkan uang dengan tabungan terkunci.",
+    "faq1": "Apa itu Tabungan Terkunci? Berkomitmen untuk memegang kripto Anda?",
+    "faq2": "Apa yang terjadi pada dana saya pada hari saya berlangganan produk Tabungan Terkunci?",
+    "faq3": "Apa yang terjadi pada dana saya pada tanggal nilai produk Tabungan Terkunci?",
+    "faq4": "Apa yang terjadi pada dana saya pada tanggal penukaran produk Tabungan Terkunci?",
+    "faq5": "Bagaimana rata-rata pengembalian tahunan (APR) dihitung?",
+    "faq6": "Apakah saya dijamin mendapatkan bunga pada produk WorkQuest Savings sekalipun pasar kripto turun?",
+    "ans1": "Sekarang Anda bisa mendapatkan bunga pada saat yang bersamaan! Jadikan kripto Anda berlangganan ke periode tabungan terkunci untuk mendapatkan bunga lebih tinggi.",
+    "ans2": "Pada hari berlangganan, WorkQuest Savings akan memotong dana untuk berlangganan dari dompet WUSD Anda.\n",
+    "ans3": "Pada tanggal nilai, WorkQuest Savings akan mendistribusikan produk Tabungan Terkunci ke dompet tabungan Anda, dan produk tabungan Anda akan mulai mendapatkan bunga.",
+    "ans4": "Pada tanggal penukaran, Anda akan melihat token awal yang dikomit ke langganan dan juga bunga yang diperoleh di 'saldo' rekening WorkQuest Anda. Proses ini akan berjalan otomatis.",
+    "ans5": "Pengembalian tahunan rata-rata (APR) menggunakan suku bunga harian rata-rata 7 hari terakhir, dikalikan dengan 365.",
+    "ans6": "Ya. Tingkat bunga pada setiap produk dijamin.",
     "smallPlug": "??",
-    "possiblePlug": "Possible",
-    "yearPlug": "1 year",
-    "depositModalBody": "Your crypto will lock for a specific period, and you will begin earning interest.",
-    "depositIsOpened": "Transfer confirmed",
-    "deposit": "Deposit",
-    "withdraw": "Withdraw",
+    "possiblePlug": "Mungkin",
+    "yearPlug": "1 tahun",
+    "depositModalBody": "Kripto Anda akan terkunci selama periode tertentu, dan Anda akan mulai mendapatkan bunga.",
+    "depositIsOpened": "Transfer dikonfirmasi",
+    "deposit": "Setor",
+    "withdraw": "Tarik",
     "withdrawText": "The amount of locked funds and the accumulated interest will be credited to your wallet"
   },
   "mining": {
@@ -1629,19 +1629,19 @@
       "balance": "Your balance:"
     },
     "liquidityMiningSub": "Is a DeFi (decentralized finance) mechanism in which participants supply cryptocurrencies into liquidity pools, and being rewarded with fees and tokens based on their share of the total pool liquidity.",
-    "pools": "Pools",
-    "choose": "Choose",
-    "information": "Information",
+    "pools": "Kumpulan",
+    "choose": "Pilih",
+    "information": "Informasi",
     "agreement": "WorkQuest Liquidity Mining User Agreement.pdf",
-    "download": "Download",
+    "download": "Unduh",
     "tableHead": {
-      "poolAddress": "Pool address",
+      "poolAddress": "Alamat kumpulan",
       "swaps": "Swaps",
       "totalValue": "Total value",
       "tokenAmount": "Token amount",
       "account": "Account",
       "time": "Time",
-      "assets": "Assets",
+      "assets": "Aktiva",
       "volume": "Volume"
     },
     "table": {
@@ -1651,17 +1651,17 @@
     "wusdEthPool": "ETH/WQT pool",
     "wusdBnbPool": "BNB/WQT pool",
     "APY": "APY",
-    "removeLiquidity": "Remove liquidity",
-    "liquidity": "Liquidity",
+    "removeLiquidity": "Hapus likuiditas",
+    "liquidity": "Likuiditas",
     "totalLiquidity": "Total liquidity",
     "reward": "Reward",
     "claimReward": "Claim Reward",
     "totalReward": "Total reward",
-    "volume24h": "Volume (24h)",
-    "myPoolShare": "My pool share",
-    "liquidityPoolProviders": "Liquidity pool providers",
-    "liquidityProvidersEarn": "Liquidity providers earn a 0.3% fee on all trades proportional to their share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.",
-    "transactions": "Transactions",
+    "volume24h": "Volume (24 jam)",
+    "myPoolShare": "Bagian kumpulan saya",
+    "liquidityPoolProviders": "Penyedia kumpulan likuiditas",
+    "liquidityProvidersEarn": "Penyedia likuiditas akan mendapatkan bayaran 0,3% pada semua perdagangan sebanding dengan bagian kumpulan mereka. Bayaran ditambahkan ke kumpulan, yang bertambah secara waktu nyata dan dapat diklaim dengan menarik likuiditas Anda.",
+    "transactions": "Transaksi",
     "connectWallet": "Connect wallet"
   },
   "collateral": {
@@ -1683,141 +1683,170 @@
     "faq": "FAQ",
     "lend": "Lend"
   },
+  "auction": {
+    "title": "Lots",
+    "time": "Added time",
+    "search": {
+      "placeholder": "Sum / Duration",
+      "button": "Serach auction"
+    },
+    "tabs": {
+      "current": "Current",
+      "completed": "Completed"
+    },
+    "card": {
+      "feeIncluded": "{feePercent}% commission already in the price",
+      "feeNotIncluded": "{feePercent}% commission not included",
+      "auctionDuration": "Auction duration",
+      "days": "{n} days",
+      "hours": "{n} hours",
+      "minutes": "{n} minutes",
+      "buy": "Buy",
+      "completed": {
+        "type": "EVEN TYPE",
+        "sender": "SENDER",
+        "lotSize": "LOT SIZE",
+        "price": "MKR PRICE",
+        "timestamp": "TIMESTAMP",
+        "txHash": "TX"
+      }
+    }
+  },
   "crediting": {
-    "lending": "WorkQuest Lending Protocol",
-    "templateText": "WorkQuest DeFi lending platform on the Work Net network with four exclusive money markets for volatile assets",
-    "marketSize": "Market size",
-    "deposit": "Deposit",
-    "percent": "Percent",
-    "wantToTakeALoan": "Want to take a loan?",
-    "borrow": "Borrow",
-    "information": "Information",
-    "openPositions": "Open positions",
-    "totalCollateralLocked": "Total collateral locked",
-    "totalWusdDebt": "Total WUSD debt",
+    "lending": "Protokol Pinjaman WorkQuest",
+    "templateText": "Platform pinjaman WorkQuest DeFi di jaringan Work Net dengan empat pasar uang eksklusif untuk aset yang mudah berubah",
+    "marketSize": "Ukuran pasar",
+    "deposit": "Setor",
+    "percent": "Persen",
+    "wantToTakeALoan": "Ingin mengambil pinjaman?",
+    "borrow": "Pinjam",
+    "information": "Informasi",
+    "openPositions": "Posisi terbuka",
+    "totalCollateralLocked": "Total jaminan terkunci",
+    "totalWusdDebt": "Total utang WUSD",
     "tableHead": {
       "id": "ID",
-      "currentRatio": "Current ratio",
-      "deposited": "Deposited",
-      "availableToWithdraw": "Available to withdraw"
+      "currentRatio": "Rasio saat ini",
+      "deposited": "Disetor",
+      "availableToWithdraw": "Tersedia untuk ditarik"
     },
     "table": {
-      "manage": "Manage"
+      "manage": "Kelola"
     },
-    "liquidationPrice": "Liquidation price",
-    "collateralizationRatio": "Collateralization ratio",
-    "ethLocked": "ETH locked",
-    "ableToWithdraw": "Able to withdraw",
-    "withdraw": "Withdraw",
-    "outstandingWusdDebt": "Outstanding WUSD debt",
-    "availableToGenerate": "Available to generate",
-    "payback": "Payback",
-    "generate": "Generate",
-    "history": "History",
+    "liquidationPrice": "Harga likuidasi",
+    "collateralizationRatio": "Rasio jaminan",
+    "ethLocked": "ETH terkunci",
+    "ableToWithdraw": "Dapat ditarik",
+    "withdraw": "Tarik",
+    "outstandingWusdDebt": "Utang WUSD yang belum lunas",
+    "availableToGenerate": "Tersedia untuk dibuat",
+    "payback": "Pembayaran kembali",
+    "generate": "Buat",
+    "history": "Riwayat",
     "credTableHeader": {
-      "activity": "Activity",
-      "amount": "Amount",
-      "time": "Time",
-      "sender": "Sender",
+      "activity": "Aktivitas",
+      "amount": "Jumlah",
+      "time": "Waktu",
+      "sender": "Pengirim",
       "txHash": "Txn hash"
     },
     "credTable": {
-      "activity": "Paid back"
+      "activity": "Dibayar kembali"
     },
-    "faq1": "What are Locked Savings? Committed to holding your crypto?",
-    "faq2": "What happens to my funds on the day I subscribe to a Locked Savings product?",
-    "ans2": "On the day of subscription, WorkQuest Savings will deduct the funds for subscription from your WUSD wallet.\n",
-    "faq3": "What happens to my funds on the value date of a Locked Savings product?",
-    "faq4": "What happens to my funds on the redemption date of a Locked Savings product?",
-    "faq5": "How is the average annual return (APR) calculated?",
-    "faq": "FAQ",
-    "lend": "Lend"
+    "faq1": "Apa itu Tabungan Terkunci? Berkomitmen untuk memegang kripto Anda?",
+    "faq2": "Apa yang terjadi pada dana saya pada hari saya berlangganan produk Tabungan Terkunci?",
+    "ans2": "Pada hari berlangganan, WorkQuest Savings akan memotong dana untuk berlangganan dari dompet WUSD Anda.\n",
+    "faq3": "Apa yang terjadi pada dana saya pada tanggal nilai produk Tabungan Terkunci?",
+    "faq4": "Apa yang terjadi pada dana saya pada tanggal penukaran produk Tabungan Terkunci?",
+    "faq5": "Bagaimana rata-rata pengembalian tahunan (APR) dihitung?",
+    "faq": "Pertanyaan Umum",
+    "lend": "Meminjamkan"
   },
   "insuring": {
-    "peerToPeerInsuring": "P2P insuring",
+    "peerToPeerInsuring": "Pengasuransian P2P",
     "card1": {
-      "title": "Minimal protection",
+      "title": "Perlindungan minimal",
       "pointsText": {
-        "point1": "An annual contribution of 1000 WUSD, payment in the event of an insured event 833.333333 WUSD."
+        "point1": "Iuran tahunan sebesar USD 1000, pembayaran jika terjadi kejadian yang diasuransikan 833,333333 WUSD."
       }
     },
     "card2": {
-      "title": "Standart protection",
+      "title": "Perlindungan standar",
       "pointsText": {
-        "point1": "Annual premium 2000 WUSD, payment in case of an insured event 1666.6667 WUSD."
+        "point1": "Premi tahunan 2000 WUSD, pembayaran dalam hal kejadian yang diasuransikan 1666,6667 WUSD."
       }
     },
     "card3": {
-      "title": "Maximum protection",
+      "title": "Perlindungan maksimal",
       "pointsText": {
-        "point1": "An annual contribution of 3000 WUSD, payment in the event of an insured event of 2500 WUSD."
+        "point1": "Iuran tahunan sebesar USD 3000, pembayaran jika terjadi kejadian yang diasuransikan 2500 WUSD."
       }
     },
-    "buy": "Buy",
-    "information": "Information",
-    "minimalProtectionPlan": "Minimal protection plan",
-    "standardProtectionPlan": "Standard protection plan",
-    "maximumProtectionPlan": "Maximum protection plan",
-    "yourFundBalance": "Insurance fund balance",
-    "withdraw": "Withdrawal",
-    "leaveFund": "Leave fund",
-    "changePlan": "Change plan",
-    "fundParticipants": "Fund participants",
+    "buy": "Beli",
+    "information": "Informasi",
+    "minimalProtectionPlan": "Program perlindungan minimal",
+    "standardProtectionPlan": "Program perlindungan standar",
+    "maximumProtectionPlan": "Program perlindungan maksimal",
+    "yourFundBalance": "Saldo dana asuransi",
+    "withdraw": "Penarikan",
+    "leaveFund": "Tinggalkan dana",
+    "changePlan": "Ubah program",
+    "fundParticipants": "Peserta dana",
     "userName": "Cody Fisher",
     "userNameCase": "Cody Fisher :",
-    "voting": "Voting",
-    "noVoteAtTheMoment": "No vote at the moment",
-    "countPeoplesInChat": "{count} peoples in chat",
-    "writeSomething": "Write something",
-    "activeVoting": "Active voting",
-    "paymentOfInsurance": "Payment of insurance",
-    "youWillCertifyTheInsuredEvent": "You will certify the insured event?",
-    "studyTheInsuredEventThoroughly": "Study the insured event thoroughly",
-    "insuredEvent": "Insured event",
+    "voting": "Pemungutan suara",
+    "noVoteAtTheMoment": "Saat ini tidak ada pemungutan suara",
+    "countPeoplesInChat": "{count} orang dalam obrolan",
+    "writeSomething": "Tulis sesuatu",
+    "activeVoting": "Pemungutan suara aktif",
+    "paymentOfInsurance": "{value}: Pembayaran asuransi",
+    "youWillCertifyTheInsuredEvent": "Anda akan mengesahkan kejadian yang diasuransikan?",
+    "studyTheInsuredEventThoroughly": "Pelajari kejadian yang diasuransikan secara menyeluruh",
+    "insuredEvent": "Kejadian yang diasuransikan",
     "planPoints": {
-      "point1": "Annual fee: {count} WUSD",
-      "point2": "Payment upon occurrence of an insured event: {count} WUSD",
-      "point3": "Duration of the contract: {count} year",
-      "point4": "Number of fund participants: {count} people"
+      "point1": "Biaya tahunan: {count} WUSD",
+      "point2": "Pembayaran setelah terjadinya kejadian yang diasuransikan: {count} WUSD",
+      "point3": "Durasi kontrak: {count} tahun",
+      "point4": "Jumlah peserta dana: {count} orang"
     },
     "faq1": {
-      "question": "What does P2P mean in insurance ?",
-      "answer": "Peer-to-peer (P2P) insurance is a product that allows a group of insureds to pool their capital, self-organize, and self-administer their own insurance"
+      "question": "Apa yang dimaksud dengan P2P dalam asuransi?",
+      "answer": "Asuransi peer-to-peer (P2P) adalah produk yang memungkinkan sekelompok tertanggung untuk mengumpulkan modal mereka, mengatur sendiri, dan mengelola sendiri asuransi mereka"
     },
     "faq2": {
-      "question": "How does p2p insurance work ?",
-      "answer": "Peer-to-peer insurance, or P2P insurance, enables groups of individuals to insure each other. The members of the group pool their money to insure against a risk affecting them. If a group member suffers an insurable loss, their claim is paid directly from the pool of money contributed by each member"
+      "question": "Bagaimana cara kerja asuransi p2p?",
+      "answer": "Asuransi peer-to-peer, atau asuransi P2P, memungkinkan kelompok individu untuk saling mengasuransikan. Anggota kelompok mengumpulkan uang mereka untuk diasuransikan terhadap risiko yang memengaruhi mereka. Jika anggota kelompok menderita kerugian yang dapat diasuransikan, klaim mereka dibayarkan langsung dari kumpulan uang yang disumbangkan oleh masing-masing anggota"
     },
     "faq3": {
-      "question": "How do you do peer to peer insurance ?",
-      "answer": "Ask for a “peer-to-peer” evaluation. In a peer-to-peer evaluation, your insurance fund will speak with another fund members about why the service or therapies are medically necessary. You can upload to the chat all the necessary documents and doctors' opinions, which will prove the legality of your case and create a vote for decision-making by the members of the foundation. If the majority of the fund votes in favor, you will receive the payout to your wallet."
+      "question": "Bagaimana cara melakukan asuransi peer to peer?",
+      "answer": "Mintalah evaluasi “peer-to-peer”. Dalam evaluasi peer-to-peer, dana asuransi Anda akan berbicara dengan anggota dana lain tentang mengapa layanan atau terapi diperlukan secara medis. Anda dapat mengunggah ke obrolan semua dokumen yang diperlukan dan pendapat dokter, yang akan membuktikan legalitas kasus Anda dan membuat pemungutan suara untuk pengambilan keputusan oleh anggota yayasan. Jika mayoritas dana mendukung, Anda akan menerima pembayaran ke dompet Anda."
     },
     "faq4": {
-      "question": "What will happen to the fund if the insured event does not occur within a year ?",
-      "answer": "At the end of the year, all users will receive notifications with a vote where they will be asked to vote for the extension of the fund for another year, which will automatically double your fund and payments in the event of an insured event or divide the fund between the fund participants."
+      "question": "Apa yang akan terjadi pada dana tersebut jika kejadian yang diasuransikan tidak terjadi dalam waktu satu tahun?",
+      "answer": "Pada akhir tahun, semua pengguna akan menerima pemberitahuan dengan pemungutan suara di mana mereka akan diminta untuk memilih perpanjangan dana selama satu tahun lagi, yang secara otomatis akan menggandakan dana dan pembayaran Anda jika terjadi kejadian yang diasuransikan atau membagi dana di antara para peserta dana."
     },
     "faq5": {
-      "question": "Who is a fund administrator ?",
-      "answer": "To ensure that each fund participant does not waste time considering all insured events, he will be able to delegate his voting rights to the fund manager for a small fee"
+      "question": "Siapa pengelola dananya?",
+      "answer": "Untuk memastikan bahwa setiap peserta dana tidak membuang waktu untuk mempertimbangkan semua kejadian yang diasuransikan, ia akan dapat mendelegasikan hak suaranya kepada pengelola dana dengan sedikit biaya"
     },
     "faq6": {
-      "question": "What is the standard size of the insurance fund ?",
-      "answer": "Funds are formed by 10 users depending on the selected protection level"
+      "question": "Berapa ukuran standar dana asuransi?",
+      "answer": "Dana dibentuk oleh 10 pengguna tergantung pada tingkat perlindungan yang dipilih"
     },
     "faq7": {
-      "question": "How is the amount of payment from the insurance fund calculated ?",
-      "answer": "An example of calculating the fund for the first year: Minimum protection - an annual premium of 1000 WUSD, payment in the event of an insured event 833.333333 WUSD.\n10 members of the fund * 1000 WUSD / 12 months = 833.333333 WUSD.\nIn case of continuation of the fund for the next year, the size of the fund and the insurance payment are doubled."
+      "question": "Bagaimana cara menghitung jumlah pembayaran dari dana asuransi?",
+      "answer": "Contoh penghitungan dana untuk tahun pertama: Perlindungan minimum - premi tahunan 1000 WUSD, pembayaran jika terjadi kejadian yang diasuransikan 833,333333 WUSD.\n10 anggota dana * 1000 WUSD / 12 bulan = 833,333333 WUSD.\nDalam hal dana berlanjut untuk tahun berikutnya, jumlah dana dan pembayaran asuransi akan menjadi dua kali lipat."
     },
     "faq8": {
-      "question": "What is the guarantee of security from withdrawals of funds by one member of the fund ?",
-      "answer": "All members of the fund will keep funds in a multi-signature wallet, where any decisions are made only by a majority vote."
+      "question": "Apa jaminan keamanan terhadap penarikan dana oleh salah seorang anggota dana?",
+      "answer": "Semua anggota dana akan menyimpan dana di dompet multi-tanda tangan, di mana setiap keputusan dibuat dengan suara mayoritas saja."
     }
   },
   "errors": {
     "transaction": {
       "notEnoughFunds": "Not enough funds"
     },
-    "incorrectPass": "Oops, something went wrong. Check the data and try again.",
+    "incorrectPass": "Ups! Ada yang tidak beres. Periksa data dan coba lagi.",
     "emptyData": {
       "emptyQuests": "Oops, there's no quests here yet",
       "emptyDisputes": "Oops, there are no disputes here yet",
@@ -1825,31 +1854,31 @@
       "emptyReviews": "Oops, there are no reviews here yet",
       "employer": {
         "myQuests": {
-          "desc": "You haven't done quests yet",
-          "btnText": "Create quest !"
+          "desc": "Anda belum menyelesaikan quest",
+          "btnText": "Buat quest!"
         },
         "allQuests": {
-          "desc": "You haven't done quests yet",
-          "btnText": "Create quest !"
+          "desc": "Anda belum menyelesaikan quest",
+          "btnText": "Buat quest!"
         }
       },
       "worker": {
         "myQuests": {
-          "desc": "You haven't done the quests yet",
-          "btnText": "Create quest !"
+          "desc": "Anda belum menyelesaikan quest",
+          "btnText": "Buat quest!"
         },
         "allQuests": {
-          "desc": "You have not responded to quests yet",
-          "btnText": "Respond to the quest !"
+          "desc": "Anda belum menanggapi quest",
+          "btnText": "Tanggapi quest!"
         }
       },
       "noEmployees": "Oops, there are no employees..."
     }
   },
   "sharing": {
-    "title": "Sharing",
-    "socialText": "Share in socials",
-    "share": "Share link"
+    "title": "Berbagi",
+    "socialText": "Bagikan di media sosial",
+    "share": "Bagikan tautan"
   },
   "crosschain": {
     "pageName": "WorkQuest Bridge",
@@ -1921,12 +1950,12 @@
   },
   "myQuests": {
     "statuses": {
-      "all": "All quests",
-      "favorites": "Favorites",
-      "responded": "Responded quests",
-      "performed": "Performed quests",
-      "active": "Active quests",
-      "invited": "Invited quests"
+      "all": "Semua quest",
+      "favorites": "Favorit",
+      "responded": "Diminta",
+      "performed": "Quest selesai",
+      "active": "Quest aktif",
+      "invited": "Quest yang diundang"
     }
   },
   "footer": {
