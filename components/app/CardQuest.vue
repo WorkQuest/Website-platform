@@ -91,9 +91,7 @@
               :alt="`${ quest.assignedWorker ? UserName(quest.assignedWorker.firstName, quest.assignedWorker.lastName) : '' }`"
             >
             <div class="user__name">
-              <span class="user__fullname">
-                {{ quest.assignedWorker ? UserName(CropTxt(quest.assignedWorker.firstName, 10), CropTxt(quest.assignedWorker.lastName, 10)) : '' }}
-              </span>
+              {{ quest.assignedWorker ? UserName(CropTxt(quest.assignedWorker.firstName, 10), CropTxt(quest.assignedWorker.lastName, 10)) : '' }}
             </div>
           </div>
           <item-rating :rating="getRatingValue(quest)" />
@@ -351,13 +349,6 @@ export default {
     &:hover {
       color: $blue;
     }
-  }
-  &__fullname {
-    word-wrap: break-word;
-    word-break: break-all;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
   }
 }
 .right {
