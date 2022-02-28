@@ -870,4 +870,12 @@ export default {
     }
   }
 }
+@include _380 {
+  .card-quest__progress {
+    height: 100%;
+  }
+  .progress__container {
+    grid-template-columns: auto;
+  }
+}
 </style>
