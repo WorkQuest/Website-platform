@@ -959,6 +959,7 @@
       "depositInfo": "Deposit info",
       "withdrawInfo": "Withdrawal info"
     },
+    "waitRoleCooldown": "You cannot change roles more than once a month. You can change role after {date} {time}",
     "settingsInfo": "Settings Info",
     "pleaseEnable2FA": "Please, enable TWO-Step authentication",
     "errorGetWUSD": "Something went wrong",
