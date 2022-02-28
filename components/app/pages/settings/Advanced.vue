@@ -128,7 +128,17 @@ export default {
           },
         ],
       },
-      rightSideButtons: [
+    };
+  },
+  computed: {
+    ...mapGetters({
+      statusTotp: 'user/getStatusTotp',
+      status2FA: 'user/getStatus2FA',
+      secondNumber: 'user/getUserSecondMobileNumber',
+      userData: 'user/getUserData',
+    }),
+    rightSideButtons() {
+      return [
         {
           title: 'settings.changePass',
           buttonName: 'settings.change',
@@ -145,7 +155,7 @@ export default {
         },
         {
           title: 'settings.smsVerification',
-          buttonName: 'settings.enable',
+          buttonName: this.userData?.phone?.fullPhone ? 'settings.verified' : 'settings.enable',
           modal: 'smsVerification',
           isSwitcher: false,
           disabled: !!this.userData?.phone?.fullPhone,
@@ -158,23 +168,14 @@ export default {
           secondModal: 'neededToEnable2FA',
           isSwitcher: true,
         },
-      ],
-    };
-  },
-  computed: {
-    ...mapGetters({
-      statusTotp: 'user/getStatusTotp',
-      status2FA: 'user/getStatus2FA',
-      secondNumber: 'user/getUserSecondMobileNumber',
-      userData: 'user/getUserData',
-    }),
+      ];
+    },
   },
   methods: {
     async showModalKey(modalKey) {
       this.$emit('showModalKey', modalKey);
     },
   },
-
 };
 </script>
 
