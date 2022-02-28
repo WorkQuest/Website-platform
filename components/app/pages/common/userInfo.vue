@@ -307,11 +307,11 @@ export default {
       return ratingStatistic?.status || 'noStatus';
     },
     initStarClass(star) {
-      const reviewMark = this.userData?.ratingStatistic?.averageMark;
+      const reviewMark = Number(this.userData?.ratingStatistic?.averageMark).toFixed(1);
       const a = this.Floor(star - reviewMark, 2);
       return [
-        { rating__star_full: star <= reviewMark || a < 0.3 },
-        { rating__star_half: (a >= 0.3 && a <= 0.7) },
+        { rating__star_full: star <= reviewMark },
+        { rating__star_half: a <= 0.7 },
       ];
     },
     shareModal() {
