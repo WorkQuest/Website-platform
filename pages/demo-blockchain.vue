@@ -33,6 +33,7 @@
                 placeholder="3500"
                 rules="required|decimal|decimalPlaces:18|min_value:0.001"
                 :name="$t('modals.amount')"
+                has-loader
               >
                 <template
                   v-slot:right-absolute

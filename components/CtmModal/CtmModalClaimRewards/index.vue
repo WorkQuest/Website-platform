@@ -16,6 +16,7 @@
           :label="$t('modals.amount')"
           :rules="`required|decimal|decimalPlaces:18${getInputRules()}`"
           :name="$t('modals.amount')"
+          has-loader
         >
           <template
             v-slot:right-absolute

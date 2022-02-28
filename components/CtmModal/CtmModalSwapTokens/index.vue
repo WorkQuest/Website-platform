@@ -13,6 +13,7 @@
           :label="$t('mining.swapTokens.oldTokens')"
           rules="required|decimal|min_value:0.00001"
           :name="$t('mining.swapTokens.oldTokens')"
+          has-loader
         >
           <template
             v-slot:right-absolute

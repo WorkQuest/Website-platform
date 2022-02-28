@@ -277,7 +277,7 @@ export default {
       border: 1px solid red !important
     }
     &_padding-r {
-      padding-right: 40px !important;
+      padding-right: 45px !important;
     }
   }
   &_disabled {

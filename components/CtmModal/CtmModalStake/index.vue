@@ -18,6 +18,7 @@
         :label="$t('modals.amount')"
         :name="$t('modals.amount')"
         :rules="`required|decimal|decimalPlaces:18|is_not:0|max_value:${stakeAmountLimit}|min_value:${minStakeAmount}`"
+        has-loader
       >
         <template v-slot:right-absolute>
           <base-btn
