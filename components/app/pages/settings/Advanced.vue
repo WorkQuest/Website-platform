@@ -128,7 +128,17 @@ export default {
           },
         ],
       },
-      rightSideButtons: [
+    };
+  },
+  computed: {
+    ...mapGetters({
+      statusTotp: 'user/getStatusTotp',
+      status2FA: 'user/getStatus2FA',
+      secondNumber: 'user/getUserSecondMobileNumber',
+      userData: 'user/getUserData',
+    }),
+    rightSideButtons() {
+      return [
         {
           title: 'settings.changePass',
           buttonName: 'settings.change',
@@ -158,23 +168,14 @@ export default {
           secondModal: 'neededToEnable2FA',
           isSwitcher: true,
         },
-      ],
-    };
-  },
-  computed: {
-    ...mapGetters({
-      statusTotp: 'user/getStatusTotp',
-      status2FA: 'user/getStatus2FA',
-      secondNumber: 'user/getUserSecondMobileNumber',
-      userData: 'user/getUserData',
-    }),
+      ];
+    },
   },
   methods: {
     async showModalKey(modalKey) {
       this.$emit('showModalKey', modalKey);
     },
   },
-
 };
 </script>
 
