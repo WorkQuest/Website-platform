@@ -197,4 +197,33 @@ export default {
     }
   }
 }
+@include _767 {
+  .auction-card {
+    padding: 10px;
+
+    &_completed {
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 10px;
+    }
+
+    &__price {
+      font-size: 20px;
+    }
+    &__fee-info {
+      font-size: 13px;
+    }
+    &__duration {
+      font-size: 12px;
+    }
+
+    &__field {
+      &-title {
+        font-size: 13px;
+      }
+      &-value {
+        font-size: 13px;
+      }
+    }
+  }
+}
 </style>

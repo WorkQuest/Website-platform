@@ -106,4 +106,11 @@ export default {
   gap: 20px;
   margin-top: 40px;
 }
+@include _767 {
+  .buy-auction {
+    &__content {
+      padding: 15px;
+    }
+  }
+}
 </style>
