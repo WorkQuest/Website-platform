@@ -30,7 +30,7 @@
             >
           </div>
           <div class="card-quest__text card-quest__text_title">
-            {{ `${quest.user ? UserName(CropTxt(quest.user.firstName, 10), CropTxt(quest.user.lastName, 10)) : ''}` }}
+            {{ `${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}` }}
           </div>
         </div>
         <div class="card-quest__head-right">
@@ -83,7 +83,7 @@
           <div
             class="container__user user"
             :data-selector="`ACTION-BTN-TO-ASSIGNED-WORKER-PROFILE-${questIndex}`"
-            @click="goToProfile(quest.assignedWorker.id)"
+            @click="showProfile(quest.assignedWorker.id)"
           >
             <img
               class="user__avatar"
@@ -91,7 +91,7 @@
               :alt="`${ quest.assignedWorker ? UserName(quest.assignedWorker.firstName, quest.assignedWorker.lastName) : '' }`"
             >
             <div class="user__name">
-              {{ quest.assignedWorker ? UserName(CropTxt(quest.assignedWorker.firstName, 10), CropTxt(quest.assignedWorker.lastName, 10)) : '' }}
+              {{ quest.assignedWorker ? UserName(quest.assignedWorker.firstName, quest.assignedWorker.lastName) : '' }}
             </div>
           </div>
           <item-rating :rating="getRatingValue(quest)" />
@@ -242,9 +242,6 @@ export default {
         { 'card-quest__amount_gray': item.status === QuestStatuses.Done },
       ];
     },
-    goToProfile(id) {
-      this.$router.push(`/profile/${id}`);
-    },
     getQuestPreview(quest) {
       if (quest?.medias?.length) {
         for (let i = 0; i < quest.medias.length; i += 1) {
@@ -340,12 +337,12 @@ export default {
     width: 100%;
     font-weight: 500;
     font-size: 16px;
+    line-height: 130%;
     color: $black800;
-    cursor: pointer;
-    transition: .5s;
     text-overflow: ellipsis;
+    overflow: hidden;
     white-space: nowrap;
-    word-break: break-word;
+    cursor: pointer;
     &:hover {
       color: $blue;
     }
@@ -398,6 +395,7 @@ export default {
             width: 30px;
             object-fit: cover;
             cursor: pointer;
+            flex-shrink: 0;
             margin-right: 10px;
           }
         }
@@ -688,7 +686,9 @@ export default {
       line-height: 130%;
       color: $black800;
       cursor: pointer;
-      transition: .5s;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
       &:hover {
         color: $blue;
       }
@@ -856,9 +856,6 @@ export default {
     &__right {
       padding: 10px;
     }
-  }
-  .user__name {
-    font-size: 12px;
   }
   .status {
     &__level {
