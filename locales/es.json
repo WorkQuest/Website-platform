@@ -1684,6 +1684,35 @@
     "faq": "FAQ",
     "lend": "Lend"
   },
+  "auction": {
+    "title": "Lots",
+    "time": "Added time",
+    "search": {
+      "placeholder": "Sum / Duration",
+      "button": "Serach auction"
+    },
+    "tabs": {
+      "current": "Current",
+      "completed": "Completed"
+    },
+    "card": {
+      "feeIncluded": "{feePercent}% commission already in the price",
+      "feeNotIncluded": "{feePercent}% commission not included",
+      "auctionDuration": "Auction duration",
+      "days": "{n} days",
+      "hours": "{n} hours",
+      "minutes": "{n} minutes",
+      "buy": "Buy",
+      "completed": {
+        "type": "EVEN TYPE",
+        "sender": "SENDER",
+        "lotSize": "LOT SIZE",
+        "price": "MKR PRICE",
+        "timestamp": "TIMESTAMP",
+        "txHash": "TX"
+      }
+    }
+  },
   "crediting": {
     "lending": "Protocolo de préstamos de WorkQuest",
     "templateText": "Plataforma de créditos WorkQuest DeFi en la red Work Net, con cuatro mercados de dinero exclusivos para activos volátiles",
