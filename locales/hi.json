@@ -2,8 +2,8 @@
   "meta": {
     "priority": {
       "all": "सभी प्राथमिकता",
-      "low": "फिक्स्ड डिलीवरी",
-      "normal": "शॉर्ट टर्म",
+      "fixedDelivery": "फिक्स्ड डिलीवरी",
+      "shortTerm": "शॉर्ट टर्म",
       "urgent": "अर्जेंट"
     },
     "performed": "परफॉर्म किया",
@@ -143,7 +143,8 @@
     "cardAdd": "कार्ड जोड़ें",
     "settings": "सेटिंग",
     "costPerHour": "कॉस्ट प्रति घंटा",
-    "disputes": "विवाद"
+    "disputes": "विवाद",
+    "success": "Success"
   },
   "btn": {
     "completeWorkOnQuest": "Complete work on Quest",

@@ -2,8 +2,8 @@
   "meta": {
     "priority": {
       "all": "Все приоритеты",
-      "low": "Фиксированная доставка",
-      "normal": "В ближайщем будущем",
+      "fixedDelivery": "Фиксированная доставка",
+      "shortTerm": "В ближайщем будущем",
       "urgent": "Срочный"
     },
     "performed": "Выполнено",
@@ -143,7 +143,8 @@
     "cardAdd": "Добавить карту",
     "settings": "Настройки",
     "costPerHour": "Цена за час",
-    "disputes": "Споры"
+    "disputes": "Споры",
+    "success": "Success"
   },
   "btn": {
     "completeWorkOnQuest": "Завершить работу над квестом",
@@ -1464,7 +1465,7 @@
   "workers": {
     "searchQuests": "Search quests",
     "searchWorkers": "Search workers",
-    "topWorkers": "Top employees",
+    "topWorkers": "Топ работников",
     "price": "Price",
     "addedTime": "Added time",
     "urgent": "Select the urgency level",

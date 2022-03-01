@@ -2,8 +2,8 @@
   "meta": {
     "priority": {
       "all": "Toutes les priorités",
-      "low": "Livraison fixe",
-      "normal": "Court terme",
+      "fixedDelivery": "Livraison fixe",
+      "shortTerm": "Court terme",
       "urgent": "Urgent"
     },
     "performed": "Exécutée",
@@ -143,7 +143,8 @@
     "cardAdd": "Ajouter une carte",
     "settings": "Paramètres",
     "costPerHour": "Coût horaire",
-    "disputes": "Litiges"
+    "disputes": "Litiges",
+    "success": "Success"
   },
   "btn": {
     "completeWorkOnQuest": "Complete work on Quest",

@@ -373,8 +373,8 @@ export default {
     runtime() {
       return [
         this.$t('meta.priority.urgent'),
-        this.$t('meta.priority.normal'),
-        this.$t('meta.priority.low'),
+        this.$t('meta.priority.shortTerm'),
+        this.$t('meta.priority.fixedDelivery'),
       ];
     },
     employment() {

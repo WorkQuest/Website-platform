@@ -2,8 +2,8 @@
   "meta": {
     "priority": {
       "all": "Semua prioritas",
-      "low": "Pengiriman tetap",
-      "normal": "Jangka pendek",
+      "fixedDelivery": "Pengiriman tetap",
+      "shortTerm": "Jangka pendek",
       "urgent": "Urgen"
     },
     "performed": "Dilakukan",
@@ -143,7 +143,8 @@
     "cardAdd": "Tambahkan Kartu",
     "settings": "Pengaturan",
     "costPerHour": "Biaya per jam",
-    "disputes": "Sengketa"
+    "disputes": "Sengketa",
+    "success": "Success"
   },
   "btn": {
     "completeWorkOnQuest": "Complete work on Quest",

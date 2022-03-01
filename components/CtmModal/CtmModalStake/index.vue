@@ -213,7 +213,7 @@ export default {
             this.SetLoader(false);
             return error();
           }
-          await this.$store.dispatch('main/showToast', { title: this.$t('meta.approve'), text: this.$t('modals.success') });
+          await this.$store.dispatch('main/showToast', { title: this.$t('meta.approve'), text: this.$t('meta.success') });
           return success();
         },
         callback: async () => await this.stake(stakeTokenAddress, poolAddress, amount, stakingType, days, isStakingStarted),

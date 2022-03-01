@@ -2,8 +2,8 @@
   "meta": {
     "priority": {
       "all": "সমস্ত অগ্রাধিকার",
-      "low": "নির্দিষ্ট ডেলিভারি",
-      "normal": "স্বল্পমেয়াদ",
+      "fixedDelivery": "নির্দিষ্ট ডেলিভারি",
+      "shortTerm": "স্বল্পমেয়াদ",
       "urgent": "জরুরি"
     },
     "performed": "সম্পাদিত",
@@ -143,7 +143,8 @@
     "cardAdd": "কার্ড যোগ করুন",
     "settings": "সেটিংস",
     "costPerHour": "প্রতি ঘণ্টায় খরচ",
-    "disputes": "বিরোধ"
+    "disputes": "বিরোধ",
+    "success": "Success"
   },
   "btn": {
     "completeWorkOnQuest": "Complete work on Quest",

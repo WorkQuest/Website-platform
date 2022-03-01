@@ -147,7 +147,7 @@ export default {
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/success.svg'),
-          title: this.$t('modals.success'),
+          title: this.$t('meta.success'),
           subtitle: this.$t('modals.SMSVerConnected'),
         });
       } else {

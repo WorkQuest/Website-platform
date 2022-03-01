@@ -75,8 +75,8 @@ export default {
           placeholder: 'priority.title',
           items: [
             this.$t('meta.priority.all'),
-            this.$t('meta.priority.low'),
-            this.$t('meta.priority.normal'),
+            this.$t('meta.priority.fixedDelivery'),
+            this.$t('meta.priority.shortTerm'),
             this.$t('priority.employee.urgent'),
           ],
           label: 'settings.priority',

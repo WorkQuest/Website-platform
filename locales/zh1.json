@@ -2,8 +2,8 @@
   "meta": {
     "priority": {
       "all": "All priority",
-      "low": "Fixed delivery",
-      "normal": "Short term",
+      "fixedDelivery": "Fixed delivery",
+      "shortTerm": "Short term",
       "urgent": "Urgent"
     },
     "performed": "Performed",
@@ -143,7 +143,8 @@
     "cardAdd": "Add card",
     "settings": "Settings",
     "costPerHour": "Cost per hour",
-    "disputes": "Disputes"
+    "disputes": "Disputes",
+    "success": "Success"
   },
   "btn": {
     "completeWorkOnQuest": "Complete work on Quest",

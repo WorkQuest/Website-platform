@@ -30,7 +30,7 @@
         <span
           :class="{table__success: el.item.status, table__failed: !el.item.status}"
         >
-          {{ el.item.status ? $t('modals.success') : $t('modals.failed') }}
+          {{ el.item.status ? $t('meta.success') : $t('modals.failed') }}
         </span>
       </template>
       <template #cell(block)="el">

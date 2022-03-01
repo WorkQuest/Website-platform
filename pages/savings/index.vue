@@ -244,23 +244,23 @@ export default {
     interestRate() {
       return [
         {
-          perc: this.$tc('meta.percents', { count: '5.31' }),
+          perc: this.$tc('meta.percents', 5.31),
           date: this.$tc('meta.days', 7),
         },
         {
-          perc: this.$tc('meta.percents', { count: '5.48' }),
+          perc: this.$tc('meta.percents', 5.48),
           date: this.$tc('meta.days', 14),
         },
         {
-          perc: this.$tc('meta.percents', { count: '5.66' }),
+          perc: this.$tc('meta.percents', 5.66),
           date: this.$tc('meta.days', 30),
         },
         {
-          perc: this.$tc('meta.percents', { count: '6' }),
+          perc: this.$tc('meta.percents', 6),
           date: this.$tc('meta.days', 90),
         },
         {
-          perc: this.$tc('meta.percents', { count: '6.5' }),
+          perc: this.$tc('meta.percents', 6.5),
           date: this.$tc('meta.days', 180),
         },
       ];

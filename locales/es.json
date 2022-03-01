@@ -2,8 +2,8 @@
   "meta": {
     "priority": {
       "all": "Todas las prioridades",
-      "low": "Entrega fija",
-      "normal": "Corto plazo",
+      "fixedDelivery": "Entrega fija",
+      "shortTerm": "Corto plazo",
       "urgent": "Urgente"
     },
     "performed": "Completadas",
@@ -143,7 +143,8 @@
     "cardAdd": "Añadir tarjeta",
     "settings": "Ajustes",
     "costPerHour": "Coste por hora",
-    "disputes": "Disputas"
+    "disputes": "Disputas",
+    "success": "Success"
   },
   "btn": {
     "completeWorkOnQuest": "Complete work on Quest",

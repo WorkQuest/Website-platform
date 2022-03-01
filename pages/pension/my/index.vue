@@ -388,7 +388,7 @@ export default {
     },
     pensionBalance() {
       const balance = this.pensionWallet?.amount || 0;
-      return this.$t(`pension.${TokenSymbols.WUSD}Count`, { count: balance });
+      return this.$t(`meta.${TokenSymbols.WUSD}Count`, { count: balance });
     },
     totalPages() {
       const len = this.history.length;
@@ -451,8 +451,8 @@ export default {
 
       const years = ends.diff(now, 'years');
       const days = ends.diff(now, 'days') - years * 365;
-      const y = years > 0 ? `${this.$t('pension.years', { count: years })} ` : '';
-      const d = days >= 0 ? this.$t('pension.days', { count: days }) : this.$t('pension.days', { count: 0 });
+      const y = years > 0 ? `${this.$t('meta.years', { count: years })} ` : '';
+      const d = days >= 0 ? this.$t('meta.days', { count: days }) : this.$t('meta.days', { count: 0 });
       return `${y}${d}`;
     },
     getFeePercent() {

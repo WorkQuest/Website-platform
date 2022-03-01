@@ -108,7 +108,7 @@ export default {
           this.$cookies.set('userLogin', true, { path: '/' });
           this.$cookies.set('userStatus', 1, { path: '/' });
           sessionStorage.removeItem('confirmToken');
-          this.ShowToast(this.$t('modals.yourAccountVerified'), this.$t('modals.success'));
+          this.ShowToast(this.$t('modals.yourAccountVerified'), this.$t('meta.success'));
           await this.$router.push(Path.ROLE);
         } else {
           // Wrong confirm token

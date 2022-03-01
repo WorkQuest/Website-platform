@@ -106,7 +106,7 @@ export default {
     },
     priorityItems() {
       const items = [this.$t('meta.priority.all')];
-      PriorityFilter.forEach((item) => { if (item.value) items.push(this.$t(`quests.runtime.${item.key}`)); });
+      PriorityFilter.forEach((item) => { if (item.value) items.push(this.$t(`meta.priority.${item.key}`)); });
       return items;
     },
     typeOfJobItems() {
