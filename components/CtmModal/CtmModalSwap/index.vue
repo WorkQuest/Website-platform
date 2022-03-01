@@ -30,7 +30,6 @@
                 class="grid__input"
                 rules="required|decimal|decimalPlaces:18|min_value:0.00001"
                 :name="$t('modals.amountField')"
-                has-loader
               >
                 <template
                   v-slot:right-absolute

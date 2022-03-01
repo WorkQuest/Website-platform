@@ -49,7 +49,6 @@
               :placeholder="'Enter amount'"
               :rules="`required|decimal|is_not:0${maxValue ? '|max_value:' + maxValue : ''}|decimalPlaces:18`"
               :name="$t('modals.amountField')"
-              has-loader
               @input="replaceDot"
             >
               >

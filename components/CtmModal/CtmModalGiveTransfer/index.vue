@@ -37,7 +37,6 @@
               :placeholder="$t('modals.amount')"
               :rules="`required|decimal|is_not:0|max_bn:${maxAmount}|decimalPlaces:18`"
               :name="$t('modals.amountField')"
-              has-loader
               @input="replaceDot"
             >
               <template

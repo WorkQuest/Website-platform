@@ -16,7 +16,6 @@
           mode="icon"
           :type="isVisibleCurrent ? 'text': 'password'"
           class="field__input"
-          has-loader
         >
           <template
             v-slot:left
@@ -51,7 +50,6 @@
         mode="icon"
         :type="isVisible ? 'text': 'password'"
         class="field__input"
-        has-loader
       >
         <template
           v-slot:left
@@ -84,7 +82,6 @@
         :label="$t('modals.confirmNewPassword')"
         mode="icon"
         :type="isVisibleConfirm ? 'text': 'password'"
-        has-loader
       >
         <template v-slot:left>
           <span class="icon-Lock" />

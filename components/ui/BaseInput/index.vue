@@ -43,7 +43,7 @@
         ref="input"
         class="ctm-field__input"
         :class="[{'ctm-field__input_error': errors[0]},
-                 {'ctm-field__input_padding-r' : hasLoader}]"
+                 {'ctm-field__input_padding-r' : $slots['right-absolute'] || (value && isSearch && !isBusySearch)}]"
         :placeholder="placeholder"
         data-selector="BASE-INPUT-FIELD"
         :value="mode === 'convertDate' ? convertDate(value) : value"
@@ -162,10 +162,6 @@ export default {
     validationMode: {
       type: String,
       default: 'aggressive',
-    },
-    hasLoader: {
-      type: Boolean,
-      default: false,
     },
   },
   mounted() {
