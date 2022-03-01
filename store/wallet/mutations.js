@@ -27,8 +27,9 @@ export default {
   setPensionHistory(state, pensionHistory) {
     state.pensionHistory = pensionHistory.sort((a, b) => b.timestamp - a.timestamp);
   },
-  setPensionHistoryData(state, payload) {
-    state.pensionHistoryData = payload;
+  setPensionHistoryData(state, { method, txs, count }) {
+    state.pensionHistory[method].txs = txs;
+    state.pensionHistory[method].count = count;
   },
   setStakingUserData(state, { pool, data }) {
     state.stakingUserData[pool] = data;

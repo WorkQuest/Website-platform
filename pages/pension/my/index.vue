@@ -94,9 +94,7 @@
                 {{ $t('pension.days', { count: 0 }) }}
               </div>
             </div>
-            <div
-              class="btn-group"
-            >
+            <div class="btn-group">
               <base-btn
                 class="btn_bl"
                 @click="showWithdrawModal"
@@ -112,62 +110,84 @@
             </div>
           </div>
         </template>
-        <div class="info-block">
-          <div class="info-block__name">
-            {{ $t('pension.transactionHistory') }}
-          </div>
-          <div class="pension-page__table">
-            <b-table
-              :items="historyByPage"
-              :fields="historyFields"
-              borderless
-              caption-top
-              thead-class="table__header"
-              tbody-tr-class="table__row"
+        <div class="pension-page__info-block">
+          <div class="info-block">
+            <div class="info-block__name">
+              {{ $t('pension.transactionHistory') }}
+            </div>
+            <div class="info-block__select-table">
+              <base-btn
+                :is-submit="false"
+                :mode="selectedTable === $options.PensionHistoryMethods.Receive ? '' : 'outline'"
+                @click="selectedTable=$options.PensionHistoryMethods.Receive"
+              >
+                {{ $t('wallet.deposit') }}
+              </base-btn>
+              <base-btn
+                :is-submit="false"
+                :mode="selectedTable === $options.PensionHistoryMethods.Withdraw ? '' : 'outline'"
+                @click="selectedTable=$options.PensionHistoryMethods.Withdraw"
+              >
+                {{ $t('pension.withdraw') }}
+              </base-btn>
+              <base-btn
+                :is-submit="false"
+                :mode="selectedTable === $options.PensionHistoryMethods.Update ? '' : 'outline'"
+                @click="selectedTable=$options.PensionHistoryMethods.Update"
+              >
+                {{ $t('pension.changePercent') }}
+              </base-btn>
+            </div>
+            <div class="pension-page__table">
+              <b-table
+                :items="historyByPage"
+                :fields="historyFields"
+                borderless
+                caption-top
+                thead-class="table__header"
+                tbody-tr-class="table__row"
+              >
+                <template #cell(operation)="el">
+                  {{ getOperationLocale(el.item.operation) }}
+                </template>
+                <template #cell(txHash)="el">
+                  <a
+                    :href="getExplorerRef(el.item.txHash)"
+                    target="_blank"
+                    class="user__value_gray"
+                  >
+                    {{ CutTxn(el.item.txHash) }}
+                  </a>
+                </template>
+                <template #cell(time)="el">
+                  <div class="user__value_gray">
+                    {{ $moment(el.item.time).format('lll') }}
+                  </div>
+                </template>
+                <template #cell(amount)="el">
+                  <div class="user__value">
+                    {{ el.item.amount }}
+                  </div>
+                </template>
+              </b-table>
+            </div>
+            <div
+              v-if="!historyByPage.length"
+              class="empty-info"
             >
-              <template #cell(operation)="el">
-                {{ getOperationLocale(el.item.operation) }}
-              </template>
-              <template #cell(txHash)="el">
-                <a
-                  :href="getExplorerRef(el.item.txHash)"
-                  target="_blank"
-                  class="user__value_gray"
-                >
-                  {{ CutTxn(el.item.txHash) }}
-                </a>
-              </template>
-              <template #cell(time)="el">
-                <div class="user__value_gray">
-                  {{ $moment(el.item.time).format('lll') }}
-                </div>
-              </template>
-              <template #cell(amount)="el">
-                <div class="user__value">
-                  {{ el.item.amount }}
-                </div>
-              </template>
-            </b-table>
+              <empty-data :description="$t('meta.listIsEmpty')" />
+            </div>
           </div>
           <div
-            v-if="!historyByPage.length"
-            class="empty-info"
+            v-if="totalPages > 1"
+            class="info-block__pager"
           >
-            <empty-data
-              :description="$t('meta.listIsEmpty')"
+            <base-pager
+              v-model="page"
+              :total-pages="totalPages"
             />
           </div>
         </div>
-        <!--        TODO: вернуть как появится возможность объединить на бэке -->
-        <!--        <div-->
-        <!--          v-if="totalPages > 1"-->
-        <!--          class="info-block__pager"-->
-        <!--        >-->
-        <!--          <base-pager-->
-        <!--            v-model="page"-->
-        <!--            :total-pages="totalPages"-->
-        <!--          />-->
-        <!--        </div>-->
         <div
           v-if="FAQs.length"
           class="info-block"
@@ -210,16 +230,17 @@ import { mapGetters } from 'vuex';
 import { WQPensionFund } from '~/abi/abi';
 import modals from '~/store/modals/modals';
 import { getWalletAddress } from '~/utils/wallet';
-import { TokenSymbols } from '~/utils/enums';
+import { PensionHistoryMethods, TokenSymbols } from '~/utils/enums';
 
 export default {
   name: 'MyPension',
+  PensionHistoryMethods,
   data() {
     return {
+      selectedTable: PensionHistoryMethods.Receive,
       page: 1,
       itemsPerPage: 10,
       walletAddress: null,
-      currentChainName: null,
       isDeadline: false,
       FAQs: [
         {
@@ -281,7 +302,6 @@ export default {
       isWalletConnected: 'wallet/getIsWalletConnected',
       pensionWallet: 'wallet/getPensionWallet',
       pensionHistory: 'wallet/getPensionHistory',
-      pensionHistoryData: 'wallet/getPensionHistoryData',
       balanceData: 'wallet/getBalanceData',
     }),
     historyFields() {
@@ -302,7 +322,7 @@ export default {
             height: '27px',
             lineHeight: '27px',
           },
-          tdAttr: { style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px' },
+          tdAttr: { style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px; width: 250px;' },
         },
         {
           key: 'txHash',
@@ -318,7 +338,12 @@ export default {
         {
           key: 'value',
           label: this.$t('modals.value'),
-          ...cellStyle,
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: { style: 'padding: 0; height: 64px; line-height: 64px; width: 325px;' },
         },
       ];
     },
@@ -327,19 +352,21 @@ export default {
       return this.$t('pension.WUSDCount', { count: balance });
     },
     totalPages() {
-      const len = this.pensionHistoryData.receive.count
-        + this.pensionHistoryData.withdraw.count
-        + this.pensionHistoryData.update.count;
+      const len = this.pensionHistory[this.selectedTable]?.count;
       if (!len) return len;
       return Math.ceil(len / this.itemsPerPage);
     },
     historyByPage() {
-      if (!this.pensionHistory.length) return [];
-      const temp = [...this.pensionHistory];
-      return temp.splice((this.page - 1) * this.itemsPerPage, this.itemsPerPage);
+      return this.pensionHistory[this.selectedTable]?.txs || [];
     },
   },
   watch: {
+    page(newVal) {
+      this.loadTablePage(newVal);
+    },
+    selectedTable() {
+      this.loadTablePage(1);
+    },
     async isWalletConnected(newValue) {
       if (!newValue) return;
       await this.getWallet();
@@ -354,7 +381,7 @@ export default {
     getOperationLocale(operation) {
       if (operation === 'WalletUpdated') return this.$t('pension.changePercent');
       if (operation === 'Received') return this.$t('wallet.deposit');
-      if (operation === 'Withdraw') return this.$t('wallet.withdraw');
+      if (operation === 'Withdrew') return this.$t('wallet.withdraw');
       return '';
     },
     getExplorerRef(hash) {
@@ -398,9 +425,19 @@ export default {
     getFeePercent() {
       return this.pensionWallet?.fee || '';
     },
+    async loadTablePage(page) {
+      this.page = page;
+      await this.$store.dispatch('wallet/getPensionTransactions', {
+        method: this.selectedTable,
+        limit: this.itemsPerPage,
+        offset: (this.page - 1) * this.itemsPerPage,
+      });
+    },
     async getWallet() {
-      await this.$store.dispatch('wallet/getPensionTransactions');
-      await this.$store.dispatch('wallet/pensionGetWalletInfo');
+      await Promise.all([
+        this.$store.dispatch('wallet/pensionGetWalletInfo'),
+        this.loadTablePage(this.page),
+      ]);
       if (!this.pensionWallet || !this.pensionWallet.isCreated) {
         await this.$router.push('/pension');
       }
@@ -646,6 +683,13 @@ export default {
     .info-block {
       background-color: #fff;
       border-radius: 6px;
+
+      &__select-table {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 20px;
+        margin: 0 15px 15px 15px;
+      }
 
       &__faqs {
         margin: 0 20px 20px 20px;
@@ -939,6 +983,10 @@ export default {
   @include _575 {
     &__content {
       .info-block {
+        &__select-table {
+          grid-template-columns: 1fr;
+          grid-template-rows: repeat(3, 1fr);
+        }
         &__triple {
           grid-template-rows: repeat(3, 1fr);
           grid-template-columns: unset;

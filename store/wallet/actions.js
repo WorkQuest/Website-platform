@@ -11,7 +11,7 @@ import {
   fetchContractData, success, error,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
-import { StakingTypes, TokenSymbols } from '~/utils/enums';
+import { PensionHistoryMethods, StakingTypes, TokenSymbols } from '~/utils/enums';
 import {
   getPensionDefaultData,
   getPensionWallet,
@@ -21,71 +21,35 @@ import {
 } from '~/utils/wallet.js';
 
 export default {
-  async getPensionTransactions({ commit, getters }) {
+  async getPensionTransactions({ commit, getters }, { method, limit, offset }) {
     try {
-      const prevData = getters.getPensionHistoryData;
-      const limit = 10;
-      const [receive, update, withdraw] = await Promise.all([
-        this.$axios.get('/v1/pension-fund/receive', {
-          params: {
-            userAddress: getWalletAddress(),
-            limit,
-            offset: prevData.receive.curOffset,
-          },
-        }),
-        this.$axios.get('/v1/pension-fund/wallet-update', {
-          params: {
-            userAddress: getWalletAddress(),
-            limit,
-            offset: prevData.update.curOffset,
-          },
-        }),
-        this.$axios.get('/v1/pension-fund/withdraw', {
-          params: {
-            userAddress: getWalletAddress(),
-            limit,
-            offset: prevData.withdraw.curOffset,
-          },
-        }),
-      ]);
-      commit('setPensionHistoryData', {
-        receive: { count: receive.data.result.count, curOffset: prevData.receive.curOffset + limit + 1 },
-        withdraw: { count: withdraw.data.result.count, curOffset: prevData.withdraw.curOffset + limit + 1 },
-        update: { count: update.data.result.count, curOffset: prevData.receive.curOffset + limit + 1 },
+      const path = method === PensionHistoryMethods.Update ? 'wallet-update' : method.toLowerCase();
+      const res = await this.$axios.get(`/v1/pension-fund/${path}`, {
+        params: {
+          userAddress: getWalletAddress(),
+          limit,
+          offset,
+        },
       });
-
-      const newData = [];
-      // eslint-disable-next-line no-restricted-syntax
-      for (const item of receive.data.result.events) {
-        newData.push({
-          operation: item.event,
-          txHash: item.transactionHash,
-          time: item.createdAt,
-          timestamp: item.timestamp,
-          value: `${getStyledAmount(item.amount)} ${TokenSymbols.WUSD}`,
-        });
-      }
-      // eslint-disable-next-line no-restricted-syntax
-      for (const item of withdraw.data.result.events) {
-        newData.push({
-          operation: item.event,
-          txHash: item.transactionHash,
-          time: item.createdAt,
-          timestamp: item.timestamp,
-          value: `${getStyledAmount(item.amount)} ${TokenSymbols.WUSD}`,
-        });
-      }
-      // eslint-disable-next-line no-restricted-syntax
-      for (const item of update.data.result.events) {
-        newData.push({
+      if (method === PensionHistoryMethods.Update) {
+        const updateData = res.data.result.events.map((item) => ({
           operation: item.event,
           txHash: item.transactionHash,
           time: item.createdAt,
           timestamp: item.timestamp,
           value: `${getStyledAmount(item.newFee)}%`,
-        });
+        }));
+        commit('setPensionHistoryData', { method, txs: updateData, count: res.data.result.count });
+      } else {
+        const receiveData = res.data.result.events.map((item) => ({
+          operation: item.event,
+          txHash: item.transactionHash,
+          time: item.createdAt,
+          timestamp: item.timestamp,
+          value: `${getStyledAmount(item.amount)} ${TokenSymbols.WUSD}`,
+        }));
+        commit('setPensionHistoryData', { method, txs: receiveData, count: res.data.result.count });
       }
-      commit('setPensionHistory', newData);
     } catch (e) {
       console.error(e);
     }

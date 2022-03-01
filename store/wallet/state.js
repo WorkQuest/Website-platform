@@ -18,7 +18,11 @@ export default () => ({
     },
   },
   pensionWallet: null,
-  pensionHistory: [],
+  pensionHistory: {
+    Update: { txs: [], count: 0 },
+    Receive: { txs: [], count: 0 },
+    Withdraw: { txs: [], count: 0 },
+  },
   stakingPoolsData: { WQT: {}, WUSD: {} },
   stakingUserData: { WQT: {}, WUSD: {} },
 });
