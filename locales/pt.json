@@ -6,6 +6,10 @@
       "shortTerm": "Curto prazo",
       "urgent": "Urgente"
     },
+    "lend": "Emprestar",
+    "faq": "FAQ (Perguntas Frequentes)",
+    "term": "Prazo",
+    "download": "Descarregar",
     "performed": "Realizado",
     "contactUs": "Contact Us",
     "balance": "Saldo",
@@ -921,8 +925,8 @@
     "errors": {
       "errorQuests": "Error with quests",
       "emptyOpenQuests": "You don't have open quests, please create",
-      "errorSmsVer": "Error SMS verification",
       "error": "Error",
+      "errorSmsVer": "Error SMS verification",
       "connect": "Error connection",
       "youCan’tDeleteActiveQuest": "You can’t delete active quest",
       "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
@@ -973,9 +977,6 @@
     "countOfRecievedWUSDDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "countOfCollateralDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "conversionPercentDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
-    "errorQuests": "Error with quests",
-    "emptyOpenQuests": "You don't have open quests, please create",
-    "errorSmsVer": "Error SMS verification",
     "fillNumber": "Please fill phone number in settings page...",
     "textLengthExceeded": "You can only write {count} characters",
     "chooseTheme": "Choose theme",
@@ -1030,7 +1031,6 @@
     "currentPassword": "Palavra-passe atual",
     "newPassword": "Nova palavra-passe",
     "confirmNewPassword": "Confirmar nova palavra-passe ",
-    "change": "Alterar",
     "title": "Título",
     "badService": "Mau serviço",
     "otherReason": "Outro motivo",
@@ -1381,7 +1381,6 @@
     "imgLoaded": "Imagem carregada com sucesso",
     "workExp": "Experiência de trabalho",
     "vacancy": "Vaga",
-    "term": "Prazo",
     "getVerification": "Concluir a verificação",
     "notVerified": "Não verificado",
     "more": "Mais",
@@ -1417,7 +1416,6 @@
     "onlyWhenSubmittedWork": "Somente ao enviar ofertas de emprego",
     "allRegistered": "Todos os utilizadores registados",
     "changePass": "Mudar palavra-passe",
-    "change": "Alterar",
     "enableTwoStepAuth": "Ativar a autenticação em dois passos",
     "enable": "Ativar",
     "smsVerification": "Verificação do perfil de SMS",
@@ -1465,7 +1463,6 @@
     "searchQuests": "Pesquisa de buscas",
     "searchWorkers": "Pesquisar trabalhadores",
     "topWorkers": "Melhores empregados",
-    "price": "Preço",
     "addedTime": "Tempo adicionado",
     "urgent": "Selecione o nível de urgência",
     "specialized": "Especializado",
@@ -1515,20 +1512,17 @@
   "pension": {
     "pensionSavingsBalance": "Saldo da poupança de pensão",
     "retirementProgram": "Programa de aposentação",
-    "faq": "FAQ (Perguntas Frequentes)",
     "pensionProgram": "Programa de pensões",
     "applyForAPension": "Candidatar-se a uma pensão",
     "applyForRetirement": "Candidatar-se à reforma",
     "annualPercent": "Percentagem anual",
     "optional": "Opcional",
     "optionalFirstDeposit": "Primeiro depósito",
-    "term": "Prazo",
     "configurablePercentage": "Percentagem configurável",
     "depositsFromQuest": "Depósito de buscas",
     "howToTakePart": "Como participar do programa de pensões?",
     "pensionPlanText": "Um plano de pensões pode permitir que um trabalhador contribua com parte do seu rendimento atual dos salários para um plano de investimento destinado a ajudar a financiar a reforma.",
     "information": "Informação detalhada",
-    "download": "Descarregar",
     "pensionBalance": "Saldo da poupança de pensão",
     "makeADeposit": "Fazer um depósito",
     "currentPercentFromAQuest": "Percentagem atual de uma busca",
@@ -1588,10 +1582,8 @@
     "conditions": "Condições",
     "maxMinSum": "Soma máx/mín",
     "depositsAndWithdrawal": "Depósitos e Levantamentos",
-    "term": "Prazo",
     "annualizedInterestRate": "Taxa de juro anualizada",
     "openADeposit": "Constituir um depósito",
-    "faq": "FAQ (Perguntas Frequentes)",
     "information": "Informação",
     "historyOfDeposits": "Histórico de depósitos",
     "depositAmount": "Montante bloqueado",
@@ -1634,7 +1626,6 @@
     "choose": "Escolher",
     "information": "Informação",
     "agreement": "WorkQuest Liquidity Mining User Agreement.pdf",
-    "download": "Descarregar",
     "tableHead": {
       "poolAddress": "Endereço do pool",
       "swaps": "Swaps",
@@ -1680,9 +1671,7 @@
     "ans2": "On the day of subscription, WorkQuest Savings will deduct the funds for subscription from your WUSD wallet.\n",
     "faq3": "What happens to my funds on the value date of a Locked Savings product?",
     "faq4": "What happens to my funds on the redemption date of a Locked Savings product?",
-    "faq5": "How is the average annual return (APR) calculated?",
-    "faq": "FAQ",
-    "lend": "Lend"
+    "faq5": "How is the average annual return (APR) calculated?"
   },
   "auction": {
     "title": "Lots",
@@ -1759,9 +1748,7 @@
     "ans2": "No dia da subscrição, o WorkQuest Savings irá deduzir os fundos para subscrição da sua carteira WUSD.\n",
     "faq3": "O que acontece aos meus fundos na data de valor de um produto de poupança bloqueado?",
     "faq4": "O que acontece aos meus fundos na data de resgate de um produto de poupança bloqueado?",
-    "faq5": "Como é calculado o rendimento médio anual (TPA)?",
-    "faq": "FAQ (Perguntas Frequentes)",
-    "lend": "Emprestar"
+    "faq5": "Como é calculado o rendimento médio anual (TPA)?"
   },
   "insuring": {
     "peerToPeerInsuring": "Seguro P2P",
@@ -2108,7 +2095,7 @@
           },
           "short": {
             "title": "Short-term",
-            "subtitle": "A quest that needs to be completed over the coming days. To indicate short-term delivery (from 24 to 72 hours), you need to start the quest as soon as possible."
+            "subtitle": "A quest that needs to be completed over the coming days. To indicate short- delivery (from 24 to 72 hours), you need to start the quest as soon as possible."
           },
           "urgent": {
             "title": "Urgent",

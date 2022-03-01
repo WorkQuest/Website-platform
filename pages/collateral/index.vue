@@ -97,7 +97,7 @@
                 </div>
               </div>
               <button class="btn__doc">
-                {{ $t('pension.download') }}
+                {{ $t('meta.download') }}
                 <img
                   class="download"
                   src="~/assets/img/ui/download.svg"
@@ -112,7 +112,7 @@
           class="info-block"
         >
           <div class="info-block__name_bold">
-            {{ $t("collateral.faq") }}
+            {{ $t("meta.faq") }}
           </div>
           <div class="info-block__faqs">
             <button

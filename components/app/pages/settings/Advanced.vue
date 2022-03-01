@@ -131,7 +131,7 @@ export default {
       rightSideButtons: [
         {
           title: 'settings.changePass',
-          buttonName: 'settings.change',
+          buttonName: 'meta.change',
           modal: 'changePassInSettings',
           isSwitcher: false,
         },
@@ -152,8 +152,8 @@ export default {
         },
         {
           title: 'settings.changeRole',
-          firstButtonName: 'settings.change',
-          secondButtonName: 'settings.change',
+          firstButtonName: 'meta.change',
+          secondButtonName: 'meta.change',
           firstModal: 'changeRoleWarning',
           secondModal: 'neededToEnable2FA',
           isSwitcher: true,

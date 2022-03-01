@@ -50,7 +50,7 @@
             </div>
             <div class="info-block__small_inline">
               <div class="text">
-                {{ $t("saving.term") }}
+                {{ $t("meta.term") }}
               </div>
               <div class="text_blue">
                 {{ $tc('saving.yearPlug', 1) }}
@@ -88,7 +88,7 @@
           class="info-block"
         >
           <div class="info-block__name_bold">
-            {{ $t("saving.faq") }}
+            {{ $t("meta.faq") }}
           </div>
           <div class="info-block__faqs">
             <button
@@ -142,7 +142,7 @@
                 </div>
               </div>
               <button class="btn__doc">
-                {{ $t('pension.download') }}
+                {{ $t('meta.download') }}
                 <img
                   class="download"
                   src="~/assets/img/ui/download.svg"

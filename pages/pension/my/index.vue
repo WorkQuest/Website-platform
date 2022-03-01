@@ -233,7 +233,7 @@
           class="info-block"
         >
           <div class="info-block__name_bold">
-            {{ $t("saving.faq") }}
+            {{ $t("meta.faq") }}
           </div>
           <div class="info-block__faqs">
             <button

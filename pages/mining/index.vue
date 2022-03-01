@@ -77,7 +77,7 @@
                 target="_blank"
                 class="btn__doc"
               >
-                {{ $t('pension.download') }}
+                {{ $t('meta.download') }}
                 <img
                   class="download"
                   src="~/assets/img/ui/download.svg"
