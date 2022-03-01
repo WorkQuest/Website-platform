@@ -135,7 +135,11 @@ export default {
 
     WQ_PROVIDER: process.env.WQ_PROVIDER,
     WQ_EXPLORER: process.env.WQ_EXPLORER,
+    WQ_ORACLE: process.env.WQ_ORACLE,
+    WQ_ROUTER: process.env.WQ_ROUTER,
     WQT_TOKEN: process.env.WQT_TOKEN,
+    ETH_TOKEN: process.env.ETH_TOKEN,
+    BNB_TOKEN: process.env.BNB_TOKEN,
 
     PENSION_FUND: process.env.PENSION_FUND,
   },
