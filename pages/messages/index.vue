@@ -18,7 +18,6 @@
             class="chats-container__search-input"
             is-search
             is-hide-error
-            has-loader
             :is-busy-search="isChatsSearching"
             :placeholder="$t('chat.searchTitle')"
             data-selector="INPUT-SEARCH"
