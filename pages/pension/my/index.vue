@@ -450,6 +450,7 @@ export default {
         walletAddress: this.walletAddress,
         maxValue: this.pensionWallet.fullAmount,
         withdrawType: 'pension',
+        callback: async () => await this.getWallet(),
       });
     },
     handleProlong() {

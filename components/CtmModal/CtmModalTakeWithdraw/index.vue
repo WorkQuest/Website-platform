@@ -157,6 +157,7 @@ export default {
     },
     async showWithdrawInfo() {
       if (this.withdrawType === 'pension') {
+        const { callback } = this.options;
         this.hide();
         this.SetLoader(true);
         const [txFee] = await Promise.all([
@@ -193,8 +194,7 @@ export default {
           },
           callback: () => {
             Promise.all([
-              this.$store.dispatch('wallet/getPensionTransactions'),
-              this.$store.dispatch('wallet/pensionGetWalletInfo'),
+              callback(),
               this.$store.dispatch('wallet/getBalance'),
             ]);
           },
