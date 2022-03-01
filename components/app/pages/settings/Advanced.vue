@@ -128,7 +128,17 @@ export default {
           },
         ],
       },
-      rightSideButtons: [
+    };
+  },
+  computed: {
+    ...mapGetters({
+      statusTotp: 'user/getStatusTotp',
+      status2FA: 'user/getStatus2FA',
+      secondNumber: 'user/getUserSecondMobileNumber',
+      userData: 'user/getUserData',
+    }),
+    rightSideButtons() {
+      return [
         {
           title: 'settings.changePass',
           buttonName: 'settings.change',
@@ -145,42 +155,27 @@ export default {
         },
         {
           title: 'settings.smsVerification',
-          buttonName: 'settings.enable',
+          buttonName: this.userData?.phone?.fullPhone ? 'settings.verified' : 'settings.enable',
           modal: 'smsVerification',
           isSwitcher: false,
-          disabled: this.userData?.tempPhone?.fullPhone,
+          disabled: !!this.userData?.phone?.fullPhone,
         },
         {
           title: 'settings.changeRole',
-          buttonName: 'settings.change',
-          modal: 'changeRoleWarning',
-          isSwitcher: false,
-          disabled: !this.userData?.totpIsActive,
+          firstButtonName: 'settings.change',
+          secondButtonName: 'settings.change',
+          firstModal: 'changeRoleWarning',
+          secondModal: 'neededToEnable2FA',
+          isSwitcher: true,
         },
-      ],
-    };
-  },
-  computed: {
-    ...mapGetters({
-      statusTotp: 'user/getStatusTotp',
-      status2FA: 'user/getStatus2FA',
-      secondNumber: 'user/getUserSecondMobileNumber',
-      userData: 'user/getUserData',
-    }),
+      ];
+    },
   },
   methods: {
     async showModalKey(modalKey) {
       this.$emit('showModalKey', modalKey);
     },
-    smsVerErrorModal() {
-      this.ShowModal({
-        key: modals.status,
-        title: this.$t('modals.errorSmsVer'),
-        subtitle: this.$t('modals.fillNumber'),
-      });
-    },
   },
-
 };
 </script>
 

@@ -932,8 +932,13 @@
     "error": "Error!"
   },
   "modals": {
+    "waitRoleCooldown": "You cannot change roles more than once a month. You can change role after {date} {time}",
+    "settingsInfo": "Settings Info",
+    "pleaseEnable2FA": "Please, enable TWO-Step authentication",
     "errorGetWUSD": "Something went wrong",
     "getWUSD": "Buy WUSD",
+    "buyAuction": "Transfer info",
+    "recipient": "Recipient address",
     "countOfRecievedWUSD": "How many WUSD do you want to receive",
     "fieldCountOf": "{countOf} amount",
     "countOfCollateral": "How much collateral to leave?",
@@ -1920,6 +1925,35 @@
     "faq": "FAQ",
     "lend": "Lend"
   },
+  "auction": {
+    "title": "Lots",
+    "time": "Added time",
+    "search": {
+      "placeholder": "Sum / Duration",
+      "button": "Serach auction"
+    },
+    "tabs": {
+      "current": "Current",
+      "completed": "Completed"
+    },
+    "card": {
+      "feeIncluded": "{feePercent}% commission already in the price",
+      "feeNotIncluded": "{feePercent}% commission not included",
+      "auctionDuration": "Auction duration",
+      "days": "{n} days",
+      "hours": "{n} hours",
+      "minutes": "{n} minutes",
+      "buy": "Buy",
+      "completed": {
+        "type": "EVEN TYPE",
+        "sender": "SENDER",
+        "lotSize": "LOT SIZE",
+        "price": "MKR PRICE",
+        "timestamp": "TIMESTAMP",
+        "txHash": "TX"
+      }
+    }
+  },
   "crediting": {
     "lending": "WorkQuest Lending Protocol",
     "crediting": "Crediting",
@@ -2544,11 +2578,11 @@
       "desc": "Notifications for employees who were looking for quests with a direct offer to review the promoted quest based on the most recent search categories of the employee. Plus the ability to choose three categories and three locations to promote the quest."
     },
     "verified": {
-      "title": "Reliable",
+      "title": "Verified",
       "desc": "Pin quest on the main page for three hours, with the ability to choose two categories and two locations for promotion the quest."
     },
     "reliable": {
-      "title": "Verified",
+      "title": "Reliable",
       "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
     }
   },

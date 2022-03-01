@@ -26,7 +26,7 @@
               :data-selector="`ACTION-BTN-GO-TO-REVIEWER-PROFILE-${i}`"
               @click="goToProfile(reviewData.fromUser.id)"
             >
-              {{ CropTxt(reviewData.fromUser.firstName, 10) }} {{ CropTxt(reviewData.fromUser.lastName, 10) }}
+              {{ CropTxt(reviewData.fromUser.firstName, 10) }} {{ CropTxt(reviewData.fromUser.lastName, 5) }}
             </div>
             <div class="card-subtitle_green">
               {{ $t('role.worker') }}
@@ -243,6 +243,7 @@ export default {
     height: 40px;
     width: 40px;
     border-radius: 50%;
+    object-fit: cover;
   }
   &__rating-block, &__user-data {
     grid-gap: 10px;

@@ -30,7 +30,7 @@
             >
           </div>
           <div class="card-quest__text card-quest__text_title">
-            {{ `${quest.user ? UserName(CropTxt(quest.user.firstName, 10), CropTxt(quest.user.lastName, 10)) : ''}` }}
+            {{ `${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}` }}
           </div>
         </div>
         <div class="card-quest__head-right">
@@ -83,7 +83,7 @@
           <div
             class="container__user user"
             :data-selector="`ACTION-BTN-TO-ASSIGNED-WORKER-PROFILE-${questIndex}`"
-            @click="goToProfile(quest.assignedWorker.id)"
+            @click="showProfile(quest.assignedWorker.id)"
           >
             <img
               class="user__avatar"
@@ -91,7 +91,7 @@
               :alt="`${ quest.assignedWorker ? UserName(quest.assignedWorker.firstName, quest.assignedWorker.lastName) : '' }`"
             >
             <div class="user__name">
-              {{ CropTxt(quest.assignedWorker.firstName, 10) }} {{ CropTxt(quest.assignedWorker.lastName, 10) }}
+              {{ quest.assignedWorker ? UserName(quest.assignedWorker.firstName, quest.assignedWorker.lastName) : '' }}
             </div>
           </div>
           <item-rating :rating="getRatingValue(quest)" />
@@ -156,13 +156,11 @@
             <star-rating
               v-if="userRole === $options.UserRole.WORKER ? quest.assignedWorkerId === userData.id : quest.userId === userData.id"
               class="card-quest__star"
-              :quest-index="0"
-              rating-type="questPage"
               :stars-number="5"
-              :data-selector="`ACTION-BTN-SHOW-REVIEW-MODAL-${questIndex}`"
-              :rating="!quest.yourReview ? currentMark.mark : quest.yourReview.mark"
-              :is-disabled="quest.yourReview !== null || currentMark.mark !== 0"
-              @input="showReviewModal($event, quest)"
+              :data-selector="`ACTION-BTN-SHOW-REVIEW-MODAL-${quest.id}`"
+              :rating="rating"
+              :is-disabled="!!rating"
+              @input="showReviewModal($event, quest.id)"
             />
           </div>
         </div>
@@ -211,8 +209,10 @@ export default {
     ...mapGetters({
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
-      currentMark: 'user/getCurrentReviewMarkOnQuest',
     }),
+    rating() {
+      return this.quest.yourReview?.mark || 0;
+    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -241,9 +241,6 @@ export default {
         { 'card-quest__amount_green': item.status !== QuestStatuses.Done },
         { 'card-quest__amount_gray': item.status === QuestStatuses.Done },
       ];
-    },
-    goToProfile(id) {
-      this.$router.push(`/profile/${id}`);
     },
     getQuestPreview(quest) {
       if (quest?.medias?.length) {
@@ -275,8 +272,16 @@ export default {
     showDetails(questId) {
       this.$router.push(`${Path.QUESTS}/${questId}`);
     },
-    showReviewModal(rating, item) {
-      this.ShowModal({ key: modals.review, item, rating });
+    showReviewModal(rating, id) {
+      this.ShowModal({
+        key: modals.review,
+        questId: id,
+        rating,
+        callback: async (payload) => {
+          const ok = await this.$store.dispatch('user/sendReviewForUser', payload);
+          if (ok) { this.ShowModal({ key: modals.thanks }); }
+        },
+      });
     },
     getStatusCard(index) {
       const questStatus = {
@@ -326,13 +331,18 @@ export default {
 </script>
 <style lang="scss" scoped>
 .user {
+  min-width: 0;
   &__name {
     @include text-simple;
+    width: 100%;
     font-weight: 500;
     font-size: 16px;
+    line-height: 130%;
     color: $black800;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
     cursor: pointer;
-    transition: .5s;
     &:hover {
       color: $blue;
     }
@@ -364,12 +374,14 @@ export default {
   }
   &__container {
     @extend .styles__full;
+    min-width: 0;
     display: grid;
     align-items: center;
-    grid-template-columns: auto 3fr;
+    grid-template-columns: auto auto;
     grid-gap: 10px;
     padding-left: 0;
     margin: 7px 0 0 6px;
+    justify-content: start;
     .container {
       &__user {
         display: flex;
@@ -383,6 +395,7 @@ export default {
             width: 30px;
             object-fit: cover;
             cursor: pointer;
+            flex-shrink: 0;
             margin-right: 10px;
           }
         }
@@ -459,12 +472,13 @@ export default {
     border: 1px solid $black100;
   }
   &__btn-details {
-    height: 28px !important;
+    height: 24px !important;
     width: 100%;
     min-width: 100px;
   }
   &__rating {
-    height: 24px;
+    height: 19px;
+    align-self: center;
   }
   &__container {
     display: flex;
@@ -595,6 +609,7 @@ export default {
     justify-content: space-between;
   }
   &__right {
+    min-width: 0;
     padding: 20px 20px 20px 30px;
     display: grid;
     grid-template-columns: auto;
@@ -655,6 +670,9 @@ export default {
       color: $black700;
       word-wrap: break-word;
       word-break: break-all;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
     &_blue {
       font-weight: 500;
@@ -668,7 +686,9 @@ export default {
       line-height: 130%;
       color: $black800;
       cursor: pointer;
-      transition: .5s;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
       &:hover {
         color: $blue;
       }
@@ -820,7 +840,7 @@ export default {
     }
     &__actions {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
     }
     &__btn {
       margin-top: 10px;
@@ -831,14 +851,11 @@ export default {
 @include _480 {
   .card-quest {
     &__actions {
-      grid-template-columns: 2fr 1fr;
+      grid-template-columns: 1fr;
     }
     &__right {
       padding: 10px;
     }
-  }
-  .user__name {
-    font-size: 12px;
   }
   .status {
     &__level {
@@ -849,6 +866,14 @@ export default {
     &__container {
       grid-template-columns: repeat(3, auto);
     }
+  }
+}
+@include _380 {
+  .card-quest__progress {
+    height: 100%;
+  }
+  .progress__container {
+    grid-template-columns: auto;
   }
 }
 </style>

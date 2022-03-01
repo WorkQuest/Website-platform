@@ -307,11 +307,11 @@ export default {
       return ratingStatistic?.status || 'noStatus';
     },
     initStarClass(star) {
-      const reviewMark = this.userData?.ratingStatistic?.averageMark;
+      const reviewMark = Number(this.userData?.ratingStatistic?.averageMark).toFixed(1);
       const a = this.Floor(star - reviewMark, 2);
       return [
         { rating__star_full: star <= reviewMark },
-        { rating__star_half: (a >= 0.3 && a <= 0.7) },
+        { rating__star_half: a <= 0.7 },
       ];
     },
     shareModal() {
@@ -426,6 +426,7 @@ export default {
     display: flex;
     grid-gap: 10px;
     align-items: center;
+    flex-wrap: wrap;
   }
   &_left {
     align-self: flex-start;
@@ -434,6 +435,8 @@ export default {
   &_right {
     align-self: flex-start;
     margin-left: 30px;
+    max-width: 630px;
+    word-break: break-word;
   }
   &__rating {
     height: 20px;
@@ -624,6 +627,7 @@ export default {
     &_right {
       margin-left: 0;
       margin-top: 30px;
+      max-width: 720px;
     }
   }
   .right {

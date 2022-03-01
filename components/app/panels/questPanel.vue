@@ -32,9 +32,15 @@
               {{ convertDate }}
             </span>
             <quest-dd
-              v-if="questData.status === questStatuses.Created"
+              v-if="userData.id === questData.user.id && InfoModeEmployer.Dispute !== questData.status"
               :data-selector="`QUEST-DD-${questData.id}`"
               :item="questData"
+            />
+            <base-btn
+              v-else
+              mode="share-btn"
+              selector="SHARE-USER-PROFILE"
+              @click="shareModal()"
             />
           </div>
         </div>
@@ -44,13 +50,15 @@
         >
           <div class="quest__location">
             <span class="icon icon-location icon_fs-20" />
-            <span
+            <div
               v-if="questData.locationPlaceName"
               class="quest__address"
-            >{{ questData.locationPlaceName }}</span>
-            <span class="user__distance">
+            >
+              {{ questData.locationPlaceName }}
+            </div>
+            <div class="user__distance">
               {{ showDistance() }} {{ $t('distance.m') }} {{ $t('meta.fromYou') }}
-            </span>
+            </div>
           </div>
         </div>
       </div>
@@ -67,6 +75,7 @@ import { mapGetters } from 'vuex';
 import moment from 'moment';
 import { InfoModeEmployer, InfoModeWorker, QuestStatuses } from '~/utils/enums';
 import skills from '~/components/app/pages/common/skills';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'QuestPanel',
@@ -102,10 +111,14 @@ export default {
       return createdAt ? moment(createdAt).format('MMMM Do YYYY, h:mm') : '';
     },
   },
-  mounted() {
-    this.SetLoader(false);
-  },
   methods: {
+    shareModal() {
+      this.ShowModal({
+        key: modals.sharingQuest,
+        itemId: this.questData.id,
+        mode: 'quest',
+      });
+    },
     getSkillTitle(path) {
       const [spec, skill] = path.split('.');
       return this.$t(`filters.items.${spec}.sub.${skill}`);
@@ -198,19 +211,19 @@ export default {
   &__container {
     padding: 34px 0 25px 0;
   }
-  &__wrapper{
+  &__wrapper {
     display: flex;
     flex-direction: row;
   }
-  &__date{
+  &__date {
     @include text-simple;
     color: $black500;
     font-style: normal;
     font-weight: normal;
     font-size: 12px;
-    margin: auto;
+    margin: auto 10px auto auto;
   }
-  &__img{
+  &__img {
     width:30px;
     height: 30px;
     border-radius: 50%;
@@ -222,11 +235,12 @@ export default {
     font-size: 16px;
     color: $black800;
     padding-left: 10px;
+    word-break: break-word;
     &:hover {
       color: $black600;
     }
   }
-  &__distance{
+  &__distance {
     @extend .user;
     font-size: 14px;
     display: flex;
