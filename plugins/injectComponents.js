@@ -5,7 +5,8 @@ import GMap from '~/node_modules/vue2-google-maps/src/components/map';
 import GMapMarker from '~/node_modules/vue2-google-maps/src/components/marker';
 import GMapCluster from '~/node_modules/vue2-google-maps/src/components/cluster';
 import GMapInfoWindow from '~/node_modules/vue2-google-maps/src/components/infoWindow';
-import GMapLoader from '~/components/app/GoogleMapLoader';
+import GMapInfoBlock from '~/components/app/GMapInfoBlock';
+import GMapLoader from '~/components/app/GMapLoader';
 import SearchWithMap from '~/components/app/SearchWithMap';
 
 import CtmModal from '~/components/CtmModal';
@@ -68,5 +69,6 @@ Vue.component('g-map', GMap);
 Vue.component('g-map-marker', GMapMarker);
 Vue.component('g-map-cluster', GMapCluster);
 Vue.component('g-map-info-window', GMapInfoWindow);
+Vue.component('g-map-info-block', GMapInfoBlock);
 Vue.component('g-map-loader', GMapLoader);
 Vue.component('search-with-map', SearchWithMap);
