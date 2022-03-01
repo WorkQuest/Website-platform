@@ -22,6 +22,7 @@
     v-else
     class="base-btn"
     :class="btnClass"
+    :type="isSubmit ? 'submit' : 'button'"
     :data-selector="`ACTION-BTN-CLICK-${selector}`"
     @click="$emit('click')"
   >
@@ -47,6 +48,10 @@ export default {
     link: {
       type: String,
       default: '',
+    },
+    isSubmit: {
+      type: Boolean,
+      default: true,
     },
     selector: {
       type: String,
@@ -101,6 +106,7 @@ export default {
         { 'base-btn_portfolio-edit': mode === 'portfolioEdit' },
         { 'base-btn_portfolio-close': mode === 'portfolioClose' },
         { 'base-btn_share-user-info': mode === 'share-btn' },
+        { 'base-btn_active-tab': mode === 'activeTab' },
         { 'base-btn_padding': this.padding },
       ];
     },
@@ -321,15 +327,15 @@ export default {
     }
   }
   &_borderless {
-    background: #FFFFFF !important;
-    color: $blue !important;
+    background: #FFFFFF;
+    color: $blue;
     &-left {
       @extend .base-btn_borderless;
-      justify-content: flex-start !important;
+      justify-content: flex-start;
     }
     &-right {
       @extend .base-btn_borderless;
-      justify-content: flex-end !important;
+      justify-content: flex-end;
     }
     &:hover {
       color: #3992ff;
@@ -358,6 +364,12 @@ export default {
     &:hover {
       background-color: $blue;
       color: $white;
+    }
+  }
+  &_active-tab {
+    &:hover {
+      background: $blue;
+      cursor: unset;
     }
   }
 }

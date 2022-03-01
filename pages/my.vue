@@ -8,7 +8,10 @@
         <div class="quests__title">
           {{ $t('quests.MyQuests') }}
         </div>
-        <div class="quests__content">
+        <div
+          class="quests__content"
+          :class="{'quests__content-wide': userRole === UserRole.WORKER }"
+        >
           <base-btn
             v-for="(item, i) in filterTabs"
             :key="i"
@@ -25,7 +28,7 @@
           class="quests__cards"
         >
           <card-quest
-            v-for="(quest,i) in questsData"
+            v-for="(quest,i) in quests"
             :key="i"
             :quest="quest"
             :quest-index="i"
@@ -54,7 +57,6 @@
 
 import { mapGetters } from 'vuex';
 import { QuestStatuses, UserRole, Path } from '~/utils/enums';
-import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'My',
@@ -70,11 +72,12 @@ export default {
   computed: {
     ...mapGetters({
       userData: 'user/getUserData',
-      questsData: 'quests/getUserInfoQuests',
-      questsCount: 'quests/getUserInfoQuestsCount',
+      userRole: 'user/getUserRole',
+      quests: 'quests/getAllQuests',
+      questsCount: 'quests/getAllQuestsCount',
     }),
-    userRole() {
-      return this.userData.role;
+    UserRole() {
+      return UserRole;
     },
     filterTabs() {
       const tabs = [
@@ -185,9 +188,12 @@ export default {
   &__content {
     display: grid;
     align-items: center;
-    grid-template-columns: repeat(6, auto);
+    grid-template-columns: repeat(5, auto);
     grid-gap: 10px;
     margin-bottom: 20px;
+    &-wide {
+      grid-template-columns: repeat(6, auto);
+    }
   }
   &__pager {
     margin-top: 25px;

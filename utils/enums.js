@@ -184,6 +184,7 @@ export const Path = {
   ROLE: '/role',
   QUESTS: '/quests',
   EDIT_QUEST: '/edit-quest',
+  COLLATERAL: '/collateral',
 };
 
 // WALLET

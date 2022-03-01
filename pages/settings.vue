@@ -173,6 +173,12 @@ export default {
       selectedSpecAndSkills: userData.userSpecializations || [],
     };
     this.SetLoader(false);
+
+    this.$root.$on('roleChanged', async () => {
+      this.SetLoader(true);
+      await this.$store.dispatch('user/getUserData');
+      this.SetLoader(false);
+    });
   },
   methods: {
     validationRefs(data) {
@@ -230,6 +236,7 @@ export default {
         twoFAAuth: modals.twoFAAuth,
         smsVerification: modals.smsVerification,
         changeRoleWarning: modals.changeRoleWarning,
+        neededToEnable2FA: modals.neededToEnable2FA,
       };
       return keys[modalKey];
     },

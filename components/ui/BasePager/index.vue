@@ -208,4 +208,20 @@ export default {
     }
   }
 }
+@include _767 {
+  .pager {
+    &__dots {
+      width: 35px;
+      height: 35px;
+    }
+    &__cloud {
+      width: 35px;
+      height: 35px;
+    }
+    &__icon {
+      width: 35px;
+      height: 35px;
+    }
+  }
+}
 </style>

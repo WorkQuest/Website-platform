@@ -163,7 +163,7 @@ export default {
           chain: this.fromToken,
           amount: `${this.amount} WQT`,
           amountInt: this.amount,
-          recepient: this.cropTxt(this.recipientAddress),
+          recepient: this.CutTxn(this.recipientAddress),
           recepientFull: this.recipientAddress,
           worknetFee: '0,5 WQT',
           binanceFee: '0,0009 BNB',
@@ -184,10 +184,6 @@ export default {
       if (!this.isConnected) {
         this.$store.dispatch('web3/connect');
       }
-    },
-    cropTxt(str) {
-      if (str.length > 40) str = `${str.slice(0, 10)}...${str.slice(-10)}`;
-      return str;
     },
   },
 };

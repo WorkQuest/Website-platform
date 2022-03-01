@@ -310,11 +310,12 @@ export default {
     }
   }
   &__btn {
-    height: 46px;
+    height: auto;
+    min-height: 46px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
+    padding: 5px 20px;
     width: 100%;
     background: #FFFFFF;
     border-radius: 6px;

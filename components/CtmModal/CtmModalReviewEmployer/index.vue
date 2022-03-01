@@ -62,9 +62,7 @@
 </template>
 
 <script>
-/* eslint-disable object-shorthand,no-var */
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalSendARequest',
@@ -80,31 +78,23 @@ export default {
     }),
   },
   mounted() {
-    this.getQuestRating();
+    this.rating = this.options.rating;
   },
   methods: {
     changeReview(value) {
       this.rating = value;
     },
-    getQuestRating() {
-      this.rating = this.options.rating;
-    },
     hide() {
       this.CloseModal();
     },
     async sendReviewForUser() {
-      const { ok } = await this.$store.dispatch('user/sendReviewForUser', {
-        questId: this.options.item.id,
+      const { questId, callback } = this.options;
+      await callback({
+        questId,
         message: this.textArea,
         mark: this.rating,
       });
       this.hide();
-      if (ok) this.showThanksModal();
-    },
-    showThanksModal() {
-      this.ShowModal({
-        key: modals.thanks,
-      });
     },
   },
 };

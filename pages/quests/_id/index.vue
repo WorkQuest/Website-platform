@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="questData"
+    v-if="quest"
     class="quest-page"
     data-selector="PAGE-QUESTS-ID"
   >
@@ -11,20 +11,20 @@
 
         <div class="quest__container">
           <h2 class="quest__title">
-            {{ questData.title }}
+            {{ quest.title }}
           </h2>
           <span class="quest__description">
-            {{ questData.description }}
+            {{ quest.description }}
           </span>
         </div>
         <div
-          v-if="questData.medias && questData.medias.length"
+          v-if="quest.medias && quest.medias.length"
           class="main__quest_materials"
         >
           <div class="quest_materials__title">
             {{ $t('quests.questMaterials') }}
           </div>
-          <files-preview :medias="questData.medias" />
+          <files-preview :medias="quest.medias" />
         </div>
         <div
           v-if="assignedWorker"
@@ -84,23 +84,21 @@
           </div>
           <div class="worker-data__priority">
             <star-rating
-              v-if="starRating(questData)"
-              class="worker-data__rating rating rating__star"
-              :quest-index="1"
+              v-if="starRating(quest)"
               rating-type="questPage"
               :stars-number="5"
-              :rating="!questData.yourReview ? currentMark.mark : questData.yourReview.mark"
-              :is-disabled="questData.yourReview !== null || currentMark.mark !== null"
-              @input="showReviewModal($event, questData)"
+              :rating="rating"
+              :is-disabled="!!rating"
+              @input="showReviewModal($event, quest.id)"
             />
             <span class="worker-data__price">
-              {{ questData.price }} {{ $t('quests.wusd') }}
+              {{ quest.price }} {{ $t('quests.wusd') }}
             </span>
             <div
               class="worker-data__priority-title"
-              :class="getPriorityClass"
+              :class="priorityClass"
             >
-              {{ getPriority }}
+              {{ priority }}
             </div>
           </div>
         </div>
@@ -112,12 +110,12 @@
           class="main__map"
           :is-draggable="false"
         />
-        <template v-if="userRole === UserRole.EMPLOYER && infoDataMode === InfoModeEmployer.Created">
+        <template v-if="userRole === $options.UserRole.EMPLOYER && infoDataMode === $options.InfoModeEmployer.Created">
           <workers-list is-invited />
           <workers-list />
         </template>
         <div
-          v-if="userRole === UserRole.WORKER"
+          v-if="userRole === $options.UserRole.WORKER"
           class="spec__container"
         >
           <div class="quest__group">
@@ -154,13 +152,15 @@
 <script>
 import { mapGetters } from 'vuex';
 import {
-  QuestStatuses, InfoModeWorker, InfoModeEmployer, UserRole, ResponseStatus,
+  QuestStatuses, InfoModeWorker, InfoModeEmployer, UserRole, ResponseStatus, questPriority,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
   name: 'Quests',
-  // TODO: Перенести в options переменные из enum, убрать из computed, добавить path из enum
+  UserRole,
+  QuestStatuses,
+  InfoModeEmployer,
   data() {
     return {
       questLocation: { lat: 0, lng: 0 },
@@ -170,7 +170,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      questData: 'quests/getQuest',
+      quest: 'quests/getQuest',
       assignedWorker: 'quests/getAssignedWorker',
       userRole: 'user/getUserRole',
       infoDataMode: 'quests/getInfoDataMode',
@@ -179,41 +179,39 @@ export default {
       otherQuests: 'quests/getAllQuests',
       currentMark: 'user/getCurrentReviewMarkOnQuest',
     }),
-    UserRole() {
-      return UserRole;
-    },
-    questStatuses() {
-      return QuestStatuses;
-    },
-    InfoModeEmployer() {
-      return InfoModeEmployer;
+    rating() {
+      return this.quest.yourReview?.mark || 0;
     },
     avatar() {
       return this.assignedWorker.avatar?.url || require('~/assets/img/app/avatar_empty.png');
     },
-    getPriority() {
-      const { priority } = this.questData;
-
-      const priorityLocale = ['low', 'normal', 'urgent'][priority];
-
-      return priority !== null ? this.$t(`priority.${priorityLocale}`) : '';
+    priority() {
+      const { priority } = this.quest;
+      const priorities = {
+        [questPriority.Low]: this.$t('priority.low'),
+        [questPriority.Normal]: this.$t('priority.normal'),
+        [questPriority.Urgent]: this.$t('priority.urgent'),
+      };
+      return priorities[priority] || '';
     },
-    getPriorityClass() {
-      const { priority } = this.questData;
-
-      const priorityModifier = ['low', 'normal', 'urgent'][priority];
-
-      return priority !== null ? `worker-data__priority-title_${priorityModifier}` : '';
+    priorityClass() {
+      const { priority } = this.quest;
+      const priorities = {
+        [questPriority.Low]: 'worker-data__priority-title_low',
+        [questPriority.Normal]: 'worker-data__priority-title_normal',
+        [questPriority.Urgent]: 'worker-data__priority-title_urgent',
+      };
+      return priorities[priority] || '';
     },
     randomSpec() {
-      const { questSpecializations } = this.questData;
+      const { questSpecializations } = this.quest;
       return Math.floor(questSpecializations[Math.floor(Math.random() * questSpecializations.length)].path);
     },
     checkAvailabilityDispute() {
       const now = this.$moment().valueOf();
       // TODO fixme Вернуть, нужно для тестов Роме
-      // const dateForStart = this.$moment(this.questData.startedAt).add(1, 'day').valueOf();
-      const dateForStart = this.$moment(this.questData.startedAt).add(1, 'm').valueOf();
+      // const dateForStart = this.$moment(this.quest.startedAt).add(1, 'day').valueOf();
+      const dateForStart = this.$moment(this.quest.startedAt).add(1, 'm').valueOf();
       return now >= dateForStart;
     },
   },
@@ -242,17 +240,21 @@ export default {
       if (!item) return false;
 
       if (this.userRole === UserRole.WORKER) {
-        return item.status === this.questStatuses.Done
+        return item.status === QuestStatuses.Done
           && item.assignedWorkerId === this.userData.id;
       }
-      return item.status === this.questStatuses.Done
+      return item.status === QuestStatuses.Done
         && this.userData.id === item.userId;
     },
-    showReviewModal(rating, item) {
+    showReviewModal(rating, id) {
       this.ShowModal({
         key: modals.review,
-        item,
+        questId: id,
         rating,
+        callback: async (payload) => {
+          const ok = await this.$store.dispatch('user/sendReviewForUser', payload);
+          if (ok) { this.ShowModal({ key: modals.thanks }); }
+        },
       });
     },
     async getSameQuests() {
@@ -266,11 +268,11 @@ export default {
         query: { limit: 10, statuses: [0] },
         specFilter,
       });
-      const questsData = this.otherQuests.filter((quest) => quest.id !== this.questData.id);
+      const questsData = this.otherQuests.filter((quest) => quest.id !== this.quest.id);
       if (questsData.length) this.sameQuest = questsData[Math.floor(Math.random() * questsData.length)];
     },
     setActionBtnsArr() {
-      const { questData: { questChat, assignedWorkerId }, userData, userRole } = this;
+      const { quest: { questChat, assignedWorkerId }, userData, userRole } = this;
 
       const arr = userRole === UserRole.EMPLOYER ? this.setEmployerBtnsArr() : this.setWorkerBtnsArr();
 
@@ -288,7 +290,7 @@ export default {
       this.actionBtnsArr = arr;
     },
     setEmployerBtnsArr() {
-      if (this.userData.id !== this.questData.userId) return [];
+      if (this.userData.id !== this.quest.userId) return [];
 
       const {
         WaitConfirm, Dispute, Created, Active,
@@ -363,7 +365,7 @@ export default {
       return arr;
     },
     setWorkerBtnsArr() {
-      const { questData: { assignedWorkerId, response }, userData, infoDataMode } = this;
+      const { quest: { assignedWorkerId, response }, userData, infoDataMode } = this;
       const {
         ADChat, Active, Created, Dispute, Invited, WaitWorker,
       } = InfoModeWorker;
@@ -489,14 +491,14 @@ export default {
     initMapData() {
       this.$store.commit('google-map/setZoom', 15);
       this.questLocation = {
-        lat: this.questData.location.latitude,
-        lng: this.questData.location.longitude,
+        lat: this.quest.location.latitude,
+        lng: this.quest.location.longitude,
       };
       this.$store.commit('google-map/setCenter', this.questLocation);
-      this.$store.commit('google-map/setPoints', [this.questData]);
+      this.$store.commit('google-map/setPoints', [this.quest]);
     },
     async getResponsesToQuest() {
-      const { questData: { id, user }, userData } = this;
+      const { quest: { id, user }, userData } = this;
 
       if (this.userRole === UserRole.EMPLOYER && user.id === userData.id) {
         await this.$store.dispatch('quests/responsesToQuest', id);
@@ -505,21 +507,21 @@ export default {
     async closeQuest() {
       const modalMode = 1;
       this.SetLoader(true);
-      if (this.questData.status !== InfoModeEmployer.Active) {
-        await this.$store.dispatch('quests/closeQuest', this.questData.id);
+      if (this.quest.status !== InfoModeEmployer.Active) {
+        await this.$store.dispatch('quests/closeQuest', this.quest.id);
         this.showQuestModal(modalMode);
       }
       await this.$router.push('/my');
       this.SetLoader(false);
     },
     async openDispute() {
-      if (this.questData.status === 3) {
-        return await this.$router.push(`/disputes/${this.questData.openDispute.id}`);
+      if (this.quest.status === 3) {
+        return await this.$router.push(`/disputes/${this.quest.openDispute.id}`);
       }
       if (this.checkAvailabilityDispute) {
         return this.ShowModal({
           key: modals.openADispute,
-          questId: this.questData.id,
+          questId: this.quest.id,
         });
       }
       return this.ShowModal({
@@ -533,14 +535,14 @@ export default {
     async acceptCompletedWorkOnQuest() {
       const modalMode = 2;
       this.SetLoader(true);
-      await this.$store.dispatch('quests/acceptCompletedWorkOnQuest', this.questData.id);
+      await this.$store.dispatch('quests/acceptCompletedWorkOnQuest', this.quest.id);
       this.showQuestModal(modalMode);
       await this.$store.dispatch('quests/setInfoDataMode', InfoModeEmployer.Done);
       this.SetLoader(false);
     },
     toRaisingViews() {
-      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
-        this.$router.push({ path: `/edit-quest/${this.questData.id}`, query: { mode: 'raise' } });
+      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.quest.status)) {
+        this.$router.push({ path: `/edit-quest/${this.quest.id}`, query: { mode: 'raise' } });
         this.$store.commit('quests/setCurrentStepEditQuest', 2);
       } else {
         this.showToastWrongStatusRaisingViews();
@@ -572,26 +574,26 @@ export default {
     },
     async rejectQuestInvitation() {
       this.SetLoader(true);
-      await this.$store.dispatch('quests/rejectQuestInvitation', this.questData.response.id);
+      await this.$store.dispatch('quests/rejectQuestInvitation', this.quest.response.id);
       await this.getQuest();
       this.setActionBtnsArr();
       this.SetLoader(false);
     },
     async acceptQuestInvitation() {
       this.SetLoader(true);
-      await this.$store.dispatch('quests/acceptQuestInvitation', this.questData.response.id);
+      await this.$store.dispatch('quests/acceptQuestInvitation', this.quest.response.id);
       await this.getQuest();
       this.setActionBtnsArr();
       this.SetLoader(false);
     },
     async goToChat() {
       this.SetLoader(true);
-      await this.$router.push(`/messages/${this.questData.questChat.chatId}`);
+      await this.$router.push(`/messages/${this.quest.questChat.chatId}`);
       this.SetLoader(false);
     },
     async acceptWorkOnQuest() {
       this.SetLoader(true);
-      if (await this.$store.dispatch('quests/acceptWorkOnQuest', this.questData.id)) {
+      if (await this.$store.dispatch('quests/acceptWorkOnQuest', this.quest.id)) {
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/questAgreed.svg'),
@@ -604,7 +606,7 @@ export default {
     },
     async rejectWorkOnQuest() {
       this.SetLoader(true);
-      if (await this.$store.dispatch('quests/rejectWorkOnQuest', this.questData.id)) {
+      if (await this.$store.dispatch('quests/rejectWorkOnQuest', this.quest.id)) {
         await this.getQuest();
         this.ShowModal({
           key: modals.status,
@@ -618,7 +620,7 @@ export default {
     },
     async completeWorkOnQuest() {
       this.SetLoader(true);
-      if (await this.$store.dispatch('quests/completeWorkOnQuest', this.questData.id)) {
+      if (await this.$store.dispatch('quests/completeWorkOnQuest', this.quest.id)) {
         await this.getQuest();
         this.ShowModal({
           key: modals.status,
@@ -632,7 +634,7 @@ export default {
     async sendARequestOnQuest() {
       this.ShowModal({
         key: modals.sendARequest,
-        questId: this.questData.id,
+        questId: this.quest.id,
       });
     },
   },
@@ -650,6 +652,7 @@ export default {
   &__container {
     display: flex;
     flex-direction: column;
+    min-width: 0;
   }
   &__title {
     @include text-simple;
@@ -666,7 +669,7 @@ export default {
     font-size: 16px;
     line-height: 20px;
     color: $black700;
-    overflow-wrap: anywhere;
+    word-break: break-word;
   }
   &__count {
     font-style: normal;
@@ -705,6 +708,7 @@ export default {
 }
 
 .worker-data {
+  min-width: 0;
   padding-top: 20px;
   border-top: 1px solid #F7F8FA;
 
@@ -712,6 +716,10 @@ export default {
     font-weight: 500;
     color: $black800;
     font-size: 18px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    word-break: break-word;
 
     &_small {
       font-size: 16px;
@@ -733,6 +741,7 @@ export default {
   }
 
   &__user-cont {
+    min-width: 0;
     display: grid;
     grid-auto-flow: column;
     gap: 10px;
@@ -741,6 +750,7 @@ export default {
   }
 
   &__avatar {
+    display: flex;
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -908,6 +918,9 @@ export default {
 }
 @include _575 {
   .worker-data {
+    &__price {
+      font-size: 21px;
+    }
     &__btns {
       grid-auto-flow: row;
     }

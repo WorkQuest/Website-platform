@@ -80,4 +80,7 @@ export default {
   areYouSure: 'areYouSure',
   stake: 'stake',
   collateralTransaction: 'collateralTransaction',
+  getWUSD: 'getWUSD',
+  buyAuction: 'buyAuction',
+  neededToEnable2FA: 'neededToEnable2FA',
 };
