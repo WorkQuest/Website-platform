@@ -83,7 +83,7 @@
           <div
             class="container__user user"
             :data-selector="`ACTION-BTN-TO-ASSIGNED-WORKER-PROFILE-${questIndex}`"
-            @click="goToProfile(quest.assignedWorker.id)"
+            @click="showProfile(quest.assignedWorker.id)"
           >
             <img
               class="user__avatar"
@@ -91,7 +91,7 @@
               :alt="`${ quest.assignedWorker ? UserName(quest.assignedWorker.firstName, quest.assignedWorker.lastName) : '' }`"
             >
             <div class="user__name">
-              {{ quest.assignedWorker ? UserName(CropTxt(quest.assignedWorker.firstName, 10), CropTxt(quest.assignedWorker.lastName, 10)) : '' }}
+              {{ quest.assignedWorker ? UserName(quest.assignedWorker.firstName, quest.assignedWorker.lastName) : '' }}
             </div>
           </div>
           <item-rating :rating="getRatingValue(quest)" />
@@ -241,9 +241,6 @@ export default {
         { 'card-quest__amount_green': item.status !== QuestStatuses.Done },
         { 'card-quest__amount_gray': item.status === QuestStatuses.Done },
       ];
-    },
-    goToProfile(id) {
-      this.$router.push(`/profile/${id}`);
     },
     getQuestPreview(quest) {
       if (quest?.medias?.length) {
@@ -398,6 +395,7 @@ export default {
             width: 30px;
             object-fit: cover;
             cursor: pointer;
+            flex-shrink: 0;
             margin-right: 10px;
           }
         }
