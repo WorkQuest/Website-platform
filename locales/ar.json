@@ -12,7 +12,6 @@
     "userId": "455dad66544ss",
     "txHash": "sf998s...ss877d",
     "time": "1 فبراير 2021",
-    "status": "تم بنجاح",
     "userName":"كريم خالد",
     "openDispute": "نزاع مفتوح",
     "unstake": "Unstake",
@@ -144,7 +143,7 @@
     "settings": "الإعدادات",
     "costPerHour": "التكلفة في الساعة",
     "disputes": "النزاعات",
-    "success": "Success"
+    "success": "تم بنجاح"
   },
   "btn": {
     "completeWorkOnQuest": "Complete work on Quest",

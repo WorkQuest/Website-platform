@@ -12,7 +12,6 @@
     "userId": "455dad66544ss",
     "txHash": "sf998s...ss877d",
     "time": "Feb 1, 2021",
-    "status": "Succès",
     "userName":"John Doe",
     "openDispute": "Open dispute",
     "unstake": "Unstake",
@@ -144,7 +143,7 @@
     "settings": "Paramètres",
     "costPerHour": "Coût horaire",
     "disputes": "Litiges",
-    "success": "Success"
+    "success": "Succès"
   },
   "btn": {
     "completeWorkOnQuest": "Complete work on Quest",

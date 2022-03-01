@@ -207,7 +207,7 @@ export default {
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
           amount: this.$tc('meta.WQTCount', 12),
-          status: this.$t('meta.status'),
+          status: this.$t('meta.success'),
         },
         {
           userName: this.$t('meta.userName'),
@@ -216,7 +216,7 @@ export default {
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
           amount: this.$tc('meta.WQTCount', 12),
-          status: this.$t('meta.status'),
+          status: this.$t('meta.success'),
         },
         {
           userName: this.$t('meta.userName'),
@@ -225,7 +225,7 @@ export default {
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
           amount: this.$tc('meta.WQTCount', 12),
-          status: this.$t('meta.status'),
+          status: this.$t('meta.success'),
         },
         {
           userName: this.$t('meta.userName'),
@@ -234,7 +234,7 @@ export default {
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
           amount: this.$tc('meta.WQTCount', 12),
-          status: this.$t('meta.status'),
+          status: this.$t('meta.success'),
         },
         {
           userName: this.$t('meta.table.userName'),
@@ -243,7 +243,7 @@ export default {
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
           amount: this.$tc('meta.WQTCount', 12),
-          status: this.$t('meta.status'),
+          status: this.$t('meta.success'),
         },
         {
           userName: this.$t('meta.userName'),
@@ -252,7 +252,7 @@ export default {
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
           amount: this.$tc('meta.WQTCount', 12),
-          status: this.$t('meta.status'),
+          status: this.$t('meta.success'),
         },
         {
           userName: this.$t('meta.userName'),
@@ -261,7 +261,7 @@ export default {
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
           amount: this.$tc('meta.WQTCount', 12),
-          status: this.$t('meta.status'),
+          status: this.$t('meta.success'),
         },
         {
           userName: this.$t('meta.userName'),
@@ -270,7 +270,7 @@ export default {
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
           amount: this.$tc('meta.WQTCount', 12),
-          status: this.$t('meta.status'),
+          status: this.$t('meta.success'),
         },
         {
           userName: this.$t('meta.userName'),
@@ -279,7 +279,7 @@ export default {
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
           amount: this.$tc('meta.WQTCount', 12),
-          status: this.$t('meta.status'),
+          status: this.$t('meta.success'),
         },
         {
           userName: this.$t('meta.userName'),
@@ -288,7 +288,7 @@ export default {
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
           amount: this.$tc('meta.WQTCount', 12),
-          status: this.$t('meta.status'),
+          status: this.$t('meta.success'),
         },
         {
           userName: this.$t('meta.userName'),
@@ -297,7 +297,7 @@ export default {
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
           amount: this.$tc('meta.WQTCount', 12),
-          status: this.$t('meta.status'),
+          status: this.$t('meta.success'),
         },
         {
           userName: this.$t('meta.userName'),
@@ -306,7 +306,7 @@ export default {
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
           amount: this.$tc('meta.WQTCount', 12),
-          status: this.$t('meta.status'),
+          status: this.$t('meta.success'),
         },
         {
           userName: this.$t('meta.userName'),
@@ -315,7 +315,7 @@ export default {
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
           amount: this.$tc('meta.WQTCount', 12),
-          status: this.$t('meta.status'),
+          status: this.$t('meta.success'),
         },
       ],
       testFields: [
