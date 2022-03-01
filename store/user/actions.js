@@ -8,11 +8,9 @@ import {
 export default {
   async changeRole({ commit }, { totp }) {
     try {
-      const { ok, result } = await this.$axios.$put('/v1/profile/change-role', { totp });
-      return ok;
+      return await this.$axios.$put('/v1/profile/change-role', { totp });
     } catch (e) {
-      console.log('user/changeUserRole');
-      return false;
+      return e;
     }
   },
   async addEducation({ commit }, data) {
@@ -446,9 +444,10 @@ export default {
   async confirmPhone({ commit }, payload) {
     try {
       const response = await this.$axios.$post('/v1/profile/phone/confirm', payload);
-      return response.result;
+      return response.ok;
     } catch (e) {
-      return console.log(e);
+      console.log('user/confirmPhone');
+      return false;
     }
   },
   async validateTOTP({ commit }, payload) {
