@@ -30,7 +30,7 @@
             >
           </div>
           <div class="card-quest__text card-quest__text_title">
-            {{ `${quest.user ? UserName(CropTxt(quest.user.firstName, 10), CropTxt(quest.user.lastName, 10)) : ''}` }}
+            {{ `${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}` }}
           </div>
         </div>
         <div class="card-quest__head-right">
@@ -337,12 +337,12 @@ export default {
     width: 100%;
     font-weight: 500;
     font-size: 16px;
+    line-height: 130%;
     color: $black800;
-    cursor: pointer;
-    transition: .5s;
     text-overflow: ellipsis;
+    overflow: hidden;
     white-space: nowrap;
-    word-break: break-word;
+    cursor: pointer;
     &:hover {
       color: $blue;
     }
@@ -686,7 +686,9 @@ export default {
       line-height: 130%;
       color: $black800;
       cursor: pointer;
-      transition: .5s;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
       &:hover {
         color: $blue;
       }
@@ -854,9 +856,6 @@ export default {
     &__right {
       padding: 10px;
     }
-  }
-  .user__name {
-    font-size: 12px;
   }
   .status {
     &__level {
