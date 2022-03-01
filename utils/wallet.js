@@ -326,7 +326,6 @@ export const pensionContribute = async (amount) => {
       gasPrice,
       value: amount,
     });
-    console.log('contribute', res);
     return success(res);
   } catch (e) {
     console.error(`Contribute: ${e}`);
@@ -346,7 +345,6 @@ export const pensionUpdateFee = async (fee) => {
       gas: gasEstimate,
       gasPrice,
     });
-    console.log('fee', res);
     return success(res);
   } catch (e) {
     console.error(`UpdateFee: ${e}`);
@@ -366,7 +364,6 @@ export const pensionsWithdraw = async (_amount) => {
       gas: gasEstimate,
       gasPrice,
     });
-    console.log('withdraw', res);
     return success(res);
   } catch (e) {
     console.error(`Withdraw: ${e}`);
