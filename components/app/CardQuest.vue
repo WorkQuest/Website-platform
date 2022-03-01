@@ -380,10 +380,11 @@ export default {
     min-width: 0;
     display: grid;
     align-items: center;
-    grid-template-columns: auto 3fr;
+    grid-template-columns: auto auto;
     grid-gap: 10px;
     padding-left: 0;
     margin: 7px 0 0 6px;
+    justify-content: start;
     .container {
       &__user {
         display: flex;
