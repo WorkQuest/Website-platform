@@ -219,14 +219,14 @@ export default {
               name: this.$t('crediting.ethLocked'),
               about: this.$tc('meta.ETHCount', { count: '3.00' }),
               btn: {
-                name: this.$t('crediting.deposit'),
+                name: this.$t('meta.deposit'),
               },
             },
             {
               name: this.$t('crediting.ableToWithdraw'),
               about: this.$tc('meta.ETHCount', { count: '3.00' }),
               btn: {
-                name: this.$t('crediting.withdraw'),
+                name: this.$t('meta.withdraw'),
               },
             },
           ],

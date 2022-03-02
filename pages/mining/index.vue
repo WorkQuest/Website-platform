@@ -51,7 +51,7 @@
           class="info-block"
         >
           <div class="info-block__name_bold">
-            {{ $t("mining.information") }}
+            {{ $t("meta.information") }}
           </div>
           <div class="info-block__documents">
             <div

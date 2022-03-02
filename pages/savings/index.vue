@@ -120,7 +120,7 @@
           class="info-block"
         >
           <div class="info-block__name_bold">
-            {{ $t("saving.information") }}
+            {{ $t("meta.information") }}
           </div>
           <div class="info-block__documents">
             <div

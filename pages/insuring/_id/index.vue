@@ -35,7 +35,7 @@
                 class="btn_bl"
                 @click="openWithdrawModule()"
               >
-                {{ $t('insuring.withdraw') }}
+                {{ $t('meta.withdrawal') }}
               </base-btn>
             </div>
             <div class="info-block__points info-block_gray">

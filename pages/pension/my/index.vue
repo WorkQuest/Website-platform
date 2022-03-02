@@ -161,7 +161,7 @@
                 class="btn_bl"
                 @click="showWithdrawModal"
               >
-                {{ $t('pension.withdraw') }}
+                {{ $t('meta.withdraw') }}
               </base-btn>
               <base-btn
                 class="btn_bl"

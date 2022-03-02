@@ -58,7 +58,7 @@
           class="info-block"
         >
           <div class="info-block__name_bold">
-            {{ $t("crediting.information") }}
+            {{ $t("meta.information") }}
           </div>
           <div class="info-block__documents">
             <div
@@ -165,7 +165,7 @@ export default {
         },
         {
           title: this.$tc('meta.percentsCount', '4.31'),
-          subtitle: this.$t('crediting.deposit'),
+          subtitle: this.$t('meta.deposit'),
         },
         {
           title: this.$tc('meta.percentsCount', 5),

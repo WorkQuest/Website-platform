@@ -46,7 +46,7 @@
               class="btn_bl"
               @click="openWithdrawAboutModal()"
             >
-              {{ $t('saving.withdraw') }}
+              {{ $t('meta.withdraw') }}
             </base-btn>
           </div>
         </div>

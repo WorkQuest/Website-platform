@@ -52,7 +52,7 @@
                 class="balance__btn"
                 @click="showDepositModal()"
               >
-                {{ $t('wallet.deposit') }}
+                {{ $t('wallet.receive') }}
               </base-btn>
               <base-btn
                 :disabled="true"
@@ -61,7 +61,7 @@
                 class="balance__btn"
                 @click="showWithdrawModal()"
               >
-                {{ $t('wallet.withdraw') }}
+                {{ $t('meta.withdraw') }}
               </base-btn>
               <base-btn
                 selector="SHOW-TRANSFER-MODAL"
