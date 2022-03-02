@@ -139,6 +139,7 @@
     }
   },
   "meta": {
+    "operation": "Operation",
     "redeem": "Redeem",
     "redeemed": "Redeemed",
     "pay": "Pay",

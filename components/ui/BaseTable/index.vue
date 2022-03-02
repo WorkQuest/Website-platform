@@ -39,6 +39,9 @@
       <template #cell(timestamp)="el">
         <span class="table__grey">{{ el.item.timestamp }}</span>
       </template>
+      <template #cell(date)="el">
+        <span class="table__grey">{{ $moment(el.item.date).format('lll') }}</span>
+      </template>
       <template #cell(from_address)="el">
         <a
           :href="getAddressUrl(el.item.from_address)"
@@ -80,15 +83,20 @@ export default {
       default: () => [],
     },
   },
+  data() {
+    return {
+      isProd: process.env.PROD === 'true',
+    };
+  },
   methods: {
     getTransactionUrl(hash) {
-      if (process.env.PROD === 'true') {
+      if (this.isProd) {
         return `https://dev-explorer.workquest.co/transactions/${hash}`;
       }
       return `https://dev-explorer.workquest.co/transactions/${hash}`;
     },
     getAddressUrl(address) {
-      if (process.env.PROD === 'true') {
+      if (this.isProd) {
         return `https://dev-explorer.workquest.co/address/${address}`;
       }
       return `https://dev-explorer.workquest.co/address/${address}`;

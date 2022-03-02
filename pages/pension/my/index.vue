@@ -145,37 +145,6 @@
                 :items="historyByPage"
                 :fields="historyFields"
               />
-              <!--              <base-table-->
-              <!--                :items="historyByPage"-->
-              <!--                :fields="historyFields"-->
-              <!--                borderless-->
-              <!--                caption-top-->
-              <!--                thead-class="table__header"-->
-              <!--                tbody-tr-class="table__row"-->
-              <!--              >-->
-              <!--                <template #cell(operation)="el">-->
-              <!--                  {{ getOperationLocale(el.item.operation) }}-->
-              <!--                </template>-->
-              <!--                <template #cell(txHash)="el">-->
-              <!--                  <a-->
-              <!--                    :href="getExplorerRef(el.item.txHash)"-->
-              <!--                    target="_blank"-->
-              <!--                    class="user__value_gray"-->
-              <!--                  >-->
-              <!--                    {{ CutTxn(el.item.txHash) }}-->
-              <!--                  </a>-->
-              <!--                </template>-->
-              <!--                <template #cell(time)="el">-->
-              <!--                  <div class="user__value_gray">-->
-              <!--                    {{ $moment(el.item.time).format('lll') }}-->
-              <!--                  </div>-->
-              <!--                </template>-->
-              <!--                <template #cell(amount)="el">-->
-              <!--                  <div class="user__value">-->
-              <!--                    {{ el.item.amount }}-->
-              <!--                  </div>-->
-              <!--                </template>-->
-              <!--              </base-table>-->
             </div>
             <div
               v-if="!historyByPage.length"
@@ -235,7 +204,7 @@
 import { mapGetters } from 'vuex';
 import { WQPensionFund } from '~/abi/abi';
 import modals from '~/store/modals/modals';
-import { getWalletAddress } from '~/utils/wallet';
+import { getStyledAmount, getWalletAddress } from '~/utils/wallet';
 import { PensionHistoryMethods, TokenSymbols } from '~/utils/enums';
 
 export default {
@@ -312,10 +281,46 @@ export default {
     }),
     historyFields() {
       return [
-        { key: 'operation', label: 'Operation' },
-        { key: 'tx_hash', label: this.$t('referral.tableHead.txHash') },
-        { key: 'time', label: this.$t('referral.tableHead.time') },
-        { key: 'value', label: this.$t('modals.value') },
+        {
+          key: 'operation',
+          label: this.$t('meta.operation'),
+          thStyle: {
+            padding: '0 0 0 23px',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: { style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px; width: 250px' },
+        },
+        {
+          key: 'tx_hash',
+          label: this.$t('referral.tableHead.txHash'),
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: { style: 'padding: 0; height: 64px; line-height: 64px' },
+        },
+        {
+          key: 'date',
+          label: this.$t('referral.tableHead.time'),
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: { style: 'padding: 0; height: 64px; line-height: 64px' },
+        },
+        {
+          key: 'value',
+          label: this.$t('modals.value'),
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: { style: 'padding: 0; height: 64px; line-height: 64px; width: 300px' },
+        },
       ];
     },
     pensionBalance() {
@@ -328,7 +333,21 @@ export default {
       return Math.ceil(len / this.itemsPerPage);
     },
     historyByPage() {
-      return this.pensionHistory[this.selectedTable]?.txs || [];
+      if (!this.pensionHistory[this.selectedTable]?.txs) return [];
+      if (this.selectedTable === PensionHistoryMethods.Update) {
+        return this.pensionHistory[this.selectedTable].txs.map((item) => ({
+          operation: item.event,
+          tx_hash: item.transactionHash,
+          date: item.createdAt,
+          value: `${getStyledAmount(item.newFee)}%`,
+        }));
+      }
+      return this.pensionHistory[this.selectedTable].txs.map((item) => ({
+        operation: item.event,
+        tx_hash: item.transactionHash,
+        date: item.createdAt,
+        value: `${getStyledAmount(item.amount)} ${TokenSymbols.WUSD}`,
+      }));
     },
   },
   watch: {

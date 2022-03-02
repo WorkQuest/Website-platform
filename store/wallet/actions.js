@@ -31,25 +31,7 @@ export default {
           offset,
         },
       });
-      if (method === PensionHistoryMethods.Update) {
-        const updateData = res.data.result.events.map((item) => ({
-          operation: item.event,
-          tx_hash: item.transactionHash,
-          time: item.createdAt,
-          timestamp: this.$moment(item.timestamp).format('lll'),
-          value: `${getStyledAmount(item.newFee)}%`,
-        }));
-        commit('setPensionHistoryData', { method, txs: updateData, count: res.data.result.count });
-      } else {
-        const receiveData = res.data.result.events.map((item) => ({
-          operation: item.event,
-          tx_hash: item.transactionHash,
-          time: item.createdAt,
-          timestamp: item.timestamp,
-          value: `${getStyledAmount(item.amount)} ${TokenSymbols.WUSD}`,
-        }));
-        commit('setPensionHistoryData', { method, txs: receiveData, count: res.data.result.count });
-      }
+      commit('setPensionHistoryData', { method, txs: res.data.result.events, count: res.data.result.count });
     } catch (e) {
       console.error(e);
     }
