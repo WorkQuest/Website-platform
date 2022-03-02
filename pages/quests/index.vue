@@ -64,7 +64,7 @@ export default {
         offset: 0,
         'sort[createdAt]': 'desc',
       },
-      specFilter: {},
+      specFilter: { 'statuses[0]': 0 },
       isShowMap: true,
       isFetching: false,
       searchTimeout: null,
