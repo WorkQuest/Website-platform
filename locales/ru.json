@@ -17,7 +17,7 @@
     "lend": "Lend",
     "faq": "FAQ",
     "term": "Term",
-    "download": "Download",
+    "download": "Скачать",
     "performed": "Выполнено",
     "contactUs": "Связаться с нами",
     "balance": "Остаток средств",
@@ -222,7 +222,7 @@
     "emailConfirmTitle": "Проверьте свою почту"
   },
   "profile": {
-    "defaultName": "Nameless User",
+    "defaultName": "Безымянный",
     "prevWorkExp": "Предыдущий опыт работы",
     "active": "active proposals",
     "radius": "in your radius",
@@ -268,7 +268,7 @@
     "auth": "Авторизация",
     "email": "Email",
     "password": "Пароль",
-    "confirmPassword": "Repeat password",
+    "confirmPassword": "Повторите пароль",
     "create": "Создать аккаунт"
   },
   "createWallet": {
@@ -276,8 +276,8 @@
     "savePhrase": "Сохранить секретную фразу",
     "keptPhrase": "Я сохранил секретную фразу",
     "confirmSecretPhrase": "Подтвердить секретную фразу",
-    "typeSecret": "Type secret word #{a}",
-    "secret": "Secret word #{a}",
+    "typeSecret": "Введите секретное слово #{a}",
+    "secret": "Секретное слово #{a}",
     "create": "Создать кошелек",
     "importWallet": "Импорт кошелька",
     "createOrImport": "Создать или импортировать кошелек",
@@ -301,17 +301,17 @@
     "chooseThis": "Выбрать эту роль"
   },
   "privacy": {
-    "agree": "I agree with"
+    "agree": "Я согласен с"
   },
   "layout": {
     "links": {
-      "terms": "\t· Terms and conditions",
-      "privacy": "\t· Privacy policy"
+      "terms": "\t· Условия",
+      "privacy": "\t· Политика приватности"
     }
   },
   "worker": {
     "cost": {
-      "notIndicated": "Not indicated..."
+      "notIndicated": "Не указана"
     }
   },
   "quests": {
@@ -319,7 +319,7 @@
     "decline": "Отклонить",
     "questTitle": "Заголовок квеста",
     "questDesc": "Описание квеста",
-    "closed": "Closed",
+    "closed": "Закрыт",
     "rejected": "Rejected",
     "completedWorkAccepted": "Completed work on quest accepted!",
     "completedWorkRejected": "Completed work on quest rejected!",
@@ -327,7 +327,7 @@
     "workOnQuestRejected": "Work on quest rejected!",
     "pleaseWaitEmp": "Work on quest completed! Please, wait your employer!",
     "publicationDate": "Дата публикации",
-    "allVariants": "All variants",
+    "allVariants": "Все варианты",
     "levels": {
       "1": {
         "title": "Gold Plus Package",
@@ -352,10 +352,10 @@
       "1000": "+ 1000 м"
     },
     "rating": {
-      "title": "Rating",
-      "verified": "Verified",
-      "reliable": "Reliable",
-      "topRanked": "Top ranked"
+      "title": "Рейтинг",
+      "verified": "Подтвержденный",
+      "reliable": "Надежный",
+      "topRanked": "Топовый"
     },
     "distantWork": {
       "title": "Рабочее место",
@@ -394,7 +394,7 @@
     "completedQuests": "Завершенные квесты",
     "oneTime": "One time",
     "averageRating": "Средний рейтинг",
-    "otherQuestsSpec": "Other quests for the specialization",
+    "otherQuestsSpec": "Другие квесты специализации",
     "questMaterials": "Материалы квеста",
     "time": "Время добавления",
     "priority": "Приоритет",
@@ -878,8 +878,8 @@
     },
     "chatCreate": {
       "desc": "Create name of group chat and choose people from your chat list",
-      "chatName": "Chat name",
-      "addNewMembers": "Add new members"
+      "chatName": "Название чата",
+      "addNewMembers": "Добавить нового участника"
     },
     "disputes": {
       "thereIsNoResponseFromTheEmployerOrEmployee": "There is no response from the employer / employee",
@@ -887,14 +887,14 @@
       "additionalRequirementsHaveBeenPutForward": "Additional requirements have been put forward",
       "inconsistenciesInTheRequirementsForTheDescriptionOfTheQuest": "Inconsistencies in the requirements for the description of the quest",
       "theQuestIsCompletedButTheEmployeeOrEmployerHasNotConfirmedItsCompletion": "The quest is completed but the employee / employer has not confirmed its completion",
-      "anotherReason": "Another reason"
+      "anotherReason": "Другая причина"
     },
     "2FA": {
       "auth": "2FA Authentication",
       "enabled": "2FA enabled successfully!",
       "disabled": "2FA disabled successfully!",
-      "status": "2FA Status",
-      "disable": "Disable 2FA",
+      "status": "Статус 2FA",
+      "disable": "Отключить 2FA",
       "youCan’tEditQuest": "You can’t edit quest without connected 2FA",
       "youCan’tDeleteQuest": "You can’t delete quest without connected 2FA"
     },
@@ -923,13 +923,13 @@
     "textLengthExceeded": "You can only write {count} characters",
     "incorrectAmount": "Incorrect amount, your wallet does not have enough funds",
     "nothingToClaim": "Nothing to claim",
-    "pleaseWait": "Please, wait",
+    "pleaseWait": "Пожалуйста, подождите",
     "deletePortfolio": "Are you sure delete portfolio?",
     "addTitle": "Please add title...",
     "addDesc": "Please add description...",
     "editCase": "Edit Case",
-    "share": "Share",
-    "areYouSure": "Are You Sure?",
+    "share": "Поделиться",
+    "areYouSure": "Вы уверены?",
     "sureDeleteText": "Do you really want to delete this quest?",
     "haventSMS": "Haven’t got SMS?",
     "sureDeleteMemberText": "Do you really want to delete this member?",
@@ -939,7 +939,7 @@
     "changePercentDesc": "A percentage of the quest amount that will be automatically credited to your retirement account",
     "yourAccountVerified": "Your account has been successfully verified",
     "yourLevelHasBeenRaised": "Your level has been raised",
-    "payment": "Payment",
+    "payment": "Платеж",
     "cardHolder": "Cardholder name",
     "review": "Review",
     "SMSVerConnected": "SMS Verification connected",
@@ -965,11 +965,11 @@
     "installGoogleAuth": "Install the Google Authenticator app on your device",
     "ifYouCantScanBarcode": "If you are unable to scan QR code enter the Secret Key manually.",
     "pleaseSaveThisKey": "Enter Google two-factor authentication key below. Please save your Google key, it will be used to recover your Google Authenticator.",
-    "step": "Step",
-    "currentPassword": "Current password",
-    "newPassword": "New password",
-    "confirmNewPassword": "Confirm new password ",
-    "title": "Title",
+    "step": "Шаг",
+    "currentPassword": "Текущий пароль",
+    "newPassword": "Новый пароль",
+    "confirmNewPassword": "Подтвердите новый пароль ",
+    "title": "Заголовок",
     "reviewOnEmployer": "Review on employer",
     "paintingWork": "Painting work",
     "art": "Art",
@@ -977,7 +977,7 @@
     "coding": "Coding",
     "description": "Description",
     "openADispute": "Open a dispute",
-    "reason": "Reason",
+    "reason": "Причина",
     "sendTo": "Send To",
     "estimatedPayment": "Estimated payment:",
     "withdrawCard": "Withdraw to bank card",
@@ -988,12 +988,12 @@
     "questAgreed": "Quest Agreed",
     "requestSend": "Request sent",
     "waitResponseFromEmployer": "Wait for a response from the employer",
-    "message": "Message",
+    "message": "Сообщение",
     "transactionSent": "Transaction sent",
     "transactionFail": "Transaction fail",
     "transactionCheck": "Check transaction",
     "cardHasBeenAdded": "Card has been added",
-    "numberOfCard": "Card number",
+    "numberOfCard": "Номер карты",
     "date": "Date",
     "cardDate": "Card’s expiry date",
     "expirationDate": "Expiration date (M/Y)",
@@ -1006,8 +1006,8 @@
     "invitation": "Invitation",
     "chooseQuest": "Choose Quest",
     "priceOfAClick": "Price of a click",
-    "city": "City",
-    "period": "Period",
+    "city": "Город",
+    "period": "Период",
     "thanks": "Thanks",
     "couple": "A couple words",
     "depositPercentFromAQuest": "Deposit percent from a quest",
@@ -1022,7 +1022,7 @@
     "currentPercent": "Current percentage",
     "depositAmount": "Deposit amount",
     "lockedSavings": "Locked savings",
-    "durationDays": "Duration (days)",
+    "durationDays": "Продолжительность (дни)",
     "depositIsOpened": "Deposit is opened",
     "tip": "Tip:",
     "tipAbout": "When you add liquidity, you will receive pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time.",
@@ -1082,7 +1082,7 @@
     "currentPercentTitle": "Current percent",
     "depositIsDone": "Deposit is done",
     "percentIsChanged": "Percent is changed",
-    "choose": "Choose",
+    "choose": "Выбрать",
     "chooseCurrency": "Choose currency",
     "coinpaymebts": "Сoinpaymebts",
     "swapTitle": "Crosschain exchange",
@@ -1117,7 +1117,7 @@
     "depositAmountField": "deposit amount",
     "claim": "Claim",
     "priceOfAClickField": "price of a click",
-    "cityField": "city",
+    "cityField": "город",
     "cardHolderField": "card holder",
     "recepientAddressField": "recepient address",
     "walletAddressField": "wallet address",
@@ -1131,11 +1131,11 @@
   },
   "ui": {
     "jobQuestors": "Job Questors",
-    "workers": "Workers",
+    "workers": "Работники",
     "profile": {
-      "myProfile": "My profile",
+      "myProfile": "Мой профиль",
       "DeFi": "DeFi functionality",
-      "logout": "Logout"
+      "logout": "Выход"
     },
     "locals": {
       "en": "en",
@@ -1150,9 +1150,9 @@
       "ar": "ar"
     },
     "notifications": {
-      "title": "Notifications",
+      "title": "Уведомления",
       "invite": "Invites you to complete the quest",
-      "noNotifications": "No notifications"
+      "noNotifications": "Нет уведомлений"
     },
     "menu": {
       "unauthorized": "Not logged",
@@ -1245,19 +1245,19 @@
     "reason": "Please add reason",
     "starredMessages": "Starred messages",
     "starredChats": "Starred chats",
-    "allChats": "All chats",
+    "allChats": "Все беседы",
     "createGroupChat": "Create group chat",
     "favorite": "Favorite",
     "messages": "Messages",
-    "chat": "Chat",
-    "quest": "Quest:",
+    "chat": "Беседа",
+    "quest": "Квест:",
     "you": "You:",
     "invitedYou": "invited you to a quest",
     "writeYouMessage": "Write you message",
-    "group": "Group",
-    "noChats": "No chats",
-    "noMessages": "No messages",
-    "membersNum": "{n} members",
+    "group": "Группа",
+    "noChats": "Нет бесед",
+    "noMessages": "Нет сообщений",
+    "membersNum": "{n} участников",
     "systemMessages": {
       "invitedYouToAQuest": "invited you to a quest",
       "youInvitedToTheQuest": "You invited to the quest",
@@ -1335,13 +1335,13 @@
     "twitterUsername": "Twitter username",
     "linkedInUsername": "LinkedIn username",
     "facebookUsername": "Facebook username",
-    "skills": "Skills:",
-    "whoCanSee": "Who can see my profile?",
+    "skills": "Навыки:",
+    "whoCanSee": "Кто может видеть мой профиль?",
     "allUsers": "All registered users",
     "allInternet": "Internet users worldwide",
     "onlyWhenSubmittedWork": "Only when submitting job offers",
     "allRegistered": "All registered users",
-    "changePass": "Change password",
+    "changePass": "Сменить пароль",
     "enableTwoStepAuth": "Enable Two-Step authentication",
     "enable": "Enable",
     "smsVerification": "SMS profile verification",
@@ -1349,7 +1349,7 @@
     "ceo": "Add a position",
     "filterAllEmployeeProfiles": "Filter all employee profiles",
     "website": "Enter your company website",
-    "changeRole": "Change role",
+    "changeRole": "Сменить роль",
     "distantWork": {
       "title": "Workplace",
       "select": "Select distant work",
@@ -1525,13 +1525,13 @@
     "withdrawText": "The amount of locked funds and the accumulated interest will be credited to your wallet"
   },
   "mining": {
-    "loading": "loading...",
+    "loading": "загрузка...",
     "swapTokens": {
       "title": "Swap tokens",
       "swap": "Swap",
       "oldTokens": "Enter amount of old tokens",
       "newTokens": "You will get new tokens",
-      "balance": "Your balance:"
+      "balance": "Ваш баланс:"
     },
     "liquidityMiningSub": "Is a DeFi (decentralized finance) mechanism in which participants supply cryptocurrencies into liquidity pools, and being rewarded with fees and tokens based on their share of the total pool liquidity.",
     "pools": "Pools",
@@ -1564,7 +1564,7 @@
     "myPoolShare": "My pool share",
     "liquidityPoolProviders": "Liquidity pool providers",
     "liquidityProvidersEarn": "Liquidity providers earn a 0.3% fee on all trades proportional to their share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.",
-    "transactions": "Transactions",
+    "transactions": "Транзакции",
     "connectWallet": "Connect wallet"
   },
   "collateral": {
@@ -1784,7 +1784,7 @@
     }
   },
   "staking": {
-    "notification": "Notification",
+    "notification": "Уведомление",
     "stakeLimitReached": "Stake limit reached",
     "notEnoughFunds": "There are not enough funds on the balance sheet",
     "notEnoughClaim": "There are not enough funds to renewal tokens",
@@ -1799,7 +1799,7 @@
       "stakeTokenAddress": "Stake Token Address",
       "rewardTokenAddress": "Reward Token Address"
     },
-    "open": "Open",
+    "open": "Открыть",
     "stakeIsEmpty": "Stake balance is empty",
     "stakeDurationIsNotOver": "Stake duration is not over",
     "cannotClaimYet": "You cannot claim rewards yet",
@@ -1834,20 +1834,20 @@
   },
   "myQuests": {
     "statuses": {
-      "all": "All quests",
-      "favorites": "Favorites",
+      "all": "Все квесты",
+      "favorites": "Избранные",
       "responded": "Responded quests",
       "performed": "Performed quests",
-      "active": "Active quests",
+      "active": "Активные квесты",
       "invited": "Invited quests"
     }
   },
   "footer": {
-    "download": "Download Mobile App",
+    "download": "Скачать мобильное приложение",
     "follow": "Follow Us",
     "company": {
       "title": "Company",
-      "wqWiki": "WorkQuest Wiki",
+      "wqWiki": "WorkQuest Вики",
       "leadership": "Leadership",
       "support": "Help & Support"
     },
@@ -1870,9 +1870,9 @@
     }
   },
   "wiki": {
-    "title": "WorkQuest Wiki",
+    "title": "WorkQuest Вики",
     "searchPlaceholder": "Type the word",
-    "search": "Search",
+    "search": "Поиск",
     "navigation": {
       "header": {
         "title": "Header menu",
@@ -2157,7 +2157,7 @@
     "counter": "{n} of {c}"
   },
   "uploader": {
-    "uploadFile": "Upload files",
+    "uploadFile": "Загрузить файлы",
     "errors": {
       "fileSizeLimit": "File size limit: {n}",
       "filesLimit": "Files limit: {n}"
