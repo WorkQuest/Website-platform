@@ -218,10 +218,6 @@ export default {
       ];
     },
   },
-  async beforeMount() {
-    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
-    await this.$store.dispatch('wallet/getBalance');
-  },
   mounted() {
     this.$nuxt.setLayout(this.userData.id ? 'default' : 'guest');
   },

@@ -152,8 +152,12 @@ export default {
       return this.checkpoints.find((el) => el.id === this.selCurrencyID).name;
     },
   },
+  async beforeMount() {
+    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+  },
   methods: {
     async requestGetWUSD() {
+      await this.$store.dispatch('wallet/getBalance');
       const payload = {
         amount: this.amountWUSD,
         collateral: this.amountCollateral,
