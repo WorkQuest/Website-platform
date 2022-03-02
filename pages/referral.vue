@@ -237,7 +237,7 @@ export default {
           status: this.$t('meta.success'),
         },
         {
-          userName: this.$t('meta.table.userName'),
+          userName: this.$t('meta.userName'),
           avaUrl: '~/assets/img/social/GOOGLE_+_.png',
           userID: this.$t('meta.userId'),
           txHash: this.$t('meta.txHash'),

@@ -163,7 +163,7 @@
                 :disabled="!isConnected || statusBusy || disabled"
                 @click="claimRewards()"
               >
-                {{ $t('meta.claimReward') }}
+                {{ $t('meta.claimRewards') }}
               </base-btn>
             </div>
           </div>
