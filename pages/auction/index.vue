@@ -73,13 +73,15 @@
           :is-completed="currentTab === 'completed'"
         />
       </div>
-      <base-pager
-        v-if="pagination.totalPages > 1"
-        v-model="pagination.currentPage"
-        class="auction__pager"
-        :total-pages="pagination.totalPages"
-        @input="setPage"
-      />
+      <div class="auction__pager-block">
+        <base-pager
+          v-if="pagination.totalPages > 1"
+          v-model="pagination.currentPage"
+          class="auction__pager"
+          :total-pages="pagination.totalPages"
+          @input="setPage"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -318,6 +320,7 @@ export default {
   }
 }
 .auction {
+  padding: 0 15px;
 
   &__content {
     width: 100%;
@@ -370,5 +373,60 @@ export default {
 .icon {
   color:$black800;
   font-size: 24px;
+}
+@include _1099 {
+  .auction {
+    &__list {
+      &_current {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  }
+}
+@include _991 {
+  .auction {
+    &__list {
+      &_completed {
+        grid-template-columns: repeat(1, 1fr);
+      }
+    }
+  }
+}
+@include _767 {
+  .auction {
+    &__title {
+      margin-top: 30px;
+      margin-bottom: 20px;
+    }
+    &__list {
+      &_current {
+        grid-template-columns: repeat(1, 1fr);
+      }
+    }
+    &__topbar {
+      &-sort {
+        &-button {
+          min-width: 130px;
+          display: grid;
+          grid-gap: 0;
+          grid-template-columns: 93px 20px;
+        }
+      }
+    }
+    &__pager {
+      &-block {
+        display: flex;
+        justify-content: center;
+      }
+    }
+  }
+  .search {
+    &__block {
+      grid-template-columns: 1fr 140px;
+      &-item {
+        padding: 5px;
+      }
+    }
+  }
 }
 </style>

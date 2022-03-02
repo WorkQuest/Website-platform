@@ -144,6 +144,7 @@ export default {
     async success() {
       const phoneResult = await this.confirmPhone();
       if (phoneResult) {
+        await this.$store.dispatch('user/getUserData');
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/success.svg'),

@@ -39,8 +39,9 @@ export default {
     line-height: 130%;
     height: 20px;
     text-transform: uppercase;
-    width: 90px;
+    width: auto;
     display: flex;
+    justify-content: center;
 
     &_topRanked {
       @extend .status__levels;
@@ -49,12 +50,12 @@ export default {
 
     &_verified {
       @extend .status__levels;
-      background-color: $grey200;
+      background-color: $brown;
     }
 
     &_reliable {
       @extend .status__levels;
-      background-color: $brown;
+      background-color: $grey200;
     }
 
     &_noStatus {

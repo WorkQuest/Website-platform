@@ -307,11 +307,11 @@ export default {
       return ratingStatistic?.status || 'noStatus';
     },
     initStarClass(star) {
-      const reviewMark = this.userData?.ratingStatistic?.averageMark;
+      const reviewMark = Number(this.userData?.ratingStatistic?.averageMark).toFixed(1);
       const a = this.Floor(star - reviewMark, 2);
       return [
         { rating__star_full: star <= reviewMark },
-        { rating__star_half: (a >= 0.3 && a <= 0.7) },
+        { rating__star_half: a <= 0.7 },
       ];
     },
     shareModal() {
@@ -425,8 +425,8 @@ export default {
   &__data {
     display: flex;
     grid-gap: 10px;
-    align-items: flex-start;
-    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
   }
   &_left {
     align-self: flex-start;
@@ -639,14 +639,6 @@ export default {
         grid-gap: 0;
         grid-template-columns: auto;
       }
-    }
-  }
-}
-@include _575 {
-  .block {
-    &__data {
-      flex-direction: column;
-      align-items: flex-end;
     }
   }
 }
