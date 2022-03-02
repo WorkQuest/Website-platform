@@ -91,7 +91,7 @@
                 selector="CLOSE"
                 @click="hide"
               >
-                {{ $t('modals.close') }}
+                {{ $t('meta.close') }}
               </base-btn>
             </span>
             <span

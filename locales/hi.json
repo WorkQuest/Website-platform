@@ -6,6 +6,10 @@
       "shortTerm": "शॉर्ट टर्म",
       "urgent": "अर्जेंट"
     },
+    "claimRewards": "Claim rewards",
+    "percent": "प्रतिशत",
+    "buy": "खरीद",
+    "deposit": "Deposit",
     "withdraw": "निकासी",
     "withdrawal": "निकासी",
     "information": "जानकारी",
@@ -969,7 +973,6 @@
     "settingsInfo": "Settings Info",
     "pleaseEnable2FA": "Please, enable TWO-Step authentication",
     "errorGetWUSD": "Something went wrong",
-    "getWUSD": "Buy WUSD",
     "countOfRecievedWUSD": "How many WUSD do you want to receive",
     "fieldCountOf": "{countOf} amount",
     "countOfCollateral": "How much collateral to leave?",
@@ -1131,7 +1134,6 @@
     "successCopied": "सार्वजनिक पता क्लिपबोर्ड पर कॉपी किया गया",
     "walletAddress": "Wallet address",
     "scanQr": "Scan QR code or copy wallet address to receive payment",
-    "close": "Close",
     "addYourCard": "You have to add your card to continue",
     "walletCopy": "Wallet number has been copied",
     "textCopy": "Text has been copied",
@@ -1607,7 +1609,6 @@
   },
   "mining": {
     "loading": "loading...",
-    "claimRewards": "Claim rewards",
     "liquidityMining": "लिक्विडिटी माइनिंग",
     "swapTokens": {
       "title": "Swap tokens",
@@ -1653,7 +1654,6 @@
   "collateral": {
     "lending": "Collateral",
     "marketSize": "Market size",
-    "percent": "Percent",
     "wantToGetWUSDTitle": "Wanna get WUSD?",
     "getWUSD": "Get WUSD",
     "wantToGoAuctionTitle": "Auction",
@@ -1670,7 +1670,7 @@
     "time": "Added time",
     "search": {
       "placeholder": "Sum / Duration",
-      "button": "Serach auction"
+      "button": "Search auction"
     },
     "tabs": {
       "current": "Current",
@@ -1680,10 +1680,6 @@
       "feeIncluded": "{feePercent}% commission already in the price",
       "feeNotIncluded": "{feePercent}% commission not included",
       "auctionDuration": "Auction duration",
-      "days": "{n} days",
-      "hours": "{n} hours",
-      "minutes": "{n} minutes",
-      "buy": "Buy",
       "completed": {
         "type": "EVEN TYPE",
         "sender": "SENDER",
@@ -1698,7 +1694,6 @@
     "lending": "WorkQuest लेंडिंग प्रोटोकॉल",
     "templateText": "Work Net नेटवर्क पर WorkQuest DeFi लेंडिंग प्लेटफॉर्म - अस्थिर ऐसेट्स के लिए चार विशेष मुद्रा बाजारों के साथ",
     "marketSize": "मार्केट साइज",
-    "percent": "प्रतिशत",
     "wantToTakeALoan": "कर्ज लेना चाहते हैं?",
     "borrow": "उधार",
     "openPositions": "ओपन पोजीशन",
@@ -1759,7 +1754,6 @@
         "point1": "वार्षिक योगदान 3000 WUSD का, 2500 WUSD बीमित इवेंट की स्थिति में भुगतान।"
       }
     },
-    "buy": "खरीद",
     "minimalProtectionPlan": "न्यूनतम प्रोटेक्शन प्लान",
     "standardProtectionPlan": "स्टैंडर्ड प्रोटेक्शन प्लान",
     "maximumProtectionPlan": "अधिकतम प्रोटेक्शन प्लान",
@@ -1892,7 +1886,6 @@
     "open": "Open",
     "stakeIsEmpty": "Stake balance is empty",
     "stakeDurationIsNotOver": "Stake duration is not over",
-    "claimRewards": "Claim rewards",
     "cannotClaimYet": "You cannot claim rewards yet",
     "cannotStakeYet": "You cannot stake tokens yet",
     "pool": "Pool",

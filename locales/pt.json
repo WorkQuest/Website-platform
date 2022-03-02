@@ -6,6 +6,10 @@
       "shortTerm": "Curto prazo",
       "urgent": "Urgente"
     },
+    "claimRewards": "Claim rewards",
+    "percent": "Percentagem",
+    "buy": "Comprar",
+    "deposit": "Deposit",
     "withdraw": "Retirar",
     "withdrawal": "Retirar",
     "information": "Informação",
@@ -969,7 +973,6 @@
     "settingsInfo": "Settings Info",
     "pleaseEnable2FA": "Please, enable TWO-Step authentication",
     "errorGetWUSD": "Something went wrong",
-    "getWUSD": "Buy WUSD",
     "countOfRecievedWUSD": "How many WUSD do you want to receive",
     "fieldCountOf": "{countOf} amount",
     "countOfCollateral": "How much collateral to leave?",
@@ -1131,7 +1134,6 @@
     "successCopied": "Endereço público copiado para a área de transferência",
     "walletAddress": "Wallet address",
     "scanQr": "Scan QR code or copy wallet address to receive payment",
-    "close": "Close",
     "addYourCard": "You have to add your card to continue",
     "walletCopy": "Wallet number has been copied",
     "textCopy": "Text has been copied",
@@ -1607,7 +1609,6 @@
   },
   "mining": {
     "loading": "loading...",
-    "claimRewards": "Claim rewards",
     "liquidityMining": "Mineração de liquidez",
     "swapTokens": {
       "title": "Swap tokens",
@@ -1653,7 +1654,6 @@
   "collateral": {
     "lending": "Collateral",
     "marketSize": "Market size",
-    "percent": "Percent",
     "wantToGetWUSDTitle": "Wanna get WUSD?",
     "getWUSD": "Get WUSD",
     "wantToGoAuctionTitle": "Auction",
@@ -1670,7 +1670,7 @@
     "time": "Added time",
     "search": {
       "placeholder": "Sum / Duration",
-      "button": "Serach auction"
+      "button": "Search auction"
     },
     "tabs": {
       "current": "Current",
@@ -1680,10 +1680,6 @@
       "feeIncluded": "{feePercent}% commission already in the price",
       "feeNotIncluded": "{feePercent}% commission not included",
       "auctionDuration": "Auction duration",
-      "days": "{n} days",
-      "hours": "{n} hours",
-      "minutes": "{n} minutes",
-      "buy": "Buy",
       "completed": {
         "type": "EVEN TYPE",
         "sender": "SENDER",
@@ -1698,7 +1694,6 @@
     "lending": "Protocolo de Empréstimo WorkQuest",
     "templateText": "Plataforma de empréstimo WorkQuest DeFi na rede Work Net com quatro mercados financeiros exclusivos para ativos voláteis",
     "marketSize": "Tamanho do mercado",
-    "percent": "Percentagem",
     "wantToTakeALoan": "Quer contrair um empréstimo?",
     "borrow": "Pedido de empréstimo",
     "openPositions": "Posições abertas",
@@ -1759,7 +1754,6 @@
         "point1": "Uma contribuição anual de 3000 WUSD, pagamento no caso de um evento segurado de 2500 WUSD."
       }
     },
-    "buy": "Comprar",
     "minimalProtectionPlan": "Plano de proteção mínima",
     "standardProtectionPlan": "Plano de proteção standard",
     "maximumProtectionPlan": "Plano de proteção máxima",
@@ -1892,7 +1886,6 @@
     "open": "Open",
     "stakeIsEmpty": "Stake balance is empty",
     "stakeDurationIsNotOver": "Stake duration is not over",
-    "claimRewards": "Claim rewards",
     "cannotClaimYet": "You cannot claim rewards yet",
     "cannotStakeYet": "You cannot stake tokens yet",
     "pool": "Pool",

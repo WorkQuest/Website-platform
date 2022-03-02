@@ -136,7 +136,7 @@
               selector="CLAIM-REWARDS"
               @click="showClaimModal"
             >
-              {{ $t('staking.claimRewards') }}
+              {{ $t('meta.claimRewards') }}
             </base-btn>
           </div>
         </div>
@@ -379,7 +379,7 @@ export default {
       }
       this.ShowModal({
         key: modals.transactionReceipt,
-        title: this.$t('staking.claimRewards'),
+        title: this.$t('meta.claimRewards'),
         fields: {
           from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
           to: { name: this.$t('meta.toBig'), value: this.poolData.poolAddress },

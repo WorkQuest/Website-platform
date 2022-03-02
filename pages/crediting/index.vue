@@ -169,7 +169,7 @@ export default {
         },
         {
           title: this.$tc('meta.percentsCount', 5),
-          subtitle: this.$t('crediting.percent'),
+          subtitle: this.$t('meta.percent'),
         },
       ];
     },

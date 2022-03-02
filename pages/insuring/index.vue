@@ -32,7 +32,7 @@
               class="btn_bl"
               @click="handleClickBuyProtection()"
             >
-              {{ $t('insuring.buy') }}
+              {{ $t('meta.buy') }}
             </base-btn>
           </div>
         </div>

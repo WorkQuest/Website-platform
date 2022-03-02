@@ -113,7 +113,7 @@ export default {
             img: require('~/assets/img/ui/error.svg'),
             title: this.$t('modals.warning'),
             subtitle: this.$t('modals.waitRoleCooldown', { date: date.toLocaleDateString(this.$i18n.locale), time: date.toLocaleTimeString(this.$i18n.locale) }),
-            button: this.$t('modals.close'),
+            button: this.$t('meta.close'),
           });
         }
       }

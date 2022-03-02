@@ -105,7 +105,7 @@ export default {
           img: require('~/assets/img/ui/deleteError.svg'),
           title: this.$t('modals.errors.error'),
           subtitle: this.$t('modals.2FA.youCan’tEditQuest'),
-          button: this.$t('modals.close'),
+          button: this.$t('meta.close'),
         });
         return;
       }
@@ -129,7 +129,7 @@ export default {
           img: require('~/assets/img/ui/deleteError.svg'),
           title: this.$t('modals.errors.error'),
           subtitle: this.$t('modals.2FA.youCan’tDeleteQuest'),
-          button: this.$t('modals.close'),
+          button: this.$t('meta.close'),
         });
         return;
       }

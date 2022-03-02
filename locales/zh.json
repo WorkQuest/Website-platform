@@ -6,6 +6,10 @@
       "shortTerm": "普通",
       "urgent": "紧急"
     },
+    "claimRewards": "Claim rewards",
+    "percent": "百分比",
+    "buy": "购买",
+    "deposit": "Deposit",
     "withdraw": "提款",
     "withdrawal": "提款",
     "information": "信息",
@@ -970,7 +974,6 @@
     "settingsInfo": "Settings Info",
     "pleaseEnable2FA": "Please, enable TWO-Step authentication",
     "errorGetWUSD": "Something went wrong",
-    "getWUSD": "Buy WUSD",
     "countOfRecievedWUSD": "How many WUSD do you want to receive",
     "fieldCountOf": "{countOf} amount",
     "countOfCollateral": "How much collateral to leave?",
@@ -1132,7 +1135,6 @@
     "successCopied": "公共地址已复制到剪贴板",
     "walletAddress": "Wallet address",
     "scanQr": "Scan QR code or copy wallet address to receive payment",
-    "close": "Close",
     "addYourCard": "You have to add your card to continue",
     "walletCopy": "Wallet number has been copied",
     "textCopy": "Text has been copied",
@@ -1609,7 +1611,6 @@
   },
   "mining": {
     "loading": "loading...",
-    "claimRewards": "Claim rewards",
     "liquidityMining": "流动性挖掘",
     "swapTokens": {
       "title": "Swap tokens",
@@ -1655,7 +1656,6 @@
   "collateral": {
     "lending": "Collateral",
     "marketSize": "Market size",
-    "percent": "Percent",
     "wantToGetWUSDTitle": "Wanna get WUSD?",
     "getWUSD": "Get WUSD",
     "wantToGoAuctionTitle": "Auction",
@@ -1672,7 +1672,7 @@
     "time": "Added time",
     "search": {
       "placeholder": "Sum / Duration",
-      "button": "Serach auction"
+      "button": "Search auction"
     },
     "tabs": {
       "current": "Current",
@@ -1682,10 +1682,6 @@
       "feeIncluded": "{feePercent}% commission already in the price",
       "feeNotIncluded": "{feePercent}% commission not included",
       "auctionDuration": "Auction duration",
-      "days": "{n} days",
-      "hours": "{n} hours",
-      "minutes": "{n} minutes",
-      "buy": "Buy",
       "completed": {
         "type": "EVEN TYPE",
         "sender": "SENDER",
@@ -1700,7 +1696,6 @@
     "lending": "WorkQuest 借贷协议",
     "templateText": "WorkNet 网络上的 WorkQuest DeFi 借贷平台，具有四个针对波动性资产的专属货币市场",
     "marketSize": "市场规模",
-    "percent": "百分比",
     "wantToTakeALoan": "想贷款吗？",
     "borrow": "借款",
     "openPositions": "未平头寸",
@@ -1761,7 +1756,6 @@
         "point1": "每年缴费 3000 WUSD，发生受保事件时赔付 2500 WUSD。"
       }
     },
-    "buy": "购买",
     "minimalProtectionPlan": "最低保护计划",
     "standardProtectionPlan": "标准保护计划",
     "maximumProtectionPlan": "最高保护计划",
@@ -1894,7 +1888,6 @@
     "open": "Open",
     "stakeIsEmpty": "Stake balance is empty",
     "stakeDurationIsNotOver": "Stake duration is not over",
-    "claimRewards": "Claim rewards",
     "cannotClaimYet": "You cannot claim rewards yet",
     "cannotStakeYet": "You cannot stake tokens yet",
     "pool": "Pool",

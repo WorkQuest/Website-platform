@@ -6,6 +6,10 @@
       "shortTerm": "স্বল্পমেয়াদ",
       "urgent": "জরুরি"
     },
+    "claimRewards": "Claim rewards",
+    "percent": "শতাংশ",
+    "buy": "কিনুন",
+    "deposit": "Deposit",
     "withdraw": "উত্তোলন করুন",
     "withdrawal": "উত্তোলন",
     "information": "তথ্য",
@@ -969,7 +973,6 @@
     "settingsInfo": "Settings Info",
     "pleaseEnable2FA": "Please, enable TWO-Step authentication",
     "errorGetWUSD": "Something went wrong",
-    "getWUSD": "Buy WUSD",
     "countOfRecievedWUSD": "How many WUSD do you want to receive",
     "fieldCountOf": "{countOf} amount",
     "countOfCollateral": "How much collateral to leave?",
@@ -1130,7 +1133,6 @@
     "successCopied": "সর্বজনীন ঠিকানা ক্লিপবোর্ডে অনুলিপি করা হয়েছে",
     "walletAddress": "Wallet address",
     "scanQr": "Scan QR code or copy wallet address to receive payment",
-    "close": "Close",
     "addYourCard": "You have to add your card to continue",
     "walletCopy": "Wallet number has been copied",
     "textCopy": "Text has been copied",
@@ -1606,7 +1608,6 @@
   },
   "mining": {
     "loading": "loading...",
-    "claimRewards": "Claim rewards",
     "liquidityMining": "লিকুইডিটি মাইনিং",
     "swapTokens": {
       "title": "Swap tokens",
@@ -1652,7 +1653,6 @@
   "collateral": {
     "lending": "Collateral",
     "marketSize": "Market size",
-    "percent": "Percent",
     "wantToGetWUSDTitle": "Wanna get WUSD?",
     "getWUSD": "Get WUSD",
     "wantToGoAuctionTitle": "Auction",
@@ -1669,7 +1669,7 @@
     "time": "Added time",
     "search": {
       "placeholder": "Sum / Duration",
-      "button": "Serach auction"
+      "button": "Search auction"
     },
     "tabs": {
       "current": "Current",
@@ -1679,10 +1679,6 @@
       "feeIncluded": "{feePercent}% commission already in the price",
       "feeNotIncluded": "{feePercent}% commission not included",
       "auctionDuration": "Auction duration",
-      "days": "{n} days",
-      "hours": "{n} hours",
-      "minutes": "{n} minutes",
-      "buy": "Buy",
       "completed": {
         "type": "EVEN TYPE",
         "sender": "SENDER",
@@ -1697,7 +1693,6 @@
     "lending": "WorkQuest ঋণ প্রোটোকল",
     "templateText": "অস্থিতিশীল সম্পদের জন্য চারটি একান্ত অর্থ বাজারসহ WorkQuest DeFi ঋণ প্রদান প্ল্যাটফর্ম Work Net নেটওয়ার্কে",
     "marketSize": "বাজারের আকার",
-    "percent": "শতাংশ",
     "wantToTakeALoan": "ঋণ নিতে চান?",
     "borrow": "ঋণ নিন",
     "openPositions": "অবস্থান খুলুন",
@@ -1758,7 +1753,6 @@
         "point1": "বার্ষিক অবদান 3000 WUSD, কোনো বিমাকৃত ইভেন্টের ক্ষেত্রে পরিশোধেয় অর্থ 2500 WUSD।"
       }
     },
-    "buy": "কিনুন",
     "minimalProtectionPlan": "ন্যূনতম সুরক্ষা পরিকল্পনা",
     "standardProtectionPlan": "প্রমিত সুরক্ষা পরিকল্পনা",
     "maximumProtectionPlan": "সর্বোচ্চ সুরক্ষা পরিকল্পনা",
@@ -1891,7 +1885,6 @@
     "open": "Open",
     "stakeIsEmpty": "Stake balance is empty",
     "stakeDurationIsNotOver": "Stake duration is not over",
-    "claimRewards": "Claim rewards",
     "cannotClaimYet": "You cannot claim rewards yet",
     "cannotStakeYet": "You cannot stake tokens yet",
     "pool": "Pool",

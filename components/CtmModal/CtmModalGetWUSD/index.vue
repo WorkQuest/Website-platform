@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="getWUSD"
-    :title="$t('modals.getWUSD')"
+    :title="$t('meta.buyWUSD')"
   >
     <div class="getWUSD__content content">
       <validation-observer
