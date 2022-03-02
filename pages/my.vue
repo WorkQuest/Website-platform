@@ -105,9 +105,6 @@ export default {
       this.SetLoader(false);
     },
   },
-  destroyed() {
-    sessionStorage.removeItem('questsListFilter');
-  },
   async mounted() {
     this.SetLoader(true);
 
@@ -123,6 +120,10 @@ export default {
     };
     await this.getQuests();
     this.SetLoader(false);
+  },
+  destroyed() {
+    this.$store.commit('quests/setUserQuests', { count: 0, quests: [] });
+    sessionStorage.removeItem('questsListFilter');
   },
   methods: {
     async getQuests() {

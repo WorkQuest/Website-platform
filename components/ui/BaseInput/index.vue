@@ -43,7 +43,7 @@
         ref="input"
         class="ctm-field__input"
         :class="[{'ctm-field__input_error': errors[0]},
-                 {'ctm-field__input_padding-r' : hasLoader}]"
+                 {'ctm-field__input_padding-r' : $slots['right-absolute'] || (value && isSearch && !isBusySearch)}]"
         :placeholder="placeholder"
         data-selector="BASE-INPUT-FIELD"
         :value="mode === 'convertDate' ? convertDate(value) : value"
@@ -163,10 +163,6 @@ export default {
       type: String,
       default: 'aggressive',
     },
-    hasLoader: {
-      type: Boolean,
-      default: false,
-    },
   },
   mounted() {
     this.focus();
@@ -277,7 +273,7 @@ export default {
       border: 1px solid red !important
     }
     &_padding-r {
-      padding-right: 40px !important;
+      padding-right: 45px !important;
     }
   }
   &_disabled {
