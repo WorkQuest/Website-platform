@@ -139,37 +139,43 @@
               </base-btn>
             </div>
             <div class="pension-page__table">
-              <b-table
+              <base-table
+                class="table__txs"
+                :title="$t('wallet.table.trx')"
                 :items="historyByPage"
                 :fields="historyFields"
-                borderless
-                caption-top
-                thead-class="table__header"
-                tbody-tr-class="table__row"
-              >
-                <template #cell(operation)="el">
-                  {{ getOperationLocale(el.item.operation) }}
-                </template>
-                <template #cell(txHash)="el">
-                  <a
-                    :href="getExplorerRef(el.item.txHash)"
-                    target="_blank"
-                    class="user__value_gray"
-                  >
-                    {{ CutTxn(el.item.txHash) }}
-                  </a>
-                </template>
-                <template #cell(time)="el">
-                  <div class="user__value_gray">
-                    {{ $moment(el.item.time).format('lll') }}
-                  </div>
-                </template>
-                <template #cell(amount)="el">
-                  <div class="user__value">
-                    {{ el.item.amount }}
-                  </div>
-                </template>
-              </b-table>
+              />
+              <!--              <base-table-->
+              <!--                :items="historyByPage"-->
+              <!--                :fields="historyFields"-->
+              <!--                borderless-->
+              <!--                caption-top-->
+              <!--                thead-class="table__header"-->
+              <!--                tbody-tr-class="table__row"-->
+              <!--              >-->
+              <!--                <template #cell(operation)="el">-->
+              <!--                  {{ getOperationLocale(el.item.operation) }}-->
+              <!--                </template>-->
+              <!--                <template #cell(txHash)="el">-->
+              <!--                  <a-->
+              <!--                    :href="getExplorerRef(el.item.txHash)"-->
+              <!--                    target="_blank"-->
+              <!--                    class="user__value_gray"-->
+              <!--                  >-->
+              <!--                    {{ CutTxn(el.item.txHash) }}-->
+              <!--                  </a>-->
+              <!--                </template>-->
+              <!--                <template #cell(time)="el">-->
+              <!--                  <div class="user__value_gray">-->
+              <!--                    {{ $moment(el.item.time).format('lll') }}-->
+              <!--                  </div>-->
+              <!--                </template>-->
+              <!--                <template #cell(amount)="el">-->
+              <!--                  <div class="user__value">-->
+              <!--                    {{ el.item.amount }}-->
+              <!--                  </div>-->
+              <!--                </template>-->
+              <!--              </base-table>-->
             </div>
             <div
               v-if="!historyByPage.length"
@@ -305,46 +311,11 @@ export default {
       balanceData: 'wallet/getBalanceData',
     }),
     historyFields() {
-      const cellStyle = {
-        thStyle: {
-          padding: '0',
-          height: '27px',
-          lineHeight: '27px',
-        },
-        tdAttr: { style: 'padding: 0; height: 64px; line-height: 64px' },
-      };
       return [
-        {
-          key: 'operation',
-          label: 'Operation',
-          thStyle: {
-            padding: '0 0 0 23px',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: { style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px; width: 250px;' },
-        },
-        {
-          key: 'txHash',
-          label: this.$t('referral.tableHead.txHash'),
-          ...cellStyle,
-          tdAttr: { style: 'padding: 0 0 0 0; height: 64px; line-height: 64px' },
-        },
-        {
-          key: 'time',
-          label: this.$t('referral.tableHead.time'),
-          ...cellStyle,
-        },
-        {
-          key: 'value',
-          label: this.$t('modals.value'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: { style: 'padding: 0; height: 64px; line-height: 64px; width: 325px;' },
-        },
+        { key: 'operation', label: 'Operation' },
+        { key: 'tx_hash', label: this.$t('referral.tableHead.txHash') },
+        { key: 'time', label: this.$t('referral.tableHead.time') },
+        { key: 'value', label: this.$t('modals.value') },
       ];
     },
     pensionBalance() {

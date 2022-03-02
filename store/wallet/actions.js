@@ -34,16 +34,16 @@ export default {
       if (method === PensionHistoryMethods.Update) {
         const updateData = res.data.result.events.map((item) => ({
           operation: item.event,
-          txHash: item.transactionHash,
+          tx_hash: item.transactionHash,
           time: item.createdAt,
-          timestamp: item.timestamp,
+          timestamp: this.$moment(item.timestamp).format('lll'),
           value: `${getStyledAmount(item.newFee)}%`,
         }));
         commit('setPensionHistoryData', { method, txs: updateData, count: res.data.result.count });
       } else {
         const receiveData = res.data.result.events.map((item) => ({
           operation: item.event,
-          txHash: item.transactionHash,
+          tx_hash: item.transactionHash,
           time: item.createdAt,
           timestamp: item.timestamp,
           value: `${getStyledAmount(item.amount)} ${TokenSymbols.WUSD}`,
