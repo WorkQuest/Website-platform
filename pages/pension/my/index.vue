@@ -334,19 +334,12 @@ export default {
     },
     historyByPage() {
       if (!this.pensionHistory[this.selectedTable]?.txs) return [];
-      if (this.selectedTable === PensionHistoryMethods.Update) {
-        return this.pensionHistory[this.selectedTable].txs.map((item) => ({
-          operation: item.event,
-          tx_hash: item.transactionHash,
-          date: item.createdAt,
-          value: `${getStyledAmount(item.newFee)}%`,
-        }));
-      }
       return this.pensionHistory[this.selectedTable].txs.map((item) => ({
         operation: item.event,
         tx_hash: item.transactionHash,
         date: item.createdAt,
-        value: `${getStyledAmount(item.amount)} ${TokenSymbols.WUSD}`,
+        value: this.selectedTable === PensionHistoryMethods.Update
+          ? `${getStyledAmount(item.newFee)}%` : `${getStyledAmount(item.amount)} ${TokenSymbols.WUSD}`,
       }));
     },
   },
@@ -679,7 +672,7 @@ export default {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-gap: 20px;
-        margin: 0 15px 15px 15px;
+        margin: 0 15px 5px 15px;
       }
 
       &__faqs {
@@ -1013,7 +1006,8 @@ export default {
 }
 .empty-info {
   & .absence {
-    margin: 10px 0 !important;
+    padding-bottom: 10px !important;
+    margin: 0 !important;
     background: transparent !important;
   }
 }
