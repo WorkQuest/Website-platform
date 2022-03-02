@@ -14,7 +14,7 @@
           class="content__picture"
         >
         <div class="content__subtitle content__subtitle_error">
-          {{ this.$t('modals.fillNumber') }}
+          {{ $t('modals.fillNumber') }}
         </div>
         <div class="content__buttons buttons">
           <base-btn
@@ -116,7 +116,6 @@ export default {
     return {
       confirmCode: '',
       step: 1,
-      phone: null,
     };
   },
   computed: {
@@ -128,9 +127,11 @@ export default {
     UserRole() {
       return UserRole;
     },
+    phone() {
+      return this.userData?.tempPhone?.fullPhone;
+    },
   },
   async beforeMount() {
-    if (this.userData?.tempPhone) this.phone = this.userData?.tempPhone?.fullPhone;
     this.confirmCode = this.currentConfirmCode;
   },
   methods: {
@@ -138,16 +139,26 @@ export default {
       this.CloseModal();
     },
     async confirmPhone() {
-      await this.$store.dispatch('user/confirmPhone', { confirmCode: this.confirmCode });
+      return await this.$store.dispatch('user/confirmPhone', { confirmCode: this.confirmCode });
     },
-    success() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/success.svg'),
-        title: this.$t('modals.success'),
-        subtitle: this.$t('modals.SMSVerConnected'),
-      });
-      this.confirmPhone();
+    async success() {
+      const phoneResult = await this.confirmPhone();
+      if (phoneResult) {
+        await this.$store.dispatch('user/getUserData');
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/success.svg'),
+          title: this.$t('modals.success'),
+          subtitle: this.$t('modals.SMSVerConnected'),
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/error.svg'),
+          title: this.$t('modals.error'),
+          subtitle: this.$t('errors.incorrectPass'),
+        });
+      }
     },
     async getCodeFromSms() {
       if (this.phone) await this.$store.dispatch('user/sendPhone');

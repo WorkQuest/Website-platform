@@ -33,7 +33,7 @@
               {{ $t('collateral.wantToGetWUSDText') }}
             </div>
             <img
-              class="calendar-img"
+              class="info-block-image"
               src="~/assets/img/app/getWUSD.svg"
               alt=""
             >
@@ -56,7 +56,7 @@
               {{ $t('collateral.wantToGoAuctionText') }}
             </div>
             <img
-              class="calendar-img"
+              class="info-block-image"
               src="~/assets/img/app/goAuction.svg"
               alt=""
             >
@@ -500,7 +500,7 @@ export default {
           grid-area: hd;
         }
 
-        .calendar-img {
+        .info-block-image {
           grid-area: sd;
           position: absolute;
           right: 0px;
@@ -633,7 +633,7 @@ export default {
           width: 100%;
           margin: 0;
           padding: 0 20px;
-          .calendar-img {
+          .info-block-image {
             position: relative;
             width: 100%;
             max-width: 370px;
@@ -641,10 +641,9 @@ export default {
           }
           .btn-group {
             padding: 0;
-            display: block;
             display: grid;
             grid-template-columns: unset;
-            grid-template-rows: repeat(2, 1fr);
+            grid-template-rows: repeat(1, 1fr);
             gap: 20px;
           }
         }

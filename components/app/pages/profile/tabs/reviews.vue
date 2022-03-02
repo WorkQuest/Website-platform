@@ -26,7 +26,7 @@
               :data-selector="`ACTION-BTN-GO-TO-REVIEWER-PROFILE-${i}`"
               @click="goToProfile(reviewData.fromUser.id)"
             >
-              {{ CropTxt(reviewData.fromUser.firstName, 10) }} {{ CropTxt(reviewData.fromUser.lastName, 10) }}
+              {{ CropTxt(reviewData.fromUser.firstName, 10) }} {{ CropTxt(reviewData.fromUser.lastName, 5) }}
             </div>
             <div class="card-subtitle_green">
               {{ $t('role.worker') }}
