@@ -6,6 +6,7 @@
       "shortTerm": "Jangka pendek",
       "urgent": "Urgen"
     },
+    "liquidityMining": "Penambangan likuiditas",
     "claimRewards": "Claim rewards",
     "percent": "Persen",
     "buy": "Beli",
@@ -160,7 +161,6 @@
     "acceptCompletedWorkOnQuest": "Accept completed work on quest",
     "closeQuest": "Close quest",
     "goToChat": "Kunjungi obrolan",
-    "responded": "Tanggapan dikirim",
     "view": "Lihat"
   },
   "distance": {
@@ -211,11 +211,8 @@
   },
   "placeholders": {
     "default": "Placeholder",
-    "firstName": "John",
-    "lastName": "Doe",
     "mail": "your@mail.com",
-    "email": "Alamat email",
-    "password": "•••••••"
+    "email": "Alamat email"
   },
   "about": {
     "text": "WorkQuest adalah sebuah proyek sosial berbasis teknologi blockchain untuk menemukan pekerjaan dan menyelesaikan tugas yang diberikan oleh pihak pemberi kerja dalam mode quest. Apakah Anda sedang mencari pekerjaan? WorkQuest akan membantu Anda menemukan quest di dekat Anda dan kota Anda. Apakah Anda membutuhkan pekerja untuk melaksanakan tujuan Anda? Cukup buat quest di situs WorkQuest. Layanan ini menanggung kewajiban garansi untuk melaksanakan quest. Dana pihak pemberi kerja disimpan di kami , jika karyawan mengonfirmasi pelaksanaan kerja, ia akan menerima setoran dana di akunnya. Sistem penilaian, ulasan, dan daftar quest yang diselesaikan akan membantu menemukan orang-orang jujur dan spesialis terbaik dengan mudah.\n\n          Tujuan kami adalah menyederhanakan komunikasi antara pihak pemberi kerja dan karyawan, membantu mempekerjakan jutaan orang, memperbaiki kondisi keuangan mereka, memecahkan masalah lama menemukan profesional yang dapat diandalkan di semua sektor demi menciptakan ekonomi digital progresif yang dibangun di atas prinsip-prinsip kepercayaan, saling menghormati dan kesejahteraan semua pesertanya."
@@ -234,13 +231,7 @@
     "proposalStatus": "Status proposal",
     "urgently": "URGEN",
     "details": "Lihat detail",
-    "available": "Tersedia",
-    "viewProfile": "Lihat \nprofil",
-    "invite": "UNDANG QUESTOR",
-    "slogan": "Buat proposal kerja",
     "add": "Tambahkan semua informasi dan waktu publikasi untuk menemukan yang tepat",
-    "create": "Buat",
-    "writeAMessage": "Tulis pesan",
     "common": "Common info",
     "sidebar": {
       "filter": "Semua filter Quest",
@@ -257,12 +248,8 @@
     "remember": "Ingat saya",
     "or": "Atau",
     "loginWith": "Masuk dengan",
-    "welcomeToWorkQuest": "Selamat datang di WorkQuest",
-    "pleaseSignIn": "Silakan masuk",
     "workQuest": "WorkQuest",
-    "makingMoneyIsFast": "WorkQuest:\n Pasar Kerja\n Terdesentralisasi di Dunia",
-    "dontHaveAnAccount": "Tidak punya akun?",
-    "forgotYourPass": "Lupa kata sandi?"
+    "makingMoneyIsFast": "WorkQuest:\n Pasar Kerja\n Terdesentralisasi di Dunia"
   },
   "signWorkQuest": {
     "title": "Jejaring sosial WorkQuest",
@@ -281,7 +268,6 @@
     "auth": "Otorisasi",
     "email": "Email",
     "password": "Kata sandi",
-    "totp": "TOTP",
     "confirmPassword": "Masukkan kembali kata sandi",
     "create": "Buat akun"
   },
@@ -309,7 +295,6 @@
   "role": {
     "employer": "Pemberi kerja",
     "worker": "Karyawan",
-    "enter": "Masukkan",
     "choose": "Pilih peran Anda",
     "employerWant": "Saya ingin membuat tugas dan mencari pekerja",
     "workerWant": "Saya ingin mencari tugas dan bekerja secara freelance",
@@ -330,9 +315,6 @@
     }
   },
   "quests": {
-    "companyNotListed": "Company not listed",
-    "workersNotInvited": "Workers not invited!",
-    "startChat": "Start chat",
     "invite": "Invite",
     "decline": "Decline",
     "questTitle": "Quest title",
@@ -345,15 +327,7 @@
     "workOnQuestRejected": "Work on quest rejected!",
     "pleaseWaitEmp": "Work on quest completed! Please, wait your employer!",
     "publicationDate": "Publication date",
-    "specQuests": "Specialized quests",
-    "permanentJob": "Permanent job",
-    "partTime": "Part-time",
-    "contract": "Contract",
-    "remoteWork": "Remote work",
     "allVariants": "All variants",
-    "employer": {
-      "usersNotResponded": "Users have not yet responded to the quest"
-    },
     "levels": {
       "1": {
         "title": "Gold Plus Package",
@@ -397,15 +371,8 @@
       "fixedTerm": "Fixed term"
     },
     "runtime": "Runtime",
-    "spec": {
-      "spec": "Specialization",
-      "addSpec": "Add specialization"
-    },
-    "acceptedTheInvitation": "Accepted the invitation",
-    "declinedTheInvitation": "Declined the invitation",
     "active": "Aktif",
     "requested": "Diminta",
-    "youInvited": "Anda Diundang",
     "inProgressBy": "Sedang dikerjakan oleh:",
     "finishedBy": "Finished by:",
     "readCompletely": "Baca seluruhnya",
@@ -414,49 +381,23 @@
     "waitWorker": "Wait worker",
     "pendingConsideration": "Pending consideration",
     "questClosed": "Quest Closed",
-    "questFinished": "Quest Completed",
     "dontHaveSpec": "Doesn`t have specializations...",
     "namelessWorker": "Nameless worker",
     "nothingAboutMe": "Nothing about me...",
     "unknownAddress": "Unknown address...",
-    "unknownPhoneNumber": "Unknown phone number...",
-    "unknownEmailAddress": "Unknown email address..",
     "questActive": "Quest Active:",
     "questDispute": "Quest Dispute:",
     "questWaitConfirm": "Quest wait confirm:",
-    "skillsNotSpecified": "Skills not specified...",
-    "proposal": "Proposal",
-    "category": "Pilih kategori",
     "address": "Tambahkan alamat",
     "uploadMaterials": "Unggah materi untuk menjelaskan quest",
-    "ads": {
-      "promoteYourQuest": "Promosikan quest Anda",
-      "publishForFree": "Publikasikan secara gratis",
-      "boostYourPublications": "Tingkatkan publikasi Anda",
-      "costPerClick": "Biaya per klik"
-    },
-    "selectLocation": "Pilih lokasi",
-    "city": "Kota",
-    "period": "Periode waktu",
-    "EstimatedPayment": "Perkiraan pembayaran:",
     "editAQuest": "Edit a quest",
     "completedQuests": "Quest selesai",
     "oneTime": "Satu kali",
-    "fullTime": "Purna waktu",
-    "uploadAImagesOrVideos": "Unggah gambar atau video",
     "averageRating": "Peringkat rata-rata",
-    "showAllActiveQuests": "Tampilkan semua quest aktif",
-    "performanceTimer": "Aktif sampai:",
     "otherQuestsSpec": "Other quests for the specialization",
     "questMaterials": "Bahan quest tambahan",
-    "searchResults": "Hasil pencarian",
     "time": "Tambahan waktu",
-    "priority": {
-      "title": "Priority",
-      "low": "Rendah",
-      "normal": "Normal",
-      "urgent": "Urgen"
-    },
+    "priority": "Priority",
     "ui": {
       "showMap": "Tampilkan peta",
       "searchOnQuestsPage": "Employer / Title / Description / City",
@@ -464,7 +405,6 @@
       "searchWithMap": "Kota / Jalan / Tempat"
     },
     "worker": "Pekerja",
-    "deleteQuest": "Hapus quest",
     "startQuest": "Mulai quest"
   },
   "filters": {
@@ -933,16 +873,13 @@
       "emptyOpenQuests": "You don't have open quests, please create",
       "errorSmsVer": "Error SMS verification",
       "error": "Error",
-      "connect": "Error connection",
       "youCan’tDeleteActiveQuest": "You can’t delete active quest",
       "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
     },
     "chatCreate": {
       "desc": "Buat nama obrolan grup dan pilih orang dari daftar obrolan Anda",
       "chatName": "Nama obrolan",
-      "members": "Members list",
-      "addNewMembers": "Add new members",
-      "addMember": "Add member"
+      "addNewMembers": "Add new members"
     },
     "disputes": {
       "thereIsNoResponseFromTheEmployerOrEmployee": "There is no response from the employer / employee",
@@ -984,11 +921,9 @@
     "conversionPercentDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "fillNumber": "Please fill phone number in settings page...",
     "textLengthExceeded": "You can only write {count} characters",
-    "chooseTheme": "Choose theme",
     "incorrectAmount": "Incorrect amount, your wallet does not have enough funds",
     "nothingToClaim": "Nothing to claim",
     "pleaseWait": "Please, wait",
-    "yourRewardBalance": "Your reward balance:",
     "deletePortfolio": "Are you sure delete portfolio?",
     "addTitle": "Please add title...",
     "addDesc": "Please add description...",
@@ -1002,9 +937,7 @@
     "sureLeaveChatText": "Do you really want to leave this chat?",
     "enterPriceRange": "Enter price range",
     "changePercentDesc": "Persentase jumlah quest yang akan secara otomatis dikreditkan ke akun pensiun Anda",
-    "yourSkillsHaveBeenAdded": "Keterampilan Anda telah berhasil ditambahkan.",
     "yourAccountVerified": "Akun Anda telah berhasil diverifikasi",
-    "youCanUpdateThisInYourProfile": "Anda dapat dengan mudah memperbarui ini di profil Anda.",
     "yourLevelHasBeenRaised": "Level Anda telah dinaikkan",
     "payment": "Pembayaran",
     "cardHolder": "Nama pemegang kartu",
@@ -1037,25 +970,19 @@
     "newPassword": "Kata sandi baru",
     "confirmNewPassword": "Konfirmasi kata sandi baru ",
     "title": "Judul",
-    "badService": "Layanan buruk",
-    "otherReason": "Alasan Lainnya",
     "reviewOnEmployer": "Ulasan tentang pemberi kerja",
     "paintingWork": "Pekerjaan melukis",
     "art": "Seni",
     "cooking": "Memasak",
     "coding": "Pengkodean",
-    "uploadAImages": "Unggah gambar atau video",
     "description": "Keterangan",
     "openADispute": "Ajukan sengketa",
     "reason": "Alasan",
     "sendTo": "Kirim Ke",
     "estimatedPayment": "Perkiraan pembayaran:",
-    "value": "Nilai",
     "withdrawCard": "Tarik ke kartu bank",
     "notice": "Pemberitahuan penting",
     "noticeDesc": "Demi keamanan Anda, tim WorkQuest meminta Anda untuk tidak melakukan korespondensi atau kontak apa pun di luar platform WorkQuest. Setiap kontak atau percakapan di luar platform dapat menyebabkan kegagalan dalam menyelesaikan hal-hal yang dipersengketakan.",
-    "welcomeToWorkQuest": "Selamat datang di WorkQuest",
-    "pleaseTellUsAboutSkills": "Mohon beri tahu kami tentang keahlian Anda di bawah ini. Ini akan meningkatkan peringkat Anda di platform dan memudahkan pengguna lain menemukan akun Anda.",
     "amount": "Jumlah",
     "messageSend": "Pesan Terkirim",
     "questAgreed": "Quest Disetujui",
@@ -1207,7 +1134,6 @@
     "workers": "Pekerja",
     "profile": {
       "myProfile": "Profil saya",
-      "instruments": "Instrumen",
       "DeFi": "Fungsionalitas DeFi",
       "logout": "Keluar"
     },
@@ -1230,7 +1156,6 @@
     },
     "menu": {
       "unauthorized": "Not logged",
-      "instruments": "Instruments",
       "crosschain": {
         "title": "WorkQuest Bridge",
         "desc": "Secure and fast way to bring cross-chain assets between WorkNet, Ethereum and Binance Smart Chain."
@@ -1425,12 +1350,6 @@
     "filterAllEmployeeProfiles": "Filter semua profil karyawan",
     "website": "Masukkan situs web perusahaan Anda",
     "changeRole": "Ubah peran",
-    "instruments": "Instrumen",
-    "pensionProgram": "Program pensiun",
-    "referralProgram": "Program referral",
-    "p2pInsurance": "Asuransi P2P",
-    "savingProduct": "Produk tabungan",
-    "liquidityMining": "Penambangan likuiditas",
     "distantWork": {
       "title": "Workplace",
       "select": "Select distant work",
@@ -1600,16 +1519,13 @@
     "ans4": "Pada tanggal penukaran, Anda akan melihat token awal yang dikomit ke langganan dan juga bunga yang diperoleh di 'saldo' rekening WorkQuest Anda. Proses ini akan berjalan otomatis.",
     "ans5": "Pengembalian tahunan rata-rata (APR) menggunakan suku bunga harian rata-rata 7 hari terakhir, dikalikan dengan 365.",
     "ans6": "Ya. Tingkat bunga pada setiap produk dijamin.",
-    "smallPlug": "??",
     "possiblePlug": "Mungkin",
     "yearPlug": "1 tahun",
     "depositModalBody": "Kripto Anda akan terkunci selama periode tertentu, dan Anda akan mulai mendapatkan bunga.",
-    "depositIsOpened": "Transfer dikonfirmasi",
     "withdrawText": "The amount of locked funds and the accumulated interest will be credited to your wallet"
   },
   "mining": {
     "loading": "loading...",
-    "liquidityMining": "Liquidity mining",
     "swapTokens": {
       "title": "Swap tokens",
       "swap": "Swap",
@@ -1948,7 +1864,6 @@
       "P2P": "P2P insurance",
       "savingsProduct": "Savings product",
       "lending": "Lending",
-      "liquidityMining": "Liquidity mining",
       "wqBridge": "WorkQuest bridge",
       "staking": "WorkQuest Staking",
       "wqDAO": "WorkQuest DAO"
@@ -1986,7 +1901,7 @@
             "subtitle": "Your WorkQuest wallet, where WQT token and WUSD stablecoin transactions are available. It can also be used to work with platform instruments."
           },
           "instruments": {
-            "title": "Instruments",
+            "title": "Instrumen",
             "subtitle": "DeFi functionality that includes referral program, 2P2 insurance, retirement savings, savings product, liquidity mining, and landing."
           },
           "language": {
@@ -2030,7 +1945,7 @@
         }
       },
       "instruments": {
-        "title": "Instruments",
+        "title": "Instrumen",
         "cards": {
           "retirement": {
             "title": "Retirement program",

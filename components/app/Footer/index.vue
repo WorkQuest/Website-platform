@@ -251,7 +251,7 @@ export default {
         ],
         secondColumn: [
           {
-            title: this.$t('footer.DeFi.liquidityMining'),
+            title: this.$t('meta.liquidityMining'),
             path: '/mining',
           },
           {

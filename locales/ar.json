@@ -6,6 +6,7 @@
       "shortTerm": "فترة قصيرة",
       "urgent": "عاجلة"
     },
+    "liquidityMining": "تعدين السيولة",
     "claimRewards": "Claim rewards",
     "percent": "النسبة المئوية",
     "buy": "شراء",
@@ -211,11 +212,8 @@
   },
   "placeholders": {
     "default": "عنصر نائب",
-    "firstName": "كريم",
-    "lastName": "خالد",
     "mail": "your@mail.com",
-    "email": "عنوان البريد الإلكتروني",
-    "password": "•••••••"
+    "email": "عنوان البريد الإلكتروني"
   },
   "about": {
     "text": "WorkQuest هو مشروع اجتماعي قائم على تكنولوجيا سلسلة الكتل ويهدف إلى إيجاد عمل وتنفيذ أي مهام من جانب صاحب العمل في وضع طلبات العمل. هل تبحث عن وظيفة؟ سيساعدك WorkQuest في العثور على طلب عمل بالقرب منك ومن مدينتك. هل تحتاج إلى موظفين لتحقيق الأهداف؟ ما عليك سوى إنشاء طلب عمل على موقع WorkQuest. تلتزم الخدمة بضمان تنفيذ طلبات العمل. يتم الاحتفاظ بأموال صاحب العمل لدينا، وعندما يؤكد الموظف أنه أدى عمله، فإنه يتلقى إيداعًا بالأموال في حسابه. سيساعد نظام التقييمات والمراجعات وقائمة طلبات العمل المكتملة في العثور على أشخاص صادقين وأفضل المتخصصين بكل سهولة.\n\n          هدفنا هو تبسيط التواصل بين صاحب العمل والموظف للمساعدة في توظيف ملايين الأشخاص، وتحسين موقفهم المالي، وحل المشكلة الدائمة المتمثلة في العثور على متخصصين موثوقين في جميع القطاعات، وبناء اقتصاد رقمي تقدمي قائم على أسس الثقة والاحترام المتبادل ورفاهية جميع المشاركين فيه."
@@ -234,13 +232,7 @@
     "proposalStatus": "حالة العرض",
     "urgently": "بشكلٍ عاجل",
     "details": "عرض التفاصيل",
-    "available": "متاح",
-    "viewProfile": "عرض \nالملف التعريفي",
-    "invite": "دعوة صاحب الوظيفة",
-    "slogan": "إنشاء عرض عمل",
     "add": "أضِف جميع المعلومات ووقت النشر للعثور على الموظفين المناسبين",
-    "create": "إنشاء",
-    "writeAMessage": "كتابة رسالة",
     "common": "Common info",
     "sidebar": {
       "filter": "عامل تصفية جميع طلبات العمل",
@@ -257,12 +249,8 @@
     "remember": "تذكرني",
     "or": "أو",
     "loginWith": "تسجيل الدخول باستخدام \nحسابك على وسائل التواصل الاجتماعي",
-    "welcomeToWorkQuest": "WorkQuest مرحبًا بك في",
-    "pleaseSignIn": "يُرجى تسجيل الدخول",
     "workQuest": "WorkQuest",
-    "makingMoneyIsFast": "WorkQuest:\n سوق العمل\n اللامركزي\n العالمي",
-    "dontHaveAnAccount": "ليس لديك حساب؟",
-    "forgotYourPass": "نسيت كلمة المرور؟"
+    "makingMoneyIsFast": "WorkQuest:\n سوق العمل\n اللامركزي\n العالمي"
   },
   "signWorkQuest": {
     "title": "شبكة WorkQuest الاجتماعية",
@@ -281,7 +269,6 @@
     "auth": "التفويض",
     "email": "البريد الإلكتروني",
     "password": "كلمة المرور",
-    "totp": "TOTP",
     "confirmPassword": "تكرار كلمة المرور",
     "create": "إنشاء حساب"
   },
@@ -309,7 +296,6 @@
   "role": {
     "employer": "صاحب العمل",
     "worker": "الموظف",
-    "enter": "إدخال",
     "choose": "اختيار الدور",
     "employerWant": "أريد إنجاز مهمة وأبحث عن موظفين",
     "workerWant": "أريد البحث عن المهام والعمل بشكلٍ مستقل",
@@ -330,9 +316,6 @@
     }
   },
   "quests": {
-    "companyNotListed": "Company not listed",
-    "workersNotInvited": "Workers not invited!",
-    "startChat": "Start chat",
     "invite": "Invite",
     "decline": "Decline",
     "questTitle": "Quest title",
@@ -345,15 +328,7 @@
     "workOnQuestRejected": "Work on quest rejected!",
     "pleaseWaitEmp": "Work on quest completed! Please, wait your employer!",
     "publicationDate": "Publication date",
-    "specQuests": "Specialized quests",
-    "permanentJob": "Permanent job",
-    "partTime": "Part-time",
-    "contract": "Contract",
-    "remoteWork": "Remote work",
     "allVariants": "All variants",
-    "employer": {
-      "usersNotResponded": "Users have not yet responded to the quest"
-    },
     "levels": {
       "1": {
         "title": "Gold Plus Package",
@@ -397,15 +372,8 @@
       "fixedTerm": "Fixed term"
     },
     "runtime": "Runtime",
-    "spec": {
-      "spec": "Specialization",
-      "addSpec": "Add specialization"
-    },
-    "acceptedTheInvitation": "Accepted the invitation",
-    "declinedTheInvitation": "Declined the invitation",
     "active": "نشطة",
     "requested": "تم طلبها",
-    "youInvited": "أرسلت دعوة إليها",
     "inProgressBy": "قيد التنفيذ بواسطة:",
     "finishedBy": "Finished by:",
     "readCompletely": "قراءة الكل",
@@ -414,49 +382,23 @@
     "waitWorker": "Wait worker",
     "pendingConsideration": "Pending consideration",
     "questClosed": "Quest Closed",
-    "questFinished": "Quest Completed",
     "dontHaveSpec": "Doesn`t have specializations...",
     "namelessWorker": "Nameless worker",
     "nothingAboutMe": "Nothing about me...",
     "unknownAddress": "Unknown address...",
-    "unknownPhoneNumber": "Unknown phone number...",
-    "unknownEmailAddress": "Unknown email address..",
     "questActive": "Quest Active:",
     "questDispute": "Quest Dispute:",
     "questWaitConfirm": "Quest wait confirm:",
-    "skillsNotSpecified": "Skills not specified...",
-    "proposal": "العرض",
-    "category": "تحديد فئة",
     "address": "إضافة عنوان",
     "uploadMaterials": "حمِّل الصور أو مقاطع الفيديو لوصف طلب العمل على أفضل نحو",
-    "ads": {
-      "promoteYourQuest": "تعزيز طلب العمل",
-      "publishForFree": "النشر مجانًا",
-      "boostYourPublications": "تعزيز منشورك",
-      "costPerClick": "التكلفة لكل نقرة"
-    },
-    "selectLocation": "تحديد الموقع",
-    "city": "المدينة",
-    "period": "الفترة الزمنية",
-    "EstimatedPayment": "الدفعة المقدَّرة:",
     "editAQuest": "Edit a quest",
     "completedQuests": "طلبات العمل المكتملة",
     "oneTime": "مرة واحدة",
-    "fullTime": "دوام كامل",
-    "uploadAImagesOrVideos": "تحميل الصور أو مقاطع الفيديو",
     "averageRating": "متوسط التقييم",
-    "showAllActiveQuests": "عرض كل طلبات العمل النشطة",
-    "performanceTimer": "نشطة حتى:",
     "otherQuestsSpec": "Other quests for the specialization",
     "questMaterials": "مواد إضافية لطلب العمل",
-    "searchResults": "نتائج البحث",
     "time": "الوقت المضاف",
-    "priority": {
-      "title": "الأولوية",
-      "low": "منخفضة",
-      "normal": "عادية",
-      "urgent": "عاجلة"
-    },
+    "priority": "الأولوية",
     "ui": {
       "showMap": "عرض الخريطة",
       "searchOnQuestsPage": "Employer / Title / Description / City",
@@ -464,7 +406,6 @@
       "searchWithMap": "المدينة/الشارع/المكان"
     },
     "worker": "الموظف",
-    "deleteQuest": "حذف طلب العمل",
     "startQuest": "بدء طلب العمل"
   },
   "filters": {
@@ -933,16 +874,13 @@
       "emptyOpenQuests": "You don't have open quests, please create",
       "errorSmsVer": "Error SMS verification",
       "error": "Error",
-      "connect": "Error connection",
       "youCan’tDeleteActiveQuest": "You can’t delete active quest",
       "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
     },
     "chatCreate": {
       "desc": "أنشئ اسمًا للدردشة الجماعية واختر الأشخاص من قائمة الدردشة لديك",
       "chatName": "اسم الدردشة",
-      "members": "Members list",
-      "addNewMembers": "Add new members",
-      "addMember": "Add member"
+      "addNewMembers": "Add new members"
     },
     "disputes": {
       "thereIsNoResponseFromTheEmployerOrEmployee": "There is no response from the employer / employee",
@@ -984,11 +922,9 @@
     "conversionPercentDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "fillNumber": "Please fill phone number in settings page...",
     "textLengthExceeded": "You can only write {count} characters",
-    "chooseTheme": "Choose theme",
     "incorrectAmount": "Incorrect amount, your wallet does not have enough funds",
     "nothingToClaim": "Nothing to claim",
     "pleaseWait": "Please, wait",
-    "yourRewardBalance": "Your reward balance:",
     "deletePortfolio": "Are you sure delete portfolio?",
     "addTitle": "Please add title...",
     "addDesc": "Please add description...",
@@ -1002,9 +938,7 @@
     "sureLeaveChatText": "Do you really want to leave this chat?",
     "enterPriceRange": "Enter price range",
     "changePercentDesc": "ستتم إضافة نسبة مئوية من مبلغ الطلب تلقائيًا إلى حساب التقاعد الخاص بك",
-    "yourSkillsHaveBeenAdded": "تمت إضافة مهاراتك بنجاح.",
     "yourAccountVerified": "تم التحقُّق من حسابك بنجاح.",
-    "youCanUpdateThisInYourProfile": "يمكنك تحديث هذا بسهولة في ملفك التعريفي.",
     "yourLevelHasBeenRaised": "لقد تم رفع مستواك",
     "payment": "الدفع",
     "cardHolder": "اسم حامل البطاقة",
@@ -1037,25 +971,19 @@
     "newPassword": "كلمة المرور الجديدة",
     "confirmNewPassword": "تأكيد كلمة المرور الجديدة ",
     "title": "العنوان",
-    "badService": "خدمة سيئة",
-    "otherReason": "سبب آخر",
     "reviewOnEmployer": "مراجعة على صاحب العمل",
     "paintingWork": "عمل طلاء",
     "art": "الفن",
     "cooking": "الطهي",
     "coding": "الترميز",
-    "uploadAImages": "تحميل الصور أو مقاطع الفيديو",
     "description": "الوصف",
     "openADispute": "فتح نزاع",
     "reason": "السبب",
     "sendTo": "إرسال إلى",
     "estimatedPayment": "الدفعة المقدَّرة:",
-    "value": "القيمة",
     "withdrawCard": "السحب على بطاقة مصرفية",
     "notice": "ملاحظة هامة",
     "noticeDesc": "من أجل سلامتك، يطلب منك فريق WorkQuest عدم إجراء أي مراسلات أو اتصالات خارج منصة WorkQuest. يمكن أن تؤدي أي اتصالات أو محادثات خارج المنصة إلى الفشل في حل المواقف المثيرة للجدل.",
-    "welcomeToWorkQuest": "مرحبًا بك في WorkQuest",
-    "pleaseTellUsAboutSkills": "يُرجى إخبارنا عن مهاراتك أدناه. سيؤدي ذلك إلى زيادة ترتيبك على المنصة وتسهيل عثور المستخدمين الآخرين على حسابك.",
     "amount": "المبلغ",
     "messageSend": "إرسال رسالة",
     "questAgreed": "تمت الموافقة على الطلب",
@@ -1207,7 +1135,6 @@
     "workers": "الموظفون",
     "profile": {
       "myProfile": "ملفي التعريفي",
-      "instruments": "الأدوات",
       "DeFi": "وظيفة التمويل اللامركزي",
       "logout": "تسجيل الخروج"
     },
@@ -1230,7 +1157,6 @@
     },
     "menu": {
       "unauthorized": "Not logged",
-      "instruments": "Instruments",
       "crosschain": {
         "title": "WorkQuest Bridge",
         "desc": "Secure and fast way to bring cross-chain assets between WorkNet, Ethereum and Binance Smart Chain."
@@ -1425,12 +1351,6 @@
     "filterAllEmployeeProfiles": "تصفية جميع ملفات تعريف الموظفين",
     "website": "إدخال الموقع الإلكتروني لشركتك",
     "changeRole": "تغيير الدور",
-    "instruments": "الأدوات",
-    "pensionProgram": "برنامج رواتب التقاعد",
-    "referralProgram": "برنامج الإحالة",
-    "p2pInsurance": "التأمين من نظير إلى نظير",
-    "savingProduct": "برنامج المدخرات",
-    "liquidityMining": "تعدين السيولة",
     "distantWork": {
       "title": "Workplace",
       "select": "Select distant work",
@@ -1600,16 +1520,13 @@
     "ans4": "في تاريخ الاسترداد، سترى كل من الرموز الأولية المخصصة للاشتراك والفائدة المحصَّلة في \"أرصدة\" حساب WorkQuest الخاص بك. ستكون هذه العملية تلقائية.",
     "ans5": "يستخدم متوسط العائد السنوي (APR) متوسط معدل الفائدة اليومية من آخر 7 أيام، مضروبًا في 365.",
     "ans6": "أجل. سعر الفائدة على كل منتج مضمون.",
-    "smallPlug": "؟؟",
     "possiblePlug": "ممكن",
     "yearPlug": "سنة واحدة",
     "depositModalBody": "سيتم تأمين عملتك المشفرة لفترة محددة، وستبدأ في الحصول على الفائدة.",
-    "depositIsOpened": "تم تأكيد التحويل",
     "withdrawText": "The amount of locked funds and the accumulated interest will be credited to your wallet"
   },
   "mining": {
     "loading": "loading...",
-    "liquidityMining": "تعدين السيولة",
     "swapTokens": {
       "title": "Swap tokens",
       "swap": "Swap",
@@ -1948,7 +1865,6 @@
       "P2P": "P2P insurance",
       "savingsProduct": "Savings product",
       "lending": "Lending",
-      "liquidityMining": "Liquidity mining",
       "wqBridge": "WorkQuest bridge",
       "staking": "WorkQuest Staking",
       "wqDAO": "WorkQuest DAO"
@@ -1986,7 +1902,7 @@
             "subtitle": "Your WorkQuest wallet, where WQT token and WUSD stablecoin transactions are available. It can also be used to work with platform instruments."
           },
           "instruments": {
-            "title": "Instruments",
+            "title": "الأدوات",
             "subtitle": "DeFi functionality that includes referral program, 2P2 insurance, retirement savings, savings product, liquidity mining, and landing."
           },
           "language": {
@@ -2030,7 +1946,7 @@
         }
       },
       "instruments": {
-        "title": "Instruments",
+        "title": "الأدوات",
         "cards": {
           "retirement": {
             "title": "Retirement program",

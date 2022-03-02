@@ -17,7 +17,7 @@
       class="filters-panel__item"
       mode="blackFont"
       :items="priorityItems"
-      :placeholder="$t('quests.priority.title')"
+      :placeholder="$t('quests.priority')"
     />
     <base-dd
       v-if="userRole === UserRole.WORKER"

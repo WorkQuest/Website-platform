@@ -3,7 +3,7 @@
     <div class="mining-page__container">
       <div class="mining-page__header">
         <div class="title">
-          {{ $t('mining.liquidityMining') }}
+          {{ $t('meta.liquidityMining') }}
         </div>
         <div class="title_sub">
           {{ $t('mining.liquidityMiningSub') }}

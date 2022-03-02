@@ -6,6 +6,7 @@
       "shortTerm": "স্বল্পমেয়াদ",
       "urgent": "জরুরি"
     },
+    "liquidityMining": "লিকুইডিটি মাইনিং",
     "claimRewards": "Claim rewards",
     "percent": "শতাংশ",
     "buy": "কিনুন",
@@ -160,7 +161,6 @@
     "acceptCompletedWorkOnQuest": "Accept completed work on quest",
     "closeQuest": "Close quest",
     "goToChat": "চ্যাটে যান",
-    "responded": "সাড়া প্রদান করুন",
     "view": "দেখুন"
   },
   "distance": {
@@ -211,11 +211,8 @@
   },
   "placeholders": {
     "default": "স্থানধারী",
-    "firstName": "জন",
-    "lastName": "ডো",
     "mail": "your@mail.com",
-    "email": "ইমেইল ঠিকানা",
-    "password": "•••••••"
+    "email": "ইমেইল ঠিকানা"
   },
   "about": {
     "text": "Work Quest হলো ব্লকচেইন প্রযুক্তির উপর ভিত্তি করে কাজ খোঁজার এবং নিয়োগকর্তার পক্ষ থেকে quest মোডে যেকোনো কাজ সমাধানের জন্য একটি সামাজিক প্রকল্প। অপনি কি চাকুরি খুজছেন? একটি work quest আপনাকে আপনার এবং আপনার শহরের পাশে কোনো quest খুঁজে পেতে সাহায্য করবে। লক্ষ্য পূরণ করতে আপনার কি কর্মী প্রয়োজন? শুধুমাত্র work quest সাইটে একটি অনুসন্ধান তৈরি করুন। এই সেবা quest সম্পাদনের বাধ্যবাধকতার নিশ্চয়তা প্রদান করে। নিয়োগকর্তার তহবিল আমাদের কাছে গচ্ছিত রাখা হয়, কর্মচারী কাজ সম্পাদনের নিশ্চয়তা দিলে তার অ্যাকাউন্টে তহবিল জমা করা হয়। রেটিং, পর্যালোচনা এবং সম্পন্ন quest তালিকা সম্বলিত ব্যবস্থার সহায়তায় সহজেই সৎ মানুষ এবং সেরা বিশেষজ্ঞদের খুঁজে পাওয়া যাবে।\n\n          আমাদের লক্ষ্য হলো নিয়োগকর্তা এবং কর্মচারীর মধ্যে যোগাযোগ সহজ করে তোলা, লক্ষ লক্ষ মানুষকে কর্মসংস্থানে সাহায্য করা, তাদের আর্থিক অবস্থার উন্নয়ন করা, সমস্ত খাতে নির্ভরযোগ্য পেশাদার খোঁজার আজীবন সমস্যার সমাধান করে বিশ্বাস, পারস্পরিক শ্রদ্ধা এবং সকল অংশগ্রহণকারীর কল্যাণের ভিত্তিতে প্রগতিশীল ডিজিটাল অর্থনীতি গড়ে তোলা। "
@@ -234,13 +231,7 @@
     "proposalStatus": "প্রস্তাবের অবস্থা",
     "urgently": "জরুরি ভিত্তিতে",
     "details": "বিস্তারিত দেখুন",
-    "available": "বিদ্যমান",
-    "viewProfile": "\nদেখুন \nপ্রোফাইল",
-    "invite": "Questor-কে আমন্ত্রণ জানান",
-    "slogan": "কাজের প্রস্তাব তৈরি করুন",
     "add": "সঠিক তথ্য পেতে সমস্ত তথ্য এবং প্রকাশনার সময় যোগ করুন",
-    "create": "তৈরি করুন",
-    "writeAMessage": "একটা বার্তা লিখুন",
     "common": "Common info",
     "sidebar": {
       "filter": "সমস্ত Quest ফিল্টার",
@@ -257,12 +248,8 @@
     "remember": "আমাকে স্মরণ করুন",
     "or": "অথবা",
     "loginWith": "দিয়ে লগইন করুন",
-    "welcomeToWorkQuest": "WorkQuest-এ স্বাগতম",
-    "pleaseSignIn": "অনুগ্রহ করে সাইন ইন করুন",
     "workQuest": "WorkQuest",
-    "makingMoneyIsFast": "WorkQuest:\n বিশ্বের বিকেন্দ্রীভূত\n চাকরির বাজার",
-    "dontHaveAnAccount": "আপনার কোনো অ্যাকাউন্ট নেই?",
-    "forgotYourPass": "আপনার পাসওয়ার্ড ভুলে গেছেন?"
+    "makingMoneyIsFast": "WorkQuest:\n বিশ্বের বিকেন্দ্রীভূত\n চাকরির বাজার"
   },
   "signWorkQuest": {
     "title": "WorkQuest সামাজিক নেটওয়ার্ক",
@@ -281,7 +268,6 @@
     "auth": "অনুমোদন",
     "email": "ইমেইল",
     "password": "পাসওয়ার্ড",
-    "totp": "TOTP",
     "confirmPassword": "পুনরায় পাসওয়ার্ড",
     "create": "অ্যাকাউন্ট তৈরি করুন"
   },
@@ -309,7 +295,6 @@
   "role": {
     "employer": "নিয়োগকর্তা",
     "worker": "কর্মচারী",
-    "enter": "উল্লেখ করুন",
     "choose": "আপনার ভূমিকা নির্বাচন করুন",
     "employerWant": "আমি একটি কাজ তৈরি করতে চাই এবং একজন কর্মী খুঁজছি",
     "workerWant": "আমি একটি কাজ অনুসন্ধান করতে এবং ফ্রিল্যান্সে কাজ করতে চাই",
@@ -330,9 +315,6 @@
     }
   },
   "quests": {
-    "companyNotListed": "Company not listed",
-    "workersNotInvited": "Workers not invited!",
-    "startChat": "Start chat",
     "invite": "আমন্ত্রিত",
     "decline": "Decline",
     "questTitle": "Quest title",
@@ -345,15 +327,7 @@
     "workOnQuestRejected": "Work on quest rejected!",
     "pleaseWaitEmp": "Work on quest completed! Please, wait your employer!",
     "publicationDate": "Publication date",
-    "specQuests": "Specialized quests",
-    "permanentJob": "Permanent job",
-    "partTime": "Part-time",
-    "contract": "Contract",
-    "remoteWork": "Remote work",
     "allVariants": "All variants",
-    "employer": {
-      "usersNotResponded": "Users have not yet responded to the quest"
-    },
     "levels": {
       "1": {
         "title": "Gold Plus Package",
@@ -397,15 +371,8 @@
       "fixedTerm": "Fixed term"
     },
     "runtime": "Runtime",
-    "spec": {
-      "spec": "Specialization",
-      "addSpec": "Add specialization"
-    },
-    "acceptedTheInvitation": "Accepted the invitation",
-    "declinedTheInvitation": "Declined the invitation",
     "active": "সক্রিয়",
     "performed": "সম্পাদিত",
-    "youInvited": "আপনি আমন্ত্রণ জানিয়েছেন",
     "inProgressBy": "অগ্রগতির পরিমাণ:",
     "finishedBy": "Finished by:",
     "readCompletely": "সম্পূর্ণরূপে পড়ুন",
@@ -414,49 +381,23 @@
     "waitWorker": "Wait worker",
     "pendingConsideration": "Pending consideration",
     "questClosed": "Quest Closed",
-    "questFinished": "Quest Completed",
     "dontHaveSpec": "Doesn`t have specializations...",
     "namelessWorker": "Nameless worker",
     "nothingAboutMe": "Nothing about me...",
     "unknownAddress": "Unknown address...",
-    "unknownPhoneNumber": "Unknown phone number...",
-    "unknownEmailAddress": "Unknown email address..",
     "questActive": "Quest Active:",
     "questDispute": "Quest Dispute:",
     "questWaitConfirm": "Quest wait confirm:",
-    "skillsNotSpecified": "Skills not specified...",
-    "proposal": "প্রস্তাব",
-    "category": "একটি ধরন নির্বাচন করুন",
     "address": "ঠিকানা যোগ করুন",
     "uploadMaterials": "quest আরও ভালভাবে বর্ণনা করার জন্য উপকরণ আপলোড করুন",
-    "ads": {
-      "promoteYourQuest": "আপনার quest প্রচার করুন",
-      "publishForFree": "বিনামূল্যে প্রকাশ করুন",
-      "boostYourPublications": "আপনার প্রকাশনা জোরদার করুন",
-      "costPerClick": "ক্লিক প্রতি খরচ"
-    },
-    "selectLocation": "স্থান নির্বাচন করুন",
-    "city": "শহর",
-    "period": "সময় মেয়াদ",
-    "EstimatedPayment": "আনুমানিক পেমেন্ট:",
     "editAQuest": "Edit a quest",
     "completedQuests": "সম্পন্ন quest",
     "oneTime": "একবার",
-    "fullTime": "পূর্ণকালীন",
-    "uploadAImagesOrVideos": "কোনো ছবি বা ভিডিও আপলোড করুন",
     "averageRating": "গড় রেটিং",
-    "showAllActiveQuests": "সমস্ত সক্রিয় quest দেখান",
-    "performanceTimer": "যে পর্যন্ত সক্রিয়:",
     "otherQuestsSpec": "Other quests for the specialization",
     "questMaterials": "অতিরিক্ত quest উপকরণ",
-    "searchResults": "অনুসন্ধানের ফলাফল",
     "time": "যোগ করা সময়",
-    "priority": {
-      "title": "অগ্রাধিকার",
-      "low": "কম",
-      "normal": "স্বাভাবিক",
-      "urgent": "জরুরি"
-    },
+    "priority": "অগ্রাধিকার",
     "ui": {
       "showMap": "মানচিত্র দেখান",
       "searchOnQuestsPage": "Employer / Title / Description / City",
@@ -464,7 +405,6 @@
       "searchWithMap": "শহর / রাস্তা / স্থান"
     },
     "worker": "কর্মী",
-    "deleteQuest": "Quest মুছুন",
     "startQuest": "Quest শুরু করুন"
   },
   "filters": {
@@ -933,16 +873,13 @@
       "emptyOpenQuests": "You don't have open quests, please create",
       "errorSmsVer": "Error SMS verification",
       "error": "Error",
-      "connect": "Error connection",
       "youCan’tDeleteActiveQuest": "You can’t delete active quest",
       "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
     },
     "chatCreate": {
       "desc": "গ্রুপ চ্যাটের নাম তৈরি করুন এবং আপনার চ্যাট তালিকা থেকে লোক চয়ন করুন",
       "chatName": "চ্যাটের নাম",
-      "members": "Members list",
-      "addNewMembers": "Add new members",
-      "addMember": "Add member"
+      "addNewMembers": "Add new members"
     },
     "disputes": {
       "thereIsNoResponseFromTheEmployerOrEmployee": "There is no response from the employer / employee",
@@ -984,11 +921,9 @@
     "conversionPercentDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "fillNumber": "Please fill phone number in settings page...",
     "textLengthExceeded": "You can only write {count} characters",
-    "chooseTheme": "Choose theme",
     "incorrectAmount": "Incorrect amount, your wallet does not have enough funds",
     "nothingToClaim": "Nothing to claim",
     "pleaseWait": "Please, wait",
-    "yourRewardBalance": "Your reward balance:",
     "deletePortfolio": "Are you sure delete portfolio?",
     "addTitle": "Please add title...",
     "addDesc": "Please add description...",
@@ -1002,9 +937,7 @@
     "sureLeaveChatText": "Do you really want to leave this chat?",
     "enterPriceRange": "Enter price range",
     "changePercentDesc": "Quest এর অর্থের একটি শতাংশ যা স্বয়ংক্রিয়ভাবে আপনার অবসর অ্যাকাউন্টে জমা হবে",
-    "yourSkillsHaveBeenAdded": "আপনার দক্ষতা সফলভাবে যোগ করা হয়েছে।",
     "yourAccountVerified": "আপনার অ্যাকাউন্ট সফলভাবে যাচাই করা হয়েছে",
-    "youCanUpdateThisInYourProfile": "আপনি সহজেই এটি আপনার প্রোফাইলে হালনাগাদ করতে পারেন।",
     "yourLevelHasBeenRaised": "আপনার লেভেল উন্নীত করা হয়েছে",
     "payment": "পেমেন্ট",
     "cardHolder": "কার্ডধারীর নাম",
@@ -1037,25 +970,19 @@
     "newPassword": "নতুন পাসওয়ার্ড",
     "confirmNewPassword": "নতুন পাসওয়ার্ড নিশ্চিত করুন ",
     "title": "শিরোনাম",
-    "badService": "খারাপ সেবা",
-    "otherReason": "অন্যান্য কারণ",
     "reviewOnEmployer": "নিয়োগকর্তার উপর পর্যালোচনা",
     "paintingWork": "চিত্রকর্মের কাজ",
     "art": "শিল্প",
     "cooking": "রান্না",
     "coding": "কোডিং",
-    "uploadAImages": "কোনো ছবি বা ভিডিও আপলোড করুন",
     "description": "বর্ণনা",
     "openADispute": "একটি বিরোধ শুরু করুন",
     "reason": "কারণ",
     "sendTo": "প্রাপক",
     "estimatedPayment": "আনুমানিক পেমেন্ট:",
-    "value": "মান",
     "withdrawCard": "ব্যাংক কার্ডে প্রত্যাহার করুন",
     "notice": "গুরুত্বপূর্ণ বিজ্ঞপ্তি",
     "noticeDesc": "আপনার নিরাপত্তার জন্য, WorkQuest টিম আপনাকে WorkQuest প্ল্যাটফর্মের বাইরে কোনো চিঠিপত্র প্রেরণ বা যোগাযোগ না করার আহ্বান জানায়। প্ল্যাটফর্মের বাইরে কোনো যোগাযোগ বা কথোপকথন বিরোধপূর্ণ পরিস্থিতির সমাধান করতে ব্যর্থতার দিকে চালিত করতে পারে।",
-    "welcomeToWorkQuest": "WorkQuest-এ স্বাগতম",
-    "pleaseTellUsAboutSkills": "অনুগ্রহ করে নিচে আপনার দক্ষতা সম্পর্কে আমাদের বলুন। এটি প্ল্যাটফর্মে আপনার র‍্যাংকিং বাড়াবে এবং অন্যান্য ব্যবহারকারীদের জন্য আপনার অ্যাকাউন্ট খুঁজে পাওয়া সহজ করবে।",
     "amount": "পরিমাণ",
     "messageSend": "বার্তা পাঠানো হয়েছে",
     "questAgreed": "Quest-এ সম্মত",
@@ -1206,7 +1133,6 @@
     "workers": "কর্মী",
     "profile": {
       "myProfile": "আমার প্রোফাইল",
-      "instruments": "দলিল",
       "DeFi": "DeFi কার্যক্রম",
       "logout": "লগআউট"
     },
@@ -1229,7 +1155,6 @@
     },
     "menu": {
       "unauthorized": "Not logged",
-      "instruments": "Instruments",
       "crosschain": {
         "title": "WorkQuest Bridge",
         "desc": "Secure and fast way to bring cross-chain assets between WorkNet, Ethereum and Binance Smart Chain."
@@ -1424,12 +1349,6 @@
     "filterAllEmployeeProfiles": "সমস্ত কর্মীর প্রোফাইল ফিল্টার করুন",
     "website": "আপনার কোম্পানির ওয়েবসাইট উল্লেখ করুন",
     "changeRole": "ভূমিকা পরিবর্তন করুন",
-    "instruments": "দলিল",
-    "pensionProgram": "পেনশন কর্মসূচি",
-    "referralProgram": "রেফারেল কর্মসূচি",
-    "p2pInsurance": "P2P বিমা",
-    "savingProduct": "সঞ্চয় পণ্য",
-    "liquidityMining": "লিকুইডিটি মাইনিং",
     "distantWork": {
       "title": "Workplace",
       "select": "Select distant work",
@@ -1599,16 +1518,13 @@
     "ans4": "প্রাপ্তির তারিখে আপনি সাবস্ক্রিপশনের জন্য প্রতিশ্রুত প্রাথমিক টোকেন এবং আপনার WorkQuest অ্যাকাউন্ট 'ব্যালেন্স'-এ অর্জিত সুদ উভয়ই দেখতে পাবেন। এই প্রক্রিয়া স্বয়ংক্রিয় হবে।",
     "ans5": "গত 7 দিনের গড় দৈনিক সুদের হারকে 365 দ্বারা গুণ করে গড় বার্ষিক আয় ((APR) বের করা হয়ে থাকে।",
     "ans6": "হ্যাঁ। প্রতিটি পণ্যের সুদের হার নিশ্চিত।",
-    "smallPlug": "??",
     "possiblePlug": "সম্ভব",
     "yearPlug": "1 বছর",
     "depositModalBody": "আপনার ক্রিপ্টো একটি নির্দিষ্ট সময়ের জন্য লক হবে, এবং আপনি সুদ উপার্জন করতে শুরু করবেন।",
-    "depositIsOpened": "স্থানান্তর নিশ্চিত করা হয়েছে",
     "withdrawText": "The amount of locked funds and the accumulated interest will be credited to your wallet"
   },
   "mining": {
     "loading": "loading...",
-    "liquidityMining": "লিকুইডিটি মাইনিং",
     "swapTokens": {
       "title": "Swap tokens",
       "swap": "Swap",
@@ -1947,7 +1863,6 @@
       "P2P": "P2P insurance",
       "savingsProduct": "Savings product",
       "lending": "Lending",
-      "liquidityMining": "Liquidity mining",
       "wqBridge": "WorkQuest bridge",
       "staking": "WorkQuest Staking",
       "wqDAO": "WorkQuest DAO"
@@ -1985,7 +1900,7 @@
             "subtitle": "Your WorkQuest wallet, where WQT token and WUSD stablecoin transactions are available. It can also be used to work with platform instruments."
           },
           "instruments": {
-            "title": "Instruments",
+            "title": "দলিল",
             "subtitle": "DeFi functionality that includes referral program, 2P2 insurance, retirement savings, savings product, liquidity mining, and landing."
           },
           "language": {
@@ -2029,7 +1944,7 @@
         }
       },
       "instruments": {
-        "title": "Instruments",
+        "title": "দলিল",
         "cards": {
           "retirement": {
             "title": "Retirement program",

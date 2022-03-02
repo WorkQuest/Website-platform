@@ -6,6 +6,7 @@
       "shortTerm": "普通",
       "urgent": "紧急"
     },
+    "liquidityMining": "流动性挖掘",
     "claimRewards": "Claim rewards",
     "percent": "百分比",
     "buy": "购买",
@@ -161,7 +162,6 @@
     "acceptCompletedWorkOnQuest": "Accept completed work on quest",
     "closeQuest": "Close quest",
     "goToChat": "转到聊天",
-    "responded": "已发送回复",
     "view": "查看"
   },
   "distance": {
@@ -212,11 +212,8 @@
   },
   "placeholders": {
     "default": "占位符",
-    "firstName": "三",
-    "lastName": "张",
     "mail": "your@mail.com",
-    "email": "电子邮件地址",
-    "password": "•••••••"
+    "email": "电子邮件地址"
   },
   "about": {
     "text": "WorkQuest 是一个基于区块链技术的社交项目，可以在 Quest 模式下提供工作机会和解决雇主方面的任务。您在找工作吗？WorkQuest 将帮助您找到附近的 Quest。您需要工作者实现目标吗？只需在 WorkQuest 站点创建 Quest 即可。服务承担执行 Quest 的保证义务。雇主资金由我方保管，雇员在确认工作执行情况后将在帐户中收到资金。由评分、评价和已完成 Quest 列表组成的系统将有助于轻松寻找合适的人员和最优秀的专家。\n\n          我们的目标是简化雇主与雇员之间的沟通，帮助数百万人就业，改善人们的财务状况，解决在各行各业寻找可靠专业人士的终身问题，以信任、相互尊重和所有参与者的福祉为基础创造进步的数字经济。"
@@ -235,13 +232,7 @@
     "proposalStatus": "提议状态",
     "urgently": "紧急",
     "details": "查看详情",
-    "available": "可用",
-    "viewProfile": "查看 \n个人资料",
-    "invite": "邀请 Questor",
-    "slogan": "创建工作提议",
     "add": "添加完整信息和发布时间以找到合适的",
-    "create": "创建",
-    "writeAMessage": "编写消息",
     "common": "Common info",
     "sidebar": {
       "filter": "所有 Quest 筛选器",
@@ -258,12 +249,8 @@
     "remember": "记住我",
     "or": "或者",
     "loginWith": "使用以下方式登录",
-    "welcomeToWorkQuest": "欢迎来到 WorkQuest",
-    "pleaseSignIn": "请登录",
     "workQuest": "WorkQuest",
-    "makingMoneyIsFast": "WorkQuest：\n 全球去中心化\n 就业市场",
-    "dontHaveAnAccount": "没有帐户？",
-    "forgotYourPass": "忘记了密码？"
+    "makingMoneyIsFast": "WorkQuest：\n 全球去中心化\n 就业市场"
   },
   "signWorkQuest": {
     "title": "WorkQuest 社交网络",
@@ -282,7 +269,6 @@
     "auth": "授权",
     "email": "电子邮件",
     "password": "密码",
-    "totp": "TOTP",
     "confirmPassword": "再次输入密码",
     "create": "创建帐户"
   },
@@ -310,7 +296,6 @@
   "role": {
     "employer": "雇主",
     "worker": "雇员",
-    "enter": "输入",
     "choose": "选择您的角色",
     "employerWant": "我想创建任务，我正在寻找工作者",
     "workerWant": "我想搜索任务，我正在从事自由职业",
@@ -331,9 +316,6 @@
     }
   },
   "quests": {
-    "companyNotListed": "Company not listed",
-    "workersNotInvited": "Workers not invited!",
-    "startChat": "Start chat",
     "invite": "Invite",
     "decline": "Decline",
     "questTitle": "Quest title",
@@ -346,15 +328,7 @@
     "workOnQuestRejected": "Work on quest rejected!",
     "pleaseWaitEmp": "Work on quest completed! Please, wait your employer!",
     "publicationDate": "Publication date",
-    "specQuests": "Specialized quests",
-    "permanentJob": "Permanent job",
-    "partTime": "Part-time",
-    "contract": "Contract",
-    "remoteWork": "Remote work",
     "allVariants": "All variants",
-    "employer": {
-      "usersNotResponded": "Users have not yet responded to the quest"
-    },
     "levels": {
       "1": {
         "title": "Gold Plus Package",
@@ -398,15 +372,8 @@
       "fixedTerm": "Fixed term"
     },
     "runtime": "Runtime",
-    "spec": {
-      "spec": "Specialization",
-      "addSpec": "Add specialization"
-    },
-    "acceptedTheInvitation": "Accepted the invitation",
-    "declinedTheInvitation": "Declined the invitation",
     "active": "有效",
     "requested": "已请求",
-    "youInvited": "您已邀请",
     "inProgressBy": "进行中：",
     "finishedBy": "Finished by:",
     "readCompletely": "完整阅读",
@@ -415,49 +382,23 @@
     "waitWorker": "Wait worker",
     "pendingConsideration": "Pending consideration",
     "questClosed": "Quest Closed",
-    "questFinished": "Quest Completed",
     "dontHaveSpec": "Doesn`t have specializations...",
     "namelessWorker": "Nameless worker",
     "nothingAboutMe": "Nothing about me...",
     "unknownAddress": "Unknown address...",
-    "unknownPhoneNumber": "Unknown phone number...",
-    "unknownEmailAddress": "Unknown email address..",
     "questActive": "Quest Active:",
     "questDispute": "Quest Dispute:",
     "questWaitConfirm": "Quest wait confirm:",
-    "skillsNotSpecified": "Skills not specified...",
-    "proposal": "提议",
-    "category": "选择类别",
     "address": "添加地址",
     "uploadMaterials": "上传材料以更好地描述 Quest",
-    "ads": {
-      "promoteYourQuest": "推广您的 Quest",
-      "publishForFree": "免费发布",
-      "boostYourPublications": "推广您的发布",
-      "costPerClick": "每次点击费用"
-    },
-    "selectLocation": "选择地点",
-    "city": "城市",
-    "period": "时长",
-    "EstimatedPayment": "预计付款：",
     "editAQuest": "Edit a quest",
     "completedQuests": "已完成的 Quest",
     "oneTime": "一次性",
-    "fullTime": "全职",
-    "uploadAImagesOrVideos": "上传图片或视频",
     "averageRating": "平均评分",
-    "showAllActiveQuests": "显示所有有效 Quest",
-    "performanceTimer": "有效期至：",
     "otherQuestsSpec": "Other quests for the specialization",
     "questMaterials": "额外 Quest 材料",
-    "searchResults": "搜索结果",
     "time": "添加时间",
-    "priority": {
-      "title": "Priority",
-      "low": "低",
-      "normal": "普通",
-      "urgent": "紧急"
-    },
+    "priority": "Priority",
     "ui": {
       "showMap": "显示地图",
       "searchOnQuestsPage": "Employer / Title / Description / City",
@@ -465,7 +406,6 @@
       "searchWithMap": "城市/街道/地点"
     },
     "worker": "工作者",
-    "deleteQuest": "删除 Quest",
     "startQuest": "开始 Quest"
   },
   "filters": {
@@ -934,16 +874,13 @@
       "emptyOpenQuests": "You don't have open quests, please create",
       "errorSmsVer": "Error SMS verification",
       "error": "Error",
-      "connect": "Error connection",
       "youCan’tDeleteActiveQuest": "You can’t delete active quest",
       "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
     },
     "chatCreate": {
       "desc": "创建群聊名称并从您的聊天列表选择人员",
       "chatName": "聊天名称",
-      "members": "Members list",
-      "addNewMembers": "Add new members",
-      "addMember": "Add member"
+      "addNewMembers": "Add new members"
     },
     "disputes": {
       "thereIsNoResponseFromTheEmployerOrEmployee": "There is no response from the employer / employee",
@@ -985,11 +922,9 @@
     "conversionPercentDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "fillNumber": "Please fill phone number in settings page...",
     "textLengthExceeded": "You can only write {count} characters",
-    "chooseTheme": "Choose theme",
     "incorrectAmount": "Incorrect amount, your wallet does not have enough funds",
     "nothingToClaim": "Nothing to claim",
     "pleaseWait": "Please, wait",
-    "yourRewardBalance": "Your reward balance:",
     "deletePortfolio": "Are you sure delete portfolio?",
     "addTitle": "Please add title...",
     "addDesc": "Please add description...",
@@ -1003,9 +938,7 @@
     "sureLeaveChatText": "Do you really want to leave this chat?",
     "enterPriceRange": "Enter price range",
     "changePercentDesc": "将自动记入您的退休帐户的 Quest 金额的百分比",
-    "yourSkillsHaveBeenAdded": "您的技能已成功添加。",
     "yourAccountVerified": "您的帐户已成功验证",
-    "youCanUpdateThisInYourProfile": "您可以在您的个人资料中轻松更新此信息。",
     "yourLevelHasBeenRaised": "您的等级已提高",
     "payment": "付款",
     "cardHolder": "持卡人姓名",
@@ -1038,25 +971,19 @@
     "newPassword": "新密码",
     "confirmNewPassword": "确认新密码",
     "title": "职称",
-    "badService": "服务糟糕",
-    "otherReason": "其他原因",
     "reviewOnEmployer": "对雇主的评价",
     "paintingWork": "绘画作品",
     "art": "艺术",
     "cooking": "烹饪",
     "coding": "编码",
-    "uploadAImages": "上传图片或视频",
     "description": "描述",
     "openADispute": "发起争议",
     "reason": "原因",
     "sendTo": "发送到",
     "estimatedPayment": "预计付款：",
-    "value": "价值",
     "withdrawCard": "提款到银行卡",
     "notice": "重要通知",
     "noticeDesc": "为了您的安全，WorkQuest 团队希望您不在 WorkQuest 平台之外进行任何通信或联系。平台外的任何联系或对话都可能导致争议情况无法解决。",
-    "welcomeToWorkQuest": "欢迎来到 WorkQuest",
-    "pleaseTellUsAboutSkills": "请在下方告诉我们您的技能。这将提高您在平台上的排名，并使其他用户更容易找到您的帐户。",
     "amount": "金额",
     "messageSend": "已发送消息",
     "questAgreed": "已同意 Quest",
@@ -1208,7 +1135,6 @@
     "workers": "工作者",
     "profile": {
       "myProfile": "我的个人资料",
-      "instruments": "工具",
       "DeFi": "DeFi 功能",
       "logout": "退出"
     },
@@ -1231,7 +1157,6 @@
     },
     "menu": {
       "unauthorized": "Not logged",
-      "instruments": "Instruments",
       "crosschain": {
         "title": "WorkQuest Bridge",
         "desc": "Secure and fast way to bring cross-chain assets between WorkNet, Ethereum and Binance Smart Chain."
@@ -1427,12 +1352,6 @@
     "filterAllEmployeeProfiles": "筛选所有雇员个人资料",
     "website": "输入您的公司网站",
     "changeRole": "更改角色",
-    "instruments": "工具",
-    "pensionProgram": "养老金计划",
-    "referralProgram": "推荐计划",
-    "p2pInsurance": "P2P 保险",
-    "savingProduct": "储蓄产品",
-    "liquidityMining": "流动性挖掘",
     "distantWork": {
       "title": "Workplace",
       "select": "Select distant work",
@@ -1602,16 +1521,13 @@
     "ans4": "在赎回日期，您将看到提交给订阅的初始代币和您的 WorkQuest 帐户“余额”中的应计利息。此过程自动进行。",
     "ans5": "平均年回报率 (APR) 是以过去 7 天的平均每日利率乘以 365。",
     "ans6": "是。产品利率均提供保证。",
-    "smallPlug": "??",
     "possiblePlug": "可能",
     "yearPlug": "1 年",
     "depositModalBody": "您的加密货币将锁定特定期限，您将开始赚取利息。",
-    "depositIsOpened": "已确认转账",
     "withdrawText": "The amount of locked funds and the accumulated interest will be credited to your wallet"
   },
   "mining": {
     "loading": "loading...",
-    "liquidityMining": "流动性挖掘",
     "swapTokens": {
       "title": "Swap tokens",
       "swap": "Swap",
@@ -1950,7 +1866,6 @@
       "P2P": "P2P insurance",
       "savingsProduct": "Savings product",
       "lending": "Lending",
-      "liquidityMining": "Liquidity mining",
       "wqBridge": "WorkQuest bridge",
       "staking": "WorkQuest Staking",
       "wqDAO": "WorkQuest DAO"
@@ -1988,7 +1903,7 @@
             "subtitle": "Your WorkQuest wallet, where WQT token and WUSD stablecoin transactions are available. It can also be used to work with platform instruments."
           },
           "instruments": {
-            "title": "Instruments",
+            "title": "工具",
             "subtitle": "DeFi functionality that includes referral program, 2P2 insurance, retirement savings, savings product, liquidity mining, and landing."
           },
           "language": {
@@ -2032,7 +1947,7 @@
         }
       },
       "instruments": {
-        "title": "Instruments",
+        "title": "工具",
         "cards": {
           "retirement": {
             "title": "Retirement program",

@@ -6,6 +6,7 @@
       "shortTerm": "В ближайщем будущем",
       "urgent": "Срочный"
     },
+    "liquidityMining": "Liquidity mining",
     "claimRewards": "Claim rewards",
     "percent": "Percent",
     "buy": "Buy",
@@ -160,7 +161,6 @@
     "acceptCompletedWorkOnQuest": "Принять выполненную работу по квесту",
     "closeQuest": "Закрыть квест",
     "goToChat": "Перейти в чат",
-    "responded": "Respond send",
     "view": "View"
   },
   "distance": {
@@ -211,11 +211,8 @@
   },
   "placeholders": {
     "default": "Placeholder",
-    "firstName": "John",
-    "lastName": "Doe",
     "mail": "your@mail.com",
-    "email": "Email address",
-    "password": "•••••••"
+    "email": "Email address"
   },
   "about": {
     "text": "Work Quest — это социальный проект на основе технологии блокчейн для поиска работы и решения любых задач со стороны работодателя в режиме квеста. Вы ищете работу? Work Quest поможет найти квест рядом с вами и вашим городом. Нужны ли вам рабочие для выполнения целей? Просто создайте квест на сайте Work Quest. Сервис берет на себя гарантийные обязательства по выполнению квестов. Средства работодателя хранятся у нас, если работник дает подтверждение о выполнении работы, он получает задаток денежных средств на свой счет. Система рейтингов, обзоров и список выполненных квестов помогут легко найти честных людей и лучших специалистов.\n Наша цель – упростить коммуникацию между работодателем и работником, помочь трудоустроить миллионы людей, улучшить их материальное положение, решить проблему поиска надежных профессионалов во всех отраслях, создать прогрессивную цифровую экономику, построенную на принципах доверия, взаимного уважения и благополучия всех его участников."
@@ -234,13 +231,7 @@
     "proposalStatus": "Proposal status",
     "urgently": "URGENTLY",
     "details": "Посмотреть подробности",
-    "available": "Available",
-    "viewProfile": "Посмотреть \nпрофиль",
-    "invite": "INVITE QUESTOR",
-    "slogan": "Create work proposal",
     "add": "Add all the information and publication time  to find the right",
-    "create": "Создать",
-    "writeAMessage": "Написать сообщение",
     "common": "Общая информация",
     "sidebar": {
       "filter": "All Quests filter",
@@ -257,12 +248,8 @@
     "remember": "Запомни меня",
     "or": "Или",
     "loginWith": "Зайдити в учетную запись, используя",
-    "welcomeToWorkQuest": "Добро пожаловать в WorkQuest",
-    "pleaseSignIn": "Пожалуйста, войдите",
     "workQuest": "WorkQuest",
-    "makingMoneyIsFast": "WorkQuest:\n Мировой\n Децентрализованный\n Рынок труда",
-    "dontHaveAnAccount": "Нет аккаунта?",
-    "forgotYourPass": "Забыли ваш пароль?"
+    "makingMoneyIsFast": "WorkQuest:\n Мировой\n Децентрализованный\n Рынок труда"
   },
   "signWorkQuest": {
     "title": "Социальная сеть WorkQuest",
@@ -281,7 +268,6 @@
     "auth": "Авторизация",
     "email": "Email",
     "password": "Пароль",
-    "totp": "TOTP",
     "confirmPassword": "Repeat password",
     "create": "Создать аккаунт"
   },
@@ -309,7 +295,6 @@
   "role": {
     "employer": "Работодатель",
     "worker": "Работник",
-    "enter": "Enter",
     "choose": "Выберите вашу роль",
     "employerWant": "Я хочу поставить задачи и найти работников",
     "workerWant": "Я хочу искать задачи и работать на фрилансе",
@@ -330,9 +315,6 @@
     }
   },
   "quests": {
-    "companyNotListed": "Компания не указана",
-    "workersNotInvited": "Работники не приглашены!",
-    "startChat": "Начать беседу",
     "invite": "Пригласить",
     "decline": "Отклонить",
     "questTitle": "Заголовок квеста",
@@ -345,15 +327,7 @@
     "workOnQuestRejected": "Work on quest rejected!",
     "pleaseWaitEmp": "Work on quest completed! Please, wait your employer!",
     "publicationDate": "Дата публикации",
-    "specQuests": "Specialized quests",
-    "permanentJob": "Permanent job",
-    "partTime": "Part-time",
-    "contract": "Contract",
-    "remoteWork": "Удаленная работа",
     "allVariants": "All variants",
-    "employer": {
-      "usersNotResponded": "Users have not yet responded to the quest"
-    },
     "levels": {
       "1": {
         "title": "Gold Plus Package",
@@ -397,15 +371,8 @@
       "fixedTerm": "Установленный срок"
     },
     "runtime": "Runtime",
-    "spec": {
-      "spec": "Специализация",
-      "addSpec": "Добавить специализацию"
-    },
-    "acceptedTheInvitation": "Принял приглашение",
-    "declinedTheInvitation": "Отклонил приглашение",
     "active": "Active",
     "requested": "Requested",
-    "youInvited": "Вы приглашены",
     "inProgressBy": "В процессе:",
     "finishedBy": "Завершил:",
     "readCompletely": "Читать полностью",
@@ -414,49 +381,23 @@
     "waitWorker": "Ожидает работника",
     "pendingConsideration": "Ожидает рассмотрения",
     "questClosed": "Квест закрыт",
-    "questFinished": "Квест завершен",
     "dontHaveSpec": "Doesn`t have specializations...",
     "namelessWorker": "Nameless worker",
     "nothingAboutMe": "Nothing about me...",
     "unknownAddress": "Unknown address...",
-    "unknownPhoneNumber": "Unknown phone number...",
-    "unknownEmailAddress": "Unknown email address..",
     "questActive": "Quest Active:",
     "questDispute": "Quest Dispute:",
     "questWaitConfirm": "Quest wait confirm:",
-    "skillsNotSpecified": "Skills not specified...",
-    "proposal": "Предложение",
-    "category": "Выберите категорию",
     "address": "Добавить адрес",
     "uploadMaterials": "Загрузить материалы квеста",
-    "ads": {
-      "promoteYourQuest": "Promote your quest",
-      "publishForFree": "Опубликовать бесплатно",
-      "boostYourPublications": "Boost your publication",
-      "costPerClick": "Цена за клик"
-    },
-    "selectLocation": "Выберите место",
-    "city": "Город",
-    "period": "Период времени",
-    "EstimatedPayment": "Estimated payment:",
     "editAQuest": "Редактировать квест",
     "completedQuests": "Завершенные квесты",
     "oneTime": "One time",
-    "fullTime": "Full time",
-    "uploadAImagesOrVideos": "Загрузить изображения или видео",
     "averageRating": "Средний рейтинг",
-    "showAllActiveQuests": "Показать все активные квесты",
-    "performanceTimer": "Active until:",
     "otherQuestsSpec": "Other quests for the specialization",
     "questMaterials": "Материалы квеста",
-    "searchResults": "Результаты поиска",
     "time": "Время добавления",
-    "priority": {
-      "title": "Приоритет",
-      "low": "Низкий",
-      "normal": "Нормальный",
-      "urgent": "Срочный"
-    },
+    "priority": "Приоритет",
     "ui": {
       "showMap": "Показать карту",
       "searchOnQuestsPage": "Работодатель / Название / Описание / Город",
@@ -464,7 +405,6 @@
       "searchWithMap": "Город / Улица / Место"
     },
     "worker": "Работник",
-    "deleteQuest": "Удалить квест",
     "startQuest": "Начать квест"
   },
   "filters": {
@@ -933,16 +873,13 @@
       "errorSmsVer": "Error SMS verification",
       "emptyOpenQuests": "You don't have open quests, please create",
       "error": "Ошибка",
-      "connect": "Ошибка подключения",
       "youCan’tDeleteActiveQuest": "Вы не можете удалить активный квест",
       "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
     },
     "chatCreate": {
       "desc": "Create name of group chat and choose people from your chat list",
       "chatName": "Chat name",
-      "members": "Members list",
-      "addNewMembers": "Add new members",
-      "addMember": "Add member"
+      "addNewMembers": "Add new members"
     },
     "disputes": {
       "thereIsNoResponseFromTheEmployerOrEmployee": "There is no response from the employer / employee",
@@ -984,11 +921,9 @@
     "conversionPercentDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "fillNumber": "Please fill phone number in settings page...",
     "textLengthExceeded": "You can only write {count} characters",
-    "chooseTheme": "Choose theme",
     "incorrectAmount": "Incorrect amount, your wallet does not have enough funds",
     "nothingToClaim": "Nothing to claim",
     "pleaseWait": "Please, wait",
-    "yourRewardBalance": "Your reward balance:",
     "deletePortfolio": "Are you sure delete portfolio?",
     "addTitle": "Please add title...",
     "addDesc": "Please add description...",
@@ -1002,9 +937,7 @@
     "sureLeaveChatText": "Do you really want to leave this chat?",
     "enterPriceRange": "Enter price range",
     "changePercentDesc": "A percentage of the quest amount that will be automatically credited to your retirement account",
-    "yourSkillsHaveBeenAdded": "Your skills have been successfully added.",
     "yourAccountVerified": "Your account has been successfully verified",
-    "youCanUpdateThisInYourProfile": "You can easily update this in your profile.",
     "yourLevelHasBeenRaised": "Your level has been raised",
     "payment": "Payment",
     "cardHolder": "Cardholder name",
@@ -1037,25 +970,19 @@
     "newPassword": "New password",
     "confirmNewPassword": "Confirm new password ",
     "title": "Title",
-    "badService": "Bad service",
-    "otherReason": "Other Reason",
     "reviewOnEmployer": "Review on employer",
     "paintingWork": "Painting work",
     "art": "Art",
     "cooking": "Cooking",
     "coding": "Coding",
-    "uploadAImages": "Upload a images or videos",
     "description": "Description",
     "openADispute": "Open a dispute",
     "reason": "Reason",
     "sendTo": "Send To",
     "estimatedPayment": "Estimated payment:",
-    "value": "Value",
     "withdrawCard": "Withdraw to bank card",
     "notice": "Important notice",
     "noticeDesc": "For your safety, the WorkQuest team asks you not to make any correspondence or contacts outside of the WorkQuest platform. Any contacts or conversation outside the platform can lead to failure in resolving controversial situations.",
-    "welcomeToWorkQuest": "Welcome to the WorkQuest",
-    "pleaseTellUsAboutSkills": "Please, tell us about your skills below. This will increase your ranking on the platform and make it easier for other users to find your account.",
     "amount": "Amount",
     "messageSend": "Message Send",
     "questAgreed": "Quest Agreed",
@@ -1207,7 +1134,6 @@
     "workers": "Workers",
     "profile": {
       "myProfile": "My profile",
-      "instruments": "Instruments",
       "DeFi": "DeFi functionality",
       "logout": "Logout"
     },
@@ -1230,7 +1156,6 @@
     },
     "menu": {
       "unauthorized": "Not logged",
-      "instruments": "Instruments",
       "crosschain": {
         "title": "WorkQuest Bridge",
         "desc": "Secure and fast way to bring cross-chain assets between WorkNet, Ethereum and Binance Smart Chain."
@@ -1425,12 +1350,6 @@
     "filterAllEmployeeProfiles": "Filter all employee profiles",
     "website": "Enter your company website",
     "changeRole": "Change role",
-    "instruments": "Instruments",
-    "pensionProgram": "Pension program",
-    "referralProgram": "Referral program",
-    "p2pInsurance": "P2P insurance",
-    "savingProduct": "Savings product",
-    "liquidityMining": "Liquidity mining",
     "distantWork": {
       "title": "Workplace",
       "select": "Select distant work",
@@ -1600,16 +1519,13 @@
     "ans4": "On the redemption date, you will see both the initial tokens committed to the subscription and the interest accrued in your WorkQuest account ‘balances’. This process will be automatic.",
     "ans5": "The average annual return (APR) uses the average daily interest rate from the past 7 days, multiplied by 365.",
     "ans6": "Yes. The interest rate on each product is guaranteed.",
-    "smallPlug": "??",
     "possiblePlug": "Possible",
     "yearPlug": "1 year",
     "depositModalBody": "Your crypto will lock for a specific period, and you will begin earning interest.",
-    "depositIsOpened": "Transfer confirmed",
     "withdrawText": "The amount of locked funds and the accumulated interest will be credited to your wallet"
   },
   "mining": {
     "loading": "loading...",
-    "liquidityMining": "Liquidity mining",
     "swapTokens": {
       "title": "Swap tokens",
       "swap": "Swap",
@@ -1948,7 +1864,6 @@
       "P2P": "P2P insurance",
       "savingsProduct": "Savings product",
       "lending": "Lending",
-      "liquidityMining": "Liquidity mining",
       "wqBridge": "WorkQuest bridge",
       "staking": "WorkQuest Staking",
       "wqDAO": "WorkQuest DAO"

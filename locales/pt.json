@@ -6,6 +6,7 @@
       "shortTerm": "Curto prazo",
       "urgent": "Urgente"
     },
+    "liquidityMining": "Mineração de liquidez",
     "claimRewards": "Claim rewards",
     "percent": "Percentagem",
     "buy": "Comprar",
@@ -160,7 +161,6 @@
     "acceptCompletedWorkOnQuest": "Accept completed work on quest",
     "closeQuest": "Close quest",
     "goToChat": "Ir para o chat",
-    "responded": "Enviar resposta",
     "view": "Visualizar"
   },
   "distance": {
@@ -211,11 +211,8 @@
   },
   "placeholders": {
     "default": "Marcador de posição de texto",
-    "firstName": "John",
-    "lastName": "Doe",
     "mail": "your@mail.com",
-    "email": "Endereço de e-mail",
-    "password": "•••••••"
+    "email": "Endereço de e-mail"
   },
   "about": {
     "text": "O WorkQuest é um projecto social baseado na tecnologia blockchain para encontrar trabalho e resolver quaisquer tarefas do lado do empregador em modo de busca. Está à procura de um emprego? Uma Busca de trabalho ajudá-lo-á a encontrar algo próximo da sua cidade. Precisa de trabalhadores para realizar os seus objetivos? Basta criar uma busca no site da busca de trabalho. O serviço assume as obrigações de garantia para a realização de missões. Os fundos do empregador são mantidos connosco, se o empregado der uma confirmação do desempenho do trabalho, recebe um depósito de fundos na sua conta. O sistema de avaliações, revisões e uma lista de missões completadas ajudará a encontrar facilmente pessoas honestas e os melhores especialistas.\n\n          O nosso objetivo é simplificar a comunicação entre o empregador e o empregado, ajudar a empregar milhões de pessoas, melhorar a sua situação financeira, resolver o problema de encontrar profissionais fiáveis em todos os setores para criar uma economia digital progressiva construída sobre os princípios da confiança, do respeito mútuo e do bem-estar de todos os seus participantes."
@@ -234,13 +231,7 @@
     "proposalStatus": "Status da proposta",
     "urgently": "URGENTEMENTE",
     "details": "Ver detalhes",
-    "available": "Disponível",
-    "viewProfile": "Ver \nperfil",
-    "invite": "CONVIDAR QUESTOR",
-    "slogan": "Criar proposta de trabalho",
     "add": "Adicione todas as informações e o prazo de publicação para encontrar o correto",
-    "create": "Criar",
-    "writeAMessage": "Escreva uma mensagem",
     "common": "Common info",
     "sidebar": {
       "filter": "Filtro de todas as Buscas",
@@ -257,12 +248,8 @@
     "remember": "Lembrar-me",
     "or": "Ou",
     "loginWith": "Iniciar sessão com",
-    "welcomeToWorkQuest": "Bem-vindo ao WorkQuest",
-    "pleaseSignIn": "Inicie sessão",
     "workQuest": "WorkQuest",
-    "makingMoneyIsFast": "WorkQuest:\n Mercado de Trabalho\n Mundial\n Descentralizado",
-    "dontHaveAnAccount": "Não tem conta?",
-    "forgotYourPass": "Esqueceu-se da palavra-passe?"
+    "makingMoneyIsFast": "WorkQuest:\n Mercado de Trabalho\n Mundial\n Descentralizado"
   },
   "signWorkQuest": {
     "title": "Rede social WorkQuest",
@@ -281,7 +268,6 @@
     "auth": "Autorização",
     "email": "E-mail",
     "password": "Palavra-passe",
-    "totp": "TOTP",
     "confirmPassword": "Repetir palavra-passe",
     "create": "Criar conta"
   },
@@ -309,7 +295,6 @@
   "role": {
     "employer": "Empregador",
     "worker": "Empregado",
-    "enter": "Entrar",
     "choose": "Escolha a sua função",
     "employerWant": "Pretendo desempenhar uma tarefa e estou à procura de trabalhadores",
     "workerWant": "Pretendo procurar tarefas e trabalhar como freelancer",
@@ -330,9 +315,6 @@
     }
   },
   "quests": {
-    "companyNotListed": "Company not listed",
-    "workersNotInvited": "Workers not invited!",
-    "startChat": "Start chat",
     "invite": "Invite",
     "decline": "Decline",
     "questTitle": "Quest title",
@@ -345,15 +327,7 @@
     "workOnQuestRejected": "Work on quest rejected!",
     "pleaseWaitEmp": "Work on quest completed! Please, wait your employer!",
     "publicationDate": "Publication date",
-    "specQuests": "Specialized quests",
-    "permanentJob": "Permanent job",
-    "partTime": "Part-time",
-    "contract": "Contract",
-    "remoteWork": "Remote work",
     "allVariants": "All variants",
-    "employer": {
-      "usersNotResponded": "Users have not yet responded to the quest"
-    },
     "levels": {
       "1": {
         "title": "Gold Plus Package",
@@ -397,15 +371,8 @@
       "fixedTerm": "Fixed term"
     },
     "runtime": "Runtime",
-    "spec": {
-      "spec": "Specialization",
-      "addSpec": "Add specialization"
-    },
-    "acceptedTheInvitation": "Accepted the invitation",
-    "declinedTheInvitation": "Declined the invitation",
     "active": "Ativo",
     "requested": "Solicitado",
-    "youInvited": "Você Convidou",
     "inProgressBy": "Em andamento por:",
     "finishedBy": "Finished by:",
     "readCompletely": "Leia completamente",
@@ -414,49 +381,23 @@
     "waitWorker": "Wait worker",
     "pendingConsideration": "Pending consideration",
     "questClosed": "Quest Closed",
-    "questFinished": "Quest Completed",
     "dontHaveSpec": "Doesn`t have specializations...",
     "namelessWorker": "Nameless worker",
     "nothingAboutMe": "Nothing about me...",
     "unknownAddress": "Unknown address...",
-    "unknownPhoneNumber": "Unknown phone number...",
-    "unknownEmailAddress": "Unknown email address..",
     "questActive": "Quest Active:",
     "questDispute": "Quest Dispute:",
     "questWaitConfirm": "Quest wait confirm:",
-    "skillsNotSpecified": "Skills not specified...",
-    "proposal": "Proposta",
-    "category": "Selecione uma categoria",
     "address": "Adicionar endereço",
     "uploadMaterials": "Faça upload de materiais para descrever melhor a busca",
-    "ads": {
-      "promoteYourQuest": "Promova a sua Busca",
-      "publishForFree": "Publique grátis",
-      "boostYourPublications": "Impulsione a sua publicação",
-      "costPerClick": "Custo por clique"
-    },
-    "selectLocation": "Selecione a localização",
-    "city": "Cidade",
-    "period": "Período de tempo",
-    "EstimatedPayment": "Pagamento estimado:",
     "editAQuest": "Edit a quest",
     "completedQuests": "Buscas concluídas",
     "oneTime": "Uma vez",
-    "fullTime": "Tempo total",
-    "uploadAImagesOrVideos": "Carregar imagens ou vídeos",
     "averageRating": "Classificação média",
-    "showAllActiveQuests": "Mostrar todas as buscas ativas",
-    "performanceTimer": "Ativo até:",
     "otherQuestsSpec": "Other quests for the specialization",
     "questMaterials": "Materiais busca adicionais",
-    "searchResults": "Resultados da pesquisa",
     "time": "Tempo adicionado",
-    "priority": {
-      "title": "Priority",
-      "low": "Baixa",
-      "normal": "Normal",
-      "urgent": "Urgente"
-    },
+    "priority": "Priority",
     "ui": {
       "showMap": "Mostrar mapa",
       "searchOnQuestsPage": "Employer / Title / Description / City",
@@ -464,7 +405,6 @@
       "searchWithMap": "Cidade / Rua / Lugar"
     },
     "worker": "Trabalhador",
-    "deleteQuest": "Eliminar busca",
     "startQuest": "Começar busca"
   },
   "filters": {
@@ -933,16 +873,13 @@
       "emptyOpenQuests": "You don't have open quests, please create",
       "error": "Error",
       "errorSmsVer": "Error SMS verification",
-      "connect": "Error connection",
       "youCan’tDeleteActiveQuest": "You can’t delete active quest",
       "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
     },
     "chatCreate": {
       "desc": "Crie o nome de chat de grupo e escolha pessoas da sua lista de chat",
       "chatName": "Nome do chat",
-      "members": "Members list",
-      "addNewMembers": "Add new members",
-      "addMember": "Add member"
+      "addNewMembers": "Add new members"
     },
     "disputes": {
       "thereIsNoResponseFromTheEmployerOrEmployee": "There is no response from the employer / employee",
@@ -984,11 +921,9 @@
     "conversionPercentDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "fillNumber": "Please fill phone number in settings page...",
     "textLengthExceeded": "You can only write {count} characters",
-    "chooseTheme": "Choose theme",
     "incorrectAmount": "Incorrect amount, your wallet does not have enough funds",
     "nothingToClaim": "Nothing to claim",
     "pleaseWait": "Please, wait",
-    "yourRewardBalance": "Your reward balance:",
     "deletePortfolio": "Are you sure delete portfolio?",
     "addTitle": "Please add title...",
     "addDesc": "Please add description...",
@@ -1002,9 +937,7 @@
     "sureLeaveChatText": "Do you really want to leave this chat?",
     "enterPriceRange": "Enter price range",
     "changePercentDesc": "Uma percentagem do montante da busca que será automaticamente creditada na sua conta de reforma",
-    "yourSkillsHaveBeenAdded": "As suas competências foram acrescentadas com sucesso.",
     "yourAccountVerified": "A sua conta foi verificada com sucesso",
-    "youCanUpdateThisInYourProfile": "Pode facilmente actualizar esta informação no seu perfil.",
     "yourLevelHasBeenRaised": "O seu nível foi elevado",
     "payment": "Pagamento",
     "cardHolder": "Nome do titular do cartão",
@@ -1037,25 +970,19 @@
     "newPassword": "Nova palavra-passe",
     "confirmNewPassword": "Confirmar nova palavra-passe ",
     "title": "Título",
-    "badService": "Mau serviço",
-    "otherReason": "Outro motivo",
     "reviewOnEmployer": "Avaliação do empregador",
     "paintingWork": "Trabalho de pintura",
     "art": "Arte",
     "cooking": "Culinária",
     "coding": "Codificação",
-    "uploadAImages": "Carregar imagens ou vídeos",
     "description": "Descrição",
     "openADispute": "Abrir disputa",
     "reason": "Motivo",
     "sendTo": "Enviar para",
     "estimatedPayment": "Pagamento estimado:",
-    "value": "Valor",
     "withdrawCard": "Levantar para cartão bancário",
     "notice": "Aviso importante",
     "noticeDesc": "Para sua segurança, a equipa WorkQuest pede-lhe que não faça qualquer correspondência ou contactos fora da plataforma WorkQuest. Qualquer contacto ou conversa fora da plataforma pode levar ao fracasso na resolução de situações controversas.",
-    "welcomeToWorkQuest": "Bem-vindo ao WorkQuest",
-    "pleaseTellUsAboutSkills": "Fale-nos, por favor, das suas competências abaixo. Isso aumentará a sua classificação na plataforma e tornará mais fácil para os outros utilizadores encontrar a sua conta.",
     "amount": "Montante",
     "messageSend": "Mensagem enviada",
     "questAgreed": "Busca Acordada",
@@ -1207,7 +1134,6 @@
     "workers": "Trabalhadores",
     "profile": {
       "myProfile": "O meu perfil",
-      "instruments": "Instrumentos",
       "DeFi": "Funcionalidade DeFi",
       "logout": "Terminar sessão"
     },
@@ -1230,7 +1156,6 @@
     },
     "menu": {
       "unauthorized": "Not logged",
-      "instruments": "Instruments",
       "crosschain": {
         "title": "WorkQuest Bridge",
         "desc": "Secure and fast way to bring cross-chain assets between WorkNet, Ethereum and Binance Smart Chain."
@@ -1425,12 +1350,6 @@
     "filterAllEmployeeProfiles": "Filtrar todos os perfis de funcionários",
     "website": "Introduza o site da sua empresa",
     "changeRole": "Mudar função",
-    "instruments": "Instrumentos",
-    "pensionProgram": "Programa de pensões",
-    "referralProgram": "Programa de referência",
-    "p2pInsurance": "Seguro P2P",
-    "savingProduct": "Produto de poupança",
-    "liquidityMining": "Mineração de liquidez",
     "distantWork": {
       "title": "Workplace",
       "select": "Select distant work",
@@ -1600,16 +1519,13 @@
     "ans4": "Na data do resgate, verá tanto os tokens iniciais atribuídos à subscrição como os juros acumulados na sua conta WorkQuest 'saldos'. Este processo será automático.",
     "ans5": "O retorno médio anual (TAEG) utiliza a taxa de juro média diária dos últimos 7 dias, multiplicada por 365.",
     "ans6": "Sim. A taxa de juro sobre cada produto é garantida.",
-    "smallPlug": "??",
     "possiblePlug": "Possível",
     "yearPlug": "1 ano",
     "depositModalBody": "A sua cripto fechará por um período específico, e começará a ganhar juros.",
-    "depositIsOpened": "Transferência confirmada",
     "withdrawText": "The amount of locked funds and the accumulated interest will be credited to your wallet"
   },
   "mining": {
     "loading": "loading...",
-    "liquidityMining": "Mineração de liquidez",
     "swapTokens": {
       "title": "Swap tokens",
       "swap": "Swap",
@@ -1948,7 +1864,6 @@
       "P2P": "P2P insurance",
       "savingsProduct": "Savings product",
       "lending": "Lending",
-      "liquidityMining": "Liquidity mining",
       "wqBridge": "WorkQuest bridge",
       "staking": "WorkQuest Staking",
       "wqDAO": "WorkQuest DAO"
@@ -1986,7 +1901,7 @@
             "subtitle": "Your WorkQuest wallet, where WQT token and WUSD stablecoin transactions are available. It can also be used to work with platform instruments."
           },
           "instruments": {
-            "title": "Instruments",
+            "title": "Instrumentos",
             "subtitle": "DeFi functionality that includes referral program, 2P2 insurance, retirement savings, savings product, liquidity mining, and landing."
           },
           "language": {
@@ -2030,7 +1945,7 @@
         }
       },
       "instruments": {
-        "title": "Instruments",
+        "title": "Instrumentos",
         "cards": {
           "retirement": {
             "title": "Retirement program",

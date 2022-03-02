@@ -6,6 +6,7 @@
       "shortTerm": "Short term",
       "urgent": "Urgent"
     },
+    "liquidityMining": "Liquidity mining",
     "claimRewards": "Claim rewards",
     "percent": "Percent",
     "buy": "Buy",
@@ -160,7 +161,6 @@
     "acceptCompletedWorkOnQuest": "Accept completed work on quest",
     "closeQuest": "Close quest",
     "goToChat": "Go to chat",
-    "responded": "Respond send",
     "view": "View"
   },
   "distance": {
@@ -211,11 +211,8 @@
   },
   "placeholders": {
     "default": "Placeholder",
-    "firstName": "John",
-    "lastName": "Doe",
     "mail": "your@mail.com",
-    "email": "Email address",
-    "password": "•••••••"
+    "email": "Email address"
   },
   "about": {
     "text": "Work Quest is a social project based on the blockchain technology for finding work and solving any tasks from the employer's side in quest mode. Are you looking for a job? A work quest will help you find a quest next to you and your city. Do you need workers to carry out the goals? Just create a quest on the site of the work quest. The service assumes the warranty obligations for performing quests. Employer funds are kept with us , if the employee gives a confirmation of the performance of work, he receives a deposit of funds on his account. The system of ratings, reviews and a list of completed quests will help to easily find honest people and the best specialists.\n\n          Our goal is to simplify the communication between the employer and the employee, to help employ millions of people, to improve their financial situation, to solve the lifelong problem of finding reliable professionals in all sectors to create a progressive digital economy built on the principles of trust, mutual respect and the well-being of all its participants."
@@ -234,13 +231,7 @@
     "proposalStatus": "Proposal status",
     "urgently": "URGENTLY",
     "details": "View details",
-    "available": "Available",
-    "viewProfile": "View \nprofile",
-    "invite": "INVITE QUESTOR",
-    "slogan": "Create work proposal",
     "add": "Add all the information and publication time  to find the right",
-    "create": "Create",
-    "writeAMessage": "Write a message",
     "common": "Common info",
     "sidebar": {
       "filter": "All Quests filter",
@@ -257,12 +248,8 @@
     "remember": "Remember me",
     "or": "Or",
     "loginWith": "Login with",
-    "welcomeToWorkQuest": "Welcome to WorkQuest",
-    "pleaseSignIn": "Please sign in",
     "workQuest": "WorkQuest",
-    "makingMoneyIsFast": "WorkQuest:\n The World's\n Decentralized\n Job Market",
-    "dontHaveAnAccount": "Don’t have an account?",
-    "forgotYourPass": "Forgot your password?"
+    "makingMoneyIsFast": "WorkQuest:\n The World's\n Decentralized\n Job Market"
   },
   "signWorkQuest": {
     "title": "WorkQuest social network",
@@ -281,7 +268,6 @@
     "auth": "Authorization",
     "email": "Email",
     "password": "Password",
-    "totp": "TOTP",
     "confirmPassword": "Repeat password",
     "create": "Create account"
   },
@@ -309,7 +295,6 @@
   "role": {
     "employer": "Employer",
     "worker": "Employee",
-    "enter": "Enter",
     "choose": "Choose your role",
     "employerWant": "I want to make a tasks and looking for a workers",
     "workerWant": "I want to search a tasks and working on freelance",
@@ -330,9 +315,6 @@
     }
   },
   "quests": {
-    "companyNotListed": "Company not listed",
-    "workersNotInvited": "Workers not invited!",
-    "startChat": "Start chat",
     "invite": "Invite",
     "decline": "Decline",
     "questTitle": "Quest title",
@@ -345,15 +327,7 @@
     "workOnQuestRejected": "Work on quest rejected!",
     "pleaseWaitEmp": "Work on quest completed! Please, wait your employer!",
     "publicationDate": "Publication date",
-    "specQuests": "Specialized quests",
-    "permanentJob": "Permanent job",
-    "partTime": "Part-time",
-    "contract": "Contract",
-    "remoteWork": "Remote work",
     "allVariants": "All variants",
-    "employer": {
-      "usersNotResponded": "Users have not yet responded to the quest"
-    },
     "levels": {
       "1": {
         "title": "Gold Plus Package",
@@ -397,15 +371,8 @@
       "fixedTerm": "Fixed term"
     },
     "runtime": "Runtime",
-    "spec": {
-      "spec": "Specialization",
-      "addSpec": "Add specialization"
-    },
-    "acceptedTheInvitation": "Accepted the invitation",
-    "declinedTheInvitation": "Declined the invitation",
     "active": "Active",
     "requested": "Requested",
-    "youInvited": "You Invited",
     "inProgressBy": "In progress by:",
     "finishedBy": "Finished by:",
     "readCompletely": "Read completely",
@@ -414,49 +381,23 @@
     "waitWorker": "Wait worker",
     "pendingConsideration": "Pending consideration",
     "questClosed": "Quest Closed",
-    "questFinished": "Quest Completed",
     "dontHaveSpec": "Doesn`t have specializations...",
     "namelessWorker": "Nameless worker",
     "nothingAboutMe": "Nothing about me...",
     "unknownAddress": "Unknown address...",
-    "unknownPhoneNumber": "Unknown phone number...",
-    "unknownEmailAddress": "Unknown email address..",
     "questActive": "Quest Active:",
     "questDispute": "Quest Dispute:",
     "questWaitConfirm": "Quest wait confirm:",
-    "skillsNotSpecified": "Skills not specified...",
-    "proposal": "Proposal",
-    "category": "Select a category",
     "address": "Add address",
     "uploadMaterials": "Upload quest materials",
-    "ads": {
-      "promoteYourQuest": "Promote your quest",
-      "publishForFree": "Publish for free",
-      "boostYourPublications": "Boost your publication",
-      "costPerClick": "Cost per click"
-    },
-    "selectLocation": "Select location",
-    "city": "City",
-    "period": "Period of time",
-    "EstimatedPayment": "Estimated payment:",
     "editAQuest": "Edit a quest",
     "completedQuests": "Completed quests",
     "oneTime": "One time",
-    "fullTime": "Full time",
-    "uploadAImagesOrVideos": "Upload a images or videos",
     "averageRating": "Average rating",
-    "showAllActiveQuests": "Show all active quests",
-    "performanceTimer": "Active until:",
     "otherQuestsSpec": "Other quests for the specialization",
     "questMaterials": "Quest materials",
-    "searchResults": "Search results",
     "time": "Added time",
-    "priority": {
-      "title": "Priority",
-      "low": "Low",
-      "normal": "Normal",
-      "urgent": "Urgent"
-    },
+    "priority": "Priority",
     "ui": {
       "showMap": "Show map",
       "searchOnQuestsPage": "Employer / Title / Description / City",
@@ -464,7 +405,6 @@
       "searchWithMap": "City / Street / Place"
     },
     "worker": "Worker",
-    "deleteQuest": "Delete quest",
     "startQuest": "Start quest"
   },
   "filters": {
@@ -933,16 +873,13 @@
       "emptyOpenQuests": "You don't have open quests, please create",
       "errorSmsVer": "Error SMS verification",
       "error": "Error",
-      "connect": "Error connection",
       "youCan’tDeleteActiveQuest": "You can’t delete active quest",
       "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
     },
     "chatCreate": {
       "desc": "Create name of group chat and choose people from your chat list",
       "chatName": "Chat name",
-      "members": "Members list",
-      "addNewMembers": "Add new members",
-      "addMember": "Add member"
+      "addNewMembers": "Add new members"
     },
     "disputes": {
       "thereIsNoResponseFromTheEmployerOrEmployee": "There is no response from the employer / employee",
@@ -986,11 +923,9 @@
     "conversionPercentDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "fillNumber": "Please fill phone number in settings page...",
     "textLengthExceeded": "You can only write {count} characters",
-    "chooseTheme": "Choose theme",
     "incorrectAmount": "Incorrect amount, your wallet does not have enough funds",
     "nothingToClaim": "Nothing to claim",
     "pleaseWait": "Please, wait",
-    "yourRewardBalance": "Your reward balance:",
     "deletePortfolio": "Are you sure delete portfolio?",
     "addTitle": "Please add title...",
     "addDesc": "Please add description...",
@@ -1004,9 +939,7 @@
     "sureLeaveChatText": "Do you really want to leave this chat?",
     "enterPriceRange": "Enter price range",
     "changePercentDesc": "A percentage of the quest amount that will be automatically credited to your retirement account",
-    "yourSkillsHaveBeenAdded": "Your skills have been successfully added.",
     "yourAccountVerified": "Your account has been successfully verified",
-    "youCanUpdateThisInYourProfile": "You can easily update this in your profile.",
     "yourLevelHasBeenRaised": "Your level has been raised",
     "payment": "Payment",
     "cardHolder": "Cardholder name",
@@ -1039,14 +972,11 @@
     "newPassword": "New password",
     "confirmNewPassword": "Confirm new password ",
     "title": "Title",
-    "badService": "Bad service",
-    "otherReason": "Other Reason",
     "reviewOnEmployer": "Review on employer",
     "paintingWork": "Painting work",
     "art": "Art",
     "cooking": "Cooking",
     "coding": "Coding",
-    "uploadAImages": "Upload a images or videos",
     "description": "Description",
     "openADispute": "Open a dispute",
     "reason": "Reason",
@@ -1056,8 +986,6 @@
     "withdrawCard": "Withdraw to bank card",
     "notice": "Important notice",
     "noticeDesc": "For your safety, the WorkQuest team asks you not to make any correspondence or contacts outside of the WorkQuest platform. Any contacts or conversation outside the platform can lead to failure in resolving controversial situations.",
-    "welcomeToWorkQuest": "Welcome to the WorkQuest",
-    "pleaseTellUsAboutSkills": "Please, tell us about your skills below. This will increase your ranking on the platform and make it easier for other users to find your account.",
     "amount": "Amount",
     "messageSend": "Message Send",
     "questAgreed": "Quest Agreed",
@@ -1209,7 +1137,6 @@
     "workers": "Workers",
     "profile": {
       "myProfile": "My profile",
-      "instruments": "Instruments",
       "DeFi": "DeFi functionality",
       "logout": "Logout"
     },
@@ -1232,7 +1159,6 @@
     },
     "menu": {
       "unauthorized": "Not logged",
-      "instruments": "Instruments",
       "crosschain": {
         "title": "WorkQuest Bridge",
         "desc": "Secure and fast way to bring cross-chain assets between WorkNet, Ethereum and Binance Smart Chain."
@@ -1427,12 +1353,6 @@
     "filterAllEmployeeProfiles": "Filter all employee profiles",
     "website": "Enter your company website",
     "changeRole": "Change role",
-    "instruments": "Instruments",
-    "pensionProgram": "Pension program",
-    "referralProgram": "Referral program",
-    "p2pInsurance": "P2P insurance",
-    "savingProduct": "Savings product",
-    "liquidityMining": "Liquidity mining",
     "distantWork": {
       "title": "Workplace",
       "select": "Select distant work",
@@ -1602,16 +1522,13 @@
     "ans4": "On the redemption date, you will see both the initial tokens committed to the subscription and the interest accrued in your WorkQuest account ‘balances’. This process will be automatic.",
     "ans5": "The average annual return (APR) uses the average daily interest rate from the past 7 days, multiplied by 365.",
     "ans6": "Yes. The interest rate on each product is guaranteed.",
-    "smallPlug": "??",
     "possiblePlug": "Possible",
     "yearPlug": "1 year",
     "depositModalBody": "Your crypto will lock for a specific period, and you will begin earning interest.",
-    "depositIsOpened": "Transfer confirmed",
     "withdrawText": "The amount of locked funds and the accumulated interest will be credited to your wallet"
   },
   "mining": {
     "loading": "loading...",
-    "liquidityMining": "Liquidity mining",
     "swapTokens": {
       "title": "Swap tokens",
       "swap": "Swap",
@@ -1950,7 +1867,6 @@
       "P2P": "P2P insurance",
       "savingsProduct": "Savings product",
       "lending": "Lending",
-      "liquidityMining": "Liquidity mining",
       "wqBridge": "WorkQuest bridge",
       "staking": "WorkQuest Staking",
       "wqDAO": "WorkQuest DAO"
