@@ -1130,7 +1130,7 @@
     "txInfo": "Transaction info"
   },
   "ui": {
-    "jobQuestors": "Job Questors",
+    "jobQuestors": "В поиске работы",
     "workers": "Работники",
     "profile": {
       "myProfile": "Мой профиль",
@@ -1280,13 +1280,13 @@
       "leftTheChat": "left the chat",
       "youLeftTheChat": "You left the chat"
     },
-    "leaveChat": "Leave chat",
-    "loadMore": "Load more",
-    "searchTitle": "Name/Quest/Group"
+    "leaveChat": "Покинуть беседу",
+    "loadMore": "Показать больше",
+    "searchTitle": "Имя/Квест/Группа"
   },
   "settings": {
-    "additionalPhoneNumber": "Additional phone number",
-    "mainPhoneNumber": "Main phone number",
+    "additionalPhoneNumber": "Дополнительный номер телефона",
+    "mainPhoneNumber": "Основной номер телефона",
     "workProposals": "Filter all work proposals",
     "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
@@ -1298,26 +1298,26 @@
     "websiteName":"website",
     "enterPhoneNumber": "Please enter your phone number",
     "enterCurrentLocation": "Please select current location",
-    "placeOfStudying": "Place of studying",
-    "specialization": "Specialization",
-    "selectSpec": "Select specialization",
-    "selectSkills": "Select skills",
-    "priority": "Priority",
+    "placeOfStudying": "Место учебы",
+    "specialization": "Специализация",
+    "selectSpec": "Выберите специализацию",
+    "selectSkills": "Выберите навыки",
+    "priority": "Приоритет",
     "description": "And you are beautiful",
     "imgLoaded": "Image loaded successful",
-    "workExp": "Work experience",
+    "workExp": "Опыт работы",
     "vacancy": "Vacancy",
-    "getVerification": "Complete the verification",
-    "notVerified": "Not verified",
+    "getVerification": "Завершите подтверждение профиля",
+    "notVerified": "Не подтвержден",
     "more": "More",
     "employmentInfo": "Employment information",
-    "addSpec": "Add specialization",
-    "removeSpec": "Remove specialization",
+    "addSpec": "Добавить специализацию",
+    "removeSpec": "Удалить специализацию",
     "education": {
       "educationalInstitution": "Educational institution"
     },
     "workExps": {
-      "companyName": "Company name"
+      "companyName": "Название компании"
     },
     "urgentJobOffers": "Urgent job offers",
     "shortTermJobOffers": "Short term job offers",
@@ -1846,15 +1846,15 @@
     "download": "Скачать мобильное приложение",
     "follow": "Follow Us",
     "company": {
-      "title": "Company",
+      "title": "Компания",
       "wqWiki": "WorkQuest Вики",
       "leadership": "Leadership",
-      "support": "Help & Support"
+      "support": "Помощь & Поддержка"
     },
     "legalInfo": {
       "title": "Legal Info",
       "risks": "Risks Disclaimer",
-      "privacyPolicy": "Privacy Policy",
+      "privacyPolicy": "Политика приватности",
       "cookiePolicy": "Cookie Policy"
     },
     "DeFi": {
