@@ -6,6 +6,19 @@
       "shortTerm": "Jangka pendek",
       "urgent": "Urgen"
     },
+    "stores": {
+      "googlePlay": "Google play",
+      "appleStore": "Apple store"
+    },
+    "amount": {
+      "amountOfBNB": "Amount of BNB",
+      "amountOfWQT": "Amount of WQT",
+      "amountOfETH": "Amount of ETH",
+      "amountETHPerWQT": "Amount ETH per WQT",
+      "amountBNBPerWQT": "Amount BNB per WQT"
+    },
+    "warning": "Warning",
+    "typeYourMessage": "Type your message",
     "liquidityMining": "Penambangan likuiditas",
     "claimRewards": "Claim rewards",
     "percent": "Persen",
@@ -877,9 +890,12 @@
       "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
     },
     "chatCreate": {
+      "title": "Create chat",
       "desc": "Buat nama obrolan grup dan pilih orang dari daftar obrolan Anda",
       "chatName": "Nama obrolan",
-      "addNewMembers": "Add new members"
+      "addNewMembers": "Add new members",
+      "members": "Members",
+      "addMember": "Add member"
     },
     "disputes": {
       "thereIsNoResponseFromTheEmployerOrEmployee": "There is no response from the employer / employee",

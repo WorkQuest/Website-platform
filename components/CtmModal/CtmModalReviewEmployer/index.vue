@@ -27,7 +27,7 @@
               <base-textarea
                 v-model="textArea"
                 class="content__textarea"
-                :placeholder="$t('modals.hello')"
+                :placeholder="$t('meta.typeYourMessage')"
                 rules="required|min:1|max:600"
                 name="review"
               />

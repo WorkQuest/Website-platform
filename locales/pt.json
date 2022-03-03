@@ -6,6 +6,19 @@
       "shortTerm": "Curto prazo",
       "urgent": "Urgente"
     },
+    "stores": {
+      "googlePlay": "Google play",
+      "appleStore": "Apple store"
+    },
+    "amount": {
+      "amountOfBNB": "Amount of BNB",
+      "amountOfWQT": "Amount of WQT",
+      "amountOfETH": "Amount of ETH",
+      "amountETHPerWQT": "Amount ETH per WQT",
+      "amountBNBPerWQT": "Amount BNB per WQT"
+    },
+    "warning": "Warning",
+    "typeYourMessage": "Type your message",
     "liquidityMining": "Mineração de liquidez",
     "claimRewards": "Claim rewards",
     "percent": "Percentagem",
@@ -877,9 +890,12 @@
       "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
     },
     "chatCreate": {
+      "title": "Create chat",
       "desc": "Crie o nome de chat de grupo e escolha pessoas da sua lista de chat",
       "chatName": "Nome do chat",
-      "addNewMembers": "Add new members"
+      "addNewMembers": "Add new members",
+      "members": "Members",
+      "addMember": "Add member"
     },
     "disputes": {
       "thereIsNoResponseFromTheEmployerOrEmployee": "There is no response from the employer / employee",

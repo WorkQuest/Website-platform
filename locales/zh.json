@@ -6,6 +6,19 @@
       "shortTerm": "普通",
       "urgent": "紧急"
     },
+    "stores": {
+      "googlePlay": "Google play",
+      "appleStore": "Apple store"
+    },
+    "amount": {
+      "amountOfBNB": "Amount of BNB",
+      "amountOfWQT": "Amount of WQT",
+      "amountOfETH": "Amount of ETH",
+      "amountETHPerWQT": "Amount ETH per WQT",
+      "amountBNBPerWQT": "Amount BNB per WQT"
+    },
+    "warning": "Warning",
+    "typeYourMessage": "Type your message",
     "liquidityMining": "流动性挖掘",
     "claimRewards": "Claim rewards",
     "percent": "百分比",
@@ -878,9 +891,12 @@
       "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
     },
     "chatCreate": {
+      "title": "Create chat",
       "desc": "创建群聊名称并从您的聊天列表选择人员",
       "chatName": "聊天名称",
-      "addNewMembers": "Add new members"
+      "addNewMembers": "Add new members",
+      "members": "Members",
+      "addMember": "Add member"
     },
     "disputes": {
       "thereIsNoResponseFromTheEmployerOrEmployee": "There is no response from the employer / employee",

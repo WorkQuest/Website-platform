@@ -225,12 +225,12 @@ export default {
       shopBtns: [
         {
           click: this.goToAppleStore,
-          text: this.$t('modals.appleStore'),
+          text: this.$t('meta.stores.appleStore'),
           img: require('~/assets/img/ui/apple-icon.svg'),
         },
         {
           click: this.goToGooglePlay,
-          text: this.$t('modals.googlePlay'),
+          text: this.$t('meta.stores.googlePlay'),
           img: require('~/assets/img/ui/google-play-icon.svg'),
         },
       ],

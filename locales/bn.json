@@ -6,6 +6,19 @@
       "shortTerm": "স্বল্পমেয়াদ",
       "urgent": "জরুরি"
     },
+    "stores": {
+      "googlePlay": "Google play",
+      "appleStore": "Apple store"
+    },
+    "amount": {
+      "amountOfBNB": "Amount of BNB",
+      "amountOfWQT": "Amount of WQT",
+      "amountOfETH": "Amount of ETH",
+      "amountETHPerWQT": "Amount ETH per WQT",
+      "amountBNBPerWQT": "Amount BNB per WQT"
+    },
+    "warning": "Warning",
+    "typeYourMessage": "Type your message",
     "liquidityMining": "লিকুইডিটি মাইনিং",
     "claimRewards": "Claim rewards",
     "percent": "শতাংশ",
@@ -877,9 +890,12 @@
       "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
     },
     "chatCreate": {
+      "title": "Create chat",
       "desc": "গ্রুপ চ্যাটের নাম তৈরি করুন এবং আপনার চ্যাট তালিকা থেকে লোক চয়ন করুন",
       "chatName": "চ্যাটের নাম",
-      "addNewMembers": "Add new members"
+      "addNewMembers": "Add new members",
+      "members": "Members",
+      "addMember": "Add member"
     },
     "disputes": {
       "thereIsNoResponseFromTheEmployerOrEmployee": "There is no response from the employer / employee",

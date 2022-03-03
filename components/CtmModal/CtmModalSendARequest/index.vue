@@ -21,7 +21,7 @@
                     v-model="text"
                     class="message__textarea"
                     rules="required"
-                    :placeholder="$t('modals.hello')"
+                    :placeholder="$t('meta.typeYourMessage')"
                   />
                 </div>
                 <files-uploader

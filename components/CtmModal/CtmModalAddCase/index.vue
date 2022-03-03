@@ -3,6 +3,7 @@
     class="message"
     :title="$t('meta.addCase')"
   >
+    <!--    TODO: Поменять загрузчик-->
     <div class="ctm-modal__content">
       <div class="message">
         <div class="message__content">
