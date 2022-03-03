@@ -335,6 +335,10 @@
     }
   },
   "quests": {
+    "workersNotInvited": "Workers not invited",
+    "employer": {
+      "usersNotResponded": "Users not responded"
+    },
     "invite": "Invite",
     "decline": "Decline",
     "questTitle": "Quest title",

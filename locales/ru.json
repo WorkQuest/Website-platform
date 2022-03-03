@@ -334,6 +334,10 @@
     }
   },
   "quests": {
+    "workersNotInvited": "Workers not invited",
+    "employer": {
+      "usersNotResponded": "Users not responded"
+    },
     "invite": "Пригласить",
     "decline": "Отклонить",
     "questTitle": "Заголовок квеста",
