@@ -50,7 +50,7 @@
                   type="border"
                   :items="addresses"
                   :is-icon="true"
-                  @input="handleChangePool"
+                  @input="handleChangePool(sourceAddressInd, 'source')"
                 />
               </div>
             </div>
@@ -58,7 +58,7 @@
               src="~assets/img/ui/swap.png"
               alt=""
               class="swap-icon"
-              @click="handleChangePool(targetAddressInd ? 1 : 0)"
+              @click="handleChangePool(0, 'swap')"
             >
             <div>
               <div class="info-block__name_bold">
@@ -73,7 +73,7 @@
                   type="border"
                   :items="addresses"
                   :is-icon="true"
-                  @input="handleChangePool"
+                  @input="handleChangePool(targetAddressInd, 'target')"
                 />
               </div>
             </div>
@@ -310,7 +310,13 @@ export default {
     },
     async checkWalletStatus() {
       if (this.isConnected) return;
-      const chainName = this.sourceAddressInd === 0 ? 'ETH' : 'BNB';
+      let chainName = '';
+      // eslint-disable-next-line default-case
+      switch (this.sourceAddressInd) {
+        case 0: chainName = 'ETH'; break;
+        case 1: chainName = 'BNB'; break;
+        case 2: chainName = 'WQT'; break;
+      }
       await this.connectToMetamask(chainName);
     },
     async redeemAction(data) {
@@ -356,9 +362,19 @@ export default {
       };
       await this.$store.dispatch('defi/swapsForCrosschain', payload);
     },
-    handleChangePool(selInd) {
-      this.sourceAddressInd = selInd ? 1 : 0;
-      this.targetAddressInd = selInd ? 0 : 1;
+    handleChangePool(selInd, mode) {
+      if (mode === 'source') {
+        if (this.targetAddressInd === selInd) this.targetAddressInd = selInd ? 0 : 1;
+        this.sourceAddressInd = selInd;
+      } else if (mode === 'target') {
+        if (this.sourceAddressInd === selInd) this.sourceAddressInd = selInd ? 0 : 1;
+        this.targetAddressInd = selInd;
+      } else if (mode === 'swap') {
+        const sourceInd = this.sourceAddressInd;
+        const targetInd = this.targetAddressInd;
+        this.targetAddressInd = sourceInd;
+        this.sourceAddressInd = targetInd;
+      }
     },
     async showSwapModal() {
       this.SetLoader(true);
