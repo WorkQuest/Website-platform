@@ -13,6 +13,7 @@
       tbody-tr-class="table__row"
     >
       <template
+        v-if="$props.title"
         #table-caption
       >
         <span class="table__title">{{ $props.title }}</span>

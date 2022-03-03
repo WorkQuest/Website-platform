@@ -141,7 +141,6 @@
             <div class="pension-page__table">
               <base-table
                 class="table"
-                :title="$t('wallet.table.trx')"
                 :items="historyByPage"
                 :fields="historyFields"
               />
@@ -669,7 +668,7 @@ export default {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-gap: 20px;
-        margin: 0 10px 5px 10px;
+        margin: 0 20px 5px 20px;
       }
 
       &__faqs {
@@ -798,7 +797,7 @@ export default {
 
       &__table-title {
         font-size: 16px;
-        padding: 10px;
+        padding: 20px;
       }
 
       &__name {
@@ -874,9 +873,13 @@ export default {
   }
 
   &__table {
+    border-radius: 6px !important;
+    overflow: hidden;
     .table {
-      margin: 0;
-      border-radius: 6px !important;
+      margin: 20px 0 0 0;
+      &:first-child {
+        border-radius: 0 !important;
+      }
     }
   }
 
@@ -892,10 +895,6 @@ export default {
 
   @include _991 {
     background: linear-gradient(to bottom, #103D7C 245px, #f6f8fa 245px);
-    &__container {
-      gap: 15px;
-      grid-template-rows: 150px auto;
-    }
     &__content {
       .info-block {
         &__grid {
@@ -905,10 +904,14 @@ export default {
     }
     &__table {
       overflow: auto;
-      width: calc(100vw - 37px);
+      width: calc(100vw - 35px);
 
       .table {
-        width: 1180px;
+        width: 1024px;
+        & > .table {
+          border-radius: 0 !important;
+          background: red !important;
+        }
       }
     }
   }
@@ -967,6 +970,14 @@ export default {
   }
 
   @include _575 {
+    &__header {
+      .title {
+        font-size: 32px;
+        &_sub {
+          font-size: 16px;
+        }
+      }
+    }
     &__content {
       .info-block {
         &__select-table {
