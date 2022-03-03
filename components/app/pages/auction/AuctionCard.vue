@@ -25,7 +25,7 @@
       <base-btn
         @click="openModalBuyAuction"
       >
-        {{ $t('meta.buy') }}
+        {{ $t('meta.btns.buy') }}
       </base-btn>
     </template>
     <template v-else>

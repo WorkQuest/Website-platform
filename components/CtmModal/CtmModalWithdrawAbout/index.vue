@@ -14,14 +14,14 @@
           selector="CANCEL"
           @click="hide"
         >
-          {{ $t('meta.cancel') }}
+          {{ $t('meta.btns.cancel') }}
         </base-btn>
         <base-btn
           class="buttons__button"
           selector="SUBMIT"
           @click="hide"
         >
-          {{ $t('meta.submit') }}
+          {{ $t('meta.btns.submit') }}
         </base-btn>
       </div>
     </div>

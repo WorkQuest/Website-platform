@@ -32,7 +32,7 @@
               class="btn_bl"
               @click="handleClickBuyProtection()"
             >
-              {{ $t('meta.buy') }}
+              {{ $t('meta.btns.buy') }}
             </base-btn>
           </div>
         </div>
@@ -63,7 +63,7 @@
                 </div>
               </div>
               <button class="btn__doc">
-                {{ $t('meta.download') }}
+                {{ $t('meta.btns.download') }}
                 <img
                   class="download"
                   src="~/assets/img/ui/download.svg"

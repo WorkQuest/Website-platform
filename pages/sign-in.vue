@@ -68,7 +68,7 @@
             data-selector="ACTION-BTN-FORGOT-PASSWORD"
             @click="showRestoreModal()"
           >
-            {{ $t('meta.forgot') }}
+            {{ $t('meta.btns.forgot') }}
           </div>
         </div>
         <div class="auth__action">
@@ -129,7 +129,7 @@
       class="auth__back"
       @click="back"
     >
-      <span class="icon-chevron_big_left" /> <span>{{ $t('meta.back') }}</span>
+      <span class="icon-chevron_big_left" /> <span>{{ $t('meta.btns.back') }}</span>
     </div>
     <CreateWallet
       :step="step"

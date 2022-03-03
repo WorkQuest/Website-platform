@@ -90,7 +90,7 @@
             mode="outline"
             @click="hide"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
@@ -98,7 +98,7 @@
             :disabled="invalid||items.length===0"
             @click="handleSubmit(showTransactionSendModal)"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.btns.submit') }}
           </base-btn>
         </div>
       </validation-observer>

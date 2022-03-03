@@ -43,7 +43,7 @@
               @click="toEditQuest"
             >
               <div class="menu__text">
-                {{ $t('meta.edit') }}
+                {{ $t('meta.btns.edit') }}
               </div>
             </div>
             <div
@@ -52,7 +52,7 @@
               @click="showAreYouSureDeleteQuestModal"
             >
               <div class="menu__text">
-                {{ $t('meta.delete') }}
+                {{ $t('meta.btns.delete') }}
               </div>
             </div>
           </div>
@@ -105,7 +105,7 @@ export default {
           img: require('~/assets/img/ui/deleteError.svg'),
           title: this.$t('modals.errors.error'),
           subtitle: this.$t('modals.2FA.youCan’tEditQuest'),
-          button: this.$t('meta.close'),
+          button: this.$t('meta.btns.close'),
         });
         return;
       }
@@ -129,7 +129,7 @@ export default {
           img: require('~/assets/img/ui/deleteError.svg'),
           title: this.$t('modals.errors.error'),
           subtitle: this.$t('modals.2FA.youCan’tDeleteQuest'),
-          button: this.$t('meta.close'),
+          button: this.$t('meta.btns.close'),
         });
         return;
       }
@@ -138,7 +138,7 @@ export default {
         actionMethod: async () => this.ShowModal({
           key: modals.areYouSure,
           title: this.$t('modals.sureDeleteNotification'),
-          okBtnTitle: this.$t('meta.delete'),
+          okBtnTitle: this.$t('meta.btns.delete'),
           okBtnFunc: () => this.deleteQuest(),
         }),
       });

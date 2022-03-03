@@ -124,7 +124,7 @@
               :data-selector="`ACTION-BTN-APPLY`"
               @click="handleSubmit"
             >
-              {{ $t('meta.apply') }}
+              {{ $t('meta.btns.apply') }}
             </base-btn>
           </div>
         </div>

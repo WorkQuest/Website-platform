@@ -45,7 +45,7 @@
               class="btn__action"
               @click="hide()"
             >
-              {{ $t('meta.cancel') }}
+              {{ $t('meta.btns.cancel') }}
             </base-btn>
           </div>
           <div class="btn__wrapper">
@@ -55,7 +55,7 @@
               :disabled="invalid || files.length === 0"
               @click="editUserCase(options.id)"
             >
-              {{ $t('meta.send') }}
+              {{ $t('meta.btns.send') }}
             </base-btn>
           </div>
         </div>

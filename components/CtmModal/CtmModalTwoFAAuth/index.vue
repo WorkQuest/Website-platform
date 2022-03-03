@@ -154,7 +154,7 @@
             selector="NEXT-STEP-WITH-ENABLE-2FA"
             @click="nextStepWithEnable2FA()"
           >
-            {{ $t('meta.next') }}
+            {{ $t('meta.btns.next') }}
           </base-btn>
         </div>
         <div
@@ -185,7 +185,7 @@
               :disabled="!validated || !passed || invalid"
               @click="handleSubmit(confirmEnable2FA)"
             >
-              {{ $t('meta.next') }}
+              {{ $t('meta.btns.next') }}
             </base-btn>
           </span>
         </div>
@@ -200,7 +200,7 @@
             class="message__action"
             @click="previousStep()"
           >
-            {{ $t('meta.back') }}
+            {{ $t('meta.btns.back') }}
           </base-btn>
         </div>
       </div>
@@ -234,7 +234,7 @@ export default {
           img: require('~/assets/img/ui/google-play-icon.svg'),
         },
       ],
-      stepBtns: [{ step: [2, 3], click: this.nextStep, text: this.$t('meta.next') }],
+      stepBtns: [{ step: [2, 3], click: this.nextStep, text: this.$t('meta.btns.next') }],
       inputs: [
         {
           id: 'confirmCode',

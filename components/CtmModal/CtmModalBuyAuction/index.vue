@@ -37,13 +37,13 @@
           :is-submit="false"
           @click="CloseModal"
         >
-          {{ $t('meta.cancel') }}
+          {{ $t('meta.btns.cancel') }}
         </base-btn>
         <base-btn
           class="buttons__button"
           @click="confirmBuy"
         >
-          {{ $t('meta.confirm') }}
+          {{ $t('meta.btns.confirm') }}
         </base-btn>
       </div>
     </div>

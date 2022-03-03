@@ -38,14 +38,14 @@
             :disabled="statusBusy"
             @click="hide()"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             selector="SUBMIT"
             :disabled="!valid || !canSubmit"
             @click="handleSubmit(options.type === 1 ? staking : unstaking)"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.btns.submit') }}
           </base-btn>
         </div>
       </validation-observer>

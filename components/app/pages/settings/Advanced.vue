@@ -141,13 +141,13 @@ export default {
       return [
         {
           title: 'settings.changePass',
-          buttonName: 'meta.change',
+          buttonName: 'meta.btns.change',
           modal: 'changePassInSettings',
           isSwitcher: false,
         },
         {
           title: 'settings.enableTwoStepAuth',
-          firstButtonName: 'meta.disable',
+          firstButtonName: 'meta.btns.disable',
           secondButtonName: 'settings.enable',
           firstModal: 'disable2FA',
           secondModal: 'twoFAAuth',
@@ -162,8 +162,8 @@ export default {
         },
         {
           title: 'settings.changeRole',
-          firstButtonName: 'meta.change',
-          secondButtonName: 'meta.change',
+          firstButtonName: 'meta.btns.change',
+          secondButtonName: 'meta.btns.change',
           firstModal: 'changeRoleWarning',
           secondModal: 'neededToEnable2FA',
           isSwitcher: true,

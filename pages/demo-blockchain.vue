@@ -73,7 +73,7 @@
               class="card__button"
               @click="handleSubmit(send)"
             >
-              {{ $t('meta.send') }}
+              {{ $t('meta.btns.send') }}
             </base-btn>
           </validation-observer>
         </div>

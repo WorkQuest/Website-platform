@@ -377,7 +377,7 @@ export default {
       switch (infoDataMode) {
         case ADChat: {
           arr = [{
-            name: this.$t('meta.agree'),
+            name: this.$t('meta.btns.agree'),
             class: '',
             mode: '',
             funcKey: 'acceptWorkOnQuest',
@@ -385,7 +385,7 @@ export default {
             disabled: false,
           },
           {
-            name: this.$t('meta.disagree'),
+            name: this.$t('meta.btns.disagree'),
             class: '',
             mode: 'outline',
             funcKey: 'rejectWorkOnQuest',
@@ -441,7 +441,7 @@ export default {
           if (response.status !== ResponseStatus.awaiting || (assignedWorkerId && assignedWorkerId !== userData.id)) break;
 
           arr = [{
-            name: this.$t('meta.agree'),
+            name: this.$t('meta.btns.agree'),
             class: '',
             mode: '',
             funcKey: 'acceptQuestInvitation',
@@ -449,7 +449,7 @@ export default {
             disabled: false,
           },
           {
-            name: this.$t('meta.disagree'),
+            name: this.$t('meta.btns.disagree'),
             class: '',
             mode: 'outline',
             funcKey: 'rejectQuestInvitation',
@@ -462,7 +462,7 @@ export default {
           if (assignedWorkerId !== userData.id) break;
 
           arr = [{
-            name: this.$t('meta.agree'),
+            name: this.$t('meta.btns.agree'),
             class: '',
             mode: '',
             funcKey: 'acceptWorkOnQuest',
@@ -470,7 +470,7 @@ export default {
             disabled: false,
           },
           {
-            name: this.$t('meta.disagree'),
+            name: this.$t('meta.btns.disagree'),
             class: '',
             mode: 'outline',
             funcKey: 'rejectWorkOnQuest',
@@ -531,7 +531,7 @@ export default {
         img: require('~/assets/img/ui/deleteError.svg'),
         title: this.$t('modals.errors.error'),
         subtitle: this.$t('modals.errors.youCantCreateDispute'),
-        button: this.$t('meta.close'),
+        button: this.$t('meta.btns.close'),
       });
     },
     async acceptCompletedWorkOnQuest() {

@@ -91,7 +91,7 @@
                 selector="CLOSE"
                 @click="hide"
               >
-                {{ $t('meta.close') }}
+                {{ $t('meta.btns.close') }}
               </base-btn>
             </span>
             <span
@@ -104,7 +104,7 @@
                 selector="CANCEL"
                 @click="hide"
               >
-                {{ $t('meta.cancel') }}
+                {{ $t('meta.btns.cancel') }}
               </base-btn>
               <base-btn
                 class="buttons__button"

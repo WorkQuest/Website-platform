@@ -41,7 +41,7 @@
             selector="CONFIRM"
             @click="showTransactionSendModal()"
           >
-            {{ $t('meta.confirm') }}
+            {{ $t('meta.btns.confirm') }}
           </base-btn>
         </div>
         <div class="btn__wrapper">
@@ -51,7 +51,7 @@
             class="message__action"
             @click="hide()"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
         </div>
       </div>

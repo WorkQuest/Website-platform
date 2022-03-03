@@ -133,7 +133,7 @@
                 :disabled="!validated || !passed || invalid"
                 @click="handleSubmit(nextStep)"
               >
-                {{ $t('meta.next') }}
+                {{ $t('meta.btns.next') }}
               </base-btn>
             </span>
             <span
@@ -146,7 +146,7 @@
                 :disabled="invalid"
                 @click="handleSubmit(nextStep)"
               >
-                {{ $t('meta.confirm') }}
+                {{ $t('meta.btns.confirm') }}
               </base-btn>
             </span>
             <span
@@ -169,7 +169,7 @@
               class="message__action"
               @click="hide()"
             >
-              {{ $t('meta.cancel') }}
+              {{ $t('meta.btns.cancel') }}
             </base-btn>
           </div>
         </div>

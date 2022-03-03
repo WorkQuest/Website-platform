@@ -61,7 +61,7 @@
 
         <div class="wallet__action">
           <base-btn :disabled="!savedMnemonicValue">
-            {{ $t('meta.next') }}
+            {{ $t('meta.btns.next') }}
           </base-btn>
         </div>
       </form>

@@ -31,7 +31,7 @@
           selector="SHOW-REQUEST-SEND"
           @click="showRequestSendModal"
         >
-          {{ $t('meta.send') }}
+          {{ $t('meta.btns.send') }}
         </base-btn>
         <base-btn
           mode="outline"
@@ -39,7 +39,7 @@
           selector="CANCEL"
           @click="hide"
         >
-          {{ $t('meta.cancel') }}
+          {{ $t('meta.btns.cancel') }}
         </base-btn>
       </div>
     </div>

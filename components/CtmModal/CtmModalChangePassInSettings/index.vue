@@ -111,7 +111,7 @@
             selector="CHANGE"
             @click="hide()"
           >
-            {{ $t('meta.change') }}
+            {{ $t('meta.btns.change') }}
           </base-btn>
         </div>
       </div>

@@ -11,7 +11,7 @@
             <template v-slot:left>
               <span class="icon-chevron_left" />
             </template>
-            {{ $t('meta.back') }}
+            {{ $t('meta.btns.back') }}
           </base-btn>
         </div>
         <div class="head-cont">

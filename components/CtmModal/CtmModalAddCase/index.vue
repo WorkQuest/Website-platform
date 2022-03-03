@@ -51,7 +51,7 @@
                     :disabled="!valid || !validated || !passed || invalid"
                     @click="addUserCase"
                   >
-                    {{ $t('meta.send') }}
+                    {{ $t('meta.btns.send') }}
                   </base-btn>
                 </div>
                 <div class="btn__wrapper">
@@ -61,7 +61,7 @@
                     class="message__action"
                     @click="hide()"
                   >
-                    {{ $t('meta.cancel') }}
+                    {{ $t('meta.btns.cancel') }}
                   </base-btn>
                 </div>
               </div>

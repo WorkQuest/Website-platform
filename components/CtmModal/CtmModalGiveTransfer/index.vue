@@ -63,7 +63,7 @@
             class="buttons__action"
             @click="hide"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__action"
@@ -71,7 +71,7 @@
             :disabled="invalid || !isCanSubmit"
             @click="handleSubmit(showWithdrawInfo)"
           >
-            {{ $t('meta.send') }}
+            {{ $t('meta.btns.send') }}
           </base-btn>
         </div>
       </validation-observer>

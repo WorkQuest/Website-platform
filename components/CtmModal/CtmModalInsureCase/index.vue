@@ -36,7 +36,7 @@
           selector="CANCEL"
           @click="hide"
         >
-          {{ $t('meta.cancel') }}
+          {{ $t('meta.btns.cancel') }}
         </base-btn>
       </div>
     </div>

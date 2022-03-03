@@ -22,7 +22,7 @@
           selector="SEND"
           @click="handleSubmit(restore)"
         >
-          {{ $t('meta.send') }}
+          {{ $t('meta.btns.send') }}
         </base-btn>
       </validation-observer>
     </div>

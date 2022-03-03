@@ -41,7 +41,7 @@
                 :disabled="!valid"
                 @click="handleSubmit(sendReviewForUser)"
               >
-                {{ $t('meta.send') }}
+                {{ $t('meta.btns.send') }}
               </base-btn>
             </div>
             <div class="buttons__wrapper">
@@ -51,7 +51,7 @@
                 mode="outline"
                 @click="hide"
               >
-                {{ $t('meta.cancel') }}
+                {{ $t('meta.btns.cancel') }}
               </base-btn>
             </div>
           </div>

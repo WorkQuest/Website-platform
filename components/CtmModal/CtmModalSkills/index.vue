@@ -66,13 +66,13 @@
             selector="CLEAR-TAGS"
             @click="clearTags()"
           >
-            {{ $t('meta.reset') }}
+            {{ $t('meta.btns.reset') }}
           </base-btn>
           <base-btn
             selector="OK"
             @click="hide()"
           >
-            {{ $t('meta.ok') }}
+            {{ $t('meta.btns.ok') }}
           </base-btn>
         </div>
       </div>

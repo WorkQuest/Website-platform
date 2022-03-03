@@ -71,7 +71,7 @@
               selector="CANCEL"
               @click="hide()"
             >
-              {{ $t('meta.cancel') }}
+              {{ $t('meta.btns.cancel') }}
             </base-btn>
             <base-btn
               class="btn_bl"
@@ -79,7 +79,7 @@
               :disabled="!validated || !passed || invalid"
               @click="handleSubmit(showTransactionSendModal)"
             >
-              {{ $t('meta.confirm') }}
+              {{ $t('meta.btns.confirm') }}
             </base-btn>
           </div>
         </div>

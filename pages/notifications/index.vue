@@ -128,7 +128,7 @@ export default {
       this.ShowModal({
         key: modals.areYouSure,
         title: this.$t('modals.sureDeleteNotification'),
-        okBtnTitle: this.$t('meta.delete'),
+        okBtnTitle: this.$t('meta.btns.delete'),
         okBtnFunc: async () => await this.removeNotification(notificationId),
       });
     },

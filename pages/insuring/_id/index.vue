@@ -346,7 +346,7 @@ export default {
       isVotingDone: false,
       btns: [
         {
-          name: this.$t('meta.disagree'),
+          name: this.$t('meta.btns.disagree'),
           class: 'btn_red',
         },
         {
@@ -354,19 +354,19 @@ export default {
           class: 'btn',
         },
         {
-          name: this.$t('meta.agree'),
+          name: this.$t('meta.btns.agree'),
           class: 'btn_bl',
         },
       ],
       results: [
         {
-          name: this.$t('meta.agree'),
+          name: this.$t('meta.btns.agree'),
           percents: 75,
           count: this.$tc('meta.units.votesCount', 10),
           class: 'progress-green',
         },
         {
-          name: this.$t('meta.disagree'),
+          name: this.$t('meta.btns.disagree'),
           percents: 20,
           count: this.$tc('meta.units.votesCount', 10),
           class: 'progress-red',

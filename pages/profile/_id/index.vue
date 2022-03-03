@@ -103,7 +103,7 @@
               data-selector="ACTION-BTN-TABS-SHOW-ALL-QUEST"
               @click="selectedTab = 'quests'"
             >
-              {{ $t('meta.showAllQuests') }}
+              {{ $t('meta.btns.showAllQuests') }}
             </div>
           </div>
         </div>
@@ -144,7 +144,7 @@
                 data-selector="ACTION-BTN-SHOW-ALL-REVIEWS"
                 @click="selectedTab = 'reviews'"
               >
-                {{ $t('meta.showAllReviews') }}
+                {{ $t('meta.btns.showAllReviews') }}
               </div>
             </div>
           </template>
@@ -201,7 +201,7 @@
               data-selector="ACTION-BTN-SHOW-ALL-PORTFOLIOS"
               @click="selectedTab = 'portfolio'"
             >
-              {{ $t('meta.showAllPortfolios') }}
+              {{ $t('meta.btns.showAllPortfolios') }}
             </div>
           </div>
         </div>

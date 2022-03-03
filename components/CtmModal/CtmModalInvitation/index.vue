@@ -54,7 +54,7 @@
               selector="INVITE-ON-QUEST"
               @click="inviteOnQuest()"
             >
-              {{ $t('meta.send') }}
+              {{ $t('meta.btns.send') }}
             </base-btn>
           </div>
           <div class="btn__wrapper">
@@ -64,7 +64,7 @@
               selector="CANCEL"
               @click="hide()"
             >
-              {{ $t('meta.cancel') }}
+              {{ $t('meta.btns.cancel') }}
             </base-btn>
           </div>
         </div>

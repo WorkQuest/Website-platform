@@ -95,7 +95,7 @@
             data-selector="ACTION-BTN-GO-TO-NOTIFICATION-PAGE"
             @click="goToNotifsPage"
           >
-            {{ $t('meta.showAll') }}
+            {{ $t('meta.btns.showAll') }}
           </base-btn>
         </template>
         <empty-data

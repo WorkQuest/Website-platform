@@ -90,7 +90,7 @@
             selector="CANCEL"
             @click="hide"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             v-if="step=== 1"
@@ -99,7 +99,7 @@
             selector="SHOW-WITHDRAW-INFO"
             @click="handleSubmit(showWithdrawInfo)"
           >
-            {{ $t('meta.confirm') }}
+            {{ $t('meta.btns.confirm') }}
           </base-btn>
           <base-btn
             v-else-if="step=== 2"

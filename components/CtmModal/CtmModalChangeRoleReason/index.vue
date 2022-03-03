@@ -28,7 +28,7 @@
                 selector="NEXT-STEP"
                 @click="nextStep()"
               >
-                {{ $t('meta.change') }}
+                {{ $t('meta.btns.change') }}
               </base-btn>
             </div>
             <div class="btn__wrapper">
@@ -38,7 +38,7 @@
                 selector="CANCEL"
                 @click="hide()"
               >
-                {{ $t('meta.cancel') }}
+                {{ $t('meta.btns.cancel') }}
               </base-btn>
             </div>
           </div>
@@ -65,7 +65,7 @@
                 selector="CHANGE-ROLE"
                 :disabled="invalid"
               >
-                {{ $t('meta.send') }}
+                {{ $t('meta.btns.send') }}
               </base-btn>
             </div>
           </form>
@@ -113,7 +113,7 @@ export default {
             img: require('~/assets/img/ui/error.svg'),
             title: this.$t('modals.warning'),
             subtitle: this.$t('modals.waitRoleCooldown', { date: date.toLocaleDateString(this.$i18n.locale), time: date.toLocaleTimeString(this.$i18n.locale) }),
-            button: this.$t('meta.close'),
+            button: this.$t('meta.btns.close'),
           });
         }
       }

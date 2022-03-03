@@ -43,7 +43,7 @@
             selector="SAVE-CHANGES"
             @click="$emit('click')"
           >
-            {{ $t("meta.save") }}
+            {{ $t("meta.btns.save") }}
           </base-btn>
           <span v-if="validationError">
             {{ $t('messages.formError') }}

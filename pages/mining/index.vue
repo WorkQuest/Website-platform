@@ -77,7 +77,7 @@
                 target="_blank"
                 class="btn__doc"
               >
-                {{ $t('meta.download') }}
+                {{ $t('meta.btns.download') }}
                 <img
                   class="download"
                   src="~/assets/img/ui/download.svg"

@@ -59,7 +59,7 @@
           selector="OK"
           @click="onSubmit()"
         >
-          {{ $t('meta.ok') }}
+          {{ $t('meta.btns.ok') }}
         </base-btn>
       </div>
     </div>

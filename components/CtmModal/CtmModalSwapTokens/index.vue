@@ -49,7 +49,7 @@
             :disabled="statusBusy"
             @click="hide()"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             :disabled="statusBusy || !isConnected"

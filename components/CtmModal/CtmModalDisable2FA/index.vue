@@ -31,7 +31,7 @@
                 selector="DISABLE-2FA"
                 @click="handleSubmit(disable2FA)"
               >
-                {{ $t('meta.disable') }}
+                {{ $t('meta.btns.disable') }}
               </base-btn>
             </span>
           </div>
@@ -42,7 +42,7 @@
               selector="CANCEL"
               @click="hide"
             >
-              {{ $t('meta.cancel') }}
+              {{ $t('meta.btns.cancel') }}
             </base-btn>
           </div>
         </div>

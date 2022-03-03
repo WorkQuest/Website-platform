@@ -47,14 +47,14 @@
           selector="CANCEL"
           @click="hide()"
         >
-          {{ $t('meta.cancel') }}
+          {{ $t('meta.btns.cancel') }}
         </base-btn>
         <base-btn
           :disabled="!valid || !canSubmit"
           selector="SUBMIT"
           @click="handleSubmit(onSubmit)"
         >
-          {{ $t('meta.submit') }}
+          {{ $t('meta.btns.submit') }}
         </base-btn>
       </div>
     </validation-observer>

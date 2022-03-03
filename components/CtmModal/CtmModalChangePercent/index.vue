@@ -30,7 +30,7 @@
             mode="outline"
             @click="hide"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             selector="SUBMIT"
@@ -38,7 +38,7 @@
             :disabled="!validated || !passed || invalid"
             @click="handleSubmit(updateFee)"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.btns.submit') }}
           </base-btn>
         </div>
       </validation-observer>

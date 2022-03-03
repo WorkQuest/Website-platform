@@ -106,13 +106,13 @@
               :is-submit="false"
               @click="CloseModal"
             >
-              {{ $t('meta.cancel') }}
+              {{ $t('meta.btns.cancel') }}
             </base-btn>
             <base-btn
               class="buttons__button"
               :disabled="!validated || !passed || invalid"
             >
-              {{ $t('meta.submit') }}
+              {{ $t('meta.btns.submit') }}
             </base-btn>
           </div>
         </form>

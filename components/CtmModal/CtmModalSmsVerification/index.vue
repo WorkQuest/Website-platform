@@ -22,7 +22,7 @@
             selector="CONFIRM-1"
             @click="hide"
           >
-            {{ $t('meta.confirm') }}
+            {{ $t('meta.btns.confirm') }}
           </base-btn>
         </div>
       </div>
@@ -88,7 +88,7 @@
             class="buttons__button"
             @click="handleSubmit(nextStep)"
           >
-            {{ $t('meta.next') }}
+            {{ $t('meta.btns.next') }}
           </base-btn>
           <base-btn
             v-if="step === 2"
@@ -97,7 +97,7 @@
             :disabled="!validated || !passed || invalid"
             @click="handleSubmit(success)"
           >
-            {{ $t('meta.confirm') }}
+            {{ $t('meta.btns.confirm') }}
           </base-btn>
         </div>
       </validation-observer>
