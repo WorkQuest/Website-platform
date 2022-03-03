@@ -146,7 +146,7 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { TokenSymbols, WalletTables } from '~/utils/enums';
+import { TokenSymbolByContract, TokenSymbols, WalletTables } from '~/utils/enums';
 import { getStyledAmount } from '~/utils/wallet';
 import EmptyData from '~/components/app/info/emptyData';
 import CollateralTable from '~/components/app/pages/wallet/CollateralTable';
@@ -189,7 +189,7 @@ export default {
       const res = [];
       // eslint-disable-next-line no-restricted-syntax
       for (const t of txs) {
-        const symbol = t.tokenTransfers[0]?.amount ? TokenSymbols.WQT : TokenSymbols.WUSD;
+        const symbol = TokenSymbolByContract[t.to_address_hash.hex] || TokenSymbols.WUSD;
         res.push({
           tx_hash: t.hash,
           block: t.block_number,
