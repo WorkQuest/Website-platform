@@ -141,37 +141,5 @@ export default {
   &__row {
     line-height: 40px;
   }
-  @include _991 {
-    .table {
-      &__row {
-        font-size: 12px;
-      }
-      &__header {
-        font-size: 10px;
-      }
-    }
-    //thead, tbody tr {
-    //  display:table;
-    //  width: 920px;
-    //  min-width: 710px;
-    //  table-layout:fixed;
-    //}
-    //thead {
-    //  width: calc( 940px - 1em );
-    //  min-width: calc( 710px - 1em );
-    //}
-  }
-  @include _767 {
-    //thead, tbody tr {
-    //  display:table;
-    //  width: 700px;
-    //  min-width: 540px;
-    //  table-layout:fixed;
-    //}
-    //thead {
-    //  width: calc( 700px - 1em );
-    //  min-width: calc( 540px - 1em );
-    //}
-  }
 }
 </style>

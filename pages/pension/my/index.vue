@@ -112,7 +112,7 @@
         </template>
         <div class="pension-page__info-block">
           <div class="info-block">
-            <div class="info-block__name">
+            <div class="info-block__table-title">
               {{ $t('pension.transactionHistory') }}
             </div>
             <div class="info-block__select-table">
@@ -669,7 +669,7 @@ export default {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-gap: 20px;
-        margin: 0 15px 5px 15px;
+        margin: 0 10px 5px 10px;
       }
 
       &__faqs {
@@ -792,20 +792,25 @@ export default {
       &__tokens {
         font-weight: 700;
         font-size: 25px;
-        color: #0083C7;
+        color: $blue;
         padding: 0 20px;
+      }
+
+      &__table-title {
+        font-size: 16px;
+        padding: 10px;
       }
 
       &__name {
         font-size: 16px;
-        color: #1D2127;
+        color: $black800;
         padding: 20px 20px 10px 20px;
         font-weight: 400;
 
         &_bold {
           font-weight: 500;
           font-size: 25px;
-          color: #103D7C;
+          color: $darkblue;
           line-height: 1;
           padding: 20px;
         }
