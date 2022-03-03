@@ -5,7 +5,7 @@
   >
     <div class="collateral__content content">
       <div class="content__header">
-        Header
+        Lorem ipsum
       </div>
       <div class="content__label">
         {{ $t('modals.eth') }}
