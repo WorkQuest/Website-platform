@@ -910,7 +910,6 @@ export default {
         width: 1024px;
         & > .table {
           border-radius: 0 !important;
-          background: red !important;
         }
       }
     }
