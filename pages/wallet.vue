@@ -189,12 +189,13 @@ export default {
       const res = [];
       // eslint-disable-next-line no-restricted-syntax
       for (const t of txs) {
+        const symbol = t.tokenTransfers[0]?.amount ? TokenSymbols.WQT : TokenSymbols.WUSD;
         res.push({
-          tx_hash: t.block_hash,
+          tx_hash: t.hash,
           block: t.block_number,
-          timestamp: this.$moment(t.inserted_at).format('lll'),
+          timestamp: this.$moment(t.block.timestamp).format('lll'),
           status: !!t.status,
-          value: getStyledAmount(t.value),
+          value: `${getStyledAmount(t.tokenTransfers[0]?.amount || t.value)} ${symbol}`,
           transaction_fee: new BigNumber(t.gas_price).multipliedBy(t.gas_used),
           from_address: t.from_address_hash.hex,
           to_address: t.to_address_hash.hex,
