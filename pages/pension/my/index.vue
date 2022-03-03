@@ -140,7 +140,7 @@
             </div>
             <div class="pension-page__table">
               <base-table
-                class="table__txs"
+                class="table"
                 :title="$t('wallet.table.trx')"
                 :items="historyByPage"
                 :fields="historyFields"
@@ -153,15 +153,12 @@
               <empty-data :description="$t('meta.listIsEmpty')" />
             </div>
           </div>
-          <div
+          <base-pager
             v-if="totalPages > 1"
+            v-model="page"
             class="info-block__pager"
-          >
-            <base-pager
-              v-model="page"
-              :total-pages="totalPages"
-            />
-          </div>
+            :total-pages="totalPages"
+          />
         </div>
         <div
           v-if="FAQs.length"
@@ -874,7 +871,7 @@ export default {
   &__table {
     .table {
       margin: 0;
-      border-radius: 0 !important;
+      border-radius: 6px !important;
     }
   }
 
