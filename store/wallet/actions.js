@@ -33,7 +33,7 @@ export default {
       });
       commit('setPensionHistoryData', { method, txs: res.data.result.events, count: res.data.result.count });
     } catch (e) {
-      console.error(e);
+      console.error('wallet/getPensionTransactions');
     }
   },
   async getTransactions({ commit }, params) {
