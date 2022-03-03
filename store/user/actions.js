@@ -81,7 +81,7 @@ export default {
         user, title, id, assignedWorker, worker, quest, employer, fromUser, message, toUserId,
         problemDescription,
       },
-    } = notification.notification;
+    } = notification.notification ? notification.notification : notification;
 
     let currTitle = quest?.title || title;
     let keyName = 'notifications.';
