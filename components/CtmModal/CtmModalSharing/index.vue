@@ -73,12 +73,8 @@ export default {
   methods: {
     makeHref(item) {
       switch (item.icon) {
-        case 'telegram': {
-          return `${item.url}${this.sharingLink}`;
-        }
-        case 'twitter': {
-          return `${item.url}${this.sharingLink}`;
-        }
+        case 'telegram':
+        case 'twitter':
         case 'facebook': {
           return `${item.url}${this.sharingLink}`;
         }
