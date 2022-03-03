@@ -141,7 +141,7 @@ export default {
         color: $white;
       }
       & img {
-        filter: brightness(100%) grayscale(0%);
+        filter: brightness(1000%) grayscale(0%);
       }
     }
   }
