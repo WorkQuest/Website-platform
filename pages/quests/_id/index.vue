@@ -177,7 +177,6 @@ export default {
       userData: 'user/getUserData',
       otherQuestsCount: 'quests/getAllQuestsCount',
       otherQuests: 'quests/getAllQuests',
-      currentMark: 'user/getCurrentReviewMarkOnQuest',
     }),
     rating() {
       return this.quest.yourReview?.mark || 0;
@@ -233,7 +232,8 @@ export default {
   async beforeDestroy() {
     await this.$store.dispatch('google-map/resetMap');
     this.$store.commit('quests/setQuest', null);
-    await this.$store.commit('user/setCurrentReviewMarkOnQuest', { questId: null, message: null, mark: null });
+    this.$store.commit('quests/setAllQuests', { count: 0, quests: [] });
+    this.$store.commit('user/setCurrentReviewMarkOnQuest', { questId: null, message: null, mark: null });
   },
   methods: {
     starRating(item) {
@@ -268,8 +268,10 @@ export default {
         query: { limit: 10, statuses: [0] },
         specFilter,
       });
+
       const questsData = this.otherQuests.filter((quest) => quest.id !== this.quest.id);
       if (questsData.length) this.sameQuest = questsData[Math.floor(Math.random() * questsData.length)];
+      else this.$store.commit('quests/setAllQuests', { count: 0, quests: [] });
     },
     setActionBtnsArr() {
       const { quest: { questChat, assignedWorkerId }, userData, userRole } = this;

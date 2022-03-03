@@ -39,7 +39,7 @@ export default {
     line-height: 130%;
     height: 20px;
     text-transform: uppercase;
-    width: 90px;
+    width: auto;
     display: flex;
     justify-content: center;
 
