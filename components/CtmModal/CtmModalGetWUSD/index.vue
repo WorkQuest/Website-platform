@@ -164,6 +164,7 @@ export default {
         percent: this.conversionPercent.substr(0, this.conversionPercent.length - 1),
         currency: this.currentCurrency,
         amountBN: new BigNumber(this.amountWUSD).shiftedBy(18).toFixed(),
+        percentBN: new BigNumber(this.conversionPercent.substr(0, this.conversionPercent.length - 1)).shiftedBy(18).toFixed(),
       };
       const tokenMap = {
         BNB: process.env.BNB_TOKEN,
@@ -210,7 +211,6 @@ export default {
             gasPrice: resultGasApprove.gasPrice,
             gas: resultGasApprove.gas,
           };
-          console.log(approveData);
           this.ShowModal({
             key: modals.transactionReceipt,
             fields: {
@@ -222,10 +222,26 @@ export default {
             },
           });
         } else {
+          const resultGasBuyWUSD = await getGasPrice(abi.WQRouter, process.env.WQ_ROUTER, 'produceWUSD', [payload.amountBN, payload.percentBN, payload.currency]);
+          const buyWUSDData = {
+            gasPrice: resultGasBuyWUSD.gasPrice,
+            gas: resultGasBuyWUSD.gas,
+          };
+
           this.ShowModal({
             key: modals.transactionReceipt,
+            fields: {
+              from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
+              to: { name: this.$t('modals.toAddress'), value: process.env.WQ_ROUTER },
+              amount: {
+                name: this.$t('modals.amount'),
+                value: payload.collateral,
+                symbol: payload.currency,
+              },
+              fee: { name: this.$t('wallet.table.trxFee'), value: new BigNumber(resultGasBuyWUSD.gasPrice).shiftedBy(-18).toFixed(), symbol: TokenSymbols.WUSD },
+            },
             submitMethod: async () => {
-              await this.$store.dispatch('collateral/buyWUSD', payload);
+              await this.$store.dispatch('collateral/buyWUSD', { payload, buyWUSDData });
             },
           });
         }
@@ -240,7 +256,6 @@ export default {
       } else if (isDotFirst) {
         const memo = valueWithoutWords.split('');
         memo.unshift('0');
-        console.log(memo);
         this.conversionPercent = memo.join('');
       } else {
         this.conversionPercent = `${valueWithoutWords}%`;

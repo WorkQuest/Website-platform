@@ -38,10 +38,25 @@ export default {
         },
       }, { root: true });
     } else {
+      const resultGasBuyWUSD = await getGasPrice(abi.WQRouter, process.env.WQ_ROUTER, 'produceWUSD', [payload.amountBN, payload.percentBN, payload.currency]);
+      const buyWUSDData = {
+        gasPrice: resultGasBuyWUSD.gasPrice,
+        gas: resultGasBuyWUSD.gas,
+      };
       dispatch('modals/show', {
         key: modals.transactionReceipt,
+        fields: {
+          from: { name: this.app.i18n.t('modals.fromAddress'), value: getWalletAddress() },
+          to: { name: this.app.i18n.t('modals.toAddress'), value: process.env.WQ_ROUTER },
+          amount: {
+            name: this.app.i18n.t('modals.amount'),
+            value: payload.collateral,
+            symbol: payload.currency,
+          },
+          fee: { name: this.app.i18n.t('wallet.table.trxFee'), value: new BigNumber(resultGasBuyWUSD.gasPrice).shiftedBy(-18).toFixed(), symbol: TokenSymbols.WUSD },
+        },
         submitMethod: async () => {
-          await dispatch('buyWUSD', payload);
+          await dispatch('buyWUSD', { payload, buyWUSDData });
         },
       }, { root: true });
     }
@@ -52,18 +67,31 @@ export default {
     } catch (e) {
       console.log('can not approve');
     }
+    const resultGasBuyWUSD = await getGasPrice(abi.WQRouter, process.env.WQ_ROUTER, 'produceWUSD', [payload.amountBN, payload.percentBN, payload.currency]);
+    const buyWUSDData = {
+      gasPrice: resultGasBuyWUSD.gasPrice,
+      gas: resultGasBuyWUSD.gas,
+    };
     dispatch('modals/show', {
       key: modals.transactionReceipt,
+      fields: {
+        from: { name: this.app.i18n.t('modals.fromAddress'), value: getWalletAddress() },
+        to: { name: this.app.i18n.t('modals.toAddress'), value: process.env.WQ_ROUTER },
+        amount: {
+          name: this.app.i18n.t('modals.amount'),
+          value: payload.collateral,
+          symbol: payload.currency,
+        },
+        fee: { name: this.app.i18n.t('wallet.table.trxFee'), value: new BigNumber(resultGasBuyWUSD.gasPrice).shiftedBy(-18).toFixed(), symbol: TokenSymbols.WUSD },
+      },
       submitMethod: async () => {
-        await dispatch('buyWUSD', payload);
+        await dispatch('buyWUSD', { payload, buyWUSDData });
       },
     }, { root: true });
   },
-  async buyWUSD(ctx, {
-    amount, collateral, percent, currency,
-  }) {
+  async buyWUSD(ctx, { payload, buyWUSDData }) {
     try {
-      await buyWUSD(amount, collateral, percent, currency);
+      await buyWUSD(payload, buyWUSDData);
     } catch (e) {
       console.log('can not buy WUSD');
     }

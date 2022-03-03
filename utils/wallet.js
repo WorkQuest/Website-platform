@@ -444,7 +444,6 @@ export const getAllowance = async (from, to, token) => {
     WQT: process.env.WQT_TOKEN,
   };
   const inst = new web3.eth.Contract(abi.ERC20, tokenMap[token]);
-  console.log('balance', await inst.methods.balanceOf(wallet.address).call({ from }));
   const allowance = await inst.methods.allowance(from, to).call({ from });
   return allowance;
 };
@@ -454,12 +453,11 @@ export const setTokenPrice = async ({ currency }, {
 }) => {
   try {
     const inst = new web3.eth.Contract(abi.WQOracle, process.env.WQ_ORACLE);
-    const res = await inst.methods.setTokenPriceUSD(timestamp, price, v, r, s, currency).send({
+    await inst.methods.setTokenPriceUSD(timestamp, price, v, r, s, currency).send({
       from: wallet.address,
       gas,
       gasPrice,
     });
-    return res;
   } catch (e) {
     console.error('setTokenPriceError', e);
     throw error();
@@ -484,18 +482,14 @@ export const approveRouter = async ({ currency, amount, amountBN }, { gasPrice, 
     throw error();
   }
 };
-export const buyWUSD = async (amount, collateral, percent, currency) => {
+export const buyWUSD = async ({ amount, percent, currency }, { gasPrice, gas }) => {
   try {
     const inst = new web3.eth.Contract(abi.WQRouter, process.env.WQ_ROUTER);
     const amountBN = new BigNumber(amount).shiftedBy(18).toFixed();
     const percentBN = new BigNumber(percent).shiftedBy(18).toFixed();
-    const [gasPrice, gasEstimate] = await Promise.all([
-      web3.eth.getGasPrice(),
-      inst.methods.produceWUSD(amountBN, percentBN, currency).estimateGas({ from: wallet.address }),
-    ]);
-    const res = await inst.methods.produceWUSD(amountBN, percentBN, currency).send({
+    await inst.methods.produceWUSD(amountBN, percentBN, currency).send({
       from: wallet.address,
-      gas: gasEstimate,
+      gas,
       gasPrice,
     });
   } catch (e) {
