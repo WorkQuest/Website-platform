@@ -1,4 +1,4 @@
-export default {
+export default () => ({
   dispute: {
     id: '',
     questId: '',
@@ -221,4 +221,4 @@ export default {
       },
     ],
   },
-};
+});
