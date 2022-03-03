@@ -388,7 +388,7 @@ export default {
     },
     pensionBalance() {
       const balance = this.pensionWallet?.amount || 0;
-      return this.$t(`meta.${TokenSymbols.WUSD}Count`, { count: balance });
+      return this.$t(`meta.coins.count.${TokenSymbols.WUSD}Count`, { count: balance });
     },
     totalPages() {
       const len = this.history.length;

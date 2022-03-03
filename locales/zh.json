@@ -933,6 +933,8 @@
       "depositInfo": "Deposit info",
       "withdrawInfo": "Withdrawal info"
     },
+    "buyAuction": "Transfer info",
+    "recipient": "Recipient address",
     "waitRoleCooldown": "You cannot change roles more than once a month. You can change role after {date} {time}",
     "settingsInfo": "Settings Info",
     "pleaseEnable2FA": "Please, enable TWO-Step authentication",
@@ -1523,6 +1525,7 @@
     }
   },
   "saving": {
+    "guestPlug": "??",
     "withdrawModalBody": "锁定资金金额和累计利息将记入您的钱包",
     "workQuestSavings": "WorkQuest Savings",
     "lendAndEarn": "借贷和赚取",

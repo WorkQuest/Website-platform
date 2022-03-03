@@ -220,11 +220,11 @@ export default {
     cards() {
       return [
         {
-          title: this.$t(`meta.${this.poolData.stakeTokenSymbol || this.slug}Count`, { count: this.NumberWithSpaces(this.poolData.totalStaked) }),
+          title: this.$t(`meta.coins.count.${this.poolData.stakeTokenSymbol || this.slug}Count`, { count: this.NumberWithSpaces(this.poolData.totalStaked) }),
           subtitle: this.$t('staking.totalStaked'),
         },
         {
-          title: this.$t(`meta.${this.poolData.tokenSymbol || this.slug}Count`, { count: this.NumberWithSpaces(this.poolData.totalDistributed) }),
+          title: this.$t(`meta.coins.count.${this.poolData.tokenSymbol || this.slug}Count`, { count: this.NumberWithSpaces(this.poolData.totalDistributed) }),
           subtitle: this.$t('staking.totalDistributed'),
         },
       ];
@@ -253,15 +253,15 @@ export default {
       const data = [
         {
           name: this.$t('staking.userInformationCards.staked'),
-          about: this.$t(`meta.${this.slug}Count`, { count: this.NumberWithSpaces(this.userInfo.staked || '') }),
+          about: this.$t(`meta.coins.count.${this.slug}Count`, { count: this.NumberWithSpaces(this.userInfo.staked || '') }),
         },
         {
           name: this.$t('staking.userInformationCards.yourBalance'),
-          about: this.$t(`meta.${this.slug}Count`, { count: this.NumberWithSpaces(this.userInfo.balance || '') }),
+          about: this.$t(`meta.coins.count.${this.slug}Count`, { count: this.NumberWithSpaces(this.userInfo.balance || '') }),
         },
         {
           name: this.$t('mining.reward'),
-          about: this.$t(`meta.${this.slug}Count`, { count: this.NumberWithSpaces(this.userInfo.claim || '') }),
+          about: this.$t(`meta.coins.count.${this.slug}Count`, { count: this.NumberWithSpaces(this.userInfo.claim || '') }),
         },
       ];
       if (this.userInfo.date && this.userInfo.staked !== '0') {
@@ -293,11 +293,11 @@ export default {
       return [
         {
           name: this.$t('staking.stakeCards.stakeMin'),
-          about: this.$t(`meta.${this.slug}Count`, { count: this.NumberWithSpaces(this.poolData.minStake || '') }),
+          about: this.$t(`meta.coins.count.${this.slug}Count`, { count: this.NumberWithSpaces(this.poolData.minStake || '') }),
         },
         {
           name: this.$t('staking.stakeCards.stakeLimit'),
-          about: this.$t(`meta.${this.slug}Count`, { count: this.NumberWithSpaces(this.poolData.maxStake || '') }),
+          about: this.$t(`meta.coins.count.${this.slug}Count`, { count: this.NumberWithSpaces(this.poolData.maxStake || '') }),
         },
         {
           name: this.$t('staking.stakeCards.periodUpdate'),

@@ -932,6 +932,8 @@
       "depositInfo": "Deposit info",
       "withdrawInfo": "Withdrawal info"
     },
+    "buyAuction": "Transfer info",
+    "recipient": "Recipient address",
     "waitRoleCooldown": "You cannot change roles more than once a month. You can change role after {date} {time}",
     "settingsInfo": "Settings Info",
     "pleaseEnable2FA": "Please, enable TWO-Step authentication",
@@ -1520,6 +1522,7 @@
     }
   },
   "saving": {
+    "guestPlug": "??",
     "withdrawModalBody": "লক করা তহবিলের পরিমাণ এবং সঞ্চিত সুদ আপনার ওয়ালেটে জমা হবে",
     "workQuestSavings": "WorkQuest Savings",
     "lendAndEarn": "ধার দিন এবং উপার্জন করুন",

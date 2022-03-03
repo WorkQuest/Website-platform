@@ -932,6 +932,8 @@
       "depositInfo": "Deposit info",
       "withdrawInfo": "Withdrawal info"
     },
+    "buyAuction": "Transfer info",
+    "recipient": "Recipient address",
     "waitRoleCooldown": "You cannot change roles more than once a month. You can change role after {date} {time}",
     "settingsInfo": "Settings Info",
     "pleaseEnable2FA": "Please, enable TWO-Step authentication",
@@ -1521,6 +1523,7 @@
     }
   },
   "saving": {
+    "guestPlug": "??",
     "withdrawModalBody": "O montante dos fundos bloqueados e os juros acumulados serão creditados na sua carteira",
     "workQuestSavings": "WorkQuest Savings",
     "lendAndEarn": "Emprestar e Ganhar",
