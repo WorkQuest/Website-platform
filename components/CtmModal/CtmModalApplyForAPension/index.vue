@@ -13,7 +13,7 @@
           </div>
           <base-field
             v-model="depositPercentFromAQuest"
-            :placeholder="$tc('meta.percentsCount', 13)"
+            :placeholder="$tc('meta.units.percentsCount', 13)"
             class="content__input"
             :name="$t('modals.depositPercent')"
             rules="required|percent|decimalPlaces:18"
@@ -25,7 +25,7 @@
           </div>
           <base-field
             v-model="firstDepositAmount"
-            :placeholder="$tc('meta.WUSDCount', 130)"
+            :placeholder="$tc('meta.coins.count.WUSDCount', 130)"
             class="content__input"
             :name="$t('modals.firstDepositAmountField')"
             rules="decimal"

@@ -226,17 +226,17 @@ export default {
       return [
         {
           name: this.$t('meta.docName'),
-          size: this.$tc('meta.mb', { count: '1.2' }),
+          size: this.$tc('meta.units.mb', 1.2),
           url: '',
         },
         {
           name: this.$t('meta.docName'),
-          size: this.$tc('meta.mb', { count: '1.2' }),
+          size: this.$tc('meta.units.mb', 1.2),
           url: '',
         },
         {
           name: this.$t('meta.docName'),
-          size: this.$tc('meta.mb', { count: '1.2' }),
+          size: this.$tc('meta.units.mb', 1.2),
           url: '',
         },
       ];
@@ -244,24 +244,24 @@ export default {
     interestRate() {
       return [
         {
-          perc: this.$tc('meta.percents', 5.31),
-          date: this.$tc('meta.days', 7),
+          perc: this.$tc('meta.units.percents', 5.31),
+          date: this.$tc('meta.units.days', 7),
         },
         {
-          perc: this.$tc('meta.percents', 5.48),
-          date: this.$tc('meta.days', 14),
+          perc: this.$tc('meta.units.percents', 5.48),
+          date: this.$tc('meta.units.days', 14),
         },
         {
-          perc: this.$tc('meta.percents', 5.66),
-          date: this.$tc('meta.days', 30),
+          perc: this.$tc('meta.units.percents', 5.66),
+          date: this.$tc('meta.units.days', 30),
         },
         {
-          perc: this.$tc('meta.percents', 6),
-          date: this.$tc('meta.days', 90),
+          perc: this.$tc('meta.units.percents', 6),
+          date: this.$tc('meta.units.days', 90),
         },
         {
-          perc: this.$tc('meta.percents', 6.5),
-          date: this.$tc('meta.days', 180),
+          perc: this.$tc('meta.units.percents', 6.5),
+          date: this.$tc('meta.units.days', 180),
         },
       ];
     },

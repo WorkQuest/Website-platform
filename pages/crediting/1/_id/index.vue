@@ -120,14 +120,14 @@ export default {
       return [
         {
           activity: this.$t('crediting.credTable.activity'),
-          amount: this.$t('meta.WUSDCount', { count: 100 }),
+          amount: this.$t('meta.coins.count.WUSDCount', { count: 100 }),
           time: 'Jun 12 2021',
           sender: 'dfgd6...fs65ds',
           txHash: 'dfgd6...fs65ds',
         },
         {
           activity: this.$t('crediting.credTable.activity'),
-          amount: this.$t('meta.WUSDCount', { count: 100 }),
+          amount: this.$t('meta.coins.count.WUSDCount', { count: 100 }),
           time: 'Jun 12 2021',
           sender: 'dfgd6...fs65ds',
           txHash: 'dfgd6...fs65ds',
@@ -201,11 +201,11 @@ export default {
     cards() {
       return [
         {
-          title: this.$tc('meta.USDCount', { count: '114.92' }),
+          title: this.$tc('meta.coins.count.USDCount', { count: '114.92' }),
           subtitle: this.$t('crediting.liquidationPrice'),
         },
         {
-          title: this.$tc('meta.percentsCount', { count: '171.65' }),
+          title: this.$tc('meta.units.percentsCount', 171.65),
           subtitle: this.$t('crediting.collateralizationRatio'),
         },
       ];
@@ -217,14 +217,14 @@ export default {
           blocks: [
             {
               name: this.$t('crediting.ethLocked'),
-              about: this.$tc('meta.ETHCount', { count: '3.00' }),
+              about: this.$tc('meta.coins.count.ETHCount', { count: '3.00' }),
               btn: {
                 name: this.$t('meta.deposit'),
               },
             },
             {
               name: this.$t('crediting.ableToWithdraw'),
-              about: this.$tc('meta.ETHCount', { count: '3.00' }),
+              about: this.$tc('meta.coins.count.ETHCount', { count: '3.00' }),
               btn: {
                 name: this.$t('meta.withdraw'),
               },
@@ -236,14 +236,14 @@ export default {
           blocks: [
             {
               name: this.$t('crediting.outstandingWusdDebt'),
-              about: this.$tc('meta.WUSDCount', '3.00'),
+              about: this.$tc('meta.coins.count.WUSDCount', '3.00'),
               btn: {
                 name: this.$t('crediting.payback'),
               },
             },
             {
               name: this.$t('crediting.availableToGenerate'),
-              about: this.$tc('meta.WUSDCount', '5 6543.23'),
+              about: this.$tc('meta.coins.count.WUSDCount', '5 6543.23'),
               btn: {
                 name: this.$t('crediting.generate'),
               },

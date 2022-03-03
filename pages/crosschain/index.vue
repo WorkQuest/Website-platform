@@ -259,11 +259,11 @@ export default {
       return [
         {
           icon: require('~/assets/img/ui/ethereum.svg'),
-          title: this.$t('meta.eth'),
+          title: this.$t('meta.coins.eth'),
         },
         {
           icon: require('~/assets/img/ui/bnb_yellow.svg'),
-          title: this.$t('meta.bsc'),
+          title: this.$t('meta.coins.bsc'),
         },
       ];
     },

@@ -96,7 +96,7 @@
               <div class="third__wrapper">
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ $tc('meta.dollarsCount', !totalLiquidityUSD ? $t('mining.loading') : Floor(totalLiquidityUSD)) }}
+                    {{ $tc('meta.coins.count.dollarsCount', !totalLiquidityUSD ? $t('mining.loading') : Floor(totalLiquidityUSD)) }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('mining.totalLiquidity') }}
@@ -104,7 +104,7 @@
                 </div>
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ isLoadingAPY ? $t('mining.loading') : $tc('meta.WQTCount', profitWQT) }}
+                    {{ isLoadingAPY ? $t('mining.loading') : $tc('meta.coins.count.WQTCount', profitWQT) }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('mining.APY') }}
@@ -118,7 +118,7 @@
               <div class="third__wrapper">
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ $tc('meta.LPCount', stakedAmount) }}
+                    {{ $tc('meta.coins.count.LPCount', stakedAmount) }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('meta.stake') }}
@@ -126,7 +126,7 @@
                 </div>
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ $tc('meta.WQTCount', rewardAmount) }}
+                    {{ $tc('meta.coins.count.WQTCount', rewardAmount) }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('mining.reward') }}

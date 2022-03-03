@@ -273,17 +273,17 @@ export default {
         if (minutes <= 60) {
           data.push({
             name: this.$t('staking.stakingCards.duration'),
-            about: this.$t('meta.minutes', { count: minutes >= 0 ? minutes : 0 }),
+            about: this.$t('meta.units.minutes', { count: minutes >= 0 ? minutes : 0 }),
           });
         } else if (hours <= 24) {
           data.push({
             name: this.$t('staking.stakingCards.duration'),
-            about: this.$t('meta.hours', { count: hours >= 0 ? hours : 0 }),
+            about: this.$t('meta.units.hours', { count: hours >= 0 ? hours : 0 }),
           });
         } else {
           data.push({
             name: this.$t('staking.stakingCards.duration'),
-            about: this.$t('meta.days', { count: days >= 0 ? days : 0 }),
+            about: this.$t('meta.units.days', { count: days >= 0 ? days : 0 }),
           });
         }
       }
@@ -321,9 +321,9 @@ export default {
   methods: {
     getTimeFromMin(min) {
       if (!min) return '';
-      if (Math.floor(min / 60 / 24) > 0) return this.$t('meta.days', { count: min / 60 / 24 });
-      if (Math.floor(min / 60) > 0) return this.$t('meta.hours', { count: Math.floor(min / 60) });
-      return this.$t('meta.hours', { count: min });
+      if (Math.floor(min / 60 / 24) > 0) return this.$t('meta.units.days', { count: min / 60 / 24 });
+      if (Math.floor(min / 60) > 0) return this.$t('meta.units.hours', { count: Math.floor(min / 60) });
+      return this.$t('meta.units.hours', { count: min });
     },
     async loadData() {
       this.SetLoader(true);

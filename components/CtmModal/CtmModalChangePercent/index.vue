@@ -17,7 +17,7 @@
           </div>
           <base-field
             v-model="amount"
-            :placeholder="$tc('meta.percentsCount', 15)"
+            :placeholder="$tc('meta.units.percentsCount', 15)"
             class="content__input"
             :name="$t('modals.currentPercentErr')"
             rules="required|percent|decimalPlaces:18"

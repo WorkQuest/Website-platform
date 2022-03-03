@@ -50,23 +50,23 @@ export default {
       abouts: [
         {
           title: this.$t('modals.currencyDetails'),
-          subtitle: this.$t('meta.eth'),
+          subtitle: this.$t('meta.coins.eth'),
         },
         {
           title: this.$t('modals.depositing'),
-          subtitle: this.$tc('meta.ETHCount', 1),
+          subtitle: this.$tc('meta.coins.count.ETHCount', 1),
         },
         {
           title: this.$t('modals.generatingDetails'),
-          subtitle: this.$tc('meta.WUSDCount', 1000),
+          subtitle: this.$tc('meta.coins.count.WUSDCount', 1000),
         },
         {
           title: this.$t('modals.collateralizationRatio'),
-          subtitle: this.$tc('meta.percentsCount', 0),
+          subtitle: this.$tc('meta.units.percentsCount', 0),
         },
         {
           title: this.$t('modals.liquidationRatio'),
-          subtitle: this.$tc('meta.percentsCount', 150),
+          subtitle: this.$tc('meta.units.percentsCount', 150),
         },
         {
           title: this.$t('modals.liquidationPrice'),
@@ -78,7 +78,7 @@ export default {
         },
         {
           title: this.$t('modals.stabilityFee'),
-          subtitle: this.$tc('meta.percentsCount', '5.85'),
+          subtitle: this.$tc('meta.units.percentsCount', 5.85),
         },
       ],
     };

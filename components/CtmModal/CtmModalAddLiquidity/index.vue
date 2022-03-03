@@ -15,7 +15,7 @@
             </div>
             <base-field
               v-model="amountOfWqt"
-              :placeholder="$tc('meta.WQTCount', 1000)"
+              :placeholder="$tc('meta.coins.count.WQTCount', 1000)"
               class="field__input"
               rules="required|decimal"
               :name="$t('meta.amount.amountOfWQT')"
@@ -27,7 +27,7 @@
               <base-field
                 v-if="options.isBNB"
                 v-model="amountOfBnb"
-                :placeholder="$tc('meta.BNBCount', 10)"
+                :placeholder="$tc('meta.coins.count.BNBCount', 10)"
                 class="field__input"
                 rules="required|decimal"
                 :name="$t('meta.amountOfBNB')"
@@ -35,7 +35,7 @@
               <base-field
                 v-else
                 v-model="amountOfEth"
-                :placeholder="$tc('meta.ETHCount', 10)"
+                :placeholder="$tc('meta.coins.count.ETHCount', 10)"
                 class="field__input"
                 rules="required|decimal"
                 :name="$t('meta.amountOfETH')"

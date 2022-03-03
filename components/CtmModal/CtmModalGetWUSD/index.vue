@@ -133,9 +133,9 @@ export default {
       amountCollateral: '',
       conversionPercent: '',
       checkpoints: [
-        { name: this.$t('meta.bnb'), id: 1 },
-        { name: this.$t('meta.eth'), id: 2 },
-        { name: this.$t('meta.wqt'), id: 3 },
+        { name: this.$t('meta.coins.bnb'), id: 1 },
+        { name: this.$t('meta.coins.eth'), id: 2 },
+        { name: this.$t('meta.coins.wqt'), id: 3 },
       ],
     };
   },

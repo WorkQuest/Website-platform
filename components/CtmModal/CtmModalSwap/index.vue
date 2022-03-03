@@ -116,12 +116,12 @@ export default {
         {
           id: 0,
           icon: require('~/assets/img/ui/bnb-logo.svg'),
-          title: this.$t('meta.bsc'),
+          title: this.$t('meta.coins.bsc'),
         },
         {
           id: 1,
           icon: require('~/assets/img/ui/ethereum.svg'),
-          title: this.$t('meta.eth'),
+          title: this.$t('meta.coins.eth'),
         },
       ];
     },

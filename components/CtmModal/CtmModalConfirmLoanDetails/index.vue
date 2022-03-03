@@ -50,15 +50,15 @@ export default {
       abouts: [
         {
           title: this.$t('modals.currencyDetails'),
-          subtitle: this.$t('meta.eth'),
+          subtitle: this.$t('meta.coins.eth'),
         },
         {
           title: this.$t('modals.loan'),
-          subtitle: this.$tc('meta.ETHCount', 1),
+          subtitle: this.$tc('meta.coins.count.ETHCount', 1),
         },
         {
           title: this.$t('modals.percentage'),
-          subtitle: this.$tc('meta.percentsCount', 150),
+          subtitle: this.$tc('meta.units.percentsCount', 150),
         },
         {
           title: this.$t('modals.loanTerm'),

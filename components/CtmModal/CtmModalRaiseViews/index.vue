@@ -43,7 +43,7 @@
             {{ $t('modals.estimatedPayment') }}
           </div>
           <div class="container__cost">
-            {{ $tc('meta.WUSDCount', 120) }}
+            {{ $tc('meta.coins.count.WUSDCount', 120) }}
           </div>
         </div>
         <div class="content__buttons buttons">

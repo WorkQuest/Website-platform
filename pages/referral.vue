@@ -20,7 +20,7 @@
                   {{ $t('referral.referralReward') }}
                 </div>
                 <div class="info-block__tokens">
-                  {{ $tc('meta.WQTCount', 0) }}
+                  {{ $tc('meta.coins.count.WQTCount', 0) }}
                 </div>
               </div>
               <div class="info-block__btn-wrap">
@@ -47,7 +47,7 @@
                 </div>
               </div>
               <div class="user__value_green">
-                {{ $tc('meta.plusCount', $tc('meta.WQTCount', 0)) }}
+                {{ $tc('meta.units.plusCount', $tc('meta.coins.count.WQTCount', 0)) }}
               </div>
             </div>
           </div>
@@ -79,7 +79,7 @@
               </div>
               <div class="info-block__avatar">
                 <div class="info-block__more">
-                  {{ $tc('meta.plusCount', 0) }}
+                  {{ $tc('meta.units.plusCount', 0) }}
                 </div>
               </div>
             </div>
@@ -206,7 +206,7 @@ export default {
           userID: this.$t('meta.userId'),
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
-          amount: this.$tc('meta.WQTCount', 12),
+          amount: this.$tc('meta.coins.count.WQTCount', 12),
           status: this.$t('meta.success'),
         },
         {
@@ -215,7 +215,7 @@ export default {
           userID: this.$t('meta.userId'),
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
-          amount: this.$tc('meta.WQTCount', 12),
+          amount: this.$tc('meta.coins.count.WQTCount', 12),
           status: this.$t('meta.success'),
         },
         {
@@ -224,7 +224,7 @@ export default {
           userID: this.$t('meta.userId'),
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
-          amount: this.$tc('meta.WQTCount', 12),
+          amount: this.$tc('meta.coins.count.WQTCount', 12),
           status: this.$t('meta.success'),
         },
         {
@@ -233,7 +233,7 @@ export default {
           userID: this.$t('meta.userId'),
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
-          amount: this.$tc('meta.WQTCount', 12),
+          amount: this.$tc('meta.coins.count.WQTCount', 12),
           status: this.$t('meta.success'),
         },
         {
@@ -242,7 +242,7 @@ export default {
           userID: this.$t('meta.userId'),
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
-          amount: this.$tc('meta.WQTCount', 12),
+          amount: this.$tc('meta.coins.count.WQTCount', 12),
           status: this.$t('meta.success'),
         },
         {
@@ -251,7 +251,7 @@ export default {
           userID: this.$t('meta.userId'),
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
-          amount: this.$tc('meta.WQTCount', 12),
+          amount: this.$tc('meta.coins.count.WQTCount', 12),
           status: this.$t('meta.success'),
         },
         {
@@ -260,7 +260,7 @@ export default {
           userID: this.$t('meta.userId'),
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
-          amount: this.$tc('meta.WQTCount', 12),
+          amount: this.$tc('meta.coins.count.WQTCount', 12),
           status: this.$t('meta.success'),
         },
         {
@@ -269,7 +269,7 @@ export default {
           userID: this.$t('meta.userId'),
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
-          amount: this.$tc('meta.WQTCount', 12),
+          amount: this.$tc('meta.coins.count.WQTCount', 12),
           status: this.$t('meta.success'),
         },
         {
@@ -278,7 +278,7 @@ export default {
           userID: this.$t('meta.userId'),
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
-          amount: this.$tc('meta.WQTCount', 12),
+          amount: this.$tc('meta.coins.count.WQTCount', 12),
           status: this.$t('meta.success'),
         },
         {
@@ -287,7 +287,7 @@ export default {
           userID: this.$t('meta.userId'),
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
-          amount: this.$tc('meta.WQTCount', 12),
+          amount: this.$tc('meta.coins.count.WQTCount', 12),
           status: this.$t('meta.success'),
         },
         {
@@ -296,7 +296,7 @@ export default {
           userID: this.$t('meta.userId'),
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
-          amount: this.$tc('meta.WQTCount', 12),
+          amount: this.$tc('meta.coins.count.WQTCount', 12),
           status: this.$t('meta.success'),
         },
         {
@@ -305,7 +305,7 @@ export default {
           userID: this.$t('meta.userId'),
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
-          amount: this.$tc('meta.WQTCount', 12),
+          amount: this.$tc('meta.coins.count.WQTCount', 12),
           status: this.$t('meta.success'),
         },
         {
@@ -314,7 +314,7 @@ export default {
           userID: this.$t('meta.userId'),
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
-          amount: this.$tc('meta.WQTCount', 12),
+          amount: this.$tc('meta.coins.count.WQTCount', 12),
           status: this.$t('meta.success'),
         },
       ],

@@ -16,12 +16,12 @@
               {{ $t('saving.depositAmount') }}
             </div>
             <div class="info-block__tokens">
-              {{ $tc('meta.WUSDCount', "4 562") }}
+              {{ $tc('meta.coins.count.WUSDCount', "4 562") }}
             </div>
           </div>
           <div class="info-block__small_right">
             <div class="info-block__perc">
-              {{ $tc('meta.plusPercents', { count: "4,51" }) }}
+              {{ $tc('meta.units.plusPercents', { count: "4,51" }) }}
             </div>
             <div class="info-block__period">
               {{ $t('pension.everyYear') }}
@@ -118,7 +118,7 @@ export default {
           userID: this.$t('meta.userId'),
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
-          amount: this.$tc('meta.WQTCount', 12),
+          amount: this.$tc('meta.coins.count.WQTCount', 12),
           status: this.$t('meta.success'),
         },
         {
@@ -127,7 +127,7 @@ export default {
           userID: this.$t('meta.userId'),
           txHash: this.$t('meta.txHash'),
           time: this.$t('meta.time'),
-          amount: this.$tc('meta.WQTCount', 12),
+          amount: this.$tc('meta.coins.count.WQTCount', 12),
           status: this.$t('meta.success'),
         },
       ],

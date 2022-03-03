@@ -37,7 +37,7 @@
                 {{ $t('pension.currentPercentFromAQuest') }}
               </div>
               <div class="info-block__tokens">
-                {{ $t('meta.percents', { count: getFeePercent() }) }}
+                {{ $t('meta.units.percents', { count: getFeePercent() }) }}
               </div>
               <base-btn
                 class="btn_bl"
@@ -49,7 +49,7 @@
             <div class="info-block__third_rate">
               <div class="info-block__small">
                 <div class="info-block__perc">
-                  {{ $t('meta.plusPercents', { count: 6 }) }}
+                  {{ $t('meta.units.plusPercents', { count: 6 }) }}
                 </div>
                 <div class="info-block__period">
                   {{ $t('pension.year') }}
@@ -138,7 +138,7 @@
             </div>
             <div class="info-block__small_right">
               <div class="info-block__perc">
-                {{ $t("meta.plusPercents", { count: 6 }) }}
+                {{ $t("meta.units.plusPercents", { count: 6 }) }}
               </div>
               <div class="info-block__period">
                 {{ $t('pension.year') }}
@@ -441,18 +441,18 @@ export default {
 
       const minutes = ends.diff(now, 'minutes');
       if (minutes <= 60) {
-        return this.$t('meta.minutes', { count: minutes });
+        return this.$t('meta.units.minutes', { count: minutes });
       }
 
       const hours = ends.diff(now, 'hours');
       if (hours <= 24) {
-        return this.$t('meta.hours', { count: hours });
+        return this.$t('meta.units.hours', { count: hours });
       }
 
       const years = ends.diff(now, 'years');
       const days = ends.diff(now, 'days') - years * 365;
-      const y = years > 0 ? `${this.$t('meta.years', { count: years })} ` : '';
-      const d = days >= 0 ? this.$t('meta.days', { count: days }) : this.$t('meta.days', { count: 0 });
+      const y = years > 0 ? `${this.$t('meta.units.years', { count: years })} ` : '';
+      const d = days >= 0 ? this.$t('meta.units.days', { count: days }) : this.$t('meta.units.days', { count: 0 });
       return `${y}${d}`;
     },
     getFeePercent() {

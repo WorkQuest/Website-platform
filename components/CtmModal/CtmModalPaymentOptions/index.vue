@@ -128,8 +128,8 @@ export default {
     }),
     currency() {
       return [
-        { title: this.$t('meta.wusd'), icon: require('~/assets/img/ui/wusd.svg') },
-        { title: this.$t('meta.wqt'), icon: require('~/assets/img/ui/wqt.svg') },
+        { title: this.$t('meta.coins.wusd'), icon: require('~/assets/img/ui/wusd.svg') },
+        { title: this.$t('meta.coins.wqt'), icon: require('~/assets/img/ui/wqt.svg') },
       ];
     },
     wallet() {

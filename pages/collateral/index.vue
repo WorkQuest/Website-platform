@@ -162,17 +162,17 @@ export default {
       return [
         {
           name: this.$t('meta.docName'),
-          size: this.$tc('meta.mb', '1.2'),
+          size: this.$tc('meta.units.mb', 1.2),
           url: '',
         },
         {
           name: this.$t('meta.docName'),
-          size: this.$tc('meta.mb', '1.2'),
+          size: this.$tc('meta.units.mb', 1.2),
           url: '',
         },
         {
           name: this.$t('meta.docName'),
-          size: this.$tc('meta.mb', '1.2'),
+          size: this.$tc('meta.units.mb', 1.2),
           url: '',
         },
       ];
@@ -180,15 +180,15 @@ export default {
     cards() {
       return [
         {
-          title: this.$tc('meta.dollarsCount', '417.1M'),
+          title: this.$tc('meta.coins.count.dollarsCount', '417.1M'),
           subtitle: this.$t('collateral.marketSize'),
         },
         {
-          title: this.$tc('meta.percentsCount', '4.31'),
+          title: this.$tc('meta.units.percentsCount', 4.31),
           subtitle: this.$t('meta.deposit'),
         },
         {
-          title: this.$tc('meta.percentsCount', 5),
+          title: this.$tc('meta.units.percentsCount', 5),
           subtitle: this.$t('meta.percent'),
         },
       ];

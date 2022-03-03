@@ -124,17 +124,17 @@ export default {
       return [
         {
           name: this.$t('meta.docName'),
-          size: this.$tc('meta.mb', { count: '1.2' }),
+          size: this.$tc('meta.units.mb', 1.2),
           url: '',
         },
         {
           name: this.$t('meta.docName'),
-          size: this.$tc('meta.mb', { count: '1.2' }),
+          size: this.$tc('meta.units.mb', 1.2),
           url: '',
         },
         {
           name: this.$t('meta.docName'),
-          size: this.$tc('meta.mb', { count: '1.2' }),
+          size: this.$tc('meta.units.mb', 1.2),
           url: '',
         },
       ];

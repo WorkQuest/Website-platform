@@ -126,42 +126,42 @@ export default {
       generate: '',
       checkpoints: [
         {
-          name: this.$t('meta.bnb'),
+          name: this.$t('meta.coins.bnb'),
           id: 1,
         },
         {
-          name: this.$t('meta.eth'),
+          name: this.$t('meta.coins.eth'),
           id: 2,
         },
         {
-          name: this.$t('meta.wqt'),
+          name: this.$t('meta.coins.wqt'),
           id: 3,
         },
       ],
       abouts: [
         {
           title: this.$t('modals.collateralization'),
-          subtitle: this.$tc('meta.percentsCount', 0),
+          subtitle: this.$tc('meta.units.percentsCount', 0),
         },
         {
           title: this.$t('modals.liquidationPrice'),
-          subtitle: this.$tc('meta.percentsCount', 0),
+          subtitle: this.$tc('meta.units.percentsCount', 0),
         },
         {
           title: this.$t('modals.currentPrice'),
-          subtitle: this.$tc('meta.percentsCount', 0),
+          subtitle: this.$tc('meta.units.percentsCount', 0),
         },
         {
           title: this.$t('modals.stabilityFee'),
-          subtitle: this.$tc('meta.percentsCount', 0),
+          subtitle: this.$tc('meta.units.percentsCount', 0),
         },
         {
           title: this.$t('modals.liquidationRatio'),
-          subtitle: this.$tc('meta.percentsCount', 0),
+          subtitle: this.$tc('meta.units.percentsCount', 0),
         },
         {
           title: this.$t('modals.liquidationPenalty'),
-          subtitle: this.$tc('meta.percentsCount', 0),
+          subtitle: this.$tc('meta.units.percentsCount', 0),
         },
       ],
     };

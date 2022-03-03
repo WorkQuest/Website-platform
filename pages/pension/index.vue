@@ -144,7 +144,7 @@ export default {
     documents() {
       return Array(3).fill({
         name: this.$tc('meta.docName'),
-        size: this.$tc('meta.mb', 1.2),
+        size: this.$tc('meta.units.mb', 1.2),
         url: '',
       });
     },
@@ -153,14 +153,14 @@ export default {
       const t = this.lockTime;
       let time;
 
-      if (t.y) time = this.$tc('meta.years', t.y);
-      else if (t.d) time = this.$tc('meta.days', t.d);
-      else if (t.h) time = this.$tc('meta.hours', t.h);
-      else if (t.m) time = this.$tc('meta.minutes', t.m);
+      if (t.y) time = this.$tc('meta.units.years', t.y);
+      else if (t.d) time = this.$tc('meta.units.days', t.d);
+      else if (t.h) time = this.$tc('meta.units.hours', t.h);
+      else if (t.m) time = this.$tc('meta.units.minutes', t.m);
 
       return [
         {
-          title: this.$tc('meta.percents', p),
+          title: this.$tc('meta.units.percents', p),
           subtitle: this.$t('pension.annualPercent'),
         },
         {

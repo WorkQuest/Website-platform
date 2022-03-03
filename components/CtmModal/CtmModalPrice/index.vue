@@ -21,7 +21,7 @@
               <base-field
                 v-model="priceFrom"
                 class="grid__input"
-                :placeholder="$tc('meta.WUSDCount', 0)"
+                :placeholder="$tc('meta.coins.count.WUSDCount', 0)"
                 rules="decimal|max_value:99999999999999"
                 :name="$t('meta.fromBig')"
               />
@@ -39,7 +39,7 @@
               <base-field
                 v-model="priceTo"
                 class="grid__field"
-                :placeholder="$tc('meta.WUSDCount', 10000)"
+                :placeholder="$tc('meta.coins.count.WUSDCount', 10000)"
                 :rules="`decimal${priceFrom ? '|min_value:'+priceFrom : ''}|max_value:99999999999999`"
                 :name="$t('meta.toBig')"
               />
