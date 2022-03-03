@@ -904,7 +904,7 @@ export default {
     }
     &__table {
       overflow: auto;
-      width: calc(100vw - 35px);
+      width: calc(100vw - 37px);
 
       .table {
         width: 1024px;
