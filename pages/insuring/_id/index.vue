@@ -258,9 +258,9 @@ export default {
     return {
       isMobileChatOpened: false,
       points: [
-        this.$t('meta.lorem'),
-        this.$t('meta.lorem'),
-        this.$t('meta.lorem'),
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
       ],
       cards: [
         {
@@ -298,7 +298,7 @@ export default {
             name: this.$t('insuring.userName'),
             url: require('~/assets/img/temp/avatar-small.jpg'),
           },
-          text: this.$t('meta.lorem'),
+          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
           time: '12.23',
         },
         {
@@ -306,7 +306,7 @@ export default {
             name: this.$t('insuring.userName'),
             url: require('~/assets/img/temp/avatar-small.jpg'),
           },
-          text: this.$t('meta.lorem'),
+          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
           time: '12.23',
         },
         {
@@ -314,7 +314,7 @@ export default {
             name: this.$t('insuring.userName'),
             url: require('~/assets/img/temp/avatar-small.jpg'),
           },
-          text: this.$t('meta.lorem'),
+          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
           time: '12.23',
         },
         {
@@ -322,7 +322,7 @@ export default {
             name: this.$t('insuring.userName'),
             url: require('~/assets/img/temp/avatar-small.jpg'),
           },
-          text: this.$t('meta.lorem'),
+          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
           time: '12.23',
         },
         {
@@ -330,7 +330,7 @@ export default {
             name: this.$t('insuring.userName'),
             url: require('~/assets/img/temp/avatar-small.jpg'),
           },
-          text: this.$t('meta.lorem'),
+          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
           time: '12.23',
         },
         {
@@ -338,7 +338,7 @@ export default {
             name: this.$t('insuring.userName'),
             url: require('~/assets/img/temp/avatar-small.jpg'),
           },
-          text: this.$t('meta.lorem'),
+          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
           time: '12.23',
         },
       ],

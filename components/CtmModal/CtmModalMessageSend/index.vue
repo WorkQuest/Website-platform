@@ -14,7 +14,7 @@
             {{ $t('modals.messageSend') }}
           </div>
           <div class="ctm-modal__desc">
-            {{ $t('meta.lorem') }}
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor
           </div>
           <base-btn
             class="email__action"

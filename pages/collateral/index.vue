@@ -6,7 +6,7 @@
           {{ $t('collateral.lending') }}
         </div>
         <div class="title_sub">
-          {{ $t('meta.lorem') }}
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor
         </div>
       </div>
       <div class="collateral-page__content">
@@ -30,7 +30,7 @@
           </div>
           <div class="info-block__about">
             <div class="info-block__subtitle">
-              {{ $t('meta.lorem') }}
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor
             </div>
             <img
               class="info-block-image"
@@ -53,7 +53,7 @@
           </div>
           <div class="info-block__about">
             <div class="info-block__subtitle">
-              {{ $t('meta.lorem') }}
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor
             </div>
             <img
               class="info-block-image"
