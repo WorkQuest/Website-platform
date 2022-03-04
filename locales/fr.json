@@ -82,7 +82,8 @@
       "acceptCompletedWorkOnQuest": "Accept completed work on quest",
       "closeQuest": "Close quest",
       "goToChat": "Accéder à la messagerie instantanée",
-      "view": "Afficher"
+      "view": "Afficher",
+      "add": "Ajouter"
     },
     "warning": "Warning",
     "typeYourMessage": "Type your message",
@@ -139,7 +140,6 @@
     "crediting": "Prêt",
     "portfolio": "Portefeuille",
     "price": "Prix",
-    "add": "Ajouter",
     "sendARequest": "Envoyer une demande",
     "aboutUs": "About Us",
     "signIn": "S'identifier",

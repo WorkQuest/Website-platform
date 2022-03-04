@@ -82,7 +82,8 @@
       "acceptCompletedWorkOnQuest": "Accept completed work on quest",
       "closeQuest": "Close quest",
       "goToChat": "চ্যাটে যান",
-      "view": "দেখুন"
+      "view": "দেখুন",
+      "add": "যোগ করুন"
     },
     "warning": "Warning",
     "typeYourMessage": "Type your message",
@@ -139,7 +140,6 @@
     "crediting": "ধার দেওয়া",
     "portfolio": "পোর্টফোলিও",
     "price": "দাম",
-    "add": "যোগ করুন",
     "sendARequest": "একটি অনুরোধ পাঠান",
     "aboutUs": "About Us",
     "signIn": "সাইন ইন করুন",

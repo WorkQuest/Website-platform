@@ -41,7 +41,10 @@
       "hours": "{count} hours",
       "years": "{count} years",
       "days": "{count} days",
-      "votesCount": "{count} votes"
+      "votesCount": "{count} votes",
+      "distance": {
+        "m": "m"
+      }
     },
     "btns": {
       "back": "वापस",
@@ -80,9 +83,7 @@
       "closeQuest": "Close quest",
       "goToChat": "चैट पर जाएं",
       "view": "देखें",
-      "distance": {
-        "m": "m"
-      }
+      "add": "जोड़ें"
     },
     "warning": "Warning",
     "typeYourMessage": "Type your message",
@@ -139,7 +140,6 @@
     "crediting": "कर्ज",
     "portfolio": "पोर्टफोलियो",
     "price": "कीमत",
-    "add": "जोड़ें",
     "sendARequest": "अनुरोध भेजें",
     "aboutUs": "About Us",
     "signIn": "साइन इन करें",

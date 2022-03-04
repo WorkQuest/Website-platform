@@ -83,7 +83,8 @@
       "closeQuest": "Close quest",
       "goToChat": "الانتقال إلى الدردشة",
       "responded": "إرسال الرد",
-      "view": "عرض"
+      "view": "عرض",
+      "add": "إضافة"
     },
     "warning": "Warning",
     "typeYourMessage": "Type your message",
@@ -140,7 +141,6 @@
     "crediting": "الإقراض",
     "portfolio": "نماذج الأعمال",
     "price": "السعر",
-    "add": "إضافة",
     "sendARequest": "إرسال طلب",
     "aboutUs": "About Us",
     "signIn": "تسجيل الدخول",

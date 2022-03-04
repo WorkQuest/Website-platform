@@ -41,7 +41,10 @@
       "hours": "{count} hours",
       "years": "{count} years",
       "days": "{count} days",
-      "votesCount": "{count} votos"
+      "votesCount": "{count} votos",
+      "distance": {
+        "m": "m"
+      }
     },
     "btns": {
       "back": "Volver",
@@ -80,9 +83,7 @@
       "closeQuest": "Close quest",
       "goToChat": "Ir al chat",
       "view": "Ver",
-      "distance": {
-        "m": "m"
-      }
+      "add": "Añadir"
     },
     "warning": "Warning",
     "typeYourMessage": "Type your message",
@@ -139,7 +140,6 @@
     "crediting": "Préstamo",
     "portfolio": "Trabajos",
     "price": "Precio",
-    "add": "Añadir",
     "sendARequest": "Enviar una solicitud",
     "aboutUs": "About Us",
     "signIn": "Iniciar sesión",

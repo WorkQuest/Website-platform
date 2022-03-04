@@ -82,7 +82,8 @@
       "acceptCompletedWorkOnQuest": "Accept completed work on quest",
       "closeQuest": "Close quest",
       "goToChat": "Go to chat",
-      "view": "View"
+      "view": "View",
+      "add": "Add"
     },
     "warning": "Warning",
     "typeYourMessage": "Type your message",
@@ -139,7 +140,6 @@
     "crediting": "Crediting",
     "portfolio": "Portfolio",
     "price": "Price",
-    "add": "Add",
     "sendARequest": "Send a request",
     "aboutUs": "About Us",
     "signIn": "Sign In",

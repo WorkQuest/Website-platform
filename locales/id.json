@@ -82,7 +82,8 @@
       "acceptCompletedWorkOnQuest": "Accept completed work on quest",
       "closeQuest": "Close quest",
       "goToChat": "Kunjungi obrolan",
-      "view": "Lihat"
+      "view": "Lihat",
+      "add": "Tambahkan"
     },
     "warning": "Warning",
     "typeYourMessage": "Type your message",
@@ -139,7 +140,6 @@
     "crediting": "Peminjaman",
     "portfolio": "Portofolio",
     "price": "Harga",
-    "add": "Tambahkan",
     "sendARequest": "Kirim permintaan",
     "aboutUs": "About Us",
     "signIn": "Masuk",

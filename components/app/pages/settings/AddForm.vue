@@ -48,11 +48,11 @@
     />
     <base-btn
       class="knowledge__btn"
-      :selector="`${isAdding} ? ${$t('meta.add')} : ${$t('meta.btns.delete')}`"
+      :selector="`${isAdding} ? ${$t('meta.btns.add')} : ${$t('meta.btns.delete')}`"
       :disabled="!item.from || !item.to || !item.place || invalid"
       @click="$emit('click')"
     >
-      {{ isAdding ? $t('meta.add') : $t('meta.btns.delete') }}
+      {{ isAdding ? $t('meta.btns.add') : $t('meta.btns.delete') }}
     </base-btn>
   </validation-observer>
 </template>

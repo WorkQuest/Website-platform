@@ -41,7 +41,10 @@
       "hours": "{count} hours",
       "years": "{count} years",
       "days": "{count} days",
-      "votesCount": "{count} 票"
+      "votesCount": "{count} 票",
+      "distance": {
+        "m": "m"
+      }
     },
     "btns": {
       "back": "后退",
@@ -80,9 +83,7 @@
       "closeQuest": "Close quest",
       "goToChat": "转到聊天",
       "view": "查看",
-      "distance": {
-        "m": "m"
-      }
+      "add": "添加"
     },
     "warning": "Warning",
     "typeYourMessage": "Type your message",
@@ -140,7 +141,6 @@
     "crediting": "借贷",
     "portfolio": "作品集",
     "price": "价格",
-    "add": "添加",
     "sendARequest": "发送请求",
     "aboutUs": "About Us",
     "signIn": "登录",
