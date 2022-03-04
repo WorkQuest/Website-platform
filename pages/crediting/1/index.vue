@@ -102,7 +102,7 @@ export default {
         },
         {
           id: 565465,
-          currentRatio: this.$tc('meta.units.percentsCount', { count: '500%' }),
+          currentRatio: this.$tc('meta.units.percentsCount', '500%'),
           deposited: this.$t('meta.coins.count.ETHCount', { count: '531' }),
           availableToWithdraw: this.$t('meta.coins.count.ETHCount', { count: '531' }),
           wusd: this.$t('meta.coins.count.WUSDCount', { count: '532' }),

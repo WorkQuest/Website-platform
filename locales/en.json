@@ -922,6 +922,7 @@
       "depositInfo": "Deposit info",
       "withdrawInfo": "Withdrawal info"
     },
+    "value": "Value",
     "buyAuction": "Transfer info",
     "recipient": "Recipient address",
     "waitRoleCooldown": "You cannot change roles more than once a month. You can change role after {date} {time}",
@@ -998,7 +999,6 @@
     "reason": "Reason",
     "sendTo": "Send To",
     "estimatedPayment": "Estimated payment:",
-    "value": "Value",
     "withdrawCard": "Withdraw to bank card",
     "notice": "Important notice",
     "noticeDesc": "For your safety, the WorkQuest team asks you not to make any correspondence or contacts outside of the WorkQuest platform. Any contacts or conversation outside the platform can lead to failure in resolving controversial situations.",

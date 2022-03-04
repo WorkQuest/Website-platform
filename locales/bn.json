@@ -85,6 +85,7 @@
       "view": "দেখুন",
       "add": "যোগ করুন"
     },
+    "operation": "Operation",
     "warning": "Warning",
     "typeYourMessage": "Type your message",
     "liquidityMining": "লিকুইডিটি মাইনিং",
@@ -921,6 +922,7 @@
       "depositInfo": "Deposit info",
       "withdrawInfo": "Withdrawal info"
     },
+    "value": "Value",
     "buyAuction": "Transfer info",
     "recipient": "Recipient address",
     "waitRoleCooldown": "You cannot change roles more than once a month. You can change role after {date} {time}",

@@ -49,7 +49,7 @@
             <div class="info-block__third_rate">
               <div class="info-block__small">
                 <div class="info-block__perc">
-                  {{ + $tc('meta.units.percentsCount', { count: 6 }) }}
+                  + {{ $tc('meta.units.percentsCount', 6 ) }}
                 </div>
                 <div class="info-block__period">
                   {{ $t('pension.year') }}
@@ -78,7 +78,7 @@
             </div>
             <div class="info-block__small_right">
               <div class="info-block__perc">
-                {{ + $tc('meta.units.percentsCount', { count: 6 }) }}
+                + {{ $tc('meta.units.percentsCount', 6) }}
               </div>
               <div class="info-block__period">
                 {{ $t('pension.year') }}
@@ -121,14 +121,14 @@
                 :mode="selectedTable === $options.PensionHistoryMethods.Receive ? '' : 'outline'"
                 @click="selectedTable=$options.PensionHistoryMethods.Receive"
               >
-                {{ $t('wallet.deposit') }}
+                {{ $t('meta.deposit') }}
               </base-btn>
               <base-btn
                 :is-submit="false"
                 :mode="selectedTable === $options.PensionHistoryMethods.Withdraw ? '' : 'outline'"
                 @click="selectedTable=$options.PensionHistoryMethods.Withdraw"
               >
-                {{ $t('pension.withdraw') }}
+                {{ $t('meta.withdraw') }}
               </base-btn>
               <base-btn
                 :is-submit="false"
@@ -359,7 +359,7 @@ export default {
   methods: {
     getOperationLocale(operation) {
       if (operation === 'WalletUpdated') return this.$t('pension.changePercent');
-      if (operation === 'Received') return this.$t('wallet.deposit');
+      if (operation === 'Received') return this.$t('meta.deposit');
       if (operation === 'Withdrew') return this.$t('wallet.withdraw');
       return '';
     },
