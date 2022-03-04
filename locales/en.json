@@ -85,6 +85,7 @@
       "view": "View",
       "add": "Add"
     },
+    "operation": "Operation",
     "warning": "Warning",
     "typeYourMessage": "Type your message",
     "liquidityMining": "Liquidity mining",

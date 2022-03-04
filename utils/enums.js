@@ -251,3 +251,9 @@ export const NetworksData = {
     },
   },
 };
+
+export const PensionHistoryMethods = Object.freeze({
+  Update: 'Update',
+  Withdraw: 'Withdraw',
+  Receive: 'Receive',
+});

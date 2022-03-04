@@ -11,7 +11,7 @@ import {
   fetchContractData, success, error,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
-import { StakingTypes, TokenSymbols } from '~/utils/enums';
+import { PensionHistoryMethods, StakingTypes, TokenSymbols } from '~/utils/enums';
 import {
   getPensionDefaultData,
   getPensionWallet,
@@ -21,6 +21,21 @@ import {
 } from '~/utils/wallet.js';
 
 export default {
+  async getPensionTransactions({ commit, getters }, { method, limit, offset }) {
+    try {
+      const path = method === PensionHistoryMethods.Update ? 'wallet-update' : method.toLowerCase();
+      const res = await this.$axios.get(`/v1/pension-fund/${path}`, {
+        params: {
+          userAddress: getWalletAddress(),
+          limit,
+          offset,
+        },
+      });
+      commit('setPensionHistoryData', { method, txs: res.data.result.events, count: res.data.result.count });
+    } catch (e) {
+      console.error('wallet/getPensionTransactions');
+    }
+  },
   async getTransactions({ commit }, params) {
     try {
       const res = await this.$axios({ url: `/account/${getWalletAddress()}/txs`, baseURL: process.env.WQ_EXPLORER, params });
