@@ -50,6 +50,7 @@ export const error = (code = 90000, msg = '', data = null) => ({
 });
 
 export const getChainIdByChain = (chain) => {
+  console.log('getChainIdByChain', chain);
   switch (chain) {
     case Chains.ETHEREUM:
       if (!isProd) return ChainsId.ETH_TEST;
@@ -60,7 +61,7 @@ export const getChainIdByChain = (chain) => {
     case Chains.BNB:
       if (!isProd) return ChainsId.BSC_TEST;
       return ChainsId.BSC_MAIN;
-    case Chains.WUSD:
+    case Chains.WORKNET:
       return ChainsId.WUSD_TEST;
     default:
       throw error(-1, `wrong chain name: ${chain} ${Chains.BINANCE} ${Chains.ETHEREUM}`);
@@ -73,7 +74,7 @@ export const addedNetwork = async (chain) => {
       networkParams = isProd ? NetworksData.ETH_MAIN : NetworksData.ETH_TEST;
     } else if (chain === Chains.BNB || [56, 97].includes(+chain)) {
       networkParams = isProd ? NetworksData.BSC_MAIN : NetworksData.BSC_TEST;
-    } else if (chain === Chains.WUSD || chain === 20211224) {
+    } else if (chain === Chains.WORKNET || chain === 20220112) {
       networkParams = NetworksData.WUSD_TEST;
     }
     await window.ethereum.request({
@@ -245,19 +246,26 @@ export const initProvider = async (payload) => {
   try {
     let walletOptions;
     if (!isProd) {
-      if (chain === 'ETH') {
+      if (chain === Chains.ETH) {
         walletOptions = {
           rpc: {
             4: 'https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
           },
           // network: 'ethereum',
         };
-      } else if (chain === 'BNB') {
+      } else if (chain === Chains.BNB) {
         walletOptions = {
           rpc: {
             97: 'https://data-seed-prebsc-2-s1.binance.org:8545/',
           },
           // network: 'binance',
+        };
+      } else if (chain === Chains.WORKNET) {
+        walletOptions = {
+          rpc: {
+            20211224: 'https://dev-node-nyc3.workquest.co',
+          },
+          // network: 'worknet',
         };
       }
     }

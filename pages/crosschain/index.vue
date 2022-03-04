@@ -315,7 +315,7 @@ export default {
       switch (this.sourceAddressInd) {
         case 0: chainName = 'ETH'; break;
         case 1: chainName = 'BNB'; break;
-        case 2: chainName = 'WQT'; break;
+        case 2: chainName = 'WORKNET'; break;
       }
       await this.connectToMetamask(chainName);
     },
@@ -379,8 +379,15 @@ export default {
     async showSwapModal() {
       this.SetLoader(true);
       let switchPoolStatus = true;
+      let chainName = '';
       if (localStorage.getItem('isMetaMask') === 'true') {
-        switchPoolStatus = await this.checkMiningPoolId(this.sourceAddressInd === 0 ? 'ETH' : 'BNB');
+        // eslint-disable-next-line default-case
+        switch (this.sourceAddressInd) {
+          case 0: chainName = 'ETH'; break;
+          case 1: chainName = 'BNB'; break;
+          case 2: chainName = 'WORKNET'; break;
+        }
+        switchPoolStatus = await this.checkMiningPoolId(chainName);
       }
       if (switchPoolStatus === true || switchPoolStatus.ok) {
         await this.$store.dispatch('web3/getCrosschainTokensData');
@@ -664,7 +671,7 @@ export default {
 
   @include _767 {
     &__container {
-      grid-template-rows: auto auto;
+      grid-template-rows: 170px auto;
       gap: 24px;
     }
     &__header {
