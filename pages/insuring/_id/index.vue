@@ -114,7 +114,7 @@
                     alt=""
                   >
                   <div class="name">
-                    {{ $tc('insuring.paymentOfInsurance', $t('insuring.userName') ) }}
+                    {{ $tc('insuring.paymentOfInsurance', 'Cody Fisher' ) }}
                   </div>
                 </div>
                 <template v-if="!isVotingDone">
@@ -295,7 +295,7 @@ export default {
       messages: [
         {
           sender: {
-            name: this.$t('insuring.userName'),
+            name: 'Cody Fisher',
             url: require('~/assets/img/temp/avatar-small.jpg'),
           },
           text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
@@ -303,7 +303,7 @@ export default {
         },
         {
           sender: {
-            name: this.$t('insuring.userName'),
+            name: 'Cody Fisher',
             url: require('~/assets/img/temp/avatar-small.jpg'),
           },
           text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
@@ -311,7 +311,7 @@ export default {
         },
         {
           sender: {
-            name: this.$t('insuring.userName'),
+            name: 'Cody Fisher',
             url: require('~/assets/img/temp/avatar-small.jpg'),
           },
           text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
@@ -319,7 +319,7 @@ export default {
         },
         {
           sender: {
-            name: this.$t('insuring.userName'),
+            name: 'Cody Fisher',
             url: require('~/assets/img/temp/avatar-small.jpg'),
           },
           text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
@@ -327,7 +327,7 @@ export default {
         },
         {
           sender: {
-            name: this.$t('insuring.userName'),
+            name: 'Cody Fisher',
             url: require('~/assets/img/temp/avatar-small.jpg'),
           },
           text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
@@ -335,7 +335,7 @@ export default {
         },
         {
           sender: {
-            name: this.$t('insuring.userName'),
+            name: 'Cody Fisher',
             url: require('~/assets/img/temp/avatar-small.jpg'),
           },
           text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',

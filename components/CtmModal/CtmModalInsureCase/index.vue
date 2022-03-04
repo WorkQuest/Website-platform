@@ -11,7 +11,7 @@
           alt="user avatar"
         >
         <span class="user__name">
-          {{ $t('insuring.userNameCase') }}
+          Cody Fisher :
         </span>
         <span class="user__text">
           {{ $t('insuring.paymentOfInsurance') }}
