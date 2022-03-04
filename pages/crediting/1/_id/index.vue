@@ -119,14 +119,14 @@ export default {
     items() {
       return [
         {
-          activity: this.$t('crediting.credTable.activity'),
+          activity: 'Paid back',
           amount: this.$t('meta.coins.count.WUSDCount', { count: 100 }),
           time: 'Jun 12 2021',
           sender: 'dfgd6...fs65ds',
           txHash: 'dfgd6...fs65ds',
         },
         {
-          activity: this.$t('crediting.credTable.activity'),
+          activity: 'Paid back',
           amount: this.$t('meta.coins.count.WUSDCount', { count: 100 }),
           time: 'Jun 12 2021',
           sender: 'dfgd6...fs65ds',

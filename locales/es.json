@@ -1634,9 +1634,6 @@
       "deposited": "Ingresado",
       "availableToWithdraw": "Disponible para retirar"
     },
-    "table": {
-      "manage": "Administrar"
-    },
     "liquidationPrice": "Precio de liquidación",
     "collateralizationRatio": "Proporción de garantía",
     "ethLocked": "ETH bloqueados",
@@ -1652,9 +1649,6 @@
       "time": "Tiempo",
       "sender": "Remitente",
       "txHash": "Hash de transacción"
-    },
-    "credTable": {
-      "activity": "Amortizado"
     },
     "faq1": "¿Qué son los ahorros a plazo fijo? ¿Se compromete a mantener sus criptomonedas?",
     "faq2": "¿Qué ocurrirá con mis fondos si me suscribo a un producto de ahorros a plazo fijo?",

@@ -1634,9 +1634,6 @@
       "deposited": "Disetor",
       "availableToWithdraw": "Tersedia untuk ditarik"
     },
-    "table": {
-      "manage": "Kelola"
-    },
     "liquidationPrice": "Harga likuidasi",
     "collateralizationRatio": "Rasio jaminan",
     "ethLocked": "ETH terkunci",
@@ -1652,9 +1649,6 @@
       "time": "Waktu",
       "sender": "Pengirim",
       "txHash": "Txn hash"
-    },
-    "credTable": {
-      "activity": "Dibayar kembali"
     },
     "faq1": "Apa itu Tabungan Terkunci? Berkomitmen untuk memegang kripto Anda?",
     "faq2": "Apa yang terjadi pada dana saya pada hari saya berlangganan produk Tabungan Terkunci?",

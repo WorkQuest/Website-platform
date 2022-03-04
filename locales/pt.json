@@ -1634,9 +1634,6 @@
       "deposited": "Depositado",
       "availableToWithdraw": "Disponível para levantamento"
     },
-    "table": {
-      "manage": "Manage"
-    },
     "liquidationPrice": "Preço de liquidação",
     "collateralizationRatio": "Taxa de colateralização",
     "ethLocked": "ETH bloqueado",
@@ -1652,9 +1649,6 @@
       "time": "Prazo",
       "sender": "Remetente",
       "txHash": "Hash Trn"
-    },
-    "credTable": {
-      "activity": "Pago de volta"
     },
     "faq1": "O que são as poupanças bloqueadas? Está empenhado em manter a sua posição cripto?",
     "faq2": "O que acontece aos meus fundos no dia em que subscrevo um produto de Poupança Bloqueado?",

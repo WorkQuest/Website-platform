@@ -98,7 +98,7 @@ export default {
           deposited: this.$tc('meta.coins.count.ETHCount', { count: '531' }),
           availableToWithdraw: this.$t('meta.coins.count.ETHCount', { count: '531' }),
           wusd: this.$t('meta.coins.count.WUSDCount', { count: '532' }),
-          manage: this.$t('crediting.table.manage'),
+          manage: 'Manage',
         },
         {
           id: 565465,
@@ -106,7 +106,7 @@ export default {
           deposited: this.$t('meta.coins.count.ETHCount', { count: '531' }),
           availableToWithdraw: this.$t('meta.coins.count.ETHCount', { count: '531' }),
           wusd: this.$t('meta.coins.count.WUSDCount', { count: '532' }),
-          manage: this.$t('crediting.table.manage'),
+          manage: 'Manage',
         },
       ],
       testFields: [

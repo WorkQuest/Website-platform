@@ -1634,9 +1634,6 @@
       "deposited": "Déposé(s)",
       "availableToWithdraw": "Disponible pour le retrait"
     },
-    "table": {
-      "manage": "Gérer"
-    },
     "liquidationPrice": "Prix de liquidation",
     "collateralizationRatio": "Ratio de garantie",
     "ethLocked": "ETH immobilisés",
@@ -1652,9 +1649,6 @@
       "time": "Heure",
       "sender": "Expéditeur",
       "txHash": "Hachage Txn"
-    },
-    "credTable": {
-      "activity": "Remboursé"
     },
     "faq1": "Qu'est-ce que l'épargne immobilisée ? Est-ce un engagement à conserver les cryptomonnaies ?",
     "faq2": "Qu'arrive-t-il à mes fonds le jour où je souscris à un produit d'épargne immobilisée ?",

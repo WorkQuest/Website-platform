@@ -1635,9 +1635,6 @@
       "deposited": "Deposited",
       "availableToWithdraw": "Available to withdraw"
     },
-    "table": {
-      "manage": "Manage"
-    },
     "liquidationPrice": "Liquidation price",
     "collateralizationRatio": "Collateralization ratio",
     "ethLocked": "ETH locked",
@@ -1653,9 +1650,6 @@
       "time": "Time",
       "sender": "Sender",
       "txHash": "Txn hash"
-    },
-    "credTable": {
-      "activity": "Paid back"
     },
     "faq1": "What are Locked Savings? Committed to holding your crypto?",
     "faq2": "What happens to my funds on the day I subscribe to a Locked Savings product?",

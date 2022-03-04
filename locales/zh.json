@@ -1636,9 +1636,6 @@
       "deposited": "已存入",
       "availableToWithdraw": "可供提款"
     },
-    "table": {
-      "manage": "管理"
-    },
     "liquidationPrice": "清算价格",
     "collateralizationRatio": "抵押率",
     "ethLocked": "已锁定 ETH",
@@ -1654,9 +1651,6 @@
       "time": "时间",
       "sender": "发送者",
       "txHash": "交易哈希"
-    },
-    "credTable": {
-      "activity": "已偿还"
     },
     "faq1": "什么是锁定储蓄？决定持有您的加密货币？",
     "faq2": "在订阅锁定储蓄产品当天，我的资金会发生什么变化？",
