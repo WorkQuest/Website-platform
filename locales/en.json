@@ -139,6 +139,8 @@
     }
   },
   "meta": {
+    "allTransactions": "All transactions",
+    "collateralTransactions": "Collateral transactions",
     "redeem": "Redeem",
     "redeemed": "Redeemed",
     "pay": "Pay",

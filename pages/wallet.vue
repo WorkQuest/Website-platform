@@ -97,22 +97,20 @@
             :mode="getSwitchButtonMode(walletTables.TXS)"
             @click="selectedWalletTable = walletTables.TXS"
           >
-            All transactions
+            {{ $t('meta.allTransactions') }}
           </base-btn>
           <base-btn
             :mode="getSwitchButtonMode(walletTables.COLLATERAL)"
             @click="selectedWalletTable = walletTables.COLLATERAL"
           >
-            Collateral transactions
+            {{ $t('meta.collateralTransactions') }}
           </base-btn>
         </div>
         <div
           v-if="selectedWalletTable === walletTables.TXS"
           class="wallet__txs"
         >
-          <div
-            class="wallet__table table"
-          >
+          <div class="wallet__table table">
             <base-table
               class="table__txs"
               :title="$t('wallet.table.trx')"
