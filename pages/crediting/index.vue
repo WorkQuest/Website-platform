@@ -141,17 +141,17 @@ export default {
     documents() {
       return [
         {
-          name: this.$tc('meta.docName'),
+          name: 'Some_document.pdf',
           size: this.$tc('meta.units.mb', 1.2),
           url: '',
         },
         {
-          name: this.$tc('meta.docName'),
+          name: 'Some_document.pdf',
           size: this.$tc('meta.units.mb', 1.2),
           url: '',
         },
         {
-          name: this.$tc('meta.docName'),
+          name: 'Some_document.pdf',
           size: this.$tc('meta.units.mb', 1.2),
           url: '',
         },

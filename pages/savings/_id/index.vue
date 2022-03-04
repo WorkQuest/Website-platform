@@ -113,20 +113,20 @@ export default {
     return {
       items: [
         {
-          userName: this.$t('meta.userName'),
+          userName: 'John Doe',
           avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('meta.userId'),
-          txHash: this.$t('meta.txHash'),
-          time: this.$t('meta.time'),
+          userID: '455dad66544ss',
+          txHash: 'sf998s...ss877d',
+          time: 'Feb 1, 2021',
           amount: this.$tc('meta.coins.count.WQTCount', 12),
           status: this.$t('meta.success'),
         },
         {
-          userName: this.$t('meta.userName'),
+          userName: 'John Doe',
           avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('meta.userId'),
-          txHash: this.$t('meta.txHash'),
-          time: this.$t('meta.time'),
+          userID: '455dad66544ss',
+          txHash: 'sf998s...ss877d',
+          time: 'Feb 1, 2021',
           amount: this.$tc('meta.coins.count.WQTCount', 12),
           status: this.$t('meta.success'),
         },

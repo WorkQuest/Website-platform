@@ -143,7 +143,7 @@ export default {
     }),
     documents() {
       return Array(3).fill({
-        name: this.$tc('meta.docName'),
+        name: 'Some_document.pdf',
         size: this.$tc('meta.units.mb', 1.2),
         url: '',
       });
