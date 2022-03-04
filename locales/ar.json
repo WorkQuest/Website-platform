@@ -1565,10 +1565,6 @@
       "assets": "الأصول",
       "volume": "الحجم"
     },
-    "table": {
-      "assets": "50% WQT / 50% ETH",
-      "assets2": "50% WQT / 50% BNB"
-    },
     "wusdEthPool": "ETH/WQT تجمُّع",
     "wusdBnbPool": "BNB/WQT تجمُّع",
     "APY": "APY",

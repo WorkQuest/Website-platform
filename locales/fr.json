@@ -1564,10 +1564,6 @@
       "assets": "Actifs",
       "volume": "Volume"
     },
-    "table": {
-      "assets": "50 % WUSD/50 % ETH",
-      "assets2": "50% WQT / 50% BNB"
-    },
     "wusdEthPool": "ETH/WQT pool",
     "wusdBnbPool": "BNB/WQT pool",
     "APY": "APY",

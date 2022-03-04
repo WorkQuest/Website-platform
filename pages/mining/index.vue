@@ -113,14 +113,14 @@ export default {
         {
           id: 'ETH',
           poolAddress: '0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf',
-          assets: this.$t('mining.table.assets'),
+          assets: '50% WQT / 50% ETH',
           chooseBtn: this.$t('mining.choose'),
           disabled: false,
         },
         {
           id: 'BNB',
           poolAddress: '0xe89508D74579A06A65B907c91F697CF4F8D9Fac7',
-          assets: this.$t('mining.table.assets2'),
+          assets: '50% WQT / 50% BNB',
           chooseBtn: this.$t('mining.choose'),
           disabled: false,
         },
