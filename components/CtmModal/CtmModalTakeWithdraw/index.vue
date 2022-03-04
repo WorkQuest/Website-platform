@@ -107,7 +107,7 @@
             selector="SHOW-ADDING-CARD"
             @click="showAddingCard"
           >
-            {{ $t('meta.addCard') }}
+            {{ $t('meta.cardAdd') }}
           </base-btn>
         </div>
       </validation-observer>

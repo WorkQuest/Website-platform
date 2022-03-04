@@ -117,7 +117,7 @@ export default {
         key: modals.status,
         img: require('~/assets/img/ui/inviteSend.svg'),
         title: this.$t('modals.inviteSend'),
-        subtitle: this.$t('meta.empty'),
+        subtitle: '',
         type: 'goToChat',
         button: this.$t('meta.btns.goToChat'),
       });

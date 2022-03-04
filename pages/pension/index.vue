@@ -160,7 +160,7 @@ export default {
 
       return [
         {
-          title: this.$tc('meta.units.percents', p),
+          title: this.$tc('meta.units.percentsCount', p),
           subtitle: this.$t('pension.annualPercent'),
         },
         {

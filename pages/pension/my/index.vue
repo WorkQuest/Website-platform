@@ -37,7 +37,7 @@
                 {{ $t('pension.currentPercentFromAQuest') }}
               </div>
               <div class="info-block__tokens">
-                {{ $t('meta.units.percents', { count: getFeePercent() }) }}
+                {{ $t('meta.units.percentsCount', { count: getFeePercent() }) }}
               </div>
               <base-btn
                 class="btn_bl"
@@ -49,7 +49,7 @@
             <div class="info-block__third_rate">
               <div class="info-block__small">
                 <div class="info-block__perc">
-                  {{ $t('meta.units.plusPercents', { count: 6 }) }}
+                  {{ + $tc('meta.units.percentsCount', { count: 6 }) }}
                 </div>
                 <div class="info-block__period">
                   {{ $t('pension.year') }}
@@ -138,7 +138,7 @@
             </div>
             <div class="info-block__small_right">
               <div class="info-block__perc">
-                {{ $t("meta.units.plusPercents", { count: 6 }) }}
+                {{ + $tc('meta.units.percentsCount', { count: 6 }) }}
               </div>
               <div class="info-block__period">
                 {{ $t('pension.year') }}

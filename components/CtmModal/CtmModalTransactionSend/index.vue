@@ -12,9 +12,6 @@
       <div class="transaction__title">
         {{ $t('modals.transactionSent') }}
       </div>
-      <div class="transaction__desc">
-        {{ $t('meta.empty') }}
-      </div>
       <base-btn
         class="transaction__action"
         selector="OK"

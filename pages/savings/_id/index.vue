@@ -21,7 +21,7 @@
           </div>
           <div class="info-block__small_right">
             <div class="info-block__perc">
-              {{ $tc('meta.units.plusPercents', { count: "4,51" }) }}
+              {{ + $tc('meta.units.percentsCount', { count: "4,51" }) }}
             </div>
             <div class="info-block__period">
               {{ $t('pension.everyYear') }}

@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('meta.addCard')"
+    :title="$t('meta.cardAdd')"
   >
     <div class="ctm-modal__content">
       <validation-observer

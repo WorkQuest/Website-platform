@@ -37,8 +37,6 @@
       "mb": "{count} MB",
       "kb": "{count} KB",
       "percentsCount": "{count}%",
-      "plusPercents": "+ {count}%",
-      "percents": "{count} %",
       "minutes": "{count} minutes",
       "hours": "{count} hours",
       "years": "{count} years",
@@ -168,11 +166,8 @@
     "addLiquidity": "Tambahkan likuiditas",
     "buyWUSD": "Buy WUSD",
     "smsVerification": "Verifikasi SMS",
-    "empty": "",
-    "test": "Test",
     "wallet": "Dompet",
     "bankCard": "Kartu bank",
-    "addCard": "Tambahkan Kartu",
     "cardAdd": "Tambahkan Kartu",
     "settings": "Pengaturan",
     "costPerHour": "Biaya per jam",
@@ -1517,7 +1512,6 @@
     }
   },
   "saving": {
-    "guestPlug": "??",
     "withdrawModalBody": "Jumlah dana terkunci dan akumulasi bunga akan dikreditkan ke dompet Anda",
     "workQuestSavings": "WorkQuest Savings",
     "lendAndEarn": "Pinjamkan & Hasilkan",

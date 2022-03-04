@@ -156,7 +156,7 @@ export default {
         key: modals.status,
         img: require('~/assets/img/ui/document.svg'),
         title: this.$t('modals.pensionIsRegistered'),
-        subtitle: this.$t('meta.empty'),
+        subtitle: '',
         path: '/pension/my',
       });
     },

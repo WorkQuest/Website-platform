@@ -81,7 +81,7 @@ export default {
         key: modals.status,
         img: require('~/assets/img/ui/transactionSend.svg'),
         title: this.$t('modals.loanIsOpened'),
-        subtitle: this.$t('meta.empty'),
+        subtitle: '',
         path: this.options.needChangeModal ? '/crediting/1' : undefined,
       });
     },

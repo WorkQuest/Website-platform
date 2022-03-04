@@ -12,9 +12,6 @@
       <div class="cardAdded__title">
         {{ $t('modals.cardHasBeenAdded') }}
       </div>
-      <div class="cardAdded__desc">
-        {{ $t('meta.empty') }}
-      </div>
       <base-btn
         class="cardAdded__action"
         selector="OK"

@@ -149,7 +149,7 @@
                     <div class="name">
                       {{ res.name }}
                       <div class="percs">
-                        {{ $tc('meta.units.percents', res.percents) }}
+                        {{ $tc('meta.units.percentsCount', res.percents) }}
                       </div>
                     </div>
                     <progress

@@ -37,7 +37,7 @@
                 {{ $t("saving.maxMinSum") }}
               </div>
               <div class="text_blue">
-                {{ $t("saving.guestPlug") }}
+                ??
               </div>
             </div>
             <div class="info-block__small_inline">
@@ -244,23 +244,23 @@ export default {
     interestRate() {
       return [
         {
-          perc: this.$tc('meta.units.percents', 5.31),
+          perc: this.$tc('meta.units.percentsCount', 5.31),
           date: this.$tc('meta.units.days', 7),
         },
         {
-          perc: this.$tc('meta.units.percents', 5.48),
+          perc: this.$tc('meta.units.percentsCount', 5.48),
           date: this.$tc('meta.units.days', 14),
         },
         {
-          perc: this.$tc('meta.units.percents', 5.66),
+          perc: this.$tc('meta.units.percentsCount', 5.66),
           date: this.$tc('meta.units.days', 30),
         },
         {
-          perc: this.$tc('meta.units.percents', 6),
+          perc: this.$tc('meta.units.percentsCount', 6),
           date: this.$tc('meta.units.days', 90),
         },
         {
-          perc: this.$tc('meta.units.percents', 6.5),
+          perc: this.$tc('meta.units.percentsCount', 6.5),
           date: this.$tc('meta.units.days', 180),
         },
       ];

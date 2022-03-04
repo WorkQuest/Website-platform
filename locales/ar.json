@@ -37,8 +37,6 @@
       "mb": "{count} م.ب",
       "kb": "{count} KB",
       "percentsCount": "{count}%",
-      "plusPercents": "+ {count}%",
-      "percents": "{count} %",
       "minutes": "{count} minutes",
       "hours": "{count} الساعات",
       "years": "{count} years",
@@ -169,11 +167,8 @@
     "addLiquidity": "إضافة سيولة",
     "buyWUSD": "WUSD شراء",
     "smsVerification": "التحقُّق برسالة نصية قصيرة",
-    "empty": "",
-    "test": "Test",
     "wallet": "المحفظة",
     "bankCard": "بطاقة مصرفية",
-    "addCard": "إضافة بطاقة",
     "cardAdd": "إضافة بطاقة",
     "settings": "الإعدادات",
     "costPerHour": "التكلفة في الساعة",
@@ -1518,7 +1513,6 @@
     }
   },
   "saving": {
-    "guestPlug": "??",
     "withdrawModalBody": "ستتم إضافة مبلغ الأموال المؤمَّنة والفائدة المجمَّعة إلى محفظتك",
     "workQuestSavings": "مدخرات WorkQuest",
     "lendAndEarn": "الإقراض والربح",

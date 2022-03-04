@@ -17,9 +17,6 @@
           {{ $t('insuring.paymentOfInsurance') }}
         </span>
       </div>
-      <div class="content__text">
-        {{ $t('meta.empty') }}
-      </div>
       <div class="content__pictures">
         <img
           v-for="(pic, i) in pics"

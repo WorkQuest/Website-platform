@@ -37,8 +37,6 @@
       "mb": "{count} MB",
       "kb": "{count} KB",
       "percentsCount": "{count}%",
-      "plusPercents": "+ {count}%",
-      "percents": "{count} %",
       "minutes": "{count} минуты",
       "hours": "{count} часы",
       "years": "{count} годы",
@@ -169,11 +167,8 @@
     "addLiquidity": "Добавить ликвидность",
     "buyWUSD": "Купить WUSD",
     "smsVerification": "СМС подтверждение",
-    "empty": "",
-    "test": "Test",
     "wallet": "Кошелек",
     "bankCard": "Банковская карта",
-    "addCard": "Добавить карту",
     "cardAdd": "Добавить карту",
     "settings": "Настройки",
     "costPerHour": "Цена за час",
@@ -1518,7 +1513,6 @@
     }
   },
   "saving": {
-    "guestPlug": "??",
     "withdrawModalBody": "The amount of locked funds and the accumulated interest will be credited to your wallet",
     "workQuestSavings": "WorkQuest Savings",
     "lendAndEarn": "Lend & Earn",

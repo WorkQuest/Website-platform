@@ -112,7 +112,7 @@ export default {
         key: modals.status,
         img: require('~/assets/img/ui/success.svg'),
         title: this.$t('modals.percentIsChanged'),
-        subtitle: this.$t('meta.empty'),
+        subtitle: '',
       });
     },
   },
