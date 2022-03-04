@@ -11,18 +11,23 @@
         <div>{{ $t('wallet.collateral.amountInDollars') }}</div>
         <div>{{ $t('wallet.collateral.amountInDollars') }}</div>
       </div>
-      <div class="table_grid item">
+      <div
+        v-for="(item, i) of items"
+        :key="i"
+        class="table_grid item"
+      >
         <div class="item__coin">
           <img
-            src="/img/app/tokens/Ethereum.svg"
-            alt="Logo"
+            :src="require('~/assets/img/ui/ethereum.svg')"
+            alt=""
+            class="item__coin-icon"
           >
-          ETH
+          {{ item.coin }}
         </div>
-        <div>0</div>
-        <div>0</div>
-        <div>0</div>
-        <div>0</div>
+        <div>{{ item.attentionQuotient }}</div>
+        <div>{{ item.sum }}</div>
+        <div>{{ item.amountInDollars1 }}</div>
+        <div>{{ item.amountInDollars2 }}</div>
         <div class="item__actions">
           <base-btn
             selector="ADD"
@@ -39,6 +44,17 @@
         </div>
       </div>
     </div>
+    <empty-data
+      v-if="!items.length"
+      :description="$t('meta.listIsEmpty')"
+      class="table__empty"
+    />
+    <base-pager
+      v-if="totalPages > 1"
+      :value="page"
+      :total-pages="totalPages"
+      class="table__pages"
+    />
   </div>
 </template>
 
@@ -47,6 +63,26 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'CollateralTable',
+  data() {
+    return {
+      page: 1,
+      itemsPerPage: 10,
+      items: [{
+        coin: 'ETH',
+        attentionQuotient: 0,
+        sum: 0,
+        amountInDollars1: 0,
+        amountInDollars2: 0,
+      }],
+    };
+  },
+  computed: {
+    totalPages() {
+      const len = this.items.length;
+      if (!len) return len;
+      return Math.ceil(len / this.itemsPerPage);
+    },
+  },
   methods: {
     handleAdd() {
       this.ShowModal({
@@ -66,9 +102,9 @@ export default {
 
 <style lang="scss" scoped>
 .collateral {
-  overflow-x: auto;
+
   &__content {
-    min-width: 1180px;
+    overflow-x: auto;
   }
 
   &__title {
@@ -89,11 +125,18 @@ export default {
 }
 .table {
   &_grid {
+    min-width: 1180px;
     display: grid;
     grid-template-columns: 160px repeat(4, 1fr) 260px;
     align-items: center;
     padding: 0 12px;
     margin-top: 12px;
+  }
+  &__empty {
+    margin-top: 20px;
+  }
+  &__pages {
+    margin-top: 20px;
   }
 }
 
@@ -114,6 +157,10 @@ export default {
     font-size: 20px;
     line-height: 130%;
     color: $black600;
+    &-icon {
+      height: 30px;
+      width: 30px;
+    }
   }
 
   &__actions {
