@@ -78,7 +78,7 @@
             data-selector="RESEND-SMS"
             @click="getCodeFromSms()"
           >
-            {{ $t('meta.resendSMS') }}
+            {{ $t('meta.btns.resendSMS') }}
           </button>
         </div>
         <div class="content__buttons buttons">

@@ -101,7 +101,7 @@
         <span class="icon-location" />
         <span class="card-quest__text card-quest__text_locate">
           {{ showDistance(quest.location) }}
-          {{ `${$t('distance.m')} ${$t('meta.fromYou')}` }}
+          {{ `${$t('meta.units.distance.m')} ${$t('meta.fromYou')}` }}
         </span>
       </div>
       <div

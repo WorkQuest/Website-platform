@@ -71,7 +71,20 @@
       "showAll": "显示所有",
       "showAllReviews": "显示所有评价",
       "showAllQuests": "Show all quests",
-      "showAllPortfolios": "Show all portfolios"
+      "showAllPortfolios": "Show all portfolios",
+      "unstake": "Unstake",
+      "stake": "Stake",
+      "resendSMS": "重新发送短信",
+      "registration": "注册",
+      "leave": "Leave",
+      "completeWorkOnQuest": "Complete work on Quest",
+      "acceptCompletedWorkOnQuest": "Accept completed work on quest",
+      "closeQuest": "Close quest",
+      "goToChat": "转到聊天",
+      "view": "查看",
+      "distance": {
+        "m": "m"
+      }
     },
     "warning": "Warning",
     "typeYourMessage": "Type your message",
@@ -94,8 +107,6 @@
     "status": "成功",
     "userName":"John Doe",
     "openDispute": "发起争议",
-    "unstake": "Unstake",
-    "stake": "Stake",
     "lastNameSmall": "姓氏",
     "lastNameBig": "姓氏",
     "firstNameSmall": "名字",
@@ -130,9 +141,7 @@
     "details": "查看详情",
     "iAgree": "我同意",
     "connectSMSVer": "连接短信验证",
-    "resendSMS": "重新发送短信",
     "remindLater": "稍后提醒",
-    "leave": "Leave",
     "listIsEmpty": "List is empty",
     "crediting": "借贷",
     "portfolio": "作品集",
@@ -140,7 +149,6 @@
     "add": "添加",
     "sendARequest": "发送请求",
     "aboutUs": "About Us",
-    "registration": "注册",
     "signIn": "登录",
     "account": "没有帐户？",
     "raiseViews": "提高浏览量",
@@ -177,16 +185,6 @@
     "costPerHour": "每小时费用",
     "disputes": "争议",
     "success": "成功"
-  },
-  "btn": {
-    "completeWorkOnQuest": "Complete work on Quest",
-    "acceptCompletedWorkOnQuest": "Accept completed work on quest",
-    "closeQuest": "Close quest",
-    "goToChat": "转到聊天",
-    "view": "查看"
-  },
-  "distance": {
-    "m": "m"
   },
   "info": {
     "yourMessage": " Your message:",

@@ -119,7 +119,7 @@ export default {
         title: this.$t('modals.inviteSend'),
         subtitle: this.$t('meta.empty'),
         type: 'goToChat',
-        button: this.$t('btn.goToChat'),
+        button: this.$t('meta.btns.goToChat'),
       });
     },
   },

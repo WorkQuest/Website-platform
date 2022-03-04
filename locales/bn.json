@@ -43,7 +43,10 @@
       "hours": "{count} hours",
       "years": "{count} years",
       "days": "{count} days",
-      "votesCount": "{count} ভোট"
+      "votesCount": "{count} ভোট",
+      "distance": {
+        "m": "m"
+      }
     },
     "btns": {
       "back": "পিছনে",
@@ -71,7 +74,17 @@
       "showAll": "সব দেখান",
       "showAllReviews": "সমস্ত মতামত দেখান",
       "showAllQuests": "Show all quests",
-      "showAllPortfolios": "Show all portfolios"
+      "showAllPortfolios": "Show all portfolios",
+      "unstake": "Unstake",
+      "stake": "Stake",
+      "resendSMS": "পুনরায় ক্ষুদে বার্তা পাঠান",
+      "registration": "নিবন্ধন",
+      "leave": "Leave",
+      "completeWorkOnQuest": "Complete work on Quest",
+      "acceptCompletedWorkOnQuest": "Accept completed work on quest",
+      "closeQuest": "Close quest",
+      "goToChat": "চ্যাটে যান",
+      "view": "দেখুন"
     },
     "warning": "Warning",
     "typeYourMessage": "Type your message",
@@ -93,8 +106,6 @@
     "time": "যোগ করা সময়",
     "userName": "কডি ফিশার",
     "openDispute": "বিতর্ক শুরু করুন",
-    "unstake": "Unstake",
-    "stake": "Stake",
     "lastNameSmall": "নামের শেষাংশ",
     "lastNameBig": "নামের শেষাংশ",
     "firstNameSmall": "নামের প্রথম অংশ",
@@ -129,9 +140,7 @@
     "details": "বিস্তারিত দেখুন",
     "iAgree": "আমি সম্মত",
     "connectSMSVer": "ক্ষুদে বার্তা যাচাই যুক্ত করুন",
-    "resendSMS": "পুনরায় ক্ষুদে বার্তা পাঠান",
     "remindLater": "পরে মনে করিয়ে দিন",
-    "leave": "Leave",
     "listIsEmpty": "List is empty",
     "crediting": "ধার দেওয়া",
     "portfolio": "পোর্টফোলিও",
@@ -139,7 +148,6 @@
     "add": "যোগ করুন",
     "sendARequest": "একটি অনুরোধ পাঠান",
     "aboutUs": "About Us",
-    "registration": "নিবন্ধন",
     "signIn": "সাইন ইন করুন",
     "account": "কোনো অ্যাকাউন্ট নেই?",
     "raiseViews": "মতামত দিন",
@@ -176,16 +184,6 @@
     "costPerHour": "প্রতি ঘণ্টায় খরচ",
     "disputes": "বিরোধ",
     "success": "Success"
-  },
-  "btn": {
-    "completeWorkOnQuest": "Complete work on Quest",
-    "acceptCompletedWorkOnQuest": "Accept completed work on quest",
-    "closeQuest": "Close quest",
-    "goToChat": "চ্যাটে যান",
-    "view": "দেখুন"
-  },
-  "distance": {
-    "m": "m"
   },
   "info": {
     "yourMessage": " Your message:",

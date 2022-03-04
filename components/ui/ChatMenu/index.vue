@@ -111,7 +111,7 @@ export default {
       this.ShowModal({
         key: modals.areYouSure,
         title: this.$t('modals.sureLeaveChatText'),
-        okBtnTitle: this.$t('meta.leave'),
+        okBtnTitle: this.$t('meta.btns.leave'),
         okBtnFunc: async () => await this.leaveChat(),
       });
     },

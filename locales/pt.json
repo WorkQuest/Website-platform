@@ -43,7 +43,10 @@
       "hours": "{count} hours",
       "years": "{count} years",
       "days": "{count} days",
-      "votesCount": "{count} votes"
+      "votesCount": "{count} votes",
+      "distance": {
+        "m": "m"
+      }
     },
     "btns": {
       "back": "Voltar",
@@ -71,7 +74,17 @@
       "showAll": "Mostrar todos",
       "showAllReviews": "Mostrar todos os comentários",
       "showAllQuests": "Show all quests",
-      "showAllPortfolios": "Show all portfolios"
+      "showAllPortfolios": "Show all portfolios",
+      "unstake": "Unstake",
+      "stake": "Stake",
+      "resendSMS": "Reenviar SMS",
+      "registration": "Registo",
+      "leave": "Leave",
+      "completeWorkOnQuest": "Complete work on Quest",
+      "acceptCompletedWorkOnQuest": "Accept completed work on quest",
+      "closeQuest": "Close quest",
+      "goToChat": "Ir para o chat",
+      "view": "Visualizar"
     },
     "warning": "Warning",
     "typeYourMessage": "Type your message",
@@ -93,8 +106,6 @@
     "time": "Fev 1, 2021",
     "userName":"John Doe",
     "openDispute": "Abrir disputa",
-    "unstake": "Unstake",
-    "stake": "Stake",
     "lastNameSmall": "Último nome",
     "lastNameBig": "Último nome",
     "firstNameSmall": "primeiro nome",
@@ -129,9 +140,7 @@
     "details": "Ver detalhes",
     "iAgree": "Concordo",
     "connectSMSVer": "Verificação de ligação por SMS",
-    "resendSMS": "Reenviar SMS",
     "remindLater": "Lembrar mais tarde",
-    "leave": "Leave",
     "listIsEmpty": "List is empty",
     "crediting": "Crédito",
     "portfolio": "Portfólio",
@@ -139,7 +148,6 @@
     "add": "Adicionar",
     "sendARequest": "Enviar um pedido",
     "aboutUs": "About Us",
-    "registration": "Registo",
     "signIn": "Iniciar sessão",
     "account": "Não tem conta?",
     "raiseViews": "Aumentar visualizações",
@@ -176,16 +184,6 @@
     "costPerHour": "Custo por hora",
     "disputes": "Disputas",
     "success": "Sucesso"
-  },
-  "btn": {
-    "completeWorkOnQuest": "Complete work on Quest",
-    "acceptCompletedWorkOnQuest": "Accept completed work on quest",
-    "closeQuest": "Close quest",
-    "goToChat": "Ir para o chat",
-    "view": "Visualizar"
-  },
-  "distance": {
-    "m": "m"
   },
   "info": {
     "yourMessage": " Your message:",

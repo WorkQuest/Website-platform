@@ -280,7 +280,7 @@ export default {
 
       if (questChat?.workerId === userData.id || (questChat?.employerId === userData.id && assignedWorkerId)) {
         arr.push({
-          name: this.$t('btn.goToChat'),
+          name: this.$t('meta.btns.goToChat'),
           class: 'base-btn_goToChat',
           mode: '',
           funcKey: 'goToChat',
@@ -311,7 +311,7 @@ export default {
             disabled: false,
           },
           {
-            name: this.$t('btn.closeQuest'),
+            name: this.$t('meta.btns.closeQuest'),
             class: '',
             mode: 'delete',
             funcKey: 'closeQuest',
@@ -333,7 +333,7 @@ export default {
         }
         case WaitConfirm: {
           arr = [{
-            name: this.$t('btn.acceptCompletedWorkOnQuest'),
+            name: this.$t('meta.btns.acceptCompletedWorkOnQuest'),
             class: '',
             mode: 'approve',
             funcKey: 'acceptCompletedWorkOnQuest',
@@ -406,7 +406,7 @@ export default {
             disabled: false,
           },
           {
-            name: this.$t('btn.completeWorkOnQuest'),
+            name: this.$t('meta.btns.completeWorkOnQuest'),
             class: '',
             mode: '',
             funcKey: 'completeWorkOnQuest',

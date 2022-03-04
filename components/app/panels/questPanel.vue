@@ -57,7 +57,7 @@
               {{ questData.locationPlaceName }}
             </div>
             <div class="user__distance">
-              {{ showDistance() }} {{ $t('distance.m') }} {{ $t('meta.fromYou') }}
+              {{ showDistance() }} {{ $t('meta.units.distance.m') }} {{ $t('meta.fromYou') }}
             </div>
           </div>
         </div>

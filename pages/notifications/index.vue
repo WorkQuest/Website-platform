@@ -64,7 +64,7 @@
                 class="button__view"
                 @click="goToEvent(notification.params ? notification.params.path : '')"
               >
-                {{ $t('btn.view') }}
+                {{ $t('meta.btns.view') }}
               </base-btn>
             </div>
           </div>

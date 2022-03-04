@@ -121,7 +121,7 @@
                     {{ $tc('meta.coins.count.LPCount', stakedAmount) }}
                   </div>
                   <div class="info-block__title_small">
-                    {{ $t('meta.stake') }}
+                    {{ $t('meta.btns.stake') }}
                   </div>
                 </div>
                 <div class="third__container">
@@ -145,7 +145,7 @@
                 :disabled="!isConnected || statusBusy || disabled"
                 @click="openModalStaking()"
               >
-                {{ $t('meta.stake') }}
+                {{ $t('meta.btns.stake') }}
               </base-btn>
               <base-btn
                 selector="UNSTAKE"
@@ -154,7 +154,7 @@
                 :disabled="!isConnected || statusBusy || disabled"
                 @click="openModalUnstaking()"
               >
-                {{ $t('meta.unstake') }}
+                {{ $t('meta.btns.unstake') }}
               </base-btn>
               <base-btn
                 selector="CLAIM-REWARDS"

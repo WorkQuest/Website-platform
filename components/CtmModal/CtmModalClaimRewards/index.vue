@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="claim"
-    :title="options.type === 1 ? $t('meta.stake') : $t('meta.unstake')"
+    :title="options.type === 1 ? $t('meta.btns.stake') : $t('meta.btns.unstake')"
   >
     <div class="claim__content content">
       <validation-observer
@@ -169,12 +169,12 @@ export default {
           ]);
           this.SetLoader(false);
           if (!txFee.ok) {
-            this.ShowToast(this.$t('modals.failed'), this.$t('meta.unstake'));
+            this.ShowToast(this.$t('modals.failed'), this.$t('meta.btns.unstake'));
             return;
           }
           this.ShowModal({
             key: modals.transactionReceipt,
-            title: this.$t('meta.unstake'),
+            title: this.$t('meta.btns.unstake'),
             fields: {
               from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
               to: { name: this.$t('meta.toBig'), value: poolAddress },
@@ -184,7 +184,7 @@ export default {
             submitMethod: async () => {
               const res = await this.$store.dispatch('wallet/stakingUnstake', { amount, stakingType, poolAddress });
               if (!res.ok && res.msg.includes('insufficient funds: insufficient funds')) {
-                this.ShowToast(this.$t('errors.transaction.notEnoughFunds'), this.$t('meta.unstake'));
+                this.ShowToast(this.$t('errors.transaction.notEnoughFunds'), this.$t('meta.btns.unstake'));
               }
               return res;
             },

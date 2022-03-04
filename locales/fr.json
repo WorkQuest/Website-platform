@@ -43,7 +43,10 @@
       "hours": "{count} hours",
       "years": "{count} years",
       "days": "{count} days",
-      "votesCount": "{count} votes"
+      "votesCount": "{count} votes",
+      "distance": {
+        "m": "m"
+      }
     },
     "btns": {
       "back": "Back",
@@ -71,7 +74,17 @@
       "showAll": "Show all",
       "showAllReviews": "Afficher toutes les évaluations",
       "showAllQuests": "Show all quests",
-      "showAllPortfolios": "Show all portfolios"
+      "showAllPortfolios": "Show all portfolios",
+      "unstake": "Unstake",
+      "stake": "Stake",
+      "resendSMS": "Renvoyer le SMS",
+      "registration": "Inscription",
+      "leave": "Leave",
+      "completeWorkOnQuest": "Complete work on Quest",
+      "acceptCompletedWorkOnQuest": "Accept completed work on quest",
+      "closeQuest": "Close quest",
+      "goToChat": "Accéder à la messagerie instantanée",
+      "view": "Afficher"
     },
     "warning": "Warning",
     "typeYourMessage": "Type your message",
@@ -93,8 +106,6 @@
     "time": "Feb 1, 2021",
     "userName":"John Doe",
     "openDispute": "Open dispute",
-    "unstake": "Unstake",
-    "stake": "Stake",
     "lastNameSmall": "nom de famille",
     "lastNameBig": "Nom de famille",
     "firstNameSmall": "prénom",
@@ -129,9 +140,7 @@
     "details": "Voir les détails",
     "iAgree": "J'accepte",
     "connectSMSVer": "Connecter la vérification par SMS",
-    "resendSMS": "Renvoyer le SMS",
     "remindLater": "Rappeler plus tard",
-    "leave": "Leave",
     "listIsEmpty": "List is empty",
     "crediting": "Prêt",
     "portfolio": "Portefeuille",
@@ -139,7 +148,6 @@
     "add": "Ajouter",
     "sendARequest": "Envoyer une demande",
     "aboutUs": "About Us",
-    "registration": "Inscription",
     "signIn": "S'identifier",
     "account": "Vous n'avez pas de compte ?",
     "raiseViews": "Augmenter les vues",
@@ -176,16 +184,6 @@
     "costPerHour": "Coût horaire",
     "disputes": "Litiges",
     "success": "Succès"
-  },
-  "btn": {
-    "completeWorkOnQuest": "Complete work on Quest",
-    "acceptCompletedWorkOnQuest": "Accept completed work on quest",
-    "closeQuest": "Close quest",
-    "goToChat": "Accéder à la messagerie instantanée",
-    "view": "Afficher"
-  },
-  "distance": {
-    "m": "m"
   },
   "info": {
     "yourMessage": " Your message:",

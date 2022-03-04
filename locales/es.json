@@ -71,7 +71,20 @@
       "showAll": "Mostrar todo",
       "showAllReviews": "Mostrar todas las opiniones",
       "showAllQuests": "Show all quests",
-      "showAllPortfolios": "Show all portfolios"
+      "showAllPortfolios": "Show all portfolios",
+      "unstake": "Unstake",
+      "stake": "Stake",
+      "resendSMS": "Volver a enviar SMS",
+      "registration": "Registro",
+      "leave": "Leave",
+      "completeWorkOnQuest": "Complete work on Quest",
+      "acceptCompletedWorkOnQuest": "Accept completed work on quest",
+      "closeQuest": "Close quest",
+      "goToChat": "Ir al chat",
+      "view": "Ver",
+      "distance": {
+        "m": "m"
+      }
     },
     "warning": "Warning",
     "typeYourMessage": "Type your message",
@@ -93,8 +106,6 @@
     "time": "1 de feb. de 2021",
     "userName":"John Doe",
     "openDispute": "Abrir disputa",
-    "unstake": "Unstake",
-    "stake": "Stake",
     "lastNameSmall": "apellidos",
     "lastNameBig": "Apellidos",
     "firstNameSmall": "nombre",
@@ -129,9 +140,7 @@
     "details": "Ver detalles",
     "iAgree": "Acepto",
     "connectSMSVer": "Conectar verificación por SMS",
-    "resendSMS": "Volver a enviar SMS",
     "remindLater": "Recordármelo más tarde",
-    "leave": "Leave",
     "listIsEmpty": "List is empty",
     "crediting": "Préstamo",
     "portfolio": "Trabajos",
@@ -139,7 +148,6 @@
     "add": "Añadir",
     "sendARequest": "Enviar una solicitud",
     "aboutUs": "About Us",
-    "registration": "Registro",
     "signIn": "Iniciar sesión",
     "account": "¿No tiene una cuenta?",
     "raiseViews": "Aumentar visualizaciones",
@@ -176,16 +184,6 @@
     "costPerHour": "Coste por hora",
     "disputes": "Disputas",
     "success": "Operación correcta"
-  },
-  "btn": {
-    "completeWorkOnQuest": "Complete work on Quest",
-    "acceptCompletedWorkOnQuest": "Accept completed work on quest",
-    "closeQuest": "Close quest",
-    "goToChat": "Ir al chat",
-    "view": "Ver"
-  },
-  "distance": {
-    "m": "m"
   },
   "info": {
     "yourMessage": " Your message:",

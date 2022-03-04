@@ -71,7 +71,20 @@
       "showAll": "Show all",
       "showAllReviews": "सभी रिव्यू दिखाएं",
       "showAllQuests": "Show all quests",
-      "showAllPortfolios": "Show all portfolios"
+      "showAllPortfolios": "Show all portfolios",
+      "unstake": "Unstake",
+      "stake": "Stake",
+      "resendSMS": "SMS फिर से भेजें",
+      "registration": "रजिस्ट्रेशन",
+      "leave": "Leave",
+      "completeWorkOnQuest": "Complete work on Quest",
+      "acceptCompletedWorkOnQuest": "Accept completed work on quest",
+      "closeQuest": "Close quest",
+      "goToChat": "चैट पर जाएं",
+      "view": "देखें",
+      "distance": {
+        "m": "m"
+      }
     },
     "warning": "Warning",
     "typeYourMessage": "Type your message",
@@ -93,8 +106,6 @@
     "time": "Feb 1, 2021",
     "userName":"John Doe",
     "openDispute": "Open dispute",
-    "unstake": "Unstake",
-    "stake": "Stake",
     "lastNameSmall": "जॉन",
     "lastNameBig": "जॉन",
     "firstNameSmall": "डो",
@@ -129,9 +140,7 @@
     "details": "विवरण देखें",
     "iAgree": "मैं सहमत हूं",
     "connectSMSVer": "SMS वेरिफिकेशन कनेक्ट करें",
-    "resendSMS": "SMS फिर से भेजें",
     "remindLater": "बाद में याद दिलाएं",
-    "leave": "Leave",
     "listIsEmpty": "List is empty",
     "crediting": "कर्ज",
     "portfolio": "पोर्टफोलियो",
@@ -139,7 +148,6 @@
     "add": "जोड़ें",
     "sendARequest": "अनुरोध भेजें",
     "aboutUs": "About Us",
-    "registration": "रजिस्ट्रेशन",
     "signIn": "साइन इन करें",
     "account": "अकाउंट नहीं है?",
     "raiseViews": "व्यू बढ़ाएं",
@@ -176,16 +184,6 @@
     "costPerHour": "कॉस्ट प्रति घंटा",
     "disputes": "विवाद",
     "success": "Success"
-  },
-  "btn": {
-    "completeWorkOnQuest": "Complete work on Quest",
-    "acceptCompletedWorkOnQuest": "Accept completed work on quest",
-    "closeQuest": "Close quest",
-    "goToChat": "चैट पर जाएं",
-    "view": "देखें"
-  },
-  "distance": {
-    "m": "m"
   },
   "info": {
     "yourMessage": " Your message:",

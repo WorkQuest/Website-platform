@@ -43,7 +43,10 @@
       "hours": "{count} hours",
       "years": "{count} years",
       "days": "{count} days",
-      "votesCount": "{count} votes"
+      "votesCount": "{count} votes",
+      "distance": {
+        "m": "m"
+      }
     },
     "btns": {
       "back": "Back",
@@ -71,11 +74,18 @@
       "showAll": "Show all",
       "showAllReviews": "Show all reviews",
       "showAllQuests": "Show all quests",
-      "showAllPortfolios": "Show all portfolios"
+      "showAllPortfolios": "Show all portfolios",
+      "unstake": "Unstake",
+      "stake": "Stake",
+      "resendSMS": "Resend SMS",
+      "registration": "Registration",
+      "leave": "Leave",
+      "completeWorkOnQuest": "Complete work on Quest",
+      "acceptCompletedWorkOnQuest": "Accept completed work on quest",
+      "closeQuest": "Close quest",
+      "goToChat": "Go to chat",
+      "view": "View"
     },
-    "unstake": "Unstake",
-    "stake": "Stake",
-    "resendSMS": "Resend SMS",
     "warning": "Warning",
     "typeYourMessage": "Type your message",
     "liquidityMining": "Liquidity mining",
@@ -131,7 +141,6 @@
     "iAgree": "I agree",
     "connectSMSVer": "Connect SMS Verification",
     "remindLater": "Remind later",
-    "leave": "Leave",
     "listIsEmpty": "List is empty",
     "crediting": "Crediting",
     "portfolio": "Portfolio",
@@ -139,7 +148,6 @@
     "add": "Add",
     "sendARequest": "Send a request",
     "aboutUs": "About Us",
-    "registration": "Registration",
     "signIn": "Sign In",
     "account": "Haven’t account?",
     "raiseViews": "Raise views",
@@ -176,16 +184,6 @@
     "costPerHour": "Cost per hour",
     "disputes": "Disputes",
     "success": "Success"
-  },
-  "btn": {
-    "completeWorkOnQuest": "Complete work on Quest",
-    "acceptCompletedWorkOnQuest": "Accept completed work on quest",
-    "closeQuest": "Close quest",
-    "goToChat": "Go to chat",
-    "view": "View"
-  },
-  "distance": {
-    "m": "m"
   },
   "info": {
     "yourMessage": " Your message:",

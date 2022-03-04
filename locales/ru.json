@@ -71,7 +71,20 @@
       "showAll": "Показать все",
       "showAllReviews": "Показать все обзоры",
       "showAllQuests": "Показать все квесты",
-      "showAllPortfolios": "Показать все портфолио"
+      "showAllPortfolios": "Показать все портфолио",
+      "unstake": "Unstake",
+      "stake": "Stake",
+      "resendSMS": "Переотправить СМС",
+      "registration": "Регистрация",
+      "leave": "Покинуть",
+      "completeWorkOnQuest": "Завершить работу над квестом",
+      "acceptCompletedWorkOnQuest": "Принять выполненную работу по квесту",
+      "closeQuest": "Закрыть квест",
+      "goToChat": "Перейти в чат",
+      "view": "View",
+      "distance": {
+        "m": "m"
+      }
     },
     "warning": "Warning",
     "typeYourMessage": "Type your message",
@@ -93,8 +106,6 @@
     "time": "1 февраля 2021 г.",
     "userName":"John Doe",
     "openDispute": "Окрыть спор",
-    "unstake": "Unstake",
-    "stake": "Stake",
     "lastNameSmall": "фамилия",
     "lastNameBig": "Фамилия",
     "firstNameSmall": "имя",
@@ -130,9 +141,7 @@
     "details": "Посмотреть детали",
     "iAgree": "Я согласен",
     "connectSMSVer": "Подключить СМС верификацию",
-    "resendSMS": "Переотправить СМС",
     "remindLater": "Напомнить позже",
-    "leave": "Покинуть",
     "listIsEmpty": "Список пуст",
     "crediting": "Кредитование",
     "portfolio": "Портфолио",
@@ -140,7 +149,6 @@
     "add": "Добавить",
     "sendARequest": "Отправить запрос",
     "aboutUs": "О нас",
-    "registration": "Регистрация",
     "signIn": "Войти",
     "account": "Нет аккаунта?",
     "raiseViews": "Увеличить просмотры",
@@ -177,16 +185,6 @@
     "costPerHour": "Цена за час",
     "disputes": "Споры",
     "success": "Успешно"
-  },
-  "btn": {
-    "completeWorkOnQuest": "Завершить работу над квестом",
-    "acceptCompletedWorkOnQuest": "Принять выполненную работу по квесту",
-    "closeQuest": "Закрыть квест",
-    "goToChat": "Перейти в чат",
-    "view": "View"
-  },
-  "distance": {
-    "m": "m"
   },
   "info": {
     "yourMessage": " Ваше сообщение:",

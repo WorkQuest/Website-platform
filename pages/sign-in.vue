@@ -17,7 +17,7 @@
           data-selector="ACTION-BTN-TO-REGISTRATION"
           to="/sign-up"
         >
-          {{ $t('meta.registration') }}
+          {{ $t('meta.btns.registration') }}
         </nuxt-link>
       </div>
       <form

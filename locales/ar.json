@@ -43,7 +43,10 @@
       "hours": "{count} الساعات",
       "years": "{count} years",
       "days": "{count} يوم",
-      "votesCount": "{count} صوت"
+      "votesCount": "{count} صوت",
+      "distance": {
+        "m": "م"
+      }
     },
     "btns": {
       "back": "العودة",
@@ -71,7 +74,18 @@
       "showAll": "Show all",
       "showAllReviews": "عرض جميع المراجعات",
       "showAllQuests": "Show all quests",
-      "showAllPortfolios": "Show all portfolios"
+      "showAllPortfolios": "Show all portfolios",
+      "unstake": "Unstake",
+      "stake": "Stake",
+      "resendSMS": "SMS إعادة إرسال",
+      "registration": "التسجيل",
+      "leave": "Leave",
+      "completeWorkOnQuest": "Complete work on Quest",
+      "acceptCompletedWorkOnQuest": "Accept completed work on quest",
+      "closeQuest": "Close quest",
+      "goToChat": "الانتقال إلى الدردشة",
+      "responded": "إرسال الرد",
+      "view": "عرض"
     },
     "warning": "Warning",
     "typeYourMessage": "Type your message",
@@ -93,8 +107,6 @@
     "time": "1 فبراير 2021",
     "userName":"كريم خالد",
     "openDispute": "نزاع مفتوح",
-    "unstake": "Unstake",
-    "stake": "Stake",
     "lastNameSmall": "خالد",
     "lastNameBig": "خالد",
     "firstNameSmall": "كريم",
@@ -129,9 +141,7 @@
     "details": "عرض التفاصيل",
     "iAgree": "أوافق",
     "connectSMSVer": "التحقُّق برسالة SMS للربط",
-    "resendSMS": "SMS إعادة إرسال",
     "remindLater": "تذكيري لاحقًا",
-    "leave": "Leave",
     "listIsEmpty": "List is empty",
     "crediting": "الإقراض",
     "portfolio": "نماذج الأعمال",
@@ -139,7 +149,6 @@
     "add": "إضافة",
     "sendARequest": "إرسال طلب",
     "aboutUs": "About Us",
-    "registration": "التسجيل",
     "signIn": "تسجيل الدخول",
     "account": "ليس لديك حساب؟",
     "raiseViews": "زيادة المشاهدات",
@@ -176,17 +185,6 @@
     "costPerHour": "التكلفة في الساعة",
     "disputes": "النزاعات",
     "success": "تم بنجاح"
-  },
-  "btn": {
-    "completeWorkOnQuest": "Complete work on Quest",
-    "acceptCompletedWorkOnQuest": "Accept completed work on quest",
-    "closeQuest": "Close quest",
-    "goToChat": "الانتقال إلى الدردشة",
-    "responded": "إرسال الرد",
-    "view": "عرض"
-  },
-  "distance": {
-    "m": "م"
   },
   "info": {
     "yourMessage": " Your message:",
