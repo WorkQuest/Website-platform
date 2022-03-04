@@ -147,6 +147,13 @@
       </div>
     </div>
   </div>
+  <div v-else-if="!isLoading">
+    <empty-data
+      :description="$t('meta.questNotFound')"
+      :link="'/quests'"
+      :btn-text="$t('meta.ok')"
+    />
+  </div>
 </template>
 
 <script>
@@ -177,6 +184,7 @@ export default {
       userData: 'user/getUserData',
       otherQuestsCount: 'quests/getAllQuestsCount',
       otherQuests: 'quests/getAllQuests',
+      isLoading: 'main/getIsLoading',
     }),
     rating() {
       return this.quest.yourReview?.mark || 0;
@@ -222,7 +230,11 @@ export default {
   },
   async beforeMount() {
     this.SetLoader(true);
-    await this.getQuest();
+    const res = await this.getQuest();
+    if (!res) {
+      this.SetLoader(false);
+      return;
+    }
     this.initMapData();
     if (this.userRole === UserRole.WORKER) await this.getSameQuests();
     await this.getResponsesToQuest();
@@ -488,7 +500,7 @@ export default {
       this[funcKey]();
     },
     async getQuest() {
-      await this.$store.dispatch('quests/getQuest', this.$route.params.id);
+      return await this.$store.dispatch('quests/getQuest', this.$route.params.id);
     },
     initMapData() {
       this.$store.commit('google-map/setZoom', 15);
