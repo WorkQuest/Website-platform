@@ -22,6 +22,7 @@
       "bnb": "BNB",
       "bsc": "BSC",
       "wqt": "WQT",
+      "wusd": "WUSD",
       "count": {
         "WUSDCount": "{count} WUSD",
         "WQTCount": "{count} WQT",
@@ -83,20 +84,11 @@
       "closeQuest": "Close quest",
       "goToChat": "Kunjungi obrolan",
       "view": "Lihat",
-      "add": "Tambahkan"
-    },
-    "Collateral": {
-      "balance": "Collateral balance",
-      "coin": "coin",
-      "sum": "sum",
-      "amountInDollars": "amount in dollars",
-      "attentionQuotient": "attention quotient",
-      "addTitle": "Add collateral",
-      "takeTitle": "Take collateral"
+      "add": "Tambahkan",
+      "take": "Take"
     },
     "allTransactions": "All transactions",
     "collateralTransactions": "Collateral transactions",
-    "take": "Take",
     "operation": "Operation",
     "warning": "Warning",
     "typeYourMessage": "Type your message",
@@ -1260,6 +1252,15 @@
     "transfer": "Beli / Kirim",
     "addCardProposal": "Tambahkan kartu Anda sendiri untuk penarikan mudah",
     "addCard": "Tambahkan Kartu",
+    "collateral": {
+      "balance": "Collateral balance",
+      "coin": "coin",
+      "sum": "sum",
+      "amountInDollars": "amount in dollars",
+      "attentionQuotient": "attention quotient",
+      "addTitle": "Add collateral",
+      "takeTitle": "Take collateral"
+    },
     "table": {
       "trx": "Transaksi",
       "txHash": "Txn Hash",

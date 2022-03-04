@@ -22,6 +22,7 @@
       "bnb": "BNB",
       "bsc": "BSC",
       "wqt": "WQT",
+      "wusd": "WUSD",
       "count": {
         "WUSDCount": "{count} WUSD",
         "WQTCount": "{count} WQT",
@@ -83,20 +84,11 @@
       "closeQuest": "Close quest",
       "goToChat": "转到聊天",
       "view": "查看",
-      "add": "添加"
-    },
-    "Collateral": {
-      "balance": "Collateral balance",
-      "coin": "coin",
-      "sum": "sum",
-      "amountInDollars": "amount in dollars",
-      "attentionQuotient": "attention quotient",
-      "addTitle": "Add collateral",
-      "takeTitle": "Take collateral"
+      "add": "添加",
+      "take": "Take"
     },
     "allTransactions": "All transactions",
     "collateralTransactions": "Collateral transactions",
-    "take": "Take",
     "operation": "Operation",
     "warning": "Warning",
     "typeYourMessage": "Type your message",
@@ -1262,6 +1254,15 @@
     "transfer": "购买/发送",
     "addCardProposal": "添加您自己的银行卡，轻松提款",
     "addCard": "添加银行卡",
+    "collateral": {
+      "balance": "Collateral balance",
+      "coin": "coin",
+      "sum": "sum",
+      "amountInDollars": "amount in dollars",
+      "attentionQuotient": "attention quotient",
+      "addTitle": "Add collateral",
+      "takeTitle": "Take collateral"
+    },
     "table": {
       "trx": "交易",
       "txHash": "交易哈希",

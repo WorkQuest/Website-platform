@@ -22,6 +22,7 @@
       "bnb": "BNB",
       "bsc": "BSC",
       "wqt": "WQT",
+      "wusd": "WUSD",
       "count": {
         "WUSDCount": "{count} WUSD",
         "WQTCount": "{count} WQT",
@@ -83,20 +84,11 @@
       "closeQuest": "Close quest",
       "goToChat": "चैट पर जाएं",
       "view": "देखें",
-      "add": "जोड़ें"
-    },
-    "Collateral": {
-      "balance": "Collateral balance",
-      "coin": "coin",
-      "sum": "sum",
-      "amountInDollars": "amount in dollars",
-      "attentionQuotient": "attention quotient",
-      "addTitle": "Add collateral",
-      "takeTitle": "Take collateral"
+      "add": "जोड़ें",
+      "take": "Take"
     },
     "allTransactions": "All transactions",
     "collateralTransactions": "Collateral transactions",
-    "take": "Take",
     "operation": "Operation",
     "warning": "Warning",
     "typeYourMessage": "Type your message",
@@ -1260,6 +1252,15 @@
     "transfer": "खरीदें / भेजें",
     "addCardProposal": "आसान निकासी के लिए अपना कार्ड जोड़ें",
     "addCard": "कार्ड जोड़ें",
+    "collateral": {
+      "balance": "Collateral balance",
+      "coin": "coin",
+      "sum": "sum",
+      "amountInDollars": "amount in dollars",
+      "attentionQuotient": "attention quotient",
+      "addTitle": "Add collateral",
+      "takeTitle": "Take collateral"
+    },
     "table": {
       "trx": "ट्रांजेक्शन",
       "txHash": "ट्रांजेक्शन हैश",

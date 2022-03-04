@@ -22,6 +22,7 @@
       "bnb": "BNB",
       "bsc": "BSC",
       "wqt": "WQT",
+      "wusd": "WUSD",
       "count": {
         "WUSDCount": "{count} WUSD",
         "WQTCount": "{count} WQT",
@@ -83,20 +84,11 @@
       "closeQuest": "Close quest",
       "goToChat": "Go to chat",
       "view": "View",
-      "add": "Add"
-    },
-    "Collateral": {
-      "balance": "Collateral balance",
-      "coin": "coin",
-      "sum": "sum",
-      "amountInDollars": "amount in dollars",
-      "attentionQuotient": "attention quotient",
-      "addTitle": "Add collateral",
-      "takeTitle": "Take collateral"
+      "add": "Add",
+      "take": "Take"
     },
     "allTransactions": "All transactions",
     "collateralTransactions": "Collateral transactions",
-    "take": "Take",
     "operation": "Operation",
     "warning": "Warning",
     "typeYourMessage": "Type your message",
@@ -1260,6 +1252,15 @@
     "transfer": "Buy / Send",
     "addCardProposal": "Add bank card for easy withdrawal",
     "addCard": "Add card",
+    "collateral": {
+      "balance": "Collateral balance",
+      "coin": "coin",
+      "sum": "sum",
+      "amountInDollars": "amount in dollars",
+      "attentionQuotient": "attention quotient",
+      "addTitle": "Add collateral",
+      "takeTitle": "Take collateral"
+    },
     "table": {
       "trx": "Transactions",
       "txHash": "Txn Hash",
