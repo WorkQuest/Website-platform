@@ -139,6 +139,7 @@
     }
   },
   "meta": {
+    "operation": "Operation",
     "allTransactions": "All transactions",
     "collateralTransactions": "Collateral transactions",
     "redeem": "Redeem",
