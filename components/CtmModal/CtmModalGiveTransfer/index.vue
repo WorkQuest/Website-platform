@@ -220,7 +220,7 @@ export default {
           },
           fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WUSD },
         },
-        submitMethod: async () => this.transfer(),
+        submitMethod: async () => await this.transfer(),
         callback,
       });
     },

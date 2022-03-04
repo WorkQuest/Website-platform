@@ -92,24 +92,49 @@
             </base-btn>
           </div>
         </div>
-        <div class="wallet__table table">
-          <base-table
-            class="table__txs"
-            :title="$t('wallet.table.trx')"
-            :items="styledTransactions"
-            :fields="walletTableFields"
-          />
-          <empty-data
-            v-if="!totalPages"
-            :description="$t('wallet.table.empty')"
-            class="table__empty"
+        <div class="wallet__switch-table">
+          <base-btn
+            :mode="getSwitchButtonMode(walletTables.TXS)"
+            @click="selectedWalletTable = walletTables.TXS"
+          >
+            {{ $t('meta.allTransactions') }}
+          </base-btn>
+          <base-btn
+            :mode="getSwitchButtonMode(walletTables.COLLATERAL)"
+            @click="selectedWalletTable = walletTables.COLLATERAL"
+          >
+            {{ $t('meta.collateralTransactions') }}
+          </base-btn>
+        </div>
+        <div
+          v-if="selectedWalletTable === walletTables.TXS"
+          class="wallet__txs"
+        >
+          <div class="wallet__table table">
+            <base-table
+              class="table__txs"
+              :title="$t('wallet.table.trx')"
+              :items="styledTransactions"
+              :fields="walletTableFields"
+            />
+            <empty-data
+              v-if="!totalPages"
+              :description="$t('wallet.table.empty')"
+              class="table__empty"
+            />
+          </div>
+          <base-pager
+            v-if="totalPages > 1"
+            v-model="currentPage"
+            :total-pages="totalPages"
           />
         </div>
-        <base-pager
-          v-if="totalPages > 1"
-          v-model="currentPage"
-          :total-pages="totalPages"
-        />
+        <div
+          v-else
+          class="wallet__txs"
+        >
+          <CollateralTable />
+        </div>
       </div>
     </div>
   </div>
@@ -119,20 +144,22 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { TokenSymbols } from '~/utils/enums';
+import { TokenSymbolByContract, TokenSymbols, WalletTables } from '~/utils/enums';
 import { getStyledAmount } from '~/utils/wallet';
 import EmptyData from '~/components/app/info/emptyData';
+import CollateralTable from '~/components/app/pages/wallet/CollateralTable';
 
 export default {
   name: 'Wallet',
   middleware: 'auth',
-  components: { EmptyData },
+  components: { EmptyData, CollateralTable },
   data() {
     return {
       cardClosed: false,
       ddValue: 0,
       txsPerPage: 10,
       currentPage: 1,
+      selectedWalletTable: WalletTables.TXS,
     };
   },
   computed: {
@@ -148,6 +175,9 @@ export default {
       balance: 'wallet/getBalanceData',
       selectedToken: 'wallet/getSelectedToken',
     }),
+    walletTables() {
+      return WalletTables;
+    },
     totalPages() {
       if (!this.transactionsCount) return 0;
       return Math.ceil(this.transactionsCount / this.txsPerPage);
@@ -157,15 +187,16 @@ export default {
       const res = [];
       // eslint-disable-next-line no-restricted-syntax
       for (const t of txs) {
+        const symbol = TokenSymbolByContract[t.to_address_hash.hex] || TokenSymbols.WUSD;
         res.push({
-          tx_hash: t.id,
-          block: t.blockNumber,
-          timestamp: this.$moment(t.timestamp).format('lll'),
+          tx_hash: t.hash,
+          block: t.block_number,
+          timestamp: this.$moment(t.block.timestamp).format('lll'),
           status: !!t.status,
-          value: getStyledAmount(t.value),
-          transaction_fee: new BigNumber(t.gasPrice).multipliedBy(t.gasUsed),
-          from_address: t.fromAddress,
-          to_address: t.toAddress,
+          value: `${getStyledAmount(t.tokenTransfers[0]?.amount || t.value)} ${symbol}`,
+          transaction_fee: new BigNumber(t.gas_price).multipliedBy(t.gas_used),
+          from_address: t.from_address_hash.hex,
+          to_address: t.to_address_hash.hex,
         });
       }
       return res;
@@ -214,6 +245,10 @@ export default {
     await this.loadData();
   },
   methods: {
+    getSwitchButtonMode(btn) {
+      if (btn === this.selectedWalletTable) return '';
+      return 'outline';
+    },
     async getTransactions() {
       await this.$store.dispatch('wallet/getTransactions', {
         limit: this.txsPerPage,
@@ -348,6 +383,14 @@ export default {
       grid-template-columns: 1fr;
     }
   }
+
+  &__switch-table {
+    display: grid;
+    grid-template-columns: repeat(2, 210px);
+    grid-gap: 10px;
+    margin-bottom: 20px;
+  }
+
   &__table {
     position: relative;
     box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
@@ -554,6 +597,9 @@ export default {
     &_mobile {
       display: block;
     }
+  }
+  .wallet__switch-table {
+    grid-template-columns: 1fr;
   }
 }
 @include _350 {
