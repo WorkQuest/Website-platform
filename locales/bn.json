@@ -85,6 +85,18 @@
       "view": "দেখুন",
       "add": "যোগ করুন"
     },
+    "Collateral": {
+      "balance": "Collateral balance",
+      "coin": "coin",
+      "sum": "sum",
+      "amountInDollars": "amount in dollars",
+      "attentionQuotient": "attention quotient",
+      "addTitle": "Add collateral",
+      "takeTitle": "Take collateral"
+    },
+    "allTransactions": "All transactions",
+    "collateralTransactions": "Collateral transactions",
+    "take": "Take",
     "operation": "Operation",
     "warning": "Warning",
     "typeYourMessage": "Type your message",
