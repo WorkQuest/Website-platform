@@ -168,9 +168,6 @@ export default {
   async beforeMount() {
     await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
-  async beforeMount() {
-    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
-  },
   methods: {
     async requestGetWUSD() {
       await this.$store.dispatch('wallet/getBalance');
