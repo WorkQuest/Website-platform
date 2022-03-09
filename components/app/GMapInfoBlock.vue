@@ -188,19 +188,6 @@ export default {
 };
 </script>
 
-<style lang="scss">
-// .gm-style-iw and .gm-style-iw-d does not working, need to fix paddings right and bottom
-.gm-style-iw{
-  padding: 0 !important;
-}
-.gm-style-iw-c {
-  padding: 0 !important;
-}
-.gm-style-iw-d {
-  padding: 0 !important;
-}
-</style>
-
 <style lang="scss" scoped>
 
 .info-window {
@@ -210,7 +197,6 @@ export default {
     display: flex;
     grid-gap: 10px;
     flex-direction: column;
-    padding: 5px 0 0 13px;
     &_multi {
       gap: 0;
       max-height: 200px;
@@ -223,10 +209,11 @@ export default {
     display: grid;
     grid-template-columns: 2fr 1fr;
     grid-gap: 5px;
-    padding: 13px 0 13px 13px;
+    padding: 13px;
     cursor: pointer;
     &:hover {
       background: $black0;
+      border-radius: 6px;
     }
   }
   &__block {
