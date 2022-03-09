@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="review"
-    :title="$t('modals.reviewOnEmployer')"
+    :title="$t('modals.titles.reviewOnEmployer')"
   >
     <div class="review__body body">
       <div class="body__rating">

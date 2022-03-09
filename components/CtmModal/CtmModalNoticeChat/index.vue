@@ -6,7 +6,7 @@
     <div class="notice__content content">
       <span class="icon-warning content__icon" />
       <div class="content__title">
-        {{ $t('modals.noticeTitle') }}
+        {{ $t('modals.titles.noticeTitle') }}
       </div>
       <div class="content__desc">
         {{ $t('modals.noticeText') }}

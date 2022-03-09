@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="dispute"
-    :title="$t('modals.openADispute')"
+    :title="$t('modals.titles.openADispute')"
   >
     <div class="dispute__content content">
       <div class="content__subtitle">

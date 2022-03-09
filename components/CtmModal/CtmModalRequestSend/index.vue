@@ -11,7 +11,7 @@
             alt="RequestSend"
           >
           <div class="ctm-modal__title">
-            {{ $t('modals.requestSend') }}
+            {{ $t('modals.titles.requestSend') }}
           </div>
           <div class="ctm-modal__desc">
             {{ $t('modals.waitResponseFromEmployer') }}

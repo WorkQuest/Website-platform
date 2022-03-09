@@ -2,7 +2,7 @@
   <ctm-modal-box
     class="deposit"
     :class="{'deposit_small': step === 2}"
-    :title="$t('meta.deposit')"
+    :title="$t('modals.titles.deposit')"
   >
     <div class="deposit__content сontent">
       <div class="content__step">

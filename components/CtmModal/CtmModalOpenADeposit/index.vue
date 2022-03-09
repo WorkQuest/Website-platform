@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="deposit"
-    :title="$t('saving.openADeposit')"
+    :title="$t('modals.titles.openADeposit')"
   >
     <div class="deposit__content content">
       <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">

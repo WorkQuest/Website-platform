@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="transfer"
-    :title="$t('modals.transfer')"
+    :title="$t('modals.titles.transfer')"
   >
     <div class="transfer__content content">
       <validation-observer v-slot="{handleSubmit, invalid}">

@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="withdraw"
-    :title="$t('meta.withdraw')"
+    :title="$t('modals.titles.withdraw')"
   >
     <div class="withdraw__content content">
       <div class="content__desc">

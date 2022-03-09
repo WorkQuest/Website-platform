@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.2FA.disable')"
+    :title="$t('modals.titles.2FA.disable')"
   >
     <div class="ctm-modal__content">
       <validation-observer

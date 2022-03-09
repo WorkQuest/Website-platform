@@ -1,6 +1,6 @@
 <template>
   <ctm-modal-box
-    :title="$t('filters.titleAll')"
+    :title="$t('modals.titles.filters.titleAll')"
     class="filter"
   >
     <div class="filter__container">

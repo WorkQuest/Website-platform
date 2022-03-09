@@ -1,15 +1,11 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('meta.cardAdd')"
+    :title="$t('modals.titles.cardAdd')"
   >
     <div class="ctm-modal__content">
-      <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
-      >
-        <div
-          class="ctm-modal__content-field"
-        >
+      <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
+        <div class="ctm-modal__content-field">
           <base-field
             v-model="cardNumberInput"
             :placeholder="'0000 0000 0000 0000'"

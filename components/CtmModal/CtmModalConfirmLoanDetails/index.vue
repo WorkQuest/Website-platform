@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="details"
-    :title="$t('modals.confirmDetails')"
+    :title="$t('modals.titles.confirmDetails')"
   >
     <div class="details__content content">
       <div class="content__field">
@@ -53,7 +53,7 @@ export default {
           subtitle: this.$t('meta.coins.eth'),
         },
         {
-          title: this.$t('modals.loan'),
+          title: this.$t('modals.titles.loan'),
           subtitle: this.$tc('meta.coins.count.ETHCount', 1),
         },
         {

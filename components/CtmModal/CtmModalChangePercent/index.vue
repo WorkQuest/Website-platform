@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="percent"
-    :title="$t('modals.changePercent')"
+    :title="$t('modals.titles.changePercent')"
   >
     <div class="percent__content content">
       <validation-observer

@@ -1,6 +1,6 @@
 <template>
   <ctm-modal-box
-    :title="$t('modals.chooseSkills')"
+    :title="$t('modals.titles.chooseSkills')"
     class="messageSend"
   >
     <div class="ctm-modal__content">

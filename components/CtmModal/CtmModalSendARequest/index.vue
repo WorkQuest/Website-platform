@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="message"
-    :title="$t('meta.sendARequest')"
+    :title="$t('modals.titles.sendARequest')"
   >
     <div class="ctm-modal__content">
       <validation-observer v-slot="{handleSubmit}">

@@ -11,7 +11,7 @@
             alt="warning"
           >
           <div class="ctm-modal__title">
-            {{ $t('meta.warning') }}
+            {{ $t('modals.title.warning') }}
           </div>
           <div class="ctm-modal__desc">
             {{ $t('modals.ifYouChangeRole') }}

@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="restore"
-    :title="$t('forgot.title')"
+    :title="$t('modals.titles.forgotPass')"
   >
     <div class="restore__content content">
       <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">

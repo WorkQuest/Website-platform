@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="ctm-modal ctm-modal_center"
-    :title="$t('modals.editCase')"
+    :title="$t('modals.titles.editCase')"
   >
     <div class="ctm-modal__content content">
       <validation-observer

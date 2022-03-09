@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.sendTo')"
+    :title="$t('modals.titles.sendTo')"
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__content-field">

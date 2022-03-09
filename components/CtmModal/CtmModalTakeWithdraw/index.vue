@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="withdrawal"
-    :title="$t('meta.withdrawal')"
+    :title="$t('modals.titles.withdrawal')"
   >
     <div class="withdrawal__content content">
       <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">

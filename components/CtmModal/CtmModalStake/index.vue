@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="stake"
-    :title="$t('meta.btns.stake')"
+    :title="$t('modals.titles.stake')"
   >
     <validation-observer
       v-slot="{handleSubmit, valid}"

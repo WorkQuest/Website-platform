@@ -3,7 +3,7 @@
     class="change-role"
     :class="[{'change-role_wide': step === 1}]"
     :is-unclosable="true"
-    :title="step === 1 ? $t('modals.reason') : $t('meta.securityCheckBig')"
+    :title="step === 1 ? $t('modals.titles.reason') : $t('modals.titles.securityCheckBig')"
   >
     <validation-observer
       v-slot="{invalid, handleSubmit}"

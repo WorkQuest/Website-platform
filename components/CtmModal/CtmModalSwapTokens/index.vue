@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="claim"
-    :title="$t('mining.swapTokens.title')"
+    :title="$t('modals.titles.swapTokens')"
   >
     <div class="claim__content content">
       <validation-observer v-slot="{handleSubmit}">

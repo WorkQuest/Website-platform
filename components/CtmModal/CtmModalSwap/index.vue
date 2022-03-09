@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="swap"
-    :title="$t('modals.swapTitle')"
+    :title="$t('modals.titles.swapTitle')"
   >
     <div class="swap__content content">
       <validation-observer

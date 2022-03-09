@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="claim"
-    :title="options.type === 1 ? $t('meta.btns.stake') : $t('meta.btns.unstake')"
+    :title="options.type === 1 ? $t('modals.titles.stake') : $t('modals.titles.unstake')"
   >
     <div class="claim__content content">
       <validation-observer

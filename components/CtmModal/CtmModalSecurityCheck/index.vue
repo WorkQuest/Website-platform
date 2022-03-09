@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="check"
-    :title="$t('meta.securityCheckBig')"
+    :title="$t('modals.titles.securityCheckBig')"
   >
     <div class="check__content">
       <validation-observer

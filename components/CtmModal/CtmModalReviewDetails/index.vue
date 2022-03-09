@@ -1,6 +1,6 @@
 <template>
   <ctm-modal-box
-    :title="$t('modals.review')"
+    :title="$t('modals.titles.review')"
   >
     <div class="ctm-modal__content content">
       <div class="content__review review">

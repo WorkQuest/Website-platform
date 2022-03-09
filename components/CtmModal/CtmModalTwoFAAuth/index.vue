@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.2FA.auth')"
+    :title="$t('modals.titles.2FA.auth')"
   >
     <validation-observer
       v-slot="{handleSubmit, validated, passed, invalid}"

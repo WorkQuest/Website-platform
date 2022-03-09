@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="insure"
-    :title="$t('modals.insureCase')"
+    :title="$t('modals.titles.insureCase')"
   >
     <div class="insure__content content">
       <div class="content__user user">

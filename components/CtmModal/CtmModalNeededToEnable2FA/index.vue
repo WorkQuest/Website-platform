@@ -18,7 +18,7 @@
       <base-btn
         class="transaction__action"
         selector="OK"
-        @click="CloseModal()"
+        @click="CloseModal"
       >
         {{ $t('meta.btns.ok') }}
       </base-btn>

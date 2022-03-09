@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="privacy"
-    :title="$t('meta.privacyPolicy')"
+    :title="$t('modals.titles.privacyPolicy')"
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__desc">

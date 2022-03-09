@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="password"
-    :title="$t('settings.changePass')"
+    :title="$t('modals.titles.changePass')"
   >
     <div class="password__content content">
       <div class="content__error">

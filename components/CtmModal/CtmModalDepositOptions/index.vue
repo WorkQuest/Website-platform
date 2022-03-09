@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="deposit"
-    :title="$t('meta.deposit')"
+    :title="$t('modals.titles.deposit')"
   >
     <div class="deposit__content content">
       <validation-observer

@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.payment')"
+    :title="$t('modals.titles.payment')"
   >
     <div class="ctm-modal__content">
       <validation-observer>

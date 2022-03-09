@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('signWorkQuest.title')"
+    :title="$t('modals.titles.signWorkQuest')"
   >
     <div class="ctm-modal__content sign">
       <div class="sign sign__description">

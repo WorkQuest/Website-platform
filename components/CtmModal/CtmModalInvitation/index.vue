@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.invitation')"
+    :title="$t('modals.titles.invitation')"
   >
     <div class="ctm-modal__content">
       <validation-observer tag="div">
@@ -116,7 +116,7 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/inviteSend.svg'),
-        title: this.$t('modals.inviteSend'),
+        title: this.$t('modals.titles.inviteSend'),
         subtitle: '',
         type: 'goToChat',
         button: this.$t('meta.btns.goToChat'),

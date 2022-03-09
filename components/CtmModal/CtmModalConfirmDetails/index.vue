@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="confirm"
-    :title="$t('modals.confirmDetails')"
+    :title="$t('modals.titles.confirmDetails')"
   >
     <div class="confirm__content content">
       <div class="content__field field">

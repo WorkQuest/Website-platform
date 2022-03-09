@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="card"
-    :title="$t('modals.addingCard')"
+    :title="$t('modals.titles.addingCard')"
   >
     <div class="card__content content">
       <ValidationObserver

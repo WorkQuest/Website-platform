@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="claim"
-    :title="$t('modals.claim')"
+    :title="$t('modals.titles.claim')"
   >
     <div class="claim__content content">
       <!--      Вывод на банковскую карту -->

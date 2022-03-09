@@ -11,7 +11,7 @@
             alt="MessageSend"
           >
           <div class="ctm-modal__title">
-            {{ $t('modals.inviteSend') }}
+            {{ $t('modals.titles.inviteSend') }}
           </div>
           <div class="ctm-modal__desc">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor

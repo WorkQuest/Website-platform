@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="liquidity"
-    :title="$t('meta.addLiquidity')"
+    :title="$t('modals.titles.addLiquidity')"
   >
     <div class="liquidity__content content">
       <validation-observer

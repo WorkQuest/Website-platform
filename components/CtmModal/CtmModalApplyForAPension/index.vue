@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="pension"
-    :title="$t('pension.applyForAPension')"
+    :title="$t('modals.titles.applyForAPension')"
   >
     <div class="pension__content content">
       <validation-observer

@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="payment"
-    :title="$t('modals.payment')"
+    :title="$t('modals.titles.payment')"
   >
     <div class="payment__content сontent">
       <div class="content__step">

@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="views"
-    :title="$t('meta.raiseViews')"
+    :title="$t('modals.titles.raiseViews')"
   >
     <div class="views__content content">
       <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
