@@ -185,6 +185,7 @@ export const Path = {
   QUESTS: '/quests',
   EDIT_QUEST: '/edit-quest',
   COLLATERAL: '/collateral',
+  WIKI: '/wiki',
 };
 
 // WALLET
