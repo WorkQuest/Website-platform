@@ -139,6 +139,9 @@
     }
   },
   "meta": {
+    "operation": "Operation",
+    "allTransactions": "All transactions",
+    "collateralTransactions": "Collateral transactions",
     "redeem": "Redeem",
     "redeemed": "Redeemed",
     "pay": "Pay",
@@ -1189,6 +1192,7 @@
     "textCopy": "Text has been copied",
     "addingCard": "Adding card",
     "add": "Add",
+    "take": "Take",
     "totalFee": "Total fee",
     "processing": "Processing time",
     "addNewCard": "Add new card",
@@ -1408,6 +1412,15 @@
       "value": "Quantity",
       "trxFee": "Transaction fee",
       "empty": "Transactions list is empty"
+    },
+    "collateral": {
+      "balance": "Collateral balance",
+      "coin": "coin",
+      "sum": "sum",
+      "amountInDollars": "amount in dollars",
+      "attentionQuotient": "attention quotient",
+      "addTitle": "Add collateral",
+      "takeTitle": "Take collateral"
     }
   },
   "chat": {
