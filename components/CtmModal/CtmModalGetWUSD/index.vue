@@ -53,11 +53,12 @@
                 {{ $t('modals.countOfRecievedWUSDDescription') }}
               </div>
               <base-field
-                v-model="amountWUSD"
+                :value="amountWUSD"
                 class="content__input"
                 placeholder="10 WUSD"
                 rules="required|decimal"
                 :name="$t('modals.fieldCountOf', { countOf: 'WUSD' })"
+                @input="changeInput(...arguments, queueMemo[0])"
               />
             </div>
             <div class="content__field">
@@ -69,11 +70,12 @@
               </div>
               <base-field
                 id="amountOfPercents_input"
-                v-model="amountCollateral"
+                :value="amountCollateral"
                 class="content__input"
                 :placeholder="`10 ${currentCurrency}`"
                 rules="required|decimal"
                 :name="$t('modals.fieldCountOf', { countOf: `${ currentCurrency } collateral` })"
+                @input="changeInput(...arguments, queueMemo[1])"
               />
             </div>
             <div class="content__field">
@@ -88,14 +90,12 @@
                 :value="conversionPercent"
                 class="content__input"
                 placeholder="150 %"
-                rules="required"
+                rules="required|min_percent:150"
                 :name="$t('modals.fieldPercentConversion')"
-                @input="calcConversionPercent"
+                @input="changeInput(...arguments, queueMemo[2])"
               />
               <div class="content__text">
-                <a href="#">
-                  {{ $t('modals.conversionAdditionalInfo') }}
-                </a>
+                {{ $t('modals.conversionAdditionalInfo', {risks:getRisksGrade}) }}
               </div>
             </div>
           </div>
@@ -137,6 +137,10 @@ export default {
       amountWUSD: '',
       amountCollateral: '',
       conversionPercent: '',
+      price: 10000, // TODO get from backend
+      inputQueue: [],
+      queueMemo: ['amountWUSD', 'amountCollateral', 'conversionPercent'],
+      needToCalcInput: '',
       checkpoints: [
         { name: this.$t('modals.bnb'), id: tokenMap.BNB },
         { name: this.$t('modals.eth'), id: tokenMap.ETH },
@@ -150,6 +154,15 @@ export default {
     }),
     currentCurrency() {
       return this.checkpoints.find((el) => el.id === this.selCurrencyID).name;
+    },
+    getRisksGrade() {
+      if (+this.conversionPercent.replace(/[^0-9,.]/g, '') >= 200) {
+        return this.$t('modals.lowRisk');
+      }
+      if (+this.conversionPercent.replace(/[^0-9,.]/g, '') >= 175) {
+        return this.$t('modals.mediumRisk');
+      }
+      return this.$t('modals.highRisk');
     },
   },
   async beforeMount() {
@@ -165,12 +178,12 @@ export default {
         currency: this.currentCurrency,
         amountBN: new BigNumber(this.amountWUSD).shiftedBy(18).toFixed(),
         collateralBN: new BigNumber(this.amountCollateral).shiftedBy(18).toFixed(),
-        percentBN: new BigNumber(this.conversionPercent.substr(0, this.conversionPercent.length - 1)).shiftedBy(18).toFixed(),
+        percentBN: new BigNumber(this.conversionPercent.substr(0, this.conversionPercent.length - 1)).shiftedBy(16).toFixed(),
       };
 
       const date = Date.now().toString();
       const timestamp = date.substr(0, date.length - 3);
-      const price = '10000000000000000000000'; // TODO price
+      const price = new BigNumber(this.price).shiftedBy(18).toFixed(); // TODO price
       const v = '0x25';
       const r = '0x4f4c17305743700648bc4f6cd3038ec6f6af0df73e31757007b7f59df7bee88d';
       const s = '0x7e1941b264348e80c78c4027afc65a87b0a5e43e86742b8ca0823584c6788fd0';
@@ -256,19 +269,59 @@ export default {
         },
       });
     },
-    calcConversionPercent(value) {
-      const valueWithoutWords = value.replace(/[^0-9,.]/g, '');
-      const isEmpty = valueWithoutWords.length === 0;
-      const isDotFirst = valueWithoutWords[0] === '.' || valueWithoutWords[0] === ',';
-      if (isEmpty) {
-        this.conversionPercent = '';
-      } else if (isDotFirst) {
-        const memo = valueWithoutWords.split('');
-        memo.unshift('0');
-        this.conversionPercent = memo.join('');
-      } else {
-        this.conversionPercent = `${valueWithoutWords}%`;
+    changeInput(value, input) {
+      this.updateStack(input);
+      if (input === this.queueMemo[0]) {
+        this.amountWUSD = value;
       }
+      if (input === this.queueMemo[1]) {
+        this.amountCollateral = value;
+      }
+      if (input === this.queueMemo[2]) {
+        const valueWithoutWords = value.replace(/[^0-9,.]/g, '');
+        const isEmpty = valueWithoutWords.length === 0;
+        const isDotFirst = valueWithoutWords[0] === '.' || valueWithoutWords[0] === ',';
+        if (isEmpty) {
+          this.conversionPercent = '';
+        } else if (isDotFirst) {
+          const memo = valueWithoutWords.split('');
+          memo.unshift('0');
+          this.conversionPercent = memo.join('');
+        } else {
+          this.conversionPercent = `${valueWithoutWords}%`;
+        }
+      }
+      if (this.inputQueue.length > 1 && +value.replace(/[^0-9,.]/g, '') > 0) {
+        this.calculateLastInput();
+      }
+    },
+    updateStack(input) {
+      const index = this.inputQueue.findIndex((el) => el === input);
+      if (index !== -1) {
+        this.inputQueue.splice(index, 1);
+      }
+      this.inputQueue.unshift(input);
+      if (this.inputQueue.length === 2) {
+        [this.needToCalcInput] = this.queueMemo.filter((el) => !(this.inputQueue.includes(el)));
+      } else {
+        [, , this.needToCalcInput] = this.inputQueue;
+      }
+    },
+    calculateLastInput() {
+      const ratio = new BigNumber(this.conversionPercent.replace(/[^0-9,.]/g, '')).dividedBy(100).toFixed();
+      if (this.needToCalcInput === this.queueMemo[0]) {
+        this[this.needToCalcInput] = new BigNumber(this.amountCollateral).multipliedBy(this.price).dividedBy(ratio).toFixed();
+      }
+      if (this.needToCalcInput === this.queueMemo[1]) {
+        this[this.needToCalcInput] = new BigNumber(this.amountWUSD).multipliedBy(ratio).dividedBy(this.price).toFixed();
+      }
+      if (this.needToCalcInput === this.queueMemo[2]) {
+        this[this.needToCalcInput] = `${new BigNumber(this.amountCollateral).multipliedBy(this.price).dividedBy(this.amountWUSD).multipliedBy(100)
+          .toFixed()}%`;
+      }
+      this.$nextTick(() => {
+        this.$refs.form.validate();
+      });
     },
   },
 };
