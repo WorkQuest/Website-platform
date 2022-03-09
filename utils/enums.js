@@ -185,6 +185,7 @@ export const Path = {
   QUESTS: '/quests',
   EDIT_QUEST: '/edit-quest',
   COLLATERAL: '/collateral',
+  WIKI: '/wiki',
 };
 
 // WALLET
@@ -205,6 +206,15 @@ export const UserStatuses = Object.freeze({
 export const TokenSymbols = Object.freeze({
   WQT: 'WQT',
   WUSD: 'WUSD',
+});
+
+export const TokenSymbolByContract = Object.freeze({
+  [process.env.WQT_TOKEN.toLowerCase()]: TokenSymbols.WQT,
+});
+
+export const WalletTables = Object.freeze({
+  TXS: 'TXS',
+  COLLATERAL: 'COLLATERAL',
 });
 
 export const ExplorerUrl = Object.freeze('https://dev-explorer.workquest.co');
@@ -257,3 +267,9 @@ export const tokenMap = {
   ETH: process.env.WORKNET_WETH_TOKEN,
   WQT: process.env.WQT_TOKEN,
 };
+
+export const PensionHistoryMethods = Object.freeze({
+  Update: 'Update',
+  Withdraw: 'Withdraw',
+  Receive: 'Receive',
+});

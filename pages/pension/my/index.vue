@@ -65,66 +65,6 @@
               </div>
             </div>
           </div>
-          <!--          <div class="info-block">-->
-          <!--            <div class="info-block__name">-->
-          <!--              {{ $t('pension.transactionHistory') }}-->
-          <!--            </div>-->
-          <!--            <div class="pension-page__table">-->
-          <!--              <b-table-->
-          <!--                :items="historyByPage"-->
-          <!--                :fields="historyFields"-->
-          <!--                borderless-->
-          <!--                caption-top-->
-          <!--                thead-class="table__header"-->
-          <!--                tbody-tr-class="table__row"-->
-          <!--              >-->
-          <!--                <template #cell(userName)="el">-->
-          <!--                  <div class="user__info">-->
-          <!--                    <img-->
-          <!--                      class="ava"-->
-          <!--                      src="~/assets/img/temp/avatar-small.jpg"-->
-          <!--                      alt=""-->
-          <!--                    >-->
-          <!--                    <div class="user__name">-->
-          <!--                      {{ el.item.userName }}-->
-          <!--                    </div>-->
-          <!--                  </div>-->
-          <!--                </template>-->
-          <!--                <template #cell(userID)="el">-->
-          <!--                  <div class="user__value_gray">-->
-          <!--                    {{ el.item.userID }}-->
-          <!--                  </div>-->
-          <!--                </template>-->
-          <!--                <template #cell(txHash)="el">-->
-          <!--                  <div class="user__value_gray">-->
-          <!--                    {{ getStyledHash(el.item.txHash) }}-->
-          <!--                  </div>-->
-          <!--                </template>-->
-          <!--                <template #cell(time)="el">-->
-          <!--                  <div class="user__value_gray">-->
-          <!--                    {{ el.item.time }}-->
-          <!--                  </div>-->
-          <!--                </template>-->
-          <!--                <template #cell(status)="el">-->
-          <!--                  <div class="user__value_green">-->
-          <!--                    {{ el.item.status }}-->
-          <!--                  </div>-->
-          <!--                </template>-->
-          <!--                <template #cell(amount)="el">-->
-          <!--                  <div class="user__value">-->
-          <!--                    {{ $t(`pension.${currentChainName}Count`, { count: el.item.amount}) }}-->
-          <!--                  </div>-->
-          <!--                </template>-->
-          <!--              </b-table>-->
-          <!--            </div>-->
-          <!--          </div>-->
-          <!--          <div class="info-block__pager">-->
-          <!--            <base-pager-->
-          <!--              v-if="totalPages > 1"-->
-          <!--              v-model="page"-->
-          <!--              :total-pages="totalPages"-->
-          <!--            />-->
-          <!--          </div>-->
         </template>
         <template v-if="isDeadline">
           <div class="info-block__grid">
@@ -154,9 +94,7 @@
                 {{ $t('pension.days', { count: 0 }) }}
               </div>
             </div>
-            <div
-              class="btn-group"
-            >
+            <div class="btn-group">
               <base-btn
                 class="btn_bl"
                 @click="showWithdrawModal"
@@ -171,63 +109,56 @@
               </base-btn>
             </div>
           </div>
-          <!--          TODO: добавить сторию транзакций (нет на бэке) -->
-          <!--          <div class="info-block">-->
-          <!--            <div class="info-block__name">-->
-          <!--              {{ $t('pension.transactionHistory') }}-->
-          <!--            </div>-->
-          <!--            <div class="pension-page__table">-->
-          <!--              <b-table-->
-          <!--                :items="historyByPage"-->
-          <!--                :fields="historyFields"-->
-          <!--                borderless-->
-          <!--                caption-top-->
-          <!--                thead-class="table__header"-->
-          <!--                tbody-tr-class="table__row"-->
-          <!--              >-->
-          <!--                <template #cell(userName)="el">-->
-          <!--                  <div class="user__info">-->
-          <!--                    <img-->
-          <!--                      class="ava"-->
-          <!--                      src="~/assets/img/temp/avatar-small.jpg"-->
-          <!--                      alt=""-->
-          <!--                    >-->
-          <!--                    <div class="user__name">-->
-          <!--                      {{ el.item.userName }}-->
-          <!--                    </div>-->
-          <!--                  </div>-->
-          <!--                </template>-->
-          <!--                <template #cell(userID)="el">-->
-          <!--                  <div class="user__value_gray">-->
-          <!--                    {{ el.item.userID }}-->
-          <!--                  </div>-->
-          <!--                </template>-->
-          <!--                <template #cell(txHash)="el">-->
-          <!--                  <div class="user__value_gray">-->
-          <!--                    {{ getStyledHash(el.item.txHash) }}-->
-          <!--                  </div>-->
-          <!--                </template>-->
-          <!--                <template #cell(time)="el">-->
-          <!--                  <div class="user__value_gray">-->
-          <!--                    {{ el.item.time }}-->
-          <!--                  </div>-->
-          <!--                </template>-->
-          <!--                <template #cell(status)="el">-->
-          <!--                  <div class="user__value_green">-->
-          <!--                    {{ el.item.status }}-->
-          <!--                  </div>-->
-          <!--                </template>-->
-          <!--              </b-table>-->
-          <!--            </div>-->
-          <!--          </div>-->
-          <!--          <div class="info-block__pager">-->
-          <!--            <base-pager-->
-          <!--              v-if="totalPages > 1"-->
-          <!--              v-model="page"-->
-          <!--              :total-pages="totalPages"-->
-          <!--            />-->
-          <!--          </div>-->
         </template>
+        <div class="pension-page__info-block">
+          <div class="info-block">
+            <div class="info-block__table-title">
+              {{ $t('pension.transactionHistory') }}
+            </div>
+            <div class="info-block__select-table">
+              <base-btn
+                :is-submit="false"
+                :mode="selectedTable === $options.PensionHistoryMethods.Receive ? '' : 'outline'"
+                @click="selectedTable=$options.PensionHistoryMethods.Receive"
+              >
+                {{ $t('wallet.deposit') }}
+              </base-btn>
+              <base-btn
+                :is-submit="false"
+                :mode="selectedTable === $options.PensionHistoryMethods.Withdraw ? '' : 'outline'"
+                @click="selectedTable=$options.PensionHistoryMethods.Withdraw"
+              >
+                {{ $t('pension.withdraw') }}
+              </base-btn>
+              <base-btn
+                :is-submit="false"
+                :mode="selectedTable === $options.PensionHistoryMethods.Update ? '' : 'outline'"
+                @click="selectedTable=$options.PensionHistoryMethods.Update"
+              >
+                {{ $t('pension.changePercent') }}
+              </base-btn>
+            </div>
+            <div class="pension-page__table">
+              <base-table
+                class="table"
+                :items="historyByPage"
+                :fields="historyFields"
+              />
+            </div>
+            <div
+              v-if="!historyByPage.length"
+              class="empty-info"
+            >
+              <empty-data :description="$t('meta.listIsEmpty')" />
+            </div>
+          </div>
+          <base-pager
+            v-if="totalPages > 1"
+            v-model="page"
+            class="info-block__pager"
+            :total-pages="totalPages"
+          />
+        </div>
         <div
           v-if="FAQs.length"
           class="info-block"
@@ -269,20 +200,19 @@
 import { mapGetters } from 'vuex';
 import { WQPensionFund } from '~/abi/abi';
 import modals from '~/store/modals/modals';
-import { getWalletAddress } from '~/utils/wallet';
-import { TokenSymbols } from '~/utils/enums';
+import { getStyledAmount, getWalletAddress } from '~/utils/wallet';
+import { PensionHistoryMethods, TokenSymbols } from '~/utils/enums';
 
 export default {
   name: 'MyPension',
+  PensionHistoryMethods,
   data() {
     return {
+      selectedTable: PensionHistoryMethods.Receive,
       page: 1,
       itemsPerPage: 10,
       walletAddress: null,
-      currentChainName: null,
       isDeadline: false,
-      history: [],
-      updateInterval: null,
       FAQs: [
         {
           name: this.$t('pension.faq1.question'),
@@ -342,87 +272,103 @@ export default {
       options: 'modals/getOptions',
       isWalletConnected: 'wallet/getIsWalletConnected',
       pensionWallet: 'wallet/getPensionWallet',
+      pensionHistory: 'wallet/getPensionHistory',
       balanceData: 'wallet/getBalanceData',
     }),
     historyFields() {
-      const cellStyle = {
-        thStyle: {
-          padding: '0',
-          height: '27px',
-          lineHeight: '27px',
-        },
-        tdAttr: { style: 'padding: 0; height: 64px; line-height: 64px' },
-      };
       return [
         {
           key: 'operation',
-          label: 'Operation',
+          label: this.$t('meta.operation'),
           thStyle: {
             padding: '0 0 0 23px',
             height: '27px',
             lineHeight: '27px',
           },
-          tdAttr: { style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px' },
+          tdAttr: { style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px; width: 250px' },
         },
         {
-          key: 'txHash',
+          key: 'tx_hash',
           label: this.$t('referral.tableHead.txHash'),
           thStyle: {
-            padding: '0 0 0 23px',
+            padding: '0',
             height: '27px',
             lineHeight: '27px',
           },
-          tdAttr: { style: 'padding: 0 0 0 0; height: 64px; line-height: 64px' },
+          tdAttr: { style: 'padding: 0; height: 64px; line-height: 64px' },
         },
         {
-          key: 'time',
+          key: 'date',
           label: this.$t('referral.tableHead.time'),
-          ...cellStyle,
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: { style: 'padding: 0; height: 64px; line-height: 64px' },
         },
         {
-          key: 'amount',
-          label: this.$t('referral.tableHead.amount'),
-          ...cellStyle,
+          key: 'value',
+          label: this.$t('modals.value'),
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: { style: 'padding: 0; height: 64px; line-height: 64px; width: 300px' },
         },
       ];
     },
     pensionBalance() {
       const balance = this.pensionWallet?.amount || 0;
-      return this.$t(`pension.${TokenSymbols.WUSD}Count`, { count: balance });
+      return this.$t('pension.WUSDCount', { count: balance });
     },
     totalPages() {
-      const len = this.history.length;
+      const len = this.pensionHistory[this.selectedTable]?.count;
       if (!len) return len;
       return Math.ceil(len / this.itemsPerPage);
     },
     historyByPage() {
-      if (!this.history.length) return [];
-      const temp = [...this.history];
-      return temp.splice((this.page - 1) * this.itemsPerPage, this.itemsPerPage);
+      if (!this.pensionHistory[this.selectedTable]?.txs) return [];
+      return this.pensionHistory[this.selectedTable].txs.map((item) => ({
+        operation: item.event,
+        tx_hash: item.transactionHash,
+        date: item.createdAt,
+        value: this.selectedTable === PensionHistoryMethods.Update
+          ? `${getStyledAmount(item.newFee)}%` : `${getStyledAmount(item.amount)} ${TokenSymbols.WUSD}`,
+      }));
     },
   },
   watch: {
+    page(newVal) {
+      this.loadTablePage(newVal);
+    },
+    selectedTable() {
+      this.loadTablePage(1);
+    },
     async isWalletConnected(newValue) {
-      if (newValue) {
-        await this.getWallet();
-        this.updateInterval = setInterval(() => this.getWallet(), 30000);
-      } else {
-        clearInterval(this.updateInterval);
-        this.history = [];
-      }
+      if (!newValue) return;
+      await this.getWallet();
     },
   },
   async mounted() {
     this.SetLoader(true);
     await this.getWallet();
-    clearInterval(this.updateInterval);
-    this.updateInterval = setInterval(() => this.getWallet(), 30000);
     this.SetLoader(false);
   },
-  async beforeDestroy() {
-    clearInterval(this.updateInterval);
-  },
   methods: {
+    getOperationLocale(operation) {
+      if (operation === 'WalletUpdated') return this.$t('pension.changePercent');
+      if (operation === 'Received') return this.$t('wallet.deposit');
+      if (operation === 'Withdrew') return this.$t('wallet.withdraw');
+      return '';
+    },
+    getExplorerRef(hash) {
+      if (process.env.PROD === 'true') {
+        return `https://dev-explorer.workquest.co/transactions/${hash ? hash.toLowerCase() : ''}`;
+      }
+      return `https://dev-explorer.workquest.co/transactions/${hash ? hash.toLowerCase() : ''}`;
+    },
     checkIsDeadLine() {
       if (!this.pensionWallet) {
         this.isDeadline = false;
@@ -458,11 +404,19 @@ export default {
     getFeePercent() {
       return this.pensionWallet?.fee || '';
     },
-    getStyledHash(txHash) {
-      return `${txHash.slice(0, 8)}...${txHash.slice(-4)}`;
+    async loadTablePage(page) {
+      this.page = page;
+      await this.$store.dispatch('wallet/getPensionTransactions', {
+        method: this.selectedTable,
+        limit: this.itemsPerPage,
+        offset: (this.page - 1) * this.itemsPerPage,
+      });
     },
     async getWallet() {
-      await this.$store.dispatch('wallet/pensionGetWalletInfo');
+      await Promise.all([
+        this.$store.dispatch('wallet/pensionGetWalletInfo'),
+        this.loadTablePage(this.page),
+      ]);
       if (!this.pensionWallet || !this.pensionWallet.isCreated) {
         await this.$router.push('/pension');
       }
@@ -475,6 +429,7 @@ export default {
         walletAddress: this.walletAddress,
         maxValue: this.pensionWallet.fullAmount,
         withdrawType: 'pension',
+        callback: async () => await this.getWallet(),
       });
     },
     handleProlong() {
@@ -709,6 +664,13 @@ export default {
       background-color: #fff;
       border-radius: 6px;
 
+      &__select-table {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 20px;
+        margin: 0 20px 5px 20px;
+      }
+
       &__faqs {
         margin: 0 20px 20px 20px;
         display: grid;
@@ -829,20 +791,25 @@ export default {
       &__tokens {
         font-weight: 700;
         font-size: 25px;
-        color: #0083C7;
+        color: $blue;
         padding: 0 20px;
+      }
+
+      &__table-title {
+        font-size: 16px;
+        padding: 20px;
       }
 
       &__name {
         font-size: 16px;
-        color: #1D2127;
+        color: $black800;
         padding: 20px 20px 10px 20px;
         font-weight: 400;
 
         &_bold {
           font-weight: 500;
           font-size: 25px;
-          color: #103D7C;
+          color: $darkblue;
           line-height: 1;
           padding: 20px;
         }
@@ -906,9 +873,13 @@ export default {
   }
 
   &__table {
+    border-radius: 6px !important;
+    overflow: hidden;
     .table {
-      margin: 0;
-      border-radius: 0 !important;
+      margin: 20px 0 0 0;
+      &:first-child {
+        border-radius: 0 !important;
+      }
     }
   }
 
@@ -924,10 +895,6 @@ export default {
 
   @include _991 {
     background: linear-gradient(to bottom, #103D7C 245px, #f6f8fa 245px);
-    &__container {
-      gap: 15px;
-      grid-template-rows: 150px auto;
-    }
     &__content {
       .info-block {
         &__grid {
@@ -940,7 +907,10 @@ export default {
       width: calc(100vw - 20px);
 
       .table {
-        width: 1180px;
+        width: 1024px;
+        & > .table {
+          border-radius: 0 !important;
+        }
       }
     }
   }
@@ -950,6 +920,13 @@ export default {
     &__container {
       grid-template-rows: auto auto;
       gap: 15px;
+    }
+    &__table {
+      &__empty {
+        .absence {
+          margin-left: 10px;
+        }
+      }
     }
     &__header {
       .title {
@@ -992,8 +969,20 @@ export default {
   }
 
   @include _575 {
+    &__header {
+      .title {
+        font-size: 32px;
+        &_sub {
+          font-size: 16px;
+        }
+      }
+    }
     &__content {
       .info-block {
+        &__select-table {
+          grid-template-columns: 1fr;
+          grid-template-rows: repeat(3, 1fr);
+        }
         &__triple {
           grid-template-rows: repeat(3, 1fr);
           grid-template-columns: unset;
@@ -1025,6 +1014,13 @@ export default {
         }
       }
     }
+  }
+}
+.empty-info {
+  & .absence {
+    padding-bottom: 10px !important;
+    margin: 0 !important;
+    background: transparent !important;
   }
 }
 </style>
