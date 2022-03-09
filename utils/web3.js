@@ -50,7 +50,6 @@ export const error = (code = 90000, msg = '', data = null) => ({
 });
 
 export const getChainIdByChain = (chain) => {
-  console.log('getChainIdByChain', chain);
   switch (chain) {
     case Chains.ETHEREUM:
       if (!isProd) return ChainsId.ETH_TEST;
@@ -114,7 +113,7 @@ export const getStakingDataByType = (stakingType) => {
   const _miningPoolId = localStorage.getItem('miningPoolId');
   switch (stakingType) {
     case StakingTypes.MINING:
-      if (_miningPoolId === 'ETH') {
+      if (_miningPoolId === Chains.ETHEREUM) {
         _tokenAddress = process.env.ETHEREUM_LP_TOKEN;
         _stakingAddress = process.env.ETHEREUM_MINING;
         _stakingAbi = abi.StakingWQ;
@@ -125,9 +124,13 @@ export const getStakingDataByType = (stakingType) => {
       }
       break;
     case StakingTypes.CROSS_CHAIN:
-      _tokenAddress = _miningPoolId === 'ETH'
-        ? process.env.ETHEREUM_WQT_TOKEN
-        : process.env.BSC_WQT_TOKEN;
+      if (_miningPoolId === Chains.ETHEREUM) {
+        _tokenAddress = process.env.ETHEREUM_WQT_TOKEN;
+      } else if (_miningPoolId === Chains.BINANCE || _miningPoolId === Chains.BNB) {
+        _tokenAddress = process.env.BSC_WQT_TOKEN;
+      } else if (_miningPoolId === Chains.WORKNET) {
+        _tokenAddress = process.env.WORKNET_WQT_TOKEN;
+      }
       break;
     default:
       console.error('[getStakingDataByType] wrong staking type: ', stakingType);
@@ -283,6 +286,13 @@ export const initProvider = async (payload) => {
             56: 'https://bsc-dataseed.binance.org/',
           },
           // network: 'binance',
+        };
+      } else if (chain === Chains.WORKNET) {
+        walletOptions = {
+          rpc: {
+            20211224: 'https://dev-node-nyc3.workquest.co',
+          },
+          // network: 'worknet',
         };
       }
     }
@@ -522,9 +532,12 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
   if (chain === Chains.ETHEREUM) {
     tokenAddress = process.env.ETHEREUM_WQT_TOKEN;
     bridgeAddress = process.env.ETHEREUM_BRIDGE;
-  } else {
+  } else if (chain === Chains.BNB || chain === Chains.BINANCE) {
     tokenAddress = process.env.BSC_WQT_TOKEN;
     bridgeAddress = process.env.BSC_BRIDGE;
+  } else if (chain === Chains.WORKNET) {
+    tokenAddress = process.env.WORKNET_WQT_TOKEN;
+    bridgeAddress = process.env.WORKNET_BRIDGE;
   }
   tokenInstance = await createInstance(abi.ERC20, tokenAddress);
   bridgeInstance = await createInstance(abi.MainNetWQBridge, bridgeAddress);

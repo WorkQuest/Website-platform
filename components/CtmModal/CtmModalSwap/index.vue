@@ -54,7 +54,7 @@
               {{ $t('modals.recepientBinance') }}
             </div>
             <base-field
-              v-model="account.address"
+              v-model="recipientAddress"
               class="body__input"
               :disabled="true"
               placeholder="Enter binance address"
@@ -180,9 +180,9 @@ export default {
       }
       this.SetLoader(false);
     },
-    connectToMetamask() {
+    async connectToMetamask() {
       if (!this.isConnected) {
-        this.$store.dispatch('web3/connect');
+        await this.$store.dispatch('web3/connect');
       }
     },
   },

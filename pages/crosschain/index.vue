@@ -256,7 +256,7 @@ export default {
       ];
     },
     addresses() {
-      const adresses = [
+      return [
         {
           icon: require('~/assets/img/ui/ethereum.svg'),
           title: this.$t('crosschain.eth'),
@@ -265,16 +265,11 @@ export default {
           icon: require('~/assets/img/ui/bnb_yellow.svg'),
           title: this.$t('crosschain.bsc'),
         },
+        {
+          icon: require('~/assets/img/ui/WQT.png'),
+          title: this.$t('crosschain.worknet'),
+        },
       ];
-      if (this.userData.id) {
-        adresses.push(
-          {
-            icon: require('~/assets/img/ui/WQT.png'),
-            title: this.$t('crosschain.worknet'),
-          },
-        );
-      }
-      return adresses;
     },
   },
   watch: {

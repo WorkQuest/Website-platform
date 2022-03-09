@@ -66,6 +66,7 @@ export default {
   async connect({ commit, dispatch, getters }, payload) {
     const isReconnection = payload?.isReconnection;
     const response = await initWeb3(payload);
+    console.log('connect', response);
     if (response.ok) {
       if (!getters.isHandlingMetamaskStatus && !isReconnection) {
         handleMetamaskStatus(() => dispatch('handleMetamaskStatusChanged'));
