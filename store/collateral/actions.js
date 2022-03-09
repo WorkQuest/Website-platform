@@ -4,7 +4,7 @@ import {
 } from '~/utils/wallet';
 import modals from '~/store/modals/modals';
 import * as abi from '~/abi/abi';
-import { TokenSymbols } from '~/utils/enums';
+import { tokenMap, TokenSymbols } from '~/utils/enums';
 
 export default {
   async setTokenPrice({ dispatch, rootGetters }, { payload, setTokenPriceData }) {
@@ -13,16 +13,11 @@ export default {
     } catch (e) {
       console.log('can not refresh prices');
     }
-    const tokenMap = {
-      BNB: process.env.BNB_TOKEN,
-      ETH: process.env.ETH_TOKEN,
-      WQT: process.env.WQT_TOKEN,
-    };
-    const allowance = await getAllowance(rootGetters['user/getUserWalletAddress'], process.env.WQ_ROUTER, payload.currency);
-    const isNeedApprove = new BigNumber(payload.amount).shiftedBy(18).isGreaterThan(allowance);
+    const allowance = await getAllowance(rootGetters['user/getUserWalletAddress'], process.env.WORKNET_ROUTER, payload.currency);
+    const isNeedApprove = new BigNumber(payload.collateralBN).isGreaterThan(allowance);
 
     if (isNeedApprove) {
-      const resultGasApprove = await getGasPrice(abi.ERC20, tokenMap[payload.currency], 'approve', [process.env.WQ_ROUTER, payload.amountBN]);
+      const resultGasApprove = await getGasPrice(abi.ERC20, tokenMap[payload.currency], 'approve', [process.env.WORKNET_ROUTER, payload.collateralBN]);
       const approveData = {
         gasPrice: resultGasApprove.gasPrice,
         gas: resultGasApprove.gas,
@@ -38,7 +33,7 @@ export default {
         },
       }, { root: true });
     } else {
-      const resultGasBuyWUSD = await getGasPrice(abi.WQRouter, process.env.WQ_ROUTER, 'produceWUSD', [payload.amountBN, payload.percentBN, payload.currency]);
+      const resultGasBuyWUSD = await getGasPrice(abi.WQRouter, process.env.WORKNET_ROUTER, 'produceWUSD', [payload.collateralBN, payload.percentBN, payload.currency]);
       const buyWUSDData = {
         gasPrice: resultGasBuyWUSD.gasPrice,
         gas: resultGasBuyWUSD.gas,
@@ -47,7 +42,7 @@ export default {
         key: modals.transactionReceipt,
         fields: {
           from: { name: this.app.i18n.t('modals.fromAddress'), value: getWalletAddress() },
-          to: { name: this.app.i18n.t('modals.toAddress'), value: process.env.WQ_ROUTER },
+          to: { name: this.app.i18n.t('modals.toAddress'), value: process.env.WORKNET_ROUTER },
           amount: {
             name: this.app.i18n.t('modals.amount'),
             value: payload.collateral,
@@ -67,7 +62,7 @@ export default {
     } catch (e) {
       console.log('can not approve');
     }
-    const resultGasBuyWUSD = await getGasPrice(abi.WQRouter, process.env.WQ_ROUTER, 'produceWUSD', [payload.amountBN, payload.percentBN, payload.currency]);
+    const resultGasBuyWUSD = await getGasPrice(abi.WQRouter, process.env.WORKNET_ROUTER, 'produceWUSD', [payload.collateralBN, payload.percentBN, payload.currency]);
     const buyWUSDData = {
       gasPrice: resultGasBuyWUSD.gasPrice,
       gas: resultGasBuyWUSD.gas,
@@ -76,7 +71,7 @@ export default {
       key: modals.transactionReceipt,
       fields: {
         from: { name: this.app.i18n.t('modals.fromAddress'), value: getWalletAddress() },
-        to: { name: this.app.i18n.t('modals.toAddress'), value: process.env.WQ_ROUTER },
+        to: { name: this.app.i18n.t('modals.toAddress'), value: process.env.WORKNET_ROUTER },
         amount: {
           name: this.app.i18n.t('modals.amount'),
           value: payload.collateral,

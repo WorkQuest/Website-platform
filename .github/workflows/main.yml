@@ -53,8 +53,8 @@ jobs:
 
           echo WQ_PROVIDER=${{ secrets.WQ_PROVIDER }} >> .env
           echo WQ_EXPLORER=${{ secrets.WQ_EXPLORER }} >> .env
-          echo WQ_ORACLE=${{ secrets.WQ_ORACLE }} >> .env
-          echo WQ_ROUTER=${{ secrets.WQ_ROUTER }} >> .env
+          echo WORKNET_ORACLE=${{ secrets.WORKNET_ORACLE }} >> .env
+          echo WORKNET_ROUTER=${{ secrets.WORKNET_ROUTER }} >> .env
           echo WQT_TOKEN=${{ secrets.WQT_TOKEN }} >> .env
           echo ETH_TOKEN=${{ secrets.ETH_TOKEN }} >> .env
           echo BNB_TOKEN=${{ secrets.BNB_TOKEN }} >> .env
@@ -128,8 +128,8 @@ jobs:
 
           echo WQ_PROVIDER=${{ secrets.WQ_PROVIDER }} >> .env
           echo WQ_EXPLORER=${{ secrets.WQ_EXPLORER }} >> .env
-          echo WQ_ORACLE=${{ secrets.WQ_ORACLE }} >> .env
-          echo WQ_ROUTER=${{ secrets.WQ_ROUTER }} >> .env
+          echo WORKNET_ORACLE=${{ secrets.WORKNET_ORACLE }} >> .env
+          echo WORKNET_ROUTER=${{ secrets.WORKNET_ROUTER }} >> .env
           echo WQT_TOKEN=${{ secrets.WQT_TOKEN }} >> .env
           echo ETH_TOKEN=${{ secrets.ETH_TOKEN }} >> .env
           echo BNB_TOKEN=${{ secrets.BNB_TOKEN }} >> .env
@@ -197,8 +197,8 @@ jobs:
 
           echo WQ_PROVIDER=${{ secrets.WQ_PROVIDER }} >> .env
           echo WQ_EXPLORER=${{ secrets.WQ_EXPLORER }} >> .env
-          echo WQ_ORACLE=${{ secrets.WQ_ORACLE }} >> .env
-          echo WQ_ROUTER=${{ secrets.WQ_ROUTER }} >> .env
+          echo WORKNET_ORACLE=${{ secrets.WORKNET_ORACLE }} >> .env
+          echo WORKNET_ROUTER=${{ secrets.WORKNET_ROUTER }} >> .env
           echo WQT_TOKEN=${{ secrets.WQT_TOKEN }} >> .env
           echo ETH_TOKEN=${{ secrets.ETH_TOKEN }} >> .env
           echo BNB_TOKEN=${{ secrets.BNB_TOKEN }} >> .env
