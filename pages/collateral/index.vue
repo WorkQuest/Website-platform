@@ -285,7 +285,7 @@ export default {
 
     .btn-group {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 20px;
       padding-bottom: 20px;
 
@@ -605,6 +605,11 @@ export default {
     }
     &__content {
       .info-block {
+        &__about {
+          .btn-group {
+            grid-template-columns: repeat(1, 1fr);
+          }
+        }
         &__triple {
           gap: 10px;
         }
