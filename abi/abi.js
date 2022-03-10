@@ -2009,8 +2009,13 @@ export const WQBridge = [
         "type": "uint256"
       },
       {
-        "internalType": "address",
+        "internalType": "address payable",
         "name": "_pool",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "validator",
         "type": "address"
       }
     ],
@@ -2044,7 +2049,7 @@ export const WQBridge = [
     "name": "pool",
     "outputs": [
       {
-        "internalType": "address",
+        "internalType": "address payable",
         "name": "",
         "type": "address"
       }
@@ -2103,7 +2108,7 @@ export const WQBridge = [
   {
     "inputs": [
       {
-        "internalType": "address",
+        "internalType": "address payable",
         "name": "recipient",
         "type": "address"
       },
@@ -2297,7 +2302,7 @@ export const WQBridge = [
   {
     "inputs": [
       {
-        "internalType": "address",
+        "internalType": "address payable",
         "name": "_pool",
         "type": "address"
       }

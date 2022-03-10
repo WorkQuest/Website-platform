@@ -6,7 +6,7 @@ export const ChainsId = {
   BSC_TEST: '0x61',
   MATIC_MAIN: '0x13881',
   MUMBAI_TEST: '0x89',
-  WUSD_TEST: '0x13488D0',
+  WORKNET_TEST: '0x13488D0',
 };
 
 export const ChainsIdByChainNumber = {
@@ -240,7 +240,7 @@ export const NetworksData = {
       decimals: 18,
     },
   },
-  WUSD_TEST: {
+  WORKNET_TEST: {
     chainId: '0x13488D0',
     chainName: 'WorkQuest DEV',
     rpcUrls: ['https://dev-node-nyc3.workquest.co'],

@@ -98,37 +98,25 @@ export default {
     },
     async showTransactionSend() {
       this.SetLoader(true);
-      const switchChainStatus = await this.checkPool();
       await this.connectToMetamask();
-      let chainTo = 0;
-      if (this.options.chain === 'ETH') {
-        chainTo = 3;
-      } else {
-        chainTo = 2;
-      }
       const optionsData = this.options;
       this.hide();
-      let swapObj;
-      if (switchChainStatus.ok) {
-        swapObj = await this.$store.dispatch('web3/swapWithBridge', {
-          _decimals: 18,
-          _amount: optionsData.amountInt,
-          chain: optionsData.chain,
-          chainTo,
-          userAddress: optionsData.recepientFull,
-          recipient: optionsData.recepientFull,
-          symbol: 'WQT',
-        });
-      } else {
-        swapObj = { code: 500 };
-      }
+      const swapObj = await this.$store.dispatch('web3/swapWithBridge', {
+        _decimals: 18,
+        _amount: optionsData.amountInt,
+        chain: optionsData.chain,
+        chainTo: optionsData.toChain,
+        userAddress: optionsData.recepientFull,
+        recipient: optionsData.recepientFull,
+        symbol: 'WQT',
+      });
       this.ShowModal({
         key: modals.status,
         img: swapObj.code === 500 ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
         title: swapObj.code === 500 ? this.$t('modals.transactionFail') : this.$t('modals.transactionSent'),
         recipient: '',
         txHash: swapObj.tx,
-        chainTo,
+        chainTo: optionsData.toChain,
         subtitle: '',
       });
       this.SetLoader(false);

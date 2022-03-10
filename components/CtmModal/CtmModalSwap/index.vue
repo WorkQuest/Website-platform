@@ -96,6 +96,23 @@ export default {
       fromToken: '',
       toToken: '',
       amount: '',
+      addresses: {
+        0: {
+          id: 2,
+          icon: require('~/assets/img/ui/ethereum.svg'),
+          title: this.$t('crosschain.eth'),
+        },
+        1: {
+          id: 3,
+          icon: require('~/assets/img/ui/bnb-logo.svg'),
+          title: this.$t('crosschain.bsc'),
+        },
+        2: {
+          id: 1,
+          icon: require('~/assets/img/ui/WQT.png'),
+          title: this.$t('crosschain.worknet'),
+        },
+      },
     };
   },
   computed: {
@@ -111,19 +128,11 @@ export default {
         'WQT',
       ];
     },
-    addresses() {
-      return [
-        {
-          id: 0,
-          icon: require('~/assets/img/ui/bnb-logo.svg'),
-          title: this.$t('crosschain.bsc'),
-        },
-        {
-          id: 1,
-          icon: require('~/assets/img/ui/ethereum.svg'),
-          title: this.$t('crosschain.eth'),
-        },
-      ];
+    crosschainFlow() {
+      return {
+        fromChain: this.addresses[this.options?.fromChain],
+        toChain: this.addresses[this.options?.toChain],
+      };
     },
     recipientAddress() {
       return this.account.address;
@@ -131,7 +140,6 @@ export default {
   },
   async mounted() {
     await this.connectToMetamask();
-    await this.crosschainFlow();
   },
   methods: {
     setMaxValue() {
@@ -139,15 +147,6 @@ export default {
     },
     hide() {
       this.CloseModal();
-    },
-    async crosschainFlow() {
-      if (this.options.crosschainId === 0) {
-        this.fromToken = this.addresses[0].title;
-        this.toToken = this.addresses[1].title;
-      } else if (this.options.crosschainId === 1) {
-        this.fromToken = this.addresses[1].title;
-        this.toToken = this.addresses[0].title;
-      }
     },
     checkAmount() {
       const maxAmount = this.tokensData.tokenAmount;
@@ -159,8 +158,9 @@ export default {
         this.amount = this.amount.replace(/[,]/g, '.');
         this.ShowModal({
           key: modals.swapInfo,
-          crosschain: `${this.fromToken} > ${this.toToken}`,
-          chain: this.fromToken,
+          crosschain: `${this.crosschainFlow.fromChain.title} > ${this.crosschainFlow.toChain.title}`,
+          chain: this.crosschainFlow.fromChain.title,
+          toChain: this.crosschainFlow.toChain.id,
           amount: `${this.amount} WQT`,
           amountInt: this.amount,
           recepient: this.CutTxn(this.recipientAddress),

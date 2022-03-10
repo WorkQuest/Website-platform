@@ -389,6 +389,8 @@ export default {
         this.ShowModal({
           key: modals.swap,
           crosschainId: this.targetAddressInd,
+          fromChain: this.sourceAddressInd,
+          toChain: this.targetAddressInd,
         });
       } else {
         this.ShowModal({

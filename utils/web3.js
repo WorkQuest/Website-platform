@@ -7,6 +7,7 @@ import * as abi from '~/abi/abi';
 import {
   Chains, ChainsId, ChainsIdByChainNumber, NetworksData, StakingTypes,
 } from '~/utils/enums';
+import { WQBridge } from '~/abi/abi';
 
 let bscRpcContract = null;
 let web3 = null;
@@ -61,7 +62,7 @@ export const getChainIdByChain = (chain) => {
       if (!isProd) return ChainsId.BSC_TEST;
       return ChainsId.BSC_MAIN;
     case Chains.WORKNET:
-      return ChainsId.WUSD_TEST;
+      return ChainsId.WORKNET_TEST;
     default:
       throw error(-1, `wrong chain name: ${chain} ${Chains.BINANCE} ${Chains.ETHEREUM}`);
   }
@@ -74,7 +75,7 @@ export const addedNetwork = async (chain) => {
     } else if (chain === Chains.BNB || [56, 97].includes(+chain)) {
       networkParams = isProd ? NetworksData.BSC_MAIN : NetworksData.BSC_TEST;
     } else if (chain === Chains.WORKNET || chain === 20220112) {
-      networkParams = NetworksData.WUSD_TEST;
+      networkParams = NetworksData.WORKNET_TEST;
     }
     await window.ethereum.request({
       method: 'wallet_addEthereumChain',
@@ -200,6 +201,9 @@ const getChainTypeById = (chainId) => {
   }
   if (+chainId === +ChainsId.MATIC_MAIN || +chainId === +ChainsId.MUMBAI_TEST) {
     return 2;
+  }
+  if (+chainId === +ChainsId.WORKNET_TEST) {
+    return 3;
   }
   return -1;
 };
@@ -341,11 +345,11 @@ export const initWeb3 = async (payload) => {
     if ((await web3.eth.getCoinbase()) === null) {
       await ethereum.request({ method: 'eth_requestAccounts' });
     }
-
+    const netTypeId = getChainTypeById(chainId);
     account = {
       address: userAddress,
       netId: chainId,
-      netType: getChainTypeById(chainId),
+      netType: netTypeId,
     };
     return success(account);
   } catch (e) {
@@ -540,23 +544,24 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
     bridgeAddress = process.env.WORKNET_BRIDGE;
   }
   tokenInstance = await createInstance(abi.ERC20, tokenAddress);
-  bridgeInstance = await createInstance(abi.MainNetWQBridge, bridgeAddress);
+  bridgeInstance = await createInstance(abi.WQBridge, bridgeAddress);
   allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [account.address, bridgeAddress])).toString();
   nonce = await web3.eth.getTransactionCount(userAddress);
   try {
     amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
     if (+allowance < +amount) {
-      store.dispatch('main/setStatusText', 'Approving');
+      await store.dispatch('main/setStatusText', 'Approving');
       showToast('Swapping', 'Approving...', 'success');
       await tokenInstance.approve(bridgeAddress, amount);
       showToast('Swapping', 'Approving done', 'success');
     }
     showToast('Swapping', 'Swapping...', 'success');
-    store.dispatch('main/setStatusText', 'Swapping');
+    await store.dispatch('main/setStatusText', 'Swapping');
     swapData = await bridgeInstance.swap(nonce, chainTo, amount, recipient, symbol);
     showToast('Swapping', 'Swapping done', 'success');
     return swapData;
   } catch (e) {
+    console.log(e);
     showToast('Swapping error', `${e.message}`, 'danger');
     return error(500, 'stake error', e);
   }
