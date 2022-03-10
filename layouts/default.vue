@@ -31,13 +31,11 @@
 <script>
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import Footer from '~/components/app/Footer';
 
 export default {
   scrollToTop: true,
   name: 'DefaultLayout',
   middleware: 'auth',
-  components: { Footer },
   directives: {
     ClickOutside,
   },
