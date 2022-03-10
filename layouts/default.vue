@@ -33,7 +33,6 @@ import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 
 export default {
-  scrollToTop: true,
   name: 'DefaultLayout',
   middleware: 'auth',
   directives: {
@@ -67,7 +66,6 @@ export default {
 <style lang="scss" scoped>
 .primary {
   height: 100vh;
-  overflow-y: auto;
   background: #F7F8FA;
 }
 

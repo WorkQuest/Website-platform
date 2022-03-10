@@ -91,7 +91,6 @@ import ClickOutside from 'vue-click-outside';
 import moment from 'moment';
 
 export default {
-  scrollToTop: true,
   name: 'GuestLayout',
   middleware: 'guest',
   directives: { ClickOutside },
