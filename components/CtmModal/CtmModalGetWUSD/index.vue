@@ -74,7 +74,10 @@
                 @input="onChangeCollateral"
               />
             </div>
-            <div class="content__field">
+            <div
+              class="content__field"
+              @keydown.delete="changeCaretPosition"
+            >
               <div class="content__label">
                 {{ $t('modals.percentageConversion') }}
               </div>
@@ -335,6 +338,9 @@ export default {
         }
       }
       if (+this.amountWUSD > 0 && +this.collateralPercentClear > 0 && +this.currentCurrencyPrice > 0) { this.calculateCollateral(); }
+      this.changeCaretPosition();
+    },
+    changeCaretPosition() {
       const input = [...[...this.$refs.percentInput?.$el.children].find((el) => el.className === 'ctm-field__body').children].find(((el) => el.nodeName.toLowerCase() === 'input'));
       this.$nextTick(() => {
         if (input.value[input.value.length - 1] === '%' && input.selectionStart === input.value.length) {
