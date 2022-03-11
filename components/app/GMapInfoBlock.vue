@@ -49,16 +49,19 @@
               :alt="content.alt"
             >
           </div>
-          <div class="info-window__name">
+          <div
+            class="info-window__name"
+            :class="{'info-window__name_long': content.status === 'noStatus' && !content.label}"
+          >
             {{ content.userName }}
           </div>
         </div>
         <item-rating
-          v-if="content.status"
+          v-if="content.status !== 'noStatus'"
           :rating="content.status"
         />
         <div
-          v-else
+          v-if="content.label"
           class="info-window__status"
           :class="content.labelClass"
         >
@@ -227,6 +230,14 @@ export default {
     font-size: 14px;
     line-height: 130%;
     color: #1D2127;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: initial;
+
+    &_long {
+      max-width: 160px;
+    }
   }
   &__status {
     @include text-simple;

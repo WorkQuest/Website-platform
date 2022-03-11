@@ -26,6 +26,7 @@
                     type="gray"
                     :label="$t('quests.runtime')"
                     :name="$t('quests.runtime')"
+                    selector="RUNTIME"
                     rules="required"
                   />
                 </div>
@@ -50,6 +51,7 @@
                 :items="employment"
                 rules="required"
                 :name="$t('quests.employment.employment')"
+                selector="EMPLOYMENT"
               />
             </div>
             <div class="page__dd">
@@ -60,6 +62,7 @@
                 :items="distantWork"
                 rules="required"
                 :name="$t('quests.distantWork.distantWork')"
+                selector="DISTANT"
               />
             </div>
           </div>
