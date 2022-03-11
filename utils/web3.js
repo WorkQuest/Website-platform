@@ -568,12 +568,14 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
 };
 
 export const redeemSwap = async (props) => {
-  const { signData, chainId } = props;
+  const { signData, chainTo } = props;
   let bridgeAddress;
-  if (chainId !== 2) {
+  if (chainTo === 2) {
     bridgeAddress = process.env.ETHEREUM_BRIDGE;
-  } else {
+  } else if (chainTo === 3) {
     bridgeAddress = process.env.BSC_BRIDGE;
+  } else if (chainTo === 1) {
+    bridgeAddress = process.env.WORKNET_BRIDGE;
   }
   try {
     showToast('Redeeming', 'Redeem...', 'success');
@@ -583,6 +585,7 @@ export const redeemSwap = async (props) => {
       data: signData,
       userAddress: signData[3],
     };
+    console.log('redeem', payload);
     return await sendTransaction('redeem', payload);
   } catch (e) {
     console.log(e);

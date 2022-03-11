@@ -182,6 +182,7 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import EmptyData from '~/components/app/info/emptyData';
+import { Chains } from '~/utils/enums';
 
 export default {
   components: { EmptyData },
@@ -308,9 +309,9 @@ export default {
       let chainName = '';
       // eslint-disable-next-line default-case
       switch (this.sourceAddressInd) {
-        case 0: chainName = 'ETH'; break;
-        case 1: chainName = 'BNB'; break;
-        case 2: chainName = 'WORKNET'; break;
+        case 0: chainName = Chains.ETHEREUM; break;
+        case 1: chainName = Chains.BINANCE; break;
+        case 2: chainName = Chains.WORKNET; break;
       }
       await this.connectToMetamask(chainName);
     },
@@ -321,7 +322,8 @@ export default {
       }
       const payload = {
         signData: data.clearData,
-        chainId: data.chainId,
+        chainFrom: data.chainFrom,
+        chainTo: data.chainTo,
       };
       const redeemObj = await this.$store.dispatch('web3/redeemSwap', payload);
       await this.swapsTableData(this.account.address, this.isConnected);

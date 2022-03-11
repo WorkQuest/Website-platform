@@ -17,6 +17,7 @@
                 v-model="token"
                 class="grid__drop"
                 :items="tokens"
+                @change="setMaxValue()"
               />
             </div>
             <div class="grid__field">
@@ -87,6 +88,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { Chains } from '~/utils/enums';
 
 export default {
   name: 'ModalSwap',
@@ -101,16 +103,19 @@ export default {
           id: 2,
           icon: require('~/assets/img/ui/ethereum.svg'),
           title: this.$t('crosschain.eth'),
+          enum: Chains.ETHEREUM,
         },
         1: {
           id: 3,
           icon: require('~/assets/img/ui/bnb-logo.svg'),
           title: this.$t('crosschain.bsc'),
+          enum: Chains.BINANCE,
         },
         2: {
           id: 1,
           icon: require('~/assets/img/ui/WQT.png'),
           title: this.$t('crosschain.worknet'),
+          enum: Chains.WORKNET,
         },
       },
     };
@@ -124,9 +129,12 @@ export default {
       isConnected: 'web3/isConnected',
     }),
     tokens() {
-      return [
-        'WQT',
-      ];
+      console.log(this.options.fromChain);
+      const tokens = ['WQT'];
+      if (this.options?.fromChain === 2) {
+        tokens.push('WETH', 'WBNB');
+      }
+      return tokens;
     },
     crosschainFlow() {
       return {
@@ -159,13 +167,13 @@ export default {
         this.ShowModal({
           key: modals.swapInfo,
           crosschain: `${this.crosschainFlow.fromChain.title} > ${this.crosschainFlow.toChain.title}`,
-          chain: this.crosschainFlow.fromChain.title,
+          chain: this.crosschainFlow.fromChain.enum,
           toChain: this.crosschainFlow.toChain.id,
-          amount: `${this.amount} WQT`,
+          amount: `${this.amount} ${this.tokens[this.token]}`,
           amountInt: this.amount,
           recepient: this.CutTxn(this.recipientAddress),
           recepientFull: this.recipientAddress,
-          worknetFee: '0,5 WQT',
+          worknetFee: `0,5 ${this.tokens[this.token]}`,
           binanceFee: '0,0009 BNB',
         });
       } else {
