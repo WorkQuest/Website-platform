@@ -33,7 +33,7 @@ export default {
         },
       }, { root: true });
     } else {
-      const resultGasBuyWUSD = await getGasPrice(abi.WQRouter, process.env.WORKNET_ROUTER, 'produceWUSD', [payload.collateralBN, payload.percentBN, payload.currency]);
+      const resultGasBuyWUSD = await getGasPrice(abi.WQRouter, process.env.WORKNET_ROUTER, 'produceWUSD', [payload.collateralBN, payload.ratioBN, payload.currency]);
       const buyWUSDData = {
         gasPrice: resultGasBuyWUSD.gasPrice,
         gas: resultGasBuyWUSD.gas,
@@ -62,7 +62,7 @@ export default {
     } catch (e) {
       console.log('can not approve');
     }
-    const resultGasBuyWUSD = await getGasPrice(abi.WQRouter, process.env.WORKNET_ROUTER, 'produceWUSD', [payload.collateralBN, payload.percentBN, payload.currency]);
+    const resultGasBuyWUSD = await getGasPrice(abi.WQRouter, process.env.WORKNET_ROUTER, 'produceWUSD', [payload.collateralBN, payload.ratioBN, payload.currency]);
     const buyWUSDData = {
       gasPrice: resultGasBuyWUSD.gasPrice,
       gas: resultGasBuyWUSD.gas,

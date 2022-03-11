@@ -473,11 +473,10 @@ export const approveRouter = async ({ currency, collateralBN }, { gasPrice, gas 
     throw error();
   }
 };
-export const buyWUSD = async ({ collateralBN, percent, currency }, { gasPrice, gas }) => {
+export const buyWUSD = async ({ collateralBN, ratioBN, currency }, { gasPrice, gas }) => {
   try {
     const inst = new web3.eth.Contract(abi.WQRouter, process.env.WORKNET_ROUTER);
-    const percentBN = new BigNumber(percent).shiftedBy(18).toFixed();
-    await inst.methods.produceWUSD(collateralBN, percentBN, currency).send({
+    await inst.methods.produceWUSD(collateralBN, ratioBN, currency).send({
       from: wallet.address,
       gas,
       gasPrice,
