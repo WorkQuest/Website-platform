@@ -395,7 +395,7 @@ export default {
       else if (this.userStatus === UserStatuses.NeedSetRole) this.$router.push(Path.ROLE);
     },
     async redirectSocialLink(socialNetwork) {
-      window.location = `${process.env.BASE_URL}v1/auth/login/${socialNetwork}`;
+      window.location = `${process.env.BASE_URL}v1/auth/login/main/${socialNetwork}`;
     },
     showRestoreModal() {
       this.ShowModal({

@@ -146,7 +146,7 @@ export default {
           this.ShowToast(this.$t('messages.attemptsExceeded'));
           this.disconnect(false);
         } else this.ShowToast(this.$t('messages.invalidPassword'));
-        this.counter -= 1;
+        this.counter += 1;
         return false;
       }
       return true;
