@@ -1,10 +1,14 @@
 {
   "meta": {
     "priority": {
+      "title": "Seleccionar prioridad",
       "all": "Todas las prioridades",
       "fixedDelivery": "Entrega fija",
       "shortTerm": "Corto plazo",
-      "urgent": "Urgente"
+      "urgent": "Urgente",
+      "employee": {
+        "urgent": "Urgent execution"
+      }
     },
     "stores": {
       "googlePlay": "Google play",
@@ -86,6 +90,16 @@
       "view": "Ver",
       "add": "Añadir",
       "take": "Take"
+    },
+    "placeholders": {
+      "default": "",
+      "mail": "your@mail.com",
+      "email": "Dirección de correo electrónico"
+    },
+    "worker": {
+      "cost": {
+        "notIndicated": "Not indicated..."
+      }
     },
     "allTransactions": "All transactions",
     "collateralTransactions": "Collateral transactions",
@@ -219,11 +233,6 @@
     "invalidPassword": "Invalid password",
     "loginToContinue": "Please login to continue"
   },
-  "placeholders": {
-    "default": "Marcador de posición",
-    "mail": "your@mail.com",
-    "email": "Dirección de correo electrónico"
-  },
   "about": {
     "text": "WorkQuest es un proyecto social basado en la tecnología de cadena de bloques para encontrar trabajo y solucionar cualquier tarea por parte de la empresa en el modo de oferta. ¿Está buscando empleo? Una oferta de empleo le ayudará a encontrar trabajo cerca de su ciudad. ¿Necesita trabajadores para alcanzar sus objetivos? Solo tiene que crear una oferta en la ubicación correspondiente. El servicio asume las obligaciones de garantía para realizar ofertas. Guardamos los fondos del empleador y, cuando el empleado confirme el desempeño del trabajo, recibirá un ingreso de fondos en su cuenta. Mediante el sistema de calificaciones, opiniones y una lista de ofertas completadas, podrá encontrar a personas de confianza y a los mejores especialistas.\n\n          Nuestro objetivo es simplificar la comunicación entre el empleador y el empleado para ayudar a conseguir un empleo a millones de personas, mejorar la situación financiera, solucionar el gran problema de encontrar profesionales fiables en todos los sectores para crear una economía digital progresiva basada en los principios de confianza, respeto mutuo y el bienestar de todos sus participantes."
   },
@@ -246,12 +255,6 @@
     "sidebar": {
       "filter": "Filtrar todas las ofertas",
       "choose": "(Elija una categoría simple \no especializada)"
-    }
-  },
-  "priority": {
-    "title": "Seleccionar prioridad",
-    "employee": {
-      "urgent": "Urgent execution"
     }
   },
   "signIn": {
@@ -315,11 +318,6 @@
     "links": {
       "terms": "\t· Términos y condiciones",
       "privacy": "\t· Política de privacidad"
-    }
-  },
-  "worker": {
-    "cost": {
-      "notIndicated": "Not indicated..."
     }
   },
   "quests": {

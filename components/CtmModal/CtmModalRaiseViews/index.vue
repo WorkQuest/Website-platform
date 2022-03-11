@@ -35,7 +35,7 @@
             v-model="period"
             class="field__drop"
             :items="items"
-            :placeholder="$t('placeholders.default')"
+            :placeholder="$t('meta.placeholders.default')"
           />
         </div>
         <div class="content__container container">

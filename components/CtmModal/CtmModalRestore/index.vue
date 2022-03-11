@@ -10,8 +10,8 @@
         </div>
         <base-field
           v-model="emailInput"
-          :name="$t('placeholders.email')"
-          :placeholder="$t('placeholders.email')"
+          :name="$t('meta.placeholders.email')"
+          :placeholder="$t('meta.placeholders.email')"
           rules="required|email"
           class="content__input"
           @enter="handleSubmit(restore)"

@@ -1,10 +1,14 @@
 {
   "meta": {
     "priority": {
+      "title": "选择优先级",
       "all": "所有优先级",
       "fixedDelivery": "低",
       "shortTerm": "普通",
-      "urgent": "紧急"
+      "urgent": "紧急",
+      "employee": {
+        "urgent": "Urgent execution"
+      }
     },
     "stores": {
       "googlePlay": "Google play",
@@ -86,6 +90,16 @@
       "view": "查看",
       "add": "添加",
       "take": "Take"
+    },
+    "placeholders": {
+      "default": "",
+      "mail": "your@mail.com",
+      "email": "电子邮件地址"
+    },
+    "worker": {
+      "cost": {
+        "notIndicated": "Not indicated..."
+      }
     },
     "allTransactions": "All transactions",
     "collateralTransactions": "Collateral transactions",
@@ -220,11 +234,6 @@
     "invalidPassword": "Invalid password",
     "loginToContinue": "Please login to continue"
   },
-  "placeholders": {
-    "default": "占位符",
-    "mail": "your@mail.com",
-    "email": "电子邮件地址"
-  },
   "about": {
     "text": "WorkQuest 是一个基于区块链技术的社交项目，可以在 Quest 模式下提供工作机会和解决雇主方面的任务。您在找工作吗？WorkQuest 将帮助您找到附近的 Quest。您需要工作者实现目标吗？只需在 WorkQuest 站点创建 Quest 即可。服务承担执行 Quest 的保证义务。雇主资金由我方保管，雇员在确认工作执行情况后将在帐户中收到资金。由评分、评价和已完成 Quest 列表组成的系统将有助于轻松寻找合适的人员和最优秀的专家。\n\n          我们的目标是简化雇主与雇员之间的沟通，帮助数百万人就业，改善人们的财务状况，解决在各行各业寻找可靠专业人士的终身问题，以信任、相互尊重和所有参与者的福祉为基础创造进步的数字经济。"
   },
@@ -247,12 +256,6 @@
     "sidebar": {
       "filter": "所有 Quest 筛选器",
       "choose": "（选择简单或 \n专业类别）"
-    }
-  },
-  "priority": {
-    "title": "选择优先级",
-    "employee": {
-      "urgent": "Urgent execution"
     }
   },
   "signIn": {
@@ -316,11 +319,6 @@
     "links": {
       "terms": "\t· 条款与条件",
       "privacy": "\t· 隐私政策"
-    }
-  },
-  "worker": {
-    "cost": {
-      "notIndicated": "Not indicated..."
     }
   },
   "quests": {

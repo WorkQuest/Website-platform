@@ -126,7 +126,7 @@
                 :to="`/quests?specializations=${randomSpec}&statuses=0`"
                 class="spec__link"
               >
-                "{{ $t(`filters.items.${randomSpec}.title`) }}"
+                "{{ $t(`filters.skills.${randomSpec}.title`) }}"
               </nuxt-link>
             </h2>
             <div class="quest__count">
@@ -258,7 +258,7 @@ export default {
       });
     },
     async getSameQuests() {
-      const skills = Object.keys(this.$t(`filters.items.${this.randomSpec}.sub`));
+      const skills = Object.keys(this.$t(`filters.skills.${this.randomSpec}.sub`));
       const specFilter = {};
       skills.forEach((skill, i) => {
         specFilter[`specializations[${i}]`] = `${this.randomSpec}.${skills[i]}`;

@@ -1,10 +1,14 @@
 {
   "meta": {
     "priority": {
+      "title": "الأولوية",
       "all": "جميع درجات الأولوية",
       "fixedDelivery": "موعد تسليم ثابت",
       "shortTerm": "فترة قصيرة",
-      "urgent": "عاجلة"
+      "urgent": "عاجلة",
+      "employee": {
+        "urgent": "Urgent execution"
+      }
     },
     "stores": {
       "googlePlay": "Google play",
@@ -87,6 +91,16 @@
       "view": "عرض",
       "add": "إضافة",
       "take": "Take"
+    },
+    "placeholders": {
+      "default": "",
+      "mail": "your@mail.com",
+      "email": "عنوان البريد الإلكتروني"
+    },
+    "worker": {
+      "cost": {
+        "notIndicated": "Not indicated..."
+      }
     },
     "allTransactions": "All transactions",
     "collateralTransactions": "Collateral transactions",
@@ -220,11 +234,6 @@
     "invalidPassword": "Invalid password",
     "loginToContinue": "Please login to continue"
   },
-  "placeholders": {
-    "default": "عنصر نائب",
-    "mail": "your@mail.com",
-    "email": "عنوان البريد الإلكتروني"
-  },
   "about": {
     "text": "WorkQuest هو مشروع اجتماعي قائم على تكنولوجيا سلسلة الكتل ويهدف إلى إيجاد عمل وتنفيذ أي مهام من جانب صاحب العمل في وضع طلبات العمل. هل تبحث عن وظيفة؟ سيساعدك WorkQuest في العثور على طلب عمل بالقرب منك ومن مدينتك. هل تحتاج إلى موظفين لتحقيق الأهداف؟ ما عليك سوى إنشاء طلب عمل على موقع WorkQuest. تلتزم الخدمة بضمان تنفيذ طلبات العمل. يتم الاحتفاظ بأموال صاحب العمل لدينا، وعندما يؤكد الموظف أنه أدى عمله، فإنه يتلقى إيداعًا بالأموال في حسابه. سيساعد نظام التقييمات والمراجعات وقائمة طلبات العمل المكتملة في العثور على أشخاص صادقين وأفضل المتخصصين بكل سهولة.\n\n          هدفنا هو تبسيط التواصل بين صاحب العمل والموظف للمساعدة في توظيف ملايين الأشخاص، وتحسين موقفهم المالي، وحل المشكلة الدائمة المتمثلة في العثور على متخصصين موثوقين في جميع القطاعات، وبناء اقتصاد رقمي تقدمي قائم على أسس الثقة والاحترام المتبادل ورفاهية جميع المشاركين فيه."
   },
@@ -247,12 +256,6 @@
     "sidebar": {
       "filter": "عامل تصفية جميع طلبات العمل",
       "choose": "(اختر فئة بسيطة أو \nمتخصصة)"
-    }
-  },
-  "priority": {
-    "title": "الأولوية",
-    "employee": {
-      "urgent": "Urgent execution"
     }
   },
   "signIn": {
@@ -316,11 +319,6 @@
     "links": {
       "terms": "\t· الشروط والأحكام",
       "privacy": "\t· سياسة الخصوصية"
-    }
-  },
-  "worker": {
-    "cost": {
-      "notIndicated": "Not indicated..."
     }
   },
   "quests": {

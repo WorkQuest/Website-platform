@@ -54,7 +54,7 @@
         {{ $t('meta.costPerHour') }}
       </div>
       <div class="cost__value">
-        {{ user.wagePerHour ? user.wagePerHour : $t('worker.cost.notIndicated') }}
+        {{ user.wagePerHour ? user.wagePerHour : $t('meta.worker.cost.notIndicated') }}
         {{ user.wagePerHour ? $t('meta.wusd') : '' }}
       </div>
     </div>
@@ -80,7 +80,7 @@ export default {
       let string = '';
       this.user.userSpecializations.forEach((item, i) => {
         const [spec, skill] = item.path.split('.');
-        const name = this.$t(`filters.items.${spec}.sub.${skill}`);
+        const name = this.$t(`filters.skills.${spec}.sub.${skill}`);
         string += `${i ? ', ' : ''}${name}`;
       });
       return string;

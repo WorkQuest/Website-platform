@@ -31,7 +31,7 @@
             {{ `${row.price} ${$options.TokenSymbols.WUSD}` }}
           </template>
           <template v-else>
-            {{ row.wagePerHour ? `${row.wagePerHour} ${$options.TokenSymbols.WUSD}` : $t('worker.cost.notIndicated') }}
+            {{ row.wagePerHour ? `${row.wagePerHour} ${$options.TokenSymbols.WUSD}` : $t('meta.worker.cost.notIndicated') }}
           </template>
         </span>
       </div>

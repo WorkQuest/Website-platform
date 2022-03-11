@@ -31,7 +31,7 @@
             rules="max:7"
             class="skills__cost"
             data-selector="SKILLS-PER-HOUR-FIELD"
-            :placeholder="skills.perHour || $t('priority.title')"
+            :placeholder="skills.perHour || $t('meta.priority.title')"
             :label="$t('meta.costPerHour')"
             :name="$t('meta.costPerHour')"
             type="gray"
@@ -72,12 +72,12 @@ export default {
       dropdowns: [
         {
           model: 'priorityIndex',
-          placeholder: 'priority.title',
+          placeholder: 'meta.priority.title',
           items: [
             this.$t('meta.priority.all'),
             this.$t('meta.priority.fixedDelivery'),
             this.$t('meta.priority.shortTerm'),
-            this.$t('priority.employee.urgent'),
+            this.$t('meta.priority.employee.urgent'),
           ],
           label: 'settings.priority',
         },

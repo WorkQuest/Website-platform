@@ -121,7 +121,7 @@ export default {
     },
     getSkillTitle(path) {
       const [spec, skill] = path.split('.');
-      return this.$t(`filters.items.${spec}.sub.${skill}`);
+      return this.$t(`filters.skills.${spec}.sub.${skill}`);
     },
     showDistance() {
       const { location: { lat, lng }, userData: { location } } = this;

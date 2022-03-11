@@ -367,9 +367,9 @@ export default {
         },
         {
           model: 'email',
-          name: 'placeholders.email',
+          name: 'meta.placeholders.email',
           rules: 'max:100||email',
-          placeholder: 'placeholders.mail',
+          placeholder: 'meta.placeholders.mail',
           icon: 'icon-mail',
           isDisabled: true,
         },

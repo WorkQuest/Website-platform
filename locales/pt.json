@@ -1,10 +1,14 @@
 {
   "meta": {
     "priority": {
+      "title": "Selecionar prioridade",
       "all": "Todas as prioridades",
       "fixedDelivery": "Entrega fixa",
       "shortTerm": "Curto prazo",
-      "urgent": "Urgente"
+      "urgent": "Urgente",
+      "employee": {
+        "urgent": "Urgent execution"
+      }
     },
     "stores": {
       "googlePlay": "Google play",
@@ -86,6 +90,16 @@
       "view": "Visualizar",
       "add": "Adicionar",
       "take": "Take"
+    },
+    "placeholders": {
+      "default": "",
+      "mail": "your@mail.com",
+      "email": "Endereço de e-mail"
+    },
+    "worker": {
+      "cost": {
+        "notIndicated": "Not indicated..."
+      }
     },
     "allTransactions": "All transactions",
     "collateralTransactions": "Collateral transactions",
@@ -219,11 +233,6 @@
     "invalidPassword": "Invalid password",
     "loginToContinue": "Please login to continue"
   },
-  "placeholders": {
-    "default": "Marcador de posição de texto",
-    "mail": "your@mail.com",
-    "email": "Endereço de e-mail"
-  },
   "about": {
     "text": "O WorkQuest é um projecto social baseado na tecnologia blockchain para encontrar trabalho e resolver quaisquer tarefas do lado do empregador em modo de busca. Está à procura de um emprego? Uma Busca de trabalho ajudá-lo-á a encontrar algo próximo da sua cidade. Precisa de trabalhadores para realizar os seus objetivos? Basta criar uma busca no site da busca de trabalho. O serviço assume as obrigações de garantia para a realização de missões. Os fundos do empregador são mantidos connosco, se o empregado der uma confirmação do desempenho do trabalho, recebe um depósito de fundos na sua conta. O sistema de avaliações, revisões e uma lista de missões completadas ajudará a encontrar facilmente pessoas honestas e os melhores especialistas.\n\n          O nosso objetivo é simplificar a comunicação entre o empregador e o empregado, ajudar a empregar milhões de pessoas, melhorar a sua situação financeira, resolver o problema de encontrar profissionais fiáveis em todos os setores para criar uma economia digital progressiva construída sobre os princípios da confiança, do respeito mútuo e do bem-estar de todos os seus participantes."
   },
@@ -246,12 +255,6 @@
     "sidebar": {
       "filter": "Filtro de todas as Buscas",
       "choose": "(Escolha a categoria simples ou \nespecializada)"
-    }
-  },
-  "priority": {
-    "title": "Selecionar prioridade",
-    "employee": {
-      "urgent": "Urgent execution"
     }
   },
   "signIn": {
@@ -315,11 +318,6 @@
     "links": {
       "terms": "\t· Termos e condições",
       "privacy": "\t· Política de privacidade"
-    }
-  },
-  "worker": {
-    "cost": {
-      "notIndicated": "Not indicated..."
     }
   },
   "quests": {

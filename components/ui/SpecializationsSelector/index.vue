@@ -121,7 +121,7 @@ export default {
       const keys = Object.keys(this.filters);
       for (let i = 0; i < keys.length; i += 1) {
         const key = keys[i];
-        specs.push(this.$t(`filters.items.${this.filters[key].id}.title`));
+        specs.push(this.$t(`filters.skills.${this.filters[key].id}.title`));
       }
       return specs;
     },
@@ -143,7 +143,7 @@ export default {
         const skillsIndexes = Object.values(skillsBySpec);
         const skillsNames = [];
         for (let j = 0; j < skillsIndexes.length; j += 1) {
-          const name = this.$t(`filters.items.${this.filters[key].id}.sub.${skillsIndexes[j]}`);
+          const name = this.$t(`filters.skills.${this.filters[key].id}.sub.${skillsIndexes[j]}`);
           skillsNames.push(name);
         }
         skillsData[i] = skillsNames;

@@ -1,10 +1,14 @@
 {
   "meta": {
     "priority": {
+      "title": "Sélectionner la priorité",
       "all": "Toutes les priorités",
       "fixedDelivery": "Livraison fixe",
       "shortTerm": "Court terme",
-      "urgent": "Urgent"
+      "urgent": "Urgent",
+      "employee": {
+        "urgent": "Urgent execution"
+      }
     },
     "stores": {
       "googlePlay": "Google play",
@@ -86,6 +90,16 @@
       "view": "Afficher",
       "add": "Ajouter",
       "take": "Take"
+    },
+    "placeholders": {
+      "default": "",
+      "mail": "votre@courriel.com",
+      "email": "Adresse e-mail"
+    },
+    "worker": {
+      "cost": {
+        "notIndicated": "Not indicated..."
+      }
     },
     "allTransactions": "All transactions",
     "collateralTransactions": "Collateral transactions",
@@ -219,11 +233,6 @@
     "invalidPassword": "Invalid password",
     "loginToContinue": "Please login to continue"
   },
-  "placeholders": {
-    "default": "Espace réservé",
-    "mail": "votre@courriel.com",
-    "email": "Adresse e-mail"
-  },
   "about": {
     "text": "WorkQuest est un projet social basé sur la technologie blockchain visant à faciliter la recherche d’emploi et résoudre toutes les tâches des employeurs en mode quête. Cherchez-vous un emploi ? WorkQuest vous aidera à trouver une quête à côté de chez vous ou dans votre ville. Avez-vous besoin de travailleurs pour réaliser certains objectifs ? Il suffit de créer une quête sur le site de WorkQuest. Le service assume les obligations de garantie pour l'exécution des quêtes. Les fonds des employeurs sont conservés auprès de nous. Si l'employé(e) fournit une confirmation de l'exécution du travail, les fonds sont reversés sur son compte. Le système d'évaluations, de notes et la liste des quêtes accomplies aideront à trouver facilement des personnes honnêtes et des spécialistes fiables.\n\n          Notre objectif est de simplifier la communication entre les employeurs et les employés, d'aider des millions de personnes à trouver des emplois, d'améliorer leur situation financière, de résoudre le problème permanent de recherche de professionnels fiables dans tous les secteurs pour créer une économie numérique progressive fondée sur les principes de confiance, de respect mutuel et de bien-être de tous ses participants."
   },
@@ -246,12 +255,6 @@
     "sidebar": {
       "filter": "Filtre Toutes les quêtes",
       "choose": "(Choisissez une catégorie simple\nou spécialisée)"
-    }
-  },
-  "priority": {
-    "title": "Sélectionner la priorité",
-    "employee": {
-      "urgent": "Urgent execution"
     }
   },
   "signIn": {
@@ -315,11 +318,6 @@
     "links": {
       "terms": "\t· Conditions générales",
       "privacy": "\t· Politique de confidentialité"
-    }
-  },
-  "worker": {
-    "cost": {
-      "notIndicated": "Not indicated..."
     }
   },
   "quests": {
