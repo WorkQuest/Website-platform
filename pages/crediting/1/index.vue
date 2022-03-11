@@ -160,7 +160,7 @@ export default {
         },
         {
           key: 'WUSD',
-          label: this.$t('meta.wusd'),
+          label: this.$t('meta.coins.wusd'),
           thStyle: {
             padding: '0',
             height: '27px',

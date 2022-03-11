@@ -55,7 +55,7 @@
       </div>
       <div class="cost__value">
         {{ user.wagePerHour ? user.wagePerHour : $t('meta.worker.cost.notIndicated') }}
-        {{ user.wagePerHour ? $t('meta.wusd') : '' }}
+        {{ user.wagePerHour ? $t('meta.coins.wusd') : '' }}
       </div>
     </div>
   </div>
