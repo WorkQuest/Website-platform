@@ -285,7 +285,7 @@ export default {
 
     .btn-group {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 20px;
       padding-bottom: 20px;
 
@@ -585,8 +585,9 @@ export default {
       }
     }
   }
-
-  @include _767 {
+}
+@include _767 {
+  .collateral-page {
     background: linear-gradient(to bottom, #103D7C 220px, #f6f8fa 220px);
     &__container {
       grid-template-rows: auto auto;
@@ -605,20 +606,28 @@ export default {
     }
     &__content {
       .info-block {
+        &__about {
+          .btn-group {
+            grid-template-columns: repeat(1, 1fr);
+          }
+        }
         &__triple {
           gap: 10px;
         }
       }
     }
   }
+}
 
-  @include _575 {
+@include _575 {
+  .collateral-page {
     &__content {
       .info-block {
         &__triple {
           grid-template-columns: unset;
           grid-template-rows: repeat(3, 1fr);
         }
+
         &__about {
           grid-template-areas:
             "hd"
@@ -629,12 +638,14 @@ export default {
           width: 100%;
           margin: 0;
           padding: 0 20px;
+
           .info-block-image {
             position: relative;
             width: 100%;
             max-width: 370px;
             justify-self: center;
           }
+
           .btn-group {
             padding: 0;
             display: grid;
@@ -643,12 +654,14 @@ export default {
             gap: 20px;
           }
         }
+
         &__documents {
           .document {
             grid-template-columns: 33px auto 23px;
           }
         }
       }
+
       .btn {
         &__doc {
           border: 0;

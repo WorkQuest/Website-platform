@@ -89,13 +89,10 @@
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import moment from 'moment';
-import Footer from '~/components/app/Footer';
 
 export default {
-  scrollToTop: true,
   name: 'GuestLayout',
   middleware: 'guest',
-  components: { Footer },
   directives: { ClickOutside },
   data() {
     return {
