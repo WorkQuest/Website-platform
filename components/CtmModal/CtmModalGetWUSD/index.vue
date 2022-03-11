@@ -134,7 +134,7 @@ export default {
       amountCollateral: '',
       collateralPercent: '',
       currentCurrencyPrice: 0,
-      optimalCollaterralRatio: 0,
+      optimalCollateralRatio: 0,
       checkpoints: [
         { name: this.$t('modals.bnb'), id: tokenMap.BNB },
         { name: this.$t('modals.eth'), id: tokenMap.ETH },
@@ -146,8 +146,8 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
-    optimalCollaterralPercent() {
-      return new BigNumber(this.optimalCollaterralRatio).multipliedBy(100).toFixed();
+    optimalCollateralPercent() {
+      return new BigNumber(this.optimalCollateralRatio).multipliedBy(100).toFixed();
     },
     currentCurrency() {
       return this.checkpoints.find((el) => el.id === this.selCurrencyID).name;
@@ -159,10 +159,10 @@ export default {
       return new BigNumber(this.collateralPercentClear).dividedBy(100).toFixed();
     },
     mediumRiskPoint() {
-      return new BigNumber(this.optimalCollaterralPercent).plus(150).dividedBy(2).toFixed();
+      return new BigNumber(this.optimalCollateralPercent).plus(150).dividedBy(2).toFixed();
     },
     getRisksGrade() {
-      if (new BigNumber(this.collateralPercentClear).isGreaterThanOrEqualTo(this.optimalCollaterralPercent)) {
+      if (new BigNumber(this.collateralPercentClear).isGreaterThanOrEqualTo(this.optimalCollateralPercent)) {
         return this.$t('modals.lowRisk');
       }
       if (new BigNumber(this.collateralPercentClear).isGreaterThanOrEqualTo(this.mediumRiskPoint)) {
@@ -179,6 +179,11 @@ export default {
         this.setActualCollateralPercent();
       },
     },
+    currentCurrencyPrice: {
+      handler() {
+        this.calculateCollateral();
+      },
+    },
   },
   async beforeMount() {
     await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
@@ -188,26 +193,30 @@ export default {
   methods: {
     onChangeWUSD(value) {
       this.amountWUSD = value;
-      if (+this.amountWUSD > 0 && +this.collateralPercentClear > 0 && +this.currentCurrencyPrice > 0) { this.calculateCollateral(); }
+      this.calculateCollateral();
       this.$nextTick(() => { this.$refs.form.validate(); });
     },
     onChangeCollateral(value) {
       this.amountCollateral = value;
-      if (+this.amountCollateral > 0 && +this.collateralPercentClear > 0 && +this.currentCurrencyPrice > 0) { this.calculateWUSD(); }
+      this.calculateWUSD();
       this.$nextTick(() => { this.$refs.form.validate(); });
     },
     calculateWUSD() {
-      this.amountWUSD = new BigNumber(this.amountCollateral).multipliedBy(this.currentCurrencyPrice).dividedBy(this.currentCollateralRatio).toFixed();
+      if (+this.amountCollateral > 0 && +this.collateralPercentClear > 0 && +this.currentCurrencyPrice > 0) {
+        this.amountWUSD = new BigNumber(this.amountCollateral).multipliedBy(this.currentCurrencyPrice).dividedBy(this.currentCollateralRatio).toFixed();
+      }
     },
     calculateCollateral() {
-      this.amountCollateral = new BigNumber(this.amountWUSD).multipliedBy(this.currentCollateralRatio).dividedBy(this.currentCurrencyPrice).toFixed();
+      if (+this.amountWUSD > 0 && +this.collateralPercentClear > 0 && +this.currentCurrencyPrice > 0) {
+        this.amountCollateral = new BigNumber(this.amountWUSD).multipliedBy(this.currentCollateralRatio).dividedBy(this.currentCurrencyPrice).toFixed();
+      }
     },
     async getCollateralData() {
       this.currentCurrencyPrice = 10000; // TODO backend
-      this.optimalCollaterralRatio = 2; // TODO backend
+      this.optimalCollateralRatio = 2; // TODO backend
     },
     setActualCollateralPercent() {
-      this.collateralPercent = `${this.optimalCollaterralPercent}%`;
+      this.collateralPercent = `${this.optimalCollateralPercent}%`;
     },
     clearForm() {
       this.amountWUSD = '';
@@ -337,7 +346,7 @@ export default {
           this.collateralPercent = withoutDotsArray.join('');
         }
       }
-      if (+this.amountWUSD > 0 && +this.collateralPercentClear > 0 && +this.currentCurrencyPrice > 0) { this.calculateCollateral(); }
+      this.calculateCollateral();
       this.changeCaretPosition();
     },
     changeCaretPosition() {
