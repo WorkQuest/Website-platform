@@ -321,9 +321,18 @@ export default {
       } else if (isDotFirst) {
         const memo = valueWithoutWords.split('');
         memo.unshift('0');
+        if (memo[memo.length - 1] !== '%') { memo.push('%'); }
         this.collateralPercent = memo.join('');
       } else {
         this.collateralPercent = `${valueWithoutWords}%`;
+      }
+      this.collateralPercent = this.collateralPercent.replace(/,/g, '.');
+      if (this.collateralPercent.includes('.')) {
+        const withoutDotsArray = this.collateralPercent.split('.');
+        if (withoutDotsArray.length > 2) {
+          withoutDotsArray.splice(1, 0, '.');
+          this.collateralPercent = withoutDotsArray.join('');
+        }
       }
       if (+this.amountWUSD > 0 && +this.collateralPercentClear > 0 && +this.currentCurrencyPrice > 0) { this.calculateCollateral(); }
       const input = [...[...this.$refs.percentInput?.$el.children].find((el) => el.className === 'ctm-field__body').children].find(((el) => el.nodeName.toLowerCase() === 'input'));
