@@ -17,7 +17,7 @@
                 v-model="token"
                 class="grid__drop"
                 :items="tokens"
-                @change="setMaxValue()"
+                @input="changeToken()"
               />
             </div>
             <div class="grid__field">
@@ -129,10 +129,11 @@ export default {
       isConnected: 'web3/isConnected',
     }),
     tokens() {
-      console.log(this.options.fromChain);
       const tokens = ['WQT'];
-      if (this.options?.fromChain === 2) {
-        tokens.push('WETH', 'WBNB');
+      if ((this.options?.fromChain === 0 && this.options?.toChain === 2) || (this.options?.fromChain === 2 && this.options?.toChain === 0)) {
+        tokens.push('WETH');
+      } else if ((this.options?.fromChain === 1 && this.options?.toChain === 2) || (this.options?.fromChain === 2 && this.options?.toChain === 1)) {
+        tokens.push('WBNB');
       }
       return tokens;
     },
@@ -148,8 +149,12 @@ export default {
   },
   async mounted() {
     await this.connectToMetamask();
+    await this.$store.dispatch('web3/getCrosschainTokensData', this.tokens[this.token]);
   },
   methods: {
+    async changeToken() {
+      await this.$store.dispatch('web3/getCrosschainTokensData', this.tokens[this.token]);
+    },
     setMaxValue() {
       this.amount = this.tokensData.tokenAmount;
     },
@@ -175,6 +180,7 @@ export default {
           recepientFull: this.recipientAddress,
           worknetFee: `0,5 ${this.tokens[this.token]}`,
           binanceFee: '0,0009 BNB',
+          tokenName: this.tokens[this.token],
         });
       } else {
         this.hide();

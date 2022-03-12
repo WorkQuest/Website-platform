@@ -190,8 +190,8 @@ export default {
     return payload;
   },
 
-  async getCrosschainTokensData({ commit }) {
-    const { tokenAddress } = getStakingDataByType(StakingTypes.CROSS_CHAIN);
+  async getCrosschainTokensData({ commit }, token) {
+    const { tokenAddress } = getStakingDataByType(StakingTypes.CROSS_CHAIN, token);
     const [tokenDecimal, tokenSymbol, tokenValue] = await Promise.all([
       fetchContractData('decimals', abi.ERC20, tokenAddress),
       fetchContractData('symbol', abi.ERC20, tokenAddress),

@@ -107,7 +107,7 @@ export const goToChain = async (chain) => {
     return { ok: false };
   }
 };
-export const getStakingDataByType = (stakingType) => {
+export const getStakingDataByType = (stakingType, token = '') => {
   let _stakingAddress;
   let _stakingAbi;
   let _tokenAddress;
@@ -126,11 +126,20 @@ export const getStakingDataByType = (stakingType) => {
       break;
     case StakingTypes.CROSS_CHAIN:
       if (_miningPoolId === Chains.ETHEREUM) {
-        _tokenAddress = process.env.ETHEREUM_WQT_TOKEN;
+        _tokenAddress = token === 'WQT' ? process.env.ETHEREUM_WQT_TOKEN : process.env.ETHEREUM_WQT_TOKEN;
       } else if (_miningPoolId === Chains.BINANCE || _miningPoolId === Chains.BNB) {
-        _tokenAddress = process.env.BSC_WQT_TOKEN;
+        _tokenAddress = token === 'WQT' ? process.env.BSC_WQT_TOKEN : process.env.BSC_WQT_TOKEN;
       } else if (_miningPoolId === Chains.WORKNET) {
-        _tokenAddress = process.env.WORKNET_WQT_TOKEN;
+        switch (token) {
+          case 'WBNB':
+            _tokenAddress = process.env.WORKNET_WBNB_TOKEN;
+            break;
+          case 'WETH':
+            _tokenAddress = process.env.WORKNET_WETH_TOKEN;
+            break;
+          default:
+            _tokenAddress = process.env.WORKNET_WQT_TOKEN;
+        }
       }
       break;
     default:
@@ -534,15 +543,26 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
   let tokenAddress;
   let bridgeAddress;
   if (chain === Chains.ETHEREUM) {
-    tokenAddress = process.env.ETHEREUM_WQT_TOKEN;
+    tokenAddress = symbol === 'WQT' ? process.env.ETHEREUM_WQT_TOKEN : process.env.WORKNET_WETH_TOKEN;
     bridgeAddress = process.env.ETHEREUM_BRIDGE;
   } else if (chain === Chains.BNB || chain === Chains.BINANCE) {
-    tokenAddress = process.env.BSC_WQT_TOKEN;
+    tokenAddress = symbol === 'WQT' ? process.env.BSC_WQT_TOKEN : process.env.WORKNET_WBNB_TOKEN;
     bridgeAddress = process.env.BSC_BRIDGE;
   } else if (chain === Chains.WORKNET) {
-    tokenAddress = process.env.WORKNET_WQT_TOKEN;
+    switch (symbol) {
+      case 'BNB':
+        tokenAddress = process.env.WORKNET_WBNB_TOKEN;
+        break;
+      case 'ETH':
+        tokenAddress = process.env.WORKNET_WETH_TOKEN;
+        break;
+      default:
+        tokenAddress = process.env.WORKNET_WQT_TOKEN;
+    }
     bridgeAddress = process.env.WORKNET_BRIDGE;
   }
+  console.log('swapWithBridge tokenAddress', tokenAddress);
+  console.log('swapWithBridge symbol', symbol);
   tokenInstance = await createInstance(abi.ERC20, tokenAddress);
   bridgeInstance = await createInstance(abi.WQBridge, bridgeAddress);
   allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [account.address, bridgeAddress])).toString();
@@ -585,7 +605,6 @@ export const redeemSwap = async (props) => {
       data: signData,
       userAddress: signData[3],
     };
-    console.log('redeem', payload);
     return await sendTransaction('redeem', payload);
   } catch (e) {
     console.log(e);

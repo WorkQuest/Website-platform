@@ -387,7 +387,6 @@ export default {
         switchPoolStatus = await this.checkMiningPoolId(chainName);
       }
       if (switchPoolStatus === true || switchPoolStatus.ok) {
-        await this.$store.dispatch('web3/getCrosschainTokensData');
         this.ShowModal({
           key: modals.swap,
           crosschainId: this.targetAddressInd,
