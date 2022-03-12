@@ -437,13 +437,6 @@ export const getGasPrice = async (contractAbi, address, method, attr) => {
   }
 };
 
-export const getAllowance = async (from, to, token) => {
-  const inst = new web3.eth.Contract(abi.ERC20, tokenMap[token]);
-  console.log('balance', await inst.methods.balanceOf(wallet.address).call());
-  const allowance = await inst.methods.allowance(from, to).call({ from });
-  return allowance;
-};
-
 export const setTokenPrice = async ({ currency }, {
   gasPrice, gas, timestamp, price, v, r, s,
 }) => {
@@ -460,19 +453,6 @@ export const setTokenPrice = async ({ currency }, {
   }
 };
 
-export const approveRouter = async ({ currency, collateralBN }, { gasPrice, gas }) => {
-  try {
-    const inst = new web3.eth.Contract(abi.ERC20, tokenMap[currency]);
-    await inst.methods.approve(process.env.WORKNET_ROUTER, collateralBN).send({
-      from: wallet.address,
-      gas,
-      gasPrice,
-    });
-  } catch (e) {
-    console.error('setTokenPriceError', e);
-    throw error();
-  }
-};
 export const buyWUSD = async ({ collateralBN, ratioBN, currency }, { gasPrice, gas }) => {
   try {
     const inst = new web3.eth.Contract(abi.WQRouter, process.env.WORKNET_ROUTER);

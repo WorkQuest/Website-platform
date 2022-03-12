@@ -936,6 +936,10 @@
     "error": "Error!"
   },
   "modals": {
+    "successBuyWUSD": "Successfully purchased WUSD",
+    "setTokenPrice": "Setting up {token} price",
+    "approveRouter": "Approve {token} to Router",
+    "takeWUSD": "Buy your WUSD",
     "waitRoleCooldown": "You cannot change roles more than once a month. You can change role after {date} {time}",
     "settingsInfo": "Settings Info",
     "pleaseEnable2FA": "Please, enable TWO-Step authentication",

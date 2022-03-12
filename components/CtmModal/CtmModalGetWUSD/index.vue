@@ -235,7 +235,11 @@ export default {
         collateralBN: new BigNumber(this.amountCollateral).shiftedBy(18).toFixed(),
         ratioBN: new BigNumber(this.collateralPercent.substr(0, this.collateralPercent.length - 1)).shiftedBy(16).toFixed(),
       };
-
+      this.SetLoader(true);
+      this.$store.dispatch('modals/hide');
+      await this.setTokenPrice(payload);
+    },
+    async setTokenPrice(payload) {
       const date = Date.now().toString();
       const timestamp = date.substr(0, date.length - 3);
       const price = '10000000000000000000000'; // TODO price
@@ -244,61 +248,63 @@ export default {
       const s = '0x7e1941b264348e80c78c4027afc65a87b0a5e43e86742b8ca0823584c6788fd0';
       const resultGasSetTokenPrice = await getGasPrice(abi.WQOracle, process.env.WORKNET_ORACLE, 'setTokenPriceUSD', [timestamp, price, v, r, s, payload.currency]);
 
-      if (resultGasSetTokenPrice.gasPrice && resultGasSetTokenPrice.gas) {
-        await this.setTokenPrice(payload, {
-          resultGasSetTokenPrice, timestamp, price, v, r, s,
+      if (resultGasSetTokenPrice.gas && resultGasSetTokenPrice.gasPrice) {
+        const setTokenPriceData = {
+          gasPrice: resultGasSetTokenPrice.gasPrice,
+          gas: resultGasSetTokenPrice.gas,
+          timestamp,
+          price,
+          v,
+          r,
+          s,
+        };
+
+        this.ShowModal({
+          key: modals.transactionReceipt,
+          title: this.$t('modals.setTokenPrice', { token: payload.currency }),
+          fields: {
+            from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
+            fee: { name: this.$t('wallet.table.trxFee'), value: new BigNumber(setTokenPriceData.gasPrice).shiftedBy(-18).toFixed(), symbol: TokenSymbols.WUSD },
+          },
+          submitMethod: async () => await this.$store.dispatch('collateral/setTokenPrice', { payload, setTokenPriceData }),
+          callback: async () => {
+            await this.approveRouter(payload);
+          },
         });
       } else {
-        const allowance = await getAllowance(this.$store.getters['user/getUserWalletAddress'], process.env.WORKNET_ROUTER, payload.currency);
-        const isNeedApprove = new BigNumber(payload.collateralBN).isGreaterThan(allowance);
-
-        if (isNeedApprove) {
-          await this.approveRouter(payload);
-        } else {
-          await this.getWUSD();
-        }
+        await this.approveRouter(payload);
       }
     },
-    async setTokenPrice(payload, {
-      resultGasSetTokenPrice, timestamp, price, v, r, s,
-    }) {
-      const setTokenPriceData = {
-        gasPrice: resultGasSetTokenPrice.gasPrice,
-        gas: resultGasSetTokenPrice.gas,
-        timestamp,
-        price,
-        v,
-        r,
-        s,
-      };
-
-      this.ShowModal({
-        key: modals.transactionReceipt,
-        fields: {
-          from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-          fee: { name: this.$t('wallet.table.trxFee'), value: new BigNumber(setTokenPriceData.gasPrice).shiftedBy(-18).toFixed(), symbol: TokenSymbols.WUSD },
-        },
-        submitMethod: async () => {
-          await this.$store.dispatch('collateral/setTokenPrice', { payload, setTokenPriceData });
-        },
-      });
-    },
     async approveRouter(payload) {
-      const resultGasApprove = await getGasPrice(abi.ERC20, tokenMap[payload.currency], 'approve', [process.env.WORKNET_ROUTER, payload.collateralBN]);
-      const approveData = {
-        gasPrice: resultGasApprove.gasPrice,
-        gas: resultGasApprove.gas,
-      };
-      this.ShowModal({
-        key: modals.transactionReceipt,
-        fields: {
-          from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-          fee: { name: this.$t('wallet.table.trxFee'), value: new BigNumber(approveData.gasPrice).shiftedBy(-18).toFixed(), symbol: TokenSymbols.WUSD },
-        },
-        submitMethod: async () => {
-          await this.$store.dispatch('collateral/approveRouter', { payload, approveData });
-        },
-      });
+      const allowance = await this.$store.dispatch('wallet/getAllowance', { tokenAddress: tokenMap[payload.currency], spenderAddress: process.env.WORKNET_ROUTER });
+      if (+allowance < +payload.collateral) {
+        const resultGasApprove = await getGasPrice(abi.ERC20, tokenMap[payload.currency], 'approve', [process.env.WORKNET_ROUTER, payload.collateralBN]);
+        this.ShowModal({
+          key: modals.transactionReceipt,
+          title: this.$t('modals.approveRouter', { token: payload.currency }),
+          fields: {
+            from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
+            fee: { name: this.$t('wallet.table.trxFee'), value: new BigNumber(resultGasApprove.gasPrice).shiftedBy(-18).toFixed(), symbol: TokenSymbols.WUSD },
+          },
+          submitMethod: async () => {
+            try {
+              await this.$store.dispatch('wallet/approve', {
+                tokenAddress: tokenMap[payload.currency],
+                spenderAddress: process.env.WORKNET_ROUTER,
+                amount: payload.collateral,
+              });
+              return { ok: true };
+            } catch (err) {
+              return { ok: false };
+            }
+          },
+          callback: async () => {
+            await this.getWUSD(payload);
+          },
+        });
+      } else {
+        await this.getWUSD(payload);
+      }
     },
     async getWUSD(payload) {
       const resultGasBuyWUSD = await getGasPrice(abi.WQRouter, process.env.WORKNET_ROUTER, 'produceWUSD', [payload.collateralBN, payload.ratioBN, payload.currency]);
@@ -309,6 +315,7 @@ export default {
 
       this.ShowModal({
         key: modals.transactionReceipt,
+        title: this.$t('modals.takeWUSD'),
         fields: {
           from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
           to: { name: this.$t('modals.toAddress'), value: process.env.WORKNET_ROUTER },
@@ -319,8 +326,9 @@ export default {
           },
           fee: { name: this.$t('wallet.table.trxFee'), value: new BigNumber(resultGasBuyWUSD.gasPrice).shiftedBy(-18).toFixed(), symbol: TokenSymbols.WUSD },
         },
-        submitMethod: async () => {
-          await this.$store.dispatch('collateral/buyWUSD', { payload, buyWUSDData });
+        submitMethod: async () => await this.$store.dispatch('collateral/buyWUSD', { payload, buyWUSDData }),
+        callback: async () => {
+          this.ShowToast(this.$t('modals.successBuyWUSD'), this.$t('modals.success'));
         },
       });
     },
@@ -350,11 +358,12 @@ export default {
       this.changeCaretPosition();
     },
     changeCaretPosition() {
-      const input = [...[...this.$refs.percentInput?.$el.children].find((el) => el.className === 'ctm-field__body').children].find(((el) => el.nodeName.toLowerCase() === 'input'));
+      const input = this.$refs.percentInput?.$refs.input;
       this.$nextTick(() => {
-        if (input.value[input.value.length - 1] === '%' && input.selectionStart === input.value.length) {
-          input.selectionStart = input.value.length - 1;
-          input.selectionEnd = input.value.length - 1;
+        const { length } = input.value;
+        if (input.value[length - 1] === '%' && input.selectionStart === length) {
+          input.selectionStart = length - 1;
+          input.selectionEnd = length - 1;
         }
       });
     },
