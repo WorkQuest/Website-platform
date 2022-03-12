@@ -105,7 +105,7 @@ export default {
     },
     ratingItems() {
       const items = [this.$t('quests.allVariants')];
-      RatingFilter.forEach((item) => { if (item) items.push(this.$t(`quests.rating.${item}`)); });
+      RatingFilter.forEach((item) => items.push(this.$t(`quests.rating.${item}`)));
       return items;
     },
     priorityItems() {
@@ -131,7 +131,7 @@ export default {
     selectedSpec() { this.$emit('sortSpec', this.selectedSpec); },
     selectedRating() {
       const { selectedRating } = this;
-      const query = selectedRating ? { 'ratingStatuses[0]': RatingFilter[selectedRating] } : {};
+      const query = selectedRating ? { 'ratingStatuses[0]': selectedRating - 1 } : {};
       this.$emit('sortRating', query);
     },
     selectedPriority() {

@@ -1,7 +1,7 @@
 <template>
   <div class="container__status status">
     <span
-      v-if="!rating"
+      v-if="rating >= 0 && rating !== 3"
       class="status__level"
       :class="`status__level_${$options.UserRating[rating]}`"
     >
