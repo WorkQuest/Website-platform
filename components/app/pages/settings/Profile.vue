@@ -34,7 +34,7 @@
           />
         </ValidationProvider>
         <div class="profile__personal-info">
-          <verified class="profile__status" />
+          <StatusKYC class="profile__status" />
           <base-field
             v-for="main in mainInputs"
             :key="main.index"
@@ -305,13 +305,13 @@
 import { GeoCode } from 'geo-coder';
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import Verified from '~/components/app/pages/settings/Verified.vue';
+import StatusKYC from './StatusKYC.vue';
 import AddForm from './AddForm.vue';
 import { UserRole } from '~/utils/enums';
 
 export default {
   name: 'SettingsProfile',
-  components: { Verified, AddForm },
+  components: { StatusKYC, AddForm },
   directives: {
     ClickOutside,
   },
@@ -626,15 +626,6 @@ export default {
   &__status {
     grid-column-start: 1;
     grid-column-end: 3;
-    max-width: 159px;
-    padding: 8px 13px;
-    display: flex;
-    background: $blue;
-    color: $white;
-    border-radius: 36px;
-    max-height: 34px;
-    justify-content: center;
-    align-items: center;
     margin-bottom: 10px;
   }
   &__row-data {
