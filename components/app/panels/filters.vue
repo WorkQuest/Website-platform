@@ -11,7 +11,7 @@
       mode="blackFont"
       :items="ratingItems"
       :placeholder="$t('quests.rating.title')"
-      selector="RATING"
+      data-selector="RATING"
     />
     <base-dd
       v-model="selectedPriority"
@@ -19,7 +19,7 @@
       mode="blackFont"
       :items="priorityItems"
       :placeholder="$t('quests.priority.title')"
-      selector="PRIORITY"
+      data-selector="PRIORITY"
     />
     <base-dd
       v-if="userRole === UserRole.WORKER"
@@ -28,7 +28,7 @@
       mode="blackFont"
       :items="typeOfJobItems"
       :placeholder="$t('quests.typeOfJob')"
-      selector="EMPLOYMENT"
+      data-selector="EMPLOYMENT"
     />
     <base-dd
       v-model="selectedWorkplace"
@@ -36,7 +36,7 @@
       mode="blackFont"
       :items="workplaceItems"
       :placeholder="$t('quests.distantWork.title')"
-      selector="WORKPLACE"
+      data-selector="WORKPLACE"
     />
     <base-btn
       class="filters-panel__item-btn item-btn"
