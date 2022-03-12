@@ -39,8 +39,8 @@
             {{ UserName(userData.firstName, userData.lastName) }}
           </div>
           <item-rating
-            v-if="ratingStatistic(userData.ratingStatistic) !== 'noStatus'"
-            :rating="ratingStatistic(userData.ratingStatistic)"
+            v-if="userData.ratingStatistic && userData.ratingStatistic.status >= 0"
+            :rating="userData.ratingStatistic.status"
           />
         </div>
         <div
@@ -194,7 +194,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { UserRole } from '~/utils/enums';
+import { UserRole, UserRating } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -304,7 +304,7 @@ export default {
   },
   methods: {
     ratingStatistic(ratingStatistic) {
-      return ratingStatistic?.status || 'noStatus';
+      return UserRating[ratingStatistic.status];
     },
     initStarClass(star) {
       const reviewMark = Number(this.userData?.ratingStatistic?.averageMark).toFixed(1);

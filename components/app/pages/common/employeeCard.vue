@@ -15,9 +15,9 @@
       <div class="card__user">
         <span class="user__name">{{ userName }}</span>
         <item-rating
-          v-if="ratingStatistic(user.ratingStatistic) !== 'noStatus'"
-          :rating="ratingStatistic(user.ratingStatistic)"
+          v-if="user.ratingStatistic && user.ratingStatistic.status >= 0"
           class="user__rating"
+          :rating="user.ratingStatistic.status"
         />
       </div>
     </div>

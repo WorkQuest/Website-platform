@@ -109,6 +109,13 @@ export const PriorityFilter = [
   { key: 'fixedDelivery', value: 1 },
 ];
 
+export const UserRating = {
+  0: 'topRanked',
+  1: 'reliable',
+  2: 'verified',
+  3: 'noStatus',
+};
+
 export const MessageAction = {
   GROUP_CHAT_CREATE: 'groupChatCreate',
   NEW_MESSAGE: 'newMessage',

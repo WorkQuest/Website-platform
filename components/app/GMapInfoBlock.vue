@@ -57,7 +57,7 @@
           </div>
         </div>
         <item-rating
-          v-if="content.status !== 'noStatus'"
+          v-if="$options.UserRating[content.status] !== 'noStatus'"
           :rating="content.status"
         />
         <div
@@ -102,12 +102,15 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { UserRole, TokenSymbols, Path } from '~/utils/enums';
+import {
+  UserRole, TokenSymbols, Path, UserRating,
+} from '~/utils/enums';
 
 export default {
   name: 'GMapInfoBlock',
   TokenSymbols,
   UserRole,
+  UserRating,
   props: {
     options: {
       type: Object,
@@ -157,7 +160,7 @@ export default {
         avatar: this.item.avatar ? this.item.avatar.url : this.EmptyAvatar(),
         alt: this.UserName(this.item.firstName, this.item.lastName),
         userName: this.UserName(this.item.firstName, this.item.lastName),
-        status: this.item?.ratingStatistic?.status || 'noStatus',
+        status: this.item?.ratingStatistic?.status || null,
         title: this.item.email,
         priceTitle: this.$t('settings.costPerHour'),
         price: `${this.item.wagePerHour} ${TokenSymbols.WUSD}`,

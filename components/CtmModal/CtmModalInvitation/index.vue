@@ -19,7 +19,7 @@
               </div>
               <item-rating
                 class="user-data__status"
-                :rating="getRatingValue()"
+                :rating="userData.ratingStatistic.status"
               />
             </div>
           </div>
@@ -93,9 +93,6 @@ export default {
     }),
   },
   methods: {
-    getRatingValue() {
-      return this.userData?.ratingStatistic?.status || 'noStatus';
-    },
     async inviteOnQuest() {
       const questId = this.availableQuests[this.questIndex].id || '';
       const payload = {

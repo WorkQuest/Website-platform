@@ -1,23 +1,30 @@
 <template>
   <div class="container__status status">
     <span
-      v-if="rating !== 'noStatus'"
+      v-if="!rating"
       class="status__level"
-      :class="`status__level_${rating}`"
+      :class="`status__level_${$options.UserRating[rating]}`"
     >
-      {{ $t(`rating.${rating}.title`) }}
+      {{ statusTitle }}
     </span>
   </div>
 </template>
 
 <script>
+import { UserRating } from '~/utils/enums';
 
 export default {
   name: 'ItemRating',
+  UserRating,
   props: {
     rating: {
-      type: String,
-      default: 'noStatus',
+      type: Number,
+      default: null,
+    },
+  },
+  computed: {
+    statusTitle() {
+      return this.rating !== null ? this.$t(`rating.${UserRating[this.rating]}.title`) : '';
     },
   },
 };
