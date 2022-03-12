@@ -40,7 +40,6 @@ import { Path, UserRole, UserStatuses } from '~/utils/enums';
 import { getIsWalletConnected } from '~/utils/wallet';
 
 export default {
-  scrollToTop: true,
   name: 'AuthLayout',
   computed: {
     ...mapGetters({
