@@ -288,16 +288,12 @@ export default {
             fee: { name: this.$t('wallet.table.trxFee'), value: new BigNumber(resultGasApprove.gasPrice).shiftedBy(-18).toFixed(), symbol: TokenSymbols.WUSD },
           },
           submitMethod: async () => {
-            try {
-              await this.$store.dispatch('wallet/approve', {
-                tokenAddress: tokenMap[payload.currency],
-                spenderAddress: process.env.WORKNET_ROUTER,
-                amount: payload.collateral,
-              });
-              return { ok: true };
-            } catch (err) {
-              return { ok: false };
-            }
+            await this.$store.dispatch('wallet/approve', {
+              tokenAddress: tokenMap[payload.currency],
+              spenderAddress: process.env.WORKNET_ROUTER,
+              amount: payload.collateral,
+            });
+            return { ok: true };
           },
           callback: async () => {
             await this.getWUSD(payload);
