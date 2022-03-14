@@ -34,12 +34,12 @@
           />
         </ValidationProvider>
         <div class="profile__personal-info">
-          <verified class="profile__status" />
+          <StatusKYC class="profile__status" />
           <base-field
             v-for="main in mainInputs"
             :key="main.index"
             v-model="profile[main.model]"
-            :data-selector="`PROFILE-FIELD-${main.index}`"
+            :data-selector="main.model"
             :rules="main.rules"
             :placeholder="$t(main.placeholder)"
             mode="icon"
@@ -55,7 +55,7 @@
             v-model="profile.locationFull.locationPlaceName"
             v-click-outside="hideSearchDD"
             :placeholder="$t('settings.addressInput')"
-            :data-selector="`PROFILE-FIELD-${$t('meta.addressSmall')}`"
+            data-selector="ADDRESS"
             rules="max:100|required"
             mode="icon"
             :selector="isSearchDDStatus"
@@ -155,7 +155,7 @@
             v-for="company in companyInputs"
             :key="company.index"
             v-model="profile.additionalInfo[company.model]"
-            :data-selector="`COMPANY-INPUT-${$t(company.name)}`"
+            :data-selector="company.model"
             :rules="company.rules"
             :placeholder="$t(company.placeholder)"
             mode="icon"
@@ -191,7 +191,7 @@
         class="profile__knowledge"
       >
         <div
-          :data-selector="`PROFILE-EDUCATION`"
+          data-selector="PROFILE-EDUCATION"
           class="profile__knowledge-container"
         >
           <div class="profile__knowledge-title">
@@ -206,7 +206,6 @@
               :key="education.id"
               :item="education"
               :is-adding="false"
-              :data-selector="`ACTION-BTN-DELETE-EDUCATION-${index}`"
               @click="deleteKnowledge(profile.additionalInfo.educations, index)"
             />
           </div>
@@ -265,13 +264,13 @@
       </div>
       <div
         class="profile__socials"
-        :data-selector="`SOCIALS`"
+        data-selector="SOCIALS"
       >
         <base-field
           v-for="social in socials"
           :key="social.index"
           v-model="profile.additionalInfo.socialNetwork[social.model]"
-          :data-selector="`SOCIALS-SOCIAL-${$t(social.name)}`"
+          :data-selector="social.model"
           :rules="social.rules"
           :placeholder="$t(social.placeholder)"
           mode="icon"
@@ -305,13 +304,13 @@
 import { GeoCode } from 'geo-coder';
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import Verified from '~/components/app/pages/settings/Verified.vue';
+import StatusKYC from './StatusKYC.vue';
 import AddForm from './AddForm.vue';
 import { UserRole } from '~/utils/enums';
 
 export default {
   name: 'SettingsProfile',
-  components: { Verified, AddForm },
+  components: { StatusKYC, AddForm },
   directives: {
     ClickOutside,
   },
@@ -626,15 +625,6 @@ export default {
   &__status {
     grid-column-start: 1;
     grid-column-end: 3;
-    max-width: 159px;
-    padding: 8px 13px;
-    display: flex;
-    background: $blue;
-    color: $white;
-    border-radius: 36px;
-    max-height: 34px;
-    justify-content: center;
-    align-items: center;
     margin-bottom: 10px;
   }
   &__row-data {
