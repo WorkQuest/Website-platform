@@ -25,7 +25,7 @@ export default {
   },
   computed: {
     ratingStr() {
-      return UserRating[this.rating];
+      return UserRating[this.rating] || Ratings.NO_STATUS;
     },
     statusTitle() {
       return this.rating !== null ? this.$t(`rating.${this.ratingStr}.title`) : '';
