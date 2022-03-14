@@ -51,13 +51,13 @@
           </div>
           <div
             class="info-window__name"
-            :class="{'info-window__name_long': content.status === 'noStatus' && !content.label}"
+            :class="{'info-window__name_long': content.status === $options.Ratings.NO_STATUS && !content.label}"
           >
             {{ content.userName }}
           </div>
         </div>
         <item-rating
-          v-if="$options.UserRating[content.status] !== 'noStatus'"
+          v-if="$options.UserRating[content.status] !== $options.Ratings.NO_STATUS"
           :rating="content.status"
         />
         <div
@@ -103,7 +103,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import {
-  UserRole, TokenSymbols, Path, UserRating,
+  UserRole, TokenSymbols, Path, UserRating, Ratings,
 } from '~/utils/enums';
 
 export default {
@@ -111,6 +111,7 @@ export default {
   TokenSymbols,
   UserRole,
   UserRating,
+  Ratings,
   props: {
     options: {
       type: Object,
