@@ -50,7 +50,7 @@ export default {
     line-height: 130%;
     height: 20px;
     text-transform: uppercase;
-    width: auto;
+    width: max-content;
     display: flex;
     justify-content: center;
 
