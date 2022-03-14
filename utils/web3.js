@@ -193,14 +193,16 @@ export const sendTransaction = async (_method, payload, _provider = web3) => {
     const data = inst.methods[_method].apply(null, payload.data).encodeABI();
     console.log('data', data);
     // const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress });
-    // const [_gasPrice, _gasEstimate] = await Promise.all([
-    //   web3.eth.getGasPrice(),
-    //   inst.methods.swap.apply(null, payload.data).estimateGas({ from: accountAddress }),
-    // ]);
-    console.log(payload);
+    const [_gasPrice, _gasEstimate] = await Promise.all([
+      web3.eth.getGasPrice(),
+      inst.methods.swap.apply(null, payload.data).estimateGas({ from: accountAddress }),
+    ]);
+    console.log(_gasPrice, _gasEstimate);
     await inst.methods.swap(...payload.data).send({
       from: accountAddress,
       value: payload.value,
+      gas: _gasEstimate,
+      gasPrice: _gasPrice,
     });
     // console.log('getGasPrice', _gasPrice, '_gasEstimate', _gasEstimate);
     // const res = await web3.eth.sendTransaction({
