@@ -100,7 +100,6 @@ export const KeyCodes = {
 // Filters
 export const WorkplaceFilter = ['all', 'distant', 'office', 'both'];
 export const WorkplaceIndex = ['distant', 'office', 'both'];
-export const RatingFilter = ['topRanked', 'reliable', 'verified'];
 export const TypeOfJobFilter = ['fullTime', 'partTime', 'fixedTerm'];
 export const PriorityFilter = [
   { key: 'all', value: 0 },
@@ -109,12 +108,18 @@ export const PriorityFilter = [
   { key: 'fixedDelivery', value: 1 },
 ];
 
-export const UserRating = {
+export const UserRating = Object.freeze({
   0: 'topRanked',
   1: 'reliable',
   2: 'verified',
   3: 'noStatus',
-};
+});
+export const RatingFilter = [
+  { key: 'all', value: 3 },
+  { key: 'topRanked', value: 0 },
+  { key: 'reliable', value: 1 },
+  { key: 'verified', value: 2 },
+];
 
 export const MessageAction = {
   GROUP_CHAT_CREATE: 'groupChatCreate',
