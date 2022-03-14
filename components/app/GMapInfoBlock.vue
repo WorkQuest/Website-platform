@@ -51,13 +51,13 @@
           </div>
           <div
             class="info-window__name"
-            :class="{'info-window__name_long': content.status === 'noStatus' && !content.label}"
+            :class="{'info-window__name_long': content.status === $options.Ratings.NO_STATUS && !content.label}"
           >
             {{ content.userName }}
           </div>
         </div>
         <item-rating
-          v-if="content.status !== 'noStatus'"
+          v-if="$options.UserRating[content.status] !== $options.Ratings.NO_STATUS"
           :rating="content.status"
         />
         <div
@@ -102,12 +102,16 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { UserRole, TokenSymbols, Path } from '~/utils/enums';
+import {
+  UserRole, TokenSymbols, Path, UserRating, Ratings,
+} from '~/utils/enums';
 
 export default {
   name: 'GMapInfoBlock',
   TokenSymbols,
   UserRole,
+  UserRating,
+  Ratings,
   props: {
     options: {
       type: Object,
@@ -157,7 +161,7 @@ export default {
         avatar: this.item.avatar ? this.item.avatar.url : this.EmptyAvatar(),
         alt: this.UserName(this.item.firstName, this.item.lastName),
         userName: this.UserName(this.item.firstName, this.item.lastName),
-        status: this.item?.ratingStatistic?.status || 'noStatus',
+        status: this.item?.ratingStatistic?.status || null,
         title: this.item.email,
         priceTitle: this.$t('settings.costPerHour'),
         price: `${this.item.wagePerHour} ${TokenSymbols.WUSD}`,

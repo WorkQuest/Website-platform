@@ -48,10 +48,7 @@
                 {{ assignedWorker.firstName }} {{ assignedWorker.lastName }}
               </div>
             </nuxt-link>
-            <item-rating
-              v-if="assignedWorker.ratingStatistic && assignedWorker.ratingStatistic.status !== 'noStatus'"
-              :rating="assignedWorker.ratingStatistic.status"
-            />
+            <item-rating :rating="assignedWorker.ratingStatistic.status" />
           </div>
         </div>
 
