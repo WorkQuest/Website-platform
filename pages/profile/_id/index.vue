@@ -3,14 +3,17 @@
     <div class="section section__container section__container_white">
       <div class="container container__block">
         <userInfo />
-        <div class="block__routes routes">
+        <div
+          ref="tabs"
+          class="block__routes routes"
+        >
           <button
             v-for="(item, i) in pageTabs"
             :key="i"
             :data-selector="`PAGE-TABS-${item.tabName}`"
             class="routes__btn"
             :class="{routes__btn_active: selectedTab === item.tabName}"
-            @click="selectedTab = item.tabName"
+            @click="selectTab(item.tabName)"
           >
             {{ item.title }}
           </button>
@@ -101,7 +104,7 @@
             <div
               class="button__more"
               data-selector="ACTION-BTN-TABS-SHOW-ALL-QUEST"
-              @click="selectedTab = 'quests'"
+              @click="selectTab('quests')"
             >
               {{ $t('meta.showAllQuests') }}
             </div>
@@ -118,9 +121,7 @@
             {{ $t('quests.reviewsBig') }}
           </div>
           <template v-if="reviewsObject.count > 0">
-            <div
-              class="reviews__container"
-            >
+            <div class="reviews__container">
               <reviewsTab :object="reviewsObject" />
             </div>
             <div
@@ -142,7 +143,7 @@
                 v-if="reviewsObject.count > 4"
                 class="button__more"
                 data-selector="ACTION-BTN-SHOW-ALL-REVIEWS"
-                @click="selectedTab = 'reviews'"
+                @click="selectTab('reviews')"
               >
                 {{ $t('meta.showAllReviews') }}
               </div>
@@ -199,7 +200,7 @@
             <div
               class="button__more"
               data-selector="ACTION-BTN-SHOW-ALL-PORTFOLIOS"
-              @click="selectedTab = 'portfolio'"
+              @click="selectTab('portfolio')"
             >
               {{ $t('meta.showAllPortfolios') }}
             </div>
@@ -349,16 +350,19 @@ export default {
     async pageQuests() {
       this.SetLoader(true);
       await this.changeQuestsData();
+      this.ScrollToTop();
       this.SetLoader(false);
     },
     async pageReviews() {
       this.SetLoader(true);
       await this.changeReviewsData();
+      this.ScrollToTop();
       this.SetLoader(false);
     },
     async pagePortfolios() {
       this.SetLoader(true);
       await this.changePortfoliosData(this.perPagerPortfolios);
+      this.ScrollToTop();
       this.SetLoader(false);
     },
   },
@@ -388,6 +392,10 @@ export default {
     await this.$store.dispatch('user/clearAnotherUserData');
   },
   methods: {
+    selectTab(tab) {
+      this.selectedTab = tab;
+      this.$refs.tabs.scrollTop = 0;
+    },
     async updateQuests(item) {
       this.SetLoader(true);
       if (!item.star) await this.$store.dispatch('quests/setStarOnQuest', item.id);
@@ -429,7 +437,7 @@ export default {
       const payload = {
         userId: this.userId,
         query: {
-          limit: limit || this.perPagerPortfolios,
+          limit,
           offset: (this.pagePortfolios - 1) * this.perPagerPortfolios,
         },
       };
