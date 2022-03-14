@@ -108,11 +108,17 @@ export const PriorityFilter = [
   { key: 'fixedDelivery', value: 1 },
 ];
 
+export const Ratings = Object.freeze({
+  TOP_RANKED: 'topRanked',
+  RELIABLE: 'reliable',
+  VERIFIED: 'verified',
+  NO_STATUS: 'noStatus',
+});
 export const UserRating = Object.freeze({
-  0: 'topRanked',
-  1: 'reliable',
-  2: 'verified',
-  3: 'noStatus',
+  0: Ratings.TOP_RANKED,
+  1: Ratings.RELIABLE,
+  2: Ratings.VERIFIED,
+  3: Ratings.NO_STATUS,
 });
 export const RatingFilter = [
   { key: 'all', value: 3 },
