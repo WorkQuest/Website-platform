@@ -121,7 +121,7 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { getAllowance, getGasPrice, getWalletAddress } from '~/utils/wallet';
+import { getGasPrice, getWalletAddress } from '~/utils/wallet';
 import * as abi from '~/abi/abi';
 import { tokenMap, TokenSymbols } from '~/utils/enums';
 
@@ -265,7 +265,7 @@ export default {
           title: this.$t('modals.setTokenPrice', { token: payload.currency }),
           fields: {
             from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-            fee: { name: this.$t('wallet.table.trxFee'), value: new BigNumber(setTokenPriceData.gasPrice).shiftedBy(-18).toFixed(), symbol: TokenSymbols.WUSD },
+            fee: { name: this.$t('wallet.table.trxFee'), value: new BigNumber(setTokenPriceData.gasPrice).multipliedBy(setTokenPriceData.gas).shiftedBy(-18).toFixed(), symbol: TokenSymbols.WUSD },
           },
           submitMethod: async () => await this.$store.dispatch('collateral/setTokenPrice', { payload, setTokenPriceData }),
           callback: async () => {
@@ -285,7 +285,7 @@ export default {
           title: this.$t('modals.approveRouter', { token: payload.currency }),
           fields: {
             from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-            fee: { name: this.$t('wallet.table.trxFee'), value: new BigNumber(resultGasApprove.gasPrice).shiftedBy(-18).toFixed(), symbol: TokenSymbols.WUSD },
+            fee: { name: this.$t('wallet.table.trxFee'), value: new BigNumber(resultGasApprove.gasPrice).multipliedBy(resultGasApprove.gas).shiftedBy(-18).toFixed(), symbol: TokenSymbols.WUSD },
           },
           submitMethod: async () => {
             await this.$store.dispatch('wallet/approve', {
@@ -321,7 +321,7 @@ export default {
             value: payload.collateral,
             symbol: payload.currency,
           },
-          fee: { name: this.$t('wallet.table.trxFee'), value: new BigNumber(resultGasBuyWUSD.gasPrice).shiftedBy(-18).toFixed(), symbol: TokenSymbols.WUSD },
+          fee: { name: this.$t('wallet.table.trxFee'), value: new BigNumber(resultGasBuyWUSD.gasPrice).multipliedBy(resultGasBuyWUSD.gas).shiftedBy(-18).toFixed(), symbol: TokenSymbols.WUSD },
         },
         submitMethod: async () => await this.$store.dispatch('collateral/buyWUSD', { payload, buyWUSDData }),
         callback: async () => {
