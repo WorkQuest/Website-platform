@@ -142,6 +142,7 @@
     "operation": "Operation",
     "allTransactions": "All transactions",
     "collateralTransactions": "Collateral transactions",
+    "questNotFound": "Quest not found",
     "redeem": "Redeem",
     "redeemed": "Redeemed",
     "pay": "Pay",
