@@ -322,7 +322,6 @@ import {
 } from '~/utils/enums';
 
 export default {
-  scrollToTop: true,
   name: 'Header',
   middleware: 'auth',
   UserRole,

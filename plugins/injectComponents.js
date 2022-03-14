@@ -9,10 +9,11 @@ import GMapInfoBlock from '~/components/app/GMapInfoBlock';
 import GMapLoader from '~/components/app/GMapLoader';
 import SearchWithMap from '~/components/app/SearchWithMap';
 
+import Header from '~/components/app/Header';
+import Footer from '~/components/app/Footer';
 import CtmModal from '~/components/CtmModal';
 import CtmModalBox from '~/components/CtmModal/CtmModalBox';
 import Loader from '~/components/ui/Loader';
-import Header from '~/components/app/Header';
 import BaseButton from '~/components/ui/BaseButton';
 import BaseInput from '~/components/ui/BaseInput';
 import BaseDD from '~/components/ui/BaseDD';
@@ -37,11 +38,12 @@ import MessagesList from '~/components/app/pages/messages_id/messagesList';
 import QuestPanel from '~/components/app/panels/questPanel';
 import Info from '~/components/app/info';
 
-Vue.component('info', Info);
-Vue.component('quest-panel', QuestPanel);
+Vue.component('Header', Header);
+Vue.component('Footer', Footer);
 Vue.component('ctm-modal', CtmModal);
 Vue.component('ctm-modal-box', CtmModalBox);
-Vue.component('Header', Header);
+Vue.component('info', Info);
+Vue.component('quest-panel', QuestPanel);
 Vue.component('base-btn', BaseButton);
 Vue.component('base-field', BaseInput);
 Vue.component('base-dd', BaseDD);

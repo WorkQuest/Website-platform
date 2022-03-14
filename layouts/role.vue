@@ -44,7 +44,6 @@ import { mapGetters } from 'vuex';
 import { Path } from '~/utils/enums';
 
 export default {
-  scrollToTop: true,
   name: 'RoleLayout',
   computed: {
     ...mapGetters({
