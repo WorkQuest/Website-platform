@@ -236,8 +236,9 @@ export default {
         ratioBN: new BigNumber(this.collateralPercent.substr(0, this.collateralPercent.length - 1)).shiftedBy(16).toFixed(),
       };
       this.SetLoader(true);
-      this.$store.dispatch('modals/hide');
+      this.CloseModal();
       await this.setTokenPrice(payload);
+      this.SetLoader(false);
     },
     async setTokenPrice(payload) {
       const date = Date.now().toString();
