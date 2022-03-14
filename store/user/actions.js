@@ -55,7 +55,9 @@ export default {
       const currConfig = config || { params: { limit: 2, offset: 0 } };
       const { data: { result, ok } } = await this.$axios.get(`${process.env.NOTIFS_URL}notifications`, currConfig);
 
-      if (result.notifications.length) result.notifications.map(async (notification) => await dispatch('setCurrNotificationObject', notification));
+      if (result.notifications.length) {
+        result.notifications.map(async (notification) => await dispatch('setCurrNotificationObject', notification));
+      }
 
       if (!config) {
         commit('setReducedNotifications', result.notifications);
@@ -75,13 +77,19 @@ export default {
     const newNotification = await dispatch('setCurrNotificationObject', notification);
     commit('addNotification', newNotification);
   },
-  setCurrNotificationObject({ getters }, notification) {
+  setCurrNotificationObject({ getters, rootGetters, dispatch }, notification) {
     const {
       action, data: {
         user, title, id, assignedWorker, worker, quest, employer, fromUser, message, toUserId,
         problemDescription,
       },
-    } = notification.notification;
+    } = notification.notification ? notification.notification : notification;
+
+    // If we on quest id page
+    const curQuestId = rootGetters['quests/getQuest']?.id;
+    if (id === curQuestId) {
+      dispatch('quests/getQuest', curQuestId, { root: true });
+    }
 
     let currTitle = quest?.title || title;
     let keyName = 'notifications.';
@@ -155,6 +163,7 @@ export default {
     notification.sender = fromUser || (isItAnWorker ? user || employer : assignedWorker || worker);
     if (currTitle) notification.params = { title: currTitle, path };
     notification.creatingDate = moment(new Date(notification.createdAt)).format('MMMM Do YYYY, HH:mm');
+    return notification;
   },
   async getUserPortfolios({ commit }, { userId, query }) {
     try {

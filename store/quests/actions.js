@@ -96,7 +96,7 @@ export default {
       commit('setQuest', result);
       return result;
     } catch (e) {
-      return console.log(e);
+      return false;
     }
   },
   async getUserQuests({ commit }, { userId, role, query }) {

@@ -19,7 +19,7 @@
         v-if="link !== ''"
         class="absence__button"
         selector="CREATE-QUEST"
-        @click="toCreateQuest"
+        @click="toLink"
       >
         {{ btnText }}
       </base-btn>
@@ -45,7 +45,7 @@ export default {
     },
   },
   methods: {
-    toCreateQuest() {
+    toLink() {
       this.$router.push(this.link);
     },
   },
