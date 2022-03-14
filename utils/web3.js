@@ -126,9 +126,11 @@ export const getStakingDataByType = (stakingType, token = '') => {
       break;
     case StakingTypes.CROSS_CHAIN:
       if (_miningPoolId === Chains.ETHEREUM) {
-        _tokenAddress = token === 'WQT' ? process.env.ETHEREUM_WQT_TOKEN : process.env.ETHEREUM_WQT_TOKEN;
+        _tokenAddress = process.env.ETHEREUM_WQT_TOKEN;
+        _stakingAddress = process.env.ETHEREUM_BRIDGE;
       } else if (_miningPoolId === Chains.BINANCE || _miningPoolId === Chains.BNB) {
-        _tokenAddress = token === 'WQT' ? process.env.BSC_WQT_TOKEN : process.env.BSC_WQT_TOKEN;
+        _tokenAddress = process.env.BSC_WQT_TOKEN;
+        _stakingAddress = process.env.BSC_BRIDGE;
       } else if (_miningPoolId === Chains.WORKNET) {
         switch (token) {
           case 'WBNB':
@@ -186,6 +188,31 @@ export const sendTransaction = async (_method, payload, _provider = web3) => {
       gasPrice,
       gas: gasEstimate,
     };
+  } else if (_method === 'swap') {
+    console.log('payload', payload);
+    const data = inst.methods[_method].apply(null, payload.data).encodeABI();
+    console.log('data', data);
+    // const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress });
+    // const [_gasPrice, _gasEstimate] = await Promise.all([
+    //   web3.eth.getGasPrice(),
+    //   inst.methods.swap.apply(null, payload.data).estimateGas({ from: accountAddress }),
+    // ]);
+    console.log(payload);
+    await inst.methods.swap(...payload.data).send({
+      from: accountAddress,
+      value: payload.value,
+    });
+    // console.log('getGasPrice', _gasPrice, '_gasEstimate', _gasEstimate);
+    // const res = await web3.eth.sendTransaction({
+    //   from: accountAddress,
+    //   to: payload.address,
+    //   // value: payload.value,
+    //   data,
+    //   gas: _gasEstimate,
+    //   gasPrice: _gasPrice,
+    // });
+    console.log('swap end');
+    return '';
   } else {
     const data = inst.methods[_method].apply(null, payload.data).encodeABI();
     const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress });
@@ -542,11 +569,12 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
   let swapData = '';
   let tokenAddress;
   let bridgeAddress;
+  const isNative = symbol !== 'WQT' && chain !== Chains.WORKNET;
   if (chain === Chains.ETHEREUM) {
-    tokenAddress = symbol === 'WQT' ? process.env.ETHEREUM_WQT_TOKEN : process.env.WORKNET_WETH_TOKEN;
+    tokenAddress = process.env.ETHEREUM_WQT_TOKEN;
     bridgeAddress = process.env.ETHEREUM_BRIDGE;
   } else if (chain === Chains.BNB || chain === Chains.BINANCE) {
-    tokenAddress = symbol === 'WQT' ? process.env.BSC_WQT_TOKEN : process.env.WORKNET_WBNB_TOKEN;
+    tokenAddress = process.env.BSC_WQT_TOKEN;
     bridgeAddress = process.env.BSC_BRIDGE;
   } else if (chain === Chains.WORKNET) {
     switch (symbol) {
@@ -561,23 +589,36 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
     }
     bridgeAddress = process.env.WORKNET_BRIDGE;
   }
-  console.log('swapWithBridge tokenAddress', tokenAddress);
-  console.log('swapWithBridge symbol', symbol);
-  tokenInstance = await createInstance(abi.ERC20, tokenAddress);
+  console.log('swapWithBridge symbol = ', symbol);
+  console.log('swapWithBridge bridgeAddress = ', bridgeAddress);
   bridgeInstance = await createInstance(abi.WQBridge, bridgeAddress);
-  allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [account.address, bridgeAddress])).toString();
+  if (!isNative) {
+    tokenInstance = await createInstance(abi.ERC20, tokenAddress);
+    allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [account.address, bridgeAddress])).toString();
+  }
   nonce = await web3.eth.getTransactionCount(userAddress);
   try {
     amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
-    if (+allowance < +amount) {
+    if (!isNative && +allowance < +amount) {
       await store.dispatch('main/setStatusText', 'Approving');
       showToast('Swapping', 'Approving...', 'success');
       await tokenInstance.approve(bridgeAddress, amount);
       showToast('Swapping', 'Approving done', 'success');
+      showToast('Swapping', 'Swapping...', 'success');
+      await store.dispatch('main/setStatusText', 'Swapping');
+      swapData = await bridgeInstance.swap(nonce, chainTo, amount, recipient, symbol);
+    } else {
+      await store.dispatch('main/setStatusText', 'Swapping');
+      const payload = {
+        abi: abi.WQBridge,
+        address: bridgeAddress,
+        value: amount,
+        data: [
+          nonce.toString(), chainTo.toString(), amount, recipient, symbol,
+        ],
+      };
+      await sendTransaction('swap', payload);
     }
-    showToast('Swapping', 'Swapping...', 'success');
-    await store.dispatch('main/setStatusText', 'Swapping');
-    swapData = await bridgeInstance.swap(nonce, chainTo, amount, recipient, symbol);
     showToast('Swapping', 'Swapping done', 'success');
     return swapData;
   } catch (e) {
