@@ -1257,6 +1257,7 @@
   },
   "notifications": {
     "title": "Notifications",
+    "openDispute": "Abrir disputa",
     "invite": "Invites you to complete the quest",
     "invitesYouToStartAQuest": "Invites you to start a quest",
     "rejectedTheQuest": "Rejected the quest",

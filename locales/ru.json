@@ -118,7 +118,7 @@
     "performed": "Выполнено",
     "contactUs": "Связаться с нами",
     "balance": "Остаток средств",
-    "openDispute": "Окрыть спор",
+    "openDispute": "Открыть спор",
     "lastNameSmall": "фамилия",
     "lastNameBig": "Фамилия",
     "firstNameSmall": "имя",
@@ -1259,6 +1259,7 @@
   "notifications": {
     "title": "Уведомления",
     "invite": "Приглашаем вас завершить квест",
+    "openDispute": "Открыт спор",
     "invitesYouToStartAQuest": "Invites you to start a quest",
     "rejectedTheQuest": "Rejected the quest",
     "acceptedTheQuest": "Accepted the quest",
