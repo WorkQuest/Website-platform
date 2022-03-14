@@ -65,7 +65,7 @@ export default () => ({
       userId: '',
       reviewCount: 0,
       averageMark: 0,
-      status: '',
+      status: null,
     },
     questsStatistic: {
       completed: 0,

@@ -100,13 +100,31 @@ export const KeyCodes = {
 // Filters
 export const WorkplaceFilter = ['all', 'distant', 'office', 'both'];
 export const WorkplaceIndex = ['distant', 'office', 'both'];
-export const RatingFilter = ['', 'verified', 'reliable', 'topRanked'];
 export const TypeOfJobFilter = ['fullTime', 'partTime', 'fixedTerm'];
 export const PriorityFilter = [
   { key: 'all', value: 0 },
   { key: 'urgent', value: 3 },
   { key: 'shortTerm', value: 2 },
   { key: 'fixedDelivery', value: 1 },
+];
+
+export const Ratings = Object.freeze({
+  TOP_RANKED: 'topRanked',
+  RELIABLE: 'reliable',
+  VERIFIED: 'verified',
+  NO_STATUS: 'noStatus',
+});
+export const UserRating = Object.freeze({
+  0: Ratings.TOP_RANKED,
+  1: Ratings.RELIABLE,
+  2: Ratings.VERIFIED,
+  3: Ratings.NO_STATUS,
+});
+export const RatingFilter = [
+  { key: 'all', value: 3 },
+  { key: 'topRanked', value: 0 },
+  { key: 'reliable', value: 1 },
+  { key: 'verified', value: 2 },
 ];
 
 export const MessageAction = {
@@ -185,6 +203,7 @@ export const Path = {
   QUESTS: '/quests',
   EDIT_QUEST: '/edit-quest',
   COLLATERAL: '/collateral',
+  WIKI: '/wiki',
 };
 
 // WALLET
@@ -205,6 +224,15 @@ export const UserStatuses = Object.freeze({
 export const TokenSymbols = Object.freeze({
   WQT: 'WQT',
   WUSD: 'WUSD',
+});
+
+export const TokenSymbolByContract = Object.freeze({
+  [process.env.WQT_TOKEN.toLowerCase()]: TokenSymbols.WQT,
+});
+
+export const WalletTables = Object.freeze({
+  TXS: 'TXS',
+  COLLATERAL: 'COLLATERAL',
 });
 
 export const ExplorerUrl = Object.freeze('https://dev-explorer.workquest.co');
@@ -251,3 +279,9 @@ export const NetworksData = {
     },
   },
 };
+
+export const PensionHistoryMethods = Object.freeze({
+  Update: 'Update',
+  Withdraw: 'Withdraw',
+  Receive: 'Receive',
+});

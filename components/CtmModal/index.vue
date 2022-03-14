@@ -89,6 +89,7 @@
       <CtmModalTransactionReceipt v-if="modals.transactionReceipt === currentModalKey" />
       <CtmModalAreYouSure v-if="modals.areYouSure === currentModalKey" />
       <CtmModalStake v-if="modals.stake === currentModalKey" />
+      <CtmModalCollateralTransaction v-if="modals.collateralTransaction === currentModalKey" />
       <CtmModalNeededToEnable2FA v-if="modals.neededToEnable2FA === currentModalKey" />
       <CtmModalGetWUSD v-if="modals.getWUSD === currentModalKey" />
       <CtmModalBuyAuction v-if="modals.buyAuction === currentModalKey" />
@@ -99,6 +100,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '@/store/modals/modals';
+import CtmModalCollateralTransaction from './CtmModalCollateralTransaction';
 import CtmModalStake from './CtmModalStake';
 import CtmModalTransactionReceipt from './CtmModalTransactionReceipt';
 import CtmModalConfirmEmail from './CtmModalConfirmEmail';
@@ -183,6 +185,7 @@ import CtmModalNeededToEnable2FA from './CtmModalNeededToEnable2FA';
 export default {
   name: 'ModalBox',
   components: {
+    CtmModalCollateralTransaction,
     CtmModalNeededToEnable2FA,
     CtmModalGetWUSD,
     CtmModalBuyAuction,
