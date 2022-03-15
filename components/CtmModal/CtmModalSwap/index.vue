@@ -16,6 +16,7 @@
               <base-dd
                 v-model="token"
                 class="grid__drop"
+                :data-selector="'Tokens'"
                 :items="tokens"
                 @input="changeToken()"
               />
@@ -28,6 +29,7 @@
                 v-model.lazy="amount"
                 type="number"
                 :placeholder="'0,05'"
+                :data-selector="'Amount'"
                 class="grid__input"
                 rules="required|decimal|decimalPlaces:18|min_value:0.00001"
                 :name="$t('modals.amountField')"
@@ -57,6 +59,7 @@
             <base-field
               v-model="recipientAddress"
               class="body__input"
+              :data-selector="'Recipient-Address'"
               :disabled="true"
               placeholder="Enter binance address"
               :name="$t('modals.recepientAddressField')"
@@ -131,9 +134,9 @@ export default {
     tokens() {
       const tokens = ['WQT'];
       if ((this.options?.fromChain === 0 && this.options?.toChain === 2) || (this.options?.fromChain === 2 && this.options?.toChain === 0)) {
-        tokens.push('WETH');
+        tokens.push('ETH');
       } else if ((this.options?.fromChain === 1 && this.options?.toChain === 2) || (this.options?.fromChain === 2 && this.options?.toChain === 1)) {
-        tokens.push('WBNB');
+        tokens.push('BNB');
       }
       return tokens;
     },
@@ -149,11 +152,20 @@ export default {
   },
   async mounted() {
     await this.connectToMetamask();
-    await this.$store.dispatch('web3/getCrosschainTokensData', this.tokens[this.token]);
+    const payload = {
+      token: this.tokens[this.token],
+      chainTo: this.crosschainFlow.toChain.id,
+    };
+    await this.$store.dispatch('web3/getCrosschainTokensData', payload);
   },
   methods: {
     async changeToken() {
-      await this.$store.dispatch('web3/getCrosschainTokensData', this.tokens[this.token]);
+      this.amount = 0;
+      const payload = {
+        token: this.tokens[this.token],
+        chainTo: this.crosschainFlow.toChain.id,
+      };
+      await this.$store.dispatch('web3/getCrosschainTokensData', payload);
     },
     setMaxValue() {
       this.amount = this.tokensData.tokenAmount;
@@ -168,7 +180,7 @@ export default {
     async showSwapInfoModal() {
       this.SetLoader(true);
       if (this.checkAmount()) {
-        this.amount = this.amount.replace(/[,]/g, '.');
+        this.amount = (this.amount.toString()).replace(/[,]/g, '.');
         this.ShowModal({
           key: modals.swapInfo,
           crosschain: `${this.crosschainFlow.fromChain.title} > ${this.crosschainFlow.toChain.title}`,

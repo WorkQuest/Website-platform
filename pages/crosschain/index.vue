@@ -49,6 +49,7 @@
                   v-model="sourceAddressInd"
                   type="border"
                   :items="addresses"
+                  :data-selector="'Source-Address'"
                   :is-icon="true"
                   @input="handleChangePool(sourceAddressInd, 'source')"
                 />
@@ -72,6 +73,7 @@
                   v-model="targetAddressInd"
                   type="border"
                   :items="addresses"
+                  :data-selector="'Target-Address'"
                   :is-icon="true"
                   @input="handleChangePool(targetAddressInd, 'target')"
                 />

@@ -108,7 +108,7 @@ export default {
         chainTo: optionsData.toChain,
         userAddress: optionsData.recepientFull,
         recipient: optionsData.recepientFull,
-        symbol: (optionsData.tokenName).replace('W', ''),
+        symbol: optionsData.tokenName,
       });
       this.ShowModal({
         key: modals.status,

@@ -190,17 +190,39 @@ export default {
     return payload;
   },
 
-  async getCrosschainTokensData({ commit }, token) {
-    const { tokenAddress } = getStakingDataByType(StakingTypes.CROSS_CHAIN, token);
-    const [tokenDecimal, tokenSymbol, tokenValue] = await Promise.all([
-      fetchContractData('decimals', abi.ERC20, tokenAddress),
-      fetchContractData('symbol', abi.ERC20, tokenAddress),
-      fetchContractData('balanceOf', abi.ERC20, tokenAddress, [getAccountAddress()]),
-    ]);
-    const payload = {
-      tokenAmount: new BigNumber(tokenValue).shiftedBy(-tokenDecimal).toString(),
-      tokenSymbol,
-    };
+  async getCrosschainTokensData({ commit }, data) {
+    let payload = {};
+    const { tokenAddress, stakingAddress } = getStakingDataByType(StakingTypes.CROSS_CHAIN, data.token);
+    if (data.token !== 'WQT') {
+      const { ethereum } = window;
+      const web3 = new Web3(ethereum);
+      const accountAddress = await getAccountAddress();
+      let balance = await web3.eth.getBalance(accountAddress);
+      const inst = new web3.eth.Contract(abi.WQBridge, stakingAddress);
+      const nonce = await web3.eth.getTransactionCount(accountAddress);
+      const swapData = [nonce, data.chainTo, balance, accountAddress, data.token];
+      const [gasPrice, gasEstimate] = await Promise.all([
+        web3.eth.getGasPrice(),
+        inst.methods.swap.apply(null, swapData).estimateGas({ from: accountAddress, value: balance }),
+      ]);
+      balance = new BigNumber(balance).shiftedBy(-18).toString();
+      const amountGas = new BigNumber(gasPrice).multipliedBy(gasEstimate).shiftedBy(-18).toString();
+      const amountMinusGasAmount = new BigNumber(balance).minus(amountGas).toNumber();
+      payload = {
+        tokenAmount: amountMinusGasAmount,
+        token: data.token,
+      };
+    } else {
+      const [tokenDecimal, tokenSymbol, tokenValue] = await Promise.all([
+        fetchContractData('decimals', abi.ERC20, tokenAddress),
+        fetchContractData('symbol', abi.ERC20, tokenAddress),
+        fetchContractData('balanceOf', abi.ERC20, tokenAddress, [getAccountAddress()]),
+      ]);
+      payload = {
+        tokenAmount: new BigNumber(tokenValue).shiftedBy(-tokenDecimal).toString(),
+        tokenSymbol,
+      };
+    }
     commit('setCrosschainTokensData', payload);
     return payload;
   },
