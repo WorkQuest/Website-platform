@@ -59,8 +59,8 @@ jobs:
           echo WORKNET_ROUTER=${{ secrets.WORKNET_ROUTER }} >> .env
           echo WORKNET_STAKING_WQT=${{ secrets.WORKNET_STAKING_WQT }} >> .env
           echo WORKNET_STAKING_WUSD=${{ secrets.WORKNET_STAKING_WUSD }} >> .env
-          echo WORKNET_WBNB_TOKEN=${{ secrets.BNB_TOKEN }} >> .env
-          echo WORKNET_WETH_TOKEN=${{ secrets.ETH_TOKEN }} >> .env
+          echo WORKNET_WBNB_TOKEN=${{ secrets.WORKNET_WBNB_TOKEN }} >> .env
+          echo WORKNET_WETH_TOKEN=${{ secrets.WORKNET_WETH_TOKEN }} >> .env
           echo WORKNET_WQT_TOKEN=${{ secrets.WORKNET_WQT_TOKEN }} >> .env
 
       - name: Run generate static task
@@ -130,8 +130,8 @@ jobs:
           echo WORKNET_ROUTER=${{ secrets.WORKNET_ROUTER }} >> .env
           echo WORKNET_STAKING_WQT=${{ secrets.WORKNET_STAKING_WQT }} >> .env
           echo WORKNET_STAKING_WUSD=${{ secrets.WORKNET_STAKING_WUSD }} >> .env
-          echo WORKNET_WBNB_TOKEN=${{ secrets.BNB_TOKEN }} >> .env
-          echo WORKNET_WETH_TOKEN=${{ secrets.ETH_TOKEN }} >> .env
+          echo WORKNET_WBNB_TOKEN=${{ secrets.WORKNET_WBNB_TOKEN }} >> .env
+          echo WORKNET_WETH_TOKEN=${{ secrets.WORKNET_WETH_TOKEN }} >> .env
           echo WORKNET_WQT_TOKEN=${{ secrets.WORKNET_WQT_TOKEN }} >> .env
 
       - name: Run generate static task
@@ -201,8 +201,8 @@ jobs:
           echo WORKNET_ROUTER=${{ secrets.WORKNET_ROUTER }} >> .env
           echo WORKNET_STAKING_WQT=${{ secrets.WORKNET_STAKING_WQT }} >> .env
           echo WORKNET_STAKING_WUSD=${{ secrets.WORKNET_STAKING_WUSD }} >> .env
-          echo WORKNET_WBNB_TOKEN=${{ secrets.BNB_TOKEN }} >> .env
-          echo WORKNET_WETH_TOKEN=${{ secrets.ETH_TOKEN }} >> .env
+          echo WORKNET_WBNB_TOKEN=${{ secrets.WORKNET_WBNB_TOKEN }} >> .env
+          echo WORKNET_WETH_TOKEN=${{ secrets.WORKNET_WETH_TOKEN }} >> .env
           echo WORKNET_WQT_TOKEN=${{ secrets.WORKNET_WQT_TOKEN }} >> .env
 
       - name: Run generate static task
