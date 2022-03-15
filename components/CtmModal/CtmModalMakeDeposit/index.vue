@@ -79,10 +79,10 @@ export default {
         this.$store.dispatch('wallet/getContractFeeData', {
           method: 'contribute',
           _abi: WQPensionFund,
-          contractAddress: process.env.PENSION_FUND,
+          contractAddress: process.env.WORKNET_PENSION_FUND,
           data: [getWalletAddress()],
           amount: this.amount,
-          recipient: process.env.PENSION_FUND,
+          recipient: process.env.WORKNET_PENSION_FUND,
         }),
         this.$store.dispatch('wallet/getBalance'),
       ]);
@@ -97,7 +97,7 @@ export default {
 
       const fields = {
         from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-        to: { name: this.$t('modals.toAddress'), value: process.env.PENSION_FUND },
+        to: { name: this.$t('modals.toAddress'), value: process.env.WORKNET_PENSION_FUND },
         fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
         amount: { name: this.$t('modals.amount'), value: this.amount, symbol: TokenSymbols.WUSD },
       };
