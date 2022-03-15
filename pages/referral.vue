@@ -52,8 +52,20 @@
             </div>
           </div>
           <div class="info-block">
-            <div class="info-block__name">
-              {{ $t('referral.yourRefers') }}
+            <div class="info-block__wrap">
+              <div class="info-block__inner">
+                <div class="info-block__name">
+                  {{ $t('referral.yourRefers') }}
+                </div>
+              </div>
+              <div class="info-block__btn-wrap">
+                <base-btn
+                  :selector="`${$t('modals.claim')}`"
+                  @click="clickClaimBtnHandler"
+                >
+                  {{ $t('modals.registration') }}
+                </base-btn>
+              </div>
             </div>
             <div class="info-block__refers">
               <div class="info-block__avatar">
