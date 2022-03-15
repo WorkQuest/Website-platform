@@ -1280,7 +1280,8 @@
     "connectError": "Error connection",
     "incorrectChain": "You choose incorrect chain!",
     "selectToken": "Select token",
-    "txInfo": "Transaction info"
+    "txInfo": "Transaction info",
+    "registration": "Регистрация"
   },
   "ui": {
     "jobQuestors": "Job Questors",
