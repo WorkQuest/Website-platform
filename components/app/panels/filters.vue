@@ -11,7 +11,7 @@
       mode="blackFont"
       :items="ratingItems"
       :placeholder="$t('quests.rating.title')"
-      selector="RATING"
+      data-selector="RATING"
     />
     <base-dd
       v-model="selectedPriority"
@@ -19,7 +19,7 @@
       mode="blackFont"
       :items="priorityItems"
       :placeholder="$t('quests.priority.title')"
-      selector="PRIORITY"
+      data-selector="PRIORITY"
     />
     <base-dd
       v-if="userRole === UserRole.WORKER"
@@ -28,7 +28,7 @@
       mode="blackFont"
       :items="typeOfJobItems"
       :placeholder="$t('quests.typeOfJob')"
-      selector="EMPLOYMENT"
+      data-selector="EMPLOYMENT"
     />
     <base-dd
       v-model="selectedWorkplace"
@@ -36,7 +36,7 @@
       mode="blackFont"
       :items="workplaceItems"
       :placeholder="$t('quests.distantWork.title')"
-      selector="WORKPLACE"
+      data-selector="WORKPLACE"
     />
     <base-btn
       class="filters-panel__item-btn item-btn"
@@ -104,14 +104,10 @@ export default {
       return query;
     },
     ratingItems() {
-      const items = [this.$t('quests.allVariants')];
-      RatingFilter.forEach((item) => { if (item) items.push(this.$t(`quests.rating.${item}`)); });
-      return items;
+      return RatingFilter.map((item, i) => (i === 0 ? this.$t('quests.allVariants') : this.$t(`quests.rating.${item.key}`)));
     },
     priorityItems() {
-      const items = [this.$t('quests.priority.all')];
-      PriorityFilter.forEach((item) => { if (item.value) items.push(this.$t(`quests.runtime.${item.key}`)); });
-      return items;
+      return PriorityFilter.map((item, i) => (i === 0 ? this.$t('quests.priority.all') : this.$t(`quests.runtime.${item.key}`)));
     },
     typeOfJobItems() {
       const items = [this.$t('quests.allVariants')];
@@ -129,25 +125,17 @@ export default {
   },
   watch: {
     selectedSpec() { this.$emit('sortSpec', this.selectedSpec); },
-    selectedRating() {
-      const { selectedRating } = this;
-      const query = selectedRating ? { 'ratingStatuses[0]': RatingFilter[selectedRating] } : {};
-      this.$emit('sortRating', query);
+    selectedRating(index) {
+      this.$emit('sortRating', index ? { 'ratingStatuses[0]': RatingFilter[index].value } : {});
     },
-    selectedPriority() {
-      const { selectedPriority } = this;
-      const query = selectedPriority ? { 'priorities[0]': PriorityFilter[selectedPriority].value } : {};
-      this.$emit('sortPriority', query);
+    selectedPriority(index) {
+      this.$emit('sortPriority', index ? { 'priorities[0]': PriorityFilter[index].value } : {});
     },
-    selectedTypeOfJob() {
-      const { selectedTypeOfJob } = this;
-      const query = selectedTypeOfJob ? { 'employments[0]': TypeOfJobFilter[selectedTypeOfJob] } : {};
-      this.$emit('sortTypeOfJob', query);
+    selectedTypeOfJob(index) {
+      this.$emit('sortTypeOfJob', index ? { 'employments[0]': TypeOfJobFilter[index] } : {});
     },
-    selectedWorkplace() {
-      const { selectedWorkplace } = this;
-      const query = selectedWorkplace ? { 'workplaces[0]': WorkplaceFilter[selectedWorkplace] } : {};
-      this.$emit('sortWorkplace', query);
+    selectedWorkplace(index) {
+      this.$emit('sortWorkplace', index ? { 'workplaces[0]': WorkplaceFilter[index] } : {});
     },
     selectedPrice() {
       const { selectedPrice: { from, to } } = this;

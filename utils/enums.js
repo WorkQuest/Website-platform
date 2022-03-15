@@ -100,13 +100,31 @@ export const KeyCodes = {
 // Filters
 export const WorkplaceFilter = ['all', 'distant', 'office', 'both'];
 export const WorkplaceIndex = ['distant', 'office', 'both'];
-export const RatingFilter = ['', 'verified', 'reliable', 'topRanked'];
 export const TypeOfJobFilter = ['fullTime', 'partTime', 'fixedTerm'];
 export const PriorityFilter = [
   { key: 'all', value: 0 },
   { key: 'urgent', value: 3 },
   { key: 'shortTerm', value: 2 },
   { key: 'fixedDelivery', value: 1 },
+];
+
+export const Ratings = Object.freeze({
+  TOP_RANKED: 'topRanked',
+  RELIABLE: 'reliable',
+  VERIFIED: 'verified',
+  NO_STATUS: 'noStatus',
+});
+export const UserRating = Object.freeze({
+  0: Ratings.TOP_RANKED,
+  1: Ratings.RELIABLE,
+  2: Ratings.VERIFIED,
+  3: Ratings.NO_STATUS,
+});
+export const RatingFilter = [
+  { key: 'all', value: 3 },
+  { key: 'topRanked', value: 0 },
+  { key: 'reliable', value: 1 },
+  { key: 'verified', value: 2 },
 ];
 
 export const MessageAction = {
