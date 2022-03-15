@@ -214,7 +214,7 @@ export const sendWalletTransaction = async (_method, payload) => {
 export const transferToken = async (recipient, value) => {
   try {
     value = new BigNumber(value).shiftedBy(18).toString();
-    const inst = new web3.eth.Contract(abi.ERC20, process.env.WQT_TOKEN);
+    const inst = new web3.eth.Contract(abi.ERC20, process.env.WORKNET_WQT_TOKEN);
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
       inst.methods.transfer.apply(null, [recipient, value]).estimateGas({ from: wallet.address }),

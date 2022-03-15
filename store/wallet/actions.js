@@ -104,7 +104,7 @@ export default {
     const res = await fetchContractData(
       'balanceOf',
       abi.ERC20,
-      process.env.WQT_TOKEN,
+      process.env.WORKNET_WQT_TOKEN,
       [userAddress],
       GetWalletProvider(),
     );
