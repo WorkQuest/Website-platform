@@ -280,6 +280,12 @@ export const NetworksData = {
   },
 };
 
+export const tokenMap = {
+  BNB: process.env.WORKNET_WBNB_TOKEN,
+  ETH: process.env.WORKNET_WETH_TOKEN,
+  WQT: process.env.WQT_TOKEN,
+};
+
 export const PensionHistoryMethods = Object.freeze({
   Update: 'Update',
   Withdraw: 'Withdraw',

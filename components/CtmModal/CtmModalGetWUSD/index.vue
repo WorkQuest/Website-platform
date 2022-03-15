@@ -49,53 +49,49 @@
               <div class="content__label">
                 {{ $t('modals.countOfRecievedWUSD') }}
               </div>
-              <div class="content__text">
-                {{ $t('modals.countOfRecievedWUSDDescription') }}
-              </div>
               <base-field
-                v-model="amountWUSD"
+                :value="amountWUSD"
                 class="content__input"
                 placeholder="10 WUSD"
                 rules="required|decimal"
                 :name="$t('modals.fieldCountOf', { countOf: 'WUSD' })"
+                type="number"
+                @input="onChangeWUSD"
               />
             </div>
             <div class="content__field">
               <div class="content__label">
                 {{ $t('modals.countOfCollateral') }}
               </div>
-              <div class="content__text">
-                {{ $t('modals.countOfCollateralDescription') }}
-              </div>
               <base-field
                 id="amountOfPercents_input"
-                v-model="amountCollateral"
+                :value="amountCollateral"
                 class="content__input"
                 :placeholder="`10 ${currentCurrency}`"
                 rules="required|decimal"
                 :name="$t('modals.fieldCountOf', { countOf: `${ currentCurrency } collateral` })"
+                type="number"
+                @input="onChangeCollateral"
               />
             </div>
-            <div class="content__field">
+            <div
+              class="content__field"
+              @keydown.delete="changeCaretPosition"
+            >
               <div class="content__label">
                 {{ $t('modals.percentageConversion') }}
               </div>
-              <div class="content__text">
-                {{ $t('modals.conversionPercentDescription') }}
-              </div>
               <base-field
                 ref="percentInput"
-                :value="conversionPercent"
+                :value="collateralPercent"
                 class="content__input"
                 placeholder="150 %"
-                rules="required"
+                rules="required|min_percent:150"
                 :name="$t('modals.fieldPercentConversion')"
-                @input="calcConversionPercent"
+                @input="calcCollateralPercent"
               />
               <div class="content__text">
-                <a href="#">
-                  {{ $t('modals.conversionAdditionalInfo') }}
-                </a>
+                {{ $t('modals.conversionAdditionalInfo', {risks:getRisksGrade}) }}
               </div>
             </div>
           </div>
@@ -123,19 +119,26 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
+import modals from '~/store/modals/modals';
+import { getGasPrice, getWalletAddress } from '~/utils/wallet';
+import * as abi from '~/abi/abi';
+import { tokenMap, TokenSymbols } from '~/utils/enums';
 
 export default {
   name: 'ModalGetWUSD',
   data() {
     return {
-      selCurrencyID: 1,
+      selCurrencyID: tokenMap.BNB,
       amountWUSD: '',
       amountCollateral: '',
-      conversionPercent: '',
+      collateralPercent: '',
+      currentCurrencyPrice: 0,
+      optimalCollateralRatio: 0,
       checkpoints: [
-        { name: this.$t('modals.bnb'), id: 1 },
-        { name: this.$t('modals.eth'), id: 2 },
-        { name: this.$t('modals.wqt'), id: 3 },
+        { name: this.$t('modals.bnb'), id: tokenMap.BNB },
+        { name: this.$t('modals.eth'), id: tokenMap.ETH },
+        { name: this.$t('modals.wqt'), id: tokenMap.WQT },
       ],
     };
   },
@@ -143,43 +146,223 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
+    optimalCollateralPercent() {
+      return new BigNumber(this.optimalCollateralRatio).multipliedBy(100).toFixed();
+    },
     currentCurrency() {
       return this.checkpoints.find((el) => el.id === this.selCurrencyID).name;
     },
+    collateralPercentClear() {
+      return this.collateralPercent.replace(/[^0-9,.]/g, '');
+    },
+    currentCollateralRatio() {
+      return new BigNumber(this.collateralPercentClear).dividedBy(100).toFixed();
+    },
+    mediumRiskPoint() {
+      return new BigNumber(this.optimalCollateralPercent).plus(150).dividedBy(2).toFixed();
+    },
+    getRisksGrade() {
+      if (new BigNumber(this.collateralPercentClear).isGreaterThanOrEqualTo(this.optimalCollateralPercent)) {
+        return this.$t('modals.lowRisk');
+      }
+      if (new BigNumber(this.collateralPercentClear).isGreaterThanOrEqualTo(this.mediumRiskPoint)) {
+        return this.$t('modals.mediumRisk');
+      }
+      return this.$t('modals.highRisk');
+    },
+  },
+  watch: {
+    selCurrencyID: {
+      async handler() {
+        this.clearForm();
+        await this.getCollateralData();
+        this.setActualCollateralPercent();
+      },
+    },
+    currentCurrencyPrice: {
+      handler() {
+        this.calculateCollateral();
+      },
+    },
+  },
+  async beforeMount() {
+    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+    await this.getCollateralData();
+    this.setActualCollateralPercent();
   },
   methods: {
-    async requestMock() {
-      // TODO async
-      throw new Error('error');
+    onChangeWUSD(value) {
+      this.amountWUSD = value;
+      this.calculateCollateral();
+      this.$nextTick(() => { this.$refs.form.validate(); });
+    },
+    onChangeCollateral(value) {
+      this.amountCollateral = value;
+      this.calculateWUSD();
+      this.$nextTick(() => { this.$refs.form.validate(); });
+    },
+    calculateWUSD() {
+      if (+this.amountCollateral > 0 && +this.collateralPercentClear > 0 && +this.currentCurrencyPrice > 0) {
+        this.amountWUSD = new BigNumber(this.amountCollateral).multipliedBy(this.currentCurrencyPrice).dividedBy(this.currentCollateralRatio).toFixed();
+      }
+    },
+    calculateCollateral() {
+      if (+this.amountWUSD > 0 && +this.collateralPercentClear > 0 && +this.currentCurrencyPrice > 0) {
+        this.amountCollateral = new BigNumber(this.amountWUSD).multipliedBy(this.currentCollateralRatio).dividedBy(this.currentCurrencyPrice).toFixed();
+      }
+    },
+    async getCollateralData() {
+      this.currentCurrencyPrice = 10000; // TODO backend
+      this.optimalCollateralRatio = 2; // TODO backend
+    },
+    setActualCollateralPercent() {
+      this.collateralPercent = `${this.optimalCollateralPercent}%`;
+    },
+    clearForm() {
+      this.amountWUSD = '';
+      this.amountCollateral = '';
+      this.collateralPercent = '';
+      this.$refs.form.reset();
     },
     async requestGetWUSD() {
+      await this.$store.dispatch('wallet/getBalance');
       const payload = {
         amount: this.amountWUSD,
         collateral: this.amountCollateral,
-        percent: this.conversionPercent,
+        percent: this.collateralPercent.substr(0, this.collateralPercent.length - 1),
         currency: this.currentCurrency,
+        amountBN: new BigNumber(this.amountWUSD).shiftedBy(18).toFixed(),
+        collateralBN: new BigNumber(this.amountCollateral).shiftedBy(18).toFixed(),
+        ratioBN: new BigNumber(this.collateralPercent.substr(0, this.collateralPercent.length - 1)).shiftedBy(16).toFixed(),
       };
-      try {
-        await this.requestMock();
-        this.CloseModal();
-      } catch (e) {
-        this.ShowToast(this.$t('modals.errorGetWUSD'));
+      this.SetLoader(true);
+      this.CloseModal();
+      await this.setTokenPrice(payload);
+      this.SetLoader(false);
+    },
+    async setTokenPrice(payload) {
+      const date = Date.now().toString();
+      const timestamp = date.substr(0, date.length - 3);
+      const price = '10000000000000000000000'; // TODO price
+      const v = '0x25';
+      const r = '0x4f4c17305743700648bc4f6cd3038ec6f6af0df73e31757007b7f59df7bee88d';
+      const s = '0x7e1941b264348e80c78c4027afc65a87b0a5e43e86742b8ca0823584c6788fd0';
+      const resultGasSetTokenPrice = await getGasPrice(abi.WQOracle, process.env.WORKNET_ORACLE, 'setTokenPriceUSD', [timestamp, price, v, r, s, payload.currency]);
+
+      if (resultGasSetTokenPrice.gas && resultGasSetTokenPrice.gasPrice) {
+        const setTokenPriceData = {
+          gasPrice: resultGasSetTokenPrice.gasPrice,
+          gas: resultGasSetTokenPrice.gas,
+          timestamp,
+          price,
+          v,
+          r,
+          s,
+        };
+
+        this.ShowModal({
+          key: modals.transactionReceipt,
+          title: this.$t('modals.setTokenPrice', { token: payload.currency }),
+          fields: {
+            from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
+            fee: { name: this.$t('wallet.table.trxFee'), value: new BigNumber(setTokenPriceData.gasPrice).multipliedBy(setTokenPriceData.gas).shiftedBy(-18).toFixed(), symbol: TokenSymbols.WUSD },
+          },
+          submitMethod: async () => await this.$store.dispatch('collateral/setTokenPrice', { payload, setTokenPriceData }),
+          callback: async () => {
+            await this.approveRouter(payload);
+          },
+        });
+      } else {
+        await this.approveRouter(payload);
       }
     },
-    calcConversionPercent(value) {
+    async approveRouter(payload) {
+      const allowance = await this.$store.dispatch('wallet/getAllowance', { tokenAddress: tokenMap[payload.currency], spenderAddress: process.env.WORKNET_ROUTER });
+      if (+allowance < +payload.collateral) {
+        const resultGasApprove = await getGasPrice(abi.ERC20, tokenMap[payload.currency], 'approve', [process.env.WORKNET_ROUTER, payload.collateralBN]);
+        this.ShowModal({
+          key: modals.transactionReceipt,
+          title: this.$t('modals.approveRouter', { token: payload.currency }),
+          fields: {
+            from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
+            fee: { name: this.$t('wallet.table.trxFee'), value: new BigNumber(resultGasApprove.gasPrice).multipliedBy(resultGasApprove.gas).shiftedBy(-18).toFixed(), symbol: TokenSymbols.WUSD },
+          },
+          submitMethod: async () => {
+            await this.$store.dispatch('wallet/approve', {
+              tokenAddress: tokenMap[payload.currency],
+              spenderAddress: process.env.WORKNET_ROUTER,
+              amount: payload.collateral,
+            });
+            return { ok: true };
+          },
+          callback: async () => {
+            await this.getWUSD(payload);
+          },
+        });
+      } else {
+        await this.getWUSD(payload);
+      }
+    },
+    async getWUSD(payload) {
+      const resultGasBuyWUSD = await getGasPrice(abi.WQRouter, process.env.WORKNET_ROUTER, 'produceWUSD', [payload.collateralBN, payload.ratioBN, payload.currency]);
+      const buyWUSDData = {
+        gasPrice: resultGasBuyWUSD.gasPrice,
+        gas: resultGasBuyWUSD.gas,
+      };
+
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        title: this.$t('modals.takeWUSD'),
+        fields: {
+          from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
+          to: { name: this.$t('modals.toAddress'), value: process.env.WORKNET_ROUTER },
+          amount: {
+            name: this.$t('modals.amount'),
+            value: payload.collateral,
+            symbol: payload.currency,
+          },
+          fee: { name: this.$t('wallet.table.trxFee'), value: new BigNumber(resultGasBuyWUSD.gasPrice).multipliedBy(resultGasBuyWUSD.gas).shiftedBy(-18).toFixed(), symbol: TokenSymbols.WUSD },
+        },
+        submitMethod: async () => await this.$store.dispatch('collateral/buyWUSD', { payload, buyWUSDData }),
+        callback: async () => {
+          this.ShowToast(this.$t('modals.successBuyWUSD'), this.$t('modals.success'));
+        },
+      });
+    },
+    calcCollateralPercent(value) {
       const valueWithoutWords = value.replace(/[^0-9,.]/g, '');
       const isEmpty = valueWithoutWords.length === 0;
-      const isDotFirst = valueWithoutWords[0] === '.' || valueWithoutWords[0] === '.';
+      const isDotFirst = valueWithoutWords[0] === '.' || valueWithoutWords[0] === ',';
       if (isEmpty) {
-        this.conversionPercent = '';
+        this.collateralPercent = '';
       } else if (isDotFirst) {
         const memo = valueWithoutWords.split('');
         memo.unshift('0');
-        console.log(memo);
-        this.conversionPercent = memo.join('');
+        if (memo[memo.length - 1] !== '%') { memo.push('%'); }
+        this.collateralPercent = memo.join('');
       } else {
-        this.conversionPercent = `${valueWithoutWords}%`;
+        this.collateralPercent = `${valueWithoutWords}%`;
       }
+      this.collateralPercent = this.collateralPercent.replace(/,/g, '.');
+      if (this.collateralPercent.includes('.')) {
+        const withoutDotsArray = this.collateralPercent.split('.');
+        if (withoutDotsArray.length > 2) {
+          withoutDotsArray.splice(1, 0, '.');
+          this.collateralPercent = withoutDotsArray.join('');
+        }
+      }
+      this.calculateCollateral();
+      this.changeCaretPosition();
+    },
+    changeCaretPosition() {
+      const input = this.$refs.percentInput?.$refs.input;
+      this.$nextTick(() => {
+        const { length } = input.value;
+        if (input.value[length - 1] === '%' && input.selectionStart === length) {
+          input.selectionStart = length - 1;
+          input.selectionEnd = length - 1;
+        }
+      });
     },
   },
 };
