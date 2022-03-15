@@ -41,6 +41,7 @@
       </div>
       <input
         ref="input"
+        :step="step"
         class="ctm-field__input"
         :class="[{'ctm-field__input_error': errors[0]},
                  {'ctm-field__input_padding-r' : $slots['right-absolute'] || (value && isSearch && !isBusySearch)}]"
@@ -88,6 +89,10 @@ export default {
     autoFocus: {
       type: Boolean,
       default: () => false,
+    },
+    step: {
+      type: String,
+      default: 'any',
     },
     onEnterPress: {
       type: Function,

@@ -135,7 +135,11 @@ export default {
 
     WQ_PROVIDER: process.env.WQ_PROVIDER,
     WQ_EXPLORER: process.env.WQ_EXPLORER,
+    WORKNET_ORACLE: process.env.WORKNET_ORACLE,
+    WORKNET_ROUTER: process.env.WORKNET_ROUTER,
     WQT_TOKEN: process.env.WQT_TOKEN,
+    WORKNET_WETH_TOKEN: process.env.WORKNET_WETH_TOKEN,
+    WORKNET_WBNB_TOKEN: process.env.WORKNET_WBNB_TOKEN,
 
     PENSION_FUND: process.env.PENSION_FUND,
   },

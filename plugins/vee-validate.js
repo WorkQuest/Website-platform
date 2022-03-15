@@ -208,6 +208,12 @@ extend('percent', {
   },
   message: 'Please enter correct {_field_}',
 });
+extend('min_percent', {
+  validate(value, { min }) {
+    return +value.replace(/%/g, '') >= +min;
+  },
+  params: ['min'],
+});
 export default ({ app }) => {
   configure({
     defaultMessage: (_field_, values) => app.i18n.t(`messages.${values._rule_}`, values),
