@@ -8,12 +8,12 @@ import {
 import * as abi from '~/abi/abi';
 
 export default {
-  async fetchRewardBalance({ commit }) {
+  async fetchRewardBalance({ commit }, userWalletAddress) {
     const res = await fetchContractData(
-      'referralBonus',
+      'getRewards',
       abi.WQReferral,
       process.env.WORKNET_REFERRAL,
-      [],
+      [userWalletAddress],
       GetWalletProvider(),
     );
     commit('setReferralReward', res ? getStyledAmount(res) : 0);
