@@ -56,6 +56,7 @@
                 rules="required|decimal"
                 :name="$t('modals.fieldCountOf', { countOf: 'WUSD' })"
                 type="number"
+                data-selector="WUSD"
                 @input="onChangeWUSD"
               />
             </div>
@@ -71,6 +72,7 @@
                 rules="required|decimal"
                 :name="$t('modals.fieldCountOf', { countOf: `${ currentCurrency } collateral` })"
                 type="number"
+                data-selector="TOKEN"
                 @input="onChangeCollateral"
               />
             </div>
@@ -88,6 +90,7 @@
                 placeholder="150 %"
                 rules="required|min_percent:150"
                 :name="$t('modals.fieldPercentConversion')"
+                data-selector="PERCENT"
                 @input="calcCollateralPercent"
               />
               <div class="content__text">
