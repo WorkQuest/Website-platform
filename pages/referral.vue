@@ -25,6 +25,7 @@
               </div>
               <div class="info-block__btn-wrap">
                 <base-btn
+                  :disabled="Number(referralReward) === 0"
                   :selector="`claim`"
                   @click="clickClaimBtnHandler"
                 >
@@ -208,8 +209,9 @@ import modals from '~/store/modals/modals';
 
 export default {
   async asyncData({ store }) {
+    const userAddress = store.getters['user/getUserWalletAddress'];
     try {
-      await store.dispatch('referral/fetchRewardBalance');
+      await store.dispatch('referral/fetchRewardBalance', userAddress);
     } catch (err) {
       console.log('fetchRewardBalance err', err);
     }
