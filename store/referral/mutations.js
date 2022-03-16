@@ -1,5 +1,8 @@
 export default {
-  setReferralReward(state, transactions) {
-    state.referralReward = transactions;
+  setReferralReward(state, reward) {
+    state.referralReward = reward;
+  },
+  setReferralsList(state, referrals) {
+    state.referralsList = referrals;
   },
 };
