@@ -20,7 +20,7 @@
                   {{ $t('referral.referralReward') }}
                 </div>
                 <div class="info-block__tokens">
-                  {{ $tc('referral.wqtCount', 0) }}
+                  {{ $tc('referral.wqtCount', referralReward) }}
                 </div>
               </div>
               <div class="info-block__btn-wrap">
@@ -203,9 +203,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
+  async asyncData({ store }) {
+    await store.dispatch('referral/fetchRewardBalance');
+  },
   data() {
     return {
       page: 1,
@@ -407,6 +411,9 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      referralReward: 'referral/getReferralReward',
+    }),
     totalPages() {
       return Math.ceil(this.items.length / this.offset);
     },
