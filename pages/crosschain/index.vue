@@ -12,24 +12,12 @@
         </div>
         <div class="header__right">
           <base-btn
-            v-if="!isConnected"
-            selector="CONNECT-WALLET"
             mode="light"
-            class="header__btn header__btn_connect"
-            :disabled="statusBusy"
-            @click="checkWalletStatus()"
+            class="header__btn"
+            :selector="isConnected ? 'CONNECT_WALLET' : 'DISCONNECT_FROM_WALLET'"
+            @click="connectWallet"
           >
-            {{ $t('mining.connectWallet') }}
-          </base-btn>
-          <base-btn
-            v-else
-            mode="light"
-            selector="DISCONNECT-FROM-WALLET"
-            class="header__btn header__btn_disconnect"
-            :disabled="statusBusy"
-            @click="disconnectFromWallet"
-          >
-            {{ $t('meta.disconnect') }}
+            {{ !isConnected ? $t('mining.connectWallet') : $t('meta.disconnect') }}
           </base-btn>
         </div>
       </div>
@@ -134,7 +122,6 @@
                     v-clipboard:success="ClipboardSuccessHandler"
                     v-clipboard:error="ClipboardErrorHandler"
                     type="button"
-                    @click="doCopy"
                   >
                     <span class="icon-copy" />
                   </button>
@@ -295,10 +282,9 @@ export default {
     await this.disconnectFromWallet();
   },
   methods: {
-    doCopy() {
-      this.ShowModal({
-        key: modals.copiedSuccess,
-      });
+    async connectWallet() {
+      if (!this.isConnected) await this.checkWalletStatus();
+      else await this.disconnectFromWallet();
     },
     async disconnectFromWallet() {
       await clearInterval(this.updateInterval);
