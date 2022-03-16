@@ -143,20 +143,23 @@
             </div>
           </div>
         </div>
-        <div class="info-block">
+        <div
+          v-if="referralList.length"
+          class="info-block"
+        >
           <div class="info-block__name">
             {{ $t('referral.historyOfRewards') }}
           </div>
           <div class="referral-page__table">
             <b-table
-              :items="items"
+              :items="referralList"
               :fields="testFields"
               borderless
               caption-top
               thead-class="table__header"
               tbody-tr-class="table__row"
             >
-              <template #cell(userName)="el">
+              <template #cell(userInfo)>
                 <div class="user__info">
                   <img
                     class="ava"
@@ -164,34 +167,48 @@
                     alt=""
                   >
                   <div class="user__name">
-                    {{ el.item.userName }}
+                    Full Name
                   </div>
                 </div>
               </template>
               <template #cell(userID)="el">
                 <div class="user__value_gray">
-                  {{ el.item.userID }}
+                  {{ CutTxn(el.item.referral, 6, 6) }}
+                  <button
+                    v-clipboard:copy="el.item.referral"
+                    v-clipboard:success="ClipboardSuccessHandler"
+                    v-clipboard:error="ClipboardErrorHandler"
+                  >
+                    <span class="icon-copy user__icon-copy" />
+                  </button>
                 </div>
               </template>
               <template #cell(txHash)="el">
-                <div class="user__value_gray">
-                  {{ el.item.txHash }}
-                </div>
+                <a
+                  :href="`https://${isProd ? 'dev' : 'test'}-explorer.workquest.co/transactions/${el.item.transactionHash}`"
+                  target="_blank"
+                  class="user__value_gray"
+                >
+                  {{ CutTxn(el.item.transactionHash, 6, 6) }}
+                </a>
               </template>
               <template #cell(time)="el">
                 <div class="user__value_gray">
-                  {{ el.item.time }}
+                  {{ GetFormTimestamp(Number(el.item.timestamp) * 1000, 'll') }}
                 </div>
               </template>
               <template #cell(status)="el">
                 <div class="user__value_green">
-                  {{ el.item.status }}
+                  {{ el.item.event }}
                 </div>
               </template>
             </b-table>
           </div>
         </div>
-        <div class="referral-page__pager">
+        <div
+          v-if="referralList.length"
+          class="referral-page__pager"
+        >
           <base-pager
             v-if="totalPages > 1"
             v-model="page"
@@ -211,7 +228,10 @@ export default {
   async asyncData({ store }) {
     const userAddress = store.getters['user/getUserWalletAddress'];
     try {
-      await store.dispatch('referral/fetchRewardBalance', userAddress);
+      await Promise.all([
+        store.dispatch('referral/fetchRewardBalance', userAddress),
+        store.dispatch('referral/getReferralsList'),
+      ]);
     } catch (err) {
       console.log('fetchRewardBalance err', err);
     }
@@ -220,129 +240,32 @@ export default {
     return {
       page: 1,
       offset: 10,
+      perPage: 6,
       referLink: 'https://www.workquest.com/ref?v=44T7iUSo1vU',
-      items: [
-        {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-        {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-        {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-        {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-        {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-        {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-        {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-        {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-        {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-        {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-        {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-        {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-        {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-      ],
+      // TODO: Удалить
+      // items: [
+      //   {
+      //     referral: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
+      //     affiliate: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
+      //     blockNumber: 14382,
+      //     transactionHash: '18vk40cc3er48fzs5ghqzxy88uq',
+      //     amount: '281231',
+      //     timestamp: '1631568392',
+      //     event: 'RewardClaimed',
+      //   },
+      //   {
+      //     referral: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
+      //     affiliate: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
+      //     blockNumber: 14382,
+      //     transactionHash: '18vk40cc3er48fzs5ghqzxy88uq',
+      //     amount: '281231',
+      //     timestamp: '1631568392',
+      //     event: 'RewardClaimed',
+      //   },
+      // ],
       testFields: [
         {
-          key: 'userName',
+          key: 'userInfo',
           label: this.$t('referral.tableHead.name'),
           thStyle: {
             padding: '0 0 0 23px',
@@ -414,14 +337,31 @@ export default {
           },
         },
       ],
+      isProd: process.env.PROD,
     };
   },
   computed: {
     ...mapGetters({
       referralReward: 'referral/getReferralReward',
+      referralList: 'referral/getReferralsList',
     }),
     totalPages() {
-      return Math.ceil(this.items.length / this.offset);
+      return Math.ceil(this.referralList.length / this.perPage);
+    },
+  },
+  watch: {
+    page: {
+      handler(newValue, oldValue) {
+        if (newValue !== oldValue) {
+          const payload = {
+            params: {
+              limit: 6,
+              offset: (newValue - 1) * this.perPage,
+            },
+          };
+          this.$store.dispatch('referral/getReferralsList', payload);
+        }
+      },
     },
   },
   async mounted() {
@@ -562,6 +502,7 @@ export default {
           overflow: hidden;
           text-overflow: ellipsis;
           font-size: 16px;
+          text-transform: capitalize;
         }
         &__value {
           font-size: 16px;
@@ -569,6 +510,7 @@ export default {
           overflow: hidden;
           text-overflow: ellipsis;
           font-weight: 500;
+          text-transform: capitalize;
 
           &_green {
             @extend .user__value;
@@ -579,6 +521,12 @@ export default {
             @extend .user__value;
             color: #7C838D;
             font-weight: 400;
+          }
+        }
+
+        &__icon-copy {
+          &:before {
+            color: #0A7EEA;
           }
         }
 
