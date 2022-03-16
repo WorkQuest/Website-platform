@@ -8,7 +8,6 @@ import localeHi from './locales/hi.json';
 import localeId from './locales/id.json';
 import localePt from './locales/pt.json';
 import localeEs from './locales/es.json';
-import dateTimeFormats from './locales/dateTimeFormats';
 
 export default {
   ssr: false,
@@ -96,7 +95,6 @@ export default {
         pt: localePt,
         es: localeEs,
       },
-      dateTimeFormats,
     },
     detectBrowserLanguage: {
       useCookie: true,
