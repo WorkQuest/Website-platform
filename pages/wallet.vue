@@ -36,6 +36,7 @@
                   v-model="ddValue"
                   class="balance__token"
                   :items="tokenSymbolsDd"
+                  data-selector="TOKENS"
                 />
               </span>
               <span class="balance__usd">

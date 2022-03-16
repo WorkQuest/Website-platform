@@ -56,6 +56,7 @@
                 rules="required|decimal"
                 :name="$t('modals.fieldCountOf', { countOf: 'WUSD' })"
                 type="number"
+                data-selector="WUSD"
                 @input="onChangeWUSD"
               />
             </div>
@@ -71,6 +72,7 @@
                 rules="required|decimal"
                 :name="$t('modals.fieldCountOf', { countOf: `${ currentCurrency } collateral` })"
                 type="number"
+                data-selector="TOKEN"
                 @input="onChangeCollateral"
               />
             </div>
@@ -88,6 +90,7 @@
                 placeholder="150 %"
                 rules="required|min_percent:150"
                 :name="$t('modals.fieldPercentConversion')"
+                data-selector="PERCENT"
                 @input="calcCollateralPercent"
               />
               <div class="content__text">
@@ -268,9 +271,7 @@ export default {
             fee: { name: this.$t('wallet.table.trxFee'), value: new BigNumber(setTokenPriceData.gasPrice).multipliedBy(setTokenPriceData.gas).shiftedBy(-18).toFixed(), symbol: TokenSymbols.WUSD },
           },
           submitMethod: async () => await this.$store.dispatch('collateral/setTokenPrice', { payload, setTokenPriceData }),
-          callback: async () => {
-            await this.approveRouter(payload);
-          },
+          callback: async () => { await this.approveRouter(payload); },
         });
       } else {
         await this.approveRouter(payload);
@@ -295,9 +296,7 @@ export default {
             });
             return { ok: true };
           },
-          callback: async () => {
-            await this.getWUSD(payload);
-          },
+          callback: async () => { await this.getWUSD(payload); },
         });
       } else {
         await this.getWUSD(payload);
