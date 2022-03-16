@@ -62,6 +62,7 @@
               <div class="info-block__btn-wrap">
                 <base-btn
                   :selector="`registration`"
+                  @click="clickRegistrationBtnHandler"
                 >
                   {{ $t('modals.registration') }}
                 </base-btn>
@@ -446,6 +447,9 @@ export default {
           key: modals.thanks,
         });
       }
+    },
+    clickRegistrationBtnHandler() {
+      console.log('click');
     },
   },
 };
