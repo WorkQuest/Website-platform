@@ -62,7 +62,6 @@
               <div class="info-block__btn-wrap">
                 <base-btn
                   :selector="`registration`"
-                  @click="clickClaimBtnHandler"
                 >
                   {{ $t('modals.registration') }}
                 </base-btn>
