@@ -55,6 +55,7 @@ export default {
   },
 
   disconnect({ commit }) {
+    console.log('disconnect');
     disconnectWeb3();
     commit('setIsConnected', false);
     commit('setMetaMaskStatus', false);
@@ -66,7 +67,9 @@ export default {
   async connect({ commit, dispatch, getters }, payload) {
     const isReconnection = payload?.isReconnection;
     const response = await initWeb3(payload);
+    console.log('connect response =', response);
     if (response.ok) {
+      console.log('connect getters.isHandlingMetamaskStatus =', getters.isHandlingMetamaskStatus, 'isReconnection =', isReconnection);
       if (!getters.isHandlingMetamaskStatus && !isReconnection) {
         handleMetamaskStatus(() => dispatch('handleMetamaskStatusChanged'));
         commit('setIsHandlingMetamaskStatus', true);

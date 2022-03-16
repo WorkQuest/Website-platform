@@ -341,6 +341,7 @@ export default {
       if (!this.isConnected) {
         await this.$store.dispatch('web3/connect', { chain: chainName });
         const switchStatus = await this.$store.dispatch('web3/goToChain', { chain: chainName });
+        console.log('isConnected', switchStatus);
         if (!switchStatus.ok) await this.disconnectFromWallet();
       }
       await this.swapsTableData(this.account.address, this.isConnected);
@@ -348,6 +349,7 @@ export default {
       this.miningPoolId = localStorage.getItem('miningPoolId');
     },
     async checkMiningPoolId(chainName) {
+      console.log('checkMiningPoolId', chainName);
       await localStorage.setItem('miningPoolId', chainName);
       this.miningPoolId = localStorage.getItem('miningPoolId');
       const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
@@ -395,6 +397,8 @@ export default {
           fromChain: this.sourceAddressInd,
           toChain: this.targetAddressInd,
         });
+        console.log(this.isConnected);
+        // await this.$store.dispatch('web3/connect', { chain: chainName });
       } else {
         this.ShowModal({
           key: modals.status,

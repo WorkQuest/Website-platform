@@ -150,8 +150,12 @@ export default {
       return this.account.address;
     },
   },
+  // watch: {
+  //   async isConnected() {
+  //     await this.connectToMetamask();
+  //   },
+  // },
   async mounted() {
-    await this.connectToMetamask();
     const payload = {
       token: this.tokens[this.token],
       chainTo: this.crosschainFlow.toChain.id,
@@ -207,8 +211,9 @@ export default {
       this.SetLoader(false);
     },
     async connectToMetamask() {
+      console.log('connectToMetamask', this.isConnected);
       if (!this.isConnected) {
-        await this.$store.dispatch('web3/connect');
+        await this.$store.dispatch('web3/connect', { chain: this.crosschainFlow.fromChain.enum });
       }
     },
   },

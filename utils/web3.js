@@ -91,6 +91,7 @@ export const goToChain = async (chain) => {
   const methodName = 'wallet_switchEthereumChain';
   const chainIdParam = typeof chain === 'string' ? getChainIdByChain(chain) : ChainsIdByChainNumber[chain];
   try {
+    console.log('goToChain chainIdParam', chainIdParam);
     await window.ethereum.request({
       method: methodName,
       params: [{ chainId: chainIdParam }],
@@ -272,8 +273,9 @@ export const initProvider = async (payload) => {
   const { chain } = payload;
   try {
     let walletOptions;
+    console.log('initProvider chain=', chain, 'isProd=', isProd);
     if (!isProd) {
-      if (chain === Chains.ETH) {
+      if (chain === Chains.ETHEREUM) {
         walletOptions = {
           rpc: {
             4: 'https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
@@ -297,7 +299,7 @@ export const initProvider = async (payload) => {
       }
     }
     if (isProd) {
-      if (chain === 'ETH') {
+      if (chain === Chains.ETHEREUM) {
         walletOptions = {
           rpc: {
             1: 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
@@ -366,6 +368,7 @@ export const initWeb3 = async (payload) => {
       await ethereum.request({ method: 'eth_requestAccounts' });
     }
     const netTypeId = getChainTypeById(chainId);
+    console.log('initWeb3 address', userAddress, 'chainId', chainId, 'netTypeId', netTypeId);
     account = {
       address: userAddress,
       netId: chainId,
