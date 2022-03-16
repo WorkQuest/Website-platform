@@ -143,5 +143,6 @@ export default {
     WORKNET_WQT_TOKEN: process.env.WORKNET_WQT_TOKEN,
 
     WORKNET_REFERRAL: process.env.REFERRAL_ADDRESS,
+    WORKNET_REFERRAL_URL: process.env.REFERRAL_URL,
   },
 };
