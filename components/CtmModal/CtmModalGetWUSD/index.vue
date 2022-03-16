@@ -271,9 +271,7 @@ export default {
             fee: { name: this.$t('wallet.table.trxFee'), value: new BigNumber(setTokenPriceData.gasPrice).multipliedBy(setTokenPriceData.gas).shiftedBy(-18).toFixed(), symbol: TokenSymbols.WUSD },
           },
           submitMethod: async () => await this.$store.dispatch('collateral/setTokenPrice', { payload, setTokenPriceData }),
-          callback: async () => {
-            await this.approveRouter(payload);
-          },
+          callback: async () => { await this.approveRouter(payload); },
         });
       } else {
         await this.approveRouter(payload);
@@ -298,9 +296,7 @@ export default {
             });
             return { ok: true };
           },
-          callback: async () => {
-            await this.getWUSD(payload);
-          },
+          callback: async () => { await this.getWUSD(payload); },
         });
       } else {
         await this.getWUSD(payload);
