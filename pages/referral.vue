@@ -208,7 +208,11 @@ import modals from '~/store/modals/modals';
 
 export default {
   async asyncData({ store }) {
-    await store.dispatch('referral/fetchRewardBalance');
+    try {
+      await store.dispatch('referral/fetchRewardBalance');
+    } catch (err) {
+      console.log('fetchRewardBalance err', err);
+    }
   },
   data() {
     return {
@@ -427,10 +431,20 @@ export default {
       ev.stopPropagation();
       this.$copyText(this.referLink);
     },
-    clickClaimBtnHandler() {
-      this.ShowModal({
-        key: modals.thanks,
-      });
+    async clickClaimBtnHandler() {
+      this.SetLoader(true);
+      let res;
+      try {
+        res = await this.$store.dispatch('referral/claimReferralReward');
+      } catch (err) {
+        console.log('claimReferralReward err', err);
+      }
+      this.SetLoader(false);
+      if (res) {
+        this.ShowModal({
+          key: modals.thanks,
+        });
+      }
     },
   },
 };

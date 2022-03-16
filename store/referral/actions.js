@@ -18,4 +18,13 @@ export default {
     );
     commit('setReferralReward', res ? getStyledAmount(res) : 0);
   },
+  async claimReferralReward() {
+    return await fetchContractData(
+      'claim',
+      abi.WQReferral,
+      process.env.WORKNET_REFERRAL,
+      [],
+      GetWalletProvider(),
+    );
+  },
 };
