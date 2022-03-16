@@ -91,7 +91,6 @@ export const goToChain = async (chain) => {
   const methodName = 'wallet_switchEthereumChain';
   const chainIdParam = typeof chain === 'string' ? getChainIdByChain(chain) : ChainsIdByChainNumber[chain];
   try {
-    console.log('goToChain chainIdParam', chainIdParam);
     await window.ethereum.request({
       method: methodName,
       params: [{ chainId: chainIdParam }],
@@ -234,46 +233,12 @@ export const handleMetamaskStatus = (callback) => {
   ethereum.on('chainChanged', callback);
   ethereum.on('accountsChanged', callback);
 };
-// Подключение к MetaMask only. TODO: Delete
-export const initMetaMaskWeb3 = async () => {
-  try {
-    const { ethereum } = window;
-    if (ethereum) {
-      web3 = new Web3(ethereum);
-      if ((await web3.eth.getCoinbase()) === null) {
-        await ethereum.request({ method: 'eth_requestAccounts' });
-      }
-      const [userAddress, chainId] = await Promise.all([
-        web3.eth.getCoinbase(),
-        web3.eth.net.getId(),
-      ]);
 
-      if (process.env.PROD === 'true' && ![1, 56, 20211224].includes(+chainId)) {
-        return error(500, 'Wrong blockchain in metamask', 'Current site work on mainnet. Please change network.');
-      }
-      if (process.env.PROD === 'false' && ![4, 97, 20211224].includes(+chainId)) {
-        return error(500, 'Wrong blockchain in metamask', 'Current site work on testnet. Please change network.');
-      }
-      account = {
-        address: userAddress,
-        netId: chainId,
-        netType: getChainTypeById(chainId),
-      };
-      web4 = new Web4();
-      await web4.setProvider(ethereum, userAddress);
-      return success(account);
-    }
-    return false;
-  } catch (e) {
-    return error(500, '', e.message);
-  }
-};
 export const initProvider = async (payload) => {
   const isReconnection = payload?.isReconnection;
   const { chain } = payload;
   try {
     let walletOptions;
-    console.log('initProvider chain=', chain, 'isProd=', isProd);
     if (!isProd) {
       if (chain === Chains.ETHEREUM) {
         walletOptions = {
@@ -365,10 +330,9 @@ export const initWeb3 = async (payload) => {
     }
     const chainId = await web3.eth.net.getId();
     if ((await web3.eth.getCoinbase()) === null) {
-      await ethereum.request({ method: 'eth_requestAccounts' });
+      await window.ethereum.request({ method: 'eth_requestAccounts' });
     }
     const netTypeId = getChainTypeById(chainId);
-    console.log('initWeb3 address', userAddress, 'chainId', chainId, 'netTypeId', netTypeId);
     account = {
       address: userAddress,
       netId: chainId,
