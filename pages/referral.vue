@@ -212,6 +212,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { STATUS_INFO } from '~/utils/referral-constants';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -297,12 +298,7 @@ export default {
         {
           key: 'event',
           label: this.$t('referral.tableHead.status'),
-          formatter: (value) => {
-            const status = {
-              RewardClaimed: this.$t('referral.event.claimed'),
-            };
-            return status[value];
-          },
+          formatter: (value) => STATUS_INFO[value](this),
           thStyle: {
             padding: '0',
             height: '27px',
