@@ -360,10 +360,6 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    doCopy(ev) {
-      ev.stopPropagation();
-      this.$copyText(this.referLink);
-    },
     async clickClaimBtnHandler() {
       this.SetLoader(true);
       let res;
