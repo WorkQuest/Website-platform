@@ -189,7 +189,6 @@
               </template>
               <template #cell(event)="el">
                 <div class="user__value_green">
-                  <!--                  {{ status[el.item.event] }}-->
                   {{ el.value }}
                 </div>
               </template>
