@@ -351,7 +351,7 @@ export default {
   },
   watch: {
     page: {
-      handler(newValue, oldValue) {
+      async handler(newValue, oldValue) {
         if (newValue !== oldValue) {
           const payload = {
             params: {
@@ -359,7 +359,11 @@ export default {
               offset: (newValue - 1) * this.perPage,
             },
           };
-          this.$store.dispatch('referral/fetchPaidEventsList', payload);
+          try {
+            await this.$store.dispatch('referral/fetchPaidEventsList', payload);
+          } catch (err) {
+            console.log('fetchPaidEventsList err', err);
+          }
         }
       },
     },
