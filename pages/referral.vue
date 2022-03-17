@@ -59,7 +59,7 @@
                   {{ $t('referral.yourRefers') }}
                 </div>
               </div>
-              <div class="info-block__btn-wrap">
+              <div class="info-block__btn-wrap info-block__btn-wrap_absolute">
                 <base-btn
                   :disabled="!createdReferralList.length"
                   :selector="`registration`"
@@ -443,6 +443,7 @@ export default {
     .info-block {
       background-color: #fff;
       border-radius: 6px;
+      position: relative;
 
       &__wrap {
         display: grid;
@@ -453,6 +454,11 @@ export default {
       &__btn-wrap {
         padding: 34px 20px 0 0;
         width: 156px;
+      }
+      &__btn-wrap_absolute {
+        position: absolute;
+        right: 0;
+        z-index: 3;
       }
 
       &__tokens {
