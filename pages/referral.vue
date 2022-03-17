@@ -216,6 +216,7 @@ import { STATUS_INFO } from '~/utils/referral-constants';
 import modals from '~/store/modals/modals';
 
 export default {
+  name: 'Referral',
   async asyncData({ store }) {
     const userAddress = store.getters['user/getUserWalletAddress'];
     try {
