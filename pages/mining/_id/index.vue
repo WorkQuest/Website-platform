@@ -243,13 +243,12 @@
             </b-table>
           </div>
         </div>
-        <div class="pager__block">
-          <base-pager
-            v-if="totalPages > 1"
-            v-model="page"
-            :total-pages="totalPages"
-          />
-        </div>
+        <base-pager
+          v-if="totalPages > 1"
+          v-model="page"
+          :total-pages="totalPages"
+          class="mining-page__pager"
+        />
       </div>
     </div>
   </div>
@@ -574,10 +573,6 @@ export default {
   display: flex;
   justify-content: center;
 
-  &__pager {
-    margin-top: 25px;
-  }
-
   &__connect {
     width: 150px;
   }
@@ -795,6 +790,10 @@ export default {
     }
   }
 
+  &__pager {
+    margin-left: auto;
+  }
+
   @include _991 {
     &__table {
       overflow: auto;
@@ -887,12 +886,6 @@ export default {
     @include _575 {
       grid-template-columns: auto;
     }
-  }
-}
-.pager {
-  &__block {
-    margin-top: 25px;
-    width: auto;
   }
 }
 </style>

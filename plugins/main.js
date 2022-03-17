@@ -187,5 +187,6 @@ Vue.mixin({
         });
       }
     },
+    ScrollToTop: () => window.scrollTo(0, 0),
   },
 });
