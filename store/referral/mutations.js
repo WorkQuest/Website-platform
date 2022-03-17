@@ -11,4 +11,10 @@ export default {
   setReferralsListCount(state, count) {
     state.referralsListCount = count;
   },
+  setCreatedReferralList(state, list) {
+    state.createdReferralList = list;
+  },
+  setReferralSignature(state, signature) {
+    state.referralSignature = signature;
+  },
 };

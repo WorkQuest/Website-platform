@@ -3,4 +3,6 @@ export default () => ({
   paidEventsList: [],
   referralsList: [],
   referralsListCount: 0,
+  createdReferralList: [],
+  referralSignature: {},
 });

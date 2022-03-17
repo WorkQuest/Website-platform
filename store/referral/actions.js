@@ -27,7 +27,7 @@ export default {
       GetWalletProvider(),
     );
   },
-  async fetchPaidEventsList({ commit, dispatch }, config) {
+  async fetchPaidEventsList({ commit }, config) {
     try {
       const currConfig = config || { params: { limit: 6, offset: 0 } };
       const { data: { result, ok } } = await this.$axios.get(`${process.env.BASE_URL}${process.env.WORKNET_REFERRAL_URL}claimed-paid-events`, currConfig);
@@ -41,7 +41,7 @@ export default {
       return false;
     }
   },
-  async fetchReferralsList({ commit, dispatch }, config) {
+  async fetchReferralsList({ commit }, config) {
     try {
       const currConfig = config || { params: { limit: 10, offset: 0 } };
       const { data: { result, ok } } = await this.$axios.get(`${process.env.BASE_URL}${process.env.WORKNET_REFERRAL_URL}referrals`, currConfig);
@@ -55,5 +55,34 @@ export default {
     } catch (e) {
       return false;
     }
+  },
+  async fetchCreatedReferralList({ commit }) {
+    try {
+      const { data: { result, ok } } = await this.$axios.get(`${process.env.BASE_URL}${process.env.WORKNET_REFERRAL_URL}referral/signature/created-referrals`);
+
+      if (result) {
+        const signature = {};
+        signature.v = result.v;
+        signature.r = result.r;
+        signature.s = result.s;
+        commit('setCreatedReferralList', result.addresses);
+        commit('setReferralSignature', signature);
+      }
+
+      return ok;
+    } catch (e) {
+      return false;
+    }
+  },
+  async addReferrals({ getters }) {
+    const signature = getters.getReferralSignature;
+    const addresses = getters.getCreatedReferralList;
+    return await fetchContractData(
+      'addReferrals',
+      abi.WQReferral,
+      process.env.WORKNET_REFERRAL,
+      [signature.v, signature.r, signature.s, addresses],
+      GetWalletProvider(),
+    );
   },
 };
