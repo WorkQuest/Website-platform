@@ -287,7 +287,7 @@ export default {
         [QuestStatuses.Active]: this.$t('quests.active'),
         [QuestStatuses.Done]: this.$t('meta.performed'),
         [QuestStatuses.WaitConfirm]: this.$t('quests.requested'),
-        [QuestStatuses.WaitWorker]: this.$t('quests.invited'),
+        [QuestStatuses.WaitWorker]: this.$t('meta.invited'),
         [QuestStatuses.Closed]: this.$t('quests.closed'),
       };
       return questStatus[index] || '';

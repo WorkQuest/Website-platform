@@ -118,7 +118,7 @@ export default {
           [InfoModeWorker.Closed]: 'quests.questClosed',
           [InfoModeWorker.Done]: 'meta.completed',
           [InfoModeWorker.Responded]: 'meta.responded',
-          [InfoModeWorker.Invited]: 'quests.invited',
+          [InfoModeWorker.Invited]: 'meta.invited',
         };
         if (this.infoDataMode === InfoModeWorker.Invited && response.status !== awaiting) {
           return this.$t(`quests.${response.status === accepted ? 'acceptedTheInvitation' : 'declinedTheInvitation'}`);

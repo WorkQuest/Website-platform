@@ -46,17 +46,17 @@
               </span>
             </div>
             <div class="balance__bottom">
+<!--              :disabled="true"-->
               <base-btn
                 selector="SHOW-DEPOSIT-MODAL"
-                :disabled="true"
                 mode="outline"
                 class="balance__btn"
                 @click="showDepositModal()"
               >
                 {{ $t('wallet.receive') }}
               </base-btn>
+<!--              :disabled="true"-->
               <base-btn
-                :disabled="true"
                 selector="SHOW-WITHDRAW-MODAL"
                 mode="outline"
                 class="balance__btn"
@@ -82,9 +82,9 @@
               class="icon-close_big card__icon"
               @click="closeCard()"
             />
+<!--            :disabled="true"-->
             <base-btn
               selector="SHOW-ADD-CARD-MODAL"
-              :disabled="true"
               class="card__btn"
               mode="outline"
               @click="showAddCardModal()"
