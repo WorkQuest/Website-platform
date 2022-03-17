@@ -3,10 +3,7 @@
     <div class="section section__container section__container_white">
       <div class="container container__block">
         <userInfo />
-        <div
-          ref="tabs"
-          class="block__routes routes"
-        >
+        <div class="block__routes routes">
           <button
             v-for="(item, i) in pageTabs"
             :key="i"
@@ -394,7 +391,7 @@ export default {
   methods: {
     selectTab(tab) {
       this.selectedTab = tab;
-      this.$refs.tabs.scrollTop = 0;
+      this.ScrollToTop();
     },
     async updateQuests(item) {
       this.SetLoader(true);
