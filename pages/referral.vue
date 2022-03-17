@@ -59,8 +59,9 @@
                   {{ $t('referral.yourRefers') }}
                 </div>
               </div>
-              <div class="info-block__btn-wrap">
+              <div class="info-block__btn-wrap info-block__btn-wrap_absolute">
                 <base-btn
+                  v-if="createdReferralList.length"
                   :selector="`registration`"
                   @click="clickRegistrationBtnHandler"
                 >
@@ -223,6 +224,7 @@ export default {
         store.dispatch('referral/fetchRewardBalance', userAddress),
         store.dispatch('referral/fetchPaidEventsList'),
         store.dispatch('referral/fetchReferralsList'),
+        store.dispatch('referral/fetchCreatedReferralList'),
       ]);
     } catch (err) {
       console.log('fetchRewardBalance err', err);
@@ -310,25 +312,16 @@ export default {
         },
       ],
       isProd: process.env.PROD,
-      paidEventsList: [
-        {
-          referral: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
-          affiliate: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
-          blockNumber: 14382,
-          transactionHash: '18vk40cc3er48fzs5ghqzxy88uq',
-          amount: '281231',
-          timestamp: '1631568392',
-          event: 'RewardClaimed',
-        },
-      ],
     };
   },
   computed: {
     ...mapGetters({
       referralReward: 'referral/getReferralReward',
-      // paidEventsList: 'referral/getPaidEventsList',
+      paidEventsList: 'referral/getPaidEventsList',
       referralsList: 'referral/getReferralsList',
       referralsListCount: 'referral/getReferralsListCount',
+      createdReferralList: 'referral/getCreatedReferralList',
+      referralSignature: 'referral/getReferralSignature',
     }),
     totalPages() {
       return Math.ceil(this.paidEventsList.length / this.perPage);
@@ -389,8 +382,20 @@ export default {
         });
       }
     },
-    clickRegistrationBtnHandler() {
-      console.log('click');
+    async clickRegistrationBtnHandler() {
+      this.SetLoader(true);
+      let res;
+      try {
+        res = await this.$store.dispatch('referral/addReferrals');
+      } catch (err) {
+        console.log('claimReferralReward err', err);
+      }
+      this.SetLoader(false);
+      if (res) {
+        this.ShowModal({
+          key: modals.thanks,
+        });
+      }
     },
   },
 };
@@ -438,6 +443,7 @@ export default {
     .info-block {
       background-color: #fff;
       border-radius: 6px;
+      position: relative;
 
       &__wrap {
         display: grid;
@@ -448,6 +454,11 @@ export default {
       &__btn-wrap {
         padding: 34px 20px 0 0;
         width: 156px;
+      }
+      &__btn-wrap_absolute {
+        position: absolute;
+        right: 0;
+        z-index: 3;
       }
 
       &__tokens {
