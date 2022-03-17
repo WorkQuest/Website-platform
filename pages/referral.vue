@@ -69,31 +69,24 @@
               </div>
             </div>
             <div class="info-block__refers">
-              <div class="info-block__avatar">
+              <div
+                v-for="(item) in referralItems"
+                :key="`${item.id}`"
+                class="info-block__avatar"
+              >
+                <!--                <img-->
+                <!--                  class="ava_list"-->
+                <!--                  :src="item.referralUser.avatar.url + '/' + item.referralUser.avatar.id"-->
+                <!--                  alt="Avatar"-->
+                <!--                >-->
                 <img
                   class="ava_list"
                   src="~/assets/img/social/FACEBOOK.png"
                   alt=""
                 >
               </div>
-              <div class="info-block__avatar">
-                <img
-                  class="ava_list"
-                  src="~/assets/img/social/TWITTER.png"
-                  alt=""
-                >
-              </div>
-              <div class="info-block__avatar">
-                <img
-                  class="ava_list"
-                  src="~/assets/img/social/GOOGLE_+_.png"
-                  alt=""
-                >
-              </div>
-              <div class="info-block__avatar">
-                <div class="info-block__more">
-                  {{ $tc('referral.plusCount', 0) }}
-                </div>
+              <div class="info-block__more">
+                {{ $tc('referral.plusCount', referralsListCount) }}
               </div>
             </div>
             <div class="info-block__name">
@@ -243,57 +236,6 @@ export default {
       offset: 10,
       perPage: 6,
       referLink: 'https://www.workquest.com/ref?v=44T7iUSo1vU',
-      // TODO: Удалить
-      // items: [
-      //   {
-      //     referral: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
-      //     affiliate: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
-      //     blockNumber: 14382,
-      //     transactionHash: '18vk40cc3er48fzs5ghqzxy88uq',
-      //     amount: '281231',
-      //     timestamp: '1631568392',
-      //     event: 'RewardClaimed',
-      //   },
-      //   {
-      //     referral: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
-      //     affiliate: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
-      //     blockNumber: 14382,
-      //     transactionHash: '18vk40cc3er48fzs5ghqzxy88uq',
-      //     amount: '281231',
-      //     timestamp: '1631568392',
-      //     event: 'RewardClaimed',
-      //   },
-      // ],
-      referralsList: [
-        {
-          id: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
-          referralUserId: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
-          affiliateId: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
-          referralStatus: 'created',
-          rewardStatus: 'paid',
-          referralUser: {
-            id: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
-            firstName: 'ivan',
-            lastName: 'ivanov',
-            avatar: {
-              id: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
-              url: 'http://example.com/v1/getVideo',
-              contentType: 'image/png',
-            },
-            ratingStatistic: {
-              id: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
-              userId: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
-              reviewCount: 10,
-              averageMark: 3.5,
-              status: 0,
-            },
-            wallet: {
-              address: '0x3e356dBeF7F3098407667a0f2aE6bC4ac9B69E0a',
-              bech32Address: 'eth18c6km0hh7vycgpmx0g8j4e4uftymd8s2ypanvc',
-            },
-          },
-        },
-      ],
       testFields: [
         {
           key: 'userInfo',
@@ -375,10 +317,27 @@ export default {
     ...mapGetters({
       referralReward: 'referral/getReferralReward',
       paidEventsList: 'referral/getPaidEventsList',
-      // referralsList: 'referral/getReferralsList',
+      referralsList: 'referral/getReferralsList',
+      referralsListCount: 'referral/getReferralsListCount',
     }),
     totalPages() {
       return Math.ceil(this.paidEventsList.length / this.perPage);
+    },
+    referralItems() {
+      const referralsList = [];
+      const indexList = [];
+      if (this.referralsList.length > 5) {
+        while (referralsList.length < 5) {
+          const index = Math.floor(Math.random() * this.referralsList.length);
+          if (!indexList.includes(index)) {
+            indexList.push(index);
+            referralsList.push(this.referralsList[index]);
+          }
+        }
+        return referralsList;
+      }
+
+      return this.referralsList;
     },
   },
   watch: {
@@ -596,13 +555,15 @@ export default {
       }
 
       &__more {
-        position: absolute;
         height: 33px;
-        width: 53px;
+        padding: 0 10px;
+        min-width: 53px;
         border-radius: 39px;
         background-color: #F7F8FA;
         text-align: center;
         line-height: 33px;
+        margin-left: -5px;
+        z-index: 2;
       }
 
       &__link {
