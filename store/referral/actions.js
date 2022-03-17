@@ -27,13 +27,13 @@ export default {
       GetWalletProvider(),
     );
   },
-  async getReferralsList({ commit, dispatch }, config) {
+  async getPaidEventsList({ commit, dispatch }, config) {
     try {
       const currConfig = config || { params: { limit: 6, offset: 0 } };
       const { data: { result, ok } } = await this.$axios.get(`${process.env.BASE_URL}${process.env.WORKNET_REFERRAL_URL}claimed-paid-events`, currConfig);
 
       if (result.events.length) {
-        commit('setReferralsList', result.events);
+        commit('setPaidEventsList', result.events);
       }
 
       return ok;

@@ -144,7 +144,7 @@
           </div>
         </div>
         <div
-          v-if="referralList.length"
+          v-if="paidEventsList.length"
           class="info-block"
         >
           <div class="info-block__name">
@@ -152,7 +152,7 @@
           </div>
           <div class="referral-page__table">
             <b-table
-              :items="referralList"
+              :items="paidEventsList"
               :fields="testFields"
               borderless
               caption-top
@@ -206,7 +206,7 @@
           </div>
         </div>
         <div
-          v-if="referralList.length"
+          v-if="paidEventsList.length"
           class="referral-page__pager"
         >
           <base-pager
@@ -230,7 +230,7 @@ export default {
     try {
       await Promise.all([
         store.dispatch('referral/fetchRewardBalance', userAddress),
-        store.dispatch('referral/getReferralsList'),
+        store.dispatch('referral/getPaidEventsList'),
       ]);
     } catch (err) {
       console.log('fetchRewardBalance err', err);
@@ -343,10 +343,10 @@ export default {
   computed: {
     ...mapGetters({
       referralReward: 'referral/getReferralReward',
-      referralList: 'referral/getReferralsList',
+      paidEventsList: 'referral/getPaidEventsList',
     }),
     totalPages() {
-      return Math.ceil(this.referralList.length / this.perPage);
+      return Math.ceil(this.paidEventsList.length / this.perPage);
     },
   },
   watch: {
@@ -359,7 +359,7 @@ export default {
               offset: (newValue - 1) * this.perPage,
             },
           };
-          this.$store.dispatch('referral/getReferralsList', payload);
+          this.$store.dispatch('referral/getPaidEventsList', payload);
         }
       },
     },
