@@ -5,4 +5,7 @@ export default {
   setPaidEventsList(state, events) {
     state.paidEventsList = events;
   },
+  setReferralsList(state, list) {
+    state.referralsList = list;
+  },
 };

@@ -230,7 +230,7 @@ export default {
     try {
       await Promise.all([
         store.dispatch('referral/fetchRewardBalance', userAddress),
-        store.dispatch('referral/getPaidEventsList'),
+        store.dispatch('referral/fetchPaidEventsList'),
       ]);
     } catch (err) {
       console.log('fetchRewardBalance err', err);
@@ -359,7 +359,7 @@ export default {
               offset: (newValue - 1) * this.perPage,
             },
           };
-          this.$store.dispatch('referral/getPaidEventsList', payload);
+          this.$store.dispatch('referral/fetchPaidEventsList', payload);
         }
       },
     },
