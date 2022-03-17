@@ -163,7 +163,6 @@
                     {{ UserName(userData.firstName, userData.lastName) }}
                   </div>
                   <div
-                    v-if="userData.role === $options.UserRole.EMPLOYER"
                     class="profile__text profile__text_blue"
                     :class="userData.role === $options.UserRole.EMPLOYER ? 'profile__text_blue' : 'profile__text_green'"
                   >

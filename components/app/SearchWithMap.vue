@@ -200,11 +200,11 @@ export default {
 
   &__block {
     display: grid;
-    grid-template-columns: 155px 1fr 143px 260px;
+    grid-template-columns: 160px 1fr 155px 260px;
 
     @include box;
     &_without-map {
-      grid-template-columns: 155px 1fr;
+      grid-template-columns: 160px 1fr;
     }
   }
 
@@ -256,9 +256,9 @@ export default {
     padding: 0 20px;
 
     &__block {
-      grid-template-columns: 155px 1fr 143px 220px;
+      grid-template-columns: 160px 1fr 155px 220px;
       &_without-map {
-        grid-template-columns: 155px 1fr;
+        grid-template-columns: 160px 1fr;
       }
     }
   }
@@ -273,7 +273,7 @@ export default {
     &__block {
       grid-template-columns: 1fr 180px;
       &_without-map {
-        grid-template-columns: 155px 1fr;
+        grid-template-columns: 160px 1fr;
       }
     }
 
@@ -290,7 +290,7 @@ export default {
 
     &__filters {
       display: grid;
-      grid-template-columns: 143px 143px;
+      grid-template-columns: 150px 150px;
       justify-content: space-between;
 
       margin-top: 20px;
