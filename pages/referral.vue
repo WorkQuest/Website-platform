@@ -74,15 +74,10 @@
                 :key="`${item.id}`"
                 class="info-block__avatar"
               >
-                <!--                <img-->
-                <!--                  class="ava_list"-->
-                <!--                  :src="item.referralUser.avatar.url + '/' + item.referralUser.avatar.id"-->
-                <!--                  alt="Avatar"-->
-                <!--                >-->
                 <img
                   class="ava_list"
-                  src="~/assets/img/social/FACEBOOK.png"
-                  alt=""
+                  :src="item.referralUser.avatar.url + '/' + item.referralUser.avatar.id"
+                  alt="Avatar"
                 >
               </div>
               <div class="info-block__more">
@@ -97,8 +92,9 @@
                 {{ referLink }}
               </div>
               <button
-                type="button"
-                @click="doCopy"
+                v-clipboard:copy="referLink"
+                v-clipboard:success="ClipboardSuccessHandler"
+                v-clipboard:error="ClipboardErrorHandler"
               >
                 <span class="icon-copy address__icon" />
               </button>
