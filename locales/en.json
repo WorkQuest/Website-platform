@@ -1659,7 +1659,7 @@
       "txHash": "Txn hash",
       "time": "Time",
       "amount": "Amount",
-      "status": "Status"
+      "status": "Event"
     },
     "table": {
       "userName": "John Doe",
@@ -1667,6 +1667,10 @@
       "txHash": "sf998s...ss877d",
       "time": "Feb 1, 2021",
       "status": "Success"
+    },
+    "event": {
+      "paid": "Paid",
+      "claimed": "Claimed"
     }
   },
   "pension": {
