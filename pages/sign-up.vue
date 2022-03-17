@@ -25,10 +25,11 @@
         <base-field
           v-model="model.firstName"
           :placeholder="$t('meta.firstNameBig')"
-          :mode="'icon'"
-          autocomplete="off"
+          mode="icon"
           :name="$t('meta.firstNameBig')"
           rules="required_if|alpha_spaces"
+          autocomplete="off"
+          data-selector="FIRST_NAME"
         >
           <template v-slot:left>
             <img
@@ -40,9 +41,10 @@
         <base-field
           v-model="model.lastName"
           :placeholder="$t('meta.lastNameBig')"
-          :mode="'icon'"
+          :mode="icon"
           :name="$t('meta.lastNameBig')"
           rules="required_if|alpha_spaces"
+          data-selector="LAST_NAME"
         >
           <template v-slot:left>
             <img
@@ -53,11 +55,12 @@
         </base-field>
         <base-field
           v-model="model.email"
-          rules="required|email"
+          mode="icon"
           :name="$t('signUp.email')"
           :placeholder="$t('signUp.email')"
-          :mode="'icon'"
+          rules="required|email"
           autocomplete="username"
+          data-selector="EMAIL"
         >
           <template v-slot:left>
             <img
@@ -68,13 +71,14 @@
         </base-field>
         <base-field
           v-model="model.password"
-          :placeholder="$t('signUp.password')"
-          :mode="'icon'"
+          mode="icon"
           :name="$t('signUp.password')"
-          autocomplete="current-password"
+          :placeholder="$t('signUp.password')"
           rules="required_if|min:8"
+          autocomplete="current-password"
           type="password"
           vid="confirmation"
+          data-selector="PASSWORD"
         >
           <template v-slot:left>
             <img
@@ -85,11 +89,12 @@
         </base-field>
         <base-field
           v-model="model.passwordConfirm"
-          :placeholder="$t('signUp.confirmPassword')"
-          :mode="'icon'"
-          type="password"
+          mode="icon"
           :name="$t('signUp.confirmPassword')"
+          :placeholder="$t('signUp.confirmPassword')"
           rules="required_if|min:8|confirmed:confirmation"
+          type="password"
+          data-selector="CONFIRM_PASSWORD"
         >
           <template v-slot:left>
             <img
@@ -99,7 +104,10 @@
           </template>
         </base-field>
         <div class="auth__action">
-          <base-btn :disabled="!valid || isLoading">
+          <base-btn
+            :disabled="!valid || isLoading"
+            selector="CREATE"
+          >
             {{ $t('signUp.create') }}
           </base-btn>
         </div>

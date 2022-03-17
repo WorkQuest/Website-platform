@@ -163,7 +163,7 @@ export default {
         const [txFee] = await Promise.all([
           this.$store.dispatch('wallet/getContractFeeData', {
             _abi: WQPensionFund,
-            contractAddress: process.env.PENSION_FUND,
+            contractAddress: process.env.WORKNET_PENSION_FUND,
             method: 'withdraw',
             data: [new BigNumber(this.amount).shiftedBy(18).toString()],
           }),

@@ -153,8 +153,8 @@ export default {
         this.$store.dispatch('wallet/getContractFeeData', {
           method: 'transfer',
           _abi: abi.ERC20,
-          contractAddress: process.env.WQT_TOKEN,
-          data: [process.env.WQT_TOKEN, new BigNumber(this.balance.WQT.fullBalance).shiftedBy(18).toString()],
+          contractAddress: process.env.WORKNET_WQT_TOKEN,
+          data: [process.env.WORKNET_WQT_TOKEN, new BigNumber(this.balance.WQT.fullBalance).shiftedBy(18).toString()],
         }),
       ]);
       this.maxFee.WQT = wqt.ok ? wqt.result.fee : 0;
@@ -203,7 +203,7 @@ export default {
         feeRes = await this.$store.dispatch('wallet/getContractFeeData', {
           method: 'transfer',
           _abi: abi.ERC20,
-          contractAddress: process.env.WQT_TOKEN,
+          contractAddress: process.env.WORKNET_WQT_TOKEN,
           data: [this.recipient, new BigNumber(this.amount).shiftedBy(18).toString()],
         });
       }

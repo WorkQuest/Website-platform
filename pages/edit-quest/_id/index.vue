@@ -25,11 +25,11 @@
                 <div class="runtime page__dd">
                   <base-dd
                     v-model="runtimeValue"
-                    :data-selector="`RUNTIME-DD-${runtime}-${runtimeValue}`"
                     :items="runtime"
                     type="gray"
                     :label="$t('quests.runtime')"
                     :placeholder="runtime[0]"
+                    data-selector="RUNTIME"
                     :name="$t('quests.runtime')"
                     rules="required"
                   />
@@ -39,9 +39,9 @@
             <div class="page__input">
               <base-field
                 v-model="price"
-                data-selector="PRICE-FIELD"
                 :type="'number'"
                 :label="$t('meta.price')"
+                data-selector="PRICE-FIELD"
                 :placeholder="+0 + currency"
                 rules="required|decimal"
                 :name="$t('meta.price')"
@@ -52,21 +52,21 @@
                 v-model="priorityIndex"
                 :label="$t('quests.employment.employment')"
                 type="gray"
-                :data-selector="`PRIORITY-DD-${employment}-${priorityIndex}`"
                 :items="employment"
                 rules="required"
                 :name="$t('quests.employment.employment')"
+                data-selector="EMPLOYMENT"
               />
             </div>
             <div class="page__dd">
               <base-dd
                 v-model="categoryIndex"
-                :data-selector="`CATEGORY-DD-${distantWork}-${categoryIndex}`"
                 :label="$t('quests.distantWork.distantWork')"
                 type="gray"
                 :items="distantWork"
                 rules="required"
                 :name="$t('quests.distantWork.distantWork')"
+                data-selector="DISTANT"
               />
             </div>
           </div>

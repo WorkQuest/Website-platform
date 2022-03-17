@@ -108,6 +108,9 @@ export default {
     GMAPKEY: process.env.GMAPKEY,
     SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
+    WQ_PROVIDER: process.env.WQ_PROVIDER,
+    WQ_EXPLORER: process.env.WQ_EXPLORER,
+
     NOTIFS_URL: process.env.NOTIFS_URL,
     WS_NOTIFS_URL: process.env.WS_NOTIFS_URL,
     WS_CHAT_ACTIONS_URL: process.env.WS_CHAT_ACTIONS_URL,
@@ -127,16 +130,16 @@ export default {
     BSC_RPC_URL: process.env.BSC_RPC_URL,
     BSC_WS_MORALIS: process.env.BSC_WS_MORALIS,
 
-    WORKNET_STAKING_WQT: process.env.WORKNET_STAKING_WQT,
-    WORKNET_STAKING_WUSD: process.env.WORKNET_STAKING_WUSD,
-
     WETH_TOKEN: process.env.WETH_TOKEN,
     WBNB_TOKEN: process.env.WBNB_TOKEN,
 
-    WQ_PROVIDER: process.env.WQ_PROVIDER,
-    WQ_EXPLORER: process.env.WQ_EXPLORER,
-    WQT_TOKEN: process.env.WQT_TOKEN,
-
-    PENSION_FUND: process.env.PENSION_FUND,
+    WORKNET_ORACLE: process.env.WORKNET_ORACLE,
+    WORKNET_PENSION_FUND: process.env.WORKNET_PENSION_FUND,
+    WORKNET_ROUTER: process.env.WORKNET_ROUTER,
+    WORKNET_STAKING_WQT: process.env.WORKNET_STAKING_WQT,
+    WORKNET_STAKING_WUSD: process.env.WORKNET_STAKING_WUSD,
+    WORKNET_WBNB_TOKEN: process.env.WORKNET_WBNB_TOKEN,
+    WORKNET_WETH_TOKEN: process.env.WORKNET_WETH_TOKEN,
+    WORKNET_WQT_TOKEN: process.env.WORKNET_WQT_TOKEN,
   },
 };

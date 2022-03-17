@@ -24,10 +24,7 @@
           <div class="worker__name">
             {{ `${response.worker.firstName} ${response.worker.lastName}` }}
           </div>
-          <item-rating
-            v-if="ratingStatistic(response.worker.ratingStatistic) !== 'noStatus'"
-            :rating="ratingStatistic(response.worker.ratingStatistic)"
-          />
+          <item-rating :rating="response.worker.ratingStatistic.status" />
         </div>
         <base-dd
           :data-selector="`WORKERS-LIST-USER-ACTIONS-${userActionsArr(response)}`"
@@ -111,9 +108,6 @@ export default {
         return this.ddUserActions;
       }
       return this.ddUserFullActions;
-    },
-    ratingStatistic(ratingStatistic) {
-      return ratingStatistic?.status || 'noStatus';
     },
     handleUserAction(index, response) {
       const funcKey = ['goToChat', 'startQuest', 'reject'][index];

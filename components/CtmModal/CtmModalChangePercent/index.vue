@@ -80,7 +80,7 @@ export default {
         this.$store.dispatch('wallet/getContractFeeData', {
           method: 'updateFee',
           _abi: abi.WQPensionFund,
-          contractAddress: process.env.PENSION_FUND,
+          contractAddress: process.env.WORKNET_PENSION_FUND,
           data: [new BigNumber(this.amount).shiftedBy(18).toString()],
         }),
         this.$store.dispatch('wallet/getBalance'),
@@ -95,7 +95,7 @@ export default {
 
       const fields = {
         from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
-        to: { name: this.$t('meta.toBig'), value: process.env.PENSION_FUND },
+        to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_PENSION_FUND },
         fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
       };
 
@@ -112,7 +112,7 @@ export default {
         key: modals.status,
         img: require('~/assets/img/ui/success.svg'),
         title: this.$t('modals.percentIsChanged'),
-        subtitle: '',
+        subtitle: this.$t('modals.percentIsChangedText'),
       });
     },
   },

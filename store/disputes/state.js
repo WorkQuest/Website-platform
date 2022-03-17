@@ -198,7 +198,7 @@ export default () => ({
               userId: '',
               reviewCount: 0,
               averageMark: 0,
-              status: '',
+              status: null,
             },
           },
           medias: [{ id: '', url: '', contentType: '' },

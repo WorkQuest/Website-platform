@@ -118,9 +118,7 @@
             {{ $t('meta.reviewsBig') }}
           </div>
           <template v-if="reviewsObject.count > 0">
-            <div
-              class="reviews__container"
-            >
+            <div class="reviews__container">
               <reviewsTab :object="reviewsObject" />
             </div>
             <div
@@ -449,10 +447,10 @@ export default {
 
 <style lang="scss" scoped>
 .quests__cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 20px;
   margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
 }
 
 .routes {
@@ -592,7 +590,7 @@ export default {
 }
 .reviews {
   &__container {
-    margin: 20px 0 20px 0;
+    margin-top: 20px;
   }
   &__btn {
     color: $black500;

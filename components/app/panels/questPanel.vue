@@ -158,6 +158,7 @@ export default {
   }
 }
 .icon {
+  color: $black700;
   align-self: center;
   &-share_outline {
     margin-left: 15px;

@@ -100,13 +100,31 @@ export const KeyCodes = {
 // Filters
 export const WorkplaceFilter = ['all', 'distant', 'office', 'both'];
 export const WorkplaceIndex = ['distant', 'office', 'both'];
-export const RatingFilter = ['', 'verified', 'reliable', 'topRanked'];
 export const TypeOfJobFilter = ['fullTime', 'partTime', 'fixedTerm'];
 export const PriorityFilter = [
   { key: 'all', value: 0 },
   { key: 'urgent', value: 3 },
   { key: 'shortTerm', value: 2 },
   { key: 'fixedDelivery', value: 1 },
+];
+
+export const Ratings = Object.freeze({
+  TOP_RANKED: 'topRanked',
+  RELIABLE: 'reliable',
+  VERIFIED: 'verified',
+  NO_STATUS: 'noStatus',
+});
+export const UserRating = Object.freeze({
+  0: Ratings.TOP_RANKED,
+  1: Ratings.RELIABLE,
+  2: Ratings.VERIFIED,
+  3: Ratings.NO_STATUS,
+});
+export const RatingFilter = [
+  { key: 'all', value: 3 },
+  { key: 'topRanked', value: 0 },
+  { key: 'reliable', value: 1 },
+  { key: 'verified', value: 2 },
 ];
 
 export const MessageAction = {
@@ -209,7 +227,7 @@ export const TokenSymbols = Object.freeze({
 });
 
 export const TokenSymbolByContract = Object.freeze({
-  [process.env.WQT_TOKEN.toLowerCase()]: TokenSymbols.WQT,
+  [process.env.WORKNET_WQT_TOKEN.toLowerCase()]: TokenSymbols.WQT,
 });
 
 export const WalletTables = Object.freeze({
@@ -260,6 +278,12 @@ export const NetworksData = {
       decimals: 18,
     },
   },
+};
+
+export const tokenMap = {
+  BNB: process.env.WORKNET_WBNB_TOKEN,
+  ETH: process.env.WORKNET_WETH_TOKEN,
+  WQT: process.env.WORKNET_WQT_TOKEN,
 };
 
 export const PensionHistoryMethods = Object.freeze({

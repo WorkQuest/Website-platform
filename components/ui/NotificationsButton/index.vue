@@ -43,8 +43,8 @@
         <template v-if="notificationsCount">
           <div class="reduced-notifications__list">
             <div
-              v-for="notification in notifications"
-              :key="notification.id"
+              v-for="(notification, i) in notifications"
+              :key="i"
               :data-selector="`NOTIFICATION-BUTTONS-NOTIFICATION-${notification.id}`"
               class="notify notify__content"
             >
@@ -59,12 +59,12 @@
                     alt="avatar"
                   >
                   <div class="notify__info">
-                    <div class="notify__text notify__text_name">
+                    <a
+                      :href="`/profile/${notification.sender.id}`"
+                      class="notify__text notify__text_name"
+                    >
                       {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
-                    </div>
-                    <!--                  <div class="notify__text notify__text_grey">-->
-                    <!--                    CEO from Amazon-->
-                    <!--                  </div>-->
+                    </a>
                   </div>
                 </div>
                 <div class="notify__text notify__text_date">
@@ -267,10 +267,18 @@ export default {
     &_date {
       font-size: 12px;
       color: $black300;
+      flex-shrink: 0;
     }
     &_name {
       font-size: 16px;
       color: $black800;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-right: 5px;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
     }
     &_grey {
       font-size: 12px;

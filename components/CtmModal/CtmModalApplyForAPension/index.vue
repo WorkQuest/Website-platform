@@ -98,7 +98,7 @@ export default {
           this.$store.dispatch('wallet/getContractFeeData', {
             method: 'updateFee',
             _abi: WQPensionFund,
-            contractAddress: process.env.PENSION_FUND,
+            contractAddress: process.env.WORKNET_PENSION_FUND,
             data: [new BigNumber(this.depositPercentFromAQuest).shiftedBy(18).toString()],
           }),
           this.$store.dispatch('wallet/getBalance'),
@@ -109,10 +109,10 @@ export default {
           this.$store.dispatch('wallet/getContractFeeData', {
             method: 'contribute',
             _abi: WQPensionFund,
-            contractAddress: process.env.PENSION_FUND,
+            contractAddress: process.env.WORKNET_PENSION_FUND,
             data: [getWalletAddress()],
             amount: this.firstDepositAmount,
-            recipient: process.env.PENSION_FUND,
+            recipient: process.env.WORKNET_PENSION_FUND,
           }),
           this.$store.dispatch('wallet/getBalance'),
         ]);
@@ -129,7 +129,7 @@ export default {
 
       const fields = {
         from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
-        to: { name: this.$t('meta.toBig'), value: process.env.PENSION_FUND },
+        to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_PENSION_FUND },
         fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
       };
       if (this.firstDepositAmount) {
@@ -156,7 +156,7 @@ export default {
         key: modals.status,
         img: require('~/assets/img/ui/document.svg'),
         title: this.$t('modals.pensionIsRegistered'),
-        subtitle: '',
+        subtitle: this.$t('modals.pensionIsRegisteredText'),
         path: '/pension/my',
       });
     },

@@ -94,7 +94,7 @@
               {{ quest.assignedWorker ? UserName(quest.assignedWorker.firstName, quest.assignedWorker.lastName) : '' }}
             </div>
           </div>
-          <item-rating :rating="getRatingValue(quest)" />
+          <item-rating :rating="quest.assignedWorker.ratingStatistic.status" />
         </div>
       </div>
       <div class="card-quest__locate">
@@ -232,9 +232,6 @@ export default {
         itemId: item.id,
         mode: 'quest',
       });
-    },
-    getRatingValue(item) {
-      return item.assignedWorker?.ratingStatistic?.status || 'noStatus';
     },
     getAmountStyles(item) {
       return [

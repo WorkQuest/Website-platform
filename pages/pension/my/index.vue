@@ -440,7 +440,7 @@ export default {
           const [txFee] = await Promise.all([
             this.$store.dispatch('wallet/getContractFeeData', {
               _abi: WQPensionFund,
-              contractAddress: process.env.PENSION_FUND,
+              contractAddress: process.env.WORKNET_PENSION_FUND,
               method: 'extendLockTime',
             }),
             this.$store.dispatch('wallet/getBalance'),
@@ -455,7 +455,7 @@ export default {
             key: modals.transactionReceipt,
             fields: {
               from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
-              to: { name: this.$t('meta.toBig'), value: process.env.PENSION_FUND },
+              to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_PENSION_FUND },
               fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
             },
             submitMethod: async () => {
