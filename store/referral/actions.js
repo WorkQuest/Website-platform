@@ -47,6 +47,7 @@ export default {
       const { data: { result, ok } } = await this.$axios.get(`${process.env.BASE_URL}${process.env.WORKNET_REFERRAL_URL}referrals`, currConfig);
 
       if (result.referrals.length) {
+        commit('setReferralsListCount', result.count);
         commit('setReferralsList', result.referrals);
       }
 

@@ -8,4 +8,7 @@ export default {
   setReferralsList(state, list) {
     state.referralsList = list;
   },
+  setReferralsListCount(state, count) {
+    state.referralsListCount = count;
+  },
 };
