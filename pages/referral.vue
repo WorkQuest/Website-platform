@@ -59,9 +59,9 @@
                   {{ $t('referral.yourRefers') }}
                 </div>
               </div>
-              <div class="info-block__btn-wrap info-block__btn-wrap_absolute">
+              <div class="info-block__btn-wrap">
                 <base-btn
-                  v-if="createdReferralList.length"
+                  :disabled="!createdReferralList.length"
                   :selector="`registration`"
                   @click="clickRegistrationBtnHandler"
                 >
@@ -443,7 +443,6 @@ export default {
     .info-block {
       background-color: #fff;
       border-radius: 6px;
-      position: relative;
 
       &__wrap {
         display: grid;
@@ -454,11 +453,6 @@ export default {
       &__btn-wrap {
         padding: 34px 20px 0 0;
         width: 156px;
-      }
-      &__btn-wrap_absolute {
-        position: absolute;
-        right: 0;
-        z-index: 3;
       }
 
       &__tokens {
