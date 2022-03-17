@@ -186,9 +186,10 @@
                   {{ GetFormTimestamp(Number(el.item.timestamp) * 1000, 'll') }}
                 </div>
               </template>
-              <template #cell(status)="el">
+              <template #cell(event)="el">
                 <div class="user__value_green">
-                  {{ el.item.event }}
+                  <!--                  {{ status[el.item.event] }}-->
+                  {{ el.value }}
                 </div>
               </template>
             </b-table>
@@ -294,8 +295,14 @@ export default {
           },
         },
         {
-          key: 'status',
+          key: 'event',
           label: this.$t('referral.tableHead.status'),
+          formatter: (value) => {
+            const status = {
+              RewardClaimed: this.$t('referral.event.claimed'),
+            };
+            return status[value];
+          },
           thStyle: {
             padding: '0',
             height: '27px',
@@ -307,12 +314,23 @@ export default {
         },
       ],
       isProd: process.env.PROD,
+      paidEventsList: [
+        {
+          referral: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
+          affiliate: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
+          blockNumber: 14382,
+          transactionHash: '18vk40cc3er48fzs5ghqzxy88uq',
+          amount: '281231',
+          timestamp: '1631568392',
+          event: 'RewardClaimed',
+        },
+      ],
     };
   },
   computed: {
     ...mapGetters({
       referralReward: 'referral/getReferralReward',
-      paidEventsList: 'referral/getPaidEventsList',
+      // paidEventsList: 'referral/getPaidEventsList',
       referralsList: 'referral/getReferralsList',
       referralsListCount: 'referral/getReferralsListCount',
     }),
