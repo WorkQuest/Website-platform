@@ -169,9 +169,9 @@ export default {
     justify-content: center;
   }
   &__cards {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
   }
   &__title {
     @include text-simple;
