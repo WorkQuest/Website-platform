@@ -163,7 +163,6 @@
                     {{ UserName(userData.firstName, userData.lastName) }}
                   </div>
                   <div
-                    v-if="userData.role === $options.UserRole.EMPLOYER"
                     class="profile__text profile__text_blue"
                     :class="userData.role === $options.UserRole.EMPLOYER ? 'profile__text_blue' : 'profile__text_green'"
                   >
@@ -318,7 +317,7 @@ import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import moment from 'moment';
 import {
-  MessageAction, UserRole, Path, ChatType,
+  MessageAction, UserRole, Path,
 } from '~/utils/enums';
 
 export default {
@@ -458,10 +457,9 @@ export default {
           const { searchValue } = this;
 
           const isSearchValIncluded = (value) => value.toLowerCase().includes(searchValue);
-          const hasSearchedUser = () => data.userMembers.some(({ firstName, lastName }) => {
-            if (isSearchValIncluded(firstName) || isSearchValIncluded(lastName)) return true;
-            return false;
-          });
+          const hasSearchedUser = () => data.userMembers.some(
+            ({ firstName, lastName }) => !!(isSearchValIncluded(firstName) || isSearchValIncluded(lastName)),
+          );
 
           if (searchValue && !isSearchValIncluded(data.name) && !hasSearchedUser()) return;
 
@@ -508,9 +506,9 @@ export default {
         await Promise.all(subscribes.map((path) => this.$wsNotifs.subscribe(`/notifications/${path}`, (ev) => {
           if (path === 'chat') {
             this.chatAction(ev);
-            return;
+          } else {
+            this.addNotification(ev);
           }
-          this.addNotification(ev);
         })));
       }
       if (!chatActionsConnection) await this.$wsChatActions.connect(this.token);

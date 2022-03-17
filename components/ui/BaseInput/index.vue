@@ -41,11 +41,12 @@
       </div>
       <input
         ref="input"
+        :step="step"
         class="ctm-field__input"
         :class="[{'ctm-field__input_error': errors[0]},
                  {'ctm-field__input_padding-r' : $slots['right-absolute'] || (value && isSearch && !isBusySearch)}]"
         :placeholder="placeholder"
-        data-selector="BASE-INPUT-FIELD"
+        :data-selector="`BASE-INPUT-FIELD-${dataSelector.toUpperCase()}`"
         :value="mode === 'convertDate' ? convertDate(value) : value"
         :type="type"
         :autocomplete="autocomplete"
@@ -58,7 +59,7 @@
       <div
         v-if="value && isSearch && !isBusySearch"
         class="ctm-field__clear"
-        data-selector="ACTION-BTN-CLEAR"
+        :data-selector="`ACTION-BTN-CLEAR-${dataSelector.toUpperCase()}`"
         @click="clear()"
       >
         <span class="icon-close_small" />
@@ -88,6 +89,10 @@ export default {
     autoFocus: {
       type: Boolean,
       default: () => false,
+    },
+    step: {
+      type: String,
+      default: 'any',
     },
     onEnterPress: {
       type: Function,
@@ -162,6 +167,11 @@ export default {
     validationMode: {
       type: String,
       default: 'aggressive',
+    },
+    dataSelector: {
+      type: String,
+      default: 'NON_SELECTOR',
+      required: true,
     },
   },
   mounted() {

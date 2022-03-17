@@ -35,6 +35,7 @@
     "hideYourMessage": "Hide your message"
   },
   "messages": {
+    "min_percent": "The {_field_} field must be greater than {min}%",
     "alpha": "The {_field_} field may only contain alphabetic characters",
     "alpha_num": "The {_field_} field may only contain alpha-numeric characters",
     "alpha_dash": "The {_field_} field may contain alpha-numeric characters as well as dashes and underscores",
@@ -142,6 +143,7 @@
     "operation": "Operation",
     "allTransactions": "All transactions",
     "collateralTransactions": "Collateral transactions",
+    "questNotFound": "Quest not found",
     "redeem": "Redeem",
     "redeemed": "Redeemed",
     "pay": "Pay",
@@ -935,6 +937,10 @@
     "error": "Error!"
   },
   "modals": {
+    "successBuyWUSD": "Successfully purchased WUSD",
+    "setTokenPrice": "Setting up {token} price",
+    "approveRouter": "Approve {token} to Router",
+    "takeWUSD": "Buy your WUSD",
     "waitRoleCooldown": "You cannot change roles more than once a month. You can change role after {date} {time}",
     "settingsInfo": "Settings Info",
     "pleaseEnable2FA": "Please, enable TWO-Step authentication",
@@ -946,8 +952,11 @@
     "fieldCountOf": "{countOf} amount",
     "countOfCollateral": "How much collateral to leave?",
     "percentageConversion": "Percentage conversion",
-    "conversionAdditionalInfo": "Information about 150% + risks",
-    "fieldPercentConversion": "Numder of percentage conversion",
+    "conversionAdditionalInfo": "Information about 150% + {risks} risks",
+    "highRisk": "High",
+    "mediumRisk": "Medium",
+    "lowRisk": "Low",
+    "fieldPercentConversion": "Percentage conversion",
     "countOfRecievedWUSDDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "countOfCollateralDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "conversionPercentDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
