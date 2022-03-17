@@ -231,6 +231,7 @@ export default {
       await Promise.all([
         store.dispatch('referral/fetchRewardBalance', userAddress),
         store.dispatch('referral/fetchPaidEventsList'),
+        store.dispatch('referral/fetchReferralsList'),
       ]);
     } catch (err) {
       console.log('fetchRewardBalance err', err);
@@ -263,6 +264,36 @@ export default {
       //     event: 'RewardClaimed',
       //   },
       // ],
+      referralsList: [
+        {
+          id: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
+          referralUserId: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
+          affiliateId: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
+          referralStatus: 'created',
+          rewardStatus: 'paid',
+          referralUser: {
+            id: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
+            firstName: 'ivan',
+            lastName: 'ivanov',
+            avatar: {
+              id: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
+              url: 'http://example.com/v1/getVideo',
+              contentType: 'image/png',
+            },
+            ratingStatistic: {
+              id: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
+              userId: 'fa0e2e4e-c53f-4af7-8906-1649daa0cce3',
+              reviewCount: 10,
+              averageMark: 3.5,
+              status: 0,
+            },
+            wallet: {
+              address: '0x3e356dBeF7F3098407667a0f2aE6bC4ac9B69E0a',
+              bech32Address: 'eth18c6km0hh7vycgpmx0g8j4e4uftymd8s2ypanvc',
+            },
+          },
+        },
+      ],
       testFields: [
         {
           key: 'userInfo',
@@ -344,6 +375,7 @@ export default {
     ...mapGetters({
       referralReward: 'referral/getReferralReward',
       paidEventsList: 'referral/getPaidEventsList',
+      // referralsList: 'referral/getReferralsList',
     }),
     totalPages() {
       return Math.ceil(this.paidEventsList.length / this.perPage);
