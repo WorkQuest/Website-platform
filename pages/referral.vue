@@ -64,7 +64,7 @@
                   :selector="`registration`"
                   @click="clickRegistrationBtnHandler"
                 >
-                  {{ $t('modals.registration') }}
+                  {{ $t('meta.btns.registration') }}
                 </base-btn>
               </div>
             </div>
@@ -81,7 +81,7 @@
                 >
               </div>
               <div class="info-block__more">
-                {{ $tc('referral.plusCount', referralsListCount) }}
+                {{ $tc('meta.units.plusCount', referralsListCount) }}
               </div>
             </div>
             <div class="info-block__name">
@@ -213,8 +213,6 @@
 import { mapGetters } from 'vuex';
 import { STATUS_INFO } from '~/utils/referral-constants';
 import modals from '~/store/modals/modals';
-import { getWalletAddress } from '~/utils/wallet';
-import { TokenSymbols } from '~/utils/enums';
 
 export default {
   name: 'Referral',
@@ -370,18 +368,11 @@ export default {
   },
   methods: {
     async clickClaimBtnHandler() {
-      // const [txFee] = await Promise.all([
-      //   this.$store.dispatch('wallet/getStakingClaimFeeData', {
-      //     stakingType: this.slug,
-      //     poolAddress: this.poolAddress,
-      //   }),
-      // ]);
       this.ShowModal({
         key: modals.referralClaim,
         fields: {
-          to: { name: this.$t('meta.fromBig'), value: this.userAddress },
+          to: { name: this.$t('meta.toBig'), value: this.userAddress },
           amount: { name: this.$t('modals.amount'), value: this.referralReward },
-          // fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
         },
       });
     },
