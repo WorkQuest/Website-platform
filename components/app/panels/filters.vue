@@ -107,7 +107,7 @@ export default {
       return RatingFilter.map((item, i) => (i === 0 ? this.$t('quests.allVariants') : this.$t(`quests.rating.${item.key}`)));
     },
     priorityItems() {
-      return PriorityFilter.map((item, i) => (i === 0 ? this.$t('meta.priority.all') : this.$t(`quests.runtime.${item.key}`)));
+      return PriorityFilter.map((item, i) => (i === 0 ? this.$t('meta.priority.all') : this.$t(`meta.priority.${item.key}`)));
     },
     typeOfJobItems() {
       const items = [this.$t('quests.allVariants')];
