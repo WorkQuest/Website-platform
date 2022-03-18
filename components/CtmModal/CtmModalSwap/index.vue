@@ -54,7 +54,7 @@
         <div class="content__body body">
           <div>
             <div class="body__title">
-              {{ $t('modals.recepientBinance') }}
+              {{ $t('modals.recipientBinance') }}
             </div>
             <base-field
               v-model="recipientAddress"
@@ -187,8 +187,8 @@ export default {
           toChain: this.crosschainFlow.toChain.id,
           amount: `${this.amount} ${this.tokens[this.token]}`,
           amountInt: this.amount,
-          recepient: this.CutTxn(this.recipientAddress),
-          recepientFull: this.recipientAddress,
+          recipient: this.CutTxn(this.recipientAddress),
+          recipientFull: this.recipientAddress,
           worknetFee: `0,5 ${this.tokens[this.token]}`,
           binanceFee: '0,0009 BNB',
           tokenName: this.tokens[this.token],

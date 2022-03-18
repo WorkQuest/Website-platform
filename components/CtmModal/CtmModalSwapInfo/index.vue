@@ -75,11 +75,11 @@ export default {
         },
         {
           title: this.$t('modals.senderAddress'),
-          subtitle: this.options.recepient,
+          subtitle: this.options.recipient,
         },
         {
-          title: this.$t('modals.recepientAddress'),
-          subtitle: this.options.recepient,
+          title: this.$t('modals.recipientAddress'),
+          subtitle: this.options.recipient,
         },
         // {
         //   title: this.$t('modals.worknetFee'),
@@ -106,8 +106,8 @@ export default {
         _amount: optionsData.amountInt,
         chain: optionsData.chain,
         chainTo: optionsData.toChain,
-        userAddress: optionsData.recepientFull,
-        recipient: optionsData.recepientFull,
+        userAddress: optionsData.recipientFull,
+        recipient: optionsData.recipientFull,
         symbol: optionsData.tokenName,
       });
       this.ShowModal({

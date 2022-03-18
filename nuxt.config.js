@@ -133,6 +133,7 @@ export default {
     WETH_TOKEN: process.env.WETH_TOKEN,
     WBNB_TOKEN: process.env.WBNB_TOKEN,
 
+    WORKNET_BRIDGE: process.env.WORKNET_BRIDGE,
     WORKNET_ORACLE: process.env.WORKNET_ORACLE,
     WORKNET_PENSION_FUND: process.env.WORKNET_PENSION_FUND,
     WORKNET_ROUTER: process.env.WORKNET_ROUTER,

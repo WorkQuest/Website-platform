@@ -8,7 +8,7 @@
         <div class="content__container">
           <div class="content__input input">
             <span class="input__title">
-              {{ $t('modals.recepient') }}
+              {{ $t('modals.recipient') }}
             </span>
             <base-field
               v-model="recipient"
