@@ -25,7 +25,7 @@
               @click="toRaisingViews"
             >
               <div class="menu__text">
-                {{ $t('modals.raiseViews') }}
+                {{ $t('meta.raiseViews') }}
               </div>
             </div>
             <div
@@ -43,7 +43,7 @@
               @click="toEditQuest"
             >
               <div class="menu__text">
-                {{ $t('modals.edit') }}
+                {{ $t('meta.btns.edit') }}
               </div>
             </div>
             <div
@@ -52,7 +52,7 @@
               @click="showAreYouSureDeleteQuestModal"
             >
               <div class="menu__text">
-                {{ $t('modals.delete') }}
+                {{ $t('meta.btns.delete') }}
               </div>
             </div>
           </div>
@@ -103,9 +103,9 @@ export default {
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/deleteError.svg'),
-          title: this.$t('modals.error'),
-          subtitle: this.$t('modals.youCan’tEditQuest'),
-          button: this.$t('modals.close'),
+          title: this.$t('modals.errors.error'),
+          subtitle: this.$t('modals.2FA.youCan’tEditQuest'),
+          button: this.$t('meta.btns.close'),
         });
         return;
       }
@@ -127,9 +127,9 @@ export default {
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/deleteError.svg'),
-          title: this.$t('modals.error'),
-          subtitle: this.$t('modals.youCan’tDeleteQuest'),
-          button: this.$t('modals.close'),
+          title: this.$t('modals.errors.error'),
+          subtitle: this.$t('modals.2FA.youCan’tDeleteQuest'),
+          button: this.$t('meta.btns.close'),
         });
         return;
       }
@@ -138,7 +138,7 @@ export default {
         actionMethod: async () => this.ShowModal({
           key: modals.areYouSure,
           title: this.$t('modals.sureDeleteNotification'),
-          okBtnTitle: this.$t('meta.delete'),
+          okBtnTitle: this.$t('meta.btns.delete'),
           okBtnFunc: () => this.deleteQuest(),
         }),
       });
@@ -161,14 +161,14 @@ export default {
     },
     showToastWrongStatusEdit() {
       return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.questInfo'),
+        title: this.$t('meta.questInfo'),
         variant: 'warning',
         text: this.$t('toasts.questCantEdit'),
       });
     },
     showToastWrongStatusRaisingViews() {
       return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.questInfo'),
+        title: this.$t('meta.questInfo'),
         variant: 'warning',
         text: this.$t('toasts.questCantRaisingViews'),
       });

@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="skills"
-    :title="$t('skills.title')"
+    :title="$t('modals.titles.skills')"
   >
     <div class="ctm-modal__content">
       <div class="skills__body">
@@ -66,13 +66,13 @@
             selector="CLEAR-TAGS"
             @click="clearTags()"
           >
-            {{ $t('meta.reset') }}
+            {{ $t('meta.btns.reset') }}
           </base-btn>
           <base-btn
             selector="OK"
             @click="hide()"
           >
-            {{ $t('meta.ok') }}
+            {{ $t('meta.btns.ok') }}
           </base-btn>
         </div>
       </div>

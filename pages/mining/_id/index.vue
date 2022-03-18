@@ -10,7 +10,7 @@
           <template v-slot:left>
             <span class="icon-chevron_left" />
           </template>
-          {{ $t('mining.back') }}
+          {{ $t('meta.btns.back') }}
         </base-btn>
         <base-btn
           v-if="!isConnected"
@@ -77,7 +77,7 @@
               class="btn_bl"
               :disabled="statusBusy"
             >
-              {{ $t('mining.addLiquidity') }}
+              {{ $t('meta.addLiquidity') }}
             </base-btn>
             <base-btn
               v-if="currentPool === 'BNB'"
@@ -86,7 +86,7 @@
               class="btn_bl"
               :disabled="statusBusy"
             >
-              {{ $t('mining.addLiquidity') }}
+              {{ $t('meta.addLiquidity') }}
             </base-btn>
           </div>
         </div>
@@ -96,7 +96,7 @@
               <div class="third__wrapper">
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ $tc('mining.dollarsCount', !totalLiquidityUSD ? $t('mining.loading') : Floor(totalLiquidityUSD)) }}
+                    {{ $tc('meta.coins.count.dollarsCount', !totalLiquidityUSD ? $t('mining.loading') : Floor(totalLiquidityUSD)) }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('mining.totalLiquidity') }}
@@ -104,7 +104,7 @@
                 </div>
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ isLoadingAPY ? $t('mining.loading') : $tc('mining.wqtCount', profitWQT) }}
+                    {{ isLoadingAPY ? $t('mining.loading') : $tc('meta.coins.count.WQTCount', profitWQT) }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('mining.APY') }}
@@ -118,15 +118,15 @@
               <div class="third__wrapper">
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ $tc('mining.lpCount', stakedAmount) }}
+                    {{ $tc('meta.coins.count.LPCount', stakedAmount) }}
                   </div>
                   <div class="info-block__title_small">
-                    {{ $t('mining.stake') }}
+                    {{ $t('meta.btns.stake') }}
                   </div>
                 </div>
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ $tc('mining.wqtCount', rewardAmount) }}
+                    {{ $tc('meta.coins.count.WQTCount', rewardAmount) }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('mining.reward') }}
@@ -145,7 +145,7 @@
                 :disabled="!isConnected || statusBusy || disabled"
                 @click="openModalStaking()"
               >
-                {{ $t('mining.stake') }}
+                {{ $t('meta.btns.stake') }}
               </base-btn>
               <base-btn
                 selector="UNSTAKE"
@@ -154,7 +154,7 @@
                 :disabled="!isConnected || statusBusy || disabled"
                 @click="openModalUnstaking()"
               >
-                {{ $t('mining.unstake') }}
+                {{ $t('meta.btns.unstake') }}
               </base-btn>
               <base-btn
                 selector="CLAIM-REWARDS"
@@ -163,7 +163,7 @@
                 :disabled="!isConnected || statusBusy || disabled"
                 @click="claimRewards()"
               >
-                {{ $t('mining.claimReward') }}
+                {{ $t('meta.claimRewards') }}
               </base-btn>
             </div>
           </div>

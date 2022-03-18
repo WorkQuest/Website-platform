@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="getWUSD"
-    :title="$t('modals.getWUSD')"
+    :title="$t('modals.titles.buyWUSD')"
   >
     <div class="getWUSD__content content">
       <validation-observer
@@ -105,13 +105,13 @@
               :is-submit="false"
               @click="CloseModal"
             >
-              {{ $t('meta.cancel') }}
+              {{ $t('meta.btns.cancel') }}
             </base-btn>
             <base-btn
               class="buttons__button"
               :disabled="!validated || !passed || invalid"
             >
-              {{ $t('meta.submit') }}
+              {{ $t('meta.btns.submit') }}
             </base-btn>
           </div>
         </form>
@@ -139,9 +139,9 @@ export default {
       currentCurrencyPrice: 0,
       optimalCollateralRatio: 0,
       checkpoints: [
-        { name: this.$t('modals.bnb'), id: tokenMap.BNB },
-        { name: this.$t('modals.eth'), id: tokenMap.ETH },
-        { name: this.$t('modals.wqt'), id: tokenMap.WQT },
+        { name: this.$t('meta.coins.bnb'), id: tokenMap.BNB },
+        { name: this.$t('meta.coins.eth'), id: tokenMap.ETH },
+        { name: this.$t('meta.coins.wqt'), id: tokenMap.WQT },
       ],
     };
   },

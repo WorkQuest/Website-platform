@@ -10,7 +10,7 @@
       class="spec"
     >
       <div class="spec__title">
-        {{ $t(`filters.items.${specialization}.title`) }}
+        {{ $t(`filters.skills.${specialization}.title`) }}
       </div>
       <ul class="spec__skills">
         <li
@@ -19,7 +19,7 @@
           :data-selector="`SKILLS-${skill}`"
           class="skills__item skills__item_blue"
         >
-          {{ $t(`filters.items.${specialization}.sub.${skill}`) }}
+          {{ $t(`filters.skills.${specialization}.sub.${skill}`) }}
         </li>
       </ul>
     </div>

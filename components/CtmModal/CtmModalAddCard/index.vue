@@ -1,15 +1,11 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.addCard')"
+    :title="$t('modals.titles.cardAdd')"
   >
     <div class="ctm-modal__content">
-      <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
-      >
-        <div
-          class="ctm-modal__content-field"
-        >
+      <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
+        <div class="ctm-modal__content-field">
           <base-field
             v-model="cardNumberInput"
             :placeholder="'0000 0000 0000 0000'"
@@ -55,7 +51,7 @@
               :disabled="!validated || !passed || invalid"
               @click="handleSubmit(showCardHasBeenAddedModal)"
             >
-              {{ $t('meta.confirm') }}
+              {{ $t('meta.btns.confirm') }}
             </base-btn>
           </div>
           <div class="btn__wrapper">
@@ -65,7 +61,7 @@
               class="message__action"
               @click="hide()"
             >
-              {{ $t('meta.cancel') }}
+              {{ $t('meta.btns.cancel') }}
             </base-btn>
           </div>
         </div>

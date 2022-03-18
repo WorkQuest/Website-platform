@@ -5,7 +5,7 @@
   >
     <div class="advanced__left">
       <div class="advanced__title">
-        {{ $t('settings.settings') }}
+        {{ $t('meta.settings') }}
       </div>
       <div
         v-for="(radio) in radioButtons"
@@ -41,7 +41,7 @@
     </div>
     <div class="advanced__right">
       <div class="advanced__title">
-        {{ $t('settings.settings') }}
+        {{ $t('meta.settings') }}
       </div>
       <div class="advanced__options">
         <div
@@ -141,13 +141,13 @@ export default {
       return [
         {
           title: 'settings.changePass',
-          buttonName: 'settings.change',
+          buttonName: 'meta.btns.change',
           modal: 'changePassInSettings',
           isSwitcher: false,
         },
         {
           title: 'settings.enableTwoStepAuth',
-          firstButtonName: 'meta.disable',
+          firstButtonName: 'meta.btns.disable',
           secondButtonName: 'settings.enable',
           firstModal: 'disable2FA',
           secondModal: 'twoFAAuth',
@@ -155,15 +155,15 @@ export default {
         },
         {
           title: 'settings.smsVerification',
-          buttonName: this.userData?.phone?.fullPhone ? 'settings.verified' : 'settings.enable',
+          buttonName: this.userData?.phone?.fullPhone ? 'meta.verified' : 'settings.enable',
           modal: 'smsVerification',
           isSwitcher: false,
           disabled: !!this.userData?.phone?.fullPhone,
         },
         {
           title: 'settings.changeRole',
-          firstButtonName: 'settings.change',
-          secondButtonName: 'settings.change',
+          firstButtonName: 'meta.btns.change',
+          secondButtonName: 'meta.btns.change',
           firstModal: 'changeRoleWarning',
           secondModal: 'neededToEnable2FA',
           isSwitcher: true,
@@ -174,6 +174,13 @@ export default {
   methods: {
     async showModalKey(modalKey) {
       this.$emit('showModalKey', modalKey);
+    },
+    smsVerErrorModal() {
+      this.ShowModal({
+        key: modals.status,
+        title: this.$t('modals.errors.errorSmsVer'),
+        subtitle: this.$t('modals.fillNumber'),
+      });
     },
   },
 };

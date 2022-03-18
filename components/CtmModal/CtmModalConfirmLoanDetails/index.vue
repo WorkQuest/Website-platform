@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="details"
-    :title="$t('modals.confirmDetails')"
+    :title="$t('modals.titles.confirmDetails')"
   >
     <div class="details__content content">
       <div class="content__field">
@@ -25,14 +25,14 @@
           selector="CANCEL"
           @click="hide"
         >
-          {{ $t('meta.cancel') }}
+          {{ $t('meta.btns.cancel') }}
         </base-btn>
         <base-btn
           class="buttons__button"
           selector="SUBMIT"
           @click="openStatusModal"
         >
-          {{ $t('meta.submit') }}
+          {{ $t('meta.btns.submit') }}
         </base-btn>
       </div>
     </div>
@@ -50,15 +50,15 @@ export default {
       abouts: [
         {
           title: this.$t('modals.currencyDetails'),
-          subtitle: this.$t('modals.eth'),
+          subtitle: this.$t('meta.coins.eth'),
         },
         {
-          title: this.$t('modals.loan'),
-          subtitle: `${1} ${this.$t('modals.eth')}`,
+          title: this.$t('modals.titles.loan'),
+          subtitle: this.$tc('meta.coins.count.ETHCount', 1),
         },
         {
           title: this.$t('modals.percentage'),
-          subtitle: this.$tc('modals.percentsCount', 150),
+          subtitle: this.$tc('meta.units.percentsCount', 150),
         },
         {
           title: this.$t('modals.loanTerm'),
@@ -81,7 +81,7 @@ export default {
         key: modals.status,
         img: require('~/assets/img/ui/transactionSend.svg'),
         title: this.$t('modals.loanIsOpened'),
-        subtitle: this.$t('modals.loanIsOpenedText'),
+        subtitle: '',
         path: this.options.needChangeModal ? '/crediting/1' : undefined,
       });
     },

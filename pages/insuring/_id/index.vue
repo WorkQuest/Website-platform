@@ -25,17 +25,17 @@
                   {{ $t('insuring.yourFundBalance') }}
                 </div>
                 <div class="title_blue">
-                  {{ $tc('insuring.wusdCount', 0) }}
+                  {{ $tc('meta.coins.count.WUSDCount', 0) }}
                 </div>
                 <div class="title_gray">
-                  {{ $tc('insuring.dollarsCount', 0) }}
+                  {{ $tc('meta.coins.count.dollarsCount', 0) }}
                 </div>
               </div>
               <base-btn
                 class="btn_bl"
                 @click="openWithdrawModule()"
               >
-                {{ $t('insuring.withdraw') }}
+                {{ $t('meta.withdrawal') }}
               </base-btn>
             </div>
             <div class="info-block__points info-block_gray">
@@ -114,7 +114,7 @@
                     alt=""
                   >
                   <div class="name">
-                    {{ $tc('insuring.paymentOfInsurance', $t('insuring.userName') ) }}
+                    {{ $tc('insuring.paymentOfInsurance', 'Cody Fisher' ) }}
                   </div>
                 </div>
                 <template v-if="!isVotingDone">
@@ -149,7 +149,7 @@
                     <div class="name">
                       {{ res.name }}
                       <div class="percs">
-                        {{ $tc('insuring.percentsCount', res.percents) }}
+                        {{ $tc('meta.units.percentsCount', res.percents) }}
                       </div>
                     </div>
                     <progress
@@ -258,9 +258,9 @@ export default {
     return {
       isMobileChatOpened: false,
       points: [
-        this.$t('insuring.pointTemplate'),
-        this.$t('insuring.pointTemplate'),
-        this.$t('insuring.pointTemplate'),
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
       ],
       cards: [
         {
@@ -295,50 +295,50 @@ export default {
       messages: [
         {
           sender: {
-            name: this.$t('insuring.userName'),
+            name: 'Cody Fisher',
             url: require('~/assets/img/temp/avatar-small.jpg'),
           },
-          text: this.$t('insuring.templateText'),
+          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
           time: '12.23',
         },
         {
           sender: {
-            name: this.$t('insuring.userName'),
+            name: 'Cody Fisher',
             url: require('~/assets/img/temp/avatar-small.jpg'),
           },
-          text: this.$t('insuring.templateText'),
+          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
           time: '12.23',
         },
         {
           sender: {
-            name: this.$t('insuring.userName'),
+            name: 'Cody Fisher',
             url: require('~/assets/img/temp/avatar-small.jpg'),
           },
-          text: this.$t('insuring.templateText'),
+          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
           time: '12.23',
         },
         {
           sender: {
-            name: this.$t('insuring.userName'),
+            name: 'Cody Fisher',
             url: require('~/assets/img/temp/avatar-small.jpg'),
           },
-          text: this.$t('insuring.templateText'),
+          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
           time: '12.23',
         },
         {
           sender: {
-            name: this.$t('insuring.userName'),
+            name: 'Cody Fisher',
             url: require('~/assets/img/temp/avatar-small.jpg'),
           },
-          text: this.$t('insuring.templateText'),
+          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
           time: '12.23',
         },
         {
           sender: {
-            name: this.$t('insuring.userName'),
+            name: 'Cody Fisher',
             url: require('~/assets/img/temp/avatar-small.jpg'),
           },
-          text: this.$t('insuring.templateText'),
+          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
           time: '12.23',
         },
       ],
@@ -346,7 +346,7 @@ export default {
       isVotingDone: false,
       btns: [
         {
-          name: this.$t('insuring.notAgree'),
+          name: this.$t('meta.btns.disagree'),
           class: 'btn_red',
         },
         {
@@ -354,21 +354,21 @@ export default {
           class: 'btn',
         },
         {
-          name: this.$t('insuring.agree'),
+          name: this.$t('meta.btns.agree'),
           class: 'btn_bl',
         },
       ],
       results: [
         {
-          name: this.$t('insuring.agree'),
+          name: this.$t('meta.btns.agree'),
           percents: 75,
-          count: this.$tc('insuring.votesCount', 10),
+          count: this.$tc('meta.units.votesCount', 10),
           class: 'progress-green',
         },
         {
-          name: this.$t('insuring.notAgree'),
+          name: this.$t('meta.btns.disagree'),
           percents: 20,
-          count: this.$tc('insuring.votesCount', 10),
+          count: this.$tc('meta.units.votesCount', 10),
           class: 'progress-red',
         },
       ],

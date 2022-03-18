@@ -1,6 +1,6 @@
 <template>
   <ctm-modal-box
-    :title="$t('modals.chooseSkills')"
+    :title="$t('modals.titles.chooseSkills')"
     class="messageSend"
   >
     <div class="ctm-modal__content">
@@ -58,7 +58,7 @@
                 selector="APPLY"
                 @click="success()"
               >
-                {{ $t('meta.apply') }}
+                {{ $t('meta.btns.apply') }}
               </base-btn>
             </div>
             <div class="btn__wrapper">
@@ -68,7 +68,7 @@
                 class="message__action"
                 @click="hide()"
               >
-                {{ $t('meta.cancel') }}
+                {{ $t('meta.btns.cancel') }}
               </base-btn>
             </div>
           </div>
@@ -120,7 +120,7 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/success.svg'),
-        title: this.$t('modals.success'),
+        title: this.$t('meta.success'),
         subtitle: this.$t('modals.yourRoleHasBeenChanged'),
       });
     },

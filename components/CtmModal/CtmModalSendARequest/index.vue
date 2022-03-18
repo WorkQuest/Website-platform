@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="message"
-    :title="$t('modals.sendARequest')"
+    :title="$t('modals.titles.sendARequest')"
   >
     <div class="ctm-modal__content">
       <validation-observer v-slot="{handleSubmit}">
@@ -21,7 +21,7 @@
                     v-model="text"
                     class="message__textarea"
                     rules="required"
-                    :placeholder="$t('modals.hello')"
+                    :placeholder="$t('meta.typeYourMessage')"
                   />
                 </div>
                 <files-uploader
@@ -42,7 +42,7 @@
                     :disabled="!text || isRespondActionInProgress"
                     @click="handleSubmit(showRequestSendModal)"
                   >
-                    {{ $t('meta.send') }}
+                    {{ $t('meta.btns.send') }}
                   </base-btn>
                 </div>
                 <div class="btn__wrapper">
@@ -52,7 +52,7 @@
                     class="message__action"
                     @click="hide()"
                   >
-                    {{ $t('meta.cancel') }}
+                    {{ $t('meta.btns.cancel') }}
                   </base-btn>
                 </div>
               </div>

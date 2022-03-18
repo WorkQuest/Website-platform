@@ -94,11 +94,13 @@ Vue.mixin({
     },
     ShowToast(text, title = null) {
       this.$bvToast.toast(text, {
-        title: title || this.$t('modals.error'),
+        title: title || this.$t('modals.errors.error'),
         variant: 'warning',
         solid: true,
         toaster: 'b-toaster-bottom-right',
         appendToast: true,
+        toastClass: 'custom-toast-width',
+        bodyClass: 'custom-toast-width',
       });
     },
     Floor: (value, precision = 4) => {
@@ -181,7 +183,7 @@ Vue.mixin({
         });
       } else {
         await this.$store.dispatch('main/showToast', {
-          title: this.$t('toasts.questInfo'),
+          title: this.$t('meta.questInfo'),
           variant: 'warning',
           text: this.$t('toasts.questCantDelete'),
         });

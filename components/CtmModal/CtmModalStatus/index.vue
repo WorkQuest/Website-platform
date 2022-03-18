@@ -47,7 +47,7 @@
           v-else
           class="status__text"
         >
-          {{ $t('meta.ok') }}
+          {{ $t('meta.btns.ok') }}
         </span>
       </base-btn>
       <div
@@ -84,7 +84,7 @@
           v-else
           class="status__text"
         >
-          {{ $t('meta.ok') }}
+          {{ $t('meta.btns.ok') }}
         </span>
       </base-btn>
     </div>

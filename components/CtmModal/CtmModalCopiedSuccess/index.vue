@@ -17,7 +17,7 @@
         selector="OK"
         @click="hide"
       >
-        {{ $t('meta.ok') }}
+        {{ $t('meta.btns.ok') }}
       </base-btn>
     </div>
   </ctm-modal-box>

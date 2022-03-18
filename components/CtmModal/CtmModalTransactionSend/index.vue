@@ -12,15 +12,12 @@
       <div class="transaction__title">
         {{ $t('modals.transactionSent') }}
       </div>
-      <div class="transaction__desc">
-        {{ $t('modals.transactionSentText') }}
-      </div>
       <base-btn
         class="transaction__action"
         selector="OK"
         @click="hide"
       >
-        {{ $t('meta.ok') }}
+        {{ $t('meta.btns.ok') }}
       </base-btn>
     </div>
   </ctm-modal-box>

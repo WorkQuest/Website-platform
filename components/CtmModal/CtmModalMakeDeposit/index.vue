@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="deposit"
-    :title="$t('modals.depositTitle')"
+    :title="$t('modals.titles.deposit')"
   >
     <div class="deposit__content content">
       <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
@@ -25,7 +25,7 @@
             selector="CANCEL"
             @click="hide"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
@@ -33,7 +33,7 @@
             :disabled="!validated || !passed || invalid"
             @click="handleSubmit(toDepositReceipt)"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.btns.submit') }}
           </base-btn>
         </div>
       </validation-observer>
@@ -96,8 +96,8 @@ export default {
       }
 
       const fields = {
-        from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-        to: { name: this.$t('modals.toAddress'), value: process.env.WORKNET_PENSION_FUND },
+        from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+        to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_PENSION_FUND },
         fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
         amount: { name: this.$t('modals.amount'), value: this.amount, symbol: TokenSymbols.WUSD },
       };
@@ -114,7 +114,7 @@ export default {
         key: modals.status,
         img: require('~/assets/img/ui/transactionSend.svg'),
         title: this.$t('modals.depositIsDone'),
-        subtitle: this.$t('modals.pensionIsRegisteredText'),
+        subtitle: '',
       });
     },
   },

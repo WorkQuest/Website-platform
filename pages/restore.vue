@@ -49,7 +49,7 @@
         </base-field>
         <div class="restore__action">
           <base-btn selector="SAVE">
-            {{ $t('meta.save') }}
+            {{ $t('meta.btns.save') }}
           </base-btn>
         </div>
       </form>

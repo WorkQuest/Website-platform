@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="claim"
-    :title="$t('mining.swapTokens.title')"
+    :title="$t('modals.titles.swapTokens')"
   >
     <div class="claim__content content">
       <validation-observer v-slot="{handleSubmit}">
@@ -49,7 +49,7 @@
             :disabled="statusBusy"
             @click="hide()"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             :disabled="statusBusy || !isConnected"

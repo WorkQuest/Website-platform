@@ -9,7 +9,7 @@
         class="role__back"
         @click="toSign"
       >
-        <span class="icon-chevron_big_left" /><span>{{ $t('meta.back') }}</span>
+        <span class="icon-chevron_big_left" /><span>{{ $t('meta.btns.back') }}</span>
       </div>
       <div class="role__title">
         {{ $t('role.choose') }}
@@ -94,7 +94,7 @@
         class="wallet-step__back"
         @click="stepBack"
       >
-        <span class="icon-chevron_big_left" /><span>{{ $t('meta.back') }}</span>
+        <span class="icon-chevron_big_left" /><span>{{ $t('meta.btns.back') }}</span>
       </div>
       <CreateWallet
         :step="step"

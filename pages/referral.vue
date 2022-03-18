@@ -20,7 +20,7 @@
                   {{ $t('referral.referralReward') }}
                 </div>
                 <div class="info-block__tokens">
-                  {{ $tc('referral.wqtCount', referralReward) }}
+                  {{ $tc('meta.coins.count.WQTCount', referralReward) }}
                 </div>
               </div>
               <div class="info-block__btn-wrap">
@@ -48,7 +48,7 @@
                 </div>
               </div>
               <div class="user__value_green">
-                {{ $tc('referral.plusCount', $tc('referral.wqtCount', 0)) }}
+                {{ $tc('meta.units.plusCount', $tc('meta.coins.count.WQTCount', 0)) }}
               </div>
             </div>
           </div>
@@ -77,8 +77,8 @@
               >
                 <img
                   class="ava_list"
-                  :src="item.referralUser.avatar.url + '/' + item.referralUser.avatar.id"
-                  alt="Avatar"
+                  src="~/assets/img/social/GOOGLE_+_.png"
+                  alt=""
                 >
               </div>
               <div class="info-block__more">
@@ -572,6 +572,7 @@ export default {
       }
 
       &__more {
+        position: absolute;
         height: 33px;
         padding: 0 10px;
         min-width: 53px;

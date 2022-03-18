@@ -3,7 +3,7 @@
     class="change-role"
     :class="[{'change-role_wide': step === 1}]"
     :is-unclosable="true"
-    :title="step === 1 ? $t('modals.reason') : $t('modals.securityCheck')"
+    :title="step === 1 ? $t('modals.titles.reason') : $t('modals.titles.securityCheckBig')"
   >
     <validation-observer
       v-slot="{invalid, handleSubmit}"
@@ -28,7 +28,7 @@
                 selector="NEXT-STEP"
                 @click="nextStep()"
               >
-                {{ $t('meta.change') }}
+                {{ $t('meta.btns.change') }}
               </base-btn>
             </div>
             <div class="btn__wrapper">
@@ -38,7 +38,7 @@
                 selector="CANCEL"
                 @click="hide()"
               >
-                {{ $t('meta.cancel') }}
+                {{ $t('meta.btns.cancel') }}
               </base-btn>
             </div>
           </div>
@@ -50,14 +50,14 @@
           <form @submit.prevent="handleSubmit(changeRole)">
             <base-field
               v-model="totp"
-              :label="$t('modals.googleConfCode')"
+              :label="$t('meta.googleConfCode')"
               class="change-role__action"
-              :placeholder="$t('modals.googleConfCode')"
+              :placeholder="$t('meta.googleConfCode')"
               rules="min:6|numeric|max:6|required"
-              :name="$t('modals.googleConfCode')"
+              :name="$t('meta.googleConfCode')"
             />
             <div class="change-role__sub">
-              {{ $t('modals.enterCode') }}
+              {{ $t('meta.googleConfCodeDesc') }}
             </div>
             <div class="btn__container">
               <base-btn
@@ -65,7 +65,7 @@
                 selector="CHANGE-ROLE"
                 :disabled="invalid"
               >
-                {{ $t('meta.send') }}
+                {{ $t('meta.btns.send') }}
               </base-btn>
             </div>
           </form>
@@ -113,7 +113,7 @@ export default {
             img: require('~/assets/img/ui/error.svg'),
             title: this.$t('modals.warning'),
             subtitle: this.$t('modals.waitRoleCooldown', { date: date.toLocaleDateString(this.$i18n.locale), time: date.toLocaleTimeString(this.$i18n.locale) }),
-            button: this.$t('modals.close'),
+            button: this.$t('meta.btns.close'),
           });
         }
       }

@@ -4,7 +4,7 @@
     data-selector="PAGE-SETTINGS"
   >
     <div class="settings__title">
-      {{ $t('settings.settings') }}
+      {{ $t('meta.settings') }}
     </div>
     <ValidationObserver
       ref="settings"
@@ -212,7 +212,7 @@ export default {
         educationAddSuccessful: this.$t('modals.educationAddSuccessful'),
         workExpAddSuccessful: this.$t('modals.workExpAddSuccessful'),
         saved: this.$t('modals.saved'),
-        error: this.$t('modals.error'),
+        error: this.$t('modals.errors.error'),
       };
       return titles[modalMode];
     },
@@ -224,7 +224,7 @@ export default {
         educationAddSuccessful: this.$t('modals.pressSaveBtn'),
         workExpAddSuccessful: this.$t('modals.pressSaveBtn'),
         saved: this.$t('modals.userDataHasBeenSaved'),
-        error: this.$t('modals.error'),
+        error: this.$t('modals.errors.error'),
       };
       return subtitles[modalMode];
     },
