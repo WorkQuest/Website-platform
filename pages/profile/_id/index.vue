@@ -10,7 +10,7 @@
             :data-selector="`PAGE-TABS-${item.tabName}`"
             class="routes__btn"
             :class="{routes__btn_active: selectedTab === item.tabName}"
-            @click="selectedTab = item.tabName"
+            @click="selectTab(item.tabName)"
           >
             {{ item.title }}
           </button>
@@ -101,7 +101,7 @@
             <div
               class="button__more"
               data-selector="ACTION-BTN-TABS-SHOW-ALL-QUEST"
-              @click="selectedTab = 'quests'"
+              @click="selectTab('quests')"
             >
               {{ $t('meta.btns.showAllQuests') }}
             </div>
@@ -140,7 +140,7 @@
                 v-if="reviewsObject.count > 4"
                 class="button__more"
                 data-selector="ACTION-BTN-SHOW-ALL-REVIEWS"
-                @click="selectedTab = 'reviews'"
+                @click="selectTab('reviews')"
               >
                 {{ $t('meta.btns.showAllReviews') }}
               </div>
@@ -197,7 +197,7 @@
             <div
               class="button__more"
               data-selector="ACTION-BTN-SHOW-ALL-PORTFOLIOS"
-              @click="selectedTab = 'portfolio'"
+              @click="selectTab('portfolio')"
             >
               {{ $t('meta.btns.showAllPortfolios') }}
             </div>
@@ -347,16 +347,19 @@ export default {
     async pageQuests() {
       this.SetLoader(true);
       await this.changeQuestsData();
+      this.ScrollToTop();
       this.SetLoader(false);
     },
     async pageReviews() {
       this.SetLoader(true);
       await this.changeReviewsData();
+      this.ScrollToTop();
       this.SetLoader(false);
     },
     async pagePortfolios() {
       this.SetLoader(true);
       await this.changePortfoliosData(this.perPagerPortfolios);
+      this.ScrollToTop();
       this.SetLoader(false);
     },
   },
@@ -386,6 +389,10 @@ export default {
     await this.$store.dispatch('user/clearAnotherUserData');
   },
   methods: {
+    selectTab(tab) {
+      this.selectedTab = tab;
+      this.ScrollToTop();
+    },
     async updateQuests(item) {
       this.SetLoader(true);
       if (!item.star) await this.$store.dispatch('quests/setStarOnQuest', item.id);
@@ -427,7 +434,7 @@ export default {
       const payload = {
         userId: this.userId,
         query: {
-          limit: limit || this.perPagerPortfolios,
+          limit,
           offset: (this.pagePortfolios - 1) * this.perPagerPortfolios,
         },
       };

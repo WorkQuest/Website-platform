@@ -137,6 +137,13 @@ body {
   z-index: 3000;
 }
 
+.custom-toast-width {
+  flex-basis: fit-content;
+  width: fit-content;
+  min-width: 350px;
+  max-width: none;
+}
+
 #WEB3_CONNECT_MODAL_ID > div {
   z-index: 1000000;
 }
