@@ -1296,7 +1296,8 @@
     "incorrectChain": "You choose incorrect chain !",
     "selectToken": "Select token",
     "txInfo": "Transaction info",
-    "registration": "Registration"
+    "registration": "Registration",
+    "referralRewards": "Claim referral rewards"
   },
   "ui": {
     "jobQuestors": "Job Questors",
