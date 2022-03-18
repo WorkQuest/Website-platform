@@ -311,7 +311,7 @@ export default {
         },
         {
           key: 'event',
-          label: this.$t('referral.tableHead.status'),
+          label: this.$t('referral.tableHead.event'),
           formatter: (value) => STATUS_INFO[value](this),
           thStyle: {
             padding: '0',
