@@ -51,7 +51,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'TransactionReceipt',
+  name: 'ReferralClaim',
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
