@@ -102,4 +102,9 @@ export default {
       return error();
     }
   },
+  async subscribeToReferralEvents(_, userAddress) {
+    await this.$wsNotifs.subscribe(`/notifications/referral/${userAddress}`, async (msg) => {
+      console.log('subscribeToReferralEvents massage', msg);
+    });
+  },
 };

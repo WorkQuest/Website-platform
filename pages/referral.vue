@@ -237,6 +237,7 @@ export default {
         store.dispatch('referral/fetchPaidEventsList'),
         store.dispatch('referral/fetchReferralsList'),
         store.dispatch('referral/fetchCreatedReferralList'),
+        store.dispatch('referral/subscribeToReferralEvents', userAddress),
       ]);
     } catch (err) {
       console.log('fetchRewardBalance err', err);
