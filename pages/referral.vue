@@ -245,7 +245,6 @@ export default {
   data() {
     return {
       page: 1,
-      offset: 10,
       perPage: 6,
       referLink: 'https://www.workquest.com/ref?v=',
       testFields: [
