@@ -99,6 +99,8 @@ Vue.mixin({
         solid: true,
         toaster: 'b-toaster-bottom-right',
         appendToast: true,
+        toastClass: 'custom-toast-width',
+        bodyClass: 'custom-toast-width',
       });
     },
     Floor: (value, precision = 4) => {
