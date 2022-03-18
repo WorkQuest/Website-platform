@@ -361,6 +361,7 @@ export default {
     page: {
       async handler(newValue, oldValue) {
         if (newValue !== oldValue) {
+          this.ScrollToTop();
           const payload = {
             params: {
               limit: 6,
