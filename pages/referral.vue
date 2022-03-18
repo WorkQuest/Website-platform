@@ -378,19 +378,9 @@ export default {
       });
     },
     async clickRegistrationBtnHandler() {
-      this.SetLoader(true);
-      let res;
-      try {
-        res = await this.$store.dispatch('referral/addReferrals');
-      } catch (err) {
-        console.log('claimReferralReward err', err);
-      }
-      this.SetLoader(false);
-      if (res) {
-        this.ShowModal({
-          key: modals.thanks,
-        });
-      }
+      this.ShowModal({
+        key: modals.referralRegistration,
+      });
     },
   },
 };
