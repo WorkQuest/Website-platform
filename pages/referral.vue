@@ -25,7 +25,6 @@
               </div>
               <div class="info-block__btn-wrap">
                 <base-btn
-                  :disabled="Number(referralReward) === 0"
                   :selector="`claim`"
                   @click="clickClaimBtnHandler"
                 >
@@ -214,6 +213,8 @@
 import { mapGetters } from 'vuex';
 import { STATUS_INFO } from '~/utils/referral-constants';
 import modals from '~/store/modals/modals';
+import { getWalletAddress } from '~/utils/wallet';
+import { TokenSymbols } from '~/utils/enums';
 
 export default {
   name: 'Referral',
@@ -322,6 +323,7 @@ export default {
       referralsListCount: 'referral/getReferralsListCount',
       createdReferralList: 'referral/getCreatedReferralList',
       referralSignature: 'referral/getReferralSignature',
+      userAddress: 'user/getUserWalletAddress',
     }),
     totalPages() {
       return Math.ceil(this.paidEventsList.length / this.perPage);
@@ -368,19 +370,20 @@ export default {
   },
   methods: {
     async clickClaimBtnHandler() {
-      this.SetLoader(true);
-      let res;
-      try {
-        res = await this.$store.dispatch('referral/claimReferralReward');
-      } catch (err) {
-        console.log('claimReferralReward err', err);
-      }
-      this.SetLoader(false);
-      if (res) {
-        this.ShowModal({
-          key: modals.thanks,
-        });
-      }
+      // const [txFee] = await Promise.all([
+      //   this.$store.dispatch('wallet/getStakingClaimFeeData', {
+      //     stakingType: this.slug,
+      //     poolAddress: this.poolAddress,
+      //   }),
+      // ]);
+      this.ShowModal({
+        key: modals.referralClaim,
+        fields: {
+          to: { name: this.$t('meta.fromBig'), value: this.userAddress },
+          amount: { name: this.$t('modals.amount'), value: this.referralReward },
+          // fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
+        },
+      });
     },
     async clickRegistrationBtnHandler() {
       this.SetLoader(true);
