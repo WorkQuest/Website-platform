@@ -2,6 +2,7 @@
   <div
     class="card"
     :data-selector="`COMPONENT-EMPLOYEE-CARD-${user.id}`"
+    :style="raiseViews"
     @click="$emit('click')"
   >
     <div class="card__header">
@@ -84,6 +85,30 @@ export default {
         string += `${i ? ', ' : ''}${name}`;
       });
       return string;
+    },
+    raiseViews() {
+      try {
+        switch (this.user.raiseView.type) {
+          case 0: {
+            return 'box-shadow: 0 0 10px 2px rgba(246, 207, 0, 0.3)';
+          }
+          case 1: {
+            return 'box-shadow: 0 0 10px 2px rgba(246, 207, 0, 0.3)';
+          }
+          case 2: {
+            return 'box-shadow: 0 0 10px 2px rgba(187,192,199, 0.3)';
+          }
+          case 3: {
+            return 'box-shadow: 3 0 0 10px 2px rgba(183,151,104, 0.3)';
+          }
+          default: {
+            console.log(this.user.raiseView.type);
+            return 'box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2)';
+          }
+        }
+      } catch (e) {
+        return 'box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2)';
+      }
     },
   },
   methods: {
