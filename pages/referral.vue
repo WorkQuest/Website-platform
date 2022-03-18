@@ -91,10 +91,16 @@
                 {{ $tc('meta.units.plusCount', referralsListCount) }}
               </div>
             </div>
-            <div class="info-block__name">
+            <div
+              v-if="userReferralId.length"
+              class="info-block__name"
+            >
               {{ $t('referral.yourReferralLink') }}
             </div>
-            <div class="info-block__link">
+            <div
+              v-if="userReferralId.length"
+              class="info-block__link"
+            >
               <div class="address">
                 {{ referLink }}{{ userReferralId }}
               </div>
