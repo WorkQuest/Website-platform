@@ -1186,9 +1186,7 @@
     "youTryToAttachUnsupportedFileFormat": "You try to attach unsupported file format",
     "incorrectChain": "You choose incorrect chain !",
     "selectToken": "Select token",
-    "txInfo": "Transaction info",
-    "registration": "Registration",
-    "referralRewards": "Claim referral rewards"
+    "txInfo": "Transaction info"
   },
   "ui": {
     "jobQuestors": "Job Questors",
