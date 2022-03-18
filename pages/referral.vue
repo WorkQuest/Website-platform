@@ -26,7 +26,7 @@
               <div class="info-block__btn-wrap">
                 <base-btn
                   :disabled="Number(referralReward) === 0"
-                  :selector="`claim`"
+                  :selector="`CLAIM`"
                   @click="clickClaimBtnHandler"
                 >
                   {{ $t('modals.claim') }}
@@ -68,7 +68,7 @@
               <div class="info-block__btn-wrap info-block__btn-wrap_absolute">
                 <base-btn
                   :disabled="!createdReferralList.length"
-                  :selector="`registration`"
+                  :selector="`REGISTRATION`"
                   @click="clickRegistrationBtnHandler"
                 >
                   {{ $t('meta.btns.registration') }}
@@ -155,7 +155,7 @@
           <div class="referral-page__table">
             <b-table
               :items="paidEventsList"
-              :fields="testFields"
+              :fields="tableFields"
               borderless
               caption-top
               thead-class="table__header"
@@ -247,7 +247,7 @@ export default {
       page: 1,
       perPage: 6,
       referLink: 'https://www.workquest.com/ref?v=',
-      testFields: [
+      tableFields: [
         {
           key: 'userInfo',
           label: this.$t('referral.tableHead.name'),
