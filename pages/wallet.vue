@@ -528,8 +528,11 @@ export default {
 
   &__icon {
     display: flex;
-    justify-content: flex-end;
+    justify-self: self-end;
+    height: 20px;
+    width: 20px;
     z-index: 2;
+
     &:before {
       cursor: pointer;
       font-size: 20px;
