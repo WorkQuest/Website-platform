@@ -25,6 +25,7 @@
               </div>
               <div class="info-block__btn-wrap">
                 <base-btn
+                  :disabled="Number(referralReward) === 0"
                   :selector="`claim`"
                   @click="clickClaimBtnHandler"
                 >
