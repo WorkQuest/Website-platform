@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="withdraw"
-    :title="$t('modals.withdrawal')"
+    :title="$t('meta.withdrawal')"
   >
     <div class="withdraw__content content">
       <validation-observer v-slot="{handleSubmit, invalid}">
@@ -13,7 +13,7 @@
             {{ $t('modals.walletAddress') }}
           </div>
           <div class="content__panel_active">
-            {{ $t('wallet.bankCard') }}
+            {{ $t('meta.bankCard') }}
           </div>
         </div>
         <div class="content__grid grid">
@@ -90,7 +90,7 @@
             mode="outline"
             @click="hide"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
@@ -98,7 +98,7 @@
             :disabled="invalid||items.length===0"
             @click="handleSubmit(showTransactionSendModal)"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.btns.submit') }}
           </base-btn>
         </div>
       </validation-observer>
@@ -139,7 +139,7 @@ export default {
     showTransactionSendModal() {
       this.ShowModal({
         key: modals.withdrawInfo,
-        title: this.$t('modals.withdrawInfo'),
+        title: this.$t('modals.info.withdrawInfo'),
         cardNumber: this.options.cardNumber || '0000000000000000',
       });
     },

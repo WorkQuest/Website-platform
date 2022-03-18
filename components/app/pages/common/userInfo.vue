@@ -30,7 +30,7 @@
           />
         </div>
         <div class="block__reviews">
-          {{ `${userData.ratingStatistic ? userData.ratingStatistic.reviewCount : 0} ${$t('quests.reviews')}` }}
+          {{ `${userData.ratingStatistic ? userData.ratingStatistic.reviewCount : 0} ${$t('meta.reviewsSmall')}` }}
         </div>
       </div>
       <div class="info-grid__block block block_right">
@@ -60,7 +60,7 @@
           class="block__knowledge knowledge"
         >
           <div class="knowledge__text">
-            {{ $t('profile.educations') }}
+            {{ $t('meta.educations') }}
           </div>
           <div
             v-if="userData.additionalInfo.educations"
@@ -149,10 +149,10 @@
           class="right__price"
         >
           <div class="price__text">
-            {{ $t('settings.costPerHour') }}
+            {{ $t('meta.costPerHour') }}
           </div>
           <div class="price__value">
-            {{ $tc('saving.wusdCount', userData.wagePerHour) }}
+            {{ $tc('meta.coins.count.WUSDCount', userData.wagePerHour) }}
           </div>
         </div>
         <div class="right__share-btn">
@@ -172,7 +172,7 @@
             selector="TO-RAISE-VIEWS"
             @click="toRaisedViews()"
           >
-            {{ $t('profile.raiseViews') }}
+            {{ $t('meta.raiseViews') }}
           </base-btn>
         </div>
         <div
@@ -334,8 +334,8 @@ export default {
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/warning.svg'),
-          title: this.$t('modals.errorQuests'),
-          subtitle: this.$t('modals.emptyOpenQuests'),
+          title: this.$t('modals.errors.errorQuests'),
+          subtitle: this.$t('modals.errors.emptyOpenQuests'),
         });
       }
     },

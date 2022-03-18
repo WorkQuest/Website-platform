@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="pension"
-    :title="$t('pension.applyForAPension')"
+    :title="$t('modals.titles.applyForAPension')"
   >
     <div class="pension__content content">
       <validation-observer
@@ -13,7 +13,7 @@
           </div>
           <base-field
             v-model="depositPercentFromAQuest"
-            :placeholder="$tc('modals.percentsCount', 13)"
+            :placeholder="$tc('meta.units.percentsCount', 13)"
             class="content__input"
             :name="$t('modals.depositPercent')"
             rules="required|percent|decimalPlaces:18"
@@ -25,7 +25,7 @@
           </div>
           <base-field
             v-model="firstDepositAmount"
-            :placeholder="$tc('pension.WUSDCount', 130)"
+            :placeholder="$tc('meta.coins.count.WUSDCount', 130)"
             class="content__input"
             :name="$t('modals.firstDepositAmountField')"
             rules="decimal"
@@ -41,7 +41,7 @@
             selector="CANCEL"
             @click="hide"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
@@ -49,7 +49,7 @@
             :disabled="invalid || inProgress"
             @click="handleSubmit(submitPensionRegistration)"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.btns.submit') }}
           </base-btn>
         </div>
       </validation-observer>
@@ -128,8 +128,8 @@ export default {
       }
 
       const fields = {
-        from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-        to: { name: this.$t('modals.toAddress'), value: process.env.WORKNET_PENSION_FUND },
+        from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+        to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_PENSION_FUND },
         fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
       };
       if (this.firstDepositAmount) {

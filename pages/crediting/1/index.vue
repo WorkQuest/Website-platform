@@ -93,20 +93,20 @@ export default {
     return {
       items: [
         {
-          id: this.$t('crediting.table.id'),
-          currentRatio: this.$t('crediting.table.currentRatio'),
-          deposited: this.$t('crediting.table.deposited'),
-          availableToWithdraw: this.$t('crediting.table.availableToWithdraw'),
-          wusd: this.$t('crediting.table.wusd'),
-          manage: this.$t('crediting.table.manage'),
+          id: 565464,
+          currentRatio: this.$tc('meta.units.percentsCount', 500),
+          deposited: this.$tc('meta.coins.count.ETHCount', { count: '531' }),
+          availableToWithdraw: this.$t('meta.coins.count.ETHCount', { count: '531' }),
+          wusd: this.$t('meta.coins.count.WUSDCount', { count: '532' }),
+          manage: 'Manage',
         },
         {
-          id: this.$t('crediting.table.id'),
-          currentRatio: this.$t('crediting.table.currentRatio'),
-          deposited: this.$t('crediting.table.deposited'),
-          availableToWithdraw: this.$t('crediting.table.availableToWithdraw'),
-          wusd: this.$t('crediting.table.wusd'),
-          manage: this.$t('crediting.table.manage'),
+          id: 565465,
+          currentRatio: this.$tc('meta.units.percentsCount', '500%'),
+          deposited: this.$t('meta.coins.count.ETHCount', { count: '531' }),
+          availableToWithdraw: this.$t('meta.coins.count.ETHCount', { count: '531' }),
+          wusd: this.$t('meta.coins.count.WUSDCount', { count: '532' }),
+          manage: 'Manage',
         },
       ],
       testFields: [
@@ -160,7 +160,7 @@ export default {
         },
         {
           key: 'WUSD',
-          label: this.$t('crediting.tableHead.wusd'),
+          label: this.$t('meta.coins.wusd'),
           thStyle: {
             padding: '0',
             height: '27px',
@@ -185,11 +185,11 @@ export default {
       ],
       cards: [
         {
-          title: this.$tc('crediting.usdCount', '255.5'),
+          title: this.$tc('meta.coins.count.USDCount', { count: '255.5' }),
           subtitle: this.$t('crediting.totalCollateralLocked'),
         },
         {
-          title: this.$tc('crediting.wusdCount', '2,150.26'),
+          title: this.$tc('meta.coins.count.WUSDCount', { count: '2,150.26' }),
           subtitle: this.$t('crediting.totalWusdDebt'),
         },
       ],

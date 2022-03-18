@@ -27,10 +27,10 @@
                     v-model="runtimeValue"
                     :items="runtime"
                     type="gray"
-                    :label="$t('quests.runtime.runtime')"
+                    :label="$t('quests.runtime')"
                     :placeholder="runtime[0]"
-                    :name="$t('quests.runtime.runtime')"
                     data-selector="RUNTIME"
+                    :name="$t('quests.runtime')"
                     rules="required"
                   />
                 </div>
@@ -40,11 +40,11 @@
               <base-field
                 v-model="price"
                 :type="'number'"
+                :label="$t('meta.price')"
                 data-selector="PRICE-FIELD"
-                :label="$t('quests.price')"
                 :placeholder="+0 + currency"
                 rules="required|decimal"
-                :name="$t('quests.price')"
+                :name="$t('meta.price')"
               />
             </div>
             <div class="page__dd">
@@ -166,7 +166,7 @@
                 mode="back"
                 @click="clickBackBtnHandler"
               >
-                {{ $t('meta.back') }}
+                {{ $t('meta.btns.back') }}
                 <template v-slot:left>
                   <span class="icon-chevron_big_left" />
                 </template>
@@ -372,9 +372,9 @@ export default {
     },
     runtime() {
       return [
-        this.$t('quests.runtime.urgent'),
-        this.$t('quests.runtime.shortTerm'),
-        this.$t('quests.runtime.fixedDelivery'),
+        this.$t('meta.priority.urgent'),
+        this.$t('meta.priority.shortTerm'),
+        this.$t('meta.priority.fixedDelivery'),
       ];
     },
     employment() {

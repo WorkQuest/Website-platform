@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="transfer"
-    :title="$t('modals.transfer')"
+    :title="$t('modals.titles.transfer')"
   >
     <div class="transfer__content content">
       <validation-observer v-slot="{handleSubmit, invalid}">
@@ -13,9 +13,9 @@
             <base-field
               v-model="recipient"
               class="input__field"
-              :placeholder="$t('modals.address')"
+              :placeholder="$t('meta.addressBig')"
               rules="required|address"
-              :name="$t('modals.addressField')"
+              :name="$t('meta.addressSmall')"
             />
           </div>
           <div class="content__input input">
@@ -63,7 +63,7 @@
             class="buttons__action"
             @click="hide"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__action"
@@ -71,7 +71,7 @@
             :disabled="invalid || !isCanSubmit"
             @click="handleSubmit(showWithdrawInfo)"
           >
-            {{ $t('meta.send') }}
+            {{ $t('meta.btns.send') }}
           </base-btn>
         </div>
       </validation-observer>
@@ -211,8 +211,8 @@ export default {
       this.ShowModal({
         key: modals.transactionReceipt,
         fields: {
-          from: { name: this.$t('modals.fromAddress'), value: this.userData.wallet.address },
-          to: { name: this.$t('modals.toAddress'), value: this.recipient },
+          from: { name: this.$t('meta.fromBig'), value: this.userData.wallet.address },
+          to: { name: this.$t('meta.toBig'), value: this.recipient },
           amount: {
             name: this.$t('modals.amount'),
             value: this.amount,

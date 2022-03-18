@@ -37,7 +37,7 @@
                 {{ $t("saving.maxMinSum") }}
               </div>
               <div class="text_blue">
-                {{ $t("saving.guestPlug") }}
+                ??
               </div>
             </div>
             <div class="info-block__small_inline">
@@ -50,7 +50,7 @@
             </div>
             <div class="info-block__small_inline">
               <div class="text">
-                {{ $t("saving.term") }}
+                {{ $t("meta.term") }}
               </div>
               <div class="text_blue">
                 {{ $tc('saving.yearPlug', 1) }}
@@ -88,7 +88,7 @@
           class="info-block"
         >
           <div class="info-block__name_bold">
-            {{ $t("saving.faq") }}
+            {{ $t("meta.faq") }}
           </div>
           <div class="info-block__faqs">
             <button
@@ -120,7 +120,7 @@
           class="info-block"
         >
           <div class="info-block__name_bold">
-            {{ $t("saving.information") }}
+            {{ $t("meta.information") }}
           </div>
           <div class="info-block__documents">
             <div
@@ -142,7 +142,7 @@
                 </div>
               </div>
               <button class="btn__doc">
-                {{ $t('pension.download') }}
+                {{ $t('meta.btns.download') }}
                 <img
                   class="download"
                   src="~/assets/img/ui/download.svg"
@@ -201,23 +201,23 @@ export default {
     cards() {
       return [
         {
-          text: this.$t('saving.card1'),
+          text: this.$tc('saving.card', { rate: 4.51, duration: 7 }),
           sel: false,
         },
         {
-          text: this.$t('saving.card2'),
+          text: this.$t('saving.card', { rate: 4.67, duration: 14 }),
           sel: false,
         },
         {
-          text: this.$t('saving.card3'),
+          text: this.$t('saving.card', { rate: 4.82, duration: 30 }),
           sel: false,
         },
         {
-          text: this.$t('saving.card4'),
+          text: this.$t('saving.card', { rate: 5.11, duration: 90 }),
           sel: false,
         },
         {
-          text: this.$t('saving.card5'),
+          text: this.$t('saving.card', { rate: 5.23, duration: 180 }),
           sel: false,
         },
       ];
@@ -225,18 +225,18 @@ export default {
     documents() {
       return [
         {
-          name: this.$t('saving.docName'),
-          size: this.$tc('saving.mb', '1.2'),
+          name: 'Some_document.pdf',
+          size: this.$tc('meta.units.mb', 1.2),
           url: '',
         },
         {
-          name: this.$t('saving.docName'),
-          size: this.$tc('saving.mb', '1.2'),
+          name: 'Some_document.pdf',
+          size: this.$tc('meta.units.mb', 1.2),
           url: '',
         },
         {
-          name: this.$t('saving.docName'),
-          size: this.$tc('saving.mb', '1.2'),
+          name: 'Some_document.pdf',
+          size: this.$tc('meta.units.mb', 1.2),
           url: '',
         },
       ];
@@ -244,24 +244,24 @@ export default {
     interestRate() {
       return [
         {
-          perc: this.$tc('saving.percents', '5.31'),
-          date: this.$tc('saving.days', 7),
+          perc: this.$tc('meta.units.percentsCount', 5.31),
+          date: this.$tc('meta.units.days', 7),
         },
         {
-          perc: this.$tc('saving.percents', '5.48'),
-          date: this.$tc('saving.days', 14),
+          perc: this.$tc('meta.units.percentsCount', 5.48),
+          date: this.$tc('meta.units.days', 14),
         },
         {
-          perc: this.$tc('saving.percents', '5.66'),
-          date: this.$tc('saving.days', 30),
+          perc: this.$tc('meta.units.percentsCount', 5.66),
+          date: this.$tc('meta.units.days', 30),
         },
         {
-          perc: this.$tc('saving.percents', 6),
-          date: this.$tc('saving.days', 90),
+          perc: this.$tc('meta.units.percentsCount', 6),
+          date: this.$tc('meta.units.days', 90),
         },
         {
-          perc: this.$tc('saving.percents', '6,5'),
-          date: this.$tc('saving.days', 180),
+          perc: this.$tc('meta.units.percentsCount', 6.5),
+          date: this.$tc('meta.units.days', 180),
         },
       ];
     },

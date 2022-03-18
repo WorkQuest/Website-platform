@@ -22,7 +22,7 @@
           selector="CANCEL"
           @click="hide"
         >
-          {{ $t('meta.cancel') }}
+          {{ $t('meta.btns.cancel') }}
         </base-btn>
         <base-btn
           class="action__button"

@@ -12,7 +12,7 @@
               selector="PREVIOUS-STEP"
               @click="goBack()"
             >
-              {{ $t('meta.back') }}
+              {{ $t('meta.btns.back') }}
               <template v-slot:left>
                 <span class="icon-chevron_big_left" />
               </template>

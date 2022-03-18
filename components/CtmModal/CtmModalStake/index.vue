@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="stake"
-    :title="$t('mining.stake')"
+    :title="$t('modals.titles.stake')"
   >
     <validation-observer
       v-slot="{handleSubmit, valid}"
@@ -47,14 +47,14 @@
           selector="CANCEL"
           @click="hide()"
         >
-          {{ $t('meta.cancel') }}
+          {{ $t('meta.btns.cancel') }}
         </base-btn>
         <base-btn
           :disabled="!valid || !canSubmit"
           selector="SUBMIT"
           @click="handleSubmit(onSubmit)"
         >
-          {{ $t('meta.submit') }}
+          {{ $t('meta.btns.submit') }}
         </base-btn>
       </div>
     </validation-observer>
@@ -195,10 +195,10 @@ export default {
       }
       this.ShowModal({
         key: modals.transactionReceipt,
-        title: this.$t('mining.approve'),
+        title: this.$t('meta.approve'),
         fields: {
-          from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-          to: { name: this.$t('modals.toAddress'), value: poolAddress },
+          from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+          to: { name: this.$t('meta.toBig'), value: poolAddress },
           fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
         },
         isShowSuccess: false,
@@ -209,11 +209,11 @@ export default {
             amount: fullMaxStake,
           });
           if (!successApprove) {
-            this.ShowToast(this.$t('modals.failed'), this.$t('mining.approve'));
+            this.ShowToast(this.$t('modals.failed'), this.$t('meta.approve'));
             this.SetLoader(false);
             return error();
           }
-          await this.$store.dispatch('main/showToast', { title: this.$t('mining.approve'), text: this.$t('modals.success') });
+          await this.$store.dispatch('main/showToast', { title: this.$t('meta.approve'), text: this.$t('meta.success') });
           return success();
         },
         callback: async () => await this.stake(stakeTokenAddress, poolAddress, amount, stakingType, days, isStakingStarted),
@@ -225,19 +225,19 @@ export default {
       this.SetLoader(false);
       if (!txFee.ok) {
         if (txFee.msg.includes('You cannot stake tokens yet')) {
-          this.ShowToast(this.$t('staking.cannotStakeYet'), this.$t('mining.stake'));
+          this.ShowToast(this.$t('staking.cannotStakeYet'), this.$t('meta.btns.stake'));
         } else {
-          this.ShowToast(this.$t('modals.failed'), this.$t('mining.stake'));
+          this.ShowToast(this.$t('modals.failed'), this.$t('meta.btns.stake'));
         }
         return;
       }
 
       this.ShowModal({
         key: modals.transactionReceipt,
-        title: `${this.$t('staking.stake')} ${stakingType}`,
+        title: `${this.$t('meta.btns.stake')} ${stakingType}`,
         fields: {
-          from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-          to: { name: this.$t('modals.toAddress'), value: poolAddress },
+          from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+          to: { name: this.$t('meta.toBig'), value: poolAddress },
           days: days && !isStakingStarted ? { name: this.$t('staking.stakeDays'), value: days } : null,
           amount: { name: this.$t('modals.amount'), value: amount, symbol: stakingType },
           fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
@@ -247,7 +247,7 @@ export default {
             stakingType, amount, poolAddress, duration: days,
           });
           if (!res.ok) {
-            await this.$store.dispatch('main/showToast', { title: this.$t('staking.stake'), text: this.$t('modals.failed') });
+            await this.$store.dispatch('main/showToast', { title: this.$t('meta.btns.stake'), text: this.$t('modals.failed') });
           }
           return res;
         },

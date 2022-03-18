@@ -6,7 +6,7 @@
     <div class="main__body">
       <div class="page">
         <h2 class="page__title">
-          {{ $t('disputes.disputes') }}
+          {{ $t('meta.disputes') }}
         </h2>
         <div
           v-if="disputesCount > 0"
@@ -118,7 +118,7 @@ export default {
       const obj = {
         [DisputeStatues.PENDING]: this.$t('disputes.pending'),
         [DisputeStatues.IN_PROGRESS]: this.$t('disputes.inProgress'),
-        [DisputeStatues.COMPLETED]: this.$t('disputes.completed'),
+        [DisputeStatues.COMPLETED]: this.$t('meta.completed'),
       };
       return obj[status];
     },

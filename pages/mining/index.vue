@@ -3,7 +3,7 @@
     <div class="mining-page__container">
       <div class="mining-page__header">
         <div class="title">
-          {{ $t('mining.liquidityMining') }}
+          {{ $t('meta.liquidityMining') }}
         </div>
         <div class="title_sub">
           {{ $t('mining.liquidityMiningSub') }}
@@ -51,7 +51,7 @@
           class="info-block"
         >
           <div class="info-block__name_bold">
-            {{ $t("mining.information") }}
+            {{ $t("meta.information") }}
           </div>
           <div class="info-block__documents">
             <div
@@ -77,7 +77,7 @@
                 target="_blank"
                 class="btn__doc"
               >
-                {{ $t('pension.download') }}
+                {{ $t('meta.btns.download') }}
                 <img
                   class="download"
                   src="~/assets/img/ui/download.svg"
@@ -113,14 +113,14 @@ export default {
         {
           id: 'ETH',
           poolAddress: '0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf',
-          assets: this.$t('mining.table.assets'),
+          assets: '50% WQT / 50% ETH',
           chooseBtn: this.$t('mining.choose'),
           disabled: false,
         },
         {
           id: 'BNB',
           poolAddress: '0xe89508D74579A06A65B907c91F697CF4F8D9Fac7',
-          assets: this.$t('mining.table.assets2'),
+          assets: '50% WQT / 50% BNB',
           chooseBtn: this.$t('mining.choose'),
           disabled: false,
         },
@@ -130,7 +130,7 @@ export default {
       return [
         {
           name: this.$t('mining.agreement'),
-          size: this.$tc('mining.kb', '47'),
+          size: this.$tc('meta.units.kb', 47),
           url: '/docs/agreement.pdf',
         },
       ];

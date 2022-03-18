@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="insure"
-    :title="$t('modals.insureCase')"
+    :title="$t('modals.titles.insureCase')"
   >
     <div class="insure__content content">
       <div class="content__user user">
@@ -11,14 +11,11 @@
           alt="user avatar"
         >
         <span class="user__name">
-          {{ $t('insuring.userNameCase') }}
+          Cody Fisher :
         </span>
         <span class="user__text">
           {{ $t('insuring.paymentOfInsurance') }}
         </span>
-      </div>
-      <div class="content__text">
-        {{ $t('insuring.insureCaseText') }}
       </div>
       <div class="content__pictures">
         <img
@@ -36,7 +33,7 @@
           selector="CANCEL"
           @click="hide"
         >
-          {{ $t('meta.cancel') }}
+          {{ $t('meta.btns.cancel') }}
         </base-btn>
       </div>
     </div>

@@ -31,9 +31,9 @@
             rules="max:7"
             class="skills__cost"
             data-selector="COST-PER-HOUR"
-            :placeholder="skills.perHour || $t('priority.title')"
-            :label="$t('settings.costPerHour')"
-            :name="$t('settings.costPerHour')"
+            :placeholder="skills.perHour || $t('meta.priority.title')"
+            :label="$t('meta.costPerHour')"
+            :name="$t('meta.costPerHour')"
             type="gray"
           />
         </div>
@@ -43,7 +43,7 @@
             selector="SAVE-CHANGES"
             @click="$emit('click')"
           >
-            {{ $t("settings.save") }}
+            {{ $t("meta.btns.save") }}
           </base-btn>
           <span v-if="validationError">
             {{ $t('messages.formError') }}
@@ -72,12 +72,12 @@ export default {
       dropdowns: [
         {
           model: 'priorityIndex',
-          placeholder: 'priority.title',
+          placeholder: 'meta.priority.title',
           items: [
-            this.$t('priority.all'),
-            this.$t('priority.employee.low'),
-            this.$t('priority.employee.normal'),
-            this.$t('priority.employee.urgent'),
+            this.$t('meta.priority.all'),
+            this.$t('meta.priority.fixedDelivery'),
+            this.$t('meta.priority.shortTerm'),
+            this.$t('meta.priority.employee.urgent'),
           ],
           label: 'settings.priority',
         },

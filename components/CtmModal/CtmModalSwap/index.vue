@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="swap"
-    :title="$t('modals.swapTitle')"
+    :title="$t('modals.titles.swapTitle')"
   >
     <div class="swap__content content">
       <validation-observer
@@ -69,7 +69,7 @@
             selector="CANCEL"
             @click="hide"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
@@ -116,12 +116,12 @@ export default {
         {
           id: 0,
           icon: require('~/assets/img/ui/bnb-logo.svg'),
-          title: this.$t('crosschain.bsc'),
+          title: this.$t('meta.coins.bsc'),
         },
         {
           id: 1,
           icon: require('~/assets/img/ui/ethereum.svg'),
-          title: this.$t('crosschain.eth'),
+          title: this.$t('meta.coins.eth'),
         },
       ];
     },

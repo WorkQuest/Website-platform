@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="info"
-    :title="options.title || 'Withdrawal info'"
+    :title="options.title || $t('modals.titles.withdrawInfo')"
   >
     <div class="info__content content">
       <div class="content__field field">
@@ -10,7 +10,7 @@
           class="field__header header"
         >
           <div class="header__title">
-            {{ $t('modals.bankCard') }}
+            {{ $t('meta.bankCard') }}
           </div>
           <div
             class="header__subtitle"
@@ -72,14 +72,14 @@
             selector="CANCEL"
             @click="hide"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
             selector="CONFIRM"
             @click="handleSubmit"
           >
-            {{ $t('meta.confirm') }}
+            {{ $t('meta.btns.confirm') }}
           </base-btn>
         </div>
       </div>

@@ -173,9 +173,9 @@ export default {
           const kb = Math.ceil(this.limitBytes / 1024);
           const mb = Math.ceil(this.limitBytes / 1024 / 1024);
           if (mb >= 1) {
-            this.showError(this.$t('uploader.errors.fileSizeLimit', { n: mb }) + this.$t('uploader.mb'));
+            this.showError(this.$t('uploader.errors.fileSizeLimit'), this.$tc('meta.units.mb', { count: mb }));
           } else {
-            this.showError(this.$t('uploader.errors.fileSizeLimit', { n: kb }) + this.$t('uploader.kb'));
+            this.showError(this.$t('uploader.errors.fileSizeLimit'), this.$tc('meta.units.kb', { count: kb }));
           }
           // eslint-disable-next-line no-continue
           continue;
@@ -184,9 +184,9 @@ export default {
           const kb = Math.ceil(this.limitBytesVideo / 1024);
           const mb = Math.ceil(this.limitBytesVideo / 1024 / 1024);
           if (mb >= 1) {
-            this.showError(this.$t('uploader.errors.fileSizeLimit', { n: mb }) + this.$t('uploader.mb'));
+            this.showError(this.$t('uploader.errors.fileSizeLimit'), this.$tc('meta.units.mb', { count: mb }));
           } else {
-            this.showError(this.$t('uploader.errors.fileSizeLimit', { n: kb }) + this.$t('uploader.kb'));
+            this.showError(this.$t('uploader.errors.fileSizeLimit'), this.$tc('meta.units.kb', { count: kb }));
           }
           // eslint-disable-next-line no-continue
           continue;

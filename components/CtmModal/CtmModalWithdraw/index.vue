@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="withdrawal"
-    :title="$t('modals.withdrawCard')"
+    :title="$t('modals.titles.withdrawCard')"
   >
     <div class="ctm-modal__content">
       <validation-observer v-slot="{ handleSubmit, validated, passed, invalid }">
@@ -71,7 +71,7 @@
               selector="CANCEL"
               @click="hide()"
             >
-              {{ $t('meta.cancel') }}
+              {{ $t('meta.btns.cancel') }}
             </base-btn>
             <base-btn
               class="btn_bl"
@@ -79,7 +79,7 @@
               :disabled="!validated || !passed || invalid"
               @click="handleSubmit(showTransactionSendModal)"
             >
-              {{ $t('meta.confirm') }}
+              {{ $t('meta.btns.confirm') }}
             </base-btn>
           </div>
         </div>

@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="claim"
-    :title="$t('modals.claim')"
+    :title="$t('modals.titles.claim')"
   >
     <div class="claim__content content">
       <!--      Вывод на банковскую карту -->
@@ -18,7 +18,7 @@
       <!--          :class="{'content__panel_active': step === 2}"-->
       <!--          @click="nextStep"-->
       <!--        >-->
-      <!--          {{ $t('wallet.bankCard') }}-->
+      <!--          {{ $t('meta.bankCard') }}-->
       <!--        </div>-->
       <!--      </div>-->
       <div class="content__field field">
@@ -38,7 +38,7 @@
           class="field__header header"
         >
           <div class="header__title">
-            {{ $t('modals.bankCard') }}
+            {{ $t('meta.bankCard') }}
           </div>
           <div
             class="header__subtitle"
@@ -78,14 +78,14 @@
             selector="CANCEL"
             @click="hide"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
             selector="CONFIRM"
             @click="showTransactionSend"
           >
-            {{ $t('meta.confirm') }}
+            {{ $t('meta.btns.confirm') }}
           </base-btn>
         </div>
       </div>

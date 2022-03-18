@@ -12,7 +12,7 @@
             class="modal__icon"
           >
           <div class="modal__title">
-            {{ $t('modals.notice') }}
+            {{ $t('modals.titles.notice') }}
           </div>
           <div class="modal__desc">
             {{ $t('modals.noticeDesc') }}
