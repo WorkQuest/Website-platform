@@ -3,7 +3,10 @@
     class="main"
     data-selector="PAGE-RAISED-VIEWS"
   >
-    <div class="main__body page">
+    <div
+      v-click-outside="hide"
+      class="main__body page"
+    >
       <div class="page">
         <div class="page btn-container__left">
           <div class="btn-container__btn_back">
@@ -55,9 +58,12 @@
               <div
                 v-for="(item, i) in periods(period)"
                 :key="i"
+                :ref="`item${i}`"
                 :data-selector="`ACTION-BTN-SWITCH-PERIOD-LEVEL-${i}`"
+                :class="cardShadow(item)"
+                :style="cardBorder"
                 class="level__card"
-                @click="selectRadio(i)"
+                @click="selectRadio(i,item)"
               >
                 <div class="level__option">
                   <input
@@ -115,15 +121,22 @@
 </template>
 
 <script>
+import ClickOutside from 'vue-click-outside';
 import modals from '~/store/modals/modals';
+import { userRaiseViewPriceDay, userRaiseViewPriceWeek, userRaiseViewPriceMonth } from '~/utils/enums';
 
 export default {
   name: 'RisedViews',
+  directives: {
+    ClickOutside,
+  },
   data() {
     return {
       ads: {
         currentAdPrice: '',
       },
+      bordered: false,
+      currentBorder: '',
       period: 1,
     };
   },
@@ -150,25 +163,25 @@ export default {
           level: this.$t('quests.levels.1.title'),
           code: 1,
           desc: this.$t('quests.levels.1.desc'),
-          cost: '10',
+          cost: userRaiseViewPriceDay.PLUS,
         },
         {
           level: this.$t('quests.levels.2.title'),
           code: 2,
           desc: this.$t('quests.levels.2.desc'),
-          cost: '10',
+          cost: userRaiseViewPriceDay.GOLD,
         },
         {
           level: this.$t('quests.levels.3.title'),
           code: 3,
           desc: this.$t('quests.levels.3.desc'),
-          cost: '10',
+          cost: userRaiseViewPriceDay.SILVER,
         },
         {
           level: this.$t('quests.levels.4.title'),
           code: 4,
           desc: this.$t('quests.levels.4.desc'),
-          cost: '10',
+          cost: userRaiseViewPriceDay.BRONZE,
         },
       ];
     },
@@ -178,25 +191,25 @@ export default {
           level: this.$t('quests.levels.1.title'),
           code: 1,
           desc: this.$t('quests.levels.1.desc'),
-          cost: '40',
+          cost: userRaiseViewPriceWeek.PLUS,
         },
         {
           level: this.$t('quests.levels.2.title'),
           code: 2,
           desc: this.$t('quests.levels.2.desc'),
-          cost: '10',
+          cost: userRaiseViewPriceWeek.GOLD,
         },
         {
           level: this.$t('quests.levels.3.title'),
           code: 3,
           desc: this.$t('quests.levels.3.desc'),
-          cost: '40',
+          cost: userRaiseViewPriceWeek.SILVER,
         },
         {
           level: this.$t('quests.levels.4.title'),
           code: 4,
           desc: this.$t('quests.levels.4.desc'),
-          cost: '40',
+          cost: userRaiseViewPriceWeek.BRONZE,
         },
       ];
     },
@@ -206,25 +219,25 @@ export default {
           level: this.$t('quests.levels.1.title'),
           code: 1,
           desc: this.$t('quests.levels.1.desc'),
-          cost: '70',
+          cost: userRaiseViewPriceMonth.PLUS,
         },
         {
           level: this.$t('quests.levels.2.title'),
           code: 2,
           desc: this.$t('quests.levels.2.desc'),
-          cost: '10',
+          cost: userRaiseViewPriceMonth.GOLD,
         },
         {
           level: this.$t('quests.levels.3.title'),
           code: 3,
           desc: this.$t('quests.levels.3.desc'),
-          cost: '70',
+          cost: userRaiseViewPriceMonth.SILVER,
         },
         {
           level: this.$t('quests.levels.4.title'),
           code: 4,
           desc: this.$t('quests.levels.4.desc'),
-          cost: '70',
+          cost: userRaiseViewPriceMonth.BRONZE,
         },
       ];
     },
@@ -248,6 +261,34 @@ export default {
       }
       return style;
     },
+    cardShadow(item) {
+      let style;
+      if (item.code === 1 || item.code === 2) {
+        style = 'level__card-golden';
+      } if (item.code === 3) {
+        style = 'level__card-silver';
+      } if (item.code === 4) {
+        style = 'level__card-bronze';
+      }
+      return style;
+    },
+    cardBorder() {
+      let style;
+      if (this.currentBorder.code === 1) {
+        const plus = this.$refs.item0;
+        plus[0].style.boxShadow = '0 0 10px 2px rgba(246, 207, 0, 0.3)';
+      } if (this.currentBorder.code === 2) {
+        const gold = this.$refs.item1;
+        gold[0].style.boxShadow = '0 0 10px 2px rgba(246, 207, 0, 0.3)';
+      } if (this.currentBorder.code === 3) {
+        const silver = this.$refs.item2;
+        silver[0].style.boxShadow = '0 0 10px 2px rgba(187,192,199, 0.3)';
+      } if (this.currentBorder.code === 4) {
+        const bronze = this.$refs.item3;
+        bronze[0].style.boxShadow = '0 0 10px 2px rgba(183,151,104, 0.3)';
+      }
+      return style;
+    },
     periods(period) {
       let val;
       if (period === 1) {
@@ -259,7 +300,9 @@ export default {
       }
       return val;
     },
-    selectRadio(idx) {
+    selectRadio(idx, item) {
+      this.currentBorder = item;
+      this.cardBorder();
       const radio = this.$refs[`radio${idx}`];
       for (let i = 0; i < Object.keys(this.$refs[`radio${i}`]).length; i += 1) {
         if (radio[i].checked) {
@@ -272,7 +315,11 @@ export default {
       }
     },
     switchPeriod(item) {
-      for (let idx = 0; idx < Object.keys(this.$refs).length - 1; idx += 1) {
+      const hideElement = this.$refs[`item${this.currentBorder.code - 1}`];
+      if (hideElement) {
+        hideElement[0].style = '';
+      }
+      for (let idx = 0; idx < Object.keys(this.$refs).filter((el) => el.match(/radio/g)).length - 1; idx += 1) {
         const radio = this.$refs[`radio${idx}`];
         for (let i = 0; i < Object.keys(radio).length; i += 1) {
           radio[0].checked = false;
@@ -281,11 +328,22 @@ export default {
         this.ads.currentAdPrice = '';
       }
     },
-    showPaymentModal() {
+    async showPaymentModal() {
       this.ShowModal({
         key: modals.paymentOptions,
         step: 1,
       });
+    },
+    hide() {
+      const hideElement = this.$refs[`item${this.currentBorder.code - 1}`];
+      hideElement[0].style = '';
+      for (let idx = 0; idx < Object.keys(this.$refs).filter((el) => el.match(/radio/g)).length - 1; idx += 1) {
+        const radio = this.$refs[`radio${idx}`];
+        for (let i = 0; i < Object.keys(radio).length; i += 1) {
+          radio[0].checked = false;
+        }
+        this.ads.currentAdPrice = '';
+      }
     },
   },
 };
@@ -450,9 +508,21 @@ export default {
     grid-template-columns: 1fr 15fr 1fr;
     margin: 20px 0 0 0;
     transition: 0.5s;
-    &:hover {
-      cursor: pointer;
-      box-shadow: 0 0 10px 2px rgba(34, 60, 80, 0.09);
+    cursor: pointer;
+    &-golden{
+      &:hover {
+        box-shadow: 0 0 10px 2px rgba(246, 207, 0, 0.3);
+      }
+    }
+    &-silver{
+      &:hover {
+        box-shadow: 0 0 10px 2px rgba(187,192,199, 0.3);
+      }
+    }
+    &-bronze{
+      &:hover {
+        box-shadow: 0 0 10px 2px rgba(183,151,104, 0.3);
+      }
     }
     &_gold {
       border: 1px solid #F7CF00;

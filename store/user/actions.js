@@ -468,4 +468,13 @@ export default {
       return false;
     }
   },
+  async payUserRaisedView({ commit }, payload) {
+    try {
+      const response = await this.$axios.$post('/v1/profile/worker/me/raise-view/pay', payload);
+      return response.ok;
+    } catch (e) {
+      console.log('profile/worker/me/raise-view/pay');
+      return false;
+    }
+  },
 };

@@ -162,12 +162,22 @@ export default {
         branch: 'payment',
       });
     },
-    showRaiseLevel() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('modals.yourLevelHasBeenRaised'),
-      });
+    async showRaiseLevel() {
+      const result = await this.$store.dispatch('user/payUserRaisedView', { duration: 1, type: 0 });
+      console.log(result);
+      if (result) {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/questAgreed.svg'),
+          title: this.$t('modals.yourLevelHasBeenRaised'),
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/error.svg'),
+          title: this.$t('modals.failed'),
+        });
+      }
     },
   },
 };

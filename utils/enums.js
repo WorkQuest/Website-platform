@@ -291,3 +291,24 @@ export const PensionHistoryMethods = Object.freeze({
   Withdraw: 'Withdraw',
   Receive: 'Receive',
 });
+
+export const userRaiseViewPriceDay = {
+  PLUS: '20',
+  GOLD: '12',
+  SILVER: '9',
+  BRONZE: '7',
+};
+
+export const userRaiseViewPriceWeek = {
+  PLUS: '35',
+  GOLD: '28',
+  SILVER: '22',
+  BRONZE: '18',
+};
+
+export const userRaiseViewPriceMonth = {
+  PLUS: '50',
+  GOLD: '35',
+  SILVER: '29',
+  BRONZE: '21',
+};
