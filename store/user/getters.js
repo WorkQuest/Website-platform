@@ -40,4 +40,5 @@ export default {
   getNotificationsList: (state) => state.notifications.list,
   getNotificationsCount: (state) => state.notifications.count,
   getReducedNotifications: (state) => state.reducedNotifications,
+  getUserReferralId: (state) => state.userData.affiliateUser.referralCodeId,
 };

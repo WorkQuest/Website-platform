@@ -90,10 +90,10 @@
             </div>
             <div class="info-block__link">
               <div class="address">
-                {{ referLink }}
+                {{ referLink }}{{ userReferralId }}
               </div>
               <button
-                v-clipboard:copy="referLink"
+                v-clipboard:copy="referLink + userReferralId"
                 v-clipboard:success="ClipboardSuccessHandler"
                 v-clipboard:error="ClipboardErrorHandler"
               >
@@ -235,7 +235,7 @@ export default {
       page: 1,
       offset: 10,
       perPage: 6,
-      referLink: 'https://www.workquest.com/ref?v=44T7iUSo1vU',
+      referLink: 'https://www.workquest.com/ref?v=',
       testFields: [
         {
           key: 'userInfo',
@@ -323,6 +323,7 @@ export default {
       createdReferralList: 'referral/getCreatedReferralList',
       referralSignature: 'referral/getReferralSignature',
       userAddress: 'user/getUserWalletAddress',
+      userReferralId: 'user/getUserReferralId',
     }),
     totalPages() {
       return Math.ceil(this.paidEventsList.length / this.perPage);
