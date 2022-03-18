@@ -114,7 +114,7 @@ export default {
         recipientAddress: this.options.recipient,
         query: '',
       };
-      await this.$store.dispatch('defi/swapsForCrosschain', payload);
+      await this.$store.dispatch('bridge/swapsForCrosschain', payload);
     }
   },
   methods: {

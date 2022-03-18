@@ -84,7 +84,7 @@
           </div>
           <div class="crosschain-page__table">
             <b-table
-              :items="crosschainTableData"
+              :items="swaps"
               :fields="tableFields"
               show-empty
               borderless
@@ -111,14 +111,14 @@
               </template>
               <template #cell(recipient)="el">
                 <div class="table__value">
-                  {{ el.item.recipient }}
+                  {{ CutTxn(el.item.recipient) }}
                 </div>
               </template>
-              <template #cell(tx)="el">
+              <template #cell(transactionHash)="el">
                 <div class="table__value">
-                  {{ el.item.tx }}
+                  {{ CutTxn(el.item.transactionHash) }}
                   <button
-                    v-clipboard:copy="el.item.txFull"
+                    v-clipboard:copy="el.item.transactionHash"
                     v-clipboard:success="ClipboardSuccessHandler"
                     v-clipboard:error="ClipboardErrorHandler"
                     type="button"
@@ -152,7 +152,7 @@
                 </div>
               </template>
               <template
-                v-if="crosschainTableData.length === 0"
+                v-if="!swapsCount"
                 slot="empty"
               >
                 <div class="crosschain-page__empty-info">
@@ -168,13 +168,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import modals from '~/store/modals/modals';
-import EmptyData from '~/components/app/info/emptyData';
 import { Chains } from '~/utils/enums';
 
 export default {
-  components: { EmptyData },
+  name: 'Crosschain',
   layout: 'guest',
   data() {
     return {
@@ -183,34 +182,30 @@ export default {
       sourceAddressInd: 0,
       targetAddressInd: 1,
       updateInterval: null,
+      query: {
+        limit: 10,
+        offset: 0,
+      },
     };
   },
   computed: {
     ...mapGetters({
-      account: 'web3/getAccount',
+      isAuth: 'user/isAuth',
       isConnected: 'web3/isConnected',
-      crosschainTableData: 'defi/getCrosschainTokensData',
-      statusBusy: 'web3/getStatusBusy',
-      userData: 'user/getUserData',
+      account: 'web3/getAccount',
+      swaps: 'bridge/getSwaps',
+      swapsCount: 'bridge/getSwapsCount',
     }),
     tableFields() {
       const cellStyle = {
-        thStyle: {
-          padding: '0',
-          height: '27px',
-          lineHeight: '27px',
-        },
+        thStyle: { padding: '0', height: '27px', lineHeight: '27px' },
         tdAttr: { style: 'padding: 0; height: 64px; line-height: 64px' },
       };
       return [
         {
           key: 'direction',
           label: this.$t('crosschain.tableHead.direction'),
-          thStyle: {
-            padding: '0 0 0 23px',
-            height: '27px',
-            lineHeight: '27px',
-          },
+          thStyle: { padding: '0 0 0 23px', height: '27px', lineHeight: '27px' },
           tdAttr: { style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px' },
         },
         {
@@ -219,7 +214,7 @@ export default {
           ...cellStyle,
         },
         {
-          key: 'tx',
+          key: 'transactionHash',
           label: this.$t('crosschain.tableHead.tx'),
           ...cellStyle,
         },
@@ -236,11 +231,7 @@ export default {
         {
           key: 'redeem',
           label: '',
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
+          thStyle: cellStyle.thStyle,
           tdAttr: { style: 'display: flex; align-items: center; height: 64px; line-height: 64px' },
         },
       ];
@@ -276,22 +267,35 @@ export default {
     },
   },
   mounted() {
-    this.$nuxt.setLayout(this.userData.id ? 'default' : 'guest');
+    this.$nuxt.setLayout(this.isAuth ? 'default' : 'guest');
   },
   async beforeDestroy() {
     await this.disconnectFromWallet();
   },
   methods: {
+    ...mapActions({
+      fetchSwaps: 'bridge/fetchMySwaps',
+      resetSwaps: 'bridge/resetMySwaps',
+    }),
     async connectWallet() {
       if (!this.isConnected) await this.checkWalletStatus();
       else await this.disconnectFromWallet();
     },
     async disconnectFromWallet() {
-      await clearInterval(this.updateInterval);
-      this.updateInterval = null;
       await this.$store.dispatch('web3/disconnect');
-      await this.swapsTableData(this.account.address, this.isConnected);
+      clearInterval(this.updateInterval);
+      this.updateInterval = null;
+      await this.resetSwaps();
     },
+    async swapsTableData() {
+      if (!this.isConnected) return;
+      const { account, query } = this;
+      await this.fetchSwaps({
+        recipientAddress: account.address,
+        query,
+      });
+    },
+
     async checkWalletStatus() {
       if (this.isConnected) return;
       let chainName = '';
@@ -308,12 +312,11 @@ export default {
       if (localStorage.getItem('isMetaMask') === 'true') {
         await this.checkMiningPoolId(data.chain);
       }
-      const payload = {
-        signData: data.clearData,
+      const redeemObj = await this.$store.dispatch('web3/redeemSwap', {
+        signData: data.signData,
         chainFrom: data.chainFrom,
         chainTo: data.chainTo,
-      };
-      const redeemObj = await this.$store.dispatch('web3/redeemSwap', payload);
+      });
       await this.swapsTableData(this.account.address, this.isConnected);
       this.ShowModal({
         key: modals.status,
@@ -340,13 +343,7 @@ export default {
       if (!rightChain) return await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
       return rightChain;
     },
-    async swapsTableData(recipientAddress, connectedStatus) {
-      const payload = {
-        recipientAddress,
-        query: connectedStatus ? '&offset=0&limit=10' : false,
-      };
-      await this.$store.dispatch('defi/swapsForCrosschain', payload);
-    },
+
     handleChangePool(selInd, mode) {
       if (mode === 'source') {
         if (this.targetAddressInd === selInd) this.targetAddressInd = selInd ? 0 : 1;
