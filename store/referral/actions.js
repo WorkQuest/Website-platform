@@ -42,7 +42,7 @@ export default {
   async fetchPaidEventsList({ commit }, config) {
     try {
       const currConfig = config || { params: { limit: 6, offset: 0 } };
-      const { data: { result, ok } } = await this.$axios.get(`${process.env.WORKNET_REFERRAL_URL}claimed-paid-events`, currConfig);
+      const { data: { result, ok } } = await this.$axios.get('v1/user/me/referral-program/claimed-paid-events', currConfig);
 
       if (result.events.length) {
         commit('setPaidEventsList', result.events);
@@ -56,7 +56,7 @@ export default {
   async fetchReferralsList({ commit }, config) {
     try {
       const currConfig = config || { params: { limit: 10, offset: 0 } };
-      const { data: { result, ok } } = await this.$axios.get(`${process.env.WORKNET_REFERRAL_URL}referrals`, currConfig);
+      const { data: { result, ok } } = await this.$axios.get('v1/user/me/referral-program/referrals', currConfig);
 
       if (result.referrals.length) {
         commit('setReferralsListCount', result.count);
@@ -70,7 +70,7 @@ export default {
   },
   async fetchCreatedReferralList({ commit }) {
     try {
-      const { data: { result, ok } } = await this.$axios.get(`${process.env.WORKNET_REFERRAL_URL}referral/signature/created-referrals`);
+      const { data: { result, ok } } = await this.$axios.get('v1/user/me/referral-program/referral/signature/created-referrals');
 
       if (result) {
         const signature = {};
