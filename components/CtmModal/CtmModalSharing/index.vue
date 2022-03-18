@@ -1,5 +1,5 @@
 <template>
-  <ctm-modal-box :title="$t('sharing.title')">
+  <ctm-modal-box :title="$t('modals.titles.sharing')">
     <div class="ctm-modal__content share">
       <span class="share__text">{{ $t('sharing.socialText') }}</span>
       <div class="share__socials">

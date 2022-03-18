@@ -6,7 +6,7 @@
     <div class="quests__container">
       <div class="quests__body">
         <div class="quests__title">
-          {{ $t('quests.MyQuests') }}
+          {{ $t('meta.myQuests') }}
         </div>
         <div
           class="quests__content"
@@ -102,12 +102,12 @@ export default {
       this.SetLoader(true);
       this.requestParams.query.offset = (this.page - 1) * this.offset;
       await this.getQuests();
+      this.ScrollToTop();
       this.SetLoader(false);
     },
   },
   async mounted() {
     this.SetLoader(true);
-
     this.requestParams = {
       userId: this.userData.id,
       role: this.userRole,
@@ -169,9 +169,9 @@ export default {
     justify-content: center;
   }
   &__cards {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
   }
   &__title {
     @include text-simple;

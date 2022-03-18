@@ -249,11 +249,11 @@ export default {
       return [
         {
           icon: require('~/assets/img/ui/ethereum.svg'),
-          title: this.$t('crosschain.eth'),
+          title: this.$t('meta.coins.eth'),
         },
         {
           icon: require('~/assets/img/ui/bnb_yellow.svg'),
-          title: this.$t('crosschain.bsc'),
+          title: this.$t('meta.coins.bsc'),
         },
         {
           icon: require('~/assets/img/ui/WQT.png'),
@@ -318,7 +318,7 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: redeemObj.code === 500 ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
-        title: redeemObj.code === 500 ? this.$t('modals.redeemFail') : this.$t('modals.redeemSuccess'),
+        title: redeemObj.code === 500 ? this.$t('modals.redeem.fail') : this.$t('modals.redeem.success'),
         subtitle: '',
       });
       this.SetLoader(false);

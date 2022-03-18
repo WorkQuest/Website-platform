@@ -4,7 +4,7 @@
     data-selector="COMPONENT-WORKERS-LIST"
   >
     <div class="worker__title">
-      {{ $t(`${isInvited ? 'quests.invited' : 'response.title'}`) }}
+      {{ $t(`${isInvited ? 'meta.invited' : 'meta.responded'}`) }}
     </div>
     <div
       v-if="getCurrUsersArr.length"
@@ -71,14 +71,14 @@ export default {
   data() {
     return {
       ddUserActions: [
-        this.$t('btn.goToChat'),
+        this.$t('meta.btns.goToChat'),
       ],
       ddInvitedUserActions: [
-        this.$t('btn.goToChat'),
+        this.$t('meta.btns.goToChat'),
         this.$t('quests.startQuest'),
       ],
       ddUserFullActions: [
-        this.$t('btn.goToChat'),
+        this.$t('meta.btns.goToChat'),
         this.$t('quests.startQuest'),
         this.$t('quests.decline'),
       ],

@@ -25,7 +25,7 @@
           selector="CANCEL"
           @click="hide"
         >
-          {{ $t('meta.cancel') }}
+          {{ $t('meta.btns.cancel') }}
         </base-btn>
         <base-btn
           v-if="!options.isFiles"
@@ -33,7 +33,7 @@
           selector="SUBMIT"
           @click="submit"
         >
-          {{ $t('meta.submit') }}
+          {{ $t('meta.btns.submit') }}
         </base-btn>
       </div>
     </div>

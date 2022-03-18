@@ -14,7 +14,7 @@
           class="page"
         >
           <h2 class="page__title">
-            {{ $t('quests.createAQuest') }}
+            {{ $t('meta.createAQuest') }}
           </h2>
           <div class="page__category">
             <div class="page runtime">
@@ -24,9 +24,9 @@
                     v-model="runtimeIndex"
                     :items="runtime"
                     type="gray"
-                    :label="$t('quests.runtime.runtime')"
-                    :name="$t('quests.runtime.runtime')"
-                    data-selector="RUNTIME"
+                    :label="$t('quests.runtime')"
+                    :name="$t('quests.runtime')"
+                    selector="RUNTIME"
                     rules="required"
                   />
                 </div>
@@ -37,10 +37,10 @@
                 v-model="price"
                 :type="'number'"
                 data-selector="PRICE-FIELD"
-                :label="$t('quests.price')"
+                :label="$t('meta.price')"
                 :placeholder="+0 + currency"
                 rules="required|decimal"
-                :name="$t('quests.price')"
+                :name="$t('meta.price')"
               />
             </div>
             <div class="page__dd">
@@ -142,7 +142,7 @@
                 :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
                 @click="handleSubmit(toRiseViews)"
               >
-                {{ $t('quests.createAQuest') }}
+                {{ $t('meta.createAQuest') }}
               </base-btn>
             </div>
           </div>
@@ -159,7 +159,7 @@
                 selector="PREVIOUS-STEP"
                 @click="goBack"
               >
-                {{ $t('meta.back') }}
+                {{ $t('meta.btns.back') }}
                 <template v-slot:left>
                   <span class="icon-chevron_big_left" />
                 </template>
@@ -404,9 +404,9 @@ export default {
     },
     runtime() {
       return [
-        this.$t('quests.runtime.urgent'),
-        this.$t('quests.runtime.shortTerm'),
-        this.$t('quests.runtime.fixedDelivery'),
+        this.$t('meta.priority.urgent'),
+        this.$t('meta.priority.shortTerm'),
+        this.$t('meta.priority.fixedDelivery'),
       ];
     },
     employment() {

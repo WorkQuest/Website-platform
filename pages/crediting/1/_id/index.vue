@@ -9,10 +9,10 @@
           <template v-slot:left>
             <span class="icon-chevron_left" />
           </template>
-          {{ $t('crediting.back') }}
+          {{ $t('meta.btns.back') }}
         </base-btn>
         <div class="title">
-          {{ $t('crediting.tempName') }}
+          Lend #56546
         </div>
       </div>
       <div class="crediting-page__content">
@@ -119,18 +119,18 @@ export default {
     items() {
       return [
         {
-          activity: this.$t('crediting.credTable.activity'),
-          amount: this.$t('crediting.credTable.amount'),
-          time: this.$t('crediting.credTable.time'),
-          sender: this.$t('crediting.credTable.sender'),
-          txHash: this.$t('crediting.credTable.txHash'),
+          activity: 'Paid back',
+          amount: this.$t('meta.coins.count.WUSDCount', { count: 100 }),
+          time: 'Jun 12 2021',
+          sender: 'dfgd6...fs65ds',
+          txHash: 'dfgd6...fs65ds',
         },
         {
-          activity: this.$t('crediting.credTable.activity'),
-          amount: this.$t('crediting.credTable.amount'),
-          time: this.$t('crediting.credTable.time'),
-          sender: this.$t('crediting.credTable.sender'),
-          txHash: this.$t('crediting.credTable.txHash'),
+          activity: 'Paid back',
+          amount: this.$t('meta.coins.count.WUSDCount', { count: 100 }),
+          time: 'Jun 12 2021',
+          sender: 'dfgd6...fs65ds',
+          txHash: 'dfgd6...fs65ds',
         },
       ];
     },
@@ -201,11 +201,11 @@ export default {
     cards() {
       return [
         {
-          title: this.$tc('crediting.usdCount', '114.92'),
+          title: this.$tc('meta.coins.count.USDCount', { count: '114.92' }),
           subtitle: this.$t('crediting.liquidationPrice'),
         },
         {
-          title: this.$tc('crediting.percentsCount', '171.65'),
+          title: this.$tc('meta.units.percentsCount', 171.65),
           subtitle: this.$t('crediting.collateralizationRatio'),
         },
       ];
@@ -217,16 +217,16 @@ export default {
           blocks: [
             {
               name: this.$t('crediting.ethLocked'),
-              about: this.$tc('crediting.ethCount', '3.00'),
+              about: this.$tc('meta.coins.count.ETHCount', { count: '3.00' }),
               btn: {
-                name: this.$t('crediting.deposit'),
+                name: this.$t('meta.deposit'),
               },
             },
             {
               name: this.$t('crediting.ableToWithdraw'),
-              about: this.$tc('crediting.ethCount', '3.00'),
+              about: this.$tc('meta.coins.count.ETHCount', { count: '3.00' }),
               btn: {
-                name: this.$t('crediting.withdraw'),
+                name: this.$t('meta.withdraw'),
               },
             },
           ],
@@ -236,14 +236,14 @@ export default {
           blocks: [
             {
               name: this.$t('crediting.outstandingWusdDebt'),
-              about: this.$tc('crediting.wusdCount', '3.00'),
+              about: this.$tc('meta.coins.count.WUSDCount', '3.00'),
               btn: {
                 name: this.$t('crediting.payback'),
               },
             },
             {
               name: this.$t('crediting.availableToGenerate'),
-              about: this.$tc('crediting.wusdCount', '5 6543.23'),
+              about: this.$tc('meta.coins.count.WUSDCount', '5 6543.23'),
               btn: {
                 name: this.$t('crediting.generate'),
               },

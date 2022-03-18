@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="card"
-    :title="$t('modals.addingCard')"
+    :title="$t('modals.titles.addingCard')"
   >
     <div class="card__content content">
       <ValidationObserver
@@ -66,7 +66,7 @@
             class="buttons__action"
             @click="hide"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__action"
@@ -74,7 +74,7 @@
             :disabled="!validated || !passed || invalid"
             @click="handleSubmit(showCardHasBeenAddedModal)"
           >
-            {{ $t('modals.add') }}
+            {{ $t('meta.btns.add') }}
           </base-btn>
         </div>
       </ValidationObserver>

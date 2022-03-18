@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="swap"
-    :title="$t('modals.swapTitle')"
+    :title="$t('modals.titles.swapTitle')"
   >
     <div class="swap__content content">
       <validation-observer
@@ -16,7 +16,7 @@
               <base-dd
                 v-model="token"
                 class="grid__drop"
-                :data-selector="'Tokens'"
+                data-selector="TOKENS"
                 :items="tokens"
                 @input="changeToken()"
               />
@@ -28,8 +28,8 @@
               <base-field
                 v-model.lazy="amount"
                 type="number"
-                :placeholder="'0,05'"
-                :data-selector="'Amount'"
+                placeholder="0,05"
+                data-selector="AMOUNT"
                 class="grid__input"
                 rules="required|decimal|decimalPlaces:18|min_value:0.00001"
                 :name="$t('modals.amountField')"
@@ -59,10 +59,10 @@
             <base-field
               v-model="recipientAddress"
               class="body__input"
-              :data-selector="'Recipient-Address'"
+              data-selector="RECIPIENT_ADDRESS"
               :disabled="true"
               placeholder="Enter binance address"
-              :name="$t('modals.recepientAddressField')"
+              :name="$t('modals.recipientAddressField')"
             />
           </div>
         </div>
@@ -73,7 +73,7 @@
             selector="CANCEL"
             @click="hide"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"

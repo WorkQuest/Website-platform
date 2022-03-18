@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="price"
-    :title="$t('modals.priceTitle')"
+    :title="$t('modals.titles.price')"
   >
     <div class="price__content content">
       <validation-observer
@@ -15,15 +15,15 @@
         <div class="content__grid grid">
           <div class="grid__field">
             <div class="grid__title">
-              {{ $t('modals.priceForm') }}
+              {{ $t('meta.fromBig') }}
             </div>
             <div class="input__container">
               <base-field
                 v-model="priceFrom"
                 class="grid__input"
-                :placeholder="$t('modals.priceFromAmount')"
+                :placeholder="$tc('meta.coins.count.WUSDCount', 0)"
                 rules="decimal|max_value:99999999999999"
-                :name="$t('modals.priceFieldFrom')"
+                :name="$t('meta.fromBig')"
               />
               <span
                 class="icon-off_outline_close input__clear"
@@ -33,15 +33,15 @@
           </div>
           <div class="grid__field">
             <div class="grid__title">
-              {{ $t('modals.priceTo') }}
+              {{ $t('meta.toBig') }}
             </div>
             <div class="input__container">
               <base-field
                 v-model="priceTo"
                 class="grid__field"
-                :placeholder="$t('modals.priceToAmount')"
+                :placeholder="$tc('meta.coins.count.WUSDCount', 10000)"
                 :rules="`decimal${priceFrom ? '|min_value:'+priceFrom : ''}|max_value:99999999999999`"
-                :name="$t('modals.priceFieldTo')"
+                :name="$t('meta.toBig')"
               />
               <span
                 class="icon-off_outline_close input__clear"
@@ -57,7 +57,7 @@
             selector="CANCEL"
             @click="hide"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__action"
@@ -65,7 +65,7 @@
             selector="SUBMIT"
             @click="handleSubmit(submit)"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.btns.submit') }}
           </base-btn>
         </div>
       </validation-observer>

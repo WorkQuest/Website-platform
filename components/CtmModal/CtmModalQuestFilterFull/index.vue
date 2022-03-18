@@ -1,6 +1,6 @@
 <template>
   <ctm-modal-box
-    :title="$t('filters.titleAll')"
+    :title="$t('modals.titles.filters.titleAll')"
     class="filter"
   >
     <div class="filter__container">
@@ -88,7 +88,7 @@
           selector="APPLY"
           @click="handleSubmit"
         >
-          {{ $t('meta.apply') }}
+          {{ $t('meta.btns.apply') }}
         </base-btn>
       </div>
     </div>
@@ -120,7 +120,7 @@ export default {
       for (let i = 0; i < specsKeys.length; i += 1) {
         const spec = this.filters[specsKeys[i]];
         f[i] = {
-          title: this.$t(`filters.items.${spec.id}.title`),
+          title: this.$t(`filters.skills.${spec.id}.title`),
           index: spec.id,
           items: {},
         };
@@ -129,7 +129,7 @@ export default {
           const index = spec.skills[skillsKeys[j]];
           f[i].items[j] = {
             index,
-            title: this.$t(`filters.items.${spec.id}.sub.${index}`),
+            title: this.$t(`filters.skills.${spec.id}.sub.${index}`),
           };
         }
       }

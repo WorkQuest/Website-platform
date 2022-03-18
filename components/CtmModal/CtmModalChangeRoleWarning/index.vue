@@ -11,7 +11,7 @@
             alt="warning"
           >
           <div class="ctm-modal__title">
-            {{ $t('modals.warning') }}
+            {{ $t('modals.title.warning') }}
           </div>
           <div class="ctm-modal__desc">
             {{ $t('modals.ifYouChangeRole') }}
@@ -23,7 +23,7 @@
                 class="message__action"
                 @click="reason()"
               >
-                {{ $t('meta.continue') }}
+                {{ $t('meta.btns.continue') }}
               </base-btn>
             </div>
             <div class="btn__wrapper">
@@ -33,7 +33,7 @@
                 selector="CANCEL"
                 @click="hide()"
               >
-                {{ $t('meta.cancel') }}
+                {{ $t('meta.btns.cancel') }}
               </base-btn>
             </div>
           </div>

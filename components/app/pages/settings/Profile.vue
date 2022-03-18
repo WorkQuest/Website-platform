@@ -59,7 +59,7 @@
             rules="max:100|required"
             mode="icon"
             :selector="isSearchDDStatus"
-            :name="$t('settings.address')"
+            :name="$t('meta.addressSmall')"
             @focus="isSearchDDStatus = true"
             @blur="checkValidate"
             @selector="getAddressInfo(profile.locationFull.locationPlaceName)"
@@ -195,7 +195,7 @@
           class="profile__knowledge-container"
         >
           <div class="profile__knowledge-title">
-            {{ $t("settings.educations") }}
+            {{ $t("meta.educations") }}
           </div>
           <div
             v-if="getEducation"
@@ -290,7 +290,7 @@
           selector="SAVE-CHANGES"
           @click="$emit('click')"
         >
-          {{ $t("settings.save") }}
+          {{ $t("meta.btns.save") }}
         </base-btn>
         <span v-if="validationError">
           {{ $t('messages.formError') }}
@@ -352,7 +352,7 @@ export default {
           model: 'firstName',
           rules: 'required||max:50',
           placeholder: 'settings.nameInput',
-          name: 'settings.firstName',
+          name: 'meta.firstNameSmall',
           icon: 'icon-user',
           isDisabled: false,
         },
@@ -360,15 +360,15 @@ export default {
           model: 'lastName',
           rules: 'required||max:50',
           placeholder: 'settings.lastNameInput',
-          name: 'settings.lastName',
+          name: 'meta.lastNameSmall',
           icon: 'icon-user',
           isDisabled: false,
         },
         {
           model: 'email',
-          name: 'placeholders.email',
+          name: 'meta.placeholders.email',
           rules: 'max:100||email',
-          placeholder: 'placeholders.mail',
+          placeholder: 'meta.placeholders.mail',
           icon: 'icon-mail',
           isDisabled: true,
         },

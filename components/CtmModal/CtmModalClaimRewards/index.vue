@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="claim"
-    :title="options.type === 1 ? $t('mining.stake') : $t('mining.unstake')"
+    :title="options.type === 1 ? $t('modals.titles.stake') : $t('modals.titles.unstake')"
   >
     <div class="claim__content content">
       <validation-observer
@@ -38,14 +38,14 @@
             :disabled="statusBusy"
             @click="hide()"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             selector="SUBMIT"
             :disabled="!valid || !canSubmit"
             @click="handleSubmit(options.type === 1 ? staking : unstaking)"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.btns.submit') }}
           </base-btn>
         </div>
       </validation-observer>
@@ -169,22 +169,22 @@ export default {
           ]);
           this.SetLoader(false);
           if (!txFee.ok) {
-            this.ShowToast(this.$t('modals.failed'), this.$t('mining.unstake'));
+            this.ShowToast(this.$t('modals.failed'), this.$t('meta.btns.unstake'));
             return;
           }
           this.ShowModal({
             key: modals.transactionReceipt,
-            title: this.$t('mining.unstake'),
+            title: this.$t('meta.btns.unstake'),
             fields: {
-              from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-              to: { name: this.$t('modals.toAddress'), value: poolAddress },
+              from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+              to: { name: this.$t('meta.toBig'), value: poolAddress },
               unstakeAmount: { name: this.$t('modals.amount'), value: amount },
               fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: stakingType },
             },
             submitMethod: async () => {
               const res = await this.$store.dispatch('wallet/stakingUnstake', { amount, stakingType, poolAddress });
               if (!res.ok && res.msg.includes('insufficient funds: insufficient funds')) {
-                this.ShowToast(this.$t('errors.transaction.notEnoughFunds'), this.$t('mining.unstake'));
+                this.ShowToast(this.$t('errors.transaction.notEnoughFunds'), this.$t('meta.btns.unstake'));
               }
               return res;
             },

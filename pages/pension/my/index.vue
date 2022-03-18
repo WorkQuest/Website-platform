@@ -37,7 +37,7 @@
                 {{ $t('pension.currentPercentFromAQuest') }}
               </div>
               <div class="info-block__tokens">
-                {{ $t('pension.percents', { count: getFeePercent() }) }}
+                {{ $t('meta.units.percentsCount', { count: getFeePercent() }) }}
               </div>
               <base-btn
                 class="btn_bl"
@@ -49,7 +49,7 @@
             <div class="info-block__third_rate">
               <div class="info-block__small">
                 <div class="info-block__perc">
-                  {{ $t('pension.plusPercents', { count: 6 }) }}
+                  + {{ $tc('meta.units.percentsCount', 6 ) }}
                 </div>
                 <div class="info-block__period">
                   {{ $t('pension.year') }}
@@ -78,7 +78,7 @@
             </div>
             <div class="info-block__small_right">
               <div class="info-block__perc">
-                {{ $t("pension.plusPercents", { count: 6 }) }}
+                + {{ $tc('meta.units.percentsCount', 6) }}
               </div>
               <div class="info-block__period">
                 {{ $t('pension.year') }}
@@ -99,7 +99,7 @@
                 class="btn_bl"
                 @click="showWithdrawModal"
               >
-                {{ $t('pension.withdraw') }}
+                {{ $t('meta.withdraw') }}
               </base-btn>
               <base-btn
                 class="btn_bl"
@@ -121,14 +121,14 @@
                 :mode="selectedTable === $options.PensionHistoryMethods.Receive ? '' : 'outline'"
                 @click="selectedTable=$options.PensionHistoryMethods.Receive"
               >
-                {{ $t('wallet.deposit') }}
+                {{ $t('meta.deposit') }}
               </base-btn>
               <base-btn
                 :is-submit="false"
                 :mode="selectedTable === $options.PensionHistoryMethods.Withdraw ? '' : 'outline'"
                 @click="selectedTable=$options.PensionHistoryMethods.Withdraw"
               >
-                {{ $t('pension.withdraw') }}
+                {{ $t('meta.withdraw') }}
               </base-btn>
               <base-btn
                 :is-submit="false"
@@ -164,7 +164,7 @@
           class="info-block"
         >
           <div class="info-block__name_bold">
-            {{ $t("saving.faq") }}
+            {{ $t("meta.faq") }}
           </div>
           <div class="info-block__faqs">
             <button
@@ -321,7 +321,7 @@ export default {
     },
     pensionBalance() {
       const balance = this.pensionWallet?.amount || 0;
-      return this.$t('pension.WUSDCount', { count: balance });
+      return this.$t('meta.coins.count.WUSDCount', { count: balance });
     },
     totalPages() {
       const len = this.pensionHistory[this.selectedTable]?.count;
@@ -359,7 +359,7 @@ export default {
   methods: {
     getOperationLocale(operation) {
       if (operation === 'WalletUpdated') return this.$t('pension.changePercent');
-      if (operation === 'Received') return this.$t('wallet.deposit');
+      if (operation === 'Received') return this.$t('meta.deposit');
       if (operation === 'Withdrew') return this.$t('wallet.withdraw');
       return '';
     },
@@ -387,18 +387,18 @@ export default {
 
       const minutes = ends.diff(now, 'minutes');
       if (minutes <= 60) {
-        return this.$t('pension.minutes', { count: minutes });
+        return this.$t('meta.units.minutes', { count: minutes });
       }
 
       const hours = ends.diff(now, 'hours');
       if (hours <= 24) {
-        return this.$t('pension.hours', { count: hours });
+        return this.$t('meta.units.hours', { count: hours });
       }
 
       const years = ends.diff(now, 'years');
       const days = ends.diff(now, 'days') - years * 365;
-      const y = years > 0 ? `${this.$t('pension.years', { count: years })} ` : '';
-      const d = days >= 0 ? this.$t('pension.days', { count: days }) : this.$t('pension.days', { count: 0 });
+      const y = years > 0 ? `${this.$t('meta.units.years', { count: years })} ` : '';
+      const d = days >= 0 ? this.$t('meta.units.days', { count: days }) : this.$t('meta.units.days', { count: 0 });
       return `${y}${d}`;
     },
     getFeePercent() {
@@ -454,8 +454,8 @@ export default {
           this.ShowModal({
             key: modals.transactionReceipt,
             fields: {
-              from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-              to: { name: this.$t('modals.toAddress'), value: process.env.WORKNET_PENSION_FUND },
+              from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+              to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_PENSION_FUND },
               fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
             },
             submitMethod: async () => {

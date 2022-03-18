@@ -8,11 +8,11 @@
         Lorem ipsum
       </div>
       <div class="content__label">
-        {{ $t('modals.eth') }}
+        {{ $t('meta.coins.eth') }}
       </div>
       <base-field placeholder="10" />
       <div class="content__label">
-        {{ $t('modals.wusd') }}
+        {{ $t('meta.coins.wusd') }}
       </div>
       <base-field placeholder="10" />
       <div class="content__actions">
@@ -37,7 +37,7 @@ export default {
       return this.options.mode === 'add' ? this.$t('wallet.collateral.addTitle') : this.$t('wallet.collateral.takeTitle');
     },
     submitText() {
-      return this.options.mode === 'add' ? this.$t('modals.add') : this.$t('modals.take');
+      return this.options.mode === 'add' ? this.$t('meta.btns.add') : this.$t('meta.btns.take');
     },
   },
   methods: {

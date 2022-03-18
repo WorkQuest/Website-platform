@@ -22,14 +22,14 @@
           mode="outline"
           @click="hide()"
         >
-          {{ $t('meta.cancel') }}
+          {{ $t('meta.btns.cancel') }}
         </base-btn>
         <base-btn
           selector="DELETE"
           class="action__button"
           @click="showErrorModal"
         >
-          {{ $t('meta.delete') }}
+          {{ $t('meta.btns.delete') }}
         </base-btn>
       </div>
     </div>
@@ -58,9 +58,9 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/deleteError.svg'),
-        title: this.$t('modals.error'),
-        subtitle: this.$t('modals.youCan’tDeleteActiveQuest'),
-        button: this.$t('modals.close'),
+        title: this.$t('modals.errors.error'),
+        subtitle: this.$t('modals.errors.youCan’tDeleteActiveQuest'),
+        button: this.$t('meta.btns.close'),
       });
     },
   },

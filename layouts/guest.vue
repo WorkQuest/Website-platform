@@ -1,8 +1,5 @@
 <template>
-  <div
-    ref="templateScroll"
-    class="primary"
-  >
+  <div class="primary">
     <div class="primary__template template">
       <div class="template__content">
         <div
@@ -65,7 +62,7 @@
                 class="header__btn"
                 @click="$router.push('/sign-in')"
               >
-                {{ $t('login.signIn') }}
+                {{ $t('meta.signIn') }}
               </base-btn>
             </div>
           </div>

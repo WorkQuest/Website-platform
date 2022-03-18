@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="restore"
-    :title="$t('forgot.title')"
+    :title="$t('modals.titles.forgotPass')"
   >
     <div class="restore__content content">
       <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
@@ -10,8 +10,8 @@
         </div>
         <base-field
           v-model="emailInput"
-          :name="$t('placeholders.email')"
-          :placeholder="$t('placeholders.email')"
+          :name="$t('meta.placeholders.email')"
+          :placeholder="$t('meta.placeholders.email')"
           rules="required|email"
           class="content__input"
           @enter="handleSubmit(restore)"
@@ -22,7 +22,7 @@
           selector="SEND"
           @click="handleSubmit(restore)"
         >
-          {{ $t('meta.send') }}
+          {{ $t('meta.btns.send') }}
         </base-btn>
       </validation-observer>
     </div>
