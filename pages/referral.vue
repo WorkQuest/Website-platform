@@ -368,11 +368,7 @@ export default {
               offset: (newValue - 1) * this.perPage,
             },
           };
-          try {
-            await this.$store.dispatch('referral/fetchPaidEventsList', payload);
-          } catch (err) {
-            console.log('fetchPaidEventsList err', err);
-          }
+          await this.$store.dispatch('referral/fetchPaidEventsList', payload);
         }
       },
     },
