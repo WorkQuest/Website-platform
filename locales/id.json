@@ -1487,7 +1487,7 @@
       "txHash": "Txn hash",
       "time": "Waktu",
       "amount": "Jumlah",
-      "status": "Status"
+      "event": "Status"
     }
   },
   "pension": {

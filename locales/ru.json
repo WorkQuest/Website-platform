@@ -1489,7 +1489,7 @@
       "txHash": "Txn hash",
       "time": "Time",
       "amount": "Amount",
-      "status": "Status"
+      "event": "Status"
     }
   },
   "pension": {

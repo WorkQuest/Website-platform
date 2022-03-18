@@ -1487,7 +1487,7 @@
       "txHash": "Hachage Txn",
       "time": "Heure",
       "amount": "Montant",
-      "status": "Statut"
+      "event": "Statut"
     }
   },
   "pension": {

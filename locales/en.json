@@ -1495,7 +1495,7 @@
       "txHash": "Txn hash",
       "time": "Time",
       "amount": "Amount",
-      "status": "Event"
+      "event": "Event"
     },
     "event": {
       "paid": "Paid",

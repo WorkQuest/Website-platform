@@ -1487,7 +1487,7 @@
       "txHash": "Hash de transacción",
       "time": "Tiempo",
       "amount": "Importe",
-      "status": "Estado"
+      "event": "Estado"
     }
   },
   "pension": {

@@ -1489,7 +1489,7 @@
       "txHash": "交易哈希",
       "time": "时间",
       "amount": "金额",
-      "status": "状态"
+      "event": "状态"
     }
   },
   "pension": {

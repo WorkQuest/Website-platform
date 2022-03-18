@@ -1487,7 +1487,7 @@
       "txHash": "Hash Trn",
       "time": "Prazo",
       "amount": "Montante",
-      "status": "Status"
+      "event": "Status"
     }
   },
   "pension": {

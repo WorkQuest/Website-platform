@@ -1487,7 +1487,7 @@
       "txHash": "Txn হ্যাশ",
       "time": "সময়",
       "amount": "পরিমাণ",
-      "status": "অবস্থা"
+      "event": "অবস্থা"
     }
   },
   "pension": {
