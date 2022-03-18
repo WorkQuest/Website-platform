@@ -33,10 +33,16 @@
                 </base-btn>
               </div>
             </div>
-            <div class="info-block__name">
+            <div
+              v-if="paidEventsList.length"
+              class="info-block__name"
+            >
               {{ $t('referral.lastRefReward') }}
             </div>
-            <div class="user_last-reward">
+            <div
+              v-if="paidEventsList.length"
+              class="user_last-reward"
+            >
               <div class="user__info">
                 <img
                   class="ava"
@@ -48,7 +54,7 @@
                 </div>
               </div>
               <div class="user__value_green">
-                {{ $tc('meta.units.plusCount', $tc('meta.coins.count.WQTCount', 0)) }}
+                {{ $tc('meta.units.plusCount', $tc('meta.coins.count.WQTCount', paidEventsList[0].amount)) }}
               </div>
             </div>
           </div>
