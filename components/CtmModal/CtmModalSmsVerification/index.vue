@@ -1,6 +1,6 @@
 <template>
   <ctm-modal-box
-    :title="!phone ? $t('modals.errorSmsVer') : $t('modals.smsVerification')"
+    :title="!phone ? $t('modals.errors.errorSmsVer') : $t('modals.titles.smsVerification')"
     class="verification"
   >
     <div class="verification__content content">
@@ -22,7 +22,7 @@
             selector="CONFIRM-1"
             @click="hide"
           >
-            {{ $t('meta.confirm') }}
+            {{ $t('meta.btns.confirm') }}
           </base-btn>
         </div>
       </div>
@@ -34,7 +34,7 @@
           {{ step === 1 ? $t('modals.enterPhone') : $t('modals.enterSMSCode') }}
         </div>
         <span class="content__top">
-          {{ step === 1 ? $t('modals.phoneNumber') : $t('modals.codeFromSMS') }}
+          {{ step === 1 ? $t('modals.phoneNumber') : $t('meta.codeFromSMS') }}
         </span>
         <base-field
           v-if="step === 1"
@@ -56,7 +56,7 @@
           v-if="step === 2"
           v-model="confirmCode"
           class="content__action"
-          :placeholder="$t('modals.codeFromSMSField')"
+          :placeholder="$t('meta.codeFromSMS')"
           mode="icon"
           rules="required|alpha_num"
           :name="$t('modals.codeFromSMS')"
@@ -78,7 +78,7 @@
             data-selector="RESEND-SMS"
             @click="getCodeFromSms()"
           >
-            {{ $t('meta.resendSMS') }}
+            {{ $t('meta.btns.resendSMS') }}
           </button>
         </div>
         <div class="content__buttons buttons">
@@ -88,7 +88,7 @@
             class="buttons__button"
             @click="handleSubmit(nextStep)"
           >
-            {{ $t('meta.next') }}
+            {{ $t('meta.btns.next') }}
           </base-btn>
           <base-btn
             v-if="step === 2"
@@ -97,7 +97,7 @@
             :disabled="!validated || !passed || invalid"
             @click="handleSubmit(success)"
           >
-            {{ $t('meta.confirm') }}
+            {{ $t('meta.btns.confirm') }}
           </base-btn>
         </div>
       </validation-observer>
@@ -148,7 +148,7 @@ export default {
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/success.svg'),
-          title: this.$t('modals.success'),
+          title: this.$t('meta.success'),
           subtitle: this.$t('modals.SMSVerConnected'),
         });
       } else {

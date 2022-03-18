@@ -32,7 +32,7 @@
               class="btn_bl"
               @click="handleClickBuyProtection()"
             >
-              {{ $t('insuring.buy') }}
+              {{ $t('meta.btns.buy') }}
             </base-btn>
           </div>
         </div>
@@ -41,7 +41,7 @@
           class="info-block"
         >
           <div class="info-block__name_bold">
-            {{ $t("insuring.information") }}
+            {{ $t("meta.information") }}
           </div>
           <div class="info-block__documents">
             <div
@@ -63,7 +63,7 @@
                 </div>
               </div>
               <button class="btn__doc">
-                {{ $t('pension.download') }}
+                {{ $t('meta.btns.download') }}
                 <img
                   class="download"
                   src="~/assets/img/ui/download.svg"
@@ -78,7 +78,7 @@
           class="info-block"
         >
           <div class="info-block__name_bold">
-            {{ $t("saving.faq") }}
+            {{ $t("meta.faq") }}
           </div>
           <div class="info-block__faqs">
             <button
@@ -123,18 +123,18 @@ export default {
     documents() {
       return [
         {
-          name: this.$t('insuring.docName'),
-          size: this.$tc('insuring.mb', '1.2'),
+          name: 'Some_document.pdf',
+          size: this.$tc('meta.units.mb', 1.2),
           url: '',
         },
         {
-          name: this.$t('insuring.docName'),
-          size: this.$tc('insuring.mb', '1.2'),
+          name: 'Some_document.pdf',
+          size: this.$tc('meta.units.mb', 1.2),
           url: '',
         },
         {
-          name: this.$t('insuring.docName'),
-          size: this.$tc('insuring.mb', '1.2'),
+          name: 'Some_document.pdf',
+          size: this.$tc('meta.units.mb', 1.2),
           url: '',
         },
       ];

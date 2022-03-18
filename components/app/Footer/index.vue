@@ -183,17 +183,17 @@ export default {
       return [
         { title: this.$t('footer.legalInfo.risks'), path: LEGAL_INFO.RISKS },
         { title: this.$t('footer.legalInfo.privacyPolicy'), path: LEGAL_INFO.PRIVACY_POLICY },
-        { title: this.$t('footer.legalInfo.terms'), path: LEGAL_INFO.TERM_CONDITIONS },
-        { title: this.$t('footer.legalInfo.aml'), path: LEGAL_INFO.AML_POLICY },
+        { title: this.$t('meta.terms'), path: LEGAL_INFO.TERM_CONDITIONS },
+        { title: this.$t('meta.aml'), path: LEGAL_INFO.AML_POLICY },
         { title: this.$t('footer.legalInfo.cookiePolicy'), path: LEGAL_INFO.COOKIE_POLICY },
       ];
     },
     companyLinks() {
       return [
         { title: this.$t('footer.company.wqWiki'), path: Path.WIKI },
-        { title: this.$t('footer.company.aboutUs'), path: COMPANY.ABOUT_US },
+        { title: this.$t('meta.aboutUs'), path: COMPANY.ABOUT_US },
         { title: this.$t('footer.company.leadership'), path: COMPANY.LEADERSHIP },
-        { title: this.$t('footer.company.contactUs'), path: COMPANY.CONTACT_US },
+        { title: this.$t('meta.contactUs'), path: COMPANY.CONTACT_US },
         { title: this.$t('footer.company.support'), path: COMPANY.SUPPORT },
       ];
     },
@@ -207,7 +207,7 @@ export default {
           { title: this.$t('footer.DeFi.lending'), path: Path.CREDITING },
         ],
         secondColumn: [
-          { title: this.$t('footer.DeFi.liquidityMining'), path: Path.MINING },
+          { title: this.$t('meta.liquidityMining'), path: Path.MINING },
           { title: this.$t('footer.DeFi.wqBridge'), path: Path.CROSSCHAIN },
           { title: this.$t('footer.DeFi.staking'), path: Path.STAKING },
           { title: this.$t('footer.DeFi.wqDAO'), path: URLS.DAO },

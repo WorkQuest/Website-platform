@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="deposit"
-    :title="$t('crediting.deposit')"
+    :title="$t('modals.titles.deposit')"
   >
     <div class="deposit__content content">
       <validation-observer
@@ -97,7 +97,7 @@
             selector="CANCEL"
             @click="hide"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
@@ -105,7 +105,7 @@
             :disabled="!validated || !passed || invalid"
             @click="handleSubmit(openConfirmDetailsModal)"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.btns.submit') }}
           </base-btn>
         </div>
       </validation-observer>
@@ -126,42 +126,42 @@ export default {
       generate: '',
       checkpoints: [
         {
-          name: this.$t('modals.bnb'),
+          name: this.$t('meta.coins.bnb'),
           id: 1,
         },
         {
-          name: this.$t('modals.eth'),
+          name: this.$t('meta.coins.eth'),
           id: 2,
         },
         {
-          name: this.$t('modals.wqt'),
+          name: this.$t('meta.coins.wqt'),
           id: 3,
         },
       ],
       abouts: [
         {
           title: this.$t('modals.collateralization'),
-          subtitle: this.$tc('modals.percentsCount', 0),
+          subtitle: this.$tc('meta.units.percentsCount', 0),
         },
         {
           title: this.$t('modals.liquidationPrice'),
-          subtitle: this.$tc('modals.percentsCount', 0),
+          subtitle: this.$tc('meta.units.percentsCount', 0),
         },
         {
           title: this.$t('modals.currentPrice'),
-          subtitle: this.$tc('modals.percentsCount', 0),
+          subtitle: this.$tc('meta.units.percentsCount', 0),
         },
         {
           title: this.$t('modals.stabilityFee'),
-          subtitle: this.$tc('modals.percentsCount', 0),
+          subtitle: this.$tc('meta.units.percentsCount', 0),
         },
         {
           title: this.$t('modals.liquidationRatio'),
-          subtitle: this.$tc('modals.percentsCount', 0),
+          subtitle: this.$tc('meta.units.percentsCount', 0),
         },
         {
           title: this.$t('modals.liquidationPenalty'),
-          subtitle: this.$tc('modals.percentsCount', 0),
+          subtitle: this.$tc('meta.units.percentsCount', 0),
         },
       ],
     };

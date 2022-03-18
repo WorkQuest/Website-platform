@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="payment"
-    :title="$t('modals.payment')"
+    :title="$t('modals.titles.payment')"
   >
     <div class="payment__content сontent">
       <div class="content__step">
@@ -17,7 +17,7 @@
           :class="{'content__panel_active': options.step === 2}"
           @click="nextStep"
         >
-          {{ $t('wallet.bankCard') }}
+          {{ $t('meta.bankCard') }}
         </div>
       </div>
       <div
@@ -38,7 +38,7 @@
         </div>
         <div class="content__drop drop">
           <div class="drop__title">
-            {{ $t('modals.wallet') }}
+            {{ $t('meta.wallet') }}
           </div>
           <base-dd
             v-model="method"
@@ -94,14 +94,14 @@
             selector="CANCEL"
             @click="hide"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
             selector="SUBMIT"
             @click="showRaiseLevel"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.btns.submit') }}
           </base-btn>
         </span>
       </div>
@@ -128,8 +128,8 @@ export default {
     }),
     currency() {
       return [
-        { title: this.$t('modals.wusd'), icon: require('~/assets/img/ui/wusd.svg') },
-        { title: this.$t('modals.wqt'), icon: require('~/assets/img/ui/wqt.svg') },
+        { title: this.$t('meta.coins.wusd'), icon: require('~/assets/img/ui/wusd.svg') },
+        { title: this.$t('meta.coins.wqt'), icon: require('~/assets/img/ui/wqt.svg') },
       ];
     },
     wallet() {

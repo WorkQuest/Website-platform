@@ -6,7 +6,7 @@
           {{ $t('collateral.lending') }}
         </div>
         <div class="title_sub">
-          {{ $t('collateral.templateText') }}
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor
         </div>
       </div>
       <div class="collateral-page__content">
@@ -30,7 +30,7 @@
           </div>
           <div class="info-block__about">
             <div class="info-block__subtitle">
-              {{ $t('collateral.wantToGetWUSDText') }}
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor
             </div>
             <img
               class="info-block-image"
@@ -53,7 +53,7 @@
           </div>
           <div class="info-block__about">
             <div class="info-block__subtitle">
-              {{ $t('collateral.wantToGoAuctionText') }}
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor
             </div>
             <img
               class="info-block-image"
@@ -75,7 +75,7 @@
           class="info-block"
         >
           <div class="info-block__name_bold">
-            {{ $t("collateral.information") }}
+            {{ $t("meta.information") }}
           </div>
           <div class="info-block__documents">
             <div
@@ -97,7 +97,7 @@
                 </div>
               </div>
               <button class="btn__doc">
-                {{ $t('pension.download') }}
+                {{ $t('meta.btns.download') }}
                 <img
                   class="download"
                   src="~/assets/img/ui/download.svg"
@@ -112,7 +112,7 @@
           class="info-block"
         >
           <div class="info-block__name_bold">
-            {{ $t("collateral.faq") }}
+            {{ $t("meta.faq") }}
           </div>
           <div class="info-block__faqs">
             <button
@@ -161,18 +161,18 @@ export default {
     documents() {
       return [
         {
-          name: this.$t('pension.docName'),
-          size: this.$tc('pension.mb', '1.2'),
+          name: 'Some_document.pdf',
+          size: this.$tc('meta.units.mb', 1.2),
           url: '',
         },
         {
-          name: this.$t('pension.docName'),
-          size: this.$tc('pension.mb', '1.2'),
+          name: 'Some_document.pdf',
+          size: this.$tc('meta.units.mb', 1.2),
           url: '',
         },
         {
-          name: this.$t('pension.docName'),
-          size: this.$tc('pension.mb', '1.2'),
+          name: 'Some_document.pdf',
+          size: this.$tc('meta.units.mb', 1.2),
           url: '',
         },
       ];
@@ -180,16 +180,16 @@ export default {
     cards() {
       return [
         {
-          title: this.$tc('collateral.dollarsCount', '417.1M'),
+          title: this.$tc('meta.coins.count.dollarsCount', '417.1M'),
           subtitle: this.$t('collateral.marketSize'),
         },
         {
-          title: this.$tc('collateral.percentsCount', '4.31'),
-          subtitle: this.$t('collateral.deposit'),
+          title: this.$tc('meta.units.percentsCount', 4.31),
+          subtitle: this.$t('meta.deposit'),
         },
         {
-          title: this.$tc('collateral.percentsCount', 5),
-          subtitle: this.$t('collateral.percent'),
+          title: this.$tc('meta.units.percentsCount', 5),
+          subtitle: this.$t('meta.percent'),
         },
       ];
     },

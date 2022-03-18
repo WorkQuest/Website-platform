@@ -2,7 +2,7 @@
   <ctm-modal-box
     class="deposit"
     :class="{'deposit_small': step === 2}"
-    :title="$t('modals.depositTitle')"
+    :title="$t('modals.titles.deposit')"
   >
     <div class="deposit__content сontent">
       <div class="content__step">
@@ -20,7 +20,7 @@
           data-selector="NEXT-STEP"
           @click="nextStep"
         >
-          {{ $t('wallet.bankCard') }}
+          {{ $t('meta.bankCard') }}
         </div>
       </div>
       <div
@@ -91,7 +91,7 @@
                 selector="CLOSE"
                 @click="hide"
               >
-                {{ $t('modals.close') }}
+                {{ $t('meta.btns.close') }}
               </base-btn>
             </span>
             <span
@@ -104,14 +104,14 @@
                 selector="CANCEL"
                 @click="hide"
               >
-                {{ $t('meta.cancel') }}
+                {{ $t('meta.btns.cancel') }}
               </base-btn>
               <base-btn
                 class="buttons__button"
                 selector="CARD-ADD"
                 @click="showAddingCard"
               >
-                {{ $t('modals.cardAdd') }}
+                {{ $t('meta.cardAdd') }}
               </base-btn>
             </span>
           </div>

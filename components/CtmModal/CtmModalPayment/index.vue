@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.payment')"
+    :title="$t('modals.titles.payment')"
   >
     <div class="ctm-modal__content">
       <validation-observer>
@@ -49,7 +49,7 @@
                 selector="SUBMIT"
                 @click="showModalLevelRaised()"
               >
-                {{ $t('meta.submit') }}
+                {{ $t('meta.btns.submit') }}
               </base-btn>
             </span>
           </div>
@@ -60,7 +60,7 @@
               class="message__action"
               @click="hide()"
             >
-              {{ $t('meta.cancel') }}
+              {{ $t('meta.btns.cancel') }}
             </base-btn>
           </div>
         </div>

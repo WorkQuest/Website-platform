@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.twoFAAuth')"
+    :title="$t('modals.titles.2FA.auth')"
   >
     <validation-observer
       v-slot="{handleSubmit, validated, passed, invalid}"
@@ -154,7 +154,7 @@
             selector="NEXT-STEP-WITH-ENABLE-2FA"
             @click="nextStepWithEnable2FA()"
           >
-            {{ $t('meta.next') }}
+            {{ $t('meta.btns.next') }}
           </base-btn>
         </div>
         <div
@@ -185,7 +185,7 @@
               :disabled="!validated || !passed || invalid"
               @click="handleSubmit(confirmEnable2FA)"
             >
-              {{ $t('meta.next') }}
+              {{ $t('meta.btns.next') }}
             </base-btn>
           </span>
         </div>
@@ -200,7 +200,7 @@
             class="message__action"
             @click="previousStep()"
           >
-            {{ $t('meta.back') }}
+            {{ $t('meta.btns.back') }}
           </base-btn>
         </div>
       </div>
@@ -225,16 +225,16 @@ export default {
       shopBtns: [
         {
           click: this.goToAppleStore,
-          text: this.$t('modals.appleStore'),
+          text: this.$t('meta.stores.appleStore'),
           img: require('~/assets/img/ui/apple-icon.svg'),
         },
         {
           click: this.goToGooglePlay,
-          text: this.$t('modals.googlePlay'),
+          text: this.$t('meta.stores.googlePlay'),
           img: require('~/assets/img/ui/google-play-icon.svg'),
         },
       ],
-      stepBtns: [{ step: [2, 3], click: this.nextStep, text: this.$t('meta.next') }],
+      stepBtns: [{ step: [2, 3], click: this.nextStep, text: this.$t('meta.btns.next') }],
       inputs: [
         {
           id: 'confirmCode',
@@ -308,8 +308,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('modals.2FAStatus'),
-        subtitle: this.$t('modals.2FAEnabled'),
+        title: this.$t('modals.2FA.status'),
+        subtitle: this.$t('modals.2FA.enabled'),
       });
     },
     validationErrorFields(data) {

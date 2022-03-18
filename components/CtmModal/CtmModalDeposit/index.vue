@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.deposit')"
+    :title="$t('modals.titles.deposit')"
   >
     <div class="ctm-modal__content">
       <validation-observer v-slot="{ handleSubmit, validated, passed, invalid }">
@@ -19,7 +19,7 @@
             class="step-panel__step"
             :class="[{'step-panel__step_active': step === 2}, {'hide': step === 3}]"
           >
-            {{ $t('wallet.bankCard') }}
+            {{ $t('meta.bankCard') }}
           </div>
         </div>
         <div
@@ -133,7 +133,7 @@
                 :disabled="!validated || !passed || invalid"
                 @click="handleSubmit(nextStep)"
               >
-                {{ $t('meta.next') }}
+                {{ $t('meta.btns.next') }}
               </base-btn>
             </span>
             <span
@@ -146,7 +146,7 @@
                 :disabled="invalid"
                 @click="handleSubmit(nextStep)"
               >
-                {{ $t('meta.confirm') }}
+                {{ $t('meta.btns.confirm') }}
               </base-btn>
             </span>
             <span
@@ -169,7 +169,7 @@
               class="message__action"
               @click="hide()"
             >
-              {{ $t('meta.cancel') }}
+              {{ $t('meta.btns.cancel') }}
             </base-btn>
           </div>
         </div>

@@ -10,7 +10,7 @@
     />
     <div class="quests__content">
       <h2 class="quests__title">
-        {{ $t('ui.quests') }}
+        {{ $t('meta.questsBig') }}
       </h2>
       <filters-panel
         class="quests__filters"
@@ -122,6 +122,7 @@ export default {
     },
     async setPage(newPage) {
       this.page = newPage;
+      this.ScrollToTop();
       await this.fetchQuestsList();
     },
     async fetchQuestsList(isResetPage = false) {

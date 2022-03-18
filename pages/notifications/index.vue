@@ -64,7 +64,7 @@
                 class="button__view"
                 @click="goToEvent(notification.params ? notification.params.path : '')"
               >
-                {{ $t('btn.view') }}
+                {{ $t('meta.btns.view') }}
               </base-btn>
             </div>
           </div>
@@ -128,7 +128,7 @@ export default {
       this.ShowModal({
         key: modals.areYouSure,
         title: this.$t('modals.sureDeleteNotification'),
-        okBtnTitle: this.$t('meta.delete'),
+        okBtnTitle: this.$t('meta.btns.delete'),
         okBtnFunc: async () => await this.removeNotification(notificationId),
       });
     },

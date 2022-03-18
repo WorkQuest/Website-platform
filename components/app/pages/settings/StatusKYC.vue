@@ -6,7 +6,7 @@
       {'status-kyc_verified': status}
     ]"
   >
-    {{ status === 0 ? $t("settings.notVerified") : $t("settings.verified") }}
+    {{ status === 0 ? $t("settings.notVerified") : $t("meta.verified") }}
     <span
       class="status-kyc__icon icon-check_all_big"
       :class="[

@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.invitation')"
+    :title="$t('modals.titles.invitation')"
   >
     <div class="ctm-modal__content">
       <validation-observer tag="div">
@@ -43,7 +43,7 @@
             id="message_input"
             v-model="message_input"
             class="message__textarea"
-            :placeholder="$t('modals.hello')"
+            :placeholder="$t('meta.typeYourMessage')"
           />
         </div>
         <div class="btn__container">
@@ -54,7 +54,7 @@
               selector="INVITE-ON-QUEST"
               @click="inviteOnQuest()"
             >
-              {{ $t('meta.send') }}
+              {{ $t('meta.btns.send') }}
             </base-btn>
           </div>
           <div class="btn__wrapper">
@@ -64,7 +64,7 @@
               selector="CANCEL"
               @click="hide()"
             >
-              {{ $t('meta.cancel') }}
+              {{ $t('meta.btns.cancel') }}
             </base-btn>
           </div>
         </div>
@@ -113,10 +113,10 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/inviteSend.svg'),
-        title: this.$t('modals.inviteSend'),
-        subtitle: this.$t('modals.invitationSendText'),
+        title: this.$t('modals.titles.inviteSend'),
+        subtitle: '',
         type: 'goToChat',
-        button: this.$t('btn.goToChat'),
+        button: this.$t('meta.btns.goToChat'),
       });
     },
   },

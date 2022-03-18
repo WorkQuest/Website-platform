@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="withdrawal"
-    :title="$t('modals.withdrawal')"
+    :title="$t('modals.titles.withdrawal')"
   >
     <div class="withdrawal__content content">
       <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
@@ -20,7 +20,7 @@
           <!--            :class="{'content__panel_active': step === 2}"-->
           <!--            @click="nextStep"-->
           <!--          >-->
-          <!--            {{ $t('wallet.bankCard') }}-->
+          <!--            {{ $t('meta.bankCard') }}-->
           <!--          </div>-->
         </div>
         <div
@@ -90,7 +90,7 @@
             selector="CANCEL"
             @click="hide"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             v-if="step=== 1"
@@ -99,7 +99,7 @@
             selector="SHOW-WITHDRAW-INFO"
             @click="handleSubmit(showWithdrawInfo)"
           >
-            {{ $t('meta.confirm') }}
+            {{ $t('meta.btns.confirm') }}
           </base-btn>
           <base-btn
             v-else-if="step=== 2"
@@ -107,7 +107,7 @@
             selector="SHOW-ADDING-CARD"
             @click="showAddingCard"
           >
-            {{ $t('modals.addCard') }}
+            {{ $t('meta.cardAdd') }}
           </base-btn>
         </div>
       </validation-observer>
@@ -178,9 +178,9 @@ export default {
         }
         this.ShowModal({
           key: modals.transactionReceipt,
-          title: this.$t('modals.withdrawInfo'),
+          title: this.$t('modals.info.withdrawInfo'),
           fields: {
-            to: { name: this.$t('modals.toAddress'), value: this.walletAddress },
+            to: { name: this.$t('meta.toBig'), value: this.walletAddress },
             amount: { name: this.$t('modals.amount'), value: this.amount, symbol: TokenSymbols.WUSD },
             fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
           },

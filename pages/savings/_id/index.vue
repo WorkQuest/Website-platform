@@ -16,12 +16,12 @@
               {{ $t('saving.depositAmount') }}
             </div>
             <div class="info-block__tokens">
-              {{ $tc('saving.wusdCount', "4 562") }}
+              {{ $tc('meta.coins.count.WUSDCount', "4 562") }}
             </div>
           </div>
           <div class="info-block__small_right">
             <div class="info-block__perc">
-              {{ $tc('saving.plusPercents', "4,51") }}
+              + {{ $tc('meta.units.percentsCount', 4.51) }}
             </div>
             <div class="info-block__period">
               {{ $t('pension.everyYear') }}
@@ -46,7 +46,7 @@
               class="btn_bl"
               @click="openWithdrawAboutModal()"
             >
-              {{ $t('saving.withdraw') }}
+              {{ $t('meta.withdraw') }}
             </base-btn>
           </div>
         </div>
@@ -113,22 +113,22 @@ export default {
     return {
       items: [
         {
-          userName: this.$t('saving.table.userName'),
+          userName: 'John Doe',
           avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('saving.table.userId'),
-          txHash: this.$t('saving.table.txHash'),
-          time: this.$t('saving.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('saving.table.status'),
+          userID: '455dad66544ss',
+          txHash: 'sf998s...ss877d',
+          time: 'Feb 1, 2021',
+          amount: this.$tc('meta.coins.count.WQTCount', 12),
+          status: this.$t('meta.success'),
         },
         {
-          userName: this.$t('saving.table.userName'),
+          userName: 'John Doe',
           avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('saving.table.userId'),
-          txHash: this.$t('saving.table.txHash'),
-          time: this.$t('saving.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('saving.table.status'),
+          userID: '455dad66544ss',
+          txHash: 'sf998s...ss877d',
+          time: 'Feb 1, 2021',
+          amount: this.$tc('meta.coins.count.WQTCount', 12),
+          status: this.$t('meta.success'),
         },
       ],
       testFields: [

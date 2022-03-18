@@ -22,14 +22,14 @@
           selector="CANCEL"
           @click="hide()"
         >
-          {{ $t('meta.cancel') }}
+          {{ $t('meta.btns.cancel') }}
         </base-btn>
         <base-btn
           class="action__button"
           selector="DELETE"
           @click="deletePortfolio(options.id)"
         >
-          {{ $t('meta.delete') }}
+          {{ $t('meta.btns.delete') }}
         </base-btn>
       </div>
     </div>

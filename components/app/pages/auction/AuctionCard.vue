@@ -18,14 +18,14 @@
       </p>
       <p class="auction-card__duration">
         {{ $t('auction.card.auctionDuration') }}
-        {{ auctionDuration.days ? $t('auction.card.days',{ n: auctionDuration.days }) : '' }}
-        {{ auctionDuration.hours ? $t('auction.card.hours',{ n: auctionDuration.hours }) : '' }}
-        {{ auctionDuration.minutes ? $t('auction.card.minutes',{ n: auctionDuration.minutes }) : '' }}
+        {{ auctionDuration.days ? $t('meta.units.days',{ count: auctionDuration.days }) : '' }}
+        {{ auctionDuration.hours ? $t('meta.units.hours',{ count: auctionDuration.hours }) : '' }}
+        {{ auctionDuration.minutes ? $t('meta.units.minutes',{ count: auctionDuration.minutes }) : '' }}
       </p>
       <base-btn
         @click="openModalBuyAuction"
       >
-        {{ $t('auction.card.buy') }}
+        {{ $t('meta.btns.buy') }}
       </base-btn>
     </template>
     <template v-else>

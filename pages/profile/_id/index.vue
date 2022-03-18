@@ -10,7 +10,7 @@
             :data-selector="`PAGE-TABS-${item.tabName}`"
             class="routes__btn"
             :class="{routes__btn_active: selectedTab === item.tabName}"
-            @click="selectedTab = item.tabName"
+            @click="selectTab(item.tabName)"
           >
             {{ item.title }}
           </button>
@@ -52,7 +52,7 @@
           class="block__skills-spec skills-spec"
         >
           <div class="skills-spec__title">
-            {{ $t('skills.title') }}
+            {{ $t('meta.skills') }}
           </div>
           <div class="skills-spec__container">
             <skills :specializations="userData.userSpecializations" />
@@ -66,7 +66,7 @@
             v-if="selectedTab === 'commonInfo'"
             class="quests__title"
           >
-            {{ $t('profile.quests') }}
+            {{ $t('meta.questsBig') }}
           </div>
           <div
             v-if="questsCount > 0"
@@ -101,9 +101,9 @@
             <div
               class="button__more"
               data-selector="ACTION-BTN-TABS-SHOW-ALL-QUEST"
-              @click="selectedTab = 'quests'"
+              @click="selectTab('quests')"
             >
-              {{ $t('meta.showAllQuests') }}
+              {{ $t('meta.btns.showAllQuests') }}
             </div>
           </div>
         </div>
@@ -115,7 +115,7 @@
             v-if="selectedTab === 'commonInfo'"
             class="reviews__title"
           >
-            {{ $t('quests.reviewsBig') }}
+            {{ $t('meta.reviewsBig') }}
           </div>
           <template v-if="reviewsObject.count > 0">
             <div class="reviews__container">
@@ -140,9 +140,9 @@
                 v-if="reviewsObject.count > 4"
                 class="button__more"
                 data-selector="ACTION-BTN-SHOW-ALL-REVIEWS"
-                @click="selectedTab = 'reviews'"
+                @click="selectTab('reviews')"
               >
-                {{ $t('meta.showAllReviews') }}
+                {{ $t('meta.btns.showAllReviews') }}
               </div>
             </div>
           </template>
@@ -159,7 +159,7 @@
             v-if="selectedTab === 'commonInfo'"
             class="portfolio__title"
           >
-            {{ $t('profile.portfolio') }}
+            {{ $t('meta.portfolio') }}
           </div>
           <div
             v-if="selectedTab === 'portfolio' && userId === mainUser.id"
@@ -169,7 +169,7 @@
               selector="ADD-PORTFOLIO-CASE"
               @click="showAddCaseModal()"
             >
-              {{ $t('ui.profile.addCase') }}
+              {{ $t('meta.addCase') }}
               <template v-slot:right>
                 <span class="icon-plus_white" />
               </template>
@@ -197,9 +197,9 @@
             <div
               class="button__more"
               data-selector="ACTION-BTN-SHOW-ALL-PORTFOLIOS"
-              @click="selectedTab = 'portfolio'"
+              @click="selectTab('portfolio')"
             >
-              {{ $t('meta.showAllPortfolios') }}
+              {{ $t('meta.btns.showAllPortfolios') }}
             </div>
           </div>
         </div>
@@ -272,12 +272,12 @@ export default {
         {
           number: 2,
           tabName: 'quests',
-          title: this.$t('profile.quests'),
+          title: this.$t('meta.questsBig'),
         },
         {
           number: 3,
           tabName: 'reviews',
-          title: this.$t('profile.reviews'),
+          title: this.$t('meta.reviewsBig'),
         },
       ];
 
@@ -285,7 +285,7 @@ export default {
         tabs.push({
           number: 4,
           tabName: 'portfolio',
-          title: this.$t('profile.portfolio'),
+          title: this.$t('meta.portfolio'),
         });
       }
       return tabs;
@@ -308,7 +308,7 @@ export default {
           subtitle: this.$t('quests.oneTime'),
         },
         {
-          title: this.$t('quests.openedQuests'),
+          title: this.$t('meta.openedQuests'),
           number: this.userData?.questsStatistic?.opened || 0,
           ratingMode: false,
           subtitle: '',
@@ -317,7 +317,7 @@ export default {
           title: this.$t('quests.averageRating'),
           number: this.userData?.ratingStatistic?.averageMark || 0,
           ratingMode: true,
-          subtitle: `${this.$t('quests.fromBig')} ${this.userData?.ratingStatistic?.reviewCount || 0} ${this.$t('quests.reviews')}`,
+          subtitle: `${this.$t('meta.fromBig')} ${this.userData?.ratingStatistic?.reviewCount || 0} ${this.$t('meta.reviewsSmall')}`,
         },
       ];
     },
@@ -347,16 +347,19 @@ export default {
     async pageQuests() {
       this.SetLoader(true);
       await this.changeQuestsData();
+      this.ScrollToTop();
       this.SetLoader(false);
     },
     async pageReviews() {
       this.SetLoader(true);
       await this.changeReviewsData();
+      this.ScrollToTop();
       this.SetLoader(false);
     },
     async pagePortfolios() {
       this.SetLoader(true);
       await this.changePortfoliosData(this.perPagerPortfolios);
+      this.ScrollToTop();
       this.SetLoader(false);
     },
   },
@@ -386,6 +389,10 @@ export default {
     await this.$store.dispatch('user/clearAnotherUserData');
   },
   methods: {
+    selectTab(tab) {
+      this.selectedTab = tab;
+      this.ScrollToTop();
+    },
     async updateQuests(item) {
       this.SetLoader(true);
       if (!item.star) await this.$store.dispatch('quests/setStarOnQuest', item.id);
@@ -427,7 +434,7 @@ export default {
       const payload = {
         userId: this.userId,
         query: {
-          limit: limit || this.perPagerPortfolios,
+          limit,
           offset: (this.pagePortfolios - 1) * this.perPagerPortfolios,
         },
       };

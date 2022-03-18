@@ -101,7 +101,7 @@
         <span class="icon-location" />
         <span class="card-quest__text card-quest__text_locate">
           {{ showDistance(quest.location) }}
-          {{ `${$t('distance.m')} ${$t('meta.fromYou')}` }}
+          {{ `${$t('meta.units.distance.m')} ${$t('meta.fromYou')}` }}
         </span>
       </div>
       <div
@@ -282,12 +282,12 @@ export default {
     },
     getStatusCard(index) {
       const questStatus = {
-        [QuestStatuses.Dispute]: this.$t('quests.dispute'),
+        [QuestStatuses.Dispute]: this.$t('meta.dispute'),
         [QuestStatuses.Rejected]: this.$t('quests.rejected'),
         [QuestStatuses.Active]: this.$t('quests.active'),
-        [QuestStatuses.Done]: this.$t('quests.performed'),
+        [QuestStatuses.Done]: this.$t('meta.performed'),
         [QuestStatuses.WaitConfirm]: this.$t('quests.requested'),
-        [QuestStatuses.WaitWorker]: this.$t('quests.invited'),
+        [QuestStatuses.WaitWorker]: this.$t('meta.invited'),
         [QuestStatuses.Closed]: this.$t('quests.closed'),
       };
       return questStatus[index] || '';
@@ -306,9 +306,9 @@ export default {
     },
     getPriority(index) {
       const priority = {
-        [questPriority.Low]: this.$t('priority.low'),
-        [questPriority.Normal]: this.$t('priority.normal'),
-        [questPriority.Urgent]: this.$t('priority.urgent'),
+        [questPriority.Low]: this.$t('meta.priority.fixedDelivery'),
+        [questPriority.Normal]: this.$t('meta.priority.shortTerm'),
+        [questPriority.Urgent]: this.$t('meta.priority.urgent'),
       };
       return priority[index] || '';
     },

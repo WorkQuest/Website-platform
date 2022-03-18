@@ -52,7 +52,7 @@
           selector="SUBMIT"
           :disabled="!valid || isLoading"
         >
-          {{ $t('meta.submit') }}
+          {{ $t('meta.btns.submit') }}
         </base-btn>
       </ValidationObserver>
     </div>
