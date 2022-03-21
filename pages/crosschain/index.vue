@@ -15,7 +15,7 @@
             mode="light"
             class="header__btn"
             :selector="isConnected ? 'CONNECT_WALLET' : 'DISCONNECT_FROM_WALLET'"
-            @click="connectWallet"
+            @click="toggleConnection"
           >
             {{ !isConnected ? $t('mining.connectWallet') : $t('meta.disconnect') }}
           </base-btn>
@@ -37,7 +37,7 @@
                   v-model="sourceAddressInd"
                   type="border"
                   :items="addresses"
-                  :data-selector="'Source-Address'"
+                  data-selector="SOURCE_ADDRESS"
                   :is-icon="true"
                   @input="handleChangePool(sourceAddressInd, 'source')"
                 />
@@ -45,7 +45,7 @@
             </div>
             <img
               src="~assets/img/ui/swap.png"
-              alt=""
+              alt="Swap"
               class="swap-icon"
               @click="handleChangePool(0, 'swap')"
             >
@@ -61,7 +61,7 @@
                   v-model="targetAddressInd"
                   type="border"
                   :items="addresses"
-                  :data-selector="'Target-Address'"
+                  data-selector="TARGET_ADDRESS"
                   :is-icon="true"
                   @input="handleChangePool(targetAddressInd, 'target')"
                 />
@@ -96,16 +96,16 @@
                 <div class="table__direction">
                   <img
                     :src="el.item.direction[0]"
-                    alt=""
+                    alt="Blockchain from"
                   >
                   <img
                     class="arrow-img"
                     src="~/assets/img/ui/arrow-down.svg"
-                    alt=""
+                    alt="Arrow"
                   >
                   <img
                     :src="el.item.direction[1]"
-                    alt=""
+                    alt="Blockchain to"
                   >
                 </div>
               </template>
@@ -241,14 +241,17 @@ export default {
         {
           icon: require('~/assets/img/ui/ethereum.svg'),
           title: this.$t('meta.coins.eth'),
+          chain: Chains.ETHEREUM,
         },
         {
           icon: require('~/assets/img/ui/bnb_yellow.svg'),
           title: this.$t('meta.coins.bsc'),
+          chain: Chains.BINANCE,
         },
         {
           icon: require('~/assets/img/ui/WQT.png'),
           title: this.$t('crosschain.worknet'),
+          chain: Chains.WORKNET,
         },
       ];
     },
@@ -277,9 +280,10 @@ export default {
       fetchSwaps: 'bridge/fetchMySwaps',
       resetSwaps: 'bridge/resetMySwaps',
     }),
-    async connectWallet() {
-      if (!this.isConnected) await this.checkWalletStatus();
-      else await this.disconnectFromWallet();
+    async toggleConnection() {
+      const { isConnected, addresses, sourceAddressInd } = this;
+      if (isConnected) await this.disconnectFromWallet();
+      else await this.connectToMetamask(addresses[sourceAddressInd].chain);
     },
     async disconnectFromWallet() {
       await this.$store.dispatch('web3/disconnect');
@@ -296,17 +300,6 @@ export default {
       });
     },
 
-    async checkWalletStatus() {
-      if (this.isConnected) return;
-      let chainName = '';
-      // eslint-disable-next-line default-case
-      switch (this.sourceAddressInd) {
-        case 0: chainName = Chains.ETHEREUM; break;
-        case 1: chainName = Chains.BINANCE; break;
-        case 2: chainName = Chains.WORKNET; break;
-      }
-      await this.connectToMetamask(chainName);
-    },
     async redeemAction(data) {
       this.SetLoader(true);
       if (localStorage.getItem('isMetaMask') === 'true') {
@@ -326,12 +319,12 @@ export default {
       });
       this.SetLoader(false);
     },
-    async connectToMetamask(chainName) {
-      if (!this.isConnected) {
-        await this.$store.dispatch('web3/connect', { chain: chainName });
-        const switchStatus = await this.$store.dispatch('web3/goToChain', { chain: chainName });
-        if (!switchStatus.ok) await this.disconnectFromWallet();
-      }
+
+    async connectToMetamask(chain) {
+      await this.$store.dispatch('web3/connect', { chain });
+      const switchStatus = await this.$store.dispatch('web3/goToChain', { chain });
+      if (!switchStatus.ok) await this.disconnectFromWallet();
+
       await this.swapsTableData(this.account.address, this.isConnected);
       await localStorage.setItem('miningPoolId', chainName);
       this.miningPoolId = localStorage.getItem('miningPoolId');
