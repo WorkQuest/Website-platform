@@ -87,7 +87,6 @@
       "acceptCompletedWorkOnQuest": "Accept completed work on quest",
       "closeQuest": "Close quest",
       "goToChat": "الانتقال إلى الدردشة",
-      "responded": "إرسال الرد",
       "view": "عرض",
       "add": "إضافة",
       "take": "Take"
@@ -196,6 +195,7 @@
     "hideYourMessage": "Hide your message"
   },
   "messages": {
+    "min_percent": "The {_field_} field must be greater than {min}%",
     "alpha": "لا يمكن أن يحتوي الحقل {_field_} إلا على أحرف أبجدية",
     "alpha_num": "لا يمكن أن يحتوي الحقل {_field_} إلا على أحرف أبجدية رقمية",
     "alpha_dash": "لا يمكن أن يحتوي الحقل {_field_} إلا على أحرف أبجدية رقمية وشرط وشرط سفلية",
@@ -222,9 +222,9 @@
     "required": "الحقل {_field_} مطلوب",
     "size": "يجب ألا تزيد قيمة الحقل {_field_} عن {size} كيلوبايت",
     "decimal": "يجب ألا يحتوي الحقل {_field_} إلا على قيم عشرية",
-    "decimalPlaces": "{_field_} ??? {places}",
-    "invalidPhone":"???",
-    "formError": "???",
+    "decimalPlaces": "The {_field_} field must contain maximum {places} decimal places",
+    "invalidPhone":"Invalid phone number",
+    "formError": "Fill in all required fields",
     "is": "The values do not match",
     "is_not": "Incorrect value",
     "mnemonic": "Incorrect secret phrase",
@@ -369,7 +369,7 @@
     },
     "distantWork": {
       "title": "عمل بالخارج",
-      "allWorkplaces": "???",
+      "allWorkplaces": "All workplaces",
       "distantWork": "عمل بالخارج",
       "workInOffice": "عمل بالداخل",
       "bothVariant": "كلا الخيارين"
@@ -980,6 +980,10 @@
     },
     "value": "Value",
     "recipient": "Recipient address",
+    "successBuyWUSD": "Successfully purchased WUSD",
+    "setTokenPrice": "Setting up {token} price",
+    "approveRouter": "Approve {token} to Router",
+    "takeWUSD": "Buy your WUSD",
     "waitRoleCooldown": "You cannot change roles more than once a month. You can change role after {date} {time}",
     "settingsInfo": "Settings Info",
     "pleaseEnable2FA": "Please, enable TWO-Step authentication",
@@ -988,8 +992,11 @@
     "fieldCountOf": "{countOf} amount",
     "countOfCollateral": "How much collateral to leave?",
     "percentageConversion": "Percentage conversion",
-    "conversionAdditionalInfo": "Information about 150% + risks",
-    "fieldPercentConversion": "Numder of percentage conversion",
+    "conversionAdditionalInfo": "Information about 150% + {risks} risks",
+    "highRisk": "High",
+    "mediumRisk": "Medium",
+    "lowRisk": "Low",
+    "fieldPercentConversion": "Percentage conversion",
     "countOfRecievedWUSDDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "countOfCollateralDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "conversionPercentDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
@@ -1140,6 +1147,7 @@
     "choose": "Choose",
     "chooseCurrency": "Choose currency",
     "coinpaymebts": "Сoinpaymebts",
+    "swapTitle": "Crosschain exchange",
     "coin": "Coin",
     "recepientBinance": "Recipient binance address",
     "createSwap": "Create swap",
@@ -1461,8 +1469,8 @@
     "noPortfoliosAdded": "No portfolios added!"
   },
   "levels": {
-    "reliableEmp": "موظف موثوق",
     "checkedByTime": "موظف تم التحقُّق منه",
+    "reliableEmp": "موظف موثوق",
     "disabled": "غير نشط",
     "higher": "موظف رفيع المستوى"
   },
