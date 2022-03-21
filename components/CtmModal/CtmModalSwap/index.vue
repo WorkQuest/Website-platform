@@ -105,13 +105,13 @@ export default {
         0: {
           id: 2,
           icon: require('~/assets/img/ui/ethereum.svg'),
-          title: this.$t('crosschain.eth'),
+          title: this.$t('meta.coins.eth'),
           enum: Chains.ETHEREUM,
         },
         1: {
           id: 3,
           icon: require('~/assets/img/ui/bnb-logo.svg'),
-          title: this.$t('crosschain.bsc'),
+          title: this.$t('meta.coins.bsc'),
           enum: Chains.BINANCE,
         },
         2: {
