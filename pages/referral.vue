@@ -95,7 +95,7 @@
                 >
               </div>
               <div class="info-block__more">
-                {{ $tc('meta.units.plusCount', referralsListCount) }}
+                {{ referralsListCount }}
               </div>
             </div>
             <div
