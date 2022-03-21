@@ -254,7 +254,7 @@ export default {
     return {
       page: 1,
       perPage: 6,
-      referLink: process.env.PROD === 'true' ? 'https://www.app-ver1.workquest.co/ref?v=' : 'https://www.app.workquest.co/ref?v=',
+      referLink: process.env.PROD === 'true' ? 'https://www.app-ver1.workquest.co/sign-in?ref=' : 'https://www.app.workquest.co/sign-in?ref=',
       tableFields: [
         {
           key: 'userInfo',
