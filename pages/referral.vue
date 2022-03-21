@@ -368,6 +368,7 @@ export default {
               offset: (newValue - 1) * this.perPage,
             },
           };
+          await this.$store.dispatch('referral/updateCurrentPage', newValue);
           await this.$store.dispatch('referral/fetchPaidEventsList', payload);
         }
       },
