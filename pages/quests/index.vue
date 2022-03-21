@@ -122,6 +122,7 @@ export default {
     },
     async setPage(newPage) {
       this.page = newPage;
+      this.ScrollToTop();
       await this.fetchQuestsList();
     },
     async fetchQuestsList(isResetPage = false) {

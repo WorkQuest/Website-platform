@@ -102,12 +102,12 @@ export default {
       this.SetLoader(true);
       this.requestParams.query.offset = (this.page - 1) * this.offset;
       await this.getQuests();
+      this.ScrollToTop();
       this.SetLoader(false);
     },
   },
   async mounted() {
     this.SetLoader(true);
-
     this.requestParams = {
       userId: this.userData.id,
       role: this.userRole,
