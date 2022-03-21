@@ -195,6 +195,7 @@
     "hideYourMessage": "Hide your message"
   },
   "messages": {
+    "min_percent": "The {_field_} field must be greater than {min}%",
     "alpha": "Le champ {_field_} ne peut contenir que des caractères alphabétiques",
     "alpha_num": "Le champ {_field_} ne peut contenir que des caractères alphanumériques",
     "alpha_dash": "Le champ {_field_} peut contenir des caractères alphanumériques ainsi que des traits d’union et des traits de soulignement",
@@ -221,7 +222,7 @@
     "required": "Le champ {_field_} est obligatoire",
     "size": "La taille du champ {_field_} doit être inférieure à {size} Ko",
     "decimal": "Le champ {_field_} ne doit contenir que des valeurs décimales",
-    "decimalPlaces": "{_field_} ??? {places}",
+    "decimalPlaces": "The {_field_} field must contain maximum {places} decimal places",
     "invalidPhone":"Invalid phone number",
     "formError": "Fill in all required fields",
     "is": "The values do not match",
@@ -940,8 +941,8 @@
     },
     "errors": {
       "errorQuests": "Error with quests",
-      "emptyOpenQuests": "You don't have open quests, please create",
       "errorSmsVer": "Error SMS verification",
+      "emptyOpenQuests": "You don't have open quests, please create",
       "error": "Error",
       "youCan’tDeleteActiveQuest": "You can’t delete active quest",
       "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
@@ -979,6 +980,10 @@
     },
     "value": "Value",
     "recipient": "Recipient address",
+    "successBuyWUSD": "Successfully purchased WUSD",
+    "setTokenPrice": "Setting up {token} price",
+    "approveRouter": "Approve {token} to Router",
+    "takeWUSD": "Buy your WUSD",
     "waitRoleCooldown": "You cannot change roles more than once a month. You can change role after {date} {time}",
     "settingsInfo": "Settings Info",
     "pleaseEnable2FA": "Please, enable TWO-Step authentication",
@@ -987,8 +992,11 @@
     "fieldCountOf": "{countOf} amount",
     "countOfCollateral": "How much collateral to leave?",
     "percentageConversion": "Percentage conversion",
-    "conversionAdditionalInfo": "Information about 150% + risks",
-    "fieldPercentConversion": "Numder of percentage conversion",
+    "conversionAdditionalInfo": "Information about 150% + {risks} risks",
+    "highRisk": "High",
+    "mediumRisk": "Medium",
+    "lowRisk": "Low",
+    "fieldPercentConversion": "Percentage conversion",
     "countOfRecievedWUSDDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "countOfCollateralDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "conversionPercentDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
@@ -1139,6 +1147,7 @@
     "choose": "Choose",
     "chooseCurrency": "Choose currency",
     "coinpaymebts": "Сoinpaymebts",
+    "swapTitle": "Crosschain exchange",
     "coin": "Coin",
     "recepientBinance": "Recipient binance address",
     "createSwap": "Create swap",
@@ -1460,8 +1469,8 @@
     "noPortfoliosAdded": "No portfolios added!"
   },
   "levels": {
-    "reliableEmp": "EMPLOYÉ(E) FIABLE.",
     "checkedByTime": "EMPLOYÉ(E) VÉRIFIÉ(E)",
+    "reliableEmp": "EMPLOYÉ(E) FIABLE.",
     "disabled": "DÉSACTIVÉE",
     "higher": "EMPLOYÉ(E) DE NIVEAU SUPÉRIEUR"
   },
