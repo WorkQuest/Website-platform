@@ -571,7 +571,6 @@ export default {
       }
 
       &__more {
-        position: absolute;
         height: 33px;
         padding: 0 10px;
         min-width: 53px;
