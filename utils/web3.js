@@ -142,6 +142,7 @@ export const getStakingDataByType = (stakingType, token = '') => {
           default:
             _tokenAddress = process.env.WORKNET_WQT_TOKEN;
         }
+        _stakingAddress = process.env.WORKNET_BRIDGE;
       }
       break;
     default:
