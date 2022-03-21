@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="views"
-    :title="$t('modals.raiseViews')"
+    :title="$t('modals.titles.raiseViews')"
   >
     <div class="views__content content">
       <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
@@ -35,7 +35,7 @@
             v-model="period"
             class="field__drop"
             :items="items"
-            :placeholder="$t('placeholders.default')"
+            :placeholder="$t('meta.placeholders.default')"
           />
         </div>
         <div class="content__container container">
@@ -43,7 +43,7 @@
             {{ $t('modals.estimatedPayment') }}
           </div>
           <div class="container__cost">
-            {{ $t('modals.estimatedPaymentField') }}
+            {{ $tc('meta.coins.count.WUSDCount', 120) }}
           </div>
         </div>
         <div class="content__buttons buttons">
@@ -53,7 +53,7 @@
             :disabled="!validated || !passed || invalid || period===''"
             @click="handleSubmit(showTransactionSendModal)"
           >
-            {{ $t('meta.ok') }}
+            {{ $t('meta.btns.ok') }}
           </base-btn>
           <base-btn
             mode="outline"
@@ -61,7 +61,7 @@
             class="buttons__action"
             @click="hide"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
         </div>
       </validation-observer>

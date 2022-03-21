@@ -80,7 +80,7 @@
             selector="CANCEL"
             @click="hide()"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="btn_bl"
@@ -88,7 +88,7 @@
             :disabled="options.isCreating && (!memberUserIds.length || !name)"
             @click="applyChanges"
           >
-            {{ $t('meta.save') }}
+            {{ $t('meta.btns.save') }}
           </base-btn>
         </div>
       </div>
@@ -155,7 +155,7 @@ export default {
       this.ShowModal({
         key: modals.areYouSure,
         title: this.$t('modals.sureDeleteMemberText'),
-        okBtnTitle: this.$t('meta.delete'),
+        okBtnTitle: this.$t('meta.btns.delete'),
         okBtnFunc: async () => await this.removeMember(userId),
       });
     },

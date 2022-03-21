@@ -1,6 +1,6 @@
 <template>
   <ctm-modal-box
-    :title="$t('modals.review')"
+    :title="$t('modals.titles.review')"
   >
     <div class="ctm-modal__content content">
       <div class="content__review review">
@@ -81,7 +81,7 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/success.svg'),
-        title: this.$t('modals.success'),
+        title: this.$t('meta.success'),
         subtitle: this.$t('modals.SMSVerConnected'),
       });
     },

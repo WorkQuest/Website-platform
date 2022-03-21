@@ -74,7 +74,7 @@
                 </div>
               </div>
               <button class="btn__doc">
-                {{ $t('pension.download') }}
+                {{ $t('meta.btns.download') }}
                 <img
                   class="download"
                   src="~/assets/img/ui/download.svg"
@@ -89,7 +89,7 @@
           class="info-block"
         >
           <div class="info-block__name_bold">
-            {{ $t("saving.faq") }}
+            {{ $t("meta.faq") }}
           </div>
           <div class="info-block__faqs">
             <button
@@ -143,8 +143,8 @@ export default {
     }),
     documents() {
       return Array(3).fill({
-        name: this.$t('pension.docName'),
-        size: this.$tc('pension.mb', 1.2),
+        name: 'Some_document.pdf',
+        size: this.$tc('meta.units.mb', 1.2),
         url: '',
       });
     },
@@ -153,14 +153,14 @@ export default {
       const t = this.lockTime;
       let time;
 
-      if (t.y) time = this.$tc('pension.years', t.y);
-      else if (t.d) time = this.$tc('pension.days', t.d);
-      else if (t.h) time = this.$tc('pension.hours', t.h);
-      else if (t.m) time = this.$tc('pension.minutes', t.m);
+      if (t.y) time = this.$tc('meta.units.years', t.y);
+      else if (t.d) time = this.$tc('meta.units.days', t.d);
+      else if (t.h) time = this.$tc('meta.units.hours', t.h);
+      else if (t.m) time = this.$tc('meta.units.minutes', t.m);
 
       return [
         {
-          title: this.$tc('pension.percents', p),
+          title: this.$tc('meta.units.percentsCount', p),
           subtitle: this.$t('pension.annualPercent'),
         },
         {
@@ -169,7 +169,7 @@ export default {
         },
         {
           title: time,
-          subtitle: this.$t('pension.term'),
+          subtitle: this.$t('meta.term'),
         },
         {
           title: this.$t('pension.configurablePercentage'),

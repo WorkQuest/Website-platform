@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="liquidity"
-    :title="$t('modals.addLiquidity')"
+    :title="$t('modals.titles.addLiquidity')"
   >
     <div class="liquidity__content content">
       <validation-observer
@@ -11,34 +11,34 @@
         <div class="content__grid">
           <div class="content__field field">
             <div class="field__title">
-              {{ $t('modals.amountOfWqt') }}
+              {{ $t('meta.amount.amountOfWQT') }}
             </div>
             <base-field
               v-model="amountOfWqt"
-              :placeholder="$t('modals.addLiquidityAmountWqt')"
+              :placeholder="$tc('meta.coins.count.WQTCount', 1000)"
               class="field__input"
               rules="required|decimal"
-              :name="$t('modals.amountOfWqtField')"
+              :name="$t('meta.amount.amountOfWQT')"
             />
             <div class="field__container">
               <div class="field__title">
-                {{ $t(`modals.${options.isBNB ? 'amountOfBnb': 'amountOfEth'}`) }}
+                {{ $t(`meta.amount.${options.isBNB ? 'amountOfBNB': 'amountOfETH'}`) }}
               </div>
               <base-field
                 v-if="options.isBNB"
                 v-model="amountOfBnb"
-                :placeholder="$t('modals.addLiquidityAmountBnb')"
+                :placeholder="$tc('meta.coins.count.BNBCount', 10)"
                 class="field__input"
                 rules="required|decimal"
-                :name="$t('modals.amountOfBnbField')"
+                :name="$t('meta.amountOfBNB')"
               />
               <base-field
                 v-else
                 v-model="amountOfEth"
-                :placeholder="$t('modals.addLiquidityAmountEth')"
+                :placeholder="$tc('meta.coins.count.ETHCount', 10)"
                 class="field__input"
                 rules="required|decimal"
-                :name="$t('modals.amountOfEthField')"
+                :name="$t('meta.amountOfETH')"
               />
               <div class="field__heading">
                 {{ $t('modals.tip') }}
@@ -72,7 +72,7 @@
             selector="CANCEL"
             @click="hide"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
@@ -112,11 +112,11 @@ export default {
       const { isBNB } = this.options;
       return [
         {
-          title: this.$t(`modals.${isBNB ? 'amountBnbPerWqt' : 'amountEthPerWqt'}`),
+          title: this.$t(`meta.amount.${isBNB ? 'amountBNBPerWQT' : 'amountETHPerWQT'}`),
           subtitle: 54,
         },
         {
-          title: this.$t(`modals.${isBNB ? 'amountBnbPerWqt' : 'amountBnbPerWqt'}`),
+          title: this.$t(`meta.amount.${isBNB ? 'amountBNBPerWQT' : 'amountBNBPerWQT'}`),
           subtitle: 65,
         },
         {

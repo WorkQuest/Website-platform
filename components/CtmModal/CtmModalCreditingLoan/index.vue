@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="loan"
-    :title="$t('modals.loan')"
+    :title="$t('modals.titles.loan')"
   >
     <div class="loan__content content">
       <validation-observer
@@ -88,7 +88,7 @@
             selector="CANCEL"
             @click="hide"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
@@ -96,7 +96,7 @@
             selector="SUBMIT"
             @click="handleSubmit(openConfirmDetailsModal)"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.btns.submit') }}
           </base-btn>
         </div>
       </validation-observer>
@@ -118,15 +118,15 @@ export default {
       percents: '',
       checkpoints: [
         {
-          name: this.$t('modals.bnb'),
+          name: this.$t('meta.coins.bnb'),
           id: 1,
         },
         {
-          name: this.$t('modals.eth'),
+          name: this.$t('meta.coins.eth'),
           id: 2,
         },
         {
-          name: this.$t('modals.wqt'),
+          name: this.$t('meta.coins.wqt'),
           id: 3,
         },
       ],

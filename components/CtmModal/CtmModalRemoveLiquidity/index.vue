@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="remove"
-    :title="$t('modals.removeLiquidity')"
+    :title="$t('modals.titles.removeLiquidity')"
   >
     <div class="remove__content content">
       <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
@@ -65,7 +65,7 @@
             selector="CANCEL"
             @click="hide()"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
@@ -73,7 +73,7 @@
             :disabled="!validated || !passed || invalid"
             @click="handleSubmit(hide)"
           >
-            {{ $t('modals.removeLiquidity') }}
+            {{ $t('modals.titles.removeLiquidity') }}
           </base-btn>
         </div>
       </validation-observer>
@@ -127,7 +127,7 @@ export default {
         },
         {
           url: require('~/assets/img/ui/wqt-logo.svg'),
-          name: this.$t('modals.wqt'),
+          name: this.$t('meta.coins.wqt'),
           value: '25.0256',
         },
       ];

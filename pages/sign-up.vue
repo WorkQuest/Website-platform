@@ -6,7 +6,7 @@
       class="auth__container"
     >
       <div class="auth__text auth__text_title">
-        <span>{{ $t('signUp.title') }}</span>
+        <span>{{ $t('meta.signUp') }}</span>
       </div>
       <div class="auth__text auth__text_simple">
         <span>{{ $t('signUp.haveAccount') }}</span>
@@ -24,9 +24,9 @@
       >
         <base-field
           v-model="model.firstName"
+          :placeholder="$t('meta.firstNameBig')"
           mode="icon"
-          :name="$t('signUp.firstName')"
-          :placeholder="$t('signUp.firstName')"
+          :name="$t('meta.firstNameBig')"
           rules="required_if|alpha_spaces"
           autocomplete="off"
           data-selector="FIRST_NAME"
@@ -40,9 +40,9 @@
         </base-field>
         <base-field
           v-model="model.lastName"
-          mode="icon"
-          :name="$t('signUp.lastName')"
-          :placeholder="$t('signUp.lastName')"
+          :placeholder="$t('meta.lastNameBig')"
+          :mode="icon"
+          :name="$t('meta.lastNameBig')"
           rules="required_if|alpha_spaces"
           data-selector="LAST_NAME"
         >

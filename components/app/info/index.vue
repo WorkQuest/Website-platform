@@ -98,9 +98,9 @@ export default {
           [InfoModeEmployer.Active]: 'quests.activeQuest',
           [InfoModeEmployer.WaitWorker]: 'quests.waitWorker',
           [InfoModeEmployer.WaitConfirm]: 'quests.pendingConsideration',
-          [InfoModeEmployer.Dispute]: 'quests.dispute',
+          [InfoModeEmployer.Dispute]: 'meta.dispute',
           [InfoModeEmployer.Closed]: 'quests.closed',
-          [InfoModeEmployer.Done]: 'performed.title',
+          [InfoModeEmployer.Done]: 'meta.performed',
         };
         return this.$t(`${obj[this.infoDataMode]}`);
       }
@@ -109,16 +109,16 @@ export default {
         const { awaiting, accepted } = ResponseStatus;
         const obj = {
           [InfoModeWorker.Created]: '',
-          [InfoModeWorker.ADChat]: 'invite.title',
+          [InfoModeWorker.ADChat]: 'meta.invited',
           [InfoModeWorker.Active]: 'quests.activeQuest',
           [InfoModeWorker.Rejected]: 'quests.requested',
           [InfoModeWorker.WaitWorker]: 'quests.pendingConsideration',
           [InfoModeWorker.WaitConfirm]: 'quests.pendingConsideration',
-          [InfoModeWorker.Dispute]: 'quests.dispute',
+          [InfoModeWorker.Dispute]: 'meta.dispute',
           [InfoModeWorker.Closed]: 'quests.questClosed',
-          [InfoModeWorker.Done]: 'quests.completed',
-          [InfoModeWorker.Responded]: 'quests.responded',
-          [InfoModeWorker.Invited]: 'quests.invited',
+          [InfoModeWorker.Done]: 'meta.completed',
+          [InfoModeWorker.Responded]: 'meta.responded',
+          [InfoModeWorker.Invited]: 'meta.invited',
         };
         if (this.infoDataMode === InfoModeWorker.Invited && response.status !== awaiting) {
           return this.$t(`quests.${response.status === accepted ? 'acceptedTheInvitation' : 'declinedTheInvitation'}`);

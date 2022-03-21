@@ -247,7 +247,7 @@ export default {
       if (validFiles.length < files.length) {
         this.ShowModal({
           key: modals.areYouSureNotification,
-          title: this.$t('modals.noticeTitle'),
+          title: this.$t('modals.titles.noticeTitle'),
           text: this.$t('modals.youTryToAttachUnsupportedFileFormat'),
           isFiles: true,
         });
@@ -258,7 +258,7 @@ export default {
       if (this.files.length + validFiles.length > 10) {
         this.ShowModal({
           key: modals.areYouSureNotification,
-          title: this.$t('modals.noticeTitle'),
+          title: this.$t('modals.titles.noticeTitle'),
           text: this.$tc('modals.youCanAttachUpToNFiles', 10),
           isFiles: true,
         });

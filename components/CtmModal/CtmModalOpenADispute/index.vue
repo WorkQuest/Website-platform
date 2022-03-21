@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="dispute"
-    :title="$t('modals.openADispute')"
+    :title="$t('modals.titles.openADispute')"
   >
     <div class="dispute__content content">
       <div class="content__subtitle">
@@ -31,7 +31,7 @@
           selector="SHOW-REQUEST-SEND"
           @click="showRequestSendModal"
         >
-          {{ $t('meta.send') }}
+          {{ $t('meta.btns.send') }}
         </base-btn>
         <base-btn
           mode="outline"
@@ -39,7 +39,7 @@
           selector="CANCEL"
           @click="hide"
         >
-          {{ $t('meta.cancel') }}
+          {{ $t('meta.btns.cancel') }}
         </base-btn>
       </div>
     </div>
@@ -104,7 +104,7 @@ export default {
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/warning.svg'),
-          title: this.$t('modals.error'),
+          title: this.$t('modals.errors.error'),
           subtitle: this.$t('errors.incorrectPass'),
         });
       }

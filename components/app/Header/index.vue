@@ -163,7 +163,6 @@
                     {{ UserName(userData.firstName, userData.lastName) }}
                   </div>
                   <div
-                    v-if="userData.role === $options.UserRole.EMPLOYER"
                     class="profile__text profile__text_blue"
                     :class="userData.role === $options.UserRole.EMPLOYER ? 'profile__text_blue' : 'profile__text_green'"
                   >
@@ -198,7 +197,7 @@
           selector="CREATE-NEW-QUEST"
           @click="createNewQuest('pc')"
         >
-          {{ $t('layout.create') }}
+          {{ $t('meta.createAQuest') }}
         </base-btn>
       </div>
     </div>
@@ -305,7 +304,7 @@
             data-selector="ACTION-BTN-CREATE-NEW-QUEST-MOBILE"
             @click="createNewQuest('mobile')"
           >
-            {{ $t('layout.create') }}
+            {{ $t('meta.createAQuest') }}
           </base-btn>
         </div>
       </div>
@@ -365,11 +364,11 @@ export default {
           path: `/profile/${this.userData.id}`,
         },
         {
-          title: this.$t('ui.profile.settings'),
+          title: this.$t('meta.settings'),
           path: Path.SETTINGS,
         },
         {
-          title: this.$t('ui.profile.disputes'),
+          title: this.$t('meta.disputes'),
           path: Path.DISPUTES,
         },
       ];
@@ -425,11 +424,11 @@ export default {
     },
     headerLinks() {
       const links = [
-        { path: Path.MY_QUESTS, title: this.$t('ui.myQuests') },
-        { path: Path.WALLET, title: this.$t('ui.wallet') },
+        { path: Path.MY_QUESTS, title: this.$t('meta.myQuests') },
+        { path: Path.WALLET, title: this.$t('meta.wallet') },
       ];
       if (this.userData.role === UserRole.EMPLOYER) links.unshift({ path: Path.WORKERS, title: this.$t('ui.jobQuestors') });
-      else links.unshift({ path: Path.QUESTS, title: this.$t('ui.quests') });
+      else links.unshift({ path: Path.QUESTS, title: this.$t('meta.questsBig') });
       return links;
     },
   },

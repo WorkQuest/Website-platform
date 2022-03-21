@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="deposit"
-    :title="$t('saving.openADeposit')"
+    :title="$t('modals.titles.openADeposit')"
   >
     <div class="deposit__content content">
       <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
@@ -42,7 +42,7 @@
             selector="CANCEL"
             @click="hide"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
@@ -50,7 +50,7 @@
             :disabled="!validated || !passed || invalid"
             @click="handleSubmit(showDepositIsOpenedModal)"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.btns.submit') }}
           </base-btn>
         </div>
       </validation-observer>
@@ -84,7 +84,7 @@ export default {
         key: modals.status,
         img: require('~/assets/img/ui/transactionSend.svg'),
         title: this.$t('modals.depositIsOpened'),
-        subtitle: this.$t('saving.depositIsOpenedText'),
+        subtitle: '',
         path: '/savings/1',
       });
     },

@@ -3,7 +3,7 @@
     <div class="wallet__container">
       <div class="wallet__body">
         <div class="wallet__nav">
-          <span class="wallet__title">{{ $t('wallet.wallet') }}</span>
+          <span class="wallet__title">{{ $t('meta.wallet') }}</span>
           <div class="wallet__address">
             <span class="user__wallet">{{ CutTxn(userWalletAddress, 8, 8) }}</span>
             <button
@@ -22,7 +22,7 @@
         >
           <div class="wallet__balance balance">
             <div class="balance__top">
-              <span class="balance__title">{{ $t('wallet.balance') }}</span>
+              <span class="balance__title">{{ $t('meta.balance') }}</span>
               <span class="balance__currency">
                 <span class="balance__currency-text">
                   {{ balance[selectedToken].balance + ' ' + selectedToken }}
@@ -48,21 +48,21 @@
             <div class="balance__bottom">
               <base-btn
                 selector="SHOW-DEPOSIT-MODAL"
-                :disabled="true"
                 mode="outline"
                 class="balance__btn"
+                :disabled="true"
                 @click="showDepositModal()"
               >
-                {{ $t('wallet.deposit') }}
+                {{ $t('wallet.receive') }}
               </base-btn>
               <base-btn
-                :disabled="true"
                 selector="SHOW-WITHDRAW-MODAL"
                 mode="outline"
                 class="balance__btn"
+                :disabled="true"
                 @click="showWithdrawModal()"
               >
-                {{ $t('wallet.withdraw') }}
+                {{ $t('meta.withdraw') }}
               </base-btn>
               <base-btn
                 selector="SHOW-TRANSFER-MODAL"
@@ -84,9 +84,9 @@
             />
             <base-btn
               selector="SHOW-ADD-CARD-MODAL"
-              :disabled="true"
               class="card__btn"
               mode="outline"
+              :disabled="true"
               @click="showAddCardModal()"
             >
               {{ $t('wallet.addCard') }}
@@ -214,8 +214,8 @@ export default {
         { key: 'status', label: this.$t('wallet.table.status'), sortable: true },
         { key: 'block', label: this.$t('wallet.table.block'), sortable: false },
         { key: 'timestamp', label: this.$t('wallet.table.timestamp'), sortable: true },
-        { key: 'from_address', label: this.$t('modals.fromAddress'), sortable: true },
-        { key: 'to_address', label: this.$t('modals.toAddress'), sortable: true },
+        { key: 'from_address', label: this.$t('meta.fromBig'), sortable: true },
+        { key: 'to_address', label: this.$t('meta.toBig'), sortable: true },
         { key: 'value', label: this.$t('wallet.table.transferred'), sortable: true },
         { key: 'transaction_fee', label: this.$t('wallet.table.trxFee'), sortable: false },
       ];
@@ -528,8 +528,11 @@ export default {
 
   &__icon {
     display: flex;
-    justify-content: flex-end;
+    justify-self: self-end;
+    height: 20px;
+    width: 20px;
     z-index: 2;
+
     &:before {
       cursor: pointer;
       font-size: 20px;

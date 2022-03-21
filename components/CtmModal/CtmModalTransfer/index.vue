@@ -1,23 +1,23 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.sendTo')"
+    :title="$t('modals.titles.sendTo')"
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__content-field">
         <base-field
           id="from"
           v-model="date"
-          :label="$t('modals.fromAddress')"
-          :placeholder="$t('modals.address')"
+          :label="$t('meta.fromBig')"
+          :placeholder="$t('meta.addressBig')"
         />
       </div>
       <div class="ctm-modal__content-field">
         <base-field
           id="to"
           v-model="date"
-          :label="$t('modals.toAddress')"
-          :placeholder="$t('modals.address')"
+          :label="$t('meta.toBig')"
+          :placeholder="$t('meta.addressBig')"
         />
       </div>
       <base-dd
@@ -41,7 +41,7 @@
             selector="CONFIRM"
             @click="showTransactionSendModal()"
           >
-            {{ $t('meta.confirm') }}
+            {{ $t('meta.btns.confirm') }}
           </base-btn>
         </div>
         <div class="btn__wrapper">
@@ -51,7 +51,7 @@
             class="message__action"
             @click="hide()"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
         </div>
       </div>

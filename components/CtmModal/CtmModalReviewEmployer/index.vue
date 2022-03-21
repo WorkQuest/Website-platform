@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="review"
-    :title="$t('modals.reviewOnEmployer')"
+    :title="$t('modals.titles.reviewOnEmployer')"
   >
     <div class="review__body body">
       <div class="body__rating">
@@ -27,7 +27,7 @@
               <base-textarea
                 v-model="textArea"
                 class="content__textarea"
-                :placeholder="$t('modals.hello')"
+                :placeholder="$t('meta.typeYourMessage')"
                 rules="required|min:1|max:600"
                 name="review"
               />
@@ -41,7 +41,7 @@
                 :disabled="!valid"
                 @click="handleSubmit(sendReviewForUser)"
               >
-                {{ $t('meta.send') }}
+                {{ $t('meta.btns.send') }}
               </base-btn>
             </div>
             <div class="buttons__wrapper">
@@ -51,7 +51,7 @@
                 mode="outline"
                 @click="hide"
               >
-                {{ $t('meta.cancel') }}
+                {{ $t('meta.btns.cancel') }}
               </base-btn>
             </div>
           </div>

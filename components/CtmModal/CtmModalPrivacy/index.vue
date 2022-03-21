@@ -1,11 +1,11 @@
 <template>
   <ctm-modal-box
     class="privacy"
-    :title="$t('privacy.title')"
+    :title="$t('modals.titles.privacyPolicy')"
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__desc">
-        {{ $t('privacy.desc') }}
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor
       </div>
       <div class="privacy__forms">
         <base-checkbox
@@ -19,7 +19,7 @@
               href="/docs/privacy.pdf"
               target="_blank"
             >
-              {{ $t('privacy.privacyLink') }}
+              {{ $t('meta.privacyPolicy') }}
             </a>
           </template>
         </base-checkbox>
@@ -34,7 +34,7 @@
               href="/docs/terms.pdf"
               target="_blank"
             >
-              {{ $t('privacy.termsLink') }}
+              {{ $t('meta.terms') }}
             </a>
           </template>
         </base-checkbox>
@@ -49,7 +49,7 @@
               href="/docs/aml.pdf"
               target="_blank"
             >
-              {{ $t('privacy.amlLink') }}
+              {{ $t('meta.aml') }}
             </a>
           </template>
         </base-checkbox>
@@ -59,7 +59,7 @@
           selector="OK"
           @click="onSubmit()"
         >
-          {{ $t('meta.ok') }}
+          {{ $t('meta.btns.ok') }}
         </base-btn>
       </div>
     </div>
@@ -108,7 +108,7 @@ export default {
           this.$cookies.set('userLogin', true, { path: '/' });
           this.$cookies.set('userStatus', 1, { path: '/' });
           sessionStorage.removeItem('confirmToken');
-          this.ShowToast(this.$t('modals.yourAccountVerified'), this.$t('modals.success'));
+          this.ShowToast(this.$t('modals.yourAccountVerified'), this.$t('meta.success'));
           await this.$router.push(Path.ROLE);
         } else {
           // Wrong confirm token

@@ -24,7 +24,7 @@
               v-if="userRole === 'employer' && userCompany"
               class="user__company"
             >
-              {{ $t('company.from') }} {{ userCompany }}
+              {{ $t('meta.fromSmall') }} {{ userCompany }}
             </span>
           </div>
           <div class="user__right">
@@ -57,7 +57,7 @@
               {{ questData.locationPlaceName }}
             </div>
             <div class="user__distance">
-              {{ showDistance() }} {{ $t('distance.m') }} {{ $t('meta.fromYou') }}
+              {{ showDistance() }} {{ $t('meta.units.distance.m') }} {{ $t('meta.fromYou') }}
             </div>
           </div>
         </div>
@@ -121,7 +121,7 @@ export default {
     },
     getSkillTitle(path) {
       const [spec, skill] = path.split('.');
-      return this.$t(`filters.items.${spec}.sub.${skill}`);
+      return this.$t(`filters.skills.${spec}.sub.${skill}`);
     },
     showDistance() {
       const { location: { lat, lng }, userData: { location } } = this;

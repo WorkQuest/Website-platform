@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="percent"
-    :title="$t('modals.changePercent')"
+    :title="$t('modals.titles.changePercent')"
   >
     <div class="percent__content content">
       <validation-observer
@@ -17,7 +17,7 @@
           </div>
           <base-field
             v-model="amount"
-            :placeholder="$tc('modals.percentsCount', 15)"
+            :placeholder="$tc('meta.units.percentsCount', 15)"
             class="content__input"
             :name="$t('modals.currentPercentErr')"
             rules="required|percent|decimalPlaces:18"
@@ -30,7 +30,7 @@
             mode="outline"
             @click="hide"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             selector="SUBMIT"
@@ -38,7 +38,7 @@
             :disabled="!validated || !passed || invalid"
             @click="handleSubmit(updateFee)"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.btns.submit') }}
           </base-btn>
         </div>
       </validation-observer>
@@ -94,8 +94,8 @@ export default {
       }
 
       const fields = {
-        from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-        to: { name: this.$t('modals.toAddress'), value: process.env.WORKNET_PENSION_FUND },
+        from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+        to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_PENSION_FUND },
         fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
       };
 

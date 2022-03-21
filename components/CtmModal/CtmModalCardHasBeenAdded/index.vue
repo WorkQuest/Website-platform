@@ -14,14 +14,14 @@
             {{ $t('modals.cardHasBeenAdded') }}
           </div>
           <div class="ctm-modal__desc">
-            {{ $t('modals.smallTemp') }}
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor
           </div>
           <base-btn
             class="email__action"
             selector="OK"
             @click="hide()"
           >
-            {{ $t('meta.ok') }}
+            {{ $t('meta.btns.ok') }}
           </base-btn>
         </div>
       </div>

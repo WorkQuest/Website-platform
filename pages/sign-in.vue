@@ -8,16 +8,16 @@
       tag="div"
     >
       <div class="auth__text auth__text_title">
-        <span>{{ $t('signIn.title') }}</span>
+        <span>{{ $t('meta.signIn') }}</span>
       </div>
       <div class="auth__text auth__text_simple">
-        <span>{{ $t('signIn.account') }}</span>
+        <span>{{ $t('meta.account') }}</span>
         <nuxt-link
           class="auth__text auth__text_link"
           data-selector="ACTION-BTN-TO-REGISTRATION"
           to="/sign-up"
         >
-          {{ $t('signIn.regs') }}
+          {{ $t('meta.btns.registration') }}
         </nuxt-link>
       </div>
       <form
@@ -70,7 +70,7 @@
             data-selector="ACTION-BTN-FORGOT-PASSWORD"
             @click="showRestoreModal()"
           >
-            {{ $t('signIn.forgot') }}
+            {{ $t('meta.btns.forgot') }}
           </div>
         </div>
         <div class="auth__action">
@@ -78,7 +78,7 @@
             :disabled="isLoading"
             selector="LOGIN"
           >
-            {{ $t('signIn.login') }}
+            {{ $t('meta.login') }}
           </base-btn>
         </div>
         <div class="auth__text auth__text_wrap">
@@ -131,7 +131,7 @@
       class="auth__back"
       @click="back"
     >
-      <span class="icon-chevron_big_left" /> <span>{{ $t('meta.back') }}</span>
+      <span class="icon-chevron_big_left" /> <span>{{ $t('meta.btns.back') }}</span>
     </div>
     <CreateWallet
       :step="step"

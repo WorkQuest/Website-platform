@@ -112,6 +112,7 @@ export default {
   methods: {
     async setPage(newPage) {
       this.page = newPage;
+      this.ScrollToTop();
       await this.fetchEmployeeList();
     },
     async fetchEmployeeList(isResetPage = false) {

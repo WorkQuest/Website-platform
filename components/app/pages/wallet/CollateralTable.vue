@@ -33,13 +33,13 @@
             selector="ADD"
             @click="handleAdd"
           >
-            {{ $t('modals.add') }}
+            {{ $t('meta.btns.add') }}
           </base-btn>
           <base-btn
             selector="TAKE"
             @click="handleTake"
           >
-            {{ $t('modals.take') }}
+            {{ $t('meta.btns.take') }}
           </base-btn>
         </div>
       </div>
