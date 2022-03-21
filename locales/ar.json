@@ -1147,6 +1147,7 @@
     "choose": "Choose",
     "chooseCurrency": "Choose currency",
     "coinpaymebts": "Сoinpaymebts",
+    "swapTitle": "Crosschain exchange",
     "coin": "Coin",
     "recepientBinance": "Recipient binance address",
     "createSwap": "Create swap",
