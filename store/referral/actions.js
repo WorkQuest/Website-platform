@@ -102,9 +102,19 @@ export default {
       return error();
     }
   },
-  async subscribeToReferralEvents(_, userAddress) {
+  async subscribeToReferralEvents({ getters }, userAddress) {
     await this.$wsNotifs.subscribe(`/notifications/referral/${userAddress}`, async (msg) => {
       console.log('subscribeToReferralEvents massage', msg);
+      if (msg.type === 'RegisteredAffiliar') {
+        console.log('RegisteredAffiliar');
+      } else if (msg.type === 'RewardClaimed') {
+        console.log('RewardClaimed');
+      } else if (msg.type === 'PaidReferral') {
+        console.log('PaidReferral');
+      }
     });
+  },
+  async unsubscribeToReferralEvents(_, userAddress) {
+    await this.$wsNotifs.unsubscribe(`/notifications/referral/${userAddress}`);
   },
 };

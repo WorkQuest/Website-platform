@@ -377,6 +377,9 @@ export default {
     this.SetLoader(true);
     this.SetLoader(false);
   },
+  beforeDestroy() {
+    this.$store.dispatch('referral/unsubscribeToReferralEvents', this.userAddress);
+  },
   methods: {
     async clickClaimBtnHandler() {
       this.ShowModal({
