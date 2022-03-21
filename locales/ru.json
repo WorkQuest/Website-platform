@@ -4,7 +4,7 @@
       "title": "Выберите приоритет",
       "all": "Все приоритеты",
       "fixedDelivery": "Фиксированная доставка",
-      "shortTerm": "В ближайщем будущем",
+      "shortTerm": "В ближайшем будущем",
       "urgent": "Срочный",
       "employee": {
         "urgent": "Срочное исполнение"
@@ -885,6 +885,7 @@
       "filters": {
         "titleAll": "Все фильтры"
       },
+      "saved": "Saved successfully",
       "cardAdd": "Add card",
       "addCase": "Add Case",
       "addingCard": "Adding card",

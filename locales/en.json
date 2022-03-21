@@ -885,6 +885,7 @@
       "filters": {
         "titleAll": "All Filters"
       },
+      "saved": "Saved successfully",
       "cardAdd": "Add card",
       "addCase": "Add Case",
       "addingCard": "Adding card",

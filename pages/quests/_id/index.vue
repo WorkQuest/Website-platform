@@ -146,9 +146,9 @@
   </div>
   <div v-else-if="!isLoading">
     <empty-data
-      :description="$t('meta.questNotFound')"
+      :description="$t('errors.emptyData.emptyQuests')"
       :link="'/quests'"
-      :btn-text="$t('meta.ok')"
+      :btn-text="$t('meta.btns.ok')"
     />
   </div>
 </template>

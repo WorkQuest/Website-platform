@@ -32,7 +32,7 @@
               {{ $t('pension.timeRemainsUntilTheEndOfThePeriod') }}
             </div>
             <div class="info-block__subtitle_black">
-              {{ $tc('saving.days', 152) }}
+              {{ $tc('meta.units.days', 152) }}
             </div>
           </div>
           <div class="btn-group_exp">
@@ -40,7 +40,7 @@
               class="btn_bl"
               @click="openOpenADepositModal()"
             >
-              {{ $t('saving.deposit') }}
+              {{ $t('meta.deposit') }}
             </base-btn>
             <base-btn
               class="btn_bl"

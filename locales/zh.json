@@ -885,6 +885,7 @@
       "filters": {
         "titleAll": "所有筛选器"
       },
+      "saved": "Saved successfully",
       "cardAdd": "Add card",
       "addCase": "Add Case",
       "addingCard": "Adding card",
