@@ -326,7 +326,7 @@ export default {
       if (!switchStatus.ok) await this.disconnectFromWallet();
 
       await this.swapsTableData(this.account.address, this.isConnected);
-      await localStorage.setItem('miningPoolId', chainName);
+      await localStorage.setItem('miningPoolId', chain);
       this.miningPoolId = localStorage.getItem('miningPoolId');
     },
     async checkMiningPoolId(chainName) {
