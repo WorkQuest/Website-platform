@@ -42,6 +42,14 @@ export default {
       isChatOpened: 'chat/isChatOpened',
     }),
   },
+  created() {
+    const { path } = this.$route;
+    const { v } = this.$route.query;
+    if (path === '/ref' && v.length) {
+      sessionStorage.setItem('referralId', v);
+      this.$router.push('/sign-up');
+    }
+  },
   async mounted() {
     this.GetLocation();
   },

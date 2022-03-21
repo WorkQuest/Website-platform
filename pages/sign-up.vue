@@ -147,11 +147,13 @@ export default {
       this.model.email = this.model.email.trim();
       this.model.firstName = this.model.firstName.trim();
       this.model.lastName = this.model.lastName.trim();
+      const referralId = sessionStorage.getItem('referralId');
       const payload = {
         firstName: this.model.firstName,
         lastName: this.model.lastName,
         email: this.model.email,
         password: this.model.password,
+        ...referralId && { referralId },
       };
       const response = await this.$store.dispatch('user/signUp', payload);
       if (response.ok) {
