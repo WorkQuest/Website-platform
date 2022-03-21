@@ -5,4 +5,5 @@ export default () => ({
   referralsListCount: 0,
   createdReferralList: [],
   referralSignature: {},
+  currentPage: 1,
 });

@@ -102,13 +102,21 @@ export default {
       return error();
     }
   },
-  async subscribeToReferralEvents({ getters }, userAddress) {
+  async subscribeToReferralEvents({ getters, commit }, userAddress) {
     await this.$wsNotifs.subscribe(`/notifications/referral/${userAddress}`, async (msg) => {
       console.log('subscribeToReferralEvents massage', msg);
+
+      const paidEventsList = JSON.parse(JSON.stringify(getters.getPaidEventsList));
+      const currentPage = getters.getCurrentPage;
+
       if (msg.type === 'RegisteredAffiliar') {
         console.log('RegisteredAffiliar');
-      } else if (msg.type === 'RewardClaimed') {
-        console.log('RewardClaimed');
+      } else if (msg.type === 'RewardClaimed' && currentPage === 1) {
+        paidEventsList.unshift(msg.data);
+        if (paidEventsList.length > 6) {
+          paidEventsList.pop();
+        }
+        commit('setPaidEventsList', paidEventsList);
       } else if (msg.type === 'PaidReferral') {
         console.log('PaidReferral');
       }
@@ -116,5 +124,8 @@ export default {
   },
   async unsubscribeToReferralEvents(_, userAddress) {
     await this.$wsNotifs.unsubscribe(`/notifications/referral/${userAddress}`);
+  },
+  updateCurrentPage({ commit }, page) {
+    commit('setCurrentPage', page);
   },
 };

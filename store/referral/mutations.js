@@ -17,4 +17,7 @@ export default {
   setReferralSignature(state, signature) {
     state.referralSignature = signature;
   },
+  setCurrentPage(state, page) {
+    state.currentPage = page;
+  },
 };
