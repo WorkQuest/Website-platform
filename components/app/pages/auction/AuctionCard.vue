@@ -194,6 +194,7 @@ export default {
     &-link {
       color: $blue;
       opacity: 1;
+      display: block;
     }
   }
 }
