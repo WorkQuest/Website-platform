@@ -82,8 +82,9 @@
                 class="info-block__avatar"
               >
                 <img
+                  v-if="item.avatar && item.avatar.url"
                   class="ava_list"
-                  src="~/assets/img/social/GOOGLE_+_.png"
+                  :src="item.avatar.url"
                   alt=""
                 >
               </div>
