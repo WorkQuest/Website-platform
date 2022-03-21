@@ -87,6 +87,12 @@
                   :src="item.avatar.url"
                   alt=""
                 >
+                <img
+                  v-else
+                  class="ava_list"
+                  :src="EmptyAvatar()"
+                  alt=""
+                >
               </div>
               <div class="info-block__more">
                 {{ $tc('meta.units.plusCount', referralsListCount) }}
