@@ -253,7 +253,7 @@ export default {
   data() {
     return {
       page: 1,
-      perPage: 6,
+      perPage: 10,
       referLink: process.env.PROD === 'true' ? 'https://www.app-ver1.workquest.co/sign-in?ref=' : 'https://www.app.workquest.co/sign-in?ref=',
       tableFields: [
         {

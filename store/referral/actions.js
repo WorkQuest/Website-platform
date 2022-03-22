@@ -122,14 +122,14 @@ export default {
         commit('setReferralsList', referralsList);
       } else if (msg.type === 'RewardClaimed' && currentPage === 1) {
         paidEventsList.unshift(msg.data);
-        if (paidEventsList.length > 6) {
+        if (paidEventsList.length > 10) {
           paidEventsList.pop();
         }
         commit('setPaidEventsList', paidEventsList);
-      } else if (msg.type === 'PaidReferral') {
+      } else if (msg.type === 'PaidReferral' && currentPage === 1) {
         console.log('PaidReferral');
         paidEventsList.unshift(msg.data);
-        if (paidEventsList.length > 6) {
+        if (paidEventsList.length > 10) {
           paidEventsList.pop();
         }
       }
