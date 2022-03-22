@@ -2,7 +2,7 @@ import moment from 'moment';
 import { error } from '~/utils/web3';
 import { connectWithMnemonic } from '~/utils/wallet';
 import {
-  NotificationAction, UserRole, Path, UserStatuses,
+  NotificationAction, UserRole, Path, UserStatuses, QuestModeReview,
 } from '~/utils/enums';
 
 export default {
@@ -221,10 +221,13 @@ export default {
       return console.log(e);
     }
   },
-  async sendReviewForUser({ commit }, { questId, message, mark }) {
+  async sendReviewForUser({ commit }, {
+    questId, message, mark, questMode,
+  }) {
     try {
       const { ok, result } = await this.$axios.$post('/v1/review/send', { questId, message, mark });
-      commit('quests/setMark', result, { root: true });
+      if (questMode === QuestModeReview.QUEST_LIST) commit('quests/setMarkOnQuestInList', result, { root: true });
+      if (questMode === QuestModeReview.QUEST_SINGLE) commit('quests/setMarkOnQuestSingle', result, { root: true });
       return ok;
     } catch (e) {
       console.log('user/sendReviewForUser');

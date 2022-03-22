@@ -88,9 +88,10 @@ export default {
       this.CloseModal();
     },
     async sendReviewForUser() {
-      const { questId, callback } = this.options;
+      const { questId, callback, questMode } = this.options;
       await callback({
         questId,
+        questMode,
         message: this.textArea,
         mark: this.rating,
       });

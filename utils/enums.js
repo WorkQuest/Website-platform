@@ -9,6 +9,11 @@ export const ChainsId = {
   WUSD_TEST: '0x1346618',
 };
 
+export const QuestModeReview = {
+  QUEST_LIST: 'QuestList',
+  QUEST_SINGLE: 'QuestSingle',
+};
+
 export const ChainsIdByChainNumber = {
   1: '0x1',
   4: '0x4',
