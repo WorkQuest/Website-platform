@@ -117,7 +117,7 @@ export default {
         2: {
           id: 1,
           icon: require('~/assets/img/ui/WQT.png'),
-          title: this.$t('crosschain.worknet'),
+          title: this.$t('meta.coins.wqt'),
           enum: Chains.WORKNET,
         },
       },

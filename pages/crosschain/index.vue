@@ -250,8 +250,8 @@ export default {
         },
         {
           icon: require('~/assets/img/ui/WQT.png'),
-          title: this.$t('crosschain.worknet'),
           chain: Chains.WORKNET,
+          title: this.$t('meta.coins.wqt'),
         },
       ];
     },
