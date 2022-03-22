@@ -67,7 +67,7 @@ export default {
       }
       this.SetLoader(false);
 
-      if (res && res.transactionHashion) {
+      if (res && res.transactionHash) {
         this.hide();
       }
     },
