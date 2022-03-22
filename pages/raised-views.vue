@@ -4,7 +4,6 @@
     data-selector="PAGE-RAISED-VIEWS"
   >
     <div
-      v-click-outside="hide"
       class="main__body page"
     >
       <div class="page">
@@ -56,12 +55,11 @@
               class="level__container"
             >
               <div
-                v-for="(item, i) in periods(period)"
+                v-for="(item, i) in periods[period]"
                 :key="i"
-                :ref="`item${i}`"
+                :ref="`card${i}`"
                 :data-selector="`ACTION-BTN-SWITCH-PERIOD-LEVEL-${i}`"
-                :class="cardShadow(item)"
-                :style="cardBorder"
+                :class="[cardBorder[item.code]]"
                 class="level__card"
                 @click="selectRadio(i,item)"
               >
@@ -78,7 +76,7 @@
                 <div class="level card">
                   <div
                     class="card__level"
-                    :class="cardStatus(item)"
+                    :class="cardStatus[item.code]"
                   >
                     {{ item.level }}
                   </div>
@@ -121,42 +119,20 @@
 </template>
 
 <script>
-import ClickOutside from 'vue-click-outside';
 import modals from '~/store/modals/modals';
 import { userRaiseViewPriceDay, userRaiseViewPriceWeek, userRaiseViewPriceMonth } from '~/utils/enums';
 
 export default {
   name: 'RisedViews',
-  directives: {
-    ClickOutside,
-  },
   data() {
     return {
       ads: {
         currentAdPrice: '',
       },
-      bordered: false,
-      currentBorder: '',
       period: 1,
     };
   },
   computed: {
-    periodTabs() {
-      return [
-        {
-          number: 1,
-          title: this.$t('raising-views.forOneDay'),
-        },
-        {
-          number: 2,
-          title: this.$t('raising-views.forOneWeek'),
-        },
-        {
-          number: 3,
-          title: this.$t('raising-views.forOneMonth'),
-        },
-      ];
-    },
     days() {
       return [
         {
@@ -241,6 +217,57 @@ export default {
         },
       ];
     },
+    periods() {
+      const value = {
+        1: this.days,
+        2: this.weeks,
+        3: this.months,
+      };
+      return value;
+    },
+    periodTabs() {
+      return [
+        {
+          number: 1,
+          title: this.$t('raising-views.forOneDay'),
+        },
+        {
+          number: 2,
+          title: this.$t('raising-views.forOneWeek'),
+        },
+        {
+          number: 3,
+          title: this.$t('raising-views.forOneMonth'),
+        },
+      ];
+    },
+    cardActive() {
+      const active = {
+        1: 'level__card_plus-active',
+        2: 'level__card_gold-active',
+        3: 'level__card_silver-active',
+        4: 'level__card_bronze-active',
+      };
+      return active;
+    },
+    cardBorder() {
+      const border = {
+        1: 'level__card_plus',
+        2: 'level__card_gold',
+        3: 'level__card_silver',
+        4: 'level__card_bronze',
+      };
+      return border;
+    },
+    cardStatus() {
+      const style = {
+        1: 'card__level_plus',
+        2: 'card__level_gold',
+        3: 'card__level_silver',
+        4: 'card__level_bronze',
+      };
+      return style;
+    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -250,78 +277,21 @@ export default {
     goBack() {
       this.$router.go(-1);
     },
-    cardStatus(item) {
-      let style;
-      if (item.code === 1) {
-        style = 'level__card_gold';
-      } if (item.code === 3) {
-        style = 'card__level_reliable';
-      } if (item.code === 4) {
-        style = 'card__level_checked';
-      }
-      return style;
-    },
-    cardShadow(item) {
-      let style;
-      if (item.code === 1 || item.code === 2) {
-        style = 'level__card-golden';
-      } if (item.code === 3) {
-        style = 'level__card-silver';
-      } if (item.code === 4) {
-        style = 'level__card-bronze';
-      }
-      return style;
-    },
-    cardBorder() {
-      let style;
-      if (this.currentBorder.code === 1) {
-        const plus = this.$refs.item0;
-        plus[0].style.boxShadow = '0 0 10px 2px rgba(246, 207, 0, 0.3)';
-      } if (this.currentBorder.code === 2) {
-        const gold = this.$refs.item1;
-        gold[0].style.boxShadow = '0 0 10px 2px rgba(246, 207, 0, 0.3)';
-      } if (this.currentBorder.code === 3) {
-        const silver = this.$refs.item2;
-        silver[0].style.boxShadow = '0 0 10px 2px rgba(187,192,199, 0.3)';
-      } if (this.currentBorder.code === 4) {
-        const bronze = this.$refs.item3;
-        bronze[0].style.boxShadow = '0 0 10px 2px rgba(183,151,104, 0.3)';
-      }
-      return style;
-    },
-    periods(period) {
-      let val;
-      if (period === 1) {
-        val = this.days;
-      } if (period === 2) {
-        val = this.weeks;
-      } if (period === 3) {
-        val = this.months;
-      }
-      return val;
-    },
     selectRadio(idx, item) {
-      this.currentBorder = item;
-      this.cardBorder();
-      const radio = this.$refs[`radio${idx}`];
-      for (let i = 0; i < Object.keys(this.$refs[`radio${i}`]).length; i += 1) {
-        if (radio[i].checked) {
-          radio[i].checked = false;
-          this.ads.currentAdPrice = '';
-        } else if (!radio[i].checked) {
-          radio[i].checked = true;
-          this.ads.currentAdPrice = radio[i].value;
-        }
+      for (let i = 0; i < Object.keys(this.$refs).filter((el) => el.match(/radio/g)).length; i += 1) {
+        this.$refs[`radio${i}`][0].checked = false;
+        this.ads.currentAdPrice = '';
+        this.$refs[`card${i}`][0].classList.remove(this.cardActive[i + 1]);
       }
+      this.$refs[`radio${idx}`][0].checked = true;
+      this.ads.currentAdPrice = this.$refs[`radio${idx}`][0].value;
+      this.$refs[`card${idx}`][0].classList.add(this.cardActive[item.code]);
     },
     switchPeriod(item) {
-      const hideElement = this.$refs[`item${this.currentBorder.code - 1}`];
-      if (hideElement) {
-        hideElement[0].style = '';
-      }
       for (let idx = 0; idx < Object.keys(this.$refs).filter((el) => el.match(/radio/g)).length - 1; idx += 1) {
         const radio = this.$refs[`radio${idx}`];
         for (let i = 0; i < Object.keys(radio).length; i += 1) {
+          this.$refs[`card${i}`][0].classList.remove(this.cardActive[i + 1]);
           radio[0].checked = false;
         }
         this.period = item.number;
@@ -333,17 +303,6 @@ export default {
         key: modals.paymentOptions,
         step: 1,
       });
-    },
-    hide() {
-      const hideElement = this.$refs[`item${this.currentBorder.code - 1}`];
-      hideElement[0].style = '';
-      for (let idx = 0; idx < Object.keys(this.$refs).filter((el) => el.match(/radio/g)).length - 1; idx += 1) {
-        const radio = this.$refs[`radio${idx}`];
-        for (let i = 0; i < Object.keys(radio).length; i += 1) {
-          radio[0].checked = false;
-        }
-        this.ads.currentAdPrice = '';
-      }
     },
   },
 };
@@ -370,7 +329,6 @@ export default {
   &-white {
     @include main;
     background: $white;
-    background: #FFFFFF;
     margin: 0 0 20px 0;
     border-radius: 6px;
     justify-content: center;
@@ -505,27 +463,42 @@ export default {
     border-radius: 6px;
     padding: 20px 0;
     display: grid;
+    border: 1px solid transparent;
     grid-template-columns: 1fr 15fr 1fr;
     margin: 20px 0 0 0;
-    transition: 0.5s;
+    transition: 0.3s;
     cursor: pointer;
-    &-golden{
+    &_plus{
       &:hover {
-        box-shadow: 0 0 10px 2px rgba(246, 207, 0, 0.3);
+        border: 1px solid $yellow100;
       }
-    }
-    &-silver{
-      &:hover {
-        box-shadow: 0 0 10px 2px rgba(187,192,199, 0.3);
-      }
-    }
-    &-bronze{
-      &:hover {
-        box-shadow: 0 0 10px 2px rgba(183,151,104, 0.3);
+      &-active{
+        border: 1px solid $yellow100;
       }
     }
     &_gold {
-      border: 1px solid #F7CF00;
+      &:hover {
+        border: 1px solid $yellow100;
+      }
+      &-active{
+        border: 1px solid $yellow100;
+      }
+    }
+    &_silver{
+      &:hover {
+        border: 1px solid $grey200;
+      }
+      &-active{
+        border: 1px solid $grey200;
+      }
+    }
+    &_bronze{
+      &:hover {
+        border: 1px solid $brown;
+      }
+      &-active{
+        border: 1px solid $brown;
+      }
     }
   }
   &__option {
@@ -541,16 +514,21 @@ export default {
     font-weight: 500;
     font-size: 12px;
     color: $white;
-    background: #F7CF00;
     border-radius: 3px;
     width: 120px;
     padding: 2px 5px;
     text-align: center;
-    &_reliable {
-      background: $grey200 !important;
+    &_plus {
+      background: $yellow100;
     }
-    &_checked {
-      background: $brown !important;
+    &_gold{
+      background: $yellow100;
+    }
+    &_silver {
+      background: $grey200;
+    }
+    &_bronze {
+      background: $brown;
     }
   }
   &__desc {
@@ -625,4 +603,10 @@ export default {
     }
   }
 }
+.icon-chevron_big_left{
+  content: "\ea4d";
+  color: $black800;
+  font-size: 25px;
+}
+
 </style>
