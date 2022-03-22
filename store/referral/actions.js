@@ -115,7 +115,7 @@ export default {
         console.log('RegisteredAffiliar');
         referralsList.unshift(msg.data);
         referralsListCount = msg.data.count;
-        if (paidEventsList.length > 5) {
+        if (paidEventsList.length > 10) {
           paidEventsList.pop();
         }
         commit('setReferralsListCount', referralsListCount);
