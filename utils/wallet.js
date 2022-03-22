@@ -470,7 +470,7 @@ export const buyWUSD = async ({ collateralBN, ratioBN, currency }, { gasPrice, g
 // Referrals Page
 export const addReferrals = async (signature, addresses, userAddress) => {
   const inst = new web3.eth.Contract(abi.WQReferral, process.env.WORKNET_REFERRAL);
-  const gasEstimate = await inst.methods.addReferrals(signature.v, signature.r, signature.s, addresses).estimateGas({ from: wallet.address });
+  const gasEstimate = await inst.methods.addReferrals(signature.v, signature.r, signature.s, addresses).estimateGas({ from: userAddress });
   if (gasEstimate) {
     return await inst.methods.addReferrals(signature.v, signature.r, signature.s, addresses).send({ from: userAddress, gas: gasEstimate });
   }
