@@ -42,10 +42,18 @@
                 class="btn"
                 @click="openCreditingDepositModal()"
               >
+                {{ $t('crediting.myLoans') }}
+              </base-btn>
+              <base-btn
+                class="btn"
+                mode="outline"
+                @click="openCreditingDepositModal()"
+              >
                 {{ $t('crediting.borrow') }}
               </base-btn>
               <base-btn
                 class="btn"
+                mode="outline"
                 @click="openCreditingLoanModal()"
               >
                 {{ $t('meta.lend') }}
@@ -283,11 +291,8 @@ export default {
       box-sizing: border-box;
       font-weight: 400;
       font-size: 16px;
-      color: #0083C7;
-      background-color: #fff;
-      border: 1px solid #0083C71A;
-      border-radius: 6px !important;
       transition: .3s;
+      border-radius: 6px !important;
 
       &__doc {
         @extend .btn;
