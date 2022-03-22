@@ -77,7 +77,7 @@
             </div>
             <div class="info-block__refers">
               <div
-                v-for="(item) in referralItems"
+                v-for="(item) in referralItems()"
                 :key="`${item.id}`"
                 class="info-block__avatar"
               >
@@ -347,22 +347,6 @@ export default {
     totalPages() {
       return Math.ceil(this.paidEventsList.length / this.perPage);
     },
-    referralItems() {
-      const referralsList = [];
-      const indexList = [];
-      if (this.referralsList.length > 5) {
-        while (referralsList.length < 5) {
-          const index = Math.floor(Math.random() * this.referralsList.length);
-          if (!indexList.includes(index)) {
-            indexList.push(index);
-            referralsList.push(this.referralsList[index]);
-          }
-        }
-        return referralsList;
-      }
-
-      return this.referralsList;
-    },
   },
   watch: {
     page: {
@@ -378,6 +362,20 @@ export default {
           await this.$store.dispatch('referral/updateCurrentPage', newValue);
           await this.$store.dispatch('referral/fetchPaidEventsList', payload);
         }
+      },
+    },
+    paidEventsList: {
+      handler() {
+        try {
+          this.$store.dispatch('referral/fetchRewardBalance', this.userAddress);
+        } catch (err) {
+          console.log('fetchRewardBalance err', err);
+        }
+      },
+    },
+    referralsList: {
+      handler() {
+        this.referralItems();
       },
     },
   },
@@ -402,6 +400,22 @@ export default {
       this.ShowModal({
         key: modals.referralRegistration,
       });
+    },
+    referralItems() {
+      const referralsList = [];
+      const indexList = [];
+      if (this.referralsList.length > 5) {
+        while (referralsList.length < 5) {
+          const index = Math.floor(Math.random() * this.referralsList.length);
+          if (!indexList.includes(index)) {
+            indexList.push(index);
+            referralsList.push(this.referralsList[index]);
+          }
+        }
+        return referralsList;
+      }
+
+      return this.referralsList;
     },
   },
 };

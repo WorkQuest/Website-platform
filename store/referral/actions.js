@@ -107,10 +107,19 @@ export default {
       console.log('subscribeToReferralEvents massage', msg);
 
       const paidEventsList = JSON.parse(JSON.stringify(getters.getPaidEventsList));
+      const referralsList = JSON.parse(JSON.stringify(getters.getReferralsList));
+      let referralsListCount = JSON.parse(JSON.stringify(getters.getReferralsListCount));
       const currentPage = getters.getCurrentPage;
 
       if (msg.type === 'RegisteredAffiliar') {
         console.log('RegisteredAffiliar');
+        referralsList.unshift(msg.data);
+        referralsListCount = msg.data.count;
+        if (paidEventsList.length > 5) {
+          paidEventsList.pop();
+        }
+        commit('setReferralsListCount', referralsListCount);
+        commit('setReferralsList', referralsList);
       } else if (msg.type === 'RewardClaimed' && currentPage === 1) {
         paidEventsList.unshift(msg.data);
         if (paidEventsList.length > 6) {
@@ -119,6 +128,10 @@ export default {
         commit('setPaidEventsList', paidEventsList);
       } else if (msg.type === 'PaidReferral') {
         console.log('PaidReferral');
+        paidEventsList.unshift(msg.data);
+        if (paidEventsList.length > 6) {
+          paidEventsList.pop();
+        }
       }
     });
   },
