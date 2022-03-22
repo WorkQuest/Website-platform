@@ -20,4 +20,7 @@ export default {
   setCurrentPage(state, page) {
     state.currentPage = page;
   },
+  setIsNeedRegistration(state, boolean) {
+    state.isNeedRegistration = boolean;
+  },
 };

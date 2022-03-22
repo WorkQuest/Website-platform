@@ -6,4 +6,5 @@ export default {
   getCreatedReferralList: (state) => state.createdReferralList,
   getReferralSignature: (state) => state.referralSignature,
   getCurrentPage: (state) => state.currentPage,
+  getIsNeedRegistration: (state) => state.isNeedRegistration,
 };

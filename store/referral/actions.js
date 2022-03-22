@@ -59,8 +59,12 @@ export default {
       const { data: { result, ok } } = await this.$axios.get('v1/user/me/referral-program/referrals', currConfig);
 
       if (result.referrals.length) {
+        const isNeedRegistration = result.referrals.some((item) => item.referralUser.referralStatus === 'created');
+        console.log(isNeedRegistration);
+
         commit('setReferralsListCount', result.count);
         commit('setReferralsList', result.referrals);
+        commit('setIsNeedRegistration', isNeedRegistration);
       }
 
       return ok;
