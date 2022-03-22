@@ -195,6 +195,7 @@
     "hideYourMessage": "Hide your message"
   },
   "messages": {
+    "min_percent": "The {_field_} field must be greater than {min}%",
     "alpha": "El campo {_field_} solo puede contener caracteres alfabéticos",
     "alpha_num": "El campo {_field_} solo puede contener caracteres alfanuméricos",
     "alpha_dash": "El campo {_field_} solo puede contener caracteres alfanuméricos, guiones y caracteres de subrayado",
@@ -940,8 +941,8 @@
     },
     "errors": {
       "errorQuests": "Error with quests",
-      "emptyOpenQuests": "You don't have open quests, please create",
       "errorSmsVer": "Error SMS verification",
+      "emptyOpenQuests": "You don't have open quests, please create",
       "error": "Error",
       "youCan’tDeleteActiveQuest": "You can’t delete active quest",
       "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
@@ -978,6 +979,10 @@
       "withdrawInfo": "Withdrawal info"
     },
     "value": "Value",
+    "successBuyWUSD": "Successfully purchased WUSD",
+    "setTokenPrice": "Setting up {token} price",
+    "approveRouter": "Approve {token} to Router",
+    "takeWUSD": "Buy your WUSD",
     "waitRoleCooldown": "You cannot change roles more than once a month. You can change role after {date} {time}",
     "settingsInfo": "Settings Info",
     "pleaseEnable2FA": "Please, enable TWO-Step authentication",
@@ -986,8 +991,11 @@
     "fieldCountOf": "{countOf} amount",
     "countOfCollateral": "How much collateral to leave?",
     "percentageConversion": "Percentage conversion",
-    "conversionAdditionalInfo": "Information about 150% + risks",
-    "fieldPercentConversion": "Numder of percentage conversion",
+    "conversionAdditionalInfo": "Information about 150% + {risks} risks",
+    "highRisk": "High",
+    "mediumRisk": "Medium",
+    "lowRisk": "Low",
+    "fieldPercentConversion": "Percentage conversion",
     "countOfRecievedWUSDDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "countOfCollateralDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "conversionPercentDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
@@ -1138,6 +1146,7 @@
     "choose": "Choose",
     "chooseCurrency": "Choose currency",
     "coinpaymebts": "Сoinpaymebts",
+    "swapTitle": "Crosschain exchange",
     "coin": "Coin",
     "recipientBinance": "Recipient binance address",
     "createSwap": "Create swap",
