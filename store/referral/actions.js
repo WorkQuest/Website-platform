@@ -60,7 +60,6 @@ export default {
 
       if (result.referrals.length) {
         const isNeedRegistration = result.referrals.some((item) => item.referralUser.referralStatus === 'created');
-        console.log(isNeedRegistration);
 
         commit('setReferralsListCount', result.count);
         commit('setReferralsList', result.referrals);
