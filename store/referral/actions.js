@@ -1,4 +1,5 @@
 import {
+  addReferrals,
   getStyledAmount,
   GetWalletProvider,
 } from '~/utils/wallet';
@@ -89,19 +90,13 @@ export default {
       return false;
     }
   },
-  async addReferrals({ getters }) {
+  async addReferrals({ getters }, userAddress) {
     const signature = getters.getReferralSignature;
     const addresses = getters.getCreatedReferralList;
     try {
-      return await fetchContractData(
-        'addReferrals',
-        abi.WQReferral,
-        process.env.WORKNET_REFERRAL,
-        [signature.v, signature.r, signature.s, addresses],
-        GetWalletProvider(),
-      );
+      return await addReferrals(signature, addresses, userAddress);
     } catch (e) {
-      console.error(`fetchContractData: ${e}`);
+      console.error(`addReferrals: ${e}`);
       return error();
     }
   },

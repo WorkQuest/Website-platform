@@ -49,6 +49,7 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      userAddress: 'user/getUserWalletAddress',
     }),
   },
   methods: {
@@ -56,14 +57,19 @@ export default {
       this.CloseModal();
     },
     async handleSubmit() {
+      let res;
       this.hide();
       this.SetLoader(true);
       try {
-        await this.$store.dispatch('referral/addReferrals');
+        res = await this.$store.dispatch('referral/addReferrals', this.userAddress);
       } catch (err) {
         console.log('addReferrals err', err);
       }
-      this.SetLoader(false);
+
+      if (res && res.transactionHashion) {
+        this.SetLoader(false);
+        this.hide();
+      }
     },
   },
 };
