@@ -65,9 +65,9 @@ export default {
       } catch (err) {
         console.log('addReferrals err', err);
       }
+      this.SetLoader(false);
 
       if (res && res.transactionHashion) {
-        this.SetLoader(false);
         this.hide();
       }
     },
