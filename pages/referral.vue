@@ -67,7 +67,7 @@
               </div>
               <div class="info-block__btn-wrap info-block__btn-wrap_absolute">
                 <base-btn
-                  :disabled="!createdReferralList.length"
+                  :disabled="!isNeedRegistration"
                   :selector="`REGISTRATION`"
                   @click="clickRegistrationBtnHandler"
                 >
@@ -243,7 +243,6 @@ export default {
         store.dispatch('referral/fetchRewardBalance', userAddress),
         store.dispatch('referral/fetchPaidEventsList'),
         store.dispatch('referral/fetchReferralsList'),
-        store.dispatch('referral/fetchCreatedReferralList'),
         store.dispatch('referral/subscribeToReferralEvents', userAddress),
       ]);
     } catch (err) {
@@ -343,6 +342,7 @@ export default {
       referralSignature: 'referral/getReferralSignature',
       userAddress: 'user/getUserWalletAddress',
       userReferralId: 'user/getUserReferralId',
+      isNeedRegistration: 'referral/getIsNeedRegistration',
     }),
     totalPages() {
       return Math.ceil(this.paidEventsList.length / this.perPage);
@@ -397,9 +397,20 @@ export default {
       });
     },
     async clickRegistrationBtnHandler() {
-      this.ShowModal({
-        key: modals.referralRegistration,
-      });
+      let res;
+      try {
+        this.SetLoader(true);
+        res = await this.$store.dispatch('referral/fetchCreatedReferralList');
+      } catch (err) {
+        console.log('fetchCreatedReferralList err', err);
+        res = false;
+      }
+      if (res) {
+        this.SetLoader(false);
+        this.ShowModal({
+          key: modals.referralRegistration,
+        });
+      }
     },
     referralItems() {
       const referralsList = [];
