@@ -94,8 +94,11 @@
                   alt=""
                 >
               </div>
-              <div class="info-block__more">
-                {{ referralsListCount }}
+              <div
+                v-if="referralsListCount > referralCount"
+                class="info-block__more"
+              >
+                {{ referralsListCount - referralCount }}
               </div>
             </div>
             <div
@@ -330,6 +333,7 @@ export default {
         },
       ],
       isProd: process.env.PROD,
+      referralCount: 5,
     };
   },
   computed: {
@@ -415,8 +419,8 @@ export default {
     referralItems() {
       const referralsList = [];
       const indexList = [];
-      if (this.referralsList.length > 5) {
-        while (referralsList.length < 5) {
+      if (this.referralsList.length > this.referralCount) {
+        while (referralsList.length < this.referralCount) {
           const index = Math.floor(Math.random() * this.referralsList.length);
           if (!indexList.includes(index)) {
             indexList.push(index);
