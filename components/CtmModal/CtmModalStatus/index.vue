@@ -24,6 +24,17 @@
           {{ options.subtitle }}
         </span>
       </div>
+      <div
+        v-if="options.usersList"
+        class="status__list"
+      >
+        <span
+          v-for="(item) in options.usersList"
+          :key="item.address"
+        >
+          {{ item }}
+        </span>
+      </div>
       <a
         v-if="options.txHash"
         :href="link"
@@ -68,6 +79,34 @@
           </span>
         </base-btn>
       </div>
+      <div
+        v-else-if="options.type === 'registration'"
+        class="status__wrap"
+      >
+        <div v-if="options.cancel">
+          <base-btn
+            class="status__btn"
+            mode="outline"
+            selector="CANCEL"
+            @click="hide()"
+          >
+            <span class="status__text">
+              {{ options.cancel }}
+            </span>
+          </base-btn>
+        </div>
+        <div v-if="options.button">
+          <base-btn
+            class="status__btn"
+            selector="REGISTRATION"
+            @click="registration()"
+          >
+            <span class="status__text">
+              {{ options.button }}
+            </span>
+          </base-btn>
+        </div>
+      </div>
       <base-btn
         v-else
         class="status__action"
@@ -105,6 +144,7 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
       chatInfoInviteOnQuest: 'quests/getChatInfoInviteOnQuest',
+      userAddress: 'user/getUserWalletAddress',
     }),
   },
   async mounted() {
@@ -145,6 +185,16 @@ export default {
         }
       }
     },
+    async registration() {
+      this.hide();
+      this.SetLoader(true);
+      const res = await this.$store.dispatch('referral/addReferrals', this.userAddress);
+      this.SetLoader(false);
+
+      if (res && res.transactionHash) {
+        this.hide();
+      }
+    },
   },
 };
 </script>
@@ -183,6 +233,22 @@ export default {
     line-height: 130%;
     text-align: center;
     color: $black600;
+  }
+  &__wrap {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    div {
+      width: 100%;
+    }
+  }
+  &__btn {
+    padding: 0 10px;
+  }
+  &__list {
+    span {
+      font-size: 11px;
+    }
   }
 }
 </style>
