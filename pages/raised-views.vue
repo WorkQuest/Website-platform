@@ -7,7 +7,7 @@
       class="main__body page"
     >
       <div class="page">
-        <div class="page btn-container__left">
+        <div class="page__btn-container btn-container__left">
           <div class="btn-container__btn_back">
             <base-btn
               mode="back"
@@ -21,10 +21,10 @@
             </base-btn>
           </div>
         </div>
-        <div class="page page__raising">
+        <div class="page__raising">
           {{ $t('raising-views.raisingViews') }}
         </div>
-        <div class="page period">
+        <div class="page__period period">
           <h3 class="period__choose">
             {{ $t('raising-views.choosePeriod') }}
           </h3>
@@ -35,7 +35,7 @@
               :data-selector="`ACTION-BTN-SWITCH-PERIOD-${i}`"
               class="period__period"
               :class="{'period__period_active': period === item.number}"
-              @click="switchPeriod(item, i)"
+              @click="switchPeriod(item)"
             >
               <h2
                 class="period__title"
@@ -46,7 +46,7 @@
             </div>
           </div>
 
-          <div class="period level">
+          <div class="period__level level">
             <div class="level__title">
               {{ $t('raising-views.chooseLevel') }}
             </div>
@@ -92,7 +92,7 @@
               </div>
             </div>
           </div>
-          <div class="btn-container">
+          <div class="period__btn-container btn-container">
             <div class="btn-container__btn">
               <base-btn
                 mode="outline"
@@ -218,12 +218,11 @@ export default {
       ];
     },
     periods() {
-      const value = {
+      return {
         1: this.days,
         2: this.weeks,
         3: this.months,
       };
-      return value;
     },
     periodTabs() {
       return [
@@ -242,31 +241,28 @@ export default {
       ];
     },
     cardActive() {
-      const active = {
+      return {
         1: 'level__card_plus-active',
         2: 'level__card_gold-active',
         3: 'level__card_silver-active',
         4: 'level__card_bronze-active',
       };
-      return active;
     },
     cardBorder() {
-      const border = {
+      return {
         1: 'level__card_plus',
         2: 'level__card_gold',
         3: 'level__card_silver',
         4: 'level__card_bronze',
       };
-      return border;
     },
     cardStatus() {
-      const style = {
+      return {
         1: 'card__level_plus',
         2: 'card__level_gold',
         3: 'card__level_silver',
         4: 'card__level_bronze',
       };
-      return style;
     },
   },
   async mounted() {
@@ -288,14 +284,11 @@ export default {
       this.$refs[`card${idx}`][0].classList.add(this.cardActive[item.code]);
     },
     switchPeriod(item) {
-      for (let idx = 0; idx < Object.keys(this.$refs).filter((el) => el.match(/radio/g)).length - 1; idx += 1) {
-        const radio = this.$refs[`radio${idx}`];
-        for (let i = 0; i < Object.keys(radio).length; i += 1) {
-          this.$refs[`card${i}`][0].classList.remove(this.cardActive[i + 1]);
-          radio[0].checked = false;
+      this.period = item.number;
+      for (let i = 0; i < Object.keys(this.$refs).filter((el) => el.match(/radio/g)).length; i += 1) {
+        if (this.$refs[`radio${i}`][0].checked) {
+          this.ads.currentAdPrice = this.periods[this.period][i].cost;
         }
-        this.period = item.number;
-        this.ads.currentAdPrice = '';
       }
     },
     async showPaymentModal() {
@@ -340,98 +333,12 @@ export default {
   }
 }
 .page {
-  &__skills {
-    width: 100%;
-    .block {
-      display: flex;
-      grid-gap: 20px;
-      justify-content: space-between;
-      margin-top: 20px;
-      &__skill-spec {
-        width: 100%;
-      }
-      &__specialization {
-        display: flex;
-        align-items: flex-start;
-        flex-direction: row;
-        grid-gap: 20px;
-      }
-      &__skill {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        flex-wrap: wrap;
-        grid-gap: 10px;
-        .skill {
-          &__badge {
-            background: rgba(0, 131, 199, 0.1);
-            border-radius: 44px;
-            color: $blue;
-            white-space: nowrap;
-            grid-gap: 8px;
-            padding: 5px 10px 5px 10px;
-            display: flex;
-            text-align: center;
-            &-skills {
-              padding: 15px;
-            }
-          }
-        }
-      }
-    }
-  }
-  &__spec {
-    flex-direction: row;
-    flex-wrap: wrap;
-    display: flex;
-    max-width: 1180px;
-    width: 100%;
-    justify-content: flex-start;
-    //padding: 0 20px 0 0;
-  }
-  &__title {
-    @include text-simple;
-    margin: 30px 0 0 0;
-  }
   &__raising {
     @include text-simple;
     font-weight: 500;
     font-size: 20px;
     color: $black800;
     margin: 0 0 20px 0;
-  }
-  &__page {
-    font-weight: 500;
-    font-size: 25px;
-    color: $black800;
-  }
-  &__dd {
-    min-width: 160px;
-  }
-  &__category {
-    align-items: flex-start;
-    margin: 20px 0 0 0;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 20px;
-  }
-  &__address {
-    margin: 20px 0 0 0;
-    display: grid;
-    grid-gap: 20px;
-  }
-  &__textarea {
-    @include text-simple;
-    border-radius: 6px;
-    padding: 11px 20px 11px 15px;
-    height: 214px;
-    width: 100%;
-    border: 0;
-    background-color: #F3F7FA;
-    resize: none;
-    &::placeholder {
-      color: $black300;
-    }
   }
 }
 .btn-container {
@@ -604,7 +511,6 @@ export default {
   }
 }
 .icon-chevron_big_left{
-  content: "\ea4d";
   color: $black800;
   font-size: 25px;
 }
