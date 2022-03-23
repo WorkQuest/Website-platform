@@ -40,7 +40,7 @@
             <div class="btn-group">
               <base-btn
                 class="btn"
-                @click="openCreditingDepositModal()"
+                @click="$router.push('/crediting/2')"
               >
                 {{ $t('crediting.myLoans') }}
               </base-btn>

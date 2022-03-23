@@ -1,7 +1,7 @@
 <template>
-  <div class="crediting-page">
-    <div class="crediting-page__container">
-      <div class="crediting-page__header">
+  <div class="crediting">
+    <div class="crediting__container">
+      <div class="crediting__header">
         <base-btn
           class="btn"
           @click="handleBackToCrediting()"
@@ -12,91 +12,54 @@
           {{ $t('meta.btns.back') }}
         </base-btn>
         <div class="title">
-          Lend #56546
+          {{ $t('meta.crediting') }}
+        </div>
+        <div class="desc">
+          {{ $t('crediting.description') }}
         </div>
       </div>
-      <div class="crediting-page__content">
+      <div class="crediting__content">
         <div class="info-block__couple">
           <div
-            v-for="(item, i) in cards"
-            :key="i"
+            v-for="(data, index) in blocksData"
+            :key="index"
             class="info-block_half"
           >
-            <div class="info-block__title_big info-block__title_blue">
-              {{ item.title }}
+            <div class="info-block__title_big">
+              {{ data.title }}
             </div>
-            <div class="info-block__title_small">
-              {{ item.subtitle }}
+            <div class="info-block__price">
+              <div class="info-block__title_small">
+                {{ data.priceTitle }}
+              </div>
+              <div class="info-block__title_big info-block__title_blue">
+                {{ data.price }}
+              </div>
             </div>
-          </div>
-        </div>
-        <div
-          v-for="(item, i) in containers"
-          :key="i"
-          class="info-block"
-        >
-          <div class="info-block__name_bold">
-            {{ item.name }}
-          </div>
-          <div class="info-block__couple_gr">
-            <div
-              v-for="(block, ind) in item.blocks"
-              :key="ind"
-              class="info-block_gray"
-            >
-              <div class="info-block__left">
-                <div class="title">
-                  {{ block.name }}
+            <div class="info-block__info-data">
+              <div
+                v-for="(info, key) in data.info"
+                :key="key"
+                class="info-data__content"
+              >
+                <div class="info-data__title">
+                  {{ info.title }}
                 </div>
-                <div class="title_blue">
-                  {{ block.about }}
+                <div class="info-data__desc">
+                  {{ info.desc }}
                 </div>
               </div>
-              <base-btn class="btn_bl">
-                {{ block.btn.name }}
+            </div>
+            <div class="info-block__buttons">
+              <base-btn
+                v-for="(button, key) in data.buttons"
+                :key="key"
+                :mode="button.mode"
+                @click="openModal(button.action)"
+              >
+                {{ button.title }}
               </base-btn>
             </div>
-          </div>
-        </div>
-        <div class="info-block">
-          <div class="info-block__name">
-            {{ $t('crediting.history') }}
-          </div>
-          <div class="crediting-page__table">
-            <b-table
-              :items="items"
-              :fields="testFields"
-              borderless
-              caption-top
-              thead-class="table__header"
-              tbody-tr-class="table__row"
-            >
-              <template #cell(activity)="el">
-                <div class="table__value_gray">
-                  {{ el.item.activity }}
-                </div>
-              </template>
-              <template #cell(amount)="el">
-                <div class="table__value_blue">
-                  {{ el.item.amount }}
-                </div>
-              </template>
-              <template #cell(time)="el">
-                <div class="table__value_gray">
-                  {{ el.item.time }}
-                </div>
-              </template>
-              <template #cell(sender)="el">
-                <div class="table__value">
-                  {{ el.item.sender }}
-                </div>
-              </template>
-              <template #cell(sender)="el">
-                <div class="table__value">
-                  {{ el.item.sender }}
-                </div>
-              </template>
-            </b-table>
           </div>
         </div>
       </div>
@@ -116,137 +79,64 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
-    items() {
+    blocksData() {
       return [
         {
-          activity: 'Paid back',
-          amount: this.$t('meta.coins.count.WUSDCount', { count: 100 }),
-          time: 'Jun 12 2021',
-          sender: 'dfgd6...fs65ds',
-          txHash: 'dfgd6...fs65ds',
-        },
-        {
-          activity: 'Paid back',
-          amount: this.$t('meta.coins.count.WUSDCount', { count: 100 }),
-          time: 'Jun 12 2021',
-          sender: 'dfgd6...fs65ds',
-          txHash: 'dfgd6...fs65ds',
-        },
-      ];
-    },
-    testFields() {
-      return [
-        {
-          key: 'activity',
-          label: this.$t('crediting.credTableHeader.activity'),
-          thStyle: {
-            padding: '0 0 0 23px',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'amount',
-          label: this.$t('crediting.credTableHeader.amount'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'time',
-          label: this.$t('crediting.credTableHeader.time'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'sender',
-          label: this.$t('crediting.credTableHeader.sender'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'txHash',
-          label: this.$t('crediting.credTableHeader.txHash'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-      ];
-    },
-    cards() {
-      return [
-        {
-          title: this.$tc('meta.coins.count.USDCount', { count: '114.92' }),
-          subtitle: this.$t('crediting.liquidationPrice'),
-        },
-        {
-          title: this.$tc('meta.units.percentsCount', 171.65),
-          subtitle: this.$t('crediting.collateralizationRatio'),
-        },
-      ];
-    },
-    containers() {
-      return [
-        {
-          name: this.$t('crediting.ethLocked'),
-          blocks: [
+          title: this.$t('crediting.currentLoan'),
+          priceTitle: this.$t('crediting.totalCollateralLocked'),
+          price: this.$tc('meta.coins.count.USDCount', 225.5),
+          info: [
             {
-              name: this.$t('crediting.ethLocked'),
-              about: this.$tc('meta.coins.count.ETHCount', { count: '3.00' }),
-              btn: {
-                name: this.$t('meta.deposit'),
-              },
+              title: 'ID',
+              desc: 565464,
             },
             {
-              name: this.$t('crediting.ableToWithdraw'),
-              about: this.$tc('meta.coins.count.ETHCount', { count: '3.00' }),
-              btn: {
-                name: this.$t('meta.withdraw'),
-              },
+              title: this.$t('crediting.tableHead.currentRatio'),
+              desc: 565464,
+            },
+            {
+              title: this.$t('crediting.tableHead.deposited'),
+              desc: 123,
+            },
+          ],
+          buttons: [
+            {
+              title: this.$t('meta.withdraw'),
+              mode: '',
+              action: 'withdraw',
+            },
+            {
+              title: this.$t('meta.deposit'),
+              mode: 'outline',
+            },
+            {
+              title: this.$t('modals.claim'),
+              mode: 'outline',
             },
           ],
         },
         {
-          name: this.$t('crediting.outstandingWusdDebt'),
-          blocks: [
+          title: this.$t('crediting.currentCredit'),
+          priceTitle: this.$t('crediting.totalWusdDebt'),
+          price: this.$tc('meta.coins.count.WUSDCount', 225.5),
+          info: [
             {
-              name: this.$t('crediting.outstandingWusdDebt'),
-              about: this.$tc('meta.coins.count.WUSDCount', '3.00'),
-              btn: {
-                name: this.$t('crediting.payback'),
-              },
+              title: 'ID',
+              desc: 565464,
             },
             {
-              name: this.$t('crediting.availableToGenerate'),
-              about: this.$tc('meta.coins.count.WUSDCount', '5 6543.23'),
-              btn: {
-                name: this.$t('crediting.generate'),
-              },
+              title: this.$t('crediting.tableHead.currentRatio'),
+              desc: 565464,
+            },
+            {
+              title: this.$t('crediting.tableHead.deposited'),
+              desc: 123,
+            },
+          ],
+          buttons: [
+            {
+              title: this.$t('crediting.refund'),
+              mode: '',
             },
           ],
         },
@@ -261,23 +151,28 @@ export default {
     handleBackToCrediting() {
       this.$router.push('/crediting');
     },
+    openModal(action) {
+      this.ShowModal({
+        key: modals.claimRewards,
+        needChangeModal: 1,
+      });
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.crediting-page {
-  background: linear-gradient(to bottom, #103D7C 232px, #f6f8fa 232px);
+.crediting {
+  background: linear-gradient(to bottom, #103D7C 290px, #f6f8fa 232px);
   display: flex;
   justify-content: center;
 
   &__container {
     display: grid;
-    grid-template-rows: 130px max-content;
+    grid-template-rows: 180px max-content;
     max-width: 1180px;
-    grid-row-gap: 50px;
+    grid-gap: 40px;
     width: 100%;
-    gap: 28px;
     padding: 10px;
     box-sizing: border-box;
   }
@@ -317,7 +212,7 @@ export default {
     display: grid;
     grid-row-gap: 30px;
     width: 100%;
-    grid-template-rows: 141px max-content;
+    grid-template-rows: max-content;
 
     .btn {
       box-sizing: border-box;
@@ -388,6 +283,16 @@ export default {
           }
         }
       }
+      &__info-data {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 20px;
+      }
+      &__buttons {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 20px;
+      }
 
       &__couple {
         display: grid;
@@ -403,11 +308,8 @@ export default {
       &_half {
         @extend .info-block;
         padding: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-        justify-content: center;
+        display: grid;
+        grid-gap: 20px;
       }
 
       &__title {
@@ -453,6 +355,19 @@ export default {
         }
       }
     }
+    .info-data {
+      &__title {
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 130%;
+      }
+      &__desc {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 130%;
+        color: $black500;
+      }
+    }
   }
 
   &__table {
@@ -480,6 +395,11 @@ export default {
         }
       }
     }
+  }
+
+  .desc {
+    width: 540px;
+    color: #8299bb;
   }
 
   @include _991 {
