@@ -336,6 +336,7 @@ export default {
       userAddress: 'user/getUserWalletAddress',
       userReferralId: 'user/getUserReferralId',
       isNeedRegistration: 'referral/getIsNeedRegistration',
+      createdReferralsList: 'referral/getCreatedReferralList',
     }),
     totalPages() {
       return Math.ceil(this.paidEventsList.length / this.perPage);
@@ -391,7 +392,13 @@ export default {
       this.SetLoader(false);
       if (res) {
         this.ShowModal({
-          key: modals.referralRegistration,
+          key: modals.status,
+          title: this.$t('meta.btns.registration'),
+          subtitle: this.$t('modals.registration'),
+          type: 'registration',
+          cancel: this.$t('meta.btns.cancel'),
+          button: this.$t('meta.btns.submit'),
+          usersList: this.createdReferralsList,
         });
       }
     },
