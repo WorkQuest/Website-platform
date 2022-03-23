@@ -101,40 +101,48 @@ export default {
     }
   },
   async subscribeToReferralEvents({ getters, commit }, userAddress) {
-    await this.$wsNotifs.subscribe(`/notifications/referral/${userAddress}`, async (msg) => {
-      console.log('subscribeToReferralEvents massage', msg);
+    try {
+      await this.$wsNotifs.subscribe(`/notifications/referral/${userAddress}`, async (msg) => {
+        console.log('subscribeToReferralEvents massage', msg);
 
-      const paidEventsList = JSON.parse(JSON.stringify(getters.getPaidEventsList));
-      const referralsList = JSON.parse(JSON.stringify(getters.getReferralsList));
-      let referralsListCount = JSON.parse(JSON.stringify(getters.getReferralsListCount));
-      const currentPage = getters.getCurrentPage;
+        const paidEventsList = JSON.parse(JSON.stringify(getters.getPaidEventsList));
+        const referralsList = JSON.parse(JSON.stringify(getters.getReferralsList));
+        let referralsListCount = JSON.parse(JSON.stringify(getters.getReferralsListCount));
+        const currentPage = getters.getCurrentPage;
 
-      if (msg.type === 'RegisteredAffiliar') {
-        console.log('RegisteredAffiliar');
-        referralsList.unshift(msg.data);
-        referralsListCount = msg.data.count;
-        if (paidEventsList.length > 10) {
-          paidEventsList.pop();
+        if (msg.type === 'RegisteredAffiliar') {
+          console.log('RegisteredAffiliar');
+          referralsList.unshift(msg.data);
+          referralsListCount = msg.data.count;
+          if (paidEventsList.length > 10) {
+            paidEventsList.pop();
+          }
+          commit('setReferralsListCount', referralsListCount);
+          commit('setReferralsList', referralsList);
+        } else if (msg.type === 'RewardClaimed' && currentPage === 1) {
+          paidEventsList.unshift(msg.data);
+          if (paidEventsList.length > 10) {
+            paidEventsList.pop();
+          }
+          commit('setPaidEventsList', paidEventsList);
+        } else if (msg.type === 'PaidReferral' && currentPage === 1) {
+          console.log('PaidReferral');
+          paidEventsList.unshift(msg.data);
+          if (paidEventsList.length > 10) {
+            paidEventsList.pop();
+          }
         }
-        commit('setReferralsListCount', referralsListCount);
-        commit('setReferralsList', referralsList);
-      } else if (msg.type === 'RewardClaimed' && currentPage === 1) {
-        paidEventsList.unshift(msg.data);
-        if (paidEventsList.length > 10) {
-          paidEventsList.pop();
-        }
-        commit('setPaidEventsList', paidEventsList);
-      } else if (msg.type === 'PaidReferral' && currentPage === 1) {
-        console.log('PaidReferral');
-        paidEventsList.unshift(msg.data);
-        if (paidEventsList.length > 10) {
-          paidEventsList.pop();
-        }
-      }
-    });
+      });
+    } catch (err) {
+      console.log('subscribeToReferralEvents err', err);
+    }
   },
   async unsubscribeToReferralEvents(_, userAddress) {
-    await this.$wsNotifs.unsubscribe(`/notifications/referral/${userAddress}`);
+    try {
+      await this.$wsNotifs.unsubscribe(`/notifications/referral/${userAddress}`);
+    } catch (err) {
+      console.log('unsubscribeToReferralEvents err', err);
+    }
   },
   updateCurrentPage({ commit }, page) {
     commit('setCurrentPage', page);
