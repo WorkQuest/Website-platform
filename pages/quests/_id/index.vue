@@ -215,6 +215,7 @@ export default {
       const now = this.$moment().valueOf();
       // TODO fixme Вернуть, нужно для тестов Роме
       // const dateForStart = this.$moment(this.quest.startedAt).add(1, 'day').valueOf();
+      // TODO: Не срабатывает без перезагрузки страницы
       const dateForStart = this.$moment(this.quest.startedAt).add(1, 'm').valueOf();
       return now >= dateForStart;
     },
@@ -246,6 +247,7 @@ export default {
   },
   methods: {
     starRating(item) {
+      console.log('starRating', item);
       if (!item) return false;
 
       if (this.userRole === UserRole.WORKER) {
@@ -517,6 +519,7 @@ export default {
       }
     },
     async closeQuest() {
+      // TODO: Добавить в enum
       const modalMode = 1;
       this.SetLoader(true);
       if (this.quest.status !== InfoModeEmployer.Active) {
@@ -527,9 +530,8 @@ export default {
       this.SetLoader(false);
     },
     async openDispute() {
-      if (this.quest.status === 3) {
-        return await this.$router.push(`/disputes/${this.quest.openDispute.id}`);
-      }
+      // TODO: Добавить в enum
+      if (this.quest.status === 3) return await this.$router.push(`/disputes/${this.quest.openDispute.id}`);
       if (this.checkAvailabilityDispute) {
         return this.ShowModal({
           key: modals.openADispute,
@@ -545,6 +547,7 @@ export default {
       });
     },
     async acceptCompletedWorkOnQuest() {
+      // TODO: Добавить в enum
       const modalMode = 2;
       this.SetLoader(true);
       await this.$store.dispatch('quests/acceptCompletedWorkOnQuest', this.quest.id);
@@ -555,10 +558,9 @@ export default {
     toRaisingViews() {
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.quest.status)) {
         this.$router.push({ path: `/edit-quest/${this.quest.id}`, query: { mode: 'raise' } });
+        // TODO: Добавить в enum
         this.$store.commit('quests/setCurrentStepEditQuest', 2);
-      } else {
-        this.showToastWrongStatusRaisingViews();
-      }
+      } else this.showToastWrongStatusRaisingViews();
     },
     showToastWrongStatusRaisingViews() {
       return this.$store.dispatch('main/showToast', {
@@ -606,13 +608,13 @@ export default {
     async acceptWorkOnQuest() {
       this.SetLoader(true);
       if (await this.$store.dispatch('quests/acceptWorkOnQuest', this.quest.id)) {
+        await this.getQuest();
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/questAgreed.svg'),
           title: this.$t('meta.questInfo'),
           subtitle: this.$t('quests.workOnQuestAccepted'),
         });
-        await this.getQuest();
       }
       this.SetLoader(false);
     },
@@ -626,7 +628,6 @@ export default {
           title: this.$t('meta.questInfo'),
           subtitle: this.$t('quests.workOnQuestRejected'),
         });
-        await this.getQuest();
       }
       this.SetLoader(false);
     },
@@ -640,7 +641,6 @@ export default {
           title: this.$t('meta.questInfo'),
           subtitle: this.$t('quests.pleaseWaitEmp'),
         });
-        await this.getQuest();
       }
       this.SetLoader(false);
     },

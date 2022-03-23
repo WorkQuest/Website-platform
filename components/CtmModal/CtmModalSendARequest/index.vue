@@ -112,6 +112,7 @@ export default {
       this.isRespondActionInProgress = true;
       const ok = await this.respondOnQuest();
       if (ok) {
+        await this.$store.dispatch('quests/getQuest', this.$route.params.id);
         this.ShowModal({
           key: modals.requestSend,
         });
