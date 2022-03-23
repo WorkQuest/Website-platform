@@ -1499,8 +1499,8 @@
       "event": "Событие"
     },
     "event": {
-      "claimed": "Claimed",
-      "paid": "Paid"
+      "claimed": "Получено",
+      "paid": "Выплачено"
     }
   },
   "pension": {
