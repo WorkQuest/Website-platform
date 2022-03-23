@@ -1496,7 +1496,7 @@
       "txHash": "Hash Trn",
       "time": "Prazo",
       "amount": "Montante",
-      "event": "Status"
+      "event": "Event"
     },
     "event": {
       "paid": "Paid",

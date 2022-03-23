@@ -1496,7 +1496,7 @@
       "txHash": "Txn হ্যাশ",
       "time": "সময়",
       "amount": "পরিমাণ",
-      "event": "অবস্থা"
+      "event": "Event"
     },
     "event": {
       "paid": "Paid",

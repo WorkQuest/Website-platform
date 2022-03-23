@@ -1496,7 +1496,7 @@
       "txHash": "تجزئة المعاملة",
       "time": "الوقت",
       "amount": "المبلغ",
-      "event": "الحالة"
+      "event": "Event"
     },
     "event": {
       "paid": "Paid",

@@ -1496,7 +1496,7 @@
       "txHash": "Hachage Txn",
       "time": "Heure",
       "amount": "Montant",
-      "event": "Statut"
+      "event": "Event"
     },
     "event": {
       "paid": "Paid",

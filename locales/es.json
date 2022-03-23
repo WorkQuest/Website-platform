@@ -1496,7 +1496,7 @@
       "txHash": "Hash de transacción",
       "time": "Tiempo",
       "amount": "Importe",
-      "event": "Estado"
+      "event": "Event"
     },
     "event": {
       "paid": "Paid",
