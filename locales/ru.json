@@ -1188,7 +1188,8 @@
     "incorrectChain": "You choose incorrect chain !",
     "selectToken": "Select token",
     "txInfo": "Transaction info",
-    "registration": "Вы верены что хотите зарегистрировать данных пользователей?"
+    "registration": "Вы верены что хотите зарегистрировать данных пользователей?",
+    "claimConfirm": "Вы потдверждаете дейсвие клейм?"
   },
   "ui": {
     "jobQuestors": "В поиске работы",
