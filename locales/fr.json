@@ -1497,6 +1497,10 @@
       "time": "Heure",
       "amount": "Montant",
       "event": "Statut"
+    },
+    "event": {
+      "paid": "Paid",
+      "claimed": "Claimed"
     }
   },
   "pension": {

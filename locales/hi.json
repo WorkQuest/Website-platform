@@ -1497,6 +1497,10 @@
       "time": "समय",
       "amount": "राशि",
       "event": "स्टेटस"
+    },
+    "event": {
+      "paid": "Paid",
+      "claimed": "Claimed"
     }
   },
   "pension": {

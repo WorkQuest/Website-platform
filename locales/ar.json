@@ -1497,6 +1497,10 @@
       "time": "الوقت",
       "amount": "المبلغ",
       "event": "الحالة"
+    },
+    "event": {
+      "paid": "Paid",
+      "claimed": "Claimed"
     }
   },
   "pension": {

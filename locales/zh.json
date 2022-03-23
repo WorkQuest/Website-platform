@@ -1497,6 +1497,10 @@
       "time": "时间",
       "amount": "金额",
       "event": "状态"
+    },
+    "event": {
+      "paid": "Paid",
+      "claimed": "Claimed"
     }
   },
   "pension": {

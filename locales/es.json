@@ -1497,6 +1497,10 @@
       "time": "Tiempo",
       "amount": "Importe",
       "event": "Estado"
+    },
+    "event": {
+      "paid": "Paid",
+      "claimed": "Claimed"
     }
   },
   "pension": {

@@ -1187,8 +1187,7 @@
     "youTryToAttachUnsupportedFileFormat": "You try to attach unsupported file format",
     "incorrectChain": "You choose incorrect chain !",
     "selectToken": "Select token",
-    "txInfo": "Transaction info",
-    "registration": "Регистрация"
+    "txInfo": "Transaction info"
   },
   "ui": {
     "jobQuestors": "В поиске работы",
@@ -1492,12 +1491,16 @@
     "everyTimeYourFriends": "Every time your friends make a first Quest, you'll get up to $35 in WQT commission in real time!",
     "historyOfRewards": "History of rewards",
     "tableHead": {
-      "name": "Name",
+      "name": "Имя",
       "userID": "User ID",
       "txHash": "Txn hash",
-      "time": "Time",
-      "amount": "Amount",
-      "event": "Status"
+      "time": "Время",
+      "amount": "Количество",
+      "event": "Событие"
+    },
+    "event": {
+      "claimed": "Claimed",
+      "paid": "Paid"
     }
   },
   "pension": {

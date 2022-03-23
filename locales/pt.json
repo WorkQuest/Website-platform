@@ -1497,6 +1497,10 @@
       "time": "Prazo",
       "amount": "Montante",
       "event": "Status"
+    },
+    "event": {
+      "paid": "Paid",
+      "claimed": "Claimed"
     }
   },
   "pension": {
