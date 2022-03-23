@@ -94,7 +94,6 @@
       <CtmModalGetWUSD v-if="modals.getWUSD === currentModalKey" />
       <CtmModalBuyAuction v-if="modals.buyAuction === currentModalKey" />
       <CtmModalReferralClaim v-if="modals.referralClaim === currentModalKey" />
-      <CtmModalReferralRegistration v-if="modals.referralRegistration === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -184,7 +183,6 @@ import CtmModalGetWUSD from './CtmModalGetWUSD';
 import CtmModalBuyAuction from './CtmModalBuyAuction';
 import CtmModalNeededToEnable2FA from './CtmModalNeededToEnable2FA';
 import CtmModalReferralClaim from './CtmModalReferralClaim';
-import CtmModalReferralRegistration from './CtmModalReferralRegistration';
 
 export default {
   name: 'ModalBox',
@@ -271,7 +269,6 @@ export default {
     CtmModalGallery,
     CtmModalAreYouSure,
     CtmModalReferralClaim,
-    CtmModalReferralRegistration,
   },
   data: () => ({
     modals,
