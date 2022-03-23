@@ -36,10 +36,9 @@
                 <base-dd
                   v-model="sourceAddressInd"
                   type="border"
+                  :is-icon="true"
                   :items="addresses"
                   data-selector="SOURCE_ADDRESS"
-                  :is-icon="true"
-                  @input="handleChangePool(sourceAddressInd, 'source')"
                 />
               </div>
             </div>
@@ -47,7 +46,7 @@
               src="~assets/img/ui/swap.png"
               alt="Swap"
               class="swap-icon"
-              @click="handleChangePool(0, 'swap')"
+              @click="toggleBlockchain"
             >
             <div>
               <div class="info-block__name_bold">
@@ -60,10 +59,9 @@
                 <base-dd
                   v-model="targetAddressInd"
                   type="border"
+                  :is-icon="true"
                   :items="addresses"
                   data-selector="TARGET_ADDRESS"
-                  :is-icon="true"
-                  @input="handleChangePool(targetAddressInd, 'target')"
                 />
               </div>
             </div>
@@ -191,8 +189,10 @@ export default {
   computed: {
     ...mapGetters({
       isAuth: 'user/isAuth',
-      isConnected: 'web3/isConnected',
+
       account: 'web3/getAccount',
+      isConnected: 'web3/isConnected',
+
       swaps: 'bridge/getSwaps',
       swapsCount: 'bridge/getSwapsCount',
     }),
@@ -257,6 +257,12 @@ export default {
     },
   },
   watch: {
+    sourceAddressInd(newIdx, oldIdx) {
+      if (this.targetAddressInd === newIdx) this.targetAddressInd = oldIdx;
+    },
+    targetAddressInd(newIdx, oldIdx) {
+      if (this.sourceAddressInd === newIdx) this.sourceAddressInd = oldIdx;
+    },
     async isConnected() {
       if (typeof this.account.address === 'string') {
         await this.swapsTableData(this.account.address, this.isConnected);
@@ -273,23 +279,33 @@ export default {
     this.$nuxt.setLayout(this.isAuth ? 'default' : 'guest');
   },
   async beforeDestroy() {
-    await this.disconnectFromWallet();
+    await this.handlerDisconnect();
   },
   methods: {
     ...mapActions({
       fetchSwaps: 'bridge/fetchMySwaps',
       resetSwaps: 'bridge/resetMySwaps',
+
+      connectWallet: 'web3/connect',
+      disconnectWallet: 'web3/disconnect',
+      goToChain: 'web3/goToChain',
     }),
     async toggleConnection() {
       const { isConnected, addresses, sourceAddressInd } = this;
-      if (isConnected) await this.disconnectFromWallet();
-      else await this.connectToMetamask(addresses[sourceAddressInd].chain);
+      if (isConnected) await this.handlerDisconnect();
+      else {
+        const { chain } = addresses[sourceAddressInd];
+        await this.connectWallet({ chain });
+
+        await localStorage.setItem('miningPoolId', chain);
+        this.miningPoolId = localStorage.getItem('miningPoolId');
+      }
     },
-    async disconnectFromWallet() {
-      await this.$store.dispatch('web3/disconnect');
+    async handlerDisconnect() {
+      await this.disconnectWallet();
+      await this.resetSwaps();
       clearInterval(this.updateInterval);
       this.updateInterval = null;
-      await this.resetSwaps();
     },
     async swapsTableData() {
       if (!this.isConnected) return;
@@ -298,6 +314,20 @@ export default {
         recipientAddress: account.address,
         query,
       });
+    },
+    toggleBlockchain() {
+      const currentSource = this.sourceAddressInd;
+      const currentTarget = this.targetAddressInd;
+      this.targetAddressInd = currentSource;
+      this.sourceAddressInd = currentTarget;
+    },
+
+    async checkMiningPoolId(chainName) {
+      await localStorage.setItem('miningPoolId', chainName);
+      this.miningPoolId = localStorage.getItem('miningPoolId');
+      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
+      if (!rightChain) return await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+      return rightChain;
     },
 
     async redeemAction(data) {
@@ -310,47 +340,15 @@ export default {
         chainFrom: data.chainFrom,
         chainTo: data.chainTo,
       });
-      await this.swapsTableData(this.account.address, this.isConnected);
+      await this.swapsTableData();
       this.ShowModal({
         key: modals.status,
         img: redeemObj.code === 500 ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
         title: redeemObj.code === 500 ? this.$t('modals.redeem.fail') : this.$t('modals.redeem.success'),
-        subtitle: '',
       });
       this.SetLoader(false);
     },
 
-    async connectToMetamask(chain) {
-      await this.$store.dispatch('web3/connect', { chain });
-      const switchStatus = await this.$store.dispatch('web3/goToChain', { chain });
-      if (!switchStatus.ok) await this.disconnectFromWallet();
-
-      await this.swapsTableData(this.account.address, this.isConnected);
-      await localStorage.setItem('miningPoolId', chain);
-      this.miningPoolId = localStorage.getItem('miningPoolId');
-    },
-    async checkMiningPoolId(chainName) {
-      await localStorage.setItem('miningPoolId', chainName);
-      this.miningPoolId = localStorage.getItem('miningPoolId');
-      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
-      if (!rightChain) return await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
-      return rightChain;
-    },
-
-    handleChangePool(selInd, mode) {
-      if (mode === 'source') {
-        if (this.targetAddressInd === selInd) this.targetAddressInd = selInd ? 0 : 1;
-        this.sourceAddressInd = selInd;
-      } else if (mode === 'target') {
-        if (this.sourceAddressInd === selInd) this.sourceAddressInd = selInd ? 0 : 1;
-        this.targetAddressInd = selInd;
-      } else if (mode === 'swap') {
-        const sourceInd = this.sourceAddressInd;
-        const targetInd = this.targetAddressInd;
-        this.targetAddressInd = sourceInd;
-        this.sourceAddressInd = targetInd;
-      }
-    },
     async showSwapModal() {
       this.SetLoader(true);
       let switchPoolStatus = true;
