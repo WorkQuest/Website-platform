@@ -384,6 +384,7 @@ export default {
           to: { name: this.$t('meta.toBig'), value: this.userAddress },
           amount: { name: this.$t('modals.amount'), value: this.referralReward },
         },
+        desc: this.$t('modals.claimConfirm'),
       });
     },
     async clickRegistrationBtnHandler() {
