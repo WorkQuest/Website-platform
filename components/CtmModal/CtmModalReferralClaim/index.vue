@@ -61,6 +61,7 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      userAddress: 'user/getUserWalletAddress',
     }),
   },
   methods: {
@@ -69,7 +70,7 @@ export default {
       this.hide();
       this.SetLoader(true);
       try {
-        await this.$store.dispatch('referral/claimReferralReward');
+        await this.$store.dispatch('referral/claimReferralReward', this.userAddress);
       } catch (err) {
         console.log('Claim err', err);
       }
