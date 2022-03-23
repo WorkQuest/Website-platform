@@ -234,16 +234,12 @@ export default {
   name: 'Referral',
   async asyncData({ store }) {
     const userAddress = store.getters['user/getUserWalletAddress'];
-    try {
-      await Promise.all([
-        store.dispatch('referral/fetchRewardBalance', userAddress),
-        store.dispatch('referral/fetchPaidEventsList'),
-        store.dispatch('referral/fetchReferralsList'),
-        store.dispatch('referral/subscribeToReferralEvents', userAddress),
-      ]);
-    } catch (err) {
-      console.log('fetchRewardBalance err', err);
-    }
+    await Promise.all([
+      store.dispatch('referral/fetchRewardBalance', userAddress),
+      store.dispatch('referral/fetchPaidEventsList'),
+      store.dispatch('referral/fetchReferralsList'),
+      store.dispatch('referral/subscribeToReferralEvents', userAddress),
+    ]);
   },
   data() {
     return {
@@ -363,11 +359,7 @@ export default {
     },
     paidEventsList: {
       handler() {
-        try {
-          this.$store.dispatch('referral/fetchRewardBalance', this.userAddress);
-        } catch (err) {
-          console.log('fetchRewardBalance err', err);
-        }
+        this.$store.dispatch('referral/fetchRewardBalance', this.userAddress);
       },
     },
     referralsList: {
@@ -394,16 +386,10 @@ export default {
       });
     },
     async clickRegistrationBtnHandler() {
-      let res;
-      try {
-        this.SetLoader(true);
-        res = await this.$store.dispatch('referral/fetchCreatedReferralList');
-      } catch (err) {
-        console.log('fetchCreatedReferralList err', err);
-        res = false;
-      }
+      this.SetLoader(true);
+      const res = await this.$store.dispatch('referral/fetchCreatedReferralList');
+      this.SetLoader(false);
       if (res) {
-        this.SetLoader(false);
         this.ShowModal({
           key: modals.referralRegistration,
         });
