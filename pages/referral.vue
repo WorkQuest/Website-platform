@@ -98,7 +98,7 @@
                 v-if="referralsListCount > referralCount"
                 class="info-block__more"
               >
-                {{ referralsListCount - referralCount }}
+                {{ $tc('meta.units.plusCount', referralsListCount - referralCount) }}
               </div>
             </div>
             <div
@@ -438,7 +438,7 @@ export default {
 
 <style lang="scss" scoped>
 .referral-page {
-  background: linear-gradient(to bottom, #103D7C 370px, #f6f8fa 370px);
+  background: linear-gradient(to bottom, $darkblue 370px, $white100 370px);
   display: flex;
   justify-content: center;
 
@@ -455,7 +455,7 @@ export default {
   &__header {
     max-width: 450px;
     font-weight: 500;
-    color: #FFF;
+    color: $white;
     align-self: center;
     .title {
       @extend .referral-page__header;
@@ -476,7 +476,7 @@ export default {
     grid-template-rows: 225px max-content max-content;
 
     .info-block {
-      background-color: #fff;
+      background-color: $white;
       border-radius: 6px;
       position: relative;
 
@@ -499,20 +499,20 @@ export default {
       &__tokens {
         font-weight: 700;
         font-size: 25px;
-        color: #0083C7;
+        color: $blue;
         padding: 0 20px;
       }
 
       &__name {
         font-size: 16px;
-        color: #1D2127;
+        color: $black800;
         padding: 20px 20px 10px 20px;
         font-weight: 400;
 
         &_bold {
           font-weight: 500;
           font-size: 25px;
-          color: #103D7C;
+          color: $darkblue;
           line-height: 1;
           padding: 20px;
         }
@@ -522,7 +522,7 @@ export default {
         height: 33px;
         width: 33px;
         border-radius: 50%;
-        background-color: #fff;
+        background-color: $white;
         flex: none;
         &_list {
           @extend .ava;
@@ -561,25 +561,25 @@ export default {
 
           &_green {
             @extend .user__value;
-            color: #00AA5B;
+            color: $green;
           }
 
           &_gray {
             @extend .user__value;
-            color: #7C838D;
+            color: $black500;
             font-weight: 400;
           }
         }
 
         &__icon-copy {
           &:before {
-            color: #0A7EEA;
+            color: $lightblue;
           }
         }
 
         &_last-reward {
           display: grid;
-          background-color: #F7F8FA;
+          background-color: $black0;
           border-radius: 5px;
           height: 50px;
           line-height: 50px;
@@ -611,7 +611,7 @@ export default {
         padding: 0 10px;
         min-width: 53px;
         border-radius: 39px;
-        background-color: #F7F8FA;
+        background-color: $black0;
         text-align: center;
         line-height: 33px;
         margin-left: -5px;
@@ -619,7 +619,7 @@ export default {
       }
 
       &__link {
-        border: 1px solid #F7F8FA;
+        border: 1px solid $black0;
         border-radius: 6px;
         width: calc(100% - 40px);
         margin-left: 20px;
@@ -637,7 +637,7 @@ export default {
           overflow: hidden;
           text-overflow: ellipsis;
           font-size: 16px;
-          color: #1D2127;
+          color: $black800;
           &__icon {
             font-size: 24px;
             &::before {
@@ -657,19 +657,19 @@ export default {
 
         .step {
           position: relative;
-          background-color: #F7F8FA;
+          background-color: $black0;
           border-radius: 6px;
           z-index: 2;
 
           &__name {
             font-weight: 500;
             font-size: 18px;
-            color: #0083C7;
+            color: $blue;
             padding: 10px;
           }
           &__about {
             font-size: 16px;
-            color: #7C838D;
+            color: $black500;
             padding: 0 10px 10px;
           }
           &:not(:last-child) {
@@ -679,7 +679,7 @@ export default {
               width: 12px;
               border-radius: 50%;
               z-index: 3;
-              background-color: #D8DFE3;
+              background-color: $grey100;
               position: absolute;
               right: -5px;
               top: calc(50% - 5px);
@@ -693,7 +693,7 @@ export default {
               width: 12px;
               border-radius: 50%;
               z-index: 3;
-              background-color: #D8DFE3;
+              background-color: $grey100;
               position: absolute;
               left: -5px;
               top: calc(50% - 5px);
@@ -706,7 +706,7 @@ export default {
           height: 2px;
           width: 100%;
           top: 50%;
-          background-color: #D8DFE3;
+          background-color: $grey100;
         }
       }
 
@@ -727,7 +727,7 @@ export default {
   }
 
   @include _991 {
-    background: linear-gradient(to bottom, #103D7C 245px, #f6f8fa 245px);
+    background: linear-gradient(to bottom, $darkblue 245px, $white100 245px);
 
     &__container {
       gap: 15px;
@@ -744,7 +744,7 @@ export default {
   }
 
   @include _767 {
-    background: linear-gradient(to bottom, #103D7C 220px, #f6f8fa 220px);
+    background: linear-gradient(to bottom, $darkblue 220px, $white100 220px);
     &__container {
       grid-template-rows: repeat(2, auto);
       gap: 24px;
