@@ -267,7 +267,7 @@ export default {
         },
         {
           key: 'userID',
-          label: this.$t('referral.tableHead.userID'),
+          label: this.$t('meta.wallet'),
           thStyle: {
             padding: '0',
             height: '27px',
