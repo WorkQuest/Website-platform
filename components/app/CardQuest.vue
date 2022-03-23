@@ -172,7 +172,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import {
-  QuestStatuses, questPriority, UserRole, Path, TokenSymbols,
+  QuestStatuses, questPriority, UserRole, Path, TokenSymbols, QuestModeReview,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
@@ -272,6 +272,7 @@ export default {
     showReviewModal(rating, id) {
       this.ShowModal({
         key: modals.review,
+        questMode: QuestModeReview.QUEST_LIST,
         questId: id,
         rating,
         callback: async (payload) => {
