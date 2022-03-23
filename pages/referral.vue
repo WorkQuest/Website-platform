@@ -82,15 +82,8 @@
                 class="info-block__avatar"
               >
                 <img
-                  v-if="item.avatar && item.avatar.url"
                   class="ava_list"
-                  :src="item.avatar.url"
-                  alt=""
-                >
-                <img
-                  v-else
-                  class="ava_list"
-                  :src="EmptyAvatar()"
+                  :src="(item.avatar && item.avatar.url) ? item.avatar.url : EmptyAvatar()"
                   alt=""
                 >
               </div>
