@@ -1,9 +1,15 @@
 <template>
   <ctm-modal-box
     class="info"
-    :title="$t('modals.referralRewards')"
+    :title="$t('modals.claim')"
   >
     <div class="info__content content">
+      <div
+        v-if="options.desc"
+        class="content__desc"
+      >
+        <p>{{ options.desc }}</p>
+      </div>
       <div class="content__fields">
         <div
           v-for="(item, i) of options.fields"
@@ -96,7 +102,8 @@ export default {
 }
 .content{
   padding: 0 28px 30px 28px!important;
-  &__fields {
+  &__fields,
+  &__desc {
     margin-top: 20px;
   }
 }
