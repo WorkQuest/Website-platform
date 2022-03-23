@@ -248,7 +248,7 @@ export const initProvider = async (payload) => {
           },
           // network: 'ethereum',
         };
-      } else if (chain === Chains.BNB) {
+      } else if (chain === Chains.BINANCE) {
         walletOptions = {
           rpc: {
             97: 'https://data-seed-prebsc-2-s1.binance.org:8545/',
@@ -272,7 +272,7 @@ export const initProvider = async (payload) => {
           },
           // network: 'ethereum',
         };
-      } else if (chain === 'BNB') {
+      } else if (chain === Chains.BINANCE) {
         walletOptions = {
           rpc: {
             56: 'https://bsc-dataseed.binance.org/',

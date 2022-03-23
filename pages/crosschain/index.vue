@@ -352,17 +352,11 @@ export default {
     async showSwapModal() {
       this.SetLoader(true);
       let switchPoolStatus = true;
-      let chainName = '';
       if (localStorage.getItem('isMetaMask') === 'true') {
-        // eslint-disable-next-line default-case
-        switch (this.sourceAddressInd) {
-          case 0: chainName = 'ETH'; break;
-          case 1: chainName = 'BNB'; break;
-          case 2: chainName = 'WORKNET'; break;
-        }
-        switchPoolStatus = await this.checkMiningPoolId(chainName);
+        const { addresses, sourceAddressInd } = this;
+        switchPoolStatus = await this.checkMiningPoolId(addresses[sourceAddressInd].chain);
       }
-      if (switchPoolStatus === true || switchPoolStatus.ok) {
+      if (switchPoolStatus) {
         this.ShowModal({
           key: modals.swap,
           crosschainId: this.targetAddressInd,
