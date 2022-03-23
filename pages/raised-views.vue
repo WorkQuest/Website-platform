@@ -354,7 +354,7 @@ export default {
     width: 200px;
     margin: 0 10px 0 0;
     &_back {
-      width: 50px;
+      width: 92px;
     }
     &:last-child {
       margin: 0;
