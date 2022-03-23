@@ -476,3 +476,12 @@ export const addReferrals = async (signature, addresses, userAddress) => {
   }
   return false;
 };
+
+export const claimReferralReward = async (userAddress) => {
+  const inst = new web3.eth.Contract(abi.WQReferral, process.env.WORKNET_REFERRAL);
+  const gasEstimate = await inst.methods.claim().estimateGas({ from: userAddress });
+  if (gasEstimate) {
+    return await inst.methods.claim().send({ from: userAddress, gas: gasEstimate });
+  }
+  return false;
+};

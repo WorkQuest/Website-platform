@@ -1,5 +1,6 @@
 import {
   addReferrals,
+  claimReferralReward,
   getStyledAmount,
   GetWalletProvider,
 } from '~/utils/wallet';
@@ -26,15 +27,9 @@ export default {
       return error();
     }
   },
-  async claimReferralReward() {
+  async claimReferralReward(_, userAddress) {
     try {
-      return await fetchContractData(
-        'claim',
-        abi.WQReferral,
-        process.env.WORKNET_REFERRAL,
-        [],
-        GetWalletProvider(),
-      );
+      return await claimReferralReward(userAddress);
     } catch (e) {
       console.error(`claimReferralReward: ${e}`);
       return error();
@@ -110,7 +105,7 @@ export default {
         let referralsListCount = JSON.parse(JSON.stringify(getters.getReferralsListCount));
         const currentPage = getters.getCurrentPage;
 
-        if (msg.type === 'RegisteredAffiliar') {
+        if (msg.action === 'RegisteredAffiliar') {
           console.log('RegisteredAffiliar');
           referralsList.unshift(msg.data);
           referralsListCount = msg.data.count;
@@ -119,13 +114,13 @@ export default {
           }
           commit('setReferralsListCount', referralsListCount);
           commit('setReferralsList', referralsList);
-        } else if (msg.type === 'RewardClaimed' && currentPage === 1) {
+        } else if (msg.action === 'RewardClaimed' && currentPage === 1) {
           paidEventsList.unshift(msg.data);
           if (paidEventsList.length > 10) {
             paidEventsList.pop();
           }
           commit('setPaidEventsList', paidEventsList);
-        } else if (msg.type === 'PaidReferral' && currentPage === 1) {
+        } else if (msg.action === 'PaidReferral' && currentPage === 1) {
           console.log('PaidReferral');
           paidEventsList.unshift(msg.data);
           if (paidEventsList.length > 10) {
