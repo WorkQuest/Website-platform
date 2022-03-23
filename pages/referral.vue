@@ -26,7 +26,7 @@
               <div class="info-block__btn-wrap">
                 <base-btn
                   :disabled="Number(referralReward) === 0"
-                  :selector="`CLAIM`"
+                  selector="CLAIM"
                   @click="clickClaimBtnHandler"
                 >
                   {{ $t('modals.claim') }}
@@ -68,7 +68,7 @@
               <div class="info-block__btn-wrap info-block__btn-wrap_absolute">
                 <base-btn
                   :disabled="!isNeedRegistration"
-                  :selector="`REGISTRATION`"
+                  selector="REGISTRATION"
                   @click="clickRegistrationBtnHandler"
                 >
                   {{ $t('meta.btns.registration') }}
