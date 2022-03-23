@@ -19,28 +19,28 @@
         </div>
       </div>
       <div class="crediting__content">
-        <div class="info-block__couple">
+        <div class="content__couple">
           <div
             v-for="(data, index) in blocksData"
             :key="index"
-            class="info-block_half"
+            class="content__half"
           >
-            <div class="info-block__title_big">
+            <div class="content__title content__title_big">
               {{ data.title }}
             </div>
-            <div class="info-block__price">
-              <div class="info-block__title_small">
+            <div class="content__price">
+              <div class="content__title content__title_small">
                 {{ data.priceTitle }}
               </div>
-              <div class="info-block__title_big info-block__title_blue">
+              <div class="content__title content__title_big content__title_blue">
                 {{ data.price }}
               </div>
             </div>
-            <div class="info-block__info-data">
+            <div class="content__info-data">
               <div
                 v-for="(info, key) in data.info"
                 :key="key"
-                class="info-data__content"
+                class="info-data__info-block"
               >
                 <div class="info-data__title">
                   {{ info.title }}
@@ -50,7 +50,7 @@
                 </div>
               </div>
             </div>
-            <div class="info-block__buttons">
+            <div class="content__buttons">
               <base-btn
                 v-for="(button, key) in data.buttons"
                 :key="key"
@@ -189,9 +189,11 @@ export default {
       font-size: 18px;
       font-weight: 400;
       margin-bottom: 10px;
+      justify-content: flex-start;
 
       .icon-chevron_left {
         font-size: 26px;
+        color: #fff;
         &:before {
           color: #fff;
         }
@@ -206,6 +208,11 @@ export default {
       line-height: 110%;
       margin: 0 0 20px;
     }
+
+    .desc {
+      width: 540px;
+      color: #8299bb;
+    }
   }
 
   &__content {
@@ -214,75 +221,11 @@ export default {
     width: 100%;
     grid-template-rows: max-content;
 
-    .btn {
-      box-sizing: border-box;
-      font-weight: 400;
-      font-size: 16px;
-      color: #0083C7;
-      border: 1px solid #0083C71A;
-      border-radius: 6px;
-      transition: .3s;
-
-      &__time-machine {
-        @extend .btn;
-        position: absolute;
-        top: 100px;
-        right: 100px;
-        width: 150px;
-        color: #fff;
-      }
-
-      &:hover {
-        background-color: #0083C71A;
-        border: 0px;
-      }
-
-      &_bl {
-        @extend .btn;
-        background-color: #0083C7;
-        border: unset;
-        color: #fff;
-
-        &:hover {
-          background-color: #103d7c;
-        }
-      }
-    }
-
-    .info-block {
+    .content {
       background-color: #fff;
       border-radius: 6px;
       overflow: hidden;
 
-      &_gray {
-        border-radius: 5px;
-        background-color: #F7F8FA;
-        padding: 20px;
-        display: grid;
-        grid-template-columns: 3fr 1fr;
-        gap: 20px;
-
-        .btn {
-          align-self: flex-end;
-        }
-      }
-
-      &__left {
-        display: grid;
-        gap: 20px;
-
-        .title {
-          color: #7C838D;
-          font-size: 16px;
-          font-weight: 400;
-
-          &_blue {
-            color: #0083C7;
-            font-size: 18px;
-            font-weight: 500;
-          }
-        }
-      }
       &__info-data {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -298,15 +241,10 @@ export default {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 20px;
-
-        &_gr {
-          @extend .info-block__couple;
-          padding: 0 20px 20px 20px;
-        }
       }
 
-      &_half {
-        @extend .info-block;
+      &__half {
+        @extend .content;
         padding: 20px;
         display: grid;
         grid-gap: 20px;
@@ -316,15 +254,15 @@ export default {
         font-size: 20px;
         font-weight: 600;
         color: #1D2127;
-        opacity: 0.5;
 
         &_black {
           color: #1D2127;
         }
 
         &_big {
-          font-size: 25px;
           font-weight: 500;
+          font-size: 20px;
+          color: $darkblue,
         }
 
         &_blue {
@@ -338,23 +276,8 @@ export default {
           color: #7C838D;
         }
       }
-
-      &__name {
-        font-size: 16px;
-        color: #1D2127;
-        padding: 20px 20px 10px 20px;
-        font-weight: 400;
-        position: relative;
-
-        &_bold {
-          font-weight: 500;
-          font-size: 25px;
-          color: #103D7C;
-          line-height: 1;
-          padding: 20px;
-        }
-      }
     }
+
     .info-data {
       &__title {
         font-weight: 600;
@@ -370,51 +293,11 @@ export default {
     }
   }
 
-  &__table {
-
-    .table {
-      margin: 0;
-      border-radius: 0 !important;
-
-      &__value {
-        font-size: 16px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        font-weight: 400;
-
-        &_green {
-          @extend .table__value;
-          color: #00AA5B;
-        }
-
-        &_gray {
-          @extend .table__value;
-          color: #7C838D;
-          font-weight: 400;
-        }
-      }
-    }
-  }
-
-  .desc {
-    width: 540px;
-    color: #8299bb;
-  }
-
-  @include _991 {
-    &__table {
-      overflow: auto;
-      width: calc(100vw - 20px);
-
-      .table {
-        width: 1180px;
-      }
-    }
-  }
-
   @include _767 {
-    background: linear-gradient(to bottom, #103D7C 195px, #f6f8fa 195px);
+    background: linear-gradient(to bottom, #103D7C 280px, #f6f8fa 195px);
+    .desc {
+      width: auto;
+    }
     &__container {
       grid-template-rows: auto auto;
       gap: 15px;
@@ -431,18 +314,7 @@ export default {
     }
     &__content {
       grid-template-rows: auto;
-      .info-block {
-        &_gray {
-          grid-template-columns: unset;
-          grid-template-rows: repeat(2, auto);
-        }
-      }
-    }
-  }
-
-  @include _575 {
-    &__content {
-      .info-block {
+      .content {
         &__couple {
           grid-template-rows: repeat(2, 1fr);
           grid-template-columns: unset;
