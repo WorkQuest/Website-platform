@@ -46,15 +46,15 @@
               <div class="user__info">
                 <img
                   class="ava"
-                  src="~/assets/img/temp/avatar-small.jpg"
+                  :src="paidEventsList[0]['referralUser.avatar.url'] ? paidEventsList[0]['referralUser.avatar.url'] : EmptyAvatar()"
                   alt="avatar"
                 >
                 <div class="user__name">
-                  Edward Cooper
+                  {{ paidEventsList[0]['referralUser.firstName'] }} {{ paidEventsList[0]['referralUser.lastName'] }}
                 </div>
               </div>
               <div class="user__value_green">
-                {{ $tc('meta.units.plusCount', $tc('meta.coins.count.WQTCount', paidEventsList[0].amount)) }}
+                {{ $tc('meta.units.plusCount', $tc('meta.coins.count.WQTCount', getStyledAmount(paidEventsList[0].amount))) }}
               </div>
             </div>
           </div>
@@ -164,23 +164,23 @@
               thead-class="table__header"
               tbody-tr-class="table__row"
             >
-              <template #cell(userInfo)>
+              <template #cell(userInfo)="el">
                 <div class="user__info">
                   <img
                     class="ava"
-                    src="~/assets/img/temp/avatar-small.jpg"
+                    :src="el.item['referralUser.avatar.url'] ? el.item['referralUser.avatar.url'] : EmptyAvatar()"
                     alt=""
                   >
                   <div class="user__name">
-                    Full Name
+                    {{ el.item['referralUser.firstName'] }} {{ el.item['referralUser.lastName'] }}
                   </div>
                 </div>
               </template>
               <template #cell(userID)="el">
                 <div class="user__value_gray">
-                  {{ CutTxn(el.item.referral, 6, 6) }}
+                  {{ CutTxn(el.item.referral ? el.item.referral : el.item.affiliate, 6, 6) }}
                   <button
-                    v-clipboard:copy="el.item.referral"
+                    v-clipboard:copy="el.item.referral ? el.item.referral : el.item.affiliate"
                     v-clipboard:success="ClipboardSuccessHandler"
                     v-clipboard:error="ClipboardErrorHandler"
                   >
@@ -200,6 +200,11 @@
               <template #cell(time)="el">
                 <div class="user__value_gray">
                   {{ GetFormTimestamp(Number(el.item.timestamp) * 1000, 'll') }}
+                </div>
+              </template>
+              <template #cell(amount)="el">
+                <div class="user__value_gray">
+                  {{ getStyledAmount(el.value) }}
                 </div>
               </template>
               <template #cell(event)="el">
@@ -229,6 +234,7 @@
 import { mapGetters } from 'vuex';
 import { STATUS_INFO } from '~/utils/referral-constants';
 import modals from '~/store/modals/modals';
+import { getStyledAmount } from '~/utils/wallet';
 
 export default {
   name: 'Referral',
@@ -418,6 +424,9 @@ export default {
       }
 
       return this.referralsList;
+    },
+    getStyledAmount(value) {
+      return getStyledAmount(value);
     },
   },
 };
