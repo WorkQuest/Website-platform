@@ -640,10 +640,12 @@ export default {
           title: this.$t('meta.questInfo'),
           subtitle: this.$t('quests.pleaseWaitEmp'),
         });
+        await this.getQuest();
       }
       this.SetLoader(false);
     },
     async sendARequestOnQuest() {
+      await this.getQuest();
       this.ShowModal({
         key: modals.sendARequest,
         questId: this.quest.id,

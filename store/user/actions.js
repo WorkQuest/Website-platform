@@ -158,11 +158,12 @@ export default {
         break;
       }
     }
-
+    console.log('keyName', keyName);
     notification.actionNameKey = keyName;
     notification.sender = fromUser || (isItAnWorker ? user || employer : assignedWorker || worker);
     if (currTitle) notification.params = { title: currTitle, path };
     notification.creatingDate = moment(new Date(notification.createdAt)).format('MMMM Do YYYY, HH:mm');
+    console.log('notification', notification);
     return notification;
   },
   async getUserPortfolios({ commit }, { userId, query }) {
