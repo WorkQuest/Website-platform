@@ -162,11 +162,12 @@ export default {
         branch: 'payment',
       });
     },
-    showRaiseLevel() {
+    async showRaiseLevel() {
+      const result = await this.$store.dispatch('user/payUserRaisedView', { duration: 1, type: 0 });
       this.ShowModal({
         key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('modals.yourLevelHasBeenRaised'),
+        img: result ? require('~/assets/img/ui/questAgreed.svg') : require('~/assets/img/ui/error.svg'),
+        title: result ? this.$t('yourLevelHasBeenRaised') : this.$t('modals.errors.error'),
       });
     },
   },
