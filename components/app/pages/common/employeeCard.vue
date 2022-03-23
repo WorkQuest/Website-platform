@@ -87,13 +87,12 @@ export default {
       return string;
     },
     raiseViews() {
-      const status = {
+      return {
         0: 'card_plus',
         1: 'card_gold',
         2: 'card_silver',
         3: 'card_bronze',
       };
-      return status;
     },
   },
   methods: {

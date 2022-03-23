@@ -3,9 +3,7 @@
     class="main"
     data-selector="PAGE-RAISED-VIEWS"
   >
-    <div
-      class="main__body page"
-    >
+    <div class="main__body page">
       <div class="page">
         <div class="page__btn-container btn-container__left">
           <div class="btn-container__btn_back">
@@ -120,7 +118,7 @@
 
 <script>
 import modals from '~/store/modals/modals';
-import { userRaiseViewPriceDay, userRaiseViewPriceWeek, userRaiseViewPriceMonth } from '~/utils/enums';
+import { UserRaiseViewPriceDay, UserRaiseViewPriceWeek, UserRaiseViewPriceMonth } from '~/utils/enums';
 
 export default {
   name: 'RisedViews',
@@ -139,25 +137,25 @@ export default {
           level: this.$t('quests.levels.1.title'),
           code: 1,
           desc: this.$t('quests.levels.1.desc'),
-          cost: userRaiseViewPriceDay.PLUS,
+          cost: UserRaiseViewPriceDay.PLUS,
         },
         {
           level: this.$t('quests.levels.2.title'),
           code: 2,
           desc: this.$t('quests.levels.2.desc'),
-          cost: userRaiseViewPriceDay.GOLD,
+          cost: UserRaiseViewPriceDay.GOLD,
         },
         {
           level: this.$t('quests.levels.3.title'),
           code: 3,
           desc: this.$t('quests.levels.3.desc'),
-          cost: userRaiseViewPriceDay.SILVER,
+          cost: UserRaiseViewPriceDay.SILVER,
         },
         {
           level: this.$t('quests.levels.4.title'),
           code: 4,
           desc: this.$t('quests.levels.4.desc'),
-          cost: userRaiseViewPriceDay.BRONZE,
+          cost: UserRaiseViewPriceDay.BRONZE,
         },
       ];
     },
@@ -167,25 +165,25 @@ export default {
           level: this.$t('quests.levels.1.title'),
           code: 1,
           desc: this.$t('quests.levels.1.desc'),
-          cost: userRaiseViewPriceWeek.PLUS,
+          cost: UserRaiseViewPriceWeek.PLUS,
         },
         {
           level: this.$t('quests.levels.2.title'),
           code: 2,
           desc: this.$t('quests.levels.2.desc'),
-          cost: userRaiseViewPriceWeek.GOLD,
+          cost: UserRaiseViewPriceWeek.GOLD,
         },
         {
           level: this.$t('quests.levels.3.title'),
           code: 3,
           desc: this.$t('quests.levels.3.desc'),
-          cost: userRaiseViewPriceWeek.SILVER,
+          cost: UserRaiseViewPriceWeek.SILVER,
         },
         {
           level: this.$t('quests.levels.4.title'),
           code: 4,
           desc: this.$t('quests.levels.4.desc'),
-          cost: userRaiseViewPriceWeek.BRONZE,
+          cost: UserRaiseViewPriceWeek.BRONZE,
         },
       ];
     },
@@ -195,25 +193,25 @@ export default {
           level: this.$t('quests.levels.1.title'),
           code: 1,
           desc: this.$t('quests.levels.1.desc'),
-          cost: userRaiseViewPriceMonth.PLUS,
+          cost: UserRaiseViewPriceMonth.PLUS,
         },
         {
           level: this.$t('quests.levels.2.title'),
           code: 2,
           desc: this.$t('quests.levels.2.desc'),
-          cost: userRaiseViewPriceMonth.GOLD,
+          cost: UserRaiseViewPriceMonth.GOLD,
         },
         {
           level: this.$t('quests.levels.3.title'),
           code: 3,
           desc: this.$t('quests.levels.3.desc'),
-          cost: userRaiseViewPriceMonth.SILVER,
+          cost: UserRaiseViewPriceMonth.SILVER,
         },
         {
           level: this.$t('quests.levels.4.title'),
           code: 4,
           desc: this.$t('quests.levels.4.desc'),
-          cost: userRaiseViewPriceMonth.BRONZE,
+          cost: UserRaiseViewPriceMonth.BRONZE,
         },
       ];
     },
