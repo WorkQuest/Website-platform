@@ -130,6 +130,7 @@ export default {
         currentAdPrice: '',
       },
       period: 1,
+      type: '',
     };
   },
   computed: {
@@ -264,6 +265,13 @@ export default {
         4: 'card__level_bronze',
       };
     },
+    duration() {
+      return {
+        1: 1,
+        2: 7,
+        3: 30,
+      };
+    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -277,10 +285,12 @@ export default {
       for (let i = 0; i < Object.keys(this.$refs).filter((el) => el.match(/radio/g)).length; i += 1) {
         this.$refs[`radio${i}`][0].checked = false;
         this.ads.currentAdPrice = '';
+        this.type = '';
         this.$refs[`card${i}`][0].classList.remove(this.cardActive[i + 1]);
       }
       this.$refs[`radio${idx}`][0].checked = true;
       this.ads.currentAdPrice = this.$refs[`radio${idx}`][0].value;
+      this.type = item.code - 1;
       this.$refs[`card${idx}`][0].classList.add(this.cardActive[item.code]);
     },
     switchPeriod(item) {
@@ -295,6 +305,8 @@ export default {
       this.ShowModal({
         key: modals.paymentOptions,
         step: 1,
+        type: this.type,
+        duration: this.duration[this.period],
       });
     },
   },

@@ -19,6 +19,7 @@
           v-if="user.ratingStatistic && user.ratingStatistic.status >= 0"
           class="user__rating"
           :rating="user.ratingStatistic.status"
+          :raise-view="user.raiseView"
         />
       </div>
     </div>
@@ -94,6 +95,9 @@ export default {
         3: 'card_bronze',
       };
     },
+  },
+  mounted() {
+    console.log(this.user);
   },
   methods: {
     ratingStatistic(ratingStatistic) {

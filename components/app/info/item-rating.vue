@@ -1,5 +1,11 @@
 <template>
   <div class="container__status status">
+    <img
+      v-if="raiseView"
+      src="~assets/img/ui/arrow-worker-profile.svg"
+      alt="Enable2FA"
+      class="transaction__image"
+    >
     <span
       v-if="ratingStr !== $options.Ratings.NO_STATUS"
       class="status__level"
@@ -22,6 +28,10 @@ export default {
       type: Number,
       default: null,
     },
+    raiseView: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     ratingStr() {
@@ -36,6 +46,9 @@ export default {
 
 <style lang="scss" scoped>
 .status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   &__levels {
     padding: 2px 5px;
     margin: 0 5px 0 0;

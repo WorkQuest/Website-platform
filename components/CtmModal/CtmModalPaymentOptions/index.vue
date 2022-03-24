@@ -163,7 +163,7 @@ export default {
       });
     },
     async showRaiseLevel() {
-      const result = await this.$store.dispatch('user/payUserRaisedView', { duration: 1, type: 0 });
+      const result = await this.$store.dispatch('user/payUserRaisedView', { duration: this.options.duration, type: this.options.type });
       this.ShowModal({
         key: modals.status,
         img: result ? require('~/assets/img/ui/questAgreed.svg') : require('~/assets/img/ui/error.svg'),
