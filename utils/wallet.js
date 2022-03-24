@@ -477,7 +477,7 @@ export const hashText = (value) => {
 export const createQuest = async (cost, depositAmount, description, nonce) => {
   try {
     const _abi = abi.WorkQuestFactory;
-    const _abiAddress = process.env.WORK_QUEST_FACTORY;
+    const _abiAddress = process.env.WORKNET_WQ_FACTORY;
 
     const hash = hashText(description);
     const _cost = new BigNumber(cost).shiftedBy(18).toString();
@@ -512,15 +512,16 @@ export const getCreateQuestFeeData = async (cost, depositAmount, description, no
       console.error('provider is null!');
       return error();
     }
-    const inst = new web3.eth.Contract(abi.WorkQuestFactory, process.env.WORK_QUEST_FACTORY);
+    const inst = new web3.eth.Contract(abi.WorkQuestFactory, process.env.WORKNET_WQ_FACTORY);
     cost = new BigNumber(cost).shiftedBy(18).toString();
     depositAmount = new BigNumber(depositAmount).shiftedBy(18).toString();
     const hash = hashText(description);
+    console.log('create quest fee', cost, depositAmount, wallet.address, hash, nonce);
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
       inst.methods.newWorkQuest.apply(null, [hash, cost, 0, nonce]).estimateGas({
         from: wallet.address,
-        to: process.env.WORK_QUEST_FACTORY,
+        to: process.env.WORKNET_WQ_FACTORY,
         value: depositAmount,
       }),
     ]);

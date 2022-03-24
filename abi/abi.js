@@ -11060,1134 +11060,1206 @@ export const WQRouter = [
 
 export const WorkQuestFactory = [
   {
-    inputs: [],
-    stateMutability: 'nonpayable',
-    type: 'constructor',
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: false,
-        internalType: 'address',
-        name: 'previousAdmin',
-        type: 'address',
+        "indexed": false,
+        "internalType": "address",
+        "name": "previousAdmin",
+        "type": "address"
       },
       {
-        indexed: false,
-        internalType: 'address',
-        name: 'newAdmin',
-        type: 'address',
-      },
+        "indexed": false,
+        "internalType": "address",
+        "name": "newAdmin",
+        "type": "address"
+      }
     ],
-    name: 'AdminChanged',
-    type: 'event',
+    "name": "AdminChanged",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'beacon',
-        type: 'address',
-      },
+        "indexed": true,
+        "internalType": "address",
+        "name": "beacon",
+        "type": "address"
+      }
     ],
-    name: 'BeaconUpgraded',
-    type: 'event',
+    "name": "BeaconUpgraded",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: true,
-        internalType: 'bytes32',
-        name: 'role',
-        type: 'bytes32',
+        "indexed": false,
+        "internalType": "address",
+        "name": "workquest",
+        "type": "address"
       },
       {
-        indexed: true,
-        internalType: 'bytes32',
-        name: 'previousAdminRole',
-        type: 'bytes32',
+        "indexed": false,
+        "internalType": "enum WorkQuestFactory.PaidTariff",
+        "name": "tariff",
+        "type": "uint8"
       },
       {
-        indexed: true,
-        internalType: 'bytes32',
-        name: 'newAdminRole',
-        type: 'bytes32',
-      },
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "promotedAt",
+        "type": "uint256"
+      }
     ],
-    name: 'RoleAdminChanged',
-    type: 'event',
+    "name": "Promoted",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: true,
-        internalType: 'bytes32',
-        name: 'role',
-        type: 'bytes32',
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
       },
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'account',
-        type: 'address',
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "previousAdminRole",
+        "type": "bytes32"
       },
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'sender',
-        type: 'address',
-      },
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "newAdminRole",
+        "type": "bytes32"
+      }
     ],
-    name: 'RoleGranted',
-    type: 'event',
+    "name": "RoleAdminChanged",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: true,
-        internalType: 'bytes32',
-        name: 'role',
-        type: 'bytes32',
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
       },
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'account',
-        type: 'address',
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
       },
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'sender',
-        type: 'address',
-      },
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      }
     ],
-    name: 'RoleRevoked',
-    type: 'event',
+    "name": "RoleGranted",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'implementation',
-        type: 'address',
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
       },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      }
     ],
-    name: 'Upgraded',
-    type: 'event',
+    "name": "RoleRevoked",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: false,
-        internalType: 'bytes32',
-        name: 'jobHash',
-        type: 'bytes32',
-      },
-      {
-        indexed: false,
-        internalType: 'address',
-        name: 'employer',
-        type: 'address',
-      },
-      {
-        indexed: false,
-        internalType: 'address',
-        name: 'workquest',
-        type: 'address',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'createdAt',
-        type: 'uint256',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'nonce',
-        type: 'uint256',
-      },
+        "indexed": true,
+        "internalType": "address",
+        "name": "implementation",
+        "type": "address"
+      }
     ],
-    name: 'WorkQuestCreated',
-    type: 'event',
+    "name": "Upgraded",
+    "type": "event"
   },
   {
-    inputs: [],
-    name: 'ADMIN_ROLE',
-    outputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        internalType: 'bytes32',
-        name: '',
-        type: 'bytes32',
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "jobHash",
+        "type": "bytes32"
       },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "employer",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "workquest",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "createdAt",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "nonce",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "name": "WorkQuestCreated",
+    "type": "event"
   },
   {
-    inputs: [],
-    name: 'DEFAULT_ADMIN_ROLE',
-    outputs: [
+    "inputs": [],
+    "name": "ADMIN_ROLE",
+    "outputs": [
       {
-        internalType: 'bytes32',
-        name: '',
-        type: 'bytes32',
-      },
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'UPGRADER_ROLE',
-    outputs: [
+    "inputs": [],
+    "name": "DEFAULT_ADMIN_ROLE",
+    "outputs": [
       {
-        internalType: 'bytes32',
-        name: '',
-        type: 'bytes32',
-      },
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'allArbiters',
-    outputs: [
+    "inputs": [],
+    "name": "UPGRADER_ROLE",
+    "outputs": [
       {
-        internalType: 'address payable[]',
-        name: '',
-        type: 'address[]',
-      },
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [],
+    "name": "allArbiters",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "address payable[]",
+        "name": "",
+        "type": "address[]"
+      }
     ],
-    name: 'arbiterList',
-    outputs: [
-      {
-        internalType: 'address payable',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    name: 'arbiters',
-    outputs: [
+    "name": "arbiterList",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: 'idx',
-        type: 'uint256',
-      },
-      {
-        internalType: 'bool',
-        name: 'status',
-        type: 'bool',
-      },
+        "internalType": "address payable",
+        "name": "",
+        "type": "address"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'fee',
-    outputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "name": "arbiters",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "idx",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "status",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'feeReceiver',
-    outputs: [
+    "inputs": [],
+    "name": "fee",
+    "outputs": [
       {
-        internalType: 'address payable',
-        name: '',
-        type: 'address',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [],
+    "name": "feeReceiver",
+    "outputs": [
       {
-        internalType: 'bytes32',
-        name: 'role',
-        type: 'bytes32',
-      },
+        "internalType": "address payable",
+        "name": "",
+        "type": "address"
+      }
     ],
-    name: 'getRoleAdmin',
-    outputs: [
-      {
-        internalType: 'bytes32',
-        name: '',
-        type: 'bytes32',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'employer',
-        type: 'address',
-      },
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      }
     ],
-    name: 'getWorkQuests',
-    outputs: [
+    "name": "getRoleAdmin",
+    "outputs": [
       {
-        internalType: 'address[]',
-        name: '',
-        type: 'address[]',
-      },
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'bytes32',
-        name: 'role',
-        type: 'bytes32',
+        "internalType": "enum WorkQuestFactory.PaidTariff",
+        "name": "tariff",
+        "type": "uint8"
       },
       {
-        internalType: 'address',
-        name: 'account',
-        type: 'address',
-      },
+        "internalType": "uint256",
+        "name": "period",
+        "type": "uint256"
+      }
     ],
-    name: 'grantRole',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "getTariffCost",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'bytes32',
-        name: 'role',
-        type: 'bytes32',
-      },
-      {
-        internalType: 'address',
-        name: 'account',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "employer",
+        "type": "address"
+      }
     ],
-    name: 'hasRole',
-    outputs: [
+    "name": "getWorkQuests",
+    "outputs": [
       {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
+        "internalType": "address[]",
+        "name": "",
+        "type": "address[]"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: '_fee',
-        type: 'uint256',
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
       },
       {
-        internalType: 'address payable',
-        name: '_feeReceiver',
-        type: 'address',
-      },
-      {
-        internalType: 'address payable',
-        name: '_pensionFund',
-        type: 'address',
-      },
-      {
-        internalType: 'address payable',
-        name: '_referral',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
     ],
-    name: 'initialize',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "grantRole",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'bytes32',
-        name: 'jobHash',
-        type: 'bytes32',
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
       },
       {
-        internalType: 'uint256',
-        name: 'cost',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'deadline',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'nonce',
-        type: 'uint256',
-      },
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
     ],
-    name: 'newWorkQuest',
-    outputs: [],
-    stateMutability: 'payable',
-    type: 'function',
+    "name": "hasRole",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'pensionFund',
-    outputs: [
+    "inputs": [
       {
-        internalType: 'address payable',
-        name: '',
-        type: 'address',
+        "internalType": "uint256",
+        "name": "_fee",
+        "type": "uint256"
       },
+      {
+        "internalType": "address payable",
+        "name": "_feeReceiver",
+        "type": "address"
+      },
+      {
+        "internalType": "address payable",
+        "name": "_pensionFund",
+        "type": "address"
+      },
+      {
+        "internalType": "address payable",
+        "name": "_referral",
+        "type": "address"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'referral',
-    outputs: [
+    "inputs": [
       {
-        internalType: 'address payable',
-        name: '',
-        type: 'address',
+        "internalType": "bytes32",
+        "name": "jobHash",
+        "type": "bytes32"
       },
+      {
+        "internalType": "uint256",
+        "name": "cost",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "deadline",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "nonce",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "name": "newWorkQuest",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [],
+    "name": "pensionFund",
+    "outputs": [
       {
-        internalType: 'bytes32',
-        name: 'role',
-        type: 'bytes32',
-      },
-      {
-        internalType: 'address',
-        name: 'account',
-        type: 'address',
-      },
+        "internalType": "address payable",
+        "name": "",
+        "type": "address"
+      }
     ],
-    name: 'renounceRole',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'bytes32',
-        name: 'role',
-        type: 'bytes32',
+        "internalType": "address",
+        "name": "workquest",
+        "type": "address"
       },
       {
-        internalType: 'address',
-        name: 'account',
-        type: 'address',
+        "internalType": "enum WorkQuestFactory.PaidTariff",
+        "name": "tariff",
+        "type": "uint8"
       },
+      {
+        "internalType": "uint256",
+        "name": "period",
+        "type": "uint256"
+      }
     ],
-    name: 'revokeRole',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "promote",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [],
+    "name": "proxiableUUID",
+    "outputs": [
       {
-        internalType: 'bytes4',
-        name: 'interfaceId',
-        type: 'bytes4',
-      },
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
     ],
-    name: 'supportsInterface',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [],
+    "name": "referral",
+    "outputs": [
       {
-        internalType: 'address payable',
-        name: '_arbiter',
-        type: 'address',
-      },
-      {
-        internalType: 'bool',
-        name: '_enabled',
-        type: 'bool',
-      },
+        "internalType": "address payable",
+        "name": "",
+        "type": "address"
+      }
     ],
-    name: 'updateArbiter',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address payable',
-        name: '_feeReceiver',
-        type: 'address',
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
       },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
     ],
-    name: 'updateFeeReceiver',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "renounceRole",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address payable',
-        name: '_pensionFund',
-        type: 'address',
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
       },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
     ],
-    name: 'updatePensionFund',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "revokeRole",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address payable',
-        name: '_referral',
-        type: 'address',
-      },
+        "internalType": "bytes4",
+        "name": "interfaceId",
+        "type": "bytes4"
+      }
     ],
-    name: 'updateRefferal',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "supportsInterface",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'newImplementation',
-        type: 'address',
+        "internalType": "address payable",
+        "name": "_arbiter",
+        "type": "address"
       },
+      {
+        "internalType": "bool",
+        "name": "_enabled",
+        "type": "bool"
+      }
     ],
-    name: 'upgradeTo',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "updateArbiter",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'newImplementation',
-        type: 'address',
-      },
-      {
-        internalType: 'bytes',
-        name: 'data',
-        type: 'bytes',
-      },
+        "internalType": "address payable",
+        "name": "_feeReceiver",
+        "type": "address"
+      }
     ],
-    name: 'upgradeToAndCall',
-    outputs: [],
-    stateMutability: 'payable',
-    type: 'function',
+    "name": "updateFeeReceiver",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
+        "internalType": "address payable",
+        "name": "_pensionFund",
+        "type": "address"
+      }
     ],
-    name: 'workquestValid',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
+    "name": "updatePensionFund",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "address payable",
+        "name": "_referral",
+        "type": "address"
+      }
     ],
-    name: 'workquests',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
+    "name": "updateRefferal",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newImplementation",
+        "type": "address"
+      }
+    ],
+    "name": "upgradeTo",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newImplementation",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "data",
+        "type": "bytes"
+      }
+    ],
+    "name": "upgradeToAndCall",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "workquestValid",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "workquests",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
 ];
 
 export const WorkQuest = [
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'bytes32',
-        name: '_jobHash',
-        type: 'bytes32',
+        "internalType": "bytes32",
+        "name": "_jobHash",
+        "type": "bytes32"
       },
       {
-        internalType: 'uint256',
-        name: '_fee',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "_fee",
+        "type": "uint256"
       },
       {
-        internalType: 'uint256',
-        name: '_cost',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "_cost",
+        "type": "uint256"
       },
       {
-        internalType: 'uint256',
-        name: '_deadline',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "_deadline",
+        "type": "uint256"
       },
       {
-        internalType: 'address payable',
-        name: '_feeReceiver',
-        type: 'address',
+        "internalType": "address payable",
+        "name": "_feeReceiver",
+        "type": "address"
       },
       {
-        internalType: 'address payable',
-        name: '_pensionFund',
-        type: 'address',
+        "internalType": "address",
+        "name": "_pensionFund",
+        "type": "address"
       },
       {
-        internalType: 'address payable',
-        name: '_employer',
-        type: 'address',
+        "internalType": "address payable",
+        "name": "_employer",
+        "type": "address"
       },
       {
-        internalType: 'address payable',
-        name: '_arbiter',
-        type: 'address',
+        "internalType": "address payable",
+        "name": "_arbiter",
+        "type": "address"
       },
       {
-        internalType: 'address payable',
-        name: '_referal',
-        type: 'address',
-      },
+        "internalType": "address payable",
+        "name": "_referal",
+        "type": "address"
+      }
     ],
-    stateMutability: 'nonpayable',
-    type: 'constructor',
+    "stateMutability": "nonpayable",
+    "type": "constructor"
   },
   {
-    anonymous: false,
-    inputs: [],
-    name: 'ArbitrationAcceptWork',
-    type: 'event',
+    "anonymous": false,
+    "inputs": [],
+    "name": "ArbitrationAcceptWork",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [],
-    name: 'ArbitrationDecreaseCost',
-    type: 'event',
+    "anonymous": false,
+    "inputs": [],
+    "name": "ArbitrationDecreaseCost",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [],
-    name: 'ArbitrationRejectWork',
-    type: 'event',
+    "anonymous": false,
+    "inputs": [],
+    "name": "ArbitrationRejectWork",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [],
-    name: 'ArbitrationRework',
-    type: 'event',
+    "anonymous": false,
+    "inputs": [],
+    "name": "ArbitrationRework",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [],
-    name: 'ArbitrationStarted',
-    type: 'event',
+    "anonymous": false,
+    "inputs": [],
+    "name": "ArbitrationStarted",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: false,
-        internalType: 'address',
-        name: 'worker',
-        type: 'address',
-      },
+        "indexed": false,
+        "internalType": "address",
+        "name": "worker",
+        "type": "address"
+      }
     ],
-    name: 'Assigned',
-    type: 'event',
+    "name": "Assigned",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [],
-    name: 'JobCancelled',
-    type: 'event',
+    "anonymous": false,
+    "inputs": [],
+    "name": "JobCancelled",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [],
-    name: 'JobDeclined',
-    type: 'event',
+    "anonymous": false,
+    "inputs": [],
+    "name": "JobDone",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [],
-    name: 'JobDone',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: false,
-        internalType: 'bytes32',
-        name: 'jobHash',
-        type: 'bytes32',
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "jobHash",
+        "type": "bytes32"
       },
       {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'cost',
-        type: 'uint256',
-      },
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "cost",
+        "type": "uint256"
+      }
     ],
-    name: 'JobEdited',
-    type: 'event',
+    "name": "JobEdited",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [],
-    name: 'JobFinished',
-    type: 'event',
+    "anonymous": false,
+    "inputs": [],
+    "name": "JobFinished",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [],
-    name: 'JobStarted',
-    type: 'event',
+    "anonymous": false,
+    "inputs": [],
+    "name": "JobStarted",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
     ],
-    name: 'Received',
-    type: 'event',
+    "name": "Received",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: false,
-        internalType: 'bytes32',
-        name: 'jobHash',
-        type: 'bytes32',
-      },
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "jobHash",
+        "type": "bytes32"
+      }
     ],
-    name: 'WorkQuestCreated',
-    type: 'event',
+    "name": "WorkQuestCreated",
+    "type": "event"
   },
   {
-    inputs: [],
-    name: 'acceptJob',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "inputs": [],
+    "name": "acceptJob",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'acceptJobResult',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "inputs": [],
+    "name": "acceptJobResult",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'arbiter',
-    outputs: [
+    "inputs": [],
+    "name": "arbiter",
+    "outputs": [
       {
-        internalType: 'address payable',
-        name: '',
-        type: 'address',
-      },
+        "internalType": "address payable",
+        "name": "",
+        "type": "address"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'arbitration',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "inputs": [],
+    "name": "arbitration",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'arbitrationAcceptWork',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "inputs": [],
+    "name": "arbitrationAcceptWork",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: '_forfeit',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "_forfeit",
+        "type": "uint256"
+      }
     ],
-    name: 'arbitrationDecreaseCost',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "arbitrationDecreaseCost",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'arbitrationRejectWork',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "inputs": [],
+    "name": "arbitrationRejectWork",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'arbitrationRework',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "inputs": [],
+    "name": "arbitrationRework",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address payable',
-        name: '_worker',
-        type: 'address',
-      },
+        "internalType": "address payable",
+        "name": "_worker",
+        "type": "address"
+      }
     ],
-    name: 'assignJob',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "assignJob",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'cancelJob',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "inputs": [],
+    "name": "cancelJob",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'cost',
-    outputs: [
+    "inputs": [],
+    "name": "cost",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'deadline',
-    outputs: [
+    "inputs": [],
+    "name": "deadline",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'declineJob',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'bytes32',
-        name: '_jobHash',
-        type: 'bytes32',
+        "internalType": "bytes32",
+        "name": "_jobHash",
+        "type": "bytes32"
       },
       {
-        internalType: 'uint256',
-        name: '_cost',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "_cost",
+        "type": "uint256"
+      }
     ],
-    name: 'editJob',
-    outputs: [],
-    stateMutability: 'payable',
-    type: 'function',
+    "name": "editJob",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'employer',
-    outputs: [
+    "inputs": [],
+    "name": "employer",
+    "outputs": [
       {
-        internalType: 'address payable',
-        name: '',
-        type: 'address',
-      },
+        "internalType": "address payable",
+        "name": "",
+        "type": "address"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'fee',
-    outputs: [
+    "inputs": [],
+    "name": "fee",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'feeReceiver',
-    outputs: [
+    "inputs": [],
+    "name": "feeReceiver",
+    "outputs": [
       {
-        internalType: 'address payable',
-        name: '',
-        type: 'address',
-      },
+        "internalType": "address payable",
+        "name": "",
+        "type": "address"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'forfeit',
-    outputs: [
+    "inputs": [],
+    "name": "forfeit",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'getInfo',
-    outputs: [
+    "inputs": [],
+    "name": "getInfo",
+    "outputs": [
       {
-        internalType: 'bytes32',
-        name: '_jobHash',
-        type: 'bytes32',
+        "internalType": "bytes32",
+        "name": "_jobHash",
+        "type": "bytes32"
       },
       {
-        internalType: 'uint256',
-        name: '_cost',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "_cost",
+        "type": "uint256"
       },
       {
-        internalType: 'uint256',
-        name: '_forfeit',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "_forfeit",
+        "type": "uint256"
       },
       {
-        internalType: 'address',
-        name: '_employer',
-        type: 'address',
+        "internalType": "address",
+        "name": "_employer",
+        "type": "address"
       },
       {
-        internalType: 'address',
-        name: '_worker',
-        type: 'address',
+        "internalType": "address",
+        "name": "_worker",
+        "type": "address"
       },
       {
-        internalType: 'address',
-        name: '_arbiter',
-        type: 'address',
+        "internalType": "address",
+        "name": "_arbiter",
+        "type": "address"
       },
       {
-        internalType: 'enum WorkQuest.JobStatus',
-        name: '_status',
-        type: 'uint8',
+        "internalType": "enum WorkQuest.JobStatus",
+        "name": "_status",
+        "type": "uint8"
       },
       {
-        internalType: 'uint256',
-        name: '_deadline',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "_deadline",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'jobHash',
-    outputs: [
+    "inputs": [],
+    "name": "jobHash",
+    "outputs": [
       {
-        internalType: 'bytes32',
-        name: '',
-        type: 'bytes32',
-      },
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'pensionFund',
-    outputs: [
+    "inputs": [],
+    "name": "pensionFund",
+    "outputs": [
       {
-        internalType: 'address payable',
-        name: '',
-        type: 'address',
-      },
+        "internalType": "contract WQPensionFund",
+        "name": "",
+        "type": "address"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'referal',
-    outputs: [
+    "inputs": [],
+    "name": "referal",
+    "outputs": [
       {
-        internalType: 'address payable',
-        name: '',
-        type: 'address',
-      },
+        "internalType": "contract WQReferral",
+        "name": "",
+        "type": "address"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'status',
-    outputs: [
+    "inputs": [],
+    "name": "status",
+    "outputs": [
       {
-        internalType: 'enum WorkQuest.JobStatus',
-        name: '',
-        type: 'uint8',
-      },
+        "internalType": "enum WorkQuest.JobStatus",
+        "name": "",
+        "type": "uint8"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'timeDone',
-    outputs: [
+    "inputs": [],
+    "name": "timeDone",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'verificationJob',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "inputs": [],
+    "name": "verificationJob",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'worker',
-    outputs: [
+    "inputs": [],
+    "name": "worker",
+    "outputs": [
       {
-        internalType: 'address payable',
-        name: '',
-        type: 'address',
-      },
+        "internalType": "address payable",
+        "name": "",
+        "type": "address"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    stateMutability: 'payable',
-    type: 'receive',
-  },
+    "stateMutability": "payable",
+    "type": "receive"
+  }
 ];

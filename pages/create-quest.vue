@@ -150,7 +150,9 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { PriorityFilter, WorkplaceIndex, TypeOfJobFilter } from '~/utils/enums';
+import {
+  PriorityFilter, WorkplaceIndex, TypeOfJobFilter, TokenSymbols,
+} from '~/utils/enums';
 
 const { GeoCode } = require('geo-coder');
 
@@ -180,6 +182,7 @@ export default {
   computed: {
     ...mapGetters({
       isWalletConnected: 'wallet/getIsWalletConnected',
+      balanceData: 'wallet/getBalanceData',
       userData: 'user/getUserData',
       step: 'quests/getCurrentStepCreateQuest',
       filters: 'quests/getFilters',
@@ -262,9 +265,13 @@ export default {
         // });
       }
     },
+    async updateBalanceWUSD() {
+      await this.$store.dispatch('wallet/getBalance');
+    },
     async createQuest() {
       if (!this.isWalletConnected) return;
 
+      this.SetLoader(true);
       const [feeRes] = await Promise.all([
         this.$store.dispatch('wallet/getCreateQuestFeeData', {
           cost: this.price,
@@ -275,14 +282,14 @@ export default {
         this.updateBalanceWUSD(),
       ]);
 
-      // Если у пользователя недостаточно денег для создания квеста
-      if (!feeRes.ok || new BigNumber(feeRes.result.fee).plus(this.depositAmount).isGreaterThan(this.balance.WUSD.fullBalance) === true) {
-        this.showToastError(this.$t('errors.transaction.notEnoughFunds'));
+      // Check: not enough funds to create quest
+      if (!feeRes.ok || new BigNumber(feeRes.result.fee).plus(this.depositAmount)
+        .isGreaterThan(this.balanceData.WUSD.fullBalance) === true) {
+        this.ShowToast(this.$t('errors.transaction.notEnoughFunds'));
         this.SetLoader(false);
         return;
       }
 
-      this.SetLoader(true);
       const medias = await this.uploadFiles(this.files);
       const payload = {
         // TODO Это быстрый фикс ошибки, при рефакторе исправить
@@ -303,20 +310,40 @@ export default {
           locationPlaceName: this.address,
         },
       };
-      const response = await this.$store.dispatch('quests/questCreate', payload);
+      const questRes = await this.$store.dispatch('quests/questCreate', payload);
       this.SetLoader(false);
-      if (response.ok) {
-        this.showModalCreatedQuest();
-        this.ShowToast(this.$t('toasts.questCreated'), this.$t('toasts.questCreated'));
-        await this.$router.push(`/quests/${response.result.id}`);
-        await this.$store.dispatch('quests/getCurrentStepCreateQuest', 1);
+      if (questRes.ok) {
+        // const { nonce } = questRes.result; // взять nonce
+        const nonce = '123'; // TODO: remove this line, uncomment up line
+        this.ShowModal({
+          key: modals.transactionReceipt,
+          fields: {
+            from: { name: this.$t('modals.fromAddress'), value: this.userData.wallet.address },
+            to: { name: this.$t('modals.toAddress'), value: process.env.WORK_QUEST_FACTORY },
+            amount: { name: this.$t('modals.amount'), value: this.depositAmount, symbol: TokenSymbols.WUSD },
+            fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WUSD },
+          },
+          submitMethod: async () => {
+            const txRes = await this.$store.dispatch('wallet/createQuest', {
+              depositAmount: this.depositAmount,
+              cost: this.price,
+              description: this.textarea,
+              nonce,
+            });
+            console.log('newWorkQuest result: ', txRes);
+            if (txRes?.ok === false) {
+              this.ShowToast(this.$t('errors.transaction.notEnoughFunds')); // TODO: варианты обработки ошибок?
+              return;
+            }
+            this.ShowModal({
+              key: modals.questCreated,
+              title: this.$t('modals.questCreated'),
+            });
+            this.ShowToast(this.$t('toasts.questCreated'), this.$t('toasts.questCreated'));
+            await this.$router.push(`/quests/${questRes.result.id}`);
+          },
+        });
       }
-    },
-    showModalCreatedQuest() {
-      this.ShowModal({
-        key: modals.questCreated,
-        title: this.$t('modals.questCreated'),
-      });
     },
   },
 };
