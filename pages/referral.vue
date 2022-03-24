@@ -252,7 +252,28 @@ export default {
       page: 1,
       perPage: 10,
       referLink: process.env.PROD === 'true' ? 'https://www.app-ver1.workquest.co/sign-in?ref=' : 'https://www.app.workquest.co/sign-in?ref=',
-      tableFields: [
+      isProd: process.env.PROD,
+      referralCount: 5,
+    };
+  },
+  computed: {
+    ...mapGetters({
+      referralReward: 'referral/getReferralReward',
+      paidEventsList: 'referral/getPaidEventsList',
+      referralsList: 'referral/getReferralsList',
+      referralsListCount: 'referral/getReferralsListCount',
+      createdReferralList: 'referral/getCreatedReferralList',
+      referralSignature: 'referral/getReferralSignature',
+      userAddress: 'user/getUserWalletAddress',
+      userReferralId: 'user/getUserReferralId',
+      isNeedRegistration: 'referral/getIsNeedRegistration',
+      createdReferralsList: 'referral/getCreatedReferralList',
+    }),
+    totalPages() {
+      return Math.ceil(this.paidEventsList.length / this.perPage);
+    },
+    tableFields() {
+      return [
         {
           key: 'userInfo',
           label: this.$t('referral.tableHead.name'),
@@ -326,26 +347,7 @@ export default {
             style: 'padding: 0; height: 64px; line-height: 64px',
           },
         },
-      ],
-      isProd: process.env.PROD,
-      referralCount: 5,
-    };
-  },
-  computed: {
-    ...mapGetters({
-      referralReward: 'referral/getReferralReward',
-      paidEventsList: 'referral/getPaidEventsList',
-      referralsList: 'referral/getReferralsList',
-      referralsListCount: 'referral/getReferralsListCount',
-      createdReferralList: 'referral/getCreatedReferralList',
-      referralSignature: 'referral/getReferralSignature',
-      userAddress: 'user/getUserWalletAddress',
-      userReferralId: 'user/getUserReferralId',
-      isNeedRegistration: 'referral/getIsNeedRegistration',
-      createdReferralsList: 'referral/getCreatedReferralList',
-    }),
-    totalPages() {
-      return Math.ceil(this.paidEventsList.length / this.perPage);
+      ];
     },
   },
   watch: {
