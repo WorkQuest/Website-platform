@@ -68,7 +68,7 @@
                     type="radio"
                     class="radio__input"
                     :value="item.cost"
-                    @input="selectRadio(i)"
+                    @input="selectRadio(i,item)"
                   >
                 </div>
                 <div class="level card">
