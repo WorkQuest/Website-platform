@@ -67,7 +67,6 @@
               </div>
               <div class="info-block__btn-wrap info-block__btn-wrap_absolute">
                 <base-btn
-                  :disabled="!isNeedRegistration"
                   selector="REGISTRATION"
                   @click="clickRegistrationBtnHandler"
                 >
@@ -404,7 +403,6 @@ export default {
           key: modals.status,
           title: this.$t('meta.btns.registration'),
           subtitle: this.$t('modals.registration'),
-          type: 'registration',
           cancel: this.$t('meta.btns.cancel'),
           button: this.$t('meta.btns.submit'),
           itemList: this.createdReferralsList,
