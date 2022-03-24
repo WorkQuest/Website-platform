@@ -296,3 +296,16 @@ export const PensionHistoryMethods = Object.freeze({
   Withdraw: 'Withdraw',
   Receive: 'Receive',
 });
+
+export const QuestMethods = Object.freeze({
+  // Employer
+  EditJob: 'editJob',
+  CancelJob: 'cancelJob',
+  AssignJob: 'assignJob',
+  AcceptJobResult: 'acceptJobResult',
+  Arbitration: 'arbitration',
+  // Worker
+  AcceptJob: 'acceptJob',
+  DeclineJob: 'declineJob',
+  VerificationJob: 'verificationJob',
+});

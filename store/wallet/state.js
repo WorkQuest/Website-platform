@@ -25,4 +25,5 @@ export default () => ({
   },
   stakingPoolsData: { WQT: {}, WUSD: {} },
   stakingUserData: { WQT: {}, WUSD: {} },
+  questsFee: 0.01, // Комиссия 1% за создание квеста
 });
