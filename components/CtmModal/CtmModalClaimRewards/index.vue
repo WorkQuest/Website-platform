@@ -12,6 +12,7 @@
           v-model="amount"
           class="content__field"
           type="number"
+          data-selector="INPUT-AMOUNT"
           :placeholder="3500"
           :label="$t('modals.amount')"
           :rules="`required|decimal|decimalPlaces:18${getInputRules()}`"

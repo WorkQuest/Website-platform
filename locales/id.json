@@ -1,4 +1,8 @@
 {
+  "kyc": {
+    "KYC": "KYC",
+    "alreadyVerified": "Your profile already verified!"
+  },
   "meta": {
     "priority": {
       "title": "Pilih Prioritas",
@@ -979,6 +983,9 @@
       "withdrawInfo": "Withdrawal info"
     },
     "value": "Value",
+    "generatedWUSD": "???",
+    "choosePeriod": "???",
+    "smallDescriptionForLoan": "???",
     "recipient": "Recipient address",
     "successBuyWUSD": "Successfully purchased WUSD",
     "setTokenPrice": "Setting up {token} price",
@@ -1112,7 +1119,6 @@
     "liquidationFee": "Biaya likuidasi",
     "saveCardForNextPayment": "Simpan kartu untuk dipakai nanti",
     "connectWallet": "Hubungkan dompet",
-    "howMuchWusdWouldYouLikeToGenerate": "Berapa banyak WUSD yang ingin Anda buat?",
     "chooseTheCurrency": "Pilih mata uang",
     "howMuchETHWouldYouLikeToOpen": "Berapa banyak ETH yang ingin Anda buka ke akun Anda?",
     "howMuchPercentWouldYouLikeToSet": "Berapa persen yang ingin Anda tetapkan?",
@@ -1675,9 +1681,14 @@
   "crediting": {
     "lending": "Protokol Pinjaman WorkQuest",
     "templateText": "Platform pinjaman WorkQuest DeFi di jaringan Work Net dengan empat pasar uang eksklusif untuk aset yang mudah berubah",
+    "description": "???",
+    "currentLoan": "???",
+    "currentCredit": "???",
     "marketSize": "Ukuran pasar",
     "wantToTakeALoan": "Ingin mengambil pinjaman?",
     "borrow": "Pinjam",
+    "myLoans": "???",
+    "refund": "???",
     "openPositions": "Posisi terbuka",
     "totalCollateralLocked": "Total jaminan terkunci",
     "totalWusdDebt": "Total utang WUSD",
