@@ -169,6 +169,9 @@ export default {
         img: result ? require('~/assets/img/ui/questAgreed.svg') : require('~/assets/img/ui/error.svg'),
         title: result ? this.$t('yourLevelHasBeenRaised') : this.$t('modals.errors.error'),
       });
+      if (result) {
+        this.$router.go(-1);
+      }
     },
   },
 };

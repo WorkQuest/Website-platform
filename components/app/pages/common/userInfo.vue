@@ -323,6 +323,17 @@ export default {
     },
     toRaisedViews() {
       this.$router.push('/raised-views');
+      if (this.userData.raiseView) {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/questAgreed.svg'),
+          title: this.$t('quests.active'),
+          // TODO заменить потом на endedAt
+          subtitle: new Date(this.userData.raiseView.createdAt).toLocaleDateString(this.$i18n.locale),
+        });
+      } else {
+        this.$router.push('/raised-views');
+      }
     },
     sendInvite() {
       if (this.isHaveOpenQuests) {
