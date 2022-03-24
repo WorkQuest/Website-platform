@@ -42,25 +42,6 @@
       >
         {{ $t('modals.transactionCheck') }}
       </a>
-      <base-btn
-        v-if="options.type === 'installMetamask'"
-        class="status__action"
-        selector="INSTALL-METAMASK"
-        @click="handleSubmit()"
-      >
-        <span
-          v-if="options.button"
-          class="status__text"
-        >
-          {{ options.button }}
-        </span>
-        <span
-          v-else
-          class="status__text"
-        >
-          {{ $t('meta.btns.ok') }}
-        </span>
-      </base-btn>
       <div
         v-else-if="options.type === 'goToChat'"
         class="button_to-chat"
@@ -110,8 +91,8 @@
       <base-btn
         v-else
         class="status__action"
-        selector="HIDE"
-        @click="hide()"
+        selector="SUBMIT"
+        @click="handleSubmit()"
       >
         <span
           v-if="options.button"
@@ -183,7 +164,7 @@ export default {
       }
     },
     async handleSubmit() {
-      await this.options.callback();
+      if (this.options.callback) await this.options.callback();
       this.hide();
     },
   },
