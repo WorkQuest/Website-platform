@@ -67,6 +67,7 @@
               </div>
               <div class="info-block__btn-wrap info-block__btn-wrap_absolute">
                 <base-btn
+                  :disabled="!isNeedRegistration"
                   selector="REGISTRATION"
                   @click="clickRegistrationBtnHandler"
                 >
