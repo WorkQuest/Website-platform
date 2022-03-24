@@ -206,8 +206,12 @@ export default {
     }
   },
   beforeDestroy() {
+    const { ref } = this.$route.query;
     if (!this.addressAssigned && !this.$cookies.get('access') && !this.$cookies.get('userStatus')) {
       this.$store.dispatch('user/logout');
+      if (ref?.length) {
+        sessionStorage.setItem('referralId', ref);
+      }
     }
   },
   methods: {
