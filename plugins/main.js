@@ -136,7 +136,7 @@ Vue.mixin({
       return str;
     },
     CutTxn(txn, first = 10, second = 10) {
-      if (txn > first + second) return `${txn.slice(0, first)}...${txn.slice(-second)}`;
+      if (txn?.length > first + second) return `${txn.slice(0, first)}...${txn.slice(-second)}`;
       return txn;
     },
     FormatPosition(position) {

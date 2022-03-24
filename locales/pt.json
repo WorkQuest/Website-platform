@@ -1193,7 +1193,9 @@
     "youTryToAttachUnsupportedFileFormat": "You try to attach unsupported file format",
     "incorrectChain": "You choose incorrect chain !",
     "selectToken": "Select token",
-    "txInfo": "Transaction info"
+    "txInfo": "Transaction info",
+    "registration": "Are you sure to registration this users?",
+    "claimConfirm": "Are you confirm the action of the claim?"
   },
   "ui": {
     "jobQuestors": "Questores de emprego",
@@ -1502,7 +1504,11 @@
       "txHash": "Hash Trn",
       "time": "Prazo",
       "amount": "Montante",
-      "status": "Status"
+      "event": "Event"
+    },
+    "event": {
+      "paid": "Paid",
+      "claimed": "Claimed"
     }
   },
   "pension": {

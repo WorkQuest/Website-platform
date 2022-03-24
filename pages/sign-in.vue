@@ -200,6 +200,10 @@ export default {
       });
     }
     if (sessionStorage.getItem('confirmToken')) this.ShowToast(this.$t('messages.loginToContinue'), ' ');
+    const { ref } = this.$route.query;
+    if (ref?.length) {
+      sessionStorage.setItem('referralId', ref);
+    }
   },
   beforeDestroy() {
     if (!this.addressAssigned && !this.$cookies.get('access') && !this.$cookies.get('userStatus')) {
