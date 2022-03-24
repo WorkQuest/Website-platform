@@ -95,6 +95,7 @@
               <base-btn
                 mode="outline"
                 data-selector="ACTION-BTN-SKIP-AND-END"
+                class="test"
                 @click="goBack()"
               >
                 {{ $t('meta.skipAndEnd') }}
@@ -104,6 +105,7 @@
               <base-btn
                 data-selector="ACTION-BTN-PAY"
                 :disabled="ads.currentAdPrice === ''"
+                class="test"
                 @click="showPaymentModal"
               >
                 {{ $t('meta.pay') }}
@@ -477,7 +479,7 @@ export default {
   &__period {
     color: $black800;
     background: $white;
-    padding: 12px 88px;
+    padding: 12px 0;
     border-radius: 6px;
     transition: .5s;
     text-align: center;
@@ -513,4 +515,41 @@ export default {
   font-size: 25px;
 }
 
+@include _1199 {
+  .main__body {
+    padding: 0 20px;
+  }
+}
+@include _767 {
+  .radio__input{
+    margin: 0 10px;
+  }
+  .card__cost{
+    padding-right: 10px;
+  }
+}
+@include _480{
+  .period{
+    &__container{
+      flex-direction: column;
+    }
+    &__period{
+      margin-bottom: 10px;
+      &:last-child{
+        margin-bottom: 0;
+      }
+  }
+    &__btn-container{
+      flex-direction: column;
+      width: 100%;
+    }
+  }
+  .btn-container__btn{
+    width: 100%;
+    margin-bottom: 10px;
+    &:last-child{
+      margin-bottom: 0;
+    }
+  }
+}
 </style>
