@@ -276,6 +276,7 @@ export default {
       resetSwaps: 'bridge/resetMySwaps',
       redeem: 'bridge/redeemSwap',
 
+      isRightChain: 'web3/chainIsCompareToCurrent',
       connectWallet: 'web3/connect',
       disconnectWallet: 'web3/disconnect',
       goToChain: 'web3/goToChain',
@@ -287,6 +288,7 @@ export default {
         const { chain } = addresses[sourceAddressInd];
         await this.connectWallet({ chain });
 
+        // TODO is need it? Need to deleted this logic and check all DeFi functions
         await localStorage.setItem('miningPoolId', chain);
         this.miningPoolId = localStorage.getItem('miningPoolId');
       }
@@ -311,20 +313,14 @@ export default {
       this.targetAddressInd = currentSource;
       this.sourceAddressInd = currentTarget;
     },
-
-    async checkMiningPoolId(chainName) {
-      await localStorage.setItem('miningPoolId', chainName);
-      this.miningPoolId = localStorage.getItem('miningPoolId');
-      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
-      if (!rightChain) return await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
-      return rightChain;
+    async checkNetwork(chain) {
+      if (localStorage.getItem('isMetaMask') !== 'true') return;
+      const isCorrectNetwork = await this.isRightChain(chain);
+      if (!isCorrectNetwork) await this.goToChain({ chain });
     },
-
     async redeemAction(data) {
       this.SetLoader(true);
-      if (localStorage.getItem('isMetaMask') === 'true') {
-        await this.checkMiningPoolId(data.chain);
-      }
+      await this.checkNetwork(data.chain);
       const result = await this.redeem({
         signData: data.signData,
         chainFrom: data.chainFrom,
@@ -337,6 +333,14 @@ export default {
       });
       await this.swapsTableData();
       this.SetLoader(false);
+    },
+
+    async checkMiningPoolId(chainName) {
+      await localStorage.setItem('miningPoolId', chainName);
+      this.miningPoolId = localStorage.getItem('miningPoolId');
+      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
+      if (!rightChain) return await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+      return rightChain;
     },
 
     async showSwapModal() {
