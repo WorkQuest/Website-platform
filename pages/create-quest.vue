@@ -26,7 +26,7 @@
                     type="gray"
                     :label="$t('quests.runtime')"
                     :name="$t('quests.runtime')"
-                    selector="RUNTIME"
+                    data-selector="RUNTIME"
                     rules="required"
                   />
                 </div>
@@ -138,7 +138,7 @@
           <div class="upload btn btn__container btn__container_right">
             <div class="btn__create">
               <base-btn
-                selector="CREATE-A-QUEST"
+                data-selector="CREATE-A-QUEST"
                 :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
                 @click="handleSubmit(toRiseViews)"
               >
@@ -156,7 +156,7 @@
             <div class="btn-container__btn_back">
               <base-btn
                 mode="back"
-                selector="PREVIOUS-STEP"
+                data-selector="PREVIOUS-STEP"
                 @click="goBack"
               >
                 {{ $t('meta.btns.back') }}
@@ -582,6 +582,7 @@ export default {
 
       & .icon-chevron_big_left {
         font-weight: 800;
+        color: $black600;
         font-size: 24px;
       }
     }

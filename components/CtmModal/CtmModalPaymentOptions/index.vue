@@ -7,6 +7,7 @@
       <div class="content__step">
         <div
           class="content__panel"
+          data-selector="ACTION-BTN-PREV-STEP"
           :class="{'content__panel_active': options.step === 1}"
           @click="previousStep"
         >
@@ -14,6 +15,7 @@
         </div>
         <div
           class="content__panel"
+          data-selector="ACTION-BTN-NEXT-STEP"
           :class="{'content__panel_active': options.step === 2}"
           @click="nextStep"
         >
@@ -32,6 +34,7 @@
             key="i"
             v-model="money"
             class="drop__field"
+            data-selector="CURRENCY"
             :items="currency"
             :is-icon="true"
           />
@@ -43,6 +46,7 @@
           <base-dd
             v-model="method"
             class="drop__field"
+            data-selector="WALLETS"
             :items="wallet"
             :is-icon="true"
           />
@@ -58,6 +62,7 @@
           </div>
           <base-dd
             v-model="card"
+            data-selector="CARD"
             class="drop__field"
             :items="items"
           >
@@ -74,7 +79,7 @@
               <base-btn
                 mode="add"
                 class="drop__button button"
-                selector="SHOW-ADDING-CARD"
+                data-selector="SHOW-ADDING-CARD"
                 @click="showAddingCard"
               >
                 <span class="icon-plus_circle_outline button__icon" />
@@ -91,14 +96,14 @@
           <base-btn
             class="buttons__button"
             mode="outline"
-            selector="CANCEL"
+            data-selector="CANCEL"
             @click="hide"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
-            selector="SUBMIT"
+            data-selector="SUBMIT"
             @click="showRaiseLevel"
           >
             {{ $t('meta.btns.submit') }}
