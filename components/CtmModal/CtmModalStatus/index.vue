@@ -25,12 +25,12 @@
         </span>
       </div>
       <div
-        v-if="options.usersList"
+        v-if="options.itemList"
         class="status__list"
       >
         <span
-          v-for="(item) in options.usersList"
-          :key="item.address"
+          v-for="(item, index) in options.itemList"
+          :key="index"
         >
           {{ item }}
         </span>
@@ -99,7 +99,7 @@
           <base-btn
             class="status__btn"
             selector="REGISTRATION"
-            @click="registration()"
+            @click="handleSubmit()"
           >
             <span class="status__text">
               {{ options.button }}
@@ -185,9 +185,9 @@ export default {
         }
       }
     },
-    async registration() {
+    async handleSubmit() {
       this.hide();
-      await this.$store.dispatch('referral/addReferrals', this.userAddress);
+      await this.options.callback();
     },
   },
 };

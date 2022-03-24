@@ -407,7 +407,8 @@ export default {
           type: 'registration',
           cancel: this.$t('meta.btns.cancel'),
           button: this.$t('meta.btns.submit'),
-          usersList: this.createdReferralsList,
+          itemList: this.createdReferralsList,
+          callback: () => this.$store.dispatch('referral/addReferrals', this.userAddress),
         });
       }
     },
