@@ -1193,7 +1193,9 @@
     "youTryToAttachUnsupportedFileFormat": "You try to attach unsupported file format",
     "incorrectChain": "You choose incorrect chain !",
     "selectToken": "Select token",
-    "txInfo": "Transaction info"
+    "txInfo": "Transaction info",
+    "until": "Until"
+
   },
   "ui": {
     "jobQuestors": "Demandeurs d'emploi",

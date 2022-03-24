@@ -295,6 +295,14 @@ export default {
     isHaveOpenQuests() {
       return this.mainUserData.questsStatistic && this.mainUserData.questsStatistic.opened > 0;
     },
+    raiseViewsName() {
+      return {
+        0: 'GOLD PLUS',
+        1: 'GOLD',
+        2: 'SILVER',
+        3: 'BRONZE',
+      };
+    },
   },
   watch: {
     async anotherUserData() {
@@ -328,8 +336,9 @@ export default {
           key: modals.status,
           img: require('~/assets/img/ui/questAgreed.svg'),
           title: this.$t('quests.active'),
+          text: `${this.raiseViewsName[this.userData.raiseView.type]} Package`,
           // TODO заменить потом на endedAt
-          subtitle: moment(this.userData.raiseView.createdAt).format('Do MMMM YYYY, hh:mm a'),
+          subtitle: `${this.$t('modals.until')} ${moment(this.userData.raiseView.createdAt).format('Do MMMM YYYY, hh:mm a')}`,
         });
       } else {
         this.$router.push(Path.RAISED_VIEWS);

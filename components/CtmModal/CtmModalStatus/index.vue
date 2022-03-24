@@ -19,6 +19,11 @@
       <div class="status__title">
         {{ options.title }}
       </div>
+      <div class="status__text">
+        <span v-if="options.text">
+          {{ options.text }}
+        </span>
+      </div>
       <div class="status__desc">
         <span v-if="options.subtitle">
           {{ options.subtitle }}
@@ -183,6 +188,13 @@ export default {
     line-height: 130%;
     text-align: center;
     color: $black600;
+  }
+  &__text{
+    font-size: 16px;
+    line-height: 130%;
+    text-align: center;
+    font-weight: 500;
+    color: $black800;
   }
 }
 </style>
