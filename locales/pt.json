@@ -1,4 +1,8 @@
 {
+  "kyc": {
+    "KYC": "KYC",
+    "alreadyVerified": "Your profile already verified!"
+  },
   "meta": {
     "priority": {
       "title": "Selecionar prioridade",
