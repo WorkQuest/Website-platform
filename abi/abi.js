@@ -12264,7 +12264,6 @@ export const WorkQuest = [
   }
 ];
 
-
 export const WQReferral = [
   {
     "inputs": [],
