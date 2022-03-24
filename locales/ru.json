@@ -1196,7 +1196,7 @@
     "txInfo": "Transaction info",
     "registration": "Вы верены что хотите зарегистрировать данных пользователей?",
     "claimConfirm": "Вы потдверждаете дейсвие клейм?",
-    "until": "Until"
+    "until": "До"
   },
   "ui": {
     "jobQuestors": "В поиске работы",
