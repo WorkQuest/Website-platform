@@ -78,6 +78,9 @@ export default () => ({
       unreadCountChats: 0,
     },
     userSpecializations: [],
+    affiliateUser: {
+      referralCodeId: '',
+    },
   },
   currentUserPosition: null,
   userRole: {},

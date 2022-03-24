@@ -1193,7 +1193,9 @@
     "youTryToAttachUnsupportedFileFormat": "You try to attach unsupported file format",
     "incorrectChain": "You choose incorrect chain !",
     "selectToken": "Select token",
-    "txInfo": "Transaction info"
+    "txInfo": "Transaction info",
+    "registration": "Are you sure to registration this users?",
+    "claimConfirm": "Are you confirm the action of the claim?"
   },
   "ui": {
     "jobQuestors": "求职者",
@@ -1502,7 +1504,11 @@
       "txHash": "交易哈希",
       "time": "时间",
       "amount": "金额",
-      "status": "状态"
+      "event": "Event"
+    },
+    "event": {
+      "paid": "Paid",
+      "claimed": "Claimed"
     }
   },
   "pension": {

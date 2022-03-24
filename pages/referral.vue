@@ -20,79 +20,97 @@
                   {{ $t('referral.referralReward') }}
                 </div>
                 <div class="info-block__tokens">
-                  {{ $tc('meta.coins.count.WQTCount', 0) }}
+                  {{ $tc('meta.coins.count.WQTCount', referralReward) }}
                 </div>
               </div>
               <div class="info-block__btn-wrap">
                 <base-btn
-                  :selector="`${$t('modals.claim')}`"
+                  :disabled="Number(referralReward) === 0"
+                  selector="CLAIM"
                   @click="clickClaimBtnHandler"
                 >
                   {{ $t('modals.claim') }}
                 </base-btn>
               </div>
             </div>
-            <div class="info-block__name">
+            <div
+              v-if="paidEventsList.length"
+              class="info-block__name"
+            >
               {{ $t('referral.lastRefReward') }}
             </div>
-            <div class="user_last-reward">
+            <div
+              v-if="paidEventsList.length"
+              class="user_last-reward"
+            >
               <div class="user__info">
                 <img
                   class="ava"
-                  src="~/assets/img/temp/avatar-small.jpg"
+                  :src="paidEventsList[0]['referralUser.avatar.url'] ? paidEventsList[0]['referralUser.avatar.url'] : EmptyAvatar()"
                   alt="avatar"
                 >
                 <div class="user__name">
-                  Edward Cooper
+                  {{ paidEventsList[0]['referralUser.firstName'] }} {{ paidEventsList[0]['referralUser.lastName'] }}
                 </div>
               </div>
               <div class="user__value_green">
-                {{ $tc('meta.units.plusCount', $tc('meta.coins.count.WQTCount', 0)) }}
+                {{ $tc('meta.units.plusCount', $tc('meta.coins.count.WQTCount', getStyledAmount(paidEventsList[0].amount))) }}
               </div>
             </div>
           </div>
           <div class="info-block">
-            <div class="info-block__name">
-              {{ $t('referral.yourRefers') }}
-            </div>
-            <div class="info-block__refers">
-              <div class="info-block__avatar">
-                <img
-                  class="ava_list"
-                  src="~/assets/img/social/FACEBOOK.png"
-                  alt=""
-                >
-              </div>
-              <div class="info-block__avatar">
-                <img
-                  class="ava_list"
-                  src="~/assets/img/social/TWITTER.png"
-                  alt=""
-                >
-              </div>
-              <div class="info-block__avatar">
-                <img
-                  class="ava_list"
-                  src="~/assets/img/social/GOOGLE_+_.png"
-                  alt=""
-                >
-              </div>
-              <div class="info-block__avatar">
-                <div class="info-block__more">
-                  {{ $tc('meta.units.plusCount', 0) }}
+            <div class="info-block__wrap">
+              <div class="info-block__inner">
+                <div class="info-block__name">
+                  {{ $t('referral.yourRefers') }}
                 </div>
               </div>
+              <div class="info-block__btn-wrap info-block__btn-wrap_absolute">
+                <base-btn
+                  :disabled="!isNeedRegistration"
+                  selector="REGISTRATION"
+                  @click="clickRegistrationBtnHandler"
+                >
+                  {{ $t('meta.btns.registration') }}
+                </base-btn>
+              </div>
             </div>
-            <div class="info-block__name">
+            <div class="info-block__refers">
+              <div
+                v-for="(item) in referralItems()"
+                :key="`${item.id}`"
+                class="info-block__avatar"
+              >
+                <img
+                  class="ava_list"
+                  :src="(item.avatar && item.avatar.url) ? item.avatar.url : EmptyAvatar()"
+                  alt=""
+                >
+              </div>
+              <div
+                v-if="referralsListCount > referralCount"
+                class="info-block__more"
+              >
+                {{ $tc('meta.units.plusCount', referralsListCount - referralCount) }}
+              </div>
+            </div>
+            <div
+              v-if="userReferralId.length"
+              class="info-block__name"
+            >
               {{ $t('referral.yourReferralLink') }}
             </div>
-            <div class="info-block__link">
+            <div
+              v-if="userReferralId.length"
+              class="info-block__link"
+            >
               <div class="address">
-                {{ referLink }}
+                {{ referLink }}{{ userReferralId }}
               </div>
               <button
-                type="button"
-                @click="doCopy"
+                v-clipboard:copy="referLink + userReferralId"
+                v-clipboard:success="ClipboardSuccessHandler"
+                v-clipboard:error="ClipboardErrorHandler"
               >
                 <span class="icon-copy address__icon" />
               </button>
@@ -130,55 +148,77 @@
             </div>
           </div>
         </div>
-        <div class="info-block">
+        <div
+          v-if="paidEventsList.length"
+          class="info-block"
+        >
           <div class="info-block__name">
             {{ $t('referral.historyOfRewards') }}
           </div>
           <div class="referral-page__table">
             <b-table
-              :items="items"
-              :fields="testFields"
+              :items="paidEventsList"
+              :fields="tableFields"
               borderless
               caption-top
               thead-class="table__header"
               tbody-tr-class="table__row"
             >
-              <template #cell(userName)="el">
+              <template #cell(userInfo)="el">
                 <div class="user__info">
                   <img
                     class="ava"
-                    src="~/assets/img/temp/avatar-small.jpg"
+                    :src="el.item['referralUser.avatar.url'] ? el.item['referralUser.avatar.url'] : EmptyAvatar()"
                     alt=""
                   >
                   <div class="user__name">
-                    {{ el.item.userName }}
+                    {{ el.item['referralUser.firstName'] }} {{ el.item['referralUser.lastName'] }}
                   </div>
                 </div>
               </template>
               <template #cell(userID)="el">
                 <div class="user__value_gray">
-                  {{ el.item.userID }}
+                  {{ CutTxn(el.item.referral ? el.item.referral : el.item.affiliate, 6, 6) }}
+                  <button
+                    v-clipboard:copy="el.item.referral ? el.item.referral : el.item.affiliate"
+                    v-clipboard:success="ClipboardSuccessHandler"
+                    v-clipboard:error="ClipboardErrorHandler"
+                  >
+                    <span class="icon-copy user__icon-copy" />
+                  </button>
                 </div>
               </template>
               <template #cell(txHash)="el">
-                <div class="user__value_gray">
-                  {{ el.item.txHash }}
-                </div>
+                <a
+                  :href="`https://${isProd ? 'dev' : 'test'}-explorer.workquest.co/transactions/${el.item.transactionHash}`"
+                  target="_blank"
+                  class="user__value_gray"
+                >
+                  {{ CutTxn(el.item.transactionHash, 6, 6) }}
+                </a>
               </template>
               <template #cell(time)="el">
                 <div class="user__value_gray">
-                  {{ el.item.time }}
+                  {{ GetFormTimestamp(Number(el.item.timestamp) * 1000, 'll') }}
                 </div>
               </template>
-              <template #cell(status)="el">
+              <template #cell(amount)="el">
+                <div class="user__value_gray">
+                  {{ getStyledAmount(el.value) }}
+                </div>
+              </template>
+              <template #cell(event)="el">
                 <div class="user__value_green">
-                  {{ el.item.status }}
+                  {{ el.value }}
                 </div>
               </template>
             </b-table>
           </div>
         </div>
-        <div class="referral-page__pager">
+        <div
+          v-if="paidEventsList.length"
+          class="referral-page__pager"
+        >
           <base-pager
             v-if="totalPages > 1"
             v-model="page"
@@ -191,136 +231,51 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import { STATUS_INFO } from '~/utils/referral-constants';
 import modals from '~/store/modals/modals';
+import { getStyledAmount } from '~/utils/wallet';
 
 export default {
+  name: 'Referral',
+  async asyncData({ store }) {
+    const userAddress = store.getters['user/getUserWalletAddress'];
+    await Promise.all([
+      store.dispatch('referral/fetchRewardBalance', userAddress),
+      store.dispatch('referral/fetchPaidEventsList'),
+      store.dispatch('referral/fetchReferralsList'),
+      store.dispatch('referral/subscribeToReferralEvents', userAddress),
+    ]);
+  },
   data() {
     return {
       page: 1,
-      offset: 10,
-      referLink: 'https://www.workquest.com/ref?v=44T7iUSo1vU',
-      items: [
+      perPage: 10,
+      referLink: process.env.PROD === 'true' ? 'https://www.app-ver1.workquest.co/sign-in?ref=' : 'https://www.app.workquest.co/sign-in?ref=',
+      isProd: process.env.PROD,
+      referralCount: 5,
+    };
+  },
+  computed: {
+    ...mapGetters({
+      referralReward: 'referral/getReferralReward',
+      paidEventsList: 'referral/getPaidEventsList',
+      referralsList: 'referral/getReferralsList',
+      referralsListCount: 'referral/getReferralsListCount',
+      createdReferralList: 'referral/getCreatedReferralList',
+      referralSignature: 'referral/getReferralSignature',
+      userAddress: 'user/getUserWalletAddress',
+      userReferralId: 'user/getUserReferralId',
+      isNeedRegistration: 'referral/getIsNeedRegistration',
+      createdReferralsList: 'referral/getCreatedReferralList',
+    }),
+    totalPages() {
+      return Math.ceil(this.paidEventsList.length / this.perPage);
+    },
+    tableFields() {
+      return [
         {
-          userName: 'John Doe',
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: '455dad66544ss',
-          txHash: 'sf998s...ss877d',
-          time: 'Feb 1, 2021',
-          amount: this.$tc('meta.coins.count.WQTCount', 12),
-          status: this.$t('meta.success'),
-        },
-        {
-          userName: 'John Doe',
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: '455dad66544ss',
-          txHash: 'sf998s...ss877d',
-          time: 'Feb 1, 2021',
-          amount: this.$tc('meta.coins.count.WQTCount', 12),
-          status: this.$t('meta.success'),
-        },
-        {
-          userName: 'John Doe',
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: '455dad66544ss',
-          txHash: 'sf998s...ss877d',
-          time: 'Feb 1, 2021',
-          amount: this.$tc('meta.coins.count.WQTCount', 12),
-          status: this.$t('meta.success'),
-        },
-        {
-          userName: 'John Doe',
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: '455dad66544ss',
-          txHash: 'sf998s...ss877d',
-          time: 'Feb 1, 2021',
-          amount: this.$tc('meta.coins.count.WQTCount', 12),
-          status: this.$t('meta.success'),
-        },
-        {
-          userName: 'John Doe',
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: '455dad66544ss',
-          txHash: 'sf998s...ss877d',
-          time: 'Feb 1, 2021',
-          amount: this.$tc('meta.coins.count.WQTCount', 12),
-          status: this.$t('meta.success'),
-        },
-        {
-          userName: 'John Doe',
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: '455dad66544ss',
-          txHash: 'sf998s...ss877d',
-          time: 'Feb 1, 2021',
-          amount: this.$tc('meta.coins.count.WQTCount', 12),
-          status: this.$t('meta.success'),
-        },
-        {
-          userName: 'John Doe',
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: '455dad66544ss',
-          txHash: 'sf998s...ss877d',
-          time: 'Feb 1, 2021',
-          amount: this.$tc('meta.coins.count.WQTCount', 12),
-          status: this.$t('meta.success'),
-        },
-        {
-          userName: 'John Doe',
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: '455dad66544ss',
-          txHash: 'sf998s...ss877d',
-          time: 'Feb 1, 2021',
-          amount: this.$tc('meta.coins.count.WQTCount', 12),
-          status: this.$t('meta.success'),
-        },
-        {
-          userName: 'John Doe',
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: '455dad66544ss',
-          txHash: 'sf998s...ss877d',
-          time: 'Feb 1, 2021',
-          amount: this.$tc('meta.coins.count.WQTCount', 12),
-          status: this.$t('meta.success'),
-        },
-        {
-          userName: 'John Doe',
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: '455dad66544ss',
-          txHash: 'sf998s...ss877d',
-          time: 'Feb 1, 2021',
-          amount: this.$tc('meta.coins.count.WQTCount', 12),
-          status: this.$t('meta.success'),
-        },
-        {
-          userName: 'John Doe',
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: '455dad66544ss',
-          txHash: 'sf998s...ss877d',
-          time: 'Feb 1, 2021',
-          amount: this.$tc('meta.coins.count.WQTCount', 12),
-          status: this.$t('meta.success'),
-        },
-        {
-          userName: 'John Doe',
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: '455dad66544ss',
-          txHash: 'sf998s...ss877d',
-          time: 'Feb 1, 2021',
-          amount: this.$tc('meta.coins.count.WQTCount', 12),
-          status: this.$t('meta.success'),
-        },
-        {
-          userName: 'John Doe',
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: '455dad66544ss',
-          txHash: 'sf998s...ss877d',
-          time: 'Feb 1, 2021',
-          amount: this.$tc('meta.coins.count.WQTCount', 12),
-          status: this.$t('meta.success'),
-        },
-      ],
-      testFields: [
-        {
-          key: 'userName',
+          key: 'userInfo',
           label: this.$t('referral.tableHead.name'),
           thStyle: {
             padding: '0 0 0 23px',
@@ -333,7 +288,7 @@ export default {
         },
         {
           key: 'userID',
-          label: this.$t('referral.tableHead.userID'),
+          label: this.$t('meta.wallet'),
           thStyle: {
             padding: '0',
             height: '27px',
@@ -380,8 +335,9 @@ export default {
           },
         },
         {
-          key: 'status',
-          label: this.$t('referral.tableHead.status'),
+          key: 'event',
+          label: this.$t('referral.tableHead.event'),
+          formatter: (value) => STATUS_INFO[value](this),
           thStyle: {
             padding: '0',
             height: '27px',
@@ -391,27 +347,88 @@ export default {
             style: 'padding: 0; height: 64px; line-height: 64px',
           },
         },
-      ],
-    };
+      ];
+    },
   },
-  computed: {
-    totalPages() {
-      return Math.ceil(this.items.length / this.offset);
+  watch: {
+    page: {
+      async handler(newValue, oldValue) {
+        if (newValue !== oldValue) {
+          this.ScrollToTop();
+          const payload = {
+            params: {
+              limit: 6,
+              offset: (newValue - 1) * this.perPage,
+            },
+          };
+          await this.$store.dispatch('referral/updateCurrentPage', newValue);
+          await this.$store.dispatch('referral/fetchPaidEventsList', payload);
+        }
+      },
+    },
+    paidEventsList: {
+      handler() {
+        this.$store.dispatch('referral/fetchRewardBalance', this.userAddress);
+      },
+    },
+    referralsList: {
+      handler() {
+        this.referralItems();
+      },
     },
   },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
   },
+  beforeDestroy() {
+    this.$store.dispatch('referral/unsubscribeToReferralEvents', this.userAddress);
+  },
   methods: {
-    doCopy(ev) {
-      ev.stopPropagation();
-      this.$copyText(this.referLink);
-    },
-    clickClaimBtnHandler() {
+    async clickClaimBtnHandler() {
       this.ShowModal({
-        key: modals.thanks,
+        key: modals.referralClaim,
+        fields: {
+          to: { name: this.$t('meta.toBig'), value: this.userAddress },
+          amount: { name: this.$t('modals.amount'), value: this.referralReward },
+        },
+        desc: this.$t('modals.claimConfirm'),
       });
+    },
+    async clickRegistrationBtnHandler() {
+      this.SetLoader(true);
+      const res = await this.$store.dispatch('referral/fetchCreatedReferralList');
+      this.SetLoader(false);
+      if (res) {
+        this.ShowModal({
+          key: modals.status,
+          title: this.$t('meta.btns.registration'),
+          subtitle: this.$t('modals.registration'),
+          type: 'registration',
+          cancel: this.$t('meta.btns.cancel'),
+          button: this.$t('meta.btns.submit'),
+          usersList: this.createdReferralsList,
+        });
+      }
+    },
+    referralItems() {
+      const referralsList = [];
+      const indexList = [];
+      if (this.referralsList.length > this.referralCount) {
+        while (referralsList.length < this.referralCount) {
+          const index = Math.floor(Math.random() * this.referralsList.length);
+          if (!indexList.includes(index)) {
+            indexList.push(index);
+            referralsList.push(this.referralsList[index]);
+          }
+        }
+        return referralsList;
+      }
+
+      return this.referralsList;
+    },
+    getStyledAmount(value) {
+      return getStyledAmount(value);
     },
   },
 };
@@ -419,7 +436,7 @@ export default {
 
 <style lang="scss" scoped>
 .referral-page {
-  background: linear-gradient(to bottom, #103D7C 370px, #f6f8fa 370px);
+  background: linear-gradient(to bottom, $darkblue 370px, $white100 370px);
   display: flex;
   justify-content: center;
 
@@ -436,7 +453,7 @@ export default {
   &__header {
     max-width: 450px;
     font-weight: 500;
-    color: #FFF;
+    color: $white;
     align-self: center;
     .title {
       @extend .referral-page__header;
@@ -457,8 +474,9 @@ export default {
     grid-template-rows: 225px max-content max-content;
 
     .info-block {
-      background-color: #fff;
+      background-color: $white;
       border-radius: 6px;
+      position: relative;
 
       &__wrap {
         display: grid;
@@ -470,24 +488,29 @@ export default {
         padding: 34px 20px 0 0;
         width: 156px;
       }
+      &__btn-wrap_absolute {
+        position: absolute;
+        right: 0;
+        z-index: 3;
+      }
 
       &__tokens {
         font-weight: 700;
         font-size: 25px;
-        color: #0083C7;
+        color: $blue;
         padding: 0 20px;
       }
 
       &__name {
         font-size: 16px;
-        color: #1D2127;
+        color: $black800;
         padding: 20px 20px 10px 20px;
         font-weight: 400;
 
         &_bold {
           font-weight: 500;
           font-size: 25px;
-          color: #103D7C;
+          color: $darkblue;
           line-height: 1;
           padding: 20px;
         }
@@ -497,7 +520,7 @@ export default {
         height: 33px;
         width: 33px;
         border-radius: 50%;
-        background-color: #fff;
+        background-color: $white;
         flex: none;
         &_list {
           @extend .ava;
@@ -524,6 +547,7 @@ export default {
           overflow: hidden;
           text-overflow: ellipsis;
           font-size: 16px;
+          text-transform: capitalize;
         }
         &__value {
           font-size: 16px;
@@ -531,22 +555,29 @@ export default {
           overflow: hidden;
           text-overflow: ellipsis;
           font-weight: 500;
+          text-transform: capitalize;
 
           &_green {
             @extend .user__value;
-            color: #00AA5B;
+            color: $green;
           }
 
           &_gray {
             @extend .user__value;
-            color: #7C838D;
+            color: $black500;
             font-weight: 400;
+          }
+        }
+
+        &__icon-copy {
+          &:before {
+            color: $lightblue;
           }
         }
 
         &_last-reward {
           display: grid;
-          background-color: #F7F8FA;
+          background-color: $black0;
           border-radius: 5px;
           height: 50px;
           line-height: 50px;
@@ -574,17 +605,19 @@ export default {
       }
 
       &__more {
-        position: absolute;
         height: 33px;
-        width: 53px;
+        padding: 0 10px;
+        min-width: 53px;
         border-radius: 39px;
-        background-color: #F7F8FA;
+        background-color: $black0;
         text-align: center;
         line-height: 33px;
+        margin-left: -5px;
+        z-index: 2;
       }
 
       &__link {
-        border: 1px solid #F7F8FA;
+        border: 1px solid $black0;
         border-radius: 6px;
         width: calc(100% - 40px);
         margin-left: 20px;
@@ -602,7 +635,7 @@ export default {
           overflow: hidden;
           text-overflow: ellipsis;
           font-size: 16px;
-          color: #1D2127;
+          color: $black800;
           &__icon {
             font-size: 24px;
             &::before {
@@ -622,19 +655,19 @@ export default {
 
         .step {
           position: relative;
-          background-color: #F7F8FA;
+          background-color: $black0;
           border-radius: 6px;
           z-index: 2;
 
           &__name {
             font-weight: 500;
             font-size: 18px;
-            color: #0083C7;
+            color: $blue;
             padding: 10px;
           }
           &__about {
             font-size: 16px;
-            color: #7C838D;
+            color: $black500;
             padding: 0 10px 10px;
           }
           &:not(:last-child) {
@@ -644,7 +677,7 @@ export default {
               width: 12px;
               border-radius: 50%;
               z-index: 3;
-              background-color: #D8DFE3;
+              background-color: $grey100;
               position: absolute;
               right: -5px;
               top: calc(50% - 5px);
@@ -658,7 +691,7 @@ export default {
               width: 12px;
               border-radius: 50%;
               z-index: 3;
-              background-color: #D8DFE3;
+              background-color: $grey100;
               position: absolute;
               left: -5px;
               top: calc(50% - 5px);
@@ -671,7 +704,7 @@ export default {
           height: 2px;
           width: 100%;
           top: 50%;
-          background-color: #D8DFE3;
+          background-color: $grey100;
         }
       }
 
@@ -692,7 +725,7 @@ export default {
   }
 
   @include _991 {
-    background: linear-gradient(to bottom, #103D7C 245px, #f6f8fa 245px);
+    background: linear-gradient(to bottom, $darkblue 245px, $white100 245px);
 
     &__container {
       gap: 15px;
@@ -709,7 +742,7 @@ export default {
   }
 
   @include _767 {
-    background: linear-gradient(to bottom, #103D7C 220px, #f6f8fa 220px);
+    background: linear-gradient(to bottom, $darkblue 220px, $white100 220px);
     &__container {
       grid-template-rows: repeat(2, auto);
       gap: 24px;
