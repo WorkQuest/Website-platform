@@ -3,6 +3,261 @@
     class="main main-white"
     data-selector="PAGE-CREATE-QUEST"
   >
+    <div class="main__body page">
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
+      >
+        <div
+          v-if="step === 1"
+          data-selector="PAGE-CREATE-QUEST-STEP-1"
+          class="page"
+        >
+          <h2 class="page__title">
+            {{ $t('meta.createAQuest') }}
+          </h2>
+          <div class="page__category">
+            <div class="page runtime">
+              <div class="runtime__container">
+                <div class="runtime page__dd">
+                  <base-dd
+                    v-model="runtimeIndex"
+                    :items="runtime"
+                    type="gray"
+                    :label="$t('quests.runtime')"
+                    :name="$t('quests.runtime')"
+                    data-selector="RUNTIME"
+                    rules="required"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="page__input">
+              <base-field
+                v-model="price"
+                type="number"
+                data-selector="PRICE-FIELD"
+                :label="$t('meta.price')"
+                :placeholder="+0 + currency"
+                rules="required|decimal"
+                :name="$t('meta.price')"
+              />
+            </div>
+            <div class="page__dd">
+              <base-dd
+                v-model="employmentIndex"
+                :label="$t('quests.employment.employment')"
+                type="gray"
+                :items="employment"
+                rules="required"
+                :name="$t('quests.employment.employment')"
+                data-selector="EMPLOYMENT"
+              />
+            </div>
+            <div class="page__dd">
+              <base-dd
+                v-model="workplaceIndex"
+                :label="$t('quests.distantWork.distantWork')"
+                type="gray"
+                :items="distantWork"
+                rules="required"
+                :name="$t('quests.distantWork.distantWork')"
+                data-selector="DISTANT"
+              />
+            </div>
+          </div>
+          <specializations-selector @changeSkills="updateSelectedSkills" />
+          <div class="page__address">
+            <base-field
+              v-model="address"
+              :label="$t('quests.address')"
+              :placeholder="$t('quests.address')"
+              data-selector="ADDRESS-FIELD"
+              mode="icon"
+              :selector="true"
+              rules="required"
+              :name="$t('quests.address')"
+              @selector="getAddressInfo(address)"
+            >
+              <template v-slot:left>
+                <span class="icon-map" />
+              </template>
+              <template v-slot:selector>
+                <div
+                  v-if="addresses.length"
+                  data-selector="ADDRESS-SELECTOR"
+                  class="selector"
+                >
+                  <div class="selector__items">
+                    <div
+                      v-for="(item, i) in addresses"
+                      :key="i"
+                      class="selector__item"
+                      :data-selector="`ACTION-BTN-SELECT-ADDRESS-${item.id}`"
+                      @click="selectAddress(item)"
+                    >
+                      {{ item.formatted }}
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </base-field>
+          </div>
+          <div class="page__input">
+            <base-field
+              v-model="questTitle"
+              data-selector="QUEST-TITLE-FIELD"
+              rules="required"
+              :name="$t('quests.questTitle')"
+              :placeholder="$t('quests.questTitle')"
+            />
+          </div>
+          <div class="page__input">
+            <textarea
+              id="textarea"
+              v-model="textarea"
+              rules="required"
+              data-selector="QUEST-DESC-TEXTAREA"
+              class="page__textarea"
+              :placeholder="$t('quests.questDesc')"
+            />
+          </div>
+          <div class="page upload__container">
+            <div class="upload__title">
+              {{ $t('quests.uploadMaterials') }}
+            </div>
+            <files-uploader
+              :multiple="true"
+              :limit="10"
+              :limit-bytes="10485760"
+              :limit-bytes-video="10485760"
+              :accept="'image/png, image/jpg, image/jpeg, video/mp4'"
+              @change="updateFiles"
+            />
+          </div>
+          <div class="upload btn btn__container btn__container_right">
+            <div class="btn__create">
+              <base-btn
+                data-selector="CREATE-A-QUEST"
+                :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
+                @click="handleSubmit(toRiseViews)"
+              >
+                {{ $t('meta.createAQuest') }}
+              </base-btn>
+            </div>
+          </div>
+        </div>
+        <div
+          v-if="step === 2"
+          data-selector="PAGE-CREATE-QUEST-STEP-2"
+          class="page"
+        >
+          <div class="page btn-container btn-container__left">
+            <div class="btn-container__btn_back">
+              <base-btn
+                mode="back"
+                data-selector="PREVIOUS-STEP"
+                @click="goBack"
+              >
+                {{ $t('meta.btns.back') }}
+                <template v-slot:left>
+                  <span class="icon-chevron_big_left" />
+                </template>
+              </base-btn>
+            </div>
+          </div>
+          <div class="page page__raising">
+            {{ $t('raising-views.raisingViews') }}
+          </div>
+          <div class="page period">
+            <h3 class="period__choose">
+              {{ $t('raising-views.choosePeriod') }}
+            </h3>
+            <div class="period__container">
+              <div
+                v-for="(item, i) in periodTabs"
+                :key="i"
+                :data-selector="`ACTION-BTN-SWITCH-PERIOD-${i}`"
+                class="period__period"
+                :class="{'period__period_active': period === item.number}"
+                @click="switchPeriod(item, i)"
+              >
+                <h2
+                  class="period__title"
+                  :class="{'period__title_active': period === item.number}"
+                >
+                  {{ item.title }}
+                </h2>
+              </div>
+            </div>
+
+            <div class="period level">
+              <div class="level__title">
+                {{ $t('raising-views.chooseLevel') }}
+              </div>
+              <div
+                v-if="period"
+                class="level__container"
+              >
+                <div
+                  v-for="(item, i) in periods(period)"
+                  :key="i"
+                  :data-selector="`ACTION-BTN-SWITCH-PERIOD-LEVEL-${i}`"
+                  class="level__card"
+                  @click="selectRadio(i)"
+                >
+                  <div class="level__option">
+                    <input
+                      :ref="`radio${i}`"
+                      name="higherLevel"
+                      type="radio"
+                      class="radio__input"
+                      :value="item.cost"
+                      @input="selectRadio(i)"
+                    >
+                  </div>
+                  <div class="level card">
+                    <div
+                      class="card__level"
+                      :class="cardStatus(item)"
+                    >
+                      {{ item.level }}
+                    </div>
+                    <div class="card__desc">
+                      {{ item.desc }}
+                    </div>
+                  </div>
+                  <div class="cost__container">
+                    <div class="card__cost">
+                      {{ item.cost }}$
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="btn-container">
+              <div class="btn-container__btn">
+                <base-btn
+                  mode="outline"
+                  data-selector="ACTION-BTN-SKIP-AND-END"
+                  @click="createQuest"
+                >
+                  {{ $t('meta.skipAndEnd') }}
+                </base-btn>
+              </div>
+              <div class="btn-container__btn">
+                <base-btn
+                  :disabled="ads.currentAdPrice === ''"
+                  data-selector="ACTION-BTN-PAY"
+                  @click="showPaymentModal"
+                >
+                  {{ $t('meta.pay') }}
+                </base-btn>
+              </div>
+            </div>
+          </div>
+        </div>
+      </validation-observer>
+    </div>
     <validation-observer
       v-slot="{handleSubmit, validated, passed, invalid}"
       class="main__body page"
@@ -370,6 +625,7 @@ export default {
 
       & .icon-chevron_big_left {
         font-weight: 800;
+        color: $black600;
         font-size: 24px;
       }
     }

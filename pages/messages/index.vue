@@ -136,6 +136,7 @@
       >
         <base-btn
           :selector="`${$t('chat.loadMore')}`"
+          data-selector="LOAD-MORE-CHATS"
           @click="loadMoreChats"
         >
           {{ $t('chat.loadMore') }}

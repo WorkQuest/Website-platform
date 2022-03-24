@@ -8,8 +8,9 @@
         <base-field
           v-model="oldTokens"
           class="content__field"
-          :placeholder="3500"
-          :type="'number'"
+          placeholder="3500"
+          data-selector="OLD-TOKENS"
+          type="number"
           :label="$t('mining.swapTokens.oldTokens')"
           rules="required|decimal|min_value:0.00001"
           :name="$t('mining.swapTokens.oldTokens')"
@@ -21,6 +22,7 @@
             <base-btn
               mode="max"
               class="max__button"
+              data-selector="MAX"
               :disabled="balance === 0"
               @click="maxBalance()"
             >
@@ -37,7 +39,8 @@
         <base-field
           v-model="newTokens"
           class="content__field"
-          :placeholder="3500"
+          placeholder="3500"
+          data-selector="NEW-TOKENS"
           :label="$t('mining.swapTokens.newTokens')"
           :disabled="true"
           :name="$t('mining.swapTokens.newTokens')"
@@ -45,7 +48,7 @@
         <div class="content__container">
           <base-btn
             mode="outline"
-            selector="CANCEL"
+            data-selector="CANCEL"
             :disabled="statusBusy"
             @click="hide()"
           >
@@ -53,7 +56,7 @@
           </base-btn>
           <base-btn
             :disabled="statusBusy || !isConnected"
-            selector="SWAP"
+            data-selector="SWAP"
             @click="handleSubmit(initSwap)"
           >
             {{ $t('mining.swapTokens.swap') }}

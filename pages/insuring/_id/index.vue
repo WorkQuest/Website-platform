@@ -130,6 +130,7 @@
                     <base-btn
                       v-for="(btn, i) in btns"
                       :key="i"
+                      :data-selector="btn.name"
                       :class="btn.class"
                       @click="handleEndVoting(i)"
                     >
@@ -226,6 +227,7 @@
             <div class="btn-cont">
               <base-btn
                 class="btn_bl"
+                data-selector="OPEN-CHAT"
                 @click="changeMobChatVisible()"
               >
                 Open chat

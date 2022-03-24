@@ -35,7 +35,7 @@
         <base-btn
           v-if="respondOnQuest || (questData.response && questData.response.message)"
           v-click-outside="closeMessage"
-          selector="TOGGLE-SHOW-MESSAGE"
+          data-selector="TOGGLE-SHOW-MESSAGE"
           class="message message__btn"
           mode="showYourMessage"
           @click="toggleShowMessage"

@@ -20,6 +20,7 @@
             {{ getCardNumber }}
             <base-btn
               mode="max"
+              data-selector="MAX"
               class="header__button"
             >
               <div
@@ -69,14 +70,14 @@
           <base-btn
             class="buttons__button"
             mode="outline"
-            selector="CANCEL"
+            data-selector="CANCEL"
             @click="hide"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
-            selector="CONFIRM"
+            data-selector="CONFIRM"
             @click="handleSubmit"
           >
             {{ $t('meta.btns.confirm') }}

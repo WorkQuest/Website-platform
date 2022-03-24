@@ -1,4 +1,8 @@
 {
+  "kyc": {
+    "KYC": "KYC",
+    "alreadyVerified": "Your profile already verified!"
+  },
   "meta": {
     "priority": {
       "title": "الأولوية",
@@ -979,6 +983,9 @@
       "withdrawInfo": "Withdrawal info"
     },
     "value": "Value",
+    "generatedWUSD": "???",
+    "choosePeriod": "???",
+    "smallDescriptionForLoan": "???",
     "recipient": "Recipient address",
     "successBuyWUSD": "Successfully purchased WUSD",
     "setTokenPrice": "Setting up {token} price",
@@ -1112,7 +1119,6 @@
     "liquidationFee": "رسوم التصفية",
     "saveCardForNextPayment": "الاحتفاظ بالبطاقة للاستخدام التالي",
     "connectWallet": "ربط المحفظة",
-    "howMuchWusdWouldYouLikeToGenerate": "ما مقدار WUSD الذي ترغب في توليده؟",
     "chooseTheCurrency": "اختر العملة",
     "howMuchETHWouldYouLikeToOpen": "ما مقدار ETH الذي ترغب في فتحه في حسابك؟",
     "howMuchPercentWouldYouLikeToSet": "ما النسبة المئوية التي تريد تحديدها؟",
@@ -1187,7 +1193,10 @@
     "youTryToAttachUnsupportedFileFormat": "You try to attach unsupported file format",
     "incorrectChain": "You choose incorrect chain !",
     "selectToken": "Select token",
-    "txInfo": "Transaction info"
+    "txInfo": "Transaction info",
+    "registration": "Are you sure to registration this users?",
+    "claimConfirm": "Are you confirm the action of the claim?",
+    "until": "Until"
   },
   "ui": {
     "jobQuestors": "أصحاب الوظائف",
@@ -1496,7 +1505,11 @@
       "txHash": "تجزئة المعاملة",
       "time": "الوقت",
       "amount": "المبلغ",
-      "status": "الحالة"
+      "event": "Event"
+    },
+    "event": {
+      "paid": "Paid",
+      "claimed": "Claimed"
     }
   },
   "pension": {
@@ -1675,9 +1688,14 @@
   "crediting": {
     "lending": "بروتوكول إقراض WorkQuest",
     "templateText": "منصة الإقراض بالتمويل اللامركزي WorkQuest على شبكة Work Net مع أربع أسواق مالية حصرية للأصول المتقلبة",
+    "description": "???",
+    "currentLoan": "???",
+    "currentCredit": "???",
     "marketSize": "حجم السوق",
     "wantToTakeALoan": "هل تريد الحصول على قرض؟",
     "borrow": "استعارة",
+    "myLoans": "???",
+    "refund": "???",
     "openPositions": "المراكز المفتوحة",
     "totalCollateralLocked": "مجموع الضمانات المؤمَّنة",
     "totalWusdDebt": "إجمالي مديونية WUSD",

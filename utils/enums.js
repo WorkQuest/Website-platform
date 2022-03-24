@@ -209,6 +209,7 @@ export const Path = {
   EDIT_QUEST: '/edit-quest',
   COLLATERAL: '/collateral',
   WIKI: '/wiki',
+  RAISED_VIEWS: '/raised-views',
 };
 
 // WALLET
@@ -296,6 +297,27 @@ export const PensionHistoryMethods = Object.freeze({
   Withdraw: 'Withdraw',
   Receive: 'Receive',
 });
+
+export const UserRaiseViewPriceDay = {
+  PLUS: '20',
+  GOLD: '12',
+  SILVER: '9',
+  BRONZE: '7',
+};
+
+export const UserRaiseViewPriceWeek = {
+  PLUS: '35',
+  GOLD: '28',
+  SILVER: '22',
+  BRONZE: '18',
+};
+
+export const UserRaiseViewPriceMonth = {
+  PLUS: '50',
+  GOLD: '35',
+  SILVER: '29',
+  BRONZE: '21',
+};
 
 export const QuestMethods = Object.freeze({
   // Employer
