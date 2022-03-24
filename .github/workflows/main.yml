@@ -56,13 +56,13 @@ jobs:
 
           echo WORKNET_ORACLE=${{ secrets.WORKNET_ORACLE }} >> .env
           echo WORKNET_PENSION_FUND=${{ secrets.WORKNET_PENSION_FUND }} >> .env
+          echo WORKNET_REFERRAL=${{ secrets.WORKNET_REFERRAL }} >> .env
           echo WORKNET_ROUTER=${{ secrets.WORKNET_ROUTER }} >> .env
           echo WORKNET_STAKING_WQT=${{ secrets.WORKNET_STAKING_WQT }} >> .env
           echo WORKNET_STAKING_WUSD=${{ secrets.WORKNET_STAKING_WUSD }} >> .env
           echo WORKNET_WBNB_TOKEN=${{ secrets.WORKNET_WBNB_TOKEN }} >> .env
           echo WORKNET_WETH_TOKEN=${{ secrets.WORKNET_WETH_TOKEN }} >> .env
           echo WORKNET_WQT_TOKEN=${{ secrets.WORKNET_WQT_TOKEN }} >> .env
-          echo WORKNET_REFERRAL=${{ secrets.REFERRAL_ADDRESS }} >> .env
 
       - name: Run generate static task
         run: npm run generate
@@ -128,13 +128,13 @@ jobs:
 
           echo WORKNET_ORACLE=${{ secrets.WORKNET_ORACLE }} >> .env
           echo WORKNET_PENSION_FUND=${{ secrets.WORKNET_PENSION_FUND }} >> .env
+          echo WORKNET_REFERRAL=${{ secrets.WORKNET_REFERRAL }} >> .env
           echo WORKNET_ROUTER=${{ secrets.WORKNET_ROUTER }} >> .env
           echo WORKNET_STAKING_WQT=${{ secrets.WORKNET_STAKING_WQT }} >> .env
           echo WORKNET_STAKING_WUSD=${{ secrets.WORKNET_STAKING_WUSD }} >> .env
           echo WORKNET_WBNB_TOKEN=${{ secrets.WORKNET_WBNB_TOKEN }} >> .env
           echo WORKNET_WETH_TOKEN=${{ secrets.WORKNET_WETH_TOKEN }} >> .env
           echo WORKNET_WQT_TOKEN=${{ secrets.WORKNET_WQT_TOKEN }} >> .env
-          echo WORKNET_REFERRAL=${{ secrets.REFERRAL_ADDRESS }} >> .env
 
       - name: Run generate static task
         run: npm run generate
@@ -200,13 +200,13 @@ jobs:
 
           echo WORKNET_ORACLE=${{ secrets.WORKNET_ORACLE }} >> .env
           echo WORKNET_PENSION_FUND=${{ secrets.WORKNET_PENSION_FUND }} >> .env
+          echo WORKNET_REFERRAL=${{ secrets.WORKNET_REFERRAL }} >> .env
           echo WORKNET_ROUTER=${{ secrets.WORKNET_ROUTER }} >> .env
           echo WORKNET_STAKING_WQT=${{ secrets.WORKNET_STAKING_WQT }} >> .env
           echo WORKNET_STAKING_WUSD=${{ secrets.WORKNET_STAKING_WUSD }} >> .env
           echo WORKNET_WBNB_TOKEN=${{ secrets.WORKNET_WBNB_TOKEN }} >> .env
           echo WORKNET_WETH_TOKEN=${{ secrets.WORKNET_WETH_TOKEN }} >> .env
           echo WORKNET_WQT_TOKEN=${{ secrets.WORKNET_WQT_TOKEN }} >> .env
-          echo WORKNET_REFERRAL=${{ secrets.REFERRAL_ADDRESS }} >> .env
 
       - name: Run generate static task
         run: npm run generate
