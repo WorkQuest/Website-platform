@@ -187,13 +187,7 @@ export default {
     },
     async registration() {
       this.hide();
-      this.SetLoader(true);
-      const res = await this.$store.dispatch('referral/addReferrals', this.userAddress);
-      this.SetLoader(false);
-
-      if (res && res.transactionHash) {
-        this.hide();
-      }
+      await this.$store.dispatch('referral/addReferrals', this.userAddress);
     },
   },
 };
