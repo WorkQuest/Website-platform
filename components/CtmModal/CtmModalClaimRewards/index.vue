@@ -233,6 +233,7 @@ export default {
           subtitle: 'Please click install...',
           button: 'Install',
           type: 'installMetamask',
+          callback: () => window.open('https://metamask.io/download.html'),
         });
       } else {
         localStorage.setItem('metamaskStatus', 'installed');

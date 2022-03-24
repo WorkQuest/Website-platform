@@ -46,7 +46,7 @@
         v-if="options.type === 'installMetamask'"
         class="status__action"
         selector="INSTALL-METAMASK"
-        @click="installMetamask()"
+        @click="handleSubmit()"
       >
         <span
           v-if="options.button"
@@ -62,7 +62,7 @@
         </span>
       </base-btn>
       <div
-        v-if="options.type === 'goToChat'"
+        v-else-if="options.type === 'goToChat'"
         class="button_to-chat"
       >
         <base-btn
@@ -163,9 +163,6 @@ export default {
       this.$router.push(`/messages/${chatId}`);
       this.hide();
     },
-    installMetamask() {
-      window.open('https://metamask.io/download.html');
-    },
     hide() {
       if (this.options.path) this.$router.push(this.options.path);
       this.CloseModal();
@@ -186,8 +183,8 @@ export default {
       }
     },
     async handleSubmit() {
-      this.hide();
       await this.options.callback();
+      this.hide();
     },
   },
 };
