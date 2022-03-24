@@ -76,7 +76,7 @@
         <div class="auth__action">
           <base-btn
             :disabled="isLoading"
-            selector="LOGIN"
+            data-selector="LOGIN"
           >
             {{ $t('meta.login') }}
           </base-btn>

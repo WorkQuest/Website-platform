@@ -13,7 +13,7 @@
       <div class="verification__button">
         <base-btn
           mode="ver"
-          selector="GO-TO-SUMSUB"
+          data-selector="GO-TO-SUMSUB"
           @click="goToSumSub"
         >
           {{ $t('settings.getVerification') }}

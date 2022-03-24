@@ -13,7 +13,7 @@
       </div>
       <base-btn
         class="content__action"
-        selector="AGREE"
+        data-selector="AGREE"
         @click="hide"
       >
         {{ $t('meta.iAgree') }}

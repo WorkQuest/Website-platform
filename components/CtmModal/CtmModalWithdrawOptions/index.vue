@@ -23,7 +23,8 @@
           <div class="grid__body">
             <base-field
               v-model="amount"
-              :placeholder="'0 WUSD'"
+              placeholder="0 WUSD"
+              data-selector="AMOUNT"
               class="grid__input"
               rules="required|decimal"
               :name="$t('modals.amountField')"
@@ -34,6 +35,7 @@
             <div class="grid__field">
               <base-field
                 v-model="dollars"
+                data-selector="DOLLARS"
                 mode="white"
                 :disabled="true"
               />
@@ -47,6 +49,7 @@
             </div>
             <base-field
               v-model="fee"
+              data-selector="FEE"
               mode="white"
               class="body__input"
               :disabled="true"
@@ -73,6 +76,7 @@
               <base-btn
                 mode="add"
                 class="drop__button button"
+                data-selector="SHOW-ADDING-CARD"
                 @click="showAddingCard"
               >
                 <span class="icon-plus_circle_outline button__icon" />
@@ -86,7 +90,7 @@
         <div class="content__buttons buttons">
           <base-btn
             class="buttons__button"
-            selector="CANCEL"
+            data-selector="CANCEL"
             mode="outline"
             @click="hide"
           >
@@ -94,7 +98,7 @@
           </base-btn>
           <base-btn
             class="buttons__button"
-            selector="SUBMIT"
+            data-selector="SUBMIT"
             :disabled="invalid||items.length===0"
             @click="handleSubmit(showTransactionSendModal)"
           >

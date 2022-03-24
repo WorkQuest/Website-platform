@@ -21,7 +21,7 @@
               {{ item }}
               <span
                 class="icon-close_small"
-                data-selector="DELETE-TAG"
+                :data-selector="`DELETE-TAG-${i}`"
                 @click="deleteTag(item)"
               />
             </base-btn>
@@ -63,13 +63,13 @@
         <div class="skills__actions">
           <base-btn
             mode="outline"
-            selector="CLEAR-TAGS"
+            data-selector="CLEAR-TAGS"
             @click="clearTags()"
           >
             {{ $t('meta.btns.reset') }}
           </base-btn>
           <base-btn
-            selector="OK"
+            data-selector="OK"
             @click="hide()"
           >
             {{ $t('meta.btns.ok') }}

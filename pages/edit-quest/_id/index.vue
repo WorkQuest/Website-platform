@@ -39,7 +39,7 @@
             <div class="page__input">
               <base-field
                 v-model="price"
-                :type="'number'"
+                type="number"
                 :label="$t('meta.price')"
                 data-selector="PRICE-FIELD"
                 :placeholder="+0 + currency"
@@ -145,7 +145,7 @@
           <div class="upload btn btn__container btn__container_right">
             <div class="btn__create">
               <base-btn
-                selector="TO-RAISED-VIEWS"
+                data-selector="TO-RAISED-VIEWS"
                 :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
                 @click="handleSubmit(toRiseViews(2))"
               >
@@ -162,7 +162,7 @@
           <div class="page btn-container btn-container__left">
             <div class="btn-container__btn_back">
               <base-btn
-                selector="PREVIOUS-STEP"
+                data-selector="PREVIOUS-STEP"
                 mode="back"
                 @click="clickBackBtnHandler"
               >
@@ -243,7 +243,7 @@
             <div class="btn-container">
               <div class="btn-container__btn">
                 <base-btn
-                  selector="EDIT-QUEST"
+                  data-selector="EDIT-QUEST"
                   mode="outline"
                   @click="editQuest"
                 >
@@ -252,7 +252,7 @@
               </div>
               <div class="btn-container__btn">
                 <base-btn
-                  selector="SHOW-PAYMENT-MODAl"
+                  data-selector="SHOW-PAYMENT-MODAl"
                   :disabled="ads.currentAdPrice === ''"
                   @click="showPaymentModal"
                 >

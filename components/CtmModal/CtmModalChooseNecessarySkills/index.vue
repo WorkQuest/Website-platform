@@ -27,7 +27,7 @@
               <base-btn
                 v-if="!skill.added || skill.added === null"
                 mode="grey"
-                selector="ADD-NEW-SKILL"
+                data-selector="ADD-NEW-SKILL"
                 @click="addNewSkill(currentValue, skill)"
               >
                 <template :v-slot="right">
@@ -39,7 +39,7 @@
               <base-btn
                 v-if="skill.added"
                 mode="grey"
-                selector="DELETE-SKILL"
+                data-selector="DELETE-SKILL"
                 @click="deleteSkill()"
               >
                 <template :v-slot="right">
@@ -55,7 +55,7 @@
             <div class="btn__wrapper">
               <base-btn
                 class="btn__apply"
-                selector="APPLY"
+                data-selector="APPLY"
                 @click="success()"
               >
                 {{ $t('meta.btns.apply') }}
@@ -64,7 +64,7 @@
             <div class="btn__wrapper">
               <base-btn
                 mode="outline"
-                selector="CANCEL"
+                data-selector="CANCEL"
                 class="message__action"
                 @click="hide()"
               >

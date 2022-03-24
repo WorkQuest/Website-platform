@@ -9,7 +9,7 @@
           <div class="btn-container__btn_back">
             <base-btn
               mode="back"
-              selector="PREVIOUS-STEP"
+              data-selector="PREVIOUS-STEP"
               @click="goBack()"
             >
               {{ $t('meta.btns.back') }}

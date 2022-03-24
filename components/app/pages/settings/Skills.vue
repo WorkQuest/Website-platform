@@ -40,7 +40,7 @@
         <div class="skills__save">
           <base-btn
             class="skills__btn"
-            selector="SAVE-CHANGES"
+            data-selector="SAVE-CHANGES"
             @click="$emit('click')"
           >
             {{ $t("meta.btns.save") }}

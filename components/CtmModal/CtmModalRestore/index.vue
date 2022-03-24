@@ -11,6 +11,7 @@
         <base-field
           v-model="emailInput"
           :name="$t('meta.placeholders.email')"
+          data-selector="EMAIL"
           :placeholder="$t('meta.placeholders.email')"
           rules="required|email"
           class="content__input"
@@ -19,7 +20,7 @@
         <base-btn
           class="content__action"
           :disabled="!validated || !passed || invalid"
-          selector="SEND"
+          data-selector="SEND"
           @click="handleSubmit(restore)"
         >
           {{ $t('meta.btns.send') }}

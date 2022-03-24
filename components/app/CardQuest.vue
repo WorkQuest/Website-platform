@@ -141,7 +141,7 @@
             v-if="quest.type !== 3"
             class="card-quest__btn-details"
             mode="borderless-right"
-            :selector="`TO-QUEST-DETAILS-${questIndex}`"
+            :data-selector="`TO-QUEST-DETAILS-${questIndex}`"
             @click="showDetails(quest.id)"
           >
             {{ $t('meta.details') }}

@@ -4,7 +4,7 @@
       <div class="mining-page__header">
         <base-btn
           class="btn"
-          selector="PREVIOUS-STEP"
+          data-selector="PREVIOUS-STEP"
           @click="handleBackToMainMining()"
         >
           <template v-slot:left>
@@ -14,7 +14,7 @@
         </base-btn>
         <base-btn
           v-if="!isConnected"
-          selector="CONNECT-WALLET"
+          data-selector="CONNECT-WALLET"
           mode="light"
           class="mining-page__connect"
           :disabled="statusBusy"
@@ -25,7 +25,7 @@
         <base-btn
           v-else
           mode="light"
-          selector="DISCONNECT-FROM-WALLET"
+          data-selector="DISCONNECT-FROM-WALLET"
           class="mining-page__connect"
           :disabled="statusBusy"
           @click="disconnectFromWallet"
@@ -62,7 +62,7 @@
           >
             <base-btn
               v-if="currentPool === 'BNB'"
-              :selector="`OPEN-SWAP-TOKENS-${$t('mining.swapTokens.title')}`"
+              :data-selector="`OPEN-SWAP-TOKENS-${$t('mining.swapTokens.title')}`"
               class="btn_bl"
               mode="outline"
               :disabled="statusBusy || metamaskStatus === 'notInstalled' || !isConnected"
@@ -72,7 +72,7 @@
             </base-btn>
             <base-btn
               v-if="currentPool === 'ETH'"
-              selector="ADD-LIQUIDITY-ETH"
+              data-selector="ADD-LIQUIDITY-ETH"
               :link="'https://app.uniswap.org/#/add/v2/0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf/ETH'"
               class="btn_bl"
               :disabled="statusBusy"
@@ -81,7 +81,7 @@
             </base-btn>
             <base-btn
               v-if="currentPool === 'BNB'"
-              selector="ADD-LIQUIDITY-BNB"
+              data-selector="ADD-LIQUIDITY-BNB"
               :link="'https://pancakeswap.finance/add/BNB/0xe89508D74579A06A65B907c91F697CF4F8D9Fac7'"
               class="btn_bl"
               :disabled="statusBusy"
@@ -140,7 +140,7 @@
           <div class="info-block third">
             <div class="third__triple">
               <base-btn
-                selector="STAKE"
+                data-selector="STAKE"
                 class="btn_bl"
                 :disabled="!isConnected || statusBusy || disabled"
                 @click="openModalStaking()"
@@ -148,7 +148,7 @@
                 {{ $t('meta.btns.stake') }}
               </base-btn>
               <base-btn
-                selector="UNSTAKE"
+                data-selector="UNSTAKE"
                 class="btn_bl"
                 mode="outline"
                 :disabled="!isConnected || statusBusy || disabled"
@@ -157,7 +157,7 @@
                 {{ $t('meta.btns.unstake') }}
               </base-btn>
               <base-btn
-                selector="CLAIM-REWARDS"
+                data-selector="CLAIM-REWARDS"
                 mode="outline"
                 class="bnt__claim"
                 :disabled="!isConnected || statusBusy || disabled"

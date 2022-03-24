@@ -14,7 +14,8 @@
               <base-field
                 v-model="withdraw"
                 class="field__body"
-                :placeholder="'1000 WQT'"
+                data-selector="WITHDRAWAL-AMOUNT"
+                placeholder="1000 WQT"
                 rules="required|decimal"
                 :name="$t('modals.withdrawalAmountField')"
               />
@@ -62,14 +63,14 @@
           <base-btn
             class="buttons__button"
             mode="outline"
-            selector="CANCEL"
+            data-selector="CANCEL"
             @click="hide()"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
-            selector="REMOVE-LIQUIDITY"
+            data-selector="REMOVE-LIQUIDITY"
             :disabled="!validated || !passed || invalid"
             @click="handleSubmit(hide)"
           >

@@ -29,7 +29,8 @@
           <div class="ctm-modal__content-field">
             <base-field
               v-model="amountInput"
-              :placeholder="'0 WUSD'"
+              placeholder="0 WUSD"
+              data-selector="AMOUNT1"
               :label="$t('modals.amount')"
               rules="min_value:0|numeric|required"
               name="Amount"
@@ -44,7 +45,8 @@
             <div class="ctm-modal__content-field">
               <base-field
                 v-model="amountInput"
-                :placeholder="'0 WUSD'"
+                placeholder="0 WUSD"
+                data-selector="AMOUNT2"
                 :label="$t('modals.amount')"
                 rules="min_value:0|numeric|required"
                 name="Amount"
@@ -63,7 +65,8 @@
             <base-field
               id="cardNumber_input"
               v-model="cardNumberInput"
-              :placeholder="'0000 0000 0000 0000'"
+              placeholder="0000 0000 0000 0000"
+              data-selector="CARD-NUMBER"
               :label="$t('modals.numberOfCard')"
               rules="required|numberOfCard"
               name="Card number"
@@ -73,7 +76,8 @@
             <div class="ctm-modal__content-field">
               <base-field
                 v-model="dateInput"
-                :placeholder="'02/24'"
+                placeholder="02/24"
+                data-selector="CARD-DATE"
                 :label="$t('modals.date')"
                 rules="required"
                 name="Date"
@@ -82,7 +86,8 @@
             <div class="ctm-modal__content-field">
               <base-field
                 v-model="cvvInput"
-                :placeholder="'242'"
+                placeholder="242"
+                data-selector="CARD-CVV"
                 :label="$t('modals.cvv')"
                 rules="required|cvv"
                 name="CVV"
@@ -129,7 +134,7 @@
             >
               <base-btn
                 class="message__action"
-                selector="NEXT-STEP"
+                data-selector="NEXT-STEP"
                 :disabled="!validated || !passed || invalid"
                 @click="handleSubmit(nextStep)"
               >
@@ -141,7 +146,7 @@
               class="step__container"
             >
               <base-btn
-                selector="CONFIRM"
+                data-selector="CONFIRM"
                 class="message__action"
                 :disabled="invalid"
                 @click="handleSubmit(nextStep)"
@@ -155,7 +160,7 @@
             >
               <base-btn
                 class="message__action"
-                selector="BUY"
+                data-selector="BUY"
                 @click="hide()"
               >
                 {{ $t('meta.buyWUSD') }}
@@ -165,7 +170,7 @@
           <div class="btn__wrapper">
             <base-btn
               mode="outline"
-              selector="CANCEL"
+              data-selector="CANCEL"
               class="message__action"
               @click="hide()"
             >
@@ -204,8 +209,7 @@ export default {
       this.CloseModal();
     },
     nextStep() {
-      // eslint-disable-next-line no-plusplus
-      this.step++;
+      this.step += 1;
     },
     showSuccessCopied() {
       this.ShowModal({
