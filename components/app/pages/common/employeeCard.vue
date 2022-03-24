@@ -2,7 +2,7 @@
   <div
     class="card"
     :data-selector="`COMPONENT-EMPLOYEE-CARD-${user.id}`"
-    :class="raiseViews[user.raiseView.type]"
+    :class="raiseViews[user.raiseView && user.raiseView.type]"
     @click="$emit('click')"
   >
     <div class="card__header">
@@ -70,6 +70,11 @@ export default {
       type: Object,
       default: () => {},
     },
+  },
+  data() {
+    return {
+      raiseType: '',
+    };
   },
   computed: {
     userName() {
