@@ -1,4 +1,8 @@
 {
+  "kyc": {
+    "KYC": "KYC",
+    "alreadyVerified": "Your profile already verified!"
+  },
   "meta": {
     "priority": {
       "title": "Selecionar prioridade",
@@ -979,6 +983,9 @@
       "withdrawInfo": "Withdrawal info"
     },
     "value": "Value",
+    "generatedWUSD": "???",
+    "choosePeriod": "???",
+    "smallDescriptionForLoan": "???",
     "recipient": "Recipient address",
     "successBuyWUSD": "Successfully purchased WUSD",
     "setTokenPrice": "Setting up {token} price",
@@ -1112,7 +1119,6 @@
     "liquidationFee": "Taxa de liquidação",
     "saveCardForNextPayment": "Guardar o cartão para a próxima utilização",
     "connectWallet": "Ligar wallet",
-    "howMuchWusdWouldYouLikeToGenerate": "Quanto WUSD pretende gerar?",
     "chooseTheCurrency": "Escolha a moeda",
     "howMuchETHWouldYouLikeToOpen": "Com que montante de ETH gostaria de abrir a sua conta?",
     "howMuchPercentWouldYouLikeToSet": "Qual a percentagem que gostaria de fixar?",
@@ -1675,9 +1681,14 @@
   "crediting": {
     "lending": "Protocolo de Empréstimo WorkQuest",
     "templateText": "Plataforma de empréstimo WorkQuest DeFi na rede Work Net com quatro mercados financeiros exclusivos para ativos voláteis",
+    "description": "???",
+    "currentLoan": "???",
+    "currentCredit": "???",
     "marketSize": "Tamanho do mercado",
     "wantToTakeALoan": "Quer contrair um empréstimo?",
     "borrow": "Pedido de empréstimo",
+    "myLoans": "???",
+    "refund": "???",
     "openPositions": "Posições abertas",
     "totalCollateralLocked": "Garantia total bloqueada",
     "totalWusdDebt": "Dívida total de WUSD",

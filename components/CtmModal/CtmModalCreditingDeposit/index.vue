@@ -10,10 +10,7 @@
       >
         <div class="content__grid">
           <div class="content__body">
-            <div
-              v-if="userRole==='employer'"
-              class="content__checkpoints checkpoints"
-            >
+            <div class="content__checkpoints checkpoints">
               <label
                 for="checkpoints__main"
                 class="checkpoints__label"
@@ -52,22 +49,21 @@
               <base-field
                 v-model="quantity"
                 class="content__input"
-                :placeholder="'1000 ETH'"
+                data-selector="TOKEN-VALUE"
+                placeholder="1000 ETH"
                 rules="required|decimal"
                 :name="$t('modals.quantityField')"
               />
             </div>
             <div class="content__field">
               <div class="content__label">
-                {{ $t('modals.howMuchWusdWouldYouLikeToGenerate') }}
+                {{ $t('modals.choosePeriod') }}
               </div>
-              <base-field
-                id="amountOfPercents_input"
-                v-model="generate"
-                class="content__input"
-                :placeholder="'10 ETH'"
-                rules="required|decimal"
-                :name="$t('modals.generateField')"
+              <base-dd
+                v-model="date"
+                class="grid__drop"
+                data-selector="DATE-DD"
+                :items="dates"
               />
             </div>
             <div class="content__field">
@@ -124,6 +120,7 @@ export default {
       selCurrencyID: 1,
       quantity: '',
       generate: '',
+      date: 0,
       checkpoints: [
         {
           name: this.$t('meta.coins.bnb'),
@@ -163,6 +160,10 @@ export default {
           title: this.$t('modals.liquidationPenalty'),
           subtitle: this.$tc('meta.units.percentsCount', 0),
         },
+        {
+          title: this.$t('modals.generatedWUSD'),
+          subtitle: this.$tc('meta.coins.count.WUSDCount', 0),
+        },
       ],
     };
   },
@@ -171,6 +172,15 @@ export default {
       options: 'modals/getOptions',
       userRole: 'user/getUserRole',
     }),
+    dates() {
+      return [
+        this.$tc('meta.units.days', 7),
+        this.$tc('meta.units.days', 14),
+        this.$tc('meta.units.days', 30),
+        this.$tc('meta.units.days', 90),
+        this.$tc('meta.units.days', 180),
+      ];
+    },
   },
   methods: {
     hide() {
