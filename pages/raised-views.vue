@@ -128,6 +128,7 @@ export default {
         currentAdPrice: '',
       },
       period: 1,
+      type: '',
     };
   },
   computed: {
@@ -262,6 +263,13 @@ export default {
         4: 'card__level_bronze',
       };
     },
+    duration() {
+      return {
+        1: 1,
+        2: 7,
+        3: 30,
+      };
+    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -275,10 +283,12 @@ export default {
       for (let i = 0; i < Object.keys(this.$refs).filter((el) => el.match(/radio/g)).length; i += 1) {
         this.$refs[`radio${i}`][0].checked = false;
         this.ads.currentAdPrice = '';
+        this.type = '';
         this.$refs[`card${i}`][0].classList.remove(this.cardActive[i + 1]);
       }
       this.$refs[`radio${idx}`][0].checked = true;
       this.ads.currentAdPrice = this.$refs[`radio${idx}`][0].value;
+      this.type = item.code - 1;
       this.$refs[`card${idx}`][0].classList.add(this.cardActive[item.code]);
     },
     switchPeriod(item) {
@@ -293,6 +303,8 @@ export default {
       this.ShowModal({
         key: modals.paymentOptions,
         step: 1,
+        type: this.type,
+        duration: this.duration[this.period],
       });
     },
   },
@@ -477,7 +489,7 @@ export default {
   &__period {
     color: $black800;
     background: $white;
-    padding: 12px 88px;
+    padding: 12px 0;
     border-radius: 6px;
     transition: .5s;
     text-align: center;
@@ -513,4 +525,41 @@ export default {
   font-size: 25px;
 }
 
+@include _1199 {
+  .main__body {
+    padding: 0 20px;
+  }
+}
+@include _767 {
+  .radio__input{
+    margin: 0 10px;
+  }
+  .card__cost{
+    padding-right: 10px;
+  }
+}
+@include _480{
+  .period{
+    &__container{
+      flex-direction: column;
+    }
+    &__period{
+      margin-bottom: 10px;
+      &:last-child{
+        margin-bottom: 0;
+      }
+  }
+    &__btn-container{
+      flex-direction: column;
+      width: 100%;
+    }
+  }
+  .btn-container__btn{
+    width: 100%;
+    margin-bottom: 10px;
+    &:last-child{
+      margin-bottom: 0;
+    }
+  }
+}
 </style>
