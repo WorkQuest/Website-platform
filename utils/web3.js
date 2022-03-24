@@ -7,7 +7,6 @@ import * as abi from '~/abi/abi';
 import {
   Chains, ChainsId, ChainsIdByChainNumber, NetworksData, StakingTypes,
 } from '~/utils/enums';
-import { WQBridge } from '~/abi/abi';
 
 let bscRpcContract = null;
 let web3 = null;
@@ -30,13 +29,11 @@ const isProd = process.env.PROD === 'true';
 export const getAccountAddress = () => account?.address;
 export const getAccount = () => account;
 
-export function showToast(title, text, variant) {
-  store.dispatch('main/showToast', {
-    title,
-    text,
-    variant,
-  }, { root: true });
-}
+export const showToast = (title, text, variant) => store.dispatch('main/showToast', {
+  title,
+  text,
+  variant,
+}, { root: true });
 
 export const success = (res) => ({
   ok: true,
@@ -580,32 +577,6 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
     console.log(e);
     showToast('Swapping error', `${e.message}`, 'danger');
     return error(500, 'stake error', e);
-  }
-};
-
-export const redeemSwap = async (props) => {
-  const { signData, chainTo } = props;
-  let bridgeAddress;
-  if (chainTo === 2) {
-    bridgeAddress = process.env.ETHEREUM_BRIDGE;
-  } else if (chainTo === 3) {
-    bridgeAddress = process.env.BSC_BRIDGE;
-  } else if (chainTo === 1) {
-    bridgeAddress = process.env.WORKNET_BRIDGE;
-  }
-  try {
-    showToast('Redeeming', 'Redeem...', 'success');
-    const payload = {
-      abi: abi.WQBridge,
-      address: bridgeAddress,
-      data: signData,
-      userAddress: signData[3],
-    };
-    return await sendTransaction('redeem', payload);
-  } catch (e) {
-    console.log(e);
-    showToast('Redeeming', `${e.message}`, 'warning');
-    return error(500, 'redeem error', e);
   }
 };
 

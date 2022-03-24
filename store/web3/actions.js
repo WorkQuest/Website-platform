@@ -16,7 +16,6 @@ import {
   initStackingContract,
   initWeb3,
   initMetaMaskWeb3,
-  redeemSwap,
   showToast,
   staking,
   unStaking,
@@ -262,9 +261,6 @@ export default {
   },
   async goToChain({ commit }, { chain }) {
     return await goToChain(chain);
-  },
-  async redeemSwap({ commit }, payload) {
-    return await redeemSwap(payload);
   },
   getAccountAddress() {
     return getAccountAddress();

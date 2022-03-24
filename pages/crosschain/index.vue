@@ -169,6 +169,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import modals from '~/store/modals/modals';
 import { Chains } from '~/utils/enums';
+import { SwapAddresses } from '~/utils/bridge-constants';
 
 export default {
   name: 'Crosschain',
@@ -238,21 +239,9 @@ export default {
     },
     addresses() {
       return [
-        {
-          icon: require('~/assets/img/ui/ethereum.svg'),
-          title: this.$t('meta.coins.eth'),
-          chain: Chains.ETHEREUM,
-        },
-        {
-          icon: require('~/assets/img/ui/bnb_yellow.svg'),
-          title: this.$t('meta.coins.bsc'),
-          chain: Chains.BINANCE,
-        },
-        {
-          icon: require('~/assets/img/ui/WQT.png'),
-          chain: Chains.WORKNET,
-          title: this.$t('meta.coins.wqt'),
-        },
+        SwapAddresses.get(Chains.ETHEREUM),
+        SwapAddresses.get(Chains.BINANCE),
+        SwapAddresses.get(Chains.WORKNET),
       ];
     },
   },
@@ -285,6 +274,7 @@ export default {
     ...mapActions({
       fetchSwaps: 'bridge/fetchMySwaps',
       resetSwaps: 'bridge/resetMySwaps',
+      redeem: 'bridge/redeemSwap',
 
       connectWallet: 'web3/connect',
       disconnectWallet: 'web3/disconnect',
@@ -335,17 +325,17 @@ export default {
       if (localStorage.getItem('isMetaMask') === 'true') {
         await this.checkMiningPoolId(data.chain);
       }
-      const redeemObj = await this.$store.dispatch('web3/redeemSwap', {
+      const result = await this.redeem({
         signData: data.signData,
         chainFrom: data.chainFrom,
         chainTo: data.chainTo,
       });
-      await this.swapsTableData();
       this.ShowModal({
         key: modals.status,
-        img: redeemObj.code === 500 ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
-        title: redeemObj.code === 500 ? this.$t('modals.redeem.fail') : this.$t('modals.redeem.success'),
+        img: require(`~/assets/img/ui/${result.code === 500 ? 'warning' : 'success'}.svg`),
+        title: this.$t(`modals.redeem.${result.code === 500 ? 'fail' : 'success'}`),
       });
+      await this.swapsTableData();
       this.SetLoader(false);
     },
 
@@ -356,22 +346,18 @@ export default {
         const { addresses, sourceAddressInd } = this;
         switchPoolStatus = await this.checkMiningPoolId(addresses[sourceAddressInd].chain);
       }
-      if (switchPoolStatus) {
+      if (switchPoolStatus || switchPoolStatus.ok) {
         this.ShowModal({
           key: modals.swap,
           crosschainId: this.targetAddressInd,
           fromChain: this.sourceAddressInd,
           toChain: this.targetAddressInd,
         });
-        // await this.$store.dispatch('web3/connect', { chain: chainName });
       } else {
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/warning.svg'),
           title: this.$t('modals.transactionFail'),
-          recipient: '',
-          txHash: '',
-          subtitle: '',
         });
       }
       this.SetLoader(false);
