@@ -27,6 +27,7 @@
               <base-textarea
                 v-model="textArea"
                 class="content__textarea"
+                data-selector="MESSAGE"
                 :placeholder="$t('meta.typeYourMessage')"
                 rules="required|min:1|max:600"
                 name="review"
@@ -37,7 +38,7 @@
             <div class="buttons__wrapper">
               <base-btn
                 class="buttons__action"
-                selector="SEND-REVIEW-FOR-USER"
+                data-selector="SEND-REVIEW-FOR-USER"
                 :disabled="!valid"
                 @click="handleSubmit(sendReviewForUser)"
               >
@@ -46,7 +47,7 @@
             </div>
             <div class="buttons__wrapper">
               <base-btn
-                selector="CANCEL"
+                data-selector="CANCEL"
                 class="buttons__action"
                 mode="outline"
                 @click="hide"

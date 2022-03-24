@@ -38,12 +38,14 @@
           <div class="btn-group_exp">
             <base-btn
               class="btn_bl"
+              data-selector="OPEN-DEPOSIT"
               @click="openOpenADepositModal()"
             >
               {{ $t('saving.deposit') }}
             </base-btn>
             <base-btn
               class="btn_bl"
+              data-selector="OPEN-WITHDRAW"
               @click="openWithdrawAboutModal()"
             >
               {{ $t('meta.withdraw') }}

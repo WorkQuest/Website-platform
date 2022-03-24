@@ -14,7 +14,7 @@
       </div>
       <base-btn
         class="cardAdded__action"
-        selector="OK"
+        data-selector="OK"
         @click="showOptions"
       >
         {{ $t('meta.btns.ok') }}

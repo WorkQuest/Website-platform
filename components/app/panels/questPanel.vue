@@ -1,7 +1,7 @@
 <template>
   <div
     class="user"
-    :data-selector="`COMPONENT-QUEST-PANEL`"
+    data-selector="COMPONENT-QUEST-PANEL"
   >
     <div class="user__top">
       <div class="user__container">
@@ -39,7 +39,7 @@
             <base-btn
               v-else
               mode="share-btn"
-              selector="SHARE-USER-PROFILE"
+              data-selector="SHARE-USER-PROFILE"
               @click="shareModal()"
             />
           </div>

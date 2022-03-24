@@ -26,7 +26,8 @@
               <base-field
                 v-model.lazy="amount"
                 type="number"
-                :placeholder="'0,05'"
+                data-selector="AMOUNT"
+                placeholder="0,05"
                 class="grid__input"
                 rules="required|decimal|decimalPlaces:18|min_value:0.00001"
                 :name="$t('modals.amountField')"
@@ -38,7 +39,7 @@
                   <base-btn
                     mode="max"
                     class="max__button"
-                    selector="SET-MAX-VAL"
+                    data-selector="MAX"
                     @click="setMaxValue()"
                   >
                     <span class="max__text">{{ $t('modals.maximum') }}</span>
@@ -56,6 +57,7 @@
             <base-field
               v-model="account.address"
               class="body__input"
+              data-selector="BINANCE-ADDRESS"
               :disabled="true"
               placeholder="Enter binance address"
               :name="$t('modals.recepientAddressField')"
@@ -66,14 +68,14 @@
           <base-btn
             class="buttons__button"
             mode="outline"
-            selector="CANCEL"
+            data-selector="CANCEL"
             @click="hide"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
-            selector="CREATE-SWAP"
+            data-selector="CREATE-SWAP"
             @click="handleSubmit(showSwapInfoModal)"
           >
             {{ $t('modals.createSwap') }}

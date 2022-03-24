@@ -10,8 +10,9 @@
             <base-field
               id="amount_input"
               v-model="amount"
+              data-selector="AMOUNT-WUSD"
               :label="$t('modals.amount')"
-              :placeholder="'0 WUSD'"
+              placeholder="0 WUSD"
               rules="min_value:0|required"
               name="Amount"
             />
@@ -29,8 +30,9 @@
           <base-field
             id="cardNumber_input"
             v-model="cardNumber"
+            data-selector="CARD-NUMBER"
             :label="$t('modals.numberOfCard')"
-            :placeholder="'1234 1234 1234 1234'"
+            placeholder="1234 1234 1234 1234"
             rules="required|numberOfCard"
             name="Card number"
           />
@@ -41,7 +43,8 @@
               id="date_input"
               v-model="date"
               :label="$t('modals.cardDate')"
-              :placeholder="'02/24'"
+              data-selector="CARD-DATE"
+              placeholder="02/24"
               name="date"
               rules="required"
             />
@@ -51,7 +54,8 @@
               id="cvv_input"
               v-model="cvv"
               :label="$t('modals.cvv')"
-              :placeholder="'242'"
+              data-selector="CARD-CVV"
+              placeholder="242"
               rules="required|cvv"
               name="CVV"
             />
@@ -68,14 +72,14 @@
           <div class="btn-group">
             <base-btn
               class="btn"
-              selector="CANCEL"
+              data-selector="CANCEL"
               @click="hide()"
             >
               {{ $t('meta.btns.cancel') }}
             </base-btn>
             <base-btn
               class="btn_bl"
-              selector="CONFIRM"
+              data-selector="CONFIRM"
               :disabled="!validated || !passed || invalid"
               @click="handleSubmit(showTransactionSendModal)"
             >

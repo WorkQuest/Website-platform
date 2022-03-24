@@ -13,7 +13,7 @@
         <div class="header__right">
           <base-btn
             v-if="!isConnected"
-            selector="CONNECT-WALLET"
+            data-selector="CONNECT-WALLET"
             mode="light"
             class="header__btn header__btn_connect"
             :disabled="statusBusy"
@@ -24,7 +24,7 @@
           <base-btn
             v-else
             mode="light"
-            selector="DISCONNECT-FROM-WALLET"
+            data-selector="DISCONNECT-FROM-WALLET"
             class="header__btn header__btn_disconnect"
             :disabled="statusBusy"
             @click="disconnectFromWallet"
@@ -80,7 +80,7 @@
           </div>
           <div class="info-block__btns-cont">
             <base-btn
-              selector="SHOW-SWAP-MODAL"
+              data-selector="SHOW-SWAP-MODAL"
               :disabled="metamaskStatus === 'notInstalled' || !isConnected"
               @click="showSwapModal"
             >
@@ -132,6 +132,7 @@
                     v-clipboard:success="ClipboardSuccessHandler"
                     v-clipboard:error="ClipboardErrorHandler"
                     type="button"
+                    data-selector="COPY-BTN"
                     @click="doCopy"
                   >
                     <span class="icon-copy" />
@@ -151,7 +152,7 @@
               <template #cell(redeem)="el">
                 <div class="table__value table__value_blue">
                   <base-btn
-                    selector="REDEEM"
+                    data-selector="REDEEM"
                     class="btn__redeem"
                     :class="!el.item.status ? 'btn__redeem_disabled' : ''"
                     mode="outline"

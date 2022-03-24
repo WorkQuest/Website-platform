@@ -4,6 +4,7 @@
       <div class="crediting__header">
         <base-btn
           class="btn"
+          data-selector="BACK-TO-CREDITING"
           @click="handleBackToCrediting()"
         >
           <template v-slot:left>
@@ -54,6 +55,7 @@
               <base-btn
                 v-for="(button, key) in data.buttons"
                 :key="key"
+                :data-selector="button.title.toUpperCase()"
                 :mode="button.mode"
                 @click="openModal(button.action)"
               >
