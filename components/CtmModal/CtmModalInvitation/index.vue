@@ -90,6 +90,7 @@ export default {
       options: 'modals/getOptions',
       userData: 'user/getUserData',
       availableQuests: 'quests/getAvailableQuests',
+      chatInfoInviteOnQuest: 'quests/getChatInfoInviteOnQuest',
     }),
   },
   methods: {
@@ -115,9 +116,15 @@ export default {
         img: require('~/assets/img/ui/inviteSend.svg'),
         title: this.$t('modals.titles.inviteSend'),
         subtitle: '',
-        type: 'goToChat',
         button: this.$t('meta.btns.goToChat'),
+        submitMode: 'agree',
+        callback: () => this.goToChat(),
       });
+    },
+    goToChat() {
+      const chatId = this.chatInfoInviteOnQuest.id;
+      this.$router.push(`/messages/${chatId}`);
+      this.hide();
     },
   },
 };

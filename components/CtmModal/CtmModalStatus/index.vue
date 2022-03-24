@@ -42,28 +42,7 @@
       >
         {{ $t('modals.transactionCheck') }}
       </a>
-      <div
-        v-else-if="options.type === 'goToChat'"
-        class="button_to-chat"
-      >
-        <base-btn
-          class="status__action"
-          mode="agree"
-          selector="GO-TO-CHAT"
-          @click="goToChat()"
-        >
-          <span
-            v-if="options.button"
-            class="status__text"
-          >
-            {{ options.button }}
-          </span>
-        </base-btn>
-      </div>
-      <div
-        v-else-if="options.type === 'registration'"
-        class="status__wrap"
-      >
+      <div class="status__wrap">
         <div v-if="options.cancel">
           <base-btn
             class="status__btn"
@@ -76,37 +55,28 @@
             </span>
           </base-btn>
         </div>
-        <div v-if="options.button">
+        <div>
           <base-btn
             class="status__btn"
-            selector="REGISTRATION"
+            :mode="options.submitMode"
+            selector="SUBMIT"
             @click="handleSubmit()"
           >
-            <span class="status__text">
+            <span
+              v-if="options.button"
+              class="status__text"
+            >
               {{ options.button }}
+            </span>
+            <span
+              v-else
+              class="status__text"
+            >
+              {{ $t('meta.btns.ok') }}
             </span>
           </base-btn>
         </div>
       </div>
-      <base-btn
-        v-else
-        class="status__action"
-        selector="SUBMIT"
-        @click="handleSubmit()"
-      >
-        <span
-          v-if="options.button"
-          class="status__text"
-        >
-          {{ options.button }}
-        </span>
-        <span
-          v-else
-          class="status__text"
-        >
-          {{ $t('meta.btns.ok') }}
-        </span>
-      </base-btn>
     </div>
   </ctm-modal-box>
 </template>
@@ -124,7 +94,6 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
-      chatInfoInviteOnQuest: 'quests/getChatInfoInviteOnQuest',
       userAddress: 'user/getUserWalletAddress',
     }),
   },
@@ -139,11 +108,6 @@ export default {
     }
   },
   methods: {
-    goToChat() {
-      const chatId = this.chatInfoInviteOnQuest.id;
-      this.$router.push(`/messages/${chatId}`);
-      this.hide();
-    },
     hide() {
       if (this.options.path) this.$router.push(this.options.path);
       this.CloseModal();
