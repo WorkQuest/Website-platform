@@ -194,7 +194,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { UserRole, UserRating } from '~/utils/enums';
+import moment from 'moment';
+import { UserRole, UserRating, Path } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -322,17 +323,16 @@ export default {
       });
     },
     toRaisedViews() {
-      this.$router.push('/raised-views');
       if (this.userData.raiseView) {
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/questAgreed.svg'),
           title: this.$t('quests.active'),
           // TODO заменить потом на endedAt
-          subtitle: new Date(this.userData.raiseView.createdAt).toLocaleDateString(this.$i18n.locale),
+          subtitle: moment(this.userData.raiseView.createdAt).format('Do MMMM YYYY, hh:mm a'),
         });
       } else {
-        this.$router.push('/raised-views');
+        this.$router.push(Path.RAISED_VIEWS);
       }
     },
     sendInvite() {

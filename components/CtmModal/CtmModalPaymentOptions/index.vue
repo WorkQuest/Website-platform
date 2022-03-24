@@ -112,6 +112,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'ModalPaymentOptions',
@@ -162,15 +163,22 @@ export default {
         branch: 'payment',
       });
     },
+    goBackToProfile() {
+      if (window.history.length > 2) {
+        this.$router.go(-1);
+      } else {
+        this.$router.push(Path.PROFILE);
+      }
+    },
     async showRaiseLevel() {
       const result = await this.$store.dispatch('user/payUserRaisedView', { duration: this.options.duration, type: this.options.type });
       this.ShowModal({
         key: modals.status,
         img: result ? require('~/assets/img/ui/questAgreed.svg') : require('~/assets/img/ui/error.svg'),
-        title: result ? this.$t('yourLevelHasBeenRaised') : this.$t('modals.errors.error'),
+        title: result ? this.$t('modals.yourLevelHasBeenRaised') : this.$t('modals.errors.error'),
       });
       if (result) {
-        this.$router.go(-1);
+        this.goBackToProfile();
       }
     },
   },

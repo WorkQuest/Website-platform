@@ -96,9 +96,6 @@ export default {
       };
     },
   },
-  mounted() {
-    console.log(this.user);
-  },
   methods: {
     ratingStatistic(ratingStatistic) {
       return ratingStatistic?.status || 'noStatus';

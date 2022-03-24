@@ -95,7 +95,6 @@
               <base-btn
                 mode="outline"
                 data-selector="ACTION-BTN-SKIP-AND-END"
-                class="test"
                 @click="goBack()"
               >
                 {{ $t('meta.skipAndEnd') }}
@@ -105,7 +104,6 @@
               <base-btn
                 data-selector="ACTION-BTN-PAY"
                 :disabled="ads.currentAdPrice === ''"
-                class="test"
                 @click="showPaymentModal"
               >
                 {{ $t('meta.pay') }}
