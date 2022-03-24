@@ -106,7 +106,7 @@
         <div class="auth__action">
           <base-btn
             :disabled="!valid || isLoading"
-            selector="CREATE"
+            data-selector="CREATE"
           >
             {{ $t('signUp.create') }}
           </base-btn>

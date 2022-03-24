@@ -30,6 +30,7 @@
             </div>
             <base-btn
               class="btn_bl"
+              data-selector="BUY-PROTECTION"
               @click="handleClickBuyProtection()"
             >
               {{ $t('meta.btns.buy') }}
@@ -111,7 +112,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 
 export default {
   data() {

@@ -56,8 +56,9 @@
           <div class="grid__body">
             <base-field
               v-model="amount"
-              :placeholder="'0 WUSD'"
+              placeholder="0 WUSD"
               class="grid__input"
+              data-selector="AMOUNT"
               :name="$t('modals.amountField')"
               rules="required|decimal"
             />
@@ -67,6 +68,7 @@
             <div class="grid__field">
               <base-field
                 v-model="dollars"
+                data-selector="DOLLARS"
                 mode="white"
                 :disabled="true"
               />
@@ -80,6 +82,7 @@
             </div>
             <base-field
               v-model="fee"
+              data-selector="FEE"
               mode="white"
               class="body__input"
               :disabled="true"
@@ -91,6 +94,7 @@
             </div>
             <base-field
               v-model="time"
+              data-selector="TIME"
               mode="white"
               class="body__input"
               :disabled="true"
@@ -101,7 +105,7 @@
           <base-btn
             class="buttons__button"
             mode="outline"
-            selector="CANCEL"
+            data-selector="CANCEL"
             @click="hide"
           >
             {{ $t('meta.btns.cancel') }}
@@ -109,7 +113,7 @@
           <base-btn
             class="buttons__button"
             :disabled="invalid"
-            selector="BUY-WUSD"
+            data-selector="BUY-WUSD"
             @click="handleSubmit(showTransactionSendModal)"
           >
             {{ $t('meta.buyWUSD') }}

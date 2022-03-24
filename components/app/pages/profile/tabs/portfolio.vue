@@ -27,17 +27,15 @@
               <base-btn
                 class="portfolio__close"
                 mode="portfolioClose"
-                :selector="`DELETE-PORTFOLIO-CASE-${i}`"
+                :data-selector="`DELETE-PORTFOLIO-CASE-${i}`"
                 @click="showDeleteCaseModal(item.id)"
               >
-                <span
-                  class="icon-close_big"
-                />
+                <span class="icon-close_big" />
               </base-btn>
               <base-btn
                 class="portfolio__edit"
                 mode="portfolioEdit"
-                :selector="`EDIT-PORTFOLIO-CASE-${i}`"
+                :data-selector="`EDIT-PORTFOLIO-CASE-${i}`"
                 @click="showEditCaseModal(item)"
               >
                 <span class="icon-edit" />

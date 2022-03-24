@@ -18,7 +18,8 @@
         <base-field
           v-model="password"
           :placeholder="$t('signUp.password')"
-          :mode="'icon'"
+          mode="icon"
+          data-selector="PASSWORD"
           :name="$t('signUp.password')"
           autocomplete="current-password"
           rules="required_if|min:8"
@@ -35,7 +36,8 @@
         <base-field
           v-model="passwordConfirm"
           :placeholder="$t('signUp.confirmPassword')"
-          :mode="'icon'"
+          mode="icon"
+          data-selector="CONFIRM-PASSWORD"
           type="password"
           :name="$t('signUp.confirmPassword')"
           rules="required_if|min:8|confirmed:confirmation"
@@ -48,7 +50,7 @@
           </template>
         </base-field>
         <div class="restore__action">
-          <base-btn selector="SAVE">
+          <base-btn data-selector="SAVE">
             {{ $t('meta.btns.save') }}
           </base-btn>
         </div>

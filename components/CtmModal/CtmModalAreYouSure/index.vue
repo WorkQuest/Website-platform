@@ -19,14 +19,14 @@
         <base-btn
           class="action__button"
           mode="outline"
-          selector="CANCEL"
+          data-selector="CANCEL"
           @click="hide"
         >
           {{ $t('meta.btns.cancel') }}
         </base-btn>
         <base-btn
           class="action__button"
-          selector="APPLY"
+          data-selector="APPLY"
           @click="handleApply"
         >
           {{ options.okBtnTitle }}

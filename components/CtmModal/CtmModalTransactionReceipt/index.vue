@@ -38,7 +38,7 @@
           <base-btn
             class="buttons__button"
             mode="outline"
-            selector="CANCEL"
+            data-selector="CANCEL"
             @click="hide"
           >
             {{ $t('meta.btns.cancel') }}
@@ -46,7 +46,7 @@
           <base-btn
             class="buttons__button"
             :disabled="!canSend"
-            selector="CONFIRM"
+            data-selector="CONFIRM"
             @click="handleSubmit"
           >
             {{ $t('meta.btns.confirm') }}

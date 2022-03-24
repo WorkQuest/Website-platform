@@ -77,6 +77,7 @@
           <div class="btn-group__third">
             <base-btn
               class="btn_bl"
+              data-selector="OPEN-DEPOSIT"
               @click="openOpenADepositModal()"
             >
               {{ $t("saving.openADeposit") }}

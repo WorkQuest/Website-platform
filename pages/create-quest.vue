@@ -35,7 +35,7 @@
             <div class="page__input">
               <base-field
                 v-model="price"
-                :type="'number'"
+                type="number"
                 data-selector="PRICE-FIELD"
                 :label="$t('meta.price')"
                 :placeholder="+0 + currency"

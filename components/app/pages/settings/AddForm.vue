@@ -48,7 +48,7 @@
     />
     <base-btn
       class="knowledge__btn"
-      :selector="`${isAdding} ? ${$t('meta.btns.add')} : ${$t('meta.btns.delete')}`"
+      :data-selector="`${isAdding} ? ${$t('meta.btns.add')} : ${$t('meta.btns.delete')}`"
       :disabled="!item.from || !item.to || !item.place || invalid"
       @click="$emit('click')"
     >

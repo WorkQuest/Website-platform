@@ -4,7 +4,7 @@
       <div class="staking-page__header">
         <div class="head-btns">
           <base-btn
-            selector="PREVIOUS-STEP"
+            data-selector="PREVIOUS-STEP"
             class="btn"
             @click="handleBackToMainStaking()"
           >
@@ -24,6 +24,7 @@
             </div>
             <button
               type="button"
+              data-selector="COPY-BTN"
               @click="doCopy"
             >
               <span class="icon-copy link-cont__icon" />
@@ -133,7 +134,7 @@
           <div class="info-block__btns-cont">
             <base-btn
               mode="outline"
-              selector="CLAIM-REWARDS"
+              data-selector="CLAIM-REWARDS"
               @click="showClaimModal"
             >
               {{ $t('meta.claimRewards') }}
@@ -163,20 +164,20 @@
           </div>
           <div class="info-block__btns-cont">
             <base-btn
-              selector="AUTO-RENEWAL"
+              data-selector="AUTO-RENEWAL"
               @click="handleAutoRenewal"
             >
               {{ $t('staking.autoRenewal') }}
             </base-btn>
             <base-btn
               mode="outline"
-              selector="SHOW-UNSTAKE-MODAL"
+              data-selector="SHOW-UNSTAKE-MODAL"
               @click="showUnstakeModal"
             >
               {{ $t('meta.btns.unstake') }}
             </base-btn>
             <base-btn
-              selector="SHOW-STAKE-MODAL"
+              data-selector="SHOW-STAKE-MODAL"
               mode="outline"
               @click="showStakeModal"
             >

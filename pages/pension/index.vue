@@ -40,6 +40,7 @@
             <div class="btn-group">
               <base-btn
                 class="btn_bl"
+                data-selector="APPLY-FOR-RETIREMENT"
                 @click="openApplyForAPensionModal()"
               >
                 {{ $t('pension.applyForRetirement') }}

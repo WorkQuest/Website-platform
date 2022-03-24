@@ -19,7 +19,7 @@
         <div class="content__buttons buttons">
           <base-btn
             class="buttons__button"
-            selector="CONFIRM-1"
+            data-selector="CONFIRM-1"
             @click="hide"
           >
             {{ $t('meta.btns.confirm') }}
@@ -39,6 +39,7 @@
         <base-field
           v-if="step === 1"
           v-model="phone"
+          data-selector="PHONE-NUMBER"
           class="content__action"
           :placeholder="$t('modals.phoneNumber')"
           mode="icon"
@@ -56,6 +57,7 @@
           v-if="step === 2"
           v-model="confirmCode"
           class="content__action"
+          data-selector="CODE-FROM-SMS"
           :placeholder="$t('meta.codeFromSMS')"
           mode="icon"
           rules="required|alpha_num"
@@ -84,7 +86,7 @@
         <div class="content__buttons buttons">
           <base-btn
             v-if="step === 1"
-            selector="NEXT-STEP"
+            data-selector="NEXT-STEP"
             class="buttons__button"
             @click="handleSubmit(nextStep)"
           >
@@ -93,7 +95,7 @@
           <base-btn
             v-if="step === 2"
             class="buttons__button"
-            selector="CONFIRM-2"
+            data-selector="CONFIRM-2"
             :disabled="!validated || !passed || invalid"
             @click="handleSubmit(success)"
           >

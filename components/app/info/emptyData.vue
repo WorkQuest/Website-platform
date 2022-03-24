@@ -18,7 +18,7 @@
       <base-btn
         v-if="link !== ''"
         class="absence__button"
-        selector="CREATE-QUEST"
+        data-selector="CREATE-QUEST"
         @click="toLink"
       >
         {{ btnText }}

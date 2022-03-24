@@ -15,6 +15,7 @@
         <base-field
           v-if="!isImportWallet"
           v-model="password"
+          data-selector="PASSWORD"
           :placeholder="$t('signUp.password')"
           :name="$t('signUp.password')"
           class="confirm__password"
@@ -26,6 +27,7 @@
           v-else
           v-model="mnemonic"
           rules="required|mnemonic"
+          data-selector="MNEMONIC"
           :placeholder="$t('createWallet.secretPhrase')"
           :name="$t('createWallet.secretPhrase')"
           :type="mnemonicInputType"
@@ -49,7 +51,7 @@
         </div>
         <base-btn
           class="confirm__submit"
-          selector="SUBMIT"
+          data-selector="SUBMIT"
           :disabled="!valid || isLoading"
         >
           {{ $t('meta.btns.submit') }}

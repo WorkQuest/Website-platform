@@ -287,7 +287,7 @@
       >
         <base-btn
           class="profile__btn"
-          selector="SAVE-CHANGES"
+          data-selector="SAVE-CHANGES"
           @click="$emit('click')"
         >
           {{ $t("meta.btns.save") }}

@@ -10,11 +10,17 @@
       <div class="content__label">
         {{ $t('meta.coins.eth') }}
       </div>
-      <base-field placeholder="10" />
+      <base-field
+        data-selector="ETH"
+        placeholder="10"
+      />
       <div class="content__label">
         {{ $t('meta.coins.wusd') }}
       </div>
-      <base-field placeholder="10" />
+      <base-field
+        data-selector="WUSD"
+        placeholder="10"
+      />
       <div class="content__actions">
         <base-btn @click="handleSubmit">
           {{ submitText }}

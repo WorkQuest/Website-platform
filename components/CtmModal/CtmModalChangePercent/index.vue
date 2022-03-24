@@ -26,14 +26,14 @@
         <div class="content__buttons buttons">
           <base-btn
             class="buttons__button"
-            selector="CANCEL"
+            data-selector="CANCEL"
             mode="outline"
             @click="hide"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
-            selector="SUBMIT"
+            data-selector="SUBMIT"
             class="buttons__button"
             :disabled="!validated || !passed || invalid"
             @click="handleSubmit(updateFee)"
