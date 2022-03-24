@@ -327,5 +327,15 @@ export default {
       grid-template-rows: auto;
     }
   }
+
+  @include _575 {
+    .info-data {
+      &__info-block {
+        display: grid;
+        grid-gap: 10px;
+        align-content: center;
+      }
+    }
+  }
 }
 </style>
