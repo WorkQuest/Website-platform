@@ -634,13 +634,13 @@ export default {
     async completeWorkOnQuest() {
       this.SetLoader(true);
       if (await this.$store.dispatch('quests/completeWorkOnQuest', this.quest.id)) {
-        await this.getQuest();
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/questAgreed.svg'),
           title: this.$t('meta.questInfo'),
           subtitle: this.$t('quests.pleaseWaitEmp'),
         });
+        await this.getQuest();
       }
       this.SetLoader(false);
     },
