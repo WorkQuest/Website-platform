@@ -71,11 +71,6 @@ export default {
       default: () => {},
     },
   },
-  data() {
-    return {
-      raiseType: '',
-    };
-  },
   computed: {
     userName() {
       const { firstName, lastName } = this.user;
