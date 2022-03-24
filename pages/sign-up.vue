@@ -24,9 +24,9 @@
       >
         <base-field
           v-model="model.firstName"
-          :placeholder="$t('meta.firstNameBig')"
           mode="icon"
           :name="$t('meta.firstNameBig')"
+          :placeholder="$t('meta.firstNameBig')"
           rules="required_if|alpha_spaces"
           autocomplete="off"
           data-selector="FIRST_NAME"
@@ -40,9 +40,9 @@
         </base-field>
         <base-field
           v-model="model.lastName"
-          :placeholder="$t('meta.lastNameBig')"
-          :mode="icon"
+          mode="icon"
           :name="$t('meta.lastNameBig')"
+          :placeholder="$t('meta.lastNameBig')"
           rules="required_if|alpha_spaces"
           data-selector="LAST_NAME"
         >
@@ -147,11 +147,13 @@ export default {
       this.model.email = this.model.email.trim();
       this.model.firstName = this.model.firstName.trim();
       this.model.lastName = this.model.lastName.trim();
+      const referralId = sessionStorage.getItem('referralId');
       const payload = {
         firstName: this.model.firstName,
         lastName: this.model.lastName,
         email: this.model.email,
         password: this.model.password,
+        ...referralId && { referralId },
       };
       const response = await this.$store.dispatch('user/signUp', payload);
       if (response.ok) {

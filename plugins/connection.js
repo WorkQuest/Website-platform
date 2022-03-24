@@ -58,6 +58,10 @@ export default class extends Client {
     return super.subscribe(path, handler);
   }
 
+  async unsubscribe(path, handler = null) {
+    await super.unsubscribe(path, handler);
+  }
+
   formConfigObject(_token) {
     const token = _token ? `Bearer ${_token}` : 'jwt';
     return {

@@ -29,6 +29,17 @@
           {{ options.subtitle }}
         </span>
       </div>
+      <div
+        v-if="options.usersList"
+        class="status__list"
+      >
+        <span
+          v-for="(item) in options.usersList"
+          :key="item.address"
+        >
+          {{ item }}
+        </span>
+      </div>
       <a
         v-if="options.txHash"
         :href="link"
@@ -73,6 +84,34 @@
           </span>
         </base-btn>
       </div>
+      <div
+        v-else-if="options.type === 'registration'"
+        class="status__wrap"
+      >
+        <div v-if="options.cancel">
+          <base-btn
+            class="status__btn"
+            mode="outline"
+            selector="CANCEL"
+            @click="hide()"
+          >
+            <span class="status__text">
+              {{ options.cancel }}
+            </span>
+          </base-btn>
+        </div>
+        <div v-if="options.button">
+          <base-btn
+            class="status__btn"
+            selector="REGISTRATION"
+            @click="registration()"
+          >
+            <span class="status__text">
+              {{ options.button }}
+            </span>
+          </base-btn>
+        </div>
+      </div>
       <base-btn
         v-else
         class="status__action"
@@ -110,6 +149,7 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
       chatInfoInviteOnQuest: 'quests/getChatInfoInviteOnQuest',
+      userAddress: 'user/getUserWalletAddress',
     }),
   },
   async mounted() {
@@ -149,6 +189,10 @@ export default {
           this.link = `https://bscscan.com/tx/${this.options.txHash}`;
         }
       }
+    },
+    async registration() {
+      this.hide();
+      await this.$store.dispatch('referral/addReferrals', this.userAddress);
     },
   },
 };
@@ -195,6 +239,22 @@ export default {
     text-align: center;
     font-weight: 500;
     color: $black800;
+  }
+  &__wrap {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    div {
+      width: 100%;
+    }
+  }
+  &__btn {
+    padding: 0 10px;
+  }
+  &__list {
+    span {
+      font-size: 11px;
+    }
   }
 }
 </style>
