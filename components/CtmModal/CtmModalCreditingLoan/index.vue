@@ -18,7 +18,7 @@
             <base-field
               v-model="quantity"
               class="content__input"
-              :placeholder="'10 ETH'"
+              placeholder="10 ETH"
               rules="required|decimal"
               data-selector="VALUE-FOR-LOAN"
               :name="$t('modals.quantityField')"

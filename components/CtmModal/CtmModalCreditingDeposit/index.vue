@@ -49,8 +49,8 @@
               <base-field
                 v-model="quantity"
                 class="content__input"
-                :data-selector="`TOKEN-VALUE`"
-                :placeholder="'1000 ETH'"
+                data-selector="TOKEN-VALUE"
+                placeholder="1000 ETH"
                 rules="required|decimal"
                 :name="$t('modals.quantityField')"
               />
@@ -62,8 +62,8 @@
               <base-dd
                 v-model="date"
                 class="grid__drop"
-                :data-selector="`DATE-DD`"
-                :items="dates()"
+                data-selector="DATE-DD"
+                :items="dates"
               />
             </div>
             <div class="content__field">
@@ -172,10 +172,14 @@ export default {
       options: 'modals/getOptions',
       userRole: 'user/getUserRole',
     }),
-  },
-  watch: {
-    date() {
-      console.log(this.date);
+    dates() {
+      return [
+        this.$tc('meta.units.days', 7),
+        this.$tc('meta.units.days', 14),
+        this.$tc('meta.units.days', 30),
+        this.$tc('meta.units.days', 90),
+        this.$tc('meta.units.days', 180),
+      ];
     },
   },
   methods: {
@@ -187,15 +191,6 @@ export default {
         key: modals.confirmDetails,
         needChangeModal: this.options.needChangeModal || undefined,
       });
-    },
-    dates() {
-      return [
-        this.$tc('meta.units.days', 7),
-        this.$tc('meta.units.days', 14),
-        this.$tc('meta.units.days', 30),
-        this.$tc('meta.units.days', 90),
-        this.$tc('meta.units.days', 180),
-      ];
     },
   },
 };
