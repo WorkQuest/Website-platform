@@ -306,11 +306,6 @@ export default {
         }
       }
 
-      &:hover {
-        background-color: #0083C71A;
-        border: 0px;
-      }
-
       &_bl {
         @extend .btn;
         background-color: #0083C7;
@@ -578,6 +573,32 @@ export default {
         }
       }
     }
+    .info-block {
+      &__about {
+        grid-template-areas:
+            "hd"
+            "ft"
+            "sd";
+        grid-template-rows: repeat(3, auto);
+        grid-template-columns: unset;
+        width: 100%;
+        margin: 0;
+        padding: 0 20px;
+        .calendar-img {
+          position: relative;
+          width: 100%;
+          max-width: 370px;
+          justify-self: center;
+        }
+        .btn-group {
+          padding: 0;
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          grid-template-rows: unset;
+          gap: 20px;
+        }
+      }
+    }
   }
 
   @include _575 {
@@ -588,28 +609,9 @@ export default {
           grid-template-rows: repeat(3, 1fr);
         }
         &__about {
-          grid-template-areas:
-            "hd"
-            "ft"
-            "sd";
-          grid-template-rows: repeat(3, auto);
-          grid-template-columns: unset;
-          width: 100%;
-          margin: 0;
-          padding: 0 20px;
-          .calendar-img {
-            position: relative;
-            width: 100%;
-            max-width: 370px;
-            justify-self: center;
-          }
           .btn-group {
-            padding: 0;
-            display: block;
-            display: grid;
             grid-template-columns: unset;
             grid-template-rows: repeat(2, 1fr);
-            gap: 20px;
           }
         }
         &__documents {

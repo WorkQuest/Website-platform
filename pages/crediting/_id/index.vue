@@ -293,6 +293,15 @@ export default {
     }
   }
 
+  @include _991 {
+    .content {
+      &__couple {
+        grid-template-rows: repeat(2, 1fr);
+        grid-template-columns: unset;
+      }
+    }
+  }
+
   @include _767 {
     background: linear-gradient(to bottom, #103D7C 280px, #f6f8fa 195px);
     .desc {
@@ -300,7 +309,7 @@ export default {
     }
     &__container {
       grid-template-rows: auto auto;
-      gap: 15px;
+      grid-gap: 15px;
     }
     &__header {
       .btn {
@@ -314,12 +323,6 @@ export default {
     }
     &__content {
       grid-template-rows: auto;
-      .content {
-        &__couple {
-          grid-template-rows: repeat(2, 1fr);
-          grid-template-columns: unset;
-        }
-      }
     }
   }
 }
