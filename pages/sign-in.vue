@@ -206,10 +206,11 @@ export default {
     }
   },
   beforeDestroy() {
-    const { ref } = this.$route.query;
+    const isRef = this.$router.history._startLocation.includes('ref');
     if (!this.addressAssigned && !this.$cookies.get('access') && !this.$cookies.get('userStatus')) {
       this.$store.dispatch('user/logout');
-      if (ref?.length) {
+      if (isRef) {
+        const ref = this.$router.history._startLocation.replace('/sign-in?ref=', '');
         sessionStorage.setItem('referralId', ref);
       }
     }
