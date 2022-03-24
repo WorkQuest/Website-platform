@@ -297,10 +297,10 @@ export default {
     },
     raiseViewsName() {
       return {
-        0: 'GOLD PLUS',
-        1: 'GOLD',
-        2: 'SILVER',
-        3: 'BRONZE',
+        0: 'Gold Plus',
+        1: 'Gold',
+        2: 'Silver',
+        3: 'Bronze',
       };
     },
   },
