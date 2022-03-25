@@ -404,7 +404,8 @@ export default {
       this.SetLoader(true);
       const res = await this.$store.dispatch('referral/fetchCreatedReferralList');
       this.SetLoader(false);
-      if (res) {
+      console.log(res);
+      if (res && this.createdReferralsList.length) {
         this.ShowModal({
           key: modals.status,
           title: this.$t('meta.btns.registration'),
@@ -413,6 +414,12 @@ export default {
           cancel: this.$t('meta.btns.cancel'),
           button: this.$t('meta.btns.submit'),
           usersList: this.createdReferralsList,
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          title: this.$t('modals.errors.error'),
+          subtitle: this.$t('notifications.registrationError'),
         });
       }
     },
