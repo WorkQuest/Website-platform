@@ -188,7 +188,7 @@
         <base-btn
           v-if="userData.role === $options.UserRole.EMPLOYER"
           class="header__btn"
-          selector="CREATE-NEW-QUEST"
+          data-selector="CREATE-NEW-QUEST"
           @click="createNewQuest('pc')"
         >
           {{ $t('meta.createAQuest') }}

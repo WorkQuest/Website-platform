@@ -7,6 +7,7 @@ import * as abi from '~/abi/abi';
 import {
   Chains, ChainsId, ChainsIdByChainNumber, NetworksData, StakingTypes,
 } from '~/utils/enums';
+import { WQBridge } from '~/abi/abi';
 
 let bscRpcContract = null;
 let web3 = null;
@@ -60,8 +61,8 @@ export const getChainIdByChain = (chain) => {
     case Chains.BNB:
       if (!isProd) return ChainsId.BSC_TEST;
       return ChainsId.BSC_MAIN;
-    case Chains.WUSD:
-      return ChainsId.WUSD_TEST;
+    case Chains.WORKNET:
+      return ChainsId.WORKNET_TEST;
     default:
       throw error(-1, `wrong chain name: ${chain} ${Chains.BINANCE} ${Chains.ETHEREUM}`);
   }
@@ -73,8 +74,8 @@ export const addedNetwork = async (chain) => {
       networkParams = isProd ? NetworksData.ETH_MAIN : NetworksData.ETH_TEST;
     } else if (chain === Chains.BNB || [56, 97].includes(+chain)) {
       networkParams = isProd ? NetworksData.BSC_MAIN : NetworksData.BSC_TEST;
-    } else if (chain === Chains.WUSD || chain === 20211224) {
-      networkParams = NetworksData.WUSD_TEST;
+    } else if (chain === Chains.WORKNET || chain === 20220112) {
+      networkParams = NetworksData.WORKNET_TEST;
     }
     await window.ethereum.request({
       method: 'wallet_addEthereumChain',
@@ -106,14 +107,14 @@ export const goToChain = async (chain) => {
     return { ok: false };
   }
 };
-export const getStakingDataByType = (stakingType) => {
+export const getStakingDataByType = (stakingType, token = '') => {
   let _stakingAddress;
   let _stakingAbi;
   let _tokenAddress;
   const _miningPoolId = localStorage.getItem('miningPoolId');
   switch (stakingType) {
     case StakingTypes.MINING:
-      if (_miningPoolId === 'ETH') {
+      if (_miningPoolId === Chains.ETHEREUM) {
         _tokenAddress = process.env.ETHEREUM_LP_TOKEN;
         _stakingAddress = process.env.ETHEREUM_MINING;
         _stakingAbi = abi.StakingWQ;
@@ -124,9 +125,25 @@ export const getStakingDataByType = (stakingType) => {
       }
       break;
     case StakingTypes.CROSS_CHAIN:
-      _tokenAddress = _miningPoolId === 'ETH'
-        ? process.env.ETHEREUM_WQT_TOKEN
-        : process.env.BSC_WQT_TOKEN;
+      if (_miningPoolId === Chains.ETHEREUM) {
+        _tokenAddress = process.env.ETHEREUM_WQT_TOKEN;
+        _stakingAddress = process.env.ETHEREUM_BRIDGE;
+      } else if (_miningPoolId === Chains.BINANCE || _miningPoolId === Chains.BNB) {
+        _tokenAddress = process.env.BSC_WQT_TOKEN;
+        _stakingAddress = process.env.BSC_BRIDGE;
+      } else if (_miningPoolId === Chains.WORKNET) {
+        switch (token) {
+          case 'BNB':
+            _tokenAddress = process.env.WORKNET_WBNB_TOKEN;
+            break;
+          case 'ETH':
+            _tokenAddress = process.env.WORKNET_WETH_TOKEN;
+            break;
+          default:
+            _tokenAddress = process.env.WORKNET_WQT_TOKEN;
+        }
+        _stakingAddress = process.env.WORKNET_BRIDGE;
+      }
       break;
     default:
       console.error('[getStakingDataByType] wrong staking type: ', stakingType);
@@ -172,6 +189,15 @@ export const sendTransaction = async (_method, payload, _provider = web3) => {
       gasPrice,
       gas: gasEstimate,
     };
+  } else if (_method === 'swap') {
+    const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress, value: payload.value });
+    await inst.methods.swap(...payload.data).send({
+      from: accountAddress,
+      value: payload.value,
+      gasPrice,
+      gas: gasEstimate,
+    });
+    return '';
   } else {
     const data = inst.methods[_method].apply(null, payload.data).encodeABI();
     const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress });
@@ -197,6 +223,9 @@ const getChainTypeById = (chainId) => {
   if (+chainId === +ChainsId.MATIC_MAIN || +chainId === +ChainsId.MUMBAI_TEST) {
     return 2;
   }
+  if (+chainId === +ChainsId.WORKNET_TEST) {
+    return 3;
+  }
   return -1;
 };
 
@@ -205,64 +234,38 @@ export const handleMetamaskStatus = (callback) => {
   ethereum.on('chainChanged', callback);
   ethereum.on('accountsChanged', callback);
 };
-// Подключение к MetaMask only. TODO: Delete
-export const initMetaMaskWeb3 = async () => {
-  try {
-    const { ethereum } = window;
-    if (ethereum) {
-      web3 = new Web3(ethereum);
-      if ((await web3.eth.getCoinbase()) === null) {
-        await ethereum.request({ method: 'eth_requestAccounts' });
-      }
-      const [userAddress, chainId] = await Promise.all([
-        web3.eth.getCoinbase(),
-        web3.eth.net.getId(),
-      ]);
 
-      if (process.env.PROD === 'true' && ![1, 56, 20211224].includes(+chainId)) {
-        return error(500, 'Wrong blockchain in metamask', 'Current site work on mainnet. Please change network.');
-      }
-      if (process.env.PROD === 'false' && ![4, 97, 20211224].includes(+chainId)) {
-        return error(500, 'Wrong blockchain in metamask', 'Current site work on testnet. Please change network.');
-      }
-      account = {
-        address: userAddress,
-        netId: chainId,
-        netType: getChainTypeById(chainId),
-      };
-      web4 = new Web4();
-      await web4.setProvider(ethereum, userAddress);
-      return success(account);
-    }
-    return false;
-  } catch (e) {
-    return error(500, '', e.message);
-  }
-};
 export const initProvider = async (payload) => {
   const isReconnection = payload?.isReconnection;
   const { chain } = payload;
   try {
     let walletOptions;
     if (!isProd) {
-      if (chain === 'ETH') {
+      if (chain === Chains.ETHEREUM) {
         walletOptions = {
           rpc: {
             4: 'https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
           },
           // network: 'ethereum',
         };
-      } else if (chain === 'BNB') {
+      } else if (chain === Chains.BNB) {
         walletOptions = {
           rpc: {
             97: 'https://data-seed-prebsc-2-s1.binance.org:8545/',
           },
           // network: 'binance',
         };
+      } else if (chain === Chains.WORKNET) {
+        walletOptions = {
+          rpc: {
+            20211224: 'https://dev-node-nyc3.workquest.co',
+          },
+          // network: 'worknet',
+        };
       }
     }
     if (isProd) {
-      if (chain === 'ETH') {
+      if (chain === Chains.ETHEREUM) {
         walletOptions = {
           rpc: {
             1: 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
@@ -275,6 +278,13 @@ export const initProvider = async (payload) => {
             56: 'https://bsc-dataseed.binance.org/',
           },
           // network: 'binance',
+        };
+      } else if (chain === Chains.WORKNET) {
+        walletOptions = {
+          rpc: {
+            20211224: 'https://dev-node-nyc3.workquest.co',
+          },
+          // network: 'worknet',
         };
       }
     }
@@ -321,13 +331,13 @@ export const initWeb3 = async (payload) => {
     }
     const chainId = await web3.eth.net.getId();
     if ((await web3.eth.getCoinbase()) === null) {
-      await ethereum.request({ method: 'eth_requestAccounts' });
+      await window.ethereum.request({ method: 'eth_requestAccounts' });
     }
-
+    const netTypeId = getChainTypeById(chainId);
     account = {
       address: userAddress,
       netId: chainId,
-      netType: getChainTypeById(chainId),
+      netType: netTypeId,
     };
     return success(account);
   } catch (e) {
@@ -511,43 +521,77 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
   let swapData = '';
   let tokenAddress;
   let bridgeAddress;
+  const isNative = symbol !== 'WQT' && chain !== Chains.WORKNET;
   if (chain === Chains.ETHEREUM) {
     tokenAddress = process.env.ETHEREUM_WQT_TOKEN;
     bridgeAddress = process.env.ETHEREUM_BRIDGE;
-  } else {
+  } else if (chain === Chains.BNB || chain === Chains.BINANCE) {
     tokenAddress = process.env.BSC_WQT_TOKEN;
     bridgeAddress = process.env.BSC_BRIDGE;
+  } else if (chain === Chains.WORKNET) {
+    switch (symbol) {
+      case 'BNB':
+        tokenAddress = process.env.WORKNET_WBNB_TOKEN;
+        break;
+      case 'ETH':
+        tokenAddress = process.env.WORKNET_WETH_TOKEN;
+        break;
+      default:
+        tokenAddress = process.env.WORKNET_WQT_TOKEN;
+    }
+    bridgeAddress = process.env.WORKNET_BRIDGE;
   }
-  tokenInstance = await createInstance(abi.ERC20, tokenAddress);
-  bridgeInstance = await createInstance(abi.MainNetWQBridge, bridgeAddress);
-  allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [account.address, bridgeAddress])).toString();
+  bridgeInstance = await createInstance(abi.WQBridge, bridgeAddress);
+  if (!isNative) {
+    tokenInstance = await createInstance(abi.ERC20, tokenAddress);
+    allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [account.address, bridgeAddress])).toString();
+  }
   nonce = await web3.eth.getTransactionCount(userAddress);
   try {
     amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
-    if (+allowance < +amount) {
-      store.dispatch('main/setStatusText', 'Approving');
+    if (!isNative && +allowance < +amount) {
+      await store.dispatch('main/setStatusText', 'Approving');
       showToast('Swapping', 'Approving...', 'success');
       await tokenInstance.approve(bridgeAddress, amount);
+      allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [account.address, bridgeAddress])).toString();
       showToast('Swapping', 'Approving done', 'success');
+      showToast('Swapping', 'Swapping...', 'success');
+      await store.dispatch('main/setStatusText', 'Swapping');
+      swapData = await bridgeInstance.swap(nonce, chainTo, amount, recipient, symbol);
+    } else if (isNative) {
+      await store.dispatch('main/setStatusText', 'Swapping');
+      const payload = {
+        abi: abi.WQBridge,
+        address: bridgeAddress,
+        value: amount,
+        data: [
+          nonce.toString(), chainTo.toString(), amount, recipient, symbol,
+        ],
+      };
+      await sendTransaction('swap', payload);
+    } else {
+      showToast('Swapping', 'Swapping...', 'success');
+      await store.dispatch('main/setStatusText', 'Swapping');
+      swapData = await bridgeInstance.swap(nonce, chainTo, amount, recipient, symbol);
     }
-    showToast('Swapping', 'Swapping...', 'success');
-    store.dispatch('main/setStatusText', 'Swapping');
-    swapData = await bridgeInstance.swap(nonce, chainTo, amount, recipient, symbol);
     showToast('Swapping', 'Swapping done', 'success');
     return swapData;
   } catch (e) {
+    console.log(e);
     showToast('Swapping error', `${e.message}`, 'danger');
     return error(500, 'stake error', e);
   }
 };
 
 export const redeemSwap = async (props) => {
-  const { signData, chainId } = props;
+  const { signData, chainTo } = props;
   let bridgeAddress;
-  if (chainId !== 2) {
+  if (chainTo === 2) {
     bridgeAddress = process.env.ETHEREUM_BRIDGE;
-  } else {
+  } else if (chainTo === 3) {
     bridgeAddress = process.env.BSC_BRIDGE;
+  } else if (chainTo === 1) {
+    bridgeAddress = process.env.WORKNET_BRIDGE;
   }
   try {
     showToast('Redeeming', 'Redeem...', 'success');

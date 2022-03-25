@@ -18,6 +18,7 @@
           <span class="change-role__describe">{{ $t('modals.pleaseDescribe') }}</span>
           <base-field
             v-model="reason"
+            data-selector="REASON"
             class="change-role__action"
             :placeholder="$t('modals.reason')"
           />
@@ -25,7 +26,7 @@
             <div class="btn__wrapper">
               <base-btn
                 class="message__action"
-                selector="NEXT-STEP"
+                data-selector="NEXT-STEP"
                 @click="nextStep()"
               >
                 {{ $t('meta.btns.change') }}
@@ -35,7 +36,7 @@
               <base-btn
                 mode="outline"
                 class="message__action"
-                selector="CANCEL"
+                data-selector="CANCEL"
                 @click="hide()"
               >
                 {{ $t('meta.btns.cancel') }}
@@ -52,6 +53,7 @@
               v-model="totp"
               :label="$t('meta.googleConfCode')"
               class="change-role__action"
+              data-selector="GOOGLE-CONF-CODE"
               :placeholder="$t('meta.googleConfCode')"
               rules="min:6|numeric|max:6|required"
               :name="$t('meta.googleConfCode')"
@@ -62,7 +64,7 @@
             <div class="btn__container">
               <base-btn
                 class="message__action"
-                selector="CHANGE-ROLE"
+                data-selector="CHANGE-ROLE"
                 :disabled="invalid"
               >
                 {{ $t('meta.btns.send') }}

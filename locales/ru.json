@@ -1195,7 +1195,8 @@
     "selectToken": "Select token",
     "txInfo": "Transaction info",
     "registration": "Вы верены что хотите зарегистрировать данных пользователей?",
-    "claimConfirm": "Вы потдверждаете дейсвие клейм?"
+    "claimConfirm": "Вы потдверждаете дейсвие клейм?",
+    "until": "До"
   },
   "ui": {
     "jobQuestors": "В поиске работы",

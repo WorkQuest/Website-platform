@@ -7,7 +7,7 @@
       <div class="info-grid__share-left">
         <base-btn
           mode="share-btn"
-          selector="SHARE-USER-PROFILE"
+          data-selector="SHARE-USER-PROFILE"
           @click="shareModal()"
         />
       </div>
@@ -157,7 +157,7 @@
         </div>
         <div class="right__share-btn">
           <base-btn
-            selector="SHARE-MODAL"
+            data-selector="SHARE-MODAL"
             mode="share-btn"
             @click="shareModal()"
           />
@@ -169,7 +169,7 @@
           class="contact__btn"
         >
           <base-btn
-            selector="TO-RAISE-VIEWS"
+            data-selector="TO-RAISE-VIEWS"
             @click="toRaisedViews()"
           >
             {{ $t('meta.raiseViews') }}
@@ -181,7 +181,7 @@
         >
           <base-btn
             mode="approve"
-            selector="GIVE-A-QUEST"
+            data-selector="GIVE-A-QUEST"
             @click="sendInvite()"
           >
             {{ $t('workers.giveAQuest') }}
@@ -194,7 +194,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { UserRole, UserRating } from '~/utils/enums';
+import moment from 'moment';
+import { UserRole, UserRating, Path } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -294,6 +295,14 @@ export default {
     isHaveOpenQuests() {
       return this.mainUserData.questsStatistic && this.mainUserData.questsStatistic.opened > 0;
     },
+    raiseViewsName() {
+      return {
+        0: 'Gold Plus',
+        1: 'Gold',
+        2: 'Silver',
+        3: 'Bronze',
+      };
+    },
   },
   watch: {
     async anotherUserData() {
@@ -322,7 +331,18 @@ export default {
       });
     },
     toRaisedViews() {
-      this.$router.push('/raised-views');
+      if (this.userData.raiseView) {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/questAgreed.svg'),
+          title: this.$t('quests.active'),
+          text: `${this.raiseViewsName[this.userData.raiseView.type]} Package`,
+          // TODO заменить потом на endedAt
+          subtitle: `${this.$t('modals.until')} ${moment(this.userData.raiseView.createdAt).format('Do MMMM YYYY, hh:mm a')}`,
+        });
+      } else {
+        this.$router.push(Path.RAISED_VIEWS);
+      }
     },
     sendInvite() {
       if (this.isHaveOpenQuests) {

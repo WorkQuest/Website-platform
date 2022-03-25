@@ -166,7 +166,7 @@
             class="portfolio__add-btn"
           >
             <base-btn
-              selector="ADD-PORTFOLIO-CASE"
+              data-selector="ADD-PORTFOLIO-CASE"
               @click="showAddCaseModal()"
             >
               {{ $t('meta.addCase') }}

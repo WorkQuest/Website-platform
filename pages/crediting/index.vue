@@ -40,6 +40,7 @@
             <div class="btn-group">
               <base-btn
                 class="btn"
+                data-selector="MY-LOANS"
                 @click="$router.push('/crediting/2')"
               >
                 {{ $t('crediting.myLoans') }}
@@ -47,6 +48,7 @@
               <base-btn
                 class="btn"
                 mode="outline"
+                data-selector="CREDITING-DEPOSIT"
                 @click="openCreditingDepositModal()"
               >
                 {{ $t('crediting.borrow') }}
@@ -54,6 +56,7 @@
               <base-btn
                 class="btn"
                 mode="outline"
+                data-selector="CREDITING-LOAN"
                 @click="openCreditingLoanModal()"
               >
                 {{ $t('meta.lend') }}

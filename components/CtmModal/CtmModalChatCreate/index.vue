@@ -11,6 +11,7 @@
         <div class="ctm-modal__content-field">
           <base-field
             v-model="name"
+            data-selector="CHAT-NAME"
             :is-hide-error="true"
             :label="$t('modals.chatCreate.chatName')"
             :placeholder="$t('modals.chatCreate.chatName')"
@@ -21,7 +22,7 @@
         <base-btn
           v-if="options.isMembersList && options.itsOwner"
           class="button"
-          selector="ADD-NEW-MEMBERS"
+          data-selector="ADD-NEW-MEMBERS"
           @click="addNewMembers"
         >
           {{ $t('modals.chatCreate.addNewMembers') }}
@@ -77,14 +78,14 @@
         <div class="btn-group">
           <base-btn
             class="btn"
-            selector="CANCEL"
+            data-selector="CANCEL"
             @click="hide()"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="btn_bl"
-            selector="APPLY"
+            data-selector="APPLY"
             :disabled="options.isCreating && (!memberUserIds.length || !name)"
             @click="applyChanges"
           >

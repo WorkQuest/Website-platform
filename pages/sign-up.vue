@@ -24,9 +24,9 @@
       >
         <base-field
           v-model="model.firstName"
-          :placeholder="$t('meta.firstNameBig')"
           mode="icon"
           :name="$t('meta.firstNameBig')"
+          :placeholder="$t('meta.firstNameBig')"
           rules="required_if|alpha_spaces"
           autocomplete="off"
           data-selector="FIRST_NAME"
@@ -40,9 +40,9 @@
         </base-field>
         <base-field
           v-model="model.lastName"
-          :placeholder="$t('meta.lastNameBig')"
-          :mode="icon"
+          mode="icon"
           :name="$t('meta.lastNameBig')"
+          :placeholder="$t('meta.lastNameBig')"
           rules="required_if|alpha_spaces"
           data-selector="LAST_NAME"
         >
@@ -106,7 +106,7 @@
         <div class="auth__action">
           <base-btn
             :disabled="!valid || isLoading"
-            selector="CREATE"
+            data-selector="CREATE"
           >
             {{ $t('signUp.create') }}
           </base-btn>

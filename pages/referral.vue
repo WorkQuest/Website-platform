@@ -26,7 +26,7 @@
               <div class="info-block__btn-wrap">
                 <base-btn
                   :disabled="Number(referralReward) === 0"
-                  selector="CLAIM"
+                  data-selector="CLAIM"
                   @click="clickClaimBtnHandler"
                 >
                   {{ $t('modals.claim') }}
@@ -68,7 +68,7 @@
               <div class="info-block__btn-wrap info-block__btn-wrap_absolute">
                 <base-btn
                   :disabled="!isNeedRegistration"
-                  selector="REGISTRATION"
+                  data-selector="REGISTRATION"
                   @click="clickRegistrationBtnHandler"
                 >
                   {{ $t('meta.btns.registration') }}
@@ -251,7 +251,7 @@ export default {
     return {
       page: 1,
       perPage: 10,
-      referLink: process.env.PROD === 'true' ? 'https://www.app-ver1.workquest.co/sign-in?ref=' : 'https://www.app.workquest.co/sign-in?ref=',
+      referLink: process.env.PROD === 'true' ? 'https://app-ver1.workquest.co/sign-in?ref=' : 'https://app.workquest.co/sign-in?ref=',
       isProd: process.env.PROD,
       referralCount: 5,
     };

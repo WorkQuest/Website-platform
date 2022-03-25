@@ -79,13 +79,13 @@
       <div class="filter__btns">
         <base-btn
           mode="outline"
-          selector="CLEAN-UP"
+          data-selector="CLEAN-UP"
           @click="cleanUp()"
         >
           {{ $t('meta.cleanUp') }}
         </base-btn>
         <base-btn
-          selector="APPLY"
+          data-selector="APPLY"
           @click="handleSubmit"
         >
           {{ $t('meta.btns.apply') }}
