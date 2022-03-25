@@ -80,7 +80,6 @@
             <base-field
               v-model="messageText"
               :placeholder="$t('chat.writeYouMessage')"
-              data-selector="MESSAGE"
               is-hide-error
               data-selector="INPUT-MESSAGE"
               mode="chat"
