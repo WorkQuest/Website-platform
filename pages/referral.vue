@@ -407,7 +407,7 @@ export default {
       this.SetLoader(true);
       const res = await this.$store.dispatch('referral/fetchCreatedReferralList');
       this.SetLoader(false);
-      if (res && !this.createdReferralsList.length) {
+      if (res && this.createdReferralsList.length) {
         this.ShowModal({
           key: modals.status,
           title: this.$t('meta.btns.registration'),
