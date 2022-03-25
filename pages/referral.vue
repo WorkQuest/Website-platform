@@ -256,7 +256,7 @@ export default {
     return {
       page: 1,
       perPage: 10,
-      referLink: process.env.PROD === 'true' ? 'https://app-ver1.workquest.co/sign-in?ref=' : 'https://app.workquest.co/sign-in?ref=',
+      referLink: process.env.PROD === 'true' ? 'https://app-ver1.workquest.co/?ref=' : 'https://app.workquest.co/?ref=',
       isProd: process.env.PROD,
       referralCount: 5,
     };
