@@ -277,6 +277,9 @@ export default {
     totalPages() {
       return Math.ceil(this.paidEventsList.length / this.perPage);
     },
+    createdReferralsList() {
+      return this.referralsList.filter((item) => item.referralUser.referralStatus === 'created');
+    },
     tableFields() {
       return [
         {
@@ -409,10 +412,10 @@ export default {
           key: modals.status,
           title: this.$t('meta.btns.registration'),
           subtitle: this.$t('modals.registration'),
-          type: 'registration',
           cancel: this.$t('meta.btns.cancel'),
           button: this.$t('meta.btns.submit'),
-          usersList: this.createdReferralsList,
+          itemList: this.createdReferralsList,
+          callback: async () => await this.$store.dispatch('referral/addReferrals', this.userAddress),
         });
       } else {
         this.ShowModal({

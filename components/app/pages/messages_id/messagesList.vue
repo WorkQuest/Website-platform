@@ -61,7 +61,7 @@
           <div class="message__data">
             <div
               v-if="!message.itsMe && !isPrevMessageSameSender(i, message)"
-              class="message__title"
+              class="message__title message__title_name"
             >
               {{ message.sender.firstName + ' ' + message.sender.lastName }}
             </div>
@@ -73,7 +73,7 @@
               ]"
               @click="goToCurrChat(message)"
             >
-              <div class="message__title">
+              <div class="message__title message__title_user-text">
                 {{ message.text }}
               </div>
               <div
@@ -571,6 +571,7 @@ export default {
     height: 43px;
     width: 43px;
     border-radius: 50%;
+    object-fit: cover;
 
     &_hidden {
       visibility: hidden;
@@ -703,5 +704,40 @@ export default {
 ::-webkit-scrollbar-thumb {
   border-radius: 2px;
   -webkit-box-shadow: inset 0 0 24px rgba(0, 131, 199, 1);
+}
+
+@include _1199 {
+  .info-message {
+    grid-template-columns: repeat(3, auto);
+    &__title {
+      white-space: nowrap;
+      color: $black600;
+    }
+    &__link {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+  .message {
+    &__title {
+      &_name {
+        width: calc(100vw - 180px);
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+      &_user-text {
+        width: calc(100vw - 180px);
+        word-wrap: break-word;
+      }
+    }
+  }
+}
+
+@include _767 {
+  .info-message {
+    grid-template-columns: unset;
+    grid-template-rows: repeat(3, auto);
+  }
 }
 </style>
