@@ -43,6 +43,20 @@ export const StakingTypes = {
   CROSS_CHAIN: 'CROSS_CHAIN',
 };
 
+// New statuses for worknet quests
+export const WorkQuestStatuses = {
+  Closed: -3,
+  Dispute: -2,
+  Blocked: -1,
+  Pending: 0, /** The quest has been created. The event about creating the quest is expected on the side of the quest factory.   */
+  Recruitment: 1, /** Recruitment of workers for the quest. See QuestResponse and flow response/invite on quest.                     */
+  WaitingForConfirmFromWorkerOnAssign: 2, /** The employer has selected a worker to complete the quest and is waiting for confirmation from the worker.      */
+  ExecutionOfWork: 3, /**  */
+  WaitingForEmployerConfirmationWork: 4, /** WaitConfirm */
+  Completed: 5, /** Done */
+};
+
+// TODO: remove (после исправления ошибок с квестами останется верний енам)
 export const QuestStatuses = {
   Rejected: -1,
   Created: 0,

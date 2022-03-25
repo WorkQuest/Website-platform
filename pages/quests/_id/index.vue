@@ -156,7 +156,14 @@
 <script>
 import { mapGetters } from 'vuex';
 import {
-  QuestStatuses, InfoModeWorker, InfoModeEmployer, UserRole, ResponseStatus, questPriority, QuestModeReview,
+  QuestStatuses,
+  InfoModeWorker,
+  InfoModeEmployer,
+  UserRole,
+  ResponseStatus,
+  questPriority,
+  QuestModeReview,
+  QuestMethods, TokenSymbols,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
@@ -174,6 +181,8 @@ export default {
   },
   computed: {
     ...mapGetters({
+      isWalletConnected: 'wallet/getIsWalletConnected',
+      userAddress: 'user/getUserWalletAddress',
       quest: 'quests/getQuest',
       assignedWorker: 'quests/getAssignedWorker',
       userRole: 'user/getUserRole',
@@ -225,7 +234,12 @@ export default {
       this.setActionBtnsArr();
     },
   },
+  beforeCreate() {
+    this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+  },
   async beforeMount() {
+    if (!this.isWalletConnected) return;
+
     this.SetLoader(true);
     const res = await this.getQuest();
     if (!res) {
@@ -520,6 +534,7 @@ export default {
       const modalMode = 1;
       this.SetLoader(true);
       if (this.quest.status !== InfoModeEmployer.Active) {
+        // TODO [!!!] close quest on contract
         await this.$store.dispatch('quests/closeQuest', this.quest.id);
         this.showQuestModal(modalMode);
       }
@@ -545,12 +560,37 @@ export default {
       });
     },
     async acceptCompletedWorkOnQuest() {
-      const modalMode = 2;
       this.SetLoader(true);
-      await this.$store.dispatch('quests/acceptCompletedWorkOnQuest', this.quest.id);
-      this.showQuestModal(modalMode);
-      await this.$store.dispatch('quests/setInfoDataMode', InfoModeEmployer.Done);
+      const contractAddress = ''; // TODO [!!!] put contract address here
+      const [feeRes] = await Promise.all([
+        this.$store.dispatch('wallet/getFeeDataJobMethod', {
+          method: QuestMethods.AcceptJobResult,
+          contractAddress,
+        }),
+        this.$store.dispatch('wallet/getBalance'),
+      ]);
       this.SetLoader(false);
+      if (feeRes.ok === false) {
+        console.error('accept completed work on quest', feeRes);
+        return;
+      }
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        fields: {
+          from: { name: this.$t('modals.fromAddress'), value: this.userAddress },
+          to: { name: this.$t('modals.toAddress'), value: contractAddress },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
+        },
+        submitMethod: async () => {
+          const txRes = await this.$store.dispatch('wallet/acceptJobResult', contractAddress);
+          console.log('accept completed work res:', txRes);
+          if (txRes.ok) {
+            this.showQuestModal(2);
+            // TODO: Обновлять сразу или по уведомлениям?
+            // await this.$store.dispatch('quests/setInfoDataMode', InfoModeEmployer.Done);
+          }
+        },
+      });
     },
     toRaisingViews() {
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.quest.status)) {
@@ -605,43 +645,114 @@ export default {
     },
     async acceptWorkOnQuest() {
       this.SetLoader(true);
-      if (await this.$store.dispatch('quests/acceptWorkOnQuest', this.quest.id)) {
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/questAgreed.svg'),
-          title: this.$t('meta.questInfo'),
-          subtitle: this.$t('quests.workOnQuestAccepted'),
-        });
-        await this.getQuest();
-      }
+      const contractAddress = ''; // TODO [!!!] get from quest data
+      const [feeRes] = await Promise.all([
+        this.$store.dispatch('wallet/getFeeDataJobMethod', {
+          method: QuestMethods.AcceptJob,
+          contractAddress,
+        }),
+        this.$store.dispatch('wallet/getBalance'),
+      ]);
       this.SetLoader(false);
+      if (feeRes.ok === false) {
+        console.error('acceptWorkOnQuest', feeRes);
+        return;
+      }
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        fields: {
+          from: { name: this.$t('modals.fromAddress'), value: this.userAddress },
+          to: { name: this.$t('modals.toAddress'), value: contractAddress },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
+        },
+        submitMethod: async () => {
+          const txRes = await this.$store.dispatch('wallet/acceptJob', contractAddress);
+          console.log('accept work res:', txRes);
+          if (txRes.ok) {
+            await this.getQuest();
+            this.ShowModal({
+              key: modals.status,
+              img: require('~/assets/img/ui/questAgreed.svg'),
+              title: this.$t('meta.questInfo'),
+              subtitle: this.$t('quests.workOnQuestAccepted'),
+            });
+          }
+        },
+      });
     },
     async rejectWorkOnQuest() {
       this.SetLoader(true);
-      if (await this.$store.dispatch('quests/rejectWorkOnQuest', this.quest.id)) {
-        await this.getQuest();
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/questAgreed.svg'),
-          title: this.$t('meta.questInfo'),
-          subtitle: this.$t('quests.workOnQuestRejected'),
-        });
-        await this.getQuest();
-      }
+      const contractAddress = ''; // TODO [!!!] get from quest data
+      const [feeRes] = await Promise.all([
+        this.$store.dispatch('wallet/getFeeDataJobMethod', {
+          method: QuestMethods.DeclineJob,
+          contractAddress,
+        }),
+        this.$store.dispatch('wallet/getBalance'),
+      ]);
       this.SetLoader(false);
+      if (!feeRes.ok) {
+        console.error('rejectWorkOnQuest', feeRes);
+        return;
+      }
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        fields: {
+          from: { name: this.$t('modals.fromAddress'), value: this.userAddress },
+          to: { name: this.$t('modals.toAddress'), value: contractAddress },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
+        },
+        submitMethod: async () => {
+          const txRes = await this.$store.dispatch('wallet/declineJob', contractAddress);
+          console.log('reject work res:', txRes);
+          if (txRes.ok) {
+            await this.getQuest();
+            this.ShowModal({
+              key: modals.status,
+              img: require('~/assets/img/ui/questAgreed.svg'),
+              title: this.$t('meta.questInfo'),
+              subtitle: this.$t('quests.workOnQuestRejected'),
+            });
+          }
+        },
+      });
     },
     async completeWorkOnQuest() {
       this.SetLoader(true);
-      if (await this.$store.dispatch('quests/completeWorkOnQuest', this.quest.id)) {
-        await this.getQuest();
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/questAgreed.svg'),
-          title: this.$t('meta.questInfo'),
-          subtitle: this.$t('quests.pleaseWaitEmp'),
-        });
-      }
+      const contractAddress = ''; // TODO [!!!] get from quest data
+      const [feeRes] = await Promise.all([
+        this.$store.dispatch('wallet/getFeeDataJobMethod', {
+          method: QuestMethods.VerificationJob,
+          contractAddress,
+        }),
+        this.$store.dispatch('wallet/getBalance'),
+      ]);
       this.SetLoader(false);
+      if (!feeRes.ok) {
+        console.error('completeWorkOnQuest', feeRes);
+        return;
+      }
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        fields: {
+          from: { name: this.$t('modals.fromAddress'), value: this.userAddress },
+          to: { name: this.$t('modals.toAddress'), value: contractAddress },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
+        },
+        submitMethod: async () => {
+          const txRes = await this.$store.dispatch('wallet/verificationJob', contractAddress);
+          console.log('complete work res:', txRes);
+          if (txRes.ok) {
+            await this.getQuest();
+            this.ShowModal({
+              key: modals.status,
+              img: require('~/assets/img/ui/questAgreed.svg'),
+              title: this.$t('meta.questInfo'),
+              subtitle: this.$t('quests.pleaseWaitEmp'),
+            });
+          }
+        },
+      });
     },
     async sendARequestOnQuest() {
       this.ShowModal({

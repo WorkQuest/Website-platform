@@ -162,7 +162,7 @@ export default {
   data() {
     return {
       period: 1,
-      selectedSpecAndSkills: [],
+      selectedSpecAndSkills: ['1.100'], // TODO: нельзя выбрать специализации - проблема на бэке
       employmentIndex: 0,
       workplaceIndex: 0,
       runtimeIndex: 0,
