@@ -407,7 +407,7 @@ export default {
           cancel: this.$t('meta.btns.cancel'),
           button: this.$t('meta.btns.submit'),
           itemList: this.createdReferralsList,
-          callback: () => this.$store.dispatch('referral/addReferrals', this.userAddress),
+          callback: async () => await this.$store.dispatch('referral/addReferrals', this.userAddress),
         });
       }
     },
