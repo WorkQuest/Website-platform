@@ -211,7 +211,6 @@ export default {
     if (!this.addressAssigned && !this.$cookies.get('access') && !this.$cookies.get('userStatus')) {
       this.$store.dispatch('user/logout');
       if (refId.length) {
-        console.log(refId);
         sessionStorage.setItem('referralId', refId);
       }
     }
