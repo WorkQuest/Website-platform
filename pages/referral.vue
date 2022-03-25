@@ -165,20 +165,20 @@
               tbody-tr-class="table__row"
             >
               <template #cell(userInfo)="el">
-                <div class="user__info">
-                  <img
-                    class="ava"
-                    :src="el.item['referralUser.avatar.url'] ? el.item['referralUser.avatar.url'] : EmptyAvatar()"
-                    alt=""
+                <div class="user__name">
+                  <nuxt-link
+                    class="user__link"
+                    :to="`profile/${el.item.id}`"
                   >
-                  <div class="user__name">
-                    <nuxt-link
-                      class="user__link"
-                      :to="`profile/${el.item.id}`"
+                    <img
+                      class="ava"
+                      :src="el.item['referralUser.avatar.url'] ? el.item['referralUser.avatar.url'] : EmptyAvatar()"
+                      alt=""
                     >
+                    <span>
                       {{ el.item['referralUser.firstName'] }} {{ el.item['referralUser.lastName'] }}
-                    </nuxt-link>
-                  </div>
+                    </span>
+                  </nuxt-link>
                 </div>
               </template>
               <template #cell(userID)="el">
@@ -536,6 +536,8 @@ export default {
         border-radius: 50%;
         background-color: $white;
         flex: none;
+        display: inline;
+        margin-right: 10px;
         &_list {
           @extend .ava;
           position: absolute;
