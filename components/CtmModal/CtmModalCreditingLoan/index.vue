@@ -8,73 +8,20 @@
         v-slot="{handleSubmit, validated, passed, invalid}"
       >
         <div class="content__body">
-          <div class="content__checkpoints checkpoints">
-            <label
-              for="checkpoints__main"
-              class="checkpoints__label"
-            >
-              {{ $t('modals.chooseTheCurrency') }}
-            </label>
-            <div
-              id="checkpoints__main"
-              class="checkpoints__main"
-            >
-              <div
-                v-for="(item, i) in checkpoints"
-                :key="i"
-                class="checkpoints__array"
-              >
-                <input
-                  :id="item.name"
-                  v-model="selCurrencyID"
-                  type="radio"
-                  class="checkpoints__item"
-                  :value="item.id"
-                >
-                <label
-                  class="checkpoints__name"
-                  :for="item.name"
-                >
-                  {{ item.name }}
-                </label>
-              </div>
-            </div>
-          </div>
           <div class="content__field">
             <div class="content__label">
               {{ $t('modals.howMuchETHWouldYouLikeToOpen') }}
             </div>
+            <div class="content__text content__text_small">
+              {{ $t('modals.smallDescriptionForLoan') }}
+            </div>
             <base-field
               v-model="quantity"
               class="content__input"
-              :placeholder="'10 ETH'"
+              placeholder="10 ETH"
               rules="required|decimal"
+              data-selector="VALUE-FOR-LOAN"
               :name="$t('modals.quantityField')"
-            />
-          </div>
-          <div class="content__field">
-            <div class="content__label">
-              {{ $t('modals.howMuchPercentWouldYouLikeToSet') }}
-            </div>
-            <base-field
-              id="amountOfPercents_input"
-              v-model="percents"
-              class="content__input"
-              :placeholder="'10 ETH'"
-              rules="required|decimal"
-              :name="$t('modals.percentField')"
-            />
-          </div>
-          <div class="content__field">
-            <div class="content__label">
-              {{ $t('modals.enterTermToReturnDebtBack') }}
-            </div>
-            <base-field
-              v-model="debt"
-              class="content__input"
-              :placeholder="'10 ETH'"
-              rules="required|decimal"
-              :name="$t('modals.amountField')"
             />
             <div class="content__text">
               {{ $t('modals.tipAbout') }}
@@ -85,7 +32,7 @@
           <base-btn
             class="buttons__button"
             mode="outline"
-            selector="CANCEL"
+            data-selector="CANCEL"
             @click="hide"
           >
             {{ $t('meta.btns.cancel') }}
@@ -93,7 +40,7 @@
           <base-btn
             class="buttons__button"
             :disabled="!validated || !passed || invalid"
-            selector="SUBMIT"
+            data-selector="SUBMIT"
             @click="handleSubmit(openConfirmDetailsModal)"
           >
             {{ $t('meta.btns.submit') }}
@@ -180,6 +127,9 @@ export default {
     font-weight: 400;
     font-size: 14px;
     margin-top: 3px;
+    &_small {
+      margin-bottom:10px;
+    }
   }
   &__checkpoints {
     margin-bottom: 25px;

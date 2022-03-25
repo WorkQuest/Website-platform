@@ -42,6 +42,7 @@
           <textarea
             id="message_input"
             v-model="message_input"
+            data-selector="MESSAGE"
             class="message__textarea"
             :placeholder="$t('meta.typeYourMessage')"
           />
@@ -51,7 +52,7 @@
             <base-btn
               class="message__action"
               :disabled="!message_input.trim()"
-              selector="INVITE-ON-QUEST"
+              data-selector="INVITE-ON-QUEST"
               @click="inviteOnQuest()"
             >
               {{ $t('meta.btns.send') }}
@@ -61,7 +62,7 @@
             <base-btn
               class="message__action"
               mode="outline"
-              selector="CANCEL"
+              data-selector="CANCEL"
               @click="hide()"
             >
               {{ $t('meta.btns.cancel') }}

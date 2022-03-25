@@ -102,6 +102,7 @@
             <base-btn
               class="buttons__button"
               mode="outline"
+              data-selector="CANCEL"
               :is-submit="false"
               @click="CloseModal"
             >
@@ -109,6 +110,7 @@
             </base-btn>
             <base-btn
               class="buttons__button"
+              data-selector="SUBMIT"
               :disabled="!validated || !passed || invalid"
             >
               {{ $t('meta.btns.submit') }}

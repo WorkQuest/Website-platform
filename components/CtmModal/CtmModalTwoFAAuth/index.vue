@@ -48,7 +48,7 @@
             >
               <base-btn
                 mode="black"
-                :selector="item.text"
+                :data-selector="item.text"
                 @click="item.click"
               >
                 {{ item.text }}
@@ -80,6 +80,7 @@
           <div class="code__input">
             <base-field
               v-model="twoFACode"
+              data-selector="2FA-CODE"
               :placeholder="twoFACode"
             />
             <button
@@ -87,6 +88,7 @@
               v-clipboard:success="ClipboardSuccessHandler"
               v-clipboard:error="ClipboardErrorHandler"
               class="btn__copy"
+              data-selector="COPY-BTN"
               type="button"
             >
               <span class="icon-copy" />
@@ -103,6 +105,7 @@
           <div class="code__input">
             <base-field
               v-model="twoFACode"
+              data-selector="2FA-CODE"
               :placeholder="twoFACode"
             />
             <button
@@ -110,6 +113,7 @@
               v-clipboard:error="ClipboardErrorHandler"
               v-clipboard:copy="twoFACode"
               class="btn__copy"
+              data-selector="COPY-BTN"
               type="button"
             >
               <span class="icon-copy" />
@@ -137,6 +141,7 @@
             v-model="models[item.model]"
             :vid="item.id"
             :label="item.label"
+            :data-selector="item.label.toUpperCase()"
             :placeholder="item.placeholder"
             :rules="item.rules"
             :name="item.name"
@@ -151,7 +156,7 @@
         >
           <base-btn
             class="message__action"
-            selector="NEXT-STEP-WITH-ENABLE-2FA"
+            data-selector="NEXT-STEP-WITH-ENABLE-2FA"
             @click="nextStepWithEnable2FA()"
           >
             {{ $t('meta.btns.next') }}
@@ -168,7 +173,7 @@
           >
             <base-btn
               v-if="item.step.includes(step)"
-              :selector="`${item.text}-${i}`"
+              :data-selector="`${item.text}-${i}`"
               class="message__action"
               @click="item.click"
             >
@@ -181,7 +186,7 @@
           >
             <base-btn
               class="message__action"
-              selector="CONFIRM-ENABLE-2FA"
+              data-selector="CONFIRM-ENABLE-2FA"
               :disabled="!validated || !passed || invalid"
               @click="handleSubmit(confirmEnable2FA)"
             >
@@ -196,7 +201,7 @@
         >
           <base-btn
             mode="outline"
-            selector="PREVIOUS-STEP"
+            data-selector="PREVIOUS-STEP"
             class="message__action"
             @click="previousStep()"
           >

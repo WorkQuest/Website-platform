@@ -75,14 +75,8 @@
           data-selector="ACTION-BTN-SHOW-LOCALE"
           @click="showLocale()"
         >
-          <span
-            v-if="currentLocale"
-            class="header__button_locale-name"
-          >
+          <span class="header__button_locale-name">
             {{ currentLocale.toUpperCase() }}
-          </span>
-          <span v-else>
-            {{ $t('ui.locals.en').toUpperCase() }}
           </span>
           <span class="icon icon-caret_down" />
           <transition name="fade">
@@ -92,9 +86,9 @@
             >
               <li
                 v-for="(item, i) in locales"
-                :key="item.localeText"
+                :key="item.localeCode"
                 class="locale__item"
-                :class="[{'locale__item_active' : currentLocale === item.localeText}]"
+                :class="[{'locale__item_active' : currentLocale === item.localeCode}]"
                 :data-selector="`ACTION-BTN-SET-LOCALE-${i}`"
                 @click="setLocale(item)"
               >
@@ -194,7 +188,7 @@
         <base-btn
           v-if="userData.role === $options.UserRole.EMPLOYER"
           class="header__btn"
-          selector="CREATE-NEW-QUEST"
+          data-selector="CREATE-NEW-QUEST"
           @click="createNewQuest('pc')"
         >
           {{ $t('meta.createAQuest') }}
@@ -336,7 +330,6 @@ export default {
       isShowLocale: false,
       isMobileMenu: false,
       isNotFlexContainer: false,
-      currentLocale: '',
     };
   },
   computed: {
@@ -350,11 +343,13 @@ export default {
       unreadMessagesCount: 'user/getUnreadChatsCount',
       chats: 'chat/getChats',
       searchValue: 'chat/getSearchValue',
+      currentLocale: 'user/getCurrentLang',
     }),
     locales() {
       return this.$i18n.locales.map((item) => ({
         localeSrc: `${item}.svg`,
         localeText: this.$t(`ui.locals.${item}`),
+        localeCode: item,
       }));
     },
     profileLinks() {
@@ -443,7 +438,7 @@ export default {
   async mounted() {
     await this.initWSListeners();
     this.GetLocation();
-    this.currentLocale = this.$i18n.localeProperties.code;
+    this.$store.commit('user/setLang', this.$i18n.localeProperties.code);
   },
   destroyed() {
     window.removeEventListener('resize', this.userWindowChange);
@@ -517,9 +512,9 @@ export default {
       await this.$store.dispatch('user/getStatistic');
     },
     setLocale(item) {
-      this.currentLocale = item.localeText;
-      this.$i18n.setLocale(item.localeText);
-      moment.locale(item.localeText);
+      this.$store.commit('user/setLang', item.localeCode);
+      this.$i18n.setLocale(item.localeCode);
+      moment.locale(item.localeCode);
     },
     kitcutDescription(text) {
       text = text.trim();

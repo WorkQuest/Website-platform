@@ -40,6 +40,7 @@
             <div class="btn-group">
               <base-btn
                 class="btn"
+                data-selector="GET-WUSD"
                 @click="openModalGetWUSD()"
               >
                 {{ $t('collateral.getWUSD') }}
@@ -63,6 +64,7 @@
             <div class="btn-group">
               <base-btn
                 class="btn"
+                data-selector="GO-AUCTION"
                 @click="goAuction()"
               >
                 {{ $t('collateral.goAuction') }}

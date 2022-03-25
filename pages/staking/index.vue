@@ -65,6 +65,7 @@
               <template #cell(open)="el">
                 <base-btn
                   class="btn_bl"
+                  data-selector="OPEN-STAKING"
                   @click="handleOpenPool(el)"
                 >
                   {{ $t('staking.open') }}

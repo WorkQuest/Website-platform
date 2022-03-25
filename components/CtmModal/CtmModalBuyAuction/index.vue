@@ -34,6 +34,7 @@
         <base-btn
           class="buttons__button"
           mode="outline"
+          data-selector="CANCEL"
           :is-submit="false"
           @click="CloseModal"
         >
@@ -41,6 +42,7 @@
         </base-btn>
         <base-btn
           class="buttons__button"
+          data-selector="CONFIRM"
           @click="confirmBuy"
         >
           {{ $t('meta.btns.confirm') }}

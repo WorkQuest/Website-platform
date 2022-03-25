@@ -35,6 +35,7 @@
           v-clipboard:success="ClipboardSuccessHandler"
           v-clipboard:error="ClipboardErrorHandler"
           class="share__copy"
+          data-selector="COPY-BTN"
           type="button"
         >
           <span class="icon-copy" />

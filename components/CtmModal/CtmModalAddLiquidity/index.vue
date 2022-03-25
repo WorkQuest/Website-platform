@@ -17,6 +17,7 @@
               v-model="amountOfWqt"
               :placeholder="$tc('meta.coins.count.WQTCount', 1000)"
               class="field__input"
+              data-selector="AMOUNT-OF-WQT"
               rules="required|decimal"
               :name="$t('meta.amount.amountOfWQT')"
             />
@@ -28,6 +29,7 @@
                 v-if="options.isBNB"
                 v-model="amountOfBnb"
                 :placeholder="$tc('meta.coins.count.BNBCount', 10)"
+                data-selector="AMOUNT-OF-BNB"
                 class="field__input"
                 rules="required|decimal"
                 :name="$t('meta.amountOfBNB')"
@@ -37,6 +39,7 @@
                 v-model="amountOfEth"
                 :placeholder="$tc('meta.coins.count.ETHCount', 10)"
                 class="field__input"
+                data-selector="AMOUNT-OF-ETH"
                 rules="required|decimal"
                 :name="$t('meta.amountOfETH')"
               />
@@ -69,14 +72,14 @@
           <base-btn
             class="buttons__button"
             mode="outline"
-            selector="CANCEL"
+            data-selector="CANCEL"
             @click="hide"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
-            selector="CONNECT-WALLET"
+            data-selector="CONNECT-WALLET"
             @click="handleSubmit(hide)"
           >
             {{ $t('modals.connectWallet') }}

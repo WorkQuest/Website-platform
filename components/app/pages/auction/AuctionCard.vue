@@ -23,6 +23,7 @@
         {{ auctionDuration.minutes ? $t('meta.units.minutes',{ count: auctionDuration.minutes }) : '' }}
       </p>
       <base-btn
+        data-selector="BUY-AUCTION"
         @click="openModalBuyAuction"
       >
         {{ $t('meta.btns.buy') }}

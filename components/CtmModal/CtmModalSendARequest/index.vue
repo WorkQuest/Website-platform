@@ -19,6 +19,7 @@
                   <textarea
                     id="textarea"
                     v-model="text"
+                    data-selector="MESSAGE"
                     class="message__textarea"
                     rules="required"
                     :placeholder="$t('meta.typeYourMessage')"
@@ -37,7 +38,7 @@
               <div class="btn__container">
                 <div class="btn__wrapper">
                   <base-btn
-                    selector="SEND"
+                    data-selector="SEND"
                     class="message__action"
                     :disabled="!text || isRespondActionInProgress"
                     @click="handleSubmit(showRequestSendModal)"
@@ -48,7 +49,7 @@
                 <div class="btn__wrapper">
                   <base-btn
                     mode="outline"
-                    selector="CANCEL"
+                    data-selector="CANCEL"
                     class="message__action"
                     @click="hide()"
                   >

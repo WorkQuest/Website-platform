@@ -1,6 +1,9 @@
 /* eslint-disable no-param-reassign */
 
 export default {
+  setLang(state, data) {
+    state.currentLang = data;
+  },
   setEducations(state, data) {
     state.userData.additionalInfo.educations = data;
   },
