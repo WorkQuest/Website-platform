@@ -12,7 +12,8 @@
       <base-field
         v-model="amount"
         validation-mode="aggressive"
-        :placeholder="1000"
+        placeholder="1000"
+        data-selector="AMOUNT"
         class="content__field"
         type="number"
         :label="$t('modals.amount')"
@@ -22,6 +23,7 @@
         <template v-slot:right-absolute>
           <base-btn
             mode="max"
+            data-selector="MAX"
             class="content__max-button"
             @click="maxAmount()"
           >
@@ -44,14 +46,14 @@
       <div class="content__actions">
         <base-btn
           mode="outline"
-          selector="CANCEL"
+          data-selector="CANCEL"
           @click="hide()"
         >
           {{ $t('meta.btns.cancel') }}
         </base-btn>
         <base-btn
           :disabled="!valid || !canSubmit"
-          selector="SUBMIT"
+          data-selector="SUBMIT"
           @click="handleSubmit(onSubmit)"
         >
           {{ $t('meta.btns.submit') }}

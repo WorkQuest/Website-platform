@@ -30,13 +30,13 @@
         <div>{{ item.amountInDollars2 }}</div>
         <div class="item__actions">
           <base-btn
-            selector="ADD"
+            data-selector="ADD"
             @click="handleAdd"
           >
             {{ $t('meta.btns.add') }}
           </base-btn>
           <base-btn
-            selector="TAKE"
+            data-selector="TAKE"
             @click="handleTake"
           >
             {{ $t('meta.btns.take') }}

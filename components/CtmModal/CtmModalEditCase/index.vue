@@ -22,10 +22,11 @@
         <base-field
           v-model="caseTitle"
           class="content__title"
+          data-selector="CASE-TITLE"
           :label="$t('modals.title')"
           :placeholder="$t('modals.addTitle')"
           rules="required|text-title|max:70"
-          :mode="'gray'"
+          mode="gray"
           :name="$t('modals.title')"
         />
         <base-textarea
@@ -33,6 +34,7 @@
           v-model="caseDescription"
           :label="$t('modals.description')"
           class="content__textarea"
+          data-selector="CASE-DESCRIPTION"
           :placeholder="$t('modals.addDesc')"
           rules="required|text-desc|max:350"
           :name="$t('modals.description')"
@@ -41,7 +43,7 @@
           <div class="btn__wrapper">
             <base-btn
               mode="outline"
-              selector="CANCEL"
+              data-selector="CANCEL"
               class="btn__action"
               @click="hide()"
             >
@@ -51,7 +53,7 @@
           <div class="btn__wrapper">
             <base-btn
               class="btn__action"
-              selector="EDIT-USER-CASE"
+              data-selector="EDIT-USER-CASE"
               :disabled="invalid || files.length === 0"
               @click="editUserCase(options.id)"
             >

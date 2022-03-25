@@ -9,6 +9,11 @@ export const ChainsId = {
   WORKNET_TEST: '0x13488D0',
 };
 
+export const QuestModeReview = {
+  QUEST_LIST: 'QuestList',
+  QUEST_SINGLE: 'QuestSingle',
+};
+
 export const ChainsIdByChainNumber = {
   1: '0x1',
   4: '0x4',
@@ -204,6 +209,7 @@ export const Path = {
   EDIT_QUEST: '/edit-quest',
   COLLATERAL: '/collateral',
   WIKI: '/wiki',
+  RAISED_VIEWS: '/raised-views',
 };
 
 // WALLET
@@ -291,3 +297,24 @@ export const PensionHistoryMethods = Object.freeze({
   Withdraw: 'Withdraw',
   Receive: 'Receive',
 });
+
+export const UserRaiseViewPriceDay = {
+  PLUS: '20',
+  GOLD: '12',
+  SILVER: '9',
+  BRONZE: '7',
+};
+
+export const UserRaiseViewPriceWeek = {
+  PLUS: '35',
+  GOLD: '28',
+  SILVER: '22',
+  BRONZE: '18',
+};
+
+export const UserRaiseViewPriceMonth = {
+  PLUS: '50',
+  GOLD: '35',
+  SILVER: '29',
+  BRONZE: '21',
+};

@@ -14,6 +14,7 @@
               id="twoFACode"
               ref="totp"
               v-model="twoFACode"
+              data-selector="GOOGLE-CONF-CODE"
               vid="totp"
               :placeholder="errorMessage || $t('meta.googleConfCodeDesc')"
               rules="required|min:6|numeric"
@@ -28,7 +29,7 @@
               <base-btn
                 class="message__action"
                 :disabled="!validated || !passed || invalid"
-                selector="DISABLE-2FA"
+                data-selector="DISABLE-2FA"
                 @click="handleSubmit(disable2FA)"
               >
                 {{ $t('meta.btns.disable') }}
@@ -39,7 +40,7 @@
             <base-btn
               mode="outline"
               class="message__action"
-              selector="CANCEL"
+              data-selector="CANCEL"
               @click="hide"
             >
               {{ $t('meta.btns.cancel') }}

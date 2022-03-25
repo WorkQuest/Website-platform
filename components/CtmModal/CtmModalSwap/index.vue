@@ -15,9 +15,9 @@
               </div>
               <base-dd
                 v-model="token"
-                class="grid__drop"
-                :data-selector="'Tokens'"
                 :items="tokens"
+                class="grid__drop"
+                data-selector="TOKENS"
                 @input="changeToken()"
               />
             </div>
@@ -28,11 +28,11 @@
               <base-field
                 v-model.lazy="amount"
                 type="number"
-                :placeholder="'0,05'"
-                :data-selector="'Amount'"
+                placeholder="0,05"
                 class="grid__input"
-                rules="required|decimal|decimalPlaces:18|min_value:0.00001"
+                data-selector="AMOUNT"
                 :name="$t('modals.amountField')"
+                rules="required|decimal|decimalPlaces:18|min_value:0.00001"
               >
                 <template
                   v-slot:right-absolute
@@ -41,7 +41,7 @@
                   <base-btn
                     mode="max"
                     class="max__button"
-                    selector="SET-MAX-VAL"
+                    data-selector="MAX"
                     @click="setMaxValue()"
                   >
                     <span class="max__text">{{ $t('modals.maximum') }}</span>
@@ -58,11 +58,11 @@
             </div>
             <base-field
               v-model="recipientAddress"
-              class="body__input"
-              :data-selector="'Recipient-Address'"
               :disabled="true"
+              class="body__input"
+              :name="$t('modals.recipientAddressField')"
               placeholder="Enter binance address"
-              :name="$t('modals.recepientAddressField')"
+              data-selector="BINANCE-ADDRESS"
             />
           </div>
         </div>
@@ -70,14 +70,14 @@
           <base-btn
             class="buttons__button"
             mode="outline"
-            selector="CANCEL"
+            data-selector="CANCEL"
             @click="hide"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
-            selector="CREATE-SWAP"
+            data-selector="CREATE-SWAP"
             @click="handleSubmit(showSwapInfoModal)"
           >
             {{ $t('modals.createSwap') }}

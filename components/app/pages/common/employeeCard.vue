@@ -2,6 +2,7 @@
   <div
     class="card"
     :data-selector="`COMPONENT-EMPLOYEE-CARD-${user.id}`"
+    :class="raiseViews[user.raiseView && user.raiseView.type]"
     @click="$emit('click')"
   >
     <div class="card__header">
@@ -18,6 +19,7 @@
           v-if="user.ratingStatistic && user.ratingStatistic.status >= 0"
           class="user__rating"
           :rating="user.ratingStatistic.status"
+          :raise-view="user.raiseView"
         />
       </div>
     </div>
@@ -85,6 +87,14 @@ export default {
       });
       return string;
     },
+    raiseViews() {
+      return {
+        0: 'card_plus',
+        1: 'card_gold',
+        2: 'card_silver',
+        3: 'card_bronze',
+      };
+    },
   },
   methods: {
     ratingStatistic(ratingStatistic) {
@@ -106,7 +116,6 @@ export default {
 
   border-radius: 6px;
 
-  box-shadow: none;
   transition: box-shadow .25s ease-in-out;
 
   cursor: pointer;
@@ -166,6 +175,18 @@ export default {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  &_plus {
+    border: 1px solid $yellow100;
+  }
+  &_gold{
+    border: 1px solid $yellow100;
+  }
+  &_silver{
+    border: 1px solid $grey200;
+  }
+  &_bronze{
+    border: 1px solid $brown;
   }
 }
 

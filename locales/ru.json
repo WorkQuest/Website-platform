@@ -1,4 +1,8 @@
 {
+  "kyc": {
+    "KYC": "KYC",
+    "alreadyVerified": "Ваш профиль уже подтвержден!"
+  },
   "meta": {
     "priority": {
       "title": "Выберите приоритет",
@@ -979,6 +983,9 @@
       "withdrawInfo": "Withdrawal info"
     },
     "value": "Value",
+    "generatedWUSD": "WUSD будет сгенерировано",
+    "choosePeriod": "Выберите срок кредита",
+    "smallDescriptionForLoan": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     "recipient": "Recipient address",
     "successBuyWUSD": "Successfully purchased WUSD",
     "setTokenPrice": "Setting up {token} price",
@@ -1112,7 +1119,6 @@
     "liquidationFee": "Liquidation fee",
     "saveCardForNextPayment": "Save the card for next use",
     "connectWallet": "Connect wallet",
-    "howMuchWusdWouldYouLikeToGenerate": "How much WUSD would you like to generate?",
     "chooseTheCurrency": "Choose the currency",
     "howMuchETHWouldYouLikeToOpen": "How much ETH would you like to open into your account?",
     "howMuchPercentWouldYouLikeToSet": "How much percent would you like to set?",
@@ -1187,7 +1193,10 @@
     "youTryToAttachUnsupportedFileFormat": "You try to attach unsupported file format",
     "incorrectChain": "You choose incorrect chain !",
     "selectToken": "Select token",
-    "txInfo": "Transaction info"
+    "txInfo": "Transaction info",
+    "registration": "Вы верены что хотите зарегистрировать данных пользователей?",
+    "claimConfirm": "Вы потдверждаете дейсвие клейм?",
+    "until": "До"
   },
   "ui": {
     "jobQuestors": "В поиске работы",
@@ -1491,12 +1500,16 @@
     "everyTimeYourFriends": "Every time your friends make a first Quest, you'll get up to $35 in WQT commission in real time!",
     "historyOfRewards": "History of rewards",
     "tableHead": {
-      "name": "Name",
+      "name": "Имя",
       "userID": "User ID",
       "txHash": "Txn hash",
-      "time": "Time",
-      "amount": "Amount",
-      "status": "Status"
+      "time": "Время",
+      "amount": "Количество",
+      "event": "Событие"
+    },
+    "event": {
+      "claimed": "Получено",
+      "paid": "Выплачено"
     }
   },
   "pension": {
@@ -1675,9 +1688,14 @@
   "crediting": {
     "lending": "WorkQuest Lending Protocol",
     "templateText": "WorkQuest DeFi lending platform on the Work Net network with four exclusive money markets for volatile assets",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
+    "currentLoan": "Текущий заем",
+    "currentCredit": "Текущий кредит",
     "marketSize": "Market size",
     "wantToTakeALoan": "Want to take a loan?",
-    "borrow": "Borrow",
+    "borrow": "Занимать",
+    "myLoans": "Мои займы",
+    "refund": "Возврат",
     "openPositions": "Open positions",
     "totalCollateralLocked": "Total collateral locked",
     "totalWusdDebt": "Total WUSD debt",
