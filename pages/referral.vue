@@ -165,15 +165,20 @@
               tbody-tr-class="table__row"
             >
               <template #cell(userInfo)="el">
-                <div class="user__info">
-                  <img
-                    class="ava"
-                    :src="el.item['referralUser.avatar.url'] ? el.item['referralUser.avatar.url'] : EmptyAvatar()"
-                    alt=""
+                <div class="user__name">
+                  <nuxt-link
+                    class="user__link"
+                    :to="`profile/${el.item.id}`"
                   >
-                  <div class="user__name">
-                    {{ el.item['referralUser.firstName'] }} {{ el.item['referralUser.lastName'] }}
-                  </div>
+                    <img
+                      class="ava"
+                      :src="el.item['referralUser.avatar.url'] ? el.item['referralUser.avatar.url'] : EmptyAvatar()"
+                      alt=""
+                    >
+                    <span>
+                      {{ el.item['referralUser.firstName'] }} {{ el.item['referralUser.lastName'] }}
+                    </span>
+                  </nuxt-link>
                 </div>
               </template>
               <template #cell(userID)="el">
@@ -251,7 +256,7 @@ export default {
     return {
       page: 1,
       perPage: 10,
-      referLink: process.env.PROD === 'true' ? 'https://app-ver1.workquest.co/sign-in?ref=' : 'https://app.workquest.co/sign-in?ref=',
+      referLink: process.env.PROD === 'true' ? 'https://app-ver1.workquest.co/?ref=' : 'https://app.workquest.co/?ref=',
       isProd: process.env.PROD,
       referralCount: 5,
     };
@@ -402,7 +407,7 @@ export default {
       this.SetLoader(true);
       const res = await this.$store.dispatch('referral/fetchCreatedReferralList');
       this.SetLoader(false);
-      if (res) {
+      if (res && !this.createdReferralsList.length) {
         this.ShowModal({
           key: modals.status,
           title: this.$t('meta.btns.registration'),
@@ -411,6 +416,12 @@ export default {
           button: this.$t('meta.btns.submit'),
           itemList: this.createdReferralsList,
           callback: async () => await this.$store.dispatch('referral/addReferrals', this.userAddress),
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          title: this.$t('modals.errors.error'),
+          subtitle: this.$t('notifications.registrationError'),
         });
       }
     },
@@ -525,6 +536,8 @@ export default {
         border-radius: 50%;
         background-color: $white;
         flex: none;
+        display: inline;
+        margin-right: 10px;
         &_list {
           @extend .ava;
           position: absolute;
@@ -590,6 +603,15 @@ export default {
           flex-wrap: wrap;
           gap: 10px;
           grid-template-columns: 5fr auto;
+        }
+        &__link {
+          position: relative;
+          text-decoration: none;
+          color: $black500;
+          &:hover,
+          &:focus{
+            text-decoration: underline;
+          }
         }
       }
 
