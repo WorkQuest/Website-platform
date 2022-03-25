@@ -60,7 +60,7 @@
               v-model="recipientAddress"
               :disabled="true"
               class="body__input"
-              :name="$t('modals.recipientAddressField')"
+              :name="$t('modals.recipientAddress')"
               data-selector="RECIPIENT_ADDRESS"
               placeholder="Enter binance address"
             />
