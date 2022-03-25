@@ -79,12 +79,12 @@
             </div>
             <base-field
               v-model="messageText"
-              :placeholder="$t('chat.writeYouMessage')"
-              is-hide-error
-              data-selector="INPUT-MESSAGE"
               mode="chat"
+              is-hide-error
               :auto-focus="true"
+              :placeholder="$t('chat.writeYouMessage')"
               :on-enter-press="handleSendMessage"
+              data-selector="INPUT-MESSAGE"
             />
             <button
               class="chat-container__send-btn"
