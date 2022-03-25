@@ -272,6 +272,9 @@ export default {
     totalPages() {
       return Math.ceil(this.paidEventsList.length / this.perPage);
     },
+    createdReferralsList() {
+      return this.referralsList.filter((item) => item.referralUser.referralStatus === 'created');
+    },
     tableFields() {
       return [
         {
