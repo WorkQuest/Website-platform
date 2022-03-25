@@ -11,7 +11,8 @@
         <base-field
           v-model="currentPasswordInput"
           :is-hide-error="true"
-          :placeholder="'******'"
+          placeholder="******"
+          data-selector="CURRENT-PASSWORD"
           :label="$t('modals.currentPassword')"
           mode="icon"
           :type="isVisibleCurrent ? 'text': 'password'"
@@ -29,7 +30,7 @@
           >
             <base-btn
               mode="max"
-              :selector="`IS-VISIBLE-CURRENT-PASS-${isVisibleCurrent}`"
+              :data-selector="`IS-VISIBLE-CURRENT-PASS-${isVisibleCurrent}`"
               class="field__button"
               :disabled="currentPasswordInput===''"
               @click="isVisibleCurrent=!isVisibleCurrent"
@@ -45,7 +46,8 @@
       <base-field
         v-model="newPasswordInput"
         :is-hide-error="true"
-        :placeholder="'******'"
+        placeholder="******"
+        data-selector="NEW-PASSWORD"
         :label="$t('modals.newPassword')"
         mode="icon"
         :type="isVisible ? 'text': 'password'"
@@ -63,7 +65,7 @@
         >
           <base-btn
             mode="max"
-            :selector="`IS-VISIBLE-PASS-${isVisible}`"
+            :data-selector="`IS-VISIBLE-PASS-${isVisible}`"
             class="field__button"
             :disabled="newPasswordInput===''"
             @click="isVisible=!isVisible"
@@ -78,7 +80,8 @@
       <base-field
         v-model="confirmNewPasswordInput"
         :is-hide-error="true"
-        :placeholder="'******'"
+        placeholder="******"
+        data-selector="CONFIRM-NEW-PASSWORD"
         :label="$t('modals.confirmNewPassword')"
         mode="icon"
         :type="isVisibleConfirm ? 'text': 'password'"
@@ -92,7 +95,7 @@
         >
           <base-btn
             mode="max"
-            :selector="`IS-VISIBLE-CONFIRM-PASS-${isVisibleConfirm}`"
+            :data-selector="`IS-VISIBLE-CONFIRM-PASS-${isVisibleConfirm}`"
             class="field__button"
             :disabled="confirmNewPasswordInput===''"
             @click="isVisibleConfirm=!isVisibleConfirm"
@@ -108,7 +111,7 @@
         <div class="buttons__group">
           <base-btn
             class="buttons__button"
-            selector="CHANGE"
+            data-selector="CHANGE"
             @click="hide()"
           >
             {{ $t('meta.btns.change') }}

@@ -13,6 +13,7 @@
             <base-field
               v-model="recipient"
               class="input__field"
+              data-selector="ADDRESS-RECIPIENT"
               :placeholder="$t('meta.addressBig')"
               rules="required|address"
               :name="$t('meta.addressSmall')"
@@ -34,6 +35,7 @@
             <base-field
               v-model="amount"
               class="input__field"
+              data-selector="AMOUNT"
               :placeholder="$t('modals.amount')"
               :rules="`required|decimal|is_not:0|max_bn:${maxAmount}|decimalPlaces:18`"
               :name="$t('modals.amountField')"
@@ -46,6 +48,7 @@
                 <base-btn
                   mode="max"
                   class="max__button"
+                  data-selector="MAX"
                   @click="maxBalance"
                 >
                   <span class="max__text">
@@ -59,7 +62,7 @@
         <div class="content__buttons buttons">
           <base-btn
             mode="outline"
-            selector="CANCEL"
+            data-selector="CANCEL"
             class="buttons__action"
             @click="hide"
           >
@@ -67,7 +70,7 @@
           </base-btn>
           <base-btn
             class="buttons__action"
-            selector="SEND"
+            data-selector="SEND"
             :disabled="invalid || !isCanSubmit"
             @click="handleSubmit(showWithdrawInfo)"
           >

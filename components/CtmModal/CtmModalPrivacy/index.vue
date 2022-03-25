@@ -56,7 +56,7 @@
         <base-btn
           class="privacy__action"
           :disabled="!isAllChecked"
-          selector="OK"
+          data-selector="OK"
           @click="onSubmit()"
         >
           {{ $t('meta.btns.ok') }}

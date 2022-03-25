@@ -17,6 +17,7 @@
           </div>
           <base-field
             v-model="securityCode"
+            data-selector="SECURITY-CODE"
             :placeholder="$t('securityCheck.placeholder')"
             :name="$t('meta.securityCheckSmall')"
             rules="required|alpha_num|length:6"
@@ -30,7 +31,7 @@
           <base-btn
             class="buttons__button"
             :disabled="!validated || !passed || invalid"
-            selector="SEND"
+            data-selector="SEND"
             @click="handleSubmit(hide)"
           >
             {{ $t('meta.btns.send') }}

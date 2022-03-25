@@ -11,14 +11,14 @@
         <base-btn
           class="buttons__button"
           mode="outline"
-          selector="CANCEL"
+          data-selector="CANCEL"
           @click="hide"
         >
           {{ $t('meta.btns.cancel') }}
         </base-btn>
         <base-btn
           class="buttons__button"
-          selector="SUBMIT"
+          data-selector="SUBMIT"
           @click="hide"
         >
           {{ $t('meta.btns.submit') }}

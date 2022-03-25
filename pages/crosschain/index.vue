@@ -14,7 +14,7 @@
           <base-btn
             mode="light"
             class="header__btn"
-            :selector="isConnected ? 'CONNECT_WALLET' : 'DISCONNECT_FROM_WALLET'"
+            :data-selector="isConnected ? 'CONNECT-WALLET' : 'DISCONNECT-FROM-WALLET'"
             @click="toggleConnection"
           >
             {{ !isConnected ? $t('mining.connectWallet') : $t('meta.disconnect') }}
@@ -68,7 +68,7 @@
           </div>
           <div class="info-block__btns-cont">
             <base-btn
-              selector="SHOW-SWAP-MODAL"
+              data-selector="SHOW-SWAP-MODAL"
               :disabled="metamaskStatus === 'notInstalled' || !isConnected"
               @click="showSwapModal"
             >
@@ -120,6 +120,7 @@
                     v-clipboard:success="ClipboardSuccessHandler"
                     v-clipboard:error="ClipboardErrorHandler"
                     type="button"
+                    data-selector="COPY-BTN"
                   >
                     <span class="icon-copy" />
                   </button>
@@ -138,7 +139,7 @@
               <template #cell(redeem)="el">
                 <div class="table__value table__value_blue">
                   <base-btn
-                    selector="REDEEM"
+                    data-selector="REDEEM"
                     class="btn__redeem"
                     :class="!el.item.status ? 'btn__redeem_disabled' : ''"
                     mode="outline"

@@ -1,4 +1,8 @@
 {
+  "kyc": {
+    "KYC": "KYC",
+    "alreadyVerified": "Your profile already verified!"
+  },
   "meta": {
     "priority": {
       "title": "选择优先级",
@@ -979,6 +983,10 @@
       "withdrawInfo": "Withdrawal info"
     },
     "value": "Value",
+    "generatedWUSD": "???",
+    "choosePeriod": "???",
+    "smallDescriptionForLoan": "???",
+    "recipient": "Recipient address",
     "successBuyWUSD": "Successfully purchased WUSD",
     "setTokenPrice": "Setting up {token} price",
     "approveRouter": "Approve {token} to Router",
@@ -1111,7 +1119,6 @@
     "liquidationFee": "清算费用",
     "saveCardForNextPayment": "保存银行卡以备下次使用",
     "connectWallet": "连接钱包",
-    "howMuchWusdWouldYouLikeToGenerate": "您想生成多少 WUSD？",
     "chooseTheCurrency": "选择货币",
     "howMuchETHWouldYouLikeToOpen": "您想在帐户中开立多少 ETH？",
     "howMuchPercentWouldYouLikeToSet": "您想设置多少百分比？",
@@ -1186,7 +1193,10 @@
     "youTryToAttachUnsupportedFileFormat": "You try to attach unsupported file format",
     "incorrectChain": "You choose incorrect chain !",
     "selectToken": "Select token",
-    "txInfo": "Transaction info"
+    "txInfo": "Transaction info",
+    "registration": "Are you sure to registration this users?",
+    "claimConfirm": "Are you confirm the action of the claim?",
+    "until": "Until"
   },
   "ui": {
     "jobQuestors": "求职者",
@@ -1495,7 +1505,11 @@
       "txHash": "交易哈希",
       "time": "时间",
       "amount": "金额",
-      "status": "状态"
+      "event": "Event"
+    },
+    "event": {
+      "paid": "Paid",
+      "claimed": "Claimed"
     }
   },
   "pension": {
@@ -1674,9 +1688,14 @@
   "crediting": {
     "lending": "WorkQuest 借贷协议",
     "templateText": "WorkNet 网络上的 WorkQuest DeFi 借贷平台，具有四个针对波动性资产的专属货币市场",
+    "description": "???",
+    "currentLoan": "???",
+    "currentCredit": "???",
     "marketSize": "市场规模",
     "wantToTakeALoan": "想贷款吗？",
     "borrow": "借款",
+    "myLoans": "???",
+    "refund": "???",
     "openPositions": "未平头寸",
     "totalCollateralLocked": "锁定的抵押总额",
     "totalWusdDebt": "WUSD 债务总额",

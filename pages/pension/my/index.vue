@@ -27,6 +27,7 @@
               </div>
               <base-btn
                 class="btn_bl"
+                data-selector="MAKE-DEPOSIT"
                 @click="openMakeDepositModal()"
               >
                 {{ $t('pension.makeADeposit') }}
@@ -41,6 +42,7 @@
               </div>
               <base-btn
                 class="btn_bl"
+                data-selector="CHANGE-PERCENT"
                 @click="openChangePercentModal()"
               >
                 {{ $t('pension.changePercent') }}
@@ -97,12 +99,14 @@
             <div class="btn-group">
               <base-btn
                 class="btn_bl"
+                data-selector="WITHDRAW"
                 @click="showWithdrawModal"
               >
                 {{ $t('meta.withdraw') }}
               </base-btn>
               <base-btn
                 class="btn_bl"
+                data-selector="PROLONG"
                 @click="handleProlong"
               >
                 {{ $t('pension.prolong') }}
@@ -118,6 +122,7 @@
             <div class="info-block__select-table">
               <base-btn
                 :is-submit="false"
+                data-selector="DEPOSIT-BTN"
                 :mode="selectedTable === $options.PensionHistoryMethods.Receive ? '' : 'outline'"
                 @click="selectedTable=$options.PensionHistoryMethods.Receive"
               >
@@ -125,6 +130,7 @@
               </base-btn>
               <base-btn
                 :is-submit="false"
+                data-selector="WITHDRAW-BTN"
                 :mode="selectedTable === $options.PensionHistoryMethods.Withdraw ? '' : 'outline'"
                 @click="selectedTable=$options.PensionHistoryMethods.Withdraw"
               >
@@ -132,6 +138,7 @@
               </base-btn>
               <base-btn
                 :is-submit="false"
+                data-selector="CHANGE-PERCENT-BTN"
                 :mode="selectedTable === $options.PensionHistoryMethods.Update ? '' : 'outline'"
                 @click="selectedTable=$options.PensionHistoryMethods.Update"
               >

@@ -1,4 +1,8 @@
 {
+  "kyc": {
+    "KYC": "KYC",
+    "alreadyVerified": "Your profile already verified!"
+  },
   "meta": {
     "priority": {
       "title": "Seleccionar prioridad",
@@ -979,6 +983,10 @@
       "withdrawInfo": "Withdrawal info"
     },
     "value": "Value",
+    "generatedWUSD": "???",
+    "choosePeriod": "???",
+    "smallDescriptionForLoan": "???",
+    "recipient": "Recipient address",
     "successBuyWUSD": "Successfully purchased WUSD",
     "setTokenPrice": "Setting up {token} price",
     "approveRouter": "Approve {token} to Router",
@@ -1111,7 +1119,6 @@
     "liquidationFee": "Tarifa de liquidación",
     "saveCardForNextPayment": "Guardar la tarjeta para usarla en el futuro",
     "connectWallet": "Conectar cartera",
-    "howMuchWusdWouldYouLikeToGenerate": "¿Cuántos WUSD quiere generar?",
     "chooseTheCurrency": "Seleccione la moneda",
     "howMuchETHWouldYouLikeToOpen": "¿Cuántos ETH quiere abrir en su cuenta?",
     "howMuchPercentWouldYouLikeToSet": "¿Qué porcentaje quiere establecer?",
@@ -1186,7 +1193,10 @@
     "youTryToAttachUnsupportedFileFormat": "You try to attach unsupported file format",
     "incorrectChain": "You choose incorrect chain !",
     "selectToken": "Select token",
-    "txInfo": "Transaction info"
+    "txInfo": "Transaction info",
+    "registration": "Are you sure to registration this users?",
+    "claimConfirm": "Are you confirm the action of the claim?",
+    "until": "Until"
   },
   "ui": {
     "jobQuestors": "Demandantes de empleo",
@@ -1495,7 +1505,11 @@
       "txHash": "Hash de transacción",
       "time": "Tiempo",
       "amount": "Importe",
-      "status": "Estado"
+      "event": "Event"
+    },
+    "event": {
+      "paid": "Paid",
+      "claimed": "Claimed"
     }
   },
   "pension": {
@@ -1674,9 +1688,14 @@
   "crediting": {
     "lending": "Protocolo de préstamos de WorkQuest",
     "templateText": "Plataforma de créditos WorkQuest DeFi en la red Work Net, con cuatro mercados de dinero exclusivos para activos volátiles",
+    "description": "???",
+    "currentLoan": "???",
+    "currentCredit": "???",
     "marketSize": "Tamaño del mercado",
     "wantToTakeALoan": "¿Quiere pedir un préstamo?",
     "borrow": "Tomar prestado",
+    "myLoans": "???",
+    "refund": "???",
     "openPositions": "Posiciones abiertas",
     "totalCollateralLocked": "Total de aval bloqueado",
     "totalWusdDebt": "Total de deuda en WUSD",

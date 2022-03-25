@@ -17,7 +17,7 @@
       </div>
       <base-btn
         class="transaction__action"
-        selector="OK"
+        data-selector="OK"
         @click="CloseModal"
       >
         {{ $t('meta.btns.ok') }}

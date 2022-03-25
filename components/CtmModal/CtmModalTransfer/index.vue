@@ -8,6 +8,7 @@
         <base-field
           id="from"
           v-model="date"
+          data-selector="FROM"
           :label="$t('meta.fromBig')"
           :placeholder="$t('meta.addressBig')"
         />
@@ -16,6 +17,7 @@
         <base-field
           id="to"
           v-model="date"
+          data-selector="TO"
           :label="$t('meta.toBig')"
           :placeholder="$t('meta.addressBig')"
         />
@@ -23,6 +25,7 @@
       <base-dd
         id="value_dd"
         type="gray"
+        data-selector="AMOUNT"
         :label="$t('modals.amount')"
         :items="items"
       />
@@ -31,14 +34,15 @@
           id="cardNumber"
           v-model="cardNumber"
           :label="$t('modals.amount')"
-          :placeholder="'0000 0000 0000 0000'"
+          data-selector="CARD-NUMBER"
+          placeholder="0000 0000 0000 0000"
         />
       </div>
       <div class="btn__container">
         <div class="btn__wrapper">
           <base-btn
             class="message__action"
-            selector="CONFIRM"
+            data-selector="CONFIRM"
             @click="showTransactionSendModal()"
           >
             {{ $t('meta.btns.confirm') }}
@@ -47,7 +51,7 @@
         <div class="btn__wrapper">
           <base-btn
             mode="outline"
-            selector="CANCEL"
+            data-selector="CANCEL"
             class="message__action"
             @click="hide()"
           >

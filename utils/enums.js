@@ -209,6 +209,7 @@ export const Path = {
   EDIT_QUEST: '/edit-quest',
   COLLATERAL: '/collateral',
   WIKI: '/wiki',
+  RAISED_VIEWS: '/raised-views',
 };
 
 // WALLET

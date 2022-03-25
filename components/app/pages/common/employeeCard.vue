@@ -19,6 +19,7 @@
           v-if="user.ratingStatistic && user.ratingStatistic.status >= 0"
           class="user__rating"
           :rating="user.ratingStatistic.status"
+          :raise-view="user.raiseView"
         />
       </div>
     </div>

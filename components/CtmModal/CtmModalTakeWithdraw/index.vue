@@ -35,7 +35,8 @@
               v-model="walletAddress"
               class="input__field"
               :disabled="true"
-              :placeholder="'Enter address'"
+              data-selector="WALLET-ADDRESS"
+              placeholder="Enter address"
               :name="$t('modals.walletAddressField')"
             />
           </div>
@@ -46,7 +47,8 @@
             <base-field
               v-model="amount"
               class="input__field"
-              :placeholder="'Enter amount'"
+              data-selector="AMOUNT"
+              placeholder="Enter amount"
               :rules="`required|decimal|is_not:0${maxValue ? '|max_value:' + maxValue : ''}|decimalPlaces:18`"
               :name="$t('modals.amountField')"
               @input="replaceDot"
@@ -58,7 +60,7 @@
               >
                 <base-btn
                   mode="max"
-                  selector="HANDLE-MAX-VALUE"
+                  data-selector="MAX"
                   class="max__button"
                   @click="handleMaxValue"
                 >
@@ -87,7 +89,7 @@
           <base-btn
             mode="outline"
             class="buttons__action"
-            selector="CANCEL"
+            data-selector="CANCEL"
             @click="hide"
           >
             {{ $t('meta.btns.cancel') }}
@@ -96,7 +98,7 @@
             v-if="step=== 1"
             class="buttons__action"
             :disabled="invalid"
-            selector="SHOW-WITHDRAW-INFO"
+            data-selector="SHOW-WITHDRAW-INFO"
             @click="handleSubmit(showWithdrawInfo)"
           >
             {{ $t('meta.btns.confirm') }}
@@ -104,7 +106,7 @@
           <base-btn
             v-else-if="step=== 2"
             class="buttons__action"
-            selector="SHOW-ADDING-CARD"
+            data-selector="SHOW-ADDING-CARD"
             @click="showAddingCard"
           >
             {{ $t('meta.cardAdd') }}

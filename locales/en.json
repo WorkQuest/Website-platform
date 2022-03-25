@@ -1,4 +1,8 @@
 {
+  "kyc": {
+    "KYC": "KYC",
+    "alreadyVerified": "Your profile already verified!"
+  },
   "meta": {
     "priority": {
       "title": "Select priority",
@@ -979,6 +983,10 @@
       "withdrawInfo": "Withdrawal info"
     },
     "value": "Value",
+    "generatedWUSD": "WUSD will be generated",
+    "choosePeriod": "Choose a period of borrowing",
+    "smallDescriptionForLoan": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    "recipient": "Recipient address",
     "successBuyWUSD": "Successfully purchased WUSD",
     "setTokenPrice": "Setting up {token} price",
     "approveRouter": "Approve {token} to Router",
@@ -1111,7 +1119,6 @@
     "liquidationFee": "Liquidation fee",
     "saveCardForNextPayment": "Save the card for next use",
     "connectWallet": "Connect wallet",
-    "howMuchWusdWouldYouLikeToGenerate": "How much WUSD would you like to generate?",
     "chooseTheCurrency": "Choose the currency",
     "howMuchETHWouldYouLikeToOpen": "How much ETH would you like to open into your account?",
     "howMuchPercentWouldYouLikeToSet": "How much percent would you like to set?",
@@ -1186,7 +1193,10 @@
     "youTryToAttachUnsupportedFileFormat": "You try to attach unsupported file format",
     "incorrectChain": "You choose incorrect chain !",
     "selectToken": "Select token",
-    "txInfo": "Transaction info"
+    "txInfo": "Transaction info",
+    "registration": "Are you sure to registration this users?",
+    "claimConfirm": "Are you confirm the action of the claim?",
+    "until": "Until"
   },
   "ui": {
     "jobQuestors": "Job Questors",
@@ -1495,7 +1505,11 @@
       "txHash": "Txn hash",
       "time": "Time",
       "amount": "Amount",
-      "status": "Status"
+      "event": "Event"
+    },
+    "event": {
+      "paid": "Paid",
+      "claimed": "Claimed"
     }
   },
   "pension": {
@@ -1674,9 +1688,14 @@
   "crediting": {
     "lending": "WorkQuest Lending Protocol",
     "templateText": "WorkQuest DeFi lending platform on the Work Net network with four exclusive money markets for volatile assets",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
+    "currentLoan": "Current loan",
+    "currentCredit": "Current credit",
     "marketSize": "Market size",
     "wantToTakeALoan": "Want to take a loan?",
     "borrow": "Borrow",
+    "myLoans": "My Loans",
+    "refund": "Refund",
     "openPositions": "Open positions",
     "totalCollateralLocked": "Total collateral locked",
     "totalWusdDebt": "Total WUSD debt",

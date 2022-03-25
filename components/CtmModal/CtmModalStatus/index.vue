@@ -19,9 +19,25 @@
       <div class="status__title">
         {{ options.title }}
       </div>
+      <div class="status__text">
+        <span v-if="options.text">
+          {{ options.text }}
+        </span>
+      </div>
       <div class="status__desc">
         <span v-if="options.subtitle">
           {{ options.subtitle }}
+        </span>
+      </div>
+      <div
+        v-if="options.usersList"
+        class="status__list"
+      >
+        <span
+          v-for="(item) in options.usersList"
+          :key="item.address"
+        >
+          {{ item }}
         </span>
       </div>
       <a
@@ -34,20 +50,11 @@
       <base-btn
         v-if="options.type === 'installMetamask'"
         class="status__action"
-        selector="INSTALL-METAMASK"
+        data-selector="INSTALL-METAMASK"
         @click="installMetamask()"
       >
-        <span
-          v-if="options.button"
-          class="status__text"
-        >
-          {{ options.button }}
-        </span>
-        <span
-          v-else
-          class="status__text"
-        >
-          {{ $t('meta.btns.ok') }}
+        <span class="status__text">
+          {{ options.button ? options.button : $t('meta.btns.ok') }}
         </span>
       </base-btn>
       <div
@@ -57,7 +64,7 @@
         <base-btn
           class="status__action"
           mode="agree"
-          selector="GO-TO-CHAT"
+          data-selector="GO-TO-CHAT"
           @click="goToChat()"
         >
           <span
@@ -68,23 +75,42 @@
           </span>
         </base-btn>
       </div>
+      <div
+        v-else-if="options.type === 'registration'"
+        class="status__wrap"
+      >
+        <div v-if="options.cancel">
+          <base-btn
+            class="status__btn"
+            mode="outline"
+            selector="CANCEL"
+            @click="hide()"
+          >
+            <span class="status__text">
+              {{ options.cancel }}
+            </span>
+          </base-btn>
+        </div>
+        <div v-if="options.button">
+          <base-btn
+            class="status__btn"
+            selector="REGISTRATION"
+            @click="registration()"
+          >
+            <span class="status__text">
+              {{ options.button }}
+            </span>
+          </base-btn>
+        </div>
+      </div>
       <base-btn
         v-else
         class="status__action"
-        selector="HIDE"
+        data-selector="HIDE"
         @click="hide()"
       >
-        <span
-          v-if="options.button"
-          class="status__text"
-        >
-          {{ options.button }}
-        </span>
-        <span
-          v-else
-          class="status__text"
-        >
-          {{ $t('meta.btns.ok') }}
+        <span class="status__text">
+          {{ options.button ? options.button : $t('meta.btns.ok') }}
         </span>
       </base-btn>
     </div>
@@ -105,6 +131,7 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
       chatInfoInviteOnQuest: 'quests/getChatInfoInviteOnQuest',
+      userAddress: 'user/getUserWalletAddress',
     }),
   },
   async mounted() {
@@ -145,6 +172,10 @@ export default {
         }
       }
     },
+    async registration() {
+      this.hide();
+      await this.$store.dispatch('referral/addReferrals', this.userAddress);
+    },
   },
 };
 </script>
@@ -183,6 +214,29 @@ export default {
     line-height: 130%;
     text-align: center;
     color: $black600;
+  }
+  &__text{
+    font-size: 16px;
+    line-height: 130%;
+    text-align: center;
+    font-weight: 500;
+    color: $black800;
+  }
+  &__wrap {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    div {
+      width: 100%;
+    }
+  }
+  &__btn {
+    padding: 0 10px;
+  }
+  &__list {
+    span {
+      font-size: 11px;
+    }
   }
 }
 </style>
