@@ -15,8 +15,10 @@
               </div>
               <base-dd
                 v-model="token"
-                class="grid__drop"
                 :items="tokens"
+                class="grid__drop"
+                data-selector="TOKENS"
+                @input="changeToken()"
               />
             </div>
             <div class="grid__field">
@@ -26,11 +28,11 @@
               <base-field
                 v-model.lazy="amount"
                 type="number"
-                data-selector="AMOUNT"
                 placeholder="0,05"
                 class="grid__input"
-                rules="required|decimal|decimalPlaces:18|min_value:0.00001"
+                data-selector="AMOUNT"
                 :name="$t('modals.amountField')"
+                rules="required|decimal|decimalPlaces:18|min_value:0.00001"
               >
                 <template
                   v-slot:right-absolute
@@ -55,12 +57,12 @@
               {{ $t('modals.recepientBinance') }}
             </div>
             <base-field
-              v-model="account.address"
-              class="body__input"
-              data-selector="BINANCE-ADDRESS"
+              v-model="recipientAddress"
               :disabled="true"
+              class="body__input"
+              :name="$t('modals.recipientAddressField')"
               placeholder="Enter binance address"
-              :name="$t('modals.recepientAddressField')"
+              data-selector="BINANCE-ADDRESS"
             />
           </div>
         </div>
@@ -89,6 +91,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { Chains } from '~/utils/enums';
 
 export default {
   name: 'ModalSwap',
@@ -98,6 +101,26 @@ export default {
       fromToken: '',
       toToken: '',
       amount: '',
+      addresses: {
+        0: {
+          id: 2,
+          icon: require('~/assets/img/ui/ethereum.svg'),
+          title: this.$t('meta.coins.eth'),
+          enum: Chains.ETHEREUM,
+        },
+        1: {
+          id: 3,
+          icon: require('~/assets/img/ui/bnb-logo.svg'),
+          title: this.$t('meta.coins.bsc'),
+          enum: Chains.BINANCE,
+        },
+        2: {
+          id: 1,
+          icon: require('~/assets/img/ui/WQT.png'),
+          title: this.$t('meta.coins.wqt'),
+          enum: Chains.WORKNET,
+        },
+      },
     };
   },
   computed: {
@@ -109,47 +132,45 @@ export default {
       isConnected: 'web3/isConnected',
     }),
     tokens() {
-      return [
-        'WQT',
-      ];
+      const tokens = ['WQT'];
+      if ((this.options?.fromChain === 0 && this.options?.toChain === 2) || (this.options?.fromChain === 2 && this.options?.toChain === 0)) {
+        tokens.push('ETH');
+      } else if ((this.options?.fromChain === 1 && this.options?.toChain === 2) || (this.options?.fromChain === 2 && this.options?.toChain === 1)) {
+        tokens.push('BNB');
+      }
+      return tokens;
     },
-    addresses() {
-      return [
-        {
-          id: 0,
-          icon: require('~/assets/img/ui/bnb-logo.svg'),
-          title: this.$t('meta.coins.bsc'),
-        },
-        {
-          id: 1,
-          icon: require('~/assets/img/ui/ethereum.svg'),
-          title: this.$t('meta.coins.eth'),
-        },
-      ];
+    crosschainFlow() {
+      return {
+        fromChain: this.addresses[this.options?.fromChain],
+        toChain: this.addresses[this.options?.toChain],
+      };
     },
     recipientAddress() {
       return this.account.address;
     },
   },
   async mounted() {
-    await this.connectToMetamask();
-    await this.crosschainFlow();
+    const payload = {
+      token: this.tokens[this.token],
+      chainTo: this.crosschainFlow.toChain.id,
+    };
+    await this.$store.dispatch('web3/getCrosschainTokensData', payload);
   },
   methods: {
+    async changeToken() {
+      this.amount = 0;
+      const payload = {
+        token: this.tokens[this.token],
+        chainTo: this.crosschainFlow.toChain.id,
+      };
+      await this.$store.dispatch('web3/getCrosschainTokensData', payload);
+    },
     setMaxValue() {
       this.amount = this.tokensData.tokenAmount;
     },
     hide() {
       this.CloseModal();
-    },
-    async crosschainFlow() {
-      if (this.options.crosschainId === 0) {
-        this.fromToken = this.addresses[0].title;
-        this.toToken = this.addresses[1].title;
-      } else if (this.options.crosschainId === 1) {
-        this.fromToken = this.addresses[1].title;
-        this.toToken = this.addresses[0].title;
-      }
     },
     checkAmount() {
       const maxAmount = this.tokensData.tokenAmount;
@@ -158,17 +179,19 @@ export default {
     async showSwapInfoModal() {
       this.SetLoader(true);
       if (this.checkAmount()) {
-        this.amount = this.amount.replace(/[,]/g, '.');
+        this.amount = (this.amount.toString()).replace(/[,]/g, '.');
         this.ShowModal({
           key: modals.swapInfo,
-          crosschain: `${this.fromToken} > ${this.toToken}`,
-          chain: this.fromToken,
-          amount: `${this.amount} WQT`,
+          crosschain: `${this.crosschainFlow.fromChain.title} > ${this.crosschainFlow.toChain.title}`,
+          chain: this.crosschainFlow.fromChain.enum,
+          toChain: this.crosschainFlow.toChain.id,
+          amount: `${this.amount} ${this.tokens[this.token]}`,
           amountInt: this.amount,
           recepient: this.CutTxn(this.recipientAddress),
           recepientFull: this.recipientAddress,
-          worknetFee: '0,5 WQT',
+          worknetFee: `0,5 ${this.tokens[this.token]}`,
           binanceFee: '0,0009 BNB',
+          tokenName: this.tokens[this.token],
         });
       } else {
         this.hide();
@@ -181,11 +204,6 @@ export default {
         });
       }
       this.SetLoader(false);
-    },
-    connectToMetamask() {
-      if (!this.isConnected) {
-        this.$store.dispatch('web3/connect');
-      }
     },
   },
 };
