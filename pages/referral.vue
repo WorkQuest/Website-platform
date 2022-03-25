@@ -172,7 +172,12 @@
                     alt=""
                   >
                   <div class="user__name">
-                    {{ el.item['referralUser.firstName'] }} {{ el.item['referralUser.lastName'] }}
+                    <nuxt-link
+                      class="user__link"
+                      :to="`profile/${el.item.id}`"
+                    >
+                      {{ el.item['referralUser.firstName'] }} {{ el.item['referralUser.lastName'] }}
+                    </nuxt-link>
                   </div>
                 </div>
               </template>
@@ -585,6 +590,15 @@ export default {
           flex-wrap: wrap;
           gap: 10px;
           grid-template-columns: 5fr auto;
+        }
+        &__link {
+          position: relative;
+          text-decoration: none;
+          color: $black500;
+          &:hover,
+          &:focus{
+            text-decoration: underline;
+          }
         }
       }
 
