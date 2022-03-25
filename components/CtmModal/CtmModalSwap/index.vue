@@ -54,7 +54,7 @@
         <div class="content__body body">
           <div>
             <div class="body__title">
-              {{ $t('modals.recipientBinance') }}
+              {{ $t('modals.recipientAddress') }}
             </div>
             <base-field
               v-model="recipientAddress"

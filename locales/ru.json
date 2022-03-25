@@ -1154,7 +1154,6 @@
     "coinpaymebts": "Сoinpaymebts",
     "swapTitle": "Crosschain exchange",
     "coin": "Coin",
-    "recipientBinance": "Recipient binance address",
     "createSwap": "Create swap",
     "crosschain": "WorkQuest Bridge",
     "crosschainText": "Eth > Binance",
