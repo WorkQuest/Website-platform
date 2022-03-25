@@ -98,8 +98,7 @@ export default {
       questData: 'quests/getQuest',
     }),
     questDDMode() {
-      const statuses = [InfoModeEmployer.Dispute, InfoModeEmployer.Done];
-      return !statuses.includes(this.questData.status);
+      return ![InfoModeEmployer.Dispute, InfoModeEmployer.Done].includes(this.questData.status);
     },
     InfoModeEmployer() {
       return InfoModeEmployer;
