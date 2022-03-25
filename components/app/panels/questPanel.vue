@@ -32,7 +32,7 @@
               {{ convertDate }}
             </span>
             <quest-dd
-              v-if="userData.id === questData.user.id && InfoModeEmployer.Dispute !== questData.status"
+              v-if="userData.id === questData.user.id && questDDMode"
               :data-selector="`QUEST-DD-${questData.id}`"
               :item="questData"
             />
@@ -97,6 +97,9 @@ export default {
       userCompany: 'quests/getQuestUserCompany',
       questData: 'quests/getQuest',
     }),
+    questDDMode() {
+      return ![InfoModeEmployer.Dispute, InfoModeEmployer.Done].includes(this.questData.status);
+    },
     InfoModeEmployer() {
       return InfoModeEmployer;
     },
