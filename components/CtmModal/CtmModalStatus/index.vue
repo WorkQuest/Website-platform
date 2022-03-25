@@ -67,16 +67,10 @@
             selector="SUBMIT"
             @click="handleSubmit()"
           >
-            <span
-              v-if="options.button"
-              class="status__text"
-            >
+            <span v-if="options.button">
               {{ options.button }}
             </span>
-            <span
-              v-else
-              class="status__text"
-            >
+            <span v-else>
               {{ $t('meta.btns.ok') }}
             </span>
           </base-btn>
