@@ -331,6 +331,7 @@ export default {
       });
     },
     toRaisedViews() {
+      this.$router.push(Path.RAISED_VIEWS);
       if (this.userData.raiseView) {
         this.ShowModal({
           key: modals.status,

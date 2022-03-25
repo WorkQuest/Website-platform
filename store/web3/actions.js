@@ -29,7 +29,7 @@ import {
   getChainIdByChain,
   initProvider,
   getPoolTotalSupplyBSC, getPoolTokensAmountBSC,
-  error,
+  error, sendTransaction,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { StakingTypes } from '~/utils/enums';
@@ -74,7 +74,8 @@ export default {
       await commit('setAccount', response.result);
       await commit('setIsConnected', true);
       await commit('setPurseData', getAccountAddress());
-      if (!isReconnection) showToast('Connect to wallet', 'Connected', 'success'); return true;
+      if (!isReconnection) showToast('Connect to wallet', 'Connected', 'success');
+      return true;
     }
     commit('setIsConnected', false);
     showToast('Error connect to wallet', `${response.data}`, 'danger');
@@ -410,4 +411,47 @@ export default {
     }
     return false;
   },
+  async getRaiseViewTariffCost({ commit }, payload) {
+    // console.log(payload.type);
+    const web3 = new Web3(process.env.WQ_PROVIDER);
+    const periods = (payload.type === 'usersTariff') ? ['1', '7', '30'] : ['1', '5', '7'];
+    const tariffs = ['1', '2', '3', '4'];
+    const price = {};
+    for (let i = 0; i < tariffs.length; i += 1) {
+      for (let j = 0; j < periods.length; j += 1) {
+        // console.log(fetchContractData(payload.type, abi.WQPromotion, process.env.PROMOTION, [periods[j], tariffs[i]], web3));
+        /* eslint-disable no-await-in-loop */
+        console.log(fetchContractData(
+          payload.type, abi.WQPromotion, process.env.PROMOTION, [tariffs[i], periods[j]], web3,
+        ));
+        // price[tariffs[i]][periods[j]] = new BigNumber(await fetchContractData(
+        //   payload.type, abi.WQPromotion, process.env.PROMOTION, [periods[j], tariffs[i]], web3,
+        // )).shiftedBy(-18).toString();
+      }
+    }
+    return await Promise.all(price);
+
+    // const cost = await fetchContractData(type, abi.WQPromotion, process.env.PROMOTION, ['1', '1'], web3);
+  },
+  async buyRaiseView(type, tariff, period, cost) {
+    const web3 = new Web3(process.env.WQ_PROVIDER);
+    try {
+      const payload = {
+        abi: abi.WQPromotion,
+        address: process.env.PROMOTION,
+        data: [
+          tariff, period, cost,
+        ],
+      };
+      await sendTransaction('setUserTariff', payload, web3);
+      return true;
+    } catch (err) {
+      return error(511, `buy raise view ${type} error`, err);
+    }
+  },
 };
+
+// }
+// 'usersTariff'
+// setQuestTariff
+// 'setUserTariff'

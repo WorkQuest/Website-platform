@@ -272,6 +272,7 @@ export default {
     },
   },
   async mounted() {
+    console.log(this.$store.dispatch('web3/getRaiseViewTariffCost', { type: 'usersTariff' }));
     this.SetLoader(true);
     this.SetLoader(false);
   },
