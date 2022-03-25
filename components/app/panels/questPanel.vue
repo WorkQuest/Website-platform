@@ -1,7 +1,7 @@
 <template>
   <div
     class="user"
-    :data-selector="`COMPONENT-QUEST-PANEL`"
+    data-selector="COMPONENT-QUEST-PANEL"
   >
     <div class="user__top">
       <div class="user__container">
@@ -32,14 +32,14 @@
               {{ convertDate }}
             </span>
             <quest-dd
-              v-if="userData.id === questData.user.id && InfoModeEmployer.Dispute !== questData.status"
+              v-if="userData.id === questData.user.id && questDDMode"
               :data-selector="`QUEST-DD-${questData.id}`"
               :item="questData"
             />
             <base-btn
               v-else
               mode="share-btn"
-              selector="SHARE-USER-PROFILE"
+              data-selector="SHARE-USER-PROFILE"
               @click="shareModal()"
             />
           </div>
@@ -97,6 +97,9 @@ export default {
       userCompany: 'quests/getQuestUserCompany',
       questData: 'quests/getQuest',
     }),
+    questDDMode() {
+      return ![InfoModeEmployer.Dispute, InfoModeEmployer.Done].includes(this.questData.status);
+    },
     InfoModeEmployer() {
       return InfoModeEmployer;
     },

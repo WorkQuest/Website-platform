@@ -13,6 +13,7 @@
       <div class="ctm-modal__content-field">
         <base-field
           v-model="userName"
+          data-selector="USER-NAME"
           :is-hide-error="true"
           :placeholder="$t('signWorkQuest.daoUsername')"
           mode="icon"
@@ -25,6 +26,7 @@
       <div class="ctm-modal__content-field">
         <base-field
           v-model="userPassword"
+          data-selector="USER-PASSWORD"
           :is-hide-error="true"
           :placeholder="$t('signWorkQuest.daoPass')"
           mode="icon"
@@ -37,7 +39,7 @@
       <div class="ctm-modal__content-btns">
         <div class="btn-group">
           <base-btn
-            selector="SIGN-IN"
+            data-selector="SIGN-IN"
             @click="hide()"
           >
             {{ $t('meta.signIn') }}

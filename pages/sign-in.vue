@@ -76,7 +76,7 @@
         <div class="auth__action">
           <base-btn
             :disabled="isLoading"
-            selector="LOGIN"
+            data-selector="LOGIN"
           >
             {{ $t('meta.login') }}
           </base-btn>
@@ -206,8 +206,13 @@ export default {
     }
   },
   beforeDestroy() {
+    const isRef = this.$router.history._startLocation.includes('ref');
     if (!this.addressAssigned && !this.$cookies.get('access') && !this.$cookies.get('userStatus')) {
       this.$store.dispatch('user/logout');
+      if (isRef) {
+        const ref = this.$router.history._startLocation.replace('/sign-in?ref=', '');
+        sessionStorage.setItem('referralId', ref);
+      }
     }
   },
   methods: {

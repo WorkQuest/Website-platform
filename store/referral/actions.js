@@ -1,8 +1,7 @@
 import {
-  addReferrals,
-  claimReferralReward,
   getStyledAmount,
   GetWalletProvider,
+  sendWalletTransaction,
 } from '~/utils/wallet';
 import {
   error,
@@ -29,7 +28,12 @@ export default {
   },
   async claimReferralReward(_, userAddress) {
     try {
-      return await claimReferralReward(userAddress);
+      const payload = {
+        abi: abi.WQReferral,
+        address: process.env.WORKNET_REFERRAL,
+        userAddress,
+      };
+      return await sendWalletTransaction('claim', payload);
     } catch (e) {
       console.error(`claimReferralReward: ${e}`);
       return error();
@@ -89,7 +93,13 @@ export default {
     const signature = getters.getReferralSignature;
     const addresses = getters.getCreatedReferralList;
     try {
-      return await addReferrals(signature, addresses, userAddress);
+      const payload = {
+        abi: abi.WQReferral,
+        address: process.env.WORKNET_REFERRAL,
+        data: [signature.v, signature.r, signature.s, addresses],
+        userAddress,
+      };
+      return await sendWalletTransaction('addReferrals', payload);
     } catch (e) {
       console.error(`addReferrals: ${e}`);
       return error();

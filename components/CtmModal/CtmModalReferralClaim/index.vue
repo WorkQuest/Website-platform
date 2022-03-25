@@ -68,13 +68,7 @@ export default {
     hide() { this.CloseModal(); },
     async handleSubmit() {
       this.hide();
-      this.SetLoader(true);
-      try {
-        await this.$store.dispatch('referral/claimReferralReward', this.userAddress);
-      } catch (err) {
-        console.log('Claim err', err);
-      }
-      this.SetLoader(false);
+      await this.$store.dispatch('referral/claimReferralReward', this.userAddress);
     },
   },
 };

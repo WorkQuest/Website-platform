@@ -19,6 +19,11 @@
       <div class="status__title">
         {{ options.title }}
       </div>
+      <div class="status__text">
+        <span v-if="options.text">
+          {{ options.text }}
+        </span>
+      </div>
       <div class="status__desc">
         <span v-if="options.subtitle">
           {{ options.subtitle }}
@@ -45,20 +50,11 @@
       <base-btn
         v-if="options.type === 'installMetamask'"
         class="status__action"
-        selector="INSTALL-METAMASK"
+        data-selector="INSTALL-METAMASK"
         @click="installMetamask()"
       >
-        <span
-          v-if="options.button"
-          class="status__text"
-        >
-          {{ options.button }}
-        </span>
-        <span
-          v-else
-          class="status__text"
-        >
-          {{ $t('meta.btns.ok') }}
+        <span class="status__text">
+          {{ options.button ? options.button : $t('meta.btns.ok') }}
         </span>
       </base-btn>
       <div
@@ -68,7 +64,7 @@
         <base-btn
           class="status__action"
           mode="agree"
-          selector="GO-TO-CHAT"
+          data-selector="GO-TO-CHAT"
           @click="goToChat()"
         >
           <span
@@ -110,20 +106,11 @@
       <base-btn
         v-else
         class="status__action"
-        selector="HIDE"
+        data-selector="HIDE"
         @click="hide()"
       >
-        <span
-          v-if="options.button"
-          class="status__text"
-        >
-          {{ options.button }}
-        </span>
-        <span
-          v-else
-          class="status__text"
-        >
-          {{ $t('meta.btns.ok') }}
+        <span class="status__text">
+          {{ options.button ? options.button : $t('meta.btns.ok') }}
         </span>
       </base-btn>
     </div>
@@ -187,13 +174,7 @@ export default {
     },
     async registration() {
       this.hide();
-      this.SetLoader(true);
-      const res = await this.$store.dispatch('referral/addReferrals', this.userAddress);
-      this.SetLoader(false);
-
-      if (res && res.transactionHash) {
-        this.hide();
-      }
+      await this.$store.dispatch('referral/addReferrals', this.userAddress);
     },
   },
 };
@@ -233,6 +214,13 @@ export default {
     line-height: 130%;
     text-align: center;
     color: $black600;
+  }
+  &__text{
+    font-size: 16px;
+    line-height: 130%;
+    text-align: center;
+    font-weight: 500;
+    color: $black800;
   }
   &__wrap {
     display: flex;

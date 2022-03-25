@@ -1,4 +1,8 @@
 {
+  "kyc": {
+    "KYC": "KYC",
+    "alreadyVerified": "Your profile already verified!"
+  },
   "meta": {
     "priority": {
       "title": "प्राथमिकता चुनें",
@@ -979,6 +983,9 @@
       "withdrawInfo": "Withdrawal info"
     },
     "value": "Value",
+    "generatedWUSD": "???",
+    "choosePeriod": "???",
+    "smallDescriptionForLoan": "???",
     "recipient": "Recipient address",
     "successBuyWUSD": "Successfully purchased WUSD",
     "setTokenPrice": "Setting up {token} price",
@@ -1112,7 +1119,6 @@
     "liquidationFee": "लिक्विडेशन शुल्क",
     "saveCardForNextPayment": "अगले उपयोग के लिए कार्ड सेव करें",
     "connectWallet": "वॉलेट कनेक्ट करें",
-    "howMuchWusdWouldYouLikeToGenerate": "आप कितना WUSD जनरेट करना चाहेंगे?",
     "chooseTheCurrency": "करेंसी यानी मुद्रा चुनें",
     "howMuchETHWouldYouLikeToOpen": "आप अपने अकाउंट में कितना ETH ओपन करना चाहेंगे?",
     "howMuchPercentWouldYouLikeToSet": "आप कितना प्रतिशत सेट करना चाहेंगे?",
@@ -1189,7 +1195,8 @@
     "selectToken": "Select token",
     "txInfo": "Transaction info",
     "registration": "Are you sure to registration this users?",
-    "claimConfirm": "Are you confirm the action of the claim?"
+    "claimConfirm": "Are you confirm the action of the claim?",
+    "until": "Until"
   },
   "ui": {
     "jobQuestors": "जॉब तलाशकर्ता",
@@ -1681,9 +1688,14 @@
   "crediting": {
     "lending": "WorkQuest लेंडिंग प्रोटोकॉल",
     "templateText": "Work Net नेटवर्क पर WorkQuest DeFi लेंडिंग प्लेटफॉर्म - अस्थिर ऐसेट्स के लिए चार विशेष मुद्रा बाजारों के साथ",
+    "description": "???",
+    "currentLoan": "???",
+    "currentCredit": "???",
     "marketSize": "मार्केट साइज",
     "wantToTakeALoan": "कर्ज लेना चाहते हैं?",
     "borrow": "उधार",
+    "myLoans": "???",
+    "refund": "???",
     "openPositions": "ओपन पोजीशन",
     "totalCollateralLocked": "कुल कोलैटरल लॉक्ड",
     "totalWusdDebt": "कुल WUSD ऋण",

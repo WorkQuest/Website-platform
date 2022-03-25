@@ -1,5 +1,6 @@
 import moment from 'moment';
 import BigNumber from 'bignumber.js';
+import { Chains } from '~/utils/enums';
 
 export default {
 
@@ -12,27 +13,30 @@ export default {
     }
     response = await this.$axios.$get(`/v1/bridge/recipient/${recipientAddress}/swaps?${query || ''}`);
     response.result.swaps.forEach((data) => {
-      let direction = [];
-      if (data.chainFrom === 2) {
-        direction = [
-          require('~/assets/img/ui/ethereum.svg'),
-          require('~/assets/img/ui/bnb_yellow.svg'),
-        ];
-      } else {
-        direction = [
-          require('~/assets/img/ui/bnb_yellow.svg'),
-          require('~/assets/img/ui/ethereum.svg'),
-        ];
-      }
+      const chainsImg = [
+        require('~/assets/img/ui/WQT.png'),
+        require('~/assets/img/ui/ethereum.svg'),
+        require('~/assets/img/ui/bnb_yellow.svg'),
+      ];
+      const chainsName = [
+        Chains.WORKNET,
+        Chains.ETHEREUM,
+        Chains.BINANCE,
+      ];
+      const direction = [
+        chainsImg[data.chainFrom - 1],
+        chainsImg[data.chainTo - 1],
+      ];
       const recipient = `${data.recipient.slice(0, 10)}...${data.recipient.slice(-10)}`;
       const tx = `${data.transactionHash.slice(0, 10)}...${data.transactionHash.slice(-10)}`;
       const created = moment(new Date(data.timestamp * 1000)).format('MMMM Do YYYY, h:mm');
       const amount = new BigNumber(data.amount).shiftedBy(-18).toString();
       const status = data.canRedeemed;
       const clearData = data.signData;
-      const chain = data.chainFrom === 3 ? 'ETH' : 'BNB';
+      const chain = chainsName[data.chainTo - 1];
       const tableItems = {
-        chainId: data.chainFrom,
+        chainFrom: data.chainFrom,
+        chainTo: data.chainTo,
         chain,
         clearData,
         status,

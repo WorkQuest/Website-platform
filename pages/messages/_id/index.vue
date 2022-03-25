@@ -80,6 +80,7 @@
             <base-field
               v-model="messageText"
               :placeholder="$t('chat.writeYouMessage')"
+              data-selector="MESSAGE"
               is-hide-error
               mode="chat"
               :auto-focus="true"
@@ -88,6 +89,7 @@
             <button
               class="chat-container__send-btn"
               :class="{'chat-container__send-btn_active' : messageText}"
+              data-selector="SEND-MESSAGE"
               @click="handleSendMessage"
             >
               <span class="icon-send" />

@@ -8,8 +8,9 @@
         <div class="ctm-modal__content-field">
           <base-field
             v-model="cardNumberInput"
-            :placeholder="'0000 0000 0000 0000'"
+            placeholder="0000 0000 0000 0000"
             :label="$t('modals.numberOfCard')"
+            data-selector="CARD-NUMBER"
             rules="required|numberOfCard"
             name="Card number"
           />
@@ -19,6 +20,7 @@
             v-model="nameInput"
             placeholder="John Doe"
             :label="$t('modals.cardholderName')"
+            data-selector="CARDHOLDER-NAME"
             name="cardholder name"
             rules="required|alpha_spaces"
           />
@@ -27,7 +29,8 @@
           <div class="ctm-modal__content-field">
             <base-field
               v-model="dateInput"
-              :placeholder="'02/24'"
+              placeholder="02/24"
+              data-selector="CARD-DATE"
               :label="$t('modals.expirationDate')"
               name="date"
               rules="required"
@@ -37,6 +40,7 @@
             <base-field
               v-model="cvvInput"
               placeholder="242"
+              data-selector="CARD-CVV"
               :label="$t('modals.cvv')"
               rules="required|cvv"
               name="CVV"
@@ -47,7 +51,7 @@
           <div class="btn__wrapper">
             <base-btn
               class="message__action"
-              selector="CONFIRM"
+              data-selector="CONFIRM"
               :disabled="!validated || !passed || invalid"
               @click="handleSubmit(showCardHasBeenAddedModal)"
             >
@@ -57,7 +61,7 @@
           <div class="btn__wrapper">
             <base-btn
               mode="outline"
-              selector="CANCEL"
+              data-selector="CANCEL"
               class="message__action"
               @click="hide()"
             >

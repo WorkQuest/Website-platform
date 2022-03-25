@@ -1,4 +1,8 @@
 {
+  "kyc": {
+    "KYC": "KYC",
+    "alreadyVerified": "Your profile already verified!"
+  },
   "meta": {
     "priority": {
       "title": "Sélectionner la priorité",
@@ -979,6 +983,9 @@
       "withdrawInfo": "Withdrawal info"
     },
     "value": "Value",
+    "generatedWUSD": "???",
+    "choosePeriod": "???",
+    "smallDescriptionForLoan": "???",
     "recipient": "Recipient address",
     "successBuyWUSD": "Successfully purchased WUSD",
     "setTokenPrice": "Setting up {token} price",
@@ -1112,7 +1119,6 @@
     "liquidationFee": "Frais de liquidation",
     "saveCardForNextPayment": "Enregistrez la carte pour une prochaine utilisation",
     "connectWallet": "Connecter le portefeuille",
-    "howMuchWusdWouldYouLikeToGenerate": "Combien de WUSD voudriez-vous générer ?",
     "chooseTheCurrency": "Choisir la devise",
     "howMuchETHWouldYouLikeToOpen": "Combien d'ETH souhaitez-vous ouvrir sur votre compte ?",
     "howMuchPercentWouldYouLikeToSet": "Quel pourcentage souhaitez-vous fixer ?",
@@ -1189,7 +1195,8 @@
     "selectToken": "Select token",
     "txInfo": "Transaction info",
     "registration": "Are you sure to registration this users?",
-    "claimConfirm": "Are you confirm the action of the claim?"
+    "claimConfirm": "Are you confirm the action of the claim?",
+    "until": "Until"
   },
   "ui": {
     "jobQuestors": "Demandeurs d'emploi",
@@ -1681,9 +1688,14 @@
   "crediting": {
     "lending": "Protocole de prêt WorkQuest",
     "templateText": "Plateforme de prêt WorkQuest DeFi sur le réseau Work Net avec quatre marchés monétaires exclusifs pour les actifs volatils",
+    "description": "???",
+    "currentLoan": "???",
+    "currentCredit": "???",
     "marketSize": "Taille du marché",
     "wantToTakeALoan": "Vous souhaitez contracter un prêt ?",
     "borrow": "Emprunter",
+    "myLoans": "???",
+    "refund": "???",
     "openPositions": "Ouvrir les positions",
     "totalCollateralLocked": "Total des garanties immobilisées",
     "totalWusdDebt": "Dette totale en WUSD",

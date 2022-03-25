@@ -26,7 +26,7 @@
               <div class="info-block__btn-wrap">
                 <base-btn
                   :disabled="Number(referralReward) === 0"
-                  selector="CLAIM"
+                  data-selector="CLAIM"
                   @click="clickClaimBtnHandler"
                 >
                   {{ $t('modals.claim') }}
@@ -68,7 +68,7 @@
               <div class="info-block__btn-wrap info-block__btn-wrap_absolute">
                 <base-btn
                   :disabled="!isNeedRegistration"
-                  selector="REGISTRATION"
+                  data-selector="REGISTRATION"
                   @click="clickRegistrationBtnHandler"
                 >
                   {{ $t('meta.btns.registration') }}
@@ -256,8 +256,29 @@ export default {
     return {
       page: 1,
       perPage: 10,
-      referLink: process.env.PROD === 'true' ? 'https://www.app-ver1.workquest.co/sign-in?ref=' : 'https://www.app.workquest.co/sign-in?ref=',
-      tableFields: [
+      referLink: process.env.PROD === 'true' ? 'https://app-ver1.workquest.co/sign-in?ref=' : 'https://app.workquest.co/sign-in?ref=',
+      isProd: process.env.PROD,
+      referralCount: 5,
+    };
+  },
+  computed: {
+    ...mapGetters({
+      referralReward: 'referral/getReferralReward',
+      paidEventsList: 'referral/getPaidEventsList',
+      referralsList: 'referral/getReferralsList',
+      referralsListCount: 'referral/getReferralsListCount',
+      createdReferralList: 'referral/getCreatedReferralList',
+      referralSignature: 'referral/getReferralSignature',
+      userAddress: 'user/getUserWalletAddress',
+      userReferralId: 'user/getUserReferralId',
+      isNeedRegistration: 'referral/getIsNeedRegistration',
+      createdReferralsList: 'referral/getCreatedReferralList',
+    }),
+    totalPages() {
+      return Math.ceil(this.paidEventsList.length / this.perPage);
+    },
+    tableFields() {
+      return [
         {
           key: 'userInfo',
           label: this.$t('referral.tableHead.name'),
@@ -331,26 +352,7 @@ export default {
             style: 'padding: 0; height: 64px; line-height: 64px',
           },
         },
-      ],
-      isProd: process.env.PROD,
-      referralCount: 5,
-    };
-  },
-  computed: {
-    ...mapGetters({
-      referralReward: 'referral/getReferralReward',
-      paidEventsList: 'referral/getPaidEventsList',
-      referralsList: 'referral/getReferralsList',
-      referralsListCount: 'referral/getReferralsListCount',
-      createdReferralList: 'referral/getCreatedReferralList',
-      referralSignature: 'referral/getReferralSignature',
-      userAddress: 'user/getUserWalletAddress',
-      userReferralId: 'user/getUserReferralId',
-      isNeedRegistration: 'referral/getIsNeedRegistration',
-      createdReferralsList: 'referral/getCreatedReferralList',
-    }),
-    totalPages() {
-      return Math.ceil(this.paidEventsList.length / this.perPage);
+      ];
     },
   },
   watch: {

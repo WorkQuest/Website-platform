@@ -23,7 +23,7 @@
     class="base-btn"
     :class="btnClass"
     :type="isSubmit ? 'submit' : 'button'"
-    :data-selector="`ACTION-BTN-CLICK-${selector.toUpperCase()}`"
+    :data-selector="`ACTION-BTN-CLICK-${dataSelector.toUpperCase()}`"
     @click="$emit('click')"
   >
     {{ text }}
@@ -53,7 +53,7 @@ export default {
       type: Boolean,
       default: true,
     },
-    selector: {
+    dataSelector: {
       type: String,
       default: '',
     },

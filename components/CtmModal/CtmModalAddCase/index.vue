@@ -27,7 +27,8 @@
                   v-model="caseTitle"
                   :label="$t('modals.title')"
                   :placeholder="$t('modals.addTitle')"
-                  :mode="'gray'"
+                  mode="gray"
+                  data-selector="CASE-TITLE"
                   rules="required|text-title"
                   :name="$t('modals.title')"
                 />
@@ -38,6 +39,7 @@
                   v-model="caseDescription"
                   :label="$t('modals.description')"
                   class="message__textarea"
+                  data-selector="CASE-DESCRIPTION"
                   :placeholder="$t('modals.addDesc')"
                   rules="required|text-desc"
                   :name="$t('modals.description')"
@@ -47,7 +49,7 @@
                 <div class="btn__wrapper">
                   <base-btn
                     class="message__action"
-                    selector="ADD-USER-CASE"
+                    data-selector="ADD-USER-CASE"
                     :disabled="!valid || !validated || !passed || invalid"
                     @click="addUserCase"
                   >
@@ -57,7 +59,7 @@
                 <div class="btn__wrapper">
                   <base-btn
                     mode="outline"
-                    selector="CANCEL"
+                    data-selector="CANCEL"
                     class="message__action"
                     @click="hide()"
                   >

@@ -15,7 +15,7 @@
           <base-btn
             v-for="(item, i) in filterTabs"
             :key="i"
-            :selector="`${item.name}`"
+            :data-selector="`${item.name}`"
             :mode="selectedTab === item.id ? '' : 'light'"
             class="quests__btn"
             @click="filterByStatus(item.id)"

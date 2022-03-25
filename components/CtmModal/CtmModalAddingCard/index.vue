@@ -16,8 +16,9 @@
           <base-field
             v-model="cardNumber"
             class="input__field"
-            :placeholder="'1234 1234 1234 1234'"
+            placeholder="1234 1234 1234 1234"
             rules="required|numberOfCard"
+            data-selector="CARD-NUMBER"
             :name="$t('modals.creditCardNumber')"
           />
         </div>
@@ -28,7 +29,8 @@
           <base-field
             v-model="cardHolder"
             class="input__field"
-            :placeholder="'John Doe'"
+            placeholder="John Doe"
+            data-selector="CARDHOLDER-NAME"
             rules="required|alpha_spaces"
             :name="$t('modals.cardHolderField')"
           />
@@ -41,8 +43,9 @@
             <base-field
               v-model="dateInput"
               class="grid__input"
-              :placeholder="'02/24'"
+              placeholder="02/24"
               rules="required|date"
+              data-selector="CARD-DATE"
               :name="$t('modals.dateName')"
             />
           </div>
@@ -54,6 +57,7 @@
               v-model="cvvInput"
               class="grid__field"
               placeholder="242"
+              data-selector="CARD-CVV"
               rules="required|cvv"
               :name="$t('modals.cvv')"
             />
@@ -62,7 +66,7 @@
         <div class="content__buttons buttons">
           <base-btn
             mode="outline"
-            selector="CANCEL"
+            data-selector="CANCEL"
             class="buttons__action"
             @click="hide"
           >
@@ -70,7 +74,7 @@
           </base-btn>
           <base-btn
             class="buttons__action"
-            selector="SHOW-MODAL-ADD"
+            data-selector="SHOW-MODAL-ADD"
             :disabled="!validated || !passed || invalid"
             @click="handleSubmit(showCardHasBeenAddedModal)"
           >

@@ -9,7 +9,7 @@
         class="content__btns"
       >
         <base-btn
-          selector="SHOW-DELETE-CASE-MODAL"
+          data-selector="SHOW-DELETE-CASE-MODAL"
           class="content portfolio__close"
           mode="portfolioClose"
           @click="showDeleteCaseModal(options.id)"
@@ -18,7 +18,7 @@
         </base-btn>
         <base-btn
           class="content portfolio__edit"
-          selector="SHOW-EDIT-CASE-MODAL"
+          data-selector="SHOW-EDIT-CASE-MODAL"
           mode="portfolioEdit"
           @click="showEditCaseModal(options.id)"
         >
