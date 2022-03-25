@@ -404,7 +404,6 @@ export default {
       this.SetLoader(true);
       const res = await this.$store.dispatch('referral/fetchCreatedReferralList');
       this.SetLoader(false);
-      console.log(res);
       if (res && this.createdReferralsList.length) {
         this.ShowModal({
           key: modals.status,
