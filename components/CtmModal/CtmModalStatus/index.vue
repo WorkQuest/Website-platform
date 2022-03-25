@@ -24,8 +24,11 @@
           {{ options.subtitle }}
         </span>
       </div>
-      <div class="status__text">
-        <span v-if="options.text">
+      <div
+        v-if="options.text"
+        class="status__text"
+      >
+        <span>
           {{ options.text }}
         </span>
       </div>
@@ -33,12 +36,19 @@
         v-if="options.itemList"
         class="status__list"
       >
-        <span
+        <div
           v-for="(item, index) in options.itemList"
           :key="index"
         >
-          {{ item }}
-        </span>
+          <img
+            class="status__img"
+            :src="item['referralUser.avatar.url'] ? item['referralUser.avatar.url'] : EmptyAvatar()"
+            alt=""
+          >
+          <span>
+            {{ item.firstName }} {{ item.lastName }}
+          </span>
+        </div>
       </div>
       <a
         v-if="options.txHash"
@@ -188,9 +198,16 @@ export default {
     padding: 0 10px;
   }
   &__list {
+    width: 100%;
     span {
-      font-size: 11px;
+      font-size: 14px;
     }
+  }
+  &__img {
+    display: inline;
+    width: 33px;
+    height: 33px;
+    border-radius: 50%;
   }
 }
 </style>
