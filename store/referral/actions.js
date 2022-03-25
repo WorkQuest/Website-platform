@@ -118,11 +118,11 @@ export default {
           console.log('RegisteredAffiliar');
           referralsList.unshift(msg.data);
           referralsListCount = msg.data.count;
-          if (paidEventsList.length > 10) {
-            paidEventsList.pop();
-          }
+
+          const isNeedRegistration = referralsList.some((item) => item.referralUser.referralStatus === 'created');
           commit('setReferralsListCount', referralsListCount);
           commit('setReferralsList', referralsList);
+          commit('setIsNeedRegistration', isNeedRegistration);
         } else if (msg.action === 'RewardClaimed' && currentPage === 1) {
           paidEventsList.unshift(msg.data);
           if (paidEventsList.length > 10) {
