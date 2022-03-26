@@ -288,7 +288,7 @@ export default {
       };
     },
   },
-  mounted() {
+  async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
   },

@@ -697,12 +697,3 @@ export const getPoolTotalSupplyBSC = async () => {
     return false;
   }
 };
-
-// export const getRaiseViewTariff = async () => {
-//   try{
-//
-//   } catch (e){
-//     console.log(e)
-//     return false
-//   }
-// };
