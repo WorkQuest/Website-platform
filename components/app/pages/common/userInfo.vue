@@ -195,7 +195,9 @@
 <script>
 import { mapGetters } from 'vuex';
 import moment from 'moment';
-import { UserRole, UserRating, Path } from '~/utils/enums';
+import {
+  UserRole, UserRating, Path, RaiseViewStatus,
+} from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -332,14 +334,13 @@ export default {
     },
     toRaisedViews() {
       this.$router.push(Path.RAISED_VIEWS);
-      if (this.userData.raiseView) {
+      if (this.userData.raiseView && RaiseViewStatus[this.userData.raiseView.status]) {
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/questAgreed.svg'),
           title: this.$t('quests.active'),
           text: `${this.raiseViewsName[this.userData.raiseView.type]} Package`,
-          // TODO заменить потом на endedAt
-          subtitle: `${this.$t('modals.until')} ${moment(this.userData.raiseView.createdAt).format('Do MMMM YYYY, hh:mm a')}`,
+          subtitle: `${this.$t('modals.until')} ${moment(this.userData.raiseView.entedAt).format('Do MMMM YYYY, hh:mm a')}`,
         });
       } else {
         this.$router.push(Path.RAISED_VIEWS);

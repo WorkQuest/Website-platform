@@ -118,7 +118,6 @@
 
 <script>
 import modals from '~/store/modals/modals';
-import { UserRaiseViewPriceDay, UserRaiseViewPriceWeek, UserRaiseViewPriceMonth } from '~/utils/enums';
 
 export default {
   name: 'RisedViews',
@@ -310,6 +309,7 @@ export default {
         step: 1,
         type: this.type,
         duration: this.duration[this.period],
+        cost: this.ads.currentAdPrice,
       });
     },
   },

@@ -3,8 +3,8 @@
     <img
       v-if="raiseView"
       src="~assets/img/ui/arrow-worker-profile.svg"
-      alt="Enable2FA"
-      class="transaction__image"
+      alt="arrow-profile"
+      class="status__img"
     >
     <span
       v-if="ratingStr !== $options.Ratings.NO_STATUS"
@@ -47,13 +47,15 @@ export default {
 <style lang="scss" scoped>
 .status {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   &__levels {
     padding: 2px 5px;
     margin: 0 5px 0 0;
     align-items: center;
     border-radius: 3px;
+  }
+  &__img{
+    margin-right: 12px;
   }
   &__level {
     @include text-simple;

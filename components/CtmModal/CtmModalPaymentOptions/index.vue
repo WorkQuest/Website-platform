@@ -176,14 +176,19 @@ export default {
       }
     },
     async showRaiseLevel() {
-      const result = await this.$store.dispatch('user/payUserRaisedView', { duration: this.options.duration, type: this.options.type });
-      this.ShowModal({
-        key: modals.status,
-        img: result ? require('~/assets/img/ui/questAgreed.svg') : require('~/assets/img/ui/error.svg'),
-        title: result ? this.$t('modals.yourLevelHasBeenRaised') : this.$t('modals.errors.error'),
+      const contractResult = await this.$store.dispatch('web3/buyRaiseView', {
+        method: 'setUserTariff', tariff: this.options.type, period: this.options.duration, cost: this.options.cost,
       });
-      if (result) {
-        this.goBackToProfile();
+      if (contractResult) {
+        const result = await this.$store.dispatch('user/payUserRaisedView', { duration: this.options.duration, type: this.options.type });
+        this.ShowModal({
+          key: modals.status,
+          img: result ? require('~/assets/img/ui/questAgreed.svg') : require('~/assets/img/ui/error.svg'),
+          title: result ? this.$t('modals.yourLevelHasBeenRaised') : this.$t('modals.errors.error'),
+        });
+        if (result) {
+          this.goBackToProfile();
+        }
       }
     },
   },

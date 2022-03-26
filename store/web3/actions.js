@@ -413,39 +413,38 @@ export default {
   },
   async getRaiseViewTariffCost({ commit }, payload) {
     const web3 = new Web3(process.env.WQ_PROVIDER);
-    const periods = RaiseViewTariffPeriods[payload.type];
-    const tariffs = ['1', '2', '3', '4'];
-    const price = {};
-    for (let i = 0; i < tariffs.length; i += 1) {
-      price[tariffs[i]] = {};
-      for (let j = 0; j < periods.length; j += 1) {
-        /* eslint-disable no-await-in-loop */
-        price[tariffs[i]][periods[j]] = new BigNumber(await fetchContractData(
-          payload.type, abi.WQPromotion, process.env.WQ_PROMOTION, [tariffs[i], periods[j]], web3,
-        )).shiftedBy(-18).toString();
+    try {
+      const periods = RaiseViewTariffPeriods[payload.type];
+      const tariffs = ['1', '2', '3', '4'];
+      const price = {};
+      for (let i = 0; i < tariffs.length; i += 1) {
+        price[tariffs[i]] = {};
+        for (let j = 0; j < periods.length; j += 1) {
+          /* eslint-disable no-await-in-loop */
+          price[tariffs[i]][periods[j]] = new BigNumber(await fetchContractData(
+            payload.type, abi.WQPromotion, process.env.WQ_PROMOTION, [tariffs[i], periods[j]], web3,
+          )).shiftedBy(-18).toString();
+        }
       }
+      return price;
+    } catch (err) {
+      return error(511, 'get raise view tariff cost error', err);
     }
-    return price;
   },
-  async buyRaiseView(type, tariff, period, cost) {
+  async buyRaiseView(method, tariff, period, cost) {
     const web3 = new Web3(process.env.WQ_PROVIDER);
     try {
       const payload = {
         abi: abi.WQPromotion,
-        address: process.env.PROMOTION,
+        address: process.env.WQ_PROMOTION,
         data: [
           tariff, period, cost,
         ],
       };
-      await sendTransaction('setUserTariff', payload, web3);
+      await sendTransaction(method, payload, web3);
       return true;
     } catch (err) {
-      return error(511, `buy raise view ${type} error`, err);
+      return error(512, `buy raise view ${method} error`, err);
     }
   },
 };
-
-// }
-// 'usersTariff'
-// setQuestTariff
-// 'setUserTariff'

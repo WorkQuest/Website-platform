@@ -111,6 +111,7 @@ export default {
 
   width: 100%;
   height: 360px;
+  border: none;
 
   padding: 20px;
 
@@ -178,15 +179,27 @@ export default {
   }
   &_plus {
     border: 1px solid $yellow100;
+    &:hover {
+      box-shadow: -1px 1px 8px 0px rgba(246, 207, 0, 0.2);
+    }
   }
   &_gold{
     border: 1px solid $yellow100;
+    &:hover {
+      box-shadow: -1px 1px 8px 0px rgba(246, 207, 0, 0.2);
+    }
   }
   &_silver{
     border: 1px solid $grey200;
+    &:hover {
+      box-shadow: -1px 1px 8px 0px rgba(187, 192, 199, 0.2);
+    }
   }
   &_bronze{
     border: 1px solid $brown;
+    &:hover {
+      box-shadow: -1px 1px 8px 0px rgba(183, 151, 104, 0.2);
+    }
   }
 }
 
