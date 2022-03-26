@@ -122,12 +122,17 @@ import { UserRaiseViewPriceDay, UserRaiseViewPriceWeek, UserRaiseViewPriceMonth 
 
 export default {
   name: 'RisedViews',
+  async asyncData({ store }) {
+    const prices = await store.dispatch('web3/getRaiseViewTariffCost', { type: 'usersTariff' });
+    return { prices };
+  },
   data() {
     return {
       ads: {
         currentAdPrice: '',
       },
       period: 1,
+      prices: '',
       type: '',
     };
   },
@@ -138,25 +143,25 @@ export default {
           level: this.$t('quests.levels.1.title'),
           code: 1,
           desc: this.$t('quests.levels.1.desc'),
-          cost: UserRaiseViewPriceDay.PLUS,
+          cost: this.prices['4']['1'],
         },
         {
           level: this.$t('quests.levels.2.title'),
           code: 2,
           desc: this.$t('quests.levels.2.desc'),
-          cost: UserRaiseViewPriceDay.GOLD,
+          cost: this.prices['3']['1'],
         },
         {
           level: this.$t('quests.levels.3.title'),
           code: 3,
           desc: this.$t('quests.levels.3.desc'),
-          cost: UserRaiseViewPriceDay.SILVER,
+          cost: this.prices['2']['1'],
         },
         {
           level: this.$t('quests.levels.4.title'),
           code: 4,
           desc: this.$t('quests.levels.4.desc'),
-          cost: UserRaiseViewPriceDay.BRONZE,
+          cost: this.prices['1']['1'],
         },
       ];
     },
@@ -166,25 +171,25 @@ export default {
           level: this.$t('quests.levels.1.title'),
           code: 1,
           desc: this.$t('quests.levels.1.desc'),
-          cost: UserRaiseViewPriceWeek.PLUS,
+          cost: this.prices['4']['7'],
         },
         {
           level: this.$t('quests.levels.2.title'),
           code: 2,
           desc: this.$t('quests.levels.2.desc'),
-          cost: UserRaiseViewPriceWeek.GOLD,
+          cost: this.prices['3']['7'],
         },
         {
           level: this.$t('quests.levels.3.title'),
           code: 3,
           desc: this.$t('quests.levels.3.desc'),
-          cost: UserRaiseViewPriceWeek.SILVER,
+          cost: this.prices['2']['7'],
         },
         {
           level: this.$t('quests.levels.4.title'),
           code: 4,
           desc: this.$t('quests.levels.4.desc'),
-          cost: UserRaiseViewPriceWeek.BRONZE,
+          cost: this.prices['1']['7'],
         },
       ];
     },
@@ -194,25 +199,25 @@ export default {
           level: this.$t('quests.levels.1.title'),
           code: 1,
           desc: this.$t('quests.levels.1.desc'),
-          cost: UserRaiseViewPriceMonth.PLUS,
+          cost: this.prices['4']['30'],
         },
         {
           level: this.$t('quests.levels.2.title'),
           code: 2,
           desc: this.$t('quests.levels.2.desc'),
-          cost: UserRaiseViewPriceMonth.GOLD,
+          cost: this.prices['3']['30'],
         },
         {
           level: this.$t('quests.levels.3.title'),
           code: 3,
           desc: this.$t('quests.levels.3.desc'),
-          cost: UserRaiseViewPriceMonth.SILVER,
+          cost: this.prices['2']['30'],
         },
         {
           level: this.$t('quests.levels.4.title'),
           code: 4,
           desc: this.$t('quests.levels.4.desc'),
-          cost: UserRaiseViewPriceMonth.BRONZE,
+          cost: this.prices['1']['30'],
         },
       ];
     },
@@ -271,8 +276,7 @@ export default {
       };
     },
   },
-  async mounted() {
-    console.log(this.$store.dispatch('web3/getRaiseViewTariffCost', { type: 'usersTariff' }));
+  mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
   },

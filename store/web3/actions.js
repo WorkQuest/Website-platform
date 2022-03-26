@@ -32,7 +32,7 @@ import {
   error, sendTransaction,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
-import { StakingTypes } from '~/utils/enums';
+import { RaiseViewTariffPeriods, StakingTypes } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 BigNumber.set({ ROUNDING_MODE: BigNumber.ROUND_DOWN });
@@ -412,26 +412,20 @@ export default {
     return false;
   },
   async getRaiseViewTariffCost({ commit }, payload) {
-    // console.log(payload.type);
     const web3 = new Web3(process.env.WQ_PROVIDER);
-    const periods = (payload.type === 'usersTariff') ? ['1', '7', '30'] : ['1', '5', '7'];
+    const periods = RaiseViewTariffPeriods[payload.type];
     const tariffs = ['1', '2', '3', '4'];
     const price = {};
     for (let i = 0; i < tariffs.length; i += 1) {
+      price[tariffs[i]] = {};
       for (let j = 0; j < periods.length; j += 1) {
-        // console.log(fetchContractData(payload.type, abi.WQPromotion, process.env.PROMOTION, [periods[j], tariffs[i]], web3));
         /* eslint-disable no-await-in-loop */
-        console.log(fetchContractData(
-          payload.type, abi.WQPromotion, process.env.PROMOTION, [tariffs[i], periods[j]], web3,
-        ));
-        // price[tariffs[i]][periods[j]] = new BigNumber(await fetchContractData(
-        //   payload.type, abi.WQPromotion, process.env.PROMOTION, [periods[j], tariffs[i]], web3,
-        // )).shiftedBy(-18).toString();
+        price[tariffs[i]][periods[j]] = new BigNumber(await fetchContractData(
+          payload.type, abi.WQPromotion, process.env.WQ_PROMOTION, [tariffs[i], periods[j]], web3,
+        )).shiftedBy(-18).toString();
       }
     }
-    return await Promise.all(price);
-
-    // const cost = await fetchContractData(type, abi.WQPromotion, process.env.PROMOTION, ['1', '1'], web3);
+    return price;
   },
   async buyRaiseView(type, tariff, period, cost) {
     const web3 = new Web3(process.env.WQ_PROVIDER);

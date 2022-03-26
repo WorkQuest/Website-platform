@@ -318,3 +318,8 @@ export const UserRaiseViewPriceMonth = {
   SILVER: '29',
   BRONZE: '21',
 };
+
+export const RaiseViewTariffPeriods = {
+  usersTariff: ['1', '7', '30'],
+  questTariff: ['1', '5', '7'],
+};
