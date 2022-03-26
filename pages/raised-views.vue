@@ -133,6 +133,7 @@ export default {
       period: 1,
       prices: '',
       type: '',
+      currentTariff: '',
     };
   },
   computed: {
@@ -143,24 +144,28 @@ export default {
           code: 1,
           desc: this.$t('quests.levels.1.desc'),
           cost: this.prices['4']['1'],
+          tariff: '4',
         },
         {
           level: this.$t('quests.levels.2.title'),
           code: 2,
           desc: this.$t('quests.levels.2.desc'),
           cost: this.prices['3']['1'],
+          tariff: '3',
         },
         {
           level: this.$t('quests.levels.3.title'),
           code: 3,
           desc: this.$t('quests.levels.3.desc'),
           cost: this.prices['2']['1'],
+          tariff: '2',
         },
         {
           level: this.$t('quests.levels.4.title'),
           code: 4,
           desc: this.$t('quests.levels.4.desc'),
           cost: this.prices['1']['1'],
+          tariff: '1',
         },
       ];
     },
@@ -171,24 +176,28 @@ export default {
           code: 1,
           desc: this.$t('quests.levels.1.desc'),
           cost: this.prices['4']['7'],
+          tariff: '4',
         },
         {
           level: this.$t('quests.levels.2.title'),
           code: 2,
           desc: this.$t('quests.levels.2.desc'),
           cost: this.prices['3']['7'],
+          tariff: '3',
         },
         {
           level: this.$t('quests.levels.3.title'),
           code: 3,
           desc: this.$t('quests.levels.3.desc'),
           cost: this.prices['2']['7'],
+          tariff: '2',
         },
         {
           level: this.$t('quests.levels.4.title'),
           code: 4,
           desc: this.$t('quests.levels.4.desc'),
           cost: this.prices['1']['7'],
+          tariff: '1',
         },
       ];
     },
@@ -199,24 +208,28 @@ export default {
           code: 1,
           desc: this.$t('quests.levels.1.desc'),
           cost: this.prices['4']['30'],
+          tariff: '4',
         },
         {
           level: this.$t('quests.levels.2.title'),
           code: 2,
           desc: this.$t('quests.levels.2.desc'),
           cost: this.prices['3']['30'],
+          tariff: '3',
         },
         {
           level: this.$t('quests.levels.3.title'),
           code: 3,
           desc: this.$t('quests.levels.3.desc'),
           cost: this.prices['2']['30'],
+          tariff: '2',
         },
         {
           level: this.$t('quests.levels.4.title'),
           code: 4,
           desc: this.$t('quests.levels.4.desc'),
           cost: this.prices['1']['30'],
+          tariff: '1',
         },
       ];
     },
@@ -288,11 +301,13 @@ export default {
         this.$refs[`radio${i}`][0].checked = false;
         this.ads.currentAdPrice = '';
         this.type = '';
+        this.currentTariff = '';
         this.$refs[`card${i}`][0].classList.remove(this.cardActive[i + 1]);
       }
       this.$refs[`radio${idx}`][0].checked = true;
       this.ads.currentAdPrice = this.$refs[`radio${idx}`][0].value;
       this.type = item.code - 1;
+      this.currentTariff = item.tariff;
       this.$refs[`card${idx}`][0].classList.add(this.cardActive[item.code]);
     },
     switchPeriod(item) {
@@ -310,6 +325,7 @@ export default {
         type: this.type,
         duration: this.duration[this.period],
         cost: this.ads.currentAdPrice,
+        tariff: this.currentTariff,
       });
     },
   },

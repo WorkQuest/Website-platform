@@ -431,20 +431,24 @@ export default {
       return error(511, 'get raise view tariff cost error', err);
     }
   },
-  async buyRaiseView(method, tariff, period, cost) {
-    const web3 = new Web3(process.env.WQ_PROVIDER);
-    try {
-      const payload = {
-        abi: abi.WQPromotion,
-        address: process.env.WQ_PROMOTION,
-        data: [
-          tariff, period, cost,
-        ],
-      };
-      await sendTransaction(method, payload, web3);
-      return true;
-    } catch (err) {
-      return error(512, `buy raise view ${method} error`, err);
-    }
+  async buyRaiseView({ commit }, payload) {
+    const response = await initWeb3(process.env.WQ_PROMOTION);
+    if (response.ok) {
+      try {
+        const params = {
+          abi: abi.WQPromotion,
+          address: process.env.WQ_PROMOTION,
+          data: [
+            payload.tariff,
+            payload.period,
+            payload.cost,
+          ],
+        };
+        await sendTransaction(payload.method, params);
+        return true;
+      } catch (err) {
+        return error(512, `buy raise view ${payload.method} error`, err);
+      }
+    } return false;
   },
 };

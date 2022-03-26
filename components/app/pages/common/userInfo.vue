@@ -333,7 +333,6 @@ export default {
       });
     },
     toRaisedViews() {
-      this.$router.push(Path.RAISED_VIEWS);
       if (this.userData.raiseView && RaiseViewStatus[this.userData.raiseView.status]) {
         this.ShowModal({
           key: modals.status,

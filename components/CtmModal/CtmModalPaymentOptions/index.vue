@@ -177,7 +177,7 @@ export default {
     },
     async showRaiseLevel() {
       const contractResult = await this.$store.dispatch('web3/buyRaiseView', {
-        method: 'setUserTariff', tariff: this.options.type, period: this.options.duration, cost: this.options.cost,
+        method: 'setUserTariff', tariff: this.options.tariff, period: this.options.duration, cost: this.options.cost,
       });
       if (contractResult) {
         const result = await this.$store.dispatch('user/payUserRaisedView', { duration: this.options.duration, type: this.options.type });
@@ -189,6 +189,12 @@ export default {
         if (result) {
           this.goBackToProfile();
         }
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/error.svg'),
+          title: this.$t('modals.errors.error'),
+        });
       }
     },
   },
