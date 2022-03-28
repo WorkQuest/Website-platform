@@ -577,8 +577,8 @@ export default {
       this.ShowModal({
         key: modals.transactionReceipt,
         fields: {
-          from: { name: this.$t('modals.fromAddress'), value: this.userAddress },
-          to: { name: this.$t('modals.toAddress'), value: contractAddress },
+          from: { name: this.$t('meta.fromBig'), value: this.userAddress },
+          to: { name: this.$t('meta.toBig'), value: contractAddress },
           fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
         },
         submitMethod: async () => {
@@ -661,8 +661,8 @@ export default {
       this.ShowModal({
         key: modals.transactionReceipt,
         fields: {
-          from: { name: this.$t('modals.fromAddress'), value: this.userAddress },
-          to: { name: this.$t('modals.toAddress'), value: contractAddress },
+          from: { name: this.$t('meta.fromBig'), value: this.userAddress },
+          to: { name: this.$t('meta.toBig'), value: contractAddress },
           fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
         },
         submitMethod: async () => {
@@ -698,8 +698,8 @@ export default {
       this.ShowModal({
         key: modals.transactionReceipt,
         fields: {
-          from: { name: this.$t('modals.fromAddress'), value: this.userAddress },
-          to: { name: this.$t('modals.toAddress'), value: contractAddress },
+          from: { name: this.$t('meta.fromBig'), value: this.userAddress },
+          to: { name: this.$t('meta.toBig'), value: contractAddress },
           fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
         },
         submitMethod: async () => {
@@ -735,8 +735,8 @@ export default {
       this.ShowModal({
         key: modals.transactionReceipt,
         fields: {
-          from: { name: this.$t('modals.fromAddress'), value: this.userAddress },
-          to: { name: this.$t('modals.toAddress'), value: contractAddress },
+          from: { name: this.$t('meta.fromBig'), value: this.userAddress },
+          to: { name: this.$t('meta.toBig'), value: contractAddress },
           fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
         },
         submitMethod: async () => {

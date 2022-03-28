@@ -134,10 +134,10 @@ export default {
         return [
           { 'info-hide': infoDataMode === InfoModeWorker.Created },
           { 'info_bg-yellow': [InfoModeWorker.ADChat, InfoModeWorker.Invited].includes(infoDataMode) },
-          { 'info_bg-green': infoDataMode === InfoModeWorker.Active || (InfoModeWorker.Invited && response?.status === ResponseStatus.accepted) },
+          { 'info_bg-green': infoDataMode === InfoModeWorker.Active || response?.status === ResponseStatus.accepted },
           { 'info_bg-grey': infoDataMode === InfoModeWorker.Rejected },
           { 'info_bg-blue': [InfoModeWorker.WaitWorker, InfoModeWorker.WaitConfirm, InfoModeWorker.Done, InfoModeWorker.Responded].includes(infoDataMode) },
-          { 'info_bg-red': [InfoModeWorker.Dispute, InfoModeWorker.Closed].includes(infoDataMode) || (InfoModeWorker.Invited && response?.status === ResponseStatus.rejected) },
+          { 'info_bg-red': [InfoModeWorker.Dispute, InfoModeWorker.Closed].includes(infoDataMode) || response?.status === ResponseStatus.rejected },
         ];
       }
       if (this.userRole === UserRole.EMPLOYER) {

@@ -54,9 +54,7 @@ export default {
   async getAllQuests({ commit }, { query, specFilter }) {
     try {
       if (query.q === '') delete query.q;
-      const { ok, result } = await this.$axios.$get('/v1/quests', {
-        params: { ...query, ...specFilter },
-      });
+      const { ok, result } = await this.$axios.$post('/v1/quests', { ...query, ...specFilter });
       commit('setAllQuests', result);
       return { ok };
     } catch (e) {
@@ -101,9 +99,8 @@ export default {
   },
   async getUserQuests({ commit }, { userId, role, query }) {
     try {
-      const response = await this.$axios.$get(`/v1/${role}/${userId}/quests`, {
-        params: { ...query },
-      });
+      // object.keys
+      const response = await this.$axios.$post(`/v1/${role}/${userId}/get-quests`, { specializations: [] }); // { ...query } // TODO [!!!] fix
       commit('setAllQuests', response.result);
       return response.result;
     } catch (e) {
@@ -294,7 +291,7 @@ export default {
   },
   async getAvailableQuests({ commit }, data) {
     try {
-      const response = await this.$axios.$get(`/v1/worker/${data}/available-quests?limit=100`);
+      const response = await this.$axios.$post(`/v1/worker/${data}/available-quests?limit=100`);
       commit('setAvailableQuests', response.result.quests);
       return response.ok;
     } catch (e) {

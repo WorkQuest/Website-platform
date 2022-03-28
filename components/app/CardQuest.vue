@@ -254,11 +254,11 @@ export default {
     progressQuestText(status) {
       if (!this.userRole) return '';
       switch (status) {
-        case QuestStatuses.Active: return this.$t('quests.questActive');
+        case QuestStatuses.ExecutionOfWork: return this.$t('quests.questActive');
         case QuestStatuses.Closed: return this.$t('quests.questClosed');
         case QuestStatuses.Dispute: return this.$t('quests.questDispute');
         case QuestStatuses.WaitWorker: return this.$t('quests.inProgressBy');
-        case QuestStatuses.WaitConfirm: return this.$t('quests.questWaitConfirm');
+        case QuestStatuses.WaitEmployerConfirm: return this.$t('quests.questWaitConfirm');
         case QuestStatuses.Done: return this.$t('quests.finishedBy');
         default: return '';
       }
@@ -285,9 +285,9 @@ export default {
       const questStatus = {
         [QuestStatuses.Dispute]: this.$t('meta.dispute'),
         [QuestStatuses.Rejected]: this.$t('quests.rejected'),
-        [QuestStatuses.Active]: this.$t('quests.active'),
+        [QuestStatuses.ExecutionOfWork]: this.$t('quests.active'),
         [QuestStatuses.Done]: this.$t('meta.performed'),
-        [QuestStatuses.WaitConfirm]: this.$t('quests.requested'),
+        [QuestStatuses.WaitEmployerConfirm]: this.$t('quests.requested'),
         [QuestStatuses.WaitWorker]: this.$t('meta.invited'),
         [QuestStatuses.Closed]: this.$t('quests.closed'),
       };
@@ -297,9 +297,9 @@ export default {
       const questStatus = {
         [QuestStatuses.Dispute]: 'card-quest__cards-state-dis',
         [QuestStatuses.Rejected]: 'card-quest__cards-state-clo',
-        [QuestStatuses.Active]: 'card-quest__cards-state-act',
+        [QuestStatuses.ExecutionOfWork]: 'card-quest__cards-state-act',
         [QuestStatuses.Done]: 'card-quest__cards-state-per',
-        [QuestStatuses.WaitConfirm]: 'card-quest__cards-state-req',
+        [QuestStatuses.WaitEmployerConfirm]: 'card-quest__cards-state-req',
         [QuestStatuses.WaitWorker]: 'card-quest__cards-state-inv',
         [QuestStatuses.Closed]: 'card-quest__cards-state-clo',
       };

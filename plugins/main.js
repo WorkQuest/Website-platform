@@ -164,6 +164,7 @@ Vue.mixin({
       return setTimeout(func, timeout);
     },
     async DeleteQuest({ id, status }) {
+      // TODO [!!!] удаление квеста
       if ([QuestStatuses.Closed, QuestStatuses.Created].includes(status)) {
         await this.$store.dispatch('quests/deleteQuest', { questId: id });
 

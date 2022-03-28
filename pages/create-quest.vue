@@ -133,9 +133,10 @@
       </div>
       <div class="upload btn btn__container btn__container_right">
         <div class="btn__create">
+          <!--          && !(selectedSpecAndSkills.length === 0)-->
           <base-btn
             selector="CREATE-A-QUEST"
-            :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
+            :disabled="!(invalid === false)"
             @click="handleSubmit(createQuest)"
           >
             {{ $t('meta.createAQuest') }}
@@ -162,7 +163,7 @@ export default {
   data() {
     return {
       period: 1,
-      selectedSpecAndSkills: ['1.100'], // TODO: нельзя выбрать специализации - проблема на бэке
+      selectedSpecAndSkills: [], // TODO: нельзя выбрать специализации - проблема на бэке
       employmentIndex: 0,
       workplaceIndex: 0,
       runtimeIndex: 0,
@@ -313,13 +314,12 @@ export default {
       const questRes = await this.$store.dispatch('quests/questCreate', payload);
       this.SetLoader(false);
       if (questRes.ok) {
-        // const { nonce } = questRes.result; // взять nonce
-        const nonce = '123'; // TODO: remove this line, uncomment up line
+        const { nonce } = questRes.result;
         this.ShowModal({
           key: modals.transactionReceipt,
           fields: {
-            from: { name: this.$t('modals.fromAddress'), value: this.userData.wallet.address },
-            to: { name: this.$t('modals.toAddress'), value: process.env.WORK_QUEST_FACTORY },
+            from: { name: this.$t('meta.fromBig'), value: this.userData.wallet.address },
+            to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_WQ_FACTORY },
             amount: { name: this.$t('modals.amount'), value: this.depositAmount, symbol: TokenSymbols.WUSD },
             fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WUSD },
           },

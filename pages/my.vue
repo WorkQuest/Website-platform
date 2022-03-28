@@ -111,6 +111,7 @@ export default {
     this.requestParams = {
       userId: this.userData.id,
       role: this.userRole,
+      specializations: null,
       query: {
         limit: 10,
         offset: 0,
@@ -149,8 +150,8 @@ export default {
       this.requestParams.query.starred = id === 1;
 
       if (id <= 1) delete this.requestParams.query['statuses[0]'];
-      else if (id === 2) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitConfirm;
-      else if (id === 3) this.requestParams.query['statuses[0]'] = QuestStatuses.Active;
+      else if (id === 2) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitEmployerConfirm;
+      else if (id === 3) this.requestParams.query['statuses[0]'] = QuestStatuses.ExecutionOfWork;
       else if (id === 4) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorker;
       else if (id === 5) this.requestParams.query['statuses[0]'] = QuestStatuses.Done;
       await this.getQuests();
