@@ -326,6 +326,11 @@ export default {
     this.SetLoader(true);
     this.SetLoader(false);
   },
+  beforeDestroy() {
+    window.removeEventListener('resize', () => {
+      this.windowSize = window.innerWidth;
+    });
+  },
   methods: {
     handleClickFAQ(index) {
       if (this.indexFAQ.includes(index)) {
