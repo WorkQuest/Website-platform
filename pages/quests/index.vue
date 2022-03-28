@@ -27,7 +27,7 @@
       >
         <card-quest
           v-for="(quest,i) in questsList"
-          :key="i"
+          :key="quest.id"
           :data-selector="`QUEST-CARD-${i}`"
           :quest-index="i"
           :quest="quest"

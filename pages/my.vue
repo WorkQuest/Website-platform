@@ -28,8 +28,8 @@
           class="quests__cards"
         >
           <card-quest
-            v-for="(quest,i) in quests"
-            :key="i"
+            v-for="(quest,i) in compQuests"
+            :key="quest.id"
             :quest="quest"
             :quest-index="i"
             @clickFavoriteStar="updateQuests(quest)"
@@ -76,6 +76,10 @@ export default {
       quests: 'quests/getAllQuests',
       questsCount: 'quests/getAllQuestsCount',
     }),
+    compQuests() {
+      this.$forceUpdate();
+      return this.quests;
+    },
     UserRole() {
       return UserRole;
     },

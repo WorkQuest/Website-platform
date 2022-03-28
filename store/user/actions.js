@@ -77,7 +77,7 @@ export default {
     const newNotification = await dispatch('setCurrNotificationObject', notification);
     commit('addNotification', newNotification);
   },
-  setCurrNotificationObject({ getters, rootGetters, dispatch }, notification) {
+  async setCurrNotificationObject({ getters, rootGetters, dispatch }, notification) {
     const {
       action, data: {
         user, title, id, assignedWorker, worker, quest, employer, fromUser, message, toUserId,
@@ -87,16 +87,22 @@ export default {
 
     // If we on quest id page
     const curQuestId = rootGetters['quests/getQuest']?.id;
-    if (id === curQuestId) {
-      dispatch('quests/getQuest', curQuestId, { root: true });
-    }
+    if (id === curQuestId) dispatch('quests/getQuest', curQuestId, { root: true });
 
     let currTitle = quest?.title || title;
     let keyName = 'notifications.';
     let path = `${Path.QUESTS}/${quest?.id || id}`;
-    const userRole = getters.getUserRole;
-    const isItAnWorker = userRole === UserRole.WORKER;
 
+    await dispatch('getUserData');
+
+    const currentUserId = getters.getUserData.id;
+    const userRole = getters.getUserRole;
+
+    console.log(currentUserId);
+    console.log(userRole);
+
+    const isItAnWorker = userRole === UserRole.WORKER;
+    console.log('action', action);
     switch (action) {
       case NotificationAction.QUEST_STARTED: {
         keyName += 'invitesYouToStartAQuest';
@@ -153,14 +159,56 @@ export default {
         currTitle = problemDescription;
         break;
       }
+      case NotificationAction.DISPUTE_DECISION: {
+        keyName += 'disputeDecision';
+        currTitle = problemDescription;
+        break;
+      }
       default: {
         keyName = '';
         break;
       }
     }
+    // TODO: Delete
+    // TODO: рефакторить и тестить!
     console.log('keyName', keyName);
     notification.actionNameKey = keyName;
+    // Actions before notification added in list
+    const query = {
+      limit: 10,
+      offset: 0,
+      starred: false,
+    };
+    // My page \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    const keyArr = [
+      'notifications.theQuestIsPending', 'notifications.invitesYouToStartAQuest', 'notifications.rejectedTheQuest',
+      'notifications.acceptedTheQuest', 'notifications.completedTheQuest', 'notifications.acceptedAJobOnAQuest',
+      'notifications.respondedToQuest', 'notifications.invitedYouToAQuest',
+      'notifications.acceptedTheInvitationToTheQuest', 'notifications.declinedTheInvitationToTheQuest',
+      'notifications.declinedYourResponseToTheQuest', 'notifications.theQuestIsPending', 'notifications.openDispute',
+      'notifications.disputeDecision',
+    ];
+    if (keyArr.includes(keyName)) {
+      console.log('keyNameNew:', keyName);
+      if (this.$router.history.current.path === Path.MY_QUESTS) {
+        // update quests list on /my page before notification
+        console.log({ currentUserId, userRole, query });
+        console.log('getters.getUserData.id', getters.getUserData.id);
+        console.log('getters.getUserRole', getters.getUserRole);
+        if (!getters.getUserData.id && getters.getUserRole) {
+          await dispatch('quests/getUserQuests', { currentUserId, userRole, query }, { root: true });
+        }
+      }
+    }
+    // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     notification.sender = fromUser || (isItAnWorker ? user || employer : assignedWorker || worker);
+    if (!notification.sender) {
+      const currentUser = getters.getUserData;
+      if (currentUser.id !== notification.userId) {
+        dispatch('getAnotherUserData', notification.userId);
+        notification.sender = getters.getAnotherUserData;
+      } else notification.sender = currentUser;
+    }
     if (currTitle) notification.params = { title: currTitle, path };
     notification.creatingDate = moment(new Date(notification.createdAt)).format('MMMM Do YYYY, HH:mm');
     console.log('notification', notification);

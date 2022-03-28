@@ -163,6 +163,7 @@ export const NotificationAction = {
   USER_LEFT_REVIEW_ABOUT_QUEST: 'userLeftReviewAboutQuest',
 
   OPEN_DISPUTE: 'openDispute',
+  DISPUTE_DECISION: 'disputeDecision',
 };
 
 export const ChatType = {
@@ -210,6 +211,7 @@ export const Path = {
   COLLATERAL: '/collateral',
   WIKI: '/wiki',
   RAISED_VIEWS: '/raised-views',
+  NOTIFICATIONS: '/notifications',
 };
 
 // WALLET

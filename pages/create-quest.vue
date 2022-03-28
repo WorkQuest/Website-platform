@@ -518,7 +518,6 @@ export default {
         description: this.textarea,
         price: this.price,
         medias,
-        adType: 0,
         specializationKeys: this.selectedSpecAndSkills,
         locationFull: {
           location: {

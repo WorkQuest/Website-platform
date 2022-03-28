@@ -8,7 +8,6 @@
     <div class="main main-white">
       <div class="main__body main__body_20gap">
         <quest-panel :location="questLocation" />
-
         <div class="quest__container">
           <h2 class="quest__title">
             {{ quest.title }}
@@ -35,7 +34,7 @@
           </div>
           <div class="worker-data__container">
             <nuxt-link
-              :to="`/profile/${assignedWorker.id}`"
+              :to="`${$options.Path.PROFILE}/${assignedWorker.id}`"
               :data-selector="`TO-ASSIGNED-WORKER-PROFILE-${assignedWorker.id}`"
               class="worker-data__user-cont"
             >
@@ -51,7 +50,6 @@
             <item-rating :rating="assignedWorker.ratingStatistic.status" />
           </div>
         </div>
-
         <div class="worker-data worker-data__more-data">
           <div
             v-if="actionBtnsArr.length"
@@ -133,6 +131,7 @@
           <div class="quest__card">
             <card-quest
               v-if="otherQuestsCount"
+              :key="sameQuest.id"
               :quest="sameQuest"
             />
             <empty-data
@@ -147,7 +146,7 @@
   <div v-else-if="!isLoading">
     <empty-data
       :description="$t('errors.emptyData.emptyQuests')"
-      :link="'/quests'"
+      :link="$options.Path.QUESTS"
       :btn-text="$t('meta.btns.ok')"
     />
   </div>
@@ -156,7 +155,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import {
-  QuestStatuses, InfoModeWorker, InfoModeEmployer, UserRole, ResponseStatus, questPriority, QuestModeReview,
+  QuestStatuses, InfoModeWorker, InfoModeEmployer, UserRole, ResponseStatus, questPriority, QuestModeReview, Path,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
@@ -165,6 +164,7 @@ export default {
   UserRole,
   QuestStatuses,
   InfoModeEmployer,
+  Path,
   data() {
     return {
       questLocation: { lat: 0, lng: 0 },
@@ -216,7 +216,7 @@ export default {
       // TODO fixme Вернуть, нужно для тестов Роме
       // const dateForStart = this.$moment(this.quest.startedAt).add(1, 'day').valueOf();
       // TODO: Не срабатывает без перезагрузки страницы
-      const dateForStart = this.$moment(this.quest.startedAt).add(1, 'm').valueOf();
+      const dateForStart = this.$moment(Date.now()).add(1, 'm').valueOf();
       return now >= dateForStart;
     },
   },
@@ -249,7 +249,6 @@ export default {
     starRating(item) {
       console.log('starRating', item);
       if (!item) return false;
-
       if (this.userRole === UserRole.WORKER) {
         return item.status === QuestStatuses.Done
           && item.assignedWorkerId === this.userData.id;
@@ -294,7 +293,6 @@ export default {
         arr.push({
           name: this.$t('meta.btns.goToChat'),
           class: 'base-btn_goToChat',
-          mode: '',
           funcKey: 'goToChat',
           icon: 'icon-chat icon_fs-20',
           disabled: false,
@@ -305,29 +303,21 @@ export default {
     },
     setEmployerBtnsArr() {
       if (this.userData.id !== this.quest.userId) return [];
-
       const {
         WaitConfirm, Dispute, Created, Active,
       } = InfoModeEmployer;
-
       let arr = [];
-
       switch (this.infoDataMode) {
         case Created: {
           arr = [{
             name: this.$t('meta.raiseViews'),
-            class: '',
-            mode: '',
             funcKey: 'toRaisingViews',
-            icon: '',
             disabled: false,
           },
           {
             name: this.$t('meta.btns.closeQuest'),
-            class: '',
             mode: 'delete',
             funcKey: 'closeQuest',
-            icon: '',
             disabled: false,
           }];
           break;
@@ -335,10 +325,7 @@ export default {
         case Active: {
           arr = [{
             name: this.$t('meta.approve'),
-            class: '',
             mode: 'approve',
-            funcKey: '',
-            icon: '',
             disabled: true,
           }];
           break;
@@ -346,18 +333,13 @@ export default {
         case WaitConfirm: {
           arr = [{
             name: this.$t('meta.btns.acceptCompletedWorkOnQuest'),
-            class: '',
             mode: 'approve',
             funcKey: 'acceptCompletedWorkOnQuest',
-            icon: '',
             disabled: false,
           },
           {
             name: this.$t('meta.openDispute'),
-            class: '',
-            mode: '',
             funcKey: 'openDispute',
-            icon: '',
             disabled: false,
           }];
           break;
@@ -365,17 +347,13 @@ export default {
         case Dispute: {
           arr = [{
             name: this.$t('meta.openDispute'),
-            class: '',
-            mode: '',
             funcKey: 'openDispute',
-            icon: '',
             disabled: false,
           }];
           break;
         }
         default: break;
       }
-
       return arr;
     },
     setWorkerBtnsArr() {
@@ -383,46 +361,32 @@ export default {
       const {
         ADChat, Active, Created, Dispute, Invited, WaitWorker,
       } = InfoModeWorker;
-
       let arr = [];
-
       switch (infoDataMode) {
         case ADChat: {
           arr = [{
             name: this.$t('meta.btns.agree'),
-            class: '',
-            mode: '',
             funcKey: 'acceptWorkOnQuest',
-            icon: '',
             disabled: false,
           },
           {
             name: this.$t('meta.btns.disagree'),
-            class: '',
             mode: 'outline',
             funcKey: 'rejectWorkOnQuest',
-            icon: '',
             disabled: false,
           }];
           break;
         }
         case Active: {
           if (assignedWorkerId !== userData.id) break;
-
           arr = [{
             name: this.$t('meta.openDispute'),
-            class: '',
-            mode: '',
             funcKey: 'openDispute',
-            icon: '',
             disabled: false,
           },
           {
             name: this.$t('meta.btns.completeWorkOnQuest'),
-            class: '',
-            mode: '',
             funcKey: 'completeWorkOnQuest',
-            icon: '',
             disabled: false,
           }];
           break;
@@ -430,10 +394,7 @@ export default {
         case Created: {
           arr = [{
             name: this.$t('meta.sendARequest'),
-            class: '',
-            mode: '',
             funcKey: 'sendARequestOnQuest',
-            icon: '',
             disabled: false,
           }];
           break;
@@ -441,52 +402,37 @@ export default {
         case Dispute: {
           arr = [{
             name: this.$t('meta.openDispute'),
-            class: '',
-            mode: '',
             funcKey: 'openDispute',
-            icon: '',
             disabled: false,
           }];
           break;
         }
         case Invited: {
           if (response.status !== ResponseStatus.awaiting || (assignedWorkerId && assignedWorkerId !== userData.id)) break;
-
           arr = [{
             name: this.$t('meta.btns.agree'),
-            class: '',
-            mode: '',
             funcKey: 'acceptQuestInvitation',
-            icon: '',
             disabled: false,
           },
           {
             name: this.$t('meta.btns.disagree'),
-            class: '',
             mode: 'outline',
             funcKey: 'rejectQuestInvitation',
-            icon: '',
             disabled: false,
           }].concat(arr);
           break;
         }
         case WaitWorker: {
           if (assignedWorkerId !== userData.id) break;
-
           arr = [{
             name: this.$t('meta.btns.agree'),
-            class: '',
-            mode: '',
             funcKey: 'acceptWorkOnQuest',
-            icon: '',
             disabled: false,
           },
           {
             name: this.$t('meta.btns.disagree'),
-            class: '',
             mode: 'outline',
             funcKey: 'rejectWorkOnQuest',
-            icon: '',
             disabled: false,
           }];
           break;
@@ -513,7 +459,6 @@ export default {
     },
     async getResponsesToQuest() {
       const { quest: { id, user }, userData } = this;
-
       if (this.userRole === UserRole.EMPLOYER && user.id === userData.id) {
         await this.$store.dispatch('quests/responsesToQuest', id);
       }
@@ -526,12 +471,11 @@ export default {
         await this.$store.dispatch('quests/closeQuest', this.quest.id);
         this.showQuestModal(modalMode);
       }
-      await this.$router.push('/my');
+      await this.$router.push(Path.MY_QUESTS);
       this.SetLoader(false);
     },
     async openDispute() {
-      // TODO: Добавить в enum
-      if (this.quest.status === 3) return await this.$router.push(`/disputes/${this.quest.openDispute.id}`);
+      if (this.quest.status === QuestStatuses.Dispute) return await this.$router.push(`/disputes/${this.quest.openDispute.id}`);
       if (this.checkAvailabilityDispute) {
         return this.ShowModal({
           key: modals.openADispute,

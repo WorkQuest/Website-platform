@@ -10,7 +10,7 @@
           class="info-block__list"
         >
           <div
-            v-for="(notification, i) in notifications"
+            v-for="(notification, i) in filterNotifications"
             :key="i"
             :ref="`${notification.id}|${notification.seen}`"
             v-observe-visibility="(isVisible) => checkUnseenNotifs(isVisible, notification)"
@@ -24,10 +24,14 @@
                   class="avatar"
                   :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : EmptyAvatar()"
                   alt=""
+                  @click="toUserProfile(notification)"
                 >
               </div>
               <div class="notification__inviter inviter">
-                <span class="inviter__name">
+                <span
+                  class="inviter__name"
+                  @click="toUserProfile(notification)"
+                >
                   {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
                 </span>
                 <!--                <span class="inviter__company">-->
@@ -35,7 +39,6 @@
                 <!--                </span>-->
               </div>
             </template>
-
             <div class="notification__quest quest">
               <span class="quest__invitation">
                 {{ $t(notification.actionNameKey) }}:
@@ -43,6 +46,7 @@
               <span
                 v-if="notification.params"
                 class="quest__title"
+                @click="goToEvent(notification.params ? notification.params.path : '')"
               >
                 {{ notification.params.title }}
               </span>
@@ -50,14 +54,12 @@
             <div class="notification__date">
               {{ notification.creatingDate }}
             </div>
-
             <img
               class="notification__remove"
               src="~assets/img/ui/close.svg"
               alt="x"
               @click="tryRemoveNotification($event, notification.id)"
             >
-
             <div class="notification__button">
               <base-btn
                 mode="outline"
@@ -89,10 +91,13 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { UserRole, Path } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
   name: 'Notifications',
+  UserRole,
+  Path,
   data() {
     return {
       filter: {
@@ -109,7 +114,12 @@ export default {
       userRole: 'user/getUserRole',
       notifications: 'user/getNotificationsList',
       notifsCount: 'user/getNotificationsCount',
+      currentUser: 'user/getUserData',
     }),
+    filterNotifications() {
+      // TODO: Используется для фильтрации нотификаций только от ворквеста
+      return this.notifications.filter((notification) => notification.queueName === 'quest');
+    },
     totalPages() {
       return Math.ceil(this.notifsCount / this.filter.limit);
     },
@@ -123,9 +133,11 @@ export default {
     this.$store.commit('user/setNotifications', { result: { notifications: [], count: this.notifsCount } });
   },
   methods: {
+    toUserProfile(notification) {
+      this.$router.push(`${Path.PROFILE}/${notification.sender.id}`);
+    },
     tryRemoveNotification(ev, notificationId) {
       ev.stopPropagation();
-
       this.ShowModal({
         key: modals.areYouSure,
         title: this.$t('modals.sureDeleteNotification'),
@@ -135,12 +147,9 @@ export default {
     },
     async removeNotification(notificationId) {
       const { limit, offset } = this.filter;
-
       this.CloseModal();
-
       this.SetLoader(true);
-
-      const payload = {
+      await this.$store.dispatch('user/removeNotification', {
         config: {
           params: {
             limit: 1,
@@ -148,24 +157,16 @@ export default {
           },
         },
         notificationId,
-      };
-
-      await this.$store.dispatch('user/removeNotification', payload);
-
+      });
       this.SetLoader(false);
     },
     checkUnseenNotifs(isVisible, { id, seen }) {
       if (!isVisible || seen || this.notificationIdsForRead.indexOf(id) >= 0) return;
-
       this.notificationIdsForRead.push(id);
-
       this.delayId = this.SetDelay(async () => {
-        const config = {
+        await this.$store.dispatch('user/readNotifications', {
           notificationIds: this.notificationIdsForRead,
-        };
-
-        await this.$store.dispatch('user/readNotifications', config);
-
+        });
         this.notificationIdsForRead = [];
       }, 1000, this.delayId);
     },
@@ -176,25 +177,18 @@ export default {
       this.SetLoader(false);
     },
     async getNotifications() {
-      const config = {
+      await this.$store.dispatch('user/getNotifications', {
         params: this.filter,
-      };
-
-      await this.$store.dispatch('user/getNotifications', config);
+      });
     },
     goToEvent(path, isNotifCont) {
       if (isNotifCont && document.body.offsetWidth > 767) return;
-
       this.$router.push(path);
     },
     navigateBack() {
-      if (this.userRole === 'employer') {
-        this.$router.push('/workers');
-      } else if (this.userRole === 'worker') {
-        this.$router.push('/quests');
-      } else {
-        this.$router.push('/');
-      }
+      if (this.userRole === UserRole.EMPLOYER) this.$router.push(Path.WORKERS);
+      else if (this.userRole === UserRole.WORKER) this.$router.push(Path.QUESTS);
+      else this.$router.push(Path.ROOT);
     },
   },
 };
@@ -266,6 +260,7 @@ export default {
     "avatar date button";
   width: 100%;
   padding: 20px;
+  min-width: 0;
 
   &_gray {
     background: #f7f8fabd;
@@ -281,6 +276,9 @@ export default {
   }
   &__inviter {
     grid-area: inviter;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
   &__quest {
     grid-area: quest;
@@ -319,6 +317,7 @@ export default {
   width: 50px;
   height: 50px;
   border-radius: 50%;
+  cursor: pointer;
 }
 .inviter {
   &__name {
@@ -327,6 +326,11 @@ export default {
     font-size: 16px;
     color: $black800;
     letter-spacing: 0.02em;
+    transition: .5s;
+    cursor: pointer;
+    &:hover {
+      color: $blue;
+    }
   }
   &__company {
     @include text-simple;
@@ -361,6 +365,7 @@ export default {
     -webkit-line-clamp: 3;
     box-orient: vertical;
     -webkit-box-orient: vertical;
+    cursor: pointer;
   }
 }
 

@@ -494,16 +494,10 @@ export default {
       const { chatActionsConnection, notifsConnection } = this.connections;
       if (!notifsConnection) {
         await this.$wsNotifs.connect(this.token);
-        const subscribes = [
-          'chat',
-          'quest',
-        ];
-        await Promise.all(subscribes.map((path) => this.$wsNotifs.subscribe(`/notifications/${path}`, (ev) => {
-          if (path === 'chat') {
-            this.chatAction(ev);
-          } else {
-            this.addNotification(ev);
-          }
+        const subscribes = ['chat', 'quest'];
+        await Promise.all(subscribes.map((path) => this.$wsNotifs.subscribe(`${Path.NOTIFICATIONS}/${path}`, (ev) => {
+          if (path === 'chat') this.chatAction(ev);
+          else this.addNotification(ev);
         })));
       }
       if (!chatActionsConnection) await this.$wsChatActions.connect(this.token);
