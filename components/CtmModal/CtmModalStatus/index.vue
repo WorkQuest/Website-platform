@@ -19,26 +19,36 @@
       <div class="status__title">
         {{ options.title }}
       </div>
-      <div class="status__text">
-        <span v-if="options.text">
-          {{ options.text }}
-        </span>
-      </div>
       <div class="status__desc">
         <span v-if="options.subtitle">
           {{ options.subtitle }}
         </span>
       </div>
       <div
-        v-if="options.usersList"
+        v-if="options.text"
+        class="status__text"
+      >
+        <span>
+          {{ options.text }}
+        </span>
+      </div>
+      <div
+        v-if="options.itemList"
         class="status__list"
       >
-        <span
-          v-for="(item) in options.usersList"
-          :key="item.address"
+        <div
+          v-for="(item, index) in options.itemList"
+          :key="index"
         >
-          {{ item }}
-        </span>
+          <img
+            class="status__img"
+            :src="item['referralUser.avatar.url'] ? item['referralUser.avatar.url'] : EmptyAvatar()"
+            alt=""
+          >
+          <span>
+            {{ item.firstName }} {{ item.lastName }}
+          </span>
+        </div>
       </div>
       <a
         v-if="options.txHash"
@@ -47,38 +57,7 @@
       >
         {{ $t('modals.transactionCheck') }}
       </a>
-      <base-btn
-        v-if="options.type === 'installMetamask'"
-        class="status__action"
-        data-selector="INSTALL-METAMASK"
-        @click="installMetamask()"
-      >
-        <span class="status__text">
-          {{ options.button ? options.button : $t('meta.btns.ok') }}
-        </span>
-      </base-btn>
-      <div
-        v-if="options.type === 'goToChat'"
-        class="button_to-chat"
-      >
-        <base-btn
-          class="status__action"
-          mode="agree"
-          data-selector="GO-TO-CHAT"
-          @click="goToChat()"
-        >
-          <span
-            v-if="options.button"
-            class="status__text"
-          >
-            {{ options.button }}
-          </span>
-        </base-btn>
-      </div>
-      <div
-        v-else-if="options.type === 'registration'"
-        class="status__wrap"
-      >
+      <div class="status__wrap">
         <div v-if="options.cancel">
           <base-btn
             class="status__btn"
@@ -91,28 +70,23 @@
             </span>
           </base-btn>
         </div>
-        <div v-if="options.button">
+        <div>
           <base-btn
             class="status__btn"
-            selector="REGISTRATION"
-            @click="registration()"
+            :mode="options.submitMode"
+            selector="SUBMIT"
+            :disabled="isLoading"
+            @click="handleSubmit()"
           >
-            <span class="status__text">
+            <span v-if="options.button">
               {{ options.button }}
+            </span>
+            <span v-else>
+              {{ $t('meta.btns.ok') }}
             </span>
           </base-btn>
         </div>
       </div>
-      <base-btn
-        v-else
-        class="status__action"
-        data-selector="HIDE"
-        @click="hide()"
-      >
-        <span class="status__text">
-          {{ options.button ? options.button : $t('meta.btns.ok') }}
-        </span>
-      </base-btn>
     </div>
   </ctm-modal-box>
 </template>
@@ -130,8 +104,8 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
-      chatInfoInviteOnQuest: 'quests/getChatInfoInviteOnQuest',
       userAddress: 'user/getUserWalletAddress',
+      isLoading: 'main/getIsLoading',
     }),
   },
   async mounted() {
@@ -145,14 +119,6 @@ export default {
     }
   },
   methods: {
-    goToChat() {
-      const chatId = this.chatInfoInviteOnQuest.id;
-      this.$router.push(`/messages/${chatId}`);
-      this.hide();
-    },
-    installMetamask() {
-      window.open('https://metamask.io/download.html');
-    },
     hide() {
       if (this.options.path) this.$router.push(this.options.path);
       this.CloseModal();
@@ -164,9 +130,12 @@ export default {
         this.link = `https://${this.IsProd ? '' : 'testnet.'}bscscan.com/tx/${this.options.txHash}`;
       }
     },
-    async registration() {
+    async handleSubmit() {
+      if (this.isLoading) return;
+      this.SetLoader(true);
+      if (this.options.callback) await this.options.callback();
       this.hide();
-      await this.$store.dispatch('referral/addReferrals', this.userAddress);
+      this.SetLoader(false);
     },
   },
 };
@@ -235,9 +204,16 @@ export default {
   }
 
   &__list {
+    width: 100%;
     span {
-      font-size: 11px;
+      font-size: 14px;
     }
+  }
+  &__img {
+    display: inline;
+    width: 33px;
+    height: 33px;
+    border-radius: 50%;
   }
 }
 </style>

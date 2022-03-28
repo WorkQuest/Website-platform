@@ -82,12 +82,30 @@ export default {
       this.CloseModal();
     },
     showDepositIsOpenedModal() {
-      this.ShowModal({
-        key: modals.status,
+      const receiptData = [
+        {
+          title: this.$t('modals.currencyDetails'),
+          subtitle: this.$t('meta.coins.eth'),
+        },
+        {
+          title: this.$t('modals.depositing'),
+          subtitle: this.$tc('meta.coins.count.ETHCount', 1),
+        },
+        {
+          title: this.$t('modals.generatingDetails'),
+          subtitle: this.$tc('meta.coins.count.WUSDCount', 1000),
+        },
+      ];
+      const dataForStatusModal = {
         img: require('~/assets/img/ui/transactionSend.svg'),
         title: this.$t('modals.depositIsOpened'),
         subtitle: '',
         path: '/savings/1',
+      };
+      this.ShowModal({
+        key: modals.confirmDetails,
+        receiptData,
+        dataForStatusModal,
       });
     },
   },

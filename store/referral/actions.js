@@ -53,10 +53,9 @@ export default {
       return false;
     }
   },
-  async fetchReferralsList({ commit }, config) {
+  async fetchReferralsList({ commit }) {
     try {
-      const currConfig = config || { params: { limit: 10, offset: 0 } };
-      const { data: { result, ok } } = await this.$axios.get('v1/user/me/referral-program/referrals', currConfig);
+      const { data: { result, ok } } = await this.$axios.get('v1/user/me/referral-program/referrals');
 
       if (result.referrals.length) {
         const isNeedRegistration = result.referrals.some((item) => item.referralUser.referralStatus === 'created');
@@ -119,11 +118,11 @@ export default {
           console.log('RegisteredAffiliar');
           referralsList.unshift(msg.data);
           referralsListCount = msg.data.count;
-          if (paidEventsList.length > 10) {
-            paidEventsList.pop();
-          }
+
+          const isNeedRegistration = referralsList.some((item) => item.referralUser.referralStatus === 'created');
           commit('setReferralsListCount', referralsListCount);
           commit('setReferralsList', referralsList);
+          commit('setIsNeedRegistration', isNeedRegistration);
         } else if (msg.action === 'RewardClaimed' && currentPage === 1) {
           paidEventsList.unshift(msg.data);
           if (paidEventsList.length > 10) {

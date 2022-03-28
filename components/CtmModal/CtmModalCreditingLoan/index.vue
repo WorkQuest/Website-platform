@@ -89,9 +89,30 @@ export default {
       this.CloseModal();
     },
     openConfirmDetailsModal() {
+      const receiptData = [
+        {
+          title: this.$t('modals.currencyDetails'),
+          subtitle: this.$t('meta.coins.eth'),
+        },
+        {
+          title: this.$t('modals.depositing'),
+          subtitle: this.$tc('meta.coins.count.ETHCount', 1),
+        },
+        {
+          title: this.$t('modals.generatingDetails'),
+          subtitle: this.$tc('meta.coins.count.WUSDCount', 1000),
+        },
+      ];
+      const dataForStatusModal = {
+        img: require('~/assets/img/ui/transactionSend.svg'),
+        title: this.$t('modals.loanIsOpened'),
+        subtitle: '',
+        path: 'crediting/1',
+      };
       this.ShowModal({
-        key: modals.confirmLoanDetails,
-        needChangeModal: this.options.needChangeModal || undefined,
+        key: modals.confirmDetails,
+        receiptData,
+        dataForStatusModal,
       });
     },
   },

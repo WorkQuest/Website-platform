@@ -19,7 +19,7 @@
         <base-btn
           class="buttons__button"
           data-selector="SUBMIT"
-          @click="hide"
+          @click="openModal"
         >
           {{ $t('meta.btns.submit') }}
         </base-btn>
@@ -30,6 +30,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalWithdrawAbout',
@@ -42,6 +43,33 @@ export default {
     hide() {
       this.CloseModal();
     },
+    openModal() {
+      const receiptData = [
+        {
+          title: this.$t('modals.lockedSavingsField'),
+          subtitle: this.$tc('meta.coins.count.WUSDCount', 1),
+        },
+        {
+          title: this.$t('modals.durationDaysField'),
+          subtitle: 180,
+        },
+        {
+          title: this.$t('saving.annualizedInterestRate'),
+          subtitle: this.$tc('meta.units.percentsCount', 16),
+        },
+      ];
+      const dataForStatusModal = {
+        img: require('~/assets/img/ui/transactionSend.svg'),
+        title: this.$t('modals.depositIsOpened'),
+        subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam',
+        path: '',
+      };
+      this.ShowModal({
+        key: modals.confirmDetails,
+        receiptData,
+        dataForStatusModal,
+      });
+    },
   },
 };
 </script>
@@ -50,7 +78,7 @@ export default {
 .withdraw {
   max-width: 390px !important;
   &__content {
-  padding: 0px 28px 30px 28px;
+  padding: 0 28px 30px 28px;
   }
 }
 .content{
