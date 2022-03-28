@@ -17,12 +17,14 @@
           <div class="info-block__double">
             <div class="info-block__send-block">
               <base-field
+                v-model="address"
                 data-selector="ADDRESS"
                 :label="$t('modals.lockedSavings')"
               />
               <base-dd
                 v-model="date"
                 class="grid__drop"
+                type="gray"
                 data-selector="DATE-DD"
                 :label="$t('modals.durationDays')"
                 :items="dates"
@@ -164,6 +166,8 @@ export default {
       selCardID: -1,
       indexFAQ: [],
       date: 0,
+      windowSize: window.innerWidth,
+      address: '',
     };
   },
   computed: {
@@ -248,6 +252,22 @@ export default {
       ];
     },
     interestRateTop() {
+      if (this.windowSize < 575) {
+        return [
+          {
+            perc: this.$tc('meta.units.percentsCount', 5.31),
+            date: this.$tc('meta.units.days', 7),
+          },
+          {
+            perc: this.$tc('meta.units.percentsCount', 5.48),
+            date: this.$tc('meta.units.days', 14),
+          },
+          {
+            perc: this.$tc('meta.units.percentsCount', 5.66),
+            date: this.$tc('meta.units.days', 30),
+          },
+        ];
+      }
       return [
         {
           perc: this.$tc('meta.units.percentsCount', 5.31),
@@ -270,6 +290,18 @@ export default {
       ];
     },
     interestRateBottom() {
+      if (this.windowSize < 575) {
+        return [
+          {
+            perc: this.$tc('meta.units.percentsCount', 6),
+            date: this.$tc('meta.units.days', 90),
+          },
+          {
+            perc: this.$tc('meta.units.percentsCount', 6.5),
+            date: this.$tc('meta.units.days', 180),
+          },
+        ];
+      }
       return [
         {
           perc: this.$tc('meta.units.percentsCount', 6),
@@ -285,6 +317,11 @@ export default {
       ];
     },
   },
+  beforeMount() {
+    window.addEventListener('resize', () => {
+      this.windowSize = window.innerWidth;
+    });
+  },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
@@ -298,8 +335,30 @@ export default {
       }
     },
     openOpenADepositModal() {
+      const receiptData = [
+        {
+          title: this.$t('modals.currencyDetails'),
+          subtitle: this.$t('meta.coins.eth'),
+        },
+        {
+          title: this.$t('modals.depositing'),
+          subtitle: this.$tc('meta.coins.count.ETHCount', 1),
+        },
+        {
+          title: this.$t('modals.generatingDetails'),
+          subtitle: this.$tc('meta.coins.count.WUSDCount', 1000),
+        },
+      ];
+      const dataForStatusModal = {
+        img: require('~/assets/img/ui/transactionSend.svg'),
+        title: this.$t('modals.depositIsOpened'),
+        subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam',
+        path: 'savings/1',
+      };
       this.ShowModal({
-        key: modals.openADeposit,
+        key: modals.confirmDetails,
+        receiptData,
+        dataForStatusModal,
       });
     },
     handleClickCard(i) {
@@ -578,24 +637,6 @@ export default {
         &_bottom {
           grid-template-columns: repeat(3, 1fr);
         }
-
-        &_line {
-          display: grid;
-          box-sizing: border-box;
-          height: 90px;
-          grid-template-columns: repeat(3, 2fr);
-        }
-
-        &_inline {
-          display: grid;
-          grid-template-rows: repeat(2, 1fr);
-          background-color: #F7F8FA;
-          height: 104px;
-          padding: 20px;
-          gap: 10px;
-          border-radius: 6px;
-        }
-
       }
 
       &__name {
@@ -718,29 +759,9 @@ export default {
         &__cards {
           grid-template-columns: repeat(2, 1fr);
         }
-        &__triple {
-          grid-template-columns: repeat(2, 1fr);
-        }
-        &__small
-        {
-          &_line {
-            height: auto;
-            grid-template-rows: repeat(2, auto);
-            grid-template-columns: repeat(5, 1fr);
-            grid-row-gap: 10px;
-
-            .text-block {
-              &:nth-child(2) {
-                padding: 0;
-                border: 0;
-              }
-            }
-
-            .text {
-              grid-column: 1/7;
-              grid-row-start: 1;
-            }
-          }
+        &__double {
+          grid-template-rows: repeat(2, auto);
+          grid-template-columns: unset;
         }
       }
       .btn-group__third {
@@ -769,23 +790,12 @@ export default {
           grid-template-columns: unset;
           grid-template-rows: repeat(3, 1fr);
         }
-        &__small
-        {
-          &_line {
+        &__small {
+          &_top {
             grid-template-columns: repeat(3, 1fr);
-
-            .text-block {
-              &:nth-child(5) {
-                grid-row-start: 3;
-                grid-column: 1/2;
-                padding: 0;
-                border: 0;
-              }
-              &:last-child {
-                grid-row-start: 3;
-                grid-column: 2/3;
-              }
-            }
+          }
+          &_bottom {
+            grid-template-columns: repeat(2, 1fr);
           }
         }
         &__documents {

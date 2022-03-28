@@ -38,17 +38,26 @@
           <div class="btn-group_exp">
             <base-btn
               class="btn_bl"
-              data-selector="OPEN-DEPOSIT"
-              @click="openOpenADepositModal()"
+              data-selector="OPEN-WITHDRAW"
+              @click="openModal('withdrawAbout')"
             >
-              {{ $t('saving.deposit') }}
+              {{ $t('meta.withdraw') }}
             </base-btn>
             <base-btn
               class="btn_bl"
-              data-selector="OPEN-WITHDRAW"
-              @click="openWithdrawAboutModal()"
+              mode="outline"
+              data-selector="OPEN-DEPOSIT"
+              @click="openModal('openADeposit')"
             >
-              {{ $t('meta.withdraw') }}
+              {{ $t('meta.deposit') }}
+            </base-btn>
+            <base-btn
+              class="btn_bl"
+              mode="outline"
+              data-selector="OPEN-CLAIM"
+              @click="openModal('openADeposit')"
+            >
+              {{ $t('modals.claim') }}
             </base-btn>
           </div>
         </div>
@@ -219,14 +228,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    openOpenADepositModal() {
+    openModal(type) {
       this.ShowModal({
-        key: modals.openADeposit,
-      });
-    },
-    openWithdrawAboutModal() {
-      this.ShowModal({
-        key: modals.withdrawAbout,
+        key: modals[type],
       });
     },
   },
@@ -302,8 +306,8 @@ export default {
 
     .btn-group {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
       padding-bottom: 20px;
 
       &_exp {
