@@ -156,7 +156,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import {
-  QuestStatuses, InfoModeWorker, InfoModeEmployer, UserRole, ResponseStatus, questPriority,
+  QuestStatuses, InfoModeWorker, InfoModeEmployer, UserRole, ResponseStatus, questPriority, QuestModeReview,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
@@ -258,6 +258,7 @@ export default {
     showReviewModal(rating, id) {
       this.ShowModal({
         key: modals.review,
+        questMode: QuestModeReview.QUEST_SINGLE,
         questId: id,
         rating,
         callback: async (payload) => {

@@ -10,10 +10,7 @@
       >
         <div class="content__grid">
           <div class="content__body">
-            <div
-              v-if="userRole==='employer'"
-              class="content__checkpoints checkpoints"
-            >
+            <div class="content__checkpoints checkpoints">
               <label
                 for="checkpoints__main"
                 class="checkpoints__label"
@@ -52,22 +49,21 @@
               <base-field
                 v-model="quantity"
                 class="content__input"
-                :placeholder="'1000 ETH'"
+                data-selector="TOKEN-VALUE"
+                placeholder="1000 ETH"
                 rules="required|decimal"
                 :name="$t('modals.quantityField')"
               />
             </div>
             <div class="content__field">
               <div class="content__label">
-                {{ $t('modals.howMuchWusdWouldYouLikeToGenerate') }}
+                {{ $t('modals.choosePeriod') }}
               </div>
-              <base-field
-                id="amountOfPercents_input"
-                v-model="generate"
-                class="content__input"
-                :placeholder="'10 ETH'"
-                rules="required|decimal"
-                :name="$t('modals.generateField')"
+              <base-dd
+                v-model="date"
+                class="grid__drop"
+                data-selector="DATE-DD"
+                :items="dates"
               />
             </div>
             <div class="content__field">
@@ -94,14 +90,14 @@
           <base-btn
             class="buttons__button"
             mode="outline"
-            selector="CANCEL"
+            data-selector="CANCEL"
             @click="hide"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
-            selector="SUBMIT"
+            data-selector="SUBMIT"
             :disabled="!validated || !passed || invalid"
             @click="handleSubmit(openConfirmDetailsModal)"
           >
@@ -124,6 +120,7 @@ export default {
       selCurrencyID: 1,
       quantity: '',
       generate: '',
+      date: 0,
       checkpoints: [
         {
           name: this.$t('meta.coins.bnb'),
@@ -163,6 +160,10 @@ export default {
           title: this.$t('modals.liquidationPenalty'),
           subtitle: this.$tc('meta.units.percentsCount', 0),
         },
+        {
+          title: this.$t('modals.generatedWUSD'),
+          subtitle: this.$tc('meta.coins.count.WUSDCount', 0),
+        },
       ],
     };
   },
@@ -171,15 +172,45 @@ export default {
       options: 'modals/getOptions',
       userRole: 'user/getUserRole',
     }),
+    dates() {
+      return [
+        this.$tc('meta.units.days', 7),
+        this.$tc('meta.units.days', 14),
+        this.$tc('meta.units.days', 30),
+        this.$tc('meta.units.days', 90),
+        this.$tc('meta.units.days', 180),
+      ];
+    },
   },
   methods: {
     hide() {
       this.CloseModal();
     },
     openConfirmDetailsModal() {
+      const receiptData = [
+        {
+          title: this.$t('modals.currencyDetails'),
+          subtitle: this.$t('meta.coins.eth'),
+        },
+        {
+          title: this.$t('modals.depositing'),
+          subtitle: this.$tc('meta.coins.count.ETHCount', 1),
+        },
+        {
+          title: this.$t('modals.generatingDetails'),
+          subtitle: this.$tc('meta.coins.count.WUSDCount', 1000),
+        },
+      ];
+      const dataForStatusModal = {
+        img: require('~/assets/img/ui/transactionSend.svg'),
+        title: this.$t('modals.depositIsOpened'),
+        subtitle: '',
+        path: 'crediting/1',
+      };
       this.ShowModal({
         key: modals.confirmDetails,
-        needChangeModal: this.options.needChangeModal || undefined,
+        receiptData,
+        dataForStatusModal,
       });
     },
   },

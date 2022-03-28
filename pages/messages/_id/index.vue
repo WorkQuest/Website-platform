@@ -79,15 +79,17 @@
             </div>
             <base-field
               v-model="messageText"
-              :placeholder="$t('chat.writeYouMessage')"
-              is-hide-error
               mode="chat"
+              is-hide-error
               :auto-focus="true"
+              :placeholder="$t('chat.writeYouMessage')"
               :on-enter-press="handleSendMessage"
+              data-selector="INPUT-MESSAGE"
             />
             <button
               class="chat-container__send-btn"
               :class="{'chat-container__send-btn_active' : messageText}"
+              data-selector="SEND-MESSAGE"
               @click="handleSendMessage"
             >
               <span class="icon-send" />
@@ -836,7 +838,6 @@ export default {
       }
     }
   }
-
   .chat {
     &__panel {
       grid-template-columns: 1fr 10fr 1fr;

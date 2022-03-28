@@ -88,7 +88,7 @@ export default {
   // Only MetaMask
   async connectToMetaMask({ commit, dispatch, getters }, payload) {
     const isReconnection = payload?.isReconnection;
-    const response = await initMetaMaskWeb3(payload);
+    const response = await initWeb3(payload);
     if (response.ok) {
       if (!getters.isHandlingMetamaskStatus && !isReconnection) {
         handleMetamaskStatus(() => dispatch('handleMetamaskStatusChanged'));
@@ -114,7 +114,7 @@ export default {
           title: 'Please install Metamask!',
           subtitle: 'Please click install...',
           button: 'Install',
-          type: 'installMetamask',
+          callback: () => window.open('https://metamask.io/download.html'),
         });
       } else {
         localStorage.setItem('metamaskStatus', 'installed');
@@ -190,17 +190,40 @@ export default {
     return payload;
   },
 
-  async getCrosschainTokensData({ commit }) {
-    const { tokenAddress } = getStakingDataByType(StakingTypes.CROSS_CHAIN);
-    const [tokenDecimal, tokenSymbol, tokenValue] = await Promise.all([
-      fetchContractData('decimals', abi.ERC20, tokenAddress),
-      fetchContractData('symbol', abi.ERC20, tokenAddress),
-      fetchContractData('balanceOf', abi.ERC20, tokenAddress, [getAccountAddress()]),
-    ]);
-    const payload = {
-      tokenAmount: new BigNumber(tokenValue).shiftedBy(-tokenDecimal).toString(),
-      tokenSymbol,
-    };
+  async getCrosschainTokensData({ commit }, data) {
+    let payload = {};
+    const isNative = localStorage.getItem('miningPoolId') === data.token;
+    const { tokenAddress, stakingAddress } = await getStakingDataByType(StakingTypes.CROSS_CHAIN, data.token);
+    const accountAddress = await getAccountAddress();
+    if (isNative) {
+      const { ethereum } = window;
+      const web3 = new Web3(ethereum);
+      let balance = await web3.eth.getBalance(accountAddress);
+      const inst = new web3.eth.Contract(abi.WQBridge, stakingAddress);
+      const nonce = await web3.eth.getTransactionCount(accountAddress);
+      const swapData = [nonce, data.chainTo, balance, accountAddress, data.token];
+      const [gasPrice, gasEstimate] = await Promise.all([
+        web3.eth.getGasPrice(),
+        inst.methods.swap.apply(null, swapData).estimateGas({ from: accountAddress, value: balance }),
+      ]);
+      balance = new BigNumber(balance).shiftedBy(-18).toString();
+      const amountGas = new BigNumber(gasPrice).multipliedBy(gasEstimate).shiftedBy(-18).toString();
+      const amountMinusGasAmount = new BigNumber(balance).minus(amountGas).toNumber();
+      payload = {
+        tokenAmount: amountMinusGasAmount,
+        token: data.token,
+      };
+    } else {
+      const [tokenDecimal, tokenSymbol, tokenValue] = await Promise.all([
+        fetchContractData('decimals', abi.ERC20, tokenAddress),
+        fetchContractData('symbol', abi.ERC20, tokenAddress),
+        fetchContractData('balanceOf', abi.ERC20, tokenAddress, [accountAddress]),
+      ]);
+      payload = {
+        tokenAmount: new BigNumber(tokenValue).shiftedBy(-tokenDecimal).toString(),
+        tokenSymbol,
+      };
+    }
     commit('setCrosschainTokensData', payload);
     return payload;
   },

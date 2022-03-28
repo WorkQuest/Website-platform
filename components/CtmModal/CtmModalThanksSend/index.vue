@@ -18,7 +18,7 @@
           </div>
           <base-btn
             class="email__action"
-            selector="OK"
+            data-selector="OK"
             @click="hide()"
           >
             {{ $t('meta.btns.ok') }}
@@ -48,12 +48,14 @@ export default {
 
 .messageSend {
   max-width: 337px !important;
+
   &__content {
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;
     grid-gap: 20px;
   }
+
   &__action {
     margin-top: 10px;
   }

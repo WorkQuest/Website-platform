@@ -14,7 +14,8 @@
           <base-field
             id="deposit__input"
             v-model="saving"
-            :placeholder="'3 500'"
+            data-selector="LOCKED-SAVINGS"
+            placeholder="3 500"
             class="content__input"
             rules="required|decimal"
             :name="$t('modals.lockedSavingsField')"
@@ -29,7 +30,8 @@
           <base-field
             id="amount__input"
             v-model="duration"
-            :placeholder="'180'"
+            placeholder="180"
+            data-selector="DURATION-DAYS"
             class="content__input"
             rules="required|numeric"
             :name="$t('modals.durationDaysField')"
@@ -39,14 +41,14 @@
           <base-btn
             class="buttons__button"
             mode="outline"
-            selector="CANCEL"
+            data-selector="CANCEL"
             @click="hide"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
-            selector="SUBMIT"
+            data-selector="SUBMIT"
             :disabled="!validated || !passed || invalid"
             @click="handleSubmit(showDepositIsOpenedModal)"
           >
@@ -80,12 +82,30 @@ export default {
       this.CloseModal();
     },
     showDepositIsOpenedModal() {
-      this.ShowModal({
-        key: modals.status,
+      const receiptData = [
+        {
+          title: this.$t('modals.currencyDetails'),
+          subtitle: this.$t('meta.coins.eth'),
+        },
+        {
+          title: this.$t('modals.depositing'),
+          subtitle: this.$tc('meta.coins.count.ETHCount', 1),
+        },
+        {
+          title: this.$t('modals.generatingDetails'),
+          subtitle: this.$tc('meta.coins.count.WUSDCount', 1000),
+        },
+      ];
+      const dataForStatusModal = {
         img: require('~/assets/img/ui/transactionSend.svg'),
         title: this.$t('modals.depositIsOpened'),
         subtitle: '',
         path: '/savings/1',
+      };
+      this.ShowModal({
+        key: modals.confirmDetails,
+        receiptData,
+        dataForStatusModal,
       });
     },
   },

@@ -9,7 +9,8 @@
           <div class="ctm-modal__content-field">
             <base-field
               v-model="cardNumberInput"
-              :placeholder="'1234 1234 1234 1234'"
+              placeholder="1234 1234 1234 1234"
+              data-selector="CARD-NUMBER"
               :is-hide-error="true"
               :label="$t('modals.numberOfCard')"
             />
@@ -17,7 +18,8 @@
           <div class="ctm-modal__content-field">
             <base-field
               v-model="cardNumberInput"
-              :placeholder="'1234 1234 1234 1234'"
+              placeholder="1234 1234 1234 1234"
+              data-selector="CARDHOLDER-NAME"
               :is-hide-error="true"
               :label="$t('modals.cardHolder')"
             />
@@ -26,7 +28,8 @@
             <div class="ctm-modal__content-field">
               <base-field
                 v-model="dateInput"
-                :placeholder="'02/24'"
+                placeholder="02/24"
+                data-selector="CARD-DATE"
                 :is-hide-error="true"
                 :label="$t('modals.date')"
               />
@@ -34,7 +37,8 @@
             <div class="ctm-modal__content-field">
               <base-field
                 v-model="cvvInput"
-                :placeholder="'242'"
+                placeholder="242"
+                data-selector="CARD-CVV"
                 :is-hide-error="true"
                 :label="$t('modals.cvv')"
               />
@@ -46,7 +50,7 @@
             <span class="step__container">
               <base-btn
                 class="message__action"
-                selector="SUBMIT"
+                data-selector="SUBMIT"
                 @click="showModalLevelRaised()"
               >
                 {{ $t('meta.btns.submit') }}
@@ -56,7 +60,7 @@
           <div class="btn__wrapper">
             <base-btn
               mode="outline"
-              selector="CANCEL"
+              data-selector="CANCEL"
               class="message__action"
               @click="hide()"
             >

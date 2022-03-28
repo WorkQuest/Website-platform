@@ -36,7 +36,7 @@
               <template #cell(choose)="el">
                 <base-btn
                   class="btn_bl"
-                  :selector="`${el.item.chooseBtn}`"
+                  :data-selector="`${el.item.chooseBtn}`"
                   :disabled="el.item.disabled"
                   @click="handleOpenPool(el)"
                 >

@@ -11,7 +11,8 @@
           </div>
           <base-field
             v-model="amount"
-            :placeholder="'3 500'"
+            placeholder="3 500"
+            data-selector="DEPOSIT-AMOUNT"
             class="content__input"
             :rules="`required|decimal|is_not:0|max_bn:${balanceData.WUSD.fullBalance}|decimalPlaces:18`"
             :name="$t('modals.depositAmountField')"
@@ -22,14 +23,14 @@
           <base-btn
             class="buttons__button"
             mode="outline"
-            selector="CANCEL"
+            data-selector="CANCEL"
             @click="hide"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
-            selector="SUBMIT"
+            data-selector="SUBMIT"
             :disabled="!validated || !passed || invalid"
             @click="handleSubmit(toDepositReceipt)"
           >

@@ -19,7 +19,7 @@
           <div class="btn__container">
             <div class="btn__wrapper">
               <base-btn
-                selector="REASON"
+                data-selector="REASON"
                 class="message__action"
                 @click="reason()"
               >
@@ -30,7 +30,7 @@
               <base-btn
                 mode="outline"
                 class="message__action"
-                selector="CANCEL"
+                data-selector="CANCEL"
                 @click="hide()"
               >
                 {{ $t('meta.btns.cancel') }}

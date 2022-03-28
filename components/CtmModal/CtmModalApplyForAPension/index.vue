@@ -15,6 +15,7 @@
             v-model="depositPercentFromAQuest"
             :placeholder="$tc('meta.units.percentsCount', 13)"
             class="content__input"
+            data-selector="DEPOSIT-PERCENT"
             :name="$t('modals.depositPercent')"
             rules="required|percent|decimalPlaces:18"
           />
@@ -27,6 +28,7 @@
             v-model="firstDepositAmount"
             :placeholder="$tc('meta.coins.count.WUSDCount', 130)"
             class="content__input"
+            data-selector="FIRST-DEPOSIT-AMOUNT"
             :name="$t('modals.firstDepositAmountField')"
             rules="decimal"
           />
@@ -38,14 +40,14 @@
           <base-btn
             class="buttons__button"
             mode="outline"
-            selector="CANCEL"
+            data-selector="CANCEL"
             @click="hide"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
-            selector="SUBMIT"
+            data-selector="SUBMIT"
             :disabled="invalid || inProgress"
             @click="handleSubmit(submitPensionRegistration)"
           >

@@ -11,7 +11,8 @@
           </div>
           <base-field
             v-model="priceOfAClick"
-            :placeholder="'0 WUSD'"
+            placeholder="0 WUSD"
+            data-selector="PRICE-FOR-CLICK"
             class="field__input"
             mode="white"
             rules="required|decimal"
@@ -22,7 +23,8 @@
           </div>
           <base-field
             v-model="city"
-            :placeholder="'Moscow'"
+            placeholder="Moscow"
+            data-selector="CITY"
             class="field__input"
             mode="white"
             rules="required|alpha_spaces"
@@ -49,7 +51,7 @@
         <div class="content__buttons buttons">
           <base-btn
             class="buttons__action"
-            selector="OK"
+            data-selector="OK"
             :disabled="!validated || !passed || invalid || period===''"
             @click="handleSubmit(showTransactionSendModal)"
           >
@@ -57,7 +59,7 @@
           </base-btn>
           <base-btn
             mode="outline"
-            selector="CANCEL"
+            data-selector="CANCEL"
             class="buttons__action"
             @click="hide"
           >

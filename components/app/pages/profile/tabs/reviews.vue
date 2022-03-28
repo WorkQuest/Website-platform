@@ -67,7 +67,7 @@
         <base-btn
           class="reviews-item__btn-read"
           mode="borderless-right"
-          :selector="`SHOW-REVIEW-DETAILS-${i}`"
+          :data-selector="`SHOW-REVIEW-DETAILS-${i}`"
           @click="showReviewDetails(reviewData)"
         >
           {{ $t('quests.readCompletely') }}

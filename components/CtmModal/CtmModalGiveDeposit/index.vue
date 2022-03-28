@@ -57,7 +57,7 @@
           <base-btn
             class="code__share"
             mode="share"
-            selector="SHOW-SHARE-MODAL"
+            data-selector="SHOW-SHARE-MODAL"
             @click="showShareModal"
           >
             <span class="icon-share_outline code__chain" />
@@ -88,7 +88,7 @@
             >
               <base-btn
                 class="buttons__action"
-                selector="CLOSE"
+                data-selector="CLOSE"
                 @click="hide"
               >
                 {{ $t('meta.btns.close') }}
@@ -101,14 +101,14 @@
               <base-btn
                 class="buttons__button"
                 mode="outline"
-                selector="CANCEL"
+                data-selector="CANCEL"
                 @click="hide"
               >
                 {{ $t('meta.btns.cancel') }}
               </base-btn>
               <base-btn
                 class="buttons__button"
-                selector="CARD-ADD"
+                data-selector="CARD-ADD"
                 @click="showAddingCard"
               >
                 {{ $t('meta.cardAdd') }}

@@ -26,7 +26,7 @@
                     type="gray"
                     :label="$t('quests.runtime')"
                     :name="$t('quests.runtime')"
-                    selector="RUNTIME"
+                    data-selector="RUNTIME"
                     rules="required"
                   />
                 </div>
@@ -35,7 +35,7 @@
             <div class="page__input">
               <base-field
                 v-model="price"
-                :type="'number'"
+                type="number"
                 data-selector="PRICE-FIELD"
                 :label="$t('meta.price')"
                 :placeholder="+0 + currency"
@@ -138,7 +138,7 @@
           <div class="upload btn btn__container btn__container_right">
             <div class="btn__create">
               <base-btn
-                selector="CREATE-A-QUEST"
+                data-selector="CREATE-A-QUEST"
                 :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
                 @click="handleSubmit(toRiseViews)"
               >
@@ -156,7 +156,7 @@
             <div class="btn-container__btn_back">
               <base-btn
                 mode="back"
-                selector="PREVIOUS-STEP"
+                data-selector="PREVIOUS-STEP"
                 @click="goBack"
               >
                 {{ $t('meta.btns.back') }}
@@ -518,7 +518,8 @@ export default {
         description: this.textarea,
         price: this.price,
         medias,
-        adType: 0,
+        // TODO интегрировать продвижение
+        // adType: 0,
         specializationKeys: this.selectedSpecAndSkills,
         locationFull: {
           location: {
@@ -568,13 +569,16 @@ export default {
   flex-direction: row;
   justify-content: flex-end;
   margin: 20px 0 0 0;
+
   &__left {
     justify-content: flex-start;
     margin: 30px 0 0 0;
   }
+
   &__btn {
     width: 200px;
     margin: 0 10px 0 0;
+
     &_back {
       display: flex;
       justify-content: left;
@@ -582,9 +586,11 @@ export default {
 
       & .icon-chevron_big_left {
         font-weight: 800;
+        color: $black600;
         font-size: 24px;
       }
     }
+
     &:last-child {
       margin: 0;
     }
@@ -598,6 +604,7 @@ export default {
 
 .card {
   border: none;
+
   &__level {
     @include text-simple;
     font-weight: 500;
@@ -608,13 +615,16 @@ export default {
     width: 120px;
     padding: 2px 5px;
     text-align: center;
+
     &_reliable {
       background: $grey200;
     }
+
     &_checked {
       background: $brown;
     }
   }
+
   &__desc {
     @include text-simple;
     font-weight: 400;
@@ -622,6 +632,7 @@ export default {
     color: $black500;
     margin-top: 12px;
   }
+
   &__cost {
     @include text-simple;
     color: $black800;
@@ -636,6 +647,7 @@ export default {
   &__title {
     @extend .period__title;
   }
+
   &__card {
     background: $white;
     border-radius: 6px;
@@ -644,14 +656,17 @@ export default {
     grid-template-columns: 1fr 15fr 1fr;
     margin: 20px 0 0 0;
     transition: 0.5s;
+
     &:hover {
       cursor: pointer;
       box-shadow: 0 0 10px 2px rgba(34, 60, 80, 0.09);
     }
+
     &_gold {
       border: 1px solid #F7CF00;
     }
   }
+
   &__option {
     display: flex;
     justify-content: center;
@@ -669,6 +684,7 @@ export default {
     height: 25px;
     border: 1px solid $blue;
     cursor: pointer;
+
     &:checked {
       background: radial-gradient($blue 50%, rgba(255, 0, 0, 0) 55%);
     }
@@ -680,15 +696,18 @@ export default {
     @extend .period__title;
     margin: 20px 0 0 0;
   }
+
   &__title {
     @include text-simple;
     font-weight: 400;
     font-size: 16px;
     color: $black800;
+
     &_active {
       color: $white;
     }
   }
+
   &__container {
     display: flex;
     justify-content: space-between;
@@ -697,6 +716,7 @@ export default {
     width: 100%;
     margin: 10px 0 20px 0;
   }
+
   &__period {
     color: $black800;
     background: $white;
@@ -706,24 +726,30 @@ export default {
     text-align: center;
     width: inherit;
     margin: 0 20px 0 0;
+
     &:last-child {
       margin: 0;
     }
+
     &:hover {
       cursor: pointer;
       box-shadow: 0 0 10px 2px rgba(34, 60, 80, 0.09);
     }
+
     &_active {
       background: $blue;
       color: $white;
+
       &:hover {
         cursor: pointer;
         box-shadow: 0 0 10px 2px rgba(34, 60, 80, 0.09);
       }
     }
+
     &:last-child {
       margin: 0;
     }
+
     &__title {
       color: $black800;
       font-weight: 500;
@@ -734,6 +760,7 @@ export default {
 
 .main {
   @include main;
+
   &-white {
     @include main;
     background: $white;
@@ -742,6 +769,7 @@ export default {
     border-radius: 6px;
     justify-content: center;
   }
+
   &__body {
     max-width: 1180px;
     width: 100%;
@@ -755,6 +783,7 @@ export default {
     grid-gap: 10px;
     align-items: flex-start;
   }
+
   &__dd {
     display: flex;
     align-items: flex-start;
@@ -768,32 +797,38 @@ export default {
     font-size: 20px;
     cursor: pointer;
   }
+
   &-check_big:before {
     content: "\ea02";
     color: $white;
     font-size: 20px;
   }
+
   &-off_outline_close::before {
     content: "\ea2a";
     color: $red;
     font-size: 20px;
   }
+
   &-map::before {
     content: "\ea28";
     color: $blue;
     font-size: 20px;
   }
 }
+
 .selector {
   @include box;
   width: 100%;
   z-index: 140;
+
   &__items {
     background: #FFFFFF;
     display: grid;
     grid-template-columns: 1fr;
     width: 100%;
   }
+
   &__item {
     @include text-simple;
     padding: 15px 20px;
@@ -803,6 +838,7 @@ export default {
     color: $black800;
     cursor: pointer;
     transition: .3s;
+
     &:hover {
       background: #F3F7FA;
     }
@@ -816,12 +852,14 @@ export default {
     align-items: center;
     justify-content: flex-start;
   }
+
   &__title {
     @include text-simple;
     color: $black500;
-    font-weight:400;
+    font-weight: 400;
     font-size: 16px;
   }
+
   &__cost {
     @include text-simple;
     color: $blue;
@@ -845,13 +883,16 @@ export default {
   transition: .3s;
   background: #0083C7;
   border-radius: 6px;
+
   &:hover {
     background: #103D7C;
   }
+
   &__passive {
     border: 1px solid rgba(0, 131, 199, 0.1);
     background: #FFFFFF;
     color: $blue;
+
     &:hover {
       background: #F7F8FA;
       color: $blue;
@@ -864,6 +905,7 @@ export default {
     margin: 20px 0 0 0;
     width: 100%;
   }
+
   &__title {
     @include text-simple;
     font-weight: 500;
@@ -875,32 +917,39 @@ export default {
 
 .btn {
   padding: 0;
+
   &__delete {
     height: 20px;
     width: 20px;
     border-radius: 50%;
   }
+
   &__create {
     width: 220px;
   }
+
   &__spec {
     width: 100%;
     padding: 6px 4px 6px 12px;
   }
+
   &__add {
     width: 100%;
     margin: 12px 0 0 0;
     padding: 6px 5px;
   }
+
   &__container {
     width: 100%;
     align-items: center;
     display: flex;
+
     &_left {
       margin: 20px 0 0 0;
       justify-content: flex-start;
       width: 100%;
     }
+
     &_right {
       justify-content: flex-end;
       width: 100%;
@@ -923,10 +972,12 @@ export default {
     align-items: center;
     @extend .half;
   }
+
   &__badges {
     margin: 16px 0 16px 0;
     display: flex;
   }
+
   &__badge {
     @include text-simple;
     display: flex;
@@ -941,6 +992,7 @@ export default {
     border-radius: 44px;
     align-items: center;
   }
+
   &__alert {
     @include text-simple;
     margin: 5px 0 0 0;
@@ -960,6 +1012,7 @@ export default {
     align-items: center;
     @extend .half;
   }
+
   &__subcategory {
     margin: 20px 0 0 0;
     @extend .half;
@@ -971,6 +1024,7 @@ export default {
     @include text-simple;
     margin: 30px 0 0 0;
   }
+
   &__raising {
     @include text-simple;
     font-weight: 500;
@@ -978,14 +1032,17 @@ export default {
     color: $black800;
     margin: 0 0 20px 0;
   }
+
   &__page {
     font-weight: 500;
     font-size: 25px;
     color: $black800;
   }
+
   &__dd {
     min-width: 160px;
   }
+
   &__category {
     align-items: flex-start;
     margin: 20px 0 0 0;
@@ -993,11 +1050,13 @@ export default {
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 20px;
   }
+
   &__address {
     margin: 20px 0 0 0;
     display: grid;
     grid-gap: 20px;
   }
+
   &__textarea {
     @include text-simple;
     border-radius: 6px;
@@ -1007,6 +1066,7 @@ export default {
     border: 0;
     background-color: #F3F7FA;
     resize: none;
+
     &::placeholder {
       color: $black300;
     }
@@ -1015,6 +1075,7 @@ export default {
 
 .main {
   @include main;
+
   &-white {
     border: 1px solid $black0;
     @include main-white;
@@ -1032,7 +1093,7 @@ export default {
     &__category {
       grid-template-columns: repeat(2, 1fr);
       margin-bottom: 25px;
-      grid-gap:5px 20px;
+      grid-gap: 5px 20px;
     }
   }
 }
@@ -1055,6 +1116,7 @@ export default {
         &__skill-spec {
           width: 100%;
         }
+
         &__specialization {
           display: flex;
           flex-direction: row;
@@ -1075,12 +1137,14 @@ export default {
       width: 100%;
       margin-top: 0;
     }
+
     &__block {
       display: flex;
       align-items: center;
       flex-direction: column;
       margin-bottom: 50px;
     }
+
     &__add-info {
       display: flex;
       justify-content: center;
@@ -1090,6 +1154,7 @@ export default {
   .btn {
     margin-top: 20px;
     width: 100%;
+
     &__create {
       width: 100%;
     }
@@ -1101,12 +1166,15 @@ export default {
     &__skill {
       padding: 40px 0;
     }
+
     &__skills {
       padding: 50px 0 20px 0;
+
       .block {
         margin-top: 0;
         grid-gap: 0;
         margin-bottom: 15px;
+
         &__specialization {
           grid-gap: 0;
           flex-direction: column;

@@ -14,7 +14,7 @@
       </div>
       <base-btn
         class="change__action"
-        selector="OK"
+        data-selector="OK"
         @click="hide"
       >
         {{ $t('meta.btns.ok') }}

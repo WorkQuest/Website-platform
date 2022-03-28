@@ -17,7 +17,7 @@
       </div>
       <div class="content__action action">
         <base-btn
-          selector="CANCEL"
+          data-selector="CANCEL"
           class="action__button"
           mode="outline"
           @click="hide()"
@@ -25,7 +25,7 @@
           {{ $t('meta.btns.cancel') }}
         </base-btn>
         <base-btn
-          selector="DELETE"
+          data-selector="DELETE"
           class="action__button"
           @click="showErrorModal"
         >

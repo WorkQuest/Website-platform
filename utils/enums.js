@@ -6,7 +6,12 @@ export const ChainsId = {
   BSC_TEST: '0x61',
   MATIC_MAIN: '0x13881',
   MUMBAI_TEST: '0x89',
-  WUSD_TEST: '0x1346618',
+  WORKNET_TEST: '0x13488D0',
+};
+
+export const QuestModeReview = {
+  QUEST_LIST: 'QuestList',
+  QUEST_SINGLE: 'QuestSingle',
 };
 
 export const ChainsIdByChainNumber = {
@@ -14,7 +19,7 @@ export const ChainsIdByChainNumber = {
   4: '0x4',
   56: '0x38',
   97: '0x61',
-  20211224: '0x1346618',
+  20220112: '0x13488D0',
 };
 
 export const NativeTokenSymbolByChainId = {
@@ -28,7 +33,7 @@ export const Chains = {
   ETHEREUM: 'ETH',
   BINANCE: 'BSC',
   BNB: 'BNB', // Same as bsc for bridge
-  WUSD: 'WUSD',
+  WORKNET: 'WORKNET',
 };
 
 export const StakingTypes = {
@@ -204,6 +209,7 @@ export const Path = {
   EDIT_QUEST: '/edit-quest',
   COLLATERAL: '/collateral',
   WIKI: '/wiki',
+  RAISED_VIEWS: '/raised-views',
 };
 
 // WALLET
@@ -268,8 +274,8 @@ export const NetworksData = {
       decimals: 18,
     },
   },
-  WUSD_TEST: {
-    chainId: '0x1346618',
+  WORKNET_TEST: {
+    chainId: '0x13488D0',
     chainName: 'WorkQuest DEV',
     rpcUrls: ['https://dev-node-nyc3.workquest.co'],
     nativeCurrency: {
@@ -291,3 +297,24 @@ export const PensionHistoryMethods = Object.freeze({
   Withdraw: 'Withdraw',
   Receive: 'Receive',
 });
+
+export const UserRaiseViewPriceDay = {
+  PLUS: '20',
+  GOLD: '12',
+  SILVER: '9',
+  BRONZE: '7',
+};
+
+export const UserRaiseViewPriceWeek = {
+  PLUS: '35',
+  GOLD: '28',
+  SILVER: '22',
+  BRONZE: '18',
+};
+
+export const UserRaiseViewPriceMonth = {
+  PLUS: '50',
+  GOLD: '35',
+  SILVER: '29',
+  BRONZE: '21',
+};

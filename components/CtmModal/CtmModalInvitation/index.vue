@@ -42,6 +42,7 @@
           <textarea
             id="message_input"
             v-model="message_input"
+            data-selector="MESSAGE"
             class="message__textarea"
             :placeholder="$t('meta.typeYourMessage')"
           />
@@ -51,7 +52,7 @@
             <base-btn
               class="message__action"
               :disabled="!message_input.trim()"
-              selector="INVITE-ON-QUEST"
+              data-selector="INVITE-ON-QUEST"
               @click="inviteOnQuest()"
             >
               {{ $t('meta.btns.send') }}
@@ -61,7 +62,7 @@
             <base-btn
               class="message__action"
               mode="outline"
-              selector="CANCEL"
+              data-selector="CANCEL"
               @click="hide()"
             >
               {{ $t('meta.btns.cancel') }}
@@ -90,6 +91,7 @@ export default {
       options: 'modals/getOptions',
       userData: 'user/getUserData',
       availableQuests: 'quests/getAvailableQuests',
+      chatInfoInviteOnQuest: 'quests/getChatInfoInviteOnQuest',
     }),
   },
   methods: {
@@ -115,9 +117,15 @@ export default {
         img: require('~/assets/img/ui/inviteSend.svg'),
         title: this.$t('modals.titles.inviteSend'),
         subtitle: '',
-        type: 'goToChat',
         button: this.$t('meta.btns.goToChat'),
+        submitMode: 'agree',
+        callback: () => this.goToChat(),
       });
+    },
+    goToChat() {
+      const chatId = this.chatInfoInviteOnQuest.id;
+      this.$router.push(`/messages/${chatId}`);
+      this.hide();
     },
   },
 };

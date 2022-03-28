@@ -62,6 +62,7 @@
               <base-btn
                 mode="outline"
                 class="button__view"
+                data-selector="NOTIFICATION-VIEW"
                 @click="goToEvent(notification.params ? notification.params.path : '')"
               >
                 {{ $t('meta.btns.view') }}

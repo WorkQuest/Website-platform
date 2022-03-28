@@ -40,6 +40,7 @@
             <div class="btn-group">
               <base-btn
                 class="btn"
+                data-selector="GET-WUSD"
                 @click="openModalGetWUSD()"
               >
                 {{ $t('collateral.getWUSD') }}
@@ -63,6 +64,7 @@
             <div class="btn-group">
               <base-btn
                 class="btn"
+                data-selector="GO-AUCTION"
                 @click="goAuction()"
               >
                 {{ $t('collateral.goAuction') }}
@@ -288,11 +290,6 @@ export default {
       grid-template-columns: repeat(2, 1fr);
       gap: 20px;
       padding-bottom: 20px;
-
-      &_exp {
-        @extend .btn-group;
-        width: calc(100% - 20px);
-      }
     }
 
     .btn {
@@ -480,7 +477,6 @@ export default {
       }
 
       &__about {
-        width: calc(100% - 50px);
         grid-template-areas:
           "hd ."
           "ft sd";
@@ -499,7 +495,7 @@ export default {
         .info-block-image {
           grid-area: sd;
           position: absolute;
-          right: 0px;
+          right: 0;
           bottom: 0;
         }
 

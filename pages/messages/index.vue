@@ -136,6 +136,7 @@
       >
         <base-btn
           :selector="`${$t('chat.loadMore')}`"
+          data-selector="LOAD-MORE-CHATS"
           @click="loadMoreChats"
         >
           {{ $t('chat.loadMore') }}
@@ -434,6 +435,7 @@ export default {
     border-radius: 50%;
     flex: none;
     position: absolute;
+    object-fit: cover;
   }
   &__title {
     font-weight: 400;
@@ -521,7 +523,19 @@ export default {
 @include _991 {
 }
 
-@include _480 {
+@include _575 {
+  .chat {
+    &__row {
+      gap: 10px;
+      width: calc(100vw - 120px);
+    }
+    &__title {
+      &_bold {
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+  }
 }
 
 @include _380 {

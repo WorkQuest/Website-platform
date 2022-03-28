@@ -38,15 +38,26 @@
           <div class="btn-group_exp">
             <base-btn
               class="btn_bl"
-              @click="openOpenADepositModal()"
+              data-selector="OPEN-WITHDRAW"
+              @click="openModal($options.modals.withdrawAbout)"
             >
               {{ $t('meta.deposit') }}
             </base-btn>
             <base-btn
               class="btn_bl"
-              @click="openWithdrawAboutModal()"
+              mode="outline"
+              data-selector="OPEN-DEPOSIT"
+              @click="openModal($options.modals.openADeposit)"
             >
-              {{ $t('meta.withdraw') }}
+              {{ $t('meta.deposit') }}
+            </base-btn>
+            <base-btn
+              class="btn_bl"
+              mode="outline"
+              data-selector="OPEN-CLAIM"
+              @click="openModal($options.modals.openADeposit)"
+            >
+              {{ $t('modals.claim') }}
             </base-btn>
           </div>
         </div>
@@ -109,6 +120,7 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'SavingProduct',
+  modals,
   data() {
     return {
       items: [
@@ -217,15 +229,8 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    openOpenADepositModal() {
-      this.ShowModal({
-        key: modals.openADeposit,
-      });
-    },
-    openWithdrawAboutModal() {
-      this.ShowModal({
-        key: modals.withdrawAbout,
-      });
+    openModal(key) {
+      this.ShowModal({ key });
     },
   },
 };
@@ -300,8 +305,8 @@ export default {
 
     .btn-group {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
       padding-bottom: 20px;
 
       &_exp {

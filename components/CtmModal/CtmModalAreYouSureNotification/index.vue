@@ -22,7 +22,7 @@
           class="buttons__button"
           :class="{'buttons__button_solo' : options.isFiles}"
           mode="outline"
-          selector="CANCEL"
+          data-selector="CANCEL"
           @click="hide"
         >
           {{ $t('meta.btns.cancel') }}
@@ -30,7 +30,7 @@
         <base-btn
           v-if="!options.isFiles"
           class="buttons__button"
-          selector="SUBMIT"
+          data-selector="SUBMIT"
           @click="submit"
         >
           {{ $t('meta.btns.submit') }}

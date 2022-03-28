@@ -1,4 +1,6 @@
 export default {
+  getStatusKYC: (state) => state.userData.statusKYC,
+  getCurrentLang: (state) => state.currentLang,
   isAuth: (state) => !!(state.tokens.access && state.tokens.refresh),
   accessToken: (state) => state.tokens.access,
   refreshToken: (state) => state.tokens.refresh,
@@ -40,4 +42,5 @@ export default {
   getNotificationsList: (state) => state.notifications.list,
   getNotificationsCount: (state) => state.notifications.count,
   getReducedNotifications: (state) => state.reducedNotifications,
+  getUserReferralId: (state) => state.userData.affiliateUser.referralCodeId,
 };

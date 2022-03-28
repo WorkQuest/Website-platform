@@ -12,6 +12,7 @@
           v-model="amount"
           class="content__field"
           type="number"
+          data-selector="INPUT-AMOUNT"
           :placeholder="3500"
           :label="$t('modals.amount')"
           :rules="`required|decimal|decimalPlaces:18${getInputRules()}`"
@@ -23,7 +24,7 @@
           >
             <base-btn
               mode="max"
-              selector="MAX-BALANCE"
+              data-selector="MAX-BALANCE"
               class="max__button"
               @click="maxBalance()"
             >
@@ -34,14 +35,14 @@
         <div class="content__container">
           <base-btn
             mode="outline"
-            selector="CANCEL"
+            data-selector="CANCEL"
             :disabled="statusBusy"
             @click="hide()"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
-            selector="SUBMIT"
+            data-selector="SUBMIT"
             :disabled="!valid || !canSubmit"
             @click="handleSubmit(options.type === 1 ? staking : unstaking)"
           >
@@ -231,7 +232,7 @@ export default {
           title: 'Please install Metamask!',
           subtitle: 'Please click install...',
           button: 'Install',
-          type: 'installMetamask',
+          callback: () => window.open('https://metamask.io/download.html'),
         });
       } else {
         localStorage.setItem('metamaskStatus', 'installed');

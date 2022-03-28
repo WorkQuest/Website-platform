@@ -40,12 +40,23 @@
             <div class="btn-group">
               <base-btn
                 class="btn"
+                data-selector="MY-LOANS"
+                @click="$router.push('/crediting/2')"
+              >
+                {{ $t('crediting.myLoans') }}
+              </base-btn>
+              <base-btn
+                class="btn"
+                mode="outline"
+                data-selector="CREDITING-DEPOSIT"
                 @click="openCreditingDepositModal()"
               >
                 {{ $t('crediting.borrow') }}
               </base-btn>
               <base-btn
                 class="btn"
+                mode="outline"
+                data-selector="CREDITING-LOAN"
                 @click="openCreditingLoanModal()"
               >
                 {{ $t('meta.lend') }}
@@ -206,13 +217,11 @@ export default {
     openCreditingDepositModal() {
       this.ShowModal({
         key: modals.creditingDeposit,
-        needChangeModal: 1,
       });
     },
     openCreditingLoanModal() {
       this.ShowModal({
         key: modals.creditingLoan,
-        needChangeModal: 1,
       });
     },
     handleClickFAQ(index) {
@@ -283,11 +292,8 @@ export default {
       box-sizing: border-box;
       font-weight: 400;
       font-size: 16px;
-      color: #0083C7;
-      background-color: #fff;
-      border: 1px solid #0083C71A;
-      border-radius: 6px !important;
       transition: .3s;
+      border-radius: 6px !important;
 
       &__doc {
         @extend .btn;
@@ -299,11 +305,6 @@ export default {
           vertical-align: unset;
           margin-left: 5px;
         }
-      }
-
-      &:hover {
-        background-color: #0083C71A;
-        border: 0px;
       }
 
       &_bl {
@@ -573,6 +574,32 @@ export default {
         }
       }
     }
+    .info-block {
+      &__about {
+        grid-template-areas:
+            "hd"
+            "ft"
+            "sd";
+        grid-template-rows: repeat(3, auto);
+        grid-template-columns: unset;
+        width: 100%;
+        margin: 0;
+        padding: 0 20px;
+        .calendar-img {
+          position: relative;
+          width: 100%;
+          max-width: 370px;
+          justify-self: center;
+        }
+        .btn-group {
+          padding: 0;
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          grid-template-rows: unset;
+          gap: 20px;
+        }
+      }
+    }
   }
 
   @include _575 {
@@ -583,28 +610,9 @@ export default {
           grid-template-rows: repeat(3, 1fr);
         }
         &__about {
-          grid-template-areas:
-            "hd"
-            "ft"
-            "sd";
-          grid-template-rows: repeat(3, auto);
-          grid-template-columns: unset;
-          width: 100%;
-          margin: 0;
-          padding: 0 20px;
-          .calendar-img {
-            position: relative;
-            width: 100%;
-            max-width: 370px;
-            justify-self: center;
-          }
           .btn-group {
-            padding: 0;
-            display: block;
-            display: grid;
             grid-template-columns: unset;
             grid-template-rows: repeat(2, 1fr);
-            gap: 20px;
           }
         }
         &__documents {

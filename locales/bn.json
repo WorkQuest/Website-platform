@@ -1,4 +1,8 @@
 {
+  "kyc": {
+    "KYC": "KYC",
+    "alreadyVerified": "Your profile already verified!"
+  },
   "meta": {
     "priority": {
       "title": "অগ্রাধিকার নির্বাচন করুন",
@@ -980,6 +984,9 @@
       "withdrawInfo": "Withdrawal info"
     },
     "value": "Value",
+    "generatedWUSD": "???",
+    "choosePeriod": "???",
+    "smallDescriptionForLoan": "???",
     "recipient": "Recipient address",
     "successBuyWUSD": "Successfully purchased WUSD",
     "setTokenPrice": "Setting up {token} price",
@@ -1113,7 +1120,6 @@
     "liquidationFee": "লিকুইডেশন ফি",
     "saveCardForNextPayment": "পরবর্তী ব্যবহারের জন্য কার্ডটি সংরক্ষণ করুন",
     "connectWallet": "ওয়ালেট সংযুক্ত করুন",
-    "howMuchWusdWouldYouLikeToGenerate": "আপনি কতটা WUSD তৈরি করতে চান?",
     "chooseTheCurrency": "মুদ্রা নির্বাচন করুন",
     "howMuchETHWouldYouLikeToOpen": "আপনি আপনার অ্যাকাউন্টে কত ETH খুলতে চান?",
     "howMuchPercentWouldYouLikeToSet": "আপনি কত শতাংশ সেট করতে চান?",
@@ -1188,7 +1194,10 @@
     "youTryToAttachUnsupportedFileFormat": "You try to attach unsupported file format",
     "incorrectChain": "You choose incorrect chain !",
     "selectToken": "Select token",
-    "txInfo": "Transaction info"
+    "txInfo": "Transaction info",
+    "registration": "Are you sure to registration this users?",
+    "claimConfirm": "Are you confirm the action of the claim?",
+    "until": "Until"
   },
   "ui": {
     "jobQuestors": "জব কোয়েস্টার",
@@ -1280,7 +1289,8 @@
     "declinedTheInvitationToTheQuest": "Declined the invitation to the quest",
     "declinedYourResponseToTheQuest": "Declined your response to the quest",
     "leftReviewAboutQuest": "Left review about quest",
-    "theQuestIsPending": "The quest is pending"
+    "theQuestIsPending": "The quest is pending",
+    "registrationError": "No users found for registration. Please contact to developers"
   },
   "wallet": {
     "WUSD": "WUSD ওয়ালেট",
@@ -1497,7 +1507,11 @@
       "txHash": "Txn হ্যাশ",
       "time": "সময়",
       "amount": "পরিমাণ",
-      "status": "অবস্থা"
+      "event": "Event"
+    },
+    "event": {
+      "paid": "Paid",
+      "claimed": "Claimed"
     }
   },
   "pension": {
@@ -1676,9 +1690,14 @@
   "crediting": {
     "lending": "WorkQuest ঋণ প্রোটোকল",
     "templateText": "অস্থিতিশীল সম্পদের জন্য চারটি একান্ত অর্থ বাজারসহ WorkQuest DeFi ঋণ প্রদান প্ল্যাটফর্ম Work Net নেটওয়ার্কে",
+    "description": "???",
+    "currentLoan": "???",
+    "currentCredit": "???",
     "marketSize": "বাজারের আকার",
     "wantToTakeALoan": "ঋণ নিতে চান?",
     "borrow": "ঋণ নিন",
+    "myLoans": "???",
+    "refund": "???",
     "openPositions": "অবস্থান খুলুন",
     "totalCollateralLocked": "মোট লককৃত জামানত",
     "totalWusdDebt": "মোট WUSD ঋণ",

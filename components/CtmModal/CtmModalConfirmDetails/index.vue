@@ -22,14 +22,14 @@
         <base-btn
           class="buttons__button"
           mode="outline"
-          selector="CANCEL"
+          data-selector="CANCEL"
           @click="hide"
         >
           {{ $t('meta.btns.cancel') }}
         </base-btn>
         <base-btn
           class="buttons__button"
-          selector="SUBMIT"
+          data-selector="SUBMIT"
           @click="openStatusModal"
         >
           {{ $t('meta.btns.submit') }}
@@ -45,60 +45,30 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalConfirmDetails',
-  data() {
-    return {
-      abouts: [
-        {
-          title: this.$t('modals.currencyDetails'),
-          subtitle: this.$t('meta.coins.eth'),
-        },
-        {
-          title: this.$t('modals.depositing'),
-          subtitle: this.$tc('meta.coins.count.ETHCount', 1),
-        },
-        {
-          title: this.$t('modals.generatingDetails'),
-          subtitle: this.$tc('meta.coins.count.WUSDCount', 1000),
-        },
-        {
-          title: this.$t('modals.collateralizationRatio'),
-          subtitle: this.$tc('meta.units.percentsCount', 0),
-        },
-        {
-          title: this.$t('modals.liquidationRatio'),
-          subtitle: this.$tc('meta.units.percentsCount', 150),
-        },
-        {
-          title: this.$t('modals.liquidationPrice'),
-          subtitle: 122,
-        },
-        {
-          title: this.$t('modals.liquidationFee'),
-          subtitle: 10,
-        },
-        {
-          title: this.$t('modals.stabilityFee'),
-          subtitle: this.$tc('meta.units.percentsCount', 5.85),
-        },
-      ],
-    };
-  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
+    abouts() {
+      return this.options.receiptData;
+    },
   },
   methods: {
     hide() {
       this.CloseModal();
     },
     openStatusModal() {
+      const {
+        dataForStatusModal: {
+          img, title, subtitle, path,
+        },
+      } = this.options;
       this.ShowModal({
         key: modals.status,
-        img: require('~/assets/img/ui/transactionSend.svg'),
-        title: this.$t('modals.depositIsOpened'),
-        subtitle: '',
-        path: this.options.needChangeModal ? '/crediting/1' : undefined,
+        img,
+        title,
+        subtitle,
+        path,
       });
     },
   },
