@@ -2,7 +2,9 @@ import { ethers } from 'ethers';
 import { AES, enc } from 'crypto-js';
 import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
-import { error, fetchContractData, success } from '~/utils/web3';
+import {
+  error, fetchContractData, success, sendTransaction,
+} from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { StakingTypes, tokenMap } from '~/utils/enums';
 
@@ -423,12 +425,13 @@ export const stake = async (stakingType, amount, poolAddress, duration) => {
 };
 
 /** Collateral */
-export const getGasPrice = async (contractAbi, address, method, attr) => {
+export const getGasPrice = async (contractAbi, address, method, attr, value = null) => {
   try {
     const inst = new web3.eth.Contract(contractAbi, address);
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
-      inst.methods[method](...attr).estimateGas({ from: wallet.address }),
+      (value) ? inst.methods[method](...attr).estimateGas({ from: wallet.address, value })
+        : inst.methods[method](...attr).estimateGas({ from: wallet.address }),
     ]);
     return { gas: gasEstimate, gasPrice };
   } catch (e) {
@@ -476,13 +479,29 @@ export const getRaiseViewTariffCost = async (method, tariffs, periods) => {
         const data = [tariffs[i], periods[j]];
         /* eslint-disable no-await-in-loop */
         price[tariffs[i]][periods[j]] = new BigNumber(await fetchContractData(
-          method, abi.WQPromotion, process.env.WORKNET_PROMOTION, data,
+          method, abi.WQPromotion, process.env.WORKNET_PROMOTION, data, web3,
         )).shiftedBy(-18).toString();
       }
     }
     return price;
   } catch (e) {
     console.log('get raise view tariff cost error', e);
+    throw error();
+  }
+};
+
+export const buyRaiseView = async (params) => {
+  try {
+    const inst = new web3.eth.Contract(abi.WQPromotion, process.env.WORKNET_PROMOTION);
+    const value = new BigNumber(params.cost).shiftedBy(18).toString();
+    const attr = [params.tariff, params.period];
+    const { gas, gasPrice } = await getGasPrice(abi.WQPromotion, process.env.WORKNET_PROMOTION, 'promoteUser', attr, value);
+    const payload = {
+      from: wallet.address, gasPrice, gas, value,
+    };
+    await inst.methods.promoteUser(params.tariff, params.period).send(payload);
+  } catch (e) {
+    console.log('buy raise view promoteUser error', e);
     throw error();
   }
 };

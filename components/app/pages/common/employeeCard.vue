@@ -2,7 +2,8 @@
   <div
     class="card"
     :data-selector="`COMPONENT-EMPLOYEE-CARD-${user.id}`"
-    :class="raiseViews[user.raiseView && user.raiseView.type]"
+    :class="
+      raiseViews[user.raiseView && $options.RaiseViewStatus[user.raiseView.status] && user.raiseView.type]"
     @click="$emit('click')"
   >
     <div class="card__header">
@@ -19,7 +20,7 @@
           v-if="user.ratingStatistic && user.ratingStatistic.status >= 0"
           class="user__rating"
           :rating="user.ratingStatistic.status"
-          :raise-view="user.raiseView"
+          :raise-view="$options.RaiseViewStatus[user.raiseView.status]"
         />
       </div>
     </div>
@@ -63,9 +64,11 @@
   </div>
 </template>
 <script>
+import { RaiseViewStatus } from '~/utils/enums';
 
 export default {
   name: 'EmployeeCard',
+  RaiseViewStatus,
   props: {
     user: {
       type: Object,

@@ -1,8 +1,6 @@
 import moment from 'moment';
-import Web3 from 'web3';
-import BigNumber from 'bignumber.js';
 import { error } from '~/utils/web3';
-import { connectWithMnemonic, sendWalletTransaction } from '~/utils/wallet';
+import { connectWithMnemonic, getRaiseViewTariffCost, buyRaiseView } from '~/utils/wallet';
 import {
   NotificationAction, UserRole, Path, UserStatuses, QuestModeReview, RaiseViewTariffPeriods,
 } from '~/utils/enums';
@@ -483,43 +481,23 @@ export default {
       return false;
     }
   },
-  // async getRaiseViewTariffCost({ commit }, payload) {
-  //   const web3 = new Web3(process.env.WQ_PROVIDER);
-  //   try {
-  //     const periods = RaiseViewTariffPeriods[payload.type];
-  //     const tariffs = ['1', '2', '3', '4'];
-  //     const price = {};
-  //     for (let i = 0; i < tariffs.length; i += 1) {
-  //       price[tariffs[i]] = {};
-  //       for (let j = 0; j < periods.length; j += 1) {
-  //         const data = [tariffs[i], periods[j]];
-  //         /* eslint-disable no-await-in-loop */
-  //         price[tariffs[i]][periods[j]] = new BigNumber(await fe(
-  //           payload.type, abi.WQPromotion, process.env.WORKNET_PROMOTION, data,
-  //         )).shiftedBy(-18).toString();
-  //       }
-  //     }
-  //     return price;
-  //   } catch (err) {
-  //     return error(511, 'get raise view tariff cost error', err);
-  //   }
-  // },
-  async buyRaiseView({ commit }, payload) {
-    // const response = await initWeb3(process.env.WORKNET_PROMOTION);
+  async getRaiseViewPrice({ commit }, payload) {
     try {
-      const params = {
-        abi: abi.WQPromotion,
-        address: process.env.WORKNET_PROMOTION,
-        data: [
-          payload.tariff,
-          payload.period,
-          payload.cost,
-        ],
-      };
-      await sendWalletTransaction(payload.method, params);
+      const periods = RaiseViewTariffPeriods[payload.type];
+      const tariffs = ['1', '2', '3', '4'];
+      return await getRaiseViewTariffCost(payload.type, tariffs, periods);
+    } catch (e) {
+      console.log('getRaiseViewPrice');
+      return false;
+    }
+  },
+  async buyRaiseView({ commit }, payload) {
+    try {
+      await buyRaiseView(payload);
       return true;
-    } catch (err) {
-      return error(512, `buy raise view ${payload.method} error`, err);
+    } catch (e) {
+      console.log('buyRaiseView');
+      return false;
     }
   },
 };

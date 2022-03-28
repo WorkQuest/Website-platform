@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { UserRating, Ratings } from '~/utils/enums';
+import { UserRating, Ratings, RaiseViewStatus } from '~/utils/enums';
 
 export default {
   name: 'ItemRating',

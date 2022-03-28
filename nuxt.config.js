@@ -17,11 +17,7 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      {
-        hid: 'description',
-        name: 'description',
-        content: 'Decentralized marketplace for work. Where employers can look for performers for different tasks, and workers perform. Work in any field with different deadlines, interactions occur through smart contracts.',
-      },
+      { hid: 'description', name: 'description', content: 'Decentralized marketplace for work. Where employers can look for performers for different tasks, and workers perform. Work in any field with different deadlines, interactions occur through smart contracts.' },
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/img/app/favicon.svg' },
@@ -139,7 +135,6 @@ export default {
 
     WORKNET_ORACLE: process.env.WORKNET_ORACLE,
     WORKNET_PENSION_FUND: process.env.WORKNET_PENSION_FUND,
-    WORKNET_PROMOTION: process.env.WORKNET_PROMOTION,
     WORKNET_REFERRAL: process.env.REFERRAL_ADDRESS,
     WORKNET_ROUTER: process.env.WORKNET_ROUTER,
     WORKNET_STAKING_WQT: process.env.WORKNET_STAKING_WQT,

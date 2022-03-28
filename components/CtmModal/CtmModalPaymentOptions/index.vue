@@ -175,7 +175,7 @@ export default {
     },
     async showRaiseLevel() {
       const contractResult = await this.$store.dispatch('user/buyRaiseView', {
-        method: 'setUserTariff', tariff: this.options.tariff, period: this.options.duration, cost: this.options.cost,
+        tariff: this.options.tariff, period: this.options.duration, cost: this.options.cost,
       });
       if (contractResult) {
         const result = await this.$store.dispatch('user/payUserRaisedView', { duration: this.options.duration, type: this.options.type });

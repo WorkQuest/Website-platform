@@ -122,7 +122,7 @@ import modals from '~/store/modals/modals';
 export default {
   name: 'RisedViews',
   async asyncData({ store }) {
-    const prices = await store.dispatch('user/getRaiseViewTariffCost', { type: 'usersTariff' });
+    const prices = await store.dispatch('user/getRaiseViewPrice', { type: 'usersTariff' });
     return { prices };
   },
   data() {
