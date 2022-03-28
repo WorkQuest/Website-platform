@@ -53,10 +53,9 @@ export default {
       return false;
     }
   },
-  async fetchReferralsList({ commit }, config) {
+  async fetchReferralsList({ commit }) {
     try {
-      const currConfig = config || { params: { limit: 10, offset: 0 } };
-      const { data: { result, ok } } = await this.$axios.get('v1/user/me/referral-program/referrals', currConfig);
+      const { data: { result, ok } } = await this.$axios.get('v1/user/me/referral-program/referrals');
 
       if (result.referrals.length) {
         const isNeedRegistration = result.referrals.some((item) => item.referralUser.referralStatus === 'created');

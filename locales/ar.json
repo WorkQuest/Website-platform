@@ -889,6 +889,7 @@
       "filters": {
         "titleAll": "جميع عوامل التصفية"
       },
+      "saved": "Saved successfully",
       "cardAdd": "Add card",
       "addCase": "Add Case",
       "addingCard": "Adding card",
@@ -1288,6 +1289,8 @@
     "declinedTheInvitationToTheQuest": "Declined the invitation to the quest",
     "declinedYourResponseToTheQuest": "Declined your response to the quest",
     "leftReviewAboutQuest": "Left review about quest",
+    "theQuestIsPending": "The quest is pending",
+    "registrationError": "No users found for registration. Please contact to developers"
     "theQuestIsPending": "The quest is pending",
     "disputeDecision": "Dispute decision"
   },

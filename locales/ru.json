@@ -8,7 +8,7 @@
       "title": "Выберите приоритет",
       "all": "Все приоритеты",
       "fixedDelivery": "Фиксированная доставка",
-      "shortTerm": "В ближайщем будущем",
+      "shortTerm": "В ближайшем будущем",
       "urgent": "Срочный",
       "employee": {
         "urgent": "Срочное исполнение"
@@ -889,6 +889,7 @@
       "filters": {
         "titleAll": "Все фильтры"
       },
+      "saved": "Saved successfully",
       "cardAdd": "Add card",
       "addCase": "Add Case",
       "addingCard": "Adding card",
@@ -1289,7 +1290,8 @@
     "declinedYourResponseToTheQuest": "Отклонил приглашение на квест",
     "leftReviewAboutQuest": "Оставил отзыв о квесте",
     "theQuestIsPending": "Квест ожидает",
-    "disputeDecision": "Решение спора"
+    "disputeDecision": "Решение спора",
+    "registrationError": "Нет пользователей для  регистрации. Пожалуйста свяжитесь с разработчиками"
   },
   "wallet": {
     "WUSD": "WUSD wallet",
