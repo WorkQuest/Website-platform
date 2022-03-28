@@ -58,13 +58,17 @@ export default {
       this.CloseModal();
     },
     openStatusModal() {
-      const { dataForStatusModal } = this.options;
+      const {
+        dataForStatusModal: {
+          img, title, subtitle, path,
+        },
+      } = this.options;
       this.ShowModal({
         key: modals.status,
-        img: dataForStatusModal.img,
-        title: dataForStatusModal.title,
-        subtitle: dataForStatusModal.subtitle,
-        path: dataForStatusModal.path || undefined,
+        img,
+        title,
+        subtitle,
+        path: path || undefined,
       });
     },
   },

@@ -327,9 +327,7 @@ export default {
     this.SetLoader(false);
   },
   beforeDestroy() {
-    window.removeEventListener('resize', () => {
-      this.windowSize = window.innerWidth;
-    });
+    window.removeEventListener('resize', () => false);
   },
   methods: {
     handleClickFAQ(index) {
