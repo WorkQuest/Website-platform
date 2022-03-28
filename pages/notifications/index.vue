@@ -10,8 +10,8 @@
           class="info-block__list"
         >
           <div
-            v-for="(notification, i) in filterNotifications"
-            :key="i"
+            v-for="(notification) in filterNotifications"
+            :key="notification.id"
             :ref="`${notification.id}|${notification.seen}`"
             v-observe-visibility="(isVisible) => checkUnseenNotifs(isVisible, notification)"
             class="notification"

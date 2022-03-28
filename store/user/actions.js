@@ -86,20 +86,13 @@ export default {
     } = notification.notification ? notification.notification : notification;
 
     // If we on quest id page
-    const curQuestId = rootGetters['quests/getQuest']?.id;
-    if (id === curQuestId) dispatch('quests/getQuest', curQuestId, { root: true });
+    if (!getters.getUserData.id && !getters.getUserRole) dispatch('getUserData');
+    const currentUserId = getters.getUserData.id;
+    const userRole = getters.getUserRole;
 
     let currTitle = quest?.title || title;
     let keyName = 'notifications.';
     let path = `${Path.QUESTS}/${quest?.id || id}`;
-
-    await dispatch('getUserData');
-
-    const currentUserId = getters.getUserData.id;
-    const userRole = getters.getUserRole;
-
-    console.log(currentUserId);
-    console.log(userRole);
 
     const isItAnWorker = userRole === UserRole.WORKER;
     console.log('action', action);
@@ -169,17 +162,14 @@ export default {
         break;
       }
     }
-    // TODO: Delete
-    // TODO: рефакторить и тестить!
-    console.log('keyName', keyName);
     notification.actionNameKey = keyName;
-    // Actions before notification added in list
     const query = {
       limit: 10,
       offset: 0,
       starred: false,
+      'sort[createdAt]': 'desc',
     };
-    // My page \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    // Update statuses
     const keyArr = [
       'notifications.theQuestIsPending', 'notifications.invitesYouToStartAQuest', 'notifications.rejectedTheQuest',
       'notifications.acceptedTheQuest', 'notifications.completedTheQuest', 'notifications.acceptedAJobOnAQuest',
@@ -189,26 +179,16 @@ export default {
       'notifications.disputeDecision',
     ];
     if (keyArr.includes(keyName)) {
-      console.log('keyNameNew:', keyName);
-      if (this.$router.history.current.path === Path.MY_QUESTS) {
-        // update quests list on /my page before notification
-        console.log({ currentUserId, userRole, query });
-        console.log('getters.getUserData.id', getters.getUserData.id);
-        console.log('getters.getUserRole', getters.getUserRole);
-        if (!getters.getUserData.id && getters.getUserRole) {
-          await dispatch('quests/getUserQuests', { currentUserId, userRole, query }, { root: true });
-        }
+      if (currentUserId && userRole) {
+        await dispatch('quests/getUserQuests',
+          {
+            userId: currentUserId,
+            role: userRole,
+            query,
+          }, { root: true });
       }
     }
-    // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     notification.sender = fromUser || (isItAnWorker ? user || employer : assignedWorker || worker);
-    if (!notification.sender) {
-      const currentUser = getters.getUserData;
-      if (currentUser.id !== notification.userId) {
-        dispatch('getAnotherUserData', notification.userId);
-        notification.sender = getters.getAnotherUserData;
-      } else notification.sender = currentUser;
-    }
     if (currTitle) notification.params = { title: currTitle, path };
     notification.creatingDate = moment(new Date(notification.createdAt)).format('MMMM Do YYYY, HH:mm');
     console.log('notification', notification);

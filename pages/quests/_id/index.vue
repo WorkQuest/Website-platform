@@ -215,8 +215,7 @@ export default {
       const now = this.$moment().valueOf();
       // TODO fixme Вернуть, нужно для тестов Роме
       // const dateForStart = this.$moment(this.quest.startedAt).add(1, 'day').valueOf();
-      // TODO: Не срабатывает без перезагрузки страницы
-      const dateForStart = this.$moment(Date.now()).add(1, 'm').valueOf();
+      const dateForStart = this.$moment(this.quest.startedAt).add(1, 'm').valueOf();
       return now >= dateForStart;
     },
   },

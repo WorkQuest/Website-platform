@@ -25,7 +25,6 @@ export default {
     state.currentStepCreateQuest = data;
   },
   setAllQuests(state, data) {
-    state.updateTime = new Date().getTime();
     state.allQuests = data;
   },
   setQuest(state, data) {

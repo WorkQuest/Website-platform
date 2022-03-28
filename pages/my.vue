@@ -28,7 +28,7 @@
           class="quests__cards"
         >
           <card-quest
-            v-for="(quest,i) in compQuests"
+            v-for="(quest,i) in quests"
             :key="quest.id"
             :quest="quest"
             :quest-index="i"
@@ -76,10 +76,6 @@ export default {
       quests: 'quests/getAllQuests',
       questsCount: 'quests/getAllQuestsCount',
     }),
-    compQuests() {
-      this.$forceUpdate();
-      return this.quests;
-    },
     UserRole() {
       return UserRole;
     },
