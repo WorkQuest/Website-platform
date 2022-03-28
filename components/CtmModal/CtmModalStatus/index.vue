@@ -158,18 +158,10 @@ export default {
       this.CloseModal();
     },
     initLink() {
-      if (process.env.PROD === 'false') {
-        if (this.options.chainTo === 3) {
-          this.link = `https://rinkeby.etherscan.io/tx/${this.options.txHash}`;
-        } else {
-          this.link = `https://testnet.bscscan.com/tx/${this.options.txHash}`;
-        }
-      } else if (process.env.PROD === 'true') {
-        if (this.options.chainTo === 3) {
-          this.link = `https://etherscan.io/tx/${this.options.txHash}`;
-        } else {
-          this.link = `https://bscscan.com/tx/${this.options.txHash}`;
-        }
+      if (this.options.chainTo === 3) {
+        this.link = `https://${this.IsProd() ? '' : 'rinkeby.'}etherscan.io/tx/${this.options.txHash}`;
+      } else {
+        this.link = `https://${this.IsProd() ? '' : 'testnet.'}bscscan.com/tx/${this.options.txHash}`;
       }
     },
     async registration() {
@@ -184,21 +176,23 @@ export default {
 
 .button {
   &_to-chat {
-    width:100%;
+    width: 100%;
   }
 }
 
 .status {
   max-width: 337px !important;
   height: auto !important;
-  padding: 0!important;
+  padding: 0 !important;
+
   &__content {
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;
     grid-gap: 20px;
-    padding: 30px!important;
+    padding: 30px !important;
   }
+
   &__title {
     text-align: center;
     margin-top: 10px;
@@ -206,33 +200,40 @@ export default {
     font-size: 23px;
     line-height: 130%;
   }
+
   &__action {
     margin-top: 10px;
   }
+
   &__desc {
     font-size: 16px;
     line-height: 130%;
     text-align: center;
     color: $black600;
   }
-  &__text{
+
+  &__text {
     font-size: 16px;
     line-height: 130%;
     text-align: center;
     font-weight: 500;
     color: $black800;
   }
+
   &__wrap {
     display: flex;
     gap: 10px;
     width: 100%;
+
     div {
       width: 100%;
     }
   }
+
   &__btn {
     padding: 0 10px;
   }
+
   &__list {
     span {
       font-size: 11px;

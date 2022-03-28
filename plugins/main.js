@@ -190,5 +190,6 @@ Vue.mixin({
       }
     },
     ScrollToTop: () => window.scrollTo(0, 0),
+    IsProd: () => process.env.PROD === 'true',
   },
 });

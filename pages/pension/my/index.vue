@@ -38,7 +38,7 @@
                 {{ $t('pension.currentPercentFromAQuest') }}
               </div>
               <div class="info-block__tokens">
-                {{ $t('meta.units.percentsCount', { count: getFeePercent() }) }}
+                {{ $t('meta.units.percentsCount', {count: getFeePercent()}) }}
               </div>
               <base-btn
                 class="btn_bl"
@@ -51,7 +51,7 @@
             <div class="info-block__third_rate">
               <div class="info-block__small">
                 <div class="info-block__perc">
-                  + {{ $tc('meta.units.percentsCount', 6 ) }}
+                  + {{ $tc('meta.units.percentsCount', 6) }}
                 </div>
                 <div class="info-block__period">
                   {{ $t('pension.year') }}
@@ -93,7 +93,7 @@
               <div
                 class="info-block__subtitle_red"
               >
-                {{ $t('pension.days', { count: 0 }) }}
+                {{ $t('pension.days', {count: 0}) }}
               </div>
             </div>
             <div class="btn-group">
@@ -371,7 +371,7 @@ export default {
       return '';
     },
     getExplorerRef(hash) {
-      if (process.env.PROD === 'true') {
+      if (this.IsProd()) {
         return `https://dev-explorer.workquest.co/transactions/${hash ? hash.toLowerCase() : ''}`;
       }
       return `https://dev-explorer.workquest.co/transactions/${hash ? hash.toLowerCase() : ''}`;
@@ -535,6 +535,7 @@ export default {
       font-size: 45px;
       line-height: 110%;
       margin: 0 0 24px;
+
       &_sub {
         @extend .title;
         font-size: 16px;
@@ -882,8 +883,10 @@ export default {
   &__table {
     border-radius: 6px !important;
     overflow: hidden;
+
     .table {
       margin: 20px 0 0 0;
+
       &:first-child {
         border-radius: 0 !important;
       }
@@ -915,6 +918,7 @@ export default {
 
       .table {
         width: 1024px;
+
         & > .table {
           border-radius: 0 !important;
         }
@@ -940,6 +944,7 @@ export default {
         font-size: 38px;
         margin-bottom: 15px;
         width: 100%;
+
         &_sub {
           font-size: 16px;
           max-width: 400px;
@@ -948,6 +953,7 @@ export default {
     }
     &__content {
       grid-template-rows: max-content max-content max-content;
+
       .info-block {
         &__triple {
           grid-template-rows: repeat(2, 1fr);
@@ -958,6 +964,7 @@ export default {
             grid-column-end: 3;
           }
         }
+
         &__grid {
           grid-template-rows: 1fr auto auto;
           grid-template-columns: repeat(2, 1fr);
@@ -979,6 +986,7 @@ export default {
     &__header {
       .title {
         font-size: 32px;
+
         &_sub {
           font-size: 16px;
         }
@@ -990,6 +998,7 @@ export default {
           grid-template-columns: 1fr;
           grid-template-rows: repeat(3, 1fr);
         }
+
         &__triple {
           grid-template-rows: repeat(3, 1fr);
           grid-template-columns: unset;
@@ -999,16 +1008,20 @@ export default {
             grid-column-end: unset;
           }
         }
+
         &__grid {
           grid-template-columns: repeat(2, auto);
+
           .text-cont {
             grid-column-start: 1;
             grid-column-end: 3;
           }
+
           .btn-group {
             &_exp {
               grid-template-rows: repeat(2, 1fr);
               grid-template-columns: repeat(2, 1fr);
+
               .btn {
                 &:last-child {
                   grid-row-start: 1;
@@ -1023,6 +1036,7 @@ export default {
     }
   }
 }
+
 .empty-info {
   & .absence {
     padding-bottom: 10px !important;
