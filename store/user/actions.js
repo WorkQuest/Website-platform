@@ -180,12 +180,15 @@ export default {
     ];
     if (keyArr.includes(keyName)) {
       if (currentUserId && userRole) {
-        await dispatch('quests/getUserQuests',
-          {
+        if (![Path.NOTIFICATIONS, Path.COLLATERAL, Path.CREDITING, Path.WORKERS,
+          Path.ROOT, Path.CROSSCHAIN, Path.EDIT_QUEST, Path.CREATE_QUEST, Path.STAKING,
+          Path.WIKI, Path.WALLET, Path.MINING, Path.SETTINGS, Path.SAVINGS].includes(this.$router.history.current.path)) {
+          await dispatch('quests/getUserQuests', {
             userId: currentUserId,
             role: userRole,
             query,
           }, { root: true });
+        }
       }
     }
     notification.sender = fromUser || (isItAnWorker ? user || employer : assignedWorker || worker);
