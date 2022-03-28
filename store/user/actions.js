@@ -1,10 +1,19 @@
 import moment from 'moment';
-import { error } from '~/utils/web3';
-import { connectWithMnemonic, getRaiseViewTariffCost, buyRaiseView } from '~/utils/wallet';
+import BigNumber from 'bignumber.js';
+import Web3 from 'web3';
+import { error, fetchContractData } from '~/utils/web3';
+import {
+  connectWithMnemonic, getGasPrice,
+  createWeb3Instance, getWallet,
+} from '~/utils/wallet';
 import {
   NotificationAction, UserRole, Path, UserStatuses, QuestModeReview, RaiseViewTariffPeriods,
 } from '~/utils/enums';
 import * as abi from '~/abi/abi';
+
+const { WORKNET_PROMOTION } = process.env;
+const { WQPromotion } = abi;
+const web3 = new Web3(process.env.WQ_PROVIDER);
 
 export default {
   async changeRole({ commit }, { totp }) {
@@ -485,7 +494,19 @@ export default {
     try {
       const periods = RaiseViewTariffPeriods[payload.type];
       const tariffs = ['1', '2', '3', '4'];
-      return await getRaiseViewTariffCost(payload.type, tariffs, periods);
+      const price = {};
+      for (let i = 0; i < tariffs.length; i += 1) {
+        price[tariffs[i]] = {};
+        for (let j = 0; j < periods.length; j += 1) {
+          const data = [tariffs[i], periods[j]];
+          /* eslint-disable no-await-in-loop */
+          const cost = await fetchContractData(
+            payload.type, WQPromotion, WORKNET_PROMOTION, data, web3,
+          );
+          price[tariffs[i]][periods[j]] = new BigNumber(cost).shiftedBy(-18).toString();
+        }
+      }
+      return price;
     } catch (e) {
       console.log('getRaiseViewPrice');
       return false;
@@ -493,7 +514,15 @@ export default {
   },
   async buyRaiseView({ commit }, payload) {
     try {
-      await buyRaiseView(payload);
+      const inst = new web3.eth.Contract(WQPromotion, WORKNET_PROMOTION);
+      const value = new BigNumber(payload.cost).shiftedBy(18).toString();
+      const attr = [payload.tariff, payload.period];
+      const wallet = getWallet();
+      const { gas, gasPrice } = await getGasPrice(WQPromotion, WORKNET_PROMOTION, 'promoteUser', attr, value);
+      const params = {
+        from: wallet, gasPrice, gas, value,
+      };
+      await inst.methods.promoteUser(payload.tariff, payload.period).send(params);
       return true;
     } catch (e) {
       console.log('buyRaiseView');

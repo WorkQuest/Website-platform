@@ -7,7 +7,6 @@ import * as abi from '~/abi/abi';
 import {
   Chains, ChainsId, ChainsIdByChainNumber, NetworksData, StakingTypes,
 } from '~/utils/enums';
-import { WQBridge } from '~/abi/abi';
 
 let bscRpcContract = null;
 let web3 = null;

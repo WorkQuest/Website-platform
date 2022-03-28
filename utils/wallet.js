@@ -3,7 +3,7 @@ import { AES, enc } from 'crypto-js';
 import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
 import {
-  error, fetchContractData, success, sendTransaction,
+  error, fetchContractData, success,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { StakingTypes, tokenMap } from '~/utils/enums';
@@ -470,38 +470,4 @@ export const buyWUSD = async ({ collateralBN, ratioBN, currency }, { gasPrice, g
   }
 };
 
-export const getRaiseViewTariffCost = async (method, tariffs, periods) => {
-  try {
-    const price = {};
-    for (let i = 0; i < tariffs.length; i += 1) {
-      price[tariffs[i]] = {};
-      for (let j = 0; j < periods.length; j += 1) {
-        const data = [tariffs[i], periods[j]];
-        /* eslint-disable no-await-in-loop */
-        price[tariffs[i]][periods[j]] = new BigNumber(await fetchContractData(
-          method, abi.WQPromotion, process.env.WORKNET_PROMOTION, data, web3,
-        )).shiftedBy(-18).toString();
-      }
-    }
-    return price;
-  } catch (e) {
-    console.log('get raise view tariff cost error', e);
-    throw error();
-  }
-};
-
-export const buyRaiseView = async (params) => {
-  try {
-    const inst = new web3.eth.Contract(abi.WQPromotion, process.env.WORKNET_PROMOTION);
-    const value = new BigNumber(params.cost).shiftedBy(18).toString();
-    const attr = [params.tariff, params.period];
-    const { gas, gasPrice } = await getGasPrice(abi.WQPromotion, process.env.WORKNET_PROMOTION, 'promoteUser', attr, value);
-    const payload = {
-      from: wallet.address, gasPrice, gas, value,
-    };
-    await inst.methods.promoteUser(params.tariff, params.period).send(payload);
-  } catch (e) {
-    console.log('buy raise view promoteUser error', e);
-    throw error();
-  }
-};
+export const getWallet = () => wallet.address;
