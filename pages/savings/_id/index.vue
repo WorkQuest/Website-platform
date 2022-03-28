@@ -39,7 +39,7 @@
             <base-btn
               class="btn_bl"
               data-selector="OPEN-WITHDRAW"
-              @click="openModal('withdrawAbout')"
+              @click="openModal($options.modals.withdrawAbout)"
             >
               {{ $t('meta.withdraw') }}
             </base-btn>
@@ -47,7 +47,7 @@
               class="btn_bl"
               mode="outline"
               data-selector="OPEN-DEPOSIT"
-              @click="openModal('openADeposit')"
+              @click="openModal($options.modals.openADeposit)"
             >
               {{ $t('meta.deposit') }}
             </base-btn>
@@ -55,7 +55,7 @@
               class="btn_bl"
               mode="outline"
               data-selector="OPEN-CLAIM"
-              @click="openModal('openADeposit')"
+              @click="openModal($options.modals.openADeposit)"
             >
               {{ $t('modals.claim') }}
             </base-btn>
@@ -120,6 +120,7 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'SavingProduct',
+  modals,
   data() {
     return {
       items: [
@@ -228,10 +229,8 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    openModal(type) {
-      this.ShowModal({
-        key: modals[type],
-      });
+    openModal(key) {
+      this.ShowModal({ key });
     },
   },
 };
