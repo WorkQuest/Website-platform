@@ -68,7 +68,7 @@ export default {
         img,
         title,
         subtitle,
-        path: path || undefined,
+        path,
       });
     },
   },
