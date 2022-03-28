@@ -9,7 +9,7 @@
           v-if="notifsCount"
           class="info-block__list"
         >
-          <transition-group name="fade">
+          <transition-group name="fade-fast">
             <div
               v-for="(notification) in notifications"
               :key="notification.id"
