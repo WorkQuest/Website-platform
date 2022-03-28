@@ -191,7 +191,8 @@
     "settings": "Definições",
     "costPerHour": "Custo por hora",
     "disputes": "Disputas",
-    "success": "Sucesso"
+    "success": "Sucesso",
+    "fail": "Fail"
   },
   "info": {
     "yourMessage": " Your message:",
@@ -227,7 +228,7 @@
     "size": "O tamanho do campo {_field_} deve ser inferior a {size}KB",
     "decimal": "O campo {_field_} deve conter apenas valores decimais",
     "decimalPlaces": "The {_field_} field must contain maximum {places} decimal places",
-    "invalidPhone":"Invalid phone number",
+    "invalidPhone": "Invalid phone number",
     "formError": "Fill in all required fields",
     "is": "The values do not match",
     "is_not": "Incorrect value",
@@ -948,6 +949,7 @@
       "errorSmsVer": "Error SMS verification",
       "emptyOpenQuests": "You don't have open quests, please create",
       "error": "Error",
+      "errorNetwork": "Error, you use not correct network. Switch to {network}",
       "youCan’tDeleteActiveQuest": "You can’t delete active quest",
       "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
     },
@@ -1368,9 +1370,9 @@
     "linkedin": "linkedin",
     "twitter": "twitter",
     "instagram": "instagram",
-    "companyName":"company",
-    "ceoName":"ceo",
-    "websiteName":"website",
+    "companyName": "company",
+    "ceoName": "ceo",
+    "websiteName": "website",
     "enterPhoneNumber": "Please enter your phone number",
     "enterCurrentLocation": "Please select current location",
     "placeOfStudying": "Local de estudo",

@@ -159,9 +159,9 @@ export default {
     },
     initLink() {
       if (this.options.chainTo === 3) {
-        this.link = `https://${this.IsProd() ? '' : 'rinkeby.'}etherscan.io/tx/${this.options.txHash}`;
+        this.link = `https://${this.IsProd ? '' : 'rinkeby.'}etherscan.io/tx/${this.options.txHash}`;
       } else {
-        this.link = `https://${this.IsProd() ? '' : 'testnet.'}bscscan.com/tx/${this.options.txHash}`;
+        this.link = `https://${this.IsProd ? '' : 'testnet.'}bscscan.com/tx/${this.options.txHash}`;
       }
     },
     async registration() {

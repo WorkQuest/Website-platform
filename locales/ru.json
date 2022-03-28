@@ -191,7 +191,8 @@
     "settings": "Настройки",
     "costPerHour": "Цена за час",
     "disputes": "Споры",
-    "success": "Успешно"
+    "success": "Успешно",
+    "fail": "Неудача"
   },
   "info": {
     "yourMessage": " Ваше сообщение:",
@@ -227,7 +228,7 @@
     "size": "The {_field_} field size must be less than {size}KB",
     "decimal": "The {_field_} field must contain only decimal values",
     "decimalPlaces": "The {_field_} field must contain maximum {places} decimal places",
-    "invalidPhone":"Неверный формат телефона",
+    "invalidPhone": "Неверный формат телефона",
     "formError": "Заполните все обязательные поля",
     "is": "The values do not match",
     "is_not": "Incorrect value",
@@ -948,6 +949,7 @@
       "errorSmsVer": "Error SMS verification",
       "emptyOpenQuests": "You don't have open quests, please create",
       "error": "Ошибка",
+      "errorNetwork": "Ошибка, Вы используете не правильную сеть. Переключитесь на {network}",
       "youCan’tDeleteActiveQuest": "Вы не можете удалить активный квест",
       "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
     },
@@ -1368,9 +1370,9 @@
     "linkedin": "linkedin",
     "twitter": "twitter",
     "instagram": "instagram",
-    "companyName":"company",
-    "ceoName":"ceo",
-    "websiteName":"website",
+    "companyName": "company",
+    "ceoName": "ceo",
+    "websiteName": "website",
     "enterPhoneNumber": "Please enter your phone number",
     "enterCurrentLocation": "Please select current location",
     "placeOfStudying": "Место учебы",

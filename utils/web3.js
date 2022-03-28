@@ -64,6 +64,23 @@ export const getChainIdByChain = (chain) => {
       throw error(-1, `wrong chain name: ${chain} ${Chains.BINANCE} ${Chains.ETHEREUM}`);
   }
 };
+
+const getChainTypeById = (chainId) => {
+  if (+chainId === +ChainsId.ETH_MAIN || +chainId === +ChainsId.ETH_TEST) {
+    return 0;
+  }
+  if (+chainId === +ChainsId.BSC_MAIN || +chainId === +ChainsId.BSC_TEST) {
+    return 1;
+  }
+  if (+chainId === +ChainsId.MATIC_MAIN || +chainId === +ChainsId.MUMBAI_TEST) {
+    return 2;
+  }
+  if (+chainId === +ChainsId.WORKNET_TEST) {
+    return 3;
+  }
+  return -1;
+};
+
 export const addedNetwork = async (chain) => {
   try {
     let networkParams = {};
@@ -92,6 +109,12 @@ export const goToChain = async (chain) => {
       method: methodName,
       params: [{ chainId: chainIdParam }],
     });
+    account = {
+      address: getAccountAddress(),
+      netId: +chainIdParam,
+      netType: getChainTypeById(chainIdParam),
+    };
+    await store.dispatch('web3/updateAccount', account);
     return { ok: true };
   } catch (e) {
     if (e.code === 4902) {
@@ -187,7 +210,10 @@ export const sendTransaction = async (_method, payload, _provider = web3) => {
       gas: gasEstimate,
     };
   } else if (_method === 'swap') {
-    const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress, value: payload.value });
+    const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({
+      from: accountAddress,
+      value: payload.value,
+    });
     await inst.methods.swap(...payload.data).send({
       from: accountAddress,
       value: payload.value,
@@ -208,22 +234,6 @@ export const sendTransaction = async (_method, payload, _provider = web3) => {
   }
   // noinspection ES6RedundantAwait
   return await _provider.eth.sendTransaction(transactionData);
-};
-
-const getChainTypeById = (chainId) => {
-  if (+chainId === +ChainsId.ETH_MAIN || +chainId === +ChainsId.ETH_TEST) {
-    return 0;
-  }
-  if (+chainId === +ChainsId.BSC_MAIN || +chainId === +ChainsId.BSC_TEST) {
-    return 1;
-  }
-  if (+chainId === +ChainsId.MATIC_MAIN || +chainId === +ChainsId.MUMBAI_TEST) {
-    return 2;
-  }
-  if (+chainId === +ChainsId.WORKNET_TEST) {
-    return 3;
-  }
-  return -1;
 };
 
 export const handleMetamaskStatus = (callback) => {

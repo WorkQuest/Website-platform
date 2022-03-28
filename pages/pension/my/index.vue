@@ -371,7 +371,7 @@ export default {
       return '';
     },
     getExplorerRef(hash) {
-      if (this.IsProd()) {
+      if (this.IsProd) {
         return `https://dev-explorer.workquest.co/transactions/${hash ? hash.toLowerCase() : ''}`;
       }
       return `https://dev-explorer.workquest.co/transactions/${hash ? hash.toLowerCase() : ''}`;

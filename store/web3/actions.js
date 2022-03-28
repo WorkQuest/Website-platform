@@ -87,6 +87,10 @@ export default {
     await dispatch('connect', { isReconnection: true, chain: localStorage.getItem('miningPoolId') });
   },
 
+  async updateAccount({ commit }, newData) {
+    commit('setAccount', newData);
+  },
+
   // Only MetaMask
   async connectToMetaMask({ commit, dispatch, getters }, payload) {
     const isReconnection = payload?.isReconnection;

@@ -1,7 +1,9 @@
 import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import { BlockchainByIndex, BridgeAddresses, SwapAddresses } from '~/utils/bridge-constants';
-import { error, sendTransaction, showToast } from '~/utils/web3';
+import {
+  error, sendTransaction, showToast, success,
+} from '~/utils/web3';
 import * as abi from '~/abi/abi';
 
 export default {
@@ -37,12 +39,13 @@ export default {
     const bridgeAddress = BridgeAddresses[BlockchainByIndex[chainTo]];
     try {
       showToast('Redeeming', 'Redeem...', 'success');
-      return await sendTransaction('redeem', {
+      const response = await sendTransaction('redeem', {
         abi: abi.WQBridge,
         address: bridgeAddress,
         data: signData,
         userAddress: signData[3],
       });
+      return success(response);
     } catch (e) {
       console.log(e);
       showToast('Redeeming', `${e.message}`, 'warning');

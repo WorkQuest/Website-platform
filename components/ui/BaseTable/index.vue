@@ -86,13 +86,13 @@ export default {
   },
   methods: {
     getTransactionUrl(hash) {
-      if (this.IsProd()) {
+      if (this.IsProd) {
         return `https://dev-explorer.workquest.co/transactions/${hash}`;
       }
       return `https://dev-explorer.workquest.co/transactions/${hash}`;
     },
     getAddressUrl(address) {
-      if (this.IsProd()) {
+      if (this.IsProd) {
         return `https://dev-explorer.workquest.co/address/${address}`;
       }
       return `https://dev-explorer.workquest.co/address/${address}`;

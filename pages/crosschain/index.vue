@@ -310,28 +310,31 @@ export default {
     },
     toggleBlockchain() {
       const currentSource = this.sourceAddressInd;
-      const currentTarget = this.targetAddressInd;
+      this.sourceAddressInd = this.targetAddressInd;
       this.targetAddressInd = currentSource;
-      this.sourceAddressInd = currentTarget;
     },
     async checkNetwork(chain) {
-      if (localStorage.getItem('isMetaMask') !== 'true') return;
+      if (localStorage.getItem('isMetaMask') !== 'true') return { ok: true };
       const isCorrectNetwork = await this.isRightChain(chain);
       if (!isCorrectNetwork) await this.goToChain({ chain });
+      return await this.isRightChain(chain);
     },
     async redeemAction(data) {
       this.SetLoader(true);
-      await this.checkNetwork(data.chain);
-      const result = await this.redeem({
-        signData: data.signData,
-        chainFrom: data.chainFrom,
-        chainTo: data.chainTo,
-      });
-      this.ShowModal({
-        key: modals.status,
-        img: require(`~/assets/img/ui/${result.code === 500 ? 'warning' : 'success'}.svg`),
-        title: this.$t(`modals.redeem.${result.code === 500 ? 'fail' : 'success'}`),
-      });
+
+      const isCorrectNetwork = await this.checkNetwork(data.chain);
+      if (!isCorrectNetwork) this.ShowModalFail(this.$t('modals.errors.errorNetwork', { network: data.chain }));
+      else {
+        const result = await this.redeem({
+          signData: data.signData,
+          chainFrom: data.chainFrom,
+          chainTo: data.chainTo,
+        });
+
+        if (result.ok) this.ShowModalSuccess(this.$t('modals.redeem.success'));
+        else this.ShowModalFail(this.$t('modals.redeem.fail'));
+      }
+
       await this.swapsTableData();
       this.SetLoader(false);
     },
@@ -378,11 +381,13 @@ export default {
 
 .swap-icon {
   transition: .3s ease-in-out;
+
   &:hover {
     filter: drop-shadow(0 0 3px rgba(72, 72, 72, 0.5));
     cursor: pointer;
   }
 }
+
 .crosschain-page {
   background: linear-gradient(to bottom, #103D7C 420px, #f6f8fa 420px);
   display: flex;
@@ -612,7 +617,7 @@ export default {
 
   @include _1199 {
     .crosschain-page__container {
-      padding: 0 30px!important;
+      padding: 0 30px !important;
     }
   }
 
@@ -639,6 +644,7 @@ export default {
         font-size: 38px;
         margin-bottom: 15px;
         width: 100%;
+
         &_sub {
           font-size: 16px;
           max-width: 400px;
@@ -659,9 +665,11 @@ export default {
   @include _575 {
     .header {
       flex-direction: column;
+
       &__right {
         width: 100%;
       }
+
       &__btn {
         width: 100%;
       }
@@ -677,7 +685,7 @@ export default {
             grid-row: 2;
           }
 
-          >div {
+          > div {
             grid-column: 1/4;
           }
         }
@@ -688,6 +696,7 @@ export default {
           }
         }
       }
+
       .btn {
         &__doc {
           border: 0;
