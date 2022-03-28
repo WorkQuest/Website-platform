@@ -49,8 +49,9 @@
                   v-model="sourceAddressInd"
                   type="border"
                   :items="addresses"
+                  :data-selector="'Source-Address'"
                   :is-icon="true"
-                  @input="handleChangePool"
+                  @input="handleChangePool(sourceAddressInd, 'source')"
                 />
               </div>
             </div>
@@ -58,7 +59,7 @@
               src="~assets/img/ui/swap.png"
               alt=""
               class="swap-icon"
-              @click="handleChangePool(targetAddressInd ? 1 : 0)"
+              @click="handleChangePool(0, 'swap')"
             >
             <div>
               <div class="info-block__name_bold">
@@ -72,8 +73,9 @@
                   v-model="targetAddressInd"
                   type="border"
                   :items="addresses"
+                  :data-selector="'Target-Address'"
                   :is-icon="true"
-                  @input="handleChangePool"
+                  @input="handleChangePool(targetAddressInd, 'target')"
                 />
               </div>
             </div>
@@ -183,6 +185,7 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import EmptyData from '~/components/app/info/emptyData';
+import { Chains } from '~/utils/enums';
 
 export default {
   components: { EmptyData },
@@ -266,6 +269,10 @@ export default {
           icon: require('~/assets/img/ui/bnb_yellow.svg'),
           title: this.$t('meta.coins.bsc'),
         },
+        {
+          icon: require('~/assets/img/ui/WQT.png'),
+          title: this.$t('meta.coins.wqt'),
+        },
       ];
     },
   },
@@ -302,7 +309,13 @@ export default {
     },
     async checkWalletStatus() {
       if (this.isConnected) return;
-      const chainName = this.sourceAddressInd === 0 ? 'ETH' : 'BNB';
+      let chainName = '';
+      // eslint-disable-next-line default-case
+      switch (this.sourceAddressInd) {
+        case 0: chainName = Chains.ETHEREUM; break;
+        case 1: chainName = Chains.BINANCE; break;
+        case 2: chainName = Chains.WORKNET; break;
+      }
       await this.connectToMetamask(chainName);
     },
     async redeemAction(data) {
@@ -312,7 +325,8 @@ export default {
       }
       const payload = {
         signData: data.clearData,
-        chainId: data.chainId,
+        chainFrom: data.chainFrom,
+        chainTo: data.chainTo,
       };
       const redeemObj = await this.$store.dispatch('web3/redeemSwap', payload);
       await this.swapsTableData(this.account.address, this.isConnected);
@@ -348,22 +362,41 @@ export default {
       };
       await this.$store.dispatch('defi/swapsForCrosschain', payload);
     },
-    handleChangePool(selInd) {
-      this.sourceAddressInd = selInd ? 1 : 0;
-      this.targetAddressInd = selInd ? 0 : 1;
+    handleChangePool(selInd, mode) {
+      if (mode === 'source') {
+        if (this.targetAddressInd === selInd) this.targetAddressInd = selInd ? 0 : 1;
+        this.sourceAddressInd = selInd;
+      } else if (mode === 'target') {
+        if (this.sourceAddressInd === selInd) this.sourceAddressInd = selInd ? 0 : 1;
+        this.targetAddressInd = selInd;
+      } else if (mode === 'swap') {
+        const sourceInd = this.sourceAddressInd;
+        const targetInd = this.targetAddressInd;
+        this.targetAddressInd = sourceInd;
+        this.sourceAddressInd = targetInd;
+      }
     },
     async showSwapModal() {
       this.SetLoader(true);
       let switchPoolStatus = true;
+      let chainName = '';
       if (localStorage.getItem('isMetaMask') === 'true') {
-        switchPoolStatus = await this.checkMiningPoolId(this.sourceAddressInd === 0 ? 'ETH' : 'BNB');
+        // eslint-disable-next-line default-case
+        switch (this.sourceAddressInd) {
+          case 0: chainName = 'ETH'; break;
+          case 1: chainName = 'BNB'; break;
+          case 2: chainName = 'WORKNET'; break;
+        }
+        switchPoolStatus = await this.checkMiningPoolId(chainName);
       }
       if (switchPoolStatus === true || switchPoolStatus.ok) {
-        await this.$store.dispatch('web3/getCrosschainTokensData');
         this.ShowModal({
           key: modals.swap,
           crosschainId: this.targetAddressInd,
+          fromChain: this.sourceAddressInd,
+          toChain: this.targetAddressInd,
         });
+        // await this.$store.dispatch('web3/connect', { chain: chainName });
       } else {
         this.ShowModal({
           key: modals.status,
@@ -640,7 +673,7 @@ export default {
 
   @include _767 {
     &__container {
-      grid-template-rows: auto auto;
+      grid-template-rows: 170px auto;
       gap: 24px;
     }
     &__header {

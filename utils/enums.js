@@ -6,7 +6,7 @@ export const ChainsId = {
   BSC_TEST: '0x61',
   MATIC_MAIN: '0x13881',
   MUMBAI_TEST: '0x89',
-  WUSD_TEST: '0x1346618',
+  WORKNET_TEST: '0x13488D0',
 };
 
 export const QuestModeReview = {
@@ -19,7 +19,7 @@ export const ChainsIdByChainNumber = {
   4: '0x4',
   56: '0x38',
   97: '0x61',
-  20211224: '0x1346618',
+  20220112: '0x13488D0',
 };
 
 export const NativeTokenSymbolByChainId = {
@@ -33,7 +33,7 @@ export const Chains = {
   ETHEREUM: 'ETH',
   BINANCE: 'BSC',
   BNB: 'BNB', // Same as bsc for bridge
-  WUSD: 'WUSD',
+  WORKNET: 'WORKNET',
 };
 
 export const StakingTypes = {
@@ -285,8 +285,8 @@ export const NetworksData = {
       decimals: 18,
     },
   },
-  WUSD_TEST: {
-    chainId: '0x1346618',
+  WORKNET_TEST: {
+    chainId: '0x13488D0',
     chainName: 'WorkQuest DEV',
     rpcUrls: ['https://dev-node-nyc3.workquest.co'],
     nativeCurrency: {
