@@ -1289,8 +1289,7 @@
     "declinedTheInvitationToTheQuest": "Declined the invitation to the quest",
     "declinedYourResponseToTheQuest": "Declined your response to the quest",
     "leftReviewAboutQuest": "Left review about quest",
-    "theQuestIsPending": "The quest is pending",
-    "registrationError": "No users found for registration. Please contact to developers"
+    "registrationError": "No users found for registration. Please contact to developers",
     "theQuestIsPending": "The quest is pending",
     "disputeDecision": "Dispute decision"
   },

@@ -95,7 +95,6 @@ export default {
     let path = `${Path.QUESTS}/${quest?.id || id}`;
 
     const isItAnWorker = userRole === UserRole.WORKER;
-    console.log('action', action);
     switch (action) {
       case NotificationAction.QUEST_STARTED: {
         keyName += 'invitesYouToStartAQuest';
@@ -192,7 +191,6 @@ export default {
     notification.sender = fromUser || (isItAnWorker ? user || employer : assignedWorker || worker);
     if (currTitle) notification.params = { title: currTitle, path };
     notification.creatingDate = moment(new Date(notification.createdAt)).format('MMMM Do YYYY, HH:mm');
-    console.log('notification', notification);
     return notification;
   },
   async getUserPortfolios({ commit }, { userId, query }) {
