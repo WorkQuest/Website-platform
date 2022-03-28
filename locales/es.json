@@ -889,6 +889,7 @@
       "filters": {
         "titleAll": "Todos los filtros"
       },
+      "saved": "Saved successfully",
       "cardAdd": "Add card",
       "addCase": "Add Case",
       "addingCard": "Adding card",
