@@ -217,13 +217,11 @@ export default {
     openCreditingDepositModal() {
       this.ShowModal({
         key: modals.creditingDeposit,
-        needChangeModal: 1,
       });
     },
     openCreditingLoanModal() {
       this.ShowModal({
         key: modals.creditingLoan,
-        needChangeModal: 1,
       });
     },
     handleClickFAQ(index) {
