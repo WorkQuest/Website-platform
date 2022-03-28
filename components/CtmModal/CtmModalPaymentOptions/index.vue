@@ -150,8 +150,6 @@ export default {
       ];
     },
   },
-  mounted() {
-  },
   methods: {
     hide() {
       this.CloseModal();
@@ -176,7 +174,7 @@ export default {
       }
     },
     async showRaiseLevel() {
-      const contractResult = await this.$store.dispatch('web3/buyRaiseView', {
+      const contractResult = await this.$store.dispatch('user/buyRaiseView', {
         method: 'setUserTariff', tariff: this.options.tariff, period: this.options.duration, cost: this.options.cost,
       });
       if (contractResult) {

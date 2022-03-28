@@ -411,44 +411,4 @@ export default {
     }
     return false;
   },
-  async getRaiseViewTariffCost({ commit }, payload) {
-    const web3 = new Web3(process.env.WQ_PROVIDER);
-    try {
-      const periods = RaiseViewTariffPeriods[payload.type];
-      const tariffs = ['1', '2', '3', '4'];
-      const price = {};
-      for (let i = 0; i < tariffs.length; i += 1) {
-        price[tariffs[i]] = {};
-        for (let j = 0; j < periods.length; j += 1) {
-          /* eslint-disable no-await-in-loop */
-          price[tariffs[i]][periods[j]] = new BigNumber(await fetchContractData(
-            payload.type, abi.WQPromotion, process.env.WQ_PROMOTION, [tariffs[i], periods[j]], web3,
-          )).shiftedBy(-18).toString();
-        }
-      }
-      return price;
-    } catch (err) {
-      return error(511, 'get raise view tariff cost error', err);
-    }
-  },
-  async buyRaiseView({ commit }, payload) {
-    const response = await initWeb3(process.env.WQ_PROMOTION);
-    if (response.ok) {
-      try {
-        const params = {
-          abi: abi.WQPromotion,
-          address: process.env.WQ_PROMOTION,
-          data: [
-            payload.tariff,
-            payload.period,
-            payload.cost,
-          ],
-        };
-        await sendTransaction(payload.method, params);
-        return true;
-      } catch (err) {
-        return error(512, `buy raise view ${payload.method} error`, err);
-      }
-    } return false;
-  },
 };

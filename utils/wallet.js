@@ -466,3 +466,23 @@ export const buyWUSD = async ({ collateralBN, ratioBN, currency }, { gasPrice, g
     throw error();
   }
 };
+
+export const getRaiseViewTariffCost = async (method, tariffs, periods) => {
+  try {
+    const price = {};
+    for (let i = 0; i < tariffs.length; i += 1) {
+      price[tariffs[i]] = {};
+      for (let j = 0; j < periods.length; j += 1) {
+        const data = [tariffs[i], periods[j]];
+        /* eslint-disable no-await-in-loop */
+        price[tariffs[i]][periods[j]] = new BigNumber(await fetchContractData(
+          method, abi.WQPromotion, process.env.WORKNET_PROMOTION, data,
+        )).shiftedBy(-18).toString();
+      }
+    }
+    return price;
+  } catch (e) {
+    console.log('get raise view tariff cost error', e);
+    throw error();
+  }
+};

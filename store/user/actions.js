@@ -1,9 +1,12 @@
 import moment from 'moment';
+import Web3 from 'web3';
+import BigNumber from 'bignumber.js';
 import { error } from '~/utils/web3';
-import { connectWithMnemonic } from '~/utils/wallet';
+import { connectWithMnemonic, sendWalletTransaction } from '~/utils/wallet';
 import {
-  NotificationAction, UserRole, Path, UserStatuses, QuestModeReview,
+  NotificationAction, UserRole, Path, UserStatuses, QuestModeReview, RaiseViewTariffPeriods,
 } from '~/utils/enums';
+import * as abi from '~/abi/abi';
 
 export default {
   async changeRole({ commit }, { totp }) {
@@ -478,6 +481,45 @@ export default {
     } catch (e) {
       console.log('profile/worker/me/raise-view/pay');
       return false;
+    }
+  },
+  // async getRaiseViewTariffCost({ commit }, payload) {
+  //   const web3 = new Web3(process.env.WQ_PROVIDER);
+  //   try {
+  //     const periods = RaiseViewTariffPeriods[payload.type];
+  //     const tariffs = ['1', '2', '3', '4'];
+  //     const price = {};
+  //     for (let i = 0; i < tariffs.length; i += 1) {
+  //       price[tariffs[i]] = {};
+  //       for (let j = 0; j < periods.length; j += 1) {
+  //         const data = [tariffs[i], periods[j]];
+  //         /* eslint-disable no-await-in-loop */
+  //         price[tariffs[i]][periods[j]] = new BigNumber(await fe(
+  //           payload.type, abi.WQPromotion, process.env.WORKNET_PROMOTION, data,
+  //         )).shiftedBy(-18).toString();
+  //       }
+  //     }
+  //     return price;
+  //   } catch (err) {
+  //     return error(511, 'get raise view tariff cost error', err);
+  //   }
+  // },
+  async buyRaiseView({ commit }, payload) {
+    // const response = await initWeb3(process.env.WORKNET_PROMOTION);
+    try {
+      const params = {
+        abi: abi.WQPromotion,
+        address: process.env.WORKNET_PROMOTION,
+        data: [
+          payload.tariff,
+          payload.period,
+          payload.cost,
+        ],
+      };
+      await sendWalletTransaction(payload.method, params);
+      return true;
+    } catch (err) {
+      return error(512, `buy raise view ${payload.method} error`, err);
     }
   },
 };
