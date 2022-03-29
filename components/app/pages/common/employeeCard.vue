@@ -2,8 +2,7 @@
   <div
     class="card"
     :data-selector="`COMPONENT-EMPLOYEE-CARD-${user.id}`"
-    :class="
-      raiseViews[user.raiseView && $options.RaiseViewStatus[user.raiseView.status] && user.raiseView.type]"
+    :class="raiseViewStatus"
     @click="$emit('click')"
   >
     <div class="card__header">
@@ -68,7 +67,6 @@ import { RaiseViewStatus } from '~/utils/enums';
 
 export default {
   name: 'EmployeeCard',
-  RaiseViewStatus,
   props: {
     user: {
       type: Object,
@@ -97,6 +95,9 @@ export default {
         2: 'card_silver',
         3: 'card_bronze',
       };
+    },
+    raiseViewStatus() {
+      return this.raiseViews[this.user.raiseView && RaiseViewStatus[this.user.raiseView.status] && this.user.raiseView.type];
     },
   },
   methods: {
