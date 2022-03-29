@@ -19,7 +19,7 @@
           v-if="user.ratingStatistic && user.ratingStatistic.status >= 0"
           class="user__rating"
           :rating="user.ratingStatistic.status"
-          :raise-view="$options.RaiseViewStatus[user.raiseView.status]"
+          :raise-view="$options.RaiseViewStatus[user.raiseView && user.raiseView.status || 1]"
         />
       </div>
     </div>
@@ -67,10 +67,12 @@ import { RaiseViewStatus } from '~/utils/enums';
 
 export default {
   name: 'EmployeeCard',
+  RaiseViewStatus,
   props: {
     user: {
       type: Object,
-      default: () => {},
+      default: () => {
+      },
     },
   },
   computed: {
@@ -181,26 +183,34 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
   &_plus {
     border: 1px solid $yellow100;
+
     &:hover {
       box-shadow: -1px 1px 8px 0px rgba(246, 207, 0, 0.2);
     }
   }
-  &_gold{
+
+  &_gold {
     border: 1px solid $yellow100;
+
     &:hover {
       box-shadow: -1px 1px 8px 0px rgba(246, 207, 0, 0.2);
     }
   }
-  &_silver{
+
+  &_silver {
     border: 1px solid $grey200;
+
     &:hover {
       box-shadow: -1px 1px 8px 0px rgba(187, 192, 199, 0.2);
     }
   }
-  &_bronze{
+
+  &_bronze {
     border: 1px solid $brown;
+
     &:hover {
       box-shadow: -1px 1px 8px 0px rgba(183, 151, 104, 0.2);
     }
