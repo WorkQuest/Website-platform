@@ -435,7 +435,8 @@ export const getGasPrice = async (contractAbi, address, method, attr, value = nu
     const inst = new web3.eth.Contract(contractAbi, address);
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
-      (value) ? inst.methods[method](...attr).estimateGas({ from: wallet.address, value })
+      (value)
+        ? inst.methods[method](...attr).estimateGas({ from: wallet.address, value })
         : inst.methods[method](...attr).estimateGas({ from: wallet.address }),
     ]);
     return { gas: gasEstimate, gasPrice };
