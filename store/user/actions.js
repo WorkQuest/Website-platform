@@ -173,13 +173,13 @@ export default {
       }
     }
     notification.actionNameKey = keyName;
-    const query = {
-      limit: 10,
-      offset: 0,
-      starred: false,
-      'sort[createdAt]': 'desc',
-    };
     if (isUpdateQuests && this.$router.history.current.path !== Path.NOTIFICATIONS) {
+      const query = {
+        limit: 10,
+        offset: 0,
+        starred: false,
+        'sort[createdAt]': 'desc',
+      };
       await dispatch('quests/getUserQuests', {
         userId: currentUserId,
         role: userRole,
