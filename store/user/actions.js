@@ -82,17 +82,34 @@ export default {
     const {
       action, data: {
         user, title, id, assignedWorker, worker, quest, employer, fromUser, message, toUserId,
-        problemDescription,
+        problemDescription, comment, rootComment, discussion,
       },
     } = notification.notification ? notification.notification : notification;
     const currentUserId = getters.getUserData.id;
     const userRole = getters.getUserRole;
+    let query = {};
+    let externalLink = false;
+    let externalBase = '';
     let isUpdateQuests = false;
+    let isUpdateProfile = false;
     let currTitle = quest?.title || title;
     let keyName = 'notifications.';
     let path = `${Path.QUESTS}/${quest?.id || id}`;
 
     switch (action) {
+      /** WORK-QUEST */
+      case NotificationAction.QUEST_EDITED: {
+        // TODO: Добавить ссылку на квест
+        keyName += 'questEdited';
+        isUpdateQuests = true;
+        break;
+      }
+      case NotificationAction.QUEST_END_SOON: {
+        // TODO: Добавить ссылку на квест
+        keyName += 'questEndSoon';
+        isUpdateQuests = true;
+        break;
+      }
       case NotificationAction.QUEST_STARTED: {
         keyName += 'invitesYouToStartAQuest';
         isUpdateQuests = true;
@@ -149,8 +166,9 @@ export default {
         break;
       }
       case NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST: {
+        // TODO: Добавить логику на обновление профиля работника/работодателя
+        isUpdateProfile = true;
         keyName += 'leftReviewAboutQuest';
-        isUpdateQuests = true;
         path = `${Path.PROFILE}/${toUserId}`;
         currTitle = message;
         break;
@@ -167,6 +185,30 @@ export default {
         currTitle = problemDescription;
         break;
       }
+      /** DAO */
+      case NotificationAction.COMMENT_LIKED: {
+        externalLink = true;
+        keyName += 'commentLiked';
+        externalBase = 'https://dev-dao.workquest.co';
+        path = `${Path.DISCUSSIONS}/${comment.discussionId}`;
+        break;
+      }
+      case NotificationAction.NEW_COMMENT_IN_DISCUSSION: {
+        externalLink = true;
+        keyName += 'newCommentInDiscussion';
+        externalBase = 'https://dev-dao.workquest.co';
+        currTitle = discussion.title;
+        path = `${Path.DISCUSSIONS}/${discussion.id}`;
+        break;
+      }
+      case NotificationAction.NEW_DISCUSSION_LIKE: {
+        externalLink = true;
+        keyName += 'newDiscussionLike';
+        externalBase = 'https://dev-dao.workquest.co';
+        currTitle = discussion.title;
+        path = `${Path.DISCUSSIONS}/${discussion.id}`;
+        break;
+      }
       default: {
         keyName = '';
         break;
@@ -174,7 +216,7 @@ export default {
     }
     notification.actionNameKey = keyName;
     if (isUpdateQuests && this.$router.history.current.path !== Path.NOTIFICATIONS) {
-      const query = {
+      query = {
         limit: 10,
         offset: 0,
         starred: false,
@@ -186,15 +228,29 @@ export default {
         query,
       }, { root: true });
     }
+    if (isUpdateProfile && this.$router.history.current.path !== Path.NOTIFICATIONS) {
+      query = {
+        limit: 8,
+        offset: 0,
+      };
+      await dispatch('getAllUserReviews', { userId: currentUserId, query });
+    }
     function setsNotificationSender() {
-      if (fromUser) notification.sender = fromUser;
-      if (userRole === UserRole.WORKER) notification.sender = user || employer;
-      if (assignedWorker) notification.sender = assignedWorker;
-      if (worker) notification.sender = worker;
-      if (quest?.user) notification.sender = quest?.user;
+      if (!notification.sender) {
+        if (userRole === UserRole.WORKER) notification.sender = user || employer;
+        if (userRole === UserRole.EMPLOYER) notification.sender = assignedWorker || worker;
+        if (quest?.user) notification.sender = quest?.user;
+        if (comment?.author) notification.sender = comment?.author;
+        if (rootComment?.author) notification.sender = rootComment?.author;
+        if (fromUser) notification.sender = fromUser;
+      }
     }
     setsNotificationSender();
-    if (currTitle) notification.params = { title: currTitle, path };
+    if (currTitle) {
+      notification.params = {
+        title: currTitle, path, externalLink, externalBase,
+      };
+    }
     notification.creatingDate = moment(new Date(notification.createdAt)).format('MMMM Do YYYY, HH:mm');
     return notification;
   },

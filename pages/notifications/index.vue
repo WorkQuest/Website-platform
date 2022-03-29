@@ -34,22 +34,25 @@
                 >
                   {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
                 </span>
-                <!--                <span class="inviter__company">-->
-                <!--                  {{ notification.company }}-->
-                <!--                </span>-->
               </div>
             </template>
             <div class="notification__quest quest">
               <span class="quest__invitation">
-                {{ $t(notification.actionNameKey) }}:
+                {{ notificationActionKey(notification) }}
               </span>
-              <span
-                v-if="notification.params"
-                class="quest__title"
-                @click="goToEvent(notification.params ? notification.params.path : '')"
+              <a
+                class="quest__external-link"
+                :href="notification.params ? `${notification.params.externalBase}${notification.params.path}` : ''"
+                target="_blank"
               >
-                {{ notification.params.title }}
-              </span>
+                <span
+                  v-if="notification.params"
+                  class="quest__title"
+                  @click="!notification.params.externalLink ? goToEvent(notification.params.path || '') : ''"
+                >
+                  {{ notification.params.title }}
+                </span>
+              </a>
             </div>
             <div class="notification__date">
               {{ notification.creatingDate }}
@@ -61,14 +64,20 @@
               @click="tryRemoveNotification($event, notification.id)"
             >
             <div class="notification__button">
-              <base-btn
-                mode="outline"
-                class="button__view"
-                data-selector="NOTIFICATION-VIEW"
-                @click="goToEvent(notification.params ? notification.params.path : '')"
+              <a
+                class="quest__external-link"
+                :href="notification.params ? `${notification.params.externalBase}${notification.params.path}` : ''"
+                target="_blank"
               >
-                {{ $t('meta.btns.view') }}
-              </base-btn>
+                <base-btn
+                  mode="outline"
+                  class="button__view"
+                  data-selector="NOTIFICATION-VIEW"
+                  @click="!notification.params.externalLink ? goToEvent(notification.params.path || '') : ''"
+                >
+                  {{ $t('meta.btns.view') }}
+                </base-btn>
+              </a>
             </div>
           </div>
         </div>
@@ -116,10 +125,6 @@ export default {
       notifsCount: 'user/getNotificationsCount',
       currentUser: 'user/getUserData',
     }),
-    // filterNotifications() {
-    //   // TODO: Используется для фильтрации нотификаций только от ворквеста
-    //   return this.notifications.filter((notification) => notification.queueName === 'quest');
-    // },
     totalPages() {
       return Math.ceil(this.notifsCount / this.filter.limit);
     },
@@ -133,6 +138,12 @@ export default {
     this.$store.commit('user/setNotifications', { result: { notifications: [], count: this.notifsCount } });
   },
   methods: {
+    notificationActionKey(notification) {
+      if (!['notifications.commentLiked', 'notifications.commentLiked',
+        'notifications.newDiscussionLike'].includes(notification.actionNameKey)) {
+        return `${this.$t(notification.actionNameKey)}:`;
+      } return `${this.$t(notification.actionNameKey)}.`;
+    },
     toUserProfile(notification) {
       this.$router.push(`${Path.PROFILE}/${notification.sender.id}`);
     },
@@ -342,6 +353,10 @@ export default {
   }
 }
 .quest {
+  &__external-link {
+    text-decoration: none;
+    text-outline: none;
+  }
   &__invitation {
     @include text-simple;
     font-weight: 400;

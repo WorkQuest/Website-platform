@@ -1291,7 +1291,12 @@
     "leftReviewAboutQuest": "Left review about quest",
     "registrationError": "No users found for registration. Please contact to developers",
     "theQuestIsPending": "The quest is pending",
-    "disputeDecision": "Dispute decision"
+    "disputeDecision": "Dispute decision",
+    "newCommentInDiscussion": "New comment in Discussion",
+    "commentLiked": "Comment liked",
+    "questEdited": "Quest edited",
+    "questEndSoon": "Quest end soon",
+    "newDiscussionLike": "New like on discussion"
   },
   "wallet": {
     "WUSD": "Portefeuille en WUSD",

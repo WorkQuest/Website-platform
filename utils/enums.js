@@ -159,11 +159,14 @@ export const NotificationAction = {
   WORKER_REJECTED_INVITATION_TO_QUEST: 'workerRejectedInvitationToQuest',
   EMPLOYER_REJECTED_WORKERS_RESPONSE: 'employerRejectedWorkersResponse',
   WAIT_WORKER: 'waitWorker',
-
   USER_LEFT_REVIEW_ABOUT_QUEST: 'userLeftReviewAboutQuest',
-
   OPEN_DISPUTE: 'openDispute',
   DISPUTE_DECISION: 'disputeDecision',
+  NEW_COMMENT_IN_DISCUSSION: 'newCommentInDiscussion',
+  COMMENT_LIKED: 'commentLiked',
+  QUEST_EDITED: 'questEdited',
+  QUEST_END_SOON: 'questEndSoon',
+  NEW_DISCUSSION_LIKE: 'newDiscussionLike',
 };
 
 export const ChatType = {
@@ -212,6 +215,7 @@ export const Path = {
   WIKI: '/wiki',
   RAISED_VIEWS: '/raised-views',
   NOTIFICATIONS: '/notifications',
+  DISCUSSIONS: '/discussions',
 };
 
 // WALLET
