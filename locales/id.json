@@ -889,6 +889,7 @@
       "filters": {
         "titleAll": "Semua Filter"
       },
+      "saved": "Saved successfully",
       "cardAdd": "Add card",
       "addCase": "Add Case",
       "addingCard": "Adding card",

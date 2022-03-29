@@ -277,7 +277,7 @@ export default {
     totalPages() {
       return Math.ceil(this.paidEventsList.length / this.perPage);
     },
-    createdReferralsList() {
+    filterCreatedReferralsList() {
       return this.referralsList.filter((item) => item.referralUser.referralStatus === 'created');
     },
     tableFields() {
@@ -407,14 +407,14 @@ export default {
       this.SetLoader(true);
       const res = await this.$store.dispatch('referral/fetchCreatedReferralList');
       this.SetLoader(false);
-      if (res && !this.createdReferralsList.length) {
+      if (res && this.createdReferralsList.length) {
         this.ShowModal({
           key: modals.status,
           title: this.$t('meta.btns.registration'),
           subtitle: this.$t('modals.registration'),
           cancel: this.$t('meta.btns.cancel'),
           button: this.$t('meta.btns.submit'),
-          itemList: this.createdReferralsList,
+          itemList: this.filterCreatedReferralsList,
           callback: async () => await this.$store.dispatch('referral/addReferrals', this.userAddress),
         });
       } else {

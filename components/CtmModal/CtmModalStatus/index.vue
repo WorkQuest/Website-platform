@@ -75,6 +75,7 @@
             class="status__btn"
             :mode="options.submitMode"
             selector="SUBMIT"
+            :disabled="isLoading"
             @click="handleSubmit()"
           >
             <span v-if="options.button">
@@ -104,6 +105,7 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
       userAddress: 'user/getUserWalletAddress',
+      isLoading: 'main/getIsLoading',
     }),
   },
   async mounted() {
@@ -137,8 +139,11 @@ export default {
       }
     },
     async handleSubmit() {
+      if (this.isLoading) return;
+      this.SetLoader(true);
       if (this.options.callback) await this.options.callback();
       this.hide();
+      this.SetLoader(false);
     },
   },
 };
