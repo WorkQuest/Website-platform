@@ -85,6 +85,7 @@ export default {
       },
     } = notification.notification ? notification.notification : notification;
 
+    console.log('notification', notification);
     // If we on quest id page
     if (!getters.getUserData.id && !getters.getUserRole) dispatch('getUserData');
     const currentUserId = getters.getUserData.id;
@@ -94,7 +95,6 @@ export default {
     let keyName = 'notifications.';
     let path = `${Path.QUESTS}/${quest?.id || id}`;
 
-    const isItAnWorker = userRole === UserRole.WORKER;
     switch (action) {
       case NotificationAction.QUEST_STARTED: {
         keyName += 'invitesYouToStartAQuest';
@@ -178,17 +178,18 @@ export default {
       'notifications.disputeDecision',
     ];
     if (keyArr.includes(keyName)) {
-      if (currentUserId && userRole) {
-        if (![Path.NOTIFICATIONS].includes(this.$router.history.current.path)) {
-          await dispatch('quests/getUserQuests', {
-            userId: currentUserId,
-            role: userRole,
-            query,
-          }, { root: true });
-        }
+      if (currentUserId && userRole && ![Path.NOTIFICATIONS].includes(this.$router.history.current.path)) {
+        await dispatch('quests/getUserQuests', {
+          userId: currentUserId,
+          role: userRole,
+          query,
+        }, { root: true });
       }
     }
+    const isItAnWorker = userRole === UserRole.WORKER;
     notification.sender = fromUser || (isItAnWorker ? user || employer : assignedWorker || worker);
+    // TODO: Временный фикс sender = undefined
+    if (!notification.sender && notification.userId === currentUserId) notification.sender = getters.getUserData;
     if (currTitle) notification.params = { title: currTitle, path };
     notification.creatingDate = moment(new Date(notification.createdAt)).format('MMMM Do YYYY, HH:mm');
     return notification;

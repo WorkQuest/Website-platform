@@ -43,27 +43,24 @@
         <template v-if="notificationsCount">
           <div class="reduced-notifications__list">
             <div
-              v-for="(notification, i) in notifications"
-              :key="i"
+              v-for="(notification) in notifications"
+              :key="notification.id"
               :data-selector="`NOTIFICATION-BUTTONS-NOTIFICATION-${notification.id}`"
               class="notify notify__content"
             >
               <div class="notify__top">
-                <div
-                  v-if="notification.sender"
-                  class="notify__user"
-                >
+                <div class="notify__user">
                   <img
                     class="notify__avatar"
-                    :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : EmptyAvatar()"
+                    :src="sender(notification.sender).avatar && sender(notification.sender).avatar.url ? sender(notification.sender).avatar.url : EmptyAvatar()"
                     alt="avatar"
                   >
                   <div class="notify__info">
                     <a
-                      :href="`/profile/${notification.sender.id}`"
+                      :href="`/profile/${sender(notification.sender).id}`"
                       class="notify__text notify__text_name"
                     >
-                      {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
+                      {{ UserName(sender(notification.sender).firstName, sender(notification.sender).lastName) }}
                     </a>
                   </div>
                 </div>
@@ -127,9 +124,14 @@ export default {
       unreadNotifsCount: 'user/getUnreadNotifsCount',
       notifications: 'user/getReducedNotifications',
       notificationsCount: 'user/getNotificationsCount',
+      userData: 'user/getUserData',
     }),
   },
   methods: {
+    sender(sender) {
+      if (!sender) sender = this.userData;
+      return sender;
+    },
     goToNotifsPage() {
       this.closePopUp();
       this.$router.push('/notifications');

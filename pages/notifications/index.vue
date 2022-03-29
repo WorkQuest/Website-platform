@@ -9,70 +9,68 @@
           v-if="notifsCount"
           class="info-block__list"
         >
-          <transition-group name="fade-fast">
-            <div
-              v-for="(notification) in notifications"
-              :key="notification.id"
-              :ref="`${notification.id}|${notification.seen}`"
-              v-observe-visibility="(isVisible) => checkUnseenNotifs(isVisible, notification)"
-              class="notification"
-              :class="{'notification_gray' : !notification.seen}"
-              @click="goToEvent(notification.params ? notification.params.path : '', true)"
-            >
-              <template v-if="notification.sender">
-                <div class="notification__avatar">
-                  <img
-                    class="avatar"
-                    :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : EmptyAvatar()"
-                    alt=""
-                    @click="toUserProfile(notification)"
-                  >
-                </div>
-                <div class="notification__inviter inviter">
-                  <span
-                    class="inviter__name"
-                    @click="toUserProfile(notification)"
-                  >
-                    {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
-                  </span>
+          <div
+            v-for="(notification) in notifications"
+            :key="notification.id"
+            :ref="`${notification.id}|${notification.seen}`"
+            v-observe-visibility="(isVisible) => checkUnseenNotifs(isVisible, notification)"
+            class="notification"
+            :class="{'notification_gray' : !notification.seen}"
+            @click="goToEvent(notification.params ? notification.params.path : '', true)"
+          >
+            <template v-if="notification.sender">
+              <div class="notification__avatar">
+                <img
+                  class="avatar"
+                  :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : EmptyAvatar()"
+                  alt=""
+                  @click="toUserProfile(notification)"
+                >
+              </div>
+              <div class="notification__inviter inviter">
+                <span
+                  class="inviter__name"
+                  @click="toUserProfile(notification)"
+                >
+                  {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
+                </span>
                 <!--                <span class="inviter__company">-->
                 <!--                  {{ notification.company }}-->
                 <!--                </span>-->
-                </div>
-              </template>
-              <div class="notification__quest quest">
-                <span class="quest__invitation">
-                  {{ $t(notification.actionNameKey) }}:
-                </span>
-                <span
-                  v-if="notification.params"
-                  class="quest__title"
-                  @click="goToEvent(notification.params ? notification.params.path : '')"
-                >
-                  {{ notification.params.title }}
-                </span>
               </div>
-              <div class="notification__date">
-                {{ notification.creatingDate }}
-              </div>
-              <img
-                class="notification__remove"
-                src="~assets/img/ui/close.svg"
-                alt="x"
-                @click="tryRemoveNotification($event, notification.id)"
+            </template>
+            <div class="notification__quest quest">
+              <span class="quest__invitation">
+                {{ $t(notification.actionNameKey) }}:
+              </span>
+              <span
+                v-if="notification.params"
+                class="quest__title"
+                @click="goToEvent(notification.params ? notification.params.path : '')"
               >
-              <div class="notification__button">
-                <base-btn
-                  mode="outline"
-                  class="button__view"
-                  data-selector="NOTIFICATION-VIEW"
-                  @click="goToEvent(notification.params ? notification.params.path : '')"
-                >
-                  {{ $t('meta.btns.view') }}
-                </base-btn>
-              </div>
+                {{ notification.params.title }}
+              </span>
             </div>
-          </transition-group>
+            <div class="notification__date">
+              {{ notification.creatingDate }}
+            </div>
+            <img
+              class="notification__remove"
+              src="~assets/img/ui/close.svg"
+              alt="x"
+              @click="tryRemoveNotification($event, notification.id)"
+            >
+            <div class="notification__button">
+              <base-btn
+                mode="outline"
+                class="button__view"
+                data-selector="NOTIFICATION-VIEW"
+                @click="goToEvent(notification.params ? notification.params.path : '')"
+              >
+                {{ $t('meta.btns.view') }}
+              </base-btn>
+            </div>
+          </div>
         </div>
         <empty-data
           v-else
@@ -131,9 +129,9 @@ export default {
     await this.getNotifications();
     this.SetLoader(false);
   },
-  // destroyed() {
-  //   this.$store.commit('user/setNotifications', { result: { notifications: [], count: this.notifsCount } });
-  // },
+  destroyed() {
+    this.$store.commit('user/setNotifications', { result: { notifications: [], count: this.notifsCount } });
+  },
   methods: {
     toUserProfile(notification) {
       this.$router.push(`${Path.PROFILE}/${notification.sender.id}`);
