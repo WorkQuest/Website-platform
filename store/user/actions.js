@@ -78,19 +78,16 @@ export default {
     commit('addNotification', newNotification);
   },
   async setCurrNotificationObject({ getters, rootGetters, dispatch }, notification) {
+    if (!getters.getUserData.id && !getters.getUserRole) dispatch('getUserData');
     const {
       action, data: {
         user, title, id, assignedWorker, worker, quest, employer, fromUser, message, toUserId,
         problemDescription,
       },
     } = notification.notification ? notification.notification : notification;
-
-    console.log('notification', notification);
-    // If we on quest id page
-    if (!getters.getUserData.id && !getters.getUserRole) dispatch('getUserData');
     const currentUserId = getters.getUserData.id;
     const userRole = getters.getUserRole;
-
+    let isUpdateQuests = false;
     let currTitle = quest?.title || title;
     let keyName = 'notifications.';
     let path = `${Path.QUESTS}/${quest?.id || id}`;
@@ -98,61 +95,75 @@ export default {
     switch (action) {
       case NotificationAction.QUEST_STARTED: {
         keyName += 'invitesYouToStartAQuest';
+        isUpdateQuests = true;
         break;
       }
       case NotificationAction.WORKER_REJECTED_QUEST: {
         keyName += 'rejectedTheQuest';
+        isUpdateQuests = true;
         break;
       }
       case NotificationAction.WORKER_ACCEPTED_QUEST: {
         keyName += 'acceptedTheQuest';
+        isUpdateQuests = true;
         break;
       }
       case NotificationAction.WORKER_COMPLETED_QUEST: {
         keyName += 'completedTheQuest';
+        isUpdateQuests = true;
         break;
       }
       case NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST: {
         keyName += 'acceptedAJobOnAQuest';
+        isUpdateQuests = true;
         break;
       }
       case NotificationAction.WORKER_RESPONDED_TO_QUEST: {
         keyName += 'respondedToQuest';
+        isUpdateQuests = true;
         break;
       }
       case NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST: {
         keyName += 'invitedYouToAQuest';
+        isUpdateQuests = true;
         break;
       }
       case NotificationAction.WORKER_ACCEPTED_INVITATION_TO_QUEST: {
         keyName += 'acceptedTheInvitationToTheQuest';
+        isUpdateQuests = true;
         break;
       }
       case NotificationAction.WORKER_REJECTED_INVITATION_TO_QUEST: {
         keyName += 'declinedTheInvitationToTheQuest';
+        isUpdateQuests = true;
         break;
       }
       case NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE: {
         keyName += 'declinedYourResponseToTheQuest';
+        isUpdateQuests = true;
         break;
       }
       case NotificationAction.WAIT_WORKER: {
         keyName += 'theQuestIsPending';
+        isUpdateQuests = true;
         break;
       }
       case NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST: {
         keyName += 'leftReviewAboutQuest';
+        isUpdateQuests = true;
         path = `${Path.PROFILE}/${toUserId}`;
         currTitle = message;
         break;
       }
       case NotificationAction.OPEN_DISPUTE: {
         keyName += 'openDispute';
+        isUpdateQuests = true;
         currTitle = problemDescription;
         break;
       }
       case NotificationAction.DISPUTE_DECISION: {
         keyName += 'disputeDecision';
+        isUpdateQuests = true;
         currTitle = problemDescription;
         break;
       }
@@ -168,28 +179,21 @@ export default {
       starred: false,
       'sort[createdAt]': 'desc',
     };
-    // Update statuses
-    const keyArr = [
-      'notifications.theQuestIsPending', 'notifications.invitesYouToStartAQuest', 'notifications.rejectedTheQuest',
-      'notifications.acceptedTheQuest', 'notifications.completedTheQuest', 'notifications.acceptedAJobOnAQuest',
-      'notifications.respondedToQuest', 'notifications.invitedYouToAQuest',
-      'notifications.acceptedTheInvitationToTheQuest', 'notifications.declinedTheInvitationToTheQuest',
-      'notifications.declinedYourResponseToTheQuest', 'notifications.theQuestIsPending', 'notifications.openDispute',
-      'notifications.disputeDecision',
-    ];
-    if (keyArr.includes(keyName)) {
-      if (currentUserId && userRole && ![Path.NOTIFICATIONS].includes(this.$router.history.current.path)) {
-        await dispatch('quests/getUserQuests', {
-          userId: currentUserId,
-          role: userRole,
-          query,
-        }, { root: true });
-      }
+    if (isUpdateQuests && this.$router.history.current.path !== Path.NOTIFICATIONS) {
+      await dispatch('quests/getUserQuests', {
+        userId: currentUserId,
+        role: userRole,
+        query,
+      }, { root: true });
     }
-    const isItAnWorker = userRole === UserRole.WORKER;
-    notification.sender = fromUser || (isItAnWorker ? user || employer : assignedWorker || worker);
-    // TODO: Временный фикс sender = undefined
-    if (!notification.sender && notification.userId === currentUserId) notification.sender = getters.getUserData;
+    function setsNotificationSender() {
+      if (fromUser) notification.sender = fromUser;
+      if (userRole === UserRole.WORKER) notification.sender = user || employer;
+      if (assignedWorker) notification.sender = assignedWorker;
+      if (worker) notification.sender = worker;
+      if (quest?.user) notification.sender = quest?.user;
+    }
+    setsNotificationSender();
     if (currTitle) notification.params = { title: currTitle, path };
     notification.creatingDate = moment(new Date(notification.createdAt)).format('MMMM Do YYYY, HH:mm');
     return notification;

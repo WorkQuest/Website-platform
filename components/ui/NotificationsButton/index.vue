@@ -52,15 +52,15 @@
                 <div class="notify__user">
                   <img
                     class="notify__avatar"
-                    :src="sender(notification.sender).avatar && sender(notification.sender).avatar.url ? sender(notification.sender).avatar.url : EmptyAvatar()"
+                    :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : EmptyAvatar()"
                     alt="avatar"
                   >
                   <div class="notify__info">
                     <a
-                      :href="`/profile/${sender(notification.sender).id}`"
+                      :href="`/profile/${notification.sender.id}`"
                       class="notify__text notify__text_name"
                     >
-                      {{ UserName(sender(notification.sender).firstName, sender(notification.sender).lastName) }}
+                      {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
                     </a>
                   </div>
                 </div>
@@ -128,10 +128,6 @@ export default {
     }),
   },
   methods: {
-    sender(sender) {
-      if (!sender) sender = this.userData;
-      return sender;
-    },
     goToNotifsPage() {
       this.closePopUp();
       this.$router.push('/notifications');
