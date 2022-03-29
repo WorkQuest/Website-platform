@@ -22,7 +22,7 @@
               <div class="notification__avatar">
                 <img
                   class="avatar"
-                  :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : EmptyAvatar()"
+                  :src="avatar(notification)"
                   alt=""
                   @click="toUserProfile(notification)"
                 >
@@ -41,14 +41,14 @@
                 {{ notificationActionKey(notification) }}
               </span>
               <a
+                v-if="notification.params"
                 class="quest__external-link"
-                :href="notification.params ? `${notification.params.externalBase}${notification.params.path}` : ''"
+                :href="notification.params.externalLink ? `${notification.params.externalBase}${notification.params.path}` : ''"
                 target="_blank"
               >
                 <span
-                  v-if="notification.params"
                   class="quest__title"
-                  @click="!notification.params.externalLink ? goToEvent(notification.params.path || '') : ''"
+                  @click="!notification.params.externalLink ? goToEvent(notification.params.path) : ''"
                 >
                   {{ notification.params.title }}
                 </span>
@@ -64,20 +64,16 @@
               @click="tryRemoveNotification($event, notification.id)"
             >
             <div class="notification__button">
-              <a
-                class="quest__external-link"
-                :href="notification.params ? `${notification.params.externalBase}${notification.params.path}` : ''"
-                target="_blank"
+              <base-btn
+                v-if="notification.params"
+                mode="outline"
+                :link="notification.params.externalLink ? `${notification.params.externalBase}${notification.params.path}` : ''"
+                class="button__view"
+                data-selector="NOTIFICATION-VIEW"
+                @click="!notification.params.externalLink ? goToEvent(notification.params.path) : ''"
               >
-                <base-btn
-                  mode="outline"
-                  class="button__view"
-                  data-selector="NOTIFICATION-VIEW"
-                  @click="!notification.params.externalLink ? goToEvent(notification.params.path || '') : ''"
-                >
-                  {{ $t('meta.btns.view') }}
-                </base-btn>
-              </a>
+                {{ $t('meta.btns.view') }}
+              </base-btn>
             </div>
           </div>
         </div>
@@ -138,9 +134,12 @@ export default {
     this.$store.commit('user/setNotifications', { result: { notifications: [], count: this.notifsCount } });
   },
   methods: {
+    avatar(notification) {
+      if (notification.sender?.avatar?.url) return notification.sender.avatar.url;
+      return this.EmptyAvatar();
+    },
     notificationActionKey(notification) {
-      if (!['notifications.commentLiked', 'notifications.commentLiked',
-        'notifications.newDiscussionLike'].includes(notification.actionNameKey)) {
+      if (!['notifications.newDiscussionLike'].includes(notification.actionNameKey)) {
         return `${this.$t(notification.actionNameKey)}:`;
       } return `${this.$t(notification.actionNameKey)}.`;
     },

@@ -190,6 +190,7 @@ export default {
         keyName += 'commentLiked';
         externalBase = 'https://dev-dao.workquest.co';
         path = `${Path.DISCUSSIONS}/${comment.discussionId}`;
+        currTitle = comment.text;
         break;
       }
       case NotificationAction.NEW_COMMENT_IN_DISCUSSION: {
@@ -214,7 +215,7 @@ export default {
       }
     }
     notification.actionNameKey = keyName;
-    if (isUpdateQuests && this.$router.history.current.path !== Path.NOTIFICATIONS) {
+    if (isUpdateQuests && currentUserId && userRole && this.$router.history.current.path !== Path.NOTIFICATIONS) {
       query = {
         limit: 10,
         offset: 0,
@@ -227,7 +228,7 @@ export default {
         query,
       }, { root: true });
     }
-    if (isUpdateProfile && this.$router.history.current.path !== Path.NOTIFICATIONS) {
+    if (isUpdateProfile && currentUserId && userRole && this.$router.history.current.path !== Path.NOTIFICATIONS) {
       query = {
         limit: 8,
         offset: 0,
