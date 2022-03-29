@@ -15,7 +15,6 @@ import {
   goToChain,
   initStackingContract,
   initWeb3,
-  initMetaMaskWeb3,
   redeemSwap,
   showToast,
   staking,
@@ -29,10 +28,10 @@ import {
   getChainIdByChain,
   initProvider,
   getPoolTotalSupplyBSC, getPoolTokensAmountBSC,
-  error, sendTransaction,
+  error,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
-import { RaiseViewTariffPeriods, StakingTypes } from '~/utils/enums';
+import { StakingTypes } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 BigNumber.set({ ROUNDING_MODE: BigNumber.ROUND_DOWN });
