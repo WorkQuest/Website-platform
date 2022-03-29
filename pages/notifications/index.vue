@@ -208,6 +208,11 @@ export default {
   }
 }
 
+.button__view {
+  text-decoration: none;
+  text-outline: none;
+}
+
 .info-block {
   background: #fff;
   border-radius: 6px;
@@ -342,10 +347,6 @@ export default {
   }
 }
 .quest {
-  &__external-link {
-    text-decoration: none;
-    text-outline: none;
-  }
   &__invitation {
     @include text-simple;
     font-weight: 400;
