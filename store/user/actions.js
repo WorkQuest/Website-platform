@@ -166,7 +166,6 @@ export default {
         break;
       }
       case NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST: {
-        // TODO: Добавить логику на обновление профиля работника/работодателя
         isUpdateProfile = true;
         keyName += 'leftReviewAboutQuest';
         path = `${Path.PROFILE}/${toUserId}`;
