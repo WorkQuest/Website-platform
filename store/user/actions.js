@@ -1,19 +1,31 @@
 import moment from 'moment';
 import BigNumber from 'bignumber.js';
-import Web3 from 'web3';
-import { error, fetchContractData } from '~/utils/web3';
 import {
-  connectWithMnemonic, getGasPrice,
-  createWeb3Instance, getWallet,
+  error,
+  success,
+  fetchContractData,
+} from '~/utils/web3';
+
+import {
+  getGasPrice,
+  createInstance,
+  getWalletAddress,
+  GetWalletProvider,
+  connectWithMnemonic,
 } from '~/utils/wallet';
+
 import {
-  NotificationAction, UserRole, Path, UserStatuses, QuestModeReview, RaiseViewTariffPeriods,
+  Path,
+  UserRole,
+  UserStatuses,
+  QuestModeReview,
+  NotificationAction,
+  RaiseViewTariffPeriods,
 } from '~/utils/enums';
-import * as abi from '~/abi/abi';
+
+import { WQPromotion } from '~/abi/abi';
 
 const { WORKNET_PROMOTION } = process.env;
-const { WQPromotion } = abi;
-const web3 = new Web3(process.env.WQ_PROVIDER);
 
 export default {
   async changeRole({ commit }, { totp }) {
@@ -481,6 +493,7 @@ export default {
       return false;
     }
   },
+  // TODO delete, waiting when backend will be catch all this events
   async payUserRaisedView({ commit }, payload) {
     try {
       const response = await this.$axios.$post('/v1/profile/worker/me/raise-view/pay', payload);
@@ -490,9 +503,9 @@ export default {
       return false;
     }
   },
-  async getRaiseViewPrice({ commit }, payload) {
+  async getRaiseViewPrice({ commit }, { type }) {
     try {
-      const periods = RaiseViewTariffPeriods[payload.type];
+      const periods = RaiseViewTariffPeriods[type];
       const tariffs = ['1', '2', '3', '4'];
       const price = {};
       for (let i = 0; i < tariffs.length; i += 1) {
@@ -501,32 +514,43 @@ export default {
           const data = [tariffs[i], periods[j]];
           /* eslint-disable no-await-in-loop */
           const cost = await fetchContractData(
-            payload.type, WQPromotion, WORKNET_PROMOTION, data, web3,
+            type,
+            WQPromotion,
+            WORKNET_PROMOTION,
+            data,
+            GetWalletProvider(),
           );
-          price[tariffs[i]][periods[j]] = new BigNumber(cost).shiftedBy(-18).toString();
+          price[tariffs[i]][periods[j]] = new BigNumber(+cost).shiftedBy(-18).toString();
         }
       }
-      return price;
+      return success(price);
     } catch (e) {
-      console.log('getRaiseViewPrice');
-      return false;
+      console.log('user/getRaiseViewPrice');
+      return error(e.code, 'Error in get raise view price', e);
     }
   },
-  async buyRaiseView({ commit }, payload) {
+  async promoteUserOnContract({ commit }, { cost, tariff, period }) {
     try {
-      const inst = new web3.eth.Contract(WQPromotion, WORKNET_PROMOTION);
-      const value = new BigNumber(payload.cost).shiftedBy(18).toString();
-      const attr = [payload.tariff, payload.period];
-      const wallet = getWallet();
-      const { gas, gasPrice } = await getGasPrice(WQPromotion, WORKNET_PROMOTION, 'promoteUser', attr, value);
+      const inst = createInstance(WQPromotion, WORKNET_PROMOTION);
+      const value = new BigNumber(cost).shiftedBy(18).toString();
+      const { gas, gasPrice } = await getGasPrice(
+        WQPromotion,
+        WORKNET_PROMOTION,
+        'promoteUser',
+        [tariff, period],
+        value,
+      );
       const params = {
-        from: wallet, gasPrice, gas, value,
+        from: getWalletAddress(),
+        gasPrice,
+        gas,
+        value,
       };
-      await inst.methods.promoteUser(payload.tariff, payload.period).send(params);
-      return true;
+      const response = await inst.methods.promoteUser(tariff, period).send(params);
+      return success(response);
     } catch (e) {
-      console.log('buyRaiseView');
-      return false;
+      console.log('user/buyRaiseView');
+      return error(e.code, 'Error in method promote user', e);
     }
   },
 };

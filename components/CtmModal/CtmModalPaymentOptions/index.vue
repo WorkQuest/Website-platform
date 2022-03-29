@@ -166,34 +166,10 @@ export default {
         branch: 'payment',
       });
     },
-    goBackToProfile() {
-      if (window.history.length > 2) {
-        this.$router.go(-1);
-      } else {
-        this.$router.push(Path.PROFILE);
-      }
-    },
     async showRaiseLevel() {
-      const contractResult = await this.$store.dispatch('user/buyRaiseView', {
-        tariff: this.options.tariff, period: this.options.duration, cost: this.options.cost,
-      });
-      if (contractResult) {
-        const result = await this.$store.dispatch('user/payUserRaisedView', { duration: this.options.duration, type: this.options.type });
-        this.ShowModal({
-          key: modals.status,
-          img: result ? require('~/assets/img/ui/questAgreed.svg') : require('~/assets/img/ui/error.svg'),
-          title: result ? this.$t('modals.yourLevelHasBeenRaised') : this.$t('modals.errors.error'),
-        });
-        if (result) {
-          this.goBackToProfile();
-        }
-      } else {
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/error.svg'),
-          title: this.$t('modals.errors.error'),
-        });
-      }
+      const { submit } = this.options;
+      if (submit) submit();
+      this.hide();
     },
   },
 };
@@ -207,16 +183,19 @@ export default {
     flex-direction: row;
     align-items: flex-start;
   }
-  &__drop:last-child{
+
+  &__drop:last-child {
     margin: 0;
   }
-  &__panel{
+
+  &__panel {
     @include text-simple;
     font-weight: 400;
     font-size: 16px;
     color: $black500;
     margin: 0 20px 0 0;
     cursor: pointer;
+
     &_active {
       color: $black800;
       border-bottom: 2px solid $blue;
@@ -226,28 +205,32 @@ export default {
 }
 
 .buttons {
-  &__step{
+  &__step {
     display: flex;
     justify-content: space-between;
     margin-top: 25px;
   }
-  &__button{
-    max-width: 206px!important;
+
+  &__button {
+    max-width: 206px !important;
   }
 }
 
 .payment {
   max-width: 487px !important;
-  &__content{
+
+  &__content {
     padding: 22px 30px 28px 30px;
   }
 }
-.drop{
-  &__field{
+
+.drop {
+  &__field {
     border: 1px solid $black0;
     border-radius: 6px;
   }
-  &__title{
+
+  &__title {
     @include text-simple;
     font-weight: 400;
     font-size: 16px;
@@ -255,26 +238,31 @@ export default {
     margin-bottom: 4px;
     margin-top: 15px;
   }
-  &__image{
-    margin-left:15px;
+
+  &__image {
+    margin-left: 15px;
   }
-  &__card:before{
+
+  &__card:before {
     font-size: 25px;
-    color:$blue!important;
+    color: $blue !important;
     margin-left: 17px;
   }
 }
-.button{
+
+.button {
   display: flex;
   justify-content: space-between;
   padding: 0 5px;
-  &__icon::before{
+
+  &__icon::before {
     font-size: 25px;
-    color:$blue!important;
+    color: $blue !important;
     margin-right: 12px;
   }
 }
-.button:hover .button__icon:before{
-  color: $white!important;
+
+.button:hover .button__icon:before {
+  color: $white !important;
 }
 </style>

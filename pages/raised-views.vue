@@ -118,12 +118,13 @@
 
 <script>
 import modals from '~/store/modals/modals';
+import { Path } from '~/utils/enums';
 
 export default {
-  name: 'RisedViews',
+  name: 'RaisedViews',
   async asyncData({ store }) {
-    const prices = await store.dispatch('user/getRaiseViewPrice', { type: 'usersTariff' });
-    return { prices };
+    const { result } = await store.dispatch('user/getRaiseViewPrice', { type: 'usersTariff' });
+    return { prices: result };
   },
   data() {
     return {
@@ -322,10 +323,37 @@ export default {
       this.ShowModal({
         key: modals.paymentOptions,
         step: 1,
-        type: this.type,
-        duration: this.duration[this.period],
-        cost: this.ads.currentAdPrice,
-        tariff: this.currentTariff,
+        submit: async () => {
+          this.SetLoader(true);
+          const period = this.duration[this.period];
+          const cost = this.ads.currentAdPrice;
+          const tariff = this.currentTariff;
+          const { ok } = await this.$store.dispatch('user/promoteUserOnContract', {
+            tariff,
+            period,
+            cost,
+          });
+          if (ok) {
+            // TODO delete, waiting when backend will be catch all this events
+            await this.$store.dispatch('user/payUserRaisedView', {
+              duration: period,
+              type: this.type,
+            });
+          }
+          this.ShowModal({
+            key: modals.status,
+            img: ok ? require('~/assets/img/ui/questAgreed.svg') : require('~/assets/img/ui/error.svg'),
+            title: ok ? this.$t('modals.yourLevelHasBeenRaised') : this.$t('modals.errors.error'),
+            callback: ok
+              ? () => {
+                if (window.history.length > 2) this.$router.go(-1);
+                else this.$router.push(Path.PROFILE);
+
+                this.$store.dispatch('user/getUserData');
+              } : '',
+          });
+          this.SetLoader(false);
+        },
       });
     },
   },
@@ -343,13 +371,16 @@ export default {
     height: 25px;
     border: 1px solid $blue;
     cursor: pointer;
+
     &:checked {
       background: radial-gradient($blue 50%, rgba(255, 0, 0, 0) 55%);
     }
   }
 }
+
 .main {
   @include main;
+
   &-white {
     @include main;
     background: $white;
@@ -357,12 +388,14 @@ export default {
     border-radius: 6px;
     justify-content: center;
   }
+
   &__body {
     max-width: 1180px;
     width: 100%;
     height: 100%;
   }
 }
+
 .page {
   &__raising {
     @include text-simple;
@@ -372,30 +405,37 @@ export default {
     margin: 0 0 20px 0;
   }
 }
+
 .btn-container {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   margin: 20px 0 0 0;
+
   &__left {
     justify-content: flex-start;
     margin: 30px 0 0 0;
   }
+
   &__btn {
     width: 200px;
     margin: 0 10px 0 0;
+
     &_back {
       width: 92px;
     }
+
     &:last-child {
       margin: 0;
     }
   }
 }
+
 .level {
   &__title {
     @extend .period__title;
   }
+
   &__card {
     background: $white;
     border-radius: 6px;
@@ -406,47 +446,58 @@ export default {
     margin: 20px 0 0 0;
     transition: 0.3s;
     cursor: pointer;
-    &_plus{
+
+    &_plus {
       &:hover {
         border: 1px solid $yellow100;
       }
-      &-active{
+
+      &-active {
         border: 1px solid $yellow100;
       }
     }
+
     &_gold {
       &:hover {
         border: 1px solid $yellow100;
       }
-      &-active{
+
+      &-active {
         border: 1px solid $yellow100;
       }
     }
-    &_silver{
+
+    &_silver {
       &:hover {
         border: 1px solid $grey200;
       }
-      &-active{
+
+      &-active {
         border: 1px solid $grey200;
       }
     }
-    &_bronze{
+
+    &_bronze {
       &:hover {
         border: 1px solid $brown;
       }
-      &-active{
+
+      &-active {
         border: 1px solid $brown;
       }
     }
   }
+
   &__option {
     display: flex;
     justify-content: center;
     align-items: center;
   }
 }
+
 .card {
   border: none;
+
   &__level {
     @include text-simple;
     font-weight: 500;
@@ -456,19 +507,24 @@ export default {
     width: 120px;
     padding: 2px 5px;
     text-align: center;
+
     &_plus {
       background: $yellow100;
     }
-    &_gold{
+
+    &_gold {
       background: $yellow100;
     }
+
     &_silver {
       background: $grey200;
     }
+
     &_bronze {
       background: $brown;
     }
   }
+
   &__desc {
     @include text-simple;
     font-weight: 400;
@@ -476,6 +532,7 @@ export default {
     color: $black500;
     margin-top: 12px;
   }
+
   &__cost {
     @include text-simple;
     color: $black800;
@@ -485,20 +542,24 @@ export default {
     justify-content: center;
   }
 }
+
 .period {
   &__choose {
     @extend .period__title;
     margin: 20px 0 0 0;
   }
+
   &__title {
     @include text-simple;
     font-weight: 400;
     font-size: 16px;
     color: $black800;
+
     &_active {
       color: $white;
     }
   }
+
   &__container {
     display: flex;
     justify-content: space-between;
@@ -507,6 +568,7 @@ export default {
     width: 100%;
     margin: 10px 0 20px 0;
   }
+
   &__period {
     color: $black800;
     background: $white;
@@ -516,24 +578,30 @@ export default {
     text-align: center;
     width: inherit;
     margin: 0 20px 0 0;
+
     &:last-child {
       margin: 0;
     }
+
     &:hover {
       cursor: pointer;
       box-shadow: 0 0 10px 2px rgba(34, 60, 80, 0.09);
     }
+
     &_active {
       background: $blue;
       color: $white;
+
       &:hover {
         cursor: pointer;
         box-shadow: 0 0 10px 2px rgba(34, 60, 80, 0.09);
       }
     }
+
     &:last-child {
       margin: 0;
     }
+
     &__title {
       color: $black800;
       font-weight: 500;
@@ -541,7 +609,8 @@ export default {
     }
   }
 }
-.icon-chevron_big_left{
+
+.icon-chevron_big_left {
   color: $black800;
   font-size: 25px;
 }
@@ -551,34 +620,40 @@ export default {
     padding: 0 20px;
   }
 }
+
 @include _767 {
-  .radio__input{
+  .radio__input {
     margin: 0 10px;
   }
-  .card__cost{
+  .card__cost {
     padding-right: 10px;
   }
 }
-@include _480{
-  .period{
-    &__container{
+
+@include _480 {
+  .period {
+    &__container {
       flex-direction: column;
     }
-    &__period{
+
+    &__period {
       margin-bottom: 10px;
-      &:last-child{
+
+      &:last-child {
         margin-bottom: 0;
       }
-  }
-    &__btn-container{
+    }
+
+    &__btn-container {
       flex-direction: column;
       width: 100%;
     }
   }
-  .btn-container__btn{
+  .btn-container__btn {
     width: 100%;
     margin-bottom: 10px;
-    &:last-child{
+
+    &:last-child {
       margin-bottom: 0;
     }
   }
