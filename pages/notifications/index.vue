@@ -40,19 +40,9 @@
               <span class="quest__invitation">
                 {{ notificationActionKey(notification) }}
               </span>
-              <a
-                v-if="notification.params"
-                class="quest__external-link"
-                :href="notification.params.externalLink ? `${notification.params.externalBase}${notification.params.path}` : ''"
-                target="_blank"
-              >
-                <span
-                  class="quest__title"
-                  @click="!notification.params.externalLink ? goToEvent(notification.params.path) : ''"
-                >
-                  {{ notification.params.title }}
-                </span>
-              </a>
+              <span class="quest__title">
+                {{ notification.params.title }}
+              </span>
             </div>
             <div class="notification__date">
               {{ notification.creatingDate }}
@@ -379,7 +369,6 @@ export default {
     -webkit-line-clamp: 3;
     box-orient: vertical;
     -webkit-box-orient: vertical;
-    cursor: pointer;
   }
 }
 
