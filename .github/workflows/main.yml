@@ -57,6 +57,7 @@ jobs:
           echo WORKNET_BRIDGE=${{ secrets.WORKNET_BRIDGE }} >> .env
           echo WORKNET_ORACLE=${{ secrets.WORKNET_ORACLE }} >> .env
           echo WORKNET_PENSION_FUND=${{ secrets.WORKNET_PENSION_FUND }} >> .env
+          echo WORKNET_PROMOTION=${{ secrets.WORKNET_PROMOTION }} >> .env
           echo WORKNET_REFERRAL=${{ secrets.WORKNET_REFERRAL }} >> .env
           echo WORKNET_ROUTER=${{ secrets.WORKNET_ROUTER }} >> .env
           echo WORKNET_STAKING_WQT=${{ secrets.WORKNET_STAKING_WQT }} >> .env
@@ -130,6 +131,7 @@ jobs:
           echo WORKNET_BRIDGE=${{ secrets.WORKNET_BRIDGE }} >> .env
           echo WORKNET_ORACLE=${{ secrets.WORKNET_ORACLE }} >> .env
           echo WORKNET_PENSION_FUND=${{ secrets.WORKNET_PENSION_FUND }} >> .env
+          echo WORKNET_PROMOTION=${{ secrets.WORKNET_PROMOTION }} >> .env
           echo WORKNET_REFERRAL=${{ secrets.WORKNET_REFERRAL }} >> .env
           echo WORKNET_ROUTER=${{ secrets.WORKNET_ROUTER }} >> .env
           echo WORKNET_STAKING_WQT=${{ secrets.WORKNET_STAKING_WQT }} >> .env
@@ -203,6 +205,7 @@ jobs:
           echo WORKNET_BRIDGE=${{ secrets.WORKNET_BRIDGE }} >> .env
           echo WORKNET_ORACLE=${{ secrets.WORKNET_ORACLE }} >> .env
           echo WORKNET_PENSION_FUND=${{ secrets.WORKNET_PENSION_FUND }} >> .env
+          echo WORKNET_PROMOTION=${{ secrets.WORKNET_PROMOTION }} >> .env
           echo WORKNET_REFERRAL=${{ secrets.WORKNET_REFERRAL }} >> .env
           echo WORKNET_ROUTER=${{ secrets.WORKNET_ROUTER }} >> .env
           echo WORKNET_STAKING_WQT=${{ secrets.WORKNET_STAKING_WQT }} >> .env

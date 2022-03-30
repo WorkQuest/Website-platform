@@ -300,23 +300,11 @@ export const PensionHistoryMethods = Object.freeze({
   Receive: 'Receive',
 });
 
-export const UserRaiseViewPriceDay = {
-  PLUS: '20',
-  GOLD: '12',
-  SILVER: '9',
-  BRONZE: '7',
+export const RaiseViewTariffPeriods = {
+  usersTariff: ['1', '7', '30'],
+  questTariff: ['1', '5', '7'],
 };
-
-export const UserRaiseViewPriceWeek = {
-  PLUS: '35',
-  GOLD: '28',
-  SILVER: '22',
-  BRONZE: '18',
-};
-
-export const UserRaiseViewPriceMonth = {
-  PLUS: '50',
-  GOLD: '35',
-  SILVER: '29',
-  BRONZE: '21',
+export const RaiseViewStatus = {
+  0: true,
+  1: false,
 };

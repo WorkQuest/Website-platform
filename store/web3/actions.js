@@ -15,7 +15,6 @@ import {
   goToChain,
   initStackingContract,
   initWeb3,
-  initMetaMaskWeb3,
   showToast,
   staking,
   unStaking,
@@ -73,10 +72,8 @@ export default {
       await commit('setAccount', response.result);
       await commit('setIsConnected', true);
       await commit('setPurseData', getAccountAddress());
-      if (!isReconnection) {
-        showToast('Connect to wallet', 'Connected', 'success');
-        return true;
-      }
+      if (!isReconnection) showToast('Connect to wallet', 'Connected', 'success');
+      return true;
     }
     commit('setIsConnected', false);
     showToast('Error connect to wallet', `${response.data}`, 'danger');

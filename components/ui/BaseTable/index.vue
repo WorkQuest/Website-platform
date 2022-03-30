@@ -87,9 +87,9 @@ export default {
   methods: {
     getTransactionUrl(hash) {
       if (this.IsProd) {
-        return `https://dev-explorer.workquest.co/transactions/${hash}`;
+        return `https://dev-explorer.workquest.co/tx/${hash}`;
       }
-      return `https://dev-explorer.workquest.co/transactions/${hash}`;
+      return `https://dev-explorer.workquest.co/tx/${hash}`;
     },
     getAddressUrl(address) {
       if (this.IsProd) {

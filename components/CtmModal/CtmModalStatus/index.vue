@@ -205,10 +205,12 @@ export default {
 
   &__list {
     width: 100%;
+
     span {
       font-size: 14px;
     }
   }
+
   &__img {
     display: inline;
     width: 33px;
