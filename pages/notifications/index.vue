@@ -131,7 +131,7 @@ export default {
   },
   methods: {
     avatar(notification) {
-      if (notification.sender?.avatar?.url) return notification.sender.avatar.url;
+      if (notification.sender?.avatar?.url) return notification.sender?.avatar?.url;
       return this.EmptyAvatar();
     },
     notificationActionKey(notification) {
