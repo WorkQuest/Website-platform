@@ -2,7 +2,7 @@ import moment from 'moment';
 import { error } from '~/utils/web3';
 import { connectWithMnemonic } from '~/utils/wallet';
 import {
-  NotificationAction, UserRole, Path, UserStatuses, QuestModeReview,
+  NotificationAction, UserRole, Path, UserStatuses, QuestModeReview, PathDAO, DaoUrl,
 } from '~/utils/enums';
 
 export default {
@@ -85,6 +85,7 @@ export default {
         problemDescription, comment, rootComment, discussion,
       },
     } = notification.notification ? notification.notification : notification;
+    const currentPath = this.$router.history.current.path;
     const currentUserId = getters.getUserData.id;
     const userRole = getters.getUserRole;
     let externalLink = false;
@@ -95,6 +96,41 @@ export default {
     let keyName = 'notifications.';
     let path = `${Path.QUESTS}/${quest?.id || id}`;
 
+    function setsNotificationSender() {
+      if (userRole === UserRole.WORKER) notification.sender = user || employer;
+      if (userRole === UserRole.EMPLOYER) notification.sender = assignedWorker || worker;
+      if (quest?.user) notification.sender = quest?.user;
+      if (comment?.author) notification.sender = comment?.author;
+      if (rootComment?.author) notification.sender = rootComment?.author;
+      if (fromUser) notification.sender = fromUser;
+    }
+    async function updatePages() {
+      const pagesUrls = [
+        `${Path.PROFILE}/${currentUserId}`,
+        `${Path.QUESTS}/${quest?.id || id}`,
+        `${Path.MY_QUESTS}`,
+      ];
+      if (isUpdateQuests && pagesUrls.includes(currentPath)) {
+        const query = {
+          limit: 10,
+          offset: 0,
+          starred: false,
+          'sort[createdAt]': 'desc',
+        };
+        await dispatch('quests/getUserQuests', {
+          userId: currentUserId,
+          role: userRole,
+          query,
+        }, { root: true });
+      }
+      if (isUpdateProfile && pagesUrls[1].includes(currentPath)) {
+        const query = {
+          limit: 8,
+          offset: 0,
+        };
+        await dispatch('getAllUserReviews', { userId: currentUserId, query });
+      }
+    }
     switch (action) {
       /** WORK-QUEST */
       case NotificationAction.QUEST_EDITED: {
@@ -187,25 +223,25 @@ export default {
       case NotificationAction.COMMENT_LIKED: {
         externalLink = true;
         keyName += 'commentLiked';
-        externalBase = 'https://dev-dao.workquest.co';
-        path = `${Path.DISCUSSIONS}/${comment.discussionId}`;
+        externalBase = DaoUrl;
+        path = `${PathDAO.DISCUSSIONS}/${comment.discussionId}`;
         currTitle = comment.text;
         break;
       }
       case NotificationAction.NEW_COMMENT_IN_DISCUSSION: {
         externalLink = true;
         keyName += 'newCommentInDiscussion';
-        externalBase = 'https://dev-dao.workquest.co';
+        externalBase = DaoUrl;
         currTitle = discussion.title;
-        path = `${Path.DISCUSSIONS}/${discussion.id}`;
+        path = `${PathDAO.DISCUSSIONS}/${discussion.id}`;
         break;
       }
       case NotificationAction.NEW_DISCUSSION_LIKE: {
         externalLink = true;
         keyName += 'newDiscussionLike';
-        externalBase = 'https://dev-dao.workquest.co';
+        externalBase = DaoUrl;
         currTitle = discussion.title;
-        path = `${Path.DISCUSSIONS}/${discussion.id}`;
+        path = `${PathDAO.DISCUSSIONS}/${discussion.id}`;
         break;
       }
       default: {
@@ -214,45 +250,14 @@ export default {
       }
     }
     notification.actionNameKey = keyName;
-    if (currentUserId && userRole) {
-      if (isUpdateQuests && this.$router.history.current.path !== Path.NOTIFICATIONS) {
-        const query = {
-          limit: 10,
-          offset: 0,
-          starred: false,
-          'sort[createdAt]': 'desc',
-        };
-        await dispatch('quests/getUserQuests', {
-          userId: currentUserId,
-          role: userRole,
-          query,
-        }, { root: true });
-      }
-      if (isUpdateProfile && this.$router.history.current.path !== Path.NOTIFICATIONS) {
-        const query = {
-          limit: 8,
-          offset: 0,
-        };
-        await dispatch('getAllUserReviews', { userId: currentUserId, query });
-      }
-    }
-    function setsNotificationSender() {
-      if (!notification.sender) {
-        if (userRole === UserRole.WORKER) notification.sender = user || employer;
-        if (userRole === UserRole.EMPLOYER) notification.sender = assignedWorker || worker;
-        if (quest?.user) notification.sender = quest?.user;
-        if (comment?.author) notification.sender = comment?.author;
-        if (rootComment?.author) notification.sender = rootComment?.author;
-        if (fromUser) notification.sender = fromUser;
-      }
-    }
-    setsNotificationSender();
+    if (!notification.sender) setsNotificationSender();
+    if (currentUserId && userRole) await updatePages();
     if (currTitle) {
       notification.params = {
         title: currTitle, path, externalLink, externalBase,
       };
     }
-    notification.creatingDate = moment(new Date(notification.createdAt)).format('hh:mm a');
+    notification.creatingDate = moment(new Date(notification.createdAt)).format('MMMM Do YYYY, HH:mm');
     return notification;
   },
   async getUserPortfolios({ commit }, { userId, query }) {

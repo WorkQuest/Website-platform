@@ -68,7 +68,7 @@
                 :link="notification.params.externalLink ? `${notification.params.externalBase}${notification.params.path}` : ''"
                 class="button__view"
                 data-selector="NOTIFICATION-VIEW"
-                @click="!notification.params.externalLink ? goToEvent(notification.params.path) : ''"
+                @click="notification.params.externalLink ? '' : goToEvent(notification.params.path)"
               >
                 {{ $t('meta.btns.view') }}
               </base-btn>
@@ -183,9 +183,7 @@ export default {
       this.SetLoader(false);
     },
     async getNotifications() {
-      await this.$store.dispatch('user/getNotifications', {
-        params: this.filter,
-      });
+      await this.$store.dispatch('user/getNotifications', { params: this.filter });
     },
     goToEvent(path, isNotifCont) {
       if (isNotifCont && document.body.offsetWidth > 767) return;

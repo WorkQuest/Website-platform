@@ -29,7 +29,7 @@
         >
           <card-quest
             v-for="(quest,i) in quests"
-            :key="quest.id"
+            :key="i"
             :quest="quest"
             :quest-index="i"
             @clickFavoriteStar="updateQuests(quest)"

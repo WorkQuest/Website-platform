@@ -215,6 +215,9 @@ export const Path = {
   WIKI: '/wiki',
   RAISED_VIEWS: '/raised-views',
   NOTIFICATIONS: '/notifications',
+};
+
+export const PathDAO = {
   DISCUSSIONS: '/discussions',
 };
 
@@ -246,6 +249,8 @@ export const WalletTables = Object.freeze({
   TXS: 'TXS',
   COLLATERAL: 'COLLATERAL',
 });
+
+export const DaoUrl = Object.freeze('https://dev-dao.workquest.co');
 
 export const ExplorerUrl = Object.freeze('https://dev-explorer.workquest.co');
 
