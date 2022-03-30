@@ -54,7 +54,9 @@
                 </div>
               </div>
               <div class="user__value_green">
-                {{ $tc('meta.units.plusCount', $tc('meta.coins.count.WQTCount', getStyledAmount(paidEventsList[0].amount))) }}
+                {{
+                  $tc('meta.units.plusCount', $tc('meta.coins.count.WQTCount', getStyledAmount(paidEventsList[0].amount)))
+                }}
               </div>
             </div>
           </div>
@@ -195,7 +197,7 @@
               </template>
               <template #cell(txHash)="el">
                 <a
-                  :href="`https://${isProd ? 'dev' : 'test'}-explorer.workquest.co/transactions/${el.item.transactionHash}`"
+                  :href="`https://${isProd ? 'dev' : 'test'}-explorer.workquest.co/tx/${el.item.transactionHash}`"
                   target="_blank"
                   class="user__value_gray"
                 >
@@ -464,16 +466,19 @@ export default {
     padding: 10px;
     box-sizing: content-box;
   }
+
   &__header {
     max-width: 450px;
     font-weight: 500;
     color: $white;
     align-self: center;
+
     .title {
       @extend .referral-page__header;
       font-size: 45px;
       line-height: 110%;
       margin: 0 0 16px;
+
       &_sub {
         @extend .referral-page__header;
         font-size: 16px;
@@ -482,6 +487,7 @@ export default {
       }
     }
   }
+
   &__content {
     display: grid;
     grid-row-gap: 30px;
@@ -502,6 +508,7 @@ export default {
         padding: 34px 20px 0 0;
         width: 156px;
       }
+
       &__btn-wrap_absolute {
         position: absolute;
         right: 0;
@@ -538,6 +545,7 @@ export default {
         flex: none;
         display: inline;
         margin-right: 10px;
+
         &_list {
           @extend .ava;
           position: absolute;
@@ -558,6 +566,7 @@ export default {
           align-items: center;
           gap: 10px;
         }
+
         &__name {
           white-space: nowrap;
           overflow: hidden;
@@ -565,6 +574,7 @@ export default {
           font-size: 16px;
           text-transform: capitalize;
         }
+
         &__value {
           font-size: 16px;
           white-space: nowrap;
@@ -604,12 +614,14 @@ export default {
           gap: 10px;
           grid-template-columns: 5fr auto;
         }
+
         &__link {
           position: relative;
           text-decoration: none;
           color: $black500;
+
           &:hover,
-          &:focus{
+          &:focus {
             text-decoration: underline;
           }
         }
@@ -652,17 +664,21 @@ export default {
         gap: 10px;
         height: 46px;
         align-items: center;
+
         button {
           margin-top: 3px;
         }
+
         .address {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
           font-size: 16px;
           color: $black800;
+
           &__icon {
             font-size: 24px;
+
             &::before {
               color: $blue;
             }
@@ -690,11 +706,13 @@ export default {
             color: $blue;
             padding: 10px;
           }
+
           &__about {
             font-size: 16px;
             color: $black500;
             padding: 0 10px 10px;
           }
+
           &:not(:last-child) {
             &:after {
               content: "";
@@ -723,6 +741,7 @@ export default {
             }
           }
         }
+
         &:after {
           content: "";
           position: absolute;
@@ -743,6 +762,7 @@ export default {
 
   &__table {
     margin-bottom: 25px;
+
     table {
       margin: 0 !important;
       border-radius: 0 !important;
@@ -777,6 +797,7 @@ export default {
         font-size: 36px;
         margin-bottom: 15px;
         width: 100%;
+
         &_sub {
           font-size: 16px;
           max-width: 400px;
@@ -786,12 +807,14 @@ export default {
     }
     &__content {
       grid-template-rows: 450px max-content max-content;
+
       .info-block {
         &_couple {
           grid-template-rows: repeat(2, 1fr);
           grid-template-columns: unset;
           gap: 20px;
         }
+
         &__steps {
           grid-template-rows: repeat(3, 1fr);
           grid-template-columns: unset;
@@ -810,7 +833,7 @@ export default {
               &:before {
                 right: calc(50% - 7px);
                 left: unset;
-                top:- 5px;
+                top: - 5px;
               }
             }
           }

@@ -372,9 +372,9 @@ export default {
     },
     getExplorerRef(hash) {
       if (process.env.PROD === 'true') {
-        return `https://dev-explorer.workquest.co/transactions/${hash ? hash.toLowerCase() : ''}`;
+        return `https://dev-explorer.workquest.co/tx/${hash ? hash.toLowerCase() : ''}`;
       }
-      return `https://dev-explorer.workquest.co/transactions/${hash ? hash.toLowerCase() : ''}`;
+      return `https://dev-explorer.workquest.co/tx/${hash ? hash.toLowerCase() : ''}`;
     },
     checkIsDeadLine() {
       if (!this.pensionWallet) {
