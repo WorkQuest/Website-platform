@@ -115,7 +115,6 @@ export default {
     let isUpdateQuests = false;
     let isUpdateProfile = false;
     let currTitle = quest?.title || title;
-    let keyName = 'notifications.';
     let path = `${Path.QUESTS}/${quest?.id || id}`;
 
     function setsNotificationSender() {
@@ -153,117 +152,60 @@ export default {
         await dispatch('getAllUserReviews', { userId: currentUserId, query });
       }
     }
+    let keyName = 'notifications.';
     switch (action) {
       /** WORK-QUEST */
-      case NotificationAction.QUEST_EDITED: {
-        // TODO: Добавить ссылку на квест
-        keyName += 'questEdited';
-        isUpdateQuests = true;
-        break;
-      }
+      case NotificationAction.QUEST_STARTED:
+      case NotificationAction.WORKER_REJECTED_QUEST:
+      case NotificationAction.WORKER_ACCEPTED_QUEST:
+      case NotificationAction.WORKER_COMPLETED_QUEST:
+      case NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST:
+      case NotificationAction.EMPLOYER_REJECTED_COMPLETED_QUEST:
+      case NotificationAction.WORKER_RESPONDED_TO_QUEST:
+      case NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST:
+      case NotificationAction.WORKER_ACCEPTED_INVITATION_TO_QUEST:
+      case NotificationAction.WORKER_REJECTED_INVITATION_TO_QUEST:
+      case NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE:
+      case NotificationAction.WAIT_WORKER:
+      case NotificationAction.QUEST_EDITED:
       case NotificationAction.QUEST_END_SOON: {
-        // TODO: Добавить ссылку на квест
-        keyName += 'questEndSoon';
+        keyName += action;
         isUpdateQuests = true;
         break;
       }
-      case NotificationAction.QUEST_STARTED: {
-        keyName += 'invitesYouToStartAQuest';
+
+      case NotificationAction.OPEN_DISPUTE:
+      case NotificationAction.DISPUTE_DECISION: {
+        keyName += action;
         isUpdateQuests = true;
+        currTitle = problemDescription;
         break;
       }
-      case NotificationAction.WORKER_REJECTED_QUEST: {
-        keyName += 'rejectedTheQuest';
-        isUpdateQuests = true;
-        break;
-      }
-      case NotificationAction.WORKER_ACCEPTED_QUEST: {
-        keyName += 'acceptedTheQuest';
-        isUpdateQuests = true;
-        break;
-      }
-      case NotificationAction.WORKER_COMPLETED_QUEST: {
-        keyName += 'completedTheQuest';
-        isUpdateQuests = true;
-        break;
-      }
-      case NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST: {
-        keyName += 'acceptedAJobOnAQuest';
-        isUpdateQuests = true;
-        break;
-      }
-      case NotificationAction.WORKER_RESPONDED_TO_QUEST: {
-        keyName += 'respondedToQuest';
-        isUpdateQuests = true;
-        break;
-      }
-      case NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST: {
-        keyName += 'invitedYouToAQuest';
-        isUpdateQuests = true;
-        break;
-      }
-      case NotificationAction.WORKER_ACCEPTED_INVITATION_TO_QUEST: {
-        keyName += 'acceptedTheInvitationToTheQuest';
-        isUpdateQuests = true;
-        break;
-      }
-      case NotificationAction.WORKER_REJECTED_INVITATION_TO_QUEST: {
-        keyName += 'declinedTheInvitationToTheQuest';
-        isUpdateQuests = true;
-        break;
-      }
-      case NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE: {
-        keyName += 'declinedYourResponseToTheQuest';
-        isUpdateQuests = true;
-        break;
-      }
-      case NotificationAction.WAIT_WORKER: {
-        keyName += 'theQuestIsPending';
-        isUpdateQuests = true;
-        break;
-      }
+
       case NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST: {
         isUpdateProfile = true;
-        keyName += 'leftReviewAboutQuest';
+        keyName += 'userLeftReviewAboutQuest';
         path = `${Path.PROFILE}/${toUserId}`;
         currTitle = message;
         break;
       }
-      case NotificationAction.OPEN_DISPUTE: {
-        keyName += 'openDispute';
-        isUpdateQuests = true;
-        currTitle = problemDescription;
-        break;
-      }
-      case NotificationAction.DISPUTE_DECISION: {
-        keyName += 'disputeDecision';
-        isUpdateQuests = true;
-        currTitle = problemDescription;
-        break;
-      }
       /** DAO */
+      case NotificationAction.NEW_COMMENT_IN_DISCUSSION:
+      case NotificationAction.NEW_DISCUSSION_LIKE: {
+        externalLink = true;
+        keyName += action;
+        externalBase = DaoUrl;
+        currTitle = discussion.title;
+        path = `${PathDAO.DISCUSSIONS}/${discussion.id}`;
+        break;
+      }
+
       case NotificationAction.COMMENT_LIKED: {
         externalLink = true;
         keyName += 'commentLiked';
         externalBase = DaoUrl;
         path = `${PathDAO.DISCUSSIONS}/${comment.discussionId}`;
         currTitle = comment.text;
-        break;
-      }
-      case NotificationAction.NEW_COMMENT_IN_DISCUSSION: {
-        externalLink = true;
-        keyName += 'newCommentInDiscussion';
-        externalBase = DaoUrl;
-        currTitle = discussion.title;
-        path = `${PathDAO.DISCUSSIONS}/${discussion.id}`;
-        break;
-      }
-      case NotificationAction.NEW_DISCUSSION_LIKE: {
-        externalLink = true;
-        keyName += 'newDiscussionLike';
-        externalBase = DaoUrl;
-        currTitle = discussion.title;
-        path = `${PathDAO.DISCUSSIONS}/${discussion.id}`;
         break;
       }
       default: {

@@ -162,10 +162,10 @@ export const NotificationAction = {
   USER_LEFT_REVIEW_ABOUT_QUEST: 'userLeftReviewAboutQuest',
   OPEN_DISPUTE: 'openDispute',
   DISPUTE_DECISION: 'disputeDecision',
-  NEW_COMMENT_IN_DISCUSSION: 'newCommentInDiscussion',
-  COMMENT_LIKED: 'commentLiked',
   QUEST_EDITED: 'questEdited',
   QUEST_END_SOON: 'questEndSoon',
+  COMMENT_LIKED: 'commentLiked',
+  NEW_COMMENT_IN_DISCUSSION: 'newCommentInDiscussion',
   NEW_DISCUSSION_LIKE: 'newDiscussionLike',
 };
 
