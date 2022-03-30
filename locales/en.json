@@ -983,6 +983,7 @@
       "depositInfo": "Deposit info",
       "withdrawInfo": "Withdrawal info"
     },
+    "phoneNumber": "Phone Number",
     "value": "Value",
     "generatedWUSD": "WUSD will be generated",
     "choosePeriod": "Choose a period of borrowing",
