@@ -3,6 +3,7 @@ import BigNumber from 'bignumber.js';
 import {
   error,
   success,
+  showToast,
   fetchContractData,
 } from '~/utils/web3';
 
@@ -587,6 +588,7 @@ export default {
       return success(response);
     } catch (e) {
       console.log('user/buyRaiseView');
+      showToast('Promote user error:', `${e.message}`, 'danger');
       return error(e.code, 'Error in method promote user', e);
     }
   },
