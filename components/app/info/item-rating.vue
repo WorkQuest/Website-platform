@@ -23,7 +23,6 @@ export default {
   name: 'ItemRating',
   UserRating,
   Ratings,
-  RaiseViewStatus,
   props: {
     rating: {
       type: Number,
