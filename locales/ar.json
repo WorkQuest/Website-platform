@@ -1693,6 +1693,7 @@
     "description": "???",
     "currentLoan": "???",
     "currentCredit": "???",
+    "chooseSource": "Choose the source",
     "marketSize": "حجم السوق",
     "wantToTakeALoan": "هل تريد الحصول على قرض؟",
     "borrow": "استعارة",

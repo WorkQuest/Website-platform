@@ -11,34 +11,68 @@
         <div class="content__grid">
           <div class="content__body">
             <div class="content__checkpoints checkpoints">
-              <label
-                for="checkpoints__main"
-                class="checkpoints__label"
-              >
-                {{ $t('modals.chooseTheCurrency') }}
-              </label>
-              <div
-                id="checkpoints__main"
-                class="checkpoints__main"
-              >
-                <div
-                  v-for="(item, i) in checkpoints"
-                  :key="i"
-                  class="checkpoints__array"
+              <div class="checkpoints__block">
+                <label
+                  for="checkpoints__main"
+                  class="checkpoints__label"
                 >
-                  <input
-                    :id="item.name"
-                    v-model="selCurrencyID"
-                    type="radio"
-                    class="checkpoints__item"
-                    :value="item.id"
+                  {{ $t('modals.chooseTheCurrency') }}
+                </label>
+                <div
+                  id="checkpoints__main"
+                  class="checkpoints__main"
+                >
+                  <div
+                    v-for="(item, i) in checkpoints"
+                    :key="i"
+                    class="checkpoints__array"
                   >
-                  <label
-                    class="checkpoints__name"
-                    :for="item.name"
+                    <input
+                      :id="item.name"
+                      v-model="selCurrencyID"
+                      type="radio"
+                      class="checkpoints__item"
+                      :value="item.id"
+                    >
+                    <label
+                      class="checkpoints__name"
+                      :for="item.name"
+                    >
+                      {{ item.name }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="checkpoints__block">
+                <label
+                  for="checkpoints__field"
+                  class="checkpoints__label"
+                >
+                  {{ $t('crediting.chooseSource') }}
+                </label>
+                <div
+                  id="checkpoints__field"
+                  class="checkpoints__main"
+                >
+                  <div
+                    v-for="(item, i) in fundsSource"
+                    :key="i"
+                    class="checkpoints__array"
                   >
-                    {{ item.name }}
-                  </label>
+                    <input
+                      :id="item.name"
+                      v-model="selFundID"
+                      type="radio"
+                      class="checkpoints__item"
+                      :value="item.id"
+                    >
+                    <label
+                      class="checkpoints__name"
+                      :for="item.name"
+                    >
+                      {{ item.name }}
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -61,6 +95,7 @@
               </div>
               <base-dd
                 v-model="date"
+                type="gray"
                 class="grid__drop"
                 data-selector="DATE-DD"
                 :items="dates"
@@ -118,9 +153,11 @@ export default {
   data() {
     return {
       selCurrencyID: 1,
+      selFundID: 1,
       quantity: '',
       generate: '',
       date: 0,
+      datesNumber: [7, 14, 30, 90, 180],
       checkpoints: [
         {
           name: this.$t('meta.coins.bnb'),
@@ -132,6 +169,20 @@ export default {
         },
         {
           name: this.$t('meta.coins.wqt'),
+          id: 3,
+        },
+      ],
+      fundsSource: [
+        {
+          name: this.$t('footer.DeFi.lending'),
+          id: 1,
+        },
+        {
+          name: this.$t('footer.DeFi.retirement'),
+          id: 2,
+        },
+        {
+          name: this.$t('ui.menu.savings.title'),
           id: 3,
         },
       ],
@@ -171,6 +222,7 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
       userRole: 'user/getUserRole',
+      funds: 'crediting/getFunds',
     }),
     dates() {
       return [
@@ -182,11 +234,14 @@ export default {
       ];
     },
   },
+  async mounted() {
+    await this.$store.dispatch('crediting/getFunds');
+  },
   methods: {
     hide() {
       this.CloseModal();
     },
-    openConfirmDetailsModal() {
+    async openConfirmDetailsModal() {
       const receiptData = [
         {
           title: this.$t('modals.currencyDetails'),
@@ -207,8 +262,14 @@ export default {
         subtitle: '',
         path: 'crediting/1',
       };
+      const payload = {
+        value: this.quantity,
+        data: [1, this.quantity, this.selFundID - 1, this.datesNumber[this.date], this.checkpoints[this.selCurrencyID - 1].name],
+      };
       this.ShowModal({
         key: modals.confirmDetails,
+        mode: 'borrow',
+        payload,
         receiptData,
         dataForStatusModal,
       });
@@ -256,6 +317,8 @@ export default {
     gap: 25px;
   }
   &__checkpoints {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
     margin-bottom: 25px;
     &_label {
       margin-bottom: 10px;
@@ -285,7 +348,7 @@ export default {
   }
   &__array {
     display: grid;
-    grid-template-columns: repeat(2, auto);
+    grid-template-columns: auto 1fr;
     gap: 10px;
     > label {
       margin: unset;
@@ -311,6 +374,15 @@ export default {
     color: #7C838D;
     font-weight: 500;
     font-size: 14px;
+  }
+}
+
+@include _991 {
+  .content {
+    &__checkpoints {
+      grid-template-columns: auto;
+      grid-gap: 20px;
+    }
   }
 }
 

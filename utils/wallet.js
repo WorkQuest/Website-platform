@@ -4,7 +4,7 @@ import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
 import { error, fetchContractData, success } from '~/utils/web3';
 import * as abi from '~/abi/abi';
-import { StakingTypes, tokenMap } from '~/utils/enums';
+import { StakingTypes } from '~/utils/enums';
 
 const bip39 = require('bip39');
 
@@ -199,6 +199,19 @@ export const sendWalletTransaction = async (_method, payload) => {
   const inst = new web3.eth.Contract(payload.abi, payload.address);
   const gasPrice = await web3.eth.getGasPrice();
   const accountAddress = getWalletAddress();
+  console.log('accountAddress:', accountAddress);
+  if (_method === 'borrow') {
+    console.log('before gasEstimate payload.data:', payload.data);
+    const data = inst.methods[_method].apply(null, payload.data).encodeABI();
+    const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress });
+    console.log('after gasEstimate');
+    return await inst.methods[_method](...payload.data).send({
+      from: accountAddress,
+      data,
+      gasPrice,
+      gas: gasEstimate,
+    });
+  }
   const data = inst.methods[_method].apply(null, payload.data).encodeABI();
   const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress });
   const transactionData = {
@@ -208,7 +221,7 @@ export const sendWalletTransaction = async (_method, payload) => {
     gasPrice,
     gas: gasEstimate,
   };
-  // noinspection ES6RedundantAwait
+    // noinspection ES6RedundantAwait
   return await web3.eth.sendTransaction(transactionData);
 };
 export const transferToken = async (recipient, value) => {
@@ -442,6 +455,7 @@ export const setTokenPrice = async ({ currency }, {
 }) => {
   try {
     const inst = new web3.eth.Contract(abi.WQOracle, process.env.WORKNET_ORACLE);
+    console.log('wallet/setTokenPrice before setTokenPriceUSD:', timestamp, price, currency);
     await inst.methods.setTokenPriceUSD(timestamp, price, v, r, s, currency).send({
       from: wallet.address,
       gas,

@@ -47,7 +47,8 @@
               </base-btn>
               <base-btn
                 class="btn"
-                mode="outline"
+                :mode="!isHaveCredit ? 'outline' : ''"
+                :disabled="isHaveCredit"
                 data-selector="CREDITING-DEPOSIT"
                 @click="openCreditingDepositModal()"
               >
@@ -141,6 +142,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { getWalletAddress } from '~/utils/wallet';
 
 export default {
   data() {
@@ -149,6 +151,10 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      isWalletConnected: 'wallet/getIsWalletConnected',
+      creditData: 'crediting/getCreditData',
+    }),
     documents() {
       return [
         {
@@ -208,9 +214,18 @@ export default {
         },
       ];
     },
+    isHaveCredit() {
+      return !!this.creditData.credit;
+    },
   },
   async mounted() {
     this.SetLoader(true);
+    await Promise.all([
+      this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt }),
+      this.$store.dispatch('crediting/getCreditData'),
+    ]);
+    console.log(this.creditData.credit);
+    if (this.isWalletConnected === false) return;
     this.SetLoader(false);
   },
   methods: {

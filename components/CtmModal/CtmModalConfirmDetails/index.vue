@@ -41,7 +41,11 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
+import { getGasPrice, getWalletAddress } from '~/utils/wallet';
+import * as abi from '~/abi/abi';
+import { tokenMap, TokenSymbols } from '~/utils/enums';
 
 export default {
   name: 'ModalConfirmDetails',
@@ -52,24 +56,88 @@ export default {
     abouts() {
       return this.options.receiptData;
     },
+    symbol() {
+      return this.options.payload.data[4];
+    },
   },
   methods: {
     hide() {
       this.CloseModal();
     },
-    openStatusModal() {
-      const {
-        dataForStatusModal: {
-          img, title, subtitle, path,
-        },
-      } = this.options;
-      this.ShowModal({
-        key: modals.status,
-        img,
-        title,
-        subtitle,
-        path,
-      });
+    async openStatusModal() {
+      this.SetLoader(true);
+      const res = await this.actionCheck();
+      this.SetLoader(false);
+      if (res) {
+        const {
+          dataForStatusModal: {
+            img,
+            title,
+            subtitle,
+            path,
+          },
+        } = this.options;
+        this.ShowModal({
+          key: modals.status,
+          img,
+          title,
+          subtitle,
+          path,
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.transactionFail'),
+          recipient: '',
+          subtitle: this.$t('modals.errors.error'),
+        });
+      }
+    },
+    async actionCheck() {
+      switch (this.options.mode) {
+        case 'borrow':
+          // eslint-disable-next-line no-case-declarations
+          const res1 = await this.setTokenPrice();
+          // eslint-disable-next-line no-case-declarations
+          const payload = {
+            symbol: this.symbol,
+            spenderAddress: process.env.BORROWING,
+            value: this.options.payload.value,
+          };
+          // eslint-disable-next-line no-case-declarations
+          const res2 = await this.$store.dispatch('wallet/approveRouter', payload);
+          if (res1 && res2) {
+            return await this.$store.dispatch('crediting/sendBorrow', this.options.payload);
+          }
+          return false;
+        default:
+          return true;
+      }
+    },
+    async setTokenPrice() {
+      const date = Date.now().toString();
+      const timestamp = date.substr(0, date.length - 3);
+      const price = '10000000000000000000000'; // TODO price
+      const v = '0x25';
+      const r = '0x4f4c17305743700648bc4f6cd3038ec6f6af0df73e31757007b7f59df7bee88d';
+      const s = '0x7e1941b264348e80c78c4027afc65a87b0a5e43e86742b8ca0823584c6788fd0';
+      const resultGasSetTokenPrice = await getGasPrice(abi.WQOracle, process.env.WORKNET_ORACLE, 'setTokenPriceUSD', [timestamp, price, v, r, s, this.symbol]);
+      if (resultGasSetTokenPrice.gas && resultGasSetTokenPrice.gasPrice) {
+        const setTokenPriceData = {
+          gasPrice: resultGasSetTokenPrice.gasPrice,
+          gas: resultGasSetTokenPrice.gas,
+          timestamp,
+          price,
+          v,
+          r,
+          s,
+        };
+        const payload = { currency: this.symbol };
+        const { ok } = await this.$store.dispatch('crediting/setTokenPrice', { payload, setTokenPriceData });
+        return ok;
+      }
+      return false;
     },
   },
 };

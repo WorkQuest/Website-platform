@@ -1693,6 +1693,7 @@
     "description": "???",
     "currentLoan": "???",
     "currentCredit": "???",
+    "chooseSource": "Choose the source",
     "marketSize": "Tamaño del mercado",
     "wantToTakeALoan": "¿Quiere pedir un préstamo?",
     "borrow": "Tomar prestado",

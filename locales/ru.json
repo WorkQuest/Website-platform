@@ -1693,6 +1693,7 @@
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
     "currentLoan": "Текущий заем",
     "currentCredit": "Текущий кредит",
+    "chooseSource": "Выбрать источник",
     "marketSize": "Market size",
     "wantToTakeALoan": "Want to take a loan?",
     "borrow": "Занимать",
