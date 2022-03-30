@@ -262,7 +262,9 @@ export default {
         rating,
         callback: async (payload) => {
           const ok = await this.$store.dispatch('user/sendReviewForUser', payload);
-          if (ok) { this.ShowModal({ key: modals.thanks }); }
+          if (ok) {
+            this.ShowModal({ key: modals.thanks });
+          }
         },
       });
     },
@@ -350,16 +352,18 @@ export default {
           }];
           break;
         }
-        default: break;
+        default:
+          break;
       }
       return arr;
     },
     setWorkerBtnsArr() {
       const { quest: { assignedWorkerId, response }, userData, infoDataMode } = this;
       const {
-        ADChat, Active, Created, Dispute, Invited, WaitWorker,
+        ADChat, Active, Created, Dispute, Invited, WaitWorker, WaitConfirm,
       } = InfoModeWorker;
       let arr = [];
+      console.log('infoDataMode', infoDataMode);
       switch (infoDataMode) {
         case ADChat: {
           arr = [{
@@ -397,6 +401,7 @@ export default {
           }];
           break;
         }
+        case WaitConfirm:
         case Dispute: {
           arr = [{
             name: this.$t('meta.openDispute'),
@@ -435,9 +440,10 @@ export default {
           }];
           break;
         }
-        default: break;
+        default:
+          break;
       }
-
+      console.log('arr', arr);
       return arr;
     },
     handleClickSpecBtn(funcKey) {
@@ -610,6 +616,7 @@ export default {
     flex-direction: column;
     min-width: 0;
   }
+
   &__title {
     @include text-simple;
     font-weight: 500;
@@ -618,6 +625,7 @@ export default {
     line-height: 39px;
     word-wrap: break-word;
   }
+
   &__description {
     @include text-simple;
     margin-top: 10px;
@@ -627,6 +635,7 @@ export default {
     color: $black700;
     word-break: break-word;
   }
+
   &__count {
     font-style: normal;
     font-weight: normal;
@@ -635,8 +644,10 @@ export default {
     color: #8D96A2;
   }
 }
+
 .main {
   @include main;
+
   &-white {
     @include main-white;
   }
@@ -747,14 +758,17 @@ export default {
     font-size: 12px;
     height: 24px;
     padding: 0 5px;
+
     &_low {
       background: rgba(34, 204, 20, 0.1);
       color: #22CC14;
     }
+
     &_urgent {
       background: rgba(223, 51, 51, 0.1);
       color: #DF3333;
     }
+
     &_normal {
       background: rgba(232, 210, 13, 0.1);
       color: #E8D20D;
@@ -773,7 +787,8 @@ export default {
   @include text-simple;
   font-weight: 500;
   font-size: 25px;
-  &__link{
+
+  &__link {
     @extend .spec;
     color: $blue;
   }
@@ -795,6 +810,7 @@ export default {
     padding: 0;
     display: flex;
     justify-content: center;
+
     .gmap__block {
       max-width: 1180px;
       width: 100%;
@@ -812,35 +828,43 @@ export default {
 .icon {
   color: $black500;
   font-size: 20px;
+
   &-chat::before {
     @extend .icon;
     color: $green !important;
   }
+
   &-location::before {
     @extend .icon;
   }
+
   &-clock::before {
     @extend .icon;
   }
+
   &-share_outline {
     @extend .icon;
     margin-left: 5px;
   }
+
   &-chat_green:before {
     @extend .icon;
     content: "\e9ba";
     color: #00AA5B;
   }
+
   &-caret_down_blue:before {
     @extend .icon;
     content: "\ea48";
     color: #0083C7;
   }
+
   &-chevron_big_left:before {
     @extend .icon;
     content: "\ea4d";
     color: #0083C7;
   }
+
   &-location:before {
     @extend .icon;
     content: "\ea23";
@@ -853,11 +877,13 @@ export default {
     padding: 10px;
   }
 }
+
 @include _991 {
   .main-white {
     display: block;
   }
 }
+
 @include _767 {
   .main {
     display: block;
@@ -867,19 +893,23 @@ export default {
     &__btns {
       margin-bottom: 10px;
     }
+
     &__more-data {
       grid-template-columns: 1fr;
     }
   }
 }
+
 @include _575 {
   .worker-data {
     &__price {
       font-size: 21px;
     }
+
     &__btns {
       grid-auto-flow: row;
     }
+
     &__more-data {
       justify-items: center;
     }
@@ -890,16 +920,19 @@ export default {
       width: 100%;
       display: flex;
       flex-direction: column;
+
       .worker-data__button {
         width: 100% !important;
       }
     }
+
     &__priority {
       width: 100%;
       display: flex;
       justify-content: space-between;
       flex-direction: row-reverse;
       align-items: center;
+
       &-title {
         font-size: 16px;
         height: 100%;

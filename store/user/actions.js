@@ -17,11 +17,13 @@ import {
 
 import {
   Path,
+  DaoUrl,
+  PathDAO,
   UserRole,
   UserStatuses,
   QuestModeReview,
   NotificationAction,
-  RaiseViewTariffPeriods, PathDAO, DaoUrl,
+  RaiseViewTariffPeriods,
 } from '~/utils/enums';
 
 import { WQPromotion } from '~/abi/abi';
@@ -79,6 +81,7 @@ export default {
       const { data: { result, ok } } = await this.$axios.get(`${process.env.NOTIFS_URL}notifications`, currConfig);
 
       if (result.notifications.length) {
+        console.log('getNotifications from rest', result.notifications);
         result.notifications.map(async (notification) => await dispatch('setCurrNotificationObject', notification));
       }
 
@@ -97,17 +100,38 @@ export default {
     }
   },
   async addNotification({ commit, dispatch }, notification) {
-    const newNotification = await dispatch('setCurrNotificationObject', notification);
+    console.log('addNotification from socket', notification);
+    const newNotification = await dispatch('setCurrNotificationObject', { notification });
     commit('addNotification', newNotification);
   },
   async setCurrNotificationObject({ getters, rootGetters, dispatch }, notification) {
-    if (!getters.getUserData.id && !getters.getUserRole) dispatch('getUserData');
+    if (!getters.getUserData.id && !getters.getUserRole) {
+      console.log('!!!!!!!!!getters.getUserData.id!!!!!!!!!', getters.getUserData.id);
+      console.log('!!!!!!!!!getters.getUserRole!!!!!!!!!!!!', getters.getUserRole);
+      dispatch('getUserData');
+    }
+
+    console.log('!!notification.notification', !!notification);
     const {
-      action, data: {
-        user, title, id, assignedWorker, worker, quest, employer, fromUser, message, toUserId,
-        problemDescription, comment, rootComment, discussion,
+      action,
+      data: {
+        id,
+        user,
+        title,
+        quest,
+        worker,
+        message,
+        comment,
+        employer,
+        fromUser,
+        toUserId,
+        discussion,
+        rootComment,
+        assignedWorker,
+        problemDescription,
       },
-    } = notification.notification ? notification.notification : notification;
+    } = notification.notification;
+
     const currentPath = this.$router.history.current.path;
     const currentUserId = getters.getUserData.id;
     const userRole = getters.getUserRole;
@@ -126,12 +150,18 @@ export default {
       if (rootComment?.author) notification.sender = rootComment?.author;
       if (fromUser) notification.sender = fromUser;
     }
+
     async function updatePages() {
       const pagesUrls = [
         `${Path.PROFILE}/${currentUserId}`,
         `${Path.QUESTS}/${quest?.id || id}`,
         `${Path.MY_QUESTS}`,
       ];
+      console.log('-=-=-=-=-=-=-=-=-');
+      console.log('updatePages paths:', pagesUrls, pagesUrls.includes(currentPath));
+      console.log('isUpdateQuests', isUpdateQuests);
+      console.log('isUpdateProfile', isUpdateProfile);
+      console.log('-=-=-=-=-=-=-=-=-');
       if (isUpdateQuests && pagesUrls.includes(currentPath)) {
         const query = {
           limit: 10,
@@ -153,6 +183,8 @@ export default {
         await dispatch('getAllUserReviews', { userId: currentUserId, query });
       }
     }
+
+    console.log('event name', action);
     let keyName = 'notifications.';
     switch (action) {
       /** WORK-QUEST */
@@ -210,19 +242,21 @@ export default {
         break;
       }
       default: {
+        console.error('Unknown event = ', action);
         keyName = '';
         break;
       }
     }
-    notification.actionNameKey = keyName;
+    notification.actionNameKey = `notifications.${action}`;
     if (!notification.sender) setsNotificationSender();
     if (currentUserId && userRole) await updatePages();
+    console.log('currTitle', currTitle);
     if (currTitle) {
       notification.params = {
         title: currTitle, path, externalLink, externalBase,
       };
     }
-    notification.creatingDate = moment(new Date(notification.createdAt)).format('MMMM Do YYYY, HH:mm');
+    notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
     return notification;
   },
   async getUserPortfolios({ commit }, { userId, query }) {
