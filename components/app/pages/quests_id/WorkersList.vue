@@ -58,7 +58,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { ResponseStatus } from '~/utils/enums';
+import { QuestMethods, ResponseStatus, TokenSymbols } from '~/utils/enums';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'WorkersList',
@@ -86,6 +87,8 @@ export default {
   },
   computed: {
     ...mapGetters({
+      isWalletConnected: 'wallet/getIsWalletConnected',
+      userWalletAddress: 'user/getUserWalletAddress',
       currentWorker: 'quests/getCurrentWorker',
       questData: 'quests/getQuest',
       invited: 'quests/getInvited',
@@ -97,14 +100,13 @@ export default {
       return isInvited ? invited : responded;
     },
   },
-  async created() {
-    this.SetLoader(false);
+  beforeCreate() {
+    this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
   methods: {
     userActionsArr({ status }) {
       if (this.isInvited) {
         if (status === ResponseStatus.accepted) return this.ddInvitedUserActions;
-
         return this.ddUserActions;
       }
       return this.ddUserFullActions;
@@ -120,17 +122,49 @@ export default {
       await this.$store.dispatch('quests/getQuest', this.questData.id);
     },
     async startQuest(response) {
+      if (!this.isWalletConnected) return;
       this.SetLoader(true);
-      const payload = {
-        config: {
-          assignedWorkerId: response.worker.id,
-        },
-        questId: this.questData.id,
-      };
-
-      await this.$store.dispatch('quests/startQuest', payload);
-      await this.getQuest();
+      const { contractAddress } = this.questData;
+      const { worker } = response;
+      console.log('TRYING TO ASSIGN WORKER', worker);
+      const workerAddress = worker.wallet.address;
+      const [feeRes] = await Promise.all([
+        this.$store.dispatch('wallet/getFeeDataJobMethod', {
+          method: QuestMethods.AssignJob,
+          contractAddress,
+          data: [workerAddress],
+        }),
+        this.$store.dispatch('wallet/getBalance'),
+      ]);
       this.SetLoader(false);
+      if (feeRes.ok === false) {
+        // how to handle error?
+        console.log('startQuest fee error', feeRes);
+        return;
+      }
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        title: 'Assign worker to quest',
+        fields: {
+          from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
+          to: { name: this.$t('meta.toBig'), value: contractAddress },
+          fee: {
+            name: this.$t('wallet.table.trxFee'),
+            value: feeRes.result.fee,
+            symbol: TokenSymbols.WUSD,
+          },
+        },
+        submitMethod: async () => {
+          const txRes = await this.$store.dispatch('wallet/assignJob', {
+            contractAddress,
+            workerAddress,
+          });
+          console.log('assign tx res', txRes);
+          if (txRes.ok) {
+            await this.getQuest();
+          }
+        },
+      });
     },
     async reject(response) {
       this.SetLoader(true);

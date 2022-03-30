@@ -218,6 +218,7 @@ export default {
     },
     randomSpec() {
       const { questSpecializations } = this.quest;
+      if (!questSpecializations.length) return '';
       return Math.floor(questSpecializations[Math.floor(Math.random() * questSpecializations.length)].path);
     },
     checkAvailabilityDispute() {
@@ -398,6 +399,8 @@ export default {
 
       let arr = [];
 
+      console.log('del', infoDataMode, WaitWorker);
+
       switch (infoDataMode) {
         case ADChat: {
           arr = [{
@@ -561,7 +564,7 @@ export default {
     },
     async acceptCompletedWorkOnQuest() {
       this.SetLoader(true);
-      const contractAddress = ''; // TODO [!!!] put contract address here
+      const { contractAddress } = this.quest;
       const [feeRes] = await Promise.all([
         this.$store.dispatch('wallet/getFeeDataJobMethod', {
           method: QuestMethods.AcceptJobResult,
@@ -645,7 +648,7 @@ export default {
     },
     async acceptWorkOnQuest() {
       this.SetLoader(true);
-      const contractAddress = ''; // TODO [!!!] get from quest data
+      const { contractAddress } = this.quest;
       const [feeRes] = await Promise.all([
         this.$store.dispatch('wallet/getFeeDataJobMethod', {
           method: QuestMethods.AcceptJob,
@@ -682,7 +685,7 @@ export default {
     },
     async rejectWorkOnQuest() {
       this.SetLoader(true);
-      const contractAddress = ''; // TODO [!!!] get from quest data
+      const { contractAddress } = this.quest;
       const [feeRes] = await Promise.all([
         this.$store.dispatch('wallet/getFeeDataJobMethod', {
           method: QuestMethods.DeclineJob,
@@ -719,7 +722,7 @@ export default {
     },
     async completeWorkOnQuest() {
       this.SetLoader(true);
-      const contractAddress = ''; // TODO [!!!] get from quest data
+      const { contractAddress } = this.quest;
       const [feeRes] = await Promise.all([
         this.$store.dispatch('wallet/getFeeDataJobMethod', {
           method: QuestMethods.VerificationJob,

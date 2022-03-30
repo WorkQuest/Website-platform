@@ -54,7 +54,8 @@ export default {
   async getAllQuests({ commit }, { query, specFilter }) {
     try {
       if (query.q === '') delete query.q;
-      const { ok, result } = await this.$axios.$post('/v1/quests', { ...query, ...specFilter });
+      // { ...query, ...specFilter }
+      const { ok, result } = await this.$axios.$post(`/v1/get-quests?limit=${query.limit || 10}&offset=${query.offset || 0}`, { specializations: [] }); // TODO: в body специализации, все остальное в query
       commit('setAllQuests', result);
       return { ok };
     } catch (e) {

@@ -66,27 +66,42 @@ export const QuestStatuses = {
 };
 export const SumSubStatuses = { NOT_VERIFIED: 0, VERIFIED: 1 };
 export const InfoModeEmployer = {
+  Closed: -3,
+  Dispute: -2,
   Rejected: -1,
   Created: 0,
   Active: 1,
-  Closed: 2,
-  Dispute: 3,
-  WaitWorker: 4,
-  WaitConfirm: 5,
-  Done: 6,
+  WaitWorker: 2,
+  WaitConfirm: 3,
+  Done: 5,
 };
+
+// Worker
+// active - работника приняли нак вест и квест начат
+// rejected - работник подал заявку, ему отклонили
+// ADChat - когда тебе работодатель предлагает
+// waitWorker - когда воркер должен согласиться на приглашение
+// waitConfirm - ждем пока работодатель подтвердит
+// responded - ожидает работодателя на вступление на квест
+// invited - приглашен, но работадатель не начал квест
+
+// Employer
+// active - работник выполняет
+// waitWorker - ожидает завершения работы
+// waitConfirm - ожидает подтверждение воркера вступить на квест
+
 export const InfoModeWorker = {
-  Created: 0,
-  ADChat: 1,
-  Active: 2,
-  Rejected: 3,
-  WaitWorker: 4,
-  WaitConfirm: 5,
-  Dispute: 7,
-  Closed: 8,
-  Done: 9,
-  Responded: 10,
-  Invited: 11,
+  // Closed: -3,
+  // Dispute: -2,
+  // Created: 0,
+  // ADChat: 1,
+  // Rejected: 3,
+  // Active: 3,
+  WaitWorker: 3,
+  WaitConfirm: 4,
+  Done: 5,
+  // Responded: 10,
+  // Invited: 11,
 };
 export const DisputeStatues = {
   PENDING: 0,
