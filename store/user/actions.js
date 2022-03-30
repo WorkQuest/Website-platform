@@ -1,9 +1,31 @@
 import moment from 'moment';
-import { error } from '~/utils/web3';
-import { connectWithMnemonic } from '~/utils/wallet';
+import BigNumber from 'bignumber.js';
 import {
-  NotificationAction, UserRole, Path, UserStatuses, QuestModeReview, PathDAO, DaoUrl,
+  error,
+  success,
+  fetchContractData,
+} from '~/utils/web3';
+
+import {
+  getGasPrice,
+  createInstance,
+  getWalletAddress,
+  GetWalletProvider,
+  connectWithMnemonic,
+} from '~/utils/wallet';
+
+import {
+  Path,
+  UserRole,
+  UserStatuses,
+  QuestModeReview,
+  NotificationAction,
+  RaiseViewTariffPeriods, PathDAO, DaoUrl,
 } from '~/utils/enums';
+
+import { WQPromotion } from '~/abi/abi';
+
+const { WORKNET_PROMOTION } = process.env;
 
 export default {
   async changeRole({ commit }, { totp }) {
@@ -566,6 +588,7 @@ export default {
       return false;
     }
   },
+  // TODO delete, waiting when backend will be catch all this events
   async payUserRaisedView({ commit }, payload) {
     try {
       const response = await this.$axios.$post('/v1/profile/worker/me/raise-view/pay', payload);
@@ -573,6 +596,56 @@ export default {
     } catch (e) {
       console.log('profile/worker/me/raise-view/pay');
       return false;
+    }
+  },
+  async getRaiseViewPrice({ commit }, { type }) {
+    try {
+      const periods = RaiseViewTariffPeriods[type];
+      const tariffs = ['1', '2', '3', '4'];
+      const price = {};
+      for (let i = 0; i < tariffs.length; i += 1) {
+        price[tariffs[i]] = {};
+        for (let j = 0; j < periods.length; j += 1) {
+          const data = [tariffs[i], periods[j]];
+          /* eslint-disable no-await-in-loop */
+          const cost = await fetchContractData(
+            type,
+            WQPromotion,
+            WORKNET_PROMOTION,
+            data,
+            GetWalletProvider(),
+          );
+          price[tariffs[i]][periods[j]] = new BigNumber(+cost).shiftedBy(-18).toString();
+        }
+      }
+      return success(price);
+    } catch (e) {
+      console.log('user/getRaiseViewPrice');
+      return error(e.code, 'Error in get raise view price', e);
+    }
+  },
+  async promoteUserOnContract({ commit }, { cost, tariff, period }) {
+    try {
+      const inst = createInstance(WQPromotion, WORKNET_PROMOTION);
+      const value = new BigNumber(cost).shiftedBy(18).toString();
+      const { gas, gasPrice } = await getGasPrice(
+        WQPromotion,
+        WORKNET_PROMOTION,
+        'promoteUser',
+        [tariff, period],
+        value,
+      );
+      const params = {
+        from: getWalletAddress(),
+        gasPrice,
+        gas,
+        value,
+      };
+      const response = await inst.methods.promoteUser(tariff, period).send(params);
+      return success(response);
+    } catch (e) {
+      console.log('user/buyRaiseView');
+      return error(e.code, 'Error in method promote user', e);
     }
   },
 };
