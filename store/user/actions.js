@@ -87,7 +87,6 @@ export default {
     } = notification.notification ? notification.notification : notification;
     const currentUserId = getters.getUserData.id;
     const userRole = getters.getUserRole;
-    let query = {};
     let externalLink = false;
     let externalBase = '';
     let isUpdateQuests = false;
@@ -215,25 +214,27 @@ export default {
       }
     }
     notification.actionNameKey = keyName;
-    if (isUpdateQuests && currentUserId && userRole && this.$router.history.current.path !== Path.NOTIFICATIONS) {
-      query = {
-        limit: 10,
-        offset: 0,
-        starred: false,
-        'sort[createdAt]': 'desc',
-      };
-      await dispatch('quests/getUserQuests', {
-        userId: currentUserId,
-        role: userRole,
-        query,
-      }, { root: true });
-    }
-    if (isUpdateProfile && currentUserId && userRole && this.$router.history.current.path !== Path.NOTIFICATIONS) {
-      query = {
-        limit: 8,
-        offset: 0,
-      };
-      await dispatch('getAllUserReviews', { userId: currentUserId, query });
+    if (currentUserId && userRole) {
+      if (isUpdateQuests && this.$router.history.current.path !== Path.NOTIFICATIONS) {
+        const query = {
+          limit: 10,
+          offset: 0,
+          starred: false,
+          'sort[createdAt]': 'desc',
+        };
+        await dispatch('quests/getUserQuests', {
+          userId: currentUserId,
+          role: userRole,
+          query,
+        }, { root: true });
+      }
+      if (isUpdateProfile && this.$router.history.current.path !== Path.NOTIFICATIONS) {
+        const query = {
+          limit: 8,
+          offset: 0,
+        };
+        await dispatch('getAllUserReviews', { userId: currentUserId, query });
+      }
     }
     function setsNotificationSender() {
       if (!notification.sender) {
@@ -251,7 +252,7 @@ export default {
         title: currTitle, path, externalLink, externalBase,
       };
     }
-    notification.creatingDate = moment(new Date(notification.createdAt)).format('MMMM Do YYYY, HH:mm');
+    notification.creatingDate = moment(new Date(notification.createdAt)).format('hh:mm a');
     return notification;
   },
   async getUserPortfolios({ commit }, { userId, query }) {

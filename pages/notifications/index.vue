@@ -5,6 +5,7 @@
         <div class="info-block__title">
           {{ $t('ui.notifications.title') }}
         </div>
+
         <div
           v-if="notifsCount"
           class="info-block__list"
@@ -34,6 +35,13 @@
                 >
                   {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
                 </span>
+                <!--                TODO: проверить входные данные нет бэка-->
+                <!--                <span-->
+                <!--                  v-if="notification.params.employer"-->
+                <!--                  class="inviter__company"-->
+                <!--                >-->
+                <!--                  {{ company(notification) }}-->
+                <!--                </span>-->
               </div>
             </template>
             <div class="notification__quest quest">
@@ -92,7 +100,6 @@ import modals from '~/store/modals/modals';
 export default {
   name: 'Notifications',
   UserRole,
-  Path,
   data() {
     return {
       filter: {
@@ -109,7 +116,6 @@ export default {
       userRole: 'user/getUserRole',
       notifications: 'user/getNotificationsList',
       notifsCount: 'user/getNotificationsCount',
-      currentUser: 'user/getUserData',
     }),
     totalPages() {
       return Math.ceil(this.notifsCount / this.filter.limit);

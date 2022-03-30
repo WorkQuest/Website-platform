@@ -1,5 +1,4 @@
 export default () => ({
-  updateTime: null,
   respondOnQuest: null,
   questListForInvitation: {},
   chatInfoInviteOnQuest: {},

@@ -246,7 +246,6 @@ export default {
   },
   methods: {
     starRating(item) {
-      console.log('starRating', item);
       if (!item) return false;
       if (this.userRole === UserRole.WORKER) {
         return item.status === QuestStatuses.Done
@@ -474,7 +473,7 @@ export default {
       this.SetLoader(false);
     },
     async openDispute() {
-      if (this.quest.status === QuestStatuses.Dispute) return await this.$router.push(`/disputes/${this.quest.openDispute.id}`);
+      if (this.quest.status === QuestStatuses.Dispute) return await this.$router.push(`${Path.DISPUTES}/${this.quest.openDispute.id}`);
       if (this.checkAvailabilityDispute) {
         return this.ShowModal({
           key: modals.openADispute,

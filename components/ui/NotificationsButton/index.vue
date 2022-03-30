@@ -124,7 +124,6 @@ export default {
       unreadNotifsCount: 'user/getUnreadNotifsCount',
       notifications: 'user/getReducedNotifications',
       notificationsCount: 'user/getNotificationsCount',
-      userData: 'user/getUserData',
     }),
   },
   methods: {
