@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="$route.name === 'messages' || (currChat && currChat.type === 'dispute') || canILeave "
+    v-if="isMenuVisible"
     class="icon-more"
   >
     <button
