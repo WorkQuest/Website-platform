@@ -148,7 +148,7 @@ export default {
       } else if (currentPath === `${Path.QUESTS}/${quest?.id || id}`) {
         const params = quest?.id || id;
         await dispatch('quests/getQuest', params, { root: true });
-        if (userRole === UserRole.EMPLOYER && quest?.user?.id === currentUserId) await dispatch('quests/responsesToQuest', params, { root: true });
+        if (userRole === UserRole.EMPLOYER) await dispatch('quests/responsesToQuest', params, { root: true });
         if (userRole === UserRole.EMPLOYER) await dispatch('quests/questListForInvitation', currentUserId, { root: true });
       }
     }
@@ -166,7 +166,6 @@ export default {
       notification.params = {
         title: currTitle, path, isExternalLink, externalBase,
       };
-      console.log(notification.params);
     }
     switch (action) {
       /** WORK-QUEST */
