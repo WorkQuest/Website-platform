@@ -110,8 +110,6 @@ export default {
     const currentUserId = getUserData.id;
     const userRole = getters.getUserRole;
     const currentPath = this.$router.history.current.path;
-    let isUpdateQuests = false;
-    let isUpdateProfile = false;
     let isExternalLink = false;
     let externalBase = '';
     let currTitle = quest?.title || title;
@@ -133,13 +131,10 @@ export default {
       if (rootComment?.author) notification.sender = rootComment?.author;
       if (fromUser) notification.sender = fromUser;
     }
-    async function updatePages() {
-      const pagesUrls = [
-        `${Path.PROFILE}/${currentUserId}`,
-        `${Path.QUESTS}/${quest?.id || id}`,
-        `${Path.MY_QUESTS}`,
-      ];
-      if (isUpdateQuests && pagesUrls.includes(currentPath)) {
+    async function updateQuests() {
+      /* For update quest lists */
+      const questListPathArray = [`\`${Path.MY_QUESTS}\`, \`${Path.QUESTS}/${quest?.id || id}\`, ${Path.PROFILE}/${currentUserId}`];
+      if (questListPathArray.includes(currentPath)) {
         const query = {
           limit: 10,
           offset: 0,
@@ -151,8 +146,14 @@ export default {
           role: userRole,
           query,
         }, { root: true });
+      } else {
+        const params = quest?.id || id;
+        await dispatch('quests/getQuest', params, { root: true });
       }
-      if (isUpdateProfile && pagesUrls[1].includes(currentPath)) {
+    }
+    async function updateProfile() {
+      /* For update user profile */
+      if (currentPath === `${Path.PROFILE}/${currentUserId}`) {
         const query = {
           limit: 8,
           offset: 0,
@@ -181,21 +182,21 @@ export default {
       case NotificationAction.WAIT_WORKER:
       case NotificationAction.QUEST_EDITED:
       case NotificationAction.QUEST_END_SOON: {
+        await updateQuests();
         keyName += action;
-        isUpdateQuests = true;
         break;
       }
 
       case NotificationAction.OPEN_DISPUTE:
       case NotificationAction.DISPUTE_DECISION: {
+        await updateQuests();
         keyName += action;
-        isUpdateQuests = true;
         currTitle = problemDescription;
         break;
       }
 
       case NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST: {
-        isUpdateProfile = true;
+        await updateProfile();
         keyName += 'userLeftReviewAboutQuest';
         path = `${Path.PROFILE}/${toUserId}`;
         currTitle = message;
@@ -229,7 +230,6 @@ export default {
     }
     notification.actionNameKey = `notifications.${action}`;
     if (!notification.sender) setsNotificationSender();
-    if (currentUserId && userRole) await updatePages();
     if (currTitle) {
       notification.params = {
         title: currTitle, path, isExternalLink, externalBase,
