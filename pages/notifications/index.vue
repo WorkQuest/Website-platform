@@ -139,10 +139,8 @@ export default {
       return notification.sender?.avatar?.url || this.EmptyAvatar();
     },
     notificationActionKey(notification) {
-      if (!['notifications.newDiscussionLike'].includes(notification.actionNameKey)) {
-        return `${this.$t(notification.actionNameKey)}:`;
-      }
-      return `${this.$t(notification.actionNameKey)}.`;
+      const symbol = ['notifications.newDiscussionLike'].includes(notification.actionNameKey) ? '.' : ':';
+      return `${this.$t(notification.actionNameKey)}${symbol}`;
     },
     toUserProfile(notification) {
       this.$router.push(`${Path.PROFILE}/${notification.sender.id}`);
