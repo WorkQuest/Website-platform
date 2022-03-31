@@ -11,7 +11,7 @@
           class="info-block__list"
         >
           <div
-            v-for="(notification) in notifications"
+            v-for="notification in notifications"
             :key="notification.id"
             :ref="`${notification.id}|${notification.seen}`"
             v-observe-visibility="(isVisible) => checkUnseenNotifs(isVisible, notification)"
@@ -48,7 +48,10 @@
               <span class="quest__invitation">
                 {{ notificationActionKey(notification) }}
               </span>
-              <span class="quest__title">
+              <span
+                v-if="notification.params"
+                class="quest__title"
+              >
                 {{ notification.params.title }}
               </span>
             </div>
@@ -61,9 +64,11 @@
               alt="x"
               @click="tryRemoveNotification($event, notification.id)"
             >
-            <div class="notification__button">
+            <div
+              v-if="notification.params"
+              class="notification__button"
+            >
               <base-btn
-                v-if="notification.params"
                 mode="outline"
                 :link="notification.params.isExternalLink ? `${notification.params.externalBase}${notification.params.path}` : ''"
                 class="button__view"

@@ -105,24 +105,20 @@ export default {
   async setCurrNotificationObject({ getters, rootGetters, dispatch }, notification) {
     const { isAuth, getUserData } = getters;
     const { action, data } = notification.notification;
-    const { id, title, quest } = data;
+    const {
+      id, title, quest, user, worker, comment, employer, fromUser, rootComment,
+      assignedWorker, message, toUserId, discussion, problemDescription,
+    } = data;
     const currentUserId = getUserData.id;
     const userRole = getters.getUserRole;
     const currentPath = this.$router.history.current.path;
-    let isExternalLink = false;
-    let externalBase = '';
-    let currTitle = quest?.title || title;
-    let path = `${Path.QUESTS}/${quest?.id || id}`;
     if (!isAuth) {
       // TODO: Не удалять!!! Разобраться в проблеме!
       console.log('!!!!!!!!!getters.getUserData.id!!!!!!!!!', currentUserId);
       console.log('!!!!!!!!!getters.getUserRole!!!!!!!!!!!!', userRole);
       dispatch('getUserData');
     }
-    function setsNotificationSender() {
-      const {
-        user, worker, comment, employer, fromUser, rootComment, assignedWorker,
-      } = data;
+    async function setsNotificationSender() {
       if (userRole === UserRole.WORKER) notification.sender = user || employer;
       if (userRole === UserRole.EMPLOYER) notification.sender = assignedWorker || worker;
       if (quest?.user) notification.sender = quest?.user;
@@ -132,7 +128,11 @@ export default {
     }
     async function updateQuests() {
       /* For update quest lists */
-      const questListPathArray = [`\`${Path.MY_QUESTS}\`, \`${Path.QUESTS}/${quest?.id || id}\`, ${Path.PROFILE}/${currentUserId}`];
+      const questListPathArray = [
+        Path.MY_QUESTS,
+        Path.QUESTS,
+        `${Path.PROFILE}/${currentUserId}`,
+      ];
       if (questListPathArray.includes(currentPath)) {
         const query = {
           limit: 10,
@@ -145,7 +145,7 @@ export default {
           role: userRole,
           query,
         }, { root: true });
-      } else {
+      } else if (currentPath === `${Path.QUESTS}/${quest?.id || id}`) {
         const params = quest?.id || id;
         await dispatch('quests/getQuest', params, { root: true });
         if (userRole === UserRole.EMPLOYER && quest?.user?.id === currentUserId) await dispatch('quests/responsesToQuest', params, { root: true });
@@ -162,11 +162,12 @@ export default {
         await dispatch('getAllUserReviews', { userId: currentUserId, query });
       }
     }
-
-    let keyName = 'notifications.';
-    const {
-      message, toUserId, discussion, problemDescription, comment,
-    } = data;
+    async function notificationParams(currTitle, path, isExternalLink, externalBase) {
+      notification.params = {
+        title: currTitle, path, isExternalLink, externalBase,
+      };
+      console.log(notification.params);
+    }
     switch (action) {
       /** WORK-QUEST */
       case NotificationAction.QUEST_STARTED:
@@ -183,60 +184,55 @@ export default {
       case NotificationAction.WAIT_WORKER:
       case NotificationAction.QUEST_EDITED:
       case NotificationAction.QUEST_END_SOON: {
+        notification.actionNameKey = `notifications.${action}`;
+        notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
+        await notificationParams(quest?.title || title, `${Path.QUESTS}/${quest?.id || id}`, false, '');
+        if (!notification.sender) await setsNotificationSender();
         await updateQuests();
-        keyName += action;
         break;
       }
 
       case NotificationAction.OPEN_DISPUTE:
       case NotificationAction.DISPUTE_DECISION: {
+        notification.actionNameKey = `notifications.${action}`;
+        notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
+        await notificationParams(problemDescription || quest?.title || title, `${Path.QUESTS}/${quest?.id || id}`, false, '');
+        if (!notification.sender) await setsNotificationSender();
         await updateQuests();
-        keyName += action;
-        currTitle = problemDescription;
         break;
       }
 
       case NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST: {
+        notification.actionNameKey = `notifications.${action}`;
+        notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
+        await notificationParams(message || quest?.title || title, `${Path.PROFILE}/${toUserId}`, false, '');
+        if (!notification.sender) await setsNotificationSender();
         await updateProfile();
-        keyName += 'userLeftReviewAboutQuest';
-        path = `${Path.PROFILE}/${toUserId}`;
-        currTitle = message;
         break;
       }
       /** DAO */
       case NotificationAction.NEW_COMMENT_IN_DISCUSSION:
       case NotificationAction.NEW_DISCUSSION_LIKE: {
-        isExternalLink = true;
-        keyName += action;
-        externalBase = DaoUrl;
-        currTitle = discussion.title;
-        path = `${PathDAO.DISCUSSIONS}/${discussion.id}`;
+        notification.actionNameKey = `notifications.${action}`;
+        notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
+        await notificationParams(discussion.title || quest?.title || title, `${PathDAO.DISCUSSIONS}/${discussion.id}`, true, DaoUrl);
+        if (!notification.sender) await setsNotificationSender();
         break;
       }
 
       case NotificationAction.COMMENT_LIKED: {
-        isExternalLink = true;
-        keyName += 'commentLiked';
-        externalBase = DaoUrl;
-        path = `${PathDAO.DISCUSSIONS}/${comment.discussionId}`;
-        currTitle = comment.text;
+        notification.actionNameKey = `notifications.${action}`;
+        notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
+        await notificationParams(comment?.text || quest?.title || title, `${PathDAO.DISCUSSIONS}/${comment.discussionId}`, true, DaoUrl);
+        if (!notification.sender) await setsNotificationSender();
         break;
       }
       default: {
         // TODO: Не удалять! Для ловли неизвестных ивентов
         console.error('Unknown event = ', action);
-        keyName = '';
         break;
       }
     }
-    notification.actionNameKey = `notifications.${action}`;
-    if (!notification.sender) setsNotificationSender();
-    if (currTitle) {
-      notification.params = {
-        title: currTitle, path, isExternalLink, externalBase,
-      };
-    }
-    notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
     return notification;
   },
   async getUserPortfolios({ commit }, { userId, query }) {

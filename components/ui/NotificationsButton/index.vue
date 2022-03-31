@@ -60,7 +60,7 @@
                       :href="`/profile/${senderId(notification)}`"
                       class="notify__text notify__text_name"
                     >
-                      {{ UserName(senderName(notification)) }}
+                      {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
                     </a>
                   </div>
                 </div>
@@ -127,12 +127,6 @@ export default {
     }),
   },
   methods: {
-    senderName(notification) {
-      if (notification.sender?.firstName && notification.sender?.lastName) {
-        return `${notification.sender?.firstName} ${notification.sender?.lastName}`;
-      }
-      return this.$t('profile.defaultName');
-    },
     senderId(notification) {
       return notification.sender?.id || '';
     },
