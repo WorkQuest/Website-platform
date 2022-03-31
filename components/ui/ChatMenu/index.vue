@@ -1,5 +1,8 @@
 <template>
-  <div class="icon-more">
+  <div
+    v-if="$route.name === 'messages' || (currChat && currChat.type === 'dispute') || canILeave "
+    class="icon-more"
+  >
     <button
       v-click-outside="closeChatMenu"
       class="chat__button chat__button_menu"
@@ -34,7 +37,7 @@
             </template>
             <template v-else>
               <div
-                v-if="!canILeave"
+                v-if=" isOpenDispute"
                 class="chat-menu__item"
                 @click="showOpenADisputeModal()"
               >
@@ -84,6 +87,12 @@ export default {
     ...mapGetters({
       currChat: 'chat/getCurrChatInfo',
     }),
+    isOpenDispute() {
+      return !this.canILeave && this.currChat.type === 'dispute';
+    },
+    isMenuVisible() {
+      return this.$route.name === 'messages' || (this.currChat && this.currChat.type === 'dispute') || this.canILeave;
+    },
   },
   methods: {
     changeStarredVal() {
