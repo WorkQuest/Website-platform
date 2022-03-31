@@ -100,49 +100,32 @@ export default {
     }
   },
   async addNotification({ commit, dispatch }, notification) {
-    console.log('addNotification from socket', notification);
     const newNotification = await dispatch('setCurrNotificationObject', { notification });
     commit('addNotification', newNotification);
   },
   async setCurrNotificationObject({ getters, rootGetters, dispatch }, notification) {
-    if (!getters.getUserData.id && !getters.getUserRole) {
-      console.log('!!!!!!!!!getters.getUserData.id!!!!!!!!!', getters.getUserData.id);
-      console.log('!!!!!!!!!getters.getUserRole!!!!!!!!!!!!', getters.getUserRole);
-      dispatch('getUserData');
-    }
-
-    console.log('!!notification.notification', !!notification);
-    const {
-      action,
-      data: {
-        id,
-        user,
-        title,
-        quest,
-        worker,
-        message,
-        comment,
-        employer,
-        fromUser,
-        toUserId,
-        discussion,
-        rootComment,
-        assignedWorker,
-        problemDescription,
-      },
-    } = notification.notification;
-
-    const currentPath = this.$router.history.current.path;
-    const currentUserId = getters.getUserData.id;
+    const { isAuth, getUserData } = getters;
+    const { action, data } = notification.notification;
+    const { id, title, quest } = data;
+    const currentUserId = getUserData.id;
     const userRole = getters.getUserRole;
-    let externalLink = false;
-    let externalBase = '';
+    const currentPath = this.$router.history.current.path;
     let isUpdateQuests = false;
     let isUpdateProfile = false;
+    let isExternalLink = false;
+    let externalBase = '';
     let currTitle = quest?.title || title;
     let path = `${Path.QUESTS}/${quest?.id || id}`;
-
+    if (!isAuth) {
+      // TODO: Не удалять!!! Разобраться в проблеме!
+      console.log('!!!!!!!!!getters.getUserData.id!!!!!!!!!', currentUserId);
+      console.log('!!!!!!!!!getters.getUserRole!!!!!!!!!!!!', userRole);
+      dispatch('getUserData');
+    }
     function setsNotificationSender() {
+      const {
+        user, worker, comment, employer, fromUser, rootComment, assignedWorker,
+      } = data;
       if (userRole === UserRole.WORKER) notification.sender = user || employer;
       if (userRole === UserRole.EMPLOYER) notification.sender = assignedWorker || worker;
       if (quest?.user) notification.sender = quest?.user;
@@ -150,18 +133,12 @@ export default {
       if (rootComment?.author) notification.sender = rootComment?.author;
       if (fromUser) notification.sender = fromUser;
     }
-
     async function updatePages() {
       const pagesUrls = [
         `${Path.PROFILE}/${currentUserId}`,
         `${Path.QUESTS}/${quest?.id || id}`,
         `${Path.MY_QUESTS}`,
       ];
-      console.log('-=-=-=-=-=-=-=-=-');
-      console.log('updatePages paths:', pagesUrls, pagesUrls.includes(currentPath));
-      console.log('isUpdateQuests', isUpdateQuests);
-      console.log('isUpdateProfile', isUpdateProfile);
-      console.log('-=-=-=-=-=-=-=-=-');
       if (isUpdateQuests && pagesUrls.includes(currentPath)) {
         const query = {
           limit: 10,
@@ -184,8 +161,10 @@ export default {
       }
     }
 
-    console.log('event name', action);
     let keyName = 'notifications.';
+    const {
+      message, toUserId, discussion, problemDescription, comment,
+    } = data;
     switch (action) {
       /** WORK-QUEST */
       case NotificationAction.QUEST_STARTED:
@@ -225,7 +204,7 @@ export default {
       /** DAO */
       case NotificationAction.NEW_COMMENT_IN_DISCUSSION:
       case NotificationAction.NEW_DISCUSSION_LIKE: {
-        externalLink = true;
+        isExternalLink = true;
         keyName += action;
         externalBase = DaoUrl;
         currTitle = discussion.title;
@@ -234,7 +213,7 @@ export default {
       }
 
       case NotificationAction.COMMENT_LIKED: {
-        externalLink = true;
+        isExternalLink = true;
         keyName += 'commentLiked';
         externalBase = DaoUrl;
         path = `${PathDAO.DISCUSSIONS}/${comment.discussionId}`;
@@ -242,6 +221,7 @@ export default {
         break;
       }
       default: {
+        // TODO: Не удалять! Для ловли неизвестных ивентов
         console.error('Unknown event = ', action);
         keyName = '';
         break;
@@ -250,10 +230,9 @@ export default {
     notification.actionNameKey = `notifications.${action}`;
     if (!notification.sender) setsNotificationSender();
     if (currentUserId && userRole) await updatePages();
-    console.log('currTitle', currTitle);
     if (currTitle) {
       notification.params = {
-        title: currTitle, path, externalLink, externalBase,
+        title: currTitle, path, isExternalLink, externalBase,
       };
     }
     notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');

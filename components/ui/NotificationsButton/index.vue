@@ -130,15 +130,14 @@ export default {
     senderName(notification) {
       if (notification.sender?.firstName && notification.sender?.lastName) {
         return `${notification.sender?.firstName} ${notification.sender?.lastName}`;
-      } return this.$t('profile.defaultName');
+      }
+      return this.$t('profile.defaultName');
     },
     senderId(notification) {
-      if (notification.sender?.id) return notification.sender?.id;
-      return this.EmptyAvatar();
+      return notification.sender?.id || '';
     },
     avatar(notification) {
-      if (notification.sender?.avatar?.url) return notification.sender?.avatar?.url;
-      return this.EmptyAvatar();
+      return notification.sender?.avatar?.url || this.EmptyAvatar();
     },
     goToNotifsPage() {
       this.closePopUp();

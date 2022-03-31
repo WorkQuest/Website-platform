@@ -537,14 +537,12 @@ export default {
     async rejectQuestInvitation() {
       this.SetLoader(true);
       await this.$store.dispatch('quests/rejectQuestInvitation', this.quest.response.id);
-      await this.getQuest();
       this.setActionBtnsArr();
       this.SetLoader(false);
     },
     async acceptQuestInvitation() {
       this.SetLoader(true);
       await this.$store.dispatch('quests/acceptQuestInvitation', this.quest.response.id);
-      await this.getQuest();
       this.setActionBtnsArr();
       this.SetLoader(false);
     },
@@ -556,7 +554,6 @@ export default {
     async acceptWorkOnQuest() {
       this.SetLoader(true);
       if (await this.$store.dispatch('quests/acceptWorkOnQuest', this.quest.id)) {
-        await this.getQuest();
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/questAgreed.svg'),
@@ -569,7 +566,6 @@ export default {
     async rejectWorkOnQuest() {
       this.SetLoader(true);
       if (await this.$store.dispatch('quests/rejectWorkOnQuest', this.quest.id)) {
-        await this.getQuest();
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/questAgreed.svg'),
@@ -593,7 +589,6 @@ export default {
       this.SetLoader(false);
     },
     async sendARequestOnQuest() {
-      await this.getQuest();
       this.ShowModal({
         key: modals.sendARequest,
         questId: this.quest.id,

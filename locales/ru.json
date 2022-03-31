@@ -1288,7 +1288,7 @@
     "workerRespondedToQuest": "Откликнулся на квест",
     "employerInvitedWorkerToQuest": "Пригласил вас на квест",
     "workerAcceptedInvitationToQuest": "Принял приглашение на квест",
-    "workerRejectedInvitationToQuest": "Declined the invitation to the quest",
+    "workerRejectedInvitationToQuest": "Отклонил приглашение на квест",
     "employerRejectedWorkersResponse": "Отклонил приглашение на квест",
     "userLeftReviewAboutQuest": "Оставил отзыв о квесте",
     "waitWorker": "Квест ожидает",
@@ -1348,7 +1348,7 @@
     "noMessages": "Нет сообщений",
     "membersNum": "{n} участников",
     "systemMessages": {
-      "employerInvitedWorkerToQuest": "invited you to a quest",
+      "employerInvitedWorkerToQuest": "Пригласил вас на квест",
       "youInvitedToTheQuest": "You invited to the quest",
       "respondedToTheQuest": "responded to the quest",
       "youHaveRespondedToTheQuest": "You have responded to the quest",

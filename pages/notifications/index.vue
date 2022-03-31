@@ -65,10 +65,10 @@
               <base-btn
                 v-if="notification.params"
                 mode="outline"
-                :link="notification.params.externalLink ? `${notification.params.externalBase}${notification.params.path}` : ''"
+                :link="notification.params.isExternalLink ? `${notification.params.externalBase}${notification.params.path}` : ''"
                 class="button__view"
                 data-selector="NOTIFICATION-VIEW"
-                @click="notification.params.externalLink ? '' : goToEvent(notification.params.path)"
+                @click="notification.params.isExternalLink ? '' : goToEvent(notification.params.path)"
               >
                 {{ $t('meta.btns.view') }}
               </base-btn>
@@ -131,13 +131,13 @@ export default {
   },
   methods: {
     avatar(notification) {
-      if (notification.sender?.avatar?.url) return notification.sender?.avatar?.url;
-      return this.EmptyAvatar();
+      return notification.sender?.avatar?.url || this.EmptyAvatar();
     },
     notificationActionKey(notification) {
       if (!['notifications.newDiscussionLike'].includes(notification.actionNameKey)) {
         return `${this.$t(notification.actionNameKey)}:`;
-      } return `${this.$t(notification.actionNameKey)}.`;
+      }
+      return `${this.$t(notification.actionNameKey)}.`;
     },
     toUserProfile(notification) {
       this.$router.push(`${Path.PROFILE}/${notification.sender.id}`);
