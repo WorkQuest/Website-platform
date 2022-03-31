@@ -81,7 +81,6 @@ export default {
       const { data: { result, ok } } = await this.$axios.get(`${process.env.NOTIFS_URL}notifications`, currConfig);
 
       if (result.notifications.length) {
-        console.log('getNotifications from rest', result.notifications);
         result.notifications.map(async (notification) => await dispatch('setCurrNotificationObject', notification));
       }
 
@@ -149,7 +148,7 @@ export default {
       } else {
         const params = quest?.id || id;
         await dispatch('quests/getQuest', params, { root: true });
-        if (quest?.user?.id === currentUserId) await dispatch('quests/responsesToQuest', params, { root: true });
+        if (userRole === UserRole.EMPLOYER && quest?.user?.id === currentUserId) await dispatch('quests/responsesToQuest', params, { root: true });
         if (userRole === UserRole.EMPLOYER) await dispatch('quests/questListForInvitation', currentUserId, { root: true });
       }
     }

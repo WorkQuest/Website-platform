@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="infoDataMode"
     class="info"
     :class="infoClass"
   >
