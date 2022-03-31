@@ -68,7 +68,7 @@
                   </div>
                 </div>
                 <div class="notify__text notify__text_date">
-                  {{ notification.creatingDate }}
+                  {{ $d(Date.parse(notification.createdAt),'long') }}
                 </div>
               </div>
               <div class="notify__reason">
