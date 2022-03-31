@@ -66,7 +66,6 @@ export default {
   },
   async getQuest({ commit, rootState }, payload) {
     try {
-      console.log('getQuest');
       const { result } = await this.$axios.$get(`/v1/quest/${payload}`);
       const { role } = rootState.user.userData;
       let currStat = 0;

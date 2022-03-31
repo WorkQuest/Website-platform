@@ -149,6 +149,8 @@ export default {
       } else {
         const params = quest?.id || id;
         await dispatch('quests/getQuest', params, { root: true });
+        if (quest?.user?.id === currentUserId) await dispatch('quests/responsesToQuest', params, { root: true });
+        if (userRole === UserRole.EMPLOYER) await dispatch('quests/questListForInvitation', currentUserId, { root: true });
       }
     }
     async function updateProfile() {

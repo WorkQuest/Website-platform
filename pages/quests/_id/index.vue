@@ -363,7 +363,6 @@ export default {
         ADChat, Active, Created, Dispute, Invited, WaitWorker, WaitConfirm,
       } = InfoModeWorker;
       let arr = [];
-      console.log('infoDataMode', infoDataMode);
       switch (infoDataMode) {
         case ADChat: {
           arr = [{
@@ -443,7 +442,6 @@ export default {
         default:
           break;
       }
-      console.log('arr', arr);
       return arr;
     },
     handleClickSpecBtn(funcKey) {
@@ -561,6 +559,7 @@ export default {
           subtitle: this.$t('quests.workOnQuestAccepted'),
         });
       }
+      await this.getQuest();
       this.SetLoader(false);
     },
     async rejectWorkOnQuest() {
@@ -573,6 +572,7 @@ export default {
           subtitle: this.$t('quests.workOnQuestRejected'),
         });
       }
+      await this.getQuest();
       this.SetLoader(false);
     },
     async completeWorkOnQuest() {
