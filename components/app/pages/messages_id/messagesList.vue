@@ -37,7 +37,7 @@
             <div
               class="info-message__link"
               :class="{'info-message__link_left' : !message.itsMe}"
-              @click="openProfile(message.infoMessage.userId || message.senderUserId)"
+              @click="openProfile(message.senderUserId)"
             >
               {{ setFullName(message) }}
             </div>
