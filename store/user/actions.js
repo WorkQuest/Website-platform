@@ -228,7 +228,7 @@ export default {
         break;
       }
       default: {
-        // TODO: Не удалять! Для ловли неизвестных ивентов
+        // Не удалять! Для ловли неизвестных ивентов
         console.error('Unknown event = ', action);
         break;
       }
