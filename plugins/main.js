@@ -85,7 +85,7 @@ Vue.mixin({
       } else if (d >= 500) {
         d = '+500';
       } else {
-        d = '-500';
+        d = '< 500';
       }
       return d;
     },

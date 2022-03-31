@@ -1,7 +1,7 @@
 <template>
   <div class="container__status status">
     <img
-      v-if="raiseView"
+      v-if="isActiveRaiseView"
       src="~assets/img/ui/arrow-worker-profile.svg"
       alt="arrow-profile"
       class="status__img"
@@ -29,8 +29,9 @@ export default {
       default: null,
     },
     raiseView: {
-      type: Boolean,
-      default: false,
+      type: Object,
+      default: () => {
+      },
     },
   },
   computed: {
@@ -40,6 +41,9 @@ export default {
     statusTitle() {
       return this.rating !== null ? this.$t(`rating.${this.ratingStr}.title`) : '';
     },
+    isActiveRaiseView() {
+      return this.raiseView && RaiseViewStatus[this.raiseView.status];
+    },
   },
 };
 </script>
@@ -48,15 +52,18 @@ export default {
 .status {
   display: flex;
   align-items: center;
+
   &__levels {
     padding: 2px 5px;
     margin: 0 5px 0 0;
     align-items: center;
     border-radius: 3px;
   }
-  &__img{
+
+  &__img {
     margin-right: 12px;
   }
+
   &__level {
     @include text-simple;
     font-weight: 500;
@@ -89,6 +96,7 @@ export default {
     }
   }
 }
+
 @include _991 {
   .status__levels {
     margin: 0;

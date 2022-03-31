@@ -324,7 +324,7 @@ export default {
       }
     },
     async showPaymentModal() {
-      if (!this.balance.WUSD) {
+      if (!(this.balance?.WUSD?.balance && +this.balance.WUSD.balance)) {
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/error.svg'),
