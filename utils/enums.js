@@ -69,13 +69,25 @@ export const InfoModeEmployer = {
   Closed: -3,
   Dispute: -2,
   Rejected: -1,
-  Created: 0,
-  Active: 1,
-  WaitWorker: 2,
-  WaitConfirm: 3,
+  Created: 0, // Waiting worker to start quest
+  WaitConfirm: 2, // Waiting for worker accept assign to quest
+  Active: 3, // Work in progress
+  WaitWorker: 4, // Waiting worker complete quest
   Done: 5,
 };
-
+export const InfoModeWorker = {
+  Closed: -3,
+  Dispute: -2,
+  Created: 0,
+  // ADChat: 1,
+  // Rejected: 3,
+  Active: 3,
+  // WaitWorker: 3,
+  WaitConfirm: 4,
+  Done: 5,
+  Responded: 10,
+  Invited: 11,
+};
 // Worker
 // active - работника приняли нак вест и квест начат
 // rejected - работник подал заявку, ему отклонили
@@ -90,19 +102,6 @@ export const InfoModeEmployer = {
 // waitWorker - ожидает завершения работы
 // waitConfirm - ожидает подтверждение воркера вступить на квест
 
-export const InfoModeWorker = {
-  // Closed: -3,
-  // Dispute: -2,
-  // Created: 0,
-  // ADChat: 1,
-  // Rejected: 3,
-  // Active: 3,
-  WaitWorker: 3,
-  WaitConfirm: 4,
-  Done: 5,
-  // Responded: 10,
-  // Invited: 11,
-};
 export const DisputeStatues = {
   PENDING: 0,
   IN_PROGRESS: 1,
