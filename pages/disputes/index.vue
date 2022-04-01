@@ -77,6 +77,13 @@ export default {
       disputes: 'disputes/getUserDisputes',
       disputesCount: 'disputes/getUserDisputesCount',
     }),
+    colorDisputeStatus() {
+      return {
+        [DisputeStatues.PENDING]: 'page__text_blue',
+        [DisputeStatues.IN_PROGRESS]: 'page__text_yellow',
+        [DisputeStatues.COMPLETED]: 'page__text_green',
+      };
+    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -121,13 +128,6 @@ export default {
         [DisputeStatues.COMPLETED]: this.$t('meta.completed'),
       };
       return obj[status];
-    },
-    colorDisputeStatus() {
-      return {
-        [DisputeStatues.PENDING]: 'page__text_blue',
-        [DisputeStatues.IN_PROGRESS]: 'page__text_yellow',
-        [DisputeStatues.COMPLETED]: 'page__text_green',
-      };
     },
   },
 };
