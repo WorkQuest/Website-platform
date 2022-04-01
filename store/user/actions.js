@@ -123,43 +123,51 @@ export default {
         /** Worker && Employer */
         if (fromUser) {
           if (action === NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST) notification.sender = fromUser;
-        } else if (comment?.author) {
+        }
+        if (comment?.author) {
           if (action === NotificationAction.COMMENT_LIKED) notification.sender = comment.author;
-        } else if (quest?.user) {
-          if (action === NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST) notification.sender = quest.user;
-          else if (action === NotificationAction.WORKER_ACCEPTED_INVITATION_TO_QUEST) notification.sender = quest.user;
-          else if (action === NotificationAction.WORKER_RESPONDED_TO_QUEST) notification.sender = quest.user;
-          else if (action === NotificationAction.OPEN_DISPUTE) notification.sender = quest.user;
-          else if (action === NotificationAction.DISPUTE_DECISION) notification.sender = quest.user;
-          else if (action === NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE) notification.sender = quest.user;
-        } else if (rootComment?.author) {
+        }
+        if (quest?.user) {
+          if ([NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST,
+            NotificationAction.WORKER_ACCEPTED_INVITATION_TO_QUEST,
+            NotificationAction.WORKER_RESPONDED_TO_QUEST,
+            NotificationAction.OPEN_DISPUTE,
+            NotificationAction.DISPUTE_DECISION,
+            NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE].includes(action)) notification.sender = quest.user;
+        }
+        if (rootComment?.author) {
           if (action === NotificationAction.NEW_COMMENT_IN_DISCUSSION) notification.sender = rootComment.author;
         }
         /** Worker */
         if (userRole === UserRole.WORKER) {
-          if (action === NotificationAction.QUEST_EDITED) notification.sender = user;
-          else if (action === NotificationAction.NEW_DISCUSSION_LIKE) notification.sender = user;
-          else if (action === NotificationAction.NEW_COMMENT_IN_DISCUSSION) notification.sender = user;
-          else if (action === NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST) notification.sender = user;
-          else if (action === NotificationAction.WAIT_WORKER) notification.sender = user;
+          if ([NotificationAction.QUEST_EDITED,
+            NotificationAction.NEW_DISCUSSION_LIKE,
+            NotificationAction.NEW_COMMENT_IN_DISCUSSION,
+            NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST,
+            NotificationAction.WAIT_WORKER].includes(action)) notification.sender = user;
         }
         /** Employer */
         if (userRole === UserRole.EMPLOYER) {
           if (assignedWorker) {
-            if (action === NotificationAction.WORKER_RESPONDED_TO_QUEST) notification.sender = assignedWorker;
-            else if (action === NotificationAction.WORKER_ACCEPTED_QUEST) notification.sender = assignedWorker;
-            else if (action === NotificationAction.WORKER_COMPLETED_QUEST) notification.sender = assignedWorker;
-            else if (action === NotificationAction.WORKER_REJECTED_QUEST) notification.sender = assignedWorker;
-          } else if (worker) {
-            if (action === NotificationAction.WORKER_RESPONDED_TO_QUEST) notification.sender = worker;
-            else if (action === NotificationAction.WORKER_ACCEPTED_QUEST) notification.sender = worker;
-            else if (action === NotificationAction.WORKER_COMPLETED_QUEST) notification.sender = worker;
-            else if (action === NotificationAction.WORKER_REJECTED_QUEST) notification.sender = worker;
-          } else if (action === NotificationAction.NEW_DISCUSSION_LIKE) notification.sender = employer;
-          else if (action === NotificationAction.QUEST_EDITED) notification.sender = employer;
-          else if (action === NotificationAction.NEW_COMMENT_IN_DISCUSSION) notification.sender = employer;
-          else if (action === NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST) notification.sender = employer;
-          else if (action === NotificationAction.WAIT_WORKER) notification.sender = employer;
+            if ([NotificationAction.WORKER_RESPONDED_TO_QUEST,
+              NotificationAction.WORKER_ACCEPTED_QUEST,
+              NotificationAction.WORKER_COMPLETED_QUEST,
+              NotificationAction.WORKER_REJECTED_QUEST,
+            ].includes(action)) notification.sender = assignedWorker;
+          }
+          if (worker) {
+            if ([NotificationAction.WORKER_RESPONDED_TO_QUEST,
+              NotificationAction.WORKER_ACCEPTED_QUEST,
+              NotificationAction.WORKER_COMPLETED_QUEST,
+              NotificationAction.WORKER_REJECTED_QUEST].includes(action)) notification.sender = worker;
+          }
+          if (employer) {
+            if ([NotificationAction.NEW_DISCUSSION_LIKE,
+              NotificationAction.QUEST_EDITED,
+              NotificationAction.NEW_COMMENT_IN_DISCUSSION,
+              NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST,
+              NotificationAction.WAIT_WORKER].includes(action)) notification.sender = employer;
+          }
         }
       }
     }
@@ -207,7 +215,7 @@ export default {
       notification.params = {
         title: currTitle, path, isExternalLink, externalBase,
       };
-      setSender();
+      await setSender();
     }
     switch (action) {
       /** WORK-QUEST */

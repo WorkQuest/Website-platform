@@ -121,10 +121,6 @@ export default {
   data() {
     return {
       isShowNotify: false,
-      filter: {
-        limit: 2,
-        offset: 0,
-      },
     };
   },
   computed: {
@@ -135,7 +131,10 @@ export default {
     }),
   },
   async beforeMount() {
-    await this.$store.dispatch('user/getNotifications', { params: this.filter });
+    await this.$store.dispatch('user/getNotifications');
+  },
+  destroyed() {
+    this.$store.commit('user/setNotifications', { result: { notifications: [], count: this.notifsCount } });
   },
   methods: {
     senderId(notification) {
