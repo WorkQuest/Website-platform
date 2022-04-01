@@ -1,4 +1,5 @@
 export default {
+  getUpdateTime: (state) => state.updateTime,
   getChatInfoInviteOnQuest: (state) => state.chatInfoInviteOnQuest,
   getQuestListForInvitation: (state) => state.questListForInvitation || {},
   getEmployeeList: (state) => state.employeeList,

@@ -5,15 +5,16 @@
         <div class="info-block__title">
           {{ $t('ui.notifications.title') }}
         </div>
+
         <div
-          v-if="notifsCount"
+          v-if="notifsCount && notifications"
           class="info-block__list"
         >
           <div
             v-for="(notification, i) in notifications"
             :key="i"
             :ref="`${notification.id}|${notification.seen}`"
-            v-observe-visibility="(isVisible) => checkUnseenNotifs(isVisible, notification)"
+            v-observe-visibility="(isVisible) => checkUnseenNotifs(isVisible, {id: notification ? notification.id : '', seen: notification.seen})"
             class="notification"
             :class="{'notification_gray' : !notification.seen}"
             @click="goToEvent(notification.params ? notification.params.path : '', true)"
@@ -22,23 +23,30 @@
               <div class="notification__avatar">
                 <img
                   class="avatar"
-                  :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : EmptyAvatar()"
+                  :src="avatar(notification)"
                   alt=""
+                  @click="toUserProfile(notification)"
                 >
               </div>
               <div class="notification__inviter inviter">
-                <span class="inviter__name">
+                <span
+                  class="inviter__name"
+                  @click="toUserProfile(notification)"
+                >
                   {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
                 </span>
-                <!--                <span class="inviter__company">-->
-                <!--                  {{ notification.company }}-->
+                <!--                TODO: проверить входные данные нет бэка-->
+                <!--                <span-->
+                <!--                  v-if="notification.params.employer"-->
+                <!--                  class="inviter__company"-->
+                <!--                >-->
+                <!--                  {{ company(notification) }}-->
                 <!--                </span>-->
               </div>
             </template>
-
             <div class="notification__quest quest">
               <span class="quest__invitation">
-                {{ $t(notification.actionNameKey) }}:
+                {{ notificationActionKey(notification) }}
               </span>
               <span
                 v-if="notification.params"
@@ -50,20 +58,22 @@
             <div class="notification__date">
               {{ notification.creatingDate }}
             </div>
-
             <img
               class="notification__remove"
               src="~assets/img/ui/close.svg"
               alt="x"
               @click="tryRemoveNotification($event, notification.id)"
             >
-
-            <div class="notification__button">
+            <div
+              v-if="notification.params"
+              class="notification__button"
+            >
               <base-btn
                 mode="outline"
+                :link="notification.params.isExternalLink ? `${notification.params.externalBase}${notification.params.path}` : ''"
                 class="button__view"
                 data-selector="NOTIFICATION-VIEW"
-                @click="goToEvent(notification.params ? notification.params.path : '')"
+                @click="notification.params.isExternalLink ? '' : goToEvent(notification.params.path)"
               >
                 {{ $t('meta.btns.view') }}
               </base-btn>
@@ -89,10 +99,12 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { UserRole, Path } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
   name: 'Notifications',
+  UserRole,
   data() {
     return {
       filter: {
@@ -123,9 +135,18 @@ export default {
     this.$store.commit('user/setNotifications', { result: { notifications: [], count: this.notifsCount } });
   },
   methods: {
+    avatar(notification) {
+      return notification.sender?.avatar?.url || this.EmptyAvatar();
+    },
+    notificationActionKey(notification) {
+      const symbol = ['notifications.newDiscussionLike'].includes(notification.actionNameKey) ? '.' : ':';
+      return `${this.$t(notification.actionNameKey)}${symbol}`;
+    },
+    toUserProfile(notification) {
+      this.$router.push(`${Path.PROFILE}/${notification.sender.id}`);
+    },
     tryRemoveNotification(ev, notificationId) {
       ev.stopPropagation();
-
       this.ShowModal({
         key: modals.areYouSure,
         title: this.$t('modals.sureDeleteNotification'),
@@ -135,12 +156,9 @@ export default {
     },
     async removeNotification(notificationId) {
       const { limit, offset } = this.filter;
-
       this.CloseModal();
-
       this.SetLoader(true);
-
-      const payload = {
+      await this.$store.dispatch('user/removeNotification', {
         config: {
           params: {
             limit: 1,
@@ -148,24 +166,16 @@ export default {
           },
         },
         notificationId,
-      };
-
-      await this.$store.dispatch('user/removeNotification', payload);
-
+      });
       this.SetLoader(false);
     },
-    checkUnseenNotifs(isVisible, { id, seen }) {
-      if (!isVisible || seen || this.notificationIdsForRead.indexOf(id) >= 0) return;
-
+    async checkUnseenNotifs(isVisible, { id, seen }) {
+      if (!isVisible || !id || seen || this.notificationIdsForRead.indexOf(id) >= 0) return;
       this.notificationIdsForRead.push(id);
-
       this.delayId = this.SetDelay(async () => {
-        const config = {
+        await this.$store.dispatch('user/readNotifications', {
           notificationIds: this.notificationIdsForRead,
-        };
-
-        await this.$store.dispatch('user/readNotifications', config);
-
+        });
         this.notificationIdsForRead = [];
       }, 1000, this.delayId);
     },
@@ -176,25 +186,16 @@ export default {
       this.SetLoader(false);
     },
     async getNotifications() {
-      const config = {
-        params: this.filter,
-      };
-
-      await this.$store.dispatch('user/getNotifications', config);
+      await this.$store.dispatch('user/getNotifications', { params: this.filter });
     },
     goToEvent(path, isNotifCont) {
       if (isNotifCont && document.body.offsetWidth > 767) return;
-
       this.$router.push(path);
     },
     navigateBack() {
-      if (this.userRole === 'employer') {
-        this.$router.push('/workers');
-      } else if (this.userRole === 'worker') {
-        this.$router.push('/quests');
-      } else {
-        this.$router.push('/');
-      }
+      if (this.userRole === UserRole.EMPLOYER) this.$router.push(Path.WORKERS);
+      else if (this.userRole === UserRole.WORKER) this.$router.push(Path.QUESTS);
+      else this.$router.push(Path.ROOT);
     },
   },
 };
@@ -212,6 +213,11 @@ export default {
     width: 100%;
     padding-top: 30px;
   }
+}
+
+.button__view {
+  text-decoration: none;
+  text-outline: none;
 }
 
 .info-block {
@@ -266,6 +272,7 @@ export default {
     "avatar date button";
   width: 100%;
   padding: 20px;
+  min-width: 0;
 
   &_gray {
     background: #f7f8fabd;
@@ -281,6 +288,9 @@ export default {
   }
   &__inviter {
     grid-area: inviter;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
   &__quest {
     grid-area: quest;
@@ -319,6 +329,7 @@ export default {
   width: 50px;
   height: 50px;
   border-radius: 50%;
+  cursor: pointer;
 }
 .inviter {
   &__name {
@@ -327,6 +338,11 @@ export default {
     font-size: 16px;
     color: $black800;
     letter-spacing: 0.02em;
+    transition: .5s;
+    cursor: pointer;
+    &:hover {
+      color: $blue;
+    }
   }
   &__company {
     @include text-simple;
