@@ -25,9 +25,7 @@ export default {
     commit('setFunds', res);
   },
   async getCreditData({ commit }) {
-    console.log('getCreditData start');
     const address = await getWalletAddress();
-    console.log('getCreditData address:', address);
     const res = await fetchContractData(
       'borrowers',
       abi.WQBorrowing,
@@ -35,7 +33,6 @@ export default {
       [address],
       GetWalletProvider(),
     );
-    console.log('getCreditData res:', res);
     commit('setCreditData', res);
   },
   async sendBorrow({ commit }, payload) {
@@ -46,6 +43,50 @@ export default {
       return true;
     } catch (err) {
       console.log('sendBorrow error:', err);
+      return false;
+    }
+  },
+  async sendRefund({ commit }, payload) {
+    payload.address = process.env.BORROWING;
+    payload.abi = abi.WQBorrowing;
+    try {
+      await sendWalletTransaction('refund', payload);
+      return true;
+    } catch (err) {
+      console.log('sendRefund error:', err);
+      return false;
+    }
+  },
+  async getWalletsData({ commit }) {
+    const address = await getWalletAddress();
+    const res = await fetchContractData(
+      'wallets',
+      abi.WQLending,
+      process.env.LENDING,
+      [address],
+      GetWalletProvider(),
+    );
+    commit('setWalletsData', res);
+  },
+  async sendLoan({ commit }, payload) {
+    payload.address = process.env.LENDING;
+    payload.abi = abi.WQLending;
+    try {
+      await sendWalletTransaction('deposit', payload);
+      return true;
+    } catch (err) {
+      console.log('sendLoan error:', err);
+      return false;
+    }
+  },
+  async sendWithdraw({ commit }, payload) {
+    payload.address = process.env.LENDING;
+    payload.abi = abi.WQLending;
+    try {
+      await sendWalletTransaction('withdraw', payload);
+      return true;
+    } catch (err) {
+      console.log('sendWithdraw error:', err);
       return false;
     }
   },

@@ -53,6 +53,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -88,31 +89,24 @@ export default {
     hide() {
       this.CloseModal();
     },
-    openConfirmDetailsModal() {
-      const receiptData = [
-        {
-          title: this.$t('modals.currencyDetails'),
-          subtitle: this.$t('meta.coins.eth'),
-        },
-        {
-          title: this.$t('modals.depositing'),
-          subtitle: this.$tc('meta.coins.count.ETHCount', 1),
-        },
-        {
-          title: this.$t('modals.generatingDetails'),
-          subtitle: this.$tc('meta.coins.count.WUSDCount', 1000),
-        },
-      ];
-      const dataForStatusModal = {
-        img: require('~/assets/img/ui/transactionSend.svg'),
-        title: this.$t('modals.loanIsOpened'),
-        subtitle: '',
-        path: 'crediting/1',
-      };
+    async openConfirmDetailsModal() {
+      this.SetLoader(true);
+      const res = await this.$store.dispatch('crediting/sendLoan', { value: new BigNumber(this.quantity).shiftedBy(18).toString() });
+      this.SetLoader(false);
+      if (res) {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/transactionSend.svg'),
+          title: this.$t('modals.loanIsOpened'),
+          subtitle: '',
+          path: 'crediting/1',
+        });
+        return;
+      }
       this.ShowModal({
-        key: modals.confirmDetails,
-        receiptData,
-        dataForStatusModal,
+        key: modals.status,
+        img: require('~/assets/img/ui/warning.svg'),
+        title: this.$t('modals.transactionFail'),
       });
     },
   },

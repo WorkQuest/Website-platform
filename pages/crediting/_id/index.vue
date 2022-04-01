@@ -84,6 +84,31 @@ export default {
     blocksData() {
       return [
         {
+          title: this.$t('crediting.currentCredit'),
+          priceTitle: this.$t('crediting.totalWusdDebt'),
+          price: this.$tc('meta.coins.count.WUSDCount', 225.5),
+          info: [
+            {
+              title: 'ID',
+              desc: 565464,
+            },
+            {
+              title: this.$t('crediting.tableHead.currentRatio'),
+              desc: 565464,
+            },
+            {
+              title: this.$t('crediting.tableHead.deposited'),
+              desc: 123,
+            },
+          ],
+          buttons: [
+            {
+              title: this.$t('crediting.refund'),
+              action: 'refund',
+            },
+          ],
+        },
+        {
           title: this.$t('crediting.currentLoan'),
           priceTitle: this.$t('crediting.totalCollateralLocked'),
           price: this.$tc('meta.coins.count.USDCount', 225.5),
@@ -117,31 +142,6 @@ export default {
             },
           ],
         },
-        {
-          title: this.$t('crediting.currentCredit'),
-          priceTitle: this.$t('crediting.totalWusdDebt'),
-          price: this.$tc('meta.coins.count.WUSDCount', 225.5),
-          info: [
-            {
-              title: 'ID',
-              desc: 565464,
-            },
-            {
-              title: this.$t('crediting.tableHead.currentRatio'),
-              desc: 565464,
-            },
-            {
-              title: this.$t('crediting.tableHead.deposited'),
-              desc: 123,
-            },
-          ],
-          buttons: [
-            {
-              title: this.$t('crediting.refund'),
-              mode: '',
-            },
-          ],
-        },
       ];
     },
   },
@@ -154,9 +154,10 @@ export default {
       this.$router.push('/crediting');
     },
     openModal(action) {
+      console.log('openModal', action);
       this.ShowModal({
-        key: modals.claimRewards,
-        needChangeModal: 1,
+        key: modals.valueSend,
+        mode: action,
       });
     },
   },

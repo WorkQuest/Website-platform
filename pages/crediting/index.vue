@@ -154,6 +154,7 @@ export default {
     ...mapGetters({
       isWalletConnected: 'wallet/getIsWalletConnected',
       creditData: 'crediting/getCreditData',
+      walletData: 'crediting/getWalletData',
     }),
     documents() {
       return [
@@ -223,8 +224,8 @@ export default {
     await Promise.all([
       this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt }),
       this.$store.dispatch('crediting/getCreditData'),
+      this.$store.dispatch('crediting/getWalletsData'),
     ]);
-    console.log(this.creditData.credit);
     if (this.isWalletConnected === false) return;
     this.SetLoader(false);
   },

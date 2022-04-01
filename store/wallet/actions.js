@@ -383,12 +383,13 @@ export default {
       return error();
     }
   },
-  async approveRouter({ commit }, { symbol, spenderAddress, value }) {
+  async approveRouter({ commit, dispatch }, { symbol, spenderAddress, value }) {
     const tokenAddress = tokenMap[symbol];
     try {
-      const allowance = await this.$store.dispatch('wallet/getAllowance', { tokenAddress, spenderAddress });
+      console.log('approveRouter', symbol, spenderAddress, value, tokenAddress);
+      const allowance = await dispatch('getAllowance', { tokenAddress, spenderAddress });
       if (+allowance < +value) {
-        return await this.$store.dispatch('wallet/approve', {
+        return await dispatch('approve', {
           tokenAddress,
           spenderAddress,
           amount: new BigNumber(value).multipliedBy(18).toFixed(),
