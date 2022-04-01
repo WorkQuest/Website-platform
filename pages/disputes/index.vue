@@ -33,7 +33,7 @@
               </div>
               <div class="page__text">
                 {{ $t('disputes.status') }}
-                <span class="page__text_yellow">
+                <span :class="[colorDisputeStatus[item.status]]">
                   {{ disputeStatus(item.status) }}
                 </span>
               </div>
@@ -121,6 +121,13 @@ export default {
         [DisputeStatues.COMPLETED]: this.$t('meta.completed'),
       };
       return obj[status];
+    },
+    colorDisputeStatus() {
+      return {
+        [DisputeStatues.PENDING]: 'page__text_blue',
+        [DisputeStatues.IN_PROGRESS]: 'page__text_yellow',
+        [DisputeStatues.COMPLETED]: 'page__text_green',
+      };
     },
   },
 };
