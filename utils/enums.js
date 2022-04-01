@@ -169,6 +169,30 @@ export const NotificationAction = {
   NEW_DISCUSSION_LIKE: 'newDiscussionLike',
 };
 
+export const notificationCommonFilterActions = Object.freeze([
+  NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST,
+  NotificationAction.WORKER_ACCEPTED_INVITATION_TO_QUEST,
+  NotificationAction.WORKER_RESPONDED_TO_QUEST,
+  NotificationAction.OPEN_DISPUTE,
+  NotificationAction.DISPUTE_DECISION,
+  NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE,
+]);
+
+export const notificationEmployerFilterActions = Object.freeze([
+  NotificationAction.WORKER_RESPONDED_TO_QUEST,
+  NotificationAction.WORKER_ACCEPTED_QUEST,
+  NotificationAction.WORKER_COMPLETED_QUEST,
+  NotificationAction.WORKER_REJECTED_QUEST,
+]);
+
+export const notificationCommonFilterAction2 = Object.freeze([
+  NotificationAction.QUEST_EDITED,
+  NotificationAction.NEW_DISCUSSION_LIKE,
+  NotificationAction.NEW_COMMENT_IN_DISCUSSION,
+  NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST,
+  NotificationAction.WAIT_WORKER,
+]);
+
 export const ChatType = {
   GROUP: 'group',
   QUEST: 'quest',

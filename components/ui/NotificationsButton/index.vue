@@ -63,7 +63,6 @@
                       :href="`/profile/${senderId(notification)}`"
                       class="notify__text notify__text_name"
                     >
-                      <!--                      TODO: Иногда валится, выяснить причину!!!-->
                       {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
                     </a>
                   </div>
@@ -132,9 +131,6 @@ export default {
   },
   async beforeMount() {
     await this.$store.dispatch('user/getNotifications');
-  },
-  destroyed() {
-    this.$store.commit('user/setNotifications', { result: { notifications: [], count: this.notifsCount } });
   },
   methods: {
     senderId(notification) {
