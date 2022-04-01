@@ -113,13 +113,28 @@ export default {
       return false;
     }
   },
-  async setTokenPrice({ dispatch, rootGetters }, { payload, setTokenPriceData }) {
+  async setTokenPrice({ dispatch, rootGetters }, payload) {
     try {
-      await setTokenPrice(payload, setTokenPriceData);
+      await setTokenPrice(payload[0], payload[1]);
       return { ok: true };
     } catch (e) {
       console.log('can not refresh prices');
       return { ok: false };
+    }
+  },
+  async sendMethod({ commit }, payload) {
+    const value = new BigNumber(payload.value).shiftedBy(18).toString();
+    try {
+      await sendWalletTransaction(payload.method, {
+        address: payload.type === 'borrowing' ? process.env.BORROWING : process.env.LENDING,
+        abi: payload.type === 'borrowing' ? abi.WQBorrowing : abi.WQLending,
+        value,
+        data: payload.data,
+      });
+      return success();
+    } catch (err) {
+      console.log('sendClaim error:', err);
+      return error();
     }
   },
 };

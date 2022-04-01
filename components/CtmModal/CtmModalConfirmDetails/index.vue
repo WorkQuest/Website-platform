@@ -98,21 +98,32 @@ export default {
       switch (this.options.mode) {
         case 'borrow':
           // eslint-disable-next-line no-case-declarations
-          const res1 = await this.setTokenPrice();
+          const checkTokenPrice = await this.setTokenPrice();
           // eslint-disable-next-line no-case-declarations
-          const payload = {
+          const { payload } = this.options;
+          // eslint-disable-next-line no-case-declarations
+          const approveAllowed = await this.$store.dispatch('wallet/approveRouter', {
             symbol: this.symbol,
             spenderAddress: process.env.BORROWING,
-            value: this.options.payload.value,
-          };
-          // eslint-disable-next-line no-case-declarations
-          const res2 = await this.$store.dispatch('wallet/approveRouter', payload);
-          if (res1 && res2) {
-            return await this.$store.dispatch('crediting/sendBorrow', this.options.payload);
+            value: payload.value,
+          });
+          if (checkTokenPrice && approveAllowed) {
+            return await this.$store.dispatch('crediting/sendMethod', {
+              value: payload.value,
+              data: [
+                payload.nonce,
+                new BigNumber(payload.value).multipliedBy(18).toFixed(),
+                payload.fundIndex,
+                payload.duration,
+                payload.symbol,
+              ],
+              method: 'borrow',
+              type: 'borrowing',
+            });
           }
           return false;
         default:
-          return true;
+          return false;
       }
     },
     async setTokenPrice() {
@@ -124,17 +135,18 @@ export default {
       const s = '0x7e1941b264348e80c78c4027afc65a87b0a5e43e86742b8ca0823584c6788fd0';
       const resultGasSetTokenPrice = await getGasPrice(abi.WQOracle, process.env.WORKNET_ORACLE, 'setTokenPriceUSD', [timestamp, price, v, r, s, this.symbol]);
       if (resultGasSetTokenPrice.gas && resultGasSetTokenPrice.gasPrice) {
-        const setTokenPriceData = {
-          gasPrice: resultGasSetTokenPrice.gasPrice,
-          gas: resultGasSetTokenPrice.gas,
-          timestamp,
-          price,
-          v,
-          r,
-          s,
-        };
-        const payload = { currency: this.symbol };
-        const { ok } = await this.$store.dispatch('crediting/setTokenPrice', { payload, setTokenPriceData });
+        const { ok } = await this.$store.dispatch('crediting/setTokenPrice', [
+          { currency: this.symbol },
+          {
+            gasPrice: resultGasSetTokenPrice.gasPrice,
+            gas: resultGasSetTokenPrice.gas,
+            timestamp,
+            price,
+            v,
+            r,
+            s,
+          },
+        ]);
         return ok;
       }
       return false;

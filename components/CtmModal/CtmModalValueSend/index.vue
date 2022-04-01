@@ -12,7 +12,7 @@
           v-model="amount"
           class="content__field"
           type="number"
-          data-selector="INPUT-AMOUNT"
+          data-selector="INPUT_AMOUNT"
           :placeholder="3500"
           :label="$t('modals.amount')"
           rules="required|decimal|decimalPlaces:18"
@@ -55,6 +55,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -78,46 +79,51 @@ export default {
     hide() { this.CloseModal(); },
     async send() {
       this.SetLoader(true);
-      let requestName = '';
       let payload = {};
       switch (this.mode) {
         case 'refund':
-          requestName = 'sendRefund';
           payload = {
             value: this.amount,
-            data: [1, this.amount],
+            data: [1, new BigNumber(this.amount).multipliedBy(18).toFixed()],
+            method: 'refund',
+            type: 'borrowing',
           };
           break;
         case 'withdraw':
-          requestName = 'sendWithdraw';
           payload = {
             value: this.amount,
-            data: [this.amount],
+            data: [new BigNumber(this.amount).multipliedBy(18).toFixed()],
+            method: 'withdraw',
+            type: 'lending',
           };
           break;
         case 'deposit':
-          requestName = 'sendDeposit';
           payload = {
             value: this.amount,
+            data: [],
+            method: 'deposit',
+            type: 'lending',
           };
           break;
         case 'claim':
-          requestName = 'sendClaim';
           payload = {
             value: this.amount,
+            data: [],
+            method: 'claim',
+            type: 'lending',
           };
           break;
         default:
           console.log('default');
       }
-      const res = await this.$store.dispatch(`crediting/${requestName}`, payload);
+      const res = await this.$store.dispatch('crediting/sendMethod', payload);
+      this.SetLoader(false);
       if (res) {
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/transactionSend.svg'),
           title: this.$t('modals.loanIsOpened'),
         });
-        this.SetLoader(false);
         return;
       }
       this.ShowModal({
@@ -125,7 +131,6 @@ export default {
         img: require('~/assets/img/ui/warning.svg'),
         title: this.$t('modals.transactionFail'),
       });
-      this.SetLoader(false);
     },
   },
 };

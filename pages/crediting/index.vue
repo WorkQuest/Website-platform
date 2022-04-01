@@ -225,12 +225,12 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+    if (!this.isWalletConnected) return;
     await Promise.all([
-      this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt }),
       this.$store.dispatch('crediting/getCreditData'),
       this.$store.dispatch('crediting/getWalletsData'),
     ]);
-    if (this.isWalletConnected === false) return;
     this.SetLoader(false);
   },
   methods: {

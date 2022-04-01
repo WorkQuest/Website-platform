@@ -264,7 +264,10 @@ export default {
       };
       const payload = {
         value: this.quantity,
-        data: [1, this.quantity, this.selFundID - 1, this.datesNumber[this.date], this.checkpoints[this.selCurrencyID - 1].name],
+        nonce: 1,
+        fundIndex: this.selFundID - 1,
+        duration: this.datesNumber[this.date],
+        symbol: this.checkpoints[this.selCurrencyID - 1].name,
       };
       this.ShowModal({
         key: modals.confirmDetails,

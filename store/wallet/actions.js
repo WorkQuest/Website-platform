@@ -386,7 +386,6 @@ export default {
   async approveRouter({ commit, dispatch }, { symbol, spenderAddress, value }) {
     const tokenAddress = tokenMap[symbol];
     try {
-      console.log('approveRouter', symbol, spenderAddress, value, tokenAddress);
       const allowance = await dispatch('getAllowance', { tokenAddress, spenderAddress });
       if (+allowance < +value) {
         return await dispatch('approve', {
