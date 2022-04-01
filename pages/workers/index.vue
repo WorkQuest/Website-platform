@@ -25,7 +25,7 @@
         v-if="employeeCount"
         class="employees__cards"
       >
-        <employee-card
+        <card-employee
           v-for="(user,id) in employeeList"
           :key="id"
           :data-selector="`TO-WORKER-PROFILE-${user.id}`"
@@ -75,10 +75,14 @@ export default {
       employeeList: 'quests/getEmployeeList',
       employeeCount: 'quests/getEmployeeCount',
     }),
-    totalPages() { return Math.ceil(this.employeeCount / this.query.limit); },
+    totalPages() {
+      return Math.ceil(this.employeeCount / this.query.limit);
+    },
   },
   watch: {
-    async isShowMap() { await this.fetchEmployeeList(true); },
+    async isShowMap() {
+      await this.fetchEmployeeList(true);
+    },
     async mapBounds(newV, oldV) {
       if (!this.isShowMap) return;
       if (
@@ -229,6 +233,7 @@ export default {
     &__content {
       padding: 0 20px;
     }
+
     &__cards {
       grid-template-columns: repeat(3, 1fr);
     }

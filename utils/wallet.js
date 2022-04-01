@@ -2,7 +2,11 @@ import { ethers } from 'ethers';
 import { AES, enc } from 'crypto-js';
 import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
-import { error, fetchContractData, success } from '~/utils/web3';
+import {
+  error,
+  success,
+  fetchContractData,
+} from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { StakingTypes } from '~/utils/enums';
 
@@ -28,6 +32,9 @@ export const getCipherKey = () => cipherKey;
 export const setCipherKey = (key) => cipherKey = key;
 
 let web3 = new Web3(process.env.WQ_PROVIDER);
+
+export const createInstance = (_abi, _address) => new web3.eth.Contract(_abi, _address);
+
 export const GetWalletProvider = () => web3;
 const wallet = {
   address: null,
@@ -456,12 +463,14 @@ export const stake = async (stakingType, amount, poolAddress, duration) => {
 };
 
 /** Collateral */
-export const getGasPrice = async (contractAbi, address, method, attr) => {
+export const getGasPrice = async (contractAbi, address, method, attr, value = null) => {
   try {
     const inst = new web3.eth.Contract(contractAbi, address);
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
-      inst.methods[method](...attr).estimateGas({ from: wallet.address }),
+      (value)
+        ? inst.methods[method](...attr).estimateGas({ from: wallet.address, value })
+        : inst.methods[method](...attr).estimateGas({ from: wallet.address }),
     ]);
     return { gas: gasEstimate, gasPrice };
   } catch (e) {

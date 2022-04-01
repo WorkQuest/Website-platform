@@ -1,9 +1,37 @@
 import moment from 'moment';
-import { error } from '~/utils/web3';
-import { connectWithMnemonic } from '~/utils/wallet';
+import BigNumber from 'bignumber.js';
 import {
-  NotificationAction, UserRole, Path, UserStatuses, QuestModeReview,
+  error,
+  success,
+  showToast,
+  fetchContractData,
+} from '~/utils/web3';
+
+import {
+  getGasPrice,
+  createInstance,
+  getWalletAddress,
+  GetWalletProvider,
+  connectWithMnemonic,
+} from '~/utils/wallet';
+
+import {
+  Path,
+  DaoUrl,
+  PathDAO,
+  UserRole,
+  UserStatuses,
+  QuestModeReview,
+  NotificationAction,
+  RaiseViewTariffPeriods,
+  notificationCommonFilterAction2,
+  notificationCommonFilterActions,
+  notificationEmployerFilterActions,
 } from '~/utils/enums';
+
+import { WQPromotion } from '~/abi/abi';
+
+const { WORKNET_PROMOTION } = process.env;
 
 export default {
   async changeRole({ commit }, { totp }) {
@@ -74,95 +102,138 @@ export default {
     }
   },
   async addNotification({ commit, dispatch }, notification) {
-    const newNotification = await dispatch('setCurrNotificationObject', notification);
+    const newNotification = await dispatch('setCurrNotificationObject', { notification });
     commit('addNotification', newNotification);
   },
-  setCurrNotificationObject({ getters, rootGetters, dispatch }, notification) {
+  async setCurrNotificationObject({ getters, rootGetters, dispatch }, notification) {
+    const { isAuth, getUserData } = getters;
+    const { action, data } = notification.notification;
     const {
-      action, data: {
-        user, title, id, assignedWorker, worker, quest, employer, fromUser, message, toUserId,
-        problemDescription,
-      },
-    } = notification.notification ? notification.notification : notification;
-
-    // If we on quest id page
-    const curQuestId = rootGetters['quests/getQuest']?.id;
-    if (id === curQuestId) {
-      dispatch('quests/getQuest', curQuestId, { root: true });
-    }
-
-    let currTitle = quest?.title || title;
-    let keyName = 'notifications.';
-    let path = `${Path.QUESTS}/${quest?.id || id}`;
+      id, title, quest, user, worker, comment, employer, fromUser, rootComment,
+      assignedWorker, message, toUserId, discussion, problemDescription,
+    } = data;
+    const currentUserId = getUserData.id;
     const userRole = getters.getUserRole;
-    const isItAnWorker = userRole === UserRole.WORKER;
-
+    const currentPath = this.$router.history.current.path;
+    if (!isAuth) {
+      // TODO: Не удалять!!! Разобраться в проблеме!
+      console.log('!!!!!!!!!getters.getUserData.id!!!!!!!!!', currentUserId);
+      console.log('!!!!!!!!!getters.getUserRole!!!!!!!!!!!!', userRole);
+      await dispatch('getUserData');
+    }
+    async function setSender() {
+      if (!notification.sender) {
+        /** Worker && Employer */
+        if (fromUser && action === NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST) notification.sender = fromUser;
+        if (comment?.author && action === NotificationAction.COMMENT_LIKED) notification.sender = comment.author;
+        if (rootComment?.author && action === NotificationAction.NEW_COMMENT_IN_DISCUSSION) notification.sender = rootComment.author;
+        if (quest?.user && notificationCommonFilterActions.includes(action)) notification.sender = quest.user;
+        /** Worker */
+        if (userRole === UserRole.WORKER && notificationCommonFilterAction2.includes(action)) notification.sender = user;
+        /** Employer */
+        if (userRole === UserRole.EMPLOYER) {
+          if (assignedWorker && notificationEmployerFilterActions.includes(action)) notification.sender = assignedWorker;
+          if (worker && notificationEmployerFilterActions.includes(action)) notification.sender = worker;
+          if (employer && notificationCommonFilterAction2.includes(action)) notification.sender = employer;
+        }
+      }
+    }
+    async function updateQuests() {
+      /* For update quest lists */
+      const questListPathArray = [
+        Path.MY_QUESTS,
+        Path.QUESTS,
+        `${Path.PROFILE}/${currentUserId}`,
+      ];
+      if (questListPathArray.includes(currentPath) && currentUserId && userRole) {
+        const query = {
+          limit: 10,
+          offset: 0,
+          starred: false,
+          'sort[createdAt]': 'desc',
+        };
+        await dispatch('quests/getUserQuests', {
+          userId: currentUserId,
+          role: userRole,
+          query,
+        }, { root: true });
+      } else if (currentPath === `${Path.QUESTS}/${quest?.id || id}`) {
+        const params = quest?.id || id;
+        await dispatch('quests/getQuest', params, { root: true });
+        if (userRole === UserRole.EMPLOYER && currentUserId && quest?.user?.id === currentUserId) {
+          await dispatch('quests/responsesToQuest', params, { root: true });
+          await dispatch('quests/questListForInvitation', currentUserId, { root: true });
+        }
+      }
+    }
+    async function updateProfile() {
+      /* For update user profile */
+      if (currentPath === `${Path.PROFILE}/${currentUserId}`) {
+        const query = {
+          limit: 8,
+          offset: 0,
+        };
+        await dispatch('getAllUserReviews', { userId: currentUserId, query });
+      }
+    }
+    async function setAllNotificationsParams(currTitle, path, isExternalLink, externalBase) {
+      notification.actionNameKey = `notifications.${action}`;
+      notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
+      notification.params = {
+        title: currTitle, path, isExternalLink, externalBase,
+      };
+      await setSender();
+    }
     switch (action) {
-      case NotificationAction.QUEST_STARTED: {
-        keyName += 'invitesYouToStartAQuest';
+      /** WORK-QUEST */
+      case NotificationAction.QUEST_STARTED:
+      case NotificationAction.WORKER_REJECTED_QUEST:
+      case NotificationAction.WORKER_ACCEPTED_QUEST:
+      case NotificationAction.WORKER_COMPLETED_QUEST:
+      case NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST:
+      case NotificationAction.EMPLOYER_REJECTED_COMPLETED_QUEST:
+      case NotificationAction.WORKER_RESPONDED_TO_QUEST:
+      case NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST:
+      case NotificationAction.WORKER_ACCEPTED_INVITATION_TO_QUEST:
+      case NotificationAction.WORKER_REJECTED_INVITATION_TO_QUEST:
+      case NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE:
+      case NotificationAction.WAIT_WORKER:
+      case NotificationAction.QUEST_EDITED:
+      case NotificationAction.QUEST_END_SOON: {
+        await setAllNotificationsParams(quest?.title || title, `${Path.QUESTS}/${quest?.id || id}`, false, '');
+        await updateQuests();
         break;
       }
-      case NotificationAction.WORKER_REJECTED_QUEST: {
-        keyName += 'rejectedTheQuest';
+
+      case NotificationAction.OPEN_DISPUTE:
+      case NotificationAction.DISPUTE_DECISION: {
+        await setAllNotificationsParams(problemDescription, `${Path.QUESTS}/${quest?.id || id}`, false, '');
+        await updateQuests();
         break;
       }
-      case NotificationAction.WORKER_ACCEPTED_QUEST: {
-        keyName += 'acceptedTheQuest';
-        break;
-      }
-      case NotificationAction.WORKER_COMPLETED_QUEST: {
-        keyName += 'completedTheQuest';
-        break;
-      }
-      case NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST: {
-        keyName += 'acceptedAJobOnAQuest';
-        break;
-      }
-      case NotificationAction.WORKER_RESPONDED_TO_QUEST: {
-        keyName += 'respondedToQuest';
-        break;
-      }
-      case NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST: {
-        keyName += 'invitedYouToAQuest';
-        break;
-      }
-      case NotificationAction.WORKER_ACCEPTED_INVITATION_TO_QUEST: {
-        keyName += 'acceptedTheInvitationToTheQuest';
-        break;
-      }
-      case NotificationAction.WORKER_REJECTED_INVITATION_TO_QUEST: {
-        keyName += 'declinedTheInvitationToTheQuest';
-        break;
-      }
-      case NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE: {
-        keyName += 'declinedYourResponseToTheQuest';
-        break;
-      }
-      case NotificationAction.WAIT_WORKER: {
-        keyName += 'theQuestIsPending';
-        break;
-      }
+
       case NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST: {
-        keyName += 'leftReviewAboutQuest';
-        path = `${Path.PROFILE}/${toUserId}`;
-        currTitle = message;
+        await setAllNotificationsParams(message, `${Path.PROFILE}/${toUserId}`, false, '');
+        await updateProfile();
         break;
       }
-      case NotificationAction.OPEN_DISPUTE: {
-        keyName += 'openDispute';
-        currTitle = problemDescription;
+      /** DAO */
+      case NotificationAction.NEW_COMMENT_IN_DISCUSSION:
+      case NotificationAction.NEW_DISCUSSION_LIKE: {
+        await setAllNotificationsParams(discussion.title, `${PathDAO.DISCUSSIONS}/${discussion.id}`, true, DaoUrl);
+        break;
+      }
+
+      case NotificationAction.COMMENT_LIKED: {
+        await setAllNotificationsParams(comment?.text, `${PathDAO.DISCUSSIONS}/${comment.discussionId}`, true, DaoUrl);
         break;
       }
       default: {
-        keyName = '';
+        // Не удалять! Для ловли неизвестных ивентов
+        console.error('Unknown event = ', action);
         break;
       }
     }
-
-    notification.actionNameKey = keyName;
-    notification.sender = fromUser || (isItAnWorker ? user || employer : assignedWorker || worker);
-    if (currTitle) notification.params = { title: currTitle, path };
-    notification.creatingDate = moment(new Date(notification.createdAt)).format('MMMM Do YYYY, HH:mm');
     return notification;
   },
   async getUserPortfolios({ commit }, { userId, query }) {
@@ -471,6 +542,7 @@ export default {
       return false;
     }
   },
+  // TODO delete, waiting when backend will be catch all this events
   async payUserRaisedView({ commit }, payload) {
     try {
       const response = await this.$axios.$post('/v1/profile/worker/me/raise-view/pay', payload);
@@ -478,6 +550,57 @@ export default {
     } catch (e) {
       console.log('profile/worker/me/raise-view/pay');
       return false;
+    }
+  },
+  async getRaiseViewPrice({ commit }, { type }) {
+    try {
+      const periods = RaiseViewTariffPeriods[type];
+      const tariffs = ['1', '2', '3', '4'];
+      const price = {};
+      for (let i = 0; i < tariffs.length; i += 1) {
+        price[tariffs[i]] = {};
+        for (let j = 0; j < periods.length; j += 1) {
+          const data = [tariffs[i], periods[j]];
+          /* eslint-disable no-await-in-loop */
+          const cost = await fetchContractData(
+            type,
+            WQPromotion,
+            WORKNET_PROMOTION,
+            data,
+            GetWalletProvider(),
+          );
+          price[tariffs[i]][periods[j]] = new BigNumber(+cost).shiftedBy(-18).toString();
+        }
+      }
+      return success(price);
+    } catch (e) {
+      console.log('user/getRaiseViewPrice');
+      return error(e.code, 'Error in get raise view price', e);
+    }
+  },
+  async promoteUserOnContract({ commit }, { cost, tariff, period }) {
+    try {
+      const inst = createInstance(WQPromotion, WORKNET_PROMOTION);
+      const value = new BigNumber(cost).shiftedBy(18).toString();
+      const { gas, gasPrice } = await getGasPrice(
+        WQPromotion,
+        WORKNET_PROMOTION,
+        'promoteUser',
+        [tariff, period],
+        value,
+      );
+      const params = {
+        from: getWalletAddress(),
+        gasPrice,
+        gas,
+        value,
+      };
+      const response = await inst.methods.promoteUser(tariff, period).send(params);
+      return success(response);
+    } catch (e) {
+      console.log('user/buyRaiseView');
+      showToast('Promote user error:', `${e.message}`, 'danger');
+      return error(e.code, 'Error in method promote user', e);
     }
   },
 };

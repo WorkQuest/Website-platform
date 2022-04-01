@@ -75,6 +75,7 @@
             class="status__btn"
             :mode="options.submitMode"
             selector="SUBMIT"
+            :disabled="isLoading"
             @click="handleSubmit()"
           >
             <span v-if="options.button">
@@ -104,6 +105,7 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
       userAddress: 'user/getUserWalletAddress',
+      isLoading: 'main/getIsLoading',
     }),
   },
   async mounted() {
@@ -137,8 +139,11 @@ export default {
       }
     },
     async handleSubmit() {
+      if (this.isLoading) return;
+      this.SetLoader(true);
       if (this.options.callback) await this.options.callback();
       this.hide();
+      this.SetLoader(false);
     },
   },
 };
@@ -148,21 +153,23 @@ export default {
 
 .button {
   &_to-chat {
-    width:100%;
+    width: 100%;
   }
 }
 
 .status {
   max-width: 337px !important;
   height: auto !important;
-  padding: 0!important;
+  padding: 0 !important;
+
   &__content {
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;
     grid-gap: 20px;
-    padding: 30px!important;
+    padding: 30px !important;
   }
+
   &__title {
     text-align: center;
     margin-top: 10px;
@@ -170,39 +177,48 @@ export default {
     font-size: 23px;
     line-height: 130%;
   }
+
   &__action {
     margin-top: 10px;
   }
+
   &__desc {
     font-size: 16px;
     line-height: 130%;
     text-align: center;
     color: $black600;
   }
-  &__text{
+
+  &__text {
     font-size: 16px;
     line-height: 130%;
     text-align: center;
     font-weight: 500;
     color: $black800;
   }
+
   &__wrap {
     display: flex;
     gap: 10px;
     width: 100%;
+
     div {
       width: 100%;
     }
   }
+
   &__btn {
     padding: 0 10px;
   }
+
   &__list {
     width: 100%;
+
     span {
       font-size: 14px;
     }
   }
+
   &__img {
     display: inline;
     width: 33px;

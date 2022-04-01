@@ -1,10 +1,10 @@
 <template>
   <div class="container__status status">
     <img
-      v-if="raiseView"
+      v-if="isActiveRaiseView"
       src="~assets/img/ui/arrow-worker-profile.svg"
-      alt="Enable2FA"
-      class="transaction__image"
+      alt="arrow-profile"
+      class="status__img"
     >
     <span
       v-if="ratingStr !== $options.Ratings.NO_STATUS"
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { UserRating, Ratings } from '~/utils/enums';
+import { UserRating, Ratings, RaiseViewStatus } from '~/utils/enums';
 
 export default {
   name: 'ItemRating',
@@ -29,8 +29,9 @@ export default {
       default: null,
     },
     raiseView: {
-      type: Boolean,
-      default: false,
+      type: Object,
+      default: () => {
+      },
     },
   },
   computed: {
@@ -40,6 +41,9 @@ export default {
     statusTitle() {
       return this.rating !== null ? this.$t(`rating.${this.ratingStr}.title`) : '';
     },
+    isActiveRaiseView() {
+      return this.raiseView && RaiseViewStatus[this.raiseView.status];
+    },
   },
 };
 </script>
@@ -47,14 +51,19 @@ export default {
 <style lang="scss" scoped>
 .status {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+
   &__levels {
     padding: 2px 5px;
     margin: 0 5px 0 0;
     align-items: center;
     border-radius: 3px;
   }
+
+  &__img {
+    margin-right: 12px;
+  }
+
   &__level {
     @include text-simple;
     font-weight: 500;
@@ -87,6 +96,7 @@ export default {
     }
   }
 }
+
 @include _991 {
   .status__levels {
     margin: 0;

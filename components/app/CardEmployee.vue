@@ -2,7 +2,7 @@
   <div
     class="card"
     :data-selector="`COMPONENT-EMPLOYEE-CARD-${user.id}`"
-    :class="raiseViews[user.raiseView && user.raiseView.type]"
+    :class="raiseViewStatus"
     @click="$emit('click')"
   >
     <div class="card__header">
@@ -63,13 +63,16 @@
   </div>
 </template>
 <script>
+import { RaiseViewStatus } from '~/utils/enums';
 
 export default {
   name: 'EmployeeCard',
+  RaiseViewStatus,
   props: {
     user: {
       type: Object,
-      default: () => {},
+      default: () => {
+      },
     },
   },
   computed: {
@@ -95,6 +98,9 @@ export default {
         3: 'card_bronze',
       };
     },
+    raiseViewStatus() {
+      return this.raiseViews[this.user.raiseView && RaiseViewStatus[this.user.raiseView.status] && this.user.raiseView.type];
+    },
   },
   methods: {
     ratingStatistic(ratingStatistic) {
@@ -111,6 +117,7 @@ export default {
 
   width: 100%;
   height: 360px;
+  border: none;
 
   padding: 20px;
 
@@ -176,17 +183,37 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
   &_plus {
     border: 1px solid $yellow100;
+
+    &:hover {
+      box-shadow: -1px 1px 8px 0px rgba(246, 207, 0, 0.2);
+    }
   }
-  &_gold{
+
+  &_gold {
     border: 1px solid $yellow100;
+
+    &:hover {
+      box-shadow: -1px 1px 8px 0px rgba(246, 207, 0, 0.2);
+    }
   }
-  &_silver{
+
+  &_silver {
     border: 1px solid $grey200;
+
+    &:hover {
+      box-shadow: -1px 1px 8px 0px rgba(187, 192, 199, 0.2);
+    }
   }
-  &_bronze{
+
+  &_bronze {
     border: 1px solid $brown;
+
+    &:hover {
+      box-shadow: -1px 1px 8px 0px rgba(183, 151, 104, 0.2);
+    }
   }
 }
 
