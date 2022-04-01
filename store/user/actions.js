@@ -120,54 +120,39 @@ export default {
     }
     async function setSender() {
       if (!notification.sender) {
+        const array1 = [
+          NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST,
+          NotificationAction.WORKER_ACCEPTED_INVITATION_TO_QUEST,
+          NotificationAction.WORKER_RESPONDED_TO_QUEST,
+          NotificationAction.OPEN_DISPUTE,
+          NotificationAction.DISPUTE_DECISION,
+          NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE,
+        ];
+        const array2 = [
+          NotificationAction.WORKER_RESPONDED_TO_QUEST,
+          NotificationAction.WORKER_ACCEPTED_QUEST,
+          NotificationAction.WORKER_COMPLETED_QUEST,
+          NotificationAction.WORKER_REJECTED_QUEST,
+        ];
+        const array3 = [
+          NotificationAction.QUEST_EDITED,
+          NotificationAction.NEW_DISCUSSION_LIKE,
+          NotificationAction.NEW_COMMENT_IN_DISCUSSION,
+          NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST,
+          NotificationAction.WAIT_WORKER,
+        ];
         /** Worker && Employer */
-        if (fromUser) {
-          if (action === NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST) notification.sender = fromUser;
-        }
-        if (comment?.author) {
-          if (action === NotificationAction.COMMENT_LIKED) notification.sender = comment.author;
-        }
-        if (quest?.user) {
-          if ([NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST,
-            NotificationAction.WORKER_ACCEPTED_INVITATION_TO_QUEST,
-            NotificationAction.WORKER_RESPONDED_TO_QUEST,
-            NotificationAction.OPEN_DISPUTE,
-            NotificationAction.DISPUTE_DECISION,
-            NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE].includes(action)) notification.sender = quest.user;
-        }
-        if (rootComment?.author) {
-          if (action === NotificationAction.NEW_COMMENT_IN_DISCUSSION) notification.sender = rootComment.author;
-        }
+        if (fromUser && action === NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST) notification.sender = fromUser;
+        if (comment?.author && action === NotificationAction.COMMENT_LIKED) notification.sender = comment.author;
+        if (rootComment?.author && action === NotificationAction.NEW_COMMENT_IN_DISCUSSION) notification.sender = rootComment.author;
+        if (quest?.user && array1.includes(action)) notification.sender = quest.user;
         /** Worker */
-        if (userRole === UserRole.WORKER) {
-          if ([NotificationAction.QUEST_EDITED,
-            NotificationAction.NEW_DISCUSSION_LIKE,
-            NotificationAction.NEW_COMMENT_IN_DISCUSSION,
-            NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST,
-            NotificationAction.WAIT_WORKER].includes(action)) notification.sender = user;
-        }
+        if (userRole === UserRole.WORKER && array3.includes(action)) notification.sender = user;
         /** Employer */
         if (userRole === UserRole.EMPLOYER) {
-          if (assignedWorker) {
-            if ([NotificationAction.WORKER_RESPONDED_TO_QUEST,
-              NotificationAction.WORKER_ACCEPTED_QUEST,
-              NotificationAction.WORKER_COMPLETED_QUEST,
-              NotificationAction.WORKER_REJECTED_QUEST,
-            ].includes(action)) notification.sender = assignedWorker;
-          }
-          if (worker) {
-            if ([NotificationAction.WORKER_RESPONDED_TO_QUEST,
-              NotificationAction.WORKER_ACCEPTED_QUEST,
-              NotificationAction.WORKER_COMPLETED_QUEST,
-              NotificationAction.WORKER_REJECTED_QUEST].includes(action)) notification.sender = worker;
-          }
-          if (employer) {
-            if ([NotificationAction.NEW_DISCUSSION_LIKE,
-              NotificationAction.QUEST_EDITED,
-              NotificationAction.NEW_COMMENT_IN_DISCUSSION,
-              NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST,
-              NotificationAction.WAIT_WORKER].includes(action)) notification.sender = employer;
-          }
+          if (assignedWorker && array2.includes(action)) notification.sender = assignedWorker;
+          if (worker && array2.includes(action)) notification.sender = worker;
+          if (employer && array3.includes(action)) notification.sender = employer;
         }
       }
     }
