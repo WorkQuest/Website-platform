@@ -91,7 +91,7 @@ export default {
     },
     async openConfirmDetailsModal() {
       this.SetLoader(true);
-      const res = await this.$store.dispatch('crediting/sendLoan', { value: new BigNumber(this.quantity).shiftedBy(18).toString() });
+      const res = await this.$store.dispatch('crediting/sendLoan', { value: this.quantity });
       this.SetLoader(false);
       if (res) {
         this.ShowModal({

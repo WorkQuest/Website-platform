@@ -20,49 +20,56 @@
         </div>
       </div>
       <div class="crediting__content">
-        <div class="content__couple">
-          <div
+        <div
+          class="content__couple"
+          :class="{'content__couple_solo' : !isHaveCredit || !isHaveLoan}"
+        >
+          <template
             v-for="(data, index) in blocksData"
-            :key="index"
-            class="content__half"
           >
-            <div class="content__title content__title_big">
-              {{ data.title }}
-            </div>
-            <div class="content__price">
-              <div class="content__title content__title_small">
-                {{ data.priceTitle }}
+            <div
+              v-if="data.show"
+              :key="index"
+              class="content__half"
+            >
+              <div class="content__title content__title_big">
+                {{ data.title }}
               </div>
-              <div class="content__title content__title_big content__title_blue">
-                {{ data.price }}
-              </div>
-            </div>
-            <div class="content__info-data">
-              <div
-                v-for="(info, key) in data.info"
-                :key="key"
-                class="info-data__info-block"
-              >
-                <div class="info-data__title">
-                  {{ info.title }}
+              <div class="content__price">
+                <div class="content__title content__title_small">
+                  {{ data.priceTitle }}
                 </div>
-                <div class="info-data__desc">
-                  {{ info.desc }}
+                <div class="content__title content__title_big content__title_blue">
+                  {{ data.price }}
                 </div>
               </div>
+              <div class="content__info-data">
+                <div
+                  v-for="(info, key) in data.info"
+                  :key="key"
+                  class="info-data__info-block"
+                >
+                  <div class="info-data__title">
+                    {{ info.title }}
+                  </div>
+                  <div class="info-data__desc">
+                    {{ info.desc }}
+                  </div>
+                </div>
+              </div>
+              <div class="content__buttons">
+                <base-btn
+                  v-for="(button, key) in data.buttons"
+                  :key="key"
+                  :data-selector="button.title.toUpperCase()"
+                  :mode="button.mode"
+                  @click="openModal(button.action)"
+                >
+                  {{ button.title }}
+                </base-btn>
+              </div>
             </div>
-            <div class="content__buttons">
-              <base-btn
-                v-for="(button, key) in data.buttons"
-                :key="key"
-                :data-selector="button.title.toUpperCase()"
-                :mode="button.mode"
-                @click="openModal(button.action)"
-              >
-                {{ button.title }}
-              </base-btn>
-            </div>
-          </div>
+          </template>
         </div>
       </div>
     </div>
@@ -74,19 +81,19 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
-  data() {
-    return {};
-  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      creditData: 'crediting/getCreditData',
+      walletData: 'crediting/getWalletData',
     }),
     blocksData() {
       return [
         {
           title: this.$t('crediting.currentCredit'),
           priceTitle: this.$t('crediting.totalWusdDebt'),
-          price: this.$tc('meta.coins.count.WUSDCount', 225.5),
+          price: this.$tc('meta.coins.count.WUSDCount', this.creditData.collateral),
+          show: this.isHaveCredit,
           info: [
             {
               title: 'ID',
@@ -112,6 +119,7 @@ export default {
           title: this.$t('crediting.currentLoan'),
           priceTitle: this.$t('crediting.totalCollateralLocked'),
           price: this.$tc('meta.coins.count.USDCount', 225.5),
+          show: this.isHaveLoan,
           info: [
             {
               title: 'ID',
@@ -129,24 +137,35 @@ export default {
           buttons: [
             {
               title: this.$t('meta.withdraw'),
-              mode: '',
               action: 'withdraw',
             },
             {
               title: this.$t('meta.deposit'),
               mode: 'outline',
+              action: 'deposit',
             },
             {
               title: this.$t('modals.claim'),
               mode: 'outline',
+              action: 'claim',
             },
           ],
         },
       ];
     },
+    isHaveCredit() {
+      return !!this.creditData.credit;
+    },
+    isHaveLoan() {
+      return !!this.walletData.amount;
+    },
   },
   async mounted() {
     this.SetLoader(true);
+    await Promise.all([
+      this.$store.dispatch('crediting/getCreditData'),
+      this.$store.dispatch('crediting/getWalletsData'),
+    ]);
     this.SetLoader(false);
   },
   methods: {
@@ -154,7 +173,6 @@ export default {
       this.$router.push('/crediting');
     },
     openModal(action) {
-      console.log('openModal', action);
       this.ShowModal({
         key: modals.valueSend,
         mode: action,
@@ -244,6 +262,9 @@ export default {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 20px;
+        &_solo {
+          grid-template-columns: auto;
+        }
       }
 
       &__half {
@@ -301,6 +322,9 @@ export default {
       &__couple {
         grid-template-rows: repeat(2, 1fr);
         grid-template-columns: unset;
+        &_solo {
+          grid-template-rows: auto;
+        }
       }
     }
   }

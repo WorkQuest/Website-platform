@@ -61,7 +61,7 @@ export default {
   name: 'CtmModalValueSend',
   data() {
     return {
-      amount: 0,
+      amount: '',
       mode: '',
     };
   },
@@ -92,21 +92,19 @@ export default {
           requestName = 'sendWithdraw';
           payload = {
             value: this.amount,
-            data: [1, this.amount],
+            data: [this.amount],
           };
           break;
         case 'deposit':
           requestName = 'sendDeposit';
           payload = {
             value: this.amount,
-            data: [1, this.amount],
           };
           break;
         case 'claim':
           requestName = 'sendClaim';
           payload = {
             value: this.amount,
-            data: [1, this.amount],
           };
           break;
         default:
@@ -119,6 +117,7 @@ export default {
           img: require('~/assets/img/ui/transactionSend.svg'),
           title: this.$t('modals.loanIsOpened'),
         });
+        this.SetLoader(false);
         return;
       }
       this.ShowModal({

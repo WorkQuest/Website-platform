@@ -56,7 +56,8 @@
               </base-btn>
               <base-btn
                 class="btn"
-                mode="outline"
+                :mode="!isHaveLoan ? 'outline' : ''"
+                :disabled="isHaveLoan"
                 data-selector="CREDITING-LOAN"
                 @click="openCreditingLoanModal()"
               >
@@ -217,6 +218,9 @@ export default {
     },
     isHaveCredit() {
       return !!this.creditData.credit;
+    },
+    isHaveLoan() {
+      return !!this.walletData.amount;
     },
   },
   async mounted() {

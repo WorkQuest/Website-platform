@@ -47,10 +47,14 @@ export default {
     }
   },
   async sendRefund({ commit }, payload) {
-    payload.address = process.env.BORROWING;
-    payload.abi = abi.WQBorrowing;
+    const value = new BigNumber(payload.value).shiftedBy(18).toString();
     try {
-      await sendWalletTransaction('refund', payload);
+      await sendWalletTransaction('refund', {
+        address: process.env.BORROWING,
+        abi: abi.WQBorrowing,
+        value,
+        data: [payload.data[0], value],
+      });
       return true;
     } catch (err) {
       console.log('sendRefund error:', err);
@@ -69,6 +73,7 @@ export default {
     commit('setWalletsData', res);
   },
   async sendLoan({ commit }, payload) {
+    payload.value = new BigNumber(payload.value).shiftedBy(18).toString();
     payload.address = process.env.LENDING;
     payload.abi = abi.WQLending;
     try {
@@ -80,13 +85,31 @@ export default {
     }
   },
   async sendWithdraw({ commit }, payload) {
+    const value = new BigNumber(payload.value).shiftedBy(18).toString();
     payload.address = process.env.LENDING;
     payload.abi = abi.WQLending;
     try {
-      await sendWalletTransaction('withdraw', payload);
+      await sendWalletTransaction('withdraw', {
+        address: process.env.LENDING,
+        abi: abi.WQLending,
+        value,
+        data: [value],
+      });
       return true;
     } catch (err) {
       console.log('sendWithdraw error:', err);
+      return false;
+    }
+  },
+  async sendClaim({ commit }, payload) {
+    payload.value = new BigNumber(payload.value).shiftedBy(18).toString();
+    payload.address = process.env.LENDING;
+    payload.abi = abi.WQLending;
+    try {
+      await sendWalletTransaction('claim', payload);
+      return true;
+    } catch (err) {
+      console.log('sendClaim error:', err);
       return false;
     }
   },
