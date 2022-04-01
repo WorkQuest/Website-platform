@@ -55,11 +55,15 @@
                     :src="avatar(notification)"
                     alt="avatar"
                   >
-                  <div class="notify__info">
+                  <div
+                    v-if="notification.sender"
+                    class="notify__info"
+                  >
                     <a
                       :href="`/profile/${senderId(notification)}`"
                       class="notify__text notify__text_name"
                     >
+                      <!--                      TODO: Иногда валится, выяснить причину!!!-->
                       {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
                     </a>
                   </div>
@@ -117,6 +121,10 @@ export default {
   data() {
     return {
       isShowNotify: false,
+      filter: {
+        limit: 2,
+        offset: 0,
+      },
     };
   },
   computed: {
@@ -125,6 +133,9 @@ export default {
       notifications: 'user/getReducedNotifications',
       notificationsCount: 'user/getNotificationsCount',
     }),
+  },
+  async beforeMount() {
+    await this.$store.dispatch('user/getNotifications', { params: this.filter });
   },
   methods: {
     senderId(notification) {

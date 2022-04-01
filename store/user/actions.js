@@ -116,15 +116,52 @@ export default {
       // TODO: Не удалять!!! Разобраться в проблеме!
       console.log('!!!!!!!!!getters.getUserData.id!!!!!!!!!', currentUserId);
       console.log('!!!!!!!!!getters.getUserRole!!!!!!!!!!!!', userRole);
-      dispatch('getUserData');
+      await dispatch('getUserData');
     }
-    async function setsNotificationSender() {
-      if (userRole === UserRole.WORKER) notification.sender = user || employer;
-      if (userRole === UserRole.EMPLOYER) notification.sender = assignedWorker || worker;
-      if (quest?.user) notification.sender = quest?.user;
-      if (comment?.author) notification.sender = comment?.author;
-      if (rootComment?.author) notification.sender = rootComment?.author;
-      if (fromUser) notification.sender = fromUser;
+    async function setSender() {
+      if (!notification.sender) {
+        /** Worker && Employer */
+        if (fromUser) {
+          if (action === NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST) notification.sender = fromUser;
+        } else if (comment?.author) {
+          if (action === NotificationAction.COMMENT_LIKED) notification.sender = comment.author;
+        } else if (quest?.user) {
+          if (action === NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST) notification.sender = quest.user;
+          else if (action === NotificationAction.WORKER_ACCEPTED_INVITATION_TO_QUEST) notification.sender = quest.user;
+          else if (action === NotificationAction.WORKER_RESPONDED_TO_QUEST) notification.sender = quest.user;
+          else if (action === NotificationAction.OPEN_DISPUTE) notification.sender = quest.user;
+          else if (action === NotificationAction.DISPUTE_DECISION) notification.sender = quest.user;
+          else if (action === NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE) notification.sender = quest.user;
+        } else if (rootComment?.author) {
+          if (action === NotificationAction.NEW_COMMENT_IN_DISCUSSION) notification.sender = rootComment.author;
+        }
+        /** Worker */
+        if (userRole === UserRole.WORKER) {
+          if (action === NotificationAction.QUEST_EDITED) notification.sender = user;
+          else if (action === NotificationAction.NEW_DISCUSSION_LIKE) notification.sender = user;
+          else if (action === NotificationAction.NEW_COMMENT_IN_DISCUSSION) notification.sender = user;
+          else if (action === NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST) notification.sender = user;
+          else if (action === NotificationAction.WAIT_WORKER) notification.sender = user;
+        }
+        /** Employer */
+        if (userRole === UserRole.EMPLOYER) {
+          if (assignedWorker) {
+            if (action === NotificationAction.WORKER_RESPONDED_TO_QUEST) notification.sender = assignedWorker;
+            else if (action === NotificationAction.WORKER_ACCEPTED_QUEST) notification.sender = assignedWorker;
+            else if (action === NotificationAction.WORKER_COMPLETED_QUEST) notification.sender = assignedWorker;
+            else if (action === NotificationAction.WORKER_REJECTED_QUEST) notification.sender = assignedWorker;
+          } else if (worker) {
+            if (action === NotificationAction.WORKER_RESPONDED_TO_QUEST) notification.sender = worker;
+            else if (action === NotificationAction.WORKER_ACCEPTED_QUEST) notification.sender = worker;
+            else if (action === NotificationAction.WORKER_COMPLETED_QUEST) notification.sender = worker;
+            else if (action === NotificationAction.WORKER_REJECTED_QUEST) notification.sender = worker;
+          } else if (action === NotificationAction.NEW_DISCUSSION_LIKE) notification.sender = employer;
+          else if (action === NotificationAction.QUEST_EDITED) notification.sender = employer;
+          else if (action === NotificationAction.NEW_COMMENT_IN_DISCUSSION) notification.sender = employer;
+          else if (action === NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST) notification.sender = employer;
+          else if (action === NotificationAction.WAIT_WORKER) notification.sender = employer;
+        }
+      }
     }
     async function updateQuests() {
       /* For update quest lists */
@@ -133,7 +170,7 @@ export default {
         Path.QUESTS,
         `${Path.PROFILE}/${currentUserId}`,
       ];
-      if (questListPathArray.includes(currentPath)) {
+      if (questListPathArray.includes(currentPath) && currentUserId && userRole) {
         const query = {
           limit: 10,
           offset: 0,
@@ -148,8 +185,10 @@ export default {
       } else if (currentPath === `${Path.QUESTS}/${quest?.id || id}`) {
         const params = quest?.id || id;
         await dispatch('quests/getQuest', params, { root: true });
-        if (userRole === UserRole.EMPLOYER) await dispatch('quests/responsesToQuest', params, { root: true });
-        if (userRole === UserRole.EMPLOYER) await dispatch('quests/questListForInvitation', currentUserId, { root: true });
+        if (userRole === UserRole.EMPLOYER && currentUserId && quest?.user?.id === currentUserId) {
+          await dispatch('quests/responsesToQuest', params, { root: true });
+          await dispatch('quests/questListForInvitation', currentUserId, { root: true });
+        }
       }
     }
     async function updateProfile() {
@@ -162,10 +201,13 @@ export default {
         await dispatch('getAllUserReviews', { userId: currentUserId, query });
       }
     }
-    async function notificationParams(currTitle, path, isExternalLink, externalBase) {
+    async function setAllNotificationsParams(currTitle, path, isExternalLink, externalBase) {
+      notification.actionNameKey = `notifications.${action}`;
+      notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
       notification.params = {
         title: currTitle, path, isExternalLink, externalBase,
       };
+      setSender();
     }
     switch (action) {
       /** WORK-QUEST */
@@ -183,47 +225,32 @@ export default {
       case NotificationAction.WAIT_WORKER:
       case NotificationAction.QUEST_EDITED:
       case NotificationAction.QUEST_END_SOON: {
-        notification.actionNameKey = `notifications.${action}`;
-        notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
-        await notificationParams(quest?.title || title, `${Path.QUESTS}/${quest?.id || id}`, false, '');
-        if (!notification.sender) await setsNotificationSender();
+        await setAllNotificationsParams(quest?.title || title, `${Path.QUESTS}/${quest?.id || id}`, false, '');
         await updateQuests();
         break;
       }
 
       case NotificationAction.OPEN_DISPUTE:
       case NotificationAction.DISPUTE_DECISION: {
-        notification.actionNameKey = `notifications.${action}`;
-        notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
-        await notificationParams(problemDescription || quest?.title || title, `${Path.QUESTS}/${quest?.id || id}`, false, '');
-        if (!notification.sender) await setsNotificationSender();
+        await setAllNotificationsParams(problemDescription, `${Path.QUESTS}/${quest?.id || id}`, false, '');
         await updateQuests();
         break;
       }
 
       case NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST: {
-        notification.actionNameKey = `notifications.${action}`;
-        notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
-        await notificationParams(message || quest?.title || title, `${Path.PROFILE}/${toUserId}`, false, '');
-        if (!notification.sender) await setsNotificationSender();
+        await setAllNotificationsParams(message, `${Path.PROFILE}/${toUserId}`, false, '');
         await updateProfile();
         break;
       }
       /** DAO */
       case NotificationAction.NEW_COMMENT_IN_DISCUSSION:
       case NotificationAction.NEW_DISCUSSION_LIKE: {
-        notification.actionNameKey = `notifications.${action}`;
-        notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
-        await notificationParams(discussion.title || quest?.title || title, `${PathDAO.DISCUSSIONS}/${discussion.id}`, true, DaoUrl);
-        if (!notification.sender) await setsNotificationSender();
+        await setAllNotificationsParams(discussion.title, `${PathDAO.DISCUSSIONS}/${discussion.id}`, true, DaoUrl);
         break;
       }
 
       case NotificationAction.COMMENT_LIKED: {
-        notification.actionNameKey = `notifications.${action}`;
-        notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
-        await notificationParams(comment?.text || quest?.title || title, `${PathDAO.DISCUSSIONS}/${comment.discussionId}`, true, DaoUrl);
-        if (!notification.sender) await setsNotificationSender();
+        await setAllNotificationsParams(comment?.text, `${PathDAO.DISCUSSIONS}/${comment.discussionId}`, true, DaoUrl);
         break;
       }
       default: {
