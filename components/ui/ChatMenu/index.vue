@@ -87,11 +87,13 @@ export default {
     ...mapGetters({
       currChat: 'chat/getCurrChatInfo',
     }),
+    // TODO узнать какой статус нужен для диспута и изменить
     isOpenDispute() {
-      return !this.canILeave && this.currChat.type === 'dispute';
+      return !this.canILeave && this.$route.query.status === '0';
     },
+    // TODO узнать какой статус нужен для диспута и изменить
     isMenuVisible() {
-      return this.$route.name === 'messages' || (this.currChat && this.currChat.type === 'dispute') || this.canILeave;
+      return this.$route.name === 'messages' || (this.$route.query.status === '0') || this.canILeave;
     },
   },
   methods: {
