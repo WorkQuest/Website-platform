@@ -7,14 +7,14 @@
         </div>
 
         <div
-          v-if="notifsCount"
+          v-if="notifsCount && notifications"
           class="info-block__list"
         >
           <div
-            v-for="notification in notifications"
-            :key="notification.id"
+            v-for="(notification, i) in notifications"
+            :key="i"
             :ref="`${notification.id}|${notification.seen}`"
-            v-observe-visibility="(isVisible) => checkUnseenNotifs(isVisible, notification)"
+            v-observe-visibility="(isVisible) => checkUnseenNotifs(isVisible, {id: notification ? notification.id : '', seen: notification.seen})"
             class="notification"
             :class="{'notification_gray' : !notification.seen}"
             @click="goToEvent(notification.params ? notification.params.path : '', true)"
@@ -169,8 +169,8 @@ export default {
       });
       this.SetLoader(false);
     },
-    checkUnseenNotifs(isVisible, { id, seen }) {
-      if (!isVisible || seen || this.notificationIdsForRead.indexOf(id) >= 0) return;
+    async checkUnseenNotifs(isVisible, { id, seen }) {
+      if (!isVisible || !id || seen || this.notificationIdsForRead.indexOf(id) >= 0) return;
       this.notificationIdsForRead.push(id);
       this.delayId = this.SetDelay(async () => {
         await this.$store.dispatch('user/readNotifications', {

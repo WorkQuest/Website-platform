@@ -540,6 +540,7 @@ export default {
     },
     async acceptQuestInvitation() {
       this.SetLoader(true);
+      await this.getQuest();
       await this.$store.dispatch('quests/acceptQuestInvitation', this.quest.response.id);
       this.setActionBtnsArr();
       this.SetLoader(false);
