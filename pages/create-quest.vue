@@ -302,7 +302,7 @@ export default {
         price: this.price,
         medias,
         // TODO интегрировать продвижение
-        // adType: 0,
+        adType: 0,
         specializationKeys: this.selectedSpecAndSkills,
         locationFull: {
           location: {
