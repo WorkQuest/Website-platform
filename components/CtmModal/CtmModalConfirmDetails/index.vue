@@ -68,7 +68,7 @@ export default {
       this.SetLoader(true);
       const res = await this.actionCheck();
       this.SetLoader(false);
-      if (res) {
+      if (res.ok) {
         const {
           dataForStatusModal: {
             img,

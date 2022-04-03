@@ -118,7 +118,7 @@ export default {
       }
       const res = await this.$store.dispatch('crediting/sendMethod', payload);
       this.SetLoader(false);
-      if (res) {
+      if (res.ok) {
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/transactionSend.svg'),

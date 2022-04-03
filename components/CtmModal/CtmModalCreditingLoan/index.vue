@@ -98,7 +98,7 @@ export default {
         type: 'lending',
       });
       this.SetLoader(false);
-      if (res) {
+      if (res.ok) {
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/transactionSend.svg'),

@@ -133,7 +133,7 @@ export default {
       });
       return success();
     } catch (err) {
-      console.log('sendClaim error:', err);
+      console.log('sendMethod error:', err);
       return error();
     }
   },
