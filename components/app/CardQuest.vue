@@ -171,7 +171,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-
 import {
   QuestStatuses, questPriority, UserRole, Path, TokenSymbols, QuestModeReview,
 } from '~/utils/enums';
