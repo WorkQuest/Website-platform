@@ -9,6 +9,7 @@
           <div class="message__content">
             <div class="modal__desc">
               <div class="message__wrapper">
+                <!--suppress XmlInvalidId -->
                 <label
                   for="textarea"
                   class="modal__labelMessage"

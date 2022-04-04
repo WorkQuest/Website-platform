@@ -69,24 +69,26 @@ export const InfoModeEmployer = {
   Closed: -3,
   Dispute: -2,
   Rejected: -1,
-  Created: 0, // Waiting worker to start quest
+  Pending: 0,
+  Created: 1, // Waiting worker to start quest
   WaitConfirm: 2, // Waiting for worker accept assign to quest
   Active: 3, // Work in progress
-  WaitWorker: 4, // Waiting worker complete quest
+  WaitWorker: 4, // Accepting or decline worker job
   Done: 5,
 };
 export const InfoModeWorker = {
   Closed: -3,
   Dispute: -2,
-  Created: 0,
-  // ADChat: 1,
-  // Rejected: 3,
-  Active: 3,
-  // WaitWorker: 3,
+  Created: 1,
+  WaitWorkerOnAssign: 2,
+  WaitWorker: 3,
   WaitConfirm: 4,
   Done: 5,
+
+  // ADChat: 1,
   Responded: 10,
   Invited: 11,
+  Rejected: 12, // 3 был вроде
 };
 // Worker
 // active - работника приняли нак вест и квест начат

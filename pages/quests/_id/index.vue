@@ -155,7 +155,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import {
-  QuestStatuses,
   Path,
   QuestStatuses,
   InfoModeWorker,
@@ -378,11 +377,11 @@ export default {
     setWorkerBtnsArr() {
       const { quest: { assignedWorkerId, response }, userData, infoDataMode } = this;
       const {
-        ADChat, Active, Created, Dispute, Invited, WaitWorker, WaitConfirm,
+        ADChat, WaitWorker, Created, Dispute, Invited, WaitWorkerOnAssign, WaitConfirm,
       } = InfoModeWorker;
       let arr = [];
 
-      console.log('del', infoDataMode, WaitWorker);
+      console.log('del', infoDataMode, WaitWorkerOnAssign);
 
       switch (infoDataMode) {
         case ADChat: {
@@ -399,7 +398,7 @@ export default {
           }];
           break;
         }
-        case Active: {
+        case WaitWorker: {
           if (assignedWorkerId !== userData.id) break;
           arr = [{
             name: this.$t('meta.openDispute'),
@@ -445,7 +444,7 @@ export default {
           }].concat(arr);
           break;
         }
-        case WaitWorker: {
+        case WaitWorkerOnAssign: {
           if (assignedWorkerId !== userData.id) break;
           arr = [{
             name: this.$t('meta.btns.agree'),

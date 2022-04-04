@@ -95,6 +95,7 @@ export default {
     infoStatusText() {
       if (this.userRole === UserRole.EMPLOYER) {
         const obj = {
+          [InfoModeEmployer.Pending]: 'quests.pending',
           [InfoModeEmployer.Active]: 'quests.activeQuest',
           [InfoModeEmployer.WaitWorker]: 'quests.waitWorker',
           [InfoModeEmployer.WaitConfirm]: 'quests.pendingConsideration',
@@ -110,9 +111,9 @@ export default {
         const obj = {
           [InfoModeWorker.Created]: '',
           [InfoModeWorker.ADChat]: 'meta.invited',
-          [InfoModeWorker.Active]: 'quests.activeQuest',
+          [InfoModeWorker.WaitWorker]: 'quests.activeQuest',
           [InfoModeWorker.Rejected]: 'quests.requested',
-          [InfoModeWorker.WaitWorker]: 'quests.pendingConsideration',
+          [InfoModeWorker.WaitWorkerOnAssign]: 'quests.pendingConsideration',
           [InfoModeWorker.WaitConfirm]: 'quests.pendingConsideration',
           [InfoModeWorker.Dispute]: 'meta.dispute',
           [InfoModeWorker.Closed]: 'quests.questClosed',
@@ -134,9 +135,9 @@ export default {
         return [
           { 'info-hide': infoDataMode === InfoModeWorker.Created },
           { 'info_bg-yellow': [InfoModeWorker.ADChat, InfoModeWorker.Invited].includes(infoDataMode) },
-          { 'info_bg-green': infoDataMode === InfoModeWorker.Active || response?.status === ResponseStatus.accepted },
+          { 'info_bg-green': infoDataMode === InfoModeWorker.WaitWorker || response?.status === ResponseStatus.accepted },
           { 'info_bg-grey': infoDataMode === InfoModeWorker.Rejected },
-          { 'info_bg-blue': [InfoModeWorker.WaitWorker, InfoModeWorker.WaitConfirm, InfoModeWorker.Done, InfoModeWorker.Responded].includes(infoDataMode) },
+          { 'info_bg-blue': [InfoModeWorker.WaitWorkerOnAssign, InfoModeWorker.WaitConfirm, InfoModeWorker.Done, InfoModeWorker.Responded].includes(infoDataMode) },
           { 'info_bg-red': [InfoModeWorker.Dispute, InfoModeWorker.Closed].includes(infoDataMode) || response?.status === ResponseStatus.rejected },
         ];
       }

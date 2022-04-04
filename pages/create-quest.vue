@@ -111,7 +111,7 @@
           <textarea
             id="textarea"
             v-model="textarea"
-            rules="required|min:20"
+            rules="required"
             data-selector="QUEST-DESC-TEXTAREA"
             class="page__textarea"
             :placeholder="$t('quests.questDesc')"

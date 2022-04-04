@@ -83,7 +83,10 @@ export default {
       } else if (role === UserRole.WORKER) {
         questStatuses.some(([key, val]) => {
           if (val === status) {
-            if (val === QuestStatuses.Created && response) key = response.type ? 'Invited' : 'Responded';
+            if (val === QuestStatuses.Created && response) {
+              key = response.type ? InfoModeWorker.Invited : InfoModeWorker.Responded;
+            }
+            console.log(val, status, key);
             currStat = InfoModeWorker[key];
             return true;
           }
@@ -292,7 +295,7 @@ export default {
   },
   async getAvailableQuests({ commit }, data) {
     try {
-      const response = await this.$axios.$post(`/v1/worker/${data}/available-quests?limit=100`);
+      const response = await this.$axios.$get(`/v1/worker/${data}/available-quests?limit=100`);
       commit('setAvailableQuests', response.result.quests);
       return response.ok;
     } catch (e) {
