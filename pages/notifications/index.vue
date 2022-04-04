@@ -36,12 +36,12 @@
                   {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
                 </span>
                 <!--                TODO: проверить входные данные нет бэка-->
-                <!--                <span-->
-                <!--                  v-if="notification.params.employer"-->
-                <!--                  class="inviter__company"-->
-                <!--                >-->
-                <!--                  {{ company(notification) }}-->
-                <!--                </span>-->
+                <span
+                  v-if="!!company(notification) && userRole === $options.UserRole.WORKER"
+                  class="inviter__company"
+                >
+                  from {{ company(notification) }}
+                </span>
               </div>
             </template>
             <div class="notification__quest quest">
@@ -135,6 +135,9 @@ export default {
     this.$store.commit('user/setNotifications', { result: { notifications: [], count: this.notifsCount } });
   },
   methods: {
+    company(notification) {
+      return notification.params?.company ?? null;
+    },
     avatar(notification) {
       return notification.sender?.avatar?.url || this.EmptyAvatar();
     },

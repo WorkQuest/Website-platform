@@ -138,6 +138,13 @@ export default {
         }
       }
     }
+    async function setCompany() {
+      console.log(notification.actionNameKey);
+      if (fromUser?.additionalInfo?.company) notification.params.company = fromUser?.additionalInfo?.company;
+      if (employer?.additionalInfo?.company) notification.params.company = employer?.additionalInfo?.company;
+      if (!fromUser?.additionalInfo?.company && !employer?.additionalInfo?.company) console.log(notification);
+      // notifications.employerAcceptedCompletedQuest, notifications.waitWorker не хватает данных company
+    }
     async function updateQuests() {
       /* For update quest lists */
       const questListPathArray = [
@@ -183,6 +190,7 @@ export default {
         title: currTitle, path, isExternalLink, externalBase,
       };
       await setSender();
+      await setCompany();
     }
     switch (action) {
       /** WORK-QUEST */
