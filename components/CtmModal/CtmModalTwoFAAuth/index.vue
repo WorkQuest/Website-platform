@@ -288,10 +288,10 @@ export default {
   },
   methods: {
     goToGooglePlay() {
-      window.location.href = 'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2';
+      window.open('https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2');
     },
     goToAppleStore() {
-      window.location.href = 'https://apps.apple.com/ru/app/google-authenticator/id388497605';
+      window.open('https://apps.apple.com/ru/app/google-authenticator/id388497605');
     },
     async enable2FA() {
       const response = await this.$store.dispatch('user/enable2FA');
