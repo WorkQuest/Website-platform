@@ -78,6 +78,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import moment from 'moment';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -86,26 +88,28 @@ export default {
       options: 'modals/getOptions',
       creditData: 'crediting/getCreditData',
       walletData: 'crediting/getWalletData',
+      rewardsData: 'crediting/getRewards',
+      currentFee: 'crediting/getCurrentFee',
     }),
     blocksData() {
       return [
         {
           title: this.$t('crediting.currentCredit'),
           priceTitle: this.$t('crediting.totalWusdDebt'),
-          price: this.$tc('meta.coins.count.WUSDCount', this.creditData.collateral),
+          price: this.$tc('meta.coins.count.WUSDCount', this.creditData.credit),
           show: this.isHaveCredit,
           info: [
             {
-              title: 'ID',
-              desc: 565464,
+              title: 'Need to refund',
+              desc: this.$tc('meta.coins.count.WUSDCount', this.fullValueForRefund),
             },
             {
-              title: this.$t('crediting.tableHead.currentRatio'),
-              desc: 565464,
+              title: this.$t('modals.totalFee'),
+              desc: this.$tc('meta.coins.count.WUSDCount', this.currentFee),
             },
             {
-              title: this.$t('crediting.tableHead.deposited'),
-              desc: 123,
+              title: this.$t('crediting.dueDate'),
+              desc: moment.unix(this.creditData.borrowedAt).add(7, 'days').format('DD.MM.YYYY'),
             },
           ],
           buttons: [
@@ -118,7 +122,7 @@ export default {
         {
           title: this.$t('crediting.currentLoan'),
           priceTitle: this.$t('crediting.totalCollateralLocked'),
-          price: this.$tc('meta.coins.count.USDCount', 225.5),
+          price: this.$tc('meta.coins.count.WUSDCount', new BigNumber(this.walletData.amount).shiftedBy(-18).toString()),
           show: this.isHaveLoan,
           info: [
             {
@@ -130,8 +134,8 @@ export default {
               desc: 565464,
             },
             {
-              title: this.$t('crediting.tableHead.deposited'),
-              desc: 123,
+              title: this.$t('meta.claimRewards'),
+              desc: this.rewardsData > 0 ? this.rewardsData : this.$t('modals.nothingToClaim'),
             },
           ],
           buttons: [
@@ -159,12 +163,17 @@ export default {
     isHaveLoan() {
       return !!this.walletData.amount;
     },
+    fullValueForRefund() {
+      return Number(this.creditData.credit) + Number(this.currentFee);
+    },
   },
   async mounted() {
     this.SetLoader(true);
     await Promise.all([
       this.$store.dispatch('crediting/getCreditData'),
       this.$store.dispatch('crediting/getWalletsData'),
+      this.$store.dispatch('crediting/getRewards'),
+      this.$store.dispatch('crediting/getCurrentFee'),
     ]);
     this.SetLoader(false);
   },
@@ -172,11 +181,31 @@ export default {
     handleBackToCrediting() {
       this.$router.push('/crediting');
     },
-    openModal(action) {
-      this.ShowModal({
-        key: modals.valueSend,
-        mode: action,
-      });
+    async openModal(action) {
+      if (action !== 'claim') {
+        this.ShowModal({
+          key: modals.valueSend,
+          mode: action,
+        });
+      } else {
+        const res = await this.$store.dispatch('crediting/sendMethod', {
+          method: 'claim',
+          type: 'lending',
+        });
+        if (res.ok) {
+          this.ShowModal({
+            key: modals.status,
+            img: require('~/assets/img/ui/transactionSend.svg'),
+            title: this.$t('modals.loanIsOpened'),
+          });
+        } else {
+          this.ShowModal({
+            key: modals.status,
+            img: require('~/assets/img/ui/warning.svg'),
+            title: this.$t('modals.transactionFail'),
+          });
+        }
+      }
     },
   },
 };

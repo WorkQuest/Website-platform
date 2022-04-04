@@ -50,6 +50,7 @@
       "hours": "{count} hours",
       "years": "{count} years",
       "days": "{count} days",
+      "daysLeft": "{count} days left",
       "votesCount": "{count} votes",
       "distance": {
         "m": "m"
@@ -1701,6 +1702,7 @@
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
     "currentLoan": "Current loan",
     "currentCredit": "Current credit",
+    "dueDate": "Due date",
     "chooseSource": "Choose the source",
     "marketSize": "Market size",
     "wantToTakeALoan": "Want to take a loan?",

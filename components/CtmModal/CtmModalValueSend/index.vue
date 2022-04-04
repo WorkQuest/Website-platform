@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="claim"
-    :title="$t('modals.amount')"
+    :title="modalName"
   >
     <div class="claim__content content">
       <validation-observer
@@ -71,6 +71,20 @@ export default {
       options: 'modals/getOptions',
       creditData: 'crediting/getCreditData',
     }),
+    modalName() {
+      switch (this.options.mode) {
+        case 'refund':
+          return this.$t('crediting.refund');
+        case 'withdraw':
+          return this.$t('meta.withdraw');
+        case 'deposit':
+          return this.$t('meta.deposit');
+        case 'claim':
+          return this.$t('modals.claim');
+        default:
+          return this.$t('modals.amount');
+      }
+    },
   },
   mounted() {
     this.mode = this.options.mode;
@@ -84,7 +98,7 @@ export default {
         case 'refund':
           payload = {
             value: this.amount,
-            data: [1, new BigNumber(this.amount).multipliedBy(18).toFixed()],
+            data: [1, this.amount],
             method: 'refund',
             type: 'borrowing',
           };
@@ -92,7 +106,7 @@ export default {
         case 'withdraw':
           payload = {
             value: this.amount,
-            data: [new BigNumber(this.amount).multipliedBy(18).toFixed()],
+            data: [new BigNumber(this.amount).shiftedBy(18).toString()],
             method: 'withdraw',
             type: 'lending',
           };
@@ -119,6 +133,11 @@ export default {
       const res = await this.$store.dispatch('crediting/sendMethod', payload);
       this.SetLoader(false);
       if (res.ok) {
+        await Promise.all([
+          this.$store.dispatch('crediting/getCreditData'),
+          this.$store.dispatch('crediting/getWalletsData'),
+          this.$store.dispatch('crediting/getRewards'),
+        ]);
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/transactionSend.svg'),

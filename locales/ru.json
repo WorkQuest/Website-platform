@@ -50,6 +50,7 @@
       "hours": "{count} часы",
       "years": "{count} годы",
       "days": "{count} дни",
+      "daysLeft": "{count} дней осталось",
       "votesCount": "{count} голоса",
       "distance": {
         "m": "m"

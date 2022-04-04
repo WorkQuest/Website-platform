@@ -46,21 +46,6 @@ export default {
       return false;
     }
   },
-  async sendRefund({ commit }, payload) {
-    const value = new BigNumber(payload.value).shiftedBy(18).toString();
-    try {
-      await sendWalletTransaction('refund', {
-        address: process.env.BORROWING,
-        abi: abi.WQBorrowing,
-        value,
-        data: [payload.data[0], value],
-      });
-      return true;
-    } catch (err) {
-      console.log('sendRefund error:', err);
-      return false;
-    }
-  },
   async getWalletsData({ commit }) {
     const address = await getWalletAddress();
     const res = await fetchContractData(
@@ -71,35 +56,6 @@ export default {
       GetWalletProvider(),
     );
     commit('setWalletsData', res);
-  },
-  async sendLoan({ commit }, payload) {
-    payload.value = new BigNumber(payload.value).shiftedBy(18).toString();
-    payload.address = process.env.LENDING;
-    payload.abi = abi.WQLending;
-    try {
-      await sendWalletTransaction('deposit', payload);
-      return true;
-    } catch (err) {
-      console.log('sendLoan error:', err);
-      return false;
-    }
-  },
-  async sendWithdraw({ commit }, payload) {
-    const value = new BigNumber(payload.value).shiftedBy(18).toString();
-    payload.address = process.env.LENDING;
-    payload.abi = abi.WQLending;
-    try {
-      await sendWalletTransaction('withdraw', {
-        address: process.env.LENDING,
-        abi: abi.WQLending,
-        value,
-        data: [value],
-      });
-      return true;
-    } catch (err) {
-      console.log('sendWithdraw error:', err);
-      return false;
-    }
   },
   async sendClaim({ commit }, payload) {
     payload.value = new BigNumber(payload.value).shiftedBy(18).toString();
@@ -122,15 +78,47 @@ export default {
       return { ok: false };
     }
   },
+  async getRewards({ commit }) {
+    const address = await getWalletAddress();
+    const res = await fetchContractData(
+      'getRewards',
+      abi.WQLending,
+      process.env.LENDING,
+      [address],
+      GetWalletProvider(),
+    );
+    commit('setRewards', res);
+  },
+  async getCurrentFee({ commit }) {
+    const address = await getWalletAddress();
+    const res = await fetchContractData(
+      'getCurrentFee',
+      abi.WQBorrowing,
+      process.env.BORROWING,
+      [address],
+      GetWalletProvider(),
+    );
+    commit('setCurrentFee', res);
+  },
   async sendMethod({ commit }, payload) {
-    const value = new BigNumber(payload.value).shiftedBy(18).toString();
+    const payloadSend = {
+      address: payload.type === 'borrowing' ? process.env.BORROWING : process.env.LENDING,
+      abi: payload.type === 'borrowing' ? abi.WQBorrowing : abi.WQLending,
+      data: payload.data,
+    };
+    switch (payloadSend.method) {
+      case 'refund':
+        payloadSend.value = payload.value;
+        break;
+      case 'dispute':
+      case 'withdraw':
+        payloadSend.value = new BigNumber(payload.value).shiftedBy(18).toString();
+        break;
+      default:
+        break;
+    }
     try {
-      await sendWalletTransaction(payload.method, {
-        address: payload.type === 'borrowing' ? process.env.BORROWING : process.env.LENDING,
-        abi: payload.type === 'borrowing' ? abi.WQBorrowing : abi.WQLending,
-        value,
-        data: payload.data,
-      });
+      await sendWalletTransaction(payload.method, payloadSend);
       return success();
     } catch (err) {
       console.log('sendMethod error:', err);

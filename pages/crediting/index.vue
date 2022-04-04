@@ -231,6 +231,7 @@ export default {
       this.$store.dispatch('crediting/getCreditData'),
       this.$store.dispatch('crediting/getWalletsData'),
     ]);
+    console.log('creditData:', this.creditData, 'walletData:', this.walletData);
     this.SetLoader(false);
   },
   methods: {
