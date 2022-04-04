@@ -64,31 +64,31 @@ export const QuestStatuses = {
   WaitEmployerConfirm: 4,
   Done: 5,
 };
-export const SumSubStatuses = { NOT_VERIFIED: 0, VERIFIED: 1 };
 export const InfoModeEmployer = {
   Closed: -3,
   Dispute: -2,
   Rejected: -1,
-  Pending: 0,
+  Pending: 0, // нужен тут?
   Created: 1, // Waiting worker to start quest
-  WaitConfirm: 2, // Waiting for worker accept assign to quest
-  Active: 3, // Work in progress
-  WaitWorker: 4, // Accepting or decline worker job
+  WaitWorkerOnAssign: 2, // Waiting for worker accept assign to quest
+  WaitWorker: 3, // Work in progress
+  WaitEmployerConfirm: 4, // Accepting or decline worker job
   Done: 5,
 };
 export const InfoModeWorker = {
   Closed: -3,
   Dispute: -2,
+  Pending: 0, // нужен тут?
   Created: 1,
   WaitWorkerOnAssign: 2,
   WaitWorker: 3,
-  WaitConfirm: 4,
+  WaitEmployerConfirm: 4,
   Done: 5,
 
-  // ADChat: 1,
+  ADChat: 9,
   Responded: 10,
   Invited: 11,
-  Rejected: 12, // 3 был вроде
+  Rejected: 12, // -1?
 };
 // Worker
 // active - работника приняли нак вест и квест начат
@@ -103,6 +103,8 @@ export const InfoModeWorker = {
 // active - работник выполняет
 // waitWorker - ожидает завершения работы
 // waitConfirm - ожидает подтверждение воркера вступить на квест
+
+export const SumSubStatuses = { NOT_VERIFIED: 0, VERIFIED: 1 };
 
 export const DisputeStatues = {
   PENDING: 0,

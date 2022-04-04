@@ -1,16 +1,21 @@
 <template>
   <div
+    v-if="infoDataMode !== $options.QuestStatuses.Pending"
     class="info"
     :class="infoClass"
   >
     <div
-      v-if="userRole === $options.UserRole.EMPLOYER && infoDataMode !== $options.InfoModeEmployer.Created"
+      v-if="userRole === $options.UserRole.EMPLOYER
+        && infoDataMode !== $options.InfoModeEmployer.Created"
       class="info__body"
     >
       <div class="info__left">
         <div
           class="info__text"
-          :class="[{'info__text_white': ![$options.InfoModeEmployer.Created, $options.InfoModeEmployer.WaitConfirm].includes(infoDataMode)}]"
+          :class="[{'info__text_white': ![
+            $options.InfoModeEmployer.Created,
+            $options.InfoModeEmployer.WaitEmployerConfirm
+          ].includes(infoDataMode)}]"
         >
           {{ infoStatusText }}
         </div>
@@ -66,7 +71,7 @@
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import {
-  InfoModeEmployer, InfoModeWorker, ResponseStatus, UserRole,
+  InfoModeEmployer, InfoModeWorker, QuestStatuses, ResponseStatus, UserRole,
 } from '~/utils/enums';
 
 export default {
@@ -76,6 +81,7 @@ export default {
   InfoModeEmployer,
   InfoModeWorker,
   ResponseStatus,
+  QuestStatuses,
   data() {
     return {
       isShowMessage: false,
@@ -95,10 +101,9 @@ export default {
     infoStatusText() {
       if (this.userRole === UserRole.EMPLOYER) {
         const obj = {
-          [InfoModeEmployer.Pending]: 'quests.pending',
-          [InfoModeEmployer.Active]: 'quests.activeQuest',
-          [InfoModeEmployer.WaitWorker]: 'quests.waitWorker',
-          [InfoModeEmployer.WaitConfirm]: 'quests.pendingConsideration',
+          [InfoModeEmployer.WaitWorker]: 'quests.activeQuest',
+          [InfoModeEmployer.WaitEmployerConfirm]: 'quests.waitWorker',
+          [InfoModeEmployer.WaitWorkerOnAssign]: 'quests.pendingConsideration',
           [InfoModeEmployer.Dispute]: 'meta.dispute',
           [InfoModeEmployer.Closed]: 'quests.closed',
           [InfoModeEmployer.Done]: 'meta.performed',
@@ -109,12 +114,13 @@ export default {
         const { response } = this.questData;
         const { awaiting, accepted } = ResponseStatus;
         const obj = {
+          [InfoModeWorker.Pending]: '',
           [InfoModeWorker.Created]: '',
           [InfoModeWorker.ADChat]: 'meta.invited',
           [InfoModeWorker.WaitWorker]: 'quests.activeQuest',
           [InfoModeWorker.Rejected]: 'quests.requested',
           [InfoModeWorker.WaitWorkerOnAssign]: 'quests.pendingConsideration',
-          [InfoModeWorker.WaitConfirm]: 'quests.pendingConsideration',
+          [InfoModeWorker.WaitEmployerConfirm]: 'quests.pendingConsideration',
           [InfoModeWorker.Dispute]: 'meta.dispute',
           [InfoModeWorker.Closed]: 'quests.questClosed',
           [InfoModeWorker.Done]: 'meta.completed',
@@ -137,16 +143,16 @@ export default {
           { 'info_bg-yellow': [InfoModeWorker.ADChat, InfoModeWorker.Invited].includes(infoDataMode) },
           { 'info_bg-green': infoDataMode === InfoModeWorker.WaitWorker || response?.status === ResponseStatus.accepted },
           { 'info_bg-grey': infoDataMode === InfoModeWorker.Rejected },
-          { 'info_bg-blue': [InfoModeWorker.WaitWorkerOnAssign, InfoModeWorker.WaitConfirm, InfoModeWorker.Done, InfoModeWorker.Responded].includes(infoDataMode) },
+          { 'info_bg-blue': [InfoModeWorker.WaitWorkerOnAssign, InfoModeWorker.WaitEmployerConfirm, InfoModeWorker.Done, InfoModeWorker.Responded].includes(infoDataMode) },
           { 'info_bg-red': [InfoModeWorker.Dispute, InfoModeWorker.Closed].includes(infoDataMode) || response?.status === ResponseStatus.rejected },
         ];
       }
       if (this.userRole === UserRole.EMPLOYER) {
         return [
           { 'info-hide': infoDataMode === InfoModeEmployer.Created },
-          { 'info_bg-yellow': infoDataMode === InfoModeEmployer.WaitWorker },
-          { 'info_bg-green': infoDataMode === InfoModeEmployer.Active },
-          { 'info_bg-grey': infoDataMode === InfoModeEmployer.WaitConfirm },
+          { 'info_bg-yellow': infoDataMode === InfoModeEmployer.WaitEmployerConfirm },
+          { 'info_bg-green': infoDataMode === InfoModeEmployer.WaitWorker },
+          { 'info_bg-grey': infoDataMode === InfoModeEmployer.WaitWorkerOnAssign },
           { 'info_bg-red': infoDataMode === InfoModeEmployer.Dispute },
           { 'info_bg-blue': [InfoModeEmployer.Closed, InfoModeEmployer.Done].includes(infoDataMode) },
         ];

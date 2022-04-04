@@ -84,9 +84,8 @@ export default {
         questStatuses.some(([key, val]) => {
           if (val === status) {
             if (val === QuestStatuses.Created && response) {
-              key = response.type ? InfoModeWorker.Invited : InfoModeWorker.Responded;
+              key = response.type ? 'Invited' : 'Responded';
             }
-            console.log(val, status, key);
             currStat = InfoModeWorker[key];
             return true;
           }

@@ -440,7 +440,7 @@ export default {
   async acceptJobResult({ commit }, contractAddress) {
     return await sendQuestTransaction(contractAddress, QuestMethods.AcceptJobResult);
   },
-  // TODO: нужен ли этот метод? console.log
+  // TODO: нужен ли этот метод?
   // employer отменил (reject) результат работы или прошло 3 дня с момента начала verification
   async arbitration({ commit }, contractAddress) {
     return await sendQuestTransaction(contractAddress, QuestMethods.Arbitration);

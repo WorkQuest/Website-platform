@@ -4,6 +4,7 @@
     class="quest-page"
     data-selector="PAGE-QUESTS-ID"
   >
+    DATA MODE: {{ infoDataMode }}x
     <info />
     <div class="main main-white">
       <div class="main__body main__body_20gap">
@@ -105,6 +106,7 @@
           class="main__map"
           :is-draggable="false"
         />
+        <!--        TODO: для переназначения воркера возможно нужно установить еще чек на .WaitWorkerOnAssign-->
         <template v-if="userRole === $options.UserRole.EMPLOYER && infoDataMode === $options.InfoModeEmployer.Created">
           <workers-list is-invited />
           <workers-list />
@@ -321,7 +323,7 @@ export default {
     setEmployerBtnsArr() {
       if (this.userData.id !== this.quest.userId) return [];
       const {
-        WaitConfirm, Dispute, Created, Active,
+        WaitWorkerOnAssign, Dispute, Created, WaitWorker, WaitEmployerConfirm,
       } = InfoModeEmployer;
       let arr = [];
       switch (this.infoDataMode) {
@@ -339,7 +341,7 @@ export default {
           }];
           break;
         }
-        case Active: {
+        case WaitWorker: {
           arr = [{
             name: this.$t('meta.approve'),
             mode: 'approve',
@@ -347,7 +349,7 @@ export default {
           }];
           break;
         }
-        case WaitConfirm: {
+        case WaitEmployerConfirm: {
           arr = [{
             name: this.$t('meta.btns.acceptCompletedWorkOnQuest'),
             mode: 'approve',
@@ -377,11 +379,11 @@ export default {
     setWorkerBtnsArr() {
       const { quest: { assignedWorkerId, response }, userData, infoDataMode } = this;
       const {
-        ADChat, WaitWorker, Created, Dispute, Invited, WaitWorkerOnAssign, WaitConfirm,
+        ADChat, WaitWorker, Created, Dispute, Invited, WaitWorkerOnAssign, WaitEmployerConfirm,
       } = InfoModeWorker;
       let arr = [];
 
-      console.log('del', infoDataMode, WaitWorkerOnAssign);
+      console.log('infoDataMode: ', infoDataMode);
 
       switch (infoDataMode) {
         case ADChat: {
@@ -420,7 +422,7 @@ export default {
           }];
           break;
         }
-        case WaitConfirm:
+        case WaitEmployerConfirm:
         case Dispute: {
           arr = [{
             name: this.$t('meta.openDispute'),
@@ -437,7 +439,7 @@ export default {
             disabled: false,
           },
           {
-            name: this.$t('meta.btns.disagree'),
+            name: `${this.$t('meta.btns.disagree')}`,
             mode: 'outline',
             funcKey: 'rejectQuestInvitation',
             disabled: false,
@@ -489,7 +491,7 @@ export default {
       // TODO: Добавить в enum
       const modalMode = 1;
       this.SetLoader(true);
-      if (this.quest.status !== InfoModeEmployer.Active) {
+      if (this.quest.status !== InfoModeEmployer.WaitWorker) {
         // TODO [!!!] close quest on contract
         await this.$store.dispatch('quests/closeQuest', this.quest.id);
         this.showQuestModal(modalMode);
@@ -582,13 +584,14 @@ export default {
     async rejectQuestInvitation() {
       this.SetLoader(true);
       await this.$store.dispatch('quests/rejectQuestInvitation', this.quest.response.id);
+      await this.getQuest();
       this.setActionBtnsArr();
       this.SetLoader(false);
     },
     async acceptQuestInvitation() {
       this.SetLoader(true);
-      await this.getQuest();
       await this.$store.dispatch('quests/acceptQuestInvitation', this.quest.response.id);
+      await this.getQuest();
       this.setActionBtnsArr();
       this.SetLoader(false);
     },

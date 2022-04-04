@@ -331,6 +331,7 @@
     },
     "invite": "আমন্ত্রিত",
     "decline": "Decline",
+    "declinedTheInvitation": "Declined the invitation",
     "questTitle": "Quest title",
     "questDesc": "Quest description",
     "closed": "Closed",

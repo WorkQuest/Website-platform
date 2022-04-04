@@ -2,7 +2,7 @@ import Vue from 'vue';
 import moment from 'moment';
 import VueTippy, { TippyComponent } from 'vue-tippy';
 import modals from '~/store/modals/modals';
-import { QuestStatuses } from '~/utils/enums';
+import { QuestMethods, QuestStatuses, TokenSymbols } from '~/utils/enums';
 
 Vue.use(VueTippy);
 Vue.component('tippy', TippyComponent);
@@ -163,24 +163,48 @@ Vue.mixin({
       clearTimeout(delayId);
       return setTimeout(func, timeout);
     },
-    async DeleteQuest({ id, status }) {
-      // TODO [!!!] удаление квеста
-      if ([QuestStatuses.Closed, QuestStatuses.Created].includes(status)) {
-        await this.$store.dispatch('quests/deleteQuest', { questId: id });
-
-        const routeName = this.$route.name;
-
-        if (routeName === 'quests-id') {
-          await this.$router.replace('/my');
-        } else if (routeName === 'my' || routeName === 'profile-id') {
-          const payload = JSON.parse(sessionStorage.getItem('questsListFilter'));
-          await this.$store.dispatch('quests/getUserQuests', payload);
+    async DeleteQuest(questData) {
+      const { id, status, contractAddress } = questData;
+      if (contractAddress && [QuestStatuses.Closed, QuestStatuses.Created].includes(status)) {
+        this.SetLoader(true);
+        const [feeRes] = await Promise.all([
+          this.$store.dispatch('wallet/getFeeDataJobMethod', {
+            method: QuestMethods.CancelJob,
+            contractAddress,
+          }),
+          this.$store.dispatch('wallet/getBalance'),
+        ]);
+        this.SetLoader(false);
+        if (!feeRes.ok) {
+          this.ShowToast(feeRes.msg);
+          return;
         }
-
-        await this.$store.dispatch('main/showToast', {
-          title: this.$t('toasts.questDeleted'),
-          variant: 'success',
-          text: this.$t('toasts.questDeleted'),
+        this.ShowModal({
+          key: modals.transactionReceipt,
+          title: 'Delete quest', // TODO: to localization
+          fields: {
+            from: { name: this.$t('meta.fromBig'), value: this.$store.getters['user/getUserWalletAddress'] },
+            to: { name: this.$t('meta.toBig'), value: contractAddress },
+            fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
+          },
+          submitMethod: async () => {
+            this.SetLoader(true);
+            const trxRes = await this.$store.dispatch('wallet/cancelJob', contractAddress);
+            if (!trxRes.ok) this.ShowToast(trxRes.msg);
+            // TODO: удалить запрос на бэк, если он сам будет отлавливать удаление квеста
+            const delRes = await this.$store.dispatch('quests/deleteQuest', { questId: id });
+            this.SetLoader(false);
+            if (delRes && trxRes.ok) {
+              const routeName = this.$route.name;
+              if (routeName === 'quests-id') {
+                await this.$router.replace('/my');
+              } else if (routeName === 'my' || routeName === 'profile-id') {
+                const payload = JSON.parse(sessionStorage.getItem('questsListFilter'));
+                await this.$store.dispatch('quests/getUserQuests', payload);
+              }
+              this.ShowToast(this.$t('toasts.questDeleted'), this.$t('toasts.questDeleted'));
+            }
+          },
         });
       } else {
         await this.$store.dispatch('main/showToast', {

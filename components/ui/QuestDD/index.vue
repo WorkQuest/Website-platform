@@ -145,7 +145,6 @@ export default {
     },
     deleteQuest() {
       this.CloseModal();
-
       this.DeleteQuest(this.item);
     },
     toRaisingViews() {
