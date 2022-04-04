@@ -47,29 +47,15 @@
             </div>
             <div class="balance__bottom">
               <base-btn
-                data-selector="SHOW-DEPOSIT-MODAL"
-                mode="outline"
+                v-for="(item, i) in walletsBtnsArray"
+                :key="i"
+                :data-selector="item.dataSelector"
+                :mode="item.mode"
                 class="balance__btn"
-                :disabled="true"
-                @click="showDepositModal()"
+                :disabled="item.disabled"
+                @click="item.click"
               >
                 {{ $t('wallet.receive') }}
-              </base-btn>
-              <base-btn
-                data-selector="SHOW-WITHDRAW-MODAL"
-                mode="outline"
-                class="balance__btn"
-                :disabled="true"
-                @click="showWithdrawModal()"
-              >
-                {{ $t('meta.withdraw') }}
-              </base-btn>
-              <base-btn
-                data-selector="SHOW-TRANSFER-MODAL"
-                class="balance__btn"
-                @click="showTransferModal()"
-              >
-                {{ $t('modals.transfer') }}
               </base-btn>
             </div>
           </div>
@@ -161,6 +147,27 @@ export default {
       txsPerPage: 10,
       currentPage: 1,
       selectedWalletTable: WalletTables.TXS,
+      walletsBtnsArray: [
+        {
+          dataSelector: 'SHOW-DEPOSIT-MODAL',
+          mode: 'outline',
+          disabled: 'true',
+          click: this.showDepositModal,
+          title: this.$t('wallet.receive'),
+        },
+        {
+          dataSelector: 'SHOW-WITHDRAW-MODAL',
+          mode: 'outline',
+          disabled: 'true',
+          click: this.showWithdrawModal,
+          title: this.$t('meta.withdraw'),
+        },
+        {
+          dataSelector: 'SHOW-TRANSFER-MODAL',
+          click: this.showTransferModal,
+          title: this.$t('modals.transfer'),
+        },
+      ],
     };
   },
   computed: {
@@ -177,6 +184,11 @@ export default {
       selectedToken: 'wallet/getSelectedToken',
     }),
     walletTables() {
+      console.log('userInfo', this.userInfo);
+      console.log('userData', this.userData);
+      console.log('selectedToken', this.selectedToken);
+      console.log('userWalletAddress', this.userWalletAddress);
+      console.log('TokenSymbols', TokenSymbols);
       return WalletTables;
     },
     totalPages() {
