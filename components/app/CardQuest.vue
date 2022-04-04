@@ -118,7 +118,7 @@
       </div>
       <div class="card-quest__text card-quest__publication">
         <span class="card-quest__publication_bold">{{ $t('quests.publicationDate') }}</span>
-        <span class="card-quest__publication_thin">{{ $d(Date.parse(quest.createdAt),'long') }}</span>
+        <span class="card-quest__publication_thin">{{ this.$moment(quest.createdAt).format('Do MMMM YYYY, hh:mm a') }}</span>
       </div>
       <div class="card-quest__actions">
         <div class="card-quest__status">
@@ -171,6 +171,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+
 import {
   QuestStatuses, questPriority, UserRole, Path, TokenSymbols, QuestModeReview,
 } from '~/utils/enums';

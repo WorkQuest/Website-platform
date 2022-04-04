@@ -8,7 +8,6 @@ import localeHi from './locales/hi.json';
 import localeId from './locales/id.json';
 import localePt from './locales/pt.json';
 import localeEs from './locales/es.json';
-import dateTimeFormats from './locales/dateTimeFormats.js';
 
 export default {
   ssr: false,
@@ -77,6 +76,10 @@ export default {
   axios: {
     baseURL: process.env.BASE_URL,
   },
+  moment: {
+    defaultLocale: 'en',
+    locales: ['ru', 'bn', 'ar', 'fr', 'hi', 'id', 'pt', 'es'],
+  },
   // bootstrapVue: {
   //   // bootstrapCSS: false, // Or `css: false`
   //   // bootstrapVueCSS: false, // Or `bvCSS: false`
@@ -100,7 +103,6 @@ export default {
         pt: localePt,
         es: localeEs,
       },
-      dateTimeFormats,
     },
     detectBrowserLanguage: {
       useCookie: true,
