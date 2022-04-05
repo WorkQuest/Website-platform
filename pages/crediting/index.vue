@@ -5,9 +5,6 @@
         <div class="title">
           {{ $t('crediting.lending') }}
         </div>
-        <div class="title_sub">
-          {{ $t('crediting.templateText') }}
-        </div>
       </div>
       <div class="crediting-page__content">
         <div class="info-block__triple">
@@ -217,10 +214,10 @@ export default {
       ];
     },
     isHaveCredit() {
-      return !!this.creditData.credit;
+      return this.creditData.credit > 0;
     },
     isHaveLoan() {
-      return !!this.walletData.amount;
+      return this.walletData.amount > 0;
     },
   },
   async mounted() {

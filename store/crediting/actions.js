@@ -5,7 +5,7 @@ import {
   getBalance, getContractFeeData,
   getIsWalletConnected,
   getStyledAmount, getWalletAddress, getTransferFeeData,
-  transfer, transferToken, GetWalletProvider, stake, sendWalletTransaction, setTokenPrice,
+  transfer, transferToken, GetWalletProvider, stake, sendWalletTransaction, setTokenPrice, setTokenPrices,
 } from '~/utils/wallet';
 import {
   fetchContractData, success, error, sendTransaction,
@@ -78,6 +78,15 @@ export default {
       return { ok: false };
     }
   },
+  async setTokenPrices({ dispatch, rootGetters }, payload) {
+    try {
+      await setTokenPrices(payload);
+      return { ok: true };
+    } catch (e) {
+      console.log('can not refresh prices');
+      return { ok: false };
+    }
+  },
   async getRewards({ commit }) {
     const address = await getWalletAddress();
     const res = await fetchContractData(
@@ -106,18 +115,20 @@ export default {
       abi: payload.type === 'borrowing' ? abi.WQBorrowing : abi.WQLending,
       data: payload.data,
     };
-    switch (payloadSend.method) {
+    switch (payload.method) {
       case 'refund':
         payloadSend.value = payload.value;
         break;
-      case 'dispute':
+      case 'deposit':
       case 'withdraw':
         payloadSend.value = new BigNumber(payload.value).shiftedBy(18).toString();
         break;
       default:
+        console.log('another method:', payload.method);
         break;
     }
     try {
+      console.log('sendMethod:', payload, payloadSend);
       await sendWalletTransaction(payload.method, payloadSend);
       return success();
     } catch (err) {

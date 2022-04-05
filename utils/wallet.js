@@ -444,6 +444,7 @@ export const stake = async (stakingType, amount, poolAddress, duration) => {
 
 /** Collateral */
 export const getGasPrice = async (contractAbi, address, method, attr, value = null) => {
+  console.log('getGasPrice:', address, method, attr, value);
   try {
     const inst = new web3.eth.Contract(contractAbi, address);
     const [gasPrice, gasEstimate] = await Promise.all([
@@ -452,6 +453,7 @@ export const getGasPrice = async (contractAbi, address, method, attr, value = nu
         ? inst.methods[method](...attr).estimateGas({ from: wallet.address, value })
         : inst.methods[method](...attr).estimateGas({ from: wallet.address }),
     ]);
+    console.log('gasPrice, gasEstimate', gasPrice, gasEstimate);
     return { gas: gasEstimate, gasPrice };
   } catch (e) {
     console.error('getGasPriceError', e);
@@ -464,7 +466,6 @@ export const setTokenPrice = async ({ currency }, {
 }) => {
   try {
     const inst = new web3.eth.Contract(abi.WQOracle, process.env.WORKNET_ORACLE);
-    console.log('wallet/setTokenPrice before setTokenPriceUSD:', timestamp, price, currency);
     await inst.methods.setTokenPriceUSD(timestamp, price, v, r, s, currency).send({
       from: wallet.address,
       gas,
@@ -472,6 +473,23 @@ export const setTokenPrice = async ({ currency }, {
     });
   } catch (e) {
     console.error('setTokenPriceError', e);
+    throw error();
+  }
+};
+
+export const setTokenPrices = async ({
+  gasPrice, gas, timestamp, prices, v, r, s, symbols,
+}) => {
+  try {
+    const inst = new web3.eth.Contract(abi.WQOracle, process.env.WORKNET_ORACLE);
+    console.log('wallet/setTokenPrices before setTokenPricesUSD:', timestamp, prices, symbols);
+    await inst.methods.setTokenPricesUSD(timestamp, v, r, s, prices, symbols).send({
+      from: wallet.address,
+      gas,
+      gasPrice,
+    });
+  } catch (e) {
+    console.error('setTokenPricesError', e);
     throw error();
   }
 };

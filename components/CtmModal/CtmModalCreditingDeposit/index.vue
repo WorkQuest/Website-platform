@@ -78,7 +78,7 @@
             </div>
             <div class="content__field">
               <div class="content__label">
-                {{ $t('modals.howMuchEthWouldYouLikeToLock') }}
+                {{ $t('modals.howMuchTokensWouldYouLikeToLock', { token: checkpoints[selCurrencyID - 1].name }) }}
               </div>
               <base-field
                 v-model="quantity"
@@ -223,6 +223,8 @@ export default {
       options: 'modals/getOptions',
       userRole: 'user/getUserRole',
       funds: 'crediting/getFunds',
+      currentPrice: 'oracle/getCurrentPrice',
+      securityRatio: 'oracle/getSecurityRatio',
     }),
     dates() {
       return [
@@ -236,6 +238,9 @@ export default {
   },
   async mounted() {
     await this.$store.dispatch('crediting/getFunds');
+    await this.$store.dispatch('oracle/getCurrentPrice');
+    await this.$store.dispatch('oracle/getSecurityRatio');
+    console.log(this.currentPrice, this.securityRatio);
   },
   methods: {
     hide() {

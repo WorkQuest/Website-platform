@@ -119,14 +119,6 @@ export default {
             type: 'lending',
           };
           break;
-        case 'claim':
-          payload = {
-            value: this.amount,
-            data: [],
-            method: 'claim',
-            type: 'lending',
-          };
-          break;
         default:
           console.log('default');
       }

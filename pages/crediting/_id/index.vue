@@ -63,6 +63,7 @@
                   :key="key"
                   :data-selector="button.title.toUpperCase()"
                   :mode="button.mode"
+                  :disabled="button.disabled"
                   @click="openModal(button.action)"
                 >
                   {{ button.title }}
@@ -116,6 +117,7 @@ export default {
             {
               title: this.$t('crediting.refund'),
               action: 'refund',
+              disabled: false,
             },
           ],
         },
@@ -126,14 +128,6 @@ export default {
           show: this.isHaveLoan,
           info: [
             {
-              title: 'ID',
-              desc: 565464,
-            },
-            {
-              title: this.$t('crediting.tableHead.currentRatio'),
-              desc: 565464,
-            },
-            {
               title: this.$t('meta.claimRewards'),
               desc: this.rewardsData > 0 ? this.rewardsData : this.$t('modals.nothingToClaim'),
             },
@@ -141,16 +135,19 @@ export default {
           buttons: [
             {
               title: this.$t('meta.withdraw'),
+              disabled: false,
               action: 'withdraw',
             },
             {
               title: this.$t('meta.deposit'),
               mode: 'outline',
+              disabled: false,
               action: 'deposit',
             },
             {
               title: this.$t('modals.claim'),
               mode: 'outline',
+              disabled: this.rewardsData <= 0,
               action: 'claim',
             },
           ],
@@ -158,10 +155,10 @@ export default {
       ];
     },
     isHaveCredit() {
-      return !!this.creditData.credit;
+      return this.creditData.credit > 0;
     },
     isHaveLoan() {
-      return !!this.walletData.amount;
+      return this.walletData.amount > 0;
     },
     fullValueForRefund() {
       return Number(this.creditData.credit) + Number(this.currentFee);

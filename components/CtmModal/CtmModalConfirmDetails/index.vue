@@ -52,6 +52,7 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      currentPrice: 'oracle/getCurrentPrice',
     }),
     abouts() {
       return this.options.receiptData;
@@ -99,28 +100,29 @@ export default {
         case 'borrow':
           // eslint-disable-next-line no-case-declarations
           const checkTokenPrice = await this.setTokenPrice();
+          console.log(checkTokenPrice);
           // eslint-disable-next-line no-case-declarations
           const { payload } = this.options;
           // eslint-disable-next-line no-case-declarations
-          const approveAllowed = await this.$store.dispatch('wallet/approveRouter', {
-            symbol: this.symbol,
-            spenderAddress: process.env.BORROWING,
-            value: payload.value,
-          });
-          if (checkTokenPrice && approveAllowed) {
-            return await this.$store.dispatch('crediting/sendMethod', {
-              value: payload.value,
-              data: [
-                payload.nonce,
-                new BigNumber(payload.value).multipliedBy(18).toFixed(),
-                payload.fundIndex,
-                payload.duration,
-                payload.symbol,
-              ],
-              method: 'borrow',
-              type: 'borrowing',
-            });
-          }
+          // const approveAllowed = await this.$store.dispatch('wallet/approveRouter', {
+          //   symbol: this.symbol,
+          //   spenderAddress: process.env.BORROWING,
+          //   value: payload.value,
+          // });
+          // if (checkTokenPrice && approveAllowed) {
+          //   return await this.$store.dispatch('crediting/sendMethod', {
+          //     value: payload.value,
+          //     data: [
+          //       payload.nonce,
+          //       new BigNumber(payload.value).multipliedBy(18).toFixed(),
+          //       payload.fundIndex,
+          //       payload.duration,
+          //       payload.symbol,
+          //     ],
+          //     method: 'borrow',
+          //     type: 'borrowing',
+          //   });
+          // }
           return false;
         default:
           return false;
@@ -129,24 +131,21 @@ export default {
     async setTokenPrice() {
       const date = Date.now().toString();
       const timestamp = date.substr(0, date.length - 3);
-      const price = '10000000000000000000000'; // TODO price
-      const v = '0x25';
-      const r = '0x4f4c17305743700648bc4f6cd3038ec6f6af0df73e31757007b7f59df7bee88d';
-      const s = '0x7e1941b264348e80c78c4027afc65a87b0a5e43e86742b8ca0823584c6788fd0';
-      const resultGasSetTokenPrice = await getGasPrice(abi.WQOracle, process.env.WORKNET_ORACLE, 'setTokenPriceUSD', [timestamp, price, v, r, s, this.symbol]);
-      if (resultGasSetTokenPrice.gas && resultGasSetTokenPrice.gasPrice) {
-        const { ok } = await this.$store.dispatch('crediting/setTokenPrice', [
-          { currency: this.symbol },
-          {
-            gasPrice: resultGasSetTokenPrice.gasPrice,
-            gas: resultGasSetTokenPrice.gas,
-            timestamp,
-            price,
-            v,
-            r,
-            s,
-          },
-        ]);
+      const {
+        prices, v, r, s, symbols,
+      } = this.currentPrice; // TODO price
+      const resultGasSetTokenPrices = await getGasPrice(abi.WQOracle, process.env.WORKNET_ORACLE, 'setTokenPricesUSD', [timestamp, v, r, s, prices, symbols]);
+      if (resultGasSetTokenPrices.gas && resultGasSetTokenPrices.gasPrice) {
+        const { ok } = await this.$store.dispatch('crediting/setTokenPrices', {
+          gasPrice: resultGasSetTokenPrice.gasPrice,
+          gas: resultGasSetTokenPrice.gas,
+          timestamp,
+          v,
+          r,
+          s,
+          prices,
+          symbols,
+        });
         return ok;
       }
       return false;

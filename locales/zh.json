@@ -1111,7 +1111,7 @@
     "tempForRemove2": "1 BNB = ... WQT",
     "currentPoolSize": "当前池大小",
     "yourPoolShare": "您的池份额",
-    "howMuchEthWouldYouLikeToLock": "您希望将多少 ETH 锁定到您的帐户？",
+    "howMuchTokensWouldYouLikeToLock": "How much {token} would you like to lock into your account?",
     "collateralization": "抵押",
     "liquidationPrice": "清算价格",
     "currentPrice": "时价",
