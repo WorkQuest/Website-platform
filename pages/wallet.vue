@@ -27,10 +27,14 @@
                 <span class="balance__currency-text">
                   {{ balance[selectedToken].balance + ' ' + selectedToken }}
                 </span>
-                <span class="balance__usd_mobile">
-                  <span v-if="selectedToken === tokenSymbols.WUSD">
-                    {{ `$ ${balance[tokenSymbols.WUSD].balance}` }}
+                <span
+                  v-if="selectedToken === tokenSymbols.WUSD"
+                  class="balance__usd_mobile"
+                >
+                  <span class="balance__usd-mobile_blue">
+                    {{ $t('wallet.delegated') }}
                   </span>
+                  {{ `$ ${balance[tokenSymbols.WUSD].balance}` }}
                 </span>
                 <base-dd
                   v-model="ddValue"
@@ -39,10 +43,14 @@
                   data-selector="TOKENS"
                 />
               </span>
-              <span class="balance__usd">
-                <span v-if="selectedToken === tokenSymbols.WUSD">
-                  {{ `$ ${balance[tokenSymbols.WUSD].balance}` }}
+              <span
+                v-if="selectedToken === tokenSymbols.WUSD"
+                class="balance__usd balance__usd_blue"
+              >
+                <span class="balance__usd">
+                  {{ $t('wallet.delegated') }}
                 </span>
+                {{ `$ ${balance[tokenSymbols.WUSD].balance}` }}
               </span>
             </div>
             <div class="balance__bottom">
