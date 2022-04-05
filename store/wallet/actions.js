@@ -5,7 +5,7 @@ import {
   getBalance, getContractFeeData,
   getIsWalletConnected,
   getStyledAmount, getWalletAddress, getTransferFeeData,
-  transfer, transferToken, GetWalletProvider, stake, sendWalletTransaction,
+  transfer, transferToken, GetWalletProvider, stake, sendWalletTransaction, getFreezed,
 } from '~/utils/wallet';
 import {
   fetchContractData, success, error,
@@ -21,6 +21,13 @@ import {
 } from '~/utils/wallet.js';
 
 export default {
+  async delegatedBalance({ commit, dispatch, rootGetters }, address) {
+    let freezed = null;
+    if (address) {
+      freezed = await getFreezed();
+      commit('user/setDelegatedBalance', getStyledAmount(freezed.result), { root: true });
+    }
+  },
   async getPensionTransactions({ commit, getters }, { method, limit, offset }) {
     try {
       const path = method === PensionHistoryMethods.Update ? 'wallet-update' : method.toLowerCase();

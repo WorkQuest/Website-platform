@@ -1,4 +1,5 @@
 export default () => ({
+  delegatedBalance: null,
   currentLang: '',
   twoFACode: '',
   verificationCode: '',

@@ -1,6 +1,9 @@
 /* eslint-disable no-param-reassign */
 
 export default {
+  setDelegatedBalance(state, data) {
+    state.delegatedBalance = data;
+  },
   setLang(state, data) {
     state.currentLang = data;
   },

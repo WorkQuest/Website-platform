@@ -28,14 +28,13 @@
                   {{ balance[selectedToken].balance + ' ' + selectedToken }}
                 </span>
                 <span
-                  v-if="selectedToken === tokenSymbols.WUSD"
+                  v-if="selectedToken === tokenSymbols.WQT"
                   class="balance__usd-mobile"
                 >
                   <span class="balance__usd-mobile_blue">
                     {{ $t('wallet.delegated') }}
                   </span>
-                  <!--                  TODO: Вывести freezed (заделегированный баланс)-->
-                  {{ `${balance[tokenSymbols.WUSD].balance}` }}
+                  {{ $tc('meta.coins.count.WQTCount', delegatedBalance ) }}
                 </span>
                 <base-dd
                   v-model="ddValue"
@@ -45,14 +44,13 @@
                 />
               </span>
               <span
-                v-if="selectedToken === tokenSymbols.WUSD"
+                v-if="selectedToken === tokenSymbols.WQT"
                 class="balance__usd balance__usd_blue"
               >
                 <span class="balance__usd">
                   {{ $t('wallet.delegated') }}
                 </span>
-                <!--                TODO: Вывести freezed (заделегированный баланс)-->
-                {{ `${balance[tokenSymbols.WUSD].balance}` }}
+                {{ $tc('meta.coins.count.WQTCount', delegatedBalance ) }}
               </span>
             </div>
             <div class="balance__bottom">
@@ -185,6 +183,7 @@ export default {
       userWalletAddress: 'user/getUserWalletAddress',
       balance: 'wallet/getBalanceData',
       selectedToken: 'wallet/getSelectedToken',
+      delegatedBalance: 'user/getDelegatedBalance',
     }),
     walletTables() {
       return WalletTables;
@@ -252,6 +251,7 @@ export default {
   },
   async mounted() {
     if (!this.isWalletConnected) return;
+    await this.$store.dispatch('wallet/delegatedBalance', this.userWalletAddress);
     const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
     this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
     await this.loadData();
