@@ -97,9 +97,7 @@
                   :alt="item.localeText"
                   class="locale__icon"
                 >
-                <span
-                  class="locale__text"
-                >
+                <span class="locale__text">
                   {{ item.localeText !== 'ui.locals.zh_cn' ? item.localeText.toUpperCase() : 'ZH' }}
                 </span>
               </li>
