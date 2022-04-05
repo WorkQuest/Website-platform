@@ -36,6 +36,19 @@ export default {
       console.error('wallet/getPensionTransactions');
     }
   },
+  // TODO: Проверить и удалить, если не надо)
+  async getAllTokens({ commit }, queries) {
+    try {
+      const response = await this.$axios.$get('/tokens', {
+        baseURL: process.env.WQ_EXPLORER,
+      });
+      console.log(response.result);
+      // commit('setAllTokens', response.result);
+      return response;
+    } catch (e) {
+      return error(e.code || 500, 'getAllTokens', e);
+    }
+  },
   async getTransactions({ commit }, params) {
     try {
       const { data } = await this.$axios({ url: `/account/${getWalletAddress()}/transactions`, baseURL: process.env.WQ_EXPLORER, params });
@@ -92,7 +105,7 @@ export default {
   setSelectedToken({ commit }, token) {
     commit('setSelectedToken', token);
   },
-  async getBalance({ commit }) {
+  async getBalanceWUSD({ commit }) {
     const res = await getBalance();
     commit('setBalance', {
       symbol: TokenSymbols.WUSD,

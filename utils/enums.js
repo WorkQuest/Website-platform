@@ -264,6 +264,8 @@ export const UserStatuses = Object.freeze({
 export const TokenSymbols = Object.freeze({
   WQT: 'WQT',
   WUSD: 'WUSD',
+  BNB: 'BNB',
+  ETH: 'ETH',
 });
 
 export const TokenSymbolByContract = Object.freeze({

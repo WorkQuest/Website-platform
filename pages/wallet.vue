@@ -202,6 +202,7 @@ export default {
       // eslint-disable-next-line no-restricted-syntax
       for (const t of txs) {
         const symbol = TokenSymbolByContract[t.to_address_hash.hex] || TokenSymbols.WUSD;
+        console.log('symbol', symbol);
         res.push({
           tx_hash: t.hash,
           block: t.block_number,
@@ -250,6 +251,8 @@ export default {
     },
   },
   beforeMount() {
+    // TODO: Проверить и удалить, если не надо)
+    this.$store.dispatch('wallet/getAllTokens');
     this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
   async mounted() {
@@ -272,8 +275,11 @@ export default {
     async loadData() {
       this.SetLoader(true);
       await Promise.all([
+        // TODO: Добавить запросы для получения балансов BNB и ETH
         this.updateBalanceWQT(),
         this.updateBalanceWUSD(),
+        // this.updateBalanceBNB(),
+        // this.updateBalanceETH(),
         this.getTransactions(),
       ]);
       this.SetLoader(false);
@@ -282,8 +288,14 @@ export default {
       await this.$store.dispatch('wallet/getBalanceWQT', this.userWalletAddress);
     },
     async updateBalanceWUSD() {
-      await this.$store.dispatch('wallet/getBalance');
+      await this.$store.dispatch('wallet/getBalanceWUSD');
     },
+    // async updateBalanceBNB() {
+    //   await this.$store.dispatch('wallet/getBalanceBNB');
+    // },
+    // async updateBalanceETH() {
+    //   await this.$store.dispatch('wallet/getBalanceETH');
+    // },
     closeCard() {
       this.cardClosed = true;
     },
