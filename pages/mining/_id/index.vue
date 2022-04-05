@@ -256,7 +256,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import moment from 'moment';
 import modals from '~/store/modals/modals';
 import chart from './graphics_data';
 import { StakingTypes } from '~/utils/enums';
@@ -340,14 +339,14 @@ export default {
       ];
     },
     tableData() {
-      moment.locale(this.$i18n.locale);
+      this.$moment.locale(this.$i18n.locale);
       const arr = [];
       this.miningSwaps.forEach((data) => {
         arr.push({
           totalValue: `${this.Floor(data.totalValue, 2)} $`,
           account: data.account,
           accountView: this.CutTxn(data.account),
-          time: moment(new Date(data.timestamp * 1000)).startOf('hour').fromNow(),
+          time: this.$moment(new Date(data.timestamp * 1000)).startOf('hour').fromNow(),
           ...this.getTokensAmount(data),
         });
       });

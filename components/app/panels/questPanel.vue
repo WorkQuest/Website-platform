@@ -72,7 +72,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import moment from 'moment';
 import { InfoModeEmployer, InfoModeWorker, QuestStatuses } from '~/utils/enums';
 import skills from '~/components/app/pages/common/skills';
 import modals from '~/store/modals/modals';
@@ -111,8 +110,8 @@ export default {
     },
     convertDate() {
       const { createdAt } = this.questData;
-      moment.locale(this.$i18n.locale);
-      return createdAt ? moment(createdAt).format('MMMM Do YYYY, h:mm') : '';
+      this.$moment.locale(this.$i18n.locale);
+      return createdAt ? this.$moment(createdAt).format('MMMM Do YYYY, h:mm') : '';
     },
   },
   methods: {
