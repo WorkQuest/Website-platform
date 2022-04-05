@@ -48,7 +48,7 @@
               </span>
             </div>
             <div class="notification__date">
-              {{ notification.creatingDate }}
+              {{ $moment(notification.createdAt).format('MMMM Do YYYY, h:mm') }}
             </div>
 
             <img

@@ -340,6 +340,7 @@ export default {
       ];
     },
     tableData() {
+      moment.locale(this.$i18n.locale);
       const arr = [];
       this.miningSwaps.forEach((data) => {
         arr.push({

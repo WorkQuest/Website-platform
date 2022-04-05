@@ -111,6 +111,7 @@ export default {
     },
     convertDate() {
       const { createdAt } = this.questData;
+      moment.locale(this.$i18n.locale);
       return createdAt ? moment(createdAt).format('MMMM Do YYYY, h:mm') : '';
     },
   },
