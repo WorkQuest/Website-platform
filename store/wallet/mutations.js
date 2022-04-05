@@ -1,4 +1,7 @@
 export default {
+  setUserWalletAddressInBech32(state, address) {
+    state.userWalletAddressInBech32 = address;
+  },
   setTransactions(state, transactions) {
     state.transactions = transactions;
   },

@@ -1,4 +1,5 @@
 export default {
+  getUserWalletAddressInBech32: (state) => state.userWalletAddressInBech32,
   getTransactions: (state) => state.transactions,
   getTransactionsCount: (state) => state.transactionsCount,
   getIsWalletConnected: (state) => state.isWalletConnected,

@@ -123,14 +123,14 @@
               </template>
               <template #cell(recipient)="el">
                 <div class="table__value">
-                  {{ el.item.recipient }}
+                  {{ convertToBech32('wq', el.item.recipient) }}
                 </div>
               </template>
               <template #cell(tx)="el">
                 <div class="table__value">
-                  {{ el.item.tx }}
+                  {{ convertToBech32('wq', el.item.tx) }}
                   <button
-                    v-clipboard:copy="el.item.txFull"
+                    v-clipboard:copy="convertToBech32('wq', el.item.txFull)"
                     v-clipboard:success="ClipboardSuccessHandler"
                     v-clipboard:error="ClipboardErrorHandler"
                     type="button"

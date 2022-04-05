@@ -1,6 +1,7 @@
 import { TokenSymbols } from '~/utils/enums';
 
 export default () => ({
+  userWalletAddressInBech32: null,
   transactions: [],
   transactionsCount: 0,
   isWalletConnected: false,
