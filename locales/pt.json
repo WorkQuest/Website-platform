@@ -1301,6 +1301,7 @@
     "newDiscussionLike": "New like on discussion"
   },
   "wallet": {
+    "delegated": "Delegated",
     "WUSD": "Carteira WUSD",
     "cryptoWallet": "Carteira cripto",
     "send": "Enviar",
