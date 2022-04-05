@@ -186,6 +186,7 @@ export default {
     styledTransactions() {
       const txs = this.transactions;
       const res = [];
+      this.$moment.locale(this.$i18n.locale);
       // eslint-disable-next-line no-restricted-syntax
       for (const t of txs) {
         const symbol = TokenSymbolByContract[t.to_address_hash.hex] || TokenSymbols.WUSD;
