@@ -29,12 +29,13 @@
                 </span>
                 <span
                   v-if="selectedToken === tokenSymbols.WUSD"
-                  class="balance__usd_mobile"
+                  class="balance__usd-mobile"
                 >
                   <span class="balance__usd-mobile_blue">
                     {{ $t('wallet.delegated') }}
                   </span>
-                  {{ `$ ${balance[tokenSymbols.WUSD].balance}` }}
+                  <!--                  TODO: Вывести freezed (заделегированный баланс)-->
+                  {{ `${balance[tokenSymbols.WUSD].balance}` }}
                 </span>
                 <base-dd
                   v-model="ddValue"
@@ -50,7 +51,8 @@
                 <span class="balance__usd">
                   {{ $t('wallet.delegated') }}
                 </span>
-                {{ `$ ${balance[tokenSymbols.WUSD].balance}` }}
+                <!--                TODO: Вывести freezed (заделегированный баланс)-->
+                {{ `${balance[tokenSymbols.WUSD].balance}` }}
               </span>
             </div>
             <div class="balance__bottom">
@@ -484,14 +486,20 @@ export default {
 
   &__usd {
     @include text-simple;
-    color: $blue;
     height: 24px;
-    &_mobile {
+    color: $black800;
+    &_blue {
+      color: $blue;
+    }
+    &-mobile {
       display: none;
       height: 33px;
-      color: $blue;
+      color: $black800;
       font-size: 18px;
       font-weight: normal;
+      &_blue {
+        color: $blue;
+      }
     }
   }
 }
