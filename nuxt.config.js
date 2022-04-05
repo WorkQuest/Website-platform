@@ -8,7 +8,6 @@ import localeHi from './locales/hi.json';
 import localeId from './locales/id.json';
 import localePt from './locales/pt.json';
 import localeEs from './locales/es.json';
-import 'moment/locale/zh-cn.js';
 
 export default {
   ssr: false,
