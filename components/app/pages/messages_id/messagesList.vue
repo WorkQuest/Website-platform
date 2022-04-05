@@ -451,7 +451,8 @@ export default {
 .messages-list {
   background-color: $white;
   height: inherit;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   position: relative;
   display: grid;
   align-items: flex-end;
@@ -511,11 +512,11 @@ export default {
 }
 
 .message {
-  width: 70%;
   display: grid;
   grid-template-columns: 43px minmax(auto, max-content) max-content;
   gap: 20px;
   height: max-content;
+  //max-width: 1000px;
 
   &__media {
     display: flex;
@@ -538,7 +539,7 @@ export default {
   &_right {
     grid-template-columns: max-content minmax(auto, max-content);
     justify-content: flex-end;
-    margin-left: 30%;
+    //margin-left: 30%;
   }
 
   &__star-cont {
@@ -577,6 +578,9 @@ export default {
     &_white {
       color: #fff;
     }
+    &_user-text {
+      word-break: break-all
+    }
   }
 
   &__avatar {
@@ -601,6 +605,7 @@ export default {
     padding: 15px;
     border-radius: 6px;
     background-color: #F7F8FA;
+    //max-width: 1000px;
 
     &_bl {
       background-color: #0083C7;
@@ -615,7 +620,8 @@ export default {
 
 .info-message {
   display: grid;
-  grid-template-columns: repeat(3, max-content);
+  grid-template-columns: repeat(3, auto);
+  //grid-template-columns: repeat(3, max-content);
   gap: 5px;
 
   &__link {
@@ -734,16 +740,17 @@ export default {
     }
   }
   .message {
+    &__bubble{
+      width: 100%;
+    }
     &__title {
       &_name {
-        width: calc(100vw - 180px);
         text-overflow: ellipsis;
         overflow: hidden;
       }
 
       &_user-text {
-        width: calc(100vw - 180px);
-        word-wrap: break-word;
+        word-break: break-all
       }
     }
   }
@@ -753,6 +760,25 @@ export default {
   .info-message {
     grid-template-columns: unset;
     grid-template-rows: repeat(3, auto);
+  }
+}
+
+@include _480 {
+  .message {
+    &__data{
+      //width: 100%;
+      //border: 10px solid red;
+    }
+    &__title {
+      &_name {
+        //width: 100%;
+      }
+
+      &_user-text {
+        //overflow: hidden;
+        //width: 100%;
+      }
+    }
   }
 }
 </style>
