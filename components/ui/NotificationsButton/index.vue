@@ -43,24 +43,24 @@
         <template v-if="notificationsCount">
           <div class="reduced-notifications__list">
             <div
-              v-for="(notification, i) in notifications"
-              :key="i"
+              v-for="(notification) in notifications"
+              :key="notification.id"
               :data-selector="`NOTIFICATION-BUTTONS-NOTIFICATION-${notification.id}`"
               class="notify notify__content"
             >
               <div class="notify__top">
-                <div
-                  v-if="notification.sender"
-                  class="notify__user"
-                >
+                <div class="notify__user">
                   <img
                     class="notify__avatar"
-                    :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : EmptyAvatar()"
+                    :src="avatar(notification)"
                     alt="avatar"
                   >
-                  <div class="notify__info">
+                  <div
+                    v-if="notification.sender"
+                    class="notify__info"
+                  >
                     <a
-                      :href="`/profile/${notification.sender.id}`"
+                      :href="`/profile/${senderId(notification)}`"
                       class="notify__text notify__text_name"
                     >
                       {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
@@ -129,7 +129,16 @@ export default {
       notificationsCount: 'user/getNotificationsCount',
     }),
   },
+  async beforeMount() {
+    await this.$store.dispatch('user/getNotifications');
+  },
   methods: {
+    senderId(notification) {
+      return notification.sender?.id || '';
+    },
+    avatar(notification) {
+      return notification.sender?.avatar?.url || this.EmptyAvatar();
+    },
     goToNotifsPage() {
       this.closePopUp();
       this.$router.push('/notifications');
@@ -139,7 +148,6 @@ export default {
         this.goToNotifsPage();
         return;
       }
-
       this.isShowNotify = !this.isShowNotify;
       this.$emit('closeAnotherPopUp');
     },
