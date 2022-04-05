@@ -336,11 +336,12 @@ export default {
       return Math.ceil(len / this.itemsPerPage);
     },
     historyByPage() {
+      this.$moment.locale(this.$i18n.locale);
       if (!this.pensionHistory[this.selectedTable]?.txs) return [];
       return this.pensionHistory[this.selectedTable].txs.map((item) => ({
         operation: item.event,
         tx_hash: item.transactionHash,
-        date: item.createdAt,
+        date: this.$moment(item.createdAt),
         value: this.selectedTable === PensionHistoryMethods.Update
           ? `${getStyledAmount(item.newFee)}%` : `${getStyledAmount(item.amount)} ${TokenSymbols.WUSD}`,
       }));
