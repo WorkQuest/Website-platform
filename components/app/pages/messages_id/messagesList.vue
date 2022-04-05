@@ -306,12 +306,15 @@ export default {
     async handleScroll({ target: { scrollTop, scrollHeight, clientHeight } }) {
       const { minScrollDifference, filter: { canLoadToBottom, canLoadToTop } } = this;
 
+      // console.log(canLoadToBottom);
+
       const currScrollOffset = scrollHeight - scrollTop;
 
       this.isScrollBtnVis = currScrollOffset > minScrollDifference;
       const scrollBottom = currScrollOffset - clientHeight;
 
       if (scrollBottom < 300) {
+        // console.log('get');
         if (canLoadToBottom && !this.isBottomChatsLoading) {
           this.isBottomChatsLoading = true;
           await this.getMessages(1);
@@ -319,7 +322,6 @@ export default {
             this.isBottomChatsLoading = false;
           }, 300);
         }
-        return;
       }
 
       if (canLoadToTop && scrollTop < 300 && !this.isTopChatsLoading) {
@@ -451,8 +453,7 @@ export default {
 .messages-list {
   background-color: $white;
   height: inherit;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: auto;
   position: relative;
   display: grid;
   align-items: flex-end;
@@ -516,7 +517,6 @@ export default {
   grid-template-columns: 43px minmax(auto, max-content) max-content;
   gap: 20px;
   height: max-content;
-  //max-width: 1000px;
 
   &__media {
     display: flex;
@@ -539,7 +539,6 @@ export default {
   &_right {
     grid-template-columns: max-content minmax(auto, max-content);
     justify-content: flex-end;
-    //margin-left: 30%;
   }
 
   &__star-cont {
@@ -605,7 +604,6 @@ export default {
     padding: 15px;
     border-radius: 6px;
     background-color: #F7F8FA;
-    //max-width: 1000px;
 
     &_bl {
       background-color: #0083C7;
@@ -621,7 +619,6 @@ export default {
 .info-message {
   display: grid;
   grid-template-columns: repeat(3, auto);
-  //grid-template-columns: repeat(3, max-content);
   gap: 5px;
 
   &__link {
@@ -760,25 +757,6 @@ export default {
   .info-message {
     grid-template-columns: unset;
     grid-template-rows: repeat(3, auto);
-  }
-}
-
-@include _480 {
-  .message {
-    &__data{
-      //width: 100%;
-      //border: 10px solid red;
-    }
-    &__title {
-      &_name {
-        //width: 100%;
-      }
-
-      &_user-text {
-        //overflow: hidden;
-        //width: 100%;
-      }
-    }
   }
 }
 </style>
