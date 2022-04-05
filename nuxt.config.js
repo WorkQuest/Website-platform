@@ -8,6 +8,7 @@ import localeHi from './locales/hi.json';
 import localeId from './locales/id.json';
 import localePt from './locales/pt.json';
 import localeEs from './locales/es.json';
+import 'moment/locale/zh-cn.js';
 
 export default {
   ssr: false,
@@ -78,7 +79,7 @@ export default {
   },
   moment: {
     defaultLocale: 'en',
-    locales: ['ru', 'bn', 'ar', 'fr', 'hi', 'id', 'pt', 'es'],
+    locales: ['ru', 'bn', 'ar', 'fr', 'hi', 'id', 'pt', 'es', 'zh-cn'],
   },
   // bootstrapVue: {
   //   // bootstrapCSS: false, // Or `css: false`
@@ -86,7 +87,7 @@ export default {
   //   icons: true,
   // },
   i18n: {
-    locales: ['en', 'ru', 'bn', 'ar', 'fr', 'hi', 'id', 'pt', 'es', 'zh'],
+    locales: ['en', 'ru', 'bn', 'ar', 'fr', 'hi', 'id', 'pt', 'es', 'zh_cn'],
     // locales: ['en'],
     defaultLocale: 'en',
     strategy: 'no_prefix',
@@ -97,7 +98,7 @@ export default {
         ar: localeAr,
         fr: localeFr,
         bn: localeBn,
-        zh: localeZh,
+        zh_cn: localeZh,
         hi: localeHi,
         id: localeId,
         pt: localePt,

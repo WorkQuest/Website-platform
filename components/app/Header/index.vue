@@ -76,7 +76,7 @@
           @click="showLocale()"
         >
           <span class="header__button_locale-name">
-            {{ currentLocale.toUpperCase() }}
+            {{ currentLocale !== 'zh_cn' ? currentLocale.toUpperCase() : 'ZH' }}
           </span>
           <span class="icon icon-caret_down" />
           <transition name="fade">
@@ -97,8 +97,10 @@
                   :alt="item.localeText"
                   class="locale__icon"
                 >
-                <span class="locale__text">
-                  {{ item.localeText.toUpperCase() }}
+                <span
+                  class="locale__text"
+                >
+                  {{ item.localeText !== 'ui.locals.zh_cn' ? item.localeText.toUpperCase() : 'ZH' }}
                 </span>
               </li>
             </ul>
