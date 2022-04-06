@@ -614,7 +614,7 @@ export default {
   }
 }
 
-.info-message {
+.info-message {;
   display: grid;
   grid-template-columns: repeat(3, auto);
   gap: 5px;
@@ -623,11 +623,17 @@ export default {
     text-decoration: underline #1D2127;
     color: #1D2127;
     cursor: pointer;
+    overflow: hidden;
+    white-space: nowrap;
 
     &_left {
       grid-column: 1;
       grid-row: 1;
     }
+  }
+
+  &__title {
+    white-space: nowrap;
   }
 }
 
@@ -753,8 +759,16 @@ export default {
 
 @include _767 {
   .info-message {
-    grid-template-columns: unset;
     grid-template-rows: repeat(3, auto);
+    &__title {
+      white-space: nowrap;
+    }
+
+    &__link {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
   }
 }
 </style>
