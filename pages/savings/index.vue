@@ -173,11 +173,11 @@ export default {
   computed: {
     dates() {
       return [
-        this.$tc('meta.units.days', 7),
-        this.$tc('meta.units.days', 14),
-        this.$tc('meta.units.days', 30),
-        this.$tc('meta.units.days', 90),
-        this.$tc('meta.units.days', 180),
+        this.$tc('meta.units.days', this.DeclOfNum(7), { count: 7 }),
+        this.$tc('meta.units.days', this.DeclOfNum(14), { count: 14 }),
+        this.$tc('meta.units.days', this.DeclOfNum(30), { count: 30 }),
+        this.$tc('meta.units.days', this.DeclOfNum(90), { count: 90 }),
+        this.$tc('meta.units.days', this.DeclOfNum(180), { count: 180 }),
       ];
     },
     FAQs() {
@@ -256,36 +256,36 @@ export default {
         return [
           {
             perc: this.$tc('meta.units.percentsCount', 5.31),
-            date: this.$tc('meta.units.days', 7),
+            date: this.$tc('meta.units.days', this.DeclOfNum(7), { count: 7 }),
           },
           {
             perc: this.$tc('meta.units.percentsCount', 5.48),
-            date: this.$tc('meta.units.days', 14),
+            date: this.$tc('meta.units.days', this.DeclOfNum(14), { count: 14 }),
           },
           {
             perc: this.$tc('meta.units.percentsCount', 5.66),
-            date: this.$tc('meta.units.days', 30),
+            date: this.$tc('meta.units.days', this.DeclOfNum(30), { count: 30 }),
           },
         ];
       }
       return [
         {
           perc: this.$tc('meta.units.percentsCount', 5.31),
-          date: this.$tc('meta.units.days', 7),
+          date: this.$tc('meta.units.days', this.DeclOfNum(7), { count: 7 }),
         },
         {
           perc: 'line',
         },
         {
           perc: this.$tc('meta.units.percentsCount', 5.48),
-          date: this.$tc('meta.units.days', 14),
+          date: this.$tc('meta.units.days', this.DeclOfNum(14), { count: 14 }),
         },
         {
           perc: 'line',
         },
         {
           perc: this.$tc('meta.units.percentsCount', 5.66),
-          date: this.$tc('meta.units.days', 30),
+          date: this.$tc('meta.units.days', this.DeclOfNum(30), { count: 30 }),
         },
       ];
     },
@@ -298,21 +298,21 @@ export default {
           },
           {
             perc: this.$tc('meta.units.percentsCount', 6.5),
-            date: this.$tc('meta.units.days', 180),
+            date: this.$tc('meta.units.days', this.DeclOfNum(180), { count: 180 }),
           },
         ];
       }
       return [
         {
           perc: this.$tc('meta.units.percentsCount', 6),
-          date: this.$tc('meta.units.days', 90),
+          date: this.$tc('meta.units.days', this.DeclOfNum(90), { count: 90 }),
         },
         {
           perc: 'line',
         },
         {
           perc: this.$tc('meta.units.percentsCount', 6.5),
-          date: this.$tc('meta.units.days', 180),
+          date: this.$tc('meta.units.days', this.DeclOfNum(180), { count: 180 }),
         },
       ];
     },

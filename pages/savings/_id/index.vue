@@ -32,7 +32,7 @@
               {{ $t('pension.timeRemainsUntilTheEndOfThePeriod') }}
             </div>
             <div class="info-block__subtitle_black">
-              {{ $tc('meta.units.days', 152) }}
+              {{ $tc('meta.units.days', DeclOfNum(152), {count: 152}) }}
             </div>
           </div>
           <div class="btn-group_exp">
@@ -98,7 +98,7 @@
               </template>
               <template #cell(time)="el">
                 <div class="user__value_gray">
-                  {{ el.item.time }}
+                  {{ $moment(el.item.time).locale($i18n.locale).format('Do MMM YY') }}
                 </div>
               </template>
               <template #cell(status)="el">
@@ -123,6 +123,7 @@ export default {
   modals,
   data() {
     return {
+      date: '',
       items: [
         {
           userName: 'John Doe',
@@ -232,6 +233,9 @@ export default {
     openModal(key) {
       this.ShowModal({ key });
     },
+    // reformDate(date) {
+    //   this.$moment(date).format('Do MMM YY');
+    // },
   },
 };
 </script>
