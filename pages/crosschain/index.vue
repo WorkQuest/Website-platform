@@ -171,6 +171,7 @@ import { mapGetters, mapActions } from 'vuex';
 import modals from '~/store/modals/modals';
 import { Chains } from '~/utils/enums';
 import { SwapAddresses } from '~/utils/bridge-constants';
+import { getChainIdByChain } from '~/utils/web3';
 
 export default {
   name: 'Crosschain',
@@ -314,60 +315,47 @@ export default {
       this.targetAddressInd = currentSource;
     },
     async checkNetwork(chain) {
-      if (localStorage.getItem('isMetaMask') !== 'true') return { ok: true };
-      const isCorrectNetwork = await this.isRightChain(chain);
-      if (!isCorrectNetwork) await this.goToChain({ chain });
-      return await this.isRightChain(chain);
+      const isMetaMask = localStorage.getItem('isMetaMask') === 'true';
+      const isCorrectNetwork = +getChainIdByChain(chain) === +this.account.netId;
+      if (!isCorrectNetwork && isMetaMask) {
+        const { ok } = await this.goToChain({ chain });
+        return ok;
+      }
+      if (!isCorrectNetwork && !isMetaMask) {
+        this.ShowModalFail(this.$t('modals.errors.errorNetwork', { network: chain }));
+        return false;
+      }
+      return true;
     },
-    async redeemAction(data) {
+    async redeemAction({ chain, signData, chainTo }) {
       this.SetLoader(true);
 
-      const isCorrectNetwork = await this.checkNetwork(data.chain);
-      if (!isCorrectNetwork) this.ShowModalFail(this.$t('modals.errors.errorNetwork', { network: data.chain }));
-      else {
-        const result = await this.redeem({
-          signData: data.signData,
-          chainFrom: data.chainFrom,
-          chainTo: data.chainTo,
-        });
+      if (await this.checkNetwork(chain)) {
+        const { ok } = await this.redeem({ signData, chainTo });
 
-        if (result.ok) this.ShowModalSuccess(this.$t('modals.redeem.success'));
-        else this.ShowModalFail(this.$t('modals.redeem.fail'));
+        if (ok) {
+          this.ShowModalSuccess(this.$t('modals.redeem.success'));
+          await this.swapsTableData();
+        } else this.ShowModalFail(this.$t('modals.redeem.fail'));
       }
 
-      await this.swapsTableData();
       this.SetLoader(false);
-    },
-
-    async checkMiningPoolId(chainName) {
-      await localStorage.setItem('miningPoolId', chainName);
-      this.miningPoolId = localStorage.getItem('miningPoolId');
-      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
-      if (!rightChain) return await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
-      return rightChain;
     },
 
     async showSwapModal() {
       this.SetLoader(true);
-      let switchPoolStatus = true;
-      if (localStorage.getItem('isMetaMask') === 'true') {
-        const { addresses, sourceAddressInd } = this;
-        switchPoolStatus = await this.checkMiningPoolId(addresses[sourceAddressInd].chain);
-      }
-      if (switchPoolStatus || switchPoolStatus.ok) {
+
+      const { addresses, sourceAddressInd, targetAddressInd } = this;
+      const { chain } = addresses[sourceAddressInd];
+      if (await this.checkNetwork(chain)) {
         this.ShowModal({
           key: modals.swap,
-          crosschainId: this.targetAddressInd,
-          fromChain: this.sourceAddressInd,
-          toChain: this.targetAddressInd,
-        });
-      } else {
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/warning.svg'),
-          title: this.$t('modals.transactionFail'),
+          crosschainId: targetAddressInd,
+          fromChain: sourceAddressInd,
+          toChain: targetAddressInd,
         });
       }
+
       this.SetLoader(false);
     },
   },

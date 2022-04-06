@@ -65,22 +65,6 @@ export const getChainIdByChain = (chain) => {
   }
 };
 
-const getChainTypeById = (chainId) => {
-  if (+chainId === +ChainsId.ETH_MAIN || +chainId === +ChainsId.ETH_TEST) {
-    return 0;
-  }
-  if (+chainId === +ChainsId.BSC_MAIN || +chainId === +ChainsId.BSC_TEST) {
-    return 1;
-  }
-  if (+chainId === +ChainsId.MATIC_MAIN || +chainId === +ChainsId.MUMBAI_TEST) {
-    return 2;
-  }
-  if (+chainId === +ChainsId.WORKNET_TEST) {
-    return 3;
-  }
-  return -1;
-};
-
 export const addedNetwork = async (chain) => {
   try {
     let networkParams = {};
@@ -112,7 +96,6 @@ export const goToChain = async (chain) => {
     account = {
       address: getAccountAddress(),
       netId: +chainIdParam,
-      netType: getChainTypeById(chainIdParam),
     };
     await store.dispatch('web3/updateAccount', account);
     return { ok: true };
@@ -340,11 +323,9 @@ export const initWeb3 = async (payload) => {
     if ((await web3.eth.getCoinbase()) === null) {
       await window.ethereum.request({ method: 'eth_requestAccounts' });
     }
-    const netTypeId = getChainTypeById(chainId);
     account = {
       address: userAddress,
       netId: chainId,
-      netType: netTypeId,
     };
     return success(account);
   } catch (e) {
