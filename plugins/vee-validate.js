@@ -208,6 +208,12 @@ extend('percent', {
   },
   message: 'Please enter correct {_field_}',
 });
+extend('greaterThanZero', {
+  validate(value) {
+    return (value > 0);
+  },
+  message: 'Please enter correct {_field_}',
+});
 extend('min_percent', {
   validate(value, { min }) {
     return +value.replace(/%/g, '') >= +min;

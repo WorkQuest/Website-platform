@@ -261,9 +261,7 @@ export default {
         } else this.addresses = [];
       } catch (e) {
         this.addresses = [];
-        // await this.$store.dispatch('main/showToast', {
-        //   text: 'Address is not correct',
-        // });
+        console.error('Geo look up is failed', e);
       }
     },
     async updateBalanceWUSD() {
