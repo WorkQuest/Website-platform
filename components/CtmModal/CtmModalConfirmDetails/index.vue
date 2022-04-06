@@ -124,6 +124,8 @@ export default {
           //   });
           // }
           return false;
+        case 'savings':
+          return true;
         default:
           return false;
       }

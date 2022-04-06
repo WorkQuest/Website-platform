@@ -17,7 +17,7 @@
           <div class="info-block__double">
             <div class="info-block__send-block">
               <base-field
-                v-model="address"
+                v-model="amount"
                 data-selector="ADDRESS"
                 :label="$t('modals.lockedSavings')"
               />
@@ -167,7 +167,8 @@ export default {
       indexFAQ: [],
       date: 0,
       windowSize: window.innerWidth,
-      address: '',
+      amount: '',
+      datesNumber: [7, 14, 30, 90, 180],
     };
   },
   computed: {
@@ -360,6 +361,8 @@ export default {
       };
       this.ShowModal({
         key: modals.confirmDetails,
+        mode: 'savings',
+        payload: { value: this.amount, lockTime: this.datesNumber[this.date] },
         receiptData,
         dataForStatusModal,
       });
