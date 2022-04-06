@@ -49,7 +49,7 @@
       "minutes": "{count} минута | {count} минуты | {count} минут",
       "hours": "{count} час | {count} часа | {count} часов",
       "years": "{count} год | {count} года | {count} лет",
-      "days": "{count} день | {count} дня | {count} дней" ,
+      "days": "{count} день | {count} дня  | {count} дней" ,
       "votesCount": "{count} голоса",
       "distance": {
         "m": "m"

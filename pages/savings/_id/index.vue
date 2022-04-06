@@ -233,9 +233,6 @@ export default {
     openModal(key) {
       this.ShowModal({ key });
     },
-    // reformDate(date) {
-    //   this.$moment(date).format('Do MMM YY');
-    // },
   },
 };
 </script>
