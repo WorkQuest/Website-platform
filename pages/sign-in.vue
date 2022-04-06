@@ -210,7 +210,7 @@ export default {
     const refId = sessionStorage.getItem('referralId');
     if (!this.addressAssigned && !this.$cookies.get('access') && !this.$cookies.get('userStatus')) {
       this.$store.dispatch('user/logout');
-      if (refId.length) {
+      if (refId?.length) {
         sessionStorage.setItem('referralId', refId);
       }
     }
