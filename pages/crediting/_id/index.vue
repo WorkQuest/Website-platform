@@ -101,7 +101,7 @@ export default {
           show: this.isHaveCredit,
           info: [
             {
-              title: 'Need to refund',
+              title: this.$t('crediting.needRefund'),
               desc: this.$tc('meta.coins.count.WUSDCount', this.fullValueForRefund),
             },
             {
@@ -193,7 +193,7 @@ export default {
           this.ShowModal({
             key: modals.status,
             img: require('~/assets/img/ui/transactionSend.svg'),
-            title: this.$t('modals.loanIsOpened'),
+            title: this.$t('modals.successfulMethod.claim'),
           });
         } else {
           this.ShowModal({

@@ -146,6 +146,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import moment from 'moment';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -240,7 +241,6 @@ export default {
     await this.$store.dispatch('crediting/getFunds');
     await this.$store.dispatch('oracle/getCurrentPrice');
     await this.$store.dispatch('oracle/getSecurityRatio');
-    console.log(this.currentPrice, this.securityRatio);
   },
   methods: {
     hide() {
@@ -249,16 +249,16 @@ export default {
     async openConfirmDetailsModal() {
       const receiptData = [
         {
-          title: this.$t('modals.currencyDetails'),
-          subtitle: this.$t('meta.coins.eth'),
+          title: this.$t('crediting.chosenSource'),
+          subtitle: this.fundsSource[this.selFundID - 1].name,
         },
         {
           title: this.$t('modals.depositing'),
-          subtitle: this.$tc('meta.coins.count.ETHCount', 1),
+          subtitle: this.$tc(`meta.coins.count.${this.checkpoints[this.selCurrencyID - 1].name}Count`, this.quantity),
         },
         {
-          title: this.$t('modals.generatingDetails'),
-          subtitle: this.$tc('meta.coins.count.WUSDCount', 1000),
+          title: this.$t('crediting.dueDate'),
+          subtitle: moment().add(this.datesNumber[this.date], 'days').format('DD.MM.YYYY'),
         },
       ];
       const dataForStatusModal = {

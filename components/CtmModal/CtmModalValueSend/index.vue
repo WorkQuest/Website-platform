@@ -105,7 +105,6 @@ export default {
           break;
         case 'withdraw':
           payload = {
-            value: this.amount,
             data: [new BigNumber(this.amount).shiftedBy(18).toString()],
             method: 'withdraw',
             type: 'lending',
@@ -133,7 +132,7 @@ export default {
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/transactionSend.svg'),
-          title: this.$t('modals.loanIsOpened'),
+          title: this.$t(`modals.successfulMethods.${this.mode}`),
         });
         return;
       }

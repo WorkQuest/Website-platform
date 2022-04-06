@@ -120,7 +120,6 @@ export default {
         payloadSend.value = payload.value;
         break;
       case 'deposit':
-      case 'withdraw':
         payloadSend.value = new BigNumber(payload.value).shiftedBy(18).toString();
         break;
       default:
@@ -132,7 +131,7 @@ export default {
       await sendWalletTransaction(payload.method, payloadSend);
       return success();
     } catch (err) {
-      console.log('sendMethod error:', err);
+      console.log('sendMethod:', payload.method, err);
       return error();
     }
   },
