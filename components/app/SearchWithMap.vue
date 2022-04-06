@@ -166,7 +166,6 @@ export default {
         }
       } catch (e) {
         console.error('Geo look up is failed', e);
-        await this.$store.dispatch('main/showToast', { text: 'Address is not correct' });
       }
       this.clearSearchResult();
     },
