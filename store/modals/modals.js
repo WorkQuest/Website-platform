@@ -85,4 +85,5 @@ export default {
   neededToEnable2FA: 'neededToEnable2FA',
   referralClaim: 'referralClaim',
   referralRegistration: 'referralRegistration',
+  valueSend: 'valueSend',
 };

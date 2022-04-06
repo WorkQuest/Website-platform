@@ -118,6 +118,7 @@ export default {
 
     WQ_PROVIDER: process.env.WQ_PROVIDER,
     WQ_EXPLORER: process.env.WQ_EXPLORER,
+    WQ_ORACLE: process.env.WQ_ORACLE,
 
     NOTIFS_URL: process.env.NOTIFS_URL,
     WS_NOTIFS_URL: process.env.WS_NOTIFS_URL,

@@ -50,6 +50,7 @@
       "hours": "{count} hours",
       "years": "{count} years",
       "days": "{count} days",
+      "daysLeft": "{count} days left",
       "votesCount": "{count} votos",
       "distance": {
         "m": "m"
@@ -1110,7 +1111,7 @@
     "tempForRemove2": "1 BNB = ... WQT",
     "currentPoolSize": "Tamaño actual del fondo",
     "yourPoolShare": "Su participación en el fondo",
-    "howMuchEthWouldYouLikeToLock": "¿Cuántos ETH quiere bloquear en su cuenta?",
+    "howMuchTokensWouldYouLikeToLock": "How much {token} would you like to lock into your account?",
     "collateralization": "Constitución de garantía",
     "liquidationPrice": "Precio de liquidación",
     "currentPrice": "Precio actual",
@@ -1701,6 +1702,7 @@
     "description": "???",
     "currentLoan": "???",
     "currentCredit": "???",
+    "chooseSource": "Choose the source",
     "marketSize": "Tamaño del mercado",
     "wantToTakeALoan": "¿Quiere pedir un préstamo?",
     "borrow": "Tomar prestado",

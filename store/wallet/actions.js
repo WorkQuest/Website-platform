@@ -11,7 +11,9 @@ import {
   fetchContractData, success, error,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
-import { PensionHistoryMethods, StakingTypes, TokenSymbols } from '~/utils/enums';
+import {
+  PensionHistoryMethods, StakingTypes, tokenMap, TokenSymbols,
+} from '~/utils/enums';
 import {
   getPensionDefaultData,
   getPensionWallet,
@@ -378,6 +380,23 @@ export default {
       return success(await sendWalletTransaction('autoRenewal', { abi: _abi, address: poolAddress }));
     } catch (e) {
       console.error('Renewal error', e.message);
+      return error();
+    }
+  },
+  async approveRouter({ commit, dispatch }, { symbol, spenderAddress, value }) {
+    const tokenAddress = tokenMap[symbol];
+    try {
+      const allowance = await dispatch('getAllowance', { tokenAddress, spenderAddress });
+      if (+allowance < +value) {
+        return await dispatch('approve', {
+          tokenAddress,
+          spenderAddress,
+          amount: new BigNumber(value).multipliedBy(18).toFixed(),
+        });
+      }
+      return false;
+    } catch (e) {
+      console.error('approveRouter error', e.message);
       return error();
     }
   },

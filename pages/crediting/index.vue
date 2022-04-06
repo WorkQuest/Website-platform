@@ -5,9 +5,6 @@
         <div class="title">
           {{ $t('crediting.lending') }}
         </div>
-        <div class="title_sub">
-          {{ $t('crediting.templateText') }}
-        </div>
       </div>
       <div class="crediting-page__content">
         <div class="info-block__triple">
@@ -47,7 +44,8 @@
               </base-btn>
               <base-btn
                 class="btn"
-                mode="outline"
+                :mode="!isHaveCredit ? 'outline' : ''"
+                :disabled="isHaveCredit"
                 data-selector="CREDITING-DEPOSIT"
                 @click="openCreditingDepositModal()"
               >
@@ -55,7 +53,8 @@
               </base-btn>
               <base-btn
                 class="btn"
-                mode="outline"
+                :mode="!isHaveLoan ? 'outline' : ''"
+                :disabled="isHaveLoan"
                 data-selector="CREDITING-LOAN"
                 @click="openCreditingLoanModal()"
               >
@@ -141,6 +140,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { getWalletAddress } from '~/utils/wallet';
 
 export default {
   data() {
@@ -149,6 +149,11 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      isWalletConnected: 'wallet/getIsWalletConnected',
+      creditData: 'crediting/getCreditData',
+      walletData: 'crediting/getWalletData',
+    }),
     documents() {
       return [
         {
@@ -208,9 +213,22 @@ export default {
         },
       ];
     },
+    isHaveCredit() {
+      return this.creditData.credit > 0;
+    },
+    isHaveLoan() {
+      return this.walletData.amount > 0;
+    },
   },
   async mounted() {
     this.SetLoader(true);
+    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+    if (!this.isWalletConnected) return;
+    await Promise.all([
+      this.$store.dispatch('crediting/getCreditData'),
+      this.$store.dispatch('crediting/getWalletsData'),
+    ]);
+    console.log('creditData:', this.creditData, 'walletData:', this.walletData);
     this.SetLoader(false);
   },
   methods: {

@@ -50,6 +50,7 @@
       "hours": "{count} hours",
       "years": "{count} years",
       "days": "{count} days",
+      "daysLeft": "{count} days left",
       "votesCount": "{count} votes",
       "distance": {
         "m": "m"
@@ -1110,7 +1111,7 @@
     "tempForRemove2": "1 BNB = ... WQT",
     "currentPoolSize": "मौजूदा पूल साइज",
     "yourPoolShare": "आपका पूल शेयर",
-    "howMuchEthWouldYouLikeToLock": "आप अपने अकाउंट में कितना ETH लॉक करना चाहेंगे?",
+    "howMuchTokensWouldYouLikeToLock": "How much {token} would you like to lock into your account?",
     "collateralization": "कोलेटरलाइजेशन",
     "liquidationPrice": "लिक्विडेशन कीमत",
     "currentPrice": "मौजूदा कीमत",
@@ -1701,6 +1702,7 @@
     "description": "???",
     "currentLoan": "???",
     "currentCredit": "???",
+    "chooseSource": "Choose the source",
     "marketSize": "मार्केट साइज",
     "wantToTakeALoan": "कर्ज लेना चाहते हैं?",
     "borrow": "उधार",

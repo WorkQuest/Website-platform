@@ -41,35 +41,114 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
+import { getGasPrice, getWalletAddress } from '~/utils/wallet';
+import * as abi from '~/abi/abi';
+import { tokenMap, TokenSymbols } from '~/utils/enums';
 
 export default {
   name: 'ModalConfirmDetails',
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      currentPrice: 'oracle/getCurrentPrice',
     }),
     abouts() {
       return this.options.receiptData;
+    },
+    symbol() {
+      return this.options.payload.data[4];
     },
   },
   methods: {
     hide() {
       this.CloseModal();
     },
-    openStatusModal() {
+    async openStatusModal() {
+      this.SetLoader(true);
+      const res = await this.actionCheck();
+      this.SetLoader(false);
+      if (res.ok) {
+        const {
+          dataForStatusModal: {
+            img,
+            title,
+            subtitle,
+            path,
+          },
+        } = this.options;
+        this.ShowModal({
+          key: modals.status,
+          img,
+          title,
+          subtitle,
+          path,
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.transactionFail'),
+          recipient: '',
+          subtitle: this.$t('modals.errors.error'),
+        });
+      }
+    },
+    async actionCheck() {
+      switch (this.options.mode) {
+        case 'borrow':
+          // eslint-disable-next-line no-case-declarations
+          const checkTokenPrice = await this.setTokenPrice();
+          console.log(checkTokenPrice);
+          // eslint-disable-next-line no-case-declarations
+          const { payload } = this.options;
+          // eslint-disable-next-line no-case-declarations
+          // const approveAllowed = await this.$store.dispatch('wallet/approveRouter', {
+          //   symbol: this.symbol,
+          //   spenderAddress: process.env.BORROWING,
+          //   value: payload.value,
+          // });
+          // if (checkTokenPrice && approveAllowed) {
+          //   return await this.$store.dispatch('crediting/sendMethod', {
+          //     value: payload.value,
+          //     data: [
+          //       payload.nonce,
+          //       new BigNumber(payload.value).multipliedBy(18).toFixed(),
+          //       payload.fundIndex,
+          //       payload.duration,
+          //       payload.symbol,
+          //     ],
+          //     method: 'borrow',
+          //     type: 'borrowing',
+          //   });
+          // }
+          return false;
+        default:
+          return false;
+      }
+    },
+    async setTokenPrice() {
+      const date = Date.now().toString();
+      const timestamp = date.substr(0, date.length - 3);
       const {
-        dataForStatusModal: {
-          img, title, subtitle, path,
-        },
-      } = this.options;
-      this.ShowModal({
-        key: modals.status,
-        img,
-        title,
-        subtitle,
-        path,
-      });
+        prices, v, r, s, symbols,
+      } = this.currentPrice; // TODO price
+      const resultGasSetTokenPrices = await getGasPrice(abi.WQOracle, process.env.WORKNET_ORACLE, 'setTokenPricesUSD', [timestamp, v, r, s, prices, symbols]);
+      if (resultGasSetTokenPrices.gas && resultGasSetTokenPrices.gasPrice) {
+        const { ok } = await this.$store.dispatch('crediting/setTokenPrices', {
+          gasPrice: resultGasSetTokenPrice.gasPrice,
+          gas: resultGasSetTokenPrice.gas,
+          timestamp,
+          v,
+          r,
+          s,
+          prices,
+          symbols,
+        });
+        return ok;
+      }
+      return false;
     },
   },
 };

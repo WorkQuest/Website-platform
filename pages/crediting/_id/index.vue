@@ -20,49 +20,57 @@
         </div>
       </div>
       <div class="crediting__content">
-        <div class="content__couple">
-          <div
+        <div
+          class="content__couple"
+          :class="{'content__couple_solo' : !isHaveCredit || !isHaveLoan}"
+        >
+          <template
             v-for="(data, index) in blocksData"
-            :key="index"
-            class="content__half"
           >
-            <div class="content__title content__title_big">
-              {{ data.title }}
-            </div>
-            <div class="content__price">
-              <div class="content__title content__title_small">
-                {{ data.priceTitle }}
+            <div
+              v-if="data.show"
+              :key="index"
+              class="content__half"
+            >
+              <div class="content__title content__title_big">
+                {{ data.title }}
               </div>
-              <div class="content__title content__title_big content__title_blue">
-                {{ data.price }}
-              </div>
-            </div>
-            <div class="content__info-data">
-              <div
-                v-for="(info, key) in data.info"
-                :key="key"
-                class="info-data__info-block"
-              >
-                <div class="info-data__title">
-                  {{ info.title }}
+              <div class="content__price">
+                <div class="content__title content__title_small">
+                  {{ data.priceTitle }}
                 </div>
-                <div class="info-data__desc">
-                  {{ info.desc }}
+                <div class="content__title content__title_big content__title_blue">
+                  {{ data.price }}
                 </div>
               </div>
+              <div class="content__info-data">
+                <div
+                  v-for="(info, key) in data.info"
+                  :key="key"
+                  class="info-data__info-block"
+                >
+                  <div class="info-data__title">
+                    {{ info.title }}
+                  </div>
+                  <div class="info-data__desc">
+                    {{ info.desc }}
+                  </div>
+                </div>
+              </div>
+              <div class="content__buttons">
+                <base-btn
+                  v-for="(button, key) in data.buttons"
+                  :key="key"
+                  :data-selector="button.title.toUpperCase()"
+                  :mode="button.mode"
+                  :disabled="button.disabled"
+                  @click="openModal(button.action)"
+                >
+                  {{ button.title }}
+                </base-btn>
+              </div>
             </div>
-            <div class="content__buttons">
-              <base-btn
-                v-for="(button, key) in data.buttons"
-                :key="key"
-                :data-selector="button.title.toUpperCase()"
-                :mode="button.mode"
-                @click="openModal(button.action)"
-              >
-                {{ button.title }}
-              </base-btn>
-            </div>
-          </div>
+          </template>
         </div>
       </div>
     </div>
@@ -71,93 +79,130 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import moment from 'moment';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 
 export default {
-  data() {
-    return {};
-  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      creditData: 'crediting/getCreditData',
+      walletData: 'crediting/getWalletData',
+      rewardsData: 'crediting/getRewards',
+      currentFee: 'crediting/getCurrentFee',
     }),
     blocksData() {
       return [
         {
-          title: this.$t('crediting.currentLoan'),
-          priceTitle: this.$t('crediting.totalCollateralLocked'),
-          price: this.$tc('meta.coins.count.USDCount', 225.5),
-          info: [
-            {
-              title: 'ID',
-              desc: 565464,
-            },
-            {
-              title: this.$t('crediting.tableHead.currentRatio'),
-              desc: 565464,
-            },
-            {
-              title: this.$t('crediting.tableHead.deposited'),
-              desc: 123,
-            },
-          ],
-          buttons: [
-            {
-              title: this.$t('meta.withdraw'),
-              mode: '',
-              action: 'withdraw',
-            },
-            {
-              title: this.$t('meta.deposit'),
-              mode: 'outline',
-            },
-            {
-              title: this.$t('modals.claim'),
-              mode: 'outline',
-            },
-          ],
-        },
-        {
           title: this.$t('crediting.currentCredit'),
           priceTitle: this.$t('crediting.totalWusdDebt'),
-          price: this.$tc('meta.coins.count.WUSDCount', 225.5),
+          price: this.$tc('meta.coins.count.WUSDCount', this.creditData.credit),
+          show: this.isHaveCredit,
           info: [
             {
-              title: 'ID',
-              desc: 565464,
+              title: 'Need to refund',
+              desc: this.$tc('meta.coins.count.WUSDCount', this.fullValueForRefund),
             },
             {
-              title: this.$t('crediting.tableHead.currentRatio'),
-              desc: 565464,
+              title: this.$t('modals.totalFee'),
+              desc: this.$tc('meta.coins.count.WUSDCount', this.currentFee),
             },
             {
-              title: this.$t('crediting.tableHead.deposited'),
-              desc: 123,
+              title: this.$t('crediting.dueDate'),
+              desc: moment.unix(this.creditData.borrowedAt).add(7, 'days').format('DD.MM.YYYY'),
             },
           ],
           buttons: [
             {
               title: this.$t('crediting.refund'),
-              mode: '',
+              action: 'refund',
+              disabled: false,
+            },
+          ],
+        },
+        {
+          title: this.$t('crediting.currentLoan'),
+          priceTitle: this.$t('crediting.totalCollateralLocked'),
+          price: this.$tc('meta.coins.count.WUSDCount', new BigNumber(this.walletData.amount).shiftedBy(-18).toString()),
+          show: this.isHaveLoan,
+          info: [
+            {
+              title: this.$t('meta.claimRewards'),
+              desc: this.rewardsData > 0 ? this.rewardsData : this.$t('modals.nothingToClaim'),
+            },
+          ],
+          buttons: [
+            {
+              title: this.$t('meta.withdraw'),
+              disabled: false,
+              action: 'withdraw',
+            },
+            {
+              title: this.$t('meta.deposit'),
+              mode: 'outline',
+              disabled: false,
+              action: 'deposit',
+            },
+            {
+              title: this.$t('modals.claim'),
+              mode: 'outline',
+              disabled: this.rewardsData <= 0,
+              action: 'claim',
             },
           ],
         },
       ];
     },
+    isHaveCredit() {
+      return this.creditData.credit > 0;
+    },
+    isHaveLoan() {
+      return this.walletData.amount > 0;
+    },
+    fullValueForRefund() {
+      return Number(this.creditData.credit) + Number(this.currentFee);
+    },
   },
   async mounted() {
     this.SetLoader(true);
+    await Promise.all([
+      this.$store.dispatch('crediting/getCreditData'),
+      this.$store.dispatch('crediting/getWalletsData'),
+      this.$store.dispatch('crediting/getRewards'),
+      this.$store.dispatch('crediting/getCurrentFee'),
+    ]);
     this.SetLoader(false);
   },
   methods: {
     handleBackToCrediting() {
       this.$router.push('/crediting');
     },
-    openModal(action) {
-      this.ShowModal({
-        key: modals.claimRewards,
-        needChangeModal: 1,
-      });
+    async openModal(action) {
+      if (action !== 'claim') {
+        this.ShowModal({
+          key: modals.valueSend,
+          mode: action,
+        });
+      } else {
+        const res = await this.$store.dispatch('crediting/sendMethod', {
+          method: 'claim',
+          type: 'lending',
+        });
+        if (res.ok) {
+          this.ShowModal({
+            key: modals.status,
+            img: require('~/assets/img/ui/transactionSend.svg'),
+            title: this.$t('modals.loanIsOpened'),
+          });
+        } else {
+          this.ShowModal({
+            key: modals.status,
+            img: require('~/assets/img/ui/warning.svg'),
+            title: this.$t('modals.transactionFail'),
+          });
+        }
+      }
     },
   },
 };
@@ -243,6 +288,9 @@ export default {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 20px;
+        &_solo {
+          grid-template-columns: auto;
+        }
       }
 
       &__half {
@@ -300,6 +348,9 @@ export default {
       &__couple {
         grid-template-rows: repeat(2, 1fr);
         grid-template-columns: unset;
+        &_solo {
+          grid-template-rows: auto;
+        }
       }
     }
   }

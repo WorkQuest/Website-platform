@@ -50,6 +50,7 @@
       "hours": "{count} hours",
       "years": "{count} years",
       "days": "{count} days",
+      "daysLeft": "{count} days left",
       "votesCount": "{count} votes",
       "distance": {
         "m": "m"
@@ -1110,7 +1111,7 @@
     "tempForRemove2": "1 BNB = ... WQT",
     "currentPoolSize": "Current pool size",
     "yourPoolShare": "Your pool share",
-    "howMuchEthWouldYouLikeToLock": "How much ETH would you like to lock into your account?",
+    "howMuchTokensWouldYouLikeToLock": "How much {token} would you like to lock into your account?",
     "collateralization": "Collateralization",
     "liquidationPrice": "Liquidation price",
     "currentPrice": "Current price",
@@ -1701,6 +1702,8 @@
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
     "currentLoan": "Current loan",
     "currentCredit": "Current credit",
+    "dueDate": "Due date",
+    "chooseSource": "Choose the source",
     "marketSize": "Market size",
     "wantToTakeALoan": "Want to take a loan?",
     "borrow": "Borrow",

@@ -317,13 +317,13 @@ export default {
   }
   &_outline {
     width: 100%;
-    border: 1px solid rgba(0, 131, 199, 0.1) !important;
-    background: #FFFFFF !important;
-    color: $blue !important;
+    border: 1px solid rgba(0, 131, 199, 0.1);
+    background: #FFFFFF;
+    color: $blue;
     padding: 0;
     &:hover {
-      background: #F7F8FA !important;
-      color: $blue !important;
+      background: #F7F8FA;
+      color: $blue;
     }
   }
   &_borderless {

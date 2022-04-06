@@ -94,6 +94,7 @@
       <CtmModalGetWUSD v-if="modals.getWUSD === currentModalKey" />
       <CtmModalBuyAuction v-if="modals.buyAuction === currentModalKey" />
       <CtmModalReferralClaim v-if="modals.referralClaim === currentModalKey" />
+      <CtmModalValueSend v-if="modals.valueSend === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -183,6 +184,7 @@ import CtmModalGetWUSD from './CtmModalGetWUSD';
 import CtmModalBuyAuction from './CtmModalBuyAuction';
 import CtmModalNeededToEnable2FA from './CtmModalNeededToEnable2FA';
 import CtmModalReferralClaim from './CtmModalReferralClaim';
+import CtmModalValueSend from '~/components/CtmModal/CtmModalValueSend';
 
 export default {
   name: 'ModalBox',
@@ -269,6 +271,7 @@ export default {
     CtmModalGallery,
     CtmModalAreYouSure,
     CtmModalReferralClaim,
+    CtmModalValueSend,
   },
   data: () => ({
     modals,

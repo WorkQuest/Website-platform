@@ -205,7 +205,20 @@ export const sendWalletTransaction = async (_method, payload) => {
   }
   const inst = new web3.eth.Contract(payload.abi, payload.address);
   const gasPrice = await web3.eth.getGasPrice();
-  const accountAddress = getWalletAddress();
+  const accountAddress = await getWalletAddress();
+  const specialArray = ['refund', 'deposit', 'withdraw'];
+  if (specialArray.includes(_method)) {
+    const data = inst.methods[_method].apply(null, payload.data).encodeABI();
+    const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress, value: payload.value });
+    return await inst.methods[_method](...payload.data).send({
+      to: payload.address,
+      from: accountAddress,
+      value: payload.value,
+      data,
+      gasPrice,
+      gas: gasEstimate,
+    });
+  }
   const data = inst.methods[_method].apply(null, payload.data).encodeABI();
   const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress });
   const transactionData = {
@@ -215,7 +228,7 @@ export const sendWalletTransaction = async (_method, payload) => {
     gasPrice,
     gas: gasEstimate,
   };
-  // noinspection ES6RedundantAwait
+    // noinspection ES6RedundantAwait
   return await web3.eth.sendTransaction(transactionData);
 };
 export const transferToken = async (recipient, value) => {
@@ -431,6 +444,7 @@ export const stake = async (stakingType, amount, poolAddress, duration) => {
 
 /** Collateral */
 export const getGasPrice = async (contractAbi, address, method, attr, value = null) => {
+  console.log('getGasPrice:', address, method, attr, value);
   try {
     const inst = new web3.eth.Contract(contractAbi, address);
     const [gasPrice, gasEstimate] = await Promise.all([
@@ -439,6 +453,7 @@ export const getGasPrice = async (contractAbi, address, method, attr, value = nu
         ? inst.methods[method](...attr).estimateGas({ from: wallet.address, value })
         : inst.methods[method](...attr).estimateGas({ from: wallet.address }),
     ]);
+    console.log('gasPrice, gasEstimate', gasPrice, gasEstimate);
     return { gas: gasEstimate, gasPrice };
   } catch (e) {
     console.error('getGasPriceError', e);
@@ -458,6 +473,23 @@ export const setTokenPrice = async ({ currency }, {
     });
   } catch (e) {
     console.error('setTokenPriceError', e);
+    throw error();
+  }
+};
+
+export const setTokenPrices = async ({
+  gasPrice, gas, timestamp, prices, v, r, s, symbols,
+}) => {
+  try {
+    const inst = new web3.eth.Contract(abi.WQOracle, process.env.WORKNET_ORACLE);
+    console.log('wallet/setTokenPrices before setTokenPricesUSD:', timestamp, prices, symbols);
+    await inst.methods.setTokenPricesUSD(timestamp, v, r, s, prices, symbols).send({
+      from: wallet.address,
+      gas,
+      gasPrice,
+    });
+  } catch (e) {
+    console.error('setTokenPricesError', e);
     throw error();
   }
 };
