@@ -319,6 +319,7 @@ export default {
             this.isBottomChatsLoading = false;
           }, 300);
         }
+        return;
       }
 
       if (canLoadToTop && scrollTop < 300 && !this.isTopChatsLoading) {
