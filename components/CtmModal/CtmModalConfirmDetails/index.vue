@@ -57,9 +57,6 @@ export default {
     abouts() {
       return this.options.receiptData;
     },
-    symbol() {
-      return this.options.payload.data[4];
-    },
   },
   methods: {
     hide() {
@@ -100,46 +97,47 @@ export default {
         case 'borrow':
           // eslint-disable-next-line no-case-declarations
           const checkTokenPrice = await this.setTokenPrice();
-          console.log(checkTokenPrice);
           // eslint-disable-next-line no-case-declarations
-          const { payload } = this.options;
+          const {
+            payload: {
+              value, symbol, nonce, fundIndex, duration,
+            },
+          } = this.options;
           // eslint-disable-next-line no-case-declarations
-          // const approveAllowed = await this.$store.dispatch('wallet/approveRouter', {
-          //   symbol: this.symbol,
-          //   spenderAddress: process.env.BORROWING,
-          //   value: payload.value,
-          // });
-          // if (checkTokenPrice && approveAllowed) {
-          //   return await this.$store.dispatch('crediting/sendMethod', {
-          //     value: payload.value,
-          //     data: [
-          //       payload.nonce,
-          //       new BigNumber(payload.value).multipliedBy(18).toFixed(),
-          //       payload.fundIndex,
-          //       payload.duration,
-          //       payload.symbol,
-          //     ],
-          //     method: 'borrow',
-          //     type: 'borrowing',
-          //   });
-          // }
+          const approveAllowed = await this.$store.dispatch('wallet/approveRouter', {
+            symbol,
+            spenderAddress: process.env.BORROWING,
+            value,
+          });
+          if (checkTokenPrice && approveAllowed) {
+            return await this.$store.dispatch('crediting/sendMethod', {
+              value,
+              data: [
+                nonce,
+                new BigNumber(value).multipliedBy(18).toFixed(),
+                fundIndex,
+                duration,
+                symbol,
+              ],
+              method: 'borrow',
+              type: 'borrowing',
+            });
+          }
           return false;
         default:
           return false;
       }
     },
     async setTokenPrice() {
-      const date = Date.now().toString();
-      const timestamp = date.substr(0, date.length - 3);
       const {
-        prices, v, r, s, symbols,
+        nonce, prices, v, r, s, symbols,
       } = this.currentPrice; // TODO price
-      const resultGasSetTokenPrices = await getGasPrice(abi.WQOracle, process.env.WORKNET_ORACLE, 'setTokenPricesUSD', [timestamp, v, r, s, prices, symbols]);
+      const resultGasSetTokenPrices = await getGasPrice(abi.WQOracle, process.env.WORKNET_ORACLE, 'setTokenPricesUSD', [nonce, v, r, s, prices, symbols]);
       if (resultGasSetTokenPrices.gas && resultGasSetTokenPrices.gasPrice) {
         const { ok } = await this.$store.dispatch('crediting/setTokenPrices', {
-          gasPrice: resultGasSetTokenPrice.gasPrice,
-          gas: resultGasSetTokenPrice.gas,
-          timestamp,
+          gasPrice: resultGasSetTokenPrices.gasPrice,
+          gas: resultGasSetTokenPrices.gas,
+          timestamp: nonce,
           v,
           r,
           s,
