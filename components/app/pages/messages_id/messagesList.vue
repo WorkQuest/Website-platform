@@ -306,15 +306,12 @@ export default {
     async handleScroll({ target: { scrollTop, scrollHeight, clientHeight } }) {
       const { minScrollDifference, filter: { canLoadToBottom, canLoadToTop } } = this;
 
-      // console.log(canLoadToBottom);
-
       const currScrollOffset = scrollHeight - scrollTop;
 
       this.isScrollBtnVis = currScrollOffset > minScrollDifference;
       const scrollBottom = currScrollOffset - clientHeight;
 
       if (scrollBottom < 300) {
-        // console.log('get');
         if (canLoadToBottom && !this.isBottomChatsLoading) {
           this.isBottomChatsLoading = true;
           await this.getMessages(1);
