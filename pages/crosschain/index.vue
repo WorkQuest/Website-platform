@@ -148,7 +148,7 @@
               </template>
               <template #cell(created)="el">
                 <div class="table__value table__value_blue">
-                  {{ this.$moment(el.item.created).format('MMMM Do YYYY, h:mm') }}
+                  {{ this.$moment(el.item.created).locale(this.i18n.locale).format('MMMM Do YYYY, h:mm') }}
                 </div>
               </template>
               <template #cell(redeem)="el">
