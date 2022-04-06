@@ -36,8 +36,6 @@ export default {
         }
       });
 
-      console.log(result);
-
       if (result.chat) {
         result.chat.members = result.chat.userMembers.filter((member) => member.id !== myId);
         result.chat.isUnread = result.chat.meMember.unreadCountMessages > 0;
@@ -51,12 +49,8 @@ export default {
         result.messages = result.messages.concat(chat.messages.list);
       }
       const { messages, count } = result;
-      // если это группа, то тогда цикл который находит первое сообщение
+
       const canLoadToBottom = chatId !== 'starred' && messages[messages.length - 1]?.number < result.count;
-      console.log(messages[messages.length - 1]);
-      console.log(messages[messages.length - 1]?.number);
-      console.log(result.count);
-      console.log(`test${canLoadToBottom}`);
       const canLoadToTop = chatId === 'starred' ? messages.length < count : messages[0]?.number > 1;
 
       commit('setMessagesList', {
