@@ -332,7 +332,6 @@ export default {
     },
     setInfoMessageText(action, itsMe) {
       let text = 'chat.systemMessages.';
-      console.log(action);
       switch (action) {
         case MessageAction.EMPLOYER_INVITE_ON_QUEST: {
           text += itsMe ? 'youInvitedToTheQuest' : 'employerInvitedWorkerToQuest';
