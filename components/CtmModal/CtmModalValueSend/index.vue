@@ -13,7 +13,7 @@
           class="content__field"
           type="number"
           data-selector="INPUT_AMOUNT"
-          :placeholder="3500"
+          placeholder="3500"
           :label="$t('modals.amount')"
           rules="required|decimal|decimalPlaces:18"
           :name="$t('modals.amount')"

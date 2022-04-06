@@ -1,17 +1,17 @@
 import BigNumber from 'bignumber.js';
 import {
-  connectWallet,
-  disconnect,
-  getBalance, getContractFeeData,
-  getIsWalletConnected,
-  getStyledAmount, getWalletAddress, getTransferFeeData,
-  transfer, transferToken, GetWalletProvider, stake, sendWalletTransaction, setTokenPrice, setTokenPrices,
+  getWalletAddress,
+  GetWalletProvider,
+  sendWalletTransaction,
+  setTokenPrice,
+  setTokenPrices,
 } from '~/utils/wallet';
 import {
-  fetchContractData, success, error, sendTransaction,
+  fetchContractData,
+  success,
+  error,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
-import { PensionHistoryMethods, StakingTypes, TokenSymbols } from '~/utils/enums';
 
 export default {
   async getFunds({ commit }) {
@@ -35,17 +35,6 @@ export default {
     );
     commit('setCreditData', res);
   },
-  async sendBorrow({ commit }, payload) {
-    payload.address = process.env.BORROWING;
-    payload.abi = abi.WQBorrowing;
-    try {
-      await sendWalletTransaction('borrow', payload);
-      return true;
-    } catch (err) {
-      console.log('sendBorrow error:', err);
-      return false;
-    }
-  },
   async getWalletsData({ commit }) {
     const address = await getWalletAddress();
     const res = await fetchContractData(
@@ -56,18 +45,6 @@ export default {
       GetWalletProvider(),
     );
     commit('setWalletsData', res);
-  },
-  async sendClaim({ commit }, payload) {
-    payload.value = new BigNumber(payload.value).shiftedBy(18).toString();
-    payload.address = process.env.LENDING;
-    payload.abi = abi.WQLending;
-    try {
-      await sendWalletTransaction('claim', payload);
-      return true;
-    } catch (err) {
-      console.log('sendClaim error:', err);
-      return false;
-    }
   },
   async setTokenPrice({ dispatch, rootGetters }, payload) {
     try {
@@ -127,7 +104,6 @@ export default {
         break;
     }
     try {
-      console.log('sendMethod:', payload, payloadSend);
       await sendWalletTransaction(payload.method, payloadSend);
       return success();
     } catch (err) {

@@ -43,9 +43,8 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { getGasPrice, getWalletAddress } from '~/utils/wallet';
+import { getGasPrice } from '~/utils/wallet';
 import * as abi from '~/abi/abi';
-import { tokenMap, TokenSymbols } from '~/utils/enums';
 
 export default {
   name: 'ModalConfirmDetails',
