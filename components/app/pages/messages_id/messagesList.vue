@@ -332,6 +332,7 @@ export default {
     },
     setInfoMessageText(action, itsMe) {
       let text = 'chat.systemMessages.';
+      console.log(action);
       switch (action) {
         case MessageAction.EMPLOYER_INVITE_ON_QUEST: {
           text += itsMe ? 'youInvitedToTheQuest' : 'employerInvitedWorkerToQuest';
@@ -759,7 +760,7 @@ export default {
 
 @include _767 {
   .info-message {
-    grid-template-rows: repeat(3, auto);
+    grid-template-columns: repeat(3, auto);
     &__title {
       white-space: nowrap;
     }
