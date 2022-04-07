@@ -46,10 +46,10 @@
       "mb": "{count} MB",
       "kb": "{count} KB",
       "percentsCount": "{count}%",
-      "minutes": "{count} minutes",
-      "hours": "{count} hours",
-      "years": "{count} years",
-      "days": "{count} days",
+      "minutes": "{count} minute | {count} minutes | {count} minutes",
+      "hours": "{count} minute | {count} minutes | {count} hours",
+      "years": "{count} year | {count} years | {count} years",
+      "days": "{count} day | {count} days | {count} days",
       "votesCount": "{count} ভোট",
       "distance": {
         "m": "m"

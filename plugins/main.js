@@ -189,6 +189,15 @@ Vue.mixin({
         });
       }
     },
+    DeclOfNum(n) {
+      n = Math.abs(n) % 100;
+      const n1 = n % 10;
+      if (n > 10 && n < 20) { return 2; }
+      if (n1 > 1 && n1 < 5) { return 1; }
+      if (n1 === 1 && this.$i18n.locale === 'ru') { return 0; }
+      return 2;
+    },
+
     ScrollToTop: () => window.scrollTo(0, 0),
   },
 });
