@@ -210,7 +210,10 @@ extend('percent', {
 });
 extend('greaterThanZero', {
   validate(value) {
-    return (value > 0);
+    if (((value.toString().includes('.')) ? (value.toString().split('.').pop().length) : (0)) < 3) {
+      return (value > 0);
+    }
+    return false;
   },
   message: 'Please enter correct {_field_}',
 });
