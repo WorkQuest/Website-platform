@@ -20,10 +20,10 @@
       >
         <span class="row__user">
           <template v-if="$options.UserRole.WORKER === userRole">
-            {{ `${$t('quests.fromBig')} ${UserName(row.user.firstName,row.user.lastName)}` }}
+            {{ `${$t('quests.fromBig')} ${UserName(row.user.firstName, row.user.lastName)}` }}
           </template>
           <template v-else>
-            {{ UserName(row.firstName,row.lastName) }}
+            {{ UserName(row.firstName, row.lastName) }}
           </template>
         </span>
         <span class="row__price">
@@ -31,7 +31,9 @@
             {{ `${row.price} ${$options.TokenSymbols.WUSD}` }}
           </template>
           <template v-else>
-            {{ row.wagePerHour ? `${row.wagePerHour} ${$options.TokenSymbols.WUSD}` : $t('meta.worker.cost.notIndicated') }}
+            {{
+              row.wagePerHour ? `${row.wagePerHour} ${$options.TokenSymbols.WUSD}` : $t('meta.worker.cost.notIndicated')
+            }}
           </template>
         </span>
       </div>
@@ -128,7 +130,8 @@ export default {
     },
     item: {
       type: Object,
-      default: () => {},
+      default: () => {
+      },
     },
     items: {
       type: Array,
@@ -204,30 +207,35 @@ export default {
     display: flex;
     grid-gap: 10px;
     flex-direction: column;
+
     &_multi {
       gap: 0;
       max-height: 200px;
       padding: 0;
-      overflow: hidden scroll;
+      overflow: hidden auto;
       overscroll-behavior: contain;
     }
   }
+
   &__row {
     display: grid;
     grid-template-columns: 2fr 1fr;
     grid-gap: 5px;
     padding: 13px;
     cursor: pointer;
+
     &:hover {
       background: $black0;
       border-radius: 6px;
     }
   }
+
   &__block {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
+
   &__name {
     max-width: 115px;
     font-weight: 600;
@@ -243,6 +251,7 @@ export default {
       max-width: 160px;
     }
   }
+
   &__status {
     @include text-simple;
     display: flex;
@@ -253,24 +262,29 @@ export default {
     line-height: 130%;
     height: 24px;
     padding: 0 5px;
+
     &_low {
       background: rgba(34, 204, 20, 0.1);
       color: #22CC14;
     }
+
     &_urgent {
       background: rgba(223, 51, 51, 0.1);
       color: #DF3333;
     }
+
     &_normal {
       background: rgba(232, 210, 13, 0.1);
       color: #E8D20D;
     }
   }
+
   &__user {
     display: flex;
     grid-gap: 5px;
     align-items: center;
   }
+
   &__text {
     font-style: normal;
     font-weight: 500;
@@ -278,30 +292,36 @@ export default {
     line-height: 130%;
     color: #353C47;
   }
+
   &__cost {
     display: flex;
     grid-gap: 5px;
     flex-direction: column;
   }
+
   &__value {
     font-weight: 500;
     font-size: 14px;
     line-height: 130%;
     color: #00AA5B;
   }
+
   &__switch {
     width: 30px !important;
     height: 30px !important;
   }
+
   &__icon {
     color: $black400;
   }
 }
+
 .avatar {
   width: 30px;
   height: 30px;
   border-radius: 100%;
   overflow: hidden;
+
   &__image {
     width: 100%;
     height: 100%;
@@ -309,6 +329,7 @@ export default {
     object-fit: cover;
   }
 }
+
 .row {
   &__user {
     @extend .info-window__name;
@@ -317,6 +338,7 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
   &__price {
     @extend .info-window__value;
     text-align: right;
