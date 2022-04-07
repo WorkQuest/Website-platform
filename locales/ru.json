@@ -1301,7 +1301,7 @@
     "newDiscussionLike": "Новый лайк на дискуссии"
   },
   "wallet": {
-    "delegated": "Delegated",
+    "delegated": "Заделегировано",
     "WUSD": "WUSD wallet",
     "cryptoWallet": "Crypto wallet",
     "send": "Send",
