@@ -46,10 +46,10 @@
       "mb": "{count} MB",
       "kb": "{count} KB",
       "percentsCount": "{count}%",
-      "minutes": "{count} минуты",
-      "hours": "{count} часы",
-      "years": "{count} годы",
-      "days": "{count} дни",
+      "minutes": "{count} минута | {count} минуты | {count} минут",
+      "hours": "{count} час | {count} часа | {count} часов",
+      "years": "{count} год | {count} года | {count} лет",
+      "days": "{count} день | {count} дня  | {count} дней" ,
       "votesCount": "{count} голоса",
       "distance": {
         "m": "m"
