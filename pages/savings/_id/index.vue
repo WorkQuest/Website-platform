@@ -123,7 +123,6 @@ export default {
   modals,
   data() {
     return {
-      date: '',
       items: [
         {
           userName: 'John Doe',
