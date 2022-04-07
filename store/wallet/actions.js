@@ -21,23 +21,8 @@ import {
 } from '~/utils/wallet.js';
 
 export default {
-  async delegatedBalance({ commit }, address) {
-    const freezed = async () => {
-      // TODO: Протестить
-      try {
-        const res = await fetchContractData(
-          'freezed',
-          abi.WQTToken,
-          process.env.WORKNET_WQT_TOKEN,
-          [address],
-          GetWalletProvider(),
-        );
-        return success(res);
-      } catch (e) {
-        console.error('getFreezed; ', e);
-        return false;
-      }
-    };
+  async delegatedBalance({ commit }) {
+    const freezed = await getFreezed();
     commit('user/setDelegatedBalance', getStyledAmount(freezed.result), { root: true });
   },
   async getPensionTransactions({ commit, getters }, { method, limit, offset }) {

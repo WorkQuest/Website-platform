@@ -269,8 +269,8 @@ export default {
     async loadData() {
       this.SetLoader(true);
       await Promise.all([
-        this.$store.dispatch('wallet/delegatedBalance', this.userWalletAddress),
         this.updateBalanceWQT(),
+        this.$store.dispatch('wallet/delegatedBalance', this.userWalletAddress),
         this.updateBalanceWUSD(),
         this.getTransactions(),
       ]);

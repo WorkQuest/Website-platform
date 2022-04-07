@@ -25,6 +25,7 @@
             </span>
             <base-dd
               v-model="ddValue"
+              data-selector="TOKEN"
               :items="tokenSymbolsDd"
             />
           </div>
@@ -71,7 +72,7 @@
           <base-btn
             class="buttons__action"
             data-selector="SEND"
-            :disabled="invalid || !isCanSubmit"
+            :disabled="invalid || !isCanSubmit || amount === 0"
             @click="handleSubmit(showWithdrawInfo)"
           >
             {{ $t('meta.btns.send') }}
@@ -113,6 +114,7 @@ export default {
       selectedToken: 'wallet/getSelectedToken',
       userData: 'user/getUserData',
       isConnected: 'wallet/getIsWalletConnected',
+      delegatedBalance: 'user/getDelegatedBalance',
     }),
     tokenSymbolsDd() {
       return Object.keys(TokenSymbols);
@@ -172,7 +174,7 @@ export default {
         this.amount = max.isGreaterThan(0) ? max.toString() : 0;
         return;
       }
-      this.amount = this.maxAmount;
+      this.amount = this.maxAmount - this.delegatedBalance;
     },
     async transfer() {
       let res;
