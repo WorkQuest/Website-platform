@@ -354,12 +354,16 @@ export default {
   }
 }
 .quest {
+  display: flex;
+  align-items: center;
   &__invitation {
     @include text-simple;
     font-weight: 400;
     font-size: 16px;
     color: $black800;
     letter-spacing: 0.03em;
+    margin-right:10px;
+    white-space: nowrap;
   }
   &__title {
     @include text-simple;
@@ -382,7 +386,6 @@ export default {
 
 @include _1199 {
   .notifications-page {
-
     &__main-container {
       padding: 20px;
     }
@@ -390,17 +393,16 @@ export default {
 }
 
 @include _991 {
-  .page {
-    &__container {
-      max-width: 100%;
-      width: auto;
+  .quest {
+    &__title{
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: initial;
+
     }
   }
   .notification {
     grid-template-columns: 52px auto 100px;
-    &__quest {
-      min-width: auto;
-    }
   }
 }
 @include _767 {
@@ -424,7 +426,10 @@ export default {
     &__remove {
       display: block;
       grid-row: 2;
-      align-self: unset;
+      align-self: center;
+    }
+    &__quest {
+      max-width: 90%;
     }
   }
   .inviter {
