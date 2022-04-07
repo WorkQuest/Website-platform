@@ -93,31 +93,26 @@ export default {
       }
     },
     async actionCheck() {
+      const { payload } = this.options;
       switch (this.options.mode) {
         case 'borrow':
           // eslint-disable-next-line no-case-declarations
           const checkTokenPrice = await this.setTokenPrice();
           // eslint-disable-next-line no-case-declarations
-          const {
-            payload: {
-              value, symbol, nonce, fundIndex, duration,
-            },
-          } = this.options;
-          // eslint-disable-next-line no-case-declarations
           const approveAllowed = await this.$store.dispatch('wallet/approveRouter', {
-            symbol,
+            symbol: payload.symbol,
             spenderAddress: process.env.BORROWING,
-            value,
+            value: payload.value,
           });
           if (checkTokenPrice && approveAllowed) {
             return await this.$store.dispatch('crediting/sendMethod', {
-              value,
+              value: payload.value,
               data: [
-                nonce,
-                new BigNumber(value).multipliedBy(18).toFixed(),
-                fundIndex,
-                duration,
-                symbol,
+                payload.nonce,
+                new BigNumber(payload.value).multipliedBy(18).toFixed(),
+                payload.fundIndex,
+                payload.duration,
+                payload.symbol,
               ],
               method: 'borrow',
               type: 'borrowing',
@@ -125,7 +120,12 @@ export default {
           }
           return false;
         case 'savings':
-          return true;
+          return await this.$store.dispatch('savings/sendMethod', {
+            value: payload.value,
+            data: [payload.lockTime],
+            method: 'deposit',
+            type: 'savings',
+          });
         default:
           return false;
       }

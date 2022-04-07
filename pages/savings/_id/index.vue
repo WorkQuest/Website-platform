@@ -37,27 +37,14 @@
           </div>
           <div class="btn-group_exp">
             <base-btn
+              v-for="(item, key) in buttonsData"
+              :key="key"
+              :mode="item.mode"
               class="btn_bl"
-              data-selector="OPEN-WITHDRAW"
-              @click="openModal($options.modals.withdrawAbout)"
+              :data-selector="`OPEN-${item.type}`"
+              @click="openModal(item.type)"
             >
-              {{ $t('meta.deposit') }}
-            </base-btn>
-            <base-btn
-              class="btn_bl"
-              mode="outline"
-              data-selector="OPEN-DEPOSIT"
-              @click="openModal($options.modals.openADeposit)"
-            >
-              {{ $t('meta.deposit') }}
-            </base-btn>
-            <base-btn
-              class="btn_bl"
-              mode="outline"
-              data-selector="OPEN-CLAIM"
-              @click="openModal($options.modals.openADeposit)"
-            >
-              {{ $t('modals.claim') }}
+              {{ item.name }}
             </base-btn>
           </div>
         </div>
@@ -223,6 +210,25 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
+    buttonsData() {
+      return [
+        {
+          mode: '',
+          type: 'WITHDRAW',
+          name: this.$t('meta.withdraw'),
+        },
+        {
+          mode: 'outline',
+          type: 'DEPOSIT',
+          name: this.$t('meta.deposit'),
+        },
+        {
+          mode: 'outline',
+          type: 'CLAIM',
+          name: this.$t('modals.claim'),
+        },
+      ];
+    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -230,7 +236,10 @@ export default {
   },
   methods: {
     openModal(key) {
-      this.ShowModal({ key });
+      this.ShowModal({
+        key: modals.valueSend,
+        mode: key,
+      });
     },
   },
 };
@@ -289,17 +298,6 @@ export default {
       &:hover {
         background-color: #0083C71A;
         border: 0;
-      }
-
-      &_bl {
-        @extend .btn;
-        background-color: #0083C7;
-        border: unset;
-        color: #fff;
-
-        &:hover {
-          background-color: #103d7c;
-        }
       }
     }
 

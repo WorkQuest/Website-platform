@@ -157,6 +157,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import moment from 'moment';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -165,6 +166,13 @@ export default {
     return {
       selCardID: -1,
       indexFAQ: [],
+      interestRate: {
+        7: 5.31,
+        14: 5.48,
+        30: 5.66,
+        90: 6,
+        180: 6.5,
+      },
       date: 0,
       windowSize: window.innerWidth,
       amount: '',
@@ -209,30 +217,6 @@ export default {
         },
       ];
     },
-    cards() {
-      return [
-        {
-          text: this.$tc('saving.card', { rate: 4.51, duration: 7 }),
-          sel: false,
-        },
-        {
-          text: this.$t('saving.card', { rate: 4.67, duration: 14 }),
-          sel: false,
-        },
-        {
-          text: this.$t('saving.card', { rate: 4.82, duration: 30 }),
-          sel: false,
-        },
-        {
-          text: this.$t('saving.card', { rate: 5.11, duration: 90 }),
-          sel: false,
-        },
-        {
-          text: this.$t('saving.card', { rate: 5.23, duration: 180 }),
-          sel: false,
-        },
-      ];
-    },
     documents() {
       return [
         {
@@ -256,36 +240,36 @@ export default {
       if (this.windowSize < 575) {
         return [
           {
-            perc: this.$tc('meta.units.percentsCount', 5.31),
+            perc: this.$tc('meta.units.percentsCount', this.interestRate[7]),
             date: this.$tc('meta.units.days', 7),
           },
           {
-            perc: this.$tc('meta.units.percentsCount', 5.48),
+            perc: this.$tc('meta.units.percentsCount', this.interestRate[14]),
             date: this.$tc('meta.units.days', 14),
           },
           {
-            perc: this.$tc('meta.units.percentsCount', 5.66),
+            perc: this.$tc('meta.units.percentsCount', this.interestRate[30]),
             date: this.$tc('meta.units.days', 30),
           },
         ];
       }
       return [
         {
-          perc: this.$tc('meta.units.percentsCount', 5.31),
+          perc: this.$tc('meta.units.percentsCount', this.interestRate[7]),
           date: this.$tc('meta.units.days', 7),
         },
         {
           perc: 'line',
         },
         {
-          perc: this.$tc('meta.units.percentsCount', 5.48),
+          perc: this.$tc('meta.units.percentsCount', this.interestRate[14]),
           date: this.$tc('meta.units.days', 14),
         },
         {
           perc: 'line',
         },
         {
-          perc: this.$tc('meta.units.percentsCount', 5.66),
+          perc: this.$tc('meta.units.percentsCount', this.interestRate[30]),
           date: this.$tc('meta.units.days', 30),
         },
       ];
@@ -294,25 +278,25 @@ export default {
       if (this.windowSize < 575) {
         return [
           {
-            perc: this.$tc('meta.units.percentsCount', 6),
+            perc: this.$tc('meta.units.percentsCount', this.interestRate[90]),
             date: this.$tc('meta.units.days', 90),
           },
           {
-            perc: this.$tc('meta.units.percentsCount', 6.5),
+            perc: this.$tc('meta.units.percentsCount', this.interestRate[180]),
             date: this.$tc('meta.units.days', 180),
           },
         ];
       }
       return [
         {
-          perc: this.$tc('meta.units.percentsCount', 6),
+          perc: this.$tc('meta.units.percentsCount', this.interestRate[90]),
           date: this.$tc('meta.units.days', 90),
         },
         {
           perc: 'line',
         },
         {
-          perc: this.$tc('meta.units.percentsCount', 6.5),
+          perc: this.$tc('meta.units.percentsCount', this.interestRate[180]),
           date: this.$tc('meta.units.days', 180),
         },
       ];
@@ -341,16 +325,16 @@ export default {
     openOpenADepositModal() {
       const receiptData = [
         {
-          title: this.$t('modals.currencyDetails'),
-          subtitle: this.$t('meta.coins.eth'),
+          title: this.$t('modals.percentage'),
+          subtitle: this.$tc('meta.units.percentsCount', this.interestRate[this.datesNumber[this.date]]),
         },
         {
           title: this.$t('modals.depositing'),
-          subtitle: this.$tc('meta.coins.count.ETHCount', 1),
+          subtitle: this.$tc('meta.coins.count.WUSDCount', this.amount),
         },
         {
-          title: this.$t('modals.generatingDetails'),
-          subtitle: this.$tc('meta.coins.count.WUSDCount', 1000),
+          title: this.$t('crediting.dueDate'),
+          subtitle: moment().add(this.datesNumber[this.date], 'days').format('DD.MM.YYYY'),
         },
       ];
       const dataForStatusModal = {
