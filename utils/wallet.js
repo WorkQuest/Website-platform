@@ -466,7 +466,7 @@ export const getFreezed = async () => {
   try {
     const res = await fetchContractData(
       'freezed',
-      abi.WQTToken,
+      abi.ERC20,
       process.env.WORKNET_WQT_TOKEN,
       [wallet.address],
       GetWalletProvider(),
