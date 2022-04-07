@@ -686,12 +686,29 @@ export default {
     max-width: 250px;
   }
   .selector {
+    @include box;
+    width: 100%;
+    z-index: 140;
     &__items {
-      padding: 10px;
-      background-color: $black0;
-      border-radius: 5px;
-      border: 1px solid $blue;
+      background: #FFFFFF;
+      display: grid;
+      grid-template-columns: 1fr;
+      width: 100%;
+    }
+
+    &__item {
+      @include text-simple;
+      padding: 15px 20px;
+      background: #FFFFFF;
+      font-weight: 500;
+      font-size: 16px;
+      color: $black800;
       cursor: pointer;
+      transition: .3s;
+
+      &:hover {
+        background: #F3F7FA;
+      }
     }
   }
 }
