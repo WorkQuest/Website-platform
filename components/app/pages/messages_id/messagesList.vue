@@ -614,7 +614,7 @@ export default {
   }
 }
 
-.info-message {;
+.info-message {
   display: grid;
   grid-template-columns: repeat(3, auto);
   gap: 5px;
