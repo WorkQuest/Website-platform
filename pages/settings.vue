@@ -188,7 +188,7 @@ export default {
     updateCoordinates(coordinates) {
       this.profile.locationFull.location.longitude = +coordinates.lng;
       this.profile.locationFull.location.latitude = +coordinates.lat;
-      this.profile.locationFull.locationPlaceName = coordinates.address;
+      this.profile.locationFull.locationPlaceName = coordinates.formatted;
     },
 
     // MODALS METHODS

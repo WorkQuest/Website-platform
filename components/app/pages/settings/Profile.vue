@@ -510,8 +510,9 @@ export default {
     selectAddress(address, i) {
       this.selectedAddressIndex = i;
       this.profile.locationFull.locationPlaceName = address.formatted;
+
       this.addresses = [];
-      this.$emit('updateCoordinates', this.coordinates);
+      this.$emit('updateCoordinates', address);
     },
     async getAddressInfo(address) {
       try {
