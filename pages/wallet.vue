@@ -251,7 +251,6 @@ export default {
   },
   async mounted() {
     if (!this.isWalletConnected) return;
-    await this.$store.dispatch('wallet/delegatedBalance', this.userWalletAddress);
     const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
     this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
     await this.loadData();
@@ -270,6 +269,7 @@ export default {
     async loadData() {
       this.SetLoader(true);
       await Promise.all([
+        this.$store.dispatch('wallet/delegatedBalance', this.userWalletAddress),
         this.updateBalanceWQT(),
         this.updateBalanceWUSD(),
         this.getTransactions(),
