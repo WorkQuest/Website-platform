@@ -346,6 +346,8 @@ export const disconnectWeb3 = () => {
   account = {};
 };
 
+export const createInstanceWeb3 = async (ab, address) => new web3.eth.Contract(ab, address);
+
 export const createInstance = async (ab, address) => {
   const abs = web4.getContractAbstraction(ab);
   return await abs.getInstance(address);

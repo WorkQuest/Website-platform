@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import { Chains } from '~/utils/enums';
 
@@ -151,20 +151,21 @@ export default {
     },
   },
   async mounted() {
-    const payload = {
+    await this.fetchBalance({
       token: this.tokens[this.token],
       chainTo: this.crosschainFlow.toChain.id,
-    };
-    await this.$store.dispatch('web3/getCrosschainTokensData', payload);
+    });
   },
   methods: {
+    ...mapActions({
+      fetchBalance: 'bridge/fetchBalance',
+    }),
     async changeToken() {
       this.amount = 0;
-      const payload = {
+      await this.fetchBalance({
         token: this.tokens[this.token],
         chainTo: this.crosschainFlow.toChain.id,
-      };
-      await this.$store.dispatch('web3/getCrosschainTokensData', payload);
+      });
     },
     setMaxValue() {
       this.amount = this.tokensData.tokenAmount;
