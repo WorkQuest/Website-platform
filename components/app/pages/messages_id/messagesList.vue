@@ -625,6 +625,7 @@ export default {
     cursor: pointer;
     overflow: hidden;
     white-space: nowrap;
+    text-overflow: ellipsis;
 
     &_left {
       grid-column: 1;
