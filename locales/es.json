@@ -1924,7 +1924,8 @@
       "requested": "Solicitadas",
       "completed": "Ofertas completadas",
       "active": "Ofertas activas",
-      "invited": "Invitaciones a ofertas"
+      "invited": "Invitaciones a ofertas",
+      "created": "Created quests"
     }
   },
   "footer": {
