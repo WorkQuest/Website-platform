@@ -1376,7 +1376,12 @@
   "settings": {
     "additionalPhoneNumber": "Additional phone number",
     "mainPhoneNumber": "Main phone number",
-    "workProposals": "Filter all work proposals",
+    "whoCouldIInvite": "Who could I invite to the quest?",
+    "whoCouldInviteMe": "Who could invite me to the quest?",
+    "topRanked": "Top ranked",
+    "reliable": "Reliable",
+    "verified": "Verified",
+    "noStatus": "Without status",
     "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
@@ -1408,9 +1413,6 @@
     "workExps": {
       "companyName": "Nombre de la empresa"
     },
-    "urgentJobOffers": "Ofertas de empleo urgentes",
-    "shortTermJobOffers": "Ofertas de empleo a corto plazo",
-    "fixedDeliveryJobOffers": "Ofertas de empleo por obra y servicio",
     "addInfo": "Puede añadir información personal, cargar una foto de perfil y completar el procedimiento de «conocer al cliente» para incrementar su calificación. La calificación depende de los datos de su perfil y de sus opiniones.",
     "alsoRating": "Cuanto mayor sea su clasificación, más fácil será encontrarle en búsquedas.",
     "dontShow": "No volver a mostrar",

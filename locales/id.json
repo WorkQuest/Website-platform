@@ -1376,7 +1376,12 @@
   "settings": {
     "additionalPhoneNumber": "Additional phone number",
     "mainPhoneNumber": "Main phone number",
-    "workProposals": "Filter all work proposals",
+    "whoCouldIInvite": "Who could I invite to the quest?",
+    "whoCouldInviteMe": "Who could invite me to the quest?",
+    "topRanked": "Top ranked",
+    "reliable": "Reliable",
+    "verified": "Verified",
+    "noStatus": "Without status",
     "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
@@ -1408,9 +1413,6 @@
     "workExps": {
       "companyName": "Nama perusahaan"
     },
-    "urgentJobOffers": "Penawaran pekerjaan mendesak",
-    "shortTermJobOffers": "Penawaran pekerjaan jangka pendek",
-    "fixedDeliveryJobOffers": "Penawaran pekerjaan pengiriman tetap",
     "addInfo": "Anda dapat menambahkan informasi tentang diri Anda, mengunggah foto profil, dan menyimak prosedur KYC untuk meningkatkan peringkat Anda. Peringkat ini tergantung pada data profil dan ulasan Anda.",
     "alsoRating": "Semakin tinggi peringkat Anda, semakin mudah untuk menemukan Anda dalam pencarian.",
     "dontShow": "Jangan tampilkan lagi",

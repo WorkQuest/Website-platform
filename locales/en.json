@@ -1376,7 +1376,12 @@
   "settings": {
     "additionalPhoneNumber": "Additional phone number",
     "mainPhoneNumber": "Main phone number",
-    "workProposals": "Filter all work proposals",
+    "whoCouldIInvite": "Who could I invite to the quest?",
+    "whoCouldInviteMe": "Who could invite me to the quest?",
+    "topRanked": "Top ranked",
+    "reliable": "Reliable",
+    "verified": "Verified",
+    "noStatus": "Without status",
     "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
@@ -1408,9 +1413,6 @@
     "workExps": {
       "companyName": "Company name"
     },
-    "urgentJobOffers": "Urgent job offers",
-    "shortTermJobOffers": "Short term job offers",
-    "fixedDeliveryJobOffers": "Fixed delivery job offers",
     "addInfo": "You can add information about yourself, upload a profile photo and go through the KYC procedure to increase your rating. The rating depends on your profile data and reviews.",
     "alsoRating": "The higher your ranking, the easier it is to find you in searches.",
     "dontShow": "Don’t show again",

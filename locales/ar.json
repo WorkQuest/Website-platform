@@ -1376,7 +1376,13 @@
   "settings": {
     "additionalPhoneNumber": "Additional phone number",
     "mainPhoneNumber": "Main phone number",
-    "workProposals": "Filter all work proposals",
+    "whoCouldIInvite": "Who could I invite to the quest?",
+    "whoCouldInviteMe": "Who could invite me to the quest?",
+    "topRanked": "Top ranked",
+    "reliable": "Reliable",
+    "verified": "Verified",
+    "noStatus": "Without status",
+    "interactOnly": "Interact only with:",
     "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
@@ -1408,9 +1414,6 @@
     "workExps": {
       "companyName": "اسم الشركة"
     },
-    "urgentJobOffers": "عروض عمل عاجلة",
-    "shortTermJobOffers": "عروض عمل قصيرة المدى",
-    "fixedDeliveryJobOffers": "عروض ذات موعد تسليم ثابت",
     "addInfo": "يمكنك إضافة معلومات عنك، وتحميل صورة الملف التعريفي والخضوع لإجراء \"اعرف عميلك\" (KYC) لزيادة تقييمك. يعتمد التقييم على بيانات ملفك التعريفي والمراجعات.",
     "alsoRating": "كلما ارتفع ترتيبك، كان من الأسهل العثور عليك في عمليات البحث.",
     "dontShow": "عدم الإظهار مرة أخرى",

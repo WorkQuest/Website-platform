@@ -36,7 +36,10 @@
         @click="editUserData"
         @checkValidate="checkValidate"
       />
-      <advanced @showModalKey="showModalKey" />
+      <advanced
+        @updateVisibility="updateVisibility($event)"
+        @showModalKey="showModalKey"
+      />
     </ValidationObserver>
   </div>
 </template>
@@ -166,7 +169,7 @@ export default {
         },
         locationPlaceName: userData.locationPlaceName,
       },
-      profileVisibilitySetting: userData.profileVisibilitySetting,
+      profileVisibilitySetting: JSON.parse(JSON.stringify(userData.profileVisibilitySetting)),
     };
     this.skills = {
       priorityIndex: userData.priority,
@@ -285,7 +288,10 @@ export default {
       if (firstMobileNumber) await this.editProfile(checkAvatarID);
       if (!firstMobileNumber) this.showModalStatus('enterPhoneNumber');
     },
-
+    async updateVisibility(profileVisibility) {
+      this.profile.profileVisibilitySetting.network = profileVisibility.visibilityUser;
+      this.profile.profileVisibilitySetting.ratingStatus = profileVisibility.restrictionRankingStatus;
+    },
     async checkValidate() {
       const validateEducation = this.userRole === UserRole.EMPLOYER ? true : await this.validateKnowledge('education',
         this.newEducation.length > 0 ? this.newEducation : 'validated');

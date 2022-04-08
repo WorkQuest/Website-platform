@@ -1376,7 +1376,8 @@
   "settings": {
     "additionalPhoneNumber": "Additional phone number",
     "mainPhoneNumber": "Main phone number",
-    "workProposals": "Filter all work proposals",
+    "whoCouldIInvite": "Who could I invite to the quest?",
+    "whoCouldInviteMe": "Who could invite me to the quest?",
     "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
@@ -1408,9 +1409,6 @@
     "workExps": {
       "companyName": "कंपनी का नाम"
     },
-    "urgentJobOffers": "अर्जेंट जॉब ऑफर",
-    "shortTermJobOffers": "शॉर्ट टर्म जॉब ऑफर",
-    "fixedDeliveryJobOffers": "फिक्स्ड डिलीवरी जॉब ऑफर",
     "addInfo": "आप अपने बारे में जानकारी जोड़ सकते हैं, प्रोफाइल फोटो अपलोड करें और अपनी रेटिंग बढ़ाने के लिए KYC प्रक्रिया से गुजरते हुए आगे बढ़ें। रेटिंग आपके प्रोफाइल डेटा और रिव्यू पर निर्भर करती है।",
     "alsoRating": "आपकी रैंकिंग जितनी अधिक होगी, आपको सर्च में ढूंढ़ना उतना ही आसान होगा।",
     "dontShow": "फिर से न दिखाएं",

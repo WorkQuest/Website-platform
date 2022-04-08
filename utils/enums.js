@@ -342,3 +342,16 @@ export const RaiseViewStatus = {
   0: true,
   1: false,
 };
+
+export const NetworkProfileVisibility = Object.freeze({
+  allUsers: 0,
+  submittingOffer: 1,
+});
+
+export const RatingStatus = Object.freeze({
+  topRanked: 0,
+  reliable: 1,
+  verified: 2,
+  noStatus: 3,
+  AllStatuses: 4,
+});

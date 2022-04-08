@@ -1376,7 +1376,12 @@
   "settings": {
     "additionalPhoneNumber": "Additional phone number",
     "mainPhoneNumber": "Main phone number",
-    "workProposals": "Filter all work proposals",
+    "whoCouldIInvite": "Who could I invite to the quest?",
+    "whoCouldInviteMe": "Who could invite me to the quest?",
+    "topRanked": "Top ranked",
+    "reliable": "Reliable",
+    "verified": "Verified",
+    "noStatus": "Without status",
     "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
@@ -1408,9 +1413,6 @@
     "workExps": {
       "companyName": "Nom de l'entreprise"
     },
-    "urgentJobOffers": "Offres d'emploi urgentes",
-    "shortTermJobOffers": "Offres d'emploi à court terme",
-    "fixedDeliveryJobOffers": "Offres d'emploi à livraison fixe",
     "addInfo": "Vous pouvez ajouter des informations vous concernant, téléverser une photo de profil et suivre la procédure KYC pour augmenter votre note. La note dépend des données de votre profil et des évaluations fournies.",
     "alsoRating": "Plus votre note est élevée, plus il est facile de vous trouver dans les recherches.",
     "dontShow": "Ne plus afficher",
