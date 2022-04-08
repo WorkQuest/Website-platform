@@ -126,10 +126,9 @@ export default {
       this.SetLoader(true);
       const { contractAddress } = this.questData;
       const { worker } = response;
-      console.log('TRYING TO ASSIGN WORKER', worker);
       const workerAddress = worker.wallet.address;
       const [feeRes] = await Promise.all([
-        this.$store.dispatch('wallet/getFeeDataJobMethod', {
+        this.$store.dispatch('quests/getFeeDataJobMethod', {
           method: QuestMethods.AssignJob,
           contractAddress,
           data: [workerAddress],
@@ -138,13 +137,13 @@ export default {
       ]);
       this.SetLoader(false);
       if (feeRes.ok === false) {
-        // how to handle error?
         console.log('startQuest fee error', feeRes);
         return;
       }
       this.ShowModal({
         key: modals.transactionReceipt,
-        title: 'Assign worker to quest',
+        title: this.$t('quests.startQuest'),
+        isShowSuccess: true,
         fields: {
           from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
           to: { name: this.$t('meta.toBig'), value: contractAddress },
@@ -155,7 +154,7 @@ export default {
           },
         },
         submitMethod: async () => {
-          const txRes = await this.$store.dispatch('wallet/assignJob', {
+          const txRes = await this.$store.dispatch('quests/assignJob', {
             contractAddress,
             workerAddress,
           });

@@ -78,6 +78,7 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'QuestPanel',
+  QuestStatuses,
   components: {
     skills,
   },
@@ -97,7 +98,7 @@ export default {
       questData: 'quests/getQuest',
     }),
     questDDMode() {
-      return ![InfoModeEmployer.Dispute, InfoModeEmployer.Done].includes(this.questData.status);
+      return ![QuestStatuses.Pending, InfoModeEmployer.Dispute, InfoModeEmployer.Done].includes(this.questData.status);
     },
     InfoModeEmployer() {
       return InfoModeEmployer;

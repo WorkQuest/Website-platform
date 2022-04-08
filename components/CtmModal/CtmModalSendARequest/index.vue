@@ -52,7 +52,7 @@
                     mode="outline"
                     data-selector="CANCEL"
                     class="message__action"
-                    @click="hide()"
+                    @click="CloseModal"
                   >
                     {{ $t('meta.btns.cancel') }}
                   </base-btn>
@@ -89,9 +89,6 @@ export default {
   methods: {
     updateFiles(files) {
       this.files = files;
-    },
-    hide() {
-      this.CloseModal();
     },
     async respondOnQuest() {
       const medias = await this.uploadFiles(this.files);

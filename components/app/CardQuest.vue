@@ -133,7 +133,7 @@
             class="card-quest__amount"
             :class="getAmountStyles(quest)"
           >
-            {{ `${quest.price}  ${$options.TokenSymbols.WUSD}` }}
+            {{ `${questReward}  ${$options.TokenSymbols.WUSD}` }}
           </div>
         </div>
         <div class="card-quest__details">
@@ -171,6 +171,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import {
   QuestStatuses, questPriority, UserRole, Path, TokenSymbols, QuestModeReview,
 } from '~/utils/enums';
@@ -212,6 +213,9 @@ export default {
     }),
     rating() {
       return this.quest.yourReview?.mark || 0;
+    },
+    questReward() {
+      return new BigNumber(this.quest.price).shiftedBy(-18).toString();
     },
   },
   async mounted() {

@@ -332,6 +332,7 @@
     "invite": "Invite",
     "decline": "Decline",
     "declinedTheInvitation": "Declined the invitation",
+    "acceptedTheInvitation": "Accepted the invitation",
     "questTitle": "Quest title",
     "questDesc": "Quest description",
     "closed": "Closed",

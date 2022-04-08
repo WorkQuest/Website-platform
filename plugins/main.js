@@ -163,12 +163,12 @@ Vue.mixin({
       clearTimeout(delayId);
       return setTimeout(func, timeout);
     },
-    async DeleteQuest(questData) {
+    async DeleteQuest(questData, callback) {
       const { id, status, contractAddress } = questData;
       if (contractAddress && [QuestStatuses.Closed, QuestStatuses.Created].includes(status)) {
         this.SetLoader(true);
         const [feeRes] = await Promise.all([
-          this.$store.dispatch('wallet/getFeeDataJobMethod', {
+          this.$store.dispatch('quests/getFeeDataJopMethod', {
             method: QuestMethods.CancelJob,
             contractAddress,
           }),
@@ -189,12 +189,12 @@ Vue.mixin({
           },
           submitMethod: async () => {
             this.SetLoader(true);
-            const trxRes = await this.$store.dispatch('wallet/cancelJob', contractAddress);
+            const trxRes = await this.$store.dispatch('quests/cancelJob', contractAddress);
             if (!trxRes.ok) this.ShowToast(trxRes.msg);
             // TODO: удалить запрос на бэк, если он сам будет отлавливать удаление квеста
-            const delRes = await this.$store.dispatch('quests/deleteQuest', { questId: id });
+            // const delRes = await this.$store.dispatch('quests/deleteQuest', { questId: id });
             this.SetLoader(false);
-            if (delRes && trxRes.ok) {
+            if (/* delRes && */trxRes.ok) {
               const routeName = this.$route.name;
               if (routeName === 'quests-id') {
                 await this.$router.replace('/my');

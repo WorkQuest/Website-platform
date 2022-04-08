@@ -245,7 +245,7 @@
                 <base-btn
                   data-selector="EDIT-QUEST"
                   mode="outline"
-                  @click="editQuest"
+                  @click="toEditQuest"
                 >
                   {{ $t('meta.skipAndEnd') }}
                 </base-btn>
@@ -269,7 +269,10 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
+import { QuestMethods, TokenSymbols } from '~/utils/enums';
+import { hashText } from '~/utils/wallet';
 
 const { GeoCode } = require('geo-coder');
 
@@ -296,10 +299,15 @@ export default {
       files: [],
       mode: this.$route.query?.mode || '',
       geoCode: null,
+      prevPrice: null,
+      prevDescription: null,
     };
   },
   computed: {
     ...mapGetters({
+      isWalletConnected: 'wallet/getIsWalletConnected',
+      userWalletAddress: 'user/getUserWalletAddress',
+      questFee: 'wallet/getQuestsFee',
       questData: 'quests/getQuest',
       step: 'quests/getCurrentStepEditQuest',
     }),
@@ -392,14 +400,32 @@ export default {
       ];
     },
   },
+  beforeCreate() {
+    this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+  },
   async mounted() {
+    if (!this.isWalletConnected) return;
     this.SetLoader(true);
     await this.$store.dispatch('quests/getQuest', this.$route.params.id);
     this.geoCode = new GeoCode('google', {
       key: process.env.GMAPKEY,
       lang: this.$i18n?.localeProperties?.code || 'en-US',
     });
-    await this.editQuestFill();
+    const {
+      title, locationPlaceName, price, description, location, employment,
+    } = this.questData;
+
+    this.runtimeValue = 1;
+    this.employmentIndex = this.parseEmployment(employment);
+    this.questTitle = title;
+    this.address = locationPlaceName;
+    this.price = new BigNumber(price).shiftedBy(-18).toString();
+    this.textarea = description;
+    this.coordinates.lng = location.longitude;
+    this.coordinates.lat = location.latitude;
+
+    this.prevPrice = this.price;
+    this.prevDescription = description;
     this.SetLoader(false);
   },
   methods: {
@@ -408,20 +434,6 @@ export default {
     },
     updateSelectedSkills(specAndSkills) {
       this.selectedSpecAndSkills = specAndSkills;
-    },
-    async editQuestFill() {
-      const {
-        title, locationPlaceName, price, description, location, employment,
-      } = this.questData;
-
-      this.runtimeValue = 1;
-      this.employmentIndex = this.parseEmployment(employment);
-      this.questTitle = title;
-      this.address = locationPlaceName;
-      this.price = price;
-      this.textarea = description;
-      this.coordinates.lng = location.longitude;
-      this.coordinates.lat = location.latitude;
     },
     cardStatus({ code }) {
       if (code === 1) return 'level__card_gold';
@@ -509,6 +521,80 @@ export default {
         this.addresses = [];
         console.error('Geo look up is failed', e);
       }
+    },
+    async toEditQuest() {
+      if (this.prevPrice === this.price && this.prevDescription === this.textarea) {
+        await this.editQuest();
+        return;
+      }
+
+      let feeRes;
+      let depositAmount;
+      const { contractAddress } = this.questData;
+      // Quest Cost Increased
+      if (new BigNumber(this.price).isGreaterThan(this.prevPrice)) {
+        depositAmount = new BigNumber(this.price).minus(this.prevPrice).multipliedBy(1 + this.questFee).toString();
+        [feeRes] = await Promise.all([
+          this.$store.dispatch('quests/getEditQuestFeeData', {
+            contractAddress,
+            description: this.textarea,
+            cost: this.price,
+            depositAmount,
+          }),
+          this.$store.dispatch('wallet/getBalance'),
+        ]);
+      } else {
+        [feeRes] = await Promise.all([
+          this.$store.dispatch('quests/getFeeDataJobMethod', {
+            contractAddress,
+            method: QuestMethods.EditJob,
+            data: [hashText(this.textarea), new BigNumber(this.price).shiftedBy(18).toString()],
+          }),
+          this.$store.dispatch('wallet/getBalance'),
+        ]);
+      }
+
+      if (feeRes.ok === false) {
+        this.ShowToast(this.$t('errors.transaction.notEnoughFunds'));
+        return;
+      }
+
+      const fields = {
+        from: {
+          name: this.$t('meta.fromBig'),
+          value: this.userWalletAddress,
+        },
+        to: {
+          name: this.$t('meta.toBig'),
+          value: contractAddress,
+        },
+        fee: {
+          name: this.$t('wallet.table.trxFee'),
+          value: feeRes.result.fee,
+          symbol: TokenSymbols.WUSD,
+        },
+      };
+      if (depositAmount) {
+        fields.amount = {
+          name: this.$t('modals.amount'),
+          value: depositAmount,
+          symbol: TokenSymbols.WUSD,
+        };
+      }
+      await this.$store.dispatch('wallet/getBalance');
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        fields,
+        submitMethod: async () => {
+          const res = await this.$store.dispatch('quests/editQuestOnContract', {
+            contractAddress,
+            cost: this.price,
+            description: this.textarea,
+            depositAmount,
+          });
+          if (res.ok) await this.editQuest();
+        },
+      });
     },
     async editQuest() {
       if (this.mode === 'raise') {

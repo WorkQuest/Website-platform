@@ -133,10 +133,9 @@
       </div>
       <div class="upload btn btn__container btn__container_right">
         <div class="btn__create">
-          <!--          && !(selectedSpecAndSkills.length === 0)-->
           <base-btn
             selector="CREATE-A-QUEST"
-            :disabled="!(invalid === false)"
+            :disabled="!(invalid === false) && !(selectedSpecAndSkills.length === 0)"
             @click="handleSubmit(createQuest)"
           >
             {{ $t('meta.createAQuest') }}
@@ -163,7 +162,7 @@ export default {
   data() {
     return {
       period: 1,
-      selectedSpecAndSkills: [], // TODO: нельзя выбрать специализации - проблема на бэке
+      selectedSpecAndSkills: [],
       employmentIndex: 0,
       workplaceIndex: 0,
       runtimeIndex: 0,
@@ -272,7 +271,7 @@ export default {
 
       this.SetLoader(true);
       const [feeRes] = await Promise.all([
-        this.$store.dispatch('wallet/getCreateQuestFeeData', {
+        this.$store.dispatch('quests/getCreateQuestFeeData', {
           cost: this.price,
           depositAmount: this.depositAmount,
           description: this.textarea,
@@ -297,7 +296,7 @@ export default {
         employment: TypeOfJobFilter[this.employmentIndex],
         title: this.questTitle,
         description: this.textarea,
-        price: this.price,
+        price: new BigNumber(this.price).shiftedBy(18).toString(),
         medias,
         // TODO интегрировать продвижение
         adType: 0,
@@ -323,7 +322,7 @@ export default {
             fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WUSD },
           },
           submitMethod: async () => {
-            const txRes = await this.$store.dispatch('wallet/createQuest', {
+            const txRes = await this.$store.dispatch('quests/createQuest', {
               depositAmount: this.depositAmount,
               cost: this.price,
               description: this.textarea,

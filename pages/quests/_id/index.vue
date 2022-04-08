@@ -88,7 +88,7 @@
               @input="showReviewModal($event, quest.id)"
             />
             <span class="worker-data__price">
-              {{ quest.price }} {{ $t('meta.coins.wusd') }}
+              {{ questReward }} {{ $t('meta.coins.wusd') }}
             </span>
             <div
               class="worker-data__priority-title"
@@ -156,6 +156,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import {
   Path,
   QuestStatuses,
@@ -196,6 +197,9 @@ export default {
       otherQuests: 'quests/getAllQuests',
       isLoading: 'main/getIsLoading',
     }),
+    questReward() {
+      return new BigNumber(this.quest.price).shiftedBy(-18).toString();
+    },
     rating() {
       return this.quest.yourReview?.mark || 0;
     },
@@ -383,8 +387,6 @@ export default {
       } = InfoModeWorker;
       let arr = [];
 
-      console.log('infoDataMode: ', infoDataMode);
-
       switch (infoDataMode) {
         case ADChat: {
           arr = [{
@@ -488,16 +490,9 @@ export default {
       }
     },
     async closeQuest() {
-      // TODO: Добавить в enum
-      const modalMode = 1;
-      this.SetLoader(true);
       if (this.quest.status !== InfoModeEmployer.WaitWorker) {
-        // TODO [!!!] close quest on contract
-        await this.$store.dispatch('quests/closeQuest', this.quest.id);
-        this.showQuestModal(modalMode);
+        await this.DeleteQuest(this.quest);
       }
-      await this.$router.push(Path.MY_QUESTS);
-      this.SetLoader(false);
     },
     async openDispute() {
       if (this.quest.status === QuestStatuses.Dispute) return await this.$router.push(`${Path.DISPUTES}/${this.quest.openDispute.id}`);
@@ -516,12 +511,10 @@ export default {
       });
     },
     async acceptCompletedWorkOnQuest() {
-      // TODO: Добавить в enum
-      const modalMode = 2;
       this.SetLoader(true);
       const { contractAddress } = this.quest;
       const [feeRes] = await Promise.all([
-        this.$store.dispatch('wallet/getFeeDataJobMethod', {
+        this.$store.dispatch('quests/getFeeDataJobMethod', {
           method: QuestMethods.AcceptJobResult,
           contractAddress,
         }),
@@ -540,12 +533,10 @@ export default {
           fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
         },
         submitMethod: async () => {
-          const txRes = await this.$store.dispatch('wallet/acceptJobResult', contractAddress);
-          console.log('accept completed work res:', txRes);
+          const txRes = await this.$store.dispatch('quests/acceptJobResult', contractAddress);
           if (txRes.ok) {
             this.showQuestModal(2);
-            // TODO: Обновлять сразу или по уведомлениям?
-            // await this.$store.dispatch('quests/setInfoDataMode', InfoModeEmployer.Done);
+            await this.$store.dispatch('quests/setInfoDataMode', QuestStatuses.Done);
           }
         },
       });
@@ -604,7 +595,7 @@ export default {
       this.SetLoader(true);
       const { contractAddress } = this.quest;
       const [feeRes] = await Promise.all([
-        this.$store.dispatch('wallet/getFeeDataJobMethod', {
+        this.$store.dispatch('quests/getFeeDataJobMethod', {
           method: QuestMethods.AcceptJob,
           contractAddress,
         }),
@@ -623,8 +614,7 @@ export default {
           fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
         },
         submitMethod: async () => {
-          const txRes = await this.$store.dispatch('wallet/acceptJob', contractAddress);
-          console.log('accept work res:', txRes);
+          const txRes = await this.$store.dispatch('quests/acceptJob', contractAddress);
           if (txRes.ok) {
             await this.getQuest();
             this.ShowModal({
@@ -641,7 +631,7 @@ export default {
       this.SetLoader(true);
       const { contractAddress } = this.quest;
       const [feeRes] = await Promise.all([
-        this.$store.dispatch('wallet/getFeeDataJobMethod', {
+        this.$store.dispatch('quests/getFeeDataJobMethod', {
           method: QuestMethods.DeclineJob,
           contractAddress,
         }),
@@ -660,8 +650,7 @@ export default {
           fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
         },
         submitMethod: async () => {
-          const txRes = await this.$store.dispatch('wallet/declineJob', contractAddress);
-          console.log('reject work res:', txRes);
+          const txRes = await this.$store.dispatch('quests/declineJob', contractAddress);
           if (txRes.ok) {
             await this.getQuest();
             this.ShowModal({
@@ -678,7 +667,7 @@ export default {
       this.SetLoader(true);
       const { contractAddress } = this.quest;
       const [feeRes] = await Promise.all([
-        this.$store.dispatch('wallet/getFeeDataJobMethod', {
+        this.$store.dispatch('quests/getFeeDataJobMethod', {
           method: QuestMethods.VerificationJob,
           contractAddress,
         }),
@@ -697,8 +686,7 @@ export default {
           fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
         },
         submitMethod: async () => {
-          const txRes = await this.$store.dispatch('wallet/verificationJob', contractAddress);
-          console.log('complete work res:', txRes);
+          const txRes = await this.$store.dispatch('quests/verificationJob', contractAddress);
           if (txRes.ok) {
             await this.getQuest();
             this.ShowModal({

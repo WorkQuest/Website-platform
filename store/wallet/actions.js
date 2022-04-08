@@ -14,8 +14,7 @@ import {
   stake,
   sendWalletTransaction,
   sendQuestTransaction,
-  createQuest,
-  getCreateQuestFeeData, getEditQuestFeeData, hashText, editQuest,
+  getEditQuestFeeData, hashText, editQuest,
 } from '~/utils/wallet';
 import {
   fetchContractData, success, error,
@@ -392,71 +391,5 @@ export default {
       console.error('Renewal error', e.message);
       return error();
     }
-  },
-
-  /** QUESTS */
-  /** Employer */
-  async createQuest({ commit }, {
-    cost, depositAmount, description, nonce,
-  }) {
-    return await createQuest(cost, depositAmount, description, nonce);
-  },
-  async getCreateQuestFeeData({ commit }, {
-    cost, depositAmount, description, nonce,
-  }) {
-    return await getCreateQuestFeeData(cost, depositAmount, description, nonce);
-  },
-  async getEditQuestFeeData({ commit }, { // If we send WUSD
-    contractAddress, description, cost, depositAmount,
-  }) {
-    return await getEditQuestFeeData(contractAddress, description, cost, depositAmount);
-  },
-
-  async getFeeDataJobMethod({ commit }, {
-    method, contractAddress, data,
-  }) {
-    return await getContractFeeData(method, abi.WorkQuest, contractAddress, data);
-  },
-  async editQuest({ commit }, {
-    contractAddress, cost, description, depositAmount = 0,
-  }) {
-    const hash = hashText(description);
-    const _cost = new BigNumber(cost).shiftedBy(18).toString();
-    if (depositAmount) { // Увеличение прайса за квест
-      const _depositAmount = new BigNumber(depositAmount).shiftedBy(18).toString();
-      return await editQuest(contractAddress, _cost, _depositAmount, description);
-    }
-    return await sendQuestTransaction(contractAddress, QuestMethods.EditJob, [hash, _cost]);
-  },
-  // Отмена/Удаление квеста
-  async cancelJob({ commit }, contractAddress) {
-    return await sendQuestTransaction(contractAddress, QuestMethods.CancelJob);
-  },
-  // Пригласить воркера на квест
-  async assignJob({ commit }, { contractAddress, workerAddress }) {
-    return await sendQuestTransaction(contractAddress, QuestMethods.AssignJob, [workerAddress]);
-  },
-  // Принять результат работы воркера
-  async acceptJobResult({ commit }, contractAddress) {
-    return await sendQuestTransaction(contractAddress, QuestMethods.AcceptJobResult);
-  },
-  // TODO: нужен ли этот метод?
-  // employer отменил (reject) результат работы или прошло 3 дня с момента начала verification
-  async arbitration({ commit }, contractAddress) {
-    return await sendQuestTransaction(contractAddress, QuestMethods.Arbitration);
-  },
-
-  /** WORKER */
-  // Отклонить приглашение на квест
-  async declineJob({ commit }, contractAddress) {
-    return await sendQuestTransaction(contractAddress, QuestMethods.DeclineJob);
-  },
-  // Принять и начать квест
-  async acceptJob({ commit }, contractAddress) {
-    return await sendQuestTransaction(contractAddress, QuestMethods.AcceptJob);
-  },
-  // Отправить результат работы на проверку employer'у
-  async verificationJob({ commit }, contractAddress) { // worker отправляет квест на проверку
-    return await sendQuestTransaction(contractAddress, QuestMethods.VerificationJob);
   },
 };

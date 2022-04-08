@@ -1,6 +1,17 @@
+import BigNumber from 'bignumber.js';
 import {
-  InfoModeEmployer, InfoModeWorker, QuestStatuses, ResponsesType, UserRole,
+  InfoModeEmployer, InfoModeWorker, QuestMethods, QuestStatuses, ResponsesType, UserRole,
 } from '~/utils/enums';
+import { WorkQuestFactory, WorkQuest } from '~/abi/abi';
+import {
+  createInstance,
+  getContractFeeData,
+  getProvider,
+  getWalletAddress,
+  hashText,
+  sendWalletTransaction,
+} from '~/utils/wallet';
+import { error, success } from '~/utils/web3';
 
 export default {
   async getWorkerData({ commit }, userId) {
@@ -107,7 +118,7 @@ export default {
       commit('setAllQuests', response.result);
       return response.result;
     } catch (e) {
-      return console.log(e);
+      return console.error(e);
     }
   },
   async editQuest({ commit }, { payload, questId }) {
@@ -116,7 +127,7 @@ export default {
       commit('setQuestData', response.result);
       return response;
     } catch (e) {
-      return console.log(e);
+      return console.error(e);
     }
   },
   async deleteQuest({ commit }, { questId }) {
@@ -124,64 +135,7 @@ export default {
       const response = await this.$axios.$delete(`/v1/quest/${questId}`);
       return response.result;
     } catch (e) {
-      return console.log(e);
-    }
-  },
-  async startQuest({ commit }, { questId, config }) {
-    try {
-      const response = await this.$axios.$post(`/v1/quest/${questId}/start`, config);
-      commit('setInfoDataMode', 4);
-      return response.result;
-    } catch (e) {
-      return console.log(e);
-    }
-  },
-  async completeWorkOnQuest({ commit }, questId) {
-    try {
-      const { ok } = await this.$axios.$post(`/v1/quest/${questId}/complete-work`, questId);
-      return ok;
-    } catch (e) {
-      return console.log(e);
-    }
-  },
-  async rejectWorkOnQuest({ commit }, questId) {
-    try {
-      const { ok } = await this.$axios.$post(`/v1/quest/${questId}/reject-work`, questId);
-      return ok;
-    } catch (e) {
-      return console.log(e);
-    }
-  },
-  async acceptCompletedWorkOnQuest({ commit }, questId) {
-    try {
-      const { ok } = await this.$axios.$post(`/v1/quest/${questId}/accept-completed-work`, questId);
-      return ok;
-    } catch (e) {
-      return console.log(e);
-    }
-  },
-  async acceptWorkOnQuest({ commit }, questId) {
-    try {
-      const { ok } = await this.$axios.$post(`/v1/quest/${questId}/accept-work`);
-      return ok;
-    } catch (e) {
-      return console.log(e);
-    }
-  },
-  async rejectCompletedWorkOnQuest({ commit }, questId) {
-    try {
-      const response = await this.$axios.$post(`/v1/quest/${questId}/reject-completed-work`, questId);
-      return response.result;
-    } catch (e) {
-      return console.log(e);
-    }
-  },
-  async closeQuest({ commit }, questId) {
-    try {
-      const response = await this.$axios.$post(`/v1/quest/${questId}/close`, questId);
-      return response.result;
-    } catch (e) {
-      return console.log(e);
+      return console.error(e);
     }
   },
   async responsesToQuest({ commit }, questId) {
@@ -192,7 +146,7 @@ export default {
       commit('setResponses', { result, responded, invited });
       return result;
     } catch (e) {
-      return console.log(e);
+      return console.error(e);
     }
   },
   async inviteOnQuest({ commit }, { questId, payload }) {
@@ -202,16 +156,17 @@ export default {
       commit('setChatInviteOnQuest', chat);
       return response.result;
     } catch (e) {
-      return console.log(e);
+      return console.error(e);
     }
   },
   async respondOnQuest({ commit }, { data, questId }) {
     try {
       const response = await this.$axios.$post(`/v1/quest/${questId}/response`, data);
       commit('setRespondOnQuest', data);
-      return response;
+      return success(response);
     } catch (e) {
-      return console.log(e);
+      console.error(e);
+      return error();
     }
   },
   async setStarOnQuest({ commit }, id) {
@@ -219,7 +174,7 @@ export default {
       const response = await this.$axios.$post(`/v1/quest/${id}/star`);
       return response.result;
     } catch (e) {
-      return console.log(e);
+      return console.error(e);
     }
   },
   async takeAwayStarOnQuest({ commit }, id) {
@@ -227,7 +182,7 @@ export default {
       const response = await this.$axios.$delete(`/v1/quest/${id}/star`);
       return response.result;
     } catch (e) {
-      return console.log(e);
+      return console.error(e);
     }
   },
   async getStarredQuests({ commit }) {
@@ -236,7 +191,7 @@ export default {
       commit('setStarredQuests', data.result);
       return data.result;
     } catch (e) {
-      return console.log(e);
+      return console.error(e);
     }
   },
   async getResponsesToQuestForAuthUser({ commit }) {
@@ -245,7 +200,7 @@ export default {
       commit('setResponsesMy', response.result);
       return response.result;
     } catch (e) {
-      return console.log(e);
+      return console.error(e);
     }
   },
 
@@ -254,16 +209,15 @@ export default {
       const response = await this.$axios.$post(`/v1/quest/response/${responseId}/accept`);
       return response.result;
     } catch (e) {
-      return console.log(e);
+      return console.error(e);
     }
   },
-
   async rejectQuestInvitation({ commit }, responseId) {
     try {
       const { ok } = await this.$axios.$post(`/v1/quest/response/${responseId}/reject`);
       return ok;
     } catch (e) {
-      console.log(e);
+      console.error(e);
       return false;
     }
   },
@@ -283,7 +237,7 @@ export default {
       const { result } = await this.$axios.$get('/v1/skill-filters');
       commit('setFilters', result);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   },
   setSelectedSpecializationsFilters({ commit }, data) {
@@ -298,8 +252,170 @@ export default {
       commit('setAvailableQuests', response.result.quests);
       return response.ok;
     } catch (e) {
-      console.log('Error: getAvailableQuests');
+      console.error('Error: getAvailableQuests');
       return false;
     }
+  },
+
+  /** Work Quest Factory */
+  async createQuest({ commit }, {
+    cost, depositAmount, description, nonce,
+  }) {
+    try {
+      const address = process.env.WORKNET_WQ_FACTORY;
+      const walletAddress = getWalletAddress();
+      const hash = hashText(description);
+      cost = new BigNumber(cost).shiftedBy(18).toString();
+      depositAmount = new BigNumber(depositAmount).shiftedBy(18).toString();
+      const data = [hash, cost, 0, nonce];
+      const inst = createInstance(WorkQuestFactory, address);
+      const sendData = inst.methods.newWorkQuest.apply(null, data).encodeABI();
+      const [gasPrice, gasEstimate] = await Promise.all([
+        getProvider().eth.getGasPrice(),
+        inst.methods.newWorkQuest.apply(null, data).estimateGas({ from: walletAddress, value: depositAmount }),
+      ]);
+      const res = await getProvider().eth.sendTransaction({
+        to: address,
+        from: walletAddress,
+        value: depositAmount,
+        data: sendData,
+        gasPrice,
+        gas: gasEstimate,
+      });
+      return success(res);
+    } catch (e) {
+      return error(9000, e.message, e);
+    }
+  },
+  /**
+   * Get create quest tx fee
+   * @param commit
+   * @param cost - price for a quest
+   * @param depositAmount - deposit = cost * 1% (create quests fee)
+   * @param description
+   * @param nonce
+   * @returns success|error
+   */
+  async getCreateQuestFeeData({ commit }, {
+    cost, depositAmount, description, nonce,
+  }) {
+    try {
+      const hash = hashText(description);
+      const address = process.env.WORKNET_WQ_FACTORY;
+      cost = new BigNumber(cost).shiftedBy(18).toString();
+      return await getContractFeeData(
+        'newWorkQuest',
+        WorkQuestFactory,
+        address,
+        [hash, cost, 0, nonce],
+        address,
+        depositAmount,
+      );
+    } catch (e) {
+      console.error('get quest create fee', e);
+      return error();
+    }
+  },
+  async editQuestOnContract({ dispatch }, {
+    contractAddress, cost, description, depositAmount = 0,
+  }) {
+    try {
+      const hash = hashText(description);
+      cost = new BigNumber(cost).shiftedBy(18).toString();
+      // if employer increase price for a quest
+      if (depositAmount) {
+        depositAmount = new BigNumber(depositAmount).shiftedBy(18).toString();
+        const walletAddress = getWalletAddress();
+        const inst = createInstance(WorkQuest, contractAddress);
+        const data = [hash, cost];
+        const sendData = inst.methods[QuestMethods.EditJob].apply(null, data).encodeABI();
+        const [gasPrice, gasEstimate] = await Promise.all([
+          getProvider().eth.getGasPrice(),
+          inst.methods[QuestMethods.EditJob].apply(null, data).estimateGas({ from: walletAddress, value: depositAmount }),
+        ]);
+        const res = await getProvider().eth.sendTransaction({
+          to: contractAddress,
+          from: walletAddress,
+          value: depositAmount,
+          data: sendData,
+          gasPrice,
+          gas: gasEstimate,
+        });
+        return success(res);
+      }
+      return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.EditJob, params: [hash, cost] });
+    } catch (e) {
+      return error(9000, e.message, e);
+    }
+  },
+  async getEditQuestFeeData({ commit }, {
+    contractAddress, description, cost, depositAmount,
+  }) {
+    try {
+      const hash = hashText(description);
+      cost = new BigNumber(cost).shiftedBy(18).toString();
+      return await getContractFeeData(
+        QuestMethods.EditJob,
+        WorkQuest,
+        contractAddress,
+        [hash, cost],
+        contractAddress,
+        depositAmount,
+      );
+    } catch (e) {
+      return error(9000, e.message, e);
+    }
+  },
+
+  /** Work Quest */
+  async getFeeDataJobMethod({ commit }, {
+    method, contractAddress, data,
+  }) {
+    return await getContractFeeData(method, WorkQuest, contractAddress, data);
+  },
+  async sendQuestTransaction({ commit }, { contractAddress, method, params = [] }) {
+    try {
+      const res = await sendWalletTransaction(method, {
+        abi: WorkQuest,
+        address: contractAddress,
+        data: params,
+      });
+      console.log(`[QUESTS] ${method}:`, res);
+      return success(res);
+    } catch (e) {
+      console.error(e);
+      return error(500, e.message, e);
+    }
+  },
+  // Отмена/Удаление квеста
+  async cancelJob({ dispatch }, contractAddress) {
+    return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.CancelJob });
+  },
+  // Пригласить воркера на квест
+  async assignJob({ dispatch }, { contractAddress, workerAddress }) {
+    return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.AssignJob, params: [workerAddress] });
+  },
+  // Принять результат работы воркера
+  async acceptJobResult({ dispatch }, contractAddress) {
+    return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.AcceptJobResult });
+  },
+  // TODO: нужен ли этот метод?
+  // employer отменил (reject) результат работы или прошло 3 дня с момента начала verification
+  async arbitration({ dispatch }, contractAddress) {
+    return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.Arbitration });
+  },
+
+  /** WORKER */
+  // Отклонить приглашение на квест
+  async declineJob({ dispatch }, contractAddress) {
+    return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.DeclineJob });
+  },
+  // Принять и начать квест
+  async acceptJob({ dispatch }, contractAddress) {
+    return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.AcceptJob });
+  },
+  // Отправить результат работы на проверку employer'у
+  async verificationJob({ dispatch }, contractAddress) {
+    return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.VerificationJob });
   },
 };

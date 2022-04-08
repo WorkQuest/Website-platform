@@ -102,8 +102,8 @@ export default {
       if (this.userRole === UserRole.EMPLOYER) {
         const obj = {
           [InfoModeEmployer.WaitWorker]: 'quests.activeQuest',
-          [InfoModeEmployer.WaitEmployerConfirm]: 'quests.waitWorker',
-          [InfoModeEmployer.WaitWorkerOnAssign]: 'quests.pendingConsideration',
+          [InfoModeEmployer.WaitWorkerOnAssign]: 'quests.waitWorker',
+          [InfoModeEmployer.WaitEmployerConfirm]: 'quests.pendingConsideration',
           [InfoModeEmployer.Dispute]: 'meta.dispute',
           [InfoModeEmployer.Closed]: 'quests.closed',
           [InfoModeEmployer.Done]: 'meta.performed',
@@ -119,7 +119,7 @@ export default {
           [InfoModeWorker.ADChat]: 'meta.invited',
           [InfoModeWorker.WaitWorker]: 'quests.activeQuest',
           [InfoModeWorker.Rejected]: 'quests.requested',
-          [InfoModeWorker.WaitWorkerOnAssign]: 'quests.pendingConsideration',
+          [InfoModeWorker.WaitWorkerOnAssign]: 'quests.pendingConsideration', // invited?
           [InfoModeWorker.WaitEmployerConfirm]: 'quests.pendingConsideration',
           [InfoModeWorker.Dispute]: 'meta.dispute',
           [InfoModeWorker.Closed]: 'quests.questClosed',
@@ -150,11 +150,11 @@ export default {
       if (this.userRole === UserRole.EMPLOYER) {
         return [
           { 'info-hide': infoDataMode === InfoModeEmployer.Created },
-          { 'info_bg-yellow': infoDataMode === InfoModeEmployer.WaitEmployerConfirm },
+          { 'info_bg-yellow': infoDataMode === InfoModeEmployer.WaitWorkerOnAssign },
           { 'info_bg-green': infoDataMode === InfoModeEmployer.WaitWorker },
-          { 'info_bg-grey': infoDataMode === InfoModeEmployer.WaitWorkerOnAssign },
-          { 'info_bg-red': infoDataMode === InfoModeEmployer.Dispute },
-          { 'info_bg-blue': [InfoModeEmployer.Closed, InfoModeEmployer.Done].includes(infoDataMode) },
+          { 'info_bg-grey': infoDataMode === InfoModeEmployer.WaitEmployerConfirm },
+          { 'info_bg-red': [InfoModeEmployer.Closed, InfoModeEmployer.Dispute].includes(infoDataMode) },
+          { 'info_bg-blue': InfoModeEmployer.Done === infoDataMode },
         ];
       }
       return '';
