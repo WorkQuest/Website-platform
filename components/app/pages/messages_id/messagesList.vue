@@ -37,7 +37,7 @@
             <div
               class="info-message__link"
               :class="{'info-message__link_left' : !message.itsMe}"
-              @click="openProfile(message.infoMessage.userId || message.senderUserId)"
+              @click="openProfile( message.itsMe ? message.infoMessage.userId : message.senderUserId)"
             >
               {{ setFullName(message) }}
             </div>
@@ -334,7 +334,7 @@ export default {
       let text = 'chat.systemMessages.';
       switch (action) {
         case MessageAction.EMPLOYER_INVITE_ON_QUEST: {
-          text += itsMe ? 'youInvitedToTheQuest' : 'invitedYouToAQuest';
+          text += itsMe ? 'youInvitedToTheQuest' : 'employerInvitedWorkerToQuest';
           break;
         }
         case MessageAction.WORKER_RESPONSE_ON_QUEST: {
@@ -511,7 +511,6 @@ export default {
 }
 
 .message {
-  width: 70%;
   display: grid;
   grid-template-columns: 43px minmax(auto, max-content) max-content;
   gap: 20px;
@@ -538,7 +537,6 @@ export default {
   &_right {
     grid-template-columns: max-content minmax(auto, max-content);
     justify-content: flex-end;
-    margin-left: 30%;
   }
 
   &__star-cont {
@@ -576,6 +574,9 @@ export default {
 
     &_white {
       color: #fff;
+    }
+    &_user-text {
+      word-break: break-all
     }
   }
 
@@ -615,18 +616,24 @@ export default {
 
 .info-message {
   display: grid;
-  grid-template-columns: repeat(3, max-content);
+  grid-template-columns: repeat(3, auto);
   gap: 5px;
 
   &__link {
     text-decoration: underline #1D2127;
     color: #1D2127;
     cursor: pointer;
+    overflow: hidden;
+    white-space: nowrap;
 
     &_left {
       grid-column: 1;
       grid-row: 1;
     }
+  }
+
+  &__title {
+    white-space: nowrap;
   }
 }
 
@@ -734,16 +741,17 @@ export default {
     }
   }
   .message {
+    &__bubble{
+      width: 100%;
+    }
     &__title {
       &_name {
-        width: calc(100vw - 180px);
         text-overflow: ellipsis;
         overflow: hidden;
       }
 
       &_user-text {
-        width: calc(100vw - 180px);
-        word-wrap: break-word;
+        word-break: break-all
       }
     }
   }
@@ -751,8 +759,16 @@ export default {
 
 @include _767 {
   .info-message {
-    grid-template-columns: unset;
-    grid-template-rows: repeat(3, auto);
+    grid-template-columns: repeat(3, auto);
+    &__title {
+      white-space: nowrap;
+    }
+
+    &__link {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
   }
 }
 </style>

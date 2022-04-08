@@ -29,7 +29,7 @@ export default {
       ];
       const recipient = `${data.recipient.slice(0, 10)}...${data.recipient.slice(-10)}`;
       const tx = `${data.transactionHash.slice(0, 10)}...${data.transactionHash.slice(-10)}`;
-      const created = moment(new Date(data.timestamp * 1000)).format('MMMM Do YYYY, h:mm');
+      const created = data.timestamp;
       const amount = new BigNumber(data.amount).shiftedBy(-18).toString();
       const status = data.canRedeemed;
       const clearData = data.signData;

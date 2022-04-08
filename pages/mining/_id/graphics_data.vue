@@ -88,6 +88,7 @@ export default {
   },
   computed: {
     datacollection() {
+      this.$moment.locale(this.$i18n.locale);
       const labels = [];
       const data = [];
       this.specialChartData.forEach((item) => {

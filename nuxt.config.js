@@ -76,13 +76,17 @@ export default {
   axios: {
     baseURL: process.env.BASE_URL,
   },
+  moment: {
+    defaultLocale: 'en',
+    locales: ['ru', 'bn', 'ar', 'fr', 'hi', 'id', 'pt', 'es', 'zh-cn'],
+  },
   // bootstrapVue: {
   //   // bootstrapCSS: false, // Or `css: false`
   //   // bootstrapVueCSS: false, // Or `bvCSS: false`
   //   icons: true,
   // },
   i18n: {
-    locales: ['en', 'ru', 'bn', 'ar', 'fr', 'hi', 'id', 'pt', 'es', 'zh'],
+    locales: ['en', 'ru', 'bn', 'ar', 'fr', 'hi', 'id', 'pt', 'es', 'zh_cn'],
     // locales: ['en'],
     defaultLocale: 'en',
     strategy: 'no_prefix',
@@ -93,7 +97,7 @@ export default {
         ar: localeAr,
         fr: localeFr,
         bn: localeBn,
-        zh: localeZh,
+        zh_cn: localeZh,
         hi: localeHi,
         id: localeId,
         pt: localePt,
