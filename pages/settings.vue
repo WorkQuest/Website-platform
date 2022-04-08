@@ -327,7 +327,6 @@ export default {
       const {
         instagram, twitter, linkedin, facebook,
       } = addInfo.socialNetwork;
-      console.log(this.profile.profileVisibilitySetting.network);
       const payload = {
         avatarId: checkAvatarID,
         firstName: this.profile.firstName,
