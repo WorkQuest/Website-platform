@@ -30,7 +30,7 @@
             class="content__input"
             data-selector="FIRST-DEPOSIT-AMOUNT"
             :name="$t('modals.firstDepositAmountField')"
-            rules="decimal"
+            rules="decimal:18|notMoreDecimalPlaces|greaterThanZero"
           />
           <div class="content__text">
             {{ $t('modals.firstDepositText') }}
