@@ -501,9 +501,6 @@ export default {
       } catch (e) {
         this.addresses = [];
         console.error('Geo look up is failed', e);
-        await this.$store.dispatch('main/showToast', {
-          text: 'Address is not correct',
-        });
       }
     },
     async createQuest() {

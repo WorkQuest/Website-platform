@@ -336,11 +336,12 @@ export default {
       return Math.ceil(len / this.itemsPerPage);
     },
     historyByPage() {
+      this.$moment.locale(this.$i18n.locale);
       if (!this.pensionHistory[this.selectedTable]?.txs) return [];
       return this.pensionHistory[this.selectedTable].txs.map((item) => ({
         operation: item.event,
         tx_hash: item.transactionHash,
-        date: item.createdAt,
+        date: this.$moment(item.createdAt),
         value: this.selectedTable === PensionHistoryMethods.Update
           ? `${getStyledAmount(item.newFee)}%` : `${getStyledAmount(item.amount)} ${TokenSymbols.WUSD}`,
       }));
@@ -394,18 +395,18 @@ export default {
 
       const minutes = ends.diff(now, 'minutes');
       if (minutes <= 60) {
-        return this.$t('meta.units.minutes', { count: minutes });
+        return this.$tc('meta.units.minutes', this.DeclOfNum(minutes), { count: minutes });
       }
 
       const hours = ends.diff(now, 'hours');
       if (hours <= 24) {
-        return this.$t('meta.units.hours', { count: hours });
+        return this.$tc('meta.units.hours', this.DeclOfNum(hours), { count: hours });
       }
 
       const years = ends.diff(now, 'years');
       const days = ends.diff(now, 'days') - years * 365;
-      const y = years > 0 ? `${this.$t('meta.units.years', { count: years })} ` : '';
-      const d = days >= 0 ? this.$t('meta.units.days', { count: days }) : this.$t('meta.units.days', { count: 0 });
+      const y = years > 0 ? `${this.$tc('meta.units.years', this.DeclOfNum(years), { count: years })} ` : '';
+      const d = days >= 0 ? this.$tc('meta.units.days', this.DeclOfNum(days), { count: days }) : this.$tc('meta.units.days', this.DeclOfNum(0), { count: 0 });
       return `${y}${d}`;
     },
     getFeePercent() {

@@ -18,9 +18,9 @@
       </p>
       <p class="auction-card__duration">
         {{ $t('auction.card.auctionDuration') }}
-        {{ auctionDuration.days ? $t('meta.units.days',{ count: auctionDuration.days }) : '' }}
-        {{ auctionDuration.hours ? $t('meta.units.hours',{ count: auctionDuration.hours }) : '' }}
-        {{ auctionDuration.minutes ? $t('meta.units.minutes',{ count: auctionDuration.minutes }) : '' }}
+        {{ auctionDuration.days ? $tc('meta.units.days',DeclOfNum(auctionDuration.days),{ count: auctionDuration.days }) : '' }}
+        {{ auctionDuration.hours ? $tc('meta.units.hours',DeclOfNum(auctionDuration.hours ),{ count: auctionDuration.hours }) : '' }}
+        {{ auctionDuration.minutes ? $tc('meta.units.minutes',DeclOfNum(auctionDuration.minutes),{ count: auctionDuration.minutes }) : '' }}
       </p>
       <base-btn
         data-selector="BUY-AUCTION"

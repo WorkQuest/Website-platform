@@ -148,7 +148,7 @@
               </template>
               <template #cell(created)="el">
                 <div class="table__value table__value_blue">
-                  {{ el.item.created }}
+                  {{ $moment(new Date(el.item.created * 1000)).locale($i18n.locale).format('MMMM Do YYYY, h:mm') }}
                 </div>
               </template>
               <template #cell(redeem)="el">
@@ -312,9 +312,15 @@ export default {
       let chainName = '';
       // eslint-disable-next-line default-case
       switch (this.sourceAddressInd) {
-        case 0: chainName = Chains.ETHEREUM; break;
-        case 1: chainName = Chains.BINANCE; break;
-        case 2: chainName = Chains.WORKNET; break;
+        case 0:
+          chainName = Chains.ETHEREUM;
+          break;
+        case 1:
+          chainName = Chains.BINANCE;
+          break;
+        case 2:
+          chainName = Chains.WORKNET;
+          break;
       }
       await this.connectToMetamask(chainName);
     },
@@ -383,9 +389,15 @@ export default {
       if (localStorage.getItem('isMetaMask') === 'true') {
         // eslint-disable-next-line default-case
         switch (this.sourceAddressInd) {
-          case 0: chainName = 'ETH'; break;
-          case 1: chainName = 'BNB'; break;
-          case 2: chainName = 'WORKNET'; break;
+          case 0:
+            chainName = 'ETH';
+            break;
+          case 1:
+            chainName = 'BNB';
+            break;
+          case 2:
+            chainName = 'WORKNET';
+            break;
         }
         switchPoolStatus = await this.checkMiningPoolId(chainName);
       }
@@ -420,11 +432,13 @@ export default {
 
 .swap-icon {
   transition: .3s ease-in-out;
+
   &:hover {
     filter: drop-shadow(0 0 3px rgba(72, 72, 72, 0.5));
     cursor: pointer;
   }
 }
+
 .crosschain-page {
   background: linear-gradient(to bottom, #103D7C 420px, #f6f8fa 420px);
   display: flex;
@@ -654,7 +668,7 @@ export default {
 
   @include _1199 {
     .crosschain-page__container {
-      padding: 0 30px!important;
+      padding: 0 30px !important;
     }
   }
 
@@ -681,6 +695,7 @@ export default {
         font-size: 38px;
         margin-bottom: 15px;
         width: 100%;
+
         &_sub {
           font-size: 16px;
           max-width: 400px;
@@ -701,9 +716,11 @@ export default {
   @include _575 {
     .header {
       flex-direction: column;
+
       &__right {
         width: 100%;
       }
+
       &__btn {
         width: 100%;
       }
@@ -719,7 +736,7 @@ export default {
             grid-row: 2;
           }
 
-          >div {
+          > div {
             grid-column: 1/4;
           }
         }
@@ -730,6 +747,7 @@ export default {
           }
         }
       }
+
       .btn {
         &__doc {
           border: 0;

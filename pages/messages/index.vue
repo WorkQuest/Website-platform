@@ -233,7 +233,7 @@ export default {
         text = 'chat.systemMessages.';
         switch (infoMessage.messageAction) {
           case MessageAction.EMPLOYER_INVITE_ON_QUEST: {
-            text += itsMe ? 'youInvitedToTheQuest' : 'invitedYouToAQuest';
+            text += itsMe ? 'youInvitedToTheQuest' : 'employerInvitedWorkerToQuest';
             break;
           }
           case MessageAction.WORKER_RESPONSE_ON_QUEST: {
