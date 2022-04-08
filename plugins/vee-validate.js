@@ -214,6 +214,15 @@ extend('greaterThanZero', {
   },
   message: "Please enter correct {_field_}, can't be zero",
 });
+extend('zeroFail', {
+  validate(value) {
+    const regex = /^[0][0-9]/;
+    return {
+      valid: !regex.test(value),
+    };
+  },
+  message: "Please enter correct {_field_}, can't be zero",
+});
 extend('notMoreDecimalPlaces', {
   validate(value) {
     return (((value.toString().includes('.')) ? (value.toString().split('.').pop().length) : (0)) < 3);

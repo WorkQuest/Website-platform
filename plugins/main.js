@@ -189,6 +189,40 @@ Vue.mixin({
         });
       }
     },
+    CalcPercent(preValue, value) {
+      const valueWithoutWords = preValue.replace(/[^0-9,.]/g, '');
+      const isEmpty = valueWithoutWords.length === 0;
+      const isDotFirst = valueWithoutWords[0] === '.' || valueWithoutWords[0] === ',';
+      if (isEmpty) {
+        value = '';
+      } else if (isDotFirst) {
+        const memo = valueWithoutWords.split('');
+        memo.unshift('0');
+        if (memo[memo.length - 1] !== '%') { memo.push('%'); }
+        value = memo.join('');
+      } else {
+        value = `${valueWithoutWords}%`;
+      }
+      value = value.replace(/,/g, '.');
+      if (value.includes('.')) {
+        const withoutDotsArray = value.split('.');
+        if (withoutDotsArray.length > 2) {
+          withoutDotsArray.splice(1, 0, '.');
+          value = withoutDotsArray.join('');
+        }
+      }
+      return value;
+    },
+    ChangeCaretPosition(ref) {
+      const input = ref?.$refs.input;
+      this.$nextTick(() => {
+        const { length } = input.value;
+        if (input.value[length - 1] === '%' && input.selectionStart === length) {
+          input.selectionStart = length - 1;
+          input.selectionEnd = length - 1;
+        }
+      });
+    },
     DeclOfNum(n) {
       n = Math.abs(n) % 100;
       const n1 = n % 10;

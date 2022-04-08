@@ -78,7 +78,7 @@
             </div>
             <div
               class="content__field"
-              @keydown.delete="changeCaretPosition"
+              @keydown.delete="ChangeCaretPosition( $refs.percentInput)"
             >
               <div class="content__label">
                 {{ $t('modals.percentageConversion') }}
@@ -88,7 +88,7 @@
                 :value="collateralPercent"
                 class="content__input"
                 placeholder="150 %"
-                rules="required|min_percent:150"
+                rules="required|min_percent:150|zeroFail"
                 :name="$t('modals.fieldPercentConversion')"
                 data-selector="PERCENT"
                 @input="calcCollateralPercent"
@@ -331,39 +331,9 @@ export default {
       });
     },
     calcCollateralPercent(value) {
-      const valueWithoutWords = value.replace(/[^0-9,.]/g, '');
-      const isEmpty = valueWithoutWords.length === 0;
-      const isDotFirst = valueWithoutWords[0] === '.' || valueWithoutWords[0] === ',';
-      if (isEmpty) {
-        this.collateralPercent = '';
-      } else if (isDotFirst) {
-        const memo = valueWithoutWords.split('');
-        memo.unshift('0');
-        if (memo[memo.length - 1] !== '%') { memo.push('%'); }
-        this.collateralPercent = memo.join('');
-      } else {
-        this.collateralPercent = `${valueWithoutWords}%`;
-      }
-      this.collateralPercent = this.collateralPercent.replace(/,/g, '.');
-      if (this.collateralPercent.includes('.')) {
-        const withoutDotsArray = this.collateralPercent.split('.');
-        if (withoutDotsArray.length > 2) {
-          withoutDotsArray.splice(1, 0, '.');
-          this.collateralPercent = withoutDotsArray.join('');
-        }
-      }
+      this.collateralPercent = this.CalcPercent(value, this.collateralPercent);
       this.calculateCollateral();
-      this.changeCaretPosition();
-    },
-    changeCaretPosition() {
-      const input = this.$refs.percentInput?.$refs.input;
-      this.$nextTick(() => {
-        const { length } = input.value;
-        if (input.value[length - 1] === '%' && input.selectionStart === length) {
-          input.selectionStart = length - 1;
-          input.selectionEnd = length - 1;
-        }
-      });
+      this.ChangeCaretPosition(this.$refs.percentInput);
     },
   },
 };
