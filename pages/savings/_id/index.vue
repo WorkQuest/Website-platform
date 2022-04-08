@@ -103,6 +103,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -235,11 +236,69 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    openModal(key) {
-      this.ShowModal({
-        key: modals.valueSend,
-        mode: key,
-      });
+    async openModal(key) {
+      const action = key.toLowerCase();
+      if (action !== 'claim') {
+        this.ShowModal({
+          key: modals.valueSend,
+          mode: action,
+          callback: async (amount) => {
+            let payload = {};
+            const value = new BigNumber(amount).shiftedBy(18).toString();
+            switch (action) {
+              case 'withdraw':
+                payload = {
+                  data: [value],
+                  method: 'withdraw',
+                  type: 'lending',
+                };
+                break;
+              case 'deposit':
+                payload = {
+                  value,
+                  data: [],
+                  method: 'deposit',
+                  type: 'lending',
+                };
+                break;
+              default:
+                console.log('another method');
+            }
+            const res = await this.$store.dispatch('savings/sendMethod', payload);
+            if (res.ok) {
+              this.ShowModal({
+                key: modals.status,
+                img: require('~/assets/img/ui/transactionSend.svg'),
+                title: this.$t(`modals.successfulMethods.${action}`),
+              });
+            } else {
+              this.ShowModal({
+                key: modals.status,
+                img: require('~/assets/img/ui/warning.svg'),
+                title: this.$t('modals.transactionFail'),
+              });
+            }
+          },
+        });
+      } else {
+        const res = await this.$store.dispatch('crediting/sendMethod', {
+          method: 'claim',
+          type: 'lending',
+        });
+        if (res.ok) {
+          this.ShowModal({
+            key: modals.status,
+            img: require('~/assets/img/ui/transactionSend.svg'),
+            title: this.$t('modals.successfulMethod.claim'),
+          });
+        } else {
+          this.ShowModal({
+            key: modals.status,
+            img: require('~/assets/img/ui/warning.svg'),
+            title: this.$t('modals.transactionFail'),
+          });
+        }
+      }
     },
   },
 };
