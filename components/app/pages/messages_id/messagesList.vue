@@ -735,7 +735,6 @@ export default {
 
 @include _1199 {
   .info-message {
-    grid-template-columns: repeat(3, auto);
 
     &__title {
       white-space: nowrap;
