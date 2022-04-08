@@ -18,19 +18,20 @@
           rules="required|decimal|decimalPlaces:18"
           :name="$t('modals.amount')"
         >
-          <!--          <template-->
-          <!--            v-slot:right-absolute-->
-          <!--            class="content__max max"-->
-          <!--          >-->
-          <!--            <base-btn-->
-          <!--              mode="max"-->
-          <!--              data-selector="MAX-BALANCE"-->
-          <!--              class="max__button"-->
-          <!--              @click="maxBalance()"-->
-          <!--            >-->
-          <!--              <span class="max__text">{{ $t('modals.maximum') }}</span>-->
-          <!--            </base-btn>-->
-          <!--          </template>-->
+          <template
+            v-if="maxValue"
+            v-slot:right-absolute
+            class="content__max max"
+          >
+            <base-btn
+              mode="max"
+              data-selector="MAX-BALANCE"
+              class="max__button"
+              @click="maxBalance()"
+            >
+              <span class="max__text">{{ $t('modals.maximum') }}</span>
+            </base-btn>
+          </template>
         </base-field>
         <div class="content__container">
           <base-btn
@@ -63,13 +64,11 @@ export default {
   data() {
     return {
       amount: '',
-      mode: '',
     };
   },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
-      creditData: 'crediting/getCreditData',
     }),
     modalName() {
       switch (this.options.mode) {
@@ -85,62 +84,21 @@ export default {
           return this.$t('modals.amount');
       }
     },
-  },
-  mounted() {
-    this.mode = this.options.mode;
+    maxValue() {
+      return this.options.maxValue;
+    },
   },
   methods: {
     hide() { this.CloseModal(); },
     async send() {
       this.SetLoader(true);
-      let payload = {};
-      switch (this.mode) {
-        case 'refund':
-          payload = {
-            value: this.amount,
-            data: [1, this.amount],
-            method: 'refund',
-            type: 'borrowing',
-          };
-          break;
-        case 'withdraw':
-          payload = {
-            data: [new BigNumber(this.amount).shiftedBy(18).toString()],
-            method: 'withdraw',
-            type: 'lending',
-          };
-          break;
-        case 'deposit':
-          payload = {
-            value: this.amount,
-            data: [],
-            method: 'deposit',
-            type: 'lending',
-          };
-          break;
-        default:
-          console.log('default');
-      }
-      const res = await this.$store.dispatch('crediting/sendMethod', payload);
+      const { callback } = this.options;
+      this.hide();
+      await callback(this.amount);
       this.SetLoader(false);
-      if (res.ok) {
-        await Promise.all([
-          this.$store.dispatch('crediting/getCreditData'),
-          this.$store.dispatch('crediting/getWalletsData'),
-          this.$store.dispatch('crediting/getRewards'),
-        ]);
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/transactionSend.svg'),
-          title: this.$t(`modals.successfulMethods.${this.mode}`),
-        });
-        return;
-      }
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/warning.svg'),
-        title: this.$t('modals.transactionFail'),
-      });
+    },
+    maxBalance() {
+      this.amount = this.maxValue;
     },
   },
 };

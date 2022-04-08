@@ -96,16 +96,9 @@ export default {
           subtitle: this.$tc('meta.coins.count.WUSDCount', 1000),
         },
       ];
-      const dataForStatusModal = {
-        img: require('~/assets/img/ui/transactionSend.svg'),
-        title: this.$t('modals.depositIsOpened'),
-        subtitle: '',
-        path: '/savings/1',
-      };
       this.ShowModal({
         key: modals.confirmDetails,
         receiptData,
-        dataForStatusModal,
       });
     },
   },

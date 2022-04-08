@@ -91,18 +91,8 @@ export default {
       address: payload.type === 'borrowing' ? process.env.BORROWING : process.env.LENDING,
       abi: payload.type === 'borrowing' ? abi.WQBorrowing : abi.WQLending,
       data: payload.data,
+      value: payload.value,
     };
-    switch (payload.method) {
-      case 'refund':
-        payloadSend.value = payload.value;
-        break;
-      case 'deposit':
-        payloadSend.value = new BigNumber(payload.value).shiftedBy(18).toString();
-        break;
-      default:
-        console.log('another method:', payload.method);
-        break;
-    }
     try {
       await sendWalletTransaction(payload.method, payloadSend);
       return success();

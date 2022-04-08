@@ -97,7 +97,7 @@ export default {
         {
           title: this.$t('crediting.currentCredit'),
           priceTitle: this.$t('crediting.totalWusdDebt'),
-          price: this.$tc('meta.coins.count.WUSDCount', this.creditData.credit),
+          price: this.$tc('meta.coins.count.WUSDCount', this.convertedCredit),
           show: this.isHaveCredit,
           info: [
             {
@@ -106,7 +106,7 @@ export default {
             },
             {
               title: this.$t('modals.totalFee'),
-              desc: this.$tc('meta.coins.count.WUSDCount', this.currentFee),
+              desc: this.$tc('meta.coins.count.WUSDCount', this.convertedCurrentFee),
             },
             {
               title: this.$t('crediting.dueDate'),
@@ -155,13 +155,19 @@ export default {
       ];
     },
     isHaveCredit() {
-      return this.creditData.credit > 0;
+      return this.convertedCredit > 0;
     },
     isHaveLoan() {
       return this.walletData.amount > 0;
     },
+    convertedCredit() {
+      return this.amountConvert(this.creditData.credit);
+    },
+    convertedCurrentFee() {
+      return this.amountConvert(this.currentFee);
+    },
     fullValueForRefund() {
-      return Number(this.creditData.credit) + Number(this.currentFee);
+      return Number(this.convertedCredit) + Number(this.convertedCurrentFee);
     },
   },
   async mounted() {
@@ -180,9 +186,66 @@ export default {
     },
     async openModal(action) {
       if (action !== 'claim') {
+        let maxValue = null;
+        if (action === 'refund') {
+          maxValue = this.fullValueForRefund;
+        } else if (action === 'withdraw') {
+          maxValue = new BigNumber(this.walletData.amount).shiftedBy(-18).toString();
+        }
         this.ShowModal({
           key: modals.valueSend,
           mode: action,
+          maxValue,
+          callback: async (amount) => {
+            let payload = {};
+            const value = new BigNumber(amount).shiftedBy(18).toString();
+            switch (action) {
+              case 'refund':
+                payload = {
+                  value,
+                  data: [1, value],
+                  method: 'refund',
+                  type: 'borrowing',
+                };
+                break;
+              case 'withdraw':
+                payload = {
+                  data: [value],
+                  method: 'withdraw',
+                  type: 'lending',
+                };
+                break;
+              case 'deposit':
+                payload = {
+                  value,
+                  data: [],
+                  method: 'deposit',
+                  type: 'lending',
+                };
+                break;
+              default:
+                console.log('default');
+            }
+            const res = await this.$store.dispatch('crediting/sendMethod', payload);
+            if (res.ok) {
+              await Promise.all([
+                this.$store.dispatch('crediting/getCreditData'),
+                this.$store.dispatch('crediting/getWalletsData'),
+                this.$store.dispatch('crediting/getRewards'),
+              ]);
+              this.ShowModal({
+                key: modals.status,
+                img: require('~/assets/img/ui/transactionSend.svg'),
+                title: this.$t(`modals.successfulMethods.${action}`),
+              });
+            } else {
+              this.ShowModal({
+                key: modals.status,
+                img: require('~/assets/img/ui/warning.svg'),
+                title: this.$t('modals.transactionFail'),
+              });
+            }
+          },
         });
       } else {
         const res = await this.$store.dispatch('crediting/sendMethod', {
@@ -203,6 +266,9 @@ export default {
           });
         }
       }
+    },
+    amountConvert(value) {
+      return new BigNumber(value).shiftedBy(-18).toString();
     },
   },
 };
