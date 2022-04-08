@@ -12,13 +12,12 @@
             {{ $t('modals.depositPercentFromAQuest') }}
           </div>
           <base-field
-            :value="depositPercentFromAQuest"
+            v-model="depositPercentFromAQuest"
             :placeholder="$tc('meta.units.percentsCount', 13)"
             class="content__input"
             data-selector="DEPOSIT-PERCENT"
             :name="$t('modals.depositPercent')"
             rules="required|percent|decimalPlaces:18"
-            @input="calcPercent"
           />
         </div>
         <div class="content__amount">
@@ -163,29 +162,6 @@ export default {
         path: '/pension/my',
       });
     },
-  },
-  calcPercent(value) {
-    const valueWithoutWords = value.replace(/[^0-9,.]/g, '');
-    const isEmpty = valueWithoutWords.length === 0;
-    const isDotFirst = valueWithoutWords[0] === '.' || valueWithoutWords[0] === ',';
-    if (isEmpty) {
-      this.collateralPercent = '';
-    } else if (isDotFirst) {
-      const memo = valueWithoutWords.split('');
-      memo.unshift('0');
-      if (memo[memo.length - 1] !== '%') { memo.push('%'); }
-      this.collateralPercent = memo.join('');
-    } else {
-      this.collateralPercent = `${valueWithoutWords}%`;
-    }
-    this.collateralPercent = this.collateralPercent.replace(/,/g, '.');
-    if (this.collateralPercent.includes('.')) {
-      const withoutDotsArray = this.collateralPercent.split('.');
-      if (withoutDotsArray.length > 2) {
-        withoutDotsArray.splice(1, 0, '.');
-        this.collateralPercent = withoutDotsArray.join('');
-      }
-    }
   },
 };
 </script>
