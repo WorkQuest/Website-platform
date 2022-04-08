@@ -350,7 +350,6 @@ export default {
       if (await this.checkNetwork(chain)) {
         this.ShowModal({
           key: modals.swap,
-          crosschainId: targetAddressInd,
           fromChain: sourceAddressInd,
           toChain: targetAddressInd,
         });
