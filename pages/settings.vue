@@ -26,7 +26,7 @@
         @showModalStatus="showModalStatus"
         @checkValidate="checkValidate"
         @updateEducation="addEducation"
-        @updateCoordinates="updateCoordinates"
+        @updateFullAddress="updateFullAddress"
         @validationRef="validationRefs"
       />
       <skills
@@ -89,6 +89,7 @@ export default {
           },
           locationPlaceName: '',
         },
+        profileVisibilitySetting: {},
       },
       skills: {
         perHour: 0,
@@ -165,6 +166,7 @@ export default {
         },
         locationPlaceName: userData.locationPlaceName,
       },
+      profileVisibilitySetting: userData.profileVisibilitySetting,
     };
     this.skills = {
       priorityIndex: userData.priority,
@@ -185,10 +187,10 @@ export default {
       this.valRefs = data;
       return this.valRefs;
     },
-    updateCoordinates(coordinates) {
-      this.profile.locationFull.location.longitude = +coordinates.lng;
-      this.profile.locationFull.location.latitude = +coordinates.lat;
-      this.profile.locationFull.locationPlaceName = coordinates.address;
+    updateFullAddress(address) {
+      this.profile.locationFull.location.longitude = +address.lng;
+      this.profile.locationFull.location.latitude = +address.lat;
+      this.profile.locationFull.locationPlaceName = address.formatted;
     },
 
     // MODALS METHODS
@@ -211,7 +213,7 @@ export default {
         imageLoadedSuccessful: this.$t('modals.imageLoadedSuccessful'),
         educationAddSuccessful: this.$t('modals.educationAddSuccessful'),
         workExpAddSuccessful: this.$t('modals.workExpAddSuccessful'),
-        saved: this.$t('modals.saved'),
+        saved: this.$t('modals.titles.saved'),
         error: this.$t('modals.errors.error'),
       };
       return titles[modalMode];
@@ -353,6 +355,10 @@ export default {
             linkedin: linkedin || null,
             facebook: facebook || null,
           },
+        },
+        profileVisibility: {
+          network: this.profile.profileVisibilitySetting.network,
+          ratingStatus: this.profile.profileVisibilitySetting.ratingStatus,
         },
       };
       if (!this.updatedSecondPhone.fullPhone) payload.additionalInfo.secondMobileNumber = null;
