@@ -82,7 +82,7 @@
                     :key="i"
                     :data-selector="`ADDRESS-SELECTOR-ADDRESS-${i}`"
                     class="selector__item"
-                    @click="selectAddress(item, i)"
+                    @click="selectAddress(item)"
                   >
                     {{ item.formatted }}
                   </div>
@@ -507,26 +507,15 @@ export default {
     },
 
     // GEOPOSITION METHODS
-    selectAddress(address, i) {
-      this.selectedAddressIndex = i;
+    selectAddress(address) {
       this.profile.locationFull.locationPlaceName = address.formatted;
-
       this.addresses = [];
-      this.$emit('updateCoordinates', address);
+      this.$emit('updateFullAddress', address);
     },
-    async getAddressInfo(address) {
+    async getAddressInfo(keyword) {
       try {
-        if (address.length) {
-          this.addresses = await this.geoCode.geolookup(address);
-          if (this.selectedAddressIndex) {
-            this.coordinates = {
-              lng: this.addresses[this.selectedAddressIndex].lng,
-              lat: this.addresses[this.selectedAddressIndex].lat,
-              address: this.addresses[this.selectedAddressIndex].formatted,
-            };
-          } else {
-            this.coordinates = { lng: this.addresses[0].lng, lat: this.addresses[0].lat, address: this.addresses[0].formatted };
-          }
+        if (keyword.length) {
+          this.addresses = await this.geoCode.geolookup(keyword);
         } else this.addresses = [];
       } catch (e) {
         this.addresses = [];
