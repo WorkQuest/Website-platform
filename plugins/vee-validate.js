@@ -208,6 +208,18 @@ extend('percent', {
   },
   message: 'Please enter correct {_field_}',
 });
+extend('greaterThanZero', {
+  validate(value) {
+    return (value > 0);
+  },
+  message: "Please enter correct {_field_}, can't be zero",
+});
+extend('notMoreDecimalPlaces', {
+  validate(value) {
+    return (((value.toString().includes('.')) ? (value.toString().split('.').pop().length) : (0)) < 3);
+  },
+  message: 'Please enter correct {_field_}, no more than 2 decimal places',
+});
 extend('min_percent', {
   validate(value, { min }) {
     return +value.replace(/%/g, '') >= +min;

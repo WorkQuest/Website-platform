@@ -96,7 +96,6 @@ export default {
         message: this.textArea,
         mark: this.rating,
       });
-      this.hide();
     },
   },
 };
@@ -122,6 +121,7 @@ export default {
     padding: 15px 30px 15px 30px;
   }
 }
+
 .content {
   &__wrapper {
     margin: 0 0 25px 0;
