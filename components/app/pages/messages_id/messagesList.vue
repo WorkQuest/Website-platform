@@ -618,7 +618,6 @@ export default {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   gap: 5px;
-  text-align: start;
   grid-template-areas: "owner system sender";
 
   &__link {
@@ -628,6 +627,7 @@ export default {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    text-align: start;
     grid-area: sender;
 
     &_left {
