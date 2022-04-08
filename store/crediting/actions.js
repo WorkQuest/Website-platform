@@ -85,14 +85,17 @@ export default {
       GetWalletProvider(),
     );
     commit('setCurrentFee', res);
+    return res;
   },
   async sendMethod({ commit }, payload) {
+    console.log('payload:', payload);
     const payloadSend = {
       address: payload.type === 'borrowing' ? process.env.BORROWING : process.env.LENDING,
       abi: payload.type === 'borrowing' ? abi.WQBorrowing : abi.WQLending,
       data: payload.data,
       value: payload.value,
     };
+    console.log('payloadSend:', payloadSend);
     try {
       await sendWalletTransaction(payload.method, payloadSend);
       return success();

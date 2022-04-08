@@ -84,7 +84,7 @@
                 v-model="quantity"
                 class="content__input"
                 data-selector="TOKEN-VALUE"
-                placeholder="1000 ETH"
+                :placeholder="`100 ${checkpoints[selCurrencyID - 1].name}`"
                 rules="required|decimal"
                 :name="$t('modals.quantityField')"
               />
@@ -277,7 +277,6 @@ export default {
         let res = false;
         if (checkTokenPrice && approveAllowed) {
           res = await this.$store.dispatch('crediting/sendMethod', {
-            valueWithDecimals,
             data: [
               1,
               valueWithDecimals,

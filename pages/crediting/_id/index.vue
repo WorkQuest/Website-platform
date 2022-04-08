@@ -167,7 +167,7 @@ export default {
       return this.amountConvert(this.currentFee);
     },
     fullValueForRefund() {
-      return Number(this.convertedCredit) + Number(this.convertedCurrentFee);
+      return new BigNumber(this.convertedCredit).plus(this.convertedCurrentFee).toString();
     },
   },
   async mounted() {
@@ -188,6 +188,7 @@ export default {
       if (action !== 'claim') {
         let maxValue = null;
         if (action === 'refund') {
+          await this.$store.dispatch('crediting/getCurrentFee');
           maxValue = this.fullValueForRefund;
         } else if (action === 'withdraw') {
           maxValue = new BigNumber(this.walletData.amount).shiftedBy(-18).toString();
@@ -196,14 +197,24 @@ export default {
           key: modals.valueSend,
           mode: action,
           maxValue,
-          callback: async (amount) => {
+          callback: async (amount, maxAmount) => {
             let payload = {};
-            const value = new BigNumber(amount).shiftedBy(18).toString();
+            const feeData = await this.$store.dispatch('crediting/getCurrentFee');
+            let value = new BigNumber(amount).shiftedBy(18);
+            if (maxAmount) {
+              maxAmount = new BigNumber(maxAmount).shiftedBy(18).toString();
+            }
+            console.log(+value.toString(), +maxAmount, value === maxAmount);
+            if (+value.toString() === +maxAmount) {
+              value = value.plus(10000).toString();
+              console.log('value:', value);
+            }
+            const valueWithoutFee = new BigNumber(amount).shiftedBy(18).minus(feeData).toString();
             switch (action) {
               case 'refund':
                 payload = {
                   value,
-                  data: [1, value],
+                  data: [1, valueWithoutFee],
                   method: 'refund',
                   type: 'borrowing',
                 };

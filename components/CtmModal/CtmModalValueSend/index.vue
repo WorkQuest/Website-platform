@@ -92,12 +92,13 @@ export default {
     hide() { this.CloseModal(); },
     async send() {
       this.SetLoader(true);
-      const { callback } = this.options;
+      const { callback, maxValue } = this.options;
       this.hide();
-      await callback(this.amount);
+      await callback(this.amount, maxValue);
       this.SetLoader(false);
     },
     maxBalance() {
+      console.log(this.maxValue);
       this.amount = this.maxValue;
     },
   },
