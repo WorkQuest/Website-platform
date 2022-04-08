@@ -14,7 +14,7 @@
         class="advanced__options advanced__options_left"
       >
         <div class="advanced__subtitle">
-          {{ radio[0].title }} {{ checkboxBlocks }}
+          {{ radio[0].title }}
         </div>
         <div
           v-for="input in radio"
@@ -36,7 +36,7 @@
             class="advanced__label"
             :for="input.id"
           >
-            {{ $t(input.local) }} {{ input.value }}
+            {{ $t(input.local) }}
           </label>
         </div>
       </div>
@@ -188,19 +188,6 @@ export default {
       ];
     },
   },
-  watch: {
-    checkboxBlocks: {
-      handler() {
-        console.log('watcher');
-        if (this.mounted) {
-          console.log('watcher2');
-          this.$emit('updateVisibility', this.checkboxBlocks);
-        }
-      },
-      immediate: false,
-      deep: true,
-    },
-  },
   created() {
     const profileVisibilitySetting = JSON.parse(JSON.stringify(this.userData.profileVisibilitySetting));
     this.checkboxBlocks.visibilityUser = profileVisibilitySetting.network;
@@ -219,6 +206,7 @@ export default {
     },
     setSelectedCheckboxByBlock(checkBoxBlockName, value) {
       this.checkboxBlocks[checkBoxBlockName] = value;
+      this.$emit('updateVisibility', this.checkboxBlocks);
     },
     isCheckboxChecked(checkBoxBlockName, value) {
       return value === this.checkboxBlocks[checkBoxBlockName];
