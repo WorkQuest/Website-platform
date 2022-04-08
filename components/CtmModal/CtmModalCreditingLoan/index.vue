@@ -10,7 +10,7 @@
         <div class="content__body">
           <div class="content__field">
             <div class="content__label">
-              {{ $t('modals.howMuchETHWouldYouLikeToOpen') }}
+              {{ $t('modals.howMuchTokensWouldYouLikeToLock', { token:'WUSD' }) }}
             </div>
             <div class="content__text content__text_small">
               {{ $t('modals.smallDescriptionForLoan') }}
@@ -18,11 +18,25 @@
             <base-field
               v-model="quantity"
               class="content__input"
-              placeholder="10 ETH"
+              placeholder="10 WUSD"
               rules="required|decimal"
               data-selector="VALUE-FOR-LOAN"
               :name="$t('modals.quantityField')"
-            />
+            >
+              <template
+                v-slot:right-absolute
+                class="content__max max"
+              >
+                <base-btn
+                  mode="max"
+                  data-selector="MAX-BALANCE"
+                  class="max__button"
+                  @click="maxBalance()"
+                >
+                  <span class="max__text">{{ $t('modals.maximum') }}</span>
+                </base-btn>
+              </template>
+            </base-field>
             <div class="content__text">
               {{ $t('modals.tipAbout') }}
             </div>
@@ -64,26 +78,16 @@ export default {
       quantity: '',
       debt: '',
       percents: '',
-      checkpoints: [
-        {
-          name: this.$t('meta.coins.bnb'),
-          id: 1,
-        },
-        {
-          name: this.$t('meta.coins.eth'),
-          id: 2,
-        },
-        {
-          name: this.$t('meta.coins.wqt'),
-          id: 3,
-        },
-      ],
     };
   },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      balanceData: 'wallet/getBalanceData',
     }),
+  },
+  async mounted() {
+    await this.$store.dispatch('wallet/getBalance');
   },
   methods: {
     hide() {
@@ -92,7 +96,7 @@ export default {
     async openConfirmDetailsModal() {
       this.SetLoader(true);
       const res = await this.$store.dispatch('crediting/sendMethod', {
-        value: this.quantity,
+        value: new BigNumber(this.quantity).shiftedBy(18).toString(),
         data: [],
         method: 'deposit',
         type: 'lending',
@@ -114,12 +118,20 @@ export default {
         title: this.$t('modals.transactionFail'),
       });
     },
+    maxBalance() {
+      this.quantity = this.balanceData.WUSD.fullBalance;
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-
+.max {
+  &__button {
+    margin-right: 10px !important;
+    background-color: transparent !important;
+  }
+}
 .loan {
   max-width: 490px !important;
   height: auto !important;
@@ -151,43 +163,5 @@ export default {
       margin-bottom:10px;
     }
   }
-  &__checkpoints {
-    margin-bottom: 25px;
-    &_label {
-      margin-bottom: 10px;
-    }
-  }
-}
-.checkpoints{
-  &__label {
-    margin-bottom: 15px;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 130%;
-  }
-  &__main{
-    display: grid;
-    grid-template-rows: repeat(3, 1fr);
-    text-align: left;
-    justify-content: flex-start;
-    gap: 13px;
-  }
-  &__array {
-    display: grid;
-    grid-template-columns: repeat(2, auto);
-    gap: 10px;
-    > label {
-      margin: unset;
-    }
-  }
-  &__item{
-   font-size: 16px;
-   font-weight: 400;
-   border-radius: 50%;
-   width: 25px;
-   height: 25px;
-   border: 1px solid #0083C7;
-   cursor: pointer;
- }
 }
 </style>

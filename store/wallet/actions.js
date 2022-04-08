@@ -391,7 +391,7 @@ export default {
         return await dispatch('approve', {
           tokenAddress,
           spenderAddress,
-          amount: new BigNumber(value).multipliedBy(18).toFixed(),
+          amount: value,
         });
       }
       return false;

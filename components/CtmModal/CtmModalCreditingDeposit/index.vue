@@ -147,7 +147,10 @@
 <script>
 import { mapGetters } from 'vuex';
 import moment from 'moment';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
+import { getGasPrice } from '~/utils/wallet';
+import * as abi from '~/abi/abi';
 
 export default {
   name: 'ModalTakeCreditingDeposit',
@@ -261,26 +264,74 @@ export default {
           subtitle: moment().add(this.datesNumber[this.date], 'days').format('DD.MM.YYYY'),
         },
       ];
-      const dataForStatusModal = {
-        img: require('~/assets/img/ui/transactionSend.svg'),
-        title: this.$t('modals.depositIsOpened'),
-        subtitle: '',
-        path: 'crediting/1',
-      };
-      const payload = {
-        value: this.quantity,
-        nonce: 1,
-        fundIndex: this.selFundID - 1,
-        duration: this.datesNumber[this.date],
-        symbol: this.checkpoints[this.selCurrencyID - 1].name,
+      const valueWithDecimals = new BigNumber(this.quantity).shiftedBy(18).toString();
+      const symbol = this.checkpoints[this.selCurrencyID - 1].name;
+      const duration = this.datesNumber[this.date];
+      const callback = async () => {
+        const checkTokenPrice = await this.setTokenPrice();
+        const approveAllowed = await this.$store.dispatch('wallet/approveRouter', {
+          symbol,
+          spenderAddress: process.env.BORROWING,
+          value: valueWithDecimals,
+        });
+        let res = false;
+        if (checkTokenPrice && approveAllowed) {
+          res = await this.$store.dispatch('crediting/sendMethod', {
+            valueWithDecimals,
+            data: [
+              1,
+              valueWithDecimals,
+              this.selFundID - 1,
+              duration,
+              symbol,
+            ],
+            method: 'borrow',
+            type: 'borrowing',
+          });
+        }
+        if (res.ok) {
+          this.ShowModal({
+            key: modals.status,
+            img: require('~/assets/img/ui/transactionSend.svg'),
+            title: this.$t('modals.depositIsOpened'),
+            subtitle: '',
+            path: 'crediting/1',
+          });
+        } else {
+          this.ShowModal({
+            key: modals.status,
+            img: require('~/assets/img/ui/warning.svg'),
+            title: this.$t('modals.transactionFail'),
+            recipient: '',
+            subtitle: this.$t('modals.errors.error'),
+          });
+        }
       };
       this.ShowModal({
         key: modals.confirmDetails,
-        mode: 'borrow',
-        payload,
         receiptData,
-        dataForStatusModal,
+        callback,
       });
+    },
+    async setTokenPrice() {
+      const {
+        nonce, prices, v, r, s, symbols,
+      } = this.currentPrice; // TODO price
+      const resultGasSetTokenPrices = await getGasPrice(abi.WQOracle, process.env.WORKNET_ORACLE, 'setTokenPricesUSD', [nonce, v, r, s, prices, symbols]);
+      if (resultGasSetTokenPrices.gas && resultGasSetTokenPrices.gasPrice) {
+        const { ok } = await this.$store.dispatch('crediting/setTokenPrices', {
+          gasPrice: resultGasSetTokenPrices.gasPrice,
+          gas: resultGasSetTokenPrices.gas,
+          timestamp: nonce,
+          v,
+          r,
+          s,
+          prices,
+          symbols,
+        });
+        return ok;
+      }
+      return false;
     },
   },
 };

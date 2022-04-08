@@ -140,7 +140,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { getWalletAddress } from '~/utils/wallet';
 
 export default {
   data() {
@@ -220,15 +219,16 @@ export default {
       return this.walletData.amount > 0;
     },
   },
+  async beforeCreate() {
+    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+  },
   async mounted() {
     this.SetLoader(true);
-    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
     if (!this.isWalletConnected) return;
     await Promise.all([
       this.$store.dispatch('crediting/getCreditData'),
       this.$store.dispatch('crediting/getWalletsData'),
     ]);
-    console.log('creditData:', this.creditData, 'walletData:', this.walletData);
     this.SetLoader(false);
   },
   methods: {
