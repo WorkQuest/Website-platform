@@ -165,7 +165,7 @@ export const MessageAction = {
   GROUP_CHAT_CREATE: 'groupChatCreate',
   NEW_MESSAGE: 'newMessage',
   MESSAGE_READ_BY_RECIPIENT: 'messageReadByRecipient',
-  GROUP_CHAT_ADD_USERS: 'groupChatAddUsers',
+  GROUP_CHAT_ADD_USERS: 'groupChatAddUser',
   GROUP_CHAT_LEAVE_USER: 'groupChatLeaveUser',
   GROUP_CHAT_DELETE_USER: 'groupChatDeleteUser',
   EMPLOYER_INVITE_ON_QUEST: 'employerInviteOnQuest',

@@ -82,7 +82,6 @@ export default {
         commit('setCreatedReferralList', result.addresses);
         commit('setReferralSignature', signature);
       }
-
       return ok;
     } catch (e) {
       return false;

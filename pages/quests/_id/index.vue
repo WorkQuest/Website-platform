@@ -285,9 +285,8 @@ export default {
         rating,
         callback: async (payload) => {
           const ok = await this.$store.dispatch('user/sendReviewForUser', payload);
-          if (ok) {
-            this.ShowModal({ key: modals.thanks });
-          }
+          if (ok) this.ShowModal({ key: modals.thanks });
+          else this.CloseModal();
         },
       });
     },

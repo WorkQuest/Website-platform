@@ -257,7 +257,6 @@ export default {
     },
     progressQuestText(status) {
       if (!this.userRole) return '';
-      console.log(status);
       switch (status) {
         case QuestStatuses.Created: return this.$t('quests.questActive');
         case QuestStatuses.Closed: return this.$t('quests.questClosed');
@@ -282,7 +281,9 @@ export default {
         rating,
         callback: async (payload) => {
           const ok = await this.$store.dispatch('user/sendReviewForUser', payload);
-          if (ok) { this.ShowModal({ key: modals.thanks }); }
+          if (ok) {
+            this.ShowModal({ key: modals.thanks });
+          } else this.CloseModal();
         },
       });
     },
@@ -292,9 +293,8 @@ export default {
         [QuestStatuses.Rejected]: this.$t('quests.rejected'),
         [QuestStatuses.WaitWorker]: this.$t('quests.active'),
         [QuestStatuses.Done]: this.$t('meta.performed'),
-        // TODO: разобраться в этих двух статусах
-        [QuestStatuses.WaitWorkerOnAssign]: this.$t('quests.requested'),
         [QuestStatuses.WaitWorkerOnAssign]: this.$t('meta.invited'),
+        [QuestStatuses.WaitEmployerConfirm]: this.$t('quests.requested'),
         [QuestStatuses.Closed]: this.$t('quests.closed'),
       };
       return questStatus[index] || '';
@@ -305,9 +305,8 @@ export default {
         [QuestStatuses.Rejected]: 'card-quest__cards-state-clo',
         [QuestStatuses.WaitWorker]: 'card-quest__cards-state-act',
         [QuestStatuses.Done]: 'card-quest__cards-state-per',
-        // TODO: разобраться в этих двух статусах
-        [QuestStatuses.WaitWorkerOnAssign]: 'card-quest__cards-state-req',
         [QuestStatuses.WaitWorkerOnAssign]: 'card-quest__cards-state-inv',
+        [QuestStatuses.WaitEmployerConfirm]: 'card-quest__cards-state-req',
         [QuestStatuses.Closed]: 'card-quest__cards-state-clo',
       };
       return questStatus[index] || '';
@@ -337,6 +336,7 @@ export default {
 <style lang="scss" scoped>
 .user {
   min-width: 0;
+
   &__name {
     @include text-simple;
     width: 100%;
@@ -348,27 +348,33 @@ export default {
     overflow: hidden;
     white-space: nowrap;
     cursor: pointer;
+
     &:hover {
       color: $blue;
     }
   }
 }
+
 .right {
   justify-self: flex-end;
 }
+
 .icon-circle_up {
   color: $black100;
   font-size: 24px;
 }
+
 .icon-share_outline {
   color: $black100;
   font-size: 24px;
 }
+
 .icon-short_right {
-    font-size: 20px;
-    cursor: pointer;
-    color: $blue;
-  }
+  font-size: 20px;
+  cursor: pointer;
+  color: $blue;
+}
+
 .progress {
   &__title {
     @include text-simple;
@@ -377,6 +383,7 @@ export default {
     font-size: 12px;
     color: $black500;
   }
+
   &__container {
     @extend .styles__full;
     min-width: 0;
@@ -387,12 +394,14 @@ export default {
     padding-left: 0;
     margin: 7px 0 0 6px;
     justify-content: start;
+
     .container {
       &__user {
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
+
         .user {
           &__avatar {
             border-radius: 50%;
@@ -408,17 +417,20 @@ export default {
     }
   }
 }
+
 .styles {
   &__full {
     width: 100%;
     height: 100%;
   }
 }
+
 .avatar {
   @extend .styles__full;
   max-height: 30px;
   max-width: 30px;
   border-radius: 50%;
+
   &__image {
     border-radius: 50%;
     height: 30px;
@@ -426,6 +438,7 @@ export default {
     object-fit: cover;
     cursor: pointer;
   }
+
   &__col {
     &_left {
       max-width: 142px;
@@ -433,6 +446,7 @@ export default {
     }
   }
 }
+
 .status {
   &__levels {
     padding: 2px 5px;
@@ -441,6 +455,7 @@ export default {
     border-radius: 3px;
     color: $white;
   }
+
   &__level {
     display: grid;
     grid-template-columns: 20px auto;
@@ -449,23 +464,28 @@ export default {
     justify-content: flex-start;
     align-items: center;
     height: 20px;
+
     &_higher {
       @extend .status__levels;
       background-color: $yellow100;
     }
+
     &_reliable {
       @extend .status__levels;
       background-color: $grey200;
     }
+
     &_checked {
       @extend .status__levels;
       background-color: $brown;
     }
+
     &_disabled {
       display: none;
     }
   }
 }
+
 .card-quest {
   transition: .5s;
   border: 1px solid $white;
@@ -473,28 +493,34 @@ export default {
   border-radius: 6px;
   display: grid;
   grid-template-columns: 210px 1fr;
+
   &:hover {
     border: 1px solid $black100;
   }
+
   &__btn-details {
     height: 24px !important;
     width: 100%;
     min-width: 100px;
   }
+
   &__rating {
     height: 19px;
     align-self: center;
   }
+
   &__container {
     display: flex;
     justify-content: center;
   }
+
   &__details {
     display: flex;
     flex-direction: row-reverse;
     gap: 10px;
     height: 24px;
   }
+
   &__publication {
     &_bold {
       @include text-simple;
@@ -502,6 +528,7 @@ export default {
       font-weight: 500;
       color: $black600;
     }
+
     &_thin {
       @include text-simple;
       font-size: 12px;
@@ -509,6 +536,7 @@ export default {
       color: $black500;
     }
   }
+
   &__left {
     @extend .styles__full;
     position: relative;
@@ -517,6 +545,7 @@ export default {
     background-position: center !important;
     border-radius: 6px 0 0 6px;
   }
+
   &__state {
     position: absolute;
     display: flex;
@@ -529,20 +558,25 @@ export default {
     color: #FFFFFF;
     top: 0;
     left: 0;
+
     &_req {
       color: $black600;
       background-color: $black200;
     }
+
     &_per {
       background-color: $blue;
     }
+
     &_act {
       background-color: $green;
     }
+
     &_inv {
       background-color: $yellow100;
     }
   }
+
   &__progress {
     background-color: $black0;
     border-radius: 6px;
@@ -552,38 +586,46 @@ export default {
     width: 100%;
     padding: 10px;
   }
+
   &__locate {
     display: grid;
     grid-template-columns: 20px 1fr;
     grid-gap: 5px;
     align-items: center;
+
     span::before {
       font-size: 20px;
       color: $black500;
     }
   }
+
   &__status {
     display: flex;
     align-self: flex-start;
     align-items: center;
     gap: 10px;
   }
+
   &__amount {
     font-style: normal;
     font-weight: bold;
     font-size: 18px;
     height: 24px;
     text-transform: uppercase;
+
     &_green {
       color: $green;
     }
+
     &_gray {
       color: $black200;
     }
+
     &__performed {
       color: $black400;
     }
   }
+
   &__priority {
     @include text-simple;
     display: flex;
@@ -594,25 +636,30 @@ export default {
     line-height: 130%;
     height: 24px;
     padding: 0 5px;
+
     &_low {
       background: rgba(34, 204, 20, 0.1);
       color: $green;
     }
+
     &_urgent {
       background: rgba(223, 51, 51, 0.1);
       color: $red;
     }
+
     &_normal {
       background: rgba(232, 210, 13, 0.1);
       color: $yellow;
     }
   }
+
   &__actions {
     grid-template-columns: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
+
   &__right {
     min-width: 0;
     padding: 20px 20px 20px 30px;
@@ -620,10 +667,12 @@ export default {
     grid-template-columns: auto;
     grid-gap: 10px;
   }
+
   &__head {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     &-right {
       display: flex;
       width: auto;
@@ -632,23 +681,28 @@ export default {
       gap: 5px;
     }
   }
+
   &__shared {
     height: 24px;
     width: 24px;
   }
+
   &__icon {
     &_fav {
       cursor: pointer;
       transition: .5s;
+
       &:hover {
         color: $black200;
       }
     }
+
     &_perf {
       display: grid;
       grid-template-columns: repeat(5, 25px);
     }
   }
+
   &__btn {
     display: flex;
     align-items: center;
@@ -657,18 +711,22 @@ export default {
     min-width: 146px;
     height: 34px;
     background: transparent;
+
     span::before {
       font-size: 24px;
       color: $blue;
     }
   }
+
   &__text {
     @include text-simple;
+
     &_details {
       font-size: 16px;
       line-height: 130%;
       color: $blue;
     }
+
     &-description {
       font-size: 16px;
       line-height: 130%;
@@ -679,12 +737,14 @@ export default {
       overflow: hidden;
       white-space: nowrap;
     }
+
     &_blue {
       font-weight: 500;
       font-size: 18px;
       line-height: 130%;
       color: $blue;
     }
+
     &_title {
       font-weight: 500;
       font-size: 16px;
@@ -694,30 +754,36 @@ export default {
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
+
       &:hover {
         color: $blue;
       }
     }
+
     &_locate {
       font-size: 14px;
       line-height: 130%;
       color: #7C838D;
     }
+
     &_grey {
       font-size: 16px;
       line-height: 130%;
       color: #7C838D;
     }
   }
+
   &__avatar {
     max-width: 30px;
     max-height: 30px;
     border-radius: 50%;
+
     &__img {
       border-radius: 100%;
       height: 100%;
     }
   }
+
   &__title {
     @include text-simple;
     cursor: pointer;
@@ -731,27 +797,34 @@ export default {
     line-height: 130%;
     color: $black800;
   }
+
   &__cards {
     &-state-clo {
-        background: $red;
-      }
+      background: $red;
+    }
+
     &-state-dis {
-        background-color: $red;
-      }
+      background-color: $red;
+    }
+
     &-state-req {
-        background: $grey;
-        color: $black600 !important;
-      }
+      background: $grey;
+      color: $black600 !important;
+    }
+
     &-state-per {
-        background: $blue;
-      }
+      background: $blue;
+    }
+
     &-state-act {
-        background: $green;
-      }
+      background: $green;
+    }
+
     &-state-inv {
       background: $yellow;
     }
   }
+
   &__card {
     margin: 20px 0 0 0;
     border: 0 solid;
@@ -762,58 +835,72 @@ export default {
     justify-content: center;
     grid-template-columns: 1fr;
     grid-gap: 20px;
+
     &__content {
       border-radius: 6px 0 0 6px;
       box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
+
       &_per {
         height: 244px;
       }
     }
   }
 }
+
 .star {
   height: 30px;
   width: 30px;
   align-self: center;
   justify-self: center;
+
   &__hide {
     display: none;
   }
+
   &__default {
     display: flex;
   }
+
   &__hover {
     display: none;
   }
+
   &:hover {
     .star {
       &__hover {
         display: flex;
       }
+
       &__default {
         display: none;
       }
+
       &__checked {
         display: none;
       }
     }
   }
 }
+
 @include _991 {
   .card-quest {
     grid-template-columns: auto;
+
     &__right {
       padding-left: 20px;
     }
+
     &__left {
       height: 200px;
       border-radius: 6px 6px 0 0;
+
       img {
         border-radius: 6px;
         height: 100%;
         width: 100%;
       }
     }
+
     .avatar {
       &__container {
         grid-template-columns: auto repeat(2, 3fr);
@@ -821,11 +908,13 @@ export default {
     }
   }
 }
+
 @include _767 {
   .card-quest {
     &__left {
       height: 200px;
       border-radius: 6px 6px 0 0;
+
       img {
         border-radius: 6px;
         height: 100%;
@@ -834,30 +923,36 @@ export default {
     }
   }
 }
+
 @include _575 {
   .card-quest {
     &__amount {
       font-size: 16px;
     }
+
     &__btn-details {
       height: 24px !important;
       font-size: 13px !important;
     }
+
     &__actions {
       display: grid;
       grid-template-columns: 1fr;
     }
+
     &__btn {
       margin-top: 10px;
       padding: 0;
     }
   }
 }
+
 @include _480 {
   .card-quest {
     &__actions {
       grid-template-columns: 1fr;
     }
+
     &__right {
       padding: 10px;
     }
@@ -873,6 +968,7 @@ export default {
     }
   }
 }
+
 @include _380 {
   .card-quest__progress {
     height: 100%;
