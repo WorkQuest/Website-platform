@@ -616,8 +616,10 @@ export default {
 
 .info-message {
   display: grid;
-  grid-template-columns: repeat(3, auto);
+  grid-template-columns: 1fr auto 1fr;
   gap: 5px;
+  text-align: start;
+  grid-template-areas: "owner system sender";
 
   &__link {
     text-decoration: underline #1D2127;
@@ -626,15 +628,20 @@ export default {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    grid-area: sender;
 
     &_left {
       grid-column: 1;
       grid-row: 1;
+      text-align: end;
+      grid-area: owner;
     }
   }
 
   &__title {
     white-space: nowrap;
+    text-align: center;
+    grid-area: system;
   }
 }
 
