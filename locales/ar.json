@@ -46,10 +46,10 @@
       "mb": "{count} م.ب",
       "kb": "{count} KB",
       "percentsCount": "{count}%",
-      "minutes": "{count} minutes",
-      "hours": "{count} الساعات",
-      "years": "{count} years",
-      "days": "{count} يوم",
+      "minutes": "{count} minute | count} minutes | {count} minutes",
+      "hours": "{count} hour | {count} الساعات | {count} الساعات",
+      "years": "{count} year | {count} years | {count} years ",
+      "days": "{count} day | {count} يوم | {count} يوم",
       "votesCount": "{count} صوت",
       "distance": {
         "m": "م"

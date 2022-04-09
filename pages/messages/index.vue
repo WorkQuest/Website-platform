@@ -440,6 +440,9 @@ export default {
   &__title {
     font-weight: 400;
     font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &_bold {
       font-weight: 500;
@@ -452,6 +455,9 @@ export default {
     &_link {
       color: #0083C7;
       cursor: pointer;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
 
       &:hover {
         text-decoration: underline;
