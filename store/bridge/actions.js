@@ -1,20 +1,20 @@
-import moment from 'moment';
 import BigNumber from 'bignumber.js';
-import Web3 from 'web3';
 import { BlockchainByIndex, BridgeAddresses, SwapAddresses } from '~/utils/bridge-constants';
 import {
-  createInstanceWeb3,
   error,
-  fetchContractData,
-  fetchNativeBalance,
-  getAccountAddress, getGasPrice, getNativeBalance,
-  getStakingDataByType, getTransactionCount, getTransactionFee,
-  sendTransaction,
-  showToast,
   success,
+  showToast,
+  getGasPrice,
+  getEstimateGas,
+  sendTransaction,
+  getNativeBalance,
+  getTransactionFee,
+  fetchContractData,
+  getAccountAddress,
+  createInstanceWeb3,
+  getTransactionCount,
 } from '~/utils/web3';
 import { WQBridge, ERC20 } from '~/abi/abi';
-import { StakingTypes } from '~/utils/enums';
 
 export default {
   async fetchMySwaps({ commit }, { recipientAddress, query }) {
@@ -31,12 +31,12 @@ export default {
           SwapAddresses.get(BlockchainByIndex[swap.chainTo]).icon,
         ],
         amount: new BigNumber(swap.amount).shiftedBy(-18).toString(),
-        created: moment(new Date(swap.timestamp * 1000)).format('MMMM Do YYYY, HH:mm'),
+        created: swap.timestamp,
       }));
       commit('setSwapsData', { count: result.count, swaps });
       return { ok };
     } catch (e) {
-      console.error('crosschain/fetchMySwaps', e);
+      console.error('bridge/fetchMySwaps', e);
       return { ok: false };
     }
   },
@@ -64,7 +64,7 @@ export default {
   },
 
   async fetchBalance({ commit }, {
-    token, toChainIndex, isNative, tokenAddress, bridgeAddress,
+    symbol, toChainIndex, isNative, tokenAddress, bridgeAddress,
   }) {
     try {
       const accountAddress = await getAccountAddress();
@@ -75,10 +75,10 @@ export default {
           WQBridge,
           bridgeAddress,
           'swap',
-          [nonce, toChainIndex, balance, accountAddress, token],
+          [nonce, toChainIndex, balance, accountAddress, symbol],
           balance,
         );
-        commit('setToken', { amount: new BigNumber(balance).shiftedBy(-18).minus(txFee.result).toNumber() });
+        commit('setToken', { amount: new BigNumber(balance).shiftedBy(-18).minus(+txFee).toNumber() });
       } else {
         const [decimal, amount] = await Promise.all([
           fetchContractData('decimals', ERC20, tokenAddress),
@@ -91,8 +91,61 @@ export default {
       }
       return success();
     } catch (e) {
-      console.error(e);
       return error(e.code, 'Error in fetchBalance', e.data);
+    }
+  },
+
+  async swap({ commit, dispatch }, {
+    amount, tokenAddress, bridgeAddress, isNative, symbol, toChainIndex,
+  }) {
+    try {
+      const nonce = await getTransactionCount();
+      const accountAddress = await getAccountAddress();
+      const value = new BigNumber(amount).shiftedBy(18);
+      const data = [nonce, toChainIndex, value, accountAddress, symbol];
+      const bridgeInstance = await createInstanceWeb3(WQBridge, bridgeAddress);
+
+      if (isNative) {
+        showToast('Swapping', 'Swapping...', 'success');
+        const [gasPrice, gas] = await Promise.all([
+          getGasPrice(),
+          getEstimateGas(null, null, bridgeInstance, 'swap', data, value),
+        ]);
+        const swapRes = await bridgeInstance.methods.swap(...data).send({
+          from: accountAddress,
+          value,
+          gasPrice,
+          gas,
+        });
+        showToast('Swapping', 'Swapping done', 'success');
+        return success(swapRes);
+      }
+
+      const allowance = await fetchContractData('allowance', ERC20, tokenAddress, [accountAddress, bridgeAddress]);
+      if (value.isGreaterThan(+allowance)) {
+        showToast('Swapping', 'Approving...', 'success');
+        const tokenInstance = await createInstanceWeb3(ERC20, tokenAddress);
+        const { status } = await tokenInstance.methods.approve(bridgeAddress, value).send({ from: accountAddress });
+        if (!status) return error(500, 'Approve was failed');
+        showToast('Swapping', 'Approving done', 'success');
+      }
+
+      showToast('Swapping', 'Swapping...', 'success');
+      const [gasPrice, gas] = await Promise.all([
+        getGasPrice(),
+        getEstimateGas(null, null, bridgeInstance, 'swap', data),
+      ]);
+      const swapRes = await bridgeInstance.methods.swap(...data).send({
+        from: accountAddress,
+        gasPrice,
+        gas,
+      });
+      showToast('Swapping', 'Swapping done', 'success');
+
+      return success(swapRes);
+    } catch (e) {
+      showToast('Swapping error', e.message, 'danger');
+      return error(e.code, 'Error in swap action', e.data);
     }
   },
 };

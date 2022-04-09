@@ -124,6 +124,7 @@ export default {
       this.CloseModal();
     },
     initLink() {
+      // TODO add worknet, best solution wiil be add link in page where you call status modal
       if (this.options.chainTo === 3) {
         this.link = `https://${this.IsProd ? '' : 'rinkeby.'}etherscan.io/tx/${this.options.txHash}`;
       } else {

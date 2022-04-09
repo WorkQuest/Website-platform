@@ -20,7 +20,6 @@ import {
   unStaking,
   swap,
   getAccount,
-  swapWithBridge,
   getStakingDataByType,
   handleMetamaskStatus,
   unsubscirbeListeners,
@@ -213,11 +212,6 @@ export default {
   },
   async swap({ commit }, { decimals, amount }) {
     return await swap(decimals, amount);
-  },
-  async swapWithBridge({ commit }, {
-    _decimals, _amount, chain, chainTo, userAddress, recipient, symbol,
-  }) {
-    return await swapWithBridge(_decimals, _amount, chain, chainTo, userAddress, recipient, symbol);
   },
   async goToChain({ commit }, { chain }) {
     return await goToChain(chain);

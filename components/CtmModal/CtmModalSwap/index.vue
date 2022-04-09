@@ -130,26 +130,26 @@ export default {
     ...mapActions({
       fetchBalance: 'bridge/fetchBalance',
     }),
-    async handlerFetchBalance(tokenName) {
+    async handlerFetchBalance(symbol) {
       const { to, from } = this.options;
       await this.fetchBalance({
-        token: tokenName,
+        symbol,
         toChainIndex: to.index,
-        tokenAddress: from.tokenAddress[tokenName],
+        tokenAddress: from.tokenAddress[symbol],
         bridgeAddress: BridgeAddresses[from.chain],
-        isNative: from.nativeSymbol === this.tokens[this.tokenId],
+        isNative: from.nativeSymbol === symbol,
       });
     },
-
     setMaxValue() {
       this.amount = this.currentToken.amount;
     },
     async showSwapInfoModal() {
       this.amount = (this.amount.toString()).replace(/[,]/g, '.');
-      const { submit } = this.options;
+      const { submit, from } = this.options;
       await submit({
         amount: this.amount,
-        tokenName: this.tokens[this.tokenId],
+        symbol: this.tokens[this.tokenId],
+        isNative: from.nativeSymbol === this.tokens[this.tokenId],
       });
     },
   },

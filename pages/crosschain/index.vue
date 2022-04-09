@@ -135,7 +135,7 @@
               </template>
               <template #cell(created)="el">
                 <div class="table__value table__value_blue">
-                  {{ $moment(new Date(el.item.created * 1000)).locale($i18n.locale).format('MMMM Do YYYY, h:mm') }}
+                  {{ $moment(new Date(el.item.created * 1000)).locale($i18n.locale).format('MMMM Do YYYY, hh:mm a') }}
                 </div>
               </template>
               <template #cell(redeem)="el">
@@ -157,7 +157,7 @@
                 slot="empty"
               >
                 <div class="crosschain-page__empty-info">
-                  <empty-data :description="$t('meta.listIsEmpty')" />
+                  <empty-data :description="$tc('meta.listIsEmpty')" />
                 </div>
               </template>
             </b-table>
@@ -172,7 +172,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import modals from '~/store/modals/modals';
 import { Chains } from '~/utils/enums';
-import { SwapAddresses } from '~/utils/bridge-constants';
+import { BridgeAddresses, SwapAddresses } from '~/utils/bridge-constants';
 import { getChainIdByChain } from '~/utils/web3';
 
 export default {
@@ -272,6 +272,7 @@ export default {
     this.$nuxt.setLayout(this.isAuth ? 'default' : 'guest');
   },
   async beforeDestroy() {
+    this.$store.commit('bridge/resetToken');
     await this.handlerDisconnect();
   },
   methods: {
@@ -279,6 +280,7 @@ export default {
       fetchSwaps: 'bridge/fetchMySwaps',
       resetSwaps: 'bridge/resetMySwaps',
       redeem: 'bridge/redeemSwap',
+      swap: 'bridge/swap',
 
       isRightChain: 'web3/chainIsCompareToCurrent',
       connectWallet: 'web3/connect',
@@ -341,8 +343,6 @@ export default {
     },
 
     async showSwapModal() {
-      this.SetLoader(true);
-
       const { addresses, sourceAddressInd, targetAddressInd } = this;
       const { chain } = addresses[sourceAddressInd];
       if (await this.checkNetwork(chain)) {
@@ -352,23 +352,40 @@ export default {
           key: modals.swap,
           from,
           to,
-          submit: async ({ amount, tokenName }) => {
+          submit: async ({ amount, symbol, isNative }) => {
             this.ShowModal({
               key: modals.swapInfo,
               networks: `${from.chain} > ${to.chain}`,
               chain: from.chain,
-              toChain: to.index,
               amount,
               recipient: this.account.address,
               // worknetFee: `0,5 ${this.tokens[this.token]}`,
               // binanceFee: '0,0009 BNB',
-              tokenName,
+              symbol,
+              submit: async () => {
+                this.CloseModal();
+                this.SetLoader(true);
+                const { ok, result } = await this.swap({
+                  amount,
+                  isNative,
+                  tokenAddress: from.tokenAddress[symbol],
+                  bridgeAddress: BridgeAddresses[from.chain],
+                  symbol,
+                  toChainIndex: to.index,
+                });
+                this.SetLoader(false);
+                this.ShowModal({
+                  key: modals.status,
+                  img: ok ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
+                  title: ok ? this.$t('modals.transactionFail') : this.$t('modals.transactionSent'),
+                  txHash: result?.tx,
+                  chainTo: result?.toChain,
+                });
+              },
             });
           },
         });
       }
-
-      this.SetLoader(false);
     },
   },
 };

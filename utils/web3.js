@@ -355,6 +355,20 @@ export const getTransactionCount = async (address = getAccountAddress()) => awai
 // Get current gas price
 export const getGasPrice = async () => await web3.eth.getGasPrice();
 
+// Get estimate gas
+export const getEstimateGas = async (contractAbi = null, contractAddress = null, inst = null, method, attr, value = null) => {
+  try {
+    if (!inst) inst = new web3.eth.Contract(contractAbi, contractAddress);
+    return await
+    (value)
+      ? inst.methods[method](...attr).estimateGas({ from: getAccountAddress(), value })
+      : inst.methods[method](...attr).estimateGas({ from: getAccountAddress() });
+  } catch (e) {
+    console.error('getGasPriceError', e);
+    return false;
+  }
+};
+
 export const createInstanceWeb3 = async (ab, address) => new web3.eth.Contract(ab, address);
 
 export const createInstance = async (ab, address) => {
@@ -362,11 +376,8 @@ export const createInstance = async (ab, address) => {
   return await abs.getInstance(address);
 };
 
-let tokenInstance;
-let bridgeInstance;
 let allowance;
 let amount;
-let nonce;
 
 // Calculate transaction fee for method
 export const getTransactionFee = async (_abi, _contractAddress, method, data = null, value = null) => {
@@ -375,8 +386,7 @@ export const getTransactionFee = async (_abi, _contractAddress, method, data = n
     const inst = new web3.eth.Contract(_abi, _contractAddress);
     const gasPrice = await web3.eth.getGasPrice();
     const gasEstimate = await inst.methods[method].apply(null, data).estimateGas({ from: account.address, value });
-    const fee = new BigNumber(gasPrice * gasEstimate).shiftedBy(-18).toString();
-    return success(fee);
+    return new BigNumber(gasPrice * gasEstimate).shiftedBy(-18).toString();
   } catch (e) {
     return error(500, 'Get transaction fee error', e);
   }
@@ -512,72 +522,6 @@ export const swap = async (decimals, amountValue) => {
 
     return success(true);
   } catch (e) {
-    showToast('Swapping error', `${e.message}`, 'danger');
-    return error(500, 'stake error', e);
-  }
-};
-
-export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAddress, recipient, symbol) => {
-  let swapData = '';
-  let tokenAddress;
-  let bridgeAddress;
-  const isNative = symbol !== 'WQT' && chain !== Chains.WORKNET;
-  if (chain === Chains.ETHEREUM) {
-    tokenAddress = process.env.ETHEREUM_WQT_TOKEN;
-    bridgeAddress = process.env.ETHEREUM_BRIDGE;
-  } else if (chain === Chains.BNB || chain === Chains.BINANCE) {
-    tokenAddress = process.env.BSC_WQT_TOKEN;
-    bridgeAddress = process.env.BSC_BRIDGE;
-  } else if (chain === Chains.WORKNET) {
-    switch (symbol) {
-      case 'BNB':
-        tokenAddress = process.env.WORKNET_WBNB_TOKEN;
-        break;
-      case 'ETH':
-        tokenAddress = process.env.WORKNET_WETH_TOKEN;
-        break;
-      default:
-        tokenAddress = process.env.WORKNET_WQT_TOKEN;
-    }
-    bridgeAddress = process.env.WORKNET_BRIDGE;
-  }
-  bridgeInstance = await createInstance(abi.WQBridge, bridgeAddress);
-  if (!isNative) {
-    tokenInstance = await createInstance(abi.ERC20, tokenAddress);
-    allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [account.address, bridgeAddress])).toString();
-  }
-  nonce = await web3.eth.getTransactionCount(userAddress);
-  try {
-    amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
-    if (!isNative && +allowance < +amount) {
-      await store.dispatch('main/setStatusText', 'Approving');
-      showToast('Swapping', 'Approving...', 'success');
-      await tokenInstance.approve(bridgeAddress, amount);
-      allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [account.address, bridgeAddress])).toString();
-      showToast('Swapping', 'Approving done', 'success');
-      showToast('Swapping', 'Swapping...', 'success');
-      await store.dispatch('main/setStatusText', 'Swapping');
-      swapData = await bridgeInstance.swap(nonce, chainTo, amount, recipient, symbol);
-    } else if (isNative) {
-      await store.dispatch('main/setStatusText', 'Swapping');
-      const payload = {
-        abi: abi.WQBridge,
-        address: bridgeAddress,
-        value: amount,
-        data: [
-          nonce.toString(), chainTo.toString(), amount, recipient, symbol,
-        ],
-      };
-      await sendTransaction('swap', payload);
-    } else {
-      showToast('Swapping', 'Swapping...', 'success');
-      await store.dispatch('main/setStatusText', 'Swapping');
-      swapData = await bridgeInstance.swap(nonce, chainTo, amount, recipient, symbol);
-    }
-    showToast('Swapping', 'Swapping done', 'success');
-    return swapData;
-  } catch (e) {
-    console.log(e);
     showToast('Swapping error', `${e.message}`, 'danger');
     return error(500, 'stake error', e);
   }
