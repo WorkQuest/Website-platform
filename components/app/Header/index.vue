@@ -340,7 +340,7 @@ export default {
       connections: 'data/notificationsConnectionStatus',
       chatId: 'chat/getCurrChatId',
       messagesFilter: 'chat/getMessagesFilter',
-      unreadMessagesCount: 'user/getUnreadChatsCount',
+      unreadMessagesCount: 'notifications/getUnreadChatsCount',
       chats: 'chat/getChats',
       searchValue: 'chat/getSearchValue',
       currentLocale: 'user/getCurrentLang',
@@ -465,7 +465,7 @@ export default {
           data.isUnread = true;
           data.userMembers = data.userMembers.filter((member) => member.id !== this.userData.id);
           this.$store.commit('chat/addChatToList', data);
-          this.$store.commit('user/changeUnreadChatsCount', { needAdd: true, count: 1 });
+          this.$store.commit('notifications/changeUnreadChatsCount', { needAdd: true, count: 1 });
         } else if (action === MessageAction.NEW_MESSAGE) {
           await this.$store.dispatch('chat/getCurrChatData', data.chatId);
           await this.getStatistic();

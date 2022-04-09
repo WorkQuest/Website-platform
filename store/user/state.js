@@ -72,11 +72,6 @@ export default () => ({
       completed: 0,
       opened: 0,
     },
-    chatStatistic: {
-      id: '',
-      userId: '',
-      unreadCountChats: 0,
-    },
     userSpecializations: [],
     affiliateUser: {
       referralCodeId: '',
@@ -120,11 +115,4 @@ export default () => ({
     questsStatistic: null,
     ratingStatistic: null,
   },
-  unreadChatsCount: 0,
-  unreadNotifsCount: 0,
-  notifications: {
-    list: [],
-    count: 0,
-  },
-  reducedNotifications: [],
 });

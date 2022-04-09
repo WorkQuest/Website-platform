@@ -124,13 +124,13 @@ export default {
   },
   computed: {
     ...mapGetters({
-      unreadNotifsCount: 'user/getUnreadNotifsCount',
-      notifications: 'user/getReducedNotifications',
-      notificationsCount: 'user/getNotificationsCount',
+      unreadNotifsCount: 'notifications/getUnreadNotifsCount',
+      notifications: 'notifications/getReducedNotifications',
+      notificationsCount: 'notifications/getNotificationsCount',
     }),
   },
   async beforeMount() {
-    await this.$store.dispatch('user/getNotifications');
+    await this.$store.dispatch('notifications/getNotifications');
   },
   methods: {
     senderId(notification) {

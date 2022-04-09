@@ -119,8 +119,8 @@ export default {
   computed: {
     ...mapGetters({
       userRole: 'user/getUserRole',
-      notifications: 'user/getNotificationsList',
-      notifsCount: 'user/getNotificationsCount',
+      notifications: 'notifications/getNotificationsList',
+      notifsCount: 'notifications/getNotificationsCount',
     }),
     totalPages() {
       return Math.ceil(this.notifsCount / this.filter.limit);
@@ -132,7 +132,7 @@ export default {
     this.SetLoader(false);
   },
   destroyed() {
-    this.$store.commit('user/setNotifications', { result: { notifications: [], count: this.notifsCount } });
+    this.$store.commit('notifications/setNotifications', { result: { notifications: [], count: this.notifsCount } });
   },
   methods: {
     avatar(notification) {
@@ -158,7 +158,7 @@ export default {
       const { limit, offset } = this.filter;
       this.CloseModal();
       this.SetLoader(true);
-      await this.$store.dispatch('user/removeNotification', {
+      await this.$store.dispatch('notifications/removeNotification', {
         config: {
           params: {
             limit: 1,
@@ -173,7 +173,7 @@ export default {
       if (!isVisible || !id || seen || this.notificationIdsForRead.indexOf(id) >= 0) return;
       this.notificationIdsForRead.push(id);
       this.delayId = this.SetDelay(async () => {
-        await this.$store.dispatch('user/readNotifications', {
+        await this.$store.dispatch('notifications/readNotifications', {
           notificationIds: this.notificationIdsForRead,
         });
         this.notificationIdsForRead = [];
@@ -186,7 +186,7 @@ export default {
       this.SetLoader(false);
     },
     async getNotifications() {
-      await this.$store.dispatch('user/getNotifications', { params: this.filter });
+      await this.$store.dispatch('notifications/getNotifications', { params: this.filter });
     },
     goToEvent(path, isNotifCont) {
       if (isNotifCont && document.body.offsetWidth > 767) return;

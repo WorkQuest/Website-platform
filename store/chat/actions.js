@@ -139,7 +139,7 @@ export default {
       const { ok } = await this.$axios.$post(`/v1/read/message/${chatId}`, config);
 
       commit('setChatAsRead');
-      commit('user/changeUnreadChatsCount', { needAdd: true, count: -1 }, { root: true });
+      commit('notifications/changeUnreadChatsCount', { needAdd: true, count: -1 }, { root: true });
       return ok;
     } catch (e) {
       return false;

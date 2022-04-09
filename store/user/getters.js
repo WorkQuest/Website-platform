@@ -37,10 +37,5 @@ export default {
   getUserPortfolio: (state) => state.medias,
   getAllUserReviews: (state) => state.userReviews,
   getUser2FA: (state) => state.userEnable2FA,
-  getUnreadChatsCount: (state) => state.unreadChatsCount,
-  getUnreadNotifsCount: (state) => state.unreadNotifsCount,
-  getNotificationsList: (state) => state.notifications.list,
-  getNotificationsCount: (state) => state.notifications.count,
-  getReducedNotifications: (state) => state.reducedNotifications,
   getUserReferralId: (state) => state.userData.affiliateUser.referralCodeId,
 };
