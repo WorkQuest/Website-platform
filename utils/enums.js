@@ -53,6 +53,7 @@ export const QuestStatuses = {
   WaitConfirm: 5,
   Done: 6,
 };
+export const TwoFAStatuses = { DISABLED: 0, ENABLED: 1 };
 export const SumSubStatuses = { NOT_VERIFIED: 0, VERIFIED: 1 };
 export const InfoModeEmployer = {
   Rejected: -1,
@@ -171,6 +172,7 @@ export const NotificationAction = {
 
 export const LocalNotificationAction = {
   KYC: 'kyc',
+  TWOFA: '2fa',
 };
 
 export const notificationCommonFilterActions = Object.freeze([

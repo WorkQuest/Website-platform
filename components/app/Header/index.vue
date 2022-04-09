@@ -311,7 +311,7 @@ import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import moment from 'moment';
 import {
-  MessageAction, UserRole, Path, SumSubStatuses,
+  MessageAction, UserRole, Path, SumSubStatuses, TwoFAStatuses,
 } from '~/utils/enums';
 
 export default {
@@ -345,6 +345,7 @@ export default {
       searchValue: 'chat/getSearchValue',
       currentLocale: 'user/getCurrentLang',
       statusKYC: 'user/getStatusKYC',
+      getStatus2FA: 'user/getStatus2FA',
     }),
     locales() {
       return this.$i18n.locales.map((item) => ({
@@ -442,8 +443,8 @@ export default {
   },
   async mounted() {
     await this.initWSListeners();
+    await this.pushLocalNotifications();
     this.GetLocation();
-    this.pushLocalNotifications();
     this.$store.commit('user/setLang', this.$i18n.localeProperties.code);
   },
   destroyed() {
@@ -452,14 +453,23 @@ export default {
     this.$wsChatActions.disconnect();
   },
   methods: {
-    pushLocalNotifications() {
+    async pushLocalNotifications() {
+      let payload;
       if (this.statusKYC === SumSubStatuses.NOT_VERIFIED) {
-        this.$store.dispatch('notifications/createLocalNotification', {
+        payload = {
           action: 'kyc',
           message: 'Please, enable KYC!',
           actionBtn: 'Enable KYC',
-          title: 'WorkQuest info',
-        });
+        };
+        await this.$store.dispatch('notifications/createLocalNotification', payload);
+      }
+      if (this.getStatus2FA === TwoFAStatuses.DISABLED) {
+        payload = {
+          action: '2fa',
+          message: 'Please, enable 2FA!',
+          actionBtn: 'Enable 2FA in Settings',
+        };
+        await this.$store.dispatch('notifications/createLocalNotification', payload);
       }
     },
     async chatAction({ data, action }) {

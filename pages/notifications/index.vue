@@ -124,7 +124,9 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { UserRole, Path, SumSubStatuses } from '~/utils/enums';
+import {
+  UserRole, Path, SumSubStatuses, TwoFAStatuses,
+} from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -147,6 +149,7 @@ export default {
       notifications: 'notifications/getNotificationsList',
       notifsCount: 'notifications/getNotificationsCount',
       statusKYC: 'user/getStatusKYC',
+      getStatus2FA: 'user/getStatus2FA',
     }),
     totalPages() {
       return Math.ceil(this.notifsCount / this.filter.limit);
@@ -155,21 +158,30 @@ export default {
   async mounted() {
     this.SetLoader(true);
     await this.getNotifications();
-    this.pushLocalNotifications();
+    await this.pushLocalNotifications();
     this.SetLoader(false);
   },
   destroyed() {
     this.$store.commit('notifications/setNotifications', { result: { notifications: [], count: this.notifsCount } });
   },
   methods: {
-    pushLocalNotifications() {
+    async pushLocalNotifications() {
+      let payload;
       if (this.statusKYC === SumSubStatuses.NOT_VERIFIED) {
-        this.$store.dispatch('notifications/createLocalNotification', {
+        payload = {
           action: 'kyc',
           message: 'Please, enable KYC!',
           actionBtn: 'Enable KYC',
-          title: 'WorkQuest info',
-        });
+        };
+        await this.$store.dispatch('notifications/createLocalNotification', payload);
+      }
+      if (this.getStatus2FA === TwoFAStatuses.DISABLED) {
+        payload = {
+          action: '2fa',
+          message: 'Please, enable 2FA!',
+          actionBtn: 'Enable 2FA in Settings',
+        };
+        await this.$store.dispatch('notifications/createLocalNotification', payload);
       }
     },
     avatar(notification) {

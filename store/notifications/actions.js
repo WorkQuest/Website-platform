@@ -12,7 +12,7 @@ export default {
     action, message, title, actionBtn, date,
   }) {
     async function setLocalNotification() {
-      if (!action && !message) return {};
+      if (!action && !message && !title) return {};
       const notification = {
         actionNameKey: `notifications.${action}`,
         creatingDate: moment(date || Date.now()).format('MMMM Do YYYY, h:mm'),
@@ -23,11 +23,11 @@ export default {
           data: {
             title,
             createdAt: moment(date || Date.now()).format('MMMM Do YYYY, h:mm'),
-            id: 'b70bef2b-f07f-4707-8e05-8c667362bebf',
+            id: 'b70bef2b-f07f-4707-8e05-8c667362beb854',
             message,
             sender: {
-              avatar: require('assets/img/ui/w-logo.svg'),
-              firstName: 'Workquest',
+              avatar: require('assets/img/app/logo.svg'),
+              firstName: 'Workquest info',
             },
           },
         },
@@ -36,15 +36,17 @@ export default {
     }
     const notification = await setLocalNotification();
     const notificationList = getters.getNotificationsList;
-    function isAdded() {
+    async function checkAdded() {
       for (let i = 0; i < notificationList.length; i += 1) {
-        if (notification === ['notifications.kyc'].includes(notificationList.actionNameKey)) return true;
+        if (['notifications.kyc', 'notifications.2fa'].includes(notificationList.actionNameKey)) return true;
       }
       return false;
     }
-    if (!isAdded()) await dispatch('addNotification', notification);
+    const isAdded = await checkAdded();
+    if (!isAdded) await dispatch('addNotification', notification);
   },
   async removeNotification({ dispatch, commit }, { config, notificationId }) {
+    // TODO: Дописать логику удаления для локальных нотификаций
     try {
       const { ok } = await this.$axios.$delete(`${process.env.NOTIFS_URL}notifications/delete/${notificationId}`);
 
@@ -211,6 +213,10 @@ export default {
 
       case LocalNotificationAction.KYC:
         await setAllNotificationsParams(title, `${Path.SUMSUB}`, false, '', true);
+        break;
+
+      case LocalNotificationAction.TWOFA:
+        await setAllNotificationsParams(title, `${Path.SETTINGS}`, false, '', true);
         break;
 
       /** DAO */
