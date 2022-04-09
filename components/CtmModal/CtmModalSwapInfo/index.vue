@@ -85,6 +85,7 @@ export default {
       this.CloseModal();
     },
     async sendTransaction() {
+      // TODO need it?
       if (!this.isConnected) await this.$store.dispatch('web3/connect');
 
       const { submit } = this.options;
