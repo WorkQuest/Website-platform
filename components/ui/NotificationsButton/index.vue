@@ -49,7 +49,25 @@
               class="notify notify__content"
             >
               <div class="notify__top">
-                <div class="notify__user">
+                <div
+                  v-if="notification.params && notification.params.isLocal"
+                  class="notify__user"
+                >
+                  <img
+                    class="notify__avatar"
+                    :src="notification.notification.data.sender.avatar"
+                    alt="avatar"
+                  >
+                  <div class="notify__info">
+                    <span class="notify__text notify__text_name">
+                      {{ UserName(notification.notification.data.sender.firstName, '') }}
+                    </span>
+                  </div>
+                </div>
+                <div
+                  v-if="notification.params && !notification.params.isLocal"
+                  class="notify__user"
+                >
                   <img
                     class="notify__avatar"
                     :src="avatar(notification)"
@@ -71,7 +89,18 @@
                   {{ $moment(notification.createdAt).format('Do MMMM YYYY, hh:mm a') }}
                 </div>
               </div>
-              <div class="notify__reason">
+              <div
+                v-if="notification.params && notification.params.isLocal"
+                class="notify__reason"
+              >
+                <div class="notify__text notify__text_blue">
+                  {{ notification.notification.data.message }}
+                </div>
+              </div>
+              <div
+                v-if="notification.params && !notification.params.isLocal"
+                class="notify__reason"
+              >
                 <div class="notify__text notify__text_blue">
                   {{ $t(notification.actionNameKey) }}:
                 </div>
@@ -81,7 +110,16 @@
                   class="notify__btn"
                   @click="goToEvent(notification.params ? notification.params.path : '')"
                 >
-                  <div class="notify__text notify__text_btn">
+                  <div
+                    v-if="notification.params && notification.params.isLocal"
+                    class="notify__text notify__text_btn"
+                  >
+                    {{ notification.notification.actionBtn }}
+                  </div>
+                  <div
+                    v-if="notification.params && !notification.params.isLocal"
+                    class="notify__text notify__text_btn"
+                  >
                     {{ notification.params ? notification.params.title : '' }}
                   </div>
                   <span class="icon icon-chevron_right" />

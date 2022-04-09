@@ -169,6 +169,10 @@ export const NotificationAction = {
   NEW_DISCUSSION_LIKE: 'newDiscussionLike',
 };
 
+export const LocalNotificationAction = {
+  KYC: 'kyc',
+};
+
 export const notificationCommonFilterActions = Object.freeze([
   NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST,
   NotificationAction.WORKER_ACCEPTED_INVITATION_TO_QUEST,
@@ -240,6 +244,7 @@ export const Path = {
   WIKI: '/wiki',
   RAISED_VIEWS: '/raised-views',
   NOTIFICATIONS: '/notifications',
+  SUMSUB: '/sumsub',
 };
 
 export const PathDAO = {

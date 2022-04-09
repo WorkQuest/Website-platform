@@ -19,7 +19,21 @@
             :class="{'notification_gray' : !notification.seen}"
             @click="goToEvent(notification.params ? notification.params.path : '', true)"
           >
-            <template v-if="notification.sender">
+            <template v-if="notification.params.isLocal">
+              <div class="notification__avatar">
+                <img
+                  class="avatar"
+                  :src="notification.notification.data.sender.avatar"
+                  alt=""
+                >
+              </div>
+              <div class="notification__inviter inviter">
+                <span class="inviter__name">
+                  {{ UserName(notification.notification.data.sender.firstName, '') }}
+                </span>
+              </div>
+            </template>
+            <template v-if="!notification.params.isLocal && notification.sender">
               <div class="notification__avatar">
                 <img
                   class="avatar"
@@ -44,7 +58,18 @@
                 <!--                </span>-->
               </div>
             </template>
-            <div class="notification__quest quest">
+            <div
+              v-if="notification.params.isLocal"
+              class="notification__quest quest"
+            >
+              <span class="quest__invitation">
+                {{ notification.notification.data.message }}
+              </span>
+            </div>
+            <div
+              v-if="!notification.params.isLocal"
+              class="notification__quest quest"
+            >
               <span class="quest__invitation">
                 {{ notificationActionKey(notification) }}
               </span>
@@ -99,7 +124,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { UserRole, Path } from '~/utils/enums';
+import { UserRole, Path, SumSubStatuses } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -121,6 +146,7 @@ export default {
       userRole: 'user/getUserRole',
       notifications: 'notifications/getNotificationsList',
       notifsCount: 'notifications/getNotificationsCount',
+      statusKYC: 'user/getStatusKYC',
     }),
     totalPages() {
       return Math.ceil(this.notifsCount / this.filter.limit);
@@ -129,12 +155,23 @@ export default {
   async mounted() {
     this.SetLoader(true);
     await this.getNotifications();
+    this.pushLocalNotifications();
     this.SetLoader(false);
   },
   destroyed() {
     this.$store.commit('notifications/setNotifications', { result: { notifications: [], count: this.notifsCount } });
   },
   methods: {
+    pushLocalNotifications() {
+      if (this.statusKYC === SumSubStatuses.NOT_VERIFIED) {
+        this.$store.dispatch('notifications/createLocalNotification', {
+          action: 'kyc',
+          message: 'Please, enable KYC!',
+          actionBtn: 'Enable KYC',
+          title: 'WorkQuest info',
+        });
+      }
+    },
     avatar(notification) {
       return notification.sender?.avatar?.url || this.EmptyAvatar();
     },

@@ -20,13 +20,13 @@ export default {
       if (ids.indexOf(notif.id) >= 0) notif.seen = true;
       return notif;
     });
-    this.commit('user/setUnreadNotifsCount', 0 - ids.length);
+    this.commit('notifications/setUnreadNotifsCount', 0 - ids.length);
   },
   addNotification(state, notification) {
     state.notifications.list.push(notification);
     state.reducedNotifications.unshift(notification);
     state.reducedNotifications.length = state.reducedNotifications.length === 1 ? 1 : 2;
     state.notifications.count += 1;
-    this.commit('user/setUnreadNotifsCount', 1);
+    this.commit('notifications/setUnreadNotifsCount', 1);
   },
 };

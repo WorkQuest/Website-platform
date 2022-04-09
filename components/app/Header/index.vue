@@ -311,7 +311,7 @@ import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import moment from 'moment';
 import {
-  MessageAction, UserRole, Path,
+  MessageAction, UserRole, Path, SumSubStatuses,
 } from '~/utils/enums';
 
 export default {
@@ -344,6 +344,7 @@ export default {
       chats: 'chat/getChats',
       searchValue: 'chat/getSearchValue',
       currentLocale: 'user/getCurrentLang',
+      statusKYC: 'user/getStatusKYC',
     }),
     locales() {
       return this.$i18n.locales.map((item) => ({
@@ -442,6 +443,7 @@ export default {
   async mounted() {
     await this.initWSListeners();
     this.GetLocation();
+    this.pushLocalNotifications();
     this.$store.commit('user/setLang', this.$i18n.localeProperties.code);
   },
   destroyed() {
@@ -450,6 +452,16 @@ export default {
     this.$wsChatActions.disconnect();
   },
   methods: {
+    pushLocalNotifications() {
+      if (this.statusKYC === SumSubStatuses.NOT_VERIFIED) {
+        this.$store.dispatch('notifications/createLocalNotification', {
+          action: 'kyc',
+          message: 'Please, enable KYC!',
+          actionBtn: 'Enable KYC',
+          title: 'WorkQuest info',
+        });
+      }
+    },
     async chatAction({ data, action }) {
       if (this.$route.name === 'messages') {
         if (action === MessageAction.GROUP_CHAT_CREATE) {

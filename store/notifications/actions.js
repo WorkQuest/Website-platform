@@ -1,7 +1,6 @@
-import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment';
 import {
-  DaoUrl,
+  DaoUrl, LocalNotificationAction,
   NotificationAction,
   notificationCommonFilterAction2,
   notificationCommonFilterActions, notificationEmployerFilterActions, Path, PathDAO,
@@ -9,29 +8,41 @@ import {
 } from '~/utils/enums';
 
 export default {
-  // TODO: Дописать логику добавления локальных нотификаций в массив
-  async localNotifications({ commit, dispatch }, { action, message, date }) {
-    function setLocalNotification() {
-      const localNotification = {
+  async createLocalNotification({ commit, getters, dispatch }, {
+    action, message, title, actionBtn, date,
+  }) {
+    async function setLocalNotification() {
+      if (!action && !message) return {};
+      const notification = {
         actionNameKey: `notifications.${action}`,
         creatingDate: moment(date || Date.now()).format('MMMM Do YYYY, h:mm'),
+        seen: false,
         notification: {
           action,
+          actionBtn,
           data: {
+            title,
             createdAt: moment(date || Date.now()).format('MMMM Do YYYY, h:mm'),
-            id: this.uuidv4(),
+            id: 'b70bef2b-f07f-4707-8e05-8c667362bebf',
             message,
             sender: {
               avatar: require('assets/img/ui/w-logo.svg'),
               firstName: 'Workquest',
-              lastName: '',
             },
           },
         },
       };
-      console.log(localNotification);
-      return localNotification;
+      return notification.notification;
     }
+    const notification = await setLocalNotification();
+    const notificationList = getters.getNotificationsList;
+    function isAdded() {
+      for (let i = 0; i < notificationList.length; i += 1) {
+        if (notification === ['notifications.kyc'].includes(notificationList.actionNameKey)) return true;
+      }
+      return false;
+    }
+    if (!isAdded()) await dispatch('addNotification', notification);
   },
   async removeNotification({ dispatch, commit }, { config, notificationId }) {
     try {
@@ -85,7 +96,6 @@ export default {
   async setCurrNotificationObject({ getters, rootGetters, dispatch }, notification) {
     const getUserData = rootGetters['user/getUserData'];
     const isAuth = rootGetters['user/isAuth'];
-    console.log('isAuth', isAuth, 'getUserData', getUserData);
     const { action, data } = notification.notification;
     const {
       id, title, quest, user, worker, comment, employer, fromUser, rootComment,
@@ -155,11 +165,11 @@ export default {
         await dispatch('user/getAllUserReviews', { userId: currentUserId, query }, { root: true });
       }
     }
-    async function setAllNotificationsParams(currTitle, path, isExternalLink, externalBase) {
+    async function setAllNotificationsParams(currTitle, path, isExternalLink, externalBase, isLocal) {
       notification.actionNameKey = `notifications.${action}`;
       notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
       notification.params = {
-        title: currTitle, path, isExternalLink, externalBase,
+        title: currTitle, path, isExternalLink, externalBase, isLocal,
       };
       await setSender();
     }
@@ -196,6 +206,13 @@ export default {
         await updateProfile();
         break;
       }
+
+      /** Workquest local */
+
+      case LocalNotificationAction.KYC:
+        await setAllNotificationsParams(title, `${Path.SUMSUB}`, false, '', true);
+        break;
+
       /** DAO */
       case NotificationAction.NEW_COMMENT_IN_DISCUSSION:
       case NotificationAction.NEW_DISCUSSION_LIKE: {
