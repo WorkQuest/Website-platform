@@ -37,14 +37,14 @@
             <div
               class="info-message__link"
               :class="{'info-message__link_left' : !message.itsMe}"
-              @click="openProfile(message.infoMessage.userId || message.senderUserId, message.itsMe)"
+              @click="openProfile( message.itsMe ? message.infoMessage.userId : message.senderUserId)"
             >
               {{ setFullName(message) }}
             </div>
             <div
               v-if="!message.itsMe && [MessageAction.GROUP_CHAT_ADD_USERS, MessageAction.GROUP_CHAT_DELETE_USER].includes(message.infoMessage.messageAction) && message.infoMessage.user"
               class="info-message__link"
-              @click="openProfile(message.infoMessage.userId, message.itsMe)"
+              @click="openProfile(message.infoMessage.userId)"
             >
               {{ (message.infoMessage.user.firstName || '') + ' ' + (message.infoMessage.user.lastName || '') }}
             </div>
@@ -177,7 +177,7 @@
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 import modals from '~/store/modals/modals';
-import { MessageAction, MessageType } from '~/utils/enums';
+import { MessageAction, MessageType, Path } from '~/utils/enums';
 
 export default {
   name: 'MessagesList',
@@ -292,7 +292,12 @@ export default {
       setTimeout(() => {
         const { HandleScrollContainer, ScrollContainer, starredMessage } = this.$refs;
 
-        if (ScrollContainer) ScrollContainer.scrollIntoView(isInit === true ? false : { block: 'end', behavior: 'smooth' });
+        if (ScrollContainer) {
+          ScrollContainer.scrollIntoView(isInit === true ? false : {
+            block: 'end',
+            behavior: 'smooth',
+          });
+        }
         if (!this.minScrollDifference) this.minScrollDifference = (HandleScrollContainer.scrollHeight - HandleScrollContainer.scrollTop) * 2;
 
         if (starredMessage && isInit) HandleScrollContainer.scrollTo(0, starredMessage[0].offsetTop - HandleScrollContainer.offsetTop - 20);
@@ -310,7 +315,9 @@ export default {
         if (canLoadToBottom && !this.isBottomChatsLoading) {
           this.isBottomChatsLoading = true;
           await this.getMessages(1);
-          setTimeout(() => { this.isBottomChatsLoading = false; }, 300);
+          setTimeout(() => {
+            this.isBottomChatsLoading = false;
+          }, 300);
         }
         return;
       }
@@ -318,14 +325,16 @@ export default {
       if (canLoadToTop && scrollTop < 300 && !this.isTopChatsLoading) {
         this.isTopChatsLoading = true;
         await this.getMessages(0);
-        setTimeout(() => { this.isTopChatsLoading = false; }, 300);
+        setTimeout(() => {
+          this.isTopChatsLoading = false;
+        }, 300);
       }
     },
     setInfoMessageText(action, itsMe) {
       let text = 'chat.systemMessages.';
       switch (action) {
         case MessageAction.EMPLOYER_INVITE_ON_QUEST: {
-          text += itsMe ? 'youInvitedToTheQuest' : 'invitedYouToAQuest';
+          text += itsMe ? 'youInvitedToTheQuest' : 'employerInvitedWorkerToQuest';
           break;
         }
         case MessageAction.WORKER_RESPONSE_ON_QUEST: {
@@ -368,8 +377,8 @@ export default {
 
       return this.$t(text);
     },
-    openProfile(userId, itsMe) {
-      this.$router.push(`/${itsMe ? 'workers' : 'profile'}/${userId}`);
+    openProfile(userId) {
+      this.$router.push(`${Path.PROFILE}/${userId}`);
     },
     setFullName({ itsMe, infoMessage: { user }, sender }) {
       return itsMe
@@ -416,7 +425,10 @@ export default {
       const messageId = message.id;
       const { chatId } = this;
 
-      await this.$store.dispatch(`chat/${message.star ? 'removeStarForMessage' : 'setStarForMessage'}`, { messageId, chatId });
+      await this.$store.dispatch(`chat/${message.star ? 'removeStarForMessage' : 'setStarForMessage'}`, {
+        messageId,
+        chatId,
+      });
       this.$forceUpdate();
     },
     async readMessages() {
@@ -499,7 +511,6 @@ export default {
 }
 
 .message {
-  width: 70%;
   display: grid;
   grid-template-columns: 43px minmax(auto, max-content) max-content;
   gap: 20px;
@@ -526,7 +537,6 @@ export default {
   &_right {
     grid-template-columns: max-content minmax(auto, max-content);
     justify-content: flex-end;
-    margin-left: 30%;
   }
 
   &__star-cont {
@@ -564,6 +574,9 @@ export default {
 
     &_white {
       color: #fff;
+    }
+    &_user-text {
+      word-break: break-all
     }
   }
 
@@ -603,18 +616,32 @@ export default {
 
 .info-message {
   display: grid;
-  grid-template-columns: repeat(3, max-content);
+  grid-template-columns: 1fr auto 1fr;
   gap: 5px;
+  grid-template-areas: "owner system sender";
 
   &__link {
     text-decoration: underline #1D2127;
     color: #1D2127;
     cursor: pointer;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: start;
+    grid-area: sender;
 
     &_left {
       grid-column: 1;
       grid-row: 1;
+      text-align: end;
+      grid-area: owner;
     }
+  }
+
+  &__title {
+    white-space: nowrap;
+    text-align: center;
+    grid-area: system;
   }
 }
 
@@ -708,11 +735,11 @@ export default {
 
 @include _1199 {
   .info-message {
-    grid-template-columns: repeat(3, auto);
     &__title {
       white-space: nowrap;
       color: $black600;
     }
+
     &__link {
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -720,15 +747,17 @@ export default {
     }
   }
   .message {
+    &__bubble{
+      width: 100%;
+    }
     &__title {
       &_name {
-        width: calc(100vw - 180px);
         text-overflow: ellipsis;
         overflow: hidden;
       }
+
       &_user-text {
-        width: calc(100vw - 180px);
-        word-wrap: break-word;
+        word-break: break-all
       }
     }
   }
@@ -736,8 +765,15 @@ export default {
 
 @include _767 {
   .info-message {
-    grid-template-columns: unset;
-    grid-template-rows: repeat(3, auto);
+    &__title {
+      white-space: nowrap;
+    }
+
+    &__link {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
   }
 }
 </style>

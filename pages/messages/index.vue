@@ -233,7 +233,7 @@ export default {
         text = 'chat.systemMessages.';
         switch (infoMessage.messageAction) {
           case MessageAction.EMPLOYER_INVITE_ON_QUEST: {
-            text += itsMe ? 'youInvitedToTheQuest' : 'invitedYouToAQuest';
+            text += itsMe ? 'youInvitedToTheQuest' : 'employerInvitedWorkerToQuest';
             break;
           }
           case MessageAction.WORKER_RESPONSE_ON_QUEST: {
@@ -440,6 +440,9 @@ export default {
   &__title {
     font-weight: 400;
     font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &_bold {
       font-weight: 500;
@@ -452,6 +455,9 @@ export default {
     &_link {
       color: #0083C7;
       cursor: pointer;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
 
       &:hover {
         text-decoration: underline;

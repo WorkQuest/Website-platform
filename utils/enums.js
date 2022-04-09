@@ -136,7 +136,7 @@ export const MessageAction = {
   GROUP_CHAT_CREATE: 'groupChatCreate',
   NEW_MESSAGE: 'newMessage',
   MESSAGE_READ_BY_RECIPIENT: 'messageReadByRecipient',
-  GROUP_CHAT_ADD_USERS: 'groupChatAddUsers',
+  GROUP_CHAT_ADD_USERS: 'groupChatAddUser',
   GROUP_CHAT_LEAVE_USER: 'groupChatLeaveUser',
   GROUP_CHAT_DELETE_USER: 'groupChatDeleteUser',
   EMPLOYER_INVITE_ON_QUEST: 'employerInviteOnQuest',
@@ -159,11 +159,40 @@ export const NotificationAction = {
   WORKER_REJECTED_INVITATION_TO_QUEST: 'workerRejectedInvitationToQuest',
   EMPLOYER_REJECTED_WORKERS_RESPONSE: 'employerRejectedWorkersResponse',
   WAIT_WORKER: 'waitWorker',
-
   USER_LEFT_REVIEW_ABOUT_QUEST: 'userLeftReviewAboutQuest',
-
   OPEN_DISPUTE: 'openDispute',
+  DISPUTE_DECISION: 'disputeDecision',
+  QUEST_EDITED: 'questEdited',
+  QUEST_END_SOON: 'questEndSoon',
+  COMMENT_LIKED: 'commentLiked',
+  NEW_COMMENT_IN_DISCUSSION: 'newCommentInDiscussion',
+  NEW_DISCUSSION_LIKE: 'newDiscussionLike',
 };
+
+export const notificationCommonFilterActions = Object.freeze([
+  NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST,
+  NotificationAction.WORKER_ACCEPTED_INVITATION_TO_QUEST,
+  NotificationAction.WORKER_REJECTED_INVITATION_TO_QUEST,
+  NotificationAction.WORKER_RESPONDED_TO_QUEST,
+  NotificationAction.OPEN_DISPUTE,
+  NotificationAction.DISPUTE_DECISION,
+  NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE,
+]);
+
+export const notificationEmployerFilterActions = Object.freeze([
+  NotificationAction.WORKER_RESPONDED_TO_QUEST,
+  NotificationAction.WORKER_ACCEPTED_QUEST,
+  NotificationAction.WORKER_COMPLETED_QUEST,
+  NotificationAction.WORKER_REJECTED_QUEST,
+]);
+
+export const notificationCommonFilterAction2 = Object.freeze([
+  NotificationAction.QUEST_EDITED,
+  NotificationAction.NEW_DISCUSSION_LIKE,
+  NotificationAction.NEW_COMMENT_IN_DISCUSSION,
+  NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST,
+  NotificationAction.WAIT_WORKER,
+]);
 
 export const ChatType = {
   GROUP: 'group',
@@ -210,6 +239,11 @@ export const Path = {
   COLLATERAL: '/collateral',
   WIKI: '/wiki',
   RAISED_VIEWS: '/raised-views',
+  NOTIFICATIONS: '/notifications',
+};
+
+export const PathDAO = {
+  DISCUSSIONS: '/discussions',
 };
 
 // WALLET
@@ -242,6 +276,8 @@ export const WalletTables = Object.freeze({
   TXS: 'TXS',
   COLLATERAL: 'COLLATERAL',
 });
+
+export const DaoUrl = Object.freeze('https://dev-dao.workquest.co');
 
 export const ExplorerUrl = Object.freeze('https://dev-explorer.workquest.co');
 

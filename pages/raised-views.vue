@@ -117,6 +117,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import { Path } from '~/utils/enums';
 
@@ -138,6 +139,9 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      balance: 'wallet/getBalanceData',
+    }),
     days() {
       return [
         {
@@ -320,6 +324,16 @@ export default {
       }
     },
     async showPaymentModal() {
+      if (!(this.balance?.WUSD?.balance && +this.balance.WUSD.balance)) {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/error.svg'),
+          title: this.$t('modals.errors.error'),
+          subtitle: this.$t('staking.notEnoughFunds'),
+        });
+        return;
+      }
+
       this.ShowModal({
         key: modals.paymentOptions,
         step: 1,
