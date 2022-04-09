@@ -3,7 +3,15 @@ import BigNumber from 'bignumber.js';
 import Web3 from 'web3';
 import { BlockchainByIndex, BridgeAddresses, SwapAddresses } from '~/utils/bridge-constants';
 import {
-  error, fetchContractData, getAccountAddress, getStakingDataByType, sendTransaction, showToast, success,
+  createInstanceWeb3,
+  error,
+  fetchContractData,
+  fetchNativeBalance,
+  getAccountAddress, getGasPrice, getNativeBalance,
+  getStakingDataByType, getTransactionCount, getTransactionFee,
+  sendTransaction,
+  showToast,
+  success,
 } from '~/utils/web3';
 import { WQBridge, ERC20 } from '~/abi/abi';
 import { StakingTypes } from '~/utils/enums';
@@ -55,41 +63,36 @@ export default {
     }
   },
 
-  async fetchBalance({ commit }, { token, chainTo }) {
-    let payload = {};
-    const isNative = localStorage.getItem('miningPoolId') === token;
-    const { tokenAddress, stakingAddress } = await getStakingDataByType(StakingTypes.CROSS_CHAIN, token);
-    const accountAddress = await getAccountAddress();
-    if (isNative) {
-      const { ethereum } = window;
-      const web3 = new Web3(ethereum);
-      let balance = await web3.eth.getBalance(accountAddress);
-      const inst = new web3.eth.Contract(WQBridge, stakingAddress);
-      const nonce = await web3.eth.getTransactionCount(accountAddress);
-      const swapData = [nonce, chainTo, balance, accountAddress, token];
-      const [gasPrice, gasEstimate] = await Promise.all([
-        web3.eth.getGasPrice(),
-        inst.methods.swap.apply(null, swapData).estimateGas({ from: accountAddress, value: balance }),
-      ]);
-      balance = new BigNumber(balance).shiftedBy(-18).toString();
-      const amountGas = new BigNumber(gasPrice).multipliedBy(gasEstimate).shiftedBy(-18).toString();
-      const amountMinusGasAmount = new BigNumber(balance).minus(amountGas).toNumber();
-      payload = {
-        tokenAmount: amountMinusGasAmount,
-        token,
-      };
-    } else {
-      const [tokenDecimal, tokenSymbol, tokenValue] = await Promise.all([
-        fetchContractData('decimals', ERC20, tokenAddress),
-        fetchContractData('symbol', ERC20, tokenAddress),
-        fetchContractData('balanceOf', ERC20, tokenAddress, [accountAddress]),
-      ]);
-      payload = {
-        tokenAmount: new BigNumber(+tokenValue).shiftedBy(-tokenDecimal).toString(),
-        tokenSymbol,
-      };
+  async fetchBalance({ commit }, {
+    token, toChainIndex, isNative, tokenAddress, bridgeAddress,
+  }) {
+    try {
+      const accountAddress = await getAccountAddress();
+      if (isNative) {
+        const balance = await getNativeBalance();
+        const nonce = await getTransactionCount();
+        const txFee = await getTransactionFee(
+          WQBridge,
+          bridgeAddress,
+          'swap',
+          [nonce, toChainIndex, balance, accountAddress, token],
+          balance,
+        );
+        commit('setToken', { amount: new BigNumber(balance).shiftedBy(-18).minus(txFee.result).toNumber() });
+      } else {
+        const [decimal, amount] = await Promise.all([
+          fetchContractData('decimals', ERC20, tokenAddress),
+          fetchContractData('balanceOf', ERC20, tokenAddress, [accountAddress]),
+        ]);
+        commit('setToken', {
+          decimal,
+          amount: new BigNumber(+amount).shiftedBy(-decimal).toString(),
+        });
+      }
+      return success();
+    } catch (e) {
+      console.error(e);
+      return error(e.code, 'Error in fetchBalance', e.data);
     }
-    commit('setCrosschainTokensData', payload);
-    return payload;
   },
 };

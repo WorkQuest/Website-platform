@@ -7,4 +7,13 @@ export default {
     state.swaps = [];
     state.swapsCount = null;
   },
+  setToken(state, payload) {
+    state.token = { ...payload };
+  },
+  resetToken(state) {
+    state.token = {
+      amount: null,
+      decimals: null,
+    };
+  },
 };

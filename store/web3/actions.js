@@ -56,7 +56,6 @@ export default {
     disconnectWeb3();
     commit('setIsConnected', false);
     commit('setMetaMaskStatus', false);
-    commit('clearTokens');
     commit('clearAccount');
     localStorage.removeItem('walletconnect');
   },
@@ -71,7 +70,6 @@ export default {
       }
       await commit('setAccount', response.result);
       await commit('setIsConnected', true);
-      await commit('setPurseData', getAccountAddress());
       if (!isReconnection) showToast('Connect to wallet', 'Connected', 'success');
       return true;
     }
@@ -99,7 +97,6 @@ export default {
       }
       await commit('setAccount', response.result);
       await commit('setIsConnected', true);
-      await commit('setPurseData', getAccountAddress());
     }
   },
   async handleMetamaskStatusChanged({ dispatch }) {
@@ -190,44 +187,6 @@ export default {
       rewardTokenAmount: new BigNumber(userInfo.claim_).shiftedBy(-18).toString(),
     };
     commit('setStakeAndRewardData', payload);
-    return payload;
-  },
-
-  async getCrosschainTokensData({ commit }, data) {
-    let payload = {};
-    const isNative = localStorage.getItem('miningPoolId') === data.token;
-    const { tokenAddress, stakingAddress } = await getStakingDataByType(StakingTypes.CROSS_CHAIN, data.token);
-    const accountAddress = await getAccountAddress();
-    if (isNative) {
-      const { ethereum } = window;
-      const web3 = new Web3(ethereum);
-      let balance = await web3.eth.getBalance(accountAddress);
-      const inst = new web3.eth.Contract(abi.WQBridge, stakingAddress);
-      const nonce = await web3.eth.getTransactionCount(accountAddress);
-      const swapData = [nonce, data.chainTo, balance, accountAddress, data.token];
-      const [gasPrice, gasEstimate] = await Promise.all([
-        web3.eth.getGasPrice(),
-        inst.methods.swap.apply(null, swapData).estimateGas({ from: accountAddress, value: balance }),
-      ]);
-      balance = new BigNumber(balance).shiftedBy(-18).toString();
-      const amountGas = new BigNumber(gasPrice).multipliedBy(gasEstimate).shiftedBy(-18).toString();
-      const amountMinusGasAmount = new BigNumber(balance).minus(amountGas).toNumber();
-      payload = {
-        tokenAmount: amountMinusGasAmount,
-        token: data.token,
-      };
-    } else {
-      const [tokenDecimal, tokenSymbol, tokenValue] = await Promise.all([
-        fetchContractData('decimals', abi.ERC20, tokenAddress),
-        fetchContractData('symbol', abi.ERC20, tokenAddress),
-        fetchContractData('balanceOf', abi.ERC20, tokenAddress, [accountAddress]),
-      ]);
-      payload = {
-        tokenAmount: new BigNumber(tokenValue).shiftedBy(-tokenDecimal).toString(),
-        tokenSymbol,
-      };
-    }
-    commit('setCrosschainTokensData', payload);
     return payload;
   },
 

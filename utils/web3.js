@@ -346,6 +346,15 @@ export const disconnectWeb3 = () => {
   account = {};
 };
 
+// Get Balance for native token
+export const getNativeBalance = async (address = getAccountAddress()) => await web3.eth.getBalance(address);
+
+// Get transaction count (or nonce) for this address
+export const getTransactionCount = async (address = getAccountAddress()) => await web3.eth.getTransactionCount(address);
+
+// Get current gas price
+export const getGasPrice = async () => await web3.eth.getGasPrice();
+
 export const createInstanceWeb3 = async (ab, address) => new web3.eth.Contract(ab, address);
 
 export const createInstance = async (ab, address) => {
@@ -359,16 +368,17 @@ let allowance;
 let amount;
 let nonce;
 
-export const getTxFee = async (_abi, _contractAddress, method, data = null) => {
+// Calculate transaction fee for method
+export const getTransactionFee = async (_abi, _contractAddress, method, data = null, value = null) => {
   try {
-    if (!method) console.error('getTxFee undefined method');
+    if (!method) console.error('getTransactionFee undefined method');
     const inst = new web3.eth.Contract(_abi, _contractAddress);
     const gasPrice = await web3.eth.getGasPrice();
-    const gasEstimate = await inst.methods[method].apply(null, data).estimateGas({ from: account.address });
+    const gasEstimate = await inst.methods[method].apply(null, data).estimateGas({ from: account.address, value });
     const fee = new BigNumber(gasPrice * gasEstimate).shiftedBy(-18).toString();
     return success(fee);
   } catch (e) {
-    return error(500, 'TxFee error', e);
+    return error(500, 'Get transaction fee error', e);
   }
 };
 

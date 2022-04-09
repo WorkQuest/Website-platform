@@ -1,10 +1,10 @@
 <template>
   <ctm-modal-box
     class="swap"
-    :title="$t('modals.titles.swapTitle')"
+    :title="$tc('modals.titles.swapTitle')"
   >
     <validation-observer
-      v-slot="{handleSubmit}"
+      v-slot="{handleSubmit, invalid}"
       tag="div"
       class="swap__content content"
     >
@@ -15,11 +15,10 @@
               {{ $t('modals.coin') }}
             </div>
             <base-dd
-              v-model="token"
+              v-model="tokenId"
               :items="tokens"
               class="grid__drop"
               data-selector="TOKENS"
-              @input="changeToken()"
             />
           </div>
           <div class="grid__field">
@@ -32,8 +31,8 @@
               placeholder="0,05"
               class="grid__input"
               data-selector="AMOUNT"
-              :name="$t('modals.amountField')"
-              rules="required|decimal|decimalPlaces:18|min_value:0.00001"
+              :name="$tc('modals.amountField')"
+              :rules="`required|decimal|decimalPlaces:18|min_value:0.00001|max_value:${currentToken.amount}`"
             >
               <template
                 v-slot:right-absolute
@@ -43,7 +42,7 @@
                   mode="max"
                   class="max__button"
                   data-selector="MAX"
-                  @click="setMaxValue()"
+                  @click="setMaxValue"
                 >
                   <span class="max__text">{{ $t('modals.maximum') }}</span>
                 </base-btn>
@@ -58,26 +57,23 @@
             {{ $t('modals.recipientAddress') }}
           </div>
           <base-field
-            v-model="recipientAddress"
-            :disabled="true"
-            class="body__input"
-            :name="$t('modals.recipientAddress')"
+            disabled
+            :value="account.address"
             data-selector="RECIPIENT_ADDRESS"
-            placeholder="Enter binance address"
+            :name="$tc('modals.recipientAddress')"
           />
         </div>
       </div>
       <div class="content__buttons buttons">
         <base-btn
-          class="buttons__button"
           mode="outline"
           data-selector="CANCEL"
-          @click="hide"
+          @click="CloseModal"
         >
           {{ $t('meta.btns.cancel') }}
         </base-btn>
         <base-btn
-          class="buttons__button"
+          :disabled="invalid"
           data-selector="CREATE-SWAP"
           @click="handleSubmit(showSwapInfoModal)"
         >
@@ -90,121 +86,71 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
-import { Chains } from '~/utils/enums';
+import { Chains, TokenSymbols } from '~/utils/enums';
+import { BridgeAddresses } from '~/utils/bridge-constants';
 
 export default {
   name: 'ModalSwap',
   data() {
     return {
-      token: 0,
-      fromToken: '',
-      toToken: '',
-      amount: '',
-      addresses: {
-        0: {
-          id: 2,
-          icon: require('~/assets/img/ui/ethereum.svg'),
-          title: this.$t('meta.coins.eth'),
-          enum: Chains.ETHEREUM,
-        },
-        1: {
-          id: 3,
-          icon: require('~/assets/img/ui/bnb-logo.svg'),
-          title: this.$t('meta.coins.bsc'),
-          enum: Chains.BINANCE,
-        },
-        2: {
-          id: 1,
-          icon: require('~/assets/img/ui/WQT.png'),
-          title: this.$t('meta.coins.wqt'),
-          enum: Chains.WORKNET,
-        },
-      },
+      amount: 0,
+      tokenId: 0,
     };
   },
   computed: {
     ...mapGetters({
       account: 'web3/getAccount',
       options: 'modals/getOptions',
-      tokensData: 'web3/getCrosschainTokensData',
-      tokens: 'web3/getPurseData',
-      isConnected: 'web3/isConnected',
+      currentToken: 'bridge/getToken',
     }),
     tokens() {
-      const tokens = ['WQT'];
-      if ((this.options?.fromChain === 0 && this.options?.toChain === 2) || (this.options?.fromChain === 2 && this.options?.toChain === 0)) {
-        tokens.push('ETH');
-      } else if ((this.options?.fromChain === 1 && this.options?.toChain === 2) || (this.options?.fromChain === 2 && this.options?.toChain === 1)) {
-        tokens.push('BNB');
+      const availableTokens = [TokenSymbols.WQT];
+      const { from, to } = this.options;
+
+      if (to.chain === Chains.WORKNET || from.chain === Chains.WORKNET) {
+        if (from.chain === Chains.ETHEREUM || to.chain === Chains.ETHEREUM) {
+          availableTokens.push(TokenSymbols.ETH);
+        } else if (from.chain === Chains.BINANCE || to.chain === Chains.BINANCE) {
+          availableTokens.push(TokenSymbols.BNB);
+        }
       }
-      return tokens;
+      return availableTokens;
     },
-    crosschainFlow() {
-      return {
-        fromChain: this.addresses[this.options?.fromChain],
-        toChain: this.addresses[this.options?.toChain],
-      };
-    },
-    recipientAddress() {
-      return this.account.address;
+  },
+  watch: {
+    async tokenId(index) {
+      this.amount = 0;
+      await this.handlerFetchBalance(this.tokens[index]);
     },
   },
   async mounted() {
-    await this.fetchBalance({
-      token: this.tokens[this.token],
-      chainTo: this.crosschainFlow.toChain.id,
-    });
+    await this.handlerFetchBalance(this.tokens[0]);
   },
   methods: {
     ...mapActions({
       fetchBalance: 'bridge/fetchBalance',
     }),
-    async changeToken() {
-      this.amount = 0;
+    async handlerFetchBalance(tokenName) {
+      const { to, from } = this.options;
       await this.fetchBalance({
-        token: this.tokens[this.token],
-        chainTo: this.crosschainFlow.toChain.id,
+        token: tokenName,
+        toChainIndex: to.index,
+        tokenAddress: from.tokenAddress[tokenName],
+        bridgeAddress: BridgeAddresses[from.chain],
+        isNative: from.nativeSymbol === this.tokens[this.tokenId],
       });
     },
+
     setMaxValue() {
-      this.amount = this.tokensData.tokenAmount;
-    },
-    hide() {
-      this.CloseModal();
-    },
-    checkAmount() {
-      const maxAmount = this.tokensData.tokenAmount;
-      return +maxAmount >= +this.amount;
+      this.amount = this.currentToken.amount;
     },
     async showSwapInfoModal() {
-      this.SetLoader(true);
-      if (this.checkAmount()) {
-        this.amount = (this.amount.toString()).replace(/[,]/g, '.');
-        this.ShowModal({
-          key: modals.swapInfo,
-          crosschain: `${this.crosschainFlow.fromChain.title} > ${this.crosschainFlow.toChain.title}`,
-          chain: this.crosschainFlow.fromChain.enum,
-          toChain: this.crosschainFlow.toChain.id,
-          amount: `${this.amount} ${this.tokens[this.token]}`,
-          amountInt: this.amount,
-          recipient: this.CutTxn(this.recipientAddress),
-          recipientFull: this.recipientAddress,
-          worknetFee: `0,5 ${this.tokens[this.token]}`,
-          binanceFee: '0,0009 BNB',
-          tokenName: this.tokens[this.token],
-        });
-      } else {
-        this.hide();
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/warning.svg'),
-          title: this.$t('modals.transactionFail'),
-          recipient: '',
-          subtitle: this.$t('modals.incorrectAmount'),
-        });
-      }
-      this.SetLoader(false);
+      this.amount = (this.amount.toString()).replace(/[,]/g, '.');
+      const { submit } = this.options;
+      await submit({
+        amount: this.amount,
+        tokenName: this.tokens[this.tokenId],
+      });
     },
   },
 };

@@ -43,9 +43,11 @@
               </div>
             </div>
             <img
-              src="~assets/img/ui/swap.png"
               alt="Swap"
+              width="34"
+              height="38"
               class="swap-icon"
+              src="~assets/img/ui/swap.png"
               @click="toggleBlockchain"
             >
             <div>
@@ -289,17 +291,13 @@ export default {
       else {
         const { chain } = addresses[sourceAddressInd];
         await this.connectWallet({ chain });
-
-        // TODO is need it? Need to deleted this logic and check all DeFi functions
-        await localStorage.setItem('miningPoolId', chain);
-        this.miningPoolId = localStorage.getItem('miningPoolId');
       }
     },
     async handlerDisconnect() {
-      await this.disconnectWallet();
-      await this.resetSwaps();
       clearInterval(this.updateInterval);
       this.updateInterval = null;
+      await this.disconnectWallet();
+      await this.resetSwaps();
     },
     async swapsTableData() {
       if (!this.isConnected) return;
@@ -348,10 +346,25 @@ export default {
       const { addresses, sourceAddressInd, targetAddressInd } = this;
       const { chain } = addresses[sourceAddressInd];
       if (await this.checkNetwork(chain)) {
+        const from = addresses[sourceAddressInd];
+        const to = addresses[targetAddressInd];
         this.ShowModal({
           key: modals.swap,
-          fromChain: sourceAddressInd,
-          toChain: targetAddressInd,
+          from,
+          to,
+          submit: async ({ amount, tokenName }) => {
+            this.ShowModal({
+              key: modals.swapInfo,
+              networks: `${from.chain} > ${to.chain}`,
+              chain: from.chain,
+              toChain: to.index,
+              amount,
+              recipient: this.account.address,
+              // worknetFee: `0,5 ${this.tokens[this.token]}`,
+              // binanceFee: '0,0009 BNB',
+              tokenName,
+            });
+          },
         });
       }
 
