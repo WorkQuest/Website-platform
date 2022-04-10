@@ -16,21 +16,13 @@ export default {
     }
   },
   async sendMethod({ commit }, payload) {
-    const payloadSend = {
-      address: process.env.SAVING_PRODUCT,
-      abi: abi.WQSavingProduct,
-      data: payload.data,
-    };
-    switch (payload.method) {
-      case 'saving':
-        payloadSend.value = new BigNumber(payload.value).shiftedBy(18).toString();
-        break;
-      default:
-        console.log('another method:', payload.method);
-        break;
-    }
     try {
-      await sendWalletTransaction(payload.method, payloadSend);
+      await sendWalletTransaction(payload.method, {
+        address: process.env.SAVING_PRODUCT,
+        abi: abi.WQSavingProduct,
+        data: payload.data,
+        value: new BigNumber(payload.value).shiftedBy(18).toString(),
+      });
       return success();
     } catch (err) {
       console.log('sendMethod:', payload.method, err);

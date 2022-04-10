@@ -337,18 +337,34 @@ export default {
           subtitle: moment().add(this.datesNumber[this.date], 'days').format('DD.MM.YYYY'),
         },
       ];
-      const dataForStatusModal = {
-        img: require('~/assets/img/ui/transactionSend.svg'),
-        title: this.$t('modals.depositIsOpened'),
-        subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam',
-        path: 'savings/1',
+      const callback = async () => {
+        const res = await this.$store.dispatch('savings/sendMethod', {
+          value: this.amount,
+          data: [this.datesNumber[this.date]],
+          method: 'deposit',
+        });
+        if (res.ok) {
+          this.ShowModal({
+            key: modals.status,
+            img: require('~/assets/img/ui/transactionSend.svg'),
+            title: this.$t('modals.depositIsOpened'),
+            subtitle: '',
+            path: 'savings/1',
+          });
+        } else {
+          this.ShowModal({
+            key: modals.status,
+            img: require('~/assets/img/ui/warning.svg'),
+            title: this.$t('modals.transactionFail'),
+            recipient: '',
+            subtitle: this.$t('modals.errors.error'),
+          });
+        }
       };
       this.ShowModal({
         key: modals.confirmDetails,
-        mode: 'savings',
-        payload: { value: this.amount, lockTime: this.datesNumber[this.date] },
+        callback,
         receiptData,
-        dataForStatusModal,
       });
     },
     handleClickCard(i) {
