@@ -1,13 +1,13 @@
 <template>
-  <div class="crosschain-page">
-    <div class="crosschain-page__container">
-      <div class="crosschain-page__header header">
+  <div class="bridge-page">
+    <div class="bridge-page__container">
+      <div class="bridge-page__header header">
         <div class="header__left">
           <div class="title">
-            {{ $t('crosschain.pageName') }}
+            {{ $t('bridge.pageName') }}
           </div>
           <div class="title_sub">
-            {{ $t('crosschain.pageAbout') }}
+            {{ $t('bridge.pageAbout') }}
           </div>
         </div>
         <div class="header__right">
@@ -22,16 +22,16 @@
         </div>
       </div>
 
-      <div class="crosschain-page__content">
+      <div class="bridge-page__content">
         <div class="info-block">
           <div class="info-block__swap-cont">
             <div>
               <div class="info-block__name_bold">
-                {{ $t("crosschain.sourceBlockchain") }}
+                {{ $t("bridge.sourceBlockchain") }}
               </div>
               <div class="contract-data">
                 <div class="contract-data__title">
-                  {{ $t('crosschain.blockchain') }}
+                  {{ $t('bridge.blockchain') }}
                 </div>
                 <base-dd
                   v-model="sourceAddressInd"
@@ -52,11 +52,11 @@
             >
             <div>
               <div class="info-block__name_bold">
-                {{ $t("crosschain.targetBlockchain") }}
+                {{ $t("bridge.targetBlockchain") }}
               </div>
               <div class="contract-data">
                 <div class="contract-data__title">
-                  {{ $t('crosschain.blockchain') }}
+                  {{ $t('bridge.blockchain') }}
                 </div>
                 <base-dd
                   v-model="targetAddressInd"
@@ -74,15 +74,15 @@
               :disabled="metamaskStatus === 'notInstalled' || !isConnected"
               @click="showSwapModal"
             >
-              {{ $t('crosschain.createSwap') }}
+              {{ $t('bridge.createSwap') }}
             </base-btn>
           </div>
         </div>
         <div class="info-block">
           <div class="info-block__name">
-            {{ $t('crosschain.mySwaps') }}
+            {{ $t('bridge.mySwaps') }}
           </div>
-          <div class="crosschain-page__table">
+          <div class="bridge-page__table">
             <b-table
               :items="swaps"
               :fields="tableFields"
@@ -130,7 +130,7 @@
               </template>
               <template #cell(amount)="el">
                 <div class="table__value">
-                  {{ `${el.item.amount} ${el.item.symbol}` }}
+                  {{ `${Floor(el.item.amount)} ${el.item.symbol}` }}
                 </div>
               </template>
               <template #cell(created)="el">
@@ -156,7 +156,7 @@
                 v-if="!swapsCount"
                 slot="empty"
               >
-                <div class="crosschain-page__empty-info">
+                <div class="bridge-page__empty-info">
                   <empty-data :description="$tc('meta.listIsEmpty')" />
                 </div>
               </template>
@@ -176,11 +176,10 @@ import { BridgeAddresses, SwapAddresses } from '~/utils/bridge-constants';
 import { getChainIdByChain } from '~/utils/web3';
 
 export default {
-  name: 'Crosschain',
+  name: 'Bridge',
   layout: 'guest',
   data() {
     return {
-      miningPoolId: localStorage.getItem('miningPoolId'),
       metamaskStatus: localStorage.getItem('metamaskStatus'),
       sourceAddressInd: 0,
       targetAddressInd: 1,
@@ -209,18 +208,18 @@ export default {
       return [
         {
           key: 'direction',
-          label: this.$t('crosschain.tableHead.direction'),
+          label: this.$t('bridge.tableHead.direction'),
           thStyle: { padding: '0 0 0 23px', height: '27px', lineHeight: '27px' },
           tdAttr: { style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px' },
         },
         {
           key: 'recipient',
-          label: this.$t('crosschain.tableHead.recipient'),
+          label: this.$t('bridge.tableHead.recipient'),
           ...cellStyle,
         },
         {
           key: 'transactionHash',
-          label: this.$t('crosschain.tableHead.tx'),
+          label: this.$t('bridge.tableHead.tx'),
           ...cellStyle,
         },
         {
@@ -230,7 +229,7 @@ export default {
         },
         {
           key: 'created',
-          label: this.$t('crosschain.tableHead.created'),
+          label: this.$t('bridge.tableHead.created'),
           ...cellStyle,
         },
         {
@@ -355,31 +354,30 @@ export default {
           submit: async ({ amount, symbol, isNative }) => {
             this.ShowModal({
               key: modals.swapInfo,
-              networks: `${from.chain} > ${to.chain}`,
-              chain: from.chain,
               amount,
-              recipient: this.account.address,
-              // worknetFee: `0,5 ${this.tokens[this.token]}`,
-              // binanceFee: '0,0009 BNB',
               symbol,
+              chain: from.chain,
+              recipient: this.account.address,
+              networks: `${from.chain} > ${to.chain}`,
               submit: async () => {
                 this.CloseModal();
+
                 this.SetLoader(true);
                 const { ok, result } = await this.swap({
                   amount,
+                  symbol,
                   isNative,
+                  toChainIndex: to.index,
                   tokenAddress: from.tokenAddress[symbol],
                   bridgeAddress: BridgeAddresses[from.chain],
-                  symbol,
-                  toChainIndex: to.index,
                 });
                 this.SetLoader(false);
+
                 this.ShowModal({
                   key: modals.status,
-                  img: ok ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
-                  title: ok ? this.$t('modals.transactionFail') : this.$t('modals.transactionSent'),
-                  txHash: result?.tx,
-                  chainTo: result?.toChain,
+                  img: !ok ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
+                  title: !ok ? this.$t('modals.transactionFail') : this.$t('modals.transactionSent'),
+                  link: `${from.explorer}/tx/${result?.transactionHash}`,
                 });
               },
             });
@@ -405,7 +403,7 @@ export default {
   }
 }
 
-.crosschain-page {
+.bridge-page {
   background: linear-gradient(to bottom, #103D7C 420px, #f6f8fa 420px);
   display: flex;
   justify-content: center;
@@ -633,13 +631,13 @@ export default {
   }
 
   @include _1199 {
-    .crosschain-page__container {
+    .bridge-page__container {
       padding: 0 30px !important;
     }
   }
 
   @include _991 {
-    .crosschain-page__table {
+    .bridge-page__table {
       overflow: auto;
     }
     &__table {

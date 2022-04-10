@@ -1,5 +1,7 @@
 import { Chains, TokenSymbols } from '~/utils/enums';
 
+const isProd = process.env.PROD === 'true';
+
 export const BlockchainIndex = Object.freeze({
   [Chains.WORKNET]: 1,
   [Chains.ETHEREUM]: 2,
@@ -30,6 +32,7 @@ export const SwapAddresses = new Map([
       tokenAddress: {
         [TokenSymbols.WQT]: process.env.ETHEREUM_WQT_TOKEN,
       },
+      explorer: `https://${isProd ? '' : 'rinkeby.'}etherscan.io`,
     },
   ],
   [
@@ -43,6 +46,7 @@ export const SwapAddresses = new Map([
       tokenAddress: {
         [TokenSymbols.WQT]: process.env.BSC_WQT_TOKEN,
       },
+      explorer: `https://${isProd ? '' : 'testnet.'}bscscan.com`,
     },
   ],
   [
@@ -58,6 +62,7 @@ export const SwapAddresses = new Map([
         [TokenSymbols.ETH]: process.env.WORKNET_WETH_TOKEN,
         [TokenSymbols.BNB]: process.env.WORKNET_WBNB_TOKEN,
       },
+      explorer: `https://${isProd ? 'dev-' : 'dev-'}explorer.workquest.co`,
     },
   ],
 ]);

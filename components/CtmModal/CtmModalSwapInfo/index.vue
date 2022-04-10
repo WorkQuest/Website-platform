@@ -54,7 +54,7 @@ export default {
     info() {
       return [
         {
-          title: this.$t('modals.crosschain'),
+          title: this.$t('modals.bridge'),
           subtitle: this.options.networks,
         },
         {
@@ -71,7 +71,7 @@ export default {
         },
         // {
         //   title: this.$t('modals.worknetFee'),
-        //   subtitle: this.options.worknetFee,
+        //   subtitle: this.options.fee,
         // },
         // {
         //   title: this.$t('modals.binanceFee'),

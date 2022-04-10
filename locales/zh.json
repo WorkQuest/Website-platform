@@ -936,7 +936,7 @@
       "signWorkQuest": "WorkQuest 社交网络",
       "skills": "Skills",
       "smsVerification": "短信验证",
-      "swapTitle": "Crosschain exchange",
+      "swapTitle": "Cross-chain exchange",
       "swapInfo": "Swap info",
       "swapTokens": "Swap tokens",
       "withdrawal": "Withdrawal",
@@ -1155,11 +1155,11 @@
     "choose": "Choose",
     "chooseCurrency": "Choose currency",
     "coinpaymebts": "Сoinpaymebts",
-    "swapTitle": "Crosschain exchange",
+    "swapTitle": "Cross-chain exchange",
     "coin": "Coin",
     "createSwap": "Create swap",
-    "crosschain": "WorkQuest Bridge",
-    "crosschainText": "Eth > Binance",
+    "bridge": "WorkQuest Bridge",
+    "bridgeText": "Eth > Binance",
     "senderAddress": "Sender address",
     "recipientAddress": "Recipient address",
     "worknetFee": "Eth fee",
@@ -1225,7 +1225,7 @@
     },
     "menu": {
       "unauthorized": "Not logged",
-      "crosschain": {
+      "bridge": {
         "title": "WorkQuest Bridge",
         "desc": "Secure and fast way to bring cross-chain assets between WorkNet, Ethereum and Binance Smart Chain."
       },
@@ -1848,7 +1848,7 @@
     "socialText": "在社交媒体中分享",
     "share": "分享链接"
   },
-  "crosschain": {
+  "bridge": {
     "pageName": "WorkQuest Bridge",
     "pageAbout": "Secure and fast way to bring cross-chain assets between WorkNet, Ethereum and Binance Smart Chain.",
     "sourceBlockchain": "Source blockchain",
@@ -2054,9 +2054,9 @@
             "title": "Liquidity mining",
             "subtitle": "Providing liquidity to pools to receive rewards based on your amount of liquidity in the pool."
           },
-          "crosschain": {
-            "title": "Crosschain",
-            "subtitle": "Most secure and fast way to bring crosschain assets between WorkNet, ETH and BSC."
+          "bridge": {
+            "title": "Bridge",
+            "subtitle": "Most secure and fast way to bring cross-chain assets between WorkNet, ETH and BSC."
           },
           "staking": {
             "title": "Staking",

@@ -226,7 +226,7 @@ export const Path = {
   SAVINGS: '/savings',
   CREDITING: '/crediting',
   MINING: '/mining',
-  CROSSCHAIN: '/crosschain',
+  BRIDGE: '/bridge',
   SETTINGS: '/settings',
   DISPUTES: '/disputes',
   WORKERS: '/workers',
