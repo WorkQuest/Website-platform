@@ -27,12 +27,17 @@
           <item-rating :rating="response.worker.ratingStatistic.status" />
         </div>
         <base-dd
+          v-if="checkAssigned(response)"
           :data-selector="`WORKERS-LIST-USER-ACTIONS-${userActionsArr(response)}`"
           class="worker__menu"
           :placeholder="30"
           :items="userActionsArr(response)"
           is-dots-view
           @input="handleUserAction($event, response)"
+        />
+        <span
+          v-else
+          class="worker__menu_divider"
         />
         <div class="worker__message-cont">
           <div class="worker__message">
@@ -58,7 +63,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { QuestMethods, ResponseStatus, TokenSymbols } from '~/utils/enums';
+import { ResponseStatus, TokenSymbols } from '~/utils/enums';
+import { QuestMethods } from '~/utils/quests-constants';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -104,6 +110,9 @@ export default {
     this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
   methods: {
+    checkAssigned(response) {
+      return this.questData?.assignedWorker?.id !== response?.worker?.id;
+    },
     userActionsArr({ status }) {
       if (this.isInvited) {
         if (status === ResponseStatus.accepted) return this.ddInvitedUserActions;
@@ -158,16 +167,15 @@ export default {
             contractAddress,
             workerAddress,
           });
-          console.log('assign tx res', txRes);
-          if (txRes.ok) {
-            await this.getQuest();
-          }
+          if (txRes.ok) await this.getQuest();
         },
       });
     },
     async reject(response) {
       this.SetLoader(true);
-      if (await this.$store.dispatch('quests/rejectTheAnswerToTheQuest', response.id)) await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
+      if (await this.$store.dispatch('quests/rejectTheAnswerToTheQuest', response.id)) {
+        await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
+      }
       this.SetLoader(false);
     },
   },

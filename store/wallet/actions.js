@@ -13,16 +13,15 @@ import {
   GetWalletProvider,
   stake,
   sendWalletTransaction,
-  sendQuestTransaction,
-  getEditQuestFeeData, hashText, editQuest,
 } from '~/utils/wallet';
 import {
   fetchContractData, success, error,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import {
-  PensionHistoryMethods, QuestMethods, StakingTypes, TokenSymbols,
+  PensionHistoryMethods, StakingTypes, TokenSymbols,
 } from '~/utils/enums';
+import { QuestMethods } from '~/utils/quests-constants';
 import {
   getPensionDefaultData,
   getPensionWallet,

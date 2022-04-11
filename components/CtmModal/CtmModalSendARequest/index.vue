@@ -70,7 +70,7 @@
 /* eslint-disable object-shorthand,no-var */
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { InfoModeWorker, QuestStatuses } from '~/utils/enums';
+import { QuestStatuses } from '~/utils/quests-constants';
 
 export default {
   name: 'ModalSendARequest',

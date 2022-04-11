@@ -271,10 +271,10 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
+import { Path, TokenSymbols } from '~/utils/enums';
 import {
-  InfoModeEmployer, Path, QuestMethods, QuestStatuses, TokenSymbols,
-} from '~/utils/enums';
-import { EditQuestState } from '~/utils/quests-constants';
+  QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses,
+} from '~/utils/quests-constants';
 import { hashText } from '~/utils/wallet';
 
 const { GeoCode } = require('geo-coder');

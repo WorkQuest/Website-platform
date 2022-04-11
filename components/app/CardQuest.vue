@@ -173,8 +173,9 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import {
-  QuestStatuses, questPriority, UserRole, Path, TokenSymbols, QuestModeReview,
+  questPriority, UserRole, Path, TokenSymbols, QuestModeReview,
 } from '~/utils/enums';
+import { QuestStatuses } from '~/utils/quests-constants';
 import modals from '~/store/modals/modals';
 
 export default {

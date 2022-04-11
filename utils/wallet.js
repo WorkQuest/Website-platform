@@ -8,7 +8,7 @@ import {
   fetchContractData,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
-import { QuestMethods, StakingTypes, tokenMap } from '~/utils/enums';
+import { StakingTypes, tokenMap } from '~/utils/enums';
 
 const bip39 = require('bip39');
 
@@ -258,7 +258,6 @@ export const getContractFeeData = async (_method, _abi, _contractAddress, data, 
       amount = new BigNumber(amount).shiftedBy(18).toString();
       tx.value = amount;
     }
-    console.log(_method, data, tx);
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
       inst.methods[_method].apply(null, data).estimateGas(tx),

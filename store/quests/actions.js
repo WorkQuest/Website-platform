@@ -1,7 +1,8 @@
 import BigNumber from 'bignumber.js';
+import { ResponsesType, UserRole } from '~/utils/enums';
 import {
-  InfoModeEmployer, InfoModeWorker, QuestMethods, QuestStatuses, ResponsesType, UserRole,
-} from '~/utils/enums';
+  QuestMethods, QuestStatuses, InfoModeEmployer, InfoModeWorker,
+} from '~/utils/quests-constants';
 import { WorkQuestFactory, WorkQuest } from '~/abi/abi';
 import {
   createInstance,
@@ -399,7 +400,6 @@ export default {
   async acceptJobResult({ dispatch }, contractAddress) {
     return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.AcceptJobResult });
   },
-  // TODO: нужен ли этот метод?
   // employer отменил (reject) результат работы или прошло 3 дня с момента начала verification
   async arbitration({ dispatch }, contractAddress) {
     return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.Arbitration });

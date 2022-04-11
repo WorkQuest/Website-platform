@@ -56,7 +56,8 @@
 <script>
 
 import { mapGetters } from 'vuex';
-import { QuestStatuses, UserRole, Path } from '~/utils/enums';
+import { UserRole, Path } from '~/utils/enums';
+import { QuestStatuses } from '~/utils/quests-constants';
 
 export default {
   name: 'My',
@@ -151,7 +152,7 @@ export default {
 
       if (id <= 1) delete this.requestParams.query['statuses[0]'];
       else if (id === 2) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitEmployerConfirm;
-      else if (id === 3) this.requestParams.query['statuses[0]'] = QuestStatuses.ExecutionOfWork;
+      else if (id === 3) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorker; // TODO [!!!]: CHECK IT было execution of work
       else if (id === 4) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorker;
       else if (id === 5) this.requestParams.query['statuses[0]'] = QuestStatuses.Done;
       await this.getQuests();

@@ -160,18 +160,16 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import {
   Path,
-  QuestStatuses,
-  InfoModeWorker,
-  InfoModeEmployer,
   UserRole,
   ResponseStatus,
   questPriority,
   QuestModeReview,
-  QuestMethods,
   TokenSymbols,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
-import { EditQuestState } from '~/utils/quests-constants';
+import {
+  QuestMethods, EditQuestState, QuestStatuses, InfoModeWorker, InfoModeEmployer,
+} from '~/utils/quests-constants';
 
 export default {
   name: 'Quests',

@@ -43,67 +43,6 @@ export const StakingTypes = {
   CROSS_CHAIN: 'CROSS_CHAIN',
 };
 
-// backend quest statuses
-// Closed: -3,
-// Dispute: -2,
-// Blocked: -1,
-// Pending: 0, /** The quest has been created. The event about creating the quest is expected on the side of the quest factory.   */
-// Recruitment: 1, /** Recruitment of workers for the quest. See QuestResponse and flow response/invite on quest.                     */
-// WaitingForConfirmFromWorkerOnAssign: 2, /** The employer has selected a worker to complete the quest and is waiting for confirmation from the worker.      */
-// ExecutionOfWork: 3, /**  */
-// WaitingForEmployerConfirmationWork: 4, /** WaitConfirm */
-// Completed: 5, /** Done */
-export const QuestStatuses = {
-  Closed: -3,
-  Dispute: -2,
-  Rejected: -1,
-  Pending: 0,
-  Created: 1,
-  WaitWorkerOnAssign: 2,
-  WaitWorker: 3,
-  WaitEmployerConfirm: 4,
-  Done: 5,
-};
-export const InfoModeEmployer = {
-  Closed: -3,
-  Dispute: -2,
-  Rejected: -1,
-  Pending: 0,
-  Created: 1, // Waiting worker to start quest
-  WaitWorkerOnAssign: 2, // Waiting for worker accept assign to quest
-  WaitWorker: 3, // Work in progress
-  WaitEmployerConfirm: 4, // Accepting or decline worker job
-  Done: 5,
-};
-export const InfoModeWorker = {
-  Closed: -3,
-  Dispute: -2,
-  Pending: 0,
-  Created: 1,
-  WaitWorkerOnAssign: 2,
-  WaitWorker: 3,
-  WaitEmployerConfirm: 4,
-  Done: 5,
-
-  ADChat: 9,
-  Responded: 10,
-  Invited: 11,
-  Rejected: 12, // -1?
-};
-// Worker
-// active - работника приняли нак вест и квест начат
-// rejected - работник подал заявку, ему отклонили
-// ADChat - когда тебе работодатель предлагает
-// waitWorker - когда воркер должен согласиться на приглашение
-// waitConfirm - ждем пока работодатель подтвердит
-// responded - ожидает работодателя на вступление на квест
-// invited - приглашен, но работадатель не начал квест
-
-// Employer
-// active - работник выполняет
-// waitWorker - ожидает завершения работы
-// waitConfirm - ожидает подтверждение воркера вступить на квест
-
 export const SumSubStatuses = { NOT_VERIFIED: 0, VERIFIED: 1 };
 
 export const DisputeStatues = {
@@ -371,16 +310,3 @@ export const RaiseViewStatus = {
   0: true,
   1: false,
 };
-
-export const QuestMethods = Object.freeze({
-  // Employer
-  EditJob: 'editJob',
-  CancelJob: 'cancelJob',
-  AssignJob: 'assignJob',
-  AcceptJobResult: 'acceptJobResult',
-  Arbitration: 'arbitration',
-  // Worker
-  AcceptJob: 'acceptJob',
-  DeclineJob: 'declineJob',
-  VerificationJob: 'verificationJob',
-});

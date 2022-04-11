@@ -2,7 +2,8 @@ import Vue from 'vue';
 import moment from 'moment';
 import VueTippy, { TippyComponent } from 'vue-tippy';
 import modals from '~/store/modals/modals';
-import { QuestMethods, QuestStatuses, TokenSymbols } from '~/utils/enums';
+import { TokenSymbols } from '~/utils/enums';
+import { QuestMethods, QuestStatuses } from '~/utils/quests-constants';
 
 Vue.use(VueTippy);
 Vue.component('tippy', TippyComponent);
