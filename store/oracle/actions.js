@@ -23,7 +23,6 @@ export default {
     try {
       const apiOracle = this.$axios.create({ baseURL: process.env.WQ_ORACLE_URL });
       const response = await apiOracle.post('/v1/oracle/risk-ratio/status', payload);
-      console.log('setDesiredSecurityRatio:', response);
       commit('setDesiredSecurityRatio', response.result);
       return response.result;
     } catch (e) {

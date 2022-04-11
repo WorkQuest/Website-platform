@@ -46,15 +46,6 @@ export default {
     );
     commit('setWalletsData', res);
   },
-  async setTokenPrice({ dispatch, rootGetters }, payload) {
-    try {
-      await setTokenPrice(payload[0], payload[1]);
-      return { ok: true };
-    } catch (e) {
-      console.log('can not refresh prices');
-      return { ok: false };
-    }
-  },
   async setTokenPrices({ dispatch, rootGetters }, payload) {
     try {
       await setTokenPrices(payload);
