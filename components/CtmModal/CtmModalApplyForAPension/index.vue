@@ -21,7 +21,7 @@
             class="content__input"
             data-selector="DEPOSIT-PERCENT"
             :name="$t('modals.depositPercent')"
-            rules="required|min_percent:0.01|zeroFail|notMoreDecimalPlaces"
+            rules="required|min_percent:0.01|max_percent:99|zeroFail|notMoreDecimalPlaces"
             @input="calcPensionPercent"
           />
         </div>
