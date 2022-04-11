@@ -64,7 +64,7 @@
                   :data-selector="button.title.toUpperCase()"
                   :mode="button.mode"
                   :disabled="button.disabled"
-                  @click="openModal(button.action)"
+                  @click="button.action === 'claim' ? sendClaim() : openModal(button.action)"
                 >
                   {{ button.title }}
                 </base-btn>
@@ -185,97 +185,96 @@ export default {
       this.$router.push('/crediting');
     },
     async openModal(action) {
-      if (action !== 'claim') {
-        let maxValue = null;
-        if (action === 'refund') {
-          await this.$store.dispatch('crediting/getCurrentFee');
-          maxValue = this.fullValueForRefund;
-        } else if (action === 'withdraw') {
-          maxValue = new BigNumber(this.walletData.amount).shiftedBy(-18).toString();
-        }
+      let maxValue = null;
+      if (action === 'refund') {
+        await this.$store.dispatch('crediting/getCurrentFee');
+        maxValue = this.fullValueForRefund;
+      } else if (action === 'withdraw') {
+        maxValue = new BigNumber(this.walletData.amount).shiftedBy(-18).toString();
+      }
+      this.ShowModal({
+        key: modals.valueSend,
+        mode: action,
+        maxValue,
+        callback: async (amount, maxAmount) => {
+          let payload = {};
+          const feeData = await this.$store.dispatch('crediting/getCurrentFee');
+          let value = new BigNumber(amount).shiftedBy(18);
+          if (maxAmount) {
+            maxAmount = new BigNumber(maxAmount).shiftedBy(18).toString();
+          }
+          console.log(+value.toString(), +maxAmount, value === maxAmount);
+          if (+value.toString() === +maxAmount) {
+            value = value.plus(10000).toString();
+            console.log('value:', value);
+          }
+          const valueWithoutFee = new BigNumber(amount).shiftedBy(18).minus(feeData).toString();
+          switch (action) {
+            case 'refund':
+              payload = {
+                value,
+                data: [1, valueWithoutFee],
+                method: 'refund',
+                type: 'borrowing',
+              };
+              break;
+            case 'withdraw':
+              payload = {
+                data: [value],
+                method: 'withdraw',
+                type: 'lending',
+              };
+              break;
+            case 'deposit':
+              payload = {
+                value,
+                data: [],
+                method: 'deposit',
+                type: 'lending',
+              };
+              break;
+            default:
+              console.log('default');
+          }
+          const res = await this.$store.dispatch('crediting/sendMethod', payload);
+          if (res.ok) {
+            await Promise.all([
+              this.$store.dispatch('crediting/getCreditData'),
+              this.$store.dispatch('crediting/getWalletsData'),
+              this.$store.dispatch('crediting/getRewards'),
+            ]);
+            this.ShowModal({
+              key: modals.status,
+              img: require('~/assets/img/ui/transactionSend.svg'),
+              title: this.$t(`modals.successfulMethods.${action}`),
+            });
+          } else {
+            this.ShowModal({
+              key: modals.status,
+              img: require('~/assets/img/ui/warning.svg'),
+              title: this.$t('modals.transactionFail'),
+            });
+          }
+        },
+      });
+    },
+    async sendClaim() {
+      const res = await this.$store.dispatch('crediting/sendMethod', {
+        method: 'claim',
+        type: 'lending',
+      });
+      if (res.ok) {
         this.ShowModal({
-          key: modals.valueSend,
-          mode: action,
-          maxValue,
-          callback: async (amount, maxAmount) => {
-            let payload = {};
-            const feeData = await this.$store.dispatch('crediting/getCurrentFee');
-            let value = new BigNumber(amount).shiftedBy(18);
-            if (maxAmount) {
-              maxAmount = new BigNumber(maxAmount).shiftedBy(18).toString();
-            }
-            console.log(+value.toString(), +maxAmount, value === maxAmount);
-            if (+value.toString() === +maxAmount) {
-              value = value.plus(10000).toString();
-              console.log('value:', value);
-            }
-            const valueWithoutFee = new BigNumber(amount).shiftedBy(18).minus(feeData).toString();
-            switch (action) {
-              case 'refund':
-                payload = {
-                  value,
-                  data: [1, valueWithoutFee],
-                  method: 'refund',
-                  type: 'borrowing',
-                };
-                break;
-              case 'withdraw':
-                payload = {
-                  data: [value],
-                  method: 'withdraw',
-                  type: 'lending',
-                };
-                break;
-              case 'deposit':
-                payload = {
-                  value,
-                  data: [],
-                  method: 'deposit',
-                  type: 'lending',
-                };
-                break;
-              default:
-                console.log('default');
-            }
-            const res = await this.$store.dispatch('crediting/sendMethod', payload);
-            if (res.ok) {
-              await Promise.all([
-                this.$store.dispatch('crediting/getCreditData'),
-                this.$store.dispatch('crediting/getWalletsData'),
-                this.$store.dispatch('crediting/getRewards'),
-              ]);
-              this.ShowModal({
-                key: modals.status,
-                img: require('~/assets/img/ui/transactionSend.svg'),
-                title: this.$t(`modals.successfulMethods.${action}`),
-              });
-            } else {
-              this.ShowModal({
-                key: modals.status,
-                img: require('~/assets/img/ui/warning.svg'),
-                title: this.$t('modals.transactionFail'),
-              });
-            }
-          },
+          key: modals.status,
+          img: require('~/assets/img/ui/transactionSend.svg'),
+          title: this.$t('modals.successfulMethod.claim'),
         });
       } else {
-        const res = await this.$store.dispatch('crediting/sendMethod', {
-          method: 'claim',
-          type: 'lending',
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.transactionFail'),
         });
-        if (res.ok) {
-          this.ShowModal({
-            key: modals.status,
-            img: require('~/assets/img/ui/transactionSend.svg'),
-            title: this.$t('modals.successfulMethod.claim'),
-          });
-        } else {
-          this.ShowModal({
-            key: modals.status,
-            img: require('~/assets/img/ui/warning.svg'),
-            title: this.$t('modals.transactionFail'),
-          });
-        }
       }
     },
     amountConvert(value) {
