@@ -1,6 +1,7 @@
 <template>
   <div
     class="icon-more"
+    :class="{'invisible':isInvisible}"
   >
     <button
       v-click-outside="closeChatMenu"
@@ -90,6 +91,11 @@ export default {
     // TODO узнать какой статус нужен для диспута и изменить
     isOpenDispute() {
       return !this.canILeave && this.$route.query.type === 'quest';
+    },
+    isInvisible() {
+      console.log(this.$route.query.status);
+      console.log(this.$route.query.status === '1' || this.$route.query.status === '3');
+      return this.$route.query.type && this.$route.query.type === 'quest' && (this.$route.query.status !== '1' || this.$route.query.status !== '3');
     },
     // TODO узнать какой статус нужен для диспута и изменить
   },
@@ -205,6 +211,9 @@ export default {
       color: $black800;
     }
   }
+}
+.invisible{
+  opacity: 0;
 }
 @include _991 {
   .chat {

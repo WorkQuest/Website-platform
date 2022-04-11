@@ -311,7 +311,20 @@ export default {
       const { id, type, questChat } = chat;
       const dispute = questChat && questChat.quest.openDispute && questChat.quest.openDispute.status;
       const questId = questChat && questChat.quest.id;
-      this.$router.push({ path: `/messages/${id}`, query: { dispute, id: questId, type } });
+      console.log(chat);
+      if (type === 'quest') {
+        const { status } = questChat && questChat.quest;
+        this.$router.push({
+          path: `/messages/${id}`,
+          query: {
+            dispute, id: questId, type, status,
+          },
+        });
+      } else {
+        this.$router.push({
+          path: `/messages/${id}`,
+        });
+      }
     },
   },
 };
