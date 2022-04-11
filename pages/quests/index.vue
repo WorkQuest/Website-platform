@@ -192,7 +192,6 @@ export default {
       await this.fetchQuestsList(true);
     },
     showDetails(quest) {
-      console.log('kek');
       this.$router.push(`${Path.QUESTS}/${quest.id}`);
     },
   },
