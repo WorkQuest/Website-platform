@@ -102,7 +102,6 @@ export default {
     },
     showOpenADisputeModal() {
       this.closeChatMenu();
-      // TODO: добавить вывод окна, на добавление диспута, после завершения логики на странице чата
       if (!this.$route.query.dispute && this.$route.query.dispute !== '0') {
         this.ShowModal({
           key: modals.openADispute,
@@ -110,7 +109,6 @@ export default {
         });
       } else {
         this.$router.push(`${Path.QUESTS}/${this.$route.query.id}`);
-        console.log(this.questId);
       }
     },
     toggleChatMenu() {

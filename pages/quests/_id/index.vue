@@ -546,7 +546,10 @@ export default {
     },
     async goToChat() {
       this.SetLoader(true);
-      await this.$router.push(`/messages/${this.quest.questChat.chatId}`);
+      const { openDispute, questChat } = this.quest;
+      const dispute = openDispute && openDispute.status;
+      const questId = openDispute && this.quest.id;
+      await this.$router.push({ path: `/messages/${questChat.chatId}`, query: { dispute, id: questId, type: 'quest' } });
       this.SetLoader(false);
     },
     async acceptWorkOnQuest() {
