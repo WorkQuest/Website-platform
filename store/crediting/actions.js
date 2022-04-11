@@ -18,7 +18,7 @@ export default {
     const res = await fetchContractData(
       'getFunds',
       abi.WQBorrowing,
-      process.env.BORROWING,
+      process.env.WORKNET_BORROWING,
       [],
       GetWalletProvider(),
     );
@@ -29,7 +29,7 @@ export default {
     const res = await fetchContractData(
       'borrowers',
       abi.WQBorrowing,
-      process.env.BORROWING,
+      process.env.WORKNET_BORROWING,
       [address],
       GetWalletProvider(),
     );
@@ -40,7 +40,7 @@ export default {
     const res = await fetchContractData(
       'wallets',
       abi.WQLending,
-      process.env.LENDING,
+      process.env.WORKNET_LENDING,
       [address],
       GetWalletProvider(),
     );
@@ -69,7 +69,7 @@ export default {
     const res = await fetchContractData(
       'getRewards',
       abi.WQLending,
-      process.env.LENDING,
+      process.env.WORKNET_LENDING,
       [address],
       GetWalletProvider(),
     );
@@ -80,7 +80,7 @@ export default {
     const res = await fetchContractData(
       'getCurrentFee',
       abi.WQBorrowing,
-      process.env.BORROWING,
+      process.env.WORKNET_BORROWING,
       [address],
       GetWalletProvider(),
     );
@@ -90,7 +90,7 @@ export default {
   async sendMethod({ commit }, payload) {
     console.log('payload:', payload);
     const payloadSend = {
-      address: payload.type === 'borrowing' ? process.env.BORROWING : process.env.LENDING,
+      address: payload.type === 'borrowing' ? process.env.WORKNET_BORROWING : process.env.WORKNET_LENDING,
       abi: payload.type === 'borrowing' ? abi.WQBorrowing : abi.WQLending,
       data: payload.data,
       value: payload.value,

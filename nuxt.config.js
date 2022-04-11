@@ -114,7 +114,7 @@ export default {
 
     WQ_PROVIDER: process.env.WQ_PROVIDER,
     WQ_EXPLORER: process.env.WQ_EXPLORER,
-    WQ_ORACLE: process.env.WQ_ORACLE,
+    WQ_ORACLE_URL: process.env.WQ_ORACLE_URL,
 
     NOTIFS_URL: process.env.NOTIFS_URL,
     WS_NOTIFS_URL: process.env.WS_NOTIFS_URL,
@@ -149,5 +149,8 @@ export default {
     WORKNET_WETH_TOKEN: process.env.WORKNET_WETH_TOKEN,
     WORKNET_WQT_TOKEN: process.env.WORKNET_WQT_TOKEN,
 
+    WORKNET_LENDING: process.env.WORKNET_LENDING,
+    WORKNET_SAVING_PRODUCT: process.env.WORKNET_SAVING_PRODUCT,
+    WORKNET_BORROWING: process.env.WORKNET_BORROWING,
   },
 };
