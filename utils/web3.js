@@ -355,10 +355,17 @@ export const getTransactionCount = async (address = getAccountAddress()) => awai
 // Get current gas price
 export const getGasPrice = async () => await web3.eth.getGasPrice();
 
+export const createInstanceWeb3 = async (ab, address) => new web3.eth.Contract(ab, address);
+
+export const createInstance = async (ab, address) => {
+  const abs = web4.getContractAbstraction(ab);
+  return await abs.getInstance(address);
+};
+
 // Get estimate gas
 export const getEstimateGas = async (contractAbi = null, contractAddress = null, inst = null, method, attr, value = null) => {
   try {
-    if (!inst) inst = new web3.eth.Contract(contractAbi, contractAddress);
+    if (!inst) inst = createInstanceWeb3(contractAbi, contractAddress);
     return await
     (value)
       ? inst.methods[method](...attr).estimateGas({ from: getAccountAddress(), value })
@@ -367,13 +374,6 @@ export const getEstimateGas = async (contractAbi = null, contractAddress = null,
     console.error('getGasPriceError', e);
     return false;
   }
-};
-
-export const createInstanceWeb3 = async (ab, address) => new web3.eth.Contract(ab, address);
-
-export const createInstance = async (ab, address) => {
-  const abs = web4.getContractAbstraction(ab);
-  return await abs.getInstance(address);
 };
 
 let allowance;

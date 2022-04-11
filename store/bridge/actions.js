@@ -19,7 +19,7 @@ import { WQBridge, ERC20 } from '~/abi/abi';
 export default {
   async fetchMySwaps({ commit }, { recipientAddress, query }) {
     try {
-      const { ok, result } = await this.$axios.$get(`/v1/bridge/recipient/${recipientAddress}/swaps`, {
+      const { result } = await this.$axios.$get(`/v1/bridge/recipient/${recipientAddress}/swaps`, {
         params: { ...query },
       });
       const swaps = result.swaps.map((swap) => ({
@@ -34,10 +34,10 @@ export default {
         created: swap.timestamp,
       }));
       commit('setSwapsData', { count: result.count, swaps });
-      return { ok };
+      return success();
     } catch (e) {
       console.error('bridge/fetchMySwaps', e);
-      return { ok: false };
+      return error();
     }
   },
 
