@@ -118,18 +118,21 @@ export const Ratings = Object.freeze({
   RELIABLE: 'reliable',
   VERIFIED: 'verified',
   NO_STATUS: 'noStatus',
+  ALL_STATUSES: 'AllStatuses',
 });
 export const UserRating = Object.freeze({
   0: Ratings.TOP_RANKED,
   1: Ratings.RELIABLE,
   2: Ratings.VERIFIED,
   3: Ratings.NO_STATUS,
+  4: Ratings.ALL_STATUSES,
 });
 export const RatingFilter = [
-  { key: 'all', value: 3 },
+  { key: 'all', value: 4 },
   { key: 'topRanked', value: 0 },
   { key: 'reliable', value: 1 },
   { key: 'verified', value: 2 },
+  { key: 'noStatus', value: 3 },
 ];
 
 export const MessageAction = {
@@ -344,14 +347,6 @@ export const RaiseViewStatus = {
 };
 
 export const NetworkProfileVisibility = Object.freeze({
-  allUsers: 0,
-  submittingOffer: 1,
-});
-
-export const RatingStatus = Object.freeze({
-  topRanked: 0,
-  reliable: 1,
-  verified: 2,
-  noStatus: 3,
-  AllStatuses: 4,
+  ALL_USERS: 0,
+  SUBMITTING_OFFER: 1,
 });

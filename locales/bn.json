@@ -369,7 +369,8 @@
       "title": "Rating",
       "verified": "Verified",
       "reliable": "Reliable",
-      "topRanked": "Top ranked"
+      "topRanked": "Top ranked",
+      "noStatus" : "Not rated"
     },
     "distantWork": {
       "title": "দূরের কাজ",
@@ -1376,12 +1377,8 @@
   "settings": {
     "additionalPhoneNumber": "Additional phone number",
     "mainPhoneNumber": "Main phone number",
-    "whoCouldIInvite": "Who could I invite to the quest?",
-    "whoCouldInviteMe": "Who could invite me to the quest?",
-    "topRanked": "Top ranked",
-    "reliable": "Reliable",
-    "verified": "Verified",
-    "noStatus": "Without status",
+    "whoCouldIInvite": "Who can respond to my quest?",
+    "whoCouldInviteMe": "Who can invite me to a quest?",
     "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",

@@ -83,7 +83,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { RatingStatus, NetworkProfileVisibility, UserRole } from '~/utils/enums';
+import { NetworkProfileVisibility, UserRole, RatingFilter } from '~/utils/enums';
 
 export default {
   name: 'Advanced',
@@ -99,47 +99,47 @@ export default {
           {
             title: this.$t('settings.whoCanSee'),
             id: 'allUsers',
-            value: NetworkProfileVisibility.allUsers,
+            value: NetworkProfileVisibility.ALL_USERS,
             local: 'settings.allUsers',
             name: 'visibilityUser',
           },
           {
             id: 'onlyWhenSubmittedWork',
-            value: NetworkProfileVisibility.submittingOffer,
+            value: NetworkProfileVisibility.SUBMITTING_OFFER,
             local: 'settings.onlyWhenSubmittedWork',
             name: 'visibilityUser',
           },
         ],
         restrictionRankingStatus: [
           {
-            title: this.$t(`settings.${this.userRole === UserRole.EMPLOYER ? 'whoCouldIInvite' : 'whoCouldInviteMe'}`),
+            title: this.$t('settings.whoCouldInviteMe'),
             id: 'allStatuses',
-            value: RatingStatus.AllStatuses,
+            value: RatingFilter[0].value,
             local: 'settings.allUsers',
             name: 'restrictionRankingStatus',
           },
           {
             id: 'verified',
-            value: RatingStatus.verified,
-            local: 'settings.verified',
+            value: RatingFilter[3].value,
+            local: 'quests.rating.verified',
             name: 'restrictionRankingStatus',
           },
           {
             id: 'reliable',
-            value: RatingStatus.reliable,
-            local: 'settings.reliable',
+            value: RatingFilter[2].value,
+            local: 'quests.rating.reliable',
             name: 'restrictionRankingStatus',
           },
           {
             id: 'topRanked',
-            value: RatingStatus.topRanked,
-            local: 'settings.topRanked',
+            value: RatingFilter[1].value,
+            local: 'quests.rating.topRanked',
             name: 'restrictionRankingStatus',
           },
           {
             id: 'noStatus',
-            value: RatingStatus.noStatus,
-            local: 'settings.noStatus',
+            value: RatingFilter[4].value,
+            local: 'quests.rating.noStatus',
             name: 'restrictionRankingStatus',
           },
         ],
@@ -189,6 +189,9 @@ export default {
     },
   },
   created() {
+    if (this.userRole === UserRole.EMPLOYER) {
+      this.radioButtons.restrictionRankingStatus[0].title = this.$t('settings.whoCouldIInvite');
+    }
     const profileVisibilitySetting = JSON.parse(JSON.stringify(this.userData.profileVisibilitySetting));
     this.checkboxBlocks.visibilityUser = profileVisibilitySetting.network;
     this.checkboxBlocks.restrictionRankingStatus = profileVisibilitySetting.ratingStatus;
@@ -265,6 +268,8 @@ export default {
     row-gap: 20px;
     &_left {
       row-gap: 12px;
+    }
+    &_left:not(:last-child) {
       margin-bottom: 20px;
     }
   }
