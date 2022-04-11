@@ -26,7 +26,7 @@ export default {
     const res = await fetchContractData(
       'wallets',
       abi.WQSavingProduct,
-      process.env.SAVING_PRODUCT,
+      process.env.WORKNET_SAVING_PRODUCT,
       [address],
       GetWalletProvider(),
     );
@@ -37,7 +37,7 @@ export default {
     const res = await fetchContractData(
       'getRewards',
       abi.WQSavingProduct,
-      process.env.SAVING_PRODUCT,
+      process.env.WORKNET_SAVING_PRODUCT,
       [address],
       GetWalletProvider(),
     );
@@ -47,7 +47,7 @@ export default {
     const res = await fetchContractData(
       'apys',
       abi.WQSavingProduct,
-      process.env.SAVING_PRODUCT,
+      process.env.WORKNET_SAVING_PRODUCT,
       [7],
       GetWalletProvider(),
     );
