@@ -443,7 +443,6 @@ export default {
   },
   async mounted() {
     await this.initWSListeners();
-    await this.pushLocalNotifications();
     this.GetLocation();
     this.$store.commit('user/setLang', this.$i18n.localeProperties.code);
   },
@@ -453,25 +452,6 @@ export default {
     this.$wsChatActions.disconnect();
   },
   methods: {
-    async pushLocalNotifications() {
-      let payload;
-      if (this.statusKYC === SumSubStatuses.NOT_VERIFIED) {
-        payload = {
-          action: 'kyc',
-          message: 'Please, enable KYC!',
-          actionBtn: 'Enable KYC',
-        };
-        await this.$store.dispatch('notifications/createLocalNotification', payload);
-      }
-      if (this.getStatus2FA === TwoFAStatuses.DISABLED) {
-        payload = {
-          action: '2fa',
-          message: 'Please, enable 2FA!',
-          actionBtn: 'Enable 2FA in Settings',
-        };
-        await this.$store.dispatch('notifications/createLocalNotification', payload);
-      }
-    },
     async chatAction({ data, action }) {
       if (this.$route.name === 'messages') {
         if (action === MessageAction.GROUP_CHAT_CREATE) {
