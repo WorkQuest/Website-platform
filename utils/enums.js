@@ -68,7 +68,7 @@ export const InfoModeEmployer = {
   Closed: -3,
   Dispute: -2,
   Rejected: -1,
-  Pending: 0, // нужен тут?
+  Pending: 0,
   Created: 1, // Waiting worker to start quest
   WaitWorkerOnAssign: 2, // Waiting for worker accept assign to quest
   WaitWorker: 3, // Work in progress
@@ -78,7 +78,7 @@ export const InfoModeEmployer = {
 export const InfoModeWorker = {
   Closed: -3,
   Dispute: -2,
-  Pending: 0, // нужен тут?
+  Pending: 0,
   Created: 1,
   WaitWorkerOnAssign: 2,
   WaitWorker: 3,

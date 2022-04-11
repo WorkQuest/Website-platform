@@ -107,7 +107,7 @@
         />
       </div>
       <div class="page__input">
-        <validation-provider rules="required|min:20">
+        <validation-provider rules="required">
           <textarea
             id="textarea"
             v-model="textarea"

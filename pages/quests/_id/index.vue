@@ -4,7 +4,6 @@
     class="quest-page"
     data-selector="PAGE-QUESTS-ID"
   >
-    DATA MODE: {{ infoDataMode }}x
     <info />
     <div class="main main-white">
       <div class="main__body main__body_20gap">
@@ -106,8 +105,10 @@
           class="main__map"
           :is-draggable="false"
         />
-        <!--        TODO: для переназначения воркера возможно нужно установить еще чек на .WaitWorkerOnAssign-->
-        <template v-if="userRole === $options.UserRole.EMPLOYER && infoDataMode === $options.InfoModeEmployer.Created">
+        <template
+          v-if="userRole === $options.UserRole.EMPLOYER
+            && (infoDataMode === $options.InfoModeEmployer.Created || infoDataMode === $options.InfoModeEmployer.WaitWorkerOnAssign)"
+        >
           <workers-list is-invited />
           <workers-list />
         </template>
@@ -170,6 +171,7 @@ import {
   TokenSymbols,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
+import { EditQuestState } from '~/utils/quests-constants';
 
 export default {
   name: 'Quests',
@@ -543,8 +545,7 @@ export default {
     toRaisingViews() {
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.quest.status)) {
         this.$router.push({ path: `/edit-quest/${this.quest.id}`, query: { mode: 'raise' } });
-        // TODO: Добавить в enum
-        this.$store.commit('quests/setCurrentStepEditQuest', 2);
+        this.$store.commit('quests/setCurrentStepEditQuest', EditQuestState.RAISE_VIEWS);
       } else this.showToastWrongStatusRaisingViews();
     },
     showToastWrongStatusRaisingViews() {

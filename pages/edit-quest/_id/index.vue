@@ -4,7 +4,7 @@
     v-if="questData"
     class="main"
     data-selector="PAGE-MY-QUESTS"
-    :class="{'main-white': step === 1}"
+    :class="{'main-white': step === $options.EditQuestState.EDITING}"
   >
     <div class="main__body page">
       <validation-observer
@@ -147,7 +147,7 @@
               <base-btn
                 data-selector="TO-RAISED-VIEWS"
                 :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
-                @click="handleSubmit(toRiseViews(2))"
+                @click="handleSubmit(toRiseViews($options.EditQuestState.RAISE_VIEWS))"
               >
                 {{ $t('quests.editAQuest') }}
               </base-btn>
@@ -155,7 +155,7 @@
           </div>
         </div>
         <div
-          v-if="step === 2"
+          v-if="step === $options.EditQuestState.RAISE_VIEWS"
           data-selector="PAGE-MY-QUESTS-STEP-2"
           class="page"
         >
@@ -168,7 +168,7 @@
               >
                 {{ $t('meta.btns.back') }}
                 <template v-slot:left>
-                  <span class="icon-chevron_big_left" />
+                  <span class="icon-chevron_big_left btn-container__icon" />
                 </template>
               </base-btn>
             </div>
@@ -271,13 +271,17 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { QuestMethods, TokenSymbols } from '~/utils/enums';
+import {
+  InfoModeEmployer, Path, QuestMethods, QuestStatuses, TokenSymbols,
+} from '~/utils/enums';
+import { EditQuestState } from '~/utils/quests-constants';
 import { hashText } from '~/utils/wallet';
 
 const { GeoCode } = require('geo-coder');
 
 export default {
   name: 'EditQuest',
+  EditQuestState,
   data() {
     return {
       ads: {
@@ -412,8 +416,12 @@ export default {
       lang: this.$i18n?.localeProperties?.code || 'en-US',
     });
     const {
-      title, locationPlaceName, price, description, location, employment,
+      title, locationPlaceName, price, description, location, employment, id, status,
     } = this.questData;
+
+    if ([QuestStatuses.Pending, InfoModeEmployer.Dispute, InfoModeEmployer.Done, InfoModeEmployer.Closed].includes(status)) {
+      await this.$router.push(`${Path.QUESTS}/${id}`);
+    }
 
     this.runtimeValue = 1;
     this.employmentIndex = this.parseEmployment(employment);
@@ -663,6 +671,9 @@ export default {
   flex-direction: row;
   justify-content: flex-end;
   margin: 20px 0 0 0;
+  &__icon {
+    color: $black700;
+  }
   &__left {
     justify-content: flex-start;
     margin: 30px 0 0 0;

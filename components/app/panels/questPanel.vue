@@ -72,7 +72,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { InfoModeEmployer, InfoModeWorker, QuestStatuses } from '~/utils/enums';
+import { InfoModeEmployer, Path, QuestStatuses } from '~/utils/enums';
 import skills from '~/components/app/pages/common/skills';
 import modals from '~/store/modals/modals';
 
@@ -98,13 +98,7 @@ export default {
       questData: 'quests/getQuest',
     }),
     questDDMode() {
-      return ![QuestStatuses.Pending, InfoModeEmployer.Dispute, InfoModeEmployer.Done].includes(this.questData.status);
-    },
-    InfoModeEmployer() {
-      return InfoModeEmployer;
-    },
-    InfoModeWorker() {
-      return InfoModeWorker;
+      return ![QuestStatuses.Pending, InfoModeEmployer.Dispute, InfoModeEmployer.Done, InfoModeEmployer.Closed].includes(this.questData.status);
     },
     questStatuses() {
       return QuestStatuses;
@@ -137,7 +131,7 @@ export default {
       );
     },
     showProfile() {
-      this.$router.push(`/profile/${this.questData.userId}`);
+      this.$router.push(`/${Path.PROFILE}/${this.questData.userId}`);
     },
   },
 };
