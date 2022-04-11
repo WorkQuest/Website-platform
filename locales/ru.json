@@ -1377,8 +1377,8 @@
   "settings": {
     "additionalPhoneNumber": "Дополнительный номер телефона",
     "mainPhoneNumber": "Основной номер телефона",
-    "whoCouldIInvite": "Who can respond to my quest?",
-    "whoCouldInviteMe": "Who can invite me to a quest?",
+    "whoCouldIInvite": "Кто может ответить на мои квесты?",
+    "whoCouldInviteMe": "Кто может пригласить меня на квест?",
     "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
