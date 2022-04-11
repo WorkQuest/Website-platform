@@ -159,6 +159,7 @@
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 import modals from '~/store/modals/modals';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'SavingProduct',
@@ -180,6 +181,9 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      walletData: 'savings/getWalletData',
+    }),
     dates() {
       return [
         this.$tc('meta.units.days', 7),
@@ -309,6 +313,10 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    await this.$store.dispatch('savings/getWalletsData');
+    if (this.walletData.amount > 0) {
+      await this.$router.push('savings/my');
+    }
     this.SetLoader(false);
   },
   beforeDestroy() {
@@ -323,52 +331,47 @@ export default {
       }
     },
     openOpenADepositModal() {
-      const receiptData = [
-        {
-          title: this.$t('modals.percentage'),
-          subtitle: this.$tc('meta.units.percentsCount', this.interestRate[this.datesNumber[this.date]]),
-        },
-        {
-          title: this.$t('modals.depositing'),
-          subtitle: this.$tc('meta.coins.count.WUSDCount', this.amount),
-        },
-        {
-          title: this.$t('crediting.dueDate'),
-          subtitle: moment().add(this.datesNumber[this.date], 'days').format('DD.MM.YYYY'),
-        },
-      ];
-      const callback = async () => {
-        const res = await this.$store.dispatch('savings/sendMethod', {
-          value: this.amount,
-          data: [this.datesNumber[this.date]],
-          method: 'deposit',
-        });
-        if (res.ok) {
-          this.ShowModal({
-            key: modals.status,
-            img: require('~/assets/img/ui/transactionSend.svg'),
-            title: this.$t('modals.depositIsOpened'),
-            subtitle: '',
-            path: 'savings/1',
-          });
-        } else {
-          this.ShowModal({
-            key: modals.status,
-            img: require('~/assets/img/ui/warning.svg'),
-            title: this.$t('modals.transactionFail'),
-            recipient: '',
-            subtitle: this.$t('modals.errors.error'),
-          });
-        }
-      };
       this.ShowModal({
         key: modals.confirmDetails,
-        callback,
-        receiptData,
+        receiptData: [
+          {
+            title: this.$t('modals.percentage'),
+            subtitle: this.$tc('meta.units.percentsCount', this.interestRate[this.datesNumber[this.date]]),
+          },
+          {
+            title: this.$t('modals.depositing'),
+            subtitle: this.$tc('meta.coins.count.WUSDCount', this.amount),
+          },
+          {
+            title: this.$t('crediting.dueDate'),
+            subtitle: moment().add(this.datesNumber[this.date], 'days').format('DD.MM.YYYY'),
+          },
+        ],
+        callback: async () => {
+          const res = await this.$store.dispatch('savings/sendMethod', {
+            value: this.amount,
+            data: [this.datesNumber[this.date]],
+            method: 'deposit',
+          });
+          if (res.ok) {
+            this.ShowModal({
+              key: modals.status,
+              img: require('~/assets/img/ui/transactionSend.svg'),
+              title: this.$t('modals.depositIsOpened'),
+              subtitle: '',
+              path: 'savings/my',
+            });
+          } else {
+            this.ShowModal({
+              key: modals.status,
+              img: require('~/assets/img/ui/warning.svg'),
+              title: this.$t('modals.transactionFail'),
+              recipient: '',
+              subtitle: this.$t('modals.errors.error'),
+            });
+          }
+        },
       });
-    },
-    handleClickCard(i) {
-      this.selCardID = this.selCardID === i ? -1 : i;
     },
   },
 };

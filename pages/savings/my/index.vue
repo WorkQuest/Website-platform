@@ -16,7 +16,7 @@
               {{ $t('saving.depositAmount') }}
             </div>
             <div class="info-block__tokens">
-              {{ $tc('meta.coins.count.WUSDCount', "4 562") }}
+              {{ $tc('meta.coins.count.WUSDCount', convertValue) }}
             </div>
           </div>
           <div class="info-block__small_right">
@@ -32,7 +32,7 @@
               {{ $t('pension.timeRemainsUntilTheEndOfThePeriod') }}
             </div>
             <div class="info-block__subtitle_black">
-              {{ $tc('meta.units.days', 152) }}
+              {{ convertDate }}
             </div>
           </div>
           <div class="btn-group_exp">
@@ -41,6 +41,7 @@
               :key="key"
               :mode="item.mode"
               class="btn_bl"
+              :disabled="item.disabled"
               :data-selector="`OPEN-${item.type}`"
               @click="openModal(item.type)"
             >
@@ -104,6 +105,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
+import moment from 'moment';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -210,29 +212,49 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      rewards: 'savings/getRewards',
+      walletData: 'savings/getWalletData',
+      apys: 'savings/getAPY',
     }),
     buttonsData() {
       return [
         {
           mode: '',
           type: 'WITHDRAW',
+          disabled: !this.isAfterPeriod,
           name: this.$t('meta.withdraw'),
         },
         {
           mode: 'outline',
           type: 'DEPOSIT',
+          disabled: false,
           name: this.$t('meta.deposit'),
         },
         {
           mode: 'outline',
           type: 'CLAIM',
+          disabled: !this.isAfterPeriod,
           name: this.$t('modals.claim'),
         },
       ];
     },
+    convertDate() {
+      return moment.unix(this.walletData.unlockDate).format('DD.MM.YYYY');
+    },
+    convertValue() {
+      return new BigNumber(this.walletData.amount).shiftedBy(-18).toString();
+    },
+    isAfterPeriod() {
+      return moment().isAfter(moment.unix(this.walletData.unlockDate));
+    },
   },
   async mounted() {
     this.SetLoader(true);
+    await Promise.all([
+      this.$store.dispatch('savings/getWalletsData'),
+      this.$store.dispatch('savings/getRewards'),
+      this.$store.dispatch('savings/getAPY'),
+    ]);
     this.SetLoader(false);
   },
   methods: {
@@ -250,15 +272,13 @@ export default {
                 payload = {
                   data: [value],
                   method: 'withdraw',
-                  type: 'lending',
                 };
                 break;
               case 'deposit':
                 payload = {
                   value,
-                  data: [],
+                  data: [7],
                   method: 'deposit',
-                  type: 'lending',
                 };
                 break;
               default:
@@ -283,7 +303,6 @@ export default {
       } else {
         const res = await this.$store.dispatch('crediting/sendMethod', {
           method: 'claim',
-          type: 'lending',
         });
         if (res.ok) {
           this.ShowModal({
