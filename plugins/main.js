@@ -1,15 +1,50 @@
 import Vue from 'vue';
 import moment from 'moment';
 import VueTippy, { TippyComponent } from 'vue-tippy';
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { QuestStatuses } from '~/utils/enums';
+import {
+  LocalNotificationAction, QuestStatuses, SumSubStatuses, TwoFAStatuses,
+} from '~/utils/enums';
 
 Vue.use(VueTippy);
 Vue.component('tippy', TippyComponent);
 
 Vue.mixin({
-
+  computed: {
+    ...mapGetters({
+      statusKYC: 'user/getStatusKYC',
+      status2FA: 'user/getStatus2FA',
+    }),
+  },
   methods: {
+    async pushLocalNotifications() {
+      let payload;
+      const KYC = this.$cookies.get(LocalNotificationAction.TWOFA);
+      const TWOFA = this.$cookies.get(LocalNotificationAction.KYC);
+      if (this.statusKYC === SumSubStatuses.NOT_VERIFIED) {
+        // TODO: Добавить локализацию
+        payload = {
+          id: '1',
+          action: LocalNotificationAction.KYC,
+          message: 'Please, enable KYC!',
+          actionBtn: 'Enable KYC',
+        };
+        if (!KYC) this.$cookies.set(LocalNotificationAction.KYC, this.statusKYC !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
+        await this.$store.dispatch('notifications/createLocalNotification', payload);
+      }
+      if (this.status2FA === TwoFAStatuses.DISABLED) {
+        // TODO: Добавить локализацию
+        payload = {
+          id: '2',
+          action: LocalNotificationAction.TWOFA,
+          message: 'Please, enable 2FA!',
+          actionBtn: 'Enable 2FA in Settings',
+        };
+        if (!TWOFA) this.$cookies.set(LocalNotificationAction.TWOFA, this.status2FA !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
+        await this.$store.dispatch('notifications/createLocalNotification', payload);
+      }
+    },
     async uploadFiles(files) {
       if (!files.length) return [];
       const fetchData = [];

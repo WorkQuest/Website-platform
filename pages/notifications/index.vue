@@ -87,7 +87,7 @@
               class="notification__remove"
               src="~assets/img/ui/close.svg"
               alt="x"
-              @click="tryRemoveNotification($event, notification.id)"
+              @click="tryRemoveNotification($event, notification.id, notification)"
             >
             <div
               v-if="notification.params"
@@ -125,7 +125,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import {
-  UserRole, Path, SumSubStatuses, TwoFAStatuses,
+  UserRole, Path,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
@@ -148,8 +148,6 @@ export default {
       userRole: 'user/getUserRole',
       notifications: 'notifications/getNotificationsList',
       notifsCount: 'notifications/getNotificationsCount',
-      statusKYC: 'user/getStatusKYC',
-      getStatus2FA: 'user/getStatus2FA',
     }),
     totalPages() {
       return Math.ceil(this.notifsCount / this.filter.limit);
@@ -165,25 +163,6 @@ export default {
     this.$store.commit('notifications/setNotifications', { result: { notifications: [], count: this.notifsCount } });
   },
   methods: {
-    async pushLocalNotifications() {
-      let payload;
-      if (this.statusKYC === SumSubStatuses.NOT_VERIFIED) {
-        payload = {
-          action: 'kyc',
-          message: 'Please, enable KYC!',
-          actionBtn: 'Enable KYC',
-        };
-        await this.$store.dispatch('notifications/createLocalNotification', payload);
-      }
-      if (this.getStatus2FA === TwoFAStatuses.DISABLED) {
-        payload = {
-          action: '2fa',
-          message: 'Please, enable 2FA!',
-          actionBtn: 'Enable 2FA in Settings',
-        };
-        await this.$store.dispatch('notifications/createLocalNotification', payload);
-      }
-    },
     avatar(notification) {
       return notification.sender?.avatar?.url || this.EmptyAvatar();
     },
@@ -194,16 +173,16 @@ export default {
     toUserProfile(notification) {
       this.$router.push(`${Path.PROFILE}/${notification.sender.id}`);
     },
-    tryRemoveNotification(ev, notificationId) {
+    tryRemoveNotification(ev, notificationId, notification) {
       ev.stopPropagation();
       this.ShowModal({
         key: modals.areYouSure,
         title: this.$t('modals.sureDeleteNotification'),
         okBtnTitle: this.$t('meta.btns.delete'),
-        okBtnFunc: async () => await this.removeNotification(notificationId),
+        okBtnFunc: async () => await this.removeNotification(notificationId, notification),
       });
     },
-    async removeNotification(notificationId) {
+    async removeNotification(notificationId, notification) {
       const { limit, offset } = this.filter;
       this.CloseModal();
       this.SetLoader(true);
@@ -215,6 +194,7 @@ export default {
           },
         },
         notificationId,
+        notification,
       });
       this.SetLoader(false);
     },

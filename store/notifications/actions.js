@@ -6,10 +6,11 @@ import {
   notificationCommonFilterActions, notificationEmployerFilterActions, Path, PathDAO,
   UserRole,
 } from '~/utils/enums';
+import { error, success } from '~/utils/web3';
 
 export default {
   async createLocalNotification({ commit, getters, dispatch }, {
-    action, message, title, actionBtn, date,
+    id, action, message, title, actionBtn, date,
   }) {
     async function setLocalNotification() {
       if (!action && !message && !title) return {};
@@ -17,13 +18,13 @@ export default {
         actionNameKey: `notifications.${action}`,
         creatingDate: moment(date || Date.now()).format('MMMM Do YYYY, h:mm'),
         seen: false,
+        id,
         notification: {
           action,
           actionBtn,
           data: {
             title,
             createdAt: moment(date || Date.now()).format('MMMM Do YYYY, h:mm'),
-            id: 'b70bef2b-f07f-4707-8e05-8c667362beb854',
             message,
             sender: {
               avatar: require('assets/img/app/logo.svg'),
@@ -36,26 +37,32 @@ export default {
     }
     const notification = await setLocalNotification();
     const notificationList = getters.getNotificationsList;
-    async function checkAdded() {
+    async function checkAddedLocalNotification() {
       for (let i = 0; i < notificationList.length; i += 1) {
-        if (['notifications.kyc', 'notifications.2fa'].includes(notificationList.actionNameKey)) return true;
+        if (Object.entries(LocalNotificationAction).includes(notificationList.actionNameKey)) {
+          return true;
+        }
       }
       return false;
     }
-    const isAdded = await checkAdded();
+    const isAdded = await checkAddedLocalNotification();
     if (!isAdded) await dispatch('addNotification', notification);
   },
-  async removeNotification({ dispatch, commit }, { config, notificationId }) {
+  async removeNotification({ dispatch, commit, rootGetters }, { config, notificationId, notification }) {
     // TODO: Дописать логику удаления для локальных нотификаций
+    const { params } = notification;
+    if (notification.actionNameKey === `notifications.${LocalNotificationAction.TWOFA}`) this.$cookies.set(LocalNotificationAction.TWOFA, rootGetters['user/getStatus2FA'] !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: false });
+    if (notification.actionNameKey === `notifications.${LocalNotificationAction.KYC}`) this.$cookies.set(LocalNotificationAction.KYC, rootGetters['user/getStatusKYC'] !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: false });
     try {
-      const { ok } = await this.$axios.$delete(`${process.env.NOTIFS_URL}notifications/delete/${notificationId}`);
-
       await commit('removeNotification', notificationId);
       await dispatch('getNotifications', config);
-
-      return ok;
+      if (!params.isLocal) {
+        const res = await this.$axios.$delete(`${process.env.NOTIFS_URL}notifications/delete/${notificationId}`);
+        return success(res);
+      }
+      return success();
     } catch (e) {
-      return false;
+      return error(e);
     }
   },
   async readNotifications({ commit }, payload) {
