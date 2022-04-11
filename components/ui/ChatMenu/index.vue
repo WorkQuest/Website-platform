@@ -1,6 +1,5 @@
 <template>
   <div
-    v-if="isMenuVisible"
     class="icon-more"
   >
     <button
@@ -37,7 +36,7 @@
             </template>
             <template v-else>
               <div
-                v-if=" isOpenDispute"
+                v-if="isOpenDispute"
                 class="chat-menu__item"
                 @click="showOpenADisputeModal()"
               >
@@ -62,6 +61,7 @@
 import ClickOutside from 'vue-click-outside';
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'ChatMenu',
@@ -89,12 +89,9 @@ export default {
     }),
     // TODO узнать какой статус нужен для диспута и изменить
     isOpenDispute() {
-      return !this.canILeave && this.$route.query.status === '0';
+      return !this.canILeave && this.$route.query.type === 'quest';
     },
     // TODO узнать какой статус нужен для диспута и изменить
-    isMenuVisible() {
-      return this.$route.name === 'messages' || (this.$route.query.status === '0') || this.canILeave;
-    },
   },
   methods: {
     changeStarredVal() {
@@ -106,10 +103,15 @@ export default {
     showOpenADisputeModal() {
       this.closeChatMenu();
       // TODO: добавить вывод окна, на добавление диспута, после завершения логики на странице чата
-      // this.ShowModal({
-      //   key: modals.openADispute,
-      //   questId: this.questId,
-      // });
+      if (!this.$route.query.dispute && this.$route.query.dispute !== '0') {
+        this.ShowModal({
+          key: modals.openADispute,
+          questId: this.questId,
+        });
+      } else {
+        this.$router.push(`${Path.QUESTS}/${this.$route.query.id}`);
+        console.log(this.questId);
+      }
     },
     toggleChatMenu() {
       this.isShowChatMenu = !this.isShowChatMenu;
