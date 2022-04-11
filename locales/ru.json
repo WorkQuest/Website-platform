@@ -369,7 +369,8 @@
       "title": "Рейтинг",
       "verified": "Подтвержденный",
       "reliable": "Надежный",
-      "topRanked": "Топовый"
+      "topRanked": "Топовый",
+      "noStatus" : "Без статуса"
     },
     "distantWork": {
       "title": "Рабочее место",
