@@ -616,8 +616,9 @@ export default {
 
 .info-message {
   display: grid;
-  grid-template-columns: repeat(3, auto);
+  grid-template-columns: 1fr auto 1fr;
   gap: 5px;
+  grid-template-areas: "owner system sender";
 
   &__link {
     text-decoration: underline #1D2127;
@@ -625,15 +626,22 @@ export default {
     cursor: pointer;
     overflow: hidden;
     white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: start;
+    grid-area: sender;
 
     &_left {
       grid-column: 1;
       grid-row: 1;
+      text-align: end;
+      grid-area: owner;
     }
   }
 
   &__title {
     white-space: nowrap;
+    text-align: center;
+    grid-area: system;
   }
 }
 
@@ -727,8 +735,6 @@ export default {
 
 @include _1199 {
   .info-message {
-    grid-template-columns: repeat(3, auto);
-
     &__title {
       white-space: nowrap;
       color: $black600;
@@ -759,7 +765,6 @@ export default {
 
 @include _767 {
   .info-message {
-    grid-template-columns: repeat(3, auto);
     &__title {
       white-space: nowrap;
     }

@@ -17,7 +17,7 @@
             class="content__input"
             data-selector="DEPOSIT-PERCENT"
             :name="$t('modals.depositPercent')"
-            rules="required|percent|decimalPlaces:18"
+            rules="required|percent|decimalPlaces:18|zeroFail|notMoreDecimalPlaces|greaterThanZero"
           />
         </div>
         <div class="content__amount">
@@ -30,7 +30,7 @@
             class="content__input"
             data-selector="FIRST-DEPOSIT-AMOUNT"
             :name="$t('modals.firstDepositAmountField')"
-            rules="decimal"
+            rules="decimal:18|notMoreDecimalPlaces|greaterThanZero|zeroFail|notMoreDecimalPlaces"
           />
           <div class="content__text">
             {{ $t('modals.firstDepositText') }}
