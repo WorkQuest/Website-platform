@@ -38,7 +38,7 @@
                 {{ $t('pension.currentPercentFromAQuest') }}
               </div>
               <div class="info-block__tokens">
-                {{ $t('meta.units.percentsCount', { count: getFeePercent() }) }}
+                {{ $t('meta.units.percentsCount', {count: getFeePercent()}) }}
               </div>
               <base-btn
                 class="btn_bl"
@@ -51,7 +51,7 @@
             <div class="info-block__third_rate">
               <div class="info-block__small">
                 <div class="info-block__perc">
-                  + {{ $tc('meta.units.percentsCount', 6 ) }}
+                  + {{ $tc('meta.units.percentsCount', 6) }}
                 </div>
                 <div class="info-block__period">
                   {{ $t('pension.year') }}
@@ -93,7 +93,7 @@
               <div
                 class="info-block__subtitle_red"
               >
-                {{ $t('pension.days', { count: 0 }) }}
+                {{ $t('pension.days', {count: 0}) }}
               </div>
             </div>
             <div class="btn-group">
@@ -208,7 +208,7 @@ import { mapGetters } from 'vuex';
 import { WQPensionFund } from '~/abi/abi';
 import modals from '~/store/modals/modals';
 import { getStyledAmount, getWalletAddress } from '~/utils/wallet';
-import { PensionHistoryMethods, TokenSymbols } from '~/utils/enums';
+import { PensionHistoryMethods, TokenSymbols, ExplorerUrl } from '~/utils/enums';
 
 export default {
   name: 'MyPension',
@@ -373,9 +373,9 @@ export default {
     },
     getExplorerRef(hash) {
       if (this.IsProd) {
-        return `https://dev-explorer.workquest.co/tx/${hash ? hash.toLowerCase() : ''}`;
+        return `${ExplorerUrl}/tx/${hash ? hash.toLowerCase() : ''}`;
       }
-      return `https://dev-explorer.workquest.co/tx/${hash ? hash.toLowerCase() : ''}`;
+      return `${ExplorerUrl}/tx/${hash ? hash.toLowerCase() : ''}`;
     },
     checkIsDeadLine() {
       if (!this.pensionWallet) {

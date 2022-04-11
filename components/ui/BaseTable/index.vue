@@ -69,6 +69,8 @@
 </template>
 
 <script>
+import { ExplorerUrl } from '~/utils/enums';
+
 export default {
   props: {
     title: {
@@ -87,15 +89,15 @@ export default {
   methods: {
     getTransactionUrl(hash) {
       if (this.IsProd) {
-        return `https://dev-explorer.workquest.co/tx/${hash}`;
+        return `${ExplorerUrl}/tx/${hash}`;
       }
-      return `https://dev-explorer.workquest.co/tx/${hash}`;
+      return `${ExplorerUrl}/tx/${hash}`;
     },
     getAddressUrl(address) {
       if (this.IsProd) {
-        return `https://dev-explorer.workquest.co/address/${address}`;
+        return `${ExplorerUrl}/address/${address}`;
       }
-      return `https://dev-explorer.workquest.co/address/${address}`;
+      return `${ExplorerUrl}/address/${address}`;
     },
   },
 };
