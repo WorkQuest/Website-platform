@@ -369,7 +369,8 @@
       "title": "Rating",
       "verified": "Verified",
       "reliable": "Reliable",
-      "topRanked": "Top ranked"
+      "topRanked": "Top ranked",
+      "noStatus" : "Not rated"
     },
     "distantWork": {
       "title": "Travail à distance",
@@ -1376,7 +1377,8 @@
   "settings": {
     "additionalPhoneNumber": "Additional phone number",
     "mainPhoneNumber": "Main phone number",
-    "workProposals": "Filter all work proposals",
+    "whoCouldIInvite": "Who can respond to my quests?",
+    "whoCouldInviteMe": "Who can invite me to a quest?",
     "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
@@ -1408,9 +1410,6 @@
     "workExps": {
       "companyName": "Nom de l'entreprise"
     },
-    "urgentJobOffers": "Offres d'emploi urgentes",
-    "shortTermJobOffers": "Offres d'emploi à court terme",
-    "fixedDeliveryJobOffers": "Offres d'emploi à livraison fixe",
     "addInfo": "Vous pouvez ajouter des informations vous concernant, téléverser une photo de profil et suivre la procédure KYC pour augmenter votre note. La note dépend des données de votre profil et des évaluations fournies.",
     "alsoRating": "Plus votre note est élevée, plus il est facile de vous trouver dans les recherches.",
     "dontShow": "Ne plus afficher",
