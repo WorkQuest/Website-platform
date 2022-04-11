@@ -44,7 +44,7 @@
             v-for="chat in chats.list"
             :key="chat.id"
             class="chats-container__chat chat"
-            @click="handleSelChat(chat.id, chat.questChat && chat.questChat.quest.openDispute && chat.questChat.quest.openDispute.status,chat.questChat && chat.questChat.quest.id, chat.type)"
+            @click="handleSelChat(chat)"
           >
             <div class="chat__body">
               <div class="chat__data">
@@ -307,8 +307,11 @@ export default {
     async getChats() {
       await this.$store.dispatch('chat/getChatsList');
     },
-    handleSelChat(chatId, dispute, id, type) {
-      this.$router.push({ path: `/messages/${chatId}`, query: { dispute, id, type } });
+    handleSelChat(chat) {
+      const { id, type, questChat } = chat;
+      const dispute = questChat && questChat.quest.openDispute && questChat.quest.openDispute.status;
+      const questId = questChat && questChat.quest.id;
+      this.$router.push({ path: `/messages/${id}`, query: { dispute, id: questId, type } });
     },
   },
 };
