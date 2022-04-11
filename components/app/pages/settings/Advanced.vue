@@ -95,54 +95,8 @@ export default {
         restrictionRankingStatus: null,
       },
       radioButtons: {
-        visibilityUser: [
-          {
-            title: this.$t('settings.whoCanSee'),
-            id: 'allUsers',
-            value: NetworkProfileVisibility.ALL_USERS,
-            local: 'settings.allUsers',
-            name: 'visibilityUser',
-          },
-          {
-            id: 'onlyWhenSubmittedWork',
-            value: NetworkProfileVisibility.SUBMITTING_OFFER,
-            local: 'settings.onlyWhenSubmittedWork',
-            name: 'visibilityUser',
-          },
-        ],
-        restrictionRankingStatus: [
-          {
-            title: this.$t('settings.whoCouldInviteMe'),
-            id: 'allStatuses',
-            value: RatingFilter[0].value,
-            local: 'settings.allUsers',
-            name: 'restrictionRankingStatus',
-          },
-          {
-            id: 'verified',
-            value: RatingFilter[3].value,
-            local: 'quests.rating.verified',
-            name: 'restrictionRankingStatus',
-          },
-          {
-            id: 'reliable',
-            value: RatingFilter[2].value,
-            local: 'quests.rating.reliable',
-            name: 'restrictionRankingStatus',
-          },
-          {
-            id: 'topRanked',
-            value: RatingFilter[1].value,
-            local: 'quests.rating.topRanked',
-            name: 'restrictionRankingStatus',
-          },
-          {
-            id: 'noStatus',
-            value: RatingFilter[4].value,
-            local: 'quests.rating.noStatus',
-            name: 'restrictionRankingStatus',
-          },
-        ],
+        visibilityUser: [],
+        restrictionRankingStatus: [],
       },
     };
   },
@@ -188,10 +142,29 @@ export default {
       ];
     },
   },
+  beforeMount() {
+    this.radioButtons.restrictionRankingStatus = RatingFilter.map((item, i) => ({
+      title: this.$t(`settings.${this.userRole === UserRole.EMPLOYER ? 'whoCouldIInvite' : 'whoCouldInviteMe'}`),
+      id: item.key,
+      value: item.value,
+      local: i === 0 ? 'settings.allUsers' : `quests.rating.${item.key}`,
+      name: 'restrictionRankingStatus',
+    }));
+    this.radioButtons.visibilityUser = [{
+      title: this.$t('settings.whoCanSee'),
+      id: 'allUsers',
+      value: NetworkProfileVisibility.ALL_USERS,
+      local: 'settings.allUsers',
+      name: 'visibilityUser',
+    },
+    {
+      id: 'onlyWhenSubmittedWork',
+      value: NetworkProfileVisibility.SUBMITTING_OFFER,
+      local: 'settings.onlyWhenSubmittedWork',
+      name: 'visibilityUser',
+    }];
+  },
   created() {
-    if (this.userRole === UserRole.EMPLOYER) {
-      this.radioButtons.restrictionRankingStatus[0].title = this.$t('settings.whoCouldIInvite');
-    }
     const profileVisibilitySetting = JSON.parse(JSON.stringify(this.userData.profileVisibilitySetting));
     this.checkboxBlocks.visibilityUser = profileVisibilitySetting.network;
     this.checkboxBlocks.restrictionRankingStatus = profileVisibilitySetting.ratingStatus;
