@@ -229,7 +229,7 @@ export const Path = {
   SAVINGS: '/savings',
   CREDITING: '/crediting',
   MINING: '/mining',
-  CROSSCHAIN: '/crosschain',
+  BRIDGE: '/bridge',
   SETTINGS: '/settings',
   DISPUTES: '/disputes',
   WORKERS: '/workers',
@@ -267,6 +267,8 @@ export const UserStatuses = Object.freeze({
 export const TokenSymbols = Object.freeze({
   WQT: 'WQT',
   WUSD: 'WUSD',
+  BNB: 'BNB',
+  ETH: 'ETH',
 });
 
 export const TokenSymbolByContract = Object.freeze({
