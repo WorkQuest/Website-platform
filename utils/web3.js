@@ -29,13 +29,11 @@ const isProd = process.env.PROD === 'true';
 export const getAccountAddress = () => account?.address;
 export const getAccount = () => account;
 
-export function showToast(title, text, variant) {
-  store.dispatch('main/showToast', {
-    title,
-    text,
-    variant,
-  }, { root: true });
-}
+export const showToast = (title, text, variant) => store.dispatch('main/showToast', {
+  title,
+  text,
+  variant,
+}, { root: true });
 
 export const success = (res) => ({
   ok: true,
@@ -66,12 +64,13 @@ export const getChainIdByChain = (chain) => {
       throw error(-1, `wrong chain name: ${chain} ${Chains.BINANCE} ${Chains.ETHEREUM}`);
   }
 };
+
 export const addedNetwork = async (chain) => {
   try {
     let networkParams = {};
     if (chain === Chains.ETHEREUM || [1, 4].includes(+chain)) {
       networkParams = isProd ? NetworksData.ETH_MAIN : NetworksData.ETH_TEST;
-    } else if (chain === Chains.BNB || [56, 97].includes(+chain)) {
+    } else if (chain === Chains.BINANCE || [56, 97].includes(+chain)) {
       networkParams = isProd ? NetworksData.BSC_MAIN : NetworksData.BSC_TEST;
     } else if (chain === Chains.WORKNET || chain === 20220112) {
       networkParams = NetworksData.WORKNET_TEST;
@@ -94,6 +93,11 @@ export const goToChain = async (chain) => {
       method: methodName,
       params: [{ chainId: chainIdParam }],
     });
+    account = {
+      address: getAccountAddress(),
+      netId: +chainIdParam,
+    };
+    await store.dispatch('web3/updateAccount', account);
     return { ok: true };
   } catch (e) {
     if (e.code === 4902) {
@@ -189,7 +193,10 @@ export const sendTransaction = async (_method, payload, _provider = web3) => {
       gas: gasEstimate,
     };
   } else if (_method === 'swap') {
-    const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress, value: payload.value });
+    const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({
+      from: accountAddress,
+      value: payload.value,
+    });
     await inst.methods.swap(...payload.data).send({
       from: accountAddress,
       value: payload.value,
@@ -212,22 +219,6 @@ export const sendTransaction = async (_method, payload, _provider = web3) => {
   return await _provider.eth.sendTransaction(transactionData);
 };
 
-const getChainTypeById = (chainId) => {
-  if (+chainId === +ChainsId.ETH_MAIN || +chainId === +ChainsId.ETH_TEST) {
-    return 0;
-  }
-  if (+chainId === +ChainsId.BSC_MAIN || +chainId === +ChainsId.BSC_TEST) {
-    return 1;
-  }
-  if (+chainId === +ChainsId.MATIC_MAIN || +chainId === +ChainsId.MUMBAI_TEST) {
-    return 2;
-  }
-  if (+chainId === +ChainsId.WORKNET_TEST) {
-    return 3;
-  }
-  return -1;
-};
-
 export const handleMetamaskStatus = (callback) => {
   const { ethereum } = window;
   ethereum.on('chainChanged', callback);
@@ -247,7 +238,7 @@ export const initProvider = async (payload) => {
           },
           // network: 'ethereum',
         };
-      } else if (chain === Chains.BNB) {
+      } else if (chain === Chains.BINANCE) {
         walletOptions = {
           rpc: {
             97: 'https://data-seed-prebsc-2-s1.binance.org:8545/',
@@ -271,7 +262,7 @@ export const initProvider = async (payload) => {
           },
           // network: 'ethereum',
         };
-      } else if (chain === 'BNB') {
+      } else if (chain === Chains.BINANCE) {
         walletOptions = {
           rpc: {
             56: 'https://bsc-dataseed.binance.org/',
@@ -332,11 +323,9 @@ export const initWeb3 = async (payload) => {
     if ((await web3.eth.getCoinbase()) === null) {
       await window.ethereum.request({ method: 'eth_requestAccounts' });
     }
-    const netTypeId = getChainTypeById(chainId);
     account = {
       address: userAddress,
       netId: chainId,
-      netType: netTypeId,
     };
     return success(account);
   } catch (e) {
@@ -357,27 +346,49 @@ export const disconnectWeb3 = () => {
   account = {};
 };
 
+// Get Balance for native token
+export const getNativeBalance = async (address = getAccountAddress()) => await web3.eth.getBalance(address);
+
+// Get transaction count (or nonce) for this address
+export const getTransactionCount = async (address = getAccountAddress()) => await web3.eth.getTransactionCount(address);
+
+// Get current gas price
+export const getGasPrice = async () => await web3.eth.getGasPrice();
+
+export const createInstanceWeb3 = async (ab, address) => new web3.eth.Contract(ab, address);
+
 export const createInstance = async (ab, address) => {
   const abs = web4.getContractAbstraction(ab);
   return await abs.getInstance(address);
 };
 
-let tokenInstance;
-let bridgeInstance;
+// Get estimate gas
+export const getEstimateGas = async (contractAbi = null, contractAddress = null, inst = null, method, attr, value = null) => {
+  try {
+    if (!inst) inst = createInstanceWeb3(contractAbi, contractAddress);
+    return await
+    (value)
+      ? inst.methods[method](...attr).estimateGas({ from: getAccountAddress(), value })
+      : inst.methods[method](...attr).estimateGas({ from: getAccountAddress() });
+  } catch (e) {
+    console.error('getGasPriceError', e);
+    return false;
+  }
+};
+
 let allowance;
 let amount;
-let nonce;
 
-export const getTxFee = async (_abi, _contractAddress, method, data = null) => {
+// Calculate transaction fee for method
+export const getTransactionFee = async (_abi, _contractAddress, method, data = null, value = null) => {
   try {
-    if (!method) console.error('getTxFee undefined method');
+    if (!method) console.error('getTransactionFee undefined method');
     const inst = new web3.eth.Contract(_abi, _contractAddress);
     const gasPrice = await web3.eth.getGasPrice();
-    const gasEstimate = await inst.methods[method].apply(null, data).estimateGas({ from: account.address });
-    const fee = new BigNumber(gasPrice * gasEstimate).shiftedBy(-18).toString();
-    return success(fee);
+    const gasEstimate = await inst.methods[method].apply(null, data).estimateGas({ from: account.address, value });
+    return new BigNumber(gasPrice * gasEstimate).shiftedBy(-18).toString();
   } catch (e) {
-    return error(500, 'TxFee error', e);
+    return error(500, 'Get transaction fee error', e);
   }
 };
 
@@ -513,98 +524,6 @@ export const swap = async (decimals, amountValue) => {
   } catch (e) {
     showToast('Swapping error', `${e.message}`, 'danger');
     return error(500, 'stake error', e);
-  }
-};
-
-export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAddress, recipient, symbol) => {
-  let swapData = '';
-  let tokenAddress;
-  let bridgeAddress;
-  const isNative = symbol !== 'WQT' && chain !== Chains.WORKNET;
-  if (chain === Chains.ETHEREUM) {
-    tokenAddress = process.env.ETHEREUM_WQT_TOKEN;
-    bridgeAddress = process.env.ETHEREUM_BRIDGE;
-  } else if (chain === Chains.BNB || chain === Chains.BINANCE) {
-    tokenAddress = process.env.BSC_WQT_TOKEN;
-    bridgeAddress = process.env.BSC_BRIDGE;
-  } else if (chain === Chains.WORKNET) {
-    switch (symbol) {
-      case 'BNB':
-        tokenAddress = process.env.WORKNET_WBNB_TOKEN;
-        break;
-      case 'ETH':
-        tokenAddress = process.env.WORKNET_WETH_TOKEN;
-        break;
-      default:
-        tokenAddress = process.env.WORKNET_WQT_TOKEN;
-    }
-    bridgeAddress = process.env.WORKNET_BRIDGE;
-  }
-  bridgeInstance = await createInstance(abi.WQBridge, bridgeAddress);
-  if (!isNative) {
-    tokenInstance = await createInstance(abi.ERC20, tokenAddress);
-    allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [account.address, bridgeAddress])).toString();
-  }
-  nonce = await web3.eth.getTransactionCount(userAddress);
-  try {
-    amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
-    if (!isNative && +allowance < +amount) {
-      await store.dispatch('main/setStatusText', 'Approving');
-      showToast('Swapping', 'Approving...', 'success');
-      await tokenInstance.approve(bridgeAddress, amount);
-      allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [account.address, bridgeAddress])).toString();
-      showToast('Swapping', 'Approving done', 'success');
-      showToast('Swapping', 'Swapping...', 'success');
-      await store.dispatch('main/setStatusText', 'Swapping');
-      swapData = await bridgeInstance.swap(nonce, chainTo, amount, recipient, symbol);
-    } else if (isNative) {
-      await store.dispatch('main/setStatusText', 'Swapping');
-      const payload = {
-        abi: abi.WQBridge,
-        address: bridgeAddress,
-        value: amount,
-        data: [
-          nonce.toString(), chainTo.toString(), amount, recipient, symbol,
-        ],
-      };
-      await sendTransaction('swap', payload);
-    } else {
-      showToast('Swapping', 'Swapping...', 'success');
-      await store.dispatch('main/setStatusText', 'Swapping');
-      swapData = await bridgeInstance.swap(nonce, chainTo, amount, recipient, symbol);
-    }
-    showToast('Swapping', 'Swapping done', 'success');
-    return swapData;
-  } catch (e) {
-    console.log(e);
-    showToast('Swapping error', `${e.message}`, 'danger');
-    return error(500, 'stake error', e);
-  }
-};
-
-export const redeemSwap = async (props) => {
-  const { signData, chainTo } = props;
-  let bridgeAddress;
-  if (chainTo === 2) {
-    bridgeAddress = process.env.ETHEREUM_BRIDGE;
-  } else if (chainTo === 3) {
-    bridgeAddress = process.env.BSC_BRIDGE;
-  } else if (chainTo === 1) {
-    bridgeAddress = process.env.WORKNET_BRIDGE;
-  }
-  try {
-    showToast('Redeeming', 'Redeem...', 'success');
-    const payload = {
-      abi: abi.WQBridge,
-      address: bridgeAddress,
-      data: signData,
-      userAddress: signData[3],
-    };
-    return await sendTransaction('redeem', payload);
-  } catch (e) {
-    console.log(e);
-    showToast('Redeeming', `${e.message}`, 'warning');
-    return error(500, 'redeem error', e);
   }
 };
 

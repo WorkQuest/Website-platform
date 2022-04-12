@@ -9,6 +9,8 @@
         :src="options.img"
         alt="Status"
         class="content__picture"
+        width="90"
+        height="90"
       >
       <img
         v-if="options.type === 'installMetamask'"
@@ -51,8 +53,8 @@
         </div>
       </div>
       <a
-        v-if="options.txHash"
-        :href="link"
+        v-if="options.link"
+        :href="options.link"
         target="_blank"
       >
         {{ $t('modals.transactionCheck') }}
@@ -96,47 +98,16 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'ModalStatus',
-  data() {
-    return {
-      link: '',
-    };
-  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
-      userAddress: 'user/getUserWalletAddress',
       isLoading: 'main/getIsLoading',
     }),
-  },
-  async mounted() {
-    this.initLink();
-    if (this.options.recipient) {
-      const payload = {
-        recipientAddress: this.options.recipient,
-        query: '',
-      };
-      await this.$store.dispatch('defi/swapsForCrosschain', payload);
-    }
   },
   methods: {
     hide() {
       if (this.options.path) this.$router.push(this.options.path);
       this.CloseModal();
-    },
-    initLink() {
-      if (process.env.PROD === 'false') {
-        if (this.options.chainTo === 3) {
-          this.link = `https://rinkeby.etherscan.io/tx/${this.options.txHash}`;
-        } else {
-          this.link = `https://testnet.bscscan.com/tx/${this.options.txHash}`;
-        }
-      } else if (process.env.PROD === 'true') {
-        if (this.options.chainTo === 3) {
-          this.link = `https://etherscan.io/tx/${this.options.txHash}`;
-        } else {
-          this.link = `https://bscscan.com/tx/${this.options.txHash}`;
-        }
-      }
     },
     async handleSubmit() {
       if (this.isLoading) return;
