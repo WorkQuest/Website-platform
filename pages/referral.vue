@@ -167,21 +167,19 @@
               tbody-tr-class="table__row"
             >
               <template #cell(userInfo)="el">
-                <div class="user__name">
-                  <nuxt-link
-                    class="user__link"
-                    :to="`profile/${el.item.id}`"
+                <nuxt-link
+                  class="user__link"
+                  :to="`profile/${el.item['referralUser.id']}`"
+                >
+                  <img
+                    class="ava"
+                    :src="el.item['referralUser.avatar.url'] ? el.item['referralUser.avatar.url'] : EmptyAvatar()"
+                    alt=""
                   >
-                    <img
-                      class="ava"
-                      :src="el.item['referralUser.avatar.url'] ? el.item['referralUser.avatar.url'] : EmptyAvatar()"
-                      alt=""
-                    >
-                    <span>
-                      {{ el.item['referralUser.firstName'] }} {{ el.item['referralUser.lastName'] }}
-                    </span>
-                  </nuxt-link>
-                </div>
+                  <div class="user__name user__name-table">
+                    {{ el.item['referralUser.firstName'] }} {{ el.item['referralUser.lastName'] }}
+                  </div>
+                </nuxt-link>
               </template>
               <template #cell(userID)="el">
                 <div class="user__value_gray">
@@ -387,7 +385,7 @@ export default {
       },
     },
   },
-  async mounted() {
+  mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
   },
@@ -574,6 +572,9 @@ export default {
           font-size: 16px;
           text-transform: capitalize;
         }
+        &__name-table {
+          max-width: 90px;
+        }
 
         &__value {
           font-size: 16px;
@@ -616,6 +617,8 @@ export default {
         }
 
         &__link {
+          display: flex;
+          align-items: center;
           position: relative;
           text-decoration: none;
           color: $black500;

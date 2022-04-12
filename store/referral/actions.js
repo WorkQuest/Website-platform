@@ -123,7 +123,19 @@ export default {
           commit('setReferralsList', referralsList);
           commit('setIsNeedRegistration', isNeedRegistration);
         } else if (msg.action === 'RewardClaimed' && currentPage === 1) {
-          paidEventsList.unshift(msg.data);
+          paidEventsList.unshift({
+            blockNumber: msg.data.blockNumber,
+            transactionHash: msg.data.transactionHash,
+            referral: msg.data.referral,
+            affiliate: msg.data.affiliate,
+            amount: msg.data.returnValues.affiliat,
+            timestamp: msg.data.timestamp,
+            event: msg.data.event,
+            'referralUser.id': msg.data['referralUser.id'] || '-',
+            'referralUser.firstName': msg.data['referralUser.firstName'] || '-',
+            'referralUser.lastName': msg.data['referralUser.lastName'] || '-',
+            'referralUser.avatar.url': msg.data['referralUser.lastName'],
+          });
           if (paidEventsList.length > 10) {
             paidEventsList.pop();
           }
