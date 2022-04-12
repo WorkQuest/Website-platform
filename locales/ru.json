@@ -49,7 +49,7 @@
       "minutes": "{count} минута | {count} минуты | {count} минут",
       "hours": "{count} час | {count} часа | {count} часов",
       "years": "{count} год | {count} года | {count} лет",
-      "days": "{count} день | {count} дня  | {count} дней" ,
+      "days": "{count} день | {count} дня  | {count} дней",
       "votesCount": "{count} голоса",
       "distance": {
         "m": "m"
@@ -936,7 +936,7 @@
       "signWorkQuest": "Социальная сеть WorkQuest",
       "skills": "Skills",
       "smsVerification": "SMS verification",
-      "swapTitle": "Cross-chain exchange",
+      "swapTitle": "Обмен между сетями",
       "swapInfo": "Swap info",
       "swapTokens": "Swap tokens",
       "withdrawal": "Withdrawal",
@@ -1155,13 +1155,13 @@
     "choose": "Выбрать",
     "chooseCurrency": "Choose currency",
     "coinpaymebts": "Сoinpaymebts",
-    "swapTitle": "Cross-chain exchange",
+    "swapTitle": "Обмен между сетями",
     "coin": "Coin",
     "createSwap": "Create swap",
-    "bridge": "WorkQuest Bridge",
+    "bridge": "WorkQuest Мост",
     "bridgeText": "Eth > Binance",
-    "senderAddress": "Sender address",
-    "recipientAddress": "Recipient address",
+    "senderAddress": "Адрес отправителя",
+    "recipientAddress": "Адрес получателя",
     "worknetFee": "Eth fee",
     "binanceFee": "Binance fee",
     "welcomeText": "Please, tell us about your skills below",
@@ -1380,8 +1380,8 @@
     "linkedin": "linkedin",
     "twitter": "twitter",
     "instagram": "instagram",
-    "companyName": "company",
-    "ceoName": "ceo",
+    "companyName": "компания",
+    "ceoName": "ген.дир.",
     "websiteName": "website",
     "enterPhoneNumber": "Please enter your phone number",
     "enterCurrentLocation": "Please select current location",
@@ -2055,8 +2055,8 @@
             "subtitle": "Providing liquidity to pools to receive rewards based on your amount of liquidity in the pool."
           },
           "bridge": {
-            "title": "Bridge",
-            "subtitle": "Most secure and fast way to bring cross-chain assets between WorkNet, ETH and BSC."
+            "title": "Мост",
+            "subtitle": "Самый безопасный и быстрый способ переноса активов между сетями WorkNet, ETH and BSC."
           },
           "staking": {
             "title": "Staking",
