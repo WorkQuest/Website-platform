@@ -291,6 +291,7 @@ export default {
       });
       return success(res);
     } catch (e) {
+      console.error('newWQ', e);
       return error(9000, e.message, e);
     }
   },

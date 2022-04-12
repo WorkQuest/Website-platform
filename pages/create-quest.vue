@@ -325,9 +325,8 @@ export default {
               description: this.textarea,
               nonce,
             });
-            console.log('newWorkQuest result: ', txRes);
             if (txRes?.ok === false) {
-              this.ShowToast(this.$t('errors.transaction.notEnoughFunds')); // TODO: варианты обработки ошибок?
+              this.ShowToast(txRes.msg);
               return;
             }
             this.ShowModal({
