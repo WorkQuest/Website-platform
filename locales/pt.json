@@ -369,7 +369,8 @@
       "title": "Rating",
       "verified": "Verified",
       "reliable": "Reliable",
-      "topRanked": "Top ranked"
+      "topRanked": "Top ranked",
+      "noStatus" : "Not rated"
     },
     "distantWork": {
       "title": "Trabalho remoto",
@@ -1377,7 +1378,8 @@
   "settings": {
     "additionalPhoneNumber": "Additional phone number",
     "mainPhoneNumber": "Main phone number",
-    "workProposals": "Filter all work proposals",
+    "whoCouldIInvite": "Who can respond to my quests?",
+    "whoCouldInviteMe": "Who can invite me to a quest?",
     "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
@@ -1409,9 +1411,6 @@
     "workExps": {
       "companyName": "Nome da empresa"
     },
-    "urgentJobOffers": "Ofertas de emprego urgentes",
-    "shortTermJobOffers": "Ofertas de trabalho de curto prazo",
-    "fixedDeliveryJobOffers": "Ofertas de trabalho de entrega fixas",
     "addInfo": "Pode adicionar informação sobre si mesmo, carregar uma foto de perfil e passar pelo procedimento KYC para melhorar a sua classificação. A classificação depende dos dados do seu perfil e das revisões.",
     "alsoRating": "Quanto mais elevada for a sua classificação, mais fácil é encontrá-lo nas buscas.",
     "dontShow": "Não voltar a mostrar",

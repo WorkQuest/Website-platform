@@ -369,7 +369,8 @@
       "title": "Rating",
       "verified": "Verified",
       "reliable": "Reliable",
-      "topRanked": "Top ranked"
+      "topRanked": "Top ranked",
+      "noStatus" : "Not rated"
     },
     "distantWork": {
       "title": "远程工作",
@@ -1377,7 +1378,8 @@
   "settings": {
     "additionalPhoneNumber": "Additional phone number",
     "mainPhoneNumber": "Main phone number",
-    "workProposals": "Filter all work proposals",
+    "whoCouldIInvite": "Who can respond to my quests?",
+    "whoCouldInviteMe": "Who can invite me to a quest?",
     "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
@@ -1409,9 +1411,6 @@
     "workExps": {
       "companyName": "公司名称"
     },
-    "urgentJobOffers": "紧急工作机会",
-    "shortTermJobOffers": "短期工作机会",
-    "fixedDeliveryJobOffers": "固定交付工作机会",
     "addInfo": "您可以添加有关您自己的信息、上传个人资料照片并通过 KYC 程序提高您的评分。评分取决于您的个人资料数据和评价。",
     "alsoRating": "您的排名越高，越容易在搜索中出现。",
     "dontShow": "不再显示",

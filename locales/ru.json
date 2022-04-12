@@ -369,7 +369,8 @@
       "title": "Рейтинг",
       "verified": "Подтвержденный",
       "reliable": "Надежный",
-      "topRanked": "Топовый"
+      "topRanked": "Топовый",
+      "noStatus" : "Без статуса"
     },
     "distantWork": {
       "title": "Рабочее место",
@@ -1377,7 +1378,8 @@
   "settings": {
     "additionalPhoneNumber": "Дополнительный номер телефона",
     "mainPhoneNumber": "Основной номер телефона",
-    "workProposals": "Filter all work proposals",
+    "whoCouldIInvite": "Кто может ответить на мои квесты?",
+    "whoCouldInviteMe": "Кто может пригласить меня на квест?",
     "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
@@ -1409,9 +1411,6 @@
     "workExps": {
       "companyName": "Название компании"
     },
-    "urgentJobOffers": "Urgent job offers",
-    "shortTermJobOffers": "Short term job offers",
-    "fixedDeliveryJobOffers": "Fixed delivery job offers",
     "addInfo": "You can add information about yourself, upload a profile photo and go through the KYC procedure to increase your rating. The rating depends on your profile data and reviews.",
     "alsoRating": "The higher your ranking, the easier it is to find you in searches.",
     "dontShow": "Don’t show again",

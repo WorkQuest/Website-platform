@@ -225,7 +225,7 @@ extend('zeroFail', {
 });
 extend('notMoreDecimalPlaces', {
   validate(value) {
-    return (((value.toString().includes('.')) ? (value.toString().split('.').pop().length) : (0)) < 3);
+    return (((value.toString().includes('.')) ? (value.toString().split('.').pop().length) : (0)) < 4);
   },
   message: 'Please enter correct {_field_}, no more than 2 decimal places',
 });
@@ -234,6 +234,13 @@ extend('min_percent', {
     return +value.replace(/%/g, '') >= +min;
   },
   params: ['min'],
+});
+extend('max_percent', {
+  validate(value, { max }) {
+    return +value.replace(/%/g, '') <= +max;
+  },
+  message: 'Please enter correct {_field_}, reduce the percentage',
+  params: ['max'],
 });
 export default ({ app }) => {
   configure({

@@ -369,7 +369,8 @@
       "title": "Rating",
       "verified": "Verified",
       "reliable": "Reliable",
-      "topRanked": "Top ranked"
+      "topRanked": "Top ranked",
+      "noStatus" : "Not rated"
     },
     "distantWork": {
       "title": "عمل بالخارج",
@@ -1377,7 +1378,9 @@
   "settings": {
     "additionalPhoneNumber": "Additional phone number",
     "mainPhoneNumber": "Main phone number",
-    "workProposals": "Filter all work proposals",
+    "whoCouldIInvite": "Who can respond to my quests?",
+    "whoCouldInviteMe": "Who can invite me to a quest?",
+    "interactOnly": "Interact only with:",
     "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
@@ -1409,9 +1412,6 @@
     "workExps": {
       "companyName": "اسم الشركة"
     },
-    "urgentJobOffers": "عروض عمل عاجلة",
-    "shortTermJobOffers": "عروض عمل قصيرة المدى",
-    "fixedDeliveryJobOffers": "عروض ذات موعد تسليم ثابت",
     "addInfo": "يمكنك إضافة معلومات عنك، وتحميل صورة الملف التعريفي والخضوع لإجراء \"اعرف عميلك\" (KYC) لزيادة تقييمك. يعتمد التقييم على بيانات ملفك التعريفي والمراجعات.",
     "alsoRating": "كلما ارتفع ترتيبك، كان من الأسهل العثور عليك في عمليات البحث.",
     "dontShow": "عدم الإظهار مرة أخرى",
