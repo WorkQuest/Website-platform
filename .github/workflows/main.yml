@@ -54,6 +54,7 @@ jobs:
           echo WETH_TOKEN=${{ secrets.WETH_TOKEN }} >> .env
           echo WBNB_TOKEN=${{ secrets.WBNB_TOKEN }} >> .env
 
+          echo WORKNET_BRIDGE=${{ secrets.WORKNET_BRIDGE }} >> .env
           echo WORKNET_ORACLE=${{ secrets.WORKNET_ORACLE }} >> .env
           echo WORKNET_PENSION_FUND=${{ secrets.WORKNET_PENSION_FUND }} >> .env
           echo WORKNET_PROMOTION=${{ secrets.WORKNET_PROMOTION }} >> .env
@@ -128,6 +129,7 @@ jobs:
           echo WETH_TOKEN=${{ secrets.WETH_TOKEN }} >> .env
           echo WBNB_TOKEN=${{ secrets.WBNB_TOKEN }} >> .env
 
+          echo WORKNET_BRIDGE=${{ secrets.WORKNET_BRIDGE }} >> .env
           echo WORKNET_ORACLE=${{ secrets.WORKNET_ORACLE }} >> .env
           echo WORKNET_PENSION_FUND=${{ secrets.WORKNET_PENSION_FUND }} >> .env
           echo WORKNET_PROMOTION=${{ secrets.WORKNET_PROMOTION }} >> .env
@@ -202,6 +204,7 @@ jobs:
           echo WETH_TOKEN=${{ secrets.WETH_TOKEN }} >> .env
           echo WBNB_TOKEN=${{ secrets.WBNB_TOKEN }} >> .env
 
+          echo WORKNET_BRIDGE=${{ secrets.WORKNET_BRIDGE }} >> .env
           echo WORKNET_ORACLE=${{ secrets.WORKNET_ORACLE }} >> .env
           echo WORKNET_PENSION_FUND=${{ secrets.WORKNET_PENSION_FUND }} >> .env
           echo WORKNET_PROMOTION=${{ secrets.WORKNET_PROMOTION }} >> .env

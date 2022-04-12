@@ -401,9 +401,9 @@ export default {
           path: Path.MINING,
         },
         {
-          title: this.$t('ui.menu.crosschain.title'),
-          desc: this.$t('ui.menu.crosschain.desc'),
-          path: Path.CROSSCHAIN,
+          title: this.$t('ui.menu.bridge.title'),
+          desc: this.$t('ui.menu.bridge.desc'),
+          path: Path.BRIDGE,
         },
         {
           title: this.$t('ui.menu.staking.title'),

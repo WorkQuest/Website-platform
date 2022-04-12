@@ -86,18 +86,21 @@ export const Ratings = Object.freeze({
   RELIABLE: 'reliable',
   VERIFIED: 'verified',
   NO_STATUS: 'noStatus',
+  ALL_STATUSES: 'AllStatuses',
 });
 export const UserRating = Object.freeze({
   0: Ratings.TOP_RANKED,
   1: Ratings.RELIABLE,
   2: Ratings.VERIFIED,
   3: Ratings.NO_STATUS,
+  4: Ratings.ALL_STATUSES,
 });
 export const RatingFilter = [
-  { key: 'all', value: 3 },
+  { key: 'all', value: 4 },
   { key: 'topRanked', value: 0 },
   { key: 'reliable', value: 1 },
   { key: 'verified', value: 2 },
+  { key: 'noStatus', value: 3 },
 ];
 
 export const MessageAction = {
@@ -194,7 +197,7 @@ export const Path = {
   SAVINGS: '/savings',
   CREDITING: '/crediting',
   MINING: '/mining',
-  CROSSCHAIN: '/crosschain',
+  BRIDGE: '/bridge',
   SETTINGS: '/settings',
   DISPUTES: '/disputes',
   WORKERS: '/workers',
@@ -232,6 +235,8 @@ export const UserStatuses = Object.freeze({
 export const TokenSymbols = Object.freeze({
   WQT: 'WQT',
   WUSD: 'WUSD',
+  BNB: 'BNB',
+  ETH: 'ETH',
 });
 
 export const TokenSymbolByContract = Object.freeze({
@@ -310,3 +315,8 @@ export const RaiseViewStatus = {
   0: true,
   1: false,
 };
+
+export const NetworkProfileVisibility = Object.freeze({
+  ALL_USERS: 0,
+  SUBMITTING_OFFER: 1,
+});
