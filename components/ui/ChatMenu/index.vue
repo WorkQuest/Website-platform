@@ -88,16 +88,12 @@ export default {
     ...mapGetters({
       currChat: 'chat/getCurrChatInfo',
     }),
-    // TODO узнать какой статус нужен для диспута и изменить
     isOpenDispute() {
       return !this.canILeave && this.$route.query.type === 'quest';
     },
     isInvisible() {
-      console.log(this.$route.query.status);
-      console.log(this.$route.query.status === '1' || this.$route.query.status === '3');
-      return this.$route.query.type && this.$route.query.type === 'quest' && (this.$route.query.status !== '1' || this.$route.query.status !== '3');
+      return this.$route.query.type && this.$route.query.type === 'quest' && (this.$route.query.status !== '1' && this.$route.query.status !== '3');
     },
-    // TODO узнать какой статус нужен для диспута и изменить
   },
   methods: {
     changeStarredVal() {
