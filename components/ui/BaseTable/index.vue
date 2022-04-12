@@ -24,7 +24,7 @@
           target="_blank"
           class="table__url"
         >
-          {{ CutTxn(convertToBech32('wq', el.item.tx_hash), 8, 4) }}
+          {{ CutTxn(el.item.tx_hash, 8, 4) }}
         </a>
       </template>
       <template #cell(status)="el">

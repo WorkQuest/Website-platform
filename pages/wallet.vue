@@ -7,7 +7,7 @@
           <div class="wallet__address">
             <span class="user__wallet">{{ CutTxn(convertToBech32('wq',userWalletAddress), 8, 8) }}</span>
             <button
-              v-clipboard:copy="convertToBech32('wq',userWalletAddress)"
+              v-clipboard:copy="userWalletAddress"
               v-clipboard:success="ClipboardSuccessHandler"
               v-clipboard:error="ClipboardErrorHandler"
               type="button"
