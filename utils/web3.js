@@ -70,7 +70,7 @@ export const addedNetwork = async (chain) => {
     let networkParams = {};
     if (chain === Chains.ETHEREUM || [1, 4].includes(+chain)) {
       networkParams = isProd ? NetworksData.ETH_MAIN : NetworksData.ETH_TEST;
-    } else if (chain === Chains.BNB || [56, 97].includes(+chain)) {
+    } else if (chain === Chains.BINANCE || [56, 97].includes(+chain)) {
       networkParams = isProd ? NetworksData.BSC_MAIN : NetworksData.BSC_TEST;
     } else if (chain === Chains.WORKNET || chain === 20220112) {
       networkParams = NetworksData.WORKNET_TEST;
