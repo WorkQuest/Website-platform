@@ -71,6 +71,11 @@ export default {
       if (isNative) {
         const balance = await getNativeBalance();
         const nonce = await getTransactionCount();
+        if (!balance) {
+          commit('setToken', { amount: 0 });
+          return success();
+        }
+
         const txFee = await getTransactionFee(
           WQBridge,
           bridgeAddress,
@@ -78,7 +83,7 @@ export default {
           [nonce, toChainIndex, balance, accountAddress, symbol],
           balance,
         );
-        commit('setToken', { amount: new BigNumber(balance).shiftedBy(-18).minus(+txFee).toNumber() });
+        commit('setToken', { amount: new BigNumber(balance).shiftedBy(-18).minus(+txFee).toNumber() || 0 });
       } else {
         const [decimal, amount] = await Promise.all([
           fetchContractData('decimals', ERC20, tokenAddress),

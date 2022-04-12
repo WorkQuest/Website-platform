@@ -73,7 +73,7 @@
           {{ $t('meta.btns.cancel') }}
         </base-btn>
         <base-btn
-          :disabled="invalid"
+          :disabled="invalid || currentToken.amount === 0"
           data-selector="CREATE-SWAP"
           @click="handleSubmit(showSwapInfoModal)"
         >
