@@ -50,6 +50,7 @@
         :value="mode === 'convertDate' ? convertDate(value) : value"
         :type="type"
         :autocomplete="autocomplete"
+        :disabled="disabled"
         @input="input"
         @keyup.enter="enter"
         @keypress.enter="onEnterPress"

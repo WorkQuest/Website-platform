@@ -31,11 +31,11 @@
           </div>
         </div>
         <div
-          v-if="options.recepientAddress"
+          v-if="options.recipientAddress"
           class="field__header header"
         >
           <div class="header__title">
-            {{ $t(options.recepientAddress) }}
+            {{ $t(options.recipientAddress) }}
           </div>
           <div class="header__subtitle">
             {{ walletAddress }}

@@ -413,11 +413,17 @@ export default {
 
   &__chat-name {
     justify-self: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 50%;
   }
 
   &__quest-link {
     color: #0083C7;
     cursor: pointer;
+    justify-self: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     &_small {
       font-size: 14px;
