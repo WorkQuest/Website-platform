@@ -317,7 +317,7 @@ export default {
   }
   &_outline {
     width: 100%;
-    border: 1px solid $shade700;
+    border: 1px solid rgba(0, 131, 199, 0.1);
     background: $white;
     color: $blue;
     padding: 0;

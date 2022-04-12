@@ -97,16 +97,16 @@ export default {
         {
           title: this.$t('crediting.currentCredit'),
           priceTitle: this.$t('crediting.totalWusdDebt'),
-          price: this.$tc('meta.coins.count.WUSDCount', this.CropTxt(this.convertedCredit, 5)),
+          price: this.$tc('meta.coins.count.WUSDCount', (+this.convertedCredit).toFixed(4)),
           show: this.isHaveCredit,
           info: [
             {
               title: this.$t('crediting.needRefund'),
-              desc: this.$tc('meta.coins.count.WUSDCount', this.CropTxt(this.fullValueForRefund, 5)),
+              desc: this.$tc('meta.coins.count.WUSDCount', (+this.fullValueForRefund).toFixed(4)),
             },
             {
               title: this.$t('modals.totalFee'),
-              desc: this.$tc('meta.coins.count.WUSDCount', this.CropTxt(this.convertedCurrentFee, 5)),
+              desc: this.$tc('meta.coins.count.WUSDCount', (+this.convertedCurrentFee).toFixed(4)),
             },
             {
               title: this.$t('crediting.dueDate'),
