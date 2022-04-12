@@ -11,16 +11,22 @@
         <div class="content__text">
           {{ $t('modals.changePercentDesc') }}
         </div>
-        <div class="content__field">
+        <div
+          class="content__field"
+          @keydown.delete="ChangeCaretPosition( $refs.percentInput)"
+        >
           <div class="content__title">
             {{ $t('modals.currentPercentTitle') }}
           </div>
           <base-field
-            v-model="amount"
+            ref="percentInput"
+            :value="amount"
             :placeholder="$tc('meta.units.percentsCount', 15)"
             class="content__input"
             :name="$t('modals.currentPercentErr')"
-            rules="required|percent|decimalPlaces:18|is_not:0"
+            data-selector="PENSION-PERCENT"
+            rules="required|min_percent:1|max_percent:99|zeroFail|notMoreDecimalPlaces"
+            @input="calcPensionPercent"
           />
         </div>
         <div class="content__buttons buttons">
@@ -81,7 +87,7 @@ export default {
           method: 'updateFee',
           _abi: abi.WQPensionFund,
           contractAddress: process.env.WORKNET_PENSION_FUND,
-          data: [new BigNumber(this.amount).shiftedBy(18).toString()],
+          data: [new BigNumber(this.amount.substr(0, this.amount.length - 1)).shiftedBy(18).toString()],
         }),
         this.$store.dispatch('wallet/getBalance'),
       ]);
@@ -102,7 +108,7 @@ export default {
       this.ShowModal({
         key: modals.transactionReceipt,
         fields,
-        submitMethod: async () => await this.$store.dispatch('wallet/pensionUpdateFee', this.amount),
+        submitMethod: async () => await this.$store.dispatch('wallet/pensionUpdateFee', this.amount.substr(0, this.amount.length - 1)),
         callback: updateMethod,
       });
       this.SetLoader(false);
@@ -114,6 +120,10 @@ export default {
         title: this.$t('modals.percentIsChanged'),
         subtitle: this.$t('modals.percentIsChangedText'),
       });
+    },
+    calcPensionPercent(value) {
+      this.amount = this.CalcPercent(value);
+      this.ChangeCaretPosition(this.$refs.percentInput);
     },
   },
 };

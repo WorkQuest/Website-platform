@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="info"
-    :title="$t('modals.titles.swapInfo')"
+    :title="$tc('modals.titles.swapInfo')"
   >
     <div class="info__content content">
       <div class="content__field field">
@@ -31,7 +31,7 @@
           <base-btn
             class="buttons__button"
             data-selector="CONFIRM"
-            @click="showTransactionSend"
+            @click="sendTransaction"
           >
             {{ $t('meta.btns.confirm') }}
           </base-btn>
@@ -43,31 +43,19 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalSwapInfo',
-  data() {
-    return {
-      miningPoolId: localStorage.getItem('miningPoolId'),
-      metamaskStatus: localStorage.getItem('metamaskStatus'),
-      sourceAddressInd: 0,
-      targetAddressInd: 1,
-    };
-  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
       isConnected: 'web3/isConnected',
     }),
-    getCardNumber() {
-      return (this.options.cardNumber);
-    },
     info() {
       return [
         {
-          title: this.$t('modals.crosschain'),
-          subtitle: this.options.crosschain,
+          title: this.$t('modals.bridge'),
+          subtitle: this.options.networks,
         },
         {
           title: this.$t('modals.amount'),
@@ -75,15 +63,15 @@ export default {
         },
         {
           title: this.$t('modals.senderAddress'),
-          subtitle: this.options.recepient,
+          subtitle: this.options.recipient,
         },
         {
-          title: this.$t('modals.recepientAddress'),
-          subtitle: this.options.recepient,
+          title: this.$t('modals.recipientAddress'),
+          subtitle: this.options.recipient,
         },
         // {
         //   title: this.$t('modals.worknetFee'),
-        //   subtitle: this.options.worknetFee,
+        //   subtitle: this.options.fee,
         // },
         // {
         //   title: this.$t('modals.binanceFee'),
@@ -96,38 +84,12 @@ export default {
     hide() {
       this.CloseModal();
     },
-    async showTransactionSend() {
-      this.SetLoader(true);
-      await this.connectToMetamask();
-      const optionsData = this.options;
-      this.hide();
-      const swapObj = await this.$store.dispatch('web3/swapWithBridge', {
-        _decimals: 18,
-        _amount: optionsData.amountInt,
-        chain: optionsData.chain,
-        chainTo: optionsData.toChain,
-        userAddress: optionsData.recepientFull,
-        recipient: optionsData.recepientFull,
-        symbol: optionsData.tokenName,
-      });
-      this.ShowModal({
-        key: modals.status,
-        img: swapObj.code === 500 ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
-        title: swapObj.code === 500 ? this.$t('modals.transactionFail') : this.$t('modals.transactionSent'),
-        recipient: '',
-        txHash: swapObj.tx,
-        chainTo: optionsData.toChain,
-        subtitle: '',
-      });
-      this.SetLoader(false);
-    },
-    async connectToMetamask() {
-      if (!this.isConnected) {
-        await this.$store.dispatch('web3/connect');
-      }
-    },
-    async checkPool() {
-      return await this.$store.dispatch('web3/goToChain', { chain: this.options.chain });
+    async sendTransaction() {
+      // TODO need it?
+      if (!this.isConnected) await this.$store.dispatch('web3/connect');
+
+      const { submit } = this.options;
+      await submit();
     },
   },
 };

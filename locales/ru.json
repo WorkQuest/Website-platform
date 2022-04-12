@@ -46,10 +46,10 @@
       "mb": "{count} MB",
       "kb": "{count} KB",
       "percentsCount": "{count}%",
-      "minutes": "{count} минуты",
-      "hours": "{count} часы",
-      "years": "{count} годы",
-      "days": "{count} дни",
+      "minutes": "{count} минута | {count} минуты | {count} минут",
+      "hours": "{count} час | {count} часа | {count} часов",
+      "years": "{count} год | {count} года | {count} лет",
+      "days": "{count} день | {count} дня  | {count} дней",
       "votesCount": "{count} голоса",
       "distance": {
         "m": "m"
@@ -191,7 +191,8 @@
     "settings": "Настройки",
     "costPerHour": "Цена за час",
     "disputes": "Споры",
-    "success": "Успешно"
+    "success": "Успешно",
+    "fail": "Неудача"
   },
   "info": {
     "yourMessage": " Ваше сообщение:",
@@ -227,7 +228,7 @@
     "size": "The {_field_} field size must be less than {size}KB",
     "decimal": "The {_field_} field must contain only decimal values",
     "decimalPlaces": "The {_field_} field must contain maximum {places} decimal places",
-    "invalidPhone":"Неверный формат телефона",
+    "invalidPhone": "Неверный формат телефона",
     "formError": "Заполните все обязательные поля",
     "is": "The values do not match",
     "is_not": "Incorrect value",
@@ -369,7 +370,8 @@
       "title": "Рейтинг",
       "verified": "Подтвержденный",
       "reliable": "Надежный",
-      "topRanked": "Топовый"
+      "topRanked": "Топовый",
+      "noStatus" : "Без статуса"
     },
     "distantWork": {
       "title": "Рабочее место",
@@ -935,7 +937,7 @@
       "signWorkQuest": "Социальная сеть WorkQuest",
       "skills": "Skills",
       "smsVerification": "SMS verification",
-      "swapTitle": "Crosschain exchange",
+      "swapTitle": "Обмен между сетями",
       "swapInfo": "Swap info",
       "swapTokens": "Swap tokens",
       "withdrawal": "Withdrawal",
@@ -949,6 +951,7 @@
       "errorSmsVer": "Error SMS verification",
       "emptyOpenQuests": "You don't have open quests, please create",
       "error": "Ошибка",
+      "errorNetwork": "Ошибка, Вы используете не правильную сеть. Переключитесь на {network}",
       "youCan’tDeleteActiveQuest": "Вы не можете удалить активный квест",
       "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
     },
@@ -988,7 +991,6 @@
     "generatedWUSD": "WUSD будет сгенерировано",
     "choosePeriod": "Выберите срок кредита",
     "smallDescriptionForLoan": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    "recipient": "Recipient address",
     "successBuyWUSD": "Successfully purchased WUSD",
     "setTokenPrice": "Setting up {token} price",
     "approveRouter": "Approve {token} to Router",
@@ -1143,7 +1145,6 @@
     "chooseCard": "Choose card",
     "maximum": "Max",
     "transfer": "Transfer",
-    "recepient": "Recepient address",
     "currencyDetails": "Currency",
     "generatingDetails": "Generating",
     "collateralizationRatio": "Collateralization ratio",
@@ -1155,14 +1156,13 @@
     "choose": "Выбрать",
     "chooseCurrency": "Choose currency",
     "coinpaymebts": "Сoinpaymebts",
-    "swapTitle": "Crosschain exchange",
+    "swapTitle": "Обмен между сетями",
     "coin": "Coin",
-    "recepientBinance": "Recipient binance address",
     "createSwap": "Create swap",
-    "crosschain": "WorkQuest Bridge",
-    "crosschainText": "Eth > Binance",
-    "senderAddress": "Sender address",
-    "recepientAddress": "Recepient address",
+    "bridge": "WorkQuest Мост",
+    "bridgeText": "Eth > Binance",
+    "senderAddress": "Адрес отправителя",
+    "recipientAddress": "Адрес получателя",
     "worknetFee": "Eth fee",
     "binanceFee": "Binance fee",
     "welcomeText": "Please, tell us about your skills below",
@@ -1187,7 +1187,6 @@
     "priceOfAClickField": "price of a click",
     "cityField": "город",
     "cardHolderField": "card holder",
-    "recepientAddressField": "recepient address",
     "walletAddressField": "wallet address",
     "thanksText": "",
     "emailVerificationCodeField": "email verification",
@@ -1227,7 +1226,7 @@
     },
     "menu": {
       "unauthorized": "Not logged",
-      "crosschain": {
+      "bridge": {
         "title": "WorkQuest Bridge",
         "desc": "Secure and fast way to bring cross-chain assets between WorkNet, Ethereum and Binance Smart Chain."
       },
@@ -1376,15 +1375,16 @@
   "settings": {
     "additionalPhoneNumber": "Дополнительный номер телефона",
     "mainPhoneNumber": "Основной номер телефона",
-    "workProposals": "Filter all work proposals",
+    "whoCouldIInvite": "Кто может ответить на мои квесты?",
+    "whoCouldInviteMe": "Кто может пригласить меня на квест?",
     "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
     "twitter": "twitter",
     "instagram": "instagram",
-    "companyName":"company",
-    "ceoName":"ceo",
-    "websiteName":"website",
+    "companyName": "компания",
+    "ceoName": "ген.дир.",
+    "websiteName": "website",
     "enterPhoneNumber": "Please enter your phone number",
     "enterCurrentLocation": "Please select current location",
     "placeOfStudying": "Место учебы",
@@ -1408,9 +1408,6 @@
     "workExps": {
       "companyName": "Название компании"
     },
-    "urgentJobOffers": "Urgent job offers",
-    "shortTermJobOffers": "Short term job offers",
-    "fixedDeliveryJobOffers": "Fixed delivery job offers",
     "addInfo": "You can add information about yourself, upload a profile photo and go through the KYC procedure to increase your rating. The rating depends on your profile data and reviews.",
     "alsoRating": "The higher your ranking, the easier it is to find you in searches.",
     "dontShow": "Don’t show again",
@@ -1850,7 +1847,7 @@
     "socialText": "Share in socials",
     "share": "Share link"
   },
-  "crosschain": {
+  "bridge": {
     "pageName": "WorkQuest Bridge",
     "pageAbout": "Secure and fast way to bring cross-chain assets between WorkNet, Ethereum and Binance Smart Chain.",
     "sourceBlockchain": "Source blockchain",
@@ -2056,9 +2053,9 @@
             "title": "Liquidity mining",
             "subtitle": "Providing liquidity to pools to receive rewards based on your amount of liquidity in the pool."
           },
-          "crosschain": {
-            "title": "Crosschain",
-            "subtitle": "Most secure and fast way to bring crosschain assets between WorkNet, ETH and BSC."
+          "bridge": {
+            "title": "Мост",
+            "subtitle": "Самый безопасный и быстрый способ переноса активов между сетями WorkNet, ETH and BSC."
           },
           "staking": {
             "title": "Staking",
