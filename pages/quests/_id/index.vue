@@ -515,7 +515,7 @@ export default {
       ]);
       this.SetLoader(false);
       if (feeRes.ok === false) {
-        console.error('accept completed work on quest', feeRes);
+        this.ShowToast(feeRes.msg);
         return;
       }
       this.ShowModal({
@@ -595,7 +595,7 @@ export default {
       ]);
       this.SetLoader(false);
       if (feeRes.ok === false) {
-        console.error('acceptWorkOnQuest', feeRes);
+        this.ShowToast(feeRes.msg);
         return;
       }
       this.ShowModal({

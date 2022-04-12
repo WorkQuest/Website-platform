@@ -146,7 +146,7 @@ export default {
       ]);
       this.SetLoader(false);
       if (feeRes.ok === false) {
-        console.log('startQuest fee error', feeRes);
+        this.ShowToast(feeRes.msg);
         return;
       }
       this.ShowModal({
