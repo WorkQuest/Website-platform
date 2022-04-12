@@ -268,5 +268,21 @@ Vue.mixin({
     },
 
     ScrollToTop: () => window.scrollTo(0, 0),
+    IsProd: () => process.env.PROD === 'true',
+    ShowModalSuccess(title = '') {
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/success.svg'),
+        title: title || this.$t('modals.meta.success'),
+      });
+    },
+    ShowModalFail(title = '') {
+      console.log(title);
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/warning.svg'),
+        title: title || this.$t('modals.meta.fail'),
+      });
+    },
   },
 });

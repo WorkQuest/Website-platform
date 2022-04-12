@@ -7,17 +7,22 @@
       <validation-observer
         v-slot="{handleSubmit, validated, passed, invalid}"
       >
-        <div class="content__percent">
+        <div
+          class="content__percent"
+          @keydown.delete="ChangeCaretPosition( $refs.percentInput)"
+        >
           <div class="content__title">
             {{ $t('modals.depositPercentFromAQuest') }}
           </div>
           <base-field
-            v-model="depositPercentFromAQuest"
+            ref="percentInput"
+            :value="depositPercentFromAQuest"
             :placeholder="$tc('meta.units.percentsCount', 13)"
             class="content__input"
             data-selector="DEPOSIT-PERCENT"
             :name="$t('modals.depositPercent')"
-            rules="required|percent|decimalPlaces:18|zeroFail|notMoreDecimalPlaces|greaterThanZero"
+            rules="required|min_percent:0.01|max_percent:99|zeroFail|notMoreDecimalPlaces"
+            @input="calcPensionPercent"
           />
         </div>
         <div class="content__amount">
@@ -84,7 +89,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
-    this.depositPercentFromAQuest = this.options.defaultFee;
+    this.depositPercentFromAQuest = `${this.options.defaultFee}%`;
   },
   methods: {
     hide() {
@@ -94,14 +99,14 @@ export default {
       const { defaultFee } = this.options;
       this.inProgress = true;
       let txFee;
-      const equalsFee = new BigNumber(defaultFee).shiftedBy(-18).isEqualTo(new BigNumber(this.depositPercentFromAQuest).shiftedBy(-18));
+      const equalsFee = new BigNumber(defaultFee).shiftedBy(-18).isEqualTo(new BigNumber(this.depositPercentFromAQuest.substr(0, this.depositPercentFromAQuest.length - 1)).shiftedBy(-18));
       if (!this.firstDepositAmount || !equalsFee) {
         const [fee] = await Promise.all([
           this.$store.dispatch('wallet/getContractFeeData', {
             method: 'updateFee',
             _abi: WQPensionFund,
             contractAddress: process.env.WORKNET_PENSION_FUND,
-            data: [new BigNumber(this.depositPercentFromAQuest).shiftedBy(18).toString()],
+            data: [new BigNumber(this.depositPercentFromAQuest.substr(0, this.depositPercentFromAQuest.length - 1)).shiftedBy(18).toString()],
           }),
           this.$store.dispatch('wallet/getBalance'),
         ]);
@@ -143,7 +148,7 @@ export default {
         fields,
         submitMethod: async () => {
           const ok = await this.$store.dispatch('wallet/pensionStartProgram', {
-            fee: this.depositPercentFromAQuest,
+            fee: this.depositPercentFromAQuest.substr(0, this.depositPercentFromAQuest.length - 1),
             firstDeposit: this.firstDepositAmount,
             defaultFee,
           });
@@ -161,6 +166,10 @@ export default {
         subtitle: this.$t('modals.pensionIsRegisteredText'),
         path: '/pension/my',
       });
+    },
+    calcPensionPercent(value) {
+      this.depositPercentFromAQuest = this.CalcPercent(value);
+      this.ChangeCaretPosition(this.$refs.percentInput);
     },
   },
 };

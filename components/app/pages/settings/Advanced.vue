@@ -14,7 +14,7 @@
         class="advanced__options advanced__options_left"
       >
         <div class="advanced__subtitle">
-          {{ radio[0].id === 'allUsers' ? $t('settings.whoCanSee') : $t('settings.workProposals') }}
+          {{ radio[0].title }}
         </div>
         <div
           v-for="input in radio"
@@ -28,7 +28,9 @@
             :data-selector="`ADVANCED-WHO-CAN-SEE-RADIO-${input.id}`"
             type="radio"
             class="advanced__input"
+            :checked="isCheckboxChecked(input.name, input.value)"
             :value="input.value"
+            @click="setSelectedCheckboxByBlock(input.name, input.value)"
           >
           <label
             class="advanced__label"
@@ -81,57 +83,26 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { NetworkProfileVisibility, UserRole, RatingFilter } from '~/utils/enums';
 
 export default {
   name: 'Advanced',
   data() {
     return {
+      mounted: false,
+      checkboxBlocks: {
+        visibilityUser: null,
+        restrictionRankingStatus: null,
+      },
       radioButtons: {
-        whoCanSeeInputs: [
-          {
-            id: 'allUsers',
-            value: 'allUsers',
-            local: 'settings.allUsers',
-            name: 'whoCanSee',
-          },
-          {
-            id: 'allInternet',
-            value: 'allInternet',
-            local: 'settings.allInternet',
-            name: 'whoCanSee',
-          },
-          {
-            id: 'onlyWhenSubmittedWork',
-            value: 'onlyWhenSubmittedWork',
-            local: 'settings.onlyWhenSubmittedWork',
-            name: 'whoCanSee',
-          },
-        ],
-        employeeProfilesInputs: [
-          {
-            id: 'urgentProposals',
-            value: 'urgentJobOffers',
-            local: 'settings.urgentJobOffers',
-            name: 'filterAllWorkProposals',
-          },
-          {
-            id: 'onlyImplementation',
-            value: 'shortTermJobOffers',
-            local: 'settings.shortTermJobOffers',
-            name: 'filterAllWorkProposals',
-          },
-          {
-            id: 'onlyReady',
-            value: 'fixedDeliveryJobOffers',
-            local: 'settings.fixedDeliveryJobOffers',
-            name: 'filterAllWorkProposals',
-          },
-        ],
+        visibilityUser: [],
+        restrictionRankingStatus: [],
       },
     };
   },
   computed: {
     ...mapGetters({
+      userRole: 'user/getUserRole',
       statusTotp: 'user/getStatusTotp',
       status2FA: 'user/getStatus2FA',
       secondNumber: 'user/getUserSecondMobileNumber',
@@ -171,6 +142,33 @@ export default {
       ];
     },
   },
+  beforeMount() {
+    this.radioButtons.restrictionRankingStatus = RatingFilter.map((item, i) => ({
+      title: this.$t(`settings.${this.userRole === UserRole.EMPLOYER ? 'whoCouldIInvite' : 'whoCouldInviteMe'}`),
+      id: item.key,
+      value: item.value,
+      local: i === 0 ? 'settings.allUsers' : `quests.rating.${item.key}`,
+      name: 'restrictionRankingStatus',
+    }));
+    this.radioButtons.visibilityUser = [{
+      title: this.$t('settings.whoCanSee'),
+      id: 'allUsers',
+      value: NetworkProfileVisibility.ALL_USERS,
+      local: 'settings.allUsers',
+      name: 'visibilityUser',
+    },
+    {
+      id: 'onlyWhenSubmittedWork',
+      value: NetworkProfileVisibility.SUBMITTING_OFFER,
+      local: 'settings.onlyWhenSubmittedWork',
+      name: 'visibilityUser',
+    }];
+  },
+  created() {
+    const profileVisibilitySetting = JSON.parse(JSON.stringify(this.userData.profileVisibilitySetting));
+    this.checkboxBlocks.visibilityUser = profileVisibilitySetting.network;
+    this.checkboxBlocks.restrictionRankingStatus = profileVisibilitySetting.ratingStatus;
+  },
   methods: {
     async showModalKey(modalKey) {
       this.$emit('showModalKey', modalKey);
@@ -181,6 +179,13 @@ export default {
         title: this.$t('modals.errors.errorSmsVer'),
         subtitle: this.$t('modals.fillNumber'),
       });
+    },
+    setSelectedCheckboxByBlock(checkBoxBlockName, value) {
+      this.checkboxBlocks[checkBoxBlockName] = value;
+      this.$emit('updateVisibility', this.checkboxBlocks);
+    },
+    isCheckboxChecked(checkBoxBlockName, value) {
+      return value === this.checkboxBlocks[checkBoxBlockName];
     },
   },
 };
@@ -236,6 +241,8 @@ export default {
     row-gap: 20px;
     &_left {
       row-gap: 12px;
+    }
+    &_left:not(:last-child) {
       margin-bottom: 20px;
     }
   }
