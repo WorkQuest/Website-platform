@@ -16,6 +16,14 @@ export default () => ({
       balance: 0,
       fullBalance: 0,
     },
+    ETH: {
+      balance: 0,
+      fullBalance: 0,
+    },
+    BNB: {
+      balance: 0,
+      fullBalance: 0,
+    },
   },
   pensionWallet: null,
   pensionHistory: {

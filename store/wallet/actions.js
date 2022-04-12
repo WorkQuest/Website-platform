@@ -19,6 +19,7 @@ import {
   pensionsWithdraw,
   pensionUpdateFee,
 } from '~/utils/wallet.js';
+import { WQBridgeToken } from '~/abi/abi';
 
 export default {
   async getPensionTransactions({ commit, getters }, { method, limit, offset }) {
@@ -123,6 +124,34 @@ export default {
     );
     commit('setBalance', {
       symbol: TokenSymbols.WQT,
+      balance: res ? getStyledAmount(res) : 0,
+      fullBalance: res ? getStyledAmount(res, true) : 0,
+    });
+  },
+  async getBalanceWBNB({ commit }, userAddress) {
+    const res = await fetchContractData(
+      'balanceOf',
+      abi.WQBridgeToken,
+      process.env.WORKNET_WBNB_TOKEN,
+      [userAddress],
+      GetWalletProvider(),
+    );
+    commit('setBalance', {
+      symbol: TokenSymbols.BNB,
+      balance: res ? getStyledAmount(res) : 0,
+      fullBalance: res ? getStyledAmount(res, true) : 0,
+    });
+  },
+  async getBalanceWETH({ commit }, userAddress) {
+    const res = await fetchContractData(
+      'balanceOf',
+      abi.WQBridgeToken,
+      process.env.WORKNET_WETH_TOKEN,
+      [userAddress],
+      GetWalletProvider(),
+    );
+    commit('setBalance', {
+      symbol: TokenSymbols.ETH,
       balance: res ? getStyledAmount(res) : 0,
       fullBalance: res ? getStyledAmount(res, true) : 0,
     });

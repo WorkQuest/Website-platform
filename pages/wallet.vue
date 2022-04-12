@@ -275,27 +275,14 @@ export default {
     async loadData() {
       this.SetLoader(true);
       await Promise.all([
-        // TODO: Добавить запросы для получения балансов BNB и ETH
-        this.updateBalanceWQT(),
-        this.updateBalanceWUSD(),
-        // this.updateBalanceBNB(),
-        // this.updateBalanceETH(),
+        await this.$store.dispatch('wallet/getBalanceWUSD'),
+        await this.$store.dispatch('wallet/getBalanceWBNB', this.userWalletAddress),
+        await this.$store.dispatch('wallet/getBalanceWETH', this.userWalletAddress),
+        await this.$store.dispatch('wallet/getBalanceWQT', this.userWalletAddress),
         this.getTransactions(),
       ]);
       this.SetLoader(false);
     },
-    async updateBalanceWQT() {
-      await this.$store.dispatch('wallet/getBalanceWQT', this.userWalletAddress);
-    },
-    async updateBalanceWUSD() {
-      await this.$store.dispatch('wallet/getBalanceWUSD');
-    },
-    // async updateBalanceBNB() {
-    //   await this.$store.dispatch('wallet/getBalanceBNB');
-    // },
-    // async updateBalanceETH() {
-    //   await this.$store.dispatch('wallet/getBalanceETH');
-    // },
     closeCard() {
       this.cardClosed = true;
     },
