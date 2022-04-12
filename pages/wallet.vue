@@ -492,10 +492,13 @@ export default {
     font-weight: 600;
     font-size: 35px;
     line-height: 130%;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    &__margin-bottom {
+      margin-bottom: 25px;
+    }
 
     @include _767 {
       font-size: 26px;

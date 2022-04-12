@@ -1302,7 +1302,7 @@
     "newDiscussionLike": "New like on discussion"
   },
   "wallet": {
-    "delegated": "Delegated",
+    "frozen": "Frozen balance",
     "WUSD": "Portefeuille en WUSD",
     "cryptoWallet": "Portefeuille crypto",
     "send": "Envoyer",

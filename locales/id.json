@@ -1302,7 +1302,7 @@
     "newDiscussionLike": "New like on discussion"
   },
   "wallet": {
-    "delegated": "Delegated",
+    "frozen": "Frozen balance",
     "WUSD": "Dompet WUSD",
     "cryptoWallet": "Dompet kripto",
     "send": "Kirim",
