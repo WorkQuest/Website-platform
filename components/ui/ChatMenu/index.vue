@@ -94,7 +94,8 @@ export default {
       return !this.canILeave && this.$route.query.type === ChatType.QUEST;
     },
     isInvisible() {
-      return this.$route.query.type && this.$route.query.type === ChatType.QUEST && (+this.$route.query.status !== QuestStatuses.Active && +this.$route.query.status !== QuestStatuses.Dispute);
+      const { type, status } = this.$route.query;
+      return type === ChatType.QUEST && ![QuestStatuses.Active, QuestStatuses.Dispute].includes(+status);
     },
   },
   methods: {
