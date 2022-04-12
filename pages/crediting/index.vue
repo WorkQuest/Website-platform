@@ -143,7 +143,7 @@ import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { getGasPrice } from '~/utils/wallet';
-import { WQOracle } from '~/abi/abi';
+import { WQOracle, WQBorrowing, WQLending } from '~/abi/abi';
 
 export default {
   data() {
@@ -270,7 +270,7 @@ export default {
               const checkTokenPrice = await this.setTokenPrice();
               const approveAllowed = await this.$store.dispatch('wallet/approveRouter', {
                 symbol,
-                spenderAddress: process.env.BORROWING,
+                spenderAddress: process.env.WORKNET_BORROWING,
                 value: valueWithDecimals,
               });
               let res = false;
@@ -284,8 +284,8 @@ export default {
                     symbol,
                   ],
                   method: 'borrow',
-                  abi: 'WORKNET_BORROWING',
-                  address: 'WQBorrowing',
+                  methodAbi: WQBorrowing,
+                  address: process.env.WORKNET_BORROWING,
                 });
               }
               this.SetLoader(false);
@@ -320,8 +320,8 @@ export default {
             value: new BigNumber(quantity).shiftedBy(18).toString(),
             data: [],
             method: 'deposit',
-            abi: 'WORKNET_LENDING',
-            address: 'WQLending',
+            methodAbi: WQLending,
+            address: process.env.WORKNET_LENDING,
           });
           this.SetLoader(false);
           if (res.ok) {

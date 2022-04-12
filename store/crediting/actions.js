@@ -67,16 +67,19 @@ export default {
     return res;
   },
   async sendMethod({ commit }, payload) {
+    const {
+      method, address, methodAbi, data, value,
+    } = payload;
     try {
-      await sendWalletTransaction(payload.method, {
-        address: process.env[payload.address],
-        abi: abi[payload.abi],
-        data: payload.data,
-        value: payload.value,
+      await sendWalletTransaction(method, {
+        address,
+        abi: methodAbi,
+        data,
+        value,
       });
       return success();
     } catch (err) {
-      console.log('sendMethod:', payload.method, err);
+      console.log('sendMethod:', method, err);
       return error();
     }
   },

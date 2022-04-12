@@ -82,6 +82,7 @@ import { mapGetters } from 'vuex';
 import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
+import { WQBorrowing, WQLending } from '~/abi/abi';
 
 export default {
   computed: {
@@ -206,6 +207,8 @@ export default {
           }
           if (+value.toString() === +maxAmount) {
             value = value.plus(10000).toString();
+          } else {
+            value = value.toString();
           }
           const valueWithoutFee = new BigNumber(amount).shiftedBy(18).minus(feeData).toString();
           switch (action) {
@@ -214,16 +217,16 @@ export default {
                 value,
                 data: [1, valueWithoutFee],
                 method: 'refund',
-                abi: 'WORKNET_BORROWING',
-                address: 'WQBorrowing',
+                methodAbi: WQBorrowing,
+                address: process.env.WORKNET_BORROWING,
               };
               break;
             case 'withdraw':
               payload = {
                 data: [value],
                 method: 'withdraw',
-                abi: 'WORKNET_LENDING',
-                address: 'WQLending',
+                methodAbi: WQLending,
+                address: process.env.WORKNET_LENDING,
               };
               break;
             case 'deposit':
@@ -231,8 +234,8 @@ export default {
                 value,
                 data: [],
                 method: 'deposit',
-                abi: 'WORKNET_LENDING',
-                address: 'WQLending',
+                methodAbi: WQLending,
+                address: process.env.WORKNET_LENDING,
               };
               break;
             default:
@@ -264,8 +267,8 @@ export default {
     async sendClaim() {
       const res = await this.$store.dispatch('crediting/sendMethod', {
         method: 'claim',
-        abi: 'WORKNET_LENDING',
-        address: 'WQLending',
+        methodAbi: WQLending,
+        address: process.env.WORKNET_LENDING,
       });
       if (res.ok) {
         this.ShowModal({
