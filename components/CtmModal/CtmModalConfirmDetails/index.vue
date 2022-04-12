@@ -57,13 +57,8 @@ export default {
       this.CloseModal();
     },
     async openStatusModal() {
-      const { callback } = this.options;
-      if (callback) {
-        this.SetLoader(true);
-        this.CloseModal();
-        await callback();
-        this.SetLoader(false);
-      }
+      this.CloseModal();
+      await this.options.submit();
     },
   },
 };

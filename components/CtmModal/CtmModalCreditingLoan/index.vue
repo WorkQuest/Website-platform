@@ -94,29 +94,9 @@ export default {
       this.CloseModal();
     },
     async openConfirmDetailsModal() {
-      this.SetLoader(true);
-      const res = await this.$store.dispatch('crediting/sendMethod', {
-        value: new BigNumber(this.quantity).shiftedBy(18).toString(),
-        data: [],
-        method: 'deposit',
-        type: 'lending',
-      });
-      this.SetLoader(false);
-      if (res.ok) {
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/transactionSend.svg'),
-          title: this.$t('modals.loanIsOpened'),
-          subtitle: '',
-          path: 'crediting/1',
-        });
-        return;
-      }
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/warning.svg'),
-        title: this.$t('modals.transactionFail'),
-      });
+      const amount = this.quantity;
+      this.hide();
+      await this.options.submit(amount);
     },
     maxBalance() {
       this.quantity = this.balanceData.WUSD.fullBalance;

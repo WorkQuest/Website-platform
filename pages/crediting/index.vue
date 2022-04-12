@@ -38,7 +38,7 @@
               <base-btn
                 class="btn"
                 data-selector="MY-LOANS"
-                @click="$router.push('/crediting/2')"
+                @click="$router.push('/crediting/my')"
               >
                 {{ $t('crediting.myLoans') }}
               </base-btn>
@@ -139,7 +139,11 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import moment from 'moment';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
+import { getGasPrice } from '~/utils/wallet';
+import { WQOracle } from '~/abi/abi';
 
 export default {
   data() {
@@ -151,6 +155,7 @@ export default {
     ...mapGetters({
       isWalletConnected: 'wallet/getIsWalletConnected',
       creditData: 'crediting/getCreditData',
+      currentPrice: 'oracle/getCurrentPrice',
       walletData: 'crediting/getWalletData',
     }),
     documents() {
@@ -227,6 +232,7 @@ export default {
     if (!this.isWalletConnected) return;
     await Promise.all([
       this.$store.dispatch('crediting/getCreditData'),
+      this.$store.dispatch('oracle/getCurrentPrice'),
       this.$store.dispatch('crediting/getWalletsData'),
     ]);
     this.SetLoader(false);
@@ -235,12 +241,126 @@ export default {
     openCreditingDepositModal() {
       this.ShowModal({
         key: modals.creditingDeposit,
+        submit: async (data) => {
+          const {
+            fundsSource, selFundID, checkpoints, selCurrencyID, datesNumber, date, quantity,
+          } = data;
+          const receiptData = [
+            {
+              title: this.$t('crediting.chosenSource'),
+              subtitle: fundsSource[selFundID - 1].name,
+            },
+            {
+              title: this.$t('modals.depositing'),
+              subtitle: this.$tc(`meta.coins.count.${checkpoints[selCurrencyID - 1].name}Count`, quantity),
+            },
+            {
+              title: this.$t('crediting.dueDate'),
+              subtitle: moment().add(datesNumber[date], 'days').format('DD.MM.YYYY'),
+            },
+          ];
+          const valueWithDecimals = new BigNumber(quantity).shiftedBy(18).toString();
+          const symbol = checkpoints[selCurrencyID - 1].name;
+          const duration = datesNumber[date];
+          this.ShowModal({
+            key: modals.confirmDetails,
+            receiptData,
+            submit: async () => {
+              this.SetLoader(true);
+              const checkTokenPrice = await this.setTokenPrice();
+              const approveAllowed = await this.$store.dispatch('wallet/approveRouter', {
+                symbol,
+                spenderAddress: process.env.BORROWING,
+                value: valueWithDecimals,
+              });
+              let res = false;
+              if (checkTokenPrice && approveAllowed) {
+                res = await this.$store.dispatch('crediting/sendMethod', {
+                  data: [
+                    1,
+                    valueWithDecimals,
+                    selFundID - 1,
+                    duration,
+                    symbol,
+                  ],
+                  method: 'borrow',
+                  abi: 'WORKNET_BORROWING',
+                  address: 'WQBorrowing',
+                });
+              }
+              this.SetLoader(false);
+              if (res.ok) {
+                this.ShowModal({
+                  key: modals.status,
+                  img: require('~/assets/img/ui/transactionSend.svg'),
+                  title: this.$t('modals.depositIsOpened'),
+                  subtitle: '',
+                  path: 'crediting/my',
+                });
+              } else {
+                this.ShowModal({
+                  key: modals.status,
+                  img: require('~/assets/img/ui/warning.svg'),
+                  title: this.$t('modals.transactionFail'),
+                  recipient: '',
+                  subtitle: this.$t('modals.errors.error'),
+                });
+              }
+            },
+          });
+        },
       });
     },
     openCreditingLoanModal() {
       this.ShowModal({
         key: modals.creditingLoan,
+        submit: async (quantity) => {
+          this.SetLoader(true);
+          const res = await this.$store.dispatch('crediting/sendMethod', {
+            value: new BigNumber(quantity).shiftedBy(18).toString(),
+            data: [],
+            method: 'deposit',
+            abi: 'WORKNET_LENDING',
+            address: 'WQLending',
+          });
+          this.SetLoader(false);
+          if (res.ok) {
+            this.ShowModal({
+              key: modals.status,
+              img: require('~/assets/img/ui/transactionSend.svg'),
+              title: this.$t('modals.loanIsOpened'),
+              subtitle: '',
+              path: 'crediting/my',
+            });
+            return;
+          }
+          this.ShowModal({
+            key: modals.status,
+            img: require('~/assets/img/ui/warning.svg'),
+            title: this.$t('modals.transactionFail'),
+          });
+        },
       });
+    },
+    async setTokenPrice() {
+      const {
+        nonce, prices, v, r, s, symbols,
+      } = this.currentPrice;
+      const resultGasSetTokenPrices = await getGasPrice(WQOracle, process.env.WORKNET_ORACLE, 'setTokenPricesUSD', [nonce, v, r, s, prices, symbols]);
+      if (resultGasSetTokenPrices.gas && resultGasSetTokenPrices.gasPrice) {
+        const { ok } = await this.$store.dispatch('crediting/setTokenPrices', {
+          gasPrice: resultGasSetTokenPrices.gasPrice,
+          gas: resultGasSetTokenPrices.gas,
+          timestamp: nonce,
+          v,
+          r,
+          s,
+          prices,
+          symbols,
+        });
+        return ok;
+      }
+      return false;
     },
     handleClickFAQ(index) {
       if (this.indexFAQ.includes(index)) {

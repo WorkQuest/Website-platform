@@ -1199,7 +1199,13 @@
     "txInfo": "Transaction info",
     "registration": "Вы верены что хотите зарегистрировать данных пользователей?",
     "claimConfirm": "Вы потдверждаете дейсвие клейм?",
-    "until": "До"
+    "until": "До",
+    "successfulMethods": {
+      "claim": "Successful claim",
+      "refund": "Successful refund",
+      "withdraw": "Successful withdrawal",
+      "deposit": "Successful deposit"
+    }
   },
   "ui": {
     "jobQuestors": "В поиске работы",

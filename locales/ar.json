@@ -50,6 +50,7 @@
       "hours": "{count} الساعات",
       "years": "{count} years",
       "days": "{count} يوم",
+      "daysLeft": "{count} days left",
       "votesCount": "{count} صوت",
       "distance": {
         "m": "م"
@@ -1198,7 +1199,13 @@
     "txInfo": "Transaction info",
     "registration": "Are you sure to registration this users?",
     "claimConfirm": "Are you confirm the action of the claim?",
-    "until": "Until"
+    "until": "Until",
+    "successfulMethods": {
+      "claim": "Successful claim",
+      "refund": "Successful refund",
+      "withdraw": "Successful withdrawal",
+      "deposit": "Successful deposit"
+    }
   },
   "ui": {
     "jobQuestors": "أصحاب الوظائف",

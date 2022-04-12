@@ -82,7 +82,7 @@ export default {
         img: require('~/assets/img/ui/transactionSend.svg'),
         title: this.$t('modals.loanIsOpened'),
         subtitle: '',
-        path: this.options.needChangeModal ? '/crediting/2' : undefined,
+        path: this.options.needChangeModal ? '/crediting/my' : undefined,
       });
     },
   },

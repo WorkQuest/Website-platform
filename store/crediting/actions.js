@@ -1,9 +1,7 @@
-import BigNumber from 'bignumber.js';
 import {
   getWalletAddress,
   GetWalletProvider,
   sendWalletTransaction,
-  setTokenPrice,
   setTokenPrices,
 } from '~/utils/wallet';
 import {
@@ -14,16 +12,6 @@ import {
 import * as abi from '~/abi/abi';
 
 export default {
-  async getFunds({ commit }) {
-    const res = await fetchContractData(
-      'getFunds',
-      abi.WQBorrowing,
-      process.env.WORKNET_BORROWING,
-      [],
-      GetWalletProvider(),
-    );
-    commit('setFunds', res);
-  },
   async getCreditData({ commit }) {
     const address = await getWalletAddress();
     const res = await fetchContractData(
@@ -79,16 +67,13 @@ export default {
     return res;
   },
   async sendMethod({ commit }, payload) {
-    console.log('payload:', payload);
-    const payloadSend = {
-      address: payload.type === 'borrowing' ? process.env.WORKNET_BORROWING : process.env.WORKNET_LENDING,
-      abi: payload.type === 'borrowing' ? abi.WQBorrowing : abi.WQLending,
-      data: payload.data,
-      value: payload.value,
-    };
-    console.log('payloadSend:', payloadSend);
     try {
-      await sendWalletTransaction(payload.method, payloadSend);
+      await sendWalletTransaction(payload.method, {
+        address: process.env[payload.address],
+        abi: abi[payload.abi],
+        data: payload.data,
+        value: payload.value,
+      });
       return success();
     } catch (err) {
       console.log('sendMethod:', payload.method, err);

@@ -97,16 +97,16 @@ export default {
         {
           title: this.$t('crediting.currentCredit'),
           priceTitle: this.$t('crediting.totalWusdDebt'),
-          price: this.$tc('meta.coins.count.WUSDCount', this.convertedCredit),
+          price: this.$tc('meta.coins.count.WUSDCount', this.CropTxt(this.convertedCredit, 5)),
           show: this.isHaveCredit,
           info: [
             {
               title: this.$t('crediting.needRefund'),
-              desc: this.$tc('meta.coins.count.WUSDCount', this.fullValueForRefund),
+              desc: this.$tc('meta.coins.count.WUSDCount', this.CropTxt(this.fullValueForRefund, 5)),
             },
             {
               title: this.$t('modals.totalFee'),
-              desc: this.$tc('meta.coins.count.WUSDCount', this.convertedCurrentFee),
+              desc: this.$tc('meta.coins.count.WUSDCount', this.CropTxt(this.convertedCurrentFee, 5)),
             },
             {
               title: this.$t('crediting.dueDate'),
@@ -197,16 +197,15 @@ export default {
         mode: action,
         maxValue,
         callback: async (amount, maxAmount) => {
+          this.SetLoader(true);
           let payload = {};
           const feeData = await this.$store.dispatch('crediting/getCurrentFee');
           let value = new BigNumber(amount).shiftedBy(18);
           if (maxAmount) {
             maxAmount = new BigNumber(maxAmount).shiftedBy(18).toString();
           }
-          console.log(+value.toString(), +maxAmount, value === maxAmount);
           if (+value.toString() === +maxAmount) {
             value = value.plus(10000).toString();
-            console.log('value:', value);
           }
           const valueWithoutFee = new BigNumber(amount).shiftedBy(18).minus(feeData).toString();
           switch (action) {
@@ -215,14 +214,16 @@ export default {
                 value,
                 data: [1, valueWithoutFee],
                 method: 'refund',
-                type: 'borrowing',
+                abi: 'WORKNET_BORROWING',
+                address: 'WQBorrowing',
               };
               break;
             case 'withdraw':
               payload = {
                 data: [value],
                 method: 'withdraw',
-                type: 'lending',
+                abi: 'WORKNET_LENDING',
+                address: 'WQLending',
               };
               break;
             case 'deposit':
@@ -230,13 +231,15 @@ export default {
                 value,
                 data: [],
                 method: 'deposit',
-                type: 'lending',
+                abi: 'WORKNET_LENDING',
+                address: 'WQLending',
               };
               break;
             default:
               console.log('default');
           }
           const res = await this.$store.dispatch('crediting/sendMethod', payload);
+          this.SetLoader(false);
           if (res.ok) {
             await Promise.all([
               this.$store.dispatch('crediting/getCreditData'),
@@ -261,7 +264,8 @@ export default {
     async sendClaim() {
       const res = await this.$store.dispatch('crediting/sendMethod', {
         method: 'claim',
-        type: 'lending',
+        abi: 'WORKNET_LENDING',
+        address: 'WQLending',
       });
       if (res.ok) {
         this.ShowModal({

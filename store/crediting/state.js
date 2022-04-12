@@ -1,5 +1,4 @@
 export default () => ({
-  funds: {},
   creditData: {},
   walletData: {},
   rewardsData: 0,

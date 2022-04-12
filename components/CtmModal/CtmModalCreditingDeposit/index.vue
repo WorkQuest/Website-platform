@@ -225,10 +225,6 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
-      userRole: 'user/getUserRole',
-      funds: 'crediting/getFunds',
-      currentPrice: 'oracle/getCurrentPrice',
-      securityRatio: 'oracle/getSecurityRatio',
     }),
     dates() {
       return [
@@ -240,97 +236,22 @@ export default {
       ];
     },
   },
-  async mounted() {
-    await this.$store.dispatch('crediting/getFunds');
-    await this.$store.dispatch('oracle/getCurrentPrice');
-    await this.$store.dispatch('oracle/getSecurityRatio');
-  },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
+    hide() { this.CloseModal(); },
     async openConfirmDetailsModal() {
-      const receiptData = [
-        {
-          title: this.$t('crediting.chosenSource'),
-          subtitle: this.fundsSource[this.selFundID - 1].name,
-        },
-        {
-          title: this.$t('modals.depositing'),
-          subtitle: this.$tc(`meta.coins.count.${this.checkpoints[this.selCurrencyID - 1].name}Count`, this.quantity),
-        },
-        {
-          title: this.$t('crediting.dueDate'),
-          subtitle: moment().add(this.datesNumber[this.date], 'days').format('DD.MM.YYYY'),
-        },
-      ];
-      const valueWithDecimals = new BigNumber(this.quantity).shiftedBy(18).toString();
-      const symbol = this.checkpoints[this.selCurrencyID - 1].name;
-      const duration = this.datesNumber[this.date];
-      const callback = async () => {
-        const checkTokenPrice = await this.setTokenPrice();
-        const approveAllowed = await this.$store.dispatch('wallet/approveRouter', {
-          symbol,
-          spenderAddress: process.env.BORROWING,
-          value: valueWithDecimals,
-        });
-        let res = false;
-        if (checkTokenPrice && approveAllowed) {
-          res = await this.$store.dispatch('crediting/sendMethod', {
-            data: [
-              1,
-              valueWithDecimals,
-              this.selFundID - 1,
-              duration,
-              symbol,
-            ],
-            method: 'borrow',
-            type: 'borrowing',
-          });
-        }
-        if (res.ok) {
-          this.ShowModal({
-            key: modals.status,
-            img: require('~/assets/img/ui/transactionSend.svg'),
-            title: this.$t('modals.depositIsOpened'),
-            subtitle: '',
-            path: 'crediting/1',
-          });
-        } else {
-          this.ShowModal({
-            key: modals.status,
-            img: require('~/assets/img/ui/warning.svg'),
-            title: this.$t('modals.transactionFail'),
-            recipient: '',
-            subtitle: this.$t('modals.errors.error'),
-          });
-        }
-      };
-      this.ShowModal({
-        key: modals.confirmDetails,
-        receiptData,
-        callback,
-      });
-    },
-    async setTokenPrice() {
       const {
-        nonce, prices, v, r, s, symbols,
-      } = this.currentPrice; // TODO price
-      const resultGasSetTokenPrices = await getGasPrice(abi.WQOracle, process.env.WORKNET_ORACLE, 'setTokenPricesUSD', [nonce, v, r, s, prices, symbols]);
-      if (resultGasSetTokenPrices.gas && resultGasSetTokenPrices.gasPrice) {
-        const { ok } = await this.$store.dispatch('crediting/setTokenPrices', {
-          gasPrice: resultGasSetTokenPrices.gasPrice,
-          gas: resultGasSetTokenPrices.gas,
-          timestamp: nonce,
-          v,
-          r,
-          s,
-          prices,
-          symbols,
-        });
-        return ok;
-      }
-      return false;
+        fundsSource, selFundID, checkpoints, selCurrencyID, datesNumber, date, quantity,
+      } = this;
+      this.hide();
+      await this.options.submit({
+        fundsSource,
+        selFundID,
+        checkpoints,
+        selCurrencyID,
+        datesNumber,
+        date,
+        quantity,
+      });
     },
   },
 };

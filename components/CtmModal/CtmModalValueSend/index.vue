@@ -91,14 +91,12 @@ export default {
   methods: {
     hide() { this.CloseModal(); },
     async send() {
-      this.SetLoader(true);
+      const value = this.amount;
       const { callback, maxValue } = this.options;
       this.hide();
-      await callback(this.amount, maxValue);
-      this.SetLoader(false);
+      await callback(value, maxValue);
     },
     maxBalance() {
-      console.log(this.maxValue);
       this.amount = this.maxValue;
     },
   },

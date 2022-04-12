@@ -206,9 +206,8 @@ export const sendWalletTransaction = async (_method, payload) => {
   const inst = new web3.eth.Contract(payload.abi, payload.address);
   const gasPrice = await web3.eth.getGasPrice();
   const accountAddress = await getWalletAddress();
-  const specialArray = ['refund', 'deposit', 'withdraw'];
-  if (specialArray.includes(_method)) {
-    const data = inst.methods[_method].apply(null, payload.data).encodeABI();
+  const data = inst.methods[_method].apply(null, payload.data).encodeABI();
+  if (payload.value) {
     const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress, value: payload.value });
     return await inst.methods[_method](...payload.data).send({
       to: payload.address,
@@ -219,7 +218,6 @@ export const sendWalletTransaction = async (_method, payload) => {
       gas: gasEstimate,
     });
   }
-  const data = inst.methods[_method].apply(null, payload.data).encodeABI();
   const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress });
   const transactionData = {
     to: payload.address,
