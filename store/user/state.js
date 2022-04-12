@@ -1,5 +1,5 @@
 export default () => ({
-  delegatedBalance: null,
+  frozenBalance: 0,
   currentLang: '',
   twoFACode: '',
   verificationCode: '',
