@@ -324,6 +324,10 @@ export default {
     width: 100%;
     background: #FFFFFF;
     border-radius: 6px;
+    border: 1px solid transparent;
+    &:hover {
+      border: 1px solid $black100;
+    }
     &_blue {
       background-color: $blue;
     }
