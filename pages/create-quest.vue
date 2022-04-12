@@ -290,7 +290,6 @@ export default {
 
       const medias = await this.uploadFiles(this.files);
       const payload = {
-        // TODO Это быстрый фикс ошибки, при рефакторе исправить
         workplace: WorkplaceIndex[this.workplaceIndex],
         priority: PriorityFilter[this.runtimeIndex + 1].value,
         employment: TypeOfJobFilter[this.employmentIndex],
@@ -298,8 +297,6 @@ export default {
         description: this.textarea,
         price: new BigNumber(this.price).shiftedBy(18).toString(),
         medias,
-        // TODO интегрировать продвижение
-        adType: 0,
         specializationKeys: this.selectedSpecAndSkills,
         locationFull: {
           location: {

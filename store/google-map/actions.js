@@ -23,8 +23,9 @@ export default {
       delete query.limit;
       delete query.offset;
       delete query['sort[createdAt]'];
-      const { ok, result } = await this.$axios.$get('/v1/quest/map/points', {
-        params: { ...query, ...specFilter },
+      const specializations = specFilter ? Object.values(specFilter) : [];
+      const { ok, result } = await this.$axios.$post('/v1/quest/map/get-points', { specializations }, {
+        params: { ...query },
       });
       commit('setPoints', result.quests);
       return { ok };

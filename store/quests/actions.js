@@ -60,18 +60,20 @@ export default {
     try {
       return await this.$axios.$post('/v1/quest/create', payload);
     } catch (e) {
-      return console.log(e);
+      return console.error(e);
     }
   },
   async getAllQuests({ commit }, { query, specFilter }) {
     try {
       if (query.q === '') delete query.q;
-      // { ...query, ...specFilter }
-      const { ok, result } = await this.$axios.$post(`/v1/get-quests?limit=${query.limit || 10}&offset=${query.offset || 0}`, { specializations: [] }); // TODO: в body специализации, все остальное в query
+      const specializations = specFilter ? Object.values(specFilter) : [];
+      const { ok, result } = await this.$axios.$post('/v1/get-quests', { specializations }, {
+        params: { ...query },
+      });
       commit('setAllQuests', result);
       return { ok };
     } catch (e) {
-      console.log('quests/getAllQuests');
+      console.error('quests/getAllQuests:', e);
       return false;
     }
   },
@@ -114,8 +116,11 @@ export default {
   },
   async getUserQuests({ commit }, { userId, role, query }) {
     try {
-      // object.keys
-      const response = await this.$axios.$post(`/v1/${role}/${userId}/get-quests`, { specializations: [] }); // { ...query } // TODO [!!!] fix
+      const specializations = query.specializations || [];
+      if (query.specializations) delete query.specializations;
+      const response = await this.$axios.$post(`/v1/${role}/${userId}/get-quests`, { specializations }, {
+        params: { ...query },
+      });
       commit('setAllQuests', response.result);
       return response.result;
     } catch (e) {
