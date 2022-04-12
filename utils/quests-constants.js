@@ -51,6 +51,5 @@ export const QuestMethods = Object.freeze({
   Arbitration: 'arbitration',
   // Worker
   AcceptJob: 'acceptJob',
-  DeclineJob: 'declineJob',
   VerificationJob: 'verificationJob',
 });

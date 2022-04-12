@@ -453,12 +453,6 @@ export default {
             name: this.$t('meta.btns.agree'),
             funcKey: 'acceptWorkOnQuest',
             disabled: false,
-          },
-          {
-            name: this.$t('meta.btns.disagree'),
-            mode: 'outline',
-            funcKey: 'rejectWorkOnQuest',
-            disabled: false,
           }];
           break;
         }
@@ -620,42 +614,6 @@ export default {
               img: require('~/assets/img/ui/questAgreed.svg'),
               title: this.$t('meta.questInfo'),
               subtitle: this.$t('quests.workOnQuestAccepted'),
-            });
-          }
-        },
-      });
-    },
-    async rejectWorkOnQuest() {
-      this.SetLoader(true);
-      const { contractAddress } = this.quest;
-      const [feeRes] = await Promise.all([
-        this.$store.dispatch('quests/getFeeDataJobMethod', {
-          method: QuestMethods.DeclineJob,
-          contractAddress,
-        }),
-        this.$store.dispatch('wallet/getBalance'),
-      ]);
-      this.SetLoader(false);
-      if (!feeRes.ok) {
-        console.error('rejectWorkOnQuest', feeRes);
-        return;
-      }
-      this.ShowModal({
-        key: modals.transactionReceipt,
-        fields: {
-          from: { name: this.$t('meta.fromBig'), value: this.userAddress },
-          to: { name: this.$t('meta.toBig'), value: contractAddress },
-          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
-        },
-        submitMethod: async () => {
-          const txRes = await this.$store.dispatch('quests/declineJob', contractAddress);
-          if (txRes.ok) {
-            await this.getQuest();
-            this.ShowModal({
-              key: modals.status,
-              img: require('~/assets/img/ui/questAgreed.svg'),
-              title: this.$t('meta.questInfo'),
-              subtitle: this.$t('quests.workOnQuestRejected'),
             });
           }
         },

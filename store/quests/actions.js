@@ -411,10 +411,6 @@ export default {
   },
 
   /** WORKER */
-  // Отклонить приглашение на квест
-  async declineJob({ dispatch }, contractAddress) {
-    return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.DeclineJob });
-  },
   // Принять и начать квест
   async acceptJob({ dispatch }, contractAddress) {
     return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.AcceptJob });
