@@ -76,13 +76,17 @@ export default {
   axios: {
     baseURL: process.env.BASE_URL,
   },
+  moment: {
+    defaultLocale: 'en',
+    locales: ['ru', 'bn', 'ar', 'fr', 'hi', 'id', 'pt', 'es', 'zh-cn'],
+  },
   // bootstrapVue: {
   //   // bootstrapCSS: false, // Or `css: false`
   //   // bootstrapVueCSS: false, // Or `bvCSS: false`
   //   icons: true,
   // },
   i18n: {
-    locales: ['en', 'ru', 'bn', 'ar', 'fr', 'hi', 'id', 'pt', 'es', 'zh'],
+    locales: ['en', 'ru', 'bn', 'ar', 'fr', 'hi', 'id', 'pt', 'es', 'zh_cn'],
     // locales: ['en'],
     defaultLocale: 'en',
     strategy: 'no_prefix',
@@ -93,7 +97,7 @@ export default {
         ar: localeAr,
         fr: localeFr,
         bn: localeBn,
-        zh: localeZh,
+        zh_cn: localeZh,
         hi: localeHi,
         id: localeId,
         pt: localePt,
@@ -139,6 +143,7 @@ export default {
     WBNB_TOKEN: process.env.WBNB_TOKEN,
 
     WORKNET_BORROWING: process.env.WORKNET_BORROWING,
+    WORKNET_BRIDGE: process.env.WORKNET_BRIDGE,
     WORKNET_LENDING: process.env.WORKNET_LENDING,
     WORKNET_ORACLE: process.env.WORKNET_ORACLE,
     WORKNET_PENSION_FUND: process.env.WORKNET_PENSION_FUND,
@@ -151,5 +156,6 @@ export default {
     WORKNET_WBNB_TOKEN: process.env.WORKNET_WBNB_TOKEN,
     WORKNET_WETH_TOKEN: process.env.WORKNET_WETH_TOKEN,
     WORKNET_WQT_TOKEN: process.env.WORKNET_WQT_TOKEN,
+
   },
 };

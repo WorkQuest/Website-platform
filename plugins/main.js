@@ -189,6 +189,65 @@ Vue.mixin({
         });
       }
     },
+    CalcPercent(preValue, value) {
+      const valueWithoutWords = preValue.replace(/[^0-9,.]/g, '');
+      const isEmpty = valueWithoutWords.length === 0;
+      const isDotFirst = valueWithoutWords[0] === '.' || valueWithoutWords[0] === ',';
+      if (isEmpty) {
+        value = '';
+      } else if (isDotFirst) {
+        const memo = valueWithoutWords.split('');
+        memo.unshift('0');
+        if (memo[memo.length - 1] !== '%') { memo.push('%'); }
+        value = memo.join('');
+      } else {
+        value = `${valueWithoutWords}%`;
+      }
+      value = value.replace(/,/g, '.');
+      if (value.includes('.')) {
+        const withoutDotsArray = value.split('.');
+        if (withoutDotsArray.length > 2) {
+          withoutDotsArray.splice(1, 0, '.');
+          value = withoutDotsArray.join('');
+        }
+      }
+      return value;
+    },
+    ChangeCaretPosition(ref) {
+      const input = ref?.$refs.input;
+      this.$nextTick(() => {
+        const { length } = input.value;
+        if (input.value[length - 1] === '%' && input.selectionStart === length) {
+          input.selectionStart = length - 1;
+          input.selectionEnd = length - 1;
+        }
+      });
+    },
+    DeclOfNum(n) {
+      n = Math.abs(n) % 100;
+      const n1 = n % 10;
+      if (n > 10 && n < 20) { return 2; }
+      if (n1 > 1 && n1 < 5) { return 1; }
+      if (n1 === 1 && this.$i18n.locale === 'ru') { return 0; }
+      return 2;
+    },
+
     ScrollToTop: () => window.scrollTo(0, 0),
+    IsProd: () => process.env.PROD === 'true',
+    ShowModalSuccess(title = '') {
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/success.svg'),
+        title: title || this.$t('modals.meta.success'),
+      });
+    },
+    ShowModalFail(title = '') {
+      console.log(title);
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/warning.svg'),
+        title: title || this.$t('modals.meta.fail'),
+      });
+    },
   },
 });

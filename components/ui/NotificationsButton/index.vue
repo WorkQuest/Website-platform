@@ -68,7 +68,7 @@
                   </div>
                 </div>
                 <div class="notify__text notify__text_date">
-                  {{ notification.creatingDate }}
+                  {{ $moment(notification.createdAt).format('Do MMMM YYYY, hh:mm a') }}
                 </div>
               </div>
               <div class="notify__reason">
