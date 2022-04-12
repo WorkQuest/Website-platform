@@ -36,8 +36,9 @@ export default {
   async employeeList({ commit }, { query, specFilter }) {
     try {
       if (query.q === '') delete query.q;
-      const { ok, result } = await this.$axios.$get('/v1/profile/workers', {
-        params: { ...query, ...specFilter },
+      const specializations = specFilter ? Object.values(specFilter) : [];
+      const { ok, result } = await this.$axios.$post('/v1/profile/get-workers', { specializations }, {
+        params: { ...query },
       });
       commit('setEmployeeList', result);
       return { ok };

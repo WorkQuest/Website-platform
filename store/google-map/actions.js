@@ -40,13 +40,14 @@ export default {
       delete query.limit;
       delete query.offset;
       delete query['sort[createdAt]'];
-      const { ok, result } = await this.$axios.$get('/v1/profile/worker/map/points', {
-        params: { ...query, ...specFilter },
+      const specializations = specFilter ? Object.values(specFilter) : [];
+      const { ok, result } = await this.$axios.$post('/v1/profile/workers/map/get-points', { specializations }, {
+        params: { ...query },
       });
       commit('setPoints', result.users);
       return { ok };
     } catch (e) {
-      console.error('map/employeesPoints');
+      console.error('map/employeesPoints', e);
       return { ok: false };
     }
   },
