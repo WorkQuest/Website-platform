@@ -208,7 +208,7 @@ export default {
         ],
         secondColumn: [
           { title: this.$t('meta.liquidityMining'), path: Path.MINING },
-          { title: this.$t('footer.DeFi.wqBridge'), path: Path.CROSSCHAIN },
+          { title: this.$t('footer.DeFi.wqBridge'), path: Path.BRIDGE },
           { title: this.$t('footer.DeFi.staking'), path: Path.STAKING },
           { title: this.$t('footer.DeFi.wqDAO'), path: URLS.DAO },
         ],

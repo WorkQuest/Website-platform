@@ -7,7 +7,7 @@
       <div class="buy-auction__info">
         <div class="buy-auction__info-unit">
           <h4 class="buy-auction__info-header">
-            {{ $t('modals.recipient') }}
+            {{ $t('modals.recipientAddress') }}
           </h4>
           <p class="buy-auction__info-value">
             {{ options.auction.recipient }}

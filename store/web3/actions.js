@@ -15,13 +15,11 @@ import {
   goToChain,
   initStackingContract,
   initWeb3,
-  redeemSwap,
   showToast,
   staking,
   unStaking,
   swap,
   getAccount,
-  swapWithBridge,
   getStakingDataByType,
   handleMetamaskStatus,
   unsubscirbeListeners,
@@ -57,7 +55,6 @@ export default {
     disconnectWeb3();
     commit('setIsConnected', false);
     commit('setMetaMaskStatus', false);
-    commit('clearTokens');
     commit('clearAccount');
     localStorage.removeItem('walletconnect');
   },
@@ -72,7 +69,6 @@ export default {
       }
       await commit('setAccount', response.result);
       await commit('setIsConnected', true);
-      await commit('setPurseData', getAccountAddress());
       if (!isReconnection) showToast('Connect to wallet', 'Connected', 'success');
       return true;
     }
@@ -83,6 +79,10 @@ export default {
   async handleConnectionStatusChanged({ dispatch }) {
     await dispatch('disconnect');
     await dispatch('connect', { isReconnection: true, chain: localStorage.getItem('miningPoolId') });
+  },
+
+  async updateAccount({ commit }, newData) {
+    commit('setAccount', newData);
   },
 
   // Only MetaMask
@@ -96,7 +96,6 @@ export default {
       }
       await commit('setAccount', response.result);
       await commit('setIsConnected', true);
-      await commit('setPurseData', getAccountAddress());
     }
   },
   async handleMetamaskStatusChanged({ dispatch }) {
@@ -190,44 +189,6 @@ export default {
     return payload;
   },
 
-  async getCrosschainTokensData({ commit }, data) {
-    let payload = {};
-    const isNative = localStorage.getItem('miningPoolId') === data.token;
-    const { tokenAddress, stakingAddress } = await getStakingDataByType(StakingTypes.CROSS_CHAIN, data.token);
-    const accountAddress = await getAccountAddress();
-    if (isNative) {
-      const { ethereum } = window;
-      const web3 = new Web3(ethereum);
-      let balance = await web3.eth.getBalance(accountAddress);
-      const inst = new web3.eth.Contract(abi.WQBridge, stakingAddress);
-      const nonce = await web3.eth.getTransactionCount(accountAddress);
-      const swapData = [nonce, data.chainTo, balance, accountAddress, data.token];
-      const [gasPrice, gasEstimate] = await Promise.all([
-        web3.eth.getGasPrice(),
-        inst.methods.swap.apply(null, swapData).estimateGas({ from: accountAddress, value: balance }),
-      ]);
-      balance = new BigNumber(balance).shiftedBy(-18).toString();
-      const amountGas = new BigNumber(gasPrice).multipliedBy(gasEstimate).shiftedBy(-18).toString();
-      const amountMinusGasAmount = new BigNumber(balance).minus(amountGas).toNumber();
-      payload = {
-        tokenAmount: amountMinusGasAmount,
-        token: data.token,
-      };
-    } else {
-      const [tokenDecimal, tokenSymbol, tokenValue] = await Promise.all([
-        fetchContractData('decimals', abi.ERC20, tokenAddress),
-        fetchContractData('symbol', abi.ERC20, tokenAddress),
-        fetchContractData('balanceOf', abi.ERC20, tokenAddress, [accountAddress]),
-      ]);
-      payload = {
-        tokenAmount: new BigNumber(tokenValue).shiftedBy(-tokenDecimal).toString(),
-        tokenSymbol,
-      };
-    }
-    commit('setCrosschainTokensData', payload);
-    return payload;
-  },
-
   unsubscribeActions() {
     unsubscirbeListeners();
   },
@@ -252,16 +213,8 @@ export default {
   async swap({ commit }, { decimals, amount }) {
     return await swap(decimals, amount);
   },
-  async swapWithBridge({ commit }, {
-    _decimals, _amount, chain, chainTo, userAddress, recipient, symbol,
-  }) {
-    return await swapWithBridge(_decimals, _amount, chain, chainTo, userAddress, recipient, symbol);
-  },
   async goToChain({ commit }, { chain }) {
     return await goToChain(chain);
-  },
-  async redeemSwap({ commit }, payload) {
-    return await redeemSwap(payload);
   },
   getAccountAddress() {
     return getAccountAddress();

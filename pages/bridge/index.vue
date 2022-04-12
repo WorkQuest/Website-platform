@@ -1,81 +1,69 @@
 <template>
-  <div class="crosschain-page">
-    <div class="crosschain-page__container">
-      <div class="crosschain-page__header header">
+  <div class="bridge-page">
+    <div class="bridge-page__container">
+      <div class="bridge-page__header header">
         <div class="header__left">
           <div class="title">
-            {{ $t('crosschain.pageName') }}
+            {{ $t('bridge.pageName') }}
           </div>
           <div class="title_sub">
-            {{ $t('crosschain.pageAbout') }}
+            {{ $t('bridge.pageAbout') }}
           </div>
         </div>
         <div class="header__right">
           <base-btn
-            v-if="!isConnected"
-            data-selector="CONNECT-WALLET"
             mode="light"
-            class="header__btn header__btn_connect"
-            :disabled="statusBusy"
-            @click="checkWalletStatus()"
+            class="header__btn"
+            :data-selector="isConnected ? 'CONNECT-WALLET' : 'DISCONNECT-FROM-WALLET'"
+            @click="toggleConnection"
           >
-            {{ $t('mining.connectWallet') }}
-          </base-btn>
-          <base-btn
-            v-else
-            mode="light"
-            data-selector="DISCONNECT-FROM-WALLET"
-            class="header__btn header__btn_disconnect"
-            :disabled="statusBusy"
-            @click="disconnectFromWallet"
-          >
-            {{ $t('meta.disconnect') }}
+            {{ !isConnected ? $t('mining.connectWallet') : $t('meta.disconnect') }}
           </base-btn>
         </div>
       </div>
 
-      <div class="crosschain-page__content">
+      <div class="bridge-page__content">
         <div class="info-block">
           <div class="info-block__swap-cont">
             <div>
               <div class="info-block__name_bold">
-                {{ $t("crosschain.sourceBlockchain") }}
+                {{ $t("bridge.sourceBlockchain") }}
               </div>
               <div class="contract-data">
                 <div class="contract-data__title">
-                  {{ $t('crosschain.blockchain') }}
+                  {{ $t('bridge.blockchain') }}
                 </div>
                 <base-dd
                   v-model="sourceAddressInd"
                   type="border"
-                  :items="addresses"
-                  :data-selector="'Source-Address'"
                   :is-icon="true"
-                  @input="handleChangePool(sourceAddressInd, 'source')"
+                  :items="addresses"
+                  data-selector="SOURCE_ADDRESS"
                 />
               </div>
             </div>
             <img
-              src="~assets/img/ui/swap.png"
-              alt=""
+              alt="Swap"
+              width="34"
+              height="38"
               class="swap-icon"
-              @click="handleChangePool(0, 'swap')"
+              src="~assets/img/ui/swap.png"
+              @click="toggleBlockchain"
             >
             <div>
               <div class="info-block__name_bold">
-                {{ $t("crosschain.targetBlockchain") }}
+                {{ $t("bridge.targetBlockchain") }}
               </div>
               <div class="contract-data">
                 <div class="contract-data__title">
-                  {{ $t('crosschain.blockchain') }}
+                  {{ $t('bridge.blockchain') }}
                 </div>
                 <base-dd
                   v-model="targetAddressInd"
                   type="border"
-                  :items="addresses"
-                  :data-selector="'Target-Address'"
                   :is-icon="true"
-                  @input="handleChangePool(targetAddressInd, 'target')"
+                  :items="addresses"
+                  data-selector="TARGET_ADDRESS"
                 />
               </div>
             </div>
@@ -86,17 +74,17 @@
               :disabled="metamaskStatus === 'notInstalled' || !isConnected"
               @click="showSwapModal"
             >
-              {{ $t('crosschain.createSwap') }}
+              {{ $t('bridge.createSwap') }}
             </base-btn>
           </div>
         </div>
         <div class="info-block">
           <div class="info-block__name">
-            {{ $t('crosschain.mySwaps') }}
+            {{ $t('bridge.mySwaps') }}
           </div>
-          <div class="crosschain-page__table">
+          <div class="bridge-page__table">
             <b-table
-              :items="crosschainTableData"
+              :items="swaps"
               :fields="tableFields"
               show-empty
               borderless
@@ -108,34 +96,33 @@
                 <div class="table__direction">
                   <img
                     :src="el.item.direction[0]"
-                    alt=""
+                    alt="Blockchain from"
                   >
                   <img
                     class="arrow-img"
                     src="~/assets/img/ui/arrow-down.svg"
-                    alt=""
+                    alt="Arrow"
                   >
                   <img
                     :src="el.item.direction[1]"
-                    alt=""
+                    alt="Blockchain to"
                   >
                 </div>
               </template>
               <template #cell(recipient)="el">
                 <div class="table__value">
-                  {{ el.item.recipient }}
+                  {{ CutTxn(el.item.recipient) }}
                 </div>
               </template>
-              <template #cell(tx)="el">
+              <template #cell(transactionHash)="el">
                 <div class="table__value">
-                  {{ el.item.tx }}
+                  {{ CutTxn(el.item.transactionHash) }}
                   <button
-                    v-clipboard:copy="el.item.txFull"
+                    v-clipboard:copy="el.item.transactionHash"
                     v-clipboard:success="ClipboardSuccessHandler"
                     v-clipboard:error="ClipboardErrorHandler"
                     type="button"
                     data-selector="COPY-BTN"
-                    @click="doCopy"
                   >
                     <span class="icon-copy" />
                   </button>
@@ -143,12 +130,12 @@
               </template>
               <template #cell(amount)="el">
                 <div class="table__value">
-                  {{ `${el.item.amount} ${el.item.symbol}` }}
+                  {{ `${Floor(el.item.amount)} ${el.item.symbol}` }}
                 </div>
               </template>
               <template #cell(created)="el">
                 <div class="table__value table__value_blue">
-                  {{ $moment(new Date(el.item.created * 1000)).locale($i18n.locale).format('MMMM Do YYYY, h:mm') }}
+                  {{ $moment(new Date(el.item.created * 1000)).locale($i18n.locale).format('MMMM Do YYYY, hh:mm a') }}
                 </div>
               </template>
               <template #cell(redeem)="el">
@@ -166,11 +153,11 @@
                 </div>
               </template>
               <template
-                v-if="crosschainTableData.length === 0"
+                v-if="!swapsCount"
                 slot="empty"
               >
-                <div class="crosschain-page__empty-info">
-                  <empty-data :description="$t('meta.listIsEmpty')" />
+                <div class="bridge-page__empty-info">
+                  <empty-data :description="$tc('meta.listIsEmpty')" />
                 </div>
               </template>
             </b-table>
@@ -182,59 +169,57 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import modals from '~/store/modals/modals';
-import EmptyData from '~/components/app/info/emptyData';
 import { Chains } from '~/utils/enums';
+import { BridgeAddresses, SwapAddresses } from '~/utils/bridge-constants';
+import { getChainIdByChain } from '~/utils/web3';
 
 export default {
-  components: { EmptyData },
+  name: 'Bridge',
   layout: 'guest',
   data() {
     return {
-      miningPoolId: localStorage.getItem('miningPoolId'),
       metamaskStatus: localStorage.getItem('metamaskStatus'),
       sourceAddressInd: 0,
       targetAddressInd: 1,
       updateInterval: null,
+      query: {
+        limit: 10,
+        offset: 0,
+      },
     };
   },
   computed: {
     ...mapGetters({
+      isAuth: 'user/isAuth',
+
       account: 'web3/getAccount',
       isConnected: 'web3/isConnected',
-      crosschainTableData: 'defi/getCrosschainTokensData',
-      statusBusy: 'web3/getStatusBusy',
-      userData: 'user/getUserData',
+
+      swaps: 'bridge/getSwaps',
+      swapsCount: 'bridge/getSwapsCount',
     }),
     tableFields() {
       const cellStyle = {
-        thStyle: {
-          padding: '0',
-          height: '27px',
-          lineHeight: '27px',
-        },
+        thStyle: { padding: '0', height: '27px', lineHeight: '27px' },
         tdAttr: { style: 'padding: 0; height: 64px; line-height: 64px' },
       };
       return [
         {
           key: 'direction',
-          label: this.$t('crosschain.tableHead.direction'),
-          thStyle: {
-            padding: '0 0 0 23px',
-            height: '27px',
-            lineHeight: '27px',
-          },
+          label: this.$t('bridge.tableHead.direction'),
+          thStyle: { padding: '0 0 0 23px', height: '27px', lineHeight: '27px' },
           tdAttr: { style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px' },
         },
         {
           key: 'recipient',
-          label: this.$t('crosschain.tableHead.recipient'),
+          label: this.$t('bridge.tableHead.recipient'),
           ...cellStyle,
         },
         {
-          key: 'tx',
-          label: this.$t('crosschain.tableHead.tx'),
+          key: 'transactionHash',
+          label: this.$t('bridge.tableHead.tx'),
           ...cellStyle,
         },
         {
@@ -244,39 +229,32 @@ export default {
         },
         {
           key: 'created',
-          label: this.$t('crosschain.tableHead.created'),
+          label: this.$t('bridge.tableHead.created'),
           ...cellStyle,
         },
         {
           key: 'redeem',
           label: '',
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
+          thStyle: cellStyle.thStyle,
           tdAttr: { style: 'display: flex; align-items: center; height: 64px; line-height: 64px' },
         },
       ];
     },
     addresses() {
       return [
-        {
-          icon: require('~/assets/img/ui/ethereum.svg'),
-          title: this.$t('meta.coins.eth'),
-        },
-        {
-          icon: require('~/assets/img/ui/bnb_yellow.svg'),
-          title: this.$t('meta.coins.bsc'),
-        },
-        {
-          icon: require('~/assets/img/ui/WQT.png'),
-          title: this.$t('meta.coins.wqt'),
-        },
+        SwapAddresses.get(Chains.ETHEREUM),
+        SwapAddresses.get(Chains.BINANCE),
+        SwapAddresses.get(Chains.WORKNET),
       ];
     },
   },
   watch: {
+    sourceAddressInd(newIdx, oldIdx) {
+      if (this.targetAddressInd === newIdx) this.targetAddressInd = oldIdx;
+    },
+    targetAddressInd(newIdx, oldIdx) {
+      if (this.sourceAddressInd === newIdx) this.sourceAddressInd = oldIdx;
+    },
     async isConnected() {
       if (typeof this.account.address === 'string') {
         await this.swapsTableData(this.account.address, this.isConnected);
@@ -290,136 +268,122 @@ export default {
     },
   },
   mounted() {
-    this.$nuxt.setLayout(this.userData.id ? 'default' : 'guest');
+    this.$nuxt.setLayout(this.isAuth ? 'default' : 'guest');
   },
   async beforeDestroy() {
-    await this.disconnectFromWallet();
+    this.$store.commit('bridge/resetToken');
+    await this.handlerDisconnect();
   },
   methods: {
-    doCopy() {
-      this.ShowModal({
-        key: modals.copiedSuccess,
-      });
+    ...mapActions({
+      fetchSwaps: 'bridge/fetchMySwaps',
+      resetSwaps: 'bridge/resetMySwaps',
+      redeem: 'bridge/redeemSwap',
+      swap: 'bridge/swap',
+
+      isRightChain: 'web3/chainIsCompareToCurrent',
+      connectWallet: 'web3/connect',
+      disconnectWallet: 'web3/disconnect',
+      goToChain: 'web3/goToChain',
+    }),
+    async toggleConnection() {
+      const { isConnected, addresses, sourceAddressInd } = this;
+      if (isConnected) await this.handlerDisconnect();
+      else {
+        const { chain } = addresses[sourceAddressInd];
+        await this.connectWallet({ chain });
+      }
     },
-    async disconnectFromWallet() {
-      await clearInterval(this.updateInterval);
+    async handlerDisconnect() {
+      clearInterval(this.updateInterval);
       this.updateInterval = null;
-      await this.$store.dispatch('web3/disconnect');
-      await this.swapsTableData(this.account.address, this.isConnected);
+      await this.disconnectWallet();
+      await this.resetSwaps();
     },
-    async checkWalletStatus() {
-      if (this.isConnected) return;
-      let chainName = '';
-      // eslint-disable-next-line default-case
-      switch (this.sourceAddressInd) {
-        case 0:
-          chainName = Chains.ETHEREUM;
-          break;
-        case 1:
-          chainName = Chains.BINANCE;
-          break;
-        case 2:
-          chainName = Chains.WORKNET;
-          break;
-      }
-      await this.connectToMetamask(chainName);
-    },
-    async redeemAction(data) {
-      this.SetLoader(true);
-      if (localStorage.getItem('isMetaMask') === 'true') {
-        await this.checkMiningPoolId(data.chain);
-      }
-      const payload = {
-        signData: data.clearData,
-        chainFrom: data.chainFrom,
-        chainTo: data.chainTo,
-      };
-      const redeemObj = await this.$store.dispatch('web3/redeemSwap', payload);
-      await this.swapsTableData(this.account.address, this.isConnected);
-      this.ShowModal({
-        key: modals.status,
-        img: redeemObj.code === 500 ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
-        title: redeemObj.code === 500 ? this.$t('modals.redeem.fail') : this.$t('modals.redeem.success'),
-        subtitle: '',
+    async swapsTableData() {
+      if (!this.isConnected) return;
+      const { account, query } = this;
+      await this.fetchSwaps({
+        recipientAddress: account.address,
+        query,
       });
+    },
+    toggleBlockchain() {
+      const currentSource = this.sourceAddressInd;
+      this.sourceAddressInd = this.targetAddressInd;
+      this.targetAddressInd = currentSource;
+    },
+    async checkNetwork(chain) {
+      const isMetaMask = localStorage.getItem('isMetaMask') === 'true';
+      const isCorrectNetwork = +getChainIdByChain(chain) === +this.account.netId;
+      if (!isCorrectNetwork && isMetaMask) {
+        const { ok } = await this.goToChain({ chain });
+        return ok;
+      }
+      if (!isCorrectNetwork && !isMetaMask) {
+        this.ShowModalFail(this.$t('modals.errors.errorNetwork', { network: chain }));
+        return false;
+      }
+      return true;
+    },
+    async redeemAction({ chain, signData, chainTo }) {
+      this.SetLoader(true);
+
+      if (await this.checkNetwork(chain)) {
+        const { ok } = await this.redeem({ signData, chainTo });
+
+        if (ok) {
+          this.ShowModalSuccess(this.$t('modals.redeem.success'));
+          await this.swapsTableData();
+        } else this.ShowModalFail(this.$t('modals.redeem.fail'));
+      }
+
       this.SetLoader(false);
     },
-    async connectToMetamask(chainName) {
-      if (!this.isConnected) {
-        await this.$store.dispatch('web3/connect', { chain: chainName });
-        const switchStatus = await this.$store.dispatch('web3/goToChain', { chain: chainName });
-        if (!switchStatus.ok) await this.disconnectFromWallet();
-      }
-      await this.swapsTableData(this.account.address, this.isConnected);
-      await localStorage.setItem('miningPoolId', chainName);
-      this.miningPoolId = localStorage.getItem('miningPoolId');
-    },
-    async checkMiningPoolId(chainName) {
-      await localStorage.setItem('miningPoolId', chainName);
-      this.miningPoolId = localStorage.getItem('miningPoolId');
-      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
-      if (!rightChain) return await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
-      return rightChain;
-    },
-    async swapsTableData(recipientAddress, connectedStatus) {
-      const payload = {
-        recipientAddress,
-        query: connectedStatus ? '&offset=0&limit=10' : false,
-      };
-      await this.$store.dispatch('defi/swapsForCrosschain', payload);
-    },
-    handleChangePool(selInd, mode) {
-      if (mode === 'source') {
-        if (this.targetAddressInd === selInd) this.targetAddressInd = selInd ? 0 : 1;
-        this.sourceAddressInd = selInd;
-      } else if (mode === 'target') {
-        if (this.sourceAddressInd === selInd) this.sourceAddressInd = selInd ? 0 : 1;
-        this.targetAddressInd = selInd;
-      } else if (mode === 'swap') {
-        const sourceInd = this.sourceAddressInd;
-        const targetInd = this.targetAddressInd;
-        this.targetAddressInd = sourceInd;
-        this.sourceAddressInd = targetInd;
-      }
-    },
+
     async showSwapModal() {
-      this.SetLoader(true);
-      let switchPoolStatus = true;
-      let chainName = '';
-      if (localStorage.getItem('isMetaMask') === 'true') {
-        // eslint-disable-next-line default-case
-        switch (this.sourceAddressInd) {
-          case 0:
-            chainName = 'ETH';
-            break;
-          case 1:
-            chainName = 'BNB';
-            break;
-          case 2:
-            chainName = 'WORKNET';
-            break;
-        }
-        switchPoolStatus = await this.checkMiningPoolId(chainName);
-      }
-      if (switchPoolStatus === true || switchPoolStatus.ok) {
+      const { addresses, sourceAddressInd, targetAddressInd } = this;
+      const { chain } = addresses[sourceAddressInd];
+      if (await this.checkNetwork(chain)) {
+        const from = addresses[sourceAddressInd];
+        const to = addresses[targetAddressInd];
         this.ShowModal({
           key: modals.swap,
-          crosschainId: this.targetAddressInd,
-          fromChain: this.sourceAddressInd,
-          toChain: this.targetAddressInd,
-        });
-        // await this.$store.dispatch('web3/connect', { chain: chainName });
-      } else {
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/warning.svg'),
-          title: this.$t('modals.transactionFail'),
-          recipient: '',
-          txHash: '',
-          subtitle: '',
+          from,
+          to,
+          submit: async ({ amount, symbol, isNative }) => {
+            this.ShowModal({
+              key: modals.swapInfo,
+              amount,
+              symbol,
+              chain: from.chain,
+              recipient: this.account.address,
+              networks: `${from.chain} > ${to.chain}`,
+              submit: async () => {
+                this.CloseModal();
+
+                this.SetLoader(true);
+                const { ok, result } = await this.swap({
+                  amount,
+                  symbol,
+                  isNative,
+                  toChainIndex: to.index,
+                  tokenAddress: from.tokenAddress[symbol],
+                  bridgeAddress: BridgeAddresses[from.chain],
+                });
+                this.SetLoader(false);
+
+                this.ShowModal({
+                  key: modals.status,
+                  img: !ok ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
+                  title: !ok ? this.$t('modals.transactionFail') : this.$t('modals.transactionSent'),
+                  link: `${from.explorer}/tx/${result?.transactionHash}`,
+                });
+              },
+            });
+          },
         });
       }
-      this.SetLoader(false);
     },
   },
 };
@@ -439,7 +403,7 @@ export default {
   }
 }
 
-.crosschain-page {
+.bridge-page {
   background: linear-gradient(to bottom, #103D7C 420px, #f6f8fa 420px);
   display: flex;
   justify-content: center;
@@ -667,13 +631,13 @@ export default {
   }
 
   @include _1199 {
-    .crosschain-page__container {
+    .bridge-page__container {
       padding: 0 30px !important;
     }
   }
 
   @include _991 {
-    .crosschain-page__table {
+    .bridge-page__table {
       overflow: auto;
     }
     &__table {
