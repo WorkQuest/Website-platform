@@ -61,8 +61,10 @@
 <script>
 import ClickOutside from 'vue-click-outside';
 import { mapGetters } from 'vuex';
+import {
+  ChatType, DisputeStatues, Path, QuestStatuses,
+} from '~/utils/enums';
 import modals from '~/store/modals/modals';
-import { Path } from '~/utils/enums';
 
 export default {
   name: 'ChatMenu',
@@ -89,10 +91,10 @@ export default {
       currChat: 'chat/getCurrChatInfo',
     }),
     isOpenDispute() {
-      return !this.canILeave && this.$route.query.type === 'quest';
+      return !this.canILeave && this.$route.query.type === ChatType.QUEST;
     },
     isInvisible() {
-      return this.$route.query.type && this.$route.query.type === 'quest' && (this.$route.query.status !== '1' && this.$route.query.status !== '3');
+      return this.$route.query.type && this.$route.query.type === ChatType.QUEST && (+this.$route.query.status !== QuestStatuses.Active && +this.$route.query.status !== QuestStatuses.Dispute);
     },
   },
   methods: {
@@ -104,7 +106,7 @@ export default {
     },
     showOpenADisputeModal() {
       this.closeChatMenu();
-      if (!this.$route.query.dispute && this.$route.query.dispute !== '0') {
+      if (!this.$route.query.dispute && +this.$route.query.dispute !== DisputeStatues.PENDING) {
         this.ShowModal({
           key: modals.openADispute,
           questId: this.questId,

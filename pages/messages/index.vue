@@ -311,7 +311,6 @@ export default {
       const { id, type, questChat } = chat;
       const dispute = questChat && questChat.quest.openDispute && questChat.quest.openDispute.status;
       const questId = questChat && questChat.quest.id;
-      console.log(chat);
       if (type === 'quest') {
         const { status } = questChat && questChat.quest;
         this.$router.push({
