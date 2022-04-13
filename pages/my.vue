@@ -152,8 +152,8 @@ export default {
 
       if (id <= 1) delete this.requestParams.query['statuses[0]'];
       else if (id === 2) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitEmployerConfirm;
-      else if (id === 3) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorker; // TODO [!!!]: CHECK IT было execution of work
-      else if (id === 4) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorker;
+      else if (id === 3) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorker;
+      else if (id === 4) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorkerOnAssign;
       else if (id === 5) this.requestParams.query['statuses[0]'] = QuestStatuses.Done;
       await this.getQuests();
       this.SetLoader(false);

@@ -153,7 +153,7 @@ export default {
           { 'info_bg-green': infoDataMode === InfoModeEmployer.WaitWorker },
           { 'info_bg-grey': infoDataMode === InfoModeEmployer.WaitEmployerConfirm },
           { 'info_bg-red': [InfoModeEmployer.Closed, InfoModeEmployer.Dispute].includes(infoDataMode) },
-          { 'info_bg-blue': InfoModeEmployer.Done === infoDataMode },
+          { 'info_bg-blue': infoDataMode === InfoModeEmployer.Done },
         ];
       }
       return '';

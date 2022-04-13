@@ -148,7 +148,7 @@
               <base-btn
                 data-selector="TO-RAISED-VIEWS"
                 :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
-                @click="handleSubmit(toRiseViews($options.EditQuestState.RAISE_VIEWS))"
+                @click="handleSubmit(setCurrentStepEditQuest($options.EditQuestState.RAISE_VIEWS))"
               >
                 {{ $t('quests.editAQuest') }}
               </base-btn>
@@ -305,7 +305,6 @@ export default {
       mode: this.$route.query?.mode || '',
       geoCode: null,
       prevPrice: null,
-      prevDescription: null,
     };
   },
   computed: {
@@ -434,7 +433,6 @@ export default {
     this.coordinates.lat = location.latitude;
 
     this.prevPrice = this.price;
-    this.prevDescription = description;
     this.SetLoader(false);
   },
   methods: {
@@ -478,7 +476,7 @@ export default {
         this.ads.currentAdPrice = '';
       }
     },
-    toRiseViews(step) {
+    setCurrentStepEditQuest(step) {
       this.$store.commit('quests/setCurrentStepEditQuest', step);
     },
     showPaymentModal() {
@@ -491,7 +489,7 @@ export default {
       if (this.mode === 'raise') {
         this.goBack();
       } else {
-        this.toRiseViews(1);
+        this.setCurrentStepEditQuest(EditQuestState.EDITING);
       }
     },
     goBack() {
@@ -618,10 +616,7 @@ export default {
         priority: this.priorityIndex,
         employment: this.convertEmployment(this.employmentIndex),
         title: this.questTitle,
-        // description: this.textarea,
-        // price: this.price,
         medias,
-        // adType: 0,
         specializationKeys: this.selectedSpecAndSkills,
         locationFull: {
           location: {
@@ -638,7 +633,7 @@ export default {
         this.showModalEditQuest();
         this.showToastEdited();
         await this.$router.push(`/quests/${questId}`);
-        this.toRiseViews(1);
+        this.setCurrentStepEditQuest(EditQuestState.EDITING);
       }
     },
     showModalEditQuest() {
