@@ -21,7 +21,7 @@ export default {
       commit('setCurrentWorker', response.result);
       return response;
     } catch (e) {
-      return console.log(e);
+      return console.error(e);
     }
   },
   async questListForInvitation({ commit }, userId) {
@@ -30,7 +30,7 @@ export default {
       commit('setQuestListForInvitation', response.result);
       return response.result;
     } catch (e) {
-      return console.log(e);
+      return console.error(e);
     }
   },
   async employeeList({ commit }, { query, specFilter }) {
@@ -43,7 +43,7 @@ export default {
       commit('setEmployeeList', result);
       return { ok };
     } catch (e) {
-      console.log('quests/employeeList');
+      console.error('quests/employeeList');
       return false;
     }
   },
@@ -234,7 +234,7 @@ export default {
       const { ok } = await this.$axios.$post(`/v1/quest/employer/${responseId}/reject`);
       return ok;
     } catch (e) {
-      console.log(e);
+      console.error(e);
       return false;
     }
   },
@@ -388,7 +388,6 @@ export default {
         address: contractAddress,
         data: params,
       });
-      console.log(`[QUESTS] ${method}:`, res);
       return success(res);
     } catch (e) {
       console.error(e);
