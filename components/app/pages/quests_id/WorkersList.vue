@@ -27,17 +27,12 @@
           <item-rating :rating="response.worker.ratingStatistic.status" />
         </div>
         <base-dd
-          v-if="checkAssigned(response)"
           :data-selector="`WORKERS-LIST-USER-ACTIONS-${userActionsArr(response)}`"
           class="worker__menu"
           :placeholder="30"
           :items="userActionsArr(response)"
           is-dots-view
           @input="handleUserAction($event, response)"
-        />
-        <span
-          v-else
-          class="worker__menu_divider"
         />
         <div class="worker__message-cont">
           <div class="worker__message">
@@ -66,6 +61,7 @@ import { mapGetters } from 'vuex';
 import { ResponseStatus, TokenSymbols } from '~/utils/enums';
 import { QuestMethods } from '~/utils/quests-constants';
 import modals from '~/store/modals/modals';
+import { error, success } from '~/utils/web3';
 
 export default {
   name: 'WorkersList',
@@ -79,10 +75,6 @@ export default {
     return {
       ddUserActions: [
         this.$t('meta.btns.goToChat'),
-      ],
-      ddInvitedUserActions: [
-        this.$t('meta.btns.goToChat'),
-        this.$t('quests.startQuest'),
       ],
       ddUserFullActions: [
         this.$t('meta.btns.goToChat'),
@@ -102,7 +94,6 @@ export default {
     }),
     getCurrUsersArr() {
       const { isInvited, invited, responded } = this;
-
       return isInvited ? invited : responded;
     },
   },
@@ -110,12 +101,8 @@ export default {
     this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
   methods: {
-    checkAssigned(response) {
-      return this.questData?.assignedWorker?.id !== response?.worker?.id;
-    },
-    userActionsArr({ status }) {
-      if (this.isInvited) {
-        if (status === ResponseStatus.accepted) return this.ddInvitedUserActions;
+    userActionsArr({ worker }) {
+      if (this.questData?.assignedWorker?.id === worker?.id) {
         return this.ddUserActions;
       }
       return this.ddUserFullActions;
@@ -167,7 +154,11 @@ export default {
             contractAddress,
             workerAddress,
           });
-          if (txRes.ok) await this.getQuest();
+          if (txRes.ok) {
+            await this.getQuest();
+            return success();
+          }
+          return error();
         },
       });
     },

@@ -105,7 +105,7 @@ export default {
           [InfoModeEmployer.WaitEmployerConfirm]: 'quests.pendingConsideration',
           [InfoModeEmployer.Dispute]: 'meta.dispute',
           [InfoModeEmployer.Closed]: 'quests.closed',
-          [InfoModeEmployer.Done]: 'meta.performed',
+          [InfoModeEmployer.Done]: 'meta.completed',
         };
         return this.$t(`${obj[this.infoDataMode]}`);
       }

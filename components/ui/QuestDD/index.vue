@@ -20,6 +20,7 @@
         <div class="menu menu__items">
           <div class="menu__container">
             <div
+              v-if="[$options.QuestStatuses.Created, $options.QuestStatuses.WaitWorkerOnAssign].includes(questData.status)"
               class="menu__item"
               :data-selector="`ACTION-BTN-TO-RAISING-VIEWS-${questIndex}`"
               @click="toRaisingViews"
@@ -38,6 +39,7 @@
               </div>
             </div>
             <div
+              v-if="canEditOrDelete"
               class="menu__item"
               :data-selector="`ACTION-BTN-TO-EDIT-QUEST-${questIndex}`"
               @click="toEditQuest"
@@ -47,6 +49,7 @@
               </div>
             </div>
             <div
+              v-if="canEditOrDelete"
               class="menu__item"
               :data-selector="`ACTION-BTN-DELETE-QUEST-${questIndex}`"
               @click="showAreYouSureDeleteQuestModal"
@@ -72,6 +75,7 @@ import modals from '~/store/modals/modals';
 export default {
   name: 'QuestDD',
   directives: { ClickOutside },
+  QuestStatuses,
   props: {
     mode: {
       type: String,
@@ -97,6 +101,9 @@ export default {
       userRole: 'user/getUserRole',
       questData: 'quests/getQuest',
     }),
+    canEditOrDelete() {
+      return this.questData.status === QuestStatuses.Created;
+    },
   },
   methods: {
     toEditQuest() {

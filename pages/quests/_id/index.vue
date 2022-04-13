@@ -326,7 +326,7 @@ export default {
     setEmployerBtnsArr() {
       if (this.userData.id !== this.quest.userId) return [];
       const {
-        WaitWorkerOnAssign, Dispute, Created, WaitWorker, WaitEmployerConfirm,
+        Dispute, Created, WaitWorker, WaitEmployerConfirm,
       } = InfoModeEmployer;
       let arr = [];
       switch (this.infoDataMode) {
@@ -346,9 +346,11 @@ export default {
         }
         case WaitWorker: {
           arr = [{
-            name: this.$t('meta.approve'),
-            mode: 'approve',
-            disabled: true,
+            name: this.$t('meta.btns.goToChat'),
+            class: 'base-btn_goToChat',
+            funcKey: 'goToChat',
+            icon: 'icon-chat icon_fs-20',
+            disabled: false,
           }];
           break;
         }
@@ -362,6 +364,13 @@ export default {
           {
             name: this.$t('meta.openDispute'),
             funcKey: 'openDispute',
+            disabled: false,
+          },
+          {
+            name: this.$t('meta.btns.goToChat'),
+            class: 'base-btn_goToChat',
+            funcKey: 'goToChat',
+            icon: 'icon-chat icon_fs-20',
             disabled: false,
           }];
           break;
@@ -652,6 +661,7 @@ export default {
         submitMethod: async () => {
           const txRes = await this.$store.dispatch('quests/verificationJob', contractAddress);
           if (txRes.ok) {
+            await this.$store.dispatch('quests/setInfoDataMode', QuestStatuses.WaitEmployerConfirm);
             await this.getQuest();
             this.ShowModal({
               key: modals.status,
