@@ -95,8 +95,9 @@ export default {
     },
     async openConfirmDetailsModal() {
       const amount = this.quantity;
+      const { submit } = this.options;
       this.hide();
-      await this.options.submit(amount);
+      await submit(amount);
     },
     maxBalance() {
       this.quantity = this.balanceData.WUSD.fullBalance;
