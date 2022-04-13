@@ -47,6 +47,26 @@ export default {
       userData: 'user/getUserData',
     }),
   },
+  async created() {
+    const accessTokenCookies = this.$cookies.get('access');
+    if (accessTokenCookies) {
+      const refreshCookies = this.$cookies.get('refresh');
+      const userStatusCookies = this.$cookies.get('userStatus');
+      await this.$store.commit('user/setTokens', {
+        access: accessTokenCookies,
+        refresh: refreshCookies,
+        userStatus: userStatusCookies,
+      });
+      await this.$store.dispatch('user/getUserData');
+      if (this.userData.status === UserStatuses.Confirmed) {
+        if (this.userData.role === UserRole.EMPLOYER) {
+          await this.$router.push(Path.WORKERS);
+        } else if (this.userData.role === UserRole.WORKER) {
+          await this.$router.push(Path.QUESTS);
+        }
+      }
+    }
+  },
   async beforeMount() {
     const { access, refresh, userStatus } = this.$route.query;
     if (access && refresh && userStatus) {

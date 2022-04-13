@@ -37,13 +37,29 @@ export default {
   setTokens(state, payload) {
     state.tokens.access = payload.access;
     state.tokens.refresh = payload.refresh;
+    if (state.isRememberMeChecked || state.tokens.refresh) {
+      // const expireAccessTokenInSeconds = JSON.parse(atob(payload.access
+      //   .split('.')[1])).exp - new Date().getTime() / 1000 || 86400; // 1day
+      const expireRefreshTokenInSeconds = JSON.parse(atob(payload.refresh
+        .split('.')[1])).exp - new Date().getTime() / 1000 || 86400 * 30;
+      this.$cookies.set('access', payload.access, { path: '/', maxAge: expireRefreshTokenInSeconds });
+      this.$cookies.set('refresh', payload.refresh, { path: '/', maxAge: expireRefreshTokenInSeconds });
+      if (payload.userStatus) {
+        this.$cookies.set('userStatus', payload.userStatus, { path: '/', maxAge: expireRefreshTokenInSeconds });
+      }
+      state.isRememberMeChecked = false;
+    } else {
+      this.$cookies.set('access', payload.access, { path: '/' });
+      if (payload.userStatus) {
+        this.$cookies.set('userStatus', payload.userStatus, { path: '/' });
+      }
+    }
     this.$cookies.set('socialNetwork', payload.social, { path: '/' });
-    this.$cookies.set('access', payload.access, { path: '/' });
-    this.$cookies.set('refresh', payload.refresh, { path: '/' });
-    if (payload.userStatus) { this.$cookies.set('userStatus', payload.userStatus, { path: '/' }); }
   },
   setUserData(state, data) {
     state.userData = data;
+    // const userStatus = this.$cookies.get('userStatus');
+    // if (!userStatus) this.$cookies.set('userStatus', data.status, { path: '/' });
   },
   setAnotherUserData(state, data) {
     state.anotherUserData = data;
@@ -120,5 +136,8 @@ export default {
     state.reducedNotifications.length = state.reducedNotifications.length === 1 ? 1 : 2;
     state.notifications.count += 1;
     this.commit('user/setUnreadNotifsCount', 1);
+  },
+  SET_REMEMBER_ME(state, payload) {
+    state.isRememberMeChecked = payload;
   },
 };

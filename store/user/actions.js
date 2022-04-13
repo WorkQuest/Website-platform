@@ -312,10 +312,13 @@ export default {
       return error(e.response.data.code, e.response.data.msg);
     }
   },
-  async signIn({ commit, dispatch }, payload) {
+  async signIn({ commit, dispatch, state }, payload) {
     try {
       const response = await this.$axios.$post('/v1/auth/login', payload);
-      commit('setTokens', response.result);
+      commit('setTokens', {
+        access: response.result.access,
+        refresh: state.isRememberMeChecked ? response.result.refresh : '',
+      });
       if (response.result.userStatus === 1 && !response.result.totpIsActive) {
         await dispatch('getMainData');
       }
@@ -602,5 +605,8 @@ export default {
       showToast('Promote user error:', `${e.message}`, 'danger');
       return error(e.code, 'Error in method promote user', e);
     }
+  },
+  setRememberMe({ commit }, payload) {
+    commit('SET_REMEMBER_ME', payload);
   },
 };
