@@ -99,16 +99,16 @@ export default {
         {
           title: this.$t('crediting.currentCredit'),
           priceTitle: this.$t('crediting.totalWusdDebt'),
-          price: this.$tc('meta.coins.count.WUSDCount', (+this.convertedCredit).toFixed(4)),
+          price: this.$t('meta.coins.count.WUSDCount', { count: this.Floor(+this.convertedCredit) }),
           show: this.isHaveCredit,
           info: [
             {
               title: this.$t('crediting.needRefund'),
-              desc: this.$tc('meta.coins.count.WUSDCount', (+this.fullValueForRefund).toFixed(4)),
+              desc: this.$t('meta.coins.count.WUSDCount', { count: this.Floor(+this.fullValueForRefund) }),
             },
             {
               title: this.$t('modals.totalFee'),
-              desc: this.$tc('meta.coins.count.WUSDCount', (+this.convertedCurrentFee).toFixed(4)),
+              desc: this.$t('meta.coins.count.WUSDCount', { count: this.Floor(+this.convertedCurrentFee) }),
             },
             {
               title: this.$t('crediting.dueDate'),
@@ -126,7 +126,7 @@ export default {
         {
           title: this.$t('crediting.currentLoan'),
           priceTitle: this.$t('crediting.totalCollateralLocked'),
-          price: this.$tc('meta.coins.count.WUSDCount', new BigNumber(this.walletData.amount).shiftedBy(-18).toString()),
+          price: this.$t('meta.coins.count.WUSDCount', { count: this.Floor(new BigNumber(this.walletData.amount).shiftedBy(-18).toString()) }),
           show: this.isHaveLoan,
           info: [
             {
