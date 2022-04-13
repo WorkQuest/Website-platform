@@ -133,7 +133,7 @@ export default {
     state.notifications.count += 1;
     this.commit('user/setUnreadNotifsCount', 1);
   },
-  SET_REMEMBER_ME(state, payload) {
+  setRememberMe(state, payload) {
     state.isRememberMeChecked = payload;
   },
 };

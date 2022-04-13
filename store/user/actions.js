@@ -607,6 +607,6 @@ export default {
     }
   },
   setRememberMe({ commit }, payload) {
-    commit('SET_REMEMBER_ME', payload);
+    commit('setRememberMe', payload);
   },
 };
