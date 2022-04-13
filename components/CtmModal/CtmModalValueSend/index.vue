@@ -92,9 +92,9 @@ export default {
     hide() { this.CloseModal(); },
     async send() {
       const value = this.amount;
-      const { callback, maxValue } = this.options;
+      const { submit } = this.options;
       this.hide();
-      await callback(value, maxValue);
+      await submit(value);
     },
     maxBalance() {
       this.amount = this.maxValue;

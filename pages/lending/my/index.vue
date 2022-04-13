@@ -198,15 +198,15 @@ export default {
         key: modals.valueSend,
         mode: action,
         maxValue,
-        callback: async (amount, maxAmount) => {
+        submit: async (amount) => {
           this.SetLoader(true);
           let payload = {};
           const feeData = await this.$store.dispatch('crediting/getCurrentFee');
           let value = new BigNumber(amount).shiftedBy(18);
-          if (maxAmount) {
-            maxAmount = new BigNumber(maxAmount).shiftedBy(18).toString();
+          if (maxValue) {
+            maxValue = new BigNumber(maxValue).shiftedBy(18).toString();
           }
-          if (+value.toString() === +maxAmount) {
+          if (+value.toString() === +maxValue && action === 'refund') {
             value = value.plus(10000).toString();
           } else {
             value = value.toString();

@@ -235,9 +235,10 @@ export default {
     async openConfirmDetailsModal() {
       const {
         fundsSource, selFundID, checkpoints, selCurrencyID, datesNumber, date, quantity,
+        options: { submit },
       } = this;
       this.hide();
-      await this.options.submit({
+      await submit({
         fundsSource,
         selFundID,
         checkpoints,
