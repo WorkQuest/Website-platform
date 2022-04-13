@@ -86,9 +86,11 @@ export default {
         { name: this.$t('myQuests.statuses.responded'), id: 2 },
         { name: this.$t('myQuests.statuses.active'), id: 3 },
         { name: this.$t('myQuests.statuses.created'), id: 0 },
+        { name: this.$t('myQuests.statuses.invited'), id: 4 },
         { name: this.$t('myQuests.statuses.performed'), id: 5 },
       ];
-      return this.userRole === UserRole.EMPLOYER ? tabs.filter((tab) => (tab.id !== 2)) : tabs;
+      return this.userRole === UserRole.EMPLOYER ? tabs.filter((tab) => (tab.id !== 2 && tab.id !== 4))
+        : tabs.filter((tab) => (tab.id !== 0));
     },
     totalPages() {
       return Math.ceil(this.questsCount / this.offset);
