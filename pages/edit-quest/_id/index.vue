@@ -123,6 +123,7 @@
             <textarea
               id="textarea"
               v-model="textarea"
+              disabled
               data-selector="QUEST-DESC-TEXTAREA"
               class="page__textarea"
               :placeholder="$t('quests.questDesc')"
@@ -531,7 +532,7 @@ export default {
       }
     },
     async toEditQuest() {
-      if (this.prevPrice === this.price && this.prevDescription === this.textarea) {
+      if (this.prevPrice === this.price) {
         await this.editQuest();
         return;
       }
@@ -617,10 +618,10 @@ export default {
         priority: this.priorityIndex,
         employment: this.convertEmployment(this.employmentIndex),
         title: this.questTitle,
-        description: this.textarea,
-        price: this.price,
+        // description: this.textarea,
+        // price: this.price,
         medias,
-        adType: 0,
+        // adType: 0,
         specializationKeys: this.selectedSpecAndSkills,
         locationFull: {
           location: {

@@ -63,7 +63,7 @@ export default {
         limit: 5,
         offset: 0,
         'sort[createdAt]': 'desc',
-        'statuses[0]': 0,
+        'statuses[0]': 1,
       },
       specFilter: {},
       isShowMap: true,

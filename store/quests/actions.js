@@ -130,7 +130,7 @@ export default {
   },
   async editQuest({ commit }, { payload, questId }) {
     try {
-      const response = await this.$axios.$put(`/v1/quest/${questId}`, payload);
+      const response = await this.$axios.$put(`/v1/quest/${questId}/edit`, payload);
       commit('setQuestData', response.result);
       return response;
     } catch (e) {
