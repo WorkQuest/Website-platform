@@ -40,7 +40,7 @@
     />
     <base-btn
       class="filters-panel__item-btn item-btn"
-      mode="light"
+      mode="filter"
       data-selector="SHOW-PRICE"
       @click="showPriceSearch"
     >
@@ -56,7 +56,7 @@
     </base-btn>
     <base-btn
       class="filters-panel__item-btn item-btn"
-      mode="light"
+      mode="filter"
       data-selector="TIME-SORT"
       @click="sortByTime"
     >
@@ -177,12 +177,14 @@ export default {
   &__item, &__item-btn {
     min-width: 180px;
   }
+  &__item-btn{
+      background-color: red !important;
+  }
 
 }
 
 .item-btn {
   padding: 0 20px;
-
   &__text {
     margin-right: auto;
 

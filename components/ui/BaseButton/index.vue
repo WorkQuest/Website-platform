@@ -107,6 +107,7 @@ export default {
         { 'base-btn_portfolio-close': mode === 'portfolioClose' },
         { 'base-btn_share-user-info': mode === 'share-btn' },
         { 'base-btn_active-tab': mode === 'activeTab' },
+        { 'base-btn_filter': mode === 'filter' },
         { 'base-btn_padding': this.padding },
       ];
     },
@@ -370,6 +371,14 @@ export default {
     &:hover {
       background: $blue;
       cursor: unset;
+    }
+  }
+  &_filter {
+    color: $black800 !important;
+    background-color: $white !important;
+    border: 1px solid transparent;
+    &:hover {
+      border: 1px solid $black100;
     }
   }
 }
