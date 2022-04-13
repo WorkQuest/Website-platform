@@ -83,12 +83,15 @@ export default {
       const tabs = [
         { name: this.$t('myQuests.statuses.all'), id: null },
         { name: this.$t('myQuests.statuses.favorites'), id: 1 },
-        { name: this.$t('myQuests.statuses.responded'), id: 2 },
-        { name: this.$t('myQuests.statuses.active'), id: 3 },
         { name: this.$t('myQuests.statuses.created'), id: 0 },
+        { name: this.$t('myQuests.statuses.responded'), id: 2 },
+        { name: this.$t('myQuests.statuses.invited'), id: 4 },
+        { name: this.$t('myQuests.statuses.active'), id: 3 },
         { name: this.$t('myQuests.statuses.performed'), id: 5 },
       ];
-      return this.userRole === UserRole.EMPLOYER ? tabs.filter((tab) => (tab.id !== 2)) : tabs;
+      return this.userRole === UserRole.EMPLOYER
+        ? tabs.filter((tab) => (tab.id !== 2 && tab.id !== 4))
+        : tabs.filter((tab) => (tab.id !== 0));
     },
     totalPages() {
       return Math.ceil(this.questsCount / this.offset);
@@ -151,8 +154,8 @@ export default {
       if (id === null) delete this.requestParams.query['statuses[0]'];
       else if (id === 0) this.requestParams.query['statuses[0]'] = QuestStatuses.Created;
       else if (id === 2) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitConfirm;
-      else if (id === 3) this.requestParams.query['statuses[0]'] = QuestStatuses.Active;
       else if (id === 4) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorker;
+      else if (id === 3) this.requestParams.query['statuses[0]'] = QuestStatuses.Active;
       else if (id === 5) this.requestParams.query['statuses[0]'] = QuestStatuses.Done;
       await this.getQuests();
       this.SetLoader(false);
@@ -165,15 +168,18 @@ export default {
 .quests {
   width: 100%;
   background-color: #f6f8fa;
+
   &__container {
     display: flex;
     justify-content: center;
   }
+
   &__cards {
     display: grid;
     grid-template-columns: 1fr;
     grid-gap: 20px;
   }
+
   &__title {
     @include text-simple;
     font-style: normal;
@@ -183,34 +189,41 @@ export default {
     color: $black800;
     margin: 20px 0 20px 0;
   }
+
   &__body {
     width: 100%;
     max-width: 1180px;
   }
+
   &__content {
     display: grid;
     align-items: center;
     grid-template-columns: repeat(5, auto);
     grid-gap: 10px;
     margin-bottom: 20px;
+
     &-wide {
       grid-template-columns: repeat(6, auto);
     }
   }
+
   &__pager {
     margin-top: 25px;
   }
 }
+
 @include _1199 {
   .quests__body {
     padding: 0 10px;
   }
 }
+
 @include _767 {
   .quests__content {
     grid-template-columns: repeat(3, auto);
   }
 }
+
 @include _480 {
   .quests__content {
     grid-template-columns: repeat(2, auto);
