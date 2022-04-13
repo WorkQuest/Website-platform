@@ -63,7 +63,7 @@ export default {
   name: 'My',
   data() {
     return {
-      selectedTab: 0,
+      selectedTab: null,
       page: 1,
       offset: 10,
       statuses: '',
@@ -82,11 +82,11 @@ export default {
     },
     filterTabs() {
       const tabs = [
-        { name: this.$t('myQuests.statuses.all'), id: 0 },
+        { name: this.$t('myQuests.statuses.all'), id: null },
         { name: this.$t('myQuests.statuses.favorites'), id: 1 },
         { name: this.$t('myQuests.statuses.responded'), id: 2 },
         { name: this.$t('myQuests.statuses.active'), id: 3 },
-        { name: this.$t('myQuests.statuses.invited'), id: 4 },
+        { name: this.$t('myQuests.statuses.created'), id: 0 },
         { name: this.$t('myQuests.statuses.performed'), id: 5 },
       ];
       return this.userRole === UserRole.EMPLOYER ? tabs.filter((tab) => (tab.id !== 2)) : tabs;
@@ -150,7 +150,8 @@ export default {
       this.requestParams.query.offset = 0;
       this.requestParams.query.starred = id === 1;
 
-      if (id <= 1) delete this.requestParams.query['statuses[0]'];
+      if (id === null) delete this.requestParams.query['statuses[0]'];
+      else if (id === 0) this.requestParams.query['statuses[0]'] = QuestStatuses.Created;
       else if (id === 2) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitEmployerConfirm;
       else if (id === 3) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorker;
       else if (id === 4) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorkerOnAssign;

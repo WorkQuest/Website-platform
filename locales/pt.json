@@ -1923,7 +1923,8 @@
       "responded": "Solicitado",
       "performed": "Buscas concluídas",
       "active": "Buscas ativas",
-      "invited": "Buscas convidadas"
+      "invited": "Buscas convidadas",
+      "created": "Missões criadas"
     }
   },
   "footer": {

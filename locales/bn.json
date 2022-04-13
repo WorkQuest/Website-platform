@@ -1923,7 +1923,8 @@
       "requested": "অনুরোধ করা হয়েছে",
       "completed": "সম্পন্ন quest",
       "active": "সক্রিয় quest",
-      "invited": "আমন্ত্রিত quest"
+      "invited": "আমন্ত্রিত quest",
+      "created": "Created quests"
     }
   },
   "footer": {
