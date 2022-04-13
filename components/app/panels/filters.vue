@@ -185,10 +185,6 @@ export default {
 
 .item-btn {
   padding: 0 20px;
-  border: 1px solid transparent;
-  &:hover{
-    //border: 1px solid $black100;
-  }
   &__text {
     margin-right: auto;
 
