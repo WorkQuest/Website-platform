@@ -1921,7 +1921,8 @@
       "responded": "Responded quests",
       "performed": "Performed quests",
       "active": "Active quests",
-      "invited": "Invited quests"
+      "invited": "Invited quests",
+      "created": "Created quests"
     }
   },
   "footer": {
