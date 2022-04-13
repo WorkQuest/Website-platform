@@ -43,7 +43,7 @@
           </base-btn>
           <base-btn
             data-selector="SUBMIT"
-            :disabled="!valid"
+            :disabled="!valid || amount <= 0"
             @click="send()"
           >
             {{ $t('meta.btns.submit') }}

@@ -278,6 +278,7 @@ export default {
               });
               let res = false;
               if (checkTokenPrice && approveAllowed) {
+                // 1 in data this is nonce, required parameter for method "borrow"
                 res = await this.$store.dispatch('crediting/sendMethod', {
                   data: [
                     1,

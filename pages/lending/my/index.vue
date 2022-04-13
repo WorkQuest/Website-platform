@@ -43,7 +43,10 @@
                   {{ data.price }}
                 </div>
               </div>
-              <div class="content__info-data">
+              <div
+                class="content__info-data"
+                :class="`content__info-data_${data.type}`"
+              >
                 <div
                   v-for="(info, key) in data.info"
                   :key="key"
@@ -57,7 +60,10 @@
                   </div>
                 </div>
               </div>
-              <div class="content__buttons">
+              <div
+                class="content__buttons"
+                :class="`content__buttons_${data.type}`"
+              >
                 <base-btn
                   v-for="(button, key) in data.buttons"
                   :key="key"
@@ -99,16 +105,17 @@ export default {
         {
           title: this.$t('crediting.currentCredit'),
           priceTitle: this.$t('crediting.totalWusdDebt'),
-          price: this.$t('meta.coins.count.WUSDCount', { count: this.Floor(+this.convertedCredit) }),
+          price: this.$t('meta.coins.count.WUSDCount', { count: +this.convertedCredit }),
+          type: 'borrow',
           show: this.isHaveCredit,
           info: [
             {
               title: this.$t('crediting.needRefund'),
-              desc: this.$t('meta.coins.count.WUSDCount', { count: this.Floor(+this.fullValueForRefund) }),
+              desc: this.$t('meta.coins.count.WUSDCount', { count: +this.fullValueForRefund }),
             },
             {
               title: this.$t('modals.totalFee'),
-              desc: this.$t('meta.coins.count.WUSDCount', { count: this.Floor(+this.convertedCurrentFee) }),
+              desc: this.$t('meta.coins.count.WUSDCount', { count: +this.convertedCurrentFee }),
             },
             {
               title: this.$t('crediting.dueDate'),
@@ -127,6 +134,7 @@ export default {
           title: this.$t('crediting.currentLoan'),
           priceTitle: this.$t('crediting.totalCollateralLocked'),
           price: this.$t('meta.coins.count.WUSDCount', { count: this.Floor(new BigNumber(this.walletData.amount).shiftedBy(-18).toString()) }),
+          type: 'lend',
           show: this.isHaveLoan,
           info: [
             {
@@ -163,13 +171,13 @@ export default {
       return this.walletData.amount > 0;
     },
     convertedCredit() {
-      return this.amountConvert(this.creditData.credit);
+      return this.Floor(new BigNumber(this.creditData.credit).shiftedBy(-18).toString());
     },
     convertedCurrentFee() {
-      return this.amountConvert(this.currentFee);
+      return this.Floor(new BigNumber(this.currentFee).shiftedBy(-18).toString());
     },
     fullValueForRefund() {
-      return new BigNumber(this.convertedCredit).plus(this.convertedCurrentFee).toString();
+      return this.Floor(new BigNumber(this.convertedCredit).plus(this.convertedCurrentFee).toString());
     },
   },
   async mounted() {
@@ -189,8 +197,7 @@ export default {
     async openModal(action) {
       let maxValue = null;
       if (action === 'refund') {
-        await this.$store.dispatch('crediting/getCurrentFee');
-        maxValue = this.fullValueForRefund;
+        maxValue = new BigNumber(this.creditData.credit).plus(this.currentFee).shiftedBy(-18).toString();
       } else if (action === 'withdraw') {
         maxValue = new BigNumber(this.walletData.amount).shiftedBy(-18).toString();
       }
@@ -206,12 +213,13 @@ export default {
           if (maxValue) {
             maxValue = new BigNumber(maxValue).shiftedBy(18).toString();
           }
+          console.log(maxValue);
+          console.log(new BigNumber(this.creditData.credit).plus(this.currentFee).toString());
           if (+value.toString() === +maxValue && action === 'refund') {
-            value = value.plus(10000).toString();
-          } else {
-            value = value.toString();
+            value = new BigNumber(this.creditData.credit).plus(this.currentFee).toString();
           }
           const valueWithoutFee = new BigNumber(amount).shiftedBy(18).minus(feeData).toString();
+          // 1 in data this is nonce, required parameter for method "refund"
           switch (action) {
             case 'refund':
               payload = {
@@ -251,6 +259,9 @@ export default {
               this.$store.dispatch('crediting/getRewards'),
             ]);
             this.ShowModalSuccess(this.$t(`modals.successfulMethods.${action}`));
+            if (!this.isHaveCredit && !this.isHaveLoan) {
+              await this.$router.push(Path.LENDING);
+            }
           } else {
             this.ShowModalFail(this.$t('modals.transactionFail'));
           }
@@ -264,11 +275,19 @@ export default {
         address: process.env.WORKNET_LENDING,
       });
       if (res.ok) {
+        await Promise.all([
+          this.$store.dispatch('crediting/getCreditData'),
+          this.$store.dispatch('crediting/getWalletsData'),
+          this.$store.dispatch('crediting/getRewards'),
+        ]);
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/transactionSend.svg'),
           title: this.$t('modals.successfulMethod.claim'),
         });
+        if (!this.isHaveCredit && !this.isHaveLoan) {
+          await this.$router.push(Path.LENDING);
+        }
       } else {
         this.ShowModal({
           key: modals.status,
@@ -276,9 +295,6 @@ export default {
           title: this.$t('modals.transactionFail'),
         });
       }
-    },
-    amountConvert(value) {
-      return new BigNumber(value).shiftedBy(-18).toString();
     },
   },
 };
@@ -456,11 +472,43 @@ export default {
   }
 
   @include _575 {
+    .content {
+      &__info-data {
+        &_borrow {
+          grid-template-rows: repeat(2, 1fr);
+          grid-template-columns: repeat(2, 1fr);
+        }
+        &_lend {
+          grid-template-columns: auto;
+        }
+      }
+      &__buttons {
+        &_borrow {
+          grid-template-columns: auto;
+        }
+      }
+    }
     .info-data {
       &__info-block {
         display: grid;
         grid-gap: 10px;
         align-content: center;
+      }
+    }
+  }
+  @include _350 {
+    .content {
+      &__buttons {
+        &_lend {
+          grid-template-columns: auto;
+          grid-template-rows: repeat(3, 1fr);
+        }
+      }
+      &__info-data {
+        &_borrow {
+          grid-template-columns: auto;
+          grid-template-rows: repeat(3, 1fr);
+        }
       }
     }
   }
