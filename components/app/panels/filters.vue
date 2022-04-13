@@ -177,10 +177,6 @@ export default {
   &__item, &__item-btn {
     min-width: 180px;
   }
-  &__item-btn{
-      background-color: red !important;
-  }
-
 }
 
 .item-btn {
