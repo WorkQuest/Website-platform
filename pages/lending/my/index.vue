@@ -5,7 +5,7 @@
         <base-btn
           class="btn"
           data-selector="BACK-TO-CREDITING"
-          @click="handleBackToCrediting()"
+          @click="handleBackToLending()"
         >
           <template v-slot:left>
             <span class="icon-chevron_left" />
@@ -83,6 +83,7 @@ import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { WQBorrowing, WQLending } from '~/abi/abi';
+import { Path } from '~/utils/enums';
 
 export default {
   computed: {
@@ -182,8 +183,8 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    handleBackToCrediting() {
-      this.$router.push('/crediting');
+    handleBackToLending() {
+      this.$router.push(Path.LENDING);
     },
     async openModal(action) {
       let maxValue = null;
@@ -217,7 +218,7 @@ export default {
                 value,
                 data: [1, valueWithoutFee],
                 method: 'refund',
-                methodAbi: WQBorrowing,
+                abi: WQBorrowing,
                 address: process.env.WORKNET_BORROWING,
               };
               break;
@@ -225,7 +226,7 @@ export default {
               payload = {
                 data: [value],
                 method: 'withdraw',
-                methodAbi: WQLending,
+                abi: WQLending,
                 address: process.env.WORKNET_LENDING,
               };
               break;
@@ -234,7 +235,7 @@ export default {
                 value,
                 data: [],
                 method: 'deposit',
-                methodAbi: WQLending,
+                abi: WQLending,
                 address: process.env.WORKNET_LENDING,
               };
               break;
@@ -249,17 +250,9 @@ export default {
               this.$store.dispatch('crediting/getWalletsData'),
               this.$store.dispatch('crediting/getRewards'),
             ]);
-            this.ShowModal({
-              key: modals.status,
-              img: require('~/assets/img/ui/transactionSend.svg'),
-              title: this.$t(`modals.successfulMethods.${action}`),
-            });
+            this.ShowModalSuccess(this.$t(`modals.successfulMethods.${action}`));
           } else {
-            this.ShowModal({
-              key: modals.status,
-              img: require('~/assets/img/ui/warning.svg'),
-              title: this.$t('modals.transactionFail'),
-            });
+            this.ShowModalFail(this.$t('modals.transactionFail'));
           }
         },
       });
@@ -267,7 +260,7 @@ export default {
     async sendClaim() {
       const res = await this.$store.dispatch('crediting/sendMethod', {
         method: 'claim',
-        methodAbi: WQLending,
+        abi: WQLending,
         address: process.env.WORKNET_LENDING,
       });
       if (res.ok) {

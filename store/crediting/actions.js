@@ -9,27 +9,25 @@ import {
   success,
   error,
 } from '~/utils/web3';
-import * as abi from '~/abi/abi';
+import { WQBorrowing, WQLending } from '~/abi/abi';
 
 export default {
   async getCreditData({ commit }) {
-    const address = await getWalletAddress();
     const res = await fetchContractData(
       'borrowers',
-      abi.WQBorrowing,
+      WQBorrowing,
       process.env.WORKNET_BORROWING,
-      [address],
+      [getWalletAddress()],
       GetWalletProvider(),
     );
     commit('setCreditData', res);
   },
   async getWalletsData({ commit }) {
-    const address = await getWalletAddress();
     const res = await fetchContractData(
       'wallets',
-      abi.WQLending,
+      WQLending,
       process.env.WORKNET_LENDING,
-      [address],
+      [getWalletAddress()],
       GetWalletProvider(),
     );
     commit('setWalletsData', res);
@@ -44,36 +42,33 @@ export default {
     }
   },
   async getRewards({ commit }) {
-    const address = await getWalletAddress();
     const res = await fetchContractData(
       'getRewards',
-      abi.WQLending,
+      WQLending,
       process.env.WORKNET_LENDING,
-      [address],
+      [getWalletAddress()],
       GetWalletProvider(),
     );
     commit('setRewards', res);
   },
   async getCurrentFee({ commit }) {
-    const address = await getWalletAddress();
     const res = await fetchContractData(
       'getCurrentFee',
-      abi.WQBorrowing,
+      WQBorrowing,
       process.env.WORKNET_BORROWING,
-      [address],
+      [getWalletAddress()],
       GetWalletProvider(),
     );
     commit('setCurrentFee', res);
     return res;
   },
-  async sendMethod({ commit }, payload) {
-    const {
-      method, address, methodAbi, data, value,
-    } = payload;
+  async sendMethod({ commit }, {
+    method, address, abi, data, value,
+  }) {
     try {
       await sendWalletTransaction(method, {
         address,
-        abi: methodAbi,
+        abi,
         data,
         value,
       });

@@ -50,7 +50,6 @@ export default {
   changeRoleSecureCheck: 'changeRoleSecureCheck',
   chooseNecessarySkills: 'chooseNecessarySkills',
   creditingLoan: 'creditingLoan',
-  confirmLoanDetails: 'confirmLoanDetails',
   smsVerification: 'smsVerification',
   reviewDetails: 'reviewDetails',
   chatCreate: 'chatCreate',

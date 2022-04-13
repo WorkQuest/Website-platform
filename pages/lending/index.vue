@@ -38,7 +38,7 @@
               <base-btn
                 class="btn"
                 data-selector="MY-LOANS"
-                @click="$router.push('/crediting/my')"
+                @click="handleGoToLendingMy()"
               >
                 {{ $t('crediting.myLoans') }}
               </base-btn>
@@ -144,6 +144,7 @@ import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { getGasPrice } from '~/utils/wallet';
 import { WQOracle, WQBorrowing, WQLending } from '~/abi/abi';
+import { Path } from '~/utils/enums';
 
 export default {
   data() {
@@ -238,13 +239,15 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    handleGoToLendingMy() {
+      this.$router.push(`${Path.LENDING}/my`);
+    },
     openCreditingDepositModal() {
       this.ShowModal({
         key: modals.creditingDeposit,
-        submit: async (data) => {
-          const {
-            fundsSource, selFundID, checkpoints, selCurrencyID, datesNumber, date, quantity,
-          } = data;
+        submit: async ({
+          fundsSource, selFundID, checkpoints, selCurrencyID, datesNumber, date, quantity,
+        }) => {
           const receiptData = [
             {
               title: this.$t('crediting.chosenSource'),
@@ -284,7 +287,7 @@ export default {
                     symbol,
                   ],
                   method: 'borrow',
-                  methodAbi: WQBorrowing,
+                  abi: WQBorrowing,
                   address: process.env.WORKNET_BORROWING,
                 });
               }
@@ -295,16 +298,10 @@ export default {
                   img: require('~/assets/img/ui/transactionSend.svg'),
                   title: this.$t('modals.depositIsOpened'),
                   subtitle: '',
-                  path: 'crediting/my',
+                  path: `${Path.LENDING}/my`,
                 });
               } else {
-                this.ShowModal({
-                  key: modals.status,
-                  img: require('~/assets/img/ui/warning.svg'),
-                  title: this.$t('modals.transactionFail'),
-                  recipient: '',
-                  subtitle: this.$t('modals.errors.error'),
-                });
+                this.ShowModalFail(this.$t('modals.transactionFail'));
               }
             },
           });
@@ -320,7 +317,7 @@ export default {
             value: new BigNumber(quantity).shiftedBy(18).toString(),
             data: [],
             method: 'deposit',
-            methodAbi: WQLending,
+            abi: WQLending,
             address: process.env.WORKNET_LENDING,
           });
           this.SetLoader(false);
@@ -330,15 +327,11 @@ export default {
               img: require('~/assets/img/ui/transactionSend.svg'),
               title: this.$t('modals.loanIsOpened'),
               subtitle: '',
-              path: 'crediting/my',
+              path: `${Path.LENDING}/my`,
             });
             return;
           }
-          this.ShowModal({
-            key: modals.status,
-            img: require('~/assets/img/ui/warning.svg'),
-            title: this.$t('modals.transactionFail'),
-          });
+          this.ShowModalFail(this.$t('modals.transactionFail'));
         },
       });
     },

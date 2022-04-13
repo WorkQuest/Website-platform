@@ -242,7 +242,6 @@ Vue.mixin({
       });
     },
     ShowModalFail(title = '') {
-      console.log(title);
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/warning.svg'),
