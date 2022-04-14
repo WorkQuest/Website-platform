@@ -86,8 +86,8 @@ export default {
         { name: this.$t('myQuests.statuses.favorites'), id: 1 },
         { name: this.$t('myQuests.statuses.created'), id: 0 },
         { name: this.$t('myQuests.statuses.responded'), id: 2 },
-        { name: this.$t('myQuests.statuses.active'), id: 3 },
         { name: this.$t('myQuests.statuses.invited'), id: 4 },
+        { name: this.$t('myQuests.statuses.active'), id: 3 },
         { name: this.$t('myQuests.statuses.performed'), id: 5 },
       ];
       return this.userRole === UserRole.EMPLOYER
@@ -152,15 +152,6 @@ export default {
       this.selectedTab = id;
       this.requestParams.query.offset = 0;
       this.requestParams.query.starred = id === 1;
-
-      /*
-      if (id === null) delete this.requestParams.query['statuses[0]'];
-      else if (id === 0) this.requestParams.query['statuses[0]'] = QuestStatuses.Created;
-      else if (id === 2) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitConfirm;
-      else if (id === 4) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorker;
-      else if (id === 3) this.requestParams.query['statuses[0]'] = QuestStatuses.Active;
-      else if (id === 5) this.requestParams.query['statuses[0]'] = QuestStatuses.Done;
-       */
 
       if (id === null) delete this.requestParams.query['statuses[0]'];
       else if (id === 0) this.requestParams.query['statuses[0]'] = QuestStatuses.Created;
