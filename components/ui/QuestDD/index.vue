@@ -20,7 +20,7 @@
         <div class="menu menu__items">
           <div class="menu__container">
             <div
-              v-if="[$options.QuestStatuses.Created, $options.QuestStatuses.WaitWorkerOnAssign].includes(questData.status)"
+              v-if="canRasieViews"
               class="menu__item"
               :data-selector="`ACTION-BTN-TO-RAISING-VIEWS-${questIndex}`"
               @click="toRaisingViews"
@@ -101,8 +101,11 @@ export default {
       userRole: 'user/getUserRole',
       questData: 'quests/getQuest',
     }),
+    canRaiseViews() {
+      return [QuestStatuses.Created, QuestStatuses.WaitWorkerOnAssign].includes(this.item.status || this.questData.status);
+    },
     canEditOrDelete() {
-      return this.questData.status === QuestStatuses.Created;
+      return this.item ? this.item.status === QuestStatuses.Created : this.questData.status === QuestStatuses.Created;
     },
   },
   methods: {

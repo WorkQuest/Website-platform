@@ -33,7 +33,7 @@
             data-selector="PRICE-FIELD"
             :label="$t('meta.price')"
             placeholder="0 WUSD"
-            rules="required|decimal|decimalPlaces:16|min_bn:1"
+            rules="required|decimal|decimalPlaces:16|min_value:1"
             :name="$t('meta.price')"
           />
         </div>

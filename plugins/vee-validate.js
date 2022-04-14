@@ -168,7 +168,7 @@ extend('max_bn', {
   message: 'Value must be less than or equal {max}',
 });
 
-extend('min_bn', {
+extend('min_value', {
   validate(value, { min }) {
     return {
       required: true,
