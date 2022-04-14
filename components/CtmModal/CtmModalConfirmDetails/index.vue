@@ -57,8 +57,9 @@ export default {
       this.CloseModal();
     },
     async openStatusModal() {
+      const { submit } = this.options;
       this.CloseModal();
-      await this.options.submit();
+      await submit();
     },
   },
 };

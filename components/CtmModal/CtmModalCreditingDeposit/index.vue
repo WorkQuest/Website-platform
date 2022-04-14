@@ -107,19 +107,6 @@
             </div>
           </div>
         </div>
-        <div class="content__zone zone">
-          <div
-            v-for="(item, i) in abouts"
-            :key="i"
-          >
-            <div class="zone__title">
-              {{ item.title }}
-            </div>
-            <div class="zone__subtitle">
-              {{ item.subtitle }}
-            </div>
-          </div>
-        </div>
       </div>
       <div class="content__buttons buttons">
         <base-btn
@@ -233,9 +220,9 @@ export default {
   methods: {
     hide() { this.CloseModal(); },
     async openConfirmDetailsModal() {
+      const { submit } = this.options;
       const {
         fundsSource, selFundID, checkpoints, selCurrencyID, datesNumber, date, quantity,
-        options: { submit },
       } = this;
       this.hide();
       await submit({
@@ -254,7 +241,6 @@ export default {
 
 <style lang="scss" scoped>
 .deposit {
-  max-width: 943px !important;
   height: auto !important;
   padding: 0!important;
   &__content{
@@ -287,7 +273,7 @@ export default {
   }
   &__grid{
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: auto;
     gap: 25px;
   }
   &__checkpoints {

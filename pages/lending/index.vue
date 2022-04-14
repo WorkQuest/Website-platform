@@ -157,8 +157,10 @@ export default {
     ...mapGetters({
       isWalletConnected: 'wallet/getIsWalletConnected',
       creditData: 'crediting/getCreditData',
-      currentPrice: 'oracle/getCurrentPrice',
+      currentPrices: 'oracle/getCurrentPrices',
       walletData: 'crediting/getWalletData',
+      prices: 'oracle/getPrices',
+      symbols: 'oracle/getSymbols',
     }),
     documents() {
       return [
@@ -234,7 +236,7 @@ export default {
     if (!this.isWalletConnected) return;
     await Promise.all([
       this.$store.dispatch('crediting/getCreditData'),
-      this.$store.dispatch('oracle/getCurrentPrice'),
+      this.$store.dispatch('oracle/getCurrentPrices'),
       this.$store.dispatch('crediting/getWalletsData'),
     ]);
     this.SetLoader(false);
@@ -279,9 +281,9 @@ export default {
               });
               let res = false;
               if (checkTokenPrice && approveAllowed) {
-                // 1 in data this is nonce, required parameter for method "borrow"
                 res = await this.$store.dispatch('crediting/sendMethod', {
                   data: [
+                    // 1 in data this is nonce, required parameter for method "borrow"
                     1,
                     valueWithDecimals,
                     selFundID - 1,
@@ -338,20 +340,19 @@ export default {
       });
     },
     async setTokenPrice() {
-      const {
-        nonce, prices, v, r, s, symbols,
-      } = this.currentPrice;
-      const resultGasSetTokenPrices = await getGasPrice(WQOracle, process.env.WORKNET_ORACLE, 'setTokenPricesUSD', [nonce, v, r, s, prices, symbols]);
-      if (resultGasSetTokenPrices.gas && resultGasSetTokenPrices.gasPrice) {
+      const { nonce } = this.currentPrices;
+      const attr = Object.keys(this.currentPrices).map((key) => this.currentPrices[key]);
+      attr.push(this.prices);
+      attr.push(this.symbols);
+      const { gas, gasPrice } = await getGasPrice(WQOracle, process.env.WORKNET_ORACLE, 'setTokenPricesUSD', attr);
+      if (gas && gasPrice) {
         const { ok } = await this.$store.dispatch('crediting/setTokenPrices', {
-          gasPrice: resultGasSetTokenPrices.gasPrice,
-          gas: resultGasSetTokenPrices.gas,
+          gasPrice,
+          gas,
           timestamp: nonce,
-          v,
-          r,
-          s,
-          prices,
-          symbols,
+          ...this.currentPrices,
+          prices: this.prices,
+          symbols: this.symbols,
         });
         return ok;
       }

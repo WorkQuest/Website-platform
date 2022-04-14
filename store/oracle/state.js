@@ -1,5 +1,7 @@
 export default () => ({
-  currentPrice: {},
+  currentPrices: {},
+  prices: [],
+  symbols: [],
   securityRatio: {},
   desiredSecurityRatio: {},
 });
