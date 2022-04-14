@@ -1,5 +1,8 @@
 <template>
-  <div class="icon-more">
+  <div
+    class="icon-more"
+    :class="{'invisible':isInvisible}"
+  >
     <button
       v-click-outside="closeChatMenu"
       class="chat__button chat__button_menu"
@@ -34,7 +37,7 @@
             </template>
             <template v-else>
               <div
-                v-if="!canILeave"
+                v-if="isOpenDispute"
                 class="chat-menu__item"
                 @click="showOpenADisputeModal()"
               >
@@ -58,6 +61,9 @@
 <script>
 import ClickOutside from 'vue-click-outside';
 import { mapGetters } from 'vuex';
+import {
+  ChatType, DisputeStatues, Path, QuestStatuses,
+} from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -84,6 +90,13 @@ export default {
     ...mapGetters({
       currChat: 'chat/getCurrChatInfo',
     }),
+    isOpenDispute() {
+      return !this.canILeave && this.$route.query.type === ChatType.QUEST;
+    },
+    isInvisible() {
+      const { type, status } = this.$route.query;
+      return type === ChatType.QUEST && ![QuestStatuses.Active, QuestStatuses.Dispute].includes(+status);
+    },
   },
   methods: {
     changeStarredVal() {
@@ -94,11 +107,14 @@ export default {
     },
     showOpenADisputeModal() {
       this.closeChatMenu();
-      // TODO: добавить вывод окна, на добавление диспута, после завершения логики на странице чата
-      // this.ShowModal({
-      //   key: modals.openADispute,
-      //   questId: this.questId,
-      // });
+      if (!this.$route.query.dispute && +this.$route.query.dispute !== DisputeStatues.PENDING) {
+        this.ShowModal({
+          key: modals.openADispute,
+          questId: this.questId,
+        });
+      } else {
+        this.$router.push(`${Path.QUESTS}/${this.$route.query.id}`);
+      }
     },
     toggleChatMenu() {
       this.isShowChatMenu = !this.isShowChatMenu;
@@ -194,6 +210,9 @@ export default {
       color: $black800;
     }
   }
+}
+.invisible{
+  opacity: 0;
 }
 @include _991 {
   .chat {
