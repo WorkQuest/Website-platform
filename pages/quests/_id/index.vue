@@ -567,7 +567,6 @@ export default {
           subtitle: this.$t('quests.workOnQuestAccepted'),
         });
       }
-      console.log('kek');
       await this.getQuest();
       this.SetLoader(false);
     },
@@ -579,6 +578,12 @@ export default {
           img: require('~/assets/img/ui/questAgreed.svg'),
           title: this.$t('meta.questInfo'),
           subtitle: this.$t('quests.workOnQuestRejected'),
+        });
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/questAgreed.svg'),
+          title: 'test',
+          subtitle: 'test',
         });
       }
       await this.getQuest();
@@ -595,12 +600,6 @@ export default {
         });
         await this.getQuest();
       }
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: 'test',
-        subtitle: 'test',
-      });
       this.SetLoader(false);
     },
     async sendARequestOnQuest() {
