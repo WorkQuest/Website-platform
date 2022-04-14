@@ -1922,7 +1922,8 @@
       "requested": "Demandée",
       "completed": "Quêtes terminées",
       "active": "Quêtes actives",
-      "invited": "Quêtes invitées"
+      "invited": "Quêtes invitées",
+      "created": "Quests créées"
     }
   },
   "footer": {

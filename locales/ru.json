@@ -1922,7 +1922,8 @@
       "responded": "Responded quests",
       "performed": "Performed quests",
       "active": "Активные квесты",
-      "invited": "Invited quests"
+      "invited": "Invited quests",
+      "created": "Созданные квесты"
     }
   },
   "footer": {
