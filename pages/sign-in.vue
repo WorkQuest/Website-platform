@@ -64,6 +64,7 @@
             v-model="remember"
             name="remember"
             :label="$t('signIn.remember')"
+            @input="$store.dispatch('user/setRememberMe', remember)"
           />
           <div
             class="auth__text auth__text_link"

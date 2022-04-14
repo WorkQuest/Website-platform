@@ -60,8 +60,7 @@
         />
         <span
           v-else
-          class="dd__caret icon-caret_down"
-          :class="[{'dd__caret_white': type === 'blue' }]"
+          :class="[{'dd__caret_white': type === 'blue' }, isShown ? 'icon-caret_up' :'icon-caret_down', 'dd__caret' ]"
         />
       </button>
       <transition name="fade">
@@ -324,6 +323,10 @@ export default {
     width: 100%;
     background: #FFFFFF;
     border-radius: 6px;
+    border: 1px solid transparent;
+    &:hover {
+      border: 1px solid $black100;
+    }
     &_blue {
       background-color: $blue;
     }
