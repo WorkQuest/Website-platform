@@ -19,7 +19,6 @@ export default function ({ $axios, store, redirect }, inject) {
     const originalRequest = error.config;
     if (error.config.url === '/v1/auth/refresh-tokens') {
       await store.dispatch('user/logout');
-      redirect(Path.SIGN_IN);
     } else if (error.response.status === 401 && !originalRequest._retry) {
       const processQueue = (err, token = null) => {
         failedQueue.forEach((prom) => (err ? prom.reject(err) : prom.resolve(token)));
@@ -30,7 +29,7 @@ export default function ({ $axios, store, redirect }, inject) {
           failedQueue.push({ resolve, reject });
         }))
           .then((token) => {
-            originalRequest.headers.Authorization = `Bearer ${token}`;
+            originalRequest.headers.authorization = `Bearer ${token}`;
             return $axios(originalRequest);
           })
           .catch((err) => Promise.reject(err));
@@ -40,7 +39,7 @@ export default function ({ $axios, store, redirect }, inject) {
       return new Promise(((resolve, reject) => {
         store.dispatch('user/refreshTokens')
           .then((data) => {
-            originalRequest.headers.Authorization = `Bearer ${data.access}`;
+            originalRequest.headers.authorization = `Bearer ${data.access}`;
             processQueue(null, data.access);
             resolve($axios(originalRequest));
           })
