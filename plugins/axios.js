@@ -3,7 +3,7 @@
 import { Path } from '~/utils/enums';
 
 // eslint-disable-next-line
-export default function ({ $axios, store, redirect }, inject) {
+export default function ({ $axios, store, redirect, app }, inject) {
   let isRefreshing = false;
   let failedQueue = [];
   $axios.onRequest((config) => {
@@ -19,6 +19,7 @@ export default function ({ $axios, store, redirect }, inject) {
     const originalRequest = error.config;
     if (error.config.url === '/v1/auth/refresh-tokens') {
       await store.dispatch('user/logout');
+      redirect(Path.SIGN_IN);
     } else if (error.response.status === 401 && !originalRequest._retry) {
       const processQueue = (err, token = null) => {
         failedQueue.forEach((prom) => (err ? prom.reject(err) : prom.resolve(token)));
