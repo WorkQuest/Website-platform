@@ -5,7 +5,7 @@ import {
   getBalance, getContractFeeData,
   getIsWalletConnected,
   getStyledAmount, getWalletAddress, getTransferFeeData,
-  transfer, transferToken, GetWalletProvider, stake, sendWalletTransaction, getFreezed,
+  transfer, transferToken, GetWalletProvider, stake, sendWalletTransaction,
 } from '~/utils/wallet';
 import {
   fetchContractData, success, error,

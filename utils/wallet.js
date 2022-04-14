@@ -462,21 +462,6 @@ export const setTokenPrice = async ({ currency }, {
   }
 };
 
-export const getFreezed = async () => {
-  try {
-    const res = await fetchContractData(
-      'freezed',
-      abi.ERC20,
-      process.env.WORKNET_WQT_TOKEN,
-      [wallet.address],
-      GetWalletProvider(),
-    );
-    return success(res);
-  } catch (e) {
-    console.error('getFreezed; ', e);
-    return false;
-  }
-};
 export const buyWUSD = async ({ collateralBN, ratioBN, currency }, { gasPrice, gas }) => {
   try {
     const inst = new web3.eth.Contract(abi.WQRouter, process.env.WORKNET_ROUTER);
