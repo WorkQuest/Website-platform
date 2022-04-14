@@ -986,6 +986,10 @@
       "depositInfo": "Deposit info",
       "withdrawInfo": "Withdrawal info"
     },
+    "fromAddress": "с",
+    "toAddress": "на",
+    "codeFromSms": "Код из СМС",
+    "saved": "Сохранено",
     "phoneNumber": "Phone Number",
     "value": "Value",
     "generatedWUSD": "WUSD будет сгенерировано",
