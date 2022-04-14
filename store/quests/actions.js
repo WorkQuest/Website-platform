@@ -315,8 +315,6 @@ export default {
       const hash = hashText(description);
       const address = process.env.WORKNET_WQ_FACTORY;
       cost = new BigNumber(cost).shiftedBy(18).toString();
-      depositAmount = new BigNumber(depositAmount).shiftedBy(18).toString();
-      console.log(depositAmount, cost);
       return await getContractFeeData(
         'newWorkQuest',
         WorkQuestFactory,

@@ -29,11 +29,11 @@
         <div class="page__input">
           <base-field
             v-model="price"
-            :type="'number'"
+            type="number"
             data-selector="PRICE-FIELD"
             :label="$t('meta.price')"
             placeholder="0 WUSD"
-            rules="required|decimal"
+            rules="required|decimal|decimalPlaces:16|min_bn:1"
             :name="$t('meta.price')"
           />
         </div>
@@ -153,6 +153,7 @@ import modals from '~/store/modals/modals';
 import {
   PriorityFilter, WorkplaceIndex, TypeOfJobFilter, TokenSymbols,
 } from '~/utils/enums';
+import { CommissionForCreatingAQuest } from '~/utils/quests-constants';
 
 const { GeoCode } = require('geo-coder');
 
@@ -186,7 +187,6 @@ export default {
       userData: 'user/getUserData',
       step: 'quests/getCurrentStepCreateQuest',
       filters: 'quests/getFilters',
-      questsFee: 'wallet/getQuestsFee',
     }),
     runtime() {
       return [
@@ -211,7 +211,7 @@ export default {
     },
     depositAmount() {
       if (!this.price) return '0';
-      return new BigNumber(this.price).multipliedBy(1 + this.questsFee).toString();
+      return new BigNumber(this.price).multipliedBy(1 + CommissionForCreatingAQuest).toString();
     },
   },
   beforeCreate() {
@@ -267,8 +267,6 @@ export default {
       await this.$store.dispatch('wallet/getBalance');
     },
     async createQuest() {
-      if (!this.isWalletConnected) return;
-
       this.SetLoader(true);
       const [feeRes] = await Promise.all([
         this.$store.dispatch('quests/getCreateQuestFeeData', {
@@ -283,7 +281,9 @@ export default {
       // Check: not enough funds to create quest
       if (!feeRes.ok || new BigNumber(feeRes.result.fee).plus(this.depositAmount)
         .isGreaterThan(this.balanceData.WUSD.fullBalance) === true) {
-        this.ShowToast(this.$t('errors.transaction.notEnoughFunds'));
+        this.ShowToast(feeRes.msg.includes('insufficient balance for transfer')
+          ? this.$t('errors.transaction.notEnoughFunds')
+          : feeRes.msg);
         this.SetLoader(false);
         return;
       }

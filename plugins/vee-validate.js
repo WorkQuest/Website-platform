@@ -168,6 +168,17 @@ extend('max_bn', {
   message: 'Value must be less than or equal {max}',
 });
 
+extend('min_bn', {
+  validate(value, { min }) {
+    return {
+      required: true,
+      valid: new BigNumber(value).isGreaterThanOrEqualTo(new BigNumber(min)),
+    };
+  },
+  params: ['min'],
+  message: 'Value must be greater than or equal {min}',
+});
+
 extend('address', {
   validate(value) {
     return {

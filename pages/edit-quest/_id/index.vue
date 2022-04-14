@@ -43,7 +43,7 @@
                 :label="$t('meta.price')"
                 data-selector="PRICE-FIELD"
                 :placeholder="+0 + currency"
-                rules="required|decimal"
+                rules="required|decimal|decimalPlaces:16|min_bn:1"
                 :name="$t('meta.price')"
               />
             </div>
