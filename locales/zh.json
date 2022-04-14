@@ -1300,6 +1300,7 @@
     "newDiscussionLike": "New like on discussion"
   },
   "wallet": {
+    "frozen": "Frozen balance",
     "WUSD": "WUSD 钱包",
     "cryptoWallet": "加密钱包",
     "send": "发送",

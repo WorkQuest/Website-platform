@@ -5,7 +5,7 @@ import {
   getBalance, getContractFeeData,
   getIsWalletConnected,
   getStyledAmount, getWalletAddress, getTransferFeeData,
-  transfer, transferToken, GetWalletProvider, stake, sendWalletTransaction,
+  transfer, transferToken, GetWalletProvider, stake, sendWalletTransaction, getFreezed,
 } from '~/utils/wallet';
 import {
   fetchContractData, success, error,
@@ -22,6 +22,21 @@ import {
 import { WQBridgeToken } from '~/abi/abi';
 
 export default {
+  async frozenBalance({ commit }, { address }) {
+    try {
+      const res = await fetchContractData(
+        'freezed',
+        abi.ERC20,
+        process.env.WORKNET_WQT_TOKEN,
+        [address],
+        GetWalletProvider(),
+      );
+      commit('user/setFrozenBalance', new BigNumber(res).shiftedBy(-18), { root: true });
+      return success(res);
+    } catch (e) {
+      return error(e.message, e);
+    }
+  },
   async getPensionTransactions({ commit, getters }, { method, limit, offset }) {
     try {
       const path = method === PensionHistoryMethods.Update ? 'wallet-update' : method.toLowerCase();

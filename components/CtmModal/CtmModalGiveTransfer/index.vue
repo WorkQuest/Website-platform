@@ -25,6 +25,7 @@
             </span>
             <base-dd
               v-model="ddValue"
+              data-selector="TOKEN"
               :items="tokenSymbolsDd"
             />
           </div>
@@ -64,7 +65,7 @@
             mode="outline"
             data-selector="CANCEL"
             class="buttons__action"
-            @click="hide"
+            @click="CloseModal()"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -85,9 +86,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
-import modals from '~/store/modals/modals';
 import { TokenSymbols } from '~/utils/enums';
-import { error, success } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 
 export default {
@@ -95,7 +94,7 @@ export default {
   data() {
     return {
       recipient: '',
-      amount: '',
+      amount: 0,
       step: 1,
       ddValue: 0,
       maxFee: {
@@ -113,17 +112,24 @@ export default {
       selectedToken: 'wallet/getSelectedToken',
       userData: 'user/getUserData',
       isConnected: 'wallet/getIsWalletConnected',
+      frozenBalance: 'user/getFrozenBalance',
     }),
     tokenSymbolsDd() {
       return Object.keys(TokenSymbols);
     },
     maxAmount() {
-      return this.balance[this.selectedToken].fullBalance || '0';
+      const fullBalance = new BigNumber(this.balance[this.selectedToken].fullBalance);
+      if (this.selectedToken === TokenSymbols.WUSD) return fullBalance.minus(this.maxFee[this.selectedToken]).toString();
+      if (this.selectedToken === TokenSymbols.WQT) {
+        return fullBalance.minus(this.frozenBalance).toString();
+      }
+      return 0;
     },
   },
   watch: {
     ddValue(val) {
       this.$store.dispatch('wallet/setSelectedToken', TokenSymbols[this.tokenSymbolsDd[val]]);
+      this.amount = 0;
     },
     balance: {
       deep: true,
@@ -142,6 +148,16 @@ export default {
     this.isCanSubmit = true;
   },
   methods: {
+    async showWithdrawInfo() {
+      const { submit } = this.options;
+      if (submit) {
+        submit({
+          recipient: this.recipient,
+          amount: this.amount,
+          selectedToken: this.selectedToken,
+        });
+      }
+    },
     replaceDot() {
       this.amount = this.amount.replace(/,/g, '.');
     },
@@ -157,75 +173,14 @@ export default {
           method: 'transfer',
           _abi: abi.ERC20,
           contractAddress: process.env.WORKNET_WQT_TOKEN,
-          data: [process.env.WORKNET_WQT_TOKEN, new BigNumber(this.balance.WQT.fullBalance).shiftedBy(18).toString()],
+          data: [process.env.WORKNET_WQT_TOKEN, this.amount],
         }),
       ]);
-      this.maxFee.WQT = wqt.ok ? wqt.result.fee : 0;
-      this.maxFee.WUSD = wusd.ok ? wusd.result.fee : 0;
-    },
-    hide() {
-      this.CloseModal();
+      this.maxFee.WQT = wqt?.ok ? wqt?.result?.fee : 0;
+      this.maxFee.WUSD = wusd?.ok ? wusd?.result?.fee : 0;
     },
     maxBalance() {
-      if (this.selectedToken === TokenSymbols.WUSD) {
-        const max = new BigNumber(this.maxAmount).minus(this.maxFee[this.selectedToken]);
-        this.amount = max.isGreaterThan(0) ? max.toString() : 0;
-        return;
-      }
       this.amount = this.maxAmount;
-    },
-    async transfer() {
-      let res;
-      if (this.selectedToken === TokenSymbols.WUSD) {
-        res = await this.$store.dispatch('wallet/transfer', {
-          recipient: this.recipient,
-          value: this.amount,
-        });
-      } else if (this.selectedToken === TokenSymbols.WQT) {
-        res = await this.$store.dispatch('wallet/transferWQT', {
-          recipient: this.recipient,
-          value: this.amount,
-        });
-      }
-      if (res?.ok) {
-        return success();
-      }
-      return error();
-    },
-    async showWithdrawInfo() {
-      const { callback } = this.options;
-      this.SetLoader(true);
-      this.hide();
-      let feeRes;
-      if (this.selectedToken === TokenSymbols.WUSD) {
-        feeRes = await this.$store.dispatch('wallet/getTransferFeeData', {
-          recipient: this.recipient,
-          value: this.amount,
-        });
-      } else {
-        feeRes = await this.$store.dispatch('wallet/getContractFeeData', {
-          method: 'transfer',
-          _abi: abi.ERC20,
-          contractAddress: process.env.WORKNET_WQT_TOKEN,
-          data: [this.recipient, new BigNumber(this.amount).shiftedBy(18).toString()],
-        });
-      }
-      this.SetLoader(false);
-      this.ShowModal({
-        key: modals.transactionReceipt,
-        fields: {
-          from: { name: this.$t('meta.fromBig'), value: this.userData.wallet.address },
-          to: { name: this.$t('meta.toBig'), value: this.recipient },
-          amount: {
-            name: this.$t('modals.amount'),
-            value: this.amount,
-            symbol: this.selectedToken, // REQUIRED!
-          },
-          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WUSD },
-        },
-        submitMethod: async () => await this.transfer(),
-        callback,
-      });
     },
   },
 };
@@ -233,17 +188,17 @@ export default {
 
 <style lang="scss" scoped>
 
-.transfer{
+.transfer {
   max-width: 500px !important;
   padding: 0!important;
-  &__content{
+  &__content {
     padding: 20px 28px 30px 28px!important;
   }
 }
 .buttons {
   display: flex;
   justify-content: space-between;
-  &__action{
+  &__action {
     width: 212px!important;
     &:not(:last-child) {
       margin-right: 10px;
@@ -251,18 +206,18 @@ export default {
   }
 }
 
-.input{
-  &__field{
+.input {
+  &__field {
     margin-top: 5px;
   }
 }
-.content{
+.content {
   &__step {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
   }
-  &__panel{
+  &__panel {
     @include text-simple;
     font-weight: 400;
     font-size: 16px;
@@ -275,7 +230,7 @@ export default {
       padding: 0 0 12px 0;
     }
   }
-  &__card{
+  &__card {
     margin: 40px auto;
   }
   &__text {
@@ -285,13 +240,13 @@ export default {
     text-align: center;
   }
 }
-.grid{
-  &__title{
+.grid {
+  &__title {
     margin: 15px 5px 0 0;
   }
 }
-.max{
-  &__button{
+.max {
+  &__button {
     margin-right: 10px!important;
     background-color: transparent!important;
   }

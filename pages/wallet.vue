@@ -27,10 +27,14 @@
                 <span class="balance__currency-text">
                   {{ balance[selectedToken].balance + ' ' + selectedToken }}
                 </span>
-                <span class="balance__usd_mobile">
-                  <span v-if="selectedToken === tokenSymbols.WUSD">
-                    {{ `$ ${balance[tokenSymbols.WUSD].balance}` }}
+                <span
+                  v-if="selectedToken === tokenSymbols.WQT"
+                  class="balance__usd-mobile"
+                >
+                  <span class="balance__usd-mobile_blue">
+                    {{ $t('wallet.frozen') }}
                   </span>
+                  {{ $tc('meta.coins.count.WQTCount', frozenBalance ) }}
                 </span>
                 <base-dd
                   v-model="ddValue"
@@ -39,9 +43,15 @@
                   data-selector="TOKENS"
                 />
               </span>
-              <span class="balance__usd">
-                <span v-if="selectedToken === tokenSymbols.WUSD">
-                  {{ `$ ${balance[tokenSymbols.WUSD].balance}` }}
+              <span :class="[{'balance__currency__margin-bottom' : selectedToken !== tokenSymbols.WQT}]">
+                <span
+                  v-if="selectedToken === tokenSymbols.WQT"
+                  class="balance__usd balance__usd_blue"
+                >
+                  <span class="balance__usd">
+                    {{ $t('wallet.frozen') }}
+                  </span>
+                  {{ $tc('meta.coins.count.WQTCount', Number(frozenBalance.toString()).toFixed(4) ) }}
                 </span>
               </span>
             </div>
@@ -73,7 +83,7 @@
               class="card__btn"
               mode="outline"
               :disabled="true"
-              @click="showAddCardModal()"
+              @click="showModal({key: 'addCard', branchText: 'adding' })"
             >
               {{ $t('wallet.addCard') }}
             </base-btn>
@@ -131,10 +141,12 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
+import * as abi from '~/abi/abi';
 import { TokenSymbolByContract, TokenSymbols, WalletTables } from '~/utils/enums';
 import { getStyledAmount } from '~/utils/wallet';
 import EmptyData from '~/components/app/info/emptyData';
 import CollateralTable from '~/components/app/pages/wallet/CollateralTable';
+import { error, success } from '~/utils/web3';
 
 export default {
   name: 'Wallet',
@@ -182,6 +194,7 @@ export default {
       userWalletAddress: 'user/getUserWalletAddress',
       balance: 'wallet/getBalanceData',
       selectedToken: 'wallet/getSelectedToken',
+      frozenBalance: 'user/getFrozenBalance',
     }),
     walletTables() {
       console.log('userInfo', this.userInfo);
@@ -279,6 +292,7 @@ export default {
         await this.$store.dispatch('wallet/getBalanceWBNB', this.userWalletAddress),
         await this.$store.dispatch('wallet/getBalanceWETH', this.userWalletAddress),
         await this.$store.dispatch('wallet/getBalanceWQT', this.userWalletAddress),
+        this.$store.dispatch('wallet/frozenBalance', { address: this.userWalletAddress }),
         this.getTransactions(),
       ]);
       this.SetLoader(false);
@@ -286,27 +300,61 @@ export default {
     closeCard() {
       this.cardClosed = true;
     },
+    showModal({ key, branchText }) {
+      this.ShowModal({
+        key: modals[key],
+        branch: branchText,
+      });
+    },
     showTransferModal() {
       this.ShowModal({
         key: modals.giveTransfer,
-        callback: async () => await this.loadData(),
-      });
-    },
-    showDepositModal() {
-      this.ShowModal({
-        key: modals.giveDeposit,
-      });
-    },
-    showWithdrawModal() {
-      this.ShowModal({
-        key: modals.takeWithdraw,
-        branch: 'withdraw',
-      });
-    },
-    showAddCardModal() {
-      this.ShowModal({
-        key: modals.addingCard,
-        branch: 'adding',
+        submit: async ({ recipient, amount, selectedToken }) => {
+          const value = new BigNumber(amount).shiftedBy(18).toString();
+          let feeRes;
+          if (selectedToken === TokenSymbols.WUSD) {
+            feeRes = await this.$store.dispatch('wallet/getTransferFeeData', {
+              recipient,
+              value: amount,
+            });
+          } else {
+            feeRes = await this.$store.dispatch('wallet/getContractFeeData', {
+              method: 'transfer',
+              _abi: abi.ERC20,
+              contractAddress: process.env.WORKNET_WQT_TOKEN,
+              data: [recipient, value],
+            });
+          }
+          this.ShowModal({
+            key: modals.transactionReceipt,
+            fields: {
+              from: { name: this.$t('modals.fromAddress'), value: this.userData.wallet.address },
+              to: { name: this.$t('modals.toAddress'), value: recipient },
+              amount: {
+                name: this.$t('modals.amount'),
+                value: amount,
+                symbol: selectedToken, // REQUIRED!
+              },
+              fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WUSD },
+            },
+            submitMethod: async () => {
+              this.CloseModal();
+              this.SetLoader(true);
+              const action = selectedToken === TokenSymbols.WUSD ? 'transfer' : 'transferWQT';
+              const res = await this.$store.dispatch(`wallet/${action}`, {
+                recipient,
+                value: amount,
+              });
+              this.SetLoader(false);
+              if (res?.ok) {
+                await this.loadData();
+                await this.ShowModal({ key: 'transactionSend' });
+                return success();
+              }
+              return error();
+            },
+          });
+        },
       });
     },
   },
@@ -461,10 +509,13 @@ export default {
     font-weight: 600;
     font-size: 35px;
     line-height: 130%;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    &__margin-bottom {
+      margin-bottom: 25px;
+    }
 
     @include _767 {
       font-size: 26px;
@@ -487,14 +538,20 @@ export default {
 
   &__usd {
     @include text-simple;
-    color: $blue;
     height: 24px;
-    &_mobile {
+    color: $black800;
+    &_blue {
+      color: $blue;
+    }
+    &-mobile {
       display: none;
       height: 33px;
-      color: $blue;
+      color: $black800;
       font-size: 18px;
       font-weight: normal;
+      &_blue {
+        color: $blue;
+      }
     }
   }
 }

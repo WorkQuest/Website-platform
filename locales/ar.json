@@ -1300,6 +1300,7 @@
     "newDiscussionLike": "New like on discussion"
   },
   "wallet": {
+    "frozen": "Frozen balance",
     "WUSD": "محفظة WUSD",
     "cryptoWallet": "محفظة العملات المشفرة",
     "send": "إرسال",

@@ -1300,6 +1300,7 @@
     "newDiscussionLike": "New like on discussion"
   },
   "wallet": {
+    "frozen": "Frozen balance",
     "WUSD": "Carteira WUSD",
     "cryptoWallet": "Carteira cripto",
     "send": "Enviar",

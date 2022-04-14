@@ -165,7 +165,7 @@ extend('max_bn', {
     };
   },
   params: ['max'],
-  message: 'Value must be less than or equal {max}',
+  message: 'Value must be more than or equal {max}',
 });
 
 extend('address', {
