@@ -3,7 +3,7 @@
 import { Path } from '~/utils/enums';
 
 // eslint-disable-next-line
-export default function ({ $axios, store, redirect, app }, inject) {
+export default function ({ $axios, store, redirect }, inject) {
   let isRefreshing = false;
   let failedQueue = [];
   $axios.onRequest((config) => {
@@ -40,8 +40,8 @@ export default function ({ $axios, store, redirect, app }, inject) {
       return new Promise(((resolve, reject) => {
         store.dispatch('user/refreshTokens')
           .then((data) => {
-            originalRequest.headers.authorization = `Bearer ${data.access}`;
-            processQueue(null, data.access);
+            originalRequest.headers.authorization = `Bearer ${data.result.access}`;
+            processQueue(null, data.result.access);
             resolve($axios(originalRequest));
           })
           .catch((err) => {
