@@ -87,7 +87,7 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import { TokenSymbols } from '~/utils/enums';
-import * as abi from '~/abi/abi';
+import { ERC20, WQBridgeToken } from '~/abi/abi';
 
 export default {
   name: 'ModalTakeTransfer',
@@ -172,19 +172,19 @@ export default {
         }),
         this.$store.dispatch('wallet/getContractFeeData', {
           method: 'transfer',
-          _abi: abi.ERC20,
+          _abi: ERC20,
           contractAddress: process.env.WORKNET_WQT_TOKEN,
           data: [process.env.WORKNET_WQT_TOKEN, this.amount],
         }),
         this.$store.dispatch('wallet/getContractFeeData', {
           method: 'transfer',
-          _abi: abi.WQBridgeToken,
+          _abi: WQBridgeToken,
           contractAddress: process.env.WORKNET_WBNB_TOKEN,
           data: [process.env.WORKNET_WBNB_TOKEN, this.amount],
         }),
         this.$store.dispatch('wallet/getContractFeeData', {
           method: 'transfer',
-          _abi: abi.WQBridgeToken,
+          _abi: WQBridgeToken,
           contractAddress: process.env.WORKNET_WETH_TOKEN,
           data: [process.env.WORKNET_WETH_TOKEN, this.amount],
         }),
