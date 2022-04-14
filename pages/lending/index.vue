@@ -36,6 +36,7 @@
             >
             <div class="btn-group">
               <base-btn
+                v-if="isHaveCredit || isHaveLoan"
                 class="btn"
                 data-selector="MY-LOANS"
                 @click="handleGoToLendingMy()"

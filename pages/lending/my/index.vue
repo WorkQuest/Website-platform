@@ -70,7 +70,7 @@
                   :data-selector="button.title.toUpperCase()"
                   :mode="button.mode"
                   :disabled="button.disabled"
-                  @click="button.action === 'claim' ? sendClaim() : openModal(button.action)"
+                  @click="openModal(button.action)"
                 >
                   {{ button.title }}
                 </base-btn>
@@ -99,6 +99,7 @@ export default {
       walletData: 'crediting/getWalletData',
       rewardsData: 'crediting/getRewards',
       currentFee: 'crediting/getCurrentFee',
+      balanceData: 'wallet/getBalanceData',
     }),
     blocksData() {
       return [
@@ -187,6 +188,7 @@ export default {
       this.$store.dispatch('crediting/getWalletsData'),
       this.$store.dispatch('crediting/getRewards'),
       this.$store.dispatch('crediting/getCurrentFee'),
+      this.$store.dispatch('wallet/getBalance'),
     ]);
     this.SetLoader(false);
   },
@@ -195,105 +197,89 @@ export default {
       this.$router.push(Path.LENDING);
     },
     async openModal(action) {
-      let maxValue = null;
-      if (action === 'refund') {
-        maxValue = new BigNumber(this.creditData.credit).plus(this.currentFee).shiftedBy(-18).toString();
-      } else if (action === 'withdraw') {
-        maxValue = new BigNumber(this.walletData.amount).shiftedBy(-18).toString();
-      }
       this.ShowModal({
         key: modals.valueSend,
         mode: action,
-        maxValue,
+        maxValue: this.maxValue(action),
+        // eslint-disable-next-line consistent-return
         submit: async (amount) => {
           this.SetLoader(true);
-          let payload = {};
-          const feeData = await this.$store.dispatch('crediting/getCurrentFee');
-          let value = new BigNumber(amount).shiftedBy(18);
-          if (maxValue) {
-            maxValue = new BigNumber(maxValue).shiftedBy(18).toString();
-          }
-          console.log(maxValue);
-          console.log(new BigNumber(this.creditData.credit).plus(this.currentFee).toString());
-          if (+value.toString() === +maxValue && action === 'refund') {
-            value = new BigNumber(this.creditData.credit).plus(this.currentFee).toString();
-          }
-          const valueWithoutFee = new BigNumber(amount).shiftedBy(18).minus(feeData).toString();
-          // 1 in data this is nonce, required parameter for method "refund"
-          switch (action) {
-            case 'refund':
-              payload = {
-                value,
-                data: [1, valueWithoutFee],
-                method: 'refund',
-                abi: WQBorrowing,
-                address: process.env.WORKNET_BORROWING,
-              };
-              break;
-            case 'withdraw':
-              payload = {
-                data: [value],
-                method: 'withdraw',
-                abi: WQLending,
-                address: process.env.WORKNET_LENDING,
-              };
-              break;
-            case 'deposit':
-              payload = {
-                value,
-                data: [],
-                method: 'deposit',
-                abi: WQLending,
-                address: process.env.WORKNET_LENDING,
-              };
-              break;
-            default:
-              console.log('default');
-          }
+          const payload = this[action](amount);
           const res = await this.$store.dispatch('crediting/sendMethod', payload);
           this.SetLoader(false);
-          if (res.ok) {
-            await Promise.all([
-              this.$store.dispatch('crediting/getCreditData'),
-              this.$store.dispatch('crediting/getWalletsData'),
-              this.$store.dispatch('crediting/getRewards'),
-            ]);
-            this.ShowModalSuccess(this.$t(`modals.successfulMethods.${action}`));
-            if (!this.isHaveCredit && !this.isHaveLoan) {
-              await this.$router.push(Path.LENDING);
-            }
-          } else {
-            this.ShowModalFail(this.$t('modals.transactionFail'));
-          }
+          await this.resultValidation(res, action);
         },
       });
     },
-    async sendClaim() {
-      const res = await this.$store.dispatch('crediting/sendMethod', {
+    refund(amount) {
+      const maxValue = new BigNumber(this.creditData.credit).plus(this.currentFee).shiftedBy(-18).toString();
+      const valueWithoutFee = new BigNumber(amount).shiftedBy(18).minus(this.currentFee).toString();
+      let value = new BigNumber(amount).shiftedBy(18).toString();
+      if (new BigNumber(value).isEqualTo(maxValue)) {
+        value = new BigNumber(this.creditData.credit).plus(this.currentFee).plus(10000).toString();
+      }
+      return {
+        value,
+        // 1 in data this is nonce, required parameter for method "refund"
+        data: [1, valueWithoutFee],
+        method: 'refund',
+        abi: WQBorrowing,
+        address: process.env.WORKNET_BORROWING,
+      };
+    },
+    withdraw(amount) {
+      const value = new BigNumber(amount).shiftedBy(18).toString();
+      return {
+        data: [value],
+        method: 'withdraw',
+        abi: WQLending,
+        address: process.env.WORKNET_LENDING,
+      };
+    },
+    deposit(amount) {
+      const value = new BigNumber(amount).shiftedBy(18).toString();
+      return {
+        value,
+        data: [],
+        method: 'deposit',
+        abi: WQLending,
+        address: process.env.WORKNET_LENDING,
+      };
+    },
+    claim() {
+      return {
         method: 'claim',
         abi: WQLending,
         address: process.env.WORKNET_LENDING,
-      });
+      };
+    },
+    maxValue(action) {
+      switch (action) {
+        case 'refund':
+          return new BigNumber(this.creditData.credit).plus(this.currentFee).shiftedBy(-18).toString();
+        case 'withdraw':
+          return new BigNumber(this.walletData.amount).shiftedBy(-18).toString();
+        case 'deposit':
+          return this.balanceData.WUSD.fullBalance;
+        case 'claim':
+          return this.rewardsData;
+        default:
+          return null;
+      }
+    },
+    async resultValidation(res, action) {
       if (res.ok) {
         await Promise.all([
           this.$store.dispatch('crediting/getCreditData'),
           this.$store.dispatch('crediting/getWalletsData'),
           this.$store.dispatch('crediting/getRewards'),
         ]);
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/transactionSend.svg'),
-          title: this.$t('modals.successfulMethod.claim'),
-        });
+        this.ShowModalSuccess(this.$t(`modals.successfulMethods.${action}`));
         if (!this.isHaveCredit && !this.isHaveLoan) {
           await this.$router.push(Path.LENDING);
         }
       } else {
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/warning.svg'),
-          title: this.$t('modals.transactionFail'),
-        });
+        this.ShowModalFail(this.$t('modals.transactionFail'));
       }
     },
   },
