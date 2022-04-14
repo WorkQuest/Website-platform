@@ -129,12 +129,12 @@ export default {
       fullBalance: res.ok ? res.result.fullBalance : 0,
     });
   },
-  async getBalanceWQT({ commit }, userAddress) {
+  async getBalanceWQT({ commit }, { address }) {
     const res = await fetchContractData(
       'balanceOf',
       abi.ERC20,
       process.env.WORKNET_WQT_TOKEN,
-      [userAddress],
+      [address],
       GetWalletProvider(),
     );
     commit('setBalance', {
@@ -143,12 +143,12 @@ export default {
       fullBalance: res ? getStyledAmount(res, true) : 0,
     });
   },
-  async getBalanceWBNB({ commit }, userAddress) {
+  async getBalanceBNB({ commit }, { address }) {
     const res = await fetchContractData(
       'balanceOf',
       abi.WQBridgeToken,
       process.env.WORKNET_WBNB_TOKEN,
-      [userAddress],
+      [address],
       GetWalletProvider(),
     );
     commit('setBalance', {
@@ -157,12 +157,12 @@ export default {
       fullBalance: res ? getStyledAmount(res, true) : 0,
     });
   },
-  async getBalanceWETH({ commit }, userAddress) {
+  async getBalanceETH({ commit }, { address }) {
     const res = await fetchContractData(
       'balanceOf',
       abi.WQBridgeToken,
       process.env.WORKNET_WETH_TOKEN,
-      [userAddress],
+      [address],
       GetWalletProvider(),
     );
     commit('setBalance', {
@@ -190,6 +190,12 @@ export default {
    */
   async transferWQT({ commit }, { recipient, value }) {
     return await transferToken(recipient, value);
+  },
+  async transferBNB({ commit }, payload) {
+    return await sendWalletTransaction('transfer', payload);
+  },
+  async transferETH({ commit }, payload) {
+    return await sendWalletTransaction('transfer', payload);
   },
   /**
    * Get Fee Data from contract method

@@ -57,15 +57,29 @@
             </div>
             <div class="balance__bottom">
               <base-btn
-                v-for="(item, i) in walletsBtnsArray"
-                :key="i"
-                :data-selector="item.dataSelector"
-                :mode="item.mode"
+                data-selector="SHOW-DEPOSIT-MODAL"
+                mode="outline"
                 class="balance__btn"
-                :disabled="item.disabled"
-                @click="item.click"
+                :disabled="true"
+                @click="showDepositModal()"
               >
                 {{ $t('wallet.receive') }}
+              </base-btn>
+              <base-btn
+                data-selector="SHOW-WITHDRAW-MODAL"
+                mode="outline"
+                class="balance__btn"
+                :disabled="true"
+                @click="showWithdrawModal()"
+              >
+                {{ $t('meta.withdraw') }}
+              </base-btn>
+              <base-btn
+                data-selector="SHOW-TRANSFER-MODAL"
+                class="balance__btn"
+                @click="showTransferModal()"
+              >
+                {{ $t('modals.transfer') }}
               </base-btn>
             </div>
           </div>
@@ -83,7 +97,7 @@
               class="card__btn"
               mode="outline"
               :disabled="true"
-              @click="showModal({key: 'addCard', branchText: 'adding' })"
+              @click="showAddCardModal()"
             >
               {{ $t('wallet.addCard') }}
             </base-btn>
@@ -141,7 +155,7 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import * as abi from '~/abi/abi';
+import { ERC20, WQBridgeToken } from '~/abi/abi';
 import { TokenSymbolByContract, TokenSymbols, WalletTables } from '~/utils/enums';
 import { getStyledAmount } from '~/utils/wallet';
 import EmptyData from '~/components/app/info/emptyData';
@@ -159,27 +173,6 @@ export default {
       txsPerPage: 10,
       currentPage: 1,
       selectedWalletTable: WalletTables.TXS,
-      walletsBtnsArray: [
-        {
-          dataSelector: 'SHOW-DEPOSIT-MODAL',
-          mode: 'outline',
-          disabled: 'true',
-          click: this.showDepositModal,
-          title: this.$t('wallet.receive'),
-        },
-        {
-          dataSelector: 'SHOW-WITHDRAW-MODAL',
-          mode: 'outline',
-          disabled: 'true',
-          click: this.showWithdrawModal,
-          title: this.$t('meta.withdraw'),
-        },
-        {
-          dataSelector: 'SHOW-TRANSFER-MODAL',
-          click: this.showTransferModal,
-          title: this.$t('modals.transfer'),
-        },
-      ],
     };
   },
   computed: {
@@ -197,11 +190,6 @@ export default {
       frozenBalance: 'user/getFrozenBalance',
     }),
     walletTables() {
-      console.log('userInfo', this.userInfo);
-      console.log('userData', this.userData);
-      console.log('selectedToken', this.selectedToken);
-      console.log('userWalletAddress', this.userWalletAddress);
-      console.log('TokenSymbols', TokenSymbols);
       return WalletTables;
     },
     totalPages() {
@@ -215,7 +203,6 @@ export default {
       // eslint-disable-next-line no-restricted-syntax
       for (const t of txs) {
         const symbol = TokenSymbolByContract[t.to_address_hash.hex] || TokenSymbols.WUSD;
-        console.log('symbol', symbol);
         res.push({
           tx_hash: t.hash,
           block: t.block_number,
@@ -264,8 +251,6 @@ export default {
     },
   },
   beforeMount() {
-    // TODO: Проверить и удалить, если не надо)
-    this.$store.dispatch('wallet/getAllTokens');
     this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
   async mounted() {
@@ -288,11 +273,11 @@ export default {
     async loadData() {
       this.SetLoader(true);
       await Promise.all([
-        await this.$store.dispatch('wallet/getBalanceWUSD'),
-        await this.$store.dispatch('wallet/getBalanceWBNB', this.userWalletAddress),
-        await this.$store.dispatch('wallet/getBalanceWETH', this.userWalletAddress),
-        await this.$store.dispatch('wallet/getBalanceWQT', this.userWalletAddress),
+        this.$store.dispatch('wallet/getBalanceWUSD'),
         this.$store.dispatch('wallet/frozenBalance', { address: this.userWalletAddress }),
+        this.$store.dispatch('wallet/getBalanceWQT', { address: this.userWalletAddress }),
+        this.$store.dispatch('wallet/getBalanceBNB', { address: this.userWalletAddress }),
+        this.$store.dispatch('wallet/getBalanceETH', { address: this.userWalletAddress }),
         this.getTransactions(),
       ]);
       this.SetLoader(false);
@@ -300,13 +285,34 @@ export default {
     closeCard() {
       this.cardClosed = true;
     },
-    showModal({ key, branchText }) {
+    showDepositModal() {
       this.ShowModal({
-        key: modals[key],
-        branch: branchText,
+        key: modals.giveDeposit,
+      });
+    },
+    showWithdrawModal() {
+      this.ShowModal({
+        key: modals.takeWithdraw,
+        branch: 'withdraw',
+      });
+    },
+    showAddCardModal() {
+      this.ShowModal({
+        key: modals.addingCard,
+        branch: 'adding',
       });
     },
     showTransferModal() {
+      const abies = {
+        [TokenSymbols.WQT]: ERC20,
+        [TokenSymbols.ETH]: WQBridgeToken,
+        [TokenSymbols.BNB]: WQBridgeToken,
+      };
+      const addresses = {
+        [TokenSymbols.ETH]: process.env.WORKNET_WETH_TOKEN,
+        [TokenSymbols.WQT]: process.env.WORKNET_WQT_TOKEN,
+        [TokenSymbols.BNB]: process.env.WORKNET_WBNB_TOKEN,
+      };
       this.ShowModal({
         key: modals.giveTransfer,
         submit: async ({ recipient, amount, selectedToken }) => {
@@ -320,8 +326,8 @@ export default {
           } else {
             feeRes = await this.$store.dispatch('wallet/getContractFeeData', {
               method: 'transfer',
-              _abi: abi.ERC20,
-              contractAddress: process.env.WORKNET_WQT_TOKEN,
+              _abi: abies[selectedToken],
+              contractAddress: addresses[selectedToken],
               data: [recipient, value],
             });
           }
@@ -340,11 +346,33 @@ export default {
             submitMethod: async () => {
               this.CloseModal();
               this.SetLoader(true);
-              const action = selectedToken === TokenSymbols.WUSD ? 'transfer' : 'transferWQT';
-              const res = await this.$store.dispatch(`wallet/${action}`, {
-                recipient,
-                value: amount,
-              });
+              const actions = {
+                [TokenSymbols.WUSD]: 'transfer',
+                [TokenSymbols.WQT]: 'transferWQT',
+                [TokenSymbols.BNB]: 'transferBNB',
+                [TokenSymbols.ETH]: 'transferETH',
+              };
+              const payloads = {
+                [TokenSymbols.WUSD]: {
+                  recipient,
+                  value: amount,
+                },
+                [TokenSymbols.WQT]: {
+                  recipient,
+                  value: amount,
+                },
+                [TokenSymbols.BNB]: {
+                  abi: abies[selectedToken],
+                  address: addresses[selectedToken],
+                  data: [recipient, new BigNumber(amount).shiftedBy(18).toString()],
+                },
+                [TokenSymbols.ETH]: {
+                  abi: abies[selectedToken],
+                  address: addresses[selectedToken],
+                  data: [recipient, new BigNumber(amount).shiftedBy(18).toString()],
+                },
+              };
+              const res = await this.$store.dispatch(`wallet/${actions[selectedToken]}`, payloads[selectedToken]);
               this.SetLoader(false);
               if (res?.ok) {
                 await this.loadData();

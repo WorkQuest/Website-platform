@@ -100,6 +100,8 @@ export default {
       maxFee: {
         WUSD: 0,
         WQT: 0,
+        ETH: 0,
+        BNB: 0,
       },
       isCanSubmit: true,
     };
@@ -119,10 +121,8 @@ export default {
     },
     maxAmount() {
       const fullBalance = new BigNumber(this.balance[this.selectedToken].fullBalance);
-      if (this.selectedToken === TokenSymbols.WUSD) return fullBalance.minus(this.maxFee[this.selectedToken]).toString();
-      if (this.selectedToken === TokenSymbols.WQT) {
-        return fullBalance.minus(this.frozenBalance).toString();
-      }
+      if (this.selectedToken !== TokenSymbols.WQT) return fullBalance.minus(this.maxFee[this.selectedToken]).toString();
+      if (this.selectedToken === TokenSymbols.WQT) return fullBalance.minus(this.frozenBalance).toString();
       return 0;
     },
   },
@@ -141,6 +141,7 @@ export default {
     },
   },
   async mounted() {
+    console.log(this.balance);
     this.isCanSubmit = false;
     const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
     this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
@@ -164,7 +165,7 @@ export default {
     // Для просчета максимальной суммы транзакции от комиссии
     async updateMaxFee() {
       if (!this.isConnected) return;
-      const [wusd, wqt] = await Promise.all([
+      const [wusd, wqt, bnb, eth] = await Promise.all([
         this.$store.dispatch('wallet/getTransferFeeData', {
           recipient: this.userData.wallet.address,
           value: this.balance.WUSD.fullBalance,
@@ -175,9 +176,23 @@ export default {
           contractAddress: process.env.WORKNET_WQT_TOKEN,
           data: [process.env.WORKNET_WQT_TOKEN, this.amount],
         }),
+        this.$store.dispatch('wallet/getContractFeeData', {
+          method: 'transfer',
+          _abi: abi.WQBridgeToken,
+          contractAddress: process.env.WORKNET_WBNB_TOKEN,
+          data: [process.env.WORKNET_WBNB_TOKEN, this.amount],
+        }),
+        this.$store.dispatch('wallet/getContractFeeData', {
+          method: 'transfer',
+          _abi: abi.WQBridgeToken,
+          contractAddress: process.env.WORKNET_WETH_TOKEN,
+          data: [process.env.WORKNET_WETH_TOKEN, this.amount],
+        }),
       ]);
       this.maxFee.WQT = wqt?.ok ? wqt?.result?.fee : 0;
       this.maxFee.WUSD = wusd?.ok ? wusd?.result?.fee : 0;
+      this.maxFee.BNB = bnb?.ok ? bnb?.result?.fee : 0;
+      this.maxFee.ETH = eth?.ok ? eth?.result?.fee : 0;
     },
     maxBalance() {
       this.amount = this.maxAmount;
