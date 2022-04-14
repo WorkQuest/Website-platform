@@ -89,7 +89,7 @@ export default {
     if (!token) {
       this.$router.push(Path.SIGN_IN);
     } else {
-      if (!this.$cookies.get('access') || !this.$cookies.get('refresh')) {
+      if (!this.$cookies.get('access')) {
         this.ShowToast(' ', this.$t('messages.loginToContinue'));
         sessionStorage.setItem('confirmToken', JSON.stringify(token));
         this.$router.push(Path.SIGN_IN);
