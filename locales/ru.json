@@ -330,6 +330,7 @@
     "employer": {
       "usersNotResponded": "Users not responded"
     },
+    "deleteQuest": "Удалить квест",
     "invite": "Пригласить",
     "decline": "Отклонить",
     "declinedTheInvitation": "Отклонил приглашение",
