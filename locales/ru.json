@@ -332,6 +332,8 @@
     },
     "invite": "Пригласить",
     "decline": "Отклонить",
+    "declinedTheInvitation": "Declined the invitation",
+    "acceptedTheInvitation": "Accepted the invitation",
     "questTitle": "Заголовок квеста",
     "questDesc": "Описание квеста",
     "closed": "Закрыт",
