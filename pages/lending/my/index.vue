@@ -274,12 +274,12 @@ export default {
           this.$store.dispatch('crediting/getWalletsData'),
           this.$store.dispatch('crediting/getRewards'),
         ]);
-        this.ShowModalSuccess(this.$t(`modals.successfulMethods.${action}`));
+        this.ShowModalSuccess({ title: this.$t(`modals.successfulMethods.${action}`) });
         if (!this.isHaveCredit && !this.isHaveLoan) {
           await this.$router.push(Path.LENDING);
         }
       } else {
-        this.ShowModalFail(this.$t('modals.transactionFail'));
+        this.ShowModalFail({ title: this.$t('modals.transactionFail') });
       }
     },
   },

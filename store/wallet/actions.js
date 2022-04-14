@@ -387,14 +387,14 @@ export default {
     const tokenAddress = tokenMap[symbol];
     try {
       const allowance = await dispatch('getAllowance', { tokenAddress, spenderAddress });
-      if (+allowance < +value) {
+      if (new BigNumber(allowance).isLessThanOrEqualTo(value)) {
         return await dispatch('approve', {
           tokenAddress,
           spenderAddress,
           amount: value,
         });
       }
-      return false;
+      return true;
     } catch (e) {
       console.error('approveRouter error', e.message);
       return error();

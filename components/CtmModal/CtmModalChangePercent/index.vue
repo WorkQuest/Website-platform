@@ -114,9 +114,7 @@ export default {
       this.SetLoader(false);
     },
     showPercentIsChanged() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/success.svg'),
+      this.ShowModalSuccess({
         title: this.$t('modals.percentIsChanged'),
         subtitle: this.$t('modals.percentIsChangedText'),
       });

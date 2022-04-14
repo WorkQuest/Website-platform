@@ -3,6 +3,7 @@ import moment from 'moment';
 import VueTippy, { TippyComponent } from 'vue-tippy';
 import modals from '~/store/modals/modals';
 import { QuestStatuses } from '~/utils/enums';
+import { images } from '~/utils/images';
 
 Vue.use(VueTippy);
 Vue.component('tippy', TippyComponent);
@@ -234,18 +235,26 @@ Vue.mixin({
 
     ScrollToTop: () => window.scrollTo(0, 0),
     IsProd: () => process.env.PROD === 'true',
-    ShowModalSuccess(title = '') {
+    ShowModalSuccess({
+      title, subtitle, img, path,
+    }) {
       this.ShowModal({
         key: modals.status,
-        img: require('~/assets/img/ui/success.svg'),
+        img: img || images.SUCCESS,
         title: title || this.$t('modals.meta.success'),
+        subtitle,
+        path,
       });
     },
-    ShowModalFail(title = '') {
+    ShowModalFail({
+      title, subtitle, img, path,
+    }) {
       this.ShowModal({
         key: modals.status,
-        img: require('~/assets/img/ui/warning.svg'),
+        img: img || images.WARNING,
         title: title || this.$t('modals.meta.fail'),
+        subtitle,
+        path,
       });
     },
   },

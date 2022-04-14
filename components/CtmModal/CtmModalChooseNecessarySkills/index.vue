@@ -80,6 +80,7 @@
 
 <script>
 import modals from '~/store/modals/modals';
+import { images } from '~/utils/images';
 
 export default {
   name: 'CtmModalChooseNecessarySkills',
@@ -119,7 +120,7 @@ export default {
     success() {
       this.ShowModal({
         key: modals.status,
-        img: require('~/assets/img/ui/success.svg'),
+        img: images.SUCCESS,
         title: this.$t('meta.success'),
         subtitle: this.$t('modals.yourRoleHasBeenChanged'),
       });

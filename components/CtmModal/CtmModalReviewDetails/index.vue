@@ -56,7 +56,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalReviewDetails',
@@ -78,9 +77,7 @@ export default {
       this.CloseModal();
     },
     success() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/success.svg'),
+      this.ShowModalSuccess({
         title: this.$t('meta.success'),
         subtitle: this.$t('modals.SMSVerConnected'),
       });

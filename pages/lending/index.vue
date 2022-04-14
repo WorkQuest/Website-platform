@@ -140,12 +140,12 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { getGasPrice } from '~/utils/wallet';
 import { WQOracle, WQBorrowing, WQLending } from '~/abi/abi';
 import { Path } from '~/utils/enums';
+import { images } from '~/utils/images';
 
 export default {
   data() {
@@ -262,7 +262,7 @@ export default {
             },
             {
               title: this.$t('crediting.dueDate'),
-              subtitle: moment().add(datesNumber[date], 'days').format('DD.MM.YYYY'),
+              subtitle: this.$moment().add(datesNumber[date], 'days').format('DD.MM.YYYY'),
             },
           ];
           const valueWithDecimals = new BigNumber(quantity).shiftedBy(18).toString();
@@ -273,40 +273,48 @@ export default {
             receiptData,
             submit: async () => {
               this.SetLoader(true);
+
+              // TODO нода должа уметь такое выполнять, ждем пока ее научат
+              // const [checkTokenPrice, approveAllowed] = await Promise.all([
+              //   this.setTokenPrice(),
+              //   this.$store.dispatch('wallet/approveRouter', {
+              //     symbol,
+              //     spenderAddress: process.env.WORKNET_BORROWING,
+              //     value: valueWithDecimals,
+              //   }),
+              // ]);
+
               const checkTokenPrice = await this.setTokenPrice();
               const approveAllowed = await this.$store.dispatch('wallet/approveRouter', {
                 symbol,
                 spenderAddress: process.env.WORKNET_BORROWING,
                 value: valueWithDecimals,
               });
+
               let res = false;
               if (checkTokenPrice && approveAllowed) {
                 res = await this.$store.dispatch('crediting/sendMethod', {
+                  address: process.env.WORKNET_BORROWING,
+                  method: 'borrow',
+                  abi: WQBorrowing,
                   data: [
-                    // 1 in data this is nonce, required parameter for method "borrow"
-                    1,
+                    1, // 1 in data this is nonce, required parameter for method "borrow"
                     valueWithDecimals,
                     selFundID - 1,
                     duration,
                     symbol,
                   ],
-                  method: 'borrow',
-                  abi: WQBorrowing,
-                  address: process.env.WORKNET_BORROWING,
                 });
               }
               this.SetLoader(false);
+
               if (res.ok) {
-                this.ShowModal({
-                  key: modals.status,
-                  img: require('~/assets/img/ui/transactionSend.svg'),
+                this.ShowModalSuccess({
                   title: this.$t('modals.depositIsOpened'),
-                  subtitle: '',
+                  img: images.TRANSACTION_SEND,
                   path: `${Path.LENDING}/my`,
                 });
-              } else {
-                this.ShowModalFail(this.$t('modals.transactionFail'));
-              }
+              } else this.ShowModalFail({ title: this.$t('modals.transactionFail') });
             },
           });
         },
@@ -317,45 +325,48 @@ export default {
         key: modals.creditingLoan,
         submit: async (quantity) => {
           this.SetLoader(true);
-          const res = await this.$store.dispatch('crediting/sendMethod', {
+          const { ok } = await this.$store.dispatch('crediting/sendMethod', {
             value: new BigNumber(quantity).shiftedBy(18).toString(),
-            data: [],
+            address: process.env.WORKNET_LENDING,
             method: 'deposit',
             abi: WQLending,
-            address: process.env.WORKNET_LENDING,
+            data: [],
           });
           this.SetLoader(false);
-          if (res.ok) {
-            this.ShowModal({
-              key: modals.status,
-              img: require('~/assets/img/ui/transactionSend.svg'),
+
+          if (ok) {
+            this.ShowModalSuccess({
               title: this.$t('modals.loanIsOpened'),
-              subtitle: '',
+              img: images.TRANSACTION_SEND,
               path: `${Path.LENDING}/my`,
             });
-            return;
-          }
-          this.ShowModalFail(this.$t('modals.transactionFail'));
+          } else this.ShowModalFail({ title: this.$t('modals.transactionFail') });
         },
       });
     },
     async setTokenPrice() {
       const { nonce } = this.currentPrices;
-      const attr = Object.keys(this.currentPrices).map((key) => this.currentPrices[key]);
-      attr.push(this.prices);
-      attr.push(this.symbols);
-      const { gas, gasPrice } = await getGasPrice(WQOracle, process.env.WORKNET_ORACLE, 'setTokenPricesUSD', attr);
+      const { prices, symbols } = this;
+
+      const { gas, gasPrice } = await getGasPrice(
+        WQOracle,
+        process.env.WORKNET_ORACLE,
+        'setTokenPricesUSD',
+        [...Object.keys(this.currentPrices).map((key) => this.currentPrices[key]), prices, symbols],
+      );
+
       if (gas && gasPrice) {
         const { ok } = await this.$store.dispatch('crediting/setTokenPrices', {
-          gasPrice,
-          gas,
-          timestamp: nonce,
           ...this.currentPrices,
-          prices: this.prices,
-          symbols: this.symbols,
+          timestamp: nonce,
+          gasPrice,
+          symbols,
+          prices,
+          gas,
         });
         return ok;
       }
+
       return false;
     },
     handleClickFAQ(index) {
