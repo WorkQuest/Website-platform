@@ -311,10 +311,10 @@ export default {
     },
     handleSelChat(chat) {
       const { id, type, questChat } = chat;
-      const dispute = questChat && questChat.quest.openDispute && questChat.quest.openDispute.status;
-      const disputeId = questChat && questChat.quest.openDispute && questChat.quest.openDispute.id;
+      const dispute = questChat?.questChat.quest.openDispute?.questChat.quest.openDispute.status;
+      const disputeId = questChat?.questChat.quest.openDispute?.questChat.quest.openDispute.id;
       if (type === 'quest') {
-        const { status } = questChat && questChat.quest;
+        const { status } = questChat?.questChat.quest;
         this.$router.push({
           path: `${Path.MESSAGES}/${id}`,
           query: {
