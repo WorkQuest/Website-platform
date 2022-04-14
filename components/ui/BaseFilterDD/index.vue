@@ -14,12 +14,7 @@
       >
         {{ $t('filters.dd.1') }}
         <span
-          v-if="isOpenDD"
-          class="icon-caret_down"
-        />
-        <span
-          v-else
-          class="icon-caret_up"
+          :class="isOpenDD ? 'icon-caret_down' : 'icon-caret_up'"
         />
       </button>
       <transition name="fade">
