@@ -315,7 +315,7 @@ export default {
       const disputeStatus = openDispute?.status;
       const disputeId = openDispute?.id;
       if (type === 'quest') {
-        const { status } = questChat?.questChat.quest;
+        const { status } = questChat?.quest;
         this.$router.push({
           path: `${Path.MESSAGES}/${id}`,
           query: {
