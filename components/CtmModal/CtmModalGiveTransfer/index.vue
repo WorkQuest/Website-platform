@@ -171,7 +171,7 @@ export default {
         }),
         this.$store.dispatch('wallet/getContractFeeData', {
           method: 'transfer',
-          _abi: abi.ERC20,
+          abi: abi.ERC20,
           contractAddress: process.env.WORKNET_WQT_TOKEN,
           data: [process.env.WORKNET_WQT_TOKEN, this.amount],
         }),
@@ -190,16 +190,20 @@ export default {
 
 .transfer {
   max-width: 500px !important;
-  padding: 0!important;
+  padding: 0 !important;
+
   &__content {
-    padding: 20px 28px 30px 28px!important;
+    padding: 20px 28px 30px 28px !important;
   }
 }
+
 .buttons {
   display: flex;
   justify-content: space-between;
+
   &__action {
-    width: 212px!important;
+    width: 212px !important;
+
     &:not(:last-child) {
       margin-right: 10px;
     }
@@ -211,12 +215,14 @@ export default {
     margin-top: 5px;
   }
 }
+
 .content {
   &__step {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
   }
+
   &__panel {
     @include text-simple;
     font-weight: 400;
@@ -224,15 +230,18 @@ export default {
     color: $black500;
     margin: 0 20px 0 0;
     cursor: pointer;
+
     &_active {
       color: $black800;
       border-bottom: 2px solid $blue;
       padding: 0 0 12px 0;
     }
   }
+
   &__card {
     margin: 40px auto;
   }
+
   &__text {
     font-size: 16px;
     line-height: 130%;
@@ -240,15 +249,17 @@ export default {
     text-align: center;
   }
 }
+
 .grid {
   &__title {
     margin: 15px 5px 0 0;
   }
 }
+
 .max {
   &__button {
-    margin-right: 10px!important;
-    background-color: transparent!important;
+    margin-right: 10px !important;
+    background-color: transparent !important;
   }
 }
 </style>
