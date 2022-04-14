@@ -547,7 +547,7 @@ export default {
     async goToChat() {
       this.SetLoader(true);
       const { openDispute, questChat, status } = this.quest;
-      const disput = openDispute?.openDispute;
+      const disput = openDispute;
       const disputeStatus = disput.status;
       const disputeId = disput.id;
       await this.$router.push({
