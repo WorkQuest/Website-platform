@@ -107,8 +107,6 @@ export default {
     },
     showOpenADisputeModal() {
       this.closeChatMenu();
-      console.log(this.$route.query.dispute);
-      console.log(+this.$route.query.dispute !== DisputeStatues.PENDING);
       if (!this.$route.query.dispute) {
         this.ShowModal({
           key: modals.openADispute,
