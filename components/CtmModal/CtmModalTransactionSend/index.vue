@@ -5,12 +5,12 @@
   >
     <div class="transaction__content">
       <img
-        src="~assets/img/ui/transactionSend.svg"
+        :src="options.mode ==='error' ? require('assets/img/ui/warning.svg') : require('assets/img/ui/transactionSend.svg')"
         alt="Transaction send"
         class="transaction__image"
       >
       <div class="transaction__title">
-        {{ $t('modals.transactionSent') }}
+        {{ options.mode ==='error' ? 'transaction error' : $t('modals.transactionSent') }}
       </div>
       <base-btn
         class="transaction__action"

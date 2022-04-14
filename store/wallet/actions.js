@@ -10,7 +10,9 @@ import {
 import {
   fetchContractData, success, error,
 } from '~/utils/web3';
-import * as abi from '~/abi/abi';
+import {
+  ERC20, WQBridgeToken, WQStaking, WQStakingNative,
+} from '~/abi/abi';
 import { PensionHistoryMethods, StakingTypes, TokenSymbols } from '~/utils/enums';
 import {
   getPensionDefaultData,
@@ -19,24 +21,8 @@ import {
   pensionsWithdraw,
   pensionUpdateFee,
 } from '~/utils/wallet.js';
-import { WQBridgeToken } from '~/abi/abi';
 
 export default {
-  async frozenBalance({ commit }, { address }) {
-    try {
-      const res = await fetchContractData(
-        'freezed',
-        abi.ERC20,
-        process.env.WORKNET_WQT_TOKEN,
-        [address],
-        GetWalletProvider(),
-      );
-      commit('user/setFrozenBalance', new BigNumber(res).shiftedBy(-18), { root: true });
-      return success(res);
-    } catch (e) {
-      return error(e.message, e);
-    }
-  },
   async getPensionTransactions({ commit, getters }, { method, limit, offset }) {
     try {
       const path = method === PensionHistoryMethods.Update ? 'wallet-update' : method.toLowerCase();
@@ -50,19 +36,6 @@ export default {
       commit('setPensionHistoryData', { method, txs: res.data.result.events, count: res.data.result.count });
     } catch (e) {
       console.error('wallet/getPensionTransactions');
-    }
-  },
-  // TODO: Проверить и удалить, если не надо)
-  async getAllTokens({ commit }, queries) {
-    try {
-      const response = await this.$axios.$get('/tokens', {
-        baseURL: process.env.WQ_EXPLORER,
-      });
-      console.log(response.result);
-      // commit('setAllTokens', response.result);
-      return response;
-    } catch (e) {
-      return error(e.code || 500, 'getAllTokens', e);
     }
   },
   async getTransactions({ commit }, params) {
@@ -129,47 +102,29 @@ export default {
       fullBalance: res.ok ? res.result.fullBalance : 0,
     });
   },
-  async getBalanceWQT({ commit }, { address }) {
-    const res = await fetchContractData(
-      'balanceOf',
-      abi.ERC20,
-      process.env.WORKNET_WQT_TOKEN,
-      [address],
-      GetWalletProvider(),
-    );
-    commit('setBalance', {
-      symbol: TokenSymbols.WQT,
-      balance: res ? getStyledAmount(res) : 0,
-      fullBalance: res ? getStyledAmount(res, true) : 0,
-    });
-  },
-  async getBalanceBNB({ commit }, { address }) {
-    const res = await fetchContractData(
-      'balanceOf',
-      abi.WQBridgeToken,
-      process.env.WORKNET_WBNB_TOKEN,
-      [address],
-      GetWalletProvider(),
-    );
-    commit('setBalance', {
-      symbol: TokenSymbols.BNB,
-      balance: res ? getStyledAmount(res) : 0,
-      fullBalance: res ? getStyledAmount(res, true) : 0,
-    });
-  },
-  async getBalanceETH({ commit }, { address }) {
-    const res = await fetchContractData(
-      'balanceOf',
-      abi.WQBridgeToken,
-      process.env.WORKNET_WETH_TOKEN,
-      [address],
-      GetWalletProvider(),
-    );
-    commit('setBalance', {
-      symbol: TokenSymbols.ETH,
-      balance: res ? getStyledAmount(res) : 0,
-      fullBalance: res ? getStyledAmount(res, true) : 0,
-    });
+  async fetchWalletData({ commit }, {
+    method, address, abi, token, symbol,
+  }) {
+    try {
+      const res = await fetchContractData(
+        method,
+        abi,
+        token,
+        [address],
+        GetWalletProvider(),
+      );
+      if (method === 'freezed') commit('user/setFrozenBalance', new BigNumber(res).shiftedBy(-18), { root: true });
+      else {
+        commit('setBalance', {
+          symbol,
+          balance: res ? getStyledAmount(res) : 0,
+          fullBalance: res ? getStyledAmount(res, true) : 0,
+        });
+      }
+      return success(res);
+    } catch (e) {
+      return error(e.message, e);
+    }
   },
   /**
    * Send transfer
@@ -220,7 +175,7 @@ export default {
       return await sendWalletTransaction(
         'approve',
         {
-          abi: abi.ERC20,
+          abi: ERC20,
           address: tokenAddress,
           data: [spenderAddress, amount],
         },
@@ -231,7 +186,7 @@ export default {
     }
   },
   async getAllowance({ commit }, { tokenAddress, spenderAddress }) {
-    const res = await fetchContractData('allowance', abi.ERC20, tokenAddress, [getWalletAddress(), spenderAddress], GetWalletProvider());
+    const res = await fetchContractData('allowance', ERC20, tokenAddress, [getWalletAddress(), spenderAddress], GetWalletProvider());
     if (!res) return false;
     return new BigNumber(res.toString()).shiftedBy(-18).toString();
   },
@@ -279,10 +234,10 @@ export default {
     let _abi = null;
     let contractAddress = null;
     if (pool === StakingTypes.WQT) {
-      _abi = abi.WQStaking;
+      _abi = WQStaking;
       contractAddress = process.env.WORKNET_STAKING_WQT;
     } else if (pool === StakingTypes.WUSD) {
-      _abi = abi.WQStakingNative;
+      _abi = WQStakingNative;
       contractAddress = process.env.WORKNET_STAKING_WUSD;
     } else {
       console.error(`Wrong pool: ${pool}`);
@@ -303,8 +258,8 @@ export default {
     let tokenSymbol = TokenSymbols.WUSD;
     if (pool !== StakingTypes.WUSD) {
       [decimals, tokenSymbol] = await Promise.all([
-        fetchContractData('decimals', abi.ERC20, rewardTokenAddress, null, GetWalletProvider()),
-        fetchContractData('symbol', abi.ERC20, rewardTokenAddress, null, GetWalletProvider()),
+        fetchContractData('decimals', ERC20, rewardTokenAddress, null, GetWalletProvider()),
+        fetchContractData('symbol', ERC20, rewardTokenAddress, null, GetWalletProvider()),
       ]);
     }
 
@@ -333,7 +288,7 @@ export default {
   },
   async getStakingUserInfo({ commit }, pool) {
     const decimals = 18;
-    const _abi = pool === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStaking;
+    const _abi = pool === StakingTypes.WUSD ? WQStakingNative : WQStaking;
     const contractAddress = pool === StakingTypes.WUSD ? process.env.WORKNET_STAKING_WUSD : process.env.WORKNET_STAKING_WQT;
     const [userInfo, stakes] = await Promise.all([
       fetchContractData('getInfoByAddress', _abi, contractAddress, [getWalletAddress()], GetWalletProvider()),
@@ -362,7 +317,7 @@ export default {
     return await stake(stakingType, amount, poolAddress, duration);
   },
   async getStakingUnstakeFeeData({ dispatch }, { stakingType, poolAddress, amount }) {
-    const _abi = stakingType === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStaking;
+    const _abi = stakingType === StakingTypes.WUSD ? WQStakingNative : WQStaking;
     return await dispatch('getContractFeeData', {
       method: 'unstake',
       _abi,
@@ -371,7 +326,7 @@ export default {
     });
   },
   async getStakingRenewalFeeData({ dispatch }, { stakingType, poolAddress }) {
-    const _abi = stakingType === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStaking;
+    const _abi = stakingType === StakingTypes.WUSD ? WQStakingNative : WQStaking;
     return await dispatch('getContractFeeData', {
       method: 'autoRenewal',
       _abi,
@@ -379,7 +334,7 @@ export default {
     });
   },
   async getStakingClaimFeeData({ dispatch }, { stakingType, poolAddress }) {
-    const _abi = stakingType === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStaking;
+    const _abi = stakingType === StakingTypes.WUSD ? WQStakingNative : WQStaking;
     return await dispatch('getContractFeeData', {
       method: 'claim',
       _abi,
@@ -391,7 +346,7 @@ export default {
   }) {
     const isNative = stakingType === StakingTypes.WUSD;
     return await dispatch('getContractFeeData', {
-      _abi: isNative ? abi.WQStakingNative : abi.WQStaking,
+      _abi: isNative ? WQStakingNative : WQStaking,
       contractAddress: poolAddress,
       method: 'stake',
       amount: isNative ? amount : null,
@@ -401,7 +356,7 @@ export default {
   async getStakingApproveFeeData({ dispatch }, { stakeTokenAddress, poolAddress, fullMaxStake }) {
     fullMaxStake = new BigNumber(fullMaxStake).shiftedBy(18).toString();
     return await dispatch('getContractFeeData', {
-      _abi: abi.ERC20,
+      _abi: ERC20,
       method: 'approve',
       contractAddress: stakeTokenAddress,
       data: [poolAddress, fullMaxStake],
@@ -410,7 +365,7 @@ export default {
   async stakingUnstake({ commit }, { amount, stakingType, poolAddress }) {
     try {
       amount = new BigNumber(amount).shiftedBy(18).toString();
-      const _abi = stakingType === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStaking;
+      const _abi = stakingType === StakingTypes.WUSD ? WQStakingNative : WQStaking;
       const res = await sendWalletTransaction(
         'unstake',
         {
@@ -427,7 +382,7 @@ export default {
   },
   async stakingClaimRewards({ commit }, { stakingType, poolAddress }) {
     try {
-      const _abi = stakingType === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStaking;
+      const _abi = stakingType === StakingTypes.WUSD ? WQStakingNative : WQStaking;
       await sendWalletTransaction('claim', { abi: _abi, address: poolAddress });
       return success();
     } catch (e) {
@@ -437,7 +392,7 @@ export default {
   },
   async stakingRenewal({ commit }, { stakingType, poolAddress }) {
     try {
-      const _abi = stakingType === StakingTypes.WUSD ? abi.WQStakingNative : abi.WQStaking;
+      const _abi = stakingType === StakingTypes.WUSD ? WQStakingNative : WQStaking;
       return success(await sendWalletTransaction('autoRenewal', { abi: _abi, address: poolAddress }));
     } catch (e) {
       console.error('Renewal error', e.message);

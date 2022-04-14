@@ -61,7 +61,7 @@
                 mode="outline"
                 class="balance__btn"
                 :disabled="true"
-                @click="showDepositModal()"
+                @click="showModal({key: 'deposit'})"
               >
                 {{ $t('wallet.receive') }}
               </base-btn>
@@ -70,7 +70,7 @@
                 mode="outline"
                 class="balance__btn"
                 :disabled="true"
-                @click="showWithdrawModal()"
+                @click="showModal({key: 'takeWithdraw', branch: 'withdraw'})"
               >
                 {{ $t('meta.withdraw') }}
               </base-btn>
@@ -97,7 +97,7 @@
               class="card__btn"
               mode="outline"
               :disabled="true"
-              @click="showAddCardModal()"
+              @click="showModal({key: 'addingCard', branch: 'adding'})"
             >
               {{ $t('wallet.addCard') }}
             </base-btn>
@@ -239,9 +239,10 @@ export default {
     ddValue(val) {
       this.$store.dispatch('wallet/setSelectedToken', TokenSymbols[this.tokenSymbolsDd[val]]);
     },
-    selectedToken() {
+    async selectedToken() {
       const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
       this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
+      await this.loadData();
     },
     isConnected(newVal) {
       if (!newVal) this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
@@ -274,10 +275,18 @@ export default {
       this.SetLoader(true);
       await Promise.all([
         this.$store.dispatch('wallet/getBalanceWUSD'),
-        this.$store.dispatch('wallet/frozenBalance', { address: this.userWalletAddress }),
-        this.$store.dispatch('wallet/getBalanceWQT', { address: this.userWalletAddress }),
-        this.$store.dispatch('wallet/getBalanceBNB', { address: this.userWalletAddress }),
-        this.$store.dispatch('wallet/getBalanceETH', { address: this.userWalletAddress }),
+        this.$store.dispatch('wallet/fetchWalletData', {
+          method: 'freezed', address: this.userWalletAddress, abi: ERC20, token: process.env.WORKNET_WQT_TOKEN,
+        }),
+        this.$store.dispatch('wallet/fetchWalletData', {
+          method: 'balanceOf', address: this.userWalletAddress, abi: ERC20, token: process.env.WORKNET_WQT_TOKEN, symbol: TokenSymbols.WQT,
+        }),
+        this.$store.dispatch('wallet/fetchWalletData', {
+          method: 'balanceOf', address: this.userWalletAddress, abi: WQBridgeToken, token: process.env.WORKNET_WBNB_TOKEN, symbol: TokenSymbols.BNB,
+        }),
+        this.$store.dispatch('wallet/fetchWalletData', {
+          method: 'balanceOf', address: this.userWalletAddress, abi: WQBridgeToken, token: process.env.WORKNET_WETH_TOKEN, symbol: TokenSymbols.ETH,
+        }),
         this.getTransactions(),
       ]);
       this.SetLoader(false);
@@ -285,21 +294,10 @@ export default {
     closeCard() {
       this.cardClosed = true;
     },
-    showDepositModal() {
+    showModal({ key, branch }) {
       this.ShowModal({
-        key: modals.giveDeposit,
-      });
-    },
-    showWithdrawModal() {
-      this.ShowModal({
-        key: modals.takeWithdraw,
-        branch: 'withdraw',
-      });
-    },
-    showAddCardModal() {
-      this.ShowModal({
-        key: modals.addingCard,
-        branch: 'adding',
+        key: modals[key],
+        branch,
       });
     },
     showTransferModal() {
@@ -364,21 +362,22 @@ export default {
                 [TokenSymbols.BNB]: {
                   abi: abies[selectedToken],
                   address: addresses[selectedToken],
-                  data: [recipient, new BigNumber(amount).shiftedBy(18).toString()],
+                  data: [recipient, value],
                 },
                 [TokenSymbols.ETH]: {
                   abi: abies[selectedToken],
                   address: addresses[selectedToken],
-                  data: [recipient, new BigNumber(amount).shiftedBy(18).toString()],
+                  data: [recipient, value],
                 },
               };
               const res = await this.$store.dispatch(`wallet/${actions[selectedToken]}`, payloads[selectedToken]);
               this.SetLoader(false);
               if (res?.ok) {
-                await this.loadData();
                 await this.ShowModal({ key: 'transactionSend' });
+                await this.loadData();
                 return success();
               }
+              await this.ShowModal({ key: 'transactionSend', mode: 'error' });
               return error();
             },
           });
