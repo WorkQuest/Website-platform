@@ -10,5 +10,4 @@ export default {
   getPensionHistory: (state) => state.pensionHistory,
   getStakingPoolsData: (state) => state.stakingPoolsData,
   getStakingUserData: (state) => state.stakingUserData,
-  getQuestsFee: (state) => state.questsFee,
 };

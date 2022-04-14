@@ -274,7 +274,7 @@ import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { Path, TokenSymbols } from '~/utils/enums';
 import {
-  QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses,
+  QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses, CommissionForCreatingAQuest,
 } from '~/utils/quests-constants';
 import { hashText } from '~/utils/wallet';
 
@@ -311,7 +311,6 @@ export default {
     ...mapGetters({
       isWalletConnected: 'wallet/getIsWalletConnected',
       userWalletAddress: 'user/getUserWalletAddress',
-      questFee: 'wallet/getQuestsFee',
       questData: 'quests/getQuest',
       step: 'quests/getCurrentStepEditQuest',
     }),
@@ -540,7 +539,7 @@ export default {
       const { contractAddress } = this.questData;
       // Quest Cost Increased
       if (new BigNumber(this.price).isGreaterThan(this.prevPrice)) {
-        depositAmount = new BigNumber(this.price).minus(this.prevPrice).multipliedBy(1 + this.questFee).toString();
+        depositAmount = new BigNumber(this.price).minus(this.prevPrice).multipliedBy(1 + CommissionForCreatingAQuest).toString();
         [feeRes] = await Promise.all([
           this.$store.dispatch('quests/getEditQuestFeeData', {
             contractAddress,

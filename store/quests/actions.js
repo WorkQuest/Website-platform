@@ -21,7 +21,8 @@ export default {
       commit('setCurrentWorker', response.result);
       return response;
     } catch (e) {
-      return console.error(e);
+      console.error('quests/getWorkerData');
+      return error();
     }
   },
   async questListForInvitation({ commit }, userId) {
@@ -30,7 +31,8 @@ export default {
       commit('setQuestListForInvitation', response.result);
       return response.result;
     } catch (e) {
-      return console.error(e);
+      console.error('quests/questListForInvitation');
+      return error();
     }
   },
   async employeeList({ commit }, { query, specFilter }) {
@@ -61,20 +63,21 @@ export default {
     try {
       return await this.$axios.$post('/v1/quest/create', payload);
     } catch (e) {
-      return console.error(e);
+      console.error('quests/questCreate');
+      return error();
     }
   },
   async getAllQuests({ commit }, { query, specFilter }) {
     try {
       if (query.q === '') delete query.q;
       const specializations = specFilter ? Object.values(specFilter) : [];
-      const { ok, result } = await this.$axios.$post('/v1/get-quests', { specializations }, {
+      const { result } = await this.$axios.$post('/v1/get-quests', { specializations }, {
         params: { ...query },
       });
       commit('setAllQuests', result);
-      return { ok };
+      return success();
     } catch (e) {
-      console.error('quests/getAllQuests:', e);
+      console.error('quests/getAllQuests');
       return false;
     }
   },
@@ -125,7 +128,8 @@ export default {
       commit('setAllQuests', response.result);
       return response.result;
     } catch (e) {
-      return console.error(e);
+      console.error('quests/getUserQuests');
+      return error();
     }
   },
   async editQuest({ commit }, { payload, questId }) {
@@ -134,15 +138,8 @@ export default {
       commit('setQuestData', response.result);
       return response;
     } catch (e) {
-      return console.error(e);
-    }
-  },
-  async deleteQuest({ commit }, { questId }) {
-    try {
-      const response = await this.$axios.$delete(`/v1/quest/${questId}`);
-      return response.result;
-    } catch (e) {
-      return console.error(e);
+      console.error('quests/editQuest');
+      return error();
     }
   },
   async responsesToQuest({ commit }, questId) {
@@ -153,7 +150,8 @@ export default {
       commit('setResponses', { result, responded, invited });
       return result;
     } catch (e) {
-      return console.error(e);
+      console.error('quests/responsesToQuest');
+      return error();
     }
   },
   async inviteOnQuest({ commit }, { questId, payload }) {
@@ -163,7 +161,8 @@ export default {
       commit('setChatInviteOnQuest', chat);
       return response.result;
     } catch (e) {
-      return console.error(e);
+      console.error('quests/inviteOnQuest');
+      return error();
     }
   },
   async respondOnQuest({ commit }, { data, questId }) {
@@ -172,7 +171,7 @@ export default {
       commit('setRespondOnQuest', data);
       return success(response);
     } catch (e) {
-      console.error(e);
+      console.error('quests/respondOnQuest');
       return error();
     }
   },
@@ -181,7 +180,8 @@ export default {
       const response = await this.$axios.$post(`/v1/quest/${id}/star`);
       return response.result;
     } catch (e) {
-      return console.error(e);
+      console.error('quests/setStarOnQuest');
+      return error();
     }
   },
   async takeAwayStarOnQuest({ commit }, id) {
@@ -189,7 +189,8 @@ export default {
       const response = await this.$axios.$delete(`/v1/quest/${id}/star`);
       return response.result;
     } catch (e) {
-      return console.error(e);
+      console.error('quests/takeAwayStarOnQuest');
+      return error();
     }
   },
   async getStarredQuests({ commit }) {
@@ -198,7 +199,8 @@ export default {
       commit('setStarredQuests', data.result);
       return data.result;
     } catch (e) {
-      return console.error(e);
+      console.error('quests/getStarredQuests');
+      return error();
     }
   },
   async getResponsesToQuestForAuthUser({ commit }) {
@@ -207,7 +209,8 @@ export default {
       commit('setResponsesMy', response.result);
       return response.result;
     } catch (e) {
-      return console.error(e);
+      console.error('quests/getResponsesToQuestForAuthUser');
+      return error();
     }
   },
 
@@ -216,7 +219,8 @@ export default {
       const response = await this.$axios.$post(`/v1/quest/response/${responseId}/accept`);
       return response.result;
     } catch (e) {
-      return console.error(e);
+      console.error('quests/acceptQuestInvitation');
+      return error();
     }
   },
   async rejectQuestInvitation({ commit }, responseId) {
@@ -224,7 +228,7 @@ export default {
       const { ok } = await this.$axios.$post(`/v1/quest/response/${responseId}/reject`);
       return ok;
     } catch (e) {
-      console.error(e);
+      console.error('quests/rejectQuestInvitation');
       return false;
     }
   },
@@ -234,7 +238,7 @@ export default {
       const { ok } = await this.$axios.$post(`/v1/quest/employer/${responseId}/reject`);
       return ok;
     } catch (e) {
-      console.error(e);
+      console.error('quests/rejectTheAnswerToTheQuest');
       return false;
     }
   },
@@ -244,7 +248,7 @@ export default {
       const { result } = await this.$axios.$get('/v1/skill-filters');
       commit('setFilters', result);
     } catch (e) {
-      console.error(e);
+      console.error('quests/getFilters');
     }
   },
   setSelectedSpecializationsFilters({ commit }, data) {
@@ -259,7 +263,7 @@ export default {
       commit('setAvailableQuests', response.result.quests);
       return response.ok;
     } catch (e) {
-      console.error('Error: getAvailableQuests');
+      console.error('quests/getAvailableQuests');
       return false;
     }
   },
@@ -291,7 +295,7 @@ export default {
       });
       return success(res);
     } catch (e) {
-      console.error('newWQ', e);
+      console.error('quests/createQuest');
       return error(9000, e.message, e);
     }
   },
@@ -311,6 +315,8 @@ export default {
       const hash = hashText(description);
       const address = process.env.WORKNET_WQ_FACTORY;
       cost = new BigNumber(cost).shiftedBy(18).toString();
+      depositAmount = new BigNumber(depositAmount).shiftedBy(18).toString();
+      console.log(depositAmount, cost);
       return await getContractFeeData(
         'newWorkQuest',
         WorkQuestFactory,
@@ -320,7 +326,6 @@ export default {
         depositAmount,
       );
     } catch (e) {
-      console.error('get quest create fee', e);
       return error();
     }
   },
@@ -390,7 +395,7 @@ export default {
       });
       return success(res);
     } catch (e) {
-      console.error(e);
+      console.error('quests/sendQuestTransaction');
       return error(500, e.message, e);
     }
   },

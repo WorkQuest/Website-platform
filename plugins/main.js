@@ -182,7 +182,7 @@ Vue.mixin({
         }
         this.ShowModal({
           key: modals.transactionReceipt,
-          title: 'Delete quest', // TODO: to localization
+          title: this.$t('quests.deleteQuest'),
           fields: {
             from: { name: this.$t('meta.fromBig'), value: this.$store.getters['user/getUserWalletAddress'] },
             to: { name: this.$t('meta.toBig'), value: contractAddress },
@@ -191,20 +191,19 @@ Vue.mixin({
           submitMethod: async () => {
             this.SetLoader(true);
             const trxRes = await this.$store.dispatch('quests/cancelJob', contractAddress);
-            if (!trxRes.ok) this.ShowToast(trxRes.msg);
-            // TODO: удалить запрос на бэк, если он сам будет отлавливать удаление квеста
-            // const delRes = await this.$store.dispatch('quests/deleteQuest', { questId: id });
             this.SetLoader(false);
-            if (/* delRes && */trxRes.ok) {
-              const routeName = this.$route.name;
-              if (routeName === 'quests-id') {
-                await this.$router.replace('/my');
-              } else if (routeName === 'my' || routeName === 'profile-id') {
-                const payload = JSON.parse(sessionStorage.getItem('questsListFilter'));
-                await this.$store.dispatch('quests/getUserQuests', payload);
-              }
-              this.ShowToast(this.$t('toasts.questDeleted'), this.$t('toasts.questDeleted'));
+            if (!trxRes.ok) {
+              this.ShowToast(trxRes.msg);
+              return;
             }
+            const routeName = this.$route.name;
+            if (routeName === 'quests-id') {
+              await this.$router.replace('/my');
+            } else if (routeName === 'my' || routeName === 'profile-id') {
+              const payload = JSON.parse(sessionStorage.getItem('questsListFilter'));
+              await this.$store.dispatch('quests/getUserQuests', payload);
+            }
+            this.ShowToast(this.$t('toasts.questDeleted'), this.$t('toasts.questDeleted'));
           },
         });
       } else {

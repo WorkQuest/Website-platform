@@ -118,7 +118,6 @@ export default {
       await this.$store.dispatch('quests/getQuest', this.questData.id);
     },
     async startQuest(response) {
-      if (!this.isWalletConnected) return;
       this.SetLoader(true);
       const { contractAddress } = this.questData;
       const { worker } = response;

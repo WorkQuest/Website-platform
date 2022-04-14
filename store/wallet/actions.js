@@ -21,7 +21,6 @@ import * as abi from '~/abi/abi';
 import {
   PensionHistoryMethods, StakingTypes, TokenSymbols,
 } from '~/utils/enums';
-import { QuestMethods } from '~/utils/quests-constants';
 import {
   getPensionDefaultData,
   getPensionWallet,

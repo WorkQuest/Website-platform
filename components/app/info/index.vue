@@ -118,7 +118,7 @@ export default {
           [InfoModeWorker.ADChat]: 'meta.invited',
           [InfoModeWorker.WaitWorker]: 'quests.activeQuest',
           [InfoModeWorker.Rejected]: 'quests.requested',
-          [InfoModeWorker.WaitWorkerOnAssign]: 'quests.pendingConsideration', // invited?
+          [InfoModeWorker.WaitWorkerOnAssign]: 'quests.pendingConsideration',
           [InfoModeWorker.WaitEmployerConfirm]: 'quests.pendingConsideration',
           [InfoModeWorker.Dispute]: 'meta.dispute',
           [InfoModeWorker.Closed]: 'quests.questClosed',
