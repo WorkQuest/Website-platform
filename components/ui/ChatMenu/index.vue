@@ -107,7 +107,7 @@ export default {
     },
     showOpenADisputeModal() {
       this.closeChatMenu();
-      if (!this.$route.query.dispute) {
+      if (!this.$route.query.disputeStatus) {
         this.ShowModal({
           key: modals.openADispute,
           questId: this.questId,
