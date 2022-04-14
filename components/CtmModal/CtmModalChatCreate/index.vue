@@ -99,6 +99,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { Path } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -219,7 +220,7 @@ export default {
           memberUserIds,
         };
         const { ok, result } = await this.$store.dispatch('chat/handleCreateGroupChat', config);
-        if (ok) this.$router.push(`/messages/${result.id}`);
+        if (ok) this.$router.push(`${Path.MESSAGES}/${result.id}`);
       } else if (isAdding && memberUserIds.length) {
         const payload = {
           config: {

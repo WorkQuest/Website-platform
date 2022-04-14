@@ -149,7 +149,9 @@
 <script>
 import { mapGetters } from 'vuex';
 import ChatMenu from '~/components/ui/ChatMenu';
-import { ChatType, MessageType, MessageAction } from '~/utils/enums';
+import {
+  Path, ChatType, MessageType, MessageAction,
+} from '~/utils/enums';
 
 export default {
   name: 'Messages',
@@ -310,18 +312,19 @@ export default {
     handleSelChat(chat) {
       const { id, type, questChat } = chat;
       const dispute = questChat && questChat.quest.openDispute && questChat.quest.openDispute.status;
-      const questId = questChat && questChat.quest.id;
+      const disputeId = questChat && questChat.quest.openDispute && questChat.quest.openDispute.id;
+      console.log(disputeId);
       if (type === 'quest') {
         const { status } = questChat && questChat.quest;
         this.$router.push({
-          path: `/messages/${id}`,
+          path: `${Path.MESSAGES}/${id}`,
           query: {
-            dispute, id: questId, type, status,
+            dispute, id: disputeId, type, status,
           },
         });
       } else {
         this.$router.push({
-          path: `/messages/${id}`,
+          path: `${Path.MESSAGES}/${id}`,
         });
       }
     },

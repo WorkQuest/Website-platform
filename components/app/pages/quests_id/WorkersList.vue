@@ -58,7 +58,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { ResponseStatus } from '~/utils/enums';
+import { ResponseStatus, Path, ChatType } from '~/utils/enums';
 
 export default {
   name: 'WorkersList',
@@ -114,7 +114,7 @@ export default {
       this[funcKey](response);
     },
     goToChat(response) {
-      this.$router.push(`/messages/${response.questChat.chatId}`);
+      this.$router.push({ path: `${Path.MESSAGES}/${response.questChat.chatId}`, query: { type: ChatType.QUEST } });
     },
     async getQuest() {
       await this.$store.dispatch('quests/getQuest', this.questData.id);

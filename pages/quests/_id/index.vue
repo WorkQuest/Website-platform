@@ -548,11 +548,11 @@ export default {
       this.SetLoader(true);
       const { openDispute, questChat, status } = this.quest;
       const dispute = openDispute && openDispute.status;
-      const questId = openDispute && this.quest.id;
+      const disputeId = openDispute && openDispute.id;
       await this.$router.push({
-        path: `/messages/${questChat.chatId}`,
+        path: `${Path.MESSAGES}/${questChat.chatId}`,
         query: {
-          dispute, id: questId, type: 'quest', status,
+          dispute, id: disputeId, type: 'quest', status,
         },
       });
       this.SetLoader(false);

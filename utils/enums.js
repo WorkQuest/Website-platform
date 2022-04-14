@@ -238,6 +238,7 @@ export const Path = {
   PROFILE: '/profile',
   ROLE: '/role',
   QUESTS: '/quests',
+  MESSAGES: '/messages',
   EDIT_QUEST: '/edit-quest',
   COLLATERAL: '/collateral',
   WIKI: '/wiki',

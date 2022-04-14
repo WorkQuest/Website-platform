@@ -388,7 +388,7 @@ export default {
     goToCurrChat(message) {
       if (this.chatId !== 'starred') return;
       localStorage.setItem('selStarredMessageNumber', JSON.stringify(message.number));
-      this.$router.push(`/messages/${message.chatId}`);
+      this.$router.push(`${Path.MESSAGES}/${message.chatId}`);
     },
     selFile(ev, files, fileUrl) {
       ev.preventDefault();
