@@ -579,12 +579,14 @@ export default {
           title: this.$t('meta.questInfo'),
           subtitle: this.$t('quests.workOnQuestRejected'),
         });
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/questAgreed.svg'),
-          title: 'test',
-          subtitle: 'test',
-        });
+        if (!this.rating) {
+          this.ShowModal({
+            key: modals.status,
+            img: require('~/assets/img/ui/questAgreed.svg'),
+            title: 'test',
+            subtitle: 'test',
+          });
+        }
       }
       await this.getQuest();
       this.SetLoader(false);
@@ -599,6 +601,14 @@ export default {
           subtitle: this.$t('quests.pleaseWaitEmp'),
         });
         await this.getQuest();
+        if (!this.rating) {
+          this.ShowModal({
+            key: modals.status,
+            img: require('~/assets/img/ui/questAgreed.svg'),
+            title: 'test',
+            subtitle: 'test',
+          });
+        }
       }
       this.SetLoader(false);
     },
