@@ -30,10 +30,10 @@ export default {
         [address],
         GetWalletProvider(),
       );
+      commit('user/setFrozenBalance', new BigNumber(res).shiftedBy(-18), { root: true });
       return success(res);
     } catch (e) {
-      console.error('getFreezed; ', e);
-      return false;
+      return error(e.message, e);
     }
   },
   async getPensionTransactions({ commit, getters }, { method, limit, offset }) {

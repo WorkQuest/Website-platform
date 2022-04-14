@@ -155,7 +155,7 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { ERC20 } from '~/abi/abi';
+import * as abi from '~/abi/abi';
 import { TokenSymbolByContract, TokenSymbols, WalletTables } from '~/utils/enums';
 import { getStyledAmount } from '~/utils/wallet';
 import EmptyData from '~/components/app/info/emptyData';
@@ -274,8 +274,8 @@ export default {
       this.SetLoader(true);
       await Promise.all([
         this.$store.dispatch('wallet/frozenBalance', { address: this.userWalletAddress }),
-        await this.$store.dispatch('wallet/getBalanceWQT', this.userWalletAddress),
-        await this.$store.dispatch('wallet/getBalance'),
+        this.$store.dispatch('wallet/getBalanceWQT', this.userWalletAddress),
+        this.$store.dispatch('wallet/getBalance'),
         this.getTransactions(),
       ]);
       this.SetLoader(false);
@@ -303,7 +303,7 @@ export default {
           } else {
             feeRes = await this.$store.dispatch('wallet/getContractFeeData', {
               method: 'transfer',
-              _abi: ERC20,
+              _abi: abi.ERC20,
               contractAddress: process.env.WORKNET_WQT_TOKEN,
               data: [recipient, value],
             });

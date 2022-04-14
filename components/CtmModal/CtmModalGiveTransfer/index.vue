@@ -120,7 +120,9 @@ export default {
     maxAmount() {
       const fullBalance = new BigNumber(this.balance[this.selectedToken].fullBalance);
       if (this.selectedToken === TokenSymbols.WUSD) return fullBalance.minus(this.maxFee[this.selectedToken]).toString();
-      if (this.selectedToken === TokenSymbols.WQT) return fullBalance.minus(this.frozenBalance).toString();
+      if (this.selectedToken === TokenSymbols.WQT) {
+        return fullBalance.minus(this.frozenBalance).toString();
+      }
       return 0;
     },
   },
