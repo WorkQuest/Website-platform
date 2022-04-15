@@ -986,6 +986,7 @@
       "depositInfo": "Deposit info",
       "withdrawInfo": "Withdrawal info"
     },
+    "transactionError": "Transaction error",
     "fromAddress": "from",
     "toAddress": "to",
     "codeFromSms": "Code from sms",

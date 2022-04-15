@@ -114,7 +114,7 @@ export default {
       selectedToken: 'wallet/getSelectedToken',
       userData: 'user/getUserData',
       isConnected: 'wallet/getIsWalletConnected',
-      frozenBalance: 'user/getFrozenBalance',
+      frozenBalance: 'wallet/getFrozenBalance',
     }),
     tokenSymbolsDd() {
       return Object.keys(TokenSymbols);
@@ -123,8 +123,7 @@ export default {
       const fullBalance = new BigNumber(this.balance[this.selectedToken].fullBalance);
       if (this.selectedToken === TokenSymbols.WUSD) return fullBalance.minus(this.maxFee[this.selectedToken]).toString();
       if (this.selectedToken === TokenSymbols.WQT) return fullBalance.minus(this.frozenBalance).toString();
-      if ([TokenSymbols.ETH, TokenSymbols.BNB].includes(this.selectedToken)) return fullBalance.toString();
-      return 0;
+      return fullBalance.toString();
     },
   },
   watch: {
@@ -151,9 +150,8 @@ export default {
   methods: {
     async showWithdrawInfo() {
       const { submit } = this.options;
-      if (submit) {
-        submit({ recipient: this.recipient, amount: this.amount, selectedToken: this.selectedToken });
-      }
+      const { recipient, amount, selectedToken } = this;
+      submit({ recipient, amount, selectedToken });
     },
     replaceDot() {
       this.amount = this.amount.replace(/,/g, '.');
@@ -162,13 +160,13 @@ export default {
     async updateMaxFee() {
       if (!this.isConnected) return;
       if (this.selectedToken === TokenSymbols.WUSD) {
-        const feeWUSD = await Promise.resolve(this.$store.dispatch('wallet/getTransferFeeData', {
+        const feeWUSD = await this.$store.dispatch('wallet/getTransferFeeData', {
           recipient: this.userData.wallet.address,
           value: this.balance.WUSD.fullBalance,
-        }));
+        });
         if (feeWUSD?.ok) this.maxFee.WUSD = feeWUSD?.result?.fee ?? 0;
         else this.maxFee.WUSD = 0;
-      } else if ([TokenSymbols.ETH, TokenSymbols.BNB, TokenSymbols.WQT].includes(this.selectedToken)) {
+      } else {
         const feeTokens = await this.$store.dispatch('wallet/getContractFeeData', {
           method: 'transfer',
           abi: ERC20,

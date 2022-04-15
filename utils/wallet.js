@@ -8,7 +8,7 @@ import {
   fetchContractData,
 } from '~/utils/web3';
 import {
-  ERC20, WQPensionFund, WQRouter, WQStaking, WQStakingNative,
+  WQPensionFund, WQRouter, WQStaking, WQStakingNative,
 } from '~/abi/abi';
 import { StakingTypes } from '~/utils/enums';
 
@@ -264,11 +264,9 @@ export const getContractFeeData = async (_method, _abi, _contractAddress, data, 
 /** PENSION FUND */
 export const getPensionDefaultData = async () => {
   try {
-    const _abi = WQPensionFund;
-    const _pensionAddress = process.env.WORKNET_PENSION_FUND;
     const [lockTime, defaultFee] = await Promise.all([
-      fetchContractData('lockTime', _abi, _pensionAddress, null, web3),
-      fetchContractData('defaultFee', _abi, _pensionAddress, null, web3),
+      fetchContractData('lockTime', WQPensionFund, process.env.WORKNET_PENSION_FUND, null, web3),
+      fetchContractData('defaultFee', WQPensionFund, process.env.WORKNET_PENSION_FUND, null, web3),
     ]);
     return success({
       defaultFee: new BigNumber(defaultFee.toString()).shiftedBy(-18).toString(),

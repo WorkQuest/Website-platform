@@ -1,5 +1,4 @@
 export default () => ({
-  frozenBalance: 0,
   currentLang: '',
   twoFACode: '',
   verificationCode: '',

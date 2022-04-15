@@ -10,7 +10,7 @@
         class="transaction__image"
       >
       <div class="transaction__title">
-        {{ options.mode ==='error' ? 'transaction error' : $t('modals.transactionSent') }}
+        {{ options.mode ==='error' ? $t('modals.transactionError') : $t('modals.transactionSent') }}
       </div>
       <base-btn
         class="transaction__action"

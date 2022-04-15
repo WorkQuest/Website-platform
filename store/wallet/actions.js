@@ -113,7 +113,7 @@ export default {
         [address],
         GetWalletProvider(),
       );
-      if (method === 'freezed') commit('user/setFrozenBalance', new BigNumber(res).shiftedBy(-18), { root: true });
+      if (method === 'freezed') commit('wallet/setFrozenBalance', new BigNumber(res).shiftedBy(-18), { root: true });
       else {
         commit('setBalance', {
           symbol,
@@ -144,7 +144,10 @@ export default {
    * @param recipient
    */
   async transferToken({ commit }, payload) {
-    return await sendWalletTransaction('transfer', payload);
+    const res = await sendWalletTransaction('transfer', payload);
+    // TODO fix it, sendWalletTransaction should return object with keys ok and result
+    if (res.ok) return error(res);
+    return success(res);
   },
   /**
    * Get Fee Data from contract method

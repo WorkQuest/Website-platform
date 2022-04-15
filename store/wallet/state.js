@@ -11,6 +11,7 @@ export default () => ({
     WQT: {
       balance: 0, // Display balance
       fullBalance: 0,
+      frozenBalance: 0,
     },
     WUSD: {
       balance: 0,
