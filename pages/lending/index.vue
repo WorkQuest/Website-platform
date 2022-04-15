@@ -271,46 +271,45 @@ export default {
           this.ShowModal({
             key: modals.confirmDetails,
             receiptData,
+            // eslint-disable-next-line consistent-return
             submit: async () => {
               this.SetLoader(true);
-
-              // TODO нода должа уметь такое выполнять, ждем пока ее научат
-              // const [checkTokenPrice, approveAllowed] = await Promise.all([
-              //   this.setTokenPrice(),
-              //   this.$store.dispatch('wallet/approveRouter', {
-              //     symbol,
-              //     spenderAddress: process.env.WORKNET_BORROWING,
-              //     value: valueWithDecimals,
-              //   }),
-              // ]);
-
               const checkTokenPrice = await this.setTokenPrice();
+              this.SetLoader(false);
               if (!checkTokenPrice) {
-                this.ShowModalFail({ title: this.$t('modals.transactionFail'), subtitle: 'incorrect price in Oracle' });
+                return this.ShowModalFail({ title: this.$t('modals.transactionFail'), subtitle: 'incorrect price in Oracle' });
               }
-              const approveAllowed = await this.$store.dispatch('wallet/approveRouter', {
-                symbol,
-                spenderAddress: process.env.WORKNET_BORROWING,
-                value: valueWithDecimals,
-              });
-              if (!approveAllowed) {
-                this.ShowModalFail({ title: this.$t('modals.transactionFail'), subtitle: 'incorrect action in approve or allowance' });
-              }
-              let res = false;
-              if (checkTokenPrice && approveAllowed) {
-                res = await this.$store.dispatch('crediting/sendMethod', {
-                  address: process.env.WORKNET_BORROWING,
-                  method: 'borrow',
-                  abi: WQBorrowing,
-                  data: [
-                    1, // 1 in data this is nonce, required parameter for method "borrow"
-                    valueWithDecimals,
-                    selFundID - 1,
-                    duration,
+              this.ShowModal({
+                key: modals.areYouSure,
+                title: this.$t('modals.approveRouter', { token: symbol }),
+                okBtnTitle: this.$t('meta.btns.submit'),
+                okBtnFunc: async () => {
+                  this.SetLoader(true);
+                  const approveAllowed = await this.$store.dispatch('wallet/approveRouter', {
                     symbol,
-                  ],
-                });
-              }
+                    spenderAddress: process.env.WORKNET_BORROWING,
+                    value: valueWithDecimals,
+                  });
+                  this.SetLoader(false);
+                  if (!approveAllowed) {
+                    return this.ShowModalFail({ title: this.$t('modals.transactionFail'), subtitle: 'incorrect action in approve or allowance' });
+                  }
+                  return true;
+                },
+              });
+              this.SetLoader(true);
+              const res = await this.$store.dispatch('crediting/sendMethod', {
+                address: process.env.WORKNET_BORROWING,
+                method: 'borrow',
+                abi: WQBorrowing,
+                data: [
+                  1, // 1 in data this is nonce, required parameter for method "borrow"
+                  valueWithDecimals,
+                  selFundID - 1,
+                  duration,
+                  symbol,
+                ],
+              });
               this.SetLoader(false);
 
               if (res.ok) {

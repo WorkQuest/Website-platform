@@ -140,7 +140,6 @@ export default {
       selCurrencyID: 1,
       selFundID: 1,
       quantity: '',
-      generate: '',
       date: 0,
       datesNumber: [7, 14, 30, 90, 180],
       checkpoints: [
