@@ -87,7 +87,7 @@
               @input="showReviewModal($event, quest.id)"
             />
             <span class="worker-data__price">
-              {{ quest.price }} {{ $t('meta.coins.wusd') }}
+              {{ questReward }} {{ $t('meta.coins.wusd') }}
             </span>
             <div
               class="worker-data__priority-title"
@@ -105,7 +105,10 @@
           class="main__map"
           :is-draggable="false"
         />
-        <template v-if="userRole === $options.UserRole.EMPLOYER && infoDataMode === $options.InfoModeEmployer.Created">
+        <template
+          v-if="userRole === $options.UserRole.EMPLOYER
+            && (infoDataMode === $options.InfoModeEmployer.Created || infoDataMode === $options.InfoModeEmployer.WaitWorkerOnAssign)"
+        >
           <workers-list is-invited />
           <workers-list />
         </template>
@@ -154,10 +157,19 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import {
-  QuestStatuses, InfoModeWorker, InfoModeEmployer, UserRole, ResponseStatus, questPriority, QuestModeReview, Path,
+  Path,
+  UserRole,
+  ResponseStatus,
+  questPriority,
+  QuestModeReview,
+  TokenSymbols,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
+import {
+  QuestMethods, EditQuestState, QuestStatuses, InfoModeWorker, InfoModeEmployer,
+} from '~/utils/quests-constants';
 
 export default {
   name: 'Quests',
@@ -174,6 +186,8 @@ export default {
   },
   computed: {
     ...mapGetters({
+      isWalletConnected: 'wallet/getIsWalletConnected',
+      userAddress: 'user/getUserWalletAddress',
       quest: 'quests/getQuest',
       assignedWorker: 'quests/getAssignedWorker',
       userRole: 'user/getUserRole',
@@ -183,6 +197,9 @@ export default {
       otherQuests: 'quests/getAllQuests',
       isLoading: 'main/getIsLoading',
     }),
+    questReward() {
+      return new BigNumber(this.quest.price).shiftedBy(-18).toString();
+    },
     rating() {
       return this.quest.yourReview?.mark || 0;
     },
@@ -209,6 +226,7 @@ export default {
     },
     randomSpec() {
       const { questSpecializations } = this.quest;
+      if (!questSpecializations.length) return '';
       return Math.floor(questSpecializations[Math.floor(Math.random() * questSpecializations.length)].path);
     },
     checkAvailabilityDispute() {
@@ -225,7 +243,12 @@ export default {
       this.setActionBtnsArr();
     },
   },
+  beforeCreate() {
+    this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+  },
   async beforeMount() {
+    if (!this.isWalletConnected) return;
+
     this.SetLoader(true);
     const res = await this.getQuest();
     if (!res) {
@@ -303,7 +326,7 @@ export default {
     setEmployerBtnsArr() {
       if (this.userData.id !== this.quest.userId) return [];
       const {
-        WaitConfirm, Dispute, Created, Active,
+        Dispute, Created, WaitWorker, WaitEmployerConfirm,
       } = InfoModeEmployer;
       let arr = [];
       switch (this.infoDataMode) {
@@ -321,15 +344,17 @@ export default {
           }];
           break;
         }
-        case Active: {
+        case WaitWorker: {
           arr = [{
-            name: this.$t('meta.approve'),
-            mode: 'approve',
-            disabled: true,
+            name: this.$t('meta.btns.goToChat'),
+            class: 'base-btn_goToChat',
+            funcKey: 'goToChat',
+            icon: 'icon-chat icon_fs-20',
+            disabled: false,
           }];
           break;
         }
-        case WaitConfirm: {
+        case WaitEmployerConfirm: {
           arr = [{
             name: this.$t('meta.btns.acceptCompletedWorkOnQuest'),
             mode: 'approve',
@@ -339,6 +364,13 @@ export default {
           {
             name: this.$t('meta.openDispute'),
             funcKey: 'openDispute',
+            disabled: false,
+          },
+          {
+            name: this.$t('meta.btns.goToChat'),
+            class: 'base-btn_goToChat',
+            funcKey: 'goToChat',
+            icon: 'icon-chat icon_fs-20',
             disabled: false,
           }];
           break;
@@ -359,9 +391,10 @@ export default {
     setWorkerBtnsArr() {
       const { quest: { assignedWorkerId, response }, userData, infoDataMode } = this;
       const {
-        ADChat, Active, Created, Dispute, Invited, WaitWorker, WaitConfirm,
+        ADChat, WaitWorker, Created, Dispute, Invited, WaitWorkerOnAssign, WaitEmployerConfirm,
       } = InfoModeWorker;
       let arr = [];
+
       switch (infoDataMode) {
         case ADChat: {
           arr = [{
@@ -377,7 +410,7 @@ export default {
           }];
           break;
         }
-        case Active: {
+        case WaitWorker: {
           if (assignedWorkerId !== userData.id) break;
           arr = [{
             name: this.$t('meta.openDispute'),
@@ -399,7 +432,7 @@ export default {
           }];
           break;
         }
-        case WaitConfirm:
+        case WaitEmployerConfirm:
         case Dispute: {
           arr = [{
             name: this.$t('meta.openDispute'),
@@ -416,24 +449,18 @@ export default {
             disabled: false,
           },
           {
-            name: this.$t('meta.btns.disagree'),
+            name: `${this.$t('meta.btns.disagree')}`,
             mode: 'outline',
             funcKey: 'rejectQuestInvitation',
             disabled: false,
           }].concat(arr);
           break;
         }
-        case WaitWorker: {
+        case WaitWorkerOnAssign: {
           if (assignedWorkerId !== userData.id) break;
           arr = [{
             name: this.$t('meta.btns.agree'),
             funcKey: 'acceptWorkOnQuest',
-            disabled: false,
-          },
-          {
-            name: this.$t('meta.btns.disagree'),
-            mode: 'outline',
-            funcKey: 'rejectWorkOnQuest',
             disabled: false,
           }];
           break;
@@ -465,15 +492,9 @@ export default {
       }
     },
     async closeQuest() {
-      // TODO: Добавить в enum
-      const modalMode = 1;
-      this.SetLoader(true);
-      if (this.quest.status !== InfoModeEmployer.Active) {
-        await this.$store.dispatch('quests/closeQuest', this.quest.id);
-        this.showQuestModal(modalMode);
+      if (this.quest.status !== InfoModeEmployer.WaitWorker) {
+        await this.DeleteQuest(this.quest);
       }
-      await this.$router.push(Path.MY_QUESTS);
-      this.SetLoader(false);
     },
     async openDispute() {
       if (this.quest.status === QuestStatuses.Dispute) return await this.$router.push(`${Path.DISPUTES}/${this.quest.openDispute.id}`);
@@ -492,19 +513,40 @@ export default {
       });
     },
     async acceptCompletedWorkOnQuest() {
-      // TODO: Добавить в enum
-      const modalMode = 2;
       this.SetLoader(true);
-      await this.$store.dispatch('quests/acceptCompletedWorkOnQuest', this.quest.id);
-      this.showQuestModal(modalMode);
-      await this.$store.dispatch('quests/setInfoDataMode', InfoModeEmployer.Done);
+      const { contractAddress } = this.quest;
+      const [feeRes] = await Promise.all([
+        this.$store.dispatch('quests/getFeeDataJobMethod', {
+          method: QuestMethods.AcceptJobResult,
+          contractAddress,
+        }),
+        this.$store.dispatch('wallet/getBalance'),
+      ]);
       this.SetLoader(false);
+      if (feeRes.ok === false) {
+        this.ShowToast(feeRes.msg);
+        return;
+      }
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        fields: {
+          from: { name: this.$t('meta.fromBig'), value: this.userAddress },
+          to: { name: this.$t('meta.toBig'), value: contractAddress },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
+        },
+        submitMethod: async () => {
+          const txRes = await this.$store.dispatch('quests/acceptJobResult', contractAddress);
+          if (txRes.ok) {
+            this.showQuestModal(2);
+            await this.$store.dispatch('quests/setInfoDataMode', QuestStatuses.Done);
+          }
+        },
+      });
     },
     toRaisingViews() {
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.quest.status)) {
         this.$router.push({ path: `/edit-quest/${this.quest.id}`, query: { mode: 'raise' } });
-        // TODO: Добавить в enum
-        this.$store.commit('quests/setCurrentStepEditQuest', 2);
+        this.$store.commit('quests/setCurrentStepEditQuest', EditQuestState.RAISE_VIEWS);
       } else this.showToastWrongStatusRaisingViews();
     },
     showToastWrongStatusRaisingViews() {
@@ -534,83 +576,102 @@ export default {
     async rejectQuestInvitation() {
       this.SetLoader(true);
       await this.$store.dispatch('quests/rejectQuestInvitation', this.quest.response.id);
+      await this.getQuest();
       this.setActionBtnsArr();
       this.SetLoader(false);
     },
     async acceptQuestInvitation() {
       this.SetLoader(true);
-      await this.getQuest();
       await this.$store.dispatch('quests/acceptQuestInvitation', this.quest.response.id);
+      await this.getQuest();
       this.setActionBtnsArr();
       this.SetLoader(false);
     },
     async goToChat() {
       this.SetLoader(true);
       const { openDispute, questChat, status } = this.quest;
-      const dispute = openDispute && openDispute.status;
-      const questId = openDispute && this.quest.id;
+      const disputeStatus = openDispute?.status;
+      const disputeId = openDispute?.id;
       await this.$router.push({
-        path: `/messages/${questChat.chatId}`,
+        path: `${Path.MESSAGES}/${questChat.chatId}`,
         query: {
-          dispute, id: questId, type: 'quest', status,
+          disputeStatus, id: disputeId, type: 'quest', status,
         },
       });
       this.SetLoader(false);
     },
     async acceptWorkOnQuest() {
       this.SetLoader(true);
-      if (await this.$store.dispatch('quests/acceptWorkOnQuest', this.quest.id)) {
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/questAgreed.svg'),
-          title: this.$t('meta.questInfo'),
-          subtitle: this.$t('quests.workOnQuestAccepted'),
-        });
-      }
-      await this.getQuest();
+      const { contractAddress } = this.quest;
+      const [feeRes] = await Promise.all([
+        this.$store.dispatch('quests/getFeeDataJobMethod', {
+          method: QuestMethods.AcceptJob,
+          contractAddress,
+        }),
+        this.$store.dispatch('wallet/getBalance'),
+      ]);
       this.SetLoader(false);
-    },
-    async rejectWorkOnQuest() {
-      this.SetLoader(true);
-      if (await this.$store.dispatch('quests/rejectWorkOnQuest', this.quest.id)) {
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/questAgreed.svg'),
-          title: this.$t('meta.questInfo'),
-          subtitle: this.$t('quests.workOnQuestRejected'),
-        });
-        if (!this.rating) {
-          this.ShowModal({
-            key: modals.status,
-            img: require('~/assets/img/ui/questAgreed.svg'),
-            title: 'test',
-            subtitle: 'test',
-          });
-        }
+      if (feeRes.ok === false) {
+        this.ShowToast(feeRes.msg);
+        return;
       }
-      await this.getQuest();
-      this.SetLoader(false);
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        fields: {
+          from: { name: this.$t('meta.fromBig'), value: this.userAddress },
+          to: { name: this.$t('meta.toBig'), value: contractAddress },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
+        },
+        submitMethod: async () => {
+          const txRes = await this.$store.dispatch('quests/acceptJob', contractAddress);
+          if (txRes.ok) {
+            await this.getQuest();
+            this.ShowModal({
+              key: modals.status,
+              img: require('~/assets/img/ui/questAgreed.svg'),
+              title: this.$t('meta.questInfo'),
+              subtitle: this.$t('quests.workOnQuestAccepted'),
+            });
+          }
+        },
+      });
     },
     async completeWorkOnQuest() {
       this.SetLoader(true);
-      if (await this.$store.dispatch('quests/completeWorkOnQuest', this.quest.id)) {
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/questAgreed.svg'),
-          title: this.$t('meta.questInfo'),
-          subtitle: this.$t('quests.pleaseWaitEmp'),
-        });
-        await this.getQuest();
-        if (!this.rating) {
-          this.ShowModal({
-            key: modals.status,
-            img: require('~/assets/img/ui/questAgreed.svg'),
-            title: 'test',
-            subtitle: 'test',
-          });
-        }
-      }
+      const { contractAddress } = this.quest;
+      const [feeRes] = await Promise.all([
+        this.$store.dispatch('quests/getFeeDataJobMethod', {
+          method: QuestMethods.VerificationJob,
+          contractAddress,
+        }),
+        this.$store.dispatch('wallet/getBalance'),
+      ]);
       this.SetLoader(false);
+      if (!feeRes.ok) {
+        console.error('completeWorkOnQuest', feeRes);
+        return;
+      }
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        fields: {
+          from: { name: this.$t('meta.fromBig'), value: this.userAddress },
+          to: { name: this.$t('meta.toBig'), value: contractAddress },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
+        },
+        submitMethod: async () => {
+          const txRes = await this.$store.dispatch('quests/verificationJob', contractAddress);
+          if (txRes.ok) {
+            await this.$store.dispatch('quests/setInfoDataMode', QuestStatuses.WaitEmployerConfirm);
+            await this.getQuest();
+            this.ShowModal({
+              key: modals.status,
+              img: require('~/assets/img/ui/questAgreed.svg'),
+              title: this.$t('meta.questInfo'),
+              subtitle: this.$t('quests.pleaseWaitEmp'),
+            });
+          }
+        },
+      });
     },
     async sendARequestOnQuest() {
       this.ShowModal({

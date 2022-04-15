@@ -9,6 +9,7 @@
           <div class="message__content">
             <div class="modal__desc">
               <div class="message__wrapper">
+                <!--suppress XmlInvalidId -->
                 <label
                   for="textarea"
                   class="modal__labelMessage"
@@ -51,7 +52,7 @@
                     mode="outline"
                     data-selector="CANCEL"
                     class="message__action"
-                    @click="hide()"
+                    @click="CloseModal"
                   >
                     {{ $t('meta.btns.cancel') }}
                   </base-btn>
@@ -69,7 +70,7 @@
 /* eslint-disable object-shorthand,no-var */
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { InfoModeWorker, QuestStatuses } from '~/utils/enums';
+import { QuestStatuses } from '~/utils/quests-constants';
 
 export default {
   name: 'ModalSendARequest',
@@ -88,9 +89,6 @@ export default {
   methods: {
     updateFiles(files) {
       this.files = files;
-    },
-    hide() {
-      this.CloseModal();
     },
     async respondOnQuest() {
       const medias = await this.uploadFiles(this.files);
