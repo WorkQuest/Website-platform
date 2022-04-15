@@ -285,12 +285,17 @@ export default {
               // ]);
 
               const checkTokenPrice = await this.setTokenPrice();
+              if (!checkTokenPrice) {
+                this.ShowModalFail({ title: this.$t('modals.transactionFail'), subtitle: 'incorrect price in Oracle' });
+              }
               const approveAllowed = await this.$store.dispatch('wallet/approveRouter', {
                 symbol,
                 spenderAddress: process.env.WORKNET_BORROWING,
                 value: valueWithDecimals,
               });
-
+              if (!approveAllowed) {
+                this.ShowModalFail({ title: this.$t('modals.transactionFail'), subtitle: 'incorrect action in approve or allowance' });
+              }
               let res = false;
               if (checkTokenPrice && approveAllowed) {
                 res = await this.$store.dispatch('crediting/sendMethod', {
@@ -309,10 +314,10 @@ export default {
               this.SetLoader(false);
 
               if (res.ok) {
+                await this.$store.dispatch('crediting/getCreditData');
                 this.ShowModalSuccess({
                   title: this.$t('modals.depositIsOpened'),
                   img: images.TRANSACTION_SEND,
-                  path: `${Path.LENDING}/my`,
                 });
               } else this.ShowModalFail({ title: this.$t('modals.transactionFail') });
             },
@@ -335,10 +340,10 @@ export default {
           this.SetLoader(false);
 
           if (ok) {
+            await this.$store.dispatch('crediting/getWalletsData');
             this.ShowModalSuccess({
               title: this.$t('modals.loanIsOpened'),
               img: images.TRANSACTION_SEND,
-              path: `${Path.LENDING}/my`,
             });
           } else this.ShowModalFail({ title: this.$t('modals.transactionFail') });
         },
