@@ -22,6 +22,7 @@
             :name="$t('meta.securityCheckSmall')"
             rules="required|alpha_num|length:6"
             class="content__input"
+            @enter="handleSubmit(hide)"
           />
           <div class="content__body">
             {{ $t('meta.googleConfCodeDesc') }}

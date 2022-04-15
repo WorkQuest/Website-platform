@@ -8,7 +8,7 @@ import {
   fetchContractData,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
-import { StakingTypes } from '~/utils/enums';
+import { StakingTypes, tokenMap } from '~/utils/enums';
 
 const bip39 = require('bip39');
 
@@ -32,7 +32,7 @@ export const getCipherKey = () => cipherKey;
 export const setCipherKey = (key) => cipherKey = key;
 
 let web3 = new Web3(process.env.WQ_PROVIDER);
-
+export const getProvider = () => web3;
 export const createInstance = (_abi, _address) => new web3.eth.Contract(_abi, _address);
 
 export const GetWalletProvider = () => web3;
@@ -501,4 +501,9 @@ export const buyWUSD = async ({ collateralBN, ratioBN, currency }, { gasPrice, g
     console.error('setTokenPriceError', e);
     throw error();
   }
+};
+
+export const hashText = (value) => {
+  if (!value) console.error('Wrong value for hashText');
+  return web3.utils.keccak256(value);
 };

@@ -1,5 +1,8 @@
 <template>
-  <div class="icon-more">
+  <div
+    class="icon-more"
+    :class="{'invisible':isInvisible}"
+  >
     <button
       v-click-outside="closeChatMenu"
       class="chat__button chat__button_menu"
@@ -34,7 +37,7 @@
             </template>
             <template v-else>
               <div
-                v-if="!canILeave"
+                v-if="isOpenDispute"
                 class="chat-menu__item"
                 @click="showOpenADisputeModal()"
               >
@@ -58,6 +61,10 @@
 <script>
 import ClickOutside from 'vue-click-outside';
 import { mapGetters } from 'vuex';
+import {
+  ChatType, DisputeStatues, Path,
+} from '~/utils/enums';
+import { QuestStatuses } from '~/utils/quests-constants';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -84,21 +91,31 @@ export default {
     ...mapGetters({
       currChat: 'chat/getCurrChatInfo',
     }),
+    isOpenDispute() {
+      return !this.canILeave && this.$route.query.type === ChatType.QUEST;
+    },
+    isInvisible() {
+      const { type, status } = this.$route.query;
+      return type === ChatType.QUEST && ![QuestStatuses.WaitWorker, QuestStatuses.Dispute].includes(+status);
+    },
   },
   methods: {
     changeStarredVal() {
       this.$emit('change');
     },
     getStarredMessages() {
-      this.$router.push('/messages/starred');
+      this.$router.push(`${Path.MESSAGES}/starred`);
     },
     showOpenADisputeModal() {
       this.closeChatMenu();
-      // TODO: добавить вывод окна, на добавление диспута, после завершения логики на странице чата
-      // this.ShowModal({
-      //   key: modals.openADispute,
-      //   questId: this.questId,
-      // });
+      if (!this.$route.query.disputeStatus) {
+        this.ShowModal({
+          key: modals.openADispute,
+          questId: this.questId,
+        });
+      } else {
+        this.$router.push(`${Path.DISPUTES}/${this.$route.query.id}`);
+      }
     },
     toggleChatMenu() {
       this.isShowChatMenu = !this.isShowChatMenu;
@@ -116,7 +133,7 @@ export default {
       });
     },
     async leaveChat() {
-      if (await this.$store.dispatch('chat/leaveFromChat', this.currChat.id)) this.$router.push('/messages');
+      if (await this.$store.dispatch('chat/leaveFromChat', this.currChat.id)) this.$router.push(`/${Path.MESSAGES}`);
 
       this.CloseModal();
     },
@@ -194,6 +211,9 @@ export default {
       color: $black800;
     }
   }
+}
+.invisible{
+  opacity: 0;
 }
 @include _991 {
   .chat {

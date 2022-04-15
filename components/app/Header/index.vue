@@ -556,7 +556,7 @@ export default {
       }
     },
     goToMessages() {
-      this.$router.push('/messages');
+      this.$router.push(Path.MESSAGES);
       this.closeAll();
     },
     showProfile() {

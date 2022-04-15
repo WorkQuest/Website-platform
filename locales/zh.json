@@ -88,8 +88,8 @@
       "resendSMS": "重新发送短信",
       "registration": "注册",
       "leave": "Leave",
-      "completeWorkOnQuest": "Complete work on Quest",
-      "acceptCompletedWorkOnQuest": "Accept completed work on quest",
+      "completeWorkOnQuest": "Complete work",
+      "acceptCompletedWorkOnQuest": "Accept work",
       "closeQuest": "Close quest",
       "goToChat": "转到聊天",
       "view": "查看",
@@ -331,8 +331,11 @@
     "employer": {
       "usersNotResponded": "Users not responded"
     },
+    "deleteQuest": "Delete quest",
     "invite": "Invite",
     "decline": "Decline",
+    "declinedTheInvitation": "Declined the invitation",
+    "acceptedTheInvitation": "Accepted the invitation",
     "questTitle": "Quest title",
     "questDesc": "Quest description",
     "closed": "Closed",
@@ -987,6 +990,10 @@
       "depositInfo": "Deposit info",
       "withdrawInfo": "Withdrawal info"
     },
+    "fromAddress": "from",
+    "toAddress": "to",
+    "codeFromSms": "Code from sms",
+    "saved": "Saved",
     "phoneNumber": "Phone Number",
     "value": "Value",
     "generatedWUSD": "WUSD will be generated",
@@ -1932,7 +1939,8 @@
       "responded": "Responded quests",
       "performed": "Performed quests",
       "active": "Active quests",
-      "invited": "Invited quests"
+      "invited": "Invited quests",
+      "created": "Created quests"
     }
   },
   "footer": {

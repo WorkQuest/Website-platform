@@ -88,8 +88,8 @@
       "resendSMS": "Переотправить СМС",
       "registration": "Регистрация",
       "leave": "Покинуть",
-      "completeWorkOnQuest": "Завершить работу над квестом",
-      "acceptCompletedWorkOnQuest": "Принять выполненную работу по квесту",
+      "completeWorkOnQuest": "Завершить работу",
+      "acceptCompletedWorkOnQuest": "Принять работу",
       "closeQuest": "Закрыть квест",
       "goToChat": "Перейти в чат",
       "view": "View",
@@ -331,8 +331,11 @@
     "employer": {
       "usersNotResponded": "Users not responded"
     },
+    "deleteQuest": "Удалить квест",
     "invite": "Пригласить",
     "decline": "Отклонить",
+    "declinedTheInvitation": "Отклонил приглашение",
+    "acceptedTheInvitation": "Принял приглашение",
     "questTitle": "Заголовок квеста",
     "questDesc": "Описание квеста",
     "closed": "Закрыт",
@@ -987,6 +990,10 @@
       "depositInfo": "Deposit info",
       "withdrawInfo": "Withdrawal info"
     },
+    "fromAddress": "с",
+    "toAddress": "на",
+    "codeFromSms": "Код из СМС",
+    "saved": "Сохранено",
     "phoneNumber": "Phone Number",
     "value": "Value",
     "generatedWUSD": "WUSD будет сгенерировано",
@@ -1931,7 +1938,8 @@
       "responded": "Responded quests",
       "performed": "Performed quests",
       "active": "Активные квесты",
-      "invited": "Invited quests"
+      "invited": "Invited quests",
+      "created": "Созданные квесты"
     }
   },
   "footer": {
