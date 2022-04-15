@@ -213,7 +213,6 @@ export default {
     },
     refund(amount) {
       const maxValue = new BigNumber(this.creditData.credit).plus(this.currentFee).shiftedBy(-18).toString();
-      const valueWithoutFee = new BigNumber(amount).shiftedBy(18).minus(this.currentFee).toString();
       let value = new BigNumber(amount).shiftedBy(18).toString();
       if (new BigNumber(value).isEqualTo(maxValue)) {
         value = new BigNumber(this.creditData.credit).plus(this.currentFee).plus(10000).toString();
@@ -221,7 +220,7 @@ export default {
       return {
         value,
         // 1 in data this is nonce, required parameter for method "refund"
-        data: [1, valueWithoutFee],
+        data: [1, this.creditData.credit],
         method: 'refund',
         abi: WQBorrowing,
         address: process.env.WORKNET_BORROWING,

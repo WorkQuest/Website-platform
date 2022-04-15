@@ -3,6 +3,7 @@ import {
   GetWalletProvider,
   sendWalletTransaction,
   setTokenPrices,
+  getContractFeeData,
 } from '~/utils/wallet';
 import {
   fetchContractData,
@@ -77,5 +78,10 @@ export default {
       console.log('sendMethod:', method, err);
       return error();
     }
+  },
+  async getMethodFee({ commit }, {
+    method, abi, address, data,
+  }) {
+    return await getContractFeeData(method, abi, address, data);
   },
 };

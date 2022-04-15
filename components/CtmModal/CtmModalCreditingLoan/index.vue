@@ -5,7 +5,7 @@
   >
     <div class="loan__content content">
       <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
+        v-slot="{handleSubmit, valid}"
       >
         <div class="content__body">
           <div class="content__field">
@@ -53,7 +53,7 @@
           </base-btn>
           <base-btn
             class="buttons__button"
-            :disabled="!validated || !passed || invalid"
+            :disabled="!valid || quantity <= 0"
             data-selector="SUBMIT"
             @click="handleSubmit(openConfirmDetailsModal)"
           >
@@ -69,6 +69,7 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
+import { WQLending } from '~/abi/abi';
 
 export default {
   name: 'ModalCreditingLoan',
@@ -78,6 +79,7 @@ export default {
       quantity: '',
       debt: '',
       percents: '',
+      feeData: 0,
     };
   },
   computed: {
@@ -85,9 +87,17 @@ export default {
       options: 'modals/getOptions',
       balanceData: 'wallet/getBalanceData',
     }),
+    balance() {
+      return this.balanceData.WUSD;
+    },
   },
   async mounted() {
     await this.$store.dispatch('wallet/getBalance');
+    this.feeData = await this.$store.dispatch('crediting/getMethodFee', {
+      method: 'deposit',
+      abi: WQLending,
+      address: process.env.WORKNET_LENDING,
+    });
   },
   methods: {
     hide() {
@@ -100,7 +110,7 @@ export default {
       await submit(amount);
     },
     maxBalance() {
-      this.quantity = this.balanceData.WUSD.fullBalance;
+      this.quantity = new BigNumber(new BigNumber(this.balance.fullBalance).shiftedBy(18).minus(this.feeData.result.fee)).shiftedBy(-18).toString();
     },
   },
 };
