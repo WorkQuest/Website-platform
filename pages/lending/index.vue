@@ -283,6 +283,7 @@ export default {
                 key: modals.areYouSure,
                 title: this.$t('modals.approveRouter', { token: symbol }),
                 okBtnTitle: this.$t('meta.btns.submit'),
+                // eslint-disable-next-line consistent-return
                 okBtnFunc: async () => {
                   this.SetLoader(true);
                   const approveAllowed = await this.$store.dispatch('wallet/approveRouter', {
@@ -294,31 +295,30 @@ export default {
                   if (!approveAllowed) {
                     return this.ShowModalFail({ title: this.$t('modals.transactionFail'), subtitle: 'incorrect action in approve or allowance' });
                   }
-                  return true;
+                  this.SetLoader(true);
+                  const res = await this.$store.dispatch('crediting/sendMethod', {
+                    address: process.env.WORKNET_BORROWING,
+                    method: 'borrow',
+                    abi: WQBorrowing,
+                    data: [
+                      1, // 1 in data this is nonce, required parameter for method "borrow"
+                      valueWithDecimals,
+                      selFundID - 1,
+                      duration,
+                      symbol,
+                    ],
+                  });
+                  this.SetLoader(false);
+
+                  if (res.ok) {
+                    await this.$store.dispatch('crediting/getCreditData');
+                    this.ShowModalSuccess({
+                      title: this.$t('modals.depositIsOpened'),
+                      img: images.TRANSACTION_SEND,
+                    });
+                  } else this.ShowModalFail({ title: this.$t('modals.transactionFail') });
                 },
               });
-              this.SetLoader(true);
-              const res = await this.$store.dispatch('crediting/sendMethod', {
-                address: process.env.WORKNET_BORROWING,
-                method: 'borrow',
-                abi: WQBorrowing,
-                data: [
-                  1, // 1 in data this is nonce, required parameter for method "borrow"
-                  valueWithDecimals,
-                  selFundID - 1,
-                  duration,
-                  symbol,
-                ],
-              });
-              this.SetLoader(false);
-
-              if (res.ok) {
-                await this.$store.dispatch('crediting/getCreditData');
-                this.ShowModalSuccess({
-                  title: this.$t('modals.depositIsOpened'),
-                  img: images.TRANSACTION_SEND,
-                });
-              } else this.ShowModalFail({ title: this.$t('modals.transactionFail') });
             },
           });
         },

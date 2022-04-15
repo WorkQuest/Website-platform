@@ -19,7 +19,7 @@
               v-model="quantity"
               class="content__input"
               placeholder="10 WUSD"
-              rules="required|decimal"
+              rules="required|decimal:18"
               data-selector="VALUE-FOR-LOAN"
               :name="$t('modals.quantityField')"
             >
@@ -68,6 +68,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
+import { getContractFeeData } from '~/utils/wallet';
 import modals from '~/store/modals/modals';
 import { WQLending } from '~/abi/abi';
 
@@ -93,11 +94,6 @@ export default {
   },
   async mounted() {
     await this.$store.dispatch('wallet/getBalance');
-    this.feeData = await this.$store.dispatch('crediting/getMethodFee', {
-      method: 'deposit',
-      abi: WQLending,
-      address: process.env.WORKNET_LENDING,
-    });
   },
   methods: {
     hide() {
@@ -109,8 +105,10 @@ export default {
       this.hide();
       await submit(amount);
     },
-    maxBalance() {
-      this.quantity = new BigNumber(new BigNumber(this.balance.fullBalance).shiftedBy(18).minus(this.feeData.result.fee)).shiftedBy(-18).toString();
+    async maxBalance() {
+      const balance = this.balance.fullBalance;
+      const { result: { fee } } = await getContractFeeData('deposit', WQLending, process.env.WORKNET_LENDING, [], null, this.balance.fullBalance);
+      this.quantity = new BigNumber(balance).minus(fee).toString();
     },
   },
 };
