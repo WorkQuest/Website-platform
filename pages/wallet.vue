@@ -34,7 +34,7 @@
                   <span class="balance__usd-mobile_blue">
                     {{ $t('wallet.frozen') }}
                   </span>
-                  {{ $tc('meta.coins.count.WQTCount', { count: Floor(frozenBalance) } ) }}
+                  {{ $t('meta.coins.count.WQTCount', { count: Floor(frozenBalance) } ) }}
                 </span>
                 <base-dd
                   v-model="ddValue"
