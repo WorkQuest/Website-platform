@@ -989,6 +989,7 @@
       "depositInfo": "Deposit info",
       "withdrawInfo": "Withdrawal info"
     },
+    "transactionError": "Transaction error",
     "fromAddress": "from",
     "toAddress": "to",
     "codeFromSms": "Code from sms",
@@ -1307,6 +1308,7 @@
     "newDiscussionLike": "New like on discussion"
   },
   "wallet": {
+    "frozen": "Frozen balance",
     "WUSD": "Carteira WUSD",
     "cryptoWallet": "Carteira cripto",
     "send": "Enviar",
