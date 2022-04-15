@@ -103,7 +103,7 @@ export default {
   setSelectedToken({ commit }, token) {
     commit('setSelectedToken', token);
   },
-  async getBalanceWUSD({ commit }) {
+  async getBalance({ commit }) {
     const res = await getBalance();
     commit('setBalance', {
       symbol: TokenSymbols.WUSD,
