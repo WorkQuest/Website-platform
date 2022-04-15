@@ -347,7 +347,7 @@ export default {
                 data: [recipient, value],
               }));
               this.SetLoader(false);
-              if (res.ok) {
+              if (res) {
                 await this.ShowModal({ key: 'transactionSend' });
                 await this.loadData();
                 return success();
