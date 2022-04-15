@@ -280,7 +280,7 @@ export default {
       else {
         const payload = { address: userWalletAddress, abi: ERC20 };
         await this.$store.dispatch('wallet/fetchWalletData', {
-          method: 'balanceOf', ...payload, ...tokens[selectedToken],
+          method: 'balanceOf', ...payload, token: tokenMap[selectedToken], symbol: selectedToken,
         });
         if (selectedToken === TokenSymbols.WQT) {
           await this.$store.dispatch('wallet/fetchWalletData', {

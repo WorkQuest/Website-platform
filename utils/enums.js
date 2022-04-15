@@ -336,12 +336,6 @@ export const tokenMap = {
   [TokenSymbols.WQT]: process.env.WORKNET_WQT_TOKEN,
 };
 
-export const tokens = {
-  [TokenSymbols.WQT]: { token: tokenMap.WQT, symbol: TokenSymbols.WQT },
-  [TokenSymbols.BNB]: { token: tokenMap.BNB, symbol: TokenSymbols.BNB },
-  [TokenSymbols.ETH]: { token: tokenMap.ETH, symbol: TokenSymbols.ETH },
-};
-
 export const PensionHistoryMethods = Object.freeze({
   Update: 'Update',
   Withdraw: 'Withdraw',
