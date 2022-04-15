@@ -1307,6 +1307,7 @@
     "newDiscussionLike": "New like on discussion"
   },
   "wallet": {
+    "frozen": "Frozen balance",
     "WUSD": "Cartera de WUSD",
     "cryptoWallet": "Cartera de criptomonedas",
     "send": "Enviar",

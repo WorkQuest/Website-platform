@@ -1,5 +1,4 @@
 /* eslint-disable */
-
 export const ERC20 = [
   {
     "inputs": [
@@ -368,6 +367,25 @@ export const ERC20 = [
     "stateMutability": "view",
     "type": "function",
     "constant": true
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'account',
+        type: 'address',
+      },
+    ],
+    name: 'freezed',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     "inputs": [
