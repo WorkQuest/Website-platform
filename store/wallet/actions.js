@@ -2,10 +2,17 @@ import BigNumber from 'bignumber.js';
 import {
   connectWallet,
   disconnect,
-  getBalance, getContractFeeData,
+  getBalance,
+  getContractFeeData,
   getIsWalletConnected,
-  getStyledAmount, getWalletAddress, getTransferFeeData,
-  transfer, transferToken, GetWalletProvider, stake, sendWalletTransaction,
+  getStyledAmount,
+  getWalletAddress,
+  getTransferFeeData,
+  transfer,
+  transferToken,
+  GetWalletProvider,
+  stake,
+  sendWalletTransaction,
 } from '~/utils/wallet';
 import {
   fetchContractData, success, error,

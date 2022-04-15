@@ -43,40 +43,8 @@ export const StakingTypes = {
   CROSS_CHAIN: 'CROSS_CHAIN',
 };
 
-export const QuestStatuses = {
-  Rejected: -1,
-  Created: 0,
-  Active: 1,
-  Closed: 2,
-  Dispute: 3,
-  WaitWorker: 4,
-  WaitConfirm: 5,
-  Done: 6,
-};
 export const SumSubStatuses = { NOT_VERIFIED: 0, VERIFIED: 1 };
-export const InfoModeEmployer = {
-  Rejected: -1,
-  Created: 0,
-  Active: 1,
-  Closed: 2,
-  Dispute: 3,
-  WaitWorker: 4,
-  WaitConfirm: 5,
-  Done: 6,
-};
-export const InfoModeWorker = {
-  Created: 0,
-  ADChat: 1,
-  Active: 2,
-  Rejected: 3,
-  WaitWorker: 4,
-  WaitConfirm: 5,
-  Dispute: 7,
-  Closed: 8,
-  Done: 9,
-  Responded: 10,
-  Invited: 11,
-};
+
 export const DisputeStatues = {
   PENDING: 0,
   IN_PROGRESS: 1,

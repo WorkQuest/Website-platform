@@ -87,8 +87,8 @@
       "resendSMS": "SMS फिर से भेजें",
       "registration": "रजिस्ट्रेशन",
       "leave": "Leave",
-      "completeWorkOnQuest": "Complete work on Quest",
-      "acceptCompletedWorkOnQuest": "Accept completed work on quest",
+      "completeWorkOnQuest": "Complete work",
+      "acceptCompletedWorkOnQuest": "Accept work",
       "closeQuest": "Close quest",
       "goToChat": "चैट पर जाएं",
       "view": "देखें",
@@ -330,8 +330,11 @@
     "employer": {
       "usersNotResponded": "Users not responded"
     },
+    "deleteQuest": "Delete quest",
     "invite": "Invite",
     "decline": "Decline",
+    "declinedTheInvitation": "Declined the invitation",
+    "acceptedTheInvitation": "Accepted the invitation",
     "questTitle": "Quest title",
     "questDesc": "Quest description",
     "closed": "Closed",

@@ -56,7 +56,8 @@
 <script>
 
 import { mapGetters } from 'vuex';
-import { QuestStatuses, UserRole, Path } from '~/utils/enums';
+import { UserRole, Path } from '~/utils/enums';
+import { QuestStatuses } from '~/utils/quests-constants';
 
 export default {
   name: 'My',
@@ -114,6 +115,7 @@ export default {
     this.requestParams = {
       userId: this.userData.id,
       role: this.userRole,
+      specializations: null,
       query: {
         limit: 10,
         offset: 0,
@@ -153,9 +155,9 @@ export default {
 
       if (id === null) delete this.requestParams.query['statuses[0]'];
       else if (id === 0) this.requestParams.query['statuses[0]'] = QuestStatuses.Created;
-      else if (id === 2) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitConfirm;
-      else if (id === 4) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorker;
-      else if (id === 3) this.requestParams.query['statuses[0]'] = QuestStatuses.Active;
+      else if (id === 2) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitEmployerConfirm;
+      else if (id === 3) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorker;
+      else if (id === 4) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorkerOnAssign;
       else if (id === 5) this.requestParams.query['statuses[0]'] = QuestStatuses.Done;
       await this.getQuests();
       this.SetLoader(false);
