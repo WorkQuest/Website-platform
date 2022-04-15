@@ -62,8 +62,9 @@
 import ClickOutside from 'vue-click-outside';
 import { mapGetters } from 'vuex';
 import {
-  ChatType, DisputeStatues, Path, QuestStatuses,
+  ChatType, DisputeStatues, Path,
 } from '~/utils/enums';
+import { QuestStatuses } from '~/utils/quests-constants';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -95,7 +96,7 @@ export default {
     },
     isInvisible() {
       const { type, status } = this.$route.query;
-      return type === ChatType.QUEST && ![QuestStatuses.Active, QuestStatuses.Dispute].includes(+status);
+      return type === ChatType.QUEST && ![QuestStatuses.WaitWorker, QuestStatuses.Dispute].includes(+status);
     },
   },
   methods: {

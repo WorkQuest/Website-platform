@@ -14,7 +14,7 @@
             placeholder="3 500"
             data-selector="DEPOSIT-AMOUNT"
             class="content__input"
-            :rules="`required|decimal|is_not:0|max_bn:${balanceData.WUSD.fullBalance}|decimalPlaces:18`"
+            :rules="`required|decimal|is_not:0|max_value:${balanceData.WUSD.fullBalance}|decimalPlaces:18`"
             :name="$t('modals.depositAmountField')"
             @input="replaceDot"
           />

@@ -2,10 +2,17 @@ import BigNumber from 'bignumber.js';
 import {
   connectWallet,
   disconnect,
-  getBalance, getContractFeeData,
+  getBalance,
+  getContractFeeData,
   getIsWalletConnected,
-  getStyledAmount, getWalletAddress, getTransferFeeData,
-  transfer, transferToken, GetWalletProvider, stake, sendWalletTransaction,
+  getStyledAmount,
+  getWalletAddress,
+  getTransferFeeData,
+  transfer,
+  transferToken,
+  GetWalletProvider,
+  stake,
+  sendWalletTransaction,
 } from '~/utils/wallet';
 import {
   fetchContractData, success, error,
@@ -21,21 +28,6 @@ import {
 } from '~/utils/wallet.js';
 
 export default {
-  async frozenBalance({ commit }, { address }) {
-    try {
-      const res = await fetchContractData(
-        'freezed',
-        ERC20,
-        process.env.WORKNET_WQT_TOKEN,
-        [address],
-        GetWalletProvider(),
-      );
-      commit('user/setFrozenBalance', new BigNumber(res).shiftedBy(-18).toString(), { root: true });
-      return success(res);
-    } catch (e) {
-      return error(e.code, e.message, e);
-    }
-  },
   async getPensionTransactions({ commit, getters }, { method, limit, offset }) {
     try {
       const path = method === PensionHistoryMethods.Update ? 'wallet-update' : method.toLowerCase();
@@ -53,11 +45,7 @@ export default {
   },
   async getTransactions({ commit }, params) {
     try {
-      const { data } = await this.$axios({
-        url: `/account/${getWalletAddress()}/transactions`,
-        baseURL: process.env.WQ_EXPLORER,
-        params,
-      });
+      const { data } = await this.$axios({ url: `/account/${getWalletAddress()}/transactions`, baseURL: process.env.WQ_EXPLORER, params });
       commit('setTransactions', data.result.transactions);
       commit('setTransactionsCount', data.result.count);
     } catch (e) {

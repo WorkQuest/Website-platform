@@ -58,7 +58,10 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { ResponseStatus, Path, ChatType } from '~/utils/enums';
+import { ResponseStatus, TokenSymbols } from '~/utils/enums';
+import { QuestMethods } from '~/utils/quests-constants';
+import modals from '~/store/modals/modals';
+import { error, success } from '~/utils/web3';
 
 export default {
   name: 'WorkersList',
@@ -73,10 +76,6 @@ export default {
       ddUserActions: [
         this.$t('meta.btns.goToChat'),
       ],
-      ddInvitedUserActions: [
-        this.$t('meta.btns.goToChat'),
-        this.$t('quests.startQuest'),
-      ],
       ddUserFullActions: [
         this.$t('meta.btns.goToChat'),
         this.$t('quests.startQuest'),
@@ -86,6 +85,8 @@ export default {
   },
   computed: {
     ...mapGetters({
+      isWalletConnected: 'wallet/getIsWalletConnected',
+      userWalletAddress: 'user/getUserWalletAddress',
       currentWorker: 'quests/getCurrentWorker',
       questData: 'quests/getQuest',
       invited: 'quests/getInvited',
@@ -93,18 +94,15 @@ export default {
     }),
     getCurrUsersArr() {
       const { isInvited, invited, responded } = this;
-
       return isInvited ? invited : responded;
     },
   },
-  async created() {
-    this.SetLoader(false);
+  beforeCreate() {
+    this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
   methods: {
-    userActionsArr({ status }) {
-      if (this.isInvited) {
-        if (status === ResponseStatus.accepted) return this.ddInvitedUserActions;
-
+    userActionsArr({ worker }) {
+      if (this.questData?.assignedWorker?.id === worker?.id) {
         return this.ddUserActions;
       }
       return this.ddUserFullActions;
@@ -121,20 +119,53 @@ export default {
     },
     async startQuest(response) {
       this.SetLoader(true);
-      const payload = {
-        config: {
-          assignedWorkerId: response.worker.id,
-        },
-        questId: this.questData.id,
-      };
-
-      await this.$store.dispatch('quests/startQuest', payload);
-      await this.getQuest();
+      const { contractAddress } = this.questData;
+      const { worker } = response;
+      const workerAddress = worker.wallet.address;
+      const [feeRes] = await Promise.all([
+        this.$store.dispatch('quests/getFeeDataJobMethod', {
+          method: QuestMethods.AssignJob,
+          contractAddress,
+          data: [workerAddress],
+        }),
+        this.$store.dispatch('wallet/getBalance'),
+      ]);
       this.SetLoader(false);
+      if (feeRes.ok === false) {
+        this.ShowToast(feeRes.msg);
+        return;
+      }
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        title: this.$t('quests.startQuest'),
+        isShowSuccess: true,
+        fields: {
+          from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
+          to: { name: this.$t('meta.toBig'), value: contractAddress },
+          fee: {
+            name: this.$t('wallet.table.trxFee'),
+            value: feeRes.result.fee,
+            symbol: TokenSymbols.WUSD,
+          },
+        },
+        submitMethod: async () => {
+          const txRes = await this.$store.dispatch('quests/assignJob', {
+            contractAddress,
+            workerAddress,
+          });
+          if (txRes.ok) {
+            await this.getQuest();
+            return success();
+          }
+          return error();
+        },
+      });
     },
     async reject(response) {
       this.SetLoader(true);
-      if (await this.$store.dispatch('quests/rejectTheAnswerToTheQuest', response.id)) await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
+      if (await this.$store.dispatch('quests/rejectTheAnswerToTheQuest', response.id)) {
+        await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
+      }
       this.SetLoader(false);
     },
   },
