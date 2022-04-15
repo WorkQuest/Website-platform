@@ -30,7 +30,7 @@ export default {
         [address],
         GetWalletProvider(),
       );
-      commit('user/setFrozenBalance', new BigNumber(res).shiftedBy(-18), { root: true });
+      commit('user/setFrozenBalance', new BigNumber(res).shiftedBy(-18).toString(), { root: true });
       return success(res);
     } catch (e) {
       return error(e.code, e.message, e);
