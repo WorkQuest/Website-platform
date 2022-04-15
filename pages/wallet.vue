@@ -34,7 +34,7 @@
                   <span class="balance__usd-mobile_blue">
                     {{ $t('wallet.frozen') }}
                   </span>
-                  {{ $tc('meta.coins.count.WQTCount', frozenBalance ) }}
+                  {{ $t('meta.coins.count.WQTCount', { count: Floor(frozenBalance) } ) }}
                 </span>
                 <base-dd
                   v-model="ddValue"
@@ -51,7 +51,7 @@
                   <span class="balance__usd">
                     {{ $t('wallet.frozen') }}
                   </span>
-                  {{ $tc('meta.coins.count.WQTCount', Number(frozenBalance.toString()).toFixed(4) ) }}
+                  {{ $t('meta.coins.count.WQTCount', { count: Floor(frozenBalance) }) }}
                 </span>
               </span>
             </div>
@@ -70,7 +70,7 @@
                 mode="outline"
                 class="balance__btn"
                 :disabled="true"
-                @click="showModal({key: 'takeWithdraw', branch: 'withdraw'})"
+                @click="showModal({key: 'withdraw', branchText: 'withdraw' })"
               >
                 {{ $t('meta.withdraw') }}
               </base-btn>
@@ -97,7 +97,7 @@
               class="card__btn"
               mode="outline"
               :disabled="true"
-              @click="showModal({key: 'addingCard', branch: 'adding'})"
+              @click="showModal({key: 'addCard', branchText: 'adding' })"
             >
               {{ $t('wallet.addCard') }}
             </base-btn>
@@ -324,7 +324,7 @@ export default {
           } else {
             feeRes = await this.$store.dispatch('wallet/getContractFeeData', {
               method: 'transfer',
-              _abi: abies[selectedToken],
+              abi: abies[selectedToken],
               contractAddress: addresses[selectedToken],
               data: [recipient, value],
             });
@@ -402,6 +402,7 @@ export default {
     font-size: 16px;
     color: $black800;
   }
+
   &__date {
     font-weight: 400;
     font-size: 14px;
@@ -423,22 +424,27 @@ export default {
     display: flex;
     justify-content: center;
   }
+
   &__card {
     box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
   }
+
   &__balance {
     box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
   }
+
   &__body {
     max-width: 1180px;
     width: calc(100vw - 40px);
   }
+
   &__nav {
     margin-top: 20px;
     display: flex;
     justify-content: space-between;
     font-size: 16px;
   }
+
   &__address {
     @include text-simple;
     display: flex;
@@ -450,6 +456,7 @@ export default {
   &__icon {
     margin-left: 22px;
     font-size: 24px;
+
     &::before {
       color: $blue;
     }
@@ -467,6 +474,7 @@ export default {
     display: grid;
     grid-template-columns: 1fr 479px;
     grid-gap: 20px;
+
     &_full {
       grid-template-columns: 1fr;
     }
@@ -502,11 +510,13 @@ export default {
     font-size: 14px;
     color: $black300;
   }
+
   &__number {
     font-weight: 700;
     font-size: 25px;
     color: $blue;
   }
+
   &__title {
     font-weight: 400;
     font-size: 16px;
@@ -567,15 +577,18 @@ export default {
     @include text-simple;
     height: 24px;
     color: $black800;
+
     &_blue {
       color: $blue;
     }
+
     &-mobile {
       display: none;
       height: 33px;
       color: $black800;
       font-size: 18px;
       font-weight: normal;
+
       &_blue {
         color: $blue;
       }
@@ -639,10 +652,12 @@ export default {
 
 .table {
   background: #FFFFFF;
+
   &__txs {
     margin: 0 !important;
     border-radius: 6px !important;
   }
+
   &__empty {
     background: #FFFFFF !important;
     margin: 10px 0 !important;
@@ -662,6 +677,7 @@ export default {
     height: 240px;
   }
 }
+
 @include _991 {
   .wallet {
     &__table {
@@ -673,6 +689,7 @@ export default {
     width: 1180px;
   }
 }
+
 @include _767 {
   .card {
     grid-template-columns: repeat(2, 1fr);
@@ -681,6 +698,7 @@ export default {
     gap: 10px;
   }
 }
+
 @include _480 {
   .balance {
     &__currency {
@@ -688,12 +706,14 @@ export default {
       flex-direction: column;
       align-items: unset;
     }
+
     &__token {
       margin-top: 5px;
     }
   }
   .balance__usd {
     display: none;
+
     &_mobile {
       display: block;
     }
@@ -702,6 +722,7 @@ export default {
     grid-template-columns: 1fr;
   }
 }
+
 @include _350 {
   .wallet {
     &__nav {
