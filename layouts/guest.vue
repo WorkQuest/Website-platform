@@ -1,5 +1,8 @@
 <template>
-  <div class="primary">
+  <div
+    ref="templateScroll"
+    class="primary"
+  >
     <div class="primary__template template">
       <div class="template__content">
         <div
