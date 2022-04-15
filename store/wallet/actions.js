@@ -18,7 +18,7 @@ import {
   fetchContractData, success, error,
 } from '~/utils/web3';
 import {
-  ERC20, WQBridgeToken, WQStaking, WQStakingNative,
+  ERC20, WQStaking, WQStakingNative,
 } from '~/abi/abi';
 import { PensionHistoryMethods, StakingTypes, TokenSymbols } from '~/utils/enums';
 import {
