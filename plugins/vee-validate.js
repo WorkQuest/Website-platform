@@ -157,11 +157,11 @@ extend('mnemonic', {
   message: 'Incorrect secret phrase',
 });
 
-extend('max_bn', {
+extend('max_value', {
   validate(value, { max }) {
     return {
       required: true,
-      valid: new BigNumber(value).isLessThanOrEqualTo(new BigNumber(max)),
+      valid: new BigNumber(value).isLessThanOrEqualTo(max),
     };
   },
   params: ['max'],
@@ -172,7 +172,7 @@ extend('min_value', {
   validate(value, { min }) {
     return {
       required: true,
-      valid: new BigNumber(value).isGreaterThanOrEqualTo(new BigNumber(min)),
+      valid: new BigNumber(value).isGreaterThanOrEqualTo(min),
     };
   },
   params: ['min'],
