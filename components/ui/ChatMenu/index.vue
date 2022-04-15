@@ -103,17 +103,17 @@ export default {
       this.$emit('change');
     },
     getStarredMessages() {
-      this.$router.push('/messages/starred');
+      this.$router.push(`${Path.MESSAGES}/starred`);
     },
     showOpenADisputeModal() {
       this.closeChatMenu();
-      if (!this.$route.query.dispute && +this.$route.query.dispute !== DisputeStatues.PENDING) {
+      if (!this.$route.query.disputeStatus) {
         this.ShowModal({
           key: modals.openADispute,
           questId: this.questId,
         });
       } else {
-        this.$router.push(`${Path.QUESTS}/${this.$route.query.id}`);
+        this.$router.push(`${Path.DISPUTES}/${this.$route.query.id}`);
       }
     },
     toggleChatMenu() {
@@ -132,7 +132,7 @@ export default {
       });
     },
     async leaveChat() {
-      if (await this.$store.dispatch('chat/leaveFromChat', this.currChat.id)) this.$router.push('/messages');
+      if (await this.$store.dispatch('chat/leaveFromChat', this.currChat.id)) this.$router.push(`/${Path.MESSAGES}`);
 
       this.CloseModal();
     },
