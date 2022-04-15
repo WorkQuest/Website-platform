@@ -17,7 +17,9 @@ import {
 import {
   fetchContractData, success, error,
 } from '~/utils/web3';
-import { ERC20, WQStaking, WQStakingNative } from '~/abi/abi';
+import {
+  ERC20, WQStaking, WQStakingNative,
+} from '~/abi/abi';
 import { PensionHistoryMethods, StakingTypes, TokenSymbols } from '~/utils/enums';
 import {
   getPensionDefaultData,
@@ -99,7 +101,7 @@ export default {
   setSelectedToken({ commit }, token) {
     commit('setSelectedToken', token);
   },
-  async getBalance({ commit }) {
+  async getBalanceWUSD({ commit }) {
     const res = await getBalance();
     commit('setBalance', {
       symbol: TokenSymbols.WUSD,
@@ -107,19 +109,29 @@ export default {
       fullBalance: res.ok ? res.result.fullBalance : 0,
     });
   },
-  async getBalanceWQT({ commit }, userAddress) {
-    const res = await fetchContractData(
-      'balanceOf',
-      ERC20,
-      process.env.WORKNET_WQT_TOKEN,
-      [userAddress],
-      GetWalletProvider(),
-    );
-    commit('setBalance', {
-      symbol: TokenSymbols.WQT,
-      balance: res ? getStyledAmount(res) : 0,
-      fullBalance: res ? getStyledAmount(res, true) : 0,
-    });
+  async fetchWalletData({ commit }, {
+    method, address, abi, token, symbol,
+  }) {
+    try {
+      const res = await fetchContractData(
+        method,
+        abi,
+        token,
+        [address],
+        GetWalletProvider(),
+      );
+      if (method === 'freezed') commit('wallet/setFrozenBalance', new BigNumber(res).shiftedBy(-18), { root: true });
+      else {
+        commit('setBalance', {
+          symbol,
+          balance: res ? getStyledAmount(res) : 0,
+          fullBalance: res ? getStyledAmount(res, true) : 0,
+        });
+      }
+      return success(res);
+    } catch (e) {
+      return error(e.message, e);
+    }
   },
   /**
    * Send transfer
@@ -135,11 +147,14 @@ export default {
   /**
    * Send transfer for WQT token
    * @param commit
+   * @param payload
    * @param recipient
-   * @param value
    */
-  async transferWQT({ commit }, { recipient, value }) {
-    return await transferToken(recipient, value);
+  async transferToken({ commit }, payload) {
+    const res = await sendWalletTransaction('transfer', payload);
+    // TODO fix it, sendWalletTransaction should return object with keys ok and result
+    if (res.ok) return error(res);
+    return success(res);
   },
   /**
    * Get Fee Data from contract method

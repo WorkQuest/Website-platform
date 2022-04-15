@@ -86,7 +86,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
-import { TokenSymbols } from '~/utils/enums';
+import { tokenMap, TokenSymbols } from '~/utils/enums';
 import { ERC20 } from '~/abi/abi';
 
 export default {
@@ -100,6 +100,8 @@ export default {
       maxFee: {
         WUSD: 0,
         WQT: 0,
+        ETH: 0,
+        BNB: 0,
       },
       isCanSubmit: true,
     };
@@ -112,18 +114,19 @@ export default {
       selectedToken: 'wallet/getSelectedToken',
       userData: 'user/getUserData',
       isConnected: 'wallet/getIsWalletConnected',
-      frozenBalance: 'user/getFrozenBalance',
+      frozenBalance: 'wallet/getFrozenBalance',
     }),
     tokenSymbolsDd() {
       return Object.keys(TokenSymbols);
     },
     maxAmount() {
-      const fullBalance = new BigNumber(this.balance[this.selectedToken].fullBalance);
-      if (this.selectedToken === TokenSymbols.WUSD) return fullBalance.minus(this.maxFee[this.selectedToken]).toString();
-      if (this.selectedToken === TokenSymbols.WQT) {
-        return fullBalance.minus(this.frozenBalance).toString();
-      }
-      return 0;
+      const {
+        selectedToken, balance, maxFee, frozenBalance,
+      } = this;
+      const fullBalance = new BigNumber(balance[selectedToken].fullBalance);
+      if (selectedToken === TokenSymbols.WUSD) return fullBalance.minus(maxFee[selectedToken]).toString();
+      if (selectedToken === TokenSymbols.WQT) return fullBalance.minus(frozenBalance).toString();
+      return fullBalance.toString();
     },
   },
   watch: {
@@ -150,13 +153,8 @@ export default {
   methods: {
     async showWithdrawInfo() {
       const { submit } = this.options;
-      if (submit) {
-        submit({
-          recipient: this.recipient,
-          amount: this.amount,
-          selectedToken: this.selectedToken,
-        });
-      }
+      const { recipient, amount, selectedToken } = this;
+      submit({ recipient, amount, selectedToken });
     },
     replaceDot() {
       this.amount = this.amount.replace(/,/g, '.');
@@ -164,20 +162,26 @@ export default {
     // Для просчета максимальной суммы транзакции от комиссии
     async updateMaxFee() {
       if (!this.isConnected) return;
-      const [wusd, wqt] = await Promise.all([
-        this.$store.dispatch('wallet/getTransferFeeData', {
-          recipient: this.userData.wallet.address,
-          value: this.balance.WUSD.fullBalance,
-        }),
-        this.$store.dispatch('wallet/getContractFeeData', {
+      const {
+        selectedToken, amount, maxFee, userData, balance,
+      } = this;
+      if (selectedToken === TokenSymbols.WUSD) {
+        const feeWUSD = await this.$store.dispatch('wallet/getTransferFeeData', {
+          recipient: userData.wallet.address,
+          value: balance.WUSD.fullBalance,
+        });
+        if (feeWUSD?.ok) maxFee.WUSD = feeWUSD?.result?.fee ?? 0;
+        else maxFee.WUSD = 0;
+      } else {
+        const feeTokens = await this.$store.dispatch('wallet/getContractFeeData', {
           method: 'transfer',
           abi: ERC20,
-          contractAddress: process.env.WORKNET_WQT_TOKEN,
-          data: [process.env.WORKNET_WQT_TOKEN, this.amount],
-        }),
-      ]);
-      this.maxFee.WQT = wqt?.ok ? wqt?.result?.fee : 0;
-      this.maxFee.WUSD = wusd?.ok ? wusd?.result?.fee : 0;
+          contractAddress: tokenMap[selectedToken],
+          data: [tokenMap[selectedToken], amount],
+        });
+        if (feeTokens?.ok) maxFee[selectedToken] = feeTokens?.result?.fee ?? 0;
+        else maxFee[selectedToken] = 0;
+      }
     },
     maxBalance() {
       this.amount = this.maxAmount;

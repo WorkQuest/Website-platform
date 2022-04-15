@@ -989,6 +989,7 @@
       "depositInfo": "Deposit info",
       "withdrawInfo": "Withdrawal info"
     },
+    "transactionError": "Ошибка транзакции",
     "fromAddress": "с",
     "toAddress": "на",
     "codeFromSms": "Код из СМС",
