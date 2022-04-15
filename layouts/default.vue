@@ -1,5 +1,8 @@
 <template>
-  <div class="primary">
+  <div
+    class="primary"
+    :class="{'stop-scrolling':isShow}"
+  >
     <div class="primary__template template">
       <div
         class="template__content"
@@ -40,6 +43,7 @@ export default {
       isLoading: 'main/getIsLoading',
       userData: 'user/getUserData',
       isChatOpened: 'chat/isChatOpened',
+      isShow: 'modals/getIsShow',
     }),
   },
   async mounted() {
@@ -91,7 +95,10 @@ export default {
     }
   }
 }
-
+.stop-scrolling{
+  overflow: hidden;
+  height: 100vh;
+}
 @include _991 {
   .template {
     &__content {
