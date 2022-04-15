@@ -19,7 +19,7 @@
               v-model="quantity"
               class="content__input"
               placeholder="10 WUSD"
-              rules="required|decimal:18"
+              rules="required|decimal:18|greaterThanZero|zeroFail"
               data-selector="VALUE-FOR-LOAN"
               :name="$t('modals.quantityField')"
             >
@@ -53,7 +53,7 @@
           </base-btn>
           <base-btn
             class="buttons__button"
-            :disabled="!valid || quantity <= 0"
+            :disabled="!valid"
             data-selector="SUBMIT"
             @click="handleSubmit(openConfirmDetailsModal)"
           >
