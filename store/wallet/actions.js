@@ -140,16 +140,10 @@ export default {
   /**
    * Send transfer for WQT token
    * @param commit
+   * @param payload
    * @param recipient
-   * @param value
    */
-  async transferWQT({ commit }, { recipient, value }) {
-    return await transferToken(recipient, value);
-  },
-  async transferBNB({ commit }, payload) {
-    return await sendWalletTransaction('transfer', payload);
-  },
-  async transferETH({ commit }, payload) {
+  async transferToken({ commit }, payload) {
     return await sendWalletTransaction('transfer', payload);
   },
   /**

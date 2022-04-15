@@ -273,22 +273,30 @@ export default {
     },
     async loadData() {
       this.SetLoader(true);
-      await Promise.all([
-        this.$store.dispatch('wallet/getBalanceWUSD'),
-        this.$store.dispatch('wallet/fetchWalletData', {
-          method: 'freezed', address: this.userWalletAddress, abi: ERC20, token: process.env.WORKNET_WQT_TOKEN,
-        }),
-        this.$store.dispatch('wallet/fetchWalletData', {
-          method: 'balanceOf', address: this.userWalletAddress, abi: ERC20, token: process.env.WORKNET_WQT_TOKEN, symbol: TokenSymbols.WQT,
-        }),
-        this.$store.dispatch('wallet/fetchWalletData', {
-          method: 'balanceOf', address: this.userWalletAddress, abi: WQBridgeToken, token: process.env.WORKNET_WBNB_TOKEN, symbol: TokenSymbols.BNB,
-        }),
-        this.$store.dispatch('wallet/fetchWalletData', {
-          method: 'balanceOf', address: this.userWalletAddress, abi: WQBridgeToken, token: process.env.WORKNET_WETH_TOKEN, symbol: TokenSymbols.ETH,
-        }),
-        this.getTransactions(),
-      ]);
+      if (this.selectedToken === TokenSymbols.WUSD) await Promise.resolve(this.$store.dispatch('wallet/getBalanceWUSD'));
+      else if (this.selectedToken === TokenSymbols.WQT) {
+        await Promise.all([
+          this.$store.dispatch('wallet/fetchWalletData', {
+            method: 'freezed', address: this.userWalletAddress, abi: ERC20, token: process.env.WORKNET_WQT_TOKEN,
+          }),
+          this.$store.dispatch('wallet/fetchWalletData', {
+            method: 'balanceOf', address: this.userWalletAddress, abi: ERC20, token: process.env.WORKNET_WQT_TOKEN, symbol: TokenSymbols.WQT,
+          }),
+        ]);
+      } else if (this.selectedToken === TokenSymbols.BNB) {
+        await Promise.resolve(
+          this.$store.dispatch('wallet/fetchWalletData', {
+            method: 'balanceOf', address: this.userWalletAddress, abi: ERC20, token: process.env.WORKNET_WBNB_TOKEN, symbol: TokenSymbols.BNB,
+          }),
+        );
+      } else if (this.selectedToken === TokenSymbols.ETH) {
+        await Promise.resolve(
+          this.$store.dispatch('wallet/fetchWalletData', {
+            method: 'balanceOf', address: this.userWalletAddress, abi: ERC20, token: process.env.WORKNET_WETH_TOKEN, symbol: TokenSymbols.ETH,
+          }),
+        );
+      }
+      await this.getTransactions();
       this.SetLoader(false);
     },
     closeCard() {
@@ -301,11 +309,6 @@ export default {
       });
     },
     showTransferModal() {
-      const abies = {
-        [TokenSymbols.WQT]: ERC20,
-        [TokenSymbols.ETH]: WQBridgeToken,
-        [TokenSymbols.BNB]: WQBridgeToken,
-      };
       const addresses = {
         [TokenSymbols.ETH]: process.env.WORKNET_WETH_TOKEN,
         [TokenSymbols.WQT]: process.env.WORKNET_WQT_TOKEN,
@@ -324,7 +327,7 @@ export default {
           } else {
             feeRes = await this.$store.dispatch('wallet/getContractFeeData', {
               method: 'transfer',
-              abi: abies[selectedToken],
+              abi: ERC20,
               contractAddress: addresses[selectedToken],
               data: [recipient, value],
             });
@@ -344,40 +347,20 @@ export default {
             submitMethod: async () => {
               this.CloseModal();
               this.SetLoader(true);
-              const actions = {
-                [TokenSymbols.WUSD]: 'transfer',
-                [TokenSymbols.WQT]: 'transferWQT',
-                [TokenSymbols.BNB]: 'transferBNB',
-                [TokenSymbols.ETH]: 'transferETH',
-              };
-              const payloads = {
-                [TokenSymbols.WUSD]: {
-                  recipient,
-                  value: amount,
-                },
-                [TokenSymbols.WQT]: {
-                  recipient,
-                  value: amount,
-                },
-                [TokenSymbols.BNB]: {
-                  abi: abies[selectedToken],
-                  address: addresses[selectedToken],
-                  data: [recipient, value],
-                },
-                [TokenSymbols.ETH]: {
-                  abi: abies[selectedToken],
-                  address: addresses[selectedToken],
-                  data: [recipient, value],
-                },
-              };
-              const res = await this.$store.dispatch(`wallet/${actions[selectedToken]}`, payloads[selectedToken]);
+              const res = await Promise.resolve(this.$store.dispatch(`wallet/${
+                this.selectedToken === TokenSymbols.WUSD ? 'transfer' : 'transferToken'
+              }`,
+              this.selectedToken === TokenSymbols.WUSD ? { recipient, value: amount } : {
+                abi: ERC20,
+                address: addresses[selectedToken],
+                data: [recipient, value],
+              }));
               this.SetLoader(false);
               if (res?.ok) {
                 await this.ShowModal({ key: 'transactionSend' });
                 await this.loadData();
                 return success();
               }
-              await this.ShowModal({ key: 'transactionSend', mode: 'error' });
               return error();
             },
           });

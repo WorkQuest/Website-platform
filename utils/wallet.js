@@ -205,38 +205,24 @@ export const sendWalletTransaction = async (_method, payload) => {
     console.error('web3 is undefined');
     return false;
   }
-  const inst = new web3.eth.Contract(payload.abi, payload.address);
-  const gasPrice = await web3.eth.getGasPrice();
-  const accountAddress = getWalletAddress();
-  const data = inst.methods[_method].apply(null, payload.data).encodeABI();
-  const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress });
-  const transactionData = {
-    to: payload.address,
-    from: accountAddress,
-    data,
-    gasPrice,
-    gas: gasEstimate,
-  };
-  // noinspection ES6RedundantAwait
-  return await web3.eth.sendTransaction(transactionData);
-};
-export const transferToken = async (recipient, value) => {
   try {
-    value = new BigNumber(value).shiftedBy(18).toString();
-    const inst = new web3.eth.Contract(ERC20, process.env.WORKNET_WQT_TOKEN);
-    const [gasPrice, gasEstimate] = await Promise.all([
-      web3.eth.getGasPrice(),
-      inst.methods.transfer.apply(null, [recipient, value]).estimateGas({ from: wallet.address }),
-    ]);
-    const res = await inst.methods.transfer(recipient, value).send({
-      from: wallet.address,
-      gas: gasEstimate,
+    const inst = new web3.eth.Contract(payload.abi, payload.address);
+    const gasPrice = await web3.eth.getGasPrice();
+    const accountAddress = getWalletAddress();
+    const data = inst.methods[_method].apply(null, payload.data).encodeABI();
+    const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress });
+    const transactionData = {
+      to: payload.address,
+      from: accountAddress,
+      data,
       gasPrice,
-    });
-    return success(res);
+      gas: gasEstimate,
+    };
+    // noinspection ES6RedundantAwait
+    return await web3.eth.sendTransaction(transactionData);
   } catch (e) {
-    console.error(e.message);
-    return error();
+    console.error('method: sendWalletTransaction');
+    return error(e.code, e.message, e);
   }
 };
 /**

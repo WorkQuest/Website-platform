@@ -121,8 +121,9 @@ export default {
     },
     maxAmount() {
       const fullBalance = new BigNumber(this.balance[this.selectedToken].fullBalance);
-      if (this.selectedToken !== TokenSymbols.WQT) return fullBalance.minus(this.maxFee[this.selectedToken]).toString();
+      if (this.selectedToken === TokenSymbols.WUSD) return fullBalance.minus(this.maxFee[this.selectedToken]).toString();
       if (this.selectedToken === TokenSymbols.WQT) return fullBalance.minus(this.frozenBalance).toString();
+      if ([TokenSymbols.ETH, TokenSymbols.BNB].includes(this.selectedToken)) return fullBalance.toString();
       return 0;
     },
   },
@@ -164,34 +165,28 @@ export default {
     // Для просчета максимальной суммы транзакции от комиссии
     async updateMaxFee() {
       if (!this.isConnected) return;
-      const [wusd, wqt, bnb, eth] = await Promise.all([
-        this.$store.dispatch('wallet/getTransferFeeData', {
+      const contractAddress = {
+        [TokenSymbols.WQT]: process.env.WORKNET_WQT_TOKEN,
+        [TokenSymbols.BNB]: process.env.WORKNET_WBNB_TOKEN,
+        [TokenSymbols.ETH]: process.env.WORKNET_WETH_TOKEN,
+      };
+      if (this.selectedToken === TokenSymbols.WUSD) {
+        const feeWUSD = await Promise.resolve(this.$store.dispatch('wallet/getTransferFeeData', {
           recipient: this.userData.wallet.address,
           value: this.balance.WUSD.fullBalance,
-        }),
-        this.$store.dispatch('wallet/getContractFeeData', {
+        }));
+        if (feeWUSD?.ok) this.maxFee.WUSD = feeWUSD?.result?.fee ?? 0;
+        else this.maxFee.WUSD = 0;
+      } else if ([TokenSymbols.ETH, TokenSymbols.BNB, TokenSymbols.WQT].includes(this.selectedToken)) {
+        const feeTokens = await this.$store.dispatch('wallet/getContractFeeData', {
           method: 'transfer',
           abi: ERC20,
-          contractAddress: process.env.WORKNET_WQT_TOKEN,
-          data: [process.env.WORKNET_WQT_TOKEN, this.amount],
-        }),
-        this.$store.dispatch('wallet/getContractFeeData', {
-          method: 'transfer',
-          abi: WQBridgeToken,
-          contractAddress: process.env.WORKNET_WBNB_TOKEN,
-          data: [process.env.WORKNET_WBNB_TOKEN, this.amount],
-        }),
-        this.$store.dispatch('wallet/getContractFeeData', {
-          method: 'transfer',
-          abi: WQBridgeToken,
-          contractAddress: process.env.WORKNET_WETH_TOKEN,
-          data: [process.env.WORKNET_WETH_TOKEN, this.amount],
-        }),
-      ]);
-      this.maxFee.WQT = wqt?.ok ? wqt?.result?.fee : 0;
-      this.maxFee.WUSD = wusd?.ok ? wusd?.result?.fee : 0;
-      this.maxFee.BNB = bnb?.ok ? bnb?.result?.fee : 0;
-      this.maxFee.ETH = eth?.ok ? eth?.result?.fee : 0;
+          contractAddress: contractAddress[this.selectedToken],
+          data: [contractAddress[this.selectedToken], this.amount],
+        });
+        if (feeTokens?.ok) this.maxFee[this.selectedToken] = feeTokens?.result?.fee ?? 0;
+        else this.maxFee[this.selectedToken] = 0;
+      }
     },
     maxBalance() {
       this.amount = this.maxAmount;
