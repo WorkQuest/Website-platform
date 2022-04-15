@@ -331,9 +331,15 @@ export const NetworksData = {
 };
 
 export const tokenMap = {
-  BNB: process.env.WORKNET_WBNB_TOKEN,
-  ETH: process.env.WORKNET_WETH_TOKEN,
-  WQT: process.env.WORKNET_WQT_TOKEN,
+  [TokenSymbols.BNB]: process.env.WORKNET_WBNB_TOKEN,
+  [TokenSymbols.ETH]: process.env.WORKNET_WETH_TOKEN,
+  [TokenSymbols.WQT]: process.env.WORKNET_WQT_TOKEN,
+};
+
+export const tokens = {
+  [TokenSymbols.WQT]: { token: tokenMap.WQT, symbol: TokenSymbols.WQT },
+  [TokenSymbols.BNB]: { token: tokenMap.BNB, symbol: TokenSymbols.BNB },
+  [TokenSymbols.ETH]: { token: tokenMap.ETH, symbol: TokenSymbols.ETH },
 };
 
 export const PensionHistoryMethods = Object.freeze({

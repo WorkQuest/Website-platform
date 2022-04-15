@@ -86,8 +86,8 @@
 <script>
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
-import { TokenSymbols } from '~/utils/enums';
-import { ERC20, WQBridgeToken } from '~/abi/abi';
+import { tokenMap, TokenSymbols } from '~/utils/enums';
+import { ERC20 } from '~/abi/abi';
 
 export default {
   name: 'ModalTakeTransfer',
@@ -152,11 +152,7 @@ export default {
     async showWithdrawInfo() {
       const { submit } = this.options;
       if (submit) {
-        submit({
-          recipient: this.recipient,
-          amount: this.amount,
-          selectedToken: this.selectedToken,
-        });
+        submit({ recipient: this.recipient, amount: this.amount, selectedToken: this.selectedToken });
       }
     },
     replaceDot() {
@@ -165,11 +161,6 @@ export default {
     // Для просчета максимальной суммы транзакции от комиссии
     async updateMaxFee() {
       if (!this.isConnected) return;
-      const contractAddress = {
-        [TokenSymbols.WQT]: process.env.WORKNET_WQT_TOKEN,
-        [TokenSymbols.BNB]: process.env.WORKNET_WBNB_TOKEN,
-        [TokenSymbols.ETH]: process.env.WORKNET_WETH_TOKEN,
-      };
       if (this.selectedToken === TokenSymbols.WUSD) {
         const feeWUSD = await Promise.resolve(this.$store.dispatch('wallet/getTransferFeeData', {
           recipient: this.userData.wallet.address,
@@ -181,8 +172,8 @@ export default {
         const feeTokens = await this.$store.dispatch('wallet/getContractFeeData', {
           method: 'transfer',
           abi: ERC20,
-          contractAddress: contractAddress[this.selectedToken],
-          data: [contractAddress[this.selectedToken], this.amount],
+          contractAddress: tokenMap[this.selectedToken],
+          data: [tokenMap[this.selectedToken], this.amount],
         });
         if (feeTokens?.ok) this.maxFee[this.selectedToken] = feeTokens?.result?.fee ?? 0;
         else this.maxFee[this.selectedToken] = 0;
