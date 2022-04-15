@@ -120,9 +120,10 @@ export default {
       return Object.keys(TokenSymbols);
     },
     maxAmount() {
-      const fullBalance = new BigNumber(this.balance[this.selectedToken].fullBalance);
-      if (this.selectedToken === TokenSymbols.WUSD) return fullBalance.minus(this.maxFee[this.selectedToken]).toString();
-      if (this.selectedToken === TokenSymbols.WQT) return fullBalance.minus(this.frozenBalance).toString();
+      const { selectedToken } = this;
+      const fullBalance = new BigNumber(this.balance[selectedToken].fullBalance);
+      if (selectedToken === TokenSymbols.WUSD) return fullBalance.minus(this.maxFee[selectedToken]).toString();
+      if (selectedToken === TokenSymbols.WQT) return fullBalance.minus(this.frozenBalance).toString();
       return fullBalance.toString();
     },
   },
@@ -159,22 +160,25 @@ export default {
     // Для просчета максимальной суммы транзакции от комиссии
     async updateMaxFee() {
       if (!this.isConnected) return;
-      if (this.selectedToken === TokenSymbols.WUSD) {
+      const {
+        selectedToken, amount, maxFee, userData, balance,
+      } = this;
+      if (selectedToken === TokenSymbols.WUSD) {
         const feeWUSD = await this.$store.dispatch('wallet/getTransferFeeData', {
-          recipient: this.userData.wallet.address,
-          value: this.balance.WUSD.fullBalance,
+          recipient: userData.wallet.address,
+          value: balance.WUSD.fullBalance,
         });
-        if (feeWUSD?.ok) this.maxFee.WUSD = feeWUSD?.result?.fee ?? 0;
-        else this.maxFee.WUSD = 0;
+        if (feeWUSD?.ok) maxFee.WUSD = feeWUSD?.result?.fee ?? 0;
+        else maxFee.WUSD = 0;
       } else {
         const feeTokens = await this.$store.dispatch('wallet/getContractFeeData', {
           method: 'transfer',
           abi: ERC20,
-          contractAddress: tokenMap[this.selectedToken],
-          data: [tokenMap[this.selectedToken], this.amount],
+          contractAddress: tokenMap[selectedToken],
+          data: [tokenMap[selectedToken], amount],
         });
-        if (feeTokens?.ok) this.maxFee[this.selectedToken] = feeTokens?.result?.fee ?? 0;
-        else this.maxFee[this.selectedToken] = 0;
+        if (feeTokens?.ok) maxFee[selectedToken] = feeTokens?.result?.fee ?? 0;
+        else maxFee[selectedToken] = 0;
       }
     },
     maxBalance() {

@@ -275,13 +275,14 @@ export default {
     },
     async loadData() {
       this.SetLoader(true);
-      if (this.selectedToken === TokenSymbols.WUSD) await this.$store.dispatch('wallet/getBalanceWUSD');
+      const { selectedToken, userWalletAddress } = this;
+      if (selectedToken === TokenSymbols.WUSD) await this.$store.dispatch('wallet/getBalanceWUSD');
       else {
-        const payload = { address: this.userWalletAddress, abi: ERC20 };
+        const payload = { address: userWalletAddress, abi: ERC20 };
         await this.$store.dispatch('wallet/fetchWalletData', {
-          method: 'balanceOf', ...payload, ...tokens[this.selectedToken],
+          method: 'balanceOf', ...payload, ...tokens[selectedToken],
         });
-        if (this.selectedToken === TokenSymbols.WQT) {
+        if (selectedToken === TokenSymbols.WQT) {
           await this.$store.dispatch('wallet/fetchWalletData', {
             method: 'freezed', ...payload, token: tokenMap.WQT,
           });
@@ -333,8 +334,8 @@ export default {
             submitMethod: async () => {
               this.CloseModal();
               this.SetLoader(true);
-              const action = this.selectedToken === TokenSymbols.WUSD ? 'transfer' : 'transferToken';
-              const payload = this.selectedToken === TokenSymbols.WUSD
+              const action = selectedToken === TokenSymbols.WUSD ? 'transfer' : 'transferToken';
+              const payload = selectedToken === TokenSymbols.WUSD
                 ? { recipient, value: amount }
                 : {
                   abi: ERC20,
