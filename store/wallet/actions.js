@@ -33,7 +33,7 @@ export default {
       commit('user/setFrozenBalance', new BigNumber(res).shiftedBy(-18), { root: true });
       return success(res);
     } catch (e) {
-      return error(e.message, e);
+      return error(e.code, e.message, e);
     }
   },
   async getPensionTransactions({ commit, getters }, { method, limit, offset }) {

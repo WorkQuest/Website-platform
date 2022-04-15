@@ -34,7 +34,7 @@
                   <span class="balance__usd-mobile_blue">
                     {{ $t('wallet.frozen') }}
                   </span>
-                  {{ $tc('meta.coins.count.WQTCount', frozenBalance) }}
+                  {{ $tc('meta.coins.count.WQTCount', { count: frozenBalance } ) }}
                 </span>
                 <base-dd
                   v-model="ddValue"
@@ -51,7 +51,7 @@
                   <span class="balance__usd">
                     {{ $t('wallet.frozen') }}
                   </span>
-                  {{ $tc('meta.coins.count.WQTCount', Number(frozenBalance.toString()).toFixed(4)) }}
+                  {{ $tc('meta.coins.count.WQTCount', { count: Number(frozenBalance.toString()).toFixed(4) }) }}
                 </span>
               </span>
             </div>
@@ -124,13 +124,13 @@
           <div class="wallet__table table">
             <base-table
               class="table__txs"
-              :title="$t('wallet.table.trx')"
+              :title="$tc('wallet.table.trx')"
               :items="styledTransactions"
               :fields="walletTableFields"
             />
             <empty-data
               v-if="!totalPages"
-              :description="$t('wallet.table.empty')"
+              :description="$tc('wallet.table.empty')"
               class="table__empty"
             />
           </div>
@@ -155,7 +155,7 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import * as abi from '~/abi/abi';
+import { ERC20 } from '~/abi/abi';
 import { TokenSymbolByContract, TokenSymbols, WalletTables } from '~/utils/enums';
 import { getStyledAmount } from '~/utils/wallet';
 import EmptyData from '~/components/app/info/emptyData';
@@ -303,7 +303,7 @@ export default {
           } else {
             feeRes = await this.$store.dispatch('wallet/getContractFeeData', {
               method: 'transfer',
-              abi: abi.ERC20,
+              _abi: ERC20,
               contractAddress: process.env.WORKNET_WQT_TOKEN,
               data: [recipient, value],
             });
