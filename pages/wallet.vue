@@ -157,7 +157,7 @@ import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { ERC20 } from '~/abi/abi';
 import {
-  tokenMap, tokens, TokenSymbolByContract, TokenSymbols, WalletTables,
+  tokenMap, TokenSymbolByContract, TokenSymbols, WalletTables,
 } from '~/utils/enums';
 import { getStyledAmount } from '~/utils/wallet';
 import EmptyData from '~/components/app/info/emptyData';
