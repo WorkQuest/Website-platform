@@ -989,6 +989,10 @@
       "depositInfo": "Deposit info",
       "withdrawInfo": "Withdrawal info"
     },
+    "fromAddress": "from",
+    "toAddress": "to",
+    "codeFromSms": "Code from sms",
+    "saved": "Saved",
     "phoneNumber": "Phone Number",
     "value": "Value",
     "generatedWUSD": "???",

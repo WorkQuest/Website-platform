@@ -112,7 +112,7 @@ export default {
       this[funcKey](response);
     },
     goToChat(response) {
-      this.$router.push(`/messages/${response.questChat.chatId}`);
+      this.$router.push({ path: `${Path.MESSAGES}/${response.questChat.chatId}`, query: { type: ChatType.QUEST } });
     },
     async getQuest() {
       await this.$store.dispatch('quests/getQuest', this.questData.id);
