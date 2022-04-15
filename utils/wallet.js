@@ -7,7 +7,9 @@ import {
   success,
   fetchContractData,
 } from '~/utils/web3';
-import * as abi from '~/abi/abi';
+import {
+  WQPensionFund, WQRouter, WQStaking, WQStakingNative,
+} from '~/abi/abi';
 import { StakingTypes, tokenMap } from '~/utils/enums';
 
 const bip39 = require('bip39');
@@ -203,49 +205,35 @@ export const sendWalletTransaction = async (_method, payload) => {
     console.error('web3 is undefined');
     return false;
   }
-  const inst = new web3.eth.Contract(payload.abi, payload.address);
-  const gasPrice = await web3.eth.getGasPrice();
-  const accountAddress = await getWalletAddress();
-  const data = inst.methods[_method].apply(null, payload.data).encodeABI();
-  if (payload.value) {
-    const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress, value: payload.value });
-    return await inst.methods[_method](...payload.data).send({
+  try {
+    const inst = new web3.eth.Contract(payload.abi, payload.address);
+    const gasPrice = await web3.eth.getGasPrice();
+    const accountAddress = getWalletAddress();
+    const data = inst.methods[_method].apply(null, payload.data).encodeABI();
+    if (payload.value) {
+      const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress, value: payload.value });
+      return await inst.methods[_method](...payload.data).send({
+        to: payload.address,
+        from: accountAddress,
+        value: payload.value,
+        data,
+        gasPrice,
+        gas: gasEstimate,
+      });
+    }
+    const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress });
+    const transactionData = {
       to: payload.address,
       from: accountAddress,
-      value: payload.value,
       data,
       gasPrice,
       gas: gasEstimate,
-    });
-  }
-  const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress });
-  const transactionData = {
-    to: payload.address,
-    from: accountAddress,
-    data,
-    gasPrice,
-    gas: gasEstimate,
-  };
+    };
     // noinspection ES6RedundantAwait
-  return await web3.eth.sendTransaction(transactionData);
-};
-export const transferToken = async (recipient, value) => {
-  try {
-    value = new BigNumber(value).shiftedBy(18).toString();
-    const inst = new web3.eth.Contract(abi.ERC20, process.env.WORKNET_WQT_TOKEN);
-    const [gasPrice, gasEstimate] = await Promise.all([
-      web3.eth.getGasPrice(),
-      inst.methods.transfer.apply(null, [recipient, value]).estimateGas({ from: wallet.address }),
-    ]);
-    const res = await inst.methods.transfer(recipient, value).send({
-      from: wallet.address,
-      gas: gasEstimate,
-      gasPrice,
-    });
-    return success(res);
+    return await web3.eth.sendTransaction(transactionData);
   } catch (e) {
-    console.error(e.message);
-    return error();
+    console.error('method: sendWalletTransaction');
+    return error(e.code, e.message, e);
   }
 };
 /**
@@ -287,11 +275,9 @@ export const getContractFeeData = async (_method, _abi, _contractAddress, data, 
 /** PENSION FUND */
 export const getPensionDefaultData = async () => {
   try {
-    const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.WORKNET_PENSION_FUND;
     const [lockTime, defaultFee] = await Promise.all([
-      fetchContractData('lockTime', _abi, _pensionAddress, null, web3),
-      fetchContractData('defaultFee', _abi, _pensionAddress, null, web3),
+      fetchContractData('lockTime', WQPensionFund, process.env.WORKNET_PENSION_FUND, null, web3),
+      fetchContractData('defaultFee', WQPensionFund, process.env.WORKNET_PENSION_FUND, null, web3),
     ]);
     return success({
       defaultFee: new BigNumber(defaultFee.toString()).shiftedBy(-18).toString(),
@@ -304,7 +290,7 @@ export const getPensionDefaultData = async () => {
 };
 export const getPensionWallet = async () => {
   try {
-    const myPensionWallet = await fetchContractData('wallets', abi.WQPensionFund, process.env.WORKNET_PENSION_FUND, [wallet.address], web3);
+    const myPensionWallet = await fetchContractData('wallets', WQPensionFund, process.env.WORKNET_PENSION_FUND, [wallet.address], web3);
     const {
       unlockDate, fee, amount, createdAt, rewardAllowed, rewardDebt, rewardDistributed,
     } = myPensionWallet;
@@ -330,7 +316,7 @@ export const getPensionWallet = async () => {
 };
 export const pensionContribute = async (amount) => {
   try {
-    const inst = new web3.eth.Contract(abi.WQPensionFund, process.env.WORKNET_PENSION_FUND);
+    const inst = new web3.eth.Contract(WQPensionFund, process.env.WORKNET_PENSION_FUND);
     amount = new BigNumber(amount).shiftedBy(18).toString();
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
@@ -350,7 +336,7 @@ export const pensionContribute = async (amount) => {
 };
 export const pensionUpdateFee = async (fee) => {
   try {
-    const inst = new web3.eth.Contract(abi.WQPensionFund, process.env.WORKNET_PENSION_FUND);
+    const inst = new web3.eth.Contract(WQPensionFund, process.env.WORKNET_PENSION_FUND);
     fee = new BigNumber(fee).shiftedBy(18).toString();
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
@@ -370,7 +356,7 @@ export const pensionUpdateFee = async (fee) => {
 export const pensionsWithdraw = async (_amount) => {
   try {
     _amount = new BigNumber(_amount).shiftedBy(18).toString();
-    const inst = new web3.eth.Contract(abi.WQPensionFund, process.env.WORKNET_PENSION_FUND);
+    const inst = new web3.eth.Contract(WQPensionFund, process.env.WORKNET_PENSION_FUND);
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
       inst.methods.withdraw.apply(null, [_amount]).estimateGas({ from: wallet.address }),
@@ -388,7 +374,7 @@ export const pensionsWithdraw = async (_amount) => {
 };
 export const pensionExtendLockTime = async () => {
   try {
-    const inst = new web3.eth.Contract(abi.WQPensionFund, process.env.WORKNET_PENSION_FUND);
+    const inst = new web3.eth.Contract(WQPensionFund, process.env.WORKNET_PENSION_FUND);
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
       inst.methods.extendLockTime.apply(null, []).estimateGas({ from: wallet.address }),
@@ -414,14 +400,14 @@ export const stake = async (stakingType, amount, poolAddress, duration) => {
       res = await sendWalletTransaction(
         'stake',
         {
-          abi: abi.WQStaking,
+          abi: WQStaking,
           address: poolAddress,
           data: [amount, duration.toString()],
         },
       );
       return success(res);
     }
-    const inst = new web3.eth.Contract(abi.WQStakingNative, poolAddress);
+    const inst = new web3.eth.Contract(WQStakingNative, poolAddress);
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
       inst.methods.stake.apply(null, []).estimateGas({ from: wallet.address, value: amount }),
@@ -491,7 +477,7 @@ export const setTokenPrices = async ({
 
 export const buyWUSD = async ({ collateralBN, ratioBN, currency }, { gasPrice, gas }) => {
   try {
-    const inst = new web3.eth.Contract(abi.WQRouter, process.env.WORKNET_ROUTER);
+    const inst = new web3.eth.Contract(WQRouter, process.env.WORKNET_ROUTER);
     await inst.methods.produceWUSD(collateralBN, ratioBN, currency).send({
       from: wallet.address,
       gas,

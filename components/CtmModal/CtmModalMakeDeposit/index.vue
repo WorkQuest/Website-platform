@@ -79,7 +79,7 @@ export default {
       const [txFee] = await Promise.all([
         this.$store.dispatch('wallet/getContractFeeData', {
           method: 'contribute',
-          _abi: WQPensionFund,
+          abi: WQPensionFund,
           contractAddress: process.env.WORKNET_PENSION_FUND,
           data: [getWalletAddress()],
           amount: this.amount,

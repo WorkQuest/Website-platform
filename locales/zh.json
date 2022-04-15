@@ -990,6 +990,7 @@
       "depositInfo": "Deposit info",
       "withdrawInfo": "Withdrawal info"
     },
+    "transactionError": "Transaction error",
     "fromAddress": "from",
     "toAddress": "to",
     "codeFromSms": "Code from sms",
@@ -1314,6 +1315,7 @@
     "newDiscussionLike": "New like on discussion"
   },
   "wallet": {
+    "frozen": "Frozen balance",
     "WUSD": "WUSD 钱包",
     "cryptoWallet": "加密钱包",
     "send": "发送",

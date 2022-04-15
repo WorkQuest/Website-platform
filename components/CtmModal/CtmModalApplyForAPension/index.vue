@@ -104,7 +104,7 @@ export default {
         const [fee] = await Promise.all([
           this.$store.dispatch('wallet/getContractFeeData', {
             method: 'updateFee',
-            _abi: WQPensionFund,
+            abi: WQPensionFund,
             contractAddress: process.env.WORKNET_PENSION_FUND,
             data: [new BigNumber(this.depositPercentFromAQuest.substr(0, this.depositPercentFromAQuest.length - 1)).shiftedBy(18).toString()],
           }),
@@ -115,7 +115,7 @@ export default {
         const [fee] = await Promise.all([
           this.$store.dispatch('wallet/getContractFeeData', {
             method: 'contribute',
-            _abi: WQPensionFund,
+            abi: WQPensionFund,
             contractAddress: process.env.WORKNET_PENSION_FUND,
             data: [getWalletAddress()],
             amount: this.firstDepositAmount,
@@ -177,26 +177,30 @@ export default {
 
 <style lang="scss" scoped>
 
-.pension{
+.pension {
   max-width: 487px !important;
+
   &__content {
-    padding: 22px 28px 30px 28px!important;
+    padding: 22px 28px 30px 28px !important;
   }
 }
-.content{
+
+.content {
   &__text {
     color: $black500;
     font-weight: 400;
     font-size: 14px;
   }
-  &__buttons{
+
+  &__buttons {
     display: grid;
     grid-template-columns: repeat(2, calc(50% - 10px));
     grid-gap: 20px;
     gap: 20px;
     margin-top: 25px;
   }
-  &__title{
+
+  &__title {
     margin-bottom: 4px;
     font-size: 16px;
     line-height: 130%;

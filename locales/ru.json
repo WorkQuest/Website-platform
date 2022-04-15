@@ -990,6 +990,7 @@
       "depositInfo": "Deposit info",
       "withdrawInfo": "Withdrawal info"
     },
+    "transactionError": "Ошибка транзакции",
     "fromAddress": "с",
     "toAddress": "на",
     "codeFromSms": "Код из СМС",
@@ -1314,17 +1315,18 @@
     "newDiscussionLike": "Новый лайк на дискуссии"
   },
   "wallet": {
+    "frozen": "Замороженный баланс",
     "WUSD": "WUSD wallet",
     "cryptoWallet": "Crypto wallet",
-    "send": "Send",
-    "toThisAddress": "to this address",
+    "send": "Отправить",
+    "toThisAddress": "на этот адрес",
     "receive": "Receive",
     "transfer": "Buy / Send",
-    "addCardProposal": "Add bank card for easy withdrawal",
-    "addCard": "Add card",
+    "addCardProposal": "Добавьте банковскую карту для удобного вывода",
+    "addCard": "Добавить карту",
     "collateral": {
-      "balance": "Collateral balance",
-      "coin": "coin",
+      "balance": "Залоговый баланс",
+      "coin": "монета",
       "sum": "sum",
       "amountInDollars": "amount in dollars",
       "attentionQuotient": "attention quotient",
@@ -1332,10 +1334,10 @@
       "takeTitle": "Take collateral"
     },
     "table": {
-      "trx": "Transactions",
-      "txHash": "Txn Hash",
-      "status": "Status",
-      "block": "Block",
+      "trx": "Транзакции",
+      "txHash": "Txn Хэш",
+      "status": "Статус",
+      "block": "Блок",
       "timestamp": "Timestamp",
       "transferred": "Tokens Transferred",
       "value": "Quantity",
