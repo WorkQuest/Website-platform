@@ -69,7 +69,6 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import { getContractFeeData } from '~/utils/wallet';
-import modals from '~/store/modals/modals';
 import { WQLending } from '~/abi/abi';
 
 export default {

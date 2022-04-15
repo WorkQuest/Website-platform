@@ -212,11 +212,7 @@ export default {
       });
     },
     refund(amount) {
-      const maxValue = new BigNumber(this.creditData.credit).plus(this.currentFee).shiftedBy(-18).toString();
-      let value = new BigNumber(amount).shiftedBy(18).toString();
-      if (new BigNumber(value).isEqualTo(maxValue)) {
-        value = new BigNumber(this.creditData.credit).plus(this.currentFee).plus(10000).toString();
-      }
+      const value = new BigNumber(amount).plus(0.1).shiftedBy(18).toString();
       return {
         value,
         // 1 in data this is nonce, required parameter for method "refund"
