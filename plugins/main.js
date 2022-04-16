@@ -15,6 +15,10 @@ Vue.mixin({
     convertToBech32(prefix, address) {
       return converter(prefix).toBech32(address);
     },
+    convertToHex(prefix, address) {
+      if (address.startsWith('wq')) return this.convertToHex(prefix, address);
+      return address;
+    },
     async uploadFiles(files) {
       if (!files.length) return [];
       const fetchData = [];
