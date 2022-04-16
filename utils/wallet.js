@@ -155,18 +155,19 @@ export const getBalance = async () => {
 // Send WUSD
 export const transfer = async (recipient, value) => {
   try {
+    const recipientInHex = this.convertToHex('wq', recipient);
     value = new BigNumber(value).shiftedBy(18).toString();
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
       web3.eth.estimateGas({
         from: wallet.address,
-        to: recipient,
+        to: recipientInHex,
         value,
       }),
     ]);
     const txRes = await web3.eth.sendTransaction({
       from: wallet.address,
-      to: recipient,
+      to: recipientInHex,
       value,
       gas: gasEstimate,
       gasPrice,
@@ -179,12 +180,14 @@ export const transfer = async (recipient, value) => {
 };
 export const getTransferFeeData = async (recipient, value) => {
   try {
+    const recipientInHex = this.convertToHex('wq', recipient);
+
     value = new BigNumber(value).shiftedBy(18).toString();
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
       web3.eth.estimateGas({
         from: wallet.address,
-        to: recipient,
+        to: recipientInHex,
         value,
       }),
     ]);
@@ -237,11 +240,13 @@ export const sendWalletTransaction = async (_method, payload) => {
  */
 export const getContractFeeData = async (_method, _abi, _contractAddress, data, recipient = null, amount = 0) => {
   try {
-    const inst = new web3.eth.Contract(_abi, _contractAddress);
+    const recipientInHex = this.convertToHex('wq', _contractAddress);
+    const _contractAddressInHex = this.convertToHex('wq', _contractAddress);
+    const inst = new web3.eth.Contract(_abi, _contractAddressInHex);
     const tx = {
       from: wallet.address,
     };
-    if (recipient) tx.to = recipient;
+    if (recipient) tx.to = recipientInHex;
     if (amount) {
       amount = new BigNumber(amount).shiftedBy(18).toString();
       tx.value = amount;
