@@ -16,8 +16,8 @@ Vue.mixin({
       return converter(prefix).toBech32(address);
     },
     convertToHex(prefix, address) {
-      console.log(prefix, address);
-      return converter(prefix).toHex(address);
+      if (address.startsWith(prefix)) return converter(prefix).toHex(address);
+      return address;
     },
     async uploadFiles(files) {
       if (!files.length) return [];

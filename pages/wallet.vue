@@ -7,7 +7,7 @@
           <div class="wallet__address">
             <span class="user__wallet">{{ CutTxn(convertToBech32('wq',userWalletAddress), 8, 8) }}</span>
             <button
-              v-clipboard:copy="userWalletAddress"
+              v-clipboard:copy="convertToBech32('wq',userWalletAddress)"
               v-clipboard:success="ClipboardSuccessHandler"
               v-clipboard:error="ClipboardErrorHandler"
               type="button"
@@ -254,7 +254,6 @@ export default {
     },
   },
   beforeMount() {
-    this.convertToBech32('wq1', this.userWalletAddress, 'mutation');
     this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
   async mounted() {
@@ -305,6 +304,8 @@ export default {
       this.ShowModal({
         key: modals.giveTransfer,
         submit: async ({ recipient, amount, selectedToken }) => {
+          const { convertToHex } = this;
+          recipient = convertToHex('wq', recipient);
           const value = new BigNumber(amount).shiftedBy(18).toString();
           let feeRes;
           if (selectedToken === TokenSymbols.WUSD) {
