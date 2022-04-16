@@ -164,7 +164,7 @@ export default {
         this.SetLoader(true);
         const [txFee] = await Promise.all([
           this.$store.dispatch('wallet/getContractFeeData', {
-            _abi: WQPensionFund,
+            abi: WQPensionFund,
             contractAddress: process.env.WORKNET_PENSION_FUND,
             method: 'withdraw',
             data: [new BigNumber(this.amount).shiftedBy(18).toString()],
@@ -223,68 +223,79 @@ export default {
 
 <style lang="scss" scoped>
 
-.withdrawal{
+.withdrawal {
   max-width: 616px !important;
-  padding: 0!important;
-  &__content{
-    padding: 22px 28px 30px 28px!important;
-  }
-}
-.buttons {
-  display: flex;
-  justify-content: space-between;
-  &__action{
-    width: 271px!important;
+  padding: 0 !important;
+
+  &__content {
+    padding: 22px 28px 30px 28px !important;
   }
 }
 
-.input{
-  &__field{
+.buttons {
+  display: flex;
+  justify-content: space-between;
+
+  &__action {
+    width: 271px !important;
+  }
+}
+
+.input {
+  &__field {
     margin-top: 5px;
   }
 }
-.content{
+
+.content {
   &__step {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
   }
-  &__panel{
+
+  &__panel {
     @include text-simple;
     font-weight: 400;
     font-size: 16px;
     color: $black500;
     margin: 0 20px 15px 0;
     cursor: pointer;
+
     &_active {
       color: $black800;
       border-bottom: 2px solid $blue;
       padding: 0 0 12px 0;
     }
   }
-  &__buttons{
+
+  &__buttons {
     margin-top: 2px;
   }
-  &__card{
+
+  &__card {
     margin: 25px auto 40px;
   }
+
   &__text {
-      font-size: 16px;
-      line-height: 130%;
-      color: #D8DFE3;
-      text-align: center;
-      margin-bottom: 25px;
+    font-size: 16px;
+    line-height: 130%;
+    color: #D8DFE3;
+    text-align: center;
+    margin-bottom: 25px;
   }
 }
-.grid{
-  &__title{
+
+.grid {
+  &__title {
     margin: 15px 5px 0 0;
   }
 }
-.max{
-  &__button{
-    margin-right: 10px!important;
-    background-color: transparent!important;
+
+.max {
+  &__button {
+    margin-right: 10px !important;
+    background-color: transparent !important;
   }
 }
 </style>

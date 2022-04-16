@@ -43,40 +43,8 @@ export const StakingTypes = {
   CROSS_CHAIN: 'CROSS_CHAIN',
 };
 
-export const QuestStatuses = {
-  Rejected: -1,
-  Created: 0,
-  Active: 1,
-  Closed: 2,
-  Dispute: 3,
-  WaitWorker: 4,
-  WaitConfirm: 5,
-  Done: 6,
-};
 export const SumSubStatuses = { NOT_VERIFIED: 0, VERIFIED: 1 };
-export const InfoModeEmployer = {
-  Rejected: -1,
-  Created: 0,
-  Active: 1,
-  Closed: 2,
-  Dispute: 3,
-  WaitWorker: 4,
-  WaitConfirm: 5,
-  Done: 6,
-};
-export const InfoModeWorker = {
-  Created: 0,
-  ADChat: 1,
-  Active: 2,
-  Rejected: 3,
-  WaitWorker: 4,
-  WaitConfirm: 5,
-  Dispute: 7,
-  Closed: 8,
-  Done: 9,
-  Responded: 10,
-  Invited: 11,
-};
+
 export const DisputeStatues = {
   PENDING: 0,
   IN_PROGRESS: 1,
@@ -238,6 +206,7 @@ export const Path = {
   PROFILE: '/profile',
   ROLE: '/role',
   QUESTS: '/quests',
+  MESSAGES: '/messages',
   EDIT_QUEST: '/edit-quest',
   COLLATERAL: '/collateral',
   WIKI: '/wiki',
@@ -272,6 +241,8 @@ export const TokenSymbols = Object.freeze({
 });
 
 export const TokenSymbolByContract = Object.freeze({
+  [process.env.WORKNET_WETH_TOKEN.toLowerCase()]: TokenSymbols.ETH,
+  [process.env.WORKNET_WBNB_TOKEN.toLowerCase()]: TokenSymbols.BNB,
   [process.env.WORKNET_WQT_TOKEN.toLowerCase()]: TokenSymbols.WQT,
 });
 
@@ -328,9 +299,9 @@ export const NetworksData = {
 };
 
 export const tokenMap = {
-  BNB: process.env.WORKNET_WBNB_TOKEN,
-  ETH: process.env.WORKNET_WETH_TOKEN,
-  WQT: process.env.WORKNET_WQT_TOKEN,
+  [TokenSymbols.BNB]: process.env.WORKNET_WBNB_TOKEN,
+  [TokenSymbols.ETH]: process.env.WORKNET_WETH_TOKEN,
+  [TokenSymbols.WQT]: process.env.WORKNET_WQT_TOKEN,
 };
 
 export const PensionHistoryMethods = Object.freeze({

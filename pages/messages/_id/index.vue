@@ -149,7 +149,7 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import ChatMenu from '~/components/ui/ChatMenu';
-import { ChatType, QuestChatStatus } from '~/utils/enums';
+import { ChatType, QuestChatStatus, Path } from '~/utils/enums';
 
 export default {
   name: 'Messages',
@@ -303,7 +303,7 @@ export default {
       if (window.history.length > 2) {
         this.$router.go(-1);
       } else {
-        this.$router.push('/messages');
+        this.$router.push(`${Path.MESSAGES}`);
       }
     },
     async handleSendMessage() {

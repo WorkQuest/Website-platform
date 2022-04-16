@@ -87,8 +87,8 @@
       "resendSMS": "SMS إعادة إرسال",
       "registration": "التسجيل",
       "leave": "Leave",
-      "completeWorkOnQuest": "Complete work on Quest",
-      "acceptCompletedWorkOnQuest": "Accept completed work on quest",
+      "completeWorkOnQuest": "Complete work",
+      "acceptCompletedWorkOnQuest": "Accept work",
       "closeQuest": "Close quest",
       "goToChat": "الانتقال إلى الدردشة",
       "view": "عرض",
@@ -330,8 +330,11 @@
     "employer": {
       "usersNotResponded": "Users not responded"
     },
+    "deleteQuest": "Delete quest",
     "invite": "Invite",
     "decline": "Decline",
+    "declinedTheInvitation": "Declined the invitation",
+    "acceptedTheInvitation": "Accepted the invitation",
     "questTitle": "Quest title",
     "questDesc": "Quest description",
     "closed": "Closed",
@@ -986,6 +989,11 @@
       "depositInfo": "Deposit info",
       "withdrawInfo": "Withdrawal info"
     },
+    "transactionError": "Transaction error",
+    "fromAddress": "from",
+    "toAddress": "to",
+    "codeFromSms": "Code from sms",
+    "saved": "Saved",
     "phoneNumber": "Phone Number",
     "value": "Value",
     "generatedWUSD": "???",
@@ -1300,6 +1308,7 @@
     "newDiscussionLike": "New like on discussion"
   },
   "wallet": {
+    "frozen": "Frozen balance",
     "WUSD": "محفظة WUSD",
     "cryptoWallet": "محفظة العملات المشفرة",
     "send": "إرسال",
@@ -1922,7 +1931,8 @@
       "requested": "تم طلبها",
       "completed": "طلبات العمل المكتملة",
       "active": "طلبات العمل النشطة",
-      "invited": "طلبات العمل المدعو إليها"
+      "invited": "طلبات العمل المدعو إليها",
+      "created": "المهام التي تم إنشاؤها"
     }
   },
   "footer": {

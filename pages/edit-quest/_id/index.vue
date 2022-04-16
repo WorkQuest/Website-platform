@@ -4,7 +4,7 @@
     v-if="questData"
     class="main"
     data-selector="PAGE-MY-QUESTS"
-    :class="{'main-white': step === 1}"
+    :class="{'main-white': step === $options.EditQuestState.EDITING}"
   >
     <div class="main__body page">
       <validation-observer
@@ -43,7 +43,7 @@
                 :label="$t('meta.price')"
                 data-selector="PRICE-FIELD"
                 :placeholder="+0 + currency"
-                rules="required|decimal"
+                rules="required|decimal|decimalPlaces:16|min_value:1"
                 :name="$t('meta.price')"
               />
             </div>
@@ -123,6 +123,7 @@
             <textarea
               id="textarea"
               v-model="textarea"
+              disabled
               data-selector="QUEST-DESC-TEXTAREA"
               class="page__textarea"
               :placeholder="$t('quests.questDesc')"
@@ -147,7 +148,7 @@
               <base-btn
                 data-selector="TO-RAISED-VIEWS"
                 :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
-                @click="handleSubmit(toRiseViews(2))"
+                @click="handleSubmit(setCurrentStepEditQuest($options.EditQuestState.RAISE_VIEWS))"
               >
                 {{ $t('quests.editAQuest') }}
               </base-btn>
@@ -155,7 +156,7 @@
           </div>
         </div>
         <div
-          v-if="step === 2"
+          v-if="step === $options.EditQuestState.RAISE_VIEWS"
           data-selector="PAGE-MY-QUESTS-STEP-2"
           class="page"
         >
@@ -168,7 +169,7 @@
               >
                 {{ $t('meta.btns.back') }}
                 <template v-slot:left>
-                  <span class="icon-chevron_big_left" />
+                  <span class="icon-chevron_big_left btn-container__icon" />
                 </template>
               </base-btn>
             </div>
@@ -245,7 +246,7 @@
                 <base-btn
                   data-selector="EDIT-QUEST"
                   mode="outline"
-                  @click="editQuest"
+                  @click="toEditQuest"
                 >
                   {{ $t('meta.skipAndEnd') }}
                 </base-btn>
@@ -269,12 +270,19 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
+import { Path, TokenSymbols } from '~/utils/enums';
+import {
+  QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses, CommissionForCreatingAQuest,
+} from '~/utils/quests-constants';
+import { hashText } from '~/utils/wallet';
 
 const { GeoCode } = require('geo-coder');
 
 export default {
   name: 'EditQuest',
+  EditQuestState,
   data() {
     return {
       ads: {
@@ -296,10 +304,13 @@ export default {
       files: [],
       mode: this.$route.query?.mode || '',
       geoCode: null,
+      prevPrice: null,
     };
   },
   computed: {
     ...mapGetters({
+      isWalletConnected: 'wallet/getIsWalletConnected',
+      userWalletAddress: 'user/getUserWalletAddress',
       questData: 'quests/getQuest',
       step: 'quests/getCurrentStepEditQuest',
     }),
@@ -392,14 +403,35 @@ export default {
       ];
     },
   },
+  beforeCreate() {
+    this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+  },
   async mounted() {
+    if (!this.isWalletConnected) return;
     this.SetLoader(true);
     await this.$store.dispatch('quests/getQuest', this.$route.params.id);
     this.geoCode = new GeoCode('google', {
       key: process.env.GMAPKEY,
       lang: this.$i18n?.localeProperties?.code || 'en-US',
     });
-    await this.editQuestFill();
+    const {
+      title, locationPlaceName, price, description, location, employment, id, status,
+    } = this.questData;
+
+    if ([QuestStatuses.Pending, InfoModeEmployer.Dispute, InfoModeEmployer.Done, InfoModeEmployer.Closed].includes(status)) {
+      await this.$router.push(`${Path.QUESTS}/${id}`);
+    }
+
+    this.runtimeValue = 1;
+    this.employmentIndex = this.parseEmployment(employment);
+    this.questTitle = title;
+    this.address = locationPlaceName;
+    this.price = new BigNumber(price).shiftedBy(-18).toString();
+    this.textarea = description;
+    this.coordinates.lng = location.longitude;
+    this.coordinates.lat = location.latitude;
+
+    this.prevPrice = this.price;
     this.SetLoader(false);
   },
   methods: {
@@ -408,20 +440,6 @@ export default {
     },
     updateSelectedSkills(specAndSkills) {
       this.selectedSpecAndSkills = specAndSkills;
-    },
-    async editQuestFill() {
-      const {
-        title, locationPlaceName, price, description, location, employment,
-      } = this.questData;
-
-      this.runtimeValue = 1;
-      this.employmentIndex = this.parseEmployment(employment);
-      this.questTitle = title;
-      this.address = locationPlaceName;
-      this.price = price;
-      this.textarea = description;
-      this.coordinates.lng = location.longitude;
-      this.coordinates.lat = location.latitude;
     },
     cardStatus({ code }) {
       if (code === 1) return 'level__card_gold';
@@ -457,7 +475,7 @@ export default {
         this.ads.currentAdPrice = '';
       }
     },
-    toRiseViews(step) {
+    setCurrentStepEditQuest(step) {
       this.$store.commit('quests/setCurrentStepEditQuest', step);
     },
     showPaymentModal() {
@@ -470,7 +488,7 @@ export default {
       if (this.mode === 'raise') {
         this.goBack();
       } else {
-        this.toRiseViews(1);
+        this.setCurrentStepEditQuest(EditQuestState.EDITING);
       }
     },
     goBack() {
@@ -510,6 +528,80 @@ export default {
         console.error('Geo look up is failed', e);
       }
     },
+    async toEditQuest() {
+      if (this.prevPrice === this.price) {
+        await this.editQuest();
+        return;
+      }
+
+      let feeRes;
+      let depositAmount;
+      const { contractAddress } = this.questData;
+      // Quest Cost Increased
+      if (new BigNumber(this.price).isGreaterThan(this.prevPrice)) {
+        depositAmount = new BigNumber(this.price).minus(this.prevPrice).multipliedBy(1 + CommissionForCreatingAQuest).toString();
+        [feeRes] = await Promise.all([
+          this.$store.dispatch('quests/getEditQuestFeeData', {
+            contractAddress,
+            description: this.textarea,
+            cost: this.price,
+            depositAmount,
+          }),
+          this.$store.dispatch('wallet/getBalance'),
+        ]);
+      } else {
+        [feeRes] = await Promise.all([
+          this.$store.dispatch('quests/getFeeDataJobMethod', {
+            contractAddress,
+            method: QuestMethods.EditJob,
+            data: [hashText(this.textarea), new BigNumber(this.price).shiftedBy(18).toString()],
+          }),
+          this.$store.dispatch('wallet/getBalance'),
+        ]);
+      }
+
+      if (feeRes.ok === false) {
+        this.ShowToast(this.$t('errors.transaction.notEnoughFunds'));
+        return;
+      }
+
+      const fields = {
+        from: {
+          name: this.$t('meta.fromBig'),
+          value: this.userWalletAddress,
+        },
+        to: {
+          name: this.$t('meta.toBig'),
+          value: contractAddress,
+        },
+        fee: {
+          name: this.$t('wallet.table.trxFee'),
+          value: feeRes.result.fee,
+          symbol: TokenSymbols.WUSD,
+        },
+      };
+      if (depositAmount) {
+        fields.amount = {
+          name: this.$t('modals.amount'),
+          value: depositAmount,
+          symbol: TokenSymbols.WUSD,
+        };
+      }
+      await this.$store.dispatch('wallet/getBalance');
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        fields,
+        submitMethod: async () => {
+          const res = await this.$store.dispatch('quests/editQuestOnContract', {
+            contractAddress,
+            cost: this.price,
+            description: this.textarea,
+            depositAmount,
+          });
+          if (res.ok) await this.editQuest();
+        },
+      });
+    },
     async editQuest() {
       if (this.mode === 'raise') {
         this.goBack();
@@ -523,10 +615,7 @@ export default {
         priority: this.priorityIndex,
         employment: this.convertEmployment(this.employmentIndex),
         title: this.questTitle,
-        description: this.textarea,
-        price: this.price,
         medias,
-        adType: 0,
         specializationKeys: this.selectedSpecAndSkills,
         locationFull: {
           location: {
@@ -543,7 +632,7 @@ export default {
         this.showModalEditQuest();
         this.showToastEdited();
         await this.$router.push(`/quests/${questId}`);
-        this.toRiseViews(1);
+        this.setCurrentStepEditQuest(EditQuestState.EDITING);
       }
     },
     showModalEditQuest() {
@@ -577,6 +666,9 @@ export default {
   flex-direction: row;
   justify-content: flex-end;
   margin: 20px 0 0 0;
+  &__icon {
+    color: $black700;
+  }
   &__left {
     justify-content: flex-start;
     margin: 30px 0 0 0;
