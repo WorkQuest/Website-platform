@@ -15,7 +15,7 @@
               class="input__field"
               data-selector="ADDRESS-RECIPIENT"
               :placeholder="$t('meta.addressBig')"
-              rules="required|max:41|min:41|addressBech32"
+              :rules="`required|${checkFormatAddress(recipient)}`"
               :name="$t('meta.addressSmall')"
             />
           </div>
@@ -141,6 +141,10 @@ export default {
     await this.updateMaxFee();
   },
   methods: {
+    checkFormatAddress(address) {
+      if (address.startsWith('wq')) return 'max:41|min:41|addressBech32';
+      return 'address';
+    },
     async showWithdrawInfo() {
       const { submit } = this.options;
       const { recipient, amount, selectedToken } = this;

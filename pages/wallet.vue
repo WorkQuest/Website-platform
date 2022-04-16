@@ -276,7 +276,7 @@ export default {
     async loadData() {
       this.SetLoader(true);
       const { selectedToken, userWalletAddress } = this;
-      if (selectedToken === TokenSymbols.WUSD) await this.$store.dispatch('wallet/getBalanceWUSD');
+      if (selectedToken === TokenSymbols.WUSD) await this.$store.dispatch('wallet/getBalance');
       else {
         const payload = { address: userWalletAddress, abi: ERC20 };
         await this.$store.dispatch('wallet/fetchWalletData', {
