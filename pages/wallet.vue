@@ -304,7 +304,7 @@ export default {
       this.ShowModal({
         key: modals.giveTransfer,
         submit: async ({ recipient, amount, selectedToken }) => {
-          const { convertToHex } = this;
+          const { convertToHex, convertToBech32 } = this;
           recipient = convertToHex('wq', recipient);
           const value = new BigNumber(amount).shiftedBy(18).toString();
           let feeRes;
@@ -324,8 +324,8 @@ export default {
           this.ShowModal({
             key: modals.transactionReceipt,
             fields: {
-              from: { name: this.$t('modals.fromAddress'), value: this.convertToBech32('wq', this.userData.wallet.address) },
-              to: { name: this.$t('modals.toAddress'), value: this.convertToBech32('wq', recipient) },
+              from: { name: this.$t('modals.fromAddress'), value: convertToBech32('wq', this.userData.wallet.address) },
+              to: { name: this.$t('modals.toAddress'), value: convertToBech32('wq', recipient) },
               amount: {
                 name: this.$t('modals.amount'),
                 value: amount,

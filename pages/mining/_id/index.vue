@@ -345,7 +345,7 @@ export default {
         arr.push({
           totalValue: `${this.Floor(data.totalValue, 2)} $`,
           account: data.account,
-          accountView: this.CutTxn(this.convertToBech32('wq', data.account)),
+          accountView: this.CutTxn(data.account),
           time: this.$moment(new Date(data.timestamp * 1000)).startOf('hour').fromNow(),
           ...this.getTokensAmount(data),
         });

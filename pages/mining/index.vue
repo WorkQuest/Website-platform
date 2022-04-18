@@ -25,7 +25,7 @@
             >
               <template #cell(poolAddress)="el">
                 <div class="table__value_gray">
-                  {{ convertToBech32('wq',el.item.poolAddress) }}
+                  {{ el.item.poolAddress }}
                 </div>
               </template>
               <template #cell(assets)="el">
