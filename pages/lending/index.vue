@@ -148,6 +148,7 @@ import { Path } from '~/utils/enums';
 import { images } from '~/utils/images';
 
 export default {
+  name: 'Lending',
   data() {
     return {
       indexFAQ: [],
@@ -297,6 +298,7 @@ export default {
                   }
                   this.SetLoader(true);
                   const res = await this.$store.dispatch('crediting/sendMethod', {
+                    value: valueWithDecimals,
                     address: process.env.WORKNET_BORROWING,
                     method: 'borrow',
                     abi: WQBorrowing,
@@ -309,7 +311,7 @@ export default {
                     ],
                   });
                   this.SetLoader(false);
-
+                  console.log('res:', res);
                   if (res.ok) {
                     await this.$store.dispatch('crediting/getCreditData');
                     this.ShowModalSuccess({

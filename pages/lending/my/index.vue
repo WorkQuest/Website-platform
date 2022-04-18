@@ -92,6 +92,7 @@ import { WQBorrowing, WQLending } from '~/abi/abi';
 import { Path } from '~/utils/enums';
 
 export default {
+  name: 'MyLending',
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',

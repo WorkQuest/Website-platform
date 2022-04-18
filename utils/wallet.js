@@ -8,7 +8,7 @@ import {
   fetchContractData,
 } from '~/utils/web3';
 import {
-  WQPensionFund, WQRouter, WQStaking, WQStakingNative,
+  WQPensionFund, WQRouter, WQStaking, WQStakingNative, WQOracle,
 } from '~/abi/abi';
 import { StakingTypes, tokenMap } from '~/utils/enums';
 
@@ -210,8 +210,12 @@ export const sendWalletTransaction = async (_method, payload) => {
     const gasPrice = await web3.eth.getGasPrice();
     const accountAddress = getWalletAddress();
     const data = inst.methods[_method].apply(null, payload.data).encodeABI();
+    console.log(_method, payload);
     if (payload.value) {
+      console.log('payload with value');
+      console.log(accountAddress, _method, payload.data, payload.value);
       const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress, value: payload.value });
+      console.log(gasEstimate);
       return await inst.methods[_method](...payload.data).send({
         to: payload.address,
         from: accountAddress,
@@ -233,6 +237,7 @@ export const sendWalletTransaction = async (_method, payload) => {
     return await web3.eth.sendTransaction(transactionData);
   } catch (e) {
     console.error('method: sendWalletTransaction');
+    console.log(e.message);
     return error(e.code, e.message, e);
   }
 };
@@ -447,7 +452,7 @@ export const setTokenPrice = async ({ currency }, {
   gasPrice, gas, timestamp, price, v, r, s,
 }) => {
   try {
-    const inst = new web3.eth.Contract(abi.WQOracle, process.env.WORKNET_ORACLE);
+    const inst = new web3.eth.Contract(WQOracle, process.env.WORKNET_ORACLE);
     await inst.methods.setTokenPriceUSD(timestamp, price, v, r, s, currency).send({
       from: wallet.address,
       gas,
@@ -463,7 +468,7 @@ export const setTokenPrices = async ({
   gasPrice, gas, timestamp, prices, v, r, s, symbols,
 }) => {
   try {
-    const inst = new web3.eth.Contract(abi.WQOracle, process.env.WORKNET_ORACLE);
+    const inst = new web3.eth.Contract(WQOracle, process.env.WORKNET_ORACLE);
     await inst.methods.setTokenPricesUSD(timestamp, v, r, s, prices, symbols).send({
       from: wallet.address,
       gas,

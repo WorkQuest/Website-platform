@@ -4,6 +4,7 @@ import VueTippy, { TippyComponent } from 'vue-tippy';
 import modals from '~/store/modals/modals';
 import { TokenSymbols } from '~/utils/enums';
 import { QuestMethods, QuestStatuses } from '~/utils/quests-constants';
+import { images } from '~/utils/images';
 
 Vue.use(VueTippy);
 Vue.component('tippy', TippyComponent);
