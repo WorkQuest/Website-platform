@@ -50,6 +50,7 @@
       "hours": "{count} час | {count} часа | {count} часов",
       "years": "{count} год | {count} года | {count} лет",
       "days": "{count} день | {count} дня  | {count} дней",
+      "daysLeft": "{count} days left",
       "votesCount": "{count} голоса",
       "distance": {
         "m": "m"
@@ -1121,7 +1122,7 @@
     "tempForRemove2": "1 BNB = ... WQT",
     "currentPoolSize": "Current pool size",
     "yourPoolShare": "Your pool share",
-    "howMuchEthWouldYouLikeToLock": "How much ETH would you like to lock into your account?",
+    "howMuchTokensWouldYouLikeToLock": "How much {token} would you like to lock into your account?",
     "collateralization": "Collateralization",
     "liquidationPrice": "Liquidation price",
     "currentPrice": "Current price",
@@ -1206,7 +1207,13 @@
     "txInfo": "Transaction info",
     "registration": "Вы верены что хотите зарегистрировать данных пользователей?",
     "claimConfirm": "Вы потдверждаете дейсвие клейм?",
-    "until": "До"
+    "until": "До",
+    "successfulMethods": {
+      "claim": "Successful claim",
+      "refund": "Successful refund",
+      "withdraw": "Successful withdrawal",
+      "deposit": "Successful deposit"
+    }
   },
   "ui": {
     "jobQuestors": "В поиске работы",
@@ -1708,10 +1715,13 @@
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
     "currentLoan": "Текущий заем",
     "currentCredit": "Текущий кредит",
+    "chooseSource": "Выбрать источник",
+    "chosenSource": "Выбранный источник",
     "marketSize": "Market size",
     "wantToTakeALoan": "Want to take a loan?",
     "borrow": "Занимать",
     "myLoans": "Мои займы",
+    "needRefund": "Необходимо вернуть",
     "refund": "Возврат",
     "openPositions": "Open positions",
     "totalCollateralLocked": "Total collateral locked",

@@ -393,7 +393,7 @@ export default {
         {
           title: this.$t('ui.menu.crediting.title'),
           desc: this.$t('ui.menu.crediting.desc'),
-          path: Path.CREDITING,
+          path: Path.LENDING,
         },
         {
           title: this.$t('ui.menu.mining.title'),

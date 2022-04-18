@@ -80,6 +80,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { images } from '~/utils/images';
 
 export default {
   name: 'CtmModalChangeRoleReason',
@@ -123,7 +124,7 @@ export default {
     success() {
       this.$root.$emit('roleChanged');
       this.ShowModal({
-        key: modals.status, img: require('~/assets/img/ui/success.svg'), title: 'Success', subtitle: 'Your role has been changed', isRoleChanged: true,
+        key: modals.status, img: images.SUCCESS, title: 'Success', subtitle: 'Your role has been changed', isRoleChanged: true,
       });
     },
   },

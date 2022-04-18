@@ -58,7 +58,6 @@
       <CtmModalChangeRoleReason v-if="modals.changeRoleReason === currentModalKey" />
       <CtmModalChooseNecessarySkills v-if="modals.chooseNecessarySkills === currentModalKey" />
       <CtmModalCreditingLoan v-if="modals.creditingLoan === currentModalKey" />
-      <CtmModalConfirmLoanDetails v-if="modals.confirmLoanDetails === currentModalKey" />
       <CtmModalSmsVerification v-if="modals.smsVerification === currentModalKey" />
       <CtmModalReviewDetails v-if="modals.reviewDetails === currentModalKey" />
       <CtmModalChatCreate v-if="modals.chatCreate === currentModalKey" />
@@ -94,6 +93,7 @@
       <CtmModalGetWUSD v-if="modals.getWUSD === currentModalKey" />
       <CtmModalBuyAuction v-if="modals.buyAuction === currentModalKey" />
       <CtmModalReferralClaim v-if="modals.referralClaim === currentModalKey" />
+      <CtmModalValueSend v-if="modals.valueSend === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -143,7 +143,6 @@ import CtmModalTransfer from './CtmModalTransfer';
 import CtmModalChangePassInSettings from './CtmModalChangePassInSettings';
 import CtmModalTwoFAAuth from './CtmModalTwoFAAuth';
 import CtmModalCreditingLoan from './CtmModalCreditingLoan';
-import CtmModalConfirmLoanDetails from './CtmModalConfirmLoanDetails';
 import CtmModalSignWorkQuest from './CtmModalSignWorkQuest';
 import CtmModalSecurityCheck from './CtmModalSecurityCheck';
 import CtmModalSharing from './CtmModalSharing';
@@ -183,6 +182,7 @@ import CtmModalGetWUSD from './CtmModalGetWUSD';
 import CtmModalBuyAuction from './CtmModalBuyAuction';
 import CtmModalNeededToEnable2FA from './CtmModalNeededToEnable2FA';
 import CtmModalReferralClaim from './CtmModalReferralClaim';
+import CtmModalValueSend from '~/components/CtmModal/CtmModalValueSend';
 
 export default {
   name: 'ModalBox',
@@ -233,7 +233,6 @@ export default {
     CtmModalChangePassInSettings,
     CtmModalTwoFAAuth,
     CtmModalCreditingLoan,
-    CtmModalConfirmLoanDetails,
     CtmModalSignWorkQuest,
     CtmModalSecurityCheck,
     CtmModalSharing,
@@ -269,6 +268,7 @@ export default {
     CtmModalGallery,
     CtmModalAreYouSure,
     CtmModalReferralClaim,
+    CtmModalValueSend,
   },
   data: () => ({
     modals,

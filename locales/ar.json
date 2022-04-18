@@ -50,6 +50,7 @@
       "hours": "{count} hour | {count} الساعات | {count} الساعات",
       "years": "{count} year | {count} years | {count} years ",
       "days": "{count} day | {count} يوم | {count} يوم",
+      "daysLeft": "{count} days left",
       "votesCount": "{count} صوت",
       "distance": {
         "m": "م"
@@ -1121,7 +1122,7 @@
     "tempForRemove2": "1 BNB = ... WQT",
     "currentPoolSize": "حجم التجمُّع الحالي",
     "yourPoolShare": "حصتك في التجمُّع",
-    "howMuchEthWouldYouLikeToLock": "ما مقدار ETH الذي تريد تأمينه في حسابك؟",
+    "howMuchTokensWouldYouLikeToLock": "ما مقدار{token} الذي تريد تأمينه في حسابك؟",
     "collateralization": "الضمانات",
     "liquidationPrice": "سعر التصفية",
     "currentPrice": "السعر الحالي",
@@ -1206,7 +1207,13 @@
     "txInfo": "Transaction info",
     "registration": "Are you sure to registration this users?",
     "claimConfirm": "Are you confirm the action of the claim?",
-    "until": "Until"
+    "until": "Until",
+    "successfulMethods": {
+      "claim": "Successful claim",
+      "refund": "Successful refund",
+      "withdraw": "Successful withdrawal",
+      "deposit": "Successful deposit"
+    }
   },
   "ui": {
     "jobQuestors": "أصحاب الوظائف",
@@ -1709,10 +1716,14 @@
     "description": "???",
     "currentLoan": "???",
     "currentCredit": "???",
+    "dueDate": "Due date",
+    "chooseSource": "Choose the source",
+    "chosenSource": "Chosen source",
     "marketSize": "حجم السوق",
     "wantToTakeALoan": "هل تريد الحصول على قرض؟",
     "borrow": "استعارة",
     "myLoans": "???",
+    "needRefund": "Need to refund",
     "refund": "???",
     "openPositions": "المراكز المفتوحة",
     "totalCollateralLocked": "مجموع الضمانات المؤمَّنة",

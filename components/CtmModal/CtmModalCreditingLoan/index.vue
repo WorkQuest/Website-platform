@@ -5,12 +5,12 @@
   >
     <div class="loan__content content">
       <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
+        v-slot="{handleSubmit, valid}"
       >
         <div class="content__body">
           <div class="content__field">
             <div class="content__label">
-              {{ $t('modals.howMuchETHWouldYouLikeToOpen') }}
+              {{ $t('modals.howMuchTokensWouldYouLikeToLock', { token:$t('meta.coins.wusd') }) }}
             </div>
             <div class="content__text content__text_small">
               {{ $t('modals.smallDescriptionForLoan') }}
@@ -18,11 +18,25 @@
             <base-field
               v-model="quantity"
               class="content__input"
-              placeholder="10 ETH"
-              rules="required|decimal"
+              :placeholder="$tc('meta.coins.count.WUSDCount', 100)"
+              rules="required|decimal:18|greaterThanZero|zeroFail"
               data-selector="VALUE-FOR-LOAN"
               :name="$t('modals.quantityField')"
-            />
+            >
+              <template
+                v-slot:right-absolute
+                class="content__max max"
+              >
+                <base-btn
+                  mode="max"
+                  data-selector="MAX-BALANCE"
+                  class="max__button"
+                  @click="maxBalance()"
+                >
+                  <span class="max__text">{{ $t('modals.maximum') }}</span>
+                </base-btn>
+              </template>
+            </base-field>
             <div class="content__text">
               {{ $t('modals.tipAbout') }}
             </div>
@@ -39,7 +53,7 @@
           </base-btn>
           <base-btn
             class="buttons__button"
-            :disabled="!validated || !passed || invalid"
+            :disabled="!valid"
             data-selector="SUBMIT"
             @click="handleSubmit(openConfirmDetailsModal)"
           >
@@ -53,7 +67,9 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
+import BigNumber from 'bignumber.js';
+import { getContractFeeData } from '~/utils/wallet';
+import { WQLending } from '~/abi/abi';
 
 export default {
   name: 'ModalCreditingLoan',
@@ -63,64 +79,47 @@ export default {
       quantity: '',
       debt: '',
       percents: '',
-      checkpoints: [
-        {
-          name: this.$t('meta.coins.bnb'),
-          id: 1,
-        },
-        {
-          name: this.$t('meta.coins.eth'),
-          id: 2,
-        },
-        {
-          name: this.$t('meta.coins.wqt'),
-          id: 3,
-        },
-      ],
+      feeData: 0,
     };
   },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      balanceData: 'wallet/getBalanceData',
     }),
+    balance() {
+      return this.balanceData.WUSD;
+    },
+  },
+  async mounted() {
+    await this.$store.dispatch('wallet/getBalance');
   },
   methods: {
     hide() {
       this.CloseModal();
     },
-    openConfirmDetailsModal() {
-      const receiptData = [
-        {
-          title: this.$t('modals.currencyDetails'),
-          subtitle: this.$t('meta.coins.eth'),
-        },
-        {
-          title: this.$t('modals.depositing'),
-          subtitle: this.$tc('meta.coins.count.ETHCount', 1),
-        },
-        {
-          title: this.$t('modals.generatingDetails'),
-          subtitle: this.$tc('meta.coins.count.WUSDCount', 1000),
-        },
-      ];
-      const dataForStatusModal = {
-        img: require('~/assets/img/ui/transactionSend.svg'),
-        title: this.$t('modals.loanIsOpened'),
-        subtitle: '',
-        path: 'crediting/1',
-      };
-      this.ShowModal({
-        key: modals.confirmDetails,
-        receiptData,
-        dataForStatusModal,
-      });
+    async openConfirmDetailsModal() {
+      const amount = this.quantity;
+      const { submit } = this.options;
+      this.hide();
+      await submit(amount);
+    },
+    async maxBalance() {
+      const balance = this.balance.fullBalance;
+      const { result: { fee } } = await getContractFeeData('deposit', WQLending, process.env.WORKNET_LENDING, [], null, this.balance.fullBalance);
+      this.quantity = new BigNumber(balance).minus(fee).toString();
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-
+.max {
+  &__button {
+    margin-right: 10px !important;
+    background-color: transparent !important;
+  }
+}
 .loan {
   max-width: 490px !important;
   height: auto !important;
@@ -152,43 +151,5 @@ export default {
       margin-bottom:10px;
     }
   }
-  &__checkpoints {
-    margin-bottom: 25px;
-    &_label {
-      margin-bottom: 10px;
-    }
-  }
-}
-.checkpoints{
-  &__label {
-    margin-bottom: 15px;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 130%;
-  }
-  &__main{
-    display: grid;
-    grid-template-rows: repeat(3, 1fr);
-    text-align: left;
-    justify-content: flex-start;
-    gap: 13px;
-  }
-  &__array {
-    display: grid;
-    grid-template-columns: repeat(2, auto);
-    gap: 10px;
-    > label {
-      margin: unset;
-    }
-  }
-  &__item{
-   font-size: 16px;
-   font-weight: 400;
-   border-radius: 50%;
-   width: 25px;
-   height: 25px;
-   border: 1px solid #0083C7;
-   cursor: pointer;
- }
 }
 </style>

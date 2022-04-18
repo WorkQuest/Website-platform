@@ -31,6 +31,7 @@ jobs:
 
           echo WQ_PROVIDER=${{ secrets.WQ_PROVIDER }} >> .env
           echo WQ_EXPLORER=${{ secrets.WQ_EXPLORER }} >> .env
+          echo WQ_ORACLE_URL=${{ secrets.WQ_ORACLE_URL }} >> .env
 
           echo NOTIFS_URL=${{ secrets.NOTIFS_URL }} >> .env
           echo WS_NOTIFS_URL=${{ secrets.WS_NOTIFS_URL }} >> .env
@@ -54,12 +55,15 @@ jobs:
           echo WETH_TOKEN=${{ secrets.WETH_TOKEN }} >> .env
           echo WBNB_TOKEN=${{ secrets.WBNB_TOKEN }} >> .env
 
+          echo WORKNET_BORROWING=${{ secrets.WORKNET_BORROWING }} >> .env
           echo WORKNET_BRIDGE=${{ secrets.WORKNET_BRIDGE }} >> .env
+          echo WORKNET_LENDING=${{ secrets.WORKNET_LENDING }} >> .env
           echo WORKNET_ORACLE=${{ secrets.WORKNET_ORACLE }} >> .env
           echo WORKNET_PENSION_FUND=${{ secrets.WORKNET_PENSION_FUND }} >> .env
           echo WORKNET_PROMOTION=${{ secrets.WORKNET_PROMOTION }} >> .env
           echo WORKNET_REFERRAL=${{ secrets.WORKNET_REFERRAL }} >> .env
           echo WORKNET_ROUTER=${{ secrets.WORKNET_ROUTER }} >> .env
+          echo WORKNET_SAVING_PRODUCT=${{ secrets.WORKNET_SAVING_PRODUCT }} >> .env
           echo WORKNET_STAKING_WQT=${{ secrets.WORKNET_STAKING_WQT }} >> .env
           echo WORKNET_STAKING_WUSD=${{ secrets.WORKNET_STAKING_WUSD }} >> .env
           echo WORKNET_WBNB_TOKEN=${{ secrets.WORKNET_WBNB_TOKEN }} >> .env
@@ -106,6 +110,7 @@ jobs:
 
           echo WQ_PROVIDER=${{ secrets.WQ_PROVIDER }} >> .env
           echo WQ_EXPLORER=${{ secrets.WQ_EXPLORER }} >> .env
+          echo WQ_ORACLE_URL=${{ secrets.WQ_ORACLE_URL }} >> .env
 
           echo NOTIFS_URL=${{ secrets.NOTIFS_URL }} >> .env
           echo WS_NOTIFS_URL=${{ secrets.WS_NOTIFS_URL }} >> .env
@@ -129,12 +134,15 @@ jobs:
           echo WETH_TOKEN=${{ secrets.WETH_TOKEN }} >> .env
           echo WBNB_TOKEN=${{ secrets.WBNB_TOKEN }} >> .env
 
+          echo WORKNET_BORROWING=${{ secrets.WORKNET_BORROWING }} >> .env
           echo WORKNET_BRIDGE=${{ secrets.WORKNET_BRIDGE }} >> .env
+          echo WORKNET_LENDING=${{ secrets.WORKNET_LENDING }} >> .env
           echo WORKNET_ORACLE=${{ secrets.WORKNET_ORACLE }} >> .env
           echo WORKNET_PENSION_FUND=${{ secrets.WORKNET_PENSION_FUND }} >> .env
           echo WORKNET_PROMOTION=${{ secrets.WORKNET_PROMOTION }} >> .env
           echo WORKNET_REFERRAL=${{ secrets.WORKNET_REFERRAL }} >> .env
           echo WORKNET_ROUTER=${{ secrets.WORKNET_ROUTER }} >> .env
+          echo WORKNET_SAVING_PRODUCT=${{ secrets.WORKNET_SAVING_PRODUCT }} >> .env
           echo WORKNET_STAKING_WQT=${{ secrets.WORKNET_STAKING_WQT }} >> .env
           echo WORKNET_STAKING_WUSD=${{ secrets.WORKNET_STAKING_WUSD }} >> .env
           echo WORKNET_WBNB_TOKEN=${{ secrets.WORKNET_WBNB_TOKEN }} >> .env
@@ -181,6 +189,7 @@ jobs:
 
           echo WQ_PROVIDER=${{ secrets.WQ_PROVIDER }} >> .env
           echo WQ_EXPLORER=${{ secrets.WQ_EXPLORER }} >> .env
+          echo WQ_ORACLE_URL=${{ secrets.WQ_ORACLE_URL }} >> .env
 
           echo NOTIFS_URL=${{ secrets.NOTIFS_URL }} >> .env
           echo WS_NOTIFS_URL=${{ secrets.WS_NOTIFS_URL }} >> .env
@@ -204,12 +213,15 @@ jobs:
           echo WETH_TOKEN=${{ secrets.WETH_TOKEN }} >> .env
           echo WBNB_TOKEN=${{ secrets.WBNB_TOKEN }} >> .env
 
+          echo WORKNET_BORROWING=${{ secrets.WORKNET_BORROWING }} >> .env
           echo WORKNET_BRIDGE=${{ secrets.WORKNET_BRIDGE }} >> .env
+          echo WORKNET_LENDING=${{ secrets.WORKNET_LENDING }} >> .env
           echo WORKNET_ORACLE=${{ secrets.WORKNET_ORACLE }} >> .env
           echo WORKNET_PENSION_FUND=${{ secrets.WORKNET_PENSION_FUND }} >> .env
           echo WORKNET_PROMOTION=${{ secrets.WORKNET_PROMOTION }} >> .env
           echo WORKNET_REFERRAL=${{ secrets.WORKNET_REFERRAL }} >> .env
           echo WORKNET_ROUTER=${{ secrets.WORKNET_ROUTER }} >> .env
+          echo WORKNET_SAVING_PRODUCT=${{ secrets.WORKNET_SAVING_PRODUCT }} >> .env
           echo WORKNET_STAKING_WQT=${{ secrets.WORKNET_STAKING_WQT }} >> .env
           echo WORKNET_STAKING_WUSD=${{ secrets.WORKNET_STAKING_WUSD }} >> .env
           echo WORKNET_WBNB_TOKEN=${{ secrets.WORKNET_WBNB_TOKEN }} >> .env
