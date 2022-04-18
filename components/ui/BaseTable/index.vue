@@ -49,7 +49,7 @@
           target="_blank"
           class="table__url"
         >
-          {{ CutTxn(el.item.from_address, 4, 4) }}
+          {{ CutTxn(convertToBech32('wq', el.item.from_address), 4, 4) }}
         </a>
       </template>
       <template #cell(to_address)="el">
@@ -58,7 +58,7 @@
           target="_blank"
           class="table__url"
         >
-          {{ CutTxn(el.item.to_address, 4, 4) }}
+          {{ CutTxn(convertToBech32('wq', el.item.to_address), 4, 4) }}
         </a>
       </template>
       <template #cell(transaction_fee)="el">

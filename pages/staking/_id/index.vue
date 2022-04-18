@@ -20,7 +20,7 @@
           </div>
           <div class="link-cont">
             <div class="link-cont__link link-cont__link_gray">
-              {{ poolAddress }}
+              {{ convertToBech32('wq', poolAddress) }}
             </div>
             <button
               type="button"

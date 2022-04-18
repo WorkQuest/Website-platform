@@ -29,7 +29,7 @@
                   target="_blank"
                   class="table__value table__value_gray"
                 >
-                  {{ CutTxn(el.item.poolAddress, 8, 4) }}
+                  {{ !!el.item.poolAddress ? CutTxn(convertToBech32('wq', el.item.poolAddress), 8, 4) : '' }}
                 </a>
               </template>
               <template #cell(totalStaked)="el">
@@ -48,7 +48,7 @@
                   target="_blank"
                   class="table__value table__value_blue"
                 >
-                  {{ CutTxn(el.item.rewardTokenAddress, 8, 4) }}
+                  {{ !!el.item.rewardTokenAddress ? CutTxn(convertToBech32('wq', el.item.rewardTokenAddress), 8,4) : '' }}
                 </a>
               </template>
               <template #cell(rewardTokenAddress)="el">
@@ -58,7 +58,7 @@
                     target="_blank"
                     class="table__value table__value_blue"
                   >
-                    {{ CutTxn(el.item.rewardTokenAddress, 8, 4) }}
+                    {{ !!el.item.rewardTokenAddress ? CutTxn(convertToBech32('wq', el.item.rewardTokenAddress), 8,4) : '' }}
                   </a>
                 </div>
               </template>
