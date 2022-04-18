@@ -10,7 +10,7 @@
         <div class="content__body">
           <div class="content__field">
             <div class="content__label">
-              {{ $t('modals.howMuchTokensWouldYouLikeToLock', { token:'WUSD' }) }}
+              {{ $t('modals.howMuchTokensWouldYouLikeToLock', { token:$t('meta.coins.wusd') }) }}
             </div>
             <div class="content__text content__text_small">
               {{ $t('modals.smallDescriptionForLoan') }}
@@ -18,7 +18,7 @@
             <base-field
               v-model="quantity"
               class="content__input"
-              placeholder="10 WUSD"
+              :placeholder="$tc('meta.coins.count.WUSDCount', 100)"
               rules="required|decimal:18|greaterThanZero|zeroFail"
               data-selector="VALUE-FOR-LOAN"
               :name="$t('modals.quantityField')"

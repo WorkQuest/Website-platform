@@ -271,19 +271,18 @@ export default {
           this.ShowModal({
             key: modals.confirmDetails,
             receiptData,
-            // eslint-disable-next-line consistent-return
             submit: async () => {
               this.SetLoader(true);
               const checkTokenPrice = await this.setTokenPrice();
               this.SetLoader(false);
               if (!checkTokenPrice) {
-                return this.ShowModalFail({ title: this.$t('modals.transactionFail'), subtitle: 'incorrect price in Oracle' });
+                this.ShowModalFail({ title: this.$t('modals.transactionFail'), subtitle: 'incorrect price in Oracle' });
+                return;
               }
               this.ShowModal({
                 key: modals.areYouSure,
                 title: this.$t('modals.approveRouter', { token: symbol }),
                 okBtnTitle: this.$t('meta.btns.submit'),
-                // eslint-disable-next-line consistent-return
                 okBtnFunc: async () => {
                   this.SetLoader(true);
                   const approveAllowed = await this.$store.dispatch('wallet/approveRouter', {
@@ -293,7 +292,8 @@ export default {
                   });
                   this.SetLoader(false);
                   if (!approveAllowed) {
-                    return this.ShowModalFail({ title: this.$t('modals.transactionFail'), subtitle: 'incorrect action in approve or allowance' });
+                    this.ShowModalFail({ title: this.$t('modals.transactionFail'), subtitle: 'incorrect action in approve or allowance' });
+                    return;
                   }
                   this.SetLoader(true);
                   const res = await this.$store.dispatch('crediting/sendMethod', {
