@@ -10,7 +10,7 @@ import {
 import {
   WQPensionFund, WQRouter, WQStaking, WQStakingNative, WQOracle,
 } from '~/abi/abi';
-import { StakingTypes, tokenMap } from '~/utils/enums';
+import { StakingTypes } from '~/utils/enums';
 
 const bip39 = require('bip39');
 
@@ -200,40 +200,47 @@ export const getTransferFeeData = async (recipient, value) => {
 };
 
 /** CONTRACTS */
-export const sendWalletTransaction = async (_method, payload) => {
+export const sendWalletTransaction = async (_method, {
+  abi, address, value, data,
+}) => {
   if (!web3) {
     console.error('web3 is undefined');
     return false;
   }
   try {
-    const inst = new web3.eth.Contract(payload.abi, payload.address);
+    const inst = new web3.eth.Contract(abi, address);
     const gasPrice = await web3.eth.getGasPrice();
     const accountAddress = getWalletAddress();
-    const data = inst.methods[_method].apply(null, payload.data).encodeABI();
+    const txData = inst.methods[_method].apply(null, data).encodeABI();
 
-    if (payload.value) {
-      const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress, value: payload.value });
-      return await inst.methods[_method](...payload.data).send({
-        to: payload.address,
+    if (value) {
+      const gas = await inst.methods[_method].apply(null, data).estimateGas({
         from: accountAddress,
-        value: payload.value,
-        data,
+        value,
+      });
+      return await inst.methods[_method](...data).send({
+        from: accountAddress,
+        to: address,
+        data: txData,
         gasPrice,
-        gas: gasEstimate,
+        gas,
+        value,
       });
     }
-    const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress });
-    const transactionData = {
-      to: payload.address,
+    const gas = await inst.methods[_method].apply(null, data).estimateGas({
       from: accountAddress,
-      data,
+    });
+    const transactionData = {
+      from: accountAddress,
+      to: address,
+      data: txData,
       gasPrice,
-      gas: gasEstimate,
+      gas,
     };
     // noinspection ES6RedundantAwait
     return await web3.eth.sendTransaction(transactionData);
   } catch (e) {
-    console.error('method: sendWalletTransaction');
+    console.error('method: sendWalletTransaction', e);
     return error(e.code, e.message, e);
   }
 };

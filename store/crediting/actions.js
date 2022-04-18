@@ -66,12 +66,15 @@ export default {
   async sendMethod({ commit }, {
     method, address, abi, data, value,
   }) {
-    return await sendWalletTransaction(method, {
+    const result = await sendWalletTransaction(method, {
       address,
       abi,
       data,
       value,
     });
+    // TODO fix it, sendWalletTransaction have to return object with keys ok and result
+    if (result.ok === false) return error(result);
+    return success(result);
   },
   async getMethodFee({ commit }, {
     method, abi, address, data,

@@ -9,7 +9,6 @@ import {
   getWalletAddress,
   getTransferFeeData,
   transfer,
-  transferToken,
   GetWalletProvider,
   stake,
   sendWalletTransaction,
@@ -49,7 +48,11 @@ export default {
   },
   async getTransactions({ commit }, params) {
     try {
-      const { data } = await this.$axios({ url: `/account/${getWalletAddress()}/transactions`, baseURL: process.env.WQ_EXPLORER, params });
+      const { data } = await this.$axios({
+        url: `/account/${getWalletAddress()}/transactions`,
+        baseURL: process.env.WQ_EXPLORER,
+        params,
+      });
       commit('setTransactions', data.result.transactions);
       commit('setTransactionsCount', data.result.count);
     } catch (e) {
@@ -155,7 +158,7 @@ export default {
   async transferToken({ commit }, payload) {
     const res = await sendWalletTransaction('transfer', payload);
     // TODO fix it, sendWalletTransaction should return object with keys ok and result
-    if (res.ok) return error(res);
+    if (res.ok === false) return error(res);
     return success(res);
   },
   /**
