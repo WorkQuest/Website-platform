@@ -5,9 +5,9 @@
         <div class="wallet__nav">
           <span class="wallet__title">{{ $t('meta.wallet') }}</span>
           <div class="wallet__address">
-            <span class="user__wallet">{{ CutTxn(userWalletAddress, 8, 8) }}</span>
+            <span class="user__wallet">{{ CutTxn(convertToBech32('wq',userWalletAddress), 8, 8) }}</span>
             <button
-              v-clipboard:copy="userWalletAddress"
+              v-clipboard:copy="convertToBech32('wq',userWalletAddress)"
               v-clipboard:success="ClipboardSuccessHandler"
               v-clipboard:error="ClipboardErrorHandler"
               type="button"
@@ -304,6 +304,8 @@ export default {
       this.ShowModal({
         key: modals.giveTransfer,
         submit: async ({ recipient, amount, selectedToken }) => {
+          const { convertToHex, convertToBech32 } = this;
+          recipient = convertToHex('wq', recipient);
           const value = new BigNumber(amount).shiftedBy(18).toString();
           let feeRes;
           if (selectedToken === TokenSymbols.WUSD) {
@@ -322,8 +324,8 @@ export default {
           this.ShowModal({
             key: modals.transactionReceipt,
             fields: {
-              from: { name: this.$t('modals.fromAddress'), value: this.userData.wallet.address },
-              to: { name: this.$t('modals.toAddress'), value: recipient },
+              from: { name: this.$t('modals.fromAddress'), value: convertToBech32('wq', this.userData.wallet.address) },
+              to: { name: this.$t('modals.toAddress'), value: convertToBech32('wq', recipient) },
               amount: {
                 name: this.$t('modals.amount'),
                 value: amount,

@@ -15,7 +15,7 @@
               class="input__field"
               data-selector="ADDRESS-RECIPIENT"
               :placeholder="$t('meta.addressBig')"
-              rules="required|address"
+              :rules="`required|${checkFormatAddress(recipient)}`"
               :name="$t('meta.addressSmall')"
             />
           </div>
@@ -72,7 +72,7 @@
           <base-btn
             class="buttons__action"
             data-selector="SEND"
-            :disabled="invalid || !isCanSubmit"
+            :disabled="invalid||!isCanSubmit"
             @click="handleSubmit(showWithdrawInfo)"
           >
             {{ $t('meta.btns.send') }}
@@ -103,7 +103,7 @@ export default {
         ETH: 0,
         BNB: 0,
       },
-      isCanSubmit: true,
+      isCanSubmit: false,
     };
   },
   computed: {
@@ -134,23 +134,17 @@ export default {
       this.$store.dispatch('wallet/setSelectedToken', TokenSymbols[this.tokenSymbolsDd[val]]);
       this.amount = 0;
     },
-    balance: {
-      deep: true,
-      handler: async () => {
-        this.isCanSubmit = false;
-        await this.updateMaxFee();
-        this.isCanSubmit = true;
-      },
-    },
   },
   async mounted() {
-    this.isCanSubmit = false;
     const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
     this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
     await this.updateMaxFee();
-    this.isCanSubmit = true;
   },
   methods: {
+    checkFormatAddress(address) {
+      if (address.startsWith('wq')) return 'max:41|min:41|addressBech32';
+      return 'address';
+    },
     async showWithdrawInfo() {
       const { submit } = this.options;
       const { recipient, amount, selectedToken } = this;
@@ -162,6 +156,7 @@ export default {
     // Для просчета максимальной суммы транзакции от комиссии
     async updateMaxFee() {
       if (!this.isConnected) return;
+      this.isCanSubmit = false;
       const {
         selectedToken, amount, maxFee, userData, balance,
       } = this;
@@ -182,6 +177,7 @@ export default {
         if (feeTokens?.ok) maxFee[selectedToken] = feeTokens?.result?.fee ?? 0;
         else maxFee[selectedToken] = 0;
       }
+      this.isCanSubmit = true;
     },
     maxBalance() {
       this.amount = this.maxAmount;

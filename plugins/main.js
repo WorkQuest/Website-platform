@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import moment from 'moment';
 import VueTippy, { TippyComponent } from 'vue-tippy';
+import converter from 'bech32-converting';
 import modals from '~/store/modals/modals';
 import { TokenSymbols } from '~/utils/enums';
 import { QuestMethods, QuestStatuses } from '~/utils/quests-constants';
@@ -12,6 +13,13 @@ Vue.component('tippy', TippyComponent);
 Vue.mixin({
 
   methods: {
+    convertToBech32(prefix, address) {
+      return converter(prefix).toBech32(address);
+    },
+    convertToHex(prefix, address) {
+      if (address.startsWith(prefix)) return converter(prefix).toHex(address);
+      return address;
+    },
     async uploadFiles(files) {
       if (!files.length) return [];
       const fetchData = [];
