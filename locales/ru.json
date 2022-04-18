@@ -956,7 +956,8 @@
       "error": "Ошибка",
       "errorNetwork": "Ошибка, Вы используете не правильную сеть. Переключитесь на {network}",
       "youCan’tDeleteActiveQuest": "Вы не можете удалить активный квест",
-      "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
+      "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest",
+      "dontHavePeople": "У вас нет пользователей для создания группового чата"
     },
     "chatCreate": {
       "title": "Create chat",
