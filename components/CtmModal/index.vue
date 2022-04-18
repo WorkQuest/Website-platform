@@ -94,6 +94,7 @@
       <CtmModalGetWUSD v-if="modals.getWUSD === currentModalKey" />
       <CtmModalBuyAuction v-if="modals.buyAuction === currentModalKey" />
       <CtmModalReferralClaim v-if="modals.referralClaim === currentModalKey" />
+      <CtmModalDownloadApp v-if="modals.downloadApp === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -183,10 +184,12 @@ import CtmModalGetWUSD from './CtmModalGetWUSD';
 import CtmModalBuyAuction from './CtmModalBuyAuction';
 import CtmModalNeededToEnable2FA from './CtmModalNeededToEnable2FA';
 import CtmModalReferralClaim from './CtmModalReferralClaim';
+import CtmModalDownloadApp from '~/components/CtmModal/CtmModalDownloadApp';
 
 export default {
   name: 'ModalBox',
   components: {
+    CtmModalDownloadApp,
     CtmModalCollateralTransaction,
     CtmModalNeededToEnable2FA,
     CtmModalGetWUSD,
