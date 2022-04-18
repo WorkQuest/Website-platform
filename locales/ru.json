@@ -87,8 +87,8 @@
       "resendSMS": "Переотправить СМС",
       "registration": "Регистрация",
       "leave": "Покинуть",
-      "completeWorkOnQuest": "Завершить работу над квестом",
-      "acceptCompletedWorkOnQuest": "Принять выполненную работу по квесту",
+      "completeWorkOnQuest": "Завершить работу",
+      "acceptCompletedWorkOnQuest": "Принять работу",
       "closeQuest": "Закрыть квест",
       "goToChat": "Перейти в чат",
       "view": "View",
@@ -330,8 +330,11 @@
     "employer": {
       "usersNotResponded": "Users not responded"
     },
+    "deleteQuest": "Удалить квест",
     "invite": "Пригласить",
     "decline": "Отклонить",
+    "declinedTheInvitation": "Отклонил приглашение",
+    "acceptedTheInvitation": "Принял приглашение",
     "questTitle": "Заголовок квеста",
     "questDesc": "Описание квеста",
     "closed": "Закрыт",
@@ -986,6 +989,11 @@
       "depositInfo": "Deposit info",
       "withdrawInfo": "Withdrawal info"
     },
+    "transactionError": "Ошибка транзакции",
+    "fromAddress": "с",
+    "toAddress": "на",
+    "codeFromSms": "Код из СМС",
+    "saved": "Сохранено",
     "phoneNumber": "Phone Number",
     "value": "Value",
     "generatedWUSD": "WUSD будет сгенерировано",
@@ -1300,17 +1308,18 @@
     "newDiscussionLike": "Новый лайк на дискуссии"
   },
   "wallet": {
+    "frozen": "Замороженный баланс",
     "WUSD": "WUSD wallet",
     "cryptoWallet": "Crypto wallet",
-    "send": "Send",
-    "toThisAddress": "to this address",
+    "send": "Отправить",
+    "toThisAddress": "на этот адрес",
     "receive": "Receive",
     "transfer": "Buy / Send",
-    "addCardProposal": "Add bank card for easy withdrawal",
-    "addCard": "Add card",
+    "addCardProposal": "Добавьте банковскую карту для удобного вывода",
+    "addCard": "Добавить карту",
     "collateral": {
-      "balance": "Collateral balance",
-      "coin": "coin",
+      "balance": "Залоговый баланс",
+      "coin": "монета",
       "sum": "sum",
       "amountInDollars": "amount in dollars",
       "attentionQuotient": "attention quotient",
@@ -1318,10 +1327,10 @@
       "takeTitle": "Take collateral"
     },
     "table": {
-      "trx": "Transactions",
-      "txHash": "Txn Hash",
-      "status": "Status",
-      "block": "Block",
+      "trx": "Транзакции",
+      "txHash": "Txn Хэш",
+      "status": "Статус",
+      "block": "Блок",
       "timestamp": "Timestamp",
       "transferred": "Tokens Transferred",
       "value": "Quantity",
@@ -1921,7 +1930,8 @@
       "responded": "Responded quests",
       "performed": "Performed quests",
       "active": "Активные квесты",
-      "invited": "Invited quests"
+      "invited": "Invited quests",
+      "created": "Созданные квесты"
     }
   },
   "footer": {

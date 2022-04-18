@@ -4,8 +4,9 @@ import VueTippy, { TippyComponent } from 'vue-tippy';
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import {
-  LocalNotificationAction, QuestStatuses, SumSubStatuses, TwoFAStatuses,
+  LocalNotificationAction, SumSubStatuses, TwoFAStatuses,
 } from '~/utils/enums';
+import { QuestMethods, QuestStatuses } from '~/utils/quests-constants';
 
 Vue.use(VueTippy);
 Vue.component('tippy', TippyComponent);
@@ -198,23 +199,47 @@ Vue.mixin({
       clearTimeout(delayId);
       return setTimeout(func, timeout);
     },
-    async DeleteQuest({ id, status }) {
-      if ([QuestStatuses.Closed, QuestStatuses.Created].includes(status)) {
-        await this.$store.dispatch('quests/deleteQuest', { questId: id });
-
-        const routeName = this.$route.name;
-
-        if (routeName === 'quests-id') {
-          await this.$router.replace('/my');
-        } else if (routeName === 'my' || routeName === 'profile-id') {
-          const payload = JSON.parse(sessionStorage.getItem('questsListFilter'));
-          await this.$store.dispatch('quests/getUserQuests', payload);
+    async DeleteQuest(questData, callback) {
+      const { id, status, contractAddress } = questData;
+      if (contractAddress && [QuestStatuses.Closed, QuestStatuses.Created].includes(status)) {
+        this.SetLoader(true);
+        const [feeRes] = await Promise.all([
+          this.$store.dispatch('quests/getFeeDataJopMethod', {
+            method: QuestMethods.CancelJob,
+            contractAddress,
+          }),
+          this.$store.dispatch('wallet/getBalance'),
+        ]);
+        this.SetLoader(false);
+        if (!feeRes.ok) {
+          this.ShowToast(feeRes.msg);
+          return;
         }
-
-        await this.$store.dispatch('main/showToast', {
-          title: this.$t('toasts.questDeleted'),
-          variant: 'success',
-          text: this.$t('toasts.questDeleted'),
+        this.ShowModal({
+          key: modals.transactionReceipt,
+          title: this.$t('quests.deleteQuest'),
+          fields: {
+            from: { name: this.$t('meta.fromBig'), value: this.$store.getters['user/getUserWalletAddress'] },
+            to: { name: this.$t('meta.toBig'), value: contractAddress },
+            fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
+          },
+          submitMethod: async () => {
+            this.SetLoader(true);
+            const trxRes = await this.$store.dispatch('quests/cancelJob', contractAddress);
+            this.SetLoader(false);
+            if (!trxRes.ok) {
+              this.ShowToast(trxRes.msg);
+              return;
+            }
+            const routeName = this.$route.name;
+            if (routeName === 'quests-id') {
+              await this.$router.replace('/my');
+            } else if (routeName === 'my' || routeName === 'profile-id') {
+              const payload = JSON.parse(sessionStorage.getItem('questsListFilter'));
+              await this.$store.dispatch('quests/getUserQuests', payload);
+            }
+            this.ShowToast(this.$t('toasts.questDeleted'), this.$t('toasts.questDeleted'));
+          },
         });
       } else {
         await this.$store.dispatch('main/showToast', {

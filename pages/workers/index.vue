@@ -123,6 +123,10 @@ export default {
       if (this.isFetching) return;
       this.isFetching = true;
 
+      if (isResetPage) this.page = 1;
+      const { query: { limit }, page } = this;
+      this.query.offset = (page - 1) * limit;
+
       if (this.isShowMap) {
         if (!this.mapBounds.northEast.lng) {
           this.isFetching = false;
@@ -134,25 +138,27 @@ export default {
         this.query['northAndSouthCoordinates[south][longitude]'] = this.mapBounds.southWest.lng;
         this.query['northAndSouthCoordinates[south][latitude]'] = this.mapBounds.southWest.lat;
 
-        await this.$store.dispatch('google-map/employeesPoints', {
-          query: { ...this.query },
-          specFilter: this.specFilter,
-        });
+        await Promise.all([
+          this.$store.dispatch('google-map/employeesPoints', {
+            query: { ...this.query },
+            specFilter: this.specFilter,
+          }),
+          this.$store.dispatch('quests/employeeList', {
+            query: this.query,
+            specFilter: this.specFilter,
+          }),
+        ]);
       } else {
         delete this.query['northAndSouthCoordinates[north][longitude]'];
         delete this.query['northAndSouthCoordinates[north][latitude]'];
         delete this.query['northAndSouthCoordinates[south][longitude]'];
         delete this.query['northAndSouthCoordinates[south][latitude]'];
+
+        await this.$store.dispatch('quests/employeeList', {
+          query: this.query,
+          specFilter: this.specFilter,
+        });
       }
-
-      if (isResetPage) this.page = 1;
-      const { query: { limit }, page } = this;
-      this.query.offset = (page - 1) * limit;
-
-      await this.$store.dispatch('quests/employeeList', {
-        query: this.query,
-        specFilter: this.specFilter,
-      });
 
       this.isFetching = false;
     },

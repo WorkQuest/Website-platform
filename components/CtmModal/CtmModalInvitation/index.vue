@@ -124,7 +124,7 @@ export default {
     },
     goToChat() {
       const chatId = this.chatInfoInviteOnQuest.id;
-      this.$router.push(`/messages/${chatId}`);
+      this.$router.push(`${Path.MESSAGES}/${chatId}`);
       this.hide();
     },
   },

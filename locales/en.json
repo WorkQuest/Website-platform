@@ -87,8 +87,8 @@
       "resendSMS": "Resend SMS",
       "registration": "Registration",
       "leave": "Leave",
-      "completeWorkOnQuest": "Complete work on Quest",
-      "acceptCompletedWorkOnQuest": "Accept completed work on quest",
+      "completeWorkOnQuest": "Complete work",
+      "acceptCompletedWorkOnQuest": "Accept work",
       "closeQuest": "Close quest",
       "goToChat": "Go to chat",
       "view": "View",
@@ -330,8 +330,11 @@
     "employer": {
       "usersNotResponded": "Users not responded"
     },
+    "deleteQuest": "Delete quest",
     "invite": "Invite",
     "decline": "Decline",
+    "declinedTheInvitation": "Declined the invitation",
+    "acceptedTheInvitation": "Accepted the invitation",
     "questTitle": "Quest title",
     "questDesc": "Quest description",
     "closed": "Closed",
@@ -986,6 +989,11 @@
       "depositInfo": "Deposit info",
       "withdrawInfo": "Withdrawal info"
     },
+    "transactionError": "Transaction error",
+    "fromAddress": "from",
+    "toAddress": "to",
+    "codeFromSms": "Code from sms",
+    "saved": "Saved",
     "phoneNumber": "Phone Number",
     "value": "Value",
     "generatedWUSD": "WUSD will be generated",
@@ -1300,6 +1308,7 @@
     "newDiscussionLike": "New like on discussion"
   },
   "wallet": {
+    "frozen": "Frozen balance",
     "WUSD": "WUSD wallet",
     "cryptoWallet": "Crypto wallet",
     "send": "Send",
@@ -1921,7 +1930,8 @@
       "responded": "Responded quests",
       "performed": "Performed quests",
       "active": "Active quests",
-      "invited": "Invited quests"
+      "invited": "Invited quests",
+      "created": "Created quests"
     }
   },
   "footer": {

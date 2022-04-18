@@ -14,7 +14,7 @@
             placeholder="3 500"
             data-selector="DEPOSIT-AMOUNT"
             class="content__input"
-            :rules="`required|decimal|is_not:0|max_bn:${balanceData.WUSD.fullBalance}|decimalPlaces:18`"
+            :rules="`required|decimal|is_not:0|max_value:${balanceData.WUSD.fullBalance}|decimalPlaces:18`"
             :name="$t('modals.depositAmountField')"
             @input="replaceDot"
           />
@@ -79,7 +79,7 @@ export default {
       const [txFee] = await Promise.all([
         this.$store.dispatch('wallet/getContractFeeData', {
           method: 'contribute',
-          _abi: WQPensionFund,
+          abi: WQPensionFund,
           contractAddress: process.env.WORKNET_PENSION_FUND,
           data: [getWalletAddress()],
           amount: this.amount,
@@ -125,22 +125,26 @@ export default {
 <style lang="scss" scoped>
 .deposit {
   max-width: 495px !important;
+
   &__content {
-    padding: 0 28px 30px 28px!important;
+    padding: 0 28px 30px 28px !important;
   }
 }
-.content{
+
+.content {
   &__field {
     margin: 15px 0 0 0;
   }
-  &__buttons{
+
+  &__buttons {
     display: grid;
     grid-template-columns: repeat(2, calc(50% - 10px));
     grid-gap: 20px;
     gap: 20px;
     margin-top: 2px;
   }
-  &__text{
+
+  &__text {
     margin: 22px 0 4px 0;
     font-size: 16px;
     line-height: 130%;

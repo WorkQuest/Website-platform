@@ -27,10 +27,14 @@
                 <span class="balance__currency-text">
                   {{ balance[selectedToken].balance + ' ' + selectedToken }}
                 </span>
-                <span class="balance__usd_mobile">
-                  <span v-if="selectedToken === tokenSymbols.WUSD">
-                    {{ `$ ${balance[tokenSymbols.WUSD].balance}` }}
+                <span
+                  v-if="selectedToken === tokenSymbols.WQT"
+                  class="balance__usd-mobile"
+                >
+                  <span class="balance__usd-mobile_blue">
+                    {{ $t('wallet.frozen') }}
                   </span>
+                  {{ $t('meta.coins.count.WQTCount', { count: Floor(frozenBalance) } ) }}
                 </span>
                 <base-dd
                   v-model="ddValue"
@@ -39,9 +43,15 @@
                   data-selector="TOKENS"
                 />
               </span>
-              <span class="balance__usd">
-                <span v-if="selectedToken === tokenSymbols.WUSD">
-                  {{ `$ ${balance[tokenSymbols.WUSD].balance}` }}
+              <span :class="[{'balance__currency__margin-bottom' : selectedToken !== tokenSymbols.WQT}]">
+                <span
+                  v-if="selectedToken === tokenSymbols.WQT"
+                  class="balance__usd balance__usd_blue"
+                >
+                  <span class="balance__usd">
+                    {{ $t('wallet.frozen') }}
+                  </span>
+                  {{ $t('meta.coins.count.WQTCount', { count: Floor(frozenBalance) }) }}
                 </span>
               </span>
             </div>
@@ -51,7 +61,7 @@
                 mode="outline"
                 class="balance__btn"
                 :disabled="true"
-                @click="showDepositModal()"
+                @click="showModal({key: 'deposit'})"
               >
                 {{ $t('wallet.receive') }}
               </base-btn>
@@ -60,7 +70,7 @@
                 mode="outline"
                 class="balance__btn"
                 :disabled="true"
-                @click="showWithdrawModal()"
+                @click="showModal({key: 'withdraw', branchText: 'withdraw' })"
               >
                 {{ $t('meta.withdraw') }}
               </base-btn>
@@ -87,7 +97,7 @@
               class="card__btn"
               mode="outline"
               :disabled="true"
-              @click="showAddCardModal()"
+              @click="showModal({key: 'addCard', branchText: 'adding' })"
             >
               {{ $t('wallet.addCard') }}
             </base-btn>
@@ -145,10 +155,14 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { TokenSymbolByContract, TokenSymbols, WalletTables } from '~/utils/enums';
+import { ERC20 } from '~/abi/abi';
+import {
+  tokenMap, TokenSymbolByContract, TokenSymbols, WalletTables,
+} from '~/utils/enums';
 import { getStyledAmount } from '~/utils/wallet';
 import EmptyData from '~/components/app/info/emptyData';
 import CollateralTable from '~/components/app/pages/wallet/CollateralTable';
+import { error, success } from '~/utils/web3';
 
 export default {
   name: 'Wallet',
@@ -175,6 +189,7 @@ export default {
       userWalletAddress: 'user/getUserWalletAddress',
       balance: 'wallet/getBalanceData',
       selectedToken: 'wallet/getSelectedToken',
+      frozenBalance: 'wallet/getFrozenBalance',
     }),
     walletTables() {
       return WalletTables;
@@ -226,9 +241,10 @@ export default {
     ddValue(val) {
       this.$store.dispatch('wallet/setSelectedToken', TokenSymbols[this.tokenSymbolsDd[val]]);
     },
-    selectedToken() {
+    async selectedToken() {
       const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
       this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
+      await this.loadData();
     },
     isConnected(newVal) {
       if (!newVal) this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
@@ -259,43 +275,85 @@ export default {
     },
     async loadData() {
       this.SetLoader(true);
-      await Promise.all([
-        this.updateBalanceWQT(),
-        this.updateBalanceWUSD(),
-        this.getTransactions(),
-      ]);
+      const { selectedToken, userWalletAddress } = this;
+      if (selectedToken === TokenSymbols.WUSD) await this.$store.dispatch('wallet/getBalanceWUSD');
+      else {
+        const payload = { address: userWalletAddress, abi: ERC20 };
+        await this.$store.dispatch('wallet/fetchWalletData', {
+          method: 'balanceOf', ...payload, token: tokenMap[selectedToken], symbol: selectedToken,
+        });
+        if (selectedToken === TokenSymbols.WQT) {
+          await this.$store.dispatch('wallet/fetchWalletData', {
+            method: 'freezed', ...payload, token: tokenMap.WQT,
+          });
+        }
+      }
+      await this.getTransactions();
       this.SetLoader(false);
-    },
-    async updateBalanceWQT() {
-      await this.$store.dispatch('wallet/getBalanceWQT', this.userWalletAddress);
-    },
-    async updateBalanceWUSD() {
-      await this.$store.dispatch('wallet/getBalance');
     },
     closeCard() {
       this.cardClosed = true;
     },
+    showModal({ key, branch }) {
+      this.ShowModal({
+        key: modals[key],
+        branch,
+      });
+    },
     showTransferModal() {
       this.ShowModal({
         key: modals.giveTransfer,
-        callback: async () => await this.loadData(),
-      });
-    },
-    showDepositModal() {
-      this.ShowModal({
-        key: modals.giveDeposit,
-      });
-    },
-    showWithdrawModal() {
-      this.ShowModal({
-        key: modals.takeWithdraw,
-        branch: 'withdraw',
-      });
-    },
-    showAddCardModal() {
-      this.ShowModal({
-        key: modals.addingCard,
-        branch: 'adding',
+        submit: async ({ recipient, amount, selectedToken }) => {
+          const value = new BigNumber(amount).shiftedBy(18).toString();
+          let feeRes;
+          if (selectedToken === TokenSymbols.WUSD) {
+            feeRes = await this.$store.dispatch('wallet/getTransferFeeData', {
+              recipient,
+              value: amount,
+            });
+          } else {
+            feeRes = await this.$store.dispatch('wallet/getContractFeeData', {
+              method: 'transfer',
+              abi: ERC20,
+              contractAddress: tokenMap[selectedToken],
+              data: [recipient, value],
+            });
+          }
+          this.ShowModal({
+            key: modals.transactionReceipt,
+            fields: {
+              from: { name: this.$t('modals.fromAddress'), value: this.userData.wallet.address },
+              to: { name: this.$t('modals.toAddress'), value: recipient },
+              amount: {
+                name: this.$t('modals.amount'),
+                value: amount,
+                symbol: selectedToken, // REQUIRED!
+              },
+              fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WUSD },
+            },
+            submitMethod: async () => {
+              this.CloseModal();
+              this.SetLoader(true);
+              const action = selectedToken === TokenSymbols.WUSD ? 'transfer' : 'transferToken';
+              const payload = selectedToken === TokenSymbols.WUSD
+                ? { recipient, value: amount }
+                : {
+                  abi: ERC20,
+                  address: tokenMap[selectedToken],
+                  data: [recipient, value],
+                };
+              const res = await this.$store.dispatch(`wallet/${action}`, payload);
+              this.SetLoader(false);
+              if (res.ok) {
+                await this.ShowModal({ key: 'transactionSend' });
+                await this.loadData();
+                return success();
+              }
+              await this.ShowModal({ key: 'transactionSend', mode: 'error' });
+              return error();
+            },
+          });
+        },
       });
     },
   },
@@ -316,6 +374,7 @@ export default {
     font-size: 16px;
     color: $black800;
   }
+
   &__date {
     font-weight: 400;
     font-size: 14px;
@@ -337,22 +396,27 @@ export default {
     display: flex;
     justify-content: center;
   }
+
   &__card {
     box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
   }
+
   &__balance {
     box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
   }
+
   &__body {
     max-width: 1180px;
     width: calc(100vw - 40px);
   }
+
   &__nav {
     margin-top: 20px;
     display: flex;
     justify-content: space-between;
     font-size: 16px;
   }
+
   &__address {
     @include text-simple;
     display: flex;
@@ -364,6 +428,7 @@ export default {
   &__icon {
     margin-left: 22px;
     font-size: 24px;
+
     &::before {
       color: $blue;
     }
@@ -381,6 +446,7 @@ export default {
     display: grid;
     grid-template-columns: 1fr 479px;
     grid-gap: 20px;
+
     &_full {
       grid-template-columns: 1fr;
     }
@@ -416,11 +482,13 @@ export default {
     font-size: 14px;
     color: $black300;
   }
+
   &__number {
     font-weight: 700;
     font-size: 25px;
     color: $blue;
   }
+
   &__title {
     font-weight: 400;
     font-size: 16px;
@@ -450,10 +518,13 @@ export default {
     font-weight: 600;
     font-size: 35px;
     line-height: 130%;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    &__margin-bottom {
+      margin-bottom: 25px;
+    }
 
     @include _767 {
       font-size: 26px;
@@ -476,14 +547,23 @@ export default {
 
   &__usd {
     @include text-simple;
-    color: $blue;
     height: 24px;
-    &_mobile {
+    color: $black800;
+
+    &_blue {
+      color: $blue;
+    }
+
+    &-mobile {
       display: none;
       height: 33px;
-      color: $blue;
+      color: $black800;
       font-size: 18px;
       font-weight: normal;
+
+      &_blue {
+        color: $blue;
+      }
     }
   }
 }
@@ -544,10 +624,12 @@ export default {
 
 .table {
   background: #FFFFFF;
+
   &__txs {
     margin: 0 !important;
     border-radius: 6px !important;
   }
+
   &__empty {
     background: #FFFFFF !important;
     margin: 10px 0 !important;
@@ -567,6 +649,7 @@ export default {
     height: 240px;
   }
 }
+
 @include _991 {
   .wallet {
     &__table {
@@ -578,6 +661,7 @@ export default {
     width: 1180px;
   }
 }
+
 @include _767 {
   .card {
     grid-template-columns: repeat(2, 1fr);
@@ -586,6 +670,7 @@ export default {
     gap: 10px;
   }
 }
+
 @include _480 {
   .balance {
     &__currency {
@@ -593,12 +678,14 @@ export default {
       flex-direction: column;
       align-items: unset;
     }
+
     &__token {
       margin-top: 5px;
     }
   }
   .balance__usd {
     display: none;
+
     &_mobile {
       display: block;
     }
@@ -607,6 +694,7 @@ export default {
     grid-template-columns: 1fr;
   }
 }
+
 @include _350 {
   .wallet {
     &__nav {

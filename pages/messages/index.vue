@@ -44,7 +44,7 @@
             v-for="chat in chats.list"
             :key="chat.id"
             class="chats-container__chat chat"
-            @click="handleSelChat(chat.id)"
+            @click="handleSelChat(chat)"
           >
             <div class="chat__body">
               <div class="chat__data">
@@ -149,7 +149,9 @@
 <script>
 import { mapGetters } from 'vuex';
 import ChatMenu from '~/components/ui/ChatMenu';
-import { ChatType, MessageType, MessageAction } from '~/utils/enums';
+import {
+  Path, ChatType, MessageType, MessageAction,
+} from '~/utils/enums';
 
 export default {
   name: 'Messages',
@@ -307,8 +309,24 @@ export default {
     async getChats() {
       await this.$store.dispatch('chat/getChatsList');
     },
-    handleSelChat(chatId) {
-      this.$router.push(`/messages/${chatId}`);
+    handleSelChat(chat) {
+      const { id, type, questChat } = chat;
+      const openDispute = questChat?.quest.openDispute;
+      const disputeStatus = openDispute?.status;
+      const disputeId = openDispute?.id;
+      if (type === 'quest') {
+        const status = questChat?.quest.status;
+        this.$router.push({
+          path: `${Path.MESSAGES}/${id}`,
+          query: {
+            disputeStatus, id: disputeId, type, status,
+          },
+        });
+      } else {
+        this.$router.push({
+          path: `${Path.MESSAGES}/${id}`,
+        });
+      }
     },
   },
 };

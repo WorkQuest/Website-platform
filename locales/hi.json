@@ -87,8 +87,8 @@
       "resendSMS": "SMS फिर से भेजें",
       "registration": "रजिस्ट्रेशन",
       "leave": "Leave",
-      "completeWorkOnQuest": "Complete work on Quest",
-      "acceptCompletedWorkOnQuest": "Accept completed work on quest",
+      "completeWorkOnQuest": "Complete work",
+      "acceptCompletedWorkOnQuest": "Accept work",
       "closeQuest": "Close quest",
       "goToChat": "चैट पर जाएं",
       "view": "देखें",
@@ -330,8 +330,11 @@
     "employer": {
       "usersNotResponded": "Users not responded"
     },
+    "deleteQuest": "Delete quest",
     "invite": "Invite",
     "decline": "Decline",
+    "declinedTheInvitation": "Declined the invitation",
+    "acceptedTheInvitation": "Accepted the invitation",
     "questTitle": "Quest title",
     "questDesc": "Quest description",
     "closed": "Closed",
@@ -986,6 +989,11 @@
       "depositInfo": "Deposit info",
       "withdrawInfo": "Withdrawal info"
     },
+    "transactionError": "Transaction error",
+    "fromAddress": "from",
+    "toAddress": "to",
+    "codeFromSms": "Code from sms",
+    "saved": "Saved",
     "phoneNumber": "Phone Number",
     "value": "Value",
     "generatedWUSD": "WUSD will be generated",
@@ -1300,6 +1308,7 @@
     "newDiscussionLike": "New like on discussion"
   },
   "wallet": {
+    "frozen": "Frozen balance",
     "WUSD": "WUSD वॉलेट",
     "cryptoWallet": "क्रिप्टो वॉलेट",
     "send": "भेजें",
@@ -1921,7 +1930,8 @@
       "responded": "अनुरोध किया",
       "performed": "पूरी हुई Quests",
       "active": "एक्टिव Quest",
-      "invited": "इन्वाइट किए quests"
+      "invited": "इन्वाइट किए quests",
+      "created": "निर्मित खोज"
     }
   },
   "footer": {
