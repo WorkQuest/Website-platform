@@ -86,8 +86,8 @@ export default {
   //   icons: true,
   // },
   i18n: {
-    locales: ['en', 'ru', 'bn', 'ar', 'fr', 'hi', 'id', 'pt', 'es', 'zh_cn'],
-    // locales: ['en'],
+    // locales: ['en', 'ru', 'bn', 'ar', 'fr', 'hi', 'id', 'pt', 'es', 'zh_cn'],
+    locales: ['en'],
     defaultLocale: 'en',
     strategy: 'no_prefix',
     vueI18n: {
