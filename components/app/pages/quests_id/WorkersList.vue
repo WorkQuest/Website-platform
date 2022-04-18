@@ -58,7 +58,9 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { ResponseStatus, TokenSymbols } from '~/utils/enums';
+import {
+  Path, TokenSymbols, ChatType,
+} from '~/utils/enums';
 import { QuestMethods } from '~/utils/quests-constants';
 import modals from '~/store/modals/modals';
 import { error, success } from '~/utils/web3';

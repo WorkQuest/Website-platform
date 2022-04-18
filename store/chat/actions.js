@@ -21,7 +21,7 @@ export default {
     config, chatId, direction, offset, isHideFooter,
   }) {
     try {
-      const method = `/v1/user/me/chat/${chatId === 'starred' ? 'messages/star' : `${chatId}/${Path.MESSAGES}`}`;
+      const method = `/v1/user/me/chat/${chatId === 'starred' ? 'messages/star' : `${chatId}${Path.MESSAGES}`}`;
       const { result, ok } = await this.$axios.$get(method, config);
       const myId = user.userData.id;
 

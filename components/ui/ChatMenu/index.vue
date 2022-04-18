@@ -133,7 +133,7 @@ export default {
       });
     },
     async leaveChat() {
-      if (await this.$store.dispatch('chat/leaveFromChat', this.currChat.id)) this.$router.push(`/${Path.MESSAGES}`);
+      if (await this.$store.dispatch('chat/leaveFromChat', this.currChat.id)) this.$router.push(`${Path.MESSAGES}`);
 
       this.CloseModal();
     },

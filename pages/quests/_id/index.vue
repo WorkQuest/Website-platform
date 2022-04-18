@@ -99,12 +99,14 @@
         </div>
       </div>
     </div>
+
+    <g-map-loader
+      class="map"
+      :is-draggable="false"
+    />
+
     <div class="main">
       <div class="main__body main__body_30gap">
-        <g-map-loader
-          class="main__map"
-          :is-draggable="false"
-        />
         <template
           v-if="userRole === $options.UserRole.EMPLOYER
             && (infoDataMode === $options.InfoModeEmployer.Created || infoDataMode === $options.InfoModeEmployer.WaitWorkerOnAssign)"
@@ -683,12 +685,6 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.gm-svpc {
-  top: 27px !important;
-}
-</style>
-
 <style lang="scss" scoped>
 .quest {
   &__container {
@@ -744,14 +740,15 @@ export default {
     }
   }
 
-  &__map {
-    height: 200px;
-  }
-
   &__quest_materials {
     padding-top: 20px;
     border-top: 1px solid #F7F8FA;
   }
+}
+
+.map {
+  height: 200px;
+  margin-bottom: 20px;
 }
 
 .worker-data {
@@ -885,26 +882,6 @@ export default {
   }
 }
 
-.map {
-  &__container {
-    padding: 0;
-    display: flex;
-    justify-content: center;
-
-    .gmap__block {
-      max-width: 1180px;
-      width: 100%;
-    }
-  }
-}
-
-.quests::v-deep {
-
-  .ctm-field__left {
-    padding-top: 6px;
-  }
-}
-
 .icon {
   color: $black500;
   font-size: 20px;
@@ -955,6 +932,9 @@ export default {
   .main__body,
   .main {
     padding: 10px;
+  }
+  .map {
+    margin-bottom: 0;
   }
 }
 
