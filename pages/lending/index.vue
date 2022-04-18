@@ -285,6 +285,7 @@ export default {
                 title: this.$t('modals.approveRouter', { token: symbol }),
                 okBtnTitle: this.$t('meta.btns.submit'),
                 okBtnFunc: async () => {
+                  this.CloseModal();
                   this.SetLoader(true);
                   const approveAllowed = await this.$store.dispatch('wallet/approveRouter', {
                     symbol,
@@ -298,7 +299,6 @@ export default {
                   }
                   this.SetLoader(true);
                   const res = await this.$store.dispatch('crediting/sendMethod', {
-                    value: valueWithDecimals,
                     address: process.env.WORKNET_BORROWING,
                     method: 'borrow',
                     abi: WQBorrowing,
@@ -311,7 +311,6 @@ export default {
                     ],
                   });
                   this.SetLoader(false);
-                  console.log('res:', res);
                   if (res.ok) {
                     await this.$store.dispatch('crediting/getCreditData');
                     this.ShowModalSuccess({
@@ -351,6 +350,7 @@ export default {
       });
     },
     async setTokenPrice() {
+      await this.$store.dispatch('oracle/getCurrentPrices');
       const { nonce } = this.currentPrices;
       const { prices, symbols } = this;
 

@@ -66,18 +66,12 @@ export default {
   async sendMethod({ commit }, {
     method, address, abi, data, value,
   }) {
-    try {
-      await sendWalletTransaction(method, {
-        address,
-        abi,
-        data,
-        value,
-      });
-      return success();
-    } catch (err) {
-      console.log('sendMethod:', method, err);
-      return error();
-    }
+    return await sendWalletTransaction(method, {
+      address,
+      abi,
+      data,
+      value,
+    });
   },
   async getMethodFee({ commit }, {
     method, abi, address, data,

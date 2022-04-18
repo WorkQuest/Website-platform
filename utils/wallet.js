@@ -210,12 +210,9 @@ export const sendWalletTransaction = async (_method, payload) => {
     const gasPrice = await web3.eth.getGasPrice();
     const accountAddress = getWalletAddress();
     const data = inst.methods[_method].apply(null, payload.data).encodeABI();
-    console.log(_method, payload);
+
     if (payload.value) {
-      console.log('payload with value');
-      console.log(accountAddress, _method, payload.data, payload.value);
       const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress, value: payload.value });
-      console.log(gasEstimate);
       return await inst.methods[_method](...payload.data).send({
         to: payload.address,
         from: accountAddress,
@@ -237,7 +234,6 @@ export const sendWalletTransaction = async (_method, payload) => {
     return await web3.eth.sendTransaction(transactionData);
   } catch (e) {
     console.error('method: sendWalletTransaction');
-    console.log(e.message);
     return error(e.code, e.message, e);
   }
 };
