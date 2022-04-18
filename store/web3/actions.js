@@ -355,7 +355,7 @@ export default {
   // mobile browser check
   // false - desktop, true - mobile && !metamask
   checkIsMobileMetamaskNeed() {
-    if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    if (!this.checkIfMobile()) {
       return false;
     }
     if (typeof window.ethereum === 'undefined') {

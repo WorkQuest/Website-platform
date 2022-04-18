@@ -25,25 +25,26 @@
         v-else
         class="qrCode"
       >
-        <div class="qrCode__pic" />
+        <qrcode
+          :value="qrLink"
+          :options="{ width: 160 }"
+        />
       </div>
     </div>
   </ctm-modal-box>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import { URLS } from '~/utils/footer-constants';
 
 export default {
   name: 'CtmModalDownloadApp',
   data() {
     return {
+      qrLink: URLS.STORES.PLAY_MARKET,
     };
   },
   computed: {
-    ...mapGetters({
-    }),
     marketLinks() {
       return [
         { key: 'app-store', href: URLS.STORES.APP_STORE },
@@ -54,8 +55,7 @@ export default {
   mounted() {
     this.$cookies.set('downloadAppDisplayed', true, { path: '/' });
   },
-  methods: {
-  },
+
 };
 </script>
 
@@ -117,7 +117,5 @@ export default {
   padding: 10px;
   border-radius: 12px;
   border: 1px solid $black200;
-  background-image: url('/img/app/qrcode.png');
-  background-size: 100% 100%;
 }
 </style>
