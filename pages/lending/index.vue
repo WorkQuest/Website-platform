@@ -143,7 +143,7 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { getGasPrice } from '~/utils/wallet';
-import { WQOracle, WQBorrowing, WQLending } from '~/abi/abi';
+import { WQOracle, WQBorrowing, WQLending } from '~/abi/index';
 import { Path } from '~/utils/enums';
 import { images } from '~/utils/images';
 
@@ -294,7 +294,10 @@ export default {
                   });
                   this.SetLoader(false);
                   if (!approveAllowed) {
-                    this.ShowModalFail({ title: this.$t('modals.transactionFail'), subtitle: 'incorrect action in approve or allowance' });
+                    this.ShowModalFail({
+                      title: this.$t('modals.transactionFail'),
+                      subtitle: 'incorrect action in approve or allowance',
+                    });
                     return;
                   }
                   this.SetLoader(true);
@@ -712,6 +715,7 @@ export default {
         font-size: 38px;
         margin-bottom: 15px;
         width: 100%;
+
         &_sub {
           font-size: 16px;
           max-width: 400px;
@@ -736,12 +740,14 @@ export default {
         width: 100%;
         margin: 0;
         padding: 0 20px;
+
         .calendar-img {
           position: relative;
           width: 100%;
           max-width: 370px;
           justify-self: center;
         }
+
         .btn-group {
           padding: 0;
           display: grid;
@@ -760,18 +766,21 @@ export default {
           grid-template-columns: unset;
           grid-template-rows: repeat(3, 1fr);
         }
+
         &__about {
           .btn-group {
             grid-template-columns: unset;
             grid-template-rows: repeat(2, 1fr);
           }
         }
+
         &__documents {
           .document {
             grid-template-columns: 33px auto 23px;
           }
         }
       }
+
       .btn {
         &__doc {
           border: 0;

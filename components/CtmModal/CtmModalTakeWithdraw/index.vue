@@ -122,7 +122,7 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { TokenSymbols } from '~/utils/enums';
-import { WQPensionFund } from '~/abi/abi';
+import { WQPensionFund } from '~/abi/index';
 import { error, success } from '~/utils/web3';
 
 export default {

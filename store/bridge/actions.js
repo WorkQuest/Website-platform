@@ -1,5 +1,7 @@
 import BigNumber from 'bignumber.js';
+
 import { BlockchainByIndex, BridgeAddresses, SwapAddresses } from '~/utils/bridge-constants';
+
 import {
   error,
   success,
@@ -14,7 +16,8 @@ import {
   createInstanceWeb3,
   getTransactionCount,
 } from '~/utils/web3';
-import { WQBridge, ERC20 } from '~/abi/abi';
+
+import { WQBridge, ERC20 } from '~/abi/index';
 
 export default {
   async fetchMySwaps({ commit }, { recipientAddress, query }) {

@@ -69,7 +69,7 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { getWalletAddress } from '~/utils/wallet';
-import { WQPensionFund } from '~/abi/abi';
+import { WQPensionFund } from '~/abi/index';
 import { TokenSymbols } from '~/utils/enums';
 
 export default {

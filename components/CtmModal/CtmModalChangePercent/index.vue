@@ -56,7 +56,7 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import * as abi from '~/abi/abi';
+import { WQPensionFund } from '~/abi/index';
 import { getWalletAddress } from '~/utils/wallet';
 import { TokenSymbols } from '~/utils/enums';
 
@@ -85,7 +85,7 @@ export default {
       const [txFee] = await Promise.all([
         this.$store.dispatch('wallet/getContractFeeData', {
           method: 'updateFee',
-          abi: abi.WQPensionFund,
+          abi: WQPensionFund,
           contractAddress: process.env.WORKNET_PENSION_FUND,
           data: [new BigNumber(this.amount.substr(0, this.amount.length - 1)).shiftedBy(18).toString()],
         }),
