@@ -375,7 +375,7 @@
       "verified": "Verified",
       "reliable": "Reliable",
       "topRanked": "Top ranked",
-      "noStatus" : "Not rated"
+      "noStatus": "Not rated"
     },
     "distantWork": {
       "title": "रिमोट जॉब",
@@ -1209,14 +1209,14 @@
     "registration": "Are you sure to registration this users?",
     "claimConfirm": "Are you confirm the action of the claim?",
     "until": "Until",
+    "scanQrCode": "You just need to scan the QR-code",
+    "downOnSmartphone": "Download Work Quest app on your smartphone",
     "successfulMethods": {
       "claim": "Successful claim",
       "refund": "Successful refund",
       "withdraw": "Successful withdrawal",
       "deposit": "Successful deposit"
-    },
-    "scanQrCode": "You just need to scan the QR-code",
-    "downOnSmartphone": "Download Work Quest app on your smartphone"
+    }
   },
   "ui": {
     "jobQuestors": "जॉब तलाशकर्ता",

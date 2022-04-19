@@ -375,7 +375,7 @@
       "verified": "Подтвержденный",
       "reliable": "Надежный",
       "topRanked": "Топовый",
-      "noStatus" : "Без статуса"
+      "noStatus": "Без статуса"
     },
     "distantWork": {
       "title": "Рабочее место",
@@ -1208,15 +1208,15 @@
     "txInfo": "Transaction info",
     "registration": "Вы верены что хотите зарегистрировать данных пользователей?",
     "claimConfirm": "Вы потдверждаете дейсвие клейм?",
+    "until": "До",
+    "scanQrCode": "You just need to scan the QR-code",
+    "downOnSmartphone": "Download Work Quest app on your smartphone",
     "successfulMethods": {
       "claim": "Successful claim",
       "refund": "Successful refund",
       "withdraw": "Successful withdrawal",
       "deposit": "Successful deposit"
-    },
-    "until": "До",
-    "scanQrCode": "You just need to scan the QR-code",
-    "downOnSmartphone": "Download Work Quest app on your smartphone"
+    }
   },
   "ui": {
     "jobQuestors": "В поиске работы",
