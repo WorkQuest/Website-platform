@@ -8,8 +8,8 @@
       "title": "Pilih Prioritas",
       "all": "Semua prioritas",
       "fixedDelivery": "Pengiriman tetap",
-      "shortTerm": "Jangka pendek",
-      "urgent": "Urgen",
+      "shortTerm": "Short term 1 week",
+      "urgent": "Urgen 24-72 hours",
       "employee": {
         "urgent": "Urgent execution"
       }

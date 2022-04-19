@@ -8,8 +8,8 @@
       "title": "प्राथमिकता चुनें",
       "all": "सभी प्राथमिकता",
       "fixedDelivery": "फिक्स्ड डिलीवरी",
-      "shortTerm": "शॉर्ट टर्म",
-      "urgent": "अर्जेंट",
+      "shortTerm": "Short term 1 week",
+      "urgent": "Urgent 24-72h",
       "employee": {
         "urgent": "Urgent execution"
       }

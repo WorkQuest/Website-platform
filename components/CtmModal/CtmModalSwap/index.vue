@@ -58,7 +58,7 @@
           </div>
           <base-field
             disabled
-            :value="account.address"
+            :value="accountAddress"
             data-selector="RECIPIENT_ADDRESS"
             :name="$tc('modals.recipientAddress')"
           />
@@ -95,6 +95,7 @@ export default {
     return {
       amount: 0,
       tokenId: 0,
+      accountAddress: '',
     };
   },
   computed: {
@@ -125,11 +126,17 @@ export default {
   },
   async mounted() {
     await this.handlerFetchBalance(this.tokens[0]);
+    await this.convertAccountAddress();
   },
   methods: {
     ...mapActions({
       fetchBalance: 'bridge/fetchBalance',
     }),
+    async convertAccountAddress() {
+      const { chain } = this.options.to;
+      if (chain === 'WORKNET') this.accountAddress = this.convertToBech32('wq', this.account.address);
+      else this.accountAddress = this.account.address;
+    },
     async handlerFetchBalance(symbol) {
       const { to, from } = this.options;
       await this.fetchBalance({

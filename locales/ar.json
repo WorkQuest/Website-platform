@@ -8,8 +8,8 @@
       "title": "الأولوية",
       "all": "جميع درجات الأولوية",
       "fixedDelivery": "موعد تسليم ثابت",
-      "shortTerm": "فترة قصيرة",
-      "urgent": "عاجلة",
+      "shortTerm": "فترة قصيرة أسبوع",
+      "urgent": "عاجلة 24-72 ساعة",
       "employee": {
         "urgent": "Urgent execution"
       }

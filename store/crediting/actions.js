@@ -10,7 +10,7 @@ import {
   success,
   error,
 } from '~/utils/web3';
-import { WQBorrowing, WQLending } from '~/abi/abi';
+import { WQBorrowing, WQLending } from '~/abi/index';
 
 export default {
   async getCreditData({ commit }) {

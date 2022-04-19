@@ -3,9 +3,21 @@ import Web4 from '@cryptonteam/web4';
 import BigNumber from 'bignumber.js';
 import Web3Modal from 'web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
-import * as abi from '~/abi/abi';
+
 import {
-  Chains, ChainsId, ChainsIdByChainNumber, NetworksData, StakingTypes,
+  ERC20,
+  BSCPool,
+  StakingWQ,
+  WQTExchange,
+  WQLiquidityMining,
+} from '~/abi/index';
+
+import {
+  Chains,
+  ChainsId,
+  NetworksData,
+  StakingTypes,
+  ChainsIdByChainNumber,
 } from '~/utils/enums';
 
 let bscRpcContract = null;
@@ -120,11 +132,11 @@ export const getStakingDataByType = (stakingType, token = '') => {
       if (_miningPoolId === Chains.ETHEREUM) {
         _tokenAddress = process.env.ETHEREUM_LP_TOKEN;
         _stakingAddress = process.env.ETHEREUM_MINING;
-        _stakingAbi = abi.StakingWQ;
+        _stakingAbi = StakingWQ;
       } else {
         _tokenAddress = process.env.BSC_LP_TOKEN;
         _stakingAddress = process.env.BSC_MINING;
-        _stakingAbi = abi.WQLiquidityMining;
+        _stakingAbi = WQLiquidityMining;
       }
       break;
     case StakingTypes.CROSS_CHAIN:
@@ -396,19 +408,19 @@ export const staking = async (_decimals, _amount, _tokenAddress, _stakingAddress
   let instance;
   const isNative = stakingType === StakingTypes.WUSD;
   if (!isNative) {
-    instance = await createInstance(abi.ERC20, _tokenAddress);
-    allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, _tokenAddress, [getAccountAddress(), _stakingAddress])).toString();
+    instance = await createInstance(ERC20, _tokenAddress);
+    allowance = new BigNumber(await fetchContractData('allowance', ERC20, _tokenAddress, [getAccountAddress(), _stakingAddress])).toString();
   }
   try {
     amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
     if (!isNative && +allowance < +amount) {
-      store.dispatch('main/setStatusText', 'Approving');
+      await store.dispatch('main/setStatusText', 'Approving');
       showToast('Staking', 'Approving...', 'success');
       await instance.approve(_stakingAddress, amount);
       showToast('Staking', 'Approving done', 'success');
     }
     showToast('Staking', 'Staking...', 'success');
-    store.dispatch('main/setStatusText', 'Staking');
+    await store.dispatch('main/setStatusText', 'Staking');
     const payload = {
       abi: _stakingAbi,
       address: _stakingAddress,
@@ -443,7 +455,7 @@ export const unStaking = async (_decimals, _amount, _stakingAddress, _stakingAbi
   try {
     amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
     showToast('Unstaking', 'Unstaking...', 'success');
-    store.dispatch('main/setStatusText', 'Staking');
+    await store.dispatch('main/setStatusText', 'Staking');
     const payload = {
       abi: _stakingAbi,
       address: _stakingAddress,
@@ -502,14 +514,14 @@ export const authRenewal = async (_stakingAddress, _stakingAbi) => {
 
 export const swap = async (decimals, amountValue) => {
   try {
-    const _tokenInstance = await createInstance(abi.ERC20, process.env.BSC_OLD_WQT_TOKEN);
-    const _exchangeInstance = await createInstance(abi.WQTExchange, process.env.BSC_WQT_EXCHANGE);
+    const _tokenInstance = await createInstance(ERC20, process.env.BSC_OLD_WQT_TOKEN);
+    const _exchangeInstance = await createInstance(WQTExchange, process.env.BSC_WQT_EXCHANGE);
 
     const _allowance = await _tokenInstance.allowance(account.address, process.env.BSC_WQT_EXCHANGE);
     const _amount = new BigNumber(amountValue.toString()).shiftedBy(+decimals).toString();
 
     if (new BigNumber(_allowance.toString()).isLessThan(_amount)) {
-      store.dispatch('main/setStatusText', 'Approving');
+      await store.dispatch('main/setStatusText', 'Approving');
       showToast('Swapping', 'Approving...', 'success');
       await _tokenInstance.approve(process.env.BSC_WQT_EXCHANGE, _amount);
       showToast('Swapping', 'Approving done', 'success');
@@ -517,7 +529,7 @@ export const swap = async (decimals, amountValue) => {
 
     showToast('Swapping', 'Swapping...', 'success');
     await _exchangeInstance.swap(_amount);
-    store.dispatch('main/setStatusText', 'Swapping');
+    await store.dispatch('main/setStatusText', 'Swapping');
     showToast('Swapping', 'Swapping done', 'success');
 
     return success(true);
@@ -552,7 +564,7 @@ export const fetchActions = async (stakingAbi, stakingAddress, callback, events,
 };
 
 export const initStackingContract = async (chain) => {
-  const stakingAbi = abi.WQLiquidityMining;
+  const stakingAbi = WQLiquidityMining;
   let stakingAddress;
   let websocketProvider;
   if (chain === 'ETH') {
@@ -583,7 +595,7 @@ export const getBinanceContractRPC = async () => {
     const address = isProd ? process.env.BSC_LP_TOKEN : '0x3ea2de549ae9dcb7992f91227e8d6629a22c3b40';
     const provider = await new Web3.providers.HttpProvider(process.env.BSC_RPC_URL);
     const web3Bsc = await new Web3(provider);
-    bscRpcContract = await new web3Bsc.eth.Contract(abi.BSCPool, address);
+    bscRpcContract = await new web3Bsc.eth.Contract(BSCPool, address);
     return bscRpcContract;
   } catch (e) {
     console.log(e);

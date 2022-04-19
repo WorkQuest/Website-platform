@@ -1,17 +1,24 @@
 import BigNumber from 'bignumber.js';
 import { ResponsesType, UserRole } from '~/utils/enums';
+
 import {
-  QuestMethods, QuestStatuses, InfoModeEmployer, InfoModeWorker,
+  QuestMethods,
+  QuestStatuses,
+  InfoModeWorker,
+  InfoModeEmployer,
 } from '~/utils/quests-constants';
-import { WorkQuestFactory, WorkQuest } from '~/abi/abi';
+
+import { WQFactory, WorkQuest } from '~/abi/index';
+
 import {
-  createInstance,
-  getContractFeeData,
-  getProvider,
-  getWalletAddress,
   hashText,
+  getProvider,
+  createInstance,
+  getWalletAddress,
+  getContractFeeData,
   sendWalletTransaction,
 } from '~/utils/wallet';
+
 import { error, success } from '~/utils/web3';
 
 export default {
@@ -279,7 +286,7 @@ export default {
       cost = new BigNumber(cost).shiftedBy(18).toString();
       depositAmount = new BigNumber(depositAmount).shiftedBy(18).toString();
       const data = [hash, cost, 0, nonce];
-      const inst = createInstance(WorkQuestFactory, address);
+      const inst = createInstance(WQFactory, address);
       const sendData = inst.methods.newWorkQuest.apply(null, data).encodeABI();
       const [gasPrice, gasEstimate] = await Promise.all([
         getProvider().eth.getGasPrice(),
@@ -317,7 +324,7 @@ export default {
       cost = new BigNumber(cost).shiftedBy(18).toString();
       return await getContractFeeData(
         'newWorkQuest',
-        WorkQuestFactory,
+        WQFactory,
         address,
         [hash, cost, 0, nonce],
         address,
@@ -354,7 +361,11 @@ export default {
         });
         return success(res);
       }
-      return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.EditJob, params: [hash, cost] });
+      return await dispatch('sendQuestTransaction', {
+        contractAddress,
+        method: QuestMethods.EditJob,
+        params: [hash, cost],
+      });
     } catch (e) {
       return error(9000, e.message, e);
     }
@@ -403,7 +414,11 @@ export default {
   },
   // Пригласить воркера на квест
   async assignJob({ dispatch }, { contractAddress, workerAddress }) {
-    return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.AssignJob, params: [workerAddress] });
+    return await dispatch('sendQuestTransaction', {
+      contractAddress,
+      method: QuestMethods.AssignJob,
+      params: [workerAddress],
+    });
   },
   // Принять результат работы воркера
   async acceptJobResult({ dispatch }, contractAddress) {
