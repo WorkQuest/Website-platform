@@ -1210,7 +1210,7 @@
     "claimConfirm": "Are you confirm the action of the claim?",
     "until": "Until",
     "scanQrCode": "You just need to scan the QR-code",
-    "downOnSmartphone": "Download Work Quest app on your smartphone"
+    "downOnSmartphone": "Download Work Quest app on your smartphone",
     "successfulMethods": {
       "claim": "Successful claim",
       "refund": "Successful refund",
