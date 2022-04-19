@@ -19,6 +19,10 @@ import {
 
 import { WQBridge, ERC20 } from '~/abi/index';
 
+/**
+ * @property swap.canRedeemed {Boolean}
+ * @property swap.chainFrom {Number}
+ */
 export default {
   async fetchMySwaps({ commit }, { recipientAddress, query }) {
     try {
@@ -109,7 +113,7 @@ export default {
     try {
       const nonce = await getTransactionCount();
       const accountAddress = await getAccountAddress();
-      const value = new BigNumber(amount).shiftedBy(18);
+      const value = new BigNumber(amount).shiftedBy(18).toString();
       const data = [nonce, toChainIndex, value, accountAddress, symbol];
       const bridgeInstance = await createInstanceWeb3(WQBridge, bridgeAddress);
 
@@ -130,7 +134,7 @@ export default {
       }
 
       const allowance = await fetchContractData('allowance', ERC20, tokenAddress, [accountAddress, bridgeAddress]);
-      if (value.isGreaterThan(+allowance)) {
+      if (new BigNumber(value).isGreaterThan(+allowance)) {
         showToast('Swapping', 'Approving...', 'success');
         const tokenInstance = await createInstanceWeb3(ERC20, tokenAddress);
         const { status } = await tokenInstance.methods.approve(bridgeAddress, value).send({ from: accountAddress });
@@ -152,6 +156,7 @@ export default {
 
       return success(swapRes);
     } catch (e) {
+      console.error('Error in swap:', e);
       showToast('Swapping error', e.message, 'danger');
       return error(e.code, 'Error in swap action', e.data);
     }
