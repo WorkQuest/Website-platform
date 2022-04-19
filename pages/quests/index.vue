@@ -52,7 +52,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import { Path } from '~/utils/enums';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'Quests',
@@ -106,11 +105,6 @@ export default {
     if (typeof isShow === 'boolean') this.isShowMap = isShow;
     await this.fetchQuestsList();
     this.SetLoader(false);
-    if (!this.$cookies.get('downloadAppDisplayed')) {
-      this.ShowModal({
-        key: modals.downloadApp,
-      });
-    }
   },
   async beforeDestroy() {
     clearTimeout(this.searchTimeout);
