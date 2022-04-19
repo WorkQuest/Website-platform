@@ -8,8 +8,8 @@
       "title": "Seleccionar prioridad",
       "all": "Todas las prioridades",
       "fixedDelivery": "Entrega fija",
-      "shortTerm": "Corto plazo",
-      "urgent": "Urgente",
+      "shortTerm": "Corto plazo semana",
+      "urgent": "Urgente 24-72 horas",
       "employee": {
         "urgent": "Urgent execution"
       }

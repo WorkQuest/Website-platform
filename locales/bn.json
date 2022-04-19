@@ -8,8 +8,8 @@
       "title": "অগ্রাধিকার নির্বাচন করুন",
       "all": "সমস্ত অগ্রাধিকার",
       "fixedDelivery": "নির্দিষ্ট ডেলিভারি",
-      "shortTerm": "স্বল্পমেয়াদ",
-      "urgent": "জরুরি",
+      "shortTerm": "Short term 1 week",
+      "urgent": "Urgent 24-72h",
       "employee": {
         "urgent": "Urgent execution"
       }
