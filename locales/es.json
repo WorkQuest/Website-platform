@@ -375,7 +375,7 @@
       "verified": "Verified",
       "reliable": "Reliable",
       "topRanked": "Top ranked",
-      "noStatus" : "Not rated"
+      "noStatus": "Not rated"
     },
     "distantWork": {
       "title": "Trabajo remoto",
@@ -948,7 +948,8 @@
       "withdraw": "Withdraw",
       "sendTo": "Enviar a",
       "withdrawCard": "Retirar a tarjeta bancaria",
-      "withdrawInfo": "Withdrawal info"
+      "withdrawInfo": "Withdrawal info",
+      "downloadApp": "Download App"
     },
     "errors": {
       "errorQuests": "Error with quests",
@@ -1208,6 +1209,8 @@
     "registration": "Are you sure to registration this users?",
     "claimConfirm": "Are you confirm the action of the claim?",
     "until": "Until",
+    "scanQrCode": "You just need to scan the QR-code",
+    "downOnSmartphone": "Download Work Quest app on your smartphone",
     "successfulMethods": {
       "claim": "Successful claim",
       "refund": "Successful refund",
