@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="deposit"
-    :title="$t('modals.titles.openADeposit')"
+    :title="$tc('modals.titles.openADeposit')"
   >
     <validation-observer
       v-slot="{handleSubmit, validated, passed, invalid}"
@@ -21,7 +21,7 @@
           placeholder="3 500"
           class="content__input"
           rules="required|decimal"
-          :name="$t('modals.lockedSavingsField')"
+          :name="$tc('modals.lockedSavingsField')"
         />
       </div>
       <div class="content__field">
@@ -37,7 +37,7 @@
           data-selector="DURATION-DAYS"
           class="content__input"
           rules="required|numeric"
-          :name="$t('modals.durationDaysField')"
+          :name="$tc('modals.durationDaysField')"
         />
       </div>
       <div class="content__buttons buttons">
@@ -45,7 +45,7 @@
           class="buttons__button"
           mode="outline"
           data-selector="CANCEL"
-          @click="hide"
+          @click="CloseModal"
         >
           {{ $t('meta.btns.cancel') }}
         </base-btn>
@@ -80,9 +80,6 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     showDepositIsOpenedModal() {
       const receiptData = [
         {

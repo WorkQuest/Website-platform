@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="remove"
-    :title="$t('modals.titles.removeLiquidity')"
+    :title="$tc('modals.titles.removeLiquidity')"
   >
     <div class="remove__content content">
       <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
@@ -17,7 +17,7 @@
                 data-selector="WITHDRAWAL-AMOUNT"
                 placeholder="1000 WQT"
                 rules="required|decimal"
-                :name="$t('modals.withdrawalAmountField')"
+                :name="$tc('modals.withdrawalAmountField')"
               />
             </div>
             <div class="content__currencies currencies">
@@ -64,7 +64,7 @@
             class="buttons__button"
             mode="outline"
             data-selector="CANCEL"
-            @click="hide()"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -72,7 +72,7 @@
             class="buttons__button"
             data-selector="REMOVE-LIQUIDITY"
             :disabled="!validated || !passed || invalid"
-            @click="handleSubmit(hide)"
+            @click="handleSubmit(CloseModal)"
           >
             {{ $t('modals.titles.removeLiquidity') }}
           </base-btn>
@@ -98,9 +98,6 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     abouts() {
       const { isBNB } = this.options;
       return [

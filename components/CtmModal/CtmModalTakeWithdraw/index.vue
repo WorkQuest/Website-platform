@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="withdrawal"
-    :title="$t('modals.titles.withdrawal')"
+    :title="$tc('modals.titles.withdrawal')"
   >
     <div class="withdrawal__content content">
       <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
@@ -37,7 +37,7 @@
               :disabled="true"
               data-selector="WALLET-ADDRESS"
               placeholder="Enter address"
-              :name="$t('modals.walletAddressField')"
+              :name="$tc('modals.walletAddressField')"
             />
           </div>
           <div class="content__input input">
@@ -50,7 +50,7 @@
               data-selector="AMOUNT"
               placeholder="Enter amount"
               :rules="`required|decimal|is_not:0${maxValue ? '|max_value:' + maxValue : ''}|decimalPlaces:18`"
-              :name="$t('modals.amountField')"
+              :name="$tc('modals.amountField')"
               @input="replaceDot"
             >
               >
@@ -90,7 +90,7 @@
             mode="outline"
             class="buttons__action"
             data-selector="CANCEL"
-            @click="hide"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -151,16 +151,13 @@ export default {
     replaceDot() {
       this.amount = this.amount.replace(/,/g, '.');
     },
-    hide() {
-      this.CloseModal();
-    },
     handleMaxValue() {
       this.amount = this.maxValue;
     },
     async showWithdrawInfo() {
       if (this.withdrawType === 'pension') {
         const { callback } = this.options;
-        this.hide();
+        this.CloseModal();
         this.SetLoader(true);
         const [txFee] = await Promise.all([
           this.$store.dispatch('wallet/getContractFeeData', {

@@ -20,7 +20,7 @@
         <div class="gallery-modal__close">
           <div
             class="control-btn control-btn_bg"
-            @click="hide"
+            @click="CloseModal"
           >
             <span class="icon-close_big" />
           </div>
@@ -104,9 +104,6 @@ export default {
       const currIndex = advanceIndex + 1 > count ? 0 : advanceIndex < 0 ? count - 1 : advanceIndex;
 
       this.$store.commit('modals/setCurrOptionByKey', [{ key: 'index', val: currIndex }]);
-    },
-    hide() {
-      this.CloseModal();
     },
   },
 };

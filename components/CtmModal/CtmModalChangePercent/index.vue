@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="percent"
-    :title="$t('modals.titles.changePercent')"
+    :title="$tc('modals.titles.changePercent')"
   >
     <div class="percent__content content">
       <validation-observer
@@ -23,7 +23,7 @@
             :value="amount"
             :placeholder="$tc('meta.units.percentsCount', 15)"
             class="content__input"
-            :name="$t('modals.currentPercentErr')"
+            :name="$tc('modals.currentPercentErr')"
             data-selector="PENSION-PERCENT"
             rules="required|min_percent:1|max_percent:99|zeroFail|notMoreDecimalPlaces"
             @input="calcPensionPercent"
@@ -34,7 +34,7 @@
             class="buttons__button"
             data-selector="CANCEL"
             mode="outline"
-            @click="hide"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -74,12 +74,9 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     async updateFee() {
       const { updateMethod } = this.options;
-      this.hide();
+      this.CloseModal();
       this.SetLoader(true);
 
       const [txFee] = await Promise.all([

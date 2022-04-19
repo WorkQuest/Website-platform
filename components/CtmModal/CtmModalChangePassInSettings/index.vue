@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="password"
-    :title="$t('modals.titles.changePass')"
+    :title="$tc('modals.titles.changePass')"
   >
     <div class="password__content content">
       <div class="content__error">
@@ -13,7 +13,7 @@
           :is-hide-error="true"
           placeholder="******"
           data-selector="CURRENT-PASSWORD"
-          :label="$t('modals.currentPassword')"
+          :label="$tc('modals.currentPassword')"
           mode="icon"
           :type="isVisibleCurrent ? 'text': 'password'"
           class="field__input"
@@ -48,7 +48,7 @@
         :is-hide-error="true"
         placeholder="******"
         data-selector="NEW-PASSWORD"
-        :label="$t('modals.newPassword')"
+        :label="$tc('modals.newPassword')"
         mode="icon"
         :type="isVisible ? 'text': 'password'"
         class="field__input"
@@ -82,7 +82,7 @@
         :is-hide-error="true"
         placeholder="******"
         data-selector="CONFIRM-NEW-PASSWORD"
-        :label="$t('modals.confirmNewPassword')"
+        :label="$tc('modals.confirmNewPassword')"
         mode="icon"
         :type="isVisibleConfirm ? 'text': 'password'"
       >

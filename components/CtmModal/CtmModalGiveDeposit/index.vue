@@ -2,7 +2,7 @@
   <ctm-modal-box
     class="deposit"
     :class="{'deposit_small': step === 2}"
-    :title="$t('modals.titles.deposit')"
+    :title="$tc('modals.titles.deposit')"
   >
     <div class="deposit__content content">
       <div class="content__step">
@@ -142,6 +142,7 @@ export default {
     previousStep() {
       this.step = 1;
     },
+    // TODO: Зарефакторить
     showSuccessCopied() {
       this.ShowModal({
         key: modals.copiedSuccess,

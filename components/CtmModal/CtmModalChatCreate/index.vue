@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t(`modals.chatCreate.${setLocale}`)"
+    :title="$tc(`modals.chatCreate.${setLocale}`)"
   >
     <div class="ctm-modal__content">
       <template v-if="options.isCreating">
@@ -13,7 +13,7 @@
             v-model="name"
             data-selector="CHAT-NAME"
             :is-hide-error="true"
-            :label="$t('modals.chatCreate.chatName')"
+            :label="$tc('modals.chatCreate.chatName')"
             :placeholder="$t('modals.chatCreate.chatName')"
           />
         </div>
@@ -134,11 +134,8 @@ export default {
   async mounted() {
     const { options: { isMembersList }, chatMembers } = this;
 
-    if (isMembersList) {
-      this.members = chatMembers;
-    } else {
-      await this.getUsers();
-    }
+    if (isMembersList) this.members = chatMembers;
+    else await this.getUsers();
   },
   methods: {
     async addNewMembers() {
@@ -220,7 +217,7 @@ export default {
           memberUserIds,
         };
         const { ok, result } = await this.$store.dispatch('chat/handleCreateGroupChat', config);
-        if (ok) this.$router.push(`${Path.MESSAGES}/${result.id}`);
+        if (ok) await this.$router.push(`${Path.MESSAGES}/${result.id}`);
       } else if (isAdding && memberUserIds.length) {
         const payload = {
           config: {

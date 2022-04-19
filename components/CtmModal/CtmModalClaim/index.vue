@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="claim"
-    :title="$t('modals.titles.claim')"
+    :title="$tc('modals.titles.claim')"
   >
     <div class="claim__content content">
       <!--      Вывод на банковскую карту -->
@@ -23,7 +23,7 @@
       <!--      </div>-->
       <div class="content__field field">
         <div
-          v-if="step===1"
+          v-if="step === 1"
           class="field__header header"
         >
           <div class="header__title">
@@ -76,7 +76,7 @@
             class="buttons__button"
             mode="outline"
             data-selector="CANCEL"
-            @click="hide"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -139,9 +139,6 @@ export default {
     ];
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     async showTransactionSend() {
       const { stakingType, updateMethod } = this.options;
       this.hide();

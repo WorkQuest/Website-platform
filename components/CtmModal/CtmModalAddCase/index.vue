@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="message"
-    :title="$t('modals.titles.addCase')"
+    :title="$tc('modals.titles.addCase')"
   >
     <!--    TODO: Поменять загрузчик-->
     <div class="ctm-modal__content">
@@ -25,24 +25,24 @@
               <div>
                 <base-field
                   v-model="caseTitle"
-                  :label="$t('modals.title')"
+                  :label="$tc('modals.title')"
                   :placeholder="$t('modals.addTitle')"
                   mode="gray"
                   data-selector="CASE-TITLE"
                   rules="required|text-title"
-                  :name="$t('modals.title')"
+                  :name="$tc('modals.title')"
                 />
               </div>
               <div class="message__wrapper">
                 <base-textarea
                   id="textarea"
                   v-model="caseDescription"
-                  :label="$t('modals.description')"
+                  :label="$tc('modals.description')"
                   class="message__textarea"
                   data-selector="CASE-DESCRIPTION"
                   :placeholder="$t('modals.addDesc')"
                   rules="required|text-desc"
-                  :name="$t('modals.description')"
+                  :name="$tc('modals.description')"
                 />
               </div>
               <div class="btn__container">

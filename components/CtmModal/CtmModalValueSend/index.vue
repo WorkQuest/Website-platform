@@ -14,9 +14,9 @@
           type="number"
           data-selector="INPUT_AMOUNT"
           placeholder="3500"
-          :label="$t('modals.amount')"
+          :label="$tc('modals.amount')"
           rules="required|decimal|decimalPlaces:18"
-          :name="$t('modals.amount')"
+          :name="$tc('modals.amount')"
         >
           <template
             v-if="maxValue"
@@ -29,7 +29,9 @@
               class="max__button"
               @click="maxBalance()"
             >
-              <span class="max__text">{{ $t('modals.maximum') }}</span>
+              <span class="max__text">
+                {{ $t('modals.maximum') }}
+              </span>
             </base-btn>
           </template>
         </base-field>
@@ -37,7 +39,7 @@
           <base-btn
             mode="outline"
             data-selector="CANCEL"
-            @click="hide()"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -89,11 +91,10 @@ export default {
     },
   },
   methods: {
-    hide() { this.CloseModal(); },
     async send() {
       const value = this.amount;
       const { submit } = this.options;
-      this.hide();
+      this.CloseModal();
       await submit(value);
     },
     maxBalance() {

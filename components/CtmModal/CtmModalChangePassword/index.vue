@@ -15,7 +15,7 @@
       <base-btn
         class="change__action"
         data-selector="OK"
-        @click="hide"
+        @click="CloseModal"
       >
         {{ $t('meta.btns.ok') }}
       </base-btn>
@@ -32,11 +32,6 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
-  },
-  methods: {
-    hide() {
-      this.CloseModal();
-    },
   },
 };
 </script>

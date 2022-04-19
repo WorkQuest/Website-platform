@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="transfer"
-    :title="$t('modals.titles.transfer')"
+    :title="$tc('modals.titles.transfer')"
   >
     <div class="transfer__content content">
       <validation-observer v-slot="{handleSubmit, invalid}">
@@ -16,7 +16,7 @@
               data-selector="ADDRESS-RECIPIENT"
               :placeholder="$t('meta.addressBig')"
               :rules="`required|${checkFormatAddress(recipient)}`"
-              :name="$t('meta.addressSmall')"
+              :name="$tc('meta.addressSmall')"
             />
           </div>
           <div class="content__input input">
@@ -39,7 +39,7 @@
               data-selector="AMOUNT"
               :placeholder="$t('modals.amount')"
               :rules="`required|decimal|is_not:0|max_value:${maxAmount}|decimalPlaces:18`"
-              :name="$t('modals.amountField')"
+              :name="$tc('modals.amountField')"
               @input="replaceDot"
             >
               <template

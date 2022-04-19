@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="withdraw"
-    :title="$t('meta.withdrawal')"
+    :title="$tc('meta.withdrawal')"
   >
     <div class="withdraw__content content">
       <validation-observer v-slot="{handleSubmit, invalid}">
@@ -27,7 +27,7 @@
               data-selector="AMOUNT"
               class="grid__input"
               rules="required|decimal"
-              :name="$t('modals.amountField')"
+              :name="$tc('modals.amountField')"
             />
             <div class="grid__equal">
               =
@@ -92,7 +92,7 @@
             class="buttons__button"
             data-selector="CANCEL"
             mode="outline"
-            @click="hide"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -137,9 +137,6 @@ export default {
     },
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     showTransactionSendModal() {
       this.ShowModal({
         key: modals.withdrawInfo,

@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.titles.invitation')"
+    :title="$tc('modals.titles.invitation')"
   >
     <div class="ctm-modal__content">
       <validation-observer tag="div">
@@ -34,6 +34,7 @@
               class="base-dd_available-quests"
               :items="availableQuests"
               :label="$t('modals.chooseQuest')"
+              :data-selector="`QUEST-${questIndex}`"
             />
           </div>
         </div>
@@ -63,7 +64,7 @@
               class="message__action"
               mode="outline"
               data-selector="CANCEL"
-              @click="hide()"
+              @click="CloseModal"
             >
               {{ $t('meta.btns.cancel') }}
             </base-btn>
@@ -108,9 +109,6 @@ export default {
         console.log(e);
       }
     },
-    hide() {
-      this.CloseModal();
-    },
     showTransactionSendModal() {
       this.ShowModal({
         key: modals.status,
@@ -125,7 +123,7 @@ export default {
     goToChat() {
       const chatId = this.chatInfoInviteOnQuest.id;
       this.$router.push(`${Path.MESSAGES}/${chatId}`);
-      this.hide();
+      this.CloseModal();
     },
   },
 };

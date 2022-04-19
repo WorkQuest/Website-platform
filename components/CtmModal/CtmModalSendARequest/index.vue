@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="message"
-    :title="$t('modals.titles.sendARequest')"
+    :title="$tc('modals.titles.sendARequest')"
   >
     <div class="ctm-modal__content">
       <validation-observer v-slot="{handleSubmit}">
@@ -115,9 +115,7 @@ export default {
         this.ShowModal({
           key: modals.requestSend,
         });
-      } else {
-        this.CloseModal();
-      }
+      } else this.CloseModal();
     },
   },
 };

@@ -14,7 +14,7 @@
       <base-btn
         class="content__action"
         data-selector="AGREE"
-        @click="hide"
+        @click="CloseModal"
       >
         {{ $t('meta.iAgree') }}
       </base-btn>
@@ -31,11 +31,6 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
-  },
-  methods: {
-    hide() {
-      this.CloseModal();
-    },
   },
 };
 </script>

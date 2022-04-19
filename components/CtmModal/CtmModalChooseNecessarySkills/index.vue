@@ -21,6 +21,7 @@
                 type="gray"
                 :items="ddList"
                 :placeholder="skill.value"
+                :data-selector="`SKILL-${i}`"
               />
             </div>
             <div>
@@ -66,7 +67,7 @@
                 mode="outline"
                 data-selector="CANCEL"
                 class="message__action"
-                @click="hide()"
+                @click="CloseModal"
               >
                 {{ $t('meta.btns.cancel') }}
               </base-btn>
@@ -114,9 +115,6 @@ export default {
       this.skills.splice(i, 1);
     },
 
-    hide() {
-      this.CloseModal();
-    },
     success() {
       this.ShowModal({
         key: modals.status,

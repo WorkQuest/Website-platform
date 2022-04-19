@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.titles.sendTo')"
+    :title="$tc('modals.titles.sendTo')"
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__content-field">
@@ -9,7 +9,7 @@
           id="from"
           v-model="date"
           data-selector="FROM"
-          :label="$t('meta.fromBig')"
+          :label="$tc('meta.fromBig')"
           :placeholder="$t('meta.addressBig')"
         />
       </div>
@@ -18,7 +18,7 @@
           id="to"
           v-model="date"
           data-selector="TO"
-          :label="$t('meta.toBig')"
+          :label="$tc('meta.toBig')"
           :placeholder="$t('meta.addressBig')"
         />
       </div>
@@ -26,14 +26,14 @@
         id="value_dd"
         type="gray"
         data-selector="AMOUNT"
-        :label="$t('modals.amount')"
+        :label="$tc('modals.amount')"
         :items="items"
       />
       <div class="ctm-modal__content-field">
         <base-field
           id="cardNumber"
           v-model="cardNumber"
-          :label="$t('modals.amount')"
+          :label="$tc('modals.amount')"
           data-selector="CARD-NUMBER"
           placeholder="0000 0000 0000 0000"
         />
@@ -53,7 +53,7 @@
             mode="outline"
             data-selector="CANCEL"
             class="message__action"
-            @click="hide()"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -83,9 +83,6 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     showTransactionSendModal() {
       this.ShowModal({
         key: modals.transactionSend,

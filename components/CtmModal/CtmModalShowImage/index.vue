@@ -74,9 +74,6 @@ export default {
     },
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     showDeleteCaseModal(id) {
       this.ShowModal({
         key: modals.deleteCase,

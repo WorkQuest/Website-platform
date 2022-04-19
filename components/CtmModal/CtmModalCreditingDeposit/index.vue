@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="deposit"
-    :title="$t('modals.titles.deposit')"
+    :title="$tc('modals.titles.deposit')"
   >
     <validation-observer
       v-slot="{handleSubmit, validated, passed, invalid}"
@@ -86,7 +86,7 @@
               data-selector="TOKEN-VALUE"
               :placeholder="`100 ${checkpoints[selCurrencyID - 1].name}`"
               rules="required|decimal"
-              :name="$t('modals.quantityField')"
+              :name="$tc('modals.quantityField')"
             />
           </div>
           <div class="content__field">
@@ -113,7 +113,7 @@
           class="buttons__button"
           mode="outline"
           data-selector="CANCEL"
-          @click="hide"
+          @click="CloseModal"
         >
           {{ $t('meta.btns.cancel') }}
         </base-btn>
@@ -217,13 +217,12 @@ export default {
     },
   },
   methods: {
-    hide() { this.CloseModal(); },
     async openConfirmDetailsModal() {
       const { submit } = this.options;
       const {
         fundsSource, selFundID, checkpoints, selCurrencyID, datesNumber, date, quantity,
       } = this;
-      this.hide();
+      this.CloseModal();
       await submit({
         fundsSource,
         selFundID,

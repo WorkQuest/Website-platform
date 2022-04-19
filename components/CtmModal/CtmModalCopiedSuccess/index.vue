@@ -15,7 +15,7 @@
       <base-btn
         class="copied__action"
         data-selector="OK"
-        @click="hide"
+        @click="CloseModal"
       >
         {{ $t('meta.btns.ok') }}
       </base-btn>

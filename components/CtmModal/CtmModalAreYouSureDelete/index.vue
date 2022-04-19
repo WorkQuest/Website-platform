@@ -20,7 +20,7 @@
           data-selector="CANCEL"
           class="action__button"
           mode="outline"
-          @click="hide()"
+          @click="CloseModal"
         >
           {{ $t('meta.btns.cancel') }}
         </base-btn>
@@ -42,18 +42,12 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalAreYouSureDelete',
-  data() {
-    return {};
-  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     showErrorModal() {
       this.ShowModal({
         key: modals.status,
