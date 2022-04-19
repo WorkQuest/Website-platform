@@ -43,6 +43,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { Chains } from '~/utils/enums';
 
 export default {
   name: 'ModalSwapInfo',
@@ -63,11 +64,13 @@ export default {
         },
         {
           title: this.$t('modals.senderAddress'),
-          subtitle: this.options.recipient,
+          subtitle: this.options.fromNetwork === Chains.WORKNET
+            ? this.convertToBech32('wq', this.options.recipient) : this.options.recipient,
         },
         {
           title: this.$t('modals.recipientAddress'),
-          subtitle: this.options.recipient,
+          subtitle: this.options.toNetwork === Chains.WORKNET
+            ? this.convertToBech32('wq', this.options.recipient) : this.options.recipient,
         },
         // {
         //   title: this.$t('modals.worknetFee'),

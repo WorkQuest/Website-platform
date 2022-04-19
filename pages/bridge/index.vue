@@ -359,6 +359,8 @@ export default {
               chain: from.chain,
               recipient: this.account.address,
               networks: `${from.chain} > ${to.chain}`,
+              fromNetwork: from.chain,
+              toNetwork: to.chain,
               submit: async () => {
                 this.CloseModal();
 
