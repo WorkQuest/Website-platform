@@ -25,21 +25,15 @@
             <span class="icon-Lock field__picture" />
           </template>
           <template
+            v-if="currentPasswordInput"
             v-slot:right-absolute
             class="field__block"
           >
-            <base-btn
-              mode="max"
+            <btn-password-visibility
               :data-selector="`IS-VISIBLE-CURRENT-PASS-${isVisibleCurrent}`"
-              class="field__button"
-              :disabled="currentPasswordInput===''"
-              @click="isVisibleCurrent=!isVisibleCurrent"
-            >
-              <span
-                class="field__picture"
-                :class="{'icon-show': isVisibleCurrent, 'icon-hide': !isVisibleCurrent }"
-              />
-            </base-btn>
+              :is-password-visible="isVisibleCurrent"
+              @toggleVisibility="isVisibleCurrent = $event"
+            />
           </template>
         </base-field>
       </div>
@@ -60,21 +54,15 @@
           <span class="icon-Lock field__picture" />
         </template>
         <template
+          v-if="newPasswordInput"
           v-slot:right-absolute
           class="field__block"
         >
-          <base-btn
-            mode="max"
+          <btn-password-visibility
             :data-selector="`IS-VISIBLE-PASS-${isVisible}`"
-            class="field__button"
-            :disabled="newPasswordInput===''"
-            @click="isVisible=!isVisible"
-          >
-            <span
-              class="field__picture"
-              :class="{'icon-show': isVisible, 'icon-hide': !isVisible }"
-            />
-          </base-btn>
+            :is-password-visible="isVisible"
+            @toggleVisibility="isVisible = $event"
+          />
         </template>
       </base-field>
       <base-field
@@ -90,21 +78,15 @@
           <span class="icon-Lock" />
         </template>
         <template
+          v-if="confirmNewPasswordInput"
           v-slot:right-absolute
           class="field__block"
         >
-          <base-btn
-            mode="max"
-            :data-selector="`IS-VISIBLE-CONFIRM-PASS-${isVisibleConfirm}`"
-            class="field__button"
-            :disabled="confirmNewPasswordInput===''"
-            @click="isVisibleConfirm=!isVisibleConfirm"
-          >
-            <span
-              class="field__picture"
-              :class="{'icon-show': isVisibleConfirm, 'icon-hide': !isVisibleConfirm }"
-            />
-          </base-btn>
+          <btn-password-visibility
+            :data-selector="`IS-VISIBLE-PASS-${isVisibleConfirm}`"
+            :is-password-visible="isVisibleConfirm"
+            @toggleVisibility="isVisibleConfirm = $event"
+          />
         </template>
       </base-field>
       <div class="content__buttons buttons">
@@ -125,9 +107,11 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import BtnPasswordVisibility from '~/components/app/BtnPasswordVisibility';
 
 export default {
   name: 'ModalChangePassSetting',
+  components: { BtnPasswordVisibility },
   data() {
     return {
       isVisible: false,
@@ -191,15 +175,6 @@ export default {
   &__error {
     color:red;
   }
-}
-.icon-show, .icon-hide {
-  color: $blue;
-  font-size: 25px;
-}
-.icon-Lock:before {
-    content: "\ea24";
-    color: $blue;
-    font-size: 25px;
 }
 
 .buttons {
