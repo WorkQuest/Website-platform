@@ -111,7 +111,7 @@
               </template>
               <template #cell(recipient)="el">
                 <div class="table__value">
-                  {{ CutTxn(el.item.recipient) }}
+                  {{ convertedRecipientTable(el) }}
                 </div>
               </template>
               <template #cell(transactionHash)="el">
@@ -287,6 +287,12 @@ export default {
       disconnectWallet: 'web3/disconnect',
       goToChain: 'web3/goToChain',
     }),
+    convertedRecipientTable(el) {
+      const { chainTo, recipient } = el.item;
+      const { CutTxn, convertToBech32 } = this;
+      if (chainTo === 1) return CutTxn(convertToBech32('wq', recipient));
+      return CutTxn(recipient);
+    },
     async toggleConnection() {
       const { isConnected, addresses, sourceAddressInd } = this;
       if (isConnected) await this.handlerDisconnect();
@@ -360,6 +366,8 @@ export default {
               chain: from.chain,
               recipient: this.account.address,
               networks: `${from.chain} > ${to.chain}`,
+              fromNetwork: from.chain,
+              toNetwork: to.chain,
               submit: async () => {
                 this.CloseModal();
 
