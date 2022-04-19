@@ -635,7 +635,7 @@ export default {
     }
   }
   &__description-textarea {
-    background-color: $black0;
+    background-color: #F3F7FA;
     resize: none;
     padding: 10px 10px 0 10px;
     margin: 0;
