@@ -199,6 +199,7 @@ export default {
       isConnected: 'web3/isConnected',
 
       swaps: 'bridge/getSwaps',
+      wsSwap: 'bridge/getWSSwap',
       swapsCount: 'bridge/getSwapsCount',
     }),
     tableFields() {
@@ -273,6 +274,7 @@ export default {
   },
   async beforeDestroy() {
     this.$store.commit('bridge/resetToken');
+    await this.$store.dispatch('bridge/unsubscribeToBridgeEvents', this.account.address);
     await this.handlerDisconnect();
   },
   methods: {
@@ -281,6 +283,8 @@ export default {
       resetSwaps: 'bridge/resetMySwaps',
       redeem: 'bridge/redeemSwap',
       swap: 'bridge/swap',
+      subscribe: 'bridge/subscribeToBridgeEvents',
+      unsubscribe: 'bridge/unsubscribeToBridgeEvents',
 
       isRightChain: 'web3/chainIsCompareToCurrent',
       connectWallet: 'web3/connect',
@@ -293,11 +297,13 @@ export default {
       else {
         const { chain } = addresses[sourceAddressInd];
         await this.connectWallet({ chain });
+        await this.subscribe(this.account.address);
       }
     },
     async handlerDisconnect() {
       clearInterval(this.updateInterval);
       this.updateInterval = null;
+      await this.unsubscribe(this.account.address);
       await this.disconnectWallet();
       await this.resetSwaps();
     },

@@ -153,4 +153,25 @@ export default {
       return error(e.code, 'Error in swap action', e.data);
     }
   },
+  async subscribeToBridgeEvents({ commit, getters }, userAddress) {
+    console.log('subscribeToBridgeEvents start', `/notifications/bridge/${userAddress}`);
+    try {
+      console.log(this.$wsNotifs);
+      await this.$wsNotifs.subscribe(`/notifications/bridge/${userAddress}`, async (msg) => {
+        console.log(msg);
+        const swap = JSON.parse(JSON.stringify(getters.getWSSwap));
+        console.log(swap);
+      });
+    } catch (err) {
+      console.log('subscribeToBridgeEvents err', err);
+    }
+  },
+  async unsubscribeToBridgeEvents(_, userAddress) {
+    try {
+      await this.$wsNotifs.unsubscribe(`/notifications/bridge/${userAddress}`);
+      console.log('unsubscribeToBridgeEvents:', this.$wsNotifs);
+    } catch (err) {
+      console.log('unsubscribeToBridgeEvents err', err);
+    }
+  },
 };
