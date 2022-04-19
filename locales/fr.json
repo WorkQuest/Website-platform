@@ -50,6 +50,7 @@
       "hours": "{count} minute | {count} minutes | {count} hours",
       "years": "{count} year | {count} years | {count} years",
       "days": "{count} day | {count} days | {count} days",
+      "daysLeft": "{count} days left",
       "votesCount": "{count} votes",
       "distance": {
         "m": "m"
@@ -957,7 +958,8 @@
       "error": "Error",
       "errorNetwork": "Error, you use not correct network. Switch to {network}",
       "youCan’tDeleteActiveQuest": "You can’t delete active quest",
-      "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
+      "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest",
+      "dontHavePeople": "You don't have people to chat"
     },
     "chatCreate": {
       "title": "Create chat",
@@ -1121,7 +1123,7 @@
     "tempForRemove2": "1 BNB = ... WQT",
     "currentPoolSize": "Taille actuelle du pool",
     "yourPoolShare": "Votre part dans le pool",
-    "howMuchEthWouldYouLikeToLock": "Combien d'ETH souhaitez-vous bloquer sur votre compte ?",
+    "howMuchTokensWouldYouLikeToLock": "Combien d'{token} souhaitez-vous bloquer sur votre compte ?",
     "collateralization": "Garantie",
     "liquidationPrice": "Prix de liquidation",
     "currentPrice": "Prix actuel",
@@ -1209,6 +1211,12 @@
     "until": "Until",
     "scanQrCode": "You just need to scan the QR-code",
     "downOnSmartphone": "Download Work Quest app on your smartphone"
+    "successfulMethods": {
+      "claim": "Successful claim",
+      "refund": "Successful refund",
+      "withdraw": "Successful withdrawal",
+      "deposit": "Successful deposit"
+    }
   },
   "ui": {
     "jobQuestors": "Demandeurs d'emploi",
@@ -1710,10 +1718,14 @@
     "description": "???",
     "currentLoan": "???",
     "currentCredit": "???",
+    "dueDate": "Due date",
+    "chooseSource": "Choose the source",
+    "chosenSource": "Chosen source",
     "marketSize": "Taille du marché",
     "wantToTakeALoan": "Vous souhaitez contracter un prêt ?",
     "borrow": "Emprunter",
     "myLoans": "???",
+    "needRefund": "Need to refund",
     "refund": "???",
     "openPositions": "Ouvrir les positions",
     "totalCollateralLocked": "Total des garanties immobilisées",

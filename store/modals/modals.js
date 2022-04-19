@@ -50,7 +50,6 @@ export default {
   changeRoleSecureCheck: 'changeRoleSecureCheck',
   chooseNecessarySkills: 'chooseNecessarySkills',
   creditingLoan: 'creditingLoan',
-  confirmLoanDetails: 'confirmLoanDetails',
   smsVerification: 'smsVerification',
   reviewDetails: 'reviewDetails',
   chatCreate: 'chatCreate',
@@ -85,5 +84,6 @@ export default {
   neededToEnable2FA: 'neededToEnable2FA',
   referralClaim: 'referralClaim',
   referralRegistration: 'referralRegistration',
+  valueSend: 'valueSend',
   downloadApp: 'downloadApp',
 };

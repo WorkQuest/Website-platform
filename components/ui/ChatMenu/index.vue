@@ -62,7 +62,7 @@
 import ClickOutside from 'vue-click-outside';
 import { mapGetters } from 'vuex';
 import {
-  ChatType, DisputeStatues, Path,
+  ChatType, Path,
 } from '~/utils/enums';
 import { QuestStatuses } from '~/utils/quests-constants';
 import modals from '~/store/modals/modals';
@@ -90,6 +90,7 @@ export default {
   computed: {
     ...mapGetters({
       currChat: 'chat/getCurrChatInfo',
+      chats: 'chat/getChats',
     }),
     isOpenDispute() {
       return !this.canILeave && this.$route.query.type === ChatType.QUEST;
@@ -139,13 +140,22 @@ export default {
     },
     showCreateChatModal() {
       this.closeChatMenu();
-      this.ShowModal({
-        key: modals.chatCreate,
-        isCreating: true,
-        itsOwner: true,
-        isMembersList: false,
-        isAdding: false,
-      });
+      if (this.chats.count) {
+        this.ShowModal({
+          key: modals.chatCreate,
+          isCreating: true,
+          itsOwner: true,
+          isMembersList: false,
+          isAdding: false,
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.errors.error'),
+          subtitle: this.$t('modals.errors.dontHavePeople'),
+        });
+      }
     },
   },
 };

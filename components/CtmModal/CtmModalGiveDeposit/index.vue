@@ -4,7 +4,7 @@
     :class="{'deposit_small': step === 2}"
     :title="$t('modals.titles.deposit')"
   >
-    <div class="deposit__content сontent">
+    <div class="deposit__content content">
       <div class="content__step">
         <div
           class="content__panel"

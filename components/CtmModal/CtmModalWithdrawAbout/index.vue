@@ -58,16 +58,9 @@ export default {
           subtitle: this.$tc('meta.units.percentsCount', 16),
         },
       ];
-      const dataForStatusModal = {
-        img: require('~/assets/img/ui/transactionSend.svg'),
-        title: this.$t('modals.depositIsOpened'),
-        subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam',
-        path: '',
-      };
       this.ShowModal({
         key: modals.confirmDetails,
         receiptData,
-        dataForStatusModal,
       });
     },
   },
