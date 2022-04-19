@@ -7,9 +7,15 @@ import {
   success,
   fetchContractData,
 } from '~/utils/web3';
+
 import {
-  WQPensionFund, WQRouter, WQStaking, WQStakingNative, WQOracle,
-} from '~/abi/abi';
+  WQOracle,
+  WQRouter,
+  WQStaking,
+  WQPensionFund,
+  WQStakingNative,
+} from '~/abi/index';
+
 import { StakingTypes } from '~/utils/enums';
 
 const bip39 = require('bip39');

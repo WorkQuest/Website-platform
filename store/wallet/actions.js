@@ -1,33 +1,46 @@
 import BigNumber from 'bignumber.js';
+
 import {
-  connectWallet,
+  stake,
+  transfer,
   disconnect,
   getBalance,
-  getContractFeeData,
-  getIsWalletConnected,
+  connectWallet,
   getStyledAmount,
   getWalletAddress,
-  getTransferFeeData,
-  transfer,
   GetWalletProvider,
-  stake,
+  getTransferFeeData,
+  getContractFeeData,
+  getIsWalletConnected,
   sendWalletTransaction,
 } from '~/utils/wallet';
+
 import {
-  fetchContractData, success, error,
+  error,
+  success,
+  fetchContractData,
 } from '~/utils/web3';
+
 import {
-  ERC20, WQStaking, WQStakingNative,
-} from '~/abi/abi';
+  ERC20,
+  WQStaking,
+  WQStakingNative,
+} from '~/abi/index';
+
 import {
-  PensionHistoryMethods, StakingTypes, tokenMap, TokenSymbols,
+  tokenMap,
+  TokenSymbols,
+  StakingTypes,
+  PensionHistoryMethods,
 } from '~/utils/enums';
+
 import {
-  getPensionDefaultData,
   getPensionWallet,
-  pensionContribute, pensionExtendLockTime,
   pensionsWithdraw,
   pensionUpdateFee,
+  pensionContribute,
+  pensionExtendLockTime,
+  getPensionDefaultData,
 } from '~/utils/wallet.js';
 
 export default {

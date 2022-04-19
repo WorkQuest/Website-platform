@@ -45,7 +45,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { WQPensionFund } from '~/abi/abi';
+import { WQPensionFund } from '~/abi/index';
 import { getWalletAddress } from '~/utils/wallet';
 import { TokenSymbols } from '~/utils/enums';
 

@@ -88,7 +88,7 @@ import { mapGetters } from 'vuex';
 import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { WQBorrowing, WQLending } from '~/abi/abi';
+import { WQBorrowing, WQLending } from '~/abi/index';
 import { Path } from '~/utils/enums';
 
 export default {
@@ -315,6 +315,7 @@ export default {
       .icon-chevron_left {
         font-size: 26px;
         color: #fff;
+
         &:before {
           color: #fff;
         }
@@ -352,6 +353,7 @@ export default {
         grid-template-columns: repeat(3, 1fr);
         grid-gap: 20px;
       }
+
       &__buttons {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -362,6 +364,7 @@ export default {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 20px;
+
         &_solo {
           grid-template-columns: auto;
         }
@@ -408,6 +411,7 @@ export default {
         font-size: 18px;
         line-height: 130%;
       }
+
       &__desc {
         font-weight: 400;
         font-size: 16px;
@@ -422,6 +426,7 @@ export default {
       &__couple {
         grid-template-rows: repeat(2, 1fr);
         grid-template-columns: unset;
+
         &_solo {
           grid-template-rows: auto;
         }
@@ -442,6 +447,7 @@ export default {
       .btn {
         justify-content: left;
       }
+
       .title {
         font-size: 38px;
         margin-bottom: 15px;
@@ -460,10 +466,12 @@ export default {
           grid-template-rows: repeat(2, 1fr);
           grid-template-columns: repeat(2, 1fr);
         }
+
         &_lend {
           grid-template-columns: auto;
         }
       }
+
       &__buttons {
         &_borrow {
           grid-template-columns: auto;
@@ -486,6 +494,7 @@ export default {
           grid-template-rows: repeat(3, 1fr);
         }
       }
+
       &__info-data {
         &_borrow {
           grid-template-columns: auto;

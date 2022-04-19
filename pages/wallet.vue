@@ -5,7 +5,7 @@
         <div class="wallet__nav">
           <span class="wallet__title">{{ $t('meta.wallet') }}</span>
           <div class="wallet__address">
-            <span class="user__wallet">{{ CutTxn(convertToBech32('wq',userWalletAddress), 8, 8) }}</span>
+            <span class="user__wallet">{{ CutTxn(convertToBech32('wq', userWalletAddress), 8, 8) }}</span>
             <button
               v-clipboard:copy="convertToBech32('wq',userWalletAddress)"
               v-clipboard:success="ClipboardSuccessHandler"
@@ -34,7 +34,7 @@
                   <span class="balance__usd-mobile_blue">
                     {{ $t('wallet.frozen') }}
                   </span>
-                  {{ $t('meta.coins.count.WQTCount', { count: Floor(frozenBalance) } ) }}
+                  {{ $t('meta.coins.count.WQTCount', {count: Floor(frozenBalance)}) }}
                 </span>
                 <base-dd
                   v-model="ddValue"
@@ -51,7 +51,7 @@
                   <span class="balance__usd">
                     {{ $t('wallet.frozen') }}
                   </span>
-                  {{ $t('meta.coins.count.WQTCount', { count: Floor(frozenBalance) }) }}
+                  {{ $t('meta.coins.count.WQTCount', {count: Floor(frozenBalance)}) }}
                 </span>
               </span>
             </div>
@@ -155,7 +155,7 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { ERC20 } from '~/abi/abi';
+import { ERC20 } from '~/abi/index';
 import {
   tokenMap, TokenSymbolByContract, TokenSymbols, WalletTables,
 } from '~/utils/enums';

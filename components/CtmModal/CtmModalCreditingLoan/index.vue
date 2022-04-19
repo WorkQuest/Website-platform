@@ -10,7 +10,7 @@
         <div class="content__body">
           <div class="content__field">
             <div class="content__label">
-              {{ $t('modals.howMuchTokensWouldYouLikeToLock', { token:$t('meta.coins.wusd') }) }}
+              {{ $t('modals.howMuchTokensWouldYouLikeToLock', {token: $t('meta.coins.wusd')}) }}
             </div>
             <div class="content__text content__text_small">
               {{ $t('modals.smallDescriptionForLoan') }}
@@ -69,7 +69,7 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import { getContractFeeData } from '~/utils/wallet';
-import { WQLending } from '~/abi/abi';
+import { WQLending } from '~/abi/index';
 
 export default {
   name: 'ModalCreditingLoan',
@@ -120,35 +120,42 @@ export default {
     background-color: transparent !important;
   }
 }
+
 .loan {
   max-width: 490px !important;
   height: auto !important;
-  padding: 0!important;
-  &__content{
+  padding: 0 !important;
+
+  &__content {
     padding: 25px 28px 30px 28px;
   }
 }
-  .buttons{
-    display: grid;
-    grid-template-columns: repeat(2, calc(50% - 10px));
-    grid-gap: 20px;
-    gap: 20px;
-    margin-top: 40px;
-  }
-.content{
-  &__field{
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(2, calc(50% - 10px));
+  grid-gap: 20px;
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.content {
+  &__field {
     margin-top: 3px;
   }
+
   &__label {
     margin-bottom: 5px;
   }
+
   &__text {
     color: #7C838D;
     font-weight: 400;
     font-size: 14px;
     margin-top: 3px;
+
     &_small {
-      margin-bottom:10px;
+      margin-bottom: 10px;
     }
   }
 }

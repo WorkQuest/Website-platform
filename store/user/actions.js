@@ -29,7 +29,7 @@ import {
   notificationEmployerFilterActions,
 } from '~/utils/enums';
 
-import { WQPromotion } from '~/abi/abi';
+import { WQPromotion } from '~/abi/index';
 
 const { WORKNET_PROMOTION } = process.env;
 
@@ -121,6 +121,7 @@ export default {
       console.log('!!!!!!!!!getters.getUserRole!!!!!!!!!!!!', userRole);
       await dispatch('getUserData');
     }
+
     async function setSender() {
       if (!notification.sender) {
         /** Worker && Employer */
@@ -138,6 +139,7 @@ export default {
         }
       }
     }
+
     async function updateQuests() {
       /* For update quest lists */
       const questListPathArray = [
@@ -166,6 +168,7 @@ export default {
         }
       }
     }
+
     async function updateProfile() {
       /* For update user profile */
       if (currentPath === `${Path.PROFILE}/${currentUserId}`) {
@@ -176,6 +179,7 @@ export default {
         await dispatch('getAllUserReviews', { userId: currentUserId, query });
       }
     }
+
     async function setAllNotificationsParams(currTitle, path, isExternalLink, externalBase) {
       notification.actionNameKey = `notifications.${action}`;
       notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
@@ -184,6 +188,7 @@ export default {
       };
       await setSender();
     }
+
     switch (action) {
       /** WORK-QUEST */
       case NotificationAction.QUEST_STARTED:

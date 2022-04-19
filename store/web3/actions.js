@@ -28,7 +28,7 @@ import {
   getPoolTotalSupplyBSC, getPoolTokensAmountBSC,
   error,
 } from '~/utils/web3';
-import * as abi from '~/abi/abi';
+import { ERC20 } from '~/abi/index';
 import { StakingTypes } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
@@ -129,12 +129,12 @@ export default {
     const { stakeTokenAddress } = stakingInfo;
     const { rewardTokenAddress } = stakingInfo;
     const [stakeDecimal, stakeSymbol, rewardDecimal, rewardSymbol, stakeBalance, rewardBalance] = await Promise.all([
-      fetchContractData('decimals', abi.ERC20, stakeTokenAddress),
-      fetchContractData('symbol', abi.ERC20, stakeTokenAddress),
-      fetchContractData('decimals', abi.ERC20, rewardTokenAddress),
-      fetchContractData('symbol', abi.ERC20, rewardTokenAddress),
-      fetchContractData('balanceOf', abi.ERC20, stakeTokenAddress, [getAccountAddress()]),
-      fetchContractData('balanceOf', abi.ERC20, rewardTokenAddress, [getAccountAddress()]),
+      fetchContractData('decimals', ERC20, stakeTokenAddress),
+      fetchContractData('symbol', ERC20, stakeTokenAddress),
+      fetchContractData('decimals', ERC20, rewardTokenAddress),
+      fetchContractData('symbol', ERC20, rewardTokenAddress),
+      fetchContractData('balanceOf', ERC20, stakeTokenAddress, [getAccountAddress()]),
+      fetchContractData('balanceOf', ERC20, rewardTokenAddress, [getAccountAddress()]),
     ]);
     const payload = {
       userPurse: {
@@ -154,12 +154,12 @@ export default {
 
   async initTokensData({ commit }) {
     const [oldTokenDecimal, oldTokenSymbol, oldTokenBalance, newTokenDecimal, newTokenSymbol, newTokenBalance] = await Promise.all([
-      fetchContractData('decimals', abi.ERC20, process.env.BSC_OLD_WQT_TOKEN),
-      fetchContractData('symbol', abi.ERC20, process.env.BSC_OLD_WQT_TOKEN),
-      fetchContractData('balanceOf', abi.ERC20, process.env.BSC_OLD_WQT_TOKEN, [getAccountAddress()]),
-      fetchContractData('decimals', abi.ERC20, process.env.BSC_WQT_TOKEN),
-      fetchContractData('symbol', abi.ERC20, process.env.BSC_WQT_TOKEN),
-      fetchContractData('balanceOf', abi.ERC20, process.env.BSC_WQT_TOKEN, [getAccountAddress()]),
+      fetchContractData('decimals', ERC20, process.env.BSC_OLD_WQT_TOKEN),
+      fetchContractData('symbol', ERC20, process.env.BSC_OLD_WQT_TOKEN),
+      fetchContractData('balanceOf', ERC20, process.env.BSC_OLD_WQT_TOKEN, [getAccountAddress()]),
+      fetchContractData('decimals', ERC20, process.env.BSC_WQT_TOKEN),
+      fetchContractData('symbol', ERC20, process.env.BSC_WQT_TOKEN),
+      fetchContractData('balanceOf', ERC20, process.env.BSC_WQT_TOKEN, [getAccountAddress()]),
     ]);
     const payload = {
       userPurse: {

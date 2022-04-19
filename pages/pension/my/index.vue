@@ -205,7 +205,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { WQPensionFund } from '~/abi/abi';
+import { WQPensionFund } from '~/abi/index';
 import modals from '~/store/modals/modals';
 import { getStyledAmount, getWalletAddress } from '~/utils/wallet';
 import { PensionHistoryMethods, TokenSymbols, ExplorerUrl } from '~/utils/enums';
