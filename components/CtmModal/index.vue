@@ -184,9 +184,7 @@ export default {
     [modals.referralClaim]: CtmModalReferralClaim,
     [modals.valueSend]: CtmModalValueSend,
   },
-  data: () => ({
-    modals,
-  }),
+  data: () => ({ modals }),
   computed: {
     ...mapGetters({
       isShow: 'modals/getIsShow',
