@@ -8,8 +8,8 @@
       "title": "选择优先级",
       "all": "所有优先级",
       "fixedDelivery": "低",
-      "shortTerm": "普通",
-      "urgent": "紧急",
+      "shortTerm": "Short term 1 week",
+      "urgent": "Urgent 24-72h",
       "employee": {
         "urgent": "Urgent execution"
       }
@@ -50,6 +50,7 @@
       "hours": "{count} minute | {count} minutes | {count} hours",
       "years": "{count} year | {count} years | {count} years",
       "days": "{count} day | {count} days | {count} days",
+      "daysLeft": "{count} days left",
       "votesCount": "{count} 票",
       "distance": {
         "m": "m"
@@ -374,7 +375,7 @@
       "verified": "Verified",
       "reliable": "Reliable",
       "topRanked": "Top ranked",
-      "noStatus" : "Not rated"
+      "noStatus": "Not rated"
     },
     "distantWork": {
       "title": "远程工作",
@@ -947,7 +948,8 @@
       "withdraw": "Withdraw",
       "sendTo": "发送到",
       "withdrawCard": "提款到银行卡",
-      "withdrawInfo": "Withdrawal info"
+      "withdrawInfo": "Withdrawal info",
+      "downloadApp": "Download App"
     },
     "errors": {
       "errorQuests": "Error with quests",
@@ -956,7 +958,8 @@
       "error": "Error",
       "errorNetwork": "Error, you use not correct network. Switch to {network}",
       "youCan’tDeleteActiveQuest": "You can’t delete active quest",
-      "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
+      "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest",
+      "dontHavePeople": "You don't have people to chat"
     },
     "chatCreate": {
       "title": "Create chat",
@@ -1120,7 +1123,7 @@
     "tempForRemove2": "1 BNB = ... WQT",
     "currentPoolSize": "当前池大小",
     "yourPoolShare": "您的池份额",
-    "howMuchEthWouldYouLikeToLock": "您希望将多少 ETH 锁定到您的帐户？",
+    "howMuchTokensWouldYouLikeToLock": "您希望将多少 {token} 锁定到您的帐户？",
     "collateralization": "抵押",
     "liquidationPrice": "清算价格",
     "currentPrice": "时价",
@@ -1205,7 +1208,15 @@
     "txInfo": "Transaction info",
     "registration": "Are you sure to registration this users?",
     "claimConfirm": "Are you confirm the action of the claim?",
-    "until": "Until"
+    "until": "Until",
+    "scanQrCode": "You just need to scan the QR-code",
+    "downOnSmartphone": "Download Work Quest app on your smartphone",
+    "successfulMethods": {
+      "claim": "Successful claim",
+      "refund": "Successful refund",
+      "withdraw": "Successful withdrawal",
+      "deposit": "Successful deposit"
+    }
   },
   "ui": {
     "jobQuestors": "求职者",
@@ -1707,10 +1718,14 @@
     "description": "???",
     "currentLoan": "???",
     "currentCredit": "???",
+    "dueDate": "Due date",
+    "chooseSource": "Choose the source",
+    "chosenSource": "Chosen source",
     "marketSize": "市场规模",
     "wantToTakeALoan": "想贷款吗？",
     "borrow": "借款",
     "myLoans": "???",
+    "needRefund": "Need to refund",
     "refund": "???",
     "openPositions": "未平头寸",
     "totalCollateralLocked": "锁定的抵押总额",

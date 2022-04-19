@@ -1,0 +1,119 @@
+<template>
+  <ctm-modal-box
+    class="ctm-modal-download"
+    :class="checkIfMobile()? 'ctm-modal-download-mobile':'ctm-modal-download-desktop'"
+    :title="$t('modals.titles.downloadApp')"
+  >
+    <div class="ctm-modal__content">
+      <div class="ctm-modal__desc">
+        {{ checkIfMobile() ? $t('modals.downOnSmartphone') : $t('modals.scanQrCode') }}
+      </div>
+      <div
+        v-if="checkIfMobile()"
+        class="links"
+      >
+        <div class="links__big">
+          <a
+            v-for="item in marketLinks"
+            :key="item.key"
+            :class="`links__store links__store_${item.key}`"
+            :href="item.href"
+          />
+        </div>
+      </div>
+      <div
+        v-else
+        class="qrCode"
+      >
+        <div class="qrCode__pic" />
+      </div>
+    </div>
+  </ctm-modal-box>
+</template>
+
+<script>
+import { URLS } from '~/utils/footer-constants';
+
+export default {
+  name: 'CtmModalDownloadApp',
+  data() {
+    return {
+    };
+  },
+  computed: {
+    marketLinks() {
+      return [
+        { key: 'app-store', href: URLS.STORES.APP_STORE },
+        { key: 'play-market', href: URLS.STORES.PLAY_MARKET },
+      ];
+    },
+  },
+  mounted() {
+    this.$cookies.set('downloadAppDisplayed', true, { path: '/' });
+  },
+
+};
+</script>
+
+<style lang="scss" scoped>
+.ctm-modal {
+  &__desc {
+    text-align: center;
+  }
+}
+.ctm-modal-download {
+  display: flex;
+  align-items: center;
+ &-mobile {
+   max-width: 343px !important;
+ }
+  &-desktop{
+    max-width: 382px !important;
+  }
+  &::v-deep{
+    .ctm-modal__content{
+    padding-top: 10px;
+    }
+    .ctm-modal__title{
+      margin: 0 auto;
+    }
+    .ctm-modal__desc{
+      color: $black600;
+      font-weight: 400;
+    }
+  }
+}
+.links{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 25px;
+  gap: 10px;
+  &__big {
+    display: flex;
+    grid-gap: 10px;
+  }
+  &__store {
+    width: 151px;
+    height: 56px;
+    &_app-store {
+      background-size: 100% 100%;
+      background-image: url('/img/app/app_store_button.svg');
+    }
+    &_play-market {
+      background-size: 100% 100%;
+      background-image: url('/img/app/play_market_button.svg');
+    }
+  }
+}
+.qrCode {
+  width: 180px;
+  height: 180px;
+  margin: 25px auto 0;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid $black200;
+  background-image: url('/img/app/qrcode.png');
+  background-size: 100% 100%;
+}
+</style>

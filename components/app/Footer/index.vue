@@ -204,7 +204,7 @@ export default {
           { title: this.$t('footer.DeFi.referral'), path: Path.REFERRAL },
           { title: this.$t('footer.DeFi.P2P'), path: Path.INSURING },
           { title: this.$t('footer.DeFi.savingsProduct'), path: Path.SAVINGS },
-          { title: this.$t('footer.DeFi.lending'), path: Path.CREDITING },
+          { title: this.$t('footer.DeFi.lending'), path: Path.LENDING },
         ],
         secondColumn: [
           { title: this.$t('meta.liquidityMining'), path: Path.MINING },

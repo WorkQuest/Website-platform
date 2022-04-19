@@ -41,7 +41,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalConfirmDetails',
@@ -57,19 +56,10 @@ export default {
     hide() {
       this.CloseModal();
     },
-    openStatusModal() {
-      const {
-        dataForStatusModal: {
-          img, title, subtitle, path,
-        },
-      } = this.options;
-      this.ShowModal({
-        key: modals.status,
-        img,
-        title,
-        subtitle,
-        path,
-      });
+    async openStatusModal() {
+      const { submit } = this.options;
+      this.CloseModal();
+      await submit();
     },
   },
 };

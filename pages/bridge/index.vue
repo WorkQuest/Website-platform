@@ -174,6 +174,7 @@ import modals from '~/store/modals/modals';
 import { Chains } from '~/utils/enums';
 import { BridgeAddresses, SwapAddresses } from '~/utils/bridge-constants';
 import { getChainIdByChain } from '~/utils/web3';
+import { images } from '~/utils/images';
 
 export default {
   name: 'Bridge',
@@ -321,7 +322,7 @@ export default {
         return ok;
       }
       if (!isCorrectNetwork && !isMetaMask) {
-        this.ShowModalFail(this.$t('modals.errors.errorNetwork', { network: chain }));
+        this.ShowModalFail({ title: this.$t('modals.errors.errorNetwork', { network: chain }) });
         return false;
       }
       return true;
@@ -333,9 +334,9 @@ export default {
         const { ok } = await this.redeem({ signData, chainTo });
 
         if (ok) {
-          this.ShowModalSuccess(this.$t('modals.redeem.success'));
+          this.ShowModalSuccess({ title: this.$t('modals.redeem.success') });
           await this.swapsTableData();
-        } else this.ShowModalFail(this.$t('modals.redeem.fail'));
+        } else this.ShowModalFail({ title: this.$t('modals.redeem.fail') });
       }
 
       this.SetLoader(false);
@@ -377,7 +378,7 @@ export default {
 
                 this.ShowModal({
                   key: modals.status,
-                  img: !ok ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
+                  img: !ok ? images.WARNING : images.SUCCESS,
                   title: !ok ? this.$t('modals.transactionFail') : this.$t('modals.transactionSent'),
                   link: `${from.explorer}/tx/${result?.transactionHash}`,
                 });

@@ -19,7 +19,9 @@ import {
 import {
   ERC20, WQStaking, WQStakingNative,
 } from '~/abi/abi';
-import { PensionHistoryMethods, StakingTypes, TokenSymbols } from '~/utils/enums';
+import {
+  PensionHistoryMethods, StakingTypes, tokenMap, TokenSymbols,
+} from '~/utils/enums';
 import {
   getPensionDefaultData,
   getPensionWallet,
@@ -46,7 +48,11 @@ export default {
   },
   async getTransactions({ commit }, params) {
     try {
-      const { data } = await this.$axios({ url: `/account/${getWalletAddress()}/transactions`, baseURL: process.env.WQ_EXPLORER, params });
+      const { data } = await this.$axios({
+        url: `/account/${getWalletAddress()}/transactions`,
+        baseURL: process.env.WQ_EXPLORER,
+        params,
+      });
       commit('setTransactions', data.result.transactions);
       commit('setTransactionsCount', data.result.count);
     } catch (e) {
@@ -152,7 +158,7 @@ export default {
   async transferToken({ commit }, payload) {
     const res = await sendWalletTransaction('transfer', payload);
     // TODO fix it, sendWalletTransaction should return object with keys ok and result
-    if (res.ok) return error(res);
+    if (res.ok === false) return error(res);
     return success(res);
   },
   /**
@@ -396,6 +402,23 @@ export default {
       return success(await sendWalletTransaction('autoRenewal', { abi, address: poolAddress }));
     } catch (e) {
       console.error('Renewal error', e.message);
+      return error();
+    }
+  },
+  async approveRouter({ commit, dispatch }, { symbol, spenderAddress, value }) {
+    const tokenAddress = tokenMap[symbol];
+    try {
+      const allowance = await dispatch('getAllowance', { tokenAddress, spenderAddress });
+      if (new BigNumber(allowance).isLessThanOrEqualTo(value)) {
+        return await dispatch('approve', {
+          tokenAddress,
+          spenderAddress,
+          amount: value,
+        });
+      }
+      return true;
+    } catch (e) {
+      console.error('approveRouter error', e.message);
       return error();
     }
   },

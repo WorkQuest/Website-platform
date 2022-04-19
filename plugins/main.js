@@ -5,6 +5,7 @@ import converter from 'bech32-converting';
 import modals from '~/store/modals/modals';
 import { TokenSymbols } from '~/utils/enums';
 import { QuestMethods, QuestStatuses } from '~/utils/quests-constants';
+import { images } from '~/utils/images';
 
 Vue.use(VueTippy);
 Vue.component('tippy', TippyComponent);
@@ -267,20 +268,41 @@ Vue.mixin({
 
     ScrollToTop: () => window.scrollTo(0, 0),
     IsProd: () => process.env.PROD === 'true',
-    ShowModalSuccess(title = '') {
+    ShowModalSuccess({
+      title, subtitle, img, path,
+    }) {
       this.ShowModal({
         key: modals.status,
-        img: require('~/assets/img/ui/success.svg'),
+        img: img || images.SUCCESS,
         title: title || this.$t('modals.meta.success'),
+        subtitle,
+        path,
       });
     },
-    ShowModalFail(title = '') {
-      console.log(title);
+    ShowModalFail({
+      title, subtitle, img, path,
+    }) {
       this.ShowModal({
         key: modals.status,
-        img: require('~/assets/img/ui/warning.svg'),
+        img: img || images.WARNING,
         title: title || this.$t('modals.meta.fail'),
+        subtitle,
+        path,
       });
+    },
+    checkIfMobile() {
+      const toMatch = [
+        /Android/i,
+        /webOS/i,
+        /iPhone/i,
+        /iPad/i,
+        /iPod/i,
+        /BlackBerry/i,
+        /Windows Phone/i,
+        /Opera Mini/i,
+      ];
+
+      return toMatch.some((toMatchItem) => navigator.userAgent.match(toMatchItem));
     },
   },
 });

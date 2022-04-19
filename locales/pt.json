@@ -8,8 +8,8 @@
       "title": "Selecionar prioridade",
       "all": "Todas as prioridades",
       "fixedDelivery": "Entrega fixa",
-      "shortTerm": "Curto prazo",
-      "urgent": "Urgente",
+      "shortTerm": "Short term 1 semana",
+      "urgent": "Urgente 24-72 horas ",
       "employee": {
         "urgent": "Urgent execution"
       }
@@ -50,6 +50,7 @@
       "hours": "{count} minute | {count} minutes | {count} hours",
       "years": "{count} year | {count} years | {count} years",
       "days": "{count} day | {count} days | {count} days",
+      "daysLeft": "{count} days left",
       "votesCount": "{count} votes",
       "distance": {
         "m": "m"
@@ -374,7 +375,7 @@
       "verified": "Verified",
       "reliable": "Reliable",
       "topRanked": "Top ranked",
-      "noStatus" : "Not rated"
+      "noStatus": "Not rated"
     },
     "distantWork": {
       "title": "Trabalho remoto",
@@ -947,7 +948,8 @@
       "withdraw": "Withdraw",
       "sendTo": "Enviar para",
       "withdrawCard": "Levantar para cartão bancário",
-      "withdrawInfo": "Withdrawal info"
+      "withdrawInfo": "Withdrawal info",
+      "downloadApp": "Download App"
     },
     "errors": {
       "errorQuests": "Error with quests",
@@ -956,7 +958,8 @@
       "error": "Error",
       "errorNetwork": "Error, you use not correct network. Switch to {network}",
       "youCan’tDeleteActiveQuest": "You can’t delete active quest",
-      "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
+      "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest",
+      "dontHavePeople": "You don't have people to chat"
     },
     "chatCreate": {
       "title": "Create chat",
@@ -1120,7 +1123,7 @@
     "tempForRemove2": "1 BNB = ... WQT",
     "currentPoolSize": "Tamanho atual do pool",
     "yourPoolShare": "A sua quota do pool",
-    "howMuchEthWouldYouLikeToLock": "Qual o montante de ETH que gostaria de bloquear na sua conta?",
+    "howMuchTokensWouldYouLikeToLock": "Qual o montante de {token} que gostaria de bloquear na sua conta?",
     "collateralization": "Colateralização",
     "liquidationPrice": "Preço de liquidação",
     "currentPrice": "Preço atual",
@@ -1205,7 +1208,15 @@
     "txInfo": "Transaction info",
     "registration": "Are you sure to registration this users?",
     "claimConfirm": "Are you confirm the action of the claim?",
-    "until": "Until"
+    "until": "Until",
+    "scanQrCode": "You just need to scan the QR-code",
+    "downOnSmartphone": "Download Work Quest app on your smartphone",
+    "successfulMethods": {
+      "claim": "Successful claim",
+      "refund": "Successful refund",
+      "withdraw": "Successful withdrawal",
+      "deposit": "Successful deposit"
+    }
   },
   "ui": {
     "jobQuestors": "Questores de emprego",
@@ -1707,10 +1718,14 @@
     "description": "???",
     "currentLoan": "???",
     "currentCredit": "???",
+    "dueDate": "Due date",
+    "chooseSource": "Choose the source",
+    "chosenSource": "Chosen source",
     "marketSize": "Tamanho do mercado",
     "wantToTakeALoan": "Quer contrair um empréstimo?",
     "borrow": "Pedido de empréstimo",
     "myLoans": "???",
+    "needRefund": "Need to refund",
     "refund": "???",
     "openPositions": "Posições abertas",
     "totalCollateralLocked": "Garantia total bloqueada",
