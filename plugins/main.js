@@ -32,6 +32,15 @@ Vue.mixin({
       let payload;
       const KYC = this.$cookies.get(LocalNotificationAction.TWOFA);
       const TWOFA = this.$cookies.get(LocalNotificationAction.KYC);
+      // TODO: Добавить локализацию
+      payload = {
+        id: '1',
+        action: LocalNotificationAction.WIKI,
+        message: 'You can get acquainted with all the functionality of the platform on the WorkQuest Wiki page!',
+        actionBtn: 'Go to Wiki',
+      };
+      if (!KYC) this.$cookies.set(LocalNotificationAction.KYC, this.statusKYC !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
+      await this.$store.dispatch('notifications/createLocalNotification', payload);
       if (this.statusKYC === SumSubStatuses.NOT_VERIFIED) {
         // TODO: Добавить локализацию
         payload = {
@@ -49,7 +58,7 @@ Vue.mixin({
           id: '2',
           action: LocalNotificationAction.TWOFA,
           message: 'Please, enable 2FA!',
-          actionBtn: 'Enable 2FA in Settings',
+          actionBtn: 'Enable 2FA',
         };
         if (!TWOFA) this.$cookies.set(LocalNotificationAction.TWOFA, this.status2FA !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
         await this.$store.dispatch('notifications/createLocalNotification', payload);

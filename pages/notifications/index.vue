@@ -101,7 +101,7 @@
                 data-selector="NOTIFICATION-VIEW"
                 @click="notification.params.isExternalLink ? '' : goToEvent(notification.params.path)"
               >
-                {{ $t('meta.btns.view') }}
+                {{ actionBtnText(notification) }}
               </base-btn>
             </div>
           </div>
@@ -164,6 +164,9 @@ export default {
     this.$store.commit('notifications/setNotifications', { result: { notifications: [], count: this.notifsCount } });
   },
   methods: {
+    actionBtnText(notification) {
+      return notification.notification.actionBtn ?? this.$t('meta.btns.view');
+    },
     avatar(notification) {
       return notification.sender?.avatar?.url || this.EmptyAvatar();
     },

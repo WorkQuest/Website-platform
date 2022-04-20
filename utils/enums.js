@@ -155,6 +155,7 @@ export const NotificationAction = {
 export const LocalNotificationAction = {
   KYC: 'kyc',
   TWOFA: '2fa',
+  WIKI: 'wiki',
 };
 
 // TODO: Временно, новые ивенты с большой буквы

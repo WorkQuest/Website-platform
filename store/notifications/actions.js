@@ -226,6 +226,10 @@ export default {
         break;
       }
 
+      case LocalNotificationAction.WIKI:
+        await setAllNotificationsParams(title, `${Path.WIKI}`, false, '', true);
+        break;
+
       case LocalNotificationAction.KYC:
         await setAllNotificationsParams(title, `${Path.SUMSUB}`, false, '', true);
         break;
