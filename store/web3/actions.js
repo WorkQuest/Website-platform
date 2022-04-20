@@ -116,6 +116,7 @@ export default {
 
   async initContract({ commit }) {
     const { stakingAddress, stakingAbi } = getStakingDataByType(StakingTypes.MINING);
+    console.log('initContract', stakingAddress);
     const stakingInfo = await fetchContractData('getStakingInfo', stakingAbi, stakingAddress);
     const { stakeTokenAddress } = stakingInfo;
     const { rewardTokenAddress } = stakingInfo;
@@ -127,6 +128,7 @@ export default {
       fetchContractData('balanceOf', ERC20, stakeTokenAddress, [getAccountAddress()]),
       fetchContractData('balanceOf', ERC20, rewardTokenAddress, [getAccountAddress()]),
     ]);
+    console.log(stakeBalance, rewardBalance);
     const payload = {
       userPurse: {
         address: getAccountAddress(),

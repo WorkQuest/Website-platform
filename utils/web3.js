@@ -73,6 +73,7 @@ export const getChainIdByChain = (chain) => {
     case Chains.WORKNET:
       return ChainsId.WORKNET_TEST;
     default:
+      console.log(chain);
       throw error(-1, `wrong chain name: ${chain} ${Chains.BINANCE} ${Chains.ETHEREUM}`);
   }
 };

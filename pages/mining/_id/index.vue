@@ -386,15 +386,19 @@ export default {
   },
   watch: {
     async isConnected(newValue) {
-      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.chain);
-      if (newValue && rightChain) {
-        await this.$store.dispatch('web3/initContract');
+      if (!newValue) await this.resetPoolData();
+      else {
+        await this.checkNetwork(this.chain);
         await this.tokensDataUpdate();
-        this.updateInterval = setInterval(() => this.tokensDataUpdate(), 60000);
-      } else {
-        await this.resetPoolData();
-        clearInterval(this.updateInterval);
       }
+      // const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.chain);
+      // const rightChain = await this.checkNetwork({ chain: this.chain });
+      // if (newValue && await this.checkNetwork({ chain: this.chain })) {
+      // await this.$store.dispatch('web3/initContract');
+      // await this.tokensDataUpdate();
+      // } else {
+      //   await this.resetPoolData();
+      // }
     },
     async page() {
       const { limit, chain: pool } = this;
@@ -532,9 +536,9 @@ export default {
 
     async tokensDataUpdate() {
       const { chain } = this;
-      let { isUpdatingData } = this;
 
-      isUpdatingData = true;
+      this.isUpdatingData = true;
+      console.log('tokensDataUpdate');
       await this.fetchPoolData({ chain });
 
       if (+this.staked > 0) {
@@ -544,14 +548,12 @@ export default {
         });
       }
 
-      isUpdatingData = false;
+      this.isUpdatingData = false;
     },
     async claimRewards() {
       this.SetLoader(true);
       if (this.claim > 0) {
-        await this.tokensDataUpdate();
         await this.$store.dispatch('web3/claimRewards', { stakingType: StakingTypes.MINING });
-        await this.tokensDataUpdate();
       } else {
         this.ShowModal({
           key: modals.status,

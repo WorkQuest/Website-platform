@@ -42,19 +42,17 @@ BigNumber.config({ EXPONENTIAL_AT: 60 });
  * amount1 - pool's token
  */
 function prepareDataForSwapsTable(swaps) {
-  const arr = [];
-  swaps.forEach((swap) => {
+  return swaps.map((swap) => {
     const isOut = swap.amount0In === '0';
-    arr.push({
+    return {
       isOut,
       totalValue: swap.amountUSD,
       amount0: isOut ? swap.amount0Out : swap.amount0In,
       amount1: isOut ? swap.amount1In : swap.amount1Out,
       account: swap.to,
       timestamp: swap.timestamp || swap.transaction.timestamp,
-    });
+    };
   });
-  return arr;
 }
 
 export default {
@@ -191,12 +189,14 @@ export default {
   async fetchPoolData({ commit }, { chain }) {
     try {
       const { stakingAddress, stakingAbi } = Pool.get(chain);
+      console.log('fetchPoolData', stakingAddress);
       const { _balance, staked_, claim_ } = await fetchContractData(
         'getInfoByAddress',
         stakingAbi,
         stakingAddress,
         [getAccountAddress()],
       );
+      console.log(_balance, staked_, claim_);
       commit('setPoolData', {
         balance: new BigNumber(_balance).shiftedBy(-18).toString(),
         staked: new BigNumber(staked_).shiftedBy(-18).toString(),
