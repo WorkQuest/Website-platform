@@ -20,9 +20,20 @@
           :name="$t('signUp.password')"
           class="confirm__password"
           rules="required_if|min:8"
-          type="password"
+          :type="isPasswordVisible?'text':'password'"
           vid="confirmation"
-        />
+        >
+          <template
+            v-if="password"
+            v-slot:right-absolute
+            class="field__block"
+          >
+            <btn-password-visibility
+              :is-password-visible="isPasswordVisible"
+              @toggleVisibility="isPasswordVisible = $event"
+            />
+          </template>
+        </base-field>
         <base-field
           v-else
           v-model="mnemonic"
@@ -30,8 +41,19 @@
           data-selector="MNEMONIC"
           :placeholder="$t('createWallet.secretPhrase')"
           :name="$t('createWallet.secretPhrase')"
-          :type="mnemonicInputType"
-        />
+          :type="isMnemonicVisible?'text':'password'"
+        >
+          <template
+            v-if="mnemonic"
+            v-slot:right-absolute
+            class="field__block"
+          >
+            <btn-password-visibility
+              :is-password-visible="isMnemonicVisible"
+              @toggleVisibility="isMnemonicVisible = $event"
+            />
+          </template>
+        </base-field>
         <div
           v-if="isImportWallet"
           class="confirm__visibility"
@@ -75,11 +97,12 @@ export default {
       context: 'default',
       toDecrypt: null,
       counter: 1,
+      isPasswordVisible: false,
 
       isImportWallet: false,
       isShowMnemonic: false,
       mnemonic: '',
-      mnemonicInputType: 'password',
+      isMnemonicVisible: false,
     };
   },
   computed: {
@@ -89,11 +112,6 @@ export default {
       callbackLayout: 'wallet/getCallbackLayout',
       isOnlyConfirm: 'wallet/getIsOnlyConfirm',
     }),
-  },
-  watch: {
-    isShowMnemonic(newVal) {
-      this.mnemonicInputType = newVal ? 'text' : 'password';
-    },
   },
   beforeCreate() {
     if (!this.$cookies.get('userLogin')) {
