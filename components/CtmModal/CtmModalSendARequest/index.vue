@@ -113,7 +113,10 @@ export default {
       if (ok) {
         await this.$store.dispatch('quests/getQuest', this.$route.params.id);
         this.ShowModal({
-          key: modals.requestSend,
+          key: modals.status,
+          img: require('assets/img/ui/message.svg'),
+          title: this.$t('modals.titles.requestSend'),
+          subtitle: this.$t('modals.waitResponseFromEmployer'),
         });
       } else this.CloseModal();
     },

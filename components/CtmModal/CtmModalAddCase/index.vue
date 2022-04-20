@@ -3,6 +3,7 @@
     class="message"
     :title="$tc('modals.titles.addCase')"
   >
+    <!--    TODO: Оптимизировать!-->
     <!--    TODO: Поменять загрузчик-->
     <div class="ctm-modal__content">
       <div class="message">
@@ -176,7 +177,10 @@ export default {
     },
     showRequestSendModal() {
       this.ShowModal({
-        key: modals.requestSend,
+        key: modals.status,
+        img: require('assets/img/ui/message.svg'),
+        title: this.$t('modals.titles.requestSend'),
+        subtitle: this.$t('modals.waitResponseFromEmployer'),
       });
     },
   },

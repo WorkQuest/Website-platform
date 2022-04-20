@@ -17,6 +17,8 @@ import modals from '@/store/modals/modals';
 export default {
   name: 'ModalBox',
   components: {
+    [modals.messageSend]: () => import('./CtmModalMessageSend'),
+    [modals.status]: () => import('./CtmModalStatus'),
     [modals.downloadApp]: () => import('./CtmModalDownloadApp'),
     [modals.collateralTransaction]: () => import('./CtmModalCollateralTransaction'),
     [modals.neededToEnable2FA]: () => import('./CtmModalNeededToEnable2FA'),
@@ -30,9 +32,7 @@ export default {
     [modals.changePassword]: () => import('./CtmModalChangePassword'),
     [modals.privacy]: () => import('./CtmModalPrivacy'),
     [modals.skills]: () => import('./CtmModalSkills'),
-    [modals.messageSend]: () => import('./CtmModalMessageSend'),
     [modals.sendARequest]: () => import('./CtmModalSendARequest'),
-    [modals.requestSend]: () => import('./CtmModalRequestSend'),
     [modals.questAgreed]: () => import('./CtmModalQuestAgreed'),
     [modals.transactionSend]: () => import('./CtmModalThanksSend'),
     [modals.cardHasBeenAdded]: () => import('./CtmModalCardHasBeenAdded'),
@@ -49,7 +49,6 @@ export default {
     [modals.makeDeposit]: () => import('./CtmModalMakeDeposit'),
     [modals.changePercent]: () => import('./CtmModalChangePercent'),
     [modals.openADeposit]: () => import('./CtmModalOpenADeposit'),
-    [modals.status]: () => import('./CtmModalStatus'),
     [modals.addLiquidity]: () => import('./CtmModalAddLiquidity'),
     [modals.removeLiquidity]: () => import('./CtmModalRemoveLiquidity'),
     [modals.creditingDeposit]: () => import('./CtmModalCreditingDeposit'),

@@ -8,7 +8,6 @@ export default {
   skills: 'skills',
   messageSend: 'messageSend',
   sendARequest: 'sendARequest',
-  requestSend: 'requestSend',
   questAgreed: 'questAgreed',
   transactionSend: 'transactionSend',
   cardHasBeenAdded: 'cardHasBeenAdded',
