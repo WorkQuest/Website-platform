@@ -14,13 +14,16 @@ import { Pool } from '~/utils/Constants/mining';
 
 import {
   error,
+  success,
+  showToast,
+  createInstance,
   fetchContractData,
   getAccountAddress,
-  getPoolTokensAmountBSC,
-  getPoolTotalSupplyBSC,
   initStackingContract,
-  success,
+  getPoolTotalSupplyBSC,
+  getPoolTokensAmountBSC,
 } from '~/utils/web3';
+import { ERC20, WQTExchange } from '~/abi';
 
 BigNumber.config({ EXPONENTIAL_AT: 60 });
 
@@ -287,6 +290,38 @@ export default {
       claim: null,
     });
     commit('setAPY', 0);
+  },
+
+  async fetchTokenInfo({ dispatch }, tokenAddress) {
+    const { ok, result } = await dispatch('web3/fetchTokenInfo', tokenAddress, { root: true });
+    return ok ? result : { balance: 0, decimals: 0, symbol: '' };
+  },
+
+  async swapOldTokens({ _ }, { decimals, amount }) {
+    try {
+      const _tokenInstance = await createInstance(ERC20, process.env.BSC_OLD_WQT_TOKEN);
+      const _exchangeInstance = await createInstance(WQTExchange, process.env.BSC_WQT_EXCHANGE);
+
+      const _allowance = await _tokenInstance.allowance(account.address, process.env.BSC_WQT_EXCHANGE);
+      const _amount = new BigNumber(amount.toString()).shiftedBy(+decimals).toString();
+
+      if (new BigNumber(_allowance.toString()).isLessThan(_amount)) {
+        await store.dispatch('main/setStatusText', 'Approving');
+        showToast('Swapping', 'Approving...', 'success');
+        await _tokenInstance.approve(process.env.BSC_WQT_EXCHANGE, _amount);
+        showToast('Swapping', 'Approving done', 'success');
+      }
+
+      showToast('Swapping', 'Swapping...', 'success');
+      await _exchangeInstance.swap(_amount);
+      await store.dispatch('main/setStatusText', 'Swapping');
+      showToast('Swapping', 'Swapping done', 'success');
+
+      return success(true);
+    } catch (e) {
+      showToast('Swapping error', `${e.message}`, 'danger');
+      return error(500, 'stake error', e);
+    }
   },
 
 };

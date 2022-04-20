@@ -11,7 +11,6 @@ import {
   showToast,
   staking,
   unStaking,
-  swap,
   getAccount,
   getStakingDataByType,
   handleMetamaskStatus,
@@ -144,29 +143,22 @@ export default {
     commit('setAccountData', payload);
   },
 
-  async initTokensData({ commit }) {
-    const [oldTokenDecimal, oldTokenSymbol, oldTokenBalance, newTokenDecimal, newTokenSymbol, newTokenBalance] = await Promise.all([
-      fetchContractData('decimals', ERC20, process.env.BSC_OLD_WQT_TOKEN),
-      fetchContractData('symbol', ERC20, process.env.BSC_OLD_WQT_TOKEN),
-      fetchContractData('balanceOf', ERC20, process.env.BSC_OLD_WQT_TOKEN, [getAccountAddress()]),
-      fetchContractData('decimals', ERC20, process.env.BSC_WQT_TOKEN),
-      fetchContractData('symbol', ERC20, process.env.BSC_WQT_TOKEN),
-      fetchContractData('balanceOf', ERC20, process.env.BSC_WQT_TOKEN, [getAccountAddress()]),
-    ]);
-    const payload = {
-      userPurse: {
-        address: getAccountAddress(),
-        oldTokenBalance: new BigNumber(oldTokenBalance).shiftedBy(-oldTokenDecimal).toString(),
-        oldTokenSymbol,
-        newTokenBalance: new BigNumber(newTokenBalance).shiftedBy(-newTokenDecimal).toString(),
-        newTokenSymbol,
-      },
-      decimals: {
-        oldTokenDecimal,
-        newTokenDecimal,
-      },
-    };
-    commit('setBSCTokensData', payload);
+  async fetchTokenInfo({ commit }, tokenAddress) {
+    try {
+      const [balance, decimals, symbol] = await Promise.all([
+        fetchContractData('balanceOf', ERC20, tokenAddress, [getAccountAddress()]),
+        fetchContractData('decimals', ERC20, tokenAddress),
+        fetchContractData('symbol', ERC20, tokenAddress),
+      ]);
+      return success({
+        balance,
+        decimals,
+        symbol,
+      });
+    } catch (e) {
+      console.error('Error in fetchTokenInfo:', e);
+      return error();
+    }
   },
 
   async getTokensData({ commit }) {
@@ -201,9 +193,6 @@ export default {
   async claimRewards({ commit }, { stakingType }) {
     const { stakingAddress, stakingAbi } = getStakingDataByType(stakingType);
     return await claimRewards(stakingAddress, stakingAbi);
-  },
-  async swap({ commit }, { decimals, amount }) {
-    return await swap(decimals, amount);
   },
   async goToChain({ commit }, { chain }) {
     return await goToChain(chain);

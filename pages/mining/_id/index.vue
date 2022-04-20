@@ -56,6 +56,7 @@
               :data-selector="btn.dataSelector"
               :mode="btn.mode"
               :link="btn.link "
+              :disabled="btn.disabled"
               @click="btn.action"
             >
               {{ $t(btn.title) }}
@@ -567,6 +568,9 @@ export default {
       if (await this.checkNetwork(chain)) {
         this.ShowModal({
           key: modals.swapTokens,
+          submit: async (amount) => {
+            console.log('swap', amount);
+          },
         });
       }
     },
