@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="deposit"
-    :title="$t('modals.titles.deposit')"
+    :title="$tc('modals.titles.deposit')"
   >
     <validation-observer
       v-slot="{handleSubmit, validated, passed, invalid}"
@@ -86,7 +86,7 @@
               data-selector="TOKEN-VALUE"
               :placeholder="`100 ${checkpoints[selCurrencyID - 1].name}`"
               rules="required|decimal"
-              :name="$t('modals.quantityField')"
+              :name="$tc('modals.quantityField')"
             />
           </div>
           <div class="content__field">
@@ -113,7 +113,7 @@
           class="buttons__button"
           mode="outline"
           data-selector="CANCEL"
-          @click="hide"
+          @click="CloseModal"
         >
           {{ $t('meta.btns.cancel') }}
         </base-btn>
@@ -143,32 +143,14 @@ export default {
       date: 0,
       datesNumber: [7, 14, 30, 90, 180],
       checkpoints: [
-        {
-          name: this.$t('meta.coins.bnb'),
-          id: 1,
-        },
-        {
-          name: this.$t('meta.coins.eth'),
-          id: 2,
-        },
-        {
-          name: this.$t('meta.coins.wqt'),
-          id: 3,
-        },
+        { name: this.$t('meta.coins.bnb'), id: 1 },
+        { name: this.$t('meta.coins.eth'), id: 2 },
+        { name: this.$t('meta.coins.wqt'), id: 3 },
       ],
       fundsSource: [
-        {
-          name: this.$t('footer.DeFi.lending'),
-          id: 1,
-        },
-        {
-          name: this.$t('footer.DeFi.retirement'),
-          id: 2,
-        },
-        {
-          name: this.$t('ui.menu.savings.title'),
-          id: 3,
-        },
+        { name: this.$t('footer.DeFi.lending'), id: 1 },
+        { name: this.$t('footer.DeFi.retirement'), id: 2 },
+        { name: this.$t('ui.menu.savings.title'), id: 3 },
       ],
       abouts: [
         {
@@ -217,13 +199,12 @@ export default {
     },
   },
   methods: {
-    hide() { this.CloseModal(); },
     async openConfirmDetailsModal() {
       const { submit } = this.options;
       const {
         fundsSource, selFundID, checkpoints, selCurrencyID, datesNumber, date, quantity,
       } = this;
-      this.hide();
+      this.CloseModal();
       await submit({
         fundsSource,
         selFundID,
@@ -284,7 +265,7 @@ export default {
     }
   }
   &__zone {
-    background-color: #F7F8FA;
+    background-color: $black0;
     border-radius: 5px;
     margin-top: 15px;
     padding: 0 20px 20px 20px;

@@ -76,7 +76,7 @@ export default {
   display: flex;
 
   &_hider {
-    background: #F7F8FA;
+    background: $black0;
   }
 
   &__body {

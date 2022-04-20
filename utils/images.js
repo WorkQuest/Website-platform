@@ -6,4 +6,6 @@ export const images = Object.freeze({
   BNB: require('~/assets/img/ui/bnb_yellow.svg'),
   ETH: require('~/assets/img/ui/eth_white.svg'),
   WQT: require('~/assets/img/ui/wqt-logo.svg'),
+  CARD_ADDED: require('assets/img/ui/cardHasBeenAdded.svg'),
+  DOCUMENT: require('~/assets/img/ui/document.svg'),
 });

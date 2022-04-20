@@ -334,13 +334,13 @@ export default {
       background: #151552;
     }
     &_gray {
-      background-color: #F7F8FA;
+      background-color: $black0;
     }
     &_disabled {
       background-color: #E6E6E7;
     }
     &_border {
-      border: 1px solid #F7F8FA;
+      border: 1px solid $black0;
     }
   }
 

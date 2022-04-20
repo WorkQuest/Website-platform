@@ -73,12 +73,12 @@ export default {
 <style lang="scss" scoped>
 .primary {
   height: 100vh;
-  background: #F7F8FA;
+  background: $black0;
 }
 
 .template {
   min-height: 100vh;
-  background: #F7F8FA;
+  background: $black0;
 
   &__content {
     display: grid;

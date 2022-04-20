@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="confirm"
-    :title="$t('modals.titles.confirmDetails')"
+    :title="$tc('modals.titles.confirmDetails')"
   >
     <div class="confirm__content content">
       <div class="content__field field">
@@ -23,7 +23,7 @@
           class="buttons__button"
           mode="outline"
           data-selector="CANCEL"
-          @click="hide"
+          @click="CloseModal"
         >
           {{ $t('meta.btns.cancel') }}
         </base-btn>
@@ -53,9 +53,6 @@ export default {
     },
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     async openStatusModal() {
       const { submit } = this.options;
       this.CloseModal();

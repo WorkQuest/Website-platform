@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="privacy"
-    :title="$t('modals.titles.privacyPolicy')"
+    :title="$tc('modals.titles.privacyPolicy')"
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__desc">
@@ -11,7 +11,7 @@
         <base-checkbox
           v-model="privacy"
           name="privacy"
-          :label="$t('privacy.agree')"
+          :label="$tc('privacy.agree')"
         >
           <template v-slot:sub>
             <a
@@ -26,7 +26,7 @@
         <base-checkbox
           v-model="terms"
           name="terms"
-          :label="$t('privacy.agree')"
+          :label="$tc('privacy.agree')"
         >
           <template v-slot:sub>
             <a
@@ -41,7 +41,7 @@
         <base-checkbox
           v-model="aml"
           name="aml"
-          :label="$t('privacy.agree')"
+          :label="$tc('privacy.agree')"
         >
           <template v-slot:sub>
             <a
@@ -94,7 +94,7 @@ export default {
       if (this.$cookies.get('userStatus') === UserStatuses.NeedSetRole) {
         const response = await this.$store.dispatch('user/setUserRole', { role: this.options.role });
         if (response?.ok) {
-          this.$cookies.set('userStatus', 1, { path: '/' });
+          this.$cookies.set('userStatus', 1, { path: Path.ROOT });
           this.options.callback();
           this.CloseModal();
           return;
@@ -105,8 +105,8 @@ export default {
           role: this.options.role,
         });
         if (response?.ok) {
-          this.$cookies.set('userLogin', true, { path: '/' });
-          this.$cookies.set('userStatus', 1, { path: '/' });
+          this.$cookies.set('userLogin', true, { path: Path.ROOT });
+          this.$cookies.set('userStatus', 1, { path: Path.ROOT });
           sessionStorage.removeItem('confirmToken');
           this.ShowToast(this.$t('modals.yourAccountVerified'), this.$t('meta.success'));
           await this.$router.push(Path.ROLE);

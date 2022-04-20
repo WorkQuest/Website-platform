@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="deposit"
-    :title="$t('modals.titles.deposit')"
+    :title="$tc('modals.titles.deposit')"
   >
     <div class="deposit__content content">
       <validation-observer
@@ -59,7 +59,7 @@
               placeholder="0 WUSD"
               class="grid__input"
               data-selector="AMOUNT"
-              :name="$t('modals.amountField')"
+              :name="$tc('modals.amountField')"
               rules="required|decimal"
             />
             <div class="grid__equal">
@@ -106,7 +106,7 @@
             class="buttons__button"
             mode="outline"
             data-selector="CANCEL"
-            @click="hide"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -147,15 +147,13 @@ export default {
     },
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     showTransactionSendModal() {
       this.ShowModal({
         key: modals.withdrawInfo,
         title: this.$t('modals.info.depositInfo'),
       });
     },
+    // TODO: Зарефакторить
     showGiveDeposit() {
       this.ShowModal({
         key: modals.giveDeposit,
@@ -205,7 +203,7 @@ export default {
 }
 .drop{
   &__field{
-    border: 1px solid #F7F8FA;
+    border: 1px solid $black0;
     border-radius: 6px;
   }
   &__title{

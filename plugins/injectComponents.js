@@ -37,6 +37,7 @@ import ItemRating from '~/components/app/info/item-rating';
 import MessagesList from '~/components/app/pages/messages_id/messagesList';
 import QuestPanel from '~/components/app/panels/questPanel';
 import Info from '~/components/app/info';
+import BtnPasswordVisibility from '~/components/app/BtnPasswordVisibility';
 
 Vue.component('Header', Header);
 Vue.component('Footer', Footer);
@@ -74,3 +75,4 @@ Vue.component('g-map-info-window', GMapInfoWindow);
 Vue.component('g-map-info-block', GMapInfoBlock);
 Vue.component('g-map-loader', GMapLoader);
 Vue.component('search-with-map', SearchWithMap);
+Vue.component('btn-password-visibility', BtnPasswordVisibility);

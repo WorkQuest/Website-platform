@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="liquidity"
-    :title="$t('modals.titles.addLiquidity')"
+    :title="$tc('modals.titles.addLiquidity')"
   >
     <div class="liquidity__content content">
       <validation-observer
@@ -19,7 +19,7 @@
               class="field__input"
               data-selector="AMOUNT-OF-WQT"
               rules="required|decimal"
-              :name="$t('meta.amount.amountOfWQT')"
+              :name="$tc('meta.amount.amountOfWQT')"
             />
             <div class="field__container">
               <div class="field__title">
@@ -32,7 +32,7 @@
                 data-selector="AMOUNT-OF-BNB"
                 class="field__input"
                 rules="required|decimal"
-                :name="$t('meta.amountOfBNB')"
+                :name="$tc('meta.amountOfBNB')"
               />
               <base-field
                 v-else
@@ -41,7 +41,7 @@
                 class="field__input"
                 data-selector="AMOUNT-OF-ETH"
                 rules="required|decimal"
-                :name="$t('meta.amountOfETH')"
+                :name="$tc('meta.amountOfETH')"
               />
               <div class="field__heading">
                 {{ $t('modals.tip') }}
@@ -164,7 +164,7 @@ export default {
     }
   }
   &__zone {
-    background-color: #F7F8FA;
+    background-color: $black0;
     border-radius: 5px;
     padding: 15px 20px 20px 20px;
   }
