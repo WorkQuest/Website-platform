@@ -330,7 +330,8 @@ export default {
               return;
             }
             this.ShowModal({
-              key: modals.questCreated,
+              key: modals.status,
+              img: require('assets/img/ui/questCreated.svg'),
               title: this.$t('modals.questCreated'),
             });
             this.ShowToast(this.$t('toasts.questCreated'), this.$t('toasts.questCreated'));
@@ -621,7 +622,7 @@ export default {
     transition: .3s;
 
     &:hover {
-      background: #F3F7FA;
+      background: $black0;
     }
   }
 }
@@ -651,7 +652,7 @@ export default {
     color: $blue;
 
     &:hover {
-      background: #F7F8FA;
+      background: $black0;
       color: $blue;
     }
   }
@@ -812,7 +813,7 @@ export default {
     height: 214px;
     width: 100%;
     border: 0;
-    background-color: #F3F7FA;
+    background-color: $black0;
     resize: none;
 
     &::placeholder {

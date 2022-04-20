@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="info"
-    :title="$t('modals.claim')"
+    :title="$tc('modals.claim')"
   >
     <div class="info__content content">
       <div
@@ -36,7 +36,7 @@
             class="buttons__button"
             mode="outline"
             selector="CANCEL"
-            @click="hide"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -65,9 +65,8 @@ export default {
     }),
   },
   methods: {
-    hide() { this.CloseModal(); },
     async handleSubmit() {
-      this.hide();
+      this.CloseModal();
       await this.$store.dispatch('referral/claimReferralReward', this.userAddress);
     },
   },

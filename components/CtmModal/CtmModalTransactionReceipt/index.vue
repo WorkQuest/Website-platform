@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="info"
-    :title="options.title || $t('modals.txInfo')"
+    :title="options.title || $tc('modals.txInfo')"
   >
     <div class="info__content content">
       <div class="content__fields">
@@ -22,7 +22,9 @@
               :class="{field__subtitle_red: !canSend && item.name === $t('wallet.table.trxFee')}"
             >
               {{ item.value }}
-              <span v-if="item.symbol">{{ item.symbol }}</span>
+              <span v-if="item.symbol">
+                {{ item.symbol }}
+              </span>
             </div>
           </div>
         </div>
@@ -39,7 +41,7 @@
             class="buttons__button"
             mode="outline"
             data-selector="CANCEL"
-            @click="hide"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -92,11 +94,10 @@ export default {
     }
   },
   methods: {
-    hide() { this.CloseModal(); },
     async handleSubmit() {
       if (!this.canSend) return;
       const { callback, submitMethod, isShowSuccess } = this.options;
-      this.hide();
+      this.CloseModal();
       this.SetLoader(true);
       if (submitMethod) {
         const res = await submitMethod();

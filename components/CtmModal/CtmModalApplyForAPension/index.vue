@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="pension"
-    :title="$t('modals.titles.applyForAPension')"
+    :title="$tc('modals.titles.applyForAPension')"
   >
     <div class="pension__content content">
       <validation-observer
@@ -20,7 +20,7 @@
             :placeholder="$tc('meta.units.percentsCount', 13)"
             class="content__input"
             data-selector="DEPOSIT-PERCENT"
-            :name="$t('modals.depositPercent')"
+            :name="$tc('modals.depositPercent')"
             rules="required|min_percent:0.01|max_percent:99|zeroFail|notMoreDecimalPlaces"
             @input="calcPensionPercent"
           />
@@ -34,7 +34,7 @@
             :placeholder="$tc('meta.coins.count.WUSDCount', 130)"
             class="content__input"
             data-selector="FIRST-DEPOSIT-AMOUNT"
-            :name="$t('modals.firstDepositAmountField')"
+            :name="$tc('modals.firstDepositAmountField')"
             rules="decimal:18|notMoreDecimalPlaces|greaterThanZero|zeroFail|notMoreDecimalPlaces"
           />
           <div class="content__text">
@@ -46,7 +46,7 @@
             class="buttons__button"
             mode="outline"
             data-selector="CANCEL"
-            @click="hide"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -71,6 +71,7 @@ import modals from '~/store/modals/modals';
 import { getWalletAddress } from '~/utils/wallet';
 import { WQPensionFund } from '~/abi/index';
 import { TokenSymbols } from '~/utils/enums';
+import { images } from '~/utils/images';
 
 export default {
   name: 'ModalApplyForAPension',
@@ -92,9 +93,6 @@ export default {
     this.depositPercentFromAQuest = `${this.options.defaultFee}%`;
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     async submitPensionRegistration() {
       const { defaultFee } = this.options;
       this.inProgress = true;
@@ -152,16 +150,14 @@ export default {
             firstDeposit: this.firstDepositAmount,
             defaultFee,
           });
-          if (ok) {
-            this.showPensionIsRegisteredModal();
-          }
+          if (ok) this.showPensionIsRegisteredModal();
         },
       });
     },
     showPensionIsRegisteredModal() {
       this.ShowModal({
         key: modals.status,
-        img: require('~/assets/img/ui/document.svg'),
+        img: images.DOCUMENT,
         title: this.$t('modals.pensionIsRegistered'),
         subtitle: this.$t('modals.pensionIsRegisteredText'),
         path: '/pension/my',

@@ -1,6 +1,6 @@
 <template>
   <ctm-modal-box
-    :title="$t('modals.titles.review')"
+    :title="$tc('modals.titles.review')"
   >
     <div class="ctm-modal__content content">
       <div class="content__review review">
@@ -73,18 +73,11 @@ export default {
         { rating__star_half: (a >= 0.3 && a <= 0.7) },
       ];
     },
-    hide() {
-      this.CloseModal();
-    },
     success() {
-      this.ShowModalSuccess({
-        title: this.$t('meta.success'),
-        subtitle: this.$t('modals.SMSVerConnected'),
-      });
+      this.ShowModalSuccess({ title: this.$t('meta.success'), subtitle: this.$t('modals.SMSVerConnected') });
     },
     nextStep() {
-      // eslint-disable-next-line no-plusplus
-      this.step++;
+      this.step += 1;
     },
   },
 };

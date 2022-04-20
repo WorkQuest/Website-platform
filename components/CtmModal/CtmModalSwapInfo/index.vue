@@ -24,7 +24,7 @@
             class="buttons__button"
             mode="outline"
             data-selector="CANCEL"
-            @click="hide"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -84,9 +84,6 @@ export default {
     },
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     async sendTransaction() {
       // TODO need it?
       if (!this.isConnected) await this.$store.dispatch('web3/connect');
@@ -123,7 +120,7 @@ export default {
   padding: 0 28px 30px 28px!important;
   &__field{
     padding: 20px 20px 20px;
-    background-color: #F7F8FA;
+    background-color: $black0;
     border-radius: 5px;
     margin-top: 25px;
   }

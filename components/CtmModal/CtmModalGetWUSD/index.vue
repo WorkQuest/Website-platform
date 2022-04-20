@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="getWUSD"
-    :title="$t('modals.titles.buyWUSD')"
+    :title="$tc('modals.titles.buyWUSD')"
   >
     <div class="getWUSD__content content">
       <validation-observer
@@ -54,7 +54,7 @@
                 class="content__input"
                 placeholder="10 WUSD"
                 rules="required|decimal"
-                :name="$t('modals.fieldCountOf', { countOf: 'WUSD' })"
+                :name="$tc('modals.fieldCountOf', { countOf: 'WUSD' })"
                 type="number"
                 data-selector="WUSD"
                 @input="onChangeWUSD"
@@ -70,7 +70,7 @@
                 class="content__input"
                 :placeholder="`10 ${currentCurrency}`"
                 rules="required|decimal"
-                :name="$t('modals.fieldCountOf', { countOf: `${ currentCurrency } collateral` })"
+                :name="$tc('modals.fieldCountOf', { countOf: `${ currentCurrency } collateral` })"
                 type="number"
                 data-selector="TOKEN"
                 @input="onChangeCollateral"
@@ -89,7 +89,7 @@
                 class="content__input"
                 placeholder="150 %"
                 rules="required|min_percent:150|zeroFail"
-                :name="$t('modals.fieldPercentConversion')"
+                :name="$tc('modals.fieldPercentConversion')"
                 data-selector="PERCENT"
                 @input="calcCollateralPercent"
               />

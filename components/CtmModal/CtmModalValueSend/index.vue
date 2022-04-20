@@ -14,9 +14,9 @@
           type="number"
           data-selector="INPUT_AMOUNT"
           placeholder="3500"
-          :label="$t('modals.amount')"
+          :label="$tc('modals.amount')"
           rules="required|decimal|decimalPlaces:18"
-          :name="$t('modals.amount')"
+          :name="$tc('modals.amount')"
         >
           <template
             v-if="maxValue"
@@ -29,7 +29,9 @@
               class="max__button"
               @click="maxBalance()"
             >
-              <span class="max__text">{{ $t('modals.maximum') }}</span>
+              <span class="max__text">
+                {{ $t('modals.maximum') }}
+              </span>
             </base-btn>
           </template>
         </base-field>
@@ -37,7 +39,7 @@
           <base-btn
             mode="outline"
             data-selector="CANCEL"
-            @click="hide()"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -71,29 +73,22 @@ export default {
       options: 'modals/getOptions',
     }),
     modalName() {
-      switch (this.options.mode) {
-        case 'refund':
-          return this.$t('crediting.refund');
-        case 'withdraw':
-          return this.$t('meta.withdraw');
-        case 'deposit':
-          return this.$t('meta.deposit');
-        case 'claim':
-          return this.$t('modals.claim');
-        default:
-          return this.$t('modals.amount');
-      }
+      const { mode } = this.options;
+      if (mode === 'refund') return this.$t('crediting.refund');
+      if (mode === 'withdraw') return this.$t('meta.withdraw');
+      if (mode === 'deposit') return this.$t('meta.deposit');
+      if (mode === 'claim') return this.$t('modals.claim');
+      return this.$t('modals.amount');
     },
     maxValue() {
       return this.options.maxValue;
     },
   },
   methods: {
-    hide() { this.CloseModal(); },
     async send() {
       const value = this.amount;
       const { submit } = this.options;
-      this.hide();
+      this.CloseModal();
       await submit(value);
     },
     maxBalance() {

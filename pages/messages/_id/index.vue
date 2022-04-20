@@ -443,7 +443,7 @@ export default {
 
   &__file-button {
     height: 40px;
-    background: #F7F8FA;
+    background: $black0;
     color: #fff;
     font-size: 1.125rem;
     font-weight: 700;

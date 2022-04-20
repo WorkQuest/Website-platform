@@ -2,7 +2,7 @@
   <ctm-modal-box
     class="ctm-modal-download"
     :class="checkIfMobile()? 'ctm-modal-download-mobile':'ctm-modal-download-desktop'"
-    :title="$t('modals.titles.downloadApp')"
+    :title="$tc('modals.titles.downloadApp')"
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__desc">
@@ -33,13 +33,10 @@
 
 <script>
 import { URLS } from '~/utils/footer-constants';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'CtmModalDownloadApp',
-  data() {
-    return {
-    };
-  },
   computed: {
     marketLinks() {
       return [
@@ -49,7 +46,7 @@ export default {
     },
   },
   mounted() {
-    this.$cookies.set('downloadAppDisplayed', true, { path: '/' });
+    this.$cookies.set('downloadAppDisplayed', true, { path: Path.ROOT });
   },
 
 };

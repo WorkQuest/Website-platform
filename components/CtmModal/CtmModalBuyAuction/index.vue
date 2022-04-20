@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="buy-auction"
-    :title="$t('modals.titles.buyAuction')"
+    :title="$tc('modals.titles.buyAuction')"
   >
     <div class="buy-auction__content">
       <div class="buy-auction__info">
