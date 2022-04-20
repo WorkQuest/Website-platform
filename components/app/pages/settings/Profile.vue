@@ -635,7 +635,7 @@ export default {
     }
   }
   &__description-textarea {
-    background-color: #F3F7FA;
+    background-color: $black150;
     resize: none;
     padding: 10px 10px 0 10px;
     margin: 0;
@@ -697,7 +697,7 @@ export default {
       transition: .3s;
 
       &:hover {
-        background: #F3F7FA;
+        background: $black150;
       }
     }
   }

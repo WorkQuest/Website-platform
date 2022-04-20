@@ -180,7 +180,7 @@ export default {
     background-color: $black0;
     resize: none;
     &::placeholder {
-      color: #F3F7FA;
+      color: $black150;
     }
   }
 }
