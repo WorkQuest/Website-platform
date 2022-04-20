@@ -73,18 +73,12 @@ export default {
       options: 'modals/getOptions',
     }),
     modalName() {
-      switch (this.options.mode) {
-        case 'refund':
-          return this.$t('crediting.refund');
-        case 'withdraw':
-          return this.$t('meta.withdraw');
-        case 'deposit':
-          return this.$t('meta.deposit');
-        case 'claim':
-          return this.$t('modals.claim');
-        default:
-          return this.$t('modals.amount');
-      }
+      const { mode } = this.options;
+      if (mode === 'refund') return this.$t('crediting.refund');
+      if (mode === 'withdraw') return this.$t('meta.withdraw');
+      if (mode === 'deposit') return this.$t('meta.deposit');
+      if (mode === 'claim') return this.$t('modals.claim');
+      return this.$t('modals.amount');
     },
     maxValue() {
       return this.options.maxValue;
