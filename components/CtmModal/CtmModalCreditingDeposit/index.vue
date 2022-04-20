@@ -284,7 +284,7 @@ export default {
     }
   }
   &__zone {
-    background-color: #F7F8FA;
+    background-color: $black0;
     border-radius: 5px;
     margin-top: 15px;
     padding: 0 20px 20px 20px;

@@ -164,7 +164,7 @@ export default {
     }
   }
   &__zone {
-    background-color: #F7F8FA;
+    background-color: $black0;
     border-radius: 5px;
     padding: 15px 20px 20px 20px;
   }

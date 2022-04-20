@@ -621,7 +621,7 @@ export default {
     transition: .3s;
 
     &:hover {
-      background: $black150;
+      background: $black0;
     }
   }
 }
@@ -651,7 +651,7 @@ export default {
     color: $blue;
 
     &:hover {
-      background: #F7F8FA;
+      background: $black0;
       color: $blue;
     }
   }
@@ -812,7 +812,7 @@ export default {
     height: 214px;
     width: 100%;
     border: 0;
-    background-color: $black150;
+    background-color: $black0;
     resize: none;
 
     &::placeholder {

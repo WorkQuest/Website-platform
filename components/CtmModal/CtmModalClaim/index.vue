@@ -192,7 +192,7 @@ export default {
 .content{
   &__field{
     padding:20px;
-    background-color: #F7F8FA;
+    background-color: $black0;
     border-radius: 5px;
     margin-top: 25px;
   }

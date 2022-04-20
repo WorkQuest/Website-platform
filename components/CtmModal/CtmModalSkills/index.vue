@@ -169,7 +169,7 @@ export default {
   &__checkbox {
     height: 24px;
     width: 24px;
-    background: #F7F8FA;
+    background: $black0;
     border-radius: 3px;
     &_checked {
       background: $blue url('~assets/img/ui/checked.svg') no-repeat 50% 50%;

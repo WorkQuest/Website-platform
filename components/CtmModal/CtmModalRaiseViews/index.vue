@@ -163,7 +163,7 @@ export default {
     margin-right: auto;
   }
   &__drop{
-    border: 1px solid #F7F8FA;
+    border: 1px solid $black0;
     border-radius: 6px;
     color: $black800!important;
   }

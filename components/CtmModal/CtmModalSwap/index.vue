@@ -192,7 +192,7 @@ export default {
   }
 
   &__drop {
-    border: 1px solid #F7F8FA;
+    border: 1px solid $black0;
     border-radius: 6px;
     margin-bottom: 23px;
   }

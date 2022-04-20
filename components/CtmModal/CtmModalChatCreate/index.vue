@@ -265,7 +265,7 @@ export default {
         padding: 15px 0;
 
         &:not(:last-child) {
-          border-bottom: 1px solid #F7F8FA;
+          border-bottom: 1px solid $black0;
         }
 
         .friends {
@@ -404,7 +404,7 @@ export default {
     position: absolute;
     width: 24px;
     height: 24px;
-    background: #F7F8FA;
+    background: $black0;
     border-radius: 3px;
     cursor: pointer;
     border: 1px solid transparent;

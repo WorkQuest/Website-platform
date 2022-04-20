@@ -156,7 +156,7 @@ export default {
     width: 100%;
     border: 0;
     color: $black700;
-    background: $black150;
+    background: $black0;
     resize: none;
     &::placeholder {
       color: $black300;
@@ -235,7 +235,7 @@ export default {
   &_default {
     .ctm-field__input {
       color: $black700;
-      background: $black150;
+      background: $black0;
       border-radius: 6px;
       border: 1px solid transparent;
       &::placeholder {
