@@ -59,6 +59,7 @@
 
 <script>
 import modals from '~/store/modals/modals';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'Restore',
@@ -83,7 +84,7 @@ export default {
         const response = await this.$store.dispatch('user/passwordChange', payload);
         if (response?.ok) {
           this.showChangeModal();
-          await this.$router.push('/sign-in');
+          await this.$router.push(Path.SIGN_IN);
         }
       } catch (e) {
         console.log(e);
