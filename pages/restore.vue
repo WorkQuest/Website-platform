@@ -5,9 +5,7 @@
     tag="div"
   >
     <div class="restore__container">
-      <div
-        class="restore__text restore__text_title"
-      >
+      <div class="restore__text restore__text_title">
         <span>{{ $t('restore.title') }}</span>
       </div>
       <form
@@ -20,7 +18,7 @@
           :placeholder="$t('signUp.password')"
           mode="icon"
           data-selector="PASSWORD"
-          :name="$t('signUp.password')"
+          :name="$tc('signUp.password')"
           autocomplete="current-password"
           rules="required_if|min:8"
           type="password"
@@ -39,7 +37,7 @@
           mode="icon"
           data-selector="CONFIRM-PASSWORD"
           type="password"
-          :name="$t('signUp.confirmPassword')"
+          :name="$tc('signUp.confirmPassword')"
           rules="required_if|min:8|confirmed:confirmation"
         >
           <template v-slot:left>
@@ -85,7 +83,7 @@ export default {
         const response = await this.$store.dispatch('user/passwordChange', payload);
         if (response?.ok) {
           this.showChangeModal();
-          this.$router.push('/sign-in');
+          await this.$router.push('/sign-in');
         }
       } catch (e) {
         console.log(e);
@@ -93,7 +91,9 @@ export default {
     },
     showChangeModal() {
       this.ShowModal({
-        key: modals.changePassword,
+        key: modals.status,
+        img: require('assets/img/ui/password_changed.svg'),
+        title: this.$t('restore.modal'),
       });
     },
   },

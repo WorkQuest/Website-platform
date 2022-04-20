@@ -3,7 +3,6 @@ export default {
   status: 'status',
   emailConfirm: 'emailConfirm',
   restore: 'restore',
-  changePassword: 'changePassword',
   privacy: 'privacy',
   skills: 'skills',
   messageSend: 'messageSend',

@@ -164,7 +164,9 @@ export default {
             password: this.confirmNewPasswordInput,
           });
           this.ShowModal({
-            key: modals.changePassword,
+            key: modals.status,
+            img: require('assets/img/ui/password_changed.svg'),
+            title: this.$t('restore.modal'),
           });
         }
       } catch (e) {

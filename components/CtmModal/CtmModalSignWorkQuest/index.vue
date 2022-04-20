@@ -76,11 +76,13 @@ export default {
       // };
       // try {
       //   const response = await this.$store.dispatch('user/editUserPassword', payload);
-      //   if (response?.ok) {
-      //     this.ShowModal({
-      //       key: modals.changePassword,
-      //     });
-      //   }
+      // if (response?.ok) {
+      //   this.ShowModal({
+      //     key: modals.status,
+      //     img: require('assets/img/ui/password_changed.svg'),
+      //     title: this.$t('restore.modal'),
+      //   });
+      // }
       // } catch (e) {
       //   this.errorMsg = e;
       //   console.log(e);

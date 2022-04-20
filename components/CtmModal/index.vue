@@ -23,7 +23,6 @@ export default {
     [modals.cardHasBeenAdded]: () => import('./CtmModalCardHasBeenAdded'),
     [modals.transactionSend]: () => import('./CtmModalTransactionSend'),
     [modals.questAgreed]: () => import('./CtmModalQuestAgreed'),
-    [modals.changePassword]: () => import('./CtmModalChangePassword'),
     [modals.emailConfirm]: () => import('./CtmModalConfirmEmail'),
     [modals.neededToEnable2FA]: () => import('./CtmModalNeededToEnable2FA'),
     [modals.messageSend]: () => import('./CtmModalMessageSend'),
