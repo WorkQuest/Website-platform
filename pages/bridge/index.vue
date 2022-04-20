@@ -207,7 +207,6 @@ export default {
       isConnected: 'web3/isConnected',
 
       swaps: 'bridge/getSwaps',
-      wsSwap: 'bridge/getWSSwap',
       swapsCount: 'bridge/getSwapsCount',
     }),
     tableFields() {
@@ -272,9 +271,6 @@ export default {
       if (typeof this.account.address === 'string') {
         await this.swapsTableData(this.account.address, this.isConnected);
       }
-    },
-    wsSwap() {
-      console.log(this.wsSwap);
     },
     async page() {
       this.query.offset = (this.page - 1) * this.query.limit;
@@ -364,10 +360,8 @@ export default {
       if (await this.checkNetwork(chain)) {
         const { ok } = await this.redeem({ signData, chainTo });
 
-        if (ok) {
-          this.ShowModalSuccess({ title: this.$t('modals.redeem.success') });
-          await this.swapsTableData();
-        } else this.ShowModalFail({ title: this.$t('modals.redeem.fail') });
+        if (ok) this.ShowModalSuccess({ title: this.$t('modals.redeem.success') });
+        else this.ShowModalFail({ title: this.$t('modals.redeem.fail') });
       }
 
       this.SetLoader(false);

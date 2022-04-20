@@ -16,7 +16,4 @@ export default {
       decimals: null,
     };
   },
-  setWSSwap(state, swap) {
-    state.wsSwap = swap;
-  },
 };
