@@ -165,7 +165,7 @@ export default {
 }
 .template {
   min-height: 100vh;
-  background: #F7F8FA;
+  background: $black0;
   &__content {
     display: grid;
     grid-template-rows: 72px 1fr auto;

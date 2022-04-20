@@ -287,7 +287,7 @@ export default {
 
   &__content {
     padding: 20px 20px 0;
-    border-top: 1px solid #F7F8FA;
+    border-top: 1px solid $black0;
     display: grid;
     gap: 12px;
   }
@@ -295,7 +295,7 @@ export default {
   &__btn {
     display: grid;
     grid-template-columns: 1fr max-content;
-    background: #F7F8FA;
+    background: $black0;
     border-radius: 3px;
     height: 44px;
     align-items: center;

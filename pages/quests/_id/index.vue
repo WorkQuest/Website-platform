@@ -761,7 +761,7 @@ export default {
 
   &__quest_materials {
     padding-top: 20px;
-    border-top: 1px solid #F7F8FA;
+    border-top: 1px solid $black0;
   }
 }
 
@@ -773,7 +773,7 @@ export default {
 .worker-data {
   min-width: 0;
   padding-top: 20px;
-  border-top: 1px solid #F7F8FA;
+  border-top: 1px solid $black0;
 
   &__title {
     font-weight: 500;

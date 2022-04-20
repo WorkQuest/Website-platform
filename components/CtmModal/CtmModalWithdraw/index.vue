@@ -160,7 +160,7 @@ export default {
   }
 
   &__gray-zone {
-    background-color: #F7F8FA;
+    background-color: $black0;
     border-radius: 5px;
     margin-top: 15px;
     padding: 0 20px 20px 20px;
@@ -244,7 +244,7 @@ export default {
     color: #B1B3B8;
     background: #FFFFFF;
     border-radius: 6px;
-    border: 1px solid #F3F7FA;
+    border: 1px solid $black0;
     margin-bottom: 23px;
   }
 }

@@ -934,7 +934,7 @@ export default {
   }
 
   &__header {
-    border-bottom: 1px solid #F7F8FA;
+    border-bottom: 1px solid $black0;
     display: grid;
     grid-template-columns: 40px 1fr;
     padding: 15px;

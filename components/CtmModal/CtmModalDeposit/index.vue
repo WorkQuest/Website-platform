@@ -326,7 +326,7 @@ export default {
     color: #B1B3B8;
     background: #FFFFFF;
     border-radius: 6px;
-    border: 1px solid #F3F7FA;
+    border: 1px solid $black0;
     margin-bottom: 23px;
   }
 }
