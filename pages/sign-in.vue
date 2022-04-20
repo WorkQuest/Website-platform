@@ -191,6 +191,10 @@ export default {
       return WalletState;
     },
   },
+  created() {
+    const { token } = this.$route.query;
+    if (token) sessionStorage.setItem('confirmToken', JSON.stringify(token));
+  },
   async mounted() {
     this.isLoginWithSocial = this.$cookies.get('socialNetwork');
     const access = this.$cookies.get('access');
