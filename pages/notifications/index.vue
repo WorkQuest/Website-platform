@@ -246,7 +246,7 @@ export default {
     float: unset;
     justify-self: flex-end;
     margin: 20px;
-    border: 1px solid #F7F8FA
+    border: 1px solid $black0
   }
 }
 

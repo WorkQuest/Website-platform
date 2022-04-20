@@ -379,7 +379,7 @@ export default {
       &__faq {
         border-radius: 5px;
         padding: 20px 60px 20px 20px;
-        background-color: #F7F8FA;
+        background-color: $black0;
         text-align: left;
         position: relative;
         transition: 300ms;

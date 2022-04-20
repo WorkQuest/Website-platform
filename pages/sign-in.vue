@@ -507,7 +507,7 @@ export default {
     transition: .5s;
     width: 40px;
     height: 40px;
-    background: #F7F8FA;
+    background: $black0;
     border-radius: 6px;
     display: flex;
     align-items: center;

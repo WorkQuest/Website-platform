@@ -697,7 +697,7 @@ export default {
       transition: .3s;
 
       &:hover {
-        background: #F3F7FA;
+        background: $black0;
       }
     }
   }

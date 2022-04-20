@@ -317,7 +317,7 @@ export default {
   &__mnemonic {
     position: relative;
     padding: 10px 40px 10px 10px;
-    background: #F3F7FA;
+    background: $black0;
     border-radius: 6px;
     font-weight: 500;
     height: 50px;

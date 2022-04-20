@@ -146,7 +146,7 @@ export default {
 }
 .content {
   &__zone {
-    background-color: #F7F8FA;
+    background-color: $black0;
     border-radius: 5px;
     padding: 20px;
   }
