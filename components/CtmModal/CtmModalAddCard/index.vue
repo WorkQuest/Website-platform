@@ -64,7 +64,7 @@
               mode="outline"
               data-selector="CANCEL"
               class="message__action"
-              @click="hide()"
+              @click="CloseModal"
             >
               {{ $t('meta.btns.cancel') }}
             </base-btn>
@@ -95,12 +95,12 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     showCardHasBeenAddedModal() {
       this.ShowModal({
-        key: modals.cardHasBeenAdded,
+        key: modals.status,
+        img: require('assets/img/ui/cardHasBeenAdded.svg'),
+        title: this.$t('modals.cardHasBeenAdded'),
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
       });
     },
   },

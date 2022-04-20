@@ -17,12 +17,13 @@ import modals from '@/store/modals/modals';
 export default {
   name: 'ModalBox',
   components: {
+    /* Need check */
+    [modals.questAgreed]: () => import('./CtmModalQuestAgreed'),
     [modals.inviteSend]: () => import('./CtmModalInviteSend'),
     [modals.cardAdded]: () => import('./CtmModalCardAdded'),
     [modals.thanks]: () => import('./CtmModalThanksSend'),
-    [modals.cardHasBeenAdded]: () => import('./CtmModalCardHasBeenAdded'),
     [modals.transactionSend]: () => import('./CtmModalTransactionSend'),
-    [modals.questAgreed]: () => import('./CtmModalQuestAgreed'),
+    /*   */
     [modals.emailConfirm]: () => import('./CtmModalConfirmEmail'),
     [modals.neededToEnable2FA]: () => import('./CtmModalNeededToEnable2FA'),
     [modals.messageSend]: () => import('./CtmModalMessageSend'),
