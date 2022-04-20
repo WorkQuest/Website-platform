@@ -77,6 +77,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { images } from '~/utils/images';
 
 export default {
   name: 'ModalAddCard',
@@ -97,7 +98,7 @@ export default {
     showCardHasBeenAddedModal() {
       this.ShowModal({
         key: modals.status,
-        img: require('assets/img/ui/cardHasBeenAdded.svg'),
+        img: images.CARD_ADDED,
         title: this.$t('modals.cardHasBeenAdded'),
         text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
       });
