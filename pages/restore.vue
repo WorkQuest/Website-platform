@@ -21,7 +21,7 @@
           :name="$tc('signUp.password')"
           autocomplete="current-password"
           rules="required_if|min:8"
-          type="password"
+          :type="isPasswordVisible?'text':'password'"
           vid="confirmation"
         >
           <template v-slot:left>
@@ -30,13 +30,24 @@
               alt=""
             >
           </template>
+          <template
+            v-if="password"
+            v-slot:right-absolute
+            class="field__block"
+          >
+            <btn-password-visibility
+              :data-selector="`IS-VISIBLE-PASS-${isPasswordVisible}`"
+              :is-password-visible="isPasswordVisible"
+              @toggleVisibility="isPasswordVisible = $event"
+            />
+          </template>
         </base-field>
         <base-field
           v-model="passwordConfirm"
           :placeholder="$t('signUp.confirmPassword')"
           mode="icon"
           data-selector="CONFIRM-PASSWORD"
-          type="password"
+          :type="isPasswordConfirmVisible?'text':'password'"
           :name="$tc('signUp.confirmPassword')"
           rules="required_if|min:8|confirmed:confirmation"
         >
@@ -45,6 +56,17 @@
               src="~assets/img/icons/password.svg"
               alt=""
             >
+          </template>
+          <template
+            v-if="passwordConfirm"
+            v-slot:right-absolute
+            class="field__block"
+          >
+            <btn-password-visibility
+              :data-selector="`IS-VISIBLE-PASS-${isPasswordConfirmVisible}`"
+              :is-password-visible="isPasswordConfirmVisible"
+              @toggleVisibility="isPasswordConfirmVisible = $event"
+            />
           </template>
         </base-field>
         <div class="restore__action">
@@ -68,6 +90,8 @@ export default {
     return {
       password: '',
       passwordConfirm: '',
+      isPasswordVisible: false,
+      isPasswordConfirmVisible: false,
     };
   },
   async mounted() {

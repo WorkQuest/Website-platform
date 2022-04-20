@@ -48,7 +48,7 @@
           :placeholder="$t('signUp.password')"
           rules="required_if|min:8"
           autocomplete="current-password"
-          type="password"
+          :type="isPasswordVisible?'text':'password'"
           vid="confirmation"
           data-selector="PASSWORD"
         >
@@ -57,6 +57,15 @@
               src="~assets/img/icons/password.svg"
               alt=""
             >
+          </template>
+          <template
+            v-if="model.password"
+            v-slot:right-absolute
+          >
+            <btn-password-visibility
+              :is-password-visible="isPasswordVisible"
+              @toggleVisibility="isPasswordVisible = $event"
+            />
           </template>
         </base-field>
         <div class="auth__tools">
@@ -170,6 +179,7 @@ export default {
       userStatus: null,
       isLoginWithSocial: false,
       userAddress: '',
+      isPasswordVisible: false,
     };
   },
   computed: {
@@ -561,7 +571,6 @@ export default {
     }
   }
 }
-
 @include _1199 {
   .auth {
     &__icons {
