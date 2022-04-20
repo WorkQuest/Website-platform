@@ -140,11 +140,9 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import { Path } from '~/utils/enums';
-import BtnPasswordVisibility from '~/components/app/BtnPasswordVisibility';
 
 export default {
   name: 'SignUp',
-  components: { BtnPasswordVisibility },
   layout: 'auth',
   data() {
     return {

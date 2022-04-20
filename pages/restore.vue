@@ -83,11 +83,9 @@
 
 <script>
 import modals from '~/store/modals/modals';
-import BtnPasswordVisibility from '~/components/app/BtnPasswordVisibility';
 
 export default {
   name: 'Restore',
-  components: { BtnPasswordVisibility },
   layout: 'auth',
   data() {
     return {

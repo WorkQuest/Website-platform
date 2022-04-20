@@ -162,13 +162,11 @@ import CreateWallet from '~/components/ui/CreateWallet';
 import {
   Path, UserRole, UserStatuses, WalletState,
 } from '~/utils/enums';
-import BtnPasswordVisibility from '~/components/app/BtnPasswordVisibility';
 
 export default {
   name: 'SignIn',
   layout: 'auth',
   components: {
-    BtnPasswordVisibility,
     CreateWallet,
   },
   data() {

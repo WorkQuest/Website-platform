@@ -107,11 +107,9 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import BtnPasswordVisibility from '~/components/app/BtnPasswordVisibility';
 
 export default {
   name: 'ModalChangePassSetting',
-  components: { BtnPasswordVisibility },
   data() {
     return {
       isVisible: false,
