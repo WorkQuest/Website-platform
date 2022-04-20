@@ -14,10 +14,17 @@ Vue.use(VueTippy);
 Vue.component('tippy', TippyComponent);
 
 Vue.mixin({
+  data() {
+    return {
+      profileFilled: false,
+    };
+  },
   computed: {
     ...mapGetters({
       statusKYC: 'user/getStatusKYC',
       status2FA: 'user/getStatus2FA',
+      userData: 'user/getUserData',
+      userRole: 'user/getUserRole',
     }),
   },
   methods: {
@@ -31,6 +38,8 @@ Vue.mixin({
     async pushLocalNotifications() {
       const KYC = this.$cookies.get(LocalNotificationAction.TWOFA);
       const TWOFA = this.$cookies.get(LocalNotificationAction.KYC);
+      console.log('this.profileFilled', this.profileFilled);
+      await this.checkProfileFilled();
       // TODO: Добавить локализацию
       await this.$store.dispatch('notifications/createLocalNotification', {
         id: '1',
@@ -39,7 +48,7 @@ Vue.mixin({
         actionBtn: 'Get Reward',
       });
       await this.$store.dispatch('notifications/createLocalNotification', {
-        id: '1',
+        id: '2',
         action: LocalNotificationAction.WIKI,
         message: 'You can get acquainted with all the functionality of the platform on the WorkQuest Wiki page!',
         actionBtn: 'Go to Wiki',
@@ -48,7 +57,7 @@ Vue.mixin({
         // TODO: Добавить локализацию
         if (!KYC) this.$cookies.set(LocalNotificationAction.KYC, this.statusKYC !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
         await this.$store.dispatch('notifications/createLocalNotification', {
-          id: '1',
+          id: '3',
           action: LocalNotificationAction.KYC,
           message: 'You can enable KYC on Sumsub page!',
           actionBtn: 'Enable KYC',
@@ -59,9 +68,17 @@ Vue.mixin({
         // TODO: Добавить якорь для прокрутки до 2FA после перехода
         if (!TWOFA) this.$cookies.set(LocalNotificationAction.TWOFA, this.status2FA !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
         await this.$store.dispatch('notifications/createLocalNotification', {
-          id: '2',
+          id: '4',
           action: LocalNotificationAction.TWOFA,
           message: 'You can enable 2FA in settings!',
+          actionBtn: 'Go to Settings',
+        });
+      }
+      if (this.profileFilled) {
+        await this.$store.dispatch('notifications/createLocalNotification', {
+          id: '5',
+          action: LocalNotificationAction.PROFILE_FILLED,
+          message: 'You can fill your profile data in settings!',
           actionBtn: 'Go to Settings',
         });
       }
@@ -349,6 +366,16 @@ Vue.mixin({
       ];
 
       return toMatch.some((toMatchItem) => navigator.userAgent.match(toMatchItem));
+    },
+    async checkProfileFilled() {
+      const { userData } = this;
+      console.log('userData', userData);
+      const {
+        avatar, firstName, lastName, phone, locationPlaceName, additionalInfo,
+      } = userData;
+      const { description } = additionalInfo;
+      this.profileFilled = !!avatar || !!phone?.fullPhone || !!firstName || !!lastName || !!locationPlaceName
+        || !!description;
     },
   },
 });

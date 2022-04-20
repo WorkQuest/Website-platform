@@ -239,6 +239,7 @@ export default {
         await setAllNotificationsParams(title, `${Path.SUMSUB}`, false, '', true);
         break;
 
+      case LocalNotificationAction.PROFILE_FILLED:
       case LocalNotificationAction.TWOFA:
         await setAllNotificationsParams(title, `${Path.SETTINGS}`, false, '', true);
         break;

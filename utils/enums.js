@@ -157,6 +157,7 @@ export const LocalNotificationAction = {
   TWOFA: '2fa',
   WIKI: 'wiki',
   GET_REWARD: 'reward',
+  PROFILE_FILLED: 'filled',
 };
 
 // TODO: Временно, новые ивенты с большой буквы
