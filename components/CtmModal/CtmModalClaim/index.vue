@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="claim"
-    :title="$t('modals.titles.claim')"
+    :title="$tc('modals.titles.claim')"
   >
     <div class="claim__content content">
       <!--      Вывод на банковскую карту -->
@@ -9,21 +9,21 @@
       <!--        <div-->
       <!--          class="content__panel"-->
       <!--          :class="{'content__panel_active': step === 1}"-->
-      <!--          @click="previousStep"-->
+      <!--          @click="setStep(1)"-->
       <!--        >-->
       <!--          {{ $t('modals.walletAddress') }}-->
       <!--        </div>-->
       <!--        <div-->
       <!--          class="content__panel"-->
       <!--          :class="{'content__panel_active': step === 2}"-->
-      <!--          @click="nextStep"-->
+      <!--          @click="setStep(2)"-->
       <!--        >-->
       <!--          {{ $t('meta.bankCard') }}-->
       <!--        </div>-->
       <!--      </div>-->
       <div class="content__field field">
         <div
-          v-if="step===1"
+          v-if="step === 1"
           class="field__header header"
         >
           <div class="header__title">
@@ -76,7 +76,7 @@
             class="buttons__button"
             mode="outline"
             data-selector="CANCEL"
-            @click="hide"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -112,14 +112,11 @@ export default {
     }),
     getCardNumber() {
       const str = this.options.cardNumber || '0000000000000000';
-      if (this.isCardNumberVisible) {
-        return `${str.slice(0, 4)} ${str.slice(4, 8)} ${str.slice(8, 12)} ${str.slice(12)}`;
-      }
+      if (this.isCardNumberVisible) return `${str.slice(0, 4)} ${str.slice(4, 8)} ${str.slice(8, 12)} ${str.slice(12)}`;
       let star = [];
       for (let i = 0; i < str.length; i += 1) {
-        if (i < str.length - 4) { star.push('*'); } else {
-          star.push(str[i]);
-        }
+        if (i < str.length - 4) star.push('*');
+        else star.push(str[i]);
       }
       star = star.join('');
       return `${star.slice(0, 4)} ${star.slice(4, 8)} ${star.slice(8, 12)} ${star.slice(12)}`;
@@ -139,22 +136,16 @@ export default {
     ];
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     async showTransactionSend() {
       const { stakingType, updateMethod } = this.options;
-      this.hide();
+      this.CloseModal();
       this.SetLoader(true);
       await this.$store.dispatch('web3/claimRewards', { stakingType });
       if (updateMethod) await updateMethod();
       this.SetLoader(false);
     },
-    nextStep() {
-      this.step = 2;
-    },
-    previousStep() {
-      this.step = 1;
+    setStep(step) {
+      this.step = step;
     },
     showNumber() {
       this.isCardNumberVisible = !this.isCardNumberVisible;

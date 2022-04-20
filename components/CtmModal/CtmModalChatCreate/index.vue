@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t(`modals.chatCreate.${setLocale}`)"
+    :title="$tc(`modals.chatCreate.${setLocale}`)"
   >
     <div class="ctm-modal__content">
       <template v-if="options.isCreating">
@@ -13,7 +13,7 @@
             v-model="name"
             data-selector="CHAT-NAME"
             :is-hide-error="true"
-            :label="$t('modals.chatCreate.chatName')"
+            :label="$tc('modals.chatCreate.chatName')"
             :placeholder="$t('modals.chatCreate.chatName')"
           />
         </div>
@@ -124,21 +124,15 @@ export default {
     }),
     setLocale() {
       const { isMembersList, isAdding } = this.options;
-
       if (isMembersList) return 'members';
       if (isAdding) return 'addMember';
-
       return 'title';
     },
   },
   async mounted() {
     const { options: { isMembersList }, chatMembers } = this;
-
-    if (isMembersList) {
-      this.members = chatMembers;
-    } else {
-      await this.getUsers();
-    }
+    if (isMembersList) this.members = chatMembers;
+    else await this.getUsers();
   },
   methods: {
     async addNewMembers() {
@@ -163,9 +157,7 @@ export default {
     },
     async removeMember(userId) {
       await this.$store.dispatch('chat/removeMember', { userId, chatId: this.chatId });
-
       this.CloseModal();
-
       this.ShowModal({
         key: modals.chatCreate,
         itsOwner: true,
@@ -175,28 +167,19 @@ export default {
       });
     },
     changeSelStatus({ target }, userId) {
-      if (target.checked) {
-        this.memberUserIds.push(userId);
-      } else {
-        this.memberUserIds = this.memberUserIds.filter((id) => id !== userId);
-      }
+      if (target.checked) this.memberUserIds.push(userId);
+      else this.memberUserIds = this.memberUserIds.filter((id) => id !== userId);
     },
     async getUsers() {
       const { filter, chatId, users } = this;
-
       const config = {
-        params: {
-          ...filter,
-          excludeMembersChatId: chatId || undefined,
-        },
+        params: { ...filter, excludeMembersChatId: chatId || undefined },
       };
-
       await this.$store.dispatch('chat/getUsersForGroupChat', config);
       this.members = users.list;
     },
     hide() {
       const { options: { isAdding }, chatMembers } = this;
-
       if (isAdding) {
         const optionsArr = [
           { key: 'isAdding', val: false },
@@ -204,7 +187,6 @@ export default {
         ];
         this.changeOptions(optionsArr);
         this.members = chatMembers;
-
         return;
       }
       this.CloseModal();
@@ -213,26 +195,15 @@ export default {
       const {
         name, memberUserIds, chatId, options: { isCreating, isAdding },
       } = this;
-
       if (isCreating) {
-        const config = {
-          name,
-          memberUserIds,
-        };
+        const config = { name, memberUserIds };
         const { ok, result } = await this.$store.dispatch('chat/handleCreateGroupChat', config);
-        if (ok) this.$router.push(`${Path.MESSAGES}/${result.id}`);
+        if (ok) await this.$router.push(`${Path.MESSAGES}/${result.id}`);
       } else if (isAdding && memberUserIds.length) {
-        const payload = {
-          config: {
-            userIds: memberUserIds,
-          },
-          chatId,
-        };
-
+        const payload = { config: { userIds: memberUserIds }, chatId };
         this.memberUserIds = [];
         await this.$store.dispatch('chat/addNewMembers', payload);
       }
-
       this.hide();
     },
   },

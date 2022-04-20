@@ -31,7 +31,7 @@
                 mode="outline"
                 class="message__action"
                 data-selector="CANCEL"
-                @click="hide()"
+                @click="CloseModal"
               >
                 {{ $t('meta.btns.cancel') }}
               </base-btn>
@@ -49,9 +49,6 @@ import modals from '~/store/modals/modals';
 export default {
   name: 'CtmModalChangeRoleWarning',
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     reason() {
       this.ShowModal({
         key: modals.changeRoleReason,

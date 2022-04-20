@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="insure"
-    :title="$t('modals.titles.insureCase')"
+    :title="$tc('modals.titles.insureCase')"
   >
     <div class="insure__content content">
       <div class="content__user user">
@@ -31,7 +31,7 @@
           class="buttons__button"
           mode="outline"
           data-selector="CANCEL"
-          @click="hide"
+          @click="CloseModal"
         >
           {{ $t('meta.btns.cancel') }}
         </base-btn>
@@ -58,11 +58,6 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
-  },
-  methods: {
-    hide() {
-      this.CloseModal();
-    },
   },
 };
 </script>
