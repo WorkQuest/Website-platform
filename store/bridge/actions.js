@@ -1,6 +1,8 @@
 import BigNumber from 'bignumber.js';
 
-import { BlockchainByIndex, BridgeAddresses, SwapAddresses } from '~/utils/bridge-constants';
+import {
+  BlockchainByIndex, BridgeAddresses, BridgeEvents, SwapAddresses,
+} from '~/utils/bridge-constants';
 
 import {
   error,
@@ -18,6 +20,7 @@ import {
 } from '~/utils/web3';
 
 import { WQBridge, ERC20 } from '~/abi/index';
+import { Chains } from '~/utils/enums';
 
 export default {
   async fetchMySwaps({ commit }, { recipientAddress, query }) {
@@ -157,13 +160,33 @@ export default {
     }
   },
   async subscribeToBridgeEvents({ commit, getters }, userAddress) {
-    console.log('subscribeToBridgeEvents start', `/notifications/bridge/${userAddress}`);
     try {
-      console.log(this.$wsNotifs);
       await this.$wsNotifs.subscribe(`/notifications/bridge/${userAddress}`, async (msg) => {
-        console.log(msg);
-        const swap = JSON.parse(JSON.stringify(getters.getWSSwap));
-        console.log(swap);
+        const {
+          event, signData, transactionHash, returnValues: {
+            amount, chainFrom, chainTo, sender, timestamp,
+          },
+        } = msg.data;
+        if (event === BridgeEvents.SWAP_INITIALIZED) {
+          const swaps = JSON.parse(JSON.stringify(getters.getSwaps));
+          if (swaps.length === 10) swaps.splice(9, 1);
+          swaps.unshift({
+            ...msg.data.returnValues,
+            amount: new BigNumber(amount).shiftedBy(-18).toString(),
+            chain: BlockchainByIndex[chainTo],
+            created: timestamp,
+            direction: [
+              SwapAddresses.get(BlockchainByIndex[chainFrom]).icon,
+              SwapAddresses.get(BlockchainByIndex[chainTo]).icon,
+            ],
+            signData,
+            transactionHash,
+            initiator: sender,
+            recipient: sender,
+            status: true,
+          });
+          commit('setSwapsData', { count: 10, swaps });
+        }
       });
     } catch (err) {
       console.log('subscribeToBridgeEvents err', err);

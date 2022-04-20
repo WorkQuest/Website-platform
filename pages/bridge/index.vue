@@ -163,6 +163,12 @@
             </b-table>
           </div>
         </div>
+        <base-pager
+          v-if="totalPages > 1"
+          v-model="page"
+          :total-pages="totalPages"
+          class="table__pages"
+        />
       </div>
     </div>
   </div>
@@ -189,11 +195,13 @@ export default {
         limit: 10,
         offset: 0,
       },
+      page: 1,
     };
   },
   computed: {
     ...mapGetters({
       isAuth: 'user/isAuth',
+      token: 'user/accessToken',
 
       account: 'web3/getAccount',
       isConnected: 'web3/isConnected',
@@ -249,6 +257,9 @@ export default {
         SwapAddresses.get(Chains.WORKNET),
       ];
     },
+    totalPages() {
+      return Math.ceil(this.swapsCount / this.query.limit);
+    },
   },
   watch: {
     sourceAddressInd(newIdx, oldIdx) {
@@ -260,13 +271,14 @@ export default {
     async isConnected() {
       if (typeof this.account.address === 'string') {
         await this.swapsTableData(this.account.address, this.isConnected);
-        if (this.isConnected && !this.updateInterval) {
-          this.updateInterval = setInterval(() => this.swapsTableData(this.account.address, this.isConnected), 5000);
-        } else {
-          await clearInterval(this.updateInterval);
-          this.updateInterval = null;
-        }
       }
+    },
+    wsSwap() {
+      console.log(this.wsSwap);
+    },
+    async page() {
+      this.query.offset = (this.page - 1) * this.query.limit;
+      await this.swapsTableData();
     },
   },
   mounted() {
@@ -303,6 +315,7 @@ export default {
       else {
         const { chain } = addresses[sourceAddressInd];
         await this.connectWallet({ chain });
+        await this.$wsNotifs.connect(this.token);
         await this.subscribe(this.account.address);
       }
     },
@@ -327,6 +340,12 @@ export default {
       this.targetAddressInd = currentSource;
     },
     async checkNetwork(chain) {
+      if (!this.isConnected) {
+        await this.connectWallet({ chain });
+        if (!this.isConnected) return false;
+        return await this.checkNetwork(chain);
+      }
+
       const isMetaMask = localStorage.getItem('isMetaMask') === 'true';
       const isCorrectNetwork = +getChainIdByChain(chain) === +this.account.netId;
       if (!isCorrectNetwork && isMetaMask) {

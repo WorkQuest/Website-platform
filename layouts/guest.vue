@@ -89,6 +89,7 @@
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import moment from 'moment';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'GuestLayout',
@@ -103,6 +104,7 @@ export default {
   computed: {
     ...mapGetters({
       isLoading: 'main/getIsLoading',
+      connections: 'data/notificationsConnectionStatus',
     }),
     locales() {
       return this.$i18n.locales.map((item) => ({
