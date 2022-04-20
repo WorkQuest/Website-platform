@@ -500,7 +500,7 @@ export default {
         const subscribes = ['chat', 'quest'];
         await Promise.all(subscribes.map((path) => this.$wsNotifs.subscribe(`${Path.NOTIFICATIONS}/${path}`, async (ev) => {
           if (path === 'chat') await this.chatAction(ev);
-          else await this.$store.dispatch('user/addNotification', ev);
+          else await this.$store.dispatch('notifications/addNotification', ev);
         })));
       }
       if (!chatActionsConnection) await this.$wsChatActions.connect(this.token);

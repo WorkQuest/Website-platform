@@ -84,6 +84,7 @@
               {{ $moment(notification.createdAt).format('MMMM Do YYYY, h:mm') }}
             </div>
             <img
+              v-if="!notification.params.isLocal"
               class="notification__remove"
               src="~assets/img/ui/close.svg"
               alt="x"
@@ -108,7 +109,7 @@
         <empty-data
           v-else
           class="info-block__no-content"
-          :description="$t('ui.notifications.noNotifications')"
+          :description="$tc('ui.notifications.noNotifications')"
         />
         <base-pager
           v-if="totalPages > 1"

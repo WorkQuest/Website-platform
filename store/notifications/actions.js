@@ -1,7 +1,7 @@
 import moment from 'moment';
 import {
   DaoUrl, LocalNotificationAction,
-  NotificationAction,
+  NotificationAction, NotificationActionFromContract,
   notificationCommonFilterAction2,
   notificationCommonFilterActions, notificationEmployerFilterActions, Path, PathDAO,
   UserRole,
@@ -68,7 +68,6 @@ export default {
   async readNotifications({ commit }, payload) {
     try {
       const { ok } = await this.$axios.$put(`${process.env.NOTIFS_URL}notifications/mark-read`, payload);
-
       commit('setNotificationsAsRead', payload.notificationIds);
       return ok;
     } catch (e) {
@@ -126,14 +125,16 @@ export default {
         if (comment?.author && action === NotificationAction.COMMENT_LIKED) notification.sender = comment.author;
         if (rootComment?.author && action === NotificationAction.NEW_COMMENT_IN_DISCUSSION) notification.sender = rootComment.author;
         if (quest?.user && notificationCommonFilterActions.includes(action)) notification.sender = quest.user;
+        if ([
+          NotificationActionFromContract.QUEST_STATUS_UPDATED1,
+          NotificationActionFromContract.QUEST_STATUS_UPDATED2,
+        ].includes(action)) notification.sender = { avatar: { url: require('assets/img/app/logo.svg') }, firstName: 'Workquest info' };
         /** Worker */
         if (userRole === UserRole.WORKER && notificationCommonFilterAction2.includes(action)) notification.sender = user;
         /** Employer */
-        if (userRole === UserRole.EMPLOYER) {
-          if (assignedWorker && notificationEmployerFilterActions.includes(action)) notification.sender = assignedWorker;
-          if (worker && notificationEmployerFilterActions.includes(action)) notification.sender = worker;
-          if (employer && notificationCommonFilterAction2.includes(action)) notification.sender = employer;
-        }
+        if (assignedWorker && notificationEmployerFilterActions.includes(action)) notification.sender = assignedWorker;
+        else if (worker && notificationEmployerFilterActions.includes(action)) notification.sender = worker;
+        else if (employer && notificationCommonFilterAction2.includes(action)) notification.sender = employer;
       }
     }
     async function updateQuests() {
@@ -218,6 +219,13 @@ export default {
 
       /** Workquest local */
 
+      case NotificationActionFromContract.QUEST_STATUS_UPDATED1:
+      case NotificationActionFromContract.QUEST_STATUS_UPDATED2: {
+        await setAllNotificationsParams(quest?.title || title, `${Path.QUESTS}/${quest?.id || id}`, false, '');
+        await updateQuests();
+        break;
+      }
+
       case LocalNotificationAction.KYC:
         await setAllNotificationsParams(title, `${Path.SUMSUB}`, false, '', true);
         break;
@@ -240,6 +248,7 @@ export default {
       default: {
         // Не удалять! Для ловли неизвестных ивентов
         console.error('Unknown event = ', action);
+        await setAllNotificationsParams(action, '', false, '', false);
         break;
       }
     }
