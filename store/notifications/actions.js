@@ -7,6 +7,7 @@ import {
   UserRole,
 } from '~/utils/enums';
 import { error, success } from '~/utils/web3';
+import modals from '~/store/modals/modals';
 
 export default {
   async createLocalNotification({ commit, getters, dispatch }, {
@@ -225,6 +226,10 @@ export default {
         await updateQuests();
         break;
       }
+
+      case LocalNotificationAction.GET_REWARD:
+        await setAllNotificationsParams(title, '', false, '', true);
+        break;
 
       case LocalNotificationAction.WIKI:
         await setAllNotificationsParams(title, `${Path.WIKI}`, false, '', true);

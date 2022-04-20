@@ -29,39 +29,41 @@ Vue.mixin({
       return address;
     },
     async pushLocalNotifications() {
-      let payload;
       const KYC = this.$cookies.get(LocalNotificationAction.TWOFA);
       const TWOFA = this.$cookies.get(LocalNotificationAction.KYC);
       // TODO: Добавить локализацию
-      payload = {
+      await this.$store.dispatch('notifications/createLocalNotification', {
+        id: '1',
+        action: LocalNotificationAction.GET_REWARD,
+        message: 'Invite your friends and get rewarded!',
+        actionBtn: 'Get Reward',
+      });
+      await this.$store.dispatch('notifications/createLocalNotification', {
         id: '1',
         action: LocalNotificationAction.WIKI,
         message: 'You can get acquainted with all the functionality of the platform on the WorkQuest Wiki page!',
         actionBtn: 'Go to Wiki',
-      };
-      if (!KYC) this.$cookies.set(LocalNotificationAction.KYC, this.statusKYC !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
-      await this.$store.dispatch('notifications/createLocalNotification', payload);
+      });
       if (this.statusKYC === SumSubStatuses.NOT_VERIFIED) {
         // TODO: Добавить локализацию
-        payload = {
+        if (!KYC) this.$cookies.set(LocalNotificationAction.KYC, this.statusKYC !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
+        await this.$store.dispatch('notifications/createLocalNotification', {
           id: '1',
           action: LocalNotificationAction.KYC,
-          message: 'Please, enable KYC!',
+          message: 'You can enable KYC on Sumsub page!',
           actionBtn: 'Enable KYC',
-        };
-        if (!KYC) this.$cookies.set(LocalNotificationAction.KYC, this.statusKYC !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
-        await this.$store.dispatch('notifications/createLocalNotification', payload);
+        });
       }
       if (this.status2FA === TwoFAStatuses.DISABLED) {
         // TODO: Добавить локализацию
-        payload = {
+        // TODO: Добавить якорь для прокрутки до 2FA после перехода
+        if (!TWOFA) this.$cookies.set(LocalNotificationAction.TWOFA, this.status2FA !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
+        await this.$store.dispatch('notifications/createLocalNotification', {
           id: '2',
           action: LocalNotificationAction.TWOFA,
-          message: 'Please, enable 2FA!',
-          actionBtn: 'Enable 2FA',
-        };
-        if (!TWOFA) this.$cookies.set(LocalNotificationAction.TWOFA, this.status2FA !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
-        await this.$store.dispatch('notifications/createLocalNotification', payload);
+          message: 'You can enable 2FA in settings!',
+          actionBtn: 'Go to Settings',
+        });
       }
     },
     async uploadFiles(files) {
