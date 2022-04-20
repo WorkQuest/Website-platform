@@ -17,12 +17,11 @@ import modals from '@/store/modals/modals';
 export default {
   name: 'ModalBox',
   components: {
-    [modals.cardAdded]: () => import('./CtmModalCardAdded'),
-    [modals.questCreated]: () => import('./CtmModalQuestCreated'),
     [modals.inviteSend]: () => import('./CtmModalInviteSend'),
+    [modals.cardAdded]: () => import('./CtmModalCardAdded'),
     [modals.thanks]: () => import('./CtmModalThanksSend'),
     [modals.cardHasBeenAdded]: () => import('./CtmModalCardHasBeenAdded'),
-    [modals.transactionSend]: () => import('./CtmModalThanksSend'),
+    [modals.transactionSend]: () => import('./CtmModalTransactionSend'),
     [modals.questAgreed]: () => import('./CtmModalQuestAgreed'),
     [modals.changePassword]: () => import('./CtmModalChangePassword'),
     [modals.emailConfirm]: () => import('./CtmModalConfirmEmail'),
