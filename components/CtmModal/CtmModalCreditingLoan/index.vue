@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="loan"
-    :title="$t('modals.titles.loan')"
+    :title="$tc('modals.titles.loan')"
   >
     <div class="loan__content content">
       <validation-observer
@@ -21,7 +21,7 @@
               :placeholder="$tc('meta.coins.count.WUSDCount', 100)"
               rules="required|decimal:18|greaterThanZero|zeroFail"
               data-selector="VALUE-FOR-LOAN"
-              :name="$t('modals.quantityField')"
+              :name="$tc('modals.quantityField')"
             >
               <template
                 v-slot:right-absolute
@@ -47,7 +47,7 @@
             class="buttons__button"
             mode="outline"
             data-selector="CANCEL"
-            @click="hide"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -95,13 +95,10 @@ export default {
     await this.$store.dispatch('wallet/getBalance');
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     async openConfirmDetailsModal() {
       const amount = this.quantity;
       const { submit } = this.options;
-      this.hide();
+      this.CloseModal();
       await submit(amount);
     },
     async maxBalance() {

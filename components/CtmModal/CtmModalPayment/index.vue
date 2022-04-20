@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.titles.payment')"
+    :title="$tc('modals.titles.payment')"
   >
     <div class="ctm-modal__content">
       <validation-observer>
@@ -12,7 +12,7 @@
               placeholder="1234 1234 1234 1234"
               data-selector="CARD-NUMBER"
               :is-hide-error="true"
-              :label="$t('modals.numberOfCard')"
+              :label="$tc('modals.numberOfCard')"
             />
           </div>
           <div class="ctm-modal__content-field">
@@ -21,7 +21,7 @@
               placeholder="1234 1234 1234 1234"
               data-selector="CARDHOLDER-NAME"
               :is-hide-error="true"
-              :label="$t('modals.cardHolder')"
+              :label="$tc('modals.cardHolder')"
             />
           </div>
           <div class="grid__2col">
@@ -31,7 +31,7 @@
                 placeholder="02/24"
                 data-selector="CARD-DATE"
                 :is-hide-error="true"
-                :label="$t('modals.date')"
+                :label="$tc('modals.date')"
               />
             </div>
             <div class="ctm-modal__content-field">
@@ -40,7 +40,7 @@
                 placeholder="242"
                 data-selector="CARD-CVV"
                 :is-hide-error="true"
-                :label="$t('modals.cvv')"
+                :label="$tc('modals.cvv')"
               />
             </div>
           </div>
@@ -62,7 +62,7 @@
               mode="outline"
               data-selector="CANCEL"
               class="message__action"
-              @click="hide()"
+              @click="CloseModal"
             >
               {{ $t('meta.btns.cancel') }}
             </base-btn>
@@ -94,9 +94,6 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     showTransactionSendModal() {
       this.ShowModal({
         key: modals.transactionSend,

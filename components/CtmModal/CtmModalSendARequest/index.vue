@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="message"
-    :title="$t('modals.titles.sendARequest')"
+    :title="$tc('modals.titles.sendARequest')"
   >
     <div class="ctm-modal__content">
       <validation-observer v-slot="{handleSubmit}">
@@ -113,11 +113,12 @@ export default {
       if (ok) {
         await this.$store.dispatch('quests/getQuest', this.$route.params.id);
         this.ShowModal({
-          key: modals.requestSend,
+          key: modals.status,
+          img: require('assets/img/ui/message.svg'),
+          title: this.$t('modals.titles.requestSend'),
+          subtitle: this.$t('modals.waitResponseFromEmployer'),
         });
-      } else {
-        this.CloseModal();
-      }
+      } else this.CloseModal();
     },
   },
 };

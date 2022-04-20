@@ -637,7 +637,8 @@ export default {
     },
     showModalEditQuest() {
       this.ShowModal({
-        key: modals.questCreated,
+        key: modals.status,
+        img: require('assets/img/ui/questCreated.svg'),
         title: this.$t('modals.questUpdated'),
       });
     },

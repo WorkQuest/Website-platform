@@ -330,7 +330,8 @@ export default {
               return;
             }
             this.ShowModal({
-              key: modals.questCreated,
+              key: modals.status,
+              img: require('assets/img/ui/questCreated.svg'),
               title: this.$t('modals.questCreated'),
             });
             this.ShowToast(this.$t('toasts.questCreated'), this.$t('toasts.questCreated'));

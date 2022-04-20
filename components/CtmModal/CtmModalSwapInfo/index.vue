@@ -24,7 +24,7 @@
             class="buttons__button"
             mode="outline"
             data-selector="CANCEL"
-            @click="hide"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -84,9 +84,6 @@ export default {
     },
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     async sendTransaction() {
       // TODO need it?
       if (!this.isConnected) await this.$store.dispatch('web3/connect');
