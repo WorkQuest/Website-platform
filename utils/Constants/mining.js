@@ -2,7 +2,10 @@ import { Chains, TokenSymbols, isProd } from '~/utils/enums';
 import { StakingWQ, WQLiquidityMining } from '~/abi/index';
 import { images } from '~/utils/images';
 
-export const some = '';
+export const PoolURL = Object.freeze({
+  BNB: 'https://pancakeswap.finance/add/BNB/0xe89508D74579A06A65B907c91F697CF4F8D9Fac7',
+  ETH: 'https://app.uniswap.org/#/add/v2/0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf/ETH',
+});
 
 export const Pool = new Map([
   [

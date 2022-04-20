@@ -50,32 +50,15 @@
             :class="{'info-block__btns_double': chain === $options.Chains.BINANCE}"
           >
             <base-btn
-              v-if="chain === $options.Chains.BINANCE"
-              :data-selector="`OPEN-SWAP-TOKENS-${$t('mining.swapTokens.title')}`"
+              v-for="(btn, idx) in poolButtons"
+              :key="idx"
               class="btn_bl"
-              mode="outline"
-              :disabled="statusBusy || metamaskStatus === 'notInstalled' || !isConnected"
-              @click="openSwapTokens()"
+              :data-selector="btn.dataSelector"
+              :mode="btn.mode"
+              :link="btn.link "
+              @click="btn.action"
             >
-              {{ $t('mining.swapTokens.title') }}
-            </base-btn>
-            <base-btn
-              v-if="chain === $options.Chains.ETHEREUM"
-              data-selector="ADD-LIQUIDITY-ETH"
-              :link="'https://app.uniswap.org/#/add/v2/0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf/ETH'"
-              class="btn_bl"
-              :disabled="statusBusy"
-            >
-              {{ $t('meta.addLiquidity') }}
-            </base-btn>
-            <base-btn
-              v-if="chain === $options.Chains.BINANCE"
-              data-selector="ADD-LIQUIDITY-BNB"
-              :link="'https://pancakeswap.finance/add/BNB/0xe89508D74579A06A65B907c91F697CF4F8D9Fac7'"
-              class="btn_bl"
-              :disabled="statusBusy"
-            >
-              {{ $t('meta.addLiquidity') }}
+              {{ $t(btn.title) }}
             </base-btn>
           </div>
         </div>
@@ -258,7 +241,7 @@ import {
   Path, StakingTypes, TokenSymbols, Chains,
 } from '~/utils/enums';
 import { getChainIdByChain } from '~/utils/web3';
-import { Pool } from '~/utils/Constants/mining';
+import { Pool, PoolURL } from '~/utils/Constants/mining';
 import { images } from '~/utils/images';
 
 export default {
@@ -289,6 +272,7 @@ export default {
       APY: 'mining/getAPY',
 
       isConnected: 'web3/isConnected',
+      account: 'web3/getAccount',
       accountData: 'web3/getAccountData',
       tokensData: 'web3/getTokensAmount',
       statusBusy: 'web3/getStatusBusy',
@@ -366,6 +350,38 @@ export default {
         images.WQT,
       ];
     },
+    poolButtons() {
+      if (this.chain === Chains.ETHEREUM) {
+        return [
+          {
+            dataSelector: 'ADD-LIQUIDITY-ETH',
+            title: 'meta.addLiquidity',
+            link: PoolURL.ETH,
+            disabled: false,
+            action: '',
+            mode: '',
+          },
+        ];
+      }
+      return [
+        {
+          dataSelector: 'OPEN-SWAP-TOKENS-WQT',
+          title: 'mining.swapTokens.title',
+          link: '',
+          disabled: this.metamaskStatus === 'notInstalled' || !this.isConnected,
+          action: this.openSwapTokens,
+          mode: 'outline',
+        },
+        {
+          dataSelector: 'ADD-LIQUIDITY-BNB',
+          title: 'meta.addLiquidity',
+          link: PoolURL.BNB,
+          disabled: false,
+          action: '',
+          mode: '',
+        },
+      ];
+    },
   },
   watch: {
     async isConnected(newValue) {
@@ -375,7 +391,6 @@ export default {
         await this.tokensDataUpdate();
         this.updateInterval = setInterval(() => this.tokensDataUpdate(), 60000);
       } else {
-        await this.disconnectWS();
         await this.resetPoolData();
         clearInterval(this.updateInterval);
       }
@@ -433,16 +448,24 @@ export default {
       else await this.connectWallet({ chain });
     },
     async checkNetwork(chain) {
+      if (!this.isConnected) {
+        await this.connectWallet({ chain });
+        if (!this.isConnected) return false;
+        return await this.checkNetwork(chain);
+      }
+
       const isMetaMask = localStorage.getItem('isMetaMask') === 'true';
       const isCorrectNetwork = +getChainIdByChain(chain) === +this.account.netId;
       if (!isCorrectNetwork && isMetaMask) {
         const { ok } = await this.goToChain({ chain });
         return ok;
       }
+
       if (!isCorrectNetwork && !isMetaMask) {
         this.ShowModalFail({ title: this.$t('modals.errors.errorNetwork', { network: chain }) });
         return false;
       }
+
       return true;
     },
 
@@ -540,12 +563,12 @@ export default {
       this.SetLoader(false);
     },
     async openSwapTokens() {
-      if (!this.isConnected) {
-        await this.connectWallet({ chain: this.chain });
+      const { chain } = this;
+      if (await this.checkNetwork(chain)) {
+        this.ShowModal({
+          key: modals.swapTokens,
+        });
       }
-      this.ShowModal({
-        key: modals.swapTokens,
-      });
     },
     async openModalUnstaking() {
       await this.checkWalletStatus();

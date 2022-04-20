@@ -1,6 +1,5 @@
 export default {
   setInitWS(state, isInit) {
-    console.log('commit setInitWS', isInit);
     state.isInitWS = isInit;
   },
   setTableData(state, data) {
