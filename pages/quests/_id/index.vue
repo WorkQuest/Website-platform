@@ -166,7 +166,7 @@ import {
   ResponseStatus,
   questPriority,
   QuestModeReview,
-  TokenSymbols,
+  TokenSymbols, LocalNotificationAction,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 import {
@@ -261,6 +261,7 @@ export default {
     if (this.userRole === UserRole.WORKER) await this.getSameQuests();
     await this.getResponsesToQuest();
     await this.setActionBtnsArr();
+    await this.localNotificationReviewUser();
     this.SetLoader(false);
   },
   async beforeDestroy() {
@@ -270,6 +271,17 @@ export default {
     this.$store.commit('user/setCurrentReviewMarkOnQuest', { questId: null, message: null, mark: null });
   },
   methods: {
+    async localNotificationReviewUser() {
+      if (this.quest.status === QuestStatuses.Done && this.userData.id === this.quest.userId && !this.quest.yourReview) {
+        // TODO: Добавить локализацию!
+        await this.$store.dispatch('notifications/createLocalNotification', {
+          id: '7',
+          action: LocalNotificationAction.RATE_THE_QUEST,
+          message: 'Please rate the completed work on the quest',
+          actionBtn: 'Go to Quest page',
+        });
+      }
+    },
     starRating(item) {
       if (!item) return false;
       if (this.userRole === UserRole.WORKER) {
@@ -541,6 +553,13 @@ export default {
           if (txRes.ok) {
             this.showQuestModal(2);
             await this.$store.dispatch('quests/setInfoDataMode', QuestStatuses.Done);
+            // TODO: Добавить локализацию && Надо ли???
+            await this.$store.dispatch('notifications/createLocalNotification', {
+              id: '6',
+              action: LocalNotificationAction.REVIEW_USER,
+              message: this.userRole === UserRole.EMPLOYER ? 'Please, review your employer!' : 'Please, review your worker!',
+              actionBtn: this.userRole === UserRole.EMPLOYER ? 'Go to Employer Profile' : 'Go to Worker Profile',
+            });
           }
         },
       });

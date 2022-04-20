@@ -7,7 +7,6 @@ import {
   UserRole,
 } from '~/utils/enums';
 import { error, success } from '~/utils/web3';
-import modals from '~/store/modals/modals';
 
 export default {
   async createLocalNotification({ commit, getters, dispatch }, {
@@ -219,6 +218,16 @@ export default {
       }
 
       /** Workquest local */
+      case LocalNotificationAction.REVIEW_USER:
+        // TODO: Добавить toUserId
+        await setAllNotificationsParams(message, `${Path.PROFILE}/${toUserId}`, false, '', true);
+        await updateProfile();
+        break;
+
+      case LocalNotificationAction.RATE_THE_QUEST:
+        // TODO: Добавить quest id в локальную нотификацию
+        await setAllNotificationsParams(message, `${Path.QUESTS}/${id}`, false, '', true);
+        break;
 
       case NotificationActionFromContract.QUEST_STATUS_UPDATED1:
       case NotificationActionFromContract.QUEST_STATUS_UPDATED2: {

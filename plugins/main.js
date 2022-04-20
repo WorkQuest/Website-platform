@@ -74,7 +74,7 @@ Vue.mixin({
           actionBtn: 'Go to Settings',
         });
       }
-      if (this.profileFilled) {
+      if (!this.profileFilled) {
         await this.$store.dispatch('notifications/createLocalNotification', {
           id: '5',
           action: LocalNotificationAction.PROFILE_FILLED,
@@ -371,11 +371,10 @@ Vue.mixin({
       const { userData } = this;
       console.log('userData', userData);
       const {
-        avatar, firstName, lastName, phone, locationPlaceName, additionalInfo,
+        avatar, firstName, lastName, locationPlaceName, additionalInfo: { description },
       } = userData;
-      const { description } = additionalInfo;
-      this.profileFilled = !!avatar || !!phone?.fullPhone || !!firstName || !!lastName || !!locationPlaceName
-        || !!description;
+      this.profileFilled = !!avatar && !!firstName && !!lastName && !!locationPlaceName
+        && !!description;
     },
   },
 });
