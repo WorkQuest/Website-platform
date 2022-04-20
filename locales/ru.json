@@ -8,8 +8,8 @@
       "title": "Выберите приоритет",
       "all": "Все приоритеты",
       "fixedDelivery": "Фиксированная доставка",
-      "shortTerm": "В ближайшем будущем",
-      "urgent": "Срочный",
+      "shortTerm": "В ближайшем будущем 1 неделя",
+      "urgent": "Срочный 24-72 часа",
       "employee": {
         "urgent": "Срочное исполнение"
       }
@@ -50,6 +50,7 @@
       "hours": "{count} час | {count} часа | {count} часов",
       "years": "{count} год | {count} года | {count} лет",
       "days": "{count} день | {count} дня  | {count} дней",
+      "daysLeft": "{count} days left",
       "votesCount": "{count} голоса",
       "distance": {
         "m": "m"
@@ -374,7 +375,7 @@
       "verified": "Подтвержденный",
       "reliable": "Надежный",
       "topRanked": "Топовый",
-      "noStatus" : "Без статуса"
+      "noStatus": "Без статуса"
     },
     "distantWork": {
       "title": "Рабочее место",
@@ -947,7 +948,8 @@
       "withdraw": "Withdraw",
       "sendTo": "Send To",
       "withdrawCard": "Withdraw to bank card",
-      "withdrawInfo": "Withdrawal info"
+      "withdrawInfo": "Withdrawal info",
+      "downloadApp": "Скачайте приложение"
     },
     "errors": {
       "errorQuests": "Error with quests",
@@ -956,7 +958,8 @@
       "error": "Ошибка",
       "errorNetwork": "Ошибка, Вы используете не правильную сеть. Переключитесь на {network}",
       "youCan’tDeleteActiveQuest": "Вы не можете удалить активный квест",
-      "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
+      "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest",
+      "dontHavePeople": "У вас нет пользователей для создания группового чата"
     },
     "chatCreate": {
       "title": "Create chat",
@@ -1120,7 +1123,7 @@
     "tempForRemove2": "1 BNB = ... WQT",
     "currentPoolSize": "Current pool size",
     "yourPoolShare": "Your pool share",
-    "howMuchEthWouldYouLikeToLock": "How much ETH would you like to lock into your account?",
+    "howMuchTokensWouldYouLikeToLock": "How much {token} would you like to lock into your account?",
     "collateralization": "Collateralization",
     "liquidationPrice": "Liquidation price",
     "currentPrice": "Current price",
@@ -1205,7 +1208,15 @@
     "txInfo": "Transaction info",
     "registration": "Вы верены что хотите зарегистрировать данных пользователей?",
     "claimConfirm": "Вы потдверждаете дейсвие клейм?",
-    "until": "До"
+    "until": "До",
+    "scanQrCode": "Просто отсканируйте QR-код",
+    "downOnSmartphone": "Скачайте Work Quest приложение на свой телефон",
+    "successfulMethods": {
+      "claim": "Successful claim",
+      "refund": "Successful refund",
+      "withdraw": "Successful withdrawal",
+      "deposit": "Successful deposit"
+    }
   },
   "ui": {
     "jobQuestors": "В поиске работы",
@@ -1707,10 +1718,13 @@
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
     "currentLoan": "Текущий заем",
     "currentCredit": "Текущий кредит",
+    "chooseSource": "Выбрать источник",
+    "chosenSource": "Выбранный источник",
     "marketSize": "Market size",
     "wantToTakeALoan": "Want to take a loan?",
     "borrow": "Занимать",
     "myLoans": "Мои займы",
+    "needRefund": "Необходимо вернуть",
     "refund": "Возврат",
     "openPositions": "Open positions",
     "totalCollateralLocked": "Total collateral locked",

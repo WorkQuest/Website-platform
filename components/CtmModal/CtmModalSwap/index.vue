@@ -58,7 +58,7 @@
           </div>
           <base-field
             disabled
-            :value="account.address"
+            :value="accountAddress"
             data-selector="RECIPIENT_ADDRESS"
             :name="$tc('modals.recipientAddress')"
           />
@@ -95,6 +95,7 @@ export default {
     return {
       amount: 0,
       tokenId: 0,
+      accountAddress: '',
     };
   },
   computed: {
@@ -106,13 +107,9 @@ export default {
     tokens() {
       const availableTokens = [TokenSymbols.WQT];
       const { from, to } = this.options;
-
       if (to.chain === Chains.WORKNET || from.chain === Chains.WORKNET) {
-        if (from.chain === Chains.ETHEREUM || to.chain === Chains.ETHEREUM) {
-          availableTokens.push(TokenSymbols.ETH);
-        } else if (from.chain === Chains.BINANCE || to.chain === Chains.BINANCE) {
-          availableTokens.push(TokenSymbols.BNB);
-        }
+        if (from.chain === Chains.ETHEREUM || to.chain === Chains.ETHEREUM) availableTokens.push(TokenSymbols.ETH);
+        else if (from.chain === Chains.BINANCE || to.chain === Chains.BINANCE) availableTokens.push(TokenSymbols.BNB);
       }
       return availableTokens;
     },
@@ -125,11 +122,17 @@ export default {
   },
   async mounted() {
     await this.handlerFetchBalance(this.tokens[0]);
+    await this.convertAccountAddress();
   },
   methods: {
     ...mapActions({
       fetchBalance: 'bridge/fetchBalance',
     }),
+    async convertAccountAddress() {
+      const { chain } = this.options.to;
+      if (chain === 'WORKNET') this.accountAddress = this.convertToBech32('wq', this.account.address);
+      else this.accountAddress = this.account.address;
+    },
     async handlerFetchBalance(symbol) {
       const { to, from } = this.options;
       await this.fetchBalance({

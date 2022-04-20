@@ -1,6 +1,6 @@
 <template>
   <ctm-modal-box
-    :title="$t('modals.titles.chooseSkills')"
+    :title="$tc('modals.titles.chooseSkills')"
     class="messageSend"
   >
     <div class="ctm-modal__content">
@@ -21,6 +21,7 @@
                 type="gray"
                 :items="ddList"
                 :placeholder="skill.value"
+                :data-selector="`SKILL-${i}`"
               />
             </div>
             <div>
@@ -66,7 +67,7 @@
                 mode="outline"
                 data-selector="CANCEL"
                 class="message__action"
-                @click="hide()"
+                @click="CloseModal"
               >
                 {{ $t('meta.btns.cancel') }}
               </base-btn>
@@ -80,6 +81,7 @@
 
 <script>
 import modals from '~/store/modals/modals';
+import { images } from '~/utils/images';
 
 export default {
   name: 'CtmModalChooseNecessarySkills',
@@ -103,23 +105,17 @@ export default {
   },
   methods: {
     addNewSkill(currentValue, skill) {
-      const newSkill = {
-        value: skill.value,
-        added: true,
-      };
+      const newSkill = { value: skill.value, added: true };
       this.skills.unshift(newSkill);
     },
     deleteSkill(i) {
       this.skills.splice(i, 1);
     },
 
-    hide() {
-      this.CloseModal();
-    },
     success() {
       this.ShowModal({
         key: modals.status,
-        img: require('~/assets/img/ui/success.svg'),
+        img: images.SUCCESS,
         title: this.$t('meta.success'),
         subtitle: this.$t('modals.yourRoleHasBeenChanged'),
       });

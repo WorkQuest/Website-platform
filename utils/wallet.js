@@ -7,9 +7,15 @@ import {
   success,
   fetchContractData,
 } from '~/utils/web3';
+
 import {
-  WQPensionFund, WQRouter, WQStaking, WQStakingNative,
-} from '~/abi/abi';
+  WQOracle,
+  WQRouter,
+  WQStaking,
+  WQPensionFund,
+  WQStakingNative,
+} from '~/abi/index';
+
 import { StakingTypes } from '~/utils/enums';
 
 const bip39 = require('bip39');
@@ -200,28 +206,47 @@ export const getTransferFeeData = async (recipient, value) => {
 };
 
 /** CONTRACTS */
-export const sendWalletTransaction = async (_method, payload) => {
+export const sendWalletTransaction = async (_method, {
+  abi, address, value, data,
+}) => {
   if (!web3) {
     console.error('web3 is undefined');
     return false;
   }
   try {
-    const inst = new web3.eth.Contract(payload.abi, payload.address);
+    const inst = new web3.eth.Contract(abi, address);
     const gasPrice = await web3.eth.getGasPrice();
     const accountAddress = getWalletAddress();
-    const data = inst.methods[_method].apply(null, payload.data).encodeABI();
-    const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress });
-    const transactionData = {
-      to: payload.address,
+    const txData = inst.methods[_method].apply(null, data).encodeABI();
+
+    if (value) {
+      const gas = await inst.methods[_method].apply(null, data).estimateGas({
+        from: accountAddress,
+        value,
+      });
+      return await inst.methods[_method](...data).send({
+        from: accountAddress,
+        to: address,
+        data: txData,
+        gasPrice,
+        gas,
+        value,
+      });
+    }
+    const gas = await inst.methods[_method].apply(null, data).estimateGas({
       from: accountAddress,
-      data,
+    });
+    const transactionData = {
+      from: accountAddress,
+      to: address,
+      data: txData,
       gasPrice,
-      gas: gasEstimate,
+      gas,
     };
     // noinspection ES6RedundantAwait
     return await web3.eth.sendTransaction(transactionData);
   } catch (e) {
-    console.error('method: sendWalletTransaction');
+    console.error('method: sendWalletTransaction', e);
     return error(e.code, e.message, e);
   }
 };
@@ -428,7 +453,7 @@ export const getGasPrice = async (contractAbi, address, method, attr, value = nu
     return { gas: gasEstimate, gasPrice };
   } catch (e) {
     console.error('getGasPriceError', e);
-    return false;
+    return { gas: false, gasPrice: false };
   }
 };
 
@@ -436,7 +461,7 @@ export const setTokenPrice = async ({ currency }, {
   gasPrice, gas, timestamp, price, v, r, s,
 }) => {
   try {
-    const inst = new web3.eth.Contract(abi.WQOracle, process.env.WORKNET_ORACLE);
+    const inst = new web3.eth.Contract(WQOracle, process.env.WORKNET_ORACLE);
     await inst.methods.setTokenPriceUSD(timestamp, price, v, r, s, currency).send({
       from: wallet.address,
       gas,
@@ -444,6 +469,22 @@ export const setTokenPrice = async ({ currency }, {
     });
   } catch (e) {
     console.error('setTokenPriceError', e);
+    throw error();
+  }
+};
+
+export const setTokenPrices = async ({
+  gasPrice, gas, timestamp, prices, v, r, s, symbols,
+}) => {
+  try {
+    const inst = new web3.eth.Contract(WQOracle, process.env.WORKNET_ORACLE);
+    await inst.methods.setTokenPricesUSD(timestamp, v, r, s, prices, symbols).send({
+      from: wallet.address,
+      gas,
+      gasPrice,
+    });
+  } catch (e) {
+    console.error('setTokenPricesError', e);
     throw error();
   }
 };

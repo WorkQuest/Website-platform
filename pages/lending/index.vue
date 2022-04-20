@@ -5,9 +5,6 @@
         <div class="title">
           {{ $t('crediting.lending') }}
         </div>
-        <div class="title_sub">
-          {{ $t('crediting.templateText') }}
-        </div>
       </div>
       <div class="crediting-page__content">
         <div class="info-block__triple">
@@ -39,15 +36,17 @@
             >
             <div class="btn-group">
               <base-btn
+                v-if="isHaveCredit || isHaveLoan"
                 class="btn"
                 data-selector="MY-LOANS"
-                @click="$router.push('/crediting/2')"
+                @click="handleGoToLendingMy()"
               >
                 {{ $t('crediting.myLoans') }}
               </base-btn>
               <base-btn
                 class="btn"
-                mode="outline"
+                :mode="!isHaveCredit ? 'outline' : ''"
+                :disabled="isHaveCredit"
                 data-selector="CREDITING-DEPOSIT"
                 @click="openCreditingDepositModal()"
               >
@@ -55,7 +54,8 @@
               </base-btn>
               <base-btn
                 class="btn"
-                mode="outline"
+                :mode="!isHaveLoan ? 'outline' : ''"
+                :disabled="isHaveLoan"
                 data-selector="CREDITING-LOAN"
                 @click="openCreditingLoanModal()"
               >
@@ -140,15 +140,29 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
+import { getGasPrice } from '~/utils/wallet';
+import { WQOracle, WQBorrowing, WQLending } from '~/abi/index';
+import { Path } from '~/utils/enums';
+import { images } from '~/utils/images';
 
 export default {
+  name: 'Lending',
   data() {
     return {
       indexFAQ: [],
     };
   },
   computed: {
+    ...mapGetters({
+      isWalletConnected: 'wallet/getIsWalletConnected',
+      creditData: 'crediting/getCreditData',
+      currentPrices: 'oracle/getCurrentPrices',
+      walletData: 'crediting/getWalletData',
+      prices: 'oracle/getPrices',
+      symbols: 'oracle/getSymbols',
+    }),
     documents() {
       return [
         {
@@ -208,21 +222,161 @@ export default {
         },
       ];
     },
+    isHaveCredit() {
+      return this.creditData.credit > 0;
+    },
+    isHaveLoan() {
+      return this.walletData.amount > 0;
+    },
+  },
+  async beforeCreate() {
+    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
   async mounted() {
     this.SetLoader(true);
+    if (!this.isWalletConnected) return;
+    await Promise.all([
+      this.$store.dispatch('crediting/getCreditData'),
+      this.$store.dispatch('oracle/getCurrentPrices'),
+      this.$store.dispatch('crediting/getWalletsData'),
+    ]);
     this.SetLoader(false);
   },
   methods: {
+    handleGoToLendingMy() {
+      this.$router.push(`${Path.LENDING}/my`);
+    },
     openCreditingDepositModal() {
       this.ShowModal({
         key: modals.creditingDeposit,
+        submit: async ({
+          fundsSource, selFundID, checkpoints, selCurrencyID, datesNumber, date, quantity,
+        }) => {
+          const receiptData = [
+            {
+              title: this.$t('crediting.chosenSource'),
+              subtitle: fundsSource[selFundID - 1].name,
+            },
+            {
+              title: this.$t('modals.depositing'),
+              subtitle: this.$tc(`meta.coins.count.${checkpoints[selCurrencyID - 1].name}Count`, quantity),
+            },
+            {
+              title: this.$t('crediting.dueDate'),
+              subtitle: this.$moment().add(datesNumber[date], 'days').format('DD.MM.YYYY'),
+            },
+          ];
+          const valueWithDecimals = new BigNumber(quantity).shiftedBy(18).toString();
+          const symbol = checkpoints[selCurrencyID - 1].name;
+          const duration = datesNumber[date];
+          this.ShowModal({
+            key: modals.confirmDetails,
+            receiptData,
+            submit: async () => {
+              this.SetLoader(true);
+              const checkTokenPrice = await this.setTokenPrice();
+              this.SetLoader(false);
+              if (!checkTokenPrice) {
+                this.ShowModalFail({ title: this.$t('modals.transactionFail'), subtitle: 'incorrect price in Oracle' });
+                return;
+              }
+              this.ShowModal({
+                key: modals.areYouSure,
+                title: this.$t('modals.approveRouter', { token: symbol }),
+                okBtnTitle: this.$t('meta.btns.submit'),
+                okBtnFunc: async () => {
+                  this.CloseModal();
+                  this.SetLoader(true);
+                  const approveAllowed = await this.$store.dispatch('wallet/approveRouter', {
+                    symbol,
+                    spenderAddress: process.env.WORKNET_BORROWING,
+                    value: valueWithDecimals,
+                  });
+                  this.SetLoader(false);
+                  if (!approveAllowed) {
+                    this.ShowModalFail({
+                      title: this.$t('modals.transactionFail'),
+                      subtitle: 'incorrect action in approve or allowance',
+                    });
+                    return;
+                  }
+                  this.SetLoader(true);
+                  const res = await this.$store.dispatch('crediting/sendMethod', {
+                    address: process.env.WORKNET_BORROWING,
+                    method: 'borrow',
+                    abi: WQBorrowing,
+                    data: [
+                      1, // 1 in data this is nonce, required parameter for method "borrow"
+                      valueWithDecimals,
+                      selFundID - 1,
+                      duration,
+                      symbol,
+                    ],
+                  });
+                  this.SetLoader(false);
+                  if (res.ok) {
+                    await this.$store.dispatch('crediting/getCreditData');
+                    this.ShowModalSuccess({
+                      title: this.$t('modals.depositIsOpened'),
+                      img: images.TRANSACTION_SEND,
+                    });
+                  } else this.ShowModalFail({ title: this.$t('modals.transactionFail') });
+                },
+              });
+            },
+          });
+        },
       });
     },
     openCreditingLoanModal() {
       this.ShowModal({
         key: modals.creditingLoan,
+        submit: async (quantity) => {
+          this.SetLoader(true);
+          const { ok } = await this.$store.dispatch('crediting/sendMethod', {
+            value: new BigNumber(quantity).shiftedBy(18).toString(),
+            address: process.env.WORKNET_LENDING,
+            method: 'deposit',
+            abi: WQLending,
+            data: [],
+          });
+          this.SetLoader(false);
+
+          if (ok) {
+            await this.$store.dispatch('crediting/getWalletsData');
+            this.ShowModalSuccess({
+              title: this.$t('modals.loanIsOpened'),
+              img: images.TRANSACTION_SEND,
+            });
+          } else this.ShowModalFail({ title: this.$t('modals.transactionFail') });
+        },
       });
+    },
+    async setTokenPrice() {
+      await this.$store.dispatch('oracle/getCurrentPrices');
+      const { nonce } = this.currentPrices;
+      const { prices, symbols } = this;
+
+      const { gas, gasPrice } = await getGasPrice(
+        WQOracle,
+        process.env.WORKNET_ORACLE,
+        'setTokenPricesUSD',
+        [...Object.keys(this.currentPrices).map((key) => this.currentPrices[key]), prices, symbols],
+      );
+
+      if (gas && gasPrice) {
+        const { ok } = await this.$store.dispatch('crediting/setTokenPrices', {
+          ...this.currentPrices,
+          timestamp: nonce,
+          gasPrice,
+          symbols,
+          prices,
+          gas,
+        });
+        return ok;
+      }
+
+      return false;
     },
     handleClickFAQ(index) {
       if (this.indexFAQ.includes(index)) {
@@ -561,6 +715,7 @@ export default {
         font-size: 38px;
         margin-bottom: 15px;
         width: 100%;
+
         &_sub {
           font-size: 16px;
           max-width: 400px;
@@ -585,12 +740,14 @@ export default {
         width: 100%;
         margin: 0;
         padding: 0 20px;
+
         .calendar-img {
           position: relative;
           width: 100%;
           max-width: 370px;
           justify-self: center;
         }
+
         .btn-group {
           padding: 0;
           display: grid;
@@ -609,18 +766,21 @@ export default {
           grid-template-columns: unset;
           grid-template-rows: repeat(3, 1fr);
         }
+
         &__about {
           .btn-group {
             grid-template-columns: unset;
             grid-template-rows: repeat(2, 1fr);
           }
         }
+
         &__documents {
           .document {
             grid-template-columns: 33px auto 23px;
           }
         }
       }
+
       .btn {
         &__doc {
           border: 0;

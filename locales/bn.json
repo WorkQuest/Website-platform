@@ -8,8 +8,8 @@
       "title": "অগ্রাধিকার নির্বাচন করুন",
       "all": "সমস্ত অগ্রাধিকার",
       "fixedDelivery": "নির্দিষ্ট ডেলিভারি",
-      "shortTerm": "স্বল্পমেয়াদ",
-      "urgent": "জরুরি",
+      "shortTerm": "Short term 1 week",
+      "urgent": "Urgent 24-72h",
       "employee": {
         "urgent": "Urgent execution"
       }
@@ -50,6 +50,7 @@
       "hours": "{count} minute | {count} minutes | {count} hours",
       "years": "{count} year | {count} years | {count} years",
       "days": "{count} day | {count} days | {count} days",
+      "daysLeft": "{count} days left",
       "votesCount": "{count} ভোট",
       "distance": {
         "m": "m"
@@ -374,7 +375,7 @@
       "verified": "Verified",
       "reliable": "Reliable",
       "topRanked": "Top ranked",
-      "noStatus" : "Not rated"
+      "noStatus": "Not rated"
     },
     "distantWork": {
       "title": "দূরের কাজ",
@@ -947,7 +948,8 @@
       "withdraw": "Withdraw",
       "sendTo": "প্রাপক",
       "withdrawCard": "ব্যাংক কার্ডে প্রত্যাহার করুন",
-      "withdrawInfo": "Withdrawal info"
+      "withdrawInfo": "Withdrawal info",
+      "downloadApp": "Download App"
     },
     "errors": {
       "errorQuests": "Error with quests",
@@ -956,7 +958,8 @@
       "error": "Error",
       "errorNetwork": "Error, you use not correct network. Switch to {network}",
       "youCan’tDeleteActiveQuest": "You can’t delete active quest",
-      "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
+      "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest",
+      "dontHavePeople": "You don't have people to chat"
     },
     "chatCreate": {
       "title": "Create chat",
@@ -1120,7 +1123,7 @@
     "tempForRemove2": "1 BNB = ... WQT",
     "currentPoolSize": "বর্তমান পুলের আকার",
     "yourPoolShare": "পুলে আপনার শেয়ার",
-    "howMuchEthWouldYouLikeToLock": "আপনি কত ETH আপনার অ্যাকাউন্টে লক করতে চান?",
+    "howMuchTokensWouldYouLikeToLock": "আপনি কত {token} আপনার অ্যাকাউন্টে লক করতে চান?",
     "collateralization": "জামানত রাখা",
     "liquidationPrice": "লিকুইডেশন মূল্য",
     "currentPrice": "বর্তমান মূল্য",
@@ -1205,7 +1208,15 @@
     "txInfo": "Transaction info",
     "registration": "Are you sure to registration this users?",
     "claimConfirm": "Are you confirm the action of the claim?",
-    "until": "Until"
+    "until": "Until",
+    "scanQrCode": "You just need to scan the QR-code",
+    "downOnSmartphone": "Download Work Quest app on your smartphone",
+    "successfulMethods": {
+      "claim": "Successful claim",
+      "refund": "Successful refund",
+      "withdraw": "Successful withdrawal",
+      "deposit": "Successful deposit"
+    }
   },
   "ui": {
     "jobQuestors": "জব কোয়েস্টার",
@@ -1707,10 +1718,14 @@
     "description": "???",
     "currentLoan": "???",
     "currentCredit": "???",
+    "dueDate": "Due date",
+    "chooseSource": "Choose the source",
+    "chosenSource": "Chosen source",
     "marketSize": "বাজারের আকার",
     "wantToTakeALoan": "ঋণ নিতে চান?",
     "borrow": "ঋণ নিন",
     "myLoans": "???",
+    "needRefund": "Need to refund",
     "refund": "???",
     "openPositions": "অবস্থান খুলুন",
     "totalCollateralLocked": "মোট লককৃত জামানত",

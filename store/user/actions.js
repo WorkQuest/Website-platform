@@ -1,4 +1,3 @@
-import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import {
   error,
@@ -15,9 +14,13 @@ import {
   connectWithMnemonic,
 } from '~/utils/wallet';
 
-import { UserStatuses, QuestModeReview, RaiseViewTariffPeriods } from '~/utils/enums';
+import {
+  UserStatuses,
+  QuestModeReview,
+  RaiseViewTariffPeriods,
+} from '~/utils/enums';
 
-import { WQPromotion } from '~/abi/abi';
+import { WQPromotion } from '~/abi/index';
 
 const { WORKNET_PROMOTION } = process.env;
 

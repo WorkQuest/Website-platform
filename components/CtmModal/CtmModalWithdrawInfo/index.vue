@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="info"
-    :title="options.title || $t('modals.titles.withdrawInfo')"
+    :title="options.title || $tc('modals.titles.withdrawInfo')"
   >
     <div class="info__content content">
       <div class="content__field field">
@@ -71,7 +71,7 @@
             class="buttons__button"
             mode="outline"
             data-selector="CANCEL"
-            @click="hide"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -99,14 +99,8 @@ export default {
       isCardNumberVisible: false,
       walletAddress: null,
       items: [
-        {
-          title: this.$t('modals.amount'),
-          subtitle: 'WUSD',
-        },
-        {
-          title: this.$t('modals.totalFee'),
-          subtitle: '$ 0,15',
-        },
+        { title: this.$t('modals.amount'), subtitle: 'WUSD' },
+        { title: this.$t('modals.totalFee'), subtitle: '$ 0,15' },
       ],
     };
   },
@@ -136,16 +130,8 @@ export default {
     this.items[1].subtitle = this.options.txFee;
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     async handleSubmit() {
-      this.showTransactionSend();
-    },
-    showTransactionSend() {
-      this.ShowModal({
-        key: modals.transactionSend,
-      });
+      this.ShowModal({ key: modals.transactionSend });
     },
     showNumber() {
       this.isCardNumberVisible = !this.isCardNumberVisible;

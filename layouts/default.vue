@@ -31,6 +31,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'DefaultLayout',
@@ -47,6 +48,11 @@ export default {
     }),
   },
   async mounted() {
+    if (!this.$cookies.get('downloadAppDisplayed')) {
+      this.ShowModal({
+        key: modals.downloadApp,
+      });
+    }
     this.GetLocation();
   },
   methods: {

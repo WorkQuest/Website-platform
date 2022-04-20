@@ -24,7 +24,7 @@
             class="buttons__button"
             mode="outline"
             data-selector="CANCEL"
-            @click="hide"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -43,6 +43,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { Chains } from '~/utils/enums';
 
 export default {
   name: 'ModalSwapInfo',
@@ -63,11 +64,13 @@ export default {
         },
         {
           title: this.$t('modals.senderAddress'),
-          subtitle: this.options.recipient,
+          subtitle: this.options.fromNetwork === Chains.WORKNET
+            ? this.convertToBech32('wq', this.options.recipient) : this.options.recipient,
         },
         {
           title: this.$t('modals.recipientAddress'),
-          subtitle: this.options.recipient,
+          subtitle: this.options.toNetwork === Chains.WORKNET
+            ? this.convertToBech32('wq', this.options.recipient) : this.options.recipient,
         },
         // {
         //   title: this.$t('modals.worknetFee'),
@@ -81,9 +84,6 @@ export default {
     },
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     async sendTransaction() {
       // TODO need it?
       if (!this.isConnected) await this.$store.dispatch('web3/connect');

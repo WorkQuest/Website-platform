@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="claim"
-    :title="$t('modals.titles.swapTokens')"
+    :title="$tc('modals.titles.swapTokens')"
   >
     <div class="claim__content content">
       <validation-observer v-slot="{handleSubmit}">
@@ -11,9 +11,9 @@
           placeholder="3500"
           data-selector="OLD-TOKENS"
           type="number"
-          :label="$t('mining.swapTokens.oldTokens')"
+          :label="$tc('mining.swapTokens.oldTokens')"
           rules="required|decimal|min_value:0.00001"
-          :name="$t('mining.swapTokens.oldTokens')"
+          :name="$tc('mining.swapTokens.oldTokens')"
         >
           <template
             v-slot:right-absolute
@@ -26,7 +26,9 @@
               :disabled="balance === 0"
               @click="maxBalance()"
             >
-              <span class="max__text">{{ $t('modals.maximum') }}</span>
+              <span class="max__text">
+                {{ $t('modals.maximum') }}
+              </span>
             </base-btn>
           </template>
         </base-field>
@@ -41,16 +43,16 @@
           class="content__field"
           placeholder="3500"
           data-selector="NEW-TOKENS"
-          :label="$t('mining.swapTokens.newTokens')"
+          :label="$tc('mining.swapTokens.newTokens')"
           :disabled="true"
-          :name="$t('mining.swapTokens.newTokens')"
+          :name="$tc('mining.swapTokens.newTokens')"
         />
         <div class="content__container">
           <base-btn
             mode="outline"
             data-selector="CANCEL"
             :disabled="statusBusy"
-            @click="hide()"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -101,15 +103,13 @@ export default {
     await this.$store.dispatch('web3/initTokensData');
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     maxBalance() {
       this.oldTokens = this.tokensData.userPurse.oldTokenBalance;
     },
     initBalanceAndCurrency() {
-      this.balance = parseInt((this.tokensData.userPurse.oldTokenBalance) * 10000, 10) / 10000;
-      this.currency = this.tokensData.userPurse.oldTokenSymbol;
+      const { oldTokenBalance, oldTokenSymbol } = this.tokensData.userPurse;
+      this.balance = parseInt((oldTokenBalance) * 10000, 10) / 10000;
+      this.currency = oldTokenSymbol;
     },
     checkAmount() {
       const maxAmount = this.tokensData.userPurse.oldTokenBalance;
@@ -118,14 +118,14 @@ export default {
     async initSwap() {
       this.SetLoader(true);
       if (this.checkAmount()) {
-        this.hide();
+        this.CloseModal();
         await this.$store.dispatch('web3/swap', {
           decimals: this.tokensData.decimals.oldTokenDecimal,
           amount: this.oldTokens,
         });
         await this.$store.dispatch('web3/initTokensData');
       } else {
-        this.hide();
+        this.CloseModal();
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/warning.svg'),

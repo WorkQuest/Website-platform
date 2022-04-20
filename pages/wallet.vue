@@ -5,9 +5,9 @@
         <div class="wallet__nav">
           <span class="wallet__title">{{ $t('meta.wallet') }}</span>
           <div class="wallet__address">
-            <span class="user__wallet">{{ CutTxn(userWalletAddress, 8, 8) }}</span>
+            <span class="user__wallet">{{ CutTxn(convertToBech32('wq', userWalletAddress), 8, 8) }}</span>
             <button
-              v-clipboard:copy="userWalletAddress"
+              v-clipboard:copy="convertToBech32('wq',userWalletAddress)"
               v-clipboard:success="ClipboardSuccessHandler"
               v-clipboard:error="ClipboardErrorHandler"
               type="button"
@@ -34,7 +34,7 @@
                   <span class="balance__usd-mobile_blue">
                     {{ $t('wallet.frozen') }}
                   </span>
-                  {{ $t('meta.coins.count.WQTCount', { count: Floor(frozenBalance) } ) }}
+                  {{ $t('meta.coins.count.WQTCount', {count: Floor(frozenBalance)}) }}
                 </span>
                 <base-dd
                   v-model="ddValue"
@@ -51,7 +51,7 @@
                   <span class="balance__usd">
                     {{ $t('wallet.frozen') }}
                   </span>
-                  {{ $t('meta.coins.count.WQTCount', { count: Floor(frozenBalance) }) }}
+                  {{ $t('meta.coins.count.WQTCount', {count: Floor(frozenBalance)}) }}
                 </span>
               </span>
             </div>
@@ -155,7 +155,7 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { ERC20 } from '~/abi/abi';
+import { ERC20 } from '~/abi/index';
 import {
   tokenMap, TokenSymbolByContract, TokenSymbols, WalletTables,
 } from '~/utils/enums';
@@ -276,7 +276,7 @@ export default {
     async loadData() {
       this.SetLoader(true);
       const { selectedToken, userWalletAddress } = this;
-      if (selectedToken === TokenSymbols.WUSD) await this.$store.dispatch('wallet/getBalanceWUSD');
+      if (selectedToken === TokenSymbols.WUSD) await this.$store.dispatch('wallet/getBalance');
       else {
         const payload = { address: userWalletAddress, abi: ERC20 };
         await this.$store.dispatch('wallet/fetchWalletData', {
@@ -304,6 +304,8 @@ export default {
       this.ShowModal({
         key: modals.giveTransfer,
         submit: async ({ recipient, amount, selectedToken }) => {
+          const { convertToHex, convertToBech32 } = this;
+          recipient = convertToHex('wq', recipient);
           const value = new BigNumber(amount).shiftedBy(18).toString();
           let feeRes;
           if (selectedToken === TokenSymbols.WUSD) {
@@ -322,8 +324,8 @@ export default {
           this.ShowModal({
             key: modals.transactionReceipt,
             fields: {
-              from: { name: this.$t('modals.fromAddress'), value: this.userData.wallet.address },
-              to: { name: this.$t('modals.toAddress'), value: recipient },
+              from: { name: this.$t('modals.fromAddress'), value: convertToBech32('wq', this.userData.wallet.address) },
+              to: { name: this.$t('modals.toAddress'), value: convertToBech32('wq', recipient) },
               amount: {
                 name: this.$t('modals.amount'),
                 value: amount,

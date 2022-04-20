@@ -318,17 +318,17 @@ export default {
   }
   &_outline {
     width: 100%;
-    border: 1px solid rgba(0, 131, 199, 0.1) !important;
-    background: #FFFFFF !important;
-    color: $blue !important;
+    border: 1px solid rgba(0, 131, 199, 0.1);
+    background: $white;
+    color: $blue;
     padding: 0;
     &:hover {
-      background: #F7F8FA !important;
-      color: $blue !important;
+      background: $black0;
+      color: $blue;
     }
   }
   &_borderless {
-    background: #FFFFFF;
+    background: $white;
     color: $blue;
     &-left {
       @extend .base-btn_borderless;

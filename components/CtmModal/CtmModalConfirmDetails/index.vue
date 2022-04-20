@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="confirm"
-    :title="$t('modals.titles.confirmDetails')"
+    :title="$tc('modals.titles.confirmDetails')"
   >
     <div class="confirm__content content">
       <div class="content__field field">
@@ -23,7 +23,7 @@
           class="buttons__button"
           mode="outline"
           data-selector="CANCEL"
-          @click="hide"
+          @click="CloseModal"
         >
           {{ $t('meta.btns.cancel') }}
         </base-btn>
@@ -41,7 +41,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalConfirmDetails',
@@ -54,22 +53,10 @@ export default {
     },
   },
   methods: {
-    hide() {
+    async openStatusModal() {
+      const { submit } = this.options;
       this.CloseModal();
-    },
-    openStatusModal() {
-      const {
-        dataForStatusModal: {
-          img, title, subtitle, path,
-        },
-      } = this.options;
-      this.ShowModal({
-        key: modals.status,
-        img,
-        title,
-        subtitle,
-        path,
-      });
+      await submit();
     },
   },
 };

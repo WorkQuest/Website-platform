@@ -212,6 +212,7 @@ export const Path = {
   INSURING: '/insuring',
   SAVINGS: '/savings',
   CREDITING: '/crediting',
+  LENDING: '/lending',
   MINING: '/mining',
   BRIDGE: '/bridge',
   SETTINGS: '/settings',

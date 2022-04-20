@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="percent"
-    :title="$t('modals.titles.changePercent')"
+    :title="$tc('modals.titles.changePercent')"
   >
     <div class="percent__content content">
       <validation-observer
@@ -23,7 +23,7 @@
             :value="amount"
             :placeholder="$tc('meta.units.percentsCount', 15)"
             class="content__input"
-            :name="$t('modals.currentPercentErr')"
+            :name="$tc('modals.currentPercentErr')"
             data-selector="PENSION-PERCENT"
             rules="required|min_percent:1|max_percent:99|zeroFail|notMoreDecimalPlaces"
             @input="calcPensionPercent"
@@ -34,7 +34,7 @@
             class="buttons__button"
             data-selector="CANCEL"
             mode="outline"
-            @click="hide"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -56,7 +56,7 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import * as abi from '~/abi/abi';
+import { WQPensionFund } from '~/abi/index';
 import { getWalletAddress } from '~/utils/wallet';
 import { TokenSymbols } from '~/utils/enums';
 
@@ -74,18 +74,15 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     async updateFee() {
       const { updateMethod } = this.options;
-      this.hide();
+      this.CloseModal();
       this.SetLoader(true);
 
       const [txFee] = await Promise.all([
         this.$store.dispatch('wallet/getContractFeeData', {
           method: 'updateFee',
-          abi: abi.WQPensionFund,
+          abi: WQPensionFund,
           contractAddress: process.env.WORKNET_PENSION_FUND,
           data: [new BigNumber(this.amount.substr(0, this.amount.length - 1)).shiftedBy(18).toString()],
         }),
@@ -114,9 +111,7 @@ export default {
       this.SetLoader(false);
     },
     showPercentIsChanged() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/success.svg'),
+      this.ShowModalSuccess({
         title: this.$t('modals.percentIsChanged'),
         subtitle: this.$t('modals.percentIsChangedText'),
       });

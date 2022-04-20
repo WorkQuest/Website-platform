@@ -1,6 +1,6 @@
 <template>
   <ctm-modal-box
-    :title="!phone ? $t('modals.errors.errorSmsVer') : $t('modals.titles.smsVerification')"
+    :title="!phone ? $tc('modals.errors.errorSmsVer') : $t('modals.titles.smsVerification')"
     class="verification"
   >
     <div class="verification__content content">
@@ -20,7 +20,7 @@
           <base-btn
             class="buttons__button"
             data-selector="CONFIRM-1"
-            @click="hide"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.confirm') }}
           </base-btn>
@@ -44,7 +44,7 @@
           :placeholder="$t('modals.phoneNumber')"
           mode="icon"
           :disabled="true"
-          :name="$t('modals.phoneNumberField')"
+          :name="$tc('modals.phoneNumberField')"
         >
           <template
             v-slot:left
@@ -61,7 +61,7 @@
           :placeholder="$t('meta.codeFromSMS')"
           mode="icon"
           rules="required|alpha_num"
-          :name="$t('modals.codeFromSMS')"
+          :name="$tc('modals.codeFromSMS')"
         >
           <template
             v-slot:left
@@ -137,9 +137,6 @@ export default {
     this.confirmCode = this.currentConfirmCode;
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     async confirmPhone() {
       return await this.$store.dispatch('user/confirmPhone', { confirmCode: this.confirmCode });
     },
@@ -147,9 +144,7 @@ export default {
       const phoneResult = await this.confirmPhone();
       if (phoneResult) {
         await this.$store.dispatch('user/getUserData');
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/success.svg'),
+        this.ShowModalSuccess({
           title: this.$t('meta.success'),
           subtitle: this.$t('modals.SMSVerConnected'),
         });
@@ -170,7 +165,7 @@ export default {
         await this.getCodeFromSms();
         this.step += 1;
       }
-      if (!this.userData.tempPhone) this.hide();
+      if (!this.userData.tempPhone) this.CloseModal();
     },
   },
 };

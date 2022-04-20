@@ -111,7 +111,7 @@
               </template>
               <template #cell(recipient)="el">
                 <div class="table__value">
-                  {{ CutTxn(el.item.recipient) }}
+                  {{ convertedRecipientTable(el) }}
                 </div>
               </template>
               <template #cell(transactionHash)="el">
@@ -174,6 +174,7 @@ import modals from '~/store/modals/modals';
 import { Chains } from '~/utils/enums';
 import { BridgeAddresses, SwapAddresses } from '~/utils/bridge-constants';
 import { getChainIdByChain } from '~/utils/web3';
+import { images } from '~/utils/images';
 
 export default {
   name: 'Bridge',
@@ -286,6 +287,12 @@ export default {
       disconnectWallet: 'web3/disconnect',
       goToChain: 'web3/goToChain',
     }),
+    convertedRecipientTable(el) {
+      const { chainTo, recipient } = el.item;
+      const { CutTxn, convertToBech32 } = this;
+      if (chainTo === 1) return CutTxn(convertToBech32('wq', recipient));
+      return CutTxn(recipient);
+    },
     async toggleConnection() {
       const { isConnected, addresses, sourceAddressInd } = this;
       if (isConnected) await this.handlerDisconnect();
@@ -321,7 +328,7 @@ export default {
         return ok;
       }
       if (!isCorrectNetwork && !isMetaMask) {
-        this.ShowModalFail(this.$t('modals.errors.errorNetwork', { network: chain }));
+        this.ShowModalFail({ title: this.$t('modals.errors.errorNetwork', { network: chain }) });
         return false;
       }
       return true;
@@ -333,9 +340,9 @@ export default {
         const { ok } = await this.redeem({ signData, chainTo });
 
         if (ok) {
-          this.ShowModalSuccess(this.$t('modals.redeem.success'));
+          this.ShowModalSuccess({ title: this.$t('modals.redeem.success') });
           await this.swapsTableData();
-        } else this.ShowModalFail(this.$t('modals.redeem.fail'));
+        } else this.ShowModalFail({ title: this.$t('modals.redeem.fail') });
       }
 
       this.SetLoader(false);
@@ -359,6 +366,8 @@ export default {
               chain: from.chain,
               recipient: this.account.address,
               networks: `${from.chain} > ${to.chain}`,
+              fromNetwork: from.chain,
+              toNetwork: to.chain,
               submit: async () => {
                 this.CloseModal();
 
@@ -375,7 +384,7 @@ export default {
 
                 this.ShowModal({
                   key: modals.status,
-                  img: !ok ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
+                  img: !ok ? images.WARNING : images.SUCCESS,
                   title: !ok ? this.$t('modals.transactionFail') : this.$t('modals.transactionSent'),
                   link: `${from.explorer}/tx/${result?.transactionHash}`,
                 });
