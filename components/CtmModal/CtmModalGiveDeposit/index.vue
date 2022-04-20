@@ -10,7 +10,7 @@
           class="content__panel"
           :class="{'content__panel_active': step === 1}"
           data-selector="PREVIOUS-STEP"
-          @click="previousStep"
+          @click="setStep(1)"
         >
           {{ $t('modals.walletAddress') }}
         </div>
@@ -18,7 +18,7 @@
           class="content__panel"
           :class="{'content__panel_active': step === 2}"
           data-selector="NEXT-STEP"
-          @click="nextStep"
+          @click="setStep(2)"
         >
           {{ $t('meta.bankCard') }}
         </div>
@@ -81,6 +81,7 @@
       </div>
       <div class="content_buttons buttons">
         <div class="buttons__container">
+          <!--          TODO: Зарефакторить!-->
           <div class="buttons__wrapper">
             <span
               v-if="step === 1"
@@ -136,16 +137,15 @@ export default {
     hide() {
       this.CloseModal();
     },
-    nextStep() {
-      this.step = 2;
-    },
-    previousStep() {
-      this.step = 1;
+    setStep(step) {
+      this.step = step;
     },
     // TODO: Зарефакторить
     showSuccessCopied() {
       this.ShowModal({
-        key: modals.copiedSuccess,
+        key: modals.status,
+        img: require('assets/img/ui/questAgreed.svg'),
+        title: this.$t('modals.textCopy'),
       });
     },
     showShareModal() {

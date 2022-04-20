@@ -68,7 +68,7 @@
             mode="outline"
             data-selector="CANCEL"
             class="buttons__action"
-            @click="hide"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -106,9 +106,6 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     showCardHasBeenAddedModal() {
       if (this.options.branch === 'payment') {
         this.ShowModal({

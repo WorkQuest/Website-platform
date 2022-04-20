@@ -170,9 +170,7 @@ export default {
         ]);
         this.SetLoader(false);
         if (!txFee?.ok || +this.balanceData.WUSD.fullBalance === 0) {
-          await this.$store.dispatch('main/showToast', {
-            text: this.$t('errors.transaction.notEnoughFunds'),
-          });
+          await this.$store.dispatch('main/showToast', { text: this.$t('errors.transaction.notEnoughFunds') });
           return;
         }
         this.ShowModal({
@@ -186,9 +184,7 @@ export default {
           submitMethod: async () => {
             const res = await this.$store.dispatch('wallet/pensionWithdraw', this.amount);
             if (res.ok) return success();
-            await this.$store.dispatch('main/showToast', {
-              text: this.$t('modals.transactionFail'),
-            });
+            await this.$store.dispatch('main/showToast', { text: this.$t('modals.transactionFail') });
             return error();
           },
           callback: () => {

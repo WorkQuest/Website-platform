@@ -143,32 +143,14 @@ export default {
       date: 0,
       datesNumber: [7, 14, 30, 90, 180],
       checkpoints: [
-        {
-          name: this.$t('meta.coins.bnb'),
-          id: 1,
-        },
-        {
-          name: this.$t('meta.coins.eth'),
-          id: 2,
-        },
-        {
-          name: this.$t('meta.coins.wqt'),
-          id: 3,
-        },
+        { name: this.$t('meta.coins.bnb'), id: 1 },
+        { name: this.$t('meta.coins.eth'), id: 2 },
+        { name: this.$t('meta.coins.wqt'), id: 3 },
       ],
       fundsSource: [
-        {
-          name: this.$t('footer.DeFi.lending'),
-          id: 1,
-        },
-        {
-          name: this.$t('footer.DeFi.retirement'),
-          id: 2,
-        },
-        {
-          name: this.$t('ui.menu.savings.title'),
-          id: 3,
-        },
+        { name: this.$t('footer.DeFi.lending'), id: 1 },
+        { name: this.$t('footer.DeFi.retirement'), id: 2 },
+        { name: this.$t('ui.menu.savings.title'), id: 3 },
       ],
       abouts: [
         {

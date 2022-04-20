@@ -79,7 +79,6 @@ export default {
       userBalance: 'web3/getUserBalance',
       userStake: 'web3/getUserStake',
       isConnected: 'web3/isConnected',
-
       stakingPoolsData: 'wallet/getStakingPoolsData',
       stakingUserData: 'wallet/getStakingUserData',
     }),

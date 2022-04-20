@@ -99,14 +99,8 @@ export default {
       isCardNumberVisible: false,
       walletAddress: null,
       items: [
-        {
-          title: this.$t('modals.amount'),
-          subtitle: 'WUSD',
-        },
-        {
-          title: this.$t('modals.totalFee'),
-          subtitle: '$ 0,15',
-        },
+        { title: this.$t('modals.amount'), subtitle: 'WUSD' },
+        { title: this.$t('modals.totalFee'), subtitle: '$ 0,15' },
       ],
     };
   },
@@ -137,9 +131,7 @@ export default {
   },
   methods: {
     async handleSubmit() {
-      this.ShowModal({
-        key: modals.transactionSend,
-      });
+      this.ShowModal({ key: modals.transactionSend });
     },
     showNumber() {
       this.isCardNumberVisible = !this.isCardNumberVisible;

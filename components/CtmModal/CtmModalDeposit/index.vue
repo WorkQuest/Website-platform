@@ -209,9 +209,12 @@ export default {
     nextStep() {
       this.step += 1;
     },
+    // TODO: Зарефакторить!
     showSuccessCopied() {
       this.ShowModal({
-        key: modals.copiedSuccess,
+        key: modals.status,
+        img: require('assets/img/ui/questAgreed.svg'),
+        title: this.$t('modals.textCopy'),
       });
     },
     showTransactionSendModal() {

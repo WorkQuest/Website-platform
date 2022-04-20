@@ -99,10 +99,8 @@ export default {
     turnOver(isForward) {
       const { count, index } = this.options;
       const advanceIndex = isForward ? index + 1 : index - 1;
-
       // eslint-disable-next-line no-nested-ternary
       const currIndex = advanceIndex + 1 > count ? 0 : advanceIndex < 0 ? count - 1 : advanceIndex;
-
       this.$store.commit('modals/setCurrOptionByKey', [{ key: 'index', val: currIndex }]);
     },
   },

@@ -130,10 +130,7 @@ export default {
       options: 'modals/getOptions',
     }),
     items() {
-      return [
-        'Visa *0000',
-        'Visa *0000',
-      ];
+      return ['Visa *0000', 'Visa *0000'];
     },
   },
   methods: {
@@ -144,16 +141,12 @@ export default {
         cardNumber: this.options.cardNumber || '0000000000000000',
       });
     },
+    // TODO: Зарефакторить!
     showTakeWithdraw() {
-      this.ShowModal({
-        key: modals.takeWithdraw,
-      });
+      this.ShowModal({ key: modals.takeWithdraw });
     },
     showAddingCard() {
-      this.ShowModal({
-        key: modals.addingCard,
-        branch: 'withdraw',
-      });
+      this.ShowModal({ key: modals.addingCard, branch: 'withdraw' });
     },
   },
 };

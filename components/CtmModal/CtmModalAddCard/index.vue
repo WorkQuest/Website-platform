@@ -5,6 +5,7 @@
   >
     <div class="ctm-modal__content">
       <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
+        <!--        TODO: Зарефакторить!-->
         <div class="ctm-modal__content-field">
           <base-field
             v-model="cardNumberInput"

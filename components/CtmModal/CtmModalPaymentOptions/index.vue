@@ -144,10 +144,7 @@ export default {
       ];
     },
     items() {
-      return [
-        'Visa *0000',
-        'Visa *0000',
-      ];
+      return ['Visa *0000', 'Visa *0000'];
     },
   },
   methods: {
@@ -158,10 +155,7 @@ export default {
       this.$store.commit('modals/setOptions', { ...this.options, step: 1 });
     },
     showAddingCard() {
-      this.ShowModal({
-        key: modals.addingCard,
-        branch: 'payment',
-      });
+      this.ShowModal({ key: modals.addingCard, branch: 'payment' });
     },
     async showRaiseLevel() {
       const { submit } = this.options;

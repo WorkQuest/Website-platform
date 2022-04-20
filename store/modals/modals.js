@@ -43,7 +43,6 @@ export default {
   signWorkQuest: 'signWorkQuest',
   securityCheck: 'securityCheck',
   sharingQuest: 'sharingQuest',
-  copiedSuccess: 'copiedSuccess',
   changeRoleWarning: 'changeRoleWarning',
   changeRoleReason: 'changeRoleReason',
   changeRoleSecureCheck: 'changeRoleSecureCheck',

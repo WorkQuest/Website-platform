@@ -52,7 +52,7 @@
               </div>
               <div
                 class="zone__subtitle"
-                :class="{'zone__subtitle_last':i=== abouts.length-1}"
+                :class="{'zone__subtitle_last':i === abouts.length - 1}"
               >
                 {{ item.subtitle }}
               </div>

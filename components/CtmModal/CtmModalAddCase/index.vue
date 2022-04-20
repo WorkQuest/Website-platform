@@ -62,7 +62,7 @@
                     mode="outline"
                     data-selector="CANCEL"
                     class="message__action"
-                    @click="hide()"
+                    @click="CloseModal"
                   >
                     {{ $t('meta.btns.cancel') }}
                   </base-btn>
@@ -88,7 +88,6 @@ export default {
       valid: '',
       caseTitle: '',
       caseDescription: '',
-
       portfolio: {
         data: {},
         file: {},
@@ -103,85 +102,55 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     async addUserCase() {
       try {
         this.SetLoader(true);
-        await this.setCaseImage();
-        await this.setCaseData();
+        const { caseTitle, caseDescription } = this;
+        const { file, data } = this.portfolio;
+        const { url, mediaId } = data.result;
+        const formData = new FormData();
+        formData.append('image', file);
+        if (data.ok) {
+          const payload = { url, formData: file, type: file.type };
+          await this.$store.dispatch('user/setCaseImage', payload);
+        }
+        const payload = { title: caseTitle, description: caseDescription, medias: [mediaId] };
+        const { ok } = await this.$store.dispatch('user/setCaseData', payload);
+        if (ok) {
+          await this.$store.dispatch('main/showToast', {
+            title: this.$t('toasts.caseAdded'),
+            variant: 'success',
+            text: this.$t('toasts.caseAdded'),
+          });
+        }
         await this.getPortfolios();
-        this.showToastAdded();
-        this.hide();
+        this.CloseModal();
         this.SetLoader(false);
       } catch (e) {
         await this.getPortfolios();
-        this.hide();
-        this.showToastError(e);
+        this.CloseModal();
+        await this.$store.dispatch('main/showToast', {
+          title: this.$t('toasts.error'),
+          variant: 'warning',
+          text: `${e}`,
+        });
         this.SetLoader(false);
       }
     },
-    showToastAdded() {
-      return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.caseAdded'),
-        variant: 'success',
-        text: this.$t('toasts.caseAdded'),
-      });
-    },
-    showToastError(e) {
-      return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.error'),
-        variant: 'warning',
-        text: `${e}`,
-      });
-    },
     async getPortfolios() {
       return await this.$store.dispatch('user/getUserPortfolios', { userId: this.userData.id });
-    },
-    async setCaseImage() {
-      const { file, data } = this.portfolio;
-      const formData = new FormData();
-      formData.append('image', file);
-      if (data.ok) {
-        const payload = {
-          url: data.result.url,
-          formData: file,
-          type: file.type,
-        };
-        await this.$store.dispatch('user/setCaseImage', payload);
-      }
-    },
-    async setCaseData() {
-      const { data } = this.portfolio;
-      const payload = {
-        title: this.caseTitle,
-        description: this.caseDescription,
-        medias: [data.result.mediaId],
-      };
-      await this.$store.dispatch('user/setCaseData', payload);
     },
     async processFile(e, validate) {
       this.valid = await validate(e);
       const file = e.target.files[0];
       if (this.valid.valid) {
-        if (!file) {
-          return false;
-        }
+        if (!file) return false;
         const reader = new FileReader();
         reader.readAsDataURL(file);
         this.portfolio.data = await this.$store.dispatch('user/imageType', { contentType: file.type });
         this.portfolio.file = file;
       }
       return this.portfolio;
-    },
-    showRequestSendModal() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('assets/img/ui/message.svg'),
-        title: this.$t('modals.titles.requestSend'),
-        subtitle: this.$t('modals.waitResponseFromEmployer'),
-      });
     },
   },
 };

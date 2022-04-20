@@ -72,9 +72,7 @@ export default {
   },
   methods: {
     async disable2FA() {
-      const response = await this.$store.dispatch('user/disable2FA', {
-        totp: this.twoFACode,
-      });
+      const response = await this.$store.dispatch('user/disable2FA', { totp: this.twoFACode });
       if (response.ok) {
         this.CloseModal();
         this.showModalSuccess();
@@ -92,9 +90,7 @@ export default {
       data.forEach(async (obj) => {
         const { field } = obj;
         const { name } = this.$refs.totp.name;
-        const err = {
-          [field]: [this.$t('messages.excluded', { _field_: name })],
-        };
+        const err = { [field]: [this.$t('messages.excluded', { _field_: name })] };
         await this.$refs.twoFA.setErrors(err);
       });
     },

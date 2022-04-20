@@ -3,6 +3,7 @@
     class="messageSend"
     :title="$tc('modals.titles.sendTo')"
   >
+    <!--    TODO: Зарефакторить-->
     <div class="ctm-modal__content">
       <div class="ctm-modal__content-field">
         <base-field

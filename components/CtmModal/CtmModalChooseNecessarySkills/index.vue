@@ -1,6 +1,6 @@
 <template>
   <ctm-modal-box
-    :title="$t('modals.titles.chooseSkills')"
+    :title="$tc('modals.titles.chooseSkills')"
     class="messageSend"
   >
     <div class="ctm-modal__content">
@@ -105,10 +105,7 @@ export default {
   },
   methods: {
     addNewSkill(currentValue, skill) {
-      const newSkill = {
-        value: skill.value,
-        added: true,
-      };
+      const newSkill = { value: skill.value, added: true };
       this.skills.unshift(newSkill);
     },
     deleteSkill(i) {

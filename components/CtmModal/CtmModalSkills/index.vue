@@ -3,6 +3,7 @@
     class="skills"
     :title="$tc('modals.titles.skills')"
   >
+    <!--    TODO: Удалить???-->
     <div class="ctm-modal__content">
       <div class="skills__body">
         <div

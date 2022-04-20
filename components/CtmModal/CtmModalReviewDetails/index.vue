@@ -74,10 +74,7 @@ export default {
       ];
     },
     success() {
-      this.ShowModalSuccess({
-        title: this.$t('meta.success'),
-        subtitle: this.$t('modals.SMSVerConnected'),
-      });
+      this.ShowModalSuccess({ title: this.$t('meta.success'), subtitle: this.$t('modals.SMSVerConnected') });
     },
     nextStep() {
       this.step += 1;

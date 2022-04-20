@@ -75,10 +75,7 @@ export default {
   },
   methods: {
     showDeleteCaseModal(id) {
-      this.ShowModal({
-        key: modals.deleteCase,
-        id,
-      });
+      this.ShowModal({ key: modals.deleteCase, id });
     },
     showEditCaseModal(id) {
       this.ShowModal({
