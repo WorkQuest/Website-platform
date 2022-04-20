@@ -1,11 +1,5 @@
 import BigNumber from 'bignumber.js';
 
-import {
-  Pair as PairUniswap,
-  Token as TokenUniswap,
-  TokenAmount as TokenAmountUniswap,
-} from '@uniswap/sdk';
-
 import Web3 from 'web3';
 import {
   claimRewards,
@@ -13,7 +7,6 @@ import {
   fetchContractData,
   getAccountAddress,
   goToChain,
-  initStackingContract,
   initWeb3,
   showToast,
   staking,
@@ -25,11 +18,10 @@ import {
   unsubscirbeListeners,
   getChainIdByChain,
   initProvider,
-  getPoolTotalSupplyBSC, getPoolTokensAmountBSC,
-  error,
+  error, success,
 } from '~/utils/web3';
 import { ERC20 } from '~/abi/index';
-import { StakingTypes } from '~/utils/enums';
+import { Chains, StakingTypes } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 BigNumber.set({ ROUNDING_MODE: BigNumber.ROUND_DOWN });
@@ -225,76 +217,7 @@ export default {
   async chainIsCompareToCurrent({ dispatch }, chain) {
     return +getChainIdByChain(chain) === +getAccount().netId;
   },
-  async getAPY({ commit }, payload) {
-    let totalSupply;
-    let reserveUSD;
-    if (payload.chain === 'ETH') {
-      const ethereum_wqt_token = process.env.PROD === 'false'
-        ? '0x06677Dc4fE12d3ba3C7CCfD0dF8Cd45e4D4095bF'
-        : process.env.ETHEREUM_WQT_TOKEN;
 
-      const token0 = new TokenUniswap(
-        1,
-        ethereum_wqt_token,
-        18,
-        'WQT',
-        'Work Quest Token',
-      );
-      const token1 = new TokenUniswap(
-        1,
-        process.env.WETH_TOKEN,
-        18,
-        'WETH',
-        'Wrapped Ether',
-      );
-      const pair = new PairUniswap(
-        new TokenAmountUniswap(token0, 2000000000000000000),
-        new TokenAmountUniswap(token1, 1000000000000000000),
-      );
-      const uniswapApi = this.$axios.create({
-        baseURL: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2',
-      });
-      const result = await uniswapApi.post('', {
-        query: `{
-        pairDayDatas (first: 1, skip: 0,
-        orderBy:date, orderDirection: desc,
-        where: {pairAddress: "${pair.liquidityToken.address.toLowerCase()}"})
-        { totalSupply reserveUSD }}`,
-      });
-      totalSupply = result.data.data.pairDayDatas[0].totalSupply;
-      reserveUSD = result.data.data.pairDayDatas[0].reserveUSD;
-    } else {
-      const [supply, tokensAmount] = await Promise.all([
-        getPoolTotalSupplyBSC(),
-        getPoolTokensAmountBSC(),
-      ]);
-      totalSupply = supply;
-      reserveUSD = new BigNumber(tokensAmount.wqtAmount).multipliedBy(tokensAmount.wbnbAmount).sqrt().toNumber();
-    }
-    try {
-      const apiCoingecko = this.$axios.create({ baseURL: 'https://api.coingecko.com/api/v3/coins/work-quest' });
-      const [coingeckoResult, stakingInfoEvent] = await Promise.all([
-        apiCoingecko.get(''),
-        initStackingContract(payload.chain),
-      ]);
-      const priceWQT = coingeckoResult.data.market_data.current_price.usd;
-      const totalStaked = new BigNumber(stakingInfoEvent.totalStaked).shiftedBy(-18).toNumber();
-      const rewardTotal = new BigNumber(stakingInfoEvent.rewardTotal).shiftedBy(-18).toNumber();
-
-      const priceLP = new BigNumber(reserveUSD).dividedBy(totalSupply).toNumber();
-      const a = new BigNumber(rewardTotal).multipliedBy(12).multipliedBy(priceWQT).toNumber();
-      const b = new BigNumber(totalStaked).multipliedBy(priceLP).toNumber();
-
-      const APY = new BigNumber(a).dividedBy(b).toNumber();
-      return new BigNumber(payload.stakedAmount)
-        .multipliedBy(priceLP)
-        .multipliedBy(APY)
-        .dividedBy(priceWQT)
-        .toNumber(); // profit
-    } catch (err) {
-      return err;
-    }
-  },
   async initProvider({ commit }, payload) {
     const providerData = await initProvider(payload);
     commit('setMetaMaskStatus', providerData.isMetaMask);

@@ -1,4 +1,6 @@
 // eslint-disable-next-line import/prefer-default-export
+export const isProd = process.env.PROD === 'true';
+
 export const ChainsId = {
   ETH_MAIN: '0x1',
   ETH_TEST: '0x4',

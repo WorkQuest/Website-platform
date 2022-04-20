@@ -14,7 +14,7 @@
           <base-btn
             mode="light"
             class="header__btn"
-            :data-selector="isConnected ? 'CONNECT-WALLET' : 'DISCONNECT-FROM-WALLET'"
+            :data-selector="!isConnected ? 'CONNECT-WALLET' : 'DISCONNECT-FROM-WALLET'"
             @click="toggleConnection"
           >
             {{ !isConnected ? $t('mining.connectWallet') : $t('meta.disconnect') }}

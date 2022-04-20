@@ -1,6 +1,4 @@
-import { Chains, TokenSymbols } from '~/utils/enums';
-
-const isProd = process.env.PROD === 'true';
+import { Chains, TokenSymbols, isProd } from '~/utils/enums';
 
 export const BlockchainIndex = Object.freeze({
   [Chains.WORKNET]: 1,

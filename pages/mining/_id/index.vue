@@ -13,30 +13,19 @@
           {{ $t('meta.btns.back') }}
         </base-btn>
         <base-btn
-          v-if="!isConnected"
-          data-selector="CONNECT-WALLET"
-          mode="light"
           class="mining-page__connect"
-          :disabled="statusBusy"
-          @click="checkWalletStatus()"
-        >
-          {{ $t('mining.connectWallet') }}
-        </base-btn>
-        <base-btn
-          v-else
           mode="light"
-          data-selector="DISCONNECT-FROM-WALLET"
-          class="mining-page__connect"
           :disabled="statusBusy"
-          @click="disconnectFromWallet"
+          :data-selector="!isConnected ? 'CONNECT-WALLET' : 'DISCONNECT-FROM-WALLET'"
+          @click="toggleConnection"
         >
-          {{ $t('meta.disconnect') }}
+          {{ !isConnected ? $t('mining.connectWallet') : $t('meta.disconnect') }}
         </base-btn>
       </div>
       <div class="mining-page__content">
         <div
           class="info-block__grid"
-          :class="{'info-block__grid_double': currentPool === 'BNB'}"
+          :class="{'info-block__grid_double': chain === 'BNB'}"
         >
           <div class="info-block__icons">
             <div
@@ -53,15 +42,15 @@
           </div>
           <div class="info-block__about">
             <div class="info-block__title_black info-block__title_big">
-              {{ $t(`mining.${currentPool === 'BNB' ? 'wusdBnbPool' : 'wusdEthPool'}`) }}
+              {{ $t(`mining.${chain === 'BNB' ? 'wusdBnbPool' : 'wusdEthPool'}`) }}
             </div>
           </div>
           <div
             class="info-block__btns"
-            :class="{'info-block__btns_double': currentPool === 'BNB'}"
+            :class="{'info-block__btns_double': chain === 'BNB'}"
           >
             <base-btn
-              v-if="currentPool === 'BNB'"
+              v-if="chain === 'BNB'"
               :data-selector="`OPEN-SWAP-TOKENS-${$t('mining.swapTokens.title')}`"
               class="btn_bl"
               mode="outline"
@@ -71,7 +60,7 @@
               {{ $t('mining.swapTokens.title') }}
             </base-btn>
             <base-btn
-              v-if="currentPool === 'ETH'"
+              v-if="chain === 'ETH'"
               data-selector="ADD-LIQUIDITY-ETH"
               :link="'https://app.uniswap.org/#/add/v2/0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf/ETH'"
               class="btn_bl"
@@ -80,7 +69,7 @@
               {{ $t('meta.addLiquidity') }}
             </base-btn>
             <base-btn
-              v-if="currentPool === 'BNB'"
+              v-if="chain === 'BNB'"
               data-selector="ADD-LIQUIDITY-BNB"
               :link="'https://pancakeswap.finance/add/BNB/0xe89508D74579A06A65B907c91F697CF4F8D9Fac7'"
               class="btn_bl"
@@ -96,7 +85,11 @@
               <div class="third__wrapper">
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ $tc('meta.coins.count.dollarsCount', !totalLiquidityUSD ? $t('mining.loading') : Floor(totalLiquidityUSD)) }}
+                    {{
+                      $tc('meta.coins.count.dollarsCount', !totalLiquidityUSD
+                        ? $t('mining.loading')
+                        : Floor(totalLiquidityUSD))
+                    }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('mining.totalLiquidity') }}
@@ -104,7 +97,11 @@
                 </div>
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ isLoadingAPY ? $t('mining.loading') : $tc('meta.coins.count.WQTCount', profitWQT) }}
+                    {{
+                      isUpdatingData
+                        ? $t('mining.loading')
+                        : $tc('meta.coins.count.WQTCount', Floor(APY))
+                    }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('mining.APY') }}
@@ -118,7 +115,7 @@
               <div class="third__wrapper">
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ $tc('meta.coins.count.LPCount', stakedAmount) }}
+                    {{ $tc('meta.coins.count.LPCount', Floor(staked)) }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('meta.btns.stake') }}
@@ -126,7 +123,7 @@
                 </div>
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ $tc('meta.coins.count.WQTCount', rewardAmount) }}
+                    {{ $tc('meta.coins.count.WQTCount', Floor(claim)) }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('mining.reward') }}
@@ -142,7 +139,7 @@
               <base-btn
                 data-selector="STAKE"
                 class="btn_bl"
-                :disabled="!isConnected || statusBusy || disabled"
+                :disabled="!isConnected || statusBusy"
                 @click="openModalStaking()"
               >
                 {{ $t('meta.btns.stake') }}
@@ -151,7 +148,7 @@
                 data-selector="UNSTAKE"
                 class="btn_bl"
                 mode="outline"
-                :disabled="!isConnected || statusBusy || disabled"
+                :disabled="!isConnected || statusBusy"
                 @click="openModalUnstaking()"
               >
                 {{ $t('meta.btns.unstake') }}
@@ -160,7 +157,7 @@
                 data-selector="CLAIM-REWARDS"
                 mode="outline"
                 class="bnt__claim"
-                :disabled="!isConnected || statusBusy || disabled"
+                :disabled="!isConnected || statusBusy"
                 @click="claimRewards()"
               >
                 {{ $t('meta.claimRewards') }}
@@ -219,7 +216,7 @@
               </template>
               <template #cell(account)="el">
                 <a
-                  v-if="currentPool === 'ETH'"
+                  v-if="chain === 'ETH'"
                   class="user__value_green"
                   :href="`https://etherscan.io/address/${el.item.account}`"
                   target="_blank"
@@ -227,7 +224,7 @@
                   {{ el.item.accountView }}
                 </a>
                 <a
-                  v-if="currentPool === 'BNB'"
+                  v-if="chain === 'BNB'"
                   class="user__value_green"
                   :href="`https://bscscan.com/address/${el.item.account}`"
                   target="_blank"
@@ -255,31 +252,27 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import chart from './graphics_data';
-import { StakingTypes } from '~/utils/enums';
+import {
+  Path, StakingTypes, TokenSymbols, Chains,
+} from '~/utils/enums';
+import { getChainIdByChain } from '~/utils/web3';
 
 export default {
   name: 'Pool',
   layout: 'guest',
   middleware: 'mining',
   components: {
-    chart,
+    chart: () => import('./graphics_data'),
   },
   data() {
     return {
       updateInterval: null,
-      disabled: false,
       metamaskStatus: localStorage.getItem('metamaskStatus'),
       page: 1,
-      perPager: 10,
-      rewardAmount: 0,
-      fullRewardAmount: 0,
-      stakedAmount: 0,
-      availableBalanceForStake: null,
-      profitWQT: 0,
-      isLoadingAPY: false,
+      limit: 10,
+      isUpdatingData: false,
     };
   },
   computed: {
@@ -287,16 +280,30 @@ export default {
       miningSwaps: 'mining/getTableData',
       miningChartData: 'mining/getChartData',
       totalLiquidityUSD: 'mining/getTotalLiquidityUSD',
+      balance: 'mining/getBalance',
+      staked: 'mining/getStaked',
+      claim: 'mining/getClaim',
+      APY: 'mining/getAPY',
 
       isConnected: 'web3/isConnected',
       accountData: 'web3/getAccountData',
       tokensData: 'web3/getTokensAmount',
       statusBusy: 'web3/getStatusBusy',
 
-      userData: 'user/getUserData',
+      isAuth: 'user/isAuth',
+      walletAddress: 'user/getUserWalletAddress',
     }),
-    currentPool() {
-      return this.$route.params.id;
+    chain() {
+      const symbol = this.$route.params.id;
+      switch (symbol) {
+        case TokenSymbols.ETH:
+          return Chains.ETHEREUM;
+        case TokenSymbols.BNB:
+          return Chains.BINANCE;
+        default:
+          console.error('Unknown pool:', symbol);
+          return '';
+      }
     },
     tableHeaders() {
       return [
@@ -340,104 +347,134 @@ export default {
     },
     tableData() {
       this.$moment.locale(this.$i18n.locale);
-      const arr = [];
-      this.miningSwaps.forEach((data) => {
-        arr.push({
-          totalValue: `${this.Floor(data.totalValue, 2)} $`,
-          account: data.account,
-          accountView: this.CutTxn(data.account),
-          time: this.$moment(new Date(data.timestamp * 1000)).startOf('hour').fromNow(),
-          ...this.getTokensAmount(data),
-        });
-      });
-      return arr;
+      return this.miningSwaps.map((data) => ({
+        totalValue: `${this.Floor(data.totalValue, 2)} $`,
+        account: data.account,
+        accountView: this.CutTxn(data.account),
+        time: this.$moment(new Date(data.timestamp * 1000)).startOf('hour').fromNow(),
+        ...this.getTokensAmount(data),
+      }));
     },
     totalPages() {
-      if (this.miningSwaps.length) return Math.ceil(100 / this.perPager);
+      if (this.miningSwaps.length) return Math.ceil(100 / this.limit);
       return 0;
     },
   },
   watch: {
     async isConnected(newValue) {
-      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.currentPool);
+      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.chain);
       if (newValue && rightChain) {
         await this.$store.dispatch('web3/initContract');
         await this.tokensDataUpdate();
         this.updateInterval = setInterval(() => this.tokensDataUpdate(), 60000);
       } else {
-        this.fullRewardAmount = 0;
-        this.rewardAmount = 0;
-        this.stakedAmount = 0;
-        this.profitWQT = 0;
+        await this.resetPoolData();
         clearInterval(this.updateInterval);
       }
     },
     async page() {
-      await this.$store.dispatch(`mining/getTableDataForWqtW${this.currentPool.toLowerCase()}Pool`, {
-        limit: this.perPager,
-        offset: (this.page - 1) * this.perPager,
+      const { limit, chain: pool } = this;
+      await this.fetchSwaps({
+        pool,
+        params: {
+          limit,
+          offset: (this.page - 1) * limit,
+        },
       });
     },
   },
+  async beforeMount() {
+    this.$nuxt.setLayout(this.isAuth ? 'default' : 'guest');
+  },
   async mounted() {
     this.SetLoader(true);
-    this.$nuxt.setLayout(this.userData.id ? 'default' : 'guest');
-    localStorage.setItem('miningPoolId', this.currentPool);
-    const currentPool = this.currentPool.toLowerCase();
-    await this.$store.dispatch(`mining/getChartDataForWqtW${currentPool}Pool`);
-    await this.$store.dispatch(`mining/getTableDataForWqtW${currentPool}Pool`, {});
+    await this.initWS();
+    const { limit, chain: pool } = this;
+    await this.fetchChartData(pool);
+    await this.fetchSwaps({ pool, params: { limit, offset: 0 } });
     this.SetLoader(false);
   },
   async beforeDestroy() {
     clearInterval(this.updateInterval);
-    await this.disconnectFromWallet();
     await Promise.all([
+      this.resetPoolData(),
+      this.disconnectWallet(),
       this.$store.commit('mining/setChartData', []),
       this.$store.commit('mining/setTableData', []),
       this.$store.commit('mining/setTotalLiquidityUSD', null),
     ]);
   },
   methods: {
-    getTokensAmount(data) {
+    ...mapActions({
+      connectWallet: 'web3/connect',
+      disconnectWallet: 'web3/disconnect',
+
+      initWS: 'mining/initWS',
+      fetchAPY: 'mining/fetchAPY',
+      fetchSwaps: 'mining/fetchSwaps',
+      fetchPoolData: 'mining/fetchPoolData',
+      resetPoolData: 'mining/resetPoolData',
+      fetchChartData: 'mining/fetchChartData',
+    }),
+    async toggleConnection() {
+      const { isConnected, chain } = this;
+      if (isConnected) await this.disconnectWallet();
+      else await this.connectWallet({ chain });
+    },
+    async checkNetwork(chain) {
+      const isMetaMask = localStorage.getItem('isMetaMask') === 'true';
+      const isCorrectNetwork = +getChainIdByChain(chain) === +this.account.netId;
+      if (!isCorrectNetwork && isMetaMask) {
+        const { ok } = await this.goToChain({ chain });
+        return ok;
+      }
+      if (!isCorrectNetwork && !isMetaMask) {
+        this.ShowModalFail({ title: this.$t('modals.errors.errorNetwork', { network: chain }) });
+        return false;
+      }
+      return true;
+    },
+
+    getTokensAmount({ isOut, amount0, amount1 }) {
       const pools = {
-        ETH: {
-          tokenIn: data.isOut ? 'WQT' : 'WETH',
-          tokenOut: data.isOut ? 'WETH' : 'WQT',
+        [Chains.ETHEREUM]: {
+          tokenIn: isOut ? 'WQT' : 'WETH',
+          tokenOut: isOut ? 'WETH' : 'WQT',
         },
-        BNB: {
-          tokenIn: data.isOut ? 'WQT' : 'WBNB',
-          tokenOut: data.isOut ? 'WBNB' : 'WQT',
+        [Chains.BINANCE]: {
+          tokenIn: isOut ? 'WQT' : 'WBNB',
+          tokenOut: isOut ? 'WBNB' : 'WQT',
         },
       };
 
-      const amount0 = this.Floor(data.isOut ? data.amount1 : data.amount0, 3);
-      const amount1 = this.Floor(data.isOut ? data.amount0 : data.amount1, 3);
+      const _amount0 = this.Floor(isOut ? amount1 : amount0, 3);
+      const _amount1 = this.Floor(isOut ? amount0 : amount1, 3);
 
-      const { currentPool } = this;
+      const { chain } = this;
       return {
-        poolAddress: `Swap ${pools[currentPool].tokenIn} for ${pools[currentPool].tokenOut}`,
-        tokenAmount0: `${amount0} ${pools[currentPool].tokenIn}`,
-        tokenAmount1: `${amount1} ${pools[currentPool].tokenOut}`,
+        poolAddress: `Swap ${pools[chain].tokenIn} for ${pools[chain].tokenOut}`,
+        tokenAmount0: `${_amount0} ${pools[chain].tokenIn}`,
+        tokenAmount1: `${_amount1} ${pools[chain].tokenOut}`,
       };
     },
 
     async checkWalletStatus() {
       if (this.isConnected) return;
       let incorrectChain = false;
-      const { currentPool } = this;
+      const { chain } = this;
       this.SetLoader(true);
-      if (await this.connectToWallet()) {
+      if (await this.connectWallet({ chain })) {
         if (localStorage.getItem('isMetaMask') === 'true') {
-          const switchStatus = await this.$store.dispatch('web3/goToChain', { chain: currentPool });
-          if (!switchStatus.ok) await this.disconnectFromWallet();
+          const switchStatus = await this.$store.dispatch('web3/goToChain', { chain });
+          if (!switchStatus.ok) await this.disconnectWallet();
         } else {
           const walletConnectData = JSON.parse(localStorage.getItem('walletconnect'));
           switch (walletConnectData.chainId) {
             case 1:
-              incorrectChain = this.currentPool !== 'ETH';
+              incorrectChain = chain !== 'ETH';
               break;
             case 56:
-              incorrectChain = this.currentPool !== 'BNB';
+              incorrectChain = chain !== 'BNB';
               break;
             default:
               incorrectChain = false;
@@ -451,38 +488,32 @@ export default {
               recipient: '',
               subtitle: this.$t('modals.incorrectChain'),
             });
-            await this.disconnectFromWallet();
+            await this.disconnectWallet();
           }
         }
       }
       this.SetLoader(false);
     },
-    async connectToWallet() {
-      return await this.$store.dispatch('web3/connect', { chain: this.currentPool });
-    },
 
     async tokensDataUpdate() {
-      this.isLoadingAPY = true;
-      const { balanceTokenAmount, rewardTokenAmount, stakeTokenAmount } = await this.$store.dispatch('web3/getTokensData');
-      this.fullRewardAmount = rewardTokenAmount;
-      this.rewardAmount = this.Floor(rewardTokenAmount);
-      this.stakedAmount = this.Floor(stakeTokenAmount);
-      this.availableBalanceForStake = balanceTokenAmount;
+      const { chain } = this;
+      let { isUpdatingData } = this;
 
-      if (+stakeTokenAmount > 0) {
-        const payload = {
-          chain: this.currentPool,
-          stakedAmount: stakeTokenAmount,
-        };
-        const profit = await this.$store.dispatch('web3/getAPY', payload);
-        this.profitWQT = this.Floor(profit);
+      isUpdatingData = true;
+      await this.fetchPoolData({ chain });
+
+      if (+this.staked > 0) {
+        await this.fetchAPY({
+          chain: this.chain,
+          stakedAmount: this.staked,
+        });
       }
 
-      this.isLoadingAPY = false;
+      isUpdatingData = false;
     },
     async claimRewards() {
       this.SetLoader(true);
-      if (this.fullRewardAmount > 0) {
+      if (this.claim > 0) {
         await this.tokensDataUpdate();
         await this.$store.dispatch('web3/claimRewards', { stakingType: StakingTypes.MINING });
         await this.tokensDataUpdate();
@@ -497,9 +528,9 @@ export default {
       }
       this.SetLoader(false);
     },
-    openSwapTokens() {
+    async openSwapTokens() {
       if (!this.isConnected) {
-        this.connectToWallet();
+        await this.connectWallet({ chain: this.chain });
       }
       this.ShowModal({
         key: modals.swapTokens,
@@ -507,7 +538,7 @@ export default {
     },
     async openModalUnstaking() {
       await this.checkWalletStatus();
-      if (this.stakedAmount > 0) {
+      if (this.staked > 0) {
         this.ShowModal({
           key: modals.claimRewards,
           type: 2,
@@ -527,7 +558,7 @@ export default {
     },
     async openModalStaking() {
       await this.checkWalletStatus();
-      if (this.availableBalanceForStake > 0) {
+      if (this.balance > 0) {
         this.ShowModal({
           key: modals.claimRewards,
           type: 1,
@@ -546,15 +577,12 @@ export default {
       }
     },
 
-    async handleBackToMainMining() {
-      await this.$router.push('/mining');
-    },
-    async disconnectFromWallet() {
-      await this.$store.dispatch('web3/disconnect');
+    handleBackToMainMining() {
+      this.$router.push(Path.MINING);
     },
     iconUrls() {
       return [
-        require(`~/assets/img/ui/${this.currentPool === 'BNB' ? 'bnb_yellow' : 'eth_white'}.svg`),
+        require(`~/assets/img/ui/${this.chain === 'BNB' ? 'bnb_yellow' : 'eth_white'}.svg`),
         require('~/assets/img/ui/wqt-logo.svg'),
       ];
     },
@@ -604,6 +632,7 @@ export default {
 
       .icon-chevron_left {
         font-size: 26px;
+
         &:before {
           color: #fff;
         }
@@ -660,6 +689,7 @@ export default {
         display: grid;
         gap: 10px;
         align-content: center;
+
         &_double {
           grid-template-columns: repeat(2, 1fr);
         }
@@ -696,6 +726,7 @@ export default {
         gap: 20px;
         padding: 20px;
         position: relative;
+
         &_double {
           grid-template-columns: 1fr 5fr 4fr;
         }
@@ -828,6 +859,7 @@ export default {
             grid-template-rows: unset;
           }
         }
+
         &__title {
           &_pad {
             width: 80%;
@@ -845,9 +877,11 @@ export default {
             grid-column-start: 1;
           }
         }
+
         &__double {
           grid-template-columns: repeat(2, 1fr);
         }
+
         &__title {
           &_pad {
             width: 100%;
@@ -858,11 +892,13 @@ export default {
     }
   }
 }
+
 .btn {
   &_bl {
     text-decoration: none;
   }
 }
+
 .third {
   width: 100%;
   align-self: center;
@@ -872,6 +908,7 @@ export default {
       margin-bottom: 10px;
     }
   }
+
   &__triple {
     display: grid;
     grid-gap: 20px;
@@ -880,6 +917,7 @@ export default {
       grid-template-columns: auto;
     }
   }
+
   &__wrapper {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

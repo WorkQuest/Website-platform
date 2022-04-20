@@ -8,4 +8,10 @@ export default {
   setTotalLiquidityUSD(state, data) {
     state.totalLiquidityUSD = data;
   },
+  setPoolData(state, data) {
+    state.poolData = { ...data };
+  },
+  setAPY(state, value) {
+    state.APY = value;
+  },
 };
