@@ -1,5 +1,6 @@
 import { Chains, TokenSymbols, isProd } from '~/utils/enums';
 import { StakingWQ, WQLiquidityMining } from '~/abi/index';
+import { images } from '~/utils/images';
 
 export const some = '';
 
@@ -12,6 +13,7 @@ export const Pool = new Map([
       stakingToken: process.env.ETHEREUM_LP_TOKEN,
       stakingAddress: process.env.ETHEREUM_MINING,
       stakingAbi: StakingWQ,
+      icon: images.ETH,
     },
   ],
   [
@@ -22,6 +24,7 @@ export const Pool = new Map([
       stakingToken: process.env.BSC_LP_TOKEN,
       stakingAddress: process.env.BSC_MINING,
       stakingAbi: WQLiquidityMining,
+      icon: images.BNB,
     },
   ],
 ]);

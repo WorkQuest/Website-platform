@@ -29,4 +29,5 @@ export default {
   getStaked: (state) => state.poolData.staked,
   getClaim: (state) => state.poolData.claim,
   getAPY: (state) => state.APY,
+  isInitWS: (state) => state.isInitWS,
 };

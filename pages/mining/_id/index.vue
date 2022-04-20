@@ -29,7 +29,7 @@
         >
           <div class="info-block__icons">
             <div
-              v-for="(item, i) in iconUrls()"
+              v-for="(item, i) in icons"
               :key="i"
               class="icon-cont"
             >
@@ -42,15 +42,15 @@
           </div>
           <div class="info-block__about">
             <div class="info-block__title_black info-block__title_big">
-              {{ $t(`mining.${chain === 'BNB' ? 'wusdBnbPool' : 'wusdEthPool'}`) }}
+              {{ $t(`mining.${chain === $options.Chains.BINANCE ? 'wusdBnbPool' : 'wusdEthPool'}`) }}
             </div>
           </div>
           <div
             class="info-block__btns"
-            :class="{'info-block__btns_double': chain === 'BNB'}"
+            :class="{'info-block__btns_double': chain === $options.Chains.BINANCE}"
           >
             <base-btn
-              v-if="chain === 'BNB'"
+              v-if="chain === $options.Chains.BINANCE"
               :data-selector="`OPEN-SWAP-TOKENS-${$t('mining.swapTokens.title')}`"
               class="btn_bl"
               mode="outline"
@@ -60,7 +60,7 @@
               {{ $t('mining.swapTokens.title') }}
             </base-btn>
             <base-btn
-              v-if="chain === 'ETH'"
+              v-if="chain === $options.Chains.ETHEREUM"
               data-selector="ADD-LIQUIDITY-ETH"
               :link="'https://app.uniswap.org/#/add/v2/0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf/ETH'"
               class="btn_bl"
@@ -69,7 +69,7 @@
               {{ $t('meta.addLiquidity') }}
             </base-btn>
             <base-btn
-              v-if="chain === 'BNB'"
+              v-if="chain === $options.Chains.BINANCE"
               data-selector="ADD-LIQUIDITY-BNB"
               :link="'https://pancakeswap.finance/add/BNB/0xe89508D74579A06A65B907c91F697CF4F8D9Fac7'"
               class="btn_bl"
@@ -201,7 +201,7 @@
               </template>
               <template #cell(totalValue)="el">
                 <div class="user__value_gray">
-                  {{ el.item.totalValue }}
+                  {{ `${Floor(el.item.totalValue, 2)} $` }}
                 </div>
               </template>
               <template #cell(tokenAmount0)="el">
@@ -216,20 +216,20 @@
               </template>
               <template #cell(account)="el">
                 <a
-                  v-if="chain === 'ETH'"
+                  v-if="chain === $options.Chains.ETHEREUM"
                   class="user__value_green"
                   :href="`https://etherscan.io/address/${el.item.account}`"
                   target="_blank"
                 >
-                  {{ el.item.accountView }}
+                  {{ CutTxn(el.item.account) }}
                 </a>
                 <a
-                  v-if="chain === 'BNB'"
+                  v-if="chain === $options.Chains.BINANCE"
                   class="user__value_green"
                   :href="`https://bscscan.com/address/${el.item.account}`"
                   target="_blank"
                 >
-                  {{ el.item.accountView }}
+                  {{ CutTxn(el.item.account) }}
                 </a>
               </template>
               <template #cell(time)="el">
@@ -258,11 +258,14 @@ import {
   Path, StakingTypes, TokenSymbols, Chains,
 } from '~/utils/enums';
 import { getChainIdByChain } from '~/utils/web3';
+import { Pool } from '~/utils/Constants/mining';
+import { images } from '~/utils/images';
 
 export default {
   name: 'Pool',
   layout: 'guest',
   middleware: 'mining',
+  Chains,
   components: {
     chart: () => import('./graphics_data'),
   },
@@ -348,9 +351,7 @@ export default {
     tableData() {
       this.$moment.locale(this.$i18n.locale);
       return this.miningSwaps.map((data) => ({
-        totalValue: `${this.Floor(data.totalValue, 2)} $`,
-        account: data.account,
-        accountView: this.CutTxn(data.account),
+        ...data,
         time: this.$moment(new Date(data.timestamp * 1000)).startOf('hour').fromNow(),
         ...this.getTokensAmount(data),
       }));
@@ -358,6 +359,12 @@ export default {
     totalPages() {
       if (this.miningSwaps.length) return Math.ceil(100 / this.limit);
       return 0;
+    },
+    icons() {
+      return [
+        Pool.get(this.chain).icon,
+        images.WQT,
+      ];
     },
   },
   watch: {
@@ -368,6 +375,7 @@ export default {
         await this.tokensDataUpdate();
         this.updateInterval = setInterval(() => this.tokensDataUpdate(), 60000);
       } else {
+        await this.disconnectWS();
         await this.resetPoolData();
         clearInterval(this.updateInterval);
       }
@@ -384,6 +392,7 @@ export default {
     },
   },
   async beforeMount() {
+    console.log('this.isAuth', this.isAuth);
     this.$nuxt.setLayout(this.isAuth ? 'default' : 'guest');
   },
   async mounted() {
@@ -396,9 +405,10 @@ export default {
   },
   async beforeDestroy() {
     clearInterval(this.updateInterval);
+    await this.disconnectWallet();
     await Promise.all([
+      this.disconnectWS(),
       this.resetPoolData(),
-      this.disconnectWallet(),
       this.$store.commit('mining/setChartData', []),
       this.$store.commit('mining/setTableData', []),
       this.$store.commit('mining/setTotalLiquidityUSD', null),
@@ -410,6 +420,7 @@ export default {
       disconnectWallet: 'web3/disconnect',
 
       initWS: 'mining/initWS',
+      disconnectWS: 'mining/disconnectWS',
       fetchAPY: 'mining/fetchAPY',
       fetchSwaps: 'mining/fetchSwaps',
       fetchPoolData: 'mining/fetchPoolData',
@@ -579,12 +590,6 @@ export default {
 
     handleBackToMainMining() {
       this.$router.push(Path.MINING);
-    },
-    iconUrls() {
-      return [
-        require(`~/assets/img/ui/${this.chain === 'BNB' ? 'bnb_yellow' : 'eth_white'}.svg`),
-        require('~/assets/img/ui/wqt-logo.svg'),
-      ];
     },
   },
 };

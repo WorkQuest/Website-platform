@@ -159,14 +159,29 @@ export default {
     }
   },
 
-  async initWS({ commit }) {
-    console.log('initWS');
+  async initWS({ commit, getters }) {
     try {
+      if (getters.isInitWS) {
+        console.log('return initWS');
+        return;
+      }
+      console.log('initWS');
       await this.$wsNotifs.subscribe(`${Path.NOTIFICATIONS}${Path.MINING}`, async (event) => {
         console.log(event);
       });
+      commit('setInitWS', true);
     } catch (e) {
-      console.error(e);
+      console.error('initWS', e);
+    }
+  },
+
+  async disconnectWS({ commit }) {
+    try {
+      console.log('disconnectWS');
+      await this.$wsNotifs.disconnect();
+      commit('setInitWS', false);
+    } catch (e) {
+      console.error('disconnectWS', e);
     }
   },
 
