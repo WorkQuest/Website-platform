@@ -18,7 +18,7 @@
                 v-model="runtimeIndex"
                 :items="runtime"
                 type="gray"
-                :label="$t('quests.runtime')"
+                :label="$tc('quests.runtime')"
                 :name="$t('quests.runtime')"
                 data-selector="RUNTIME"
                 rules="required"
@@ -31,16 +31,16 @@
             v-model="price"
             type="number"
             data-selector="PRICE-FIELD"
-            :label="$t('meta.price')"
+            :label="$tc('meta.price')"
             placeholder="0 WUSD"
             rules="required|decimal|decimalPlaces:16|min_value:1"
-            :name="$t('meta.price')"
+            :name="$tc('meta.price')"
           />
         </div>
         <div class="page__dd">
           <base-dd
             v-model="employmentIndex"
-            :label="$t('quests.employment.employment')"
+            :label="$tc('quests.employment.employment')"
             type="gray"
             :items="employment"
             rules="required"
@@ -51,7 +51,7 @@
         <div class="page__dd">
           <base-dd
             v-model="workplaceIndex"
-            :label="$t('quests.distantWork.distantWork')"
+            :label="$tc('quests.distantWork.distantWork')"
             type="gray"
             :items="distantWork"
             rules="required"
@@ -60,17 +60,20 @@
           />
         </div>
       </div>
-      <specializations-selector @changeSkills="updateSelectedSkills" />
+      <specializations-selector
+        :skills="selectedSpecAndSkills"
+        @changeSkills="updateSelectedSkills"
+      />
       <div class="page__address">
         <base-field
           v-model="address"
-          :label="$t('quests.address')"
+          :label="$tc('quests.address')"
           :placeholder="$t('quests.address')"
           data-selector="ADDRESS-FIELD"
           mode="icon"
           :selector="true"
           rules="required"
-          :name="$t('quests.address')"
+          :name="$tc('quests.address')"
           @selector="getAddressInfo(address)"
         >
           <template v-slot:left>
@@ -102,7 +105,7 @@
           v-model="questTitle"
           data-selector="QUEST-TITLE-FIELD"
           rules="required"
-          :name="$t('quests.questTitle')"
+          :name="$tc('quests.questTitle')"
           :placeholder="$t('quests.questTitle')"
         />
       </div>
@@ -130,6 +133,7 @@
           :accept="'image/png, image/jpg, image/jpeg, video/mp4'"
           @change="updateFiles"
         />
+        <!--        :preloaded-files="prefetchedFiles"-->
       </div>
       <div class="upload btn btn__container btn__container_right">
         <div class="btn__create">
@@ -151,7 +155,7 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import {
-  PriorityFilter, WorkplaceIndex, TypeOfJobFilter, TokenSymbols,
+  PriorityFilter, TokenSymbols, TypeOfJobFilter, WorkplaceIndex,
 } from '~/utils/enums';
 import { CommissionForCreatingAQuest } from '~/utils/quests-constants';
 
@@ -167,16 +171,17 @@ export default {
       employmentIndex: 0,
       workplaceIndex: 0,
       runtimeIndex: 0,
-      periodIndex: 0,
+      // periodIndex: 0,
       questTitle: '',
       address: '',
       textarea: '',
       price: '',
-      priceOfClick: '',
-      city: '',
+      // priceOfClick: '',
+      // city: '',
       coordinates: {},
       addresses: [],
       files: [],
+      prefetchedFiles: [],
       geoCode: null,
     };
   },
@@ -214,8 +219,33 @@ export default {
       return new BigNumber(this.price).multipliedBy(1 + CommissionForCreatingAQuest).toString();
     },
   },
-  beforeCreate() {
-    this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+  async beforeRouteLeave(to, from, next) {
+    // Save quest draft in cookie questDraft
+    const files = await this.uploadFiles(this.files, true);
+    this.$cookies.set('questDraft', {
+      workplace: WorkplaceIndex[this.workplaceIndex],
+      priority: PriorityFilter[this.runtimeIndex + 1].value,
+      employment: TypeOfJobFilter[this.employmentIndex],
+      title: this.questTitle,
+      description: this.textarea,
+      price: this.price,
+      medias: files,
+      specializationKeys: this.selectedSpecAndSkills,
+      locationFull: {
+        location: {
+          longitude: this.coordinates.lng,
+          latitude: this.coordinates.lat,
+        },
+        locationPlaceName: this.address,
+      },
+    });
+    next();
+  },
+  async beforeCreate() {
+    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+  },
+  async beforeMount() {
+    await this.fillQuestFromQuestDraft();
   },
   async mounted() {
     if (!this.isWalletConnected) return;
@@ -227,6 +257,25 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    async fillQuestFromQuestDraft() {
+      const questDraft = this.$cookies.get('questDraft');
+      console.log('questDraft', questDraft);
+      this.selectedSpecAndSkills = questDraft.specializationKeys ?? [];
+      this.questTitle = questDraft?.title ?? '';
+      this.textarea = questDraft?.description ?? '';
+      this.price = questDraft?.price ?? '';
+      this.employmentIndex = TypeOfJobFilter.indexOf(questDraft?.employment) ?? 0;
+      this.workplaceIndex = WorkplaceIndex.indexOf(questDraft?.workplace) ?? 0;
+      this.runtimeIndex = PriorityFilter[questDraft?.priority + 1]?.value ?? 0;
+      this.address = questDraft?.locationFull.locationPlaceName ?? '';
+      this.coordinates = {
+        lng: questDraft?.locationFull.location.longitude,
+        lat: questDraft?.locationFull.location.latitude,
+      };
+      // TODO: Доделать
+      console.log('questDraft.specializationKeys', questDraft?.specializationKeys);
+      // this.prefetchedFiles = questDraft?.medias ?? [];
+    },
     updateFiles(files) {
       this.files = files;
     },

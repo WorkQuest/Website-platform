@@ -117,9 +117,9 @@ export default {
     for (const file of this.preloadedFiles) {
       this.files.push({
         id: this.id,
-        mediaId: file.id,
-        src: file.url,
-        type: file.contentType.split('/')[0],
+        mediaId: file?.id,
+        src: file?.url,
+        type: file?.contentType.split('/')[0],
       });
       this.id += 1;
     }

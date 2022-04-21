@@ -19,7 +19,7 @@
             :data-selector="`SPECIALIZATIONS-DD-${displaySpecIndex[key]}`"
             mode="small"
             rules="required"
-            :label="$t('settings.specialization')"
+            :label="$tc('settings.specialization')"
             :hide-selected="hideSelectedSpecs"
             @input="switchSkill($event, key)"
           />
@@ -34,7 +34,7 @@
               :items="skillsNames[displaySpecIndex[key]]"
               mode="small"
               rules="required"
-              :label="$t('meta.skills')"
+              :label="$tc('meta.skills')"
               :hide-selected="hideSelectedSkills[key]"
               @input="addSkillToBadge($event, key)"
             />
@@ -68,14 +68,14 @@
         </div>
       </div>
       <base-btn
-        :text="$t('settings.removeSpec')"
+        :text="$tc('settings.removeSpec')"
         class="specialization__btn specialization__btn_remove"
         :selector="`REMOVE-SKILL-TO-BADGE-${key}`"
         @click="removeSpecialization(key)"
       />
     </div>
     <base-btn
-      :text="$t('settings.addSpec')"
+      :text="$tc('settings.addSpec')"
       :disabled="specCount === 3"
       class="skills__btn-add"
       :class="specCount === 3 ? 'skills__btn-add_disabled' : ''"
@@ -165,8 +165,8 @@ export default {
     },
   },
   async mounted() {
-    if (!this.filters) await this.$store.dispatch('quests/getFilters');
     if (this.skills && this.skills.length) await this.fillData();
+    if (!this.filters) await this.$store.dispatch('quests/getFilters');
   },
   methods: {
     async fillData() {
@@ -174,10 +174,10 @@ export default {
       let key = 1;
       // eslint-disable-next-line no-restricted-syntax
       for (const item of this.skills) {
-        const [_spec, _skill] = item.path.split('.');
+        const [_spec, _skill] = item.path ? item.path.split('.') : item.split('.');
         const spec = parseInt(_spec, 10);
         const skill = parseInt(_skill, 10);
-        if (!Object.keys(specKeys).includes(_spec)) {
+        if (specKeys && !Object.keys(specKeys).includes(_spec)) {
           specKeys[spec] = key;
           this.displaySpecIndex[key] = this.specsIndexes.indexOf(spec);
           this.selectedSkills[key] = [];
@@ -233,15 +233,11 @@ export default {
         }
       }
       const numberInHide = this.hideSelectedSkills[key].indexOf(hideIndex);
-      if (numberInHide > -1) {
-        this.hideSelectedSkills[key].splice(numberInHide, 1);
-      }
+      if (numberInHide > -1) this.hideSelectedSkills[key].splice(numberInHide, 1);
 
       const numberInArray = this.selectedSkills[key].indexOf(skill);
       this.selectedSkills[key].splice(numberInArray, 1);
-      if (!this.selectedSkills[key].length) {
-        this.skillIndex[key] = -1;
-      }
+      if (!this.selectedSkills[key].length) this.skillIndex[key] = -1;
       this.onChangeInputSpecs();
     },
     switchSkill(event, key) {
@@ -252,9 +248,7 @@ export default {
       this.onChangeInputSpecs();
     },
     addSpecialization() {
-      if (this.specCount <= 2) {
-        this.specCount += 1;
-      }
+      if (this.specCount <= 2) this.specCount += 1;
       this.onChangeInputSpecs();
     },
     removeSpecialization(key) {
