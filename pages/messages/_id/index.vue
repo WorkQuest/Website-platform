@@ -149,7 +149,10 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import ChatMenu from '~/components/ui/ChatMenu';
-import { ChatType, QuestChatStatus, Path } from '~/utils/enums';
+import { InfoModeWorker, QuestStatuses } from '~/utils/quests-constants';
+import {
+  ChatType, QuestChatStatus, Path,
+} from '~/utils/enums';
 
 export default {
   name: 'Messages',
@@ -167,6 +170,7 @@ export default {
     ...mapGetters({
       userData: 'user/getUserData',
       currChat: 'chat/getCurrChatInfo',
+      infoDataMode: 'quests/getInfoDataMode',
     }),
     ChatType() {
       return ChatType;
@@ -180,7 +184,11 @@ export default {
         || (isGroupChat && !amIOwner) : false;
     },
     isClosedQuestChat() {
-      return this.currChat?.questChat?.status === QuestChatStatus.Closed;
+      return ((this.currChat?.questChat?.status === QuestChatStatus.Closed)
+        || (+this.$route.query.status === QuestStatuses.Done
+        || +this.$route.query.status === QuestStatuses.Closed
+        || +this.$route.query.status === QuestStatuses.Rejected
+        || this.infoDataMode === InfoModeWorker.Responded));
     },
     canLeave() {
       return this.isGroupChat && !this.amIOwner;

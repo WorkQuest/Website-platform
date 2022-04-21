@@ -313,7 +313,9 @@ export default {
 
       const arr = userRole === UserRole.EMPLOYER ? this.setEmployerBtnsArr() : this.setWorkerBtnsArr();
 
-      if (questChat?.workerId === userData.id || (questChat?.employerId === userData.id && assignedWorkerId)) {
+      if ((questChat?.workerId === userData.id || (questChat?.employerId === userData.id && assignedWorkerId))
+        && (this.quest.status !== QuestStatuses.Closed && this.quest.status !== QuestStatuses.Rejected
+          && this.quest.status !== QuestStatuses.Done && this.infoDataMode !== InfoModeWorker.Responded)) {
         arr.push({
           name: this.$t('meta.btns.goToChat'),
           class: 'base-btn_goToChat',
