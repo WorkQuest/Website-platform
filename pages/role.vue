@@ -154,8 +154,7 @@ export default {
   },
   async beforeMount() {
     const access = this.$cookies.get('access');
-    const userStatus = this.$cookies.get('userStatus');
-    if (!access || !userStatus) {
+    if (!access) {
       await this.$router.push(Path.SIGN_IN);
       return;
     }

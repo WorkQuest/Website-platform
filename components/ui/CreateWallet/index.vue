@@ -20,6 +20,7 @@
             :type="isShowMnemonic?'text':'password'"
             disabled
             class="wallet__phrase-input"
+            :class="{'wallet__phrase-input--icon': isShowMnemonic}"
           >
           <div class="wallet__mnemonic_btn">
             <button
@@ -343,10 +344,10 @@ export default {
     }
     &_btn {
       right: 10px;
-      top: 15%;
+      top: 20%;
       position: absolute;
       display: flex;
-      gap: 5px;
+      gap: 8px;
     }
   }
   &__phrase-input {
@@ -355,6 +356,9 @@ export default {
     height: 100%;
     padding: 0 12px;
     background: none;
+    &--icon{
+      padding-right: 35px;
+    }
   }
   &__confirm-phrase {
     display: flex;
