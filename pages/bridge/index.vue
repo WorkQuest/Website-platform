@@ -141,7 +141,7 @@
               <template #cell(redeem)="el">
                 <div class="table__value table__value_blue">
                   <base-btn
-                    data-selector="REDEEM"
+                    :data-selector="`REDEEM-${el.item.nonce}`"
                     class="btn__redeem"
                     :class="!el.item.status ? 'btn__redeem_disabled' : ''"
                     mode="outline"
