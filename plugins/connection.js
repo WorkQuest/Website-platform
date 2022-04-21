@@ -63,7 +63,7 @@ export default class extends Client {
   }
 
   formConfigObject(_token) {
-    const token = _token ? `Bearer ${_token}` : 'jwt';
+    const token = _token ? `Bearer ${_token}` : null;
     return {
       auth: {
         headers: {

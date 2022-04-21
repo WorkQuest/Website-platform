@@ -163,6 +163,12 @@
             </b-table>
           </div>
         </div>
+        <base-pager
+          v-if="totalPages > 1"
+          v-model="page"
+          :total-pages="totalPages"
+          class="table__pages"
+        />
       </div>
     </div>
   </div>
@@ -189,17 +195,21 @@ export default {
         limit: 10,
         offset: 0,
       },
+      page: 1,
     };
   },
   computed: {
     ...mapGetters({
       isAuth: 'user/isAuth',
+      token: 'user/accessToken',
 
       account: 'web3/getAccount',
       isConnected: 'web3/isConnected',
 
       swaps: 'bridge/getSwaps',
       swapsCount: 'bridge/getSwapsCount',
+
+      connections: 'main/notificationsConnectionStatus',
     }),
     tableFields() {
       const cellStyle = {
@@ -248,6 +258,9 @@ export default {
         SwapAddresses.get(Chains.WORKNET),
       ];
     },
+    totalPages() {
+      return Math.ceil(this.swapsCount / this.query.limit);
+    },
   },
   watch: {
     sourceAddressInd(newIdx, oldIdx) {
@@ -259,13 +272,11 @@ export default {
     async isConnected() {
       if (typeof this.account.address === 'string') {
         await this.swapsTableData(this.account.address, this.isConnected);
-        if (this.isConnected && !this.updateInterval) {
-          this.updateInterval = setInterval(() => this.swapsTableData(this.account.address, this.isConnected), 5000);
-        } else {
-          await clearInterval(this.updateInterval);
-          this.updateInterval = null;
-        }
       }
+    },
+    async page() {
+      this.query.offset = (this.page - 1) * this.query.limit;
+      await this.swapsTableData();
     },
   },
   mounted() {
@@ -273,6 +284,7 @@ export default {
   },
   async beforeDestroy() {
     this.$store.commit('bridge/resetToken');
+    await this.unsubscribe(this.account.address);
     await this.handlerDisconnect();
   },
   methods: {
@@ -281,6 +293,8 @@ export default {
       resetSwaps: 'bridge/resetMySwaps',
       redeem: 'bridge/redeemSwap',
       swap: 'bridge/swap',
+      subscribe: 'bridge/subscribeToBridgeEvents',
+      unsubscribe: 'bridge/unsubscribeToBridgeEvents',
 
       isRightChain: 'web3/chainIsCompareToCurrent',
       connectWallet: 'web3/connect',
@@ -299,11 +313,14 @@ export default {
       else {
         const { chain } = addresses[sourceAddressInd];
         await this.connectWallet({ chain });
+        if (!this.connections.notifsConnection) await this.$wsNotifs.connect(this.token);
+        await this.subscribe(this.account.address);
       }
     },
     async handlerDisconnect() {
       clearInterval(this.updateInterval);
       this.updateInterval = null;
+      await this.unsubscribe(this.account.address);
       await this.disconnectWallet();
       await this.resetSwaps();
     },
@@ -321,6 +338,12 @@ export default {
       this.targetAddressInd = currentSource;
     },
     async checkNetwork(chain) {
+      if (!this.isConnected) {
+        await this.connectWallet({ chain });
+        if (!this.isConnected) return false;
+        return await this.checkNetwork(chain);
+      }
+
       const isMetaMask = localStorage.getItem('isMetaMask') === 'true';
       const isCorrectNetwork = +getChainIdByChain(chain) === +this.account.netId;
       if (!isCorrectNetwork && isMetaMask) {
@@ -339,10 +362,8 @@ export default {
       if (await this.checkNetwork(chain)) {
         const { ok } = await this.redeem({ signData, chainTo });
 
-        if (ok) {
-          this.ShowModalSuccess({ title: this.$t('modals.redeem.success') });
-          await this.swapsTableData();
-        } else this.ShowModalFail({ title: this.$t('modals.redeem.fail') });
+        if (ok) this.ShowModalSuccess({ title: this.$t('modals.redeem.success') });
+        else this.ShowModalFail({ title: this.$t('modals.redeem.fail') });
       }
 
       this.SetLoader(false);
@@ -372,6 +393,7 @@ export default {
                 this.CloseModal();
 
                 this.SetLoader(true);
+                this.page = 1;
                 const { ok, result } = await this.swap({
                   amount,
                   symbol,
