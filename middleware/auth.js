@@ -21,7 +21,7 @@ export default async function ({
     if (access || refresh) {
       store.commit('user/setTokens', payload);
     }
-    if ((!access && !refresh) || !app.$cookies.get('userLogin')) {
+    if (!access || !app.$cookies.get('userLogin')) {
       await store.dispatch('user/logout');
       return redirect(Path.SIGN_IN);
     }

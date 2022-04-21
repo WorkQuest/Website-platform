@@ -5,7 +5,7 @@
       :class="{role_hidden: step !== walletState.Default}"
     >
       <div
-        v-if="step === walletState.ImportOrCreate || step === walletState.Default"
+        v-if="step === walletState.Default"
         class="role__back"
         @click="toSign"
       >
@@ -160,13 +160,13 @@ export default {
       return;
     }
     if (!this.userData.id) await this.$store.dispatch('user/getUserData');
-    if (this.userData.wallet?.address && userStatus === UserStatuses.Confirmed) {
+    if (this.userData.wallet?.address && this.userData.status === UserStatuses.Confirmed) {
       this.isWalletAssigned = true;
       this.isClearOnDestroy = false;
       await this.redirectUser();
       return;
     }
-    if (userStatus === UserStatuses.Confirmed && !this.userData?.wallet?.address) {
+    if (this.userData.status === UserStatuses.Confirmed && !this.userData?.wallet?.address) {
       this.step = WalletState.ImportOrCreate;
       if (getCipherKey() == null && !this.isLoginWithSocialNetwork) {
         this.isClearOnDestroy = false;
