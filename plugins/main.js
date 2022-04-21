@@ -37,14 +37,13 @@ Vue.mixin({
 
       function getFileData({ url, file }) {
         filesData.push({
-          url,
-          file,
-          // file: {
-          //   type: file.type,
-          //   name: file.name,
-          //   size: file.size,
-          //   file,
-          // },
+          file: {
+            url,
+            type: file.type,
+            name: file.name,
+            size: file.size,
+            file,
+          },
           medias,
         });
       }

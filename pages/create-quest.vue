@@ -131,6 +131,7 @@
           :limit-bytes="10485760"
           :limit-bytes-video="10485760"
           :accept="'image/png, image/jpg, image/jpeg, video/mp4'"
+          :preloaded-files="prefetchedFiles"
           @change="updateFiles"
         />
         <!--        :preloaded-files="prefetchedFiles"-->
@@ -260,7 +261,7 @@ export default {
     async fillQuestFromQuestDraft() {
       const questDraft = this.$cookies.get('questDraft');
       console.log('questDraft', questDraft);
-      this.selectedSpecAndSkills = questDraft.specializationKeys ?? [];
+      this.selectedSpecAndSkills = questDraft?.specializationKeys ?? [];
       this.questTitle = questDraft?.title ?? '';
       this.textarea = questDraft?.description ?? '';
       this.price = questDraft?.price ?? '';
@@ -273,8 +274,7 @@ export default {
         lat: questDraft?.locationFull.location.latitude,
       };
       // TODO: Доделать
-      console.log('questDraft.specializationKeys', questDraft?.specializationKeys);
-      // this.prefetchedFiles = questDraft?.medias ?? [];
+      this.prefetchedFiles = questDraft?.medias ?? [];
     },
     updateFiles(files) {
       this.files = files;
@@ -384,6 +384,7 @@ export default {
               title: this.$t('modals.questCreated'),
             });
             this.ShowToast(this.$t('toasts.questCreated'), this.$t('toasts.questCreated'));
+            this.$cookies.remove('questDraft');
             await this.$router.push(`/quests/${questRes.result.id}`);
           },
         });
