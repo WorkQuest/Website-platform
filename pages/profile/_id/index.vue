@@ -367,6 +367,7 @@ export default {
     sessionStorage.removeItem('questsListFilter');
   },
   async mounted() {
+    await this.$store.dispatch('user/getMainData');
     if (this.userId !== this.mainUser.id) {
       await this.$store.dispatch('user/getAnotherUserData', this.userId);
       this.userData = this.anotherUserData;
