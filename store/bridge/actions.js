@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js';
 
+import { Path } from '~/utils/enums';
 import {
   BlockchainByIndex, BridgeAddresses, BridgeEvents, SwapAddresses,
 } from '~/utils/bridge-constants';
@@ -20,7 +21,6 @@ import {
 } from '~/utils/web3';
 
 import { WQBridge, ERC20 } from '~/abi/index';
-import { Chains } from '~/utils/enums';
 
 /**
  * @property swap.canRedeemed {Boolean}
@@ -166,7 +166,7 @@ export default {
   },
   async subscribeToBridgeEvents({ commit, getters }, userAddress) {
     try {
-      await this.$wsNotifs.subscribe(`/notifications/bridge/${userAddress}`, async (msg) => {
+      await this.$wsNotifs.subscribe(`${Path.NOTIFICATIONS}${Path.BRIDGE}/${userAddress}`, async (msg) => {
         const swaps = JSON.parse(JSON.stringify(getters.getSwaps));
         const {
           event, signData, transactionHash, returnValues: {
@@ -204,15 +204,14 @@ export default {
         commit('setSwapsData', { count, swaps });
       });
     } catch (err) {
-      console.log('subscribeToBridgeEvents err', err);
+      console.error('subscribeToBridgeEvents err', err);
     }
   },
   async unsubscribeToBridgeEvents(_, userAddress) {
     try {
       await this.$wsNotifs.unsubscribe(`/notifications/bridge/${userAddress}`);
-      console.log('unsubscribeToBridgeEvents:', this.$wsNotifs);
     } catch (err) {
-      console.log('unsubscribeToBridgeEvents err', err);
+      console.error('unsubscribeToBridgeEvents err', err);
     }
   },
 };

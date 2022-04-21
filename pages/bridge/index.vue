@@ -208,6 +208,8 @@ export default {
 
       swaps: 'bridge/getSwaps',
       swapsCount: 'bridge/getSwapsCount',
+
+      connections: 'main/notificationsConnectionStatus',
     }),
     tableFields() {
       const cellStyle = {
@@ -282,7 +284,7 @@ export default {
   },
   async beforeDestroy() {
     this.$store.commit('bridge/resetToken');
-    await this.$store.dispatch('bridge/unsubscribeToBridgeEvents', this.account.address);
+    await this.unsubscribe(this.account.address);
     await this.handlerDisconnect();
   },
   methods: {
@@ -311,7 +313,7 @@ export default {
       else {
         const { chain } = addresses[sourceAddressInd];
         await this.connectWallet({ chain });
-        await this.$wsNotifs.connect(this.token);
+        if (!this.connections.notifsConnection) await this.$wsNotifs.connect(this.token);
         await this.subscribe(this.account.address);
       }
     },
@@ -391,6 +393,7 @@ export default {
                 this.CloseModal();
 
                 this.SetLoader(true);
+                this.page = 1;
                 const { ok, result } = await this.swap({
                   amount,
                   symbol,
