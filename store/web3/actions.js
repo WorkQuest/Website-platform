@@ -215,66 +215,10 @@ export default {
     return providerData;
   },
 
-  // добавленно только для страницы demo-blockchain
-  async sendTransaction({ commit }, { address, amount, balance }) {
-    try {
-      const { ethereum } = window;
-      const web3 = new Web3(ethereum);
-      const accountAddress = await getAccountAddress();
-
-      const _amount = new BigNumber(amount).shiftedBy(18);
-      const gasPrice = await web3.eth.getGasPrice();
-      const gasEstimate = await web3.eth.estimateGas({
-        from: accountAddress,
-        to: address,
-        value: _amount,
-      });
-
-      // const amountGas = new BigNumber(gasPrice).multipliedBy(gasEstimate).shiftedBy(-18);
-      // const amountGasPlusAmount = new BigNumber(amountGas).plus(amount).toNumber();
-      // if (new BigNumber(balance).isLessThan(amountGasPlusAmount)) _amount = new BigNumber(amount).minus(amountGas).shiftedBy(18).toNumber();
-
-      return await web3.eth.sendTransaction({
-        from: accountAddress,
-        to: address,
-        value: _amount,
-        gasPrice,
-        gas: gasEstimate,
-      });
-    } catch (err) {
-      showToast('Send transaction error', `${err.message}`, 'danger');
-      return error(500, 'send transaction error', err);
-    }
-  },
-  async showBalanceOnDemo() {
-    let balance = 0;
-    try {
-      const { ethereum } = window;
-      const web3 = new Web3(ethereum);
-      const accountAddress = await getAccountAddress();
-      await web3.eth.getBalance(accountAddress, (err, result) => {
-        if (err) {
-          console.log(err);
-        } else {
-          balance = result;
-        }
-      });
-      return new BigNumber(balance).shiftedBy(-18).toString();
-    } catch (err) {
-      showToast('Balance error', `${err.message}`, 'danger');
-      return error(500, 'balance error', err);
-    }
-  },
-
   // mobile browser check
   // false - desktop, true - mobile && !metamask
   checkIsMobileMetamaskNeed() {
-    if (!this.checkIfMobile()) {
-      return false;
-    }
-    if (typeof window.ethereum === 'undefined') {
-      return true;
-    }
-    return false;
+    if (!this.checkIfMobile()) return false;
+    return typeof window.ethereum === 'undefined';
   },
 };
