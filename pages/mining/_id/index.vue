@@ -387,8 +387,7 @@ export default {
   watch: {
     async isConnected(newValue) {
       if (!newValue) await this.resetPoolData();
-      else {
-        await this.checkNetwork(this.chain);
+      else if (await this.checkNetwork(this.chain)) {
         await this.tokensDataUpdate();
       }
       // const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.chain);
