@@ -182,7 +182,6 @@ export default {
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
-      userInfo: 'data/getUserInfo',
       transactions: 'wallet/getTransactions',
       transactionsCount: 'wallet/getTransactionsCount',
       isWalletConnected: 'wallet/getIsWalletConnected',
