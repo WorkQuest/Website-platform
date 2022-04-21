@@ -53,14 +53,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ctm-modal {
-  &__desc {
-    text-align: center;
-  }
-}
 .ctm-modal-download {
-  display: flex;
-  align-items: center;
  &-mobile {
    max-width: 343px !important;
  }
