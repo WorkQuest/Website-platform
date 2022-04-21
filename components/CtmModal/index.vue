@@ -5,13 +5,13 @@
       class="ctm-modal"
       @mousedown.self="backgroundClick"
     >
-      <component :is="currentModalKey"/>
+      <component :is="currentModalKey" />
     </div>
   </transition>
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
+import { mapGetters } from 'vuex';
 import modals from '@/store/modals/modals';
 
 export default {
@@ -94,7 +94,7 @@ export default {
     [modals.referralClaim]: () => import('./CtmModalReferralClaim'),
     [modals.valueSend]: () => import('./CtmModalValueSend'),
   },
-  data: () => ({modals}),
+  data: () => ({ modals }),
   computed: {
     ...mapGetters({
       isShow: 'modals/getIsShow',
