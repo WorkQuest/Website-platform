@@ -1,5 +1,5 @@
 export default {
-  getTableData: (state) => state.tableData,
+  getSwaps: (state) => state.swaps,
   getChartData: (state) => {
     const chartDataAsc = [...state.chartData].sort((a, b) => (a.date > b.date ? 1 : 0));
     const lastElementIndex = chartDataAsc.length - 1;

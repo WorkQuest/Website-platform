@@ -2,8 +2,8 @@ export default {
   setInitWS(state, isInit) {
     state.isInitWS = isInit;
   },
-  setTableData(state, data) {
-    state.tableData = data;
+  setSwaps(state, data) {
+    state.swaps = data;
   },
   setChartData(state, data) {
     state.chartData = data;

@@ -282,10 +282,9 @@ export default {
       redeem: 'bridge/redeemSwap',
       swap: 'bridge/swap',
 
-      isRightChain: 'web3/chainIsCompareToCurrent',
+      goToChain: 'web3/goToChain',
       connectWallet: 'web3/connect',
       disconnectWallet: 'web3/disconnect',
-      goToChain: 'web3/goToChain',
     }),
     convertedRecipientTable(el) {
       const { chainTo, recipient } = el.item;

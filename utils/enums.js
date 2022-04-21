@@ -24,13 +24,6 @@ export const ChainsIdByChainNumber = {
   20220112: '0x13488D0',
 };
 
-export const NativeTokenSymbolByChainId = {
-  [+ChainsId.ETH_MAIN]: 'ETH',
-  [+ChainsId.ETH_TEST]: 'ETH',
-  [+ChainsId.BSC_MAIN]: 'BNB',
-  [+ChainsId.BSC_TEST]: 'BNB',
-};
-
 export const Chains = {
   ETHEREUM: 'ETH',
   BINANCE: 'BSC',
@@ -41,8 +34,6 @@ export const Chains = {
 export const StakingTypes = {
   WQT: 'WQT',
   WUSD: 'WUSD',
-  MINING: 'MINING',
-  CROSS_CHAIN: 'CROSS_CHAIN',
 };
 
 export const SumSubStatuses = { NOT_VERIFIED: 0, VERIFIED: 1 };

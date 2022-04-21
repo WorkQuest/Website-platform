@@ -1,15 +1,11 @@
-import BigNumber from 'bignumber.js';
-
 import {
   Pair as PairUniswap,
   Token as TokenUniswap,
   TokenAmount as TokenAmountUniswap,
 } from '@uniswap/sdk';
 
-import {
-  Path, Chains,
-} from '~/utils/enums';
-
+import BigNumber from 'bignumber.js';
+import { Path, Chains } from '~/utils/enums';
 import { Pool } from '~/utils/Constants/mining';
 
 import {
@@ -17,15 +13,17 @@ import {
   success,
   showToast,
   getGasPrice,
+  makeApprove,
   getAllowance,
   getEstimateGas,
   fetchContractData,
   getAccountAddress,
-  createInstanceWeb3,
+  createInstance,
   initStackingContract,
   getPoolTotalSupplyBSC,
-  getPoolTokensAmountBSC, makeApprove,
+  getPoolTokensAmountBSC,
 } from '~/utils/web3';
+
 import { ERC20, WQTExchange } from '~/abi';
 
 BigNumber.config({ EXPONENTIAL_AT: 60 });
@@ -43,6 +41,7 @@ BigNumber.config({ EXPONENTIAL_AT: 60 });
  * }>}
  * amount0 - have to WQT!
  * amount1 - pool's token
+ * @property swap.amountUSD
  */
 function prepareDataForSwapsTable(swaps) {
   return swaps.map((swap) => {
@@ -105,7 +104,8 @@ export default {
         amount1In: new BigNumber(swap.amount1In).shiftedBy(-18).decimalPlaces(3).toString(),
         amount1Out: new BigNumber(swap.amount1Out).shiftedBy(-18).decimalPlaces(3).toString(),
       }));
-      commit('setTableData', prepareDataForSwapsTable(swaps));
+      commit('setSwaps', prepareDataForSwapsTable(swaps));
+      commit('setSwapsCount', result.count);
       return ok;
     } catch (e) {
       console.error('error in getTableDataForWqtWbnbPool', e);
@@ -130,7 +130,7 @@ export default {
         amount0In: swap.amount1In,
         amount0Out: swap.amount1Out,
       }));
-      commit('setTableData', prepareDataForSwapsTable(swaps));
+      commit('setSwaps', prepareDataForSwapsTable(swaps));
       return ok;
     } catch (e) {
       console.error('error in getTableDataForWqtWethPool', e);
@@ -138,6 +138,11 @@ export default {
     }
   },
 
+  /**
+   * @property result.reserveUSD
+   * @param commit
+   * @return {Promise<boolean|*>}
+   */
   async fetchBNBChart({ commit }) {
     try {
       const { ok, result } = await this.$axios.$get('/v1/pool-liquidity/wqt-weth/tokenDay?limit=10');
@@ -150,6 +155,11 @@ export default {
     }
   },
 
+  /**
+   * @property result.infoPer10Days
+   * @param commit
+   * @return {Promise<boolean|*>}
+   */
   async fetchETHChart({ commit }) {
     try {
       const { ok, result } = await this.$axios.$get('/v1/pool-liquidity/wqt-wbnb/tokenDay?limit=10');
@@ -163,6 +173,12 @@ export default {
     }
   },
 
+  /**
+   * @property $wsNotifs
+   * @param commit
+   * @param getters
+   * @return {Promise<void>}
+   */
   async initWS({ commit, getters }) {
     try {
       if (getters.isInitWS) {
@@ -211,6 +227,16 @@ export default {
     }
   },
 
+  /**
+   * @property totalSupply
+   * @property pairDayDatas
+   * @property stakingInfoEvent.rewardTotal
+   * @property stakingInfoEvent.totalStaked
+   * @property market_data.current_price
+   * @param commit
+   * @param payload
+   * @return {Promise<{msg: string, code: number, data: null, ok: boolean}|{result: *, ok: boolean}>}
+   */
   async fetchAPY({ commit }, payload) {
     let totalSupply;
     let reserveUSD;
@@ -299,10 +325,10 @@ export default {
     return ok ? result : { balance: 0, decimals: 0, symbol: '' };
   },
 
-  async swapOldTokens({ dispatch }, { amount, decimals }) {
+  async swapOldTokens({ _ }, { amount, decimals }) {
     try {
-      const tokenInstance = await createInstanceWeb3(ERC20, process.env.BSC_OLD_WQT_TOKEN);
-      const exchangeInstance = await createInstanceWeb3(WQTExchange, process.env.BSC_WQT_EXCHANGE);
+      const tokenInstance = await createInstance(ERC20, process.env.BSC_OLD_WQT_TOKEN);
+      const exchangeInstance = await createInstance(WQTExchange, process.env.BSC_WQT_EXCHANGE);
 
       const value = new BigNumber(amount).shiftedBy(+decimals).toString();
       const allowance = await getAllowance(getAccountAddress(), process.env.BSC_WQT_EXCHANGE, tokenInstance);
@@ -335,8 +361,8 @@ export default {
   async stake({ _ }, { amount, chain }) {
     try {
       const { stakingAbi, stakingAddress, stakingToken } = Pool.get(chain);
-      const instanceStake = await createInstanceWeb3(stakingAbi, stakingAddress);
-      const instanceToken = await createInstanceWeb3(ERC20, stakingToken);
+      const instanceStake = await createInstance(stakingAbi, stakingAddress);
+      const instanceToken = await createInstance(ERC20, stakingToken);
 
       const value = new BigNumber(amount).shiftedBy(18).toString();
       const allowance = await getAllowance(getAccountAddress(), stakingAddress, instanceToken);
@@ -363,6 +389,64 @@ export default {
       console.error('Error in mining stake', e);
       showToast('Staking error', `${e.message}`, 'danger');
       return error(e.code, 'Stake error', e);
+    }
+  },
+
+  /**
+   * @property unstake
+   * @param _
+   * @param amount
+   * @param chain
+   * @return {Promise<{msg: string, code: number, data: null, ok: boolean}|{result: *, ok: boolean}>}
+   */
+  async unStake({ _ }, { amount, chain }) {
+    try {
+      const { stakingAbi, stakingAddress } = Pool.get(chain);
+      const inst = await createInstance(stakingAbi, stakingAddress);
+
+      const value = new BigNumber(amount).shiftedBy(18).toString();
+      showToast('Unstaking', 'Unstaking...', 'success');
+      const [gasPrice, gas] = await Promise.all([
+        getGasPrice(),
+        getEstimateGas(null, null, inst, 'unstake', [value]),
+      ]);
+      const result = await inst.methods.unstake(value).send({
+        from: getAccountAddress(),
+        gasPrice,
+        gas,
+      });
+      showToast('Unstaking', 'Unstaking done', 'success');
+
+      return success(result);
+    } catch (e) {
+      console.error('Error in mining unStake', e);
+      showToast('Unstaking error', `${e.message}`, 'danger');
+      return error(e.code, 'Stake error', e);
+    }
+  },
+
+  async claim({ _ }, { chain }) {
+    try {
+      const { stakingAbi, stakingAddress } = Pool.get(chain);
+      const inst = await createInstance(stakingAbi, stakingAddress);
+
+      showToast('Claiming', 'Claiming...', 'success');
+      const [gasPrice, gas] = await Promise.all([
+        getGasPrice(),
+        getEstimateGas(null, null, inst, 'claim', []),
+      ]);
+      const result = await inst.methods.claim().send({
+        from: getAccountAddress(),
+        gasPrice,
+        gas,
+      });
+      showToast('Claiming', 'Claiming done', 'success');
+
+      return success(result);
+    } catch (e) {
+      console.error('Error in mining claim', e);
+      showToast('Claim error', `${e.message}`, 'danger');
+      return error(e.code, 'Error with claim', e);
     }
   },
 

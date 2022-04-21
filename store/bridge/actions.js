@@ -13,7 +13,7 @@ import {
   getTransactionFee,
   fetchContractData,
   getAccountAddress,
-  createInstanceWeb3,
+  createInstance,
   getTransactionCount,
 } from '~/utils/web3';
 
@@ -115,7 +115,7 @@ export default {
       const accountAddress = await getAccountAddress();
       const value = new BigNumber(amount).shiftedBy(18).toString();
       const data = [nonce, toChainIndex, value, accountAddress, symbol];
-      const bridgeInstance = await createInstanceWeb3(WQBridge, bridgeAddress);
+      const bridgeInstance = await createInstance(WQBridge, bridgeAddress);
 
       if (isNative) {
         showToast('Swapping', 'Swapping...', 'success');
@@ -136,7 +136,7 @@ export default {
       const allowance = await fetchContractData('allowance', ERC20, tokenAddress, [accountAddress, bridgeAddress]);
       if (new BigNumber(value).isGreaterThan(+allowance)) {
         showToast('Swapping', 'Approving...', 'success');
-        const tokenInstance = await createInstanceWeb3(ERC20, tokenAddress);
+        const tokenInstance = await createInstance(ERC20, tokenAddress);
         const { status } = await tokenInstance.methods.approve(bridgeAddress, value).send({ from: accountAddress });
         if (!status) return error(500, 'Approve was failed');
         showToast('Swapping', 'Approving done', 'success');

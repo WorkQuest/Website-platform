@@ -15,7 +15,6 @@
         <base-btn
           class="mining-page__connect"
           mode="light"
-          :disabled="statusBusy"
           :data-selector="!isConnected ? 'CONNECT-WALLET' : 'DISCONNECT-FROM-WALLET'"
           @click="toggleConnection"
         >
@@ -123,7 +122,7 @@
               <base-btn
                 data-selector="STAKE"
                 class="btn_bl"
-                :disabled="!isConnected || statusBusy"
+                :disabled="!isConnected"
                 @click="openModalStaking()"
               >
                 {{ $t('meta.btns.stake') }}
@@ -132,7 +131,7 @@
                 data-selector="UNSTAKE"
                 class="btn_bl"
                 mode="outline"
-                :disabled="!isConnected || statusBusy"
+                :disabled="!isConnected"
                 @click="openModalUnstaking()"
               >
                 {{ $t('meta.btns.unstake') }}
@@ -141,7 +140,7 @@
                 data-selector="CLAIM-REWARDS"
                 mode="outline"
                 class="bnt__claim"
-                :disabled="!isConnected || statusBusy"
+                :disabled="!isConnected"
                 @click="claimRewards()"
               >
                 {{ $t('meta.claimRewards') }}
@@ -239,7 +238,7 @@
 import { mapActions, mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import {
-  Path, StakingTypes, TokenSymbols, Chains,
+  Path, TokenSymbols, Chains,
 } from '~/utils/enums';
 import { getChainIdByChain } from '~/utils/web3';
 import { Pool, PoolURL } from '~/utils/Constants/mining';
@@ -256,28 +255,24 @@ export default {
   },
   data() {
     return {
-      updateInterval: null,
-      metamaskStatus: localStorage.getItem('metamaskStatus'),
       page: 1,
       limit: 10,
       isUpdatingData: false,
+      metamaskStatus: localStorage.getItem('metamaskStatus'),
     };
   },
   computed: {
     ...mapGetters({
-      miningSwaps: 'mining/getTableData',
+      APY: 'mining/getAPY',
+      claim: 'mining/getClaim',
+      staked: 'mining/getStaked',
+      balance: 'mining/getBalance',
+      miningSwaps: 'mining/getSwaps',
       miningChartData: 'mining/getChartData',
       totalLiquidityUSD: 'mining/getTotalLiquidityUSD',
-      balance: 'mining/getBalance',
-      staked: 'mining/getStaked',
-      claim: 'mining/getClaim',
-      APY: 'mining/getAPY',
 
-      isConnected: 'web3/isConnected',
       account: 'web3/getAccount',
-      accountData: 'web3/getAccountData',
-      tokensData: 'web3/getTokensAmount',
-      statusBusy: 'web3/getStatusBusy',
+      isConnected: 'web3/isConnected',
 
       isAuth: 'user/isAuth',
       walletAddress: 'user/getUserWalletAddress',
@@ -343,8 +338,7 @@ export default {
       }));
     },
     totalPages() {
-      if (this.miningSwaps.length) return Math.ceil(100 / this.limit);
-      return 0;
+      return Math.ceil(100 / this.limit);
     },
     icons() {
       return [
@@ -386,19 +380,11 @@ export default {
     },
   },
   watch: {
-    async isConnected(newValue) {
-      if (!newValue) await this.resetPoolData();
+    async isConnected(status) {
+      if (!status) await this.resetPoolData();
       else if (await this.checkNetwork(this.chain)) {
         await this.tokensDataUpdate();
       }
-      // const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.chain);
-      // const rightChain = await this.checkNetwork({ chain: this.chain });
-      // if (newValue && await this.checkNetwork({ chain: this.chain })) {
-      // await this.$store.dispatch('web3/initContract');
-      // await this.tokensDataUpdate();
-      // } else {
-      //   await this.resetPoolData();
-      // }
     },
     async page() {
       const { limit, chain: pool } = this;
@@ -423,7 +409,6 @@ export default {
     this.SetLoader(false);
   },
   async beforeDestroy() {
-    clearInterval(this.updateInterval);
     await this.disconnectWallet();
     await Promise.all([
       this.disconnectWS(),
@@ -448,7 +433,10 @@ export default {
       fetchChartData: 'mining/fetchChartData',
       swapOldTokens: 'mining/swapOldTokens',
       stakeTokens: 'mining/stake',
+      unStakeTokens: 'mining/unStake',
+      claimTokens: 'mining/claim',
     }),
+
     async toggleConnection() {
       this.SetLoader(true);
       const { isConnected, chain } = this;
@@ -456,6 +444,7 @@ export default {
       else await this.connectWallet({ chain });
       this.SetLoader(false);
     },
+
     async checkNetwork(chain) {
       if (!this.isConnected) {
         await this.connectWallet({ chain });
@@ -501,43 +490,6 @@ export default {
       };
     },
 
-    async checkWalletStatus() {
-      if (this.isConnected) return;
-      let incorrectChain = false;
-      const { chain } = this;
-      this.SetLoader(true);
-      if (await this.connectWallet({ chain })) {
-        if (localStorage.getItem('isMetaMask') === 'true') {
-          const switchStatus = await this.$store.dispatch('web3/goToChain', { chain });
-          if (!switchStatus.ok) await this.disconnectWallet();
-        } else {
-          const walletConnectData = JSON.parse(localStorage.getItem('walletconnect'));
-          switch (walletConnectData.chainId) {
-            case 1:
-              incorrectChain = chain !== 'ETH';
-              break;
-            case 56:
-              incorrectChain = chain !== 'BNB';
-              break;
-            default:
-              incorrectChain = false;
-              break;
-          }
-          if (incorrectChain) {
-            this.ShowModal({
-              key: modals.status,
-              img: require('~/assets/img/ui/warning.svg'),
-              title: this.$t('modals.connectError'),
-              recipient: '',
-              subtitle: this.$t('modals.incorrectChain'),
-            });
-            await this.disconnectWallet();
-          }
-        }
-      }
-      this.SetLoader(false);
-    },
-
     async tokensDataUpdate() {
       const { chain } = this;
 
@@ -550,7 +502,6 @@ export default {
           stakedAmount: this.staked,
         });
       }
-
       this.isUpdatingData = false;
     },
 
@@ -599,40 +550,50 @@ export default {
     },
 
     async openModalUnstaking() {
-      await this.checkWalletStatus();
-      if (this.staked > 0) {
+      if (await this.checkNetwork(this.chain)) {
         this.ShowModal({
-          key: modals.claimRewards,
-          type: 2,
-          decimals: this.accountData.decimals.stakeDecimal,
-          stakingType: StakingTypes.MINING,
-          updateMethod: this.tokensDataUpdate,
-        });
-      } else {
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/warning.svg'),
-          title: this.$t('modals.transactionFail'),
-          recipient: '',
-          subtitle: this.$t('modals.incorrectAmount'),
+          key: modals.valueSend,
+          title: 'modals.titles.unstake',
+          maxValue: this.staked,
+          submit: async (amount) => {
+            this.CloseModal();
+
+            this.SetLoader(true);
+            const { ok } = await this.unStakeTokens({
+              amount,
+              chain: this.chain,
+            });
+            this.SetLoader(false);
+
+            if (ok) {
+              this.ShowModalSuccess({});
+              await this.tokensDataUpdate();
+            } else this.ShowModalFail({});
+          },
         });
       }
     },
 
     async claimRewards() {
-      this.SetLoader(true);
-      if (this.claim > 0) {
-        await this.$store.dispatch('web3/claimRewards', { stakingType: StakingTypes.MINING });
-      } else {
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/warning.svg'),
+      if (this.claim === 0) {
+        this.ShowModalFail({
           title: this.$t('modals.transactionFail'),
-          recipient: '',
           subtitle: this.$t('modals.nothingToClaim'),
         });
+        return;
       }
-      this.SetLoader(false);
+
+      const { chain } = this;
+      if (await this.checkNetwork(chain)) {
+        this.SetLoader(true);
+        const { ok } = await this.claimTokens({ chain });
+        this.SetLoader(false);
+
+        if (ok) {
+          this.ShowModalSuccess({});
+          await this.tokensDataUpdate();
+        } else this.ShowModalFail({});
+      }
     },
 
   },

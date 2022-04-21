@@ -1,6 +1,6 @@
 export default () => ({
   isInitWS: false,
-  tableData: [],
+  swaps: [],
   chartData: [],
   totalLiquidityUSD: null,
   poolData: {
