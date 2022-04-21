@@ -28,6 +28,9 @@ export default {
 .icon-show, .icon-hide {
   color: $blue;
   font-size: 25px;
+  &:hover::before {
+    color: $blue;
+  }
 }
 .icon-Lock:before {
   content: "\ea24";
