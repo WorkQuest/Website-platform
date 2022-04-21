@@ -1,5 +1,7 @@
 import BigNumber from 'bignumber.js';
 
+import Web3 from 'web3';
+
 import {
   stake,
   transfer,
@@ -434,5 +436,25 @@ export default {
       console.error('approveRouter error', e.message);
       return error();
     }
+  },
+  async subscribeToWalletEvents({ commit, dispatch }) {
+    const web3 = new Web3(new Web3.providers.WebsocketProvider('ws://localhost:8546'));
+    let balance = -1;
+
+    web3.eth.getAccounts().then((accounts) => web3.eth.subscribe('newBlockHeaders', (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        web3.eth.getBalance(accounts[0]).then((bal) => {
+          console.log('user: ', accounts[0]);
+          console.log('balance: ', bal);
+          balance = bal;
+        });
+      }
+    }));
+  },
+  async unsubscribeToWalletEvents({ commit, dispatch }) {
+    const web3 = new Web3(new Web3.providers.WebsocketProvider('ws://localhost:8546'));
+    web3.eth.clearSubscriptions();
   },
 };
