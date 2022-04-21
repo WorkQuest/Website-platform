@@ -5,7 +5,7 @@
         <base-btn
           class="btn"
           data-selector="PREVIOUS-STEP"
-          @click="handleBackToMainMining()"
+          @click="$router.push($options.Path.MINING)"
         >
           <template v-slot:left>
             <span class="icon-chevron_left" />
@@ -249,6 +249,7 @@ export default {
   name: 'Pool',
   layout: 'guest',
   middleware: 'mining',
+  Path,
   Chains,
   components: {
     chart: () => import('./graphics_data'),
@@ -411,7 +412,6 @@ export default {
     },
   },
   async beforeMount() {
-    console.log('this.isAuth', this.isAuth);
     this.$nuxt.setLayout(this.isAuth ? 'default' : 'guest');
   },
   async mounted() {
@@ -435,6 +435,7 @@ export default {
   },
   methods: {
     ...mapActions({
+      goToChain: 'web3/goToChain',
       connectWallet: 'web3/connect',
       disconnectWallet: 'web3/disconnect',
 
@@ -445,6 +446,7 @@ export default {
       fetchPoolData: 'mining/fetchPoolData',
       resetPoolData: 'mining/resetPoolData',
       fetchChartData: 'mining/fetchChartData',
+      swapOldTokens: 'mining/swapOldTokens',
     }),
     async toggleConnection() {
       const { isConnected, chain } = this;
@@ -537,18 +539,37 @@ export default {
       const { chain } = this;
 
       this.isUpdatingData = true;
-      console.log('tokensDataUpdate');
       await this.fetchPoolData({ chain });
 
       if (+this.staked > 0) {
         await this.fetchAPY({
-          chain: this.chain,
+          chain,
           stakedAmount: this.staked,
         });
       }
 
       this.isUpdatingData = false;
     },
+
+    async openSwapTokens() {
+      if (await this.checkNetwork(this.chain)) {
+        this.ShowModal({
+          key: modals.swapTokens,
+          submit: async (amount, decimals) => {
+            this.SetLoader(true);
+            this.CloseModal();
+
+            const { ok } = await this.swapOldTokens({ amount, decimals });
+
+            if (ok) this.ShowModalSuccess({});
+            else this.ShowModalFail({});
+
+            this.SetLoader(false);
+          },
+        });
+      }
+    },
+
     async claimRewards() {
       this.SetLoader(true);
       if (this.claim > 0) {
@@ -564,17 +585,7 @@ export default {
       }
       this.SetLoader(false);
     },
-    async openSwapTokens() {
-      const { chain } = this;
-      if (await this.checkNetwork(chain)) {
-        this.ShowModal({
-          key: modals.swapTokens,
-          submit: async (amount) => {
-            console.log('swap', amount);
-          },
-        });
-      }
-    },
+
     async openModalUnstaking() {
       await this.checkWalletStatus();
       if (this.staked > 0) {
@@ -614,10 +625,6 @@ export default {
           subtitle: this.$t('modals.incorrectAmount'),
         });
       }
-    },
-
-    handleBackToMainMining() {
-      this.$router.push(Path.MINING);
     },
   },
 };

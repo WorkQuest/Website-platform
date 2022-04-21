@@ -10,13 +10,13 @@
     >
       <base-field
         v-model="amount"
-        class="content__field"
-        placeholder="3500"
-        data-selector="OLD-TOKENS"
         type="number"
-        :label="$tc('mining.swapTokens.oldTokens')"
+        placeholder="3500"
+        class="content__field"
+        data-selector="OLD-TOKENS"
         :name="$tc('mining.swapTokens.oldTokens')"
-        rules="required|decimal|min_value:0.00001"
+        :label="$tc('mining.swapTokens.oldTokens')"
+        :rules="`required|decimal|min_value:0.00001|max_value:${balance}`"
       >
         <template
           v-slot:right-absolute
@@ -38,7 +38,7 @@
       <div class="content__subtitle">
         {{ $t('mining.swapTokens.balance') }}
         <span class="content__subtitle_blue">
-          {{ oldToken.balance }} {{ oldToken.symbol }}
+          {{ Floor(balance) }} {{ oldToken.symbol }}
         </span>
       </div>
       <base-field
@@ -90,6 +90,9 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
+    balance() {
+      return new BigNumber(this.oldToken.balance).shiftedBy(-this.oldToken.decimals).toString();
+    },
   },
   async mounted() {
     this.oldToken = await this.fetchTokenInfo(process.env.BSC_OLD_WQT_TOKEN);
@@ -99,12 +102,14 @@ export default {
       fetchTokenInfo: 'mining/fetchTokenInfo',
     }),
     maxBalance() {
-      this.amount = this.oldToken.balance;
+      this.amount = this.balance;
     },
     async initSwap() {
-      if (new BigNumber(this.oldToken.balance).isGreaterThanOrEqualTo(this.amount)) {
-        const { submit } = this.options;
-        await submit(this.amount);
+      const {
+        amount, balance, oldToken: { decimals }, options: { submit },
+      } = this;
+      if (new BigNumber(balance).isGreaterThanOrEqualTo(amount)) {
+        await submit(amount, decimals);
       } else {
         this.ShowModalFail({
           title: this.$t('modals.transactionFail'),

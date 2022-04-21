@@ -21,7 +21,7 @@ import {
   getAccountAddress,
   initStackingContract,
   getPoolTotalSupplyBSC,
-  getPoolTokensAmountBSC,
+  getPoolTokensAmountBSC, createInstanceWeb3, getGasPrice, getEstimateGas, getTransactionCount,
 } from '~/utils/web3';
 import { ERC20, WQTExchange } from '~/abi';
 
@@ -297,28 +297,39 @@ export default {
     return ok ? result : { balance: 0, decimals: 0, symbol: '' };
   },
 
-  async swapOldTokens({ _ }, { decimals, amount }) {
+  async swapOldTokens({ dispatch }, { amount, decimals }) {
     try {
-      const _tokenInstance = await createInstance(ERC20, process.env.BSC_OLD_WQT_TOKEN);
-      const _exchangeInstance = await createInstance(WQTExchange, process.env.BSC_WQT_EXCHANGE);
+      const tokenInstance = await createInstanceWeb3(ERC20, process.env.BSC_OLD_WQT_TOKEN);
+      const exchangeInstance = await createInstanceWeb3(WQTExchange, process.env.BSC_WQT_EXCHANGE);
 
-      const _allowance = await _tokenInstance.allowance(account.address, process.env.BSC_WQT_EXCHANGE);
-      const _amount = new BigNumber(amount.toString()).shiftedBy(+decimals).toString();
+      const value = new BigNumber(amount).shiftedBy(+decimals).toString();
+      const allowance = await tokenInstance.methods.allowance
+        .apply(null, [getAccountAddress(), process.env.BSC_WQT_EXCHANGE])
+        .call();
 
-      if (new BigNumber(_allowance.toString()).isLessThan(_amount)) {
-        await store.dispatch('main/setStatusText', 'Approving');
+      if (new BigNumber(allowance).isLessThan(value)) {
         showToast('Swapping', 'Approving...', 'success');
-        await _tokenInstance.approve(process.env.BSC_WQT_EXCHANGE, _amount);
+        await tokenInstance.methods.approve(process.env.BSC_WQT_EXCHANGE, value).send({
+          from: getAccountAddress(),
+        });
         showToast('Swapping', 'Approving done', 'success');
       }
 
       showToast('Swapping', 'Swapping...', 'success');
-      await _exchangeInstance.swap(_amount);
-      await store.dispatch('main/setStatusText', 'Swapping');
+      const [gasPrice, gas] = await Promise.all([
+        getGasPrice(),
+        getEstimateGas(null, null, exchangeInstance, 'swap', [value]),
+      ]);
+      const swapRes = await exchangeInstance.methods.swap(value).send({
+        from: getAccountAddress(),
+        gasPrice,
+        gas,
+      });
       showToast('Swapping', 'Swapping done', 'success');
 
-      return success(true);
+      return success(swapRes);
     } catch (e) {
+      console.error('Error in swap old token', e);
       showToast('Swapping error', `${e.message}`, 'danger');
       return error(500, 'stake error', e);
     }
