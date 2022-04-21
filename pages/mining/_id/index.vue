@@ -447,11 +447,14 @@ export default {
       resetPoolData: 'mining/resetPoolData',
       fetchChartData: 'mining/fetchChartData',
       swapOldTokens: 'mining/swapOldTokens',
+      stakeTokens: 'mining/stake',
     }),
     async toggleConnection() {
+      this.SetLoader(true);
       const { isConnected, chain } = this;
       if (isConnected) await this.disconnectWallet();
       else await this.connectWallet({ chain });
+      this.SetLoader(false);
     },
     async checkNetwork(chain) {
       if (!this.isConnected) {
@@ -570,20 +573,29 @@ export default {
       }
     },
 
-    async claimRewards() {
-      this.SetLoader(true);
-      if (this.claim > 0) {
-        await this.$store.dispatch('web3/claimRewards', { stakingType: StakingTypes.MINING });
-      } else {
+    async openModalStaking() {
+      if (await this.checkNetwork(this.chain)) {
         this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/warning.svg'),
-          title: this.$t('modals.transactionFail'),
-          recipient: '',
-          subtitle: this.$t('modals.nothingToClaim'),
+          key: modals.valueSend,
+          title: 'modals.titles.stake',
+          maxValue: this.balance,
+          submit: async (amount) => {
+            this.CloseModal();
+
+            this.SetLoader(true);
+            const { ok } = await this.stakeTokens({
+              amount,
+              chain: this.chain,
+            });
+            this.SetLoader(false);
+
+            if (ok) {
+              this.ShowModalSuccess({});
+              await this.tokensDataUpdate();
+            } else this.ShowModalFail({});
+          },
         });
       }
-      this.SetLoader(false);
     },
 
     async openModalUnstaking() {
@@ -606,26 +618,23 @@ export default {
         });
       }
     },
-    async openModalStaking() {
-      await this.checkWalletStatus();
-      if (this.balance > 0) {
-        this.ShowModal({
-          key: modals.claimRewards,
-          type: 1,
-          stakingType: StakingTypes.MINING,
-          decimals: this.accountData.decimals.stakeDecimal,
-          updateMethod: this.tokensDataUpdate,
-        });
+
+    async claimRewards() {
+      this.SetLoader(true);
+      if (this.claim > 0) {
+        await this.$store.dispatch('web3/claimRewards', { stakingType: StakingTypes.MINING });
       } else {
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/warning.svg'),
           title: this.$t('modals.transactionFail'),
           recipient: '',
-          subtitle: this.$t('modals.incorrectAmount'),
+          subtitle: this.$t('modals.nothingToClaim'),
         });
       }
+      this.SetLoader(false);
     },
+
   },
 };
 </script>

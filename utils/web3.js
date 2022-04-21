@@ -368,11 +368,33 @@ export const getTransactionCount = async (address = getAccountAddress()) => awai
 // Get current gas price
 export const getGasPrice = async () => await web3.eth.getGasPrice();
 
-export const createInstanceWeb3 = async (ab, address) => new web3.eth.Contract(ab, address);
+export const createInstanceWeb3 = async (abi, address) => new web3.eth.Contract(abi, address);
 
-export const createInstance = async (ab, address) => {
-  const abs = web4.getContractAbstraction(ab);
+export const createInstance = async (abi, address) => {
+  const abs = web4.getContractAbstraction(abi);
   return await abs.getInstance(address);
+};
+
+export const getAllowance = async (owner, sender, inst = null, abi = null, address = null) => {
+  try {
+    if (!inst) inst = await createInstanceWeb3(abi, address);
+    return await inst.methods.allowance.apply(null, [owner, sender]).call();
+  } catch (e) {
+    console.error('Error in getAllowance', e);
+    throw e;
+  }
+};
+
+export const makeApprove = async (spender, amount, inst = null, abi = null, address = null) => {
+  try {
+    if (!inst) inst = await createInstanceWeb3(abi, address);
+    await inst.methods.approve(spender, amount).send({
+      from: getAccountAddress(),
+    });
+  } catch (e) {
+    console.error('Error in makeApprove', e);
+    throw e;
+  }
 };
 
 // Get estimate gas
@@ -389,7 +411,7 @@ export const getEstimateGas = async (contractAbi = null, contractAddress = null,
   }
 };
 
-let allowance;
+// let allowance;
 let amount;
 
 // Calculate transaction fee for method
@@ -405,52 +427,52 @@ export const getTransactionFee = async (_abi, _contractAddress, method, data = n
   }
 };
 
-export const staking = async (_decimals, _amount, _tokenAddress, _stakingAddress, _stakingAbi, duration, stakingType) => {
-  let instance;
-  const isNative = stakingType === StakingTypes.WUSD;
-  if (!isNative) {
-    instance = await createInstance(ERC20, _tokenAddress);
-    allowance = new BigNumber(await fetchContractData('allowance', ERC20, _tokenAddress, [getAccountAddress(), _stakingAddress])).toString();
-  }
-  try {
-    amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
-    if (!isNative && +allowance < +amount) {
-      await store.dispatch('main/setStatusText', 'Approving');
-      showToast('Staking', 'Approving...', 'success');
-      await instance.approve(_stakingAddress, amount);
-      showToast('Staking', 'Approving done', 'success');
-    }
-    showToast('Staking', 'Staking...', 'success');
-    await store.dispatch('main/setStatusText', 'Staking');
-    const payload = {
-      abi: _stakingAbi,
-      address: _stakingAddress,
-    };
-    if (stakingType === StakingTypes.MINING) {
-      payload.data = [amount];
-    } else if (stakingType === StakingTypes.WQT) {
-      payload.data = [amount, duration];
-    } else if (stakingType === StakingTypes.WUSD) {
-      const contractInstance = await createInstance(_stakingAbi, _stakingAddress);
-      await contractInstance.stake({ value: amount });
-      showToast('Staking', 'Staking done', 'success');
-      return '';
-    } else {
-      console.error('[staking] wrong staking type:', stakingType);
-      return error(500, 'stake error');
-    }
-    await sendTransaction('stake', payload);
-    showToast('Staking', 'Staking done', 'success');
-    return '';
-  } catch (e) {
-    if (e.message.toString().includes('You cannot stake tokens yet')) {
-      showToast('Stacking error', 'You cannot stake tokens yet', 'danger');
-    } else {
-      showToast('Stacking error', `${e.message}`, 'danger');
-    }
-    return error(500, 'stake error', e);
-  }
-};
+// export const staking = async (_decimals, _amount, _tokenAddress, _stakingAddress, _stakingAbi, duration, stakingType) => {
+//   let instance;
+//   const isNative = stakingType === StakingTypes.WUSD;
+//   if (!isNative) {
+//     instance = await createInstance(ERC20, _tokenAddress);
+//     allowance = new BigNumber(await fetchContractData('allowance', ERC20, _tokenAddress, [getAccountAddress(), _stakingAddress])).toString();
+//   }
+//   try {
+//     amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
+//     if (!isNative && +allowance < +amount) {
+//       await store.dispatch('main/setStatusText', 'Approving');
+//       showToast('Staking', 'Approving...', 'success');
+//       await instance.approve(_stakingAddress, amount);
+//       showToast('Staking', 'Approving done', 'success');
+//     }
+//     showToast('Staking', 'Staking...', 'success');
+//     await store.dispatch('main/setStatusText', 'Staking');
+//     const payload = {
+//       abi: _stakingAbi,
+//       address: _stakingAddress,
+//     };
+//     if (stakingType === StakingTypes.MINING) {
+//       payload.data = [amount];
+//     } else if (stakingType === StakingTypes.WQT) {
+//       payload.data = [amount, duration];
+//     } else if (stakingType === StakingTypes.WUSD) {
+//       const contractInstance = await createInstance(_stakingAbi, _stakingAddress);
+//       await contractInstance.stake({ value: amount });
+//       showToast('Staking', 'Staking done', 'success');
+//       return '';
+//     } else {
+//       console.error('[staking] wrong staking type:', stakingType);
+//       return error(500, 'stake error');
+//     }
+//     await sendTransaction('stake', payload);
+//     showToast('Staking', 'Staking done', 'success');
+//     return '';
+//   } catch (e) {
+//     if (e.message.toString().includes('You cannot stake tokens yet')) {
+//       showToast('Stacking error', 'You cannot stake tokens yet', 'danger');
+//     } else {
+//       showToast('Stacking error', `${e.message}`, 'danger');
+//     }
+//     return error(500, 'stake error', e);
+//   }
+// };
 
 export const unStaking = async (_decimals, _amount, _stakingAddress, _stakingAbi) => {
   try {

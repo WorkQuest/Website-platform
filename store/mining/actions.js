@@ -16,12 +16,15 @@ import {
   error,
   success,
   showToast,
-  createInstance,
+  getGasPrice,
+  getAllowance,
+  getEstimateGas,
   fetchContractData,
   getAccountAddress,
+  createInstanceWeb3,
   initStackingContract,
   getPoolTotalSupplyBSC,
-  getPoolTokensAmountBSC, createInstanceWeb3, getGasPrice, getEstimateGas, getTransactionCount,
+  getPoolTokensAmountBSC, makeApprove,
 } from '~/utils/web3';
 import { ERC20, WQTExchange } from '~/abi';
 
@@ -189,14 +192,13 @@ export default {
   async fetchPoolData({ commit }, { chain }) {
     try {
       const { stakingAddress, stakingAbi } = Pool.get(chain);
-      console.log('fetchPoolData', stakingAddress);
       const { _balance, staked_, claim_ } = await fetchContractData(
         'getInfoByAddress',
         stakingAbi,
         stakingAddress,
         [getAccountAddress()],
       );
-      console.log(_balance, staked_, claim_);
+
       commit('setPoolData', {
         balance: new BigNumber(_balance).shiftedBy(-18).toString(),
         staked: new BigNumber(staked_).shiftedBy(-18).toString(),
@@ -303,15 +305,10 @@ export default {
       const exchangeInstance = await createInstanceWeb3(WQTExchange, process.env.BSC_WQT_EXCHANGE);
 
       const value = new BigNumber(amount).shiftedBy(+decimals).toString();
-      const allowance = await tokenInstance.methods.allowance
-        .apply(null, [getAccountAddress(), process.env.BSC_WQT_EXCHANGE])
-        .call();
-
+      const allowance = await getAllowance(getAccountAddress(), process.env.BSC_WQT_EXCHANGE, tokenInstance);
       if (new BigNumber(allowance).isLessThan(value)) {
         showToast('Swapping', 'Approving...', 'success');
-        await tokenInstance.methods.approve(process.env.BSC_WQT_EXCHANGE, value).send({
-          from: getAccountAddress(),
-        });
+        await makeApprove(process.env.BSC_WQT_EXCHANGE, value, tokenInstance);
         showToast('Swapping', 'Approving done', 'success');
       }
 
@@ -320,18 +317,52 @@ export default {
         getGasPrice(),
         getEstimateGas(null, null, exchangeInstance, 'swap', [value]),
       ]);
-      const swapRes = await exchangeInstance.methods.swap(value).send({
+      const result = await exchangeInstance.methods.swap(value).send({
         from: getAccountAddress(),
         gasPrice,
         gas,
       });
       showToast('Swapping', 'Swapping done', 'success');
 
-      return success(swapRes);
+      return success(result);
     } catch (e) {
       console.error('Error in swap old token', e);
       showToast('Swapping error', `${e.message}`, 'danger');
-      return error(500, 'stake error', e);
+      return error(500, 'Swap error', e);
+    }
+  },
+
+  async stake({ _ }, { amount, chain }) {
+    try {
+      const { stakingAbi, stakingAddress, stakingToken } = Pool.get(chain);
+      const instanceStake = await createInstanceWeb3(stakingAbi, stakingAddress);
+      const instanceToken = await createInstanceWeb3(ERC20, stakingToken);
+
+      const value = new BigNumber(amount).shiftedBy(18).toString();
+      const allowance = await getAllowance(getAccountAddress(), stakingAddress, instanceToken);
+      if (new BigNumber(allowance).isLessThan(value)) {
+        showToast('Swapping', 'Approving...', 'success');
+        await makeApprove(stakingAddress, value, instanceToken);
+        showToast('Swapping', 'Approving done', 'success');
+      }
+
+      showToast('Staking', 'Staking...', 'success');
+      const [gasPrice, gas] = await Promise.all([
+        getGasPrice(),
+        getEstimateGas(null, null, instanceStake, 'stake', [value]),
+      ]);
+      const result = await instanceStake.methods.stake(value).send({
+        from: getAccountAddress(),
+        gasPrice,
+        gas,
+      });
+      showToast('Staking', 'Staking done', 'success');
+
+      return success(result);
+    } catch (e) {
+      console.error('Error in mining stake', e);
+      showToast('Staking error', `${e.message}`, 'danger');
+      return error(e.code, 'Stake error', e);
     }
   },
 

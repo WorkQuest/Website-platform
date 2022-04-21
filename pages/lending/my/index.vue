@@ -70,7 +70,7 @@
                   :data-selector="button.title.toUpperCase()"
                   :mode="button.mode"
                   :disabled="button.disabled"
-                  @click="openModal(button.action)"
+                  @click="openModal(button.action, button.modalTitle)"
                 >
                   {{ button.title }}
                 </base-btn>
@@ -128,6 +128,7 @@ export default {
             {
               title: this.$t('crediting.refund'),
               action: 'refund',
+              modalTitle: 'crediting.refund',
               disabled: false,
             },
           ],
@@ -149,18 +150,21 @@ export default {
               title: this.$t('meta.withdraw'),
               disabled: false,
               action: 'withdraw',
+              modalTitle: 'meta.withdraw',
             },
             {
               title: this.$t('meta.deposit'),
               mode: 'outline',
               disabled: false,
               action: 'deposit',
+              modalTitle: 'meta.deposit',
             },
             {
               title: this.$t('modals.claim'),
               mode: 'outline',
               disabled: this.rewardsData <= 0,
               action: 'claim',
+              modalTitle: 'modals.claim',
             },
           ],
         },
@@ -197,17 +201,19 @@ export default {
     handleBackToLending() {
       this.$router.push(Path.LENDING);
     },
-    async openModal(action) {
+    async openModal(action, title) {
       this.ShowModal({
         key: modals.valueSend,
-        mode: action,
         maxValue: this.maxValue(action),
-        // eslint-disable-next-line consistent-return
+        title,
         submit: async (amount) => {
-          this.SetLoader(true);
+          this.CloseModal();
           const payload = this[action](amount);
+
+          this.SetLoader(true);
           const res = await this.$store.dispatch('crediting/sendMethod', payload);
           this.SetLoader(false);
+
           await this.resultValidation(res, action);
         },
       });
