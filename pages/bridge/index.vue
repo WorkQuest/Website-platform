@@ -141,7 +141,7 @@
               <template #cell(redeem)="el">
                 <div class="table__value table__value_blue">
                   <base-btn
-                    data-selector="REDEEM"
+                    :data-selector="`REDEEM-${el.item.nonce}`"
                     class="btn__redeem"
                     :class="!el.item.status ? 'btn__redeem_disabled' : ''"
                     mode="outline"
@@ -530,7 +530,7 @@ export default {
         display: grid;
         grid-template-columns: 1fr 34px 1fr;
         gap: 20px;
-        align-items: center;
+        align-items: end;
         padding: 20px;
 
         img {
@@ -699,12 +699,6 @@ export default {
     }
     &__content {
       grid-template-rows: auto;
-
-      .info-block {
-        &__swap-cont {
-          grid-template-columns: 1fr 24px 1fr;
-        }
-      }
     }
   }
 
