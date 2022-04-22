@@ -185,9 +185,7 @@ export default {
     },
     isClosedQuestChat() {
       return ((this.currChat?.questChat?.status === QuestChatStatus.Closed)
-        || (+this.$route.query.status === QuestStatuses.Done
-        || +this.$route.query.status === QuestStatuses.Closed
-        || +this.$route.query.status === QuestStatuses.Rejected));
+        || [QuestStatuses.Done, QuestStatuses.Closed, QuestStatuses.Rejected].includes(+this.$route.query.status));
     },
     canLeave() {
       return this.isGroupChat && !this.amIOwner;

@@ -312,10 +312,8 @@ export default {
       const { quest: { questChat, assignedWorkerId }, userData, userRole } = this;
 
       const arr = userRole === UserRole.EMPLOYER ? this.setEmployerBtnsArr() : this.setWorkerBtnsArr();
-      console.log(this.infoDataMode);
       if ((questChat?.workerId === userData.id || (questChat?.employerId === userData.id && assignedWorkerId))
-        && (this.quest.status !== QuestStatuses.Closed && this.quest.status !== QuestStatuses.Rejected
-          && this.quest.status !== QuestStatuses.Done)) {
+        && ![QuestStatuses.Closed, QuestStatuses.Rejected, QuestStatuses.Done].includes(this.quest.status)) {
         arr.push({
           name: this.$t('meta.btns.goToChat'),
           class: 'base-btn_goToChat',
