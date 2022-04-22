@@ -256,12 +256,12 @@ export default {
     this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
   async mounted() {
-    if (!sessionStorage.getItem('walletApp')) {
+    if (!this.$cookies.get('isWalletAppShowed')) {
       this.ShowModal({
         key: modals.downloadApp,
         title: this.$tc('modals.titles.downloadWallet'),
         subtitle: this.$t('modals.downWalletOnSmartphone'),
-        app: 'walletApp',
+        app: 'isWalletAppShowed',
       });
     }
     if (!this.isWalletConnected) return;

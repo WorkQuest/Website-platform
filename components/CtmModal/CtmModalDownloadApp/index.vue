@@ -59,7 +59,7 @@ export default {
     },
   },
   mounted() {
-    sessionStorage.setItem(this.options.app, 'done');
+    this.$cookies.set(this.options.app, true);
   },
 
 };
