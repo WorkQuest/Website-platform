@@ -262,6 +262,9 @@ export default {
     await this.$store.dispatch('wallet/subscribeToWalletEvents');
     await this.loadData();
   },
+  async beforeDestroy() {
+    await this.$store.dispatch('wallet/unsubscribeToWalletEvents');
+  },
   methods: {
     getSwitchButtonMode(btn) {
       if (btn === this.selectedWalletTable) return '';

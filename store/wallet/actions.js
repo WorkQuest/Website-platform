@@ -14,7 +14,7 @@ import {
   getTransferFeeData,
   getContractFeeData,
   getIsWalletConnected,
-  sendWalletTransaction,
+  sendWalletTransaction, getProvider,
 } from '~/utils/wallet';
 
 import {
@@ -438,20 +438,35 @@ export default {
     }
   },
   async subscribeToWalletEvents({ commit, dispatch }) {
-    const web3 = new Web3(new Web3.providers.WebsocketProvider(process.env.WS_WQ_PROVIDER));
-    let balance = -1;
+    try {
+      const wsProvider = new Web3(new Web3.providers.WebsocketProvider(process.env.WS_WQ_PROVIDER));
+      console.log('wsProvider:', wsProvider);
+      const subscription = wsProvider.eth.subscribe('newBlockHeaders', (_error, result) => {
+        if (!_error) {
+          console.log(result);
 
-    web3.eth.getAccounts().then((accounts) => web3.eth.subscribe('newBlockHeaders', (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        web3.eth.getBalance(accounts[0]).then((bal) => {
-          console.log('user: ', accounts[0]);
-          console.log('balance: ', bal);
-          balance = bal;
-        });
-      }
-    }));
+          return;
+        }
+
+        console.error(_error);
+      })
+        .on('connected', (subscriptionId) => {
+          console.log(subscriptionId);
+        })
+        .on('data', (blockHeader) => {
+          console.log(blockHeader);
+        })
+        .on('error', console.error);
+      // await wsProvider.eth.subscribe('newBlockHeaders', async (err, result) => {
+      //   if (err) {
+      //     console.log('1234', err);
+      //   } else {
+      //     console.log('aeraeraeraera', result);
+      //   }
+      // });
+    } catch (err) {
+      console.error(err);
+    }
   },
   async unsubscribeToWalletEvents({ commit, dispatch }) {
     const web3 = new Web3(new Web3.providers.WebsocketProvider(process.env.WS_WQ_PROVIDER));
