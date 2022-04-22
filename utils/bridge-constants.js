@@ -18,6 +18,11 @@ export const BridgeAddresses = Object.freeze({
   [Chains.BINANCE]: process.env.BSC_BRIDGE,
 });
 
+export const BridgeEvents = Object.freeze({
+  SWAP_INITIALIZED: 'SwapInitialized',
+  SWAP_REDEEMED: 'SwapRedeemed',
+});
+
 export const SwapAddresses = new Map([
   [
     Chains.ETHEREUM,

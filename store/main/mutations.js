@@ -17,4 +17,7 @@ export default {
   setIsLoaderBackgroundHider(state, value) {
     state.isLoaderBackgroundHider = value;
   },
+  updateConnectionsStatus(state, { name, value }) {
+    state.connections[name] = value;
+  },
 };
