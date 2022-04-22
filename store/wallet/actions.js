@@ -438,7 +438,7 @@ export default {
     }
   },
   async subscribeToWalletEvents({ commit, dispatch }) {
-    const web3 = new Web3(new Web3.providers.WebsocketProvider('ws://localhost:8546'));
+    const web3 = new Web3(new Web3.providers.WebsocketProvider(process.env.WS_WQ_PROVIDER));
     let balance = -1;
 
     web3.eth.getAccounts().then((accounts) => web3.eth.subscribe('newBlockHeaders', (err, result) => {
@@ -454,7 +454,7 @@ export default {
     }));
   },
   async unsubscribeToWalletEvents({ commit, dispatch }) {
-    const web3 = new Web3(new Web3.providers.WebsocketProvider('ws://localhost:8546'));
+    const web3 = new Web3(new Web3.providers.WebsocketProvider(process.env.WS_WQ_PROVIDER));
     web3.eth.clearSubscriptions();
   },
 };

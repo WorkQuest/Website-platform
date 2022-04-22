@@ -259,6 +259,7 @@ export default {
     if (!this.isWalletConnected) return;
     const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
     this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
+    await this.$store.dispatch('wallet/subscribeToWalletEvents');
     await this.loadData();
   },
   methods: {
