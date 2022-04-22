@@ -120,8 +120,8 @@ export default {
         this.files.push({
           id: this.id,
           mediaId: file.id,
-          src: file.url.split('?')[0],
-          type: file.type.split('/')[0],
+          src: file.url?.split('?')[0],
+          type: file.type?.split('/')[0],
           mode: 'preloaded',
         });
         this.id += 1;
@@ -131,9 +131,7 @@ export default {
   },
   methods: {
     uploaderStyles() {
-      return [
-        { uploader__preview: !this.files.length },
-      ];
+      return [{ uploader__preview: !this.files.length }];
     },
     openExplorer() {
       this.$refs.input.click();

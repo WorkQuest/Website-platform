@@ -171,17 +171,13 @@ export default {
       employmentIndex: 0,
       workplaceIndex: 0,
       runtimeIndex: 0,
-      // periodIndex: 0,
       questTitle: '',
       address: '',
       textarea: '',
       price: '',
-      // priceOfClick: '',
-      // city: '',
       coordinates: {},
       addresses: [],
       files: [],
-      // prefetchedFiles: [],
       geoCode: null,
     };
   },
@@ -244,7 +240,7 @@ export default {
       const preloadedArr = this.files.filter((file) => file.mode === 'preloaded');
       const notPreloadedArr = this.files.filter((file) => !file.mode);
       const notPreloadedMedias = await this.uploadFiles(notPreloadedArr, true);
-      let medias = preloadedArr.concat(notPreloadedMedias);
+      let medias = [...preloadedArr, ...notPreloadedMedias];
       if (isUpload === true && !!questDraftMedias) {
         medias = questDraftMedias.map((e) => e.mediaId);
       }
@@ -281,7 +277,6 @@ export default {
       this.SetLoader(true);
       const questDraft = this.$cookies.get('questDraft');
       const questDraftMedias = this.$cookies.get('questDraftMedias');
-      console.log('questDraft', questDraft);
       if (questDraft) {
         this.selectedSpecAndSkills = questDraft?.specializationKeys || [];
         this.questTitle = questDraft?.title || '';
@@ -295,8 +290,7 @@ export default {
           lng: questDraft?.locationFull.location.longitude,
           lat: questDraft?.locationFull.location.latitude,
         };
-        this.files = questDraftMedias || [];
-        console.log('files in data', this.files);
+        if (questDraftMedias) this.updateFiles(questDraftMedias);
       }
     },
     updateFiles(files) {
@@ -325,10 +319,7 @@ export default {
       try {
         if (address.length) {
           this.addresses = await this.geoCode.geolookup(address);
-          this.coordinates = {
-            lng: this.addresses[0].lng,
-            lat: this.addresses[0].lat,
-          };
+          this.coordinates = { lng: this.addresses[0].lng, lat: this.addresses[0].lat };
         } else this.addresses = [];
       } catch (e) {
         this.addresses = [];
@@ -359,7 +350,6 @@ export default {
         this.SetLoader(false);
         return;
       }
-      // TODO: Проверить
       const medias = await this.setMedias(true);
       const payload = {
         workplace: WorkplaceIndex[this.workplaceIndex],

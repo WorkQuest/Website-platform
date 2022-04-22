@@ -26,10 +26,8 @@ Vue.mixin({
       const fetchUrlsData = [];
       const medias = [];
       const filesData = [];
-      console.log('file list', files);
       // eslint-disable-next-line no-restricted-syntax
       for (const item of files) {
-        console.log('item', item);
         if (item.mediaId) medias.push(item.mediaId);
         fetchData.push(this.$store.dispatch('user/getUploadFileLink', { contentType: item.file?.type }));
       }
@@ -37,7 +35,6 @@ Vue.mixin({
       const urls = await Promise.all(fetchData);
       let urlId = 0;
       function getFileData({ url, mediaId, file }) {
-        console.log('mediaId', mediaId);
         if (url && file && file?.type && file?.name && file?.size && file?.type && mediaId) {
           filesData.push({
             url,
@@ -52,7 +49,6 @@ Vue.mixin({
       }
       for (let i = 0; i < files.length; i += 1) {
         const { mediaId, url } = urls[urlId];
-        console.log('urls[urlId]', urls[urlId]);
         const { file } = this.files[i];
         medias.push(mediaId);
         if (isReturnFile) getFileData({ url, mediaId, file });
