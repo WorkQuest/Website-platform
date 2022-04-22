@@ -412,7 +412,7 @@ export default {
       // redirect to confirm access if token exists & unconfirmed account
       const confirmToken = sessionStorage.getItem('confirmToken');
       if ((this.userStatus === UserStatuses.Unconfirmed || !this.userAddress) && confirmToken) {
-        this.$router.push(`/role/?token=${confirmToken}`);
+        this.$router.push(`${Path.ROLE}/?token=${confirmToken}`);
         return;
       }
       sessionStorage.removeItem('confirmToken');
