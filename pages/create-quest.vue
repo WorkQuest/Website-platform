@@ -239,15 +239,25 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    async setMedias() {
+      let medias = [];
+      const preloadedArr = this.files.filter((file) => file.mode === 'preloaded');
+      const notPreloadedArr = this.files.filter((file) => !file.mode);
+      const notPreloadedMedias = await this.uploadFiles(notPreloadedArr, true) ?? {};
+      medias = [...new Set([...medias, ...preloadedArr, ...notPreloadedMedias])];
+      console.log(1, 'medias', medias);
+      return medias;
+    },
+    // TODO: Проверить
     async setQuestDraft() {
       // Save quest draft in cookie questDraft
       this.SetLoader(true);
+      const medias = await this.setMedias();
       const {
         workplaceIndex, runtimeIndex, employmentIndex, questTitle,
         textarea, price, selectedSpecAndSkills, address, coordinates: { lng, lat },
       } = this;
       // TODO: Проверить
-      const medias = await this.uploadFiles(this.files, true);
       this.$cookies.set('questDraft', {
         workplace: WorkplaceIndex[workplaceIndex],
         priority: PriorityFilter[runtimeIndex + 1].value,
@@ -255,7 +265,7 @@ export default {
         title: questTitle,
         description: textarea,
         price,
-        medias: medias ?? [],
+        medias,
         specializationKeys: selectedSpecAndSkills,
         locationFull: {
           location: {
@@ -348,7 +358,7 @@ export default {
         return;
       }
       // TODO: Проверить
-      const medias = await this.uploadFiles(this.files);
+      const medias = await this.setMedias();
       const payload = {
         workplace: WorkplaceIndex[this.workplaceIndex],
         priority: PriorityFilter[this.runtimeIndex + 1].value,

@@ -116,16 +116,18 @@ export default {
       .split(',');
     // eslint-disable-next-line no-restricted-syntax
     for (const file of this.preloadedFiles) {
-      this.files.push({
-        id: this.id,
-        mediaId: file.id,
-        src: file.url?.split('?')[0],
-        type: file.type?.split('/')[0],
-        mode: 'preloaded',
-      });
-      this.id += 1;
+      if (file.url && file.type) {
+        this.files.push({
+          // id: this.id,
+          mediaId: file.id,
+          src: file.url,
+          type: file.type,
+          mode: 'preloaded',
+        });
+        this.id += 1;
+      }
+      this.$emit('change', this.files);
     }
-    this.$emit('change', this.files);
   },
   methods: {
     uploaderStyles() {
@@ -193,9 +195,9 @@ export default {
           // eslint-disable-next-line no-continue
           continue;
         }
-        if (!this.acceptDuplicates && this.files.filter((item) => !item.mediaId && item.file.size === file.size
-          && item.file.lastModified === file.lastModified
-          && item.file.name === file.name).length) {
+        if (!this.acceptDuplicates && this.files.filter((item) => !item.mediaId && item.file?.size === file?.size
+          && item.file?.lastModified === file?.lastModified
+          && item.file?.name === file?.name).length) {
           // eslint-disable-next-line no-continue
           continue;
         }

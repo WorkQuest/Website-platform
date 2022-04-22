@@ -32,18 +32,18 @@ Vue.mixin({
         console.log('item', item);
         if (item.mediaId) medias.push(item.mediaId);
         fetchData.push(this.$store.dispatch('user/getUploadFileLink', { contentType: item.file?.type }));
-        // if (item.mode !== 'preloaded') fetchData.push(this.$store.dispatch('user/getUploadFileLink', { contentType: item.file?.type }));
       }
       if (!fetchData.length) return medias;
       const urls = await Promise.all(fetchData);
       let urlId = 0;
       function getFileData({ url, mediaId, file }) {
         filesData.push({
-          url,
-          type: file?.type,
+          url: url?.split('?')[0],
+          type: file?.type?.split('/')[0],
           name: file?.name,
           size: file?.size,
-          file,
+          data: file,
+          contentType: file?.type,
           mediaId,
         });
       }
@@ -55,7 +55,7 @@ Vue.mixin({
         medias.push(mediaId);
         if (isReturnFile) getFileData({ url, mediaId, file });
         fetchUrlsData.push(this.$store.dispatch('user/uploadFile', {
-          url: urls[urlId].url,
+          url,
           data: file,
           contentType: file?.type,
         }));
