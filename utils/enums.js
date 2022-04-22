@@ -27,7 +27,6 @@ export const ChainsIdByChainNumber = {
 export const Chains = {
   ETHEREUM: 'ETH',
   BINANCE: 'BSC',
-  BNB: 'BNB', // Same as bsc for bridge
   WORKNET: 'WORKNET',
 };
 

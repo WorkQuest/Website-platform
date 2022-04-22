@@ -59,9 +59,6 @@ export const getChainIdByChain = (chain) => {
     case Chains.BINANCE:
       if (!isProd) return ChainsId.BSC_TEST;
       return ChainsId.BSC_MAIN;
-    case Chains.BNB:
-      if (!isProd) return ChainsId.BSC_TEST;
-      return ChainsId.BSC_MAIN;
     case Chains.WORKNET:
       return ChainsId.WORKNET_TEST;
     default:

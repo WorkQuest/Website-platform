@@ -209,7 +209,7 @@ export default {
   },
   async unsubscribeToBridgeEvents(_, userAddress) {
     try {
-      await this.$wsNotifs.unsubscribe(`/notifications/bridge/${userAddress}`);
+      await this.$wsNotifs.unsubscribe(`${Path.NOTIFICATIONS}${Path.BRIDGE}/${userAddress}`);
     } catch (err) {
       console.error('unsubscribeToBridgeEvents err', err);
     }

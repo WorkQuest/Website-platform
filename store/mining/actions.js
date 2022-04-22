@@ -105,7 +105,6 @@ export default {
         amount1Out: new BigNumber(swap.amount1Out).shiftedBy(-18).decimalPlaces(3).toString(),
       }));
       commit('setSwaps', prepareDataForSwapsTable(swaps));
-      commit('setSwapsCount', result.count);
       return ok;
     } catch (e) {
       console.error('error in getTableDataForWqtWbnbPool', e);
@@ -177,31 +176,26 @@ export default {
    * @property $wsNotifs
    * @param commit
    * @param getters
+   * @param rootGetters
    * @return {Promise<void>}
    */
-  async initWS({ commit, getters }) {
+  async subscribeWS({ commit, getters, rootGetters }) {
     try {
-      if (getters.isInitWS) {
-        console.log('return initWS');
-        return;
-      }
-      console.log('initWS');
-      await this.$wsNotifs.subscribe(`${Path.NOTIFICATIONS}${Path.MINING}`, async (event) => {
+      console.log('subscribeWS', rootGetters['main/notificationsConnectionStatus']);
+      await this.$wsNotifs.subscribe(`${Path.NOTIFICATIONS}/daily_liquidity`, async (event) => {
         console.log(event);
       });
-      commit('setInitWS', true);
     } catch (e) {
-      console.error('initWS', e);
+      console.error('subscribeWS', e);
     }
   },
 
-  async disconnectWS({ commit }) {
+  async unsubscribeWS({ _ }) {
     try {
-      console.log('disconnectWS');
-      await this.$wsNotifs.disconnect();
-      commit('setInitWS', false);
+      console.log('unsubscribeWS');
+      await this.$wsNotifs.unsubscribe();
     } catch (e) {
-      console.error('disconnectWS', e);
+      console.error('unsubscribeWS', e);
     }
   },
 

@@ -1,5 +1,4 @@
 export default () => ({
-  isInitWS: false,
   swaps: [],
   chartData: [],
   totalLiquidityUSD: null,

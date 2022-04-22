@@ -402,7 +402,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    await this.initWS();
+    await this.subscribeWS();
     const { limit, chain: pool } = this;
     await this.fetchChartData(pool);
     await this.fetchSwaps({ pool, params: { limit, offset: 0 } });
@@ -411,10 +411,10 @@ export default {
   async beforeDestroy() {
     await this.disconnectWallet();
     await Promise.all([
-      this.disconnectWS(),
       this.resetPoolData(),
+      this.unsubscribeWS(),
+      this.$store.commit('mining/setSwaps', []),
       this.$store.commit('mining/setChartData', []),
-      this.$store.commit('mining/setTableData', []),
       this.$store.commit('mining/setTotalLiquidityUSD', null),
     ]);
   },
@@ -424,17 +424,19 @@ export default {
       connectWallet: 'web3/connect',
       disconnectWallet: 'web3/disconnect',
 
-      initWS: 'mining/initWS',
-      disconnectWS: 'mining/disconnectWS',
+      subscribeWS: 'mining/subscribeWS',
+      unsubscribeWS: 'mining/unsubscribeWS',
+
       fetchAPY: 'mining/fetchAPY',
       fetchSwaps: 'mining/fetchSwaps',
       fetchPoolData: 'mining/fetchPoolData',
       resetPoolData: 'mining/resetPoolData',
       fetchChartData: 'mining/fetchChartData',
-      swapOldTokens: 'mining/swapOldTokens',
+
+      claimTokens: 'mining/claim',
       stakeTokens: 'mining/stake',
       unStakeTokens: 'mining/unStake',
-      claimTokens: 'mining/claim',
+      swapOldTokens: 'mining/swapOldTokens',
     }),
 
     async toggleConnection() {

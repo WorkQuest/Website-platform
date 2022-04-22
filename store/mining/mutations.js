@@ -1,7 +1,4 @@
 export default {
-  setInitWS(state, isInit) {
-    state.isInitWS = isInit;
-  },
   setSwaps(state, data) {
     state.swaps = data;
   },
