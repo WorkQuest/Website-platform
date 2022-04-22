@@ -192,7 +192,7 @@ export default {
             status: true,
           });
           swapsCount += 1;
-        } else {
+        } else if (event === BridgeEvents.SWAP_REDEEMED) {
           swaps.some((item) => {
             if (item.nonce === +msg.data.returnValues.nonce) {
               item.status = false;
