@@ -48,9 +48,12 @@ export default {
     }),
   },
   async mounted() {
-    if (!this.$cookies.get('downloadAppDisplayed')) {
+    if (!sessionStorage.getItem('questsApp') && this.$route.name !== 'wallet') {
       this.ShowModal({
         key: modals.downloadApp,
+        title: this.$tc('modals.titles.downloadApp'),
+        subtitle: this.$t('modals.downOnSmartphone'),
+        app: 'questsApp',
       });
     }
     this.GetLocation();

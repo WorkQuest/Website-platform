@@ -2,11 +2,11 @@
   <ctm-modal-box
     class="ctm-modal-download"
     :class="checkIfMobile()? 'ctm-modal-download-mobile':'ctm-modal-download-desktop'"
-    :title="$tc('modals.titles.downloadApp')"
+    :title="options.title"
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__desc">
-        {{ checkIfMobile() ? $t('modals.downOnSmartphone') : $t('modals.scanQrCode') }}
+        {{ checkIfMobile() ? options.subtitle: $t('modals.scanQrCode') }}
       </div>
       <div
         v-if="checkIfMobile()"
@@ -32,13 +32,26 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { URLS } from '~/utils/footer-constants';
-import { Path } from '~/utils/enums';
 
 export default {
   name: 'CtmModalDownloadApp',
   computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+    }),
     marketLinks() {
+      if (this.options.app === 'quests') return this.marketLinksQuest;
+      return this.marketLinksWallet;
+    },
+    marketLinksWallet() {
+      return [
+        { key: 'app-store', href: URLS.STORES.APP_STORE },
+        { key: 'play-market', href: URLS.STORES.PLAY_MARKET },
+      ];
+    },
+    marketLinksQuest() {
       return [
         { key: 'app-store', href: URLS.STORES.APP_STORE },
         { key: 'play-market', href: URLS.STORES.PLAY_MARKET },
@@ -46,7 +59,7 @@ export default {
     },
   },
   mounted() {
-    this.$cookies.set('downloadAppDisplayed', true, { path: Path.ROOT });
+    sessionStorage.setItem(this.options.app, 'done');
   },
 
 };

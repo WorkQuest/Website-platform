@@ -256,6 +256,14 @@ export default {
     this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
   async mounted() {
+    if (!sessionStorage.getItem('walletApp')) {
+      this.ShowModal({
+        key: modals.downloadApp,
+        title: this.$tc('modals.titles.downloadWallet'),
+        subtitle: this.$t('modals.downWalletOnSmartphone'),
+        app: 'walletApp',
+      });
+    }
     if (!this.isWalletConnected) return;
     const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
     this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
