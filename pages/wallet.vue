@@ -11,6 +11,7 @@
               v-clipboard:success="ClipboardSuccessHandler"
               v-clipboard:error="ClipboardErrorHandler"
               type="button"
+              data-selector="COPY"
             >
               <span class="icon-copy wallet__icon" />
             </button>
@@ -105,12 +106,14 @@
         </div>
         <div class="wallet__switch-table">
           <base-btn
+            data-selector="SWITCH-ALL"
             :mode="getSwitchButtonMode(walletTables.TXS)"
             @click="selectedWalletTable = walletTables.TXS"
           >
             {{ $t('meta.allTransactions') }}
           </base-btn>
           <base-btn
+            data-selector="SWITCH-COLLATERAL"
             :mode="getSwitchButtonMode(walletTables.COLLATERAL)"
             @click="selectedWalletTable = walletTables.COLLATERAL"
           >
