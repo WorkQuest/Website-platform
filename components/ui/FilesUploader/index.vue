@@ -112,16 +112,16 @@ export default {
     };
   },
   async created() {
-    this.acceptedTypes = this.accept.replace(/\s/g, '')
-      .split(',');
+    this.acceptedTypes = this.accept.replace(/\s/g, '').split(',');
     // eslint-disable-next-line no-restricted-syntax
     for (const file of this.preloadedFiles) {
-      if (file.url && file.type) {
+      if (!!file.url && !!file.type) {
+        console.log(22424, 'file', file);
         this.files.push({
-          // id: this.id,
+          id: this.id,
           mediaId: file.id,
-          src: file.url,
-          type: file.type,
+          src: file.url.split('?')[0],
+          type: file.type.split('/')[0],
           mode: 'preloaded',
         });
         this.id += 1;

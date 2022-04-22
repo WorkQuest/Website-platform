@@ -239,25 +239,26 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    async setMedias() {
-      let medias = [];
+    async setMedias(isUpload) {
+      const questDraftMedias = this.$cookies.get('questDraftMedias');
       const preloadedArr = this.files.filter((file) => file.mode === 'preloaded');
       const notPreloadedArr = this.files.filter((file) => !file.mode);
-      const notPreloadedMedias = await this.uploadFiles(notPreloadedArr, true) ?? {};
-      medias = [...new Set([...medias, ...preloadedArr, ...notPreloadedMedias])];
-      console.log(1, 'medias', medias);
+      const notPreloadedMedias = await this.uploadFiles(notPreloadedArr, true);
+      let medias = preloadedArr.concat(notPreloadedMedias);
+      if (isUpload === true && !!questDraftMedias) {
+        medias = questDraftMedias.map((e) => e.mediaId);
+      }
       return medias;
     },
-    // TODO: Проверить
     async setQuestDraft() {
       // Save quest draft in cookie questDraft
       this.SetLoader(true);
-      const medias = await this.setMedias();
+      const medias = await this.setMedias(false);
       const {
         workplaceIndex, runtimeIndex, employmentIndex, questTitle,
         textarea, price, selectedSpecAndSkills, address, coordinates: { lng, lat },
       } = this;
-      // TODO: Проверить
+      this.$cookies.set('questDraftMedias', medias);
       this.$cookies.set('questDraft', {
         workplace: WorkplaceIndex[workplaceIndex],
         priority: PriorityFilter[runtimeIndex + 1].value,
@@ -265,7 +266,6 @@ export default {
         title: questTitle,
         description: textarea,
         price,
-        medias,
         specializationKeys: selectedSpecAndSkills,
         locationFull: {
           location: {
@@ -280,6 +280,7 @@ export default {
     async fillQuestFromQuestDraft() {
       this.SetLoader(true);
       const questDraft = this.$cookies.get('questDraft');
+      const questDraftMedias = this.$cookies.get('questDraftMedias');
       console.log('questDraft', questDraft);
       if (questDraft) {
         this.selectedSpecAndSkills = questDraft?.specializationKeys || [];
@@ -294,7 +295,8 @@ export default {
           lng: questDraft?.locationFull.location.longitude,
           lat: questDraft?.locationFull.location.latitude,
         };
-        this.files = questDraft?.medias ?? [];
+        this.files = questDraftMedias || [];
+        console.log('files in data', this.files);
       }
     },
     updateFiles(files) {
@@ -358,7 +360,7 @@ export default {
         return;
       }
       // TODO: Проверить
-      const medias = await this.setMedias();
+      const medias = await this.setMedias(true);
       const payload = {
         workplace: WorkplaceIndex[this.workplaceIndex],
         priority: PriorityFilter[this.runtimeIndex + 1].value,

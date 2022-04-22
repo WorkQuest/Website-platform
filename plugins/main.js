@@ -37,20 +37,22 @@ Vue.mixin({
       const urls = await Promise.all(fetchData);
       let urlId = 0;
       function getFileData({ url, mediaId, file }) {
-        filesData.push({
-          url: url?.split('?')[0],
-          type: file?.type?.split('/')[0],
-          name: file?.name,
-          size: file?.size,
-          data: file,
-          contentType: file?.type,
-          mediaId,
-        });
+        console.log('mediaId', mediaId);
+        if (url && file && file?.type && file?.name && file?.size && file?.type && mediaId) {
+          filesData.push({
+            url,
+            type: file?.type,
+            name: file?.name,
+            size: file?.size,
+            data: file,
+            contentType: file?.type,
+            mediaId,
+          });
+        }
       }
       for (let i = 0; i < files.length; i += 1) {
         const { mediaId, url } = urls[urlId];
-        // eslint-disable-next-line no-continue
-        if (files[i]?.mediaId) continue;
+        console.log('urls[urlId]', urls[urlId]);
         const { file } = this.files[i];
         medias.push(mediaId);
         if (isReturnFile) getFileData({ url, mediaId, file });
