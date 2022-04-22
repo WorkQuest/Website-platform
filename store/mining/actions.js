@@ -59,17 +59,19 @@ function prepareDataForSwapsTable(swaps) {
 
 export default {
 
-  async fetchChartData({ dispatch }, pool) {
-    switch (pool) {
-      case Chains.BINANCE:
-        await dispatch('fetchBNBChart');
-        break;
-      case Chains.ETHEREUM:
-        await dispatch('fetchETHChart');
-        break;
-      default:
-        console.error('Unknown pool:', pool);
-        break;
+  async fetchChartData({ commit }, pool) {
+    try {
+      const pools = {
+        [Chains.BINANCE]: 'wqt-wbnb',
+        [Chains.ETHEREUM]: 'wqt-weth',
+      };
+      const { ok, result: { data } } = await this.$axios.$get(`/v1/pool-liquidity/${pools[pool]}/token-day?limit=10`);
+      commit('setTotalLiquidityUSD', data[0].reserveUSD);
+      commit('setChartData', data.reverse());
+      return ok;
+    } catch (e) {
+      console.error('mining/fetchETHChart');
+      return false;
     }
   },
 
@@ -107,7 +109,7 @@ export default {
       commit('setSwaps', prepareDataForSwapsTable(swaps));
       return ok;
     } catch (e) {
-      console.error('error in getTableDataForWqtWbnbPool', e);
+      console.error('mining/fetchBNBSwaps');
       return false;
     }
   },
@@ -132,42 +134,7 @@ export default {
       commit('setSwaps', prepareDataForSwapsTable(swaps));
       return ok;
     } catch (e) {
-      console.error('error in getTableDataForWqtWethPool', e);
-      return false;
-    }
-  },
-
-  /**
-   * @property result.reserveUSD
-   * @param commit
-   * @return {Promise<boolean|*>}
-   */
-  async fetchBNBChart({ commit }) {
-    try {
-      const { ok, result } = await this.$axios.$get('/v1/pool-liquidity/wqt-weth/tokenDay?limit=10');
-      commit('setTotalLiquidityUSD', result[0].reserveUSD);
-      commit('setChartData', result.reverse());
-      return ok;
-    } catch (e) {
-      console.error('getChartDataForWqtWethPool');
-      return false;
-    }
-  },
-
-  /**
-   * @property result.infoPer10Days
-   * @param commit
-   * @return {Promise<boolean|*>}
-   */
-  async fetchETHChart({ commit }) {
-    try {
-      const { ok, result } = await this.$axios.$get('/v1/pool-liquidity/wqt-wbnb/tokenDay?limit=10');
-      const totalLiquidity = result.infoPer10Days[0].reserveUSD;
-      commit('setTotalLiquidityUSD', totalLiquidity);
-      commit('setChartData', result.infoPer10Days.reverse());
-      return ok;
-    } catch (e) {
-      console.error('getChartDataForWqtWbnbPool');
+      console.error('mining/fetchETHSwaps');
       return false;
     }
   },
@@ -186,7 +153,7 @@ export default {
         console.log(event);
       });
     } catch (e) {
-      console.error('subscribeWS', e);
+      console.error('mining/subscribeWS', e);
     }
   },
 
@@ -195,7 +162,7 @@ export default {
       console.log('unsubscribeWS');
       await this.$wsNotifs.unsubscribe();
     } catch (e) {
-      console.error('unsubscribeWS', e);
+      console.error('mining/unsubscribeWS', e);
     }
   },
 
@@ -216,7 +183,7 @@ export default {
       });
       return success();
     } catch (e) {
-      console.error('Error fetchPoolData for pool:', chain, e);
+      console.error('Error mining/fetchPoolData for pool:', chain, e);
       return error();
     }
   },
@@ -300,7 +267,7 @@ export default {
       commit('setAPY', profit);
       return success(profit);
     } catch (err) {
-      console.error('Error in fetchAPY:', err);
+      console.error('Error in mining/fetchAPY:', err);
       return error(err);
     }
   },
@@ -346,7 +313,7 @@ export default {
 
       return success(result);
     } catch (e) {
-      console.error('Error in swap old token', e);
+      console.error('Error in mining/swapOldTokens:', e);
       showToast('Swapping error', `${e.message}`, 'danger');
       return error(500, 'Swap error', e);
     }
@@ -380,7 +347,7 @@ export default {
 
       return success(result);
     } catch (e) {
-      console.error('Error in mining stake', e);
+      console.error('Error in mining/stake:', e);
       showToast('Staking error', `${e.message}`, 'danger');
       return error(e.code, 'Stake error', e);
     }
@@ -413,7 +380,7 @@ export default {
 
       return success(result);
     } catch (e) {
-      console.error('Error in mining unStake', e);
+      console.error('Error in mining/unStake:', e);
       showToast('Unstaking error', `${e.message}`, 'danger');
       return error(e.code, 'Stake error', e);
     }
@@ -438,7 +405,7 @@ export default {
 
       return success(result);
     } catch (e) {
-      console.error('Error in mining claim', e);
+      console.error('Error in mining/claim:', e);
       showToast('Claim error', `${e.message}`, 'danger');
       return error(e.code, 'Error with claim', e);
     }
