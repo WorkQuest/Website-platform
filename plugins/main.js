@@ -26,41 +26,38 @@ Vue.mixin({
       const fetchUrlsData = [];
       const medias = [];
       const filesData = [];
+      console.log('file list', files);
       // eslint-disable-next-line no-restricted-syntax
       for (const item of files) {
+        console.log('item', item);
         if (item.mediaId) medias.push(item.mediaId);
-        else fetchData.push(this.$store.dispatch('user/getUploadFileLink', { contentType: item.file.type }));
+        fetchData.push(this.$store.dispatch('user/getUploadFileLink', { contentType: item.file?.type }));
+        // if (item.mode !== 'preloaded') fetchData.push(this.$store.dispatch('user/getUploadFileLink', { contentType: item.file?.type }));
       }
       if (!fetchData.length) return medias;
       const urls = await Promise.all(fetchData);
       let urlId = 0;
-
-      function getFileData({ url, file }) {
+      function getFileData({ url, mediaId, file }) {
         filesData.push({
-          file: {
-            url,
-            type: file.type,
-            name: file.name,
-            size: file.size,
-            file,
-          },
-          medias,
+          url,
+          type: file?.type,
+          name: file?.name,
+          size: file?.size,
+          file,
+          mediaId,
         });
       }
-
       for (let i = 0; i < files.length; i += 1) {
+        const { mediaId, url } = urls[urlId];
         // eslint-disable-next-line no-continue
-        if (files[i].mediaId) continue;
+        if (files[i]?.mediaId) continue;
         const { file } = this.files[i];
-        medias.push(urls[urlId].mediaId);
-        if (isReturnFile) {
-          console.log('file', file);
-          getFileData({ url: urls[urlId].url, file });
-        }
+        medias.push(mediaId);
+        if (isReturnFile) getFileData({ url, mediaId, file });
         fetchUrlsData.push(this.$store.dispatch('user/uploadFile', {
           url: urls[urlId].url,
           data: file,
-          contentType: file.type,
+          contentType: file?.type,
         }));
         urlId += 1;
       }

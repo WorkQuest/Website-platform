@@ -111,24 +111,17 @@ export default {
       acceptedTypes: [],
     };
   },
-  mounted() {
-    this.acceptedTypes = this.accept.replace(/\s/g, '').split(',');
-    console.log('this.preloadedFiles', this.preloadedFiles);
+  async created() {
+    this.acceptedTypes = this.accept.replace(/\s/g, '')
+      .split(',');
     // eslint-disable-next-line no-restricted-syntax
     for (const file of this.preloadedFiles) {
-      let url;
-      let type;
-      if (!file?.url) url = file?.file?.url.split('?')[0];
-      if (!file?.contentType) type = file?.file?.type.split('/')[0];
-      else {
-        url = file?.url;
-        type = file?.contentType.split('/')[0];
-      }
       this.files.push({
         id: this.id,
-        mediaId: file?.id,
-        src: url,
-        type,
+        mediaId: file.id,
+        src: file.url?.split('?')[0],
+        type: file.type?.split('/')[0],
+        mode: 'preloaded',
       });
       this.id += 1;
     }

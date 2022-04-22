@@ -131,10 +131,9 @@
           :limit-bytes="10485760"
           :limit-bytes-video="10485760"
           :accept="'image/png, image/jpg, image/jpeg, video/mp4'"
-          :preloaded-files="prefetchedFiles"
+          :preloaded-files="files"
           @change="updateFiles"
         />
-        <!--        :preloaded-files="prefetchedFiles"-->
       </div>
       <div class="upload btn btn__container btn__container_right">
         <div class="btn__create">
@@ -182,7 +181,7 @@ export default {
       coordinates: {},
       addresses: [],
       files: [],
-      prefetchedFiles: [],
+      // prefetchedFiles: [],
       geoCode: null,
     };
   },
@@ -221,31 +220,13 @@ export default {
     },
   },
   async beforeRouteLeave(to, from, next) {
-    // Save quest draft in cookie questDraft
-    const files = await this.uploadFiles(this.files, true);
-    this.$cookies.set('questDraft', {
-      workplace: WorkplaceIndex[this.workplaceIndex],
-      priority: PriorityFilter[this.runtimeIndex + 1].value,
-      employment: TypeOfJobFilter[this.employmentIndex],
-      title: this.questTitle,
-      description: this.textarea,
-      price: this.price,
-      medias: files,
-      specializationKeys: this.selectedSpecAndSkills,
-      locationFull: {
-        location: {
-          longitude: this.coordinates.lng,
-          latitude: this.coordinates.lat,
-        },
-        locationPlaceName: this.address,
-      },
-    });
+    await this.setQuestDraft();
     next();
   },
   async beforeCreate() {
     await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
-  async beforeMount() {
+  async created() {
     await this.fillQuestFromQuestDraft();
   },
   async mounted() {
@@ -258,23 +239,53 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    async setQuestDraft() {
+      // Save quest draft in cookie questDraft
+      this.SetLoader(true);
+      const {
+        workplaceIndex, runtimeIndex, employmentIndex, questTitle,
+        textarea, price, selectedSpecAndSkills, address, coordinates: { lng, lat },
+      } = this;
+      // TODO: Проверить
+      const medias = await this.uploadFiles(this.files, true);
+      this.$cookies.set('questDraft', {
+        workplace: WorkplaceIndex[workplaceIndex],
+        priority: PriorityFilter[runtimeIndex + 1].value,
+        employment: TypeOfJobFilter[employmentIndex],
+        title: questTitle,
+        description: textarea,
+        price,
+        medias: medias ?? [],
+        specializationKeys: selectedSpecAndSkills,
+        locationFull: {
+          location: {
+            longitude: lng,
+            latitude: lat,
+          },
+          locationPlaceName: address,
+        },
+      });
+      this.SetLoader(false);
+    },
     async fillQuestFromQuestDraft() {
+      this.SetLoader(true);
       const questDraft = this.$cookies.get('questDraft');
       console.log('questDraft', questDraft);
-      this.selectedSpecAndSkills = questDraft?.specializationKeys ?? [];
-      this.questTitle = questDraft?.title ?? '';
-      this.textarea = questDraft?.description ?? '';
-      this.price = questDraft?.price ?? '';
-      this.employmentIndex = TypeOfJobFilter.indexOf(questDraft?.employment) ?? 0;
-      this.workplaceIndex = WorkplaceIndex.indexOf(questDraft?.workplace) ?? 0;
-      this.runtimeIndex = PriorityFilter[questDraft?.priority + 1]?.value ?? 0;
-      this.address = questDraft?.locationFull.locationPlaceName ?? '';
-      this.coordinates = {
-        lng: questDraft?.locationFull.location.longitude,
-        lat: questDraft?.locationFull.location.latitude,
-      };
-      // TODO: Доделать
-      this.prefetchedFiles = questDraft?.medias ?? [];
+      if (questDraft) {
+        this.selectedSpecAndSkills = questDraft?.specializationKeys || [];
+        this.questTitle = questDraft?.title || '';
+        this.textarea = questDraft?.description || '';
+        this.price = questDraft?.price || '';
+        this.employmentIndex = TypeOfJobFilter.indexOf(questDraft?.employment) || 0;
+        this.workplaceIndex = WorkplaceIndex.indexOf(questDraft?.workplace) || 0;
+        this.runtimeIndex = PriorityFilter[questDraft?.priority + 1]?.value || 0;
+        this.address = questDraft?.locationFull.locationPlaceName ?? '';
+        this.coordinates = {
+          lng: questDraft?.locationFull.location.longitude,
+          lat: questDraft?.locationFull.location.latitude,
+        };
+        this.files = questDraft?.medias ?? [];
+      }
     },
     updateFiles(files) {
       this.files = files;
@@ -336,7 +347,7 @@ export default {
         this.SetLoader(false);
         return;
       }
-
+      // TODO: Проверить
       const medias = await this.uploadFiles(this.files);
       const payload = {
         workplace: WorkplaceIndex[this.workplaceIndex],
