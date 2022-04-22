@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js';
 
 import Web3 from 'web3';
 
+import { WebSocket } from 'ws';
 import {
   stake,
   transfer,
@@ -35,7 +36,6 @@ import {
   StakingTypes,
   PensionHistoryMethods,
 } from '~/utils/enums';
-
 import {
   getPensionWallet,
   pensionsWithdraw,
@@ -439,24 +439,29 @@ export default {
   },
   async subscribeToWalletEvents({ commit, dispatch }) {
     try {
-      const wsProvider = new Web3(new Web3.providers.WebsocketProvider(process.env.WS_WQ_PROVIDER));
-      console.log('wsProvider:', wsProvider);
-      const subscription = wsProvider.eth.subscribe('newBlockHeaders', (_error, result) => {
-        if (!_error) {
-          console.log(result);
+      const ws = new WebSocket(process.env.WS_WQ_PROVIDER);
 
-          return;
-        }
-
-        console.error(_error);
-      })
-        .on('connected', (subscriptionId) => {
-          console.log(subscriptionId);
-        })
-        .on('data', (blockHeader) => {
-          console.log(blockHeader);
-        })
-        .on('error', console.error);
+      ws.onopen = function () {
+        ws.send('{ "jsonrpc": "2.0", "method": "subscribe", "params": ["tm.event=\'NewBlockHeader\'"], "id": 1 }');
+      };
+      // const wsProvider = new Web3(new Web3.providers.WebsocketProvider(process.env.ETHEREUM_WS_INFURA));
+      // console.log('wsProvider:', wsProvider);
+      // const subscription = wsProvider.eth.subscribe('newBlockHeaders', (_error, result) => {
+      //   if (!_error) {
+      //     console.log(result);
+      //
+      //     return;
+      //   }
+      //
+      //   console.error(_error);
+      // })
+      //   .on('connected', (subscriptionId) => {
+      //     console.log(subscriptionId);
+      //   })
+      //   .on('data', (blockHeader) => {
+      //     console.log(blockHeader);
+      //   })
+      //   .on('error', console.error);
       // await wsProvider.eth.subscribe('newBlockHeaders', async (err, result) => {
       //   if (err) {
       //     console.log('1234', err);
