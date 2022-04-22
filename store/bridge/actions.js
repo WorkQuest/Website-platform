@@ -191,15 +191,15 @@ export default {
             recipient: sender,
             status: true,
           });
-          const { result: { count } } = await this.$axios.$get(`/v1/bridge/recipient/${userAddress}/swaps`);
-          swapsCount = count;
+          swapsCount += 1;
         } else {
-          // eslint-disable-next-line array-callback-return
           swaps.some((item) => {
             if (item.nonce === +msg.data.returnValues.nonce) {
               item.status = false;
               item.canRedeemed = false;
+              return true;
             }
+            return false;
           });
         }
         commit('setSwapsData', { count: swapsCount, swaps });
