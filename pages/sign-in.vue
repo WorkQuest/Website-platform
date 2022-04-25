@@ -193,7 +193,7 @@ export default {
   },
   created() {
     const { token } = this.$route.query;
-    if (token) sessionStorage.setItem('confirmToken', JSON.stringify(token));
+    if (token) sessionStorage.setItem('confirmToken', String(token));
   },
   async mounted() {
     this.isLoginWithSocial = this.$cookies.get('socialNetwork');
@@ -410,9 +410,9 @@ export default {
       this.addressAssigned = true;
       this.$cookies.set('userLogin', true, { path: '/' });
       // redirect to confirm access if token exists & unconfirmed account
-      const confirmToken = JSON.parse(sessionStorage.getItem('confirmToken'));
-      if (this.userStatus === UserStatuses.Unconfirmed && confirmToken) {
-        this.$router.push(`/confirm/?token=${confirmToken}`);
+      const confirmToken = sessionStorage.getItem('confirmToken');
+      if ((this.userStatus === UserStatuses.Unconfirmed || !this.userAddress) && confirmToken) {
+        this.$router.push(`${Path.ROLE}/?token=${confirmToken}`);
         return;
       }
       sessionStorage.removeItem('confirmToken');
