@@ -154,18 +154,19 @@ export default {
   },
   async beforeMount() {
     const access = this.$cookies.get('access');
+    const userStatus = this.$cookies.get('userStatus');
     if (!access) {
       await this.$router.push(Path.SIGN_IN);
       return;
     }
-    if (!this.userData.id) await this.$store.dispatch('user/getUserData');
+    if (!this.userData.id && +userStatus === UserStatuses.Confirmed) await this.$store.dispatch('user/getUserData');
     if (this.userData.wallet?.address && this.userData.status === UserStatuses.Confirmed) {
       this.isWalletAssigned = true;
       this.isClearOnDestroy = false;
       await this.redirectUser();
       return;
     }
-    if (this.userData.status === UserStatuses.Confirmed && !this.userData?.wallet?.address) {
+    if (+userStatus === UserStatuses.Confirmed && !this.userData?.wallet?.address) {
       this.step = WalletState.ImportOrCreate;
       if (getCipherKey() == null && !this.isLoginWithSocialNetwork) {
         this.isClearOnDestroy = false;
