@@ -25,7 +25,7 @@ export default async function ({
       await store.dispatch('user/logout');
       return redirect(Path.SIGN_IN);
     }
-    if (userData.id === '' && +userStatus === UserStatuses.Confirmed) {
+    if (!userData.id && +userStatus === UserStatuses.Confirmed) {
       await store.dispatch('user/getMainData');
     }
     if (+userStatus === UserStatuses.NeedSetRole && route.path !== Path.ROLE) {
