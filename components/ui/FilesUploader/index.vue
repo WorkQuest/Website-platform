@@ -119,7 +119,8 @@ export default {
         console.log(22424, 'file', file);
         this.files.push({
           id: this.id,
-          mediaId: file.id,
+          file: file.data,
+          mediaId: file.mediaId,
           src: file.src?.split('?')[0],
           type: file.type?.split('/')[0],
           mode: 'preloaded',

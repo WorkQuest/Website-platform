@@ -34,29 +34,37 @@ Vue.mixin({
       if (!fetchData.length) return medias;
       const urls = await Promise.all(fetchData);
       let urlId = 0;
-      function getFileData({ url, mediaId, file }) {
-        if (url && file && file?.type && file?.name && file?.size && file?.type && mediaId) {
-          filesData.push({
-            src: url,
-            type: file?.type,
-            name: file?.name,
-            size: file?.size,
-            data: file,
-            contentType: file?.type,
-            mediaId,
-          });
-        }
+      function getFileData({
+        url, mediaId, i,
+      }) {
+        filesData.push({
+          src: url,
+          type: files[i].file?.type,
+          name: files[i].file?.name,
+          size: files[i].file?.size,
+          data: files[i].file,
+          contentType: files[i].type,
+          mediaId,
+        });
       }
       for (let i = 0; i < files.length; i += 1) {
         const { mediaId, url } = urls[urlId];
-        const { file } = this.files[i];
+        if (isReturnFile) {
+          getFileData({
+            url, mediaId, i, files,
+          });
+        }
+        console.log('this.files', this.files);
         medias.push(mediaId);
-        if (isReturnFile) getFileData({ url, mediaId, file });
-        fetchUrlsData.push(this.$store.dispatch('user/uploadFile', {
-          url,
-          data: file,
-          contentType: file?.type,
-        }));
+        console.log('mediaId', mediaId);
+        console.log('file', [i], this.files[i]?.file);
+        if (files[i]?.file) {
+          fetchUrlsData.push(this.$store.dispatch('user/uploadFile', {
+            url,
+            data: files[i].file,
+            contentType: files[i].file.type,
+          }));
+        }
         urlId += 1;
       }
       await Promise.all(fetchUrlsData);
