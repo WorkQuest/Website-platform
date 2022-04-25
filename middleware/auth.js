@@ -25,10 +25,10 @@ export default async function ({
       await store.dispatch('user/logout');
       return redirect(Path.SIGN_IN);
     }
-    if (userData.id === '') {
+    if (userData.id === '' && +userStatus === UserStatuses.Confirmed) {
       await store.dispatch('user/getMainData');
     }
-    if (userStatus === UserStatuses.NeedSetRole && route.path !== Path.ROLE) {
+    if (+userStatus === UserStatuses.NeedSetRole && route.path !== Path.ROLE) {
       return redirect(Path.ROLE);
     }
     return true;

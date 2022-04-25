@@ -200,6 +200,7 @@ export default {
     const access = this.$cookies.get('access');
     const refresh = this.$cookies.get('refresh');
     const userStatus = this.$cookies.get('userStatus');
+    if (+userStatus === UserStatuses.Confirmed && access) await this.redirectUser();
     if (this.isLoginWithSocial && access && +userStatus === UserStatuses.Confirmed) {
       this.SetLoader(true);
       await this.$store.dispatch('user/getUserData');
@@ -265,6 +266,7 @@ export default {
       };
       const { ok, result } = await this.$store.dispatch('user/signIn', payload);
       if (ok) {
+        this.$cookies.set('userStatus', result.userStatus);
         this.userStatus = result.userStatus;
         this.userAddress = result.address;
         if (result.totpIsActive) {
@@ -406,19 +408,19 @@ export default {
       }));
       this.$store.dispatch('wallet/connectWallet', { userWalletAddress: wallet.address, userPassword: this.model.password });
     },
-    redirectUser() {
+    async redirectUser() {
       this.addressAssigned = true;
       this.$cookies.set('userLogin', true, { path: '/' });
       // redirect to confirm access if token exists & unconfirmed account
       const confirmToken = sessionStorage.getItem('confirmToken');
       if ((this.userStatus === UserStatuses.Unconfirmed || !this.userAddress) && confirmToken) {
-        this.$router.push(`${Path.ROLE}/?token=${confirmToken}`);
+        await this.$router.push(`${Path.ROLE}/?token=${confirmToken}`);
         return;
       }
       sessionStorage.removeItem('confirmToken');
-      if (this.userData.role === UserRole.EMPLOYER) this.$router.push(Path.WORKERS);
-      else if (this.userData.role === UserRole.WORKER) this.$router.push(Path.QUESTS);
-      else if (this.userStatus === UserStatuses.NeedSetRole) this.$router.push(Path.ROLE);
+      if (!this.userData.id) await this.$store.dispatch('user/getUserData');
+      if (this.userData.role === UserRole.EMPLOYER) await this.$router.push(Path.WORKERS);
+      else if (this.userData.role === UserRole.WORKER) await this.$router.push(Path.QUESTS);
     },
     async redirectSocialLink(socialNetwork) {
       window.location = `${process.env.BASE_URL}v1/auth/login/main/${socialNetwork}`;
