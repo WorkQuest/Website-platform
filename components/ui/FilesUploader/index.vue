@@ -115,12 +115,12 @@ export default {
     this.acceptedTypes = this.accept.replace(/\s/g, '').split(',');
     // eslint-disable-next-line no-restricted-syntax
     for (const file of this.preloadedFiles) {
-      if (!!file.url && !!file.type) {
+      if (!!file.src && !!file.type) {
         console.log(22424, 'file', file);
         this.files.push({
           id: this.id,
           mediaId: file.id,
-          src: file.url?.split('?')[0],
+          src: file.src?.split('?')[0],
           type: file.type?.split('/')[0],
           mode: 'preloaded',
         });

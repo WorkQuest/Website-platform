@@ -37,7 +37,7 @@ Vue.mixin({
       function getFileData({ url, mediaId, file }) {
         if (url && file && file?.type && file?.name && file?.size && file?.type && mediaId) {
           filesData.push({
-            url,
+            src: url,
             type: file?.type,
             name: file?.name,
             size: file?.size,
