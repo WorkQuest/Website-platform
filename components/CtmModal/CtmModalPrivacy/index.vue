@@ -97,7 +97,7 @@ export default {
       });
       if (response?.ok) {
         this.$cookies.set('userLogin', true, { path: Path.ROOT });
-        this.$cookies.set('userStatus', 1, { path: Path.ROOT });
+        this.$cookies.set('userStatus', UserStatuses.Confirmed, { path: Path.ROOT });
         sessionStorage.removeItem('confirmToken');
         this.ShowToast(this.$t('modals.yourAccountVerified'), this.$t('meta.success'));
         await this.options.callback();
