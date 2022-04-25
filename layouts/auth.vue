@@ -57,8 +57,8 @@ export default {
         refresh: refreshCookies,
         userStatus: userStatusCookies,
       });
-      await this.$store.dispatch('user/getUserData');
       if (this.userData.status === UserStatuses.Confirmed) {
+        await this.$store.dispatch('user/getUserData');
         if (this.userData.role === UserRole.EMPLOYER) {
           await this.$router.push(Path.WORKERS);
         } else if (this.userData.role === UserRole.WORKER) {

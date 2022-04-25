@@ -1,15 +1,9 @@
 <template>
-  <base-btn
-    mode="max"
-    class="visibility-button"
-    :is-submit="false"
+  <span
+    class="visibility-button__icon"
+    :class="{'icon-show': !isPasswordVisible, 'icon-hide': isPasswordVisible }"
     @click="$emit('toggleVisibility', !isPasswordVisible)"
-  >
-    <span
-      class="visibility-button__icon"
-      :class="{'icon-show': !isPasswordVisible, 'icon-hide': isPasswordVisible }"
-    />
-  </base-btn>
+  />
 </template>
 
 <script>
@@ -29,6 +23,7 @@ export default {
   color: $blue;
   font-size: 25px;
   &:hover::before {
+    cursor: pointer;
     color: $blue;
   }
 }
@@ -37,7 +32,5 @@ export default {
   color: $blue;
   font-size: 25px;
 }
-.visibility-button {
-   background-color: transparent !important;
-}
+
 </style>
