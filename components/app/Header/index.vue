@@ -346,6 +346,7 @@ export default {
       currentLocale: 'user/getCurrentLang',
       statusKYC: 'user/getStatusKYC',
       getStatus2FA: 'user/getStatus2FA',
+      userWalletAddress: 'user/getUserWalletAddress',
     }),
     locales() {
       return this.$i18n.locales.map((item) => ({
@@ -495,15 +496,18 @@ export default {
     },
     async initWSListeners() {
       const { chatActionsConnection, notifsConnection } = this.connections;
+      const {
+        userWalletAddress, $wsNotifs, $wsChatActions, $store, token,
+      } = this;
       if (!notifsConnection) {
-        await this.$wsNotifs.connect(this.token);
-        const subscribes = ['chat', 'quest'];
-        await Promise.all(subscribes.map((path) => this.$wsNotifs.subscribe(`${Path.NOTIFICATIONS}/${path}`, async (ev) => {
+        await $wsNotifs.connect(token);
+        const subscribes = ['chat', 'quest', 'dao', 'proposal', 'dailyLiquidity', `bridge/${userWalletAddress}`, `referral/${userWalletAddress}`];
+        await Promise.all(subscribes.map((path) => $wsNotifs.subscribe(`${Path.NOTIFICATIONS}/${path}`, async (ev) => {
           if (path === 'chat') await this.chatAction(ev);
-          else await this.$store.dispatch('notifications/addNotification', ev);
+          else await $store.dispatch('notifications/addNotification', ev);
         })));
       }
-      if (!chatActionsConnection) await this.$wsChatActions.connect(this.token);
+      if (!chatActionsConnection) await $wsChatActions.connect(token);
     },
     async getStatistic() {
       await this.$store.dispatch('user/getStatistic');
