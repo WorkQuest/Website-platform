@@ -99,10 +99,6 @@ export default {
       type: Array,
       default: () => [],
     },
-    isClearData: {
-      type: Boolean,
-      default: false,
-    },
   },
   data() {
     return {
@@ -115,26 +111,17 @@ export default {
       acceptedTypes: [],
     };
   },
-  watch: {
-    isClearData() {
-      if (this.isClearData) this.files = [];
-    },
-  },
   async created() {
     this.acceptedTypes = this.accept.replace(/\s/g, '').split(',');
     // eslint-disable-next-line no-restricted-syntax
     for (const file of this.preloadedFiles) {
-      if (!!file.src && !!file.type) {
-        this.files.push({
-          id: this.id,
-          file: file.data,
-          mediaId: file.mediaId,
-          src: file.src?.split('?')[0],
-          type: file.type?.split('/')[0],
-          mode: 'preloaded',
-        });
-        this.id += 1;
-      }
+      this.files.push({
+        id: this.id,
+        mediaId: file.id,
+        src: file.url,
+        type: file.contentType.split('/')[0],
+      });
+      this.id += 1;
       this.$emit('change', this.files);
     }
   },

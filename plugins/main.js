@@ -20,12 +20,11 @@ Vue.mixin({
       if (address.startsWith(prefix)) return converter(prefix).toHex(address);
       return address;
     },
-    async uploadFiles(files, isReturnFile) {
+    async uploadFiles(files) {
       if (!files.length) return [];
       const fetchData = [];
       const fetchUrlsData = [];
       const medias = [];
-      const filesData = [];
       // eslint-disable-next-line no-restricted-syntax
       for (const item of files) {
         if (item.mediaId) medias.push(item.mediaId);
@@ -34,26 +33,8 @@ Vue.mixin({
       if (!fetchData.length) return medias;
       const urls = await Promise.all(fetchData);
       let urlId = 0;
-      function getFileData({
-        url, mediaId, i,
-      }) {
-        filesData.push({
-          src: url,
-          type: files[i].file?.type,
-          name: files[i].file?.name,
-          size: files[i].file?.size,
-          data: files[i].file,
-          contentType: files[i].type,
-          mediaId,
-        });
-      }
       for (let i = 0; i < files.length; i += 1) {
         const { mediaId, url } = urls[urlId];
-        if (isReturnFile) {
-          getFileData({
-            url, mediaId, i, files,
-          });
-        }
         medias.push(mediaId);
         if (files[i]?.file) {
           fetchUrlsData.push(this.$store.dispatch('user/uploadFile', {
@@ -65,7 +46,6 @@ Vue.mixin({
         urlId += 1;
       }
       await Promise.all(fetchUrlsData);
-      if (isReturnFile) return filesData;
       return medias;
     },
     async signerUser(callback) {
