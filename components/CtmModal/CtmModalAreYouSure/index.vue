@@ -10,7 +10,7 @@
         class="content__picture"
       >
       <div class="content__title">
-        {{ $t('modals.areYouSure') }}
+        {{ options.text || $t('modals.areYouSure') }}
       </div>
       <div class="content__desc">
         {{ options.title }}
@@ -20,7 +20,7 @@
           class="action__button"
           mode="outline"
           data-selector="CANCEL"
-          @click="CloseModal"
+          @click="handleCancel"
         >
           {{ $t('meta.btns.cancel') }}
         </base-btn>
@@ -49,7 +49,16 @@ export default {
   },
   methods: {
     async handleApply() {
-      await this.options.okBtnFunc();
+      const { okBtnFunc } = this.options;
+      if (okBtnFunc) await okBtnFunc();
+      this.CloseModal();
+      this.SetLoader(false);
+    },
+    async handleCancel() {
+      const { cancelBtnFunc } = this.options;
+      if (cancelBtnFunc) await cancelBtnFunc();
+      this.CloseModal();
+      this.SetLoader(false);
     },
   },
 };

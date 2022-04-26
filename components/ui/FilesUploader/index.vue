@@ -111,7 +111,7 @@ export default {
       acceptedTypes: [],
     };
   },
-  mounted() {
+  async created() {
     this.acceptedTypes = this.accept.replace(/\s/g, '').split(',');
     // eslint-disable-next-line no-restricted-syntax
     for (const file of this.preloadedFiles) {
@@ -122,14 +122,12 @@ export default {
         type: file.contentType.split('/')[0],
       });
       this.id += 1;
+      this.$emit('change', this.files);
     }
-    this.$emit('change', this.files);
   },
   methods: {
     uploaderStyles() {
-      return [
-        { uploader__preview: !this.files.length },
-      ];
+      return [{ uploader__preview: !this.files.length }];
     },
     openExplorer() {
       this.$refs.input.click();
@@ -191,9 +189,9 @@ export default {
           // eslint-disable-next-line no-continue
           continue;
         }
-        if (!this.acceptDuplicates && this.files.filter((item) => !item.mediaId && item.file.size === file.size
-          && item.file.lastModified === file.lastModified
-          && item.file.name === file.name).length) {
+        if (!this.acceptDuplicates && this.files.filter((item) => !item.mediaId && item.file?.size === file?.size
+          && item.file?.lastModified === file?.lastModified
+          && item.file?.name === file?.name).length) {
           // eslint-disable-next-line no-continue
           continue;
         }

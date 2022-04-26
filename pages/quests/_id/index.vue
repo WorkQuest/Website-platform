@@ -250,6 +250,7 @@ export default {
   },
   async beforeMount() {
     if (!this.isWalletConnected) return;
+    this.$cookies.remove('questDraft');
 
     this.SetLoader(true);
     const res = await this.getQuest();

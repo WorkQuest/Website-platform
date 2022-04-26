@@ -91,21 +91,21 @@ Vue.mixin({
       // eslint-disable-next-line no-restricted-syntax
       for (const item of files) {
         if (item.mediaId) medias.push(item.mediaId);
-        else fetchData.push(this.$store.dispatch('user/getUploadFileLink', { contentType: item.file.type }));
+        fetchData.push(this.$store.dispatch('user/getUploadFileLink', { contentType: item.file?.type }));
       }
       if (!fetchData.length) return medias;
       const urls = await Promise.all(fetchData);
       let urlId = 0;
       for (let i = 0; i < files.length; i += 1) {
-        // eslint-disable-next-line no-continue
-        if (files[i].mediaId) continue;
-        const { file } = this.files[i];
-        medias.push(urls[urlId].mediaId);
-        fetchUrlsData.push(this.$store.dispatch('user/uploadFile', {
-          url: urls[urlId].url,
-          data: file,
-          contentType: file.type,
-        }));
+        const { mediaId, url } = urls[urlId];
+        medias.push(mediaId);
+        if (files[i]?.file) {
+          fetchUrlsData.push(this.$store.dispatch('user/uploadFile', {
+            url,
+            data: files[i].file,
+            contentType: files[i].file.type,
+          }));
+        }
         urlId += 1;
       }
       await Promise.all(fetchUrlsData);
