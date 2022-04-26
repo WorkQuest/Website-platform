@@ -154,6 +154,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
+import moment from 'moment';
 import modals from '~/store/modals/modals';
 import { ERC20 } from '~/abi/index';
 import {
@@ -209,8 +210,8 @@ export default {
           block: t.block_number,
           timestamp: this.$moment(t.block.timestamp).format('lll'),
           status: !!t.status,
-          value: `${getStyledAmount(t.tokenTransfers[0]?.amount || t.value)} ${symbol}`,
-          transaction_fee: new BigNumber(t.gas_price).multipliedBy(t.gas_used),
+          value: `${getStyledAmount(t.tokenTransfers?.[0]?.amount || t.value)} ${symbol}`,
+          transaction_fee: t.transaction_fee || new BigNumber(t.gas_price).multipliedBy(t.gas_used),
           from_address: t.from_address_hash.hex,
           to_address: t.to_address_hash.hex,
         });
@@ -259,7 +260,12 @@ export default {
     if (!this.isWalletConnected) return;
     const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
     this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
-    await this.$store.dispatch('wallet/subscribeToWalletEvents');
+    await this.$store.dispatch('wallet/subscribeToWalletEvents', {
+      address: this.convertToBech32('eth', this.userWalletAddress),
+      hexAddress: this.userWalletAddress,
+      date: moment(),
+      updateWalletData: async () => await this.loadData(),
+    });
     await this.loadData();
   },
   async beforeDestroy() {

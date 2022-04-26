@@ -1,8 +1,5 @@
 import BigNumber from 'bignumber.js';
 
-import Web3 from 'web3';
-
-import { WebSocket } from 'ws';
 import {
   stake,
   transfer,
@@ -437,44 +434,54 @@ export default {
       return error();
     }
   },
-  async subscribeToWalletEvents({ commit, dispatch }) {
+  async subscribeToWalletEvents({
+    commit, dispatch, rootGetters, getters,
+  }, payload) {
     try {
-      const ws = new WebSocket(process.env.WS_WQ_PROVIDER);
-
-      ws.onopen = function () {
-        ws.send('{ "jsonrpc": "2.0", "method": "subscribe", "params": ["tm.event=\'NewBlockHeader\'"], "id": 1 }');
+      this.$wsNode.connect(null);
+      this.connection = new WebSocket('wss://dev-node-nyc3.workquest.co/tendermint-rpc/websocket');
+      this.connection.onopen = () => {
+        console.log('Successfully connected to the echo websocket server...');
+        const request = {
+          jsonrpc: '2.0',
+          method: 'subscribe',
+          id: 0,
+          params: {
+            query: "tm.event='Tx'",
+            // query: "tm.event='Tx' AND ethereum_tx.recipient='wq1khck2m34qnnwgevz6cmksrm73duvgp2t6ddgyv'",
+          },
+        };
+        this.connection.send(JSON.stringify(request));
       };
-      // const wsProvider = new Web3(new Web3.providers.WebsocketProvider(process.env.ETHEREUM_WS_INFURA));
-      // console.log('wsProvider:', wsProvider);
-      // const subscription = wsProvider.eth.subscribe('newBlockHeaders', (_error, result) => {
-      //   if (!_error) {
-      //     console.log(result);
-      //
-      //     return;
-      //   }
-      //
-      //   console.error(_error);
-      // })
-      //   .on('connected', (subscriptionId) => {
-      //     console.log(subscriptionId);
-      //   })
-      //   .on('data', (blockHeader) => {
-      //     console.log(blockHeader);
-      //   })
-      //   .on('error', console.error);
-      // await wsProvider.eth.subscribe('newBlockHeaders', async (err, result) => {
-      //   if (err) {
-      //     console.log('1234', err);
-      //   } else {
-      //     console.log('aeraeraeraera', result);
-      //   }
-      // });
+      this.connection.onmessage = async function (ev) {
+        const { events } = JSON.parse(ev?.data).result;
+        const recipient = events ? events['ethereum_tx.recipient'][0].toLowerCase() : null;
+        if (recipient === payload.hexAddress) {
+          const transactions = JSON.parse(JSON.stringify(getters.getTransactions));
+          if (transactions.length === 10) transactions.splice(9, 1);
+          transactions.unshift({
+            hash: events['tx.hash'][0].toLowerCase(),
+            block_number: events['tx.height'][0],
+            block: { timestamp: payload.date },
+            status: true,
+            value: events['ethereum_tx.amount'][0],
+            transaction_fee: +(events['tx.fee'][0].split('a')[0]),
+            from_address_hash: { hex: events['message.sender'][3] },
+            to_address_hash: { hex: recipient },
+          });
+          await payload.updateWalletData();
+          commit('setTransactions', transactions);
+          let transactionsCount = JSON.parse(JSON.stringify(getters.getTransactionsCount));
+          commit('setTransactionsCount', transactionsCount += 1);
+        }
+      };
+      return true;
     } catch (err) {
       console.error(err);
+      return error();
     }
   },
   async unsubscribeToWalletEvents({ commit, dispatch }) {
-    const web3 = new Web3(new Web3.providers.WebsocketProvider(process.env.WS_WQ_PROVIDER));
-    web3.eth.clearSubscriptions();
+    this.$wsNode.disconnect();
   },
 };

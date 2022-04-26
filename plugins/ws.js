@@ -11,6 +11,9 @@ export default async ({ store, $axios }, inject) => {
       {
         name: 'wsChatActions', url: process.env.WS_CHAT_ACTIONS_URL, verboseName: 'chatActionsConnection',
       },
+      {
+        name: 'wsNode', url: process.env.WS_WQ_PROVIDER, verboseName: 'node',
+      },
     ],
     async initConnection(_connection) {
       const connection = new Connection(_connection.url, _connection.name);
