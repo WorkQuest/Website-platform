@@ -227,13 +227,12 @@ export default {
     await this.fillQuestFromQuestDraft();
     if (questDraft || questDraftMedias) {
       this.ShowModal({
-        key: 'areYouSure',
+        key: modals.areYouSure,
         text: this.$t('modals.draft.youHaveAQuestDraft'),
         okBtnTitle: this.$t('meta.btns.delete'),
         okBtnFunc: async () => {
           await this.clearData();
         },
-        cancelBtnFunc: async () => this.CloseModal(),
       });
     }
   },
@@ -278,34 +277,26 @@ export default {
     },
     async setQuestDraft() {
       this.SetLoader(true);
-      this.ShowModal({
-        key: 'areYouSure',
-        text: this.$t('modals.draft.saveQuestDraft'),
-        okBtnTitle: this.$t('meta.btns.save'),
-        cancelBtnFunc: async () => this.clearData(),
-        okBtnFunc: async () => {
-          const medias = await this.setMedias(false);
-          const {
-            workplaceIndex, runtimeIndex, employmentIndex, questTitle,
-            textarea, price, selectedSpecAndSkills, address, coordinates: { lng, lat },
-          } = this;
-          this.$cookies.set('questDraftMedias', medias);
-          this.$cookies.set('questDraft', {
-            workplace: WorkplaceIndex[workplaceIndex],
-            priority: PriorityFilter[runtimeIndex + 1].value,
-            employment: TypeOfJobFilter[employmentIndex],
-            title: questTitle,
-            description: textarea,
-            price,
-            specializationKeys: selectedSpecAndSkills,
-            locationFull: {
-              location: {
-                longitude: lng,
-                latitude: lat,
-              },
-              locationPlaceName: address,
-            },
-          });
+      const medias = await this.setMedias(false);
+      const {
+        workplaceIndex, runtimeIndex, employmentIndex, questTitle,
+        textarea, price, selectedSpecAndSkills, address, coordinates: { lng, lat },
+      } = this;
+      this.$cookies.set('questDraftMedias', medias);
+      this.$cookies.set('questDraft', {
+        workplace: WorkplaceIndex[workplaceIndex],
+        priority: PriorityFilter[runtimeIndex + 1].value,
+        employment: TypeOfJobFilter[employmentIndex],
+        title: questTitle,
+        description: textarea,
+        price,
+        specializationKeys: selectedSpecAndSkills,
+        locationFull: {
+          location: {
+            longitude: lng,
+            latitude: lat,
+          },
+          locationPlaceName: address,
         },
       });
       this.SetLoader(false);
