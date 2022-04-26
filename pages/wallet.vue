@@ -182,7 +182,6 @@ export default {
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
-      userInfo: 'data/getUserInfo',
       transactions: 'wallet/getTransactions',
       transactionsCount: 'wallet/getTransactionsCount',
       isWalletConnected: 'wallet/getIsWalletConnected',
@@ -257,6 +256,14 @@ export default {
     this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
   async mounted() {
+    if (!this.$cookies.get('isWalletAppShowed')) {
+      this.ShowModal({
+        key: modals.downloadApp,
+        title: this.$tc('modals.titles.downloadWallet'),
+        subtitle: this.$t('modals.downWalletOnSmartphone'),
+        app: 'isWalletAppShowed',
+      });
+    }
     if (!this.isWalletConnected) return;
     const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
     this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;

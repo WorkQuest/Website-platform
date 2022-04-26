@@ -238,7 +238,7 @@ export default {
     align-items: center;
   }
   &__btn {
-    min-width: 163px;
+    min-width: 143px;
   }
   &__logo {
     display: grid;
@@ -305,6 +305,7 @@ export default {
     }
   }
 }
+
 @include _991 {
   .template {
     &__content {
@@ -312,8 +313,12 @@ export default {
     }
   }
 }
+
 @include _575 {
   .header {
+    &__body {
+      margin: 0 10px;
+    }
     &__logo {
       span {
         display: none;
@@ -324,6 +329,19 @@ export default {
     }
     &__right {
       grid-gap: 10px;
+    }
+  }
+}
+
+@include _350 {
+  .header {
+    &__btn {
+      min-width: 130px;
+    }
+    &__button {
+      &_locale {
+        width: 55px;
+      }
     }
   }
 }

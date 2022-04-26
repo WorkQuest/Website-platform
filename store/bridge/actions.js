@@ -1,6 +1,9 @@
 import BigNumber from 'bignumber.js';
 
-import { BlockchainByIndex, BridgeAddresses, SwapAddresses } from '~/utils/bridge-constants';
+import { Path } from '~/utils/enums';
+import {
+  BlockchainByIndex, BridgeAddresses, BridgeEvents, SwapAddresses,
+} from '~/utils/bridge-constants';
 
 import {
   error,
@@ -159,6 +162,57 @@ export default {
       console.error('Error in swap:', e);
       showToast('Swapping error', e.message, 'danger');
       return error(e.code, 'Error in swap action', e.data);
+    }
+  },
+  async subscribeToBridgeEvents({ commit, getters }, userAddress) {
+    try {
+      await this.$wsNotifs.subscribe(`${Path.NOTIFICATIONS}${Path.BRIDGE}/${userAddress}`, async (msg) => {
+        const swaps = JSON.parse(JSON.stringify(getters.getSwaps));
+        let swapsCount = JSON.parse(JSON.stringify(getters.getSwapsCount));
+        const {
+          event, signData, transactionHash, returnValues: {
+            amount, chainFrom, chainTo, sender, timestamp,
+          },
+        } = msg.data;
+        if (event === BridgeEvents.SWAP_INITIALIZED) {
+          if (swaps.length === 10) swaps.splice(9, 1);
+          swaps.unshift({
+            ...msg.data.returnValues,
+            amount: new BigNumber(amount).shiftedBy(-18).toString(),
+            chain: BlockchainByIndex[chainTo],
+            created: timestamp,
+            direction: [
+              SwapAddresses.get(BlockchainByIndex[chainFrom]).icon,
+              SwapAddresses.get(BlockchainByIndex[chainTo]).icon,
+            ],
+            signData,
+            transactionHash,
+            initiator: sender,
+            recipient: sender,
+            status: true,
+          });
+          swapsCount += 1;
+        } else if (event === BridgeEvents.SWAP_REDEEMED) {
+          swaps.some((item) => {
+            if (item.nonce === +msg.data.returnValues.nonce) {
+              item.status = false;
+              item.canRedeemed = false;
+              return true;
+            }
+            return false;
+          });
+        }
+        commit('setSwapsData', { count: swapsCount, swaps });
+      });
+    } catch (err) {
+      console.error('subscribeToBridgeEvents err', err);
+    }
+  },
+  async unsubscribeToBridgeEvents(_, userAddress) {
+    try {
+      await this.$wsNotifs.unsubscribe(`/notifications/bridge/${userAddress}`);
+    } catch (err) {
+      console.error('unsubscribeToBridgeEvents err', err);
     }
   },
 };

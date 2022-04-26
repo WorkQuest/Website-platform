@@ -337,7 +337,7 @@ export default {
       userData: 'user/getUserData',
       imageData: 'user/getImageData',
       token: 'user/accessToken',
-      connections: 'data/notificationsConnectionStatus',
+      connections: 'main/notificationsConnectionStatus',
       chatId: 'chat/getCurrChatId',
       messagesFilter: 'chat/getMessagesFilter',
       unreadMessagesCount: 'notifications/getUnreadChatsCount',

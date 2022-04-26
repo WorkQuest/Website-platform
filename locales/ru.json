@@ -949,7 +949,8 @@
       "sendTo": "Send To",
       "withdrawCard": "Withdraw to bank card",
       "withdrawInfo": "Withdrawal info",
-      "downloadApp": "Скачайте приложение"
+      "downloadApp": "Скачайте приложение",
+      "downloadWallet": "Download Wallet App"
     },
     "errors": {
       "errorQuests": "Error with quests",
@@ -1211,6 +1212,7 @@
     "until": "До",
     "scanQrCode": "Просто отсканируйте QR-код",
     "downOnSmartphone": "Скачайте Work Quest приложение на свой телефон",
+    "downWalletOnSmartphone": "Download Work Quest Wallet app on your smartphone",
     "successfulMethods": {
       "claim": "Successful claim",
       "refund": "Successful refund",
