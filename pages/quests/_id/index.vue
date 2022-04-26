@@ -281,8 +281,8 @@ export default {
         await this.$store.dispatch('notifications/createLocalNotification', {
           id: '7',
           action: LocalNotificationAction.RATE_THE_QUEST,
-          message: 'Please rate the completed work on the quest',
-          actionBtn: 'Go to Quest page',
+          message: this.$t('localNotifications.messages.rateTheQuest'),
+          actionBtn: this.$t('localNotifications.btns.rateTheQuest'),
           date: '',
           questId: id,
         });
@@ -560,16 +560,14 @@ export default {
           if (txRes.ok) {
             this.showQuestModal(2);
             await $store.dispatch('quests/setInfoDataMode', QuestStatuses.Done);
-            // TODO: Добавить локализацию
             await $store.dispatch('notifications/createLocalNotification', {
               id: '6',
               action: LocalNotificationAction.REVIEW_USER,
-              message: userRole === UserRole.EMPLOYER ? 'Please, review your employer!' : 'Please, review your worker!',
-              actionBtn: userRole === UserRole.EMPLOYER ? 'Go to Employer Profile' : 'Go to Worker Profile',
+              message: userRole === UserRole.EMPLOYER ? this.$t('localNotifications.messages.reviewEmp') : this.$t('localNotifications.messages.reviewWorker'),
+              actionBtn: userRole === UserRole.EMPLOYER ? this.$t('localNotifications.btns.reviewEmp') : this.$t('localNotifications.btns.reviewWorker'),
               questId: '',
               userId: userRole === UserRole.EMPLOYER ? assignedWorkerId : id,
               date: '',
-              // toUserId
             });
           }
         },

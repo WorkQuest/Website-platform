@@ -39,46 +39,43 @@ Vue.mixin({
       const KYC = this.$cookies.get(LocalNotificationAction.TWOFA);
       const TWOFA = this.$cookies.get(LocalNotificationAction.KYC);
       await this.checkProfileFilled();
-      // TODO: Добавить локализацию
       await this.$store.dispatch('notifications/createLocalNotification', {
         id: '1',
         action: LocalNotificationAction.GET_REWARD,
-        message: 'Invite your friends and get rewarded!',
-        actionBtn: 'Get Reward',
+        message: this.$t('localNotifications.messages.inviteFriends'),
+        actionBtn: this.$t('localNotifications.btns.inviteFriends'),
       });
       await this.$store.dispatch('notifications/createLocalNotification', {
         id: '2',
         action: LocalNotificationAction.WIKI,
-        message: 'You can get acquainted with all the functionality of the platform on the WorkQuest Wiki page!',
-        actionBtn: 'Go to Wiki',
+        message: this.$t('localNotifications.messages.wiki'),
+        actionBtn: this.$t('localNotifications.btns.wiki'),
       });
       if (this.statusKYC === SumSubStatuses.NOT_VERIFIED) {
-        // TODO: Добавить локализацию
         if (!KYC) this.$cookies.set(LocalNotificationAction.KYC, this.statusKYC !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
         await this.$store.dispatch('notifications/createLocalNotification', {
           id: '3',
           action: LocalNotificationAction.KYC,
-          message: 'You can enable KYC on Sumsub page!',
-          actionBtn: 'Enable KYC',
+          message: this.$t('localNotifications.messages.kyc'),
+          actionBtn: this.$t('localNotifications.btns.kyc'),
         });
       }
       if (this.status2FA === TwoFAStatuses.DISABLED) {
-        // TODO: Добавить локализацию
         // TODO: Добавить якорь для прокрутки до 2FA после перехода
         if (!TWOFA) this.$cookies.set(LocalNotificationAction.TWOFA, this.status2FA !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
         await this.$store.dispatch('notifications/createLocalNotification', {
           id: '4',
           action: LocalNotificationAction.TWOFA,
-          message: 'You can enable 2FA in settings!',
-          actionBtn: 'Go to Settings',
+          message: this.$t('localNotifications.messages.twoFA'),
+          actionBtn: this.$t('localNotifications.btns.toSettings'),
         });
       }
       if (!this.profileFilled) {
         await this.$store.dispatch('notifications/createLocalNotification', {
           id: '5',
           action: LocalNotificationAction.PROFILE_FILLED,
-          message: 'You can fill your profile data in settings!',
-          actionBtn: 'Go to Settings',
+          message: this.$t('localNotifications.messages.fillSettingsData'),
+          actionBtn: this.$t('localNotifications.btns.toSettings'),
         });
       }
     },

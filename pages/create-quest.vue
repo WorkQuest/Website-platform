@@ -283,12 +283,11 @@ export default {
           locationPlaceName: address,
         },
       });
-      // TODO: Добавить локализацию!
       await this.$store.dispatch('notifications/createLocalNotification', {
         id: '8',
         action: LocalNotificationAction.QUEST_DRAFT,
-        message: 'You have a saved draft of the quest.',
-        actionBtn: 'Go to Create Quest page',
+        message: this.$t('localNotifications.messages.questDraft'),
+        actionBtn: this.$t('localNotifications.btns.questDraft'),
       });
       this.SetLoader(false);
     },
