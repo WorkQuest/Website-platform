@@ -99,6 +99,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    isClearData: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -111,12 +115,16 @@ export default {
       acceptedTypes: [],
     };
   },
+  watch: {
+    isClearData() {
+      if (this.isClearData) this.files = [];
+    },
+  },
   async created() {
     this.acceptedTypes = this.accept.replace(/\s/g, '').split(',');
     // eslint-disable-next-line no-restricted-syntax
     for (const file of this.preloadedFiles) {
       if (!!file.src && !!file.type) {
-        console.log(22424, 'file', file);
         this.files.push({
           id: this.id,
           file: file.data,

@@ -54,10 +54,7 @@ Vue.mixin({
             url, mediaId, i, files,
           });
         }
-        console.log('this.files', this.files);
         medias.push(mediaId);
-        console.log('mediaId', mediaId);
-        console.log('file', [i], this.files[i]?.file);
         if (files[i]?.file) {
           fetchUrlsData.push(this.$store.dispatch('user/uploadFile', {
             url,

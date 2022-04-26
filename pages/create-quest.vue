@@ -62,6 +62,7 @@
       </div>
       <specializations-selector
         :skills="selectedSpecAndSkills"
+        :is-clear-data="isClearData"
         @changeSkills="updateSelectedSkills"
       />
       <div class="page__address">
@@ -132,6 +133,7 @@
           :limit-bytes-video="10485760"
           :accept="'image/png, image/jpg, image/jpeg, video/mp4'"
           :preloaded-files="files"
+          :is-clear-data="isClearData"
           @change="updateFiles"
         />
       </div>
@@ -179,6 +181,7 @@ export default {
       addresses: [],
       files: [],
       geoCode: null,
+      isClearData: false,
     };
   },
   computed: {
@@ -215,15 +218,24 @@ export default {
       return new BigNumber(this.price).multipliedBy(1 + CommissionForCreatingAQuest).toString();
     },
   },
-  async beforeRouteLeave(to, from, next) {
-    await this.setQuestDraft();
-    next();
-  },
   async beforeCreate() {
     await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
   async created() {
+    const questDraft = this.$cookies.get('questDraft');
+    const questDraftMedias = this.$cookies.get('questDraftMedias');
     await this.fillQuestFromQuestDraft();
+    if (questDraft || questDraftMedias) {
+      this.ShowModal({
+        key: 'areYouSure',
+        text: this.$t('modals.draft.youHaveAQuestDraft'),
+        okBtnTitle: this.$t('meta.btns.delete'),
+        okBtnFunc: async () => {
+          await this.clearData();
+        },
+        cancelBtnFunc: async () => this.CloseModal(),
+      });
+    }
   },
   async mounted() {
     if (!this.isWalletConnected) return;
@@ -234,7 +246,25 @@ export default {
     });
     this.SetLoader(false);
   },
+  async beforeDestroy() {
+    await this.setQuestDraft();
+  },
   methods: {
+    clearData() {
+      this.$cookies.remove('questDraft');
+      this.$cookies.remove('questDraftMedias');
+      this.isClearData = true;
+      this.selectedSpecAndSkills = [];
+      this.questTitle = '';
+      this.textarea = '';
+      this.price = '';
+      this.employmentIndex = 0;
+      this.workplaceIndex = 0;
+      this.runtimeIndex = 0;
+      this.address = '';
+      this.coordinates = { lng: 0, lat: 0 };
+      this.files = [];
+    },
     async setMedias(isUpload) {
       const questDraftMedias = this.$cookies.get('questDraftMedias');
       const preloadedArr = this.files.filter((file) => file.mode === 'preloaded');
@@ -247,28 +277,35 @@ export default {
       return medias;
     },
     async setQuestDraft() {
-      // Save quest draft in cookie questDraft
       this.SetLoader(true);
-      const medias = await this.setMedias(false);
-      const {
-        workplaceIndex, runtimeIndex, employmentIndex, questTitle,
-        textarea, price, selectedSpecAndSkills, address, coordinates: { lng, lat },
-      } = this;
-      this.$cookies.set('questDraftMedias', medias);
-      this.$cookies.set('questDraft', {
-        workplace: WorkplaceIndex[workplaceIndex],
-        priority: PriorityFilter[runtimeIndex + 1].value,
-        employment: TypeOfJobFilter[employmentIndex],
-        title: questTitle,
-        description: textarea,
-        price,
-        specializationKeys: selectedSpecAndSkills,
-        locationFull: {
-          location: {
-            longitude: lng,
-            latitude: lat,
-          },
-          locationPlaceName: address,
+      this.ShowModal({
+        key: 'areYouSure',
+        text: this.$t('modals.draft.saveQuestDraft'),
+        okBtnTitle: this.$t('meta.btns.save'),
+        cancelBtnFunc: async () => this.clearData(),
+        okBtnFunc: async () => {
+          const medias = await this.setMedias(false);
+          const {
+            workplaceIndex, runtimeIndex, employmentIndex, questTitle,
+            textarea, price, selectedSpecAndSkills, address, coordinates: { lng, lat },
+          } = this;
+          this.$cookies.set('questDraftMedias', medias);
+          this.$cookies.set('questDraft', {
+            workplace: WorkplaceIndex[workplaceIndex],
+            priority: PriorityFilter[runtimeIndex + 1].value,
+            employment: TypeOfJobFilter[employmentIndex],
+            title: questTitle,
+            description: textarea,
+            price,
+            specializationKeys: selectedSpecAndSkills,
+            locationFull: {
+              location: {
+                longitude: lng,
+                latitude: lat,
+              },
+              locationPlaceName: address,
+            },
+          });
         },
       });
       this.SetLoader(false);

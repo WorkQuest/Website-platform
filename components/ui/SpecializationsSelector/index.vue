@@ -97,6 +97,10 @@ import { mapGetters } from 'vuex';
 export default {
   name: 'SpecializationsSelector',
   props: {
+    isClearData: {
+      type: Boolean,
+      default: false,
+    },
     skills: {
       type: Array,
       default: null,
@@ -164,7 +168,20 @@ export default {
       return Object.values(this.displaySpecIndex);
     },
   },
-  async mounted() {
+  watch: {
+    async isClearData() {
+      if (this.isClearData) {
+        this.specCount = 0;
+        this.specIndex = { 1: -1, 2: -1, 3: -1 };
+        this.displaySpecIndex = { 1: -1, 2: -1, 3: -1 };
+        this.hideSelectedSkills = { 1: [], 2: [], 3: [] };
+        this.skillIndex = { 1: -1, 2: -1, 3: -1 };
+        this.selectedSkills = { 1: [], 2: [], 3: [] };
+      }
+    },
+  },
+  // TODO: Добавить очистку
+  async beforeMount() {
     if (this.skills && this.skills.length) await this.fillData();
     if (!this.filters) await this.$store.dispatch('quests/getFilters');
   },
