@@ -32,6 +32,7 @@
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import modals from '~/store/modals/modals';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'DefaultLayout',
@@ -48,9 +49,12 @@ export default {
     }),
   },
   async mounted() {
-    if (!this.$cookies.get('downloadAppDisplayed')) {
+    if (!this.$cookies.get('isWorkQuestsAppShowed') && this.$route.path !== Path.WALLET) {
       this.ShowModal({
         key: modals.downloadApp,
+        title: this.$tc('modals.titles.downloadApp'),
+        subtitle: this.$t('modals.downOnSmartphone'),
+        app: 'isWorkQuestsAppShowed',
       });
     }
     this.GetLocation();

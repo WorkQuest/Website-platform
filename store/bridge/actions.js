@@ -168,6 +168,7 @@ export default {
     try {
       await this.$wsNotifs.subscribe(`${Path.NOTIFICATIONS}${Path.BRIDGE}/${userAddress}`, async (msg) => {
         const swaps = JSON.parse(JSON.stringify(getters.getSwaps));
+        let swapsCount = JSON.parse(JSON.stringify(getters.getSwapsCount));
         const {
           event, signData, transactionHash, returnValues: {
             amount, chainFrom, chainTo, sender, timestamp,
@@ -190,18 +191,18 @@ export default {
             recipient: sender,
             status: true,
           });
-        }
-        if (event === BridgeEvents.SWAP_REDEEMED) {
-          // eslint-disable-next-line array-callback-return
+          swapsCount += 1;
+        } else if (event === BridgeEvents.SWAP_REDEEMED) {
           swaps.some((item) => {
             if (item.nonce === +msg.data.returnValues.nonce) {
               item.status = false;
               item.canRedeemed = false;
+              return true;
             }
+            return false;
           });
         }
-        const { result: { count } } = await this.$axios.$get(`/v1/bridge/recipient/${userAddress}/swaps`);
-        commit('setSwapsData', { count, swaps });
+        commit('setSwapsData', { count: swapsCount, swaps });
       });
     } catch (err) {
       console.error('subscribeToBridgeEvents err', err);
