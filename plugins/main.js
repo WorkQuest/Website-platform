@@ -38,7 +38,6 @@ Vue.mixin({
     async pushLocalNotifications() {
       const KYC = this.$cookies.get(LocalNotificationAction.TWOFA);
       const TWOFA = this.$cookies.get(LocalNotificationAction.KYC);
-      console.log('this.profileFilled', this.profileFilled);
       await this.checkProfileFilled();
       // TODO: Добавить локализацию
       await this.$store.dispatch('notifications/createLocalNotification', {

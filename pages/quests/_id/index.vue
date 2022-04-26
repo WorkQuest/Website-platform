@@ -273,13 +273,18 @@ export default {
   },
   methods: {
     async localNotificationReviewUser() {
-      if (this.quest.status === QuestStatuses.Done && this.userData.id === this.quest.userId && !this.quest.yourReview) {
+      const {
+        status, userId, yourReview, id,
+      } = this.quest;
+      if (status === QuestStatuses.Done && this.userData.id === userId && !yourReview) {
         // TODO: Добавить локализацию!
         await this.$store.dispatch('notifications/createLocalNotification', {
           id: '7',
           action: LocalNotificationAction.RATE_THE_QUEST,
           message: 'Please rate the completed work on the quest',
           actionBtn: 'Go to Quest page',
+          date: '',
+          questId: id,
         });
       }
     },
@@ -550,16 +555,21 @@ export default {
           fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
         },
         submitMethod: async () => {
-          const txRes = await this.$store.dispatch('quests/acceptJobResult', contractAddress);
+          const { userRole, $store, quest: { assignedWorkerId, user: { id } } } = this;
+          const txRes = await $store.dispatch('quests/acceptJobResult', contractAddress);
           if (txRes.ok) {
             this.showQuestModal(2);
-            await this.$store.dispatch('quests/setInfoDataMode', QuestStatuses.Done);
-            // TODO: Добавить локализацию && Надо ли???
-            await this.$store.dispatch('notifications/createLocalNotification', {
+            await $store.dispatch('quests/setInfoDataMode', QuestStatuses.Done);
+            // TODO: Добавить локализацию
+            await $store.dispatch('notifications/createLocalNotification', {
               id: '6',
               action: LocalNotificationAction.REVIEW_USER,
-              message: this.userRole === UserRole.EMPLOYER ? 'Please, review your employer!' : 'Please, review your worker!',
-              actionBtn: this.userRole === UserRole.EMPLOYER ? 'Go to Employer Profile' : 'Go to Worker Profile',
+              message: userRole === UserRole.EMPLOYER ? 'Please, review your employer!' : 'Please, review your worker!',
+              actionBtn: userRole === UserRole.EMPLOYER ? 'Go to Employer Profile' : 'Go to Worker Profile',
+              questId: '',
+              userId: userRole === UserRole.EMPLOYER ? assignedWorkerId : id,
+              date: '',
+              // toUserId
             });
           }
         },

@@ -10,7 +10,7 @@ import { error, success } from '~/utils/web3';
 
 export default {
   async createLocalNotification({ commit, getters, dispatch }, {
-    id, action, message, title, actionBtn, date,
+    id, action, message, title, actionBtn, questId, userId, date,
   }) {
     async function setLocalNotification() {
       if (!action && !message && !title) return {};
@@ -24,6 +24,8 @@ export default {
           actionBtn,
           data: {
             title,
+            questId,
+            userId,
             createdAt: moment(date || Date.now()).format('MMMM Do YYYY, h:mm'),
             message,
             sender: {
@@ -49,7 +51,6 @@ export default {
     if (!isAdded) await dispatch('addNotification', notification);
   },
   async removeNotification({ dispatch, commit, rootGetters }, { config, notificationId, notification }) {
-    // TODO: Дописать логику удаления для локальных нотификаций
     const { params } = notification;
     if (notification.actionNameKey === `notifications.${LocalNotificationAction.TWOFA}`) this.$cookies.set(LocalNotificationAction.TWOFA, rootGetters['user/getStatus2FA'] !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: false });
     if (notification.actionNameKey === `notifications.${LocalNotificationAction.KYC}`) this.$cookies.set(LocalNotificationAction.KYC, rootGetters['user/getStatusKYC'] !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: false });
@@ -107,7 +108,7 @@ export default {
     const { action, data } = notification.notification;
     const {
       id, title, quest, user, worker, comment, employer, fromUser, rootComment,
-      assignedWorker, message, toUserId, discussion, problemDescription,
+      assignedWorker, message, toUserId, discussion, problemDescription, questId,
     } = data;
     const currentUserId = getUserData.id;
     const userRole = rootGetters.getUserRole;
@@ -125,6 +126,7 @@ export default {
         if (comment?.author && action === NotificationAction.COMMENT_LIKED) notification.sender = comment.author;
         if (rootComment?.author && action === NotificationAction.NEW_COMMENT_IN_DISCUSSION) notification.sender = rootComment.author;
         if (quest?.user && notificationCommonFilterActions.includes(action)) notification.sender = quest.user;
+        // TODO: После обновления убрать лишний ключ
         if ([
           NotificationActionFromContract.QUEST_STATUS_UPDATED1,
           NotificationActionFromContract.QUEST_STATUS_UPDATED2,
@@ -219,14 +221,14 @@ export default {
 
       /** Workquest local */
       case LocalNotificationAction.REVIEW_USER:
-        // TODO: Добавить toUserId
+        // TODO: проверить!!!
         await setAllNotificationsParams(message, `${Path.PROFILE}/${toUserId}`, false, '', true);
         await updateProfile();
         break;
 
       case LocalNotificationAction.RATE_THE_QUEST:
-        // TODO: Добавить quest id в локальную нотификацию
-        await setAllNotificationsParams(message, `${Path.QUESTS}/${id}`, false, '', true);
+        // TODO: проверить!!!
+        await setAllNotificationsParams(message, `${Path.QUESTS}/${questId}`, false, '', true);
         break;
 
       case NotificationActionFromContract.QUEST_STATUS_UPDATED1:
@@ -237,7 +239,12 @@ export default {
       }
 
       case LocalNotificationAction.GET_REWARD:
+        // TODO: дописать нет логики рефералки
         await setAllNotificationsParams(title, '', false, '', true);
+        break;
+
+      case LocalNotificationAction.QUEST_DRAFT:
+        await setAllNotificationsParams(title, `${Path.CREATE_QUEST}`, false, '', true);
         break;
 
       case LocalNotificationAction.WIKI:

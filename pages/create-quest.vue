@@ -157,6 +157,7 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import {
+  LocalNotificationAction,
   PriorityFilter, TokenSymbols, TypeOfJobFilter, WorkplaceIndex,
 } from '~/utils/enums';
 import { CommissionForCreatingAQuest } from '~/utils/quests-constants';
@@ -281,6 +282,13 @@ export default {
           },
           locationPlaceName: address,
         },
+      });
+      // TODO: Добавить локализацию!
+      await this.$store.dispatch('notifications/createLocalNotification', {
+        id: '8',
+        action: LocalNotificationAction.QUEST_DRAFT,
+        message: 'You have a saved draft of the quest.',
+        actionBtn: 'Go to Create Quest page',
       });
       this.SetLoader(false);
     },

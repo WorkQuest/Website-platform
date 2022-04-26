@@ -160,6 +160,7 @@ export const LocalNotificationAction = {
   PROFILE_FILLED: 'filled',
   REVIEW_USER: 'review',
   RATE_THE_QUEST: 'quest',
+  QUEST_DRAFT: 'questDraft',
 };
 
 // TODO: Временно, новые ивенты с большой буквы
