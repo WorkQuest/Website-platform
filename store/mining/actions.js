@@ -6,7 +6,7 @@ import {
 
 import BigNumber from 'bignumber.js';
 import { Path, Chains } from '~/utils/enums';
-import { Pool } from '~/utils/Constants/mining';
+import { Pool } from '~/utils/сonstants/mining';
 
 import {
   error,

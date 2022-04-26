@@ -69,7 +69,7 @@
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import { Path } from '~/utils/enums';
-import { QuestStatuses } from '~/utils/quests-constants';
+import { QuestStatuses } from '~/utils/сonstants/quests';
 import modals from '~/store/modals/modals';
 
 export default {

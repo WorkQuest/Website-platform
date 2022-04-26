@@ -241,7 +241,7 @@ import {
   Path, TokenSymbols, Chains,
 } from '~/utils/enums';
 import { getChainIdByChain } from '~/utils/web3';
-import { Pool, PoolURL } from '~/utils/Constants/mining';
+import { Pool, PoolURL } from '~/utils/сonstants/mining';
 import { images } from '~/utils/images';
 
 export default {

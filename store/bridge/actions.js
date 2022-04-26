@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js';
 import { Path } from '~/utils/enums';
 import {
   BlockchainByIndex, BridgeAddresses, BridgeEvents, SwapAddresses,
-} from '~/utils/bridge-constants';
+} from '~/utils/сonstants/bridge';
 
 import {
   error,

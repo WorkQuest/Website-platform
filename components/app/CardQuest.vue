@@ -175,7 +175,7 @@ import BigNumber from 'bignumber.js';
 import {
   questPriority, UserRole, Path, TokenSymbols, QuestModeReview,
 } from '~/utils/enums';
-import { QuestStatuses } from '~/utils/quests-constants';
+import { QuestStatuses } from '~/utils/сonstants/quests';
 import modals from '~/store/modals/modals';
 
 export default {

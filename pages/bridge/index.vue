@@ -178,7 +178,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import modals from '~/store/modals/modals';
 import { Chains } from '~/utils/enums';
-import { BridgeAddresses, SwapAddresses } from '~/utils/bridge-constants';
+import { BridgeAddresses, SwapAddresses } from '~/utils/сonstants/bridge';
 import { getChainIdByChain } from '~/utils/web3';
 import { images } from '~/utils/images';
 

@@ -165,7 +165,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { Path } from '~/utils/enums';
-import { URLS, LEGAL_INFO, COMPANY } from '~/utils/footer-constants';
+import { URLS, LEGAL_INFO, COMPANY } from '~/utils/сonstants/footer';
 
 export default {
   name: 'Footer',

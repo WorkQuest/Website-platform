@@ -4,7 +4,7 @@ import VueTippy, { TippyComponent } from 'vue-tippy';
 import converter from 'bech32-converting';
 import modals from '~/store/modals/modals';
 import { TokenSymbols } from '~/utils/enums';
-import { QuestMethods, QuestStatuses } from '~/utils/quests-constants';
+import { QuestMethods, QuestStatuses } from '~/utils/сonstants/quests';
 import { images } from '~/utils/images';
 
 Vue.use(VueTippy);

@@ -73,7 +73,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { Path } from '~/utils/enums';
-import { QuestStatuses, InfoModeEmployer } from '~/utils/quests-constants';
+import { QuestStatuses, InfoModeEmployer } from '~/utils/сonstants/quests';
 import skills from '~/components/app/pages/common/skills';
 import modals from '~/store/modals/modals';
 

@@ -57,7 +57,7 @@
 
 import { mapGetters } from 'vuex';
 import { UserRole, Path } from '~/utils/enums';
-import { QuestStatuses } from '~/utils/quests-constants';
+import { QuestStatuses } from '~/utils/сonstants/quests';
 
 export default {
   name: 'My',
