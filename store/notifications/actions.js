@@ -170,10 +170,7 @@ export default {
     async function updateProfile() {
       /* For update user profile */
       if (currentPath === `${Path.PROFILE}/${currentUserId}`) {
-        const query = {
-          limit: 8,
-          offset: 0,
-        };
+        const query = { limit: 8, offset: 0 };
         await dispatch('user/getAllUserReviews', { userId: currentUserId, query }, { root: true });
       }
     }
