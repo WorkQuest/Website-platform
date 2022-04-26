@@ -491,6 +491,10 @@ export default {
         }
       }
     },
+    /**
+     * @property $wsChatActions
+     * @return {Promise<void>}
+     */
     async initWSListeners() {
       const { chatActionsConnection, notifsConnection } = this.connections;
       if (!notifsConnection) {

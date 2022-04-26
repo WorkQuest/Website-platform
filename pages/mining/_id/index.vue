@@ -397,8 +397,8 @@ export default {
       });
     },
   },
-  async beforeMount() {
-    this.$nuxt.setLayout(this.isAuth ? 'default' : 'guest');
+  beforeMount() {
+    if (this.isAuth) this.$nuxt.setLayout('default');
   },
   async mounted() {
     this.SetLoader(true);

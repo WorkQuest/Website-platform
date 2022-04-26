@@ -35,6 +35,6 @@ export default async function ({
   } catch (e) {
     console.error(e);
     await store.dispatch('user/logout');
-    return redirect('/sign-in');
+    return redirect(Path.SIGN_IN);
   }
 }

@@ -118,6 +118,7 @@ export default {
     },
   },
   created() {
+    this.$wsNotifs.connect(null);
     window.addEventListener('resize', this.userWindowChange);
   },
   destroyed() {

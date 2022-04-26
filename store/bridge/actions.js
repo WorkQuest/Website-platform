@@ -164,7 +164,7 @@ export default {
       return error(e.code, 'Error in swap action', e.data);
     }
   },
-  async subscribeToBridgeEvents({ commit, getters }, userAddress) {
+  async subscribeWS({ commit, getters }, userAddress) {
     try {
       await this.$wsNotifs.subscribe(`${Path.NOTIFICATIONS}${Path.BRIDGE}/${userAddress}`, async (msg) => {
         const swaps = JSON.parse(JSON.stringify(getters.getSwaps));
@@ -205,14 +205,14 @@ export default {
         commit('setSwapsData', { count: swapsCount, swaps });
       });
     } catch (err) {
-      console.error('subscribeToBridgeEvents err', err);
+      console.error('subscribeWS err', err);
     }
   },
-  async unsubscribeToBridgeEvents(_, userAddress) {
+  async unsubscribeWS(_, userAddress) {
     try {
       await this.$wsNotifs.unsubscribe(`${Path.NOTIFICATIONS}${Path.BRIDGE}/${userAddress}`);
     } catch (err) {
-      console.error('unsubscribeToBridgeEvents err', err);
+      console.error('unsubscribeWS err', err);
     }
   },
 };

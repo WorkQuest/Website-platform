@@ -279,8 +279,8 @@ export default {
       await this.swapsTableData();
     },
   },
-  mounted() {
-    this.$nuxt.setLayout(this.isAuth ? 'default' : 'guest');
+  beforeMount() {
+    if (this.isAuth) this.$nuxt.setLayout('default');
   },
   async beforeDestroy() {
     this.$store.commit('bridge/resetToken');
@@ -293,8 +293,8 @@ export default {
       resetSwaps: 'bridge/resetMySwaps',
       redeem: 'bridge/redeemSwap',
       swap: 'bridge/swap',
-      subscribe: 'bridge/subscribeToBridgeEvents',
-      unsubscribe: 'bridge/unsubscribeToBridgeEvents',
+      subscribe: 'bridge/subscribeWS',
+      unsubscribe: 'bridge/unsubscribeWS',
 
       goToChain: 'web3/goToChain',
       connectWallet: 'web3/connect',
@@ -312,7 +312,6 @@ export default {
       else {
         const { chain } = addresses[sourceAddressInd];
         await this.connectWallet({ chain });
-        if (!this.connections.notifsConnection) await this.$wsNotifs.connect(this.token);
         await this.subscribe(this.account.address);
       }
     },

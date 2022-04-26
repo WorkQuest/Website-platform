@@ -9,8 +9,7 @@ export default {
       let n = 0;
       while (n <= lastElementIndex) {
         const position = lastElementIndex - n;
-        const currentDayInTheChart = window.$nuxt.$root.$moment(chartDataAsc[position].date * 1000).utc(false);
-        if (window.$nuxt.$root.$moment(dayToDisplay).isSameOrAfter(currentDayInTheChart, 'days')) {
+        if (window.$nuxt.$root.$moment(dayToDisplay).isSameOrAfter(chartDataAsc[position].date, 'days')) {
           return {
             ...chartDataAsc[position],
             date: dayToDisplay,

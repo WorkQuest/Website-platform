@@ -28,46 +28,21 @@ import { ERC20, WQTExchange } from '~/abi';
 
 BigNumber.config({ EXPONENTIAL_AT: 60 });
 
-/**
- * Returns prepared data for swaps table on liquidity mining page.
- * @param {Array} swaps - array of swaps from back
- * @returns {Array.<{
- * isOut: boolean,
- * totalValue: string,
- * amount0: string,
- * amount1: string,
- * account: string,
- * timestamp: string,
- * }>}
- * amount0 - have to WQT!
- * amount1 - pool's token
- * @property swap.amountUSD
- */
-function prepareDataForSwapsTable(swaps) {
-  return swaps.map((swap) => {
-    const isOut = swap.amount0In === '0';
-    return {
-      isOut,
-      totalValue: swap.amountUSD,
-      amount0: isOut ? swap.amount0Out : swap.amount0In,
-      amount1: isOut ? swap.amount1In : swap.amount1Out,
-      account: swap.to,
-      timestamp: swap.timestamp || swap.transaction.timestamp,
-    };
-  });
-}
+const pools = {
+  [Chains.BINANCE]: 'wqt-wbnb',
+  [Chains.ETHEREUM]: 'wqt-weth',
+};
 
 export default {
 
   async fetchChartData({ commit }, pool) {
     try {
-      const pools = {
-        [Chains.BINANCE]: 'wqt-wbnb',
-        [Chains.ETHEREUM]: 'wqt-weth',
-      };
       const { ok, result: { data } } = await this.$axios.$get(`/v1/pool-liquidity/${pools[pool]}/token-day?limit=10`);
       commit('setTotalLiquidityUSD', data[0].reserveUSD);
-      commit('setChartData', data.reverse());
+      commit('setChartData', data.reverse().map((item) => ({
+        ...item,
+        date: this.$moment(item.date * 1000).utc(false),
+      })));
       return ok;
     } catch (e) {
       console.error('mining/fetchETHChart');
@@ -75,66 +50,34 @@ export default {
     }
   },
 
-  async fetchSwaps({ dispatch }, { pool, params }) {
-    switch (pool) {
-      case Chains.BINANCE:
-        await dispatch('fetchBNBSwaps', params);
-        break;
-      case Chains.ETHEREUM:
-        await dispatch('fetchETHSwaps', params);
-        break;
-      default:
-        console.error('Unknown pool:', pool);
-        break;
-    }
-  },
-
-  async fetchBNBSwaps({ commit }, { limit = 10, offset = 0 }) {
+  async fetchSwaps({ commit }, { pool, params }) {
     try {
-      const { ok, result } = await this.$axios.$get('/v1/pool-liquidity/wqt-wbnb/swaps', {
-        params: {
-          limit,
-          offset,
-        },
+      const { ok, result: { data } } = await this.$axios.$get(`/v1/pool-liquidity/${pools[pool]}/swaps`, {
+        params,
       });
-      // amount0 - это WQT
-      // amount1 - это WBNB
-      const swaps = result.swaps.map((swap) => ({
-        ...swap,
-        amount0In: new BigNumber(swap.amount0In).shiftedBy(-18).decimalPlaces(3).toString(),
-        amount0Out: new BigNumber(swap.amount0Out).shiftedBy(-18).decimalPlaces(3).toString(),
-        amount1In: new BigNumber(swap.amount1In).shiftedBy(-18).decimalPlaces(3).toString(),
-        amount1Out: new BigNumber(swap.amount1Out).shiftedBy(-18).decimalPlaces(3).toString(),
+
+      /**
+       * @property swap.amount0In - token came to pool
+       * @property swap.amount0Out - token go out from pool
+       * @property swap.amount1In - wqt came to pool
+       * @property swap.amount1Out - wqt go out from pool
+       * @property swap.amountUSD
+       */
+      commit('setSwaps', data.map((swap) => {
+        const isOut = swap.amount0In === '0';
+        return {
+          isOut,
+          ...swap,
+          account: swap.to,
+          timestamp: swap.timestamp,
+          totalValue: swap.amountUSD,
+          amount0: new BigNumber(isOut ? swap.amount0Out : swap.amount0In).shiftedBy(-18).decimalPlaces(3).toString(),
+          amount1: new BigNumber(isOut ? swap.amount1In : swap.amount1Out).shiftedBy(-18).decimalPlaces(3).toString(),
+        };
       }));
-      commit('setSwaps', prepareDataForSwapsTable(swaps));
       return ok;
     } catch (e) {
-      console.error('mining/fetchBNBSwaps');
-      return false;
-    }
-  },
-
-  async fetchETHSwaps({ commit }, { limit = 10, offset = 0 }) {
-    try {
-      const { ok, result } = await this.$axios.$get('/v1/pool-liquidity/wqt-weth/swaps', {
-        params: {
-          limit,
-          offset,
-        },
-      });
-      // amount0 - это WETH
-      // amount1 - это WQT
-      const swaps = result.map((swap) => ({
-        ...swap,
-        amount1In: swap.amount0In,
-        amount1Out: swap.amount0Out,
-        amount0In: swap.amount1In,
-        amount0Out: swap.amount1Out,
-      }));
-      commit('setSwaps', prepareDataForSwapsTable(swaps));
-      return ok;
-    } catch (e) {
-      console.error('mining/fetchETHSwaps');
+      console.error('mining/fetchSwaps');
       return false;
     }
   },
@@ -143,14 +86,17 @@ export default {
    * @property $wsNotifs
    * @param commit
    * @param getters
-   * @param rootGetters
    * @return {Promise<void>}
    */
-  async subscribeWS({ commit, getters, rootGetters }) {
+  async subscribeWS({ commit, getters }) {
     try {
-      console.log('subscribeWS', rootGetters['main/notificationsConnectionStatus']);
-      await this.$wsNotifs.subscribe(`${Path.NOTIFICATIONS}/daily_liquidity`, async (event) => {
-        console.log(event);
+      await this.$wsNotifs.subscribe(`${Path.NOTIFICATIONS}/dailyLiquidity`, async (event) => {
+        const { reserveUSD } = event.data;
+        commit('setTotalLiquidityUSD', reserveUSD);
+
+        const chartData = JSON.parse(JSON.stringify(getters.getChartData));
+        chartData[chartData.length - 1].reserveUSD = reserveUSD;
+        commit('setChartData', chartData);
       });
     } catch (e) {
       console.error('mining/subscribeWS', e);
@@ -159,8 +105,7 @@ export default {
 
   async unsubscribeWS({ _ }) {
     try {
-      console.log('unsubscribeWS');
-      await this.$wsNotifs.unsubscribe();
+      await this.$wsNotifs.unsubscribe(`${Path.NOTIFICATIONS}/dailyLiquidity`);
     } catch (e) {
       console.error('mining/unsubscribeWS', e);
     }
