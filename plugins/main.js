@@ -28,22 +28,21 @@ Vue.mixin({
       // eslint-disable-next-line no-restricted-syntax
       for (const item of files) {
         if (item.mediaId) medias.push(item.mediaId);
-        fetchData.push(this.$store.dispatch('user/getUploadFileLink', { contentType: item.file?.type }));
+        else fetchData.push(this.$store.dispatch('user/getUploadFileLink', { contentType: item.file?.type }));
       }
       if (!fetchData.length) return medias;
       const urls = await Promise.all(fetchData);
-      let urlId = 0;
       for (let i = 0; i < files.length; i += 1) {
-        const { mediaId, url } = urls[urlId];
+        const { file } = files[i];
+        const { mediaId, url } = urls[i];
         medias.push(mediaId);
-        if (files[i]?.file) {
+        if (file) {
           fetchUrlsData.push(this.$store.dispatch('user/uploadFile', {
             url,
-            data: files[i].file,
-            contentType: files[i].file.type,
+            data: file,
+            contentType: file.type,
           }));
         }
-        urlId += 1;
       }
       await Promise.all(fetchUrlsData);
       return medias;

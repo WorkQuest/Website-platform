@@ -221,7 +221,7 @@ export default {
   async beforeCreate() {
     await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
-  async created() {
+  async beforeMount() {
     const questDraft = this.$cookies.get('questDraft');
     await this.fillQuestFromQuestDraft(questDraft);
     if (questDraft) {
@@ -229,7 +229,7 @@ export default {
         key: modals.areYouSure,
         text: this.$t('modals.draft.youHaveAQuestDraft'),
         okBtnTitle: this.$t('meta.btns.delete'),
-        okBtnFunc: await this.clearData,
+        okBtnFunc: this.clearData,
       });
     }
   },
