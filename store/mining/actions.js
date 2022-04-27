@@ -82,12 +82,6 @@ export default {
     }
   },
 
-  /**
-   * @property $wsNotifs
-   * @param commit
-   * @param getters
-   * @return {Promise<void>}
-   */
   async subscribeWS({ commit, getters }) {
     try {
       await this.$wsNotifs.subscribe(`${Path.NOTIFICATIONS}/dailyLiquidity`, async (event) => {

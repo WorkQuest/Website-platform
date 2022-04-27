@@ -446,8 +446,6 @@ export default {
   },
   destroyed() {
     window.removeEventListener('resize', this.userWindowChange);
-    this.$wsNotifs.disconnect();
-    this.$wsChatActions.disconnect();
   },
   methods: {
     async chatAction({ data, action }) {
@@ -492,11 +490,13 @@ export default {
       }
     },
     /**
+     * @property $wsNotifs
      * @property $wsChatActions
      * @return {Promise<void>}
      */
     async initWSListeners() {
       const { chatActionsConnection, notifsConnection } = this.connections;
+
       if (!notifsConnection) {
         await this.$wsNotifs.connect(this.token);
         const subscribes = ['chat', 'quest'];
@@ -505,6 +505,7 @@ export default {
           else await this.$store.dispatch('user/addNotification', ev);
         })));
       }
+
       if (!chatActionsConnection) await this.$wsChatActions.connect(this.token);
     },
     async getStatistic() {
