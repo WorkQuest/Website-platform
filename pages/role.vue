@@ -153,14 +153,9 @@ export default {
     window.addEventListener('beforeunload', this.clearCookies);
   },
   async beforeMount() {
-    const access = this.$cookies.get('access');
     const userStatus = this.$cookies.get('userStatus');
-    if (!access) {
-      await this.$router.push(Path.SIGN_IN);
-      return;
-    }
     if (!this.userData.id && +userStatus === UserStatuses.Confirmed) await this.$store.dispatch('user/getUserData');
-    if (this.userData.wallet?.address && this.userData.status === UserStatuses.Confirmed) {
+    if (this.userData.wallet?.address && userStatus === UserStatuses.Confirmed) {
       this.isWalletAssigned = true;
       this.isClearOnDestroy = false;
       await this.redirectUser();
