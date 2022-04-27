@@ -501,6 +501,7 @@ export default {
       } = this;
       if (!notifsConnection) {
         await $wsNotifs.connect(token);
+        // TODO: проверить `bridge/${userWalletAddress}`, `referral/${userWalletAddress}`
         const subscribes = ['chat', 'quest', 'dao', 'proposal', 'dailyLiquidity', `bridge/${userWalletAddress}`, `referral/${userWalletAddress}`];
         await Promise.all(subscribes.map((path) => $wsNotifs.subscribe(`${Path.NOTIFICATIONS}/${path}`, async (ev) => {
           if (path === 'chat') await this.chatAction(ev);
