@@ -113,7 +113,6 @@ export default {
   async mounted() {
     this.SetLoader(true);
     this.requestParams = {
-      userId: this.userData.id,
       role: this.userRole,
       specializations: null,
       query: {
