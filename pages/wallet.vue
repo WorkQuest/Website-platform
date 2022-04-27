@@ -263,7 +263,7 @@ export default {
       address: this.convertToBech32('ethm', this.userWalletAddress),
       hexAddress: this.userWalletAddress,
       date: this.$moment(),
-      updateWalletData: async () => await this.loadData(),
+      updateWalletData: this.loadData,
     });
     await this.loadData();
   },
