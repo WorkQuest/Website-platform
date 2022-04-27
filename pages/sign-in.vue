@@ -186,6 +186,8 @@ export default {
     ...mapGetters({
       userData: 'user/getUserData',
       isLoading: 'main/getIsLoading',
+
+      connections: 'main/notificationsConnectionStatus',
     }),
     walletState() {
       return WalletState;
@@ -295,7 +297,7 @@ export default {
       // Redirect to confirm account
       if (confirmToken) {
         setCipherKey(this.model.password);
-        this.redirectUser();
+        await this.redirectUser();
         this.SetLoader(false);
         return;
       }
@@ -332,7 +334,7 @@ export default {
         const wallet = createWallet(sessionMnemonic);
         if (wallet && wallet.address.toLowerCase() === this.userWalletAddress) {
           this.saveToStorage(wallet);
-          this.redirectUser();
+          await this.redirectUser();
           this.SetLoader(false);
           return;
         }
@@ -344,7 +346,7 @@ export default {
         const wallet = createWallet(mnemonic);
         if (wallet && wallet.address.toLowerCase() === this.userWalletAddress) {
           this.saveToStorage(wallet);
-          this.redirectUser();
+          await this.redirectUser();
           this.SetLoader(false);
           return;
         }
@@ -419,6 +421,11 @@ export default {
       }
       sessionStorage.removeItem('confirmToken');
       if (!this.userData.id) await this.$store.dispatch('user/getUserData');
+
+      // this is necessary for the case when the user was in the guest layout and then decided to log in
+      // $wsNotifs was connected on guest layout without token, it will be reconnect in header with token
+      if (this.connections.notifsConnection) await this.$wsNotifs.disconnect();
+
       if (this.userData.role === UserRole.EMPLOYER) await this.$router.push(Path.WORKERS);
       else if (this.userData.role === UserRole.WORKER) await this.$router.push(Path.QUESTS);
     },

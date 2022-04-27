@@ -64,7 +64,7 @@ import { mapGetters } from 'vuex';
 import {
   ChatType, Path,
 } from '~/utils/enums';
-import { QuestStatuses } from '~/utils/quests-constants';
+import { QuestStatuses } from '~/utils/сonstants/quests';
 import modals from '~/store/modals/modals';
 
 export default {

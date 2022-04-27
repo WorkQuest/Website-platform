@@ -239,7 +239,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { STATUS_INFO } from '~/utils/referral-constants';
+import { STATUS_INFO } from '~/utils/сonstants/referral';
 import modals from '~/store/modals/modals';
 import { getStyledAmount } from '~/utils/wallet';
 

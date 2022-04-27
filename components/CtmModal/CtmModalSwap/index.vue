@@ -87,7 +87,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import { Chains, TokenSymbols } from '~/utils/enums';
-import { BridgeAddresses } from '~/utils/bridge-constants';
+import { BridgeAddresses } from '~/utils/сonstants/bridge';
 
 export default {
   name: 'ModalSwap',

@@ -4,7 +4,7 @@ import VueTippy, { TippyComponent } from 'vue-tippy';
 import converter from 'bech32-converting';
 import modals from '~/store/modals/modals';
 import { TokenSymbols } from '~/utils/enums';
-import { QuestMethods, QuestStatuses } from '~/utils/quests-constants';
+import { QuestMethods, QuestStatuses } from '~/utils/сonstants/quests';
 import { images } from '~/utils/images';
 
 Vue.use(VueTippy);
@@ -231,7 +231,9 @@ Vue.mixin({
       } else if (isDotFirst) {
         const memo = valueWithoutWords.split('');
         memo.unshift('0');
-        if (memo[memo.length - 1] !== '%') { memo.push('%'); }
+        if (memo[memo.length - 1] !== '%') {
+          memo.push('%');
+        }
         value = memo.join('');
       } else {
         value = `${valueWithoutWords}%`;
@@ -259,9 +261,15 @@ Vue.mixin({
     DeclOfNum(n) {
       n = Math.abs(n) % 100;
       const n1 = n % 10;
-      if (n > 10 && n < 20) { return 2; }
-      if (n1 > 1 && n1 < 5) { return 1; }
-      if (n1 === 1 && this.$i18n.locale === 'ru') { return 0; }
+      if (n > 10 && n < 20) {
+        return 2;
+      }
+      if (n1 > 1 && n1 < 5) {
+        return 1;
+      }
+      if (n1 === 1 && this.$i18n.locale === 'ru') {
+        return 0;
+      }
       return 2;
     },
 
@@ -273,7 +281,7 @@ Vue.mixin({
       this.ShowModal({
         key: modals.status,
         img: img || images.SUCCESS,
-        title: title || this.$t('modals.meta.success'),
+        title: title || this.$t('meta.success'),
         subtitle,
         path,
       });
@@ -284,7 +292,7 @@ Vue.mixin({
       this.ShowModal({
         key: modals.status,
         img: img || images.WARNING,
-        title: title || this.$t('modals.meta.fail'),
+        title: title || this.$t('meta.fail'),
         subtitle,
         path,
       });

@@ -1,14 +1,10 @@
 import Web3 from 'web3';
-import Web4 from '@cryptonteam/web4';
 import BigNumber from 'bignumber.js';
 import Web3Modal from 'web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 
 import {
-  ERC20,
   BSCPool,
-  StakingWQ,
-  WQTExchange,
   WQLiquidityMining,
 } from '~/abi/index';
 
@@ -16,14 +12,10 @@ import {
   Chains,
   ChainsId,
   NetworksData,
-  StakingTypes,
   ChainsIdByChainNumber,
 } from '~/utils/enums';
 
-let bscRpcContract = null;
 let web3 = null;
-let web4 = null;
-
 let account = {};
 
 let store;
@@ -67,12 +59,10 @@ export const getChainIdByChain = (chain) => {
     case Chains.BINANCE:
       if (!isProd) return ChainsId.BSC_TEST;
       return ChainsId.BSC_MAIN;
-    case Chains.BNB:
-      if (!isProd) return ChainsId.BSC_TEST;
-      return ChainsId.BSC_MAIN;
     case Chains.WORKNET:
       return ChainsId.WORKNET_TEST;
     default:
+      console.log(chain);
       throw error(-1, `wrong chain name: ${chain} ${Chains.BINANCE} ${Chains.ETHEREUM}`);
   }
 };
@@ -121,54 +111,6 @@ export const goToChain = async (chain) => {
     }
     return { ok: false };
   }
-};
-export const getStakingDataByType = (stakingType, token = '') => {
-  let _stakingAddress;
-  let _stakingAbi;
-  let _tokenAddress;
-  const _miningPoolId = localStorage.getItem('miningPoolId');
-  switch (stakingType) {
-    case StakingTypes.MINING:
-      if (_miningPoolId === Chains.ETHEREUM) {
-        _tokenAddress = process.env.ETHEREUM_LP_TOKEN;
-        _stakingAddress = process.env.ETHEREUM_MINING;
-        _stakingAbi = StakingWQ;
-      } else {
-        _tokenAddress = process.env.BSC_LP_TOKEN;
-        _stakingAddress = process.env.BSC_MINING;
-        _stakingAbi = WQLiquidityMining;
-      }
-      break;
-    case StakingTypes.CROSS_CHAIN:
-      if (_miningPoolId === Chains.ETHEREUM) {
-        _tokenAddress = process.env.ETHEREUM_WQT_TOKEN;
-        _stakingAddress = process.env.ETHEREUM_BRIDGE;
-      } else if (_miningPoolId === Chains.BINANCE || _miningPoolId === Chains.BNB) {
-        _tokenAddress = process.env.BSC_WQT_TOKEN;
-        _stakingAddress = process.env.BSC_BRIDGE;
-      } else if (_miningPoolId === Chains.WORKNET) {
-        switch (token) {
-          case 'BNB':
-            _tokenAddress = process.env.WORKNET_WBNB_TOKEN;
-            break;
-          case 'ETH':
-            _tokenAddress = process.env.WORKNET_WETH_TOKEN;
-            break;
-          default:
-            _tokenAddress = process.env.WORKNET_WQT_TOKEN;
-        }
-        _stakingAddress = process.env.WORKNET_BRIDGE;
-      }
-      break;
-    default:
-      console.error('[getStakingDataByType] wrong staking type: ', stakingType);
-      return false;
-  }
-  return {
-    stakingAddress: _stakingAddress,
-    stakingAbi: _stakingAbi,
-    tokenAddress: _tokenAddress,
-  };
 };
 
 export const fetchContractData = async (_method, _abi, _address, _params, _provider = web3) => {
@@ -324,9 +266,7 @@ export const initWeb3 = async (payload) => {
     let userAddress;
     const provider = await initProvider(payload);
     web3 = new Web3(provider);
-    web4 = new Web4();
     userAddress = await web3.eth.getCoinbase();
-    await web4.setProvider(provider, userAddress);
     if (userAddress === null) {
       await provider.enable();
       userAddress = await web3.eth.getCoinbase();
@@ -354,7 +294,6 @@ export const disconnectWeb3 = () => {
     web3Modal.clearCachedProvider();
   }
   web3 = null;
-  web4 = null;
   account = {};
 };
 
@@ -367,17 +306,34 @@ export const getTransactionCount = async (address = getAccountAddress()) => awai
 // Get current gas price
 export const getGasPrice = async () => await web3.eth.getGasPrice();
 
-export const createInstanceWeb3 = async (ab, address) => new web3.eth.Contract(ab, address);
+export const createInstance = async (abi, address) => new web3.eth.Contract(abi, address);
 
-export const createInstance = async (ab, address) => {
-  const abs = web4.getContractAbstraction(ab);
-  return await abs.getInstance(address);
+export const getAllowance = async (owner, sender, inst = null, abi = null, address = null) => {
+  try {
+    if (!inst) inst = await createInstance(abi, address);
+    return await inst.methods.allowance.apply(null, [owner, sender]).call();
+  } catch (e) {
+    console.error('Error in getAllowance', e);
+    throw e;
+  }
+};
+
+export const makeApprove = async (spender, amount, inst = null, abi = null, address = null) => {
+  try {
+    if (!inst) inst = await createInstance(abi, address);
+    await inst.methods.approve(spender, amount).send({
+      from: getAccountAddress(),
+    });
+  } catch (e) {
+    console.error('Error in makeApprove', e);
+    throw e;
+  }
 };
 
 // Get estimate gas
 export const getEstimateGas = async (contractAbi = null, contractAddress = null, inst = null, method, attr, value = null) => {
   try {
-    if (!inst) inst = createInstanceWeb3(contractAbi, contractAddress);
+    if (!inst) inst = createInstance(contractAbi, contractAddress);
     return await
     (value)
       ? inst.methods[method](...attr).estimateGas({ from: getAccountAddress(), value })
@@ -387,9 +343,6 @@ export const getEstimateGas = async (contractAbi = null, contractAddress = null,
     return false;
   }
 };
-
-let allowance;
-let amount;
 
 // Calculate transaction fee for method
 export const getTransactionFee = async (_abi, _contractAddress, method, data = null, value = null) => {
@@ -401,141 +354,6 @@ export const getTransactionFee = async (_abi, _contractAddress, method, data = n
     return new BigNumber(gasPrice * gasEstimate).shiftedBy(-18).toString();
   } catch (e) {
     return error(500, 'Get transaction fee error', e);
-  }
-};
-
-export const staking = async (_decimals, _amount, _tokenAddress, _stakingAddress, _stakingAbi, duration, stakingType) => {
-  let instance;
-  const isNative = stakingType === StakingTypes.WUSD;
-  if (!isNative) {
-    instance = await createInstance(ERC20, _tokenAddress);
-    allowance = new BigNumber(await fetchContractData('allowance', ERC20, _tokenAddress, [getAccountAddress(), _stakingAddress])).toString();
-  }
-  try {
-    amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
-    if (!isNative && +allowance < +amount) {
-      await store.dispatch('main/setStatusText', 'Approving');
-      showToast('Staking', 'Approving...', 'success');
-      await instance.approve(_stakingAddress, amount);
-      showToast('Staking', 'Approving done', 'success');
-    }
-    showToast('Staking', 'Staking...', 'success');
-    await store.dispatch('main/setStatusText', 'Staking');
-    const payload = {
-      abi: _stakingAbi,
-      address: _stakingAddress,
-    };
-    if (stakingType === StakingTypes.MINING) {
-      payload.data = [amount];
-    } else if (stakingType === StakingTypes.WQT) {
-      payload.data = [amount, duration];
-    } else if (stakingType === StakingTypes.WUSD) {
-      const contractInstance = await createInstance(_stakingAbi, _stakingAddress);
-      await contractInstance.stake({ value: amount });
-      showToast('Staking', 'Staking done', 'success');
-      return '';
-    } else {
-      console.error('[staking] wrong staking type:', stakingType);
-      return error(500, 'stake error');
-    }
-    await sendTransaction('stake', payload);
-    showToast('Staking', 'Staking done', 'success');
-    return '';
-  } catch (e) {
-    if (e.message.toString().includes('You cannot stake tokens yet')) {
-      showToast('Stacking error', 'You cannot stake tokens yet', 'danger');
-    } else {
-      showToast('Stacking error', `${e.message}`, 'danger');
-    }
-    return error(500, 'stake error', e);
-  }
-};
-
-export const unStaking = async (_decimals, _amount, _stakingAddress, _stakingAbi) => {
-  try {
-    amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
-    showToast('Unstaking', 'Unstaking...', 'success');
-    await store.dispatch('main/setStatusText', 'Staking');
-    const payload = {
-      abi: _stakingAbi,
-      address: _stakingAddress,
-      data: [amount],
-    };
-    await sendTransaction('unstake', payload);
-    showToast('Unstaking', 'Unstaking done', 'success');
-    return '';
-  } catch (e) {
-    showToast('Unstaking error', `${e.message}`, 'danger');
-    return error(500, 'stake error', e);
-  }
-};
-
-export const claimRewards = async (_stakingAddress, _stakingAbi) => {
-  try {
-    showToast('Claiming', 'Claiming...', 'success');
-    const payload = {
-      abi: _stakingAbi,
-      address: _stakingAddress,
-    };
-    await sendTransaction('claim', payload);
-    showToast('Claiming', 'Claiming done', 'success');
-    return '';
-  } catch (e) {
-    if (e.message.toString().includes('You cannot claim tokens yet')) {
-      showToast('Stacking error', 'You cannot claim tokens yet', 'danger');
-    } else {
-      showToast('Claim error', `${e.message}`, 'danger');
-    }
-    return error(500, 'claim error', e);
-  }
-};
-
-// TODO: DELETE
-export const authRenewal = async (_stakingAddress, _stakingAbi) => {
-  showToast('Auto renewal', 'Accepting...', 'success');
-  try {
-    const payload = {
-      abi: _stakingAbi,
-      address: _stakingAddress,
-    };
-    await sendTransaction('autoRenewal', payload);
-    return success();
-  } catch (e) {
-    if (e.message.toString().includes('You cannot claim tokens yet')) {
-      showToast('Stacking error', 'You cannot claim tokens yet', 'danger');
-    } else if (e.message.toString().includes('You cannot stake tokens yet')) {
-      showToast('Stacking error', 'You cannot stake tokens yet', 'danger');
-    } else {
-      showToast('Auto renewal error', `${e.message}`, 'danger');
-    }
-    return error(500, 'auto renewal', e);
-  }
-};
-
-export const swap = async (decimals, amountValue) => {
-  try {
-    const _tokenInstance = await createInstance(ERC20, process.env.BSC_OLD_WQT_TOKEN);
-    const _exchangeInstance = await createInstance(WQTExchange, process.env.BSC_WQT_EXCHANGE);
-
-    const _allowance = await _tokenInstance.allowance(account.address, process.env.BSC_WQT_EXCHANGE);
-    const _amount = new BigNumber(amountValue.toString()).shiftedBy(+decimals).toString();
-
-    if (new BigNumber(_allowance.toString()).isLessThan(_amount)) {
-      await store.dispatch('main/setStatusText', 'Approving');
-      showToast('Swapping', 'Approving...', 'success');
-      await _tokenInstance.approve(process.env.BSC_WQT_EXCHANGE, _amount);
-      showToast('Swapping', 'Approving done', 'success');
-    }
-
-    showToast('Swapping', 'Swapping...', 'success');
-    await _exchangeInstance.swap(_amount);
-    await store.dispatch('main/setStatusText', 'Swapping');
-    showToast('Swapping', 'Swapping done', 'success');
-
-    return success(true);
-  } catch (e) {
-    showToast('Swapping error', `${e.message}`, 'danger');
-    return error(500, 'stake error', e);
   }
 };
 
@@ -588,6 +406,8 @@ export const initStackingContract = async (chain) => {
   const liquidityMiningContract = new liquidityMiningProvider.eth.Contract(stakingAbi, stakingAddress);
   return await liquidityMiningContract.methods.getStakingInfo().call();
 };
+
+let bscRpcContract = null;
 
 export const getBinanceContractRPC = async () => {
   if (bscRpcContract) return bscRpcContract;

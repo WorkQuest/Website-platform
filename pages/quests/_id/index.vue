@@ -171,7 +171,7 @@ import {
 import modals from '~/store/modals/modals';
 import {
   QuestMethods, EditQuestState, QuestStatuses, InfoModeWorker, InfoModeEmployer,
-} from '~/utils/quests-constants';
+} from '~/utils/сonstants/quests';
 
 export default {
   name: 'Quests',
