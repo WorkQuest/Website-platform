@@ -194,7 +194,7 @@ export default {
         const [_spec, _skill] = item.path ? item.path.split('.') : item.split('.');
         const spec = parseInt(_spec, 10);
         const skill = parseInt(_skill, 10);
-        if (specKeys && !Object.keys(specKeys).includes(_spec)) {
+        if (!Object.keys(specKeys).includes(_spec)) {
           specKeys[spec] = key;
           this.displaySpecIndex[key] = this.specsIndexes.indexOf(spec);
           this.selectedSkills[key] = [];
