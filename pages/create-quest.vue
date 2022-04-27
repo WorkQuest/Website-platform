@@ -263,7 +263,7 @@ export default {
       this.SetLoader(true);
       const {
         workplaceIndex, runtimeIndex, employmentIndex, questTitle,
-        textarea, price, selectedSpecAndSkills, address, coordinates: { lng, lat },
+        textarea, price, selectedSpecAndSkills, address, coordinates: { lng, lat }, clearData,
       } = this;
       this.$cookies.set('questDraft', {
         workplace: WorkplaceIndex[workplaceIndex],
