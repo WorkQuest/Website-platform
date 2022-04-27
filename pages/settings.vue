@@ -129,7 +129,7 @@ export default {
   async mounted() {
     this.SetLoader(true);
     // TODO: Добавить скроллинг до 2FA
-    this.scrollTo(0);
+    this.scrollTo(1800);
     if (!this.filters) await this.$store.dispatch('quests/getFilters');
     if (!this.profile.firstName) await this.$store.dispatch('user/getUserData');
     const addInfo = this.userData.additionalInfo;
@@ -188,8 +188,10 @@ export default {
     });
   },
   methods: {
-    scrollTo(x) {
-      window.scrollTo(x, 0);
+    scrollTo(y) {
+      setTimeout(() => {
+        scrollTo(0, y);
+      }, 200);
     },
     validationRefs(data) {
       this.valRefs = data;

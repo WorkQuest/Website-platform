@@ -22,6 +22,9 @@ export default {
     });
     this.commit('notifications/setUnreadNotifsCount', 0 - ids.length);
   },
+  addLocalNotificationSettings(state, notification) {
+    // TODO: Дописать!
+  },
   addNotification(state, notification) {
     // TODO: Проверить!
     console.log('state.notifications.list', state.notifications.list);

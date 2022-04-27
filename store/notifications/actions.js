@@ -48,7 +48,9 @@ export default {
       return false;
     }
     const isAdded = await checkAddedLocalNotification();
-    if (!isAdded) await dispatch('addNotification', notification);
+    if (!isAdded) {
+      await dispatch('addNotification', notification);
+    }
   },
   async removeNotification({ dispatch, commit, rootGetters }, { config, notificationId, notification }) {
     const { params } = notification;
@@ -100,6 +102,9 @@ export default {
   },
   async addNotification({ commit, dispatch }, notification) {
     const newNotification = await dispatch('setCurrNotificationObject', { notification });
+    console.log('newNotification', newNotification);
+    // TODO: Дописать!!!
+    if (newNotification.params.isLocal) commit('addLocalNotificationSettings', newNotification);
     commit('addNotification', newNotification);
   },
   async setCurrNotificationObject({ getters, rootGetters, dispatch }, notification) {
@@ -174,11 +179,11 @@ export default {
         await dispatch('user/getAllUserReviews', { userId: currentUserId, query }, { root: true });
       }
     }
-    async function setAllNotificationsParams(currTitle, path, isExternalLink, externalBase, isLocal) {
+    async function setAllNotificationsParams(currTitle, path, isExternalLink, externalBase, isLocal, scrollTo) {
       notification.actionNameKey = `notifications.${action}`;
       notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
       notification.params = {
-        title: currTitle, path, isExternalLink, externalBase, isLocal,
+        title: currTitle, path, isExternalLink, externalBase, isLocal, scrollTo,
       };
       await setSender();
     }
@@ -253,8 +258,11 @@ export default {
         break;
 
       case LocalNotificationAction.PROFILE_FILLED:
+        await setAllNotificationsParams(title, `${Path.SETTINGS}`, false, '', true, 40);
+        break;
+
       case LocalNotificationAction.TWOFA:
-        await setAllNotificationsParams(title, `${Path.SETTINGS}`, false, '', true);
+        await setAllNotificationsParams(title, `${Path.SETTINGS}`, false, '', true, 180);
         break;
 
       /** DAO */
