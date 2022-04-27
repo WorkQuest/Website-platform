@@ -10,10 +10,10 @@
         class="content__picture"
       >
       <div class="content__title">
-        {{ options.text || $t('modals.areYouSure') }}
+        {{ options.title || $t('modals.areYouSure') }}
       </div>
       <div class="content__desc">
-        {{ options.title }}
+        {{ options.text }}
       </div>
       <div class="content__action action">
         <base-btn
@@ -52,13 +52,11 @@ export default {
       const { okBtnFunc } = this.options;
       if (okBtnFunc) await okBtnFunc();
       this.CloseModal();
-      this.SetLoader(false);
     },
     async handleCancel() {
       const { cancelBtnFunc } = this.options;
       if (cancelBtnFunc) await cancelBtnFunc();
       this.CloseModal();
-      this.SetLoader(false);
     },
   },
 };

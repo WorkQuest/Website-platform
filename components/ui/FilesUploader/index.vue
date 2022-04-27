@@ -117,13 +117,13 @@ export default {
     for (const file of this.preloadedFiles) {
       this.files.push({
         id: this.id,
-        mediaId: file.id,
-        src: file.url,
-        type: file.contentType.split('/')[0],
+        mediaId: file?.id,
+        src: file?.url,
+        type: file?.contentType.split('/')[0],
       });
       this.id += 1;
-      this.$emit('change', this.files);
     }
+    this.$emit('change', this.files);
   },
   methods: {
     uploaderStyles() {
@@ -170,26 +170,20 @@ export default {
         if (type === 'image' && this.limitBytes && file.size >= this.limitBytes) {
           const kb = Math.ceil(this.limitBytes / 1024);
           const mb = Math.ceil(this.limitBytes / 1024 / 1024);
-          if (mb >= 1) {
-            this.showError(this.$t('uploader.errors.fileSizeLimit'), this.$tc('meta.units.mb', { count: mb }));
-          } else {
-            this.showError(this.$t('uploader.errors.fileSizeLimit'), this.$tc('meta.units.kb', { count: kb }));
-          }
+          if (mb >= 1) this.showError(this.$t('uploader.errors.fileSizeLimit'), this.$tc('meta.units.mb', { count: mb }));
+          else this.showError(this.$t('uploader.errors.fileSizeLimit'), this.$tc('meta.units.kb', { count: kb }));
           // eslint-disable-next-line no-continue
           continue;
         }
         if (type === 'video' && this.limitBytesVideo && file.size >= this.limitBytesVideo) {
           const kb = Math.ceil(this.limitBytesVideo / 1024);
           const mb = Math.ceil(this.limitBytesVideo / 1024 / 1024);
-          if (mb >= 1) {
-            this.showError(this.$t('uploader.errors.fileSizeLimit'), this.$tc('meta.units.mb', { count: mb }));
-          } else {
-            this.showError(this.$t('uploader.errors.fileSizeLimit'), this.$tc('meta.units.kb', { count: kb }));
-          }
+          if (mb >= 1) this.showError(this.$t('uploader.errors.fileSizeLimit'), this.$tc('meta.units.mb', { count: mb }));
+          else this.showError(this.$t('uploader.errors.fileSizeLimit'), this.$tc('meta.units.kb', { count: kb }));
           // eslint-disable-next-line no-continue
           continue;
         }
-        if (!this.acceptDuplicates && this.files.filter((item) => !item.mediaId && item.file?.size === file?.size
+        if (!this.acceptDuplicates && this.files?.filter((item) => !item.mediaId && item.file?.size === file?.size
           && item.file?.lastModified === file?.lastModified
           && item.file?.name === file?.name).length) {
           // eslint-disable-next-line no-continue

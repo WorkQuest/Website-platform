@@ -282,7 +282,7 @@ export default {
               }
               this.ShowModal({
                 key: modals.areYouSure,
-                title: this.$t('modals.approveRouter', { token: symbol }),
+                text: this.$t('modals.approveRouter', { token: symbol }),
                 okBtnTitle: this.$t('meta.btns.submit'),
                 okBtnFunc: async () => {
                   this.CloseModal();

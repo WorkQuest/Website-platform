@@ -222,17 +222,15 @@ export default {
   async beforeCreate() {
     await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
-  async created() {
+  async beforeMount() {
     const questDraft = this.$cookies.get('questDraft');
-    await this.fillQuestFromQuestDraft();
+    await this.fillQuestFromQuestDraft(questDraft);
     if (questDraft) {
       this.ShowModal({
         key: modals.areYouSure,
         text: this.$t('modals.draft.youHaveAQuestDraft'),
         okBtnTitle: this.$t('meta.btns.delete'),
-        okBtnFunc: async () => {
-          await this.clearData();
-        },
+        okBtnFunc: this.clearData,
       });
     }
   },
@@ -249,7 +247,8 @@ export default {
     await this.setQuestDraft();
   },
   methods: {
-    clearData() {
+    async clearData() {
+      this.$cookies.remove('questDraft');
       this.isClearData = true;
       this.selectedSpecAndSkills = [];
       this.questTitle = '';
@@ -265,7 +264,7 @@ export default {
       this.SetLoader(true);
       const {
         workplaceIndex, runtimeIndex, employmentIndex, questTitle,
-        textarea, price, selectedSpecAndSkills, address, coordinates: { lng, lat },
+        textarea, price, selectedSpecAndSkills, address, coordinates: { lng, lat }, clearData,
       } = this;
       this.$cookies.set('questDraft', {
         workplace: WorkplaceIndex[workplaceIndex],
@@ -291,9 +290,8 @@ export default {
       });
       this.SetLoader(false);
     },
-    async fillQuestFromQuestDraft() {
+    async fillQuestFromQuestDraft(questDraft) {
       this.SetLoader(true);
-      const questDraft = this.$cookies.get('questDraft');
       if (questDraft) {
         this.selectedSpecAndSkills = questDraft?.specializationKeys || [];
         this.questTitle = questDraft?.title || '';
@@ -413,7 +411,6 @@ export default {
               title: this.$t('modals.questCreated'),
             });
             this.ShowToast(this.$t('toasts.questCreated'), this.$t('toasts.questCreated'));
-            this.$cookies.remove('questDraft');
             await this.$router.push(`/quests/${questRes.result.id}`);
           },
         });

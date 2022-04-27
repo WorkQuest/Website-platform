@@ -4,11 +4,10 @@ import VueTippy, { TippyComponent } from 'vue-tippy';
 import converter from 'bech32-converting';
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { TokenSymbols } from '~/utils/enums';
 import {
-  LocalNotificationAction, SumSubStatuses, TwoFAStatuses,
+  TokenSymbols, LocalNotificationAction, SumSubStatuses, TwoFAStatuses,
 } from '~/utils/enums';
-import { QuestMethods, QuestStatuses } from '~/utils/quests-constants';
+import { QuestMethods, QuestStatuses } from '~/utils/сonstants/quests';
 import { images } from '~/utils/images';
 
 Vue.use(VueTippy);
@@ -88,22 +87,21 @@ Vue.mixin({
       // eslint-disable-next-line no-restricted-syntax
       for (const item of files) {
         if (item.mediaId) medias.push(item.mediaId);
-        else fetchData.push(this.$store.dispatch('user/getUploadFileLink', { contentType: item.file.type }));
+        else fetchData.push(this.$store.dispatch('user/getUploadFileLink', { contentType: item.file?.type }));
       }
       if (!fetchData.length) return medias;
       const urls = await Promise.all(fetchData);
-      let urlId = 0;
       for (let i = 0; i < files.length; i += 1) {
-        const { mediaId, url } = urls[urlId];
+        const { file } = files[i];
+        const { mediaId, url } = urls[i];
         medias.push(mediaId);
-        if (files[i]?.file) {
+        if (file) {
           fetchUrlsData.push(this.$store.dispatch('user/uploadFile', {
             url,
-            data: files[i].file,
-            contentType: files[i].file.type,
+            data: file,
+            contentType: file.type,
           }));
         }
-        urlId += 1;
       }
       await Promise.all(fetchUrlsData);
       return medias;

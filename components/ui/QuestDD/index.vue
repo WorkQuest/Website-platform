@@ -148,7 +148,7 @@ export default {
         key: modals.securityCheck,
         actionMethod: async () => this.ShowModal({
           key: modals.areYouSure,
-          title: this.$t('modals.sureDeleteNotification'),
+          text: this.$t('modals.sureDeleteNotification'),
           okBtnTitle: this.$t('meta.btns.delete'),
           okBtnFunc: () => this.deleteQuest(),
         }),
