@@ -122,8 +122,8 @@ export default {
         type: file.contentType.split('/')[0],
       });
       this.id += 1;
-      this.$emit('change', this.files);
     }
+    this.$emit('change', this.files);
   },
   methods: {
     uploaderStyles() {
