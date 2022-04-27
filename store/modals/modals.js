@@ -79,4 +79,5 @@ export default {
   referralRegistration: 'referralRegistration',
   valueSend: 'valueSend',
   downloadApp: 'downloadApp',
+  claimRewards: 'claimRewards',
 };

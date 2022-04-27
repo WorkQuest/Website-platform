@@ -93,6 +93,7 @@ export default {
     [modals.areYouSure]: () => import('./CtmModalAreYouSure'),
     [modals.referralClaim]: () => import('./CtmModalReferralClaim'),
     [modals.valueSend]: () => import('./CtmModalValueSend'),
+    [modals.claimRewards]: () => import('./CtmModalClaimRewards'),
   },
   data: () => ({ modals }),
   computed: {
