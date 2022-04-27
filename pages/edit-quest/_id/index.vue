@@ -275,7 +275,7 @@ import modals from '~/store/modals/modals';
 import { Path, TokenSymbols } from '~/utils/enums';
 import {
   QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses, CommissionForCreatingAQuest,
-} from '~/utils/quests-constants';
+} from '~/utils/сonstants/quests';
 import { hashText } from '~/utils/wallet';
 
 const { GeoCode } = require('geo-coder');

@@ -153,7 +153,7 @@ import modals from '~/store/modals/modals';
 import {
   PriorityFilter, WorkplaceIndex, TypeOfJobFilter, TokenSymbols,
 } from '~/utils/enums';
-import { CommissionForCreatingAQuest } from '~/utils/quests-constants';
+import { CommissionForCreatingAQuest } from '~/utils/сonstants/quests';
 
 const { GeoCode } = require('geo-coder');
 

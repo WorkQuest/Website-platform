@@ -9,9 +9,11 @@ export default class extends Client {
     this.isPrivate = options.isPrivate;
   }
 
-  onAuthError = () => {}
+  onAuthError = () => {
+  }
 
-  onRequestError = () => {}
+  onRequestError = () => {
+  }
 
   async connect(token) {
     try {
@@ -32,7 +34,9 @@ export default class extends Client {
           reject(error);
         }
         resolve(resp);
-      }).catch((err) => { reject(err); });
+      }).catch((err) => {
+        reject(err);
+      });
     });
   }
 

@@ -71,7 +71,7 @@
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import { ResponseStatus, UserRole } from '~/utils/enums';
-import { QuestStatuses, InfoModeEmployer, InfoModeWorker } from '~/utils/quests-constants';
+import { QuestStatuses, InfoModeEmployer, InfoModeWorker } from '~/utils/сonstants/quests';
 
 export default {
   name: 'InfoVue',
