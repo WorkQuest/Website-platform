@@ -317,7 +317,6 @@ export default {
       const {
         messageText, files, chatId,
       } = this;
-      // if (!messageText) return;
 
       const text = messageText;
 
