@@ -112,7 +112,7 @@ export default {
     };
   },
   async created() {
-    this.acceptedTypes = this.accept?.replace(/\s/g, '')?.split(',');
+    this.acceptedTypes = this.accept.replace(/\s/g, '').split(',');
     // eslint-disable-next-line no-restricted-syntax
     for (const file of this.preloadedFiles) {
       this.files.push({
@@ -201,7 +201,7 @@ export default {
       this.$emit('change', this.files);
     },
     checkContentType(file) {
-      return this.acceptedTypes?.indexOf(file.type) !== -1;
+      return this.acceptedTypes.indexOf(file.type) !== -1;
     },
     showError(errorText) {
       this.errorInfo.isShow = true;

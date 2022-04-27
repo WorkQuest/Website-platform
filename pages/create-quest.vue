@@ -227,7 +227,7 @@ export default {
     if (questDraft) {
       this.ShowModal({
         key: modals.areYouSure,
-        text: this.$t('modals.draft.youHaveAQuestDraft'),
+        title: this.$t('modals.draft.youHaveAQuestDraft'),
         okBtnTitle: this.$t('meta.btns.delete'),
         okBtnFunc: this.clearData,
       });
