@@ -113,17 +113,15 @@ export default {
   },
   async created() {
     this.acceptedTypes = this.accept?.replace(/\s/g, '')?.split(',');
-    if (this.preloadedFiles) {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const file of this.preloadedFiles) {
-        this.files.push({
-          id: this.id,
-          mediaId: file?.id,
-          src: file?.url,
-          type: file?.contentType.split('/')[0],
-        });
-        this.id += 1;
-      }
+    // eslint-disable-next-line no-restricted-syntax
+    for (const file of this.preloadedFiles) {
+      this.files.push({
+        id: this.id,
+        mediaId: file?.id,
+        src: file?.url,
+        type: file?.contentType.split('/')[0],
+      });
+      this.id += 1;
     }
     this.$emit('change', this.files);
   },
