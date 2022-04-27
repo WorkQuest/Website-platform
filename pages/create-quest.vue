@@ -246,7 +246,8 @@ export default {
     await this.setQuestDraft();
   },
   methods: {
-    clearData() {
+    async clearData() {
+      this.$cookies.remove('questDraft');
       this.isClearData = true;
       this.selectedSpecAndSkills = [];
       this.questTitle = '';
@@ -403,7 +404,6 @@ export default {
               title: this.$t('modals.questCreated'),
             });
             this.ShowToast(this.$t('toasts.questCreated'), this.$t('toasts.questCreated'));
-            this.$cookies.remove('questDraft');
             await this.$router.push(`/quests/${questRes.result.id}`);
           },
         });
