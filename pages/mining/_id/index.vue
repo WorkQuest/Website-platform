@@ -24,7 +24,7 @@
       <div class="mining-page__content">
         <div
           class="info-block__grid"
-          :class="{'info-block__grid_double': chain === 'BNB'}"
+          :class="{'info-block__grid_double': chain === $options.Chains.BINANCE}"
         >
           <div class="info-block__icons">
             <div
@@ -472,12 +472,12 @@ export default {
     getTokensAmount({ isOut, amount0, amount1 }) {
       const pools = {
         [Chains.ETHEREUM]: {
-          tokenIn: isOut ? 'WQT' : 'WETH',
-          tokenOut: isOut ? 'WETH' : 'WQT',
+          tokenIn: isOut ? TokenSymbols.WQT : TokenSymbols.WETH,
+          tokenOut: isOut ? TokenSymbols.WETH : TokenSymbols.WQT,
         },
         [Chains.BINANCE]: {
-          tokenIn: isOut ? 'WQT' : 'WBNB',
-          tokenOut: isOut ? 'WBNB' : 'WQT',
+          tokenIn: isOut ? TokenSymbols.WQT : TokenSymbols.WBNB,
+          tokenOut: isOut ? TokenSymbols.WBNB : TokenSymbols.WQT,
         },
       };
 
@@ -530,7 +530,7 @@ export default {
       if (await this.checkNetwork(this.chain)) {
         this.ShowModal({
           key: modals.valueSend,
-          title: 'modals.titles.stake',
+          title: this.$t('modals.titles.stake'),
           maxValue: this.balance,
           submit: async (amount) => {
             this.CloseModal();
@@ -555,7 +555,7 @@ export default {
       if (await this.checkNetwork(this.chain)) {
         this.ShowModal({
           key: modals.valueSend,
-          title: 'modals.titles.unstake',
+          title: this.$t('modals.titles.unstake'),
           maxValue: this.staked,
           submit: async (amount) => {
             this.CloseModal();

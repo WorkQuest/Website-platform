@@ -226,11 +226,14 @@ export const UserStatuses = Object.freeze({
   NeedSetRole: 2,
 });
 
+// TODO need to change uses in project of ETH and BNB on WETH and WBNB
 export const TokenSymbols = Object.freeze({
   WQT: 'WQT',
   WUSD: 'WUSD',
   BNB: 'BNB',
   ETH: 'ETH',
+  WBNB: 'WBNB',
+  WETH: 'WETH',
 });
 
 export const TokenSymbolByContract = Object.freeze({

@@ -70,7 +70,7 @@
                   :data-selector="button.title.toUpperCase()"
                   :mode="button.mode"
                   :disabled="button.disabled"
-                  @click="openModal(button.action, button.modalTitle)"
+                  @click="openModal(button.action, button.title)"
                 >
                   {{ button.title }}
                 </base-btn>
@@ -128,7 +128,6 @@ export default {
             {
               title: this.$t('crediting.refund'),
               action: 'refund',
-              modalTitle: 'crediting.refund',
               disabled: false,
             },
           ],
@@ -150,21 +149,18 @@ export default {
               title: this.$t('meta.withdraw'),
               disabled: false,
               action: 'withdraw',
-              modalTitle: 'meta.withdraw',
             },
             {
               title: this.$t('meta.deposit'),
               mode: 'outline',
               disabled: false,
               action: 'deposit',
-              modalTitle: 'meta.deposit',
             },
             {
               title: this.$t('modals.claim'),
               mode: 'outline',
               disabled: this.rewardsData <= 0,
               action: 'claim',
-              modalTitle: 'modals.claim',
             },
           ],
         },

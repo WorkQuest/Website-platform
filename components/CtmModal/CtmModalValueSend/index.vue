@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="claim"
-    :title="$t(options.title)"
+    :title="options.title"
   >
     <div class="claim__content content">
       <validation-observer

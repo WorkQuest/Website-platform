@@ -218,7 +218,13 @@ export default {
       return res;
     },
     tokenSymbolsDd() {
-      return Object.keys(TokenSymbols);
+      // TODO need to change on WETH and WBNB
+      return [
+        TokenSymbols.WQT,
+        TokenSymbols.WUSD,
+        TokenSymbols.BNB,
+        TokenSymbols.ETH,
+      ];
     },
     tokenSymbols() {
       return TokenSymbols;
