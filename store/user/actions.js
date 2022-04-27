@@ -155,7 +155,6 @@ export default {
           'sort[createdAt]': 'desc',
         };
         await dispatch('quests/getUserQuests', {
-          userId: currentUserId,
           role: userRole,
           query,
         }, { root: true });

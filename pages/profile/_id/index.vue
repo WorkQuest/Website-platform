@@ -410,7 +410,6 @@ export default {
     },
     async changeQuestsData(limit) {
       const payload = {
-        userId: this.userId,
         role: this.userData.role,
         query: {
           limit: limit || this.perPagerQuests,
