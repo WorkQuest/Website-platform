@@ -223,7 +223,7 @@ export default {
   },
   async created() {
     const questDraft = this.$cookies.get('questDraft');
-    await this.fillQuestFromQuestDraft();
+    await this.fillQuestFromQuestDraft(questDraft);
     if (questDraft) {
       this.ShowModal({
         key: modals.areYouSure,
@@ -282,9 +282,8 @@ export default {
       });
       this.SetLoader(false);
     },
-    async fillQuestFromQuestDraft() {
+    async fillQuestFromQuestDraft(questDraft) {
       this.SetLoader(true);
-      const questDraft = this.$cookies.get('questDraft');
       if (questDraft) {
         this.selectedSpecAndSkills = questDraft?.specializationKeys || [];
         this.questTitle = questDraft?.title || '';
