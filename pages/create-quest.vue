@@ -229,9 +229,7 @@ export default {
         key: modals.areYouSure,
         text: this.$t('modals.draft.youHaveAQuestDraft'),
         okBtnTitle: this.$t('meta.btns.delete'),
-        okBtnFunc: async () => {
-          await this.clearData();
-        },
+        okBtnFunc: await this.clearData,
       });
     }
   },
