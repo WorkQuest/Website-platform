@@ -215,6 +215,7 @@ export default {
     async setPage() {
       this.filter.offset = (this.page - 1) * this.filter.limit;
       this.SetLoader(true);
+      this.ScrollToTop();
       await this.getNotifications();
       this.SetLoader(false);
     },
