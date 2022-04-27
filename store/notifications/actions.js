@@ -237,7 +237,7 @@ export default {
 
       case LocalNotificationAction.GET_REWARD:
         // TODO: дописать нет логики рефералки
-        await setAllNotificationsParams(title, '', false, '', true);
+        await setAllNotificationsParams(title, `${Path.REFERRAL}`, false, '', true);
         break;
 
       case LocalNotificationAction.QUEST_DRAFT:
