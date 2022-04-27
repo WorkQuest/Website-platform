@@ -154,7 +154,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
-import moment from 'moment';
 import modals from '~/store/modals/modals';
 import { ERC20 } from '~/abi/index';
 import {
@@ -260,16 +259,16 @@ export default {
     if (!this.isWalletConnected) return;
     const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
     this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
-    await this.$store.dispatch('wallet/subscribeToWalletEvents', {
-      address: this.convertToBech32('eth', this.userWalletAddress),
+    await this.$store.dispatch('wallet/subscribeWS', {
+      address: this.convertToBech32('ethm', this.userWalletAddress),
       hexAddress: this.userWalletAddress,
-      date: moment(),
+      date: this.$moment(),
       updateWalletData: async () => await this.loadData(),
     });
     await this.loadData();
   },
   async beforeDestroy() {
-    await this.$store.dispatch('wallet/unsubscribeToWalletEvents');
+    await this.$store.dispatch('wallet/unsubscribeWS');
   },
   methods: {
     getSwitchButtonMode(btn) {

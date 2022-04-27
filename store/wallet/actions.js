@@ -12,7 +12,7 @@ import {
   getTransferFeeData,
   getContractFeeData,
   getIsWalletConnected,
-  sendWalletTransaction, getProvider,
+  sendWalletTransaction,
 } from '~/utils/wallet';
 
 import {
@@ -41,6 +41,8 @@ import {
   pensionExtendLockTime,
   getPensionDefaultData,
 } from '~/utils/wallet.js';
+
+const connectionWS = null;
 
 export default {
   async getPensionTransactions({ commit, getters }, { method, limit, offset }) {
@@ -434,27 +436,28 @@ export default {
       return error();
     }
   },
-  async subscribeToWalletEvents({
+  async subscribeWS({
     commit, dispatch, rootGetters, getters,
   }, payload) {
     try {
-      this.$wsNode.connect(null);
-      this.connection = new WebSocket('wss://dev-node-nyc3.workquest.co/tendermint-rpc/websocket');
-      this.connection.onopen = () => {
-        console.log('Successfully connected to the echo websocket server...');
+      this.connectionWS = new WebSocket(process.env.WS_WQ_PROVIDER);
+      this.connectionWS.onopen = () => {
         const request = {
           jsonrpc: '2.0',
           method: 'subscribe',
           id: 0,
           params: {
             query: "tm.event='Tx'",
-            // query: "tm.event='Tx' AND ethereum_tx.recipient='wq1khck2m34qnnwgevz6cmksrm73duvgp2t6ddgyv'",
+            // When the backend adds a new websocket you need to switch to this query to find the specific user's tx correctly.
+            // Also need to find out what address type you need to enter Hex or convert to bech 32
+            // query: `tm.event='Tx' AND ethereum_tx.recipient='${payload.hexAddress}'`,
           },
         };
-        this.connection.send(JSON.stringify(request));
+        console.log('Successfully connected to the echo websocket server...');
+        this.connectionWS.send(JSON.stringify(request));
       };
-      this.connection.onmessage = async function (ev) {
-        const { events } = JSON.parse(ev?.data).result;
+      this.connectionWS.onmessage = async function (ev) {
+        const { events } = JSON.parse(ev.data).result;
         const recipient = events ? events['ethereum_tx.recipient'][0].toLowerCase() : null;
         if (recipient === payload.hexAddress) {
           const transactions = JSON.parse(JSON.stringify(getters.getTransactions));
@@ -471,8 +474,7 @@ export default {
           });
           await payload.updateWalletData();
           commit('setTransactions', transactions);
-          let transactionsCount = JSON.parse(JSON.stringify(getters.getTransactionsCount));
-          commit('setTransactionsCount', transactionsCount += 1);
+          commit('setTransactionsCount', getters.getTransactionsCount + 1);
         }
       };
       return true;
@@ -481,7 +483,7 @@ export default {
       return error();
     }
   },
-  async unsubscribeToWalletEvents({ commit, dispatch }) {
-    this.$wsNode.disconnect();
+  async unsubscribeWS({ _ }) {
+    this.connectionWS = null;
   },
 };
