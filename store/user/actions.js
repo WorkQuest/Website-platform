@@ -155,6 +155,8 @@ export default {
     ]);
   },
   async logout({ commit }) {
+    await this.$wsChatActions.disconnect();
+    await this.$wsNotifs.disconnect();
     commit('logOut');
   },
   async confirm({ commit }, payload) {

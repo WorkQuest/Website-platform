@@ -33,7 +33,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { URLS } from '~/utils/footer-constants';
+import { URLS } from '~/utils/сonstants/footer';
 
 export default {
   name: 'CtmModalDownloadApp',

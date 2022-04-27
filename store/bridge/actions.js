@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js';
 import { Path } from '~/utils/enums';
 import {
   BlockchainByIndex, BridgeAddresses, BridgeEvents, SwapAddresses,
-} from '~/utils/bridge-constants';
+} from '~/utils/сonstants/bridge';
 
 import {
   error,
@@ -16,7 +16,7 @@ import {
   getTransactionFee,
   fetchContractData,
   getAccountAddress,
-  createInstanceWeb3,
+  createInstance,
   getTransactionCount,
 } from '~/utils/web3';
 
@@ -118,7 +118,7 @@ export default {
       const accountAddress = await getAccountAddress();
       const value = new BigNumber(amount).shiftedBy(18).toString();
       const data = [nonce, toChainIndex, value, accountAddress, symbol];
-      const bridgeInstance = await createInstanceWeb3(WQBridge, bridgeAddress);
+      const bridgeInstance = await createInstance(WQBridge, bridgeAddress);
 
       if (isNative) {
         showToast('Swapping', 'Swapping...', 'success');
@@ -139,7 +139,7 @@ export default {
       const allowance = await fetchContractData('allowance', ERC20, tokenAddress, [accountAddress, bridgeAddress]);
       if (new BigNumber(value).isGreaterThan(+allowance)) {
         showToast('Swapping', 'Approving...', 'success');
-        const tokenInstance = await createInstanceWeb3(ERC20, tokenAddress);
+        const tokenInstance = await createInstance(ERC20, tokenAddress);
         const { status } = await tokenInstance.methods.approve(bridgeAddress, value).send({ from: accountAddress });
         if (!status) return error(500, 'Approve was failed');
         showToast('Swapping', 'Approving done', 'success');
@@ -164,7 +164,7 @@ export default {
       return error(e.code, 'Error in swap action', e.data);
     }
   },
-  async subscribeToBridgeEvents({ commit, getters }, userAddress) {
+  async subscribeWS({ commit, getters }, userAddress) {
     try {
       await this.$wsNotifs.subscribe(`${Path.NOTIFICATIONS}${Path.BRIDGE}/${userAddress}`, async (msg) => {
         const swaps = JSON.parse(JSON.stringify(getters.getSwaps));
@@ -205,14 +205,14 @@ export default {
         commit('setSwapsData', { count: swapsCount, swaps });
       });
     } catch (err) {
-      console.error('subscribeToBridgeEvents err', err);
+      console.error('subscribeWS err', err);
     }
   },
-  async unsubscribeToBridgeEvents(_, userAddress) {
+  async unsubscribeWS(_, userAddress) {
     try {
-      await this.$wsNotifs.unsubscribe(`/notifications/bridge/${userAddress}`);
+      await this.$wsNotifs.unsubscribe(`${Path.NOTIFICATIONS}${Path.BRIDGE}/${userAddress}`);
     } catch (err) {
-      console.error('unsubscribeToBridgeEvents err', err);
+      console.error('unsubscribeWS err', err);
     }
   },
 };

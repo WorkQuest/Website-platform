@@ -449,8 +449,6 @@ export default {
   },
   destroyed() {
     window.removeEventListener('resize', this.userWindowChange);
-    this.$wsNotifs.disconnect();
-    this.$wsChatActions.disconnect();
   },
   methods: {
     async chatAction({ data, action }) {
@@ -494,15 +492,19 @@ export default {
         }
       }
     },
+    /**
+     * @property $wsNotifs
+     * @property $wsChatActions
+     * @return {Promise<void>}
+     */
     async initWSListeners() {
       const { chatActionsConnection, notifsConnection } = this.connections;
       const {
-        userWalletAddress, $wsNotifs, $wsChatActions, $store, token,
+        $wsNotifs, $wsChatActions, $store, token,
       } = this;
       if (!notifsConnection) {
         await $wsNotifs.connect(token);
-        // TODO: проверить `bridge/${userWalletAddress}`, `referral/${userWalletAddress}`
-        const subscribes = ['chat', 'quest', 'dao', 'proposal', 'dailyLiquidity', `bridge/${userWalletAddress}`, `referral/${userWalletAddress}`];
+        const subscribes = ['chat', 'quest', 'dao', 'proposal', 'dailyLiquidity'];
         await Promise.all(subscribes.map((path) => $wsNotifs.subscribe(`${Path.NOTIFICATIONS}/${path}`, async (ev) => {
           if (path === 'chat') await this.chatAction(ev);
           else await $store.dispatch('notifications/addNotification', ev);

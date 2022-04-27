@@ -1,5 +1,5 @@
 export default {
-  getTableData: (state) => state.tableData,
+  getSwaps: (state) => state.swaps,
   getChartData: (state) => {
     const chartDataAsc = [...state.chartData].sort((a, b) => (a.date > b.date ? 1 : 0));
     const lastElementIndex = chartDataAsc.length - 1;
@@ -9,8 +9,7 @@ export default {
       let n = 0;
       while (n <= lastElementIndex) {
         const position = lastElementIndex - n;
-        const currentDayInTheChart = window.$nuxt.$root.$moment(chartDataAsc[position].date * 1000).utc(false);
-        if (window.$nuxt.$root.$moment(dayToDisplay).isSameOrAfter(currentDayInTheChart, 'days')) {
+        if (window.$nuxt.$root.$moment(dayToDisplay).isSameOrAfter(chartDataAsc[position].date, 'days')) {
           return {
             ...chartDataAsc[position],
             date: dayToDisplay,
@@ -25,4 +24,8 @@ export default {
     });
   },
   getTotalLiquidityUSD: (state) => state.totalLiquidityUSD,
+  getBalance: (state) => state.poolData.balance,
+  getStaked: (state) => state.poolData.staked,
+  getClaim: (state) => state.poolData.claim,
+  getAPY: (state) => state.APY,
 };

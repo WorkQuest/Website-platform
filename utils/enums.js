@@ -1,4 +1,6 @@
 // eslint-disable-next-line import/prefer-default-export
+export const isProd = process.env.PROD === 'true';
+
 export const ChainsId = {
   ETH_MAIN: '0x1',
   ETH_TEST: '0x4',
@@ -22,25 +24,15 @@ export const ChainsIdByChainNumber = {
   20220112: '0x13488D0',
 };
 
-export const NativeTokenSymbolByChainId = {
-  [+ChainsId.ETH_MAIN]: 'ETH',
-  [+ChainsId.ETH_TEST]: 'ETH',
-  [+ChainsId.BSC_MAIN]: 'BNB',
-  [+ChainsId.BSC_TEST]: 'BNB',
-};
-
 export const Chains = {
   ETHEREUM: 'ETH',
   BINANCE: 'BSC',
-  BNB: 'BNB', // Same as bsc for bridge
   WORKNET: 'WORKNET',
 };
 
 export const StakingTypes = {
   WQT: 'WQT',
   WUSD: 'WUSD',
-  MINING: 'MINING',
-  CROSS_CHAIN: 'CROSS_CHAIN',
 };
 
 export const QuestStatuses = {
@@ -264,11 +256,14 @@ export const UserStatuses = Object.freeze({
   NeedSetRole: 2,
 });
 
+// TODO need to change uses in project of ETH and BNB on WETH and WBNB
 export const TokenSymbols = Object.freeze({
   WQT: 'WQT',
   WUSD: 'WUSD',
   BNB: 'BNB',
   ETH: 'ETH',
+  WBNB: 'WBNB',
+  WETH: 'WETH',
 });
 
 export const TokenSymbolByContract = Object.freeze({

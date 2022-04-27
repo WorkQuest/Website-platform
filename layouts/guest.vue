@@ -102,7 +102,9 @@ export default {
   },
   computed: {
     ...mapGetters({
+      isAuth: 'user/isAuth',
       isLoading: 'main/getIsLoading',
+      connections: 'main/notificationsConnectionStatus',
     }),
     locales() {
       return this.$i18n.locales.map((item) => ({
@@ -117,7 +119,8 @@ export default {
       this.closeLocale();
     },
   },
-  created() {
+  async created() {
+    if (!this.isAuth && !this.connections.notifsConnection) await this.$wsNotifs.connect(null);
     window.addEventListener('resize', this.userWindowChange);
   },
   destroyed() {

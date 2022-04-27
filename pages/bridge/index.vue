@@ -14,7 +14,7 @@
           <base-btn
             mode="light"
             class="header__btn"
-            :data-selector="isConnected ? 'CONNECT-WALLET' : 'DISCONNECT-FROM-WALLET'"
+            :data-selector="!isConnected ? 'CONNECT-WALLET' : 'DISCONNECT-FROM-WALLET'"
             @click="toggleConnection"
           >
             {{ !isConnected ? $t('mining.connectWallet') : $t('meta.disconnect') }}
@@ -178,7 +178,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import modals from '~/store/modals/modals';
 import { Chains } from '~/utils/enums';
-import { BridgeAddresses, SwapAddresses } from '~/utils/bridge-constants';
+import { BridgeAddresses, SwapAddresses } from '~/utils/сonstants/bridge';
 import { getChainIdByChain } from '~/utils/web3';
 import { images } from '~/utils/images';
 
@@ -279,8 +279,8 @@ export default {
       await this.swapsTableData();
     },
   },
-  mounted() {
-    this.$nuxt.setLayout(this.isAuth ? 'default' : 'guest');
+  beforeMount() {
+    if (this.isAuth) this.$nuxt.setLayout('default');
   },
   async beforeDestroy() {
     this.$store.commit('bridge/resetToken');
@@ -293,13 +293,12 @@ export default {
       resetSwaps: 'bridge/resetMySwaps',
       redeem: 'bridge/redeemSwap',
       swap: 'bridge/swap',
-      subscribe: 'bridge/subscribeToBridgeEvents',
-      unsubscribe: 'bridge/unsubscribeToBridgeEvents',
+      subscribe: 'bridge/subscribeWS',
+      unsubscribe: 'bridge/unsubscribeWS',
 
-      isRightChain: 'web3/chainIsCompareToCurrent',
+      goToChain: 'web3/goToChain',
       connectWallet: 'web3/connect',
       disconnectWallet: 'web3/disconnect',
-      goToChain: 'web3/goToChain',
     }),
     convertedRecipientTable(el) {
       const { chainTo, recipient } = el.item;
@@ -313,7 +312,6 @@ export default {
       else {
         const { chain } = addresses[sourceAddressInd];
         await this.connectWallet({ chain });
-        if (!this.connections.notifsConnection) await this.$wsNotifs.connect(this.token);
         await this.subscribe(this.account.address);
       }
     },

@@ -160,7 +160,7 @@ import {
   LocalNotificationAction,
   PriorityFilter, TokenSymbols, TypeOfJobFilter, WorkplaceIndex,
 } from '~/utils/enums';
-import { CommissionForCreatingAQuest } from '~/utils/quests-constants';
+import { CommissionForCreatingAQuest } from '~/utils/сonstants/quests';
 
 const { GeoCode } = require('geo-coder');
 

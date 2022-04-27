@@ -11,6 +11,7 @@
               v-clipboard:success="ClipboardSuccessHandler"
               v-clipboard:error="ClipboardErrorHandler"
               type="button"
+              data-selector="COPY"
             >
               <span class="icon-copy wallet__icon" />
             </button>
@@ -105,12 +106,14 @@
         </div>
         <div class="wallet__switch-table">
           <base-btn
+            data-selector="SWITCH-ALL"
             :mode="getSwitchButtonMode(walletTables.TXS)"
             @click="selectedWalletTable = walletTables.TXS"
           >
             {{ $t('meta.allTransactions') }}
           </base-btn>
           <base-btn
+            data-selector="SWITCH-COLLATERAL"
             :mode="getSwitchButtonMode(walletTables.COLLATERAL)"
             @click="selectedWalletTable = walletTables.COLLATERAL"
           >
@@ -209,8 +212,8 @@ export default {
           block: t.block_number,
           timestamp: this.$moment(t.block.timestamp).format('lll'),
           status: !!t.status,
-          value: `${getStyledAmount(t.tokenTransfers[0]?.amount || t.value)} ${symbol}`,
-          transaction_fee: new BigNumber(t.gas_price).multipliedBy(t.gas_used),
+          value: `${getStyledAmount(t.value || t.tokenTransfers[0]?.amount)} ${symbol}`,
+          transaction_fee: t.transaction_fee || new BigNumber(t.gas_price).multipliedBy(t.gas_used),
           from_address: t.from_address_hash.hex,
           to_address: t.to_address_hash.hex,
         });
@@ -218,7 +221,13 @@ export default {
       return res;
     },
     tokenSymbolsDd() {
-      return Object.keys(TokenSymbols);
+      // TODO need to change on WETH and WBNB
+      return [
+        TokenSymbols.WQT,
+        TokenSymbols.WUSD,
+        TokenSymbols.BNB,
+        TokenSymbols.ETH,
+      ];
     },
     tokenSymbols() {
       return TokenSymbols;
@@ -267,7 +276,16 @@ export default {
     if (!this.isWalletConnected) return;
     const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
     this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
+    await this.$store.dispatch('wallet/subscribeWS', {
+      address: this.convertToBech32('ethm', this.userWalletAddress),
+      hexAddress: this.userWalletAddress,
+      date: this.$moment(),
+      updateWalletData: this.loadData,
+    });
     await this.loadData();
+  },
+  async beforeDestroy() {
+    await this.$store.dispatch('wallet/unsubscribeWS');
   },
   methods: {
     getSwitchButtonMode(btn) {

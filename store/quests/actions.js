@@ -6,7 +6,7 @@ import {
   QuestStatuses,
   InfoModeWorker,
   InfoModeEmployer,
-} from '~/utils/quests-constants';
+} from '~/utils/сonstants/quests';
 
 import { WQFactory, WorkQuest } from '~/abi/index';
 

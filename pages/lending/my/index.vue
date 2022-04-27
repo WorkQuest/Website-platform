@@ -70,7 +70,7 @@
                   :data-selector="button.title.toUpperCase()"
                   :mode="button.mode"
                   :disabled="button.disabled"
-                  @click="openModal(button.action)"
+                  @click="openModal(button.action, button.title)"
                 >
                   {{ button.title }}
                 </base-btn>
@@ -197,17 +197,19 @@ export default {
     handleBackToLending() {
       this.$router.push(Path.LENDING);
     },
-    async openModal(action) {
+    async openModal(action, title) {
       this.ShowModal({
         key: modals.valueSend,
-        mode: action,
         maxValue: this.maxValue(action),
-        // eslint-disable-next-line consistent-return
+        title,
         submit: async (amount) => {
-          this.SetLoader(true);
+          this.CloseModal();
           const payload = this[action](amount);
+
+          this.SetLoader(true);
           const res = await this.$store.dispatch('crediting/sendMethod', payload);
           this.SetLoader(false);
+
           await this.resultValidation(res, action);
         },
       });
