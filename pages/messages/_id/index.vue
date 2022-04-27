@@ -11,7 +11,9 @@
             @click="goBackToChatsList()"
           >
             <span class="icon-short_left" />
-            <span>{{ $t('chat.chat') }}</span>
+            <span>
+              {{ $t('chat.chat') }}
+            </span>
           </div>
           <div class="chat-container__chat-name">
             <template v-if="currChat">
@@ -88,7 +90,7 @@
             />
             <button
               class="chat-container__send-btn"
-              :class="{'chat-container__send-btn_active' : messageText}"
+              :class="{'chat-container__send-btn_active' : messageText || files}"
               data-selector="SEND-MESSAGE"
               @click="handleSendMessage"
             >
@@ -315,7 +317,7 @@ export default {
       const {
         messageText, files, chatId,
       } = this;
-      if (!messageText) return;
+      // if (!messageText) return;
 
       const text = messageText;
 
