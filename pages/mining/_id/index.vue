@@ -577,7 +577,7 @@ export default {
     },
 
     async claimRewards() {
-      if (this.claim === 0) {
+      if (+this.claim === 0) {
         this.ShowModalFail({
           title: this.$t('modals.transactionFail'),
           subtitle: this.$t('modals.nothingToClaim'),
