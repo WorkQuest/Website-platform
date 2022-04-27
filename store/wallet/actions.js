@@ -42,7 +42,7 @@ import {
   getPensionDefaultData,
 } from '~/utils/wallet.js';
 
-const connectionWS = null;
+let connectionWS = null;
 
 export default {
   async getPensionTransactions({ commit, getters }, { method, limit, offset }) {
@@ -440,8 +440,8 @@ export default {
     commit, dispatch, rootGetters, getters,
   }, payload) {
     try {
-      this.connectionWS = new WebSocket(process.env.WS_WQ_PROVIDER);
-      this.connectionWS.onopen = () => {
+      connectionWS = new WebSocket(process.env.WS_WQ_PROVIDER);
+      connectionWS.onopen = () => {
         const request = {
           jsonrpc: '2.0',
           method: 'subscribe',
@@ -454,9 +454,9 @@ export default {
           },
         };
         console.log('Successfully connected to the echo websocket server...');
-        this.connectionWS.send(JSON.stringify(request));
+        connectionWS.send(JSON.stringify(request));
       };
-      this.connectionWS.onmessage = async function (ev) {
+      connectionWS.onmessage = async function (ev) {
         const { events } = JSON.parse(ev.data).result;
         const recipient = events ? events['ethereum_tx.recipient'][0].toLowerCase() : null;
         if (recipient === payload.hexAddress) {
@@ -484,6 +484,6 @@ export default {
     }
   },
   async unsubscribeWS({ _ }) {
-    this.connectionWS = null;
+    connectionWS = null;
   },
 };
