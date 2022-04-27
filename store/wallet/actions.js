@@ -33,7 +33,6 @@ import {
   StakingTypes,
   PensionHistoryMethods,
 } from '~/utils/enums';
-
 import {
   getPensionWallet,
   pensionsWithdraw,
@@ -42,6 +41,8 @@ import {
   pensionExtendLockTime,
   getPensionDefaultData,
 } from '~/utils/wallet.js';
+
+let connectionWS = null;
 
 export default {
   async getPensionTransactions({ commit, getters }, { method, limit, offset }) {
@@ -434,5 +435,55 @@ export default {
       console.error('approveRouter error', e.message);
       return error();
     }
+  },
+  async subscribeWS({
+    commit, dispatch, rootGetters, getters,
+  }, payload) {
+    try {
+      connectionWS = new WebSocket(process.env.WS_WQ_PROVIDER);
+      connectionWS.onopen = () => {
+        const request = {
+          jsonrpc: '2.0',
+          method: 'subscribe',
+          id: 0,
+          params: {
+            query: "tm.event='Tx'",
+            // When the backend adds a new websocket you need to switch to this query to find the specific user's tx correctly.
+            // Also need to find out what address type you need to enter Hex or convert to bech 32
+            // query: `tm.event='Tx' AND ethereum_tx.recipient='${payload.hexAddress}'`,
+          },
+        };
+        console.log('Successfully connected to the echo websocket server...');
+        connectionWS.send(JSON.stringify(request));
+      };
+      connectionWS.onmessage = async function (ev) {
+        const { events } = JSON.parse(ev.data).result;
+        const recipient = events ? events['ethereum_tx.recipient'][0].toLowerCase() : null;
+        if (recipient === payload.hexAddress) {
+          const transactions = JSON.parse(JSON.stringify(getters.getTransactions));
+          if (transactions.length === 10) transactions.splice(9, 1);
+          transactions.unshift({
+            hash: events['tx.hash'][0].toLowerCase(),
+            block_number: events['tx.height'][0],
+            block: { timestamp: payload.date },
+            status: true,
+            value: events['ethereum_tx.amount'][0],
+            transaction_fee: +(events['tx.fee'][0].split('a')[0]),
+            from_address_hash: { hex: events['message.sender'][3] },
+            to_address_hash: { hex: recipient },
+          });
+          await payload.updateWalletData();
+          commit('setTransactions', transactions);
+          commit('setTransactionsCount', getters.getTransactionsCount + 1);
+        }
+      };
+      return true;
+    } catch (err) {
+      console.error(err);
+      return error();
+    }
+  },
+  async unsubscribeWS({ _ }) {
+    connectionWS = null;
   },
 };
