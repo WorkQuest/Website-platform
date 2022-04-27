@@ -150,7 +150,7 @@ export default {
     tryRemoveUser(userId) {
       this.ShowModal({
         key: modals.areYouSure,
-        title: this.$t('modals.sureDeleteMemberText'),
+        text: this.$t('modals.sureDeleteMemberText'),
         okBtnTitle: this.$t('meta.btns.delete'),
         okBtnFunc: async () => await this.removeMember(userId),
       });

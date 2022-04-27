@@ -18,7 +18,7 @@
                 v-model="runtimeIndex"
                 :items="runtime"
                 type="gray"
-                :label="$t('quests.runtime')"
+                :label="$tc('quests.runtime')"
                 :name="$t('quests.runtime')"
                 data-selector="RUNTIME"
                 rules="required"
@@ -31,16 +31,16 @@
             v-model="price"
             type="number"
             data-selector="PRICE-FIELD"
-            :label="$t('meta.price')"
+            :label="$tc('meta.price')"
             placeholder="0 WUSD"
             rules="required|decimal|decimalPlaces:16|min_value:1"
-            :name="$t('meta.price')"
+            :name="$tc('meta.price')"
           />
         </div>
         <div class="page__dd">
           <base-dd
             v-model="employmentIndex"
-            :label="$t('quests.employment.employment')"
+            :label="$tc('quests.employment.employment')"
             type="gray"
             :items="employment"
             rules="required"
@@ -51,7 +51,7 @@
         <div class="page__dd">
           <base-dd
             v-model="workplaceIndex"
-            :label="$t('quests.distantWork.distantWork')"
+            :label="$tc('quests.distantWork.distantWork')"
             type="gray"
             :items="distantWork"
             rules="required"
@@ -60,17 +60,21 @@
           />
         </div>
       </div>
-      <specializations-selector @changeSkills="updateSelectedSkills" />
+      <specializations-selector
+        :skills="selectedSpecAndSkills"
+        :is-clear-data="isClearData"
+        @changeSkills="updateSelectedSkills"
+      />
       <div class="page__address">
         <base-field
           v-model="address"
-          :label="$t('quests.address')"
+          :label="$tc('quests.address')"
           :placeholder="$t('quests.address')"
           data-selector="ADDRESS-FIELD"
           mode="icon"
           :selector="true"
           rules="required"
-          :name="$t('quests.address')"
+          :name="$tc('quests.address')"
           @selector="getAddressInfo(address)"
         >
           <template v-slot:left>
@@ -102,7 +106,7 @@
           v-model="questTitle"
           data-selector="QUEST-TITLE-FIELD"
           rules="required"
-          :name="$t('quests.questTitle')"
+          :name="$tc('quests.questTitle')"
           :placeholder="$t('quests.questTitle')"
         />
       </div>
@@ -128,6 +132,8 @@
           :limit-bytes="10485760"
           :limit-bytes-video="10485760"
           :accept="'image/png, image/jpg, image/jpeg, video/mp4'"
+          :preloaded-files="files"
+          :is-clear-data="isClearData"
           @change="updateFiles"
         />
       </div>
@@ -151,7 +157,7 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import {
-  PriorityFilter, WorkplaceIndex, TypeOfJobFilter, TokenSymbols,
+  PriorityFilter, TokenSymbols, TypeOfJobFilter, WorkplaceIndex,
 } from '~/utils/enums';
 import { CommissionForCreatingAQuest } from '~/utils/сonstants/quests';
 
@@ -167,17 +173,15 @@ export default {
       employmentIndex: 0,
       workplaceIndex: 0,
       runtimeIndex: 0,
-      periodIndex: 0,
       questTitle: '',
       address: '',
       textarea: '',
       price: '',
-      priceOfClick: '',
-      city: '',
       coordinates: {},
       addresses: [],
       files: [],
       geoCode: null,
+      isClearData: false,
     };
   },
   computed: {
@@ -214,8 +218,20 @@ export default {
       return new BigNumber(this.price).multipliedBy(1 + CommissionForCreatingAQuest).toString();
     },
   },
-  beforeCreate() {
-    this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+  async beforeCreate() {
+    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+  },
+  async beforeMount() {
+    const questDraft = this.$cookies.get('questDraft');
+    await this.fillQuestFromQuestDraft(questDraft);
+    if (questDraft) {
+      this.ShowModal({
+        key: modals.areYouSure,
+        text: this.$t('modals.draft.youHaveAQuestDraft'),
+        okBtnTitle: this.$t('meta.btns.delete'),
+        okBtnFunc: this.clearData,
+      });
+    }
   },
   async mounted() {
     if (!this.isWalletConnected) return;
@@ -226,7 +242,64 @@ export default {
     });
     this.SetLoader(false);
   },
+  async beforeDestroy() {
+    await this.setQuestDraft();
+  },
   methods: {
+    async clearData() {
+      this.$cookies.remove('questDraft');
+      this.isClearData = true;
+      this.selectedSpecAndSkills = [];
+      this.questTitle = '';
+      this.textarea = '';
+      this.price = '';
+      this.employmentIndex = 0;
+      this.workplaceIndex = 0;
+      this.runtimeIndex = 0;
+      this.address = '';
+      this.coordinates = { lng: 0, lat: 0 };
+    },
+    async setQuestDraft() {
+      this.SetLoader(true);
+      const {
+        workplaceIndex, runtimeIndex, employmentIndex, questTitle,
+        textarea, price, selectedSpecAndSkills, address, coordinates: { lng, lat }, clearData,
+      } = this;
+      this.$cookies.set('questDraft', {
+        workplace: WorkplaceIndex[workplaceIndex],
+        priority: PriorityFilter[runtimeIndex + 1].value,
+        employment: TypeOfJobFilter[employmentIndex],
+        title: questTitle,
+        description: textarea,
+        price,
+        specializationKeys: selectedSpecAndSkills,
+        locationFull: {
+          location: {
+            longitude: lng,
+            latitude: lat,
+          },
+          locationPlaceName: address,
+        },
+      });
+      this.SetLoader(false);
+    },
+    async fillQuestFromQuestDraft(questDraft) {
+      this.SetLoader(true);
+      if (questDraft) {
+        this.selectedSpecAndSkills = questDraft?.specializationKeys || [];
+        this.questTitle = questDraft?.title || '';
+        this.textarea = questDraft?.description || '';
+        this.price = questDraft?.price || '';
+        this.employmentIndex = TypeOfJobFilter.indexOf(questDraft?.employment) || 0;
+        this.workplaceIndex = WorkplaceIndex.indexOf(questDraft?.workplace) || 0;
+        this.runtimeIndex = PriorityFilter[questDraft?.priority + 1]?.value || 0;
+        this.address = questDraft?.locationFull.locationPlaceName ?? '';
+        this.coordinates = {
+          lng: questDraft?.locationFull.location.longitude,
+          lat: questDraft?.locationFull.location.latitude,
+        };
+      }
+    },
     updateFiles(files) {
       this.files = files;
     },
@@ -253,10 +326,7 @@ export default {
       try {
         if (address.length) {
           this.addresses = await this.geoCode.geolookup(address);
-          this.coordinates = {
-            lng: this.addresses[0].lng,
-            lat: this.addresses[0].lat,
-          };
+          this.coordinates = { lng: this.addresses[0].lng, lat: this.addresses[0].lat };
         } else this.addresses = [];
       } catch (e) {
         this.addresses = [];
@@ -287,7 +357,6 @@ export default {
         this.SetLoader(false);
         return;
       }
-
       const medias = await this.uploadFiles(this.files);
       const payload = {
         workplace: WorkplaceIndex[this.workplaceIndex],

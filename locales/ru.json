@@ -993,6 +993,10 @@
       "depositInfo": "Deposit info",
       "withdrawInfo": "Withdrawal info"
     },
+    "draft": {
+      "youHaveAQuestDraft": "У вас есть черновик квеста. Очистить?",
+      "saveQuestDraft": "Сохранить черновик квеста?"
+    },
     "transactionError": "Ошибка транзакции",
     "fromAddress": "с",
     "toAddress": "на",

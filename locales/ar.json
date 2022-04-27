@@ -993,6 +993,10 @@
       "depositInfo": "Deposit info",
       "withdrawInfo": "Withdrawal info"
     },
+    "draft": {
+      "youHaveAQuestDraft": "You have a quest draft. Cleat it?",
+      "saveQuestDraft": "Save quest draft?"
+    },
     "transactionError": "Transaction error",
     "fromAddress": "from",
     "toAddress": "to",
