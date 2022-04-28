@@ -68,7 +68,7 @@
                   type="file"
                   class="chat-container__file-input"
                   multiple
-                  :disabled="files.length >= 10 || !validate"
+                  :disabled="files.length >= 10"
                   @change="getFiles($event, validate)"
                 >
               </ValidationProvider>
