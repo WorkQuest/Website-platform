@@ -202,15 +202,13 @@ export default {
     const access = this.$cookies.get('access');
     const refresh = this.$cookies.get('refresh');
     const userStatus = this.$cookies.get('userStatus');
-
+    if (+userStatus === UserStatuses.Confirmed && access) await this.redirectUser();
     if (this.isLoginWithSocial && access && +userStatus === UserStatuses.Confirmed) {
       this.SetLoader(true);
       await this.$store.dispatch('user/getUserData');
       this.userWalletAddress = this.userData?.wallet?.address;
       this.SetLoader(false);
-
       if (!this.userWalletAddress) return;
-
       this.step = WalletState.ImportMnemonic;
       this.$store.commit('user/setTokens', {
         access,
@@ -218,13 +216,8 @@ export default {
         userStatus,
         social: this.isLoginWithSocial,
       });
-      return;
     }
-
-    if (+userStatus === UserStatuses.Confirmed && access) await this.redirectUser();
-
     if (sessionStorage.getItem('confirmToken')) this.ShowToast(this.$t('messages.loginToContinue'), ' ');
-
     const isRef = this.$router.history._startLocation.includes('ref');
     if (isRef) {
       const ref = this.$router.history._startLocation.replace('/?ref=', '');
@@ -373,7 +366,7 @@ export default {
       });
       if (res.ok) {
         this.saveToStorage(wallet);
-        await this.redirectUser();
+        this.redirectUser();
         return;
       }
       if (res.code === 400011) {
@@ -394,7 +387,7 @@ export default {
       // All ok
       if (wallet.address.toLowerCase() === this.userWalletAddress) {
         this.saveToStorage(wallet);
-        await this.redirectUser();
+        this.redirectUser();
         return;
       }
       // Phrase not assigned to this account
@@ -422,7 +415,7 @@ export default {
       this.$cookies.set('userLogin', true, { path: '/' });
       // redirect to confirm access if token exists & unconfirmed account
       const confirmToken = sessionStorage.getItem('confirmToken');
-      if ((this.userStatus === UserStatuses.Unconfirmed || !this.userWalletAddress) && confirmToken) {
+      if ((this.userStatus === UserStatuses.Unconfirmed || !this.userAddress) && confirmToken) {
         await this.$router.push(`${Path.ROLE}/?token=${confirmToken}`);
         return;
       }
