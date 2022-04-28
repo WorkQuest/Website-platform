@@ -114,7 +114,6 @@ export default {
             file.type = file.contentType.split('/')[0];
           });
         }
-
         await commit('addMessageToList', message);
       }
       return payload.ok;

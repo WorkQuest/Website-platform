@@ -5,9 +5,9 @@
         <div class="wallet__nav">
           <span class="wallet__title">{{ $t('meta.wallet') }}</span>
           <div class="wallet__address">
-            <span class="user__wallet">{{ CutTxn(convertToBech32('wq', userWalletAddress), 8, 8) }}</span>
+            <span class="user__wallet">{{ shortWqAddress }}</span>
             <button
-              v-clipboard:copy="convertToBech32('wq',userWalletAddress)"
+              v-clipboard:copy="wqAddress"
               v-clipboard:success="ClipboardSuccessHandler"
               v-clipboard:error="ClipboardErrorHandler"
               type="button"
@@ -182,17 +182,22 @@ export default {
   },
   computed: {
     ...mapGetters({
-      tags: 'ui/getTags',
       userRole: 'user/getUserRole',
-      userData: 'user/getUserData',
-      transactions: 'wallet/getTransactions',
-      transactionsCount: 'wallet/getTransactionsCount',
-      isWalletConnected: 'wallet/getIsWalletConnected',
       userWalletAddress: 'user/getUserWalletAddress',
+
       balance: 'wallet/getBalanceData',
+      transactions: 'wallet/getTransactions',
       selectedToken: 'wallet/getSelectedToken',
       frozenBalance: 'wallet/getFrozenBalance',
+      transactionsCount: 'wallet/getTransactionsCount',
+      isWalletConnected: 'wallet/getIsWalletConnected',
     }),
+    wqAddress() {
+      return this.convertToBech32('wq', this.userWalletAddress);
+    },
+    shortWqAddress() {
+      return this.CutTxn(this.wqAddress, 8, 8);
+    },
     walletTables() {
       return WalletTables;
     },
@@ -277,9 +282,8 @@ export default {
     const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
     this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
     await this.$store.dispatch('wallet/subscribeWS', {
-      address: this.convertToBech32('ethm', this.userWalletAddress),
       hexAddress: this.userWalletAddress,
-      date: this.$moment(),
+      timestamp: this.$moment(),
       updateWalletData: this.loadData,
     });
     await this.loadData();
@@ -329,7 +333,7 @@ export default {
       this.ShowModal({
         key: modals.giveTransfer,
         submit: async ({ recipient, amount, selectedToken }) => {
-          const { convertToHex, convertToBech32 } = this;
+          const { wqAddress, convertToHex, convertToBech32 } = this;
           recipient = convertToHex('wq', recipient);
           const value = new BigNumber(amount).shiftedBy(18).toString();
           let feeRes;
@@ -349,7 +353,7 @@ export default {
           this.ShowModal({
             key: modals.transactionReceipt,
             fields: {
-              from: { name: this.$t('modals.fromAddress'), value: convertToBech32('wq', this.userData.wallet.address) },
+              from: { name: this.$t('modals.fromAddress'), value: wqAddress },
               to: { name: this.$t('modals.toAddress'), value: convertToBech32('wq', recipient) },
               amount: {
                 name: this.$t('modals.amount'),
