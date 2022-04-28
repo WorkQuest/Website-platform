@@ -341,7 +341,7 @@ export default {
           url, id: i + 1, type,
         });
         await this.$store.dispatch('chat/setImage', cData);
-      })).then(() => { this.isDisabledSendMessage = false; });
+      }));
 
       const medias = files.map(({ data }) => data.mediaId);
       this.files = [];
@@ -354,6 +354,7 @@ export default {
         chatId,
       };
       await this.$store.dispatch('chat/handleSendMessage', payload);
+      this.isDisabledSendMessage = false;
     },
     onEnter(e, callback) {
       if (!e.ctrlKey) {
