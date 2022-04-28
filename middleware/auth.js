@@ -35,7 +35,8 @@ export default async function ({
       return redirect(Path.ROLE);
     }
 
-    if (!userData.wallet.address) {
+    const walletAddress = userData.wallet.address;
+    if (!walletAddress) {
       await store.dispatch('user/logout');
       return redirect(Path.SIGN_IN);
     }
@@ -47,7 +48,7 @@ export default async function ({
       return redirect(Path.SIGN_IN);
     }
 
-    const mnemonic = storage[userData.wallet.address];
+    const mnemonic = storage[walletAddress];
     if (!mnemonic) {
       await store.dispatch('user/logout');
       return redirect(Path.SIGN_IN);
