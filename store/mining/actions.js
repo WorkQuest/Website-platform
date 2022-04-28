@@ -15,10 +15,10 @@ import {
   getGasPrice,
   makeApprove,
   getAllowance,
-  createInstance,
   getEstimateGas,
   fetchContractData,
   getAccountAddress,
+  createInstance,
   initStackingContract,
   getPoolTotalSupplyBSC,
   getPoolTokensAmountBSC,
@@ -294,6 +294,7 @@ export default {
 
   /**
    * @property unstake
+   * @param _
    * @param amount
    * @param chain
    * @return {Promise<{msg: string, code: number, data: null, ok: boolean}|{result: *, ok: boolean}>}
