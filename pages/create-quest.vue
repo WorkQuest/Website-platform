@@ -265,7 +265,7 @@ export default {
         workplaceIndex, runtimeIndex, employmentIndex, questTitle,
         textarea, price, selectedSpecAndSkills, address, coordinates: { lng, lat }, clearData,
       } = this;
-      if (!questTitle && !textarea && !price && !address) await this.clearData();
+      if (!questTitle && !textarea && !price && !address) await clearData();
       else {
         this.$cookies.set('questDraft', {
           workplace: WorkplaceIndex[workplaceIndex],
