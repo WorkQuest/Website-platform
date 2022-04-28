@@ -141,7 +141,7 @@
             />
             <empty-data
               v-else
-              :description="$t(`errors.emptyData.emptyQuests`)"
+              :description="$tc(`errors.emptyData.emptyQuests`)"
             />
           </div>
         </div>
@@ -150,9 +150,9 @@
   </div>
   <div v-else-if="!isLoading">
     <empty-data
-      :description="$t('errors.emptyData.emptyQuests')"
+      :description="$tc('errors.emptyData.emptyQuests')"
       :link="$options.Path.QUESTS"
-      :btn-text="$t('meta.btns.ok')"
+      :btn-text="$tc('meta.btns.ok')"
     />
   </div>
 </template>
@@ -172,6 +172,7 @@ import modals from '~/store/modals/modals';
 import {
   QuestMethods, EditQuestState, QuestStatuses, InfoModeWorker, InfoModeEmployer,
 } from '~/utils/сonstants/quests';
+import { images } from '~/utils/images';
 
 export default {
   name: 'Quests',
@@ -206,7 +207,7 @@ export default {
       return this.quest.yourReview?.mark || 0;
     },
     avatar() {
-      return this.assignedWorker.avatar?.url || require('~/assets/img/app/avatar_empty.png');
+      return this.assignedWorker.avatar?.url || images.EMPTY_AVATAR;
     },
     priority() {
       const { priority } = this.quest;
@@ -231,7 +232,7 @@ export default {
       if (!questSpecializations.length) return '';
       return Math.floor(questSpecializations[Math.floor(Math.random() * questSpecializations.length)].path);
     },
-    checkAvailabilityDispute() {
+    checkAvailabilityDisputeTime() {
       const now = this.$moment().valueOf();
       // TODO fixme Вернуть, нужно для тестов Роме
       // const dateForStart = this.$moment(this.quest.startedAt).add(1, 'day').valueOf();
@@ -500,15 +501,23 @@ export default {
     },
     async openDispute() {
       if (this.quest.status === QuestStatuses.Dispute) return await this.$router.push(`${Path.DISPUTES}/${this.quest.openDispute.id}`);
-      if (this.checkAvailabilityDispute) {
-        return this.ShowModal({
-          key: modals.openADispute,
-          questId: this.quest.id,
+      if (this.checkAvailabilityDisputeTime) {
+        return this.showModal({
+          key: modals.status,
+          img: '',
+          title: '',
+          text: '',
+          callback: this.disputePay,
         });
+        // TODO: Добавить после оплаты диспута
+        // return this.ShowModal({
+        //   key: modals.openADispute,
+        //   questId: this.quest.id,
+        // });
       }
       return this.ShowModal({
         key: modals.status,
-        img: require('~/assets/img/ui/deleteError.svg'),
+        img: images.ERROR,
         title: this.$t('modals.errors.error'),
         subtitle: this.$t('modals.errors.youCantCreateDispute'),
         button: this.$t('meta.btns.close'),
@@ -561,7 +570,7 @@ export default {
     showQuestModal(modalMode) {
       this.ShowModal({
         key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
+        img: images.QUEST_AGREED,
         title: this.$t('meta.questInfo'),
         subtitle: this.modalMode(modalMode),
       });
@@ -630,7 +639,7 @@ export default {
             await this.getQuest();
             this.ShowModal({
               key: modals.status,
-              img: require('~/assets/img/ui/questAgreed.svg'),
+              img: images.QUEST_AGREED,
               title: this.$t('meta.questInfo'),
               subtitle: this.$t('quests.workOnQuestAccepted'),
             });
@@ -667,7 +676,7 @@ export default {
             await this.getQuest();
             this.ShowModal({
               key: modals.status,
-              img: require('~/assets/img/ui/questAgreed.svg'),
+              img: images.QUEST_AGREED,
               title: this.$t('meta.questInfo'),
               subtitle: this.$t('quests.pleaseWaitEmp'),
             });

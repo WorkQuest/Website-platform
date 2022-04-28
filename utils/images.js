@@ -1,5 +1,8 @@
 // eslint-disable-next-line import/prefer-default-export
 export const images = Object.freeze({
+  EMPTY_AVATAR: require('~/assets/img/app/avatar_empty.png'),
+  ERROR: require('~/assets/img/ui/deleteError.svg'),
+  QUEST_AGREED: require('~/assets/img/ui/questAgreed.svg'),
   SUCCESS: require('~/assets/img/ui/success.svg'),
   WARNING: require('~/assets/img/ui/warning.svg'),
   TRANSACTION_SEND: require('~/assets/img/ui/transactionSend.svg'),
