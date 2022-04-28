@@ -41,15 +41,14 @@ export default async function ({
     }
 
     // Checking local storage
-    const _localStorage = JSON.parse(localStorage.getItem('mnemonic'));
-    const _sessionStorage = JSON.parse(sessionStorage.getItem('mnemonic'));
-    if (!(_localStorage || _sessionStorage) && route.path !== Path.ROLE) {
+    const storage = JSON.parse(localStorage.getItem('mnemonic'));
+    if (!storage && route.path !== Path.ROLE) {
       await store.dispatch('user/logout');
       return redirect(Path.SIGN_IN);
     }
 
-    const mnemonic = _localStorage[walletAddress] || _sessionStorage[walletAddress];
-    if (!mnemonic && ![Path.ROLE, Path.SIGN_IN].includes(route.path)) {
+    const mnemonic = storage[walletAddress];
+    if (!mnemonic && route.path !== Path.ROLE) {
       await store.dispatch('user/logout');
       return redirect(Path.SIGN_IN);
     }
