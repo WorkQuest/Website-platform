@@ -86,12 +86,14 @@
               :auto-focus="true"
               :placeholder="$t('chat.writeYouMessage')"
               :on-enter-press="handleSendMessage"
+              :disabled="isDisabledSendMessage"
               data-selector="INPUT-MESSAGE"
             />
             <button
               class="chat-container__send-btn"
               :class="{'chat-container__send-btn_active' : messageText || files}"
               data-selector="SEND-MESSAGE"
+              :disabled="isDisabledSendMessage"
               @click="handleSendMessage"
             >
               <span class="icon-send" />
@@ -166,6 +168,7 @@ export default {
       messageText: '',
       files: [],
       chatId: this.$route.params.id,
+      isDisabledSendMessage: false,
     };
   },
   computed: {
@@ -317,6 +320,7 @@ export default {
       const {
         messageText, files, chatId,
       } = this;
+      this.isDisabledSendMessage = true;
       if (!messageText && !files.length) return;
 
       const text = messageText;
@@ -336,7 +340,6 @@ export default {
         msgFiles.push({
           url, id: i + 1, type,
         });
-
         await this.$store.dispatch('chat/setImage', cData);
       }));
 
@@ -350,8 +353,8 @@ export default {
         },
         chatId,
       };
-
       await this.$store.dispatch('chat/handleSendMessage', payload);
+      this.isDisabledSendMessage = false;
     },
     onEnter(e, callback) {
       if (!e.ctrlKey) {
