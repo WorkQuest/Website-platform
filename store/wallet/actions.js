@@ -456,7 +456,7 @@ export default {
         console.log('Successfully connected to the echo websocket server...');
         connectionWS.send(JSON.stringify(request));
       };
-      connectionWS.onmessage = async function (ev) {
+      connectionWS.onmessage = async (ev) => {
         const { events } = JSON.parse(ev.data).result;
         const recipient = events ? events['ethereum_tx.recipient'][0].toLowerCase() : null;
         if (recipient === payload.hexAddress) {
