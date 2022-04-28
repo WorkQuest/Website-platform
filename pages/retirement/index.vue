@@ -123,9 +123,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { Chains } from '~/utils/enums';
+import { Path } from '~/utils/enums';
 
 export default {
   data() {
@@ -139,8 +139,10 @@ export default {
   },
   computed: {
     ...mapGetters({
-      pensionWallet: 'wallet/getPensionWallet',
+      pensionWallet: 'retirement/getPensionWallet',
       isWalletConnected: 'wallet/getIsWalletConnected',
+
+      userWalletAddress: 'user/getUserWalletAddress',
     }),
     documents() {
       return Array(3).fill({
@@ -242,12 +244,22 @@ export default {
     if (!this.isWalletConnected) return;
     this.SetLoader(true);
     await this.getInfo();
+    await this.subscribe(this.userWalletAddress);
     this.SetLoader(false);
   },
+  async beforeDestroy() {
+    await this.unsubscribe(this.userWalletAddress);
+  },
   methods: {
+    ...mapActions({
+      subscribe: 'retirement/subscribeWS',
+      unsubscribe: 'retirement/unsubscribeWS',
+      getDefaultData: 'retirement/pensionGetDefaultData',
+      getWalletInfo: 'retirement/pensionGetWalletInfo',
+    }),
     async getInfo() {
       const [defaultDataRes] = await Promise.all([
-        this.$store.dispatch('wallet/pensionGetDefaultData'),
+        this.getDefaultData(),
         this.checkWalletExists(),
       ]);
       if (defaultDataRes.ok) {
@@ -272,7 +284,7 @@ export default {
       return {};
     },
     async checkWalletExists() {
-      await this.$store.dispatch('wallet/pensionGetWalletInfo');
+      await this.getWalletInfo();
       if (this.pensionWallet?.isCreated) {
         await this.$router.push(`${Path.RETIREMENT}/my`);
       }

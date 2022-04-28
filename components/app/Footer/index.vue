@@ -200,7 +200,7 @@ export default {
     DeFiLinks() {
       return {
         firstColumn: [
-          { title: this.$t('footer.DeFi.retirement'), path: Path.PENSION },
+          { title: this.$t('footer.DeFi.retirement'), path: Path.RETIREMENT },
           { title: this.$t('footer.DeFi.referral'), path: Path.REFERRAL },
           { title: this.$t('footer.DeFi.P2P'), path: Path.INSURING },
           { title: this.$t('footer.DeFi.savingsProduct'), path: Path.SAVINGS },

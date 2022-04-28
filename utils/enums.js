@@ -205,6 +205,7 @@ export const Path = {
   WIKI: '/wiki',
   RAISED_VIEWS: '/raised-views',
   NOTIFICATIONS: '/notifications',
+  RETIREMENT: '/retirement',
 };
 
 export const PathDAO = {

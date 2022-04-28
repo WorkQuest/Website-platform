@@ -29,6 +29,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import loaderModes from '~/store/main/loaderModes';
+import { Path, TokenSymbols } from '~/utils/enums';
 
 export default {
   props: {
@@ -51,10 +52,10 @@ export default {
   methods: {
     checkPage() {
       return [
-        '/mining/BNB', '/mining/ETH',
-        '/bridge',
-        '/staking', '/staking/WQT', '/staking/WUSD',
-        '/pension', '/pension/my',
+        `${Path.MINING}/${TokenSymbols.BNB}`, `${Path.MINING}/${TokenSymbols.ETH}`,
+        Path.BRIDGE,
+        Path.STAKING, `${Path.STAKING}/${TokenSymbols.WQT}`, `${Path.STAKING}/${TokenSymbols.WUSD}`,
+        Path.RETIREMENT, `${Path.RETIREMENT}/my`,
       ].includes(this.$route.path);
     },
   },
