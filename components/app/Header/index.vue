@@ -475,6 +475,12 @@ export default {
 
       if (data.chatId === this.chatId && !this.messagesFilter.canLoadToBottom) {
         if (action === MessageAction.MESSAGE_READ_BY_RECIPIENT) return;
+        if (data.medias.length) {
+          data.medias.forEach((file) => {
+            // eslint-disable-next-line prefer-destructuring
+            file.type = file.contentType.split('/')[0];
+          });
+        }
         this.$store.commit('chat/addMessageToList', data);
         this.$store.commit('chat/setChatAsUnread');
 
