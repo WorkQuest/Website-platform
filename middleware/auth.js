@@ -35,21 +35,20 @@ export default async function ({
       return redirect(Path.ROLE);
     }
 
-    const walletAddress = userData.wallet.address;
-    if (!walletAddress) {
-      await store.dispatch('user/logout');
-      return redirect(Path.SIGN_IN);
+    const walletAddress = userData?.wallet?.address;
+    if (!walletAddress && route.path !== Path.ROLE) {
+      return redirect(Path.ROLE);
     }
 
     // Checking local storage
     const storage = JSON.parse(localStorage.getItem('mnemonic'));
-    if (!storage) {
+    if (!storage && route.path !== Path.ROLE) {
       await store.dispatch('user/logout');
       return redirect(Path.SIGN_IN);
     }
 
     const mnemonic = storage[walletAddress];
-    if (!mnemonic) {
+    if (!mnemonic && route.path !== Path.ROLE) {
       await store.dispatch('user/logout');
       return redirect(Path.SIGN_IN);
     }

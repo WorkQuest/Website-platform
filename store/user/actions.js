@@ -352,15 +352,15 @@ export default {
     await this.$wsNotifs.disconnect();
     commit('logOut');
   },
-  async confirm({ commit }, payload) {
+  async confirm({ commit }, { role, confirmCode }) {
     try {
       commit('setTokens', {
         access: this.$cookies.get('access'),
         refresh: this.$cookies.get('refresh'),
         userStatus: UserStatuses.Confirmed,
       });
-      this.$cookies.set('role', payload.role, { path: '/' });
-      return await this.$axios.$post('/v1/auth/confirm-email', payload);
+      this.$cookies.set('role', role, { path: '/' });
+      return await this.$axios.$post('/v1/auth/confirm-email', { role, confirmCode });
     } catch (e) {
       return false;
     }
