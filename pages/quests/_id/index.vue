@@ -503,17 +503,13 @@ export default {
       if (this.quest.status === QuestStatuses.Dispute) return await this.$router.push(`${Path.DISPUTES}/${this.quest.openDispute.id}`);
       if (this.checkAvailabilityDisputeTime) {
         return this.showModal({
+          // TODO: Добавить локализацию
           key: modals.status,
-          img: '',
-          title: '',
-          text: '',
+          img: images.WARNING,
+          title: 'Dispute Pay',
+          text: 'You need to pay to open a dispute',
           callback: this.disputePay,
         });
-        // TODO: Добавить после оплаты диспута
-        // return this.ShowModal({
-        //   key: modals.openADispute,
-        //   questId: this.quest.id,
-        // });
       }
       return this.ShowModal({
         key: modals.status,
@@ -522,6 +518,15 @@ export default {
         subtitle: this.$t('modals.errors.youCantCreateDispute'),
         button: this.$t('meta.btns.close'),
       });
+    },
+    async disputePay() {
+      // TODO: Дописать логику, подключить конктакт
+
+      // TODO: Добавить после оплаты диспута
+      // return this.ShowModal({
+      //   key: modals.openADispute,
+      //   questId: this.quest.id,
+      // });
     },
     async acceptCompletedWorkOnQuest() {
       this.SetLoader(true);
