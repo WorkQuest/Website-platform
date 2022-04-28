@@ -65,6 +65,12 @@
         :is-clear-data="isClearData"
         @changeSkills="updateSelectedSkills"
       />
+      <div
+        v-if="validated === true && selectedSpecAndSkills.length === 0"
+        class="page__error"
+      >
+        {{ $t('errors.selectSpec') }}
+      </div>
       <div class="page__address">
         <base-field
           v-model="address"
@@ -112,7 +118,7 @@
       </div>
       <div class="page__input">
         <validation-provider rules="required">
-          <textarea
+          <base-textarea
             id="textarea"
             v-model="textarea"
             rules="required"
@@ -182,13 +188,16 @@ export default {
       files: [],
       geoCode: null,
       isClearData: false,
+      isNotChooseSpec: false,
     };
   },
   computed: {
     ...mapGetters({
       isWalletConnected: 'wallet/getIsWalletConnected',
       balanceData: 'wallet/getBalanceData',
+
       userData: 'user/getUserData',
+
       step: 'quests/getCurrentStepCreateQuest',
       filters: 'quests/getFilters',
     }),
@@ -305,6 +314,9 @@ export default {
     },
     updateSelectedSkills(specAndSkills) {
       this.selectedSpecAndSkills = specAndSkills;
+      if (this.selectedSpecAndSkills.length > 0) {
+        this.isNotChooseSpec = false;
+      }
     },
     cardStatus(item) {
       if (item.code === 1) return 'level__card_gold';
@@ -337,7 +349,14 @@ export default {
       await this.$store.dispatch('wallet/getBalance');
     },
     async createQuest() {
+      console.log('createQuest');
       this.SetLoader(true);
+      if (this.selectedSpecAndSkills.length === 0) {
+        this.isNotChooseSpec = true;
+        this.SetLoader(false);
+        return;
+      }
+      // eslint-disable-next-line no-unreachable
       const [feeRes] = await Promise.all([
         this.$store.dispatch('quests/getCreateQuestFeeData', {
           cost: this.price,
@@ -847,6 +866,11 @@ export default {
 }
 
 .page {
+  &__error {
+    color: #bb5151;
+    font-size: 12px;
+    min-height: 23px;
+  }
   &__title {
     @include text-simple;
     margin: 30px 0 0 0;
@@ -878,11 +902,8 @@ export default {
   &__textarea {
     @include text-simple;
     border-radius: 6px;
-    padding: 11px 20px 11px 15px;
-    height: 214px;
     width: 100%;
     border: 0;
-    background-color: $black0;
     resize: none;
 
     &::placeholder {
