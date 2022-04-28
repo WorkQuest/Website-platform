@@ -90,31 +90,21 @@ export default {
   },
   methods: {
     async onSubmit() {
-      // Role page & select role
-      if (this.$cookies.get('userStatus') === UserStatuses.NeedSetRole) {
-        const response = await this.$store.dispatch('user/setUserRole', { role: this.options.role });
-        if (response?.ok) {
-          this.$cookies.set('userStatus', 1, { path: Path.ROOT });
-          this.options.callback();
-          this.CloseModal();
-          return;
-        }
-      } else { // Confirm account page
-        const response = await this.$store.dispatch('user/confirm', {
-          confirmCode: sessionStorage.getItem('confirmToken'),
-          role: this.options.role,
-        });
-        if (response?.ok) {
-          this.$cookies.set('userLogin', true, { path: Path.ROOT });
-          this.$cookies.set('userStatus', UserStatuses.Confirmed, { path: Path.ROOT });
-          sessionStorage.removeItem('confirmToken');
-          this.ShowToast(this.$t('modals.yourAccountVerified'), this.$t('meta.success'));
-          await this.options.callback();
-        } else {
-          // Wrong confirm token
-          await this.$store.dispatch('user/logout');
-          await this.$router.push(Path.SIGN_IN);
-        }
+      // Role page
+      const response = await this.$store.dispatch('user/confirm', {
+        confirmCode: sessionStorage.getItem('confirmToken'),
+        role: this.options.role,
+      });
+      if (response?.ok) {
+        this.$cookies.set('userLogin', true, { path: Path.ROOT });
+        this.$cookies.set('userStatus', UserStatuses.Confirmed, { path: Path.ROOT });
+        sessionStorage.removeItem('confirmToken');
+        this.ShowToast(this.$t('modals.yourAccountVerified'), this.$t('meta.success'));
+        await this.options.callback();
+      } else {
+        // Wrong confirm token
+        await this.$store.dispatch('user/logout');
+        await this.$router.push(Path.SIGN_IN);
       }
       this.CloseModal();
     },
