@@ -277,9 +277,8 @@ export default {
     const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
     this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
     await this.$store.dispatch('wallet/subscribeWS', {
-      address: this.convertToBech32('ethm', this.userWalletAddress),
       hexAddress: this.userWalletAddress,
-      date: this.$moment(),
+      timestamp: this.$moment(),
       updateWalletData: this.loadData,
     });
     await this.loadData();
