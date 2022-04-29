@@ -66,7 +66,7 @@
         @changeSkills="updateSelectedSkills"
       />
       <div
-        v-if="validated === true && selectedSpecAndSkills.length === 0"
+        v-if="validated && selectedSpecAndSkills.length === 0"
         class="page__error"
       >
         {{ $t('errors.selectSpec') }}
@@ -860,7 +860,7 @@ export default {
 
 .page {
   &__error {
-    color: $red100;
+    color: $errorText;
     font-size: 12px;
     min-height: 23px;
   }

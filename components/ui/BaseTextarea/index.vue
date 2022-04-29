@@ -219,7 +219,7 @@ export default {
     }
   }
   &__err {
-    color: $red100;
+    color: $errorText;
     font-size: 12px;
     min-height: 23px;
   }

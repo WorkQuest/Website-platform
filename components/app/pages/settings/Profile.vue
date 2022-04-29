@@ -647,7 +647,7 @@ export default {
     }
   }
   &__error {
-    color: $red100;
+    color: $errorText;
     font-size: 12px;
     min-height: 23px;
   }
@@ -665,7 +665,7 @@ export default {
     justify-content: flex-end;
     align-items: flex-end;
     span {
-      color: $red100;
+      color: $errorText;
       font-size: 14px;
       min-height: 23px;
       width: 250px;
