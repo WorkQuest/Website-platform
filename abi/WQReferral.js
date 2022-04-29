@@ -48,7 +48,7 @@ const WQReferral = [
       {
         indexed: false,
         internalType: 'address',
-        name: 'affiliat',
+        name: 'affiliate',
         type: 'address',
       },
       {
@@ -66,19 +66,6 @@ const WQReferral = [
     inputs: [
       {
         indexed: false,
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
-    ],
-    name: 'Received',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
         internalType: 'address',
         name: 'referral',
         type: 'address',
@@ -86,7 +73,7 @@ const WQReferral = [
       {
         indexed: false,
         internalType: 'address',
-        name: 'affiliat',
+        name: 'affiliate',
         type: 'address',
       },
     ],
@@ -99,7 +86,7 @@ const WQReferral = [
       {
         indexed: false,
         internalType: 'address',
-        name: 'affiliat',
+        name: 'affiliate',
         type: 'address',
       },
       {
@@ -306,6 +293,19 @@ const WQReferral = [
     type: 'function',
   },
   {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'referral',
+        type: 'address',
+      },
+    ],
+    name: 'delAffiliate',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
     inputs: [],
     name: 'earnedThreshold',
     outputs: [
@@ -415,11 +415,6 @@ const WQReferral = [
     inputs: [
       {
         internalType: 'address',
-        name: '_token',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
         name: '_oracle',
         type: 'address',
       },
@@ -449,9 +444,22 @@ const WQReferral = [
     name: 'oracle',
     outputs: [
       {
-        internalType: 'contract WQPriceOracle',
+        internalType: 'contract WQPriceOracleInterface',
         name: '',
         type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'proxiableUUID',
+    outputs: [
+      {
+        internalType: 'bytes32',
+        name: '',
+        type: 'bytes32',
       },
     ],
     stateMutability: 'view',
@@ -553,6 +561,19 @@ const WQReferral = [
   {
     inputs: [
       {
+        internalType: 'address',
+        name: 'referral',
+        type: 'address',
+      },
+    ],
+    name: 'setEarned',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
         internalType: 'uint256',
         name: '_earnedThreshold',
         type: 'uint256',
@@ -605,19 +626,6 @@ const WQReferral = [
   {
     inputs: [
       {
-        internalType: 'address',
-        name: '_token',
-        type: 'address',
-      },
-    ],
-    name: 'setToken',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
         internalType: 'bytes4',
         name: 'interfaceId',
         type: 'bytes4',
@@ -629,19 +637,6 @@ const WQReferral = [
         internalType: 'bool',
         name: '',
         type: 'bool',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'token',
-    outputs: [
-      {
-        internalType: 'contract IERC20Upgradeable',
-        name: '',
-        type: 'address',
       },
     ],
     stateMutability: 'view',
@@ -677,10 +672,6 @@ const WQReferral = [
     outputs: [],
     stateMutability: 'payable',
     type: 'function',
-  },
-  {
-    stateMutability: 'payable',
-    type: 'receive',
   },
 ];
 

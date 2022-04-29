@@ -274,22 +274,25 @@ export default {
         workplaceIndex, runtimeIndex, employmentIndex, questTitle,
         textarea, price, selectedSpecAndSkills, address, coordinates: { lng, lat }, clearData,
       } = this;
-      this.$cookies.set('questDraft', {
-        workplace: WorkplaceIndex[workplaceIndex],
-        priority: PriorityFilter[runtimeIndex + 1].value,
-        employment: TypeOfJobFilter[employmentIndex],
-        title: questTitle,
-        description: textarea,
-        price,
-        specializationKeys: selectedSpecAndSkills,
-        locationFull: {
-          location: {
-            longitude: lng,
-            latitude: lat,
+      if (!questTitle && !textarea && !price && !address) await clearData();
+      else {
+        this.$cookies.set('questDraft', {
+          workplace: WorkplaceIndex[workplaceIndex],
+          priority: PriorityFilter[runtimeIndex + 1].value,
+          employment: TypeOfJobFilter[employmentIndex],
+          title: questTitle,
+          description: textarea,
+          price,
+          specializationKeys: selectedSpecAndSkills,
+          locationFull: {
+            location: {
+              longitude: lng,
+              latitude: lat,
+            },
+            locationPlaceName: address,
           },
-          locationPlaceName: address,
-        },
-      });
+        });
+      }
       this.SetLoader(false);
     },
     async fillQuestFromQuestDraft(questDraft) {
@@ -417,6 +420,7 @@ export default {
               this.ShowToast(txRes.msg);
               return;
             }
+            await this.clearData();
             this.ShowModal({
               key: modals.status,
               img: require('assets/img/ui/questCreated.svg'),
