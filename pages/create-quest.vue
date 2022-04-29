@@ -66,7 +66,7 @@
         @changeSkills="updateSelectedSkills"
       />
       <div
-        v-if="validated && !selectedSpecAndSkills.length"
+        v-if="validated && !selectedSpecAndSkills.length || !invalid && !selectedSpecAndSkills.length"
         class="page__error"
       >
         {{ $t('errors.selectSpec') }}
@@ -147,7 +147,7 @@
         <div class="btn__create">
           <base-btn
             selector="CREATE-A-QUEST"
-            :disabled="validated && invalid && !selectedSpecAndSkills.length"
+            :disabled="validated && invalid || !selectedSpecAndSkills.length"
             @click="handleSubmit(createQuest)"
           >
             {{ $t('meta.createAQuest') }}
@@ -353,6 +353,13 @@ export default {
     },
     async createQuest() {
       this.SetLoader(true);
+      if (!this.selectedSpecAndSkills.length) {
+        this.isNotChooseSpec = true;
+        this.ScrollToTop();
+        this.SetLoader(false);
+        return;
+      }
+      // eslint-disable-next-line no-unreachable
       const [feeRes] = await Promise.all([
         this.$store.dispatch('quests/getCreateQuestFeeData', {
           cost: this.price,
