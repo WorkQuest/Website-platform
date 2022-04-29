@@ -124,7 +124,7 @@ export default {
     align-items: flex-end;
     margin: 0;
     span {
-      color: #bb5151;
+      color: $red100;
       font-size: 14px;
       min-height: 23px;
       width: 250px;

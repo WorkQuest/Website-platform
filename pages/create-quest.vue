@@ -867,7 +867,7 @@ export default {
 
 .page {
   &__error {
-    color: #bb5151;
+    color: $red100;
     font-size: 12px;
     min-height: 23px;
   }
