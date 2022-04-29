@@ -4,7 +4,7 @@
     data-selector="PAGE-CREATE-QUEST"
   >
     <validation-observer
-      v-slot="{handleSubmit, validated, passed, invalid}"
+      v-slot="{handleSubmit, validated, invalid}"
       class="main__body page"
     >
       <h2 class="page__title">
@@ -66,7 +66,7 @@
         @changeSkills="updateSelectedSkills"
       />
       <div
-        v-if="validated && selectedSpecAndSkills.length === 0"
+        v-if="validated && !selectedSpecAndSkills.length"
         class="page__error"
       >
         {{ $t('errors.selectSpec') }}
@@ -147,7 +147,7 @@
         <div class="btn__create">
           <base-btn
             selector="CREATE-A-QUEST"
-            :disabled="!(invalid === false) && !(selectedSpecAndSkills.length === 0)"
+            :disabled="validated && invalid && !selectedSpecAndSkills.length"
             @click="handleSubmit(createQuest)"
           >
             {{ $t('meta.createAQuest') }}
