@@ -349,14 +349,7 @@ export default {
       await this.$store.dispatch('wallet/getBalance');
     },
     async createQuest() {
-      console.log('createQuest');
       this.SetLoader(true);
-      if (this.selectedSpecAndSkills.length === 0) {
-        this.isNotChooseSpec = true;
-        this.SetLoader(false);
-        return;
-      }
-      // eslint-disable-next-line no-unreachable
       const [feeRes] = await Promise.all([
         this.$store.dispatch('quests/getCreateQuestFeeData', {
           cost: this.price,
