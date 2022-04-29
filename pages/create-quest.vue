@@ -413,6 +413,7 @@ export default {
               this.ShowToast(txRes.msg);
               return;
             }
+            await this.clearData();
             this.ShowModal({
               key: modals.status,
               img: require('assets/img/ui/questCreated.svg'),
