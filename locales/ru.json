@@ -1843,6 +1843,7 @@
     "transaction": {
       "notEnoughFunds": "Not enough funds"
     },
+    "selectSpec": "Пожалуйста, выберите специализацию",
     "incorrectPass": "Oops, something went wrong. Check the data and try again.",
     "emptyData": {
       "emptyQuests": "Oops, there's no quests here yet",
