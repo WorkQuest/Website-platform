@@ -152,8 +152,10 @@ export default {
   },
   created() {
     const profileVisibilitySetting = JSON.parse(JSON.stringify(this.userData.profileVisibilitySetting));
-    this.checkboxBlocks.visibilityUser = profileVisibilitySetting.network;
-    this.checkboxBlocks.restrictionRankingStatus = profileVisibilitySetting.ratingStatus;
+    this.checkboxBlocks.visibilityUser = Array.isArray(profileVisibilitySetting.network)
+      ? profileVisibilitySetting.network : [];
+    this.checkboxBlocks.restrictionRankingStatus = Array.isArray(profileVisibilitySetting.ratingStatus)
+      ? profileVisibilitySetting.ratingStatus : [];
   },
   methods: {
     async showModalKey(modalKey) {
