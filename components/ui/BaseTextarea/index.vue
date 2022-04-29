@@ -28,6 +28,7 @@
         data-selector="BASE-TEXTAREA-TEXTAREA"
         :value="mode === 'convertDate' ? convertDate(value) : value"
         class="ctm-field__textarea"
+        :class="{'ctm-field__textarea_error' : (isHideError || errors[0])}"
         :placeholder="placeholder"
         @input="input"
         @focus="$emit('focus')"
@@ -44,7 +45,7 @@
       </div>
     </div>
     <div
-      v-if="!isHideError"
+      v-if="!isHideError || errors[0]"
       class="ctm-field__err"
     >
       {{ errorText || errors[0] }}
@@ -158,6 +159,9 @@ export default {
     color: $black700;
     background: $black0;
     resize: none;
+    &_error {
+      border: 1px solid $red;
+    }
     &::placeholder {
       color: $black300;
     }
@@ -215,7 +219,7 @@ export default {
     }
   }
   &__err {
-    color: #bb5151;
+    color: $errorText;
     font-size: 12px;
     min-height: 23px;
   }

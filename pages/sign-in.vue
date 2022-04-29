@@ -366,7 +366,7 @@ export default {
       });
       if (res.ok) {
         this.saveToStorage(wallet);
-        this.redirectUser();
+        await this.redirectUser();
         return;
       }
       if (res.code === 400011) {
@@ -387,7 +387,7 @@ export default {
       // All ok
       if (wallet.address.toLowerCase() === this.userWalletAddress) {
         this.saveToStorage(wallet);
-        this.redirectUser();
+        await this.redirectUser();
         return;
       }
       // Phrase not assigned to this account
