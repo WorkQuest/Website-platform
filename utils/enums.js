@@ -314,8 +314,3 @@ export const RaiseViewStatus = {
   0: true,
   1: false,
 };
-
-export const NetworkProfileVisibility = Object.freeze({
-  ALL_USERS: 0,
-  SUBMITTING_OFFER: 1,
-});
