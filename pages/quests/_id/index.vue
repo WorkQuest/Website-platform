@@ -591,7 +591,6 @@ export default {
     },
     async goToChat() {
       this.SetLoader(true);
-      console.log(this.quest);
       const { openDispute, questChat, status } = this.quest;
       const disputeStatus = openDispute?.status;
       const disputeId = openDispute?.id;
