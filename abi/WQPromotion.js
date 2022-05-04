@@ -42,6 +42,37 @@ const WQPromotion = [
       {
         indexed: false,
         internalType: 'address',
+        name: 'quest',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'enum WQPromotion.PaidTariff',
+        name: 'tariff',
+        type: 'uint8',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'period',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'promotedAt',
+        type: 'uint256',
+      },
+    ],
+    name: 'PromotedQuest',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
         name: 'user',
         type: 'address',
       },
@@ -54,11 +85,17 @@ const WQPromotion = [
       {
         indexed: false,
         internalType: 'uint256',
+        name: 'period',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
         name: 'promotedAt',
         type: 'uint256',
       },
     ],
-    name: 'Promoted',
+    name: 'PromotedUser',
     type: 'event',
   },
   {
@@ -193,7 +230,7 @@ const WQPromotion = [
     name: 'factory',
     outputs: [
       {
-        internalType: 'contract WorkQuestFactory',
+        internalType: 'contract WorkQuestFactoryInterface',
         name: '',
         type: 'address',
       },
@@ -206,7 +243,7 @@ const WQPromotion = [
     name: 'feeReceiver',
     outputs: [
       {
-        internalType: 'address payable',
+        internalType: 'address',
         name: '',
         type: 'address',
       },
@@ -278,13 +315,18 @@ const WQPromotion = [
   {
     inputs: [
       {
-        internalType: 'address payable',
+        internalType: 'address',
         name: '_feeReceiver',
         type: 'address',
       },
       {
         internalType: 'address',
         name: '_factory',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: '_wusd',
         type: 'address',
       },
     ],
@@ -311,9 +353,9 @@ const WQPromotion = [
         type: 'uint256',
       },
     ],
-    name: 'promote',
+    name: 'promoteQuest',
     outputs: [],
-    stateMutability: 'payable',
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -331,7 +373,7 @@ const WQPromotion = [
     ],
     name: 'promoteUser',
     outputs: [],
-    stateMutability: 'payable',
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -535,6 +577,19 @@ const WQPromotion = [
         internalType: 'uint256',
         name: '',
         type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'wusd',
+    outputs: [
+      {
+        internalType: 'contract IERC20Upgradeable',
+        name: '',
+        type: 'address',
       },
     ],
     stateMutability: 'view',

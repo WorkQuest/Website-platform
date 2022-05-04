@@ -61,7 +61,7 @@ export const SwapAddresses = new Map([
       index: BlockchainIndex.WORKNET,
       nativeSymbol: TokenSymbols.WUSD,
       tokenAddress: {
-        [TokenSymbols.WQT]: process.env.WORKNET_WQT_TOKEN,
+        [TokenSymbols.WQT]: process.env.WORKNET_WQT_TOKEN, // TODO fix it, this secret was deleted
         [TokenSymbols.ETH]: process.env.WORKNET_WETH_TOKEN,
         [TokenSymbols.BNB]: process.env.WORKNET_WBNB_TOKEN,
       },
