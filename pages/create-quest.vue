@@ -147,8 +147,7 @@
         <div class="btn__create">
           <base-btn
             selector="CREATE-A-QUEST"
-            :disabled="validated && invalid || !selectedSpecAndSkills.length"
-            @click="handleSubmit(createQuest)"
+            @click="handleSubmit(createQuest(invalid))"
           >
             {{ $t('meta.createAQuest') }}
           </base-btn>
@@ -351,9 +350,9 @@ export default {
     async updateBalanceWUSD() {
       await this.$store.dispatch('wallet/getBalance');
     },
-    async createQuest() {
+    async createQuest(invalid) {
       this.SetLoader(true);
-      if (!this.selectedSpecAndSkills.length) {
+      if (!this.selectedSpecAndSkills.length || invalid) {
         this.isNotChooseSpec = true;
         this.ScrollToTop();
         this.SetLoader(false);
