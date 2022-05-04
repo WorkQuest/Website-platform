@@ -269,7 +269,7 @@ export const TokenSymbols = Object.freeze({
 export const TokenSymbolByContract = Object.freeze({
   [process.env.WORKNET_WETH_TOKEN.toLowerCase()]: TokenSymbols.ETH,
   [process.env.WORKNET_WBNB_TOKEN.toLowerCase()]: TokenSymbols.BNB,
-  [process.env.WORKNET_WQT_TOKEN.toLowerCase()]: TokenSymbols.WQT,
+  // [process.env.WORKNET_WQT_TOKEN.toLowerCase()]: TokenSymbols.WQT, // TODO fix it, this secret was deleted
 });
 
 export const WalletTables = Object.freeze({
@@ -327,7 +327,7 @@ export const NetworksData = {
 export const tokenMap = {
   [TokenSymbols.BNB]: process.env.WORKNET_WBNB_TOKEN,
   [TokenSymbols.ETH]: process.env.WORKNET_WETH_TOKEN,
-  [TokenSymbols.WQT]: process.env.WORKNET_WQT_TOKEN,
+  [TokenSymbols.WQT]: process.env.WORKNET_WQT_TOKEN, // TODO fix it, this secret was deleted
 };
 
 export const PensionHistoryMethods = Object.freeze({

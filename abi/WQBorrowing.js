@@ -385,7 +385,33 @@ const WQBorrowing = [
     ],
     name: 'buyCollateral',
     outputs: [],
-    stateMutability: 'payable',
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'fee',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'feeReceiver',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
     type: 'function',
   },
   {
@@ -447,6 +473,25 @@ const WQBorrowing = [
         internalType: 'contract WQFundInterface[]',
         name: 'funds_',
         type: 'address[]',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'user',
+        type: 'address',
+      },
+    ],
+    name: 'getRewards',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
       },
     ],
     stateMutability: 'view',
@@ -525,6 +570,21 @@ const WQBorrowing = [
         name: '_fixedRate',
         type: 'uint256',
       },
+      {
+        internalType: 'address',
+        name: '_wusd',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: '_feeReceiver',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_fee',
+        type: 'uint256',
+      },
     ],
     name: 'initialize',
     outputs: [],
@@ -572,7 +632,7 @@ const WQBorrowing = [
     ],
     name: 'refund',
     outputs: [],
-    stateMutability: 'payable',
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -638,6 +698,32 @@ const WQBorrowing = [
       },
     ],
     name: 'setApy',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_fee',
+        type: 'uint256',
+      },
+    ],
+    name: 'setFee',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_feeReceiver',
+        type: 'address',
+      },
+    ],
+    name: 'setFeeReceiver',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -761,8 +847,17 @@ const WQBorrowing = [
     type: 'function',
   },
   {
-    stateMutability: 'payable',
-    type: 'receive',
+    inputs: [],
+    name: 'wusd',
+    outputs: [
+      {
+        internalType: 'contract IERC20Upgradeable',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
   },
 ];
 

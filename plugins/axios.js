@@ -50,7 +50,13 @@ export default function ({ $axios, store, redirect }, inject) {
           })
           .then(() => { isRefreshing = false; });
       }));
-    } else if (error.response.data.code !== 400010 && error.response.data.code !== 403000) {
+    } else if (error.response.data.code === 403000) {
+      // TODO add this message to locales
+      await store.dispatch('main/showToast', {
+        title: 'Error',
+        text: error.response.data.msg,
+      });
+    } else if (error.response.data.code !== 400010) {
       await store.dispatch('main/showToast', {
         title: 'Error',
         text: error.response.data.msg,

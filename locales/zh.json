@@ -1867,6 +1867,7 @@
     "transaction": {
       "notEnoughFunds": "Not enough funds"
     },
+    "selectSpec": "Please select a specialization",
     "incorrectPass": "哎呀，出错了。检查数据并重试。",
     "emptyData": {
       "emptyQuests": "Oops, there's no quests here yet",

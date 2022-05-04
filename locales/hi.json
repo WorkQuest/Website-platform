@@ -1867,6 +1867,7 @@
     "transaction": {
       "notEnoughFunds": "Not enough funds"
     },
+    "selectSpec": "Please select a specialization",
     "incorrectPass": "ओह! कुछ गलत हो गया है। डेटा जांचें और फिर से कोशिश करें।",
     "emptyData": {
       "emptyQuests": "Oops, there's no quests here yet",

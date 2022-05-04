@@ -260,6 +260,19 @@ const WQSavingProduct = [
   },
   {
     inputs: [],
+    name: 'MONTH',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'UPGRADER_ROLE',
     outputs: [
       {
@@ -369,10 +382,73 @@ const WQSavingProduct = [
         name: 'lockTime',
         type: 'uint256',
       },
+      {
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
+      },
     ],
     name: 'deposit',
     outputs: [],
-    stateMutability: 'payable',
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'feePerMonth',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'feeReceiver',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'feeWithdraw',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'user',
+        type: 'address',
+      },
+    ],
+    name: 'getRewards',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
     type: 'function',
   },
   {
@@ -437,7 +513,28 @@ const WQSavingProduct = [
     type: 'function',
   },
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_wusd',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: '_feeReceiver',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_feePerMonth',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_feeWithdraw',
+        type: 'uint256',
+      },
+    ],
     name: 'initialize',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -476,7 +573,7 @@ const WQSavingProduct = [
     ],
     name: 'refund',
     outputs: [],
-    stateMutability: 'payable',
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -575,6 +672,37 @@ const WQSavingProduct = [
   {
     inputs: [
       {
+        internalType: 'uint256',
+        name: '_feeWithdraw',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_feePerMonth',
+        type: 'uint256',
+      },
+    ],
+    name: 'setFee',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_feeReceiver',
+        type: 'address',
+      },
+    ],
+    name: 'setFeeReceiver',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
         internalType: 'bytes4',
         name: 'interfaceId',
         type: 'bytes4',
@@ -657,6 +785,11 @@ const WQSavingProduct = [
         name: 'unlockDate',
         type: 'uint256',
       },
+      {
+        internalType: 'uint256',
+        name: 'duration',
+        type: 'uint256',
+      },
     ],
     stateMutability: 'view',
     type: 'function',
@@ -672,6 +805,19 @@ const WQSavingProduct = [
     name: 'withdraw',
     outputs: [],
     stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'wusd',
+    outputs: [
+      {
+        internalType: 'contract IERC20Upgradeable',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
     type: 'function',
   },
 ];

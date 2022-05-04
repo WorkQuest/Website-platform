@@ -4,7 +4,7 @@
     data-selector="PAGE-CREATE-QUEST"
   >
     <validation-observer
-      v-slot="{handleSubmit, validated, passed, invalid}"
+      v-slot="{handleSubmit, validated, invalid}"
       class="main__body page"
     >
       <h2 class="page__title">
@@ -65,6 +65,12 @@
         :is-clear-data="isClearData"
         @changeSkills="updateSelectedSkills"
       />
+      <div
+        v-if="validated && !selectedSpecAndSkills.length || !invalid && !selectedSpecAndSkills.length"
+        class="page__error"
+      >
+        {{ $t('errors.selectSpec') }}
+      </div>
       <div class="page__address">
         <base-field
           v-model="address"
@@ -112,7 +118,7 @@
       </div>
       <div class="page__input">
         <validation-provider rules="required">
-          <textarea
+          <base-textarea
             id="textarea"
             v-model="textarea"
             rules="required"
@@ -141,7 +147,7 @@
         <div class="btn__create">
           <base-btn
             selector="CREATE-A-QUEST"
-            :disabled="!(invalid === false) && !(selectedSpecAndSkills.length === 0)"
+            :disabled="validated && invalid || !selectedSpecAndSkills.length"
             @click="handleSubmit(createQuest)"
           >
             {{ $t('meta.createAQuest') }}
@@ -183,13 +189,16 @@ export default {
       files: [],
       geoCode: null,
       isClearData: false,
+      isNotChooseSpec: false,
     };
   },
   computed: {
     ...mapGetters({
       isWalletConnected: 'wallet/getIsWalletConnected',
       balanceData: 'wallet/getBalanceData',
+
       userData: 'user/getUserData',
+
       step: 'quests/getCurrentStepCreateQuest',
       filters: 'quests/getFilters',
     }),
@@ -266,28 +275,31 @@ export default {
         workplaceIndex, runtimeIndex, employmentIndex, questTitle,
         textarea, price, selectedSpecAndSkills, address, coordinates: { lng, lat }, clearData,
       } = this;
-      this.$cookies.set('questDraft', {
-        workplace: WorkplaceIndex[workplaceIndex],
-        priority: PriorityFilter[runtimeIndex + 1].value,
-        employment: TypeOfJobFilter[employmentIndex],
-        title: questTitle,
-        description: textarea,
-        price,
-        specializationKeys: selectedSpecAndSkills,
-        locationFull: {
-          location: {
-            longitude: lng,
-            latitude: lat,
+      if (!questTitle && !textarea && !price && !address) await clearData();
+      else {
+        this.$cookies.set('questDraft', {
+          workplace: WorkplaceIndex[workplaceIndex],
+          priority: PriorityFilter[runtimeIndex + 1].value,
+          employment: TypeOfJobFilter[employmentIndex],
+          title: questTitle,
+          description: textarea,
+          price,
+          specializationKeys: selectedSpecAndSkills,
+          locationFull: {
+            location: {
+              longitude: lng,
+              latitude: lat,
+            },
+            locationPlaceName: address,
           },
-          locationPlaceName: address,
-        },
-      });
-      await this.$store.dispatch('notifications/createLocalNotification', {
-        id: '8',
-        action: LocalNotificationAction.QUEST_DRAFT,
-        message: this.$t('localNotifications.messages.questDraft'),
-        actionBtn: this.$t('localNotifications.btns.questDraft'),
-      });
+        });
+        await this.$store.dispatch('notifications/createLocalNotification', {
+          id: '8',
+          action: LocalNotificationAction.QUEST_DRAFT,
+          message: this.$t('localNotifications.messages.questDraft'),
+          actionBtn: this.$t('localNotifications.btns.questDraft'),
+        });
+      }
       this.SetLoader(false);
     },
     async fillQuestFromQuestDraft(questDraft) {
@@ -312,6 +324,9 @@ export default {
     },
     updateSelectedSkills(specAndSkills) {
       this.selectedSpecAndSkills = specAndSkills;
+      if (this.selectedSpecAndSkills.length > 0) {
+        this.isNotChooseSpec = false;
+      }
     },
     cardStatus(item) {
       if (item.code === 1) return 'level__card_gold';
@@ -345,6 +360,13 @@ export default {
     },
     async createQuest() {
       this.SetLoader(true);
+      if (!this.selectedSpecAndSkills.length) {
+        this.isNotChooseSpec = true;
+        this.ScrollToTop();
+        this.SetLoader(false);
+        return;
+      }
+      // eslint-disable-next-line no-unreachable
       const [feeRes] = await Promise.all([
         this.$store.dispatch('quests/getCreateQuestFeeData', {
           cost: this.price,
@@ -405,6 +427,7 @@ export default {
               this.ShowToast(txRes.msg);
               return;
             }
+            await this.clearData();
             this.ShowModal({
               key: modals.status,
               img: require('assets/img/ui/questCreated.svg'),
@@ -854,6 +877,11 @@ export default {
 }
 
 .page {
+  &__error {
+    color: $errorText;
+    font-size: 12px;
+    min-height: 23px;
+  }
   &__title {
     @include text-simple;
     margin: 30px 0 0 0;
@@ -885,11 +913,8 @@ export default {
   &__textarea {
     @include text-simple;
     border-radius: 6px;
-    padding: 11px 20px 11px 15px;
-    height: 214px;
     width: 100%;
     border: 0;
-    background-color: $black0;
     resize: none;
 
     &::placeholder {
