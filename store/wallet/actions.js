@@ -99,7 +99,7 @@ export default {
   async getBalance({ commit }) {
     const res = await getBalance();
     commit('setBalance', {
-      symbol: TokenSymbols.WUSD,
+      symbol: TokenSymbols.WQT,
       balance: res.ok ? res.result.balance : 0,
       fullBalance: res.ok ? res.result.fullBalance : 0,
     });

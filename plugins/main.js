@@ -177,7 +177,7 @@ Vue.mixin({
       if (contractAddress && [QuestStatuses.Closed, QuestStatuses.Created].includes(status)) {
         this.SetLoader(true);
         const [feeRes] = await Promise.all([
-          this.$store.dispatch('quests/getFeeDataJopMethod', {
+          this.$store.dispatch('quests/getFeeDataJobMethod', {
             method: QuestMethods.CancelJob,
             contractAddress,
           }),
