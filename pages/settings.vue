@@ -92,7 +92,6 @@ export default {
           },
           locationPlaceName: '',
         },
-        profileVisibilitySetting: {},
       },
       skills: {
         perHour: 0,
@@ -109,6 +108,14 @@ export default {
       newEducation: [],
       newWorkExp: [],
       valRefs: {},
+      employerProfileVisibilitySetting: {
+        arrayRatingStatusCanRespondToQuest: [],
+        arrayRatingStatusInMySearch: [],
+      },
+      workerProfileVisibilitySetting: {
+        arrayRatingStatusCanInviteMeOnQuest: [],
+        arrayRatingStatusInMySearch: [],
+      },
     };
   },
   computed: {
@@ -169,7 +176,6 @@ export default {
         },
         locationPlaceName: userData.locationPlaceName,
       },
-      profileVisibilitySetting: JSON.parse(JSON.stringify(userData.profileVisibilitySetting)),
     };
     this.skills = {
       priorityIndex: userData.priority,
@@ -177,6 +183,17 @@ export default {
       perHour: userData.wagePerHour,
       selectedSpecAndSkills: userData.userSpecializations || [],
     };
+    if (this.userRole === UserRole.EMPLOYER) {
+      this.employerProfileVisibilitySetting = {
+        arrayRatingStatusCanRespondToQuest: this.userData.employerProfileVisibilitySetting.arrayRatingStatusCanRespondToQuest,
+        arrayRatingStatusInMySearch: this.userData.employerProfileVisibilitySetting.arrayRatingStatusInMySearch,
+      };
+    } else {
+      this.workerProfileVisibilitySetting = {
+        arrayRatingStatusCanInviteMeOnQuest: this.userData.workerProfileVisibilitySetting.arrayRatingStatusCanInviteMeOnQuest,
+        arrayRatingStatusInMySearch: this.userData.workerProfileVisibilitySetting.arrayRatingStatusInMySearch,
+      };
+    }
     this.SetLoader(false);
 
     this.$root.$on('roleChanged', async () => {
@@ -289,8 +306,13 @@ export default {
       if (!firstMobileNumber) this.showModalStatus('enterPhoneNumber');
     },
     async updateVisibility(profileVisibility) {
-      this.profile.profileVisibilitySetting.network = profileVisibility.visibilityUser;
-      this.profile.profileVisibilitySetting.ratingStatus = profileVisibility.restrictionRankingStatus;
+      if (this.userRole === UserRole.EMPLOYER) {
+        this.employerProfileVisibilitySetting.arrayRatingStatusCanRespondToQuest = profileVisibility.visibilityUser;
+        this.employerProfileVisibilitySetting.arrayRatingStatusInMySearch = profileVisibility.restrictionRankingStatus;
+      } else {
+        this.workerProfileVisibilitySetting.arrayRatingStatusCanInviteMeOnQuest = profileVisibility.visibilityUser;
+        this.workerProfileVisibilitySetting.arrayRatingStatusInMySearch = profileVisibility.restrictionRankingStatus;
+      }
     },
     async checkValidate() {
       const validateEducation = this.userRole === UserRole.EMPLOYER ? true : await this.validateKnowledge('education',
@@ -362,11 +384,12 @@ export default {
             facebook: facebook || null,
           },
         },
-        profileVisibility: {
-          network: this.profile.profileVisibilitySetting.network,
-          ratingStatus: this.profile.profileVisibilitySetting.ratingStatus,
-        },
       };
+      if (this.userRole === UserRole.EMPLOYER) {
+        payload.employerProfileVisibilitySetting = this.employerProfileVisibilitySetting;
+      } else {
+        payload.workerProfileVisibilitySetting = this.workerProfileVisibilitySetting;
+      }
       if (!this.updatedSecondPhone.fullPhone) payload.additionalInfo.secondMobileNumber = null;
       await this.editProfileResponse(`user/${this.editProfileRoute()}`, this.userRole === UserRole.WORKER ? {
         ...payload,

@@ -88,12 +88,19 @@ export const UserRating = Object.freeze({
   4: Ratings.ALL_STATUSES,
 });
 export const RatingFilter = [
-  { key: 'all', value: 4 },
-  { key: 'topRanked', value: 0 },
-  { key: 'reliable', value: 1 },
-  { key: 'verified', value: 2 },
-  { key: 'noStatus', value: 3 },
+  { key: 'all', value: 7 },
+  { key: 'topRanked', value: 4 },
+  { key: 'reliable', value: 2 },
+  { key: 'verified', value: 1 },
+  { key: 'noStatus', value: 0 },
 ];
+export const RatingStatus = {
+  NoStatus: 0,
+  Verified: 1,
+  Reliable: 2,
+  TopRanked: 4,
+  AllStatuses: 7,
+};
 
 export const MessageAction = {
   GROUP_CHAT_CREATE: 'groupChatCreate',

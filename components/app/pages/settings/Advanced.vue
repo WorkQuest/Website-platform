@@ -75,7 +75,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { UserRole, RatingFilter } from '~/utils/enums';
+import { UserRole, RatingFilter, RatingStatus } from '~/utils/enums';
 
 export default {
   name: 'Advanced',
@@ -151,11 +151,19 @@ export default {
     }));
   },
   created() {
-    const profileVisibilitySetting = JSON.parse(JSON.stringify(this.userData.profileVisibilitySetting));
-    this.checkboxBlocks.visibilityUser = Array.isArray(profileVisibilitySetting.network)
-      ? profileVisibilitySetting.network : [];
-    this.checkboxBlocks.restrictionRankingStatus = Array.isArray(profileVisibilitySetting.ratingStatus)
-      ? profileVisibilitySetting.ratingStatus : [];
+    if (this.userRole === UserRole.EMPLOYER) {
+      const profileVisibilitySetting = JSON.parse(JSON.stringify(this.userData.employerProfileVisibilitySetting));
+      this.checkboxBlocks.visibilityUser = Array.isArray(profileVisibilitySetting.arrayRatingStatusCanRespondToQuest)
+        ? profileVisibilitySetting.arrayRatingStatusCanRespondToQuest : [];
+      this.checkboxBlocks.restrictionRankingStatus = Array.isArray(profileVisibilitySetting.arrayRatingStatusInMySearch)
+        ? profileVisibilitySetting.arrayRatingStatusInMySearch : [];
+    } else {
+      const profileVisibilitySetting = JSON.parse(JSON.stringify(this.userData.workerProfileVisibilitySetting));
+      this.checkboxBlocks.visibilityUser = Array.isArray(profileVisibilitySetting.arrayRatingStatusCanInviteMeOnQuest)
+        ? profileVisibilitySetting.arrayRatingStatusCanInviteMeOnQuest : [];
+      this.checkboxBlocks.restrictionRankingStatus = Array.isArray(profileVisibilitySetting.arrayRatingStatusInMySearch)
+        ? profileVisibilitySetting.arrayRatingStatusInMySearch : [];
+    }
   },
   methods: {
     async showModalKey(modalKey) {
@@ -169,12 +177,24 @@ export default {
       });
     },
     setSelectedCheckboxByBlock(checkBoxBlockName, value) {
-      if (!this.checkboxBlocks[checkBoxBlockName].includes(value)) this.checkboxBlocks[checkBoxBlockName].push(value);
-      else this.checkboxBlocks[checkBoxBlockName] = this.checkboxBlocks[checkBoxBlockName].filter((e) => e !== value);
+      if (value === RatingStatus.AllStatuses
+        && !this.checkboxBlocks[checkBoxBlockName].includes(RatingStatus.AllStatuses)) {
+        this.checkboxBlocks[checkBoxBlockName] = [RatingStatus.AllStatuses];
+        this.$emit('updateVisibility', this.checkboxBlocks);
+        return null;
+      }
+      if (!this.checkboxBlocks[checkBoxBlockName].includes(value)) {
+        this.checkboxBlocks[checkBoxBlockName].push(value);
+        this.checkboxBlocks[checkBoxBlockName] = this.checkboxBlocks[checkBoxBlockName].filter((e) => e !== RatingStatus.AllStatuses);
+      } else {
+        this.checkboxBlocks[checkBoxBlockName] = this.checkboxBlocks[checkBoxBlockName].filter((e) => e !== value);
+      }
       this.$emit('updateVisibility', this.checkboxBlocks);
+      return null;
     },
     isCheckboxChecked(checkBoxBlockName, value) {
-      return this.checkboxBlocks[checkBoxBlockName].includes(value);
+      return this.checkboxBlocks[checkBoxBlockName].includes(value)
+        || this.checkboxBlocks[checkBoxBlockName].includes(RatingStatus.AllStatuses);
     },
   },
 };
