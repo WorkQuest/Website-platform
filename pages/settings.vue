@@ -52,7 +52,7 @@ import VerificationCard from '~/components/app/pages/settings/VerificationCard.v
 import Profile from '~/components/app/pages/settings/Profile.vue';
 import Skills from '~/components/app/pages/settings/Skills.vue';
 import Advanced from '~/components/app/pages/settings/Advanced.vue';
-import { UserRole, WorkplaceIndex } from '~/utils/enums';
+import { LocalNotificationAction, UserRole, WorkplaceIndex } from '~/utils/enums';
 
 export default {
   name: 'Settings',
@@ -118,6 +118,7 @@ export default {
       accessToken: 'sumsub/getSumSubBackendToken',
       filters: 'quests/getFilters',
       secondNumber: 'user/getUserSecondMobileNumber',
+      localNotifications: 'notifications/getLocalNotifications',
     }),
     WorkplaceIndex() {
       return WorkplaceIndex;
@@ -128,8 +129,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    // TODO: Добавить скроллинг до 2FA
-    this.scrollTo(1800);
+    this.scrollToPx();
     if (!this.filters) await this.$store.dispatch('quests/getFilters');
     if (!this.profile.firstName) await this.$store.dispatch('user/getUserData');
     const addInfo = this.userData.additionalInfo;
@@ -188,10 +188,22 @@ export default {
     });
   },
   methods: {
-    scrollTo(y) {
-      setTimeout(() => {
-        scrollTo(0, y);
-      }, 200);
+    scrollToPx() {
+      // TODO: Доделать! Добавить условия для захода на страницу!
+      const twoFALocalNotification = [...new Set(this.localNotifications)].filter((n) => n.actionNameKey
+        === `notifications.${LocalNotificationAction.TWOFA}`);
+      function scrollTo2FA() {
+        console.log('twoFALocalNotification[0]?.params?.scrollToPx', 1, twoFALocalNotification[0]?.params?.scrollToPx);
+        return twoFALocalNotification[0]?.params?.scrollToPx;
+      }
+      if (twoFALocalNotification[0]) {
+        console.log(twoFALocalNotification, 'twoFALocalNotifications');
+        if (twoFALocalNotification) {
+          setTimeout(() => {
+            scrollTo(0, scrollTo2FA());
+          }, 200);
+        }
+      }
     },
     validationRefs(data) {
       this.valRefs = data;

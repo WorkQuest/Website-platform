@@ -22,13 +22,13 @@ export default {
     });
     this.commit('notifications/setUnreadNotifsCount', 0 - ids.length);
   },
-  addLocalNotificationSettings(state, notification) {
-    // TODO: Дописать!
+  addLocalNotification(state, notification) {
+    state.localNotifications.push(notification);
   },
   addNotification(state, notification) {
     // TODO: Проверить!
-    console.log('state.notifications.list', state.notifications.list);
-    console.log('state.reducedNotifications', state.reducedNotifications);
+    // console.log('state.notifications.list', state.notifications.list);
+    // console.log('state.reducedNotifications', state.reducedNotifications);
     state.notifications.list.push(notification);
     state.reducedNotifications.unshift(notification);
     state.reducedNotifications.length = state.reducedNotifications.length === 1 ? 1 : 2;

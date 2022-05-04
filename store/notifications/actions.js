@@ -48,9 +48,7 @@ export default {
       return false;
     }
     const isAdded = await checkAddedLocalNotification();
-    if (!isAdded) {
-      await dispatch('addNotification', notification);
-    }
+    if (!isAdded) await dispatch('addNotification', notification);
   },
   async removeNotification({ dispatch, commit, rootGetters }, { config, notificationId, notification }) {
     const { params } = notification;
@@ -102,9 +100,10 @@ export default {
   },
   async addNotification({ commit, dispatch }, notification) {
     const newNotification = await dispatch('setCurrNotificationObject', { notification });
-    console.log('newNotification', newNotification);
-    // TODO: Дописать!!!
-    if (newNotification.params.isLocal) commit('addLocalNotificationSettings', newNotification);
+    if (newNotification.params.isLocal) {
+      console.log('local notif', notification);
+      commit('addLocalNotification', newNotification);
+    }
     commit('addNotification', newNotification);
   },
   async setCurrNotificationObject({ getters, rootGetters, dispatch }, notification) {
@@ -179,11 +178,11 @@ export default {
         await dispatch('user/getAllUserReviews', { userId: currentUserId, query }, { root: true });
       }
     }
-    async function setAllNotificationsParams(currTitle, path, isExternalLink, externalBase, isLocal, scrollTo) {
+    async function setAllNotificationsParams(currTitle, path, isExternalLink, externalBase, isLocal, scrollToPx) {
       notification.actionNameKey = `notifications.${action}`;
       notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
       notification.params = {
-        title: currTitle, path, isExternalLink, externalBase, isLocal, scrollTo,
+        title: currTitle, path, isExternalLink, externalBase, isLocal, scrollToPx,
       };
       await setSender();
     }
@@ -258,11 +257,11 @@ export default {
         break;
 
       case LocalNotificationAction.PROFILE_FILLED:
-        await setAllNotificationsParams(title, `${Path.SETTINGS}`, false, '', true, 40);
+        await setAllNotificationsParams(title, `${Path.SETTINGS}`, false, '', true, 400);
         break;
 
       case LocalNotificationAction.TWOFA:
-        await setAllNotificationsParams(title, `${Path.SETTINGS}`, false, '', true, 180);
+        await setAllNotificationsParams(title, `${Path.SETTINGS}`, false, '', true, 1800);
         break;
 
       /** DAO */
@@ -283,7 +282,7 @@ export default {
         break;
       }
     }
-    console.log('notification', notification);
+    // console.log('notification', notification);
     return notification;
   },
 };
