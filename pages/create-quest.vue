@@ -398,7 +398,7 @@ export default {
           key: modals.transactionReceipt,
           title: 'Approve',
           fields: {
-            from: { name: this.$t('meta.fromBig'), value: this.userData.wallet.address },
+            from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
             to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_WQ_FACTORY },
             amount: { name: this.$t('modals.amount'), value: this.depositAmount, symbol: TokenSymbols.WUSD },
             fee: { name: this.$t('wallet.table.trxFee'), value: approveFee.result.fee, symbol: TokenSymbols.WQT },
@@ -475,7 +475,7 @@ export default {
         this.ShowModal({
           key: modals.transactionReceipt,
           fields: {
-            from: { name: this.$t('meta.fromBig'), value: this.userData.wallet.address },
+            from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
             to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_WQ_FACTORY },
             amount: { name: this.$t('modals.amount'), value: this.depositAmount, symbol: TokenSymbols.WUSD },
             fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
