@@ -35,13 +35,13 @@
                 >
                   {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
                 </span>
-                <!--                TODO: проверить входные данные нет бэка-->
-                <!--                <span-->
-                <!--                  v-if="notification.params.employer"-->
-                <!--                  class="inviter__company"-->
-                <!--                >-->
-                <!--                  {{ company(notification) }}-->
-                <!--                </span>-->
+                <span
+                  v-if="notification.sender.additionalInfo"
+                  class="inviter__company"
+                >
+                  {{ notification.sender.additionalInfo.company ?
+                    `${$t('modals.fromAddress')} ${notification.sender.additionalInfo.company}` : '' }}
+                </span>
               </div>
             </template>
             <div class="notification__quest quest">
@@ -287,9 +287,9 @@ export default {
     align-self: flex-start;
   }
   &__inviter {
+    display: flex;
+    gap: 5px;
     grid-area: inviter;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     overflow: hidden;
   }
   &__quest {
@@ -340,17 +340,24 @@ export default {
     letter-spacing: 0.02em;
     transition: .5s;
     cursor: pointer;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
     &:hover {
       color: $blue;
     }
   }
   &__company {
+    flex: 0 0 15%;
     @include text-simple;
     font-weight: 400;
     font-size: 16px;
     color: $black500;
     letter-spacing: 0.02em;
     margin-left: 5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 }
 .quest {
@@ -372,7 +379,6 @@ export default {
     text-overflow: ellipsis;
     white-space: initial;
 
-    display: -webkit-box;
     line-clamp: 3;
     -webkit-line-clamp: 3;
     box-orient: vertical;
