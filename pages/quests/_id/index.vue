@@ -173,6 +173,8 @@ import {
   QuestMethods, EditQuestState, QuestStatuses, InfoModeWorker, InfoModeEmployer,
 } from '~/utils/сonstants/quests';
 import { images } from '~/utils/images';
+import { getContractFeeData, sendWalletTransaction, transfer } from '~/utils/wallet';
+import { WorkQuest, WQFactory } from '~/abi';
 
 export default {
   name: 'Quests',
@@ -397,7 +399,7 @@ export default {
         ADChat, WaitWorker, Created, Dispute, Invited, WaitWorkerOnAssign, WaitEmployerConfirm,
       } = InfoModeWorker;
       let arr = [];
-
+      console.log(infoDataMode);
       switch (infoDataMode) {
         case ADChat: {
           arr = [{
@@ -502,7 +504,7 @@ export default {
     async openDispute() {
       if (this.quest.status === QuestStatuses.Dispute) return await this.$router.push(`${Path.DISPUTES}/${this.quest.openDispute.id}`);
       if (this.checkAvailabilityDisputeTime) {
-        return this.showModal({
+        return this.ShowModal({
           // TODO: Добавить локализацию
           key: modals.status,
           img: images.WARNING,
@@ -521,18 +523,34 @@ export default {
     },
     async disputePay() {
       // TODO: Дописать логику, подключить конктакт
-
-      // TODO: Добавить после оплаты диспута
-      // return this.ShowModal({
-      //   key: modals.openADispute,
-      //   questId: this.quest.id,
-      // });
+      const { contractAddress } = this.quest;
+      console.log('contractAddress', contractAddress);
+      const { result: { fee } } = await this.$store.dispatch('quests/getFeeDataJobMethod', {
+        method: 'feeTx',
+        abi: WQFactory,
+        contractAddress: process.env.WORKNET_WQ_FACTORY,
+      });
+      console.log('FeeTx', fee);
+      const value = new BigNumber(fee).toString();
+      console.log(' value', value);
+      const payload = { abi: WorkQuest, address: contractAddress, value };
+      const payment = await sendWalletTransaction('arbitration', payload);
+      // TODO: Исправить на fee
+      console.log('c', payment);
+      if (payment.ok) {
+        // TODO: Добавить после оплаты диспута
+        return this.ShowModal({ key: modals.openADispute, questId: this.quest.id });
+      }
+      return this.ShowModalFail({
+        title: 'Payment Error', subtitle: 'Please, try later...', img: images.ERROR,
+      });
     },
     async acceptCompletedWorkOnQuest() {
       this.SetLoader(true);
       const { contractAddress } = this.quest;
       const [feeRes] = await Promise.all([
         this.$store.dispatch('quests/getFeeDataJobMethod', {
+          abi: WorkQuest,
           method: QuestMethods.AcceptJobResult,
           contractAddress,
         }),
@@ -621,6 +639,7 @@ export default {
       const { contractAddress } = this.quest;
       const [feeRes] = await Promise.all([
         this.$store.dispatch('quests/getFeeDataJobMethod', {
+          abi: WorkQuest,
           method: QuestMethods.AcceptJob,
           contractAddress,
         }),
@@ -657,6 +676,7 @@ export default {
       const { contractAddress } = this.quest;
       const [feeRes] = await Promise.all([
         this.$store.dispatch('quests/getFeeDataJobMethod', {
+          abi: WorkQuest,
           method: QuestMethods.VerificationJob,
           contractAddress,
         }),

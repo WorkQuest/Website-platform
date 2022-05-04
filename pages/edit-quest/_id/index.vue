@@ -277,6 +277,7 @@ import {
   QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses, CommissionForCreatingAQuest,
 } from '~/utils/сonstants/quests';
 import { hashText } from '~/utils/wallet';
+import { WorkQuest } from '~/abi';
 
 const { GeoCode } = require('geo-coder');
 
@@ -554,6 +555,7 @@ export default {
           this.$store.dispatch('quests/getFeeDataJobMethod', {
             contractAddress,
             method: QuestMethods.EditJob,
+            abi: WorkQuest,
             data: [hashText(this.textarea), new BigNumber(this.price).shiftedBy(18).toString()],
           }),
           this.$store.dispatch('wallet/getBalance'),

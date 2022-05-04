@@ -388,9 +388,9 @@ export default {
 
   /** Work Quest */
   async getFeeDataJobMethod({ commit }, {
-    method, contractAddress, data,
+    method, abi, contractAddress, data,
   }) {
-    return await getContractFeeData(method, WorkQuest, contractAddress, data);
+    return await getContractFeeData(method, abi, contractAddress, data);
   },
   async sendQuestTransaction({ commit }, { contractAddress, method, params = [] }) {
     try {
