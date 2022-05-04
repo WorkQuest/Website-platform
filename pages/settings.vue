@@ -52,7 +52,9 @@ import VerificationCard from '~/components/app/pages/settings/VerificationCard.v
 import Profile from '~/components/app/pages/settings/Profile.vue';
 import Skills from '~/components/app/pages/settings/Skills.vue';
 import Advanced from '~/components/app/pages/settings/Advanced.vue';
-import { LocalNotificationAction, UserRole, WorkplaceIndex } from '~/utils/enums';
+import {
+  LocalNotificationAction, UserRole, WorkplaceIndex, Path,
+} from '~/utils/enums';
 
 export default {
   name: 'Settings',
@@ -171,7 +173,7 @@ export default {
         },
         locationPlaceName: userData.locationPlaceName,
       },
-      profileVisibilitySetting: JSON.parse(JSON.stringify(userData.profileVisibilitySetting)),
+      // profileVisibilitySetting: JSON.parse(JSON.stringify(userData?.profileVisibilitySetting)),
     };
     this.skills = {
       priorityIndex: userData.priority,
@@ -196,13 +198,10 @@ export default {
         console.log('twoFALocalNotification[0]?.params?.scrollToPx', 1, twoFALocalNotification[0]?.params?.scrollToPx);
         return twoFALocalNotification[0]?.params?.scrollToPx;
       }
-      if (twoFALocalNotification[0]) {
+      // TODO: Доделать!
+      if (twoFALocalNotification[0] && this.$nuxt.context.from.path === Path.NOTIFICATIONS) {
         console.log(twoFALocalNotification, 'twoFALocalNotifications');
-        if (twoFALocalNotification) {
-          setTimeout(() => {
-            scrollTo(0, scrollTo2FA());
-          }, 200);
-        }
+        setTimeout(() => { scrollTo(0, scrollTo2FA()); }, 200);
       }
     },
     validationRefs(data) {
