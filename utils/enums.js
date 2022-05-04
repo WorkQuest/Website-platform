@@ -299,6 +299,7 @@ export const tokenMap = {
   [TokenSymbols.BNB]: process.env.WORKNET_WBNB_TOKEN,
   [TokenSymbols.ETH]: process.env.WORKNET_WETH_TOKEN,
   [TokenSymbols.WQT]: process.env.WORKNET_WQT_TOKEN, // TODO fix it, this secret was deleted
+  [TokenSymbols.WUSD]: process.env.WORKNET_WUSD_TOKEN,
 };
 
 export const PensionHistoryMethods = Object.freeze({

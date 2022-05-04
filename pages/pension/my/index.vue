@@ -422,7 +422,7 @@ export default {
     },
     async getWallet() {
       await Promise.all([
-        this.$store.dispatch('wallet/pensionGetWalletInfo'),
+        this.$store.dispatch('retirement/pensionGetWalletInfo'),
         this.loadTablePage(this.page),
       ]);
       if (!this.pensionWallet || !this.pensionWallet.isCreated) {

@@ -332,15 +332,16 @@ export const pensionContribute = async (amount) => {
   try {
     const inst = new web3.eth.Contract(WQPensionFund, process.env.WORKNET_PENSION_FUND);
     amount = new BigNumber(amount).shiftedBy(18).toString();
+    const data = [wallet.address, amount];
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
-      inst.methods.contribute.apply(null, [wallet.address]).estimateGas({ from: wallet.address, value: amount }),
+      inst.methods.contribute.apply(null, data).estimateGas({ from: wallet.address, to: process.env.WORKNET_PENSION_FUND }),
     ]);
-    const res = await inst.methods.contribute(wallet.address).send({
+    const res = await inst.methods.contribute(...data).send({
       from: wallet.address,
       gas: gasEstimate,
       gasPrice,
-      value: amount,
+      data,
     });
     return success(res);
   } catch (e) {

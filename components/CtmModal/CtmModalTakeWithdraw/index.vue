@@ -182,7 +182,7 @@ export default {
             fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
           },
           submitMethod: async () => {
-            const res = await this.$store.dispatch('wallet/pensionWithdraw', this.amount);
+            const res = await this.$store.dispatch('retirement/pensionWithdraw', this.amount);
             if (res.ok) return success();
             await this.$store.dispatch('main/showToast', { text: this.$t('modals.transactionFail') });
             return error();

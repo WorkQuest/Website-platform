@@ -105,7 +105,7 @@ export default {
       this.ShowModal({
         key: modals.transactionReceipt,
         fields,
-        submitMethod: async () => await this.$store.dispatch('wallet/pensionUpdateFee', this.amount.substr(0, this.amount.length - 1)),
+        submitMethod: async () => await this.$store.dispatch('retirement/pensionUpdateFee', this.amount.substr(0, this.amount.length - 1)),
         callback: updateMethod,
       });
       this.SetLoader(false);

@@ -373,7 +373,6 @@ export default {
       subscribe: 'retirement/subscribeWS',
       unsubscribe: 'retirement/unsubscribeWS',
       getPensionTransactions: 'retirement/getPensionTransactions',
-      getWalletInfo: 'retirement/pensionGetWalletInfo',
       pensionGetWalletInfo: 'retirement/pensionGetWalletInfo',
       pensionExtendLockTime: 'retirement/pensionExtendLockTime',
 

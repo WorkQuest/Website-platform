@@ -44,10 +44,11 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { WQPensionFund } from '~/abi/index';
 import { getWalletAddress } from '~/utils/wallet';
-import { TokenSymbols } from '~/utils/enums';
+import { tokenMap, TokenSymbols } from '~/utils/enums';
 
 export default {
   name: 'ModalMakeDeposit',
@@ -71,21 +72,36 @@ export default {
     },
     async toDepositReceipt() {
       const { updateMethod } = this.options;
+      const { amount, balanceData } = this;
+      const newAmount = new BigNumber(amount).shiftedBy(18).toString();
+      console.log(balanceData);
       this.CloseModal();
       this.SetLoader(true);
+      const allowance = await this.$store.dispatch('wallet/getAllowance', {
+        tokenAddress: tokenMap[TokenSymbols.WUSD],
+        spenderAddress: process.env.WORKNET_PENSION_FUND,
+      });
+      console.log('allowance:', allowance, 'newAmount:', newAmount);
+      if (+allowance < +newAmount) {
+        await this.$store.dispatch('wallet/approve', {
+          tokenAddress: tokenMap[TokenSymbols.WUSD],
+          spenderAddress: process.env.WORKNET_PENSION_FUND,
+          amount: newAmount,
+        });
+      } else {
+        this.SetLoader(false);
+      }
       const [txFee] = await Promise.all([
         this.$store.dispatch('wallet/getContractFeeData', {
           method: 'contribute',
           abi: WQPensionFund,
           contractAddress: process.env.WORKNET_PENSION_FUND,
-          data: [getWalletAddress()],
-          amount: this.amount,
+          data: [getWalletAddress(), newAmount],
           recipient: process.env.WORKNET_PENSION_FUND,
         }),
         this.$store.dispatch('wallet/getBalance'),
       ]);
-
-      if (!txFee?.ok || +this.balanceData.WUSD.balance === 0) {
+      if (!txFee?.ok || +balanceData.WUSD.balance === 0) {
         await this.$store.dispatch('main/showToast', {
           text: this.$t('errors.transaction.notEnoughFunds'),
         });
@@ -97,12 +113,12 @@ export default {
         from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
         to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_PENSION_FUND },
         fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
-        amount: { name: this.$t('modals.amount'), value: this.amount, symbol: TokenSymbols.WUSD },
+        amount: { name: this.$t('modals.amount'), value: amount, symbol: TokenSymbols.WUSD },
       };
       this.ShowModal({
         key: modals.transactionReceipt,
         fields,
-        submitMethod: async () => await this.$store.dispatch('wallet/pensionContribute', this.amount),
+        submitMethod: async () => await this.$store.dispatch('retirement/pensionContribute', amount),
         callback: updateMethod,
       });
       this.SetLoader(false);
