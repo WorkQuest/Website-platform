@@ -164,11 +164,11 @@ export default {
       name: 'visibilityUser',
     }];
   },
-  // created() {
-  //   const profileVisibilitySetting = JSON.parse(JSON.stringify(this.userData?.profileVisibilitySetting));
-  //   this.checkboxBlocks.visibilityUser = profileVisibilitySetting?.network;
-  //   this.checkboxBlocks.restrictionRankingStatus = profileVisibilitySetting?.ratingStatus;
-  // },
+  created() {
+    const profileVisibilitySetting = JSON.parse(JSON.stringify(this.userData?.profileVisibilitySetting));
+    this.checkboxBlocks.visibilityUser = profileVisibilitySetting?.network;
+    this.checkboxBlocks.restrictionRankingStatus = profileVisibilitySetting?.ratingStatus;
+  },
   methods: {
     async showModalKey(modalKey) {
       this.$emit('showModalKey', modalKey);

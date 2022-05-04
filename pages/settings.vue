@@ -173,7 +173,7 @@ export default {
         },
         locationPlaceName: userData.locationPlaceName,
       },
-      // profileVisibilitySetting: JSON.parse(JSON.stringify(userData?.profileVisibilitySetting)),
+      profileVisibilitySetting: JSON.parse(JSON.stringify(userData?.profileVisibilitySetting)),
     };
     this.skills = {
       priorityIndex: userData.priority,
