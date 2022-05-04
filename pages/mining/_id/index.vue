@@ -275,7 +275,6 @@ export default {
       isConnected: 'web3/isConnected',
 
       isAuth: 'user/isAuth',
-      walletAddress: 'user/getUserWalletAddress',
     }),
     chain() {
       const symbol = this.$route.params.id;
@@ -285,6 +284,7 @@ export default {
         case TokenSymbols.BNB:
           return Chains.BINANCE;
         default:
+          if (this.$route.path === Path.MINING) return '';
           console.error('Unknown pool:', symbol);
           return '';
       }
@@ -384,9 +384,12 @@ export default {
       if (!status) await this.resetPoolData();
       else if (await this.checkNetwork(this.chain)) {
         await this.tokensDataUpdate();
-        await this.fetchTotalSupply(this.chain);
-        await this.fetchStakingInfo(this.chain);
-        await this.calcProfit();
+      }
+    },
+    async totalLiquidityUSD(newVal, oldVal) {
+      if (this.page === 1 && oldVal) {
+        const { limit, chain: pool } = this;
+        await this.fetchSwaps({ pool, params: { limit, offset: 0 } });
       }
     },
     async page() {
@@ -435,8 +438,6 @@ export default {
       fetchPoolData: 'mining/fetchPoolData',
       resetPoolData: 'mining/resetPoolData',
       fetchChartData: 'mining/fetchChartData',
-      fetchTotalSupply: 'mining/fetchTotalSupply',
-      fetchStakingInfo: 'mining/fetchStakingInfo',
 
       claimTokens: 'mining/claim',
       stakeTokens: 'mining/stake',

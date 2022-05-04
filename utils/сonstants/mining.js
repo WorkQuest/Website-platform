@@ -1,5 +1,5 @@
 import { Chains, isProd } from '~/utils/enums';
-import { StakingWQ, WQLiquidityMining } from '~/abi/index';
+import { WQLiquidityMining } from '~/abi/index';
 import { images } from '~/utils/images';
 
 export const PoolURL = Object.freeze({
@@ -15,7 +15,7 @@ export const Pool = new Map([
       rewardToken: process.env.ETHEREUM_WQT_TOKEN,
       stakingToken: process.env.ETHEREUM_LP_TOKEN,
       stakingAddress: process.env.ETHEREUM_MINING,
-      stakingAbi: StakingWQ,
+      stakingAbi: WQLiquidityMining,
       icon: images.ETH,
       provider: process.env.ETHEREUM_RPC_URL,
       // need only for testnet, in mainnet we can use stakingToken

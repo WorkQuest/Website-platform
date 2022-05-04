@@ -20,7 +20,6 @@ import {
 import {
   ERC20,
   WQTExchange,
-  WQLiquidityMining,
 } from '~/abi';
 
 BigNumber.config({ EXPONENTIAL_AT: 60 });
@@ -35,15 +34,24 @@ let MINING_INSTANCE = null;
 
 export default {
 
+  /**
+   * @property usdPriceWQT
+   * @param commit
+   * @param pool
+   * @return {Promise<boolean|*>}
+   */
   async fetchChartData({ commit }, pool) {
     try {
       const { ok, result: { data } } = await this.$axios.$get(`/v1/pool-liquidity/${pools[pool]}/token-day?limit=10`);
-      commit('setWQTPrice', new BigNumber(data[0].usdPriceWQT).shiftedBy(-18).toNumber());
-      commit('setTotalLiquidityUSD', data[0].reserveUSD);
+      const { usdPriceWQT, reserveUSD } = data[0];
+
+      commit('setTotalLiquidityUSD', reserveUSD);
+      commit('setWQTPrice', new BigNumber(usdPriceWQT).shiftedBy(-18).toNumber());
       commit('setChartData', data.reverse().map((item) => ({
         ...item,
         date: this.$moment(item.date * 1000).utc(false),
       })));
+
       return ok;
     } catch (e) {
       console.error('mining/fetchETHChart');
@@ -83,7 +91,11 @@ export default {
     }
   },
 
-  async subscribeWS({ commit, getters }) {
+  async subscribeWS({ commit, getters, dispatch }) {
+    const pool = {
+      DailyLiquidityWqtWeth: Chains.ETHEREUM,
+      DailyLiquidityWqtWbnb: Chains.BINANCE,
+    };
     try {
       await this.$wsNotifs.subscribe(`${Path.NOTIFICATIONS}/dailyLiquidity`, async (event) => {
         const { reserveUSD } = event.data;
@@ -92,6 +104,9 @@ export default {
         const chartData = JSON.parse(JSON.stringify(getters.getChartData));
         chartData[chartData.length - 1].reserveUSD = reserveUSD;
         commit('setChartData', chartData);
+
+        await dispatch('fetchPoolData', { chain: pool[event.action] });
+        await dispatch('calcProfit');
       });
     } catch (e) {
       console.error('mining/subscribeWS', e);
@@ -106,58 +121,55 @@ export default {
     }
   },
 
-  async fetchPoolData({ commit }, { chain }) {
+  /**
+   * @property getStakingInfo
+   * @param commit
+   * @param dispatch
+   * @param chain
+   * @return {Promise<{msg: string, code: number, data: null, ok: boolean}|{result: *, ok: boolean}>}
+   */
+  async fetchPoolData({ commit, dispatch }, { chain }) {
     try {
-      const { stakingAddress, stakingAbi } = Pool.get(chain);
-      const { _balance, staked_, claim_ } = await fetchContractData(
-        'getInfoByAddress',
+      const {
+        lpToken,
+        provider,
         stakingAbi,
+        miningAddress,
         stakingAddress,
-        [getAccountAddress()],
-      );
+      } = Pool.get(chain);
+
+      // because we use data from mainnet
+      const rpcProvider = new Web3.providers.HttpProvider(provider);
+      const web3 = new Web3(rpcProvider);
+
+      if (!LP_INSTANCE) LP_INSTANCE = await new web3.eth.Contract(ERC20, lpToken);
+      if (!MINING_INSTANCE) MINING_INSTANCE = await new web3.eth.Contract(stakingAbi, miningAddress);
+
+      const [
+        totalSupply,
+        { totalStaked, rewardTotal },
+        { _balance, staked_, claim_ },
+      ] = await Promise.all([
+        LP_INSTANCE.methods.totalSupply().call(),
+        MINING_INSTANCE.methods.getStakingInfo().call(),
+        fetchContractData('getInfoByAddress', stakingAbi, stakingAddress, [getAccountAddress()]),
+      ]);
 
       commit('setPoolData', {
         balance: new BigNumber(_balance).shiftedBy(-18).toString(),
         staked: new BigNumber(staked_).shiftedBy(-18).toString(),
         claim: new BigNumber(claim_).shiftedBy(-18).toString(),
       });
-      return success();
-    } catch (e) {
-      console.error('Error mining/fetchPoolData for pool:', chain, e);
-      return error();
-    }
-  },
-
-  async fetchTotalSupply({ commit }, pool) {
-    try {
-      if (!LP_INSTANCE) {
-        const provider = new Web3.providers.HttpProvider(Pool.get(pool).provider);
-        const web3 = new Web3(provider);
-        LP_INSTANCE = await new web3.eth.Contract(ERC20, Pool.get(pool).lpToken);
-      }
-
-      const totalSupply = await LP_INSTANCE.methods.totalSupply().call();
-      commit('setTotalSupply', new BigNumber(totalSupply).shiftedBy(-18).toString());
-    } catch (e) {
-      console.error('Error in mining/fetchTotalSupply:', e);
-    }
-  },
-
-  async fetchStakingInfo({ commit }, pool) {
-    try {
-      if (!MINING_INSTANCE) {
-        const provider = new Web3.providers.HttpProvider(Pool.get(pool).provider);
-        const web3 = new Web3(provider);
-        MINING_INSTANCE = await new web3.eth.Contract(WQLiquidityMining, Pool.get(pool).miningAddress);
-      }
-
-      const { totalStaked, rewardTotal } = await MINING_INSTANCE.methods.getStakingInfo().call();
       commit('setStakingInfo', {
         totalStaked: new BigNumber(totalStaked).shiftedBy(-18).toString(),
         totalReward: new BigNumber(rewardTotal).shiftedBy(-18).toString(),
       });
+      commit('setTotalSupply', new BigNumber(+totalSupply).shiftedBy(-18).toString());
+
+      return success();
     } catch (e) {
-      console.error('Error in mining/fetchStakingInfo:', e);
+      console.error('Error mining/fetchPoolData for pool:', chain, e);
+      return error();
     }
   },
 
@@ -212,7 +224,6 @@ export default {
 
     commit('setProfit', null);
     commit('setTotalSupply', null);
-    commit('setTotalLiquidityUSD', null);
 
     LP_INSTANCE = null;
     MINING_INSTANCE = null;
