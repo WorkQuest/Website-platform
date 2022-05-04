@@ -277,25 +277,23 @@ export default {
 
   /** Work Quest Factory */
   async createQuest({ commit }, {
-    cost, depositAmount, description, nonce,
+    cost, description, nonce,
   }) {
     try {
       const address = process.env.WORKNET_WQ_FACTORY;
       const walletAddress = getWalletAddress();
       const hash = hashText(description);
       cost = new BigNumber(cost).shiftedBy(18).toString();
-      depositAmount = new BigNumber(depositAmount).shiftedBy(18).toString();
       const data = [hash, cost, 0, nonce];
       const inst = createInstance(WQFactory, address);
       const sendData = inst.methods.newWorkQuest.apply(null, data).encodeABI();
       const [gasPrice, gasEstimate] = await Promise.all([
         getProvider().eth.getGasPrice(),
-        inst.methods.newWorkQuest.apply(null, data).estimateGas({ from: walletAddress, value: depositAmount }),
+        inst.methods.newWorkQuest.apply(null, data).estimateGas({ from: walletAddress }),
       ]);
       const res = await getProvider().eth.sendTransaction({
         to: address,
         from: walletAddress,
-        value: depositAmount,
         data: sendData,
         gasPrice,
         gas: gasEstimate,
@@ -316,7 +314,7 @@ export default {
    * @returns success|error
    */
   async getCreateQuestFeeData({ commit }, {
-    cost, depositAmount, description, nonce,
+    cost, description, nonce,
   }) {
     try {
       const hash = hashText(description);
@@ -328,7 +326,6 @@ export default {
         address,
         [hash, cost, 0, nonce],
         address,
-        depositAmount,
       );
     } catch (e) {
       return error();

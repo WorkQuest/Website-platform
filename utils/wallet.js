@@ -145,7 +145,7 @@ export const getStyledAmount = (amount, full = false, decimals = 18) => {
 
 // web3.eth.net.getId() - если нужно будет получить chainId
 
-// WUSD
+// WQT
 export const getBalance = async () => {
   try {
     const balance = await web3.eth.getBalance(wallet.address);
@@ -158,7 +158,6 @@ export const getBalance = async () => {
     return error();
   }
 };
-// Send WUSD
 export const transfer = async (recipient, value) => {
   try {
     value = new BigNumber(value).shiftedBy(18).toString();
