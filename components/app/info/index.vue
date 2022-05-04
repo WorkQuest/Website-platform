@@ -14,7 +14,6 @@
           class="info__text"
           :class="[{'info__text_white': ![
             $options.InfoModeEmployer.Created,
-            $options.InfoModeEmployer.WaitEmployerConfirm
           ].includes(infoDataMode)}]"
         >
           {{ infoStatusText }}
@@ -151,9 +150,8 @@ export default {
           { 'info-hide': infoDataMode === InfoModeEmployer.Created },
           { 'info_bg-yellow': infoDataMode === InfoModeEmployer.WaitWorkerOnAssign },
           { 'info_bg-green': infoDataMode === InfoModeEmployer.WaitWorker },
-          { 'info_bg-grey': infoDataMode === InfoModeEmployer.WaitEmployerConfirm },
           { 'info_bg-red': [InfoModeEmployer.Closed, InfoModeEmployer.Dispute].includes(infoDataMode) },
-          { 'info_bg-blue': infoDataMode === InfoModeEmployer.Done },
+          { 'info_bg-blue': [InfoModeEmployer.WaitEmployerConfirm, InfoModeEmployer.Done].includes(infoDataMode) },
         ];
       }
       return '';
