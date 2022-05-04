@@ -137,7 +137,7 @@
           :limit="10"
           :limit-bytes="10485760"
           :limit-bytes-video="10485760"
-          :accept="'image/png, image/jpg, image/jpeg, video/mp4'"
+          accept="image/png, image/jpg, image/jpeg, video/mp4"
           :preloaded-files="files"
           :is-clear-data="isClearData"
           @change="updateFiles"
@@ -148,7 +148,7 @@
           <base-btn
             selector="CREATE-A-QUEST"
             :disabled="validated && invalid || !selectedSpecAndSkills.length"
-            @click="handleSubmit(createQuest)"
+            @click="handleSubmit(toCreateQuest)"
           >
             {{ $t('meta.createAQuest') }}
           </base-btn>
@@ -163,9 +163,11 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import {
-  PriorityFilter, TokenSymbols, TypeOfJobFilter, WorkplaceIndex,
+  PriorityFilter, tokenMap, TokenSymbols, TypeOfJobFilter, WorkplaceIndex,
 } from '~/utils/enums';
 import { CommissionForCreatingAQuest } from '~/utils/сonstants/quests';
+import { ERC20 } from '~/abi';
+import { error, success } from '~/utils/web3';
 
 const { GeoCode } = require('geo-coder');
 
@@ -195,8 +197,8 @@ export default {
     ...mapGetters({
       isWalletConnected: 'wallet/getIsWalletConnected',
       balanceData: 'wallet/getBalanceData',
-
       userData: 'user/getUserData',
+      userWalletAddress: 'user/getUserWalletAddress',
 
       step: 'quests/getCurrentStepCreateQuest',
       filters: 'quests/getFilters',
@@ -348,10 +350,7 @@ export default {
         console.error('Geo look up is failed', e);
       }
     },
-    async updateBalanceWUSD() {
-      await this.$store.dispatch('wallet/getBalance');
-    },
-    async createQuest() {
+    async toCreateQuest() {
       this.SetLoader(true);
       if (!this.selectedSpecAndSkills.length) {
         this.isNotChooseSpec = true;
@@ -359,26 +358,98 @@ export default {
         this.SetLoader(false);
         return;
       }
+
+      const tokenAddress = tokenMap[TokenSymbols.WUSD];
+      const spenderAddress = process.env.WORKNET_WQ_FACTORY;
+      const [allowance] = await Promise.all([
+        this.$store.dispatch('wallet/getAllowance', {
+          tokenAddress,
+          spenderAddress,
+        }),
+        this.$store.dispatch('wallet/fetchWalletData', {
+          method: 'balanceOf',
+          address: this.userWalletAddress,
+          abi: ERC20,
+          token: tokenAddress,
+          symbol: TokenSymbols.WUSD,
+        }),
+        this.$store.dispatch('wallet/getBalance'),
+      ]);
+      // Not enough WUSD
+      if (new BigNumber(this.depositAmount).isGreaterThan(this.balanceData.WUSD.fullBalance)) {
+        this.ShowToast(`${this.$t('errors.transaction.notEnoughFunds')} (${TokenSymbols.WUSD})`);
+        this.SetLoader(false);
+        return;
+      }
+      if (new BigNumber(allowance).isLessThan(this.depositAmount)) {
+        const approveFee = await this.$store.dispatch('wallet/getContractFeeData', {
+          method: 'approve',
+          abi: ERC20,
+          contractAddress: tokenAddress,
+          data: [tokenAddress, new BigNumber(this.depositAmount).shiftedBy(18).toString()],
+        });
+        if (!approveFee.ok) {
+          this.ShowToast(approveFee.msg);
+          this.SetLoader(false);
+          return;
+        }
+        this.SetLoader(false);
+        this.ShowModal({
+          key: modals.transactionReceipt,
+          title: 'Approve',
+          fields: {
+            from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
+            to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_WQ_FACTORY },
+            amount: { name: this.$t('modals.amount'), value: this.depositAmount, symbol: TokenSymbols.WUSD },
+            fee: { name: this.$t('wallet.table.trxFee'), value: approveFee.result.fee, symbol: TokenSymbols.WQT },
+          },
+          callback: this.createQuest,
+          submitMethod: async () => {
+            this.ShowToast('Approving...', 'Approve');
+            const approveOk = await this.$store.dispatch('wallet/approve', {
+              tokenAddress,
+              spenderAddress,
+              amount: this.depositAmount,
+            });
+            if (!approveOk) {
+              this.ShowToast('Approve error');
+              this.SetLoader(false);
+              return error();
+            }
+            this.ShowToast('Approving done', 'Approve');
+            return success();
+          },
+        });
+      } else {
+        await this.createQuest();
+      }
+    },
+    async createQuest() {
+      // Check balance before send data to backend
       // eslint-disable-next-line no-unreachable
       const [feeRes] = await Promise.all([
         this.$store.dispatch('quests/getCreateQuestFeeData', {
           cost: this.price,
-          depositAmount: this.depositAmount,
           description: this.textarea,
           nonce: '123',
         }),
-        this.updateBalanceWUSD(),
+        this.$store.dispatch('wallet/fetchWalletData', {
+          method: 'balanceOf',
+          address: this.userWalletAddress,
+          abi: ERC20,
+          token: tokenMap[TokenSymbols.WUSD],
+          symbol: TokenSymbols.WUSD,
+        }),
+        this.$store.dispatch('wallet/getBalance'),
       ]);
 
       // Check: not enough funds to create quest
-      if (!feeRes.ok || new BigNumber(feeRes.result.fee).plus(this.depositAmount)
-        .isGreaterThan(this.balanceData.WUSD.fullBalance) === true) {
-        this.ShowToast(feeRes.msg.includes('insufficient balance for transfer')
-          ? this.$t('errors.transaction.notEnoughFunds')
-          : feeRes.msg);
+      if (!feeRes.ok) {
+        this.ShowToast(feeRes.msg);
         this.SetLoader(false);
         return;
       }
+
       const medias = await this.uploadFiles(this.files);
       const payload = {
         workplace: WorkplaceIndex[this.workplaceIndex],
@@ -404,14 +475,13 @@ export default {
         this.ShowModal({
           key: modals.transactionReceipt,
           fields: {
-            from: { name: this.$t('meta.fromBig'), value: this.userData.wallet.address },
+            from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
             to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_WQ_FACTORY },
             amount: { name: this.$t('modals.amount'), value: this.depositAmount, symbol: TokenSymbols.WUSD },
-            fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WUSD },
+            fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
           },
           submitMethod: async () => {
             const txRes = await this.$store.dispatch('quests/createQuest', {
-              depositAmount: this.depositAmount,
               cost: this.price,
               description: this.textarea,
               nonce,

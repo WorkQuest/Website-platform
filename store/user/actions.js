@@ -209,6 +209,12 @@ export default {
         break;
       }
 
+      case 'QuestStatusUpdated':
+      case 'questStatusUpdated': {
+        await updateQuests();
+        break;
+      }
+
       case NotificationAction.OPEN_DISPUTE:
       case NotificationAction.DISPUTE_DECISION: {
         await setAllNotificationsParams(problemDescription, `${Path.QUESTS}/${quest?.id || id}`, false, '');

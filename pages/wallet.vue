@@ -184,7 +184,6 @@ export default {
     ...mapGetters({
       userRole: 'user/getUserRole',
       userWalletAddress: 'user/getUserWalletAddress',
-
       balance: 'wallet/getBalanceData',
       transactions: 'wallet/getTransactions',
       selectedToken: 'wallet/getSelectedToken',
@@ -211,7 +210,7 @@ export default {
       this.$moment.locale(this.$i18n.locale);
       // eslint-disable-next-line no-restricted-syntax
       for (const t of txs) {
-        const symbol = TokenSymbolByContract[t.to_address_hash.hex] || TokenSymbols.WUSD;
+        const symbol = TokenSymbolByContract[t.to_address_hash.hex] || TokenSymbols.WQT;
         res.push({
           tx_hash: t.hash,
           block: t.block_number,
@@ -259,9 +258,6 @@ export default {
       this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
       await this.loadData();
     },
-    isConnected(newVal) {
-      if (!newVal) this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
-    },
     currentPage() {
       this.getTransactions();
     },
@@ -305,15 +301,15 @@ export default {
     async loadData() {
       this.SetLoader(true);
       const { selectedToken, userWalletAddress } = this;
-      if (selectedToken === TokenSymbols.WUSD) await this.$store.dispatch('wallet/getBalance');
+      if (selectedToken === TokenSymbols.WQT) await this.$store.dispatch('wallet/getBalance');
       else {
         const payload = { address: userWalletAddress, abi: ERC20 };
         await this.$store.dispatch('wallet/fetchWalletData', {
           method: 'balanceOf', ...payload, token: tokenMap[selectedToken], symbol: selectedToken,
         });
-        if (selectedToken === TokenSymbols.WQT) {
+        if (selectedToken === TokenSymbols.WUSD) {
           await this.$store.dispatch('wallet/fetchWalletData', {
-            method: 'freezed', ...payload, token: tokenMap.WQT,
+            method: 'freezed', ...payload, token: tokenMap.WUSD,
           });
         }
       }
@@ -337,7 +333,7 @@ export default {
           recipient = convertToHex('wq', recipient);
           const value = new BigNumber(amount).shiftedBy(18).toString();
           let feeRes;
-          if (selectedToken === TokenSymbols.WUSD) {
+          if (selectedToken === TokenSymbols.WQT) {
             feeRes = await this.$store.dispatch('wallet/getTransferFeeData', {
               recipient,
               value: amount,
