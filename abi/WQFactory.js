@@ -40,31 +40,6 @@ const WQFactory = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
-        internalType: 'address',
-        name: 'workquest',
-        type: 'address',
-      },
-      {
-        indexed: false,
-        internalType: 'enum WorkQuestFactory.PaidTariff',
-        name: 'tariff',
-        type: 'uint8',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'promotedAt',
-        type: 'uint256',
-      },
-    ],
-    name: 'Promoted',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
         indexed: true,
         internalType: 'bytes32',
         name: 'role',
@@ -201,6 +176,19 @@ const WQFactory = [
   },
   {
     inputs: [],
+    name: 'ARBITER_ROLE',
+    outputs: [
+      {
+        internalType: 'bytes32',
+        name: '',
+        type: 'bytes32',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'DEFAULT_ADMIN_ROLE',
     outputs: [
       {
@@ -227,63 +215,7 @@ const WQFactory = [
   },
   {
     inputs: [],
-    name: 'allArbiters',
-    outputs: [
-      {
-        internalType: 'address payable[]',
-        name: '',
-        type: 'address[]',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    name: 'arbiterList',
-    outputs: [
-      {
-        internalType: 'address payable',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-    name: 'arbiters',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: 'idx',
-        type: 'uint256',
-      },
-      {
-        internalType: 'bool',
-        name: 'status',
-        type: 'bool',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'fee',
+    name: 'feeEmployer',
     outputs: [
       {
         internalType: 'uint256',
@@ -308,6 +240,32 @@ const WQFactory = [
     type: 'function',
   },
   {
+    inputs: [],
+    name: 'feeTx',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'feeWorker',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [
       {
         internalType: 'bytes32',
@@ -324,30 +282,6 @@ const WQFactory = [
       },
     ],
     stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'enum WorkQuestFactory.PaidTariff',
-        name: 'tariff',
-        type: 'uint8',
-      },
-      {
-        internalType: 'uint256',
-        name: 'period',
-        type: 'uint256',
-      },
-    ],
-    name: 'getTariffCost',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'pure',
     type: 'function',
   },
   {
@@ -415,7 +349,12 @@ const WQFactory = [
     inputs: [
       {
         internalType: 'uint256',
-        name: '_fee',
+        name: '_feeEmployer',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_feeWorker',
         type: 'uint256',
       },
       {
@@ -431,6 +370,11 @@ const WQFactory = [
       {
         internalType: 'address payable',
         name: '_referral',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: '_wusd',
         type: 'address',
       },
     ],
@@ -464,7 +408,7 @@ const WQFactory = [
     ],
     name: 'newWorkQuest',
     outputs: [],
-    stateMutability: 'payable',
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -478,29 +422,6 @@ const WQFactory = [
       },
     ],
     stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'workquest',
-        type: 'address',
-      },
-      {
-        internalType: 'enum WorkQuestFactory.PaidTariff',
-        name: 'tariff',
-        type: 'uint8',
-      },
-      {
-        internalType: 'uint256',
-        name: 'period',
-        type: 'uint256',
-      },
-    ],
-    name: 'promote',
-    outputs: [],
-    stateMutability: 'payable',
     type: 'function',
   },
   {
@@ -568,6 +489,84 @@ const WQFactory = [
   {
     inputs: [
       {
+        internalType: 'uint256',
+        name: '_fee',
+        type: 'uint256',
+      },
+    ],
+    name: 'setFeeEmployer',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address payable',
+        name: '_feeReceiver',
+        type: 'address',
+      },
+    ],
+    name: 'setFeeReceiver',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_fee',
+        type: 'uint256',
+      },
+    ],
+    name: 'setFeeWorker',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address payable',
+        name: '_pensionFund',
+        type: 'address',
+      },
+    ],
+    name: 'setPensionFund',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address payable',
+        name: '_referral',
+        type: 'address',
+      },
+    ],
+    name: 'setRefferal',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_wusd',
+        type: 'address',
+      },
+    ],
+    name: 'setWusd',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
         internalType: 'bytes4',
         name: 'interfaceId',
         type: 'bytes4',
@@ -582,63 +581,6 @@ const WQFactory = [
       },
     ],
     stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address payable',
-        name: '_arbiter',
-        type: 'address',
-      },
-      {
-        internalType: 'bool',
-        name: '_enabled',
-        type: 'bool',
-      },
-    ],
-    name: 'updateArbiter',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address payable',
-        name: '_feeReceiver',
-        type: 'address',
-      },
-    ],
-    name: 'updateFeeReceiver',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address payable',
-        name: '_pensionFund',
-        type: 'address',
-      },
-    ],
-    name: 'updatePensionFund',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address payable',
-        name: '_referral',
-        type: 'address',
-      },
-    ],
-    name: 'updateRefferal',
-    outputs: [],
-    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -708,6 +650,19 @@ const WQFactory = [
     outputs: [
       {
         internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'wusd',
+    outputs: [
+      {
+        internalType: 'contract IERC20Upgradeable',
         name: '',
         type: 'address',
       },

@@ -8,12 +8,12 @@ export default () => ({
   isOnlyConfirm: false, // for confirm password layout
   selectedToken: TokenSymbols.WUSD,
   balance: {
-    WQT: {
-      balance: 0, // Display balance
+    WUSD: {
+      balance: 0,
       fullBalance: 0,
       frozenBalance: 0,
     },
-    WUSD: {
+    WQT: {
       balance: 0,
       fullBalance: 0,
     },

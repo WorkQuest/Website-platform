@@ -67,9 +67,10 @@ jobs:
           echo WORKNET_SAVING_PRODUCT=${{ secrets.WORKNET_SAVING_PRODUCT }} >> .env
           echo WORKNET_STAKING_WQT=${{ secrets.WORKNET_STAKING_WQT }} >> .env
           echo WORKNET_STAKING_WUSD=${{ secrets.WORKNET_STAKING_WUSD }} >> .env
+          echo WORKNET_USDT_TOKEN=${{ secrets.WORKNET_USDT_TOKEN }} >> .env
           echo WORKNET_WBNB_TOKEN=${{ secrets.WORKNET_WBNB_TOKEN }} >> .env
           echo WORKNET_WETH_TOKEN=${{ secrets.WORKNET_WETH_TOKEN }} >> .env
-          echo WORKNET_WQT_TOKEN=${{ secrets.WORKNET_WQT_TOKEN }} >> .env
+          echo WORKNET_WUSD_TOKEN=${{ secrets.WORKNET_WUSD_TOKEN }} >> .env
           echo WORKNET_WQ_FACTORY=${{ secrets.WORKNET_WQ_FACTORY }} >> .env
 
       - name: Run generate static task
@@ -147,9 +148,10 @@ jobs:
           echo WORKNET_SAVING_PRODUCT=${{ secrets.WORKNET_SAVING_PRODUCT }} >> .env
           echo WORKNET_STAKING_WQT=${{ secrets.WORKNET_STAKING_WQT }} >> .env
           echo WORKNET_STAKING_WUSD=${{ secrets.WORKNET_STAKING_WUSD }} >> .env
+          echo WORKNET_USDT_TOKEN=${{ secrets.WORKNET_USDT_TOKEN }} >> .env
           echo WORKNET_WBNB_TOKEN=${{ secrets.WORKNET_WBNB_TOKEN }} >> .env
           echo WORKNET_WETH_TOKEN=${{ secrets.WORKNET_WETH_TOKEN }} >> .env
-          echo WORKNET_WQT_TOKEN=${{ secrets.WORKNET_WQT_TOKEN }} >> .env
+          echo WORKNET_WUSD_TOKEN=${{ secrets.WORKNET_WUSD_TOKEN }} >> .env
           echo WORKNET_WQ_FACTORY=${{ secrets.WORKNET_WQ_FACTORY }} >> .env
 
       - name: Run generate static task
@@ -227,9 +229,10 @@ jobs:
           echo WORKNET_SAVING_PRODUCT=${{ secrets.WORKNET_SAVING_PRODUCT }} >> .env
           echo WORKNET_STAKING_WQT=${{ secrets.WORKNET_STAKING_WQT }} >> .env
           echo WORKNET_STAKING_WUSD=${{ secrets.WORKNET_STAKING_WUSD }} >> .env
+          echo WORKNET_USDT_TOKEN=${{ secrets.WORKNET_USDT_TOKEN }} >> .env
           echo WORKNET_WBNB_TOKEN=${{ secrets.WORKNET_WBNB_TOKEN }} >> .env
           echo WORKNET_WETH_TOKEN=${{ secrets.WORKNET_WETH_TOKEN }} >> .env
-          echo WORKNET_WQT_TOKEN=${{ secrets.WORKNET_WQT_TOKEN }} >> .env
+          echo WORKNET_WUSD_TOKEN=${{ secrets.WORKNET_WUSD_TOKEN }} >> .env
           echo WORKNET_WQ_FACTORY=${{ secrets.WORKNET_WQ_FACTORY }} >> .env
 
       - name: Run generate static task
