@@ -8,11 +8,6 @@ const WorkQuest = [
       },
       {
         internalType: 'uint256',
-        name: '_fee',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
         name: '_cost',
         type: 'uint256',
       },
@@ -22,28 +17,8 @@ const WorkQuest = [
         type: 'uint256',
       },
       {
-        internalType: 'address payable',
-        name: '_feeReceiver',
-        type: 'address',
-      },
-      {
         internalType: 'address',
-        name: '_pensionFund',
-        type: 'address',
-      },
-      {
-        internalType: 'address payable',
         name: '_employer',
-        type: 'address',
-      },
-      {
-        internalType: 'address payable',
-        name: '_arbiter',
-        type: 'address',
-      },
-      {
-        internalType: 'address payable',
-        name: '_referal',
         type: 'address',
       },
     ],
@@ -110,12 +85,6 @@ const WorkQuest = [
     inputs: [
       {
         indexed: false,
-        internalType: 'bytes32',
-        name: 'jobHash',
-        type: 'bytes32',
-      },
-      {
-        indexed: false,
         internalType: 'uint256',
         name: 'cost',
         type: 'uint256',
@@ -164,6 +133,19 @@ const WorkQuest = [
   },
   {
     inputs: [],
+    name: 'ARBITER_ROLE',
+    outputs: [
+      {
+        internalType: 'bytes32',
+        name: '',
+        type: 'bytes32',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'acceptJob',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -178,22 +160,9 @@ const WorkQuest = [
   },
   {
     inputs: [],
-    name: 'arbiter',
-    outputs: [
-      {
-        internalType: 'address payable',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
     name: 'arbitration',
     outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: 'payable',
     type: 'function',
   },
   {
@@ -233,7 +202,7 @@ const WorkQuest = [
   {
     inputs: [
       {
-        internalType: 'address payable',
+        internalType: 'address',
         name: '_worker',
         type: 'address',
       },
@@ -279,11 +248,6 @@ const WorkQuest = [
   {
     inputs: [
       {
-        internalType: 'bytes32',
-        name: '_jobHash',
-        type: 'bytes32',
-      },
-      {
         internalType: 'uint256',
         name: '_cost',
         type: 'uint256',
@@ -291,7 +255,7 @@ const WorkQuest = [
     ],
     name: 'editJob',
     outputs: [],
-    stateMutability: 'payable',
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -299,7 +263,7 @@ const WorkQuest = [
     name: 'employer',
     outputs: [
       {
-        internalType: 'address payable',
+        internalType: 'address',
         name: '',
         type: 'address',
       },
@@ -309,23 +273,10 @@ const WorkQuest = [
   },
   {
     inputs: [],
-    name: 'fee',
+    name: 'factory',
     outputs: [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'feeReceiver',
-    outputs: [
-      {
-        internalType: 'address payable',
+        internalType: 'contract WorkQuestFactoryInterface',
         name: '',
         type: 'address',
       },
@@ -377,7 +328,7 @@ const WorkQuest = [
       },
       {
         internalType: 'address',
-        name: '_arbiter',
+        name: '_factory',
         type: 'address',
       },
       {
@@ -402,32 +353,6 @@ const WorkQuest = [
         internalType: 'bytes32',
         name: '',
         type: 'bytes32',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'pensionFund',
-    outputs: [
-      {
-        internalType: 'contract WQPensionFund',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'referal',
-    outputs: [
-      {
-        internalType: 'contract WQReferral',
-        name: '',
-        type: 'address',
       },
     ],
     stateMutability: 'view',
@@ -471,17 +396,13 @@ const WorkQuest = [
     name: 'worker',
     outputs: [
       {
-        internalType: 'address payable',
+        internalType: 'address',
         name: '',
         type: 'address',
       },
     ],
     stateMutability: 'view',
     type: 'function',
-  },
-  {
-    stateMutability: 'payable',
-    type: 'receive',
   },
 ];
 
