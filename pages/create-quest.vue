@@ -199,6 +199,7 @@ export default {
       balanceData: 'wallet/getBalanceData',
       userData: 'user/getUserData',
       userWalletAddress: 'user/getUserWalletAddress',
+
       step: 'quests/getCurrentStepCreateQuest',
       filters: 'quests/getFilters',
     }),
