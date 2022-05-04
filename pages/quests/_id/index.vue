@@ -534,7 +534,7 @@ export default {
         fields: {
           from: { name: this.$t('meta.fromBig'), value: this.userAddress },
           to: { name: this.$t('meta.toBig'), value: contractAddress },
-          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WQT },
         },
         submitMethod: async () => {
           const txRes = await this.$store.dispatch('quests/acceptJobResult', contractAddress);
@@ -591,6 +591,7 @@ export default {
     },
     async goToChat() {
       this.SetLoader(true);
+      console.log(this.quest);
       const { openDispute, questChat, status } = this.quest;
       const disputeStatus = openDispute?.status;
       const disputeId = openDispute?.id;
@@ -622,7 +623,7 @@ export default {
         fields: {
           from: { name: this.$t('meta.fromBig'), value: this.userAddress },
           to: { name: this.$t('meta.toBig'), value: contractAddress },
-          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WQT },
         },
         submitMethod: async () => {
           const txRes = await this.$store.dispatch('quests/acceptJob', contractAddress);
@@ -658,7 +659,7 @@ export default {
         fields: {
           from: { name: this.$t('meta.fromBig'), value: this.userAddress },
           to: { name: this.$t('meta.toBig'), value: contractAddress },
-          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WQT },
         },
         submitMethod: async () => {
           const txRes = await this.$store.dispatch('quests/verificationJob', contractAddress);
@@ -942,13 +943,6 @@ export default {
   .main-white {
     display: block;
   }
-}
-
-@include _767 {
-  .main {
-    display: block;
-  }
-
   .worker-data {
     &__btns {
       margin-bottom: 10px;
@@ -960,19 +954,9 @@ export default {
   }
 }
 
-@include _575 {
-  .worker-data {
-    &__price {
-      font-size: 21px;
-    }
-
-    &__btns {
-      grid-auto-flow: row;
-    }
-
-    &__more-data {
-      justify-items: center;
-    }
+@include _767 {
+  .main {
+    display: block;
   }
 
   .worker-data {
@@ -997,6 +981,22 @@ export default {
         font-size: 16px;
         height: 100%;
       }
+    }
+  }
+}
+
+@include _575 {
+  .worker-data {
+    &__price {
+      font-size: 21px;
+    }
+
+    &__btns {
+      grid-auto-flow: row;
+    }
+
+    &__more-data {
+      justify-items: center;
     }
   }
 
