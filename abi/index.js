@@ -1,5 +1,4 @@
 import ERC20 from '~/abi/ERC20';
-import BSCPool from '~/abi/BSCPool';
 import WQBridge from '~/abi/WQBridge';
 import WQOracle from '~/abi/WQOracle';
 import WQRouter from '~/abi/WQRouter';
@@ -19,7 +18,6 @@ import WQLiquidityMining from '~/abi/WQLiquidityMining';
 
 export {
   ERC20,
-  BSCPool,
   WQBridge,
   WQOracle,
   WQRouter,

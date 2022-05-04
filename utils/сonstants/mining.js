@@ -1,4 +1,4 @@
-import { Chains } from '~/utils/enums';
+import { Chains, isProd } from '~/utils/enums';
 import { StakingWQ, WQLiquidityMining } from '~/abi/index';
 import { images } from '~/utils/images';
 
@@ -17,6 +17,10 @@ export const Pool = new Map([
       stakingAddress: process.env.ETHEREUM_MINING,
       stakingAbi: StakingWQ,
       icon: images.ETH,
+      provider: process.env.ETHEREUM_RPC_URL,
+      // need only for testnet, in mainnet we can use stakingToken
+      lpToken: isProd ? process.env.ETHEREUM_LP_TOKEN : '0xf1fE852fCA1b5a869ef1FE06a2799E1F38B70B84',
+      miningAddress: isProd ? process.env.ETHEREUM_MINING : '0x85fCeFe4b3646E74218793e8721275D3448b76F4',
     },
   ],
   [
@@ -28,6 +32,10 @@ export const Pool = new Map([
       stakingAddress: process.env.BSC_MINING,
       stakingAbi: WQLiquidityMining,
       icon: images.BNB,
+      provider: process.env.BSC_RPC_URL,
+      // need only for testnet, in mainnet we can use stakingToken
+      lpToken: isProd ? process.env.BSC_LP_TOKEN : '0x3EA2de549ae9DcB7992F91227e8d6629A22C3b40',
+      miningAddress: isProd ? process.env.BSC_MINING : '0x7F31d9c6Cf99DDB89E2a068fE7B96d230b9D19d1',
     },
   ],
 ]);

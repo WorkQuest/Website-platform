@@ -83,7 +83,7 @@
                     {{
                       isUpdatingData
                         ? $t('mining.loading')
-                        : $tc('meta.coins.count.WQTCount', Floor(APY))
+                        : $tc('meta.coins.count.WQTCount', Floor(profit))
                     }}
                   </div>
                   <div class="info-block__title_small">
@@ -263,9 +263,9 @@ export default {
   },
   computed: {
     ...mapGetters({
-      APY: 'mining/getAPY',
       claim: 'mining/getClaim',
       staked: 'mining/getStaked',
+      profit: 'mining/getProfit',
       balance: 'mining/getBalance',
       miningSwaps: 'mining/getSwaps',
       miningChartData: 'mining/getChartData',
@@ -384,6 +384,9 @@ export default {
       if (!status) await this.resetPoolData();
       else if (await this.checkNetwork(this.chain)) {
         await this.tokensDataUpdate();
+        await this.fetchTotalSupply(this.chain);
+        await this.fetchStakingInfo(this.chain);
+        await this.calcProfit();
       }
     },
     async page() {
@@ -427,11 +430,13 @@ export default {
       subscribeWS: 'mining/subscribeWS',
       unsubscribeWS: 'mining/unsubscribeWS',
 
-      fetchAPY: 'mining/fetchAPY',
       fetchSwaps: 'mining/fetchSwaps',
+      calcProfit: 'mining/calcProfit',
       fetchPoolData: 'mining/fetchPoolData',
       resetPoolData: 'mining/resetPoolData',
       fetchChartData: 'mining/fetchChartData',
+      fetchTotalSupply: 'mining/fetchTotalSupply',
+      fetchStakingInfo: 'mining/fetchStakingInfo',
 
       claimTokens: 'mining/claim',
       stakeTokens: 'mining/stake',
@@ -493,17 +498,9 @@ export default {
     },
 
     async tokensDataUpdate() {
-      const { chain } = this;
-
       this.isUpdatingData = true;
-      await this.fetchPoolData({ chain });
-
-      if (+this.staked > 0) {
-        await this.fetchAPY({
-          chain,
-          stakedAmount: this.staked,
-        });
-      }
+      await this.fetchPoolData({ chain: this.chain });
+      if (+this.staked > 0) await this.calcProfit();
       this.isUpdatingData = false;
     },
 

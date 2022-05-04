@@ -130,6 +130,7 @@ export default {
     ETHEREUM_MINING: process.env.ETHEREUM_MINING,
     ETHEREUM_WQT_TOKEN: process.env.ETHEREUM_WQT_TOKEN,
     ETHEREUM_WS_INFURA: process.env.ETHEREUM_WS_INFURA,
+    ETHEREUM_RPC_URL: process.env.ETHEREUM_RPC_URL,
 
     BSC_BRIDGE: process.env.BSC_BRIDGE,
     BSC_LP_TOKEN: process.env.BSC_LP_TOKEN,
