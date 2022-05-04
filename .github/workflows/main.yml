@@ -42,7 +42,6 @@ jobs:
           echo ETHEREUM_LP_TOKEN=${{ secrets.ETHEREUM_LP_TOKEN }} >> .env
           echo ETHEREUM_MINING=${{ secrets.ETHEREUM_MINING }} >> .env
           echo ETHEREUM_WQT_TOKEN=${{ secrets.ETHEREUM_WQT_TOKEN }} >> .env
-          echo ETHEREUM_WS_INFURA=${{ secrets.ETHEREUM_WS_INFURA }} >> .env
 
           echo BSC_BRIDGE=${{ secrets.BSC_BRIDGE }} >> .env
           echo BSC_LP_TOKEN=${{ secrets.BSC_LP_TOKEN }} >> .env
@@ -51,7 +50,6 @@ jobs:
           echo BSC_WQT_EXCHANGE=${{ secrets.BSC_WQT_EXCHANGE }} >> .env
           echo BSC_WQT_TOKEN=${{ secrets.BSC_WQT_TOKEN }} >> .env
           echo BSC_RPC_URL=${{ secrets.BSC_RPC_URL }} >> .env
-          echo BSC_WS_MORALIS=${{ secrets.BSC_WS_MORALIS }} >> .env
 
           echo WETH_TOKEN=${{ secrets.WETH_TOKEN }} >> .env
           echo WBNB_TOKEN=${{ secrets.WBNB_TOKEN }} >> .env
@@ -123,7 +121,6 @@ jobs:
           echo ETHEREUM_LP_TOKEN=${{ secrets.ETHEREUM_LP_TOKEN }} >> .env
           echo ETHEREUM_MINING=${{ secrets.ETHEREUM_MINING }} >> .env
           echo ETHEREUM_WQT_TOKEN=${{ secrets.ETHEREUM_WQT_TOKEN }} >> .env
-          echo ETHEREUM_WS_INFURA=${{ secrets.ETHEREUM_WS_INFURA }} >> .env
 
           echo BSC_BRIDGE=${{ secrets.BSC_BRIDGE }} >> .env
           echo BSC_LP_TOKEN=${{ secrets.BSC_LP_TOKEN }} >> .env
@@ -132,7 +129,6 @@ jobs:
           echo BSC_WQT_EXCHANGE=${{ secrets.BSC_WQT_EXCHANGE }} >> .env
           echo BSC_WQT_TOKEN=${{ secrets.BSC_WQT_TOKEN }} >> .env
           echo BSC_RPC_URL=${{ secrets.BSC_RPC_URL }} >> .env
-          echo BSC_WS_MORALIS=${{ secrets.BSC_WS_MORALIS }} >> .env
 
           echo WETH_TOKEN=${{ secrets.WETH_TOKEN }} >> .env
           echo WBNB_TOKEN=${{ secrets.WBNB_TOKEN }} >> .env
@@ -204,7 +200,6 @@ jobs:
           echo ETHEREUM_LP_TOKEN=${{ secrets.ETHEREUM_LP_TOKEN }} >> .env
           echo ETHEREUM_MINING=${{ secrets.ETHEREUM_MINING }} >> .env
           echo ETHEREUM_WQT_TOKEN=${{ secrets.ETHEREUM_WQT_TOKEN }} >> .env
-          echo ETHEREUM_WS_INFURA=${{ secrets.ETHEREUM_WS_INFURA }} >> .env
 
           echo BSC_BRIDGE=${{ secrets.BSC_BRIDGE }} >> .env
           echo BSC_LP_TOKEN=${{ secrets.BSC_LP_TOKEN }} >> .env
@@ -213,7 +208,6 @@ jobs:
           echo BSC_WQT_EXCHANGE=${{ secrets.BSC_WQT_EXCHANGE }} >> .env
           echo BSC_WQT_TOKEN=${{ secrets.BSC_WQT_TOKEN }} >> .env
           echo BSC_RPC_URL=${{ secrets.BSC_RPC_URL }} >> .env
-          echo BSC_WS_MORALIS=${{ secrets.BSC_WS_MORALIS }} >> .env
 
           echo WETH_TOKEN=${{ secrets.WETH_TOKEN }} >> .env
           echo WBNB_TOKEN=${{ secrets.WBNB_TOKEN }} >> .env
