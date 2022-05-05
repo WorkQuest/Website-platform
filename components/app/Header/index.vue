@@ -310,9 +310,7 @@
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import moment from 'moment';
-import {
-  MessageAction, UserRole, Path, SumSubStatuses, TwoFAStatuses,
-} from '~/utils/enums';
+import { MessageAction, UserRole, Path } from '~/utils/enums';
 
 export default {
   name: 'Header',
@@ -344,9 +342,6 @@ export default {
       chats: 'chat/getChats',
       searchValue: 'chat/getSearchValue',
       currentLocale: 'user/getCurrentLang',
-      statusKYC: 'user/getStatusKYC',
-      getStatus2FA: 'user/getStatus2FA',
-      userWalletAddress: 'user/getUserWalletAddress',
     }),
     locales() {
       return this.$i18n.locales.map((item) => ({
