@@ -120,7 +120,6 @@ export const MessageAction = {
   WORKER_ACCEPT_INVITE_ON_QUEST: 'workerAcceptInviteOnQuest',
 };
 
-// TODO: Временно, новые ивенты с большой буквы
 export const NotificationAction = {
   QUEST_STARTED: 'questStarted',
   WORKER_REJECTED_QUEST: 'workerRejectedQuest',
@@ -155,10 +154,8 @@ export const LocalNotificationAction = {
   QUEST_DRAFT: 'questDraft',
 };
 
-// TODO: Временно, новые ивенты с большой буквы
 export const NotificationActionFromContract = {
-  QUEST_STATUS_UPDATED1: 'QuestStatusUpdated',
-  QUEST_STATUS_UPDATED2: 'questStatusUpdated',
+  QUEST_STATUS_UPDATED: 'questStatusUpdated',
 };
 
 export const notificationCommonFilterActions = Object.freeze([

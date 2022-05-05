@@ -198,28 +198,24 @@ export default {
       case NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE:
       case NotificationAction.WAIT_WORKER:
       case NotificationAction.QUEST_EDITED:
-      case NotificationAction.QUEST_END_SOON: {
+      case NotificationAction.QUEST_END_SOON:
         await setAllNotificationsParams(quest?.title || title, `${Path.QUESTS}/${quest?.id || id}`, false, '');
         await updateQuests();
         break;
-      }
 
       case NotificationAction.OPEN_DISPUTE:
-      case NotificationAction.DISPUTE_DECISION: {
+      case NotificationAction.DISPUTE_DECISION:
         await setAllNotificationsParams(problemDescription, `${Path.QUESTS}/${quest?.id || id}`, false, '');
         await updateQuests();
         break;
-      }
 
-      case NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST: {
+      case NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST:
         await setAllNotificationsParams(message, `${Path.PROFILE}/${toUserId}`, false, '');
         await updateProfile();
         break;
-      }
 
       /** Workquest local */
       case LocalNotificationAction.REVIEW_USER:
-        // TODO: проверить!!!
         await setAllNotificationsParams(message, `${Path.PROFILE}/${toUserId}`, false, '', true);
         await updateProfile();
         break;
@@ -228,12 +224,10 @@ export default {
         await setAllNotificationsParams(message, `${Path.QUESTS}/${questId}`, false, '', true);
         break;
 
-      case NotificationActionFromContract.QUEST_STATUS_UPDATED1:
-      case NotificationActionFromContract.QUEST_STATUS_UPDATED2: {
+      case NotificationActionFromContract.QUEST_STATUS_UPDATED:
         await setAllNotificationsParams(quest?.title || title, `${Path.QUESTS}/${quest?.id || id}`, false, '');
         await updateQuests();
         break;
-      }
 
       case LocalNotificationAction.GET_REWARD:
         await setAllNotificationsParams(title, `${Path.REFERRAL}`, false, '', true);
