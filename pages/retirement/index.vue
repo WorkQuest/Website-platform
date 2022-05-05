@@ -127,7 +127,7 @@ import { mapActions, mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { Path, tokenMap, TokenSymbols } from '~/utils/enums';
-import { WQPensionFund } from '~/abi';
+import { ERC20, WQPensionFund } from '~/abi';
 import { getWalletAddress } from '~/utils/wallet';
 import { images } from '~/utils/images';
 
@@ -250,16 +250,15 @@ export default {
     if (!this.isWalletConnected) return;
     this.SetLoader(true);
     await this.getInfo();
-    await this.subscribe(this.userWalletAddress);
+    await this.fetchWalletData({
+      method: 'balanceOf', address: getWalletAddress(), abi: ERC20, token: tokenMap[TokenSymbols.WUSD], symbol: TokenSymbols.WUSD,
+    });
     this.SetLoader(false);
-  },
-  async beforeDestroy() {
-    await this.unsubscribe(this.userWalletAddress);
   },
   methods: {
     ...mapActions({
-      subscribe: 'retirement/subscribeWS',
-      unsubscribe: 'retirement/unsubscribeWS',
+      fetchWalletData: 'wallet/fetchWalletData',
+
       getDefaultData: 'retirement/pensionGetDefaultData',
       getWalletInfo: 'retirement/pensionGetWalletInfo',
     }),
@@ -296,20 +295,18 @@ export default {
       }
     },
     openApplyForAPensionModal() {
-      console.log(this.balanceData.WUSD);
-      const { balance } = this.balanceData.WUSD;
+      const { balance, fullBalance } = this.balanceData.WUSD;
       this.ShowModal({
         key: modals.applyForAPension,
         defaultFee: this.percent,
+        maxValue: fullBalance,
         submitMethod: async (firstDepositAmount, depositPercentFromAQuest) => {
-          console.log('start submitMethod');
           this.CloseModal();
           this.SetLoader(true);
           const allowance = await this.$store.dispatch('wallet/getAllowance', {
             tokenAddress: tokenMap[TokenSymbols.WUSD],
             spenderAddress: process.env.WORKNET_PENSION_FUND,
           });
-          console.log(allowance, firstDepositAmount);
           if (+allowance < +firstDepositAmount) {
             await this.$store.dispatch('wallet/approve', {
               tokenAddress: tokenMap[TokenSymbols.WUSD],
@@ -346,12 +343,12 @@ export default {
             ]);
             txFee = fee;
           }
-          console.log(txFee, balance);
           if (!txFee?.ok || balance === 0) {
             await this.$store.dispatch('main/showToast', {
               text: this.$t('errors.transaction.notEnoughFunds'),
             });
             this.inProgress = false;
+            this.SetLoader(false);
             return false;
           }
           const fields = {
@@ -367,20 +364,15 @@ export default {
             key: modals.transactionReceipt,
             fields,
             submitMethod: async () => {
-              console.log(123);
-              // const ok = await this.$store.dispatch('retirement/pensionStartProgram', {
-              //   fee: depositPercentFromAQuest.substr(0, depositPercentFromAQuest.length - 1),
-              //   firstDeposit: firstDepositAmount,
-              //   defaultFee,
-              // });
-              // if (ok) this.showPensionIsRegisteredModal();
+              const ok = await this.$store.dispatch('retirement/pensionStartProgram', {
+                fee: depositPercentFromAQuest.substr(0, depositPercentFromAQuest.length - 1),
+                firstDeposit: firstDepositAmount,
+                defaultFee: this.percent,
+              });
+              if (ok) this.showPensionIsRegisteredModal();
             },
           });
           return true;
-        },
-        calcPensionPercent: (value) => {
-          this.depositPercentFromAQuest = this.CalcPercent(value);
-          this.ChangeCaretPosition(this.$refs.percentInput);
         },
       });
     },

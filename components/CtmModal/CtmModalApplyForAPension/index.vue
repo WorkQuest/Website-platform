@@ -22,7 +22,7 @@
             data-selector="DEPOSIT-PERCENT"
             :name="$tc('modals.depositPercent')"
             rules="required|min_percent:0.01|max_percent:99|zeroFail|notMoreDecimalPlaces"
-            @input="options.calcPensionPercent"
+            @input="calcPensionPercent"
           />
         </div>
         <div class="content__amount">
@@ -35,8 +35,25 @@
             class="content__input"
             data-selector="FIRST-DEPOSIT-AMOUNT"
             :name="$tc('modals.firstDepositAmountField')"
-            rules="decimal:18|notMoreDecimalPlaces|greaterThanZero|zeroFail|notMoreDecimalPlaces"
-          />
+            :rules="`decimal:18|notMoreDecimalPlaces|greaterThanZero|zeroFail|notMoreDecimalPlaces|${maxValue ? `max_value:${maxValue}` : ''}`"
+          >
+            <template
+              v-if="maxValue"
+              v-slot:right-absolute
+              class="content__max max"
+            >
+              <base-btn
+                mode="max"
+                data-selector="MAX-BALANCE"
+                class="max__button"
+                @click="maxBalance()"
+              >
+                <span class="max__text">
+                  {{ $t('modals.maximum') }}
+                </span>
+              </base-btn>
+            </template>
+          </base-field>
           <div class="content__text">
             {{ $t('modals.firstDepositText') }}
           </div>
@@ -66,12 +83,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import BigNumber from 'bignumber.js';
-import modals from '~/store/modals/modals';
-import { getWalletAddress } from '~/utils/wallet';
-import { WQPensionFund } from '~/abi/index';
-import { tokenMap, TokenSymbols } from '~/utils/enums';
-import { images } from '~/utils/images';
 
 export default {
   name: 'ModalApplyForAPension',
@@ -86,6 +97,9 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
+    maxValue() {
+      return this.options.maxValue;
+    },
   },
   mounted() {
     this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
@@ -93,13 +107,27 @@ export default {
   },
   methods: {
     async submitPensionRegistration() {
-      this.options.submitMethod(this.firstDepositAmount, this.depositPercentFromAQuest);
+      const { depositPercentFromAQuest, firstDepositAmount, options: { submitMethod } } = this;
+      await submitMethod(firstDepositAmount, depositPercentFromAQuest);
+    },
+    calcPensionPercent() {
+      this.depositPercentFromAQuest = this.CalcPercent(this.depositPercentFromAQuest);
+      this.ChangeCaretPosition(this.$refs.percentInput);
+    },
+    maxBalance() {
+      this.firstDepositAmount = this.maxValue;
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.max {
+  &__button {
+    margin-right: 10px !important;
+    background-color: transparent !important;
+  }
+}
 
 .pension {
   max-width: 487px !important;

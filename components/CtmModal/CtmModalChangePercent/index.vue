@@ -13,7 +13,7 @@
         </div>
         <div
           class="content__field"
-          @keydown.delete="ChangeCaretPosition( $refs.percentInput)"
+          @keydown.delete="ChangeCaretPosition($refs.percentInput)"
         >
           <div class="content__title">
             {{ $t('modals.currentPercentTitle') }}
@@ -42,7 +42,7 @@
             data-selector="SUBMIT"
             class="buttons__button"
             :disabled="!validated || !passed || invalid"
-            @click="handleSubmit(updateFee)"
+            @click="handleSubmit(send())"
           >
             {{ $t('meta.btns.submit') }}
           </base-btn>
@@ -54,11 +54,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import BigNumber from 'bignumber.js';
-import modals from '~/store/modals/modals';
-import { WQPensionFund } from '~/abi/index';
-import { getWalletAddress } from '~/utils/wallet';
-import { TokenSymbols } from '~/utils/enums';
 
 export default {
   name: 'ModalApplyForAPension',
@@ -70,51 +65,12 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
-      balanceData: 'wallet/getBalanceData',
     }),
   },
   methods: {
-    async updateFee() {
-      const { updateMethod } = this.options;
-      this.CloseModal();
-      this.SetLoader(true);
-
-      const [txFee] = await Promise.all([
-        this.$store.dispatch('wallet/getContractFeeData', {
-          method: 'updateFee',
-          abi: WQPensionFund,
-          contractAddress: process.env.WORKNET_PENSION_FUND,
-          data: [new BigNumber(this.amount.substr(0, this.amount.length - 1)).shiftedBy(18).toString()],
-        }),
-        this.$store.dispatch('wallet/getBalance'),
-      ]);
-      if (!txFee?.ok || +this.balanceData.WUSD.balance === 0) {
-        await this.$store.dispatch('main/showToast', {
-          text: this.$t('errors.transaction.notEnoughFunds'),
-        });
-        this.SetLoader(false);
-        return;
-      }
-
-      const fields = {
-        from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
-        to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_PENSION_FUND },
-        fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
-      };
-
-      this.ShowModal({
-        key: modals.transactionReceipt,
-        fields,
-        submitMethod: async () => await this.$store.dispatch('retirement/pensionUpdateFee', this.amount.substr(0, this.amount.length - 1)),
-        callback: updateMethod,
-      });
-      this.SetLoader(false);
-    },
-    showPercentIsChanged() {
-      this.ShowModalSuccess({
-        title: this.$t('modals.percentIsChanged'),
-        subtitle: this.$t('modals.percentIsChangedText'),
-      });
+    async send() {
+      const { amount, options: { submit } } = this;
+      await submit(amount);
     },
     calcPensionPercent(value) {
       this.amount = this.CalcPercent(value);

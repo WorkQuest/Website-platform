@@ -205,12 +205,14 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { WQPensionFund } from '~/abi/index';
+import BigNumber from 'bignumber.js';
+import { ERC20, WQPensionFund } from '~/abi/index';
 import modals from '~/store/modals/modals';
 import { getStyledAmount, getWalletAddress } from '~/utils/wallet';
 import {
-  PensionHistoryMethods, TokenSymbols, ExplorerUrl, Path,
+  PensionHistoryMethods, TokenSymbols, ExplorerUrl, Path, tokenMap,
 } from '~/utils/enums';
+import { error, success } from '~/utils/web3';
 
 export default {
   name: 'MyPension',
@@ -366,7 +368,11 @@ export default {
   async mounted() {
     this.SetLoader(true);
     await this.getWallet();
+    await this.subscribe(this.userWalletAddress);
     this.SetLoader(false);
+  },
+  async beforeDestroy() {
+    await this.unsubscribe(this.userWalletAddress);
   },
   methods: {
     ...mapActions({
@@ -375,9 +381,11 @@ export default {
       getPensionTransactions: 'retirement/getPensionTransactions',
       pensionGetWalletInfo: 'retirement/pensionGetWalletInfo',
       pensionExtendLockTime: 'retirement/pensionExtendLockTime',
+      pensionContribute: 'retirement/pensionContribute',
+      pensionWithdraw: 'retirement/pensionWithdraw',
 
       getContractFeeData: 'wallet/getContractFeeData',
-      getBalance: 'wallet/getBalance',
+      fetchWalletData: 'wallet/fetchWalletData',
     }),
     getOperationLocale(operation) {
       if (operation === 'WalletUpdated') return this.$t('pension.changePercent');
@@ -443,6 +451,9 @@ export default {
         await this.$router.push(Path.RETIREMENT);
       }
       this.walletAddress = getWalletAddress();
+      await this.fetchWalletData({
+        method: 'balanceOf', address: this.walletAddress, abi: ERC20, token: tokenMap[TokenSymbols.WUSD], symbol: TokenSymbols.WUSD,
+      });
       this.checkIsDeadLine();
     },
     showWithdrawModal() {
@@ -451,7 +462,45 @@ export default {
         walletAddress: this.walletAddress,
         maxValue: this.pensionWallet.fullAmount,
         withdrawType: 'pension',
-        callback: async () => await this.getWallet(),
+        submit: async (amount) => {
+          this.CloseModal();
+          this.SetLoader(true);
+          const [txFee] = await Promise.all([
+            this.$store.dispatch('wallet/getContractFeeData', {
+              abi: WQPensionFund,
+              contractAddress: process.env.WORKNET_PENSION_FUND,
+              method: 'withdraw',
+              data: [new BigNumber(this.amount).shiftedBy(18).toString()],
+            }),
+            this.$store.dispatch('wallet/getBalance'),
+          ]);
+          this.SetLoader(false);
+          if (!txFee?.ok || +this.balanceData.WUSD.fullBalance === 0) {
+            await this.$store.dispatch('main/showToast', { text: this.$t('errors.transaction.notEnoughFunds') });
+            return;
+          }
+          this.ShowModal({
+            key: modals.transactionReceipt,
+            title: this.$t('modals.info.withdrawInfo'),
+            fields: {
+              to: { name: this.$t('meta.toBig'), value: this.walletAddress },
+              amount: { name: this.$t('modals.amount'), value: amount, symbol: TokenSymbols.WUSD },
+              fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
+            },
+            submitMethod: async () => {
+              const res = await this.pensionWithdraw(amount);
+              if (res.ok) return success();
+              await this.$store.dispatch('main/showToast', { text: this.$t('modals.transactionFail') });
+              return error();
+            },
+            callback: () => {
+              Promise.all([
+                this.getWallet(),
+                this.$store.dispatch('wallet/getBalance'),
+              ]);
+            },
+          });
+        },
       });
     },
     handleProlong() {
@@ -465,7 +514,7 @@ export default {
               contractAddress: process.env.WORKNET_PENSION_FUND,
               method: 'extendLockTime',
             }),
-            this.getBalance(),
+            this.getWallet(),
           ]);
           if (txFee.ok === false || +this.balanceData.WUSD.balance === 0) {
             await this.$store.dispatch('main/showToast', {
@@ -480,6 +529,7 @@ export default {
               to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_PENSION_FUND },
               fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
             },
+            isShowSuccess: true,
             submitMethod: async () => {
               const res = await this.pensionExtendLockTime();
               if (res.ok) {
@@ -501,14 +551,101 @@ export default {
     },
     openMakeDepositModal() {
       this.ShowModal({
-        key: modals.makeDeposit,
-        updateMethod: async () => await this.getWallet(),
+        key: modals.valueSend,
+        title: this.$t('pension.makeADeposit'),
+        maxValue: this.balanceData.WUSD.balance,
+        submit: async (amount) => {
+          const { balanceData } = this;
+          const newAmount = new BigNumber(amount).shiftedBy(18).toString();
+          this.CloseModal();
+          this.SetLoader(true);
+          const allowance = await this.$store.dispatch('wallet/getAllowance', {
+            tokenAddress: tokenMap[TokenSymbols.WUSD],
+            spenderAddress: process.env.WORKNET_PENSION_FUND,
+          });
+          if (+allowance < +newAmount) {
+            await this.$store.dispatch('wallet/approve', {
+              tokenAddress: tokenMap[TokenSymbols.WUSD],
+              spenderAddress: process.env.WORKNET_PENSION_FUND,
+              amount: newAmount,
+            });
+          } else {
+            this.SetLoader(false);
+          }
+          const [txFee] = await Promise.all([
+            this.$store.dispatch('wallet/getContractFeeData', {
+              method: 'contribute',
+              abi: WQPensionFund,
+              contractAddress: process.env.WORKNET_PENSION_FUND,
+              data: [getWalletAddress(), newAmount],
+              recipient: process.env.WORKNET_PENSION_FUND,
+            }),
+            this.getWallet(),
+          ]);
+          if (!txFee?.ok || +balanceData.WUSD.balance === 0) {
+            await this.$store.dispatch('main/showToast', {
+              text: this.$t('errors.transaction.notEnoughFunds'),
+            });
+            this.SetLoader(false);
+            return;
+          }
+
+          const fields = {
+            from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+            to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_PENSION_FUND },
+            fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
+            amount: { name: this.$t('modals.amount'), value: amount, symbol: TokenSymbols.WUSD },
+          };
+          this.ShowModal({
+            key: modals.transactionReceipt,
+            fields,
+            isShowSuccess: true,
+            submitMethod: async () => await this.pensionContribute(amount),
+            callback: await this.getWallet(),
+          });
+          this.SetLoader(false);
+        },
       });
     },
     openChangePercentModal() {
       this.ShowModal({
         key: modals.changePercent,
-        updateMethod: async () => await this.getWallet(),
+        submit: async (amount) => {
+          const { balanceData } = this;
+          this.CloseModal();
+          this.SetLoader(true);
+
+          const [txFee] = await Promise.all([
+            this.$store.dispatch('wallet/getContractFeeData', {
+              method: 'updateFee',
+              abi: WQPensionFund,
+              contractAddress: process.env.WORKNET_PENSION_FUND,
+              data: [new BigNumber(amount.substr(0, amount.length - 1)).shiftedBy(18).toString()],
+            }),
+            this.getWallet(),
+          ]);
+          if (!txFee?.ok || +balanceData.WUSD.balance === 0) {
+            await this.$store.dispatch('main/showToast', {
+              text: this.$t('errors.transaction.notEnoughFunds'),
+            });
+            this.SetLoader(false);
+            return;
+          }
+
+          const fields = {
+            from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+            to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_PENSION_FUND },
+            fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
+          };
+
+          this.ShowModal({
+            key: modals.transactionReceipt,
+            fields,
+            submitMethod: async () => await this.$store.dispatch('retirement/pensionUpdateFee', amount.substr(0, amount.length - 1)),
+            callback: await this.getWallet(),
+          });
+          this.SetLoader(false);
+        },
       });
     },
     handleClickFAQ(FAQ) {

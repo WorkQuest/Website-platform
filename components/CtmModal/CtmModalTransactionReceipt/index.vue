@@ -83,14 +83,14 @@ export default {
     const amount = fields?.amount?.value;
     const symbol = fields?.amount?.symbol;
     const fee = fields?.fee?.value;
-    const wqtBalance = this.balance.WQT.fullBalance;
+    const wusdBalance = this.balance.WUSD.fullBalance;
 
-    // If we send WQT
-    if (fee && amount && symbol === TokenSymbols.WQT) {
-      this.canSend = new BigNumber(amount).plus(fee).isLessThanOrEqualTo(wqtBalance);
+    // If we send WUSD
+    if (fee && amount && symbol === TokenSymbols.WUSD) {
+      this.canSend = new BigNumber(amount).plus(fee).isLessThanOrEqualTo(wusdBalance);
     } else if (fee) {
       // Only need check transaction fee with user balance
-      this.canSend = new BigNumber(fee).isLessThanOrEqualTo(wqtBalance);
+      this.canSend = new BigNumber(fee).isLessThanOrEqualTo(wusdBalance);
     }
   },
   methods: {
@@ -104,10 +104,10 @@ export default {
         if (res?.ok) {
           if (callback) await callback();
           if (isShowSuccess) {
-            await this.$store.dispatch('modals/show', {
-              key: modals.transactionSend,
-            });
+            this.ShowModalSuccess({});
           }
+        } else if (isShowSuccess) {
+          this.ShowModalFail({});
         }
       }
       this.SetLoader(false);

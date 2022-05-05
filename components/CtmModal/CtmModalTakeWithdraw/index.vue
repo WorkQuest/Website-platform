@@ -99,7 +99,7 @@
             class="buttons__action"
             :disabled="invalid"
             data-selector="SHOW-WITHDRAW-INFO"
-            @click="handleSubmit(showWithdrawInfo)"
+            @click="handleSubmit(send)"
           >
             {{ $t('meta.btns.confirm') }}
           </base-btn>
@@ -148,53 +148,15 @@ export default {
     this.withdrawType = this.options.withdrawType;
   },
   methods: {
+    async send() {
+      const { amount, options: { submit } } = this;
+      await submit(amount);
+    },
     replaceDot() {
       this.amount = this.amount.replace(/,/g, '.');
     },
     handleMaxValue() {
       this.amount = this.maxValue;
-    },
-    async showWithdrawInfo() {
-      if (this.withdrawType === 'pension') {
-        const { callback } = this.options;
-        this.CloseModal();
-        this.SetLoader(true);
-        const [txFee] = await Promise.all([
-          this.$store.dispatch('wallet/getContractFeeData', {
-            abi: WQPensionFund,
-            contractAddress: process.env.WORKNET_PENSION_FUND,
-            method: 'withdraw',
-            data: [new BigNumber(this.amount).shiftedBy(18).toString()],
-          }),
-          this.$store.dispatch('wallet/getBalance'),
-        ]);
-        this.SetLoader(false);
-        if (!txFee?.ok || +this.balanceData.WUSD.fullBalance === 0) {
-          await this.$store.dispatch('main/showToast', { text: this.$t('errors.transaction.notEnoughFunds') });
-          return;
-        }
-        this.ShowModal({
-          key: modals.transactionReceipt,
-          title: this.$t('modals.info.withdrawInfo'),
-          fields: {
-            to: { name: this.$t('meta.toBig'), value: this.walletAddress },
-            amount: { name: this.$t('modals.amount'), value: this.amount, symbol: TokenSymbols.WUSD },
-            fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
-          },
-          submitMethod: async () => {
-            const res = await this.$store.dispatch('retirement/pensionWithdraw', this.amount);
-            if (res.ok) return success();
-            await this.$store.dispatch('main/showToast', { text: this.$t('modals.transactionFail') });
-            return error();
-          },
-          callback: () => {
-            Promise.all([
-              callback(),
-              this.$store.dispatch('wallet/getBalance'),
-            ]);
-          },
-        });
-      }
     },
     showAddingCard() {
       this.ShowModal({

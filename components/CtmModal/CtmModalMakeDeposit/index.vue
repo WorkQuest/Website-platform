@@ -74,14 +74,12 @@ export default {
       const { updateMethod } = this.options;
       const { amount, balanceData } = this;
       const newAmount = new BigNumber(amount).shiftedBy(18).toString();
-      console.log(balanceData);
       this.CloseModal();
       this.SetLoader(true);
       const allowance = await this.$store.dispatch('wallet/getAllowance', {
         tokenAddress: tokenMap[TokenSymbols.WUSD],
         spenderAddress: process.env.WORKNET_PENSION_FUND,
       });
-      console.log('allowance:', allowance, 'newAmount:', newAmount);
       if (+allowance < +newAmount) {
         await this.$store.dispatch('wallet/approve', {
           tokenAddress: tokenMap[TokenSymbols.WUSD],
