@@ -109,7 +109,6 @@ export default {
   },
   async setCurrNotificationObject({ getters, rootGetters, dispatch }, notification) {
     const getUserData = rootGetters['user/getUserData'];
-    const isAuth = rootGetters['user/isAuth'];
     const { action, data } = notification.notification;
     const {
       id, title, quest, user, worker, comment, employer, fromUser, rootComment,
@@ -118,12 +117,13 @@ export default {
     const currentUserId = getUserData.id;
     const userRole = rootGetters.getUserRole;
     const currentPath = this.$router.history.current.path;
-    if (!isAuth) {
-      // TODO: Не удалять!!! Разобраться в проблеме!
-      console.log('!!!!!!!!!getters.getUserData.id!!!!!!!!!', currentUserId);
-      console.log('!!!!!!!!!getters.getUserRole!!!!!!!!!!!!', userRole);
-      await dispatch('user/getUserData', { root: true });
-    }
+    // const isAuth = rootGetters['user/isAuth'];
+    // if (!isAuth) {
+    //   // TODO: Не удалять!!! Разобраться в проблеме!
+    //   console.log('!!!!!!!!!getters.getUserData.id!!!!!!!!!', currentUserId);
+    //   console.log('!!!!!!!!!getters.getUserRole!!!!!!!!!!!!', userRole);
+    //   await dispatch('user/getUserData', { root: true });
+    // }
     async function setSender() {
       if (!notification.sender) {
         /** Worker && Employer */
