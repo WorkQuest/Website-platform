@@ -349,7 +349,7 @@ export default {
         console.error('Geo look up is failed', e);
       }
     },
-    async toCreateQuest() {
+    async toCreateQuest(invalid) {
       this.SetLoader(true);
       if (!this.selectedSpecAndSkills.length || invalid) {
         this.isNotChooseSpec = true;
