@@ -180,11 +180,15 @@ export default {
         await dispatch('user/getAllUserReviews', { userId: currentUserId, query }, { root: true });
       }
     }
-    async function setAllNotificationsParams(currTitle, path, isExternalLink, externalBase, isLocal, scrollToPx) {
+    async function setAllNotificationsParams({
+      // eslint-disable-next-line no-shadow
+      title = '', path = '', isExternalLink = false,
+      externalBase = '', isLocal = false, scrollToPx = 0,
+    }) {
       notification.actionNameKey = `notifications.${action}`;
       notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
       notification.params = {
-        title: currTitle, path, isExternalLink, externalBase, isLocal, scrollToPx,
+        title, path, isExternalLink, externalBase, isLocal, scrollToPx,
       };
       await setSender();
     }
@@ -204,75 +208,130 @@ export default {
       case NotificationAction.WAIT_WORKER:
       case NotificationAction.QUEST_EDITED:
       case NotificationAction.QUEST_END_SOON:
-        await setAllNotificationsParams(quest?.title || title, `${Path.QUESTS}/${quest?.id || id}`, false, '');
+        await setAllNotificationsParams({
+          title: quest?.title || title,
+          path: `${Path.QUESTS}/${quest?.id || id}`,
+        });
         await updateQuests();
         break;
 
       case NotificationAction.OPEN_DISPUTE:
       case NotificationAction.DISPUTE_DECISION:
-        await setAllNotificationsParams(problemDescription, `${Path.QUESTS}/${quest?.id || id}`, false, '');
+        await setAllNotificationsParams({
+          title: problemDescription,
+          path: `${Path.QUESTS}/${quest?.id || id}`,
+        });
         await updateQuests();
         break;
 
       case NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST:
-        await setAllNotificationsParams(message, `${Path.PROFILE}/${toUserId}`, false, '');
+        await setAllNotificationsParams({
+          title: message,
+          path: `${Path.PROFILE}/${toUserId}`,
+        });
         await updateProfile();
         break;
 
       /** Workquest local */
       case LocalNotificationAction.REVIEW_USER:
-        await setAllNotificationsParams(message, `${Path.PROFILE}/${toUserId}`, false, '', true);
+        await setAllNotificationsParams({
+          title: message,
+          path: `${Path.PROFILE}/${toUserId}`,
+          isLocal: true,
+        });
         await updateProfile();
         break;
 
       case LocalNotificationAction.RATE_THE_QUEST:
-        await setAllNotificationsParams(message, `${Path.QUESTS}/${questId}`, false, '', true);
+        await setAllNotificationsParams({
+          title: message,
+          path: `${Path.QUESTS}/${questId}`,
+          isLocal: true,
+        });
         break;
 
-      case NotificationActionFromContract.QUEST_STATUS_UPDATED:
-        await setAllNotificationsParams(quest?.title || title, `${Path.QUESTS}/${quest?.id || id}`, false, '');
+      case NotificationActionFromContract.QUEST_STATUS_UPDATED1:
+      case NotificationActionFromContract.QUEST_STATUS_UPDATED2:
+        await setAllNotificationsParams({
+          title: quest?.title || title,
+          path: `${Path.QUESTS}/${quest?.id || id}`,
+        });
         await updateQuests();
         break;
 
       case LocalNotificationAction.GET_REWARD:
-        await setAllNotificationsParams(title, `${Path.REFERRAL}`, false, '', true);
+        await setAllNotificationsParams({
+          title,
+          path: `${Path.REFERRAL}`,
+          isLocal: true,
+        });
         break;
 
       case LocalNotificationAction.QUEST_DRAFT:
-        await setAllNotificationsParams(title, `${Path.CREATE_QUEST}`, false, '', true);
+        await setAllNotificationsParams({
+          title,
+          path: `${Path.CREATE_QUEST}`,
+          isLocal: true,
+        });
         break;
 
       case LocalNotificationAction.WIKI:
-        await setAllNotificationsParams(title, `${Path.WIKI}`, false, '', true);
+        await setAllNotificationsParams({
+          title,
+          path: `${Path.WIKI}`,
+          isLocal: true,
+        });
         break;
 
       case LocalNotificationAction.KYC:
-        await setAllNotificationsParams(title, `${Path.SUMSUB}`, false, '', true);
+        await setAllNotificationsParams({
+          title,
+          path: `${Path.SUMSUB}`,
+          isLocal: true,
+        });
         break;
 
       case LocalNotificationAction.PROFILE_FILLED:
-        await setAllNotificationsParams(title, `${Path.SETTINGS}`, false, '', true, 400);
+        await setAllNotificationsParams({
+          title,
+          path: `${Path.SETTINGS}`,
+          isLocal: true,
+        });
         break;
 
       case LocalNotificationAction.TWOFA:
-        await setAllNotificationsParams(title, `${Path.SETTINGS}`, false, '', true, 1800);
+        await setAllNotificationsParams({
+          title,
+          path: `${Path.SETTINGS}`,
+          isLocal: true,
+        });
         break;
 
       /** DAO */
       case NotificationAction.NEW_COMMENT_IN_DISCUSSION:
       case NotificationAction.NEW_DISCUSSION_LIKE: {
-        await setAllNotificationsParams(discussion.title, `${PathDAO.DISCUSSIONS}/${discussion.id}`, true, DaoUrl);
+        await setAllNotificationsParams({
+          title: discussion.title,
+          path: `${PathDAO.DISCUSSIONS}/${discussion.id}`,
+          isExternalLink: true,
+          externalBase: DaoUrl,
+        });
         break;
       }
 
       case NotificationAction.COMMENT_LIKED: {
-        await setAllNotificationsParams(comment?.text, `${PathDAO.DISCUSSIONS}/${comment.discussionId}`, true, DaoUrl);
+        await setAllNotificationsParams({
+          title: comment?.text,
+          path: `${PathDAO.DISCUSSIONS}/${comment.discussionId}`,
+          isExternalLink: true,
+          externalBase: DaoUrl,
+        });
         break;
       }
       default: {
         // Не удалять! Для ловли неизвестных ивентов
         console.error('Unknown event = ', action);
-        await setAllNotificationsParams(action, '', false, '', false);
+        await setAllNotificationsParams(action);
         break;
       }
     }

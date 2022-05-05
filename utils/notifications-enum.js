@@ -49,7 +49,8 @@ export const notificationCommonFilterAction2 = Object.freeze([
 ]);
 
 export const NotificationActionFromContract = {
-  QUEST_STATUS_UPDATED: 'questStatusUpdated',
+  QUEST_STATUS_UPDATED1: 'QuestStatusUpdated',
+  QUEST_STATUS_UPDATED2: 'questStatusUpdated',
 };
 
 export const LocalNotificationAction = {
