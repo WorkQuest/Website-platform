@@ -336,6 +336,7 @@ export default {
     @include text-simple;
     font-weight: 500;
     font-size: 16px;
+    line-height: normal;
     color: $black800;
     letter-spacing: 0.02em;
     transition: .5s;
@@ -350,6 +351,7 @@ export default {
   &__company {
     flex: 0 0 15%;
     @include text-simple;
+    line-height: normal;
     font-weight: 400;
     font-size: 16px;
     color: $black500;
