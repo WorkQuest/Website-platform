@@ -156,14 +156,21 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    this.page = this.$cookies.get('notificationPage');
     await this.getNotifications();
     await this.pushLocalNotifications();
     this.SetLoader(false);
+  },
+  async beforeDestroy() {
+    await this.saveNotificationCurrentPage();
   },
   destroyed() {
     this.$store.commit('notifications/setNotifications', { result: { notifications: [], count: this.notifsCount } });
   },
   methods: {
+    async saveNotificationCurrentPage() {
+      this.$cookies.set('notificationPage', this.page);
+    },
     actionBtnText(notification) {
       return notification.notification.actionBtn ?? this.$t('meta.btns.view');
     },

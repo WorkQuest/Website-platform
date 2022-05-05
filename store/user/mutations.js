@@ -70,6 +70,7 @@ export default {
     this.$cookies.remove('role');
     this.$cookies.remove('userLogin');
     this.$cookies.remove('socialNetwork');
+    this.$cookies.remove('notificationPage');
     sessionStorage.clear();
     state.userData = {};
     state.tokens = { access: '', refresh: '' };
