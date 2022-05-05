@@ -510,7 +510,8 @@ export default {
       } = this;
       if (!notifsConnection) {
         await $wsNotifs.connect(token);
-        const subscribes = ['chat', 'quest', 'dao', 'proposal', 'dailyLiquidity'];
+        // TODO: Вернуть, когда будет работать 'proposal'
+        const subscribes = ['chat', 'quest', 'dao', 'dailyLiquidity'];
         await Promise.all(subscribes.map((path) => $wsNotifs.subscribe(`${Path.NOTIFICATIONS}/${path}`, async (ev) => {
           if (path === 'chat') await this.chatAction(ev);
           else await $store.dispatch('notifications/addNotification', ev);
