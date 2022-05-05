@@ -21,23 +21,15 @@
           :key="input.index"
           data-selector="ADVANCED-WHO-CAN-SEE-RADIO"
           class="advanced__option"
+          @click="setSelectedCheckboxByBlock(input.name, input.value)"
         >
-          <input
+          <base-checkbox
             :id="input.id"
-            :name="input.name"
+            :name="input.id"
+            :value="isCheckboxChecked(input.name, input.value)"
             :data-selector="`ADVANCED-WHO-CAN-SEE-RADIO-${input.id}`"
-            type="radio"
-            class="advanced__input"
-            :checked="isCheckboxChecked(input.name, input.value)"
-            :value="input.value"
-            @click="setSelectedCheckboxByBlock(input.name, input.value)"
-          >
-          <label
-            class="advanced__label"
-            :for="input.id"
-          >
-            {{ $t(input.local) }}
-          </label>
+            :label="String($t(input.local))"
+          />
         </div>
       </div>
     </div>
@@ -83,7 +75,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { NetworkProfileVisibility, UserRole, RatingFilter } from '~/utils/enums';
+import { UserRole, RatingFilter, RatingStatus } from '~/utils/enums';
 
 export default {
   name: 'Advanced',
@@ -91,8 +83,8 @@ export default {
     return {
       mounted: false,
       checkboxBlocks: {
-        visibilityUser: null,
-        restrictionRankingStatus: null,
+        visibilityUser: [],
+        restrictionRankingStatus: [],
       },
       radioButtons: {
         visibilityUser: [],
@@ -150,24 +142,25 @@ export default {
       local: i === 0 ? 'settings.allUsers' : `quests.rating.${item.key}`,
       name: 'restrictionRankingStatus',
     }));
-    this.radioButtons.visibilityUser = [{
-      title: this.$t('settings.whoCanSee'),
-      id: 'allUsers',
-      value: NetworkProfileVisibility.ALL_USERS,
-      local: 'settings.allUsers',
+    this.radioButtons.visibilityUser = RatingFilter.map((item, i) => ({
+      title: this.$t(`settings.${this.userRole === UserRole.EMPLOYER ? 'whoAppearsInMyListEmployees' : 'whoAppearsInMyListEmployers'}`),
+      id: item.key,
+      value: item.value,
+      local: i === 0 ? 'settings.allUsers' : `quests.rating.${item.key}`,
       name: 'visibilityUser',
-    },
-    {
-      id: 'onlyWhenSubmittedWork',
-      value: NetworkProfileVisibility.SUBMITTING_OFFER,
-      local: 'settings.onlyWhenSubmittedWork',
-      name: 'visibilityUser',
-    }];
+    }));
   },
   created() {
-    const profileVisibilitySetting = JSON.parse(JSON.stringify(this.userData?.profileVisibilitySetting));
-    this.checkboxBlocks.visibilityUser = profileVisibilitySetting?.network;
-    this.checkboxBlocks.restrictionRankingStatus = profileVisibilitySetting?.ratingStatus;
+    const { employerProfileVisibilitySetting, workerProfileVisibilitySetting } = JSON.parse(JSON.stringify(this.userData));
+    if (this.userRole === UserRole.EMPLOYER) {
+      const { arrayRatingStatusCanRespondToQuest, arrayRatingStatusInMySearch } = employerProfileVisibilitySetting;
+      this.checkboxBlocks.visibilityUser = arrayRatingStatusCanRespondToQuest;
+      this.checkboxBlocks.restrictionRankingStatus = arrayRatingStatusInMySearch;
+    } else {
+      const { arrayRatingStatusCanInviteMeOnQuest, arrayRatingStatusInMySearch } = workerProfileVisibilitySetting;
+      this.checkboxBlocks.visibilityUser = arrayRatingStatusCanInviteMeOnQuest;
+      this.checkboxBlocks.restrictionRankingStatus = arrayRatingStatusInMySearch;
+    }
   },
   methods: {
     async showModalKey(modalKey) {
@@ -181,11 +174,24 @@ export default {
       });
     },
     setSelectedCheckboxByBlock(checkBoxBlockName, value) {
-      this.checkboxBlocks[checkBoxBlockName] = value;
+      if (value === RatingStatus.AllStatuses
+        && !this.checkboxBlocks[checkBoxBlockName].includes(RatingStatus.AllStatuses)) {
+        this.checkboxBlocks[checkBoxBlockName] = [RatingStatus.AllStatuses];
+        this.$emit('updateVisibility', this.checkboxBlocks);
+        return null;
+      }
+      if (!this.checkboxBlocks[checkBoxBlockName].includes(value)) {
+        this.checkboxBlocks[checkBoxBlockName].push(value);
+        this.checkboxBlocks[checkBoxBlockName] = this.checkboxBlocks[checkBoxBlockName].filter((e) => e !== RatingStatus.AllStatuses);
+      } else {
+        this.checkboxBlocks[checkBoxBlockName] = this.checkboxBlocks[checkBoxBlockName].filter((e) => e !== value);
+      }
       this.$emit('updateVisibility', this.checkboxBlocks);
+      return null;
     },
     isCheckboxChecked(checkBoxBlockName, value) {
-      return value === this.checkboxBlocks[checkBoxBlockName];
+      return this.checkboxBlocks[checkBoxBlockName].includes(value)
+        || this.checkboxBlocks[checkBoxBlockName].includes(RatingStatus.AllStatuses);
     },
   },
 };
