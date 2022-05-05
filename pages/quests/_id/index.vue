@@ -276,7 +276,6 @@ export default {
         status, userId, yourReview, id,
       } = this.quest;
       if (status === QuestStatuses.Done && this.userData.id === userId && !yourReview) {
-        // TODO: Добавить локализацию!
         await this.$store.dispatch('notifications/createLocalNotification', {
           id: '7',
           action: LocalNotificationAction.RATE_THE_QUEST,

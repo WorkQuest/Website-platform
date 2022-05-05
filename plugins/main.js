@@ -61,7 +61,6 @@ Vue.mixin({
         });
       }
       if (this.status2FA === TwoFAStatuses.DISABLED) {
-        // TODO: Добавить якорь для прокрутки до 2FA после перехода
         if (!TWOFA) this.$cookies.set(LocalNotificationAction.TWOFA, this.status2FA !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
         await this.$store.dispatch('notifications/createLocalNotification', {
           id: '4',
@@ -372,7 +371,6 @@ Vue.mixin({
     },
     async checkProfileFilled() {
       const { userData } = this;
-      console.log('userData', userData);
       const {
         avatar, firstName, lastName, locationPlaceName, additionalInfo: { description },
       } = userData;

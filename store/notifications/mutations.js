@@ -26,9 +26,6 @@ export default {
     state.localNotifications.push(notification);
   },
   addNotification(state, notification) {
-    // TODO: Проверить!
-    // console.log('state.notifications.list', state.notifications.list);
-    // console.log('state.reducedNotifications', state.reducedNotifications);
     state.notifications.list.push(notification);
     state.reducedNotifications.unshift(notification);
     state.reducedNotifications.length = state.reducedNotifications.length === 1 ? 1 : 2;

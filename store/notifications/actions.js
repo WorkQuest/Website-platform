@@ -100,10 +100,7 @@ export default {
   },
   async addNotification({ commit, dispatch }, notification) {
     const newNotification = await dispatch('setCurrNotificationObject', { notification });
-    if (newNotification.params.isLocal) {
-      console.log('local notif', notification);
-      commit('addLocalNotification', newNotification);
-    }
+    if (newNotification.params.isLocal) commit('addLocalNotification', newNotification);
     commit('addNotification', newNotification);
   },
   async setCurrNotificationObject({ getters, rootGetters, dispatch }, notification) {
@@ -228,7 +225,6 @@ export default {
         break;
 
       case LocalNotificationAction.RATE_THE_QUEST:
-        // TODO: проверить!!!
         await setAllNotificationsParams(message, `${Path.QUESTS}/${questId}`, false, '', true);
         break;
 
@@ -240,7 +236,6 @@ export default {
       }
 
       case LocalNotificationAction.GET_REWARD:
-        // TODO: дописать нет логики рефералки
         await setAllNotificationsParams(title, `${Path.REFERRAL}`, false, '', true);
         break;
 
@@ -282,7 +277,6 @@ export default {
         break;
       }
     }
-    // console.log('notification', notification);
     return notification;
   },
 };
