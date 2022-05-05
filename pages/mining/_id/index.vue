@@ -83,7 +83,7 @@
                     {{
                       isUpdatingData
                         ? $t('mining.loading')
-                        : $tc('meta.coins.count.WQTCount', Floor(APY))
+                        : $tc('meta.coins.count.WQTCount', Floor(profit))
                     }}
                   </div>
                   <div class="info-block__title_small">
@@ -263,9 +263,9 @@ export default {
   },
   computed: {
     ...mapGetters({
-      APY: 'mining/getAPY',
       claim: 'mining/getClaim',
       staked: 'mining/getStaked',
+      profit: 'mining/getProfit',
       balance: 'mining/getBalance',
       miningSwaps: 'mining/getSwaps',
       miningChartData: 'mining/getChartData',
@@ -275,7 +275,6 @@ export default {
       isConnected: 'web3/isConnected',
 
       isAuth: 'user/isAuth',
-      walletAddress: 'user/getUserWalletAddress',
     }),
     chain() {
       const symbol = this.$route.params.id;
@@ -285,6 +284,7 @@ export default {
         case TokenSymbols.BNB:
           return Chains.BINANCE;
         default:
+          if (this.$route.path === Path.MINING) return '';
           console.error('Unknown pool:', symbol);
           return '';
       }
@@ -386,6 +386,12 @@ export default {
         await this.tokensDataUpdate();
       }
     },
+    async totalLiquidityUSD(newVal, oldVal) {
+      if (this.page === 1 && oldVal) {
+        const { limit, chain: pool } = this;
+        await this.fetchSwaps({ pool, params: { limit, offset: 0 } });
+      }
+    },
     async page() {
       const { limit, chain: pool } = this;
       await this.fetchSwaps({
@@ -427,8 +433,8 @@ export default {
       subscribeWS: 'mining/subscribeWS',
       unsubscribeWS: 'mining/unsubscribeWS',
 
-      fetchAPY: 'mining/fetchAPY',
       fetchSwaps: 'mining/fetchSwaps',
+      calcProfit: 'mining/calcProfit',
       fetchPoolData: 'mining/fetchPoolData',
       resetPoolData: 'mining/resetPoolData',
       fetchChartData: 'mining/fetchChartData',
@@ -493,17 +499,9 @@ export default {
     },
 
     async tokensDataUpdate() {
-      const { chain } = this;
-
       this.isUpdatingData = true;
-      await this.fetchPoolData({ chain });
-
-      if (+this.staked > 0) {
-        await this.fetchAPY({
-          chain,
-          stakedAmount: this.staked,
-        });
-      }
+      await this.fetchPoolData({ chain: this.chain });
+      if (+this.staked > 0) await this.calcProfit();
       this.isUpdatingData = false;
     },
 
