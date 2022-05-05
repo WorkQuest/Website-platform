@@ -164,9 +164,9 @@ import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import {
   tokenMap,
-  LocalNotificationAction,
   PriorityFilter, TokenSymbols, TypeOfJobFilter, WorkplaceIndex,
 } from '~/utils/enums';
+import { LocalNotificationAction } from '~/utils/notifications-enum';
 import { CommissionForCreatingAQuest } from '~/utils/сonstants/quests';
 import { ERC20 } from '~/abi';
 import { error, success } from '~/utils/web3';

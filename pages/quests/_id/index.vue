@@ -166,8 +166,10 @@ import {
   ResponseStatus,
   questPriority,
   QuestModeReview,
-  TokenSymbols, LocalNotificationAction,
+  TokenSymbols,
 } from '~/utils/enums';
+
+import { LocalNotificationAction } from '~/utils/notifications-enum';
 import modals from '~/store/modals/modals';
 import {
   QuestMethods, EditQuestState, QuestStatuses, InfoModeWorker, InfoModeEmployer,

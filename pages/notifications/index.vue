@@ -125,9 +125,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import {
-  UserRole, Path,
-} from '~/utils/enums';
+import { UserRole, Path } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {

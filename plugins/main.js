@@ -4,9 +4,8 @@ import VueTippy, { TippyComponent } from 'vue-tippy';
 import converter from 'bech32-converting';
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import {
-  TokenSymbols, LocalNotificationAction, SumSubStatuses, TwoFAStatuses,
-} from '~/utils/enums';
+import { TokenSymbols, SumSubStatuses, TwoFAStatuses } from '~/utils/enums';
+import { LocalNotificationAction } from '~/utils/notifications-enum';
 import { QuestMethods, QuestStatuses } from '~/utils/сonstants/quests';
 import { images } from '~/utils/images';
 

@@ -125,7 +125,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { Chains } from '~/utils/enums';
 
 export default {
   data() {

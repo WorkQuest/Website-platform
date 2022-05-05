@@ -52,9 +52,8 @@ import VerificationCard from '~/components/app/pages/settings/VerificationCard.v
 import Profile from '~/components/app/pages/settings/Profile.vue';
 import Skills from '~/components/app/pages/settings/Skills.vue';
 import Advanced from '~/components/app/pages/settings/Advanced.vue';
-import {
-  LocalNotificationAction, UserRole, WorkplaceIndex, Path,
-} from '~/utils/enums';
+import { UserRole, WorkplaceIndex, Path } from '~/utils/enums';
+import { LocalNotificationAction } from '~/utils/notifications-enum';
 
 export default {
   name: 'Settings',

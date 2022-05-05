@@ -1,11 +1,16 @@
 import moment from 'moment';
 import {
-  DaoUrl, LocalNotificationAction,
-  NotificationAction, NotificationActionFromContract,
-  notificationCommonFilterAction2,
-  notificationCommonFilterActions, notificationEmployerFilterActions, Path, PathDAO,
+  DaoUrl, Path, PathDAO,
   UserRole,
 } from '~/utils/enums';
+import {
+  NotificationAction,
+  LocalNotificationAction,
+  NotificationActionFromContract,
+  notificationCommonFilterActions,
+  notificationCommonFilterAction2,
+  notificationEmployerFilterActions,
+} from '~/utils/notifications-enum';
 import { error, success } from '~/utils/web3';
 
 export default {
