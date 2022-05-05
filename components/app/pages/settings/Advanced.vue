@@ -151,18 +151,15 @@ export default {
     }));
   },
   created() {
+    const { employerProfileVisibilitySetting, workerProfileVisibilitySetting } = JSON.parse(JSON.stringify(this.userData));
     if (this.userRole === UserRole.EMPLOYER) {
-      const profileVisibilitySetting = JSON.parse(JSON.stringify(this.userData.employerProfileVisibilitySetting));
-      this.checkboxBlocks.visibilityUser = Array.isArray(profileVisibilitySetting.arrayRatingStatusCanRespondToQuest)
-        ? profileVisibilitySetting.arrayRatingStatusCanRespondToQuest : [];
-      this.checkboxBlocks.restrictionRankingStatus = Array.isArray(profileVisibilitySetting.arrayRatingStatusInMySearch)
-        ? profileVisibilitySetting.arrayRatingStatusInMySearch : [];
+      const { arrayRatingStatusCanRespondToQuest, arrayRatingStatusInMySearch } = employerProfileVisibilitySetting;
+      this.checkboxBlocks.visibilityUser = arrayRatingStatusCanRespondToQuest;
+      this.checkboxBlocks.restrictionRankingStatus = arrayRatingStatusInMySearch;
     } else {
-      const profileVisibilitySetting = JSON.parse(JSON.stringify(this.userData.workerProfileVisibilitySetting));
-      this.checkboxBlocks.visibilityUser = Array.isArray(profileVisibilitySetting.arrayRatingStatusCanInviteMeOnQuest)
-        ? profileVisibilitySetting.arrayRatingStatusCanInviteMeOnQuest : [];
-      this.checkboxBlocks.restrictionRankingStatus = Array.isArray(profileVisibilitySetting.arrayRatingStatusInMySearch)
-        ? profileVisibilitySetting.arrayRatingStatusInMySearch : [];
+      const { arrayRatingStatusCanInviteMeOnQuest, arrayRatingStatusInMySearch } = workerProfileVisibilitySetting;
+      this.checkboxBlocks.visibilityUser = arrayRatingStatusCanInviteMeOnQuest;
+      this.checkboxBlocks.restrictionRankingStatus = arrayRatingStatusInMySearch;
     }
   },
   methods: {
