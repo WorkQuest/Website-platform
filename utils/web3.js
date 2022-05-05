@@ -4,11 +4,6 @@ import Web3Modal from 'web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 
 import {
-  BSCPool,
-  WQLiquidityMining,
-} from '~/abi/index';
-
-import {
   Chains,
   ChainsId,
   NetworksData,
@@ -306,7 +301,7 @@ export const getTransactionCount = async (address = getAccountAddress()) => awai
 // Get current gas price
 export const getGasPrice = async () => await web3.eth.getGasPrice();
 
-export const createInstance = async (abi, address) => new web3.eth.Contract(abi, address);
+export const createInstance = async (abi, address) => await new web3.eth.Contract(abi, address);
 
 export const getAllowance = async (owner, sender, inst = null, abi = null, address = null) => {
   try {
@@ -378,72 +373,5 @@ export const fetchActions = async (stakingAbi, stakingAddress, callback, events,
   await unsubscirbeListeners();
   for (let i = 0; i < events.length; i += 1) {
     actionsListeners.push(fetchContractAction(contractInst, events[i], callback, params[i]));
-  }
-};
-
-export const initStackingContract = async (chain) => {
-  const stakingAbi = WQLiquidityMining;
-  let stakingAddress;
-  let websocketProvider;
-  if (chain === 'ETH') {
-    stakingAddress = isProd ? process.env.ETHEREUM_MINING : '0x85fCeFe4b3646E74218793e8721275D3448b76F4';
-    websocketProvider = process.env.ETHEREUM_WS_INFURA;
-  } else {
-    stakingAddress = isProd ? process.env.BSC_MINING : '0x7F31d9c6Cf99DDB89E2a068fE7B96d230b9D19d1';
-    websocketProvider = process.env.BSC_WS_MORALIS;
-  }
-  const liquidityMiningProvider = new Web3(new Web3.providers.WebsocketProvider(websocketProvider, {
-    clientConfig: {
-      keepalive: true,
-      keepaliveInterval: 60000,
-    },
-    reconnect: {
-      auto: true,
-      delay: 1000,
-      onTimeout: false,
-    },
-  }));
-  const liquidityMiningContract = new liquidityMiningProvider.eth.Contract(stakingAbi, stakingAddress);
-  return await liquidityMiningContract.methods.getStakingInfo().call();
-};
-
-let bscRpcContract = null;
-
-export const getBinanceContractRPC = async () => {
-  if (bscRpcContract) return bscRpcContract;
-  try {
-    const address = isProd ? process.env.BSC_LP_TOKEN : '0x3ea2de549ae9dcb7992f91227e8d6629a22c3b40';
-    const provider = await new Web3.providers.HttpProvider(process.env.BSC_RPC_URL);
-    const web3Bsc = await new Web3(provider);
-    bscRpcContract = await new web3Bsc.eth.Contract(BSCPool, address);
-    return bscRpcContract;
-  } catch (e) {
-    console.log(e);
-    return null;
-  }
-};
-
-export const getPoolTokensAmountBSC = async () => {
-  try {
-    const poolContract = await getBinanceContractRPC();
-    const res = await poolContract.methods.getReserves().call();
-    return {
-      wqtAmount: new BigNumber(res._reserve0).shiftedBy(-18).toString(),
-      wbnbAmount: new BigNumber(res._reserve1).shiftedBy(-18).toString(),
-    };
-  } catch (e) {
-    console.log(e);
-    return false;
-  }
-};
-
-export const getPoolTotalSupplyBSC = async () => {
-  try {
-    const poolContract = await getBinanceContractRPC();
-    const res = await poolContract.methods.totalSupply().call();
-    return new BigNumber(res).shiftedBy(-18).toString();
-  } catch (e) {
-    console.log(e);
-    return false;
   }
 };

@@ -128,8 +128,8 @@ export default {
     ETHEREUM_BRIDGE: process.env.ETHEREUM_BRIDGE,
     ETHEREUM_LP_TOKEN: process.env.ETHEREUM_LP_TOKEN,
     ETHEREUM_MINING: process.env.ETHEREUM_MINING,
+    ETHEREUM_RPC_URL: process.env.ETHEREUM_RPC_URL,
     ETHEREUM_WQT_TOKEN: process.env.ETHEREUM_WQT_TOKEN,
-    ETHEREUM_WS_INFURA: process.env.ETHEREUM_WS_INFURA,
 
     BSC_BRIDGE: process.env.BSC_BRIDGE,
     BSC_LP_TOKEN: process.env.BSC_LP_TOKEN,
@@ -138,7 +138,6 @@ export default {
     BSC_WQT_EXCHANGE: process.env.BSC_WQT_EXCHANGE,
     BSC_WQT_TOKEN: process.env.BSC_WQT_TOKEN,
     BSC_RPC_URL: process.env.BSC_RPC_URL,
-    BSC_WS_MORALIS: process.env.BSC_WS_MORALIS,
 
     WETH_TOKEN: process.env.WETH_TOKEN,
     WBNB_TOKEN: process.env.WBNB_TOKEN,
