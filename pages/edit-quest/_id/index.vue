@@ -546,7 +546,6 @@ export default {
           tokenAddress: wusdAddress,
           spenderAddress: contractAddress,
         });
-        console.log(allowance, 'allowance');
         if (new BigNumber(allowance).isLessThan(depositAmount)) {
           const [approveFee] = await Promise.all([
             this.$store.dispatch('wallet/getContractFeeData', {
@@ -557,7 +556,6 @@ export default {
             }),
             this.$store.dispatch('wallet/getBalance'),
           ]);
-          console.log('approve fee', approveFee);
           if (!approveFee.ok) {
             this.ShowToast(approveFee.msg);
             this.SetLoader(false);
