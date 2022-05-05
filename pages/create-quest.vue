@@ -147,8 +147,7 @@
         <div class="btn__create">
           <base-btn
             selector="CREATE-A-QUEST"
-            :disabled="validated && invalid || !selectedSpecAndSkills.length"
-            @click="handleSubmit(toCreateQuest)"
+            @click="handleSubmit(toCreateQuest(invalid))"
           >
             {{ $t('meta.createAQuest') }}
           </base-btn>
@@ -352,7 +351,7 @@ export default {
     },
     async toCreateQuest(invalid) {
       this.SetLoader(true);
-      if (!this.selectedSpecAndSkills.length) {
+      if (!this.selectedSpecAndSkills.length || invalid) {
         this.isNotChooseSpec = true;
         this.ScrollToTop();
         this.SetLoader(false);
