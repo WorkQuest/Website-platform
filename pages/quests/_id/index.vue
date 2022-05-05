@@ -141,7 +141,7 @@
             />
             <empty-data
               v-else
-              :description="$t(`errors.emptyData.emptyQuests`)"
+              :description="$tc(`errors.emptyData.emptyQuests`)"
             />
           </div>
         </div>
@@ -150,9 +150,9 @@
   </div>
   <div v-else-if="!isLoading">
     <empty-data
-      :description="$t('errors.emptyData.emptyQuests')"
+      :description="$tc('errors.emptyData.emptyQuests')"
       :link="$options.Path.QUESTS"
-      :btn-text="$t('meta.btns.ok')"
+      :btn-text="$tc('meta.btns.ok')"
     />
   </div>
 </template>
@@ -201,6 +201,10 @@ export default {
       otherQuests: 'quests/getAllQuests',
       isLoading: 'main/getIsLoading',
     }),
+    isEmployer() {
+      const { userRole } = this;
+      return userRole === UserRole.EMPLOYER;
+    },
     questReward() {
       return new BigNumber(this.quest.price).shiftedBy(-18).toString();
     },
@@ -263,29 +267,39 @@ export default {
     if (this.userRole === UserRole.WORKER) await this.getSameQuests();
     await this.getResponsesToQuest();
     await this.setActionBtnsArr();
-    await this.localNotificationReviewUser();
     this.SetLoader(false);
   },
   async beforeDestroy() {
+    const {
+      $store, quest: {
+        assignedWorkerId, user, yourReview, id,
+      }, isEmployer, isYour, isDone,
+    } = this;
     await this.$store.dispatch('google-map/resetMap');
     this.$store.commit('quests/setQuest', null);
     this.$store.commit('quests/setAllQuests', { count: 0, quests: [] });
     this.$store.commit('user/setCurrentReviewMarkOnQuest', { questId: null, message: null, mark: null });
+    if (isDone() && isYour() && !yourReview) {
+      await $store.dispatch('notifications/createLocalNotification', {
+        action: LocalNotificationAction.REVIEW_USER,
+        message: isEmployer ? this.$t('localNotifications.messages.reviewEmp') : this.$t('localNotifications.messages.rateTheQuest'),
+        actionBtn: isEmployer ? this.$t('localNotifications.btns.reviewEmp') : this.$t('localNotifications.btns.rateTheQuest'),
+        questId: id,
+        userId: isEmployer ? assignedWorkerId : user.id,
+        date: this.Date.now(),
+      });
+    }
   },
   methods: {
-    async localNotificationReviewUser() {
-      const {
-        status, userId, yourReview, id,
-      } = this.quest;
-      if (status === QuestStatuses.Done && this.userData.id === userId && !yourReview) {
-        await this.$store.dispatch('notifications/createLocalNotification', {
-          action: LocalNotificationAction.RATE_THE_QUEST,
-          message: this.$t('localNotifications.messages.rateTheQuest'),
-          actionBtn: this.$t('localNotifications.btns.rateTheQuest'),
-          date: '',
-          questId: id,
-        });
-      }
+    isDone() {
+      const { quest } = this;
+      const { status } = quest;
+      return status === QuestStatuses.Done;
+    },
+    isYour() {
+      const { userData, quest } = this;
+      const { userId } = quest;
+      return userData.id === userId;
     },
     starRating(item) {
       if (!item) return false;
@@ -505,8 +519,8 @@ export default {
       this.$store.commit('google-map/setPoints', [this.quest]);
     },
     async getResponsesToQuest() {
-      const { quest: { id, user }, userData } = this;
-      if (this.userRole === UserRole.EMPLOYER && user.id === userData.id) {
+      const { quest: { id, user }, userData, isDone } = this;
+      if (isDone() && user.id === userData.id) {
         await this.$store.dispatch('quests/responsesToQuest', id);
       }
     },
@@ -554,20 +568,11 @@ export default {
           fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WQT },
         },
         submitMethod: async () => {
-          const { userRole, $store, quest: { assignedWorkerId, user: { id } } } = this;
+          const { $store } = this;
           const txRes = await $store.dispatch('quests/acceptJobResult', contractAddress);
           if (txRes.ok) {
             this.showQuestModal(2);
             await $store.dispatch('quests/setInfoDataMode', QuestStatuses.Done);
-            await $store.dispatch('notifications/createLocalNotification', {
-              id: '6',
-              action: LocalNotificationAction.REVIEW_USER,
-              message: userRole === UserRole.EMPLOYER ? this.$t('localNotifications.messages.reviewEmp') : this.$t('localNotifications.messages.reviewWorker'),
-              actionBtn: userRole === UserRole.EMPLOYER ? this.$t('localNotifications.btns.reviewEmp') : this.$t('localNotifications.btns.reviewWorker'),
-              questId: '',
-              userId: userRole === UserRole.EMPLOYER ? assignedWorkerId : id,
-              date: '',
-            });
           }
         },
       });

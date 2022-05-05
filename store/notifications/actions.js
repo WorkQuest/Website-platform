@@ -241,14 +241,6 @@ export default {
         await updateProfile();
         break;
 
-      case LocalNotificationAction.RATE_THE_QUEST:
-        await setAllNotificationsParams({
-          title: message,
-          path: `${Path.QUESTS}/${questId}`,
-          isLocal: true,
-        });
-        break;
-
       case NotificationActionFromContract.QUEST_STATUS_UPDATED1:
       case NotificationActionFromContract.QUEST_STATUS_UPDATED2:
         await setAllNotificationsParams({
