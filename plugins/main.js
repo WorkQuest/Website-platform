@@ -2,10 +2,8 @@ import Vue from 'vue';
 import moment from 'moment';
 import VueTippy, { TippyComponent } from 'vue-tippy';
 import converter from 'bech32-converting';
-import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { TokenSymbols, SumSubStatuses, TwoFAStatuses } from '~/utils/enums';
-import { LocalNotificationAction } from '~/utils/notifications-enum';
+import { TokenSymbols } from '~/utils/enums';
 import { QuestMethods, QuestStatuses } from '~/utils/сonstants/quests';
 import { images } from '~/utils/images';
 
@@ -13,19 +11,6 @@ Vue.use(VueTippy);
 Vue.component('tippy', TippyComponent);
 
 Vue.mixin({
-  data() {
-    return {
-      profileFilled: false,
-    };
-  },
-  computed: {
-    ...mapGetters({
-      statusKYC: 'user/getStatusKYC',
-      status2FA: 'user/getStatus2FA',
-      userData: 'user/getUserData',
-      userRole: 'user/getUserRole',
-    }),
-  },
   methods: {
     convertToBech32(prefix, address) {
       return converter(prefix).toBech32(address);
@@ -33,49 +18,6 @@ Vue.mixin({
     convertToHex(prefix, address) {
       if (address.startsWith(prefix)) return converter(prefix).toHex(address);
       return address;
-    },
-    async pushLocalNotifications() {
-      const KYC = this.$cookies.get(LocalNotificationAction.TWOFA);
-      const TWOFA = this.$cookies.get(LocalNotificationAction.KYC);
-      await this.checkProfileFilled();
-      await this.$store.dispatch('notifications/createLocalNotification', {
-        id: '1',
-        action: LocalNotificationAction.GET_REWARD,
-        message: this.$t('localNotifications.messages.inviteFriends'),
-        actionBtn: this.$t('localNotifications.btns.inviteFriends'),
-      });
-      await this.$store.dispatch('notifications/createLocalNotification', {
-        id: '2',
-        action: LocalNotificationAction.WIKI,
-        message: this.$t('localNotifications.messages.wiki'),
-        actionBtn: this.$t('localNotifications.btns.wiki'),
-      });
-      if (this.statusKYC === SumSubStatuses.NOT_VERIFIED) {
-        if (!KYC) this.$cookies.set(LocalNotificationAction.KYC, this.statusKYC !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
-        await this.$store.dispatch('notifications/createLocalNotification', {
-          id: '3',
-          action: LocalNotificationAction.KYC,
-          message: this.$t('localNotifications.messages.kyc'),
-          actionBtn: this.$t('localNotifications.btns.kyc'),
-        });
-      }
-      if (this.status2FA === TwoFAStatuses.DISABLED) {
-        if (!TWOFA) this.$cookies.set(LocalNotificationAction.TWOFA, this.status2FA !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
-        await this.$store.dispatch('notifications/createLocalNotification', {
-          id: '4',
-          action: LocalNotificationAction.TWOFA,
-          message: this.$t('localNotifications.messages.twoFA'),
-          actionBtn: this.$t('localNotifications.btns.toSettings'),
-        });
-      }
-      if (!this.profileFilled) {
-        await this.$store.dispatch('notifications/createLocalNotification', {
-          id: '5',
-          action: LocalNotificationAction.PROFILE_FILLED,
-          message: this.$t('localNotifications.messages.fillSettingsData'),
-          actionBtn: this.$t('localNotifications.btns.toSettings'),
-        });
-      }
     },
     async uploadFiles(files) {
       if (!files.length) return [];
@@ -367,14 +309,6 @@ Vue.mixin({
       ];
 
       return toMatch.some((toMatchItem) => navigator.userAgent.match(toMatchItem));
-    },
-    async checkProfileFilled() {
-      const { userData } = this;
-      const {
-        avatar, firstName, lastName, locationPlaceName, additionalInfo: { description },
-      } = userData;
-      this.profileFilled = !!avatar && !!firstName && !!lastName && !!locationPlaceName
-        && !!description;
     },
   },
 });

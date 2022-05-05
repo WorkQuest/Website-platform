@@ -125,8 +125,11 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { UserRole, Path } from '~/utils/enums';
+import {
+  UserRole, Path, SumSubStatuses, TwoFAStatuses,
+} from '~/utils/enums';
 import modals from '~/store/modals/modals';
+import { LocalNotificationAction } from '~/utils/notifications-enum';
 
 export default {
   name: 'Notifications',
@@ -140,11 +143,15 @@ export default {
       page: 1,
       notificationIdsForRead: [],
       delayId: null,
+      profileFilled: false,
     };
   },
   computed: {
     ...mapGetters({
       userRole: 'user/getUserRole',
+      userData: 'user/getUserData',
+      statusKYC: 'user/getStatusKYC',
+      status2FA: 'user/getStatus2FA',
       notifications: 'notifications/getNotificationsList',
       notifsCount: 'notifications/getNotificationsCount',
     }),
@@ -154,9 +161,49 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    this.page = this.$cookies.get('notificationPage');
+    const { userData, $cookies } = this;
+    const {
+      avatar, firstName, lastName, locationPlaceName, additionalInfo: { description },
+    } = userData;
+    const KYC = $cookies.get(LocalNotificationAction.TWOFA);
+    const TWOFA = $cookies.get(LocalNotificationAction.KYC);
+    this.page = $cookies.get('notificationPage');
+    this.profileFilled = !!avatar && !!firstName && !!lastName && !!locationPlaceName
+      && !!description;
     await this.getNotifications();
-    await this.pushLocalNotifications();
+    await this.$store.dispatch('notifications/createLocalNotification', {
+      action: LocalNotificationAction.GET_REWARD,
+      message: this.$t('localNotifications.messages.inviteFriends'),
+      actionBtn: this.$t('localNotifications.btns.inviteFriends'),
+    });
+    await this.$store.dispatch('notifications/createLocalNotification', {
+      action: LocalNotificationAction.WIKI,
+      message: this.$t('localNotifications.messages.wiki'),
+      actionBtn: this.$t('localNotifications.btns.wiki'),
+    });
+    if (this.statusKYC === SumSubStatuses.NOT_VERIFIED) {
+      if (!KYC) this.$cookies.set(LocalNotificationAction.KYC, this.statusKYC !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
+      await this.$store.dispatch('notifications/createLocalNotification', {
+        action: LocalNotificationAction.KYC,
+        message: this.$t('localNotifications.messages.kyc'),
+        actionBtn: this.$t('localNotifications.btns.kyc'),
+      });
+    }
+    if (this.status2FA === TwoFAStatuses.DISABLED) {
+      if (!TWOFA) this.$cookies.set(LocalNotificationAction.TWOFA, this.status2FA !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
+      await this.$store.dispatch('notifications/createLocalNotification', {
+        action: LocalNotificationAction.TWOFA,
+        message: this.$t('localNotifications.messages.twoFA'),
+        actionBtn: this.$t('localNotifications.btns.toSettings'),
+      });
+    }
+    if (!this.profileFilled) {
+      await this.$store.dispatch('notifications/createLocalNotification', {
+        action: LocalNotificationAction.PROFILE_FILLED,
+        message: this.$t('localNotifications.messages.fillSettingsData'),
+        actionBtn: this.$t('localNotifications.btns.toSettings'),
+      });
+    }
     this.SetLoader(false);
   },
   async beforeDestroy() {

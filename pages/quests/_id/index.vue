@@ -279,7 +279,6 @@ export default {
       } = this.quest;
       if (status === QuestStatuses.Done && this.userData.id === userId && !yourReview) {
         await this.$store.dispatch('notifications/createLocalNotification', {
-          id: '7',
           action: LocalNotificationAction.RATE_THE_QUEST,
           message: this.$t('localNotifications.messages.rateTheQuest'),
           actionBtn: this.$t('localNotifications.btns.rateTheQuest'),

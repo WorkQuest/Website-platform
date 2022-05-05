@@ -297,7 +297,6 @@ export default {
           },
         });
         await this.$store.dispatch('notifications/createLocalNotification', {
-          id: '8',
           action: LocalNotificationAction.QUEST_DRAFT,
           message: this.$t('localNotifications.messages.questDraft'),
           actionBtn: this.$t('localNotifications.btns.questDraft'),

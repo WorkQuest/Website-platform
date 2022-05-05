@@ -44,11 +44,10 @@ export default {
     }
     const notification = await setLocalNotification();
     const notificationList = getters.getNotificationsList;
+    // const is added = () => some
     async function checkAddedLocalNotification() {
       for (let i = 0; i < notificationList.length; i += 1) {
-        if (Object.entries(LocalNotificationAction).includes(notificationList.actionNameKey)) {
-          return true;
-        }
+        if (Object.entries(LocalNotificationAction).includes(notificationList.actionNameKey)) return true;
       }
       return false;
     }
@@ -331,7 +330,6 @@ export default {
       default: {
         // Не удалять! Для ловли неизвестных ивентов
         console.error('Unknown event = ', action);
-        await setAllNotificationsParams(action);
         break;
       }
     }
