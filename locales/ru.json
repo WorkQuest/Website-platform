@@ -1337,6 +1337,8 @@
     "workerAcceptedInvitationToQuest": "Принял приглашение на квест",
     "workerRejectedInvitationToQuest": "Отклонил приглашение на квест",
     "employerRejectedWorkersResponse": "Отклонил приглашение на квест",
+    "questStatusUpdated": "Статус квеста обновлен",
+    "QuestStatusUpdated": "Статус квеста обновлен",
     "userLeftReviewAboutQuest": "Оставил отзыв о квесте",
     "waitWorker": "Квест ожидает",
     "disputeDecision": "Решение спора",
