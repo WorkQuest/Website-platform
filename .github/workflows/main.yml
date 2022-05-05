@@ -41,6 +41,7 @@ jobs:
           echo ETHEREUM_BRIDGE=${{ secrets.ETHEREUM_BRIDGE }} >> .env
           echo ETHEREUM_LP_TOKEN=${{ secrets.ETHEREUM_LP_TOKEN }} >> .env
           echo ETHEREUM_MINING=${{ secrets.ETHEREUM_MINING }} >> .env
+          echo ETHEREUM_RPC_URL=${{ secrets.ETHEREUM_RPC_URL }} >> .env
           echo ETHEREUM_WQT_TOKEN=${{ secrets.ETHEREUM_WQT_TOKEN }} >> .env
 
           echo BSC_BRIDGE=${{ secrets.BSC_BRIDGE }} >> .env
@@ -120,6 +121,7 @@ jobs:
           echo ETHEREUM_BRIDGE=${{ secrets.ETHEREUM_BRIDGE }} >> .env
           echo ETHEREUM_LP_TOKEN=${{ secrets.ETHEREUM_LP_TOKEN }} >> .env
           echo ETHEREUM_MINING=${{ secrets.ETHEREUM_MINING }} >> .env
+          echo ETHEREUM_RPC_URL=${{ secrets.ETHEREUM_RPC_URL }} >> .env
           echo ETHEREUM_WQT_TOKEN=${{ secrets.ETHEREUM_WQT_TOKEN }} >> .env
 
           echo BSC_BRIDGE=${{ secrets.BSC_BRIDGE }} >> .env
@@ -199,6 +201,7 @@ jobs:
           echo ETHEREUM_BRIDGE=${{ secrets.ETHEREUM_BRIDGE }} >> .env
           echo ETHEREUM_LP_TOKEN=${{ secrets.ETHEREUM_LP_TOKEN }} >> .env
           echo ETHEREUM_MINING=${{ secrets.ETHEREUM_MINING }} >> .env
+          echo ETHEREUM_RPC_URL=${{ secrets.ETHEREUM_RPC_URL }} >> .env
           echo ETHEREUM_WQT_TOKEN=${{ secrets.ETHEREUM_WQT_TOKEN }} >> .env
 
           echo BSC_BRIDGE=${{ secrets.BSC_BRIDGE }} >> .env
