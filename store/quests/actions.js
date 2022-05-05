@@ -332,54 +332,30 @@ export default {
     }
   },
   async editQuestOnContract({ dispatch }, {
-    contractAddress, cost, description, depositAmount = 0,
+    contractAddress, cost,
   }) {
     try {
-      const hash = hashText(description);
       cost = new BigNumber(cost).shiftedBy(18).toString();
-      // if employer increase price for a quest
-      if (depositAmount) {
-        depositAmount = new BigNumber(depositAmount).shiftedBy(18).toString();
-        const walletAddress = getWalletAddress();
-        const inst = createInstance(WorkQuest, contractAddress);
-        const data = [hash, cost];
-        const sendData = inst.methods[QuestMethods.EditJob].apply(null, data).encodeABI();
-        const [gasPrice, gasEstimate] = await Promise.all([
-          getProvider().eth.getGasPrice(),
-          inst.methods[QuestMethods.EditJob].apply(null, data).estimateGas({ from: walletAddress, value: depositAmount }),
-        ]);
-        const res = await getProvider().eth.sendTransaction({
-          to: contractAddress,
-          from: walletAddress,
-          value: depositAmount,
-          data: sendData,
-          gasPrice,
-          gas: gasEstimate,
-        });
-        return success(res);
-      }
       return await dispatch('sendQuestTransaction', {
         contractAddress,
         method: QuestMethods.EditJob,
-        params: [hash, cost],
+        params: [cost],
       });
     } catch (e) {
       return error(9000, e.message, e);
     }
   },
   async getEditQuestFeeData({ commit }, {
-    contractAddress, description, cost, depositAmount,
+    contractAddress, cost,
   }) {
     try {
-      const hash = hashText(description);
       cost = new BigNumber(cost).shiftedBy(18).toString();
       return await getContractFeeData(
         QuestMethods.EditJob,
         WorkQuest,
         contractAddress,
-        [hash, cost],
+        [cost],
         contractAddress,
-        depositAmount,
       );
     } catch (e) {
       return error(9000, e.message, e);

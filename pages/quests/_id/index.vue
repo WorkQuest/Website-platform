@@ -495,7 +495,10 @@ export default {
     },
     async closeQuest() {
       if (this.quest.status !== InfoModeEmployer.WaitWorker) {
-        await this.DeleteQuest(this.quest);
+        this.ShowModal({
+          key: modals.securityCheck,
+          actionMethod: async () => await this.DeleteQuest(this.quest),
+        });
       }
     },
     async openDispute() {
