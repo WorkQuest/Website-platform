@@ -518,30 +518,46 @@ export default {
         return;
       }
 
-      let feeRes;
-      let depositAmount;
       const { contractAddress } = this.questData;
       const wusdAddress = tokenMap[TokenSymbols.WUSD];
 
-      // Quest Cost Increased
-      if (new BigNumber(this.price).isGreaterThan(this.prevPrice)) {
-        const deposit = new BigNumber(this.price).minus(this.prevPrice).toString();
-        depositAmount = new BigNumber(deposit).multipliedBy(1 + CommissionForCreatingAQuest).toString();
+      new Promise(async (resolve, reject) => {
+        // Quest Cost Increased
+        if (new BigNumber(this.price).isGreaterThan(this.prevPrice)) {
+          const deposit = new BigNumber(this.price).minus(this.prevPrice).toString();
+          const depositAmount = new BigNumber(deposit).multipliedBy(1 + CommissionForCreatingAQuest).toString();
 
-        this.SetLoader(true);
-        await this.$store.dispatch('wallet/fetchWalletData', {
-          method: 'balanceOf',
-          address: this.userWalletAddress,
-          abi: ERC20,
-          token: wusdAddress,
-          symbol: TokenSymbols.WUSD,
-        });
-        if (new BigNumber(this.balanceData.WUSD.fullBalance).isLessThan(depositAmount)) {
-          this.ShowToast(`${this.$t('errors.transaction.notEnoughFunds')} (${TokenSymbols.WUSD})`);
-          this.SetLoader(false);
-          return;
+          this.SetLoader(true);
+          await this.$store.dispatch('wallet/fetchWalletData', {
+            method: 'balanceOf',
+            address: this.userWalletAddress,
+            abi: ERC20,
+            token: wusdAddress,
+            symbol: TokenSymbols.WUSD,
+          });
+          if (new BigNumber(this.balanceData.WUSD.fullBalance).isLessThan(depositAmount)) {
+            this.ShowToast(`${this.$t('errors.transaction.notEnoughFunds')} (${TokenSymbols.WUSD})`);
+            this.SetLoader(false);
+            reject(new Error('error'));
+            return;
+          }
+          await this.makeApprove({ wusdAddress, contractAddress, depositAmount })
+            .then(async (result) => {
+              await resolve(result);
+            }).catch((error) => {
+              reject(error);
+            });
+        } else { // Quest cost decrease
+          await resolve();
         }
+      }).then(async (deposit) => {
+        await this.editWithCostChange(contractAddress, deposit);
+      });
+    },
 
+    // Approve to quest contract if cost increased
+    async makeApprove({ wusdAddress, contractAddress, depositAmount }) {
+      return new Promise(async (resolve, reject) => {
         const allowance = await this.$store.dispatch('wallet/getAllowance', {
           tokenAddress: wusdAddress,
           spenderAddress: contractAddress,
@@ -556,14 +572,17 @@ export default {
             }),
             this.$store.dispatch('wallet/getBalance'),
           ]);
+
           this.SetLoader(false);
           if (!approveFee.ok) {
             this.ShowToast(approveFee.msg);
+            reject(new Error('Approve fee is not okay'));
             return;
           }
+
           this.ShowModal({
             key: modals.transactionReceipt,
-            title: 'Approve',
+            title: this.$t('meta.approve'),
             fields: {
               from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
               to: { name: this.$t('meta.toBig'), value: contractAddress },
@@ -579,49 +598,25 @@ export default {
               });
               if (!approveOk) {
                 this.ShowToast('Approve error');
-                this.SetLoader(false);
+                reject(new Error('Approve is not okay'));
                 return;
               }
               this.ShowToast('Approving done', 'Approve');
-              [feeRes] = await Promise.all([
-                this.$store.dispatch('quests/getEditQuestFeeData', {
-                  contractAddress,
-                  cost: deposit,
-                }),
-                this.$store.dispatch('wallet/getBalance'),
-              ]);
-              await this.editWithCostChange(contractAddress, feeRes, this.price, deposit);
+              await resolve(depositAmount);
             },
           });
-        } else { // Approve not needed
-          [feeRes] = await Promise.all([
-            this.$store.dispatch('quests/getEditQuestFeeData', {
-              contractAddress,
-              cost: deposit,
-            }),
-            this.$store.dispatch('wallet/getBalance'),
-          ]);
-          await this.editWithCostChange(contractAddress, feeRes, this.price, deposit);
+        } else {
+          await resolve(depositAmount);
         }
-      } else { // Quest cost decrease
-        [feeRes] = await Promise.all([
-          this.$store.dispatch('quests/getFeeDataJobMethod', {
-            contractAddress,
-            method: QuestMethods.EditJob,
-            data: [new BigNumber(this.price).shiftedBy(18).toString()],
-          }),
-          this.$store.dispatch('wallet/getBalance'),
-        ]);
-        await this.editWithCostChange(contractAddress, feeRes, this.price);
-      }
+      });
     },
-    // to change price on blockchain
+
+    //  Send new data to backend
     async editQuest() {
       if (this.mode === 'raise') {
         this.goBack();
         return;
       }
-
       this.SetLoader(true);
       const medias = await this.uploadFiles(this.files);
       const payload = {
@@ -650,13 +645,19 @@ export default {
       }
     },
     /**
-     * Send new data to backend
+     * To change price on contract
      * @param contractAddress
-     * @param feeRes
-     * @param cost - new quest reward
-     * @param depositAmount - if increasing cost
+     * @param depositAmount - if increasing cost. How much need to deposit for new cost
      */
-    async editWithCostChange(contractAddress, feeRes, cost, depositAmount) {
+    async editWithCostChange(contractAddress, depositAmount) {
+      const [feeRes] = await Promise.all([
+        this.$store.dispatch('quests/getFeeDataJobMethod', {
+          contractAddress,
+          method: QuestMethods.EditJob,
+          data: [new BigNumber(this.price).shiftedBy(18).toString()],
+        }),
+        this.$store.dispatch('wallet/getBalance'),
+      ]);
       if (!feeRes.ok) {
         this.ShowToast(this.$t('errors.transaction.notEnoughFunds'));
         return;
@@ -676,7 +677,7 @@ export default {
         submitMethod: async () => {
           const res = await this.$store.dispatch('quests/editQuestOnContract', {
             contractAddress,
-            cost,
+            cost: this.price,
           });
           if (res.ok) await this.editQuest();
         },

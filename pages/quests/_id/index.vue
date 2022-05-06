@@ -346,16 +346,6 @@ export default {
           }];
           break;
         }
-        case WaitWorker: {
-          arr = [{
-            name: this.$t('meta.btns.goToChat'),
-            class: 'base-btn_goToChat',
-            funcKey: 'goToChat',
-            icon: 'icon-chat icon_fs-20',
-            disabled: false,
-          }];
-          break;
-        }
         case WaitEmployerConfirm: {
           arr = [{
             name: this.$t('meta.btns.acceptCompletedWorkOnQuest'),

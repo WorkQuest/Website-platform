@@ -395,7 +395,7 @@ export default {
         this.SetLoader(false);
         this.ShowModal({
           key: modals.transactionReceipt,
-          title: 'Approve',
+          title: this.$t('meta.approve'),
           fields: {
             from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
             to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_WQ_FACTORY },

@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js';
-import { ResponsesType, UserRole } from '~/utils/enums';
+import Vue from 'vue';
+import { ResponsesType, TokenSymbols, UserRole } from '~/utils/enums';
 
 import {
   QuestMethods,
@@ -20,6 +21,7 @@ import {
 } from '~/utils/wallet';
 
 import { error, success } from '~/utils/web3';
+import modals from '~/store/modals/modals';
 
 export default {
   async getWorkerData({ commit }, userId) {
@@ -345,22 +347,6 @@ export default {
       return error(9000, e.message, e);
     }
   },
-  async getEditQuestFeeData({ commit }, {
-    contractAddress, cost,
-  }) {
-    try {
-      cost = new BigNumber(cost).shiftedBy(18).toString();
-      return await getContractFeeData(
-        QuestMethods.EditJob,
-        WorkQuest,
-        contractAddress,
-        [cost],
-        contractAddress,
-      );
-    } catch (e) {
-      return error(9000, e.message, e);
-    }
-  },
 
   /** Work Quest */
   async getFeeDataJobMethod({ commit }, {
@@ -381,7 +367,6 @@ export default {
       return error(500, e.message, e);
     }
   },
-  // Отмена/Удаление квеста
   async cancelJob({ dispatch }, contractAddress) {
     return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.CancelJob });
   },
