@@ -46,10 +46,9 @@ export default {
     const notificationList = getters.getNotificationsList;
     // const is added = () => some
     async function checkAddedLocalNotification() {
-      for (let i = 0; i < notificationList.length; i += 1) {
-        if (Object.entries(LocalNotificationAction).includes(notificationList.actionNameKey)) return true;
-      }
-      return false;
+      // TODO: Доработать!
+      const isAdded = () => notificationList.some((n) => Object.entries(LocalNotificationAction).includes(n.actionNameKey));
+      return isAdded();
     }
     const isAdded = await checkAddedLocalNotification();
     if (!isAdded) await dispatch('addNotification', notification);
