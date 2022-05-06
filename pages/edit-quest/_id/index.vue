@@ -556,12 +556,11 @@ export default {
             }),
             this.$store.dispatch('wallet/getBalance'),
           ]);
+          this.SetLoader(false);
           if (!approveFee.ok) {
             this.ShowToast(approveFee.msg);
-            this.SetLoader(false);
             return;
           }
-          this.SetLoader(false);
           this.ShowModal({
             key: modals.transactionReceipt,
             title: 'Approve',
