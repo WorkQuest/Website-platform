@@ -55,10 +55,7 @@ export default {
         },
       };
       notification.actionNameKey = `notifications.${action}`;
-      if (action === LocalNotificationAction.REVIEW_USER) {
-        notification.notification.params = { title: message, path: `${Path.PROFILE}/${userId}`, isLocal: true };
-        await dispatch('updateProfile');
-      } else if (action === LocalNotificationAction.GET_REWARD) {
+      if (action === LocalNotificationAction.GET_REWARD) {
         notification.notification.params = { title, path: `${Path.REFERRAL}`, isLocal: true };
       } else if (action === LocalNotificationAction.QUEST_DRAFT) {
         notification.notification.params = { title, path: `${Path.CREATE_QUEST}`, sLocal: true };
@@ -216,7 +213,7 @@ export default {
       if (fromUser && !notification.sender) notification.sender = fromUser;
       notification.params = {
         title: message,
-        path: `${Path.PROFILE}/${toUserId}`,
+        path: `${Path.PROFILE}/${userRole === UserRole.EMPLOYER ? toUserId : fromUser.id}`,
       };
       await dispatch('updateProfile');
     } else if (action === NotificationAction.NEW_COMMENT_IN_DISCUSSION) {

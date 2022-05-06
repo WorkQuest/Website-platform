@@ -76,7 +76,6 @@ export const LocalNotificationAction = {
   WIKI: 'wiki',
   GET_REWARD: 'reward',
   PROFILE_FILLED: 'filled',
-  REVIEW_USER: 'review',
   RATE_THE_QUEST: 'quest',
   QUEST_DRAFT: 'questDraft',
 };
