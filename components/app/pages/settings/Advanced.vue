@@ -161,6 +161,7 @@ export default {
       this.checkboxBlocks.visibilityUser = arrayRatingStatusCanInviteMeOnQuest;
       this.checkboxBlocks.restrictionRankingStatus = arrayRatingStatusInMySearch;
     }
+    this.checkMaskAllUser();
   },
   methods: {
     async showModalKey(modalKey) {
@@ -184,6 +185,8 @@ export default {
         this.checkboxBlocks[checkBoxBlockName].push(value);
         this.checkboxBlocks[checkBoxBlockName] = this.checkboxBlocks[checkBoxBlockName].filter((e) => e !== RatingStatus.AllStatuses);
       } else {
+        this.checkboxBlocks[checkBoxBlockName] = this.checkboxBlocks[checkBoxBlockName].filter((e) => e
+          !== RatingStatus.AllStatuses);
         this.checkboxBlocks[checkBoxBlockName] = this.checkboxBlocks[checkBoxBlockName].filter((e) => e !== value);
       }
       this.$emit('updateVisibility', this.checkboxBlocks);
@@ -192,6 +195,18 @@ export default {
     isCheckboxChecked(checkBoxBlockName, value) {
       return this.checkboxBlocks[checkBoxBlockName].includes(value)
         || this.checkboxBlocks[checkBoxBlockName].includes(RatingStatus.AllStatuses);
+    },
+    checkMaskAllUser() {
+      const ratingStatus = [RatingStatus.NoStatus,
+        RatingStatus.Verified,
+        RatingStatus.Reliable,
+        RatingStatus.TopRanked];
+      if (JSON.stringify(this.checkboxBlocks.visibilityUser.sort()) === JSON.stringify(ratingStatus.sort())) {
+        this.checkboxBlocks.visibilityUser.push(RatingStatus.AllStatuses);
+      }
+      if (JSON.stringify(this.checkboxBlocks.restrictionRankingStatus.sort()) === JSON.stringify(ratingStatus.sort())) {
+        this.checkboxBlocks.restrictionRankingStatus.push(RatingStatus.AllStatuses);
+      }
     },
   },
 };
