@@ -357,13 +357,6 @@ export default {
             name: this.$t('meta.openDispute'),
             funcKey: 'openDispute',
             disabled: false,
-          },
-          {
-            name: this.$t('meta.btns.goToChat'),
-            class: 'base-btn_goToChat',
-            funcKey: 'goToChat',
-            icon: 'icon-chat icon_fs-20',
-            disabled: false,
           }];
           break;
         }
