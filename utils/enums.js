@@ -190,7 +190,7 @@ export const Path = {
   SIGN_UP: '/sign-up',
   MY_QUESTS: '/my',
   WALLET: '/wallet',
-  PENSION: '/pension',
+  PENSION: '/retirement',
   REFERRAL: '/referral',
   INSURING: '/insuring',
   SAVINGS: '/savings',
