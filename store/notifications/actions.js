@@ -56,7 +56,7 @@ export default {
       };
       notification.actionNameKey = `notifications.${action}`;
       if (action === LocalNotificationAction.REVIEW_USER) {
-        notification.notification.params = { title: message, path: `${Path.PROFILE}/${toUserId}`, isLocal: true };
+        notification.notification.params = { title: message, path: `${Path.PROFILE}/${userId}`, isLocal: true };
         await dispatch('updateProfile');
       } else if (action === LocalNotificationAction.GET_REWARD) {
         notification.notification.params = { title, path: `${Path.REFERRAL}`, isLocal: true };

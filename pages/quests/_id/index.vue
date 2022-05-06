@@ -270,25 +270,10 @@ export default {
     this.SetLoader(false);
   },
   async beforeDestroy() {
-    const {
-      $store, quest: {
-        assignedWorkerId, user, yourReview, id,
-      }, isEmployer, isYour, isDone,
-    } = this;
     await this.$store.dispatch('google-map/resetMap');
     this.$store.commit('quests/setQuest', null);
     this.$store.commit('quests/setAllQuests', { count: 0, quests: [] });
     this.$store.commit('user/setCurrentReviewMarkOnQuest', { questId: null, message: null, mark: null });
-    if (isDone() && isYour() && !yourReview) {
-      await $store.dispatch('notifications/createLocalNotification', {
-        action: LocalNotificationAction.REVIEW_USER,
-        message: isEmployer ? this.$t('localNotifications.messages.reviewEmp') : this.$t('localNotifications.messages.rateTheQuest'),
-        actionBtn: isEmployer ? this.$t('localNotifications.btns.reviewEmp') : this.$t('localNotifications.btns.rateTheQuest'),
-        questId: id,
-        userId: isEmployer ? assignedWorkerId : user.id,
-        date: this.Date.now(),
-      });
-    }
   },
   methods: {
     isDone() {
