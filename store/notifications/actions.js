@@ -16,7 +16,7 @@ import { error, success } from '~/utils/web3';
 export default {
 
   async updateProfile() {
-    /* For update user profile */
+    /** For update user profile */
     const { getters, dispatch } = this.app.store;
     const userData = getters['user/getUserData'];
     const currentUserId = userData.id;
@@ -38,6 +38,7 @@ export default {
         seen: false,
         id,
         notification: {
+          params: {},
           action,
           actionBtn,
           data: {
@@ -53,82 +54,30 @@ export default {
           },
         },
       };
+      if (action === LocalNotificationAction.REVIEW_USER) {
+        notification.notification.params = { title: message, path: `${Path.PROFILE}/${toUserId}`, isLocal: true };
+        await this.updateProfile();
+      } else if ([NotificationActionFromContract.QUEST_STATUS_UPDATED1,
+        NotificationActionFromContract.QUEST_STATUS_UPDATED2].includes(action)) {
+        notification.notification.params = { title: quest?.title || title, path: `${Path.QUESTS}/${quest?.id || id}` };
+        await this.updateProfile();
+      } else if (action === LocalNotificationAction.GET_REWARD) {
+        notification.notification.params = { title, path: `${Path.REFERRAL}`, isLocal: true };
+      } else if (action === LocalNotificationAction.QUEST_DRAFT) {
+        notification.notification.params = { title, path: `${Path.CREATE_QUEST}`, sLocal: true };
+      } else if (action === LocalNotificationAction.WIKI) {
+        notification.notification.params = { title, path: `${Path.WIKI}`, isLocal: true };
+      } else if (action === LocalNotificationAction.KYC) {
+        notification.notification.params = { title, path: `${Path.SUMSUB}`, isLocal: true };
+      } else if (action === LocalNotificationAction.PROFILE_FILLED) {
+        notification.notification.params = { title, path: `${Path.SETTINGS}`, isLocal: true };
+      } else if (action === LocalNotificationAction.TWOFA) {
+        notification.notification.params = { title, path: `${Path.SETTINGS}`, isLocal: true };
+      }
+
       return notification.notification;
     }
     const notification = await setLocalNotification();
-
-    // switch (action) {
-    //   /** Workquest local */
-    //   case LocalNotificationAction.REVIEW_USER:
-    //     await setAllNotificationsParams({
-    //       title: message,
-    //       path: `${Path.PROFILE}/${toUserId}`,
-    //       isLocal: true,
-    //     });
-    //     await this.updateProfile();
-    //     break;
-    //
-    //   case NotificationActionFromContract.QUEST_STATUS_UPDATED1:
-    //   case NotificationActionFromContract.QUEST_STATUS_UPDATED2:
-    //     await setAllNotificationsParams({
-    //       title: quest?.title || title,
-    //       path: `${Path.QUESTS}/${quest?.id || id}`,
-    //     });
-    //     await this.updateProfile();
-    //     break;
-    //
-    //   case LocalNotificationAction.GET_REWARD:
-    //     await setAllNotificationsParams({
-    //       title,
-    //       path: `${Path.REFERRAL}`,
-    //       isLocal: true,
-    //     });
-    //     break;
-    //
-    //   case LocalNotificationAction.QUEST_DRAFT:
-    //     await setAllNotificationsParams({
-    //       title,
-    //       path: `${Path.CREATE_QUEST}`,
-    //       isLocal: true,
-    //     });
-    //     break;
-    //
-    //   case LocalNotificationAction.WIKI:
-    //     await setAllNotificationsParams({
-    //       title,
-    //       path: `${Path.WIKI}`,
-    //       isLocal: true,
-    //     });
-    //     break;
-    //
-    //   case LocalNotificationAction.KYC:
-    //     await setAllNotificationsParams({
-    //       title,
-    //       path: `${Path.SUMSUB}`,
-    //       isLocal: true,
-    //     });
-    //     break;
-    //
-    //   case LocalNotificationAction.PROFILE_FILLED:
-    //     await setAllNotificationsParams({
-    //       title,
-    //       path: `${Path.SETTINGS}`,
-    //       isLocal: true,
-    //     });
-    //     break;
-    //
-    //   case LocalNotificationAction.TWOFA:
-    //     await setAllNotificationsParams({
-    //       title,
-    //       path: `${Path.SETTINGS}`,
-    //       isLocal: true,
-    //     });
-    //     break;
-    //
-    //   default: {
-    //     break;
-    //   }
-    // }
 
     const notificationList = getters.getNotificationsList;
     async function checkAddedLocalNotification() {
@@ -139,6 +88,7 @@ export default {
     const isAdded = await checkAddedLocalNotification();
     if (!isAdded) await dispatch('addNotification', notification);
   },
+
   async removeNotification({ dispatch, commit, rootGetters }, { config, notificationId, notification }) {
     const { params } = notification;
     if (notification.actionNameKey === `notifications.${LocalNotificationAction.TWOFA}`) {
@@ -161,6 +111,7 @@ export default {
       return error(e);
     }
   },
+
   async readNotifications({ commit }, payload) {
     try {
       const { ok } = await this.$axios.$put(`${process.env.NOTIFS_URL}notifications/mark-read`, payload);
@@ -170,6 +121,7 @@ export default {
       return false;
     }
   },
+
   async getNotifications({ commit, dispatch }, config) {
     try {
       const currConfig = config || { params: { limit: 2, offset: 0 } };
@@ -193,6 +145,7 @@ export default {
       return false;
     }
   },
+
   async setCurrNotificationObject({ getters, rootGetters, dispatch }, notification) {
     const userData = rootGetters['user/getUserData'];
     const { action, data } = notification.notification;
@@ -233,15 +186,7 @@ export default {
       }
     }
 
-    // async function updateProfile() {
-    //   /* For update user profile */
-    //   if (currentPath === `${Path.PROFILE}/${currentUserId}`) {
-    //     const query = { limit: 8, offset: 0 };
-    //     await dispatch('user/getAllUserReviews', { userId: currentUserId, query }, { root: true });
-    //   }
-    // }
-
-    async function setAllNotificationsParams({
+    async function setServerNotificationsParams({
       // eslint-disable-next-line no-shadow
       title = '', path = '', isExternalLink = false,
       externalBase = '', isLocal = false, scrollToPx = 0,
@@ -287,7 +232,7 @@ export default {
       case NotificationAction.WAIT_WORKER:
       case NotificationAction.QUEST_EDITED:
       case NotificationAction.QUEST_END_SOON:
-        await setAllNotificationsParams({
+        await setServerNotificationsParams({
           title: quest?.title || title,
           path: `${Path.QUESTS}/${quest?.id || id}`,
         });
@@ -296,7 +241,7 @@ export default {
 
       case NotificationAction.OPEN_DISPUTE:
       case NotificationAction.DISPUTE_DECISION:
-        await setAllNotificationsParams({
+        await setServerNotificationsParams({
           title: problemDescription,
           path: `${Path.QUESTS}/${quest?.id || id}`,
         });
@@ -304,7 +249,7 @@ export default {
         break;
 
       case NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST:
-        await setAllNotificationsParams({
+        await setServerNotificationsParams({
           title: message,
           path: `${Path.PROFILE}/${toUserId}`,
         });
@@ -314,7 +259,7 @@ export default {
       /** DAO */
       case NotificationAction.NEW_COMMENT_IN_DISCUSSION:
       case NotificationAction.NEW_DISCUSSION_LIKE: {
-        await setAllNotificationsParams({
+        await setServerNotificationsParams({
           title: discussion.title,
           path: `${PathDAO.DISCUSSIONS}/${discussion.id}`,
           isExternalLink: true,
@@ -324,7 +269,7 @@ export default {
       }
 
       case NotificationAction.COMMENT_LIKED: {
-        await setAllNotificationsParams({
+        await setServerNotificationsParams({
           title: comment?.text,
           path: `${PathDAO.DISCUSSIONS}/${comment.discussionId}`,
           isExternalLink: true,
@@ -335,7 +280,7 @@ export default {
 
       /** Workquest local */
       case LocalNotificationAction.REVIEW_USER:
-        await setAllNotificationsParams({
+        await setServerNotificationsParams({
           title: message,
           path: `${Path.PROFILE}/${toUserId}`,
           isLocal: true,
@@ -345,7 +290,7 @@ export default {
 
       case NotificationActionFromContract.QUEST_STATUS_UPDATED1:
       case NotificationActionFromContract.QUEST_STATUS_UPDATED2:
-        await setAllNotificationsParams({
+        await setServerNotificationsParams({
           title: quest?.title || title,
           path: `${Path.QUESTS}/${quest?.id || id}`,
         });
@@ -353,7 +298,7 @@ export default {
         break;
 
       case LocalNotificationAction.GET_REWARD:
-        await setAllNotificationsParams({
+        await setServerNotificationsParams({
           title,
           path: `${Path.REFERRAL}`,
           isLocal: true,
@@ -361,7 +306,7 @@ export default {
         break;
 
       case LocalNotificationAction.QUEST_DRAFT:
-        await setAllNotificationsParams({
+        await setServerNotificationsParams({
           title,
           path: `${Path.CREATE_QUEST}`,
           isLocal: true,
@@ -369,7 +314,7 @@ export default {
         break;
 
       case LocalNotificationAction.WIKI:
-        await setAllNotificationsParams({
+        await setServerNotificationsParams({
           title,
           path: `${Path.WIKI}`,
           isLocal: true,
@@ -377,7 +322,7 @@ export default {
         break;
 
       case LocalNotificationAction.KYC:
-        await setAllNotificationsParams({
+        await setServerNotificationsParams({
           title,
           path: `${Path.SUMSUB}`,
           isLocal: true,
@@ -385,7 +330,7 @@ export default {
         break;
 
       case LocalNotificationAction.PROFILE_FILLED:
-        await setAllNotificationsParams({
+        await setServerNotificationsParams({
           title,
           path: `${Path.SETTINGS}`,
           isLocal: true,
@@ -393,7 +338,7 @@ export default {
         break;
 
       case LocalNotificationAction.TWOFA:
-        await setAllNotificationsParams({
+        await setServerNotificationsParams({
           title,
           path: `${Path.SETTINGS}`,
           isLocal: true,
@@ -410,8 +355,9 @@ export default {
   },
 
   async addNotification({ commit, dispatch }, notification) {
+    // TODO: Добавить разделение на локальные и с сервера
+    if (notification.params.isLocal) commit('addLocalNotification', notification);
     const newNotification = await dispatch('setCurrNotificationObject', { notification });
-    if (newNotification.params.isLocal) commit('addLocalNotification', newNotification);
     commit('addNotification', newNotification);
   },
 };
