@@ -14,6 +14,19 @@ import {
 import { error, success } from '~/utils/web3';
 
 export default {
+
+  async updateProfile() {
+    /* For update user profile */
+    const { getters, dispatch } = this.app.store;
+    const userData = getters['user/getUserData'];
+    const currentUserId = userData.id;
+    const currentPath = this.$router.history.current.path;
+    if (currentPath === `${Path.PROFILE}/${currentUserId}`) {
+      const query = { limit: 8, offset: 0 };
+      await dispatch('user/getAllUserReviews', { userId: currentUserId, query }, { root: true });
+    }
+  },
+
   async createLocalNotification({ commit, getters, dispatch }, {
     id, action, message, title, actionBtn, questId, userId, date,
   }) {
@@ -43,6 +56,80 @@ export default {
       return notification.notification;
     }
     const notification = await setLocalNotification();
+
+    // switch (action) {
+    //   /** Workquest local */
+    //   case LocalNotificationAction.REVIEW_USER:
+    //     await setAllNotificationsParams({
+    //       title: message,
+    //       path: `${Path.PROFILE}/${toUserId}`,
+    //       isLocal: true,
+    //     });
+    //     await this.updateProfile();
+    //     break;
+    //
+    //   case NotificationActionFromContract.QUEST_STATUS_UPDATED1:
+    //   case NotificationActionFromContract.QUEST_STATUS_UPDATED2:
+    //     await setAllNotificationsParams({
+    //       title: quest?.title || title,
+    //       path: `${Path.QUESTS}/${quest?.id || id}`,
+    //     });
+    //     await this.updateProfile();
+    //     break;
+    //
+    //   case LocalNotificationAction.GET_REWARD:
+    //     await setAllNotificationsParams({
+    //       title,
+    //       path: `${Path.REFERRAL}`,
+    //       isLocal: true,
+    //     });
+    //     break;
+    //
+    //   case LocalNotificationAction.QUEST_DRAFT:
+    //     await setAllNotificationsParams({
+    //       title,
+    //       path: `${Path.CREATE_QUEST}`,
+    //       isLocal: true,
+    //     });
+    //     break;
+    //
+    //   case LocalNotificationAction.WIKI:
+    //     await setAllNotificationsParams({
+    //       title,
+    //       path: `${Path.WIKI}`,
+    //       isLocal: true,
+    //     });
+    //     break;
+    //
+    //   case LocalNotificationAction.KYC:
+    //     await setAllNotificationsParams({
+    //       title,
+    //       path: `${Path.SUMSUB}`,
+    //       isLocal: true,
+    //     });
+    //     break;
+    //
+    //   case LocalNotificationAction.PROFILE_FILLED:
+    //     await setAllNotificationsParams({
+    //       title,
+    //       path: `${Path.SETTINGS}`,
+    //       isLocal: true,
+    //     });
+    //     break;
+    //
+    //   case LocalNotificationAction.TWOFA:
+    //     await setAllNotificationsParams({
+    //       title,
+    //       path: `${Path.SETTINGS}`,
+    //       isLocal: true,
+    //     });
+    //     break;
+    //
+    //   default: {
+    //     break;
+    //   }
+    // }
+
     const notificationList = getters.getNotificationsList;
     async function checkAddedLocalNotification() {
       // TODO: Доработать!
@@ -107,13 +194,13 @@ export default {
     }
   },
   async setCurrNotificationObject({ getters, rootGetters, dispatch }, notification) {
-    const getUserData = rootGetters['user/getUserData'];
+    const userData = rootGetters['user/getUserData'];
     const { action, data } = notification.notification;
     const {
       id, title, quest, user, worker, comment, employer, fromUser, rootComment,
       assignedWorker, message, toUserId, discussion, problemDescription,
     } = data;
-    const currentUserId = getUserData.id;
+    const currentUserId = userData.id;
     const userRole = rootGetters.getUserRole;
     const currentPath = this.$router.history.current.path;
 
@@ -146,13 +233,13 @@ export default {
       }
     }
 
-    async function updateProfile() {
-      /* For update user profile */
-      if (currentPath === `${Path.PROFILE}/${currentUserId}`) {
-        const query = { limit: 8, offset: 0 };
-        await dispatch('user/getAllUserReviews', { userId: currentUserId, query }, { root: true });
-      }
-    }
+    // async function updateProfile() {
+    //   /* For update user profile */
+    //   if (currentPath === `${Path.PROFILE}/${currentUserId}`) {
+    //     const query = { limit: 8, offset: 0 };
+    //     await dispatch('user/getAllUserReviews', { userId: currentUserId, query }, { root: true });
+    //   }
+    // }
 
     async function setAllNotificationsParams({
       // eslint-disable-next-line no-shadow
@@ -221,8 +308,30 @@ export default {
           title: message,
           path: `${Path.PROFILE}/${toUserId}`,
         });
-        await updateProfile();
+        await dispatch('updateProfile');
         break;
+
+      /** DAO */
+      case NotificationAction.NEW_COMMENT_IN_DISCUSSION:
+      case NotificationAction.NEW_DISCUSSION_LIKE: {
+        await setAllNotificationsParams({
+          title: discussion.title,
+          path: `${PathDAO.DISCUSSIONS}/${discussion.id}`,
+          isExternalLink: true,
+          externalBase: DaoUrl,
+        });
+        break;
+      }
+
+      case NotificationAction.COMMENT_LIKED: {
+        await setAllNotificationsParams({
+          title: comment?.text,
+          path: `${PathDAO.DISCUSSIONS}/${comment.discussionId}`,
+          isExternalLink: true,
+          externalBase: DaoUrl,
+        });
+        break;
+      }
 
       /** Workquest local */
       case LocalNotificationAction.REVIEW_USER:
@@ -231,7 +340,7 @@ export default {
           path: `${Path.PROFILE}/${toUserId}`,
           isLocal: true,
         });
-        await updateProfile();
+        await dispatch('updateProfile');
         break;
 
       case NotificationActionFromContract.QUEST_STATUS_UPDATED1:
@@ -240,7 +349,7 @@ export default {
           title: quest?.title || title,
           path: `${Path.QUESTS}/${quest?.id || id}`,
         });
-        await updateQuests();
+        await dispatch('updateProfile');
         break;
 
       case LocalNotificationAction.GET_REWARD:
@@ -291,27 +400,6 @@ export default {
         });
         break;
 
-      /** DAO */
-      case NotificationAction.NEW_COMMENT_IN_DISCUSSION:
-      case NotificationAction.NEW_DISCUSSION_LIKE: {
-        await setAllNotificationsParams({
-          title: discussion.title,
-          path: `${PathDAO.DISCUSSIONS}/${discussion.id}`,
-          isExternalLink: true,
-          externalBase: DaoUrl,
-        });
-        break;
-      }
-
-      case NotificationAction.COMMENT_LIKED: {
-        await setAllNotificationsParams({
-          title: comment?.text,
-          path: `${PathDAO.DISCUSSIONS}/${comment.discussionId}`,
-          isExternalLink: true,
-          externalBase: DaoUrl,
-        });
-        break;
-      }
       default: {
         // Не удалять! Для ловли неизвестных ивентов
         console.error('Unknown event = ', action);
