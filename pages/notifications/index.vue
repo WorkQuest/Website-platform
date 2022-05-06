@@ -23,13 +23,13 @@
               <div class="notification__avatar">
                 <img
                   class="avatar"
-                  :src="notification.notification.data.sender.avatar"
+                  :src="notification.data.sender.avatar"
                   alt=""
                 >
               </div>
               <div class="notification__inviter inviter">
                 <span class="inviter__name">
-                  {{ UserName(notification.notification.data.sender.firstName, '') }}
+                  {{ UserName(notification.data.sender.firstName, '') }}
                 </span>
               </div>
             </template>
@@ -63,7 +63,7 @@
               class="notification__quest quest"
             >
               <span class="quest__invitation">
-                {{ notification.notification.data.message }}
+                {{ notification.data.message }}
               </span>
             </div>
             <div
@@ -217,7 +217,7 @@ export default {
       this.$cookies.set('notificationPage', this.page);
     },
     actionBtnText(notification) {
-      return notification.notification.actionBtn ?? this.$t('meta.btns.view');
+      return notification.actionBtn ?? this.$t('meta.btns.view');
     },
     avatar(notification) {
       return notification.sender?.avatar?.url || this.EmptyAvatar();

@@ -59,7 +59,7 @@ export default {
         await this.updateProfile();
       } else if ([NotificationActionFromContract.QUEST_STATUS_UPDATED1,
         NotificationActionFromContract.QUEST_STATUS_UPDATED2].includes(action)) {
-        notification.notification.params = { title: quest?.title || title, path: `${Path.QUESTS}/${quest?.id || id}` };
+        notification.notification.params = { title, path: `${Path.QUESTS}/${quest?.id || id}` };
         await this.updateProfile();
       } else if (action === LocalNotificationAction.GET_REWARD) {
         notification.notification.params = { title, path: `${Path.REFERRAL}`, isLocal: true };
@@ -216,147 +216,82 @@ export default {
       }
     }
 
-    switch (action) {
-      /** WORK-QUEST */
-      case NotificationAction.QUEST_STARTED:
-      case NotificationAction.WORKER_REJECTED_QUEST:
-      case NotificationAction.WORKER_ACCEPTED_QUEST:
-      case NotificationAction.WORKER_COMPLETED_QUEST:
-      case NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST:
-      case NotificationAction.EMPLOYER_REJECTED_COMPLETED_QUEST:
-      case NotificationAction.WORKER_RESPONDED_TO_QUEST:
-      case NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST:
-      case NotificationAction.WORKER_ACCEPTED_INVITATION_TO_QUEST:
-      case NotificationAction.WORKER_REJECTED_INVITATION_TO_QUEST:
-      case NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE:
-      case NotificationAction.WAIT_WORKER:
-      case NotificationAction.QUEST_EDITED:
-      case NotificationAction.QUEST_END_SOON:
-        await setServerNotificationsParams({
-          title: quest?.title || title,
-          path: `${Path.QUESTS}/${quest?.id || id}`,
-        });
-        await updateQuests();
-        break;
-
-      case NotificationAction.OPEN_DISPUTE:
-      case NotificationAction.DISPUTE_DECISION:
-        await setServerNotificationsParams({
-          title: problemDescription,
-          path: `${Path.QUESTS}/${quest?.id || id}`,
-        });
-        await updateQuests();
-        break;
-
-      case NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST:
-        await setServerNotificationsParams({
-          title: message,
-          path: `${Path.PROFILE}/${toUserId}`,
-        });
-        await dispatch('updateProfile');
-        break;
-
-      /** DAO */
-      case NotificationAction.NEW_COMMENT_IN_DISCUSSION:
-      case NotificationAction.NEW_DISCUSSION_LIKE: {
-        await setServerNotificationsParams({
-          title: discussion.title,
-          path: `${PathDAO.DISCUSSIONS}/${discussion.id}`,
-          isExternalLink: true,
-          externalBase: DaoUrl,
-        });
-        break;
-      }
-
-      case NotificationAction.COMMENT_LIKED: {
-        await setServerNotificationsParams({
-          title: comment?.text,
-          path: `${PathDAO.DISCUSSIONS}/${comment.discussionId}`,
-          isExternalLink: true,
-          externalBase: DaoUrl,
-        });
-        break;
-      }
-
-      /** Workquest local */
-      case LocalNotificationAction.REVIEW_USER:
-        await setServerNotificationsParams({
-          title: message,
-          path: `${Path.PROFILE}/${toUserId}`,
-          isLocal: true,
-        });
-        await dispatch('updateProfile');
-        break;
-
-      case NotificationActionFromContract.QUEST_STATUS_UPDATED1:
-      case NotificationActionFromContract.QUEST_STATUS_UPDATED2:
-        await setServerNotificationsParams({
-          title: quest?.title || title,
-          path: `${Path.QUESTS}/${quest?.id || id}`,
-        });
-        await dispatch('updateProfile');
-        break;
-
-      case LocalNotificationAction.GET_REWARD:
-        await setServerNotificationsParams({
-          title,
-          path: `${Path.REFERRAL}`,
-          isLocal: true,
-        });
-        break;
-
-      case LocalNotificationAction.QUEST_DRAFT:
-        await setServerNotificationsParams({
-          title,
-          path: `${Path.CREATE_QUEST}`,
-          isLocal: true,
-        });
-        break;
-
-      case LocalNotificationAction.WIKI:
-        await setServerNotificationsParams({
-          title,
-          path: `${Path.WIKI}`,
-          isLocal: true,
-        });
-        break;
-
-      case LocalNotificationAction.KYC:
-        await setServerNotificationsParams({
-          title,
-          path: `${Path.SUMSUB}`,
-          isLocal: true,
-        });
-        break;
-
-      case LocalNotificationAction.PROFILE_FILLED:
-        await setServerNotificationsParams({
-          title,
-          path: `${Path.SETTINGS}`,
-          isLocal: true,
-        });
-        break;
-
-      case LocalNotificationAction.TWOFA:
-        await setServerNotificationsParams({
-          title,
-          path: `${Path.SETTINGS}`,
-          isLocal: true,
-        });
-        break;
-
-      default: {
-        // Не удалять! Для ловли неизвестных ивентов
-        console.error('Unknown event = ', action);
-        break;
-      }
+    if ([
+      NotificationAction.QUEST_STARTED,
+      NotificationAction.WORKER_REJECTED_QUEST,
+      NotificationAction.WORKER_ACCEPTED_QUEST,
+      NotificationAction.WORKER_COMPLETED_QUEST,
+      NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST,
+      NotificationAction.EMPLOYER_REJECTED_COMPLETED_QUEST,
+      NotificationAction.WORKER_RESPONDED_TO_QUEST,
+      NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST,
+      NotificationAction.WORKER_ACCEPTED_INVITATION_TO_QUEST,
+      NotificationAction.WORKER_REJECTED_INVITATION_TO_QUEST,
+      NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE,
+      NotificationAction.WAIT_WORKER,
+      NotificationAction.QUEST_EDITED,
+      NotificationAction.QUEST_END_SOON,
+    ].includes(action)) {
+      await setServerNotificationsParams({
+        title: quest?.title || title,
+        path: `${Path.QUESTS}/${quest?.id || id}`,
+      });
+      await updateQuests();
+    } else if ([
+      NotificationAction.OPEN_DISPUTE,
+      NotificationAction.DISPUTE_DECISION,
+    ].includes(action)) {
+      await setServerNotificationsParams({
+        title: problemDescription,
+        path: `${Path.QUESTS}/${quest?.id || id}`,
+      });
+      await updateQuests();
+    } else if (action === NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST) {
+      await setServerNotificationsParams({
+        title: message,
+        path: `${Path.PROFILE}/${toUserId}`,
+      });
+      await dispatch('updateProfile');
+    } else if ([
+      NotificationAction.NEW_COMMENT_IN_DISCUSSION,
+      NotificationAction.NEW_DISCUSSION_LIKE,
+    ].includes(action)) {
+      await setServerNotificationsParams({
+        title: discussion.title,
+        path: `${PathDAO.DISCUSSIONS}/${discussion.id}`,
+        isExternalLink: true,
+        externalBase: DaoUrl,
+      });
+    } else if (action === NotificationAction.COMMENT_LIKED) {
+      await setServerNotificationsParams({
+        title: comment?.text,
+        path: `${PathDAO.DISCUSSIONS}/${comment.discussionId}`,
+        isExternalLink: true,
+        externalBase: DaoUrl,
+      });
+    } else if ([
+      NotificationActionFromContract.QUEST_STATUS_UPDATED1,
+      NotificationActionFromContract.QUEST_STATUS_UPDATED2,
+    ].includes(action)) {
+      await setServerNotificationsParams({
+        title: quest?.title || title,
+        path: `${Path.QUESTS}/${quest?.id || id}`,
+      });
+      await dispatch('updateProfile');
+    } else {
+      // Не удалять! Для ловли неизвестных ивентов
+      // console.error('Unknown event = ', action);
     }
-    return notification;
+    console.log('notification', notification);
+    return notification.notification;
   },
 
   async addNotification({ commit, dispatch }, notification) {
     // TODO: Добавить разделение на локальные и с сервера
-    if (notification.params.isLocal) commit('addLocalNotification', notification);
+    if (notification.params?.isLocal) {
+      // commit('addNotification', notification);
+      commit('addLocalNotification', notification);
+    }
     const newNotification = await dispatch('setCurrNotificationObject', { notification });
     commit('addNotification', newNotification);
   },
