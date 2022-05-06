@@ -54,20 +54,21 @@ export default {
           },
         },
       };
-      notification.actionNameKey = `notifications.${action}`;
       if (action === LocalNotificationAction.GET_REWARD) {
-        notification.notification.params = { title, path: `${Path.REFERRAL}`, isLocal: true };
+        notification.notification.params = { path: `${Path.REFERRAL}` };
       } else if (action === LocalNotificationAction.QUEST_DRAFT) {
-        notification.notification.params = { title, path: `${Path.CREATE_QUEST}`, sLocal: true };
+        notification.notification.params = { path: `${Path.CREATE_QUEST}` };
       } else if (action === LocalNotificationAction.WIKI) {
-        notification.notification.params = { title, path: `${Path.WIKI}`, isLocal: true };
+        notification.notification.params = { path: `${Path.WIKI}` };
       } else if (action === LocalNotificationAction.KYC) {
-        notification.notification.params = { title, path: `${Path.SUMSUB}`, isLocal: true };
+        notification.notification.params = { path: `${Path.SUMSUB}` };
       } else if (action === LocalNotificationAction.PROFILE_FILLED) {
-        notification.notification.params = { title, path: `${Path.SETTINGS}`, isLocal: true };
+        notification.notification.params = { path: `${Path.SETTINGS}` };
       } else if (action === LocalNotificationAction.TWOFA) {
-        notification.notification.params = { title, path: `${Path.SETTINGS}`, isLocal: true };
+        notification.notification.params = { path: `${Path.SETTINGS}` };
       }
+      notification.actionNameKey = `notifications.${action}`;
+      Object.assign(notification.notification.params, { title, isLocal: true });
 
       return notification.notification;
     }
@@ -185,20 +186,12 @@ export default {
     notification.params = { isLocal: false };
 
     if (notificationsQuestsActions.includes(action)) {
-      notification.params = {
-        title: quest?.title || title,
-        path: `${Path.QUESTS}/${quest?.id || id}`,
-      };
       await updateQuests();
     } else if ([
       NotificationActionFromContract.QUEST_STATUS_UPDATED1,
       NotificationActionFromContract.QUEST_STATUS_UPDATED2,
     ].includes(action)) {
       notification.sender = { avatar: { url: require('assets/img/app/logo.svg') }, firstName: 'Workquest info' };
-      notification.params = {
-        title: quest?.title || title,
-        path: `${Path.QUESTS}/${quest?.id || id}`,
-      };
       await dispatch('updateProfile');
     } else if ([
       NotificationAction.OPEN_DISPUTE,
@@ -218,19 +211,6 @@ export default {
       await dispatch('updateProfile');
     } else if (action === NotificationAction.NEW_COMMENT_IN_DISCUSSION) {
       if (rootComment?.author && !notification.sender) notification.sender = rootComment.author;
-      notification.params = {
-        title: discussion.title,
-        path: `${PathDAO.DISCUSSIONS}/${discussion.id}`,
-        isExternalLink: true,
-        externalBase: DaoUrl,
-      };
-    } else if (action === NotificationAction.NEW_DISCUSSION_LIKE) {
-      notification.params = {
-        title: discussion.title,
-        path: `${PathDAO.DISCUSSIONS}/${discussion.id}`,
-        isExternalLink: true,
-        externalBase: DaoUrl,
-      };
     } else if (action === NotificationAction.COMMENT_LIKED) {
       if (comment?.author && !notification.sender) notification.sender = comment.author;
       notification.params = {
@@ -239,10 +219,30 @@ export default {
         isExternalLink: true,
         externalBase: DaoUrl,
       };
+    } else if ([
+      NotificationAction.NEW_COMMENT_IN_DISCUSSION,
+      NotificationAction.NEW_DISCUSSION_LIKE,
+    ].includes(action)) {
+      notification.params = {
+        title: discussion.title,
+        path: `${PathDAO.DISCUSSIONS}/${discussion.id}`,
+        isExternalLink: true,
+        externalBase: DaoUrl,
+      };
+    } else if ([
+      ...notificationsQuestsActions,
+      NotificationActionFromContract.QUEST_STATUS_UPDATED1,
+      NotificationActionFromContract.QUEST_STATUS_UPDATED2,
+    ].includes(action)) {
+      notification.params = {
+        title: quest?.title || title,
+        path: `${Path.QUESTS}/${quest?.id || id}`,
+      };
     } else {
       // Не удалять! Для ловли неизвестных ивентов
       // console.error('Unknown event = ', action);
     }
+    Object.assign(notification.params, { isLocal: false });
 
     /** Set sender if it need */
     if (quest?.user && notificationCommonFilterActions.includes(action) && !notification.sender) {
