@@ -346,7 +346,7 @@ export default {
       if (!this.pensionHistory[this.selectedTable]?.txs) return [];
       return this.pensionHistory[this.selectedTable].txs.map((item) => ({
         operation: item.event,
-        tx_hash: this.convertToBech32('wq', item.transactionHash),
+        tx_hash: item.transactionHash,
         date: this.$moment(item.createdAt),
         value: this.selectedTable === PensionHistoryMethods.Update
           ? `${getStyledAmount(item.newFee)}%` : `${getStyledAmount(item.amount)} ${TokenSymbols.WUSD}`,
@@ -476,20 +476,21 @@ export default {
             }),
             this.$store.dispatch('wallet/getBalance'),
           ]);
-          this.SetLoader(false);
           if (!txFee?.ok || +balance === 0) {
             await this.$store.dispatch('main/showToast', { text: this.$t('errors.transaction.notEnoughFunds') });
+            this.SetLoader(false);
             return;
           }
           this.ShowModal({
             key: modals.transactionReceipt,
             title: this.$t('modals.info.withdrawInfo'),
             fields: {
-              to: { name: this.$t('meta.toBig'), value: this.walletAddress },
+              to: { name: this.$t('meta.toBig'), value: this.convertToBech32('wq', this.walletAddress) },
               amount: { name: this.$t('modals.amount'), value: amount, symbol: TokenSymbols.WUSD },
               fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
             },
             submitMethod: async () => {
+              this.SetLoader(true);
               const res = await this.pensionWithdraw(amount);
               if (res.ok) return success();
               await this.$store.dispatch('main/showToast', { text: this.$t('modals.transactionFail') });
@@ -521,22 +522,24 @@ export default {
             }),
             this.getWallet(),
           ]);
-          this.SetLoader(false);
           if (txFee.ok === false || +balance === 0) {
             await this.$store.dispatch('main/showToast', {
               text: this.$t('errors.transaction.notEnoughFunds'),
             });
+            this.SetLoader(false);
             return;
           }
           this.ShowModal({
             key: modals.transactionReceipt,
             fields: {
-              from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
-              to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_PENSION_FUND },
+              from: { name: this.$t('meta.fromBig'), value: this.convertToBech32('wq', getWalletAddress()) },
+              to: { name: this.$t('meta.toBig'), value: this.convertToBech32('wq', process.env.WORKNET_PENSION_FUND) },
               fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
             },
-            isShowSuccess: true,
-            submitMethod: await this.pensionExtendLockTime(),
+            submitMethod: async () => {
+              this.SetLoader(true);
+              await this.pensionExtendLockTime();
+            },
           });
         },
       });
@@ -562,8 +565,6 @@ export default {
               spenderAddress: process.env.WORKNET_PENSION_FUND,
               amount: newAmount,
             });
-          } else {
-            this.SetLoader(false);
           }
           const [txFee] = await Promise.all([
             this.$store.dispatch('wallet/getContractFeeData', {
@@ -575,28 +576,29 @@ export default {
             }),
             this.getWallet(),
           ]);
+          this.SetLoader(false);
           if (!txFee?.ok || +balanceData.WUSD.balance === 0) {
             await this.$store.dispatch('main/showToast', {
               text: this.$t('errors.transaction.notEnoughFunds'),
             });
-            this.SetLoader(false);
             return;
           }
 
           const fields = {
-            from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
-            to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_PENSION_FUND },
+            from: { name: this.$t('meta.fromBig'), value: this.convertToBech32('wq', getWalletAddress()) },
+            to: { name: this.$t('meta.toBig'), value: this.convertToBech32('wq', process.env.WORKNET_PENSION_FUND) },
             fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
             amount: { name: this.$t('modals.amount'), value: amount, symbol: TokenSymbols.WUSD },
           };
           this.ShowModal({
             key: modals.transactionReceipt,
             fields,
-            isShowSuccess: true,
-            submitMethod: async () => await this.pensionContribute(amount),
+            submitMethod: async () => {
+              this.SetLoader(true);
+              await this.pensionContribute(amount);
+            },
             callback: await this.getWallet(),
           });
-          this.SetLoader(false);
         },
       });
     },
@@ -618,27 +620,29 @@ export default {
             }),
             this.getWallet(),
           ]);
+          this.SetLoader(false);
           if (!txFee?.ok || +balanceData.WUSD.balance === 0) {
             await this.$store.dispatch('main/showToast', {
               text: this.$t('errors.transaction.notEnoughFunds'),
             });
-            this.SetLoader(false);
             return;
           }
 
           const fields = {
-            from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
-            to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_PENSION_FUND },
+            from: { name: this.$t('meta.fromBig'), value: this.convertToBech32('wq', getWalletAddress()) },
+            to: { name: this.$t('meta.toBig'), value: this.convertToBech32('wq', process.env.WORKNET_PENSION_FUND) },
             fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
           };
 
           this.ShowModal({
             key: modals.transactionReceipt,
             fields,
-            submitMethod: async () => await this.$store.dispatch('retirement/pensionUpdateFee', amount.substr(0, amount.length - 1)),
+            submitMethod: async () => {
+              this.SetLoader(true);
+              await this.$store.dispatch('retirement/pensionUpdateFee', amount.substr(0, amount.length - 1));
+            },
             callback: await this.getWallet(),
           });
-          this.SetLoader(false);
         },
       });
     },

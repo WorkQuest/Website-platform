@@ -198,7 +198,7 @@ export default {
             payload.tx = {
               event,
               transactionHash,
-              createdAt: moment.unix(unlockDate).utc().format(),
+              createdAt: moment.utc().format(),
               newFee,
             };
             count = pensionHistory[PensionHistoryMethods.Update].count + 1;
@@ -212,6 +212,7 @@ export default {
         pensionHistory[payload.method].txs.unshift(payload.tx);
         await dispatch('pensionGetWalletInfo');
         commit('setPensionHistoryData', { method: payload.method, txs: pensionHistory[payload.method].txs, count });
+        await dispatch('main/setLoading', false, { root: true });
       });
     } catch (err) {
       console.error('subscribeWS err', err);

@@ -98,7 +98,6 @@ export default {
       if (!this.canSend) return;
       const { callback, submitMethod, isShowSuccess } = this.options;
       this.CloseModal();
-      this.SetLoader(true);
       if (submitMethod) {
         const res = await submitMethod();
         if (res?.ok) {
@@ -110,7 +109,6 @@ export default {
           this.ShowModalFail({});
         }
       }
-      this.SetLoader(false);
     },
   },
 };

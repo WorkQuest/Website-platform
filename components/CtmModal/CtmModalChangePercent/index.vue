@@ -72,7 +72,7 @@ export default {
       await submit(amount);
     },
     calcPensionPercent(value) {
-      this.amount = this.CalcPercent(value);
+      this.amount = this.CalcPercent(value, this.amount);
       this.ChangeCaretPosition(this.$refs.percentInput);
     },
   },

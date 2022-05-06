@@ -77,7 +77,6 @@
             class="status__btn"
             :mode="options.submitMode"
             selector="SUBMIT"
-            :disabled="isLoading"
             @click="handleSubmit()"
           >
             <span v-if="options.button">
@@ -110,11 +109,8 @@ export default {
       this.CloseModal();
     },
     async handleSubmit() {
-      if (this.isLoading) return;
-      this.SetLoader(true);
       if (this.options.callback) await this.options.callback();
       this.hide();
-      this.SetLoader(false);
     },
   },
 };

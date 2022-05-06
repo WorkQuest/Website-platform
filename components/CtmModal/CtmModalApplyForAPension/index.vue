@@ -22,7 +22,7 @@
             data-selector="DEPOSIT-PERCENT"
             :name="$tc('modals.depositPercent')"
             rules="required|min_percent:0.01|max_percent:99|zeroFail|notMoreDecimalPlaces"
-            @input="calcPensionPercent"
+            @input="calcPensionPercent(depositPercentFromAQuest)"
           />
         </div>
         <div class="content__amount">
@@ -110,8 +110,8 @@ export default {
       const { depositPercentFromAQuest, firstDepositAmount, options: { submitMethod } } = this;
       await submitMethod(firstDepositAmount, depositPercentFromAQuest);
     },
-    calcPensionPercent() {
-      this.depositPercentFromAQuest = this.CalcPercent(this.depositPercentFromAQuest);
+    calcPensionPercent(value) {
+      this.depositPercentFromAQuest = this.CalcPercent(value, this.depositPercentFromAQuest);
       this.ChangeCaretPosition(this.$refs.percentInput);
     },
     maxBalance() {
