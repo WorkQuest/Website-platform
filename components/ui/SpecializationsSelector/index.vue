@@ -21,6 +21,7 @@
             rules="required"
             :label="$tc('settings.specialization')"
             :hide-selected="hideSelectedSpecs"
+            :is-search="true"
             @input="switchSkill($event, key)"
           />
           <div class="specialization__skills skills">
@@ -36,6 +37,7 @@
               rules="required"
               :label="$tc('meta.skills')"
               :hide-selected="hideSelectedSkills[key]"
+              :is-search="true"
               @input="addSkillToBadge($event, key)"
             />
             <div

@@ -70,7 +70,7 @@
           :class="{'dd__items_small' : mode === 'small'}"
         >
           <button
-            v-for="(item, i) in items"
+            v-for="(item, i) in filteredItems"
             :key="`dd__item-${i}`"
             :data-selector="`ACTION-BTN-SELECT-ITEM-${dataSelector.toUpperCase()}-${i}`"
             class="dd__item dd__item_icon"
@@ -89,8 +89,16 @@
           class="dd__items"
           :class="[{'dd__items_small' : mode === 'small'}, {'dd__items_wide' : isDotsView}]"
         >
+          <base-field
+            v-if="isSearch"
+            v-model="searchLine"
+            class="dd__search"
+            data-selector="INPUT-SEARCH"
+            :is-search="true"
+            :is-hide-error="true"
+          />
           <button
-            v-for="(item, i) in items"
+            v-for="(item, i) in filteredItems"
             :key="`dd__item-${i}`"
             class="dd__item"
             :data-selector="`ACTION-BTN-SELECT-ITEM-${dataSelector.toUpperCase()}-${i}`"
@@ -168,9 +176,14 @@ export default {
       default: 'NON-SELECTOR',
       required: true,
     },
+    isSearch: {
+      type: Boolean,
+      default: false,
+    },
   },
   data: () => ({
     isShown: false,
+    searchLine: '',
   }),
   computed: {
     elementsIsEmpty() {
@@ -186,6 +199,12 @@ export default {
         { dd__btn_border: type === 'border' },
         { 'dd__dots-btn': isDotsView },
       ];
+    },
+    filteredItems() {
+      if (this.searchLine.length > 0) {
+        return this.items.filter((item) => item.toLowerCase().includes(this.searchLine.toLowerCase()));
+      }
+      return this.items;
     },
   },
   methods: {
@@ -366,6 +385,9 @@ export default {
       color: #7c838d;
       font-size: 19px;
     }
+  }
+  &__search {
+    width: 100%;
   }
 }
 </style>
