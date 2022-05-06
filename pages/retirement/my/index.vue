@@ -93,7 +93,7 @@
               <div
                 class="info-block__subtitle_red"
               >
-                {{ $t('pension.days', {count: 0}) }}
+                {{ $tc('meta.units.days', 0) }}
               </div>
             </div>
             <div class="btn-group">
@@ -346,7 +346,7 @@ export default {
       if (!this.pensionHistory[this.selectedTable]?.txs) return [];
       return this.pensionHistory[this.selectedTable].txs.map((item) => ({
         operation: item.event,
-        tx_hash: item.transactionHash,
+        tx_hash: this.convertToBech32('wq', item.transactionHash),
         date: this.$moment(item.createdAt),
         value: this.selectedTable === PensionHistoryMethods.Update
           ? `${getStyledAmount(item.newFee)}%` : `${getStyledAmount(item.amount)} ${TokenSymbols.WUSD}`,
@@ -368,11 +368,11 @@ export default {
   async mounted() {
     this.SetLoader(true);
     await this.getWallet();
-    await this.subscribe(this.userWalletAddress);
+    await this.subscribe(getWalletAddress());
     this.SetLoader(false);
   },
   async beforeDestroy() {
-    await this.unsubscribe(this.userWalletAddress);
+    await this.unsubscribe(getWalletAddress());
   },
   methods: {
     ...mapActions({
@@ -463,6 +463,8 @@ export default {
         maxValue: this.pensionWallet.fullAmount,
         withdrawType: 'pension',
         submit: async (amount) => {
+          this.selectedTable = PensionHistoryMethods.Withdraw;
+          const { balance } = this.balanceData.WUSD;
           this.CloseModal();
           this.SetLoader(true);
           const [txFee] = await Promise.all([
@@ -470,12 +472,12 @@ export default {
               abi: WQPensionFund,
               contractAddress: process.env.WORKNET_PENSION_FUND,
               method: 'withdraw',
-              data: [new BigNumber(this.amount).shiftedBy(18).toString()],
+              data: [new BigNumber(amount).shiftedBy(18).toString()],
             }),
             this.$store.dispatch('wallet/getBalance'),
           ]);
           this.SetLoader(false);
-          if (!txFee?.ok || +this.balanceData.WUSD.fullBalance === 0) {
+          if (!txFee?.ok || +balance === 0) {
             await this.$store.dispatch('main/showToast', { text: this.$t('errors.transaction.notEnoughFunds') });
             return;
           }
@@ -508,6 +510,9 @@ export default {
         key: modals.areYouSureNotification,
         text: this.$t('pension.prolongText'),
         callback: async () => {
+          const { balance } = this.balanceData.WUSD;
+          this.CloseModal();
+          this.SetLoader(true);
           const [txFee] = await Promise.all([
             this.getContractFeeData({
               abi: WQPensionFund,
@@ -516,7 +521,8 @@ export default {
             }),
             this.getWallet(),
           ]);
-          if (txFee.ok === false || +this.balanceData.WUSD.balance === 0) {
+          this.SetLoader(false);
+          if (txFee.ok === false || +balance === 0) {
             await this.$store.dispatch('main/showToast', {
               text: this.$t('errors.transaction.notEnoughFunds'),
             });
@@ -530,21 +536,7 @@ export default {
               fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
             },
             isShowSuccess: true,
-            submitMethod: async () => {
-              const res = await this.pensionExtendLockTime();
-              if (res.ok) {
-                await this.$store.dispatch('main/showToast', {
-                  title: this.$t('pension.prolong'),
-                  text: this.$t('modals.transactionSent'),
-                });
-                await this.getWallet();
-              } else {
-                await this.$store.dispatch('main/showToast', {
-                  title: this.$t('pension.prolong'),
-                  text: this.$t('modals.transactionFail'),
-                });
-              }
-            },
+            submitMethod: await this.pensionExtendLockTime(),
           });
         },
       });
@@ -556,6 +548,7 @@ export default {
         maxValue: this.balanceData.WUSD.balance,
         submit: async (amount) => {
           const { balanceData } = this;
+          this.selectedTable = PensionHistoryMethods.Receive;
           const newAmount = new BigNumber(amount).shiftedBy(18).toString();
           this.CloseModal();
           this.SetLoader(true);
@@ -612,6 +605,7 @@ export default {
         key: modals.changePercent,
         submit: async (amount) => {
           const { balanceData } = this;
+          this.selectedTable = PensionHistoryMethods.Update;
           this.CloseModal();
           this.SetLoader(true);
 

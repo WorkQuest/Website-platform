@@ -42,7 +42,7 @@
             data-selector="SUBMIT"
             class="buttons__button"
             :disabled="!validated || !passed || invalid"
-            @click="handleSubmit(send())"
+            @click="send()"
           >
             {{ $t('meta.btns.submit') }}
           </base-btn>

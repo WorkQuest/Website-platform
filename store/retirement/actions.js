@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js';
 
+import moment from 'moment';
 import { getWalletAddress, GetWalletProvider } from '~/utils/wallet';
 import { PensionHistoryMethods } from '~/utils/enums';
 import { WQPensionFund } from '~/abi';
@@ -163,10 +164,54 @@ export default {
       return error();
     }
   },
-  async subscribeWS({ commit, getters }, userAddress) {
+  async subscribeWS({ commit, getters, dispatch }, userAddress) {
     try {
       await this.$wsNotifs.subscribe(`/notifications/pensionFund/${userAddress}`, async (msg) => {
-        console.log(msg.data);
+        const pensionHistory = JSON.parse(JSON.stringify(getters.getPensionHistory));
+        const {
+          data: {
+            event, transactionHash, returnValues: {
+              amount, timestamp, unlockDate, newFee,
+            },
+          },
+        } = msg;
+        let payload = {
+          tx: {
+            event,
+            transactionHash,
+            createdAt: moment.unix(timestamp).utc().format(),
+            amount,
+          },
+        };
+        let count;
+        switch (event) {
+          case 'Received':
+            payload.method = PensionHistoryMethods.Receive;
+            count = pensionHistory[PensionHistoryMethods.Receive].count + 1;
+            break;
+          case 'Withdraw':
+            payload.method = PensionHistoryMethods.Withdraw;
+            count = pensionHistory[PensionHistoryMethods.Withdraw].count + 1;
+            break;
+          case 'WalletUpdated':
+            payload.method = PensionHistoryMethods.Update;
+            payload.tx = {
+              event,
+              transactionHash,
+              createdAt: moment.unix(unlockDate).utc().format(),
+              newFee,
+            };
+            count = pensionHistory[PensionHistoryMethods.Update].count + 1;
+            break;
+          default:
+            payload = {};
+            count = 0;
+            break;
+        }
+        if (pensionHistory[payload.method].txs.length === 10) pensionHistory[payload.method].txs.splice(9, 1);
+        pensionHistory[payload.method].txs.unshift(payload.tx);
+        await dispatch('pensionGetWalletInfo');
+        commit('setPensionHistoryData', { method: payload.method, txs: pensionHistory[payload.method].txs, count });
       });
     } catch (err) {
       console.error('subscribeWS err', err);
