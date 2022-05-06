@@ -9,7 +9,7 @@ import {
   NotificationActionFromContract,
   notificationCommonFilterActions,
   notificationCommonFilterAction2,
-  notificationEmployerFilterActions,
+  notificationEmployerFilterActions, notificationsQuestsActions,
 } from '~/utils/notifications-enum';
 import { error, success } from '~/utils/web3';
 
@@ -54,6 +54,7 @@ export default {
           },
         },
       };
+      notification.actionNameKey = `notifications.${action}`;
       if (action === LocalNotificationAction.REVIEW_USER) {
         notification.notification.params = { title: message, path: `${Path.PROFILE}/${toUserId}`, isLocal: true };
         await this.updateProfile();
@@ -185,102 +186,84 @@ export default {
         }
       }
     }
+    /** Set common params */
+    notification.actionNameKey = `notifications.${action}`;
+    notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
+    notification.params = { isLocal: false };
 
-    async function setServerNotificationsParams({
-      // eslint-disable-next-line no-shadow
-      title = '', path = '', isExternalLink = false,
-      externalBase = '',
-    }) {
-      notification.actionNameKey = `notifications.${action}`;
-      notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
+    if (notificationsQuestsActions.includes(action)) {
       notification.params = {
-        title, path, isExternalLink, externalBase,
-      };
-      if (!notification.sender) {
-        /** Worker && Employer */
-        if (fromUser && action === NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST) notification.sender = fromUser;
-        if (comment?.author && action === NotificationAction.COMMENT_LIKED) notification.sender = comment.author;
-        if (rootComment?.author && action === NotificationAction.NEW_COMMENT_IN_DISCUSSION) notification.sender = rootComment.author;
-        if (quest?.user && notificationCommonFilterActions.includes(action)) notification.sender = quest.user;
-        // TODO: После обновления убрать лишний ключ
-        if ([
-          NotificationActionFromContract.QUEST_STATUS_UPDATED1,
-          NotificationActionFromContract.QUEST_STATUS_UPDATED2,
-        ].includes(action)) notification.sender = { avatar: { url: require('assets/img/app/logo.svg') }, firstName: 'Workquest info' };
-        /** Worker */
-        if (userRole === UserRole.WORKER && notificationCommonFilterAction2.includes(action)) notification.sender = user;
-        /** Employer */
-        if (assignedWorker && notificationEmployerFilterActions.includes(action)) notification.sender = assignedWorker;
-        else if (worker && notificationEmployerFilterActions.includes(action)) notification.sender = worker;
-        else if (employer && notificationCommonFilterAction2.includes(action)) notification.sender = employer;
-      }
-    }
-
-    if ([
-      NotificationAction.QUEST_STARTED,
-      NotificationAction.WORKER_REJECTED_QUEST,
-      NotificationAction.WORKER_ACCEPTED_QUEST,
-      NotificationAction.WORKER_COMPLETED_QUEST,
-      NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST,
-      NotificationAction.EMPLOYER_REJECTED_COMPLETED_QUEST,
-      NotificationAction.WORKER_RESPONDED_TO_QUEST,
-      NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST,
-      NotificationAction.WORKER_ACCEPTED_INVITATION_TO_QUEST,
-      NotificationAction.WORKER_REJECTED_INVITATION_TO_QUEST,
-      NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE,
-      NotificationAction.WAIT_WORKER,
-      NotificationAction.QUEST_EDITED,
-      NotificationAction.QUEST_END_SOON,
-    ].includes(action)) {
-      await setServerNotificationsParams({
         title: quest?.title || title,
         path: `${Path.QUESTS}/${quest?.id || id}`,
-      });
+      };
       await updateQuests();
-    } else if ([
-      NotificationAction.OPEN_DISPUTE,
-      NotificationAction.DISPUTE_DECISION,
-    ].includes(action)) {
-      await setServerNotificationsParams({
-        title: problemDescription,
-        path: `${Path.QUESTS}/${quest?.id || id}`,
-      });
-      await updateQuests();
-    } else if (action === NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST) {
-      await setServerNotificationsParams({
-        title: message,
-        path: `${Path.PROFILE}/${toUserId}`,
-      });
-      await dispatch('updateProfile');
-    } else if ([
-      NotificationAction.NEW_COMMENT_IN_DISCUSSION,
-      NotificationAction.NEW_DISCUSSION_LIKE,
-    ].includes(action)) {
-      await setServerNotificationsParams({
-        title: discussion.title,
-        path: `${PathDAO.DISCUSSIONS}/${discussion.id}`,
-        isExternalLink: true,
-        externalBase: DaoUrl,
-      });
-    } else if (action === NotificationAction.COMMENT_LIKED) {
-      await setServerNotificationsParams({
-        title: comment?.text,
-        path: `${PathDAO.DISCUSSIONS}/${comment.discussionId}`,
-        isExternalLink: true,
-        externalBase: DaoUrl,
-      });
     } else if ([
       NotificationActionFromContract.QUEST_STATUS_UPDATED1,
       NotificationActionFromContract.QUEST_STATUS_UPDATED2,
     ].includes(action)) {
-      await setServerNotificationsParams({
+      notification.sender = { avatar: { url: require('assets/img/app/logo.svg') }, firstName: 'Workquest info' };
+      notification.params = {
         title: quest?.title || title,
         path: `${Path.QUESTS}/${quest?.id || id}`,
-      });
+      };
       await dispatch('updateProfile');
+    } else if ([
+      NotificationAction.OPEN_DISPUTE,
+      NotificationAction.DISPUTE_DECISION,
+    ].includes(action)) {
+      notification.params = {
+        title: problemDescription,
+        path: `${Path.QUESTS}/${quest?.id || id}`,
+      };
+      await updateQuests();
+    } else if (action === NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST) {
+      if (fromUser && !notification.sender) notification.sender = fromUser;
+      notification.params = {
+        title: message,
+        path: `${Path.PROFILE}/${toUserId}`,
+      };
+      await dispatch('updateProfile');
+    } else if (action === NotificationAction.NEW_COMMENT_IN_DISCUSSION) {
+      if (rootComment?.author && !notification.sender) notification.sender = rootComment.author;
+      notification.params = {
+        title: discussion.title,
+        path: `${PathDAO.DISCUSSIONS}/${discussion.id}`,
+        isExternalLink: true,
+        externalBase: DaoUrl,
+      };
+    } else if (action === NotificationAction.NEW_DISCUSSION_LIKE) {
+      notification.params = {
+        title: discussion.title,
+        path: `${PathDAO.DISCUSSIONS}/${discussion.id}`,
+        isExternalLink: true,
+        externalBase: DaoUrl,
+      };
+    } else if (action === NotificationAction.COMMENT_LIKED) {
+      if (comment?.author && !notification.sender) notification.sender = comment.author;
+      notification.params = {
+        title: comment?.text,
+        path: `${PathDAO.DISCUSSIONS}/${comment.discussionId}`,
+        isExternalLink: true,
+        externalBase: DaoUrl,
+      };
     } else {
       // Не удалять! Для ловли неизвестных ивентов
       // console.error('Unknown event = ', action);
+    }
+
+    /** Set sender if it need */
+    if (quest?.user && notificationCommonFilterActions.includes(action) && !notification.sender) {
+      notification.sender = quest.user;
+    } else if (userRole === UserRole.WORKER && notificationCommonFilterAction2.includes(action && !notification.sender)) {
+      notification.sender = user;
+    } else if (assignedWorker && notificationEmployerFilterActions.includes(action) && !notification.sender) {
+      notification.sender = assignedWorker;
+    } else if (worker && notificationEmployerFilterActions.includes(action) && !notification.sender) {
+      notification.sender = worker;
+    } else if (worker && notificationEmployerFilterActions.includes(action) && !notification.sender) {
+      notification.sender = worker;
+    } else if (employer && notificationCommonFilterAction2.includes(action) && !notification.sender) {
+      notification.sender = employer;
     }
     console.log('notification', notification);
     return notification.notification;

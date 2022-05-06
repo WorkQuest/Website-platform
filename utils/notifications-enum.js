@@ -23,6 +23,23 @@ export const NotificationAction = {
   NEW_DISCUSSION_LIKE: 'newDiscussionLike',
 };
 
+export const notificationsQuestsActions = Object.freeze([
+  NotificationAction.QUEST_STARTED,
+  NotificationAction.WORKER_REJECTED_QUEST,
+  NotificationAction.WORKER_ACCEPTED_QUEST,
+  NotificationAction.WORKER_COMPLETED_QUEST,
+  NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST,
+  NotificationAction.EMPLOYER_REJECTED_COMPLETED_QUEST,
+  NotificationAction.WORKER_RESPONDED_TO_QUEST,
+  NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST,
+  NotificationAction.WORKER_ACCEPTED_INVITATION_TO_QUEST,
+  NotificationAction.WORKER_REJECTED_INVITATION_TO_QUEST,
+  NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE,
+  NotificationAction.WAIT_WORKER,
+  NotificationAction.QUEST_EDITED,
+  NotificationAction.QUEST_END_SOON,
+]);
+
 export const notificationCommonFilterActions = Object.freeze([
   NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST,
   NotificationAction.WORKER_ACCEPTED_INVITATION_TO_QUEST,

@@ -55,12 +55,12 @@
                 >
                   <img
                     class="notify__avatar"
-                    :src="notification.notification.data.sender.avatar"
+                    :src="notification.data.sender.avatar"
                     alt="avatar"
                   >
                   <div class="notify__info">
                     <span class="notify__text notify__text_name">
-                      {{ UserName(notification.notification.data.sender.firstName, '') }}
+                      {{ UserName(notification.data.sender.firstName, '') }}
                     </span>
                   </div>
                 </div>
@@ -94,7 +94,7 @@
                 class="notify__reason"
               >
                 <div class="notify__text notify__text_blue">
-                  {{ notification.notification.data.message }}
+                  {{ notification.data.message }}
                 </div>
               </div>
               <div
@@ -114,7 +114,7 @@
                     v-if="notification.params && notification.params.isLocal"
                     class="notify__text notify__text_btn"
                   >
-                    {{ notification.notification.actionBtn }}
+                    {{ notification.actionBtn }}
                   </div>
                   <div
                     v-if="notification.params && !notification.params.isLocal"
@@ -139,7 +139,7 @@
         <empty-data
           v-else
           class="reduced-notifications__no-content"
-          :description="$t('ui.notifications.noNotifications')"
+          :description="$tc('ui.notifications.noNotifications')"
         />
       </div>
     </transition>
