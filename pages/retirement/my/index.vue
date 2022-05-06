@@ -492,7 +492,12 @@ export default {
             submitMethod: async () => {
               this.SetLoader(true);
               const res = await this.pensionWithdraw(amount);
-              if (res.ok) return success();
+              if (res.ok) {
+                if (this.pensionWallet.fullAmount === 0) {
+                  await this.$router.push(Path.RETIREMENT);
+                }
+                return success();
+              }
               await this.$store.dispatch('main/showToast', { text: this.$t('modals.transactionFail') });
               return error();
             },
