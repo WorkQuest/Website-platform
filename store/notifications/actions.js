@@ -189,12 +189,12 @@ export default {
     async function setServerNotificationsParams({
       // eslint-disable-next-line no-shadow
       title = '', path = '', isExternalLink = false,
-      externalBase = '', isLocal = false, scrollToPx = 0,
+      externalBase = '',
     }) {
       notification.actionNameKey = `notifications.${action}`;
       notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
       notification.params = {
-        title, path, isExternalLink, externalBase, isLocal, scrollToPx,
+        title, path, isExternalLink, externalBase,
       };
       if (!notification.sender) {
         /** Worker && Employer */
