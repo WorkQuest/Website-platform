@@ -113,7 +113,7 @@ export default {
       if (this.isLoading) return;
       this.SetLoader(true);
       if (this.options.callback) await this.options.callback();
-      this.hide();
+      if (!this.options.isNotClose) this.hide();
       this.SetLoader(false);
     },
   },

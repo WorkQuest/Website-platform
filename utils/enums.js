@@ -137,6 +137,7 @@ export const NotificationAction = {
   COMMENT_LIKED: 'commentLiked',
   NEW_COMMENT_IN_DISCUSSION: 'newCommentInDiscussion',
   NEW_DISCUSSION_LIKE: 'newDiscussionLike',
+  QUEST_STATUS_UPDATED: 'QuestStatusUpdated',
 };
 
 export const notificationCommonFilterActions = Object.freeze([
