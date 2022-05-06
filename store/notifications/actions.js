@@ -116,13 +116,6 @@ export default {
     const currentUserId = getUserData.id;
     const userRole = rootGetters.getUserRole;
     const currentPath = this.$router.history.current.path;
-    // const isAuth = rootGetters['user/isAuth'];
-    // if (!isAuth) {
-    //   // TODO: Не удалять!!! Разобраться в проблеме!
-    //   console.log('!!!!!!!!!getters.getUserData.id!!!!!!!!!', currentUserId);
-    //   console.log('!!!!!!!!!getters.getUserRole!!!!!!!!!!!!', userRole);
-    //   await dispatch('user/getUserData', { root: true });
-    // }
     async function setSender() {
       if (!notification.sender) {
         /** Worker && Employer */
