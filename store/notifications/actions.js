@@ -57,11 +57,7 @@ export default {
       notification.actionNameKey = `notifications.${action}`;
       if (action === LocalNotificationAction.REVIEW_USER) {
         notification.notification.params = { title: message, path: `${Path.PROFILE}/${toUserId}`, isLocal: true };
-        await this.updateProfile();
-      } else if ([NotificationActionFromContract.QUEST_STATUS_UPDATED1,
-        NotificationActionFromContract.QUEST_STATUS_UPDATED2].includes(action)) {
-        notification.notification.params = { title, path: `${Path.QUESTS}/${quest?.id || id}` };
-        await this.updateProfile();
+        await dispatch('updateProfile');
       } else if (action === LocalNotificationAction.GET_REWARD) {
         notification.notification.params = { title, path: `${Path.REFERRAL}`, isLocal: true };
       } else if (action === LocalNotificationAction.QUEST_DRAFT) {
