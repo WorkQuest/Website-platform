@@ -3,52 +3,51 @@
     class="percent"
     :title="$tc('modals.titles.changePercent')"
   >
-    <div class="percent__content content">
-      <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
-        class="content__validator"
+    <validation-observer
+      v-slot="{handleSubmit, validated, passed, invalid}"
+      class="percent__content content"
+      tag="div"
+    >
+      <div class="content__text">
+        {{ $t('modals.changePercentDesc') }}
+      </div>
+      <div
+        class="content__field"
+        @keydown.delete="ChangeCaretPosition($refs.percentInput)"
       >
-        <div class="content__text">
-          {{ $t('modals.changePercentDesc') }}
+        <div class="content__title">
+          {{ $t('modals.currentPercentTitle') }}
         </div>
-        <div
-          class="content__field"
-          @keydown.delete="ChangeCaretPosition($refs.percentInput)"
+        <base-field
+          ref="percentInput"
+          :value="amount"
+          :placeholder="$tc('meta.units.percentsCount', 15)"
+          class="content__input"
+          :name="$tc('modals.currentPercentErr')"
+          data-selector="PENSION-PERCENT"
+          rules="required|min_percent:1|max_percent:99|zeroFail|notMoreDecimalPlaces"
+          @input="calcPensionPercent"
+        />
+      </div>
+      <div class="content__buttons buttons">
+        <base-btn
+          class="buttons__button"
+          data-selector="CANCEL"
+          mode="outline"
+          @click="CloseModal"
         >
-          <div class="content__title">
-            {{ $t('modals.currentPercentTitle') }}
-          </div>
-          <base-field
-            ref="percentInput"
-            :value="amount"
-            :placeholder="$tc('meta.units.percentsCount', 15)"
-            class="content__input"
-            :name="$tc('modals.currentPercentErr')"
-            data-selector="PENSION-PERCENT"
-            rules="required|min_percent:1|max_percent:99|zeroFail|notMoreDecimalPlaces"
-            @input="calcPensionPercent"
-          />
-        </div>
-        <div class="content__buttons buttons">
-          <base-btn
-            class="buttons__button"
-            data-selector="CANCEL"
-            mode="outline"
-            @click="CloseModal"
-          >
-            {{ $t('meta.btns.cancel') }}
-          </base-btn>
-          <base-btn
-            data-selector="SUBMIT"
-            class="buttons__button"
-            :disabled="!validated || !passed || invalid"
-            @click="send()"
-          >
-            {{ $t('meta.btns.submit') }}
-          </base-btn>
-        </div>
-      </validation-observer>
-    </div>
+          {{ $t('meta.btns.cancel') }}
+        </base-btn>
+        <base-btn
+          data-selector="SUBMIT"
+          class="buttons__button"
+          :disabled="!validated || !passed || invalid"
+          @click="handleSubmit(send)"
+        >
+          {{ $t('meta.btns.submit') }}
+        </base-btn>
+      </div>
+    </validation-observer>
   </ctm-modal-box>
 </template>
 
@@ -85,13 +84,11 @@ export default {
 .percent {
   padding: 0 !important;
   max-width: 487px !important;
-
-  &__content {
-    padding: 0 28px 30px 28px !important;
-  }
 }
 
 .content {
+  padding: 0 28px 30px 28px !important;
+
   &__text {
     margin: 22px 0 15px 0;
     font-size: 16px;
