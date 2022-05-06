@@ -44,7 +44,6 @@ export default {
     }
     const notification = await setLocalNotification();
     const notificationList = getters.getNotificationsList;
-    // const is added = () => some
     async function checkAddedLocalNotification() {
       // TODO: Доработать!
       const isAdded = () => notificationList.some((n) => Object.entries(LocalNotificationAction).includes(n.actionNameKey));
@@ -55,8 +54,14 @@ export default {
   },
   async removeNotification({ dispatch, commit, rootGetters }, { config, notificationId, notification }) {
     const { params } = notification;
-    if (notification.actionNameKey === `notifications.${LocalNotificationAction.TWOFA}`) this.$cookies.set(LocalNotificationAction.TWOFA, rootGetters['user/getStatus2FA'] !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: false });
-    if (notification.actionNameKey === `notifications.${LocalNotificationAction.KYC}`) this.$cookies.set(LocalNotificationAction.KYC, rootGetters['user/getStatusKYC'] !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: false });
+    if (notification.actionNameKey === `notifications.${LocalNotificationAction.TWOFA}`) {
+      this.$cookies.set(LocalNotificationAction.TWOFA, rootGetters['user/getStatus2FA'] !== 0,
+        { maxAge: 60 * 60 * 24 * 7, enabled: false });
+    }
+    if (notification.actionNameKey === `notifications.${LocalNotificationAction.KYC}`) {
+      this.$cookies.set(LocalNotificationAction.KYC, rootGetters['user/getStatusKYC'] !== 0,
+        { maxAge: 60 * 60 * 24 * 7, enabled: false });
+    }
     try {
       await commit('removeNotification', notificationId);
       await dispatch('getNotifications', config);
@@ -101,41 +106,17 @@ export default {
       return false;
     }
   },
-  async addNotification({ commit, dispatch }, notification) {
-    const newNotification = await dispatch('setCurrNotificationObject', { notification });
-    if (newNotification.params.isLocal) commit('addLocalNotification', newNotification);
-    commit('addNotification', newNotification);
-  },
   async setCurrNotificationObject({ getters, rootGetters, dispatch }, notification) {
     const getUserData = rootGetters['user/getUserData'];
     const { action, data } = notification.notification;
     const {
       id, title, quest, user, worker, comment, employer, fromUser, rootComment,
-      assignedWorker, message, toUserId, discussion, problemDescription, questId,
+      assignedWorker, message, toUserId, discussion, problemDescription,
     } = data;
     const currentUserId = getUserData.id;
     const userRole = rootGetters.getUserRole;
     const currentPath = this.$router.history.current.path;
-    async function setSender() {
-      if (!notification.sender) {
-        /** Worker && Employer */
-        if (fromUser && action === NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST) notification.sender = fromUser;
-        if (comment?.author && action === NotificationAction.COMMENT_LIKED) notification.sender = comment.author;
-        if (rootComment?.author && action === NotificationAction.NEW_COMMENT_IN_DISCUSSION) notification.sender = rootComment.author;
-        if (quest?.user && notificationCommonFilterActions.includes(action)) notification.sender = quest.user;
-        // TODO: После обновления убрать лишний ключ
-        if ([
-          NotificationActionFromContract.QUEST_STATUS_UPDATED1,
-          NotificationActionFromContract.QUEST_STATUS_UPDATED2,
-        ].includes(action)) notification.sender = { avatar: { url: require('assets/img/app/logo.svg') }, firstName: 'Workquest info' };
-        /** Worker */
-        if (userRole === UserRole.WORKER && notificationCommonFilterAction2.includes(action)) notification.sender = user;
-        /** Employer */
-        if (assignedWorker && notificationEmployerFilterActions.includes(action)) notification.sender = assignedWorker;
-        else if (worker && notificationEmployerFilterActions.includes(action)) notification.sender = worker;
-        else if (employer && notificationCommonFilterAction2.includes(action)) notification.sender = employer;
-      }
-    }
+
     async function updateQuests() {
       /* For update quest lists */
       const questListPathArray = [
@@ -164,6 +145,7 @@ export default {
         }
       }
     }
+
     async function updateProfile() {
       /* For update user profile */
       if (currentPath === `${Path.PROFILE}/${currentUserId}`) {
@@ -171,6 +153,7 @@ export default {
         await dispatch('user/getAllUserReviews', { userId: currentUserId, query }, { root: true });
       }
     }
+
     async function setAllNotificationsParams({
       // eslint-disable-next-line no-shadow
       title = '', path = '', isExternalLink = false,
@@ -181,8 +164,26 @@ export default {
       notification.params = {
         title, path, isExternalLink, externalBase, isLocal, scrollToPx,
       };
-      await setSender();
+      if (!notification.sender) {
+        /** Worker && Employer */
+        if (fromUser && action === NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST) notification.sender = fromUser;
+        if (comment?.author && action === NotificationAction.COMMENT_LIKED) notification.sender = comment.author;
+        if (rootComment?.author && action === NotificationAction.NEW_COMMENT_IN_DISCUSSION) notification.sender = rootComment.author;
+        if (quest?.user && notificationCommonFilterActions.includes(action)) notification.sender = quest.user;
+        // TODO: После обновления убрать лишний ключ
+        if ([
+          NotificationActionFromContract.QUEST_STATUS_UPDATED1,
+          NotificationActionFromContract.QUEST_STATUS_UPDATED2,
+        ].includes(action)) notification.sender = { avatar: { url: require('assets/img/app/logo.svg') }, firstName: 'Workquest info' };
+        /** Worker */
+        if (userRole === UserRole.WORKER && notificationCommonFilterAction2.includes(action)) notification.sender = user;
+        /** Employer */
+        if (assignedWorker && notificationEmployerFilterActions.includes(action)) notification.sender = assignedWorker;
+        else if (worker && notificationEmployerFilterActions.includes(action)) notification.sender = worker;
+        else if (employer && notificationCommonFilterAction2.includes(action)) notification.sender = employer;
+      }
     }
+
     switch (action) {
       /** WORK-QUEST */
       case NotificationAction.QUEST_STARTED:
@@ -318,5 +319,11 @@ export default {
       }
     }
     return notification;
+  },
+
+  async addNotification({ commit, dispatch }, notification) {
+    const newNotification = await dispatch('setCurrNotificationObject', { notification });
+    if (newNotification.params.isLocal) commit('addLocalNotification', newNotification);
+    commit('addNotification', newNotification);
   },
 };
