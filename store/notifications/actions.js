@@ -173,6 +173,7 @@ export default {
         }, { root: true });
       } else if (currentPath === `${Path.QUESTS}/${quest?.id || id}`) {
         const params = quest?.id || id;
+        // TODO: Пофиксить!
         await dispatch('quests/getQuest', params, { root: true });
         if (userRole === UserRole.EMPLOYER && currentUserId && quest?.user?.id === currentUserId) {
           await dispatch('quests/responsesToQuest', params, { root: true });
