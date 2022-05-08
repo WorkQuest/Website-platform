@@ -136,7 +136,7 @@ export default {
   },
   methods: {
     avatar(notification) {
-      return notification.sender?.avatar?.url || this.EmptyAvatar();
+      return notification.sender?.avatar?.url || images.EMPTY_AVATAR;
     },
     notificationActionKey(notification) {
       const symbol = ['notifications.newDiscussionLike'].includes(notification.actionNameKey) ? '.' : ':';
