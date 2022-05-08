@@ -354,7 +354,7 @@ export default {
       await this.$wsNotifs.disconnect();
       commit('logOut');
     } catch (e) {
-      console.error(e);
+      console.error('user/logout', e);
     }
   },
   async confirm({ commit }, payload) {
