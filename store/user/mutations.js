@@ -1,14 +1,6 @@
-/* eslint-disable no-param-reassign */
-
 export default {
   setLang(state, data) {
     state.currentLang = data;
-  },
-  setEducations(state, data) {
-    state.userData.additionalInfo.educations = data;
-  },
-  setWorkExperiences(state, data) {
-    state.userData.additionalInfo.workExperiences = data;
   },
   setVerificationCode(state, data) {
     state.verificationCode = data;
@@ -21,12 +13,6 @@ export default {
   },
   setUserPortfolioCases(state, data) {
     state.portfolios = data;
-  },
-  setUploaderImage(state, data) {
-    state.medias = data;
-  },
-  setUploaderData(state, data) {
-    state.portfolio = data;
   },
   setCaseImage(state, data) {
     state.medias = data;
@@ -73,7 +59,7 @@ export default {
     this.$cookies.remove('questDraft');
     sessionStorage.clear();
     state.userData = {};
-    state.tokens = { access: '', refresh: '' };
+    state.tokens = { access: null, refresh: null };
   },
   setCurrentUserPosition(state, data) {
     state.currentUserPosition = data;

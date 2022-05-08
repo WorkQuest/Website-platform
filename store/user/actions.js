@@ -41,12 +41,6 @@ export default {
       return e;
     }
   },
-  async addEducation({ commit }, data) {
-    commit('setEducations', data);
-  },
-  async addWorkExperiences({ commit }, data) {
-    commit('setWorkExperiences', data);
-  },
   async getStatistic({ commit }) {
     try {
       const { result } = await this.$axios.$get('/v1/profile/statistic/me');
@@ -354,9 +348,14 @@ export default {
     ]);
   },
   async logout({ commit }) {
-    await this.$wsChatActions.disconnect();
-    await this.$wsNotifs.disconnect();
-    commit('logOut');
+    try {
+      await this.$axios.$post('v1/auth/logout');
+      await this.$wsChatActions.disconnect();
+      await this.$wsNotifs.disconnect();
+      commit('logOut');
+    } catch (e) {
+      console.error(e);
+    }
   },
   async confirm({ commit }, payload) {
     try {
