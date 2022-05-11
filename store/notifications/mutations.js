@@ -6,6 +6,7 @@ export default {
     state.reducedNotifications = notifications;
   },
   setNotifications(state, { notifications, count, needPush }) {
+    // TODO: Переписать!
     state.notifications.list = needPush ? state.notifications.list.concat(notifications) : notifications;
     state.notifications.count = count;
   },
