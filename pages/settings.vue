@@ -305,8 +305,10 @@ export default {
     },
 
     async updateVisibility({ visibilityUser, restrictionRankingStatus }) {
-      this.profileVisibilitySetting[this.isEmployer ? 'ratingStatusCanRespondToQuest'
-        : 'ratingStatusCanInviteMeOnQuest'] = visibilityUser;
+      this.profileVisibilitySetting[this.isEmployer
+        ? 'ratingStatusCanRespondToQuest'
+        : 'ratingStatusCanInviteMeOnQuest'
+      ] = visibilityUser;
       this.profileVisibilitySetting.ratingStatusInMySearch = restrictionRankingStatus;
     },
     async checkValidate() {
