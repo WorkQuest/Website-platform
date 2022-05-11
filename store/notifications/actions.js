@@ -192,7 +192,8 @@ export default {
       NotificationActionFromContract.QUEST_STATUS_UPDATED1,
       NotificationActionFromContract.QUEST_STATUS_UPDATED2,
     ].includes(action)) {
-      notification.sender = { avatar: { url: require('assets/img/app/logo.svg') }, firstName: 'Workquest info' };
+      notification.sender = userRole === UserRole.EMPLOYER ? assignedWorker
+        || { avatar: { url: require('assets/img/app/logo.svg') }, firstName: 'Workquest info' } : user;
       notification.params = {
         ...notification.params,
         title,
