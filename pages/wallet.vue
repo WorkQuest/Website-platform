@@ -404,7 +404,8 @@ export default {
 <style lang="scss" scoped>
 
 .buy-wqt {
-  border-radius: 0 0 6px 6px;
+  margin-top: 20px;
+  border-radius: 6px;
   padding: 20px;
   background: $blue;
   color: $white100;

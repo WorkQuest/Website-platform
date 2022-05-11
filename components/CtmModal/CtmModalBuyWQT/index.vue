@@ -14,6 +14,7 @@
         </div>
         <base-dd
           v-model="selectedNetwork"
+          type="border"
           data-selector="NETWORK"
           :items="networkList"
           is-icon
@@ -25,6 +26,7 @@
         </div>
         <base-dd
           v-model="selectedToken"
+          type="border"
           data-selector="TOKEN"
           :items="tokenList"
         />
