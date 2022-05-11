@@ -37,40 +37,38 @@ export default {
         creatingDate: moment(date || Date.now()).format('MMMM Do YYYY, h:mm'),
         seen: false,
         id,
-        notification: {
-          params: {},
-          action,
-          actionBtn,
-          data: {
-            title,
-            questId,
-            userId,
-            createdAt: moment(date || Date.now()).format('MMMM Do YYYY, h:mm'),
-            message,
-            sender: {
-              avatar: require('assets/img/app/logo.svg'),
-              firstName: 'Workquest info',
-            },
+        params: {},
+        action,
+        actionBtn,
+        data: {
+          title,
+          questId,
+          userId,
+          createdAt: moment(date || Date.now()).format('MMMM Do YYYY, h:mm'),
+          message,
+          sender: {
+            avatar: require('assets/img/app/logo.svg'),
+            firstName: 'Workquest info',
           },
         },
       };
       if (action === LocalNotificationAction.GET_REWARD) {
-        notification.notification.params = { path: `${Path.REFERRAL}` };
+        notification.params = { path: `${Path.REFERRAL}` };
       } else if (action === LocalNotificationAction.QUEST_DRAFT) {
-        notification.notification.params = { path: `${Path.CREATE_QUEST}` };
+        notification.params = { path: `${Path.CREATE_QUEST}` };
       } else if (action === LocalNotificationAction.WIKI) {
-        notification.notification.params = { path: `${Path.WIKI}` };
+        notification.params = { path: `${Path.WIKI}` };
       } else if (action === LocalNotificationAction.KYC) {
-        notification.notification.params = { path: `${Path.SUMSUB}` };
+        notification.params = { path: `${Path.SUMSUB}` };
       } else if (action === LocalNotificationAction.PROFILE_FILLED) {
-        notification.notification.params = { path: `${Path.SETTINGS}` };
+        notification.params = { path: `${Path.SETTINGS}` };
       } else if (action === LocalNotificationAction.TWOFA) {
-        notification.notification.params = { path: `${Path.SETTINGS}` };
+        notification.params = { path: `${Path.SETTINGS}` };
       }
       notification.actionNameKey = `notifications.${action}`;
-      Object.assign(notification.notification.params, { title, isLocal: true });
+      Object.assign(notification.params, { title, isLocal: true });
 
-      return notification.notification;
+      return notification;
     }
     const notification = await setLocalNotification();
 
@@ -282,10 +280,7 @@ export default {
 
   async addNotification({ commit, dispatch }, notification) {
     // TODO: Добавить разделение на локальные и с сервера
-    if (notification.params?.isLocal) {
-      // commit('addNotification', notification);
-      commit('addLocalNotification', notification);
-    }
+    if (notification.params?.isLocal) commit('addLocalNotification', notification);
     const newNotification = await dispatch('setCurrNotificationObject', { notification });
     commit('addNotification', newNotification);
   },
