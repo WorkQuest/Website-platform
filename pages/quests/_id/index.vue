@@ -249,9 +249,12 @@ export default {
     notifications: {
       handler() {
         const { notification } = this.notifications[0];
-        if (this.mounted && this.userRole === UserRole.WORKER && notification
+        if (this.mounted && notification
+          && this.userRole === UserRole.WORKER
+          && notification.data.id === this.$route.params.id
           && notification.action === NotificationAction.QUEST_STATUS_UPDATED
-          && notification.data.status === QuestStatuses.Done && !this.quest.yourReview) this.suggestToAddReview();
+          && notification.data.status === QuestStatuses.Done
+          && !this.quest.yourReview) this.suggestToAddReview();
       },
       immediate: false,
     },
