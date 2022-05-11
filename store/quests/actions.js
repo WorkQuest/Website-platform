@@ -392,13 +392,18 @@ export default {
   }) {
     return await getContractFeeData(method, abi, contractAddress, data);
   },
-  async sendQuestTransaction({ commit }, { contractAddress, method, params = [] }) {
+  async sendQuestTransaction({ commit }, {
+    contractAddress, method, params = [], value,
+  }) {
     try {
-      const res = await sendWalletTransaction(method, {
+      const payload = {
         abi: WorkQuest,
         address: contractAddress,
         data: params,
-      });
+      };
+      if (value) payload.value = value;
+      console.log('payload sendQuestTransaction', payload);
+      const res = await sendWalletTransaction(method, payload);
       return success(res);
     } catch (e) {
       console.error('quests/sendQuestTransaction');
@@ -422,8 +427,8 @@ export default {
     return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.AcceptJobResult });
   },
   // employer отменил (reject) результат работы или прошло 3 дня с момента начала verification
-  async arbitration({ dispatch }, contractAddress) {
-    return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.Arbitration });
+  async arbitration({ dispatch }, { contractAddress, value }) {
+    return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.Arbitration, value });
   },
 
   /** WORKER */

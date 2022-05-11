@@ -206,7 +206,7 @@ export const getTransferFeeData = async (recipient, value) => {
 
 /** CONTRACTS */
 export const sendWalletTransaction = async (_method, {
-  abi, address, value, data,
+  abi, address, value, data = [],
 }) => {
   if (!web3) {
     console.error('web3 is undefined');
@@ -217,7 +217,6 @@ export const sendWalletTransaction = async (_method, {
     const gasPrice = await web3.eth.getGasPrice();
     const accountAddress = getWalletAddress();
     const txData = inst.methods[_method].apply(null, data).encodeABI();
-
     if (value) {
       const gas = await inst.methods[_method].apply(null, data).estimateGas({
         from: accountAddress,

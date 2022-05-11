@@ -523,7 +523,7 @@ export default {
     },
     async disputePay() {
       // TODO: Дописать логику, подключить конктакт
-      const { contractAddress } = this.quest;
+      const { contractAddress, id } = this.quest;
       console.log('contractAddress', contractAddress);
       const { result: { fee } } = await this.$store.dispatch('quests/getFeeDataJobMethod', {
         method: 'feeTx',
@@ -531,15 +531,14 @@ export default {
         contractAddress: process.env.WORKNET_WQ_FACTORY,
       });
       console.log('FeeTx', fee);
-      const value = new BigNumber(fee).toString();
-      console.log(' value', value);
-      const payload = { abi: WorkQuest, address: contractAddress, value };
-      const payment = await sendWalletTransaction('arbitration', payload);
+      const value = new BigNumber(fee).shiftedBy(18).toString();
+      console.log('value', value);
+      const feeRes = await this.$store.dispatch('quests/arbitration', { contractAddress, value });
       // TODO: Исправить на fee
-      console.log('c', payment);
-      if (payment.ok) {
+      console.log('feeRes', feeRes);
+      if (feeRes.ok) {
         // TODO: Добавить после оплаты диспута
-        return this.ShowModal({ key: modals.openADispute, questId: this.quest.id });
+        return this.ShowModal({ key: modals.openADispute, questId: id });
       }
       return this.ShowModalFail({
         title: 'Payment Error', subtitle: 'Please, try later...', img: images.ERROR,
