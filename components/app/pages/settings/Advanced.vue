@@ -8,18 +8,18 @@
         {{ $t('meta.settings') }}
       </div>
       <div
-        v-for="(radio) in radioButtons"
-        :key="radio.index"
-        data-selector="ADVANCED-RADIOS"
+        v-for="(checkBox) in checkBoxButtons"
+        :key="checkBox.index"
+        data-selector="ADVANCED-CHECKBOX"
         class="advanced__options advanced__options_left"
       >
         <div class="advanced__subtitle">
-          {{ radio[0].title }}
+          {{ checkBox[0].title }}
         </div>
         <div
-          v-for="input in radio"
+          v-for="input in checkBox"
           :key="input.index"
-          data-selector="ADVANCED-WHO-CAN-SEE-RADIO"
+          data-selector="ADVANCED-WHO-CAN-SEE-CHECKBox"
           class="advanced__option"
           @click="setSelectedCheckboxByBlock(input.name, input.value)"
         >
@@ -27,7 +27,7 @@
             :id="input.id"
             :name="input.id"
             :value="isCheckboxChecked(input.name, input.value)"
-            :data-selector="`ADVANCED-WHO-CAN-SEE-RADIO-${input.id}`"
+            :data-selector="`ADVANCED-WHO-CAN-SEE-CHECKBOX-${input.id}`"
             :label="String($t(input.local))"
           />
         </div>
@@ -86,7 +86,7 @@ export default {
         visibilityUser: [],
         restrictionRankingStatus: [],
       },
-      radioButtons: {
+      checkBoxButtons: {
         visibilityUser: [],
         restrictionRankingStatus: [],
       },
@@ -135,14 +135,14 @@ export default {
     },
   },
   beforeMount() {
-    this.radioButtons.restrictionRankingStatus = RatingFilter.map((item, i) => ({
+    this.checkBoxButtons.restrictionRankingStatus = RatingFilter.map((item, i) => ({
       title: this.$t(`settings.${this.userRole === UserRole.EMPLOYER ? 'whoCouldIInvite' : 'whoCouldInviteMe'}`),
       id: item.key,
       value: item.value,
       local: i === 0 ? 'settings.allUsers' : `quests.rating.${item.key}`,
       name: 'restrictionRankingStatus',
     }));
-    this.radioButtons.visibilityUser = RatingFilter.map((item, i) => ({
+    this.checkBoxButtons.visibilityUser = RatingFilter.map((item, i) => ({
       title: this.$t(`settings.${this.userRole === UserRole.EMPLOYER ? 'whoAppearsInMyListEmployees' : 'whoAppearsInMyListEmployers'}`),
       id: item.key,
       value: item.value,
