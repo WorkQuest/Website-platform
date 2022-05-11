@@ -30,47 +30,40 @@ export default {
   async createLocalNotification({ commit, getters, dispatch }, {
     id, action, message, title, actionBtn, questId, userId, date,
   }) {
-    async function setLocalNotification() {
-      if (!action && !message && !title) return {};
-      const notification = {
-        actionNameKey: `notifications.${action}`,
-        creatingDate: moment(date || Date.now()).format('MMMM Do YYYY, h:mm'),
-        seen: false,
-        id,
-        params: {},
-        action,
-        actionBtn,
-        data: {
-          title,
-          questId,
-          userId,
-          createdAt: moment(date || Date.now()).format('MMMM Do YYYY, h:mm'),
-          message,
-          sender: {
-            avatar: require('assets/img/app/logo.svg'),
-            firstName: 'Workquest info',
-          },
+    if (!action && !message && !title) return;
+    const notification = {
+      actionNameKey: `notifications.${action}`,
+      seen: false,
+      id,
+      action,
+      actionBtn,
+      data: {
+        title,
+        questId,
+        userId,
+        createdAt: moment(date || Date.now()).format('MMMM Do YYYY, h:mm'),
+        message,
+        sender: {
+          avatar: require('assets/img/app/logo.svg'),
+          firstName: 'Workquest info',
         },
-      };
-      if (action === LocalNotificationAction.GET_REWARD) {
-        notification.params = { path: `${Path.REFERRAL}` };
-      } else if (action === LocalNotificationAction.QUEST_DRAFT) {
-        notification.params = { path: `${Path.CREATE_QUEST}` };
-      } else if (action === LocalNotificationAction.WIKI) {
-        notification.params = { path: `${Path.WIKI}` };
-      } else if (action === LocalNotificationAction.KYC) {
-        notification.params = { path: `${Path.SUMSUB}` };
-      } else if (action === LocalNotificationAction.PROFILE_FILLED) {
-        notification.params = { path: `${Path.SETTINGS}` };
-      } else if (action === LocalNotificationAction.TWOFA) {
-        notification.params = { path: `${Path.SETTINGS}` };
-      }
-      notification.actionNameKey = `notifications.${action}`;
-      Object.assign(notification.params, { title, isLocal: true });
-
-      return notification;
+      },
+    };
+    if (action === LocalNotificationAction.GET_REWARD) {
+      notification.params = { path: `${Path.REFERRAL}` };
+    } else if (action === LocalNotificationAction.QUEST_DRAFT) {
+      notification.params = { path: `${Path.CREATE_QUEST}` };
+    } else if (action === LocalNotificationAction.WIKI) {
+      notification.params = { path: `${Path.WIKI}` };
+    } else if (action === LocalNotificationAction.KYC) {
+      notification.params = { path: `${Path.SUMSUB}` };
+    } else if (action === LocalNotificationAction.PROFILE_FILLED) {
+      notification.params = { path: `${Path.SETTINGS}` };
+    } else if (action === LocalNotificationAction.TWOFA) {
+      notification.params = { path: `${Path.SETTINGS}` };
     }
-    const notification = await setLocalNotification();
+    notification.actionNameKey = `notifications.${action}`;
+    Object.assign(notification.params, { title, isLocal: true });
 
     const notificationList = getters.getNotificationsList;
     async function checkAddedLocalNotification() {
