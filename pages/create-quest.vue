@@ -164,7 +164,7 @@ import modals from '~/store/modals/modals';
 import {
   PriorityFilter, tokenMap, TokenSymbols, TypeOfJobFilter, WorkplaceIndex,
 } from '~/utils/enums';
-import { CommissionForCreatingAQuest } from '~/utils/сonstants/quests';
+import { CommissionForCreatingAQuest } from '~/utils/сonstants/commission';
 import { ERC20 } from '~/abi';
 import { error, success } from '~/utils/web3';
 

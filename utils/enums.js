@@ -28,6 +28,7 @@ export const Chains = {
   ETHEREUM: 'ETH',
   BINANCE: 'BSC',
   WORKNET: 'WORKNET',
+  POLYGON: 'POLYGON',
 };
 
 export const StakingTypes = {
@@ -241,6 +242,7 @@ export const TokenSymbols = Object.freeze({
   ETH: 'ETH',
   WBNB: 'WBNB',
   WETH: 'WETH',
+  USDT: 'USDT',
 });
 
 export const TokenSymbolByContract = Object.freeze({

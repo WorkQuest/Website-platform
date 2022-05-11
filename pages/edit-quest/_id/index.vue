@@ -274,9 +274,10 @@ import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { Path, TokenSymbols } from '~/utils/enums';
 import {
-  QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses, CommissionForCreatingAQuest,
+  QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses,
 } from '~/utils/сonstants/quests';
 import { hashText } from '~/utils/wallet';
+import { CommissionForCreatingAQuest } from '~/utils/сonstants/commission';
 
 const { GeoCode } = require('geo-coder');
 

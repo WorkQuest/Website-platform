@@ -10,7 +10,7 @@
             <div>{{ $t('wallet.buyWQT.sub') }}</div>
             <base-btn
               mode="outline"
-              @click="ShowModal({ key: 'buyWQT' })"
+              @click="showBuyWQTModal"
             >
               {{ $t('wallet.buyWQT.buyButton') }}
             </base-btn>
@@ -174,6 +174,7 @@ import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { ERC20 } from '~/abi/index';
 import {
+  Chains,
   tokenMap, TokenSymbolByContract, TokenSymbols, WalletTables,
 } from '~/utils/enums';
 import { getStyledAmount } from '~/utils/wallet';
@@ -204,6 +205,9 @@ export default {
       frozenBalance: 'wallet/getFrozenBalance',
       transactionsCount: 'wallet/getTransactionsCount',
       isWalletConnected: 'wallet/getIsWalletConnected',
+
+      // buy wqt logic
+      isMetamaskConnected: 'web3/isConnected',
     }),
     wqAddress() {
       return this.convertToBech32('wq', this.userWalletAddress);
@@ -302,6 +306,14 @@ export default {
     await this.$store.dispatch('wallet/unsubscribeWS');
   },
   methods: {
+    async showBuyWQTModal() {
+      if (!this.isMetamaskConnected) {
+        if (await this.$store.dispatch('web3/connect', { chain: Chains.ETHEREUM }) === false) {
+          return;
+        }
+      }
+      this.ShowModal({ key: modals.buyWQT });
+    },
     getSwitchButtonMode(btn) {
       if (btn === this.selectedWalletTable) return '';
       return 'outline';

@@ -56,6 +56,9 @@ export const getChainIdByChain = (chain) => {
       return ChainsId.BSC_MAIN;
     case Chains.WORKNET:
       return ChainsId.WORKNET_TEST;
+    case Chains.POLYGON:
+      if (!isProd) return ChainsId.MUMBAI_TEST;
+      return ChainsId.MATIC_MAIN;
     default:
       console.log(chain);
       throw error(-1, `wrong chain name: ${chain} ${Chains.BINANCE} ${Chains.ETHEREUM}`);
@@ -95,16 +98,20 @@ export const goToChain = async (chain) => {
       netId: +chainIdParam,
     };
     await store.dispatch('web3/updateAccount', account);
-    return { ok: true };
+    return success();
   } catch (e) {
     if (e.code === 4902) {
       return await addedNetwork(chain);
+    }
+    if (e.code === -32002) {
+      showToast('Please open Metamask to change network');
+      return error(e.code, 'switch chain error', e);
     }
     if (typeof window.ethereum !== 'undefined') {
       showToast('Switch chain error:', `${e.message}`, 'danger');
       return error(500, 'switch chain error', e);
     }
-    return { ok: false };
+    return error(e.code);
   }
 };
 
