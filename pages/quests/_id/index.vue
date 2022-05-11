@@ -251,7 +251,7 @@ export default {
         const { notification } = this.notifications[0];
         if (this.mounted && notification
           && this.userRole === UserRole.WORKER
-          && notification.data.id === this.$route.params.id
+          && notification.data.questId === this.$route.params.id
           && notification.action === NotificationAction.QUEST_STATUS_UPDATED
           && notification.data.status === QuestStatuses.Done
           && !this.quest.yourReview) this.suggestToAddReview();
@@ -273,7 +273,6 @@ export default {
     }
     this.initMapData();
     if (this.userRole === UserRole.WORKER) {
-      console.log(res);
       await this.getSameQuests();
       if (!res.yourReview) await this.suggestToAddReview();
     }
