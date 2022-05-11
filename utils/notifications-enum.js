@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/prefer-default-export
 
 export const NotificationAction = {
+  QUEST_STATUS_UPDATED: 'QuestStatusUpdated',
   QUEST_STARTED: 'questStarted',
   WORKER_REJECTED_QUEST: 'workerRejectedQuest',
   WORKER_ACCEPTED_QUEST: 'workerAcceptedQuest',
@@ -21,6 +22,20 @@ export const NotificationAction = {
   COMMENT_LIKED: 'commentLiked',
   NEW_COMMENT_IN_DISCUSSION: 'newCommentInDiscussion',
   NEW_DISCUSSION_LIKE: 'newDiscussionLike',
+};
+
+export const LocalNotificationAction = {
+  KYC: 'kyc',
+  TWOFA: '2fa',
+  WIKI: 'wiki',
+  GET_REWARD: 'reward',
+  PROFILE_FILLED: 'filled',
+  RATE_THE_QUEST: 'quest',
+  QUEST_DRAFT: 'questDraft',
+};
+
+export const NotificationActionFromContract = {
+  QUEST_EDITED_ON_CONTRACT: 'QuestEditedOnContract',
 };
 
 export const notificationsQuestsActions = Object.freeze([
@@ -64,19 +79,3 @@ export const notificationCommonFilterAction2 = Object.freeze([
   NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST,
   NotificationAction.WAIT_WORKER,
 ]);
-
-export const NotificationActionFromContract = {
-  QUEST_STATUS_UPDATED1: 'QuestStatusUpdated',
-  QUEST_STATUS_UPDATED2: 'questStatusUpdated',
-  QUEST_EDITED_ON_CONTRACT: 'QuestEditedOnContract',
-};
-
-export const LocalNotificationAction = {
-  KYC: 'kyc',
-  TWOFA: '2fa',
-  WIKI: 'wiki',
-  GET_REWARD: 'reward',
-  PROFILE_FILLED: 'filled',
-  RATE_THE_QUEST: 'quest',
-  QUEST_DRAFT: 'questDraft',
-};

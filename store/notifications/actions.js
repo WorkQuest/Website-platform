@@ -76,7 +76,6 @@ export default {
 
     const notificationList = getters.getNotificationsList;
     async function checkAddedLocalNotification() {
-      // TODO: Доработать!
       const isAdded = () => notificationList.some((n) => Object.entries(LocalNotificationAction).includes(n.actionNameKey));
       return isAdded();
     }
@@ -188,10 +187,7 @@ export default {
 
     if (notificationsQuestsActions.includes(action)) {
       await updateQuests();
-    } else if ([
-      NotificationActionFromContract.QUEST_STATUS_UPDATED1,
-      NotificationActionFromContract.QUEST_STATUS_UPDATED2,
-    ].includes(action)) {
+    } else if (action === NotificationAction.QUEST_STATUS_UPDATED) {
       notification.sender = userRole === UserRole.EMPLOYER ? assignedWorker
         || { avatar: { url: require('assets/img/app/logo.svg') }, firstName: 'Workquest info' } : user;
       notification.params = {
@@ -253,8 +249,7 @@ export default {
       };
     } else if ([
       ...notificationsQuestsActions,
-      NotificationActionFromContract.QUEST_STATUS_UPDATED1,
-      NotificationActionFromContract.QUEST_STATUS_UPDATED2,
+      NotificationAction.QUEST_STATUS_UPDATED,
     ].includes(action)) {
       notification.params = {
         ...notification.params,
