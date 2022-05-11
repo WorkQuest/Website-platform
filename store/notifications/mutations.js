@@ -5,7 +5,7 @@ export default {
   setReducedNotifications(state, notifications) {
     state.reducedNotifications = notifications;
   },
-  setNotifications(state, { result: { notifications, count }, needPush }) {
+  setNotifications(state, { notifications, count, needPush }) {
     state.notifications.list = needPush ? state.notifications.list.concat(notifications) : notifications;
     state.notifications.count = count;
   },
@@ -21,9 +21,6 @@ export default {
       return notif;
     });
     this.commit('notifications/setUnreadNotifsCount', 0 - ids.length);
-  },
-  addLocalNotification(state, notification) {
-    state.localNotifications.push(notification);
   },
   addNotification(state, notification) {
     state.notifications.list.push(notification);

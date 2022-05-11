@@ -111,19 +111,19 @@ export default {
     try {
       const currConfig = config || { params: { limit: 2, offset: 0 } };
       const { data: { result, ok } } = await this.$axios.get(`${process.env.NOTIFS_URL}notifications`, currConfig);
-
-      if (result.notifications.length) {
-        result.notifications.map(async (notification) => await dispatch('setCurrNotificationObject', notification));
+      const { notifications, count } = result;
+      if (notifications.length) {
+        notifications.map(async (notification) => await dispatch('setCurrNotificationObject', notification));
       }
 
       if (!config) {
-        commit('setReducedNotifications', result.notifications);
+        commit('setReducedNotifications', notifications);
         commit('setUnreadNotifsCount', result.unreadCount);
       }
 
       const needPush = config?.params.limit === 1;
 
-      commit('setNotifications', { result, needPush });
+      commit('setNotifications', { notifications, count, needPush });
 
       return ok;
     } catch (e) {
@@ -270,8 +270,6 @@ export default {
   },
 
   async addNotification({ commit, dispatch }, notification) {
-    // TODO: Добавить разделение на локальные и с сервера
-    if (notification.params?.isLocal) commit('addLocalNotification', notification);
     const newNotification = await dispatch('setCurrNotificationObject', { notification });
     commit('addNotification', newNotification);
   },
