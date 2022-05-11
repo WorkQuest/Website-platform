@@ -536,7 +536,7 @@ export default {
       const feeRes = await this.$store.dispatch('quests/arbitration', { contractAddress, value });
       // TODO: Исправить на fee
       console.log('feeRes', feeRes);
-      if (feeRes.ok) {
+      if (feeRes.result.ok) {
         // TODO: Добавить после оплаты диспута
         return this.ShowModal({ key: modals.openADispute, questId: id });
       }
