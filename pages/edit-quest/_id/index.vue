@@ -538,13 +538,14 @@ export default {
           if (new BigNumber(this.balanceData.WUSD.fullBalance).isLessThan(depositAmount)) {
             this.ShowToast(`${this.$t('errors.transaction.notEnoughFunds')} (${TokenSymbols.WUSD})`);
             this.SetLoader(false);
-            reject(new Error('error'));
+            reject();
             return;
           }
           await this.makeApprove({ wusdAddress, contractAddress, depositAmount })
             .then(async (result) => {
               await resolve(result);
             }).catch((error) => {
+              this.SetLoader(false);
               reject(error);
             });
         } else { // Quest cost decrease
@@ -575,8 +576,8 @@ export default {
 
           this.SetLoader(false);
           if (!approveFee.ok) {
-            this.ShowToast(approveFee.msg);
-            reject(new Error('Approve fee is not okay'));
+            this.ShowToast('Approve error');
+            reject();
             return;
           }
 
@@ -598,7 +599,7 @@ export default {
               });
               if (!approveOk) {
                 this.ShowToast('Approve error');
-                reject(new Error('Approve is not okay'));
+                reject();
                 return;
               }
               this.ShowToast('Approving done', 'Approve');

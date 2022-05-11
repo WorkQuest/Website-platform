@@ -328,7 +328,7 @@ export default {
     setEmployerBtnsArr() {
       if (this.userData.id !== this.quest.userId) return [];
       const {
-        Dispute, Created, WaitWorker, WaitEmployerConfirm,
+        Dispute, Created, WaitEmployerConfirm,
       } = InfoModeEmployer;
       let arr = [];
       switch (this.infoDataMode) {
