@@ -2,6 +2,20 @@
   <div class="wallet">
     <div class="wallet__container">
       <div class="wallet__body">
+        <div class="buy-wqt">
+          <div class="buy-wqt__title">
+            {{ $t('wallet.buyWQT.title') }}
+          </div>
+          <div class="buy-wqt__sub">
+            <div>{{ $t('wallet.buyWQT.sub') }}</div>
+            <base-btn
+              mode="outline"
+              @click="ShowModal({ key: 'buyWQT' })"
+            >
+              {{ $t('wallet.buyWQT.buyButton') }}
+            </base-btn>
+          </div>
+        </div>
         <div class="wallet__nav">
           <span class="wallet__title">{{ $t('meta.wallet') }}</span>
           <div class="wallet__address">
@@ -388,6 +402,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.buy-wqt {
+  border-radius: 0 0 6px 6px;
+  padding: 20px;
+  background: $blue;
+  color: $white100;
+  &__title {
+    font-size: 22px;
+    font-weight: 500;
+  }
+  &__sub {
+    display: grid;
+    grid-template-columns: 80% 1fr;
+  }
+}
 
 .table {
   &__container {

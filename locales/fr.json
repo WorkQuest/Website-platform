@@ -997,6 +997,8 @@
       "youHaveAQuestDraft": "You have a quest draft. Cleat it?",
       "saveQuestDraft": "Save quest draft?"
     },
+    "token": "Token",
+    "network": "Network",
     "transactionError": "Transaction error",
     "fromAddress": "from",
     "toAddress": "to",
@@ -1334,6 +1336,11 @@
     "transfer": "Acheter/Envoyer",
     "addCardProposal": "Ajoutez votre propre carte pour assurer un retrait facile",
     "addCard": "Ajouter une carte",
+    "buyWQT": {
+      "buyButton": "Buy WQT",
+      "title": "Buy first WQT!",
+      "sub": "Donec rutrum congue leo eget malesuada. Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem."
+    },
     "collateral": {
       "balance": "Collateral balance",
       "coin": "coin",

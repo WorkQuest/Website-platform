@@ -80,4 +80,5 @@ export default {
   valueSend: 'valueSend',
   downloadApp: 'downloadApp',
   claimRewards: 'claimRewards',
+  buyWQT: 'buyWQT',
 };

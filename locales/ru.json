@@ -997,6 +997,8 @@
       "youHaveAQuestDraft": "У вас есть черновик квеста. Очистить?",
       "saveQuestDraft": "Сохранить черновик квеста?"
     },
+    "token": "Токен",
+    "network": "Сеть",
     "transactionError": "Ошибка транзакции",
     "fromAddress": "с",
     "toAddress": "на",
@@ -1334,6 +1336,11 @@
     "transfer": "Buy / Send",
     "addCardProposal": "Добавьте банковскую карту для удобного вывода",
     "addCard": "Добавить карту",
+    "buyWQT": {
+      "buyButton": "Buy WQT",
+      "title": "Buy first WQT!",
+      "sub": "Donec rutrum congue leo eget malesuada. Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem."
+    },
     "collateral": {
       "balance": "Залоговый баланс",
       "coin": "монета",

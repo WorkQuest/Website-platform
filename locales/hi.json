@@ -997,6 +997,8 @@
       "youHaveAQuestDraft": "You have a quest draft. Cleat it?",
       "saveQuestDraft": "Save quest draft?"
     },
+    "token": "Token",
+    "network": "Network",
     "transactionError": "Transaction error",
     "fromAddress": "from",
     "toAddress": "to",
@@ -1334,6 +1336,11 @@
     "transfer": "खरीदें / भेजें",
     "addCardProposal": "आसान निकासी के लिए अपना कार्ड जोड़ें",
     "addCard": "कार्ड जोड़ें",
+    "buyWQT": {
+      "buyButton": "Buy WQT",
+      "title": "Buy first WQT!",
+      "sub": "Donec rutrum congue leo eget malesuada. Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem."
+    },
     "collateral": {
       "balance": "Collateral balance",
       "coin": "coin",
