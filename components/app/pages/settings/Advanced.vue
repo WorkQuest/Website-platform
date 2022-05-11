@@ -20,7 +20,7 @@
           v-for="input in checkBox"
           :key="input.index"
           data-selector="ADVANCED-WHO-CAN-SEE-CHECKBox"
-          class="advanced__option"
+          class="advanced__option advanced__checkBox"
           @click="setSelectedCheckboxByBlock(input.name, input.value)"
         >
           <base-checkbox
@@ -285,6 +285,9 @@ export default {
         max-width: 220px;
       }
     }
+  }
+  &__checkBox {
+    width: fit-content;
   }
   &__option-buttons {
     min-width: 220px;
