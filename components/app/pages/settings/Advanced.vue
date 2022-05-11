@@ -181,13 +181,16 @@ export default {
       if (isHas && isAllStatuses) {
         this.checkboxBlocks[checkBoxBlockName] = [];
       } else if (isHas) {
-        this.checkboxBlocks[checkBoxBlockName] = this.checkboxBlocks[checkBoxBlockName].filter((e) => e !== value);
+        this.checkboxBlocks[checkBoxBlockName] = this.checkboxBlocks[checkBoxBlockName].filter((e) => e !== RatingStatus.AllStatuses || e
+          !== value);
       } else if (isAllStatuses) {
         this.checkboxBlocks[checkBoxBlockName] = [RatingStatus.AllStatuses];
       } else {
+        this.checkboxBlocks[checkBoxBlockName] = this.checkboxBlocks[checkBoxBlockName].filter((e) => e
+          !== RatingStatus.AllStatuses);
         this.checkboxBlocks[checkBoxBlockName].push(value);
+        this.checkMaskAllUser();
       }
-
       this.$emit('updateVisibility', this.checkboxBlocks);
       return null;
     },
@@ -203,10 +206,10 @@ export default {
         RatingStatus.TopRanked,
       ];
       if (JSON.stringify(this.checkboxBlocks.visibilityUser.sort()) === JSON.stringify(ratingStatus.sort())) {
-        this.checkboxBlocks.visibilityUser.push(RatingStatus.AllStatuses);
+        this.checkboxBlocks.visibilityUser = [RatingStatus.AllStatuses];
       }
       if (JSON.stringify(this.checkboxBlocks.restrictionRankingStatus.sort()) === JSON.stringify(ratingStatus.sort())) {
-        this.checkboxBlocks.restrictionRankingStatus.push(RatingStatus.AllStatuses);
+        this.checkboxBlocks.restrictionRankingStatus = [RatingStatus.AllStatuses];
       }
     },
   },
