@@ -269,8 +269,6 @@ export default {
       notification.sender = assignedWorker;
     } else if (worker && notificationEmployerFilterActions.includes(action) && !notification.sender) {
       notification.sender = worker;
-    } else if (worker && notificationEmployerFilterActions.includes(action) && !notification.sender) {
-      notification.sender = worker;
     } else if (employer && notificationCommonFilterAction2.includes(action) && !notification.sender) {
       notification.sender = employer;
     }
