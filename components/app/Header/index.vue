@@ -148,7 +148,7 @@
                   <img
                     id="userAvatarDesktop"
                     class="profile__img"
-                    :src="imageData || EmptyAvatar()"
+                    :src="imageData || $options.images.EMPTY_AVATAR"
                     alt=""
                   >
                 </div>
@@ -210,7 +210,7 @@
               <img
                 id="userAvatarMobile"
                 class="profile__img"
-                :src="imageData || EmptyAvatar()"
+                :src="imageData || $options.images.EMPTY_AVATAR"
                 alt=""
               >
             </div>
@@ -310,12 +310,14 @@
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import moment from 'moment';
+import { images } from '~/utils/images';
 import { MessageAction, UserRole, Path } from '~/utils/enums';
 
 export default {
   name: 'Header',
   middleware: 'auth',
   UserRole,
+  images,
   directives: {
     ClickOutside,
   },

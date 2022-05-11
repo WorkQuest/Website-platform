@@ -107,6 +107,7 @@ import { mapGetters } from 'vuex';
 import {
   UserRole, TokenSymbols, Path, UserRating, Ratings,
 } from '~/utils/enums';
+import { images } from '~/utils/images';
 
 export default {
   name: 'GMapInfoBlock',
@@ -150,7 +151,7 @@ export default {
       if (!Object.keys(this.item).length) return {};
       if (this.userRole === UserRole.WORKER) {
         return {
-          avatar: this.item.user.avatar ? this.item.user.avatar.url : this.EmptyAvatar(),
+          avatar: this.item.user.avatar ? this.item.user.avatar.url : images.EMPTY_AVATAR,
           alt: this.UserName(this.item.user.firstName, this.item.user.lastName),
           userName: this.UserName(this.item.user.firstName, this.item.user.lastName),
           label: this.getPriority(this.item.priority),
@@ -161,7 +162,7 @@ export default {
         };
       }
       return {
-        avatar: this.item.avatar ? this.item.avatar.url : this.EmptyAvatar(),
+        avatar: this.item.avatar ? this.item.avatar.url : images.EMPTY_AVATAR,
         alt: this.UserName(this.item.firstName, this.item.lastName),
         userName: this.UserName(this.item.firstName, this.item.lastName),
         status: this.item?.ratingStatistic?.status || null,

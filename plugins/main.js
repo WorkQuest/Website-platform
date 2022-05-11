@@ -46,15 +46,6 @@ Vue.mixin({
       await Promise.all(fetchUrlsData);
       return medias;
     },
-    async signerUser(callback) {
-      if (this.$store.getters['user/hasUserAddress']) {
-        callback();
-      } else {
-        const r = await this.$store.dispatch('user/checkWallet');
-        // eslint-disable-next-line no-unused-expressions
-        r.ok && callback();
-      }
-    },
     ShowModal(payload) {
       this.$store.dispatch('modals/show', {
         key: modals.default,
@@ -127,13 +118,6 @@ Vue.mixin({
       }
       return '-';
     },
-    Require(img) {
-      // eslint-disable-next-line global-require
-      // return require(`assets/img/${img}`);
-    },
-    NumberFormat(value, fixed) {
-      return (+value && new Intl.NumberFormat('ru', { maximumFractionDigits: fixed || 8 }).format(value || 0)) || 0;
-    },
     GetLocation() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(this.FormatPosition);
@@ -153,9 +137,6 @@ Vue.mixin({
         longitude: position.coords.longitude,
       };
       this.$store.dispatch('user/setCurrentPosition', payload);
-    },
-    EmptyAvatar() {
-      return require('~/assets/img/app/avatar_empty.png');
     },
     UserName(firstName, lastName) {
       if (firstName || lastName) return `${firstName || ''} ${lastName || ''}`;
@@ -271,7 +252,6 @@ Vue.mixin({
       }
       return 2;
     },
-
     ScrollToTop: () => window.scrollTo(0, 0),
     IsProd: () => process.env.PROD === 'true',
     ShowModalSuccess({
