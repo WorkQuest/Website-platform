@@ -166,7 +166,7 @@ import {
   ResponseStatus,
   questPriority,
   QuestModeReview,
-  TokenSymbols,
+  TokenSymbols, NotificationAction,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 import {
@@ -184,6 +184,7 @@ export default {
       questLocation: { lat: 0, lng: 0 },
       actionBtnsArr: [],
       sameQuest: {},
+      mounted: false,
     };
   },
   computed: {
@@ -198,6 +199,7 @@ export default {
       otherQuestsCount: 'quests/getAllQuestsCount',
       otherQuests: 'quests/getAllQuests',
       isLoading: 'main/getIsLoading',
+      notifications: 'user/getNotificationsList',
     }),
     questReward() {
       return new BigNumber(this.quest.price).shiftedBy(-18).toString();
@@ -244,6 +246,18 @@ export default {
       if (oldVal === undefined || newVal === oldVal) return;
       this.setActionBtnsArr();
     },
+    notifications: {
+      handler() {
+        const { notification } = this.notifications[0];
+        if (this.mounted && notification
+          && this.userRole === UserRole.WORKER
+          && notification.data.questId === this.$route.params.id
+          && notification.action === NotificationAction.QUEST_STATUS_UPDATED
+          && notification.data.status === QuestStatuses.Done
+          && !this.quest.yourReview) this.suggestToAddReview();
+      },
+      immediate: false,
+    },
   },
   beforeCreate() {
     this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
@@ -258,10 +272,16 @@ export default {
       return;
     }
     this.initMapData();
-    if (this.userRole === UserRole.WORKER) await this.getSameQuests();
+    if (this.userRole === UserRole.WORKER) {
+      await this.getSameQuests();
+      if (!res.yourReview) await this.suggestToAddReview();
+    }
     await this.getResponsesToQuest();
     await this.setActionBtnsArr();
     this.SetLoader(false);
+  },
+  mounted() {
+    this.mounted = true;
   },
   async beforeDestroy() {
     await this.$store.dispatch('google-map/resetMap');
@@ -564,6 +584,8 @@ export default {
         img: require('~/assets/img/ui/questAgreed.svg'),
         title: this.$t('meta.questInfo'),
         subtitle: this.modalMode(modalMode),
+        isNotClose: true,
+        callback: () => this.suggestToAddReview(),
       });
     },
     modalMode(modalMode) {
@@ -679,6 +701,16 @@ export default {
       this.ShowModal({
         key: modals.sendARequest,
         questId: this.quest.id,
+      });
+    },
+    async suggestToAddReview() {
+      this.ShowModal({
+        key: modals.areYouSure,
+        title: ' ',
+        text: this.$t(`modals.${this.userRole === UserRole.WORKER ? 'wouldReviewEmployer' : 'wouldReviewEmployee'}`),
+        okBtnTitle: this.$t('meta.btns.ok'),
+        isNotClose: true,
+        okBtnFunc: () => this.showReviewModal(0, this.quest.id),
       });
     },
   },
