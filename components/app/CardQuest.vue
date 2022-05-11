@@ -26,7 +26,7 @@
             <img
               class="avatar__image"
               :alt="`${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}`"
-              :src="quest.user && quest.user.avatar ? quest.user.avatar.url : EmptyAvatar()"
+              :src="quest.user && quest.user.avatar ? quest.user.avatar.url : $options.images.EMPTY_AVATAR"
             >
           </div>
           <div class="card-quest__text card-quest__text_title">
@@ -87,7 +87,7 @@
           >
             <img
               class="user__avatar"
-              :src="quest.assignedWorker.avatar ? quest.assignedWorker.avatar.url : EmptyAvatar()"
+              :src="quest.assignedWorker.avatar ? quest.assignedWorker.avatar.url : $options.images.EMPTY_AVATAR"
               :alt="`${ quest.assignedWorker ? UserName(quest.assignedWorker.firstName, quest.assignedWorker.lastName) : '' }`"
             >
             <div class="user__name">
@@ -177,9 +177,11 @@ import {
 } from '~/utils/enums';
 import { QuestStatuses } from '~/utils/сonstants/quests';
 import modals from '~/store/modals/modals';
+import { images } from '~/utils/images';
 
 export default {
   name: 'CardQuest',
+  images,
   UserRole,
   TokenSymbols,
   QuestStatuses,
