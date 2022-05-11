@@ -254,6 +254,7 @@ export default {
           && notification.data.questId === this.$route.params.id
           && notification.action === NotificationAction.QUEST_STATUS_UPDATED
           && notification.data.status === QuestStatuses.Done
+          && this.userData.id === notification.data.assignedWorkerId
           && !this.quest.yourReview) this.suggestToAddReview();
       },
       immediate: false,
@@ -274,7 +275,8 @@ export default {
     this.initMapData();
     if (this.userRole === UserRole.WORKER) {
       await this.getSameQuests();
-      if (!res.yourReview) await this.suggestToAddReview();
+      if (!res.yourReview && this.quest.status === QuestStatuses.Done
+        && this.userData.id === this.quest.assignedWorkerId) await this.suggestToAddReview();
     }
     await this.getResponsesToQuest();
     await this.setActionBtnsArr();
