@@ -15,7 +15,7 @@
         <div class="block__avatar avatar">
           <img
             class="avatar__img"
-            :src="userData.avatar && userData.avatar.url ? userData.avatar.url : EmptyAvatar()"
+            :src="userData.avatar && userData.avatar.url ? userData.avatar.url : $options.images.EMPTY_AVATAR"
             :alt="userData.avatar && userData.avatar.url ? userData.avatar.url : 'avatar_empty'"
             loading="lazy"
           >
@@ -199,9 +199,11 @@ import {
   UserRole, UserRating, Path, RaiseViewStatus,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
+import { images } from '~/utils/images';
 
 export default {
   name: 'UserInfo',
+  images,
   computed: {
     ...mapGetters({
       mainUser: 'user/getUserData',

@@ -10,7 +10,7 @@
             <div class="ctm-modal__user-data">
               <img
                 class="user-data__img"
-                :src="userData.avatar && userData.avatar.url ? userData.avatar.url : EmptyAvatar()"
+                :src="userData.avatar && userData.avatar.url ? userData.avatar.url : $options.images.EMPTY_AVATAR"
                 :alt="userData.avatar && userData.avatar.url ? userData.avatar.url : 'avatar_empty'"
               >
               <div class="user-data__name">
@@ -79,9 +79,11 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import { Path } from '~/utils/enums';
+import { images } from '~/utils/images';
 
 export default {
   name: 'ModalInvitation',
+  images,
   data() {
     return {
       questIndex: 0,

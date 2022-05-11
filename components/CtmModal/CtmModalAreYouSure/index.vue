@@ -49,9 +49,9 @@ export default {
   },
   methods: {
     async handleApply() {
-      const { okBtnFunc } = this.options;
+      const { okBtnFunc, isNotClose } = this.options;
       if (okBtnFunc) await okBtnFunc();
-      this.CloseModal();
+      if (!isNotClose) this.CloseModal();
     },
     async handleCancel() {
       const { cancelBtnFunc } = this.options;

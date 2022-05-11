@@ -185,11 +185,11 @@ export default {
       } else if (isAllStatuses) {
         this.checkboxBlocks[checkBoxBlockName] = [RatingStatus.AllStatuses];
       } else {
-        this.checkboxBlocks[checkBoxBlockName] = this.checkboxBlocks[checkBoxBlockName].filter((e) => e
-          !== RatingStatus.AllStatuses);
+        this.checkboxBlocks[checkBoxBlockName] = this.checkboxBlocks[checkBoxBlockName].filter((e) => e !== RatingStatus.AllStatuses);
         this.checkboxBlocks[checkBoxBlockName].push(value);
         this.checkMaskAllUser();
       }
+
       this.$emit('updateVisibility', this.checkboxBlocks);
       return null;
     },

@@ -148,7 +148,7 @@
                   <img
                     id="userAvatarDesktop"
                     class="profile__img"
-                    :src="imageData || EmptyAvatar()"
+                    :src="imageData || $options.images.EMPTY_AVATAR"
                     alt=""
                   >
                 </div>
@@ -210,7 +210,7 @@
               <img
                 id="userAvatarMobile"
                 class="profile__img"
-                :src="imageData || EmptyAvatar()"
+                :src="imageData || $options.images.EMPTY_AVATAR"
                 alt=""
               >
             </div>
@@ -313,11 +313,13 @@ import moment from 'moment';
 import {
   MessageAction, UserRole, Path,
 } from '~/utils/enums';
+import { images } from '~/utils/images';
 
 export default {
   name: 'Header',
   middleware: 'auth',
   UserRole,
+  images,
   directives: {
     ClickOutside,
   },

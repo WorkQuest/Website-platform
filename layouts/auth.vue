@@ -57,8 +57,10 @@ export default {
         refresh: refreshCookies,
         userStatus: userStatusCookies,
       });
+
       if (this.userData.status === UserStatuses.Confirmed) {
         await this.$store.dispatch('user/getUserData');
+
         if (this.userData.role === UserRole.EMPLOYER) {
           await this.$router.push(Path.WORKERS);
         } else if (this.userData.role === UserRole.WORKER) {
@@ -74,17 +76,20 @@ export default {
         access, refresh, userStatus, social: true,
       });
       await this.$store.dispatch('user/getUserData');
+
       // To set role or assign wallet
       if (+userStatus === UserStatuses.NeedSetRole || !this.userData?.wallet?.address) {
         this.$cookies.set('userLogin', true, { path: '/' });
         await this.$router.push(Path.ROLE);
         return;
       }
+
       // To import mnemonic for login
       if (+userStatus === UserStatuses.Confirmed && !getIsWalletConnected()) {
         await this.$router.push(Path.SIGN_IN);
         return;
       }
+
       await this.$store.dispatch('user/getStatistic');
       await this.$store.dispatch('user/getNotifications');
 
