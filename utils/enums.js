@@ -81,19 +81,26 @@ export const Ratings = Object.freeze({
   ALL_STATUSES: 'AllStatuses',
 });
 export const UserRating = Object.freeze({
-  0: Ratings.TOP_RANKED,
-  1: Ratings.RELIABLE,
+  8: Ratings.TOP_RANKED,
+  4: Ratings.RELIABLE,
   2: Ratings.VERIFIED,
-  3: Ratings.NO_STATUS,
-  4: Ratings.ALL_STATUSES,
+  1: Ratings.NO_STATUS,
+  15: Ratings.ALL_STATUSES,
 });
 export const RatingFilter = [
-  { key: 'all', value: 4 },
-  { key: 'topRanked', value: 0 },
-  { key: 'reliable', value: 1 },
+  { key: 'all', value: 15 },
+  { key: 'topRanked', value: 8 },
+  { key: 'reliable', value: 4 },
   { key: 'verified', value: 2 },
-  { key: 'noStatus', value: 3 },
+  { key: 'noStatus', value: 1 },
 ];
+export const RatingStatus = {
+  NoStatus: 1,
+  Verified: 2,
+  Reliable: 4,
+  TopRanked: 8,
+  AllStatuses: 15,
+};
 
 export const MessageAction = {
   GROUP_CHAT_CREATE: 'groupChatCreate',
@@ -314,8 +321,3 @@ export const RaiseViewStatus = {
   0: true,
   1: false,
 };
-
-export const NetworkProfileVisibility = Object.freeze({
-  ALL_USERS: 0,
-  SUBMITTING_OFFER: 1,
-});

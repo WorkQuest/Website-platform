@@ -137,7 +137,7 @@ export default {
       return notification.sender?.id || '';
     },
     avatar(notification) {
-      return notification.sender?.avatar?.url || this.EmptyAvatar();
+      return notification.sender?.avatar?.url || images.EMPTY_AVATAR;
     },
     goToNotifsPage() {
       this.closePopUp();

@@ -23,9 +23,13 @@ export default {
       };
     });
   },
+  getTotalSupply: (state) => state.totalSupply,
+  getTotalStaked: (state) => state.stakingInfo.totalStaked,
+  getTotalReward: (state) => state.stakingInfo.totalReward,
   getTotalLiquidityUSD: (state) => state.totalLiquidityUSD,
   getBalance: (state) => state.poolData.balance,
   getStaked: (state) => state.poolData.staked,
   getClaim: (state) => state.poolData.claim,
-  getAPY: (state) => state.APY,
+  getProfit: (state) => state.profit,
+  getWQTPrice: (state) => state.wqtPrice,
 };
