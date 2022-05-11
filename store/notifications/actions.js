@@ -193,12 +193,29 @@ export default {
       NotificationActionFromContract.QUEST_STATUS_UPDATED2,
     ].includes(action)) {
       notification.sender = { avatar: { url: require('assets/img/app/logo.svg') }, firstName: 'Workquest info' };
+      notification.params = {
+        ...notification.params,
+        title,
+        path: `${Path.QUESTS}/${data.id}`,
+      };
       await dispatch('updateProfile');
+    } else if (action === NotificationActionFromContract.QUEST_EDITED_ON_CONTRACT) {
+      notification.sender = {
+        avatar: user.avatar,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      };
+      notification.params = {
+        ...notification.params,
+        title,
+        path: `${Path.QUESTS}/${quest?.id || id}`,
+      };
     } else if ([
       NotificationAction.OPEN_DISPUTE,
       NotificationAction.DISPUTE_DECISION,
     ].includes(action)) {
       notification.params = {
+        ...notification.params,
         title: problemDescription,
         path: `${Path.QUESTS}/${quest?.id || id}`,
       };
@@ -206,6 +223,7 @@ export default {
     } else if (action === NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST) {
       if (fromUser && !notification.sender) notification.sender = fromUser;
       notification.params = {
+        ...notification.params,
         title: message,
         path: `${Path.PROFILE}/${userRole === UserRole.EMPLOYER ? toUserId : fromUser.id}`,
       };
@@ -215,6 +233,7 @@ export default {
     } else if (action === NotificationAction.COMMENT_LIKED) {
       if (comment?.author && !notification.sender) notification.sender = comment.author;
       notification.params = {
+        ...notification.params,
         title: comment?.text,
         path: `${PathDAO.DISCUSSIONS}/${comment.discussionId}`,
         isExternalLink: true,
@@ -225,6 +244,7 @@ export default {
       NotificationAction.NEW_DISCUSSION_LIKE,
     ].includes(action)) {
       notification.params = {
+        ...notification.params,
         title: discussion.title,
         path: `${PathDAO.DISCUSSIONS}/${discussion.id}`,
         isExternalLink: true,
@@ -236,6 +256,7 @@ export default {
       NotificationActionFromContract.QUEST_STATUS_UPDATED2,
     ].includes(action)) {
       notification.params = {
+        ...notification.params,
         title: quest?.title || title,
         path: `${Path.QUESTS}/${quest?.id || id}`,
       };

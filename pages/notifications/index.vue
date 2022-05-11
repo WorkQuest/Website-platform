@@ -130,6 +130,7 @@ import {
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 import { LocalNotificationAction } from '~/utils/notifications-enum';
+import { images } from '~/utils/images';
 
 export default {
   name: 'Notifications',

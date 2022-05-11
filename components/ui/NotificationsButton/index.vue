@@ -149,6 +149,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
+import { images } from '~/utils/images';
 
 export default {
   name: 'NotificationsButtonContainer',

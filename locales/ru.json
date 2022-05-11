@@ -1323,6 +1323,7 @@
     }
   },
   "notifications": {
+    "QuestEditedOnContract": "Квест отредактирован на контракте",
     "title": "Уведомления",
     "invite": "Приглашаем вас завершить квест",
     "openDispute": "Открыт спор",

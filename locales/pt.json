@@ -1323,6 +1323,7 @@
     }
   },
   "notifications": {
+    "QuestEditedOnContract": "Quest edited on contract",
     "title": "Notifications",
     "openDispute": "Abrir disputa",
     "invite": "Invites you to complete the quest",

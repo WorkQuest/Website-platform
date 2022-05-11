@@ -1323,6 +1323,7 @@
     }
   },
   "notifications": {
+    "QuestEditedOnContract": "Quest edited on contract",
     "title": "Notifications",
     "openDispute": "发起争议",
     "invite": "Invites you to complete the quest",
