@@ -181,7 +181,7 @@ export default {
       if (isHas && isAllStatuses) {
         this.checkboxBlocks[checkBoxBlockName] = [];
       } else if (isHas) {
-        this.checkboxBlocks[checkBoxBlockName] = this.checkboxBlocks[checkBoxBlockName].filter((e) => e !== RatingStatus.AllStatuses || e
+        this.checkboxBlocks[checkBoxBlockName] = this.checkboxBlocks[checkBoxBlockName].filter((e) => e
           !== value);
       } else if (isAllStatuses) {
         this.checkboxBlocks[checkBoxBlockName] = [RatingStatus.AllStatuses];
