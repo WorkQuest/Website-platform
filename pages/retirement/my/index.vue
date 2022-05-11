@@ -23,7 +23,7 @@
                 {{ $t('pension.pensionBalance') }}
               </div>
               <div class="info-block__tokens">
-                {{ pensionBalance }}
+                {{ pensionBalance.text }}
               </div>
               <base-btn
                 class="btn_bl"
@@ -75,7 +75,7 @@
                 {{ $t('pension.pensionSavingsBalance') }}
               </div>
               <div class="info-block__tokens">
-                {{ pensionBalance }}
+                {{ pensionBalance.text }}
               </div>
             </div>
             <div class="info-block__small_right">
@@ -224,6 +224,7 @@ export default {
       itemsPerPage: 10,
       walletAddress: null,
       isDeadline: false,
+      interval: null,
       FAQs: [
         {
           name: this.$t('pension.faq1.question'),
@@ -334,7 +335,10 @@ export default {
     },
     pensionBalance() {
       const balance = this.pensionWallet?.amount || 0;
-      return this.$t('meta.coins.count.WUSDCount', { count: balance });
+      return {
+        text: this.$t('meta.coins.count.WUSDCount', { count: balance }),
+        value: balance,
+      };
     },
     totalPages() {
       const len = this.pensionHistory[this.selectedTable]?.count;
@@ -372,6 +376,7 @@ export default {
     this.SetLoader(false);
   },
   async beforeDestroy() {
+    clearTimeout(this.interval);
     await this.unsubscribe(getWalletAddress());
   },
   methods: {
@@ -415,8 +420,18 @@ export default {
       const now = this.$moment.now();
       const ends = this.$moment(unlockDate);
 
+      const seconds = ends.diff(now, 'seconds');
+      if (seconds <= 60) {
+        return this.$tc('meta.units.seconds', this.DeclOfNum(seconds), { count: seconds });
+      }
+
       const minutes = ends.diff(now, 'minutes');
       if (minutes <= 60) {
+        if (minutes <= 3) {
+          this.interval = setTimeout(() => {
+            this.isDeadline = true;
+          }, seconds);
+        }
         return this.$tc('meta.units.minutes', this.DeclOfNum(minutes), { count: minutes });
       }
 
@@ -447,9 +462,6 @@ export default {
         this.pensionGetWalletInfo(),
         this.loadTablePage(this.page),
       ]);
-      if (!this.pensionWallet || !this.pensionWallet.isCreated) {
-        await this.$router.push(Path.RETIREMENT);
-      }
       this.walletAddress = getWalletAddress();
       await this.fetchWalletData({
         method: 'balanceOf', address: this.walletAddress, abi: ERC20, token: tokenMap[TokenSymbols.WUSD], symbol: TokenSymbols.WUSD,
@@ -474,7 +486,6 @@ export default {
               method: 'withdraw',
               data: [new BigNumber(amount).shiftedBy(18).toString()],
             }),
-            this.$store.dispatch('wallet/getBalance'),
           ]);
           if (!txFee?.ok || +balance === 0) {
             await this.$store.dispatch('main/showToast', { text: this.$t('errors.transaction.notEnoughFunds') });
@@ -527,6 +538,8 @@ export default {
             }),
             this.getWallet(),
           ]);
+          console.log(txFee);
+          console.log(balance);
           if (txFee.ok === false || +balance === 0) {
             await this.$store.dispatch('main/showToast', {
               text: this.$t('errors.transaction.notEnoughFunds'),
@@ -544,6 +557,7 @@ export default {
             submitMethod: async () => {
               this.SetLoader(true);
               await this.pensionExtendLockTime();
+              this.SetLoader(false);
             },
           });
         },

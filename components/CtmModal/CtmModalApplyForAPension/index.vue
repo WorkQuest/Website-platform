@@ -9,7 +9,7 @@
       >
         <div
           class="content__percent"
-          @keydown.delete="ChangeCaretPosition( $refs.percentInput)"
+          @keydown.delete="ChangeCaretPosition($refs.percentInput)"
         >
           <div class="content__title">
             {{ $t('modals.depositPercentFromAQuest') }}
@@ -22,7 +22,7 @@
             data-selector="DEPOSIT-PERCENT"
             :name="$tc('modals.depositPercent')"
             rules="required|min_percent:0.01|max_percent:99|zeroFail|notMoreDecimalPlaces"
-            @input="calcPensionPercent(depositPercentFromAQuest)"
+            @input="calcPensionPercent"
           />
         </div>
         <div class="content__amount">
@@ -35,7 +35,7 @@
             class="content__input"
             data-selector="FIRST-DEPOSIT-AMOUNT"
             :name="$tc('modals.firstDepositAmountField')"
-            :rules="`decimal:18|notMoreDecimalPlaces|greaterThanZero|zeroFail|notMoreDecimalPlaces|${maxValue ? `max_value:${maxValue}` : ''}`"
+            :rules="`decimal:18|notMoreDecimalPlaces|notMoreDecimalPlaces|${maxValue ? `max_value:${maxValue}` : ''}`"
           >
             <template
               v-if="maxValue"

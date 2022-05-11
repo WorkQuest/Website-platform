@@ -268,6 +268,8 @@ export const getContractFeeData = async (_method, _abi, _contractAddress, data, 
       amount = new BigNumber(amount).shiftedBy(18).toString();
       tx.value = amount;
     }
+    console.log(_method);
+    console.log(tx);
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
       inst.methods[_method].apply(null, data).estimateGas(tx),

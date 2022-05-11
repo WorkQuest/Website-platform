@@ -46,6 +46,7 @@
       "mb": "{count} MB",
       "kb": "{count} KB",
       "percentsCount": "{count}%",
+      "seconds": "{count} секунда | {count} секунды | {count} секунд",
       "minutes": "{count} минута | {count} минуты | {count} минут",
       "hours": "{count} час | {count} часа | {count} часов",
       "years": "{count} год | {count} года | {count} лет",

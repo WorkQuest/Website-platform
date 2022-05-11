@@ -115,6 +115,15 @@ export default {
       return error();
     }
   },
+  async feeContributeWUSD() {
+    try {
+      const res = await fetchContractData('feePerMonth', WQPensionFund, process.env.WORKNET_PENSION_FUND, null, web3);
+      return success(res);
+    } catch (e) {
+      console.error(`Contribute: ${e}`);
+      return error();
+    }
+  },
   async pensionWithdraw({ commit }, amount) {
     try {
       amount = new BigNumber(amount).shiftedBy(18).toString();
@@ -131,6 +140,15 @@ export default {
       return success(res);
     } catch (e) {
       console.error(`Withdraw: ${e}`);
+      return error();
+    }
+  },
+  async feeWithdrawWUSD() {
+    try {
+      const res = await fetchContractData('feeWithdraw', WQPensionFund, process.env.WORKNET_PENSION_FUND, null, web3);
+      return success(res);
+    } catch (e) {
+      console.error(`Contribute: ${e}`);
       return error();
     }
   },
@@ -208,7 +226,8 @@ export default {
             count = 0;
             break;
         }
-        if (pensionHistory[payload.method].txs.length === 10) pensionHistory[payload.method].txs.splice(9, 1);
+        console.log('subscribeWS:', pensionHistory);
+        if (pensionHistory[payload.method].txs && pensionHistory[payload.method].txs.length === 10) pensionHistory[payload.method].txs.splice(9, 1);
         pensionHistory[payload.method].txs.unshift(payload.tx);
         await dispatch('pensionGetWalletInfo');
         commit('setPensionHistoryData', { method: payload.method, txs: pensionHistory[payload.method].txs, count });

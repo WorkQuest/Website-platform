@@ -46,6 +46,7 @@
       "mb": "{count} MB",
       "kb": "{count} KB",
       "percentsCount": "{count}%",
+      "seconds": "{count} second | {count} seconds | {count} seconds",
       "minutes": "{count} minute | {count} minutes | {count} minutes",
       "hours": "{count} minute | {count} minutes | {count} hours",
       "years": "{count} year | {count} years | {count} years",

@@ -294,8 +294,15 @@ export default {
         await this.$router.push(`${Path.RETIREMENT}/my`);
       }
     },
-    openApplyForAPensionModal() {
-      const { balance, fullBalance } = this.balanceData.WUSD;
+    async openApplyForAPensionModal() {
+      if (this.pensionWallet?.isCreated) {
+        await this.checkWalletExists();
+        return;
+      }
+      const {
+        balance,
+        fullBalance,
+      } = this.balanceData.WUSD;
       this.ShowModal({
         key: modals.applyForAPension,
         defaultFee: this.percent,
@@ -313,13 +320,11 @@ export default {
               spenderAddress: process.env.WORKNET_PENSION_FUND,
               amount: firstDepositAmount,
             });
-          } else {
-            this.SetLoader(false);
           }
           this.inProgress = true;
           let txFee;
           const equalsFee = new BigNumber(this.percent).shiftedBy(-18).isEqualTo(new BigNumber(depositPercentFromAQuest.substr(0, depositPercentFromAQuest.length - 1)).shiftedBy(-18));
-          if (!firstDepositAmount || !equalsFee) {
+          if (!equalsFee) {
             const [fee] = await Promise.all([
               this.$store.dispatch('wallet/getContractFeeData', {
                 method: 'updateFee',
@@ -327,10 +332,10 @@ export default {
                 contractAddress: process.env.WORKNET_PENSION_FUND,
                 data: [new BigNumber(depositPercentFromAQuest.substr(0, depositPercentFromAQuest.length - 1)).shiftedBy(18).toString()],
               }),
-              this.$store.dispatch('wallet/getBalance'),
             ]);
             txFee = fee;
-          } else if (firstDepositAmount) {
+          }
+          if (firstDepositAmount) {
             const [fee] = await Promise.all([
               this.$store.dispatch('wallet/getContractFeeData', {
                 method: 'contribute',
@@ -339,7 +344,6 @@ export default {
                 data: [getWalletAddress(), new BigNumber(firstDepositAmount).shiftedBy(18).toString()],
                 recipient: process.env.WORKNET_PENSION_FUND,
               }),
-              this.$store.dispatch('wallet/getBalance'),
             ]);
             txFee = fee;
           }
@@ -352,23 +356,39 @@ export default {
             return false;
           }
           const fields = {
-            from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
-            to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_PENSION_FUND },
-            fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
+            from: {
+              name: this.$t('meta.fromBig'),
+              value: getWalletAddress(),
+            },
+            to: {
+              name: this.$t('meta.toBig'),
+              value: process.env.WORKNET_PENSION_FUND,
+            },
+            fee: {
+              name: this.$t('wallet.table.trxFee'),
+              value: txFee.result.fee,
+              symbol: TokenSymbols.WQT,
+            },
           };
           if (firstDepositAmount) {
-            fields.amount = { name: this.$t('modals.amount'), value: firstDepositAmount, symbol: TokenSymbols.WUSD };
+            fields.amount = {
+              name: this.$t('modals.amount'),
+              value: firstDepositAmount,
+              symbol: TokenSymbols.WUSD,
+            };
           }
           this.SetLoader(false);
           this.ShowModal({
             key: modals.transactionReceipt,
             fields,
             submitMethod: async () => {
+              this.SetLoader(true);
               const ok = await this.$store.dispatch('retirement/pensionStartProgram', {
                 fee: depositPercentFromAQuest.substr(0, depositPercentFromAQuest.length - 1),
                 firstDeposit: firstDepositAmount,
                 defaultFee: this.percent,
               });
+              this.SetLoader(false);
               if (ok) this.showPensionIsRegisteredModal();
             },
           });
@@ -381,8 +401,7 @@ export default {
         key: modals.status,
         img: images.DOCUMENT,
         title: this.$t('modals.pensionIsRegistered'),
-        subtitle: this.$t('modals.pensionIsRegisteredText'),
-        path: '/retirement/my',
+        path: `${Path.RETIREMENT}/my`,
       });
     },
     handleClickFAQ(index) {

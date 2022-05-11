@@ -20,7 +20,6 @@ export default {
   raiseViews: 'raiseViews',
   invitation: 'invitation',
   applyForAPension: 'applyForAPension',
-  makeDeposit: 'makeDeposit',
   changePercent: 'changePercent',
   openADeposit: 'openADeposit',
   addLiquidity: 'addLiquidity',
