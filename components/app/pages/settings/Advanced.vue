@@ -161,6 +161,7 @@ export default {
       this.checkboxBlocks.visibilityUser = arrayRatingStatusCanInviteMeOnQuest;
       this.checkboxBlocks.restrictionRankingStatus = arrayRatingStatusInMySearch;
     }
+    this.checkMaskAllUser();
   },
   methods: {
     async showModalKey(modalKey) {
@@ -174,24 +175,41 @@ export default {
       });
     },
     setSelectedCheckboxByBlock(checkBoxBlockName, value) {
-      if (value === RatingStatus.AllStatuses
-        && !this.checkboxBlocks[checkBoxBlockName].includes(RatingStatus.AllStatuses)) {
-        this.checkboxBlocks[checkBoxBlockName] = [RatingStatus.AllStatuses];
-        this.$emit('updateVisibility', this.checkboxBlocks);
-        return null;
-      }
-      if (!this.checkboxBlocks[checkBoxBlockName].includes(value)) {
-        this.checkboxBlocks[checkBoxBlockName].push(value);
-        this.checkboxBlocks[checkBoxBlockName] = this.checkboxBlocks[checkBoxBlockName].filter((e) => e !== RatingStatus.AllStatuses);
-      } else {
+      const isHas = this.checkboxBlocks[checkBoxBlockName].includes(value);
+      const isAllStatuses = value === RatingStatus.AllStatuses;
+
+      if (isHas && isAllStatuses) {
+        this.checkboxBlocks[checkBoxBlockName] = [];
+      } else if (isHas) {
         this.checkboxBlocks[checkBoxBlockName] = this.checkboxBlocks[checkBoxBlockName].filter((e) => e !== value);
+      } else if (isAllStatuses) {
+        this.checkboxBlocks[checkBoxBlockName] = [RatingStatus.AllStatuses];
+      } else {
+        this.checkboxBlocks[checkBoxBlockName] = this.checkboxBlocks[checkBoxBlockName].filter((e) => e !== RatingStatus.AllStatuses);
+        this.checkboxBlocks[checkBoxBlockName].push(value);
+        this.checkMaskAllUser();
       }
+
       this.$emit('updateVisibility', this.checkboxBlocks);
       return null;
     },
     isCheckboxChecked(checkBoxBlockName, value) {
-      return this.checkboxBlocks[checkBoxBlockName].includes(value)
-        || this.checkboxBlocks[checkBoxBlockName].includes(RatingStatus.AllStatuses);
+      const checkboxes = this.checkboxBlocks[checkBoxBlockName];
+      return checkboxes.includes(value) || checkboxes.includes(RatingStatus.AllStatuses);
+    },
+    checkMaskAllUser() {
+      const ratingStatus = [
+        RatingStatus.NoStatus,
+        RatingStatus.Verified,
+        RatingStatus.Reliable,
+        RatingStatus.TopRanked,
+      ];
+      if (JSON.stringify(this.checkboxBlocks.visibilityUser.sort()) === JSON.stringify(ratingStatus.sort())) {
+        this.checkboxBlocks.visibilityUser = [RatingStatus.AllStatuses];
+      }
+      if (JSON.stringify(this.checkboxBlocks.restrictionRankingStatus.sort()) === JSON.stringify(ratingStatus.sort())) {
+        this.checkboxBlocks.restrictionRankingStatus = [RatingStatus.AllStatuses];
+      }
     },
   },
 };
