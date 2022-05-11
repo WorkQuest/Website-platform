@@ -196,10 +196,12 @@ export default {
       return checkboxes.includes(value) || checkboxes.includes(RatingStatus.AllStatuses);
     },
     checkMaskAllUser() {
-      const ratingStatus = [RatingStatus.NoStatus,
+      const ratingStatus = [
+        RatingStatus.NoStatus,
         RatingStatus.Verified,
         RatingStatus.Reliable,
-        RatingStatus.TopRanked];
+        RatingStatus.TopRanked,
+      ];
       if (JSON.stringify(this.checkboxBlocks.visibilityUser.sort()) === JSON.stringify(ratingStatus.sort())) {
         this.checkboxBlocks.visibilityUser.push(RatingStatus.AllStatuses);
       }
