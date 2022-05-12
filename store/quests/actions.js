@@ -127,11 +127,12 @@ export default {
       return false;
     }
   },
-  async getUserQuests({ commit }, { role, query }) {
+  async getUserQuests({ commit }, { role, query, userId }) {
     try {
       const specializations = query.specializations || [];
       if (query.specializations) delete query.specializations;
-      const response = await this.$axios.$post(`/v1/me/${role}/get-quests`, { specializations }, {
+      const url = !userId ? `/v1/me/${role}/get-quests` : `/v1/${role}/${userId}/get-quests`;
+      const response = await this.$axios.$post(url, { specializations }, {
         params: { ...query },
       });
       commit('setAllQuests', response.result);

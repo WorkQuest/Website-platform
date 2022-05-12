@@ -151,13 +151,15 @@ export default {
       this.selectedTab = id;
       this.requestParams.query.offset = 0;
       this.requestParams.query.starred = id === 1;
+      delete this.requestParams.query.invited;
 
       if (id === null) delete this.requestParams.query['statuses[0]'];
       else if (id === 0) this.requestParams.query['statuses[0]'] = QuestStatuses.Created;
       else if (id === 2) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitEmployerConfirm;
       else if (id === 3) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorker;
-      else if (id === 4) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorkerOnAssign;
+      else if (id === 4) this.requestParams.query.invited = true;
       else if (id === 5) this.requestParams.query['statuses[0]'] = QuestStatuses.Done;
+
       await this.getQuests();
       this.SetLoader(false);
     },
