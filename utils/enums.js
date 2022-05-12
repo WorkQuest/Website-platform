@@ -6,22 +6,18 @@ export const ChainsId = {
   ETH_TEST: '0x4',
   BSC_MAIN: '0x38',
   BSC_TEST: '0x61',
-  MATIC_MAIN: '0x13881',
-  MUMBAI_TEST: '0x89',
+  MATIC_MAIN: '0x89',
+  MUMBAI_TEST: '0x13881',
   WORKNET_TEST: '0x13488D0',
 };
 
-export const QuestModeReview = {
-  QUEST_LIST: 'QuestList',
-  QUEST_SINGLE: 'QuestSingle',
-};
-
 export const ChainsIdByChainNumber = {
-  1: '0x1',
-  4: '0x4',
-  56: '0x38',
-  97: '0x61',
-  20220112: '0x13488D0',
+  1: [ChainsId.ETH_MAIN],
+  4: [ChainsId.ETH_TEST],
+  56: [ChainsId.BSC_MAIN],
+  137: [ChainsId.MATIC_MAIN],
+  80001: [ChainsId.MUMBAI_TEST],
+  20220112: [ChainsId.WORKNET_TEST],
 };
 
 export const Chains = {
@@ -29,6 +25,11 @@ export const Chains = {
   BINANCE: 'BSC',
   WORKNET: 'WORKNET',
   POLYGON: 'POLYGON',
+};
+
+export const QuestModeReview = {
+  QUEST_LIST: 'QuestList',
+  QUEST_SINGLE: 'QuestSingle',
 };
 
 export const StakingTypes = {

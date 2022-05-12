@@ -108,7 +108,7 @@ export const BuyWQTTokensData = new Map([
     {
       title: Chains.POLYGON,
       chain: Chains.POLYGON,
-      icon: null, // TODO: add icon
+      icon: require('~/assets/img/ui/Polygon.svg'),
       bridgeAddress: process.env.POLYGON_STABLE_BRIDGE,
       tokens: [
         {

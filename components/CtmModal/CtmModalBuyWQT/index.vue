@@ -39,27 +39,43 @@
           is-icon
         />
       </div>
-      <div class="content__amount">
+      <div class="content__field">
         <div
           v-if="tokenData"
-          class="content__balance"
+          class="content__field_label"
         >
           {{ $t('meta.balance') }} {{ tokenData.balance }} {{ tokenData.symbol }}
         </div>
-        <base-field
-          v-model="amount"
-          :disabled="isNeedToChangeNetwork || !tokenData"
-          :placeholder="$t('modals.amount')"
-          :name="$t('modals.amount')"
-          :rules="`required|decimal|decimalPlaces:${tokenList[selectedToken].decimals}`"
-          data-selector="AMOUNT"
-        />
+        <div>
+          <base-field
+            v-model="amount"
+            :disabled="isNeedToChangeNetwork || !tokenData"
+            :placeholder="$t('modals.amount')"
+            :name="$t('modals.amount')"
+            :rules="`required|decimal|decimalPlaces:${tokenData ? tokenData.decimals : 0}`"
+            data-selector="AMOUNT"
+          >
+            <template
+              v-slot:right-absolute
+              class="content__max max"
+            >
+              <base-btn
+                mode="max"
+                class="max__button"
+                data-selector="MAX"
+                @click="maxValue"
+              >
+                <span class="max__text">{{ $t('modals.maximum') }}</span>
+              </base-btn>
+            </template>
+          </base-field>
+        </div>
       </div>
       <div class="content__wqt">
         <span v-if="wqtAmount">{{ $t('meta.amount.amountOfWQT') }}: {{ wqtAmount }}</span>
       </div>
       <base-btn
-        :disabled="invalid || isNeedToChangeNetwork"
+        :disabled="invalid || isNeedToChangeNetwork || inProgressWQT"
         @click="handleSubmit(submit)"
       >
         {{ $t('meta.btns.confirm') }}
@@ -71,10 +87,12 @@
 <script>
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
-import { BuyWQTTokensData } from '~/utils/сonstants/bridge';
+import { BlockchainIndex, BuyWQTTokensData } from '~/utils/сonstants/bridge';
 import { Chains, TokenSymbols } from '~/utils/enums';
 import { WQTBuyCommission } from '~/utils/сonstants/commission';
 import { getStyledAmount } from '~/utils/wallet';
+import { getChainIdByChain } from '~/utils/web3';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalBuyWQT',
@@ -88,7 +106,7 @@ export default {
       isNeedToChangeNetwork: false,
 
       wqtAmount: null, // Сколько мы получим wqt
-      updatePriceId: null,
+      updatePriceId: null, // timeout to fetch oracle price
       inProgressWQT: false,
 
       tokenData: null,
@@ -97,6 +115,7 @@ export default {
   computed: {
     ...mapGetters({
       isMetamaskConnected: 'web3/isConnected',
+      web3Account: 'web3/getAccount',
       oraclePrices: 'oracle/getPrices',
       oracleSymbols: 'oracle/getSymbols',
     }),
@@ -104,7 +123,7 @@ export default {
       return [
         BuyWQTTokensData.get(Chains.ETHEREUM),
         BuyWQTTokensData.get(Chains.BINANCE),
-        // BuyWQTTokensData.get(Chains.POLYGON),
+        BuyWQTTokensData.get(Chains.POLYGON),
       ];
     },
     tokenList() {
@@ -113,19 +132,25 @@ export default {
   },
   watch: {
     async isMetamaskConnected(newVal) {
-      if (newVal) { // && right chain id todo: нужно проверить на корректность сети текущей
-        await this.updateTokenData();
+      if (newVal) {
+        if (!this.isChainCompareToCurrent()) {
+          this.isNeedToChangeNetwork = true;
+          this.clearData();
+        } else {
+          this.isNeedToChangeNetwork = false;
+          await this.updateTokenData();
+        }
       }
-      console.log('reconnected metamask');
     },
-    async selectedNetwork(newVal, prevVal) {
-      this.tokenData = null;
+    async selectedNetwork(newVal) {
+      this.clearData();
       this.isNeedToChangeNetwork = false;
       const res = await this.$store.dispatch('web3/goToChain', { chain: this.networkList[newVal].chain });
-      console.log('net', res);
       if (!res.ok) {
         this.isNeedToChangeNetwork = true;
         this.wqtAmount = null;
+      } else {
+        await this.updateTokenData();
       }
     },
     // Определение сколько приблизительно WQT мы получим
@@ -138,14 +163,9 @@ export default {
       this.inProgressWQT = true;
       this.wqtAmount = `${this.$t('modals.pleaseWait')}...`;
       this.updatePriceId = setTimeout(async () => {
-        await Promise.all([
-          // TODO: вычислять комиссию за транзу и отнимать от конечной суммы
-          this.$store.dispatch('oracle/getCurrentPrices'),
-        ]);
-        let priceWQT = this.oraclePrices[this.oracleSymbols.indexOf(TokenSymbols.WQT)];
-        priceWQT = new BigNumber(priceWQT).shiftedBy(-18);
+        await this.$store.dispatch('oracle/getCurrentPrices');
+        const priceWQT = new BigNumber(this.oraclePrices[this.oracleSymbols.indexOf(TokenSymbols.WQT)]).shiftedBy(-18);
         const decimalAmount = new BigNumber(this.amount).multipliedBy(1 - WQTBuyCommission);
-        console.log(decimalAmount.toString(), priceWQT.toString());
         this.wqtAmount = decimalAmount.dividedBy(priceWQT);
         this.inProgressWQT = false;
       },
@@ -162,10 +182,21 @@ export default {
     await this.updateTokenData();
   },
   methods: {
+    clearData() {
+      this.amount = null;
+      this.tokenData = null;
+      this.wqtAmount = null;
+    },
+    isChainCompareToCurrent() {
+      return +this.web3Account.netId === +getChainIdByChain(this.networkList[this.selectedNetwork].chain);
+    },
+    maxValue() {
+      if (!this.tokenData) return;
+      this.amount = this.tokenData.balance;
+    },
     // Updates balance by current network & token
     async updateTokenData() {
       const res = await this.$store.dispatch('web3/fetchTokenInfo', this.tokenList[this.selectedToken].tokenAddress);
-      console.log('token', res);
       if (res.ok) {
         const r = res.result;
         this.tokenData = {
@@ -175,9 +206,22 @@ export default {
         };
       } else this.tokenData = null;
     },
-    submit() {
-      if (this.inProgressWQT) return;
-      console.log('haha');
+    async submit() {
+      if (this.inProgressWQT || !this.tokenData || this.isNeedToChangeNetwork) return;
+      this.SetLoader(true);
+      const res = await this.$store.dispatch('wallet/swap', {
+        amount: this.amount,
+        tokenAddress: this.tokenList[this.selectedToken].tokenAddress,
+        bridgeAddress: this.networkList[this.selectedNetwork].bridgeAddress,
+        isNative: false,
+        symbol: this.tokenData.symbol,
+        toChainIndex: BlockchainIndex[Chains.WORKNET],
+        decimals: this.tokenData.decimals,
+      });
+      this.SetLoader(false);
+      if (res.ok) {
+        this.ShowModal({ key: modals.transactionSend });
+      }
     },
   },
 };
@@ -203,7 +247,7 @@ export default {
     }
   }
   &__wqt {
-    height: 20px;
+    min-height: 24px;
   }
   &__balance {
     color: $black500;
