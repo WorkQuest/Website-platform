@@ -26,7 +26,7 @@ export default function ({ $axios, store, redirect }, inject) {
       isRefreshing = false;
       failedQueue = [];
 
-      // throw error;
+      throw error;
     } else if (error.response.status === 401 && !originalRequest._retry) {
       const processQueue = (err, token = null) => {
         failedQueue.forEach((prom) => (err ? prom.reject(err) : prom.resolve(token)));
