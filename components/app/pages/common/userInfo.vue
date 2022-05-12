@@ -352,6 +352,10 @@ export default {
         this.ShowModal({
           key: modals.invitation,
           userId: this.userData.id,
+          avatar: this.userData.avatar,
+          firstName: this.userData.firstName,
+          lastName: this.userData.lastName,
+          ratingStatistic: this.userData.ratingStatistic,
         });
       } else {
         this.ShowModal({

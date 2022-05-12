@@ -164,8 +164,8 @@ export default {
   async inviteOnQuest({ commit }, { questId, payload }) {
     try {
       const response = await this.$axios.$post(`/v1/quest/${questId}/invite`, payload);
-      const { chat } = response.result;
-      commit('setChatInviteOnQuest', chat);
+      const { questChat } = response.result;
+      commit('setChatInviteOnQuest', questChat);
       return response.result;
     } catch (e) {
       console.error('quests/inviteOnQuest');
