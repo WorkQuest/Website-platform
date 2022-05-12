@@ -6,7 +6,6 @@ export default {
     state.reducedNotifications = notifications;
   },
   setNotifications(state, { notifications, count, needPush }) {
-    // TODO: Переписать!
     state.notifications.list = needPush ? state.notifications.list.concat(notifications) : notifications;
     state.notifications.count = count;
   },
@@ -28,6 +27,7 @@ export default {
     state.reducedNotifications.unshift(notification);
     state.reducedNotifications.length = state.reducedNotifications.length === 1 ? 1 : 2;
     state.notifications.count += 1;
+    if (notification.params.isLocal) return;
     this.commit('notifications/setUnreadNotifsCount', 1);
   },
 };

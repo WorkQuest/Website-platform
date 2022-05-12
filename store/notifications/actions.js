@@ -33,7 +33,7 @@ export default {
     if (!action && !message && !title) return;
     const notification = {
       actionNameKey: `notifications.${action}`,
-      seen: false,
+      seen: true,
       id,
       action,
       actionBtn,
@@ -68,7 +68,7 @@ export default {
     const notificationList = getters.getNotificationsList;
     async function checkAddedLocalNotification() {
       const isAdded = () => notificationList.some((n) => Object.entries(LocalNotificationAction).includes(n.actionNameKey));
-      return isAdded();
+      return !!isAdded();
     }
     const isAdded = await checkAddedLocalNotification();
     if (!isAdded) await dispatch('addNotification', notification);
@@ -109,6 +109,7 @@ export default {
 
   async getNotifications({ commit, dispatch }, config) {
     try {
+      // TODO: Сделать отдельный массив под это)
       const currConfig = config || { params: { limit: 2, offset: 0 } };
       const { data: { result, ok } } = await this.$axios.get(`${process.env.NOTIFS_URL}notifications`, currConfig);
       const { notifications, count } = result;
@@ -265,7 +266,6 @@ export default {
     } else if (employer && notificationCommonFilterAction2.includes(action) && !notification.sender) {
       notification.sender = employer;
     }
-    console.log('notification', notification);
     return notification.notification;
   },
 
