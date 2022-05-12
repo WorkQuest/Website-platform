@@ -89,20 +89,10 @@
                   {{ $moment(notification.createdAt).format('Do MMMM YYYY, hh:mm a') }}
                 </div>
               </div>
-              <div
-                v-if="notification.params && notification.params.isLocal"
-                class="notify__reason"
-              >
+              <div class="notify__reason">
                 <div class="notify__text notify__text_blue">
-                  {{ notification.data.message }}
-                </div>
-              </div>
-              <div
-                v-if="notification.params && !notification.params.isLocal"
-                class="notify__reason"
-              >
-                <div class="notify__text notify__text_blue">
-                  {{ $t(notification.actionNameKey) }}:
+                  {{ notification.params && notification.params.isLocal
+                    ? notification.data.message : $t(notification.actionNameKey) }}
                 </div>
               </div>
               <div class="notify__action">
@@ -110,17 +100,9 @@
                   class="notify__btn"
                   @click="goToEvent(notification.params ? notification.params.path : '')"
                 >
-                  <div
-                    v-if="notification.params && notification.params.isLocal"
-                    class="notify__text notify__text_btn"
-                  >
-                    {{ notification.actionBtn }}
-                  </div>
-                  <div
-                    v-if="notification.params && !notification.params.isLocal"
-                    class="notify__text notify__text_btn"
-                  >
-                    {{ notification.params ? notification.params.title : '' }}
+                  <div class="notify__text notify__text_btn">
+                    {{ notification.params && notification.params.isLocal
+                      ? notification.actionBtn : notification.params ? notification.params.title : '' }}
                   </div>
                   <span class="icon icon-chevron_right" />
                 </base-btn>
