@@ -14,7 +14,9 @@
             v-for="(notification, i) in notifications"
             :key="i"
             :ref="`${notification.id}|${notification.seen}`"
-            v-observe-visibility="(isVisible) => checkUnseenNotifs(isVisible, {id: notification ? notification.id : '', seen: notification.seen})"
+            v-observe-visibility="(isVisible) =>
+              checkUnseenNotifs(isVisible, {id: notification
+                ? notification.id : '', seen: notification.seen})"
             class="notification"
             :class="{'notification_gray' : !notification.seen}"
             @click="goToEvent(notification.params ? notification.params.path : '', true)"
@@ -58,20 +60,10 @@
                 </span>
               </div>
             </template>
-            <div
-              v-if="notification.params.isLocal"
-              class="notification__quest quest"
-            >
+            <div class="notification__quest quest">
               <span class="quest__invitation">
-                {{ notification.data.message }}
-              </span>
-            </div>
-            <div
-              v-if="!notification.params.isLocal"
-              class="notification__quest quest"
-            >
-              <span class="quest__invitation">
-                {{ notificationActionKey(notification) }}
+                {{ notification.params.isLocal
+                  ? notification.data.message : notificationActionKey(notification) }}
               </span>
               <span
                 v-if="notification.params"
@@ -96,10 +88,12 @@
             >
               <base-btn
                 mode="outline"
-                :link="notification.params.isExternalLink ? `${notification.params.externalBase}${notification.params.path}` : ''"
+                :link="notification.params.isExternalLink
+                  ? `${notification.params.externalBase}${notification.params.path}` : ''"
                 class="button__view"
                 data-selector="NOTIFICATION-VIEW"
-                @click="notification.params.isExternalLink ? '' : goToEvent(notification.params.path)"
+                @click="notification.params.isExternalLink
+                  ? '' : goToEvent(notification.params.path)"
               >
                 {{ actionBtnText(notification) }}
               </base-btn>
@@ -176,9 +170,6 @@ export default {
   async beforeDestroy() {
     await this.saveNotificationCurrentPage();
   },
-  // destroyed() {
-  //   this.$store.commit('notifications/setNotifications', { result: { notifications: [], count: this.notifsCount } });
-  // },
   methods: {
     async setLocalNotifications() {
       const { $cookies } = this;
