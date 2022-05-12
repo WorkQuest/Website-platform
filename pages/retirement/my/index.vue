@@ -469,7 +469,7 @@ export default {
     showWithdrawModal() {
       this.ShowModal({
         key: modals.takeWithdraw,
-        walletAddress: this.walletAddress,
+        walletAddress: this.convertToBech32('wq', this.walletAddress),
         maxValue: this.pensionWallet.fullAmount,
         withdrawType: 'pension',
         submit: async (amount) => {
