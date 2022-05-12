@@ -1218,6 +1218,8 @@
     "scanQrCode": "You just need to scan the QR-code",
     "downOnSmartphone": "Download Work Quest app on your smartphone",
     "downWalletOnSmartphone": "Download Work Quest Wallet app on your smartphone",
+    "wouldReviewEmployee": "Would you like to add a review to the employee?",
+    "wouldReviewEmployer": "Would you like to add a review to the employer?",
     "successfulMethods": {
       "claim": "Successful claim",
       "refund": "Successful refund",
