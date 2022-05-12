@@ -177,7 +177,10 @@ export default {
 
     if (notificationsQuestsActions.includes(action)) {
       await updateQuests();
-    } else if (action === NotificationAction.QUEST_STATUS_UPDATED) {
+    } else if ([
+      NotificationAction.QUEST_STATUS_UPDATED1,
+      NotificationAction.QUEST_STATUS_UPDATED2,
+    ].includes(action)) {
       notification.sender = userRole === UserRole.EMPLOYER ? assignedWorker
         || { avatar: { url: require('assets/img/app/logo.svg') }, firstName: 'Workquest info' } : user;
       notification.params = {
@@ -264,6 +267,7 @@ export default {
     } else if (employer && notificationCommonFilterAction2.includes(action) && !notification.sender) {
       notification.sender = employer;
     }
+    console.log('notification', notification);
     return notification.notification;
   },
 
