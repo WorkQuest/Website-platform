@@ -153,8 +153,8 @@ Vue.mixin({
       clearTimeout(delayId);
       return setTimeout(func, timeout);
     },
-    async DeleteQuest(questData, callback) {
-      const { id, status, contractAddress } = questData;
+    async DeleteQuest(questData) {
+      const { status, contractAddress } = questData;
       if (contractAddress && [QuestStatuses.Closed, QuestStatuses.Created].includes(status)) {
         this.SetLoader(true);
         const [feeRes] = await Promise.all([
