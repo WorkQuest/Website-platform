@@ -60,7 +60,7 @@ export default {
     } else if (action === LocalNotificationAction.PROFILE_FILLED) {
       notification.params = { path: `${Path.SETTINGS}` };
     } else if (action === LocalNotificationAction.TWOFA) {
-      notification.params = { path: `${Path.SETTINGS}` };
+      notification.params = { path: `${Path.SETTINGS}#2FA` };
     }
     notification.actionNameKey = `notifications.${action}`;
     Object.assign(notification.params, { title, isLocal: true });
