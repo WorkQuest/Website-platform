@@ -62,7 +62,7 @@
                   {{ $t('pension.timeRemainsUntilTheEndOfThePeriod') }}
                 </div>
                 <div class="info-block__subtitle_black">
-                  {{ endOfPeriod() }}
+                  {{ unlockDate }}
                 </div>
               </div>
             </div>
@@ -225,6 +225,10 @@ export default {
       walletAddress: null,
       isDeadline: false,
       interval: null,
+      intervalForHours: null,
+      intervalForMinutes: null,
+      intervalForSeconds: null,
+      unlockDate: null,
       FAQs: [
         {
           name: this.$t('pension.faq1.question'),
@@ -374,11 +378,15 @@ export default {
     if (!this.pensionWallet.isCreated) {
       await this.$router.push(Path.RETIREMENT);
     }
+    this.endOfPeriod();
     await this.subscribe(getWalletAddress());
     this.SetLoader(false);
   },
   async beforeDestroy() {
     clearTimeout(this.interval);
+    clearTimeout(this.intervalForSeconds);
+    clearTimeout(this.intervalForMinutes);
+    clearTimeout(this.intervalForHours);
     await this.unsubscribe(getWalletAddress());
   },
   methods: {
@@ -417,32 +425,43 @@ export default {
       this.isDeadline = ends.diff(now, 'milliseconds') <= 0;
     },
     endOfPeriod() {
-      if (!this.pensionWallet) return '';
+      if (!this.pensionWallet) return;
       const { unlockDate } = this.pensionWallet;
       const now = this.$moment.now();
       const ends = this.$moment(unlockDate);
 
+      const seconds = ends.diff(now, 'seconds');
+      const milliseconds = ends.diff(now, 'milliseconds');
+      if (seconds <= 60) {
+        clearInterval(this.intervalForMinutes);
+        this.intervalForSeconds = setInterval(this.endOfPeriod, 1000);
+        this.interval = setTimeout(() => {
+          this.isDeadline = true;
+        }, milliseconds);
+        clearInterval(this.intervalForSeconds);
+        this.unlockDate = this.$tc('meta.units.seconds', this.DeclOfNum(seconds), { count: seconds });
+      }
+
       const minutes = ends.diff(now, 'minutes');
       if (minutes <= 60) {
-        if (minutes <= 3) {
-          const milliseconds = ends.diff(now, 'milliseconds');
-          this.interval = setTimeout(() => {
-            this.isDeadline = true;
-          }, milliseconds);
-        }
-        return this.$tc('meta.units.minutes', this.DeclOfNum(minutes), { count: minutes });
+        clearInterval(this.intervalForHours);
+        this.intervalForMinutes = setInterval(this.endOfPeriod, 60000);
+        this.unlockDate = this.$tc('meta.units.minutes', this.DeclOfNum(minutes), { count: minutes });
+        return;
       }
 
       const hours = ends.diff(now, 'hours');
       if (hours <= 24) {
-        return this.$tc('meta.units.hours', this.DeclOfNum(hours), { count: hours });
+        this.intervalForHours = setInterval(this.endOfPeriod, 3.6e+6);
+        this.unlockDate = this.$tc('meta.units.hours', this.DeclOfNum(hours), { count: hours });
+        return;
       }
 
       const years = ends.diff(now, 'years');
       const days = ends.diff(now, 'days') - years * 365;
       const y = years > 0 ? `${this.$tc('meta.units.years', this.DeclOfNum(years), { count: years })} ` : '';
       const d = days >= 0 ? this.$tc('meta.units.days', this.DeclOfNum(days), { count: days }) : this.$tc('meta.units.days', this.DeclOfNum(0), { count: 0 });
-      return `${y}${d}`;
+      this.unlockDate = `${y}${d}`;
     },
     getFeePercent() {
       return this.pensionWallet?.fee || '';
@@ -510,7 +529,6 @@ export default {
                 this.getWallet(),
                 this.$store.dispatch('wallet/getBalance'),
               ]);
-              this.SetLoader(false);
             },
           });
         },
@@ -530,7 +548,6 @@ export default {
               contractAddress: process.env.WORKNET_PENSION_FUND,
               method: 'extendLockTime',
             }),
-            this.getWallet(),
           ]);
           if (txFee.ok === false || +balance === 0) {
             await this.$store.dispatch('main/showToast', {
@@ -548,7 +565,11 @@ export default {
             },
             submitMethod: async () => {
               this.SetLoader(true);
-              await this.pensionExtendLockTime();
+              const res = await this.pensionExtendLockTime();
+              if (res.ok) {
+                await this.getWallet();
+                this.endOfPeriod();
+              }
               this.SetLoader(false);
             },
           });
@@ -607,10 +628,6 @@ export default {
             submitMethod: async () => {
               this.SetLoader(true);
               await this.pensionContribute(amount);
-              this.SetLoader(false);
-            },
-            callback: async () => {
-              await this.getWallet();
             },
           });
         },
