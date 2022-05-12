@@ -12,7 +12,6 @@
       :class="[{'dd__top': mode === 'top' }, {'dd_small' : isDotsView}]"
     >
       <slot name="card" />
-
       <button
         class="dd__btn"
         :class="ddClass"
@@ -70,7 +69,7 @@
           :class="{'dd__items_small' : mode === 'small'}"
         >
           <button
-            v-for="(item, i) in filteredItems"
+            v-for="(item, i) in items"
             :key="`dd__item-${i}`"
             :data-selector="`ACTION-BTN-SELECT-ITEM-${dataSelector.toUpperCase()}-${i}`"
             class="dd__item dd__item_icon"
@@ -98,11 +97,11 @@
             :is-hide-error="true"
           />
           <button
-            v-for="(item, i) in filteredItems"
+            v-for="(item, i) in items"
             :key="`dd__item-${i}`"
             class="dd__item"
             :data-selector="`ACTION-BTN-SELECT-ITEM-${dataSelector.toUpperCase()}-${i}`"
-            :class="{'dd__item_hide': isSelected(i)}"
+            :class="{'dd__item_hide': isSelected(i) || !isSearchMatched(item)}"
             @click="selectItem(i)"
           >
             {{ dataType === 'array' ? item : item.title }}
@@ -200,12 +199,6 @@ export default {
         { 'dd__dots-btn': isDotsView },
       ];
     },
-    filteredItems() {
-      if (this.searchLine.length > 0) {
-        return this.items.filter((item) => item.toLowerCase().includes(this.searchLine.toLowerCase()));
-      }
-      return this.items;
-    },
   },
   methods: {
     hideDd() {
@@ -218,6 +211,9 @@ export default {
     },
     isSelected(i) {
       return this.hideSelected.includes(i);
+    },
+    isSearchMatched(item) {
+      return item.toLowerCase().includes(this.searchLine.toLowerCase());
     },
   },
 };

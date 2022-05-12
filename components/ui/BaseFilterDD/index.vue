@@ -36,12 +36,20 @@
                 {{ $t('filters.filterBtn') }}
               </base-btn>
             </div>
+            <base-field
+              v-model="searchLine"
+              class="filter__search"
+              data-selector="INPUT-SEARCH"
+              :is-search="true"
+              :is-hide-error="true"
+            />
             <div class="filter__body">
               <div
                 v-for="(item, specIdx) in searchFilters"
                 :id="specIdx"
                 :key="specIdx"
                 :data-selector="`SEARCH-FILTERS-${specIdx}`"
+                :class="{'item__hidden' : !isMatchedSpec(item, specIdx)}"
               >
                 <div
                   class="filter__item item"
@@ -69,6 +77,7 @@
                       :class="[{'hide': !visible[specIdx]}]"
                     >
                       <div
+                        v-if="searchLine.length === 0"
                         class="sub__item checkbox"
                         :data-selector="`ACTION-BTN-SELECT-ALL-${specIdx}`"
                         @click="selectAll(specIdx)"
@@ -92,6 +101,7 @@
                         :id="skillIdx"
                         :key="skillIdx"
                         class="sub__item"
+                        :class="{'item__hidden' : !isMatchedSkill(sub)}"
                         :data-selector="`ACTION-BTN-SELECT-SUB-${skillIdx}`"
                         @click="selectSub(specIdx, skillIdx)"
                       >
@@ -144,6 +154,7 @@ export default {
       selected: {},
       selectedAll: [],
       visible: {},
+      searchLine: '',
     };
   },
   computed: {
@@ -243,6 +254,18 @@ export default {
         [index]: !this.visible[index],
       };
     },
+    isMatchedSpec(spec, specIdx) {
+      const matches = Object.values(spec.items).filter((skill) => (skill.title.toLowerCase().includes(this.searchLine.toLowerCase())));
+      if (this.searchLine.length > 0 && matches.length > 0) {
+        this.visible[specIdx] = true;
+      } else if (matches.length === 0) {
+        this.visible[specIdx] = false;
+      }
+      return matches.length > 0;
+    },
+    isMatchedSkill(skill) {
+      return skill.title.toLowerCase().includes(this.searchLine.toLowerCase());
+    },
   },
 };
 </script>
@@ -285,6 +308,7 @@ export default {
     height: 400px;
     margin: 10px 0 0 0;
     padding: 10px 0 0 0;
+    min-width: 358px;
   }
   &__item {
     &:hover {
@@ -295,6 +319,9 @@ export default {
 
 .item {
   width: 100%;
+  &__hidden {
+    display: none;
+  }
 }
 
 .sub {
