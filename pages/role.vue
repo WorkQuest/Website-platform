@@ -178,7 +178,7 @@ export default {
   },
   beforeDestroy() {
     if (!this.isClearOnDestroy || this.isWalletAssigned) return;
-    this.$store.dispatch('user/logout');
+    this.$store.dispatch('user/logout', false);
   },
   methods: {
     clearCookies() {
