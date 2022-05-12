@@ -276,7 +276,6 @@ import { Path, tokenMap, TokenSymbols } from '~/utils/enums';
 import {
   QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses,
 } from '~/utils/сonstants/quests';
-import { hashText } from '~/utils/wallet';
 import { CommissionForCreatingAQuest } from '~/utils/сonstants/commission';
 import { ERC20 } from '~/abi';
 
