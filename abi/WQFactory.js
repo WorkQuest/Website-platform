@@ -291,12 +291,22 @@ const WQFactory = [
         name: 'employer',
         type: 'address',
       },
+      {
+        internalType: 'uint256',
+        name: 'offset',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'limit',
+        type: 'uint256',
+      },
     ],
     name: 'getWorkQuests',
     outputs: [
       {
         internalType: 'address[]',
-        name: '',
+        name: 'page',
         type: 'address[]',
       },
     ],
@@ -355,6 +365,11 @@ const WQFactory = [
       {
         internalType: 'uint256',
         name: '_feeWorker',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_feeTx',
         type: 'uint256',
       },
       {
@@ -508,6 +523,19 @@ const WQFactory = [
       },
     ],
     name: 'setFeeReceiver',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_fee',
+        type: 'uint256',
+      },
+    ],
+    name: 'setFeeTx',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',

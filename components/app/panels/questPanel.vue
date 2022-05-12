@@ -99,7 +99,10 @@ export default {
       questData: 'quests/getQuest',
     }),
     questDDMode() {
-      return ![QuestStatuses.WaitWorkerOnAssign, QuestStatuses.WaitWorker, QuestStatuses.Pending, InfoModeEmployer.Dispute, InfoModeEmployer.Done, InfoModeEmployer.Closed].includes(this.questData.status);
+      return [
+        QuestStatuses.Created,
+        QuestStatuses.Rejected,
+      ].includes(this.questData.status);
     },
     questStatuses() {
       return QuestStatuses;
