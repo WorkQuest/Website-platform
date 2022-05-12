@@ -52,7 +52,7 @@ import VerificationCard from '~/components/app/pages/settings/VerificationCard.v
 import Profile from '~/components/app/pages/settings/Profile.vue';
 import Skills from '~/components/app/pages/settings/Skills.vue';
 import Advanced from '~/components/app/pages/settings/Advanced.vue';
-import { UserRole, WorkplaceIndex, Path } from '~/utils/enums';
+import { UserRole, WorkplaceIndex, Path, RatingStatus } from '~/utils/enums';
 import { LocalNotificationAction } from '~/utils/notifications-enum';
 
 export default {
@@ -322,9 +322,12 @@ export default {
     },
 
     async updateVisibility({ visibilityUser, restrictionRankingStatus }) {
-      this.profileVisibilitySetting[this.isEmployer ? 'ratingStatusCanRespondToQuest'
-        : 'ratingStatusCanInviteMeOnQuest'] = visibilityUser;
-      this.profileVisibilitySetting.ratingStatusInMySearch = restrictionRankingStatus;
+      const formatWithDefaultVal = (arr) => (arr.length === 0 ? [RatingStatus.AllStatuses] : arr);
+      this.profileVisibilitySetting[this.isEmployer
+        ? 'ratingStatusCanRespondToQuest'
+        : 'ratingStatusCanInviteMeOnQuest'
+      ] = formatWithDefaultVal(visibilityUser);
+      this.profileVisibilitySetting.ratingStatusInMySearch = formatWithDefaultVal(restrictionRankingStatus);
     },
     async checkValidate() {
       const validateEducation = this.isEmployer ? true : await this.validateKnowledge('education',
