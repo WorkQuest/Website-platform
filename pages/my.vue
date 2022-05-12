@@ -152,6 +152,7 @@ export default {
       this.requestParams.query.offset = 0;
       this.requestParams.query.starred = id === 1;
       delete this.requestParams.query.invited;
+      delete this.requestParams.query['statuses[0]'];
 
       if (id === null) delete this.requestParams.query['statuses[0]'];
       else if (id === 0) this.requestParams.query['statuses[0]'] = QuestStatuses.Created;
