@@ -510,6 +510,7 @@ export default {
                 this.getWallet(),
                 this.$store.dispatch('wallet/getBalance'),
               ]);
+              this.SetLoader(false);
             },
           });
         },
@@ -606,8 +607,11 @@ export default {
             submitMethod: async () => {
               this.SetLoader(true);
               await this.pensionContribute(amount);
+              this.SetLoader(false);
             },
-            callback: await this.getWallet(),
+            callback: async () => {
+              await this.getWallet();
+            },
           });
         },
       });

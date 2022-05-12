@@ -358,11 +358,11 @@ export default {
           const fields = {
             from: {
               name: this.$t('meta.fromBig'),
-              value: getWalletAddress(),
+              value: this.convertToBech32('wq', getWalletAddress()),
             },
             to: {
               name: this.$t('meta.toBig'),
-              value: process.env.WORKNET_PENSION_FUND,
+              value: this.convertToBech32('wq', process.env.WORKNET_PENSION_FUND),
             },
             fee: {
               name: this.$t('wallet.table.trxFee'),

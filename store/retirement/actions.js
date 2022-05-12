@@ -189,7 +189,7 @@ export default {
         const {
           data: {
             event, transactionHash, returnValues: {
-              amount, timestamp, unlockDate, newFee,
+              amount, timestamp, newFee,
             },
           },
         } = msg;
@@ -226,7 +226,6 @@ export default {
             count = 0;
             break;
         }
-        console.log('subscribeWS:', pensionHistory);
         if (pensionHistory[payload.method].txs && pensionHistory[payload.method].txs.length === 10) pensionHistory[payload.method].txs.splice(9, 1);
         pensionHistory[payload.method].txs.unshift(payload.tx);
         await dispatch('pensionGetWalletInfo');
