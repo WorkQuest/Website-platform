@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="buy-wqt"
-    title="Buy WQT"
+    :title="$t('wallet.buyWQT.buyButton')"
   >
     <validation-observer
       v-slot="{handleSubmit, invalid}"
@@ -65,14 +65,18 @@
                 data-selector="MAX"
                 @click="maxValue"
               >
-                <span class="max__text">{{ $t('modals.maximum') }}</span>
+                <span class="max__text">
+                  {{ $t('modals.maximum') }}
+                </span>
               </base-btn>
             </template>
           </base-field>
         </div>
       </div>
       <div class="content__wqt">
-        <span v-if="wqtAmount">{{ $t('meta.amount.amountOfWQT') }}: {{ wqtAmount }}</span>
+        <span v-if="wqtAmount">
+          {{ $t('meta.amount.amountOfWQT') }}: {{ wqtAmount }}
+        </span>
       </div>
       <base-btn
         :disabled="invalid || isNeedToChangeNetwork || inProgressWQT"
@@ -101,15 +105,11 @@ export default {
       selectedToken: 0,
       selectedNetwork: null,
       amount: null,
-      selectedTokenBalance: 0,
-
-      isNeedToChangeNetwork: false,
-
-      wqtAmount: null, // Сколько мы получим wqt
-      updatePriceId: null, // timeout to fetch oracle price
-      inProgressWQT: false,
-
       tokenData: null,
+      updatePriceId: null,
+      wqtAmount: null, // Сколько мы получим wqt
+      inProgressWQT: false,
+      isNeedToChangeNetwork: false,
     };
   },
   computed: {
