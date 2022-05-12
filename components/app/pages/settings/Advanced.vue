@@ -8,26 +8,26 @@
         {{ $t('meta.settings') }}
       </div>
       <div
-        v-for="(radio) in radioButtons"
-        :key="radio.index"
-        data-selector="ADVANCED-RADIOS"
+        v-for="(checkBox) in checkBoxButtons"
+        :key="checkBox.index"
+        data-selector="ADVANCED-CHECKBOX"
         class="advanced__options advanced__options_left"
       >
         <div class="advanced__subtitle">
-          {{ radio[0].title }}
+          {{ checkBox[0].title }}
         </div>
         <div
-          v-for="input in radio"
+          v-for="input in checkBox"
           :key="input.index"
-          data-selector="ADVANCED-WHO-CAN-SEE-RADIO"
-          class="advanced__option"
+          data-selector="ADVANCED-WHO-CAN-SEE-CHECKBox"
+          class="advanced__option advanced__checkBox"
           @click="setSelectedCheckboxByBlock(input.name, input.value)"
         >
           <base-checkbox
             :id="input.id"
             :name="input.id"
             :value="isCheckboxChecked(input.name, input.value)"
-            :data-selector="`ADVANCED-WHO-CAN-SEE-RADIO-${input.id}`"
+            :data-selector="`ADVANCED-WHO-CAN-SEE-CHECKBOX-${input.id}`"
             :label="String($t(input.local))"
           />
         </div>
@@ -86,7 +86,7 @@ export default {
         visibilityUser: [],
         restrictionRankingStatus: [],
       },
-      radioButtons: {
+      checkBoxButtons: {
         visibilityUser: [],
         restrictionRankingStatus: [],
       },
@@ -135,14 +135,14 @@ export default {
     },
   },
   beforeMount() {
-    this.radioButtons.restrictionRankingStatus = RatingFilter.map((item, i) => ({
+    this.checkBoxButtons.restrictionRankingStatus = RatingFilter.map((item, i) => ({
       title: this.$t(`settings.${this.userRole === UserRole.EMPLOYER ? 'whoCouldIInvite' : 'whoCouldInviteMe'}`),
       id: item.key,
       value: item.value,
       local: i === 0 ? 'settings.allUsers' : `quests.rating.${item.key}`,
       name: 'restrictionRankingStatus',
     }));
-    this.radioButtons.visibilityUser = RatingFilter.map((item, i) => ({
+    this.checkBoxButtons.visibilityUser = RatingFilter.map((item, i) => ({
       title: this.$t(`settings.${this.userRole === UserRole.EMPLOYER ? 'whoAppearsInMyListEmployees' : 'whoAppearsInMyListEmployers'}`),
       id: item.key,
       value: item.value,
@@ -161,6 +161,7 @@ export default {
       this.checkboxBlocks.visibilityUser = arrayRatingStatusCanInviteMeOnQuest;
       this.checkboxBlocks.restrictionRankingStatus = arrayRatingStatusInMySearch;
     }
+    this.checkMaskAllUser();
   },
   methods: {
     async showModalKey(modalKey) {
@@ -174,24 +175,41 @@ export default {
       });
     },
     setSelectedCheckboxByBlock(checkBoxBlockName, value) {
-      if (value === RatingStatus.AllStatuses
-        && !this.checkboxBlocks[checkBoxBlockName].includes(RatingStatus.AllStatuses)) {
-        this.checkboxBlocks[checkBoxBlockName] = [RatingStatus.AllStatuses];
-        this.$emit('updateVisibility', this.checkboxBlocks);
-        return null;
-      }
-      if (!this.checkboxBlocks[checkBoxBlockName].includes(value)) {
-        this.checkboxBlocks[checkBoxBlockName].push(value);
-        this.checkboxBlocks[checkBoxBlockName] = this.checkboxBlocks[checkBoxBlockName].filter((e) => e !== RatingStatus.AllStatuses);
-      } else {
+      const isHas = this.checkboxBlocks[checkBoxBlockName].includes(value);
+      const isAllStatuses = value === RatingStatus.AllStatuses;
+
+      if (isHas && isAllStatuses) {
+        this.checkboxBlocks[checkBoxBlockName] = [];
+      } else if (isHas) {
         this.checkboxBlocks[checkBoxBlockName] = this.checkboxBlocks[checkBoxBlockName].filter((e) => e !== value);
+      } else if (isAllStatuses) {
+        this.checkboxBlocks[checkBoxBlockName] = [RatingStatus.AllStatuses];
+      } else {
+        this.checkboxBlocks[checkBoxBlockName] = this.checkboxBlocks[checkBoxBlockName].filter((e) => e !== RatingStatus.AllStatuses);
+        this.checkboxBlocks[checkBoxBlockName].push(value);
+        this.checkMaskAllUser();
       }
+
       this.$emit('updateVisibility', this.checkboxBlocks);
       return null;
     },
     isCheckboxChecked(checkBoxBlockName, value) {
-      return this.checkboxBlocks[checkBoxBlockName].includes(value)
-        || this.checkboxBlocks[checkBoxBlockName].includes(RatingStatus.AllStatuses);
+      const checkboxes = this.checkboxBlocks[checkBoxBlockName];
+      return checkboxes.includes(value) || checkboxes.includes(RatingStatus.AllStatuses);
+    },
+    checkMaskAllUser() {
+      const ratingStatus = [
+        RatingStatus.NoStatus,
+        RatingStatus.Verified,
+        RatingStatus.Reliable,
+        RatingStatus.TopRanked,
+      ];
+      if (JSON.stringify(this.checkboxBlocks.visibilityUser.sort()) === JSON.stringify(ratingStatus.sort())) {
+        this.checkboxBlocks.visibilityUser = [RatingStatus.AllStatuses];
+      }
+      if (JSON.stringify(this.checkboxBlocks.restrictionRankingStatus.sort()) === JSON.stringify(ratingStatus.sort())) {
+        this.checkboxBlocks.restrictionRankingStatus = [RatingStatus.AllStatuses];
+      }
     },
   },
 };
@@ -267,6 +285,9 @@ export default {
         max-width: 220px;
       }
     }
+  }
+  &__checkBox {
+    width: fit-content;
   }
   &__option-buttons {
     min-width: 220px;

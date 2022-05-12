@@ -411,6 +411,7 @@ export default {
     async changeQuestsData(limit) {
       const payload = {
         role: this.userData.role,
+        userId: this.userData.id,
         query: {
           limit: limit || this.perPagerQuests,
           offset: (this.pageQuests - 1) * this.perPagerQuests,

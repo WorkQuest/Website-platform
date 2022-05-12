@@ -46,7 +46,7 @@
               <div class="user__info">
                 <img
                   class="ava"
-                  :src="paidEventsList[0]['referralUser.avatar.url'] ? paidEventsList[0]['referralUser.avatar.url'] : EmptyAvatar()"
+                  :src="paidEventsList[0]['referralUser.avatar.url'] ? paidEventsList[0]['referralUser.avatar.url'] : $options.images.EMPTY_AVATAR"
                   alt="avatar"
                 >
                 <div class="user__name">
@@ -85,7 +85,7 @@
               >
                 <img
                   class="ava_list"
-                  :src="(item.avatar && item.avatar.url) ? item.avatar.url : EmptyAvatar()"
+                  :src="(item.avatar && item.avatar.url) ? item.avatar.url : $options.images.EMPTY_AVATAR"
                   alt=""
                 >
               </div>
@@ -174,7 +174,7 @@
                   >
                     <img
                       class="ava"
-                      :src="el.item['referralUser.avatar.url'] ? el.item['referralUser.avatar.url'] : EmptyAvatar()"
+                      :src="el.item['referralUser.avatar.url'] ? el.item['referralUser.avatar.url'] : $options.images.EMPTY_AVATAR"
                       alt=""
                     >
                     <span>
@@ -242,9 +242,11 @@ import { mapGetters } from 'vuex';
 import { STATUS_INFO } from '~/utils/сonstants/referral';
 import modals from '~/store/modals/modals';
 import { getStyledAmount } from '~/utils/wallet';
+import { images } from '~/utils/images';
 
 export default {
   name: 'Referral',
+  images,
   async asyncData({ store }) {
     const userAddress = store.getters['user/getUserWalletAddress'];
     await Promise.all([

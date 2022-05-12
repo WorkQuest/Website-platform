@@ -44,7 +44,7 @@
         >
           <img
             class="status__img"
-            :src="item['referralUser.avatar.url'] ? item['referralUser.avatar.url'] : EmptyAvatar()"
+            :src="item['referralUser.avatar.url'] ? item['referralUser.avatar.url'] : $options.images.EMPTY_AVATAR"
             alt=""
           >
           <span>
@@ -95,9 +95,11 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { images } from '~/utils/images';
 
 export default {
   name: 'ModalStatus',
+  images,
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
@@ -113,7 +115,7 @@ export default {
       if (this.isLoading) return;
       this.SetLoader(true);
       if (this.options.callback) await this.options.callback();
-      this.hide();
+      if (!this.options.isNotClose) this.hide();
       this.SetLoader(false);
     },
   },

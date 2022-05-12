@@ -147,8 +147,7 @@
         <div class="btn__create">
           <base-btn
             selector="CREATE-A-QUEST"
-            :disabled="validated && invalid || !selectedSpecAndSkills.length"
-            @click="handleSubmit(toCreateQuest)"
+            @click="handleSubmit(toCreateQuest(invalid))"
           >
             {{ $t('meta.createAQuest') }}
           </base-btn>
@@ -350,9 +349,9 @@ export default {
         console.error('Geo look up is failed', e);
       }
     },
-    async toCreateQuest() {
+    async toCreateQuest(invalid) {
       this.SetLoader(true);
-      if (!this.selectedSpecAndSkills.length) {
+      if (!this.selectedSpecAndSkills.length || invalid) {
         this.isNotChooseSpec = true;
         this.ScrollToTop();
         this.SetLoader(false);
@@ -396,14 +395,13 @@ export default {
         this.SetLoader(false);
         this.ShowModal({
           key: modals.transactionReceipt,
-          title: 'Approve',
+          title: this.$t('meta.approve'),
           fields: {
             from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
             to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_WQ_FACTORY },
             amount: { name: this.$t('modals.amount'), value: this.depositAmount, symbol: TokenSymbols.WUSD },
             fee: { name: this.$t('wallet.table.trxFee'), value: approveFee.result.fee, symbol: TokenSymbols.WQT },
           },
-          callback: this.createQuest,
           submitMethod: async () => {
             this.ShowToast('Approving...', 'Approve');
             const approveOk = await this.$store.dispatch('wallet/approve', {
@@ -414,10 +412,10 @@ export default {
             if (!approveOk) {
               this.ShowToast('Approve error');
               this.SetLoader(false);
-              return error();
+              return;
             }
             this.ShowToast('Approving done', 'Approve');
-            return success();
+            await this.createQuest();
           },
         });
       } else {

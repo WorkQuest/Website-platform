@@ -192,7 +192,7 @@ export default {
       let key = 1;
       // eslint-disable-next-line no-restricted-syntax
       for (const item of this.skills) {
-        const [_spec, _skill] = item.split('.');
+        const [_spec, _skill] = item?.path ? item.path.split('.') : item.split('.');
         const spec = parseInt(_spec, 10);
         const skill = parseInt(_skill, 10);
         if (!Object.keys(specKeys).includes(_spec)) {

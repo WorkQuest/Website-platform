@@ -20,7 +20,7 @@
         <div class="menu menu__items">
           <div class="menu__container">
             <div
-              v-if="canRasieViews"
+              v-if="canRaiseViews"
               class="menu__item"
               :data-selector="`ACTION-BTN-TO-RAISING-VIEWS-${questIndex}`"
               @click="toRaisingViews"
@@ -146,17 +146,11 @@ export default {
       }
       this.ShowModal({
         key: modals.securityCheck,
-        actionMethod: async () => this.ShowModal({
-          key: modals.areYouSure,
-          text: this.$t('modals.sureDeleteNotification'),
-          okBtnTitle: this.$t('meta.btns.delete'),
-          okBtnFunc: () => this.deleteQuest(),
-        }),
+        actionMethod: () => {
+          this.CloseModal();
+          this.DeleteQuest(this.item);
+        },
       });
-    },
-    deleteQuest() {
-      this.CloseModal();
-      this.DeleteQuest(this.item);
     },
     toRaisingViews() {
       const { status, id } = this.item;
