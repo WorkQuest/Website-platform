@@ -1219,6 +1219,8 @@
     "scanQrCode": "Просто отсканируйте QR-код",
     "downOnSmartphone": "Скачайте Work Quest приложение на свой телефон",
     "downWalletOnSmartphone": "Download Work Quest Wallet app on your smartphone",
+    "wouldReviewEmployee": "Добавить отзыв о сотруднике?",
+    "wouldReviewEmployer": "Добавить отзыв о работодателе?",
     "successfulMethods": {
       "claim": "Successful claim",
       "refund": "Successful refund",
