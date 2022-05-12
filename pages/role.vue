@@ -201,6 +201,7 @@ export default {
     showPrivacy(role) {
       this.ShowModal({
         key: modals.privacy,
+        isSocialNetwork: this.isLoginWithSocialNetwork,
         callback: () => this.goToAssignWallet(),
         role,
       });

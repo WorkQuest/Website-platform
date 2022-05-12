@@ -91,10 +91,19 @@ export default {
   methods: {
     async onSubmit() {
       // Role page
-      const response = await this.$store.dispatch('user/confirm', {
-        confirmCode: sessionStorage.getItem('confirmToken'),
-        role: this.options.role,
-      });
+      const confirmCode = sessionStorage.getItem('confirmToken');
+      let response;
+      if (this.options.isSocialNetwork) {
+        response = await this.$store.dispatch('user/setUserRole', {
+          role: this.options.role,
+        });
+      } else {
+        response = await this.$store.dispatch('user/confirm', {
+          confirmCode,
+          role: this.options.role,
+        });
+      }
+
       if (response?.ok) {
         this.$cookies.set('userLogin', true, { path: Path.ROOT });
         this.$cookies.set('userStatus', UserStatuses.Confirmed, { path: Path.ROOT });
@@ -102,7 +111,7 @@ export default {
         this.ShowToast(this.$t('modals.yourAccountVerified'), this.$t('meta.success'));
         await this.options.callback();
       } else {
-        // Wrong confirm token
+        // Wrong confirm token or errors with social network login
         await this.$store.dispatch('user/logout');
         await this.$router.push(Path.SIGN_IN);
       }
