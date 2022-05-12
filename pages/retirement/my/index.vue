@@ -352,8 +352,7 @@ export default {
         operation: item.event,
         tx_hash: item.transactionHash,
         date: this.$moment(item.createdAt),
-        value: this.selectedTable === PensionHistoryMethods.Update
-          ? `${getStyledAmount(item.newFee)}%` : `${getStyledAmount(item.amount)} ${TokenSymbols.WUSD}`,
+        value: this.selectedTable === PensionHistoryMethods.Update ? `${getStyledAmount(item.newFee)}%` : `${getStyledAmount(item.amount)} ${TokenSymbols.WUSD}`,
       }));
     },
   },
@@ -372,6 +371,9 @@ export default {
   async mounted() {
     this.SetLoader(true);
     await this.getWallet();
+    if (!this.pensionWallet.isCreated) {
+      await this.$router.push(Path.RETIREMENT);
+    }
     await this.subscribe(getWalletAddress());
     this.SetLoader(false);
   },
@@ -420,17 +422,13 @@ export default {
       const now = this.$moment.now();
       const ends = this.$moment(unlockDate);
 
-      const seconds = ends.diff(now, 'seconds');
-      if (seconds <= 60) {
-        return this.$tc('meta.units.seconds', this.DeclOfNum(seconds), { count: seconds });
-      }
-
       const minutes = ends.diff(now, 'minutes');
       if (minutes <= 60) {
         if (minutes <= 3) {
+          const milliseconds = ends.diff(now, 'milliseconds');
           this.interval = setTimeout(() => {
             this.isDeadline = true;
-          }, seconds);
+          }, milliseconds);
         }
         return this.$tc('meta.units.minutes', this.DeclOfNum(minutes), { count: minutes });
       }
@@ -503,12 +501,7 @@ export default {
             submitMethod: async () => {
               this.SetLoader(true);
               const res = await this.pensionWithdraw(amount);
-              if (res.ok) {
-                if (this.pensionWallet.fullAmount === 0) {
-                  await this.$router.push(Path.RETIREMENT);
-                }
-                return success();
-              }
+              if (res.ok) return success();
               await this.$store.dispatch('main/showToast', { text: this.$t('modals.transactionFail') });
               return error();
             },
@@ -538,8 +531,6 @@ export default {
             }),
             this.getWallet(),
           ]);
-          console.log(txFee);
-          console.log(balance);
           if (txFee.ok === false || +balance === 0) {
             await this.$store.dispatch('main/showToast', {
               text: this.$t('errors.transaction.notEnoughFunds'),
