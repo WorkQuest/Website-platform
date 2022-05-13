@@ -1,8 +1,7 @@
 // eslint-disable-next-line import/prefer-default-export
 
 export const NotificationAction = {
-  QUEST_STATUS_UPDATED1: 'QuestStatusUpdated',
-  QUEST_STATUS_UPDATED2: 'questStatusUpdated',
+  QUEST_STATUS_UPDATED: 'QuestStatusUpdated',
   QUEST_STARTED: 'questStarted',
   WORKER_REJECTED_QUEST: 'workerRejectedQuest',
   WORKER_ACCEPTED_QUEST: 'workerAcceptedQuest',
