@@ -66,11 +66,9 @@ export default {
     Object.assign(notification.params, { title, isLocal: true });
 
     const notificationList = getters.getNotificationsList;
-    async function checkAddedLocalNotification() {
-      const isAdded = () => notificationList.some((n) => Object.entries(LocalNotificationAction).includes(n.actionNameKey));
-      return !!isAdded();
-    }
-    const isAdded = await checkAddedLocalNotification();
+
+    const isAdded = !!notificationList.some((n) => Object.entries(LocalNotificationAction).includes(n.actionNameKey));
+
     if (!isAdded) await dispatch('addNotification', notification);
   },
 
