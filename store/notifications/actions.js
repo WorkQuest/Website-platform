@@ -7,9 +7,7 @@ import {
   NotificationAction,
   LocalNotificationAction,
   NotificationActionFromContract,
-  notificationCommonFilterActions,
-  notificationCommonFilterAction2,
-  notificationEmployerFilterActions, notificationsQuestsActions,
+  notificationsQuestsActions,
 } from '~/utils/notifications-enum';
 import { error, success } from '~/utils/web3';
 import { images } from '~/utils/images';
@@ -257,15 +255,44 @@ export default {
     Object.assign(notification.params, { isLocal: false });
 
     /** Set sender if it need */
-    if (quest?.user && notificationCommonFilterActions.includes(action) && !notification.sender) {
-      notification.sender = quest.user;
-    } else if (notificationCommonFilterAction2.includes(action && !notification.sender)) {
-      if (userRole === UserRole.WORKER) notification.sender = user;
-      else if (employer) notification.sender = employer;
-    } else if (notificationEmployerFilterActions.includes(action) && !notification.sender) {
-      if (assignedWorker) notification.sender = assignedWorker;
-      else if (worker) notification.sender = worker;
+    switch (action) {
+      case quest?.user && !notification.sender && [
+        NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST,
+        NotificationAction.WORKER_ACCEPTED_INVITATION_TO_QUEST,
+        NotificationAction.WORKER_REJECTED_INVITATION_TO_QUEST,
+        NotificationAction.WORKER_RESPONDED_TO_QUEST,
+        NotificationAction.OPEN_DISPUTE,
+        NotificationAction.DISPUTE_DECISION,
+        NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE,
+      ].includes(action):
+        notification.sender = quest.user;
+        break;
+
+      case !notification.sender && [
+        NotificationAction.QUEST_EDITED,
+        NotificationAction.NEW_DISCUSSION_LIKE,
+        NotificationAction.NEW_COMMENT_IN_DISCUSSION,
+        NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST,
+        NotificationAction.WAIT_WORKER,
+      ].includes(action):
+        if (userRole === UserRole.WORKER) notification.sender = user;
+        else if (employer) notification.sender = employer;
+        break;
+
+      case !notification.sender && [
+        NotificationAction.WORKER_RESPONDED_TO_QUEST,
+        NotificationAction.WORKER_ACCEPTED_QUEST,
+        NotificationAction.WORKER_COMPLETED_QUEST,
+        NotificationAction.WORKER_REJECTED_QUEST,
+      ].includes(action):
+        if (assignedWorker) notification.sender = assignedWorker;
+        else if (worker) notification.sender = worker;
+        break;
+
+      default:
+        break;
     }
+
     return notification.notification;
   },
 
