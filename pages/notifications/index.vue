@@ -82,12 +82,10 @@
             >
               <base-btn
                 mode="outline"
-                :link="notification.params.isExternalLink
-                  ? `${notification.params.externalBase}${notification.params.path}` : ''"
+                :link="notification.params.isExternalLink ? `${notification.params.externalBase}${notification.params.path}` : ''"
                 class="button__view"
                 data-selector="NOTIFICATION-VIEW"
-                @click="notification.params.isExternalLink
-                  ? '' : goToEvent(notification.params.path)"
+                @click="notification.params.isExternalLink ? '' : goToEvent(notification.params.path)"
               >
                 {{ actionBtnText(notification) }}
               </base-btn>
