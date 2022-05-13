@@ -259,14 +259,12 @@ export default {
     /** Set sender if it need */
     if (quest?.user && notificationCommonFilterActions.includes(action) && !notification.sender) {
       notification.sender = quest.user;
-    } else if (userRole === UserRole.WORKER && notificationCommonFilterAction2.includes(action && !notification.sender)) {
-      notification.sender = user;
-    } else if (assignedWorker && notificationEmployerFilterActions.includes(action) && !notification.sender) {
-      notification.sender = assignedWorker;
-    } else if (worker && notificationEmployerFilterActions.includes(action) && !notification.sender) {
-      notification.sender = worker;
-    } else if (employer && notificationCommonFilterAction2.includes(action) && !notification.sender) {
-      notification.sender = employer;
+    } else if (notificationCommonFilterAction2.includes(action && !notification.sender)) {
+      if (userRole === UserRole.WORKER) notification.sender = user;
+      else if (employer) notification.sender = employer;
+    } else if (notificationEmployerFilterActions.includes(action) && !notification.sender) {
+      if (assignedWorker) notification.sender = assignedWorker;
+      else if (worker) notification.sender = worker;
     }
     return notification.notification;
   },
