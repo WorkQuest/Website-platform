@@ -548,13 +548,18 @@ export default {
       }
     },
     async openDispute() {
-      const { status, openDispute, id } = this.quest;
-      if (status === QuestStatuses.Dispute) return await this.$router.push(`${Path.DISPUTES}/${openDispute.id}`);
-      if (this.checkAvailabilityDisputeTime) {
-        return this.ShowModal({
+      const {
+        $router, checkAvailabilityDisputeTime, $store, ShowModal, ShowModalFail,
+      } = this;
+      const {
+        status, openDispute, id, contractAddress,
+      } = this.quest;
+      if (status === QuestStatuses.Dispute) return await $router.push(`${Path.DISPUTES}/${openDispute.id}`);
+      if (checkAvailabilityDisputeTime) {
+        return ShowModal({
           key: modals.openADispute,
           questId: id,
-          submitMethod: async () => this.ShowModal({
+          submitMethod: async () => ShowModal({
             // TODO: Добавить локализацию
             key: modals.status,
             img: images.WARNING,
@@ -562,39 +567,43 @@ export default {
             text: 'You need to pay to open a dispute',
             callback: async () => {
               // TODO: Дописать логику
-              const { contractAddress } = this.quest;
-              const feeTx = await fetchContractData('feeTx', WQFactory, process.env.WORKNET_WQ_FACTORY, null, GetWalletProvider());
+              const feeTx = await fetchContractData(
+                'feeTx',
+                WQFactory,
+                process.env.WORKNET_WQ_FACTORY,
+                null,
+                GetWalletProvider(),
+              );
               console.log('feeTx:', feeTx);
-              const createDisputePayment = await this.$store.dispatch('quests/arbitration', {
+              const { result } = await $store.dispatch('quests/arbitration', {
                 contractAddress,
                 value: feeTx,
               });
-              console.log('createDisputePayment:', createDisputePayment);
-              if (!createDisputePayment.result.status) {
-                setTimeout(async () => this.ShowModalFail({
+              console.log('createDisputePayment:', result);
+              if (!result.status) {
+                setTimeout(async () => ShowModalFail({
                   title: 'Payment Error',
                   subtitle: 'Please, try later...',
                   img: images.ERROR,
                 }), 1000);
-              } else if (createDisputePayment.result.status) {
-                setTimeout(async () => this.ShowModal({
+              } else if (result.status) {
+                setTimeout(async () => ShowModal({
                   key: modals.status,
                   title: 'Payment Success',
                   subtitle: 'You can check a transaction status on Explorer!',
                   mode: 'link',
                   img: images.SUCCESS,
-                  trxHash: createDisputePayment.result.transactionHash,
+                  trxHash: result.transactionHash,
                   callback: async () => {
                     const disputeInfo = this.$cookies.get('disputeInfo');
-                    // TODO: Узнать про контракт!!
+                    // TODO: Узнать про контракт переработать условия!!
                     const createDisputeRes = '';
                     console.log('createDisputeRes', createDisputeRes);
                     if (createDisputeRes?.ok) {
-                      setTimeout(async () => await this.$router.push(`/disputes/${createDisputeRes.result.id}`), 1000);
+                      setTimeout(async () => await $router.push(`${Path.DISPUTES}/${createDisputeRes.result.id}`), 1000);
                     } else {
-                      setTimeout(async () => this.ShowModal({
-                        key: modals.status,
-                        img: require('~/assets/img/ui/warning.svg'),
+                      setTimeout(async () => ShowModalFail({
+                        img: images.WARNING,
                         title: this.$t('modals.errors.error'),
                         subtitle: this.$t('errors.incorrectPass'),
                       }), 1000);
