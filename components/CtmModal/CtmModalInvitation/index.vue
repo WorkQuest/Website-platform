@@ -10,12 +10,12 @@
             <div class="ctm-modal__user-data">
               <img
                 class="user-data__img"
-                :src="userData.avatar && userData.avatar.url ? userData.avatar.url : $options.images.EMPTY_AVATAR"
-                :alt="userData.avatar && userData.avatar.url ? userData.avatar.url : 'avatar_empty'"
+                :src="options.avatar && options.avatar.url ? options.avatar.url : $options.images.EMPTY_AVATAR"
+                alt="avatar"
               >
               <div class="user-data__name">
-                {{ userData.firstName ? userData.firstName : "Nameless worker" }}
-                {{ userData.lastName ? userData.lastName : "" }}
+                {{ options.firstName ? options.firstName : "" }}
+                {{ options.lastName ? options.lastName : "" }}
               </div>
               <item-rating
                 class="user-data__status"
@@ -124,7 +124,7 @@ export default {
       });
     },
     goToChat() {
-      const chatId = this.chatInfoInviteOnQuest.id;
+      const { chatId } = this.chatInfoInviteOnQuest;
       this.$router.push(`${Path.MESSAGES}/${chatId}`);
       this.CloseModal();
     },

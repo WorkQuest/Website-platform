@@ -358,7 +358,7 @@ export default {
     setEmployerBtnsArr() {
       if (this.userData.id !== this.quest.userId) return [];
       const {
-        Dispute, Created, WaitWorker, WaitEmployerConfirm,
+        Dispute, Created, WaitEmployerConfirm,
       } = InfoModeEmployer;
       let arr = [];
       switch (this.infoDataMode) {
@@ -376,16 +376,6 @@ export default {
           }];
           break;
         }
-        case WaitWorker: {
-          arr = [{
-            name: this.$t('meta.btns.goToChat'),
-            class: 'base-btn_goToChat',
-            funcKey: 'goToChat',
-            icon: 'icon-chat icon_fs-20',
-            disabled: false,
-          }];
-          break;
-        }
         case WaitEmployerConfirm: {
           arr = [{
             name: this.$t('meta.btns.acceptCompletedWorkOnQuest'),
@@ -396,13 +386,6 @@ export default {
           {
             name: this.$t('meta.openDispute'),
             funcKey: 'openDispute',
-            disabled: false,
-          },
-          {
-            name: this.$t('meta.btns.goToChat'),
-            class: 'base-btn_goToChat',
-            funcKey: 'goToChat',
-            icon: 'icon-chat icon_fs-20',
             disabled: false,
           }];
           break;
@@ -525,7 +508,10 @@ export default {
     },
     async closeQuest() {
       if (this.quest.status !== InfoModeEmployer.WaitWorker) {
-        await this.DeleteQuest(this.quest);
+        this.ShowModal({
+          key: modals.securityCheck,
+          actionMethod: async () => await this.DeleteQuest(this.quest),
+        });
       }
     },
     async openDispute() {

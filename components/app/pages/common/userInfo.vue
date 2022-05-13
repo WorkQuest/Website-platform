@@ -210,6 +210,7 @@ export default {
       tags: 'ui/getTags',
       mainUserData: 'user/getUserData',
       anotherUserData: 'user/getAnotherUserData',
+      availableQuests: 'quests/getAvailableQuests',
     }),
     isEmptyUserData() {
       return !this.userData.id;
@@ -348,10 +349,14 @@ export default {
       }
     },
     sendInvite() {
-      if (this.isHaveOpenQuests) {
+      if (this.availableQuests.length > 0) {
         this.ShowModal({
           key: modals.invitation,
           userId: this.userData.id,
+          avatar: this.userData.avatar,
+          firstName: this.userData.firstName,
+          lastName: this.userData.lastName,
+          ratingStatistic: this.userData.ratingStatistic,
         });
       } else {
         this.ShowModal({

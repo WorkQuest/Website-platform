@@ -22,7 +22,7 @@ export default async function ({
       store.commit('user/setTokens', payload);
     }
     if (!access || !app.$cookies.get('userLogin')) {
-      await store.commit('user/logOut');
+      await store.dispatch('user/logout', false);
       return redirect(Path.SIGN_IN);
     }
     if (!userData.id && +userStatus === UserStatuses.Confirmed) {
@@ -31,10 +31,16 @@ export default async function ({
     if (+userStatus === UserStatuses.NeedSetRole && route.path !== Path.ROLE) {
       return redirect(Path.ROLE);
     }
+
+    if (!store.getters['user/getUserWalletAddress']) {
+      await store.dispatch('user/logout', !!store.getters['user/getUserData']?.id);
+      return redirect(Path.SIGN_IN);
+    }
+
     return true;
   } catch (e) {
     console.error(e);
-    await store.commit('user/logOut');
+    await store.dispatch('user/logout', false);
     return redirect(Path.SIGN_IN);
   }
 }

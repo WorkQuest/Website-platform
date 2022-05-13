@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js';
-import { ResponsesType, UserRole } from '~/utils/enums';
+import Vue from 'vue';
+import { ResponsesType, TokenSymbols, UserRole } from '~/utils/enums';
 
 import {
   QuestMethods,
@@ -20,6 +21,7 @@ import {
 } from '~/utils/wallet';
 
 import { error, success } from '~/utils/web3';
+import modals from '~/store/modals/modals';
 
 export default {
   async getWorkerData({ commit }, userId) {
@@ -125,11 +127,12 @@ export default {
       return false;
     }
   },
-  async getUserQuests({ commit }, { role, query }) {
+  async getUserQuests({ commit }, { role, query, userId }) {
     try {
       const specializations = query.specializations || [];
       if (query.specializations) delete query.specializations;
-      const response = await this.$axios.$post(`/v1/me/${role}/get-quests`, { specializations }, {
+      const url = !userId ? `/v1/me/${role}/get-quests` : `/v1/${role}/${userId}/get-quests`;
+      const response = await this.$axios.$post(url, { specializations }, {
         params: { ...query },
       });
       commit('setAllQuests', response.result);
@@ -164,8 +167,8 @@ export default {
   async inviteOnQuest({ commit }, { questId, payload }) {
     try {
       const response = await this.$axios.$post(`/v1/quest/${questId}/invite`, payload);
-      const { chat } = response.result;
-      commit('setChatInviteOnQuest', chat);
+      const { questChat } = response.result;
+      commit('setChatInviteOnQuest', questChat);
       return response.result;
     } catch (e) {
       console.error('quests/inviteOnQuest');
@@ -268,7 +271,7 @@ export default {
     try {
       const response = await this.$axios.$get(`/v1/worker/${data}/available-quests?limit=100`);
       commit('setAvailableQuests', response.result.quests);
-      return response.ok;
+      return response.result;
     } catch (e) {
       console.error('quests/getAvailableQuests');
       return false;
@@ -332,55 +335,15 @@ export default {
     }
   },
   async editQuestOnContract({ dispatch }, {
-    contractAddress, cost, description, depositAmount = 0,
+    contractAddress, cost,
   }) {
     try {
-      const hash = hashText(description);
       cost = new BigNumber(cost).shiftedBy(18).toString();
-      // if employer increase price for a quest
-      if (depositAmount) {
-        depositAmount = new BigNumber(depositAmount).shiftedBy(18).toString();
-        const walletAddress = getWalletAddress();
-        const inst = createInstance(WorkQuest, contractAddress);
-        const data = [hash, cost];
-        const sendData = inst.methods[QuestMethods.EditJob].apply(null, data).encodeABI();
-        const [gasPrice, gasEstimate] = await Promise.all([
-          getProvider().eth.getGasPrice(),
-          inst.methods[QuestMethods.EditJob].apply(null, data).estimateGas({ from: walletAddress, value: depositAmount }),
-        ]);
-        const res = await getProvider().eth.sendTransaction({
-          to: contractAddress,
-          from: walletAddress,
-          value: depositAmount,
-          data: sendData,
-          gasPrice,
-          gas: gasEstimate,
-        });
-        return success(res);
-      }
       return await dispatch('sendQuestTransaction', {
         contractAddress,
         method: QuestMethods.EditJob,
-        params: [hash, cost],
+        params: [cost],
       });
-    } catch (e) {
-      return error(9000, e.message, e);
-    }
-  },
-  async getEditQuestFeeData({ commit }, {
-    contractAddress, description, cost, depositAmount,
-  }) {
-    try {
-      const hash = hashText(description);
-      cost = new BigNumber(cost).shiftedBy(18).toString();
-      return await getContractFeeData(
-        QuestMethods.EditJob,
-        WorkQuest,
-        contractAddress,
-        [hash, cost],
-        contractAddress,
-        depositAmount,
-      );
     } catch (e) {
       return error(9000, e.message, e);
     }
@@ -405,7 +368,6 @@ export default {
       return error(500, e.message, e);
     }
   },
-  // Отмена/Удаление квеста
   async cancelJob({ dispatch }, contractAddress) {
     return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.CancelJob });
   },

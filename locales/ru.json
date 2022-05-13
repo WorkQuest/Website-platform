@@ -1423,7 +1423,11 @@
     },
     "leaveChat": "Покинуть беседу",
     "loadMore": "Показать больше",
-    "searchTitle": "Имя/Квест/Группа"
+    "searchTitle": "Имя/Квест/Группа",
+    "menu": {
+      "giveAQuest": "Дать квест",
+      "removeFromChat": "Удалить из чата"
+    }
   },
   "settings": {
     "additionalPhoneNumber": "Дополнительный номер телефона",
