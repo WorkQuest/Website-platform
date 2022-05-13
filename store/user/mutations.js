@@ -88,7 +88,7 @@ export default {
   },
   setStatisticData(state, data) {
     state.statisticData = data;
-    this.commit('notifications/changeUnreadChatsCount', { count: data.chatsStatistic?.unreadCountChats || 0, needAdd: false }, { root: true });
+    this.commit('chat/changeUnreadChatsCount', { count: data.chatsStatistic?.unreadCountChats || 0, needAdd: false }, { root: true });
   },
   setRememberMe(state, payload) {
     state.isRememberMeChecked = payload;

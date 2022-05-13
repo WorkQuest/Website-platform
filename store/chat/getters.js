@@ -1,4 +1,5 @@
 export default {
+  getUnreadChatsCount: (state) => state.unreadChatsCount,
   getMessages: (state) => state.messages,
   getCurrChatInfo: (state) => state.currChat || null,
   currChatIsUnread: (state) => state.currChat?.isUnread || false,

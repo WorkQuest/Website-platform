@@ -1,6 +1,6 @@
 export default {
-  changeUnreadChatsCount(state, { count, needAdd }) {
-    state.unreadChatsCount = needAdd ? state.unreadChatsCount + count : count;
+  setUnreadNotifsCount(state, count) {
+    state.unreadNotifsCount += count;
   },
   setReducedNotifications(state, notifications) {
     state.reducedNotifications = notifications;
@@ -11,9 +11,6 @@ export default {
   },
   removeNotification(state, notificationId) {
     state.notifications.list = state.notifications.list.filter(({ id }) => notificationId !== id);
-  },
-  setUnreadNotifsCount(state, count) {
-    state.unreadNotifsCount += count;
   },
   setNotificationsAsRead(state, ids) {
     state.notifications.list.forEach((notif) => {
