@@ -42,6 +42,7 @@
                   class="balance__token"
                   :items="tokenSymbolsDd"
                   data-selector="TOKENS"
+                  type="border"
                 />
               </span>
               <span :class="[{'balance__currency__margin-bottom' : selectedToken !== tokenSymbols.WQT}]">
@@ -231,6 +232,7 @@ export default {
         TokenSymbols.WUSD,
         TokenSymbols.BNB,
         TokenSymbols.ETH,
+        TokenSymbols.USDT,
       ];
     },
     tokenSymbols() {
@@ -567,8 +569,6 @@ export default {
 
   &__token {
     height: 49px;
-    border: 1px solid $black100;
-    border-radius: 6px;
     box-sizing: border-box;
   }
 
