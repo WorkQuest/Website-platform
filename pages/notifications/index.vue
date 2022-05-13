@@ -17,7 +17,8 @@
             v-observe-visibility="(isVisible) =>
               checkUnseenNotifs(isVisible, {
                 id: notification.id,
-                seen: notification.seen
+                seen: notification.seen,
+                isLocal: notification.params.isLocal
               })"
             class="notification"
             :class="{'notification_gray' : !notification.seen}"
@@ -141,6 +142,7 @@ export default {
       status2FA: 'user/getStatus2FA',
       notifications: 'notifications/getNotificationsList',
       notifsCount: 'notifications/getNotificationsCount',
+      unreadNotifsCount: 'notifications/getUnreadNotifsCount',
     }),
     totalPages() {
       return Math.ceil(this.notifsCount / this.filter.limit);
@@ -248,15 +250,19 @@ export default {
       });
       this.SetLoader(false);
     },
-    async checkUnseenNotifs(isVisible, { id, seen }) {
-      if (!isVisible || !id || seen || this.notificationIdsForRead.indexOf(id) >= 0) return;
-      this.notificationIdsForRead.push(id);
-      this.delayId = this.SetDelay(async () => {
-        await this.$store.dispatch('notifications/readNotifications', {
-          notificationIds: this.notificationIdsForRead,
-        });
-        this.notificationIdsForRead = [];
-      }, 1000, this.delayId);
+    async checkUnseenNotifs(isVisible, { id, seen, isLocal }) {
+      if (isLocal && isVisible && seen) this.$store.commit('notifications/setUnreadNotifsCount', this.unreadNotifsCount > 0 ? -1 : 0);
+      else if (isLocal && !isVisible && !seen) return;
+      else if (!isLocal || !isVisible || !id || seen || this.notificationIdsForRead.indexOf(id) >= 0) return;
+      if (!isLocal) {
+        this.notificationIdsForRead.push(id);
+        this.delayId = this.SetDelay(async () => {
+          await this.$store.dispatch('notifications/readNotifications', {
+            notificationIds: this.notificationIdsForRead,
+          });
+          this.notificationIdsForRead = [];
+        }, 1000, this.delayId);
+      }
     },
     async setPage() {
       this.filter.offset = (this.page - 1) * this.filter.limit;

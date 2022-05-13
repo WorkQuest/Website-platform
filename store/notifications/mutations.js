@@ -18,7 +18,6 @@ export default {
   setNotificationsAsRead(state, ids) {
     state.notifications.list.forEach((notif) => {
       if (ids.indexOf(notif.id) >= 0) notif.seen = true;
-      return notif;
     });
     this.commit('notifications/setUnreadNotifsCount', 0 - ids.length);
   },
@@ -27,7 +26,6 @@ export default {
     state.reducedNotifications.unshift(notification);
     state.reducedNotifications.length = state.reducedNotifications.length === 1 ? 1 : 2;
     state.notifications.count += 1;
-    if (notification.params.isLocal) return;
     this.commit('notifications/setUnreadNotifsCount', 1);
   },
 };

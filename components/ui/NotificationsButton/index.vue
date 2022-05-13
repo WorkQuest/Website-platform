@@ -9,6 +9,8 @@
       data-selector="ACTION-BTN-TOGGLE-POP-UP"
       @click="togglePopUp"
     >
+      {{ unreadNotifsCount }}
+      {{ notificationsCount }}
       <template v-if="notificationsCount">
         <img
           v-if="unreadNotifsCount"
