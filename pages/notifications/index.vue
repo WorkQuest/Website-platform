@@ -253,8 +253,9 @@ export default {
     async checkUnseenNotifs(isVisible, { id, seen, isLocal }) {
       if (isLocal && isVisible && seen) this.$store.commit('notifications/setUnreadNotifsCount', this.unreadNotifsCount > 0 ? -1 : 0);
       else if (isLocal && !isVisible && !seen) return;
-      else if (!isLocal || !isVisible || !id || seen || this.notificationIdsForRead.indexOf(id) >= 0) return;
+      else if (!isVisible || !id || seen) return;
       if (!isLocal) {
+        this.$store.commit('notifications/setUnreadNotifsCount', this.unreadNotifsCount > 0 ? -1 : 0);
         this.notificationIdsForRead.push(id);
         this.delayId = this.SetDelay(async () => {
           await this.$store.dispatch('notifications/readNotifications', {
