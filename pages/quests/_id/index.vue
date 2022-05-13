@@ -596,8 +596,8 @@ export default {
                   trxHash: result.transactionHash,
                   callback: async () => {
                     const disputeInfo = this.$cookies.get('disputeInfo');
-                    // TODO: Узнать про контракт переработать условия!!
-                    const createDisputeRes = '';
+                    // TODO: Ждать возвращения метода на бэке!!
+                    const createDisputeRes = await this.$store.dispatch('disputes/createDispute', disputeInfo);
                     console.log('createDisputeRes', createDisputeRes);
                     if (createDisputeRes?.ok) {
                       setTimeout(async () => await $router.push(`${Path.DISPUTES}/${createDisputeRes.result.id}`), 1000);
