@@ -35,16 +35,6 @@ export const StakingTypes = {
   WUSD: 'WUSD',
 };
 
-export const QuestStatuses = {
-  Rejected: -1,
-  Created: 0,
-  Active: 1,
-  Closed: 2,
-  Dispute: 3,
-  WaitWorker: 4,
-  WaitConfirm: 5,
-  Done: 6,
-};
 export const TwoFAStatuses = { DISABLED: 0, ENABLED: 1 };
 export const SumSubStatuses = { NOT_VERIFIED: 0, VERIFIED: 1 };
 
