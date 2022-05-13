@@ -1,6 +1,7 @@
 <template>
   <ctm-modal-box
     class="dispute"
+    :is-unclosable="true"
     :title="$tc('modals.titles.openADispute')"
   >
     <div class="dispute__content content">
@@ -12,6 +13,7 @@
         type="gray"
         :items="items"
         class="content__drop"
+        data-selector="REASON"
         :placeholder="$t('chat.reason')"
       />
       <div class="content__subtitle">
@@ -22,6 +24,7 @@
         :placeholder="$t('modals.description')"
         :error-text="$tc('modals.textLengthExceeded', 1000)"
         :is-hide-error="!isMoreCharacters"
+        data-selector="DESCRIPTION"
         rules="required|text-desc"
       />
       <div class="content__buttons buttons">
@@ -29,7 +32,7 @@
           class="buttons__button"
           :disabled="!drop || isMoreCharacters"
           data-selector="SHOW-REQUEST-SEND"
-          @click="showRequestSendModal"
+          @click="onSubmit"
         >
           {{ $t('meta.btns.send') }}
         </base-btn>
@@ -56,6 +59,7 @@ export default {
     return {
       drop: '',
       description: '',
+      questId: '',
     };
   },
   computed: {
@@ -86,25 +90,33 @@ export default {
       return this.description.length > 1000;
     },
   },
+  mounted() {
+    this.questId = this.options.questId;
+    console.log('questId', this.questId);
+  },
+  beforeDestroy() {
+    console.log('this.options.questId', this.questId);
+    this.$cookies.set('disputeInfo', {
+      questId: this.questId,
+      reason: this.itemsForPayload[this.drop],
+      problemDescription: this.description,
+    });
+  },
   methods: {
-    async showRequestSendModal() {
-      const payload = {
-        questId: this.options.questId,
-        reason: this.itemsForPayload[this.drop],
-        problemDescription: this.description,
-      };
-      const response = await this.$store.dispatch('disputes/createDispute', payload);
+    async onSubmit() {
+      const {
+        callback,
+        submitMethod,
+      } = this.options;
       this.CloseModal();
-      if (response.ok) {
-        await this.$router.push(`/disputes/${response.result.id}`);
-      } else {
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/warning.svg'),
-          title: this.$t('modals.errors.error'),
-          subtitle: this.$t('errors.incorrectPass'),
-        });
+      this.SetLoader(true);
+      if (submitMethod) {
+        const res = await submitMethod();
+        if (res?.ok) {
+          if (callback) await callback();
+        }
       }
+      this.SetLoader(false);
     },
   },
 };

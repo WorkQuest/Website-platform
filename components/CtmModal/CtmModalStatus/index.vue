@@ -73,7 +73,28 @@
           </base-btn>
         </div>
         <div>
+          <a
+            v-if="options.mode === 'link'"
+            :href="`https://dev-explorer.workquest.co/tx/${options.trxHash}`"
+            target="_blank"
+          >
+            <base-btn
+              class="status__btn"
+              :mode="options.submitMode"
+              selector="SUBMIT"
+              :disabled="isLoading"
+              @click="handleSubmit()"
+            >
+              <span v-if="options.button">
+                {{ options.button }}
+              </span>
+              <span v-else>
+                {{ $t('meta.btns.ok') }}
+              </span>
+            </base-btn>
+          </a>
           <base-btn
+            v-else
             class="status__btn"
             :mode="options.submitMode"
             selector="SUBMIT"

@@ -160,6 +160,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
+import Web3 from 'web3';
 import {
   Path,
   UserRole,
@@ -173,8 +174,9 @@ import {
   QuestMethods, EditQuestState, QuestStatuses, InfoModeWorker, InfoModeEmployer,
 } from '~/utils/сonstants/quests';
 import { images } from '~/utils/images';
-import { getContractFeeData, sendWalletTransaction, transfer } from '~/utils/wallet';
-import { WorkQuest, WQFactory } from '~/abi';
+import { ERC20, WorkQuest, WQFactory } from '~/abi';
+import { fetchContractData } from '~/utils/web3';
+import { getWalletAddress, GetWalletProvider } from '~/utils/wallet';
 
 export default {
   name: 'Quests',
@@ -325,16 +327,31 @@ export default {
       });
 
       await this.$store.dispatch('quests/getAllQuests', {
-        query: { limit: 10, statuses: [0] },
+        query: {
+          limit: 10,
+          statuses: [0],
+        },
         specFilter,
       });
 
       const questsData = this.otherQuests.filter((quest) => quest.id !== this.quest.id);
       if (questsData.length) this.sameQuest = questsData[Math.floor(Math.random() * questsData.length)];
-      else this.$store.commit('quests/setAllQuests', { count: 0, quests: [] });
+      else {
+        this.$store.commit('quests/setAllQuests', {
+          count: 0,
+          quests: [],
+        });
+      }
     },
     setActionBtnsArr() {
-      const { quest: { questChat, assignedWorkerId }, userData, userRole } = this;
+      const {
+        quest: {
+          questChat,
+          assignedWorkerId,
+        },
+        userData,
+        userRole,
+      } = this;
 
       const arr = userRole === UserRole.EMPLOYER ? this.setEmployerBtnsArr() : this.setWorkerBtnsArr();
       if ((questChat?.workerId === userData.id || (questChat?.employerId === userData.id && assignedWorkerId))
@@ -353,7 +370,9 @@ export default {
     setEmployerBtnsArr() {
       if (this.userData.id !== this.quest.userId) return [];
       const {
-        Dispute, Created, WaitEmployerConfirm,
+        Dispute,
+        Created,
+        WaitEmployerConfirm,
       } = InfoModeEmployer;
       let arr = [];
       switch (this.infoDataMode) {
@@ -399,9 +418,22 @@ export default {
       return arr;
     },
     setWorkerBtnsArr() {
-      const { quest: { assignedWorkerId, response }, userData, infoDataMode } = this;
       const {
-        ADChat, WaitWorker, Created, Dispute, Invited, WaitWorkerOnAssign, WaitEmployerConfirm,
+        quest: {
+          assignedWorkerId,
+          response,
+        },
+        userData,
+        infoDataMode,
+      } = this;
+      const {
+        ADChat,
+        WaitWorker,
+        Created,
+        Dispute,
+        Invited,
+        WaitWorkerOnAssign,
+        WaitEmployerConfirm,
       } = InfoModeWorker;
       let arr = [];
       console.log(infoDataMode);
@@ -496,7 +528,13 @@ export default {
       this.$store.commit('google-map/setPoints', [this.quest]);
     },
     async getResponsesToQuest() {
-      const { quest: { id, user }, userData } = this;
+      const {
+        quest: {
+          id,
+          user,
+        },
+        userData,
+      } = this;
       if (this.userRole === UserRole.EMPLOYER && user.id === userData.id) {
         await this.$store.dispatch('quests/responsesToQuest', id);
       }
@@ -510,15 +548,20 @@ export default {
       }
     },
     async openDispute() {
-      if (this.quest.status === QuestStatuses.Dispute) return await this.$router.push(`${Path.DISPUTES}/${this.quest.openDispute.id}`);
+      const { status, openDispute, id } = this.quest;
+      if (status === QuestStatuses.Dispute) return await this.$router.push(`${Path.DISPUTES}/${openDispute.id}`);
       if (this.checkAvailabilityDisputeTime) {
         return this.ShowModal({
-          // TODO: Добавить локализацию
-          key: modals.status,
-          img: images.WARNING,
-          title: 'Dispute Pay',
-          text: 'You need to pay to open a dispute',
-          callback: this.disputePay,
+          key: modals.openADispute,
+          questId: id,
+          submitMethod: async () => this.ShowModal({
+            // TODO: Добавить локализацию
+            key: modals.status,
+            img: images.WARNING,
+            title: 'Dispute Pay',
+            text: 'You need to pay to open a dispute',
+            callback: this.disputePay,
+          }),
         });
       }
       return this.ShowModal({
@@ -530,27 +573,47 @@ export default {
       });
     },
     async disputePay() {
-      // TODO: Дописать логику, подключить конктакт
-      const { contractAddress, id } = this.quest;
-      console.log('contractAddress', contractAddress);
-      const { result: { fee } } = await this.$store.dispatch('quests/getFeeDataJobMethod', {
-        method: 'feeTx',
-        abi: WQFactory,
-        contractAddress: process.env.WORKNET_WQ_FACTORY,
+      // TODO: Дописать логику
+      const { contractAddress } = this.quest;
+      const feeTx = await fetchContractData('feeTx', WQFactory, process.env.WORKNET_WQ_FACTORY, null, GetWalletProvider());
+      console.log('feeTx:', feeTx);
+      const createDisputePayment = await this.$store.dispatch('quests/arbitration', {
+        contractAddress,
+        value: feeTx,
       });
-      console.log('FeeTx', fee);
-      const value = new BigNumber(fee).shiftedBy(18).toString();
-      console.log('value', value);
-      const feeRes = await this.$store.dispatch('quests/arbitration', { contractAddress, value });
-      // TODO: Исправить на fee
-      console.log('feeRes', feeRes);
-      if (feeRes.result.ok) {
-        // TODO: Добавить после оплаты диспута
-        return this.ShowModal({ key: modals.openADispute, questId: id });
+      console.log('createDisputePayment:', createDisputePayment);
+      if (!createDisputePayment.result.status) {
+        setTimeout(async () => this.ShowModalFail({
+          title: 'Payment Error',
+          subtitle: 'Please, try later...',
+          img: images.ERROR,
+        }), 1000);
+      } else if (createDisputePayment.result.status) {
+        setTimeout(async () => this.ShowModal({
+          key: modals.status,
+          title: 'Payment Success',
+          subtitle: 'You can check a transaction status on Explorer!',
+          mode: 'link',
+          img: images.SUCCESS,
+          trxHash: createDisputePayment.result.transactionHash,
+          callback: async () => {
+            const disputeInfo = this.$cookies.get('disputeInfo');
+            // TODO: Узнать про контракт!!
+            const createDisputeRes = '';
+            console.log('createDisputeRes', createDisputeRes);
+            if (createDisputeRes?.ok) {
+              setTimeout(async () => await this.$router.push(`/disputes/${createDisputeRes.result.id}`), 1000);
+            } else {
+              setTimeout(async () => this.ShowModal({
+                key: modals.status,
+                img: require('~/assets/img/ui/warning.svg'),
+                title: this.$t('modals.errors.error'),
+                subtitle: this.$t('errors.incorrectPass'),
+              }), 1000);
+            }
+          },
+        }), 1000);
       }
-      return this.ShowModalFail({
-        title: 'Payment Error', subtitle: 'Please, try later...', img: images.ERROR,
-      });
     },
     async acceptCompletedWorkOnQuest() {
       this.SetLoader(true);

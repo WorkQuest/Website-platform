@@ -1,13 +1,6 @@
 import disputes from '~/pages/disputes';
 
 export default {
-  async createDispute({ commit }, { reason, problemDescription, questId }) {
-    try {
-      return await this.$axios.$post(`/v1/quest/${questId}/open-dispute`, { reason, problemDescription });
-    } catch (e) {
-      return console.log(e);
-    }
-  },
   async getDispute({ commit }, disputeId) {
     try {
       const { result } = await this.$axios.$get(`/v1/quest/dispute/${disputeId}`);
