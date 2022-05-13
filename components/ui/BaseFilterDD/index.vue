@@ -40,6 +40,7 @@
               v-model="searchLine"
               class="filter__search"
               data-selector="INPUT-SEARCH"
+              :placeholder="$t('meta.placeholders.searchSpecSkill')"
               :is-search="true"
               :is-hide-error="true"
             />
@@ -314,6 +315,9 @@ export default {
     &:hover {
       cursor: pointer;
     }
+  }
+  &__search {
+    margin: 15px 0;
   }
 }
 

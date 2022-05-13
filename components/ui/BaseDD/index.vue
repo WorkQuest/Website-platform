@@ -93,6 +93,7 @@
             v-model="searchLine"
             class="dd__search"
             data-selector="INPUT-SEARCH"
+            :placeholder="$t(`meta.placeholders.${searchPlaceholder}`)"
             :is-search="true"
             :is-hide-error="true"
           />
@@ -178,6 +179,10 @@ export default {
     isSearch: {
       type: Boolean,
       default: false,
+    },
+    searchPlaceholder: {
+      type: String,
+      default: '',
     },
   },
   data: () => ({
