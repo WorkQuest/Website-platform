@@ -72,15 +72,13 @@ export default {
     if (!isAdded) await dispatch('addNotification', notification);
   },
 
-  async removeNotification({ dispatch, commit, rootGetters }, { config, notificationId, notification }) {
-    const { params } = notification;
-    if (notification.actionNameKey === `notifications.${LocalNotificationAction.TWOFA}`) {
-      this.$cookies.set(LocalNotificationAction.TWOFA, rootGetters['user/getStatus2FA'] !== 0,
-        { maxAge: 60 * 60 * 24 * 7, enabled: false });
-    }
-    if (notification.actionNameKey === `notifications.${LocalNotificationAction.KYC}`) {
-      this.$cookies.set(LocalNotificationAction.KYC, rootGetters['user/getStatusKYC'] !== 0,
-        { maxAge: 60 * 60 * 24 * 7, enabled: false });
+  async removeNotification({ dispatch, commit, rootGetters }, { config, notificationId, notification: { params, actionNameKey } }) {
+    if ([`notifications.${LocalNotificationAction.TWOFA}`, `notifications.${LocalNotificationAction.KYC}`].includes(actionNameKey)) {
+      this.$cookies.set(
+        actionNameKey.substr('notifications.'.length, actionNameKey.length),
+        rootGetters['user/getStatus2FA'] !== 0,
+        { maxAge: 60 * 60 * 24 * 7, enabled: false },
+      );
     }
     try {
       await commit('removeNotification', notificationId);
