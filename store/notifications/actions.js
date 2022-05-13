@@ -81,12 +81,12 @@ export default {
       );
     }
     try {
-      await commit('removeNotification', notificationId);
-      await dispatch('getNotifications', config);
       if (!params.isLocal) {
         const res = await this.$axios.$delete(`${process.env.NOTIFS_URL}notifications/delete/${notificationId}`);
         return success(res);
       }
+      await commit('removeNotification', notificationId);
+      await dispatch('getNotifications', config);
       return success();
     } catch (e) {
       return error(e);
