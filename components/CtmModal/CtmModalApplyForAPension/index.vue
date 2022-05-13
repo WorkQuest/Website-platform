@@ -35,7 +35,7 @@
             class="content__input"
             data-selector="FIRST-DEPOSIT-AMOUNT"
             :name="$tc('modals.firstDepositAmountField')"
-            :rules="`decimal:18|notMoreDecimalPlaces|notMoreDecimalPlaces|${maxValue ? `max_value:${maxValue}` : ''}`"
+            :rules="`decimalPlaces:18|notMoreDecimalPlaces|${maxValue ? `max_value:${maxValue}` : ''}`"
           >
             <template
               v-if="maxValue"

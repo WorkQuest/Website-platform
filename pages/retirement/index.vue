@@ -246,24 +246,29 @@ export default {
   async beforeCreate() {
     await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
-  async mounted() {
+  async mounted(values) {
     if (!this.isWalletConnected) return;
     this.SetLoader(true);
-    await this.getInfo();
-    await this.fetchWalletData({
-      method: 'balanceOf', address: getWalletAddress(), abi: ERC20, token: tokenMap[TokenSymbols.WUSD], symbol: TokenSymbols.WUSD,
-    });
+    await Promise.all([this.getInfo(), this.fetchWalletData({
+      method: 'balanceOf',
+      address: getWalletAddress(),
+      abi: ERC20,
+      token: tokenMap[TokenSymbols.WUSD],
+      symbol: TokenSymbols.WUSD,
+    })]);
     this.SetLoader(false);
   },
   methods: {
     ...mapActions({
       fetchWalletData: 'wallet/fetchWalletData',
+      getBalanceWQT: 'wallet/getBalance',
 
       getDefaultData: 'retirement/pensionGetDefaultData',
       getWalletInfo: 'retirement/pensionGetWalletInfo',
     }),
     async getInfo() {
       const [defaultDataRes] = await Promise.all([
+        this.getBalanceWQT(),
         this.getDefaultData(),
         this.checkWalletExists(),
       ]);
