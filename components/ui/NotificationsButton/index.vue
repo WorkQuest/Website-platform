@@ -101,8 +101,11 @@
                   @click="goToEvent(notification.params ? notification.params.path : '')"
                 >
                   <div class="notify__text notify__text_btn">
-                    {{ notification.params && notification.params.isLocal
-                      ? notification.actionBtn : notification.params ? notification.params.title : '' }}
+                    {{
+                      notification.params && notification.params.isLocal
+                        ? notification.data.message
+                        : $t(notification.actionNameKey)
+                    }}
                   </div>
                   <span class="icon icon-chevron_right" />
                 </base-btn>
