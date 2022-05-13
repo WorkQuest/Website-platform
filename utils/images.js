@@ -9,4 +9,5 @@ export const images = Object.freeze({
   CARD_ADDED: require('assets/img/ui/cardHasBeenAdded.svg'),
   EMPTY_AVATAR: require('~/assets/img/app/avatar_empty.png'),
   TRANSACTION_SEND: require('~/assets/img/ui/transactionSend.svg'),
+  WQ_LOGO: require('assets/img/app/logo.svg'),
 });

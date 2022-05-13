@@ -50,22 +50,7 @@
             >
               <div class="notify__top">
                 <div
-                  v-if="notification.params && notification.params.isLocal"
-                  class="notify__user"
-                >
-                  <img
-                    class="notify__avatar"
-                    :src="notification.data.sender.avatar"
-                    alt="avatar"
-                  >
-                  <div class="notify__info">
-                    <span class="notify__text notify__text_name">
-                      {{ UserName(notification.data.sender.firstName, '') }}
-                    </span>
-                  </div>
-                </div>
-                <div
-                  v-if="notification.params && !notification.params.isLocal"
+                  v-if="notification.params"
                   class="notify__user"
                 >
                   <img

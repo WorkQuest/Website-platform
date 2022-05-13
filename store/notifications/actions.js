@@ -12,6 +12,7 @@ import {
   notificationEmployerFilterActions, notificationsQuestsActions,
 } from '~/utils/notifications-enum';
 import { error, success } from '~/utils/web3';
+import { images } from '~/utils/images';
 
 export default {
 
@@ -37,16 +38,16 @@ export default {
       id,
       action,
       actionBtn,
+      sender: {
+        avatar: { url: images.WQ_LOGO },
+        firstName: 'Workquest info',
+      },
       data: {
         title,
         questId,
         userId,
         createdAt: moment(date || Date.now()).format('MMMM Do YYYY, h:mm'),
         message,
-        sender: {
-          avatar: require('assets/img/app/logo.svg'),
-          firstName: 'Workquest info',
-        },
       },
     };
     if (action === LocalNotificationAction.GET_REWARD) {

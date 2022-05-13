@@ -23,21 +23,7 @@
             :class="{'notification_gray' : !notification.seen}"
             @click="goToEvent(notification.params ? notification.params.path : '', true)"
           >
-            <template v-if="notification.params.isLocal">
-              <div class="notification__avatar">
-                <img
-                  class="avatar"
-                  :src="notification.data.sender.avatar"
-                  alt=""
-                >
-              </div>
-              <div class="notification__inviter inviter">
-                <span class="inviter__name">
-                  {{ UserName(notification.data.sender.firstName, '') }}
-                </span>
-              </div>
-            </template>
-            <template v-if="!notification.params.isLocal && notification.sender">
+            <template v-if="notification.sender">
               <div class="notification__avatar">
                 <img
                   class="avatar"
@@ -57,15 +43,21 @@
                   v-if="notification.sender.additionalInfo"
                   class="inviter__company"
                 >
-                  {{ notification.sender.additionalInfo.company ?
-                    `${$t('modals.fromAddress')} ${notification.sender.additionalInfo.company}` : '' }}
+                  {{
+                    notification.sender.additionalInfo.company
+                      ? `${$t('modals.fromAddress')} ${notification.sender.additionalInfo.company}`
+                      : ''
+                  }}
                 </span>
               </div>
             </template>
             <div class="notification__quest quest">
               <span class="quest__invitation">
-                {{ notification.params.isLocal
-                  ? notification.data.message : notificationActionKey(notification) }}
+                {{
+                  notification.params.isLocal
+                    ? notification.data.message
+                    : notificationActionKey(notification)
+                }}
               </span>
               <span
                 v-if="notification.params"
