@@ -41,7 +41,7 @@ export default {
   async getPensionTransactions({ commit, getters }, { method, limit, offset }) {
     try {
       const path = method === PensionHistoryMethods.Update ? 'wallet-update' : method.toLowerCase();
-      const { res: { data: { result } } } = await this.$axios.get(`/v1/pension-fund/${path}`, {
+      const { data: { result } } = await this.$axios.get(`/v1/pension-fund/${path}`, {
         params: {
           userAddress: getWalletAddress(),
           limit,
