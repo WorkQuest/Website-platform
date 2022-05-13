@@ -80,13 +80,12 @@ export default {
       const accountAddress = await getAccountAddress();
       if (isNative) {
         const balance = await getNativeBalance();
-        console.log('balance:', balance);
         const nonce = await getTransactionCount();
         if (!balance) {
           commit('setToken', { amount: 0 });
           return success();
         }
-
+        // TODO: под вопросом
         // const txFee = await getTransactionFee(
         //   WQBridge,
         //   bridgeAddress,

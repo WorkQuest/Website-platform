@@ -372,7 +372,6 @@ export default {
       if (await this.checkNetwork(chain)) {
         const from = addresses[sourceAddressInd];
         const to = addresses[targetAddressInd];
-        console.log(from);
         this.ShowModal({
           key: modals.swap,
           from,
