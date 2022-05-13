@@ -91,7 +91,6 @@ export default {
   methods: {
     async onSubmit() {
       // Role page
-      const confirmCode = sessionStorage.getItem('confirmToken');
       let response;
       if (this.options.isSocialNetwork) {
         response = await this.$store.dispatch('user/setUserRole', {
@@ -99,7 +98,7 @@ export default {
         });
       } else {
         response = await this.$store.dispatch('user/confirm', {
-          confirmCode,
+          confirmCode: sessionStorage.getItem('confirmToken'),
           role: this.options.role,
         });
       }

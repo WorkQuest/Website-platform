@@ -37,8 +37,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import { Path, UserRole, UserStatuses } from '~/utils/enums';
-import { getIsWalletConnected } from '~/utils/wallet';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'AuthLayout',
