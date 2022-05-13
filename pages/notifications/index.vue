@@ -15,8 +15,7 @@
             :key="i"
             :ref="`${notification.id}|${notification.seen}`"
             v-observe-visibility="(isVisible) =>
-              checkUnseenNotifs(isVisible, {id: notification
-                ? notification.id : '', seen: notification.seen})"
+              checkUnseenNotifs(isVisible, {id: notification.id, seen: notification.seen})"
             class="notification"
             :class="{'notification_gray' : !notification.seen}"
             @click="goToEvent(notification.params ? notification.params.path : '', true)"
