@@ -89,7 +89,7 @@ import { connectWithMnemonic, setCipherKey } from '~/utils/wallet';
 import { Path } from '~/utils/enums';
 
 export default {
-  name: 'ConfirmPassword',
+  name: 'Confirm',
   middleware: 'auth',
   data() {
     return {
