@@ -166,46 +166,48 @@ export default {
   },
   methods: {
     async setLocalNotifications() {
-      const { $cookies } = this;
-      const KYC = $cookies.get(LocalNotificationAction.TWOFA);
-      const TWOFA = $cookies.get(LocalNotificationAction.KYC);
-      await this.$store.dispatch('notifications/createLocalNotification', {
-        id: '1',
-        action: LocalNotificationAction.GET_REWARD,
-        message: this.$t('localNotifications.messages.inviteFriends'),
-        actionBtn: this.$t('localNotifications.btns.inviteFriends'),
-      });
-      await this.$store.dispatch('notifications/createLocalNotification', {
-        id: '2',
-        action: LocalNotificationAction.WIKI,
-        message: this.$t('localNotifications.messages.wiki'),
-        actionBtn: this.$t('localNotifications.btns.wiki'),
-      });
-      if (this.statusKYC === SumSubStatuses.NOT_VERIFIED) {
-        if (!KYC) this.$cookies.set(LocalNotificationAction.KYC, this.statusKYC !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
+      const { $cookies, page, totalPages } = this;
+      if (page === totalPages) {
+        const KYC = $cookies.get(LocalNotificationAction.TWOFA);
+        const TWOFA = $cookies.get(LocalNotificationAction.KYC);
         await this.$store.dispatch('notifications/createLocalNotification', {
-          id: '3',
-          action: LocalNotificationAction.KYC,
-          message: this.$t('localNotifications.messages.kyc'),
-          actionBtn: this.$t('localNotifications.btns.kyc'),
+          id: '1',
+          action: LocalNotificationAction.GET_REWARD,
+          message: this.$t('localNotifications.messages.inviteFriends'),
+          actionBtn: this.$t('localNotifications.btns.inviteFriends'),
         });
-      }
-      if (this.status2FA === TwoFAStatuses.DISABLED) {
-        if (!TWOFA) this.$cookies.set(LocalNotificationAction.TWOFA, this.status2FA !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
         await this.$store.dispatch('notifications/createLocalNotification', {
-          id: '4',
-          action: LocalNotificationAction.TWOFA,
-          message: this.$t('localNotifications.messages.twoFA'),
-          actionBtn: this.$t('localNotifications.btns.toSettings'),
+          id: '2',
+          action: LocalNotificationAction.WIKI,
+          message: this.$t('localNotifications.messages.wiki'),
+          actionBtn: this.$t('localNotifications.btns.wiki'),
         });
-      }
-      if (!this.profileFilled) {
-        await this.$store.dispatch('notifications/createLocalNotification', {
-          id: '5',
-          action: LocalNotificationAction.PROFILE_FILLED,
-          message: this.$t('localNotifications.messages.fillSettingsData'),
-          actionBtn: this.$t('localNotifications.btns.toSettings'),
-        });
+        if (this.statusKYC === SumSubStatuses.NOT_VERIFIED) {
+          if (!KYC) this.$cookies.set(LocalNotificationAction.KYC, this.statusKYC !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
+          await this.$store.dispatch('notifications/createLocalNotification', {
+            id: '3',
+            action: LocalNotificationAction.KYC,
+            message: this.$t('localNotifications.messages.kyc'),
+            actionBtn: this.$t('localNotifications.btns.kyc'),
+          });
+        }
+        if (this.status2FA === TwoFAStatuses.DISABLED) {
+          if (!TWOFA) this.$cookies.set(LocalNotificationAction.TWOFA, this.status2FA !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
+          await this.$store.dispatch('notifications/createLocalNotification', {
+            id: '4',
+            action: LocalNotificationAction.TWOFA,
+            message: this.$t('localNotifications.messages.twoFA'),
+            actionBtn: this.$t('localNotifications.btns.toSettings'),
+          });
+        }
+        if (!this.profileFilled) {
+          await this.$store.dispatch('notifications/createLocalNotification', {
+            id: '5',
+            action: LocalNotificationAction.PROFILE_FILLED,
+            message: this.$t('localNotifications.messages.fillSettingsData'),
+            actionBtn: this.$t('localNotifications.btns.toSettings'),
+          });
+        }
       }
     },
     async saveNotificationCurrentPage() {

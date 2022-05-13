@@ -175,7 +175,6 @@ export default {
         break;
 
       case NotificationAction.QUEST_STATUS_UPDATED:
-        console.log('user', user);
         notification.sender = userRole === UserRole.EMPLOYER ? assignedWorker
           || { avatar: { url: images.WQ_LOGO }, firstName: 'Workquest info' } : user;
         notification.params = {
