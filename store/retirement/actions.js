@@ -10,13 +10,14 @@ const web3 = GetWalletProvider();
 
 const min = Object.freeze(new BigNumber(0.0001));
 
+const inst = new web3.eth.Contract(WQPensionFund, process.env.WORKNET_PENSION_FUND);
+
 export default {
   async getPensionWallet({ _ }) {
     try {
-      const myPensionWallet = await fetchContractData('wallets', WQPensionFund, process.env.WORKNET_PENSION_FUND, [getWalletAddress()], web3);
       const {
         unlockDate, fee, amount, createdAt, rewardAllowed, rewardDebt, rewardDistributed,
-      } = myPensionWallet;
+      } = await fetchContractData('wallets', WQPensionFund, process.env.WORKNET_PENSION_FUND, [getWalletAddress()], web3);
       const _amount = new BigNumber(amount).shiftedBy(-18);
       let _fee = new BigNumber(fee).shiftedBy(-18);
       if (_fee.isGreaterThan('0') && _fee.isLessThan('0.0000001')) {
@@ -40,14 +41,14 @@ export default {
   async getPensionTransactions({ commit, getters }, { method, limit, offset }) {
     try {
       const path = method === PensionHistoryMethods.Update ? 'wallet-update' : method.toLowerCase();
-      const res = await this.$axios.get(`/v1/pension-fund/${path}`, {
+      const { res: { data: { result } } } = await this.$axios.get(`/v1/pension-fund/${path}`, {
         params: {
           userAddress: getWalletAddress(),
           limit,
           offset,
         },
       });
-      commit('setPensionHistoryData', { method, txs: res.data.result.events, count: res.data.result.count });
+      commit('setPensionHistoryData', { method, txs: result.events, count: result.count });
     } catch (e) {
       console.error('retirement/getPensionTransactions');
     }
@@ -77,7 +78,6 @@ export default {
   },
   async pensionUpdateFee({ commit }, fee) {
     try {
-      const inst = new web3.eth.Contract(WQPensionFund, process.env.WORKNET_PENSION_FUND);
       fee = new BigNumber(fee).shiftedBy(18).toString();
       const [gasPrice, gasEstimate] = await Promise.all([
         web3.eth.getGasPrice(),
@@ -96,7 +96,6 @@ export default {
   },
   async pensionContribute({ commit }, amount) {
     try {
-      const inst = new web3.eth.Contract(WQPensionFund, process.env.WORKNET_PENSION_FUND);
       amount = new BigNumber(amount).shiftedBy(18).toString();
       const data = [getWalletAddress(), amount];
       const [gasPrice, gasEstimate] = await Promise.all([
@@ -127,7 +126,6 @@ export default {
   async pensionWithdraw({ commit }, amount) {
     try {
       amount = new BigNumber(amount).shiftedBy(18).toString();
-      const inst = new web3.eth.Contract(WQPensionFund, process.env.WORKNET_PENSION_FUND);
       const [gasPrice, gasEstimate] = await Promise.all([
         web3.eth.getGasPrice(),
         inst.methods.withdraw.apply(null, [amount]).estimateGas({ from: getWalletAddress() }),
@@ -166,7 +164,6 @@ export default {
   },
   async pensionExtendLockTime() {
     try {
-      const inst = new web3.eth.Contract(WQPensionFund, process.env.WORKNET_PENSION_FUND);
       const [gasPrice, gasEstimate] = await Promise.all([
         web3.eth.getGasPrice(),
         inst.methods.extendLockTime.apply(null, []).estimateGas({ from: getWalletAddress() }),

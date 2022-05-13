@@ -319,7 +319,7 @@ export default {
             tokenAddress: tokenMap[TokenSymbols.WUSD],
             spenderAddress: process.env.WORKNET_PENSION_FUND,
           });
-          if (+allowance < +firstDepositAmount) {
+          if (new BigNumber(allowance).isLessThan(firstDepositAmount)) {
             await this.$store.dispatch('wallet/approve', {
               tokenAddress: tokenMap[TokenSymbols.WUSD],
               spenderAddress: process.env.WORKNET_PENSION_FUND,
@@ -387,13 +387,11 @@ export default {
             key: modals.transactionReceipt,
             fields,
             submitMethod: async () => {
-              this.SetLoader(true);
               const ok = await this.$store.dispatch('retirement/pensionStartProgram', {
                 fee: depositPercentFromAQuest.substr(0, depositPercentFromAQuest.length - 1),
                 firstDeposit: firstDepositAmount,
                 defaultFee: this.percent,
               });
-              this.SetLoader(false);
               if (ok) this.showPensionIsRegisteredModal();
             },
           });

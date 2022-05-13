@@ -23,7 +23,7 @@
                 {{ $t('pension.pensionBalance') }}
               </div>
               <div class="info-block__tokens">
-                {{ pensionBalance.text }}
+                {{ $t('meta.coins.count.WUSDCount', { count: pensionBalance }) }}
               </div>
               <base-btn
                 class="btn_bl"
@@ -75,7 +75,7 @@
                 {{ $t('pension.pensionSavingsBalance') }}
               </div>
               <div class="info-block__tokens">
-                {{ pensionBalance.text }}
+                {{ $t('meta.coins.count.WUSDCount', { count: pensionBalance }) }}
               </div>
             </div>
             <div class="info-block__small_right">
@@ -208,7 +208,7 @@ import { mapActions, mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import { ERC20, WQPensionFund } from '~/abi/index';
 import modals from '~/store/modals/modals';
-import { getStyledAmount, getWalletAddress } from '~/utils/wallet';
+import { getStyledAmount } from '~/utils/wallet';
 import {
   PensionHistoryMethods, TokenSymbols, ExplorerUrl, Path, tokenMap,
 } from '~/utils/enums';
@@ -222,12 +222,10 @@ export default {
       selectedTable: PensionHistoryMethods.Receive,
       page: 1,
       itemsPerPage: 10,
-      walletAddress: null,
       isDeadline: false,
-      interval: null,
+      timeOut: null,
       intervalForHours: null,
       intervalForMinutes: null,
-      intervalForSeconds: null,
       unlockDate: null,
       FAQs: [
         {
@@ -292,6 +290,8 @@ export default {
 
       pensionWallet: 'retirement/getPensionWallet',
       pensionHistory: 'retirement/getPensionHistory',
+
+      walletAddress: 'user/getUserWalletAddress',
     }),
     historyFields() {
       return [
@@ -338,11 +338,7 @@ export default {
       ];
     },
     pensionBalance() {
-      const balance = this.pensionWallet?.amount || 0;
-      return {
-        text: this.$t('meta.coins.count.WUSDCount', { count: balance }),
-        value: balance,
-      };
+      return this.pensionWallet?.amount || 0;
     },
     totalPages() {
       const len = this.pensionHistory[this.selectedTable]?.count;
@@ -377,17 +373,18 @@ export default {
     await this.getWallet();
     if (!this.pensionWallet.isCreated) {
       await this.$router.push(Path.RETIREMENT);
+      this.SetLoader(false);
+      return;
     }
     this.endOfPeriod();
-    await this.subscribe(getWalletAddress());
+    await this.subscribe(this.walletAddress);
     this.SetLoader(false);
   },
   async beforeDestroy() {
-    clearTimeout(this.interval);
-    clearTimeout(this.intervalForSeconds);
+    clearTimeout(this.timeOut);
     clearTimeout(this.intervalForMinutes);
     clearTimeout(this.intervalForHours);
-    await this.unsubscribe(getWalletAddress());
+    await this.unsubscribe(this.walletAddress);
   },
   methods: {
     ...mapActions({
@@ -400,6 +397,7 @@ export default {
       pensionWithdraw: 'retirement/pensionWithdraw',
 
       getContractFeeData: 'wallet/getContractFeeData',
+      getBalanceWQT: 'wallet/getBalance',
       fetchWalletData: 'wallet/fetchWalletData',
     }),
     getOperationLocale(operation) {
@@ -419,27 +417,24 @@ export default {
         this.isDeadline = false;
         return;
       }
-      const { unlockDate } = this.pensionWallet;
       const now = this.$moment.now();
-      const ends = this.$moment(unlockDate);
+      const ends = this.$moment(this.pensionWallet.unlockDate);
       this.isDeadline = ends.diff(now, 'milliseconds') <= 0;
     },
     endOfPeriod() {
       if (!this.pensionWallet) return;
-      const { unlockDate } = this.pensionWallet;
       const now = this.$moment.now();
-      const ends = this.$moment(unlockDate);
+      const ends = this.$moment(this.pensionWallet.unlockDate);
 
       const seconds = ends.diff(now, 'seconds');
       const milliseconds = ends.diff(now, 'milliseconds');
       if (seconds <= 60) {
         clearInterval(this.intervalForMinutes);
-        this.intervalForSeconds = setInterval(this.endOfPeriod, 1000);
-        this.interval = setTimeout(() => {
+        this.timeOut = setTimeout(() => {
           this.isDeadline = true;
         }, milliseconds);
-        clearInterval(this.intervalForSeconds);
         this.unlockDate = this.$tc('meta.units.seconds', this.DeclOfNum(seconds), { count: seconds });
+        return;
       }
 
       const minutes = ends.diff(now, 'minutes');
@@ -476,10 +471,10 @@ export default {
     },
     async getWallet() {
       await Promise.all([
+        this.getBalanceWQT(),
         this.pensionGetWalletInfo(),
         this.loadTablePage(this.page),
       ]);
-      this.walletAddress = getWalletAddress();
       await this.fetchWalletData({
         method: 'balanceOf', address: this.walletAddress, abi: ERC20, token: tokenMap[TokenSymbols.WUSD], symbol: TokenSymbols.WUSD,
       });
@@ -503,6 +498,7 @@ export default {
               method: 'withdraw',
               data: [new BigNumber(amount).shiftedBy(18).toString()],
             }),
+            this.getBalanceWQT(),
           ]);
           if (!txFee?.ok || +balance === 0) {
             await this.$store.dispatch('main/showToast', { text: this.$t('errors.transaction.notEnoughFunds') });
@@ -515,7 +511,7 @@ export default {
             fields: {
               to: { name: this.$t('meta.toBig'), value: this.convertToBech32('wq', this.walletAddress) },
               amount: { name: this.$t('modals.amount'), value: amount, symbol: TokenSymbols.WUSD },
-              fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
+              fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WQT },
             },
             submitMethod: async () => {
               this.SetLoader(true);
@@ -539,7 +535,7 @@ export default {
         key: modals.areYouSureNotification,
         text: this.$t('pension.prolongText'),
         callback: async () => {
-          const { balance } = this.balanceData.WUSD;
+          const { balanceData: { WUSD: { balance } } } = this;
           this.CloseModal();
           this.SetLoader(true);
           const [txFee] = await Promise.all([
@@ -548,8 +544,9 @@ export default {
               contractAddress: process.env.WORKNET_PENSION_FUND,
               method: 'extendLockTime',
             }),
+            this.getBalanceWQT(),
           ]);
-          if (txFee.ok === false || +balance === 0) {
+          if (!txFee.ok || +balance === 0) {
             await this.$store.dispatch('main/showToast', {
               text: this.$t('errors.transaction.notEnoughFunds'),
             });
@@ -559,18 +556,17 @@ export default {
           this.ShowModal({
             key: modals.transactionReceipt,
             fields: {
-              from: { name: this.$t('meta.fromBig'), value: this.convertToBech32('wq', getWalletAddress()) },
+              from: { name: this.$t('meta.fromBig'), value: this.convertToBech32('wq', this.walletAddress) },
               to: { name: this.$t('meta.toBig'), value: this.convertToBech32('wq', process.env.WORKNET_PENSION_FUND) },
-              fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
+              fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WQT },
             },
+            isDontOffLoader: true,
             submitMethod: async () => {
-              this.SetLoader(true);
               const res = await this.pensionExtendLockTime();
               if (res.ok) {
                 await this.getWallet();
                 this.endOfPeriod();
               }
-              this.SetLoader(false);
             },
           });
         },
@@ -591,7 +587,7 @@ export default {
             tokenAddress: tokenMap[TokenSymbols.WUSD],
             spenderAddress: process.env.WORKNET_PENSION_FUND,
           });
-          if (+allowance < +newAmount) {
+          if (new BigNumber(allowance).isLessThan(newAmount)) {
             await this.$store.dispatch('wallet/approve', {
               tokenAddress: tokenMap[TokenSymbols.WUSD],
               spenderAddress: process.env.WORKNET_PENSION_FUND,
@@ -603,7 +599,7 @@ export default {
               method: 'contribute',
               abi: WQPensionFund,
               contractAddress: process.env.WORKNET_PENSION_FUND,
-              data: [getWalletAddress(), newAmount],
+              data: [this.walletAddress, newAmount],
               recipient: process.env.WORKNET_PENSION_FUND,
             }),
             this.getWallet(),
@@ -617,16 +613,16 @@ export default {
           }
 
           const fields = {
-            from: { name: this.$t('meta.fromBig'), value: this.convertToBech32('wq', getWalletAddress()) },
+            from: { name: this.$t('meta.fromBig'), value: this.convertToBech32('wq', this.walletAddress) },
             to: { name: this.$t('meta.toBig'), value: this.convertToBech32('wq', process.env.WORKNET_PENSION_FUND) },
-            fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
+            fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WQT },
             amount: { name: this.$t('modals.amount'), value: amount, symbol: TokenSymbols.WUSD },
           };
           this.ShowModal({
             key: modals.transactionReceipt,
             fields,
+            isDontOffLoader: true,
             submitMethod: async () => {
-              this.SetLoader(true);
               await this.pensionContribute(amount);
             },
           });
@@ -641,7 +637,6 @@ export default {
           this.selectedTable = PensionHistoryMethods.Update;
           this.CloseModal();
           this.SetLoader(true);
-
           const [txFee] = await Promise.all([
             this.$store.dispatch('wallet/getContractFeeData', {
               method: 'updateFee',
@@ -652,6 +647,7 @@ export default {
             this.getWallet(),
           ]);
           this.SetLoader(false);
+
           if (!txFee?.ok || +balanceData.WUSD.balance === 0) {
             await this.$store.dispatch('main/showToast', {
               text: this.$t('errors.transaction.notEnoughFunds'),
@@ -660,19 +656,16 @@ export default {
           }
 
           const fields = {
-            from: { name: this.$t('meta.fromBig'), value: this.convertToBech32('wq', getWalletAddress()) },
+            from: { name: this.$t('meta.fromBig'), value: this.convertToBech32('wq', this.walletAddress) },
             to: { name: this.$t('meta.toBig'), value: this.convertToBech32('wq', process.env.WORKNET_PENSION_FUND) },
-            fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
+            fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WQT },
           };
 
           this.ShowModal({
             key: modals.transactionReceipt,
             fields,
-            submitMethod: async () => {
-              this.SetLoader(true);
-              await this.$store.dispatch('retirement/pensionUpdateFee', amount.substr(0, amount.length - 1));
-            },
-            callback: await this.getWallet(),
+            isDontOffLoader: true,
+            submitMethod: async () => await this.$store.dispatch('retirement/pensionUpdateFee', amount.substr(0, amount.length - 1)),
           });
         },
       });
