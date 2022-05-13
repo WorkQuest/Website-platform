@@ -97,6 +97,7 @@ export default {
       context: 'default',
       toDecrypt: null,
       counter: 1,
+      tryLimit: 5,
       isPasswordVisible: false,
 
       isImportWallet: false,
@@ -162,7 +163,7 @@ export default {
     async checkPassword() {
       const checked = await this.$store.dispatch('wallet/checkPassword', this.password);
       if (!checked) {
-        if (this.counter >= 5) {
+        if (this.counter >= this.tryLimit) {
           this.ShowToast(this.$t('messages.attemptsExceeded'));
           this.disconnect(false);
         } else this.ShowToast(this.$t('messages.invalidPassword'));
@@ -198,7 +199,13 @@ export default {
         [this.userWalletAddress]: this.mnemonic,
       }));
       if (connectWithMnemonic(this.userWalletAddress)) this.allowAccess();
-      else this.ShowToast(this.$t('messages.mnemonic'));
+      else {
+        this.ShowToast(this.$t('messages.mnemonic'));
+        if (this.counter >= this.tryLimit) {
+          this.disconnect(true);
+        }
+        this.counter += 1;
+      }
     },
     disconnect(showMnemonicError = true) {
       if (showMnemonicError) this.ShowToast(this.$t('messages.loginWithSecret'));
