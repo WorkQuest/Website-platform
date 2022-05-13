@@ -169,81 +169,94 @@ export default {
     notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
     notification.params = { isLocal: false };
 
-    if (notificationsQuestsActions.includes(action)) {
-      await updateQuests();
-    } else if (action === NotificationAction.QUEST_STATUS_UPDATED) {
-      notification.sender = userRole === UserRole.EMPLOYER ? assignedWorker
-        || { avatar: { url: require('assets/img/app/logo.svg') }, firstName: 'Workquest info' } : user;
-      notification.params = {
-        ...notification.params,
-        title,
-        path: `${Path.QUESTS}/${data.id}`,
-      };
-      await dispatch('updateProfile');
-    } else if (action === NotificationActionFromContract.QUEST_EDITED_ON_CONTRACT) {
-      notification.sender = {
-        avatar: user.avatar,
-        firstName: user.firstName,
-        lastName: user.lastName,
-      };
-      notification.params = {
-        ...notification.params,
-        title,
-        path: `${Path.QUESTS}/${quest?.id || id}`,
-      };
-    } else if ([
-      NotificationAction.OPEN_DISPUTE,
-      NotificationAction.DISPUTE_DECISION,
-    ].includes(action)) {
-      notification.params = {
-        ...notification.params,
-        title: problemDescription,
-        path: `${Path.QUESTS}/${quest?.id || id}`,
-      };
-      await updateQuests();
-    } else if (action === NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST) {
-      if (fromUser && !notification.sender) notification.sender = fromUser;
-      notification.params = {
-        ...notification.params,
-        title: message,
-        path: `${Path.PROFILE}/${userRole === UserRole.EMPLOYER ? toUserId : fromUser.id}`,
-      };
-      await dispatch('updateProfile');
-    } else if (action === NotificationAction.NEW_COMMENT_IN_DISCUSSION) {
-      if (rootComment?.author && !notification.sender) notification.sender = rootComment.author;
-    } else if (action === NotificationAction.COMMENT_LIKED) {
-      if (comment?.author && !notification.sender) notification.sender = comment.author;
-      notification.params = {
-        ...notification.params,
-        title: comment?.text,
-        path: `${PathDAO.DISCUSSIONS}/${comment.discussionId}`,
-        isExternalLink: true,
-        externalBase: DaoUrl,
-      };
-    } else if ([
-      NotificationAction.NEW_COMMENT_IN_DISCUSSION,
-      NotificationAction.NEW_DISCUSSION_LIKE,
-    ].includes(action)) {
-      notification.params = {
-        ...notification.params,
-        title: discussion.title,
-        path: `${PathDAO.DISCUSSIONS}/${discussion.id}`,
-        isExternalLink: true,
-        externalBase: DaoUrl,
-      };
-    } else if ([
-      ...notificationsQuestsActions,
-      NotificationAction.QUEST_STATUS_UPDATED,
-    ].includes(action)) {
-      notification.params = {
-        ...notification.params,
-        title: quest?.title || title,
-        path: `${Path.QUESTS}/${quest?.id || id}`,
-      };
-    } else {
-      // Не удалять! Для ловли неизвестных ивентов
-      // console.error('Unknown event = ', action);
+    switch (action) {
+      case notificationsQuestsActions.includes(action):
+        await updateQuests();
+        break;
+
+      case NotificationAction.QUEST_STATUS_UPDATED:
+        console.log('user', user);
+        notification.sender = userRole === UserRole.EMPLOYER ? assignedWorker
+          || { avatar: { url: images.WQ_LOGO }, firstName: 'Workquest info' } : user;
+        notification.params = {
+          ...notification.params,
+          title,
+          path: `${Path.QUESTS}/${data.id}`,
+        };
+        await dispatch('updateProfile');
+        break;
+
+      case NotificationActionFromContract.QUEST_EDITED_ON_CONTRACT:
+        notification.sender = {
+          avatar: user.avatar,
+          firstName: user.firstName,
+          lastName: user.lastName,
+        };
+        notification.params = {
+          ...notification.params,
+          title,
+          path: `${Path.QUESTS}/${quest?.id || id}`,
+        };
+        break;
+
+      case [NotificationAction.OPEN_DISPUTE, NotificationAction.DISPUTE_DECISION].includes(action):
+        notification.params = {
+          ...notification.params,
+          title: problemDescription,
+          path: `${Path.QUESTS}/${quest?.id || id}`,
+        };
+        await updateQuests();
+        break;
+
+      case NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST:
+        if (fromUser && !notification.sender) notification.sender = fromUser;
+        notification.params = {
+          ...notification.params,
+          title: message,
+          path: `${Path.PROFILE}/${userRole === UserRole.EMPLOYER ? toUserId : fromUser.id}`,
+        };
+        await dispatch('updateProfile');
+        break;
+
+      case NotificationAction.NEW_COMMENT_IN_DISCUSSION:
+        if (rootComment?.author && !notification.sender) notification.sender = rootComment.author;
+        break;
+
+      case NotificationAction.COMMENT_LIKED:
+        if (comment?.author && !notification.sender) notification.sender = comment.author;
+        notification.params = {
+          ...notification.params,
+          title: comment?.text,
+          path: `${PathDAO.DISCUSSIONS}/${comment.discussionId}`,
+          isExternalLink: true,
+          externalBase: DaoUrl,
+        };
+        break;
+
+      case [NotificationAction.NEW_COMMENT_IN_DISCUSSION, NotificationAction.NEW_DISCUSSION_LIKE].includes(action):
+        notification.params = {
+          ...notification.params,
+          title: discussion.title,
+          path: `${PathDAO.DISCUSSIONS}/${discussion.id}`,
+          isExternalLink: true,
+          externalBase: DaoUrl,
+        };
+        break;
+
+      case [...notificationsQuestsActions, NotificationAction.QUEST_STATUS_UPDATED].includes(action):
+        notification.params = {
+          ...notification.params,
+          title: quest?.title || title,
+          path: `${Path.QUESTS}/${quest?.id || id}`,
+        };
+        break;
+
+      default:
+        // Не удалять! Для ловли неизвестных ивентов
+        // console.error('Unknown event = ', action);
+        break;
     }
+
     Object.assign(notification.params, { isLocal: false });
 
     /** Set sender if it need */
