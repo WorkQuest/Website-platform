@@ -138,9 +138,6 @@ export default {
     isCurrentUserEmployer() {
       return this.currentUser.role === UserRole.EMPLOYER;
     },
-    isHaveOpenQuests() {
-      return this.currentUser.questsStatistic && this.currentUser.questsStatistic.opened > 0;
-    },
   },
   async mounted() {
     const { options: { isMembersList }, chatMembers } = this;
@@ -179,9 +176,9 @@ export default {
         isAdding: false,
       });
     },
-    changeSelStatus({ target }, userId) {
-      if (target.checked) this.memberUserIds.push(userId);
-      else this.memberUserIds = this.memberUserIds.filter((id) => id !== userId);
+    changeSelStatus({ target }, { id }) {
+      if (target.checked) this.memberUserIds.push(id);
+      else this.memberUserIds = this.memberUserIds.filter((userId) => userId !== id);
     },
     async getUsers() {
       const { filter, chatId, users } = this;
@@ -220,8 +217,8 @@ export default {
       this.hide();
     },
     async sendInvite(user) {
-      await this.$store.dispatch('quests/getAvailableQuests', user.id);
-      if (this.isHaveOpenQuests) {
+      const { count } = await this.$store.dispatch('quests/getAvailableQuests', user.id);
+      if (count > 0) {
         this.ShowModal({
           key: modals.invitation,
           userId: user.id,
