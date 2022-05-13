@@ -16,15 +16,13 @@ import { images } from '~/utils/images';
 
 export default {
 
-  async updateProfile() {
+  async updateProfile({ rootGetters, dispatch }) {
     /** For update user profile */
-    const { getters, dispatch } = this.app.store;
-    const userData = getters['user/getUserData'];
-    const currentUserId = userData.id;
+    const { id } = rootGetters['user/getUserData'];
     const currentPath = this.$router.history.current.path;
-    if (currentPath === `${Path.PROFILE}/${currentUserId}`) {
+    if (currentPath === `${Path.PROFILE}/${id}`) {
       const query = { limit: 8, offset: 0 };
-      await dispatch('user/getAllUserReviews', { userId: currentUserId, query }, { root: true });
+      await dispatch('user/getAllUserReviews', { userId: id, query }, { root: true });
     }
   },
 
