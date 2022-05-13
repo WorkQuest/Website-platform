@@ -80,6 +80,7 @@ export const Ratings = Object.freeze({
   NO_STATUS: 'noStatus',
   ALL_STATUSES: 'AllStatuses',
 });
+
 export const UserRating = Object.freeze({
   8: Ratings.TOP_RANKED,
   4: Ratings.RELIABLE,
@@ -89,10 +90,10 @@ export const UserRating = Object.freeze({
 });
 export const RatingFilter = [
   { key: 'all', value: 15 },
-  { key: 'topRanked', value: 8 },
-  { key: 'reliable', value: 4 },
-  { key: 'verified', value: 2 },
-  { key: 'noStatus', value: 1 },
+  { key: [Ratings.TOP_RANKED], value: 8 },
+  { key: [Ratings.RELIABLE], value: 4 },
+  { key: [Ratings.VERIFIED], value: 2 },
+  { key: [Ratings.NO_STATUS], value: 1 },
 ];
 export const RatingStatus = {
   NoStatus: 1,

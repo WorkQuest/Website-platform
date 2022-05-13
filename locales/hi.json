@@ -378,11 +378,11 @@
       "noStatus": "Not rated"
     },
     "distantWork": {
-      "title": "रिमोट जॉब",
+      "title": "Workplace",
       "allWorkplaces": "All workplaces",
-      "distantWork": "रिमोट जॉब",
-      "workInOffice": "ऑफिस जॉब",
-      "bothVariant": "दोनों प्रकार"
+      "distantWork": "Remote work",
+      "workInOffice": "In-office",
+      "bothVariant": "Hybrid workplace"
     },
     "employment": {
       "employment": "Employment",
@@ -1473,9 +1473,9 @@
       "title": "Workplace",
       "select": "Select distant work",
       "allWorkplaces": "All workplaces",
-      "distantWork": "Distant work",
-      "workInOffice": "Work in office",
-      "bothVariant": "Both variants"
+      "distantWork": "Remote work",
+      "workInOffice": "In-office",
+      "bothVariant": "Hybrid workplace"
     }
   },
   "raising-views": {
@@ -2301,8 +2301,8 @@
   "workPlaces": {
     "title": "Workplace",
     "all": "All workplaces",
-    "distant": "Distant work",
-    "office": "Work in office",
-    "both": "Both variants"
+    "distant": "Remote work",
+    "office": "In-office",
+    "both": "Hybrid workplace"
   }
 }

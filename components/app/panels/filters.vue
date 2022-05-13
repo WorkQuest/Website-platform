@@ -124,7 +124,7 @@ export default {
       if (from && to) return { title: `${from} - ${to}`, hasPrice: true };
       if (!from && to) return { title: `0 - ${to}`, hasPrice: true };
       if (from && !to) return { title: `> ${from}`, hasPrice: true };
-      return { title: this.$t('meta.price'), hasPrice: false };
+      return { title: this.$t(`meta.${this.userRole === UserRole.WORKER ? 'price' : 'costPerHour'}`), hasPrice: false };
     },
     isPriceModalShowed() {
       return this.isModalShowed && this.activeModalKey === modals.priceSearch;
@@ -163,7 +163,7 @@ export default {
   },
   methods: {
     showPriceSearch() {
-      this.ShowModal({ key: modals.priceSearch });
+      this.ShowModal({ key: modals.priceSearch, title: this.$t(`meta.${this.userRole === UserRole.WORKER ? 'price' : 'costPerHour'}`) });
     },
     sortByTime() {
       this.selectedSort = this.selectedSort === 'desc' ? 'asc' : 'desc';
