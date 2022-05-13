@@ -560,7 +560,49 @@ export default {
             img: images.WARNING,
             title: 'Dispute Pay',
             text: 'You need to pay to open a dispute',
-            callback: this.disputePay,
+            callback: async () => {
+              // TODO: Дописать логику
+              const { contractAddress } = this.quest;
+              const feeTx = await fetchContractData('feeTx', WQFactory, process.env.WORKNET_WQ_FACTORY, null, GetWalletProvider());
+              console.log('feeTx:', feeTx);
+              const createDisputePayment = await this.$store.dispatch('quests/arbitration', {
+                contractAddress,
+                value: feeTx,
+              });
+              console.log('createDisputePayment:', createDisputePayment);
+              if (!createDisputePayment.result.status) {
+                setTimeout(async () => this.ShowModalFail({
+                  title: 'Payment Error',
+                  subtitle: 'Please, try later...',
+                  img: images.ERROR,
+                }), 1000);
+              } else if (createDisputePayment.result.status) {
+                setTimeout(async () => this.ShowModal({
+                  key: modals.status,
+                  title: 'Payment Success',
+                  subtitle: 'You can check a transaction status on Explorer!',
+                  mode: 'link',
+                  img: images.SUCCESS,
+                  trxHash: createDisputePayment.result.transactionHash,
+                  callback: async () => {
+                    const disputeInfo = this.$cookies.get('disputeInfo');
+                    // TODO: Узнать про контракт!!
+                    const createDisputeRes = '';
+                    console.log('createDisputeRes', createDisputeRes);
+                    if (createDisputeRes?.ok) {
+                      setTimeout(async () => await this.$router.push(`/disputes/${createDisputeRes.result.id}`), 1000);
+                    } else {
+                      setTimeout(async () => this.ShowModal({
+                        key: modals.status,
+                        img: require('~/assets/img/ui/warning.svg'),
+                        title: this.$t('modals.errors.error'),
+                        subtitle: this.$t('errors.incorrectPass'),
+                      }), 1000);
+                    }
+                  },
+                }), 1000);
+              }
+            },
           }),
         });
       }
@@ -571,49 +613,6 @@ export default {
         subtitle: this.$t('modals.errors.youCantCreateDispute'),
         button: this.$t('meta.btns.close'),
       });
-    },
-    async disputePay() {
-      // TODO: Дописать логику
-      const { contractAddress } = this.quest;
-      const feeTx = await fetchContractData('feeTx', WQFactory, process.env.WORKNET_WQ_FACTORY, null, GetWalletProvider());
-      console.log('feeTx:', feeTx);
-      const createDisputePayment = await this.$store.dispatch('quests/arbitration', {
-        contractAddress,
-        value: feeTx,
-      });
-      console.log('createDisputePayment:', createDisputePayment);
-      if (!createDisputePayment.result.status) {
-        setTimeout(async () => this.ShowModalFail({
-          title: 'Payment Error',
-          subtitle: 'Please, try later...',
-          img: images.ERROR,
-        }), 1000);
-      } else if (createDisputePayment.result.status) {
-        setTimeout(async () => this.ShowModal({
-          key: modals.status,
-          title: 'Payment Success',
-          subtitle: 'You can check a transaction status on Explorer!',
-          mode: 'link',
-          img: images.SUCCESS,
-          trxHash: createDisputePayment.result.transactionHash,
-          callback: async () => {
-            const disputeInfo = this.$cookies.get('disputeInfo');
-            // TODO: Узнать про контракт!!
-            const createDisputeRes = '';
-            console.log('createDisputeRes', createDisputeRes);
-            if (createDisputeRes?.ok) {
-              setTimeout(async () => await this.$router.push(`/disputes/${createDisputeRes.result.id}`), 1000);
-            } else {
-              setTimeout(async () => this.ShowModal({
-                key: modals.status,
-                img: require('~/assets/img/ui/warning.svg'),
-                title: this.$t('modals.errors.error'),
-                subtitle: this.$t('errors.incorrectPass'),
-              }), 1000);
-            }
-          },
-        }), 1000);
-      }
     },
     async acceptCompletedWorkOnQuest() {
       this.SetLoader(true);
