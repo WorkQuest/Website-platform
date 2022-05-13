@@ -48,7 +48,7 @@
           :placeholder="$t('signUp.password')"
           rules="required_if|min:8"
           autocomplete="current-password"
-          type="password"
+          :type="isPasswordVisible?'text':'password'"
           vid="confirmation"
           data-selector="PASSWORD"
         >
@@ -58,12 +58,22 @@
               alt=""
             >
           </template>
+          <template
+            v-if="model.password"
+            v-slot:right-absolute
+          >
+            <btn-password-visibility
+              :is-password-visible="isPasswordVisible"
+              @toggleVisibility="isPasswordVisible = $event"
+            />
+          </template>
         </base-field>
         <div class="auth__tools">
           <base-checkbox
             v-model="remember"
             name="remember"
             :label="$t('signIn.remember')"
+            @input="$store.dispatch('user/setRememberMe', remember)"
           />
           <div
             class="auth__text auth__text_link"
@@ -169,22 +179,30 @@ export default {
       userStatus: null,
       isLoginWithSocial: false,
       userAddress: '',
+      isPasswordVisible: false,
     };
   },
   computed: {
     ...mapGetters({
       userData: 'user/getUserData',
       isLoading: 'main/getIsLoading',
+
+      connections: 'main/notificationsConnectionStatus',
     }),
     walletState() {
       return WalletState;
     },
+  },
+  created() {
+    const { token } = this.$route.query;
+    if (token) sessionStorage.setItem('confirmToken', String(token));
   },
   async mounted() {
     this.isLoginWithSocial = this.$cookies.get('socialNetwork');
     const access = this.$cookies.get('access');
     const refresh = this.$cookies.get('refresh');
     const userStatus = this.$cookies.get('userStatus');
+    if (+userStatus === UserStatuses.Confirmed && access) await this.redirectUser();
     if (this.isLoginWithSocial && access && +userStatus === UserStatuses.Confirmed) {
       this.SetLoader(true);
       await this.$store.dispatch('user/getUserData');
@@ -250,6 +268,7 @@ export default {
       };
       const { ok, result } = await this.$store.dispatch('user/signIn', payload);
       if (ok) {
+        this.$cookies.set('userStatus', result.userStatus);
         this.userStatus = result.userStatus;
         this.userAddress = result.address;
         if (result.totpIsActive) {
@@ -278,7 +297,7 @@ export default {
       // Redirect to confirm account
       if (confirmToken) {
         setCipherKey(this.model.password);
-        this.redirectUser();
+        await this.redirectUser();
         this.SetLoader(false);
         return;
       }
@@ -315,7 +334,7 @@ export default {
         const wallet = createWallet(sessionMnemonic);
         if (wallet && wallet.address.toLowerCase() === this.userWalletAddress) {
           this.saveToStorage(wallet);
-          this.redirectUser();
+          await this.redirectUser();
           this.SetLoader(false);
           return;
         }
@@ -327,7 +346,7 @@ export default {
         const wallet = createWallet(mnemonic);
         if (wallet && wallet.address.toLowerCase() === this.userWalletAddress) {
           this.saveToStorage(wallet);
-          this.redirectUser();
+          await this.redirectUser();
           this.SetLoader(false);
           return;
         }
@@ -347,7 +366,7 @@ export default {
       });
       if (res.ok) {
         this.saveToStorage(wallet);
-        this.redirectUser();
+        await this.redirectUser();
         return;
       }
       if (res.code === 400011) {
@@ -368,7 +387,7 @@ export default {
       // All ok
       if (wallet.address.toLowerCase() === this.userWalletAddress) {
         this.saveToStorage(wallet);
-        this.redirectUser();
+        await this.redirectUser();
         return;
       }
       // Phrase not assigned to this account
@@ -391,19 +410,24 @@ export default {
       }));
       this.$store.dispatch('wallet/connectWallet', { userWalletAddress: wallet.address, userPassword: this.model.password });
     },
-    redirectUser() {
+    async redirectUser() {
       this.addressAssigned = true;
       this.$cookies.set('userLogin', true, { path: '/' });
       // redirect to confirm access if token exists & unconfirmed account
-      const confirmToken = JSON.parse(sessionStorage.getItem('confirmToken'));
-      if (this.userStatus === UserStatuses.Unconfirmed && confirmToken) {
-        this.$router.push(`/confirm/?token=${confirmToken}`);
+      const confirmToken = sessionStorage.getItem('confirmToken');
+      if ((this.userStatus === UserStatuses.Unconfirmed || !this.userAddress) && confirmToken) {
+        await this.$router.push(`${Path.ROLE}/?token=${confirmToken}`);
         return;
       }
       sessionStorage.removeItem('confirmToken');
-      if (this.userData.role === UserRole.EMPLOYER) this.$router.push(Path.WORKERS);
-      else if (this.userData.role === UserRole.WORKER) this.$router.push(Path.QUESTS);
-      else if (this.userStatus === UserStatuses.NeedSetRole) this.$router.push(Path.ROLE);
+      if (!this.userData.id) await this.$store.dispatch('user/getUserData');
+
+      // this is necessary for the case when the user was in the guest layout and then decided to log in
+      // $wsNotifs was connected on guest layout without token, it will be reconnect in header with token
+      if (this.connections.notifsConnection) await this.$wsNotifs.disconnect();
+
+      if (this.userData.role === UserRole.EMPLOYER) await this.$router.push(Path.WORKERS);
+      else if (this.userData.role === UserRole.WORKER) await this.$router.push(Path.QUESTS);
     },
     async redirectSocialLink(socialNetwork) {
       window.location = `${process.env.BASE_URL}v1/auth/login/main/${socialNetwork}`;
@@ -506,7 +530,7 @@ export default {
     transition: .5s;
     width: 40px;
     height: 40px;
-    background: #F7F8FA;
+    background: $black0;
     border-radius: 6px;
     display: flex;
     align-items: center;
@@ -560,7 +584,6 @@ export default {
     }
   }
 }
-
 @include _1199 {
   .auth {
     &__icons {

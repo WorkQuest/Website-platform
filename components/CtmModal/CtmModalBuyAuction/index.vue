@@ -1,13 +1,13 @@
 <template>
   <ctm-modal-box
     class="buy-auction"
-    :title="$t('modals.titles.buyAuction')"
+    :title="$tc('modals.titles.buyAuction')"
   >
     <div class="buy-auction__content">
       <div class="buy-auction__info">
         <div class="buy-auction__info-unit">
           <h4 class="buy-auction__info-header">
-            {{ $t('modals.recipient') }}
+            {{ $t('modals.recipientAddress') }}
           </h4>
           <p class="buy-auction__info-value">
             {{ options.auction.recipient }}

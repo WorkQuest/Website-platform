@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="privacy"
-    :title="$t('modals.titles.privacyPolicy')"
+    :title="$tc('modals.titles.privacyPolicy')"
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__desc">
@@ -11,7 +11,7 @@
         <base-checkbox
           v-model="privacy"
           name="privacy"
-          :label="$t('privacy.agree')"
+          :label="$tc('privacy.agree')"
         >
           <template v-slot:sub>
             <a
@@ -26,7 +26,7 @@
         <base-checkbox
           v-model="terms"
           name="terms"
-          :label="$t('privacy.agree')"
+          :label="$tc('privacy.agree')"
         >
           <template v-slot:sub>
             <a
@@ -41,7 +41,7 @@
         <base-checkbox
           v-model="aml"
           name="aml"
-          :label="$t('privacy.agree')"
+          :label="$tc('privacy.agree')"
         >
           <template v-slot:sub>
             <a
@@ -90,31 +90,29 @@ export default {
   },
   methods: {
     async onSubmit() {
-      // Role page & select role
-      if (this.$cookies.get('userStatus') === UserStatuses.NeedSetRole) {
-        const response = await this.$store.dispatch('user/setUserRole', { role: this.options.role });
-        if (response?.ok) {
-          this.$cookies.set('userStatus', 1, { path: '/' });
-          this.options.callback();
-          this.CloseModal();
-          return;
-        }
-      } else { // Confirm account page
-        const response = await this.$store.dispatch('user/confirm', {
-          confirmCode: this.options.confirmCode,
+      // Role page
+      let response;
+      if (this.options.isSocialNetwork) {
+        response = await this.$store.dispatch('user/setUserRole', {
           role: this.options.role,
         });
-        if (response?.ok) {
-          this.$cookies.set('userLogin', true, { path: '/' });
-          this.$cookies.set('userStatus', 1, { path: '/' });
-          sessionStorage.removeItem('confirmToken');
-          this.ShowToast(this.$t('modals.yourAccountVerified'), this.$t('meta.success'));
-          await this.$router.push(Path.ROLE);
-        } else {
-          // Wrong confirm token
-          await this.$store.dispatch('user/logout');
-          await this.$router.push(Path.SIGN_IN);
-        }
+      } else {
+        response = await this.$store.dispatch('user/confirm', {
+          confirmCode: sessionStorage.getItem('confirmToken'),
+          role: this.options.role,
+        });
+      }
+
+      if (response?.ok) {
+        this.$cookies.set('userLogin', true, { path: Path.ROOT });
+        this.$cookies.set('userStatus', UserStatuses.Confirmed, { path: Path.ROOT });
+        sessionStorage.removeItem('confirmToken');
+        this.ShowToast(this.$t('modals.yourAccountVerified'), this.$t('meta.success'));
+        await this.options.callback();
+      } else {
+        // Wrong confirm token or errors with social network login
+        await this.$store.dispatch('user/logout');
+        await this.$router.push(Path.SIGN_IN);
       }
       this.CloseModal();
     },

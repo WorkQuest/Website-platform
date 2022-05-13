@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="withdraw"
-    :title="$t('meta.withdrawal')"
+    :title="$tc('meta.withdrawal')"
   >
     <div class="withdraw__content content">
       <validation-observer v-slot="{handleSubmit, invalid}">
@@ -27,7 +27,7 @@
               data-selector="AMOUNT"
               class="grid__input"
               rules="required|decimal"
-              :name="$t('modals.amountField')"
+              :name="$tc('modals.amountField')"
             />
             <div class="grid__equal">
               =
@@ -92,7 +92,7 @@
             class="buttons__button"
             data-selector="CANCEL"
             mode="outline"
-            @click="hide"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -130,16 +130,10 @@ export default {
       options: 'modals/getOptions',
     }),
     items() {
-      return [
-        'Visa *0000',
-        'Visa *0000',
-      ];
+      return ['Visa *0000', 'Visa *0000'];
     },
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     showTransactionSendModal() {
       this.ShowModal({
         key: modals.withdrawInfo,
@@ -147,16 +141,12 @@ export default {
         cardNumber: this.options.cardNumber || '0000000000000000',
       });
     },
+    // TODO: Зарефакторить!
     showTakeWithdraw() {
-      this.ShowModal({
-        key: modals.takeWithdraw,
-      });
+      this.ShowModal({ key: modals.takeWithdraw });
     },
     showAddingCard() {
-      this.ShowModal({
-        key: modals.addingCard,
-        branch: 'withdraw',
-      });
+      this.ShowModal({ key: modals.addingCard, branch: 'withdraw' });
     },
   },
 };
@@ -198,7 +188,7 @@ export default {
 }
 .drop{
   &__field{
-    border: 1px solid #F7F8FA;
+    border: 1px solid $black0;
     border-radius: 6px;
   }
   &__title{

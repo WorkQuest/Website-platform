@@ -9,7 +9,7 @@
       <div class="card__avatar">
         <img
           class="card__img"
-          :src="user.avatar ? user.avatar.url: EmptyAvatar()"
+          :src="user.avatar ? user.avatar.url: $options.images.EMPTY_AVATAR"
           :alt="userName"
         >
       </div>
@@ -64,10 +64,12 @@
 </template>
 <script>
 import { RaiseViewStatus } from '~/utils/enums';
+import { images } from '~/utils/images';
 
 export default {
   name: 'EmployeeCard',
   RaiseViewStatus,
+  images,
   props: {
     user: {
       type: Object,

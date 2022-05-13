@@ -1,6 +1,6 @@
 <template>
   <ctm-modal-box
-    :title="$t('modals.titles.review')"
+    :title="$tc('modals.titles.review')"
   >
     <div class="ctm-modal__content content">
       <div class="content__review review">
@@ -56,7 +56,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalReviewDetails',
@@ -74,20 +73,11 @@ export default {
         { rating__star_half: (a >= 0.3 && a <= 0.7) },
       ];
     },
-    hide() {
-      this.CloseModal();
-    },
     success() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/success.svg'),
-        title: this.$t('meta.success'),
-        subtitle: this.$t('modals.SMSVerConnected'),
-      });
+      this.ShowModalSuccess({ title: this.$t('meta.success'), subtitle: this.$t('modals.SMSVerConnected') });
     },
     nextStep() {
-      // eslint-disable-next-line no-plusplus
-      this.step++;
+      this.step += 1;
     },
   },
 };

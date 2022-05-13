@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="deposit"
-    :title="$t('modals.titles.deposit')"
+    :title="$tc('modals.titles.deposit')"
   >
     <div class="deposit__content content">
       <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
@@ -14,8 +14,8 @@
             placeholder="3 500"
             data-selector="DEPOSIT-AMOUNT"
             class="content__input"
-            :rules="`required|decimal|is_not:0|max_bn:${balanceData.WUSD.fullBalance}|decimalPlaces:18`"
-            :name="$t('modals.depositAmountField')"
+            :rules="`required|decimal|is_not:0|max_value:${balanceData.WUSD.fullBalance}|decimalPlaces:18`"
+            :name="$tc('modals.depositAmountField')"
             @input="replaceDot"
           />
         </div>
@@ -24,7 +24,7 @@
             class="buttons__button"
             mode="outline"
             data-selector="CANCEL"
-            @click="hide"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -45,7 +45,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { WQPensionFund } from '~/abi/abi';
+import { WQPensionFund } from '~/abi/index';
 import { getWalletAddress } from '~/utils/wallet';
 import { TokenSymbols } from '~/utils/enums';
 
@@ -69,17 +69,14 @@ export default {
     replaceDot() {
       this.amount = this.amount.replace(/,/g, '.');
     },
-    hide() {
-      this.CloseModal();
-    },
     async toDepositReceipt() {
       const { updateMethod } = this.options;
-      this.hide();
+      this.CloseModal();
       this.SetLoader(true);
       const [txFee] = await Promise.all([
         this.$store.dispatch('wallet/getContractFeeData', {
           method: 'contribute',
-          _abi: WQPensionFund,
+          abi: WQPensionFund,
           contractAddress: process.env.WORKNET_PENSION_FUND,
           data: [getWalletAddress()],
           amount: this.amount,
@@ -125,22 +122,26 @@ export default {
 <style lang="scss" scoped>
 .deposit {
   max-width: 495px !important;
+
   &__content {
-    padding: 0 28px 30px 28px!important;
+    padding: 0 28px 30px 28px !important;
   }
 }
-.content{
+
+.content {
   &__field {
     margin: 15px 0 0 0;
   }
-  &__buttons{
+
+  &__buttons {
     display: grid;
     grid-template-columns: repeat(2, calc(50% - 10px));
     grid-gap: 20px;
     gap: 20px;
     margin-top: 2px;
   }
-  &__text{
+
+  &__text {
     margin: 22px 0 4px 0;
     font-size: 16px;
     line-height: 130%;

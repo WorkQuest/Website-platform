@@ -86,8 +86,8 @@ export default {
   //   icons: true,
   // },
   i18n: {
-    locales: ['en', 'ru', 'bn', 'ar', 'fr', 'hi', 'id', 'pt', 'es', 'zh_cn'],
-    // locales: ['en'],
+    // locales: ['en', 'ru', 'bn', 'ar', 'fr', 'hi', 'id', 'pt', 'es', 'zh_cn'],
+    locales: ['en'],
     defaultLocale: 'en',
     strategy: 'no_prefix',
     vueI18n: {
@@ -118,16 +118,18 @@ export default {
 
     WQ_PROVIDER: process.env.WQ_PROVIDER,
     WQ_EXPLORER: process.env.WQ_EXPLORER,
+    WQ_ORACLE_URL: process.env.WQ_ORACLE_URL,
 
     NOTIFS_URL: process.env.NOTIFS_URL,
     WS_NOTIFS_URL: process.env.WS_NOTIFS_URL,
     WS_CHAT_ACTIONS_URL: process.env.WS_CHAT_ACTIONS_URL,
+    WS_WQ_PROVIDER: process.env.WS_WQ_PROVIDER,
 
     ETHEREUM_BRIDGE: process.env.ETHEREUM_BRIDGE,
     ETHEREUM_LP_TOKEN: process.env.ETHEREUM_LP_TOKEN,
     ETHEREUM_MINING: process.env.ETHEREUM_MINING,
+    ETHEREUM_RPC_URL: process.env.ETHEREUM_RPC_URL,
     ETHEREUM_WQT_TOKEN: process.env.ETHEREUM_WQT_TOKEN,
-    ETHEREUM_WS_INFURA: process.env.ETHEREUM_WS_INFURA,
 
     BSC_BRIDGE: process.env.BSC_BRIDGE,
     BSC_LP_TOKEN: process.env.BSC_LP_TOKEN,
@@ -136,21 +138,22 @@ export default {
     BSC_WQT_EXCHANGE: process.env.BSC_WQT_EXCHANGE,
     BSC_WQT_TOKEN: process.env.BSC_WQT_TOKEN,
     BSC_RPC_URL: process.env.BSC_RPC_URL,
-    BSC_WS_MORALIS: process.env.BSC_WS_MORALIS,
 
-    WETH_TOKEN: process.env.WETH_TOKEN,
-    WBNB_TOKEN: process.env.WBNB_TOKEN,
-
+    WORKNET_BORROWING: process.env.WORKNET_BORROWING,
+    WORKNET_BRIDGE: process.env.WORKNET_BRIDGE,
+    WORKNET_LENDING: process.env.WORKNET_LENDING,
     WORKNET_ORACLE: process.env.WORKNET_ORACLE,
     WORKNET_PENSION_FUND: process.env.WORKNET_PENSION_FUND,
     WORKNET_PROMOTION: process.env.WORKNET_PROMOTION,
     WORKNET_REFERRAL: process.env.REFERRAL_ADDRESS,
     WORKNET_ROUTER: process.env.WORKNET_ROUTER,
+    WORKNET_SAVING_PRODUCT: process.env.WORKNET_SAVING_PRODUCT,
     WORKNET_STAKING_WQT: process.env.WORKNET_STAKING_WQT,
     WORKNET_STAKING_WUSD: process.env.WORKNET_STAKING_WUSD,
+    WORKNET_USDT_TOKEN: process.env.WORKNET_USDT_TOKEN,
     WORKNET_WBNB_TOKEN: process.env.WORKNET_WBNB_TOKEN,
     WORKNET_WETH_TOKEN: process.env.WORKNET_WETH_TOKEN,
-    WORKNET_WQT_TOKEN: process.env.WORKNET_WQT_TOKEN,
-
+    WORKNET_WUSD_TOKEN: process.env.WORKNET_WUSD_TOKEN,
+    WORKNET_WQ_FACTORY: process.env.WORKNET_WQ_FACTORY,
   },
 };

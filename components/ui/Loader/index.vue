@@ -52,7 +52,7 @@ export default {
     checkPage() {
       return [
         '/mining/BNB', '/mining/ETH',
-        '/crosschain',
+        '/bridge',
         '/staking', '/staking/WQT', '/staking/WUSD',
         '/pension', '/pension/my',
       ].includes(this.$route.path);
@@ -76,7 +76,7 @@ export default {
   display: flex;
 
   &_hider {
-    background: #F7F8FA;
+    background: $black0;
   }
 
   &__body {

@@ -3,8 +3,8 @@ export default () => ({
   twoFACode: '',
   verificationCode: '',
   tokens: {
-    access: '',
-    refresh: '',
+    access: null,
+    refresh: null,
   },
   userData: {
     statusKYC: false,
@@ -127,4 +127,5 @@ export default () => ({
     count: 0,
   },
   reducedNotifications: [],
+  isRememberMeChecked: null,
 });

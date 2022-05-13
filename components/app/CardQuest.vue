@@ -26,7 +26,7 @@
             <img
               class="avatar__image"
               :alt="`${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}`"
-              :src="quest.user && quest.user.avatar ? quest.user.avatar.url : EmptyAvatar()"
+              :src="quest.user && quest.user.avatar ? quest.user.avatar.url : $options.images.EMPTY_AVATAR"
             >
           </div>
           <div class="card-quest__text card-quest__text_title">
@@ -87,7 +87,7 @@
           >
             <img
               class="user__avatar"
-              :src="quest.assignedWorker.avatar ? quest.assignedWorker.avatar.url : EmptyAvatar()"
+              :src="quest.assignedWorker.avatar ? quest.assignedWorker.avatar.url : $options.images.EMPTY_AVATAR"
               :alt="`${ quest.assignedWorker ? UserName(quest.assignedWorker.firstName, quest.assignedWorker.lastName) : '' }`"
             >
             <div class="user__name">
@@ -133,7 +133,7 @@
             class="card-quest__amount"
             :class="getAmountStyles(quest)"
           >
-            {{ `${quest.price}  ${$options.TokenSymbols.WUSD}` }}
+            {{ `${questReward}  ${$options.TokenSymbols.WUSD}` }}
           </div>
         </div>
         <div class="card-quest__details">
@@ -171,13 +171,17 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import {
-  QuestStatuses, questPriority, UserRole, Path, TokenSymbols, QuestModeReview,
+  questPriority, UserRole, Path, TokenSymbols, QuestModeReview,
 } from '~/utils/enums';
+import { QuestStatuses } from '~/utils/сonstants/quests';
 import modals from '~/store/modals/modals';
+import { images } from '~/utils/images';
 
 export default {
   name: 'CardQuest',
+  images,
   UserRole,
   TokenSymbols,
   QuestStatuses,
@@ -192,8 +196,7 @@ export default {
     },
     quest: {
       type: Object,
-      default: () => {
-      },
+      default: () => {},
     },
   },
   data() {
@@ -213,6 +216,9 @@ export default {
     }),
     rating() {
       return this.quest.yourReview?.mark || 0;
+    },
+    questReward() {
+      return new BigNumber(this.quest.price).shiftedBy(-18).toString();
     },
   },
   async mounted() {
@@ -255,20 +261,13 @@ export default {
     progressQuestText(status) {
       if (!this.userRole) return '';
       switch (status) {
-        case QuestStatuses.Active:
-          return this.$t('quests.questActive');
-        case QuestStatuses.Closed:
-          return this.$t('quests.questClosed');
-        case QuestStatuses.Dispute:
-          return this.$t('quests.questDispute');
-        case QuestStatuses.WaitWorker:
-          return this.$t('quests.inProgressBy');
-        case QuestStatuses.WaitConfirm:
-          return this.$t('quests.questWaitConfirm');
-        case QuestStatuses.Done:
-          return this.$t('quests.finishedBy');
-        default:
-          return '';
+        case QuestStatuses.Created: return this.$t('quests.questActive');
+        case QuestStatuses.Closed: return this.$t('quests.questClosed');
+        case QuestStatuses.Dispute: return this.$t('quests.questDispute');
+        case QuestStatuses.WaitWorker: return this.$t('quests.inProgressBy');
+        case QuestStatuses.WaitEmployerConfirm: return this.$t('quests.questWaitConfirm');
+        case QuestStatuses.Done: return this.$t('quests.finishedBy');
+        default: return '';
       }
     },
     showProfile(profileId) {
@@ -295,10 +294,10 @@ export default {
       const questStatus = {
         [QuestStatuses.Dispute]: this.$t('meta.dispute'),
         [QuestStatuses.Rejected]: this.$t('quests.rejected'),
-        [QuestStatuses.Active]: this.$t('quests.active'),
+        [QuestStatuses.WaitWorker]: this.$t('quests.active'),
         [QuestStatuses.Done]: this.$t('meta.performed'),
-        [QuestStatuses.WaitConfirm]: this.$t('quests.requested'),
-        [QuestStatuses.WaitWorker]: this.$t('meta.invited'),
+        [QuestStatuses.WaitWorkerOnAssign]: this.$t('meta.invited'),
+        [QuestStatuses.WaitEmployerConfirm]: this.$t('quests.requested'),
         [QuestStatuses.Closed]: this.$t('quests.closed'),
       };
       return questStatus[index] || '';
@@ -307,10 +306,10 @@ export default {
       const questStatus = {
         [QuestStatuses.Dispute]: 'card-quest__cards-state-dis',
         [QuestStatuses.Rejected]: 'card-quest__cards-state-clo',
-        [QuestStatuses.Active]: 'card-quest__cards-state-act',
+        [QuestStatuses.WaitWorker]: 'card-quest__cards-state-act',
         [QuestStatuses.Done]: 'card-quest__cards-state-per',
-        [QuestStatuses.WaitConfirm]: 'card-quest__cards-state-req',
-        [QuestStatuses.WaitWorker]: 'card-quest__cards-state-inv',
+        [QuestStatuses.WaitWorkerOnAssign]: 'card-quest__cards-state-inv',
+        [QuestStatuses.WaitEmployerConfirm]: 'card-quest__cards-state-req',
         [QuestStatuses.Closed]: 'card-quest__cards-state-clo',
       };
       return questStatus[index] || '';

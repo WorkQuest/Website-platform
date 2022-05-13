@@ -8,8 +8,8 @@
       "title": "选择优先级",
       "all": "所有优先级",
       "fixedDelivery": "低",
-      "shortTerm": "普通",
-      "urgent": "紧急",
+      "shortTerm": "Short term 1 week",
+      "urgent": "Urgent 24-72h",
       "employee": {
         "urgent": "Urgent execution"
       }
@@ -50,6 +50,7 @@
       "hours": "{count} minute | {count} minutes | {count} hours",
       "years": "{count} year | {count} years | {count} years",
       "days": "{count} day | {count} days | {count} days",
+      "daysLeft": "{count} days left",
       "votesCount": "{count} 票",
       "distance": {
         "m": "m"
@@ -87,8 +88,8 @@
       "resendSMS": "重新发送短信",
       "registration": "注册",
       "leave": "Leave",
-      "completeWorkOnQuest": "Complete work on Quest",
-      "acceptCompletedWorkOnQuest": "Accept completed work on quest",
+      "completeWorkOnQuest": "Complete work",
+      "acceptCompletedWorkOnQuest": "Accept work",
       "closeQuest": "Close quest",
       "goToChat": "转到聊天",
       "view": "查看",
@@ -191,7 +192,8 @@
     "settings": "设置",
     "costPerHour": "每小时费用",
     "disputes": "争议",
-    "success": "成功"
+    "success": "成功",
+    "fail": "Fail"
   },
   "info": {
     "yourMessage": " Your message:",
@@ -227,7 +229,7 @@
     "size": "“{_field_}”字段必须小于 {size}KB",
     "decimal": "“{_field_}”字段必须仅包含十进制值",
     "decimalPlaces": "The {_field_} field must contain maximum {places} decimal places",
-    "invalidPhone":"Invalid phone number",
+    "invalidPhone": "Invalid phone number",
     "formError": "Fill in all required fields",
     "is": "The values do not match",
     "is_not": "Incorrect value",
@@ -329,8 +331,11 @@
     "employer": {
       "usersNotResponded": "Users not responded"
     },
+    "deleteQuest": "Delete quest",
     "invite": "Invite",
     "decline": "Decline",
+    "declinedTheInvitation": "Declined the invitation",
+    "acceptedTheInvitation": "Accepted the invitation",
     "questTitle": "Quest title",
     "questDesc": "Quest description",
     "closed": "Closed",
@@ -369,7 +374,8 @@
       "title": "Rating",
       "verified": "Verified",
       "reliable": "Reliable",
-      "topRanked": "Top ranked"
+      "topRanked": "Top ranked",
+      "noStatus": "Not rated"
     },
     "distantWork": {
       "title": "远程工作",
@@ -935,22 +941,26 @@
       "signWorkQuest": "WorkQuest 社交网络",
       "skills": "Skills",
       "smsVerification": "短信验证",
-      "swapTitle": "Crosschain exchange",
+      "swapTitle": "Cross-chain exchange",
       "swapInfo": "Swap info",
       "swapTokens": "Swap tokens",
       "withdrawal": "Withdrawal",
       "withdraw": "Withdraw",
       "sendTo": "发送到",
       "withdrawCard": "提款到银行卡",
-      "withdrawInfo": "Withdrawal info"
+      "withdrawInfo": "Withdrawal info",
+      "downloadApp": "Download App",
+      "downloadWallet": "Download Wallet App"
     },
     "errors": {
       "errorQuests": "Error with quests",
       "errorSmsVer": "Error SMS verification",
       "emptyOpenQuests": "You don't have open quests, please create",
       "error": "Error",
+      "errorNetwork": "Error, you use not correct network. Switch to {network}",
       "youCan’tDeleteActiveQuest": "You can’t delete active quest",
-      "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
+      "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest",
+      "dontHavePeople": "You don't have people to chat"
     },
     "chatCreate": {
       "title": "Create chat",
@@ -983,12 +993,20 @@
       "depositInfo": "Deposit info",
       "withdrawInfo": "Withdrawal info"
     },
+    "draft": {
+      "youHaveAQuestDraft": "You have a quest draft. Cleat it?",
+      "saveQuestDraft": "Save quest draft?"
+    },
+    "transactionError": "Transaction error",
+    "fromAddress": "from",
+    "toAddress": "to",
+    "codeFromSms": "Code from sms",
+    "saved": "Saved",
     "phoneNumber": "Phone Number",
     "value": "Value",
-    "generatedWUSD": "???",
-    "choosePeriod": "???",
-    "smallDescriptionForLoan": "???",
-    "recipient": "Recipient address",
+    "generatedWUSD": "WUSD will be generated",
+    "choosePeriod": "Choose a period of borrowing",
+    "smallDescriptionForLoan": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     "successBuyWUSD": "Successfully purchased WUSD",
     "setTokenPrice": "Setting up {token} price",
     "approveRouter": "Approve {token} to Router",
@@ -1110,7 +1128,7 @@
     "tempForRemove2": "1 BNB = ... WQT",
     "currentPoolSize": "当前池大小",
     "yourPoolShare": "您的池份额",
-    "howMuchEthWouldYouLikeToLock": "您希望将多少 ETH 锁定到您的帐户？",
+    "howMuchTokensWouldYouLikeToLock": "您希望将多少 {token} 锁定到您的帐户？",
     "collateralization": "抵押",
     "liquidationPrice": "清算价格",
     "currentPrice": "时价",
@@ -1143,7 +1161,6 @@
     "chooseCard": "Choose card",
     "maximum": "Max",
     "transfer": "Transfer",
-    "recepient": "Recepient address",
     "currencyDetails": "Currency",
     "generatingDetails": "Generating",
     "collateralizationRatio": "Collateralization ratio",
@@ -1155,14 +1172,13 @@
     "choose": "Choose",
     "chooseCurrency": "Choose currency",
     "coinpaymebts": "Сoinpaymebts",
-    "swapTitle": "Crosschain exchange",
+    "swapTitle": "Cross-chain exchange",
     "coin": "Coin",
-    "recepientBinance": "Recipient binance address",
     "createSwap": "Create swap",
-    "crosschain": "WorkQuest Bridge",
-    "crosschainText": "Eth > Binance",
+    "bridge": "WorkQuest Bridge",
+    "bridgeText": "Eth > Binance",
     "senderAddress": "Sender address",
-    "recepientAddress": "Recepient address",
+    "recipientAddress": "Recipient address",
     "worknetFee": "Eth fee",
     "binanceFee": "Binance fee",
     "welcomeText": "Please, tell us about your skills below",
@@ -1187,7 +1203,6 @@
     "priceOfAClickField": "price of a click",
     "cityField": "city",
     "cardHolderField": "card holder",
-    "recepientAddressField": "recepient address",
     "walletAddressField": "wallet address",
     "thanksText": "",
     "emailVerificationCodeField": "email verification",
@@ -1198,7 +1213,18 @@
     "txInfo": "Transaction info",
     "registration": "Are you sure to registration this users?",
     "claimConfirm": "Are you confirm the action of the claim?",
-    "until": "Until"
+    "until": "Until",
+    "scanQrCode": "You just need to scan the QR-code",
+    "downOnSmartphone": "Download Work Quest app on your smartphone",
+    "downWalletOnSmartphone": "Download Work Quest Wallet app on your smartphone",
+    "wouldReviewEmployee": "Would you like to add a review to the employee?",
+    "wouldReviewEmployer": "Would you like to add a review to the employer?",
+    "successfulMethods": {
+      "claim": "Successful claim",
+      "refund": "Successful refund",
+      "withdraw": "Successful withdrawal",
+      "deposit": "Successful deposit"
+    }
   },
   "ui": {
     "jobQuestors": "求职者",
@@ -1227,7 +1253,7 @@
     },
     "menu": {
       "unauthorized": "Not logged",
-      "crosschain": {
+      "bridge": {
         "title": "WorkQuest Bridge",
         "desc": "Secure and fast way to bring cross-chain assets between WorkNet, Ethereum and Binance Smart Chain."
       },
@@ -1301,6 +1327,7 @@
     "newDiscussionLike": "New like on discussion"
   },
   "wallet": {
+    "frozen": "Frozen balance",
     "WUSD": "WUSD 钱包",
     "cryptoWallet": "加密钱包",
     "send": "发送",
@@ -1371,20 +1398,25 @@
     },
     "leaveChat": "Leave chat",
     "loadMore": "Load more",
-    "searchTitle": "Name/Quest/Group"
+    "searchTitle": "Name/Quest/Group",
+    "menu": {
+      "giveAQuest": "Give a quest",
+      "removeFromChat": "Remove from the chat"
+    }
   },
   "settings": {
     "additionalPhoneNumber": "Additional phone number",
     "mainPhoneNumber": "Main phone number",
-    "workProposals": "Filter all work proposals",
+    "whoCouldIInvite": "Who can respond to my quests?",
+    "whoCouldInviteMe": "Who can invite me to a quest?",
     "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
     "twitter": "twitter",
     "instagram": "instagram",
-    "companyName":"company",
-    "ceoName":"ceo",
-    "websiteName":"website",
+    "companyName": "company",
+    "ceoName": "ceo",
+    "websiteName": "website",
     "enterPhoneNumber": "Please enter your phone number",
     "enterCurrentLocation": "Please select current location",
     "placeOfStudying": "学习地点",
@@ -1408,9 +1440,6 @@
     "workExps": {
       "companyName": "公司名称"
     },
-    "urgentJobOffers": "紧急工作机会",
-    "shortTermJobOffers": "短期工作机会",
-    "fixedDeliveryJobOffers": "固定交付工作机会",
     "addInfo": "您可以添加有关您自己的信息、上传个人资料照片并通过 KYC 程序提高您的评分。评分取决于您的个人资料数据和评价。",
     "alsoRating": "您的排名越高，越容易在搜索中出现。",
     "dontShow": "不再显示",
@@ -1425,7 +1454,8 @@
     "linkedInUsername": "LinkedIn 用户名",
     "facebookUsername": "Facebook 用户名",
     "skills": "技能：",
-    "whoCanSee": "谁可以看到我的个人资料？",
+    "whoAppearsInMyListEmployees": "Who appears in my list of employees?",
+    "whoAppearsInMyListEmployers": "Who appears in my list of employers?",
     "allUsers": "所有注册用户",
     "allInternet": "全球互联网用户",
     "onlyWhenSubmittedWork": "仅在提交工作机会时",
@@ -1701,10 +1731,14 @@
     "description": "???",
     "currentLoan": "???",
     "currentCredit": "???",
+    "dueDate": "Due date",
+    "chooseSource": "Choose the source",
+    "chosenSource": "Chosen source",
     "marketSize": "市场规模",
     "wantToTakeALoan": "想贷款吗？",
     "borrow": "借款",
     "myLoans": "???",
+    "needRefund": "Need to refund",
     "refund": "???",
     "openPositions": "未平头寸",
     "totalCollateralLocked": "锁定的抵押总额",
@@ -1817,6 +1851,7 @@
     "transaction": {
       "notEnoughFunds": "Not enough funds"
     },
+    "selectSpec": "Please select a specialization",
     "incorrectPass": "哎呀，出错了。检查数据并重试。",
     "emptyData": {
       "emptyQuests": "Oops, there's no quests here yet",
@@ -1850,7 +1885,7 @@
     "socialText": "在社交媒体中分享",
     "share": "分享链接"
   },
-  "crosschain": {
+  "bridge": {
     "pageName": "WorkQuest Bridge",
     "pageAbout": "Secure and fast way to bring cross-chain assets between WorkNet, Ethereum and Binance Smart Chain.",
     "sourceBlockchain": "Source blockchain",
@@ -1924,7 +1959,8 @@
       "responded": "Responded quests",
       "performed": "Performed quests",
       "active": "Active quests",
-      "invited": "Invited quests"
+      "invited": "Invited quests",
+      "created": "Created quests"
     }
   },
   "footer": {
@@ -2056,9 +2092,9 @@
             "title": "Liquidity mining",
             "subtitle": "Providing liquidity to pools to receive rewards based on your amount of liquidity in the pool."
           },
-          "crosschain": {
-            "title": "Crosschain",
-            "subtitle": "Most secure and fast way to bring crosschain assets between WorkNet, ETH and BSC."
+          "bridge": {
+            "title": "Bridge",
+            "subtitle": "Most secure and fast way to bring cross-chain assets between WorkNet, ETH and BSC."
           },
           "staking": {
             "title": "Staking",

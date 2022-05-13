@@ -1,16 +1,17 @@
 <template>
   <ctm-modal-box
     class="deposit"
-    :title="$t('modals.titles.deposit')"
+    :title="$tc('modals.titles.deposit')"
   >
-    <div class="deposit__content content">
-      <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
-        tag="div"
-      >
-        <div class="content__grid">
-          <div class="content__body">
-            <div class="content__checkpoints checkpoints">
+    <validation-observer
+      v-slot="{handleSubmit, validated, passed, invalid}"
+      class="deposit__content content"
+      tag="div"
+    >
+      <div class="content__grid">
+        <div class="content__body">
+          <div class="content__checkpoints checkpoints">
+            <div class="checkpoints__block">
               <label
                 for="checkpoints__main"
                 class="checkpoints__label"
@@ -42,98 +43,114 @@
                 </div>
               </div>
             </div>
-            <div class="content__field">
-              <div class="content__label">
-                {{ $t('modals.howMuchEthWouldYouLikeToLock') }}
-              </div>
-              <base-field
-                v-model="quantity"
-                class="content__input"
-                data-selector="TOKEN-VALUE"
-                placeholder="1000 ETH"
-                rules="required|decimal"
-                :name="$t('modals.quantityField')"
-              />
-            </div>
-            <div class="content__field">
-              <div class="content__label">
-                {{ $t('modals.choosePeriod') }}
-              </div>
-              <base-dd
-                v-model="date"
-                class="grid__drop"
-                data-selector="DATE-DD"
-                :items="dates"
-              />
-            </div>
-            <div class="content__field">
-              <div class="content__text">
-                {{ $t('modals.tipAbout') }}
-              </div>
-            </div>
-          </div>
-          <div class="content__zone zone">
-            <div
-              v-for="(item, i) in abouts"
-              :key="i"
-            >
-              <div class="zone__title">
-                {{ item.title }}
-              </div>
-              <div class="zone__subtitle">
-                {{ item.subtitle }}
+            <div class="checkpoints__block">
+              <label
+                for="checkpoints__field"
+                class="checkpoints__label"
+              >
+                {{ $t('crediting.chooseSource') }}
+              </label>
+              <div
+                id="checkpoints__field"
+                class="checkpoints__main"
+              >
+                <div
+                  v-for="(item, i) in fundsSource"
+                  :key="i"
+                  class="checkpoints__array"
+                >
+                  <input
+                    :id="item.name"
+                    v-model="selFundID"
+                    type="radio"
+                    class="checkpoints__item"
+                    :value="item.id"
+                  >
+                  <label
+                    class="checkpoints__name"
+                    :for="item.name"
+                  >
+                    {{ item.name }}
+                  </label>
+                </div>
               </div>
             </div>
           </div>
+          <div class="content__field">
+            <div class="content__label">
+              {{ $t('modals.howMuchTokensWouldYouLikeToLock', { token: checkpoints[selCurrencyID - 1].name }) }}
+            </div>
+            <base-field
+              v-model="quantity"
+              class="content__input"
+              data-selector="TOKEN-VALUE"
+              :placeholder="`100 ${checkpoints[selCurrencyID - 1].name}`"
+              rules="required|decimal"
+              :name="$tc('modals.quantityField')"
+            />
+          </div>
+          <div class="content__field">
+            <div class="content__label">
+              {{ $t('modals.choosePeriod') }}
+            </div>
+            <base-dd
+              v-model="date"
+              type="gray"
+              class="grid__drop"
+              data-selector="DATE-DD"
+              :items="dates"
+            />
+          </div>
+          <div class="content__field">
+            <div class="content__text">
+              {{ $t('modals.tipAbout') }}
+            </div>
+          </div>
         </div>
-        <div class="content__buttons buttons">
-          <base-btn
-            class="buttons__button"
-            mode="outline"
-            data-selector="CANCEL"
-            @click="hide"
-          >
-            {{ $t('meta.btns.cancel') }}
-          </base-btn>
-          <base-btn
-            class="buttons__button"
-            data-selector="SUBMIT"
-            :disabled="!validated || !passed || invalid"
-            @click="handleSubmit(openConfirmDetailsModal)"
-          >
-            {{ $t('meta.btns.submit') }}
-          </base-btn>
-        </div>
-      </validation-observer>
-    </div>
+      </div>
+      <div class="content__buttons buttons">
+        <base-btn
+          class="buttons__button"
+          mode="outline"
+          data-selector="CANCEL"
+          @click="CloseModal"
+        >
+          {{ $t('meta.btns.cancel') }}
+        </base-btn>
+        <base-btn
+          class="buttons__button"
+          data-selector="SUBMIT"
+          :disabled="!validated || !passed || invalid"
+          @click="handleSubmit(openConfirmDetailsModal)"
+        >
+          {{ $t('meta.btns.submit') }}
+        </base-btn>
+      </div>
+    </validation-observer>
   </ctm-modal-box>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalTakeCreditingDeposit',
   data() {
     return {
       selCurrencyID: 1,
+      selFundID: 1,
       quantity: '',
-      generate: '',
       date: 0,
+      datesNumber: [7, 14, 30, 90, 180],
       checkpoints: [
-        {
-          name: this.$t('meta.coins.bnb'),
-          id: 1,
-        },
-        {
-          name: this.$t('meta.coins.eth'),
-          id: 2,
-        },
-        {
-          name: this.$t('meta.coins.wqt'),
-          id: 3,
-        },
+        { name: this.$t('meta.coins.bnb'), id: 1 },
+        { name: this.$t('meta.coins.eth'), id: 2 },
+        { name: this.$t('meta.coins.wqt'), id: 3 },
+      ],
+      fundsSource: [
+        { name: this.$t('footer.DeFi.lending'), id: 1 },
+        { name: this.$t('footer.DeFi.retirement'), id: 2 },
+        { name: this.$t('ui.menu.savings.title'), id: 3 },
       ],
       abouts: [
         {
@@ -170,7 +187,6 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
-      userRole: 'user/getUserRole',
     }),
     dates() {
       return [
@@ -183,34 +199,20 @@ export default {
     },
   },
   methods: {
-    hide() {
+    async openConfirmDetailsModal() {
+      const { submit } = this.options;
+      const {
+        fundsSource, selFundID, checkpoints, selCurrencyID, datesNumber, date, quantity,
+      } = this;
       this.CloseModal();
-    },
-    openConfirmDetailsModal() {
-      const receiptData = [
-        {
-          title: this.$t('modals.currencyDetails'),
-          subtitle: this.$t('meta.coins.eth'),
-        },
-        {
-          title: this.$t('modals.depositing'),
-          subtitle: this.$tc('meta.coins.count.ETHCount', 1),
-        },
-        {
-          title: this.$t('modals.generatingDetails'),
-          subtitle: this.$tc('meta.coins.count.WUSDCount', 1000),
-        },
-      ];
-      const dataForStatusModal = {
-        img: require('~/assets/img/ui/transactionSend.svg'),
-        title: this.$t('modals.depositIsOpened'),
-        subtitle: '',
-        path: 'crediting/1',
-      };
-      this.ShowModal({
-        key: modals.confirmDetails,
-        receiptData,
-        dataForStatusModal,
+      await submit({
+        fundsSource,
+        selFundID,
+        checkpoints,
+        selCurrencyID,
+        datesNumber,
+        date,
+        quantity,
       });
     },
   },
@@ -219,7 +221,6 @@ export default {
 
 <style lang="scss" scoped>
 .deposit {
-  max-width: 943px !important;
   height: auto !important;
   padding: 0!important;
   &__content{
@@ -252,17 +253,19 @@ export default {
   }
   &__grid{
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: auto;
     gap: 25px;
   }
   &__checkpoints {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
     margin-bottom: 25px;
     &_label {
       margin-bottom: 10px;
     }
   }
   &__zone {
-    background-color: #F7F8FA;
+    background-color: $black0;
     border-radius: 5px;
     margin-top: 15px;
     padding: 0 20px 20px 20px;
@@ -285,7 +288,7 @@ export default {
   }
   &__array {
     display: grid;
-    grid-template-columns: repeat(2, auto);
+    grid-template-columns: auto 1fr;
     gap: 10px;
     > label {
       margin: unset;
@@ -311,6 +314,15 @@ export default {
     color: #7C838D;
     font-weight: 500;
     font-size: 14px;
+  }
+}
+
+@include _991 {
+  .content {
+    &__checkpoints {
+      grid-template-columns: auto;
+      grid-gap: 20px;
+    }
   }
 }
 

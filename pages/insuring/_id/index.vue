@@ -615,7 +615,7 @@ export default {
       &_gray {
         @extend .user;
         grid-template-columns: 25px auto;
-        background-color: #F7F8FA;
+        background-color: $black0;
         border-radius: 5px;
         height: 42px;
         width: 100%;
@@ -643,7 +643,7 @@ export default {
 
         .message {
           padding: 13px;
-          background-color: #F7F8FA;
+          background-color: $black0;
           border-radius: 5px;
 
           &__content {
@@ -701,7 +701,7 @@ export default {
 
       &__footer-bar {
         border-radius: 6px;
-        background-color: #F7F8FA;
+        background-color: $black0;
         height: 46px;
         padding: 11px 20px 11px 15px;
         display: grid;
@@ -712,7 +712,7 @@ export default {
         .message-inp {
           padding: 0;
           border: 0;
-          background-color: #F7F8FA;
+          background-color: $black0;
           width: 100%;
         }
 
@@ -850,7 +850,7 @@ export default {
       }
 
       &_gray {
-        background-color: #F7F8FA;
+        background-color: $black0;
         padding: 15px;
         border-radius: 5px;
       }

@@ -371,6 +371,7 @@ export default {
       await this.$store.dispatch('user/getAnotherUserData', this.userId);
       this.userData = this.anotherUserData;
     } else {
+      await this.$store.dispatch('user/getMainData');
       this.userData = this.mainUser;
     }
     await this.changeQuestsData(2);
@@ -409,8 +410,8 @@ export default {
     },
     async changeQuestsData(limit) {
       const payload = {
-        userId: this.userId,
         role: this.userData.role,
+        userId: this.userData.id,
         query: {
           limit: limit || this.perPagerQuests,
           offset: (this.pageQuests - 1) * this.perPagerQuests,

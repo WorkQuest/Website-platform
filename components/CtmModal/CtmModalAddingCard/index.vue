@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="card"
-    :title="$t('modals.titles.addingCard')"
+    :title="$tc('modals.titles.addingCard')"
   >
     <div class="card__content content">
       <ValidationObserver
@@ -19,7 +19,7 @@
             placeholder="1234 1234 1234 1234"
             rules="required|numberOfCard"
             data-selector="CARD-NUMBER"
-            :name="$t('modals.creditCardNumber')"
+            :name="$tc('modals.creditCardNumber')"
           />
         </div>
         <div class="content__input input">
@@ -32,7 +32,7 @@
             placeholder="John Doe"
             data-selector="CARDHOLDER-NAME"
             rules="required|alpha_spaces"
-            :name="$t('modals.cardHolderField')"
+            :name="$tc('modals.cardHolderField')"
           />
         </div>
         <div class="content__grid grid">
@@ -46,7 +46,7 @@
               placeholder="02/24"
               rules="required|date"
               data-selector="CARD-DATE"
-              :name="$t('modals.dateName')"
+              :name="$tc('modals.dateName')"
             />
           </div>
           <div class="grid__field">
@@ -59,7 +59,7 @@
               placeholder="242"
               data-selector="CARD-CVV"
               rules="required|cvv"
-              :name="$t('modals.cvv')"
+              :name="$tc('modals.cvv')"
             />
           </div>
         </div>
@@ -68,7 +68,7 @@
             mode="outline"
             data-selector="CANCEL"
             class="buttons__action"
-            @click="hide"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -106,9 +106,6 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     showCardHasBeenAddedModal() {
       if (this.options.branch === 'payment') {
         this.ShowModal({

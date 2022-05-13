@@ -1,4 +1,6 @@
 // eslint-disable-next-line import/prefer-default-export
+export const isProd = process.env.PROD === 'true';
+
 export const ChainsId = {
   ETH_MAIN: '0x1',
   ETH_TEST: '0x4',
@@ -22,61 +24,19 @@ export const ChainsIdByChainNumber = {
   20220112: '0x13488D0',
 };
 
-export const NativeTokenSymbolByChainId = {
-  [+ChainsId.ETH_MAIN]: 'ETH',
-  [+ChainsId.ETH_TEST]: 'ETH',
-  [+ChainsId.BSC_MAIN]: 'BNB',
-  [+ChainsId.BSC_TEST]: 'BNB',
-};
-
 export const Chains = {
   ETHEREUM: 'ETH',
   BINANCE: 'BSC',
-  BNB: 'BNB', // Same as bsc for bridge
   WORKNET: 'WORKNET',
 };
 
 export const StakingTypes = {
   WQT: 'WQT',
   WUSD: 'WUSD',
-  MINING: 'MINING',
-  CROSS_CHAIN: 'CROSS_CHAIN',
 };
 
-export const QuestStatuses = {
-  Rejected: -1,
-  Created: 0,
-  Active: 1,
-  Closed: 2,
-  Dispute: 3,
-  WaitWorker: 4,
-  WaitConfirm: 5,
-  Done: 6,
-};
 export const SumSubStatuses = { NOT_VERIFIED: 0, VERIFIED: 1 };
-export const InfoModeEmployer = {
-  Rejected: -1,
-  Created: 0,
-  Active: 1,
-  Closed: 2,
-  Dispute: 3,
-  WaitWorker: 4,
-  WaitConfirm: 5,
-  Done: 6,
-};
-export const InfoModeWorker = {
-  Created: 0,
-  ADChat: 1,
-  Active: 2,
-  Rejected: 3,
-  WaitWorker: 4,
-  WaitConfirm: 5,
-  Dispute: 7,
-  Closed: 8,
-  Done: 9,
-  Responded: 10,
-  Invited: 11,
-};
+
 export const DisputeStatues = {
   PENDING: 0,
   IN_PROGRESS: 1,
@@ -118,19 +78,29 @@ export const Ratings = Object.freeze({
   RELIABLE: 'reliable',
   VERIFIED: 'verified',
   NO_STATUS: 'noStatus',
+  ALL_STATUSES: 'AllStatuses',
 });
 export const UserRating = Object.freeze({
-  0: Ratings.TOP_RANKED,
-  1: Ratings.RELIABLE,
+  8: Ratings.TOP_RANKED,
+  4: Ratings.RELIABLE,
   2: Ratings.VERIFIED,
-  3: Ratings.NO_STATUS,
+  1: Ratings.NO_STATUS,
+  15: Ratings.ALL_STATUSES,
 });
 export const RatingFilter = [
-  { key: 'all', value: 3 },
-  { key: 'topRanked', value: 0 },
-  { key: 'reliable', value: 1 },
+  { key: 'all', value: 15 },
+  { key: 'topRanked', value: 8 },
+  { key: 'reliable', value: 4 },
   { key: 'verified', value: 2 },
+  { key: 'noStatus', value: 1 },
 ];
+export const RatingStatus = {
+  NoStatus: 1,
+  Verified: 2,
+  Reliable: 4,
+  TopRanked: 8,
+  AllStatuses: 15,
+};
 
 export const MessageAction = {
   GROUP_CHAT_CREATE: 'groupChatCreate',
@@ -167,6 +137,7 @@ export const NotificationAction = {
   COMMENT_LIKED: 'commentLiked',
   NEW_COMMENT_IN_DISCUSSION: 'newCommentInDiscussion',
   NEW_DISCUSSION_LIKE: 'newDiscussionLike',
+  QUEST_STATUS_UPDATED: 'QuestStatusUpdated',
 };
 
 export const notificationCommonFilterActions = Object.freeze([
@@ -225,8 +196,9 @@ export const Path = {
   INSURING: '/insuring',
   SAVINGS: '/savings',
   CREDITING: '/crediting',
+  LENDING: '/lending',
   MINING: '/mining',
-  CROSSCHAIN: '/crosschain',
+  BRIDGE: '/bridge',
   SETTINGS: '/settings',
   DISPUTES: '/disputes',
   WORKERS: '/workers',
@@ -235,6 +207,7 @@ export const Path = {
   PROFILE: '/profile',
   ROLE: '/role',
   QUESTS: '/quests',
+  MESSAGES: '/messages',
   EDIT_QUEST: '/edit-quest',
   COLLATERAL: '/collateral',
   WIKI: '/wiki',
@@ -261,13 +234,20 @@ export const UserStatuses = Object.freeze({
   NeedSetRole: 2,
 });
 
+// TODO need to change uses in project of ETH and BNB on WETH and WBNB
 export const TokenSymbols = Object.freeze({
   WQT: 'WQT',
   WUSD: 'WUSD',
+  BNB: 'BNB',
+  ETH: 'ETH',
+  WBNB: 'WBNB',
+  WETH: 'WETH',
 });
 
 export const TokenSymbolByContract = Object.freeze({
-  [process.env.WORKNET_WQT_TOKEN.toLowerCase()]: TokenSymbols.WQT,
+  [process.env.WORKNET_WETH_TOKEN.toLowerCase()]: TokenSymbols.ETH,
+  [process.env.WORKNET_WBNB_TOKEN.toLowerCase()]: TokenSymbols.BNB,
+  [process.env.WORKNET_WUSD_TOKEN.toLowerCase()]: TokenSymbols.WUSD,
 });
 
 export const WalletTables = Object.freeze({
@@ -323,9 +303,9 @@ export const NetworksData = {
 };
 
 export const tokenMap = {
-  BNB: process.env.WORKNET_WBNB_TOKEN,
-  ETH: process.env.WORKNET_WETH_TOKEN,
-  WQT: process.env.WORKNET_WQT_TOKEN,
+  [TokenSymbols.BNB]: process.env.WORKNET_WBNB_TOKEN,
+  [TokenSymbols.ETH]: process.env.WORKNET_WETH_TOKEN,
+  [TokenSymbols.WUSD]: process.env.WORKNET_WUSD_TOKEN,
 };
 
 export const PensionHistoryMethods = Object.freeze({

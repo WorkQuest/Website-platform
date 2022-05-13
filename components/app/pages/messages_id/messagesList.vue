@@ -388,7 +388,7 @@ export default {
     goToCurrChat(message) {
       if (this.chatId !== 'starred') return;
       localStorage.setItem('selStarredMessageNumber', JSON.stringify(message.number));
-      this.$router.push(`/messages/${message.chatId}`);
+      this.$router.push(`${Path.MESSAGES}/${message.chatId}`);
     },
     selFile(ev, files, fileUrl) {
       ev.preventDefault();
@@ -498,7 +498,7 @@ export default {
     cursor: pointer;
 
     &:hover {
-      background-color: #F7F8FA;
+      background-color: $black0;
       opacity: .8;
       box-shadow: 0 0 10px 2px rgba(34, 60, 80, 0.3);
     }
@@ -601,7 +601,7 @@ export default {
     gap: 10px;
     padding: 15px;
     border-radius: 6px;
-    background-color: #F7F8FA;
+    background-color: $black0;
 
     &_bl {
       background-color: #0083C7;

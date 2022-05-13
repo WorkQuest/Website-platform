@@ -5,4 +5,5 @@ export default {
   getLoaderProgress: (state) => state.loaderProgress,
   getProjects: (state) => state.projects,
   getIsLoaderBackgroundHider: (state) => state.isLoaderBackgroundHider,
+  notificationsConnectionStatus: (state) => state.connections,
 };

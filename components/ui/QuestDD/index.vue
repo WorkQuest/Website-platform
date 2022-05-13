@@ -20,6 +20,7 @@
         <div class="menu menu__items">
           <div class="menu__container">
             <div
+              v-if="canRaiseViews"
               class="menu__item"
               :data-selector="`ACTION-BTN-TO-RAISING-VIEWS-${questIndex}`"
               @click="toRaisingViews"
@@ -38,6 +39,7 @@
               </div>
             </div>
             <div
+              v-if="canEditOrDelete"
               class="menu__item"
               :data-selector="`ACTION-BTN-TO-EDIT-QUEST-${questIndex}`"
               @click="toEditQuest"
@@ -47,6 +49,7 @@
               </div>
             </div>
             <div
+              v-if="canEditOrDelete"
               class="menu__item"
               :data-selector="`ACTION-BTN-DELETE-QUEST-${questIndex}`"
               @click="showAreYouSureDeleteQuestModal"
@@ -65,12 +68,14 @@
 <script>
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import { QuestStatuses, Path } from '~/utils/enums';
+import { Path } from '~/utils/enums';
+import { QuestStatuses } from '~/utils/сonstants/quests';
 import modals from '~/store/modals/modals';
 
 export default {
   name: 'QuestDD',
   directives: { ClickOutside },
+  QuestStatuses,
   props: {
     mode: {
       type: String,
@@ -96,6 +101,12 @@ export default {
       userRole: 'user/getUserRole',
       questData: 'quests/getQuest',
     }),
+    canRaiseViews() {
+      return [QuestStatuses.Created, QuestStatuses.WaitWorkerOnAssign].includes(this.item.status || this.questData.status);
+    },
+    canEditOrDelete() {
+      return this.item ? this.item.status === QuestStatuses.Created : this.questData.status === QuestStatuses.Created;
+    },
   },
   methods: {
     toEditQuest() {
@@ -135,18 +146,11 @@ export default {
       }
       this.ShowModal({
         key: modals.securityCheck,
-        actionMethod: async () => this.ShowModal({
-          key: modals.areYouSure,
-          title: this.$t('modals.sureDeleteNotification'),
-          okBtnTitle: this.$t('meta.btns.delete'),
-          okBtnFunc: () => this.deleteQuest(),
-        }),
+        actionMethod: () => {
+          this.CloseModal();
+          this.DeleteQuest(this.item);
+        },
       });
-    },
-    deleteQuest() {
-      this.CloseModal();
-
-      this.DeleteQuest(this.item);
     },
     toRaisingViews() {
       const { status, id } = this.item;

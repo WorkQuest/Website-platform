@@ -7,14 +7,14 @@ import {
   error,
   fetchContractData,
 } from '~/utils/web3';
-import * as abi from '~/abi/abi';
+import { WQReferral } from '~/abi/index';
 
 export default {
   async fetchRewardBalance({ commit }, userWalletAddress) {
     try {
       const res = await fetchContractData(
         'getRewards',
-        abi.WQReferral,
+        WQReferral,
         process.env.WORKNET_REFERRAL,
         [userWalletAddress],
         GetWalletProvider(),
@@ -29,7 +29,7 @@ export default {
   async claimReferralReward(_, userAddress) {
     try {
       const payload = {
-        abi: abi.WQReferral,
+        abi: WQReferral,
         address: process.env.WORKNET_REFERRAL,
         userAddress,
       };
@@ -72,7 +72,12 @@ export default {
   },
   async fetchCreatedReferralList({ commit }) {
     try {
-      const { data: { result, ok } } = await this.$axios.get('v1/user/me/referral-program/referral/signature/created-referrals');
+      const {
+        data: {
+          result,
+          ok,
+        },
+      } = await this.$axios.get('v1/user/me/referral-program/referral/signature/created-referrals');
 
       if (result) {
         const signature = {};
@@ -92,7 +97,7 @@ export default {
     const addresses = getters.getCreatedReferralList;
     try {
       const payload = {
-        abi: abi.WQReferral,
+        abi: WQReferral,
         address: process.env.WORKNET_REFERRAL,
         data: [signature.v, signature.r, signature.s, addresses],
         userAddress,

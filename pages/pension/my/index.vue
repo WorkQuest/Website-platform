@@ -38,7 +38,7 @@
                 {{ $t('pension.currentPercentFromAQuest') }}
               </div>
               <div class="info-block__tokens">
-                {{ $t('meta.units.percentsCount', { count: getFeePercent() }) }}
+                {{ $t('meta.units.percentsCount', {count: getFeePercent()}) }}
               </div>
               <base-btn
                 class="btn_bl"
@@ -51,7 +51,7 @@
             <div class="info-block__third_rate">
               <div class="info-block__small">
                 <div class="info-block__perc">
-                  + {{ $tc('meta.units.percentsCount', 6 ) }}
+                  + {{ $tc('meta.units.percentsCount', 6) }}
                 </div>
                 <div class="info-block__period">
                   {{ $t('pension.year') }}
@@ -93,7 +93,7 @@
               <div
                 class="info-block__subtitle_red"
               >
-                {{ $t('pension.days', { count: 0 }) }}
+                {{ $t('pension.days', {count: 0}) }}
               </div>
             </div>
             <div class="btn-group">
@@ -205,10 +205,10 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { WQPensionFund } from '~/abi/abi';
+import { WQPensionFund } from '~/abi/index';
 import modals from '~/store/modals/modals';
 import { getStyledAmount, getWalletAddress } from '~/utils/wallet';
-import { PensionHistoryMethods, TokenSymbols } from '~/utils/enums';
+import { PensionHistoryMethods, TokenSymbols, ExplorerUrl } from '~/utils/enums';
 
 export default {
   name: 'MyPension',
@@ -372,10 +372,10 @@ export default {
       return '';
     },
     getExplorerRef(hash) {
-      if (process.env.PROD === 'true') {
-        return `https://dev-explorer.workquest.co/tx/${hash ? hash.toLowerCase() : ''}`;
+      if (this.IsProd) {
+        return `${ExplorerUrl}/tx/${hash ? hash.toLowerCase() : ''}`;
       }
-      return `https://dev-explorer.workquest.co/tx/${hash ? hash.toLowerCase() : ''}`;
+      return `${ExplorerUrl}/tx/${hash ? hash.toLowerCase() : ''}`;
     },
     checkIsDeadLine() {
       if (!this.pensionWallet) {
@@ -447,7 +447,7 @@ export default {
         callback: async () => {
           const [txFee] = await Promise.all([
             this.$store.dispatch('wallet/getContractFeeData', {
-              _abi: WQPensionFund,
+              abi: WQPensionFund,
               contractAddress: process.env.WORKNET_PENSION_FUND,
               method: 'extendLockTime',
             }),
@@ -536,6 +536,7 @@ export default {
       font-size: 45px;
       line-height: 110%;
       margin: 0 0 24px;
+
       &_sub {
         @extend .title;
         font-size: 16px;
@@ -688,7 +689,7 @@ export default {
       &__faq {
         border-radius: 5px;
         padding: 20px 60px 20px 20px;
-        background-color: #F7F8FA;
+        background-color: $black0;
         text-align: left;
         position: relative;
         transition: 300ms;
@@ -703,7 +704,7 @@ export default {
       }
 
       &__small {
-        background-color: #F7F8FA;
+        background-color: $black0;
         display: grid;
         grid-template-rows: repeat(2, 1fr);
         width: 115px;
@@ -883,8 +884,10 @@ export default {
   &__table {
     border-radius: 6px !important;
     overflow: hidden;
+
     .table {
       margin: 20px 0 0 0;
+
       &:first-child {
         border-radius: 0 !important;
       }
@@ -916,6 +919,7 @@ export default {
 
       .table {
         width: 1024px;
+
         & > .table {
           border-radius: 0 !important;
         }
@@ -941,6 +945,7 @@ export default {
         font-size: 38px;
         margin-bottom: 15px;
         width: 100%;
+
         &_sub {
           font-size: 16px;
           max-width: 400px;
@@ -949,6 +954,7 @@ export default {
     }
     &__content {
       grid-template-rows: max-content max-content max-content;
+
       .info-block {
         &__triple {
           grid-template-rows: repeat(2, 1fr);
@@ -959,6 +965,7 @@ export default {
             grid-column-end: 3;
           }
         }
+
         &__grid {
           grid-template-rows: 1fr auto auto;
           grid-template-columns: repeat(2, 1fr);
@@ -980,6 +987,7 @@ export default {
     &__header {
       .title {
         font-size: 32px;
+
         &_sub {
           font-size: 16px;
         }
@@ -991,6 +999,7 @@ export default {
           grid-template-columns: 1fr;
           grid-template-rows: repeat(3, 1fr);
         }
+
         &__triple {
           grid-template-rows: repeat(3, 1fr);
           grid-template-columns: unset;
@@ -1000,16 +1009,20 @@ export default {
             grid-column-end: unset;
           }
         }
+
         &__grid {
           grid-template-columns: repeat(2, auto);
+
           .text-cont {
             grid-column-start: 1;
             grid-column-end: 3;
           }
+
           .btn-group {
             &_exp {
               grid-template-rows: repeat(2, 1fr);
               grid-template-columns: repeat(2, 1fr);
+
               .btn {
                 &:last-child {
                   grid-row-start: 1;
@@ -1024,6 +1037,7 @@ export default {
     }
   }
 }
+
 .empty-info {
   & .absence {
     padding-bottom: 10px !important;

@@ -1,8 +1,11 @@
 import Vue from 'vue';
 import moment from 'moment';
 import VueTippy, { TippyComponent } from 'vue-tippy';
+import converter from 'bech32-converting';
 import modals from '~/store/modals/modals';
-import { QuestStatuses } from '~/utils/enums';
+import { TokenSymbols } from '~/utils/enums';
+import { QuestMethods, QuestStatuses } from '~/utils/сonstants/quests';
+import { images } from '~/utils/images';
 
 Vue.use(VueTippy);
 Vue.component('tippy', TippyComponent);
@@ -10,6 +13,13 @@ Vue.component('tippy', TippyComponent);
 Vue.mixin({
 
   methods: {
+    convertToBech32(prefix, address) {
+      return converter(prefix).toBech32(address);
+    },
+    convertToHex(prefix, address) {
+      if (address.startsWith(prefix)) return converter(prefix).toHex(address);
+      return address;
+    },
     async uploadFiles(files) {
       if (!files.length) return [];
       const fetchData = [];
@@ -18,34 +28,24 @@ Vue.mixin({
       // eslint-disable-next-line no-restricted-syntax
       for (const item of files) {
         if (item.mediaId) medias.push(item.mediaId);
-        else fetchData.push(this.$store.dispatch('user/getUploadFileLink', { contentType: item.file.type }));
+        else fetchData.push(this.$store.dispatch('user/getUploadFileLink', { contentType: item.file?.type }));
       }
       if (!fetchData.length) return medias;
       const urls = await Promise.all(fetchData);
-      let urlId = 0;
       for (let i = 0; i < files.length; i += 1) {
-        // eslint-disable-next-line no-continue
-        if (files[i].mediaId) continue;
-        const { file } = this.files[i];
-        medias.push(urls[urlId].mediaId);
-        fetchUrlsData.push(this.$store.dispatch('user/uploadFile', {
-          url: urls[urlId].url,
-          data: file,
-          contentType: file.type,
-        }));
-        urlId += 1;
+        const { file } = files[i];
+        const { mediaId, url } = urls[i];
+        medias.push(mediaId);
+        if (file) {
+          fetchUrlsData.push(this.$store.dispatch('user/uploadFile', {
+            url,
+            data: file,
+            contentType: file.type,
+          }));
+        }
       }
       await Promise.all(fetchUrlsData);
       return medias;
-    },
-    async signerUser(callback) {
-      if (this.$store.getters['user/hasUserAddress']) {
-        callback();
-      } else {
-        const r = await this.$store.dispatch('user/checkWallet');
-        // eslint-disable-next-line no-unused-expressions
-        r.ok && callback();
-      }
     },
     ShowModal(payload) {
       this.$store.dispatch('modals/show', {
@@ -119,13 +119,6 @@ Vue.mixin({
       }
       return '-';
     },
-    Require(img) {
-      // eslint-disable-next-line global-require
-      // return require(`assets/img/${img}`);
-    },
-    NumberFormat(value, fixed) {
-      return (+value && new Intl.NumberFormat('ru', { maximumFractionDigits: fixed || 8 }).format(value || 0)) || 0;
-    },
     GetLocation() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(this.FormatPosition);
@@ -146,9 +139,6 @@ Vue.mixin({
       };
       this.$store.dispatch('user/setCurrentPosition', payload);
     },
-    EmptyAvatar() {
-      return require('~/assets/img/app/avatar_empty.png');
-    },
     UserName(firstName, lastName) {
       if (firstName || lastName) return `${firstName || ''} ${lastName || ''}`;
       return this.$t('profile.defaultName');
@@ -163,23 +153,47 @@ Vue.mixin({
       clearTimeout(delayId);
       return setTimeout(func, timeout);
     },
-    async DeleteQuest({ id, status }) {
-      if ([QuestStatuses.Closed, QuestStatuses.Created].includes(status)) {
-        await this.$store.dispatch('quests/deleteQuest', { questId: id });
-
-        const routeName = this.$route.name;
-
-        if (routeName === 'quests-id') {
-          await this.$router.replace('/my');
-        } else if (routeName === 'my' || routeName === 'profile-id') {
-          const payload = JSON.parse(sessionStorage.getItem('questsListFilter'));
-          await this.$store.dispatch('quests/getUserQuests', payload);
+    async DeleteQuest(questData) {
+      const { status, contractAddress } = questData;
+      if (contractAddress && [QuestStatuses.Closed, QuestStatuses.Created].includes(status)) {
+        this.SetLoader(true);
+        const [feeRes] = await Promise.all([
+          this.$store.dispatch('quests/getFeeDataJobMethod', {
+            method: QuestMethods.CancelJob,
+            contractAddress,
+          }),
+          this.$store.dispatch('wallet/getBalance'),
+        ]);
+        this.SetLoader(false);
+        if (!feeRes.ok) {
+          this.ShowToast(feeRes.msg);
+          return;
         }
-
-        await this.$store.dispatch('main/showToast', {
-          title: this.$t('toasts.questDeleted'),
-          variant: 'success',
-          text: this.$t('toasts.questDeleted'),
+        this.ShowModal({
+          key: modals.transactionReceipt,
+          title: this.$t('quests.deleteQuest'),
+          fields: {
+            from: { name: this.$t('meta.fromBig'), value: this.$store.getters['user/getUserWalletAddress'] },
+            to: { name: this.$t('meta.toBig'), value: contractAddress },
+            fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
+          },
+          submitMethod: async () => {
+            this.SetLoader(true);
+            const trxRes = await this.$store.dispatch('quests/cancelJob', contractAddress);
+            this.SetLoader(false);
+            if (!trxRes.ok) {
+              this.ShowToast(trxRes.msg);
+              return;
+            }
+            const routeName = this.$route.name;
+            if (routeName === 'quests-id') {
+              await this.$router.replace('/my');
+            } else if (routeName === 'my' || routeName === 'profile-id') {
+              const payload = JSON.parse(sessionStorage.getItem('questsListFilter'));
+              await this.$store.dispatch('quests/getUserQuests', payload);
+            }
+            this.ShowToast(this.$t('toasts.questDeleted'), this.$t('toasts.questDeleted'));
+          },
         });
       } else {
         await this.$store.dispatch('main/showToast', {
@@ -198,7 +212,9 @@ Vue.mixin({
       } else if (isDotFirst) {
         const memo = valueWithoutWords.split('');
         memo.unshift('0');
-        if (memo[memo.length - 1] !== '%') { memo.push('%'); }
+        if (memo[memo.length - 1] !== '%') {
+          memo.push('%');
+        }
         value = memo.join('');
       } else {
         value = `${valueWithoutWords}%`;
@@ -226,12 +242,54 @@ Vue.mixin({
     DeclOfNum(n) {
       n = Math.abs(n) % 100;
       const n1 = n % 10;
-      if (n > 10 && n < 20) { return 2; }
-      if (n1 > 1 && n1 < 5) { return 1; }
-      if (n1 === 1 && this.$i18n.locale === 'ru') { return 0; }
+      if (n > 10 && n < 20) {
+        return 2;
+      }
+      if (n1 > 1 && n1 < 5) {
+        return 1;
+      }
+      if (n1 === 1 && this.$i18n.locale === 'ru') {
+        return 0;
+      }
       return 2;
     },
-
     ScrollToTop: () => window.scrollTo(0, 0),
+    IsProd: () => process.env.PROD === 'true',
+    ShowModalSuccess({
+      title, subtitle, img, path,
+    }) {
+      this.ShowModal({
+        key: modals.status,
+        img: img || images.SUCCESS,
+        title: title || this.$t('meta.success'),
+        subtitle,
+        path,
+      });
+    },
+    ShowModalFail({
+      title, subtitle, img, path,
+    }) {
+      this.ShowModal({
+        key: modals.status,
+        img: img || images.WARNING,
+        title: title || this.$t('meta.fail'),
+        subtitle,
+        path,
+      });
+    },
+    checkIfMobile() {
+      const toMatch = [
+        /Android/i,
+        /webOS/i,
+        /iPhone/i,
+        /iPad/i,
+        /iPod/i,
+        /BlackBerry/i,
+        /Windows Phone/i,
+        /Opera Mini/i,
+      ];
+
+      return toMatch.some((toMatchItem) => navigator.userAgent.match(toMatchItem));
+    },
   },
 });

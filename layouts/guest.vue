@@ -1,5 +1,8 @@
 <template>
-  <div class="primary">
+  <div
+    ref="templateScroll"
+    class="primary"
+  >
     <div class="primary__template template">
       <div class="template__content">
         <div
@@ -99,7 +102,9 @@ export default {
   },
   computed: {
     ...mapGetters({
+      isAuth: 'user/isAuth',
       isLoading: 'main/getIsLoading',
+      connections: 'main/notificationsConnectionStatus',
     }),
     locales() {
       return this.$i18n.locales.map((item) => ({
@@ -114,7 +119,8 @@ export default {
       this.closeLocale();
     },
   },
-  created() {
+  async created() {
+    if (!this.isAuth && !this.connections.notifsConnection) await this.$wsNotifs.connect(null);
     window.addEventListener('resize', this.userWindowChange);
   },
   destroyed() {
@@ -162,7 +168,7 @@ export default {
 }
 .template {
   min-height: 100vh;
-  background: #F7F8FA;
+  background: $black0;
   &__content {
     display: grid;
     grid-template-rows: 72px 1fr auto;
@@ -235,7 +241,7 @@ export default {
     align-items: center;
   }
   &__btn {
-    min-width: 163px;
+    min-width: 143px;
   }
   &__logo {
     display: grid;
@@ -302,6 +308,7 @@ export default {
     }
   }
 }
+
 @include _991 {
   .template {
     &__content {
@@ -309,8 +316,12 @@ export default {
     }
   }
 }
+
 @include _575 {
   .header {
+    &__body {
+      margin: 0 10px;
+    }
     &__logo {
       span {
         display: none;
@@ -321,6 +332,19 @@ export default {
     }
     &__right {
       grid-gap: 10px;
+    }
+  }
+}
+
+@include _350 {
+  .header {
+    &__btn {
+      min-width: 130px;
+    }
+    &__button {
+      &_locale {
+        width: 55px;
+      }
     }
   }
 }

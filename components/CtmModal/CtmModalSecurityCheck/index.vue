@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="check"
-    :title="$t('modals.titles.securityCheckBig')"
+    :title="$tc('modals.titles.securityCheckBig')"
   >
     <div class="check__content">
       <validation-observer
@@ -19,9 +19,10 @@
             v-model="securityCode"
             data-selector="SECURITY-CODE"
             :placeholder="$t('securityCheck.placeholder')"
-            :name="$t('meta.securityCheckSmall')"
+            :name="$tc('meta.securityCheckSmall')"
             rules="required|alpha_num|length:6"
             class="content__input"
+            @enter="handleSubmit(hide)"
           />
           <div class="content__body">
             {{ $t('meta.googleConfCodeDesc') }}
@@ -61,7 +62,7 @@ export default {
   },
   methods: {
     async hide() {
-      const { actionMethod, action } = this.options;
+      const { actionMethod } = this.options;
       const result = await this.$store.dispatch('user/validateTOTP', { token: this.securityCode });
       if (result) {
         await this.CloseModal();

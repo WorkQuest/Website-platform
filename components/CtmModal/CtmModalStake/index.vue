@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="stake"
-    :title="$t('modals.titles.stake')"
+    :title="$tc('modals.titles.stake')"
   >
     <validation-observer
       v-slot="{handleSubmit, valid}"
@@ -16,8 +16,8 @@
         data-selector="AMOUNT"
         class="content__field"
         type="number"
-        :label="$t('modals.amount')"
-        :name="$t('modals.amount')"
+        :label="$tc('modals.amount')"
+        :name="$tc('modals.amount')"
         :rules="`required|decimal|decimalPlaces:18|is_not:0|max_value:${stakeAmountLimit}|min_value:${minStakeAmount}`"
       >
         <template v-slot:right-absolute>
@@ -47,7 +47,7 @@
         <base-btn
           mode="outline"
           data-selector="CANCEL"
-          @click="hide()"
+          @click="CloseModal"
         >
           {{ $t('meta.btns.cancel') }}
         </base-btn>
@@ -89,12 +89,24 @@ export default {
       stakingPoolsData: 'wallet/getStakingPoolsData',
       stakingUserData: 'wallet/getStakingUserData',
     }),
-    userStakeBalance() { return this.balanceData[TokenSymbols.WUSD].fullBalance; },
-    isStakingStarted() { return this.userInfo.isStakingStarted; },
-    stakingType() { return this.options.stakingType; },
-    userInfo() { return this.stakingUserData[this.stakingType]; },
-    poolData() { return this.stakingPoolsData[this.stakingType]; },
-    minStakeAmount() { return this.stakingPoolsData[this.stakingType].fullMinStake; },
+    userStakeBalance() {
+      return this.balanceData[TokenSymbols.WUSD].fullBalance;
+    },
+    isStakingStarted() {
+      return this.userInfo.isStakingStarted;
+    },
+    stakingType() {
+      return this.options.stakingType;
+    },
+    userInfo() {
+      return this.stakingUserData[this.stakingType];
+    },
+    poolData() {
+      return this.stakingPoolsData[this.stakingType];
+    },
+    minStakeAmount() {
+      return this.stakingPoolsData[this.stakingType].fullMinStake;
+    },
     stakeAmountLimit() {
       const maxStake = this.poolData.fullMaxStake;
       let maxBalance = this.balanceData[this.stakingType].fullBalance;
@@ -105,9 +117,9 @@ export default {
       }
       if (!this.isStakingStarted) return new BigNumber(maxBalance).isLessThan(maxStake) ? maxBalance : maxStake;
       const possible = new BigNumber(maxStake).minus(this.userInfo.fullStaked);
-      if (new BigNumber(possible).isGreaterThan(maxBalance)) {
-        return maxBalance;
-      }
+
+      if (new BigNumber(possible).isGreaterThan(maxBalance)) return maxBalance;
+
       return possible.isLessThan(0) ? possible.toString() : '0';
     },
   },
@@ -116,8 +128,9 @@ export default {
     await this.updateMaxFee();
   },
   methods: {
-    hide() { this.CloseModal(); },
-    maxAmount() { this.amount = this.stakeAmountLimit; },
+    maxAmount() {
+      this.amount = this.stakeAmountLimit;
+    },
     async updateMaxFee() {
       if (this.stakingType !== StakingTypes.WUSD) {
         this.feeForMaxWUSDValue = 0;
@@ -148,8 +161,7 @@ export default {
       const { stakingType, amount, isStakingStarted } = this;
       const isNative = stakingType === StakingTypes.WUSD;
       const days = this.stakeDays[this.daysValue];
-
-      this.hide();
+      this.CloseModal();
 
       // Staking WQT
       if (!isNative) {
@@ -228,9 +240,7 @@ export default {
       if (!txFee.ok) {
         if (txFee.msg.includes('You cannot stake tokens yet')) {
           this.ShowToast(this.$t('staking.cannotStakeYet'), this.$t('meta.btns.stake'));
-        } else {
-          this.ShowToast(this.$t('modals.failed'), this.$t('meta.btns.stake'));
-        }
+        } else this.ShowToast(this.$t('modals.failed'), this.$t('meta.btns.stake'));
         return;
       }
 

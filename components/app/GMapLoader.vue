@@ -3,7 +3,7 @@
     ref="gMap"
     :options="{
       disableDefaultUI: true,
-      minZoom: 1,
+      minZoom: 4,
       maxZoom: 18,
       gestureHandling: isDraggable ? 'auto' : 'none',
       clickableIcons: isDraggable,
@@ -140,7 +140,9 @@ export default {
         });
       }, 500);
     },
-    async onZoomChanged(event) { await this.$store.dispatch('google-map/setNewZoom', event); },
+    async onZoomChanged(event) {
+      await this.$store.dispatch('google-map/setNewZoom', event);
+    },
     async onClusterClick(cluster) {
       const newCenter = cluster.center_.toJSON();
       this.clusterPosition = { ...newCenter };

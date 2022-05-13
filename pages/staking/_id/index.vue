@@ -20,7 +20,7 @@
           </div>
           <div class="link-cont">
             <div class="link-cont__link link-cont__link_gray">
-              {{ poolAddress }}
+              {{ convertToBech32('wq', poolAddress) }}
             </div>
             <button
               type="button"
@@ -584,7 +584,7 @@ export default {
         color: #fff;
 
         &_gray {
-          color: #F7F8FA;
+          color: $black0;
           font-weight: 400;
         }
       }
@@ -651,7 +651,7 @@ export default {
         .info-card {
           display: grid;
           grid-template-rows: repeat(2, 1fr);
-          background-color: #F7F8FA;
+          background-color: $black0;
           height: 104px;
           padding: 20px;
           gap: 10px;

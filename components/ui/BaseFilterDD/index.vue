@@ -14,12 +14,7 @@
       >
         {{ $t('filters.dd.1') }}
         <span
-          v-if="isOpenDD"
-          class="icon-caret_down"
-        />
-        <span
-          v-else
-          class="icon-caret_up"
+          :class="isOpenDD ? 'icon-caret_down' : 'icon-caret_up'"
         />
       </button>
       <transition name="fade">
@@ -347,18 +342,22 @@ export default {
     padding: 0 20px;
     width: 100%;
     max-width: 400px;
-    background: #FFFFFF;
+    background: $white;
     border-radius: 6px;
     justify-items: center;
+    border: 1px solid transparent;
     &_gray {
       background-color: $black0;
+    }
+    &:hover {
+      border: 1px solid $black100;
     }
   }
   &__list {
     @include box;
     width: 400px;
     position: absolute;
-    background: #FFFFFF;
+    background: $white;
     top: calc(100% + 4px);
     display: grid;
     align-items: center;

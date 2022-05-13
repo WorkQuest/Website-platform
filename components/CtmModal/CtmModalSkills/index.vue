@@ -1,8 +1,9 @@
 <template>
   <ctm-modal-box
     class="skills"
-    :title="$t('modals.titles.skills')"
+    :title="$tc('modals.titles.skills')"
   >
+    <!--    TODO: Удалить???-->
     <div class="ctm-modal__content">
       <div class="skills__body">
         <div
@@ -70,7 +71,7 @@
           </base-btn>
           <base-btn
             data-selector="OK"
-            @click="hide()"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.ok') }}
           </base-btn>
@@ -88,18 +89,9 @@ export default {
   data() {
     return {
       typeItems: [
-        {
-          id: 0,
-          title: 'Select 1',
-        },
-        {
-          id: 1,
-          title: 'Select 2',
-        },
-        {
-          id: 2,
-          title: 'Select 3',
-        },
+        { id: 0, title: 'Select 1' },
+        { id: 1, title: 'Select 2' },
+        { id: 2, title: 'Select 3' },
       ],
     };
   },
@@ -113,17 +105,14 @@ export default {
       this.$store.dispatch('ui/deleteTags', tag);
     },
     addTag(item) {
-      // eslint-disable-next-line no-unused-expressions
-      this.tags.includes(item) ? this.deleteTag(item) : this.$store.dispatch('ui/setTags', item);
+      if (this.tags.includes(item)) this.deleteTag(item);
+      this.$store.dispatch('ui/setTags', item);
     },
     isInclude(item) {
       return !!this.tags.includes(item);
     },
     clearTags() {
       this.$store.dispatch('ui/clearTags');
-    },
-    hide() {
-      this.CloseModal();
     },
   },
 };
@@ -169,7 +158,7 @@ export default {
   &__checkbox {
     height: 24px;
     width: 24px;
-    background: #F7F8FA;
+    background: $black0;
     border-radius: 3px;
     &_checked {
       background: $blue url('~assets/img/ui/checked.svg') no-repeat 50% 50%;

@@ -157,15 +157,26 @@ extend('mnemonic', {
   message: 'Incorrect secret phrase',
 });
 
-extend('max_bn', {
+extend('max_value', {
   validate(value, { max }) {
     return {
       required: true,
-      valid: new BigNumber(value).isLessThanOrEqualTo(new BigNumber(max)),
+      valid: new BigNumber(value).isLessThanOrEqualTo(max),
     };
   },
   params: ['max'],
   message: 'Value must be less than or equal {max}',
+});
+
+extend('min_value', {
+  validate(value, { min }) {
+    return {
+      required: true,
+      valid: new BigNumber(value).isGreaterThanOrEqualTo(min),
+    };
+  },
+  params: ['min'],
+  message: 'Value must be greater than or equal {min}',
 });
 
 extend('address', {
@@ -176,6 +187,16 @@ extend('address', {
     };
   },
   message: 'Type correct address',
+});
+extend('addressBech32', {
+  validate(value) {
+    const regex = /wq1[a-z-0-9]{3,41}$/;
+    return {
+      required: true,
+      valid: regex.test(value),
+    };
+  },
+  message: 'Please enter correct {_field_}',
 });
 
 extend('text-title', {

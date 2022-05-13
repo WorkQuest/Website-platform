@@ -370,7 +370,7 @@ export default {
       }
 
       &__small {
-        background-color: #F7F8FA;
+        background-color: $black0;
         display: grid;
         grid-template-rows: repeat(2, 1fr);
         width: 115px;
@@ -467,7 +467,7 @@ export default {
 
     &_last-reward {
       display: grid;
-      background-color: #F7F8FA;
+      background-color: $black0;
       border-radius: 5px;
       height: 50px;
       line-height: 50px;

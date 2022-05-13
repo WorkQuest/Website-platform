@@ -40,7 +40,7 @@
     />
     <base-btn
       class="filters-panel__item-btn item-btn"
-      mode="light"
+      mode="filter"
       data-selector="SHOW-PRICE"
       @click="showPriceSearch"
     >
@@ -51,12 +51,14 @@
         {{ prices.title }}
       </span>
       <template v-slot:right>
-        <span class="item-btn__icon icon icon-caret_down icon_blue" />
+        <span
+          :class="[isPriceModalShowed ? 'icon-caret_up' : 'icon-caret_down', 'item-btn__icon icon  icon_blue']"
+        />
       </template>
     </base-btn>
     <base-btn
       class="filters-panel__item-btn item-btn"
-      mode="light"
+      mode="filter"
       data-selector="TIME-SORT"
       @click="sortByTime"
     >
@@ -95,6 +97,8 @@ export default {
       userRole: 'user/getUserRole',
       selectedPrice: 'quests/getSelectedPriceFilter',
       selectedSpecializations: 'quests/getSelectedSpecializationsFilters',
+      activeModalKey: 'modals/getCurrentModalKey',
+      isModalShowed: 'modals/getIsShow',
     }),
     UserRole() { return UserRole; },
     selectedSpec() {
@@ -121,6 +125,9 @@ export default {
       if (!from && to) return { title: `0 - ${to}`, hasPrice: true };
       if (from && !to) return { title: `> ${from}`, hasPrice: true };
       return { title: this.$t('meta.price'), hasPrice: false };
+    },
+    isPriceModalShowed() {
+      return this.isModalShowed && this.activeModalKey === modals.priceSearch;
     },
   },
   watch: {
@@ -177,12 +184,10 @@ export default {
   &__item, &__item-btn {
     min-width: 180px;
   }
-
 }
 
 .item-btn {
   padding: 0 20px;
-
   &__text {
     margin-right: auto;
 

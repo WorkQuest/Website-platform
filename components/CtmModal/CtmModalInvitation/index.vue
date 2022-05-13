@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.titles.invitation')"
+    :title="$tc('modals.titles.invitation')"
   >
     <div class="ctm-modal__content">
       <validation-observer tag="div">
@@ -10,12 +10,12 @@
             <div class="ctm-modal__user-data">
               <img
                 class="user-data__img"
-                :src="userData.avatar && userData.avatar.url ? userData.avatar.url : EmptyAvatar()"
-                :alt="userData.avatar && userData.avatar.url ? userData.avatar.url : 'avatar_empty'"
+                :src="options.avatar && options.avatar.url ? options.avatar.url : $options.images.EMPTY_AVATAR"
+                alt="avatar"
               >
               <div class="user-data__name">
-                {{ userData.firstName ? userData.firstName : "Nameless worker" }}
-                {{ userData.lastName ? userData.lastName : "" }}
+                {{ options.firstName ? options.firstName : "" }}
+                {{ options.lastName ? options.lastName : "" }}
               </div>
               <item-rating
                 class="user-data__status"
@@ -34,6 +34,7 @@
               class="base-dd_available-quests"
               :items="availableQuests"
               :label="$t('modals.chooseQuest')"
+              :data-selector="`QUEST-${questIndex}`"
             />
           </div>
         </div>
@@ -63,7 +64,7 @@
               class="message__action"
               mode="outline"
               data-selector="CANCEL"
-              @click="hide()"
+              @click="CloseModal"
             >
               {{ $t('meta.btns.cancel') }}
             </base-btn>
@@ -77,9 +78,12 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { Path } from '~/utils/enums';
+import { images } from '~/utils/images';
 
 export default {
   name: 'ModalInvitation',
+  images,
   data() {
     return {
       questIndex: 0,
@@ -108,9 +112,6 @@ export default {
         console.log(e);
       }
     },
-    hide() {
-      this.CloseModal();
-    },
     showTransactionSendModal() {
       this.ShowModal({
         key: modals.status,
@@ -123,9 +124,9 @@ export default {
       });
     },
     goToChat() {
-      const chatId = this.chatInfoInviteOnQuest.id;
-      this.$router.push(`/messages/${chatId}`);
-      this.hide();
+      const { chatId } = this.chatInfoInviteOnQuest;
+      this.$router.push(`${Path.MESSAGES}/${chatId}`);
+      this.CloseModal();
     },
   },
 };

@@ -46,7 +46,7 @@
               <div class="user__info">
                 <img
                   class="ava"
-                  :src="paidEventsList[0]['referralUser.avatar.url'] ? paidEventsList[0]['referralUser.avatar.url'] : EmptyAvatar()"
+                  :src="paidEventsList[0]['referralUser.avatar.url'] ? paidEventsList[0]['referralUser.avatar.url'] : $options.images.EMPTY_AVATAR"
                   alt="avatar"
                 >
                 <div class="user__name">
@@ -85,7 +85,7 @@
               >
                 <img
                   class="ava_list"
-                  :src="(item.avatar && item.avatar.url) ? item.avatar.url : EmptyAvatar()"
+                  :src="(item.avatar && item.avatar.url) ? item.avatar.url : $options.images.EMPTY_AVATAR"
                   alt=""
                 >
               </div>
@@ -167,19 +167,21 @@
               tbody-tr-class="table__row"
             >
               <template #cell(userInfo)="el">
-                <nuxt-link
-                  class="user__link"
-                  :to="`profile/${el.item['referralUser.id']}`"
-                >
-                  <img
-                    class="ava"
-                    :src="el.item['referralUser.avatar.url'] ? el.item['referralUser.avatar.url'] : EmptyAvatar()"
-                    alt=""
+                <div class="user__name">
+                  <nuxt-link
+                    class="user__link"
+                    :to="`profile/${el.item.id}`"
                   >
-                  <div class="user__name user__name-table">
-                    {{ el.item['referralUser.firstName'] }} {{ el.item['referralUser.lastName'] }}
-                  </div>
-                </nuxt-link>
+                    <img
+                      class="ava"
+                      :src="el.item['referralUser.avatar.url'] ? el.item['referralUser.avatar.url'] : $options.images.EMPTY_AVATAR"
+                      alt=""
+                    >
+                    <span>
+                      {{ el.item['referralUser.firstName'] }} {{ el.item['referralUser.lastName'] }}
+                    </span>
+                  </nuxt-link>
+                </div>
               </template>
               <template #cell(userID)="el">
                 <div class="user__value_gray">
@@ -237,12 +239,14 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { STATUS_INFO } from '~/utils/referral-constants';
+import { STATUS_INFO } from '~/utils/сonstants/referral';
 import modals from '~/store/modals/modals';
 import { getStyledAmount } from '~/utils/wallet';
+import { images } from '~/utils/images';
 
 export default {
   name: 'Referral',
+  images,
   async asyncData({ store }) {
     const userAddress = store.getters['user/getUserWalletAddress'];
     await Promise.all([
@@ -385,7 +389,7 @@ export default {
       },
     },
   },
-  mounted() {
+  async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
   },

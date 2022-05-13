@@ -15,7 +15,7 @@ export default async function ({ app, store }) {
       userStatus,
     };
 
-    if (!access || !refresh || !userLogin) return;
+    if (!access || !userLogin) return;
 
     if ((access || refresh) && userLogin) {
       store.commit('user/setTokens', payload);

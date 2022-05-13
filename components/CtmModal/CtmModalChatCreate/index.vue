@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t(`modals.chatCreate.${setLocale}`)"
+    :title="$tc(`modals.chatCreate.${setLocale}`)"
   >
     <div class="ctm-modal__content">
       <template v-if="options.isCreating">
@@ -13,7 +13,7 @@
             v-model="name"
             data-selector="CHAT-NAME"
             :is-hide-error="true"
-            :label="$t('modals.chatCreate.chatName')"
+            :label="$tc('modals.chatCreate.chatName')"
             :placeholder="$t('modals.chatCreate.chatName')"
           />
         </div>
@@ -56,17 +56,21 @@
                   :id="user.id"
                   type="checkbox"
                   class="checkbox-input"
-                  @change="changeSelStatus($event, user.id)"
+                  @change="changeSelStatus($event, user)"
                 >
                 <span class="checkmark" />
               </label>
             </div>
             <div
               v-if="options.isMembersList && options.itsOwner"
-              class="friends__del-cont"
-              @click="tryRemoveUser(user.id)"
+              class="friends__menu"
             >
-              <span class="icon-minus_circle_outline" />
+              <chat-menu
+                class="friends__btn-menu"
+                :menu-items="isCurrentUserEmployer?['giveAQuest','removeFromChat']:['removeFromChat']"
+                @giveAQuest="sendInvite(user)"
+                @removeFromChat="tryRemoveUser(user.id)"
+              />
             </div>
           </div>
         </div>
@@ -99,10 +103,13 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { Path, UserRole } from '~/utils/enums';
 import modals from '~/store/modals/modals';
+import ChatMenu from '~/components/ui/ChatMenu';
 
 export default {
   name: 'ModalChatUsers',
+  components: { ChatMenu },
   data() {
     return {
       name: '',
@@ -120,24 +127,22 @@ export default {
       users: 'chat/getGroupChatUsers',
       chatMembers: 'chat/getChatMembers',
       chatId: 'chat/getCurrChatId',
+      currentUser: 'user/getUserData',
     }),
     setLocale() {
       const { isMembersList, isAdding } = this.options;
-
       if (isMembersList) return 'members';
       if (isAdding) return 'addMember';
-
       return 'title';
+    },
+    isCurrentUserEmployer() {
+      return this.currentUser.role === UserRole.EMPLOYER;
     },
   },
   async mounted() {
     const { options: { isMembersList }, chatMembers } = this;
-
-    if (isMembersList) {
-      this.members = chatMembers;
-    } else {
-      await this.getUsers();
-    }
+    if (isMembersList) this.members = chatMembers;
+    else await this.getUsers();
   },
   methods: {
     async addNewMembers() {
@@ -155,16 +160,14 @@ export default {
     tryRemoveUser(userId) {
       this.ShowModal({
         key: modals.areYouSure,
-        title: this.$t('modals.sureDeleteMemberText'),
+        text: this.$t('modals.sureDeleteMemberText'),
         okBtnTitle: this.$t('meta.btns.delete'),
         okBtnFunc: async () => await this.removeMember(userId),
       });
     },
     async removeMember(userId) {
       await this.$store.dispatch('chat/removeMember', { userId, chatId: this.chatId });
-
       this.CloseModal();
-
       this.ShowModal({
         key: modals.chatCreate,
         itsOwner: true,
@@ -173,29 +176,20 @@ export default {
         isAdding: false,
       });
     },
-    changeSelStatus({ target }, userId) {
-      if (target.checked) {
-        this.memberUserIds.push(userId);
-      } else {
-        this.memberUserIds = this.memberUserIds.filter((id) => id !== userId);
-      }
+    changeSelStatus({ target }, { id }) {
+      if (target.checked) this.memberUserIds.push(id);
+      else this.memberUserIds = this.memberUserIds.filter((userId) => userId !== id);
     },
     async getUsers() {
       const { filter, chatId, users } = this;
-
       const config = {
-        params: {
-          ...filter,
-          excludeMembersChatId: chatId || undefined,
-        },
+        params: { ...filter, excludeMembersChatId: chatId || undefined },
       };
-
       await this.$store.dispatch('chat/getUsersForGroupChat', config);
       this.members = users.list;
     },
     hide() {
       const { options: { isAdding }, chatMembers } = this;
-
       if (isAdding) {
         const optionsArr = [
           { key: 'isAdding', val: false },
@@ -203,7 +197,6 @@ export default {
         ];
         this.changeOptions(optionsArr);
         this.members = chatMembers;
-
         return;
       }
       this.CloseModal();
@@ -212,27 +205,36 @@ export default {
       const {
         name, memberUserIds, chatId, options: { isCreating, isAdding },
       } = this;
-
       if (isCreating) {
-        const config = {
-          name,
-          memberUserIds,
-        };
+        const config = { name, memberUserIds };
         const { ok, result } = await this.$store.dispatch('chat/handleCreateGroupChat', config);
-        if (ok) this.$router.push(`/messages/${result.id}`);
+        if (ok) await this.$router.push(`${Path.MESSAGES}/${result.id}`);
       } else if (isAdding && memberUserIds.length) {
-        const payload = {
-          config: {
-            userIds: memberUserIds,
-          },
-          chatId,
-        };
-
+        const payload = { config: { userIds: memberUserIds }, chatId };
         this.memberUserIds = [];
         await this.$store.dispatch('chat/addNewMembers', payload);
       }
-
       this.hide();
+    },
+    async sendInvite(user) {
+      const { count } = await this.$store.dispatch('quests/getAvailableQuests', user.id);
+      if (count > 0) {
+        this.ShowModal({
+          key: modals.invitation,
+          userId: user.id,
+          avatar: user.avatar,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          ratingStatistic: user.ratingStatistic,
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.errors.errorQuests'),
+          subtitle: this.$t('modals.errors.emptyOpenQuests'),
+        });
+      }
     },
   },
 };
@@ -250,7 +252,7 @@ export default {
     .participants {
       &__content {
         max-height: 500px;
-        overflow: auto;
+        overflow: visible;
         &::-webkit-scrollbar {
           width: 0;
           height: 0;
@@ -264,7 +266,7 @@ export default {
         padding: 15px 0;
 
         &:not(:last-child) {
-          border-bottom: 1px solid #F7F8FA;
+          border-bottom: 1px solid $black0;
         }
 
         .friends {
@@ -403,7 +405,7 @@ export default {
     position: absolute;
     width: 24px;
     height: 24px;
-    background: #F7F8FA;
+    background: $black0;
     border-radius: 3px;
     cursor: pointer;
     border: 1px solid transparent;
@@ -432,8 +434,18 @@ export default {
 }
 
 .friends {
+  &__menu {
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    gap: 5px;
+  }
   &__del-cont {
+    margin-top: 4px;
     cursor: pointer;
+  }
+  &__btn-menu{
+    margin-right:3px ;
   }
 }
 .messageSend {

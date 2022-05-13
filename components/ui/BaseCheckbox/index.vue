@@ -110,7 +110,7 @@ export default {
     position: absolute;
     width: 24px;
     height: 24px;
-    background: #F7F8FA;
+    background: $black0;
     border-radius: 3px;
     cursor: pointer;
     border: 1px solid transparent;

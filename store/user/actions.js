@@ -29,7 +29,7 @@ import {
   notificationEmployerFilterActions,
 } from '~/utils/enums';
 
-import { WQPromotion } from '~/abi/abi';
+import { WQPromotion } from '~/abi/index';
 
 const { WORKNET_PROMOTION } = process.env;
 
@@ -41,19 +41,13 @@ export default {
       return e;
     }
   },
-  async addEducation({ commit }, data) {
-    commit('setEducations', data);
-  },
-  async addWorkExperiences({ commit }, data) {
-    commit('setWorkExperiences', data);
-  },
   async getStatistic({ commit }) {
     try {
       const { result } = await this.$axios.$get('/v1/profile/statistic/me');
-
       commit('setStatisticData', result);
+      return success(result);
     } catch (e) {
-      console.log(e);
+      return error();
     }
   },
   async removeNotification({ dispatch, commit }, { config, notificationId }) {
@@ -121,6 +115,7 @@ export default {
       console.log('!!!!!!!!!getters.getUserRole!!!!!!!!!!!!', userRole);
       await dispatch('getUserData');
     }
+
     async function setSender() {
       if (!notification.sender) {
         /** Worker && Employer */
@@ -138,6 +133,7 @@ export default {
         }
       }
     }
+
     async function updateQuests() {
       /* For update quest lists */
       const questListPathArray = [
@@ -153,7 +149,6 @@ export default {
           'sort[createdAt]': 'desc',
         };
         await dispatch('quests/getUserQuests', {
-          userId: currentUserId,
           role: userRole,
           query,
         }, { root: true });
@@ -166,6 +161,7 @@ export default {
         }
       }
     }
+
     async function updateProfile() {
       /* For update user profile */
       if (currentPath === `${Path.PROFILE}/${currentUserId}`) {
@@ -176,6 +172,7 @@ export default {
         await dispatch('getAllUserReviews', { userId: currentUserId, query });
       }
     }
+
     async function setAllNotificationsParams(currTitle, path, isExternalLink, externalBase) {
       notification.actionNameKey = `notifications.${action}`;
       notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
@@ -184,6 +181,7 @@ export default {
       };
       await setSender();
     }
+
     switch (action) {
       /** WORK-QUEST */
       case NotificationAction.QUEST_STARTED:
@@ -201,6 +199,12 @@ export default {
       case NotificationAction.QUEST_EDITED:
       case NotificationAction.QUEST_END_SOON: {
         await setAllNotificationsParams(quest?.title || title, `${Path.QUESTS}/${quest?.id || id}`, false, '');
+        await updateQuests();
+        break;
+      }
+
+      case 'QuestStatusUpdated':
+      case 'questStatusUpdated': {
         await updateQuests();
         break;
       }
@@ -312,10 +316,13 @@ export default {
       return error(e.response.data.code, e.response.data.msg);
     }
   },
-  async signIn({ commit, dispatch }, payload) {
+  async signIn({ commit, dispatch, state }, payload) {
     try {
       const response = await this.$axios.$post('/v1/auth/login', payload);
-      commit('setTokens', response.result);
+      commit('setTokens', {
+        access: response.result.access,
+        refresh: state.isRememberMeChecked ? response.result.refresh : '',
+      });
       if (response.result.userStatus === 1 && !response.result.totpIsActive) {
         await dispatch('getMainData');
       }
@@ -340,8 +347,15 @@ export default {
       dispatch('getNotifications'),
     ]);
   },
-  async logout({ commit }) {
-    commit('logOut');
+  async logout({ commit }, isValidToken = true) {
+    try {
+      if (isValidToken) await this.$axios.$post('v1/auth/logout');
+      await this.$wsChatActions.disconnect();
+      await this.$wsNotifs.disconnect();
+      commit('logOut');
+    } catch (e) {
+      console.error('user/logout', e);
+    }
   },
   async confirm({ commit }, payload) {
     try {
@@ -358,14 +372,12 @@ export default {
   },
   async getUserData({ commit }) {
     try {
-      const response = await this.$axios.$get('/v1/profile/me');
-      const { result } = response;
+      const { result } = await this.$axios.$get('/v1/profile/me');
       commit('setUserData', result);
       if (result.wallet?.address) connectWithMnemonic(result.wallet.address);
-      return response;
+      return success(result);
     } catch (e) {
-      console.error(e);
-      return false;
+      return error();
     }
   },
   async getAnotherUserData({ commit }, payload) {
@@ -406,9 +418,14 @@ export default {
     }
   },
   async refreshTokens({ commit }) {
-    const response = await this.$axios.$post('/v1/auth/refresh-tokens');
-    commit('setTokens', response.result);
-    return response;
+    // eslint-disable-next-line no-useless-catch
+    try {
+      const response = await this.$axios.$post('/v1/auth/refresh-tokens');
+      commit('setTokens', response.result);
+      return response;
+    } catch (e) {
+      throw e;
+    }
   },
   async setCurrentPosition({ commit }, payload) {
     commit('setCurrentUserPosition', payload);
@@ -474,13 +491,8 @@ export default {
       commit('setTwoFAStatus', false);
       return response;
     } catch (e) {
-      const response = {
-        ok: e.response.data.ok,
-        code: e.response.data.code,
-        msg: e.response.data.msg,
-        data: e.response.data.data,
-      };
-      return response;
+      const { data } = e.response;
+      return error(data.code, data.msg, data);
     }
   },
   async enable2FA({ commit }, payload) {
@@ -489,13 +501,8 @@ export default {
       commit('setTwoFACode', response.result);
       return response;
     } catch (e) {
-      const response = {
-        ok: e.response.data.ok,
-        code: e.response.data.code,
-        msg: e.response.data.msg,
-        data: e.response.data.data,
-      };
-      return response;
+      const { data } = e.response;
+      return error(data.code, data.msg, data);
     }
   },
   async confirmEnable2FA({ commit }, payload) {
@@ -505,13 +512,8 @@ export default {
       commit('setTwoFAStatus', true);
       return response;
     } catch (e) {
-      const response = {
-        ok: e.response.data.ok,
-        code: e.response.data.code,
-        msg: e.response.data.msg,
-        data: e.response.data.data,
-      };
-      return response;
+      const { data } = e.response;
+      return error(data.code, data.msg, data);
     }
   },
 
@@ -602,5 +604,8 @@ export default {
       showToast('Promote user error:', `${e.message}`, 'danger');
       return error(e.code, 'Error in method promote user', e);
     }
+  },
+  setRememberMe({ commit }, payload) {
+    commit('setRememberMe', payload);
   },
 };

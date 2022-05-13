@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="restore"
-    :title="$t('modals.titles.forgotPass')"
+    :title="$tc('modals.titles.forgotPass')"
   >
     <div class="restore__content content">
       <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
@@ -10,7 +10,7 @@
         </div>
         <base-field
           v-model="emailInput"
-          :name="$t('meta.placeholders.email')"
+          :name="$tc('meta.placeholders.email')"
           data-selector="EMAIL"
           :placeholder="$t('meta.placeholders.email')"
           rules="required|email"
@@ -47,9 +47,6 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     async restore() {
       const payload = {
         email: this.emailInput,

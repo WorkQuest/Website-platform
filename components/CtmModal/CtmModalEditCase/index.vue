@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="ctm-modal ctm-modal_center"
-    :title="$t('modals.titles.editCase')"
+    :title="$tc('modals.titles.editCase')"
   >
     <div class="ctm-modal__content content">
       <validation-observer
@@ -23,21 +23,21 @@
           v-model="caseTitle"
           class="content__title"
           data-selector="CASE-TITLE"
-          :label="$t('modals.title')"
+          :label="$tc('modals.title')"
           :placeholder="$t('modals.addTitle')"
           rules="required|text-title|max:70"
           mode="gray"
-          :name="$t('modals.title')"
+          :name="$tc('modals.title')"
         />
         <base-textarea
           id="textarea"
           v-model="caseDescription"
-          :label="$t('modals.description')"
+          :label="$tc('modals.description')"
           class="content__textarea"
           data-selector="CASE-DESCRIPTION"
           :placeholder="$t('modals.addDesc')"
           rules="required|text-desc|max:350"
-          :name="$t('modals.description')"
+          :name="$tc('modals.description')"
         />
         <div class="content__btn btn">
           <div class="btn__wrapper">
@@ -45,7 +45,7 @@
               mode="outline"
               data-selector="CANCEL"
               class="btn__action"
-              @click="hide()"
+              @click="CloseModal"
             >
               {{ $t('meta.btns.cancel') }}
             </base-btn>
@@ -85,69 +85,38 @@ export default {
       userData: 'user/getUserData',
     }),
   },
-  mounted() {
-    this.editTitle();
+  async mounted() {
+    this.caseTitle = await this.options.title;
+    this.caseDescription = await this.options.desc;
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     updateFiles(files) {
       this.files = files;
     },
     async editUserCase(id) {
       try {
         this.SetLoader(true);
-        await this.setCaseData(id);
-        await this.getAllPortfolios();
-        this.SetLoader(false);
-      } catch (e) {
-        this.showToastError(e);
-        this.SetLoader(false);
-      }
-    },
-    async editTitle() {
-      this.caseTitle = await this.options.title;
-      this.caseDescription = await this.options.desc;
-    },
-    showToastEdited() {
-      return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.caseEdited'),
-        variant: 'success',
-        text: this.$t('toasts.caseEdited'),
-      });
-    },
-    showToastError(e) {
-      return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.error'),
-        variant: 'warning',
-        text: `${e}`,
-      });
-    },
-    async setCaseData(id) {
-      const medias = await this.uploadFiles(this.files);
-      if (medias.length) {
-        const payload = {
-          title: this.caseTitle,
-          description: this.caseDescription,
-          medias,
-        };
-        await this.$store.dispatch('user/editCaseData', { payload, id });
-        await this.hide();
-        this.showToastEdited();
-      }
-    },
-    async getAllPortfolios() {
-      try {
+        const medias = await this.uploadFiles(this.files);
+        if (medias.length) {
+          const payload = { title: this.caseTitle, description: this.caseDescription, medias };
+          await this.$store.dispatch('user/editCaseData', { payload, id });
+          this.CloseModal();
+          await this.$store.dispatch('main/showToast', {
+            title: this.$t('toasts.caseEdited'),
+            variant: 'success',
+            text: this.$t('toasts.caseEdited'),
+          });
+        }
         await this.$store.dispatch('user/getUserPortfolios', { userId: this.userData.id });
+        this.SetLoader(false);
       } catch (e) {
-        this.showToastError(e);
+        await this.$store.dispatch('main/showToast', {
+          title: this.$t('toasts.error'),
+          variant: 'warning',
+          text: `${e}`,
+        });
+        this.SetLoader(false);
       }
-    },
-    showRequestSendModal() {
-      this.ShowModal({
-        key: modals.requestSend,
-      });
     },
   },
 };

@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="dispute"
-    :title="$t('modals.titles.openADispute')"
+    :title="$tc('modals.titles.openADispute')"
   >
     <div class="dispute__content content">
       <div class="content__subtitle">
@@ -37,7 +37,7 @@
           mode="outline"
           class="buttons__button"
           data-selector="CANCEL"
-          @click="hide"
+          @click="CloseModal"
         >
           {{ $t('meta.btns.cancel') }}
         </base-btn>
@@ -87,9 +87,6 @@ export default {
     },
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     async showRequestSendModal() {
       const payload = {
         questId: this.options.questId,
@@ -97,7 +94,7 @@ export default {
         problemDescription: this.description,
       };
       const response = await this.$store.dispatch('disputes/createDispute', payload);
-      this.hide();
+      this.CloseModal();
       if (response.ok) {
         await this.$router.push(`/disputes/${response.result.id}`);
       } else {

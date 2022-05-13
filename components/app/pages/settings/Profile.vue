@@ -647,7 +647,7 @@ export default {
     }
   }
   &__error {
-    color: #bb5151;
+    color: $errorText;
     font-size: 12px;
     min-height: 23px;
   }
@@ -665,7 +665,7 @@ export default {
     justify-content: flex-end;
     align-items: flex-end;
     span {
-      color: #bb5151;
+      color: $errorText;
       font-size: 14px;
       min-height: 23px;
       width: 250px;
@@ -697,7 +697,7 @@ export default {
       transition: .3s;
 
       &:hover {
-        background: #F3F7FA;
+        background: $black0;
       }
     }
   }

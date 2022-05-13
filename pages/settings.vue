@@ -30,13 +30,16 @@
         @validationRef="validationRefs"
       />
       <skills
-        v-if="userRole === UserRole.WORKER"
+        v-if="userRole === $options.UserRole.WORKER"
         :skills="skills"
         :validation-error="validationError"
         @click="editUserData"
         @checkValidate="checkValidate"
       />
-      <advanced @showModalKey="showModalKey" />
+      <advanced
+        @updateVisibility="updateVisibility($event)"
+        @showModalKey="showModalKey"
+      />
     </ValidationObserver>
   </div>
 </template>
@@ -49,10 +52,11 @@ import VerificationCard from '~/components/app/pages/settings/VerificationCard.v
 import Profile from '~/components/app/pages/settings/Profile.vue';
 import Skills from '~/components/app/pages/settings/Skills.vue';
 import Advanced from '~/components/app/pages/settings/Advanced.vue';
-import { UserRole, WorkplaceIndex } from '~/utils/enums';
+import { RatingStatus, UserRole, WorkplaceIndex } from '~/utils/enums';
 
 export default {
   name: 'Settings',
+  UserRole,
   components: {
     VerificationCard, Profile, Skills, Advanced,
   },
@@ -89,7 +93,6 @@ export default {
           },
           locationPlaceName: '',
         },
-        profileVisibilitySetting: {},
       },
       skills: {
         perHour: 0,
@@ -106,6 +109,7 @@ export default {
       newEducation: [],
       newWorkExp: [],
       valRefs: {},
+      profileVisibilitySetting: {},
     };
   },
   computed: {
@@ -119,8 +123,8 @@ export default {
     WorkplaceIndex() {
       return WorkplaceIndex;
     },
-    UserRole() {
-      return UserRole;
+    isEmployer() {
+      return this.userRole === UserRole.EMPLOYER;
     },
   },
   async mounted() {
@@ -129,6 +133,7 @@ export default {
     if (!this.profile.firstName) await this.$store.dispatch('user/getUserData');
     const addInfo = this.userData.additionalInfo;
     const { userData, secondNumber } = this;
+    const { employerProfileVisibilitySetting, workerProfileVisibilitySetting } = userData;
     this.profile = {
       avatarId: userData.avatarId,
       firstName: userData.firstName,
@@ -166,7 +171,6 @@ export default {
         },
         locationPlaceName: userData.locationPlaceName,
       },
-      profileVisibilitySetting: userData.profileVisibilitySetting,
     };
     this.skills = {
       priorityIndex: userData.priority,
@@ -174,6 +178,20 @@ export default {
       perHour: userData.wagePerHour,
       selectedSpecAndSkills: userData.userSpecializations || [],
     };
+
+    if (this.isEmployer) {
+      const { arrayRatingStatusCanRespondToQuest, arrayRatingStatusInMySearch } = employerProfileVisibilitySetting;
+      this.profileVisibilitySetting = {
+        ratingStatusCanRespondToQuest: arrayRatingStatusCanRespondToQuest,
+        ratingStatusInMySearch: arrayRatingStatusInMySearch,
+      };
+    } else {
+      const { arrayRatingStatusCanInviteMeOnQuest, arrayRatingStatusInMySearch } = workerProfileVisibilitySetting;
+      this.profileVisibilitySetting = {
+        ratingStatusCanInviteMeOnQuest: arrayRatingStatusCanInviteMeOnQuest,
+        ratingStatusInMySearch: arrayRatingStatusInMySearch,
+      };
+    }
     this.SetLoader(false);
 
     this.$root.$on('roleChanged', async () => {
@@ -286,10 +304,18 @@ export default {
       if (!firstMobileNumber) this.showModalStatus('enterPhoneNumber');
     },
 
+    async updateVisibility({ visibilityUser, restrictionRankingStatus }) {
+      const formatWithDefaultVal = (arr) => (arr.length === 0 ? [RatingStatus.AllStatuses] : arr);
+      this.profileVisibilitySetting[this.isEmployer
+        ? 'ratingStatusCanRespondToQuest'
+        : 'ratingStatusCanInviteMeOnQuest'
+      ] = formatWithDefaultVal(visibilityUser);
+      this.profileVisibilitySetting.ratingStatusInMySearch = formatWithDefaultVal(restrictionRankingStatus);
+    },
     async checkValidate() {
-      const validateEducation = this.userRole === UserRole.EMPLOYER ? true : await this.validateKnowledge('education',
+      const validateEducation = this.isEmployer ? true : await this.validateKnowledge('education',
         this.newEducation.length > 0 ? this.newEducation : 'validated');
-      const validateWorkExp = this.userRole === UserRole.EMPLOYER ? true : await this.validateKnowledge('work',
+      const validateWorkExp = this.isEmployer ? true : await this.validateKnowledge('work',
         this.newWorkExp.length > 0 ? this.newWorkExp : 'validated');
       const validateSettings = await this.$refs.settings.validate();
       if (!validateSettings || !validateEducation || !validateWorkExp || !this.isValidPhoneNumber || !this.isValidSecondPhoneNumber) return true;
@@ -318,8 +344,7 @@ export default {
     },
 
     editProfileRoute() {
-      if (this.userRole === UserRole.WORKER) return 'editWorkerData';
-      return 'editEmployerData';
+      return this.isEmployer ? 'editEmployerData' : 'editWorkerData';
     },
 
     async editProfile(checkAvatarID) {
@@ -356,13 +381,10 @@ export default {
             facebook: facebook || null,
           },
         },
-        profileVisibility: {
-          network: this.profile.profileVisibilitySetting.network,
-          ratingStatus: this.profile.profileVisibilitySetting.ratingStatus,
-        },
+        profileVisibility: { ...this.profileVisibilitySetting },
       };
       if (!this.updatedSecondPhone.fullPhone) payload.additionalInfo.secondMobileNumber = null;
-      await this.editProfileResponse(`user/${this.editProfileRoute()}`, this.userRole === UserRole.WORKER ? {
+      await this.editProfileResponse(`user/${this.editProfileRoute()}`, !this.isEmployer ? {
         ...payload,
         additionalInfo: {
           ...payload.additionalInfo,

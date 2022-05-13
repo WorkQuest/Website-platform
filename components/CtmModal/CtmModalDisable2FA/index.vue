@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.titles.2FA.disable')"
+    :title="$tc('modals.titles.2FA.disable')"
   >
     <div class="ctm-modal__content">
       <validation-observer
@@ -41,7 +41,7 @@
               mode="outline"
               class="message__action"
               data-selector="CANCEL"
-              @click="hide"
+              @click="CloseModal"
             >
               {{ $t('meta.btns.cancel') }}
             </base-btn>
@@ -71,15 +71,10 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     async disable2FA() {
-      const response = await this.$store.dispatch('user/disable2FA', {
-        totp: this.twoFACode,
-      });
+      const response = await this.$store.dispatch('user/disable2FA', { totp: this.twoFACode });
       if (response.ok) {
-        this.hide();
+        this.CloseModal();
         this.showModalSuccess();
       } else this.validationErrorFields(response.data);
     },
@@ -95,9 +90,7 @@ export default {
       data.forEach(async (obj) => {
         const { field } = obj;
         const { name } = this.$refs.totp.name;
-        const err = {
-          [field]: [this.$t('messages.excluded', { _field_: name })],
-        };
+        const err = { [field]: [this.$t('messages.excluded', { _field_: name })] };
         await this.$refs.twoFA.setErrors(err);
       });
     },
