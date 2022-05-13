@@ -199,9 +199,12 @@ export default {
       transactionsCount: 'wallet/getTransactionsCount',
       isWalletConnected: 'wallet/getIsWalletConnected',
     }),
+    selectedTokenData() {
+      return this.balance[this.selectedToken];
+    },
     selectedTokenBalanceInfo() {
-      if (!this.balance[this.selectedToken]) return this.selectedToken;
-      return `${this.balance[this.selectedToken]?.balance || '0'} ${this.selectedToken}`;
+      if (!this.selectedTokenData) return this.selectedToken;
+      return `${this.selectedTokenData?.balance || '0'} ${this.selectedToken}`;
     },
     wqAddress() {
       return this.convertToBech32('wq', this.userWalletAddress);
@@ -339,7 +342,7 @@ export default {
         submit: async ({ recipient, amount, selectedToken }) => {
           const { wqAddress, convertToHex, convertToBech32 } = this;
           recipient = convertToHex('wq', recipient);
-          const value = new BigNumber(amount).shiftedBy(Number(this.balance[selectedToken].decimals)).toString();
+          const value = new BigNumber(amount).shiftedBy(Number(this.selectedTokenData.decimals)).toString();
           let feeRes;
           if (selectedToken === TokenSymbols.WQT) {
             feeRes = await this.$store.dispatch('wallet/getTransferFeeData', {
