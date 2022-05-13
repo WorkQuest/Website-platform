@@ -22,11 +22,11 @@
             class="wallet__phrase-input"
             :class="{'wallet__phrase-input--icon': isShowMnemonic}"
           >
-          <div class="wallet__mnemonic_btn">
+          <div class="wallet__mnemonic_btns">
             <button
-              v-if="isShowMnemonic"
               v-clipboard:copy="mnemonic"
               v-clipboard:error="ClipboardErrorHandler"
+              class="wallet__mnemonic_copy-btn"
               type="button"
               @click="showCopySuccess"
             >
@@ -342,12 +342,17 @@ export default {
         color: $blue;
       }
     }
-    &_btn {
+    &_btns {
       right: 10px;
-      top: 20%;
+      top: 0;
+      height: 100%;
       position: absolute;
       display: flex;
+      align-items: center;
       gap: 8px;
+    }
+    &_copy-btn {
+      padding-top: 4px
     }
   }
   &__phrase-input {
