@@ -203,9 +203,11 @@ export default {
       isLoading: 'main/getIsLoading',
       notifications: 'user/getNotificationsList',
     }),
+    isDone() {
+      return this.quest.status === QuestStatuses.Done;
+    },
     isEmployer() {
-      const { userRole } = this;
-      return userRole === UserRole.EMPLOYER;
+      return this.userRole === UserRole.EMPLOYER;
     },
     questReward() {
       return new BigNumber(this.quest.price).shiftedBy(-18).toString();
@@ -298,16 +300,6 @@ export default {
     this.$store.commit('user/setCurrentReviewMarkOnQuest', { questId: null, message: null, mark: null });
   },
   methods: {
-    isDone() {
-      const { quest } = this;
-      const { status } = quest;
-      return status === QuestStatuses.Done;
-    },
-    isYour() {
-      const { userData, quest } = this;
-      const { userId } = quest;
-      return userData.id === userId;
-    },
     starRating(item) {
       if (!item) return false;
       if (this.userRole === UserRole.WORKER) {
@@ -527,7 +519,7 @@ export default {
     },
     async getResponsesToQuest() {
       const { quest: { id, user }, userData, isDone } = this;
-      if (isDone() && user.id === userData.id) {
+      if (isDone && user.id === userData.id) {
         await this.$store.dispatch('quests/responsesToQuest', id);
       }
     },

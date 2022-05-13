@@ -153,8 +153,7 @@ export default {
       avatar, firstName, lastName, locationPlaceName, additionalInfo: { description },
     } = userData;
     this.page = $cookies.get('notificationPage');
-    this.profileFilled = !!avatar && !!firstName && !!lastName && !!locationPlaceName
-      && !!description;
+    this.profileFilled = !!avatar && !!firstName && !!lastName && !!locationPlaceName && !!description;
     await this.getNotifications();
     await this.setLocalNotifications();
     this.SetLoader(false);
