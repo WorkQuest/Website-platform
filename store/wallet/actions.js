@@ -31,7 +31,7 @@ import {
   tokenMap,
   TokenSymbols,
   StakingTypes,
-  PensionHistoryMethods,
+  PensionHistoryMethods, WorknetTokenAddresses,
 } from '~/utils/enums';
 import {
   getPensionWallet,
@@ -128,10 +128,23 @@ export default {
       fullBalance: res.ok ? res.result.fullBalance : 0,
     });
   },
-  async fetchWalletData({ commit }, {
+  async fetchCommonTokenInfo({ commit }) {
+    try {
+      const tokens = await Promise.all(WorknetTokenAddresses.map(async (address) => await Promise.all([
+        fetchContractData('symbol', ERC20, address, [], GetWalletProvider()),
+        fetchContractData('decimals', ERC20, address, [], GetWalletProvider()),
+      ])));
+      // eslint-disable-next-line no-restricted-syntax
+      for (const item of tokens) commit('setCommonTokenData', item);
+    } catch (e) {
+      console.error('wallet/fetchCommonTokenInfo');
+    }
+  },
+  async fetchWalletData({ commit, getters }, {
     method, address, abi, token, symbol,
   }) {
     try {
+      const { decimals } = getters.getBalanceData[symbol];
       const res = await fetchContractData(
         method,
         abi,
@@ -139,12 +152,12 @@ export default {
         [address],
         GetWalletProvider(),
       );
-      if (method === 'freezed') commit('wallet/setFrozenBalance', new BigNumber(res).shiftedBy(-18), { root: true });
+      if (method === 'freezed') commit('wallet/setFrozenBalance', new BigNumber(res.toString()).shiftedBy(-decimals), { root: true });
       else {
         commit('setBalance', {
           symbol,
-          balance: res ? getStyledAmount(res) : 0,
-          fullBalance: res ? getStyledAmount(res, true) : 0,
+          balance: res ? getStyledAmount(res, false, decimals) : 0,
+          fullBalance: res ? getStyledAmount(res, true, decimals) : 0,
         });
       }
       return success(res);
@@ -153,11 +166,11 @@ export default {
     }
   },
   /**
-   * Send transfer
+   * Send transfer of native token
    * @param recipient
    * @param value
    */
-  async transfer({ commit }, { recipient, value }) {
+  async transfer({ _ }, { recipient, value }) {
     return await transfer(recipient, value);
   },
   async getTransferFeeData({ commit }, { recipient, value }) {
@@ -165,11 +178,10 @@ export default {
   },
   /**
    * Send transfer for WQT token
-   * @param commit
    * @param payload
    * @param recipient
    */
-  async transferToken({ commit }, payload) {
+  async transferToken({ _ }, payload) {
     const res = await sendWalletTransaction('transfer', payload);
     // TODO fix it, sendWalletTransaction should return object with keys ok and result
     if (res.ok === false) return error(res);
