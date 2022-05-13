@@ -44,10 +44,10 @@ export default {
   async getStatistic({ commit }) {
     try {
       const { result } = await this.$axios.$get('/v1/profile/statistic/me');
-
       commit('setStatisticData', result);
+      return success(result);
     } catch (e) {
-      console.log(e);
+      return error();
     }
   },
   async removeNotification({ dispatch, commit }, { config, notificationId }) {
@@ -347,9 +347,9 @@ export default {
       dispatch('getNotifications'),
     ]);
   },
-  async logout({ commit }) {
+  async logout({ commit }, isValidToken = true) {
     try {
-      await this.$axios.$post('v1/auth/logout');
+      if (isValidToken) await this.$axios.$post('v1/auth/logout');
       await this.$wsChatActions.disconnect();
       await this.$wsNotifs.disconnect();
       commit('logOut');
@@ -372,14 +372,12 @@ export default {
   },
   async getUserData({ commit }) {
     try {
-      const response = await this.$axios.$get('/v1/profile/me');
-      const { result } = response;
+      const { result } = await this.$axios.$get('/v1/profile/me');
       commit('setUserData', result);
       if (result.wallet?.address) connectWithMnemonic(result.wallet.address);
-      return response;
+      return success(result);
     } catch (e) {
-      console.error(e);
-      return false;
+      return error();
     }
   },
   async getAnotherUserData({ commit }, payload) {
@@ -420,9 +418,14 @@ export default {
     }
   },
   async refreshTokens({ commit }) {
-    const response = await this.$axios.$post('/v1/auth/refresh-tokens');
-    commit('setTokens', response.result);
-    return response;
+    // eslint-disable-next-line no-useless-catch
+    try {
+      const response = await this.$axios.$post('/v1/auth/refresh-tokens');
+      commit('setTokens', response.result);
+      return response;
+    } catch (e) {
+      throw e;
+    }
   },
   async setCurrentPosition({ commit }, payload) {
     commit('setCurrentUserPosition', payload);
@@ -488,13 +491,8 @@ export default {
       commit('setTwoFAStatus', false);
       return response;
     } catch (e) {
-      const response = {
-        ok: e.response.data.ok,
-        code: e.response.data.code,
-        msg: e.response.data.msg,
-        data: e.response.data.data,
-      };
-      return response;
+      const { data } = e.response;
+      return error(data.code, data.msg, data);
     }
   },
   async enable2FA({ commit }, payload) {
@@ -503,13 +501,8 @@ export default {
       commit('setTwoFACode', response.result);
       return response;
     } catch (e) {
-      const response = {
-        ok: e.response.data.ok,
-        code: e.response.data.code,
-        msg: e.response.data.msg,
-        data: e.response.data.data,
-      };
-      return response;
+      const { data } = e.response;
+      return error(data.code, data.msg, data);
     }
   },
   async confirmEnable2FA({ commit }, payload) {
@@ -519,13 +512,8 @@ export default {
       commit('setTwoFAStatus', true);
       return response;
     } catch (e) {
-      const response = {
-        ok: e.response.data.ok,
-        code: e.response.data.code,
-        msg: e.response.data.msg,
-        data: e.response.data.data,
-      };
-      return response;
+      const { data } = e.response;
+      return error(data.code, data.msg, data);
     }
   },
 

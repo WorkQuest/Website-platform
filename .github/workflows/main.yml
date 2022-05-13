@@ -52,9 +52,6 @@ jobs:
           echo BSC_WQT_TOKEN=${{ secrets.BSC_WQT_TOKEN }} >> .env
           echo BSC_RPC_URL=${{ secrets.BSC_RPC_URL }} >> .env
 
-          echo WETH_TOKEN=${{ secrets.WETH_TOKEN }} >> .env
-          echo WBNB_TOKEN=${{ secrets.WBNB_TOKEN }} >> .env
-
           echo WORKNET_BORROWING=${{ secrets.WORKNET_BORROWING }} >> .env
           echo WORKNET_BRIDGE=${{ secrets.WORKNET_BRIDGE }} >> .env
           echo WORKNET_LENDING=${{ secrets.WORKNET_LENDING }} >> .env
@@ -132,9 +129,6 @@ jobs:
           echo BSC_WQT_TOKEN=${{ secrets.BSC_WQT_TOKEN }} >> .env
           echo BSC_RPC_URL=${{ secrets.BSC_RPC_URL }} >> .env
 
-          echo WETH_TOKEN=${{ secrets.WETH_TOKEN }} >> .env
-          echo WBNB_TOKEN=${{ secrets.WBNB_TOKEN }} >> .env
-
           echo WORKNET_BORROWING=${{ secrets.WORKNET_BORROWING }} >> .env
           echo WORKNET_BRIDGE=${{ secrets.WORKNET_BRIDGE }} >> .env
           echo WORKNET_LENDING=${{ secrets.WORKNET_LENDING }} >> .env
@@ -211,9 +205,6 @@ jobs:
           echo BSC_WQT_EXCHANGE=${{ secrets.BSC_WQT_EXCHANGE }} >> .env
           echo BSC_WQT_TOKEN=${{ secrets.BSC_WQT_TOKEN }} >> .env
           echo BSC_RPC_URL=${{ secrets.BSC_RPC_URL }} >> .env
-
-          echo WETH_TOKEN=${{ secrets.WETH_TOKEN }} >> .env
-          echo WBNB_TOKEN=${{ secrets.WBNB_TOKEN }} >> .env
 
           echo WORKNET_BORROWING=${{ secrets.WORKNET_BORROWING }} >> .env
           echo WORKNET_BRIDGE=${{ secrets.WORKNET_BRIDGE }} >> .env
