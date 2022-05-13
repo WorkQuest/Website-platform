@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 
-import { Path } from '~/utils/enums';
+import { Path, TokenSymbols } from '~/utils/enums';
 import {
   BlockchainByIndex, BridgeAddresses, BridgeEvents, SwapAddresses,
 } from '~/utils/сonstants/bridge';
@@ -40,7 +40,7 @@ export default {
           SwapAddresses.get(BlockchainByIndex[swap.chainFrom]).icon,
           SwapAddresses.get(BlockchainByIndex[swap.chainTo]).icon,
         ],
-        amount: new BigNumber(swap.amount).shiftedBy(-18).toString(),
+        amount: new BigNumber(swap.amount).shiftedBy(swap.symbol === TokenSymbols.USDT ? -6 : -18).toString(),
         created: swap.timestamp,
       }));
       commit('setSwapsData', { count: result.count, swaps });
@@ -80,20 +80,21 @@ export default {
       const accountAddress = await getAccountAddress();
       if (isNative) {
         const balance = await getNativeBalance();
+        console.log('balance:', balance);
         const nonce = await getTransactionCount();
         if (!balance) {
           commit('setToken', { amount: 0 });
           return success();
         }
 
-        const txFee = await getTransactionFee(
-          WQBridge,
-          bridgeAddress,
-          'swap',
-          [nonce, toChainIndex, balance, accountAddress, symbol],
-          balance,
-        );
-        commit('setToken', { amount: new BigNumber(balance).shiftedBy(-18).minus(+txFee).toNumber() || 0 });
+        // const txFee = await getTransactionFee(
+        //   WQBridge,
+        //   bridgeAddress,
+        //   'swap',
+        //   [nonce, toChainIndex, balance, accountAddress, symbol],
+        //   balance,
+        // );
+        commit('setToken', { amount: new BigNumber(balance).shiftedBy(-18).toNumber() || 0 });
       } else {
         const [decimal, amount] = await Promise.all([
           fetchContractData('decimals', ERC20, tokenAddress),
@@ -116,7 +117,7 @@ export default {
     try {
       const nonce = await getTransactionCount();
       const accountAddress = await getAccountAddress();
-      const value = new BigNumber(amount).shiftedBy(18).toString();
+      const value = new BigNumber(amount).shiftedBy(symbol === TokenSymbols.USDT ? 6 : 18).toString();
       const data = [nonce, toChainIndex, value, accountAddress, symbol];
       const bridgeInstance = await createInstance(WQBridge, bridgeAddress);
 
@@ -178,7 +179,7 @@ export default {
           if (swaps.length === 10) swaps.splice(9, 1);
           swaps.unshift({
             ...msg.data.returnValues,
-            amount: new BigNumber(amount).shiftedBy(-18).toString(),
+            amount: new BigNumber(amount).shiftedBy(msg.data.returnValues.symbol === TokenSymbols.USDT ? -6 : -18).toString(),
             chain: BlockchainByIndex[chainTo],
             created: timestamp,
             direction: [
