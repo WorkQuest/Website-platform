@@ -96,7 +96,7 @@ export default {
       recipient: '',
       amount: 0,
       ddValue: 0,
-      maxFee: { WQT: 0 },
+      maxFeeForNativeToken: 0,
       isCanSubmit: false,
     };
   },
@@ -118,10 +118,10 @@ export default {
     },
     maxAmount() {
       const {
-        selectedToken, balance, maxFee, frozenBalance,
+        selectedToken, balance, maxFeeForNativeToken, frozenBalance,
       } = this;
       const fullBalance = new BigNumber(balance[selectedToken].fullBalance);
-      if (selectedToken === TokenSymbols.WQT) return fullBalance.minus(maxFee[selectedToken]).toString();
+      if (selectedToken === TokenSymbols.WQT) return fullBalance.minus(maxFeeForNativeToken).toString();
       // TODO [frozen]: fix with frozen tokens
       // if (selectedToken === TokenSymbols.WQT) return fullBalance.minus(frozenBalance).toString();
       return fullBalance.toString();
@@ -156,15 +156,15 @@ export default {
       if (!this.isConnected) return;
       this.isCanSubmit = false;
       const {
-        selectedToken, amount, maxFee, userData, balance,
+        selectedToken, amount, userData, balance,
       } = this;
       if (selectedToken === TokenSymbols.WQT) {
         const nativeTokenFee = await this.$store.dispatch('wallet/getTransferFeeData', {
           recipient: userData.wallet.address,
           value: balance.WQT.fullBalance,
         });
-        if (nativeTokenFee?.ok) maxFee.WQT = nativeTokenFee?.result?.fee ?? 0;
-        else maxFee.WQT = 0;
+        if (nativeTokenFee?.ok) this.maxFeeForNativeToken = nativeTokenFee?.result?.fee ?? 0;
+        else this.maxFeeForNativeToken = 0;
       } else {
         const feeTokens = await this.$store.dispatch('wallet/getContractFeeData', {
           method: 'transfer',
@@ -172,8 +172,8 @@ export default {
           contractAddress: tokenMap[selectedToken],
           data: [tokenMap[selectedToken], amount],
         });
-        if (feeTokens?.ok) maxFee[selectedToken] = feeTokens?.result?.fee ?? 0;
-        else maxFee[selectedToken] = 0;
+        if (feeTokens?.ok) this.maxFeeForNativeToken = feeTokens?.result?.fee ?? 0;
+        else this.maxFeeForNativeToken = 0;
       }
       this.isCanSubmit = true;
     },
