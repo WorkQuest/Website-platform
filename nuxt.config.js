@@ -139,9 +139,6 @@ export default {
     BSC_WQT_TOKEN: process.env.BSC_WQT_TOKEN,
     BSC_RPC_URL: process.env.BSC_RPC_URL,
 
-    WETH_TOKEN: process.env.WETH_TOKEN,
-    WBNB_TOKEN: process.env.WBNB_TOKEN,
-
     WORKNET_BORROWING: process.env.WORKNET_BORROWING,
     WORKNET_BRIDGE: process.env.WORKNET_BRIDGE,
     WORKNET_LENDING: process.env.WORKNET_LENDING,
@@ -158,5 +155,6 @@ export default {
     WORKNET_WETH_TOKEN: process.env.WORKNET_WETH_TOKEN,
     WORKNET_WUSD_TOKEN: process.env.WORKNET_WUSD_TOKEN,
     WORKNET_WQ_FACTORY: process.env.WORKNET_WQ_FACTORY,
+    WORKNET_VOTING: process.env.WORKNET_VOTING,
   },
 };

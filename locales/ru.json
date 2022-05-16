@@ -99,7 +99,10 @@
     "placeholders": {
       "default": "",
       "mail": "your@mail.com",
-      "email": "Email address"
+      "email": "Email address",
+      "specialization": "Введите специализацию",
+      "skill": "Введите навык",
+      "searchSpecSkill": "Введите специализацию или навык"
     },
     "worker": {
       "cost": {
@@ -1398,7 +1401,11 @@
     },
     "leaveChat": "Покинуть беседу",
     "loadMore": "Показать больше",
-    "searchTitle": "Имя/Квест/Группа"
+    "searchTitle": "Имя/Квест/Группа",
+    "menu": {
+      "giveAQuest": "Дать квест",
+      "removeFromChat": "Удалить из чата"
+    }
   },
   "settings": {
     "additionalPhoneNumber": "Дополнительный номер телефона",

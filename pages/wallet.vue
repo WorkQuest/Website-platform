@@ -25,11 +25,14 @@
             <div class="balance__top">
               <span class="balance__title">{{ $t('meta.balance') }}</span>
               <span class="balance__currency">
-                <span class="balance__currency-text">
-                  {{ balance[selectedToken].balance + ' ' + selectedToken }}
+                <span
+                  class="balance__currency-text"
+                  :class="{'balance__currency-text_light': isFetchingBalance}"
+                >
+                  {{ selectedTokenBalanceInfo }}
                 </span>
                 <span
-                  v-if="selectedToken === tokenSymbols.WQT"
+                  v-if="selectedToken === $options.TokenSymbols.WQT"
                   class="balance__usd-mobile"
                 >
                   <span class="balance__usd-mobile_blue">
@@ -41,12 +44,14 @@
                   v-model="ddValue"
                   class="balance__token"
                   :items="tokenSymbolsDd"
+                  :placeholder="$options.TokenSymbols.WQT"
                   data-selector="TOKENS"
+                  type="border"
                 />
               </span>
-              <span :class="[{'balance__currency__margin-bottom' : selectedToken !== tokenSymbols.WQT}]">
+              <span :class="[{'balance__currency__margin-bottom' : selectedToken !== $options.TokenSymbols.WQT}]">
                 <span
-                  v-if="selectedToken === tokenSymbols.WQT"
+                  v-if="selectedToken === $options.TokenSymbols.WQT"
                   class="balance__usd balance__usd_blue"
                 >
                   <span class="balance__usd">
@@ -160,7 +165,7 @@ import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { ERC20 } from '~/abi/index';
 import {
-  tokenMap, TokenSymbolByContract, TokenSymbols, WalletTables,
+  TokenMap, TokenSymbolByContract, TokenSymbols, WalletTables, WorknetTokenAddresses,
 } from '~/utils/enums';
 import { getStyledAmount } from '~/utils/wallet';
 import EmptyData from '~/components/app/info/emptyData';
@@ -171,6 +176,7 @@ export default {
   name: 'Wallet',
   middleware: 'auth',
   components: { EmptyData, CollateralTable },
+  TokenSymbols,
   data() {
     return {
       cardClosed: false,
@@ -178,6 +184,8 @@ export default {
       txsPerPage: 10,
       currentPage: 1,
       selectedWalletTable: WalletTables.TXS,
+      tokenSymbolsDd: [],
+      isFetchingBalance: false,
     };
   },
   computed: {
@@ -191,6 +199,13 @@ export default {
       transactionsCount: 'wallet/getTransactionsCount',
       isWalletConnected: 'wallet/getIsWalletConnected',
     }),
+    selectedTokenData() {
+      return this.balance[this.selectedToken];
+    },
+    selectedTokenBalanceInfo() {
+      if (!this.selectedTokenData) return this.selectedToken;
+      return `${this.selectedTokenData?.balance || '0'} ${this.selectedToken}`;
+    },
     wqAddress() {
       return this.convertToBech32('wq', this.userWalletAddress);
     },
@@ -205,36 +220,23 @@ export default {
       return Math.ceil(this.transactionsCount / this.txsPerPage);
     },
     styledTransactions() {
-      const txs = this.transactions;
-      const res = [];
-      this.$moment.locale(this.$i18n.locale);
-      // eslint-disable-next-line no-restricted-syntax
-      for (const t of txs) {
+      return this.transactions.map((t) => {
         const symbol = TokenSymbolByContract[t.to_address_hash.hex] || TokenSymbols.WQT;
-        res.push({
+        const decimals = this.balance[symbol].decimals || 18;
+        return {
           tx_hash: t.hash,
           block: t.block_number,
           timestamp: this.$moment(t.block.timestamp).format('lll'),
           status: !!t.status,
-          value: `${getStyledAmount(t.value || t.tokenTransfers[0]?.amount)} ${symbol}`,
+          value: `${getStyledAmount(t.tokenTransfers[0]?.amount || t.value, false, decimals)} ${symbol}`,
           transaction_fee: t.transaction_fee || new BigNumber(t.gas_price).multipliedBy(t.gas_used),
           from_address: t.from_address_hash.hex,
           to_address: t.to_address_hash.hex,
-        });
-      }
-      return res;
+        };
+      });
     },
-    tokenSymbolsDd() {
-      // TODO need to change on WETH and WBNB
-      return [
-        TokenSymbols.WQT,
-        TokenSymbols.WUSD,
-        TokenSymbols.BNB,
-        TokenSymbols.ETH,
-      ];
-    },
-    tokenSymbols() {
-      return TokenSymbols;
+    tokenAddresses() {
+      return WorknetTokenAddresses;
     },
     walletTableFields() {
       return [
@@ -250,8 +252,11 @@ export default {
     },
   },
   watch: {
-    ddValue(val) {
-      this.$store.dispatch('wallet/setSelectedToken', TokenSymbols[this.tokenSymbolsDd[val]]);
+    balance() {
+      this.tokenSymbolsDd = Object.keys(this.balance);
+    },
+    ddValue(newVal) {
+      this.$store.dispatch('wallet/setSelectedToken', this.tokenSymbolsDd[newVal]);
     },
     async selectedToken() {
       const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
@@ -275,8 +280,7 @@ export default {
       });
     }
     if (!this.isWalletConnected) return;
-    const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
-    this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
+
     await this.$store.dispatch('wallet/subscribeWS', {
       hexAddress: this.userWalletAddress,
       timestamp: this.$moment(),
@@ -299,22 +303,21 @@ export default {
       });
     },
     async loadData() {
-      this.SetLoader(true);
+      this.isFetchingBalance = true;
       const { selectedToken, userWalletAddress } = this;
-      if (selectedToken === TokenSymbols.WQT) await this.$store.dispatch('wallet/getBalance');
-      else {
+      if (selectedToken === TokenSymbols.WQT) {
+        await Promise.all([
+          this.$store.dispatch('wallet/getBalance'),
+          this.$store.dispatch('wallet/updateFrozenBalance'),
+        ]);
+      } else {
         const payload = { address: userWalletAddress, abi: ERC20 };
         await this.$store.dispatch('wallet/fetchWalletData', {
-          method: 'balanceOf', ...payload, token: tokenMap[selectedToken], symbol: selectedToken,
+          method: 'balanceOf', ...payload, token: this.tokenAddresses[this.tokenSymbolsDd.indexOf(selectedToken) - 1], symbol: selectedToken,
         });
-        if (selectedToken === TokenSymbols.WUSD) {
-          await this.$store.dispatch('wallet/fetchWalletData', {
-            method: 'freezed', ...payload, token: tokenMap.WUSD,
-          });
-        }
       }
       await this.getTransactions();
-      this.SetLoader(false);
+      this.isFetchingBalance = false;
     },
     closeCard() {
       this.cardClosed = true;
@@ -326,12 +329,13 @@ export default {
       });
     },
     showTransferModal() {
+      if (this.isFetchingBalance) return;
       this.ShowModal({
         key: modals.giveTransfer,
         submit: async ({ recipient, amount, selectedToken }) => {
           const { wqAddress, convertToHex, convertToBech32 } = this;
           recipient = convertToHex('wq', recipient);
-          const value = new BigNumber(amount).shiftedBy(18).toString();
+          const value = new BigNumber(amount).shiftedBy(Number(this.selectedTokenData.decimals)).toString();
           let feeRes;
           if (selectedToken === TokenSymbols.WQT) {
             feeRes = await this.$store.dispatch('wallet/getTransferFeeData', {
@@ -342,7 +346,7 @@ export default {
             feeRes = await this.$store.dispatch('wallet/getContractFeeData', {
               method: 'transfer',
               abi: ERC20,
-              contractAddress: tokenMap[selectedToken],
+              contractAddress: TokenMap[selectedToken],
               data: [recipient, value],
             });
           }
@@ -356,17 +360,17 @@ export default {
                 value: amount,
                 symbol: selectedToken, // REQUIRED!
               },
-              fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WUSD },
+              fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
             },
             submitMethod: async () => {
               this.CloseModal();
               this.SetLoader(true);
-              const action = selectedToken === TokenSymbols.WUSD ? 'transfer' : 'transferToken';
-              const payload = selectedToken === TokenSymbols.WUSD
+              const action = selectedToken === TokenSymbols.WQT ? 'transfer' : 'transferToken';
+              const payload = selectedToken === TokenSymbols.WQT
                 ? { recipient, value: amount }
                 : {
                   abi: ERC20,
-                  address: tokenMap[selectedToken],
+                  address: TokenMap[selectedToken],
                   data: [recipient, value],
                 };
               const res = await this.$store.dispatch(`wallet/${action}`, payload);
@@ -562,13 +566,14 @@ export default {
       text-overflow: ellipsis;
       max-width: 1000px;
       padding-right: 20px;
+      &_light {
+        color: $black500;
+      }
     }
   }
 
   &__token {
     height: 49px;
-    border: 1px solid $black100;
-    border-radius: 6px;
     box-sizing: border-box;
   }
 

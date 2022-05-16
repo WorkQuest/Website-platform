@@ -128,22 +128,22 @@ import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { getGasPrice, getWalletAddress } from '~/utils/wallet';
 import { WQOracle, WQRouter, ERC20 } from '~/abi/index';
-import { tokenMap, TokenSymbols } from '~/utils/enums';
+import { TokenMap, TokenSymbols } from '~/utils/enums';
 
 export default {
   name: 'ModalGetWUSD',
   data() {
     return {
-      selCurrencyID: tokenMap.BNB,
+      selCurrencyID: TokenMap.BNB,
       amountWUSD: '',
       amountCollateral: '',
       collateralPercent: '',
       currentCurrencyPrice: 0,
       optimalCollateralRatio: 0,
       checkpoints: [
-        { name: this.$t('meta.coins.bnb'), id: tokenMap.BNB },
-        { name: this.$t('meta.coins.eth'), id: tokenMap.ETH },
-        { name: this.$t('meta.coins.wqt'), id: tokenMap.WQT },
+        { name: this.$t('meta.coins.bnb'), id: TokenMap.BNB },
+        { name: this.$t('meta.coins.eth'), id: TokenMap.ETH },
+        // { name: this.$t('meta.coins.wqt'), id: TokenMap.WQT }, // TODO: wqt native now, fix it
       ],
     };
   },
@@ -294,11 +294,11 @@ export default {
     },
     async approveRouter(payload) {
       const allowance = await this.$store.dispatch('wallet/getAllowance', {
-        tokenAddress: tokenMap[payload.currency],
+        tokenAddress: TokenMap[payload.currency],
         spenderAddress: process.env.WORKNET_ROUTER,
       });
       if (+allowance < +payload.collateral) {
-        const resultGasApprove = await getGasPrice(ERC20, tokenMap[payload.currency], 'approve', [process.env.WORKNET_ROUTER, payload.collateralBN]);
+        const resultGasApprove = await getGasPrice(ERC20, TokenMap[payload.currency], 'approve', [process.env.WORKNET_ROUTER, payload.collateralBN]);
         this.ShowModal({
           key: modals.transactionReceipt,
           title: this.$t('modals.approveRouter', { token: payload.currency }),
@@ -312,7 +312,7 @@ export default {
           },
           submitMethod: async () => {
             await this.$store.dispatch('wallet/approve', {
-              tokenAddress: tokenMap[payload.currency],
+              tokenAddress: TokenMap[payload.currency],
               spenderAddress: process.env.WORKNET_ROUTER,
               amount: payload.collateral,
             });

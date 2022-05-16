@@ -56,17 +56,21 @@
                   :id="user.id"
                   type="checkbox"
                   class="checkbox-input"
-                  @change="changeSelStatus($event, user.id)"
+                  @change="changeSelStatus($event, user)"
                 >
                 <span class="checkmark" />
               </label>
             </div>
             <div
               v-if="options.isMembersList && options.itsOwner"
-              class="friends__del-cont"
-              @click="tryRemoveUser(user.id)"
+              class="friends__menu"
             >
-              <span class="icon-minus_circle_outline" />
+              <chat-menu
+                class="friends__btn-menu"
+                :menu-items="isCurrentUserEmployer?['giveAQuest','removeFromChat']:['removeFromChat']"
+                @giveAQuest="sendInvite(user)"
+                @removeFromChat="tryRemoveUser(user.id)"
+              />
             </div>
           </div>
         </div>
@@ -99,11 +103,13 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { Path } from '~/utils/enums';
+import { Path, UserRole } from '~/utils/enums';
 import modals from '~/store/modals/modals';
+import ChatMenu from '~/components/ui/ChatMenu';
 
 export default {
   name: 'ModalChatUsers',
+  components: { ChatMenu },
   data() {
     return {
       name: '',
@@ -121,12 +127,16 @@ export default {
       users: 'chat/getGroupChatUsers',
       chatMembers: 'chat/getChatMembers',
       chatId: 'chat/getCurrChatId',
+      currentUser: 'user/getUserData',
     }),
     setLocale() {
       const { isMembersList, isAdding } = this.options;
       if (isMembersList) return 'members';
       if (isAdding) return 'addMember';
       return 'title';
+    },
+    isCurrentUserEmployer() {
+      return this.currentUser.role === UserRole.EMPLOYER;
     },
   },
   async mounted() {
@@ -166,9 +176,9 @@ export default {
         isAdding: false,
       });
     },
-    changeSelStatus({ target }, userId) {
-      if (target.checked) this.memberUserIds.push(userId);
-      else this.memberUserIds = this.memberUserIds.filter((id) => id !== userId);
+    changeSelStatus({ target }, { id }) {
+      if (target.checked) this.memberUserIds.push(id);
+      else this.memberUserIds = this.memberUserIds.filter((userId) => userId !== id);
     },
     async getUsers() {
       const { filter, chatId, users } = this;
@@ -206,6 +216,26 @@ export default {
       }
       this.hide();
     },
+    async sendInvite(user) {
+      const { count } = await this.$store.dispatch('quests/getAvailableQuests', user.id);
+      if (count > 0) {
+        this.ShowModal({
+          key: modals.invitation,
+          userId: user.id,
+          avatar: user.avatar,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          ratingStatistic: user.ratingStatistic,
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.errors.errorQuests'),
+          subtitle: this.$t('modals.errors.emptyOpenQuests'),
+        });
+      }
+    },
   },
 };
 </script>
@@ -222,7 +252,7 @@ export default {
     .participants {
       &__content {
         max-height: 500px;
-        overflow: auto;
+        overflow: visible;
         &::-webkit-scrollbar {
           width: 0;
           height: 0;
@@ -404,8 +434,18 @@ export default {
 }
 
 .friends {
+  &__menu {
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    gap: 5px;
+  }
   &__del-cont {
+    margin-top: 4px;
     cursor: pointer;
+  }
+  &__btn-menu{
+    margin-right:3px ;
   }
 }
 .messageSend {

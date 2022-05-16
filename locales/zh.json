@@ -99,7 +99,10 @@
     "placeholders": {
       "default": "",
       "mail": "your@mail.com",
-      "email": "电子邮件地址"
+      "email": "电子邮件地址",
+      "specialization": "Enter specialization",
+      "skill": "Enter skill",
+      "searchSpecSkill": "Enter specialization or skill"
     },
     "worker": {
       "cost": {
@@ -1398,7 +1401,11 @@
     },
     "leaveChat": "Leave chat",
     "loadMore": "Load more",
-    "searchTitle": "Name/Quest/Group"
+    "searchTitle": "Name/Quest/Group",
+    "menu": {
+      "giveAQuest": "Give a quest",
+      "removeFromChat": "Remove from the chat"
+    }
   },
   "settings": {
     "additionalPhoneNumber": "Additional phone number",

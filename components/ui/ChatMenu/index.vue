@@ -1,60 +1,73 @@
 <template>
   <div
-    class="icon-more"
+    class="icon-more chat__button_menu"
     :class="{'invisible':isInvisible}"
   >
     <button
       v-click-outside="closeChatMenu"
-      class="chat__button chat__button_menu"
+      class="chat__button "
       @click="toggleChatMenu"
     >
       <span class="icon-more_horizontal" />
-      <transition name="fade">
-        <div
-          v-if="isShowChatMenu"
-          class="chat-menu"
-        >
-          <div class="chat-menu__items">
-            <template v-if="$route.name === 'messages'">
-              <div
-                class="chat-menu__item"
-                @click="getStarredMessages"
-              >
-                {{ $t('chat.starredMessages') }}
-              </div>
-              <div
-                class="chat-menu__item"
-                @click="changeStarredVal"
-              >
-                {{ $t(`chat.${starred ? 'allChats' : 'starredChats'}`) }}
-              </div>
-              <div
-                class="chat-menu__item"
-                @click="showCreateChatModal()"
-              >
-                {{ $t('chat.createGroupChat') }}
-              </div>
-            </template>
-            <template v-else>
-              <div
-                v-if="isOpenDispute"
-                class="chat-menu__item"
-                @click="showOpenADisputeModal()"
-              >
-                {{ $t('meta.openDispute') }}
-              </div>
-              <div
-                v-if="canILeave"
-                class="chat-menu__item"
-                @click="tryLeaveChat"
-              >
-                {{ $t('chat.leaveChat') }}
-              </div>
-            </template>
-          </div>
-        </div>
-      </transition>
     </button>
+    <transition name="fade">
+      <div
+        v-if="isShowChatMenu"
+        class="chat-menu"
+        :class="menuItems.length?'chat-menu-secondary-position':'chat-menu-main-position'"
+      >
+        <div
+          class="chat-menu__items"
+        >
+          <template v-if="menuItems.length">
+            <div
+              v-for="(item, index) in menuItems"
+              :key="index"
+              class="chat-menu__item"
+              @click="$emit(item)"
+            >
+              {{ $t(`chat.menu.${item}`) }}
+            </div>
+          </template>
+          <template v-if="$route.name === 'messages'">
+            <div
+              class="chat-menu__item"
+              @click="getStarredMessages"
+            >
+              {{ $t('chat.starredMessages') }}
+            </div>
+            <div
+              class="chat-menu__item"
+              @click="changeStarredVal"
+            >
+              {{ $t(`chat.${starred ? 'allChats' : 'starredChats'}`) }}
+            </div>
+            <div
+              class="chat-menu__item"
+              @click="showCreateChatModal()"
+            >
+              {{ $t('chat.createGroupChat') }}
+            </div>
+          </template>
+          <template v-else>
+            <div
+              v-if="isOpenDispute"
+              class="chat-menu__item"
+              @click="showOpenADisputeModal()"
+            >
+              {{ $t('meta.openDispute') }}
+            </div>
+            <div
+              v-if="canILeave"
+              class="chat-menu__item"
+              @click="tryLeaveChat"
+            >
+              {{ $t('chat.leaveChat') }}
+            </div>
+          </template>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -80,6 +93,10 @@ export default {
     canILeave: {
       type: Boolean,
       default: false,
+    },
+    menuItems: {
+      type: Array,
+      default: () => ([]),
     },
   },
   data() {
@@ -195,14 +212,20 @@ export default {
 
 .chat-menu {
   position: absolute;
-  top: 55px;
   background: #FFFFFF;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   border-radius: 6px;
   min-width: 86px;
   z-index: 1;
-  margin: 0 90px 0 0;
   width: max-content;
+  &-main-position{
+    margin: 0 90px 0 0;
+    top: 55px;
+  }
+  &-secondary-position{
+    bottom: 0;
+    left: 0;
+  }
   &__items {
     padding: 10px;
     display: grid;
@@ -217,6 +240,7 @@ export default {
     color: $black500;
     transition: .5s;
     text-align: left;
+    cursor: pointer;
     &:hover {
       color: $black800;
     }

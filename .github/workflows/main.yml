@@ -52,9 +52,6 @@ jobs:
           echo BSC_WQT_TOKEN=${{ secrets.BSC_WQT_TOKEN }} >> .env
           echo BSC_RPC_URL=${{ secrets.BSC_RPC_URL }} >> .env
 
-          echo WETH_TOKEN=${{ secrets.WETH_TOKEN }} >> .env
-          echo WBNB_TOKEN=${{ secrets.WBNB_TOKEN }} >> .env
-
           echo WORKNET_BORROWING=${{ secrets.WORKNET_BORROWING }} >> .env
           echo WORKNET_BRIDGE=${{ secrets.WORKNET_BRIDGE }} >> .env
           echo WORKNET_LENDING=${{ secrets.WORKNET_LENDING }} >> .env
@@ -71,6 +68,7 @@ jobs:
           echo WORKNET_WETH_TOKEN=${{ secrets.WORKNET_WETH_TOKEN }} >> .env
           echo WORKNET_WUSD_TOKEN=${{ secrets.WORKNET_WUSD_TOKEN }} >> .env
           echo WORKNET_WQ_FACTORY=${{ secrets.WORKNET_WQ_FACTORY }} >> .env
+          echo WORKNET_VOTING=${{ secrets.WORKNET_VOTING }} >> .env
 
       - name: Run generate static task
         run: npm run generate
@@ -132,9 +130,6 @@ jobs:
           echo BSC_WQT_TOKEN=${{ secrets.BSC_WQT_TOKEN }} >> .env
           echo BSC_RPC_URL=${{ secrets.BSC_RPC_URL }} >> .env
 
-          echo WETH_TOKEN=${{ secrets.WETH_TOKEN }} >> .env
-          echo WBNB_TOKEN=${{ secrets.WBNB_TOKEN }} >> .env
-
           echo WORKNET_BORROWING=${{ secrets.WORKNET_BORROWING }} >> .env
           echo WORKNET_BRIDGE=${{ secrets.WORKNET_BRIDGE }} >> .env
           echo WORKNET_LENDING=${{ secrets.WORKNET_LENDING }} >> .env
@@ -151,6 +146,7 @@ jobs:
           echo WORKNET_WETH_TOKEN=${{ secrets.WORKNET_WETH_TOKEN }} >> .env
           echo WORKNET_WUSD_TOKEN=${{ secrets.WORKNET_WUSD_TOKEN }} >> .env
           echo WORKNET_WQ_FACTORY=${{ secrets.WORKNET_WQ_FACTORY }} >> .env
+          echo WORKNET_VOTING=${{ secrets.WORKNET_VOTING }} >> .env
 
       - name: Run generate static task
         run: npm run generate
@@ -212,9 +208,6 @@ jobs:
           echo BSC_WQT_TOKEN=${{ secrets.BSC_WQT_TOKEN }} >> .env
           echo BSC_RPC_URL=${{ secrets.BSC_RPC_URL }} >> .env
 
-          echo WETH_TOKEN=${{ secrets.WETH_TOKEN }} >> .env
-          echo WBNB_TOKEN=${{ secrets.WBNB_TOKEN }} >> .env
-
           echo WORKNET_BORROWING=${{ secrets.WORKNET_BORROWING }} >> .env
           echo WORKNET_BRIDGE=${{ secrets.WORKNET_BRIDGE }} >> .env
           echo WORKNET_LENDING=${{ secrets.WORKNET_LENDING }} >> .env
@@ -231,6 +224,7 @@ jobs:
           echo WORKNET_WETH_TOKEN=${{ secrets.WORKNET_WETH_TOKEN }} >> .env
           echo WORKNET_WUSD_TOKEN=${{ secrets.WORKNET_WUSD_TOKEN }} >> .env
           echo WORKNET_WQ_FACTORY=${{ secrets.WORKNET_WQ_FACTORY }} >> .env
+          echo WORKNET_VOTING=${{ secrets.WORKNET_VOTING }} >> .env
 
       - name: Run generate static task
         run: npm run generate
