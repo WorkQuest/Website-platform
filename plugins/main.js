@@ -6,6 +6,7 @@ import modals from '~/store/modals/modals';
 import { TokenSymbols } from '~/utils/enums';
 import { QuestMethods, QuestStatuses } from '~/utils/сonstants/quests';
 import { images } from '~/utils/images';
+import { WorkQuest } from '~/abi';
 
 Vue.use(VueTippy);
 Vue.component('tippy', TippyComponent);
@@ -159,6 +160,7 @@ Vue.mixin({
         this.SetLoader(true);
         const [feeRes] = await Promise.all([
           this.$store.dispatch('quests/getFeeDataJobMethod', {
+            abi: WorkQuest,
             method: QuestMethods.CancelJob,
             contractAddress,
           }),
