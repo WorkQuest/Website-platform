@@ -93,7 +93,7 @@
             v-model="searchLine"
             class="dd__search"
             data-selector="INPUT-SEARCH"
-            :placeholder="$t(`meta.placeholders.${searchPlaceholder}`)"
+            :placeholder="searchPlaceholder"
             :is-search="true"
             :is-hide-error="true"
           />
