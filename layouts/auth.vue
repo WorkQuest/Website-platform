@@ -4,7 +4,7 @@
       <div class="template__left">
         <div
           class="template__logo"
-          @click="toMain()"
+          @click="$router.push($options.Path.SIGN_IN)"
         >
           <img
             src="~assets/img/app/logo.svg"
@@ -40,6 +40,7 @@ import { Path, UserRole, UserStatuses } from '~/utils/enums';
 
 export default {
   name: 'AuthLayout',
+  Path,
   computed: {
     ...mapGetters({
       isLoading: 'main/getIsLoading',
@@ -91,11 +92,6 @@ export default {
         await this.$router.push(Path.QUESTS);
       }
     }
-  },
-  methods: {
-    toMain() {
-      this.$router.push('/sign-in');
-    },
   },
 };
 </script>

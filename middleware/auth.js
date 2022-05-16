@@ -28,9 +28,10 @@ export default async function ({
     if (!userData.id && +userStatus === UserStatuses.Confirmed) {
       await store.dispatch('user/getMainData');
     }
-    if (+userStatus === UserStatuses.NeedSetRole && route.path !== Path.ROLE) {
+    if ((+userStatus === UserStatuses.NeedSetRole || !store.getters['user/getUserWalletAddress']) && route.path !== Path.ROLE) {
       return redirect(Path.ROLE);
     }
+
     return true;
   } catch (e) {
     console.error(e);

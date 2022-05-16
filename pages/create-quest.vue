@@ -166,13 +166,12 @@ import {
 } from '~/utils/enums';
 import { CommissionForCreatingAQuest } from '~/utils/сonstants/quests';
 import { ERC20 } from '~/abi';
-import { error, success } from '~/utils/web3';
 
 const { GeoCode } = require('geo-coder');
 
 export default {
   name: 'CreateQuest',
-  middleware: ['employer-role'],
+  middleware: 'employer-role',
   data() {
     return {
       period: 1,
