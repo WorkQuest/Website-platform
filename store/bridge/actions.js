@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 
-import { Path, TokenSymbols } from '~/utils/enums';
+import { Path, tokenMap, TokenSymbols } from '~/utils/enums';
 import {
   BlockchainByIndex, BridgeAddresses, BridgeEvents, SwapAddresses,
 } from '~/utils/сonstants/bridge';
@@ -73,7 +73,7 @@ export default {
     }
   },
 
-  async fetchBalance({ commit }, {
+  async fetchBalance({ commit, dispatch }, {
     symbol, toChainIndex, isNative, tokenAddress, bridgeAddress,
   }) {
     try {
@@ -85,15 +85,16 @@ export default {
           commit('setToken', { amount: 0 });
           return success();
         }
-        // TODO: под вопросом
-        // const txFee = await getTransactionFee(
-        //   WQBridge,
-        //   bridgeAddress,
-        //   'swap',
-        //   [nonce, toChainIndex, balance, accountAddress, symbol],
-        //   balance,
-        // );
-        commit('setToken', { amount: new BigNumber(balance).shiftedBy(-18).toNumber() || 0 });
+
+        const txFee = await getTransactionFee(
+          WQBridge,
+          bridgeAddress,
+          'swap',
+          [nonce, toChainIndex, balance, accountAddress, symbol],
+          balance,
+        );
+
+        commit('setToken', { amount: new BigNumber(balance).shiftedBy(symbol === TokenSymbols.USDT ? -6 : -18).minus(+txFee).toNumber() || 0 });
       } else {
         const [decimal, amount] = await Promise.all([
           fetchContractData('decimals', ERC20, tokenAddress),
