@@ -204,6 +204,7 @@ export default {
     },
     // Updates balance by current network & token
     async updateTokenData() {
+      if (!this.isChainCompareToCurrent()) return;
       const res = await this.$store.dispatch('web3/fetchTokenInfo', this.tokenList[this.selectedToken].tokenAddress);
       if (res.ok) {
         const r = res.result;
