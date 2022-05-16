@@ -127,13 +127,13 @@
           <div class="wallet__table table">
             <base-table
               class="table__txs"
-              :title="$t('wallet.table.trx')"
+              :title="$tc('wallet.table.trx')"
               :items="styledTransactions"
               :fields="walletTableFields"
             />
             <empty-data
               v-if="!totalPages"
-              :description="$t('wallet.table.empty')"
+              :description="$tc('wallet.table.empty')"
               class="table__empty"
             />
           </div>

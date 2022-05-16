@@ -206,7 +206,7 @@ export const getTransferFeeData = async (recipient, value) => {
 
 /** CONTRACTS */
 export const sendWalletTransaction = async (_method, {
-  abi, address, value, data = [],
+  abi, address, value, data,
 }) => {
   if (!web3) {
     console.error('web3 is undefined');
