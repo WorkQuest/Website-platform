@@ -569,7 +569,7 @@ export default {
                   // TODO: Добавить локализацию
                   key: modals.status,
                   img: images.WARNING,
-                  title: 'Dispute Pay',
+                  title: 'Dispute payment',
                   text: 'You need to pay to open a dispute',
                   callback: async () => {
                     const feeTx = await fetchContractData(
