@@ -307,14 +307,11 @@ export default {
         await this.checkWalletExists();
         return;
       }
-      const {
-        balance,
-        fullBalance,
-      } = this.balanceData.WUSD;
+      const { balanceData } = this;
       this.ShowModal({
         key: modals.applyForAPension,
         defaultFee: this.percent,
-        maxValue: fullBalance,
+        maxValue: balanceData.WUSD.fullBalance,
         submitMethod: async (firstDepositAmount, depositPercentFromAQuest) => {
           this.CloseModal();
           this.SetLoader(true);
@@ -322,7 +319,15 @@ export default {
             tokenAddress: tokenMap[TokenSymbols.WUSD],
             spenderAddress: process.env.WORKNET_PENSION_FUND,
           });
+          let txFee = 0;
           if (new BigNumber(allowance).isLessThan(firstDepositAmount)) {
+            const { result: { fee } } = await this.$store.dispatch('wallet/getContractFeeData', {
+              method: 'approve',
+              abi: ERC20,
+              contractAddress: tokenMap[TokenSymbols.WUSD],
+              data: [process.env.WORKNET_PENSION_FUND, new BigNumber(firstDepositAmount).shiftedBy(18).toString()],
+            });
+            txFee = fee;
             await this.$store.dispatch('wallet/approve', {
               tokenAddress: tokenMap[TokenSymbols.WUSD],
               spenderAddress: process.env.WORKNET_PENSION_FUND,
@@ -330,32 +335,27 @@ export default {
             });
           }
           this.inProgress = true;
-          let txFee;
           const equalsFee = new BigNumber(this.percent).shiftedBy(-18).isEqualTo(new BigNumber(depositPercentFromAQuest.substr(0, depositPercentFromAQuest.length - 1)).shiftedBy(-18));
           if (!equalsFee) {
-            const [fee] = await Promise.all([
-              this.$store.dispatch('wallet/getContractFeeData', {
-                method: 'updateFee',
-                abi: WQPensionFund,
-                contractAddress: process.env.WORKNET_PENSION_FUND,
-                data: [new BigNumber(depositPercentFromAQuest.substr(0, depositPercentFromAQuest.length - 1)).shiftedBy(18).toString()],
-              }),
-            ]);
-            txFee = fee;
+            const { result: { fee } } = await this.$store.dispatch('wallet/getContractFeeData', {
+              method: 'updateFee',
+              abi: WQPensionFund,
+              contractAddress: process.env.WORKNET_PENSION_FUND,
+              data: [new BigNumber(depositPercentFromAQuest.substr(0, depositPercentFromAQuest.length - 1)).shiftedBy(18).toString()],
+            });
+            txFee = new BigNumber(txFee).plus(fee);
           }
           if (firstDepositAmount) {
-            const [fee] = await Promise.all([
-              this.$store.dispatch('wallet/getContractFeeData', {
-                method: 'contribute',
-                abi: WQPensionFund,
-                contractAddress: process.env.WORKNET_PENSION_FUND,
-                data: [getWalletAddress(), new BigNumber(firstDepositAmount).shiftedBy(18).toString()],
-                recipient: process.env.WORKNET_PENSION_FUND,
-              }),
-            ]);
-            txFee = fee;
+            const { result: { fee } } = await this.$store.dispatch('wallet/getContractFeeData', {
+              method: 'contribute',
+              abi: WQPensionFund,
+              contractAddress: process.env.WORKNET_PENSION_FUND,
+              data: [getWalletAddress(), new BigNumber(firstDepositAmount).shiftedBy(18).toString()],
+              recipient: process.env.WORKNET_PENSION_FUND,
+            });
+            txFee = new BigNumber(txFee).plus(fee);
           }
-          if (!txFee?.ok || balance === 0) {
+          if (balanceData.WUSD.balance === 0 || balanceData.WQT.balance === 0) {
             await this.$store.dispatch('main/showToast', {
               text: this.$t('errors.transaction.notEnoughFunds'),
             });
@@ -374,7 +374,7 @@ export default {
             },
             fee: {
               name: this.$t('wallet.table.trxFee'),
-              value: txFee.result.fee,
+              value: txFee,
               symbol: TokenSymbols.WQT,
             },
           };
