@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 
-import { Path, tokenMap, TokenSymbols } from '~/utils/enums';
+import { Path, TokenSymbols } from '~/utils/enums';
 import {
   BlockchainByIndex, BridgeAddresses, BridgeEvents, SwapAddresses,
 } from '~/utils/сonstants/bridge';
