@@ -555,7 +555,7 @@ export default {
       if (checkAvailabilityDisputeTime) {
         return ShowModal({
           key: modals.openADispute,
-          submitMethod: async ({ reason, problemDescription, questId }) => {
+          submitMethod: async ({ reason, problemDescription }) => {
             if (!openDispute) await this.$store.dispatch('disputes/createDispute', { reason, problemDescription, questId: id });
             this.feeTx = await fetchContractData(
               'feeTx',
