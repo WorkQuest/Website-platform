@@ -160,7 +160,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
-import Web3 from 'web3';
 import {
   Path,
   UserRole,
@@ -174,9 +173,9 @@ import {
   QuestMethods, EditQuestState, QuestStatuses, InfoModeWorker, InfoModeEmployer,
 } from '~/utils/сonstants/quests';
 import { images } from '~/utils/images';
-import { ERC20, WorkQuest, WQFactory } from '~/abi';
+import { WorkQuest, WQFactory } from '~/abi';
 import { fetchContractData } from '~/utils/web3';
-import { getWalletAddress, GetWalletProvider } from '~/utils/wallet';
+import { GetWalletProvider } from '~/utils/wallet';
 
 export default {
   name: 'Quests',
@@ -215,6 +214,11 @@ export default {
     avatar() {
       return this.assignedWorker.avatar?.url || images.EMPTY_AVATAR;
     },
+    dateForStart() {
+      // TODO fixme Вернуть, нужно для тестов Роме
+      // const dateForStart = this.$moment(this.quest.startedAt).add(1, 'day').valueOf();
+      return this.$moment(this.quest.startedAt).add(1, 'm').valueOf();
+    },
     priority() {
       const { priority } = this.quest;
       const priorities = {
@@ -240,10 +244,7 @@ export default {
     },
     checkAvailabilityDisputeTime() {
       const now = this.$moment().valueOf();
-      // TODO fixme Вернуть, нужно для тестов Роме
-      // const dateForStart = this.$moment(this.quest.startedAt).add(1, 'day').valueOf();
-      const dateForStart = this.$moment(this.quest.startedAt).add(1, 'm').valueOf();
-      return now >= dateForStart;
+      return now >= this.dateForStart;
     },
   },
   watch: {
@@ -287,7 +288,7 @@ export default {
     await this.setActionBtnsArr();
     this.SetLoader(false);
   },
-  mounted() {
+  async mounted() {
     this.mounted = true;
   },
   async beforeDestroy() {
@@ -549,11 +550,10 @@ export default {
     },
     async openDispute() {
       const {
-        $router, checkAvailabilityDisputeTime, $store, ShowModal, ShowModalFail,
+        $router, checkAvailabilityDisputeTime, $store, ShowModal, ShowModalFail, quest: {
+          status, openDispute, id, contractAddress,
+        },
       } = this;
-      const {
-        status, openDispute, id, contractAddress,
-      } = this.quest;
       if (status === QuestStatuses.Dispute) return await $router.push(`${Path.DISPUTES}/${openDispute.id}`);
       if (checkAvailabilityDisputeTime) {
         return ShowModal({
@@ -566,7 +566,6 @@ export default {
             title: 'Dispute Pay',
             text: 'You need to pay to open a dispute',
             callback: async () => {
-              // TODO: Дописать логику
               const feeTx = await fetchContractData(
                 'feeTx',
                 WQFactory,
@@ -574,12 +573,10 @@ export default {
                 null,
                 GetWalletProvider(),
               );
-              console.log('feeTx:', feeTx);
               const { result } = await $store.dispatch('quests/arbitration', {
                 contractAddress,
                 value: feeTx,
               });
-              console.log('createDisputePayment:', result);
               if (!result.status) {
                 setTimeout(async () => ShowModalFail({
                   title: 'Payment Error',
@@ -595,11 +592,10 @@ export default {
                   img: images.SUCCESS,
                   trxHash: result.transactionHash,
                   callback: async () => {
-                    const disputeInfo = this.$cookies.get('disputeInfo');
-                    // TODO: Ждать возвращения метода на бэке!!
-                    const createDisputeRes = await this.$store.dispatch('disputes/createDispute', disputeInfo);
-                    console.log('createDisputeRes', createDisputeRes);
+                    const { reason, problemDescription, questId } = this.$cookies.get('disputeInfo');
+                    const createDisputeRes = await this.$store.dispatch('disputes/createDispute', { reason, problemDescription, questId });
                     if (createDisputeRes?.ok) {
+                      this.$cookies.remove('disputeInfo');
                       setTimeout(async () => await $router.push(`${Path.DISPUTES}/${createDisputeRes.result.id}`), 1000);
                     } else {
                       setTimeout(async () => ShowModalFail({

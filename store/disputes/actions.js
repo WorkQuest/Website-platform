@@ -3,7 +3,7 @@ import disputes from '~/pages/disputes';
 export default {
   async createDispute({ commit }, { reason, problemDescription, questId }) {
     try {
-      return await this.$axios.$post(`/v1/quest/${questId}/open-dispute`, { reason, problemDescription });
+      return await this.$axios.$post(`/v1/quest/${questId}/dispute`, { reason, problemDescription });
     } catch (e) {
       return console.log(e);
     }

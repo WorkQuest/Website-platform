@@ -68,22 +68,22 @@ export default {
     }),
     items() {
       return [
-        this.$t('modals.disputes.thereIsNoResponseFromTheEmployerOrEmployee'),
-        this.$t('modals.disputes.badlyDoneWork'),
-        this.$t('modals.disputes.additionalRequirementsHaveBeenPutForward'),
-        this.$t('modals.disputes.inconsistenciesInTheRequirementsForTheDescriptionOfTheQuest'),
-        this.$t('modals.disputes.theQuestIsCompletedButTheEmployeeOrEmployerHasNotConfirmedItsCompletion'),
-        this.$t('modals.disputes.anotherReason'),
+        this.$t('modals.disputes.NoAnswer'),
+        this.$t('modals.disputes.PoorlyDoneJob'),
+        this.$t('modals.disputes.AdditionalRequirement'),
+        this.$t('modals.disputes.RequirementDoesNotMatch'),
+        this.$t('modals.disputes.NoConfirmationOfComplete'),
+        this.$t('modals.disputes.AnotherReason'),
       ];
     },
     itemsForPayload() {
       return [
-        'noAnswer',
-        'poorlyDoneJob',
-        'additionalRequirement',
-        'requirementDoesNotMatch',
-        'noConfirmationOfComplete',
-        'anotherReason',
+        'NoAnswer',
+        'PoorlyDoneJob',
+        'AdditionalRequirement',
+        'RequirementDoesNotMatch',
+        'NoConfirmationOfComplete',
+        'AnotherReason',
       ];
     },
     isMoreCharacters() {
@@ -95,7 +95,6 @@ export default {
     console.log('questId', this.questId);
   },
   beforeDestroy() {
-    console.log('this.options.questId', this.questId);
     this.$cookies.set('disputeInfo', {
       questId: this.questId,
       reason: this.itemsForPayload[this.drop],
