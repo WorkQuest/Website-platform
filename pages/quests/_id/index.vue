@@ -215,11 +215,6 @@ export default {
     avatar() {
       return this.assignedWorker.avatar?.url || images.EMPTY_AVATAR;
     },
-    dateForStart() {
-      // TODO fixme Вернуть, нужно для тестов Роме
-      // const dateForStart = this.$moment(this.quest.startedAt).add(1, 'day').valueOf();
-      return this.$moment(this.quest.startedAt).add(1, 'm').valueOf();
-    },
     priority() {
       const { priority } = this.quest;
       const priorities = {
@@ -245,7 +240,9 @@ export default {
     },
     checkAvailabilityDisputeTime() {
       const now = this.$moment().valueOf();
-      return now >= this.dateForStart;
+      // TODO fixme Вернуть, нужно для тестов Роме
+      // this.$moment(this.quest.startedAt).add(1, 'day').valueOf();
+      return now >= this.$moment(this.quest.startedAt).add(1, 'm').valueOf();
     },
   },
   watch: {
@@ -289,7 +286,7 @@ export default {
     await this.setActionBtnsArr();
     this.SetLoader(false);
   },
-  async mounted() {
+  mounted() {
     this.mounted = true;
   },
   async beforeDestroy() {
@@ -560,63 +557,52 @@ export default {
           key: modals.openADispute,
           questId: id,
           submitMethod: async ({ reason, problemDescription, questId }) => {
-            let createDisputeRes;
-            if (!openDispute) createDisputeRes = await this.$store.dispatch('disputes/createDispute', { reason, problemDescription, questId });
-            else if (openDispute) createDisputeRes = true;
-            if (createDisputeRes?.ok || createDisputeRes) {
-              setTimeout(async () => {
-                this.feeTx = await fetchContractData(
-                  'feeTx',
-                  WQFactory,
-                  process.env.WORKNET_WQ_FACTORY,
-                  null,
-                  GetWalletProvider(),
-                );
-                ShowModal({
-                  key: modals.transactionReceipt,
-                  fields: {
-                    from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
-                    to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_PENSION_FUND },
-                    fee: { name: this.$t('wallet.table.trxFee'), value: 0 },
-                    amount: {
-                      name: this.$t('wallet.table.value'),
-                      value: new BigNumber(this.feeTx).shiftedBy(-18).toString(),
-                      symbol: TokenSymbols.WUSD,
-                    },
-                  },
-                  title: this.$t('modals.titles.disputePayment'),
-                  text: this.$t('modals.payForDispute'),
-                  submitMethod: async () => {
-                    const { result } = await $store.dispatch('quests/arbitration', {
-                      contractAddress,
-                      value: this.feeTx,
-                    });
-                    if (!result.status) {
-                      setTimeout(async () => ShowModalFail({
-                        title: this.$t('modals.transactionError'),
-                        subtitle: this.$t('modals.tryLater'),
-                        img: images.ERROR,
-                      }), 1000);
-                    } else if (result.status) {
-                      setTimeout(async () => ShowModal({
-                        key: modals.status,
-                        title: this.$t('modals.transactionSent'),
-                        subtitle: this.$t('modals.checkExplorer'),
-                        link: `${process.env.WQ_EXPLORER_TX}/${result.transactionHash}`,
-                        img: images.SUCCESS,
-                        callback: await $router.push(`${Path.DISPUTES}/${createDisputeRes.result.id}`, 1000),
-                      }), 1000);
-                    }
-                  },
+            if (!openDispute) await this.$store.dispatch('disputes/createDispute', { reason, problemDescription, questId });
+            this.feeTx = await fetchContractData(
+              'feeTx',
+              WQFactory,
+              process.env.WORKNET_WQ_FACTORY,
+              null,
+              GetWalletProvider(),
+            );
+            ShowModal({
+              key: modals.transactionReceipt,
+              fields: {
+                from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+                to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_PENSION_FUND },
+                fee: { name: this.$t('wallet.table.trxFee'), value: 0 },
+                amount: {
+                  name: this.$t('wallet.table.value'),
+                  value: new BigNumber(this.feeTx).shiftedBy(-18).toString(),
+                  symbol: TokenSymbols.WUSD,
+                },
+              },
+              title: this.$t('modals.titles.disputePayment'),
+              text: this.$t('modals.payForDispute'),
+              submitMethod: async () => {
+                const { result } = await $store.dispatch('quests/arbitration', {
+                  contractAddress,
+                  value: this.feeTx,
                 });
-              }, 1000);
-            } else {
-              setTimeout(async () => ShowModalFail({
-                img: images.WARNING,
-                title: this.$t('modals.errors.error'),
-                subtitle: this.$t('errors.incorrectPass'),
-              }), 1000);
-            }
+                if (!result.status) {
+                  ShowModalFail({
+                    title: this.$t('modals.transactionError'),
+                    subtitle: this.$t('modals.tryLater'),
+                    img: images.ERROR,
+                  });
+                } else if (result.status) {
+                  const currentQuest = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
+                  ShowModal({
+                    key: modals.status,
+                    title: this.$t('modals.transactionSent'),
+                    subtitle: this.$t('modals.checkExplorer'),
+                    link: `${process.env.WQ_EXPLORER_TX}/${result.transactionHash}`,
+                    img: images.SUCCESS,
+                    callback: await $router.push(`${Path.DISPUTES}/${currentQuest.openDispute?.id}`),
+                  });
+                }
+              },
+            });
           },
         });
       }

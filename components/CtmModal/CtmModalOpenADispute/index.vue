@@ -11,7 +11,8 @@
       <base-dd
         v-model="drop"
         type="gray"
-        :items="items"
+        data-type="object"
+        :items="reasons"
         class="content__drop"
         data-selector="REASON"
         :placeholder="$t('chat.reason')"
@@ -66,24 +67,14 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
-    items() {
+    reasons() {
       return [
-        this.$t('modals.disputes.NoAnswer'),
-        this.$t('modals.disputes.PoorlyDoneJob'),
-        this.$t('modals.disputes.AdditionalRequirement'),
-        this.$t('modals.disputes.RequirementDoesNotMatch'),
-        this.$t('modals.disputes.NoConfirmationOfComplete'),
-        this.$t('modals.disputes.AnotherReason'),
-      ];
-    },
-    itemsForPayload() {
-      return [
-        'NoAnswer',
-        'PoorlyDoneJob',
-        'AdditionalRequirement',
-        'RequirementDoesNotMatch',
-        'NoConfirmationOfComplete',
-        'AnotherReason',
+        { title: this.$t('modals.disputes.NoAnswer'), key: 'NoAnswer' },
+        { title: this.$t('modals.disputes.PoorlyDoneJob'), key: 'PoorlyDoneJob' },
+        { title: this.$t('modals.disputes.AdditionalRequirement'), key: 'AdditionalRequirement' },
+        { title: this.$t('modals.disputes.RequirementDoesNotMatch'), key: 'RequirementDoesNotMatch' },
+        { title: this.$t('modals.disputes.NoConfirmationOfComplete'), key: 'NoConfirmationOfComplete' },
+        { title: this.$t('modals.disputes.AnotherReason'), key: 'AnotherReason' },
       ];
     },
     isMoreCharacters() {
@@ -103,7 +94,7 @@ export default {
       if (submitMethod) {
         const res = await submitMethod({
           questId: this.questId,
-          reason: this.itemsForPayload[this.drop],
+          reason: this.reasons[this.drop].key,
           problemDescription: this.description,
         });
         if (res?.ok) {
