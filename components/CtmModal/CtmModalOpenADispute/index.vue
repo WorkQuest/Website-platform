@@ -93,13 +93,6 @@ export default {
   mounted() {
     this.questId = this.options.questId;
   },
-  beforeDestroy() {
-    this.$cookies.set('disputeInfo', {
-      questId: this.questId,
-      reason: this.itemsForPayload[this.drop],
-      problemDescription: this.description,
-    });
-  },
   methods: {
     async onSubmit() {
       const {
@@ -108,7 +101,11 @@ export default {
       } = this.options;
       this.SetLoader(true);
       if (submitMethod) {
-        const res = await submitMethod();
+        const res = await submitMethod({
+          questId: this.questId,
+          reason: this.itemsForPayload[this.drop],
+          problemDescription: this.description,
+        });
         if (res?.ok) {
           if (callback) await callback();
         }

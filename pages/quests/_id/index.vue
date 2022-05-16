@@ -438,7 +438,6 @@ export default {
         WaitEmployerConfirm,
       } = InfoModeWorker;
       let arr = [];
-      console.log(infoDataMode);
       switch (infoDataMode) {
         case ADChat: {
           arr = [{
@@ -560,11 +559,11 @@ export default {
         return ShowModal({
           key: modals.openADispute,
           questId: id,
-          submitMethod: async () => {
-            const { reason, problemDescription, questId } = this.$cookies.get('disputeInfo');
-            const createDisputeRes = await this.$store.dispatch('disputes/createDispute', { reason, problemDescription, questId });
-            if (createDisputeRes?.ok || !createDisputeRes) {
-              this.$cookies.remove('disputeInfo');
+          submitMethod: async ({ reason, problemDescription, questId }) => {
+            let createDisputeRes;
+            if (!openDispute) createDisputeRes = await this.$store.dispatch('disputes/createDispute', { reason, problemDescription, questId });
+            else if (openDispute) createDisputeRes = true;
+            if (createDisputeRes?.ok || createDisputeRes) {
               setTimeout(async () => {
                 this.feeTx = await fetchContractData(
                   'feeTx',
@@ -610,7 +609,7 @@ export default {
                     }
                   },
                 });
-              });
+              }, 1000);
             } else {
               setTimeout(async () => ShowModalFail({
                 img: images.WARNING,
