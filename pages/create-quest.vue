@@ -165,7 +165,7 @@ import {
   tokenMap,
   PriorityFilter, TokenSymbols, TypeOfJobFilter, WorkplaceIndex,
 } from '~/utils/enums';
-import { LocalNotificationAction } from '~/utils/notifications-enum';
+import { LocalNotificationAction } from '~/utils/notifications';
 import { CommissionForCreatingAQuest } from '~/utils/сonstants/quests';
 import { ERC20 } from '~/abi';
 

@@ -116,7 +116,7 @@ import {
   UserRole, Path, SumSubStatuses, TwoFAStatuses,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
-import { LocalNotificationAction } from '~/utils/notifications-enum';
+import { LocalNotificationAction } from '~/utils/notifications';
 import { images } from '~/utils/images';
 
 export default {

@@ -10,7 +10,7 @@ import {
   notificationCommonFilterActions,
   notificationCommonFilterAction2,
   notificationEmployerFilterActions, notificationsQuestsActions,
-} from '~/utils/notifications-enum';
+} from '~/utils/notifications';
 import { error, success } from '~/utils/web3';
 import { images } from '~/utils/images';
 
@@ -125,7 +125,7 @@ export default {
 
   async setCurrNotificationObject({ getters, rootGetters, dispatch }, notification) {
     const userData = rootGetters['user/getUserData'];
-    const { action, data } = notification.notification;
+    const { data, action } = notification.notification;
     const {
       id, title, quest, user, worker, comment, employer, fromUser, rootComment,
       assignedWorker, message, toUserId, discussion, problemDescription,
@@ -266,6 +266,7 @@ export default {
       if (assignedWorker) notification.sender = assignedWorker;
       else if (worker) notification.sender = worker;
     }
+    console.log('notifications', notification.notification);
     return notification.notification;
   },
 

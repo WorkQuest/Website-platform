@@ -169,7 +169,7 @@ import {
   TokenSymbols,
 } from '~/utils/enums';
 
-import { NotificationAction } from '~/utils/notifications-enum';
+import { NotificationAction } from '~/utils/notifications';
 import modals from '~/store/modals/modals';
 import {
   QuestMethods, EditQuestState, QuestStatuses, InfoModeWorker, InfoModeEmployer,
