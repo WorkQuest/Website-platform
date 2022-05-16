@@ -249,13 +249,16 @@ export default {
   async mounted(values) {
     if (!this.isWalletConnected) return;
     this.SetLoader(true);
-    await Promise.all([this.getInfo(), this.fetchWalletData({
-      method: 'balanceOf',
-      address: getWalletAddress(),
-      abi: ERC20,
-      token: tokenMap[TokenSymbols.WUSD],
-      symbol: TokenSymbols.WUSD,
-    })]);
+    await Promise.all([
+      this.getInfo(),
+      this.fetchWalletData({
+        method: 'balanceOf',
+        address: getWalletAddress(),
+        abi: ERC20,
+        token: tokenMap[TokenSymbols.WUSD],
+        symbol: TokenSymbols.WUSD,
+      }),
+    ]);
     this.SetLoader(false);
   },
   methods: {
@@ -268,9 +271,9 @@ export default {
     }),
     async getInfo() {
       const [defaultDataRes] = await Promise.all([
-        this.getBalanceWQT(),
         this.getDefaultData(),
         this.checkWalletExists(),
+        this.getBalanceWQT(),
       ]);
       if (defaultDataRes.ok) {
         const { lockTime, defaultFee } = defaultDataRes.result;
