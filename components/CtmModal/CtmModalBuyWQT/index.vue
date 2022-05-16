@@ -200,7 +200,7 @@ export default {
     },
     maxValue() {
       if (!this.tokenData) return;
-      this.amount = this.tokenData.balance;
+      this.amount = this.maxUSDTValue;
     },
     // Updates balance by current network & token
     async updateTokenData() {
