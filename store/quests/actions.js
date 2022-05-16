@@ -365,7 +365,6 @@ export default {
         data: params,
       };
       if (value) payload.value = value;
-      console.log('payload sendQuestTransaction', payload);
       const res = await sendWalletTransaction(method, payload);
       return success(res);
     } catch (e) {
@@ -390,7 +389,6 @@ export default {
   },
   // employer отменил (reject) результат работы или прошло 3 дня с момента начала verification
   async arbitration({ dispatch }, { contractAddress, value }) {
-    console.log('value arbitration', value);
     return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.Arbitration, value });
   },
 

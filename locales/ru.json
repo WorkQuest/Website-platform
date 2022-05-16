@@ -972,12 +972,12 @@
       "addMember": "Add member"
     },
     "disputes": {
-      "NoAnswer": "There is no response from the employer / employee",
-      "AnotherReason": "Another reason",
-      "PoorlyDoneJob": "Poorly done work",
-      "AdditionalRequirement": "Additional requirements have been put forward",
-      "RequirementDoesNotMatch": "Inconsistencies in the requirements for the description of the quest",
-      "NoConfirmationOfComplete": "The quest is completed but the employee / employer has not confirmed its completion"
+      "NoAnswer": "Нет ответа от работодателя / работника",
+      "AnotherReason": "Другая причина",
+      "PoorlyDoneJob": "Плохо выполненная работа",
+      "AdditionalRequirement": "Выдвинуты дополнительные требования",
+      "RequirementDoesNotMatch": "Несоответствия в требованиях к описанию квеста",
+      "NoConfirmationOfComplete": "Квест выполнен, но работник / работодатель не подтвердил его выполнение"
     },
     "2FA": {
       "enabled": "2FA enabled successfully!",
