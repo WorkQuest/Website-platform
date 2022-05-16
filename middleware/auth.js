@@ -28,13 +28,8 @@ export default async function ({
     if (!userData.id && +userStatus === UserStatuses.Confirmed) {
       await store.dispatch('user/getMainData');
     }
-    if (+userStatus === UserStatuses.NeedSetRole && route.path !== Path.ROLE) {
+    if ((+userStatus === UserStatuses.NeedSetRole || !store.getters['user/getUserWalletAddress']) && route.path !== Path.ROLE) {
       return redirect(Path.ROLE);
-    }
-
-    if (!store.getters['user/getUserWalletAddress']) {
-      await store.dispatch('user/logout', !!store.getters['user/getUserData']?.id);
-      return redirect(Path.SIGN_IN);
     }
 
     return true;
