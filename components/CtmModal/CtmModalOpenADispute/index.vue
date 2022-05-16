@@ -92,7 +92,6 @@ export default {
   },
   mounted() {
     this.questId = this.options.questId;
-    console.log('questId', this.questId);
   },
   beforeDestroy() {
     this.$cookies.set('disputeInfo', {
@@ -107,7 +106,6 @@ export default {
         callback,
         submitMethod,
       } = this.options;
-      this.CloseModal();
       this.SetLoader(true);
       if (submitMethod) {
         const res = await submitMethod();
