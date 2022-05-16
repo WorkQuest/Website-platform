@@ -175,7 +175,7 @@ import {
 import { images } from '~/utils/images';
 import { WorkQuest, WQFactory } from '~/abi';
 import { fetchContractData } from '~/utils/web3';
-import { GetWalletProvider } from '~/utils/wallet';
+import { getWalletAddress, GetWalletProvider } from '~/utils/wallet';
 
 export default {
   name: 'Quests',
@@ -189,6 +189,7 @@ export default {
       actionBtnsArr: [],
       sameQuest: {},
       mounted: false,
+      feeTx: 0,
     };
   },
   computed: {
@@ -562,38 +563,46 @@ export default {
           submitMethod: async () => {
             const { reason, problemDescription, questId } = this.$cookies.get('disputeInfo');
             const createDisputeRes = await this.$store.dispatch('disputes/createDispute', { reason, problemDescription, questId });
-            if (createDisputeRes?.ok || createDisputeRes?.code === 40010) {
+            if (createDisputeRes?.ok || !createDisputeRes) {
               this.$cookies.remove('disputeInfo');
               setTimeout(async () => {
+                this.feeTx = await fetchContractData(
+                  'feeTx',
+                  WQFactory,
+                  process.env.WORKNET_WQ_FACTORY,
+                  null,
+                  GetWalletProvider(),
+                );
                 ShowModal({
-                  // TODO: Добавить локализацию
-                  key: modals.status,
-                  img: images.WARNING,
-                  title: 'Dispute payment',
-                  text: 'You need to pay to open a dispute',
-                  callback: async () => {
-                    const feeTx = await fetchContractData(
-                      'feeTx',
-                      WQFactory,
-                      process.env.WORKNET_WQ_FACTORY,
-                      null,
-                      GetWalletProvider(),
-                    );
+                  key: modals.transactionReceipt,
+                  fields: {
+                    from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+                    to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_PENSION_FUND },
+                    fee: { name: this.$t('wallet.table.trxFee'), value: 0 },
+                    amount: {
+                      name: this.$t('wallet.table.value'),
+                      value: new BigNumber(this.feeTx).shiftedBy(-18).toString(),
+                      symbol: TokenSymbols.WUSD,
+                    },
+                  },
+                  title: this.$t('modals.titles.disputePayment'),
+                  text: this.$t('modals.payForDispute'),
+                  submitMethod: async () => {
                     const { result } = await $store.dispatch('quests/arbitration', {
                       contractAddress,
-                      value: feeTx,
+                      value: this.feeTx,
                     });
                     if (!result.status) {
                       setTimeout(async () => ShowModalFail({
-                        title: 'Payment Error',
-                        subtitle: 'Please, try later...',
+                        title: this.$t('modals.transactionError'),
+                        subtitle: this.$t('modals.tryLater'),
                         img: images.ERROR,
                       }), 1000);
                     } else if (result.status) {
                       setTimeout(async () => ShowModal({
                         key: modals.status,
-                        title: 'Payment Success',
-                        subtitle: 'You can check a transaction status on Explorer!',
+                        title: this.$t('modals.transactionSent'),
+                        subtitle: this.$t('modals.checkExplorer'),
                         link: `${process.env.WQ_EXPLORER_TX}/${result.transactionHash}`,
                         img: images.SUCCESS,
                         callback: await $router.push(`${Path.DISPUTES}/${createDisputeRes.result.id}`, 1000),

@@ -895,6 +895,7 @@
       "filters": {
         "titleAll": "Todos os Filtros"
       },
+      "disputePayment": "Dispute payment",
       "saved": "Saved successfully",
       "cardAdd": "Add card",
       "addCase": "Add Case",
@@ -997,6 +998,9 @@
       "youHaveAQuestDraft": "You have a quest draft. Cleat it?",
       "saveQuestDraft": "Save quest draft?"
     },
+    "payForDispute": "You need to pay to open a dispute",
+    "tryLater": "Please, try later...",
+    "checkExplorer": "You can check a transaction status on Explorer",
     "transactionError": "Transaction error",
     "fromAddress": "from",
     "toAddress": "to",

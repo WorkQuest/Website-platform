@@ -895,6 +895,7 @@
       "filters": {
         "titleAll": "Все фильтры"
       },
+      "disputePayment": "Dispute payment",
       "saved": "Saved successfully",
       "cardAdd": "Add card",
       "addCase": "Add Case",
@@ -997,6 +998,9 @@
       "youHaveAQuestDraft": "У вас есть черновик квеста. Очистить?",
       "saveQuestDraft": "Сохранить черновик квеста?"
     },
+    "payForDispute": "Вам нужно оплатить открытие спора",
+    "tryLater": "Пожалуйста, попробуйте позже...",
+    "checkExplorer": "Вы можете проверить статус транзакции на Explorer",
     "transactionError": "Ошибка транзакции",
     "fromAddress": "с",
     "toAddress": "на",
