@@ -100,9 +100,9 @@
       "default": "प्लेसहोल्डर",
       "mail": "your@mail.com",
       "email": "ईमेल एड्रेस",
-      "specialization": "???",
-      "skill": "???",
-      "searchSpecSkill": "???"
+      "specialization": "Enter specialization",
+      "skill": "Enter skill",
+      "searchSpecSkill": "Enter specialization or skill"
     },
     "worker": {
       "cost": {

@@ -100,9 +100,9 @@
       "default": "",
       "mail": "votre@courriel.com",
       "email": "Adresse e-mail",
-      "specialization": "???",
-      "skill": "???",
-      "searchSpecSkill": "???"
+      "specialization": "Enter specialization",
+      "skill": "Enter skill",
+      "searchSpecSkill": "Enter specialization or skill"
     },
     "worker": {
       "cost": {

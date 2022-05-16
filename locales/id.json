@@ -100,9 +100,9 @@
       "default": "",
       "mail": "your@mail.com",
       "email": "Alamat email",
-      "specialization": "???",
-      "skill": "???",
-      "searchSpecSkill": "???"
+      "specialization": "Enter specialization",
+      "skill": "Enter skill",
+      "searchSpecSkill": "Enter specialization or skill"
     },
     "worker": {
       "cost": {
