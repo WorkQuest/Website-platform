@@ -68,6 +68,7 @@ jobs:
           echo WORKNET_WETH_TOKEN=${{ secrets.WORKNET_WETH_TOKEN }} >> .env
           echo WORKNET_WUSD_TOKEN=${{ secrets.WORKNET_WUSD_TOKEN }} >> .env
           echo WORKNET_WQ_FACTORY=${{ secrets.WORKNET_WQ_FACTORY }} >> .env
+          echo WORKNET_VOTING=${{ secrets.WORKNET_VOTING }} >> .env
 
       - name: Run generate static task
         run: npm run generate
@@ -145,6 +146,7 @@ jobs:
           echo WORKNET_WETH_TOKEN=${{ secrets.WORKNET_WETH_TOKEN }} >> .env
           echo WORKNET_WUSD_TOKEN=${{ secrets.WORKNET_WUSD_TOKEN }} >> .env
           echo WORKNET_WQ_FACTORY=${{ secrets.WORKNET_WQ_FACTORY }} >> .env
+          echo WORKNET_VOTING=${{ secrets.WORKNET_VOTING }} >> .env
 
       - name: Run generate static task
         run: npm run generate
@@ -222,6 +224,7 @@ jobs:
           echo WORKNET_WETH_TOKEN=${{ secrets.WORKNET_WETH_TOKEN }} >> .env
           echo WORKNET_WUSD_TOKEN=${{ secrets.WORKNET_WUSD_TOKEN }} >> .env
           echo WORKNET_WQ_FACTORY=${{ secrets.WORKNET_WQ_FACTORY }} >> .env
+          echo WORKNET_VOTING=${{ secrets.WORKNET_VOTING }} >> .env
 
       - name: Run generate static task
         run: npm run generate

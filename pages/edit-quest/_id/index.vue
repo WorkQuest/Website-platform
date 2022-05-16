@@ -271,7 +271,7 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { Path, tokenMap, TokenSymbols } from '~/utils/enums';
+import { Path, TokenMap, TokenSymbols } from '~/utils/enums';
 import {
   QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses, CommissionForCreatingAQuest,
 } from '~/utils/сonstants/quests';
@@ -517,7 +517,7 @@ export default {
       }
 
       const { contractAddress } = this.questData;
-      const wusdAddress = tokenMap[TokenSymbols.WUSD];
+      const wusdAddress = TokenMap[TokenSymbols.WUSD];
 
       new Promise(async (resolve, reject) => {
         // Quest Cost Increased
