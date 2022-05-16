@@ -163,7 +163,8 @@ export default {
     // Определение сколько приблизительно WQT мы получим
     amount(newVal) {
       clearTimeout(this.updatePriceId);
-      if (!newVal || isNaN(newVal)) {
+      const val = new BigNumber(newVal);
+      if (!newVal || isNaN(newVal) || val.isGreaterThan(100) || new BigNumber(newVal).isLessThan(5)) {
         this.wqtAmount = null;
         return;
       }
