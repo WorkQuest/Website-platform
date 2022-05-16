@@ -356,7 +356,6 @@ export default {
     },
     async redeemAction({ chain, signData, chainTo }) {
       this.SetLoader(true);
-
       if (await this.checkNetwork(chain)) {
         const { ok } = await this.redeem({ signData, chainTo });
 
@@ -389,7 +388,6 @@ export default {
               toNetwork: to.chain,
               submit: async () => {
                 this.CloseModal();
-
                 this.SetLoader(true);
                 this.page = 1;
                 const { ok, result } = await this.swap({
