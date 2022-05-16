@@ -27,7 +27,7 @@
               <span class="balance__currency">
                 <span
                   class="balance__currency-text"
-                  :class="{'balance__currency-text_red': isFetchingBalance}"
+                  :class="{'balance__currency-text_light': isFetchingBalance}"
                 >
                   {{ selectedTokenBalanceInfo }}
                 </span>
@@ -573,7 +573,7 @@ export default {
       text-overflow: ellipsis;
       max-width: 1000px;
       padding-right: 20px;
-      &_red {
+      &_light {
         color: $black500;
       }
     }

@@ -144,7 +144,6 @@ export default {
     method, address, abi, token, symbol,
   }) {
     try {
-      const { decimals } = getters.getBalanceData[symbol];
       const res = await fetchContractData(
         method,
         abi,
@@ -152,6 +151,7 @@ export default {
         [address],
         GetWalletProvider(),
       );
+      const { decimals } = getters.getBalanceData[symbol];
       if (method === 'freezed') commit('wallet/setFrozenBalance', new BigNumber(res.toString()).shiftedBy(-decimals), { root: true });
       else {
         commit('setBalance', {
