@@ -555,9 +555,8 @@ export default {
       if (checkAvailabilityDisputeTime) {
         return ShowModal({
           key: modals.openADispute,
-          questId: id,
           submitMethod: async ({ reason, problemDescription, questId }) => {
-            if (!openDispute) await this.$store.dispatch('disputes/createDispute', { reason, problemDescription, questId });
+            if (!openDispute) await this.$store.dispatch('disputes/createDispute', { reason, problemDescription, questId: id });
             this.feeTx = await fetchContractData(
               'feeTx',
               WQFactory,

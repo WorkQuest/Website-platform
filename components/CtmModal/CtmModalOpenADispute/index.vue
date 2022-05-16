@@ -60,7 +60,6 @@ export default {
     return {
       drop: '',
       description: '',
-      questId: '',
     };
   },
   computed: {
