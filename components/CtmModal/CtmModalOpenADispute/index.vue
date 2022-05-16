@@ -80,9 +80,6 @@ export default {
       return this.description.length > 1000;
     },
   },
-  mounted() {
-    this.questId = this.options.questId;
-  },
   methods: {
     async onSubmit() {
       const {
@@ -92,7 +89,6 @@ export default {
       this.SetLoader(true);
       if (submitMethod) {
         const res = await submitMethod({
-          questId: this.questId,
           reason: this.reasons[this.drop].key,
           problemDescription: this.description,
         });
