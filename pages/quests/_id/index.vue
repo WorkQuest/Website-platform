@@ -189,7 +189,6 @@ export default {
       actionBtnsArr: [],
       sameQuest: {},
       mounted: false,
-      feeTx: 0,
     };
   },
   computed: {
@@ -556,8 +555,10 @@ export default {
         return ShowModal({
           key: modals.openADispute,
           submitMethod: async ({ reason, problemDescription }) => {
+            // TODO: Добавить проверку на FeeTx
+            // TODO: Получать из disputes/createDispute id диспута
             if (!openDispute) await this.$store.dispatch('disputes/createDispute', { reason, problemDescription, questId: id });
-            this.feeTx = await fetchContractData(
+            const feeTx = await fetchContractData(
               'feeTx',
               WQFactory,
               process.env.WORKNET_WQ_FACTORY,
@@ -572,7 +573,7 @@ export default {
                 fee: { name: this.$t('wallet.table.trxFee'), value: 0 },
                 amount: {
                   name: this.$t('wallet.table.value'),
-                  value: new BigNumber(this.feeTx).shiftedBy(-18).toString(),
+                  value: new BigNumber(feeTx).shiftedBy(-18).toString(),
                   symbol: TokenSymbols.WUSD,
                 },
               },
@@ -581,7 +582,7 @@ export default {
               submitMethod: async () => {
                 const { result } = await $store.dispatch('quests/arbitration', {
                   contractAddress,
-                  value: this.feeTx,
+                  value: feeTx,
                 });
                 if (!result.status) {
                   ShowModalFail({
@@ -590,6 +591,7 @@ export default {
                     img: images.ERROR,
                   });
                 } else if (result.status) {
+                  // TODO: Получать из disputes/createDispute id диспута
                   const currentQuest = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
                   ShowModal({
                     key: modals.status,

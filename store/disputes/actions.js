@@ -1,5 +1,3 @@
-import disputes from '~/pages/disputes';
-
 export default {
   async createDispute({ commit }, { reason, problemDescription, questId }) {
     try {
