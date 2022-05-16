@@ -99,7 +99,10 @@
     "placeholders": {
       "default": "",
       "mail": "your@mail.com",
-      "email": "Endereço de e-mail"
+      "email": "Endereço de e-mail",
+      "specialization": "???",
+      "skill": "???",
+      "searchSpecSkill": "???"
     },
     "worker": {
       "cost": {

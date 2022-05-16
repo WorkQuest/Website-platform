@@ -99,7 +99,10 @@
     "placeholders": {
       "default": "",
       "mail": "your@mail.com",
-      "email": "Alamat email"
+      "email": "Alamat email",
+      "specialization": "???",
+      "skill": "???",
+      "searchSpecSkill": "???"
     },
     "worker": {
       "cost": {

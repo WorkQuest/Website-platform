@@ -99,7 +99,10 @@
     "placeholders": {
       "default": "",
       "mail": "votre@courriel.com",
-      "email": "Adresse e-mail"
+      "email": "Adresse e-mail",
+      "specialization": "???",
+      "skill": "???",
+      "searchSpecSkill": "???"
     },
     "worker": {
       "cost": {

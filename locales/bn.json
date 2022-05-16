@@ -99,7 +99,10 @@
     "placeholders": {
       "default": "",
       "mail": "your@mail.com",
-      "email": "ইমেইল ঠিকানা"
+      "email": "ইমেইল ঠিকানা",
+      "specialization": "???",
+      "skill": "???",
+      "searchSpecSkill": "???"
     },
     "worker": {
       "cost": {
