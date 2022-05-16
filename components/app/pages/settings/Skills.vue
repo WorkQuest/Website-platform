@@ -31,7 +31,7 @@
             rules="max:7"
             class="skills__cost"
             data-selector="COST-PER-HOUR"
-            :placeholder="skills.perHour || $t('meta.priority.title')"
+            :placeholder="skills.perHour || $t('meta.costPerHour')"
             :label="$t('meta.costPerHour')"
             :name="$t('meta.costPerHour')"
             type="gray"

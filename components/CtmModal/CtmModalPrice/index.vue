@@ -152,7 +152,8 @@ export default {
     grid-gap: 10px;
   }
   &__buttons{
-    margin-top: 30px;
+    margin-top: 40px;
+    pointer-events: auto;
   }
   &__title{
     color: $black600;
@@ -165,9 +166,6 @@ export default {
     margin:20px 0 4px;
   }
   &__input{
-    height: 100px;
-  }
-  &__field{
     height: 100px;
   }
 }
