@@ -40,6 +40,10 @@ export default {
         avatar: { url: images.WQ_LOGO },
         firstName: 'Workquest info',
       },
+      params: {
+        title,
+        isLocal: true,
+      },
       data: {
         title,
         questId,
@@ -49,20 +53,18 @@ export default {
       },
     };
     if (action === LocalNotificationAction.GET_REWARD) {
-      notification.params = { path: `${Path.REFERRAL}` };
+      notification.params.path = Path.REFERRAL;
     } else if (action === LocalNotificationAction.QUEST_DRAFT) {
-      notification.params = { path: `${Path.CREATE_QUEST}` };
+      notification.params.path = Path.CREATE_QUEST;
     } else if (action === LocalNotificationAction.WIKI) {
-      notification.params = { path: `${Path.WIKI}` };
+      notification.params.path = Path.WIKI;
     } else if (action === LocalNotificationAction.KYC) {
-      notification.params = { path: `${Path.SUMSUB}` };
+      notification.params.path = Path.SUMSUB;
     } else if (action === LocalNotificationAction.PROFILE_FILLED) {
-      notification.params = { path: `${Path.SETTINGS}` };
+      notification.params.path = Path.SETTINGS;
     } else if (action === LocalNotificationAction.TWOFA) {
-      notification.params = { path: `${Path.SETTINGS}#2FA` };
+      notification.params.path = `${Path.SETTINGS}#2FA`;
     }
-    notification.actionNameKey = `notifications.${action}`;
-    Object.assign(notification.params, { title, isLocal: true });
 
     const notificationList = getters.getNotificationsList;
 
@@ -81,7 +83,7 @@ export default {
     }
     try {
       if (!params.isLocal) await this.$axios.$delete(`${process.env.NOTIFS_URL}notifications/delete/${notificationId}`);
-      await commit('removeotification', notificationId);
+      await commit('removeNotification', notificationId);
       await dispatch('getNotifications', config);
       return success();
     } catch (e) {
@@ -266,7 +268,6 @@ export default {
       if (assignedWorker) notification.sender = assignedWorker;
       else if (worker) notification.sender = worker;
     }
-    console.log('notifications', notification.notification);
     return notification.notification;
   },
 
