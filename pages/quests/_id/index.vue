@@ -588,9 +588,8 @@ export default {
                   key: modals.status,
                   title: 'Payment Success',
                   subtitle: 'You can check a transaction status on Explorer!',
-                  mode: 'link',
+                  link: `${process.env.WQ_EXPLORER_TX}/${result.transactionHash}`,
                   img: images.SUCCESS,
-                  trxHash: result.transactionHash,
                   callback: async () => {
                     const { reason, problemDescription, questId } = this.$cookies.get('disputeInfo');
                     const createDisputeRes = await this.$store.dispatch('disputes/createDispute', { reason, problemDescription, questId });
