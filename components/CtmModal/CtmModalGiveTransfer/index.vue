@@ -86,7 +86,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
-import { tokenMap, TokenSymbols } from '~/utils/enums';
+import { TokenMap, TokenSymbols } from '~/utils/enums';
 import { ERC20 } from '~/abi/index';
 
 export default {
@@ -169,8 +169,8 @@ export default {
         const feeTokens = await this.$store.dispatch('wallet/getContractFeeData', {
           method: 'transfer',
           abi: ERC20,
-          contractAddress: tokenMap[selectedToken],
-          data: [tokenMap[selectedToken], amount],
+          contractAddress: TokenMap[selectedToken],
+          data: [TokenMap[selectedToken], amount],
         });
         if (feeTokens?.ok) this.maxFeeForNativeToken = feeTokens?.result?.fee ?? 0;
         else this.maxFeeForNativeToken = 0;

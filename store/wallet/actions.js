@@ -28,7 +28,7 @@ import {
 } from '~/abi/index';
 
 import {
-  tokenMap,
+  TokenMap,
   TokenSymbols,
   StakingTypes,
   PensionHistoryMethods, WorknetTokenAddresses,
@@ -134,8 +134,7 @@ export default {
         fetchContractData('symbol', ERC20, address, [], GetWalletProvider()),
         fetchContractData('decimals', ERC20, address, [], GetWalletProvider()),
       ])));
-      // eslint-disable-next-line no-restricted-syntax
-      for (const item of tokens) commit('setCommonTokenData', item);
+      tokens.forEach((item) => commit('setCommonTokenData', item));
     } catch (e) {
       console.error('wallet/fetchCommonTokenInfo');
     }
@@ -432,7 +431,7 @@ export default {
     }
   },
   async approveRouter({ commit, dispatch }, { symbol, spenderAddress, value }) {
-    const tokenAddress = tokenMap[symbol];
+    const tokenAddress = TokenMap[symbol];
     try {
       const allowance = await dispatch('getAllowance', { tokenAddress, spenderAddress });
       if (new BigNumber(allowance).isLessThanOrEqualTo(value)) {

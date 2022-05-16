@@ -259,7 +259,7 @@ export const TokenSymbolByContract = Object.freeze({
   [process.env.WORKNET_USDT_TOKEN.toLowerCase()]: TokenSymbols.USDT,
 });
 
-export const tokenMap = {
+export const TokenMap = {
   [TokenSymbols.BNB]: process.env.WORKNET_WBNB_TOKEN,
   [TokenSymbols.ETH]: process.env.WORKNET_WETH_TOKEN,
   [TokenSymbols.WUSD]: process.env.WORKNET_WUSD_TOKEN,

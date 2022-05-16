@@ -165,7 +165,7 @@ import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { ERC20 } from '~/abi/index';
 import {
-  tokenMap, TokenSymbolByContract, TokenSymbols, WalletTables, WorknetTokenAddresses,
+  TokenMap, TokenSymbolByContract, TokenSymbols, WalletTables, WorknetTokenAddresses,
 } from '~/utils/enums';
 import { getStyledAmount } from '~/utils/wallet';
 import EmptyData from '~/components/app/info/emptyData';
@@ -353,7 +353,7 @@ export default {
             feeRes = await this.$store.dispatch('wallet/getContractFeeData', {
               method: 'transfer',
               abi: ERC20,
-              contractAddress: tokenMap[selectedToken],
+              contractAddress: TokenMap[selectedToken],
               data: [recipient, value],
             });
           }
@@ -377,7 +377,7 @@ export default {
                 ? { recipient, value: amount }
                 : {
                   abi: ERC20,
-                  address: tokenMap[selectedToken],
+                  address: TokenMap[selectedToken],
                   data: [recipient, value],
                 };
               const res = await this.$store.dispatch(`wallet/${action}`, payload);
