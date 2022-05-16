@@ -52,7 +52,7 @@
             :disabled="isNeedToChangeNetwork || !tokenData"
             :placeholder="$t('modals.amount')"
             :name="$t('modals.amount')"
-            :rules="`required|decimal|decimalPlaces:${tokenData ? tokenData.decimals : 0}`"
+            :rules="`required|decimal|decimalPlaces:${tokenData ? tokenData.decimals : 0}|max_value:${maxUSDTValue}|min_value:5`"
             data-selector="AMOUNT"
           >
             <template
@@ -128,6 +128,13 @@ export default {
     },
     tokenList() {
       return this.networkList[this.selectedNetwork].tokens;
+    },
+    maxUSDTValue() {
+      if (!this.tokenData) return 0;
+      if (new BigNumber(this.tokenData.fullBalance).isGreaterThan(100)) {
+        return 100;
+      }
+      return this.tokenData.fullBalance;
     },
   },
   watch: {
