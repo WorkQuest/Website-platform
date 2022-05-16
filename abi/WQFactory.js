@@ -698,7 +698,6 @@ const WQFactory = [
     stateMutability: 'view',
     type: 'function',
   },
-
 ];
 
 export default WQFactory;
