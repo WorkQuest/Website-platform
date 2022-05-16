@@ -10,6 +10,7 @@ export default () => ({
   balance: {
     WQT: { balance: 0, fullBalance: 0, decimals: 18 },
   },
+  frozenBalance: 0,
   pensionWallet: null,
   pensionHistory: {
     Update: { txs: [], count: 0 },

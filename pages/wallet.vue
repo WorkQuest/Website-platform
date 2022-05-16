@@ -310,18 +310,16 @@ export default {
     async loadData() {
       this.isFetchingBalance = true;
       const { selectedToken, userWalletAddress } = this;
-      if (selectedToken === TokenSymbols.WQT) await this.$store.dispatch('wallet/getBalance');
-      else {
+      if (selectedToken === TokenSymbols.WQT) {
+        await Promise.all([
+          this.$store.dispatch('wallet/getBalance'),
+          this.$store.dispatch('wallet/updateFrozenBalance'),
+        ]);
+      } else {
         const payload = { address: userWalletAddress, abi: ERC20 };
         await this.$store.dispatch('wallet/fetchWalletData', {
           method: 'balanceOf', ...payload, token: this.tokenAddresses[this.tokenSymbolsDd.indexOf(selectedToken) - 1], symbol: selectedToken,
         });
-        // TODO [frozen]: временный коммент тк WUSD не имеют freezed сейчас
-        // if (selectedToken === TokenSymbols.WUSD) {
-        //   await this.$store.dispatch('wallet/fetchWalletData', {
-        //     method: 'freezed', ...payload, token: tokenMap.WUSD,
-        //   });
-        // }
       }
       await this.getTransactions();
       this.isFetchingBalance = false;

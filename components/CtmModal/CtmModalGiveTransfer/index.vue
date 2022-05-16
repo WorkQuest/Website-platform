@@ -122,8 +122,6 @@ export default {
       } = this;
       const fullBalance = new BigNumber(balance[selectedToken].fullBalance);
       if (selectedToken === TokenSymbols.WQT) return fullBalance.minus(maxFeeForNativeToken).toString();
-      // TODO [frozen]: fix with frozen tokens
-      // if (selectedToken === TokenSymbols.WQT) return fullBalance.minus(frozenBalance).toString();
       return fullBalance.toString();
     },
   },
@@ -163,7 +161,7 @@ export default {
           recipient: userData.wallet.address,
           value: balance.WQT.fullBalance,
         });
-        if (nativeTokenFee?.ok) this.maxFeeForNativeToken = nativeTokenFee?.result?.fee ?? 0;
+        if (nativeTokenFee.ok) this.maxFeeForNativeToken = nativeTokenFee.result.fee;
         else this.maxFeeForNativeToken = 0;
       } else {
         const feeTokens = await this.$store.dispatch('wallet/getContractFeeData', {
@@ -172,7 +170,7 @@ export default {
           contractAddress: TokenMap[selectedToken],
           data: [TokenMap[selectedToken], amount],
         });
-        if (feeTokens?.ok) this.maxFeeForNativeToken = feeTokens?.result?.fee ?? 0;
+        if (feeTokens.ok) this.maxFeeForNativeToken = feeTokens.result.fee;
         else this.maxFeeForNativeToken = 0;
       }
       this.isCanSubmit = true;

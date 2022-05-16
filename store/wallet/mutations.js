@@ -1,6 +1,6 @@
 export default {
   setFrozenBalance(state, data) {
-    state.balance.WQT.frozenBalance = data;
+    state.frozenBalance = data;
   },
   setTransactions(state, transactions) {
     state.transactions = transactions;

@@ -139,6 +139,23 @@ export default {
       console.error('wallet/fetchCommonTokenInfo');
     }
   },
+  async updateFrozenBalance({ commit, rootGetters }) {
+    try {
+      const res = await fetchContractData(
+        'frozed',
+        ERC20,
+        process.env.WORKNET_VOTING,
+        [rootGetters['user/getUserWalletAddress']],
+        GetWalletProvider(),
+      );
+      commit('wallet/setFrozenBalance', res
+        ? new BigNumber(res).shiftedBy(-18).toString()
+        : '0', { root: true });
+      return success(res);
+    } catch (e) {
+      return error(-1, e.message, e);
+    }
+  },
   async fetchWalletData({ commit, getters }, {
     method, address, abi, token, symbol,
   }) {
@@ -151,14 +168,11 @@ export default {
         GetWalletProvider(),
       );
       const { decimals } = getters.getBalanceData[symbol];
-      if (method === 'freezed') commit('wallet/setFrozenBalance', new BigNumber(res.toString()).shiftedBy(-decimals), { root: true });
-      else {
-        commit('setBalance', {
-          symbol,
-          balance: res ? getStyledAmount(res, false, decimals) : 0,
-          fullBalance: res ? getStyledAmount(res, true, decimals) : 0,
-        });
-      }
+      commit('setBalance', {
+        symbol,
+        balance: res ? getStyledAmount(res, false, decimals) : 0,
+        fullBalance: res ? getStyledAmount(res, true, decimals) : 0,
+      });
       return success(res);
     } catch (e) {
       return error(e.message, e);

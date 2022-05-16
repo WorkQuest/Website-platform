@@ -375,7 +375,7 @@ const ERC20 = [
         type: 'address',
       },
     ],
-    name: 'freezed',
+    name: 'frozed',
     outputs: [
       {
         internalType: 'uint256',
