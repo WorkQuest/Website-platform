@@ -201,11 +201,8 @@ export default {
       otherQuestsCount: 'quests/getAllQuestsCount',
       otherQuests: 'quests/getAllQuests',
       isLoading: 'main/getIsLoading',
-      notifications: 'user/getNotificationsList',
+      notifications: 'notifications/getNotificationsList',
     }),
-    isDone() {
-      return this.quest.status === QuestStatuses.Done;
-    },
     isEmployer() {
       return this.userRole === UserRole.EMPLOYER;
     },
@@ -258,7 +255,7 @@ export default {
       handler() {
         const { notification } = this.notifications[0];
         if (this.mounted && notification
-          && this.userRole === UserRole.WORKER
+          && !this.isEmployer
           && notification.data.questId === this.$route.params.id
           && notification.action === NotificationAction.QUEST_STATUS_UPDATED
           && notification.data.status === QuestStatuses.Done
@@ -281,10 +278,13 @@ export default {
       return;
     }
     this.initMapData();
-    if (this.userRole === UserRole.WORKER) {
+    const {
+      isEmployer, userData, quest: { assignedWorkerId },
+    } = this;
+    if (!isEmployer) {
       await this.getSameQuests();
       if (!res.yourReview && this.quest.status === QuestStatuses.Done
-        && this.userData.id === this.quest.assignedWorkerId) await this.suggestToAddReview();
+        && userData.id === assignedWorkerId) await this.suggestToAddReview();
     }
     await this.getResponsesToQuest();
     await this.setActionBtnsArr();
@@ -301,13 +301,11 @@ export default {
   },
   methods: {
     starRating(item) {
+      const { isEmployer, userData: { id } } = this;
+
       if (!item) return false;
-      if (this.userRole === UserRole.WORKER) {
-        return item.status === QuestStatuses.Done
-          && item.assignedWorkerId === this.userData.id;
-      }
-      return item.status === QuestStatuses.Done
-        && this.userData.id === item.userId;
+      if (!isEmployer) return item.status === QuestStatuses.Done && item.assignedWorkerId === id;
+      return item.status === QuestStatuses.Done && id === item.userId;
     },
     showReviewModal(rating, id) {
       this.ShowModal({
@@ -339,11 +337,14 @@ export default {
       else this.$store.commit('quests/setAllQuests', { count: 0, quests: [] });
     },
     setActionBtnsArr() {
-      const { quest: { questChat, assignedWorkerId }, userData, userRole } = this;
+      const {
+        quest: { questChat, assignedWorkerId }, userData, isEmployer, quest,
+      } = this;
 
-      const arr = userRole === UserRole.EMPLOYER ? this.setEmployerBtnsArr() : this.setWorkerBtnsArr();
+      const arr = isEmployer ? this.setEmployerBtnsArr() : this.setWorkerBtnsArr();
+
       if ((questChat?.workerId === userData.id || (questChat?.employerId === userData.id && assignedWorkerId))
-        && ![QuestStatuses.Closed, QuestStatuses.Rejected, QuestStatuses.Done].includes(this.quest.status)) {
+        && ![QuestStatuses.Closed, QuestStatuses.Rejected, QuestStatuses.Done].includes(quest.status)) {
         arr.push({
           name: this.$t('meta.btns.goToChat'),
           class: 'base-btn_goToChat',
@@ -501,8 +502,9 @@ export default {
       this.$store.commit('google-map/setPoints', [this.quest]);
     },
     async getResponsesToQuest() {
-      const { quest: { id, user }, userData, isDone } = this;
-      if (isDone && user.id === userData.id) {
+      const { quest: { id, user }, userData, isEmployer } = this;
+
+      if (isEmployer && user.id === userData.id) {
         await this.$store.dispatch('quests/responsesToQuest', id);
       }
     },
@@ -515,7 +517,9 @@ export default {
       }
     },
     async openDispute() {
-      if (this.quest.status === QuestStatuses.Dispute) return await this.$router.push(`${Path.DISPUTES}/${this.quest.openDispute.id}`);
+      if (this.quest.status === QuestStatuses.Dispute) {
+        return await this.$router.push(`${Path.DISPUTES}/${this.quest.openDispute.id}`);
+      }
       if (this.checkAvailabilityDispute) {
         return this.ShowModal({
           key: modals.openADispute,
@@ -704,7 +708,7 @@ export default {
       this.ShowModal({
         key: modals.areYouSure,
         title: ' ',
-        text: this.$t(`modals.${this.userRole === UserRole.WORKER ? 'wouldReviewEmployer' : 'wouldReviewEmployee'}`),
+        text: this.$t(`modals.${!this.isEmployer ? 'wouldReviewEmployer' : 'wouldReviewEmployee'}`),
         okBtnTitle: this.$t('meta.btns.ok'),
         isNotClose: true,
         okBtnFunc: () => this.showReviewModal(0, this.quest.id),
