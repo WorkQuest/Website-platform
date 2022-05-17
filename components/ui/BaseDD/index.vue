@@ -102,7 +102,7 @@
             :key="`dd__item-${i}`"
             class="dd__item"
             :data-selector="`ACTION-BTN-SELECT-ITEM-${dataSelector.toUpperCase()}-${i}`"
-            :class="{'dd__item_hide': isSelected(i) || !isSearchMatched(item)}"
+            :class="{'dd__item_hide': isSelected(i) || (isSearch && !isSearchMatched(item))}"
             @click="selectItem(i)"
           >
             {{ dataType === 'array' ? item : item.title }}
