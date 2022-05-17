@@ -126,7 +126,7 @@
 import { mapActions, mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { Path, tokenMap, TokenSymbols } from '~/utils/enums';
+import { Path, TokenMap, TokenSymbols } from '~/utils/enums';
 import { ERC20, WQPensionFund } from '~/abi';
 import { getWalletAddress } from '~/utils/wallet';
 import { images } from '~/utils/images';
@@ -255,7 +255,7 @@ export default {
         method: 'balanceOf',
         address: getWalletAddress(),
         abi: ERC20,
-        token: tokenMap[TokenSymbols.WUSD],
+        token: TokenMap[TokenSymbols.WUSD],
         symbol: TokenSymbols.WUSD,
       }),
     ]);
@@ -316,7 +316,7 @@ export default {
           this.CloseModal();
           this.SetLoader(true);
           const allowance = await this.$store.dispatch('wallet/getAllowance', {
-            tokenAddress: tokenMap[TokenSymbols.WUSD],
+            tokenAddress: TokenMap[TokenSymbols.WUSD],
             spenderAddress: process.env.WORKNET_PENSION_FUND,
           });
           let txFee = 0;
@@ -324,12 +324,12 @@ export default {
             const { result: { fee } } = await this.$store.dispatch('wallet/getContractFeeData', {
               method: 'approve',
               abi: ERC20,
-              contractAddress: tokenMap[TokenSymbols.WUSD],
+              contractAddress: TokenMap[TokenSymbols.WUSD],
               data: [process.env.WORKNET_PENSION_FUND, new BigNumber(firstDepositAmount).shiftedBy(18).toString()],
             });
             txFee = fee;
             await this.$store.dispatch('wallet/approve', {
-              tokenAddress: tokenMap[TokenSymbols.WUSD],
+              tokenAddress: TokenMap[TokenSymbols.WUSD],
               spenderAddress: process.env.WORKNET_PENSION_FUND,
               amount: firstDepositAmount,
             });

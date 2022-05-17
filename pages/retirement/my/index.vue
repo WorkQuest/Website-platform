@@ -210,7 +210,7 @@ import { ERC20, WQPensionFund } from '~/abi/index';
 import modals from '~/store/modals/modals';
 import { getStyledAmount } from '~/utils/wallet';
 import {
-  PensionHistoryMethods, TokenSymbols, ExplorerUrl, Path, tokenMap,
+  PensionHistoryMethods, TokenSymbols, ExplorerUrl, Path, TokenMap,
 } from '~/utils/enums';
 import { error, success } from '~/utils/web3';
 
@@ -476,7 +476,7 @@ export default {
         this.loadTablePage(this.page),
       ]);
       await this.fetchWalletData({
-        method: 'balanceOf', address: this.walletAddress, abi: ERC20, token: tokenMap[TokenSymbols.WUSD], symbol: TokenSymbols.WUSD,
+        method: 'balanceOf', address: this.walletAddress, abi: ERC20, token: TokenMap[TokenSymbols.WUSD], symbol: TokenSymbols.WUSD,
       });
       this.checkIsDeadLine();
     },
@@ -584,12 +584,12 @@ export default {
           this.CloseModal();
           this.SetLoader(true);
           const allowance = await this.$store.dispatch('wallet/getAllowance', {
-            tokenAddress: tokenMap[TokenSymbols.WUSD],
+            tokenAddress: TokenMap[TokenSymbols.WUSD],
             spenderAddress: process.env.WORKNET_PENSION_FUND,
           });
           if (new BigNumber(allowance).isLessThan(newAmount)) {
             await this.$store.dispatch('wallet/approve', {
-              tokenAddress: tokenMap[TokenSymbols.WUSD],
+              tokenAddress: TokenMap[TokenSymbols.WUSD],
               spenderAddress: process.env.WORKNET_PENSION_FUND,
               amount: newAmount,
             });
