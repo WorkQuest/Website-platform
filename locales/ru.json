@@ -898,6 +898,7 @@
       "filters": {
         "titleAll": "Все фильтры"
       },
+      "disputePayment": "Оплата Спора",
       "saved": "Saved successfully",
       "cardAdd": "Add card",
       "addCase": "Add Case",
@@ -974,12 +975,12 @@
       "addMember": "Add member"
     },
     "disputes": {
-      "thereIsNoResponseFromTheEmployerOrEmployee": "There is no response from the employer / employee",
-      "badlyDoneWork": "Badly done work",
-      "additionalRequirementsHaveBeenPutForward": "Additional requirements have been put forward",
-      "inconsistenciesInTheRequirementsForTheDescriptionOfTheQuest": "Inconsistencies in the requirements for the description of the quest",
-      "theQuestIsCompletedButTheEmployeeOrEmployerHasNotConfirmedItsCompletion": "The quest is completed but the employee / employer has not confirmed its completion",
-      "anotherReason": "Другая причина"
+      "NoAnswer": "Нет ответа от работодателя / работника",
+      "AnotherReason": "Другая причина",
+      "PoorlyDoneJob": "Плохо выполненная работа",
+      "AdditionalRequirement": "Выдвинуты дополнительные требования",
+      "RequirementDoesNotMatch": "Несоответствия в требованиях к описанию квеста",
+      "NoConfirmationOfComplete": "Квест выполнен, но работник / работодатель не подтвердил его выполнение"
     },
     "2FA": {
       "enabled": "2FA enabled successfully!",
@@ -1000,6 +1001,9 @@
       "youHaveAQuestDraft": "У вас есть черновик квеста. Очистить?",
       "saveQuestDraft": "Сохранить черновик квеста?"
     },
+    "payForDispute": "Вам нужно оплатить открытие спора",
+    "tryLater": "Пожалуйста, попробуйте позже...",
+    "checkExplorer": "Вы можете проверить статус транзакции на Explorer",
     "transactionError": "Ошибка транзакции",
     "fromAddress": "с",
     "toAddress": "на",
