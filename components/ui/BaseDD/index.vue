@@ -218,6 +218,7 @@ export default {
       return this.hideSelected.includes(i);
     },
     isSearchMatched(item) {
+      if (this.dataType === 'object') return item.title.toLowerCase().includes(this.searchLine.toLowerCase());
       return item.toLowerCase().includes(this.searchLine.toLowerCase());
     },
   },

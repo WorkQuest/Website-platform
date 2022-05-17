@@ -123,7 +123,7 @@
               {{ $t('quests.otherQuestsSpec') }}
               <nuxt-link
                 :data-selector="`ACTION-TO-SPEC-${randomSpec}`"
-                :to="`/quests?specializations=${randomSpec}&statuses=0`"
+                :to="`${$options.Path.QUESTS}?specializations=${randomSpec}&statuses=0`"
                 class="spec__link"
               >
                 "{{ $t(`filters.skills.${randomSpec}.title`) }}"
@@ -551,63 +551,67 @@ export default {
         },
       } = this;
       if (status === QuestStatuses.Dispute) return await $router.push(`${Path.DISPUTES}/${openDispute.id}`);
-      if (checkAvailabilityDisputeTime) {
-        return ShowModal({
-          key: modals.openADispute,
-          submitMethod: async ({ reason, problemDescription }) => {
-            // TODO: Добавить проверку на FeeTx
-            // TODO: Получать из disputes/createDispute id диспута
-            if (!openDispute) await this.$store.dispatch('disputes/createDispute', { reason, problemDescription, questId: id });
-            const feeTx = await fetchContractData(
-              'feeTx',
-              WQFactory,
-              process.env.WORKNET_WQ_FACTORY,
-              null,
-              GetWalletProvider(),
-            );
-            ShowModal({
-              key: modals.transactionReceipt,
-              fields: {
-                from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
-                to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_PENSION_FUND },
-                fee: { name: this.$t('wallet.table.trxFee'), value: 0 },
-                amount: {
-                  name: this.$t('wallet.table.value'),
-                  value: new BigNumber(feeTx).shiftedBy(-18).toString(),
-                  symbol: TokenSymbols.WUSD,
-                },
-              },
-              title: this.$t('modals.titles.disputePayment'),
-              text: this.$t('modals.payForDispute'),
-              submitMethod: async () => {
-                const { result } = await $store.dispatch('quests/arbitration', {
-                  contractAddress,
-                  value: feeTx,
-                });
-                if (!result.status) {
-                  ShowModalFail({
-                    title: this.$t('modals.transactionError'),
-                    subtitle: this.$t('modals.tryLater'),
-                    img: images.ERROR,
-                  });
-                } else if (result.status) {
-                  // TODO: Получать из disputes/createDispute id диспута
-                  const currentQuest = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
-                  ShowModal({
-                    key: modals.status,
-                    title: this.$t('modals.transactionSent'),
-                    subtitle: this.$t('modals.checkExplorer'),
-                    link: `${process.env.WQ_EXPLORER_TX}/${result.transactionHash}`,
-                    img: images.SUCCESS,
-                    callback: await $router.push(`${Path.DISPUTES}/${currentQuest.openDispute?.id}`),
-                  });
-                }
-              },
-            });
-          },
+      const feeTx = await fetchContractData(
+        'feeTx',
+        WQFactory,
+        process.env.WORKNET_WQ_FACTORY,
+        null,
+        GetWalletProvider(),
+      );
+      async function payment({ reason = '', problemDescription = '' }) {
+        const currentQuest = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
+        if (!openDispute) await this.$store.dispatch('disputes/createDispute', { reason, problemDescription, questId: id });
+        const { result } = await $store.dispatch('quests/arbitration', {
+          contractAddress,
+          value: feeTx,
         });
+        if (!result.status) {
+          ShowModalFail({
+            title: this.$t('modals.transactionError'),
+            subtitle: this.$t('modals.tryLater'),
+            img: images.ERROR,
+          });
+        } else if (result.status) {
+          ShowModal({
+            key: modals.status,
+            title: this.$t('modals.transactionSent'),
+            subtitle: this.$t('modals.checkExplorer'),
+            link: `${process.env.WQ_EXPLORER_TX}/${result.transactionHash}`,
+            img: images.SUCCESS,
+            callback: await $router.push(`${Path.DISPUTES}/${currentQuest.openDispute?.id}`),
+          });
+        }
       }
-      return this.ShowModal({
+      if (checkAvailabilityDisputeTime) {
+        if (openDispute) {
+          /** Флоу, если сознан диспут и не было оплаты */
+          await payment({});
+        } else if (!openDispute) {
+          /** Флоу, если не сознан диспут и не было оплаты */
+          return ShowModal({
+            key: modals.openADispute,
+            submitMethod: async ({ reason, problemDescription }) => {
+              ShowModal({
+                key: modals.transactionReceipt,
+                fields: {
+                  from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+                  to: { name: this.$t('meta.toBig'), value: contractAddress },
+                  fee: { name: this.$t('wallet.table.trxFee'), value: 0 },
+                  amount: {
+                    name: this.$t('wallet.table.value'),
+                    value: new BigNumber(feeTx).shiftedBy(-18).toString(),
+                    symbol: TokenSymbols.WUSD,
+                  },
+                },
+                title: this.$t('modals.titles.disputePayment'),
+                text: this.$t('modals.payForDispute'),
+                submitMethod: await payment({ reason, problemDescription }),
+              });
+            },
+          });
+        }
+      }
+      return ShowModal({
         key: modals.status,
         img: images.ERROR,
         title: this.$t('modals.errors.error'),
