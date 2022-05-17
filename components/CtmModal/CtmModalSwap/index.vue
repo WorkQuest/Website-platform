@@ -108,8 +108,8 @@ export default {
       const availableTokens = [TokenSymbols.WQT];
       const { from, to } = this.options;
       if (to.chain === Chains.WORKNET || from.chain === Chains.WORKNET) {
-        if (from.chain === Chains.ETHEREUM || to.chain === Chains.ETHEREUM) availableTokens.push(TokenSymbols.ETH);
-        else if (from.chain === Chains.BINANCE || to.chain === Chains.BINANCE) availableTokens.push(TokenSymbols.BNB);
+        if (from.chain === Chains.ETHEREUM || to.chain === Chains.ETHEREUM) availableTokens.push(TokenSymbols.ETH, TokenSymbols.USDT);
+        else if (from.chain === Chains.BINANCE || to.chain === Chains.BINANCE) availableTokens.push(TokenSymbols.BNB, TokenSymbols.USDT);
       }
       return availableTokens;
     },
