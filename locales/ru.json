@@ -99,7 +99,10 @@
     "placeholders": {
       "default": "",
       "mail": "your@mail.com",
-      "email": "Email address"
+      "email": "Email address",
+      "specialization": "Введите специализацию",
+      "skill": "Введите навык",
+      "searchSpecSkill": "Введите специализацию или навык"
     },
     "worker": {
       "cost": {

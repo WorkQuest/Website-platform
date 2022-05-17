@@ -440,7 +440,10 @@ export default {
     window.addEventListener('resize', this.userWindowChange);
   },
   async mounted() {
-    await this.initWSListeners();
+    await Promise.all([
+      this.$store.dispatch('wallet/fetchCommonTokenInfo'), // Get Symbol & Decimals for worknet tokens
+      this.initWSListeners(),
+    ]);
     this.GetLocation();
     this.$store.commit('user/setLang', this.$i18n.localeProperties.code);
   },

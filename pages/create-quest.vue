@@ -162,8 +162,8 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import {
-  tokenMap,
   PriorityFilter, TokenSymbols, TypeOfJobFilter, WorkplaceIndex,
+  TokenMap,
 } from '~/utils/enums';
 import { LocalNotificationAction } from '~/utils/notifications';
 import { CommissionForCreatingAQuest } from '~/utils/сonstants/quests';
@@ -364,7 +364,7 @@ export default {
         return;
       }
 
-      const tokenAddress = tokenMap[TokenSymbols.WUSD];
+      const tokenAddress = TokenMap[TokenSymbols.WUSD];
       const spenderAddress = process.env.WORKNET_WQ_FACTORY;
       const [allowance] = await Promise.all([
         this.$store.dispatch('wallet/getAllowance', {
@@ -441,7 +441,7 @@ export default {
           method: 'balanceOf',
           address: this.userWalletAddress,
           abi: ERC20,
-          token: tokenMap[TokenSymbols.WUSD],
+          token: TokenMap[TokenSymbols.WUSD],
           symbol: TokenSymbols.WUSD,
         }),
         this.$store.dispatch('wallet/getBalance'),
