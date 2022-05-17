@@ -16,11 +16,13 @@
             type="gray"
             :items="specializationsNames"
             :placeholder="$t('settings.selectSpec')"
+            :search-placeholder="$t('meta.placeholders.specialization')"
             :data-selector="`SPECIALIZATIONS-DD-${displaySpecIndex[key]}`"
             mode="small"
             rules="required"
             :label="$tc('settings.specialization')"
             :hide-selected="hideSelectedSpecs"
+            :is-search="true"
             @input="switchSkill($event, key)"
           />
           <div class="specialization__skills skills">
@@ -31,11 +33,13 @@
               :type="specIndex[key] < 0 || selectedSkills[key].length === 5 ? 'disabled' : 'gray'"
               :disabled="specIndex[key] < 0 || selectedSkills[key].length === 5"
               :placeholder="$t('settings.selectSkills')"
+              :search-placeholder="$t('meta.placeholders.skill')"
               :items="skillsNames[displaySpecIndex[key]]"
               mode="small"
               rules="required"
               :label="$tc('meta.skills')"
               :hide-selected="hideSelectedSkills[key]"
+              :is-search="true"
               @input="addSkillToBadge($event, key)"
             />
             <div

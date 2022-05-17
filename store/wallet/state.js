@@ -6,26 +6,11 @@ export default () => ({
   isWalletConnected: false,
   callbackLayout: 'default',
   isOnlyConfirm: false, // for confirm password layout
-  selectedToken: TokenSymbols.WUSD,
+  selectedToken: TokenSymbols.WQT,
   balance: {
-    WUSD: {
-      balance: 0,
-      fullBalance: 0,
-      frozenBalance: 0,
-    },
-    WQT: {
-      balance: 0,
-      fullBalance: 0,
-    },
-    ETH: {
-      balance: 0,
-      fullBalance: 0,
-    },
-    BNB: {
-      balance: 0,
-      fullBalance: 0,
-    },
+    WQT: { balance: 0, fullBalance: 0, decimals: 18 },
   },
+  frozenBalance: 0,
   pensionWallet: null,
   pensionHistory: {
     Update: { txs: [], count: 0 },

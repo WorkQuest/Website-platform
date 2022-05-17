@@ -99,7 +99,10 @@
     "placeholders": {
       "default": "प्लेसहोल्डर",
       "mail": "your@mail.com",
-      "email": "ईमेल एड्रेस"
+      "email": "ईमेल एड्रेस",
+      "specialization": "Enter specialization",
+      "skill": "Enter skill",
+      "searchSpecSkill": "Enter specialization or skill"
     },
     "worker": {
       "cost": {
