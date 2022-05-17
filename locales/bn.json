@@ -181,7 +181,7 @@
     "aml": "AML ও CTF নীতি",
     "createAQuest": "একটি quest তৈরি করুন",
     "completed": "Completed",
-    "typeOfJob": "কাজের ধরন",
+    "typeOfJob": "Type of employment",
     "choosePeriod": "মেয়াদ চয়ন করুন",
     "verified": "Verified",
     "dispute": "রোধ নং",
@@ -451,7 +451,7 @@
       "1": "বিশেষায়ন",
       "2": "Quest",
       "3": "জরুরি",
-      "4": "কাজের ধরন",
+      "4": "Type of employment",
       "5": "সমস্ত অগ্রাধিকার",
       "6": "দাম",
       "7": "যোগ করা সময়"
@@ -2229,7 +2229,7 @@
             "subtitle": "Quest delivery time: Urgent, Short term, Fixed delivery."
           },
           "job": {
-            "title": "Type of job",
+            "title": "Type of employment",
             "subtitle": "Select the type of employment: Full-time, Part-time, Fixed term, Contract."
           },
           "distant": {

@@ -87,12 +87,12 @@ import {
   RatingFilter,
   PriorityFilter,
   WorkplaceFilter,
-  TypeOfJobFilter, PayPeriodsIndex,
+  TypeOfJobFilter, PayPeriodsIndex, PayPeriodsFilter,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'FiltersPanel',
+  name: 'PanelFilters',
   data() {
     return {
       selectedRating: null,
@@ -125,12 +125,15 @@ export default {
       return PriorityFilter.map((item, i) => (i === 0 ? this.$t('meta.priority.all') : this.$t(`meta.priority.${item.key}`)));
     },
     typeOfJobItems() {
-      const items = [this.$t('quests.allVariants')];
-      TypeOfJobFilter.forEach((item) => { items.push(this.$t(`quests.employment.${item}`)); });
-      return items;
+      return TypeOfJobFilter.map((item, i) => (i === 0 ? this.$t('quests.allVariants') : this.$t(`quests.employment.${item}`)));
     },
-    workplaceItems() { return WorkplaceFilter.map((item) => this.$t(`workPlaces.${item}`)); },
-    payPeriodItems() { return PayPeriodsIndex.map((item) => this.$t(`quests.payPeriods.${item}`)); },
+    workplaceItems() {
+      return WorkplaceFilter.map((item) => this.$t(`workPlaces.${item}`));
+    },
+    payPeriodItems() {
+      return PayPeriodsFilter.map((item, i) => (i === 0 ? this.$t('quests.allVariants')
+        : this.$t(`quests.payPeriods.${item}`)));
+    },
     prices() {
       const { from, to } = this.selectedPrice;
       if (from && to) return { title: `${from} - ${to}`, hasPrice: true };
@@ -140,6 +143,9 @@ export default {
     },
     isPriceModalShowed() {
       return this.isModalShowed && this.activeModalKey === modals.priceSearch;
+    },
+    isEmployer() {
+      return this.userRole === UserRole.EMPLOYER;
     },
   },
   watch: {
@@ -162,7 +168,7 @@ export default {
     selectedPrice() {
       const { selectedPrice: { from, to } } = this;
       const query = {};
-      const queryName = this.userRole === UserRole.EMPLOYER ? 'betweenWagePerHour' : 'priceBetween';
+      const queryName = this.isEmployer ? 'betweenWagePerHour' : 'priceBetween';
       if (from || to) {
         query[`${queryName}[from]`] = from || 0;
         query[`${queryName}[to]`] = to || 99999999999999;
@@ -178,7 +184,7 @@ export default {
   },
   methods: {
     showPriceSearch() {
-      this.ShowModal({ key: modals.priceSearch, title: this.$t(`meta.${this.userRole === UserRole.WORKER ? 'price' : 'costPerHour'}`) });
+      this.ShowModal({ key: modals.priceSearch, title: this.$t(`meta.${this.isEmployer ? 'costPerHour' : 'price'}`) });
     },
     sortByTime() {
       this.selectedSort = this.selectedSort === 'desc' ? 'asc' : 'desc';

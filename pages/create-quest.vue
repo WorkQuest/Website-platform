@@ -173,7 +173,7 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import {
-  PriorityFilter, TokenMap, TokenSymbols, TypeOfJobFilter, PayPeriodsIndex, WorkplaceIndex,
+  PriorityFilter, TokenMap, TokenSymbols, TypeOfJobs, PayPeriodsIndex, WorkplaceIndex,
 } from '~/utils/enums';
 import { CommissionForCreatingAQuest } from '~/utils/сonstants/quests';
 import { ERC20 } from '~/abi';
@@ -221,7 +221,7 @@ export default {
       ];
     },
     employment() {
-      return TypeOfJobFilter.map((item) => this.$t(`quests.employment.${item}`));
+      return TypeOfJobs.map((item) => this.$t(`quests.employment.${item}`));
     },
     distantWork() {
       return [
@@ -292,7 +292,7 @@ export default {
           workplace: WorkplaceIndex[workplaceIndex],
           payPeriod: PayPeriodsIndex[payPeriodsIndex],
           priority: PriorityFilter[runtimeIndex + 1].value,
-          typeOfEmployment: TypeOfJobFilter[employmentIndex],
+          typeOfEmployment: TypeOfJobs[employmentIndex],
           title: questTitle,
           description: textarea,
           price,
@@ -315,7 +315,7 @@ export default {
         this.questTitle = questDraft?.title || '';
         this.textarea = questDraft?.description || '';
         this.price = questDraft?.price || '';
-        this.employmentIndex = TypeOfJobFilter.indexOf(questDraft?.typeOfEmployment) || 0;
+        this.employmentIndex = TypeOfJobs.indexOf(questDraft?.typeOfEmployment) || 0;
         this.workplaceIndex = WorkplaceIndex.indexOf(questDraft?.workplace) || 0;
         this.payPeriodsIndex = PayPeriodsIndex.indexOf(questDraft?.workplace) || 0;
         this.runtimeIndex = PriorityFilter[questDraft?.priority + 1]?.value || 0;
@@ -466,7 +466,7 @@ export default {
         workplace: WorkplaceIndex[this.workplaceIndex],
         payPeriod: PayPeriodsIndex[this.payPeriodsIndex],
         priority: PriorityFilter[this.runtimeIndex + 1].value,
-        typeOfEmployment: TypeOfJobFilter[this.employmentIndex],
+        typeOfEmployment: TypeOfJobs[this.employmentIndex],
         title: this.questTitle,
         description: this.textarea,
         price: new BigNumber(this.price).shiftedBy(18).toString(),

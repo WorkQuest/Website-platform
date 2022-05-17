@@ -181,7 +181,7 @@
     "aml": "AML & CTF Policy",
     "createAQuest": "Créer une quête",
     "completed": "Completed",
-    "typeOfJob": "Type de travail",
+    "typeOfJob": "Type of employment",
     "choosePeriod": "Choisir la période",
     "verified": "Verified",
     "dispute": "Litiges",
@@ -451,7 +451,7 @@
       "1": "Spécialisation",
       "2": "Quêtes",
       "3": "Urgent",
-      "4": "Type de travail",
+      "4": "Type of employment",
       "5": "Toutes les priorités",
       "6": "Prix",
       "7": "Temps ajouté"
@@ -2229,7 +2229,7 @@
             "subtitle": "Quest delivery time: Urgent, Short term, Fixed delivery."
           },
           "job": {
-            "title": "Type of job",
+            "title": "Type of employment",
             "subtitle": "Select the type of employment: Full-time, Part-time, Fixed term, Contract."
           },
           "distant": {

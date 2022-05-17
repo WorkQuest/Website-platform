@@ -181,7 +181,7 @@
     "aml": "AML & CTF Policy",
     "createAQuest": "Создать квест",
     "completed": "Completed",
-    "typeOfJob": "Тип работы",
+    "typeOfJob": "Type of employment",
     "choosePeriod": "Выберите период",
     "verified": "Подтвержден",
     "dispute": "Спор",
@@ -381,11 +381,11 @@
       "noStatus": "Без статуса"
     },
     "distantWork": {
-      "title": "Workplace",
-      "allWorkplaces": "All workplaces",
-      "distantWork": "Remote work",
-      "workInOffice": "In-office",
-      "bothVariant": "Hybrid workplace"
+      "title": "Рабочее место",
+      "allWorkplaces": "Все рабочие места",
+      "distantWork": "Удаленная работа",
+      "workInOffice": "В офисе",
+      "bothVariant": "Гибридное рабочее место"
     },
     "payPeriods": {
       "title": "Pay periods",
@@ -451,7 +451,7 @@
       "1": "Специализация",
       "2": "Квесты",
       "3": "Срочность",
-      "4": "Тип работ",
+      "4": "Тип занятости",
       "5": "Приоритет",
       "6": "Цена",
       "7": "Время добавления"
@@ -2228,7 +2228,7 @@
             "subtitle": "Quest delivery time: Urgent, Short term, Fixed delivery."
           },
           "job": {
-            "title": "Type of job",
+            "title": "Type of employment",
             "subtitle": "Select the type of employment: Full-time, Part-time, Fixed term, Contract."
           },
           "distant": {
@@ -2318,7 +2318,7 @@
     }
   },
   "workPlaces": {
-    "title": "Workplace",
+    "title": "Рабочее место",
     "all": "All workplaces",
     "Remote": "Удаленная работа",
     "InOffice": "В офисе",

@@ -181,7 +181,7 @@
     "aml": "反洗钱和反恐融资政策",
     "createAQuest": "创建 Quest",
     "completed": "Completed",
-    "typeOfJob": "工作类型",
+    "typeOfJob": "Type of employment",
     "choosePeriod": "选择期限",
     "verified": "Verified",
     "dispute": "发起争议",
@@ -451,7 +451,7 @@
       "1": "专业",
       "2": "Quest",
       "3": "紧急",
-      "4": "工作类型",
+      "4": "Type of employment",
       "5": "所有优先级",
       "6": "价格",
       "7": "添加时间"
@@ -2229,7 +2229,7 @@
             "subtitle": "Quest delivery time: Urgent, Short term, Fixed delivery."
           },
           "job": {
-            "title": "Type of job",
+            "title": "Type of employment",
             "subtitle": "Select the type of employment: Full-time, Part-time, Fixed term, Contract."
           },
           "distant": {

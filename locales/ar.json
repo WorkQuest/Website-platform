@@ -181,7 +181,7 @@
     "aml": "سياسة مكافحة غسل الأموال وتمويل الإرهاب",
     "createAQuest": "إنشاء طلب عمل",
     "completed": "طلبات العمل المكتملة",
-    "typeOfJob": "نوع العمل",
+    "typeOfJob": "Type of employment",
     "choosePeriod": "اختيار الفترة",
     "verified": "Verified",
     "dispute": "النزاع",
@@ -451,7 +451,7 @@
       "1": "التخصُّص",
       "2": "طلبات العمل",
       "3": "عاجلة",
-      "4": "نوع العمل",
+      "4": "Type of employment",
       "5": "جميع درجات الأولوية",
       "6": "السعر",
       "7": "الوقت المضاف"
@@ -2230,7 +2230,7 @@
             "subtitle": "Quest delivery time: Urgent, Short term, Fixed delivery."
           },
           "job": {
-            "title": "Type of job",
+            "title": "Type of employment",
             "subtitle": "Select the type of employment: Full-time, Part-time, Fixed term, Contract."
           },
           "distant": {

@@ -181,7 +181,7 @@
     "aml": "AML एवं CTF नीति",
     "createAQuest": "Quest बनाएं",
     "completed": "Completed",
-    "typeOfJob": "जॉब का प्रकार",
+    "typeOfJob": "Type of employment",
     "choosePeriod": "अवधि चुनें",
     "verified": "Verified",
     "dispute": "विवाद",
@@ -451,7 +451,7 @@
       "1": "विशेषज्ञता",
       "2": "Quests",
       "3": "अर्जेंट",
-      "4": "जॉब का प्रकार",
+      "4": "Type of employment",
       "5": "सभी प्राथमिकता",
       "6": "कीमत",
       "7": "जोड़ा गया समय"
@@ -2229,7 +2229,7 @@
             "subtitle": "Quest delivery time: Urgent, Short term, Fixed delivery."
           },
           "job": {
-            "title": "Type of job",
+            "title": "Type of employment",
             "subtitle": "Select the type of employment: Full-time, Part-time, Fixed term, Contract."
           },
           "distant": {
