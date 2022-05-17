@@ -55,6 +55,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { TokenSymbols } from '~/utils/enums';
 
 export default {
   name: 'ReferralClaim',
@@ -64,9 +65,13 @@ export default {
       userAddress: 'user/getUserWalletAddress',
     }),
   },
+  beforeMount() {
+    this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+  },
   methods: {
     async handleSubmit() {
       this.CloseModal();
+      await this.$store.dispatch('oracle/setCurrentPriceToken', { symbol: TokenSymbols.WQT });
       await this.$store.dispatch('referral/claimReferralReward', this.userAddress);
     },
   },
