@@ -100,7 +100,7 @@ export default {
       {
         model: 'payPeriodIndex',
         placeholder: 'settings.selectPayPeriod',
-        items: () => PayPeriodsIndex.map((item) => this.$t(`quests.payPeriods.${item}`)),
+        items: PayPeriodsIndex.map((item) => this.$t(`quests.payPeriods.${item}`)),
         label: 'quests.payPeriods.title',
       },
     ];
