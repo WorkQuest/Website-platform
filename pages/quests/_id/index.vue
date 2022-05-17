@@ -551,14 +551,7 @@ export default {
         },
       } = this;
       if (status === QuestStatuses.Dispute) return await $router.push(`${Path.DISPUTES}/${openDispute.id}`);
-      const feeTx = await fetchContractData(
-        'feeTx',
-        WQFactory,
-        process.env.WORKNET_WQ_FACTORY,
-        null,
-        GetWalletProvider(),
-      );
-      async function payment({ reason = '', problemDescription = '' }) {
+      async function payment({ reason = '', problemDescription = '', feeTx }) {
         const currentQuest = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
         if (!openDispute) await this.$store.dispatch('disputes/createDispute', { reason, problemDescription, questId: id });
         const { result } = await $store.dispatch('quests/arbitration', {
@@ -571,7 +564,7 @@ export default {
             subtitle: this.$t('modals.tryLater'),
             img: images.ERROR,
           });
-        } else if (result.status) {
+        } else {
           ShowModal({
             key: modals.status,
             title: this.$t('modals.transactionSent'),
@@ -583,10 +576,17 @@ export default {
         }
       }
       if (checkAvailabilityDisputeTime) {
+        const feeTx = await fetchContractData(
+          'feeTx',
+          WQFactory,
+          process.env.WORKNET_WQ_FACTORY,
+          null,
+          GetWalletProvider(),
+        );
         if (openDispute) {
           /** Флоу, если сознан диспут и не было оплаты */
-          await payment({});
-        } else if (!openDispute) {
+          await payment({ feeTx });
+        } else {
           /** Флоу, если не сознан диспут и не было оплаты */
           return ShowModal({
             key: modals.openADispute,
@@ -605,7 +605,7 @@ export default {
                 },
                 title: this.$t('modals.titles.disputePayment'),
                 text: this.$t('modals.payForDispute'),
-                submitMethod: await payment({ reason, problemDescription }),
+                submitMethod: await payment({ reason, problemDescription, feeTx }),
               });
             },
           });
