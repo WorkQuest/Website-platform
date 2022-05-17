@@ -162,8 +162,7 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import {
-  PriorityFilter, TokenSymbols, TypeOfJobFilter, WorkplaceIndex,
-  TokenMap,
+  PriorityFilter, TokenSymbols, TypeOfJobFilter, WorkplaceIndex, TokenMap,
 } from '~/utils/enums';
 import { LocalNotificationAction } from '~/utils/notifications';
 import { CommissionForCreatingAQuest } from '~/utils/сonstants/quests';
