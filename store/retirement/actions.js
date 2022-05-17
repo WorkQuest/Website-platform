@@ -211,8 +211,7 @@ export default {
           case 'WalletUpdated':
             payload.method = PensionHistoryMethods.Update;
             payload.tx = {
-              event,
-              transactionHash,
+              ...payload.tx,
               createdAt: moment.utc().format(),
               newFee,
             };
@@ -223,7 +222,9 @@ export default {
             count = 0;
             break;
         }
+
         if (pensionHistory[payload.method].txs.length === 10) pensionHistory[payload.method].txs.splice(9, 1);
+
         pensionHistory[payload.method].txs.unshift(payload.tx);
         await dispatch('pensionGetWalletInfo');
         commit('setPensionHistoryData', { method: payload.method, txs: pensionHistory[payload.method].txs, count });
