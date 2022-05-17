@@ -13,6 +13,7 @@ import {
 } from '~/utils/notifications';
 import { error, success } from '~/utils/web3';
 import { images } from '~/utils/images';
+import { QuestStatuses } from '~/utils/сonstants/quests';
 
 export default {
 
@@ -130,7 +131,7 @@ export default {
     const { data, action } = notification.notification;
     const {
       id, title, quest, user, worker, comment, employer, fromUser, rootComment,
-      assignedWorker, message, toUserId, discussion, problemDescription,
+      assignedWorker, message, toUserId, discussion, problemDescription, openDisputeUser, reason, number, status,
     } = data;
     const currentUserId = userData.id;
     const userRole = rootGetters.getUserRole;
@@ -267,7 +268,15 @@ export default {
     } else if (notificationEmployerFilterActions.includes(action) && !notification.sender) {
       if (assignedWorker) notification.sender = assignedWorker;
       else if (worker) notification.sender = worker;
+    } else if (action === NotificationAction.OPENED_DISPUTE) {
+      notification.sender = openDisputeUser;
+      notification.params = {
+        ...notification.params,
+        title: `№${number}, Reason: ${reason}, Quest: ${quest?.title}`,
+        path: `${Path.DISPUTES}/${data.id}`,
+      };
     }
+    console.log('notification.notification', notification.notification);
     return notification.notification;
   },
 

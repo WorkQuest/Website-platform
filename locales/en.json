@@ -1330,7 +1330,8 @@
   "notifications": {
     "QuestEditedOnContract": "Quest edited on contract",
     "title": "Notifications",
-    "openDispute": "Open dispute",
+    "OpenDispute": "Opened dispute",
+    "openDispute": "Opened dispute",
     "invite": "Invites you to complete the quest",
     "questStarted": "Invites you to start a quest",
     "workerRejectedQuest": "Rejected the quest",

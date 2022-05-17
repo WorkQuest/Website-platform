@@ -1330,6 +1330,7 @@
   "notifications": {
     "QuestEditedOnContract": "Quest edited on contract",
     "title": "Notifications",
+    "OpenDispute": "نزاع مفتوح",
     "openDispute": "نزاع مفتوح",
     "invite": "Invites you to complete the quest",
     "questStarted": "Invites you to start a quest",

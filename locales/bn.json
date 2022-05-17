@@ -1330,6 +1330,7 @@
   "notifications": {
     "QuestEditedOnContract": "Quest edited on contract",
     "title": "Notifications",
+    "OpenDispute": "বিতর্ক শুরু করুন",
     "openDispute": "বিতর্ক শুরু করুন",
     "invite": "Invites you to complete the quest",
     "questStarted": "Invites you to start a quest",
