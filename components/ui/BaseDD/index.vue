@@ -12,7 +12,6 @@
       :class="[{'dd__top': mode === 'top' }, {'dd_small' : isDotsView}]"
     >
       <slot name="card" />
-
       <button
         class="dd__btn"
         :class="ddClass"
@@ -89,12 +88,21 @@
           class="dd__items"
           :class="[{'dd__items_small' : mode === 'small'}, {'dd__items_wide' : isDotsView}]"
         >
+          <base-field
+            v-if="isSearch"
+            v-model="searchLine"
+            class="dd__search"
+            data-selector="INPUT-SEARCH"
+            :placeholder="searchPlaceholder"
+            :is-search="true"
+            :is-hide-error="true"
+          />
           <button
             v-for="(item, i) in items"
             :key="`dd__item-${i}`"
             class="dd__item"
             :data-selector="`ACTION-BTN-SELECT-ITEM-${dataSelector.toUpperCase()}-${i}`"
-            :class="{'dd__item_hide': isSelected(i)}"
+            :class="{'dd__item_hide': isSelected(i) || !isSearchMatched(item)}"
             @click="selectItem(i)"
           >
             {{ dataType === 'array' ? item : item.title }}
@@ -168,9 +176,18 @@ export default {
       default: 'NON-SELECTOR',
       required: true,
     },
+    isSearch: {
+      type: Boolean,
+      default: false,
+    },
+    searchPlaceholder: {
+      type: String,
+      default: '',
+    },
   },
   data: () => ({
     isShown: false,
+    searchLine: '',
   }),
   computed: {
     elementsIsEmpty() {
@@ -199,6 +216,9 @@ export default {
     },
     isSelected(i) {
       return this.hideSelected.includes(i);
+    },
+    isSearchMatched(item) {
+      return item.toLowerCase().includes(this.searchLine.toLowerCase());
     },
   },
 };
@@ -366,6 +386,9 @@ export default {
       color: #7c838d;
       font-size: 19px;
     }
+  }
+  &__search {
+    width: 100%;
   }
 }
 </style>

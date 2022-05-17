@@ -38,7 +38,7 @@
               class="input__field"
               data-selector="AMOUNT"
               :placeholder="$t('modals.amount')"
-              :rules="`required|decimal|is_not:0|max_value:${maxAmount}|decimalPlaces:18`"
+              :rules="`required|decimal|is_not:0|max_value:${maxAmount}|decimalPlaces:${tokenDecimals}`"
               :name="$tc('modals.amountField')"
               @input="replaceDot"
             >
@@ -86,7 +86,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
-import { tokenMap, TokenSymbols } from '~/utils/enums';
+import { TokenMap, TokenSymbols } from '~/utils/enums';
 import { ERC20 } from '~/abi/index';
 
 export default {
@@ -95,14 +95,8 @@ export default {
     return {
       recipient: '',
       amount: 0,
-      step: 1,
       ddValue: 0,
-      maxFee: {
-        WUSD: 0,
-        WQT: 0,
-        ETH: 0,
-        BNB: 0,
-      },
+      maxFeeForNativeToken: 0,
       isCanSubmit: false,
     };
   },
@@ -116,16 +110,18 @@ export default {
       isConnected: 'wallet/getIsWalletConnected',
       frozenBalance: 'wallet/getFrozenBalance',
     }),
+    tokenDecimals() {
+      return this.balance[this.selectedToken].decimals;
+    },
     tokenSymbolsDd() {
-      return Object.keys(TokenSymbols);
+      return Object.keys(this.balance);
     },
     maxAmount() {
       const {
-        selectedToken, balance, maxFee, frozenBalance,
+        selectedToken, balance, maxFeeForNativeToken, frozenBalance,
       } = this;
       const fullBalance = new BigNumber(balance[selectedToken].fullBalance);
-      if (selectedToken === TokenSymbols.WUSD) return fullBalance.minus(maxFee[selectedToken]).toString();
-      if (selectedToken === TokenSymbols.WQT) return fullBalance.minus(frozenBalance).toString();
+      if (selectedToken === TokenSymbols.WQT) return fullBalance.minus(maxFeeForNativeToken).toString();
       return fullBalance.toString();
     },
   },
@@ -158,24 +154,24 @@ export default {
       if (!this.isConnected) return;
       this.isCanSubmit = false;
       const {
-        selectedToken, amount, maxFee, userData, balance,
+        selectedToken, amount, userData, balance,
       } = this;
-      if (selectedToken === TokenSymbols.WUSD) {
-        const feeWUSD = await this.$store.dispatch('wallet/getTransferFeeData', {
+      if (selectedToken === TokenSymbols.WQT) {
+        const nativeTokenFee = await this.$store.dispatch('wallet/getTransferFeeData', {
           recipient: userData.wallet.address,
-          value: balance.WUSD.fullBalance,
+          value: balance.WQT.fullBalance,
         });
-        if (feeWUSD?.ok) maxFee.WUSD = feeWUSD?.result?.fee ?? 0;
-        else maxFee.WUSD = 0;
+        if (nativeTokenFee.ok) this.maxFeeForNativeToken = nativeTokenFee.result.fee;
+        else this.maxFeeForNativeToken = 0;
       } else {
         const feeTokens = await this.$store.dispatch('wallet/getContractFeeData', {
           method: 'transfer',
           abi: ERC20,
-          contractAddress: tokenMap[selectedToken],
-          data: [tokenMap[selectedToken], amount],
+          contractAddress: TokenMap[selectedToken],
+          data: [TokenMap[selectedToken], amount],
         });
-        if (feeTokens?.ok) maxFee[selectedToken] = feeTokens?.result?.fee ?? 0;
-        else maxFee[selectedToken] = 0;
+        if (feeTokens.ok) this.maxFeeForNativeToken = feeTokens.result.fee;
+        else this.maxFeeForNativeToken = 0;
       }
       this.isCanSubmit = true;
     },

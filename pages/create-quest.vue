@@ -162,17 +162,16 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import {
-  PriorityFilter, tokenMap, TokenSymbols, TypeOfJobFilter, WorkplaceIndex,
+  PriorityFilter, TokenMap, TokenSymbols, TypeOfJobFilter, WorkplaceIndex,
 } from '~/utils/enums';
 import { CommissionForCreatingAQuest } from '~/utils/сonstants/quests';
 import { ERC20 } from '~/abi';
-import { error, success } from '~/utils/web3';
 
 const { GeoCode } = require('geo-coder');
 
 export default {
   name: 'CreateQuest',
-  middleware: ['employer-role'],
+  middleware: 'employer-role',
   data() {
     return {
       period: 1,
@@ -358,7 +357,7 @@ export default {
         return;
       }
 
-      const tokenAddress = tokenMap[TokenSymbols.WUSD];
+      const tokenAddress = TokenMap[TokenSymbols.WUSD];
       const spenderAddress = process.env.WORKNET_WQ_FACTORY;
       const [allowance] = await Promise.all([
         this.$store.dispatch('wallet/getAllowance', {
@@ -435,7 +434,7 @@ export default {
           method: 'balanceOf',
           address: this.userWalletAddress,
           abi: ERC20,
-          token: tokenMap[TokenSymbols.WUSD],
+          token: TokenMap[TokenSymbols.WUSD],
           symbol: TokenSymbols.WUSD,
         }),
         this.$store.dispatch('wallet/getBalance'),

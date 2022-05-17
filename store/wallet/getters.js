@@ -1,5 +1,5 @@
 export default {
-  getFrozenBalance: (state) => state.balance.WQT.frozenBalance,
+  getFrozenBalance: (state) => state.frozenBalance,
   getTransactions: (state) => state.transactions,
   getTransactionsCount: (state) => state.transactionsCount,
   getIsWalletConnected: (state) => state.isWalletConnected,

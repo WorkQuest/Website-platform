@@ -1,6 +1,6 @@
 export default {
   setFrozenBalance(state, data) {
-    state.balance.WQT.frozenBalance = data;
+    state.frozenBalance = data;
   },
   setTransactions(state, transactions) {
     state.transactions = transactions;
@@ -17,9 +17,21 @@ export default {
   setIsOnlyConfirm(state, value) {
     state.isOnlyConfirm = value;
   },
+  setCommonTokenData(state, [symbol, decimals]) {
+    state.balance = {
+      ...state.balance,
+      [symbol]: { decimals },
+    };
+  },
   setBalance(state, { symbol, balance, fullBalance }) {
-    state.balance[symbol].balance = balance;
-    state.balance[symbol].fullBalance = fullBalance;
+    state.balance = {
+      ...state.balance,
+      [symbol]: {
+        ...state.balance[symbol],
+        balance,
+        fullBalance,
+      },
+    };
   },
   setSelectedToken(state, token) {
     state.selectedToken = token;
