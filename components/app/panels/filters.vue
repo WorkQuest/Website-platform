@@ -31,11 +31,21 @@
       data-selector="EMPLOYMENT"
     />
     <base-dd
+      v-if="userRole === UserRole.WORKER"
       v-model="selectedWorkplace"
       class="filters-panel__item"
       mode="blackFont"
       :items="workplaceItems"
       :placeholder="$t('quests.distantWork.title')"
+      data-selector="WORKPLACE"
+    />
+    <base-dd
+      v-else
+      v-model="selectPayPeriod"
+      class="filters-panel__item"
+      mode="blackFont"
+      :items="payPeriodItems"
+      :placeholder="$t('quests.payPeriods.title')"
       data-selector="WORKPLACE"
     />
     <base-btn
@@ -77,7 +87,7 @@ import {
   RatingFilter,
   PriorityFilter,
   WorkplaceFilter,
-  TypeOfJobFilter,
+  TypeOfJobFilter, PayPeriodsIndex,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
@@ -89,6 +99,7 @@ export default {
       selectedPriority: null,
       selectedTypeOfJob: null,
       selectedWorkplace: null,
+      selectPayPeriod: null,
       selectedSort: 'desc',
     };
   },
@@ -119,6 +130,7 @@ export default {
       return items;
     },
     workplaceItems() { return WorkplaceFilter.map((item) => this.$t(`workPlaces.${item}`)); },
+    payPeriodItems() { return PayPeriodsIndex.map((item) => this.$t(`quests.payPeriods.${item}`)); },
     prices() {
       const { from, to } = this.selectedPrice;
       if (from && to) return { title: `${from} - ${to}`, hasPrice: true };
@@ -139,10 +151,13 @@ export default {
       this.$emit('sortPriority', index ? { 'priorities[0]': PriorityFilter[index].value } : {});
     },
     selectedTypeOfJob(index) {
-      this.$emit('sortTypeOfJob', index ? { 'employments[0]': TypeOfJobFilter[index] } : {});
+      this.$emit('sortTypeOfJob', index ? { 'typeOfEmployments[0]': TypeOfJobFilter[index] } : {});
     },
     selectedWorkplace(index) {
       this.$emit('sortWorkplace', index ? { 'workplaces[0]': WorkplaceFilter[index] } : {});
+    },
+    selectPayPeriod(index) {
+      this.$emit('sortPayPeriod', index ? { 'payPeriods[0]': PayPeriodsIndex[index] } : {});
     },
     selectedPrice() {
       const { selectedPrice: { from, to } } = this;

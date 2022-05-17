@@ -387,11 +387,27 @@
       "workInOffice": "In-office",
       "bothVariant": "Hybrid workplace"
     },
+    "payPeriods": {
+      "title": "Pay periods",
+      "Hourly": "Hourly",
+      "Daily": "Daily",
+      "Weekly": "Weekly",
+      "BiWeekly":"Bi-weekly ",
+      "SemiMonthly": "Semi-monthly",
+      "Monthly": "Monthly",
+      "Quarterly": "Quarterly",
+      "SemiAnnually": "Semi-annually",
+      "Annually": "Annually",
+      "FixedPeriod":"Fixed period",
+      "ByAgreement":"By agreement"
+    },
     "employment": {
       "employment": "Employment",
-      "fullTime": "Full time",
-      "partTime": "Part time",
-      "fixedTerm": "Fixed term"
+      "FullTime": "Full time",
+      "PartTime": "Part time",
+      "FixedTerm": "Fixed term",
+      "EmploymentContract": "Employment contract",
+      "RemoteWork": "Remote work"
     },
     "runtime": "Runtime",
     "active": "Aktif",
@@ -1479,7 +1495,8 @@
       "distantWork": "Remote work",
       "workInOffice": "In-office",
       "bothVariant": "Hybrid workplace"
-    }
+    },
+    "selectPayPeriod": "Select pay period"
   },
   "raising-views": {
     "raisingViews": "Meningkatkan tampilan",
@@ -2304,8 +2321,8 @@
   "workPlaces": {
     "title": "Workplace",
     "all": "All workplaces",
-    "distant": "Remote work",
-    "office": "In-office",
-    "both": "Hybrid workplace"
+    "Remote": "Remote work",
+    "InOffice": "In-office",
+    "Hybrid": "Hybrid workplace"
   }
 }

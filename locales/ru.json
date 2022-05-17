@@ -387,11 +387,27 @@
       "workInOffice": "In-office",
       "bothVariant": "Hybrid workplace"
     },
+    "payPeriods": {
+      "title": "Pay periods",
+      "Hourly": "Ежечасно",
+      "Daily": "Еженедельно",
+      "Weekly": "Раз в две недели",
+      "BiWeekly":"Bi-weekly ",
+      "SemiMonthly": "Раз в полмесяца",
+      "Monthly": "Ежемесячно",
+      "Quarterly": "Ежеквартальный",
+      "SemiAnnually": "Раз в полгода",
+      "Annually": "Ежегодно",
+      "FixedPeriod":"Фиксированная длина",
+      "ByAgreement":"По соглашению"
+    },
     "employment": {
       "employment": "Занятость",
-      "fullTime": "Полная",
-      "partTime": "Частичная",
-      "fixedTerm": "Установленный срок"
+      "FullTime": "Полная",
+      "PartTime": "Частичная",
+      "FixedTerm": "Установленный срок",
+      "EmploymentContract": "Контракт",
+      "RemoteWork": "Удаленная работа"
     },
     "runtime": "Runtime",
     "active": "Active",
@@ -1479,7 +1495,8 @@
       "distantWork": "Remote work",
       "workInOffice": "In-office",
       "bothVariant": "Hybrid workplace"
-    }
+    },
+    "selectPayPeriod": "Выберите период оплаты"
   },
   "raising-views": {
     "raisingViews": "Увеличение просмотров",
@@ -2303,9 +2320,9 @@
   "workPlaces": {
     "title": "Workplace",
     "all": "All workplaces",
-    "distant": "Remote work",
-    "office": "In-office",
-    "both": "Hybrid workplace"
+    "Remote": "Удаленная работа",
+    "InOffice": "В офисе",
+    "Hybrid": "Гибридное рабочее место"
   }
 }
 

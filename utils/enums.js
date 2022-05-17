@@ -63,9 +63,11 @@ export const KeyCodes = {
 };
 
 // Filters
-export const WorkplaceFilter = ['all', 'distant', 'office', 'both'];
-export const WorkplaceIndex = ['distant', 'office', 'both'];
-export const TypeOfJobFilter = ['fullTime', 'partTime', 'fixedTerm'];
+export const WorkplaceIndex = ['Remote', 'InOffice', 'Hybrid'];
+export const PayPeriodsIndex = ['Hourly', 'Daily', 'Weekly', 'BiWeekly', 'SemiMonthly', 'Monthly', 'Quarterly', 'SemiAnnually', 'Annually', 'FixedPeriod', 'ByAgreement'];
+
+export const WorkplaceFilter = ['all', 'Remote', 'InOffice', 'Hybrid'];
+export const TypeOfJobFilter = ['FullTime', 'PartTime', 'FixedTerm', 'EmploymentContract', 'RemoteWork'];
 export const PriorityFilter = [
   { key: 'all', value: 0 },
   { key: 'urgent', value: 3 },

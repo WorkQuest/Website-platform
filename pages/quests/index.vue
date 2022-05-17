@@ -20,6 +20,7 @@
         @sortPriority="sortByPriority"
         @sortWorkplace="sortByWorkplace"
         @sortTypeOfJob="sortTypeOfJob"
+        @sortPayperiod="sortPayPeriod"
       />
       <div
         v-if="questsCount"
@@ -193,10 +194,16 @@ export default {
       await this.fetchQuestsList(true);
     },
     async sortTypeOfJob(value) {
-      if (!Object.keys(value).length) delete this.query['employments[0]'];
+      if (!Object.keys(value).length) delete this.query['typeOfEmployments[0]'];
       else this.query = { ...this.query, ...value };
       await this.fetchQuestsList(true);
     },
+    async sortPayPeriod(value) {
+      if (!Object.keys(value).length) delete this.query['payPeriod[0]'];
+      else this.query = { ...this.query, ...value };
+      await this.fetchQuestsList(true);
+    },
+
     showDetails(quest) {
       this.$router.push(`${Path.QUESTS}/${quest.id}`);
     },
