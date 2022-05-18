@@ -43,7 +43,10 @@
                 </div>
               </div>
             </div>
-            <div class="checkpoints__block">
+            <div
+              v-if="options.mode !== 'borrow'"
+              class="checkpoints__block"
+            >
               <label
                 for="checkpoints__field"
                 class="checkpoints__label"
