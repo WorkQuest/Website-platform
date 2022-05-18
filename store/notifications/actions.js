@@ -195,7 +195,7 @@ export default {
         };
         break;
 
-      case action === NotificationAction.DISPUTE_DECISION:
+      case NotificationAction.DISPUTE_DECISION:
         notification.params = {
           ...notification.params,
           title: problemDescription,
