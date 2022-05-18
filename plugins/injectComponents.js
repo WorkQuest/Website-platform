@@ -34,7 +34,6 @@ import NotificationsButton from '~/components/ui/NotificationsButton';
 import EmptyData from '~/components/app/info/emptyData';
 import CardEmployee from '~/components/app/CardEmployee';
 import CardQuest from '~/components/app/CardQuest';
-import PanelFilters from '~/components/app/PanelFilters';
 import ItemRating from '~/components/app/info/item-rating';
 import MessagesList from '~/components/app/pages/messages_id/messagesList';
 import QuestPanel from '~/components/app/panels/questPanel';
@@ -49,45 +48,40 @@ Vue.component('g-map', GMap);
 Vue.component('g-map-marker', GMapMarker);
 Vue.component('g-map-cluster', GMapCluster);
 Vue.component('g-map-info-window', GMapInfoWindow);
-Vue.component('g-map-loader', GMapLoader);
-Vue.component('search-with-map', SearchWithMap);
-
-Vue.component('panel-filters', PanelFilters);
-
-Vue.component('info', Info);
-Vue.component('quest-panel', QuestPanel);
-Vue.component('ctm-modal', CtmModal);
-Vue.component('ctm-modal-box', CtmModalBox);
-Vue.component('info', Info);
-Vue.component('quest-panel', QuestPanel);
-Vue.component('base-btn', BaseButton);
-Vue.component('base-field', BaseInput);
-Vue.component('base-dd', BaseDD);
-Vue.component('base-filter-dd', BaseFilterDD);
-Vue.component('base-checkbox', BaseCheckbox);
-Vue.component('loader', Loader);
-Vue.component('base-table', BaseTable);
-Vue.component('base-pager', BasePager);
-Vue.component('quest-dd', QuestDD);
-Vue.component('base-textarea', BaseTextarea);
-Vue.component('workers-list', WorkersList);
-Vue.component('star-rating', StarRating);
-Vue.component('specializations-selector', SpecializationsSelector);
-Vue.component('files-uploader', FilesUploader);
-Vue.component('files-preview', FilesPreview);
-Vue.component('notifications-button', NotificationsButton);
-Vue.component('empty-data', EmptyData);
-Vue.component('employee-card', EmployeeCard);
-Vue.component('card-employee', CardEmployee);
-Vue.component('panel-filters', PanelFilters);
-Vue.component('item-rating', ItemRating);
-Vue.component('MessagesList', MessagesList);
-Vue.component('card-quest', CardQuest);
-Vue.component('g-map', GMap);
-Vue.component('g-map-marker', GMapMarker);
-Vue.component('g-map-cluster', GMapCluster);
-Vue.component('g-map-info-window', GMapInfoWindow);
 Vue.component('g-map-info-block', GMapInfoBlock);
 Vue.component('g-map-loader', GMapLoader);
 Vue.component('search-with-map', SearchWithMap);
+
+Vue.component('panel-filters', PanelFilters);
+
+Vue.component('base-dd', BaseDD);
+Vue.component('base-btn', BaseButton);
+Vue.component('base-field', BaseInput);
+Vue.component('base-table', BaseTable);
+Vue.component('base-pager', BasePager);
+Vue.component('base-textarea', BaseTextarea);
+Vue.component('base-checkbox', BaseCheckbox);
+Vue.component('base-filter-dd', BaseFilterDD);
+
+Vue.component('ctm-modal', CtmModal);
+Vue.component('ctm-modal-box', CtmModalBox);
+
+Vue.component('card-quest', CardQuest);
+Vue.component('card-employee', CardEmployee);
+
+Vue.component('files-preview', FilesPreview);
+Vue.component('files-uploader', FilesUploader);
+
+Vue.component('quest-dd', QuestDD);
+Vue.component('quest-panel', QuestPanel);
+
+Vue.component('info', Info);
+Vue.component('loader', Loader);
+Vue.component('workers-list', WorkersList);
+Vue.component('star-rating', StarRating);
+Vue.component('specializations-selector', SpecializationsSelector);
+Vue.component('empty-data', EmptyData);
+Vue.component('item-rating', ItemRating);
+Vue.component('MessagesList', MessagesList);
+Vue.component('notifications-button', NotificationsButton);
 Vue.component('btn-password-visibility', BtnPasswordVisibility);

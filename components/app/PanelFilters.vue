@@ -23,7 +23,7 @@
     />
     <base-dd
       v-if="userRole === $options.UserRole.WORKER"
-      v-model="selectedEmployment"
+      v-model="selectedTypeOfJob"
       class="filters-panel__item"
       mode="blackFont"
       :items="typeOfJobItems"
@@ -148,9 +148,6 @@ export default {
     },
   },
   watch: {
-    selectedRating(index) {
-      this.$emit('sortRating', index ? {'ratingStatuses[0]': RatingFilter[index].value} : {});
-    },
     selectedSpecializations: {
       deep: true,
       handler() {
@@ -159,6 +156,9 @@ export default {
         specs.forEach((item, i) => { query[`specializations[${i}]`] = item; });
         this.$emit('sortSpec', query);
       },
+    },
+    selectedRating(index) {
+      this.$emit('sortRating', index ? { 'ratingStatuses[0]': RatingFilter[index].value } : {});
     },
     selectedPriority(index) {
       this.$emit('sortPriority', index ? { 'priorities[0]': PriorityFilter[index].value } : {});
