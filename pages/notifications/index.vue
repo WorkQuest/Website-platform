@@ -167,8 +167,6 @@ export default {
     async setLocalNotifications() {
       const { $cookies, page, totalPages } = this;
       if (page === totalPages) {
-        const KYC = $cookies.get(LocalNotificationAction.TWOFA);
-        const TWOFA = $cookies.get(LocalNotificationAction.KYC);
         await this.$store.dispatch('notifications/createLocalNotification', {
           id: '1',
           action: LocalNotificationAction.GET_REWARD,
@@ -182,6 +180,7 @@ export default {
           actionBtn: this.$t('localNotifications.btns.wiki'),
         });
         if (this.statusKYC === SumSubStatuses.NOT_VERIFIED) {
+          const KYC = $cookies.get(LocalNotificationAction.TWOFA);
           if (!KYC) this.$cookies.set(LocalNotificationAction.KYC, this.statusKYC !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
           await this.$store.dispatch('notifications/createLocalNotification', {
             id: '3',
@@ -191,6 +190,7 @@ export default {
           });
         }
         if (this.status2FA === TwoFAStatuses.DISABLED) {
+          const TWOFA = $cookies.get(LocalNotificationAction.KYC);
           if (!TWOFA) this.$cookies.set(LocalNotificationAction.TWOFA, this.status2FA !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
           await this.$store.dispatch('notifications/createLocalNotification', {
             id: '4',
@@ -225,17 +225,18 @@ export default {
     toUserProfile(notification) {
       this.$router.push(`${Path.PROFILE}/${notification.sender.id}`);
     },
-    tryRemoveNotification(ev, notificationId, notification) {
+    tryRemoveNotification(ev, notification) {
       ev.stopPropagation();
       this.ShowModal({
         key: modals.areYouSure,
         text: this.$t('modals.sureDeleteNotification'),
         okBtnTitle: this.$t('meta.btns.delete'),
-        okBtnFunc: async () => await this.removeNotification(notificationId, notification),
+        okBtnFunc: async () => await this.removeNotification(notification),
       });
     },
-    async removeNotification(notificationId, notification) {
+    async removeNotification(notification) {
       const { limit, offset } = this.filter;
+      const { id } = notification;
       this.CloseModal();
       this.SetLoader(true);
       await this.$store.dispatch('notifications/removeNotification', {
@@ -245,7 +246,7 @@ export default {
             offset: limit + offset - 1,
           },
         },
-        notificationId,
+        id,
         notification,
       });
       this.SetLoader(false);

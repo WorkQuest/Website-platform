@@ -6,7 +6,6 @@ import {
 import {
   NotificationAction,
   LocalNotificationAction,
-  NotificationActionFromContract,
   notificationCommonFilterActions,
   notificationCommonFilterAction2,
   notificationEmployerFilterActions, notificationsQuestsActions,
@@ -31,47 +30,46 @@ export default {
     id, action, message, title, actionBtn, questId, userId, date,
   }) {
     if (!action && !message && !title) return;
-    const notification = {
-      actionNameKey: `notifications.${action}`,
-      seen: true,
-      id,
-      action,
-      actionBtn,
-      sender: {
-        avatar: { url: images.WQ_LOGO },
-        firstName: 'Workquest info',
-      },
-      params: {
-        title,
-        isLocal: true,
-      },
-      data: {
-        title,
-        questId,
-        userId,
-        createdAt: moment(date || Date.now()).format('MMMM Do YYYY, h:mm'),
-        message,
-      },
-    };
-    if (action === LocalNotificationAction.GET_REWARD) {
-      notification.params.path = Path.REFERRAL;
-    } else if (action === LocalNotificationAction.QUEST_DRAFT) {
-      notification.params.path = Path.CREATE_QUEST;
-    } else if (action === LocalNotificationAction.WIKI) {
-      notification.params.path = Path.WIKI;
-    } else if (action === LocalNotificationAction.KYC) {
-      notification.params.path = Path.SUMSUB;
-    } else if (action === LocalNotificationAction.PROFILE_FILLED) {
-      notification.params.path = Path.SETTINGS;
-    } else if (action === LocalNotificationAction.TWOFA) {
-      notification.params.path = `${Path.SETTINGS}#2FA`;
-    }
-
     const notificationList = getters.getNotificationsList;
-
     const isAdded = !!notificationList.some((n) => Object.entries(LocalNotificationAction).includes(n.actionNameKey));
-
-    if (!isAdded) await dispatch('addNotification', notification);
+    if (!isAdded) {
+      const notification = {
+        actionNameKey: `notifications.${action}`,
+        seen: true,
+        id,
+        action,
+        actionBtn,
+        sender: {
+          avatar: { url: images.WQ_LOGO },
+          firstName: 'Workquest info',
+        },
+        params: {
+          title,
+          isLocal: true,
+        },
+        data: {
+          title,
+          questId,
+          userId,
+          createdAt: moment(date || Date.now()).format('MMMM Do YYYY, h:mm'),
+          message,
+        },
+      };
+      if (action === LocalNotificationAction.GET_REWARD) {
+        notification.params.path = Path.REFERRAL;
+      } else if (action === LocalNotificationAction.QUEST_DRAFT) {
+        notification.params.path = Path.CREATE_QUEST;
+      } else if (action === LocalNotificationAction.WIKI) {
+        notification.params.path = Path.WIKI;
+      } else if (action === LocalNotificationAction.KYC) {
+        notification.params.path = Path.SUMSUB;
+      } else if (action === LocalNotificationAction.PROFILE_FILLED) {
+        notification.params.path = Path.SETTINGS;
+      } else if (action === LocalNotificationAction.TWOFA) {
+        notification.params.path = `${Path.SETTINGS}#2FA`;
+      }
+      await dispatch('addNotification', notification);
+    }
   },
 
   async removeNotification({ dispatch, commit, rootGetters }, { config, notificationId, notification: { params, actionNameKey } }) {
@@ -186,7 +184,7 @@ export default {
         await dispatch('updateProfile');
         break;
 
-      case NotificationActionFromContract.QUEST_EDITED_ON_CONTRACT:
+      case NotificationAction.QUEST_EDITED_ON_CONTRACT:
         notification.sender = {
           avatar: user.avatar,
           firstName: user.firstName,
@@ -276,7 +274,6 @@ export default {
         path: `${Path.DISPUTES}/${data.id}`,
       };
     }
-    console.log('notification.notification', notification.notification);
     return notification.notification;
   },
 

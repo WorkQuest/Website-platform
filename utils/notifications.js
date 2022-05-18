@@ -23,6 +23,7 @@ export const NotificationAction = {
   COMMENT_LIKED: 'commentLiked',
   NEW_COMMENT_IN_DISCUSSION: 'newCommentInDiscussion',
   NEW_DISCUSSION_LIKE: 'newDiscussionLike',
+  QUEST_EDITED_ON_CONTRACT: 'QuestEditedOnContract',
 };
 
 export const LocalNotificationAction = {
@@ -33,10 +34,6 @@ export const LocalNotificationAction = {
   PROFILE_FILLED: 'filled',
   RATE_THE_QUEST: 'quest',
   QUEST_DRAFT: 'questDraft',
-};
-
-export const NotificationActionFromContract = {
-  QUEST_EDITED_ON_CONTRACT: 'QuestEditedOnContract',
 };
 
 export const notificationsQuestsActions = Object.freeze([

@@ -350,18 +350,17 @@ export default {
     setActionBtnsArr() {
       const {
         quest: {
-          questChat,
+          questChat: { workerId, employerId },
           assignedWorkerId,
+          status,
         },
-        userData,
-        userRole,
+        userData: { id },
         isEmployer,
-        quest,
       } = this;
       const arr = isEmployer ? this.setEmployerBtnsArr() : this.setWorkerBtnsArr();
 
-      if ((questChat?.workerId === userData.id || (questChat?.employerId === userData.id && assignedWorkerId))
-        && ![QuestStatuses.Closed, QuestStatuses.Rejected, QuestStatuses.Done].includes(quest.status)) {
+      if ((workerId === id || (employerId === id && assignedWorkerId))
+        && ![QuestStatuses.Closed, QuestStatuses.Rejected, QuestStatuses.Done].includes(status)) {
         arr.push({
           name: this.$t('meta.btns.goToChat'),
           class: 'base-btn_goToChat',
@@ -535,8 +534,9 @@ export default {
     async getResponsesToQuest() {
       const { quest: { id, user }, userData, isEmployer } = this;
       if (this.userRole === UserRole.EMPLOYER && user.id === userData.id) {
-      if (isEmployer && user.id === userData.id) {
-        await this.$store.dispatch('quests/responsesToQuest', id);
+        if (isEmployer && user.id === userData.id) {
+          await this.$store.dispatch('quests/responsesToQuest', id);
+        }
       }
     },
     async closeQuest() {
