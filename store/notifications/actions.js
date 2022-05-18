@@ -72,7 +72,7 @@ export default {
     }
   },
 
-  async removeNotification({ dispatch, commit, rootGetters }, { config, notificationId, notification: { params, actionNameKey } }) {
+  async removeNotification({ dispatch, commit, rootGetters }, { config, notification: { params, actionNameKey, id } }) {
     if ([`notifications.${LocalNotificationAction.TWOFA}`, `notifications.${LocalNotificationAction.KYC}`].includes(actionNameKey)) {
       this.$cookies.set(
         actionNameKey.substr('notifications.'.length, actionNameKey.length),
@@ -81,8 +81,8 @@ export default {
       );
     }
     try {
-      if (!params.isLocal) await this.$axios.$delete(`${process.env.NOTIFS_URL}notifications/delete/${notificationId}`);
-      await commit('removeNotification', notificationId);
+      if (!params.isLocal) await this.$axios.$delete(`${process.env.NOTIFS_URL}notifications/delete/${id}`);
+      await commit('removeNotification', id);
       await dispatch('getNotifications', config);
       return success();
     } catch (e) {

@@ -75,7 +75,7 @@
               class="notification__remove"
               src="~assets/img/ui/close.svg"
               alt="x"
-              @click="tryRemoveNotification($event, notification.id, notification)"
+              @click="tryRemoveNotification($event, notification)"
             >
             <div
               v-if="notification.params"
@@ -228,7 +228,6 @@ export default {
     },
     async removeNotification(notification) {
       const { limit, offset } = this.filter;
-      const { id } = notification;
       this.CloseModal();
       this.SetLoader(true);
       await this.$store.dispatch('notifications/removeNotification', {
@@ -238,7 +237,6 @@ export default {
             offset: limit + offset - 1,
           },
         },
-        id,
         notification,
       });
       this.SetLoader(false);
