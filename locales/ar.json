@@ -1600,8 +1600,8 @@
       "event": "Event"
     },
     "event": {
-      "paid": "Paid",
-      "claimed": "Claimed"
+      "PaidReferral": "Paid",
+      "ClaimedReferral": "Claimed"
     }
   },
   "pension": {

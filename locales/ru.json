@@ -1599,8 +1599,8 @@
       "event": "Событие"
     },
     "event": {
-      "claimed": "Получено",
-      "paid": "Выплачено"
+      "PaidReferral": "Выплачено",
+      "RewardClaimed": "Получено"
     }
   },
   "pension": {

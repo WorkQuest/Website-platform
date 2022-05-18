@@ -33,6 +33,7 @@ export default {
   plugins: [
     { src: '@plugins/ws', mode: 'client' },
     { src: '@plugins/axios.js' },
+    { src: '@plugins/axiosOracle.js' },
     { src: '@plugins/main.js' },
     { src: '@plugins/vee-validate.js' },
     { src: '@plugins/clipboard.js' },

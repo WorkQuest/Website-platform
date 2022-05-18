@@ -170,7 +170,7 @@
                 <div class="user__name">
                   <nuxt-link
                     class="user__link"
-                    :to="`profile/${el.item.id}`"
+                    :to="`profile/${el.item['referralUser.id']}`"
                   >
                     <img
                       class="ava"
@@ -239,10 +239,10 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { STATUS_INFO } from '~/utils/сonstants/referral';
 import modals from '~/store/modals/modals';
 import { getStyledAmount } from '~/utils/wallet';
 import { images } from '~/utils/images';
+import { REFERRAL_EVENTS } from '~/utils/сonstants/referral';
 
 export default {
   name: 'Referral',
@@ -349,7 +349,7 @@ export default {
         {
           key: 'event',
           label: this.$t('referral.tableHead.event'),
-          formatter: (value) => STATUS_INFO[value](this),
+          formatter: (value) => this.$t(`referral.event.${REFERRAL_EVENTS[value]}`),
           thStyle: {
             padding: '0',
             height: '27px',
@@ -576,6 +576,9 @@ export default {
           font-size: 16px;
           text-transform: capitalize;
         }
+        &__name-table {
+          max-width: 90px;
+        }
 
         &__value {
           font-size: 16px;
@@ -618,6 +621,8 @@ export default {
         }
 
         &__link {
+          display: flex;
+          align-items: center;
           position: relative;
           text-decoration: none;
           color: $black500;

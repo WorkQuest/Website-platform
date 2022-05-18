@@ -225,10 +225,10 @@ export default {
       sessionStorage.setItem('referralId', ref);
     }
   },
-  beforeDestroy() {
-    const refId = sessionStorage.getItem('referralId');
+  async beforeDestroy() {
     if (!this.addressAssigned && !this.$cookies.get('access') && !this.$cookies.get('userStatus')) {
-      this.$store.dispatch('user/logout', false);
+      const refId = sessionStorage.getItem('referralId');
+      await this.$store.dispatch('user/logout', false);
       if (refId?.length) {
         sessionStorage.setItem('referralId', refId);
       }
