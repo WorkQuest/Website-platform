@@ -14,7 +14,12 @@
             v-for="(notification, i) in notifications"
             :key="i"
             :ref="`${notification.id}|${notification.seen}`"
-            v-observe-visibility="(isVisible) => checkUnseenNotifs(isVisible, {id: notification ? notification.id : '', seen: notification.seen})"
+            v-observe-visibility="(isVisible) =>
+              checkUnseenNotifs(isVisible, {
+                id: notification.id,
+                seen: notification.seen,
+                isLocal: notification.params.isLocal
+              })"
             class="notification"
             :class="{'notification_gray' : !notification.seen}"
             @click="goToEvent(notification.params ? notification.params.path : '', true)"
@@ -39,14 +44,21 @@
                   v-if="notification.sender.additionalInfo"
                   class="inviter__company"
                 >
-                  {{ notification.sender.additionalInfo.company ?
-                    `${$t('modals.fromAddress')} ${notification.sender.additionalInfo.company}` : '' }}
+                  {{
+                    notification.sender.additionalInfo.company
+                      ? `${$t('modals.fromAddress')} ${notification.sender.additionalInfo.company}`
+                      : ''
+                  }}
                 </span>
               </div>
             </template>
             <div class="notification__quest quest">
               <span class="quest__invitation">
-                {{ notificationActionKey(notification) }}
+                {{
+                  notification.params.isLocal
+                    ? notification.data.message
+                    : notificationActionKey(notification)
+                }}
               </span>
               <span
                 v-if="notification.params"
@@ -59,10 +71,11 @@
               {{ $moment(notification.createdAt).format('MMMM Do YYYY, h:mm') }}
             </div>
             <img
+              v-if="!notification.params.isLocal"
               class="notification__remove"
               src="~assets/img/ui/close.svg"
               alt="x"
-              @click="tryRemoveNotification($event, notification.id)"
+              @click="tryRemoveNotification($event, notification)"
             >
             <div
               v-if="notification.params"
@@ -75,7 +88,7 @@
                 data-selector="NOTIFICATION-VIEW"
                 @click="notification.params.isExternalLink ? '' : goToEvent(notification.params.path)"
               >
-                {{ $t('meta.btns.view') }}
+                {{ actionBtnText(notification) }}
               </base-btn>
             </div>
           </div>
@@ -83,7 +96,7 @@
         <empty-data
           v-else
           class="info-block__no-content"
-          :description="$t('ui.notifications.noNotifications')"
+          :description="$tc('ui.notifications.noNotifications')"
         />
         <base-pager
           v-if="totalPages > 1"
@@ -99,8 +112,12 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { UserRole, Path } from '~/utils/enums';
+import {
+  UserRole, Path, SumSubStatuses, TwoFAStatuses,
+} from '~/utils/enums';
 import modals from '~/store/modals/modals';
+import { LocalNotificationAction } from '~/utils/notifications';
+import { images } from '~/utils/images';
 
 export default {
   name: 'Notifications',
@@ -114,13 +131,18 @@ export default {
       page: 1,
       notificationIdsForRead: [],
       delayId: null,
+      profileFilled: false,
     };
   },
   computed: {
     ...mapGetters({
       userRole: 'user/getUserRole',
-      notifications: 'user/getNotificationsList',
-      notifsCount: 'user/getNotificationsCount',
+      userData: 'user/getUserData',
+      statusKYC: 'user/getStatusKYC',
+      status2FA: 'user/getStatus2FA',
+      notifications: 'notifications/getNotificationsList',
+      notifsCount: 'notifications/getNotificationsCount',
+      unreadNotifsCount: 'notifications/getUnreadNotifsCount',
     }),
     totalPages() {
       return Math.ceil(this.notifsCount / this.filter.limit);
@@ -128,13 +150,63 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    const {
+      avatar, firstName, lastName, locationPlaceName, additionalInfo: { description },
+    } = this.userData;
+    this.profileFilled = !!avatar && !!firstName && !!lastName && !!locationPlaceName && !!description;
     await this.getNotifications();
+    await this.setLocalNotifications();
     this.SetLoader(false);
   },
-  destroyed() {
-    this.$store.commit('user/setNotifications', { result: { notifications: [], count: this.notifsCount } });
-  },
   methods: {
+    async setLocalNotifications() {
+      const { $cookies, page, totalPages } = this;
+      if (page === totalPages) {
+        await this.$store.dispatch('notifications/createLocalNotification', {
+          id: '1',
+          action: LocalNotificationAction.GET_REWARD,
+          message: this.$t('localNotifications.messages.inviteFriends'),
+          actionBtn: this.$t('localNotifications.btns.inviteFriends'),
+        });
+        await this.$store.dispatch('notifications/createLocalNotification', {
+          id: '2',
+          action: LocalNotificationAction.WIKI,
+          message: this.$t('localNotifications.messages.wiki'),
+          actionBtn: this.$t('localNotifications.btns.wiki'),
+        });
+        if (this.statusKYC === SumSubStatuses.NOT_VERIFIED) {
+          const KYC = $cookies.get(LocalNotificationAction.TWOFA);
+          if (!KYC) this.$cookies.set(LocalNotificationAction.KYC, this.statusKYC !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
+          await this.$store.dispatch('notifications/createLocalNotification', {
+            id: '3',
+            action: LocalNotificationAction.KYC,
+            message: this.$t('localNotifications.messages.kyc'),
+            actionBtn: this.$t('localNotifications.btns.kyc'),
+          });
+        }
+        if (this.status2FA === TwoFAStatuses.DISABLED) {
+          const TWOFA = $cookies.get(LocalNotificationAction.KYC);
+          if (!TWOFA) this.$cookies.set(LocalNotificationAction.TWOFA, this.status2FA !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
+          await this.$store.dispatch('notifications/createLocalNotification', {
+            id: '4',
+            action: LocalNotificationAction.TWOFA,
+            message: this.$t('localNotifications.messages.twoFA'),
+            actionBtn: this.$t('localNotifications.btns.toSettings'),
+          });
+        }
+        if (!this.profileFilled) {
+          await this.$store.dispatch('notifications/createLocalNotification', {
+            id: '5',
+            action: LocalNotificationAction.PROFILE_FILLED,
+            message: this.$t('localNotifications.messages.fillSettingsData'),
+            actionBtn: this.$t('localNotifications.btns.toSettings'),
+          });
+        }
+      }
+    },
+    actionBtnText(notification) {
+      return notification.actionBtn ?? this.$t('meta.btns.view');
+    },
     avatar(notification) {
       return notification.sender?.avatar?.url || images.EMPTY_AVATAR;
     },
@@ -145,57 +217,58 @@ export default {
     toUserProfile(notification) {
       this.$router.push(`${Path.PROFILE}/${notification.sender.id}`);
     },
-    tryRemoveNotification(ev, notificationId) {
+    tryRemoveNotification(ev, notification) {
       ev.stopPropagation();
       this.ShowModal({
         key: modals.areYouSure,
         text: this.$t('modals.sureDeleteNotification'),
         okBtnTitle: this.$t('meta.btns.delete'),
-        okBtnFunc: async () => await this.removeNotification(notificationId),
+        okBtnFunc: async () => await this.removeNotification(notification),
       });
     },
-    async removeNotification(notificationId) {
+    async removeNotification(notification) {
       const { limit, offset } = this.filter;
       this.CloseModal();
       this.SetLoader(true);
-      await this.$store.dispatch('user/removeNotification', {
+      await this.$store.dispatch('notifications/removeNotification', {
         config: {
           params: {
             limit: 1,
             offset: limit + offset - 1,
           },
         },
-        notificationId,
+        notification,
       });
       this.SetLoader(false);
     },
-    async checkUnseenNotifs(isVisible, { id, seen }) {
-      if (!isVisible || !id || seen || this.notificationIdsForRead.indexOf(id) >= 0) return;
-      this.notificationIdsForRead.push(id);
-      this.delayId = this.SetDelay(async () => {
-        await this.$store.dispatch('user/readNotifications', {
-          notificationIds: this.notificationIdsForRead,
-        });
-        this.notificationIdsForRead = [];
-      }, 1000, this.delayId);
+    async checkUnseenNotifs(isVisible, { id, seen, isLocal }) {
+      if (isLocal && isVisible && seen) this.$store.commit('notifications/setUnreadNotifsCount', this.unreadNotifsCount > 0 ? -1 : 0);
+      else if (!isLocal && id && !seen) return;
+      if (!isLocal) {
+        this.$store.commit('notifications/setUnreadNotifsCount', this.unreadNotifsCount > 0 ? -1 : 0);
+        this.notificationIdsForRead.push(id);
+        this.delayId = this.SetDelay(async () => {
+          await this.$store.dispatch('notifications/readNotifications', {
+            notificationIds: this.notificationIdsForRead,
+          });
+          this.notificationIdsForRead = [];
+        }, 3000, this.delayId);
+      }
     },
     async setPage() {
       this.filter.offset = (this.page - 1) * this.filter.limit;
       this.SetLoader(true);
+      this.ScrollToTop();
       await this.getNotifications();
+      await this.setLocalNotifications();
       this.SetLoader(false);
     },
     async getNotifications() {
-      await this.$store.dispatch('user/getNotifications', { params: this.filter });
+      await this.$store.dispatch('notifications/getNotifications', { params: this.filter });
     },
     goToEvent(path, isNotifCont) {
       if (isNotifCont && document.body.offsetWidth > 767) return;
       this.$router.push(path);
-    },
-    navigateBack() {
-      if (this.userRole === UserRole.EMPLOYER) this.$router.push(Path.WORKERS);
-      else if (this.userRole === UserRole.WORKER) this.$router.push(Path.QUESTS);
-      else this.$router.push(Path.ROOT);
     },
   },
 };

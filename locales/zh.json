@@ -1325,8 +1325,33 @@
       }
     }
   },
+  "localNotifications": {
+    "messages": {
+      "inviteFriends": "Invite your friends and get rewarded!",
+      "wiki": "You can get acquainted with all the functionality of the platform on the WorkQuest Wiki page!",
+      "kyc": "You can enable KYC on Sumsub page.",
+      "twoFA": "You can enable 2FA in settings.",
+      "fillSettingsData": "You can fill your profile data in settings.",
+      "questDraft": "You have a saved draft of the quest.",
+      "rateTheQuest": "Please rate the completed work on the quest.",
+      "reviewEmp": "Please, review your Employer!",
+      "reviewWorker": "Please, review your Employee!"
+    },
+    "btns": {
+      "inviteFriends": "Get Reward",
+      "wiki": "Go to Wiki",
+      "kyc": "Enable KYC",
+      "toSettings": "Go to Settings",
+      "questDraft": "Go to Create Quest page",
+      "rateTheQuest": "Go to Quest page",
+      "reviewEmp": "Go to Employer Profile",
+      "reviewWorker": "Go to Employee Profile"
+    }
+  },
   "notifications": {
+    "QuestEditedOnContract": "Quest edited on contract",
     "title": "Notifications",
+    "OpenDispute": "发起争议",
     "openDispute": "发起争议",
     "invite": "Invites you to complete the quest",
     "questStarted": "Invites you to start a quest",
@@ -1340,6 +1365,7 @@
     "workerAcceptedInvitationToQuest": "Accepted the invitation to the quest",
     "workerRejectedInvitationToQuest": "Declined the invitation to the quest",
     "employerRejectedWorkersResponse": "Declined your response to the quest",
+    "QuestStatusUpdated": "Quest status updated",
     "userLeftReviewAboutQuest": "Left review about quest",
     "registrationError": "No users found for registration. Please contact to developers",
     "waitWorker": "The quest is pending",

@@ -173,8 +173,9 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import {
-  PriorityFilter, TokenMap, TokenSymbols, TypeOfJobs, PayPeriodsIndex, WorkplaceIndex,
+  PriorityFilter, TokenMap, TokenSymbols, TypeOfJobs, PayPeriodsIndex, WorkplaceIndex, TypeOfJobFilter,
 } from '~/utils/enums';
+import { LocalNotificationAction } from '~/utils/notifications';
 import { CommissionForCreatingAQuest } from '~/utils/сonstants/quests';
 import { ERC20 } from '~/abi';
 
@@ -304,6 +305,11 @@ export default {
             },
             locationPlaceName: address,
           },
+        });
+        await this.$store.dispatch('notifications/createLocalNotification', {
+          action: LocalNotificationAction.QUEST_DRAFT,
+          message: this.$t('localNotifications.messages.questDraft'),
+          actionBtn: this.$t('localNotifications.btns.questDraft'),
         });
       }
       this.SetLoader(false);

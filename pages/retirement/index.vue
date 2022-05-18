@@ -144,10 +144,8 @@ export default {
   computed: {
     ...mapGetters({
       pensionWallet: 'retirement/getPensionWallet',
-
       balanceData: 'wallet/getBalanceData',
       isWalletConnected: 'wallet/getIsWalletConnected',
-
       userWalletAddress: 'user/getUserWalletAddress',
     }),
     documents() {

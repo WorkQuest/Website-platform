@@ -1325,9 +1325,34 @@
       }
     }
   },
+  "localNotifications": {
+    "messages": {
+      "inviteFriends": "Пригласите ваших друзей и получите награду!",
+      "wiki": "Ознакомиться со всем функционалом платформы можно на странице WorkQuest Wiki!",
+      "kyc": "Вы можете включить KYC на странице Sumsub.",
+      "twoFA": "Вы можете включить 2FA в настройках.",
+      "fillSettingsData": "Вы можете информацию о себе в настройках.",
+      "questDraft": "У вас есть сохраненный черновик квеста.",
+      "rateTheQuest": "Пожалуйста, оцените завершенную работу по квесту!",
+      "reviewEmp": "Пожалуйста, оцените своего Работодателя!",
+      "reviewWorker": "Пожалуйста, оцените своего Работника!"
+    },
+    "btns": {
+      "inviteFriends": "Получить награду",
+      "wiki": "Перейти в Wiki",
+      "kyc": "Включить KYC",
+      "toSettings": "Перейти в Настройки",
+      "questDraft": "Перейти на Создание квеста",
+      "rateTheQuest": "Перейти на Квест",
+      "reviewEmp": "Перейти в профиль Работодателя",
+      "reviewWorker": "Перейти в профиль Работника"
+    }
+  },
   "notifications": {
+    "QuestEditedOnContract": "Квест отредактирован на контракте",
     "title": "Уведомления",
     "invite": "Приглашаем вас завершить квест",
+    "OpenDispute": "Открыт спор",
     "openDispute": "Открыт спор",
     "questStarted": "Приглашает вас начать квест",
     "workerRejectedQuest": "Отказался от квеста",
@@ -1340,6 +1365,7 @@
     "workerAcceptedInvitationToQuest": "Принял приглашение на квест",
     "workerRejectedInvitationToQuest": "Отклонил приглашение на квест",
     "employerRejectedWorkersResponse": "Отклонил приглашение на квест",
+    "QuestStatusUpdated": "Статус квеста обновлен",
     "userLeftReviewAboutQuest": "Оставил отзыв о квесте",
     "waitWorker": "Квест ожидает",
     "disputeDecision": "Решение спора",

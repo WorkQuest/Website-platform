@@ -11,7 +11,7 @@
     >
       <template v-if="notificationsCount">
         <img
-          v-if="unreadNotifsCount"
+          v-if="unreadNotifsCount > 0"
           src="~assets/img/ui/notification_outline_red_dot.svg"
           alt=""
         >
@@ -49,7 +49,10 @@
               class="notify notify__content"
             >
               <div class="notify__top">
-                <div class="notify__user">
+                <div
+                  v-if="notification.params"
+                  class="notify__user"
+                >
                   <img
                     class="notify__avatar"
                     :src="avatar(notification)"
@@ -73,7 +76,8 @@
               </div>
               <div class="notify__reason">
                 <div class="notify__text notify__text_blue">
-                  {{ $t(notification.actionNameKey) }}:
+                  {{ notification.params && notification.params.isLocal
+                    ? notification.data.message : $t(notification.actionNameKey) }}
                 </div>
               </div>
               <div class="notify__action">
@@ -82,7 +86,11 @@
                   @click="goToEvent(notification.params ? notification.params.path : '')"
                 >
                   <div class="notify__text notify__text_btn">
-                    {{ notification.params ? notification.params.title : '' }}
+                    {{
+                      notification.params && notification.params.isLocal
+                        ? notification.data.message
+                        : $t(notification.actionNameKey)
+                    }}
                   </div>
                   <span class="icon icon-chevron_right" />
                 </base-btn>
@@ -101,7 +109,7 @@
         <empty-data
           v-else
           class="reduced-notifications__no-content"
-          :description="$t('ui.notifications.noNotifications')"
+          :description="$tc('ui.notifications.noNotifications')"
         />
       </div>
     </transition>
@@ -111,6 +119,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
+import { images } from '~/utils/images';
 
 export default {
   name: 'NotificationsButtonContainer',
@@ -124,13 +133,13 @@ export default {
   },
   computed: {
     ...mapGetters({
-      unreadNotifsCount: 'user/getUnreadNotifsCount',
-      notifications: 'user/getReducedNotifications',
-      notificationsCount: 'user/getNotificationsCount',
+      unreadNotifsCount: 'notifications/getUnreadNotifsCount',
+      notifications: 'notifications/getReducedNotifications',
+      notificationsCount: 'notifications/getNotificationsCount',
     }),
   },
   async beforeMount() {
-    await this.$store.dispatch('user/getNotifications');
+    await this.$store.dispatch('notifications/getNotifications');
   },
   methods: {
     senderId(notification) {

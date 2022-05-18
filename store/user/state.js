@@ -72,11 +72,6 @@ export default () => ({
       completed: 0,
       opened: 0,
     },
-    chatStatistic: {
-      id: '',
-      userId: '',
-      unreadCountChats: 0,
-    },
     userSpecializations: [],
     affiliateUser: {
       referralCodeId: '',

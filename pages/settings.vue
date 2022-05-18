@@ -37,6 +37,7 @@
         @checkValidate="checkValidate"
       />
       <advanced
+        id="2FA"
         @updateVisibility="updateVisibility($event)"
         @showModalKey="showModalKey"
       />
@@ -122,6 +123,7 @@ export default {
       accessToken: 'sumsub/getSumSubBackendToken',
       filters: 'quests/getFilters',
       secondNumber: 'user/getUserSecondMobileNumber',
+      localNotifications: 'notifications/getLocalNotifications',
     }),
     WorkplaceIndex() {
       return WorkplaceIndex;
@@ -135,7 +137,8 @@ export default {
     if (!this.filters) await this.$store.dispatch('quests/getFilters');
     if (!this.profile.firstName) await this.$store.dispatch('user/getUserData');
     const addInfo = this.userData.additionalInfo;
-    const { userData, secondNumber } = this;
+    const { userData, secondNumber, scrollToId } = this;
+    scrollToId();
     const { employerProfileVisibilitySetting, workerProfileVisibilitySetting } = userData;
     this.profile = {
       avatarId: userData.avatarId,
@@ -205,6 +208,13 @@ export default {
     });
   },
   methods: {
+    scrollToId() {
+      if (this.$route.hash) {
+        const id = this.$route.hash.slice(1);
+        const element = document.getElementById(id);
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    },
     validationRefs(data) {
       this.valRefs = data;
       return this.valRefs;
