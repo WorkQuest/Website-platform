@@ -890,6 +890,11 @@ const WQPensionFund = [
         name: 'createdAt',
         type: 'uint256',
       },
+      {
+        internalType: 'uint256',
+        name: 'serviceComission',
+        type: 'uint256',
+      },
     ],
     name: 'updateWallet',
     outputs: [],
@@ -970,6 +975,11 @@ const WQPensionFund = [
       {
         internalType: 'uint256',
         name: 'rewardDistributed',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'serviceComission',
         type: 'uint256',
       },
     ],

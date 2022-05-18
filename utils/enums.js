@@ -191,7 +191,6 @@ export const Path = {
   SIGN_UP: '/sign-up',
   MY_QUESTS: '/my',
   WALLET: '/wallet',
-  PENSION: '/pension',
   REFERRAL: '/referral',
   INSURING: '/insuring',
   SAVINGS: '/savings',
@@ -213,6 +212,7 @@ export const Path = {
   WIKI: '/wiki',
   RAISED_VIEWS: '/raised-views',
   NOTIFICATIONS: '/notifications',
+  RETIREMENT: '/retirement',
 };
 
 export const PathDAO = {
