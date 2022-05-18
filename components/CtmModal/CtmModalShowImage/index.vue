@@ -9,22 +9,20 @@
         class="content__btns"
       >
         <base-btn
+          data-selector="SHOW-DELETE-CASE-MODAL"
           class="content portfolio__close"
           mode="portfolioClose"
           @click="showDeleteCaseModal(options.id)"
         >
-          <span
-            class="icon-close_big"
-          />
+          <span class="icon-close_big" />
         </base-btn>
         <base-btn
           class="content portfolio__edit"
+          data-selector="SHOW-EDIT-CASE-MODAL"
           mode="portfolioEdit"
           @click="showEditCaseModal(options.id)"
         >
-          <span
-            class="icon-edit"
-          />
+          <span class="icon-edit" />
         </base-btn>
       </div>
       <video
@@ -76,14 +74,8 @@ export default {
     },
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     showDeleteCaseModal(id) {
-      this.ShowModal({
-        key: modals.deleteCase,
-        id,
-      });
+      this.ShowModal({ key: modals.deleteCase, id });
     },
     showEditCaseModal(id) {
       this.ShowModal({
@@ -124,7 +116,6 @@ export default {
   @include modalKit;
   &__box {
     max-width: 1200px !important;
-    max-height: 100% !important;
     width: 100% !important;
     height: auto !important;
     padding: 0 !important;
@@ -190,6 +181,24 @@ export default {
     width: 100%;
     word-break: break-word;
     white-space: pre-line;
+  }
+}
+
+@include _767 {
+  .content {
+    max-height: 600px !important;
+  }
+}
+
+@include _575 {
+  .content {
+    max-height: 400px !important;
+  }
+}
+
+@include _480 {
+  .content {
+    max-height: 300px !important;
   }
 }
 

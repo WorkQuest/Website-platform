@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('signWorkQuest.title')"
+    :title="$tc('modals.titles.signWorkQuest')"
   >
     <div class="ctm-modal__content sign">
       <div class="sign sign__description">
@@ -13,6 +13,7 @@
       <div class="ctm-modal__content-field">
         <base-field
           v-model="userName"
+          data-selector="USER-NAME"
           :is-hide-error="true"
           :placeholder="$t('signWorkQuest.daoUsername')"
           mode="icon"
@@ -25,6 +26,7 @@
       <div class="ctm-modal__content-field">
         <base-field
           v-model="userPassword"
+          data-selector="USER-PASSWORD"
           :is-hide-error="true"
           :placeholder="$t('signWorkQuest.daoPass')"
           mode="icon"
@@ -37,9 +39,10 @@
       <div class="ctm-modal__content-btns">
         <div class="btn-group">
           <base-btn
+            data-selector="SIGN-IN"
             @click="hide()"
           >
-            {{ $t('signIn.title') }}
+            {{ $t('meta.signIn') }}
           </base-btn>
         </div>
       </div>
@@ -73,11 +76,13 @@ export default {
       // };
       // try {
       //   const response = await this.$store.dispatch('user/editUserPassword', payload);
-      //   if (response?.ok) {
-      //     this.ShowModal({
-      //       key: modals.changePassword,
-      //     });
-      //   }
+      // if (response?.ok) {
+      //   this.ShowModal({
+      //     key: modals.status,
+      //     img: require('assets/img/ui/password_changed.svg'),
+      //     title: this.$t('restore.modal'),
+      //   });
+      // }
       // } catch (e) {
       //   this.errorMsg = e;
       //   console.log(e);

@@ -1,6 +1,7 @@
 <template>
   <div
     v-click-outside="hideDd"
+    data-selector="COMPONENT-BASE-FILTER-DD"
     class="dd"
   >
     <div
@@ -8,16 +9,12 @@
     >
       <button
         class="dd__btn"
+        data-selector="ACTION-BTN-TOGGLE-DD"
         @click="toggleDd"
       >
         {{ $t('filters.dd.1') }}
         <span
-          v-if="isOpenDD"
-          class="icon-caret_down"
-        />
-        <span
-          v-else
-          class="icon-caret_up"
+          :class="isOpenDD ? 'icon-caret_down' : 'icon-caret_up'"
         />
       </button>
       <transition name="fade">
@@ -33,22 +30,34 @@
             <div class="filter__btn">
               <base-btn
                 mode="outline"
+                data-selector="ACTION-BTN-SHOW-FILTER-FULL"
                 @click="showFilterFull"
               >
                 {{ $t('filters.filterBtn') }}
               </base-btn>
             </div>
+            <base-field
+              v-model="searchLine"
+              class="filter__search"
+              data-selector="INPUT-SEARCH"
+              :placeholder="$t('meta.placeholders.searchSpecSkill')"
+              :is-search="true"
+              :is-hide-error="true"
+            />
             <div class="filter__body">
               <div
                 v-for="(item, specIdx) in searchFilters"
                 :id="specIdx"
                 :key="specIdx"
+                :data-selector="`SEARCH-FILTERS-${specIdx}`"
+                :class="{'item__hidden' : !isMatchedSpec(item, specIdx)}"
               >
                 <div
                   class="filter__item item"
                 >
                   <div
                     class="item"
+                    :data-selector="`ACTION-BTN-TOGGLE-CATEGORY-${specIdx}`"
                     @click="toggleCategory(specIdx)"
                   >
                     <span
@@ -69,12 +78,15 @@
                       :class="[{'hide': !visible[specIdx]}]"
                     >
                       <div
+                        v-if="searchLine.length === 0"
                         class="sub__item checkbox"
+                        :data-selector="`ACTION-BTN-SELECT-ALL-${specIdx}`"
                         @click="selectAll(specIdx)"
                       >
                         <input
                           :id="specIdx"
                           v-model="selectedAll[specIdx]"
+                          :data-selector="`SELECT-ALL-CHECKBOX-${specIdx}`"
                           class="checkbox checkbox__box sub"
                           type="checkbox"
                           :name="$t('filters.commonSub.selectAll')"
@@ -90,11 +102,14 @@
                         :id="skillIdx"
                         :key="skillIdx"
                         class="sub__item"
+                        :class="{'item__hidden' : !isMatchedSkill(sub)}"
+                        :data-selector="`ACTION-BTN-SELECT-SUB-${skillIdx}`"
                         @click="selectSub(specIdx, skillIdx)"
                       >
                         <input
                           :id="sub.id"
                           v-model="selected[getPath(specIdx, skillIdx)]"
+                          :data-selector="`SUB-CHECKBOX-${sub.id}`"
                           class="checkbox checkbox__box sub"
                           type="checkbox"
                           :name="sub.title"
@@ -111,8 +126,11 @@
             </div>
           </div>
           <div class="dd__btn">
-            <base-btn @click="handleSubmit">
-              {{ $t('meta.apply') }}
+            <base-btn
+              :data-selector="`ACTION-BTN-APPLY`"
+              @click="handleSubmit"
+            >
+              {{ $t('meta.btns.apply') }}
             </base-btn>
           </div>
         </div>
@@ -137,6 +155,7 @@ export default {
       selected: {},
       selectedAll: [],
       visible: {},
+      searchLine: '',
     };
   },
   computed: {
@@ -150,7 +169,7 @@ export default {
       for (let i = 0; i < specsKeys.length; i += 1) {
         const spec = this.filters[specsKeys[i]];
         f[i] = {
-          title: this.$t(`filters.items.${spec.id}.title`),
+          title: this.$t(`filters.skills.${spec.id}.title`),
           index: spec.id,
           items: {},
         };
@@ -159,7 +178,7 @@ export default {
           const index = spec.skills[skillsKeys[j]];
           f[i].items[j] = {
             index,
-            title: this.$t(`filters.items.${spec.id}.sub.${index}`),
+            title: this.$t(`filters.skills.${spec.id}.sub.${index}`),
           };
         }
       }
@@ -236,6 +255,18 @@ export default {
         [index]: !this.visible[index],
       };
     },
+    isMatchedSpec(spec, specIdx) {
+      const matches = Object.values(spec.items).filter((skill) => (skill.title.toLowerCase().includes(this.searchLine.toLowerCase())));
+      if (this.searchLine.length > 0 && matches.length > 0) {
+        this.visible[specIdx] = true;
+      } else if (matches.length === 0) {
+        this.visible[specIdx] = false;
+      }
+      return matches.length > 0;
+    },
+    isMatchedSkill(skill) {
+      return skill.title.toLowerCase().includes(this.searchLine.toLowerCase());
+    },
   },
 };
 </script>
@@ -278,16 +309,23 @@ export default {
     height: 400px;
     margin: 10px 0 0 0;
     padding: 10px 0 0 0;
+    min-width: 358px;
   }
   &__item {
     &:hover {
       cursor: pointer;
     }
   }
+  &__search {
+    margin: 15px 0;
+  }
 }
 
 .item {
   width: 100%;
+  &__hidden {
+    display: none;
+  }
 }
 
 .sub {
@@ -335,18 +373,22 @@ export default {
     padding: 0 20px;
     width: 100%;
     max-width: 400px;
-    background: #FFFFFF;
+    background: $white;
     border-radius: 6px;
     justify-items: center;
+    border: 1px solid transparent;
     &_gray {
       background-color: $black0;
+    }
+    &:hover {
+      border: 1px solid $black100;
     }
   }
   &__list {
     @include box;
     width: 400px;
     position: absolute;
-    background: #FFFFFF;
+    background: $white;
     top: calc(100% + 4px);
     display: grid;
     align-items: center;

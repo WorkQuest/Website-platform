@@ -1,10 +1,11 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.deposit')"
+    :title="$tc('modals.titles.deposit')"
   >
     <div class="ctm-modal__content">
       <validation-observer v-slot="{ handleSubmit, validated, passed, invalid }">
+        <!--        TODO: Зарефакторить-->
         <div
           class="step-panel"
           :class="{'hide': step === 3}"
@@ -19,20 +20,19 @@
             class="step-panel__step"
             :class="[{'step-panel__step_active': step === 2}, {'hide': step === 3}]"
           >
-            {{ $t('wallet.bankCard') }}
+            {{ $t('meta.bankCard') }}
           </div>
         </div>
         <div
           v-if="step === 1"
           class="step__container"
         >
-          <div
-            class="ctm-modal__content-field"
-          >
+          <div class="ctm-modal__content-field">
             <base-field
               v-model="amountInput"
-              :placeholder="'0 WUSD'"
-              :label="$t('modals.amount')"
+              placeholder="0 WUSD"
+              data-selector="AMOUNT1"
+              :label="$tc('modals.amount')"
               rules="min_value:0|numeric|required"
               name="Amount"
             />
@@ -46,8 +46,9 @@
             <div class="ctm-modal__content-field">
               <base-field
                 v-model="amountInput"
-                :placeholder="'0 WUSD'"
-                :label="$t('modals.amount')"
+                placeholder="0 WUSD"
+                data-selector="AMOUNT2"
+                :label="$tc('modals.amount')"
                 rules="min_value:0|numeric|required"
                 name="Amount"
               />
@@ -65,22 +66,20 @@
             <base-field
               id="cardNumber_input"
               v-model="cardNumberInput"
-              :placeholder="'0000 0000 0000 0000'"
-              :label="$t('modals.numberOfCard')"
+              placeholder="0000 0000 0000 0000"
+              data-selector="CARD-NUMBER"
+              :label="$tc('modals.numberOfCard')"
               rules="required|numberOfCard"
               name="Card number"
             />
           </div>
-          <div
-            class="grid__2col"
-          >
-            <div
-              class="ctm-modal__content-field"
-            >
+          <div class="grid__2col">
+            <div class="ctm-modal__content-field">
               <base-field
                 v-model="dateInput"
-                :placeholder="'02/24'"
-                :label="$t('modals.date')"
+                placeholder="02/24"
+                data-selector="CARD-DATE"
+                :label="$tc('modals.date')"
                 rules="required"
                 name="Date"
               />
@@ -88,8 +87,9 @@
             <div class="ctm-modal__content-field">
               <base-field
                 v-model="cvvInput"
-                :placeholder="'242'"
-                :label="$t('modals.cvv')"
+                placeholder="242"
+                data-selector="CARD-CVV"
+                :label="$tc('modals.cvv')"
                 rules="required|cvv"
                 name="CVV"
               />
@@ -135,10 +135,11 @@
             >
               <base-btn
                 class="message__action"
+                data-selector="NEXT-STEP"
                 :disabled="!validated || !passed || invalid"
                 @click="handleSubmit(nextStep)"
               >
-                {{ $t('meta.next') }}
+                {{ $t('meta.btns.next') }}
               </base-btn>
             </span>
             <span
@@ -146,11 +147,12 @@
               class="step__container"
             >
               <base-btn
+                data-selector="CONFIRM"
                 class="message__action"
                 :disabled="invalid"
                 @click="handleSubmit(nextStep)"
               >
-                {{ $t('meta.confirm') }}
+                {{ $t('meta.btns.confirm') }}
               </base-btn>
             </span>
             <span
@@ -159,7 +161,8 @@
             >
               <base-btn
                 class="message__action"
-                @click="hide()"
+                data-selector="BUY"
+                @click="CloseModal"
               >
                 {{ $t('meta.buyWUSD') }}
               </base-btn>
@@ -167,11 +170,12 @@
           </div>
           <div class="btn__wrapper">
             <base-btn
-              :mode="'outline'"
+              mode="outline"
+              data-selector="CANCEL"
               class="message__action"
-              @click="hide()"
+              @click="CloseModal"
             >
-              {{ $t('meta.cancel') }}
+              {{ $t('meta.btns.cancel') }}
             </base-btn>
           </div>
         </div>
@@ -202,16 +206,15 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     nextStep() {
-      // eslint-disable-next-line no-plusplus
-      this.step++;
+      this.step += 1;
     },
+    // TODO: Зарефакторить!
     showSuccessCopied() {
       this.ShowModal({
-        key: modals.copiedSuccess,
+        key: modals.status,
+        img: require('assets/img/ui/questAgreed.svg'),
+        title: this.$t('modals.textCopy'),
       });
     },
     showTransactionSendModal() {
@@ -323,7 +326,7 @@ export default {
     color: #B1B3B8;
     background: #FFFFFF;
     border-radius: 6px;
-    border: 1px solid #F3F7FA;
+    border: 1px solid $black0;
     margin-bottom: 23px;
   }
 }

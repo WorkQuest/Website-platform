@@ -1,23 +1,48 @@
 <template>
   <div class="container__status status">
-    <span
-      v-if="rating !== 'noStatus'"
-      class="status__level"
-      :class="`status__level_${rating}`"
+    <img
+      v-if="isActiveRaiseView"
+      src="~assets/img/ui/arrow-worker-profile.svg"
+      alt="arrow-profile"
+      class="status__img"
     >
-      {{ $t(`rating.${rating}.title`) }}
+    <span
+      v-if="ratingStr !== $options.Ratings.NO_STATUS"
+      class="status__level"
+      :class="`status__level_${ratingStr}`"
+    >
+      {{ statusTitle }}
     </span>
   </div>
 </template>
 
 <script>
+import { UserRating, Ratings, RaiseViewStatus } from '~/utils/enums';
 
 export default {
   name: 'ItemRating',
+  UserRating,
+  Ratings,
   props: {
     rating: {
-      type: String,
-      default: 'noStatus',
+      type: Number,
+      default: null,
+    },
+    raiseView: {
+      type: Object,
+      default: () => {
+      },
+    },
+  },
+  computed: {
+    ratingStr() {
+      return UserRating[this.rating] || Ratings.NO_STATUS;
+    },
+    statusTitle() {
+      return this.rating !== null ? this.$t(`rating.${this.ratingStr}.title`) : '';
+    },
+    isActiveRaiseView() {
+      return this.raiseView && RaiseViewStatus[this.raiseView.status];
     },
   },
 };
@@ -25,12 +50,20 @@ export default {
 
 <style lang="scss" scoped>
 .status {
+  display: flex;
+  align-items: center;
+
   &__levels {
     padding: 2px 5px;
     margin: 0 5px 0 0;
     align-items: center;
     border-radius: 3px;
   }
+
+  &__img {
+    margin-right: 12px;
+  }
+
   &__level {
     @include text-simple;
     font-weight: 500;
@@ -39,6 +72,9 @@ export default {
     line-height: 130%;
     height: 20px;
     text-transform: uppercase;
+    width: max-content;
+    display: flex;
+    justify-content: center;
 
     &_topRanked {
       @extend .status__levels;
@@ -47,17 +83,23 @@ export default {
 
     &_verified {
       @extend .status__levels;
-      background-color: $grey200;
+      background-color: $brown;
     }
 
     &_reliable {
       @extend .status__levels;
-      background-color: $brown;
+      background-color: $grey200;
     }
 
     &_noStatus {
       display: none;
     }
+  }
+}
+
+@include _991 {
+  .status__levels {
+    margin: 0;
   }
 }
 </style>

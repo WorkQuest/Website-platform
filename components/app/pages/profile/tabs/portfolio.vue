@@ -1,5 +1,8 @@
 <template>
-  <div class="portfolio">
+  <div
+    class="portfolio"
+    data-selector="COMPONENT-PORTFOLIO-TAB"
+  >
     <emptyData
       v-if="object.count === 0"
       :description="$t('errors.emptyData.emptyPortfolios')"
@@ -7,10 +10,12 @@
     <div
       v-else
       class="portfolio__items"
+      data-selector="PORTFOLIO-CASES"
     >
       <div
-        v-for="(item) in object.cases"
+        v-for="(item, i) in object.cases"
         :key="item.id"
+        :data-selector="`PORTFOLIO-CASE-${i}`"
         class="portfolio__item"
       >
         <div class="portfolio__card">
@@ -22,15 +27,15 @@
               <base-btn
                 class="portfolio__close"
                 mode="portfolioClose"
+                :data-selector="`DELETE-PORTFOLIO-CASE-${i}`"
                 @click="showDeleteCaseModal(item.id)"
               >
-                <span
-                  class="icon-close_big"
-                />
+                <span class="icon-close_big" />
               </base-btn>
               <base-btn
                 class="portfolio__edit"
                 mode="portfolioEdit"
+                :data-selector="`EDIT-PORTFOLIO-CASE-${i}`"
                 @click="showEditCaseModal(item)"
               >
                 <span class="icon-edit" />
@@ -44,6 +49,7 @@
             >
               <img
                 class="portfolio__image"
+                :data-selector="`PORTFOLIO-CASE-IMAGE-${j}`"
                 :src="img.url"
                 :alt="item.title"
               >
@@ -188,9 +194,10 @@ export default {
     border-radius: 6px;
     cursor: pointer;
     position: relative;
-    transition: 0.3s;
+    transition: .5s;
+    border: 1px solid $white;
     &:hover {
-      box-shadow: 0 0 10px 2px rgba(34, 60, 80, 0.3);
+      border: 1px solid $black100;
     }
   }
   &__items {
@@ -201,7 +208,7 @@ export default {
   &__image {
     height: 350px;
     width: 100%;
-    border-radius: 6px;
+    border-radius: 8px;
     object-fit: cover;
   }
   &__footer {

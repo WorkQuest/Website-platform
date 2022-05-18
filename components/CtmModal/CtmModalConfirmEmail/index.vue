@@ -11,16 +11,17 @@
             alt="Email"
           >
           <div class="ctm-modal__title">
-            {{ $t('registration.emailConfirmTitle') }}
+            {{ $t('modals.titles.emailConfirmTitle') }}
           </div>
           <div class="ctm-modal__desc">
             {{ $t('registration.emailConfirm') }}
           </div>
           <base-btn
             class="email__action"
+            data-selector="OK"
             @click="hide()"
           >
-            {{ $t('meta.ok') }}
+            {{ $t('meta.btns.ok') }}
           </base-btn>
         </div>
       </div>

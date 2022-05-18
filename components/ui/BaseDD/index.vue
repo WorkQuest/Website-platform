@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div data-selector="COMPONENT-BASE-DD">
     <div
       v-if="label !== ''"
       :class="[{'ctm-field__header' : !tip}, {'ctm-field__header ctm-field__header_mar5' : tip}]"
@@ -12,10 +12,10 @@
       :class="[{'dd__top': mode === 'top' }, {'dd_small' : isDotsView}]"
     >
       <slot name="card" />
-
       <button
         class="dd__btn"
         :class="ddClass"
+        :data-selector="`ACTION-BTN-${dataSelector.toUpperCase()}`"
         :disabled="disabled || elementsIsEmpty"
         @click="isShown = !isShown"
       >
@@ -40,6 +40,7 @@
         <span
           v-else-if="items[value]"
           class="dd__title"
+          :data-selector="`BASE-DD-${dataSelector.toUpperCase()}-${items[value]}`"
           :class="[{'dd__title_white': type === 'blue' }, { 'dd__title_black': mode === 'blackFont' }]"
         >
           {{ dataType === 'array' ? items[value] : items[value].title }}
@@ -58,8 +59,7 @@
         />
         <span
           v-else
-          class="dd__caret icon-caret_down"
-          :class="[{'dd__caret_white': type === 'blue' }]"
+          :class="[{'dd__caret_white': type === 'blue' }, isShown ? 'icon-caret_up' :'icon-caret_down', 'dd__caret' ]"
         />
       </button>
       <transition name="fade">
@@ -71,6 +71,7 @@
           <button
             v-for="(item, i) in items"
             :key="`dd__item-${i}`"
+            :data-selector="`ACTION-BTN-SELECT-ITEM-${dataSelector.toUpperCase()}-${i}`"
             class="dd__item dd__item_icon"
             @click="selectItem(i)"
           >
@@ -87,11 +88,21 @@
           class="dd__items"
           :class="[{'dd__items_small' : mode === 'small'}, {'dd__items_wide' : isDotsView}]"
         >
+          <base-field
+            v-if="isSearch"
+            v-model="searchLine"
+            class="dd__search"
+            data-selector="INPUT-SEARCH"
+            :placeholder="searchPlaceholder"
+            :is-search="true"
+            :is-hide-error="true"
+          />
           <button
             v-for="(item, i) in items"
             :key="`dd__item-${i}`"
             class="dd__item"
-            :class="{'dd__item_hide': isSelected(i)}"
+            :data-selector="`ACTION-BTN-SELECT-ITEM-${dataSelector.toUpperCase()}-${i}`"
+            :class="{'dd__item_hide': isSelected(i) || (isSearch && !isSearchMatched(item))}"
             @click="selectItem(i)"
           >
             {{ dataType === 'array' ? item : item.title }}
@@ -160,9 +171,23 @@ export default {
       type: Boolean,
       default: false,
     },
+    dataSelector: {
+      type: String,
+      default: 'NON-SELECTOR',
+      required: true,
+    },
+    isSearch: {
+      type: Boolean,
+      default: false,
+    },
+    searchPlaceholder: {
+      type: String,
+      default: '',
+    },
   },
   data: () => ({
     isShown: false,
+    searchLine: '',
   }),
   computed: {
     elementsIsEmpty() {
@@ -191,6 +216,10 @@ export default {
     },
     isSelected(i) {
       return this.hideSelected.includes(i);
+    },
+    isSearchMatched(item) {
+      if (this.dataType === 'object') return item.title.toLowerCase().includes(this.searchLine.toLowerCase());
+      return item.toLowerCase().includes(this.searchLine.toLowerCase());
     },
   },
 };
@@ -306,14 +335,19 @@ export default {
     }
   }
   &__btn {
-    height: 46px;
+    height: auto;
+    min-height: 46px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
+    padding: 5px 20px;
     width: 100%;
     background: #FFFFFF;
     border-radius: 6px;
+    border: 1px solid transparent;
+    &:hover {
+      border: 1px solid $black100;
+    }
     &_blue {
       background-color: $blue;
     }
@@ -321,13 +355,13 @@ export default {
       background: #151552;
     }
     &_gray {
-      background-color: #F7F8FA;
+      background-color: $black0;
     }
     &_disabled {
       background-color: #E6E6E7;
     }
     &_border {
-      border: 1px solid #F7F8FA;
+      border: 1px solid $black0;
     }
   }
 
@@ -353,6 +387,9 @@ export default {
       color: #7c838d;
       font-size: 19px;
     }
+  }
+  &__search {
+    width: 100%;
   }
 }
 </style>

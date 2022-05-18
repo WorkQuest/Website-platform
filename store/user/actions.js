@@ -1,153 +1,45 @@
-import moment from 'moment';
-import { error } from '~/utils/web3';
-import { connectWithMnemonic } from '~/utils/wallet';
+import BigNumber from 'bignumber.js';
 import {
-  NotificationAction, UserRole, Path, UserStatuses,
+  error,
+  success,
+  showToast,
+  fetchContractData,
+} from '~/utils/web3';
+
+import {
+  getGasPrice,
+  createInstance,
+  getWalletAddress,
+  GetWalletProvider,
+  connectWithMnemonic,
+} from '~/utils/wallet';
+
+import {
+  UserStatuses,
+  QuestModeReview,
+  RaiseViewTariffPeriods,
 } from '~/utils/enums';
 
+import { WQPromotion } from '~/abi/index';
+
+const { WORKNET_PROMOTION } = process.env;
+
 export default {
-  async addEducation({ commit }, data) {
-    commit('setEducations', data);
-  },
-  async addWorkExperiences({ commit }, data) {
-    commit('setWorkExperiences', data);
+  async changeRole({ commit }, { totp }) {
+    try {
+      return await this.$axios.$put('/v1/profile/change-role', { totp });
+    } catch (e) {
+      return e;
+    }
   },
   async getStatistic({ commit }) {
     try {
       const { result } = await this.$axios.$get('/v1/profile/statistic/me');
-
       commit('setStatisticData', result);
+      return success(result);
     } catch (e) {
-      console.log(e);
+      return error();
     }
-  },
-  async removeNotification({ dispatch, commit }, { config, notificationId }) {
-    try {
-      const { ok } = await this.$axios.$delete(`${process.env.NOTIFS_URL}notifications/delete/${notificationId}`);
-
-      await commit('removeNotification', notificationId);
-      await dispatch('getNotifications', config);
-
-      return ok;
-    } catch (e) {
-      return false;
-    }
-  },
-  async readNotifications({ commit }, payload) {
-    try {
-      const { ok } = await this.$axios.$put(`${process.env.NOTIFS_URL}notifications/mark-read`, payload);
-
-      commit('setNotificationsAsRead', payload.notificationIds);
-      return ok;
-    } catch (e) {
-      return false;
-    }
-  },
-  async getNotifications({ commit, dispatch }, config) {
-    try {
-      const currConfig = config || { params: { limit: 2, offset: 0 } };
-      const { data: { result, ok } } = await this.$axios.get(`${process.env.NOTIFS_URL}notifications`, currConfig);
-
-      if (result.notifications.length) result.notifications.map(async (notification) => await dispatch('setCurrNotificationObject', notification));
-
-      if (!config) {
-        commit('setReducedNotifications', result.notifications);
-        commit('setUnreadNotifsCount', result.unreadCount);
-      }
-
-      const needPush = config?.params.limit === 1;
-
-      commit('setNotifications', { result, needPush });
-
-      return ok;
-    } catch (e) {
-      return false;
-    }
-  },
-  async addNotification({ commit, dispatch }, notification) {
-    const newNotification = await dispatch('setCurrNotificationObject', notification);
-    commit('addNotification', newNotification);
-  },
-  setCurrNotificationObject({ getters }, notification) {
-    const {
-      action, data: {
-        user, title, id, assignedWorker, worker, quest, employer, fromUser, message, toUserId,
-        problemDescription,
-      },
-    } = notification.notification;
-
-    let currTitle = quest?.title || title;
-    let keyName = 'notifications.';
-    let path = `${Path.QUESTS}/${quest?.id || id}`;
-    const userRole = getters.getUserRole;
-    const isItAnWorker = userRole === UserRole.WORKER;
-
-    switch (action) {
-      case NotificationAction.QUEST_STARTED: {
-        keyName += 'invitesYouToStartAQuest';
-        break;
-      }
-      case NotificationAction.WORKER_REJECTED_QUEST: {
-        keyName += 'rejectedTheQuest';
-        break;
-      }
-      case NotificationAction.WORKER_ACCEPTED_QUEST: {
-        keyName += 'acceptedTheQuest';
-        break;
-      }
-      case NotificationAction.WORKER_COMPLETED_QUEST: {
-        keyName += 'completedTheQuest';
-        break;
-      }
-      case NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST: {
-        keyName += 'acceptedAJobOnAQuest';
-        break;
-      }
-      case NotificationAction.WORKER_RESPONDED_TO_QUEST: {
-        keyName += 'respondedToQuest';
-        break;
-      }
-      case NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST: {
-        keyName += 'invitedYouToAQuest';
-        break;
-      }
-      case NotificationAction.WORKER_ACCEPTED_INVITATION_TO_QUEST: {
-        keyName += 'acceptedTheInvitationToTheQuest';
-        break;
-      }
-      case NotificationAction.WORKER_REJECTED_INVITATION_TO_QUEST: {
-        keyName += 'declinedTheInvitationToTheQuest';
-        break;
-      }
-      case NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE: {
-        keyName += 'declinedYourResponseToTheQuest';
-        break;
-      }
-      case NotificationAction.WAIT_WORKER: {
-        keyName += 'theQuestIsPending';
-        break;
-      }
-      case NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST: {
-        keyName += 'leftReviewAboutQuest';
-        path = `${Path.PROFILE}/${toUserId}`;
-        currTitle = message;
-        break;
-      }
-      case NotificationAction.OPEN_DISPUTE: {
-        keyName += 'openDispute';
-        currTitle = problemDescription;
-        break;
-      }
-      default: {
-        keyName = '';
-        break;
-      }
-    }
-
-    notification.actionNameKey = keyName;
-    notification.sender = fromUser || (isItAnWorker ? user || employer : assignedWorker || worker);
-    if (currTitle) notification.params = { title: currTitle, path };
-    notification.creatingDate = moment(new Date(notification.createdAt)).format('MMMM Do YYYY, HH:mm');
   },
   async getUserPortfolios({ commit }, { userId, query }) {
     try {
@@ -205,11 +97,14 @@ export default {
       return console.log(e);
     }
   },
-  async sendReviewForUser({ commit }, { questId, message, mark }) {
+  async sendReviewForUser({ commit }, {
+    questId, message, mark, questMode,
+  }) {
     try {
       const { ok, result } = await this.$axios.$post('/v1/review/send', { questId, message, mark });
-      commit('setCurrentReviewMarkOnQuest', { questId, message, mark });
-      return { ok };
+      if (questMode === QuestModeReview.QUEST_LIST) commit('quests/setMarkOnQuestInList', result, { root: true });
+      if (questMode === QuestModeReview.QUEST_SINGLE) commit('quests/setMarkOnQuestSingle', result, { root: true });
+      return ok;
     } catch (e) {
       console.log('user/sendReviewForUser');
       return false;
@@ -222,14 +117,15 @@ export default {
       return error(e.response.data.code, e.response.data.msg);
     }
   },
-  async signIn({ commit, dispatch }, payload) {
+  async signIn({ commit, dispatch, state }, payload) {
     try {
       const response = await this.$axios.$post('/v1/auth/login', payload);
-      commit('setTokens', response.result);
-      if (response.result.userStatus === 1) {
-        await dispatch('getUserData');
-        await dispatch('getStatistic');
-        await dispatch('getNotifications');
+      commit('setTokens', {
+        access: response.result.access,
+        refresh: state.isRememberMeChecked ? response.result.refresh : '',
+      });
+      if (response.result.userStatus === 1 && !response.result.totpIsActive) {
+        await dispatch('getMainData');
       }
       return response;
     } catch (e) {
@@ -245,8 +141,22 @@ export default {
       return error();
     }
   },
-  async logout({ commit }) {
-    commit('logOut');
+  async getMainData({ dispatch }) {
+    await Promise.all([
+      dispatch('getUserData'),
+      dispatch('getStatistic'),
+      dispatch('notifications/getNotifications', '', { root: true }),
+    ]);
+  },
+  async logout({ commit }, isValidToken = true) {
+    try {
+      if (isValidToken) await this.$axios.$post('v1/auth/logout');
+      await this.$wsChatActions.disconnect();
+      await this.$wsNotifs.disconnect();
+      commit('logOut');
+    } catch (e) {
+      console.error('user/logout', e);
+    }
   },
   async confirm({ commit }, payload) {
     try {
@@ -263,14 +173,12 @@ export default {
   },
   async getUserData({ commit }) {
     try {
-      const response = await this.$axios.$get('/v1/profile/me');
-      const { result } = response;
+      const { result } = await this.$axios.$get('/v1/profile/me');
       commit('setUserData', result);
       if (result.wallet?.address) connectWithMnemonic(result.wallet.address);
-      return response;
+      return success(result);
     } catch (e) {
-      console.error(e);
-      return false;
+      return error();
     }
   },
   async getAnotherUserData({ commit }, payload) {
@@ -294,24 +202,31 @@ export default {
     try {
       const response = await this.$axios.$put('/v1/employer/profile/edit', payload);
       commit('setUserData', response.result);
-      return response;
+      return response.ok;
     } catch (e) {
-      return console.log(e);
+      console.log(e);
+      return false;
     }
   },
   async editWorkerData({ commit }, payload) {
     try {
       const response = await this.$axios.$put('/v1/worker/profile/edit', payload);
       commit('setUserData', response.result);
-      return response;
+      return response.ok;
     } catch (e) {
-      return console.log(e);
+      console.log(e);
+      return false;
     }
   },
   async refreshTokens({ commit }) {
-    const response = await this.$axios.$post('/v1/auth/refresh-tokens');
-    commit('setTokens', response.result);
-    return response;
+    // eslint-disable-next-line no-useless-catch
+    try {
+      const response = await this.$axios.$post('/v1/auth/refresh-tokens');
+      commit('setTokens', response.result);
+      return response;
+    } catch (e) {
+      throw e;
+    }
   },
   async setCurrentPosition({ commit }, payload) {
     commit('setCurrentUserPosition', payload);
@@ -377,13 +292,8 @@ export default {
       commit('setTwoFAStatus', false);
       return response;
     } catch (e) {
-      const response = {
-        ok: e.response.data.ok,
-        code: e.response.data.code,
-        msg: e.response.data.msg,
-        data: e.response.data.data,
-      };
-      return response;
+      const { data } = e.response;
+      return error(data.code, data.msg, data);
     }
   },
   async enable2FA({ commit }, payload) {
@@ -392,13 +302,8 @@ export default {
       commit('setTwoFACode', response.result);
       return response;
     } catch (e) {
-      const response = {
-        ok: e.response.data.ok,
-        code: e.response.data.code,
-        msg: e.response.data.msg,
-        data: e.response.data.data,
-      };
-      return response;
+      const { data } = e.response;
+      return error(data.code, data.msg, data);
     }
   },
   async confirmEnable2FA({ commit }, payload) {
@@ -408,13 +313,8 @@ export default {
       commit('setTwoFAStatus', true);
       return response;
     } catch (e) {
-      const response = {
-        ok: e.response.data.ok,
-        code: e.response.data.code,
-        msg: e.response.data.msg,
-        data: e.response.data.data,
-      };
-      return response;
+      const { data } = e.response;
+      return error(data.code, data.msg, data);
     }
   },
 
@@ -430,9 +330,83 @@ export default {
   async confirmPhone({ commit }, payload) {
     try {
       const response = await this.$axios.$post('/v1/profile/phone/confirm', payload);
-      return response.result;
+      return response.ok;
     } catch (e) {
-      return console.log(e);
+      console.log('user/confirmPhone');
+      return false;
     }
+  },
+  async validateTOTP({ commit }, payload) {
+    try {
+      const response = await this.$axios.$post('/v1/auth/validate-totp', payload);
+      return response.result.isValid;
+    } catch (e) {
+      console.log('user/validateTOTP');
+      return false;
+    }
+  },
+  // TODO delete, waiting when backend will be catch all this events
+  async payUserRaisedView({ commit }, payload) {
+    try {
+      const response = await this.$axios.$post('/v1/profile/worker/me/raise-view/pay', payload);
+      return response.ok;
+    } catch (e) {
+      console.log('profile/worker/me/raise-view/pay');
+      return false;
+    }
+  },
+  async getRaiseViewPrice({ commit }, { type }) {
+    try {
+      const periods = RaiseViewTariffPeriods[type];
+      const tariffs = ['1', '2', '3', '4'];
+      const price = {};
+      for (let i = 0; i < tariffs.length; i += 1) {
+        price[tariffs[i]] = {};
+        for (let j = 0; j < periods.length; j += 1) {
+          const data = [tariffs[i], periods[j]];
+          /* eslint-disable no-await-in-loop */
+          const cost = await fetchContractData(
+            type,
+            WQPromotion,
+            WORKNET_PROMOTION,
+            data,
+            GetWalletProvider(),
+          );
+          price[tariffs[i]][periods[j]] = new BigNumber(+cost).shiftedBy(-18).toString();
+        }
+      }
+      return success(price);
+    } catch (e) {
+      console.log('user/getRaiseViewPrice');
+      return error(e.code, 'Error in get raise view price', e);
+    }
+  },
+  async promoteUserOnContract({ commit }, { cost, tariff, period }) {
+    try {
+      const inst = createInstance(WQPromotion, WORKNET_PROMOTION);
+      const value = new BigNumber(cost).shiftedBy(18).toString();
+      const { gas, gasPrice } = await getGasPrice(
+        WQPromotion,
+        WORKNET_PROMOTION,
+        'promoteUser',
+        [tariff, period],
+        value,
+      );
+      const params = {
+        from: getWalletAddress(),
+        gasPrice,
+        gas,
+        value,
+      };
+      const response = await inst.methods.promoteUser(tariff, period).send(params);
+      return success(response);
+    } catch (e) {
+      console.log('user/buyRaiseView');
+      showToast('Promote user error:', `${e.message}`, 'danger');
+      return error(e.code, 'Error in method promote user', e);
+    }
+  },
+  setRememberMe({ commit }, payload) {
+    commit('setRememberMe', payload);
   },
 };

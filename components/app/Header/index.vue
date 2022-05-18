@@ -2,11 +2,13 @@
   <div
     v-click-outside="closeAll"
     class="header"
+    data-selector="COMPONENT-HEADER"
   >
     <div class="header__body">
       <div class="header__left">
         <div
           class="header__logo"
+          data-selector="ACTION-BTN-TO-MAIN-PAGE"
           @click="toMain()"
         >
           <img
@@ -23,6 +25,7 @@
             :key="i"
             :to="item.path"
             class="header__link"
+            :data-selector="`HEADER-LINKS-${i}`"
             :exact-active-class="'header__link_active'"
           >
             {{ item.title }}
@@ -30,6 +33,7 @@
           <div
             class="header__link header__link_menu"
             :class="{'header__link_active': isShowAdditionalMenu}"
+            data-selector="ACTION-BTN-SHOW-ADDITIONAL-MENU"
             @click="showAdditionalMenu()"
           >
             {{ $t('ui.profile.DeFi') }}
@@ -41,8 +45,9 @@
               >
                 <div class="menu__items">
                   <nuxt-link
-                    v-for="item in additionalMenuLinks"
+                    v-for="(item, i) in additionalMenuLinks"
                     :key="`item-${item.title}`"
+                    :data-selector="`ADDITIONAL-MENU-LINKS-${i}`"
                     :to="item.path"
                     class="menu__item"
                   >
@@ -67,16 +72,11 @@
       <div class="header__right">
         <div
           class="header__button header__button_locale"
+          data-selector="ACTION-BTN-SHOW-LOCALE"
           @click="showLocale()"
         >
-          <span
-            v-if="currentLocale"
-            class="header__button_locale-name"
-          >
-            {{ currentLocale.toUpperCase() }}
-          </span>
-          <span v-else>
-            {{ $t('ui.locals.en').toUpperCase() }}
+          <span class="header__button_locale-name">
+            {{ currentLocale !== 'zh_cn' ? currentLocale.toUpperCase() : 'ZH' }}
           </span>
           <span class="icon icon-caret_down" />
           <transition name="fade">
@@ -85,10 +85,11 @@
               class="locale"
             >
               <li
-                v-for="item in locales"
-                :key="item.localeText"
+                v-for="(item, i) in locales"
+                :key="item.localeCode"
                 class="locale__item"
-                :class="[{'locale__item_active' : currentLocale === item.localeText}]"
+                :class="[{'locale__item_active' : currentLocale === item.localeCode}]"
+                :data-selector="`ACTION-BTN-SET-LOCALE-${i}`"
                 @click="setLocale(item)"
               >
                 <img
@@ -105,6 +106,7 @@
         </div>
         <div
           class="header__button"
+          data-selector="ACTION-BTN-GO-TO-MESSAGES"
           @click="goToMessages()"
         >
           <img
@@ -117,9 +119,13 @@
             class="icon icon-message"
           />
         </div>
-        <notifications-button />
+        <notifications-button
+          data-selector="ACTION-BTN-NOTIF-CLOSE-ALL"
+          @closeAnotherPopUp="closeAll()"
+        />
         <div
           class="ctm-menu__toggle"
+          data-selector="ACTION-BTN-TOGGLE-MOBILE-MENU"
           @click="toggleMobileMenu()"
         >
           <div class="header__button header__button_menu">
@@ -128,6 +134,7 @@
         </div>
         <div
           class="header__button header__button_profile"
+          data-selector="ACTION-BTN-SHOW-PROFILE"
           @click="showProfile()"
         >
           <span class="icon icon-hamburger" />
@@ -141,7 +148,7 @@
                   <img
                     id="userAvatarDesktop"
                     class="profile__img"
-                    :src="imageData || EmptyAvatar()"
+                    :src="imageData || $options.images.EMPTY_AVATAR"
                     alt=""
                   >
                 </div>
@@ -150,7 +157,6 @@
                     {{ UserName(userData.firstName, userData.lastName) }}
                   </div>
                   <div
-                    v-if="userData.role === $options.UserRole.EMPLOYER"
                     class="profile__text profile__text_blue"
                     :class="userData.role === $options.UserRole.EMPLOYER ? 'profile__text_blue' : 'profile__text_green'"
                   >
@@ -160,8 +166,9 @@
               </div>
               <div class="profile__items">
                 <nuxt-link
-                  v-for="item in profileLinks"
+                  v-for="(item, i) in profileLinks"
                   :key="`item-${item.title}`"
+                  :data-selector="`PROFILE-LINKS-${i}`"
                   class="profile__item"
                   :to="item.path"
                 >
@@ -169,6 +176,7 @@
                 </nuxt-link>
                 <div
                   class="profile__item profile__item_red"
+                  data-selector="ACTION-BTN-LOGOUT"
                   @click="logout()"
                 >
                   {{ $t('ui.profile.logout') }}
@@ -180,9 +188,10 @@
         <base-btn
           v-if="userData.role === $options.UserRole.EMPLOYER"
           class="header__btn"
+          data-selector="CREATE-NEW-QUEST"
           @click="createNewQuest('pc')"
         >
-          {{ $t('layout.create') }}
+          {{ $t('meta.createAQuest') }}
         </base-btn>
       </div>
     </div>
@@ -193,6 +202,7 @@
       <div class="ctm-menu__content">
         <div
           class="ctm-menu__user"
+          data-selector="TOGGLE-USER-DD-MOBILE"
           @click="toggleUserDD()"
         >
           <div class="user__container">
@@ -200,7 +210,7 @@
               <img
                 id="userAvatarMobile"
                 class="profile__img"
-                :src="imageData || EmptyAvatar()"
+                :src="imageData || $options.images.EMPTY_AVATAR"
                 alt=""
               >
             </div>
@@ -229,12 +239,14 @@
             v-for="(item, i) in profileLinks"
             :key="i"
             class="dropdown__link"
-            @click="toRoute(item.link)"
+            :data-selector="`PROFILE-LINKS-MOBILE-${i}`"
+            @click="toRoute(item.path)"
           >
             {{ item.title }}
           </div>
           <div
             class="dropdown__link dropdown__link_logout"
+            data-selector="ACTION-BTN-LOGOUT-MOBILE"
             @click="logout()"
           >
             {{ $t('ui.profile.logout') }}
@@ -244,6 +256,7 @@
           <div
             v-for="(item, i) in headerLinks"
             :key="i"
+            :data-selector="`HEADER-LINKS-MOBILE-${i}`"
             class="ctm-menu__link"
             @click="toRoute(item.path)"
           >
@@ -252,6 +265,7 @@
         </div>
         <div
           class="ctm-menu__dropdown"
+          data-selector="ACTION-BTN-TOGGLE-INSTRUMENT-DD"
           @click="toggleInstrumentDD()"
         >
           <div class="dropdown__btn">
@@ -270,6 +284,7 @@
           <div
             v-for="(item, i) in additionalMenuLinks"
             :key="i"
+            :data-selector="`ADDITIONAL-MENU-LINKS-MOBILE-${i}`"
             class="dropdown-data__link"
             @click="toRoute(item.path)"
           >
@@ -280,9 +295,10 @@
           <base-btn
             v-if="userData.role === $options.UserRole.EMPLOYER"
             class="ctm-menu__btn"
+            data-selector="ACTION-BTN-CREATE-NEW-QUEST-MOBILE"
             @click="createNewQuest('mobile')"
           >
-            {{ $t('layout.create') }}
+            {{ $t('meta.createAQuest') }}
           </base-btn>
         </div>
       </div>
@@ -294,15 +310,14 @@
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import moment from 'moment';
-import {
-  MessageAction, UserRole, Path, ChatType,
-} from '~/utils/enums';
+import { images } from '~/utils/images';
+import { MessageAction, UserRole, Path } from '~/utils/enums';
 
 export default {
-  scrollToTop: true,
   name: 'Header',
   middleware: 'auth',
   UserRole,
+  images,
   directives: {
     ClickOutside,
   },
@@ -315,17 +330,6 @@ export default {
       isShowLocale: false,
       isMobileMenu: false,
       isNotFlexContainer: false,
-      currentLocale: '',
-      headerLinks: [
-        {
-          path: Path.MY_QUESTS,
-          title: this.$t('ui.myQuests'),
-        },
-        {
-          path: Path.WALLET,
-          title: this.$t('ui.wallet'),
-        },
-      ],
     };
   },
   computed: {
@@ -333,17 +337,19 @@ export default {
       userData: 'user/getUserData',
       imageData: 'user/getImageData',
       token: 'user/accessToken',
-      connections: 'data/notificationsConnectionStatus',
+      connections: 'main/notificationsConnectionStatus',
       chatId: 'chat/getCurrChatId',
       messagesFilter: 'chat/getMessagesFilter',
-      unreadMessagesCount: 'user/getUnreadChatsCount',
+      unreadMessagesCount: 'chat/getUnreadChatsCount',
       chats: 'chat/getChats',
       searchValue: 'chat/getSearchValue',
+      currentLocale: 'user/getCurrentLang',
     }),
     locales() {
       return this.$i18n.locales.map((item) => ({
         localeSrc: `${item}.svg`,
         localeText: this.$t(`ui.locals.${item}`),
+        localeCode: item,
       }));
     },
     profileLinks() {
@@ -353,11 +359,11 @@ export default {
           path: `/profile/${this.userData.id}`,
         },
         {
-          title: this.$t('ui.profile.settings'),
+          title: this.$t('meta.settings'),
           path: Path.SETTINGS,
         },
         {
-          title: this.$t('ui.profile.disputes'),
+          title: this.$t('meta.disputes'),
           path: Path.DISPUTES,
         },
       ];
@@ -367,7 +373,7 @@ export default {
         {
           title: this.$t('ui.menu.pension.title'),
           desc: this.$t('ui.menu.pension.desc'),
-          path: Path.PENSION,
+          path: Path.RETIREMENT,
         },
         {
           title: this.$t('ui.menu.referral.title'),
@@ -387,7 +393,7 @@ export default {
         {
           title: this.$t('ui.menu.crediting.title'),
           desc: this.$t('ui.menu.crediting.desc'),
-          path: Path.CREDITING,
+          path: Path.LENDING,
         },
         {
           title: this.$t('ui.menu.mining.title'),
@@ -395,16 +401,34 @@ export default {
           path: Path.MINING,
         },
         {
-          title: this.$t('ui.menu.crosschain.title'),
-          desc: this.$t('ui.menu.crosschain.desc'),
-          path: Path.CROSSCHAIN,
+          title: this.$t('ui.menu.bridge.title'),
+          desc: this.$t('ui.menu.bridge.desc'),
+          path: Path.BRIDGE,
         },
         {
           title: this.$t('ui.menu.staking.title'),
           desc: this.$t('ui.menu.staking.desc'),
           path: Path.STAKING,
         },
+        {
+          title: this.$t('ui.menu.collateral.title'),
+          desc: this.$t('ui.menu.collateral.desc'),
+          path: Path.COLLATERAL,
+        },
       ];
+    },
+    headerLinks() {
+      const links = [
+        { path: Path.MY_QUESTS, title: this.$t('meta.myQuests') },
+        { path: Path.WALLET, title: this.$t('meta.wallet') },
+      ];
+      if (this.userData.role === UserRole.EMPLOYER) {
+        links.unshift({
+          path: Path.WORKERS,
+          title: this.$t('ui.jobQuestors'),
+        });
+      } else links.unshift({ path: Path.QUESTS, title: this.$t('meta.questsBig') });
+      return links;
     },
   },
   watch: {
@@ -416,15 +440,15 @@ export default {
     window.addEventListener('resize', this.userWindowChange);
   },
   async mounted() {
-    await this.initWSListeners();
+    await Promise.all([
+      this.$store.dispatch('wallet/fetchCommonTokenInfo'), // Get Symbol & Decimals for worknet tokens
+      this.initWSListeners(),
+    ]);
     this.GetLocation();
-    this.currentLocale = this.$i18n.localeProperties.code;
-    this.initHeaderLinks();
+    this.$store.commit('user/setLang', this.$i18n.localeProperties.code);
   },
   destroyed() {
     window.removeEventListener('resize', this.userWindowChange);
-    this.$wsNotifs.disconnect();
-    this.$wsChatActions.disconnect();
   },
   methods: {
     async chatAction({ data, action }) {
@@ -433,17 +457,16 @@ export default {
           const { searchValue } = this;
 
           const isSearchValIncluded = (value) => value.toLowerCase().includes(searchValue);
-          const hasSearchedUser = () => data.userMembers.some(({ firstName, lastName }) => {
-            if (isSearchValIncluded(firstName) || isSearchValIncluded(lastName)) return true;
-            return false;
-          });
+          const hasSearchedUser = () => data.userMembers.some(
+            ({ firstName, lastName }) => !!(isSearchValIncluded(firstName) || isSearchValIncluded(lastName)),
+          );
 
           if (searchValue && !isSearchValIncluded(data.name) && !hasSearchedUser()) return;
 
           data.isUnread = true;
           data.userMembers = data.userMembers.filter((member) => member.id !== this.userData.id);
           this.$store.commit('chat/addChatToList', data);
-          this.$store.commit('user/changeUnreadChatsCount', { needAdd: true, count: 1 });
+          this.$store.commit('chat/changeUnreadChatsCount', { needAdd: true, count: 1 });
         } else if (action === MessageAction.NEW_MESSAGE) {
           await this.$store.dispatch('chat/getCurrChatData', data.chatId);
           await this.getStatistic();
@@ -455,6 +478,12 @@ export default {
 
       if (data.chatId === this.chatId && !this.messagesFilter.canLoadToBottom) {
         if (action === MessageAction.MESSAGE_READ_BY_RECIPIENT) return;
+
+        data.medias.forEach((file) => {
+          // eslint-disable-next-line prefer-destructuring
+          file.type = file.contentType.split('/')[0];
+        });
+
         this.$store.commit('chat/addMessageToList', data);
         this.$store.commit('chat/setChatAsUnread');
 
@@ -469,47 +498,33 @@ export default {
         }
       }
     },
-    async  addNotification(ev) {
-      await this.$store.dispatch('user/addNotification', ev);
-    },
+    /**
+     * @property $wsNotifs
+     * @property $wsChatActions
+     * @return {Promise<void>}
+     */
     async initWSListeners() {
       const { chatActionsConnection, notifsConnection } = this.connections;
+      const {
+        $wsNotifs, $wsChatActions, $store, token,
+      } = this;
       if (!notifsConnection) {
-        await this.$wsNotifs.connect(this.token);
-        const subscribes = [
-          'chat',
-          'quest',
-        ];
-        await Promise.all(subscribes.map((path) => this.$wsNotifs.subscribe(`/notifications/${path}`, (ev) => {
-          if (path === 'chat') {
-            this.chatAction(ev);
-            return;
-          }
-          this.addNotification(ev);
+        await $wsNotifs.connect(token);
+        const subscribes = ['chat', 'quest', 'dao'];
+        await Promise.all(subscribes.map((path) => $wsNotifs.subscribe(`${Path.NOTIFICATIONS}/${path}`, async (ev) => {
+          if (path === 'chat') await this.chatAction(ev);
+          else await $store.dispatch('notifications/addNotification', ev);
         })));
       }
-      if (!chatActionsConnection) await this.$wsChatActions.connect(this.token);
-    },
-    initHeaderLinks() {
-      if (this.userData.role === this.$options.UserRole.EMPLOYER) {
-        this.headerLinks.unshift({
-          path: Path.WORKERS,
-          title: this.$t('ui.jobQuestors'),
-        });
-      } else {
-        this.headerLinks.unshift({
-          path: Path.QUESTS,
-          title: this.$t('ui.quests'),
-        });
-      }
+      if (!chatActionsConnection) await $wsChatActions.connect(token);
     },
     async getStatistic() {
       await this.$store.dispatch('user/getStatistic');
     },
     setLocale(item) {
-      this.currentLocale = item.localeText;
-      this.$i18n.setLocale(item.localeText);
-      moment.locale(item.localeText);
+      this.$store.commit('user/setLang', item.localeCode);
+      this.$i18n.setLocale(item.localeCode);
+      moment.locale(item.localeCode);
     },
     kitcutDescription(text) {
       text = text.trim();
@@ -556,7 +571,7 @@ export default {
       }
     },
     goToMessages() {
-      this.$router.push('/messages');
+      this.$router.push(Path.MESSAGES);
       this.closeAll();
     },
     showProfile() {
@@ -613,9 +628,11 @@ export default {
     padding: 15px 0 0 0;
     display: grid;
   }
+
   &__dropdown-icon {
     align-self: center;
   }
+
   &__container {
     display: flex;
     flex-direction: row;
@@ -627,6 +644,7 @@ export default {
     width: 100%;
     padding: 0 20px 0 0;
   }
+
   &__avatar {
     max-height: 40px;
     max-width: 40px;
@@ -636,11 +654,13 @@ export default {
     margin-left: 20px;
     margin-right: 10px;
   }
+
   &__name {
     font-weight: 500;
     font-size: 16px;
     color: $black800;
   }
+
   &__role {
     font-weight: 400;
     font-size: 12px;
@@ -652,10 +672,12 @@ export default {
 .icon {
   font-size: 20px;
   color: $shade700;
+
   &-chevron_right {
     transition: .1s;
     visibility: hidden;
   }
+
   &-message, &-hamburger {
     font-size: 24px;
     color: $black400;
@@ -673,6 +695,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+
   &__body {
     max-width: 1180px;
     width: 100%;
@@ -680,26 +703,31 @@ export default {
     align-items: center;
     justify-content: space-between;
   }
+
   &__left {
     display: grid;
     align-items: center;
     grid-template-columns: auto 1fr;
     grid-gap: 35px;
   }
+
   &__link {
     @include text-simple;
     font-size: 16px;
     line-height: 130%;
     color: $black400;
     text-decoration: none;
+
     &_active {
       color: $black800;
     }
+
     &_menu {
       display: flex;
       align-items: center;
       position: relative;
       cursor: pointer;
+
       span {
         color: $black400;
         font-size: 24px;
@@ -721,49 +749,60 @@ export default {
     width: 43px;
     height: 43px;
     border: 1px solid transparent;
+
     &:hover {
       border: 1px solid $black100;
     }
+
     .icon-caret_down {
       color: $black400;
       font-size: 24px;
     }
+
     &_profile {
       position: relative;
     }
+
     &_menu {
       position: relative;
       display: none;
     }
+
     &_locale {
       width: 86px;
       height: 46px;
     }
+
     &_locale-name {
       padding-left: 10px;
     }
   }
+
   &__links {
     display: grid;
     align-items: center;
     grid-template-columns: repeat(4, auto);
     grid-gap: 25px;
   }
+
   &__right {
     display: grid;
     grid-template-columns: repeat(5, auto);
     grid-gap: 10px;
     align-items: center;
   }
+
   &__btn {
     min-width: 163px;
   }
+
   &__logo {
     display: grid;
     align-items: center;
     grid-template-columns: 40px 1fr;
     grid-gap: 5px;
     cursor: pointer;
+
     span {
       @include text-simple;
       font-weight: bold;
@@ -772,6 +811,7 @@ export default {
       color: $black700;
     }
   }
+
   &__ctm-menu {
     transition: .2s;
   }
@@ -791,6 +831,7 @@ export default {
     left: 0;
     z-index: 9999;
   }
+
   &__content {
     height: 100%;
     width: 100%;
@@ -798,19 +839,23 @@ export default {
     flex-direction: column;
     background: $white;
     border-radius: 0 0 5px 5px;
+
     &_hide {
       width: 0;
     }
   }
+
   &__user {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
   }
+
   &__links {
     display: flex;
     flex-direction: column;
   }
+
   &__link {
     padding: 16px 20px 16px 20px;
     font-weight: 400;
@@ -819,15 +864,18 @@ export default {
     border-bottom: 1px solid $black0;
     cursor: pointer;
     text-decoration: none;
+
     &:hover {
       background: $blue;
       color: $white;
       font-weight: 600;
     }
   }
+
   &__actions {
     padding: 20px;
   }
+
   &__toggle {
     display: none;
   }
@@ -842,22 +890,27 @@ export default {
     padding: 16px 0 20px 30px;
     align-items: flex-start;
     width: 100%;
+
     &_logout {
       color: $red;
     }
   }
+
   &__btn {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+
     &:hover {
       background: $blue;
       color: $white;
       font-weight: 600;
     }
   }
+
   &__title {
     padding: 16px 0 20px 20px;
   }
+
   &__arrow {
     justify-self: flex-end;
     padding: 16px 20px 0 0;
@@ -885,29 +938,34 @@ export default {
   width: 100%;
   min-height: 235px;
   z-index: 10000000;
+
   &__img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
   }
+
   &__header {
-    border-bottom: 1px solid #F7F8FA;
+    border-bottom: 1px solid $black0;
     display: grid;
     grid-template-columns: 40px 1fr;
     padding: 15px;
     grid-gap: 10px;
   }
+
   &__avatar {
     max-width: 40px;
     max-height: 40px;
     border-radius: 100%;
   }
+
   &__items {
     display: grid;
     grid-template-columns: 1fr;
     justify-items: flex-start;
   }
+
   &__item {
     @include text-simple;
     height: 41px;
@@ -921,29 +979,39 @@ export default {
     transition: .3s;
     border-radius: 6px;
     text-decoration: none;
+
     &_red {
       color: $red;
     }
+
     &:hover {
       background: $black0;
     }
   }
+
   &__text {
     @include text-simple;
     font-weight: 500;
     font-size: 16px;
     line-height: 130%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+    white-space: nowrap;
+
     &_blue {
       font-weight: normal;
       font-size: 12px;
       color: $blue;
     }
+
     &_green {
       font-weight: normal;
       font-size: 12px;
       color: $green;
     }
   }
+
   &__info {
     display: grid;
     grid-template-columns: 1fr;
@@ -954,7 +1022,7 @@ export default {
 
 .menu {
   position: absolute;
-  top: 50px;
+  top: 49px;
   background: $white;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   border-radius: 6px;
@@ -963,31 +1031,37 @@ export default {
   left: -100%;
   min-height: 230px;
   z-index: 10000000;
+
   &__top {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
   }
+
   &__text {
     @include text-simple;
+
     &_header {
       font-size: 16px;
       line-height: 130%;
       color: $black800;
     }
+
     &_grey {
       font-size: 14px;
       line-height: 130%;
       color: $black500;
     }
   }
+
   &__items {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     padding: 20px;
     grid-gap: 10px;
   }
+
   &__item {
     transition: .3s;
     background: $white;
@@ -1000,9 +1074,11 @@ export default {
     flex-direction: column;
     justify-content: flex-start;
     padding: 10px;
+
     &:hover {
       border: 1px solid $black100;
       text-decoration: none;
+
       span {
         visibility: visible;
       }
@@ -1018,21 +1094,26 @@ export default {
   border-radius: 6px;
   z-index: 10000000;
   padding: 15px 20px;
+
   &__item {
     width: 46px;
     display: flex;
     align-items: center;
     opacity: 0.7;
+
     &_active {
       opacity: 1;
     }
+
     &:hover {
       opacity: 1;
     }
   }
+
   &__item:not(:last-child) {
     margin-bottom: 15px;
   }
+
   &__icon {
     display: block;
     margin-right: 10px;
@@ -1040,6 +1121,7 @@ export default {
     width: 15px;
     height: 15px;
   }
+
   &__text {
     @include text-simple;
     font-weight: 500;
@@ -1059,17 +1141,21 @@ export default {
     &__button_menu {
       display: flex;
     }
+
     &__body {
       margin: 0 20px 0 20px;
     }
+
     &__links {
       display: none;
     }
+
     &__button {
       &_profile {
         display: none;
       }
     }
+
     &__btn {
       display: none !important;
     }
@@ -1091,12 +1177,15 @@ export default {
         display: none;
       }
     }
+
     &__btn {
       display: none !important;
     }
+
     &__left {
       grid-gap: 15px;
     }
+
     &__right {
       grid-gap: 2px;
     }

@@ -1,26 +1,22 @@
 <template>
   <ctm-modal-box
     class="deposit"
-    :title="$t('modals.depositTitle')"
+    :title="$tc('modals.titles.deposit')"
   >
     <div class="deposit__content content">
       <validation-observer
         v-slot="{handleSubmit, validated, passed, invalid}"
         class="content__validator"
       >
-        <div
-          class="content__step"
-        >
+        <div class="content__step">
           <div
             class="content__panel"
             @click="showGiveDeposit"
           >
             {{ $t('modals.walletAddress') }}
           </div>
-          <div
-            class="content__panel content__panel_active"
-          >
-            {{ $t('wallet.bankCard') }}
+          <div class="content__panel content__panel_active">
+            {{ $t('meta.bankCard') }}
           </div>
         </div>
         <div class="content__drop drop">
@@ -41,6 +37,7 @@
             >
               <base-btn
                 mode="add"
+                selector="SHOW-ADDING-CARD"
                 class="drop__button button"
                 @click="showAddingCard"
               >
@@ -59,9 +56,10 @@
           <div class="grid__body">
             <base-field
               v-model="amount"
-              :placeholder="'0 WUSD'"
+              placeholder="0 WUSD"
               class="grid__input"
-              :name="$t('modals.amountField')"
+              data-selector="AMOUNT"
+              :name="$tc('modals.amountField')"
               rules="required|decimal"
             />
             <div class="grid__equal">
@@ -70,6 +68,7 @@
             <div class="grid__field">
               <base-field
                 v-model="dollars"
+                data-selector="DOLLARS"
                 mode="white"
                 :disabled="true"
               />
@@ -83,6 +82,7 @@
             </div>
             <base-field
               v-model="fee"
+              data-selector="FEE"
               mode="white"
               class="body__input"
               :disabled="true"
@@ -94,6 +94,7 @@
             </div>
             <base-field
               v-model="time"
+              data-selector="TIME"
               mode="white"
               class="body__input"
               :disabled="true"
@@ -104,13 +105,15 @@
           <base-btn
             class="buttons__button"
             mode="outline"
-            @click="hide"
+            data-selector="CANCEL"
+            @click="CloseModal"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
             :disabled="invalid"
+            data-selector="BUY-WUSD"
             @click="handleSubmit(showTransactionSendModal)"
           >
             {{ $t('meta.buyWUSD') }}
@@ -144,15 +147,13 @@ export default {
     },
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     showTransactionSendModal() {
       this.ShowModal({
         key: modals.withdrawInfo,
-        title: this.$t('modals.depositInfo'),
+        title: this.$t('modals.info.depositInfo'),
       });
     },
+    // TODO: Зарефакторить
     showGiveDeposit() {
       this.ShowModal({
         key: modals.giveDeposit,
@@ -202,7 +203,7 @@ export default {
 }
 .drop{
   &__field{
-    border: 1px solid #F7F8FA;
+    border: 1px solid $black0;
     border-radius: 6px;
   }
   &__title{

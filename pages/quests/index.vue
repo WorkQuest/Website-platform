@@ -1,5 +1,8 @@
 <template>
-  <div class="quests">
+  <div
+    class="quests"
+    data-selector="PAGE-QUESTS"
+  >
     <search-with-map
       class="quests__search"
       @isShowMap="isShowMap = $event"
@@ -7,7 +10,7 @@
     />
     <div class="quests__content">
       <h2 class="quests__title">
-        {{ $t('ui.quests') }}
+        {{ $t('meta.questsBig') }}
       </h2>
       <panel-filters
         class="quests__filters"
@@ -16,15 +19,18 @@
         @sortPrice="sortByPrice"
         @sortPriority="sortByPriority"
         @sortWorkplace="sortByWorkplace"
-        @sortEmployment="sortByEmployment"
+        @sortTypeOfJob="sortTypeOfJob"
+        @sortPayPeriod="sortPayPeriod"
       />
       <div
         v-if="questsCount"
         class="quests__cards"
       >
         <card-quest
-          v-for="(quest,id) in questsList"
-          :key="id"
+          v-for="(quest,i) in questsList"
+          :key="i"
+          :data-selector="`QUEST-CARD-${i}`"
+          :quest-index="i"
           :quest="quest"
           @clickFavoriteStar="updateQuests(quest)"
         />
@@ -58,6 +64,7 @@ export default {
         limit: 5,
         offset: 0,
         'sort[createdAt]': 'desc',
+        'statuses[0]': 1,
       },
       specFilter: {},
       isShowMap: true,
@@ -116,11 +123,16 @@ export default {
     },
     async setPage(newPage) {
       this.page = newPage;
+      this.ScrollToTop();
       await this.fetchQuestsList();
     },
     async fetchQuestsList(isResetPage = false) {
       if (this.isFetching) return;
       this.isFetching = true;
+
+      if (isResetPage) this.page = 1;
+      const { query: { limit }, page } = this;
+      this.query.offset = (page - 1) * limit;
 
       if (this.isShowMap) {
         if (!this.mapBounds.northEast.lng) {
@@ -132,25 +144,27 @@ export default {
         this.query['northAndSouthCoordinates[south][longitude]'] = this.mapBounds.southWest.lng;
         this.query['northAndSouthCoordinates[south][latitude]'] = this.mapBounds.southWest.lat;
 
-        await this.$store.dispatch('google-map/questsPoints', {
-          query: { ...this.query },
-          specFilter: this.specFilter,
-        });
+        await Promise.all([
+          this.$store.dispatch('google-map/questsPoints', {
+            query: { ...this.query },
+            specFilter: this.specFilter,
+          }),
+          this.$store.dispatch('quests/getAllQuests', {
+            query: this.query,
+            specFilter: this.specFilter,
+          }),
+        ]);
       } else {
         delete this.query['northAndSouthCoordinates[north][longitude]'];
         delete this.query['northAndSouthCoordinates[north][latitude]'];
         delete this.query['northAndSouthCoordinates[south][longitude]'];
         delete this.query['northAndSouthCoordinates[south][latitude]'];
+
+        await this.$store.dispatch('quests/getAllQuests', {
+          query: this.query,
+          specFilter: this.specFilter,
+        });
       }
-
-      if (isResetPage) this.page = 1;
-      const { query: { limit }, page } = this;
-      this.query.offset = (page - 1) * limit;
-
-      await this.$store.dispatch('quests/getAllQuests', {
-        query: this.query,
-        specFilter: this.specFilter,
-      });
 
       this.isFetching = false;
     },
@@ -179,11 +193,17 @@ export default {
       else this.query = { ...this.query, ...value };
       await this.fetchQuestsList(true);
     },
-    async sortByEmployment(value) {
-      if (!Object.keys(value).length) delete this.query['employments[0]'];
+    async sortTypeOfJob(value) {
+      if (!Object.keys(value).length) delete this.query['typeOfEmployments[0]'];
       else this.query = { ...this.query, ...value };
       await this.fetchQuestsList(true);
     },
+    async sortPayPeriod(value) {
+      if (!Object.keys(value).length) delete this.query['payPeriods[0]'];
+      else this.query = { ...this.query, ...value };
+      await this.fetchQuestsList(true);
+    },
+
     showDetails(quest) {
       this.$router.push(`${Path.QUESTS}/${quest.id}`);
     },

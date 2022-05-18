@@ -8,7 +8,7 @@
         <div class="header__warning icon-warning_outline" />
         <div
           class="header__close icon-close_big"
-          @click="hide"
+          @click="CloseModal"
         />
       </div>
       <div class="content__subtitle">
@@ -22,16 +22,18 @@
           class="buttons__button"
           :class="{'buttons__button_solo' : options.isFiles}"
           mode="outline"
-          @click="hide"
+          data-selector="CANCEL"
+          @click="CloseModal"
         >
-          {{ $t('meta.cancel') }}
+          {{ $t('meta.btns.cancel') }}
         </base-btn>
         <base-btn
           v-if="!options.isFiles"
           class="buttons__button"
+          data-selector="SUBMIT"
           @click="submit"
         >
-          {{ $t('meta.submit') }}
+          {{ $t('meta.btns.submit') }}
         </base-btn>
       </div>
     </div>
@@ -43,9 +45,6 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'ModalAreYouSureNotification',
-  data() {
-    return {};
-  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
@@ -54,11 +53,8 @@ export default {
   methods: {
     async submit() {
       const { callback } = this.options;
-      this.hide();
-      if (callback) await callback();
-    },
-    hide() {
       this.CloseModal();
+      if (callback) await callback();
     },
   },
 };

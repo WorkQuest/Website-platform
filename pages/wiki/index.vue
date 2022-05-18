@@ -19,6 +19,7 @@
                 class="wiki__input"
                 :is-search="true"
                 :is-hide-error="true"
+                data-selector="SEARCH"
                 :placeholder="$t('wiki.searchPlaceholder')"
                 @input="handleSearch"
                 @focus="handleSearch"
@@ -42,6 +43,7 @@
             <div class="wiki__button-field">
               <base-btn
                 class="wiki__search-button"
+                data-selector="SEARCH-BTN"
                 :text="$t('wiki.search')"
               />
             </div>

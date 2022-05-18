@@ -11,6 +11,11 @@ export default {
   async resetMap({ commit }) {
     commit('setZoom', 15);
     commit('setPoints', []);
+    commit('setCenter', { lat: 0, lng: 0 });
+    commit('setBounds', {
+      northEast: { lat: 0, lng: 0 },
+      southWest: { lat: 0, lng: 0 },
+    });
   },
   async questsPoints({ commit }, { query, specFilter }) {
     try {
@@ -18,8 +23,9 @@ export default {
       delete query.limit;
       delete query.offset;
       delete query['sort[createdAt]'];
-      const { ok, result } = await this.$axios.$get('/v1/quest/map/points', {
-        params: { ...query, ...specFilter },
+      const specializations = specFilter ? Object.values(specFilter) : [];
+      const { ok, result } = await this.$axios.$post('/v1/quest/map/get-points', { specializations }, {
+        params: { ...query },
       });
       commit('setPoints', result.quests);
       return { ok };
@@ -34,13 +40,14 @@ export default {
       delete query.limit;
       delete query.offset;
       delete query['sort[createdAt]'];
-      const { ok, result } = await this.$axios.$get('/v1/profile/worker/map/points', {
-        params: { ...query, ...specFilter },
+      const specializations = specFilter ? Object.values(specFilter) : [];
+      const { ok, result } = await this.$axios.$post('/v1/profile/workers/map/get-points', { specializations }, {
+        params: { ...query },
       });
       commit('setPoints', result.users);
       return { ok };
     } catch (e) {
-      console.error('map/employeesPoints');
+      console.error('map/employeesPoints', e);
       return { ok: false };
     }
   },

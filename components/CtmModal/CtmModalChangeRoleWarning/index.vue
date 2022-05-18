@@ -11,7 +11,7 @@
             alt="warning"
           >
           <div class="ctm-modal__title">
-            {{ $t('modals.warning') }}
+            {{ $t('modals.titles.warning') }}
           </div>
           <div class="ctm-modal__desc">
             {{ $t('modals.ifYouChangeRole') }}
@@ -19,19 +19,21 @@
           <div class="btn__container">
             <div class="btn__wrapper">
               <base-btn
+                data-selector="REASON"
                 class="message__action"
                 @click="reason()"
               >
-                {{ $t('meta.continue') }}
+                {{ $t('meta.btns.continue') }}
               </base-btn>
             </div>
             <div class="btn__wrapper">
               <base-btn
                 mode="outline"
                 class="message__action"
-                @click="hide()"
+                data-selector="CANCEL"
+                @click="CloseModal"
               >
-                {{ $t('meta.cancel') }}
+                {{ $t('meta.btns.cancel') }}
               </base-btn>
             </div>
           </div>
@@ -47,9 +49,6 @@ import modals from '~/store/modals/modals';
 export default {
   name: 'CtmModalChangeRoleWarning',
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     reason() {
       this.ShowModal({
         key: modals.changeRoleReason,

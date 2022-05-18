@@ -1,9 +1,13 @@
 <template>
-  <div class="info-grid">
+  <div
+    class="info-grid"
+    data-selector="COMPONENT-INFO-USER"
+  >
     <div class="info-grid__left">
       <div class="info-grid__share-left">
         <base-btn
           mode="share-btn"
+          data-selector="SHARE-USER-PROFILE"
           @click="shareModal()"
         />
       </div>
@@ -11,7 +15,7 @@
         <div class="block__avatar avatar">
           <img
             class="avatar__img"
-            :src="userData.avatar && userData.avatar.url ? userData.avatar.url : EmptyAvatar()"
+            :src="userData.avatar && userData.avatar.url ? userData.avatar.url : $options.images.EMPTY_AVATAR"
             :alt="userData.avatar && userData.avatar.url ? userData.avatar.url : 'avatar_empty'"
             loading="lazy"
           >
@@ -20,12 +24,13 @@
           <div
             v-for="(star,idx) in 5"
             :key="idx"
+            :data-selector="`STAR-RATING-STAR-${idx}`"
             class="rating__star"
             :class="initStarClass(star)"
           />
         </div>
         <div class="block__reviews">
-          {{ `${userData.ratingStatistic ? userData.ratingStatistic.reviewCount : 0} ${$t('quests.reviews')}` }}
+          {{ `${userData.ratingStatistic ? userData.ratingStatistic.reviewCount : 0} ${$t('meta.reviewsSmall')}` }}
         </div>
       </div>
       <div class="info-grid__block block block_right">
@@ -34,8 +39,8 @@
             {{ UserName(userData.firstName, userData.lastName) }}
           </div>
           <item-rating
-            v-if="ratingStatistic(userData.ratingStatistic) !== 'noStatus'"
-            :rating="ratingStatistic(userData.ratingStatistic)"
+            v-if="userData.ratingStatistic && userData.ratingStatistic.status >= 0"
+            :rating="userData.ratingStatistic.status"
           />
         </div>
         <div
@@ -55,7 +60,7 @@
           class="block__knowledge knowledge"
         >
           <div class="knowledge__text">
-            {{ $t('profile.educations') }}
+            {{ $t('meta.educations') }}
           </div>
           <div
             v-if="userData.additionalInfo.educations"
@@ -64,6 +69,7 @@
             <div
               v-for="(item, i) in userData.additionalInfo.educations"
               :key="i"
+              :data-selector="`EDUCATIONS-EDUCATION-${i}`"
               class="knowledge__item"
             >
               <span class="knowledge__place">{{ item.place }}</span>
@@ -82,6 +88,7 @@
             <div
               v-for="(item, i) in userData.additionalInfo.workExperiences"
               :key="i"
+              :data-selector="`WORK-EXP-EXP-${i}`"
               class="work-exp__item"
             >
               <span class="work-exp__place">{{ item.place }}</span>
@@ -96,10 +103,12 @@
           <span
             v-for="(i, key) in socialNetworks"
             :key="key"
+            :data-selector="`SOCIALS-SOCIAL-${key}`"
             class="social__container"
           >
             <a
               class="social__link"
+              :data-selector="`SOCIALS-LINK-https://${key}.com/${i}`"
               :href="`https://${key}.com/${i}`"
               target="_blank"
             >
@@ -112,6 +121,7 @@
             <div
               v-for="(data, key) in contactData"
               :key="key"
+              :data-selector="`CONTACT-DATA-${key}`"
               class="contact__container"
             >
               <span
@@ -120,6 +130,7 @@
               />
               <a
                 :href="data.href"
+                :data-selector="`CONTACT-DATA-LINK-${data.href}`"
                 target="_blank"
                 class="contact__link"
               >{{ data.name }}</a>
@@ -138,14 +149,15 @@
           class="right__price"
         >
           <div class="price__text">
-            {{ $t('settings.costPerHour') }}
+            {{ $t('meta.costPerHour') }}
           </div>
           <div class="price__value">
-            {{ $tc('saving.wusdCount', userData.wagePerHour) }}
+            {{ $tc('meta.coins.count.WUSDCount', userData.wagePerHour) }}
           </div>
         </div>
         <div class="right__share-btn">
           <base-btn
+            data-selector="SHARE-MODAL"
             mode="share-btn"
             @click="shareModal()"
           />
@@ -157,9 +169,10 @@
           class="contact__btn"
         >
           <base-btn
+            data-selector="TO-RAISE-VIEWS"
             @click="toRaisedViews()"
           >
-            {{ $t('profile.raiseViews') }}
+            {{ $t('meta.raiseViews') }}
           </base-btn>
         </div>
         <div
@@ -167,7 +180,8 @@
           class="contact__btn"
         >
           <base-btn
-            :mode="'approve'"
+            mode="approve"
+            data-selector="GIVE-A-QUEST"
             @click="sendInvite()"
           >
             {{ $t('workers.giveAQuest') }}
@@ -180,17 +194,23 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { UserRole } from '~/utils/enums';
+import moment from 'moment';
+import {
+  UserRole, UserRating, Path, RaiseViewStatus,
+} from '~/utils/enums';
 import modals from '~/store/modals/modals';
+import { images } from '~/utils/images';
 
 export default {
   name: 'UserInfo',
+  images,
   computed: {
     ...mapGetters({
       mainUser: 'user/getUserData',
       tags: 'ui/getTags',
       mainUserData: 'user/getUserData',
       anotherUserData: 'user/getAnotherUserData',
+      availableQuests: 'quests/getAvailableQuests',
     }),
     isEmptyUserData() {
       return !this.userData.id;
@@ -280,6 +300,14 @@ export default {
     isHaveOpenQuests() {
       return this.mainUserData.questsStatistic && this.mainUserData.questsStatistic.opened > 0;
     },
+    raiseViewsName() {
+      return {
+        0: 'Gold Plus',
+        1: 'Gold',
+        2: 'Silver',
+        3: 'Bronze',
+      };
+    },
   },
   watch: {
     async anotherUserData() {
@@ -290,10 +318,10 @@ export default {
   },
   methods: {
     ratingStatistic(ratingStatistic) {
-      return ratingStatistic?.status || 'noStatus';
+      return UserRating[ratingStatistic.status];
     },
     initStarClass(star) {
-      const reviewMark = this.userData?.ratingStatistic?.averageMark;
+      const reviewMark = Number(this.userData?.ratingStatistic?.averageMark).toFixed(1);
       const a = this.Floor(star - reviewMark, 2);
       return [
         { rating__star_full: star <= reviewMark },
@@ -303,23 +331,39 @@ export default {
     shareModal() {
       this.ShowModal({
         key: modals.sharingQuest,
+        mode: 'profile',
+        itemId: this.userData.id,
       });
     },
     toRaisedViews() {
-      this.$router.push('/raised-views');
+      if (this.userData.raiseView && RaiseViewStatus[this.userData.raiseView.status]) {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/questAgreed.svg'),
+          title: this.$t('quests.active'),
+          text: `${this.raiseViewsName[this.userData.raiseView.type]} Package`,
+          subtitle: `${this.$t('modals.until')} ${moment(this.userData.raiseView.entedAt).format('Do MMMM YYYY, hh:mm a')}`,
+        });
+      } else {
+        this.$router.push(Path.RAISED_VIEWS);
+      }
     },
     sendInvite() {
-      if (this.isHaveOpenQuests) {
+      if (this.availableQuests.length > 0) {
         this.ShowModal({
           key: modals.invitation,
           userId: this.userData.id,
+          avatar: this.userData.avatar,
+          firstName: this.userData.firstName,
+          lastName: this.userData.lastName,
+          ratingStatistic: this.userData.ratingStatistic,
         });
       } else {
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/warning.svg'),
-          title: this.$t('modals.errorQuests'),
-          subtitle: this.$t('modals.emptyOpenQuests'),
+          title: this.$t('modals.errors.errorQuests'),
+          subtitle: this.$t('modals.errors.emptyOpenQuests'),
         });
       }
     },
@@ -342,6 +386,7 @@ export default {
   padding: 25px 0 0 0;
   grid-gap: 20px;
   justify-content: space-between;
+
   &__block {
     @extend .styles__flex;
     -webkit-box-orient: vertical;
@@ -352,21 +397,25 @@ export default {
     -ms-flex-pack: center;
     justify-content: center;
     grid-gap: 15px;
+
     &_left {
       max-width: 142px;
     }
   }
+
   &__left {
     flex-direction: row;
     justify-content: center;
     display: flex;
   }
+
   &__right {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-end;
   }
+
   &__share-left {
     display: none;
   }
@@ -377,14 +426,17 @@ export default {
     display: grid;
     justify-content: space-between;
     align-items: center;
+
     &_employee {
       grid-template-columns: auto auto;
       grid-gap: 30px;
     }
   }
+
   &__footer {
     width: 280px;
   }
+
   &__price {
     display: flex;
     flex-direction: column;
@@ -397,6 +449,7 @@ export default {
     font-size: 14px;
     color: #353C47;
   }
+
   &__value {
     font-weight: 500;
     font-size: 18px;
@@ -410,20 +463,27 @@ export default {
     display: flex;
     grid-gap: 10px;
     align-items: center;
+    flex-wrap: wrap;
   }
+
   &_left {
     align-self: flex-start;
     max-width: 142px;
   }
+
   &_right {
     align-self: flex-start;
     margin-left: 30px;
+    max-width: 630px;
+    word-break: break-word;
   }
+
   &__rating {
     height: 20px;
     display: flex;
     width: 142px;
   }
+
   &__reviews {
     font-style: normal;
     font-weight: normal;
@@ -433,6 +493,7 @@ export default {
     color: #7C838D;
     text-align: center;
   }
+
   &__title {
     @include text-simple;
     font-style: normal;
@@ -441,11 +502,13 @@ export default {
     line-height: 130%;
     color: $black800;
   }
+
   &__description {
     font-weight: 400;
     font-size: 16px;
     color: $black600;
   }
+
   &__socials {
     display: flex;
     grid-gap: 5px;
@@ -453,24 +516,29 @@ export default {
     .icon {
       font-size: 20px;
       cursor: pointer;
+
       &-facebook::before {
         @extend .icon;
         color: #0A7EEA;
       }
+
       &-twitter::before {
         @extend .icon;
         color: #24CAFF;
       }
+
       &-instagram::before {
         @extend .icon;
         color: #C540F3;
       }
+
       &-linkedin:before {
         @extend .icon;
         content: "\e9ed";
         color: #57A6EF;
       }
     }
+
     .social {
       &__link {
         text-decoration: none;
@@ -483,11 +551,13 @@ export default {
   display: flex;
   flex-wrap: wrap;
   margin: -5px 0;
+
   &__container {
     display: flex;
     align-items: flex-end;
     margin: 5px 0;
   }
+
   &__link {
     text-decoration: none;
     font-size: 14px;
@@ -497,12 +567,14 @@ export default {
     justify-content: center;
     align-items: center;
   }
+
   &__btn {
     width: 100%;
     display: flex;
     align-items: flex-end;
     height: 43px;
   }
+
   &__icon {
     @extend .icon;
     color: $black500;
@@ -517,9 +589,11 @@ export default {
     background-image: url('~assets/img/ui/star-empty.svg');
     background-repeat: no-repeat;
     background-position: center;
+
     &_half {
       background-image: url('~assets/img/ui/star-half.svg');
     }
+
     &_full {
       background-image: url('~assets/img/ui/star-small.svg');
     }
@@ -542,16 +616,19 @@ export default {
     font-size: 16px;
     color: $black700;
   }
+
   &__container {
     display: flex;
     flex-direction: column;
   }
+
   &__place {
     @include text-simple;
     font-weight: 400;
     font-size: 14px;
     color: $black500;
   }
+
   &__term {
     @include text-simple;
     font-weight: 400;
@@ -563,6 +640,7 @@ export default {
 @include _1199 {
   .contacts {
     margin: 0 0 20px 0;
+
     .contact {
       display: flex;
       flex-direction: column;
@@ -571,11 +649,13 @@ export default {
   .right {
     &__header {
       justify-items: end;
+
       &_employee {
         grid-gap: 15px;
         grid-template-columns: 110px auto;
       }
     }
+
     &__footer {
       width: 100%;
     }
@@ -587,14 +667,17 @@ export default {
     flex-direction: column;
     align-items: center;
     grid-gap: 0;
+
     &__left {
       flex-direction: column;
       width: 100%;
     }
+
     &__right {
       grid-gap: 20px;
       width: 100%;
     }
+
     &__share-left {
       display: flex;
       height: 0;
@@ -605,15 +688,18 @@ export default {
     &_left {
       align-self: center;
     }
+
     &_right {
       margin-left: 0;
       margin-top: 30px;
+      max-width: 720px;
     }
   }
   .right {
     &__share-btn {
       display: none;
     }
+
     &__header {
       &_employee {
         grid-gap: 0;

@@ -1,19 +1,18 @@
 <template>
   <ctm-modal-box
     class="restore"
-    :title="$t('forgot.title')"
+    :title="$tc('modals.titles.forgotPass')"
   >
     <div class="restore__content content">
-      <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
-      >
+      <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
         <div class="content__field">
           {{ $t('forgot.desc') }}
         </div>
         <base-field
           v-model="emailInput"
-          :name="$t('placeholders.email')"
-          :placeholder="$t('placeholders.email')"
+          :name="$tc('meta.placeholders.email')"
+          data-selector="EMAIL"
+          :placeholder="$t('meta.placeholders.email')"
           rules="required|email"
           class="content__input"
           @enter="handleSubmit(restore)"
@@ -21,9 +20,10 @@
         <base-btn
           class="content__action"
           :disabled="!validated || !passed || invalid"
+          data-selector="SEND"
           @click="handleSubmit(restore)"
         >
-          {{ $t('meta.send') }}
+          {{ $t('meta.btns.send') }}
         </base-btn>
       </validation-observer>
     </div>
@@ -47,9 +47,6 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     async restore() {
       const payload = {
         email: this.emailInput,

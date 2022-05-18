@@ -1,29 +1,29 @@
 <template>
   <div
-    v-if="questData"
+    v-if="quest"
     class="quest-page"
+    data-selector="PAGE-QUESTS-ID"
   >
     <info />
     <div class="main main-white">
       <div class="main__body main__body_20gap">
         <quest-panel :location="questLocation" />
-
         <div class="quest__container">
           <h2 class="quest__title">
-            {{ questData.title }}
+            {{ quest.title }}
           </h2>
           <span class="quest__description">
-            {{ questData.description }}
+            {{ quest.description }}
           </span>
         </div>
         <div
-          v-if="questData.medias && questData.medias.length"
+          v-if="quest.medias && quest.medias.length"
           class="main__quest_materials"
         >
           <div class="quest_materials__title">
             {{ $t('quests.questMaterials') }}
           </div>
-          <files-preview :medias="questData.medias" />
+          <files-preview :medias="quest.medias" />
         </div>
         <div
           v-if="assignedWorker"
@@ -34,7 +34,8 @@
           </div>
           <div class="worker-data__container">
             <nuxt-link
-              :to="`/profile/${assignedWorker.id}`"
+              :to="`${$options.Path.PROFILE}/${assignedWorker.id}`"
+              :data-selector="`TO-ASSIGNED-WORKER-PROFILE-${assignedWorker.id}`"
               class="worker-data__user-cont"
             >
               <img
@@ -46,13 +47,9 @@
                 {{ assignedWorker.firstName }} {{ assignedWorker.lastName }}
               </div>
             </nuxt-link>
-            <item-rating
-              v-if="assignedWorker.ratingStatistic && assignedWorker.ratingStatistic.status !== 'noStatus'"
-              :rating="assignedWorker.ratingStatistic.status"
-            />
+            <item-rating :rating="assignedWorker.ratingStatistic.status" />
           </div>
         </div>
-
         <div class="worker-data worker-data__more-data">
           <div
             v-if="actionBtnsArr.length"
@@ -66,6 +63,7 @@
               <base-btn
                 :class="btn.class"
                 :mode="btn.mode"
+                :selector="`ACTION-BTNS-ARRAY-${i}`"
                 :disabled="btn.disabled"
                 @click="handleClickSpecBtn(btn.funcKey)"
               >
@@ -81,135 +79,174 @@
           </div>
           <div class="worker-data__priority">
             <star-rating
-              v-if="starRating(questData)"
-              class="worker-data__rating rating rating__star"
-              :quest-index="1"
+              v-if="starRating(quest)"
               rating-type="questPage"
               :stars-number="5"
-              :rating="!questData.yourReview ? currentMark.mark : questData.yourReview.mark"
-              :is-disabled="questData.yourReview !== null || currentMark.mark !== null"
-              @input="showReviewModal($event, questData)"
+              :rating="rating"
+              :is-disabled="!!rating"
+              @input="showReviewModal($event, quest.id)"
             />
             <span class="worker-data__price">
-              {{ questData.price }} {{ $t('quests.wusd') }}
+              {{ questReward }} {{ $t('meta.coins.wusd') }}
             </span>
             <div
               class="worker-data__priority-title"
-              :class="getPriorityClass"
+              :class="priorityClass"
             >
-              {{ getPriority }}
+              {{ priority }}
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <g-map-loader
+      class="map"
+      :is-draggable="false"
+    />
+
     <div class="main">
       <div class="main__body main__body_30gap">
-        <g-map-loader
-          class="main__map"
-          :is-draggable="false"
-        />
-        <template v-if="userRole === UserRole.EMPLOYER && infoDataMode === InfoModeEmployer.Created">
+        <template
+          v-if="userRole === $options.UserRole.EMPLOYER
+            && (infoDataMode === $options.InfoModeEmployer.Created || infoDataMode === $options.InfoModeEmployer.WaitWorkerOnAssign)"
+        >
           <workers-list is-invited />
           <workers-list />
         </template>
         <div
-          v-if="userRole === UserRole.WORKER"
+          v-if="userRole === $options.UserRole.WORKER"
           class="spec__container"
         >
           <div class="quest__group">
             <h2 class="quest__spec">
               {{ $t('quests.otherQuestsSpec') }}
               <nuxt-link
-                :to="`/quests?specializations=${randomSpec}&statuses=0`"
+                :data-selector="`ACTION-TO-SPEC-${randomSpec}`"
+                :to="`${$options.Path.QUESTS}?specializations=${randomSpec}&statuses=0`"
                 class="spec__link"
               >
-                "{{ $t(`filters.items.${randomSpec}.title`) }}"
+                "{{ $t(`filters.skills.${randomSpec}.title`) }}"
               </nuxt-link>
             </h2>
             <div class="quest__count">
-              {{ `${otherQuestsCount > 0 ? otherQuestsCount : 0} ${$t('quests.questsSmall')}` }}
+              {{ `${otherQuestsCount > 0 ? otherQuestsCount : 0} ${$t('meta.questsSmall')}` }}
             </div>
           </div>
           <div class="quest__card">
             <card-quest
               v-if="otherQuestsCount"
+              :key="sameQuest.id"
               :quest="sameQuest"
             />
             <empty-data
               v-else
-              :description="$t(`errors.emptyData.emptyQuests`)"
+              :description="$tc(`errors.emptyData.emptyQuests`)"
             />
           </div>
         </div>
       </div>
     </div>
   </div>
+  <div v-else-if="!isLoading">
+    <empty-data
+      :description="$tc('errors.emptyData.emptyQuests')"
+      :link="$options.Path.QUESTS"
+      :btn-text="$tc('meta.btns.ok')"
+    />
+  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import {
-  QuestStatuses, InfoModeWorker, InfoModeEmployer, UserRole, ResponseStatus,
+  Path,
+  UserRole,
+  ResponseStatus,
+  questPriority,
+  QuestModeReview,
+  TokenSymbols,
 } from '~/utils/enums';
+
+import { NotificationAction } from '~/utils/notifications';
 import modals from '~/store/modals/modals';
+import {
+  QuestMethods, EditQuestState, QuestStatuses, InfoModeWorker, InfoModeEmployer,
+} from '~/utils/сonstants/quests';
+import { images } from '~/utils/images';
+import { WorkQuest, WQFactory } from '~/abi';
+import { fetchContractData } from '~/utils/web3';
+import { getWalletAddress, GetWalletProvider } from '~/utils/wallet';
 
 export default {
   name: 'Quests',
+  UserRole,
+  QuestStatuses,
+  InfoModeEmployer,
+  Path,
   data() {
     return {
       questLocation: { lat: 0, lng: 0 },
       actionBtnsArr: [],
       sameQuest: {},
+      mounted: false,
     };
   },
   computed: {
     ...mapGetters({
-      questData: 'quests/getQuest',
+      isWalletConnected: 'wallet/getIsWalletConnected',
+      userAddress: 'user/getUserWalletAddress',
+      quest: 'quests/getQuest',
       assignedWorker: 'quests/getAssignedWorker',
       userRole: 'user/getUserRole',
       infoDataMode: 'quests/getInfoDataMode',
       userData: 'user/getUserData',
       otherQuestsCount: 'quests/getAllQuestsCount',
       otherQuests: 'quests/getAllQuests',
-      currentMark: 'user/getCurrentReviewMarkOnQuest',
+      isLoading: 'main/getIsLoading',
+      notifications: 'notifications/getNotificationsList',
     }),
-    UserRole() {
-      return UserRole;
+    isEmployer() {
+      return this.userRole === UserRole.EMPLOYER;
     },
-    questStatuses() {
-      return QuestStatuses;
+    questReward() {
+      return new BigNumber(this.quest.price).shiftedBy(-18).toString();
     },
-    InfoModeEmployer() {
-      return InfoModeEmployer;
+    rating() {
+      return this.quest.yourReview?.mark || 0;
     },
     avatar() {
-      return this.assignedWorker.avatar?.url || require('~/assets/img/app/avatar_empty.png');
+      return this.assignedWorker.avatar?.url || images.EMPTY_AVATAR;
     },
-    getPriority() {
-      const { priority } = this.questData;
-
-      const priorityLocale = ['low', 'normal', 'urgent'][priority];
-
-      return priority !== null ? this.$t(`priority.${priorityLocale}`) : '';
+    priority() {
+      const { priority } = this.quest;
+      const priorities = {
+        [questPriority.Low]: this.$t('meta.priority.fixedDelivery'),
+        [questPriority.Normal]: this.$t('meta.priority.shortTerm'),
+        [questPriority.Urgent]: this.$t('meta.priority.urgent'),
+      };
+      return priorities[priority] || '';
     },
-    getPriorityClass() {
-      const { priority } = this.questData;
-
-      const priorityModifier = ['low', 'normal', 'urgent'][priority];
-
-      return priority !== null ? `worker-data__priority-title_${priorityModifier}` : '';
+    priorityClass() {
+      const { priority } = this.quest;
+      const priorities = {
+        [questPriority.Low]: 'worker-data__priority-title_low',
+        [questPriority.Normal]: 'worker-data__priority-title_normal',
+        [questPriority.Urgent]: 'worker-data__priority-title_urgent',
+      };
+      return priorities[priority] || '';
     },
     randomSpec() {
-      const { questSpecializations } = this.questData;
+      const { questSpecializations } = this.quest;
+      if (!questSpecializations.length) return '';
       return Math.floor(questSpecializations[Math.floor(Math.random() * questSpecializations.length)].path);
     },
-    checkAvailabilityDispute() {
+    checkAvailabilityDisputeTime() {
       const now = this.$moment().valueOf();
       // TODO fixme Вернуть, нужно для тестов Роме
-      // const dateForStart = this.$moment(this.questData.startedAt).add(1, 'day').valueOf();
-      const dateForStart = this.$moment(this.questData.startedAt).add(1, 'm').valueOf();
-      return now >= dateForStart;
+      // this.$moment(this.quest.startedAt).add(1, 'day').valueOf();
+      return now >= this.$moment(this.quest.startedAt).add(1, 'm').valueOf();
     },
   },
   watch: {
@@ -217,61 +254,116 @@ export default {
       if (oldVal === undefined || newVal === oldVal) return;
       this.setActionBtnsArr();
     },
+    notifications: {
+      handler() {
+        const { notification } = this.notifications[0];
+        if (this.mounted && notification
+          && !this.isEmployer
+          && notification.data.questId === this.$route.params.id
+          && notification.action === NotificationAction.QUEST_STATUS_UPDATED
+          && notification.data.status === QuestStatuses.Done
+          && this.userData.id === notification.data.assignedWorkerId
+          && !this.quest.yourReview) this.suggestToAddReview();
+      },
+      immediate: false,
+    },
+  },
+  beforeCreate() {
+    this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
   async beforeMount() {
+    if (!this.isWalletConnected) return;
+
     this.SetLoader(true);
-    await this.getQuest();
+    const res = await this.getQuest();
+    if (!res) {
+      this.SetLoader(false);
+      return;
+    }
     this.initMapData();
-    if (this.userRole === UserRole.WORKER) await this.getSameQuests();
+    const {
+      isEmployer, userData, quest: { assignedWorkerId },
+    } = this;
+    if (!isEmployer) {
+      await this.getSameQuests();
+      if (!res.yourReview && this.quest.status === QuestStatuses.Done
+        && userData.id === assignedWorkerId) await this.suggestToAddReview();
+    }
     await this.getResponsesToQuest();
     await this.setActionBtnsArr();
     this.SetLoader(false);
   },
+  mounted() {
+    this.mounted = true;
+  },
   async beforeDestroy() {
     await this.$store.dispatch('google-map/resetMap');
     this.$store.commit('quests/setQuest', null);
-    await this.$store.commit('user/setCurrentReviewMarkOnQuest', { questId: null, message: null, mark: null });
+    this.$store.commit('quests/setAllQuests', { count: 0, quests: [] });
+    this.$store.commit('user/setCurrentReviewMarkOnQuest', { questId: null, message: null, mark: null });
   },
   methods: {
     starRating(item) {
-      if (this.userRole === UserRole.WORKER) {
-        return item.status === this.questStatuses.Done
-          && item.assignedWorkerId === this.userData.id;
-      }
-      return item.status === this.questStatuses.Done
-        && this.userData.id === item.userId;
+      const { isEmployer, userData: { id } } = this;
+
+      if (!item) return false;
+      if (!isEmployer) return item.status === QuestStatuses.Done && item.assignedWorkerId === id;
+      return item.status === QuestStatuses.Done && id === item.userId;
     },
-    showReviewModal(rating, item) {
+    showReviewModal(rating, id) {
       this.ShowModal({
         key: modals.review,
-        item,
+        questMode: QuestModeReview.QUEST_SINGLE,
+        questId: id,
         rating,
+        callback: async (payload) => {
+          const ok = await this.$store.dispatch('user/sendReviewForUser', payload);
+          if (ok) this.ShowModal({ key: modals.thanks });
+          else this.CloseModal();
+        },
       });
     },
     async getSameQuests() {
-      const skills = Object.keys(this.$t(`filters.items.${this.randomSpec}.sub`));
+      const skills = Object.keys(this.$t(`filters.skills.${this.randomSpec}.sub`));
       const specFilter = {};
       skills.forEach((skill, i) => {
         specFilter[`specializations[${i}]`] = `${this.randomSpec}.${skills[i]}`;
       });
 
       await this.$store.dispatch('quests/getAllQuests', {
-        query: { limit: 10, statuses: [0] },
+        query: {
+          limit: 10,
+          statuses: [0],
+        },
         specFilter,
       });
-      const questsData = this.otherQuests.filter((quest) => quest.id !== this.questData.id);
+
+      const questsData = this.otherQuests.filter((quest) => quest.id !== this.quest.id);
       if (questsData.length) this.sameQuest = questsData[Math.floor(Math.random() * questsData.length)];
+      else {
+        this.$store.commit('quests/setAllQuests', {
+          count: 0,
+          quests: [],
+        });
+      }
     },
     setActionBtnsArr() {
-      const { questData: { questChat, assignedWorkerId }, userData, userRole } = this;
+      const {
+        quest: {
+          questChat,
+          assignedWorkerId,
+          status,
+        },
+        userData: { id },
+        isEmployer,
+      } = this;
+      const arr = isEmployer ? this.setEmployerBtnsArr() : this.setWorkerBtnsArr();
 
-      const arr = userRole === UserRole.EMPLOYER ? this.setEmployerBtnsArr() : this.setWorkerBtnsArr();
-
-      if (questChat?.workerId === userData.id || (questChat?.employerId === userData.id && assignedWorkerId)) {
+      if ((questChat?.workerId === id || (questChat?.employerId === id && assignedWorkerId))
+        && ![QuestStatuses.Closed, QuestStatuses.Rejected, QuestStatuses.Done].includes(status)) {
         arr.push({
-          name: this.$t('btn.goToChat'),
+          name: this.$t('meta.btns.goToChat'),
           class: 'base-btn_goToChat',
-          mode: '',
           funcKey: 'goToChat',
           icon: 'icon-chat icon_fs-20',
           disabled: false,
@@ -281,267 +373,297 @@ export default {
       this.actionBtnsArr = arr;
     },
     setEmployerBtnsArr() {
-      if (this.userData.id !== this.questData.userId) return [];
-
+      if (this.userData.id !== this.quest.userId) return [];
       const {
-        WaitConfirm, Dispute, Created, Active,
+        Dispute,
+        Created,
+        WaitEmployerConfirm,
       } = InfoModeEmployer;
-
       let arr = [];
-
       switch (this.infoDataMode) {
         case Created: {
           arr = [{
-            name: this.$t('quests.raiseViews'),
-            class: '',
-            mode: '',
+            name: this.$t('meta.raiseViews'),
             funcKey: 'toRaisingViews',
-            icon: '',
             disabled: false,
           },
           {
-            name: this.$t('btn.closeQuest'),
-            class: '',
+            name: this.$t('meta.btns.closeQuest'),
             mode: 'delete',
             funcKey: 'closeQuest',
-            icon: '',
             disabled: false,
           }];
           break;
         }
-        case Active: {
+        case WaitEmployerConfirm: {
           arr = [{
-            name: this.$t('quests.approve'),
-            class: '',
-            mode: 'approve',
-            funcKey: '',
-            icon: '',
-            disabled: true,
-          }];
-          break;
-        }
-        case WaitConfirm: {
-          arr = [{
-            name: this.$t('btn.acceptCompletedWorkOnQuest'),
-            class: '',
+            name: this.$t('meta.btns.acceptCompletedWorkOnQuest'),
             mode: 'approve',
             funcKey: 'acceptCompletedWorkOnQuest',
-            icon: '',
             disabled: false,
           },
           {
-            name: this.$t('btn.dispute'),
-            class: '',
-            mode: '',
+            name: this.$t('meta.openDispute'),
             funcKey: 'openDispute',
-            icon: '',
             disabled: false,
           }];
           break;
         }
         case Dispute: {
           arr = [{
-            name: this.$t('btn.dispute'),
-            class: '',
-            mode: '',
+            name: this.$t('meta.openDispute'),
             funcKey: 'openDispute',
-            icon: '',
             disabled: false,
           }];
           break;
         }
-        default: break;
+        default:
+          break;
       }
-
       return arr;
     },
     setWorkerBtnsArr() {
-      const { questData: { assignedWorkerId, response }, userData, infoDataMode } = this;
       const {
-        ADChat, Active, Created, Dispute, Invited, WaitWorker,
+        quest: {
+          assignedWorkerId,
+          response,
+        },
+        userData,
+        infoDataMode,
+      } = this;
+      const {
+        ADChat,
+        WaitWorker,
+        Created,
+        Dispute,
+        Invited,
+        WaitWorkerOnAssign,
+        WaitEmployerConfirm,
       } = InfoModeWorker;
-
       let arr = [];
-
       switch (infoDataMode) {
         case ADChat: {
           arr = [{
-            name: this.$t('btn.agree'),
-            class: '',
-            mode: '',
+            name: this.$t('meta.btns.agree'),
             funcKey: 'acceptWorkOnQuest',
-            icon: '',
             disabled: false,
           },
           {
-            name: this.$t('btn.disagree'),
-            class: '',
+            name: this.$t('meta.btns.disagree'),
             mode: 'outline',
             funcKey: 'rejectWorkOnQuest',
-            icon: '',
             disabled: false,
           }];
           break;
         }
-        case Active: {
+        case WaitWorker: {
           if (assignedWorkerId !== userData.id) break;
-
           arr = [{
-            name: this.$t('btn.dispute'),
-            class: '',
-            mode: '',
+            name: this.$t('meta.openDispute'),
             funcKey: 'openDispute',
-            icon: '',
             disabled: false,
           },
           {
-            name: this.$t('btn.completeWorkOnQuest'),
-            class: '',
-            mode: '',
+            name: this.$t('meta.btns.completeWorkOnQuest'),
             funcKey: 'completeWorkOnQuest',
-            icon: '',
             disabled: false,
           }];
           break;
         }
         case Created: {
           arr = [{
-            name: this.$t('btn.sendARequest'),
-            class: '',
-            mode: '',
+            name: this.$t('meta.sendARequest'),
             funcKey: 'sendARequestOnQuest',
-            icon: '',
             disabled: false,
           }];
           break;
         }
+        case WaitEmployerConfirm:
         case Dispute: {
           arr = [{
-            name: this.$t('btn.dispute'),
-            class: '',
-            mode: '',
+            name: this.$t('meta.openDispute'),
             funcKey: 'openDispute',
-            icon: '',
             disabled: false,
           }];
           break;
         }
         case Invited: {
           if (response.status !== ResponseStatus.awaiting || (assignedWorkerId && assignedWorkerId !== userData.id)) break;
-
           arr = [{
-            name: this.$t('btn.agree'),
-            class: '',
-            mode: '',
+            name: this.$t('meta.btns.agree'),
             funcKey: 'acceptQuestInvitation',
-            icon: '',
             disabled: false,
           },
           {
-            name: this.$t('btn.disagree'),
-            class: '',
+            name: `${this.$t('meta.btns.disagree')}`,
             mode: 'outline',
             funcKey: 'rejectQuestInvitation',
-            icon: '',
             disabled: false,
           }].concat(arr);
           break;
         }
-        case WaitWorker: {
+        case WaitWorkerOnAssign: {
           if (assignedWorkerId !== userData.id) break;
-
           arr = [{
-            name: this.$t('btn.agree'),
-            class: '',
-            mode: '',
+            name: this.$t('meta.btns.agree'),
             funcKey: 'acceptWorkOnQuest',
-            icon: '',
-            disabled: false,
-          },
-          {
-            name: this.$t('btn.disagree'),
-            class: '',
-            mode: 'outline',
-            funcKey: 'rejectWorkOnQuest',
-            icon: '',
             disabled: false,
           }];
           break;
         }
-        default: break;
+        default:
+          break;
       }
-
       return arr;
     },
     handleClickSpecBtn(funcKey) {
       this[funcKey]();
     },
     async getQuest() {
-      await this.$store.dispatch('quests/getQuest', this.$route.params.id);
+      return await this.$store.dispatch('quests/getQuest', this.$route.params.id);
     },
     initMapData() {
       this.$store.commit('google-map/setZoom', 15);
       this.questLocation = {
-        lat: this.questData.location.latitude,
-        lng: this.questData.location.longitude,
+        lat: this.quest.location.latitude,
+        lng: this.quest.location.longitude,
       };
       this.$store.commit('google-map/setCenter', this.questLocation);
-      this.$store.commit('google-map/setPoints', [this.questData]);
+      this.$store.commit('google-map/setPoints', [this.quest]);
     },
     async getResponsesToQuest() {
-      const { questData: { id, user }, userData } = this;
-
+      const { quest: { id, user }, userData, isEmployer } = this;
       if (this.userRole === UserRole.EMPLOYER && user.id === userData.id) {
-        await this.$store.dispatch('quests/responsesToQuest', id);
+        if (isEmployer && user.id === userData.id) {
+          await this.$store.dispatch('quests/responsesToQuest', id);
+        }
       }
     },
     async closeQuest() {
-      const modalMode = 1;
-      this.SetLoader(true);
-      if (this.questData.status !== InfoModeEmployer.Active) {
-        await this.$store.dispatch('quests/closeQuest', this.questData.id);
-        this.showQuestModal(modalMode);
-      }
-      await this.$router.push('/my');
-      this.SetLoader(false);
-    },
-    async openDispute() {
-      if (this.questData.status === 3) {
-        return await this.$router.push(`/disputes/${this.questData.openDispute.id}`);
-      }
-      if (this.checkAvailabilityDispute) {
-        return this.ShowModal({
-          key: modals.openADispute,
-          questId: this.questData.id,
+      if (this.quest.status !== InfoModeEmployer.WaitWorker) {
+        this.ShowModal({
+          key: modals.securityCheck,
+          actionMethod: async () => await this.DeleteQuest(this.quest),
         });
       }
-      return this.ShowModal({
+    },
+    async openDispute() {
+      const {
+        $router, checkAvailabilityDisputeTime, $store, ShowModal, ShowModalFail, quest: {
+          status, openDispute, id, contractAddress,
+        },
+      } = this;
+      if (status === QuestStatuses.Dispute) return await $router.push(`${Path.DISPUTES}/${openDispute.id}`);
+      async function payment({ reason = '', problemDescription = '', feeTx }) {
+        const currentQuest = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
+        if (!openDispute) await this.$store.dispatch('disputes/createDispute', { reason, problemDescription, questId: id });
+        const { result } = await $store.dispatch('quests/arbitration', {
+          contractAddress,
+          value: feeTx,
+        });
+        if (!result.status) {
+          ShowModalFail({
+            title: this.$t('modals.transactionError'),
+            subtitle: this.$t('modals.tryLater'),
+            img: images.ERROR,
+          });
+        } else {
+          ShowModal({
+            key: modals.status,
+            title: this.$t('modals.transactionSent'),
+            subtitle: this.$t('modals.checkExplorer'),
+            link: `${process.env.WQ_EXPLORER_TX}/${result.transactionHash}`,
+            img: images.SUCCESS,
+            callback: await $router.push(`${Path.DISPUTES}/${currentQuest.openDispute?.id}`),
+          });
+        }
+      }
+      if (checkAvailabilityDisputeTime) {
+        const feeTx = await fetchContractData(
+          'feeTx',
+          WQFactory,
+          process.env.WORKNET_WQ_FACTORY,
+          null,
+          GetWalletProvider(),
+        );
+        if (openDispute) {
+          /** Флоу, если сознан диспут и не было оплаты */
+          await payment({ feeTx });
+        } else {
+          /** Флоу, если не сознан диспут и не было оплаты */
+          return ShowModal({
+            key: modals.openADispute,
+            submitMethod: async ({ reason, problemDescription }) => {
+              ShowModal({
+                key: modals.transactionReceipt,
+                fields: {
+                  from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+                  to: { name: this.$t('meta.toBig'), value: contractAddress },
+                  fee: { name: this.$t('wallet.table.trxFee'), value: 0 },
+                  amount: {
+                    name: this.$t('wallet.table.value'),
+                    value: new BigNumber(feeTx).shiftedBy(-18).toString(),
+                    symbol: TokenSymbols.WUSD,
+                  },
+                },
+                title: this.$t('modals.titles.disputePayment'),
+                text: this.$t('modals.payForDispute'),
+                submitMethod: await payment({ reason, problemDescription, feeTx }),
+              });
+            },
+          });
+        }
+      }
+      return ShowModal({
         key: modals.status,
-        img: require('~/assets/img/ui/deleteError.svg'),
-        title: this.$t('modals.error'),
-        subtitle: this.$t('modals.youCantCreateDispute'),
-        button: this.$t('modals.close'),
+        img: images.ERROR,
+        title: this.$t('modals.errors.error'),
+        subtitle: this.$t('modals.errors.youCantCreateDispute'),
+        button: this.$t('meta.btns.close'),
       });
     },
     async acceptCompletedWorkOnQuest() {
-      const modalMode = 2;
       this.SetLoader(true);
-      await this.$store.dispatch('quests/acceptCompletedWorkOnQuest', this.questData.id);
-      this.showQuestModal(modalMode);
-      await this.$store.dispatch('quests/setInfoDataMode', InfoModeEmployer.Done);
+      const { contractAddress } = this.quest;
+      const [feeRes] = await Promise.all([
+        this.$store.dispatch('quests/getFeeDataJobMethod', {
+          abi: WorkQuest,
+          method: QuestMethods.AcceptJobResult,
+          contractAddress,
+        }),
+        this.$store.dispatch('wallet/getBalance'),
+      ]);
       this.SetLoader(false);
+      if (feeRes.ok === false) {
+        this.ShowToast(feeRes.msg);
+        return;
+      }
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        fields: {
+          from: { name: this.$t('meta.fromBig'), value: this.userAddress },
+          to: { name: this.$t('meta.toBig'), value: contractAddress },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WQT },
+        },
+        submitMethod: async () => {
+          const { $store } = this;
+          const txRes = await $store.dispatch('quests/acceptJobResult', contractAddress);
+          if (txRes.ok) {
+            this.showQuestModal(2);
+            await $store.dispatch('quests/setInfoDataMode', QuestStatuses.Done);
+          }
+        },
+      });
     },
     toRaisingViews() {
-      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
-        this.$router.push({ path: `/edit-quest/${this.questData.id}`, query: { mode: 'raise' } });
-        this.$store.commit('quests/setCurrentStepEditQuest', 2);
-      } else {
-        this.showToastWrongStatusRaisingViews();
-      }
+      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.quest.status)) {
+        this.$router.push({ path: `/edit-quest/${this.quest.id}`, query: { mode: 'raise' } });
+        this.$store.commit('quests/setCurrentStepEditQuest', EditQuestState.RAISE_VIEWS);
+      } else this.showToastWrongStatusRaisingViews();
     },
     showToastWrongStatusRaisingViews() {
       return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.questInfo'),
+        title: this.$t('meta.questInfo'),
         variant: 'warning',
         text: this.$t('toasts.questCantRaisingViews'),
       });
@@ -549,9 +671,11 @@ export default {
     showQuestModal(modalMode) {
       this.ShowModal({
         key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('quests.questInfo'),
+        img: images.QUEST_AGREED,
+        title: this.$t('meta.questInfo'),
         subtitle: this.modalMode(modalMode),
+        isNotClose: true,
+        callback: () => this.suggestToAddReview(),
       });
     },
     modalMode(modalMode) {
@@ -565,85 +689,134 @@ export default {
     },
     async rejectQuestInvitation() {
       this.SetLoader(true);
-      await this.$store.dispatch('quests/rejectQuestInvitation', this.questData.response.id);
+      await this.$store.dispatch('quests/rejectQuestInvitation', this.quest.response.id);
       await this.getQuest();
       this.setActionBtnsArr();
       this.SetLoader(false);
     },
     async acceptQuestInvitation() {
       this.SetLoader(true);
-      await this.$store.dispatch('quests/acceptQuestInvitation', this.questData.response.id);
+      await this.$store.dispatch('quests/acceptQuestInvitation', this.quest.response.id);
       await this.getQuest();
       this.setActionBtnsArr();
       this.SetLoader(false);
     },
     async goToChat() {
       this.SetLoader(true);
-      await this.$router.push(`/messages/${this.questData.questChat.chatId}`);
+      const { openDispute, questChat, status } = this.quest;
+      const disputeStatus = openDispute?.status;
+      const disputeId = openDispute?.id;
+      await this.$router.push({
+        path: `${Path.MESSAGES}/${questChat.chatId}`,
+        query: {
+          disputeStatus, id: disputeId, type: 'quest', status,
+        },
+      });
       this.SetLoader(false);
     },
     async acceptWorkOnQuest() {
       this.SetLoader(true);
-      if (await this.$store.dispatch('quests/acceptWorkOnQuest', this.questData.id)) {
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/questAgreed.svg'),
-          title: this.$t('quests.questInfo'),
-          subtitle: this.$t('quests.workOnQuestAccepted'),
-        });
-        await this.getQuest();
-      }
+      const { contractAddress } = this.quest;
+      const [feeRes] = await Promise.all([
+        this.$store.dispatch('quests/getFeeDataJobMethod', {
+          abi: WorkQuest,
+          method: QuestMethods.AcceptJob,
+          contractAddress,
+        }),
+        this.$store.dispatch('wallet/getBalance'),
+      ]);
       this.SetLoader(false);
-    },
-    async rejectWorkOnQuest() {
-      this.SetLoader(true);
-      if (await this.$store.dispatch('quests/rejectWorkOnQuest', this.questData.id)) {
-        await this.getQuest();
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/questAgreed.svg'),
-          title: this.$t('quests.questInfo'),
-          subtitle: this.$t('quests.workOnQuestRejected'),
-        });
-        await this.getQuest();
+      if (feeRes.ok === false) {
+        this.ShowToast(feeRes.msg);
+        return;
       }
-      this.SetLoader(false);
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        fields: {
+          from: { name: this.$t('meta.fromBig'), value: this.userAddress },
+          to: { name: this.$t('meta.toBig'), value: contractAddress },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WQT },
+        },
+        submitMethod: async () => {
+          const txRes = await this.$store.dispatch('quests/acceptJob', contractAddress);
+          if (txRes.ok) {
+            await this.getQuest();
+            this.ShowModal({
+              key: modals.status,
+              img: images.QUEST_AGREED,
+              title: this.$t('meta.questInfo'),
+              subtitle: this.$t('quests.workOnQuestAccepted'),
+            });
+          }
+        },
+      });
     },
     async completeWorkOnQuest() {
       this.SetLoader(true);
-      if (await this.$store.dispatch('quests/completeWorkOnQuest', this.questData.id)) {
-        await this.getQuest();
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/questAgreed.svg'),
-          title: this.$t('quests.questInfo'),
-          subtitle: this.$t('quests.pleaseWaitEmp'),
-        });
-      }
+      const { contractAddress } = this.quest;
+      const [feeRes] = await Promise.all([
+        this.$store.dispatch('quests/getFeeDataJobMethod', {
+          abi: WorkQuest,
+          method: QuestMethods.VerificationJob,
+          contractAddress,
+        }),
+        this.$store.dispatch('wallet/getBalance'),
+      ]);
       this.SetLoader(false);
+      if (!feeRes.ok) {
+        console.error('completeWorkOnQuest', feeRes);
+        return;
+      }
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        fields: {
+          from: { name: this.$t('meta.fromBig'), value: this.userAddress },
+          to: { name: this.$t('meta.toBig'), value: contractAddress },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WQT },
+        },
+        submitMethod: async () => {
+          const txRes = await this.$store.dispatch('quests/verificationJob', contractAddress);
+          if (txRes.ok) {
+            await this.$store.dispatch('quests/setInfoDataMode', QuestStatuses.WaitEmployerConfirm);
+            await this.getQuest();
+            this.ShowModal({
+              key: modals.status,
+              img: images.QUEST_AGREED,
+              title: this.$t('meta.questInfo'),
+              subtitle: this.$t('quests.pleaseWaitEmp'),
+            });
+          }
+        },
+      });
     },
     async sendARequestOnQuest() {
       this.ShowModal({
         key: modals.sendARequest,
-        questId: this.questData.id,
+        questId: this.quest.id,
+      });
+    },
+    async suggestToAddReview() {
+      this.ShowModal({
+        key: modals.areYouSure,
+        title: ' ',
+        text: this.$t(`modals.${!this.isEmployer ? 'wouldReviewEmployer' : 'wouldReviewEmployee'}`),
+        okBtnTitle: this.$t('meta.btns.ok'),
+        isNotClose: true,
+        okBtnFunc: () => this.showReviewModal(0, this.quest.id),
       });
     },
   },
 };
 </script>
 
-<style lang="scss">
-.gm-svpc {
-  top: 27px !important;
-}
-</style>
-
 <style lang="scss" scoped>
 .quest {
   &__container {
     display: flex;
     flex-direction: column;
+    min-width: 0;
   }
+
   &__title {
     @include text-simple;
     font-weight: 500;
@@ -652,6 +825,7 @@ export default {
     line-height: 39px;
     word-wrap: break-word;
   }
+
   &__description {
     @include text-simple;
     margin-top: 10px;
@@ -659,8 +833,9 @@ export default {
     font-size: 16px;
     line-height: 20px;
     color: $black700;
-    overflow-wrap: anywhere;
+    word-break: break-word;
   }
+
   &__count {
     font-style: normal;
     font-weight: normal;
@@ -669,8 +844,10 @@ export default {
     color: #8D96A2;
   }
 }
+
 .main {
   @include main;
+
   &-white {
     @include main-white;
   }
@@ -687,24 +864,30 @@ export default {
     }
   }
 
-  &__map {
-    height: 200px;
-  }
-
   &__quest_materials {
     padding-top: 20px;
-    border-top: 1px solid #F7F8FA;
+    border-top: 1px solid $black0;
   }
 }
 
+.map {
+  height: 200px;
+  margin-bottom: 20px;
+}
+
 .worker-data {
+  min-width: 0;
   padding-top: 20px;
-  border-top: 1px solid #F7F8FA;
+  border-top: 1px solid $black0;
 
   &__title {
     font-weight: 500;
     color: $black800;
     font-size: 18px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    word-break: break-word;
 
     &_small {
       font-size: 16px;
@@ -726,6 +909,7 @@ export default {
   }
 
   &__user-cont {
+    min-width: 0;
     display: grid;
     grid-auto-flow: column;
     gap: 10px;
@@ -734,6 +918,7 @@ export default {
   }
 
   &__avatar {
+    display: flex;
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -774,14 +959,17 @@ export default {
     font-size: 12px;
     height: 24px;
     padding: 0 5px;
+
     &_low {
       background: rgba(34, 204, 20, 0.1);
       color: #22CC14;
     }
+
     &_urgent {
       background: rgba(223, 51, 51, 0.1);
       color: #DF3333;
     }
+
     &_normal {
       background: rgba(232, 210, 13, 0.1);
       color: #E8D20D;
@@ -800,7 +988,8 @@ export default {
   @include text-simple;
   font-weight: 500;
   font-size: 25px;
-  &__link{
+
+  &__link {
     @extend .spec;
     color: $blue;
   }
@@ -817,57 +1006,46 @@ export default {
   }
 }
 
-.map {
-  &__container {
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    .gmap__block {
-      max-width: 1180px;
-      width: 100%;
-    }
-  }
-}
-
-.quests::v-deep {
-
-  .ctm-field__left {
-    padding-top: 6px;
-  }
-}
-
 .icon {
   color: $black500;
   font-size: 20px;
+
   &-chat::before {
     @extend .icon;
     color: $green !important;
   }
+
   &-location::before {
     @extend .icon;
   }
+
   &-clock::before {
     @extend .icon;
   }
+
   &-share_outline {
     @extend .icon;
     margin-left: 5px;
   }
+
   &-chat_green:before {
     @extend .icon;
     content: "\e9ba";
     color: #00AA5B;
   }
+
   &-caret_down_blue:before {
     @extend .icon;
     content: "\ea48";
     color: #0083C7;
   }
+
   &-chevron_big_left:before {
     @extend .icon;
     content: "\ea4d";
     color: #0083C7;
   }
+
   &-location:before {
     @extend .icon;
     content: "\ea23";
@@ -879,12 +1057,26 @@ export default {
   .main {
     padding: 10px;
   }
+  .map {
+    margin-bottom: 0;
+  }
 }
+
 @include _991 {
   .main-white {
     display: block;
   }
+  .worker-data {
+    &__btns {
+      margin-bottom: 10px;
+    }
+
+    &__more-data {
+      grid-template-columns: 1fr;
+    }
+  }
 }
+
 @include _767 {
   .main {
     display: block;
@@ -892,42 +1084,42 @@ export default {
 
   .worker-data {
     &__btns {
-      margin-bottom: 10px;
-    }
-    &__more-data {
-      grid-template-columns: 1fr;
-    }
-  }
-}
-@include _575 {
-  .worker-data {
-    &__btns {
-      grid-auto-flow: row;
-    }
-    &__more-data {
-      justify-items: center;
-    }
-  }
-
-  .worker-data {
-    &__btns {
       width: 100%;
       display: flex;
       flex-direction: column;
+
       .worker-data__button {
         width: 100% !important;
       }
     }
+
     &__priority {
       width: 100%;
       display: flex;
       justify-content: space-between;
       flex-direction: row-reverse;
       align-items: center;
+
       &-title {
         font-size: 16px;
         height: 100%;
       }
+    }
+  }
+}
+
+@include _575 {
+  .worker-data {
+    &__price {
+      font-size: 21px;
+    }
+
+    &__btns {
+      grid-auto-flow: row;
+    }
+
+    &__more-data {
+      justify-items: center;
     }
   }
 

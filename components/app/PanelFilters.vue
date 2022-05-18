@@ -11,33 +11,47 @@
       mode="blackFont"
       :items="ratingItems"
       :placeholder="$t('quests.rating.title')"
+      data-selector="RATING"
     />
     <base-dd
       v-model="selectedPriority"
       class="filters-panel__item"
       mode="blackFont"
       :items="priorityItems"
-      :placeholder="$t('quests.priority.title')"
+      :placeholder="$t('quests.priority')"
+      data-selector="PRIORITY"
     />
     <base-dd
       v-if="userRole === $options.UserRole.WORKER"
       v-model="selectedEmployment"
       class="filters-panel__item"
       mode="blackFont"
-      :items="employmentItems"
-      :placeholder="$t('quests.typeOfJob')"
+      :items="typeOfJobItems"
+      :placeholder="$t('meta.typeOfJob')"
+      data-selector="EMPLOYMENT"
     />
     <base-dd
+      v-if="userRole === $options.UserRole.WORKER"
       v-model="selectedWorkplace"
       class="filters-panel__item"
       mode="blackFont"
       :items="workplaceItems"
       :placeholder="$t('quests.distantWork.title')"
+      data-selector="WORKPLACE"
+    />
+    <base-dd
+      v-else
+      v-model="selectPayPeriod"
+      class="filters-panel__item"
+      mode="blackFont"
+      :items="payPeriodItems"
+      :placeholder="$t('quests.payPeriods.title')"
+      data-selector="WORKPLACE"
     />
     <base-btn
       class="filters-panel__item-btn item-btn"
-      mode="light"
-      data-selector="ACTION-SHOW-PRICE"
+      mode="filter"
+      data-selector="SHOW-PRICE"
       @click="showPriceSearch"
     >
       <span
@@ -47,13 +61,15 @@
         {{ prices.title }}
       </span>
       <template v-slot:right>
-        <span class="item-btn__icon icon icon-caret_down icon_blue" />
+        <span
+          :class="[isPriceModalShowed ? 'icon-caret_up' : 'icon-caret_down', 'item-btn__icon icon  icon_blue']"
+        />
       </template>
     </base-btn>
     <base-btn
       class="filters-panel__item-btn item-btn"
-      mode="light"
-      data-selector="ACTION-TIME-SORT"
+      mode="filter"
+      data-selector="TIME-SORT"
       @click="sortByTime"
     >
       <span class="item-btn__text">
@@ -71,7 +87,13 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { UserRole, Filters, Priority } from '~/utils/enums';
+import {
+  UserRole,
+  RatingFilter,
+  PriorityFilter,
+  WorkplaceFilter,
+  TypeOfJobFilter, PayPeriodsIndex, PayPeriodsFilter,
+} from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -81,8 +103,9 @@ export default {
     return {
       selectedRating: null,
       selectedPriority: null,
-      selectedEmployment: null,
+      selectedTypeOfJob: null,
       selectedWorkplace: null,
+      selectPayPeriod: null,
       selectedSort: 'desc',
     };
   },
@@ -91,28 +114,43 @@ export default {
       userRole: 'user/getUserRole',
       selectedPrice: 'quests/getSelectedPriceFilter',
       selectedSpecializations: 'quests/getSelectedSpecializationsFilters',
+      activeModalKey: 'modals/getCurrentModalKey',
+      isModalShowed: 'modals/getIsShow',
     }),
     ratingItems() {
-      return Filters.EMPLOYEE_RATING.map((item) => this.$t(`ratings.${item}`));
+      return RatingFilter.map((item, i) => (i === 0 ? this.$t('quests.allVariants') : this.$t(`quests.rating.${item.key}`)));
     },
     priorityItems() {
-      return Filters.PRIORITIES.map((item) => this.$t(`priorities.${item}`));
+      return PriorityFilter.map((item, i) => (i === 0 ? this.$t('meta.priority.all') : this.$t(`meta.priority.${item.key}`)));
     },
-    employmentItems() {
-      return Filters.EMPLOYMENTS.map((item) => this.$t(`employments.${item}`));
+    typeOfJobItems() {
+      return TypeOfJobFilter.map((item, i) => (i === 0 ? this.$t('quests.allVariants') : this.$t(`quests.employment.${item}`)));
     },
     workplaceItems() {
-      return Filters.WORKPLACES.map((item) => this.$t(`workplaces.${item}`));
+      return WorkplaceFilter.map((item) => this.$t(`workPlaces.${item}`));
+    },
+    payPeriodItems() {
+      return PayPeriodsFilter.map((item, i) => (i === 0 ? this.$t('quests.allVariants')
+        : this.$t(`quests.payPeriods.${item}`)));
     },
     prices() {
       const { from, to } = this.selectedPrice;
       if (from && to) return { title: `${from} - ${to}`, hasPrice: true };
       if (!from && to) return { title: `0 - ${to}`, hasPrice: true };
       if (from && !to) return { title: `> ${from}`, hasPrice: true };
-      return { title: this.$t('quests.price'), hasPrice: false };
+      return { title: this.$t(`meta.${this.userRole === UserRole.WORKER ? 'price' : 'costPerHour'}`), hasPrice: false };
+    },
+    isPriceModalShowed() {
+      return this.isModalShowed && this.activeModalKey === modals.priceSearch;
+    },
+    isEmployer() {
+      return this.userRole === UserRole.EMPLOYER;
     },
   },
   watch: {
+    selectedRating(index) {
+      this.$emit('sortRating', index ? {'ratingStatuses[0]': RatingFilter[index].value} : {});
+    },
     selectedSpecializations: {
       deep: true,
       handler() {
@@ -122,27 +160,22 @@ export default {
         this.$emit('sortSpec', query);
       },
     },
-    selectedRating(index) {
-      const query = index ? { 'ratingStatuses[0]': Filters.EMPLOYEE_RATING[index] } : {};
-      this.$emit('sortRating', query);
-    },
     selectedPriority(index) {
-      const key = Filters.PRIORITIES[index].toUpperCase();
-      const query = index ? { 'priorities[0]': Priority[key].key } : {};
-      this.$emit('sortPriority', query);
+      this.$emit('sortPriority', index ? { 'priorities[0]': PriorityFilter[index].value } : {});
     },
-    selectedEmployment(index) {
-      const query = index ? { 'employments[0]': Filters.EMPLOYMENTS[index] } : {};
-      this.$emit('sortEmployment', query);
+    selectedTypeOfJob(index) {
+      this.$emit('sortTypeOfJob', index ? { 'typeOfEmployments[0]': TypeOfJobFilter[index] } : {});
     },
     selectedWorkplace(index) {
-      const query = index ? { 'workplaces[0]': Filters.WORKPLACES[index] } : {};
-      this.$emit('sortWorkplace', query);
+      this.$emit('sortWorkplace', index ? { 'workplaces[0]': WorkplaceFilter[index] } : {});
+    },
+    selectPayPeriod(index) {
+      this.$emit('sortPayPeriod', index ? { 'payPeriods[0]': PayPeriodsFilter[index] } : {});
     },
     selectedPrice() {
       const { selectedPrice: { from, to } } = this;
       const query = {};
-      const queryName = this.userRole === UserRole.EMPLOYER ? 'betweenWagePerHour' : 'priceBetween';
+      const queryName = this.isEmployer ? 'betweenWagePerHour' : 'priceBetween';
       if (from || to) {
         query[`${queryName}[from]`] = from || 0;
         query[`${queryName}[to]`] = to || 99999999999999;
@@ -158,7 +191,7 @@ export default {
   },
   methods: {
     showPriceSearch() {
-      this.ShowModal({ key: modals.priceSearch });
+      this.ShowModal({ key: modals.priceSearch, title: this.$t(`meta.${this.isEmployer ? 'costPerHour' : 'price'}`) });
     },
     sortByTime() {
       this.selectedSort = this.selectedSort === 'desc' ? 'asc' : 'desc';
@@ -183,7 +216,6 @@ export default {
 
 .item-btn {
   padding: 0 20px;
-
   &__text {
     margin-right: auto;
 

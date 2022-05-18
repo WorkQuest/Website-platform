@@ -18,7 +18,6 @@
             class="chats-container__search-input"
             is-search
             is-hide-error
-            has-loader
             :is-busy-search="isChatsSearching"
             :placeholder="$t('chat.searchTitle')"
             data-selector="INPUT-SEARCH"
@@ -45,7 +44,7 @@
             v-for="chat in chats.list"
             :key="chat.id"
             class="chats-container__chat chat"
-            @click="handleSelChat(chat.id)"
+            @click="handleSelChat(chat)"
           >
             <div class="chat__body">
               <div class="chat__data">
@@ -135,7 +134,11 @@
         v-if="canLoadMoreChats"
         class="chats-page__footer"
       >
-        <base-btn @click="loadMoreChats">
+        <base-btn
+          :selector="`${$t('chat.loadMore')}`"
+          data-selector="LOAD-MORE-CHATS"
+          @click="loadMoreChats"
+        >
           {{ $t('chat.loadMore') }}
         </base-btn>
       </div>
@@ -146,7 +149,9 @@
 <script>
 import { mapGetters } from 'vuex';
 import ChatMenu from '~/components/ui/ChatMenu';
-import { ChatType, MessageType, MessageAction } from '~/utils/enums';
+import {
+  Path, ChatType, MessageType, MessageAction,
+} from '~/utils/enums';
 
 export default {
   name: 'Messages',
@@ -230,7 +235,7 @@ export default {
         text = 'chat.systemMessages.';
         switch (infoMessage.messageAction) {
           case MessageAction.EMPLOYER_INVITE_ON_QUEST: {
-            text += itsMe ? 'youInvitedToTheQuest' : 'invitedYouToAQuest';
+            text += itsMe ? 'youInvitedToTheQuest' : 'employerInvitedWorkerToQuest';
             break;
           }
           case MessageAction.WORKER_RESPONSE_ON_QUEST: {
@@ -304,8 +309,24 @@ export default {
     async getChats() {
       await this.$store.dispatch('chat/getChatsList');
     },
-    handleSelChat(chatId) {
-      this.$router.push(`/messages/${chatId}`);
+    handleSelChat(chat) {
+      const { id, type, questChat } = chat;
+      const openDispute = questChat?.quest.openDispute;
+      const disputeStatus = openDispute?.status;
+      const disputeId = openDispute?.id;
+      if (type === 'quest') {
+        const status = questChat?.quest.status;
+        this.$router.push({
+          path: `${Path.MESSAGES}/${id}`,
+          query: {
+            disputeStatus, id: disputeId, type, status,
+          },
+        });
+      } else {
+        this.$router.push({
+          path: `${Path.MESSAGES}/${id}`,
+        });
+      }
     },
   },
 };
@@ -432,10 +453,14 @@ export default {
     border-radius: 50%;
     flex: none;
     position: absolute;
+    object-fit: cover;
   }
   &__title {
     font-weight: 400;
     font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &_bold {
       font-weight: 500;
@@ -448,6 +473,9 @@ export default {
     &_link {
       color: #0083C7;
       cursor: pointer;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
 
       &:hover {
         text-decoration: underline;
@@ -519,7 +547,19 @@ export default {
 @include _991 {
 }
 
-@include _480 {
+@include _575 {
+  .chat {
+    &__row {
+      gap: 10px;
+      width: calc(100vw - 120px);
+    }
+    &__title {
+      &_bold {
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+  }
 }
 
 @include _380 {

@@ -1,12 +1,13 @@
 <template>
   <ctm-modal-box
     class="payment"
-    :title="$t('modals.payment')"
+    :title="$tc('modals.titles.payment')"
   >
     <div class="payment__content сontent">
       <div class="content__step">
         <div
           class="content__panel"
+          data-selector="ACTION-BTN-PREV-STEP"
           :class="{'content__panel_active': options.step === 1}"
           @click="previousStep"
         >
@@ -14,10 +15,11 @@
         </div>
         <div
           class="content__panel"
+          data-selector="ACTION-BTN-NEXT-STEP"
           :class="{'content__panel_active': options.step === 2}"
           @click="nextStep"
         >
-          {{ $t('wallet.bankCard') }}
+          {{ $t('meta.bankCard') }}
         </div>
       </div>
       <div
@@ -32,17 +34,19 @@
             key="i"
             v-model="money"
             class="drop__field"
+            data-selector="CURRENCY"
             :items="currency"
             :is-icon="true"
           />
         </div>
         <div class="content__drop drop">
           <div class="drop__title">
-            {{ $t('modals.wallet') }}
+            {{ $t('meta.wallet') }}
           </div>
           <base-dd
             v-model="method"
             class="drop__field"
+            data-selector="WALLETS"
             :items="wallet"
             :is-icon="true"
           />
@@ -58,6 +62,7 @@
           </div>
           <base-dd
             v-model="card"
+            data-selector="CARD"
             class="drop__field"
             :items="items"
           >
@@ -74,6 +79,7 @@
               <base-btn
                 mode="add"
                 class="drop__button button"
+                data-selector="SHOW-ADDING-CARD"
                 @click="showAddingCard"
               >
                 <span class="icon-plus_circle_outline button__icon" />
@@ -90,15 +96,17 @@
           <base-btn
             class="buttons__button"
             mode="outline"
-            @click="hide"
+            data-selector="CANCEL"
+            @click="CloseModal"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
+            data-selector="SUBMIT"
             @click="showRaiseLevel"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.btns.submit') }}
           </base-btn>
         </span>
       </div>
@@ -109,6 +117,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'ModalPaymentOptions',
@@ -125,8 +134,8 @@ export default {
     }),
     currency() {
       return [
-        { title: this.$t('modals.wusd'), icon: require('~/assets/img/ui/wusd.svg') },
-        { title: this.$t('modals.wqt'), icon: require('~/assets/img/ui/wqt.svg') },
+        { title: this.$t('meta.coins.wusd'), icon: require('~/assets/img/ui/wusd.svg') },
+        { title: this.$t('meta.coins.wqt'), icon: require('~/assets/img/ui/wqt.svg') },
       ];
     },
     wallet() {
@@ -135,18 +144,10 @@ export default {
       ];
     },
     items() {
-      return [
-        'Visa *0000',
-        'Visa *0000',
-      ];
+      return ['Visa *0000', 'Visa *0000'];
     },
-  },
-  mounted() {
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     nextStep() {
       this.$store.commit('modals/setOptions', { ...this.options, step: 2 });
     },
@@ -154,17 +155,12 @@ export default {
       this.$store.commit('modals/setOptions', { ...this.options, step: 1 });
     },
     showAddingCard() {
-      this.ShowModal({
-        key: modals.addingCard,
-        branch: 'payment',
-      });
+      this.ShowModal({ key: modals.addingCard, branch: 'payment' });
     },
-    showRaiseLevel() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('modals.yourLevelHasBeenRaised'),
-      });
+    async showRaiseLevel() {
+      const { submit } = this.options;
+      if (submit) submit();
+      this.CloseModal();
     },
   },
 };
@@ -178,16 +174,19 @@ export default {
     flex-direction: row;
     align-items: flex-start;
   }
-  &__drop:last-child{
+
+  &__drop:last-child {
     margin: 0;
   }
-  &__panel{
+
+  &__panel {
     @include text-simple;
     font-weight: 400;
     font-size: 16px;
     color: $black500;
     margin: 0 20px 0 0;
     cursor: pointer;
+
     &_active {
       color: $black800;
       border-bottom: 2px solid $blue;
@@ -197,28 +196,32 @@ export default {
 }
 
 .buttons {
-  &__step{
+  &__step {
     display: flex;
     justify-content: space-between;
     margin-top: 25px;
   }
-  &__button{
-    max-width: 206px!important;
+
+  &__button {
+    max-width: 206px !important;
   }
 }
 
 .payment {
   max-width: 487px !important;
-  &__content{
+
+  &__content {
     padding: 22px 30px 28px 30px;
   }
 }
-.drop{
-  &__field{
+
+.drop {
+  &__field {
     border: 1px solid $black0;
     border-radius: 6px;
   }
-  &__title{
+
+  &__title {
     @include text-simple;
     font-weight: 400;
     font-size: 16px;
@@ -226,26 +229,31 @@ export default {
     margin-bottom: 4px;
     margin-top: 15px;
   }
-  &__image{
-    margin-left:15px;
+
+  &__image {
+    margin-left: 15px;
   }
-  &__card:before{
+
+  &__card:before {
     font-size: 25px;
-    color:$blue!important;
+    color: $blue !important;
     margin-left: 17px;
   }
 }
-.button{
+
+.button {
   display: flex;
   justify-content: space-between;
   padding: 0 5px;
-  &__icon::before{
+
+  &__icon::before {
     font-size: 25px;
-    color:$blue!important;
+    color: $blue !important;
     margin-right: 12px;
   }
 }
-.button:hover .button__icon:before{
-  color: $white!important;
+
+.button:hover .button__icon:before {
+  color: $white !important;
 }
 </style>

@@ -1,8 +1,9 @@
 <template>
   <ctm-modal-box
     class="message"
-    :title="$t('modals.addCase')"
+    :title="$tc('modals.titles.addCase')"
   >
+    <!--    TODO: Поменять загрузчик-->
     <div class="ctm-modal__content">
       <div class="message">
         <div class="message__content">
@@ -24,41 +25,45 @@
               <div>
                 <base-field
                   v-model="caseTitle"
-                  :label="$t('modals.title')"
+                  :label="$tc('modals.title')"
                   :placeholder="$t('modals.addTitle')"
-                  :mode="'gray'"
+                  mode="gray"
+                  data-selector="CASE-TITLE"
                   rules="required|text-title"
-                  :name="$t('modals.title')"
+                  :name="$tc('modals.title')"
                 />
               </div>
               <div class="message__wrapper">
                 <base-textarea
                   id="textarea"
                   v-model="caseDescription"
-                  :label="$t('modals.description')"
+                  :label="$tc('modals.description')"
                   class="message__textarea"
+                  data-selector="CASE-DESCRIPTION"
                   :placeholder="$t('modals.addDesc')"
                   rules="required|text-desc"
-                  :name="$t('modals.description')"
+                  :name="$tc('modals.description')"
                 />
               </div>
               <div class="btn__container">
                 <div class="btn__wrapper">
                   <base-btn
                     class="message__action"
+                    data-selector="ADD-USER-CASE"
                     :disabled="!valid || !validated || !passed || invalid"
                     @click="addUserCase"
                   >
-                    {{ $t('meta.send') }}
+                    {{ $t('meta.btns.send') }}
                   </base-btn>
                 </div>
                 <div class="btn__wrapper">
                   <base-btn
-                    :mode="'outline'"
+                    mode="outline"
+                    data-selector="CANCEL"
                     class="message__action"
-                    @click="hide()"
+                    @click="CloseModal"
                   >
-                    {{ $t('meta.cancel') }}
+                    {{ $t('meta.btns.cancel') }}
                   </base-btn>
                 </div>
               </div>
@@ -82,7 +87,6 @@ export default {
       valid: '',
       caseTitle: '',
       caseDescription: '',
-
       portfolio: {
         data: {},
         file: {},
@@ -97,82 +101,55 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     async addUserCase() {
       try {
         this.SetLoader(true);
-        await this.setCaseImage();
-        await this.setCaseData();
+        const { caseTitle, caseDescription } = this;
+        const { file, data } = this.portfolio;
+        const { url, mediaId } = data.result;
+        const formData = new FormData();
+        formData.append('image', file);
+        if (data.ok) {
+          const payload = { url, formData: file, type: file.type };
+          await this.$store.dispatch('user/setCaseImage', payload);
+        }
+        const payload = { title: caseTitle, description: caseDescription, medias: [mediaId] };
+        const { ok } = await this.$store.dispatch('user/setCaseData', payload);
+        if (ok) {
+          await this.$store.dispatch('main/showToast', {
+            title: this.$t('toasts.caseAdded'),
+            variant: 'success',
+            text: this.$t('toasts.caseAdded'),
+          });
+        }
         await this.getPortfolios();
-        this.showToastAdded();
-        this.hide();
+        this.CloseModal();
         this.SetLoader(false);
       } catch (e) {
         await this.getPortfolios();
-        this.hide();
-        this.showToastError(e);
+        this.CloseModal();
+        await this.$store.dispatch('main/showToast', {
+          title: this.$t('toasts.error'),
+          variant: 'warning',
+          text: `${e}`,
+        });
         this.SetLoader(false);
       }
     },
-    showToastAdded() {
-      return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.caseAdded'),
-        variant: 'success',
-        text: this.$t('toasts.caseAdded'),
-      });
-    },
-    showToastError(e) {
-      return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.error'),
-        variant: 'warning',
-        text: `${e}`,
-      });
-    },
     async getPortfolios() {
       return await this.$store.dispatch('user/getUserPortfolios', { userId: this.userData.id });
-    },
-    async setCaseImage() {
-      const { file, data } = this.portfolio;
-      const formData = new FormData();
-      formData.append('image', file);
-      if (data.ok) {
-        const payload = {
-          url: data.result.url,
-          formData: file,
-          type: file.type,
-        };
-        await this.$store.dispatch('user/setCaseImage', payload);
-      }
-    },
-    async setCaseData() {
-      const { data } = this.portfolio;
-      const payload = {
-        title: this.caseTitle,
-        description: this.caseDescription,
-        medias: [data.result.mediaId],
-      };
-      await this.$store.dispatch('user/setCaseData', payload);
     },
     async processFile(e, validate) {
       this.valid = await validate(e);
       const file = e.target.files[0];
       if (this.valid.valid) {
-        if (!file) {
-          return false;
-        }
+        if (!file) return false;
         const reader = new FileReader();
         reader.readAsDataURL(file);
         this.portfolio.data = await this.$store.dispatch('user/imageType', { contentType: file.type });
         this.portfolio.file = file;
       }
       return this.portfolio;
-    },
-    showRequestSendModal() {
-      this.ShowModal({
-        key: modals.requestSend,
-      });
     },
   },
 };

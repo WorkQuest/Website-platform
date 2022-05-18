@@ -6,14 +6,15 @@
     <div class="notice__content content">
       <span class="icon-warning content__icon" />
       <div class="content__title">
-        {{ $t('modals.noticeTitle') }}
+        {{ $t('modals.titles.noticeTitle') }}
       </div>
       <div class="content__desc">
         {{ $t('modals.noticeText') }}
       </div>
       <base-btn
         class="content__action"
-        @click="hide"
+        data-selector="AGREE"
+        @click="CloseModal"
       >
         {{ $t('meta.iAgree') }}
       </base-btn>
@@ -30,11 +31,6 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
-  },
-  methods: {
-    hide() {
-      this.CloseModal();
-    },
   },
 };
 </script>

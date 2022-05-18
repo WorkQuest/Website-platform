@@ -4,9 +4,7 @@
     class="ctm-modal__box gallery-modal"
   >
     <div class="gallery-modal__container">
-      <div
-        class="gallery-modal__pager"
-      >
+      <div class="gallery-modal__pager">
         <video
           v-if="isVideo"
           :src="getUrl"
@@ -22,7 +20,7 @@
         <div class="gallery-modal__close">
           <div
             class="control-btn control-btn_bg"
-            @click="hide"
+            @click="CloseModal"
           >
             <span class="icon-close_big" />
           </div>
@@ -101,14 +99,9 @@ export default {
     turnOver(isForward) {
       const { count, index } = this.options;
       const advanceIndex = isForward ? index + 1 : index - 1;
-
       // eslint-disable-next-line no-nested-ternary
       const currIndex = advanceIndex + 1 > count ? 0 : advanceIndex < 0 ? count - 1 : advanceIndex;
-
       this.$store.commit('modals/setCurrOptionByKey', [{ key: 'index', val: currIndex }]);
-    },
-    hide() {
-      this.CloseModal();
     },
   },
 };

@@ -5,15 +5,21 @@
         <div class="info-block__title">
           {{ $t('ui.notifications.title') }}
         </div>
+
         <div
-          v-if="notifsCount"
+          v-if="notifsCount && notifications"
           class="info-block__list"
         >
           <div
             v-for="(notification, i) in notifications"
             :key="i"
             :ref="`${notification.id}|${notification.seen}`"
-            v-observe-visibility="(isVisible) => checkUnseenNotifs(isVisible, notification)"
+            v-observe-visibility="(isVisible) =>
+              checkUnseenNotifs(isVisible, {
+                id: notification.id,
+                seen: notification.seen,
+                isLocal: notification.params.isLocal
+              })"
             class="notification"
             :class="{'notification_gray' : !notification.seen}"
             @click="goToEvent(notification.params ? notification.params.path : '', true)"
@@ -22,23 +28,37 @@
               <div class="notification__avatar">
                 <img
                   class="avatar"
-                  :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : EmptyAvatar()"
+                  :src="avatar(notification)"
                   alt=""
+                  @click="toUserProfile(notification)"
                 >
               </div>
               <div class="notification__inviter inviter">
-                <span class="inviter__name">
+                <span
+                  class="inviter__name"
+                  @click="toUserProfile(notification)"
+                >
                   {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
                 </span>
-                <!--                <span class="inviter__company">-->
-                <!--                  {{ notification.company }}-->
-                <!--                </span>-->
+                <span
+                  v-if="notification.sender.additionalInfo"
+                  class="inviter__company"
+                >
+                  {{
+                    notification.sender.additionalInfo.company
+                      ? `${$t('modals.fromAddress')} ${notification.sender.additionalInfo.company}`
+                      : ''
+                  }}
+                </span>
               </div>
             </template>
-
             <div class="notification__quest quest">
               <span class="quest__invitation">
-                {{ $t(notification.actionNameKey) }}:
+                {{
+                  notification.params.isLocal
+                    ? notification.data.message
+                    : notificationActionKey(notification)
+                }}
               </span>
               <span
                 v-if="notification.params"
@@ -48,23 +68,27 @@
               </span>
             </div>
             <div class="notification__date">
-              {{ notification.creatingDate }}
+              {{ $moment(notification.createdAt).format('MMMM Do YYYY, h:mm') }}
             </div>
-
             <img
+              v-if="!notification.params.isLocal"
               class="notification__remove"
               src="~assets/img/ui/close.svg"
               alt="x"
-              @click="tryRemoveNotification($event, notification.id)"
+              @click="tryRemoveNotification($event, notification)"
             >
-
-            <div class="notification__button">
+            <div
+              v-if="notification.params"
+              class="notification__button"
+            >
               <base-btn
                 mode="outline"
+                :link="notification.params.isExternalLink ? `${notification.params.externalBase}${notification.params.path}` : ''"
                 class="button__view"
-                @click="goToEvent(notification.params ? notification.params.path : '')"
+                data-selector="NOTIFICATION-VIEW"
+                @click="notification.params.isExternalLink ? '' : goToEvent(notification.params.path)"
               >
-                {{ $t('btn.view') }}
+                {{ actionBtnText(notification) }}
               </base-btn>
             </div>
           </div>
@@ -72,7 +96,7 @@
         <empty-data
           v-else
           class="info-block__no-content"
-          :description="$t('ui.notifications.noNotifications')"
+          :description="$tc('ui.notifications.noNotifications')"
         />
         <base-pager
           v-if="totalPages > 1"
@@ -88,10 +112,16 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import {
+  UserRole, Path, SumSubStatuses, TwoFAStatuses,
+} from '~/utils/enums';
 import modals from '~/store/modals/modals';
+import { LocalNotificationAction } from '~/utils/notifications';
+import { images } from '~/utils/images';
 
 export default {
   name: 'Notifications',
+  UserRole,
   data() {
     return {
       filter: {
@@ -101,13 +131,18 @@ export default {
       page: 1,
       notificationIdsForRead: [],
       delayId: null,
+      profileFilled: false,
     };
   },
   computed: {
     ...mapGetters({
       userRole: 'user/getUserRole',
-      notifications: 'user/getNotificationsList',
-      notifsCount: 'user/getNotificationsCount',
+      userData: 'user/getUserData',
+      statusKYC: 'user/getStatusKYC',
+      status2FA: 'user/getStatus2FA',
+      notifications: 'notifications/getNotificationsList',
+      notifsCount: 'notifications/getNotificationsCount',
+      unreadNotifsCount: 'notifications/getUnreadNotifsCount',
     }),
     totalPages() {
       return Math.ceil(this.notifsCount / this.filter.limit);
@@ -115,85 +150,125 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    const {
+      avatar, firstName, lastName, locationPlaceName, additionalInfo: { description },
+    } = this.userData;
+    this.profileFilled = !!avatar && !!firstName && !!lastName && !!locationPlaceName && !!description;
     await this.getNotifications();
+    await this.setLocalNotifications();
     this.SetLoader(false);
   },
-  destroyed() {
-    this.$store.commit('user/setNotifications', { result: { notifications: [], count: this.notifsCount } });
-  },
   methods: {
-    tryRemoveNotification(ev, notificationId) {
+    async setLocalNotifications() {
+      const { $cookies, page, totalPages } = this;
+      if (page === totalPages) {
+        await this.$store.dispatch('notifications/createLocalNotification', {
+          id: '1',
+          action: LocalNotificationAction.GET_REWARD,
+          message: this.$t('localNotifications.messages.inviteFriends'),
+          actionBtn: this.$t('localNotifications.btns.inviteFriends'),
+        });
+        await this.$store.dispatch('notifications/createLocalNotification', {
+          id: '2',
+          action: LocalNotificationAction.WIKI,
+          message: this.$t('localNotifications.messages.wiki'),
+          actionBtn: this.$t('localNotifications.btns.wiki'),
+        });
+        if (this.statusKYC === SumSubStatuses.NOT_VERIFIED) {
+          const KYC = $cookies.get(LocalNotificationAction.TWOFA);
+          if (!KYC) this.$cookies.set(LocalNotificationAction.KYC, this.statusKYC !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
+          await this.$store.dispatch('notifications/createLocalNotification', {
+            id: '3',
+            action: LocalNotificationAction.KYC,
+            message: this.$t('localNotifications.messages.kyc'),
+            actionBtn: this.$t('localNotifications.btns.kyc'),
+          });
+        }
+        if (this.status2FA === TwoFAStatuses.DISABLED) {
+          const TWOFA = $cookies.get(LocalNotificationAction.KYC);
+          if (!TWOFA) this.$cookies.set(LocalNotificationAction.TWOFA, this.status2FA !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
+          await this.$store.dispatch('notifications/createLocalNotification', {
+            id: '4',
+            action: LocalNotificationAction.TWOFA,
+            message: this.$t('localNotifications.messages.twoFA'),
+            actionBtn: this.$t('localNotifications.btns.toSettings'),
+          });
+        }
+        if (!this.profileFilled) {
+          await this.$store.dispatch('notifications/createLocalNotification', {
+            id: '5',
+            action: LocalNotificationAction.PROFILE_FILLED,
+            message: this.$t('localNotifications.messages.fillSettingsData'),
+            actionBtn: this.$t('localNotifications.btns.toSettings'),
+          });
+        }
+      }
+    },
+    actionBtnText(notification) {
+      return notification.actionBtn ?? this.$t('meta.btns.view');
+    },
+    avatar(notification) {
+      return notification.sender?.avatar?.url || images.EMPTY_AVATAR;
+    },
+    notificationActionKey(notification) {
+      const symbol = ['notifications.newDiscussionLike'].includes(notification.actionNameKey) ? '.' : ':';
+      return `${this.$t(notification.actionNameKey)}${symbol}`;
+    },
+    toUserProfile(notification) {
+      this.$router.push(`${Path.PROFILE}/${notification.sender.id}`);
+    },
+    tryRemoveNotification(ev, notification) {
       ev.stopPropagation();
-
       this.ShowModal({
         key: modals.areYouSure,
-        title: this.$t('modals.sureDeleteNotification'),
-        okBtnTitle: this.$t('meta.delete'),
-        okBtnFunc: async () => await this.removeNotification(notificationId),
+        text: this.$t('modals.sureDeleteNotification'),
+        okBtnTitle: this.$t('meta.btns.delete'),
+        okBtnFunc: async () => await this.removeNotification(notification),
       });
     },
-    async removeNotification(notificationId) {
+    async removeNotification(notification) {
       const { limit, offset } = this.filter;
-
       this.CloseModal();
-
       this.SetLoader(true);
-
-      const payload = {
+      await this.$store.dispatch('notifications/removeNotification', {
         config: {
           params: {
             limit: 1,
             offset: limit + offset - 1,
           },
         },
-        notificationId,
-      };
-
-      await this.$store.dispatch('user/removeNotification', payload);
-
+        notification,
+      });
       this.SetLoader(false);
     },
-    checkUnseenNotifs(isVisible, { id, seen }) {
-      if (!isVisible || seen || this.notificationIdsForRead.indexOf(id) >= 0) return;
-
-      this.notificationIdsForRead.push(id);
-
-      this.delayId = this.SetDelay(async () => {
-        const config = {
-          notificationIds: this.notificationIdsForRead,
-        };
-
-        await this.$store.dispatch('user/readNotifications', config);
-
-        this.notificationIdsForRead = [];
-      }, 1000, this.delayId);
+    async checkUnseenNotifs(isVisible, { id, seen, isLocal }) {
+      if (isLocal && isVisible && seen) this.$store.commit('notifications/setUnreadNotifsCount', this.unreadNotifsCount > 0 ? -1 : 0);
+      else if (!isLocal && id && !seen) return;
+      if (!isLocal) {
+        this.$store.commit('notifications/setUnreadNotifsCount', this.unreadNotifsCount > 0 ? -1 : 0);
+        this.notificationIdsForRead.push(id);
+        this.delayId = this.SetDelay(async () => {
+          await this.$store.dispatch('notifications/readNotifications', {
+            notificationIds: this.notificationIdsForRead,
+          });
+          this.notificationIdsForRead = [];
+        }, 3000, this.delayId);
+      }
     },
     async setPage() {
       this.filter.offset = (this.page - 1) * this.filter.limit;
       this.SetLoader(true);
+      this.ScrollToTop();
       await this.getNotifications();
+      await this.setLocalNotifications();
       this.SetLoader(false);
     },
     async getNotifications() {
-      const config = {
-        params: this.filter,
-      };
-
-      await this.$store.dispatch('user/getNotifications', config);
+      await this.$store.dispatch('notifications/getNotifications', { params: this.filter });
     },
     goToEvent(path, isNotifCont) {
       if (isNotifCont && document.body.offsetWidth > 767) return;
-
       this.$router.push(path);
-    },
-    navigateBack() {
-      if (this.userRole === 'employer') {
-        this.$router.push('/workers');
-      } else if (this.userRole === 'worker') {
-        this.$router.push('/quests');
-      } else {
-        this.$router.push('/');
-      }
     },
   },
 };
@@ -211,6 +286,11 @@ export default {
     width: 100%;
     padding-top: 30px;
   }
+}
+
+.button__view {
+  text-decoration: none;
+  text-outline: none;
 }
 
 .info-block {
@@ -239,7 +319,7 @@ export default {
     float: unset;
     justify-self: flex-end;
     margin: 20px;
-    border: 1px solid #F7F8FA
+    border: 1px solid $black0
   }
 }
 
@@ -265,6 +345,7 @@ export default {
     "avatar date button";
   width: 100%;
   padding: 20px;
+  min-width: 0;
 
   &_gray {
     background: #f7f8fabd;
@@ -279,7 +360,10 @@ export default {
     align-self: flex-start;
   }
   &__inviter {
+    display: flex;
+    gap: 5px;
     grid-area: inviter;
+    overflow: hidden;
   }
   &__quest {
     grid-area: quest;
@@ -318,22 +402,37 @@ export default {
   width: 50px;
   height: 50px;
   border-radius: 50%;
+  cursor: pointer;
 }
 .inviter {
   &__name {
     @include text-simple;
     font-weight: 500;
     font-size: 16px;
+    line-height: normal;
     color: $black800;
     letter-spacing: 0.02em;
+    transition: .5s;
+    cursor: pointer;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    &:hover {
+      color: $blue;
+    }
   }
   &__company {
+    flex: 0 0 15%;
     @include text-simple;
+    line-height: normal;
     font-weight: 400;
     font-size: 16px;
     color: $black500;
     letter-spacing: 0.02em;
     margin-left: 5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 }
 .quest {
@@ -355,7 +454,6 @@ export default {
     text-overflow: ellipsis;
     white-space: initial;
 
-    display: -webkit-box;
     line-clamp: 3;
     -webkit-line-clamp: 3;
     box-orient: vertical;

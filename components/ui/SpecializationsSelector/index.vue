@@ -1,5 +1,8 @@
 <template>
-  <div class="selector__skills skills">
+  <div
+    class="selector__skills skills"
+    data-selector="COMPONENT-SPEC-SELECTOR"
+  >
     <div
       v-for="key in specCount"
       :key="key"
@@ -13,24 +16,30 @@
             type="gray"
             :items="specializationsNames"
             :placeholder="$t('settings.selectSpec')"
-            :mode="'small'"
+            :search-placeholder="$t('meta.placeholders.specialization')"
+            :data-selector="`SPECIALIZATIONS-DD-${displaySpecIndex[key]}`"
+            mode="small"
             rules="required"
-            :label="$t('settings.specialization')"
+            :label="$tc('settings.specialization')"
             :hide-selected="hideSelectedSpecs"
+            :is-search="true"
             @input="switchSkill($event, key)"
           />
           <div class="specialization__skills skills">
             <base-dd
               v-model="skillIndex[key]"
               class="specialization__dd"
+              :data-selector="`SKILLS-DD-${specIndex[key]}`"
               :type="specIndex[key] < 0 || selectedSkills[key].length === 5 ? 'disabled' : 'gray'"
               :disabled="specIndex[key] < 0 || selectedSkills[key].length === 5"
               :placeholder="$t('settings.selectSkills')"
+              :search-placeholder="$t('meta.placeholders.skill')"
               :items="skillsNames[displaySpecIndex[key]]"
-              :mode="'small'"
+              mode="small"
               rules="required"
-              :label="$t('settings.skillsInput')"
+              :label="$tc('meta.skills')"
               :hide-selected="hideSelectedSkills[key]"
+              :is-search="true"
               @input="addSkillToBadge($event, key)"
             />
             <div
@@ -45,11 +54,13 @@
           <div
             v-for="(item, i) in selectedSkills[key]"
             :key="i"
+            :data-selector="`SELECTED-SKILLS-${i}`"
             class="skill__badge"
           >
             {{ item.name }}
             <button
               class="skill__remove"
+              :data-selector="`ACTION-BTN-REMOVE-SKILL-TO-BADGE-${i}`"
               @click="removeSkillToBadge(item, key)"
             >
               <img
@@ -61,16 +72,18 @@
         </div>
       </div>
       <base-btn
-        :text="$t('settings.removeSpec')"
+        :text="$tc('settings.removeSpec')"
         class="specialization__btn specialization__btn_remove"
+        :selector="`REMOVE-SKILL-TO-BADGE-${key}`"
         @click="removeSpecialization(key)"
       />
     </div>
     <base-btn
-      :text="$t('settings.addSpec')"
+      :text="$tc('settings.addSpec')"
       :disabled="specCount === 3"
       class="skills__btn-add"
       :class="specCount === 3 ? 'skills__btn-add_disabled' : ''"
+      selector="ADD-SPEC"
       @click="addSpecialization"
     />
     <div
@@ -88,6 +101,10 @@ import { mapGetters } from 'vuex';
 export default {
   name: 'SpecializationsSelector',
   props: {
+    isClearData: {
+      type: Boolean,
+      default: false,
+    },
     skills: {
       type: Array,
       default: null,
@@ -112,7 +129,7 @@ export default {
       const keys = Object.keys(this.filters);
       for (let i = 0; i < keys.length; i += 1) {
         const key = keys[i];
-        specs.push(this.$t(`filters.items.${this.filters[key].id}.title`));
+        specs.push(this.$t(`filters.skills.${this.filters[key].id}.title`));
       }
       return specs;
     },
@@ -134,7 +151,7 @@ export default {
         const skillsIndexes = Object.values(skillsBySpec);
         const skillsNames = [];
         for (let j = 0; j < skillsIndexes.length; j += 1) {
-          const name = this.$t(`filters.items.${this.filters[key].id}.sub.${skillsIndexes[j]}`);
+          const name = this.$t(`filters.skills.${this.filters[key].id}.sub.${skillsIndexes[j]}`);
           skillsNames.push(name);
         }
         skillsData[i] = skillsNames;
@@ -155,7 +172,19 @@ export default {
       return Object.values(this.displaySpecIndex);
     },
   },
-  async mounted() {
+  watch: {
+    async isClearData() {
+      if (this.isClearData) {
+        this.specCount = 0;
+        this.specIndex = { 1: -1, 2: -1, 3: -1 };
+        this.displaySpecIndex = { 1: -1, 2: -1, 3: -1 };
+        this.hideSelectedSkills = { 1: [], 2: [], 3: [] };
+        this.skillIndex = { 1: -1, 2: -1, 3: -1 };
+        this.selectedSkills = { 1: [], 2: [], 3: [] };
+      }
+    },
+  },
+  async beforeMount() {
     if (!this.filters) await this.$store.dispatch('quests/getFilters');
     if (this.skills && this.skills.length) await this.fillData();
   },
@@ -165,7 +194,7 @@ export default {
       let key = 1;
       // eslint-disable-next-line no-restricted-syntax
       for (const item of this.skills) {
-        const [_spec, _skill] = item.path.split('.');
+        const [_spec, _skill] = item?.path ? item.path.split('.') : item.split('.');
         const spec = parseInt(_spec, 10);
         const skill = parseInt(_skill, 10);
         if (!Object.keys(specKeys).includes(_spec)) {
@@ -224,15 +253,11 @@ export default {
         }
       }
       const numberInHide = this.hideSelectedSkills[key].indexOf(hideIndex);
-      if (numberInHide > -1) {
-        this.hideSelectedSkills[key].splice(numberInHide, 1);
-      }
+      if (numberInHide > -1) this.hideSelectedSkills[key].splice(numberInHide, 1);
 
       const numberInArray = this.selectedSkills[key].indexOf(skill);
       this.selectedSkills[key].splice(numberInArray, 1);
-      if (!this.selectedSkills[key].length) {
-        this.skillIndex[key] = -1;
-      }
+      if (!this.selectedSkills[key].length) this.skillIndex[key] = -1;
       this.onChangeInputSpecs();
     },
     switchSkill(event, key) {
@@ -243,9 +268,7 @@ export default {
       this.onChangeInputSpecs();
     },
     addSpecialization() {
-      if (this.specCount <= 2) {
-        this.specCount += 1;
-      }
+      if (this.specCount <= 2) this.specCount += 1;
       this.onChangeInputSpecs();
     },
     removeSpecialization(key) {

@@ -20,78 +20,99 @@
                   {{ $t('referral.referralReward') }}
                 </div>
                 <div class="info-block__tokens">
-                  {{ $tc('referral.wqtCount', 0) }}
+                  {{ $tc('meta.coins.count.WQTCount', referralReward) }}
                 </div>
               </div>
               <div class="info-block__btn-wrap">
                 <base-btn
+                  :disabled="Number(referralReward) === 0"
+                  data-selector="CLAIM"
                   @click="clickClaimBtnHandler"
                 >
                   {{ $t('modals.claim') }}
                 </base-btn>
               </div>
             </div>
-            <div class="info-block__name">
+            <div
+              v-if="paidEventsList.length"
+              class="info-block__name"
+            >
               {{ $t('referral.lastRefReward') }}
             </div>
-            <div class="user_last-reward">
+            <div
+              v-if="paidEventsList.length"
+              class="user_last-reward"
+            >
               <div class="user__info">
                 <img
                   class="ava"
-                  src="~/assets/img/temp/avatar-small.jpg"
+                  :src="paidEventsList[0]['referralUser.avatar.url'] ? paidEventsList[0]['referralUser.avatar.url'] : $options.images.EMPTY_AVATAR"
                   alt="avatar"
                 >
                 <div class="user__name">
-                  Edward Cooper
+                  {{ paidEventsList[0]['referralUser.firstName'] }} {{ paidEventsList[0]['referralUser.lastName'] }}
                 </div>
               </div>
               <div class="user__value_green">
-                {{ $tc('referral.plusCount', $tc('referral.wqtCount', 0)) }}
+                {{
+                  $tc('meta.units.plusCount', $tc('meta.coins.count.WQTCount', getStyledAmount(paidEventsList[0].amount)))
+                }}
               </div>
             </div>
           </div>
           <div class="info-block">
-            <div class="info-block__name">
-              {{ $t('referral.yourRefers') }}
-            </div>
-            <div class="info-block__refers">
-              <div class="info-block__avatar">
-                <img
-                  class="ava_list"
-                  src="~/assets/img/social/FACEBOOK.png"
-                  alt=""
-                >
-              </div>
-              <div class="info-block__avatar">
-                <img
-                  class="ava_list"
-                  src="~/assets/img/social/TWITTER.png"
-                  alt=""
-                >
-              </div>
-              <div class="info-block__avatar">
-                <img
-                  class="ava_list"
-                  src="~/assets/img/social/GOOGLE_+_.png"
-                  alt=""
-                >
-              </div>
-              <div class="info-block__avatar">
-                <div class="info-block__more">
-                  {{ $tc('referral.plusCount', 0) }}
+            <div class="info-block__wrap">
+              <div class="info-block__inner">
+                <div class="info-block__name">
+                  {{ $t('referral.yourRefers') }}
                 </div>
               </div>
+              <div class="info-block__btn-wrap info-block__btn-wrap_absolute">
+                <base-btn
+                  :disabled="!isNeedRegistration"
+                  data-selector="REGISTRATION"
+                  @click="clickRegistrationBtnHandler"
+                >
+                  {{ $t('meta.btns.registration') }}
+                </base-btn>
+              </div>
             </div>
-            <div class="info-block__name">
+            <div class="info-block__refers">
+              <div
+                v-for="(item) in referralItems()"
+                :key="`${item.id}`"
+                class="info-block__avatar"
+              >
+                <img
+                  class="ava_list"
+                  :src="(item.avatar && item.avatar.url) ? item.avatar.url : $options.images.EMPTY_AVATAR"
+                  alt=""
+                >
+              </div>
+              <div
+                v-if="referralsListCount > referralCount"
+                class="info-block__more"
+              >
+                {{ $tc('meta.units.plusCount', referralsListCount - referralCount) }}
+              </div>
+            </div>
+            <div
+              v-if="userReferralId.length"
+              class="info-block__name"
+            >
               {{ $t('referral.yourReferralLink') }}
             </div>
-            <div class="info-block__link">
+            <div
+              v-if="userReferralId.length"
+              class="info-block__link"
+            >
               <div class="address">
-                {{ referLink }}
+                {{ referLink }}{{ userReferralId }}
               </div>
               <button
-                type="button"
-                @click="doCopy"
+                v-clipboard:copy="referLink + userReferralId"
+                v-clipboard:success="ClipboardSuccessHandler"
+                v-clipboard:error="ClipboardErrorHandler"
               >
                 <span class="icon-copy address__icon" />
               </button>
@@ -129,55 +150,82 @@
             </div>
           </div>
         </div>
-        <div class="info-block">
+        <div
+          v-if="paidEventsList.length"
+          class="info-block"
+        >
           <div class="info-block__name">
             {{ $t('referral.historyOfRewards') }}
           </div>
           <div class="referral-page__table">
             <b-table
-              :items="items"
-              :fields="testFields"
+              :items="paidEventsList"
+              :fields="tableFields"
               borderless
               caption-top
               thead-class="table__header"
               tbody-tr-class="table__row"
             >
-              <template #cell(userName)="el">
-                <div class="user__info">
-                  <img
-                    class="ava"
-                    src="~/assets/img/temp/avatar-small.jpg"
-                    alt=""
+              <template #cell(userInfo)="el">
+                <div class="user__name">
+                  <nuxt-link
+                    class="user__link"
+                    :to="`profile/${el.item['referralUser.id']}`"
                   >
-                  <div class="user__name">
-                    {{ el.item.userName }}
-                  </div>
+                    <img
+                      class="ava"
+                      :src="el.item['referralUser.avatar.url'] ? el.item['referralUser.avatar.url'] : $options.images.EMPTY_AVATAR"
+                      alt=""
+                    >
+                    <span>
+                      {{ el.item['referralUser.firstName'] }} {{ el.item['referralUser.lastName'] }}
+                    </span>
+                  </nuxt-link>
                 </div>
               </template>
               <template #cell(userID)="el">
                 <div class="user__value_gray">
-                  {{ el.item.userID }}
+                  {{ CutTxn(el.item.referral ? el.item.referral : el.item.affiliate, 6, 6) }}
+                  <button
+                    v-clipboard:copy="el.item.referral ? el.item.referral : el.item.affiliate"
+                    v-clipboard:success="ClipboardSuccessHandler"
+                    v-clipboard:error="ClipboardErrorHandler"
+                  >
+                    <span class="icon-copy user__icon-copy" />
+                  </button>
                 </div>
               </template>
               <template #cell(txHash)="el">
-                <div class="user__value_gray">
-                  {{ el.item.txHash }}
-                </div>
+                <a
+                  :href="`https://${isProd ? 'dev' : 'test'}-explorer.workquest.co/tx/${el.item.transactionHash}`"
+                  target="_blank"
+                  class="user__value_gray"
+                >
+                  {{ CutTxn(el.item.transactionHash, 6, 6) }}
+                </a>
               </template>
               <template #cell(time)="el">
                 <div class="user__value_gray">
-                  {{ el.item.time }}
+                  {{ GetFormTimestamp(Number(el.item.timestamp) * 1000, 'll') }}
                 </div>
               </template>
-              <template #cell(status)="el">
+              <template #cell(amount)="el">
+                <div class="user__value_gray">
+                  {{ getStyledAmount(el.value) }}
+                </div>
+              </template>
+              <template #cell(event)="el">
                 <div class="user__value_green">
-                  {{ el.item.status }}
+                  {{ el.value }}
                 </div>
               </template>
             </b-table>
           </div>
         </div>
-        <div class="referral-page__pager">
+        <div
+          v-if="paidEventsList.length"
+          class="referral-page__pager"
+        >
           <base-pager
             v-if="totalPages > 1"
             v-model="page"
@@ -190,136 +238,56 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { getStyledAmount } from '~/utils/wallet';
+import { images } from '~/utils/images';
+import { REFERRAL_EVENTS } from '~/utils/сonstants/referral';
 
 export default {
+  name: 'Referral',
+  images,
+  async asyncData({ store }) {
+    const userAddress = store.getters['user/getUserWalletAddress'];
+    await Promise.all([
+      store.dispatch('referral/fetchRewardBalance', userAddress),
+      store.dispatch('referral/fetchPaidEventsList'),
+      store.dispatch('referral/fetchReferralsList'),
+      store.dispatch('referral/subscribeToReferralEvents', userAddress),
+    ]);
+  },
   data() {
     return {
       page: 1,
-      offset: 10,
-      referLink: 'https://www.workquest.com/ref?v=44T7iUSo1vU',
-      items: [
+      perPage: 10,
+      referLink: process.env.PROD === 'true' ? 'https://app-ver1.workquest.co/?ref=' : 'https://app.workquest.co/?ref=',
+      isProd: process.env.PROD,
+      referralCount: 5,
+    };
+  },
+  computed: {
+    ...mapGetters({
+      referralReward: 'referral/getReferralReward',
+      paidEventsList: 'referral/getPaidEventsList',
+      referralsList: 'referral/getReferralsList',
+      referralsListCount: 'referral/getReferralsListCount',
+      createdReferralList: 'referral/getCreatedReferralList',
+      referralSignature: 'referral/getReferralSignature',
+      userAddress: 'user/getUserWalletAddress',
+      userReferralId: 'user/getUserReferralId',
+      isNeedRegistration: 'referral/getIsNeedRegistration',
+      createdReferralsList: 'referral/getCreatedReferralList',
+    }),
+    totalPages() {
+      return Math.ceil(this.paidEventsList.length / this.perPage);
+    },
+    filterCreatedReferralsList() {
+      return this.referralsList.filter((item) => item.referralUser.referralStatus === 'created');
+    },
+    tableFields() {
+      return [
         {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-        {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-        {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-        {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-        {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-        {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-        {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-        {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-        {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-        {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-        {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-        {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-        {
-          userName: this.$t('referral.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('referral.table.userId'),
-          txHash: this.$t('referral.table.txHash'),
-          time: this.$t('referral.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('referral.table.status'),
-        },
-      ],
-      testFields: [
-        {
-          key: 'userName',
+          key: 'userInfo',
           label: this.$t('referral.tableHead.name'),
           thStyle: {
             padding: '0 0 0 23px',
@@ -332,7 +300,7 @@ export default {
         },
         {
           key: 'userID',
-          label: this.$t('referral.tableHead.userID'),
+          label: this.$t('meta.wallet'),
           thStyle: {
             padding: '0',
             height: '27px',
@@ -379,8 +347,9 @@ export default {
           },
         },
         {
-          key: 'status',
-          label: this.$t('referral.tableHead.status'),
+          key: 'event',
+          label: this.$t('referral.tableHead.event'),
+          formatter: (value) => this.$t(`referral.event.${REFERRAL_EVENTS[value]}`),
           thStyle: {
             padding: '0',
             height: '27px',
@@ -390,27 +359,94 @@ export default {
             style: 'padding: 0; height: 64px; line-height: 64px',
           },
         },
-      ],
-    };
+      ];
+    },
   },
-  computed: {
-    totalPages() {
-      return Math.ceil(this.items.length / this.offset);
+  watch: {
+    page: {
+      async handler(newValue, oldValue) {
+        if (newValue !== oldValue) {
+          this.ScrollToTop();
+          const payload = {
+            params: {
+              limit: 6,
+              offset: (newValue - 1) * this.perPage,
+            },
+          };
+          await this.$store.dispatch('referral/updateCurrentPage', newValue);
+          await this.$store.dispatch('referral/fetchPaidEventsList', payload);
+        }
+      },
+    },
+    paidEventsList: {
+      handler() {
+        this.$store.dispatch('referral/fetchRewardBalance', this.userAddress);
+      },
+    },
+    referralsList: {
+      handler() {
+        this.referralItems();
+      },
     },
   },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
   },
+  beforeDestroy() {
+    this.$store.dispatch('referral/unsubscribeToReferralEvents', this.userAddress);
+  },
   methods: {
-    doCopy(ev) {
-      ev.stopPropagation();
-      this.$copyText(this.referLink);
-    },
-    clickClaimBtnHandler() {
+    async clickClaimBtnHandler() {
       this.ShowModal({
-        key: modals.thanks,
+        key: modals.referralClaim,
+        fields: {
+          to: { name: this.$t('meta.toBig'), value: this.userAddress },
+          amount: { name: this.$t('modals.amount'), value: this.referralReward },
+        },
+        desc: this.$t('modals.claimConfirm'),
       });
+    },
+    async clickRegistrationBtnHandler() {
+      this.SetLoader(true);
+      const res = await this.$store.dispatch('referral/fetchCreatedReferralList');
+      this.SetLoader(false);
+      if (res && this.createdReferralsList.length) {
+        this.ShowModal({
+          key: modals.status,
+          title: this.$t('meta.btns.registration'),
+          subtitle: this.$t('modals.registration'),
+          cancel: this.$t('meta.btns.cancel'),
+          button: this.$t('meta.btns.submit'),
+          itemList: this.filterCreatedReferralsList,
+          callback: async () => await this.$store.dispatch('referral/addReferrals', this.userAddress),
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          title: this.$t('modals.errors.error'),
+          subtitle: this.$t('notifications.registrationError'),
+        });
+      }
+    },
+    referralItems() {
+      const referralsList = [];
+      const indexList = [];
+      if (this.referralsList.length > this.referralCount) {
+        while (referralsList.length < this.referralCount) {
+          const index = Math.floor(Math.random() * this.referralsList.length);
+          if (!indexList.includes(index)) {
+            indexList.push(index);
+            referralsList.push(this.referralsList[index]);
+          }
+        }
+        return referralsList;
+      }
+
+      return this.referralsList;
+    },
+    getStyledAmount(value) {
+      return getStyledAmount(value);
     },
   },
 };
@@ -418,7 +454,7 @@ export default {
 
 <style lang="scss" scoped>
 .referral-page {
-  background: linear-gradient(to bottom, #103D7C 370px, #f6f8fa 370px);
+  background: linear-gradient(to bottom, $darkblue 370px, $white100 370px);
   display: flex;
   justify-content: center;
 
@@ -432,16 +468,19 @@ export default {
     padding: 10px;
     box-sizing: content-box;
   }
+
   &__header {
     max-width: 450px;
     font-weight: 500;
-    color: #FFF;
+    color: $white;
     align-self: center;
+
     .title {
       @extend .referral-page__header;
       font-size: 45px;
       line-height: 110%;
       margin: 0 0 16px;
+
       &_sub {
         @extend .referral-page__header;
         font-size: 16px;
@@ -450,14 +489,16 @@ export default {
       }
     }
   }
+
   &__content {
     display: grid;
     grid-row-gap: 30px;
     grid-template-rows: 225px max-content max-content;
 
     .info-block {
-      background-color: #fff;
+      background-color: $white;
       border-radius: 6px;
+      position: relative;
 
       &__wrap {
         display: grid;
@@ -470,23 +511,29 @@ export default {
         width: 156px;
       }
 
+      &__btn-wrap_absolute {
+        position: absolute;
+        right: 0;
+        z-index: 3;
+      }
+
       &__tokens {
         font-weight: 700;
         font-size: 25px;
-        color: #0083C7;
+        color: $blue;
         padding: 0 20px;
       }
 
       &__name {
         font-size: 16px;
-        color: #1D2127;
+        color: $black800;
         padding: 20px 20px 10px 20px;
         font-weight: 400;
 
         &_bold {
           font-weight: 500;
           font-size: 25px;
-          color: #103D7C;
+          color: $darkblue;
           line-height: 1;
           padding: 20px;
         }
@@ -496,8 +543,11 @@ export default {
         height: 33px;
         width: 33px;
         border-radius: 50%;
-        background-color: #fff;
+        background-color: $white;
         flex: none;
+        display: inline;
+        margin-right: 10px;
+
         &_list {
           @extend .ava;
           position: absolute;
@@ -518,34 +568,47 @@ export default {
           align-items: center;
           gap: 10px;
         }
+
         &__name {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
           font-size: 16px;
+          text-transform: capitalize;
         }
+        &__name-table {
+          max-width: 90px;
+        }
+
         &__value {
           font-size: 16px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
           font-weight: 500;
+          text-transform: capitalize;
 
           &_green {
             @extend .user__value;
-            color: #00AA5B;
+            color: $green;
           }
 
           &_gray {
             @extend .user__value;
-            color: #7C838D;
+            color: $black500;
             font-weight: 400;
+          }
+        }
+
+        &__icon-copy {
+          &:before {
+            color: $lightblue;
           }
         }
 
         &_last-reward {
           display: grid;
-          background-color: #F7F8FA;
+          background-color: $black0;
           border-radius: 5px;
           height: 50px;
           line-height: 50px;
@@ -555,6 +618,19 @@ export default {
           flex-wrap: wrap;
           gap: 10px;
           grid-template-columns: 5fr auto;
+        }
+
+        &__link {
+          display: flex;
+          align-items: center;
+          position: relative;
+          text-decoration: none;
+          color: $black500;
+
+          &:hover,
+          &:focus {
+            text-decoration: underline;
+          }
         }
       }
 
@@ -573,17 +649,19 @@ export default {
       }
 
       &__more {
-        position: absolute;
         height: 33px;
-        width: 53px;
+        padding: 0 10px;
+        min-width: 53px;
         border-radius: 39px;
-        background-color: #F7F8FA;
+        background-color: $black0;
         text-align: center;
         line-height: 33px;
+        margin-left: -5px;
+        z-index: 2;
       }
 
       &__link {
-        border: 1px solid #F7F8FA;
+        border: 1px solid $black0;
         border-radius: 6px;
         width: calc(100% - 40px);
         margin-left: 20px;
@@ -593,17 +671,21 @@ export default {
         gap: 10px;
         height: 46px;
         align-items: center;
+
         button {
           margin-top: 3px;
         }
+
         .address {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
           font-size: 16px;
-          color: #1D2127;
+          color: $black800;
+
           &__icon {
             font-size: 24px;
+
             &::before {
               color: $blue;
             }
@@ -621,21 +703,23 @@ export default {
 
         .step {
           position: relative;
-          background-color: #F7F8FA;
+          background-color: $black0;
           border-radius: 6px;
           z-index: 2;
 
           &__name {
             font-weight: 500;
             font-size: 18px;
-            color: #0083C7;
+            color: $blue;
             padding: 10px;
           }
+
           &__about {
             font-size: 16px;
-            color: #7C838D;
+            color: $black500;
             padding: 0 10px 10px;
           }
+
           &:not(:last-child) {
             &:after {
               content: "";
@@ -643,7 +727,7 @@ export default {
               width: 12px;
               border-radius: 50%;
               z-index: 3;
-              background-color: #D8DFE3;
+              background-color: $grey100;
               position: absolute;
               right: -5px;
               top: calc(50% - 5px);
@@ -657,20 +741,21 @@ export default {
               width: 12px;
               border-radius: 50%;
               z-index: 3;
-              background-color: #D8DFE3;
+              background-color: $grey100;
               position: absolute;
               left: -5px;
               top: calc(50% - 5px);
             }
           }
         }
+
         &:after {
           content: "";
           position: absolute;
           height: 2px;
           width: 100%;
           top: 50%;
-          background-color: #D8DFE3;
+          background-color: $grey100;
         }
       }
 
@@ -684,6 +769,7 @@ export default {
 
   &__table {
     margin-bottom: 25px;
+
     table {
       margin: 0 !important;
       border-radius: 0 !important;
@@ -691,7 +777,7 @@ export default {
   }
 
   @include _991 {
-    background: linear-gradient(to bottom, #103D7C 245px, #f6f8fa 245px);
+    background: linear-gradient(to bottom, $darkblue 245px, $white100 245px);
 
     &__container {
       gap: 15px;
@@ -708,7 +794,7 @@ export default {
   }
 
   @include _767 {
-    background: linear-gradient(to bottom, #103D7C 220px, #f6f8fa 220px);
+    background: linear-gradient(to bottom, $darkblue 220px, $white100 220px);
     &__container {
       grid-template-rows: repeat(2, auto);
       gap: 24px;
@@ -718,6 +804,7 @@ export default {
         font-size: 36px;
         margin-bottom: 15px;
         width: 100%;
+
         &_sub {
           font-size: 16px;
           max-width: 400px;
@@ -727,12 +814,14 @@ export default {
     }
     &__content {
       grid-template-rows: 450px max-content max-content;
+
       .info-block {
         &_couple {
           grid-template-rows: repeat(2, 1fr);
           grid-template-columns: unset;
           gap: 20px;
         }
+
         &__steps {
           grid-template-rows: repeat(3, 1fr);
           grid-template-columns: unset;
@@ -751,7 +840,7 @@ export default {
               &:before {
                 right: calc(50% - 7px);
                 left: unset;
-                top:- 5px;
+                top: - 5px;
               }
             }
           }

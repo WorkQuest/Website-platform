@@ -1,16 +1,15 @@
 <template>
   <ctm-modal-box
     class="message"
-    :title="$t('modals.sendARequest')"
+    :title="$tc('modals.titles.sendARequest')"
   >
     <div class="ctm-modal__content">
-      <validation-observer
-        v-slot="{handleSubmit}"
-      >
+      <validation-observer v-slot="{handleSubmit}">
         <div class="message">
           <div class="message__content">
             <div class="modal__desc">
               <div class="message__wrapper">
+                <!--suppress XmlInvalidId -->
                 <label
                   for="textarea"
                   class="modal__labelMessage"
@@ -21,9 +20,10 @@
                   <textarea
                     id="textarea"
                     v-model="text"
+                    data-selector="MESSAGE"
                     class="message__textarea"
                     rules="required"
-                    :placeholder="$t('modals.hello')"
+                    :placeholder="$t('meta.typeYourMessage')"
                   />
                 </div>
                 <files-uploader
@@ -39,20 +39,22 @@
               <div class="btn__container">
                 <div class="btn__wrapper">
                   <base-btn
+                    data-selector="SEND"
                     class="message__action"
                     :disabled="!text || isRespondActionInProgress"
                     @click="handleSubmit(showRequestSendModal)"
                   >
-                    {{ $t('meta.send') }}
+                    {{ $t('meta.btns.send') }}
                   </base-btn>
                 </div>
                 <div class="btn__wrapper">
                   <base-btn
-                    :mode="'outline'"
+                    mode="outline"
+                    data-selector="CANCEL"
                     class="message__action"
-                    @click="hide()"
+                    @click="CloseModal"
                   >
-                    {{ $t('meta.cancel') }}
+                    {{ $t('meta.btns.cancel') }}
                   </base-btn>
                 </div>
               </div>
@@ -68,7 +70,7 @@
 /* eslint-disable object-shorthand,no-var */
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { InfoModeWorker, QuestStatuses } from '~/utils/enums';
+import { QuestStatuses } from '~/utils/сonstants/quests';
 
 export default {
   name: 'ModalSendARequest',
@@ -87,9 +89,6 @@ export default {
   methods: {
     updateFiles(files) {
       this.files = files;
-    },
-    hide() {
-      this.CloseModal();
     },
     async respondOnQuest() {
       const medias = await this.uploadFiles(this.files);
@@ -112,12 +111,14 @@ export default {
       this.isRespondActionInProgress = true;
       const ok = await this.respondOnQuest();
       if (ok) {
+        await this.$store.dispatch('quests/getQuest', this.$route.params.id);
         this.ShowModal({
-          key: modals.requestSend,
+          key: modals.status,
+          img: require('assets/img/ui/message.svg'),
+          title: this.$t('modals.titles.requestSend'),
+          subtitle: this.$t('modals.waitResponseFromEmployer'),
         });
-      } else {
-        this.CloseModal();
-      }
+      } else this.CloseModal();
     },
   },
 };

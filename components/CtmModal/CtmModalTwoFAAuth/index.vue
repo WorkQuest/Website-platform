@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.twoFAAuth')"
+    :title="$tc('modals.titles.2FA.auth')"
   >
     <validation-observer
       v-slot="{handleSubmit, validated, passed, invalid}"
@@ -47,7 +47,8 @@
               class="btn__store"
             >
               <base-btn
-                :mode="'black'"
+                mode="black"
+                :data-selector="item.text"
                 @click="item.click"
               >
                 {{ item.text }}
@@ -79,6 +80,7 @@
           <div class="code__input">
             <base-field
               v-model="twoFACode"
+              data-selector="2FA-CODE"
               :placeholder="twoFACode"
             />
             <button
@@ -86,6 +88,7 @@
               v-clipboard:success="ClipboardSuccessHandler"
               v-clipboard:error="ClipboardErrorHandler"
               class="btn__copy"
+              data-selector="COPY-BTN"
               type="button"
             >
               <span class="icon-copy" />
@@ -102,6 +105,7 @@
           <div class="code__input">
             <base-field
               v-model="twoFACode"
+              data-selector="2FA-CODE"
               :placeholder="twoFACode"
             />
             <button
@@ -109,6 +113,7 @@
               v-clipboard:error="ClipboardErrorHandler"
               v-clipboard:copy="twoFACode"
               class="btn__copy"
+              data-selector="COPY-BTN"
               type="button"
             >
               <span class="icon-copy" />
@@ -136,6 +141,7 @@
             v-model="models[item.model]"
             :vid="item.id"
             :label="item.label"
+            :data-selector="item.label.toUpperCase()"
             :placeholder="item.placeholder"
             :rules="item.rules"
             :name="item.name"
@@ -150,9 +156,10 @@
         >
           <base-btn
             class="message__action"
+            data-selector="NEXT-STEP-WITH-ENABLE-2FA"
             @click="nextStepWithEnable2FA()"
           >
-            {{ $t('meta.next') }}
+            {{ $t('meta.btns.next') }}
           </base-btn>
         </div>
         <div
@@ -166,6 +173,7 @@
           >
             <base-btn
               v-if="item.step.includes(step)"
+              :data-selector="`${item.text}-${i}`"
               class="message__action"
               @click="item.click"
             >
@@ -178,10 +186,11 @@
           >
             <base-btn
               class="message__action"
+              data-selector="CONFIRM-ENABLE-2FA"
               :disabled="!validated || !passed || invalid"
               @click="handleSubmit(confirmEnable2FA)"
             >
-              {{ $t('meta.next') }}
+              {{ $t('meta.btns.next') }}
             </base-btn>
           </span>
         </div>
@@ -191,11 +200,12 @@
           class="btn__wrapper"
         >
           <base-btn
-            :mode="'outline'"
+            mode="outline"
+            data-selector="PREVIOUS-STEP"
             class="message__action"
             @click="previousStep()"
           >
-            {{ $t('meta.back') }}
+            {{ $t('meta.btns.back') }}
           </base-btn>
         </div>
       </div>
@@ -204,7 +214,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -220,16 +230,16 @@ export default {
       shopBtns: [
         {
           click: this.goToAppleStore,
-          text: this.$t('modals.appleStore'),
+          text: this.$t('meta.stores.appleStore'),
           img: require('~/assets/img/ui/apple-icon.svg'),
         },
         {
           click: this.goToGooglePlay,
-          text: this.$t('modals.googlePlay'),
+          text: this.$t('meta.stores.googlePlay'),
           img: require('~/assets/img/ui/google-play-icon.svg'),
         },
       ],
-      stepBtns: [{ step: [2, 3], click: this.nextStep, text: this.$t('meta.next') }],
+      stepBtns: [{ step: [2, 3], click: this.nextStep, text: this.$t('meta.btns.next') }],
       inputs: [
         {
           id: 'confirmCode',
@@ -277,11 +287,11 @@ export default {
     await this.$store.dispatch('user/getUserData');
   },
   methods: {
-    goToGooglePlay(to, from, next) {
-      window.location.href = 'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2';
+    goToGooglePlay() {
+      window.open('https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2');
     },
-    goToAppleStore(to, from, next) {
-      window.location.href = 'https://apps.apple.com/ru/app/google-authenticator/id388497605';
+    goToAppleStore() {
+      window.open('https://apps.apple.com/ru/app/google-authenticator/id388497605');
     },
     async enable2FA() {
       const response = await this.$store.dispatch('user/enable2FA');
@@ -303,8 +313,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('modals.2FAStatus'),
-        subtitle: this.$t('modals.2FAEnabled'),
+        title: this.$t('modals.2FA.status'),
+        subtitle: this.$t('modals.2FA.enabled'),
       });
     },
     validationErrorFields(data) {

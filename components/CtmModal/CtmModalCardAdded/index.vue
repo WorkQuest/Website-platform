@@ -12,14 +12,12 @@
       <div class="cardAdded__title">
         {{ $t('modals.cardHasBeenAdded') }}
       </div>
-      <div class="cardAdded__desc">
-        {{ $t('modals.cardAddedText') }}
-      </div>
       <base-btn
         class="cardAdded__action"
+        data-selector="OK"
         @click="showOptions"
       >
-        {{ $t('meta.ok') }}
+        {{ $t('meta.btns.ok') }}
       </base-btn>
     </div>
   </ctm-modal-box>

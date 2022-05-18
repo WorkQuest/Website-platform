@@ -1,5 +1,8 @@
 <template>
-  <div class="skills">
+  <div
+    class="skills"
+    data-selector="COMPONENT-SKILLS"
+  >
     <div class="skills__container">
       <div class="skills__title">
         {{ $t("settings.employmentInfo") }}
@@ -16,6 +19,7 @@
             :key="index"
             v-model="skills[dd.model]"
             class="skills__drop-down"
+            :data-selector="dd.model"
             type="gray"
             :placeholder="$t(dd.placeholder)"
             :items="dd.items"
@@ -26,18 +30,20 @@
             v-model="skills.perHour"
             rules="max:7"
             class="skills__cost"
-            :placeholder="skills.perHour || $t('priority.title')"
-            :label="$t('settings.costPerHour')"
-            :name="$t('settings.costPerHour')"
+            data-selector="COST-PER-HOUR"
+            :placeholder="skills.perHour || $t('meta.costPerHour')"
+            :label="$t('meta.costPerHour')"
+            :name="$t('meta.costPerHour')"
             type="gray"
           />
         </div>
         <div class="skills__save">
           <base-btn
             class="skills__btn"
+            data-selector="SAVE-CHANGES"
             @click="$emit('click')"
           >
-            {{ $t("settings.save") }}
+            {{ $t("meta.btns.save") }}
           </base-btn>
           <span v-if="validationError">
             {{ $t('messages.formError') }}
@@ -49,6 +55,8 @@
 </template>
 
 <script>
+import { PayPeriodsIndex } from '~/utils/enums';
+
 export default {
   name: 'Skills',
   props: {
@@ -63,30 +71,39 @@ export default {
   },
   data() {
     return {
-      dropdowns: [
-        {
-          model: 'priorityIndex',
-          placeholder: 'priority.title',
-          items: [
-            this.$t('priority.all'),
-            this.$t('priority.employee.low'),
-            this.$t('priority.employee.normal'),
-            this.$t('priority.employee.urgent'),
-          ],
-          label: 'settings.priority',
-        },
-        {
-          model: 'distantIndex',
-          placeholder: 'settings.distantWork.select',
-          items: [
-            this.$t('settings.distantWork.distantWork'),
-            this.$t('settings.distantWork.workInOffice'),
-            this.$t('settings.distantWork.bothVariant'),
-          ],
-          label: 'settings.distantWork.title',
-        },
-      ],
+      dropdowns: [],
     };
+  },
+  beforeMount() {
+    this.dropdowns = [
+      {
+        model: 'priorityIndex',
+        placeholder: 'meta.priority.title',
+        items: [
+          this.$t('meta.priority.all'),
+          this.$t('meta.priority.fixedDelivery'),
+          this.$t('meta.priority.shortTerm'),
+          this.$t('meta.priority.employee.urgent'),
+        ],
+        label: 'settings.priority',
+      },
+      {
+        model: 'distantIndex',
+        placeholder: 'settings.distantWork.select',
+        items: [
+          this.$t('settings.distantWork.distantWork'),
+          this.$t('settings.distantWork.workInOffice'),
+          this.$t('settings.distantWork.bothVariant'),
+        ],
+        label: 'settings.distantWork.title',
+      },
+      {
+        model: 'payPeriodIndex',
+        placeholder: 'settings.selectPayPeriod',
+        items: PayPeriodsIndex.map((item) => this.$t(`quests.payPeriods.${item}`)),
+        label: 'quests.payPeriods.title',
+      },
+    ];
   },
   methods: {
     updateSelectedSkills(specAndSkills) {
@@ -118,7 +135,7 @@ export default {
     align-items: flex-end;
     margin: 0;
     span {
-      color: #bb5151;
+      color: $errorText;
       font-size: 14px;
       min-height: 23px;
       width: 250px;

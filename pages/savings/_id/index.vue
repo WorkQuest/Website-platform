@@ -16,12 +16,12 @@
               {{ $t('saving.depositAmount') }}
             </div>
             <div class="info-block__tokens">
-              {{ $tc('saving.wusdCount', "4 562") }}
+              {{ $tc('meta.coins.count.WUSDCount', "4 562") }}
             </div>
           </div>
           <div class="info-block__small_right">
             <div class="info-block__perc">
-              {{ $tc('saving.plusPercents', "4,51") }}
+              + {{ $tc('meta.units.percentsCount', 4.51) }}
             </div>
             <div class="info-block__period">
               {{ $t('pension.everyYear') }}
@@ -32,21 +32,32 @@
               {{ $t('pension.timeRemainsUntilTheEndOfThePeriod') }}
             </div>
             <div class="info-block__subtitle_black">
-              {{ $tc('saving.days', 152) }}
+              {{ $tc('meta.units.days', DeclOfNum(152), {count: 152}) }}
             </div>
           </div>
           <div class="btn-group_exp">
             <base-btn
               class="btn_bl"
-              @click="openOpenADepositModal()"
+              data-selector="OPEN-WITHDRAW"
+              @click="openModal($options.modals.withdrawAbout)"
             >
-              {{ $t('saving.deposit') }}
+              {{ $t('meta.deposit') }}
             </base-btn>
             <base-btn
               class="btn_bl"
-              @click="openWithdrawAboutModal()"
+              mode="outline"
+              data-selector="OPEN-DEPOSIT"
+              @click="openModal($options.modals.openADeposit)"
             >
-              {{ $t('saving.withdraw') }}
+              {{ $t('meta.deposit') }}
+            </base-btn>
+            <base-btn
+              class="btn_bl"
+              mode="outline"
+              data-selector="OPEN-CLAIM"
+              @click="openModal($options.modals.openADeposit)"
+            >
+              {{ $t('modals.claim') }}
             </base-btn>
           </div>
         </div>
@@ -87,7 +98,7 @@
               </template>
               <template #cell(time)="el">
                 <div class="user__value_gray">
-                  {{ el.item.time }}
+                  {{ $moment(el.item.time).locale($i18n.locale).format('Do MMM YY') }}
                 </div>
               </template>
               <template #cell(status)="el">
@@ -109,26 +120,27 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'SavingProduct',
+  modals,
   data() {
     return {
       items: [
         {
-          userName: this.$t('saving.table.userName'),
+          userName: 'John Doe',
           avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('saving.table.userId'),
-          txHash: this.$t('saving.table.txHash'),
-          time: this.$t('saving.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('saving.table.status'),
+          userID: '455dad66544ss',
+          txHash: 'sf998s...ss877d',
+          time: 'Feb 1, 2021',
+          amount: this.$tc('meta.coins.count.WQTCount', 12),
+          status: this.$t('meta.success'),
         },
         {
-          userName: this.$t('saving.table.userName'),
+          userName: 'John Doe',
           avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('saving.table.userId'),
-          txHash: this.$t('saving.table.txHash'),
-          time: this.$t('saving.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('saving.table.status'),
+          userID: '455dad66544ss',
+          txHash: 'sf998s...ss877d',
+          time: 'Feb 1, 2021',
+          amount: this.$tc('meta.coins.count.WQTCount', 12),
+          status: this.$t('meta.success'),
         },
       ],
       testFields: [
@@ -217,15 +229,8 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    openOpenADepositModal() {
-      this.ShowModal({
-        key: modals.openADeposit,
-      });
-    },
-    openWithdrawAboutModal() {
-      this.ShowModal({
-        key: modals.withdrawAbout,
-      });
+    openModal(key) {
+      this.ShowModal({ key });
     },
   },
 };
@@ -300,8 +305,8 @@ export default {
 
     .btn-group {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
       padding-bottom: 20px;
 
       &_exp {
@@ -365,7 +370,7 @@ export default {
       }
 
       &__small {
-        background-color: #F7F8FA;
+        background-color: $black0;
         display: grid;
         grid-template-rows: repeat(2, 1fr);
         width: 115px;
@@ -462,7 +467,7 @@ export default {
 
     &_last-reward {
       display: grid;
-      background-color: #F7F8FA;
+      background-color: $black0;
       border-radius: 5px;
       height: 50px;
       line-height: 50px;

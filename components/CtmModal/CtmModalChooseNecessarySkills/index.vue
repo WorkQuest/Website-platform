@@ -1,6 +1,6 @@
 <template>
   <ctm-modal-box
-    :title="$t('modals.chooseSkills')"
+    :title="$tc('modals.titles.chooseSkills')"
     class="messageSend"
   >
     <div class="ctm-modal__content">
@@ -21,12 +21,14 @@
                 type="gray"
                 :items="ddList"
                 :placeholder="skill.value"
+                :data-selector="`SKILL-${i}`"
               />
             </div>
             <div>
               <base-btn
                 v-if="!skill.added || skill.added === null"
-                :mode="'grey'"
+                mode="grey"
+                data-selector="ADD-NEW-SKILL"
                 @click="addNewSkill(currentValue, skill)"
               >
                 <template :v-slot="right">
@@ -37,7 +39,8 @@
               </base-btn>
               <base-btn
                 v-if="skill.added"
-                :mode="'grey'"
+                mode="grey"
+                data-selector="DELETE-SKILL"
                 @click="deleteSkill()"
               >
                 <template :v-slot="right">
@@ -53,18 +56,20 @@
             <div class="btn__wrapper">
               <base-btn
                 class="btn__apply"
+                data-selector="APPLY"
                 @click="success()"
               >
-                {{ $t('meta.apply') }}
+                {{ $t('meta.btns.apply') }}
               </base-btn>
             </div>
             <div class="btn__wrapper">
               <base-btn
-                :mode="'outline'"
+                mode="outline"
+                data-selector="CANCEL"
                 class="message__action"
-                @click="hide()"
+                @click="CloseModal"
               >
-                {{ $t('meta.cancel') }}
+                {{ $t('meta.btns.cancel') }}
               </base-btn>
             </div>
           </div>
@@ -76,6 +81,7 @@
 
 <script>
 import modals from '~/store/modals/modals';
+import { images } from '~/utils/images';
 
 export default {
   name: 'CtmModalChooseNecessarySkills',
@@ -99,24 +105,18 @@ export default {
   },
   methods: {
     addNewSkill(currentValue, skill) {
-      const newSkill = {
-        value: skill.value,
-        added: true,
-      };
+      const newSkill = { value: skill.value, added: true };
       this.skills.unshift(newSkill);
     },
     deleteSkill(i) {
       this.skills.splice(i, 1);
     },
 
-    hide() {
-      this.CloseModal();
-    },
     success() {
       this.ShowModal({
         key: modals.status,
-        img: require('~/assets/img/ui/success.svg'),
-        title: this.$t('modals.success'),
+        img: images.SUCCESS,
+        title: this.$t('meta.success'),
         subtitle: this.$t('modals.yourRoleHasBeenChanged'),
       });
     },

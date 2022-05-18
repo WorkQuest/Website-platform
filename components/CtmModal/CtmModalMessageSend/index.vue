@@ -11,16 +11,17 @@
             alt="MessageSend"
           >
           <div class="ctm-modal__title">
-            {{ $t('modals.messageSend') }}
+            {{ $t('modals.titles.messageSend') }}
           </div>
           <div class="ctm-modal__desc">
-            {{ $t('modals.smallTemp') }}
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor
           </div>
           <base-btn
             class="email__action"
-            @click="hide()"
+            data-selector="OK"
+            @click="CloseModal"
           >
-            {{ $t('meta.ok') }}
+            {{ $t('meta.btns.ok') }}
           </base-btn>
         </div>
       </div>
@@ -33,18 +34,10 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'ModalMessageSend',
-  data() {
-    return {};
-  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
-  },
-  methods: {
-    hide() {
-      this.CloseModal();
-    },
   },
 };
 </script>

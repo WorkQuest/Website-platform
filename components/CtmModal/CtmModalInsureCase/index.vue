@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="insure"
-    :title="$t('modals.insureCase')"
+    :title="$tc('modals.titles.insureCase')"
   >
     <div class="insure__content content">
       <div class="content__user user">
@@ -11,14 +11,11 @@
           alt="user avatar"
         >
         <span class="user__name">
-          {{ $t('insuring.userNameCase') }}
+          Cody Fisher :
         </span>
         <span class="user__text">
           {{ $t('insuring.paymentOfInsurance') }}
         </span>
-      </div>
-      <div class="content__text">
-        {{ $t('insuring.insureCaseText') }}
       </div>
       <div class="content__pictures">
         <img
@@ -33,9 +30,10 @@
         <base-btn
           class="buttons__button"
           mode="outline"
-          @click="hide"
+          data-selector="CANCEL"
+          @click="CloseModal"
         >
-          {{ $t('meta.cancel') }}
+          {{ $t('meta.btns.cancel') }}
         </base-btn>
       </div>
     </div>
@@ -44,7 +42,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalInsureCase',
@@ -62,11 +59,6 @@ export default {
       options: 'modals/getOptions',
     }),
   },
-  methods: {
-    hide() {
-      this.CloseModal();
-    },
-  },
 };
 </script>
 
@@ -76,7 +68,7 @@ export default {
   max-width: 537px !important;
 
   &__content {
-    padding: 0px 28px 30px 28px!important;
+    padding: 0 28px 30px 28px!important;
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;
@@ -115,7 +107,7 @@ export default {
     line-height: 130%;
     margin: 0 5px 0 15px;
   }
-  &__text{
+  &__text {
     weight: 400;
     font-size: 16px;
     color: $black500;

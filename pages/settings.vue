@@ -1,14 +1,17 @@
 <template>
-  <div class="settings">
+  <div
+    class="settings"
+    data-selector="PAGE-SETTINGS"
+  >
     <div class="settings__title">
-      {{ $t('settings.settings') }}
+      {{ $t('meta.settings') }}
     </div>
     <ValidationObserver
       ref="settings"
       class="settings__body"
       tag="div"
     >
-      <verification-card v-if="userRole === UserRole.WORKER && isShowInfo === true && userData.statusKYC === 0" />
+      <verification-card v-if="userData.statusKYC === 0" />
       <profile
         :profile="profile"
         :new-education="newEducation"
@@ -16,23 +19,28 @@
         :avatar-change="avatarChange"
         :validation-error="validationError"
         :is-valid-phone-number="isValidPhoneNumber"
+        :is-valid-second-phone-number="isValidSecondPhoneNumber"
         @click="editUserData"
         @updateFirstPhone="updateFirstPhone($event)"
         @updateSecondPhone="updateSecondPhone($event)"
         @showModalStatus="showModalStatus"
         @checkValidate="checkValidate"
         @updateEducation="addEducation"
-        @updateCoordinates="updateCoordinates"
+        @updateFullAddress="updateFullAddress"
         @validationRef="validationRefs"
       />
       <skills
-        v-if="userRole === UserRole.WORKER"
+        v-if="userRole === $options.UserRole.WORKER"
         :skills="skills"
         :validation-error="validationError"
         @click="editUserData"
         @checkValidate="checkValidate"
       />
-      <advanced @showModalKey="showModalKey" />
+      <advanced
+        id="2FA"
+        @updateVisibility="updateVisibility($event)"
+        @showModalKey="showModalKey"
+      />
     </ValidationObserver>
   </div>
 </template>
@@ -45,10 +53,13 @@ import VerificationCard from '~/components/app/pages/settings/VerificationCard.v
 import Profile from '~/components/app/pages/settings/Profile.vue';
 import Skills from '~/components/app/pages/settings/Skills.vue';
 import Advanced from '~/components/app/pages/settings/Advanced.vue';
-import { UserRole, WorkplaceIndex } from '~/utils/enums';
+import {
+  PayPeriodsIndex, RatingStatus, UserRole, WorkplaceIndex,
+} from '~/utils/enums';
 
 export default {
   name: 'Settings',
+  UserRole,
   components: {
     VerificationCard, Profile, Skills, Advanced,
   },
@@ -90,17 +101,19 @@ export default {
         perHour: 0,
         priorityIndex: -1,
         distantIndex: -1,
+        payPeriod: -1,
         selectedSpecAndSkills: null,
       },
-      isShowInfo: true,
       avatarChange: { data: {}, file: {} },
       updatedSecondPhone: { codeRegion: null, phone: null, fullPhone: null },
       updatedFirstPhone: { codeRegion: null, phone: null, fullPhone: null },
       validationError: false,
       isValidPhoneNumber: true,
+      isValidSecondPhoneNumber: true,
       newEducation: [],
       newWorkExp: [],
       valRefs: {},
+      profileVisibilitySetting: {},
     };
   },
   computed: {
@@ -110,12 +123,13 @@ export default {
       accessToken: 'sumsub/getSumSubBackendToken',
       filters: 'quests/getFilters',
       secondNumber: 'user/getUserSecondMobileNumber',
+      localNotifications: 'notifications/getLocalNotifications',
     }),
     WorkplaceIndex() {
       return WorkplaceIndex;
     },
-    UserRole() {
-      return UserRole;
+    isEmployer() {
+      return this.userRole === UserRole.EMPLOYER;
     },
   },
   async mounted() {
@@ -123,23 +137,25 @@ export default {
     if (!this.filters) await this.$store.dispatch('quests/getFilters');
     if (!this.profile.firstName) await this.$store.dispatch('user/getUserData');
     const addInfo = this.userData.additionalInfo;
+    const { userData, secondNumber, scrollToId } = this;
+    scrollToId();
+    const { employerProfileVisibilitySetting, workerProfileVisibilitySetting } = userData;
     this.profile = {
-      avatarId: this.userData.avatarId,
-      firstName: this.userData.firstName,
-      lastName: this.userData.lastName,
-      email: this.userData.email,
+      avatarId: userData.avatarId,
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      email: userData.email,
       firstPhone: {
-        codeRegion: this.userData.phone?.codeRegion || this.userData.tempPhone?.codeRegion,
-        phone: this.userData.phone?.phone || this.userData.tempPhone?.phone,
-        fullPhone: this.userData.phone?.fullPhone || this.userData.tempPhone?.fullPhone,
+        codeRegion: userData.phone?.codeRegion || userData.tempPhone?.codeRegion,
+        phone: userData.phone?.phone || userData.tempPhone?.phone,
+        fullPhone: userData.phone?.fullPhone || userData.tempPhone?.fullPhone,
       },
       additionalInfo: {
         secondMobileNumber: {
-          codeRegion: this.secondNumber?.codeRegion || null,
-          phone: this.secondNumber?.phone || null,
-          fullPhone: this.secondNumber?.fullPhone || null,
+          codeRegion: secondNumber?.codeRegion || null,
+          phone: secondNumber?.phone || null,
+          fullPhone: secondNumber?.fullPhone || null,
         },
-        address: addInfo.address,
         socialNetwork: {
           instagram: addInfo.socialNetwork.instagram,
           twitter: addInfo.socialNetwork.twitter,
@@ -156,33 +172,59 @@ export default {
       },
       locationFull: {
         location: {
-          longitude: this.coordinates?.lng || this.profile.locationFull.location?.longitude || 0,
-          latitude: this.coordinates?.lat || this.profile.locationFull.location?.latitude || 0,
+          longitude: userData.location?.longitude || 0,
+          latitude: userData.location?.latitude || 0,
         },
-        locationPlaceName: addInfo.address,
+        locationPlaceName: userData.locationPlaceName,
       },
     };
     this.skills = {
-      priorityIndex: this.userData.priority,
-      distantIndex: this.distantIndexByWorkplace(this.userData.workplace),
-      perHour: this.userData.wagePerHour,
-      selectedSpecAndSkills: this.userData.userSpecializations || [],
+      priorityIndex: userData.priority,
+      distantIndex: WorkplaceIndex.indexOf(userData.workplace),
+      payPeriodIndex: PayPeriodsIndex.indexOf(userData.payPeriod),
+      perHour: userData.costPerHour,
+      selectedSpecAndSkills: userData.userSpecializations || [],
     };
+
+    if (this.isEmployer) {
+      const { arrayRatingStatusCanRespondToQuest, arrayRatingStatusInMySearch } = employerProfileVisibilitySetting;
+      this.profileVisibilitySetting = {
+        ratingStatusCanRespondToQuest: arrayRatingStatusCanRespondToQuest,
+        ratingStatusInMySearch: arrayRatingStatusInMySearch,
+      };
+    } else {
+      const { arrayRatingStatusCanInviteMeOnQuest, arrayRatingStatusInMySearch } = workerProfileVisibilitySetting;
+      this.profileVisibilitySetting = {
+        ratingStatusCanInviteMeOnQuest: arrayRatingStatusCanInviteMeOnQuest,
+        ratingStatusInMySearch: arrayRatingStatusInMySearch,
+      };
+    }
     this.SetLoader(false);
+
+    this.$root.$on('roleChanged', async () => {
+      this.SetLoader(true);
+      await this.$store.dispatch('user/getUserData');
+      this.SetLoader(false);
+    });
   },
   methods: {
+    scrollToId() {
+      if (this.$route.hash) {
+        const id = this.$route.hash.slice(1);
+        const element = document.getElementById(id);
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    },
     validationRefs(data) {
       this.valRefs = data;
       return this.valRefs;
     },
-    updateCoordinates(coordinates) {
-      this.profile.locationFull.location.longitude = +coordinates.lng;
-      this.profile.locationFull.location.latitude = +coordinates.lat;
-      this.profile.locationFull.locationPlaceName = coordinates.address;
+    updateFullAddress(address) {
+      this.profile.locationFull.location.longitude = +address.lng;
+      this.profile.locationFull.location.latitude = +address.lat;
+      this.profile.locationFull.locationPlaceName = address.formatted;
     },
-    distantIndexByWorkplace(workplace) {
-      return WorkplaceIndex.indexOf(workplace);
-    },
+
     // MODALS METHODS
     addEducation(knowledge, data) {
       const { educations, workExperiences } = this.profile.additionalInfo;
@@ -203,7 +245,8 @@ export default {
         imageLoadedSuccessful: this.$t('modals.imageLoadedSuccessful'),
         educationAddSuccessful: this.$t('modals.educationAddSuccessful'),
         workExpAddSuccessful: this.$t('modals.workExpAddSuccessful'),
-        saved: this.$t('modals.saved'),
+        saved: this.$t('modals.titles.saved'),
+        error: this.$t('modals.errors.error'),
       };
       return titles[modalMode];
     },
@@ -215,6 +258,7 @@ export default {
         educationAddSuccessful: this.$t('modals.pressSaveBtn'),
         workExpAddSuccessful: this.$t('modals.pressSaveBtn'),
         saved: this.$t('modals.userDataHasBeenSaved'),
+        error: this.$t('modals.errors.error'),
       };
       return subtitles[modalMode];
     },
@@ -226,6 +270,7 @@ export default {
         twoFAAuth: modals.twoFAAuth,
         smsVerification: modals.smsVerification,
         changeRoleWarning: modals.changeRoleWarning,
+        neededToEnable2FA: modals.neededToEnable2FA,
       };
       return keys[modalKey];
     },
@@ -235,7 +280,7 @@ export default {
     showModalStatus(modalMode) {
       this.ShowModal({
         key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
+        img: require(`~/assets/img/ui/${modalMode === 'error' ? 'error' : 'questAgreed'}.svg`),
         title: this.modalsStatusTitle(modalMode),
         subtitle: this.modalsStatusSubtitles(modalMode),
       });
@@ -252,7 +297,7 @@ export default {
     },
 
     updateSecondPhone(value) {
-      this.isValidPhoneNumber = true;
+      this.isValidSecondPhoneNumber = !value.nationalNumber || value.isValid;
       this.updatedSecondPhone = {
         phone: value?.nationalNumber || null,
         fullPhone: value?.formatInternational ? value.formatInternational.replace(/\s/g, '') : null,
@@ -273,13 +318,21 @@ export default {
       if (!firstMobileNumber) this.showModalStatus('enterPhoneNumber');
     },
 
+    async updateVisibility({ visibilityUser, restrictionRankingStatus }) {
+      const formatWithDefaultVal = (arr) => (arr.length === 0 ? [RatingStatus.AllStatuses] : arr);
+      this.profileVisibilitySetting[this.isEmployer
+        ? 'ratingStatusCanRespondToQuest'
+        : 'ratingStatusCanInviteMeOnQuest'
+      ] = formatWithDefaultVal(visibilityUser);
+      this.profileVisibilitySetting.ratingStatusInMySearch = formatWithDefaultVal(restrictionRankingStatus);
+    },
     async checkValidate() {
-      const validateEducation = this.userRole === UserRole.EMPLOYER ? true : await this.validateKnowledge('education',
+      const validateEducation = this.isEmployer ? true : await this.validateKnowledge('education',
         this.newEducation.length > 0 ? this.newEducation : 'validated');
-      const validateWorkExp = this.userRole === UserRole.EMPLOYER ? true : await this.validateKnowledge('work',
+      const validateWorkExp = this.isEmployer ? true : await this.validateKnowledge('work',
         this.newWorkExp.length > 0 ? this.newWorkExp : 'validated');
       const validateSettings = await this.$refs.settings.validate();
-      if (!validateSettings || !validateEducation || !validateWorkExp || !this.isValidPhoneNumber) return true;
+      if (!validateSettings || !validateEducation || !validateWorkExp || !this.isValidPhoneNumber || !this.isValidSecondPhoneNumber) return true;
       this.validationError = false;
       return false;
     },
@@ -305,8 +358,7 @@ export default {
     },
 
     editProfileRoute() {
-      if (this.userRole === UserRole.WORKER) return 'editWorkerData';
-      return 'editEmployerData';
+      return this.isEmployer ? 'editEmployerData' : 'editWorkerData';
     },
 
     async editProfile(checkAvatarID) {
@@ -325,13 +377,12 @@ export default {
         },
         locationFull: {
           location: {
-            longitude: this.coordinates ? this.coordinates.lng : this.profile.locationFull.location?.longitude || 0,
-            latitude: this.coordinates ? this.coordinates.lat : this.profile.locationFull.location?.latitude || 0,
+            longitude: this.profile.locationFull.location?.longitude || this.userData.location?.longitude,
+            latitude: this.profile.locationFull.location?.latitude || this.userData.location?.latitude,
           },
-          locationPlaceName: addInfo.address,
+          locationPlaceName: this.profile.locationFull.locationPlaceName || this.userData.locationPlaceName,
         },
         additionalInfo: {
-          address: addInfo.address,
           secondMobileNumber: {
             codeRegion: this.updatedSecondPhone?.codeRegion ? this.updatedSecondPhone?.codeRegion : null,
             phone: this.updatedSecondPhone?.phone ? this.updatedSecondPhone?.phone : null,
@@ -344,9 +395,10 @@ export default {
             facebook: facebook || null,
           },
         },
+        profileVisibility: { ...this.profileVisibilitySetting },
       };
       if (!this.updatedSecondPhone.fullPhone) payload.additionalInfo.secondMobileNumber = null;
-      await this.editProfileResponse(`user/${this.editProfileRoute()}`, this.userRole === UserRole.WORKER ? {
+      await this.editProfileResponse(`user/${this.editProfileRoute()}`, !this.isEmployer ? {
         ...payload,
         additionalInfo: {
           ...payload.additionalInfo,
@@ -354,9 +406,10 @@ export default {
           workExperiences: addInfo.workExperiences,
           description: addInfo.description || null,
         },
-        workplace: this.parseDistantWork(this.skills.distantIndex),
+        workplace: WorkplaceIndex[this.skills.distantIndex],
+        payPeriod: PayPeriodsIndex[this.payPeriodsIndex] || this.userData.payPeriod,
         priority: this.skills.priorityIndex,
-        wagePerHour: this.skills.perHour || this.userData.wagePerHour,
+        costPerHour: this.skills.perHour || this.userData.costPerHour,
         specializationKeys: this.skills.selectedSpecAndSkills || [],
       } : {
         ...payload,
@@ -371,16 +424,9 @@ export default {
       await this.$store.dispatch('user/getUserData');
     },
 
-    parseDistantWork(index) {
-      if (index === 0) return 'distant';
-      if (index === 1) return 'office';
-      if (index === 2) return 'both';
-      return null;
-    },
-
     async editProfileResponse(action, payload) {
-      await this.$store.dispatch(action, payload);
-      this.showModalStatus('saved');
+      const result = await this.$store.dispatch(action, payload);
+      this.showModalStatus(result ? 'saved' : 'error');
     },
   },
 };

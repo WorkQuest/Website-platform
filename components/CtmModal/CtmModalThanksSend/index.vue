@@ -18,9 +18,10 @@
           </div>
           <base-btn
             class="email__action"
-            @click="hide()"
+            data-selector="OK"
+            @click="CloseModal"
           >
-            {{ $t('meta.ok') }}
+            {{ $t('meta.btns.ok') }}
           </base-btn>
         </div>
       </div>
@@ -29,19 +30,9 @@
 </template>
 
 <script>
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalThanksSend',
-  data() {
-    return {
-    };
-  },
-  methods: {
-    hide() {
-      this.CloseModal();
-    },
-  },
 };
 </script>
 
@@ -52,12 +43,14 @@ export default {
 
 .messageSend {
   max-width: 337px !important;
+
   &__content {
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;
     grid-gap: 20px;
   }
+
   &__action {
     margin-top: 10px;
   }

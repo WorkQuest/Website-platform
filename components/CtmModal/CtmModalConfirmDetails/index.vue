@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="confirm"
-    :title="$t('modals.confirmDetails')"
+    :title="$tc('modals.titles.confirmDetails')"
   >
     <div class="confirm__content content">
       <div class="content__field field">
@@ -22,15 +22,17 @@
         <base-btn
           class="buttons__button"
           mode="outline"
-          @click="hide"
+          data-selector="CANCEL"
+          @click="CloseModal"
         >
-          {{ $t('meta.cancel') }}
+          {{ $t('meta.btns.cancel') }}
         </base-btn>
         <base-btn
           class="buttons__button"
+          data-selector="SUBMIT"
           @click="openStatusModal"
         >
-          {{ $t('meta.submit') }}
+          {{ $t('meta.btns.submit') }}
         </base-btn>
       </div>
     </div>
@@ -39,65 +41,22 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalConfirmDetails',
-  data() {
-    return {
-      abouts: [
-        {
-          title: this.$t('modals.currencyDetails'),
-          subtitle: this.$t('modals.eth'),
-        },
-        {
-          title: this.$t('modals.depositing'),
-          subtitle: `${1} ${this.$t('modals.eth')}`,
-        },
-        {
-          title: this.$t('modals.generatingDetails'),
-          subtitle: `${1000} ${this.$t('modals.wusd')}`,
-        },
-        {
-          title: this.$t('modals.collateralizationRatio'),
-          subtitle: this.$tc('modals.percentsCount', 0),
-        },
-        {
-          title: this.$t('modals.liquidationRatio'),
-          subtitle: this.$tc('modals.percentsCount', 150),
-        },
-        {
-          title: this.$t('modals.liquidationPrice'),
-          subtitle: 122,
-        },
-        {
-          title: this.$t('modals.liquidationFee'),
-          subtitle: 10,
-        },
-        {
-          title: this.$t('modals.stabilityFee'),
-          subtitle: this.$tc('modals.percentsCount', '5.85'),
-        },
-      ],
-    };
-  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
+    abouts() {
+      return this.options.receiptData;
+    },
   },
   methods: {
-    hide() {
+    async openStatusModal() {
+      const { submit } = this.options;
       this.CloseModal();
-    },
-    openStatusModal() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/transactionSend.svg'),
-        title: this.$t('modals.depositIsOpened'),
-        subtitle: this.$t('modals.depositIsOpenedText'),
-        path: this.options.needChangeModal ? '/crediting/1' : undefined,
-      });
+      await submit();
     },
   },
 };

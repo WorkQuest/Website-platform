@@ -17,7 +17,11 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Decentralized marketplace for work. Where employers can look for performers for different tasks, and workers perform. Work in any field with different deadlines, interactions occur through smart contracts.' },
+      {
+        hid: 'description',
+        name: 'description',
+        content: 'Decentralized marketplace for work. Where employers can look for performers for different tasks, and workers perform. Work in any field with different deadlines, interactions occur through smart contracts.',
+      },
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/img/app/favicon.svg' },
@@ -29,6 +33,7 @@ export default {
   plugins: [
     { src: '@plugins/ws', mode: 'client' },
     { src: '@plugins/axios.js' },
+    { src: '@plugins/axiosOracle.js' },
     { src: '@plugins/main.js' },
     { src: '@plugins/vee-validate.js' },
     { src: '@plugins/clipboard.js' },
@@ -72,14 +77,18 @@ export default {
   axios: {
     baseURL: process.env.BASE_URL,
   },
+  moment: {
+    defaultLocale: 'en',
+    locales: ['ru', 'bn', 'ar', 'fr', 'hi', 'id', 'pt', 'es', 'zh-cn'],
+  },
   // bootstrapVue: {
   //   // bootstrapCSS: false, // Or `css: false`
   //   // bootstrapVueCSS: false, // Or `bvCSS: false`
   //   icons: true,
   // },
   i18n: {
-    locales: ['en', 'ru', 'bn', 'ar', 'fr', 'hi', 'id', 'pt', 'es', 'zh'],
-    // locales: ['en'],
+    // locales: ['en', 'ru', 'bn', 'ar', 'fr', 'hi', 'id', 'pt', 'es', 'zh_cn'],
+    locales: ['en'],
     defaultLocale: 'en',
     strategy: 'no_prefix',
     vueI18n: {
@@ -89,7 +98,7 @@ export default {
         ar: localeAr,
         fr: localeFr,
         bn: localeBn,
-        zh: localeZh,
+        zh_cn: localeZh,
         hi: localeHi,
         id: localeId,
         pt: localePt,
@@ -108,15 +117,20 @@ export default {
     GMAPKEY: process.env.GMAPKEY,
     SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
+    WQ_PROVIDER: process.env.WQ_PROVIDER,
+    WQ_EXPLORER: process.env.WQ_EXPLORER,
+    WQ_ORACLE_URL: process.env.WQ_ORACLE_URL,
+
     NOTIFS_URL: process.env.NOTIFS_URL,
     WS_NOTIFS_URL: process.env.WS_NOTIFS_URL,
     WS_CHAT_ACTIONS_URL: process.env.WS_CHAT_ACTIONS_URL,
+    WS_WQ_PROVIDER: process.env.WS_WQ_PROVIDER,
 
     ETHEREUM_BRIDGE: process.env.ETHEREUM_BRIDGE,
     ETHEREUM_LP_TOKEN: process.env.ETHEREUM_LP_TOKEN,
     ETHEREUM_MINING: process.env.ETHEREUM_MINING,
+    ETHEREUM_RPC_URL: process.env.ETHEREUM_RPC_URL,
     ETHEREUM_WQT_TOKEN: process.env.ETHEREUM_WQT_TOKEN,
-    ETHEREUM_WS_INFURA: process.env.ETHEREUM_WS_INFURA,
 
     BSC_BRIDGE: process.env.BSC_BRIDGE,
     BSC_LP_TOKEN: process.env.BSC_LP_TOKEN,
@@ -125,18 +139,23 @@ export default {
     BSC_WQT_EXCHANGE: process.env.BSC_WQT_EXCHANGE,
     BSC_WQT_TOKEN: process.env.BSC_WQT_TOKEN,
     BSC_RPC_URL: process.env.BSC_RPC_URL,
-    BSC_WS_MORALIS: process.env.BSC_WS_MORALIS,
 
+    WORKNET_BORROWING: process.env.WORKNET_BORROWING,
+    WORKNET_BRIDGE: process.env.WORKNET_BRIDGE,
+    WORKNET_LENDING: process.env.WORKNET_LENDING,
+    WORKNET_ORACLE: process.env.WORKNET_ORACLE,
+    WORKNET_PENSION_FUND: process.env.WORKNET_PENSION_FUND,
+    WORKNET_PROMOTION: process.env.WORKNET_PROMOTION,
+    WORKNET_REFERRAL: process.env.REFERRAL_ADDRESS,
+    WORKNET_ROUTER: process.env.WORKNET_ROUTER,
+    WORKNET_SAVING_PRODUCT: process.env.WORKNET_SAVING_PRODUCT,
     WORKNET_STAKING_WQT: process.env.WORKNET_STAKING_WQT,
     WORKNET_STAKING_WUSD: process.env.WORKNET_STAKING_WUSD,
-
-    WETH_TOKEN: process.env.WETH_TOKEN,
-    WBNB_TOKEN: process.env.WBNB_TOKEN,
-
-    WQ_PROVIDER: process.env.WQ_PROVIDER,
-    WQ_EXPLORER: process.env.WQ_EXPLORER,
-    WQT_TOKEN: process.env.WQT_TOKEN,
-
-    PENSION_FUND: process.env.PENSION_FUND,
+    WORKNET_USDT_TOKEN: process.env.WORKNET_USDT_TOKEN,
+    WORKNET_WBNB_TOKEN: process.env.WORKNET_WBNB_TOKEN,
+    WORKNET_WETH_TOKEN: process.env.WORKNET_WETH_TOKEN,
+    WORKNET_WUSD_TOKEN: process.env.WORKNET_WUSD_TOKEN,
+    WORKNET_WQ_FACTORY: process.env.WORKNET_WQ_FACTORY,
+    WORKNET_VOTING: process.env.WORKNET_VOTING,
   },
 };

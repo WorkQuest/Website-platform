@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="liquidity"
-    :title="$t('modals.addLiquidity')"
+    :title="$tc('modals.titles.addLiquidity')"
   >
     <div class="liquidity__content content">
       <validation-observer
@@ -11,34 +11,37 @@
         <div class="content__grid">
           <div class="content__field field">
             <div class="field__title">
-              {{ $t('modals.amountOfWqt') }}
+              {{ $t('meta.amount.amountOfWQT') }}
             </div>
             <base-field
               v-model="amountOfWqt"
-              :placeholder="$t('modals.addLiquidityAmountWqt')"
+              :placeholder="$tc('meta.coins.count.WQTCount', 1000)"
               class="field__input"
+              data-selector="AMOUNT-OF-WQT"
               rules="required|decimal"
-              :name="$t('modals.amountOfWqtField')"
+              :name="$tc('meta.amount.amountOfWQT')"
             />
             <div class="field__container">
               <div class="field__title">
-                {{ $t(`modals.${options.isBNB ? 'amountOfBnb': 'amountOfEth'}`) }}
+                {{ $t(`meta.amount.${options.isBNB ? 'amountOfBNB': 'amountOfETH'}`) }}
               </div>
               <base-field
                 v-if="options.isBNB"
                 v-model="amountOfBnb"
-                :placeholder="$t('modals.addLiquidityAmountBnb')"
+                :placeholder="$tc('meta.coins.count.BNBCount', 10)"
+                data-selector="AMOUNT-OF-BNB"
                 class="field__input"
                 rules="required|decimal"
-                :name="$t('modals.amountOfBnbField')"
+                :name="$tc('meta.amountOfBNB')"
               />
               <base-field
                 v-else
                 v-model="amountOfEth"
-                :placeholder="$t('modals.addLiquidityAmountEth')"
+                :placeholder="$tc('meta.coins.count.ETHCount', 10)"
                 class="field__input"
+                data-selector="AMOUNT-OF-ETH"
                 rules="required|decimal"
-                :name="$t('modals.amountOfEthField')"
+                :name="$tc('meta.amountOfETH')"
               />
               <div class="field__heading">
                 {{ $t('modals.tip') }}
@@ -69,12 +72,14 @@
           <base-btn
             class="buttons__button"
             mode="outline"
+            data-selector="CANCEL"
             @click="hide"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
+            data-selector="CONNECT-WALLET"
             @click="handleSubmit(hide)"
           >
             {{ $t('modals.connectWallet') }}
@@ -110,11 +115,11 @@ export default {
       const { isBNB } = this.options;
       return [
         {
-          title: this.$t(`modals.${isBNB ? 'amountBnbPerWqt' : 'amountEthPerWqt'}`),
+          title: this.$t(`meta.amount.${isBNB ? 'amountBNBPerWQT' : 'amountETHPerWQT'}`),
           subtitle: 54,
         },
         {
-          title: this.$t(`modals.${isBNB ? 'amountBnbPerWqt' : 'amountBnbPerWqt'}`),
+          title: this.$t(`meta.amount.${isBNB ? 'amountBNBPerWQT' : 'amountBNBPerWQT'}`),
           subtitle: 65,
         },
         {
@@ -159,7 +164,7 @@ export default {
     }
   }
   &__zone {
-    background-color: #F7F8FA;
+    background-color: $black0;
     border-radius: 5px;
     padding: 15px 20px 20px 20px;
   }

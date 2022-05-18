@@ -164,6 +164,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { Path } from '~/utils/enums';
+import { URLS, LEGAL_INFO, COMPANY } from '~/utils/сonstants/footer';
 
 export default {
   name: 'Footer',
@@ -179,138 +181,54 @@ export default {
     }),
     legalInfoLinks() {
       return [
-        {
-          title: this.$t('footer.legalInfo.risks'),
-          path: 'https://workquest.co/risk_disclaimer',
-        },
-        {
-          title: this.$t('footer.legalInfo.privacyPolicy'),
-          path: 'https://workquest.co/privacy_policy',
-        },
-        {
-          title: this.$t('footer.legalInfo.terms'),
-          path: 'https://workquest.co/terms_conditions',
-        },
-        {
-          title: this.$t('footer.legalInfo.aml'),
-          path: 'https://workquest.co/aml_ctf_policy',
-        },
-        {
-          title: this.$t('footer.legalInfo.cookiePolicy'),
-          path: '#',
-        },
+        { title: this.$t('footer.legalInfo.risks'), path: LEGAL_INFO.RISKS },
+        { title: this.$t('footer.legalInfo.privacyPolicy'), path: LEGAL_INFO.PRIVACY_POLICY },
+        { title: this.$t('meta.terms'), path: LEGAL_INFO.TERM_CONDITIONS },
+        { title: this.$t('meta.aml'), path: LEGAL_INFO.AML_POLICY },
+        { title: this.$t('footer.legalInfo.cookiePolicy'), path: LEGAL_INFO.COOKIE_POLICY },
       ];
     },
     companyLinks() {
       return [
-        {
-          title: this.$t('footer.company.wqWiki'),
-          path: '#',
-        },
-        {
-          title: this.$t('footer.company.aboutUs'),
-          path: '#',
-        },
-        {
-          title: this.$t('footer.company.leadership'),
-          path: '#',
-        },
-        {
-          title: this.$t('footer.company.contactUs'),
-          path: '#',
-        },
-        {
-          title: this.$t('footer.company.support'),
-          path: '#',
-        },
+        { title: this.$t('footer.company.wqWiki'), path: Path.WIKI },
+        { title: this.$t('meta.aboutUs'), path: COMPANY.ABOUT_US },
+        { title: this.$t('footer.company.leadership'), path: COMPANY.LEADERSHIP },
+        { title: this.$t('meta.contactUs'), path: COMPANY.CONTACT_US },
+        { title: this.$t('footer.company.support'), path: COMPANY.SUPPORT },
       ];
     },
     DeFiLinks() {
       return {
         firstColumn: [
-          {
-            title: this.$t('footer.DeFi.retirement'),
-            path: '/pension',
-          },
-          {
-            title: this.$t('footer.DeFi.referral'),
-            path: '/referral',
-          },
-          {
-            title: this.$t('footer.DeFi.P2P'),
-            path: '/insuring',
-          },
-          {
-            title: this.$t('footer.DeFi.savingsProduct'),
-            path: '/savings',
-          },
-          {
-            title: this.$t('footer.DeFi.lending'),
-            path: '/crediting',
-          },
+          { title: this.$t('footer.DeFi.retirement'), path: Path.RETIREMENT },
+          { title: this.$t('footer.DeFi.referral'), path: Path.REFERRAL },
+          { title: this.$t('footer.DeFi.P2P'), path: Path.INSURING },
+          { title: this.$t('footer.DeFi.savingsProduct'), path: Path.SAVINGS },
+          { title: this.$t('footer.DeFi.lending'), path: Path.LENDING },
         ],
         secondColumn: [
-          {
-            title: this.$t('footer.DeFi.liquidityMining'),
-            path: '/mining',
-          },
-          {
-            title: this.$t('footer.DeFi.wqBridge'),
-            path: '/crosschain',
-          },
-          {
-            title: this.$t('footer.DeFi.staking'),
-            path: '/staking',
-          },
-          {
-            title: this.$t('footer.DeFi.wqDAO'),
-            path: '#',
-          },
+          { title: this.$t('meta.liquidityMining'), path: Path.MINING },
+          { title: this.$t('footer.DeFi.wqBridge'), path: Path.BRIDGE },
+          { title: this.$t('footer.DeFi.staking'), path: Path.STAKING },
+          { title: this.$t('footer.DeFi.wqDAO'), path: URLS.DAO },
         ],
       };
     },
     socialList() {
       return [
-        {
-          key: 'twitter',
-          href: 'https://twitter.com/workquest_co',
-        },
-        {
-          key: 'youtube',
-          href: 'https://www.youtube.com/channel/UCpQTdOMynXejrRTVf4ksKPA',
-        },
-        {
-          key: 'reddit',
-          href: 'https://www.reddit.com/user/WorkQuest_co',
-        },
-        {
-          key: 'facebook',
-          href: 'https://m.facebook.com/WorkQuestOfficial/',
-        },
-        {
-          key: 'linkedin',
-          href: 'https://www.linkedin.com/company/workquestofficial',
-        },
-        {
-          key: 'instagram',
-          href: 'https://www.instagram.com/workquestofficial/',
-        },
-        {
-          key: 'telegram',
-          href: 'https://t.me/WorkQuest',
-        },
+        { key: 'twitter', href: URLS.SOCIALS.TWITTER },
+        { key: 'youtube', href: URLS.SOCIALS.YOUTUBE },
+        { key: 'reddit', href: URLS.SOCIALS.REDDIT },
+        { key: 'facebook', href: URLS.SOCIALS.FACEBOOK },
+        { key: 'linkedin', href: URLS.SOCIALS.LINKEDIN },
+        { key: 'instagram', href: URLS.SOCIALS.INSTAGRAM },
+        { key: 'telegram', href: URLS.SOCIALS.TELEGRAM },
       ];
     },
     marketLinks() {
       return [
-        {
-          key: 'app-store',
-          href: '#',
-        },
-        {
-          key: 'play-market',
-          href: '#',
-        },
+        { key: 'app-store', href: URLS.STORES.APP_STORE },
+        { key: 'play-market', href: URLS.STORES.PLAY_MARKET },
       ];
     },
   },
@@ -471,53 +389,53 @@ export default {
     &__social {
       width: 40px;
       height: 40px;
-      transition: all 0.5s;
+      border: 0.3px solid $black0;
       &_twitter {
         background-image: url('assets/img/social/footer_twitter.svg');
         border-radius: 10px;
-        &:hover {
+        &:hover, &:active {
           background-image: url('assets/img/social/footer_twitter_active.svg')
         }
       }
       &_youtube {
         background-image: url('assets/img/social/footer_youtube.svg');
         border-radius: 10px;
-        &:hover {
+        &:hover, &:active {
           background-image: url('assets/img/social/footer_youtube_active.svg')
         }
       }
       &_reddit {
         background-image: url('assets/img/social/footer_reddit.svg');
         border-radius: 10px;
-        &:hover {
+        &:hover, &:active {
           background-image: url('assets/img/social/footer_reddit_active.svg')
         }
       }
       &_facebook {
         background-image: url('assets/img/social/footer_facebook.svg');
         border-radius: 10px;
-        &:hover {
+        &:hover, &:active {
           background-image: url('assets/img/social/footer_facebook_active.svg')
         }
       }
       &_linkedin {
         background-image: url('assets/img/social/footer_linkedin.svg');
         border-radius: 10px;
-        &:hover {
+        &:hover, &:active {
           background-image: url('assets/img/social/footer_linkedin_active.svg')
         }
       }
       &_instagram {
         background-image: url('assets/img/social/footer_instagram.svg');
         border-radius: 10px;
-        &:hover {
+        &:hover, &:active {
           background-image: url('assets/img/social/footer_instagram_active.svg')
         }
       }
       &_telegram {
         background-image: url('assets/img/social/footer_telegram.svg');
         border-radius: 10px;
-        &:hover {
+        &:hover, &:active {
           background-image: url('assets/img/social/footer_telegram_active.svg')
         }
       }

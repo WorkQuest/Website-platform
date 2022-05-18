@@ -9,6 +9,8 @@
         :src="options.img"
         alt="Status"
         class="content__picture"
+        width="90"
+        height="90"
       >
       <img
         v-if="options.type === 'installMetamask'"
@@ -24,123 +26,97 @@
           {{ options.subtitle }}
         </span>
       </div>
+      <div
+        v-if="options.text"
+        class="status__text"
+      >
+        <span>
+          {{ options.text }}
+        </span>
+      </div>
+      <div
+        v-if="options.itemList"
+        class="status__list"
+      >
+        <div
+          v-for="(item, index) in options.itemList"
+          :key="index"
+        >
+          <img
+            class="status__img"
+            :src="item['referralUser.avatar.url'] ? item['referralUser.avatar.url'] : $options.images.EMPTY_AVATAR"
+            alt=""
+          >
+          <span>
+            {{ item.firstName }} {{ item.lastName }}
+          </span>
+        </div>
+      </div>
       <a
-        v-if="options.txHash"
-        :href="link"
+        v-if="options.link"
+        :href="options.link"
         target="_blank"
       >
         {{ $t('modals.transactionCheck') }}
       </a>
-      <base-btn
-        v-if="options.type === 'installMetamask'"
-        class="status__action"
-        @click="installMetamask()"
-      >
-        <span
-          v-if="options.button"
-          class="status__text"
-        >
-          {{ options.button }}
-        </span>
-        <span
-          v-else
-          class="status__text"
-        >
-          {{ $t('meta.ok') }}
-        </span>
-      </base-btn>
-      <div
-        v-if="options.type === 'goToChat'"
-        class="button_to-chat"
-      >
-        <base-btn
-          class="status__action"
-          mode="agree"
-          @click="goToChat()"
-        >
-          <span
-            v-if="options.button"
-            class="status__text"
+      <div class="status__wrap">
+        <div v-if="options.cancel">
+          <base-btn
+            class="status__btn"
+            mode="outline"
+            selector="CANCEL"
+            @click="hide()"
           >
-            {{ options.button }}
-          </span>
-        </base-btn>
+            <span class="status__text">
+              {{ options.cancel }}
+            </span>
+          </base-btn>
+        </div>
+        <div>
+          <base-btn
+            class="status__btn"
+            :mode="options.submitMode"
+            selector="SUBMIT"
+            :disabled="isLoading"
+            @click="handleSubmit()"
+          >
+            <span v-if="options.button">
+              {{ options.button }}
+            </span>
+            <span v-else>
+              {{ $t('meta.btns.ok') }}
+            </span>
+          </base-btn>
+        </div>
       </div>
-      <base-btn
-        v-else
-        class="status__action"
-        @click="hide()"
-      >
-        <span
-          v-if="options.button"
-          class="status__text"
-        >
-          {{ options.button }}
-        </span>
-        <span
-          v-else
-          class="status__text"
-        >
-          {{ $t('meta.ok') }}
-        </span>
-      </base-btn>
     </div>
   </ctm-modal-box>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import { images } from '~/utils/images';
 
 export default {
   name: 'ModalStatus',
-  data() {
-    return {
-      link: '',
-    };
-  },
+  images,
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
-      chatInfoInviteOnQuest: 'quests/getChatInfoInviteOnQuest',
+      isLoading: 'main/getIsLoading',
     }),
   },
-  async mounted() {
-    this.initLink();
-    if (this.options.recipient) {
-      const payload = {
-        recipientAddress: this.options.recipient,
-        query: '',
-      };
-      await this.$store.dispatch('defi/swapsForCrosschain', payload);
-    }
-  },
   methods: {
-    goToChat() {
-      const chatId = this.chatInfoInviteOnQuest.id;
-      this.$router.push(`/messages/${chatId}`);
-      this.hide();
-    },
-    installMetamask() {
-      window.open('https://metamask.io/download.html');
-    },
     hide() {
       if (this.options.path) this.$router.push(this.options.path);
       this.CloseModal();
     },
-    initLink() {
-      if (process.env.PROD === 'false') {
-        if (this.options.chainTo === 3) {
-          this.link = `https://rinkeby.etherscan.io/tx/${this.options.txHash}`;
-        } else {
-          this.link = `https://testnet.bscscan.com/tx/${this.options.txHash}`;
-        }
-      } else if (process.env.PROD === 'true') {
-        if (this.options.chainTo === 3) {
-          this.link = `https://etherscan.io/tx/${this.options.txHash}`;
-        } else {
-          this.link = `https://bscscan.com/tx/${this.options.txHash}`;
-        }
-      }
+    async handleSubmit() {
+      if (this.isLoading) return;
+      this.SetLoader(true);
+      if (this.options.callback) await this.options.callback();
+      if (!this.options.isNotClose) this.hide();
+      this.SetLoader(false);
     },
   },
 };
@@ -150,21 +126,23 @@ export default {
 
 .button {
   &_to-chat {
-    width:100%;
+    width: 100%;
   }
 }
 
 .status {
   max-width: 337px !important;
   height: auto !important;
-  padding: 0!important;
+  padding: 0 !important;
+
   &__content {
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;
     grid-gap: 20px;
-    padding: 30px!important;
+    padding: 30px !important;
   }
+
   &__title {
     text-align: center;
     margin-top: 10px;
@@ -172,14 +150,53 @@ export default {
     font-size: 23px;
     line-height: 130%;
   }
+
   &__action {
     margin-top: 10px;
   }
+
   &__desc {
     font-size: 16px;
     line-height: 130%;
     text-align: center;
     color: $black600;
+  }
+
+  &__text {
+    font-size: 16px;
+    line-height: 130%;
+    text-align: center;
+    font-weight: 500;
+    color: $black800;
+  }
+
+  &__wrap {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+
+    div {
+      width: 100%;
+    }
+  }
+
+  &__btn {
+    padding: 0 10px;
+  }
+
+  &__list {
+    width: 100%;
+
+    span {
+      font-size: 14px;
+    }
+  }
+
+  &__img {
+    display: inline;
+    width: 33px;
+    height: 33px;
+    border-radius: 50%;
   }
 }
 </style>

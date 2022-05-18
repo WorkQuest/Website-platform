@@ -5,9 +5,7 @@
     tag="div"
   >
     <div class="restore__container">
-      <div
-        class="restore__text restore__text_title"
-      >
+      <div class="restore__text restore__text_title">
         <span>{{ $t('restore.title') }}</span>
       </div>
       <form
@@ -18,11 +16,12 @@
         <base-field
           v-model="password"
           :placeholder="$t('signUp.password')"
-          :mode="'icon'"
-          :name="$t('signUp.password')"
+          mode="icon"
+          data-selector="PASSWORD"
+          :name="$tc('signUp.password')"
           autocomplete="current-password"
           rules="required_if|min:8"
-          type="password"
+          :type="isPasswordVisible?'text':'password'"
           vid="confirmation"
         >
           <template v-slot:left>
@@ -31,13 +30,25 @@
               alt=""
             >
           </template>
+          <template
+            v-if="password"
+            v-slot:right-absolute
+            class="field__block"
+          >
+            <btn-password-visibility
+              :data-selector="`IS-VISIBLE-PASS-${isPasswordVisible}`"
+              :is-password-visible="isPasswordVisible"
+              @toggleVisibility="isPasswordVisible = $event"
+            />
+          </template>
         </base-field>
         <base-field
           v-model="passwordConfirm"
           :placeholder="$t('signUp.confirmPassword')"
-          :mode="'icon'"
-          type="password"
-          :name="$t('signUp.confirmPassword')"
+          mode="icon"
+          data-selector="CONFIRM-PASSWORD"
+          :type="isPasswordConfirmVisible?'text':'password'"
+          :name="$tc('signUp.confirmPassword')"
           rules="required_if|min:8|confirmed:confirmation"
         >
           <template v-slot:left>
@@ -46,10 +57,21 @@
               alt=""
             >
           </template>
+          <template
+            v-if="passwordConfirm"
+            v-slot:right-absolute
+            class="field__block"
+          >
+            <btn-password-visibility
+              :data-selector="`IS-VISIBLE-PASS-${isPasswordConfirmVisible}`"
+              :is-password-visible="isPasswordConfirmVisible"
+              @toggleVisibility="isPasswordConfirmVisible = $event"
+            />
+          </template>
         </base-field>
         <div class="restore__action">
-          <base-btn>
-            {{ $t('meta.save') }}
+          <base-btn data-selector="SAVE">
+            {{ $t('meta.btns.save') }}
           </base-btn>
         </div>
       </form>
@@ -59,6 +81,7 @@
 
 <script>
 import modals from '~/store/modals/modals';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'Restore',
@@ -67,6 +90,8 @@ export default {
     return {
       password: '',
       passwordConfirm: '',
+      isPasswordVisible: false,
+      isPasswordConfirmVisible: false,
     };
   },
   async mounted() {
@@ -83,7 +108,7 @@ export default {
         const response = await this.$store.dispatch('user/passwordChange', payload);
         if (response?.ok) {
           this.showChangeModal();
-          this.$router.push('/sign-in');
+          await this.$router.push(Path.SIGN_IN);
         }
       } catch (e) {
         console.log(e);
@@ -91,7 +116,9 @@ export default {
     },
     showChangeModal() {
       this.ShowModal({
-        key: modals.changePassword,
+        key: modals.status,
+        img: require('assets/img/ui/password_changed.svg'),
+        title: this.$t('restore.modal'),
       });
     },
   },

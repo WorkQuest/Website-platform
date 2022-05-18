@@ -1,7 +1,7 @@
 <template>
   <div
-    ref="templateScroll"
     class="primary"
+    :class="{'stop-scrolling':isShow}"
   >
     <div class="primary__template template">
       <div
@@ -31,13 +31,12 @@
 <script>
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import Footer from '~/components/app/Footer';
+import modals from '~/store/modals/modals';
+import { Path } from '~/utils/enums';
 
 export default {
-  scrollToTop: true,
   name: 'DefaultLayout',
   middleware: 'auth',
-  components: { Footer },
   directives: {
     ClickOutside,
   },
@@ -46,9 +45,18 @@ export default {
       isLoading: 'main/getIsLoading',
       userData: 'user/getUserData',
       isChatOpened: 'chat/isChatOpened',
+      isShow: 'modals/getIsShow',
     }),
   },
   async mounted() {
+    if (!this.$cookies.get('isWorkQuestsAppShowed') && this.$route.path !== Path.WALLET) {
+      this.ShowModal({
+        key: modals.downloadApp,
+        title: this.$tc('modals.titles.downloadApp'),
+        subtitle: this.$t('modals.downOnSmartphone'),
+        app: 'isWorkQuestsAppShowed',
+      });
+    }
     this.GetLocation();
   },
   methods: {
@@ -69,13 +77,12 @@ export default {
 <style lang="scss" scoped>
 .primary {
   height: 100vh;
-  overflow-y: auto;
-  background: #F7F8FA;
+  background: $black0;
 }
 
 .template {
   min-height: 100vh;
-  background: #F7F8FA;
+  background: $black0;
 
   &__content {
     display: grid;
@@ -98,7 +105,10 @@ export default {
     }
   }
 }
-
+.stop-scrolling{
+  overflow: hidden;
+  height: 100vh;
+}
 @include _991 {
   .template {
     &__content {

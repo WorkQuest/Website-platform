@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.invitation')"
+    :title="$tc('modals.titles.invitation')"
   >
     <div class="ctm-modal__content">
       <validation-observer tag="div">
@@ -10,16 +10,16 @@
             <div class="ctm-modal__user-data">
               <img
                 class="user-data__img"
-                :src="userData.avatar && userData.avatar.url ? userData.avatar.url : EmptyAvatar()"
-                :alt="userData.avatar && userData.avatar.url ? userData.avatar.url : 'avatar_empty'"
+                :src="options.avatar && options.avatar.url ? options.avatar.url : $options.images.EMPTY_AVATAR"
+                alt="avatar"
               >
               <div class="user-data__name">
-                {{ userData.firstName ? userData.firstName : "Nameless worker" }}
-                {{ userData.lastName ? userData.lastName : "" }}
+                {{ options.firstName ? options.firstName : "" }}
+                {{ options.lastName ? options.lastName : "" }}
               </div>
               <item-rating
                 class="user-data__status"
-                :rating="getRatingValue()"
+                :rating="userData.ratingStatistic.status"
               />
             </div>
           </div>
@@ -34,6 +34,7 @@
               class="base-dd_available-quests"
               :items="availableQuests"
               :label="$t('modals.chooseQuest')"
+              :data-selector="`QUEST-${questIndex}`"
             />
           </div>
         </div>
@@ -42,8 +43,9 @@
           <textarea
             id="message_input"
             v-model="message_input"
+            data-selector="MESSAGE"
             class="message__textarea"
-            :placeholder="$t('modals.hello')"
+            :placeholder="$t('meta.typeYourMessage')"
           />
         </div>
         <div class="btn__container">
@@ -51,18 +53,20 @@
             <base-btn
               class="message__action"
               :disabled="!message_input.trim()"
+              data-selector="INVITE-ON-QUEST"
               @click="inviteOnQuest()"
             >
-              {{ $t('meta.send') }}
+              {{ $t('meta.btns.send') }}
             </base-btn>
           </div>
           <div class="btn__wrapper">
             <base-btn
               class="message__action"
-              :mode="'outline'"
-              @click="hide()"
+              mode="outline"
+              data-selector="CANCEL"
+              @click="CloseModal"
             >
-              {{ $t('meta.cancel') }}
+              {{ $t('meta.btns.cancel') }}
             </base-btn>
           </div>
         </div>
@@ -74,9 +78,12 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { Path } from '~/utils/enums';
+import { images } from '~/utils/images';
 
 export default {
   name: 'ModalInvitation',
+  images,
   data() {
     return {
       questIndex: 0,
@@ -88,12 +95,10 @@ export default {
       options: 'modals/getOptions',
       userData: 'user/getUserData',
       availableQuests: 'quests/getAvailableQuests',
+      chatInfoInviteOnQuest: 'quests/getChatInfoInviteOnQuest',
     }),
   },
   methods: {
-    getRatingValue() {
-      return this.userData?.ratingStatistic?.status || 'noStatus';
-    },
     async inviteOnQuest() {
       const questId = this.availableQuests[this.questIndex].id || '';
       const payload = {
@@ -107,18 +112,21 @@ export default {
         console.log(e);
       }
     },
-    hide() {
-      this.CloseModal();
-    },
     showTransactionSendModal() {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/inviteSend.svg'),
-        title: this.$t('modals.inviteSend'),
-        subtitle: this.$t('modals.invitationSendText'),
-        type: 'goToChat',
-        button: this.$t('btn.goToChat'),
+        title: this.$t('modals.titles.inviteSend'),
+        subtitle: '',
+        button: this.$t('meta.btns.goToChat'),
+        submitMode: 'agree',
+        callback: () => this.goToChat(),
       });
+    },
+    goToChat() {
+      const { chatId } = this.chatInfoInviteOnQuest;
+      this.$router.push(`${Path.MESSAGES}/${chatId}`);
+      this.CloseModal();
     },
   },
 };

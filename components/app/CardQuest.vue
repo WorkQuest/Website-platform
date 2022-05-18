@@ -1,5 +1,8 @@
 <template>
-  <div class="card-quest">
+  <div
+    class="card-quest"
+    :data-selector="`COMPONENT-CARD-QUEST-${questIndex}`"
+  >
     <div
       class="card-quest__left"
       :style="`background: url(${getQuestPreview(quest).url}) no-repeat`"
@@ -16,20 +19,17 @@
       <div class="card-quest__head">
         <div
           class="card-quest__title"
+          :data-selector="`ACTION-BTN-TO-CREATOR-QUEST-PROFILE-${questIndex}`"
           @click="showProfile(quest.userId)"
         >
           <div class="card-quest__avatar avatar">
             <img
               class="avatar__image"
               :alt="`${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}`"
-              :src="quest.user && quest.user.avatar ? quest.user.avatar.url : EmptyAvatar()"
-              @click="goToProfile(quest.user.id)"
+              :src="quest.user && quest.user.avatar ? quest.user.avatar.url : $options.images.EMPTY_AVATAR"
             >
           </div>
-          <div
-            class="card-quest__text card-quest__text_title"
-            @click="goToProfile(quest.user.id)"
-          >
+          <div class="card-quest__text card-quest__text_title">
             {{ `${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}` }}
           </div>
         </div>
@@ -42,6 +42,7 @@
             v-if="quest.userId === userData.id || quest.assignedWorkerId === userData.id"
             class="card-quest__icon card-quest__icon_fav star"
             :class="[{'star__hide': disputeId.length !== 0}]"
+            :data-selector="`ACTION-BTN-TOGGLE-FAVORITE-QUEST-${questIndex}`"
             @click="clickFavoriteStar(quest)"
           >
             <img
@@ -56,14 +57,16 @@
             >
           </div>
           <quest-dd
-            v-if="quest.status === $options.QuestStatuses.Created && userRole === $options.UserRole.EMPLOYER && quest.userId === userData.id"
+            v-if="quest && quest.status === $options.QuestStatuses.Created && userRole === $options.UserRole.EMPLOYER && quest.userId === userData.id"
             class="card-quest__icon card-quest__icon_fav"
+            :quest-index="questIndex"
             :item="quest"
           />
           <button
             v-if="userRole === $options.UserRole.WORKER || quest.status !== $options.QuestStatuses.Created"
+            :data-selector="`ACTION-BTN-TO-SHARE-QUEST-${questIndex}`"
             class="card-quest__shared"
-            @click="shareModal(quest.id)"
+            @click="shareModal(quest)"
           >
             <span class="card-quest__icon card-quest__icon_fav icon-share_outline" />
           </button>
@@ -79,38 +82,39 @@
         <div class="progress__container container">
           <div
             class="container__user user"
-            @click="goToProfile(quest.assignedWorker.id)"
+            :data-selector="`ACTION-BTN-TO-ASSIGNED-WORKER-PROFILE-${questIndex}`"
+            @click="showProfile(quest.assignedWorker.id)"
           >
             <img
               class="user__avatar"
-              :src="quest.assignedWorker.avatar ? quest.assignedWorker.avatar.url : EmptyAvatar()"
+              :src="quest.assignedWorker.avatar ? quest.assignedWorker.avatar.url : $options.images.EMPTY_AVATAR"
               :alt="`${ quest.assignedWorker ? UserName(quest.assignedWorker.firstName, quest.assignedWorker.lastName) : '' }`"
             >
             <div class="user__name">
-              {{ quest.assignedWorker.firstName }} {{ quest.assignedWorker.lastName }}
+              {{ quest.assignedWorker ? UserName(quest.assignedWorker.firstName, quest.assignedWorker.lastName) : '' }}
             </div>
           </div>
-          <item-rating :rating="getRatingValue(quest)" />
+          <item-rating :rating="quest.assignedWorker.ratingStatistic.status" />
         </div>
       </div>
       <div class="card-quest__locate">
         <span class="icon-location" />
         <span class="card-quest__text card-quest__text_locate">
           {{ showDistance(quest.location) }}
-          {{ `${$t('distance.m')} ${$t('meta.fromYou')}` }}
+          {{ `${$t('meta.units.distance.m')} ${$t('meta.fromYou')}` }}
         </span>
       </div>
       <div
         v-if="quest.title"
         class="card-quest__text card-quest__text_blue"
       >
-        {{ cropTxt(quest.title, 68) }}
+        {{ CropTxt(quest.title, 68) }}
       </div>
       <div
         v-if="quest.description"
         class="card-quest__text card-quest__text-description"
       >
-        {{ cropTxt(quest.description, 98) }}
+        {{ CropTxt(quest.description, 98) }}
       </div>
       <div class="card-quest__text card-quest__publication">
         <span class="card-quest__publication_bold">{{ $t('quests.publicationDate') }}</span>
@@ -129,7 +133,7 @@
             class="card-quest__amount"
             :class="getAmountStyles(quest)"
           >
-            {{ `${quest.price}  ${$options.TokenSymbols.WUSD}` }}
+            {{ `${questReward}  ${$options.TokenSymbols.WUSD}` }}
           </div>
         </div>
         <div class="card-quest__details">
@@ -137,6 +141,7 @@
             v-if="quest.type !== 3"
             class="card-quest__btn-details"
             mode="borderless-right"
+            :data-selector="`TO-QUEST-DETAILS-${questIndex}`"
             @click="showDetails(quest.id)"
           >
             {{ $t('meta.details') }}
@@ -151,12 +156,11 @@
             <star-rating
               v-if="userRole === $options.UserRole.WORKER ? quest.assignedWorkerId === userData.id : quest.userId === userData.id"
               class="card-quest__star"
-              :quest-index="0"
-              rating-type="questPage"
               :stars-number="5"
-              :rating="!quest.yourReview ? currentMark.mark : quest.yourReview.mark"
-              :is-disabled="quest.yourReview !== null || currentMark.mark !== 0"
-              @input="showReviewModal($event, quest)"
+              :data-selector="`ACTION-BTN-SHOW-REVIEW-MODAL-${quest.id}`"
+              :rating="rating"
+              :is-disabled="!!rating"
+              @input="showReviewModal($event, quest.id)"
             />
           </div>
         </div>
@@ -167,13 +171,17 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import {
-  QuestStatuses, questPriority, UserRole, Path, TokenSymbols,
+  questPriority, UserRole, Path, TokenSymbols, QuestModeReview,
 } from '~/utils/enums';
+import { QuestStatuses } from '~/utils/сonstants/quests';
 import modals from '~/store/modals/modals';
+import { images } from '~/utils/images';
 
 export default {
   name: 'CardQuest',
+  images,
   UserRole,
   TokenSymbols,
   QuestStatuses,
@@ -181,6 +189,10 @@ export default {
     disputeId: {
       type: String,
       default: '',
+    },
+    questIndex: {
+      type: Number,
+      default: 0,
     },
     quest: {
       type: Object,
@@ -201,8 +213,13 @@ export default {
     ...mapGetters({
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
-      currentMark: 'user/getCurrentReviewMarkOnQuest',
     }),
+    rating() {
+      return this.quest.yourReview?.mark || 0;
+    },
+    questReward() {
+      return new BigNumber(this.quest.price).shiftedBy(-18).toString();
+    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -220,19 +237,14 @@ export default {
       this.ShowModal({
         key: modals.sharingQuest,
         itemId: item.id,
+        mode: 'quest',
       });
-    },
-    getRatingValue(item) {
-      return item.assignedWorker?.ratingStatistic?.status || 'noStatus';
     },
     getAmountStyles(item) {
       return [
         { 'card-quest__amount_green': item.status !== QuestStatuses.Done },
         { 'card-quest__amount_gray': item.status === QuestStatuses.Done },
       ];
-    },
-    goToProfile(id) {
-      this.$router.push(`/profile/${id}`);
     },
     getQuestPreview(quest) {
       if (quest?.medias?.length) {
@@ -246,18 +258,14 @@ export default {
     clickFavoriteStar(item) {
       this.$emit('clickFavoriteStar', item);
     },
-    cropTxt(str, maxLength) {
-      if (str.length > maxLength) str = `${str.slice(0, maxLength)}...`;
-      return str;
-    },
     progressQuestText(status) {
       if (!this.userRole) return '';
       switch (status) {
-        case QuestStatuses.Active: return this.$t('quests.questActive');
+        case QuestStatuses.Created: return this.$t('quests.questActive');
         case QuestStatuses.Closed: return this.$t('quests.questClosed');
         case QuestStatuses.Dispute: return this.$t('quests.questDispute');
         case QuestStatuses.WaitWorker: return this.$t('quests.inProgressBy');
-        case QuestStatuses.WaitConfirm: return this.$t('quests.questWaitConfirm');
+        case QuestStatuses.WaitEmployerConfirm: return this.$t('quests.questWaitConfirm');
         case QuestStatuses.Done: return this.$t('quests.finishedBy');
         default: return '';
       }
@@ -268,17 +276,28 @@ export default {
     showDetails(questId) {
       this.$router.push(`${Path.QUESTS}/${questId}`);
     },
-    showReviewModal(rating, item) {
-      this.ShowModal({ key: modals.review, item, rating });
+    showReviewModal(rating, id) {
+      this.ShowModal({
+        key: modals.review,
+        questMode: QuestModeReview.QUEST_LIST,
+        questId: id,
+        rating,
+        callback: async (payload) => {
+          const ok = await this.$store.dispatch('user/sendReviewForUser', payload);
+          if (ok) {
+            this.ShowModal({ key: modals.thanks });
+          } else this.CloseModal();
+        },
+      });
     },
     getStatusCard(index) {
       const questStatus = {
-        [QuestStatuses.Dispute]: this.$t('quests.dispute'),
+        [QuestStatuses.Dispute]: this.$t('meta.dispute'),
         [QuestStatuses.Rejected]: this.$t('quests.rejected'),
-        [QuestStatuses.Active]: this.$t('quests.active'),
-        [QuestStatuses.Done]: this.$t('quests.performed'),
-        [QuestStatuses.WaitConfirm]: this.$t('quests.requested'),
-        [QuestStatuses.WaitWorker]: this.$t('quests.invited'),
+        [QuestStatuses.WaitWorker]: this.$t('quests.active'),
+        [QuestStatuses.Done]: this.$t('meta.performed'),
+        [QuestStatuses.WaitWorkerOnAssign]: this.$t('meta.invited'),
+        [QuestStatuses.WaitEmployerConfirm]: this.$t('quests.requested'),
         [QuestStatuses.Closed]: this.$t('quests.closed'),
       };
       return questStatus[index] || '';
@@ -287,19 +306,19 @@ export default {
       const questStatus = {
         [QuestStatuses.Dispute]: 'card-quest__cards-state-dis',
         [QuestStatuses.Rejected]: 'card-quest__cards-state-clo',
-        [QuestStatuses.Active]: 'card-quest__cards-state-act',
+        [QuestStatuses.WaitWorker]: 'card-quest__cards-state-act',
         [QuestStatuses.Done]: 'card-quest__cards-state-per',
-        [QuestStatuses.WaitConfirm]: 'card-quest__cards-state-req',
-        [QuestStatuses.WaitWorker]: 'card-quest__cards-state-inv',
+        [QuestStatuses.WaitWorkerOnAssign]: 'card-quest__cards-state-inv',
+        [QuestStatuses.WaitEmployerConfirm]: 'card-quest__cards-state-req',
         [QuestStatuses.Closed]: 'card-quest__cards-state-clo',
       };
       return questStatus[index] || '';
     },
     getPriority(index) {
       const priority = {
-        [questPriority.Low]: this.$t('priority.low'),
-        [questPriority.Normal]: this.$t('priority.normal'),
-        [questPriority.Urgent]: this.$t('priority.urgent'),
+        [questPriority.Low]: this.$t('meta.priority.fixedDelivery'),
+        [questPriority.Normal]: this.$t('meta.priority.shortTerm'),
+        [questPriority.Urgent]: this.$t('meta.priority.urgent'),
       };
       return priority[index] || '';
     },
@@ -319,34 +338,46 @@ export default {
 </script>
 <style lang="scss" scoped>
 .user {
+  min-width: 0;
+
   &__name {
     @include text-simple;
+    width: 100%;
     font-weight: 500;
     font-size: 16px;
+    line-height: 130%;
     color: $black800;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
     cursor: pointer;
-    transition: .5s;
+
     &:hover {
       color: $blue;
     }
   }
 }
+
 .right {
   justify-self: flex-end;
 }
+
 .icon-circle_up {
   color: $black100;
   font-size: 24px;
 }
+
 .icon-share_outline {
   color: $black100;
   font-size: 24px;
 }
+
 .icon-short_right {
-    font-size: 20px;
-    cursor: pointer;
-    color: $blue;
-  }
+  font-size: 20px;
+  cursor: pointer;
+  color: $blue;
+}
+
 .progress {
   &__title {
     @include text-simple;
@@ -355,20 +386,25 @@ export default {
     font-size: 12px;
     color: $black500;
   }
+
   &__container {
     @extend .styles__full;
+    min-width: 0;
     display: grid;
     align-items: center;
-    grid-template-columns: auto 3fr;
+    grid-template-columns: auto auto;
     grid-gap: 10px;
     padding-left: 0;
     margin: 7px 0 0 6px;
+    justify-content: start;
+
     .container {
       &__user {
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
+
         .user {
           &__avatar {
             border-radius: 50%;
@@ -376,6 +412,7 @@ export default {
             width: 30px;
             object-fit: cover;
             cursor: pointer;
+            flex-shrink: 0;
             margin-right: 10px;
           }
         }
@@ -383,17 +420,20 @@ export default {
     }
   }
 }
+
 .styles {
   &__full {
     width: 100%;
     height: 100%;
   }
 }
+
 .avatar {
   @extend .styles__full;
   max-height: 30px;
   max-width: 30px;
   border-radius: 50%;
+
   &__image {
     border-radius: 50%;
     height: 30px;
@@ -401,6 +441,7 @@ export default {
     object-fit: cover;
     cursor: pointer;
   }
+
   &__col {
     &_left {
       max-width: 142px;
@@ -408,6 +449,7 @@ export default {
     }
   }
 }
+
 .status {
   &__levels {
     padding: 2px 5px;
@@ -416,6 +458,7 @@ export default {
     border-radius: 3px;
     color: $white;
   }
+
   &__level {
     display: grid;
     grid-template-columns: 20px auto;
@@ -424,23 +467,28 @@ export default {
     justify-content: flex-start;
     align-items: center;
     height: 20px;
+
     &_higher {
       @extend .status__levels;
       background-color: $yellow100;
     }
+
     &_reliable {
       @extend .status__levels;
       background-color: $grey200;
     }
+
     &_checked {
       @extend .status__levels;
       background-color: $brown;
     }
+
     &_disabled {
       display: none;
     }
   }
 }
+
 .card-quest {
   transition: .5s;
   border: 1px solid $white;
@@ -448,27 +496,34 @@ export default {
   border-radius: 6px;
   display: grid;
   grid-template-columns: 210px 1fr;
+
   &:hover {
     border: 1px solid $black100;
   }
+
   &__btn-details {
-    height: 28px !important;
+    height: 24px !important;
     width: 100%;
     min-width: 100px;
   }
+
   &__rating {
-    height: 24px;
+    height: 19px;
+    align-self: center;
   }
+
   &__container {
     display: flex;
     justify-content: center;
   }
+
   &__details {
     display: flex;
     flex-direction: row-reverse;
     gap: 10px;
     height: 24px;
   }
+
   &__publication {
     &_bold {
       @include text-simple;
@@ -476,6 +531,7 @@ export default {
       font-weight: 500;
       color: $black600;
     }
+
     &_thin {
       @include text-simple;
       font-size: 12px;
@@ -483,6 +539,7 @@ export default {
       color: $black500;
     }
   }
+
   &__left {
     @extend .styles__full;
     position: relative;
@@ -491,6 +548,7 @@ export default {
     background-position: center !important;
     border-radius: 6px 0 0 6px;
   }
+
   &__state {
     position: absolute;
     display: flex;
@@ -503,20 +561,25 @@ export default {
     color: #FFFFFF;
     top: 0;
     left: 0;
+
     &_req {
       color: $black600;
       background-color: $black200;
     }
+
     &_per {
       background-color: $blue;
     }
+
     &_act {
       background-color: $green;
     }
+
     &_inv {
       background-color: $yellow100;
     }
   }
+
   &__progress {
     background-color: $black0;
     border-radius: 6px;
@@ -526,38 +589,46 @@ export default {
     width: 100%;
     padding: 10px;
   }
+
   &__locate {
     display: grid;
     grid-template-columns: 20px 1fr;
     grid-gap: 5px;
     align-items: center;
+
     span::before {
       font-size: 20px;
       color: $black500;
     }
   }
+
   &__status {
     display: flex;
     align-self: flex-start;
     align-items: center;
     gap: 10px;
   }
+
   &__amount {
     font-style: normal;
     font-weight: bold;
     font-size: 18px;
     height: 24px;
     text-transform: uppercase;
+
     &_green {
       color: $green;
     }
+
     &_gray {
       color: $black200;
     }
+
     &__performed {
       color: $black400;
     }
   }
+
   &__priority {
     @include text-simple;
     display: flex;
@@ -568,35 +639,43 @@ export default {
     line-height: 130%;
     height: 24px;
     padding: 0 5px;
+
     &_low {
       background: rgba(34, 204, 20, 0.1);
       color: $green;
     }
+
     &_urgent {
       background: rgba(223, 51, 51, 0.1);
       color: $red;
     }
+
     &_normal {
       background: rgba(232, 210, 13, 0.1);
       color: $yellow;
     }
   }
+
   &__actions {
     grid-template-columns: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
+
   &__right {
+    min-width: 0;
     padding: 20px 20px 20px 30px;
     display: grid;
     grid-template-columns: auto;
     grid-gap: 10px;
   }
+
   &__head {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     &-right {
       display: flex;
       width: auto;
@@ -605,23 +684,28 @@ export default {
       gap: 5px;
     }
   }
+
   &__shared {
     height: 24px;
     width: 24px;
   }
+
   &__icon {
     &_fav {
       cursor: pointer;
       transition: .5s;
+
       &:hover {
         color: $black200;
       }
     }
+
     &_perf {
       display: grid;
       grid-template-columns: repeat(5, 25px);
     }
   }
+
   &__btn {
     display: flex;
     align-items: center;
@@ -630,62 +714,79 @@ export default {
     min-width: 146px;
     height: 34px;
     background: transparent;
+
     span::before {
       font-size: 24px;
       color: $blue;
     }
   }
+
   &__text {
     @include text-simple;
+
     &_details {
       font-size: 16px;
       line-height: 130%;
       color: $blue;
     }
+
     &-description {
       font-size: 16px;
       line-height: 130%;
       color: $black700;
       word-wrap: break-word;
       word-break: break-all;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
+
     &_blue {
       font-weight: 500;
       font-size: 18px;
       line-height: 130%;
       color: $blue;
     }
+
     &_title {
       font-weight: 500;
       font-size: 16px;
       line-height: 130%;
       color: $black800;
       cursor: pointer;
-      transition: .5s;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+
       &:hover {
         color: $blue;
       }
     }
+
     &_locate {
       font-size: 14px;
       line-height: 130%;
       color: #7C838D;
     }
+
     &_grey {
       font-size: 16px;
       line-height: 130%;
       color: #7C838D;
     }
   }
+
   &__avatar {
     max-width: 30px;
     max-height: 30px;
     border-radius: 50%;
+
     &__img {
       border-radius: 100%;
       height: 100%;
     }
   }
+
   &__title {
     @include text-simple;
     cursor: pointer;
@@ -699,27 +800,34 @@ export default {
     line-height: 130%;
     color: $black800;
   }
+
   &__cards {
     &-state-clo {
-        background: $red;
-      }
+      background: $red;
+    }
+
     &-state-dis {
-        background-color: $red;
-      }
+      background-color: $red;
+    }
+
     &-state-req {
-        background: $grey;
-        color: $black600 !important;
-      }
+      background: $grey;
+      color: $black600 !important;
+    }
+
     &-state-per {
-        background: $blue;
-      }
+      background: $blue;
+    }
+
     &-state-act {
-        background: $green;
-      }
+      background: $green;
+    }
+
     &-state-inv {
       background: $yellow;
     }
   }
+
   &__card {
     margin: 20px 0 0 0;
     border: 0 solid;
@@ -730,58 +838,72 @@ export default {
     justify-content: center;
     grid-template-columns: 1fr;
     grid-gap: 20px;
+
     &__content {
       border-radius: 6px 0 0 6px;
       box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
+
       &_per {
         height: 244px;
       }
     }
   }
 }
+
 .star {
   height: 30px;
   width: 30px;
   align-self: center;
   justify-self: center;
+
   &__hide {
     display: none;
   }
+
   &__default {
     display: flex;
   }
+
   &__hover {
     display: none;
   }
+
   &:hover {
     .star {
       &__hover {
         display: flex;
       }
+
       &__default {
         display: none;
       }
+
       &__checked {
         display: none;
       }
     }
   }
 }
+
 @include _991 {
   .card-quest {
     grid-template-columns: auto;
+
     &__right {
       padding-left: 20px;
     }
+
     &__left {
       height: 200px;
       border-radius: 6px 6px 0 0;
+
       img {
         border-radius: 6px;
         height: 100%;
         width: 100%;
       }
     }
+
     .avatar {
       &__container {
         grid-template-columns: auto repeat(2, 3fr);
@@ -789,11 +911,13 @@ export default {
     }
   }
 }
+
 @include _767 {
   .card-quest {
     &__left {
       height: 200px;
       border-radius: 6px 6px 0 0;
+
       img {
         border-radius: 6px;
         height: 100%;
@@ -802,36 +926,39 @@ export default {
     }
   }
 }
+
 @include _575 {
   .card-quest {
     &__amount {
       font-size: 16px;
     }
+
     &__btn-details {
       height: 24px !important;
       font-size: 13px !important;
     }
+
     &__actions {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
     }
+
     &__btn {
       margin-top: 10px;
       padding: 0;
     }
   }
 }
+
 @include _480 {
   .card-quest {
     &__actions {
-      grid-template-columns: 2fr 1fr;
+      grid-template-columns: 1fr;
     }
+
     &__right {
       padding: 10px;
     }
-  }
-  .user__name {
-    font-size: 12px;
   }
   .status {
     &__level {
@@ -842,6 +969,15 @@ export default {
     &__container {
       grid-template-columns: repeat(3, auto);
     }
+  }
+}
+
+@include _380 {
+  .card-quest__progress {
+    height: 100%;
+  }
+  .progress__container {
+    grid-template-columns: auto;
   }
 }
 </style>

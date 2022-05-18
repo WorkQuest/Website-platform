@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="card"
-    :title="$t('modals.addingCard')"
+    :title="$tc('modals.titles.addingCard')"
   >
     <div class="card__content content">
       <ValidationObserver
@@ -16,9 +16,10 @@
           <base-field
             v-model="cardNumber"
             class="input__field"
-            :placeholder="'1234 1234 1234 1234'"
+            placeholder="1234 1234 1234 1234"
             rules="required|numberOfCard"
-            :name="$t('modals.creditCardNumber')"
+            data-selector="CARD-NUMBER"
+            :name="$tc('modals.creditCardNumber')"
           />
         </div>
         <div class="content__input input">
@@ -28,9 +29,10 @@
           <base-field
             v-model="cardHolder"
             class="input__field"
-            :placeholder="'John Doe'"
+            placeholder="John Doe"
+            data-selector="CARDHOLDER-NAME"
             rules="required|alpha_spaces"
-            :name="$t('modals.cardHolderField')"
+            :name="$tc('modals.cardHolderField')"
           />
         </div>
         <div class="content__grid grid">
@@ -41,9 +43,10 @@
             <base-field
               v-model="dateInput"
               class="grid__input"
-              :placeholder="'02/24'"
+              placeholder="02/24"
               rules="required|date"
-              :name="$t('modals.dateName')"
+              data-selector="CARD-DATE"
+              :name="$tc('modals.dateName')"
             />
           </div>
           <div class="grid__field">
@@ -54,25 +57,28 @@
               v-model="cvvInput"
               class="grid__field"
               placeholder="242"
+              data-selector="CARD-CVV"
               rules="required|cvv"
-              :name="$t('modals.cvv')"
+              :name="$tc('modals.cvv')"
             />
           </div>
         </div>
         <div class="content__buttons buttons">
           <base-btn
-            :mode="'outline'"
+            mode="outline"
+            data-selector="CANCEL"
             class="buttons__action"
-            @click="hide"
+            @click="CloseModal"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__action"
+            data-selector="SHOW-MODAL-ADD"
             :disabled="!validated || !passed || invalid"
             @click="handleSubmit(showCardHasBeenAddedModal)"
           >
-            {{ $t('modals.add') }}
+            {{ $t('meta.btns.add') }}
           </base-btn>
         </div>
       </ValidationObserver>
@@ -100,9 +106,6 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     showCardHasBeenAddedModal() {
       if (this.options.branch === 'payment') {
         this.ShowModal({

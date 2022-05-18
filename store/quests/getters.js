@@ -1,4 +1,5 @@
 export default {
+  getUpdateTime: (state) => state.updateTime,
   getChatInfoInviteOnQuest: (state) => state.chatInfoInviteOnQuest,
   getQuestListForInvitation: (state) => state.questListForInvitation || {},
   getEmployeeList: (state) => state.employeeList,
@@ -8,8 +9,6 @@ export default {
   getQuestsStatistic: (state) => state.currentWorker?.questsStatistic,
   getRatingStatistic: (state) => state.currentWorker?.ratingStatistic,
   getInfoDataMode: (state) => state.infoDataMode,
-  getUserInfoQuests: (state) => state.userInfoQuests.quests,
-  getUserInfoQuestsCount: (state) => state.userInfoQuests.count,
   getAllQuests: (state) => state.allQuests.quests,
   getAllQuestsCount: (state) => state.allQuests.count,
   getQuest: (state) => state.quest,

@@ -1,8 +1,12 @@
 <template>
-  <div class="preview">
+  <div
+    class="preview"
+    data-selector="COMPONENT-FILES-PREVIEW"
+  >
     <div
       v-for="(item, i) of medias"
       :key="i"
+      :data-selector="`ACTION-BTN-OPEN-FILE-${i}`"
       @click="openFile(item)"
     >
       <img
@@ -39,13 +43,11 @@ export default {
   },
   methods: {
     openFile(file) {
-      if (window.innerWidth >= 761) {
-        this.ShowModal({
-          key: modals.showImage,
-          contentType: file.contentType.split('/')[0],
-          url: file.url,
-        });
-      }
+      this.ShowModal({
+        key: modals.showImage,
+        contentType: file.contentType.split('/')[0],
+        url: file.url,
+      });
     },
   },
 };

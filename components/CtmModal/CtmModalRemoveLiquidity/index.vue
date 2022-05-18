@@ -1,12 +1,10 @@
 <template>
   <ctm-modal-box
     class="remove"
-    :title="$t('modals.removeLiquidity')"
+    :title="$tc('modals.titles.removeLiquidity')"
   >
     <div class="remove__content content">
-      <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
-      >
+      <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
         <div class="content__grid">
           <div>
             <div class="content__field field">
@@ -16,9 +14,10 @@
               <base-field
                 v-model="withdraw"
                 class="field__body"
-                :placeholder="'1000 WQT'"
+                data-selector="WITHDRAWAL-AMOUNT"
+                placeholder="1000 WQT"
                 rules="required|decimal"
-                :name="$t('modals.withdrawalAmountField')"
+                :name="$tc('modals.withdrawalAmountField')"
               />
             </div>
             <div class="content__currencies currencies">
@@ -53,7 +52,7 @@
               </div>
               <div
                 class="zone__subtitle"
-                :class="{'zone__subtitle_last':i=== abouts.length-1}"
+                :class="{'zone__subtitle_last':i === abouts.length - 1}"
               >
                 {{ item.subtitle }}
               </div>
@@ -64,16 +63,18 @@
           <base-btn
             class="buttons__button"
             mode="outline"
-            @click="hide()"
+            data-selector="CANCEL"
+            @click="CloseModal"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
+            data-selector="REMOVE-LIQUIDITY"
             :disabled="!validated || !passed || invalid"
-            @click="handleSubmit(hide)"
+            @click="handleSubmit(CloseModal)"
           >
-            {{ $t('modals.removeLiquidity') }}
+            {{ $t('modals.titles.removeLiquidity') }}
           </base-btn>
         </div>
       </validation-observer>
@@ -97,9 +98,6 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     abouts() {
       const { isBNB } = this.options;
       return [
@@ -127,7 +125,7 @@ export default {
         },
         {
           url: require('~/assets/img/ui/wqt-logo.svg'),
-          name: this.$t('modals.wqt'),
+          name: this.$t('meta.coins.wqt'),
           value: '25.0256',
         },
       ];
@@ -148,7 +146,7 @@ export default {
 }
 .content {
   &__zone {
-    background-color: #F7F8FA;
+    background-color: $black0;
     border-radius: 5px;
     padding: 20px;
   }
@@ -177,7 +175,7 @@ export default {
     }
     }
     &__picture{
-      box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 4px 9px rgba(0, 0, 0, 0.15);
       border-radius: 50%;
     }
     &__name {

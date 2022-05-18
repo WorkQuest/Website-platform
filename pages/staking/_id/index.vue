@@ -4,13 +4,14 @@
       <div class="staking-page__header">
         <div class="head-btns">
           <base-btn
+            data-selector="PREVIOUS-STEP"
             class="btn"
             @click="handleBackToMainStaking()"
           >
             <template v-slot:left>
               <span class="icon-chevron_left" />
             </template>
-            {{ $t('staking.back') }}
+            {{ $t('meta.btns.back') }}
           </base-btn>
         </div>
         <div class="head-cont">
@@ -19,10 +20,11 @@
           </div>
           <div class="link-cont">
             <div class="link-cont__link link-cont__link_gray">
-              {{ poolAddress }}
+              {{ convertToBech32('wq', poolAddress) }}
             </div>
             <button
               type="button"
+              data-selector="COPY-BTN"
               @click="doCopy"
             >
               <span class="icon-copy link-cont__icon" />
@@ -132,15 +134,16 @@
           <div class="info-block__btns-cont">
             <base-btn
               mode="outline"
+              data-selector="CLAIM-REWARDS"
               @click="showClaimModal"
             >
-              {{ $t('staking.claimRewards') }}
+              {{ $t('meta.claimRewards') }}
             </base-btn>
           </div>
         </div>
         <div class="info-block">
           <div class="info-block__name_bold">
-            {{ $t('staking.stake') }}
+            {{ $t('meta.btns.stake') }}
           </div>
           <div class="info-block__info-cards">
             <div
@@ -160,20 +163,25 @@
             </div>
           </div>
           <div class="info-block__btns-cont">
-            <base-btn @click="handleAutoRenewal">
+            <base-btn
+              data-selector="AUTO-RENEWAL"
+              @click="handleAutoRenewal"
+            >
               {{ $t('staking.autoRenewal') }}
             </base-btn>
             <base-btn
               mode="outline"
+              data-selector="SHOW-UNSTAKE-MODAL"
               @click="showUnstakeModal"
             >
-              {{ $t('staking.unstake') }}
+              {{ $t('meta.btns.unstake') }}
             </base-btn>
             <base-btn
+              data-selector="SHOW-STAKE-MODAL"
               mode="outline"
               @click="showStakeModal"
             >
-              {{ $t('staking.stake') }}
+              {{ $t('meta.btns.stake') }}
             </base-btn>
           </div>
         </div>
@@ -213,11 +221,11 @@ export default {
     cards() {
       return [
         {
-          title: this.$t(`staking.${this.poolData.stakeTokenSymbol || this.slug}Count`, { n: this.NumberWithSpaces(this.poolData.totalStaked) }),
+          title: this.$t(`meta.coins.count.${this.poolData.stakeTokenSymbol || this.slug}Count`, { count: this.NumberWithSpaces(this.poolData.totalStaked) }),
           subtitle: this.$t('staking.totalStaked'),
         },
         {
-          title: this.$t(`staking.${this.poolData.tokenSymbol || this.slug}Count`, { n: this.NumberWithSpaces(this.poolData.totalDistributed) }),
+          title: this.$t(`meta.coins.count.${this.poolData.tokenSymbol || this.slug}Count`, { count: this.NumberWithSpaces(this.poolData.totalDistributed) }),
           subtitle: this.$t('staking.totalDistributed'),
         },
       ];
@@ -246,15 +254,15 @@ export default {
       const data = [
         {
           name: this.$t('staking.userInformationCards.staked'),
-          about: this.$t(`staking.${this.slug}Count`, { n: this.NumberWithSpaces(this.userInfo.staked || '') }),
+          about: this.$t(`meta.coins.count.${this.slug}Count`, { count: this.NumberWithSpaces(this.userInfo.staked || '') }),
         },
         {
           name: this.$t('staking.userInformationCards.yourBalance'),
-          about: this.$t(`staking.${this.slug}Count`, { n: this.NumberWithSpaces(this.userInfo.balance || '') }),
+          about: this.$t(`meta.coins.count.${this.slug}Count`, { count: this.NumberWithSpaces(this.userInfo.balance || '') }),
         },
         {
           name: this.$t('mining.reward'),
-          about: this.$t(`staking.${this.slug}Count`, { n: this.NumberWithSpaces(this.userInfo.claim || '') }),
+          about: this.$t(`meta.coins.count.${this.slug}Count`, { count: this.NumberWithSpaces(this.userInfo.claim || '') }),
         },
       ];
       if (this.userInfo.date && this.userInfo.staked !== '0') {
@@ -266,17 +274,17 @@ export default {
         if (minutes <= 60) {
           data.push({
             name: this.$t('staking.stakingCards.duration'),
-            about: this.$t('staking.min', { n: minutes >= 0 ? minutes : 0 }),
+            about: this.$tc('meta.units.minutes', this.DeclOfNum(minutes >= 0 ? minutes : 0), { count: minutes >= 0 ? minutes : 0 }),
           });
         } else if (hours <= 24) {
           data.push({
             name: this.$t('staking.stakingCards.duration'),
-            about: this.$t('staking.hours', { n: hours >= 0 ? hours : 0 }),
+            about: this.$tc('meta.units.hours', this.DeclOfNum(hours >= 0 ? hours : 0), { count: hours >= 0 ? hours : 0 }),
           });
         } else {
           data.push({
             name: this.$t('staking.stakingCards.duration'),
-            about: this.$t('staking.days', { n: days >= 0 ? days : 0 }),
+            about: this.$tc('meta.units.days', this.DeclOfNum(days >= 0 ? days : 0), { count: days >= 0 ? days : 0 }),
           });
         }
       }
@@ -286,11 +294,11 @@ export default {
       return [
         {
           name: this.$t('staking.stakeCards.stakeMin'),
-          about: this.$t(`staking.${this.slug}Count`, { n: this.NumberWithSpaces(this.poolData.minStake || '') }),
+          about: this.$t(`meta.coins.count.${this.slug}Count`, { count: this.NumberWithSpaces(this.poolData.minStake || '') }),
         },
         {
           name: this.$t('staking.stakeCards.stakeLimit'),
-          about: this.$t(`staking.${this.slug}Count`, { n: this.NumberWithSpaces(this.poolData.maxStake || '') }),
+          about: this.$t(`meta.coins.count.${this.slug}Count`, { count: this.NumberWithSpaces(this.poolData.maxStake || '') }),
         },
         {
           name: this.$t('staking.stakeCards.periodUpdate'),
@@ -314,9 +322,9 @@ export default {
   methods: {
     getTimeFromMin(min) {
       if (!min) return '';
-      if (Math.floor(min / 60 / 24) > 0) return this.$t('staking.days', { n: min / 60 / 24 });
-      if (Math.floor(min / 60) > 0) return this.$t('staking.hours', { n: Math.floor(min / 60) });
-      return this.$t('staking.min', { n: min });
+      if (Math.floor(min / 60 / 24) > 0) return this.$tc('meta.units.days', this.DeclOfNum(min / 60 / 24), { count: min / 60 / 24 });
+      if (Math.floor(min / 60) > 0) return this.$tc('meta.units.hours', this.DeclOfNum(Math.floor(min / 60)), { count: Math.floor(min / 60) });
+      return this.$tc('meta.units.hours', this.DeclOfNum(min), { count: min });
     },
     async loadData() {
       this.SetLoader(true);
@@ -372,10 +380,10 @@ export default {
       }
       this.ShowModal({
         key: modals.transactionReceipt,
-        title: this.$t('staking.claimRewards'),
+        title: this.$t('meta.claimRewards'),
         fields: {
-          from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-          to: { name: this.$t('modals.toAddress'), value: this.poolData.poolAddress },
+          from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+          to: { name: this.$t('meta.toBig'), value: this.poolData.poolAddress },
           fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
         },
         submitMethod: async () => await this.$store.dispatch('wallet/stakingClaimRewards', {
@@ -479,7 +487,7 @@ export default {
       this.ShowModal({
         key: modals.areYouSureNotification,
         title: this.$t('modals.areYouSure'),
-        text: this.$t('staking.renewalTokens', { n: renewalValue }),
+        text: this.$t('staking.renewalTokens', { count: renewalValue }),
         callback: async () => {
           this.SetLoader(true);
           const [txFee] = await Promise.all([
@@ -504,8 +512,8 @@ export default {
             key: modals.transactionReceipt,
             title: this.$t('staking.autoRenewal'),
             fields: {
-              from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-              to: { name: this.$t('modals.toAddress'), value: this.poolAddress },
+              from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+              to: { name: this.$t('meta.toBig'), value: this.poolAddress },
               fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
             },
             submitMethod: async () => await this.$store.dispatch('wallet/stakingRenewal', { stakingType: this.slug, poolAddress: this.poolAddress }),
@@ -576,7 +584,7 @@ export default {
         color: #fff;
 
         &_gray {
-          color: #F7F8FA;
+          color: $black0;
           font-weight: 400;
         }
       }
@@ -643,7 +651,7 @@ export default {
         .info-card {
           display: grid;
           grid-template-rows: repeat(2, 1fr);
-          background-color: #F7F8FA;
+          background-color: $black0;
           height: 104px;
           padding: 20px;
           gap: 10px;

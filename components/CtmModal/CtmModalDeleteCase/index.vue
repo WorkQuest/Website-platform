@@ -19,15 +19,17 @@
         <base-btn
           class="action__button"
           mode="outline"
-          @click="hide()"
+          data-selector="CANCEL"
+          @click="CloseModal"
         >
-          {{ $t('meta.cancel') }}
+          {{ $t('meta.btns.cancel') }}
         </base-btn>
         <base-btn
           class="action__button"
+          data-selector="DELETE"
           @click="deletePortfolio(options.id)"
         >
-          {{ $t('meta.delete') }}
+          {{ $t('meta.btns.delete') }}
         </base-btn>
       </div>
     </div>
@@ -40,9 +42,6 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalAreYouSureDelete',
-  data() {
-    return {};
-  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
@@ -50,21 +49,26 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     async deletePortfolio(id) {
       try {
         this.SetLoader(true);
         await this.$store.dispatch('user/deletePortfolio', id);
-        this.showToastDeleted();
+        await this.$store.dispatch('main/showToast', {
+          title: this.$t('toasts.caseDeleted'),
+          variant: 'success',
+          text: this.$t('toasts.caseDeleted'),
+        });
         await this.getAllPortfolios();
-        this.hide();
+        this.CloseModal();
         this.SetLoader(false);
       } catch (e) {
         await this.getAllPortfolios();
-        this.hide();
-        this.showToastError(e);
+        this.CloseModal();
+        await this.$store.dispatch('main/showToast', {
+          title: this.$t('toasts.error'),
+          variant: 'warning',
+          text: `${e}`,
+        });
         this.SetLoader(false);
       }
     },
@@ -72,22 +76,12 @@ export default {
       try {
         await this.$store.dispatch('user/getUserPortfolios', { userId: this.userData.id });
       } catch (e) {
-        this.showToastError(e);
+        await this.$store.dispatch('main/showToast', {
+          title: this.$t('toasts.error'),
+          variant: 'warning',
+          text: `${e}`,
+        });
       }
-    },
-    showToastDeleted() {
-      return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.caseDeleted'),
-        variant: 'success',
-        text: this.$t('toasts.caseDeleted'),
-      });
-    },
-    showToastError(e) {
-      return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.error'),
-        variant: 'warning',
-        text: `${e}`,
-      });
     },
   },
 };

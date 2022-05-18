@@ -1,7 +1,9 @@
 <template>
   <div
+    v-if="questData"
     class="main"
-    :class="{'main-white': step === 1}"
+    data-selector="PAGE-MY-QUESTS"
+    :class="{'main-white': step === $options.EditQuestState.EDITING}"
   >
     <div class="main__body page">
       <validation-observer
@@ -10,6 +12,7 @@
       >
         <div
           v-if="step === 1"
+          data-selector="PAGE-MY-QUESTS-STEP-1"
           class="page"
         >
           <h2 class="page__title">
@@ -23,9 +26,10 @@
                     v-model="runtimeValue"
                     :items="runtime"
                     type="gray"
-                    :label="$t('quests.runtime.runtime')"
+                    :label="$tc('quests.runtime')"
                     :placeholder="runtime[0]"
-                    :name="$t('quests.runtime.runtime')"
+                    data-selector="RUNTIME"
+                    :name="$t('quests.runtime')"
                     rules="required"
                   />
                 </div>
@@ -34,31 +38,34 @@
             <div class="page__input">
               <base-field
                 v-model="price"
-                :type="'number'"
-                :label="$t('quests.price')"
-                :placeholder="+0 + currency"
-                rules="required|decimal"
-                :name="$t('quests.price')"
+                type="number"
+                :label="$tc('meta.price')"
+                data-selector="PRICE-FIELD"
+                placeholder="0 WUSD"
+                rules="required|decimal|decimalPlaces:16|min_value:1"
+                :name="$tc('meta.price')"
               />
             </div>
             <div class="page__dd">
               <base-dd
                 v-model="priorityIndex"
-                :label="$t('quests.employment.employment')"
+                :label="$tc('quests.employment.employment')"
                 type="gray"
                 :items="employment"
                 rules="required"
-                :name="$t('quests.employment.employment')"
+                :name="$tc('quests.employment.employment')"
+                data-selector="EMPLOYMENT"
               />
             </div>
             <div class="page__dd">
               <base-dd
                 v-model="categoryIndex"
-                :label="$t('quests.distantWork.distantWork')"
+                :label="$tc('quests.distantWork.distantWork')"
                 type="gray"
                 :items="distantWork"
                 rules="required"
                 :name="$t('quests.distantWork.distantWork')"
+                data-selector="DISTANT"
               />
             </div>
           </div>
@@ -69,12 +76,13 @@
           <div class="page__address">
             <base-field
               v-model="address"
-              :label="$t('quests.address')"
+              :label="$tc('quests.address')"
+              data-selector="ADDRESS-FIELD"
               :placeholder="$t('quests.address')"
               mode="icon"
               :selector="true"
               rules="required"
-              :name="$t('quests.address')"
+              :name="$tc('quests.address')"
               @selector="getAddressInfo(address)"
             >
               <template v-slot:left>
@@ -83,12 +91,14 @@
               <template v-slot:selector>
                 <div
                   v-if="addresses.length"
+                  data-selector="ADDRESS-SELECTOR"
                   class="selector"
                 >
                   <div class="selector__items">
                     <div
                       v-for="(item, i) in addresses"
                       :key="i"
+                      :data-selector="`ACTION-BTN-ADDRESS-${i}`"
                       class="selector__item"
                       @click="selectAddress(item)"
                     >
@@ -102,8 +112,9 @@
           <div class="page__input">
             <base-field
               v-model="questTitle"
+              data-selector="QUEST-TITLE-FIELD"
               rules="required"
-              :name="$t('quests.questTitle')"
+              :name="$tc('quests.questTitle')"
               :placeholder="$t('quests.questTitle')"
             />
           </div>
@@ -111,6 +122,8 @@
             <textarea
               id="textarea"
               v-model="textarea"
+              disabled
+              data-selector="QUEST-DESC-TEXTAREA"
               class="page__textarea"
               :placeholder="$t('quests.questDesc')"
             />
@@ -132,8 +145,9 @@
           <div class="upload btn btn__container btn__container_right">
             <div class="btn__create">
               <base-btn
+                data-selector="TO-RAISED-VIEWS"
                 :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
-                @click="handleSubmit(toRiseViews(2))"
+                @click="handleSubmit(setCurrentStepEditQuest($options.EditQuestState.RAISE_VIEWS))"
               >
                 {{ $t('quests.editAQuest') }}
               </base-btn>
@@ -141,18 +155,20 @@
           </div>
         </div>
         <div
-          v-if="step === 2"
+          v-if="step === $options.EditQuestState.RAISE_VIEWS"
+          data-selector="PAGE-MY-QUESTS-STEP-2"
           class="page"
         >
           <div class="page btn-container btn-container__left">
             <div class="btn-container__btn_back">
               <base-btn
+                data-selector="PREVIOUS-STEP"
                 mode="back"
                 @click="clickBackBtnHandler"
               >
-                {{ $t('meta.back') }}
+                {{ $t('meta.btns.back') }}
                 <template v-slot:left>
-                  <span class="icon-chevron_big_left" />
+                  <span class="icon-chevron_big_left btn-container__icon" />
                 </template>
               </base-btn>
             </div>
@@ -227,14 +243,16 @@
             <div class="btn-container">
               <div class="btn-container__btn">
                 <base-btn
+                  data-selector="EDIT-QUEST"
                   mode="outline"
-                  @click="editQuest"
+                  @click="toEditQuest"
                 >
                   {{ $t('meta.skipAndEnd') }}
                 </base-btn>
               </div>
               <div class="btn-container__btn">
                 <base-btn
+                  data-selector="SHOW-PAYMENT-MODAl"
                   :disabled="ads.currentAdPrice === ''"
                   @click="showPaymentModal"
                 >
@@ -251,12 +269,19 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
+import { Path, TokenMap, TokenSymbols } from '~/utils/enums';
+import {
+  QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses, CommissionForCreatingAQuest,
+} from '~/utils/сonstants/quests';
+import { ERC20 } from '~/abi';
 
 const { GeoCode } = require('geo-coder');
 
 export default {
   name: 'EditQuest',
+  EditQuestState,
   data() {
     return {
       ads: {
@@ -273,123 +298,75 @@ export default {
       textarea: '',
       price: '',
       coordinates: {},
-      currency: ' WUSD',
       addresses: [],
       files: [],
       mode: this.$route.query?.mode || '',
       geoCode: null,
+      prevPrice: null,
     };
   },
   computed: {
     ...mapGetters({
+      isWalletConnected: 'wallet/getIsWalletConnected',
+      userWalletAddress: 'user/getUserWalletAddress',
+      balanceData: 'wallet/getBalanceData',
       questData: 'quests/getQuest',
       step: 'quests/getCurrentStepEditQuest',
     }),
     days() {
-      return [
-        {
-          level: this.$t('quests.levels.1.title'),
-          code: 1,
-          desc: this.$t('quests.levels.1.desc'),
+      const days = [];
+      // eslint-disable-next-line no-plusplus
+      for (let i = 1; i < 5; i++) {
+        const title = `quests.levels.${i}.`;
+        days.push({
+          level: this.$t(`${title}title`),
+          code: i,
+          desc: this.$t(`${title}desc`),
           cost: '10',
-        },
-        {
-          level: this.$t('quests.levels.2.title'),
-          code: 2,
-          desc: this.$t('quests.levels.2.desc'),
-          cost: '10',
-        },
-        {
-          level: this.$t('quests.levels.3.title'),
-          code: 3,
-          desc: this.$t('quests.levels.3.desc'),
-          cost: '10',
-        },
-        {
-          level: this.$t('quests.levels.4.title'),
-          code: 4,
-          desc: this.$t('quests.levels.4.desc'),
-          cost: '10',
-        },
-      ];
+        });
+      }
+      return days;
     },
     weeks() {
-      return [
-        {
-          level: this.$t('quests.levels.1.title'),
-          code: 1,
-          desc: this.$t('quests.levels.1.desc'),
-          cost: '40',
-        },
-        {
-          level: this.$t('quests.levels.2.title'),
-          code: 2,
-          desc: this.$t('quests.levels.2.desc'),
-          cost: '10',
-        },
-        {
-          level: this.$t('quests.levels.3.title'),
-          code: 3,
-          desc: this.$t('quests.levels.3.desc'),
-          cost: '40',
-        },
-        {
-          level: this.$t('quests.levels.4.title'),
-          code: 4,
-          desc: this.$t('quests.levels.4.desc'),
-          cost: '40',
-        },
-      ];
+      const weeks = [];
+      // eslint-disable-next-line no-plusplus
+      for (let i = 1; i < 5; i++) {
+        const title = `quests.levels.${i}.`;
+        weeks.push({
+          level: this.$t(`${title}title`),
+          code: i,
+          desc: this.$t(`${title}desc`),
+          cost: i === 2 ? '10' : '40',
+        });
+      }
+      return weeks;
     },
     months() {
-      return [
-        {
-          level: this.$t('quests.levels.1.title'),
-          code: 1,
-          desc: this.$t('quests.levels.1.desc'),
-          cost: '70',
-        },
-        {
-          level: this.$t('quests.levels.2.title'),
-          code: 2,
-          desc: this.$t('quests.levels.2.desc'),
-          cost: '10',
-        },
-        {
-          level: this.$t('quests.levels.3.title'),
-          code: 3,
-          desc: this.$t('quests.levels.3.desc'),
-          cost: '70',
-        },
-        {
-          level: this.$t('quests.levels.4.title'),
-          code: 4,
-          desc: this.$t('quests.levels.4.desc'),
-          cost: '70',
-        },
-      ];
+      const months = [];
+      // eslint-disable-next-line no-plusplus
+      for (let i = 1; i < 5; i++) {
+        const title = `quests.levels.${i}.`;
+        months.push({
+          level: this.$t(`${title}title`),
+          code: i,
+          desc: this.$t(`${title}desc`),
+          cost: i === 2 ? '10' : '70',
+        });
+      }
+      return months;
     },
     periodTabs() {
       return [
-        {
-          number: 1,
-          title: this.$t('raising-views.forOneDay'),
-        },
-        {
-          number: 2,
-          title: this.$t('raising-views.forOneWeek'),
-        },
-        {
-          number: 3,
-          title: this.$t('raising-views.forOneMonth'),
-        },
+        { number: 1, title: this.$t('raising-views.forOneDay') },
+        { number: 2, title: this.$t('raising-views.forOneWeek') },
+        { number: 3, title: this.$t('raising-views.forOneMonth') },
       ];
     },
     runtime() {
       return [
-        this.$t('quests.runtime.urgent'),
-        this.$t('quests.runtime.shortTerm'),
-        this.$t('quests.runtime.fixedDelivery'),
+        this.$t('meta.priority.urgent'),
+        this.$t('meta.priority.shortTerm'),
+        this.$t('meta.priority.fixedDelivery'),
       ];
     },
     employment() {
@@ -407,14 +384,35 @@ export default {
       ];
     },
   },
+  beforeCreate() {
+    this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+  },
   async mounted() {
+    if (!this.isWalletConnected) return;
     this.SetLoader(true);
     await this.$store.dispatch('quests/getQuest', this.$route.params.id);
     this.geoCode = new GeoCode('google', {
       key: process.env.GMAPKEY,
       lang: this.$i18n?.localeProperties?.code || 'en-US',
     });
-    await this.editQuestFill();
+    const {
+      title, locationPlaceName, price, description, location, employment, id, status,
+    } = this.questData;
+
+    if ([QuestStatuses.Pending, InfoModeEmployer.Dispute, InfoModeEmployer.Done, InfoModeEmployer.Closed].includes(status)) {
+      await this.$router.push(`${Path.QUESTS}/${id}`);
+    }
+
+    this.runtimeValue = 1;
+    this.employmentIndex = this.parseEmployment(employment);
+    this.questTitle = title;
+    this.address = locationPlaceName;
+    this.price = new BigNumber(price).shiftedBy(-18).toString();
+    this.textarea = description;
+    this.coordinates.lng = location.longitude;
+    this.coordinates.lat = location.latitude;
+
+    this.prevPrice = this.price;
     this.SetLoader(false);
   },
   methods: {
@@ -424,20 +422,10 @@ export default {
     updateSelectedSkills(specAndSkills) {
       this.selectedSpecAndSkills = specAndSkills;
     },
-    async editQuestFill() {
-      this.runtimeValue = 1;
-      this.employmentIndex = this.parseEmployment(this.questData.employment);
-      this.questTitle = this.questData.title;
-      this.address = this.questData.locationPlaceName;
-      this.price = this.questData.price;
-      this.textarea = this.questData.description;
-      this.coordinates.lng = this.questData.location.longitude;
-      this.coordinates.lat = this.questData.location.latitude;
-    },
-    cardStatus(item) {
-      if (item.code === 1) return 'level__card_gold';
-      if (item.code === 3) return 'card__level_reliable';
-      if (item.code === 4) return 'card__level_checked';
+    cardStatus({ code }) {
+      if (code === 1) return 'level__card_gold';
+      if (code === 3) return 'card__level_reliable';
+      if (code === 4) return 'card__level_checked';
       return '';
     },
     periods(period) {
@@ -468,7 +456,7 @@ export default {
         this.ads.currentAdPrice = '';
       }
     },
-    toRiseViews(step) {
+    setCurrentStepEditQuest(step) {
       this.$store.commit('quests/setCurrentStepEditQuest', step);
     },
     showPaymentModal() {
@@ -481,7 +469,7 @@ export default {
       if (this.mode === 'raise') {
         this.goBack();
       } else {
-        this.toRiseViews(1);
+        this.setCurrentStepEditQuest(EditQuestState.EDITING);
       }
     },
     goBack() {
@@ -519,29 +507,123 @@ export default {
       } catch (e) {
         this.addresses = [];
         console.error('Geo look up is failed', e);
-        await this.$store.dispatch('main/showToast', {
-          text: 'Address is not correct',
-        });
       }
     },
+    async toEditQuest() {
+      // Edit only quest info w/o sending tx
+      if (this.prevPrice === this.price) {
+        await this.editQuest();
+        return;
+      }
+
+      const { contractAddress } = this.questData;
+      const wusdAddress = TokenMap[TokenSymbols.WUSD];
+
+      new Promise(async (resolve, reject) => {
+        // Quest Cost Increased
+        if (new BigNumber(this.price).isGreaterThan(this.prevPrice)) {
+          const deposit = new BigNumber(this.price).minus(this.prevPrice).toString();
+          const depositAmount = new BigNumber(deposit).multipliedBy(1 + CommissionForCreatingAQuest).toString();
+
+          this.SetLoader(true);
+          await this.$store.dispatch('wallet/fetchWalletData', {
+            method: 'balanceOf',
+            address: this.userWalletAddress,
+            abi: ERC20,
+            token: wusdAddress,
+            symbol: TokenSymbols.WUSD,
+          });
+          if (new BigNumber(this.balanceData.WUSD.fullBalance).isLessThan(depositAmount)) {
+            this.ShowToast(`${this.$t('errors.transaction.notEnoughFunds')} (${TokenSymbols.WUSD})`);
+            this.SetLoader(false);
+            reject();
+            return;
+          }
+          await this.makeApprove({ wusdAddress, contractAddress, depositAmount })
+            .then(async (result) => {
+              await resolve(result);
+            }).catch((error) => {
+              this.SetLoader(false);
+              reject(error);
+            });
+        } else { // Quest cost decrease
+          await resolve();
+        }
+      }).then(async (deposit) => {
+        await this.editWithCostChange(contractAddress, deposit);
+      });
+    },
+
+    // Approve to quest contract if cost increased
+    async makeApprove({ wusdAddress, contractAddress, depositAmount }) {
+      return new Promise(async (resolve, reject) => {
+        const allowance = await this.$store.dispatch('wallet/getAllowance', {
+          tokenAddress: wusdAddress,
+          spenderAddress: contractAddress,
+        });
+        if (new BigNumber(allowance).isLessThan(depositAmount)) {
+          const [approveFee] = await Promise.all([
+            this.$store.dispatch('wallet/getContractFeeData', {
+              method: 'approve',
+              abi: ERC20,
+              contractAddress: wusdAddress,
+              data: [contractAddress, new BigNumber(depositAmount).shiftedBy(18).toString()],
+            }),
+            this.$store.dispatch('wallet/getBalance'),
+          ]);
+
+          this.SetLoader(false);
+          if (!approveFee.ok) {
+            this.ShowToast('Approve error');
+            reject();
+            return;
+          }
+
+          this.ShowModal({
+            key: modals.transactionReceipt,
+            title: this.$t('meta.approve'),
+            fields: {
+              from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
+              to: { name: this.$t('meta.toBig'), value: contractAddress },
+              amount: { name: this.$t('modals.amount'), value: depositAmount, symbol: TokenSymbols.WUSD },
+              fee: { name: this.$t('wallet.table.trxFee'), value: approveFee.result.fee, symbol: TokenSymbols.WQT },
+            },
+            submitMethod: async () => {
+              this.ShowToast('Approving...', 'Approve');
+              const approveOk = await this.$store.dispatch('wallet/approve', {
+                tokenAddress: wusdAddress,
+                spenderAddress: contractAddress,
+                amount: depositAmount,
+              });
+              if (!approveOk) {
+                this.ShowToast('Approve error');
+                reject();
+                return;
+              }
+              this.ShowToast('Approving done', 'Approve');
+              await resolve(depositAmount);
+            },
+          });
+        } else {
+          await resolve(depositAmount);
+        }
+      });
+    },
+
+    //  Send new data to backend
     async editQuest() {
       if (this.mode === 'raise') {
         this.goBack();
         return;
       }
-
       this.SetLoader(true);
       const medias = await this.uploadFiles(this.files);
       const payload = {
         workplace: 'distant',
         priority: this.priorityIndex,
         employment: this.convertEmployment(this.employmentIndex),
-        category: 'Default',
         title: this.questTitle,
-        description: this.textarea,
-        price: this.price,
         medias,
-        adType: 0,
         specializationKeys: this.selectedSpecAndSkills,
         locationFull: {
           location: {
@@ -558,12 +640,52 @@ export default {
         this.showModalEditQuest();
         this.showToastEdited();
         await this.$router.push(`/quests/${questId}`);
-        this.toRiseViews(1);
+        this.setCurrentStepEditQuest(EditQuestState.EDITING);
       }
+    },
+    /**
+     * To change price on contract
+     * @param contractAddress
+     * @param depositAmount - if increasing cost. How much need to deposit for new cost
+     */
+    async editWithCostChange(contractAddress, depositAmount) {
+      const [feeRes] = await Promise.all([
+        this.$store.dispatch('quests/getFeeDataJobMethod', {
+          contractAddress,
+          method: QuestMethods.EditJob,
+          data: [new BigNumber(this.price).shiftedBy(18).toString()],
+        }),
+        this.$store.dispatch('wallet/getBalance'),
+      ]);
+      if (!feeRes.ok) {
+        this.ShowToast(this.$t('errors.transaction.notEnoughFunds'));
+        return;
+      }
+      const fields = {
+        from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
+        to: { name: this.$t('meta.toBig'), value: contractAddress },
+        fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
+      };
+      if (depositAmount) {
+        fields.amount = { name: this.$t('modals.amount'), value: depositAmount, symbol: TokenSymbols.WUSD };
+      }
+      await this.$store.dispatch('wallet/getBalance');
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        fields,
+        submitMethod: async () => {
+          const res = await this.$store.dispatch('quests/editQuestOnContract', {
+            contractAddress,
+            cost: this.price,
+          });
+          if (res.ok) await this.editQuest();
+        },
+      });
     },
     showModalEditQuest() {
       this.ShowModal({
-        key: modals.questCreated,
+        key: modals.status,
+        img: require('assets/img/ui/questCreated.svg'),
         title: this.$t('modals.questUpdated'),
       });
     },
@@ -592,6 +714,9 @@ export default {
   flex-direction: row;
   justify-content: flex-end;
   margin: 20px 0 0 0;
+  &__icon {
+    color: $black700;
+  }
   &__left {
     justify-content: flex-start;
     margin: 30px 0 0 0;
@@ -828,7 +953,7 @@ export default {
     cursor: pointer;
     transition: .3s;
     &:hover {
-      background: #F3F7FA;
+      background: $black0;
     }
   }
 }
@@ -877,7 +1002,7 @@ export default {
     background: #FFFFFF;
     color: $blue;
     &:hover {
-      background: #F7F8FA;
+      background: $black0;
       color: $blue;
     }
   }
@@ -1063,7 +1188,7 @@ export default {
     align-items: flex-start;
     margin: 20px 0 0 0;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     grid-gap: 20px;
   }
   &__address {
@@ -1078,7 +1203,7 @@ export default {
     height: 214px;
     width: 100%;
     border: 0;
-    background-color: #F3F7FA;
+    background-color: $black0;
     resize: none;
     &::placeholder {
       color: $black300;

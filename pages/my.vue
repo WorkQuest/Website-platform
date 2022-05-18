@@ -1,14 +1,21 @@
 <template>
-  <div class="quests">
+  <div
+    class="quests"
+    data-selector="PAGE-MY-QUESTS"
+  >
     <div class="quests__container">
       <div class="quests__body">
         <div class="quests__title">
-          {{ $t('quests.MyQuests') }}
+          {{ $t('meta.myQuests') }}
         </div>
-        <div class="quests__content">
+        <div
+          class="quests__content"
+          :class="{'quests__content-wide': userRole === UserRole.WORKER }"
+        >
           <base-btn
             v-for="(item, i) in filterTabs"
             :key="i"
+            :data-selector="`${item.name}`"
             :mode="selectedTab === item.id ? '' : 'light'"
             class="quests__btn"
             @click="filterByStatus(item.id)"
@@ -21,9 +28,10 @@
           class="quests__cards"
         >
           <card-quest
-            v-for="(quest,id) in questsData"
-            :key="id"
+            v-for="(quest,i) in quests"
+            :key="i"
             :quest="quest"
+            :quest-index="i"
             @clickFavoriteStar="updateQuests(quest)"
           />
         </div>
@@ -48,14 +56,14 @@
 <script>
 
 import { mapGetters } from 'vuex';
-import { QuestStatuses, UserRole, Path } from '~/utils/enums';
-import emptyData from '~/components/app/info/emptyData';
+import { UserRole, Path } from '~/utils/enums';
+import { QuestStatuses } from '~/utils/сonstants/quests';
 
 export default {
   name: 'My',
   data() {
     return {
-      selectedTab: 0,
+      selectedTab: null,
       page: 1,
       offset: 10,
       statuses: '',
@@ -65,22 +73,26 @@ export default {
   computed: {
     ...mapGetters({
       userData: 'user/getUserData',
-      questsData: 'quests/getUserInfoQuests',
-      questsCount: 'quests/getUserInfoQuestsCount',
+      userRole: 'user/getUserRole',
+      quests: 'quests/getAllQuests',
+      questsCount: 'quests/getAllQuestsCount',
     }),
-    userRole() {
-      return this.userData.role;
+    UserRole() {
+      return UserRole;
     },
     filterTabs() {
       const tabs = [
-        { name: this.$t('myQuests.statuses.all'), id: 0 },
+        { name: this.$t('myQuests.statuses.all'), id: null },
         { name: this.$t('myQuests.statuses.favorites'), id: 1 },
+        { name: this.$t('myQuests.statuses.created'), id: 0 },
         { name: this.$t('myQuests.statuses.responded'), id: 2 },
-        { name: this.$t('myQuests.statuses.active'), id: 3 },
         { name: this.$t('myQuests.statuses.invited'), id: 4 },
+        { name: this.$t('myQuests.statuses.active'), id: 3 },
         { name: this.$t('myQuests.statuses.performed'), id: 5 },
       ];
-      return this.userRole === UserRole.EMPLOYER ? tabs.filter((tab) => (tab.id !== 2)) : tabs;
+      return this.userRole === UserRole.EMPLOYER
+        ? tabs.filter((tab) => (tab.id !== 2 && tab.id !== 4))
+        : tabs.filter((tab) => (tab.id !== 0));
     },
     totalPages() {
       return Math.ceil(this.questsCount / this.offset);
@@ -93,15 +105,16 @@ export default {
     async page() {
       this.SetLoader(true);
       this.requestParams.query.offset = (this.page - 1) * this.offset;
-      await this.$store.dispatch('quests/getUserQuests', this.requestParams);
+      await this.getQuests();
+      this.ScrollToTop();
       this.SetLoader(false);
     },
   },
   async mounted() {
     this.SetLoader(true);
     this.requestParams = {
-      userId: this.userData.id,
       role: this.userRole,
+      specializations: null,
       query: {
         limit: 10,
         offset: 0,
@@ -109,16 +122,27 @@ export default {
         'sort[createdAt]': 'desc',
       },
     };
-    await this.$store.dispatch('quests/getUserQuests', this.requestParams);
+    await this.getQuests();
     this.SetLoader(false);
   },
+  destroyed() {
+    this.$store.commit('quests/setUserQuests', { count: 0, quests: [] });
+    sessionStorage.removeItem('questsListFilter');
+  },
   methods: {
+    async getQuests() {
+      const { requestParams } = this;
+
+      sessionStorage.setItem('questsListFilter', JSON.stringify(requestParams));
+
+      await this.$store.dispatch('quests/getUserQuests', requestParams);
+    },
     async updateQuests(item) {
       this.SetLoader(true);
       if (!item.star) await this.$store.dispatch('quests/setStarOnQuest', item.id);
       else await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
 
-      await this.$store.dispatch('quests/getUserQuests', this.requestParams);
+      await this.getQuests();
       this.SetLoader(false);
     },
     async filterByStatus(id) {
@@ -127,13 +151,17 @@ export default {
       this.selectedTab = id;
       this.requestParams.query.offset = 0;
       this.requestParams.query.starred = id === 1;
+      delete this.requestParams.query.invited;
+      delete this.requestParams.query['statuses[0]'];
 
-      if (id <= 1) delete this.requestParams.query['statuses[0]'];
-      else if (id === 2) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitConfirm;
-      else if (id === 3) this.requestParams.query['statuses[0]'] = QuestStatuses.Active;
-      else if (id === 4) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorker;
+      if (id === null) delete this.requestParams.query['statuses[0]'];
+      else if (id === 0) this.requestParams.query['statuses[0]'] = QuestStatuses.Created;
+      else if (id === 2) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitEmployerConfirm;
+      else if (id === 3) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorker;
+      else if (id === 4) this.requestParams.query.invited = true;
       else if (id === 5) this.requestParams.query['statuses[0]'] = QuestStatuses.Done;
-      await this.$store.dispatch('quests/getUserQuests', this.requestParams);
+
+      await this.getQuests();
       this.SetLoader(false);
     },
   },
@@ -144,15 +172,18 @@ export default {
 .quests {
   width: 100%;
   background-color: #f6f8fa;
+
   &__container {
     display: flex;
     justify-content: center;
   }
+
   &__cards {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
   }
+
   &__title {
     @include text-simple;
     font-style: normal;
@@ -162,31 +193,41 @@ export default {
     color: $black800;
     margin: 20px 0 20px 0;
   }
+
   &__body {
     width: 100%;
     max-width: 1180px;
   }
+
   &__content {
     display: grid;
     align-items: center;
-    grid-template-columns: repeat(6, auto);
+    grid-template-columns: repeat(5, auto);
     grid-gap: 10px;
     margin-bottom: 20px;
+
+    &-wide {
+      grid-template-columns: repeat(6, auto);
+    }
   }
+
   &__pager {
     margin-top: 25px;
   }
 }
+
 @include _1199 {
   .quests__body {
     padding: 0 10px;
   }
 }
+
 @include _767 {
   .quests__content {
     grid-template-columns: repeat(3, auto);
   }
 }
+
 @include _480 {
   .quests__content {
     grid-template-columns: repeat(2, auto);

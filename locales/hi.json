@@ -1,40 +1,211 @@
 {
-  "invite": {
-    "title": "इन्वाइट किया"
+  "kyc": {
+    "KYC": "KYC",
+    "alreadyVerified": "Your profile already verified!"
   },
-  "response": {
-    "title": "जवाब दिया"
-  },
-  "active": {
-    "title": "जवाब दिया"
-  },
-  "company": {
-    "from": "से"
-  },
-  "performed": {
-    "title": "परफॉर्म किया"
-  },
-  "btn": {
-    "agree": "सहमत",
-    "disagree": "???",
-    "completeWorkOnQuest": "???",
-    "acceptCompletedWorkOnQuest": "???",
-    "closeQuest": "???",
-    "goToChat": "चैट पर जाएं",
-    "dispute": "खुला विवाद",
+  "meta": {
+    "priority": {
+      "title": "प्राथमिकता चुनें",
+      "all": "सभी प्राथमिकता",
+      "fixedDelivery": "फिक्स्ड डिलीवरी",
+      "shortTerm": "Short term 1 week",
+      "urgent": "Urgent 24-72h",
+      "employee": {
+        "urgent": "Urgent execution"
+      }
+    },
+    "stores": {
+      "googlePlay": "Google play",
+      "appleStore": "Apple store"
+    },
+    "amount": {
+      "amountOfBNB": "Amount of BNB",
+      "amountOfWQT": "Amount of WQT",
+      "amountOfETH": "Amount of ETH",
+      "amountETHPerWQT": "Amount ETH per WQT",
+      "amountBNBPerWQT": "Amount BNB per WQT"
+    },
+    "coins": {
+      "eth": "ETH",
+      "bnb": "BNB",
+      "bsc": "BSC",
+      "wqt": "WQT",
+      "wusd": "WUSD",
+      "count": {
+        "WUSDCount": "{count} WUSD",
+        "WQTCount": "{count} WQT",
+        "ETHCount": "{count} ETH",
+        "BNBCount": "{count} BNB",
+        "USDCount": "{count} USD",
+        "LPCount": "{count} LP",
+        "dollarsCount": "$ {count}"
+      }
+    },
+    "units": {
+      "plusCount": "+ {count}",
+      "mb": "{count} MB",
+      "kb": "{count} KB",
+      "percentsCount": "{count}%",
+      "seconds": "{count} second | {count} seconds | {count} seconds",
+      "minutes": "{count} minute | {count} minutes | {count} minutes",
+      "hours": "{count} minute | {count} minutes | {count} hours",
+      "years": "{count} year | {count} years | {count} years",
+      "days": "{count} day | {count} days | {count} days",
+      "daysLeft": "{count} days left",
+      "votesCount": "{count} votes",
+      "distance": {
+        "m": "m"
+      }
+    },
+    "btns": {
+      "back": "वापस",
+      "edit": "एडिट करें",
+      "ok": "ओके",
+      "send": "भेजें",
+      "delete": "Delete",
+      "save": "सेव करें",
+      "reset": "रीसेट करें",
+      "buy": "खरीद",
+      "cancel": "कैंसिल करें",
+      "confirm": "कंफर्म करें",
+      "submit": "सबमिट करें",
+      "next": "अगला",
+      "disagree": "Disagree",
+      "continue": "जारी रखें",
+      "download": "डाउनलोड करें",
+      "change": "बदलें",
+      "forgot": "पासवर्ड भूल गए?",
+      "close": "Close",
+      "disable": "अक्षम करें",
+      "later": "बाद में",
+      "apply": "लागू करें",
+      "agree": "सहमत",
+      "showAll": "Show all",
+      "showAllReviews": "सभी रिव्यू दिखाएं",
+      "showAllQuests": "Show all quests",
+      "showAllPortfolios": "Show all portfolios",
+      "unstake": "Unstake",
+      "stake": "Stake",
+      "resendSMS": "SMS फिर से भेजें",
+      "registration": "रजिस्ट्रेशन",
+      "leave": "Leave",
+      "completeWorkOnQuest": "Complete work",
+      "acceptCompletedWorkOnQuest": "Accept work",
+      "closeQuest": "Close quest",
+      "goToChat": "चैट पर जाएं",
+      "view": "देखें",
+      "add": "जोड़ें",
+      "take": "Take"
+    },
+    "placeholders": {
+      "default": "प्लेसहोल्डर",
+      "mail": "your@mail.com",
+      "email": "ईमेल एड्रेस",
+      "specialization": "Enter specialization",
+      "skill": "Enter skill",
+      "searchSpecSkill": "Enter specialization or skill"
+    },
+    "worker": {
+      "cost": {
+        "notIndicated": "Not indicated..."
+      }
+    },
+    "allTransactions": "All transactions",
+    "collateralTransactions": "Collateral transactions",
+    "operation": "Operation",
+    "typeYourMessage": "Type your message",
+    "liquidityMining": "लिक्विडिटी माइनिंग",
+    "claimRewards": "Claim rewards",
+    "percent": "प्रतिशत",
+    "deposit": "Deposit",
+    "withdraw": "निकासी",
+    "withdrawal": "निकासी",
+    "information": "जानकारी",
+    "lend": "उधार",
+    "faq": "आम सवाल",
+    "term": "अवधि",
+    "performed": "परफॉर्म किया",
+    "contactUs": "Contact Us",
+    "balance": "बैलेंस",
+    "openDispute": "Open dispute",
+    "lastNameSmall": "जॉन",
+    "lastNameBig": "जॉन",
+    "firstNameSmall": "डो",
+    "firstNameBig": "डो",
+    "showAllCases": "सभी केस दिखाएं",
+    "addCase": "केस जोड़ें",
+    "addressBig": "पता",
+    "addressSmall": "पता",
+    "skills": "्किल",
+    "myQuests": "मेरी Quests",
+    "reviewsSmall": "रिव्यू",
+    "reviewsBig": "रिव्यू",
+    "questsSmall": "quests",
+    "questsBig": "Quests",
+    "codeFromSMS": "SMS से कोड",
+    "toBig": "To",
+    "toSmall": "to",
+    "fromBig": "From",
+    "fromSmall": "from",
     "responded": "जवाब भेजा",
+    "questInfo": "Quest info",
+    "invited": "इन्वाइट किया",
+    "redeem": "Redeem",
+    "redeemed": "Redeemed",
+    "pay": "Pay",
+    "skipAndEnd": "Skip and end",
+    "cleanUp": "Clean up",
+    "connected": "Connected",
+    "disconnect": "Disconnect wallet",
+    "fromYou": "आपके नजदीक",
+    "details": "विवरण देखें",
+    "iAgree": "मैं सहमत हूं",
+    "connectSMSVer": "SMS वेरिफिकेशन कनेक्ट करें",
+    "remindLater": "बाद में याद दिलाएं",
+    "listIsEmpty": "List is empty",
+    "crediting": "कर्ज",
+    "portfolio": "पोर्टफोलियो",
+    "price": "कीमत",
     "sendARequest": "अनुरोध भेजें",
-    "view": "देखें"
-  },
-  "distance": {
-    "m": "m"
+    "aboutUs": "About Us",
+    "signIn": "साइन इन करें",
+    "account": "अकाउंट नहीं है?",
+    "raiseViews": "व्यू बढ़ाएं",
+    "educations": "शिक्षा",
+    "login": "लॉगिन करें",
+    "signUp": "साइन अप करें",
+    "securityCheckBig": "सुरक्षा जांच",
+    "securityCheckSmall": "सुरक्षा जांच",
+    "googleConfCode": "Google कंफर्मेशन कोड",
+    "googleConfCodeDesc": "Google Authenticator ऐप से 6 अंकों का कोड दर्ज करें",
+    "terms": "नियम एवं शर्तें",
+    "aml": "AML एवं CTF नीति",
+    "createAQuest": "Quest बनाएं",
+    "completed": "Completed",
+    "typeOfJob": "Type of employment",
+    "choosePeriod": "अवधि चुनें",
+    "verified": "Verified",
+    "dispute": "विवाद",
+    "approve": "मंजूर करें",
+    "openedQuests": "ओपन Quest",
+    "addLiquidity": "लिक्विडिटी जोड़ें",
+    "buyWUSD": "WUSD खरीदें",
+    "wallet": "वॉलेट",
+    "bankCard": "बैंक कार्ड",
+    "cardAdd": "कार्ड जोड़ें",
+    "settings": "सेटिंग",
+    "costPerHour": "कॉस्ट प्रति घंटा",
+    "disputes": "विवाद",
+    "success": "Success",
+    "fail": "Fail"
   },
   "info": {
-    "yourMessage": "???",
+    "yourMessage": " Your message:",
     "showYourMessage": "अपना मैसेज दिखाएं",
-    "hideYourMessage": "???"
+    "hideYourMessage": "Hide your message"
   },
   "messages": {
+    "min_percent": "The {_field_} field must be greater than {min}%",
     "alpha": "{_field_} फील्ड में केवल अल्फाबैटिक कैरेक्टर यानी वर्णानुक्रमिक वर्ण हो सकते हैं",
     "alpha_num": "{_field_} फील्ड में केवल अल्फा-न्यूमेरिक कैरेक्टर हो सकते हैं",
     "alpha_dash": "{_field_} फील्ड में अल्फा-न्यूमेरिक कैरेक्टर के साथ-साथ डैश व अंडरस्कोर भी हो सकते हैं",
@@ -61,55 +232,26 @@
     "required": "{_field_} फील्ड आवश्यक है",
     "size": "{_field_} फील्ड साइज {size}KB से कम होना चाहिए",
     "decimal": "{_field_} फील्ड में केवल दशमलव मान होने चाहिए",
-    "decimalPlaces": "{_field_} ??? {places}",
-    "invalidPhone":"???",
-    "formError": "???",
+    "decimalPlaces": "The {_field_} field must contain maximum {places} decimal places",
+    "invalidPhone": "Invalid phone number",
+    "formError": "Fill in all required fields",
     "is": "The values do not match",
     "is_not": "Incorrect value",
     "mnemonic": "Incorrect secret phrase",
     "attemptsExceeded": "Number of attempts exceeded",
     "loginWithSecret": "Please login with secret phrase",
-    "invalidPassword": "Invalid password"
-  },
-  "labels": {
-    "firstName": "नाम का पहला शब्द",
-    "lastName": "नाम का अंतिम शब्द",
-    "mail": "मेल",
-    "password": "पासवर्ड डालें"
-  },
-  "placeholders": {
-    "default": "प्लेसहोल्डर",
-    "firstName": "जॉन",
-    "lastName": "डो",
-    "mail": "your@mail.com",
-    "email": "ईमेल एड्रेस",
-    "password": "•••••••"
+    "invalidPassword": "Invalid password",
+    "loginToContinue": "Please login to continue"
   },
   "about": {
-    "contact": "संपर्क करें",
-    "content": {
-      "title": "हमारे बारे में",
-      "text": "WorkQuest एक सोशल प्रोजेक्ट है जो ब्लॉकचेन तकनीक पर आधारित है, यह काम खोजने और quest मोड में एंप्लॉयर यानी नियोक्ता वाले टास्क पूरे करने के लिए है। क्या आप जॉब की तलाश में हैं? WorkQuest आपको अपने करीब या अपने शहर के बगल में quest ढूंढ़ने में मदद करेगा। क्या आपको अपने काम पूरे करने के लिए वर्कर चाहिए? बस यह करें कि WorkQuest की साइट पर एक quest बनाएं। यह सेवा quests को पूरा करने के लिए वारंटी दायित्वों को अपने ऊपर लेती है। एंप्लॉयर हमारे पास पैसा जमा करता है, यदि कर्मचारी काम पूरा करने की पुष्टि कर देता है, तो उसके अपने खाते में पैसा जमा कर दिया जाता है। रेटिंग, रिव्यू और पूरे किए गए quests की सूची का सिस्टम सही व ईमानदार लोगों और बेहतरीन विशेषज्ञों को आसानी से खोजने में मदद करता है।\n\n          हमारा लक्ष्य एंप्लॉयर और कर्मचारी के बीच कम्युनिकेशन को सरल बनाना है, लाखों लोगों को रोजगार देने में मदद करना, उनकी वित्तीय स्थिति में सुधार करना, सभी सेक्टर में भरोसेमंद प्रोफेशनल खोजने की हमेशा की दिक्कत को हल करना है ताकि एक लगातार प्रगति करती डिजिटल अर्थव्यवस्था बनाई जा सके जो विश्वास, आपसी सम्मान और इसके सभी प्रतिभागियों की भलाई के सिद्धांतों पर आधारित हो।"
-    }
+    "text": "WorkQuest एक सोशल प्रोजेक्ट है जो ब्लॉकचेन तकनीक पर आधारित है, यह काम खोजने और quest मोड में एंप्लॉयर यानी नियोक्ता वाले टास्क पूरे करने के लिए है। क्या आप जॉब की तलाश में हैं? WorkQuest आपको अपने करीब या अपने शहर के बगल में quest ढूंढ़ने में मदद करेगा। क्या आपको अपने काम पूरे करने के लिए वर्कर चाहिए? बस यह करें कि WorkQuest की साइट पर एक quest बनाएं। यह सेवा quests को पूरा करने के लिए वारंटी दायित्वों को अपने ऊपर लेती है। एंप्लॉयर हमारे पास पैसा जमा करता है, यदि कर्मचारी काम पूरा करने की पुष्टि कर देता है, तो उसके अपने खाते में पैसा जमा कर दिया जाता है। रेटिंग, रिव्यू और पूरे किए गए quests की सूची का सिस्टम सही व ईमानदार लोगों और बेहतरीन विशेषज्ञों को आसानी से खोजने में मदद करता है।\n\n          हमारा लक्ष्य एंप्लॉयर और कर्मचारी के बीच कम्युनिकेशन को सरल बनाना है, लाखों लोगों को रोजगार देने में मदद करना, उनकी वित्तीय स्थिति में सुधार करना, सभी सेक्टर में भरोसेमंद प्रोफेशनल खोजने की हमेशा की दिक्कत को हल करना है ताकि एक लगातार प्रगति करती डिजिटल अर्थव्यवस्था बनाई जा सके जो विश्वास, आपसी सम्मान और इसके सभी प्रतिभागियों की भलाई के सिद्धांतों पर आधारित हो।"
   },
   "registration": {
-    "edit": "एडिट करें",
-    "registration": "रजिस्ट्रेशन",
     "emailConfirm": "आपके ईमेल एड्रेस पर मैसेज भेजा गया है",
     "emailConfirmTitle": "अपना ईमेल देखें"
   },
-  "login": {
-    "signIn": "साइन इन करें",
-    "account": "अकाउंट नहीं है?",
-    "remember": "मुझे याद रखें",
-    "forgot": "पासवर्ड भूल गए?",
-    "loginWith": "अपने सोशल मीडिया अकाउंट \nके जरिए लॉगिन करें",
-    "create": "अकाउंट बनाएं"
-  },
   "profile": {
     "defaultName": "Nameless User",
-    "raiseViews": "व्यू बढ़ाएं",
-    "educations": "शिक्षा",
     "prevWorkExp": "पिछला वर्क एक्सपीरिएंस",
     "active": "एक्टिव प्रपोजल",
     "radius": "आपके दायरे में",
@@ -118,116 +260,36 @@
     "proposalStatus": "प्रपोजल स्टेटस",
     "urgently": "तत्काल",
     "details": "विवरण देखें",
-    "available": "उपलब्ध",
-    "viewProfile": "प्रोफाइल \nदेखें",
-    "invite": "QUESTOR को इन्वाइट करें",
-    "slogan": "वर्क प्रपोजल बनाएं",
     "add": "समस्त जानकारी और पब्लिकेशन समय जोड़ें ताकि यह खोज सकें:",
-    "create": "बनाएं",
-    "writeAMessage": "मैसेज लिखें",
-    "quests": "Quests",
-    "reviews": "रिव्यू",
-    "portfolio": "पोर्टफोलियो",
-    "common": "???",
+    "common": "Common info",
     "sidebar": {
       "filter": "सभी Quests फिल्टर",
-      "choose": "(सामान्य या स्पेशलाइज्ड \nकैटेगरी चुनें)",
-      "quests": "Quests",
-      "specialized": "स्पेशलाइज्ड QUESTS",
-      "find": "जॉब ढूंढ़ें"
-    }
-  },
-  "meta": {
-    "redeem": "???",
-    "redeemed": "???",
-    "pay": "???",
-    "skipAndEnd": "???",
-    "cleanUp": "???",
-    "close": "???",
-    "connected": "???",
-    "disconnect": "???",
-    "delete": "???",
-    "back": "वापस",
-    "ok": "ओके",
-    "send": "भेजें",
-    "save": "सेव करें",
-    "reset": "रीसेट करें",
-    "fromYou": "आपके नजदीक",
-    "details": "विवरण देखें",
-    "cancel": "कैंसिल करें",
-    "confirm": "कंफर्म करें",
-    "buyWUSD": "WUSD खरीदें",
-    "submit": "सबमिट करें",
-    "showAllReviews": "सभी रिव्यू दिखाएं",
-    "showAllQuests": "???",
-    "showAllPortfolios": "???",
-    "later": "बाद में",
-    "iAgree": "मैं सहमत हूं",
-    "next": "अगला",
-    "continue": "जारी रखें",
-    "change": "बदलें",
-    "apply": "लागू करें",
-    "connectSMSVer": "SMS वेरिफिकेशन कनेक्ट करें",
-    "resendSMS": "SMS फिर से भेजें",
-    "disable": "अक्षम करें",
-    "remindLater": "बाद में याद दिलाएं",
-    "leave": "???",
-    "showAll": "Show all",
-    "listIsEmpty": "List is empty"
-  },
-  "priority": {
-    "title": "प्राथमिकता चुनें",
-    "all": "सभी प्राथमिकता",
-    "low": "फिक्स्ड डिलीवरी",
-    "normal": "शॉर्ट टर्म",
-    "urgent": "अर्जेंट",
-    "employee": {
-      "low": "???",
-      "normal": "???",
-      "urgent": "???"
+      "choose": "(सामान्य या स्पेशलाइज्ड \nकैटेगरी चुनें)"
     }
   },
   "signIn": {
-    "title": "साइन इन करें",
-    "account": "अकाउंट नहीं है?",
-    "regs": "रजिस्ट्रेशन",
-    "login": "लॉगिन करें",
     "remember": "मुझे याद रखें",
-    "forgot": "पासवर्ड भूल गए",
     "or": "या",
     "loginWith": "इससे लॉगिन करें:",
-    "welcomeToWorkQuest": "WorkQuest में स्वागत है",
-    "pleaseSignIn": "साइन इन करें",
     "workQuest": "WorkQuest",
-    "makingMoneyIsFast": "WorkQuest:\n दुनिया का \nविकेंद्रीकृत\n जॉब मार्केट",
-    "dontHaveAnAccount": "अकाउंट नहीं है?",
-    "signUp": "साइन अप करें",
-    "forgotYourPass": "अपना पासवर्ड भूल गए?"
+    "makingMoneyIsFast": "WorkQuest:\n दुनिया का \nविकेंद्रीकृत\n जॉब मार्केट"
   },
   "signWorkQuest": {
-    "title": "WorkQuest सोशल नेटवर्क",
     "description": "साइन इन करने के लिए आप अपने WorkQuest DAO लॉगिन व पासवर्ड का प्रयोग कर सकते हैं",
     "daoUsername": "DAO यूजरनेम",
     "daoPass": "DAO पासवर्ड"
   },
   "securityCheck": {
-    "title": "सुरक्षा जांच",
-    "confCode": "Google कंफर्मेशन कोड",
     "placeholder": "प्लेसहोल्डर",
-    "confCodeDesc": "Google Authenticator ऐप से 6 अंकों का कोड दर्ज करें",
-    "confCodeField": "???",
+    "confCodeField": "google verification",
     "confirmAccess": "Confirm access",
     "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
-    "title": "साइन अप करें",
     "haveAccount": "पहले से ही कोई अकाउंट है?",
     "auth": "ऑथराइजेशन",
-    "firstName": "नाम का पहला शब्द",
-    "lastName": "नाम का अंतिम शब्द",
     "email": "ईमेल",
     "password": "पासवर्ड",
-    "totp":"???",
     "confirmPassword": "पासवर्ड दोहराएं",
     "create": "अकाउंट बनाएं"
   },
@@ -245,7 +307,6 @@
     "secretPhrase": "Secret phrase"
   },
   "forgot": {
-    "title": "पासवर्ड भूल गए?",
     "desc": "हम आपको आपका पासवर्ड रीसेट करने के लिए निर्देश भेजेंगे।"
   },
   "restore": {
@@ -255,89 +316,58 @@
   "role": {
     "employer": "एंप्लॉयर",
     "worker": "कर्मचारी",
-    "enter": "एंटर करें",
     "choose": "अपनी भूमिका चुनें",
     "employerWant": "मुझे टास्क बनाने हैं और मुझे वर्कर्स की तलाश है",
     "workerWant": "मुझे टास्क की तलाश है और मैं फ्रीलांस काम करने में इच्छुक हूं",
     "chooseThis": "यह भूमिका चुनें"
   },
   "privacy": {
-    "title": "गोपनीयता नीति",
-    "desc": "",
-    "agree": "मैं इससे सहमत हूं:",
-    "privacyLink": "गोपनीयता नीति",
-    "termsLink": "नियम एवं शर्तें",
-    "amlLink": "AML एवं CTF नीति"
+    "agree": "मैं इससे सहमत हूं:"
   },
   "layout": {
-    "create": "Quest बनाएं",
     "links": {
       "terms": "\t· नियम एवं शर्तें",
       "privacy": "\t· गोपनीयता नीति"
     }
   },
-  "skills": {
-    "title": "स्किल"
-  },
-  "worker": {
-    "cost": {
-      "notIndicated": "???..."
-    }
-  },
   "quests": {
-    "showAll": "???",
-    "wusd": "WUSD",
+    "workersNotInvited": "Workers not invited",
     "employer": {
-      "usersNotResponded": "???"
+      "usersNotResponded": "Users not responded"
     },
-    "companyNotListed": "???",
-    "workersNotInvited": "???",
-    "startChat": "???",
-    "invite": "???",
-    "decline": "???",
-    "questTitle": "???",
-    "questDesc": "???",
-    "questInfo": "???",
-    "closed": "???",
-    "completed": "???",
-    "rejected": "???",
-    "completedWorkAccepted": "???",
-    "completedWorkRejected": "???",
-    "workOnQuestAccepted": "???",
-    "workOnQuestRejected": "???",
-    "pleaseWaitEmp": "???",
-    "quests": "???",
-    "questsSmall": "quests",
-    "publicationDate": "???",
-    "urgent": "अर्जेंट",
-    "specQuests": "???",
-    "permanentJob": "???",
-    "typeOfJob": "जॉब का प्रकार",
-    "partTime": "???",
-    "fixedTerm": "???",
-    "contract": "???",
-    "remoteWork": "???",
-    "allVariants": "???",
+    "deleteQuest": "Delete quest",
+    "invite": "Invite",
+    "decline": "Decline",
+    "declinedTheInvitation": "Declined the invitation",
+    "acceptedTheInvitation": "Accepted the invitation",
+    "questTitle": "Quest title",
+    "questDesc": "Quest description",
+    "closed": "Closed",
+    "rejected": "Rejected",
+    "completedWorkAccepted": "Completed work on quest accepted!",
+    "completedWorkRejected": "Completed work on quest rejected!",
+    "workOnQuestAccepted": "Work on quest accepted!",
+    "workOnQuestRejected": "Work on quest rejected!",
+    "pleaseWaitEmp": "Work on quest completed! Please, wait your employer!",
+    "publicationDate": "Publication date",
+    "allVariants": "All variants",
     "levels": {
       "1": {
-        "title": "???",
-        "desc": "???"
+        "title": "Gold Plus Package",
+        "desc": "Notifications for employees who were looking for quests, via an offer to review the quest that has been promoted by the employer. The employee will be invited to complete the quest in based on the most recent search categories of the employee. Plus the ability to choose any category and any location to promote the quest."
       },
       "2": {
-        "title": "???",
-        "desc": "???"
+        "title": "Gold Package",
+        "desc": "Notifications for employees who were looking for quests with a direct offer to review the promoted quest based on the most recent search categories of the employee. Plus the ability to choose three categories and three locations to promote the quest."
       },
       "3": {
-        "title": "???",
-        "desc": "???"
+        "title": "Silver Package",
+        "desc": "Pin quest on the main page for three hours, with the ability to choose two categories and two locations for promotion the quest."
       },
       "4": {
-        "title": "???",
-        "desc": "???"
+        "title": "Bronze Package",
+        "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
       }
-    },
-    "createQuest": {
-      "choosePeriod": "???"
     },
     "distance": {
       "100": "+ 100 m",
@@ -345,118 +375,69 @@
       "1000": "+ 1000 m"
     },
     "rating": {
-      "title": "???",
-      "verified": "???",
-      "reliable": "???",
-      "topRanked": "???"
+      "title": "Rating",
+      "verified": "Verified",
+      "reliable": "Reliable",
+      "topRanked": "Top ranked",
+      "noStatus": "Not rated"
     },
     "distantWork": {
-      "title": "रिमोट जॉब",
-      "allWorkplaces": "???",
-      "distantWork": "रिमोट जॉब",
-      "workInOffice": "ऑफिस जॉब",
-      "bothVariant": "दोनों प्रकार"
+      "title": "Workplace",
+      "allWorkplaces": "All workplaces",
+      "distantWork": "Remote work",
+      "workInOffice": "In-office",
+      "bothVariant": "Hybrid workplace"
+    },
+    "payPeriods": {
+      "title": "Pay periods",
+      "Hourly": "Hourly",
+      "Daily": "Daily",
+      "Weekly": "Weekly",
+      "BiWeekly":"Bi-weekly ",
+      "SemiMonthly": "Semi-monthly",
+      "Monthly": "Monthly",
+      "Quarterly": "Quarterly",
+      "SemiAnnually": "Semi-annually",
+      "Annually": "Annually",
+      "FixedPeriod":"Fixed period",
+      "ByAgreement":"By agreement"
     },
     "employment": {
-      "employment": "???",
-      "fullTime": "???",
-      "partTime": "???",
-      "fixedTerm": "???"
+      "employment": "Employment",
+      "FullTime": "Full time",
+      "PartTime": "Part time",
+      "FixedTerm": "Fixed term",
+      "EmploymentContract": "Employment contract",
+      "RemoteWork": "Remote work"
     },
-    "runtime": {
-      "runtime": "???",
-      "urgent": "???",
-      "shortTerm": "???",
-      "fixedDelivery": "???"
-    },
-    "spec": {
-      "spec": "???",
-      "addSpec": "???"
-    },
-    "skills": {
-      "skills": "???",
-      "chooseSkills": "???",
-      "limit": "???"
-    },
-    "hours": "घंटे",
-    "responded": "???",
-    "invited": "इन्वाइट किया",
-    "acceptedTheInvitation": "???",
-    "declinedTheInvitation": "???",
+    "runtime": "Runtime",
     "active": "एक्टिव",
-    "performed": "परफॉर्म किया",
     "requested": "अनुरोध किया",
-    "youInvited": "आपने इन्वाइट किया",
     "inProgressBy": "इनके द्वारा प्रगति पर:",
-    "finishedBy": "???:",
-    "showAllCases": "सभी केस दिखाएं",
-    "portfolio": "पोर्टफोलियो",
-    "searchQuests": "Quest खोजें",
+    "finishedBy": "Finished by:",
     "readCompletely": "पूरा पढ़ें",
     "questBig": "Quest",
-    "fromBig": "से",
-    "fromSmall": "???",
-    "fromYou": "आप से",
-    "reviews": "रिव्यू",
-    "reviewsBig": "रिव्यू",
-    "MyQuests": "मेरी Quests",
     "activeQuest": "एक्टिव Quest",
-    "waitWorker": "???",
-    "pendingConsideration": "???",
-    "dispute": "???",
-    "questClosed": "???",
-    "questFinished": "???",
-    "dontHaveSpec": "???...",
-    "namelessWorker": "???",
-    "nothingAboutMe": "???...",
-    "unknownAddress": "???...",
-    "unknownPhoneNumber": "???...",
-    "unknownEmailAddress": "???..",
-    "questActive": "???:",
-    "questDispute": "???:",
-    "questWaitConfirm": "???:",
-    "skillsNotSpecified": "???...",
-    "proposal": "प्रपोजल",
-    "category": "कैटेगरी चुनें",
+    "waitWorker": "Wait worker",
+    "pendingConsideration": "Pending consideration",
+    "questClosed": "Quest Closed",
+    "dontHaveSpec": "Doesn`t have specializations...",
+    "namelessWorker": "Nameless worker",
+    "nothingAboutMe": "Nothing about me...",
+    "unknownAddress": "Unknown address...",
+    "questActive": "Quest Active:",
+    "questDispute": "Quest Dispute:",
+    "questWaitConfirm": "Quest wait confirm:",
     "address": "एड्रेस जोड़ें",
     "uploadMaterials": "Quest का बेहतर वर्णन करने के लिए सामग्री अपलोड करें",
-    "price": "कीमत",
-    "filter": {
-      "btn": "फिल्टर"
-    },
-    "ads": {
-      "promoteYourQuest": "अपनी Quest को प्रमोट करें",
-      "publishForFree": "मुफ्त में पब्लिश करें",
-      "boostYourPublications": "अपने पब्लिकेशन को बढ़ावा दें",
-      "costPerClick": "कीमत प्रति क्लिक"
-    },
-    "selectLocation": "लोकेशन चुनें",
-    "city": "शहर",
-    "period": "समय अवधि",
-    "EstimatedPayment": "अनुमानित भुगतान:",
-    "createAQuest": "Quest बनाएं",
-    "editAQuest": "???",
-    "openedQuests": "???",
+    "editAQuest": "Edit a quest",
     "completedQuests": "पूरी हुई Quests",
     "oneTime": "एकबारगी",
-    "fullTime": "फुलटाइम",
-    "uploadAImagesOrVideos": "इमेज या वीडियो अपलोड करें",
     "averageRating": "औसत रेटिंग",
-    "showAllActiveQuests": "सभी एक्टिव Quests दिखाएं",
-    "performanceTimer": "इस समय तक एक्टिव:",
-    "questAmount": "Quests",
-    "otherQuestsSpec": "???",
+    "otherQuestsSpec": "Other quests for the specialization",
     "questMaterials": "अतिरिक्त Quest सामग्री",
-    "searchResults": "सर्च परिणाम",
-    "type": "जॉब का प्रकार",
     "time": "जोड़ा गया समय",
-    "priority": {
-      "title": "???",
-      "all": "सभी प्राथमिकता",
-      "low": "कम",
-      "normal": "सामान्य",
-      "urgent": "अर्जेंट"
-    },
+    "priority": "Priority",
     "ui": {
       "showMap": "नक्शा दिखाएं",
       "searchOnQuestsPage": "Employer / Title / Description / City",
@@ -464,9 +445,6 @@
       "searchWithMap": "शहर / मोहल्ला / स्थान"
     },
     "worker": "वर्कर",
-    "raiseViews": "व्यू बढ़ाएं",
-    "deleteQuest": "Quest डिलीट करें",
-    "approve": "मंजूर करें",
     "startQuest": "Quest शुरू करें"
   },
   "filters": {
@@ -474,35 +452,34 @@
       "1": "विशेषज्ञता",
       "2": "Quests",
       "3": "अर्जेंट",
-      "4": "जॉब का प्रकार",
+      "4": "Type of employment",
       "5": "सभी प्राथमिकता",
       "6": "कीमत",
       "7": "जोड़ा गया समय"
     },
     "title": "फिल्टर",
-    "titleAll": "सभी फिल्टर",
     "filterBtn": "सभी फिल्टर दिखाएं",
     "commonSub": {
       "selectAll": "सभी चुनें"
     },
-    "items": {
+    "skills": {
       "1": {
-        "title": "???",
+        "title": "Retail, Sales & Purchasing",
         "sub": {
-          "100": "???",
-          "101": "???",
-          "102": "???",
-          "103": "???",
-          "104": "???",
-          "105": "???",
-          "106": "???",
-          "107": "???",
-          "108": "???",
-          "109": "???",
-          "110": "???",
-          "111": "???",
-          "112": "???",
-          "113": "???"
+          "100": "Convenience Stores",
+          "101": "Grocery Stores",
+          "102": "Specialty retailers",
+          "103": "Clothing Stores",
+          "104": "Auto Retailers",
+          "105": "Home furnishing retailers",
+          "106": "Drug Stores",
+          "107": "Department Stores",
+          "108": "Super Markets and Hyper Markets",
+          "109": "Multichannel Stores",
+          "110": "Discount Stores",
+          "111": "Direct Sales Catalog and mail order companies",
+          "112": "E-commerce Stores",
+          "113": "Other Retail, Sales & Purchasing"
         }
       },
       "2": {
@@ -520,234 +497,234 @@
         }
       },
       "3": {
-        "title": "???",
+        "title": "Accounting & Consulting",
         "sub": {
-          "300": "???",
-          "301": "???",
-          "302": "???",
-          "303": "???",
-          "304": "???"
+          "300": "Accounting ",
+          "301": "Financial Planning",
+          "302": "Human Resources",
+          "303": "Management Consulting",
+          "304": "Other Accounting & Consulting"
         }
       },
       "4": {
-        "title": "???",
+        "title": "Admin Support",
         "sub": {
-          "400": "???",
-          "406": "???",
-          "402": "???",
-          "403": "???",
-          "404": "???",
-          "405": "???"
+          "400": "Data Entry",
+          "406": "Other Admin Support",
+          "402": "Personal / Virtual Assistance",
+          "403": "Project Management",
+          "404": "Transcription",
+          "405": "Web Research"
         }
       },
       "5": {
-        "title": "???",
+        "title": "Customer Service",
         "sub": {
-          "500": "???",
-          "501": "???"
+          "500": "Customer Service",
+          "501": "Technical Support"
         }
       },
       "6": {
-        "title": "???",
+        "title": "Data Science & Analytics",
         "sub": {
-          "601": "???",
-          "600": "???",
-          "602": "???",
-          "603": "???",
-          "604": "???",
-          "605": "???",
-          "606": "???"
+          "601": "Data Extraction / ETL",
+          "600": "A / B Testing",
+          "602": "Data Mining & Management",
+          "603": "Data Visualization",
+          "604": "Machine Learning",
+          "605": "Quantitative Analysis",
+          "606": "Other Data Science & Analytics"
         }
       },
       "7": {
-        "title": "???",
+        "title": "Personnel Management & HR",
         "sub": {
-          "700": "???",
-          "701": "???",
-          "702": "???",
-          "703": "???",
-          "704": "???",
-          "705": "???",
-          "706": "???",
-          "707": "???",
-          "708": "???",
-          "709": "???",
-          "710": "???",
-          "711": "???",
-          "712": "???"
+          "700": "Human Resource Planning",
+          "701": "Recruitment and Selection",
+          "702": "Performance Management",
+          "703": "Learning and Development",
+          "704": "Career Planning",
+          "705": "Function Evaluation",
+          "706": "Rewards",
+          "707": "Industrial Relations",
+          "708": "Employee Participation and Communication",
+          "709": "Health and Safety",
+          "710": "Personal Wellbeing",
+          "711": "Administrative Responsibilities",
+          "712": "Other Personnel Management & HR"
         }
       },
       "8": {
-        "title": "???",
+        "title": "Security",
         "sub": {
-          "800": "???",
-          "801": "???",
-          "802": "???",
-          "803": "???",
-          "804": "???",
-          "805": "???",
-          "806": "???",
-          "807": "???",
-          "808": "???",
-          "809": "???"
+          "800": "Risk Manager",
+          "801": "Systems, Network & Web Penetration Tester",
+          "802": "Network Security Engineer",
+          "803": "Network Security Administrator",
+          "804": "Cyber Crime Investigator",
+          "805": "Information Security Analyst",
+          "806": "Security Analyst",
+          "807": "Security Manager",
+          "808": "Security Guard",
+          "809": "Other Security "
         }
       },
       "9": {
-        "title": "???",
+        "title": "Home Staff",
         "sub": {
-          "900": "???",
-          "901": "???",
-          "902": "???",
-          "903": "???",
-          "904": "???",
-          "905": "???",
-          "906": "???",
-          "907": "???",
-          "908": "???"
+          "900": "Babysitting",
+          "901": "Governess",
+          "902": "Tutors",
+          "903": "Housekeepers",
+          "904": "Caregivers",
+          "905": "Cooks",
+          "906": "Gardeners",
+          "907": "Drivers",
+          "908": "Other Home Staff"
         }
       },
       "10": {
-        "title": "???",
+        "title": "Beauty, Fitness & Sport",
         "sub": {
-          "1007": "???",
-          "1008": "???",
-          "1005": "???",
-          "1004": "???",
-          "1002": "???",
-          "1003": "???",
-          "1006": "???",
-          "1001": "???",
-          "1000": "???"
+          "1007": "Beauty salon",
+          "1008": "Other Beauty, Fitness & Sport ",
+          "1005": "Physical Therapist",
+          "1004": "Occupational Therapist",
+          "1002": "Fitness Trainer",
+          "1003": "Massage Therapist",
+          "1006": "Recreational Therapist",
+          "1001": "Exercise Physiologist",
+          "1000": "Athletic Trainer"
         }
       },
       "11": {
-        "title": "???",
+        "title": "Education",
         "sub": {
-          "1105": "???",
-          "1104": "???",
-          "1102": "???",
-          "1103": "???",
-          "1101": "???",
-          "1100": "???"
+          "1105": "Other Education",
+          "1104": "Teaching Lanquages",
+          "1102": "School Counseling",
+          "1103": "School Social Work",
+          "1101": "Education Administration",
+          "1100": "Teaching"
         }
       },
       "12": {
-        "title": "???",
+        "title": "Culture & Arts",
         "sub": {
-          "1212": "???",
-          "1203": "???",
-          "1217": "???",
-          "1202": "???",
-          "1213": "???",
-          "1206": "???",
-          "1200": "???",
-          "1211": "???",
-          "1210": "???",
-          "1207": "???",
-          "1218": "???",
-          "1201": "???",
-          "1208": "???",
-          "1204": "???",
-          "1215": "???",
-          "1214": "???",
-          "1209": "???",
-          "1205": "???",
-          "1216": "???"
+          "1212": "Art Director",
+          "1203": "Dancer",
+          "1217": "Film Director",
+          "1202": "Choreographer",
+          "1213": "Museum Director",
+          "1206": "Music therapist",
+          "1200": "Actor",
+          "1211": "Curator",
+          "1210": "Product Designer",
+          "1207": "Theatre director",
+          "1218": "Other Culture & Arts",
+          "1201": "Community Arts Worker",
+          "1208": "Multimedia Specialist ",
+          "1204": "Dramatherapist",
+          "1215": "Art Therapist",
+          "1214": "Art Teacher",
+          "1209": "Systems Designer",
+          "1205": "Music producer",
+          "1216": "Medical Illustrator"
         }
       },
       "13": {
-        "title": "???",
+        "title": "IT / Networking",
         "sub": {
-          "1300": "???",
-          "1302": "???",
-          "1303": "???",
-          "1301": "???",
-          "1304": "???"
+          "1300": "Database Administration",
+          "1302": "Information Security",
+          "1303": "Network & System Administration",
+          "1301": "ERP / CRM Software",
+          "1304": "Other IT & Networking"
         }
       },
       "14": {
-        "title": "???",
+        "title": "Design",
         "sub": {
-          "1406": "???",
-          "1405": "???",
-          "1403": "???",
-          "1404": "???",
-          "1401": "???",
-          "1402": "???",
-          "1400": "???"
+          "1406": "Other Design",
+          "1405": "Interior & Exterior Design",
+          "1403": "Graphic, Editorial & Presentation Design",
+          "1404": "Product Design",
+          "1401": "Branding",
+          "1402": "Gaming & AR / VR",
+          "1400": "Layout Design"
         }
       },
       "15": {
-        "title": "???",
+        "title": "Creative Production",
         "sub": {
-          "1503": "???",
-          "1500": "???",
-          "1501": "???",
-          "1505": "???",
-          "1502": "???",
-          "1506": "???",
-          "1507": "???",
-          "1504": "???"
+          "1503": "Photography",
+          "1500": "Art & Illustration",
+          "1501": "Audio & Music Production",
+          "1505": "Voice Talent",
+          "1502": "Performing Arts",
+          "1506": "3D Visualization",
+          "1507": "Other Creative Production",
+          "1504": "Video & Animation"
         }
       },
       "16": {
-        "title": "???",
+        "title": "Engineering & Architecture",
         "sub": {
-          "1600": "???",
-          "1601": "???",
-          "1602": "???",
-          "1603": "???",
-          "1604": "???",
-          "1605": "???",
-          "1606": "???",
-          "1607": "???",
-          "1608": "???"
+          "1600": "3D Modeling & CAD",
+          "1601": "Architecture",
+          "1602": "Chemical Engineering",
+          "1603": "Civil & Structural Engineering",
+          "1604": "Contract Manufacturing",
+          "1605": "Electrical Engineering",
+          "1606": "Mechanical Engineering",
+          "1607": "Physical Sciences",
+          "1608": "Other Engineering"
         }
       },
       "17": {
-        "title": "???",
+        "title": "Law & Legal Support",
         "sub": {
-          "1700": "???",
-          "1701": "???",
-          "1702": "???",
-          "1703": "???",
-          "1704": "???"
+          "1700": "Contract Law",
+          "1701": "Corporate Law ",
+          "1702": "Intellectual Property Law",
+          "1703": "Paralegal Services",
+          "1704": "Other Law & Legal Support"
         }
       },
       "18": {
-        "title": "???",
+        "title": "Marketing & Sales",
         "sub": {
-          "1800": "???",
-          "1801": "???",
-          "1802": "???",
-          "1803": "???",
-          "1804": "???",
-          "1805": "???",
-          "1806": "???",
-          "1807": "???",
-          "1808": "???",
-          "1809": "???"
+          "1800": "Display Advertising",
+          "1801": "Email & Marketing Automation",
+          "1802": "Lead Generation",
+          "1803": "Market & Customer Research",
+          "1804": "Marketing Strategy",
+          "1805": "Public Relations",
+          "1806": "SEM - Search Engine Marketing",
+          "1807": "SEO - Search Engine Optimization",
+          "1808": "SMM - Social Media Marketing",
+          "1809": "Other Sales & Marketing"
         }
       },
       "19": {
-        "title": "???",
+        "title": "Translation",
         "sub": {
-          "1900": "???",
-          "1901": "???",
-          "1902": "???",
-          "1903": "???",
-          "1904": "???"
+          "1900": "General Translation",
+          "1901": "Legal Translation",
+          "1902": "Medical Translation",
+          "1903": "Technical Translation",
+          "1904": "Other Translation"
         }
       },
       "20": {
-        "title": "???",
+        "title": "Real Estate",
         "sub": {
-          "2000": "???",
-          "2001": "???",
-          "2002": "???",
-          "2003": "???",
-          "2004": "???",
-          "2005": "???"
+          "2000": "Residential Real Estate",
+          "2001": "New Construction & Resale Homes",
+          "2002": "Commercial Real Estate",
+          "2003": "Industrial Real Estate",
+          "2004": "Vacant Land",
+          "2005": "Other Real Estate"
         }
       },
       "21": {
@@ -767,254 +744,342 @@
         }
       },
       "22": {
-        "title": "???",
+        "title": "Writing",
         "sub": {
-          "2200": "???",
-          "2201": "???",
-          "2202": "???",
-          "2203": "???",
-          "2204": "???",
-          "2205": "???",
-          "2206": "???"
+          "2200": "Content & Copywriting",
+          "2201": "Creative Writing",
+          "2202": "Editing & Proofreading",
+          "2203": "Grant Writing",
+          "2204": "Resumes & Cover Letters",
+          "2205": "Technical Writing",
+          "2206": "Other Writing"
         }
       },
       "23": {
-        "title": "???",
+        "title": "Agriculture & Agribusiness",
         "sub": {
-          "2300": "???",
-          "2301": "???",
-          "2302": "???",
-          "2303": "???",
-          "2304": "???"
+          "2300": "Crops",
+          "2301": "Livestock (both production and animal health)",
+          "2302": "Fisheries and Aquaculture (including capture fisheries)",
+          "2303": "Forestry",
+          "2304": "Other Agriculture & Agribusiness"
         }
       },
       "24": {
-        "title": "???",
+        "title": "Secretariat, Correspondence & Records Management",
         "sub": {
-          "2400": "???",
-          "2401": "???",
-          "2402": "???",
-          "2403": "???",
-          "2404": "???",
-          "2405": "???",
-          "2406": "???",
-          "2407": "???",
-          "2408": "???",
-          "2409": "???"
+          "2400": "Property records - title deeds and settlements",
+          "2401": "Accounting papers - rentals, vouchers, surveys and valuations.",
+          "2402": "Legal papers",
+          "2403": "Inventories",
+          "2404": "Correspondence",
+          "2405": "Enclosure papers",
+          "2406": "Manorial papers - court rolls, custumals, terriers, surveys etc.",
+          "2407": "Personal and political papers",
+          "2408": "Maps and plans",
+          "2409": "Other Secretariat, Correspondence & Records Management"
         }
       },
       "25": {
-        "title": "???",
+        "title": "Medicine & Pharmacy",
         "sub": {
-          "2800": "???",
-          "2801": "???",
-          "2802": "???",
-          "2803": "???",
-          "2804": "???",
-          "2805": "???",
-          "2806": "???",
-          "2807": "???"
+          "2800": "Retail Pharmacy",
+          "2801": "Hospital Pharmacy",
+          "2802": "Medication Distribution Center",
+          "2803": "Homecare & Hospice Pharmacy",
+          "2804": "Pharmacy Informatics",
+          "2805": "Ambulatory Care Pharmacy",
+          "2806": "Pharmacists",
+          "2807": "Other Medicine & Pharmacy"
         }
       },
       "26": {
-        "title": "???",
+        "title": "Transport & Logistics",
         "sub": {
-          "2600": "???",
-          "2601": "???",
-          "2602": "???",
-          "2603": "???",
-          "2604": "???",
-          "2605": "???",
-          "2606": "???",
-          "2607": "???"
+          "2600": "Management",
+          "2601": "Inventory Planning",
+          "2602": "Warehousing",
+          "2603": "Procurement of Goods and Services",
+          "2604": "Packaging and Storage",
+          "2605": "Transportation",
+          "2606": "Customer service.",
+          "2607": "Other Transport & Logistics"
         }
       },
       "27": {
-        "title": "???",
+        "title": "Construction",
         "sub": {
-          "2700": "???",
-          "2701": "???",
-          "2702": "???",
-          "2703": "???",
-          "2704": "???"
+          "2700": "Residential Building",
+          "2701": "Institutional and Commercial Building",
+          "2702": "Infrastructure and Heavy Construction",
+          "2703": "Specialized Industrial Construction",
+          "2704": "Other Construction"
         }
       },
       "28": {
         "title": "रियल एस्टेट",
         "sub": {
-          "1": "आवासीय रियल एस्टेट",
-          "2": "नया निर्माण और रीसेल वाले घर",
-          "3": "कमर्शियल रियल एस्टेट",
-          "4": "इंडस्ट्रियल रियल एस्टेट",
-          "5": "खाली जमीन",
-          "6": "अन्य रियल एस्टेट"
+          "2801": "आवासीय रियल एस्टेट",
+          "2802": "नया निर्माण और रीसेल वाले घर",
+          "2803": "कमर्शियल रियल एस्टेट",
+          "2804": "इंडस्ट्रियल रियल एस्टेट",
+          "2805": "खाली जमीन",
+          "2806": "अन्य रियल एस्टेट"
         }
       },
       "29": {
-        "title": "???",
+        "title": "Banking, Finance & Insurance",
         "sub": {
-          "2900": "???",
-          "2901": "???",
-          "2902": "???",
-          "2903": "???",
-          "2904": "???",
-          "2905": "???",
-          "2906": "???",
-          "2907": "???",
-          "2908": "???"
+          "2900": "The Financial Services Industry",
+          "2901": "Financial Planning",
+          "2902": "Corporate Finance",
+          "2903": "Commercial Banking",
+          "2904": "Investment Banking",
+          "2905": "Hedge Funds",
+          "2906": "Private Equity, Venture Capital",
+          "2907": "Insurance",
+          "2908": "Other Banking, Finance & Insurance"
         }
       },
       "30": {
-        "title": "???",
+        "title": "Tourism, Leisure & Entertainment",
         "sub": {
-          "3000": "???",
-          "3001": "???",
-          "3002": "???",
-          "3003": "???",
-          "3004": "???",
-          "3005": "???",
-          "3006": "???",
-          "3007": "???",
-          "3008": "???",
-          "3009": "???"
+          "3000": "Amusement Attendant",
+          "3001": "Concierge",
+          "3002": "Cruise Ship Director",
+          "3003": "Curator",
+          "3004": "Gaming Dealers",
+          "3005": "Lifeguard",
+          "3006": "Information Clerk",
+          "3007": "Recreation Worker",
+          "3008": "Tour and Travel Guide",
+          "3009": "Other Tourism, Leisure & Entertainment"
         }
       },
       "31": {
-        "title": "???",
+        "title": "Telecommunications",
         "sub": {
-          "3100": "???",
-          "3101": "???",
-          "3102": "???",
-          "3103": "???",
-          "3104": "???",
-          "3105": "???",
-          "3106": "???",
-          "3107": "???"
+          "3100": "Telecommunications Systems Managers",
+          "3101": "Line Installers",
+          "3102": "Customer Service Representative",
+          "3103": "Computer Software Engineers",
+          "3104": "Computer Programmers",
+          "3105": "Professional Associations",
+          "3106": "Related Certification Bodies",
+          "3107": "Other Telecommunications "
         }
       },
       "32": {
-        "title": "???",
+        "title": "Early Career & Students",
         "sub": {
-          "3200": "???",
-          "3201": "???",
-          "3202": "???"
+          "3200": "Courier",
+          "3201": "Waiter",
+          "3202": "Other Early Career & Students"
         }
       },
       "33": {
-        "title": "???",
+        "title": "Service Occupations",
         "sub": {
-          "3300": "???",
-          "3301": "???"
+          "3300": "Restaurants & Food Services industry",
+          "3301": "Other Service Occupations"
         }
       },
       "34": {
         "title": "स्थायी काम",
         "sub": {
-          "1": "पार्ट-टाइम",
-          "2": "फुल-टाइम",
-          "3": "विदेश में काम"
+          "3401": "पार्ट-टाइम",
+          "3402": "फुल-टाइम",
+          "3403": "विदेश में काम"
         }
       }
     }
   },
   "toasts": {
-    "questInfo": "???",
-    "questCantDelete": "???",
-    "questCantEdit": "???",
-    "questCantRaisingViews": "???",
-    "questEdited": "???",
-    "questCreated": "???",
-    "questDeleted": "???",
-    "caseDeleted": "???",
-    "caseAdded": "???",
-    "caseEdited": "???",
-    "error": "???"
+    "questCantDelete": "You can't delete this quest on this stage!",
+    "questCantEdit": "You can't edit this quest on this stage!",
+    "questCantRaisingViews": "You can't go to raising views on this stage!",
+    "questEdited": "Quest edited!",
+    "questCreated": "Quest created!",
+    "questDeleted": "Quest deleted!",
+    "caseDeleted": "Case deleted!",
+    "caseAdded": "Case added!",
+    "caseEdited": "Case edited!",
+    "error": "Error!"
   },
   "modals": {
-    "errorQuests": "???",
-    "emptyOpenQuests": "???",
-    "errorSmsVer": "???",
-    "fillNumber": "???",
-    "disputes": {
-      "thereIsNoResponseFromTheEmployerOrEmployee": "???",
-      "badlyDoneWork": "???",
-      "additionalRequirementsHaveBeenPutForward": "???",
-      "inconsistenciesInTheRequirementsForTheDescriptionOfTheQuest": "???",
-      "theQuestIsCompletedButTheEmployeeOrEmployerHasNotConfirmedItsCompletion": "???",
-      "anotherReason": "???"
+    "titles": {
+      "2FA": {
+        "disable": "Disable 2FA",
+        "auth": "2FA Authentication"
+      },
+      "filters": {
+        "titleAll": "सभी फिल्टर"
+      },
+      "disputePayment": "Dispute payment",
+      "saved": "Saved successfully",
+      "cardAdd": "Add card",
+      "addCase": "Add Case",
+      "addingCard": "Adding card",
+      "addLiquidity": "Add liquidity",
+      "applyForAPension": "Apply for a pension",
+      "buyAuction": "Transfer info",
+      "changePass": "Change password",
+      "changePercent": "प्रतिशत बदलें",
+      "reason": "Reason",
+      "securityCheckBig": "Security check",
+      "warning": "Warning",
+      "chooseSkills": "आवश्यक स्किल चुनें",
+      "claim": "Claim",
+      "stake": "Stake",
+      "unstake": "Unstake",
+      "confirmDetails": "विवरण कंफर्म करें",
+      "emailConfirmTitle": "Check your email",
+      "deposit": "Deposit",
+      "loan": "कर्ज",
+      "editCase": "Edit Case",
+      "buyWUSD": "Buy WUSD",
+      "transfer": "Transfer",
+      "insureCase": "बीमा केस",
+      "invitation": "इन्विटेशन",
+      "messageSend": "Message Send",
+      "inviteSend": "इन्वाइट भेजा गया",
+      "notice": "महत्वपूर्ण सूचना",
+      "noticeTitle": "Notice",
+      "openADeposit": "Open a deposit",
+      "openADispute": "विवाद खोलें",
+      "payment": "भुगतान",
+      "price": "Price",
+      "privacyPolicy": "Privacy policy",
+      "questAgreed": "Quest सहमति",
+      "raiseViews": "Raise views",
+      "removeLiquidity": "लिक्विडिटी हटाएं",
+      "requestSend": "अनुरोध भेजा गया",
+      "forgotPass": "पासवर्ड भूल गए?",
+      "review": "रिव्यू",
+      "reviewOnEmployer": "एंप्लॉयर का रिव्यू",
+      "sendARequest": "Send a request",
+      "sharing": "शेयरिंग",
+      "signWorkQuest": "WorkQuest सोशल नेटवर्क",
+      "skills": "Skills",
+      "smsVerification": "SMS वेरिफिकेशन",
+      "swapTitle": "Cross-chain exchange",
+      "swapInfo": "Swap info",
+      "swapTokens": "Swap tokens",
+      "withdrawal": "Withdrawal",
+      "withdraw": "Withdraw",
+      "sendTo": "इन्हें भेजें:",
+      "withdrawCard": "बैंक कार्ड पर निकासी",
+      "withdrawInfo": "Withdrawal info",
+      "downloadApp": "Download App",
+      "downloadWallet": "Download Wallet App"
     },
-    "chooseTheme": "???",
-    "incorrectAmount": "???",
-    "nothingToClaim": "???",
-    "pleaseWait": "???",
-    "redeemSuccess": "???",
-    "redeemFail": "???",
+    "errors": {
+      "errorQuests": "Error with quests",
+      "emptyOpenQuests": "You don't have open quests, please create",
+      "errorSmsVer": "Error SMS verification",
+      "error": "Error",
+      "errorNetwork": "Error, you use not correct network. Switch to {network}",
+      "youCan’tDeleteActiveQuest": "You can’t delete active quest",
+      "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest",
+      "dontHavePeople": "You don't have people to chat"
+    },
     "chatCreate": {
-      "title": "ग्रुप चैट बनाएं",
+      "title": "Create chat",
       "desc": "ग्रुप चैट का नाम लिखें और अपनी चैट सूची में से लोगों को चुनें",
       "chatName": "चैट नाम",
-      "members": "???",
-      "addNewMembers": "???",
-      "addMember": "???"
+      "addNewMembers": "Add new members",
+      "members": "Members",
+      "addMember": "Add member"
     },
-    "yourRewardBalance": "???",
-    "deletePortfolio": "???",
-    "addTitle": "???",
-    "addDesc": "???",
-    "editCase": "???",
-    "error": "???",
-    "share": "???",
-    "edit": "???",
-    "delete": "???",
-    "youCan’tDeleteActiveQuest": "???",
-    "youCantCreateDispute": "???",
-    "sureDeleteText": "???",
-    "sureDeleteMemberText": "???",
-    "sureDeleteNotification": "???",
-    "sureLeaveChatText": "???",
-    "priceTitle": "???",
-    "enterPriceRange": "???",
-    "priceForm": "???",
-    "priceFromAmount": "???",
-    "priceFieldFrom": "???",
-    "priceTo": "???",
-    "priceToAmount": "???",
-    "priceFieldTo": "???",
-    "changePercentDesc": "Quest का एक प्रतिशत जो स्वचालित रूप से आपके रिटायरमेंट अकाउंट में जमा हो जाएगा",
-    "yourSkillsHaveBeenAdded": "आपकी स्किल सफलतापूर्वक जोड़ी गईं।",
-    "yourAccountVerified": "आपका अकाउंट वेरिफाई कर दिया गया है",
-    "youCanUpdateThisInYourProfile": "आप इसे अपनी प्रोफाइल में आसानी से अपडेट कर सकते हैं।",
-    "disable2Fa": "2FA को अक्षम करें",
-    "2FAEnabled": "???",
-    "2FADisabled": "???",
-    "2FAStatus": "???",
-    "yourLevelHasBeenRaised": "आपका लेवल बढ़ा दिया गया है",
-    "payment": "भुगतान",
-    "cardHolder": "कार्डधारक का नाम",
-    "review": "रिव्यू",
+    "disputes": {
+      "NoAnswer": "There is no response from the employer / employee",
+      "AnotherReason": "Another reason",
+      "PoorlyDoneJob": "Poorly done work",
+      "AdditionalRequirement": "Additional requirements have been put forward",
+      "RequirementDoesNotMatch": "Inconsistencies in the requirements for the description of the quest",
+      "NoConfirmationOfComplete": "The quest is completed but the employee / employer has not confirmed its completion"
+    },
+    "2FA": {
+      "enabled": "2FA enabled successfully!",
+      "disabled": "2FA disabled successfully!",
+      "status": "2FA Status",
+      "youCan’tEditQuest": "You can’t edit quest without connected 2FA",
+      "youCan’tDeleteQuest": "You can’t delete quest without connected 2FA"
+    },
+    "redeem": {
+      "success": "Redeem success!",
+      "fail": "Redeem fail"
+    },
+    "info": {
+      "depositInfo": "Deposit info",
+      "withdrawInfo": "Withdrawal info"
+    },
+    "draft": {
+      "youHaveAQuestDraft": "You have a quest draft. Cleat it?",
+      "saveQuestDraft": "Save quest draft?"
+    },
+    "payForDispute": "You need to pay to open a dispute",
+    "tryLater": "Please, try later...",
+    "checkExplorer": "You can check a transaction status on Explorer",
+    "transactionError": "Transaction error",
+    "fromAddress": "from",
+    "toAddress": "to",
+    "codeFromSms": "Code from sms",
+    "saved": "Saved",
+    "phoneNumber": "Phone Number",
+    "value": "Value",
+    "generatedWUSD": "WUSD will be generated",
+    "choosePeriod": "Choose a period of borrowing",
+    "smallDescriptionForLoan": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    "successBuyWUSD": "Successfully purchased WUSD",
+    "setTokenPrice": "Setting up {token} price",
+    "approveRouter": "Approve {token} to Router",
+    "takeWUSD": "Buy your WUSD",
+    "waitRoleCooldown": "You cannot change roles more than once a month. You can change role after {date} {time}",
+    "settingsInfo": "Settings Info",
+    "pleaseEnable2FA": "Please, enable TWO-Step authentication",
+    "errorGetWUSD": "Something went wrong",
+    "countOfRecievedWUSD": "How many WUSD do you want to receive",
+    "fieldCountOf": "{countOf} amount",
+    "countOfCollateral": "How much collateral to leave?",
+    "percentageConversion": "Percentage conversion",
+    "conversionAdditionalInfo": "Information about 150% + {risks} risks",
+    "highRisk": "High",
+    "mediumRisk": "Medium",
+    "lowRisk": "Low",
+    "fieldPercentConversion": "Percentage conversion",
+    "countOfRecievedWUSDDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+    "countOfCollateralDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+    "conversionPercentDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+    "fillNumber": "Please fill phone number in settings page...",
+    "textLengthExceeded": "You can only write {count} characters",
+    "incorrectAmount": "Incorrect amount, your wallet does not have enough funds",
+    "nothingToClaim": "Nothing to claim",
+    "pleaseWait": "Please, wait",
+    "deletePortfolio": "Are you sure delete portfolio?",
+    "addTitle": "Please add title...",
+    "addDesc": "Please add description...",
+    "share": "Share",
+    "areYouSure": "Are You Sure?",
+    "sureDeleteText": "Do you really want to delete this quest?",
     "haventSMS": "SMS नहीं मिला?",
+    "sureDeleteMemberText": "Do you really want to delete this member?",
+    "sureDeleteNotification": "Do you really want to delete this notification?",
+    "sureLeaveChatText": "Do you really want to leave this chat?",
+    "enterPriceRange": "Enter price range",
+    "changePercentDesc": "Quest का एक प्रतिशत जो स्वचालित रूप से आपके रिटायरमेंट अकाउंट में जमा हो जाएगा",
+    "yourAccountVerified": "आपका अकाउंट वेरिफाई कर दिया गया है",
+    "yourLevelHasBeenRaised": "आपका लेवल बढ़ा दिया गया है",
+    "cardHolder": "कार्डधारक का नाम",
     "SMSVerConnected": "SMS वेरिफिकेशन कनेक्ट हुआ",
-    "phoneNumber": "फोन नंबर",
-    "phoneNumberField": "???",
     "enterPhone": "SMS वेरिफिकेशन को कंफर्म करने के लिए अपना फोन नंबर डालें",
     "enterSMSCode": "हमने आपके फोन नंबर पर वेरिफिकेशन कोड भेज दिया है। यह कोड डालें",
-    "codeFromSMS": "SMS से कोड",
-    "smsVerification": "SMS वेरिफिकेशन",
-    "codeFromSMSField": "???",
-    "saved": "सेव किया",
     "userDataHasBeenSaved": "यूजर डेटा सेव हो गया है",
     "workExpAddSuccessful": "वर्क एक्सपीरिएंस जोड़ा गया",
     "educationAddSuccessful": "शिक्षा को जोड़ा गया",
     "pressSaveBtn": "कृपया सेव करें बटन दबाएं",
     "imageLoadedSuccessful": "इमेज लोड हो गई",
-    "success": "सफल",
-    "failed": "Failed",
     "yourRoleHasBeenChanged": "आपकी भूमिका बदल दी गई है",
-    "chooseSkills": "आवश्यक स्किल चुनें",
-    "securityCheck": "सुरक्षा जांच",
-    "googleConfCode": "Google कंफर्मेशन कोड",
-    "enterCode": "Google Authenticator ऐप से 6 अंकों का कोड दर्ज करें",
-    "warning": "चेतावनी",
     "pleaseDescribe": "कृपया भूमिका बदलने का कारण बताएं",
     "ifYouChangeRole": "अगर आप अभी भूमिका बदलते हैं, तो आप फिर इसे एक महीने बाद ही बदल सकते हैं। जारी रखें?",
     "toYourEmail": "आपके ईमेल एड्रेस पर",
@@ -1024,59 +1089,30 @@
     "emailPlaceholder": "कृपया ईमेल वेरिफिकेशन कोड दर्ज करें",
     "googleVerificationCode": "Google वेरिफिकेशन कोड",
     "codePlaceholder": "कृपया Google वेरिफिकेशन कोड दर्ज करें",
-    "appleStore": "App Store",
-    "googlePlay": "Google Play",
     "useYourGoogleAuth": "QR कोड स्कैन करने के लिए अपने Google Authenticator ऐप का उपयोग करें।",
     "installGoogleAuth": "अपनी डिवाइस पर Google Authenticator ऐप इंस्टॉल करें",
     "ifYouCantScanBarcode": "अगर आप QR कोड स्कैन नहीं कर पा रहे हैं, तो \"सीक्रेट की\" को मैनुअली डालें।",
     "pleaseSaveThisKey": "नीचे Google दो-फैक्टर वाला ऑथेंटिकेशन पासवर्ड डालें। कृपया अपनी 'Google की' सेव करें, इसका उपयोग आपके Google Authenticator को रिकवर करने के लिए किया जाएगा।",
     "step": "स्टेप",
-    "twoFAAuth": "2FA ऑथेंटिकेशन",
     "currentPassword": "मौजूदा पासवर्ड",
     "newPassword": "नया पासवर्ड",
     "confirmNewPassword": "नया पासवर्ड कंफर्म करें ",
-    "change": "बदलें",
     "title": "टाइटल",
-    "badService": "खराब सर्विस",
-    "otherReason": "अन्य वजह",
-    "reviewOnEmployer": "एंप्लॉयर का रिव्यू",
     "paintingWork": "पेंटिंग कार्य",
     "art": "कला",
     "cooking": "कुकिंग",
     "coding": "कोडिंग",
-    "uploadAImages": "इमेज या वीडियो अपलोड करें",
     "description": "विवरण",
-    "addCase": "केस जोड़ें",
-    "openADispute": "विवाद खोलें",
     "reason": "कारण",
-    "lorem": "",
-    "withdraw": "निकासी",
-    "sendTo": "इन्हें भेजें:",
     "estimatedPayment": "अनुमानित भुगतान:",
-    "hello": "नमस्ते...",
-    "value": "वैल्यू",
-    "withdrawCard": "बैंक कार्ड पर निकासी",
-    "address": "पता",
-    "notice": "महत्वपूर्ण सूचना",
     "noticeDesc": "आपकी सुरक्षा के लिए, WorkQuest टीम आपसे आग्रह करती है कि आप WorkQuest प्लेटफॉर्म के बाहर कोई पत्राचार या संपर्क न करें। इस प्लेटफॉर्म के बाहर किसी भी संपर्क या बातचीत के चलते विवादास्पद स्थितियों को हल करने में विफलता मिल सकती है।",
-    "toAddress": "प्रति",
-    "fromAddress": "प्रेषक",
-    "welcomeToWorkQuest": "WorkQuest में स्वागत है",
-    "pleaseTellUsAboutSkills": "कृपया नीचे हमें अपने हुनरों यानी स्किल के बारे में बताएं। इससे प्लेटफॉर्म पर आपकी रैंकिंग बढ़ेगी और अन्य यूजर्स के लिए आपका अकाउंट ढूंढ़ना आसान हो जाएगा।",
     "amount": "राशि",
-    "messageSend": "मैसेज भेजा गया",
-    "questAgreed": "Quest सहमति",
-    "requestSend": "अनुरोध भेजा गया",
     "waitResponseFromEmployer": "Wait for a response from the employer",
-    "sendARequest": "अनुरोध भेजें",
     "message": "मैसेज",
-    "bodyMessage": "नमस्ते",
-    "areYouSure": "क्या आपको यकीन है?",
     "transactionSent": "ट्रांजेक्शन भेजा गया",
-    "transactionFail": "???",
-    "transactionCheck": "???",
+    "transactionFail": "Transaction fail",
+    "transactionCheck": "Check transaction",
     "cardHasBeenAdded": "कार्ड जोड़ा गया",
-    "deposit": "प्राप्त करें",
     "numberOfCard": "कार्ड नंबर",
     "date": "दिनांक",
     "cardDate": "कार्ड की समाप्ति तिथि",
@@ -1084,13 +1120,9 @@
     "cvv": "CVV",
     "cardholderName": "कार्डधारक का नाम",
     "addAnotherCard": "अन्य कार्ड जोड़ें",
-    "addCard": "कार्ड जोड़ें",
-    "inviteSend": "इन्वाइट भेजा गया",
     "questCreated": "Quest बनाई गई",
-    "questUpdated": "???",
-    "invitation": "इन्विटेशन",
+    "questUpdated": "Quest Updated",
     "chooseQuest": "Quest चुनें",
-    "raiseViews": "व्यू बढ़ाएं",
     "priceOfAClick": "एक क्लिक की कीमत",
     "city": "शहर",
     "period": "अवधि",
@@ -1101,7 +1133,7 @@
     "depositRetirementModalPrecentPlaceholder": "0% कृपया कोई प्रतिशत चुनें",
     "depositRetirementModalAmountPlaceholder": "0 WUSD कृपया धनराशि डालें",
     "firstDepositAmount": "पहली जमा राशि*",
-    "firstDepositAmountField": "???",
+    "firstDepositAmountField": "first deposit amount",
     "aboutFirstDeposit": "* पहली जमा राशि ऑप्शनल है। अगर आप जमा नहीं करना चाहते हैं, तो आप इस फील्ड को खाली छोड़ सकते हैं",
     "pensionIsRegisteredTitle": "बधाई !",
     "pensionIsRegisteredDesc": "पेंशन प्रोग्राम सफलतापूर्वक लॉन्च हो गया है।",
@@ -1110,181 +1142,127 @@
     "lockedSavings": "लॉक्ड बचत",
     "durationDays": "अवधि (दिन)",
     "depositIsOpened": "डिपॉजिट को खोला गया है",
-    "addLiquidity": "लिक्विडिटी जोड़ें",
-    "amountOfWqt": "WQT राशि",
-    "amountOfEth": "ETH राशि",
-    "amountOfBnb": "BNB राशि",
     "tip": "टिप:",
     "tipAbout": "जब आप लिक्विडिटी जोड़ते हैं, तो आपको अपनी पोजीशन को रिप्रिजेंट करने वाले पूल टोकन मिलेंगे। ये टोकन ऑटोमेटिक ढंग से पूल के आपके शेयर के अनुपात में शुल्क अर्जित करते हैं, और इन्हें किसी भी समय रिडीम यानी भुनाया जा सकता है।",
     "byAddingLiquidityYouWillEarn": "लिक्विडिटी जोड़कर आप पूल के अपने शेयर के अनुपात में इस पेयर पर सभी ट्रेडों का 0.3% अर्जित करेंगे। शुल्क पूल में जोड़े जाते हैं, रियल टाइम में बढ़ते हैं और लिक्विडिटी को विदड्रॉ करने के द्वारा क्लेम किए जा सकते हैं।",
-    "amountEthPerWqt": "राशि ETH प्रति WQT",
-    "amountBnbPerWqt": "राशि BNB प्रति WQT",
     "shareOfPool": "पूल का शेयर",
-    "removeLiquidity": "लिक्विडिटी हटाएं",
     "withdrawalAmount": "निकाली जाने वाली राशि",
     "exchangeRate": "एक्सचेंज रेट",
-    "tempForRemove": "1 ETH = ... WUSD",
+    "tempForRemove": "1 ETH = ... WQT",
     "tempForRemove2": "1 BNB = ... WQT",
     "currentPoolSize": "मौजूदा पूल साइज",
     "yourPoolShare": "आपका पूल शेयर",
-    "eth": "ETH",
-    "wusd": "WUSD",
-    "howMuchEthWouldYouLikeToLock": "आप अपने अकाउंट में कितना ETH लॉक करना चाहेंगे?",
-    "smallTemp": "",
-    "template": "",
+    "howMuchTokensWouldYouLikeToLock": "आप अपने अकाउंट में कितना {token} लॉक करना चाहेंगे?",
     "collateralization": "कोलेटरलाइजेशन",
-    "percentsCount": "{count}%",
     "liquidationPrice": "लिक्विडेशन कीमत",
     "currentPrice": "मौजूदा कीमत",
     "stabilityFee": "स्थिरता शुल्क",
     "liquidationRatio": "लिक्विडेशन अनुपात",
     "liquidationPenalty": "लिक्विडेशन पेनाल्टी",
-    "confirmDetails": "विवरण कंफर्म करें",
     "depositing": "जमा",
-    "generating": "राशि",
     "liquidationFee": "लिक्विडेशन शुल्क",
-    "withdrawal": "निकासी",
     "saveCardForNextPayment": "अगले उपयोग के लिए कार्ड सेव करें",
-    "insureCase": "बीमा केस",
     "connectWallet": "वॉलेट कनेक्ट करें",
-    "howMuchWusdWouldYouLikeToGenerate": "आप कितना WUSD जनरेट करना चाहेंगे?",
     "chooseTheCurrency": "करेंसी यानी मुद्रा चुनें",
-    "bnb": "BNB",
-    "wqt": "WQT",
     "howMuchETHWouldYouLikeToOpen": "आप अपने अकाउंट में कितना ETH ओपन करना चाहेंगे?",
     "howMuchPercentWouldYouLikeToSet": "आप कितना प्रतिशत सेट करना चाहेंगे?",
     "enterTermToReturnDebtBack ": "कर्ज वापस करने के लिए टर्म डालें",
     "currency": "कोलैटरल करेंसी",
-    "loan": "कर्ज",
     "percentage": "प्रतिशत",
     "loanTerm": "कर्ज की अवधि",
     "loanIsOpened": "कर्ज ओपन है",
     "successCopied": "सार्वजनिक पता क्लिपबोर्ड पर कॉपी किया गया",
-    "walletAddress": "???",
-    "scanQr": "???",
-    "close": "???",
-    "depositTitle": "???",
-    "addYourCard": "???",
-    "walletCopy": "???",
-    "textCopy": "???",
-    "addingCard": "???",
-    "add": "???",
-    "totalFee": "???",
-    "processing": "???",
-    "addNewCard": "???",
-    "numberCard": "???",
-    "chooseCard": "???",
-    "depositInfo": "???",
-    "cardAdd": "???",
-    "cardAddedText": "",
-    "transactionSentText": "",
-    "maximum": "???",
-    "withdrawInfo": "???",
-    "bankCard": "???",
-    "transfer": "???",
-    "recepient": "???",
-    "transferInfo": "???",
-    "currencyDetails": "???",
-    "generatingDetails": "???",
-    "collateralizationRatio": "???",
-    "depositIsOpenedText": "",
-    "loanText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt sed sed integer volutpat. Faucibus sit ultricies quam egestas nisl, aliquam vitae. Non ultrices tincidunt tristique semper. Proin tincidunt nullam nisi sed massa.",
-    "loanIsOpenedText": "",
-    "firstDepositText": "???",
-    "pensionIsRegistered": "???",
-    "pensionIsRegisteredText": "",
-    "changePercent": "???",
-    "changePercentText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor",
-    "currentPercentTitle": "???",
-    "depositIsDone": "???",
-    "makeDepositText": "",
-    "percentIsChangedText": "",
-    "percentIsChanged": "???",
-    "invitationSendText": "",
-    "choose": "???",
-    "openDisputeText": "",
-    "chooseCurrency": "???",
-    "wallet": "???",
-    "coinpaymebts": "???",
-    "errorDeleteText": "???",
-    "swapTitle": "???",
-    "coin": "???",
-    "recepientBinance": "???",
-    "createSwap": "???",
-    "swapInfo": "???",
-    "crosschain": "???",
-    "crosschainText": "Eth > Binance",
-    "senderAddress": "???",
-    "recepientAddress": "???",
-    "worknetFee": "Eth ???",
-    "binanceFee": "Binance ???",
-    "welcomeText": "???",
-    "areYouSureText": "",
-    "noticeTitle": "???",
-    "noticeText": "???",
-    "areYouSureNotificationText": "",
-    "creditCardNumber": "???",
-    "dateName": "???",
-    "depositPercent": "???",
-    "currentPercentErr": "???",
-    "amountField": "???",
-    "percentField": "???",
-    "quantityField": "???",
-    "creditingDepositText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt sed sed integer volutpat. Faucibus sit ultricies quam egestas nisl, aliquam vitae. Non ultrices tincidunt tristique semper. Proin tincidunt nullam nisi sed massa.",
-    "generateField": "???",
-    "amountOfWqtField": "??? WQT",
-    "amountOfEthField": "??? ETH",
-    "amountOfBnbField": "??? BNB",
-    "withdrawalAmountField": "???",
+    "walletAddress": "Wallet address",
+    "scanQr": "Scan QR code or copy wallet address to receive payment",
+    "addYourCard": "You have to add your card to continue",
+    "walletCopy": "Wallet number has been copied",
+    "textCopy": "Text has been copied",
+    "addingCard": "Adding card",
+    "totalFee": "Total fee",
+    "processing": "Processing time",
+    "addNewCard": "Add new card",
+    "numberCard": "Number of card",
+    "chooseCard": "Choose card",
+    "maximum": "Max",
+    "transfer": "Transfer",
+    "currencyDetails": "Currency",
+    "generatingDetails": "Generating",
+    "collateralizationRatio": "Collateralization ratio",
+    "firstDepositText": "* First deposit amount is optional. If you do not want to make a deposit, you may leave this field empty",
+    "pensionIsRegistered": "Pension is registered!",
+    "currentPercentTitle": "Current percent",
+    "depositIsDone": "Deposit is done",
+    "percentIsChanged": "Percent is changed",
+    "choose": "Choose",
+    "chooseCurrency": "Choose currency",
+    "coinpaymebts": "Сoinpaymebts",
+    "swapTitle": "Cross-chain exchange",
+    "coin": "Coin",
+    "createSwap": "Create swap",
+    "bridge": "WorkQuest Bridge",
+    "bridgeText": "Eth > Binance",
+    "senderAddress": "Sender address",
+    "recipientAddress": "Recipient address",
+    "worknetFee": "Eth fee",
+    "binanceFee": "Binance fee",
+    "welcomeText": "Please, tell us about your skills below",
+    "noticeText": "I disclaim responsibility if communication will take place in third-party chats",
+    "creditCardNumber": "credit card number",
+    "dateName": "date",
+    "depositPercent": "deposit percent",
+    "currentPercentErr": "current percent",
+    "amountField": "amount",
+    "percentField": "percent",
+    "quantityField": "quantity",
+    "generateField": "generate",
+    "withdrawalAmountField": "withdrawal amount",
     "removeLiquidityCurrentPoolSize": "1 ETH + 456 WQT",
     "removeLiquidityCurrentPoolSize2": "1 BNB + 456 WQT",
     "removeLiquidityYourPoolShare": "10% = 1% ETH + 4% WQT",
     "removeLiquidityYourPoolShare2": "10% = 1% BNB + 4% WQT",
-    "lockedSavingsField": "???",
-    "durationDaysField": "???",
-    "depositAmountField": "???",
-    "claim": "???",
-    "estimatedPaymentField": "120 WUSD",
-    "priceOfAClickField": "???",
-    "cityField": "???",
-    "addLiquidityAmountWqt": "1000 WQT",
-    "addLiquidityAmountEth": "10 ETH",
-    "addLiquidityAmountBnb": "10 BNB",
-    "cardHolderField": "???",
-    "addressField": "???",
-    "securityCheckField": "???",
-    "recepientAddressField": "???",
-    "walletAddressField": "???",
+    "lockedSavingsField": "locked savings",
+    "durationDaysField": "duration days",
+    "depositAmountField": "deposit amount",
+    "claim": "Claim",
+    "priceOfAClickField": "price of a click",
+    "cityField": "city",
+    "cardHolderField": "card holder",
+    "walletAddressField": "wallet address",
     "thanksText": "",
-    "emailVerificationCodeField": "???",
-    "youCanAttachUpToNFiles": "???",
-    "youTryToAttachUnsupportedFileFormat": "???",
-    "connectError": "Error connection",
-    "incorrectChain": "You choose incorrect chain!",
+    "emailVerificationCodeField": "email verification",
+    "youCanAttachUpToNFiles": "You can attach up to {n} files",
+    "youTryToAttachUnsupportedFileFormat": "You try to attach unsupported file format",
+    "incorrectChain": "You choose incorrect chain !",
     "selectToken": "Select token",
-    "txInfo": "Transaction info"
+    "txInfo": "Transaction info",
+    "registration": "Are you sure to registration this users?",
+    "claimConfirm": "Are you confirm the action of the claim?",
+    "until": "Until",
+    "scanQrCode": "You just need to scan the QR-code",
+    "downOnSmartphone": "Download Work Quest app on your smartphone",
+    "downWalletOnSmartphone": "Download Work Quest Wallet app on your smartphone",
+    "wouldReviewEmployee": "Would you like to add a review to the employee?",
+    "wouldReviewEmployer": "Would you like to add a review to the employer?",
+    "successfulMethods": {
+      "claim": "Successful claim",
+      "refund": "Successful refund",
+      "withdraw": "Successful withdrawal",
+      "deposit": "Successful deposit"
+    }
   },
   "ui": {
     "jobQuestors": "जॉब तलाशकर्ता",
     "workers": "वर्कर",
-    "wallet": "वॉलेट",
-    "myQuests": "मेरी Quests",
-    "quests": "Quests",
     "profile": {
-      "addCase": "केस जोड़ें",
       "myProfile": "मेरी प्रोफाइल",
-      "settings": "सेटिंग",
-      "disputes": "विवाद",
-      "instruments": "इंस्ट्रूमेंट",
       "DeFi": "DeFi फंक्शनैलिटी",
-      "logout": "लॉगआउट",
-      "login": "???"
+      "logout": "लॉगआउट"
     },
     "locals": {
       "en": "en",
       "ru": "ru",
       "bn": "bn",
-      "zh": "zh",
+      "zh_cn": "zh",
       "fr": "fr",
       "hi": "hi",
       "id": "id",
@@ -1298,15 +1276,18 @@
       "noNotifications": "No notifications"
     },
     "menu": {
-      "unauthorized": "???",
-      "instruments": "???",
-      "crosschain": {
-        "title": "???",
-        "desc": "???"
+      "unauthorized": "Not logged",
+      "bridge": {
+        "title": "WorkQuest Bridge",
+        "desc": "Secure and fast way to bring cross-chain assets between WorkNet, Ethereum and Binance Smart Chain."
+      },
+      "collateral": {
+        "title": "Collateral",
+        "desc": "Some amazing text here. Look at that!"
       },
       "staking": {
-        "title": "???",
-        "desc": "???"
+        "title": "WorkQuest Staking",
+        "desc": "Make your assets work. Stake your assets into DeFi staking or Locked staking to increase staking income."
       },
       "pension": {
         "title": "रिटायरमेंट प्रोग्राम",
@@ -1340,40 +1321,80 @@
     "buttons": {
       "errors": {
         "manySpec": "आप केवल 3 विशेषज्ञताएं जोड़ सकते हैं",
-        "manySkills": "???"
+        "manySkills": "You can only add 5 skills"
       }
     }
   },
+  "localNotifications": {
+    "messages": {
+      "inviteFriends": "Invite your friends and get rewarded!",
+      "wiki": "You can get acquainted with all the functionality of the platform on the WorkQuest Wiki page!",
+      "kyc": "You can enable KYC on Sumsub page.",
+      "twoFA": "You can enable 2FA in settings.",
+      "fillSettingsData": "You can fill your profile data in settings.",
+      "questDraft": "You have a saved draft of the quest.",
+      "rateTheQuest": "Please rate the completed work on the quest.",
+      "reviewEmp": "Please, review your Employer!",
+      "reviewWorker": "Please, review your Employee!"
+    },
+    "btns": {
+      "inviteFriends": "Get Reward",
+      "wiki": "Go to Wiki",
+      "kyc": "Enable KYC",
+      "toSettings": "Go to Settings",
+      "questDraft": "Go to Create Quest page",
+      "rateTheQuest": "Go to Quest page",
+      "reviewEmp": "Go to Employer Profile",
+      "reviewWorker": "Go to Employee Profile"
+    }
+  },
   "notifications": {
+    "QuestEditedOnContract": "Quest edited on contract",
     "title": "Notifications",
+    "OpenDispute": "Open dispute",
+    "openDispute": "Open dispute",
     "invite": "Invites you to complete the quest",
-    "invitesYouToStartAQuest": "Invites you to start a quest",
-    "rejectedTheQuest": "Rejected the quest",
-    "acceptedTheQuest": "Accepted the quest",
-    "completedTheQuest": "Completed the quest",
-    "acceptedAJobOnAQuest": "Accepted a job on a quest",
-    "respondedToQuest": "Responded to quest",
-    "invitedYouToAQuest": "Invited you to a quest",
-    "acceptedTheInvitationToTheQuest": "Accepted the invitation to the quest",
-    "declinedTheInvitationToTheQuest": "Declined the invitation to the quest",
-    "declinedYourResponseToTheQuest": "Declined your response to the quest",
-    "leftReviewAboutQuest": "Left review about quest",
-    "theQuestIsPending": "The quest is pending",
-    "openDispute": "Open dispute"
+    "questStarted": "Invites you to start a quest",
+    "workerRejectedQuest": "Rejected the quest",
+    "workerAcceptedQuest": "Accepted the quest",
+    "workerCompletedQuest": "Completed the quest",
+    "employerAcceptedCompletedQuest": "Accepted a job on a quest",
+    "employerRejectedCompletedQuest": "Rejected a job on a quest",
+    "workerRespondedToQuest": "Responded to quest",
+    "employerInvitedWorkerToQuest": "Invited you to a quest",
+    "workerAcceptedInvitationToQuest": "Accepted the invitation to the quest",
+    "workerRejectedInvitationToQuest": "Declined the invitation to the quest",
+    "employerRejectedWorkersResponse": "Declined your response to the quest",
+    "QuestStatusUpdated": "Quest status updated",
+    "userLeftReviewAboutQuest": "Left review about quest",
+    "registrationError": "No users found for registration. Please contact to developers",
+    "waitWorker": "The quest is pending",
+    "disputeDecision": "Dispute decision",
+    "newCommentInDiscussion": "New comment in Discussion",
+    "commentLiked": "Comment liked",
+    "questEdited": "Quest edited",
+    "questEndSoon": "Quest end soon",
+    "newDiscussionLike": "New like on discussion"
   },
   "wallet": {
+    "frozen": "Frozen balance",
     "WUSD": "WUSD वॉलेट",
     "cryptoWallet": "क्रिप्टो वॉलेट",
-    "bankCard": "बैंक कार्ड",
     "send": "भेजें",
     "toThisAddress": "इस पते पर",
-    "wallet": "वॉलेट",
-    "balance": "बैलेंस",
-    "deposit": "प्राप्त करें",
-    "withdraw": "निकासी",
+    "receive": "प्राप्त करें",
     "transfer": "खरीदें / भेजें",
     "addCardProposal": "आसान निकासी के लिए अपना कार्ड जोड़ें",
     "addCard": "कार्ड जोड़ें",
+    "collateral": {
+      "balance": "Collateral balance",
+      "coin": "coin",
+      "sum": "sum",
+      "amountInDollars": "amount in dollars",
+      "attentionQuotient": "attention quotient",
+      "addTitle": "Add collateral",
+      "takeTitle": "Take collateral"
+    },
     "table": {
       "trx": "ट्रांजेक्शन",
       "txHash": "ट्रांजेक्शन हैश",
@@ -1387,11 +1408,10 @@
     }
   },
   "chat": {
-    "reason": "???",
-    "openDispute": "खुला विवाद",
-    "starredMessages": "???",
-    "starredChats": "???",
-    "allChats": "???",
+    "reason": "Please add reason",
+    "starredMessages": "Starred messages",
+    "starredChats": "Starred chats",
+    "allChats": "All chats",
     "createGroupChat": "ग्रुप चैट बनाएं",
     "favorite": "पसंदीदा",
     "messages": "मैसेज",
@@ -1400,89 +1420,76 @@
     "you": "आप:",
     "invitedYou": "ने आपको Quest में इन्वाइट किया",
     "writeYouMessage": "अपना मैसेज लिखें",
-    "group": "???",
-    "noChats": "???",
-    "noMessages": "???",
-    "membersNum": "{n} ???",
+    "group": "Group",
+    "noChats": "No chats",
+    "noMessages": "No messages",
+    "membersNum": "{n} members",
     "systemMessages": {
-      "invitedYouToAQuest": "???",
-      "youInvitedToTheQuest": "???",
-      "respondedToTheQuest": "???",
-      "youHaveRespondedToTheQuest": "???",
-      "rejectedTheResponseToTheQuest": "r???",
-      "youRejectTheResponseOnQuest": "???",
-      "rejectedTheInviteToTheQuest": "???",
-      "youRejectedTheInviteToTheQuest": "???",
-      "acceptedTheInviteToTheQuest": "???",
-      "youAcceptedTheInviteToTheQuest": "???",
-      "createdAGroupChat": "???",
-      "youCreatedAGroupChat": "???",
-      "removedFromChat": "???",
-      "youHaveRemovedFromChat": "???",
-      "addedToChat": "???",
-      "youAddedToChat": "???",
-      "userAddedToChat": "???",
-      "userRemovedFromChat": "???",
-      "leftTheChat": "???",
-      "youLeftTheChat": "???"
+      "employerInvitedWorkerToQuest": "invited you to a quest",
+      "youInvitedToTheQuest": "You invited to the quest",
+      "respondedToTheQuest": "responded to the quest",
+      "youHaveRespondedToTheQuest": "You have responded to the quest",
+      "rejectedTheResponseToTheQuest": "rejected the response to the quest",
+      "youRejectTheResponseOnQuest": "You rejected the response to the quest",
+      "rejectedTheInviteToTheQuest": "rejected the invite to the quest",
+      "youRejectedTheInviteToTheQuest": "You rejected the invite to the quest",
+      "acceptedTheInviteToTheQuest": "accepted the invite to the quest",
+      "youAcceptedTheInviteToTheQuest": "You accepted the invite to the quest",
+      "createdAGroupChat": "created a group chat",
+      "youCreatedAGroupChat": "You created a group chat",
+      "removedFromChat": "removed from chat",
+      "youHaveRemovedFromChat": "You have removed from the chat",
+      "addedToChat": "added to chat",
+      "youAddedToChat": "You added to chat",
+      "userAddedToChat": "Added user to chat",
+      "userRemovedFromChat": "Removed user from chat",
+      "leftTheChat": "left the chat",
+      "youLeftTheChat": "You left the chat"
     },
-    "leaveChat": "???",
-    "loadMore": "???",
-    "searchTitle": "Name/Quest/Group"
+    "leaveChat": "Leave chat",
+    "loadMore": "Load more",
+    "searchTitle": "Name/Quest/Group",
+    "menu": {
+      "giveAQuest": "Give a quest",
+      "removeFromChat": "Remove from the chat"
+    }
   },
   "settings": {
-    "additionalPhoneNumber": "???",
-    "mainPhoneNumber": "???",
-    "workProposals": "???",
-    "phoneVerified": "???",
+    "additionalPhoneNumber": "Additional phone number",
+    "mainPhoneNumber": "Main phone number",
+    "whoCouldIInvite": "Who can respond to my quests?",
+    "whoCouldInviteMe": "Who can invite me to a quest?",
+    "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
     "twitter": "twitter",
     "instagram": "instagram",
-    "address": "???",
-    "lastName": "???",
-    "firstName": "???",
-    "companyName":"???",
-    "ceoName":"???",
-    "websiteName":"???",
-    "enterPhoneNumber": "???",
-    "enterCurrentLocation": "???",
+    "companyName": "company",
+    "ceoName": "ceo",
+    "websiteName": "website",
+    "enterPhoneNumber": "Please enter your phone number",
+    "enterCurrentLocation": "Please select current location",
     "placeOfStudying": "पढ़ाई का स्थान",
     "specialization": "विशेषज्ञता",
-    "selectSpec": "???",
-    "skillsInput": "स्किल",
-    "selectSkills": "???",
+    "selectSpec": "Select specialization",
+    "selectSkills": "Select skills",
     "priority": "प्राथमिकता",
-    "costPerHour": "कॉस्ट प्रति घंटा",
     "description": "And you are beautiful",
     "imgLoaded": "इमेज लोड हो गई",
     "workExp": "वर्क एक्सपीरिएंस",
-    "add": "जोड़ें",
-    "delete": "डिलीट करें",
-    "educations": "शिक्षा",
     "vacancy": "वैकेंसी",
-    "term": "अवधि",
     "getVerification": "वेरिफिकेशन पूरा करें",
     "notVerified": "वेरिफिकेशन नहीं हुआ है",
-    "verified": "???",
     "more": "अधिक",
     "employmentInfo": "रोजगार जानकारी",
     "addSpec": "विशेषज्ञता जोड़ें",
     "removeSpec": "विशेषज्ञता हटाएं",
     "education": {
-      "from": "से",
-      "to": "तक",
       "educationalInstitution": "शैक्षिक संस्था"
     },
     "workExps": {
-      "from": "से",
-      "to": "तक",
       "companyName": "कंपनी का नाम"
     },
-    "settings": "सेटिंग",
-    "urgentJobOffers": "अर्जेंट जॉब ऑफर",
-    "shortTermJobOffers": "शॉर्ट टर्म जॉब ऑफर",
-    "fixedDeliveryJobOffers": "फिक्स्ड डिलीवरी जॉब ऑफर",
     "addInfo": "आप अपने बारे में जानकारी जोड़ सकते हैं, प्रोफाइल फोटो अपलोड करें और अपनी रेटिंग बढ़ाने के लिए KYC प्रक्रिया से गुजरते हुए आगे बढ़ें। रेटिंग आपके प्रोफाइल डेटा और रिव्यू पर निर्भर करती है।",
     "alsoRating": "आपकी रैंकिंग जितनी अधिक होगी, आपको सर्च में ढूंढ़ना उतना ही आसान होगा।",
     "dontShow": "फिर से न दिखाएं",
@@ -1496,15 +1503,14 @@
     "twitterUsername": "Twitter यूजरनेम",
     "linkedInUsername": "LinkedIn यूजरनेम",
     "facebookUsername": "Facebook यूजरनेम",
-    "save": "सेव करें",
     "skills": "स्किल:",
-    "whoCanSee": "मेरी प्रोफाइल कौन देख सकता है?",
+    "whoAppearsInMyListEmployees": "Who appears in my list of employees?",
+    "whoAppearsInMyListEmployers": "Who appears in my list of employers?",
     "allUsers": "सभी रजिस्टर्ड यूजर्स",
     "allInternet": "दुनिया भर में इंटरनेट यूजर्स",
     "onlyWhenSubmittedWork": "केवल जॉब ऑफर सबमिट करते समय",
     "allRegistered": "सभी रजिस्टर्ड यूजर्स",
     "changePass": "पासवर्ड बदलें",
-    "change": "बदलें",
     "enableTwoStepAuth": "दो-स्टेप वाला ऑथेंटिकेशन सक्षम करें",
     "enable": "सक्षम करें",
     "smsVerification": "SMS प्रोफाइल वेरिफिकेशन",
@@ -1513,23 +1519,15 @@
     "filterAllEmployeeProfiles": "सभी कर्मचारी प्रोफाइलें फिल्टर करें",
     "website": "अपनी कंपनी की वेबसाइट का नाम डालें",
     "changeRole": "भूमिका बदलें",
-    "2FA": "2FA",
-    "smsVerification2": "SMS वेरिफिकेशन",
-    "instruments": "इंस्ट्रूमेंट",
-    "pensionProgram": "पेंशन प्रोग्राम",
-    "referralProgram": "रेफरल प्रोग्राम",
-    "p2pInsurance": "P2P इंश्योरेंस",
-    "savingProduct": "सेविंग्स प्रोडक्ट",
-    "crediting": "क्रेडिटिंग",
-    "liquidityMining": "लिक्विडिटी माइनिंग",
     "distantWork": {
-      "title": "???",
-      "select": "???",
-      "allWorkplaces": "???",
-      "distantWork": "???",
-      "workInOffice": "???",
-      "bothVariant": "???"
-    }
+      "title": "Workplace",
+      "select": "Select distant work",
+      "allWorkplaces": "All workplaces",
+      "distantWork": "Remote work",
+      "workInOffice": "In-office",
+      "bothVariant": "Hybrid workplace"
+    },
+    "selectPayPeriod": "Select pay period"
   },
   "raising-views": {
     "raisingViews": "व्यू बढ़ाएं",
@@ -1540,47 +1538,35 @@
     "chooseLevel": "लेवल चुनें"
   },
   "disputes": {
-    "disputes": "विवाद",
     "dispute": "विवाद №:",
     "quest": "Quest:",
     "employer": "एंप्लॉयर:",
     "questSalary": "Quest वेतन:",
     "status": "स्टेटस:",
     "decision": "निर्णय:",
-    "Dispute": "विवाद",
     "pending": "पेंडिंग",
     "chatHistory": "चैट हिस्ट्री",
     "disputeTime": "विवाद खुलने का समय:",
-    "inProgress": "???",
-    "completed": "???"
+    "inProgress": "In progress"
   },
   "workers": {
     "searchQuests": "Quest खोजें",
     "searchWorkers": "वर्कर्स खोजें",
     "topWorkers": "टॉप कर्मचारी",
-    "price": "कीमत",
     "addedTime": "जोड़ा गया समय",
-    "quests": "Quests",
     "urgent": "अर्जेंसी लेवल चुनें",
     "specialized": "स्पेशलाइज्ड",
-    "typeOfJob": "जॉब का प्रकार",
     "specializations": "विशेषज्ञता",
     "aboutMe": "मेरे बारे में",
     "giveAQuest": "Quest दें",
     "inviteQuestor": "Questor को इन्वाइट करें",
     "skills": "स्किल",
     "completedQuests": "पूरी हुई Quests",
-    "openedQuests": "ओपन Quest",
-    "showAll": "सभी दिखाएं",
     "averageRating": "औसत रेटिंग",
-    "from": "से",
     "based": "आधारित",
     "reviews": "रिव्यू",
-    "noReviewsAdded": "???",
-    "portfolio": "पोर्टफोलियो",
-    "noPortfoliosAdded": "???",
-    "showAllCases": "सभी केस दिखाएं",
-    "costTitle": "???"
+    "noReviewsAdded": "No reviews added!",
+    "noPortfoliosAdded": "No portfolios added!"
   },
   "levels": {
     "reliableEmp": "भरोसेमंद EMP.",
@@ -1593,9 +1579,7 @@
     "earnCryptoTogether": "साथ-साथ क्रिप्टो कमाएं",
     "headerSubtitle": "जब आपके दोस्त रजिस्टर हों और WorkQuest प्लेटफॉर्म पर पहला Quest करें तो आप WQT में हर बार 35$ तक कमाएं।",
     "referralReward": "रेफरल पुरस्कार",
-    "wqtCount": "{count} WQT",
     "lastRefReward": "पिछला रेफरल पुरस्कार",
-    "plusCount": "+ {count}",
     "yourRefers": "आपके रेफरल",
     "yourReferralLink": "आपका रेफरल लिंक",
     "howToInviteYourFriends": "अपने दोस्तों को कैसे इन्वाइट करें?",
@@ -1612,34 +1596,27 @@
       "txHash": "ट्रांजेक्शन हैश",
       "time": "समय",
       "amount": "राशि",
-      "status": "स्टेटस"
+      "event": "Event"
     },
-    "table": {
-      "userName": "जॉन डो",
-      "userId": "455dad66544ss",
-      "txHash": "sf998s...ss877d",
-      "time": "1 फरवरी, 2021",
-      "status": "सफल"
+    "event": {
+      "PaidReferral": "Paid",
+      "RewardClaimed": "Claimed"
     }
   },
   "pension": {
     "pensionSavingsBalance": "पेंशन सेविंग्स बैलेंस",
     "retirementProgram": "रिटायरमेंट प्रोग्राम",
-    "faq": "आम सवाल",
     "pensionProgram": "पेंशन प्रोग्राम",
     "applyForAPension": "पेंशन के लिए आवेदन करें",
     "applyForRetirement": "रिटायरमेंट के लिए आवेदन करें",
     "annualPercent": "वार्षिक प्रतिशत",
     "optional": "ऑप्शनल",
     "optionalFirstDeposit": "पहला डिपॉजिट",
-    "term": "अवधि",
-    "castomizable": "कस्टमाइज योग्य",
     "configurablePercentage": "कॉन्फिगर योग्य प्रतिशत",
     "depositsFromQuest": "Quest से डिपॉजिट",
     "howToTakePart": "पेंशन प्रोग्राम में कैसे भाग लें?",
     "pensionPlanText": "पेंशन प्लान यह सुविधा देता है कि कर्मचारी वेतन या मेहनताने से होने वाली अपनी मौजूदा आय का एक हिस्सा इन्वेस्टमेंट प्लान में लगाए ताकि रिटायरमेंट के लिए फंड तैयार हो सके।",
     "information": "विस्तृत जानकारी",
-    "download": "डाउनलोड करें",
     "pensionBalance": "पेंशन सेविंग्स बैलेंस",
     "makeADeposit": "डिपॉजिट करें",
     "currentPercentFromAQuest": "Quest से वर्तमान प्रतिशत",
@@ -1648,27 +1625,8 @@
     "year": "वार्षिक",
     "timeRemainsUntilTheEndOfThePeriod": "अवधि के अंत तक शेष समय:",
     "transactionHistory": "ट्रांजेक्शन हिस्ट्री",
-    "withdraw": "निकासी",
     "prolong": "विस्तार",
-    "prolongText": "???",
-    "templateText": "",
-    "table": {
-      "userName": "जॉन डो",
-      "userId": "455dad66544ss",
-      "txHash": "sf998s...ss877d",
-      "time": "1 फरवरी, 2021",
-      "status": "सफल"
-    },
-    "docName": "Some_document.pdf",
-    "mb": "{count} MB",
-    "percents": "{count} %",
-    "minutes": "{count} ???",
-    "hours": "{count} ???",
-    "years": "{count} ???",
-    "days": "{count} ???",
-    "WUSDCount": "{count} WUSD",
-    "ETHCount": "{count} ETH",
-    "plusPercents": "+ {count}%",
+    "prolongText": "This will prolong pension program for 1 year",
     "faq1": {
       "question": "आप पेंशन के लिए कैसे योग्यता हासिल करते हैं?",
       "answer": "रिटायरमेंट लाभों का पात्र होने के लिए आपको अब किसी एंप्लॉयर यानी नियोक्ता के यहां कुछ खास वर्षों तक नियमित काम करने की आवश्यकता नहीं है। अब बस उस प्रत्येक Quest का प्रतिशत चुनें जिसे आप अपने खाते में जमा करना चाहते हैं। जैसे-जैसे आप फंड जमा करते जाते हैं, वैसे-वैसे आपका रिटायरमेंट बेनिफिट बढ़ता जाता है। फंड का उपयोग उधार प्रोग्राम में करने पर अतिरिक्त प्रतिशत स्वचालित रूप से अर्जित हो जाएगा।"
@@ -1717,18 +1675,11 @@
     "conditions": "शर्तें",
     "maxMinSum": "अधिकतम/न्यूनतम योग",
     "depositsAndWithdrawal": "जमा और निकासी",
-    "term": "अवधि",
     "annualizedInterestRate": "वार्षिक ब्याज दर",
     "openADeposit": "डिपॉजिट खोलें",
-    "faq": "आम सवाल",
-    "information": "जानकारी",
     "historyOfDeposits": "डिपॉजिट हिस्ट्री",
     "depositAmount": "लॉक्ड राशि",
-    "card1": "वार्षिक ब्याज दर \n 4.51% \n अवधि (दिन): 7 दिन",
-    "card2": "वार्षिक ब्याज दर \n 4.67% \n अवधि (दिन): 14 दिन",
-    "card3": "वार्षिक ब्याज दर \n 4.82% \n अवधि (दिन): 30 दिन",
-    "card4": "वार्षिक ब्याज दर \n 5.11% \n अवधि (दिन): 90 दिन",
-    "card5": "वार्षिक ब्याज दर \n 5.23% \n अवधि (दिन): 180 दिन",
+    "card": "वार्षिक ब्याज दर \n {rate}% \n अवधि (दिन): {duration} दिन",
     "templateText": "अपनी क्रिप्टोकरेंसी बनाए रखने का पक्का इरादा है?\nयह ऐसा आसान तरीका है जिसमें लॉक्ड सेविंग के जरिए उधार देना व पैसा कमाना मुमकिन है।",
     "faq1": "लॉक्ड बचत क्या है? अपनी क्रिप्टोकरेंसी बनाए रखने का पक्का इरादा है?",
     "faq2": "किसी दिन किसी लॉक्ड बचत वाले प्रोडक्ट का सब्सक्रिप्शन लेने पर, उस दिन मेरे फंड का क्या होगा?",
@@ -1742,133 +1693,117 @@
     "ans4": "रिडेम्पशन तिथि पर, आप दोनों ही चीजें देखेंगे - सब्सक्रिप्शन वाले प्रारंभिक टोकन और आपके WorkQuest अकाउंट 'बैलेंस' में अर्जित ब्याज। यह प्रक्रिया स्वचालित होगी।",
     "ans5": "औसत वार्षिक रिटर्न (APR) पिछले 7 दिनों की औसत दैनिक ब्याज दर का उपयोग करता है, जिसे 365 से गुणा किया जाता है।",
     "ans6": "हां। प्रत्येक प्रोडक्ट पर ब्याज दर की गारंटी है।",
-    "docName": "Some_document.pdf",
-    "mb": "{count} MB",
-    "percents": "{count} %",
-    "days": "{count} दिन",
-    "smallPlug": "??",
     "possiblePlug": "संभव",
     "yearPlug": "1 वर्ष",
-    "wusdCount": "{count} WUSD",
-    "plusPercents": "+ {count}%",
-    "table": {
-      "userName": "जॉन डो",
-      "userId": "455dad66544ss",
-      "txHash": "sf998s...ss877d",
-      "time": "1 फरवरी, 2021",
-      "status": "सफल"
-    },
     "depositModalBody": "आपकी क्रिप्टो एक खास अवधि के लिए लॉक हो जाएगी, और आप ब्याज कमाना शुरू कर देंगे।",
-    "depositIsOpened": "ट्रांसफर की पुष्टि",
-    "deposit": "जमा",
-    "withdraw": "निकासी",
-    "depositIsOpenedText": "",
-    "withdrawText": "???"
+    "withdrawText": "The amount of locked funds and the accumulated interest will be credited to your wallet"
   },
   "mining": {
-    "loading": "???...",
-    "claimRewards": "???",
-    "liquidityMining": "लिक्विडिटी माइनिंग",
+    "loading": "loading...",
     "swapTokens": {
-      "title": "???",
-      "swap": "???",
-      "oldTokens": "???",
-      "newTokens": "???",
-      "balance": "???"
+      "title": "Swap tokens",
+      "swap": "Swap",
+      "oldTokens": "Enter amount of old tokens",
+      "newTokens": "You will get new tokens",
+      "balance": "Your balance:"
     },
-    "approve": "???",
-    "stake": "???",
-    "unstake": "???",
-    "liquidityMiningSub": "???",
-    "templateText": "",
+    "liquidityMiningSub": "Is a DeFi (decentralized finance) mechanism in which participants supply cryptocurrencies into liquidity pools, and being rewarded with fees and tokens based on their share of the total pool liquidity.",
     "pools": "पूल",
     "choose": "चुनें",
-    "information": "जानकारी",
-    "docName": "Some_document.pdf",
-    "agreement": "???.pdf",
-    "kb": "{count} KB",
-    "download": "डाउनलोड करें",
+    "agreement": "WorkQuest Liquidity Mining User Agreement.pdf",
     "tableHead": {
       "poolAddress": "पूल एड्रेस",
-      "swaps": "???",
-      "totalValue": "???",
-      "tokenAmount": "???",
-      "account": "???",
-      "time": "???",
+      "swaps": "Swaps",
+      "totalValue": "Total value",
+      "tokenAmount": "Token amount",
+      "account": "Account",
+      "time": "Time",
       "assets": "ऐसेट",
-      "sdsdsdsd": "sdsdsdsd",
       "volume": "वॉल्यूम"
     },
-    "table": {
-      "poolAddress": "0sjs3892...sd45",
-      "assets": "50% WUSD / 50% ETH",
-      "assets2": "50% WQT / 50% BNB",
-      "sdsdsdsd": "sdsdsdsd",
-      "volume": "$4.5M"
-    },
-    "mb": "{count} MB",
-    "back": "वापस",
-    "wusdEthPool": "WUSD/ETH पूल",
-    "wusdBnbPool": "Pool BNB/WQT",
-    "dollarsCount": "$ {count}",
-    "procCount": "{count} %",
-    "lpCount": "{count} LP",
-    "wqtCount": "{count} WQT",
-    "APY": "???",
-    "addLiquidity": "लिक्विडिटी जोड़ें",
+    "wusdEthPool": "ETH/WQT pool",
+    "wusdBnbPool": "BNB/WQT pool",
+    "APY": "APY",
     "removeLiquidity": "लिक्विडिटी हटाएं",
     "liquidity": "लिक्विडिटी",
-    "totalLiquidity": "???",
-    "reward": "???",
-    "claimReward": "???",
-    "totalReward": "???",
+    "totalLiquidity": "Total liquidity",
+    "reward": "Reward",
+    "claimReward": "Claim Reward",
+    "totalReward": "Total reward",
     "volume24h": "वॉल्यूम (24घं)",
     "myPoolShare": "मेरा पूल शेयर",
     "liquidityPoolProviders": "लिक्विडिटी पूल प्रोवाइडर",
     "liquidityProvidersEarn": "लिक्विडिटी प्रदाता पूल के अपने शेयर के अनुपात में सभी ट्रेडों पर 0.3% शुल्क अर्जित करते हैं। शुल्क पूल में जोड़े जाते हैं, इनमें वृद्धि रियल टाइम में होती है और इन्हें लिक्विडिटी को विद्ड्रॉ करने के द्वारा क्लेम किया जा सकता है।",
     "transactions": "ट्रांजेक्शन",
-    "connectWallet": "???"
+    "connectWallet": "Connect wallet"
+  },
+  "collateral": {
+    "lending": "Collateral",
+    "marketSize": "Market size",
+    "wantToGetWUSDTitle": "Wanna get WUSD?",
+    "getWUSD": "Get WUSD",
+    "wantToGoAuctionTitle": "Auction",
+    "goAuction": "Go to the auction",
+    "faq1": "What are Locked Savings? Committed to holding your crypto?",
+    "faq2": "What happens to my funds on the day I subscribe to a Locked Savings product?",
+    "ans2": "On the day of subscription, WorkQuest Savings will deduct the funds for subscription from your WUSD wallet.\n",
+    "faq3": "What happens to my funds on the value date of a Locked Savings product?",
+    "faq4": "What happens to my funds on the redemption date of a Locked Savings product?",
+    "faq5": "How is the average annual return (APR) calculated?"
+  },
+  "auction": {
+    "title": "Lots",
+    "time": "Added time",
+    "search": {
+      "placeholder": "Sum / Duration",
+      "button": "Search auction"
+    },
+    "tabs": {
+      "current": "Current",
+      "completed": "Completed"
+    },
+    "card": {
+      "feeIncluded": "{feePercent}% commission already in the price",
+      "feeNotIncluded": "{feePercent}% commission not included",
+      "auctionDuration": "Auction duration",
+      "completed": {
+        "type": "EVEN TYPE",
+        "sender": "SENDER",
+        "lotSize": "LOT SIZE",
+        "price": "MKR PRICE",
+        "timestamp": "TIMESTAMP",
+        "txHash": "TX"
+      }
+    }
   },
   "crediting": {
     "lending": "WorkQuest लेंडिंग प्रोटोकॉल",
-    "crediting": "क्रेडिटिंग",
     "templateText": "Work Net नेटवर्क पर WorkQuest DeFi लेंडिंग प्लेटफॉर्म - अस्थिर ऐसेट्स के लिए चार विशेष मुद्रा बाजारों के साथ",
+    "description": "???",
+    "currentLoan": "???",
+    "currentCredit": "???",
+    "dueDate": "Due date",
+    "chooseSource": "Choose the source",
+    "chosenSource": "Chosen source",
     "marketSize": "मार्केट साइज",
-    "deposit": "जमा",
-    "percent": "प्रतिशत",
-    "dollarsCount": "$ {count}",
-    "percentsCount": "{count}%",
     "wantToTakeALoan": "कर्ज लेना चाहते हैं?",
     "borrow": "उधार",
-    "information": "जानकारी",
+    "myLoans": "???",
+    "needRefund": "Need to refund",
+    "refund": "???",
     "openPositions": "ओपन पोजीशन",
-    "usdCount": "{count} USD",
     "totalCollateralLocked": "कुल कोलैटरल लॉक्ड",
-    "wusdCount": "{count} WUSD",
     "totalWusdDebt": "कुल WUSD ऋण",
     "tableHead": {
       "id": "ID",
       "currentRatio": "वर्तमान अनुपात",
       "deposited": "जमा किया",
-      "availableToWithdraw": "निकासी लेने के लिए उपलब्ध",
-      "wusd": "WUSD"
+      "availableToWithdraw": "निकासी लेने के लिए उपलब्ध"
     },
-    "table": {
-      "id": "565464",
-      "currentRatio": "500%",
-      "deposited": "531 ETH",
-      "availableToWithdraw": "531 ETH",
-      "wusd": "532 WUSD",
-      "manage": "मैनेज करें"
-    },
-    "back": "वापस",
-    "tempName": "उधार #56546",
     "liquidationPrice": "लिक्विडेशन कीमत",
     "collateralizationRatio": "कोलेटरलाइजेशन अनुपात",
     "ethLocked": "ETH लॉक्ड",
-    "ethCount": "{count} ETH",
     "ableToWithdraw": "निकासी में समर्थ",
-    "withdraw": "निकासी",
     "outstandingWusdDebt": "बकाया WUSD ऋण",
     "availableToGenerate": "जनरेट करने के लिए उपलब्ध",
     "payback": "पेबैक",
@@ -1881,25 +1816,15 @@
       "sender": "प्रेषक",
       "txHash": "ट्रांजेक्शन हैश"
     },
-    "credTable": {
-      "activity": "धन चुकाया",
-      "amount": "100 WUSD",
-      "time": "12 जून, 2021",
-      "sender": "dfgd6...fs65ds",
-      "txHash": "dfgd6...fs65ds"
-    },
     "faq1": "लॉक्ड बचत क्या है? अपनी क्रिप्टोकरेंसी बनाए रखने का पक्का इरादा है?",
     "faq2": "किसी दिन किसी लॉक्ड बचत वाले प्रोडक्ट का सब्सक्रिप्शन लेने पर, उस दिन मेरे फंड का क्या होगा?",
     "ans2": "सब्सक्रिप्शन के दिन, WorkQuest Savings आपके WUSD वॉलेट से सब्सक्रिप्शन वाली धनराशि काट लेगी।\n",
     "faq3": "किसी लॉक्ड बचत वाले प्रोडक्ट की वैल्यू तिथि पर मेरे फंड का क्या होगा?",
     "faq4": "किसी लॉक्ड बचत वाले प्रोडक्ट की रिडेम्प्शन तिथि पर मेरे फंड का क्या होगा?",
-    "faq5": "औसत वार्षिक रिटर्न (APR) की गणना कैसे की जाती है?",
-    "faq": "आम सवाल",
-    "lend": "उधार"
+    "faq5": "औसत वार्षिक रिटर्न (APR) की गणना कैसे की जाती है?"
   },
   "insuring": {
     "peerToPeerInsuring": "P2P इंश्योरेंस",
-    "templateText": "",
     "card1": {
       "title": "न्यूनतम प्रोटेक्शन",
       "pointsText": {
@@ -1918,23 +1843,13 @@
         "point1": "वार्षिक योगदान 3000 WUSD का, 2500 WUSD बीमित इवेंट की स्थिति में भुगतान।"
       }
     },
-    "pointTemplate": "",
-    "buy": "खरीद",
-    "information": "जानकारी",
-    "docName": "Some_document.pdf",
-    "mb": "{count} MB",
     "minimalProtectionPlan": "न्यूनतम प्रोटेक्शन प्लान",
     "standardProtectionPlan": "स्टैंडर्ड प्रोटेक्शन प्लान",
     "maximumProtectionPlan": "अधिकतम प्रोटेक्शन प्लान",
     "yourFundBalance": "बीमा फंड बैलेंस",
-    "wusdCount": "{count} WUSD",
-    "dollarsCount": "$ {count}",
-    "withdraw": "निकासी",
     "leaveFund": "फंड छोड़ें",
     "changePlan": "प्लान बदलें",
     "fundParticipants": "फंड प्रतिभागी",
-    "userName": "कॉडी फिशर",
-    "userNameCase": "??? :",
     "voting": "वोटिंग",
     "noVoteAtTheMoment": "इस समय कोई वोट नहीं",
     "countPeoplesInChat": "{count} लोग चैट में",
@@ -1943,12 +1858,7 @@
     "paymentOfInsurance": "{value}: बीमा का भुगतान",
     "youWillCertifyTheInsuredEvent": "आप बीमित इवेंट को प्रमाणित करेंगे?",
     "studyTheInsuredEventThoroughly": "बीमित इवेंट का अच्छी तरह से अध्ययन करें",
-    "insureCaseText": "",
-    "notAgree": "असहमत",
     "insuredEvent": "बीमित इवेंट",
-    "agree": "सहमत",
-    "percentsCount": "{count} %",
-    "votesCount": "{count} वोट",
     "planPoints": {
       "point1": "वार्षिक शुल्क: {count} WUSD",
       "point2": "बीमित इवेंट होने पर भुगतान: {count} WUSD",
@@ -1992,12 +1902,13 @@
     "transaction": {
       "notEnoughFunds": "Not enough funds"
     },
+    "selectSpec": "Please select a specialization",
     "incorrectPass": "ओह! कुछ गलत हो गया है। डेटा जांचें और फिर से कोशिश करें।",
     "emptyData": {
-      "emptyQuests": "???",
-      "emptyDisputes": "???",
-      "emptyPortfolios": "???",
-      "emptyReviews": "???",
+      "emptyQuests": "Oops, there's no quests here yet",
+      "emptyDisputes": "Oops, there are no disputes here yet",
+      "emptyPortfolios": "Oops, there's no portfolio here yet",
+      "emptyReviews": "Oops, there are no reviews here yet",
       "employer": {
         "myQuests": {
           "desc": "आपने अभी तक Quest नहीं किया है",
@@ -2022,450 +1933,427 @@
     }
   },
   "sharing": {
-    "title": "शेयरिंग",
     "socialText": "सोशल मीडिया में शेयर करें",
     "share": "लिंक शेयर करें"
   },
-  "crosschain": {
-    "pageName": "???",
-    "pageAbout": "???",
-    "sourceBlockchain": "???",
-    "targetBlockchain": "???",
-    "blockchain": "???",
-    "yourWQTAddress": "???",
-    "YourBSCAddress": "???",
-    "balance": "???",
-    "createSwap": "???",
-    "mySwaps": "???",
-    "eth": "ETH",
-    "worknet": "Wor???knet",
-    "bsc": "BSC",
+  "bridge": {
+    "pageName": "WorkQuest Bridge",
+    "pageAbout": "Secure and fast way to bring cross-chain assets between WorkNet, Ethereum and Binance Smart Chain.",
+    "sourceBlockchain": "Source blockchain",
+    "targetBlockchain": "Target blockchain",
+    "blockchain": "Blockchain",
+    "yourWQTAddress": "Your WQT address",
+    "YourBSCAddress": "Your BSC address",
+    "createSwap": "Create swap",
+    "mySwaps": "My swaps",
+    "worknet": "Worknet",
     "tableHead": {
-      "direction": "???",
-      "recipient": "???",
-      "tx": "???",
-      "created": "???"
-    },
-    "recipTemp": "0xnf8o2…9b74thb3",
-    "dateTemp": "05.08.2021, 12:00"
+      "direction": "Direction",
+      "recipient": "Recipient",
+      "tx": "Tx",
+      "created": "Created"
+    }
   },
   "staking": {
-    "notification": "???",
-    "stakeLimitReached": "???",
-    "notEnoughFunds": "???",
-    "notEnoughClaim": "???",
-    "_inDev": "???",
-    "mainHeader": "???",
-    "tempHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
-    "pools": "???",
+    "notification": "Notification",
+    "stakeLimitReached": "Stake limit reached",
+    "notEnoughFunds": "There are not enough funds on the balance sheet",
+    "notEnoughClaim": "There are not enough funds to renewal tokens",
+    "_inDev": "In development",
+    "mainHeader": "Single staking",
+    "stakingSub": "Make your assets work. Stake your assets into DeFi staking or Locked staking to increase staking income.",
+    "pools": "Pools",
     "tableHead": {
-      "poolAddress": "???",
-      "totalStaked": "???",
-      "totalDistributed": "???",
-      "stakeTokenAddress": "???",
-      "rewardTokenAddress": "???"
+      "poolAddress": "Pool address",
+      "totalStaked": "Total Staked",
+      "totalDistributed": "Total Distributed",
+      "stakeTokenAddress": "Stake Token Address",
+      "rewardTokenAddress": "Reward Token Address"
     },
-    "open": "???",
-    "back": "???",
-    "unstake": "???",
-    "stakeIsEmpty": "???",
-    "stakeDurationIsNotOver": "???",
-    "claimRewards": "???",
-    "cannotClaimYet": "???",
+    "open": "Open",
+    "stakeIsEmpty": "Stake balance is empty",
+    "stakeDurationIsNotOver": "Stake duration is not over",
+    "cannotClaimYet": "You cannot claim rewards yet",
     "cannotStakeYet": "You cannot stake tokens yet",
     "pool": "Pool",
-    "stakeTokenAddress": "???",
-    "rewardTokenAddress": "???",
-    "totalStaked": "???",
-    "WQTCount": "{n} WQT",
-    "WUSDCount": "{n} WUSD",
-    "ETHCount": "{n} ETH",
-    "BNBCount": "{n} BNB",
-    "hours": "{n} ???",
-    "days": "{n} ???",
-    "min": "{n} ???",
-    "totalDistributed": "???",
-    "staking": "???",
+    "stakeTokenAddress": "Stake Token Address",
+    "rewardTokenAddress": "Reward Token Address",
+    "totalStaked": "Total Staked",
+    "totalDistributed": "Total Distributed",
+    "staking": "Staking",
     "stakingCards": {
-      "distributionTime": "???",
-      "rewardTotal": "???",
-      "takePeriod": "???",
-      "claimPeriod": "???",
-      "duration": "???"
+      "distributionTime": "Distribution Time",
+      "rewardTotal": "Reward Total",
+      "takePeriod": "Stake Period",
+      "claimPeriod": "Claim Period",
+      "duration": "Duration"
     },
-    "userInformation": "???",
+    "userInformation": "User information",
     "userInformationCards": {
-      "staked": "???",
-      "stakeBalance": "???",
-      "claimed": "???"
+      "staked": "Staked",
+      "yourBalance": "Your balance",
+      "claimed": "Claimed"
     },
     "stakeCards": {
-      "stakeMin": "???",
-      "stakeLimit": "???",
-      "periodUpdate": "???"
+      "stakeMin": "Stake minimum",
+      "stakeLimit": "Stake limit",
+      "periodUpdate": "Period update"
     },
-    "stakeDays": "???",
-    "stake": "???",
-    "autoRenewal": "???",
-    "renewalTokens": "??? {n} ???"
+    "stakeDays": "Stake days",
+    "autoRenewal": "Auto Renewal",
+    "renewalTokens": "This will renewal {count} tokens"
   },
   "myQuests": {
     "statuses": {
       "all": "सभी Quest",
-      "fav": "पसंदीदा",
-      "requested": "अनुरोध किया",
-      "completed": "पूरी हुई Quests",
+      "favorites": "पसंदीदा",
+      "responded": "अनुरोध किया",
+      "performed": "पूरी हुई Quests",
       "active": "एक्टिव Quest",
-      "invited": "इन्वाइट किए quests"
+      "invited": "इन्वाइट किए quests",
+      "created": "निर्मित खोज"
     }
   },
   "footer": {
-    "download": "???",
-    "follow": "???",
+    "download": "Download Mobile App",
+    "follow": "Follow Us",
     "company": {
-      "title": "???",
-      "wqWiki": "???",
-      "aboutUs": "A???",
-      "leadership": "???",
-      "contactUs": "???",
-      "support": "???"
+      "title": "Company",
+      "wqWiki": "WorkQuest Wiki",
+      "leadership": "Leadership",
+      "support": "Help & Support"
     },
     "legalInfo": {
-      "title": "???",
-      "risks": "???",
-      "privacyPolicy": "???",
-      "terms": "???",
-      "aml": "???",
-      "cookiePolicy": "???"
+      "title": "Legal Info",
+      "risks": "Risks Disclaimer",
+      "privacyPolicy": "Privacy Policy",
+      "cookiePolicy": "Cookie Policy"
     },
     "DeFi": {
-      "title": "???",
-      "retirement": "???",
-      "referral": "???",
-      "P2P": "???",
-      "savingsProduct": "???",
-      "lending": "???",
-      "liquidityMining": "???",
-      "wqBridge": "???",
-      "staking": "???",
-      "wqDAO": "???"
+      "title": "DeFi functionality",
+      "retirement": "Retirement program",
+      "referral": "Referral program",
+      "P2P": "P2P insurance",
+      "savingsProduct": "Savings product",
+      "lending": "Lending",
+      "wqBridge": "WorkQuest bridge",
+      "staking": "WorkQuest Staking",
+      "wqDAO": "WorkQuest DAO"
     }
   },
   "wiki": {
     "title": "WorkQuest Wiki",
-    "searchPlaceholder": "???",
-    "search": "???",
+    "searchPlaceholder": "Type the word",
+    "search": "Search",
     "navigation": {
       "header": {
-        "title": "???",
-        "subtitle": "???",
+        "title": "Header menu",
+        "subtitle": "There are two types of header: for employer and for employee.",
         "cards": {
           "employer": {
-            "title": "???"
+            "title": "Header for employer"
           },
           "employee": {
-            "title": "???"
+            "title": "Header for employee"
           },
           "quests": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Quests",
+            "subtitle": "General list of job offers published on the platform."
           },
           "employees": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Employees",
+            "subtitle": "General list of employees registered on the platform."
           },
           "myQuests": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "My quests",
+            "subtitle": "All job offers you interact with."
           },
           "wallet": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Wallet",
+            "subtitle": "Your WorkQuest wallet, where WQT token and WUSD stablecoin transactions are available. It can also be used to work with platform instruments."
           },
           "instruments": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "इंस्ट्रूमेंट",
+            "subtitle": "DeFi functionality that includes referral program, 2P2 insurance, retirement savings, savings product, liquidity mining, and landing."
           },
           "language": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Language",
+            "subtitle": "Choose your language."
           },
           "chats": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Chats",
+            "subtitle": "Communication between employee and employer, group communication and saving important chats."
           },
           "notifications": {
-            "title": "???",
-            "subtitle": "???",
+            "title": "Notifications",
+            "subtitle": "All important notifications related to your profile and platform updates.",
             "noNotifications": "No notifications"
           },
           "menu": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Menu",
+            "subtitle": "Main menu of the platform."
           }
         }
       },
       "profile": {
-        "title": "???",
+        "title": "Profile menu",
         "cards": {
           "profile": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "My profile",
+            "subtitle": "Access to the profile page of an employee or employer with basic information about them."
           },
           "settings": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Settings",
+            "subtitle": "Change profile information, social network, change password and security settings."
           },
           "disputes": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Disputes",
+            "subtitle": "Disputes on your quests, decisions, status and other information."
           },
           "logout": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Logout",
+            "subtitle": "Logout from your profile to the main page of the platform."
           }
         }
       },
       "instruments": {
-        "title": "???",
+        "title": "इंस्ट्रूमेंट",
         "cards": {
           "retirement": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Retirement program",
+            "subtitle": "That will generate an annual percentage of profit on the amount of savings."
           },
           "referral": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Referral program",
+            "subtitle": "Is a program to expand the user base of the platform, where everyone receives a reward for inviting new users"
           },
           "P2P": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "P2P insurance",
+            "subtitle": "Decentralized insurance where fund members manage the insurance fund themselves by voting for important decisions."
           },
           "savings": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Savings product",
+            "subtitle": "Brings additional income in the form of annual interest."
           },
           "lending": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Lending",
+            "subtitle": "The ability to take out a loan or issue a loan for a specific period and interest rate."
           },
           "liquidity": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Liquidity mining",
+            "subtitle": "Providing liquidity to pools to receive rewards based on your amount of liquidity in the pool."
           },
-          "crosschain": {
-            "title": "???",
-            "subtitle": "???"
+          "bridge": {
+            "title": "Bridge",
+            "subtitle": "Most secure and fast way to bring cross-chain assets between WorkNet, ETH and BSC."
           },
           "staking": {
-            "title": "???",
+            "title": "Staking",
             "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
           }
         }
       },
       "statuses": {
-        "title": "???",
+        "title": "Statuses",
         "cards": {
           "delivery": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Fixed delivery",
+            "subtitle": "After the employee has determined the optimal job offer and consented to the execution of the quest, an agreement is concluded between the employee and the employer."
           },
           "short": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Short-term",
+            "subtitle": "A quest that needs to be completed over the coming days. To indicate short-term delivery (from 24 to 72 hours), you need to start the quest as soon as possible."
           },
           "urgent": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Urgent",
+            "subtitle": "A quest that needs to be completed urgently. To indicate urgent delivery (from 1 to 24 hours), you need to start the quest almost immediately"
           },
           "top": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Top Ranked EMP.",
+            "subtitle": "Top ranked employee/employer — this means that there has been a large number of successfully completed quests, with an average score from user reviews of over 4.5 points. Requires passing KYC (verified account), phone number verification, three social media verification, and filling out employment information."
           },
           "reliable": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Reliable EMP.",
+            "subtitle": "Reliable employee/employer a large number of successfully completed quests, with the average score from user reviews of at least 4 points. Requires passing KYC (verified account), phone number verification and verification in two social networks."
           },
           "verified": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Verified EMP.",
+            "subtitle": "Verified employee/employer is a validated user with a small number of successfully completed quests, and an average user score of at least 3.5 points. Requires passing KYC (verified account) and verification of one of the social networks."
           }
         }
       },
       "buttons": {
-        "title": "???",
+        "title": "Buttons",
         "cards": {
           "create": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Create a quest",
+            "subtitle": "Create a work proposal with a detailed description of the task, requirements for candidates and a technical description."
           },
           "results": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Search Results",
+            "subtitle": "Search for a job offer by selected search categories."
           },
           "workers": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Search Workers",
+            "subtitle": "Search for workers by selected search categories."
           },
           "details": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "View details",
+            "subtitle": "Each work proposal (quest) is displayed with basic brief information, the user can use the \"View details\" button and view all detailed information related to this quest."
           },
           "map": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Show map",
+            "subtitle": "Enable or Disable the map to search for employees or employers."
           },
           "button": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Share button",
+            "subtitle": "Share your profile or created quest on social networks"
           },
           "raise": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Raise views",
+            "subtitle": "Promoting a quest or profile of an employee and employer in the search."
           }
         }
       },
       "employer": {
-        "title": "???",
+        "title": "Employer's office",
         "cards": {
           "specialization": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Specialization",
+            "subtitle": "List of industries requiring specialized skill sets."
           },
           "rating": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Rating",
+            "subtitle": "Employee rating: Verified employee/Reliable employee/Higher level of trust employee."
           },
           "priority": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "All priority",
+            "subtitle": "Priority for delivery: Urgent, Short-term, Fixed Delivery."
           },
           "distant": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Distant work",
+            "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
           },
           "price": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Price",
+            "subtitle": "Filter for finding employees by cost per hour of work, sorted from lowest to highest."
           },
           "time": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Added time",
+            "subtitle": "Filter for searching employees by registration date, from new users to early users or vice versa."
           }
         }
       },
       "employee": {
-        "title": "???",
+        "title": "Employee’s office",
         "cards": {
           "specialization": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Specialization",
+            "subtitle": "List of industries requiring special skills."
           },
           "quests": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Quests",
+            "subtitle": "Select a job offer: Quests (all type of work), Specialized quests (task that require specialized skills), permanent job (job search by categories)."
           },
           "delivery": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Quest delivery time",
+            "subtitle": "Quest delivery time: Urgent, Short term, Fixed delivery."
           },
           "job": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Type of employment",
+            "subtitle": "Select the type of employment: Full-time, Part-time, Fixed term, Contract."
           },
           "distant": {
-            "title": "???",
+            "title": "Distant work",
             "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
           },
           "price": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Price",
+            "subtitle": "A filter to search for quests, ordered from the lowest price to the highest."
           },
           "time": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Added time",
+            "subtitle": "Filter to search for quests by publication date, from the newest to the latest created, or vice versa."
           }
         }
       },
       "user": {
-        "title": "???",
+        "title": "User profile",
         "cards": {
           "reviews": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Reviews",
+            "subtitle": "Comments and reviews that users leave about each other after completing the quest."
           },
           "quests": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "All quests",
+            "subtitle": "List of all published quests."
           },
           "active": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Active quests",
+            "subtitle": "The quest in which you are currently active."
           },
           "invited": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Invited quests",
+            "subtitle": "List of quests that you have been invited to complete."
           },
           "favorite": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Favorite",
+            "subtitle": "A quest that is added to favorites for frequent interaction."
           }
         }
       },
       "quest": {
-        "title": "???",
+        "title": "Boosting quest",
         "cards": {
           "goldPlus": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Gold Plus Package",
+            "subtitle": "Notifications for employees who were looking for quests, via an offer to review the quest that has been promoted by the employer. The employee will be invited to complete the quest in based on the most recent search categories of the employee. Plus the ability to choose any category and any location to promote the quest."
           },
           "gold": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Gold package",
+            "subtitle": "Notifications for employees who were looking for quests with a direct offer to review the promoted quest based on the most recent search categories of the employee. Plus the ability to choose three categories and three locations to promote the quest."
           },
           "silver": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Silver package",
+            "subtitle": "Pin quest on the main page for three hours, with the ability to choose two categories and two locations for promotion the quest."
           },
           "bronze": {
-            "title": "???",
-            "subtitle": "???"
+            "title": "Bronze package",
+            "subtitle": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
           }
         }
       }
     }
   },
   "gallery": {
-    "counter": "{n} ??? {c}"
+    "counter": "{n} of {c}"
   },
   "uploader": {
-    "uploadFile": "???",
-    "kb": "KB",
-    "mb": "MB",
+    "uploadFile": "Upload files",
     "errors": {
-      "fileSizeLimit": "???: {n}",
-      "filesLimit": "???: {n}"
+      "fileSizeLimit": "File size limit: {n}",
+      "filesLimit": "Files limit: {n}"
     }
   },
   "rating": {
     "topRanked": {
-      "title": "???",
+      "title": "Top Ranked",
       "desc": "Notifications for employees who were looking for quests with a direct offer to review the promoted quest based on the most recent search categories of the employee. Plus the ability to choose three categories and three locations to promote the quest."
     },
     "verified": {
-      "title": "???",
+      "title": "Reliable",
       "desc": "Pin quest on the main page for three hours, with the ability to choose two categories and two locations for promotion the quest."
     },
     "reliable": {
-      "title": "???",
+      "title": "Verified",
       "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
     }
   },
   "workPlaces": {
     "title": "Workplace",
     "all": "All workplaces",
-    "distant": "Distant work",
-    "office": "Work in office",
-    "both": "Both variants"
+    "Remote": "Remote work",
+    "InOffice": "In-office",
+    "Hybrid": "Hybrid workplace"
   }
 }

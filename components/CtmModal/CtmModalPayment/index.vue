@@ -1,72 +1,70 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.payment')"
+    :title="$tc('modals.titles.payment')"
   >
     <div class="ctm-modal__content">
       <validation-observer>
-        <div
-          class="step__container"
-        >
+        <div class="step__container">
           <div class="ctm-modal__content-field">
             <base-field
               v-model="cardNumberInput"
-              :placeholder="'1234 1234 1234 1234'"
+              placeholder="1234 1234 1234 1234"
+              data-selector="CARD-NUMBER"
               :is-hide-error="true"
-              :label="$t('modals.numberOfCard')"
+              :label="$tc('modals.numberOfCard')"
             />
           </div>
           <div class="ctm-modal__content-field">
             <base-field
               v-model="cardNumberInput"
-              :placeholder="'1234 1234 1234 1234'"
+              placeholder="1234 1234 1234 1234"
+              data-selector="CARDHOLDER-NAME"
               :is-hide-error="true"
-              :label="$t('modals.cardHolder')"
+              :label="$tc('modals.cardHolder')"
             />
           </div>
-          <div
-            class="grid__2col"
-          >
-            <div
-              class="ctm-modal__content-field"
-            >
+          <div class="grid__2col">
+            <div class="ctm-modal__content-field">
               <base-field
                 v-model="dateInput"
-                :placeholder="'02/24'"
+                placeholder="02/24"
+                data-selector="CARD-DATE"
                 :is-hide-error="true"
-                :label="$t('modals.date')"
+                :label="$tc('modals.date')"
               />
             </div>
             <div class="ctm-modal__content-field">
               <base-field
                 v-model="cvvInput"
-                :placeholder="'242'"
+                placeholder="242"
+                data-selector="CARD-CVV"
                 :is-hide-error="true"
-                :label="$t('modals.cvv')"
+                :label="$tc('modals.cvv')"
               />
             </div>
           </div>
         </div>
         <div class="btn__container">
           <div class="btn__wrapper">
-            <span
-              class="step__container"
-            >
+            <span class="step__container">
               <base-btn
                 class="message__action"
+                data-selector="SUBMIT"
                 @click="showModalLevelRaised()"
               >
-                {{ $t('meta.submit') }}
+                {{ $t('meta.btns.submit') }}
               </base-btn>
             </span>
           </div>
           <div class="btn__wrapper">
             <base-btn
-              :mode="'outline'"
+              mode="outline"
+              data-selector="CANCEL"
               class="message__action"
-              @click="hide()"
+              @click="CloseModal"
             >
-              {{ $t('meta.cancel') }}
+              {{ $t('meta.btns.cancel') }}
             </base-btn>
           </div>
         </div>
@@ -96,9 +94,6 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     showTransactionSendModal() {
       this.ShowModal({
         key: modals.transactionSend,

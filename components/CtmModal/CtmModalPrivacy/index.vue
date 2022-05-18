@@ -1,17 +1,17 @@
 <template>
   <ctm-modal-box
     class="privacy"
-    :title="$t('privacy.title')"
+    :title="$tc('modals.titles.privacyPolicy')"
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__desc">
-        {{ $t('privacy.desc') }}
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor
       </div>
       <div class="privacy__forms">
         <base-checkbox
           v-model="privacy"
           name="privacy"
-          :label="$t('privacy.agree')"
+          :label="$tc('privacy.agree')"
         >
           <template v-slot:sub>
             <a
@@ -19,14 +19,14 @@
               href="/docs/privacy.pdf"
               target="_blank"
             >
-              {{ $t('privacy.privacyLink') }}
+              {{ $t('meta.privacyPolicy') }}
             </a>
           </template>
         </base-checkbox>
         <base-checkbox
           v-model="terms"
           name="terms"
-          :label="$t('privacy.agree')"
+          :label="$tc('privacy.agree')"
         >
           <template v-slot:sub>
             <a
@@ -34,14 +34,14 @@
               href="/docs/terms.pdf"
               target="_blank"
             >
-              {{ $t('privacy.termsLink') }}
+              {{ $t('meta.terms') }}
             </a>
           </template>
         </base-checkbox>
         <base-checkbox
           v-model="aml"
           name="aml"
-          :label="$t('privacy.agree')"
+          :label="$tc('privacy.agree')"
         >
           <template v-slot:sub>
             <a
@@ -49,16 +49,17 @@
               href="/docs/aml.pdf"
               target="_blank"
             >
-              {{ $t('privacy.amlLink') }}
+              {{ $t('meta.aml') }}
             </a>
           </template>
         </base-checkbox>
         <base-btn
           class="privacy__action"
           :disabled="!isAllChecked"
+          data-selector="OK"
           @click="onSubmit()"
         >
-          {{ $t('meta.ok') }}
+          {{ $t('meta.btns.ok') }}
         </base-btn>
       </div>
     </div>
@@ -89,33 +90,29 @@ export default {
   },
   methods: {
     async onSubmit() {
-      // Role page & select role
-      if (this.$cookies.get('userStatus') === UserStatuses.NeedSetRole) {
-        const response = await this.$store.dispatch('user/setUserRole', { role: this.options.role });
-        if (response?.ok) {
-          this.$cookies.set('role', this.options.role, { path: '/' });
-          this.$cookies.set('userStatus', 1, { path: '/' });
-          this.options.callback();
-          this.CloseModal();
-          return;
-        }
-      } else { // Confirm account page
-        const payload = {
-          confirmCode: this.options.confirmCode,
+      // Role page
+      let response;
+      if (this.options.isSocialNetwork) {
+        response = await this.$store.dispatch('user/setUserRole', {
           role: this.options.role,
-        };
-        const response = await this.$store.dispatch('user/confirm', payload);
-        if (response?.ok) {
-          this.$cookies.set('role', this.options.role, { path: '/' });
-          this.$cookies.set('userStatus', 1, { path: '/' });
-          sessionStorage.removeItem('confirmToken');
-          this.ShowToast(this.$t('modals.yourAccountVerified'), this.$t('modals.success'));
-          await this.$router.push(Path.ROLE);
-        } else {
-          // Wrong confirm token
-          await this.$store.dispatch('user/logout');
-          await this.$router.push(Path.SIGN_IN);
-        }
+        });
+      } else {
+        response = await this.$store.dispatch('user/confirm', {
+          confirmCode: sessionStorage.getItem('confirmToken'),
+          role: this.options.role,
+        });
+      }
+
+      if (response?.ok) {
+        this.$cookies.set('userLogin', true, { path: Path.ROOT });
+        this.$cookies.set('userStatus', UserStatuses.Confirmed, { path: Path.ROOT });
+        sessionStorage.removeItem('confirmToken');
+        this.ShowToast(this.$t('modals.yourAccountVerified'), this.$t('meta.success'));
+        await this.options.callback();
+      } else {
+        // Wrong confirm token or errors with social network login
+        await this.$store.dispatch('user/logout');
+        await this.$router.push(Path.SIGN_IN);
       }
       this.CloseModal();
     },

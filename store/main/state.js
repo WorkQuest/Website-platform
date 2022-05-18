@@ -6,4 +6,8 @@ export default () => ({
   loaderMode: loaderModes.default,
   isLoaderBackgroundHider: true,
   loaderProgress: 0,
+  connections: {
+    notifsConnection: false,
+    chatActionsConnection: false,
+  },
 });

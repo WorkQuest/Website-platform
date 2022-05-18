@@ -1,10 +1,13 @@
 <template>
   <div
+    v-if="Object.keys(item).length"
     v-click-outside="closeQuestMenu"
+    :data-selector="`COMPONENT-QUEST-DD-${questIndex}`"
     class="quest quest__menu"
   >
     <button
       class="quest__button quest__button_menu"
+      :data-selector="`ACTION-BTN-TOGGLE-QUEST-MENU-${questIndex}`"
       @click="toggleQuestMenu()"
     >
       <span class="icon-more_vertical" />
@@ -17,35 +20,42 @@
         <div class="menu menu__items">
           <div class="menu__container">
             <div
+              v-if="canRaiseViews"
               class="menu__item"
+              :data-selector="`ACTION-BTN-TO-RAISING-VIEWS-${questIndex}`"
               @click="toRaisingViews"
             >
               <div class="menu__text">
-                {{ $t('modals.raiseViews') }}
+                {{ $t('meta.raiseViews') }}
               </div>
             </div>
             <div
               class="menu__item"
-              @click="shareModal()"
+              :data-selector="`ACTION-BTN-SHARE-MODAL-${questIndex}`"
+              @click="shareModal"
             >
               <div class="menu__text">
                 {{ $t('modals.share') }}
               </div>
             </div>
             <div
+              v-if="canEditOrDelete"
               class="menu__item"
-              @click="toEditQuest()"
+              :data-selector="`ACTION-BTN-TO-EDIT-QUEST-${questIndex}`"
+              @click="toEditQuest"
             >
               <div class="menu__text">
-                {{ $t('modals.edit') }}
+                {{ $t('meta.btns.edit') }}
               </div>
             </div>
             <div
+              v-if="canEditOrDelete"
               class="menu__item"
-              @click="showAreYouSureDeleteQuestModal()"
+              :data-selector="`ACTION-BTN-DELETE-QUEST-${questIndex}`"
+              @click="showAreYouSureDeleteQuestModal"
             >
               <div class="menu__text">
-                {{ $t('modals.delete') }}
+                {{ $t('meta.btns.delete') }}
               </div>
             </div>
           </div>
@@ -58,16 +68,22 @@
 <script>
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import { QuestStatuses, Path } from '~/utils/enums';
+import { Path } from '~/utils/enums';
+import { QuestStatuses } from '~/utils/сonstants/quests';
 import modals from '~/store/modals/modals';
 
 export default {
   name: 'QuestDD',
   directives: { ClickOutside },
+  QuestStatuses,
   props: {
     mode: {
       type: String,
       default: '',
+    },
+    questIndex: {
+      type: Number,
+      default: 0,
     },
     item: {
       type: Object,
@@ -81,25 +97,66 @@ export default {
   },
   computed: {
     ...mapGetters({
+      userData: 'user/getUserData',
       userRole: 'user/getUserRole',
       questData: 'quests/getQuest',
     }),
+    canRaiseViews() {
+      return [QuestStatuses.Created, QuestStatuses.WaitWorkerOnAssign].includes(this.item.status || this.questData.status);
+    },
+    canEditOrDelete() {
+      return this.item ? this.item.status === QuestStatuses.Created : this.questData.status === QuestStatuses.Created;
+    },
   },
   methods: {
     toEditQuest() {
-      // TODO: Исправить логику editQuest
-      // if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.item.status)) {
-      //   this.$router.push(`${Path.EDIT_QUEST}/${this.item.id}`);
-      //   this.setCurrentStepEditQuest(1);
-      // } else this.showToastWrongStatusEdit();
+      if (!this.userData.totpIsActive) {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/deleteError.svg'),
+          title: this.$t('modals.errors.error'),
+          subtitle: this.$t('modals.2FA.youCan’tEditQuest'),
+          button: this.$t('meta.btns.close'),
+        });
+        return;
+      }
+
+      this.ShowModal({
+        key: modals.securityCheck,
+        actionMethod: async () => this.editAction(),
+      });
+    },
+    editAction() {
+      const { status, id } = this.item;
+      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(status)) {
+        this.$router.push(`${Path.EDIT_QUEST}/${id}`);
+        this.setCurrentStepEditQuest(1);
+      } else this.showToastWrongStatusEdit();
     },
     showAreYouSureDeleteQuestModal() {
-      // TODO: Исправить логику deleteQuest
-      // this.ShowModal({ key: modals.areYouSureDeleteQuest, item: this.item });
+      if (!this.userData.totpIsActive) {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/deleteError.svg'),
+          title: this.$t('modals.errors.error'),
+          subtitle: this.$t('modals.2FA.youCan’tDeleteQuest'),
+          button: this.$t('meta.btns.close'),
+        });
+        return;
+      }
+      this.ShowModal({
+        key: modals.securityCheck,
+        actionMethod: () => {
+          this.CloseModal();
+          this.DeleteQuest(this.item);
+        },
+      });
     },
     toRaisingViews() {
-      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.item.status)) {
-        this.$router.push({ path: `${Path.EDIT_QUEST}/${this.item.id}`, query: { mode: 'raise' } });
+      const { status, id } = this.item;
+
+      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(status)) {
+        this.$router.push({ path: `${Path.EDIT_QUEST}/${id}`, query: { mode: 'raise' } });
         this.setCurrentStepEditQuest(2);
       } else this.showToastWrongStatusRaisingViews();
     },
@@ -108,20 +165,24 @@ export default {
     },
     showToastWrongStatusEdit() {
       return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.questInfo'),
+        title: this.$t('meta.questInfo'),
         variant: 'warning',
         text: this.$t('toasts.questCantEdit'),
       });
     },
     showToastWrongStatusRaisingViews() {
       return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.questInfo'),
+        title: this.$t('meta.questInfo'),
         variant: 'warning',
         text: this.$t('toasts.questCantRaisingViews'),
       });
     },
     shareModal() {
-      this.ShowModal({ key: modals.sharingQuest, itemId: this.item.id });
+      this.ShowModal({
+        key: modals.sharingQuest,
+        itemId: this.item.id,
+        mode: 'quest',
+      });
     },
     closeQuestMenu() {
       this.isShowQuestMenu = false;

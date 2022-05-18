@@ -1,6 +1,6 @@
 <template>
   <ctm-modal-box
-    :title="$t('filters.titleAll')"
+    :title="$t('modals.titles.filters.titleAll')"
     class="filter"
   >
     <div class="filter__container">
@@ -11,16 +11,14 @@
           :key="specIdx"
           class="filter__items"
         >
-          <div
-            class="filter__item item"
-          >
+          <div class="filter__item item">
             <div
               class="item"
               @click="toggleCategory(specIdx)"
             >
-              <span
-                class="item__title"
-              >{{ item.title }}</span>
+              <span class="item__title">
+                {{ item.title }}
+              </span>
               <span
                 v-show="!visible[specIdx]"
                 class="icon-caret_down"
@@ -47,7 +45,9 @@
                   <label
                     :for="specIdx"
                     class="sub__label"
-                  >{{ $t('filters.commonSub.selectAll') }}</label>
+                  >
+                    {{ $t('filters.commonSub.selectAll') }}
+                  </label>
                 </div>
                 <div
                   v-for="(sub, skillIdx) in item.items"
@@ -68,9 +68,11 @@
                       :name="sub.title"
                     >
                     <label
-                      :for="sub.title"
+                      :for="sub.id"
                       class="sub__label"
-                    >{{ sub.title }}</label>
+                    >
+                      {{ sub.title }}
+                    </label>
                   </div>
                 </div>
               </div>
@@ -81,12 +83,16 @@
       <div class="filter__btns">
         <base-btn
           mode="outline"
+          data-selector="CLEAN-UP"
           @click="cleanUp()"
         >
           {{ $t('meta.cleanUp') }}
         </base-btn>
-        <base-btn @click="handleSubmit">
-          {{ $t('meta.apply') }}
+        <base-btn
+          data-selector="APPLY"
+          @click="handleSubmit"
+        >
+          {{ $t('meta.btns.apply') }}
         </base-btn>
       </div>
     </div>
@@ -118,7 +124,7 @@ export default {
       for (let i = 0; i < specsKeys.length; i += 1) {
         const spec = this.filters[specsKeys[i]];
         f[i] = {
-          title: this.$t(`filters.items.${spec.id}.title`),
+          title: this.$t(`filters.skills.${spec.id}.title`),
           index: spec.id,
           items: {},
         };
@@ -127,7 +133,7 @@ export default {
           const index = spec.skills[skillsKeys[j]];
           f[i].items[j] = {
             index,
-            title: this.$t(`filters.items.${spec.id}.sub.${index}`),
+            title: this.$t(`filters.skills.${spec.id}.sub.${index}`),
           };
         }
       }
@@ -142,9 +148,6 @@ export default {
     if (!this.filters) await this.$store.dispatch('quests/getFilters');
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     handleSubmit() {
       const queryKeys = Object.keys(this.selected);
       const query = [];
@@ -161,7 +164,7 @@ export default {
         visible: this.visible,
       };
       this.$store.dispatch('quests/setSelectedSpecializationsFilters', data);
-      this.hide();
+      this.CloseModal();
     },
     getPath(specIdx, skillIdx) {
       return `${this.searchFilters[specIdx].index}.${this.searchFilters[specIdx].items[skillIdx].index}`;

@@ -1,5 +1,8 @@
 <template>
-  <div class="profile">
+  <div
+    class="profile"
+    data-selector="COMPONENT-PROFILE"
+  >
     <div class="profile__title">
       {{ $t("settings.profileInfo") }}
     </div>
@@ -22,6 +25,7 @@
             class="profile__avatar-input"
             type="file"
             accept="image/*"
+            data-selector="ACTION-BTN-UPLOAD-PROFILE-IMAGE"
             @change="processFile($event, validate)"
           >
           <label
@@ -30,11 +34,12 @@
           />
         </ValidationProvider>
         <div class="profile__personal-info">
-          <verified class="profile__status" />
+          <StatusKYC class="profile__status" />
           <base-field
             v-for="main in mainInputs"
             :key="main.index"
             v-model="profile[main.model]"
+            :data-selector="main.model"
             :rules="main.rules"
             :placeholder="$t(main.placeholder)"
             mode="icon"
@@ -47,16 +52,17 @@
             </template>
           </base-field>
           <base-field
-            v-model="profile.additionalInfo.address"
+            v-model="profile.locationFull.locationPlaceName"
             v-click-outside="hideSearchDD"
             :placeholder="$t('settings.addressInput')"
+            data-selector="ADDRESS"
             rules="max:100|required"
             mode="icon"
             :selector="isSearchDDStatus"
-            :name="$t('settings.address')"
+            :name="$t('meta.addressSmall')"
             @focus="isSearchDDStatus = true"
             @blur="checkValidate"
-            @selector="getAddressInfo(profile.additionalInfo.address)"
+            @selector="getAddressInfo(profile.locationFull.locationPlaceName)"
           >
             <template v-slot:left>
               <span class="icon icon-location" />
@@ -65,13 +71,18 @@
               <div
                 v-if="addresses.length && isSearchDDStatus"
                 class="profile__selector selector"
+                data-selector="ADDRESS-SELECTOR"
               >
-                <div class="selector__items">
+                <div
+                  class="selector__items"
+                  data-selector="ADDRESS-SELECTOR-ADDRESSES"
+                >
                   <div
                     v-for="(item, i) in addresses"
                     :key="i"
+                    :data-selector="`ADDRESS-SELECTOR-ADDRESS-${i}`"
                     class="selector__item"
-                    @click="selectAddress(item, i)"
+                    @click="selectAddress(item)"
                   >
                     {{ item.formatted }}
                   </div>
@@ -89,6 +100,7 @@
             <vue-phone-number-input
               id="phone1"
               v-model="firstPhone.fullPhone"
+              data-selector="MAIN-PHONE-FIELD"
               :default-country-code="firstPhone.codeRegion"
               :error="!isValidPhoneNumber"
               class="profile__phone-input"
@@ -100,6 +112,12 @@
               color="#ccc"
               @update="updateFirstPhone($event)"
             />
+            <span
+              v-if="!isValidPhoneNumber"
+              class="profile__error"
+            >
+              {{ $t('messages.invalidPhone') }}
+            </span>
           </div>
           <div class="profile__phone-input">
             <label
@@ -112,6 +130,8 @@
               v-if="userRole === UserRole.EMPLOYER"
               id="phone2"
               v-model="secondPhoneNumber.fullPhone"
+              data-selector="SECOND-PHONE-FIELD"
+              :error="!isValidSecondPhoneNumber"
               :default-country-code="secondPhoneNumber.codeRegion"
               error-color="#EB5757"
               clearable
@@ -120,7 +140,7 @@
               @update="updateSecondPhone($event)"
             />
             <span
-              v-if="!isValidPhoneNumber"
+              v-if="!isValidSecondPhoneNumber"
               class="profile__error"
             >
               {{ $t('messages.invalidPhone') }}
@@ -135,6 +155,7 @@
             v-for="company in companyInputs"
             :key="company.index"
             v-model="profile.additionalInfo[company.model]"
+            :data-selector="company.model"
             :rules="company.rules"
             :placeholder="$t(company.placeholder)"
             mode="icon"
@@ -155,6 +176,7 @@
             id="textarea"
             v-model="profile.additionalInfo.description"
             :placeholder="$t('settings.userDesc')"
+            data-selector="DESCRIPTION-FIELD"
             class="profile__description-textarea"
             :class="{ 'profile__description-textarea_error': errors[0] }"
           />
@@ -165,11 +187,15 @@
       </div>
       <div
         v-show="userRole === UserRole.WORKER"
+        data-selector="PROFILE-EDUCATION-&-WORK-EXP"
         class="profile__knowledge"
       >
-        <div class="profile__knowledge-container">
+        <div
+          data-selector="PROFILE-EDUCATION"
+          class="profile__knowledge-container"
+        >
           <div class="profile__knowledge-title">
-            {{ $t("settings.educations") }}
+            {{ $t("meta.educations") }}
           </div>
           <div
             v-if="getEducation"
@@ -192,13 +218,17 @@
               :item="newEducation"
               :is-adding="true"
               :placeholder="$t('settings.education.educationalInstitution')"
+              :data-selector="`ACTION-BTN-ADD-EDUCATION-${newEducation.place}`"
               @click="addNewKnowledge(profile.additionalInfo.educations, 'newEducation', 'education', 'education')"
               @blur="clearError(newEducation ? newEducation
                 : profile.additionalInfo.educations[profile.additionalInfo.educations.length - 1], 'education')"
             />
           </ValidationProvider>
         </div>
-        <div class="profile__knowledge-container">
+        <div
+          data-selector="PROFILE-WORK-EXP"
+          class="profile__knowledge-container"
+        >
           <div class="profile__knowledge-title">
             {{ $t("settings.workExp") }}
           </div>
@@ -207,11 +237,12 @@
             class="profile__knowledge-added"
           >
             <add-form
-              v-for="(work, index) in profile.additionalInfo.workExperiences"
+              v-for="(work, i) in profile.additionalInfo.workExperiences"
               :key="work.id"
               :item="work"
+              :data-selector="`ACTION-BTN-DELETE-WORK-EXP-${i}`"
               :is-adding="false"
-              @click="deleteKnowledge(profile.additionalInfo.workExperiences, index)"
+              @click="deleteKnowledge(profile.additionalInfo.workExperiences, i)"
             />
           </div>
           <ValidationProvider
@@ -223,6 +254,7 @@
               :item="newWorkExp"
               :is-adding="true"
               :placeholder="$t('settings.workExps.companyName')"
+              :data-selector="`ACTION-BTN-ADD-WORK-EXP-${newWorkExp.place}`"
               @click="addNewKnowledge(profile.additionalInfo.workExperiences, 'newWorkExp', 'work', 'work')"
               @blur="clearError(newWorkExp ? newWorkExp
                 : profile.additionalInfo.workExperiences[profile.additionalInfo.workExperiences.length - 1], 'work')"
@@ -230,11 +262,15 @@
           </ValidationProvider>
         </div>
       </div>
-      <div class="profile__socials">
+      <div
+        class="profile__socials"
+        data-selector="SOCIALS"
+      >
         <base-field
           v-for="social in socials"
           :key="social.index"
           v-model="profile.additionalInfo.socialNetwork[social.model]"
+          :data-selector="social.model"
           :rules="social.rules"
           :placeholder="$t(social.placeholder)"
           mode="icon"
@@ -251,9 +287,10 @@
       >
         <base-btn
           class="profile__btn"
+          data-selector="SAVE-CHANGES"
           @click="$emit('click')"
         >
-          {{ $t("settings.save") }}
+          {{ $t("meta.btns.save") }}
         </base-btn>
         <span v-if="validationError">
           {{ $t('messages.formError') }}
@@ -267,13 +304,13 @@
 import { GeoCode } from 'geo-coder';
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import Verified from '~/components/app/pages/settings/Verified.vue';
+import StatusKYC from './StatusKYC.vue';
 import AddForm from './AddForm.vue';
 import { UserRole } from '~/utils/enums';
 
 export default {
   name: 'SettingsProfile',
-  components: { Verified, AddForm },
+  components: { StatusKYC, AddForm },
   directives: {
     ClickOutside,
   },
@@ -294,6 +331,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isValidSecondPhoneNumber: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -311,7 +352,7 @@ export default {
           model: 'firstName',
           rules: 'required||max:50',
           placeholder: 'settings.nameInput',
-          name: 'settings.firstName',
+          name: 'meta.firstNameSmall',
           icon: 'icon-user',
           isDisabled: false,
         },
@@ -319,15 +360,15 @@ export default {
           model: 'lastName',
           rules: 'required||max:50',
           placeholder: 'settings.lastNameInput',
-          name: 'settings.lastName',
+          name: 'meta.lastNameSmall',
           icon: 'icon-user',
           isDisabled: false,
         },
         {
           model: 'email',
-          name: 'placeholders.email',
+          name: 'meta.placeholders.email',
           rules: 'max:100||email',
-          placeholder: 'placeholders.mail',
+          placeholder: 'meta.placeholders.mail',
           icon: 'icon-mail',
           isDisabled: true,
         },
@@ -401,22 +442,27 @@ export default {
     getWorkExp() {
       return this.profile.additionalInfo.workExperiences.length !== 0;
     },
+    profileSecondPhone() {
+      const { secondMobileNumber } = this.profile.additionalInfo;
+      return {
+        codeRegion: secondMobileNumber?.codeRegion,
+        phone: secondMobileNumber?.phone,
+        fullPhone: secondMobileNumber?.fullPhone,
+      };
+    },
+    profileFirstPhone() {
+      const { firstPhone } = this.profile;
+      return {
+        codeRegion: firstPhone?.codeRegion,
+        phone: firstPhone?.phone,
+        fullPhone: firstPhone?.fullPhone,
+      };
+    },
   },
   watch: {
-    profile: {
-      deep: true,
-      handler() {
-        this.secondPhoneNumber = {
-          codeRegion: this.profile?.additionalInfo?.secondMobileNumber?.codeRegion,
-          phone: this.profile?.additionalInfo?.secondMobileNumber?.phone,
-          fullPhone: this.profile?.additionalInfo?.secondMobileNumber?.fullPhone,
-        };
-        this.firstPhone = {
-          codeRegion: this.profile.firstPhone?.codeRegion,
-          phone: this.profile.firstPhone?.phone,
-          fullPhone: this.profile.firstPhone?.fullPhone,
-        };
-      },
+    profile() {
+      this.secondPhoneNumber = this.profileSecondPhone;
+      this.firstPhone = this.profileFirstPhone;
     },
   },
   mounted() {
@@ -461,32 +507,19 @@ export default {
     },
 
     // GEOPOSITION METHODS
-    selectAddress(address, i) {
-      this.selectedAddressIndex = i;
-      this.profile.additionalInfo.address = address.formatted;
+    selectAddress(address) {
+      this.profile.locationFull.locationPlaceName = address.formatted;
       this.addresses = [];
-      this.$emit('updateCoordinates', this.coordinates);
+      this.$emit('updateFullAddress', address);
     },
-    async getAddressInfo(address) {
+    async getAddressInfo(keyword) {
       try {
-        if (address.length) {
-          this.addresses = await this.geoCode.geolookup(address);
-          if (this.selectedAddressIndex) {
-            this.coordinates = {
-              lng: this.addresses[this.selectedAddressIndex].lng,
-              lat: this.addresses[this.selectedAddressIndex].lat,
-              address: this.addresses[this.selectedAddressIndex].formatted,
-            };
-          } else {
-            this.coordinates = { lng: this.addresses[0].lng, lat: this.addresses[0].lat, address: this.addresses[0].formatted };
-          }
+        if (keyword.length) {
+          this.addresses = await this.geoCode.geolookup(keyword);
         } else this.addresses = [];
       } catch (e) {
         this.addresses = [];
         console.error('Geo look up is failed', e);
-        await this.$store.dispatch('main/showToast', {
-          text: 'Address is not correct',
-        });
       }
     },
     hideSearchDD() {
@@ -579,15 +612,6 @@ export default {
   &__status {
     grid-column-start: 1;
     grid-column-end: 3;
-    max-width: 159px;
-    padding: 8px 13px;
-    display: flex;
-    background: $blue;
-    color: $white;
-    border-radius: 36px;
-    max-height: 34px;
-    justify-content: center;
-    align-items: center;
     margin-bottom: 10px;
   }
   &__row-data {
@@ -623,7 +647,7 @@ export default {
     }
   }
   &__error {
-    color: #bb5151;
+    color: $errorText;
     font-size: 12px;
     min-height: 23px;
   }
@@ -641,7 +665,7 @@ export default {
     justify-content: flex-end;
     align-items: flex-end;
     span {
-      color: #bb5151;
+      color: $errorText;
       font-size: 14px;
       min-height: 23px;
       width: 250px;
@@ -652,12 +676,29 @@ export default {
     max-width: 250px;
   }
   .selector {
+    @include box;
+    width: 100%;
+    z-index: 140;
     &__items {
-      padding: 10px;
-      background-color: $black0;
-      border-radius: 5px;
-      border: 1px solid $blue;
+      background: #FFFFFF;
+      display: grid;
+      grid-template-columns: 1fr;
+      width: 100%;
+    }
+
+    &__item {
+      @include text-simple;
+      padding: 15px 20px;
+      background: #FFFFFF;
+      font-weight: 500;
+      font-size: 16px;
+      color: $black800;
       cursor: pointer;
+      transition: .3s;
+
+      &:hover {
+        background: $black0;
+      }
     }
   }
 }

@@ -21,22 +21,21 @@ export default async function ({
     if (access || refresh) {
       store.commit('user/setTokens', payload);
     }
-    if (!access || !refresh || !app.$cookies.get('userLogin')) {
-      await store.dispatch('user/logout');
+    if (!access || !app.$cookies.get('userLogin')) {
+      await store.dispatch('user/logout', false);
       return redirect(Path.SIGN_IN);
     }
-    if (userData.id === '') {
-      await store.dispatch('user/getUserData');
-      await store.dispatch('user/getStatistic');
-      await store.dispatch('user/getNotifications');
+    if (!userData.id && +userStatus === UserStatuses.Confirmed) {
+      await store.dispatch('user/getMainData');
     }
-    if (userStatus === UserStatuses.NeedSetRole && route.path !== Path.ROLE) {
+    if ((+userStatus === UserStatuses.NeedSetRole || !store.getters['user/getUserWalletAddress']) && route.path !== Path.ROLE) {
       return redirect(Path.ROLE);
     }
+
     return true;
   } catch (e) {
     console.error(e);
-    await store.dispatch('user/logout');
-    return redirect('/sign-in');
+    await store.dispatch('user/logout', false);
+    return redirect(Path.SIGN_IN);
   }
 }

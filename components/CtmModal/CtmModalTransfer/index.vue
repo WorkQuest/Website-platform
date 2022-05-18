@@ -1,55 +1,62 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.sendTo')"
+    :title="$tc('modals.titles.sendTo')"
   >
+    <!--    TODO: Зарефакторить-->
     <div class="ctm-modal__content">
       <div class="ctm-modal__content-field">
         <base-field
           id="from"
           v-model="date"
-          :label="$t('modals.fromAddress')"
-          :placeholder="$t('modals.address')"
+          data-selector="FROM"
+          :label="$tc('meta.fromBig')"
+          :placeholder="$t('meta.addressBig')"
         />
       </div>
       <div class="ctm-modal__content-field">
         <base-field
           id="to"
           v-model="date"
-          :label="$t('modals.toAddress')"
-          :placeholder="$t('modals.address')"
+          data-selector="TO"
+          :label="$tc('meta.toBig')"
+          :placeholder="$t('meta.addressBig')"
         />
       </div>
       <base-dd
         id="value_dd"
         type="gray"
-        :label="$t('modals.amount')"
+        data-selector="AMOUNT"
+        :label="$tc('modals.amount')"
         :items="items"
       />
       <div class="ctm-modal__content-field">
         <base-field
           id="cardNumber"
           v-model="cardNumber"
-          :label="$t('modals.amount')"
-          :placeholder="'0000 0000 0000 0000'"
+          :label="$tc('modals.amount')"
+          data-selector="CARD-NUMBER"
+          placeholder="0000 0000 0000 0000"
         />
       </div>
       <div class="btn__container">
         <div class="btn__wrapper">
           <base-btn
             class="message__action"
+            data-selector="CONFIRM"
             @click="showTransactionSendModal()"
           >
-            {{ $t('meta.confirm') }}
+            {{ $t('meta.btns.confirm') }}
           </base-btn>
         </div>
         <div class="btn__wrapper">
           <base-btn
-            :mode="'outline'"
+            mode="outline"
+            data-selector="CANCEL"
             class="message__action"
-            @click="hide()"
+            @click="CloseModal"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
         </div>
       </div>
@@ -77,9 +84,6 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     showTransactionSendModal() {
       this.ShowModal({
         key: modals.transactionSend,

@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="stake"
-    :title="$t('mining.stake')"
+    :title="$tc('modals.titles.stake')"
   >
     <validation-observer
       v-slot="{handleSubmit, valid}"
@@ -12,16 +12,18 @@
       <base-field
         v-model="amount"
         validation-mode="aggressive"
-        :placeholder="1000"
+        placeholder="1000"
+        data-selector="AMOUNT"
         class="content__field"
         type="number"
-        :label="$t('modals.amount')"
-        :name="$t('modals.amount')"
+        :label="$tc('modals.amount')"
+        :name="$tc('modals.amount')"
         :rules="`required|decimal|decimalPlaces:18|is_not:0|max_value:${stakeAmountLimit}|min_value:${minStakeAmount}`"
       >
         <template v-slot:right-absolute>
           <base-btn
             mode="max"
+            data-selector="MAX"
             class="content__max-button"
             @click="maxAmount()"
           >
@@ -43,16 +45,18 @@
       </div>
       <div class="content__actions">
         <base-btn
-          :mode="'outline'"
-          @click="hide()"
+          mode="outline"
+          data-selector="CANCEL"
+          @click="CloseModal"
         >
-          {{ $t('meta.cancel') }}
+          {{ $t('meta.btns.cancel') }}
         </base-btn>
         <base-btn
           :disabled="!valid || !canSubmit"
+          data-selector="SUBMIT"
           @click="handleSubmit(onSubmit)"
         >
-          {{ $t('meta.submit') }}
+          {{ $t('meta.btns.submit') }}
         </base-btn>
       </div>
     </validation-observer>
@@ -85,12 +89,24 @@ export default {
       stakingPoolsData: 'wallet/getStakingPoolsData',
       stakingUserData: 'wallet/getStakingUserData',
     }),
-    userStakeBalance() { return this.balanceData[TokenSymbols.WUSD].fullBalance; },
-    isStakingStarted() { return this.userInfo.isStakingStarted; },
-    stakingType() { return this.options.stakingType; },
-    userInfo() { return this.stakingUserData[this.stakingType]; },
-    poolData() { return this.stakingPoolsData[this.stakingType]; },
-    minStakeAmount() { return this.stakingPoolsData[this.stakingType].fullMinStake; },
+    userStakeBalance() {
+      return this.balanceData[TokenSymbols.WUSD].fullBalance;
+    },
+    isStakingStarted() {
+      return this.userInfo.isStakingStarted;
+    },
+    stakingType() {
+      return this.options.stakingType;
+    },
+    userInfo() {
+      return this.stakingUserData[this.stakingType];
+    },
+    poolData() {
+      return this.stakingPoolsData[this.stakingType];
+    },
+    minStakeAmount() {
+      return this.stakingPoolsData[this.stakingType].fullMinStake;
+    },
     stakeAmountLimit() {
       const maxStake = this.poolData.fullMaxStake;
       let maxBalance = this.balanceData[this.stakingType].fullBalance;
@@ -101,9 +117,9 @@ export default {
       }
       if (!this.isStakingStarted) return new BigNumber(maxBalance).isLessThan(maxStake) ? maxBalance : maxStake;
       const possible = new BigNumber(maxStake).minus(this.userInfo.fullStaked);
-      if (new BigNumber(possible).isGreaterThan(maxBalance)) {
-        return maxBalance;
-      }
+
+      if (new BigNumber(possible).isGreaterThan(maxBalance)) return maxBalance;
+
       return possible.isLessThan(0) ? possible.toString() : '0';
     },
   },
@@ -112,8 +128,9 @@ export default {
     await this.updateMaxFee();
   },
   methods: {
-    hide() { this.CloseModal(); },
-    maxAmount() { this.amount = this.stakeAmountLimit; },
+    maxAmount() {
+      this.amount = this.stakeAmountLimit;
+    },
     async updateMaxFee() {
       if (this.stakingType !== StakingTypes.WUSD) {
         this.feeForMaxWUSDValue = 0;
@@ -144,8 +161,7 @@ export default {
       const { stakingType, amount, isStakingStarted } = this;
       const isNative = stakingType === StakingTypes.WUSD;
       const days = this.stakeDays[this.daysValue];
-
-      this.hide();
+      this.CloseModal();
 
       // Staking WQT
       if (!isNative) {
@@ -193,10 +209,10 @@ export default {
       }
       this.ShowModal({
         key: modals.transactionReceipt,
-        title: this.$t('mining.approve'),
+        title: this.$t('meta.approve'),
         fields: {
-          from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-          to: { name: this.$t('modals.toAddress'), value: poolAddress },
+          from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+          to: { name: this.$t('meta.toBig'), value: poolAddress },
           fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
         },
         isShowSuccess: false,
@@ -207,11 +223,11 @@ export default {
             amount: fullMaxStake,
           });
           if (!successApprove) {
-            this.ShowToast(this.$t('modals.failed'), this.$t('mining.approve'));
+            this.ShowToast(this.$t('modals.failed'), this.$t('meta.approve'));
             this.SetLoader(false);
             return error();
           }
-          await this.$store.dispatch('main/showToast', { title: this.$t('mining.approve'), text: this.$t('modals.success') });
+          await this.$store.dispatch('main/showToast', { title: this.$t('meta.approve'), text: this.$t('meta.success') });
           return success();
         },
         callback: async () => await this.stake(stakeTokenAddress, poolAddress, amount, stakingType, days, isStakingStarted),
@@ -223,19 +239,17 @@ export default {
       this.SetLoader(false);
       if (!txFee.ok) {
         if (txFee.msg.includes('You cannot stake tokens yet')) {
-          this.ShowToast(this.$t('staking.cannotStakeYet'), this.$t('mining.stake'));
-        } else {
-          this.ShowToast(this.$t('modals.failed'), this.$t('mining.stake'));
-        }
+          this.ShowToast(this.$t('staking.cannotStakeYet'), this.$t('meta.btns.stake'));
+        } else this.ShowToast(this.$t('modals.failed'), this.$t('meta.btns.stake'));
         return;
       }
 
       this.ShowModal({
         key: modals.transactionReceipt,
-        title: `${this.$t('staking.stake')} ${stakingType}`,
+        title: `${this.$t('meta.btns.stake')} ${stakingType}`,
         fields: {
-          from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-          to: { name: this.$t('modals.toAddress'), value: poolAddress },
+          from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+          to: { name: this.$t('meta.toBig'), value: poolAddress },
           days: days && !isStakingStarted ? { name: this.$t('staking.stakeDays'), value: days } : null,
           amount: { name: this.$t('modals.amount'), value: amount, symbol: stakingType },
           fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
@@ -245,7 +259,7 @@ export default {
             stakingType, amount, poolAddress, duration: days,
           });
           if (!res.ok) {
-            await this.$store.dispatch('main/showToast', { title: this.$t('staking.stake'), text: this.$t('modals.failed') });
+            await this.$store.dispatch('main/showToast', { title: this.$t('meta.btns.stake'), text: this.$t('modals.failed') });
           }
           return res;
         },

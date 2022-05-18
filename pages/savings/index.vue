@@ -10,77 +10,75 @@
         </div>
       </div>
       <div class="saving-page__content">
-        <div class="info-block__cards">
-          <button
-            v-for="(item, i) in cards"
-            :key="i"
-            :class="[{'info-block__card' : selCardID !== i},
-                     {'info-block__card_sel' : selCardID === i}]"
-            @click="handleClickCard(i)"
-          >
-            <div class="info-block__circle" />
-            <div class="info-block__subtitle">
-              {{ item.text }}
-            </div>
-          </button>
-        </div>
-        <div
-          v-if="selCardID >= 0"
-          class="info-block"
-        >
+        <div class="info-block">
           <div class="info-block__name_bold">
             {{ $t("saving.conditions") }}
           </div>
-          <div class="info-block__triple">
-            <div class="info-block__small_inline">
+          <div class="info-block__double">
+            <div class="info-block__send-block">
+              <base-field
+                v-model="address"
+                data-selector="ADDRESS"
+                :label="$t('modals.lockedSavings')"
+              />
+              <base-dd
+                v-model="date"
+                class="grid__drop"
+                type="gray"
+                data-selector="DATE-DD"
+                :label="$t('modals.durationDays')"
+                :items="dates"
+              />
+              <base-btn
+                class="btn_bl"
+                @click="openOpenADepositModal()"
+              >
+                {{ $t("saving.openADeposit") }}
+              </base-btn>
+            </div>
+            <div class="info-block__data">
               <div class="text">
-                {{ $t("saving.maxMinSum") }}
+                {{ $t("saving.annualizedInterestRate") }}
               </div>
-              <div class="text_blue">
-                {{ $t("saving.guestPlug") }}
+              <div class="info-block__small info-block__small_top">
+                <div
+                  v-for="(item, i) in interestRateTop"
+                  :key="i"
+                  class="text-block"
+                >
+                  <template v-if="item.perc !== 'line'">
+                    <div class="text_blue">
+                      {{ item.perc }}
+                    </div>
+                    <div class="text_small">
+                      {{ item.date }}
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div class="info-block__line" />
+                  </template>
+                </div>
+              </div>
+              <div class="info-block__small info-block__small_bottom">
+                <div
+                  v-for="(item, i) in interestRateBottom"
+                  :key="i"
+                  class="text-block"
+                >
+                  <template v-if="item.perc !== 'line'">
+                    <div class="text_blue">
+                      {{ item.perc }}
+                    </div>
+                    <div class="text_small">
+                      {{ item.date }}
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div class="info-block__line" />
+                  </template>
+                </div>
               </div>
             </div>
-            <div class="info-block__small_inline">
-              <div class="text">
-                {{ $t("saving.depositsAndWithdrawal") }}
-              </div>
-              <div class="text_blue">
-                {{ $t("saving.possiblePlug") }}
-              </div>
-            </div>
-            <div class="info-block__small_inline">
-              <div class="text">
-                {{ $t("saving.term") }}
-              </div>
-              <div class="text_blue">
-                {{ $tc('saving.yearPlug', 1) }}
-              </div>
-            </div>
-          </div>
-          <div class="info-block__small_line">
-            <div class="text">
-              {{ $t("saving.annualizedInterestRate") }}
-            </div>
-            <div
-              v-for="(item, i) in interestRate"
-              :key="i"
-              class="text-block"
-            >
-              <div class="text_blue">
-                {{ item.perc }}
-              </div>
-              <div class="text_small">
-                {{ item.date }}
-              </div>
-            </div>
-          </div>
-          <div class="btn-group__third">
-            <base-btn
-              class="btn_bl"
-              @click="openOpenADepositModal()"
-            >
-              {{ $t("saving.openADeposit") }}
-            </base-btn>
           </div>
         </div>
         <div
@@ -88,7 +86,7 @@
           class="info-block"
         >
           <div class="info-block__name_bold">
-            {{ $t("saving.faq") }}
+            {{ $t("meta.faq") }}
           </div>
           <div class="info-block__faqs">
             <button
@@ -120,7 +118,7 @@
           class="info-block"
         >
           <div class="info-block__name_bold">
-            {{ $t("saving.information") }}
+            {{ $t("meta.information") }}
           </div>
           <div class="info-block__documents">
             <div
@@ -142,7 +140,7 @@
                 </div>
               </div>
               <button class="btn__doc">
-                {{ $t('pension.download') }}
+                {{ $t('meta.btns.download') }}
                 <img
                   class="download"
                   src="~/assets/img/ui/download.svg"
@@ -167,9 +165,21 @@ export default {
     return {
       selCardID: -1,
       indexFAQ: [],
+      date: 0,
+      windowSize: window.innerWidth,
+      address: '',
     };
   },
   computed: {
+    dates() {
+      return [
+        this.$tc('meta.units.days', this.DeclOfNum(7), { count: 7 }),
+        this.$tc('meta.units.days', this.DeclOfNum(14), { count: 14 }),
+        this.$tc('meta.units.days', this.DeclOfNum(30), { count: 30 }),
+        this.$tc('meta.units.days', this.DeclOfNum(90), { count: 90 }),
+        this.$tc('meta.units.days', this.DeclOfNum(180), { count: 180 }),
+      ];
+    },
     FAQs() {
       return [
         {
@@ -201,23 +211,23 @@ export default {
     cards() {
       return [
         {
-          text: this.$t('saving.card1'),
+          text: this.$tc('saving.card', { rate: 4.51, duration: 7 }),
           sel: false,
         },
         {
-          text: this.$t('saving.card2'),
+          text: this.$t('saving.card', { rate: 4.67, duration: 14 }),
           sel: false,
         },
         {
-          text: this.$t('saving.card3'),
+          text: this.$t('saving.card', { rate: 4.82, duration: 30 }),
           sel: false,
         },
         {
-          text: this.$t('saving.card4'),
+          text: this.$t('saving.card', { rate: 5.11, duration: 90 }),
           sel: false,
         },
         {
-          text: this.$t('saving.card5'),
+          text: this.$t('saving.card', { rate: 5.23, duration: 180 }),
           sel: false,
         },
       ];
@@ -225,50 +235,99 @@ export default {
     documents() {
       return [
         {
-          name: this.$t('saving.docName'),
-          size: this.$tc('saving.mb', '1.2'),
+          name: 'Some_document.pdf',
+          size: this.$tc('meta.units.mb', 1.2),
           url: '',
         },
         {
-          name: this.$t('saving.docName'),
-          size: this.$tc('saving.mb', '1.2'),
+          name: 'Some_document.pdf',
+          size: this.$tc('meta.units.mb', 1.2),
           url: '',
         },
         {
-          name: this.$t('saving.docName'),
-          size: this.$tc('saving.mb', '1.2'),
+          name: 'Some_document.pdf',
+          size: this.$tc('meta.units.mb', 1.2),
           url: '',
         },
       ];
     },
-    interestRate() {
+    interestRateTop() {
+      if (this.windowSize < 575) {
+        return [
+          {
+            perc: this.$tc('meta.units.percentsCount', 5.31),
+            date: this.$tc('meta.units.days', this.DeclOfNum(7), { count: 7 }),
+          },
+          {
+            perc: this.$tc('meta.units.percentsCount', 5.48),
+            date: this.$tc('meta.units.days', this.DeclOfNum(14), { count: 14 }),
+          },
+          {
+            perc: this.$tc('meta.units.percentsCount', 5.66),
+            date: this.$tc('meta.units.days', this.DeclOfNum(30), { count: 30 }),
+          },
+        ];
+      }
       return [
         {
-          perc: this.$tc('saving.percents', '5.31'),
-          date: this.$tc('saving.days', 7),
+          perc: this.$tc('meta.units.percentsCount', 5.31),
+          date: this.$tc('meta.units.days', this.DeclOfNum(7), { count: 7 }),
         },
         {
-          perc: this.$tc('saving.percents', '5.48'),
-          date: this.$tc('saving.days', 14),
+          perc: 'line',
         },
         {
-          perc: this.$tc('saving.percents', '5.66'),
-          date: this.$tc('saving.days', 30),
+          perc: this.$tc('meta.units.percentsCount', 5.48),
+          date: this.$tc('meta.units.days', this.DeclOfNum(14), { count: 14 }),
         },
         {
-          perc: this.$tc('saving.percents', 6),
-          date: this.$tc('saving.days', 90),
+          perc: 'line',
         },
         {
-          perc: this.$tc('saving.percents', '6,5'),
-          date: this.$tc('saving.days', 180),
+          perc: this.$tc('meta.units.percentsCount', 5.66),
+          date: this.$tc('meta.units.days', this.DeclOfNum(30), { count: 30 }),
+        },
+      ];
+    },
+    interestRateBottom() {
+      if (this.windowSize < 575) {
+        return [
+          {
+            perc: this.$tc('meta.units.percentsCount', 6),
+            date: this.$tc('meta.units.days', 90),
+          },
+          {
+            perc: this.$tc('meta.units.percentsCount', 6.5),
+            date: this.$tc('meta.units.days', this.DeclOfNum(180), { count: 180 }),
+          },
+        ];
+      }
+      return [
+        {
+          perc: this.$tc('meta.units.percentsCount', 6),
+          date: this.$tc('meta.units.days', this.DeclOfNum(90), { count: 90 }),
+        },
+        {
+          perc: 'line',
+        },
+        {
+          perc: this.$tc('meta.units.percentsCount', 6.5),
+          date: this.$tc('meta.units.days', this.DeclOfNum(180), { count: 180 }),
         },
       ];
     },
   },
+  beforeMount() {
+    window.addEventListener('resize', () => {
+      this.windowSize = window.innerWidth;
+    });
+  },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', () => false);
   },
   methods: {
     handleClickFAQ(index) {
@@ -279,8 +338,30 @@ export default {
       }
     },
     openOpenADepositModal() {
+      const receiptData = [
+        {
+          title: this.$t('modals.currencyDetails'),
+          subtitle: this.$t('meta.coins.eth'),
+        },
+        {
+          title: this.$t('modals.depositing'),
+          subtitle: this.$tc('meta.coins.count.ETHCount', 1),
+        },
+        {
+          title: this.$t('modals.generatingDetails'),
+          subtitle: this.$tc('meta.coins.count.WUSDCount', 1000),
+        },
+      ];
+      const dataForStatusModal = {
+        img: require('~/assets/img/ui/transactionSend.svg'),
+        title: this.$t('modals.depositIsOpened'),
+        subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam',
+        path: 'savings/1',
+      };
       this.ShowModal({
-        key: modals.openADeposit,
+        key: modals.confirmDetails,
+        receiptData,
+        dataForStatusModal,
       });
     },
     handleClickCard(i) {
@@ -385,6 +466,7 @@ export default {
         background-color: #0083C7;
         border: unset;
         color: #fff;
+        margin-top: 20px;
 
         &:hover {
           background-color: #103d7c;
@@ -465,6 +547,22 @@ export default {
       background-color: #fff;
       border-radius: 6px;
 
+      &__line {
+        width: 1px;
+        height: 51px;
+        background-color: $black100;
+      }
+
+      &__send-block {
+        display: grid;
+        grid-gap: 10px;
+      }
+      &__data {
+        display: grid;
+        background-color: $black0;
+        padding: 20px;
+        border-radius: 6px;
+      }
       &__documents {
         padding: 0 20px 20px 20px;
         display: grid;
@@ -514,55 +612,33 @@ export default {
       &__faq {
         border-radius: 5px;
         padding: 20px 60px 20px 20px;
-        background-color: #F7F8FA;
+        background-color: $black0;
         text-align: left;
         position: relative;
         transition: 300ms;
       }
 
-      &__triple {
+      &__double {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-        padding: 0 20px 20px 20px;
+        grid-template-columns: 35% auto;
+        grid-gap: 20px;
+        padding: 20px;
       }
 
       &__small {
-        background-color: #F7F8FA;
         display: grid;
-        grid-template-rows: repeat(2, 1fr);
-        width: 115px;
-        height: 66px;
         box-sizing: border-box;
-        border-radius: 6px;
-        margin: 20px 0 0 20px;
         padding-left: 10px;
+        justify-items: center;
         align-self: baseline;
+        height: 50px;
 
-        &_line {
-          background-color: #F7F8FA;
-          display: grid;
-          border-radius: 6px;
-          box-sizing: border-box;
-          padding: 20px;
-          margin: 0 20px 20px 20px;
-          height: 90px;
-          grid-template-columns: 5fr repeat(5, 2fr);
-
-          .text-block {
-            padding-left: 20px;
-            border-left: 1px solid #E9EDF2;
-          }
+        &_top {
+          grid-template-columns: repeat(5, 1fr);
         }
 
-        &_inline {
-          display: grid;
-          grid-template-rows: repeat(2, 1fr);
-          background-color: #F7F8FA;
-          height: 104px;
-          padding: 20px;
-          gap: 10px;
-          border-radius: 6px;
+        &_bottom {
+          grid-template-columns: repeat(3, 1fr);
         }
       }
 
@@ -686,29 +762,9 @@ export default {
         &__cards {
           grid-template-columns: repeat(2, 1fr);
         }
-        &__triple {
-          grid-template-columns: repeat(2, 1fr);
-        }
-        &__small
-        {
-          &_line {
-            height: auto;
-            grid-template-rows: repeat(2, auto);
-            grid-template-columns: repeat(5, 1fr);
-            grid-row-gap: 10px;
-
-            .text-block {
-              &:nth-child(2) {
-                padding: 0;
-                border: 0;
-              }
-            }
-
-            .text {
-              grid-column: 1/7;
-              grid-row-start: 1;
-            }
-          }
+        &__double {
+          grid-template-rows: repeat(2, auto);
+          grid-template-columns: unset;
         }
       }
       .btn-group__third {
@@ -737,23 +793,12 @@ export default {
           grid-template-columns: unset;
           grid-template-rows: repeat(3, 1fr);
         }
-        &__small
-        {
-          &_line {
+        &__small {
+          &_top {
             grid-template-columns: repeat(3, 1fr);
-
-            .text-block {
-              &:nth-child(5) {
-                grid-row-start: 3;
-                grid-column: 1/2;
-                padding: 0;
-                border: 0;
-              }
-              &:last-child {
-                grid-row-start: 3;
-                grid-column: 2/3;
-              }
-            }
+          }
+          &_bottom {
+            grid-template-columns: repeat(2, 1fr);
           }
         }
         &__documents {

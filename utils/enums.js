@@ -1,4 +1,6 @@
 // eslint-disable-next-line import/prefer-default-export
+export const isProd = process.env.PROD === 'true';
+
 export const ChainsId = {
   ETH_MAIN: '0x1',
   ETH_TEST: '0x4',
@@ -6,7 +8,12 @@ export const ChainsId = {
   BSC_TEST: '0x61',
   MATIC_MAIN: '0x13881',
   MUMBAI_TEST: '0x89',
-  WUSD_TEST: '0x1346618',
+  WORKNET_TEST: '0x13488D0',
+};
+
+export const QuestModeReview = {
+  QUEST_LIST: 'QuestList',
+  QUEST_SINGLE: 'QuestSingle',
 };
 
 export const ChainsIdByChainNumber = {
@@ -14,64 +21,23 @@ export const ChainsIdByChainNumber = {
   4: '0x4',
   56: '0x38',
   97: '0x61',
-  20211224: '0x1346618',
-};
-
-export const NativeTokenSymbolByChainId = {
-  [+ChainsId.ETH_MAIN]: 'ETH',
-  [+ChainsId.ETH_TEST]: 'ETH',
-  [+ChainsId.BSC_MAIN]: 'BNB',
-  [+ChainsId.BSC_TEST]: 'BNB',
+  20220112: '0x13488D0',
 };
 
 export const Chains = {
   ETHEREUM: 'ETH',
   BINANCE: 'BSC',
-  BNB: 'BNB', // Same as bsc for bridge
-  WUSD: 'WUSD',
+  WORKNET: 'WORKNET',
 };
 
 export const StakingTypes = {
   WQT: 'WQT',
   WUSD: 'WUSD',
-  MINING: 'MINING',
-  CROSS_CHAIN: 'CROSS_CHAIN',
 };
 
-export const QuestStatuses = {
-  Rejected: -1,
-  Created: 0,
-  Active: 1,
-  Closed: 2,
-  Dispute: 3,
-  WaitWorker: 4,
-  WaitConfirm: 5,
-  Done: 6,
-};
+export const TwoFAStatuses = { DISABLED: 0, ENABLED: 1 };
 export const SumSubStatuses = { NOT_VERIFIED: 0, VERIFIED: 1 };
-export const InfoModeEmployer = {
-  Rejected: -1,
-  Created: 0,
-  Active: 1,
-  Closed: 2,
-  Dispute: 3,
-  WaitWorker: 4,
-  WaitConfirm: 5,
-  Done: 6,
-};
-export const InfoModeWorker = {
-  Created: 0,
-  ADChat: 1,
-  Active: 2,
-  Rejected: 3,
-  WaitWorker: 4,
-  WaitConfirm: 5,
-  Dispute: 7,
-  Closed: 8,
-  Done: 9,
-  Responded: 10,
-  Invited: 11,
-};
+
 export const DisputeStatues = {
   PENDING: 0,
   IN_PROGRESS: 1,
@@ -129,10 +95,13 @@ export const Filters = {
 };
 
 // Filters
-export const WorkplaceFilter = ['all', 'distant', 'office', 'both'];
-export const WorkplaceIndex = ['distant', 'office', 'both'];
-export const RatingFilter = ['', 'verified', 'reliable', 'topRanked'];
-export const TypeOfJobFilter = ['fullTime', 'partTime', 'fixedTerm'];
+export const WorkplaceIndex = ['Remote', 'InOffice', 'Hybrid'];
+export const PayPeriodsIndex = ['Hourly', 'Daily', 'Weekly', 'BiWeekly', 'SemiMonthly', 'Monthly', 'Quarterly', 'SemiAnnually', 'Annually', 'FixedPeriod', 'ByAgreement'];
+export const TypeOfJobs = ['FullTime', 'PartTime', 'FixedTerm', 'EmploymentContract', 'RemoteWork'];
+
+export const PayPeriodsFilter = ['all', 'Hourly', 'Daily', 'Weekly', 'BiWeekly', 'SemiMonthly', 'Monthly', 'Quarterly', 'SemiAnnually', 'Annually', 'FixedPeriod', 'ByAgreement'];
+export const WorkplaceFilter = ['all', 'Remote', 'InOffice', 'Hybrid'];
+export const TypeOfJobFilter = ['all', 'FullTime', 'PartTime', 'FixedTerm', 'EmploymentContract', 'RemoteWork'];
 export const PriorityFilter = [
   { key: 'all', value: 0 },
   { key: 'urgent', value: 3 },
@@ -140,11 +109,41 @@ export const PriorityFilter = [
   { key: 'fixedDelivery', value: 1 },
 ];
 
+export const Ratings = Object.freeze({
+  TOP_RANKED: 'topRanked',
+  RELIABLE: 'reliable',
+  VERIFIED: 'verified',
+  NO_STATUS: 'noStatus',
+  ALL_STATUSES: 'AllStatuses',
+});
+
+export const UserRating = Object.freeze({
+  8: Ratings.TOP_RANKED,
+  4: Ratings.RELIABLE,
+  2: Ratings.VERIFIED,
+  1: Ratings.NO_STATUS,
+  15: Ratings.ALL_STATUSES,
+});
+export const RatingFilter = [
+  { key: [Ratings.ALL_STATUSES], value: 15 },
+  { key: [Ratings.TOP_RANKED], value: 8 },
+  { key: [Ratings.RELIABLE], value: 4 },
+  { key: [Ratings.VERIFIED], value: 2 },
+  { key: [Ratings.NO_STATUS], value: 1 },
+];
+export const RatingStatus = {
+  NoStatus: 1,
+  Verified: 2,
+  Reliable: 4,
+  TopRanked: 8,
+  AllStatuses: 15,
+};
+
 export const MessageAction = {
   GROUP_CHAT_CREATE: 'groupChatCreate',
   NEW_MESSAGE: 'newMessage',
   MESSAGE_READ_BY_RECIPIENT: 'messageReadByRecipient',
-  GROUP_CHAT_ADD_USERS: 'groupChatAddUsers',
+  GROUP_CHAT_ADD_USERS: 'groupChatAddUser',
   GROUP_CHAT_LEAVE_USER: 'groupChatLeaveUser',
   GROUP_CHAT_DELETE_USER: 'groupChatDeleteUser',
   EMPLOYER_INVITE_ON_QUEST: 'employerInviteOnQuest',
@@ -152,25 +151,6 @@ export const MessageAction = {
   EMPLOYER_REJECT_RESPONSE_ON_QUEST: 'employerRejectResponseOnQuest',
   WORKER_REJECT_INVITE_ON_QUEST: 'workerRejectInviteOnQuest',
   WORKER_ACCEPT_INVITE_ON_QUEST: 'workerAcceptInviteOnQuest',
-};
-
-export const NotificationAction = {
-  QUEST_STARTED: 'questStarted',
-  WORKER_REJECTED_QUEST: 'workerRejectedQuest',
-  WORKER_ACCEPTED_QUEST: 'workerAcceptedQuest',
-  WORKER_COMPLETED_QUEST: 'workerCompletedQuest',
-  EMPLOYER_ACCEPTED_COMPLETED_QUEST: 'employerAcceptedCompletedQuest',
-  EMPLOYER_REJECTED_COMPLETED_QUEST: 'employerRejectedCompletedQuest',
-  WORKER_RESPONDED_TO_QUEST: 'workerRespondedToQuest',
-  EMPLOYER_INVITED_WORKER_TO_QUEST: 'employerInvitedWorkerToQuest',
-  WORKER_ACCEPTED_INVITATION_TO_QUEST: 'workerAcceptedInvitationToQuest',
-  WORKER_REJECTED_INVITATION_TO_QUEST: 'workerRejectedInvitationToQuest',
-  EMPLOYER_REJECTED_WORKERS_RESPONSE: 'employerRejectedWorkersResponse',
-  WAIT_WORKER: 'waitWorker',
-
-  USER_LEFT_REVIEW_ABOUT_QUEST: 'userLeftReviewAboutQuest',
-
-  OPEN_DISPUTE: 'openDispute',
 };
 
 export const ChatType = {
@@ -199,13 +179,13 @@ export const Path = {
   SIGN_UP: '/sign-up',
   MY_QUESTS: '/my',
   WALLET: '/wallet',
-  PENSION: '/pension',
   REFERRAL: '/referral',
   INSURING: '/insuring',
   SAVINGS: '/savings',
   CREDITING: '/crediting',
+  LENDING: '/lending',
   MINING: '/mining',
-  CROSSCHAIN: '/crosschain',
+  BRIDGE: '/bridge',
   SETTINGS: '/settings',
   DISPUTES: '/disputes',
   WORKERS: '/workers',
@@ -214,7 +194,18 @@ export const Path = {
   PROFILE: '/profile',
   ROLE: '/role',
   QUESTS: '/quests',
+  MESSAGES: '/messages',
   EDIT_QUEST: '/edit-quest',
+  COLLATERAL: '/collateral',
+  WIKI: '/wiki',
+  RAISED_VIEWS: '/raised-views',
+  NOTIFICATIONS: '/notifications',
+  RETIREMENT: '/retirement',
+  SUMSUB: '/sumsub',
+};
+
+export const PathDAO = {
+  DISCUSSIONS: '/discussions',
 };
 
 // WALLET
@@ -235,7 +226,41 @@ export const UserStatuses = Object.freeze({
 export const TokenSymbols = Object.freeze({
   WQT: 'WQT',
   WUSD: 'WUSD',
+  BNB: 'BNB',
+  ETH: 'ETH',
+  WBNB: 'WBNB',
+  WETH: 'WETH',
+  USDT: 'USDT',
 });
+
+// wallet balance
+export const WorknetTokenAddresses = Object.freeze([
+  process.env.WORKNET_WUSD_TOKEN,
+  process.env.WORKNET_WBNB_TOKEN,
+  process.env.WORKNET_WETH_TOKEN,
+  process.env.WORKNET_USDT_TOKEN,
+]);
+
+export const TokenSymbolByContract = Object.freeze({
+  [process.env.WORKNET_WUSD_TOKEN.toLowerCase()]: TokenSymbols.WUSD,
+  [process.env.WORKNET_WBNB_TOKEN.toLowerCase()]: TokenSymbols.BNB,
+  [process.env.WORKNET_WETH_TOKEN.toLowerCase()]: TokenSymbols.ETH,
+  [process.env.WORKNET_USDT_TOKEN.toLowerCase()]: TokenSymbols.USDT,
+});
+
+export const TokenMap = {
+  [TokenSymbols.BNB]: process.env.WORKNET_WBNB_TOKEN,
+  [TokenSymbols.ETH]: process.env.WORKNET_WETH_TOKEN,
+  [TokenSymbols.WUSD]: process.env.WORKNET_WUSD_TOKEN,
+  [TokenSymbols.USDT]: process.env.WORKNET_USDT_TOKEN,
+};
+
+export const WalletTables = Object.freeze({
+  TXS: 'TXS',
+  COLLATERAL: 'COLLATERAL',
+});
+
+export const DaoUrl = Object.freeze('https://dev-dao.workquest.co');
 
 export const ExplorerUrl = Object.freeze('https://dev-explorer.workquest.co');
 
@@ -270,8 +295,8 @@ export const NetworksData = {
       decimals: 18,
     },
   },
-  WUSD_TEST: {
-    chainId: '0x1346618',
+  WORKNET_TEST: {
+    chainId: '0x13488D0',
     chainName: 'WorkQuest DEV',
     rpcUrls: ['https://dev-node-nyc3.workquest.co'],
     nativeCurrency: {
@@ -280,4 +305,19 @@ export const NetworksData = {
       decimals: 18,
     },
   },
+};
+
+export const PensionHistoryMethods = Object.freeze({
+  Update: 'Update',
+  Withdraw: 'Withdraw',
+  Receive: 'Receive',
+});
+
+export const RaiseViewTariffPeriods = {
+  usersTariff: ['1', '7', '30'],
+  questTariff: ['1', '5', '7'],
+};
+export const RaiseViewStatus = {
+  0: true,
+  1: false,
 };
