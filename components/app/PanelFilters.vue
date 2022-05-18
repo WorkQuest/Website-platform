@@ -31,11 +31,21 @@
       data-selector="EMPLOYMENT"
     />
     <base-dd
+      v-if="userRole === UserRole.WORKER"
       v-model="selectedWorkplace"
       class="filters-panel__item"
       mode="blackFont"
       :items="workplaceItems"
       :placeholder="$t('quests.distantWork.title')"
+      data-selector="WORKPLACE"
+    />
+    <base-dd
+      v-else
+      v-model="selectPayPeriod"
+      class="filters-panel__item"
+      mode="blackFont"
+      :items="payPeriodItems"
+      :placeholder="$t('quests.payPeriods.title')"
       data-selector="WORKPLACE"
     />
     <base-btn
@@ -77,18 +87,19 @@ import {
   RatingFilter,
   PriorityFilter,
   WorkplaceFilter,
-  TypeOfJobFilter,
+  TypeOfJobFilter, PayPeriodsIndex, PayPeriodsFilter,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'FiltersPanel',
+  name: 'PanelFilters',
   data() {
     return {
       selectedRating: null,
       selectedPriority: null,
       selectedTypeOfJob: null,
       selectedWorkplace: null,
+      selectPayPeriod: null,
       selectedSort: 'desc',
     };
   },
@@ -114,20 +125,27 @@ export default {
       return PriorityFilter.map((item, i) => (i === 0 ? this.$t('meta.priority.all') : this.$t(`meta.priority.${item.key}`)));
     },
     typeOfJobItems() {
-      const items = [this.$t('quests.allVariants')];
-      TypeOfJobFilter.forEach((item) => { items.push(this.$t(`quests.employment.${item}`)); });
-      return items;
+      return TypeOfJobFilter.map((item, i) => (i === 0 ? this.$t('quests.allVariants') : this.$t(`quests.employment.${item}`)));
     },
-    workplaceItems() { return WorkplaceFilter.map((item) => this.$t(`workPlaces.${item}`)); },
+    workplaceItems() {
+      return WorkplaceFilter.map((item) => this.$t(`workPlaces.${item}`));
+    },
+    payPeriodItems() {
+      return PayPeriodsFilter.map((item, i) => (i === 0 ? this.$t('quests.allVariants')
+        : this.$t(`quests.payPeriods.${item}`)));
+    },
     prices() {
       const { from, to } = this.selectedPrice;
       if (from && to) return { title: `${from} - ${to}`, hasPrice: true };
       if (!from && to) return { title: `0 - ${to}`, hasPrice: true };
       if (from && !to) return { title: `> ${from}`, hasPrice: true };
-      return { title: this.$t('meta.price'), hasPrice: false };
+      return { title: this.$t(`meta.${this.userRole === UserRole.WORKER ? 'price' : 'costPerHour'}`), hasPrice: false };
     },
     isPriceModalShowed() {
       return this.isModalShowed && this.activeModalKey === modals.priceSearch;
+    },
+    isEmployer() {
+      return this.userRole === UserRole.EMPLOYER;
     },
   },
   watch: {
@@ -139,15 +157,18 @@ export default {
       this.$emit('sortPriority', index ? { 'priorities[0]': PriorityFilter[index].value } : {});
     },
     selectedTypeOfJob(index) {
-      this.$emit('sortTypeOfJob', index ? { 'employments[0]': TypeOfJobFilter[index] } : {});
+      this.$emit('sortTypeOfJob', index ? { 'typeOfEmployments[0]': TypeOfJobFilter[index] } : {});
     },
     selectedWorkplace(index) {
       this.$emit('sortWorkplace', index ? { 'workplaces[0]': WorkplaceFilter[index] } : {});
     },
+    selectPayPeriod(index) {
+      this.$emit('sortPayPeriod', index ? { 'payPeriods[0]': PayPeriodsFilter[index] } : {});
+    },
     selectedPrice() {
       const { selectedPrice: { from, to } } = this;
       const query = {};
-      const queryName = this.userRole === UserRole.EMPLOYER ? 'betweenWagePerHour' : 'priceBetween';
+      const queryName = this.isEmployer ? 'betweenWagePerHour' : 'priceBetween';
       if (from || to) {
         query[`${queryName}[from]`] = from || 0;
         query[`${queryName}[to]`] = to || 99999999999999;
@@ -163,7 +184,7 @@ export default {
   },
   methods: {
     showPriceSearch() {
-      this.ShowModal({ key: modals.priceSearch });
+      this.ShowModal({ key: modals.priceSearch, title: this.$t(`meta.${this.isEmployer ? 'costPerHour' : 'price'}`) });
     },
     sortByTime() {
       this.selectedSort = this.selectedSort === 'desc' ? 'asc' : 'desc';

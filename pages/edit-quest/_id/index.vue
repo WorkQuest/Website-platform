@@ -1188,7 +1188,7 @@ export default {
     align-items: flex-start;
     margin: 20px 0 0 0;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     grid-gap: 20px;
   }
   &__address {

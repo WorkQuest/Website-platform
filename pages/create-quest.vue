@@ -59,6 +59,17 @@
             data-selector="DISTANT"
           />
         </div>
+        <div class="page__dd">
+          <base-dd
+            v-model="payPeriodsIndex"
+            :label="$tc('quests.payPeriods.title')"
+            type="gray"
+            :items="payPeriods"
+            rules="required"
+            :name="$t('quests.payPeriods.title')"
+            data-selector="DISTANT"
+          />
+        </div>
       </div>
       <specializations-selector
         :skills="selectedSpecAndSkills"
@@ -162,7 +173,7 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import {
-  PriorityFilter, TokenMap, TokenSymbols, TypeOfJobFilter, WorkplaceIndex,
+  PriorityFilter, TokenMap, TokenSymbols, TypeOfJobs, PayPeriodsIndex, WorkplaceIndex,
 } from '~/utils/enums';
 import { CommissionForCreatingAQuest } from '~/utils/сonstants/quests';
 import { ERC20 } from '~/abi';
@@ -178,6 +189,7 @@ export default {
       selectedSpecAndSkills: [],
       employmentIndex: 0,
       workplaceIndex: 0,
+      payPeriodsIndex: 0,
       runtimeIndex: 0,
       questTitle: '',
       address: '',
@@ -209,11 +221,7 @@ export default {
       ];
     },
     employment() {
-      return [
-        this.$t('quests.employment.fullTime'),
-        this.$t('quests.employment.partTime'),
-        this.$t('quests.employment.fixedTerm'),
-      ];
+      return TypeOfJobs.map((item) => this.$t(`quests.employment.${item}`));
     },
     distantWork() {
       return [
@@ -221,6 +229,9 @@ export default {
         this.$t('quests.distantWork.workInOffice'),
         this.$t('quests.distantWork.bothVariant'),
       ];
+    },
+    payPeriods() {
+      return PayPeriodsIndex.map((item) => this.$t(`quests.payPeriods.${item}`));
     },
     depositAmount() {
       if (!this.price) return '0';
@@ -264,6 +275,7 @@ export default {
       this.price = '';
       this.employmentIndex = 0;
       this.workplaceIndex = 0;
+      this.payPeriodsIndex = 0;
       this.runtimeIndex = 0;
       this.address = '';
       this.coordinates = { lng: 0, lat: 0 };
@@ -271,15 +283,16 @@ export default {
     async setQuestDraft() {
       this.SetLoader(true);
       const {
-        workplaceIndex, runtimeIndex, employmentIndex, questTitle,
+        workplaceIndex, payPeriodsIndex, runtimeIndex, employmentIndex, questTitle,
         textarea, price, selectedSpecAndSkills, address, coordinates: { lng, lat }, clearData,
       } = this;
       if (!questTitle && !textarea && !price && !address) await clearData();
       else {
         this.$cookies.set('questDraft', {
           workplace: WorkplaceIndex[workplaceIndex],
+          payPeriod: PayPeriodsIndex[payPeriodsIndex],
           priority: PriorityFilter[runtimeIndex + 1].value,
-          employment: TypeOfJobFilter[employmentIndex],
+          typeOfEmployment: TypeOfJobs[employmentIndex],
           title: questTitle,
           description: textarea,
           price,
@@ -302,8 +315,9 @@ export default {
         this.questTitle = questDraft?.title || '';
         this.textarea = questDraft?.description || '';
         this.price = questDraft?.price || '';
-        this.employmentIndex = TypeOfJobFilter.indexOf(questDraft?.employment) || 0;
+        this.employmentIndex = TypeOfJobs.indexOf(questDraft?.typeOfEmployment) || 0;
         this.workplaceIndex = WorkplaceIndex.indexOf(questDraft?.workplace) || 0;
+        this.payPeriodsIndex = PayPeriodsIndex.indexOf(questDraft?.workplace) || 0;
         this.runtimeIndex = PriorityFilter[questDraft?.priority + 1]?.value || 0;
         this.address = questDraft?.locationFull.locationPlaceName ?? '';
         this.coordinates = {
@@ -450,8 +464,9 @@ export default {
       const medias = await this.uploadFiles(this.files);
       const payload = {
         workplace: WorkplaceIndex[this.workplaceIndex],
+        payPeriod: PayPeriodsIndex[this.payPeriodsIndex],
         priority: PriorityFilter[this.runtimeIndex + 1].value,
-        employment: TypeOfJobFilter[this.employmentIndex],
+        typeOfEmployment: TypeOfJobs[this.employmentIndex],
         title: this.questTitle,
         description: this.textarea,
         price: new BigNumber(this.price).shiftedBy(18).toString(),
@@ -960,7 +975,7 @@ export default {
     align-items: flex-start;
     margin: 20px 0 0 0;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     grid-gap: 20px;
   }
 

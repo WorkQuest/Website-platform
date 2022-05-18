@@ -63,9 +63,13 @@ export const KeyCodes = {
 };
 
 // Filters
-export const WorkplaceFilter = ['all', 'distant', 'office', 'both'];
-export const WorkplaceIndex = ['distant', 'office', 'both'];
-export const TypeOfJobFilter = ['fullTime', 'partTime', 'fixedTerm'];
+export const WorkplaceIndex = ['Remote', 'InOffice', 'Hybrid'];
+export const PayPeriodsIndex = ['Hourly', 'Daily', 'Weekly', 'BiWeekly', 'SemiMonthly', 'Monthly', 'Quarterly', 'SemiAnnually', 'Annually', 'FixedPeriod', 'ByAgreement'];
+export const TypeOfJobs = ['FullTime', 'PartTime', 'FixedTerm', 'EmploymentContract', 'RemoteWork'];
+
+export const PayPeriodsFilter = ['all', 'Hourly', 'Daily', 'Weekly', 'BiWeekly', 'SemiMonthly', 'Monthly', 'Quarterly', 'SemiAnnually', 'Annually', 'FixedPeriod', 'ByAgreement'];
+export const WorkplaceFilter = ['all', 'Remote', 'InOffice', 'Hybrid'];
+export const TypeOfJobFilter = ['all', 'FullTime', 'PartTime', 'FixedTerm', 'EmploymentContract', 'RemoteWork'];
 export const PriorityFilter = [
   { key: 'all', value: 0 },
   { key: 'urgent', value: 3 },
@@ -80,6 +84,7 @@ export const Ratings = Object.freeze({
   NO_STATUS: 'noStatus',
   ALL_STATUSES: 'AllStatuses',
 });
+
 export const UserRating = Object.freeze({
   8: Ratings.TOP_RANKED,
   4: Ratings.RELIABLE,
@@ -88,11 +93,11 @@ export const UserRating = Object.freeze({
   15: Ratings.ALL_STATUSES,
 });
 export const RatingFilter = [
-  { key: 'all', value: 15 },
-  { key: 'topRanked', value: 8 },
-  { key: 'reliable', value: 4 },
-  { key: 'verified', value: 2 },
-  { key: 'noStatus', value: 1 },
+  { key: [Ratings.ALL_STATUSES], value: 15 },
+  { key: [Ratings.TOP_RANKED], value: 8 },
+  { key: [Ratings.RELIABLE], value: 4 },
+  { key: [Ratings.VERIFIED], value: 2 },
+  { key: [Ratings.NO_STATUS], value: 1 },
 ];
 export const RatingStatus = {
   NoStatus: 1,

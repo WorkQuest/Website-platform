@@ -182,7 +182,7 @@
     "aml": "AML & CTF Policy",
     "createAQuest": "Créer une quête",
     "completed": "Completed",
-    "typeOfJob": "Type de travail",
+    "typeOfJob": "Type of employment",
     "choosePeriod": "Choisir la période",
     "verified": "Verified",
     "dispute": "Litiges",
@@ -382,17 +382,33 @@
       "noStatus": "Not rated"
     },
     "distantWork": {
-      "title": "Travail à distance",
+      "title": "Workplace",
       "allWorkplaces": "All workplaces",
-      "distantWork": "Travail à distance",
-      "workInOffice": "Travail de bureau",
-      "bothVariant": "Les deux variantes"
+      "distantWork": "Remote work",
+      "workInOffice": "In-office",
+      "bothVariant": "Hybrid workplace"
+    },
+    "payPeriods": {
+      "title": "Pay periods",
+      "Hourly": "Hourly",
+      "Daily": "Daily",
+      "Weekly": "Weekly",
+      "BiWeekly":"Bi-weekly ",
+      "SemiMonthly": "Semi-monthly",
+      "Monthly": "Monthly",
+      "Quarterly": "Quarterly",
+      "SemiAnnually": "Semi-annually",
+      "Annually": "Annually",
+      "FixedPeriod":"Fixed period",
+      "ByAgreement":"By agreement"
     },
     "employment": {
       "employment": "Employment",
-      "fullTime": "Full time",
-      "partTime": "Part time",
-      "fixedTerm": "Fixed term"
+      "FullTime": "Full time",
+      "PartTime": "Part time",
+      "FixedTerm": "Fixed term",
+      "EmploymentContract": "Employment contract",
+      "RemoteWork": "Remote work"
     },
     "runtime": "Runtime",
     "active": "Active",
@@ -436,7 +452,7 @@
       "1": "Spécialisation",
       "2": "Quêtes",
       "3": "Urgent",
-      "4": "Type de travail",
+      "4": "Type of employment",
       "5": "Toutes les priorités",
       "6": "Prix",
       "7": "Temps ajouté"
@@ -1481,10 +1497,11 @@
       "title": "Workplace",
       "select": "Select distant work",
       "allWorkplaces": "All workplaces",
-      "distantWork": "Distant work",
-      "workInOffice": "Work in office",
-      "bothVariant": "Both variants"
-    }
+      "distantWork": "Remote work",
+      "workInOffice": "In-office",
+      "bothVariant": "Hybrid workplace"
+    },
+    "selectPayPeriod": "Select pay period"
   },
   "raising-views": {
     "raisingViews": "Augmenter les vues",
@@ -2217,7 +2234,7 @@
             "subtitle": "Quest delivery time: Urgent, Short term, Fixed delivery."
           },
           "job": {
-            "title": "Type of job",
+            "title": "Type of employment",
             "subtitle": "Select the type of employment: Full-time, Part-time, Fixed term, Contract."
           },
           "distant": {
@@ -2309,8 +2326,8 @@
   "workPlaces": {
     "title": "Workplace",
     "all": "All workplaces",
-    "distant": "Distant work",
-    "office": "Work in office",
-    "both": "Both variants"
+    "Remote": "Remote work",
+    "InOffice": "In-office",
+    "Hybrid": "Hybrid workplace"
   }
 }
