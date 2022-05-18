@@ -373,7 +373,7 @@ export default {
         {
           title: this.$t('ui.menu.pension.title'),
           desc: this.$t('ui.menu.pension.desc'),
-          path: Path.PENSION,
+          path: Path.RETIREMENT,
         },
         {
           title: this.$t('ui.menu.referral.title'),

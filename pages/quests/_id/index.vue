@@ -123,7 +123,7 @@
               {{ $t('quests.otherQuestsSpec') }}
               <nuxt-link
                 :data-selector="`ACTION-TO-SPEC-${randomSpec}`"
-                :to="`/quests?specializations=${randomSpec}&statuses=0`"
+                :to="`${$options.Path.QUESTS}?specializations=${randomSpec}&statuses=0`"
                 class="spec__link"
               >
                 "{{ $t(`filters.skills.${randomSpec}.title`) }}"
@@ -174,6 +174,10 @@ import modals from '~/store/modals/modals';
 import {
   QuestMethods, EditQuestState, QuestStatuses, InfoModeWorker, InfoModeEmployer,
 } from '~/utils/сonstants/quests';
+import { images } from '~/utils/images';
+import { WorkQuest, WQFactory } from '~/abi';
+import { fetchContractData } from '~/utils/web3';
+import { getWalletAddress, GetWalletProvider } from '~/utils/wallet';
 
 export default {
   name: 'Quests',
@@ -213,7 +217,7 @@ export default {
       return this.quest.yourReview?.mark || 0;
     },
     avatar() {
-      return this.assignedWorker.avatar?.url || require('~/assets/img/app/avatar_empty.png');
+      return this.assignedWorker.avatar?.url || images.EMPTY_AVATAR;
     },
     priority() {
       const { priority } = this.quest;
@@ -238,12 +242,11 @@ export default {
       if (!questSpecializations.length) return '';
       return Math.floor(questSpecializations[Math.floor(Math.random() * questSpecializations.length)].path);
     },
-    checkAvailabilityDispute() {
+    checkAvailabilityDisputeTime() {
       const now = this.$moment().valueOf();
       // TODO fixme Вернуть, нужно для тестов Роме
-      // const dateForStart = this.$moment(this.quest.startedAt).add(1, 'day').valueOf();
-      const dateForStart = this.$moment(this.quest.startedAt).add(1, 'm').valueOf();
-      return now >= dateForStart;
+      // this.$moment(this.quest.startedAt).add(1, 'day').valueOf();
+      return now >= this.$moment(this.quest.startedAt).add(1, 'm').valueOf();
     },
   },
   watch: {
@@ -328,19 +331,33 @@ export default {
       });
 
       await this.$store.dispatch('quests/getAllQuests', {
-        query: { limit: 10, statuses: [0] },
+        query: {
+          limit: 10,
+          statuses: [0],
+        },
         specFilter,
       });
 
       const questsData = this.otherQuests.filter((quest) => quest.id !== this.quest.id);
       if (questsData.length) this.sameQuest = questsData[Math.floor(Math.random() * questsData.length)];
-      else this.$store.commit('quests/setAllQuests', { count: 0, quests: [] });
+      else {
+        this.$store.commit('quests/setAllQuests', {
+          count: 0,
+          quests: [],
+        });
+      }
     },
     setActionBtnsArr() {
       const {
-        quest: { questChat, assignedWorkerId }, userData, isEmployer, quest,
+        quest: {
+          questChat,
+          assignedWorkerId,
+        },
+        userData,
+        userRole,
+        isEmployer,
+        quest,
       } = this;
-
       const arr = isEmployer ? this.setEmployerBtnsArr() : this.setWorkerBtnsArr();
 
       if ((questChat?.workerId === userData.id || (questChat?.employerId === userData.id && assignedWorkerId))
@@ -359,7 +376,9 @@ export default {
     setEmployerBtnsArr() {
       if (this.userData.id !== this.quest.userId) return [];
       const {
-        Dispute, Created, WaitEmployerConfirm,
+        Dispute,
+        Created,
+        WaitEmployerConfirm,
       } = InfoModeEmployer;
       let arr = [];
       switch (this.infoDataMode) {
@@ -405,12 +424,24 @@ export default {
       return arr;
     },
     setWorkerBtnsArr() {
-      const { quest: { assignedWorkerId, response }, userData, infoDataMode } = this;
       const {
-        ADChat, WaitWorker, Created, Dispute, Invited, WaitWorkerOnAssign, WaitEmployerConfirm,
+        quest: {
+          assignedWorkerId,
+          response,
+        },
+        userData,
+        infoDataMode,
+      } = this;
+      const {
+        ADChat,
+        WaitWorker,
+        Created,
+        Dispute,
+        Invited,
+        WaitWorkerOnAssign,
+        WaitEmployerConfirm,
       } = InfoModeWorker;
       let arr = [];
-
       switch (infoDataMode) {
         case ADChat: {
           arr = [{
@@ -503,7 +534,7 @@ export default {
     },
     async getResponsesToQuest() {
       const { quest: { id, user }, userData, isEmployer } = this;
-
+      if (this.userRole === UserRole.EMPLOYER && user.id === userData.id) {
       if (isEmployer && user.id === userData.id) {
         await this.$store.dispatch('quests/responsesToQuest', id);
       }
@@ -517,18 +548,75 @@ export default {
       }
     },
     async openDispute() {
-      if (this.quest.status === QuestStatuses.Dispute) {
-        return await this.$router.push(`${Path.DISPUTES}/${this.quest.openDispute.id}`);
-      }
-      if (this.checkAvailabilityDispute) {
-        return this.ShowModal({
-          key: modals.openADispute,
-          questId: this.quest.id,
+      const {
+        $router, checkAvailabilityDisputeTime, $store, ShowModal, ShowModalFail, quest: {
+          status, openDispute, id, contractAddress,
+        },
+      } = this;
+      if (status === QuestStatuses.Dispute) return await $router.push(`${Path.DISPUTES}/${openDispute.id}`);
+      async function payment({ reason = '', problemDescription = '', feeTx }) {
+        const currentQuest = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
+        if (!openDispute) await this.$store.dispatch('disputes/createDispute', { reason, problemDescription, questId: id });
+        const { result } = await $store.dispatch('quests/arbitration', {
+          contractAddress,
+          value: feeTx,
         });
+        if (!result.status) {
+          ShowModalFail({
+            title: this.$t('modals.transactionError'),
+            subtitle: this.$t('modals.tryLater'),
+            img: images.ERROR,
+          });
+        } else {
+          ShowModal({
+            key: modals.status,
+            title: this.$t('modals.transactionSent'),
+            subtitle: this.$t('modals.checkExplorer'),
+            link: `${process.env.WQ_EXPLORER_TX}/${result.transactionHash}`,
+            img: images.SUCCESS,
+            callback: await $router.push(`${Path.DISPUTES}/${currentQuest.openDispute?.id}`),
+          });
+        }
       }
-      return this.ShowModal({
+      if (checkAvailabilityDisputeTime) {
+        const feeTx = await fetchContractData(
+          'feeTx',
+          WQFactory,
+          process.env.WORKNET_WQ_FACTORY,
+          null,
+          GetWalletProvider(),
+        );
+        if (openDispute) {
+          /** Флоу, если сознан диспут и не было оплаты */
+          await payment({ feeTx });
+        } else {
+          /** Флоу, если не сознан диспут и не было оплаты */
+          return ShowModal({
+            key: modals.openADispute,
+            submitMethod: async ({ reason, problemDescription }) => {
+              ShowModal({
+                key: modals.transactionReceipt,
+                fields: {
+                  from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+                  to: { name: this.$t('meta.toBig'), value: contractAddress },
+                  fee: { name: this.$t('wallet.table.trxFee'), value: 0 },
+                  amount: {
+                    name: this.$t('wallet.table.value'),
+                    value: new BigNumber(feeTx).shiftedBy(-18).toString(),
+                    symbol: TokenSymbols.WUSD,
+                  },
+                },
+                title: this.$t('modals.titles.disputePayment'),
+                text: this.$t('modals.payForDispute'),
+                submitMethod: await payment({ reason, problemDescription, feeTx }),
+              });
+            },
+          });
+        }
+      }
+      return ShowModal({
         key: modals.status,
-        img: require('~/assets/img/ui/deleteError.svg'),
+        img: images.ERROR,
         title: this.$t('modals.errors.error'),
         subtitle: this.$t('modals.errors.youCantCreateDispute'),
         button: this.$t('meta.btns.close'),
@@ -539,6 +627,7 @@ export default {
       const { contractAddress } = this.quest;
       const [feeRes] = await Promise.all([
         this.$store.dispatch('quests/getFeeDataJobMethod', {
+          abi: WorkQuest,
           method: QuestMethods.AcceptJobResult,
           contractAddress,
         }),
@@ -582,7 +671,7 @@ export default {
     showQuestModal(modalMode) {
       this.ShowModal({
         key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
+        img: images.QUEST_AGREED,
         title: this.$t('meta.questInfo'),
         subtitle: this.modalMode(modalMode),
         isNotClose: true,
@@ -630,6 +719,7 @@ export default {
       const { contractAddress } = this.quest;
       const [feeRes] = await Promise.all([
         this.$store.dispatch('quests/getFeeDataJobMethod', {
+          abi: WorkQuest,
           method: QuestMethods.AcceptJob,
           contractAddress,
         }),
@@ -653,7 +743,7 @@ export default {
             await this.getQuest();
             this.ShowModal({
               key: modals.status,
-              img: require('~/assets/img/ui/questAgreed.svg'),
+              img: images.QUEST_AGREED,
               title: this.$t('meta.questInfo'),
               subtitle: this.$t('quests.workOnQuestAccepted'),
             });
@@ -666,6 +756,7 @@ export default {
       const { contractAddress } = this.quest;
       const [feeRes] = await Promise.all([
         this.$store.dispatch('quests/getFeeDataJobMethod', {
+          abi: WorkQuest,
           method: QuestMethods.VerificationJob,
           contractAddress,
         }),
@@ -690,7 +781,7 @@ export default {
             await this.getQuest();
             this.ShowModal({
               key: modals.status,
-              img: require('~/assets/img/ui/questAgreed.svg'),
+              img: images.QUEST_AGREED,
               title: this.$t('meta.questInfo'),
               subtitle: this.$t('quests.pleaseWaitEmp'),
             });

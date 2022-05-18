@@ -15,7 +15,7 @@
           data-selector="INPUT_AMOUNT"
           placeholder="3500"
           :label="$tc('modals.amount')"
-          :rules="`required|decimal|decimalPlaces:18|min_value:0.0001|max_value:${maxValue}`"
+          :rules="`required|decimal|decimalPlaces:18|min_value:0.0001|${maxValue ? `max_value:${maxValue}` : ''}`"
           :name="$tc('modals.amount')"
         >
           <template
@@ -58,8 +58,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import BigNumber from 'bignumber.js';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'CtmModalValueSend',

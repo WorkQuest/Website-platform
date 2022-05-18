@@ -51,7 +51,7 @@
         </div>
         <emptyData
           v-else
-          :description="$t(`errors.emptyData.emptyDisputes`)"
+          :description="$tc(`errors.emptyData.emptyDisputes`)"
         />
       </div>
     </div>
@@ -62,7 +62,7 @@
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 import emptyData from '~/components/app/info/emptyData';
-import { DisputeStatues } from '~/utils/enums';
+import { DisputeStatues, Path } from '~/utils/enums';
 
 export default {
   name: 'Disputes',
@@ -95,7 +95,7 @@ export default {
       return [
         {
           title: this.$t('disputes.dispute'),
-          value: item.disputeNumber,
+          value: item.number,
         },
         {
           title: this.$t('disputes.quest'),
@@ -115,8 +115,8 @@ export default {
         },
       ];
     },
-    toDisputes(item) {
-      this.$router.push({ path: `/disputes/${item}` });
+    toDisputes(itemId) {
+      this.$router.push(`${Path.DISPUTES}/${itemId}`);
     },
     convertDate(createdAt) {
       return createdAt ? moment(createdAt).format('MMMM Do YYYY, h:mm') : '';

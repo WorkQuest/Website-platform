@@ -25,7 +25,7 @@
         >
           <base-checkbox
             :id="input.id"
-            :name="input.id"
+            :name="String(input.id)"
             :value="isCheckboxChecked(input.name, input.value)"
             :data-selector="`ADVANCED-WHO-CAN-SEE-CHECKBOX-${input.id}`"
             :label="String($t(input.local))"
