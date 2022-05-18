@@ -52,12 +52,12 @@ export default {
   async setCurrentPriceTokens() {
     const {
       result: {
-        nonce, v, r, s, prices, symbols,
+        nonce: timestamp, v, r, s, prices, symbols,
       },
     } = await apiOracle.$get('/oracle/sign-price/tokens');
 
     const params = {
-      nonce, v, r, s, prices, symbols,
+      timestamp, v, r, s, prices, symbols,
     };
 
     const { gas, gasPrice } = await getGasPrice(WQOracle, process.env.WORKNET_ORACLE, 'setTokenPricesUSD', Object.values(params));
@@ -66,7 +66,6 @@ export default {
         gasPrice,
         gas,
         ...params,
-        timestamp: params.nonce,
       });
     }
   },
