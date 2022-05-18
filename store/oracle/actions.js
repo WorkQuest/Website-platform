@@ -4,12 +4,10 @@ import {
 } from '~/utils/wallet';
 import { WQOracle } from '~/abi';
 
-const apiOracle = this.$axios.create({ baseURL: process.env.WQ_ORACLE_URL });
-
 export default {
   async getCurrentPrices({ commit }) {
     try {
-      const { result } = await apiOracle.$get('/oracle/sign-price/tokens');
+      const { result } = await this.$axiosOracle.$get('/oracle/sign-price/tokens');
       commit('setCurrentPrices', result);
       return result;
     } catch (e) {
@@ -18,7 +16,7 @@ export default {
   },
   async getSecurityRatio({ commit }) {
     try {
-      const { result } = await apiOracle.$get('/oracle/security-ratio/percent');
+      const { result } = await this.$axiosOracle.$get('/oracle/security-ratio/percent');
       commit('setSecurityRatio', result);
       return result;
     } catch (e) {
@@ -27,7 +25,7 @@ export default {
   },
   async setDesiredSecurityRatio({ commit }, payload) {
     try {
-      const { result } = await apiOracle.post('/oracle/risk-ratio/status', payload);
+      const { result } = await this.$axiosOracle.post('/oracle/risk-ratio/status', payload);
       commit('setDesiredSecurityRatio', result);
       return result;
     } catch (e) {
@@ -35,7 +33,7 @@ export default {
     }
   },
   async setCurrentPriceToken({ dispatch }, { symbol }) {
-    const { result: price } = await apiOracle.$get(`/oracle/${symbol}/price`);
+    const { result: price } = await this.$axiosOracle.$get(`/oracle/${symbol}/price`);
     const res = await dispatch('getCurrentPrices');
     const params = {
       timestamp: res.nonce,
@@ -54,7 +52,7 @@ export default {
       result: {
         nonce: timestamp, v, r, s, prices, symbols,
       },
-    } = await apiOracle.$get('/oracle/sign-price/tokens');
+    } = await this.$axiosOracle.$get('/oracle/sign-price/tokens');
 
     const params = {
       timestamp, v, r, s, prices, symbols,
