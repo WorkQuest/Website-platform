@@ -108,15 +108,15 @@ export default {
     try {
       await this.$wsNotifs.subscribe(`/notifications/referral/${userAddress}`, async (msg) => {
         console.log('subscribeToReferralEvents massage', msg);
-
+        const { data: dataMessage } = msg;
         const paidEventsList = JSON.parse(JSON.stringify(getters.getPaidEventsList));
         const referralsList = JSON.parse(JSON.stringify(getters.getReferralsList));
         let referralsListCount = JSON.parse(JSON.stringify(getters.getReferralsListCount));
         const currentPage = getters.getCurrentPage;
 
         if (msg.action === 'RegisteredAffiliar') {
-          referralsList.unshift(msg.data);
-          referralsListCount = msg.data.count;
+          referralsList.unshift(dataMessage);
+          referralsListCount = dataMessage.count;
 
           const isNeedRegistration = referralsList.some((item) => item.referralUser.referralStatus === 'created');
           commit('setReferralsListCount', referralsListCount);
@@ -124,17 +124,17 @@ export default {
           commit('setIsNeedRegistration', isNeedRegistration);
         } else if ((msg.action === REFERRAL_EVENTS.RewardClaimed || msg.action === REFERRAL_EVENTS.PaidReferral) && currentPage === 1) {
           paidEventsList.unshift({
-            blockNumber: msg.data.blockNumber,
-            transactionHash: msg.data.transactionHash,
-            referral: msg.data.referral,
-            affiliate: msg.data.affiliate,
-            amount: msg.data.returnValues.affiliat,
-            timestamp: msg.data.timestamp,
-            event: msg.data.event,
-            'referralUser.id': msg.data['referralUser.id'] || '-',
-            'referralUser.firstName': msg.data['referralUser.firstName'] || '-',
-            'referralUser.lastName': msg.data['referralUser.lastName'] || '-',
-            'referralUser.avatar.url': msg.data['referralUser.lastName'],
+            blockNumber: dataMessage.blockNumber,
+            transactionHash: dataMessage.transactionHash,
+            referral: dataMessage.referral,
+            affiliate: dataMessage.affiliate,
+            amount: dataMessage.returnValues.affiliat,
+            timestamp: dataMessage.timestamp,
+            event: dataMessage.event,
+            'referralUser.id': dataMessage['referralUser.id'] || '-',
+            'referralUser.firstName': dataMessage['referralUser.firstName'] || '-',
+            'referralUser.lastName': dataMessage['referralUser.lastName'] || '-',
+            'referralUser.avatar.url': dataMessage['referralUser.lastName'],
           });
           if (paidEventsList.length > 10) {
             paidEventsList.pop();
