@@ -123,9 +123,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { Chains } from '~/utils/enums';
+import { Path, TokenMap, TokenSymbols } from '~/utils/enums';
+import { ERC20, WQPensionFund } from '~/abi';
+import { getWalletAddress } from '~/utils/wallet';
+import { images } from '~/utils/images';
 
 export default {
   data() {
@@ -139,8 +143,10 @@ export default {
   },
   computed: {
     ...mapGetters({
-      pensionWallet: 'wallet/getPensionWallet',
+      pensionWallet: 'retirement/getPensionWallet',
+      balanceData: 'wallet/getBalanceData',
       isWalletConnected: 'wallet/getIsWalletConnected',
+      userWalletAddress: 'user/getUserWalletAddress',
     }),
     documents() {
       return Array(3).fill({
@@ -238,17 +244,34 @@ export default {
   async beforeCreate() {
     await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
-  async mounted() {
+  async mounted(values) {
     if (!this.isWalletConnected) return;
     this.SetLoader(true);
-    await this.getInfo();
+    await Promise.all([
+      this.getInfo(),
+      this.fetchWalletData({
+        method: 'balanceOf',
+        address: getWalletAddress(),
+        abi: ERC20,
+        token: TokenMap[TokenSymbols.WUSD],
+        symbol: TokenSymbols.WUSD,
+      }),
+    ]);
     this.SetLoader(false);
   },
   methods: {
+    ...mapActions({
+      fetchWalletData: 'wallet/fetchWalletData',
+      getBalanceWQT: 'wallet/getBalance',
+
+      getDefaultData: 'retirement/pensionGetDefaultData',
+      getWalletInfo: 'retirement/pensionGetWalletInfo',
+    }),
     async getInfo() {
       const [defaultDataRes] = await Promise.all([
-        this.$store.dispatch('wallet/pensionGetDefaultData'),
+        this.getDefaultData(),
         this.checkWalletExists(),
+        this.getBalanceWQT(),
       ]);
       if (defaultDataRes.ok) {
         const { lockTime, defaultFee } = defaultDataRes.result;
@@ -272,15 +295,117 @@ export default {
       return {};
     },
     async checkWalletExists() {
-      await this.$store.dispatch('wallet/pensionGetWalletInfo');
+      await this.getWalletInfo();
       if (this.pensionWallet?.isCreated) {
-        await this.$router.push('/pension/my');
+        await this.$router.push(`${Path.RETIREMENT}/my`);
       }
     },
-    openApplyForAPensionModal() {
+    async openApplyForAPensionModal() {
+      if (this.pensionWallet?.isCreated) {
+        await this.checkWalletExists();
+        return;
+      }
+      const { balanceData } = this;
       this.ShowModal({
         key: modals.applyForAPension,
         defaultFee: this.percent,
+        maxValue: balanceData.WUSD.fullBalance,
+        submitMethod: async (firstDepositAmount, depositPercentFromAQuest) => {
+          this.CloseModal();
+          this.SetLoader(true);
+          const allowance = await this.$store.dispatch('wallet/getAllowance', {
+            tokenAddress: TokenMap[TokenSymbols.WUSD],
+            spenderAddress: process.env.WORKNET_PENSION_FUND,
+          });
+          let txFee = 0;
+          if (new BigNumber(allowance).isLessThan(firstDepositAmount)) {
+            const { result: { fee } } = await this.$store.dispatch('wallet/getContractFeeData', {
+              method: 'approve',
+              abi: ERC20,
+              contractAddress: TokenMap[TokenSymbols.WUSD],
+              data: [process.env.WORKNET_PENSION_FUND, new BigNumber(firstDepositAmount).shiftedBy(18).toString()],
+            });
+            txFee = fee;
+            await this.$store.dispatch('wallet/approve', {
+              tokenAddress: TokenMap[TokenSymbols.WUSD],
+              spenderAddress: process.env.WORKNET_PENSION_FUND,
+              amount: firstDepositAmount,
+            });
+          }
+          this.inProgress = true;
+          const equalsFee = new BigNumber(this.percent).shiftedBy(-18).isEqualTo(new BigNumber(depositPercentFromAQuest.substr(0, depositPercentFromAQuest.length - 1)).shiftedBy(-18));
+          if (!equalsFee) {
+            const { result: { fee } } = await this.$store.dispatch('wallet/getContractFeeData', {
+              method: 'updateFee',
+              abi: WQPensionFund,
+              contractAddress: process.env.WORKNET_PENSION_FUND,
+              data: [new BigNumber(depositPercentFromAQuest.substr(0, depositPercentFromAQuest.length - 1)).shiftedBy(18).toString()],
+            });
+            txFee = new BigNumber(txFee).plus(fee);
+          }
+          if (firstDepositAmount) {
+            const { result: { fee } } = await this.$store.dispatch('wallet/getContractFeeData', {
+              method: 'contribute',
+              abi: WQPensionFund,
+              contractAddress: process.env.WORKNET_PENSION_FUND,
+              data: [getWalletAddress(), new BigNumber(firstDepositAmount).shiftedBy(18).toString()],
+              recipient: process.env.WORKNET_PENSION_FUND,
+            });
+            txFee = new BigNumber(txFee).plus(fee);
+          }
+          if (balanceData.WUSD.balance === 0 || balanceData.WQT.balance === 0) {
+            await this.$store.dispatch('main/showToast', {
+              text: this.$t('errors.transaction.notEnoughFunds'),
+            });
+            this.inProgress = false;
+            this.SetLoader(false);
+            return false;
+          }
+          const fields = {
+            from: {
+              name: this.$t('meta.fromBig'),
+              value: this.convertToBech32('wq', getWalletAddress()),
+            },
+            to: {
+              name: this.$t('meta.toBig'),
+              value: this.convertToBech32('wq', process.env.WORKNET_PENSION_FUND),
+            },
+            fee: {
+              name: this.$t('wallet.table.trxFee'),
+              value: txFee,
+              symbol: TokenSymbols.WQT,
+            },
+          };
+          if (firstDepositAmount) {
+            fields.amount = {
+              name: this.$t('modals.amount'),
+              value: firstDepositAmount,
+              symbol: TokenSymbols.WUSD,
+            };
+          }
+          this.SetLoader(false);
+          this.ShowModal({
+            key: modals.transactionReceipt,
+            fields,
+            submitMethod: async () => {
+              const ok = await this.$store.dispatch('retirement/pensionStartProgram', {
+                fee: depositPercentFromAQuest.substr(0, depositPercentFromAQuest.length - 1),
+                firstDeposit: firstDepositAmount,
+                defaultFee: this.percent,
+              });
+              if (ok) this.showPensionIsRegisteredModal();
+            },
+          });
+          return true;
+        },
+      });
+    },
+    showPensionIsRegisteredModal() {
+      this.ShowModal({
+        key: modals.status,
+        img: images.DOCUMENT,
+        title: this.$t('modals.pensionIsRegistered'),
+        path: `${Path.RETIREMENT}/my`,
       });
     },
     handleClickFAQ(index) {

@@ -37,6 +37,7 @@
         @checkValidate="checkValidate"
       />
       <advanced
+        id="2FA"
         @updateVisibility="updateVisibility($event)"
         @showModalKey="showModalKey"
       />
@@ -52,7 +53,9 @@ import VerificationCard from '~/components/app/pages/settings/VerificationCard.v
 import Profile from '~/components/app/pages/settings/Profile.vue';
 import Skills from '~/components/app/pages/settings/Skills.vue';
 import Advanced from '~/components/app/pages/settings/Advanced.vue';
-import { RatingStatus, UserRole, WorkplaceIndex } from '~/utils/enums';
+import {
+  PayPeriodsIndex, RatingStatus, UserRole, WorkplaceIndex,
+} from '~/utils/enums';
 
 export default {
   name: 'Settings',
@@ -98,6 +101,7 @@ export default {
         perHour: 0,
         priorityIndex: -1,
         distantIndex: -1,
+        payPeriod: -1,
         selectedSpecAndSkills: null,
       },
       avatarChange: { data: {}, file: {} },
@@ -119,6 +123,7 @@ export default {
       accessToken: 'sumsub/getSumSubBackendToken',
       filters: 'quests/getFilters',
       secondNumber: 'user/getUserSecondMobileNumber',
+      localNotifications: 'notifications/getLocalNotifications',
     }),
     WorkplaceIndex() {
       return WorkplaceIndex;
@@ -132,7 +137,8 @@ export default {
     if (!this.filters) await this.$store.dispatch('quests/getFilters');
     if (!this.profile.firstName) await this.$store.dispatch('user/getUserData');
     const addInfo = this.userData.additionalInfo;
-    const { userData, secondNumber } = this;
+    const { userData, secondNumber, scrollToId } = this;
+    scrollToId();
     const { employerProfileVisibilitySetting, workerProfileVisibilitySetting } = userData;
     this.profile = {
       avatarId: userData.avatarId,
@@ -175,7 +181,8 @@ export default {
     this.skills = {
       priorityIndex: userData.priority,
       distantIndex: WorkplaceIndex.indexOf(userData.workplace),
-      perHour: userData.wagePerHour,
+      payPeriodIndex: PayPeriodsIndex.indexOf(userData.payPeriod),
+      perHour: userData.costPerHour,
       selectedSpecAndSkills: userData.userSpecializations || [],
     };
 
@@ -201,6 +208,13 @@ export default {
     });
   },
   methods: {
+    scrollToId() {
+      if (this.$route.hash) {
+        const id = this.$route.hash.slice(1);
+        const element = document.getElementById(id);
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    },
     validationRefs(data) {
       this.valRefs = data;
       return this.valRefs;
@@ -392,9 +406,10 @@ export default {
           workExperiences: addInfo.workExperiences,
           description: addInfo.description || null,
         },
-        workplace: this.parseDistantWork(this.skills.distantIndex),
+        workplace: WorkplaceIndex[this.skills.distantIndex],
+        payPeriod: PayPeriodsIndex[this.payPeriodsIndex] || this.userData.payPeriod,
         priority: this.skills.priorityIndex,
-        wagePerHour: this.skills.perHour || this.userData.wagePerHour,
+        costPerHour: this.skills.perHour || this.userData.costPerHour,
         specializationKeys: this.skills.selectedSpecAndSkills || [],
       } : {
         ...payload,
@@ -407,13 +422,6 @@ export default {
         },
       });
       await this.$store.dispatch('user/getUserData');
-    },
-
-    parseDistantWork(index) {
-      if (index === 0) return 'distant';
-      if (index === 1) return 'office';
-      if (index === 2) return 'both';
-      return null;
     },
 
     async editProfileResponse(action, payload) {

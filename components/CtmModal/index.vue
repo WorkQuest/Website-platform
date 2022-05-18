@@ -44,7 +44,6 @@ export default {
     [modals.invitation]: () => import('./CtmModalInvitation'),
     [modals.raiseViews]: () => import('./CtmModalRaiseViews'),
     [modals.applyForAPension]: () => import('./CtmModalApplyForAPension'),
-    [modals.makeDeposit]: () => import('./CtmModalMakeDeposit'),
     [modals.changePercent]: () => import('./CtmModalChangePercent'),
     [modals.openADeposit]: () => import('./CtmModalOpenADeposit'),
     [modals.addLiquidity]: () => import('./CtmModalAddLiquidity'),

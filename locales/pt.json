@@ -46,6 +46,7 @@
       "mb": "{count} MB",
       "kb": "{count} KB",
       "percentsCount": "{count}%",
+      "seconds": "{count} second | {count} seconds | {count} seconds",
       "minutes": "{count} minute | {count} minutes | {count} minutes",
       "hours": "{count} minute | {count} minutes | {count} hours",
       "years": "{count} year | {count} years | {count} years",
@@ -181,7 +182,7 @@
     "aml": "AML & CTF Policy",
     "createAQuest": "Criar uma busca",
     "completed": "Completed",
-    "typeOfJob": "Tipo de trabalho",
+    "typeOfJob": "Type of employment",
     "choosePeriod": "Escolha o prazo",
     "verified": "Verified",
     "dispute": "Abrir disputa",
@@ -381,17 +382,33 @@
       "noStatus": "Not rated"
     },
     "distantWork": {
-      "title": "Trabalho remoto",
+      "title": "Workplace",
       "allWorkplaces": "All workplaces",
-      "distantWork": "Trabalho remoto",
-      "workInOffice": "Trabalho no escritório",
-      "bothVariant": "Ambas as variantes"
+      "distantWork": "Remote work",
+      "workInOffice": "In-office",
+      "bothVariant": "Hybrid workplace"
+    },
+    "payPeriods": {
+      "title": "Pay periods",
+      "Hourly": "Hourly",
+      "Daily": "Daily",
+      "Weekly": "Weekly",
+      "BiWeekly":"Bi-weekly ",
+      "SemiMonthly": "Semi-monthly",
+      "Monthly": "Monthly",
+      "Quarterly": "Quarterly",
+      "SemiAnnually": "Semi-annually",
+      "Annually": "Annually",
+      "FixedPeriod":"Fixed period",
+      "ByAgreement":"By agreement"
     },
     "employment": {
       "employment": "Employment",
-      "fullTime": "Full time",
-      "partTime": "Part time",
-      "fixedTerm": "Fixed term"
+      "FullTime": "Full time",
+      "PartTime": "Part time",
+      "FixedTerm": "Fixed term",
+      "EmploymentContract": "Employment contract",
+      "RemoteWork": "Remote work"
     },
     "runtime": "Runtime",
     "active": "Ativo",
@@ -435,7 +452,7 @@
       "1": "Especialização",
       "2": "Buscas",
       "3": "Urgente",
-      "4": "Tipo de trabalho",
+      "4": "Type of employment",
       "5": "Todas as prioridades",
       "6": "Preço",
       "7": "Tempo adicionado"
@@ -898,6 +915,7 @@
       "filters": {
         "titleAll": "Todos os Filtros"
       },
+      "disputePayment": "Dispute payment",
       "saved": "Saved successfully",
       "cardAdd": "Add card",
       "addCase": "Add Case",
@@ -974,12 +992,12 @@
       "addMember": "Add member"
     },
     "disputes": {
-      "thereIsNoResponseFromTheEmployerOrEmployee": "There is no response from the employer / employee",
-      "badlyDoneWork": "Badly done work",
-      "additionalRequirementsHaveBeenPutForward": "Additional requirements have been put forward",
-      "inconsistenciesInTheRequirementsForTheDescriptionOfTheQuest": "Inconsistencies in the requirements for the description of the quest",
-      "theQuestIsCompletedButTheEmployeeOrEmployerHasNotConfirmedItsCompletion": "The quest is completed but the employee / employer has not confirmed its completion",
-      "anotherReason": "Another reason"
+      "NoAnswer": "There is no response from the employer / employee",
+      "AnotherReason": "Another reason",
+      "PoorlyDoneJob": "Poorly done work",
+      "AdditionalRequirement": "Additional requirements have been put forward",
+      "RequirementDoesNotMatch": "Inconsistencies in the requirements for the description of the quest",
+      "NoConfirmationOfComplete": "The quest is completed but the employee / employer has not confirmed its completion"
     },
     "2FA": {
       "enabled": "2FA enabled successfully!",
@@ -1000,6 +1018,9 @@
       "youHaveAQuestDraft": "You have a quest draft. Cleat it?",
       "saveQuestDraft": "Save quest draft?"
     },
+    "payForDispute": "You need to pay to open a dispute",
+    "tryLater": "Please, try later...",
+    "checkExplorer": "You can check a transaction status on Explorer",
     "transactionError": "Transaction error",
     "fromAddress": "from",
     "toAddress": "to",
@@ -1304,8 +1325,33 @@
       }
     }
   },
+  "localNotifications": {
+    "messages": {
+      "inviteFriends": "Invite your friends and get rewarded!",
+      "wiki": "You can get acquainted with all the functionality of the platform on the WorkQuest Wiki page!",
+      "kyc": "You can enable KYC on Sumsub page.",
+      "twoFA": "You can enable 2FA in settings.",
+      "fillSettingsData": "You can fill your profile data in settings.",
+      "questDraft": "You have a saved draft of the quest.",
+      "rateTheQuest": "Please rate the completed work on the quest.",
+      "reviewEmp": "Please, review your Employer!",
+      "reviewWorker": "Please, review your Employee!"
+    },
+    "btns": {
+      "inviteFriends": "Get Reward",
+      "wiki": "Go to Wiki",
+      "kyc": "Enable KYC",
+      "toSettings": "Go to Settings",
+      "questDraft": "Go to Create Quest page",
+      "rateTheQuest": "Go to Quest page",
+      "reviewEmp": "Go to Employer Profile",
+      "reviewWorker": "Go to Employee Profile"
+    }
+  },
   "notifications": {
+    "QuestEditedOnContract": "Quest edited on contract",
     "title": "Notifications",
+    "OpenDispute": "Abrir disputa",
     "openDispute": "Abrir disputa",
     "invite": "Invites you to complete the quest",
     "questStarted": "Invites you to start a quest",
@@ -1319,6 +1365,7 @@
     "workerAcceptedInvitationToQuest": "Accepted the invitation to the quest",
     "workerRejectedInvitationToQuest": "Declined the invitation to the quest",
     "employerRejectedWorkersResponse": "Declined your response to the quest",
+    "QuestStatusUpdated": "Quest status updated",
     "userLeftReviewAboutQuest": "Left review about quest",
     "registrationError": "No users found for registration. Please contact to developers",
     "waitWorker": "The quest is pending",
@@ -1476,10 +1523,11 @@
       "title": "Workplace",
       "select": "Select distant work",
       "allWorkplaces": "All workplaces",
-      "distantWork": "Distant work",
-      "workInOffice": "Work in office",
-      "bothVariant": "Both variants"
-    }
+      "distantWork": "Remote work",
+      "workInOffice": "In-office",
+      "bothVariant": "Hybrid workplace"
+    },
+    "selectPayPeriod": "Select pay period"
   },
   "raising-views": {
     "raisingViews": "Aumentar visualizações",
@@ -2212,7 +2260,7 @@
             "subtitle": "Quest delivery time: Urgent, Short term, Fixed delivery."
           },
           "job": {
-            "title": "Type of job",
+            "title": "Type of employment",
             "subtitle": "Select the type of employment: Full-time, Part-time, Fixed term, Contract."
           },
           "distant": {
@@ -2304,8 +2352,8 @@
   "workPlaces": {
     "title": "Workplace",
     "all": "All workplaces",
-    "distant": "Distant work",
-    "office": "Work in office",
-    "both": "Both variants"
+    "Remote": "Remote work",
+    "InOffice": "In-office",
+    "Hybrid": "Hybrid workplace"
   }
 }

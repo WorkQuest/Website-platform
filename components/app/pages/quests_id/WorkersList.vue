@@ -64,6 +64,7 @@ import {
 import { QuestMethods } from '~/utils/сonstants/quests';
 import modals from '~/store/modals/modals';
 import { error, success } from '~/utils/web3';
+import { WorkQuest } from '~/abi';
 
 export default {
   name: 'WorkersList',
@@ -127,6 +128,7 @@ export default {
       const [feeRes] = await Promise.all([
         this.$store.dispatch('quests/getFeeDataJobMethod', {
           method: QuestMethods.AssignJob,
+          abi: WorkQuest,
           contractAddress,
           data: [workerAddress],
         }),

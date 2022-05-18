@@ -31,7 +31,7 @@
             rules="max:7"
             class="skills__cost"
             data-selector="COST-PER-HOUR"
-            :placeholder="skills.perHour || $t('meta.priority.title')"
+            :placeholder="skills.perHour || $t('meta.costPerHour')"
             :label="$t('meta.costPerHour')"
             :name="$t('meta.costPerHour')"
             type="gray"
@@ -55,6 +55,8 @@
 </template>
 
 <script>
+import { PayPeriodsIndex } from '~/utils/enums';
+
 export default {
   name: 'Skills',
   props: {
@@ -69,30 +71,39 @@ export default {
   },
   data() {
     return {
-      dropdowns: [
-        {
-          model: 'priorityIndex',
-          placeholder: 'meta.priority.title',
-          items: [
-            this.$t('meta.priority.all'),
-            this.$t('meta.priority.fixedDelivery'),
-            this.$t('meta.priority.shortTerm'),
-            this.$t('meta.priority.employee.urgent'),
-          ],
-          label: 'settings.priority',
-        },
-        {
-          model: 'distantIndex',
-          placeholder: 'settings.distantWork.select',
-          items: [
-            this.$t('settings.distantWork.distantWork'),
-            this.$t('settings.distantWork.workInOffice'),
-            this.$t('settings.distantWork.bothVariant'),
-          ],
-          label: 'settings.distantWork.title',
-        },
-      ],
+      dropdowns: [],
     };
+  },
+  beforeMount() {
+    this.dropdowns = [
+      {
+        model: 'priorityIndex',
+        placeholder: 'meta.priority.title',
+        items: [
+          this.$t('meta.priority.all'),
+          this.$t('meta.priority.fixedDelivery'),
+          this.$t('meta.priority.shortTerm'),
+          this.$t('meta.priority.employee.urgent'),
+        ],
+        label: 'settings.priority',
+      },
+      {
+        model: 'distantIndex',
+        placeholder: 'settings.distantWork.select',
+        items: [
+          this.$t('settings.distantWork.distantWork'),
+          this.$t('settings.distantWork.workInOffice'),
+          this.$t('settings.distantWork.bothVariant'),
+        ],
+        label: 'settings.distantWork.title',
+      },
+      {
+        model: 'payPeriodIndex',
+        placeholder: 'settings.selectPayPeriod',
+        items: PayPeriodsIndex.map((item) => this.$t(`quests.payPeriods.${item}`)),
+        label: 'quests.payPeriods.title',
+      },
+    ];
   },
   methods: {
     updateSelectedSkills(specAndSkills) {

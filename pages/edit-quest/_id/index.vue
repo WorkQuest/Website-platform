@@ -1,5 +1,4 @@
 <template>
-  <!--  TODO: исправить редактирование квеста-->
   <div
     v-if="questData"
     class="main"
@@ -27,7 +26,7 @@
                     v-model="runtimeValue"
                     :items="runtime"
                     type="gray"
-                    :label="$t('quests.runtime')"
+                    :label="$tc('quests.runtime')"
                     :placeholder="runtime[0]"
                     data-selector="RUNTIME"
                     :name="$t('quests.runtime')"
@@ -40,28 +39,28 @@
               <base-field
                 v-model="price"
                 type="number"
-                :label="$t('meta.price')"
+                :label="$tc('meta.price')"
                 data-selector="PRICE-FIELD"
                 placeholder="0 WUSD"
                 rules="required|decimal|decimalPlaces:16|min_value:1"
-                :name="$t('meta.price')"
+                :name="$tc('meta.price')"
               />
             </div>
             <div class="page__dd">
               <base-dd
                 v-model="priorityIndex"
-                :label="$t('quests.employment.employment')"
+                :label="$tc('quests.employment.employment')"
                 type="gray"
                 :items="employment"
                 rules="required"
-                :name="$t('quests.employment.employment')"
+                :name="$tc('quests.employment.employment')"
                 data-selector="EMPLOYMENT"
               />
             </div>
             <div class="page__dd">
               <base-dd
                 v-model="categoryIndex"
-                :label="$t('quests.distantWork.distantWork')"
+                :label="$tc('quests.distantWork.distantWork')"
                 type="gray"
                 :items="distantWork"
                 rules="required"
@@ -77,13 +76,13 @@
           <div class="page__address">
             <base-field
               v-model="address"
-              :label="$t('quests.address')"
+              :label="$tc('quests.address')"
               data-selector="ADDRESS-FIELD"
               :placeholder="$t('quests.address')"
               mode="icon"
               :selector="true"
               rules="required"
-              :name="$t('quests.address')"
+              :name="$tc('quests.address')"
               @selector="getAddressInfo(address)"
             >
               <template v-slot:left>
@@ -115,7 +114,7 @@
               v-model="questTitle"
               data-selector="QUEST-TITLE-FIELD"
               rules="required"
-              :name="$t('quests.questTitle')"
+              :name="$tc('quests.questTitle')"
               :placeholder="$t('quests.questTitle')"
             />
           </div>
@@ -1189,7 +1188,7 @@ export default {
     align-items: flex-start;
     margin: 20px 0 0 0;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     grid-gap: 20px;
   }
   &__address {
