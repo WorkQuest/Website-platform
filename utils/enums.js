@@ -63,37 +63,6 @@ export const KeyCodes = {
   ArrowRight: 39,
 };
 
-export const Workplace = {
-  DISTANT: 'distant',
-  OFFICE: 'office',
-  BOTH: 'both',
-};
-
-export const Employment = {
-  FULL: 'fullTime',
-  PART: 'partTime',
-  FIXED: 'fixedTerm',
-};
-
-export const Priority = {
-  LOW: { key: 1, value: 'low' },
-  NORMAL: { key: 2, value: 'normal' },
-  URGENT: { key: 3, value: 'urgent' },
-};
-
-export const EmployeeRating = {
-  VERIFIED: 'verified',
-  RELIABLE: 'reliable',
-  TOP: 'topRanked',
-};
-
-export const Filters = {
-  WORKPLACES: ['allWorkplaces', Workplace.DISTANT, Workplace.OFFICE, Workplace.BOTH],
-  EMPLOYMENTS: ['allEmployments', Employment.FULL, Employment.PART, Employment.FIXED],
-  PRIORITIES: ['allPriorities', Priority.LOW.value, Priority.NORMAL.value, Priority.URGENT.value],
-  EMPLOYEE_RATING: ['allRatings', EmployeeRating.VERIFIED, EmployeeRating.RELIABLE, EmployeeRating.TOP],
-};
-
 // Filters
 export const WorkplaceIndex = ['Remote', 'InOffice', 'Hybrid'];
 export const PayPeriodsIndex = ['Hourly', 'Daily', 'Weekly', 'BiWeekly', 'SemiMonthly', 'Monthly', 'Quarterly', 'SemiAnnually', 'Annually', 'FixedPeriod', 'ByAgreement'];
@@ -140,17 +109,17 @@ export const RatingStatus = {
 };
 
 export const MessageAction = {
-  GROUP_CHAT_CREATE: 'groupChatCreate',
   NEW_MESSAGE: 'newMessage',
-  MESSAGE_READ_BY_RECIPIENT: 'messageReadByRecipient',
+  GROUP_CHAT_CREATE: 'groupChatCreate',
   GROUP_CHAT_ADD_USERS: 'groupChatAddUser',
   GROUP_CHAT_LEAVE_USER: 'groupChatLeaveUser',
   GROUP_CHAT_DELETE_USER: 'groupChatDeleteUser',
   EMPLOYER_INVITE_ON_QUEST: 'employerInviteOnQuest',
   WORKER_RESPONSE_ON_QUEST: 'workerResponseOnQuest',
-  EMPLOYER_REJECT_RESPONSE_ON_QUEST: 'employerRejectResponseOnQuest',
+  MESSAGE_READ_BY_RECIPIENT: 'messageReadByRecipient',
   WORKER_REJECT_INVITE_ON_QUEST: 'workerRejectInviteOnQuest',
   WORKER_ACCEPT_INVITE_ON_QUEST: 'workerAcceptInviteOnQuest',
+  EMPLOYER_REJECT_RESPONSE_ON_QUEST: 'employerRejectResponseOnQuest',
 };
 
 export const ChatType = {

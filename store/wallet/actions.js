@@ -31,7 +31,7 @@ import {
   TokenMap,
   TokenSymbols,
   StakingTypes,
-  PensionHistoryMethods, WorknetTokenAddresses,
+  WorknetTokenAddresses,
 } from '~/utils/enums';
 
 let connectionWS = null;
