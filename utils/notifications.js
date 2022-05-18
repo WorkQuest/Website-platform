@@ -57,7 +57,6 @@ export const notificationCommonFilterActions = Object.freeze([
   NotificationAction.WORKER_ACCEPTED_INVITATION_TO_QUEST,
   NotificationAction.WORKER_REJECTED_INVITATION_TO_QUEST,
   NotificationAction.WORKER_RESPONDED_TO_QUEST,
-  NotificationAction.OPEN_DISPUTE,
   NotificationAction.DISPUTE_DECISION,
   NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE,
 ]);
