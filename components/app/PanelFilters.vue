@@ -163,7 +163,7 @@ export default {
       this.$emit('sortWorkplace', index ? { 'workplaces[0]': WorkplaceFilter[index] } : {});
     },
     selectPayPeriod(index) {
-      this.$emit('sortPayPeriod', index ? { 'payPeriods[0]': PayPeriodsIndex[index] } : {});
+      this.$emit('sortPayPeriod', index ? { 'payPeriods[0]': PayPeriodsFilter[index] } : {});
     },
     selectedPrice() {
       const { selectedPrice: { from, to } } = this;
