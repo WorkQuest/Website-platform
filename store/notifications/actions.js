@@ -105,9 +105,7 @@ export default {
       const currConfig = config || { params: { limit: 2, offset: 0 } };
       const { data: { result, ok } } = await this.$axios.get(`${process.env.NOTIFS_URL}notifications`, currConfig);
       const { notifications, count } = result;
-      if (notifications.length) {
-        notifications.map(async (notification) => await dispatch('setCurrNotificationObject', notification));
-      }
+      notifications.map(async (notification) => await dispatch('setCurrNotificationObject', notification));
 
       if (!config) {
         commit('setReducedNotifications', notifications);
@@ -197,7 +195,7 @@ export default {
         };
         break;
 
-      case [NotificationAction.OPEN_DISPUTE, NotificationAction.DISPUTE_DECISION].includes(action):
+      case action === NotificationAction.DISPUTE_DECISION:
         notification.params = {
           ...notification.params,
           title: problemDescription,
@@ -250,12 +248,8 @@ export default {
         break;
 
       default:
-        // Не удалять! Для ловли неизвестных ивентов
-        // console.error('Unknown event = ', action);
         break;
     }
-
-    Object.assign(notification.params, { isLocal: false });
 
     /** Set sender if it need */
     if (quest?.user && notificationCommonFilterActions.includes(action) && !notification.sender) {

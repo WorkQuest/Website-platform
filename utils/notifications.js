@@ -16,7 +16,6 @@ export const NotificationAction = {
   EMPLOYER_REJECTED_WORKERS_RESPONSE: 'employerRejectedWorkersResponse',
   WAIT_WORKER: 'waitWorker',
   USER_LEFT_REVIEW_ABOUT_QUEST: 'userLeftReviewAboutQuest',
-  OPEN_DISPUTE: 'openDispute',
   DISPUTE_DECISION: 'disputeDecision',
   QUEST_EDITED: 'questEdited',
   QUEST_END_SOON: 'questEndSoon',

@@ -11,7 +11,7 @@
     >
       <template v-if="notificationsCount">
         <img
-          v-if="unreadNotifsCount > 0 ? unreadNotifsCount : 0"
+          v-if="unreadNotifsCount > 0"
           src="~assets/img/ui/notification_outline_red_dot.svg"
           alt=""
         >

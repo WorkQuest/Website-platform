@@ -150,18 +150,13 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    const { userData, $cookies } = this;
     const {
       avatar, firstName, lastName, locationPlaceName, additionalInfo: { description },
-    } = userData;
-    this.page = $cookies.get('notificationPage');
+    } = this.userData;
     this.profileFilled = !!avatar && !!firstName && !!lastName && !!locationPlaceName && !!description;
     await this.getNotifications();
     await this.setLocalNotifications();
     this.SetLoader(false);
-  },
-  async beforeDestroy() {
-    await this.saveNotificationCurrentPage();
   },
   methods: {
     async setLocalNotifications() {
@@ -208,9 +203,6 @@ export default {
           });
         }
       }
-    },
-    async saveNotificationCurrentPage() {
-      this.$cookies.set('notificationPage', this.page);
     },
     actionBtnText(notification) {
       return notification.actionBtn ?? this.$t('meta.btns.view');
