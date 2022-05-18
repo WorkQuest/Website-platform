@@ -350,7 +350,7 @@ export default {
     setActionBtnsArr() {
       const {
         quest: {
-          questChat: { workerId, employerId },
+          questChat,
           assignedWorkerId,
           status,
         },
@@ -359,7 +359,7 @@ export default {
       } = this;
       const arr = isEmployer ? this.setEmployerBtnsArr() : this.setWorkerBtnsArr();
 
-      if ((workerId === id || (employerId === id && assignedWorkerId))
+      if ((questChat?.workerId === id || (questChat?.employerId === id && assignedWorkerId))
         && ![QuestStatuses.Closed, QuestStatuses.Rejected, QuestStatuses.Done].includes(status)) {
         arr.push({
           name: this.$t('meta.btns.goToChat'),
