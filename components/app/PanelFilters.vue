@@ -23,12 +23,12 @@
     />
     <base-dd
       v-if="userRole === UserRole.WORKER"
-      v-model="selectedTypeOfJob"
+      v-model="selectedTypeOfEmployment"
       class="filters-panel__item"
       mode="blackFont"
       :items="typeOfJobItems"
       :placeholder="$t('meta.typeOfJob')"
-      data-selector="EMPLOYMENT"
+      data-selector="TYPE-EMPLOYMENT"
     />
     <base-dd
       v-if="userRole === UserRole.WORKER"
@@ -87,7 +87,7 @@ import {
   RatingFilter,
   PriorityFilter,
   WorkplaceFilter,
-  TypeOfJobFilter, PayPeriodsIndex, PayPeriodsFilter,
+  TypeOfEmploymentFilters, PayPeriodsIndex, PayPeriodsFilter,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
@@ -97,7 +97,7 @@ export default {
     return {
       selectedRating: null,
       selectedPriority: null,
-      selectedTypeOfJob: null,
+      selectedTypeOfEmployment: null,
       selectedWorkplace: null,
       selectPayPeriod: null,
       selectedSort: 'desc',
@@ -125,7 +125,7 @@ export default {
       return PriorityFilter.map((item, i) => (i === 0 ? this.$t('meta.priority.all') : this.$t(`meta.priority.${item.key}`)));
     },
     typeOfJobItems() {
-      return TypeOfJobFilter.map((item, i) => (i === 0 ? this.$t('quests.allVariants') : this.$t(`quests.employment.${item}`)));
+      return TypeOfEmploymentFilters.map((item, i) => (i === 0 ? this.$t('quests.allVariants') : this.$t(`quests.employment.${item}`)));
     },
     workplaceItems() {
       return WorkplaceFilter.map((item) => this.$t(`workPlaces.${item}`));
@@ -156,8 +156,8 @@ export default {
     selectedPriority(index) {
       this.$emit('sortPriority', index ? { 'priorities[0]': PriorityFilter[index].value } : {});
     },
-    selectedTypeOfJob(index) {
-      this.$emit('sortTypeOfJob', index ? { 'typeOfEmployments[0]': TypeOfJobFilter[index] } : {});
+    selectedTypeOfEmployment(index) {
+      this.$emit('sortTypeOfEmployment', index ? { 'typeOfEmployments[0]': TypeOfEmploymentFilters[index] } : {});
     },
     selectedWorkplace(index) {
       this.$emit('sortWorkplace', index ? { 'workplaces[0]': WorkplaceFilter[index] } : {});

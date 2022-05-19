@@ -284,7 +284,7 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import {
-  Path, PayPeriodsIndex, TokenMap, TokenSymbols, TypeOfJobs, WorkplaceIndex,
+  Path, PayPeriodsIndex, TokenMap, TokenSymbols, TypeOfEmployments, WorkplaceIndex,
 } from '~/utils/enums';
 import {
   QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses, CommissionForCreatingAQuest,
@@ -385,7 +385,7 @@ export default {
       ];
     },
     employment() {
-      return TypeOfJobs.map((item) => this.$t(`quests.employment.${item}`));
+      return TypeOfEmployments.map((item) => this.$t(`quests.employment.${item}`));
     },
     distantWork() {
       return [
@@ -418,7 +418,7 @@ export default {
     }
 
     this.runtimeValue = 1;
-    this.employmentIndex = TypeOfJobs.indexOf(typeOfEmployment);
+    this.employmentIndex = TypeOfEmployments.indexOf(typeOfEmployment);
     this.payPeriodIndex = PayPeriodsIndex.indexOf(payPeriod);
     this.workplaceIndex = WorkplaceIndex.indexOf(workplace);
     this.questTitle = title;
@@ -621,7 +621,7 @@ export default {
       const payload = {
         workplace: WorkplaceIndex[this.workplaceIndex],
         priority: this.priorityIndex,
-        typeOfEmployment: TypeOfJobs[this.employmentIndex],
+        typeOfEmployment: TypeOfEmployments[this.employmentIndex],
         // payPeriod: PayPeriodsIndex[this.payPeriodIndex],
         title: this.questTitle,
         medias,
