@@ -19,7 +19,7 @@
         @sortPrice="sortByPrice"
         @sortPriority="sortByPriority"
         @sortWorkplace="sortByWorkplace"
-        @sortTypeOfJob="sortTypeOfJob"
+        @sortTypeOfEmployment="sortTypeOfEmployment"
         @sortPayPeriod="sortPayPeriod"
       />
       <div
@@ -193,7 +193,7 @@ export default {
       else this.query = { ...this.query, ...value };
       await this.fetchQuestsList(true);
     },
-    async sortTypeOfJob(value) {
+    async sortTypeOfEmployment(value) {
       if (!Object.keys(value).length) delete this.query['typeOfEmployments[0]'];
       else this.query = { ...this.query, ...value };
       await this.fetchQuestsList(true);
