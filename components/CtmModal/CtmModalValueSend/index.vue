@@ -15,7 +15,7 @@
           data-selector="INPUT_AMOUNT"
           placeholder="3500"
           :label="$tc('modals.amount')"
-          :rules="`required|decimal|decimalPlaces:18|min_value:0.0001|${maxValue ? `max_value:${maxValue}` : ''}`"
+          :rules="`required|decimalPlaces:18|min_value:0.0001|${maxValue ? `max_value:${maxValue}` : ''}`"
           :name="$tc('modals.amount')"
         >
           <template
