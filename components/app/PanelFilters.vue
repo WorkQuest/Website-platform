@@ -3,7 +3,10 @@
     class="filters-panel"
     data-selector="FILTER-PANEL"
   >
-    <base-filter-dd class="filters-panel__item" />
+    <base-filter-dd
+      class="filters-panel__item"
+      @openSpec="openSpecTest"
+    />
     <base-dd
       v-if="userRole === UserRole.EMPLOYER"
       v-model="selectedRating"
@@ -183,6 +186,9 @@ export default {
     });
   },
   methods: {
+    openSpecTest(value) {
+      this.$emit('openSpec', value);
+    },
     showPriceSearch() {
       this.ShowModal({ key: modals.priceSearch, title: this.$t(`meta.${this.isEmployer ? 'costPerHour' : 'price'}`) });
     },

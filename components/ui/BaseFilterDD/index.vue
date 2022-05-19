@@ -56,7 +56,7 @@
                   class="filter__item item"
                 >
                   <div
-                    class="item"
+                    class="item__head"
                     :data-selector="`ACTION-BTN-TOGGLE-CATEGORY-${specIdx}`"
                     @click="toggleCategory(specIdx)"
                   >
@@ -247,6 +247,7 @@ export default {
       };
     },
     toggleDd() {
+      this.$emit('openSpec', this.isOpenDD);
       this.isOpenDD = !this.isOpenDD;
     },
     toggleCategory(index) {
@@ -274,7 +275,7 @@ export default {
 <style scoped lang="scss">
 .icon {
   cursor: pointer;
-  font-size: 25px;
+  font-size: 23px;
   color: $blue !important;
   &-caret_up::before {
     @extend .icon;
@@ -307,14 +308,8 @@ export default {
     overflow-x: hidden;
     overscroll-behavior-y: contain;
     height: 400px;
-    margin: 10px 0 0 0;
-    padding: 10px 0 0 0;
+    padding: 20px 0 0 0;
     min-width: 358px;
-  }
-  &__item {
-    &:hover {
-      cursor: pointer;
-    }
   }
   &__search {
     margin: 15px 0;
@@ -323,8 +318,19 @@ export default {
 
 .item {
   width: 100%;
+  padding: 0 5px;
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
   &__hidden {
     display: none;
+  }
+  &:hover {
+    background-color: #7c838d17;
+    border-radius: 6px;
+    cursor: pointer;
   }
 }
 

@@ -15,6 +15,7 @@
       <panel-filters
         class="quests__filters"
         @sortSpec="sortBySpec"
+        @openSpec="scrollToSpec"
         @sortTime="sortByTime"
         @sortPrice="sortByPrice"
         @sortPriority="sortByPriority"
@@ -113,6 +114,9 @@ export default {
     this.$store.commit('quests/setAllQuests', { count: null, quests: [] });
   },
   methods: {
+    scrollToSpec(value) {
+      if (value) window.scrollTo(0, this.isShowMap ? 500 : 200);
+    },
     async updateQuests(item) {
       this.SetLoader(true);
       if (!item?.star && item?.id) await this.$store.dispatch('quests/setStarOnQuest', item.id);

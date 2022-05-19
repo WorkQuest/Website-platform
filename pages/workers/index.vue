@@ -15,6 +15,7 @@
       <panel-filters
         class="employees__filters"
         @sortSpec="sortBySpec"
+        @openSpec="scrollToSpec"
         @sortTime="sortByTime"
         @sortPrice="sortByPrice"
         @sortRating="sortByRating"
@@ -115,6 +116,9 @@ export default {
     this.$store.commit('quests/setEmployeeList', { count: null, users: [] });
   },
   methods: {
+    scrollToSpec(value) {
+      if (value) window.scrollTo(0, this.isShowMap ? 500 : 200);
+    },
     async setPage(newPage) {
       this.page = newPage;
       this.ScrollToTop();
