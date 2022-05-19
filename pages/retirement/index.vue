@@ -305,6 +305,13 @@ export default {
         await this.checkWalletExists();
         return;
       }
+      await this.fetchWalletData({
+        method: 'balanceOf',
+        address: getWalletAddress(),
+        abi: ERC20,
+        token: TokenMap[TokenSymbols.WUSD],
+        symbol: TokenSymbols.WUSD,
+      });
       const { balanceData } = this;
       this.ShowModal({
         key: modals.applyForAPension,
