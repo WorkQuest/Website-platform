@@ -244,7 +244,7 @@ export default {
   async beforeCreate() {
     await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
-  async mounted(values) {
+  async mounted() {
     if (!this.isWalletConnected) return;
     this.SetLoader(true);
     await Promise.all([
@@ -305,6 +305,13 @@ export default {
         await this.checkWalletExists();
         return;
       }
+      await this.fetchWalletData({
+        method: 'balanceOf',
+        address: getWalletAddress(),
+        abi: ERC20,
+        token: TokenMap[TokenSymbols.WUSD],
+        symbol: TokenSymbols.WUSD,
+      });
       const { balanceData } = this;
       this.ShowModal({
         key: modals.applyForAPension,

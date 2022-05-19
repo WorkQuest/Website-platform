@@ -43,7 +43,10 @@
                 </div>
               </div>
             </div>
-            <div class="checkpoints__block">
+            <div
+              v-if="options.mode !== 'borrow'"
+              class="checkpoints__block"
+            >
               <label
                 for="checkpoints__field"
                 class="checkpoints__label"
@@ -76,7 +79,10 @@
               </div>
             </div>
           </div>
-          <div class="content__field">
+          <div
+            v-if="options.mode !== 'borrow'"
+            class="content__field"
+          >
             <div class="content__label">
               {{ $t('modals.howMuchTokensWouldYouLikeToLock', { token: checkpoints[selCurrencyID - 1].name }) }}
             </div>
@@ -89,7 +95,10 @@
               :name="$tc('modals.quantityField')"
             />
           </div>
-          <div class="content__field">
+          <div
+            v-if="options.mode !== 'borrow'"
+            class="content__field"
+          >
             <div class="content__label">
               {{ $t('modals.choosePeriod') }}
             </div>
@@ -118,10 +127,19 @@
           {{ $t('meta.btns.cancel') }}
         </base-btn>
         <base-btn
+          v-if="options.mode !== 'borrow'"
           class="buttons__button"
           data-selector="SUBMIT"
           :disabled="!validated || !passed || invalid"
           @click="handleSubmit(openConfirmDetailsModal)"
+        >
+          {{ $t('meta.btns.submit') }}
+        </base-btn>
+        <base-btn
+          v-if="options.mode === 'borrow'"
+          class="buttons__button"
+          data-selector="SUBMIT"
+          @click="openConfirmDetailsModal()"
         >
           {{ $t('meta.btns.submit') }}
         </base-btn>
