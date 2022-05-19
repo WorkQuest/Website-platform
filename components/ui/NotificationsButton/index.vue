@@ -281,6 +281,7 @@ export default {
       font-size: 16px;
       color: $black800;
       overflow: hidden;
+      white-space: nowrap;
       text-overflow: ellipsis;
       margin-right: 5px;
       cursor: pointer;
