@@ -178,8 +178,8 @@ export default {
     },
     async sortByPrice(value) {
       if (!Object.keys(value).length) {
-        delete this.query['betweenCostPerHour[from]'];
-        delete this.query['betweenCostPerHour[to]'];
+        delete this.query['priceBetween[from]'];
+        delete this.query['priceBetween[to]'];
       } else this.query = { ...this.query, ...value };
       await this.fetchQuestsList(true);
     },
