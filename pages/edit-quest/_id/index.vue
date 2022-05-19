@@ -622,7 +622,6 @@ export default {
         workplace: WorkplaceIndex[this.workplaceIndex],
         priority: this.priorityIndex,
         typeOfEmployment: TypeOfEmployments[this.employmentIndex],
-        // payPeriod: PayPeriodsIndex[this.payPeriodIndex],
         title: this.questTitle,
         medias,
         specializationKeys: this.selectedSpecAndSkills,
