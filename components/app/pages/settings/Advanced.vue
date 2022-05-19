@@ -154,12 +154,12 @@ export default {
     const { employerProfileVisibilitySetting, workerProfileVisibilitySetting } = JSON.parse(JSON.stringify(this.userData));
     if (this.userRole === UserRole.EMPLOYER) {
       const { arrayRatingStatusCanRespondToQuest, arrayRatingStatusInMySearch } = employerProfileVisibilitySetting;
-      this.checkboxBlocks.visibilityUser = arrayRatingStatusCanRespondToQuest;
-      this.checkboxBlocks.restrictionRankingStatus = arrayRatingStatusInMySearch;
+      this.checkboxBlocks.visibilityUser = arrayRatingStatusCanRespondToQuest || [];
+      this.checkboxBlocks.restrictionRankingStatus = arrayRatingStatusInMySearch || [];
     } else {
       const { arrayRatingStatusCanInviteMeOnQuest, arrayRatingStatusInMySearch } = workerProfileVisibilitySetting;
-      this.checkboxBlocks.visibilityUser = arrayRatingStatusCanInviteMeOnQuest;
-      this.checkboxBlocks.restrictionRankingStatus = arrayRatingStatusInMySearch;
+      this.checkboxBlocks.visibilityUser = arrayRatingStatusCanInviteMeOnQuest || [];
+      this.checkboxBlocks.restrictionRankingStatus = arrayRatingStatusInMySearch || [];
     }
     this.checkMaskAllUser();
   },
