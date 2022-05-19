@@ -168,7 +168,7 @@ export default {
     selectedPrice() {
       const { selectedPrice: { from, to } } = this;
       const query = {};
-      const queryName = this.isEmployer ? 'betweenWagePerHour' : 'priceBetween';
+      const queryName = this.isEmployer ? 'betweenCostPerHour' : 'priceBetween';
       if (from || to) {
         query[`${queryName}[from]`] = from || 0;
         query[`${queryName}[to]`] = to || 99999999999999;
