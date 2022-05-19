@@ -83,7 +83,6 @@
           </div>
           <specializations-selector
             :skills="questData.questSpecializations"
-            read-mode
             @changeSkills="updateSelectedSkills"
           />
           <div class="page__address">
