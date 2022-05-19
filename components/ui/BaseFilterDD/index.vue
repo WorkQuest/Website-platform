@@ -8,7 +8,7 @@
       class="dd dd__container"
     >
       <button
-        class="dd__btn"
+        class="dd__btn dd__btn_sort"
         data-selector="ACTION-BTN-TOGGLE-DD"
         @click="toggleDd"
       >
@@ -370,7 +370,6 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
     width: 100%;
     max-width: 400px;
     background: $white;
@@ -379,6 +378,9 @@ export default {
     border: 1px solid transparent;
     &_gray {
       background-color: $black0;
+    }
+    &_sort {
+      padding: 0 20px;
     }
     &:hover {
       border: 1px solid $black100;

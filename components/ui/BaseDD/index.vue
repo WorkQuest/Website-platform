@@ -13,7 +13,7 @@
     >
       <slot name="card" />
       <button
-        class="dd__btn"
+        class="dd__btn dd__btn_sort"
         :class="ddClass"
         :data-selector="`ACTION-BTN-${dataSelector.toUpperCase()}`"
         :disabled="disabled || elementsIsEmpty"
@@ -340,7 +340,6 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 5px 20px;
     width: 100%;
     background: #FFFFFF;
     border-radius: 6px;
@@ -362,6 +361,9 @@ export default {
     }
     &_border {
       border: 1px solid $black0;
+    }
+    &_sort  {
+      padding: 0 20px;
     }
   }
 
