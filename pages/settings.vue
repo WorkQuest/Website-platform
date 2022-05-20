@@ -186,13 +186,13 @@ export default {
       selectedSpecAndSkills: userData.userSpecializations || [],
     };
 
-    if (this.isEmployer) {
+    if (this.isEmployer && employerProfileVisibilitySetting) {
       const { arrayRatingStatusCanRespondToQuest, arrayRatingStatusInMySearch } = employerProfileVisibilitySetting;
       this.profileVisibilitySetting = {
         ratingStatusCanRespondToQuest: arrayRatingStatusCanRespondToQuest,
         ratingStatusInMySearch: arrayRatingStatusInMySearch,
       };
-    } else {
+    } else if (workerProfileVisibilitySetting) {
       const { arrayRatingStatusCanInviteMeOnQuest, arrayRatingStatusInMySearch } = workerProfileVisibilitySetting;
       this.profileVisibilitySetting = {
         ratingStatusCanInviteMeOnQuest: arrayRatingStatusCanInviteMeOnQuest,
