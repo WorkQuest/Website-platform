@@ -8,6 +8,7 @@
       class="dd dd__container"
     >
       <button
+        id="sort-btn"
         class="dd__btn dd__btn_sort"
         data-selector="ACTION-BTN-TOGGLE-DD"
         @click="toggleDd"
@@ -247,7 +248,7 @@ export default {
       };
     },
     toggleDd() {
-      this.$emit('openSpec', this.isOpenDD);
+      if (this.isOpenDD) document.getElementById('sort-btn').scrollIntoView({ behavior: 'smooth', block: 'start' });
       this.isOpenDD = !this.isOpenDD;
     },
     toggleCategory(index) {
@@ -308,17 +309,16 @@ export default {
     overflow-x: hidden;
     overscroll-behavior-y: contain;
     height: 400px;
-    padding: 20px 0 0 0;
     min-width: 358px;
   }
   &__search {
-    margin: 15px 0;
+    margin: 10px 0;
   }
 }
 
 .item {
   width: 100%;
-  padding: 0 5px;
+  padding: 5px 15px;
   &__head {
     display: flex;
     align-items: center;
@@ -342,6 +342,9 @@ export default {
       text-shadow: 0px -1px 10px -3px rgba(34, 60, 80, 0.4);
       cursor: pointer;
     }
+  }
+  &__body {
+    padding-top: 5px;
   }
   &__item {
     width: 100%;
