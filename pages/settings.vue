@@ -406,7 +406,7 @@ export default {
           workExperiences: addInfo.workExperiences,
           description: addInfo.description || null,
         },
-        workplace: WorkplaceIndex[this.skills.distantIndex],
+        workplace: WorkplaceIndex[this.skills.distantIndex] || null,
         payPeriod: PayPeriodsIndex[this.skills.payPeriodIndex] || this.userData.payPeriod,
         priority: this.skills.priorityIndex,
         costPerHour: this.skills.perHour || this.userData.costPerHour,
