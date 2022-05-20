@@ -87,7 +87,8 @@ import {
   RatingFilter,
   PriorityFilter,
   WorkplaceFilter,
-  TypeOfEmploymentFilters, PayPeriodsIndex, PayPeriodsFilter,
+  TypeOfEmploymentFilters,
+  PayPeriodsFilter,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 

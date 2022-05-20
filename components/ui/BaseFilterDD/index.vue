@@ -7,8 +7,12 @@
     <div
       class="dd dd__container"
     >
+      <div
+        ref="sort"
+        class="dd__anchor"
+      />
       <button
-        class="dd__btn"
+        class="dd__btn dd__btn_sort"
         data-selector="ACTION-BTN-TOGGLE-DD"
         @click="toggleDd"
       >
@@ -56,7 +60,7 @@
                   class="filter__item item"
                 >
                   <div
-                    class="item"
+                    class="item__head"
                     :data-selector="`ACTION-BTN-TOGGLE-CATEGORY-${specIdx}`"
                     @click="toggleCategory(specIdx)"
                   >
@@ -247,6 +251,7 @@ export default {
       };
     },
     toggleDd() {
+      if (this.isOpenDD) this.$refs.sort.scrollIntoView();
       this.isOpenDD = !this.isOpenDD;
     },
     toggleCategory(index) {
@@ -274,7 +279,7 @@ export default {
 <style scoped lang="scss">
 .icon {
   cursor: pointer;
-  font-size: 25px;
+  font-size: 23px;
   color: $blue !important;
   &-caret_up::before {
     @extend .icon;
@@ -307,24 +312,28 @@ export default {
     overflow-x: hidden;
     overscroll-behavior-y: contain;
     height: 400px;
-    margin: 10px 0 0 0;
-    padding: 10px 0 0 0;
     min-width: 358px;
   }
-  &__item {
-    &:hover {
-      cursor: pointer;
-    }
-  }
   &__search {
-    margin: 15px 0;
+    margin: 10px 0;
   }
 }
 
 .item {
   width: 100%;
+  padding: 5px 15px;
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
   &__hidden {
     display: none;
+  }
+  &:hover {
+    background-color: #7c838d17;
+    border-radius: 6px;
+    cursor: pointer;
   }
 }
 
@@ -336,6 +345,9 @@ export default {
       text-shadow: 0px -1px 10px -3px rgba(34, 60, 80, 0.4);
       cursor: pointer;
     }
+  }
+  &__body {
+    padding-top: 5px;
   }
   &__item {
     width: 100%;
@@ -352,6 +364,9 @@ export default {
 }
 
 .dd {
+  &__anchor {
+    @include anchor;
+  }
   &__container {
     display: flex;
     align-items: center;
@@ -370,7 +385,6 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
     width: 100%;
     max-width: 400px;
     background: $white;
@@ -379,6 +393,9 @@ export default {
     border: 1px solid transparent;
     &_gray {
       background-color: $black0;
+    }
+    &_sort {
+      padding: 0 20px;
     }
     &:hover {
       border: 1px solid $black100;
