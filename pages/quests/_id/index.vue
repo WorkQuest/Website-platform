@@ -630,7 +630,7 @@ export default {
     },
     async acceptCompletedWorkOnQuest() {
       this.SetLoader(true);
-      const { contractAddress } = this.quest;
+      const { contractAddress, id } = this.quest;
       const [feeRes] = await Promise.all([
         this.$store.dispatch('quests/getFeeDataJobMethod', {
           abi: WorkQuest,
@@ -654,11 +654,10 @@ export default {
         },
         submitMethod: async () => {
           this.$store.commit('notifications/setWaitForUpdateQuest', {
-            id: this.quest.id,
+            id,
             callback: () => this.showQuestModal(2),
           });
-          const { $store } = this;
-          const txRes = await $store.dispatch('quests/acceptJobResult', contractAddress);
+          await this.$store.dispatch('quests/acceptJobResult', contractAddress);
         },
       });
     },
@@ -723,7 +722,7 @@ export default {
     },
     async acceptWorkOnQuest() {
       this.SetLoader(true);
-      const { contractAddress } = this.quest;
+      const { contractAddress, id } = this.quest;
       const [feeRes] = await Promise.all([
         this.$store.dispatch('quests/getFeeDataJobMethod', {
           abi: WorkQuest,
@@ -747,7 +746,7 @@ export default {
         },
         submitMethod: async () => {
           this.$store.commit('notifications/setWaitForUpdateQuest', {
-            id: this.quest.id,
+            id,
             callback: () => this.ShowModal({
               key: modals.status,
               img: images.QUEST_AGREED,
@@ -761,7 +760,7 @@ export default {
     },
     async completeWorkOnQuest() {
       this.SetLoader(true);
-      const { contractAddress } = this.quest;
+      const { contractAddress, id } = this.quest;
       const [feeRes] = await Promise.all([
         this.$store.dispatch('quests/getFeeDataJobMethod', {
           abi: WorkQuest,
@@ -785,7 +784,7 @@ export default {
         },
         submitMethod: async () => {
           this.$store.commit('notifications/setWaitForUpdateQuest', {
-            id: this.quest.id,
+            id,
             callback: () => this.ShowModal({
               key: modals.status,
               img: images.QUEST_AGREED,
