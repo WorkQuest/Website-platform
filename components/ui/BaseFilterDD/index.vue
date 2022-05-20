@@ -4,9 +4,7 @@
     data-selector="COMPONENT-BASE-FILTER-DD"
     class="dd"
   >
-    <div
-      class="dd dd__container"
-    >
+    <div class="dd dd__container">
       <div
         ref="sort"
         class="dd__anchor"
@@ -17,9 +15,7 @@
         @click="toggleDd"
       >
         {{ $t('filters.dd.1') }}
-        <span
-          :class="isOpenDD ? 'icon-caret_down' : 'icon-caret_up'"
-        />
+        <span :class="isOpenDD ? 'icon-caret_down' : 'icon-caret_up'" />
       </button>
       <transition name="fade">
         <div
@@ -47,6 +43,7 @@
               :placeholder="$t('meta.placeholders.searchSpecSkill')"
               :is-search="true"
               :is-hide-error="true"
+              @clear.stop
             />
             <div class="filter__body">
               <div
@@ -56,17 +53,15 @@
                 :data-selector="`SEARCH-FILTERS-${specIdx}`"
                 :class="{'item__hidden' : !isMatchedSpec(item, specIdx)}"
               >
-                <div
-                  class="filter__item item"
-                >
+                <div class="filter__item item">
                   <div
                     class="item__head"
                     :data-selector="`ACTION-BTN-TOGGLE-CATEGORY-${specIdx}`"
                     @click="toggleCategory(specIdx)"
                   >
-                    <span
-                      class="item__title"
-                    >{{ item.title }}</span>
+                    <span class="item__title">
+                      {{ item.title }}
+                    </span>
                     <span
                       v-if="!visible[specIdx]"
                       class="icon-caret_down"
@@ -121,7 +116,9 @@
                         <label
                           :id="skillIdx"
                           class="sub__label"
-                        >{{ sub.title }}</label>
+                        >
+                          {{ sub.title }}
+                        </label>
                       </div>
                     </div>
                   </div>
@@ -149,7 +146,7 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'Dd',
+  name: 'FilterDD',
   directives: {
     ClickOutside,
   },
