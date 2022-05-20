@@ -186,13 +186,13 @@ export default {
       selectedSpecAndSkills: userData.userSpecializations || [],
     };
 
-    if (this.isEmployer) {
+    if (this.isEmployer && employerProfileVisibilitySetting) {
       const { arrayRatingStatusCanRespondToQuest, arrayRatingStatusInMySearch } = employerProfileVisibilitySetting;
       this.profileVisibilitySetting = {
         ratingStatusCanRespondToQuest: arrayRatingStatusCanRespondToQuest,
         ratingStatusInMySearch: arrayRatingStatusInMySearch,
       };
-    } else {
+    } else if (workerProfileVisibilitySetting) {
       const { arrayRatingStatusCanInviteMeOnQuest, arrayRatingStatusInMySearch } = workerProfileVisibilitySetting;
       this.profileVisibilitySetting = {
         ratingStatusCanInviteMeOnQuest: arrayRatingStatusCanInviteMeOnQuest,
@@ -406,7 +406,7 @@ export default {
           workExperiences: addInfo.workExperiences,
           description: addInfo.description || null,
         },
-        workplace: WorkplaceIndex[this.skills.distantIndex],
+        workplace: WorkplaceIndex[this.skills.distantIndex] || null,
         payPeriod: PayPeriodsIndex[this.skills.payPeriodIndex] || this.userData.payPeriod,
         priority: this.skills.priorityIndex,
         costPerHour: this.skills.perHour || this.userData.costPerHour,
