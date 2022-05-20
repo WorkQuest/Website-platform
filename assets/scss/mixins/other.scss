@@ -14,3 +14,8 @@
   display: flex;
   align-items: center;
 }
+// Style for anchor logic. Takes away the height of the header for a correct shift(scroll)
+@mixin anchor {
+  position: absolute;
+  top: -75px;
+}

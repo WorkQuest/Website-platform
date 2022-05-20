@@ -7,8 +7,11 @@
     <div
       class="dd dd__container"
     >
+      <div
+        ref="sort"
+        class="dd__anchor"
+      />
       <button
-        id="sort-btn"
         class="dd__btn dd__btn_sort"
         data-selector="ACTION-BTN-TOGGLE-DD"
         @click="toggleDd"
@@ -248,7 +251,7 @@ export default {
       };
     },
     toggleDd() {
-      if (this.isOpenDD) document.getElementById('sort-btn').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (this.isOpenDD) this.$refs.sort.scrollIntoView();
       this.isOpenDD = !this.isOpenDD;
     },
     toggleCategory(index) {
@@ -361,6 +364,9 @@ export default {
 }
 
 .dd {
+  &__anchor {
+    @include anchor;
+  }
   &__container {
     display: flex;
     align-items: center;
