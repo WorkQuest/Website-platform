@@ -243,6 +243,7 @@ import modals from '~/store/modals/modals';
 import { getStyledAmount } from '~/utils/wallet';
 import { images } from '~/utils/images';
 import { REFERRAL_EVENTS } from '~/utils/сonstants/referral';
+import { TokenSymbols } from '~/utils/enums';
 
 export default {
   name: 'Referral',
@@ -282,7 +283,7 @@ export default {
       return Math.ceil(this.paidEventsList.length / this.perPage);
     },
     filterCreatedReferralsList() {
-      return this.referralsList.filter((item) => item.referralUser.referralStatus === 'created');
+      return this.referralsList.filter((item) => item.referralUser.referralStatus === 'created' && item.raiseView);
     },
     tableFields() {
       return [
@@ -401,10 +402,16 @@ export default {
       this.ShowModal({
         key: modals.referralClaim,
         fields: {
-          to: { name: this.$t('meta.toBig'), value: this.userAddress },
+          to: { name: this.$t('meta.toBig'), value: this.convertToBech32('wq', this.userAddress) },
           amount: { name: this.$t('modals.amount'), value: this.referralReward },
         },
         desc: this.$t('modals.claimConfirm'),
+        submit: async () => {
+          this.SetLoader(true);
+          await this.$store.dispatch('oracle/setCurrentPriceToken', { symbol: TokenSymbols.WQT });
+          await this.$store.dispatch('referral/claimReferralReward', this.userAddress);
+          this.SetLoader(false);
+        },
       });
     },
     async clickRegistrationBtnHandler() {
@@ -419,7 +426,11 @@ export default {
           cancel: this.$t('meta.btns.cancel'),
           button: this.$t('meta.btns.submit'),
           itemList: this.filterCreatedReferralsList,
-          callback: async () => await this.$store.dispatch('referral/addReferrals', this.userAddress),
+          callback: async () => {
+            this.SetLoader(true);
+            await this.$store.dispatch('referral/addReferrals', this.userAddress);
+            this.SetLoader(false);
+          },
         });
       } else {
         this.ShowModal({
