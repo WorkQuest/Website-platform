@@ -66,11 +66,11 @@ export const KeyCodes = {
 // Filters
 export const WorkplaceIndex = ['Remote', 'InOffice', 'Hybrid'];
 export const PayPeriodsIndex = ['Hourly', 'Daily', 'Weekly', 'BiWeekly', 'SemiMonthly', 'Monthly', 'Quarterly', 'SemiAnnually', 'Annually', 'FixedPeriod', 'ByAgreement'];
-export const TypeOfJobs = ['FullTime', 'PartTime', 'FixedTerm', 'EmploymentContract', 'RemoteWork'];
+export const TypeOfEmployments = ['FullTime', 'PartTime', 'FixedTerm', 'EmploymentContract', 'RemoteWork'];
 
 export const PayPeriodsFilter = ['all', 'Hourly', 'Daily', 'Weekly', 'BiWeekly', 'SemiMonthly', 'Monthly', 'Quarterly', 'SemiAnnually', 'Annually', 'FixedPeriod', 'ByAgreement'];
 export const WorkplaceFilter = ['all', 'Remote', 'InOffice', 'Hybrid'];
-export const TypeOfJobFilter = ['all', 'FullTime', 'PartTime', 'FixedTerm', 'EmploymentContract', 'RemoteWork'];
+export const TypeOfEmploymentFilters = ['all', 'FullTime', 'PartTime', 'FixedTerm', 'EmploymentContract', 'RemoteWork'];
 export const PriorityFilter = [
   { key: 'all', value: 0 },
   { key: 'urgent', value: 3 },

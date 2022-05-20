@@ -48,7 +48,7 @@
             </div>
             <div class="page__dd">
               <base-dd
-                v-model="priorityIndex"
+                v-model="employmentIndex"
                 :label="$tc('quests.employment.employment')"
                 type="gray"
                 :items="employment"
@@ -59,13 +59,25 @@
             </div>
             <div class="page__dd">
               <base-dd
-                v-model="categoryIndex"
-                :label="$tc('quests.distantWork.distantWork')"
+                v-model="workplaceIndex"
+                :label="$t('quests.distantWork.title')"
                 type="gray"
                 :items="distantWork"
                 rules="required"
                 :name="$t('quests.distantWork.distantWork')"
                 data-selector="DISTANT"
+              />
+            </div>
+            <div class="page__dd">
+              <base-dd
+                v-model="payPeriodIndex"
+                :label="$t('quests.payPeriods.title')"
+                type="gray"
+                :items="payPeriods"
+                rules="required"
+                :name="$t('quests.payPeriods.title')"
+                data-selector="PAY_PERIOD"
+                disabled
               />
             </div>
           </div>
@@ -271,7 +283,9 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { Path, TokenMap, TokenSymbols } from '~/utils/enums';
+import {
+  Path, PayPeriodsIndex, TokenMap, TokenSymbols, TypeOfEmployments, WorkplaceIndex,
+} from '~/utils/enums';
 import {
   QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses, CommissionForCreatingAQuest,
 } from '~/utils/сonstants/quests';
@@ -291,7 +305,8 @@ export default {
       selectedSpecAndSkills: [],
       priorityIndex: 1,
       employmentIndex: 0,
-      categoryIndex: 0,
+      workplaceIndex: 0,
+      payPeriodIndex: 0,
       runtimeValue: '',
       questTitle: '',
       address: '',
@@ -370,11 +385,7 @@ export default {
       ];
     },
     employment() {
-      return [
-        this.$t('quests.employment.fullTime'),
-        this.$t('quests.employment.partTime'),
-        this.$t('quests.employment.fixedTerm'),
-      ];
+      return TypeOfEmployments.map((item) => this.$t(`quests.employment.${item}`));
     },
     distantWork() {
       return [
@@ -382,6 +393,9 @@ export default {
         this.$t('quests.distantWork.workInOffice'),
         this.$t('quests.distantWork.bothVariant'),
       ];
+    },
+    payPeriods() {
+      return PayPeriodsIndex.map((item) => this.$t(`quests.payPeriods.${item}`));
     },
   },
   beforeCreate() {
@@ -396,7 +410,7 @@ export default {
       lang: this.$i18n?.localeProperties?.code || 'en-US',
     });
     const {
-      title, locationPlaceName, price, description, location, employment, id, status,
+      title, locationPlaceName, price, description, location, typeOfEmployment, id, status, payPeriod, workplace,
     } = this.questData;
 
     if ([QuestStatuses.Pending, InfoModeEmployer.Dispute, InfoModeEmployer.Done, InfoModeEmployer.Closed].includes(status)) {
@@ -404,7 +418,9 @@ export default {
     }
 
     this.runtimeValue = 1;
-    this.employmentIndex = this.parseEmployment(employment);
+    this.employmentIndex = TypeOfEmployments.indexOf(typeOfEmployment);
+    this.payPeriodIndex = PayPeriodsIndex.indexOf(payPeriod);
+    this.workplaceIndex = WorkplaceIndex.indexOf(workplace);
     this.questTitle = title;
     this.address = locationPlaceName;
     this.price = new BigNumber(price).shiftedBy(-18).toString();
@@ -478,22 +494,6 @@ export default {
     selectAddress(address) {
       this.addresses = [];
       this.address = address.formatted;
-    },
-    convertEmployment(employmentId) {
-      const employments = [
-        'fullTime',
-        'partTime',
-        'fixedTerm',
-      ];
-      return employments[employmentId];
-    },
-    parseEmployment(employment) {
-      const employments = {
-        fullTime: 0,
-        partTime: 1,
-        fixedTerm: 2,
-      };
-      return employments[employment];
     },
     async getAddressInfo(address) {
       try {
@@ -619,9 +619,9 @@ export default {
       this.SetLoader(true);
       const medias = await this.uploadFiles(this.files);
       const payload = {
-        workplace: 'distant',
+        workplace: WorkplaceIndex[this.workplaceIndex],
         priority: this.priorityIndex,
-        employment: this.convertEmployment(this.employmentIndex),
+        typeOfEmployment: TypeOfEmployments[this.employmentIndex],
         title: this.questTitle,
         medias,
         specializationKeys: this.selectedSpecAndSkills,

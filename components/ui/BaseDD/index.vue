@@ -250,6 +250,9 @@ export default {
   }
 
   &__title {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     color: $black500;
     &_white {
       color: $white;
