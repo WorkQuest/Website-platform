@@ -25,4 +25,7 @@ export default {
     state.notifications.count += 1;
     this.commit('notifications/setUnreadNotifsCount', 1);
   },
+  setWaitForUpdateQuest(state, data) {
+    state.waitForUpdateQuest = data;
+  },
 };

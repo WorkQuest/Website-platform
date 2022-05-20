@@ -5,4 +5,5 @@ export default () => ({
     count: 0,
   },
   reducedNotifications: [],
+  waitForUpdateQuest: null,
 });

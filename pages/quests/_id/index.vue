@@ -601,6 +601,7 @@ export default {
             submitMethod: async ({ reason, problemDescription }) => {
               ShowModal({
                 key: modals.transactionReceipt,
+                isDontOffLoader: true,
                 fields: {
                   from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
                   to: { name: this.$t('meta.toBig'), value: contractAddress },
@@ -645,18 +646,19 @@ export default {
       }
       this.ShowModal({
         key: modals.transactionReceipt,
+        isDontOffLoader: true,
         fields: {
           from: { name: this.$t('meta.fromBig'), value: this.userAddress },
           to: { name: this.$t('meta.toBig'), value: contractAddress },
           fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WQT },
         },
         submitMethod: async () => {
+          this.$store.commit('notifications/setWaitForUpdateQuest', {
+            id: this.quest.id,
+            callback: () => this.showQuestModal(2),
+          });
           const { $store } = this;
           const txRes = await $store.dispatch('quests/acceptJobResult', contractAddress);
-          if (txRes.ok) {
-            this.showQuestModal(2);
-            await $store.dispatch('quests/setInfoDataMode', QuestStatuses.Done);
-          }
         },
       });
     },
@@ -737,22 +739,23 @@ export default {
       }
       this.ShowModal({
         key: modals.transactionReceipt,
+        isDontOffLoader: true,
         fields: {
           from: { name: this.$t('meta.fromBig'), value: this.userAddress },
           to: { name: this.$t('meta.toBig'), value: contractAddress },
           fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WQT },
         },
         submitMethod: async () => {
-          const txRes = await this.$store.dispatch('quests/acceptJob', contractAddress);
-          if (txRes.ok) {
-            await this.getQuest();
-            this.ShowModal({
+          this.$store.commit('notifications/setWaitForUpdateQuest', {
+            id: this.quest.id,
+            callback: () => this.ShowModal({
               key: modals.status,
               img: images.QUEST_AGREED,
               title: this.$t('meta.questInfo'),
               subtitle: this.$t('quests.workOnQuestAccepted'),
-            });
-          }
+            }),
+          });
+          await this.$store.dispatch('quests/acceptJob', contractAddress);
         },
       });
     },
@@ -774,23 +777,23 @@ export default {
       }
       this.ShowModal({
         key: modals.transactionReceipt,
+        isDontOffLoader: true,
         fields: {
           from: { name: this.$t('meta.fromBig'), value: this.userAddress },
           to: { name: this.$t('meta.toBig'), value: contractAddress },
           fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WQT },
         },
         submitMethod: async () => {
-          const txRes = await this.$store.dispatch('quests/verificationJob', contractAddress);
-          if (txRes.ok) {
-            await this.$store.dispatch('quests/setInfoDataMode', QuestStatuses.WaitEmployerConfirm);
-            await this.getQuest();
-            this.ShowModal({
+          this.$store.commit('notifications/setWaitForUpdateQuest', {
+            id: this.quest.id,
+            callback: () => this.ShowModal({
               key: modals.status,
               img: images.QUEST_AGREED,
               title: this.$t('meta.questInfo'),
               subtitle: this.$t('quests.pleaseWaitEmp'),
-            });
-          }
+            }),
+          });
+          await this.$store.dispatch('quests/verificationJob', contractAddress);
         },
       });
     },
