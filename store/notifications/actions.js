@@ -172,7 +172,7 @@ export default {
       case NotificationAction.QUEST_STATUS_UPDATED:
         notification.sender = userRole === UserRole.EMPLOYER ? assignedWorker
           || { avatar: { url: images.WQ_LOGO }, firstName: 'Workquest info' } : user;
-        notification.params = { // TODO: жалуется что мутацию меняю тут
+        notification.params = {
           ...notification.params,
           title,
           path: `${Path.QUESTS}/${data.id}`,
