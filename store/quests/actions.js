@@ -9,7 +9,7 @@ import {
   InfoModeEmployer,
 } from '~/utils/сonstants/quests';
 
-import { WQFactory, WorkQuest } from '~/abi/index';
+import { WQFactory, WorkQuest, WQPromotion } from '~/abi/index';
 
 import {
   hashText,
@@ -400,5 +400,28 @@ export default {
   // Отправить результат работы на проверку employer'у
   async verificationJob({ dispatch }, contractAddress) {
     return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.VerificationJob });
+  },
+
+  /** RAISE VIEWS */
+  /**
+   * Raise view quest
+   * @param _
+   * @param address - quest contract address
+   * @param tariff - [0, 1, 2, 3] // GoldPlus, Gold, Silver, Bronze
+   * @param period - days
+   */
+  async promoteQuest(_, { address, tariff, period }) {
+    try {
+      const res = await sendWalletTransaction('promoteQuest', {
+        address: process.env.WORKNET_PROMOTION,
+        abi: WQPromotion,
+        data: [address, tariff, period],
+      });
+      console.log('promote res', res);
+      return success(res);
+    } catch (e) {
+      console.error('quests/promoteQuest', e);
+      return error(-1, e.msg, e);
+    }
   },
 };
