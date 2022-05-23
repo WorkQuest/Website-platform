@@ -4,4 +4,5 @@ export default {
   getNotificationsCount: (state) => state.notifications.count,
   getReducedNotifications: (state) => state.reducedNotifications,
   getLocalNotifications: (state) => state.localNotifications,
+  getWaitForUpdateQuest: (state) => state.waitForUpdateQuest,
 };

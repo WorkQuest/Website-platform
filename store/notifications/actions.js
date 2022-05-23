@@ -132,7 +132,9 @@ export default {
     }
   },
 
-  async setCurrNotificationObject({ getters, rootGetters, dispatch }, notification) {
+  async setCurrNotificationObject({
+    getters, rootGetters, dispatch, commit,
+  }, notification) {
     const userData = rootGetters['user/getUserData'];
     const { data, action } = notification.notification;
     const {
@@ -141,8 +143,8 @@ export default {
     } = data;
     const currentUserId = userData.id;
     const userRole = rootGetters.getUserRole;
-    const currentPath = this.$router.history.current.path;
 
+    const currentPath = this.$router.history.current.path;
     async function updateQuests() {
       /* For update quest lists */
       const questListPathArray = [
@@ -177,10 +179,6 @@ export default {
     notification.params = { isLocal: false };
 
     switch (action) {
-      case notificationsQuestsActions.includes(action):
-        await updateQuests();
-        break;
-
       case NotificationAction.QUEST_STATUS_UPDATED:
         notification.sender = userRole === UserRole.EMPLOYER ? assignedWorker
           || { avatar: { url: images.WQ_LOGO }, firstName: 'Workquest info' } : user;
@@ -189,6 +187,15 @@ export default {
           title,
           path: `${Path.QUESTS}/${data.id}`,
         };
+
+        if (getters.getWaitForUpdateQuest?.id === data?.id) {
+          dispatch('main/setLoading', false, { root: true });
+          if (getters.getWaitForUpdateQuest?.callback) {
+            await getters.getWaitForUpdateQuest.callback();
+          }
+          commit('setWaitForUpdateQuest', null);
+        }
+
         await dispatch('updateProfile');
         break;
 
@@ -259,6 +266,10 @@ export default {
 
       default:
         break;
+    }
+
+    if (notificationsQuestsActions.includes(action)) {
+      await updateQuests();
     }
 
     /** Set sender if it need */
