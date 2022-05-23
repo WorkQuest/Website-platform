@@ -113,9 +113,9 @@ export default {
     },
     async handleSubmit() {
       if (this.isLoading) return;
-      if (!this.options.isNotClose) this.hide();
       this.SetLoader(true);
       if (this.options.callback) await this.options.callback();
+      if (!this.options.isNotClose) this.hide();
       this.SetLoader(false);
     },
   },
