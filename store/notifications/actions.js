@@ -239,7 +239,11 @@ export default {
     }
 
     /* For update quest & quest lists */
-    if (notificationsQuestsActions.includes(action)) {
+    if ([
+      ...notificationsQuestsActions,
+      NotificationAction.QUEST_STATUS_UPDATED,
+      NotificationAction.DISPUTE_DECISION,
+    ].includes(action)) {
       const currentPath = this.$router.history.current.path;
       const questListPathArray = [
         Path.MY_QUESTS,
