@@ -406,12 +406,6 @@ export default {
           amount: { name: this.$t('modals.amount'), value: this.referralReward },
         },
         desc: this.$t('modals.claimConfirm'),
-        submit: async () => {
-          this.SetLoader(true);
-          await this.$store.dispatch('oracle/setCurrentPriceTokens');
-          await this.$store.dispatch('referral/claimReferralReward', this.userAddress);
-          this.SetLoader(false);
-        },
       });
     },
     async clickRegistrationBtnHandler() {

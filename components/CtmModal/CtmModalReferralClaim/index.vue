@@ -70,7 +70,10 @@ export default {
   methods: {
     async handleSubmit() {
       this.CloseModal();
-      this.options.submit();
+      this.SetLoader(true);
+      await this.$store.dispatch('oracle/setCurrentPriceTokens');
+      await this.$store.dispatch('referral/claimReferralReward', this.userAddress);
+      this.SetLoader(false);
     },
   },
 };
