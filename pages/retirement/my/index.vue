@@ -567,6 +567,7 @@ export default {
                 await this.getWallet();
                 this.endOfPeriod();
               }
+              this.SetLoader(false);
             },
           });
         },
