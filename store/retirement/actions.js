@@ -78,7 +78,6 @@ export default {
   },
   async pensionUpdateFee({ commit }, fee) {
     try {
-      fee = new BigNumber(fee).shiftedBy(18).toString();
       const [gasPrice, gasEstimate] = await Promise.all([
         web3.eth.getGasPrice(),
         inst.methods.updateFee.apply(null, [fee]).estimateGas({ from: getWalletAddress() }),
