@@ -134,8 +134,8 @@ export default {
     const currentUserId = userData.id;
     const userRole = rootGetters.getUserRole;
 
+    const currentPath = this.$router.history.current.path;
     async function updateQuests() {
-      const currentPath = this.$router.history.current.path;
       /* For update quest lists */
       const questListPathArray = [
         Path.MY_QUESTS,

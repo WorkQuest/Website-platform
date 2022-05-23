@@ -323,7 +323,7 @@ export default {
         this.price = questDraft?.price || '';
         this.employmentIndex = TypeOfEmployments.indexOf(questDraft?.typeOfEmployment) || 0;
         this.workplaceIndex = WorkplaceIndex.indexOf(questDraft?.workplace) || 0;
-        this.payPeriodsIndex = PayPeriodsIndex.indexOf(questDraft?.workplace) || 0;
+        this.payPeriodsIndex = PayPeriodsIndex.indexOf(questDraft?.payPeriod) || 0;
         this.runtimeIndex = PriorityFilter[questDraft?.priority + 1]?.value || 0;
         this.address = questDraft?.locationFull.locationPlaceName ?? '';
         this.coordinates = {
