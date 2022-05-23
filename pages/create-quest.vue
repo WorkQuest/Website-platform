@@ -139,6 +139,32 @@
           />
         </validation-provider>
       </div>
+      <validation-provider
+        v-slot="{ errors }"
+        :rules="{ required: { allowFalse: false } }"
+        class="page__edit-check"
+        tag="div"
+        name=" "
+      >
+        <div class="edit-check">
+          <input
+            id="understand"
+            v-model="isCheckedEditAfter"
+            class="edit-check__box"
+            data-selector="I_UNDERSTAND"
+            type="checkbox"
+          >
+          <label
+            class="edit-check__text"
+            for="understand"
+          >
+            {{ $t('quests.impossibleEditAfterCreation') }}
+          </label>
+        </div>
+        <div class="page__error">
+          {{ errors[0] }}
+        </div>
+      </validation-provider>
       <div class="page upload__container">
         <div class="upload__title">
           {{ $t('quests.uploadMaterials') }}
@@ -202,6 +228,7 @@ export default {
       geoCode: null,
       isClearData: false,
       isNotChooseSpec: false,
+      isCheckedEditAfter: false,
     };
   },
   computed: {
@@ -370,7 +397,7 @@ export default {
     },
     async toCreateQuest(invalid) {
       this.SetLoader(true);
-      if (!this.selectedSpecAndSkills.length || invalid) {
+      if (!this.isCheckedEditAfter || !this.selectedSpecAndSkills.length || invalid) {
         this.isNotChooseSpec = true;
         this.ScrollToTop();
         this.SetLoader(false);
@@ -556,6 +583,19 @@ export default {
     &:last-child {
       margin: 0;
     }
+  }
+}
+
+.edit-check {
+  display: flex;
+  align-items: center;
+  &__box {
+    width: 16px;
+    height: 16px;
+  }
+  &__text {
+    margin: 0 0 0 10px;
+    user-select: none;
   }
 }
 
