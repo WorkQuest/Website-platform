@@ -210,6 +210,7 @@
     "alpha_num": "The {_field_} field may only contain alpha-numeric characters",
     "alpha_dash": "The {_field_} field may contain alpha-numeric characters as well as dashes and underscores",
     "alpha_spaces": "The {_field_} field may only contain alphabetic characters as well as spaces",
+    "alpha_spaces_dash": "The {_field_} field may only contain alphabetic characters as well as spaces, dashes and underscores",
     "between": "The {_field_} field must be between {min} and {max}",
     "confirmed": "The {_field_} field confirmation does not match",
     "digits": "The {_field_} field must be numeric and exactly contain {length} digits",

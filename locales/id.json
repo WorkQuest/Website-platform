@@ -210,6 +210,7 @@
     "alpha_num": "Kolom {_field_} hanya boleh berisi karakter huruf dan angka saja",
     "alpha_dash": "Kolom {_field_} boleh berisi karakter huruf dan angka serta tanda hubung dan garis bawah",
     "alpha_spaces": "Kolom {_field_} hanya boleh berisi karakter huruf dan spasi saja",
+    "alpha_spaces_dash": "The {_field_} field may only contain alphabetic characters as well as spaces, dashes and underscores",
     "between": "Kolom {_field_} harus antara {min} hingga {max}",
     "confirmed": "Konfirmasi kolom {_field_} tidak sama",
     "digits": "Kolom {_field_} harus berisi angka dan tepat berisi {length} digit",
