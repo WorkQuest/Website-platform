@@ -69,8 +69,8 @@ export default {
   },
   methods: {
     async handleSubmit() {
-      this.options.submit();
       this.CloseModal();
+      this.options.submit();
     },
   },
 };

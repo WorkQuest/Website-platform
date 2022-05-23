@@ -85,6 +85,7 @@
               >
                 <img
                   class="ava_list"
+                  :class="{'ava_list--empty': !item.avatar}"
                   :src="(item.avatar && item.avatar.url) ? item.avatar.url : $options.images.EMPTY_AVATAR"
                   alt=""
                 >
@@ -243,7 +244,6 @@ import modals from '~/store/modals/modals';
 import { getStyledAmount } from '~/utils/wallet';
 import { images } from '~/utils/images';
 import { REFERRAL_EVENTS } from '~/utils/сonstants/referral';
-import { TokenSymbols } from '~/utils/enums';
 
 export default {
   name: 'Referral',
@@ -283,7 +283,7 @@ export default {
       return Math.ceil(this.paidEventsList.length / this.perPage);
     },
     filterCreatedReferralsList() {
-      return this.referralsList.filter((item) => item.referralUser.referralStatus === 'created' && item.raiseView);
+      return this.referralsList.filter((item) => item.referralUser.referralStatus === 'created' && item.ratingStatistic);
     },
     tableFields() {
       return [
@@ -408,7 +408,7 @@ export default {
         desc: this.$t('modals.claimConfirm'),
         submit: async () => {
           this.SetLoader(true);
-          await this.$store.dispatch('oracle/setCurrentPriceToken', { symbol: TokenSymbols.WQT });
+          await this.$store.dispatch('oracle/setCurrentPriceTokens');
           await this.$store.dispatch('referral/claimReferralReward', this.userAddress);
           this.SetLoader(false);
         },
@@ -429,6 +429,7 @@ export default {
           callback: async () => {
             this.SetLoader(true);
             await this.$store.dispatch('referral/addReferrals', this.userAddress);
+            await this.$store.dispatch('referral/fetchReferralsList');
             this.SetLoader(false);
           },
         });
@@ -562,6 +563,9 @@ export default {
         &_list {
           @extend .ava;
           position: absolute;
+          &--empty{
+            border: 1px solid $black200;
+          }
         }
       }
 

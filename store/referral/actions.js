@@ -59,7 +59,7 @@ export default {
       const { result, ok } = await this.$axios.$get('v1/user/me/referral-program/referrals');
 
       if (result.referrals.length) {
-        const isNeedRegistration = result.referrals.some((item) => item.referralUser.referralStatus === 'created');
+        const isNeedRegistration = result.referrals.some((item) => item.referralUser.referralStatus === 'created' && item.ratingStatistic);
 
         commit('setReferralsListCount', result.count);
         commit('setReferralsList', result.referrals);
@@ -118,7 +118,7 @@ export default {
           referralsList.unshift(dataMessage);
           referralsListCount = dataMessage.count;
 
-          const isNeedRegistration = referralsList.some((item) => item.referralUser.referralStatus === 'created');
+          const isNeedRegistration = referralsList.some((item) => item.referralUser.referralStatus === 'created' && item.ratingStatistic);
           commit('setReferralsListCount', referralsListCount);
           commit('setReferralsList', referralsList);
           commit('setIsNeedRegistration', isNeedRegistration);
@@ -127,8 +127,8 @@ export default {
             blockNumber: dataMessage.blockNumber,
             transactionHash: dataMessage.transactionHash,
             referral: dataMessage.referral,
-            affiliate: dataMessage.affiliate,
-            amount: dataMessage.returnValues.affiliat,
+            affiliate: dataMessage.returnValues.affiliat,
+            amount: dataMessage.returnValues.amount,
             timestamp: dataMessage.timestamp,
             event: dataMessage.event,
             'referralUser.id': dataMessage['referralUser.id'] || '-',
