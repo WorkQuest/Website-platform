@@ -335,6 +335,7 @@
     "employer": {
       "usersNotResponded": "Users not responded"
     },
+    "impossibleEditAfterCreation": "Я понимаю что редактирование заголовка и описания для этого квеста будет невозможным после создания",
     "deleteQuest": "Удалить квест",
     "invite": "Пригласить",
     "decline": "Отклонить",
