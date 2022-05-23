@@ -51,6 +51,7 @@ export const notificationsQuestsActions = Object.freeze([
   NotificationAction.QUEST_EDITED,
   NotificationAction.QUEST_END_SOON,
   NotificationAction.QUEST_STATUS_UPDATED,
+  NotificationAction.DISPUTE_DECISION,
 ]);
 
 export const notificationCommonFilterActions = Object.freeze([

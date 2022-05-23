@@ -144,35 +144,6 @@ export default {
     const currentUserId = userData.id;
     const userRole = rootGetters.getUserRole;
 
-    const currentPath = this.$router.history.current.path;
-    async function updateQuests() {
-      /* For update quest lists */
-      const questListPathArray = [
-        Path.MY_QUESTS,
-        Path.QUESTS,
-        `${Path.PROFILE}/${currentUserId}`,
-      ];
-      if (questListPathArray.includes(currentPath) && currentUserId && userRole) {
-        const query = {
-          limit: 10,
-          offset: 0,
-          starred: false,
-          'sort[createdAt]': 'desc',
-        };
-        await dispatch('quests/getUserQuests', {
-          userId: currentUserId,
-          role: userRole,
-          query,
-        }, { root: true });
-      } else if (currentPath === `${Path.QUESTS}/${quest?.id || id}`) {
-        const params = quest?.id || id;
-        await dispatch('quests/getQuest', params, { root: true });
-        if (userRole === UserRole.EMPLOYER && currentUserId && quest?.user?.id === currentUserId) {
-          await dispatch('quests/responsesToQuest', params, { root: true });
-          await dispatch('quests/questListForInvitation', currentUserId, { root: true });
-        }
-      }
-    }
     /** Set common params */
     notification.actionNameKey = `notifications.${action}`;
     notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
@@ -218,7 +189,6 @@ export default {
           title: problemDescription,
           path: `${Path.QUESTS}/${quest?.id || id}`,
         };
-        await updateQuests();
         break;
 
       case NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST:
@@ -268,8 +238,34 @@ export default {
         break;
     }
 
+    /* For update quest & quest lists */
     if (notificationsQuestsActions.includes(action)) {
-      await updateQuests();
+      const currentPath = this.$router.history.current.path;
+      const questListPathArray = [
+        Path.MY_QUESTS,
+        Path.QUESTS,
+        `${Path.PROFILE}/${currentUserId}`,
+      ];
+      if (questListPathArray.includes(currentPath) && currentUserId && userRole) {
+        const query = {
+          limit: 10,
+          offset: 0,
+          starred: false,
+          'sort[createdAt]': 'desc',
+        };
+        await dispatch('quests/getUserQuests', {
+          userId: currentUserId,
+          role: userRole,
+          query,
+        }, { root: true });
+      } else if (currentPath === `${Path.QUESTS}/${quest?.id || id}`) {
+        const params = quest?.id || id;
+        await dispatch('quests/getQuest', params, { root: true });
+        if (userRole === UserRole.EMPLOYER && currentUserId && quest?.user?.id === currentUserId) {
+          await dispatch('quests/responsesToQuest', params, { root: true });
+          await dispatch('quests/questListForInvitation', currentUserId, { root: true });
+        }
+      }
     }
 
     /** Set sender if it need */
