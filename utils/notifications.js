@@ -48,6 +48,8 @@ export const notificationsQuestsActions = Object.freeze([
   NotificationAction.WORKER_REJECTED_INVITATION_TO_QUEST,
   NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE,
   NotificationAction.WAIT_WORKER,
+  NotificationAction.QUEST_EDITED,
+  NotificationAction.QUEST_END_SOON,
 ]);
 
 export const notificationCommonFilterActions = Object.freeze([
