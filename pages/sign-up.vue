@@ -43,7 +43,7 @@
           mode="icon"
           :name="$t('meta.lastNameBig')"
           :placeholder="$t('meta.lastNameBig')"
-          rules="required_if|alpha_spaces|max:15"
+          rules="required_if|alpha_spaces_dash|max:15"
           data-selector="LAST_NAME"
         >
           <template v-slot:left>
