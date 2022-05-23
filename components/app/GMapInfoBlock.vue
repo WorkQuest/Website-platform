@@ -157,7 +157,7 @@ export default {
           label: this.getPriority(this.item.priority),
           labelClass: this.getPriorityClass(this.item.priority),
           title: this.item.title,
-          priceTitle: this.$t('quests.price'),
+          priceTitle: this.$t('meta.price'),
           price: `${this.item.price} ${TokenSymbols.WUSD}`,
         };
       }
@@ -167,7 +167,7 @@ export default {
         userName: this.UserName(this.item.firstName, this.item.lastName),
         status: this.item?.ratingStatistic?.status || null,
         title: this.item.email,
-        priceTitle: this.$t('settings.costPerHour'),
+        priceTitle: this.$t('meta.costPerHour'),
         price: `${this.item.wagePerHour} ${TokenSymbols.WUSD}`,
       };
     },
@@ -180,9 +180,9 @@ export default {
     getPriority(index) {
       const priority = {
         0: '',
-        1: this.$t('priority.low'),
-        2: this.$t('priority.normal'),
-        3: this.$t('priority.urgent'),
+        1: this.$t('meta.priority.fixedDelivery'),
+        2: this.$t('meta.priority.shortTerm'),
+        3: this.$t('meta.priority.urgent'),
       };
       return priority[index] || '';
     },

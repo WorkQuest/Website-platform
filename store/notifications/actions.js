@@ -1,18 +1,24 @@
 import moment from 'moment';
+
 import {
-  DaoUrl, Path, PathDAO,
+  Path,
+  DaoUrl,
+  PathDAO,
   UserRole,
 } from '~/utils/enums';
+
 import {
   NotificationAction,
   LocalNotificationAction,
+  notificationsQuestsActions,
   notificationCommonFilterActions,
   notificationCommonFilterAction2,
-  notificationEmployerFilterActions, notificationsQuestsActions,
+  notificationEmployerFilterActions,
 } from '~/utils/notifications';
+
 import { error, success } from '~/utils/web3';
+
 import { images } from '~/utils/images';
-import { QuestStatuses } from '~/utils/сonstants/quests';
 
 export default {
 
@@ -21,8 +27,12 @@ export default {
     const { id } = rootGetters['user/getUserData'];
     const currentPath = this.$router.history.current.path;
     if (currentPath === `${Path.PROFILE}/${id}`) {
-      const query = { limit: 8, offset: 0 };
-      await dispatch('user/getAllUserReviews', { userId: id, query }, { root: true });
+      // TODO летят запросы если даже это была старая нотификация
+      // как проверить: зайти на свой профиль, обновить страницу, смотреть в network
+      await dispatch('user/getAllUserReviews', {
+        userId: id,
+        params: { limit: 8, offset: 0 },
+      }, { root: true });
     }
   },
 
@@ -122,7 +132,9 @@ export default {
     }
   },
 
-  async setCurrNotificationObject({ getters, rootGetters, dispatch }, notification) {
+  async setCurrNotificationObject({
+    getters, rootGetters, dispatch, commit,
+  }, notification) {
     const userData = rootGetters['user/getUserData'];
     const { data, action } = notification.notification;
     const {
@@ -131,46 +143,13 @@ export default {
     } = data;
     const currentUserId = userData.id;
     const userRole = rootGetters.getUserRole;
-    const currentPath = this.$router.history.current.path;
 
-    async function updateQuests() {
-      /* For update quest lists */
-      const questListPathArray = [
-        Path.MY_QUESTS,
-        Path.QUESTS,
-        `${Path.PROFILE}/${currentUserId}`,
-      ];
-      if (questListPathArray.includes(currentPath) && currentUserId && userRole) {
-        const query = {
-          limit: 10,
-          offset: 0,
-          starred: false,
-          'sort[createdAt]': 'desc',
-        };
-        await dispatch('quests/getUserQuests', {
-          userId: currentUserId,
-          role: userRole,
-          query,
-        }, { root: true });
-      } else if (currentPath === `${Path.QUESTS}/${quest?.id || id}`) {
-        const params = quest?.id || id;
-        await dispatch('quests/getQuest', params, { root: true });
-        if (userRole === UserRole.EMPLOYER && currentUserId && quest?.user?.id === currentUserId) {
-          await dispatch('quests/responsesToQuest', params, { root: true });
-          await dispatch('quests/questListForInvitation', currentUserId, { root: true });
-        }
-      }
-    }
     /** Set common params */
     notification.actionNameKey = `notifications.${action}`;
     notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
     notification.params = { isLocal: false };
 
     switch (action) {
-      case notificationsQuestsActions.includes(action):
-        await updateQuests();
-        break;
-
       case NotificationAction.QUEST_STATUS_UPDATED:
         notification.sender = userRole === UserRole.EMPLOYER ? assignedWorker
           || { avatar: { url: images.WQ_LOGO }, firstName: 'Workquest info' } : user;
@@ -179,6 +158,15 @@ export default {
           title,
           path: `${Path.QUESTS}/${data.id}`,
         };
+
+        if (getters.getWaitForUpdateQuest?.id === data?.id) {
+          dispatch('main/setLoading', false, { root: true });
+          if (getters.getWaitForUpdateQuest?.callback) {
+            await getters.getWaitForUpdateQuest.callback();
+          }
+          commit('setWaitForUpdateQuest', null);
+        }
+
         await dispatch('updateProfile');
         break;
 
@@ -201,7 +189,6 @@ export default {
           title: problemDescription,
           path: `${Path.QUESTS}/${quest?.id || id}`,
         };
-        await updateQuests();
         break;
 
       case NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST:
@@ -249,6 +236,40 @@ export default {
 
       default:
         break;
+    }
+
+    /* For update quest & quest lists */
+    if ([
+      ...notificationsQuestsActions,
+      NotificationAction.QUEST_STATUS_UPDATED,
+      NotificationAction.DISPUTE_DECISION,
+    ].includes(action)) {
+      const currentPath = this.$router.history.current.path;
+      const questListPathArray = [
+        Path.MY_QUESTS,
+        Path.QUESTS,
+        `${Path.PROFILE}/${currentUserId}`,
+      ];
+      if (questListPathArray.includes(currentPath) && currentUserId && userRole) {
+        const query = {
+          limit: 10,
+          offset: 0,
+          starred: false,
+          'sort[createdAt]': 'desc',
+        };
+        await dispatch('quests/getUserQuests', {
+          userId: currentUserId,
+          role: userRole,
+          query,
+        }, { root: true });
+      } else if (currentPath === `${Path.QUESTS}/${quest?.id || id}`) {
+        const params = quest?.id || id;
+        await dispatch('quests/getQuest', params, { root: true });
+        if (userRole === UserRole.EMPLOYER && currentUserId && quest?.user?.id === currentUserId) {
+          await dispatch('quests/responsesToQuest', params, { root: true });
+          await dispatch('quests/questListForInvitation', currentUserId, { root: true });
+        }
+      }
     }
 
     /** Set sender if it need */

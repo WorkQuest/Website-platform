@@ -38,7 +38,7 @@
                 {{ $t('pension.currentPercentFromAQuest') }}
               </div>
               <div class="info-block__tokens">
-                {{ $t('meta.units.percentsCount', {count: getFeePercent()}) }}
+                {{ $t('meta.units.percentsCount', {count: getFeePercent(pensionFee)}) }}
               </div>
               <base-btn
                 class="btn_bl"
@@ -340,6 +340,9 @@ export default {
     pensionBalance() {
       return this.pensionWallet?.amount || 0;
     },
+    pensionFee() {
+      return this.pensionWallet?.fee || 0;
+    },
     totalPages() {
       const len = this.pensionHistory[this.selectedTable]?.count;
       if (!len) return len;
@@ -352,7 +355,7 @@ export default {
         operation: item.event,
         tx_hash: item.transactionHash,
         date: this.$moment(item.createdAt),
-        value: this.selectedTable === PensionHistoryMethods.Update ? `${getStyledAmount(item.newFee)}%` : `${getStyledAmount(item.amount)} ${TokenSymbols.WUSD}`,
+        value: this.selectedTable === PensionHistoryMethods.Update ? `${getStyledAmount(this.getFeePercent(item.newFee))}%` : `${getStyledAmount(item.amount)} ${TokenSymbols.WUSD}`,
       }));
     },
   },
@@ -458,8 +461,9 @@ export default {
       const d = days >= 0 ? this.$tc('meta.units.days', this.DeclOfNum(days), { count: days }) : this.$tc('meta.units.days', this.DeclOfNum(0), { count: 0 });
       this.unlockDate = `${y}${d}`;
     },
-    getFeePercent() {
-      return this.pensionWallet?.fee || '';
+    getFeePercent(fee) {
+      const amount = fee * 100;
+      return new BigNumber(amount).toString() || '';
     },
     async loadTablePage(page) {
       this.page = page;
@@ -567,6 +571,7 @@ export default {
                 await this.getWallet();
                 this.endOfPeriod();
               }
+              this.SetLoader(false);
             },
           });
         },
@@ -637,12 +642,13 @@ export default {
           this.selectedTable = PensionHistoryMethods.Update;
           this.CloseModal();
           this.SetLoader(true);
+          const newAmount = new BigNumber(amount.substr(0, amount.length - 1) / 100).shiftedBy(18).toString();
           const [txFee] = await Promise.all([
             this.$store.dispatch('wallet/getContractFeeData', {
               method: 'updateFee',
               abi: WQPensionFund,
               contractAddress: process.env.WORKNET_PENSION_FUND,
-              data: [new BigNumber(amount.substr(0, amount.length - 1)).shiftedBy(18).toString()],
+              data: [newAmount],
             }),
             this.getWallet(),
           ]);
@@ -660,12 +666,11 @@ export default {
             to: { name: this.$t('meta.toBig'), value: this.convertToBech32('wq', process.env.WORKNET_PENSION_FUND) },
             fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WQT },
           };
-
           this.ShowModal({
             key: modals.transactionReceipt,
             fields,
             isDontOffLoader: true,
-            submitMethod: async () => await this.$store.dispatch('retirement/pensionUpdateFee', amount.substr(0, amount.length - 1)),
+            submitMethod: async () => await this.$store.dispatch('retirement/pensionUpdateFee', newAmount),
           });
         },
       });

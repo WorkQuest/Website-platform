@@ -88,13 +88,14 @@ export default {
     }
   },
 
-  async getAllUserReviews({ commit }, { userId, query }) {
+  async getAllUserReviews({ commit }, { userId, params }) {
     try {
-      const response = await this.$axios.$get(`/v1/user/${userId}/reviews?${query}`);
-      commit('setUserReviews', response.result);
-      return response;
+      const { result } = await this.$axios.$get(`/v1/user/${userId}/reviews`, { params });
+      commit('setUserReviews', result);
+      return success(result);
     } catch (e) {
-      return console.log(e);
+      console.error('Error in user/getAllUserReviews: ', e);
+      return error();
     }
   },
   async sendReviewForUser({ commit }, {

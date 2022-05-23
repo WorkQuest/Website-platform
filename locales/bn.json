@@ -335,6 +335,7 @@
     "employer": {
       "usersNotResponded": "Users not responded"
     },
+    "impossibleEditAfterCreation": "I understand that editing the title and the description of this quest will be impossible after its creation",
     "deleteQuest": "Delete quest",
     "invite": "আমন্ত্রিত",
     "decline": "Decline",
