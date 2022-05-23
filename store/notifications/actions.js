@@ -1,18 +1,24 @@
 import moment from 'moment';
+
 import {
-  DaoUrl, Path, PathDAO,
+  Path,
+  DaoUrl,
+  PathDAO,
   UserRole,
 } from '~/utils/enums';
+
 import {
   NotificationAction,
   LocalNotificationAction,
+  notificationsQuestsActions,
   notificationCommonFilterActions,
   notificationCommonFilterAction2,
-  notificationEmployerFilterActions, notificationsQuestsActions,
+  notificationEmployerFilterActions,
 } from '~/utils/notifications';
+
 import { error, success } from '~/utils/web3';
+
 import { images } from '~/utils/images';
-import { QuestStatuses } from '~/utils/сonstants/quests';
 
 export default {
 
@@ -21,8 +27,12 @@ export default {
     const { id } = rootGetters['user/getUserData'];
     const currentPath = this.$router.history.current.path;
     if (currentPath === `${Path.PROFILE}/${id}`) {
-      const query = { limit: 8, offset: 0 };
-      await dispatch('user/getAllUserReviews', { userId: id, query }, { root: true });
+      // TODO летят запросы если даже это была старая нотификация
+      // как проверить: зайти на свой профиль, обновить страницу, смотреть в network
+      await dispatch('user/getAllUserReviews', {
+        userId: id,
+        params: { limit: 8, offset: 0 },
+      }, { root: true });
     }
   },
 
