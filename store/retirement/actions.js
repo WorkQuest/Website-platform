@@ -150,10 +150,9 @@ export default {
     }
   },
   async pensionStartProgram({ commit, dispatch }, payload) {
-    const { firstDeposit, fee, defaultFee } = payload;
+    const { firstDeposit, fee, equalsFee } = payload;
     let feeOk = true;
     let depositOk = false;
-    const equalsFee = new BigNumber(defaultFee).isEqualTo(new BigNumber(fee).shiftedBy(-18).toNumber() * 100);
     if (!equalsFee) {
       feeOk = await dispatch('pensionUpdateFee', fee);
     }
