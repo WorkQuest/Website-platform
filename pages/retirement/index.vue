@@ -346,7 +346,7 @@ export default {
               method: 'updateFee',
               abi: WQPensionFund,
               contractAddress: process.env.WORKNET_PENSION_FUND,
-              data: [new BigNumber(depositPercentFromAQuest.substr(0, depositPercentFromAQuest.length - 1)).shiftedBy(18).toString()],
+              data: [new BigNumber(depositPercentFromAQuest.substr(0, depositPercentFromAQuest.length - 1) / 100).shiftedBy(18).toString()],
             });
             txFee = new BigNumber(txFee).plus(fee);
           }
@@ -396,7 +396,7 @@ export default {
             fields,
             submitMethod: async () => {
               const ok = await this.$store.dispatch('retirement/pensionStartProgram', {
-                fee: depositPercentFromAQuest.substr(0, depositPercentFromAQuest.length - 1),
+                fee: new BigNumber(depositPercentFromAQuest.substr(0, depositPercentFromAQuest.length - 1) / 100).shiftedBy(18).toString(),
                 firstDeposit: firstDepositAmount,
                 defaultFee: this.percent,
               });

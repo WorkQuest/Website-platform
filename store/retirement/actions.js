@@ -153,8 +153,8 @@ export default {
     const { firstDeposit, fee, defaultFee } = payload;
     let feeOk = true;
     let depositOk = false;
-    const equalsFee = new BigNumber(defaultFee).shiftedBy(-18).isEqualTo(new BigNumber(fee).shiftedBy(-18));
-    if (!firstDeposit || !equalsFee) {
+    const equalsFee = new BigNumber(defaultFee).isEqualTo(new BigNumber(fee).shiftedBy(-18).toNumber() * 100);
+    if (!equalsFee) {
       feeOk = await dispatch('pensionUpdateFee', fee);
     }
     if (firstDeposit) depositOk = await dispatch('pensionContribute', firstDeposit);
