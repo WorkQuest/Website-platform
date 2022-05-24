@@ -33,33 +33,10 @@ import {
   StakingTypes,
   PensionHistoryMethods, WorknetTokenAddresses,
 } from '~/utils/enums';
-import {
-  getPensionWallet,
-  pensionsWithdraw,
-  pensionUpdateFee,
-  pensionContribute,
-  pensionExtendLockTime,
-  getPensionDefaultData,
-} from '~/utils/wallet.js';
 
 let connectionWS = null;
 
 export default {
-  async getPensionTransactions({ commit, getters }, { method, limit, offset }) {
-    try {
-      const path = method === PensionHistoryMethods.Update ? 'wallet-update' : method.toLowerCase();
-      const res = await this.$axios.get(`/v1/pension-fund/${path}`, {
-        params: {
-          userAddress: getWalletAddress(),
-          limit,
-          offset,
-        },
-      });
-      commit('setPensionHistoryData', { method, txs: res.data.result.events, count: res.data.result.count });
-    } catch (e) {
-      console.error('wallet/getPensionTransactions');
-    }
-  },
   async getTransactions({ commit }, params) {
     try {
       const { data } = await this.$axios({
@@ -237,44 +214,6 @@ export default {
     const res = await fetchContractData('allowance', ERC20, tokenAddress, [getWalletAddress(), spenderAddress], GetWalletProvider());
     if (!res) return false;
     return new BigNumber(res.toString()).shiftedBy(-18).toString();
-  },
-
-  /** PENSION PROGRAM */
-  /** Get default lockTime & fee */
-  async pensionGetDefaultData() {
-    return await getPensionDefaultData();
-  },
-  async pensionGetWalletInfo({ commit }) {
-    const res = await getPensionWallet();
-    if (res.ok === false) {
-      commit('setPensionWallet', null);
-      return;
-    }
-    commit('setPensionWallet', res.result);
-  },
-  async pensionUpdateFee({ commit }, fee) {
-    return await pensionUpdateFee(fee);
-  },
-  async pensionContribute({ commit }, amount) {
-    return await pensionContribute(amount);
-  },
-  async pensionWithdraw({ commit }, amount) {
-    return await pensionsWithdraw(amount);
-  },
-  async pensionStartProgram({ commit }, payload) {
-    const { firstDeposit, fee, defaultFee } = payload;
-    let feeOk = true;
-    let depositOk = false;
-    const equalsFee = new BigNumber(defaultFee).shiftedBy(-18).isEqualTo(new BigNumber(fee).shiftedBy(-18));
-    if (!firstDeposit || !equalsFee) {
-      feeOk = await pensionUpdateFee(fee);
-    }
-    if (firstDeposit) depositOk = await pensionContribute(firstDeposit);
-    else return feeOk;
-    return depositOk && feeOk;
-  },
-  async pensionExtendLockTime() {
-    return await pensionExtendLockTime();
   },
 
   /** Staking */

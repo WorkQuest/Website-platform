@@ -310,10 +310,8 @@
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import moment from 'moment';
-import {
-  MessageAction, UserRole, Path,
-} from '~/utils/enums';
 import { images } from '~/utils/images';
+import { MessageAction, UserRole, Path } from '~/utils/enums';
 
 export default {
   name: 'Header',
@@ -342,7 +340,7 @@ export default {
       connections: 'main/notificationsConnectionStatus',
       chatId: 'chat/getCurrChatId',
       messagesFilter: 'chat/getMessagesFilter',
-      unreadMessagesCount: 'user/getUnreadChatsCount',
+      unreadMessagesCount: 'chat/getUnreadChatsCount',
       chats: 'chat/getChats',
       searchValue: 'chat/getSearchValue',
       currentLocale: 'user/getCurrentLang',
@@ -375,7 +373,7 @@ export default {
         {
           title: this.$t('ui.menu.pension.title'),
           desc: this.$t('ui.menu.pension.desc'),
-          path: Path.PENSION,
+          path: Path.RETIREMENT,
         },
         {
           title: this.$t('ui.menu.referral.title'),
@@ -468,7 +466,7 @@ export default {
           data.isUnread = true;
           data.userMembers = data.userMembers.filter((member) => member.id !== this.userData.id);
           this.$store.commit('chat/addChatToList', data);
-          this.$store.commit('user/changeUnreadChatsCount', { needAdd: true, count: 1 });
+          this.$store.commit('chat/changeUnreadChatsCount', { needAdd: true, count: 1 });
         } else if (action === MessageAction.NEW_MESSAGE) {
           await this.$store.dispatch('chat/getCurrChatData', data.chatId);
           await this.getStatistic();
@@ -507,17 +505,18 @@ export default {
      */
     async initWSListeners() {
       const { chatActionsConnection, notifsConnection } = this.connections;
-
+      const {
+        $wsNotifs, $wsChatActions, $store, token,
+      } = this;
       if (!notifsConnection) {
-        await this.$wsNotifs.connect(this.token);
-        const subscribes = ['chat', 'quest'];
-        await Promise.all(subscribes.map((path) => this.$wsNotifs.subscribe(`${Path.NOTIFICATIONS}/${path}`, async (ev) => {
+        await $wsNotifs.connect(token);
+        const subscribes = ['chat', 'quest', 'dao'];
+        await Promise.all(subscribes.map((path) => $wsNotifs.subscribe(`${Path.NOTIFICATIONS}/${path}`, async (ev) => {
           if (path === 'chat') await this.chatAction(ev);
-          else await this.$store.dispatch('user/addNotification', ev);
+          else await $store.dispatch('notifications/addNotification', ev);
         })));
       }
-
-      if (!chatActionsConnection) await this.$wsChatActions.connect(this.token);
+      if (!chatActionsConnection) await $wsChatActions.connect(token);
     },
     async getStatistic() {
       await this.$store.dispatch('user/getStatistic');

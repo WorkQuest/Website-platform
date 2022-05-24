@@ -1,21 +1,18 @@
 <template>
   <ctm-modal-box
-    class="messageSend"
+    class="twoFA"
     :title="$tc('modals.titles.2FA.auth')"
   >
     <validation-observer
       v-slot="{handleSubmit, validated, passed, invalid}"
       ref="twoFA"
       tag="div"
-      class="ctm-modal__content"
+      class="twoFA__content"
     >
-      <div class="step-panel">
-        <div
-          v-for="(item, i) in stepPanel"
-          :key="i"
-          class="step-panel__container"
-        >
+      <div class="twoFA__step-panels step-panel">
+        <template v-for="(item, i) in stepPanel">
           <div
+            :key="`text-${i}`"
             class="step-panel__step"
             :class="[{'step-panel__step_active': item.stepActive.includes(step)}]"
           >
@@ -26,25 +23,26 @@
           </div>
           <div
             v-if="item.step !== 4"
-            class="line"
-            :class="[{'line__active': item.line.includes(step)}]"
+            :key="`line-${i}`"
+            class="step-panel__line"
+            :class="[{'step-panel__line_active': item.line.includes(step)}]"
           />
-        </div>
+        </template>
       </div>
       <!-- Steps -->
       <div
         v-if="step === 1"
-        class="step__container"
+        class="twoFA__container"
       >
-        <div class="ctm-modal__content-field">
-          <div class="content__text">
+        <div class="container__content-field">
+          <div class="content-field_text">
             {{ $t('modals.installGoogleAuth') }}
           </div>
-          <div class="btn__container">
+          <div class="content-field__btns btns">
             <div
               v-for="(item, i) in shopBtns"
               :key="i"
-              class="btn__store"
+              class="content-field__btn-store"
             >
               <base-btn
                 mode="black"
@@ -65,19 +63,19 @@
       </div>
       <div
         v-if="step === 2"
-        class="step__container"
+        class="twoFA__container twoFA__container_without-bottom"
       >
-        <div class="ctm-modal__content-field">
-          <span class="content__text">{{ $t('modals.useYourGoogleAuth') }}</span>
-          <div class="content qr qr__container">
+        <div class="container__content-field">
+          <span class="content-field__text">{{ $t('modals.useYourGoogleAuth') }}</span>
+          <div class="content-field__qr">
             <qrcode
               v-if="qrLink"
               :value="qrLink"
               :options="{ width: 200 }"
             />
           </div>
-          <span class="content__text">{{ $t('modals.ifYouCantScanBarcode') }}</span>
-          <div class="code__input">
+          <span class="content-field__text">{{ $t('modals.ifYouCantScanBarcode') }}</span>
+          <div class="content-field__input">
             <base-field
               v-model="twoFACode"
               data-selector="2FA-CODE"
@@ -87,7 +85,7 @@
               v-clipboard:copy="twoFACode"
               v-clipboard:success="ClipboardSuccessHandler"
               v-clipboard:error="ClipboardErrorHandler"
-              class="btn__copy"
+              class="content-field__btn-copy"
               data-selector="COPY-BTN"
               type="button"
             >
@@ -98,11 +96,11 @@
       </div>
       <div
         v-if="step === 3"
-        class="step__container"
+        class="twoFA__container twoFA__container_without-bottom"
       >
-        <div class="ctm-modal__content-field">
-          <span class="content__text">{{ $t('modals.pleaseSaveThisKey') }}</span>
-          <div class="code__input">
+        <div class="container__content-field">
+          <span class="content-field__text">{{ $t('modals.pleaseSaveThisKey') }}</span>
+          <div class="content-field__input">
             <base-field
               v-model="twoFACode"
               data-selector="2FA-CODE"
@@ -112,7 +110,7 @@
               v-clipboard:success="ClipboardSuccessHandler"
               v-clipboard:error="ClipboardErrorHandler"
               v-clipboard:copy="twoFACode"
-              class="btn__copy"
+              class="content-field__btn-copy"
               data-selector="COPY-BTN"
               type="button"
             >
@@ -123,58 +121,63 @@
       </div>
       <div
         v-if="step === 4"
-        class="step__container"
+        class="twoFA__container twoFA__container_without-bottom"
       >
-        <div class="ctm-modal__content-field">
-          <div class="content__text">
+        <div class="container__content-field container__content-field_big">
+          <div class="content-field__text">
             {{ $t('modals.switchOnGoogleAuth') }}
           </div>
-          <div class="content__text_grey">
+          <div class="content-field__text content-field__text_grey">
             {{ $t('modals.toYourEmail') }} {{ userData.email }} {{ $t('modals.codeHasBeenSent') }}
           </div>
         </div>
-        <div class="ctm-modal__content-field">
-          <base-field
-            v-for="(item, i) in inputs"
-            :id="item.id"
-            :key="i"
-            v-model="models[item.model]"
-            :vid="item.id"
-            :label="item.label"
-            :data-selector="item.label.toUpperCase()"
-            :placeholder="item.placeholder"
-            :rules="item.rules"
-            :name="item.name"
-          />
-        </div>
+        <base-field
+          v-for="(item, i) in inputs"
+          :id="item.id"
+          :key="i"
+          v-model="models[item.model]"
+          :vid="item.id"
+          :label="item.label"
+          :data-selector="item.label.toUpperCase()"
+          :placeholder="item.placeholder"
+          :rules="item.rules"
+          :name="item.name"
+        />
       </div>
       <!-- Steps btns -->
-      <div class="btn__container">
-        <div
+      <div class="twoFA__btns-block">
+        <base-btn
           v-if="step === 1"
-          class="step__container"
+          data-selector="NEXT-STEP-WITH-ENABLE-2FA"
+          @click="nextStepWithEnable2FA()"
+        >
+          {{ $t('meta.btns.next') }}
+        </base-btn>
+
+        <div
+          v-if="step > 1"
+          class="btns-block__wrapper"
         >
           <base-btn
-            class="message__action"
-            data-selector="NEXT-STEP-WITH-ENABLE-2FA"
-            @click="nextStepWithEnable2FA()"
+            mode="outline"
+            data-selector="PREVIOUS-STEP"
+            @click="previousStep()"
           >
-            {{ $t('meta.btns.next') }}
+            {{ $t('meta.btns.back') }}
           </base-btn>
         </div>
         <div
           v-if="step > 1"
-          class="btn__wrapper"
+          class="btns-block__wrapper"
         >
           <div
             v-for="(item, i) in stepBtns"
             :key="i"
-            class="step__container"
+            class="btns-block__container"
           >
             <base-btn
               v-if="item.step.includes(step)"
               :data-selector="`${item.text}-${i}`"
-              class="message__action"
               @click="item.click"
             >
               {{ item.text }}
@@ -182,10 +185,9 @@
           </div>
           <span
             v-if="step === 4"
-            class="step__container"
+            class="btns-block__container"
           >
             <base-btn
-              class="message__action"
               data-selector="CONFIRM-ENABLE-2FA"
               :disabled="!validated || !passed || invalid"
               @click="handleSubmit(confirmEnable2FA)"
@@ -193,20 +195,6 @@
               {{ $t('meta.btns.next') }}
             </base-btn>
           </span>
-        </div>
-
-        <div
-          v-if="step > 1"
-          class="btn__wrapper"
-        >
-          <base-btn
-            mode="outline"
-            data-selector="PREVIOUS-STEP"
-            class="message__action"
-            @click="previousStep()"
-          >
-            {{ $t('meta.btns.back') }}
-          </base-btn>
         </div>
       </div>
     </validation-observer>
@@ -346,177 +334,147 @@ export default {
 
 <style lang="scss" scoped>
 
-.message {
-  &__action {
-    width: 100% !important;
+.twoFA {
+  @include modalKit;
+  font-size: 16px;
+  white-space: normal;
+  word-break: break-word;
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  text-align: left;
+  background: #FFFFFF;
+  border-radius: 6px;
+  max-width: 430px !important;
+  height: max-content !important;
+  &__content {
+    padding: 25px 28px 0;
+  }
+  &__equal {
+    margin: 0 0 35px 10px;
+  }
+  &__step-panels {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  &__container {
+    display: grid;
+    margin: 15px 0;
+    &_without-bottom {
+      margin: 15px 0 0;
+    }
+    &_big {
+      grid-gap: 10px;
+    }
+  }
+  &__btns-block {
+    display: flex;
+    justify-content: space-between;
   }
 }
 
-  .content {
-    &__text {
-      @include text-simple;
-      margin: 20px 0;
-      font-weight: 400;
-      color: $black700;
-      font-size: 18px;
-      &_grey {
-        @extend .content__text;
-        font-size: 16px;
-        color: $black400;
-      }
+.container {
+  &__content-field {
+    display: grid;
+    grid-gap: 10px;
+    &_big {
+      margin-bottom: 15px;
     }
   }
+}
 
-  .icon-copy {
-      color: $blue;
-      font-size: 20px;
-    }
-
-  .qr__container {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      margin: 20px 0;
-  }
-
-  .code {
-    &__input {
-      padding: 10px 0 0 0;
-      display: grid;
-      grid-template-columns: 6fr 1fr;
-      grid-gap: 10px;
-    }
-
-    &__container {
-      display: flex;
-      border: 1px solid $black0;
-      border-radius: 6px;
-      justify-content: space-between;
-      padding: 12px;
-      margin: 33px 10px 0 0;
-      width: 100%;
-    }
-
-    &__text {
-      font-weight: 400;
-      font-size: 16px;
-      color: $black800;
-    }
-  }
-
-  .step {
-    &__text_hide {
-      display: none;
-    }
-    &__number {
-      padding: 10px;
-    }
-
-    &__container {
-      width: 100%;
-    }
-  }
-
-  .step-panel {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-
-    &__container {
-      display: flex;
-      flex-direction: row;
-      align-items: flex-start;
-    }
-
-    &__block {
-      white-space: nowrap;
-    }
-
-    &__step {
-      @include text-simple;
-      background: rgba(0, 131, 199, 0.1);
-      border-radius: 6px;
-      font-weight: 400;
-      font-size: 16px;
-      color: $black500;
-      padding: 10px;
-      text-align: center;
-
-      &_active {
-        @extend .step-panel__step;
-        color: $white;
-        background: $blue;
-      }
-
-    }
-  }
-  .line {
+.step-panel {
+  &__line {
     display: block;
     height: 1px;
     border-top: 1px solid rgba(0, 131, 199, 0.1);
     margin: auto 0;
     padding: 0;
-    width: 33px;
-
-    &__active {
-      @extend .line;
+    width: 100%;
+    &_active {
+      @extend .step-panel__line;
       border-top: 1px solid $blue;
     }
   }
-  .ctm-modal {
-    &__content-field {
-      margin: 15px 0 0 0;
-    }
-
-    &__equal {
-      margin: 0 0 35px 10px;
-    }
+  &__block {
+    white-space: nowrap;
   }
+  &__step {
+    @include text-simple;
+    background: rgba(0, 131, 199, 0.1);
+    border-radius: 6px;
+    font-weight: 400;
+    font-size: 16px;
+    color: $black500;
+    padding: 10px;
+    text-align: center;
 
-  .ctm-modal {
-    @include modalKit;
-  }
-
-  .input {
-    &_white {
-      border-radius: 6px;
-      border: 1px solid $black0;
-      padding: 11px 20px 11px 15px;
-      height: 46px;
-      width: 100%;
-      background-color: $white;
-      resize: none;
-      &::placeholder {
-        color: $black800;
-      }
+    &_active {
+      @extend .step-panel__step;
+      color: $white;
+      background: $blue;
     }
-  }
-  .btn {
-    &__container {
+    &__btns {
       display: flex;
       flex-direction: row-reverse;
       justify-content: space-between;
     }
+  }
+}
 
-    &__wrapper {
-      width: 45%;
-    }
-
-    &__store {
-      width: 47%;
-      margin-bottom: 25px;
-    }
-
-    &__copy {
-      background: $white;
-      border: 1px solid $black0;
-      padding: 11px;
-      border-radius: 6px;
-      height: 46px;
+.content-field {
+  &__btns {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+  &__qr {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  &__input {
+    padding: 10px 0 0 0;
+    display: grid;
+    grid-template-columns: 6fr 1fr;
+    grid-gap: 10px;
+  }
+  &__btn-store {
+    width: 47%;
+  }
+  &__btn-copy {
+    background: $white;
+    border: 1px solid $black0;
+    padding: 11px;
+    border-radius: 6px;
+    height: 46px;
+  }
+  &__text {
+    @include text-simple;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%;
+    color: $black700;
+    font-size: 18px;
+    &_grey {
+      @extend .content-field__text;
+      font-size: 16px;
+      color: $black400;
     }
   }
+}
 
-  .messageSend {
-    max-width: 430px !important;
+.btns-block {
+  &__wrapper {
+    width: 45%;
   }
+}
+
+.icon-copy {
+  color: $blue;
+  font-size: 20px;
+}
+
 </style>

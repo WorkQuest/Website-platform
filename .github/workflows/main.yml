@@ -42,12 +42,14 @@ jobs:
           echo ETHEREUM_LP_TOKEN=${{ secrets.ETHEREUM_LP_TOKEN }} >> .env
           echo ETHEREUM_MINING=${{ secrets.ETHEREUM_MINING }} >> .env
           echo ETHEREUM_RPC_URL=${{ secrets.ETHEREUM_RPC_URL }} >> .env
+          echo ETHEREUM_USDT_TOKEN=${{ secrets.ETHEREUM_USDT_TOKEN }} >> .env
           echo ETHEREUM_WQT_TOKEN=${{ secrets.ETHEREUM_WQT_TOKEN }} >> .env
 
           echo BSC_BRIDGE=${{ secrets.BSC_BRIDGE }} >> .env
           echo BSC_LP_TOKEN=${{ secrets.BSC_LP_TOKEN }} >> .env
           echo BSC_MINING=${{ secrets.BSC_MINING }} >> .env
           echo BSC_OLD_WQT_TOKEN=${{ secrets.BSC_OLD_WQT_TOKEN }} >> .env
+          echo BSC_USDT_TOKEN=${{ secrets.BSC_USDT_TOKEN }} >> .env
           echo BSC_WQT_EXCHANGE=${{ secrets.BSC_WQT_EXCHANGE }} >> .env
           echo BSC_WQT_TOKEN=${{ secrets.BSC_WQT_TOKEN }} >> .env
           echo BSC_RPC_URL=${{ secrets.BSC_RPC_URL }} >> .env
@@ -120,12 +122,14 @@ jobs:
           echo ETHEREUM_LP_TOKEN=${{ secrets.ETHEREUM_LP_TOKEN }} >> .env
           echo ETHEREUM_MINING=${{ secrets.ETHEREUM_MINING }} >> .env
           echo ETHEREUM_RPC_URL=${{ secrets.ETHEREUM_RPC_URL }} >> .env
+          echo ETHEREUM_USDT_TOKEN=${{ secrets.ETHEREUM_USDT_TOKEN }} >> .env
           echo ETHEREUM_WQT_TOKEN=${{ secrets.ETHEREUM_WQT_TOKEN }} >> .env
 
           echo BSC_BRIDGE=${{ secrets.BSC_BRIDGE }} >> .env
           echo BSC_LP_TOKEN=${{ secrets.BSC_LP_TOKEN }} >> .env
           echo BSC_MINING=${{ secrets.BSC_MINING }} >> .env
           echo BSC_OLD_WQT_TOKEN=${{ secrets.BSC_OLD_WQT_TOKEN }} >> .env
+          echo BSC_USDT_TOKEN=${{ secrets.BSC_USDT_TOKEN }} >> .env
           echo BSC_WQT_EXCHANGE=${{ secrets.BSC_WQT_EXCHANGE }} >> .env
           echo BSC_WQT_TOKEN=${{ secrets.BSC_WQT_TOKEN }} >> .env
           echo BSC_RPC_URL=${{ secrets.BSC_RPC_URL }} >> .env
@@ -198,12 +202,14 @@ jobs:
           echo ETHEREUM_LP_TOKEN=${{ secrets.ETHEREUM_LP_TOKEN }} >> .env
           echo ETHEREUM_MINING=${{ secrets.ETHEREUM_MINING }} >> .env
           echo ETHEREUM_RPC_URL=${{ secrets.ETHEREUM_RPC_URL }} >> .env
+          echo ETHEREUM_USDT_TOKEN=${{ secrets.ETHEREUM_USDT_TOKEN }} >> .env
           echo ETHEREUM_WQT_TOKEN=${{ secrets.ETHEREUM_WQT_TOKEN }} >> .env
 
           echo BSC_BRIDGE=${{ secrets.BSC_BRIDGE }} >> .env
           echo BSC_LP_TOKEN=${{ secrets.BSC_LP_TOKEN }} >> .env
           echo BSC_MINING=${{ secrets.BSC_MINING }} >> .env
           echo BSC_OLD_WQT_TOKEN=${{ secrets.BSC_OLD_WQT_TOKEN }} >> .env
+          echo BSC_USDT_TOKEN=${{ secrets.BSC_USDT_TOKEN }} >> .env
           echo BSC_WQT_EXCHANGE=${{ secrets.BSC_WQT_EXCHANGE }} >> .env
           echo BSC_WQT_TOKEN=${{ secrets.BSC_WQT_TOKEN }} >> .env
           echo BSC_RPC_URL=${{ secrets.BSC_RPC_URL }} >> .env

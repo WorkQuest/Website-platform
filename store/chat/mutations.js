@@ -1,6 +1,9 @@
 /* eslint-disable no-param-reassign */
 
 export default {
+  changeUnreadChatsCount(state, { count, needAdd }) {
+    state.unreadChatsCount = needAdd ? state.unreadChatsCount + count : count;
+  },
   setChatsList(state, { chats, count }) {
     state.chats.list = chats;
     state.chats.count = count;

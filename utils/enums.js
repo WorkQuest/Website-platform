@@ -35,6 +35,7 @@ export const StakingTypes = {
   WUSD: 'WUSD',
 };
 
+export const TwoFAStatuses = { DISABLED: 0, ENABLED: 1 };
 export const SumSubStatuses = { NOT_VERIFIED: 0, VERIFIED: 1 };
 
 export const DisputeStatues = {
@@ -63,9 +64,13 @@ export const KeyCodes = {
 };
 
 // Filters
-export const WorkplaceFilter = ['all', 'distant', 'office', 'both'];
-export const WorkplaceIndex = ['distant', 'office', 'both'];
-export const TypeOfJobFilter = ['fullTime', 'partTime', 'fixedTerm'];
+export const WorkplaceIndex = ['Remote', 'InOffice', 'Hybrid'];
+export const PayPeriodsIndex = ['Hourly', 'Daily', 'Weekly', 'BiWeekly', 'SemiMonthly', 'Monthly', 'Quarterly', 'SemiAnnually', 'Annually', 'FixedPeriod', 'ByAgreement'];
+export const TypeOfEmployments = ['FullTime', 'PartTime', 'FixedTerm', 'EmploymentContract', 'RemoteWork'];
+
+export const PayPeriodsFilter = ['all', 'Hourly', 'Daily', 'Weekly', 'BiWeekly', 'SemiMonthly', 'Monthly', 'Quarterly', 'SemiAnnually', 'Annually', 'FixedPeriod', 'ByAgreement'];
+export const WorkplaceFilter = ['all', 'Remote', 'InOffice', 'Hybrid'];
+export const TypeOfEmploymentFilters = ['all', 'FullTime', 'PartTime', 'FixedTerm', 'EmploymentContract', 'RemoteWork'];
 export const PriorityFilter = [
   { key: 'all', value: 0 },
   { key: 'urgent', value: 3 },
@@ -80,6 +85,7 @@ export const Ratings = Object.freeze({
   NO_STATUS: 'noStatus',
   ALL_STATUSES: 'AllStatuses',
 });
+
 export const UserRating = Object.freeze({
   8: Ratings.TOP_RANKED,
   4: Ratings.RELIABLE,
@@ -88,11 +94,11 @@ export const UserRating = Object.freeze({
   15: Ratings.ALL_STATUSES,
 });
 export const RatingFilter = [
-  { key: 'all', value: 15 },
-  { key: 'topRanked', value: 8 },
-  { key: 'reliable', value: 4 },
-  { key: 'verified', value: 2 },
-  { key: 'noStatus', value: 1 },
+  { key: [Ratings.ALL_STATUSES], value: 15 },
+  { key: [Ratings.TOP_RANKED], value: 8 },
+  { key: [Ratings.RELIABLE], value: 4 },
+  { key: [Ratings.VERIFIED], value: 2 },
+  { key: [Ratings.NO_STATUS], value: 1 },
 ];
 export const RatingStatus = {
   NoStatus: 1,
@@ -115,55 +121,6 @@ export const MessageAction = {
   WORKER_REJECT_INVITE_ON_QUEST: 'workerRejectInviteOnQuest',
   WORKER_ACCEPT_INVITE_ON_QUEST: 'workerAcceptInviteOnQuest',
 };
-
-export const NotificationAction = {
-  QUEST_STARTED: 'questStarted',
-  WORKER_REJECTED_QUEST: 'workerRejectedQuest',
-  WORKER_ACCEPTED_QUEST: 'workerAcceptedQuest',
-  WORKER_COMPLETED_QUEST: 'workerCompletedQuest',
-  EMPLOYER_ACCEPTED_COMPLETED_QUEST: 'employerAcceptedCompletedQuest',
-  EMPLOYER_REJECTED_COMPLETED_QUEST: 'employerRejectedCompletedQuest',
-  WORKER_RESPONDED_TO_QUEST: 'workerRespondedToQuest',
-  EMPLOYER_INVITED_WORKER_TO_QUEST: 'employerInvitedWorkerToQuest',
-  WORKER_ACCEPTED_INVITATION_TO_QUEST: 'workerAcceptedInvitationToQuest',
-  WORKER_REJECTED_INVITATION_TO_QUEST: 'workerRejectedInvitationToQuest',
-  EMPLOYER_REJECTED_WORKERS_RESPONSE: 'employerRejectedWorkersResponse',
-  WAIT_WORKER: 'waitWorker',
-  USER_LEFT_REVIEW_ABOUT_QUEST: 'userLeftReviewAboutQuest',
-  OPEN_DISPUTE: 'openDispute',
-  DISPUTE_DECISION: 'disputeDecision',
-  QUEST_EDITED: 'questEdited',
-  QUEST_END_SOON: 'questEndSoon',
-  COMMENT_LIKED: 'commentLiked',
-  NEW_COMMENT_IN_DISCUSSION: 'newCommentInDiscussion',
-  NEW_DISCUSSION_LIKE: 'newDiscussionLike',
-  QUEST_STATUS_UPDATED: 'QuestStatusUpdated',
-};
-
-export const notificationCommonFilterActions = Object.freeze([
-  NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST,
-  NotificationAction.WORKER_ACCEPTED_INVITATION_TO_QUEST,
-  NotificationAction.WORKER_REJECTED_INVITATION_TO_QUEST,
-  NotificationAction.WORKER_RESPONDED_TO_QUEST,
-  NotificationAction.OPEN_DISPUTE,
-  NotificationAction.DISPUTE_DECISION,
-  NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE,
-]);
-
-export const notificationEmployerFilterActions = Object.freeze([
-  NotificationAction.WORKER_RESPONDED_TO_QUEST,
-  NotificationAction.WORKER_ACCEPTED_QUEST,
-  NotificationAction.WORKER_COMPLETED_QUEST,
-  NotificationAction.WORKER_REJECTED_QUEST,
-]);
-
-export const notificationCommonFilterAction2 = Object.freeze([
-  NotificationAction.QUEST_EDITED,
-  NotificationAction.NEW_DISCUSSION_LIKE,
-  NotificationAction.NEW_COMMENT_IN_DISCUSSION,
-  NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST,
-  NotificationAction.WAIT_WORKER,
-]);
 
 export const ChatType = {
   GROUP: 'group',
@@ -191,7 +148,6 @@ export const Path = {
   SIGN_UP: '/sign-up',
   MY_QUESTS: '/my',
   WALLET: '/wallet',
-  PENSION: '/pension',
   REFERRAL: '/referral',
   INSURING: '/insuring',
   SAVINGS: '/savings',
@@ -213,6 +169,8 @@ export const Path = {
   WIKI: '/wiki',
   RAISED_VIEWS: '/raised-views',
   NOTIFICATIONS: '/notifications',
+  RETIREMENT: '/retirement',
+  SUMSUB: '/sumsub',
 };
 
 export const PathDAO = {

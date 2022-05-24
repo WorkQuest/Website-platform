@@ -250,6 +250,9 @@ export default {
   }
 
   &__title {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     color: $black500;
     &_white {
       color: $white;
@@ -338,9 +341,9 @@ export default {
     height: auto;
     min-height: 46px;
     display: flex;
+    padding: 0 20px;
     align-items: center;
     justify-content: space-between;
-    padding: 5px 20px;
     width: 100%;
     background: #FFFFFF;
     border-radius: 6px;

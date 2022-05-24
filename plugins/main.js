@@ -12,7 +12,6 @@ Vue.use(VueTippy);
 Vue.component('tippy', TippyComponent);
 
 Vue.mixin({
-
   methods: {
     convertToBech32(prefix, address) {
       return converter(prefix).toBech32(address);

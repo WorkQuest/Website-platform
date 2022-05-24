@@ -59,6 +59,17 @@
             data-selector="DISTANT"
           />
         </div>
+        <div class="page__dd">
+          <base-dd
+            v-model="payPeriodsIndex"
+            :label="$tc('quests.payPeriods.title')"
+            type="gray"
+            :items="payPeriods"
+            rules="required"
+            :name="$t('quests.payPeriods.title')"
+            data-selector="DISTANT"
+          />
+        </div>
       </div>
       <specializations-selector
         :skills="selectedSpecAndSkills"
@@ -128,6 +139,32 @@
           />
         </validation-provider>
       </div>
+      <validation-provider
+        v-slot="{ errors }"
+        :rules="{ required: { allowFalse: false } }"
+        class="page__edit-check"
+        tag="div"
+        name=" "
+      >
+        <div class="edit-check">
+          <input
+            id="understand"
+            v-model="isCheckedEditAfter"
+            class="edit-check__box"
+            data-selector="I_UNDERSTAND"
+            type="checkbox"
+          >
+          <label
+            class="edit-check__text"
+            for="understand"
+          >
+            {{ $t('quests.impossibleEditAfterCreation') }}
+          </label>
+        </div>
+        <div class="page__error">
+          {{ errors[0] }}
+        </div>
+      </validation-provider>
       <div class="page upload__container">
         <div class="upload__title">
           {{ $t('quests.uploadMaterials') }}
@@ -162,8 +199,9 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import {
-  PriorityFilter, TokenMap, TokenSymbols, TypeOfJobFilter, WorkplaceIndex,
+  PriorityFilter, TokenMap, TokenSymbols, TypeOfEmployments, PayPeriodsIndex, WorkplaceIndex,
 } from '~/utils/enums';
+import { LocalNotificationAction } from '~/utils/notifications';
 import { CommissionForCreatingAQuest } from '~/utils/сonstants/quests';
 import { ERC20 } from '~/abi';
 
@@ -178,6 +216,7 @@ export default {
       selectedSpecAndSkills: [],
       employmentIndex: 0,
       workplaceIndex: 0,
+      payPeriodsIndex: 0,
       runtimeIndex: 0,
       questTitle: '',
       address: '',
@@ -189,6 +228,7 @@ export default {
       geoCode: null,
       isClearData: false,
       isNotChooseSpec: false,
+      isCheckedEditAfter: false,
     };
   },
   computed: {
@@ -209,11 +249,7 @@ export default {
       ];
     },
     employment() {
-      return [
-        this.$t('quests.employment.fullTime'),
-        this.$t('quests.employment.partTime'),
-        this.$t('quests.employment.fixedTerm'),
-      ];
+      return TypeOfEmployments.map((item) => this.$t(`quests.employment.${item}`));
     },
     distantWork() {
       return [
@@ -221,6 +257,9 @@ export default {
         this.$t('quests.distantWork.workInOffice'),
         this.$t('quests.distantWork.bothVariant'),
       ];
+    },
+    payPeriods() {
+      return PayPeriodsIndex.map((item) => this.$t(`quests.payPeriods.${item}`));
     },
     depositAmount() {
       if (!this.price) return '0';
@@ -264,6 +303,7 @@ export default {
       this.price = '';
       this.employmentIndex = 0;
       this.workplaceIndex = 0;
+      this.payPeriodsIndex = 0;
       this.runtimeIndex = 0;
       this.address = '';
       this.coordinates = { lng: 0, lat: 0 };
@@ -271,15 +311,16 @@ export default {
     async setQuestDraft() {
       this.SetLoader(true);
       const {
-        workplaceIndex, runtimeIndex, employmentIndex, questTitle,
+        workplaceIndex, payPeriodsIndex, runtimeIndex, employmentIndex, questTitle,
         textarea, price, selectedSpecAndSkills, address, coordinates: { lng, lat }, clearData,
       } = this;
       if (!questTitle && !textarea && !price && !address) await clearData();
       else {
         this.$cookies.set('questDraft', {
           workplace: WorkplaceIndex[workplaceIndex],
+          payPeriod: PayPeriodsIndex[payPeriodsIndex],
           priority: PriorityFilter[runtimeIndex + 1].value,
-          employment: TypeOfJobFilter[employmentIndex],
+          typeOfEmployment: TypeOfEmployments[employmentIndex],
           title: questTitle,
           description: textarea,
           price,
@@ -292,6 +333,11 @@ export default {
             locationPlaceName: address,
           },
         });
+        await this.$store.dispatch('notifications/createLocalNotification', {
+          action: LocalNotificationAction.QUEST_DRAFT,
+          message: this.$t('localNotifications.messages.questDraft'),
+          actionBtn: this.$t('localNotifications.btns.questDraft'),
+        });
       }
       this.SetLoader(false);
     },
@@ -302,8 +348,9 @@ export default {
         this.questTitle = questDraft?.title || '';
         this.textarea = questDraft?.description || '';
         this.price = questDraft?.price || '';
-        this.employmentIndex = TypeOfJobFilter.indexOf(questDraft?.employment) || 0;
+        this.employmentIndex = TypeOfEmployments.indexOf(questDraft?.typeOfEmployment) || 0;
         this.workplaceIndex = WorkplaceIndex.indexOf(questDraft?.workplace) || 0;
+        this.payPeriodsIndex = PayPeriodsIndex.indexOf(questDraft?.payPeriod) || 0;
         this.runtimeIndex = PriorityFilter[questDraft?.priority + 1]?.value || 0;
         this.address = questDraft?.locationFull.locationPlaceName ?? '';
         this.coordinates = {
@@ -350,7 +397,7 @@ export default {
     },
     async toCreateQuest(invalid) {
       this.SetLoader(true);
-      if (!this.selectedSpecAndSkills.length || invalid) {
+      if (!this.isCheckedEditAfter || !this.selectedSpecAndSkills.length || invalid) {
         this.isNotChooseSpec = true;
         this.ScrollToTop();
         this.SetLoader(false);
@@ -450,8 +497,9 @@ export default {
       const medias = await this.uploadFiles(this.files);
       const payload = {
         workplace: WorkplaceIndex[this.workplaceIndex],
+        payPeriod: PayPeriodsIndex[this.payPeriodsIndex],
         priority: PriorityFilter[this.runtimeIndex + 1].value,
-        employment: TypeOfJobFilter[this.employmentIndex],
+        typeOfEmployment: TypeOfEmployments[this.employmentIndex],
         title: this.questTitle,
         description: this.textarea,
         price: new BigNumber(this.price).shiftedBy(18).toString(),
@@ -535,6 +583,19 @@ export default {
     &:last-child {
       margin: 0;
     }
+  }
+}
+
+.edit-check {
+  display: flex;
+  align-items: center;
+  &__box {
+    width: 16px;
+    height: 16px;
+  }
+  &__text {
+    margin: 0 0 0 10px;
+    user-select: none;
   }
 }
 
@@ -960,7 +1021,7 @@ export default {
     align-items: flex-start;
     margin: 20px 0 0 0;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     grid-gap: 20px;
   }
 

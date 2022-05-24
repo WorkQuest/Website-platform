@@ -130,6 +130,12 @@
             {{ getPriority(quest.priority) }}
           </div>
           <div
+            v-if="quest.payPeriod"
+            class="card-quest__payPeriod"
+          >
+            {{ $tc(`quests.payPeriods.${quest.payPeriod}`) }}
+          </div>
+          <div
             class="card-quest__amount"
             :class="getAmountStyles(quest)"
           >
@@ -654,6 +660,20 @@ export default {
       background: rgba(232, 210, 13, 0.1);
       color: $yellow;
     }
+  }
+  &__payPeriod {
+    @include text-simple;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    font-size: 12px;
+    line-height: 130%;
+    height: 24px;
+    padding: 0 5px;
+    background: $grey100;
+    color: $black800;
+
   }
 
   &__actions {

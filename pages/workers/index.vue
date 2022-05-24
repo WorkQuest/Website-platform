@@ -12,7 +12,7 @@
       <h2 class="employees__title">
         {{ $t('workers.topWorkers') }}
       </h2>
-      <filters-panel
+      <panel-filters
         class="employees__filters"
         @sortSpec="sortBySpec"
         @sortTime="sortByTime"
@@ -20,6 +20,7 @@
         @sortRating="sortByRating"
         @sortPriority="sortByPriority"
         @sortWorkplace="sortByWorkplace"
+        @sortPayPeriod="sortPayPeriod"
       />
       <div
         v-if="employeeCount"
@@ -172,8 +173,8 @@ export default {
     },
     async sortByPrice(value) {
       if (!Object.keys(value).length) {
-        delete this.query['betweenWagePerHour[from]'];
-        delete this.query['betweenWagePerHour[to]'];
+        delete this.query['betweenCostPerHour[from]'];
+        delete this.query['betweenCostPerHour[to]'];
       } else this.query = { ...this.query, ...value };
       await this.fetchEmployeeList(true);
     },
@@ -189,6 +190,11 @@ export default {
     },
     async sortByWorkplace(value) {
       if (!Object.keys(value).length) delete this.query['workplaces[0]'];
+      else this.query = { ...this.query, ...value };
+      await this.fetchEmployeeList(true);
+    },
+    async sortPayPeriod(value) {
+      if (!Object.keys(value).length) delete this.query['payPeriods[0]'];
       else this.query = { ...this.query, ...value };
       await this.fetchEmployeeList(true);
     },

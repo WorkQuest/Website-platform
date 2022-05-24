@@ -33,6 +33,7 @@ export default {
   plugins: [
     { src: '@plugins/ws', mode: 'client' },
     { src: '@plugins/axios.js' },
+    { src: '@plugins/axiosOracle.js' },
     { src: '@plugins/main.js' },
     { src: '@plugins/vee-validate.js' },
     { src: '@plugins/clipboard.js' },
@@ -129,12 +130,14 @@ export default {
     ETHEREUM_LP_TOKEN: process.env.ETHEREUM_LP_TOKEN,
     ETHEREUM_MINING: process.env.ETHEREUM_MINING,
     ETHEREUM_RPC_URL: process.env.ETHEREUM_RPC_URL,
+    ETHEREUM_USDT_TOKEN: process.env.ETHEREUM_USDT_TOKEN,
     ETHEREUM_WQT_TOKEN: process.env.ETHEREUM_WQT_TOKEN,
 
     BSC_BRIDGE: process.env.BSC_BRIDGE,
     BSC_LP_TOKEN: process.env.BSC_LP_TOKEN,
     BSC_MINING: process.env.BSC_MINING,
     BSC_OLD_WQT_TOKEN: process.env.BSC_OLD_WQT_TOKEN,
+    BSC_USDT_TOKEN: process.env.BSC_USDT_TOKEN,
     BSC_WQT_EXCHANGE: process.env.BSC_WQT_EXCHANGE,
     BSC_WQT_TOKEN: process.env.BSC_WQT_TOKEN,
     BSC_RPC_URL: process.env.BSC_RPC_URL,
