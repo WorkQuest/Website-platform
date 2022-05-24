@@ -397,7 +397,6 @@ export default {
         this.SetLoader(false);
         return;
       }
-      console.log('after check');
       const tokenAddress = TokenMap[TokenSymbols.WUSD];
       const spenderAddress = process.env.WORKNET_WQ_FACTORY;
       const [allowance] = await Promise.all([
