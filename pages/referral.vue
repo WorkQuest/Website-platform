@@ -20,7 +20,7 @@
                   {{ $t('referral.referralReward') }}
                 </div>
                 <div class="info-block__tokens">
-                  {{ $tc('meta.coins.count.WQTCount', referralReward) }}
+                  {{ $tc('meta.coins.count.USDCount', referralReward) }}
                 </div>
               </div>
               <div class="info-block__btn-wrap">
@@ -414,18 +414,12 @@ export default {
       this.SetLoader(false);
       if (res && this.createdReferralsList.length) {
         this.ShowModal({
-          key: modals.status,
+          key: modals.referralRegistration,
           title: this.$t('meta.btns.registration'),
           subtitle: this.$t('modals.registration'),
           cancel: this.$t('meta.btns.cancel'),
           button: this.$t('meta.btns.submit'),
           itemList: this.filterCreatedReferralsList,
-          callback: async () => {
-            this.SetLoader(true);
-            await this.$store.dispatch('referral/addReferrals', this.userAddress);
-            await this.$store.dispatch('referral/fetchReferralsList');
-            this.SetLoader(false);
-          },
         });
       } else {
         this.ShowModal({
