@@ -25,6 +25,15 @@ import { WQPromotion } from '~/abi/index';
 const { WORKNET_PROMOTION } = process.env;
 
 export default {
+  async resendEmail({ commit }, { email }) {
+    try {
+      const { result } = await this.$axios.$get('/v1/auth/mail/resend-email');
+      console.log('res', result);
+      return result;
+    } catch (e) {
+      return error();
+    }
+  },
   async changeRole({ commit }, { totp }) {
     try {
       return await this.$axios.$put('/v1/profile/change-role', { totp });

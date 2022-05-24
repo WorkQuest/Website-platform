@@ -8,14 +8,18 @@
       tag="div"
     >
       <div class="auth__text auth__text_title">
-        <span>{{ $t('meta.signIn') }}</span>
+        <span>
+          {{ $t('meta.signIn') }}
+        </span>
       </div>
       <div class="auth__text auth__text_simple">
-        <span>{{ $t('meta.account') }}</span>
+        <span>
+          {{ $t('meta.account') }}
+        </span>
         <nuxt-link
           class="auth__text auth__text_link"
           data-selector="ACTION-BTN-TO-REGISTRATION"
-          to="/sign-up"
+          :to="$options.Path.SIGN_UP"
         >
           {{ $t('meta.btns.registration') }}
         </nuxt-link>
@@ -28,7 +32,7 @@
         <base-field
           v-model="model.email"
           mode="icon"
-          :name="$t('signUp.email')"
+          :name="$tc('signUp.email')"
           :placeholder="$t('signUp.email')"
           rules="required|email"
           autocomplete="username"
@@ -36,7 +40,7 @@
         >
           <template v-slot:left>
             <img
-              src="~assets/img/icons/email.svg"
+              :src="$options.images.EMAIL"
               alt=""
             >
           </template>
@@ -44,7 +48,7 @@
         <base-field
           v-model="model.password"
           mode="icon"
-          :name="$t('signUp.password')"
+          :name="$tc('signUp.password')"
           :placeholder="$t('signUp.password')"
           rules="required_if|min:8"
           autocomplete="current-password"
@@ -54,7 +58,7 @@
         >
           <template v-slot:left>
             <img
-              src="~assets/img/icons/password.svg"
+              :src="$options.images.PASSWORD"
               alt=""
             >
           </template>
@@ -72,7 +76,7 @@
           <base-checkbox
             v-model="remember"
             name="remember"
-            :label="$t('signIn.remember')"
+            :label="$tc('signIn.remember')"
             @input="$store.dispatch('user/setRememberMe', remember)"
           />
           <div
@@ -91,10 +95,17 @@
             {{ $t('meta.login') }}
           </base-btn>
         </div>
-        <div class="auth__text auth__text_wrap">
-          {{ $t('signIn.or') }}
-        </div>
       </form>
+      <base-btn
+        data-selector="RESEND-LETTER"
+        :disabled="timeLeft > 0"
+        @click="resendLetter"
+      >
+        {{ `Resend the letter ${timeLeft}` }}
+      </base-btn>
+      <div class="auth__text auth__text_wrap">
+        {{ $t('signIn.or') }}
+      </div>
       <div class="auth__social">
         <div class="auth__text auth__text_dark">
           {{ $t('signIn.loginWith') }}
@@ -105,7 +116,7 @@
             @click="showSignWorkQuest()"
           >
             <img
-              src="~assets/img/app/logo.svg"
+              :src="$options.images.WQ_LOGO"
               alt="WorkQuest"
             >
           </button>
@@ -141,7 +152,10 @@
       class="auth__back"
       @click="back"
     >
-      <span class="icon-chevron_big_left" /> <span>{{ $t('meta.btns.back') }}</span>
+      <span class="icon-chevron_big_left" />
+      <span>
+        {{ $t('meta.btns.back') }}
+      </span>
     </div>
     <CreateWallet
       :step="step"
@@ -162,15 +176,20 @@ import CreateWallet from '~/components/ui/CreateWallet';
 import {
   Path, UserRole, UserStatuses, WalletState,
 } from '~/utils/enums';
+import { images } from '~/utils/images';
 
 export default {
   name: 'SignIn',
   layout: 'auth',
+  images,
+  Path,
   components: {
     CreateWallet,
   },
   data() {
     return {
+      timer: null,
+      timeLeft: 60,
       addressAssigned: false,
       userWalletAddress: null,
       step: WalletState.Default,
@@ -191,6 +210,15 @@ export default {
     }),
     walletState() {
       return WalletState;
+    },
+  },
+  watch: {
+    timeLeft(time) {
+      if (time === 0) this.stopTimer();
+    },
+    userStatus() {
+      // TODO: Добавить в дату
+      if (this.userStatus === 0) this.startTimer();
     },
   },
   created() {
@@ -235,6 +263,14 @@ export default {
     }
   },
   methods: {
+    startTimer() {
+      this.timer = setInterval(() => {
+        this.timeLeft -= 1;
+      }, 1000);
+    },
+    stopTimer() {
+      clearTimeout(this.timer);
+    },
     clearCookies() {
       if (this.userData.id) return;
       this.$cookies.remove('access');
@@ -264,6 +300,19 @@ export default {
     },
     goStep(step) {
       this.step = step;
+    },
+
+    showConfirmEmailModal() {
+      this.ShowModal({
+        key: modals.emailConfirm,
+      });
+    },
+
+    async resendLetter() {
+      this.SetLoader(true);
+      this.model.email = this.model.email.trim();
+      if (this.model.email) await this.$store.dispatch('user/resendEmail', { email: this.model.email });
+      this.SetLoader(false);
     },
     async signIn() {
       if (this.isLoading) return;
@@ -313,7 +362,7 @@ export default {
       // Wallet is not assigned to this account
       if (!this.userAddress) {
         setCipherKey(this.model.password);
-        this.$cookies.set('userLogin', true, { path: '/' });
+        this.$cookies.set('userLogin', true, { path: Path.ROOT });
         await this.$router.push(Path.ROLE);
         this.SetLoader(false);
         return;
@@ -420,7 +469,7 @@ export default {
     },
     async redirectUser() {
       this.addressAssigned = true;
-      this.$cookies.set('userLogin', true, { path: '/' });
+      this.$cookies.set('userLogin', true, { path: Path.ROOT });
       // redirect to confirm access if token exists & unconfirmed account
       const confirmToken = sessionStorage.getItem('confirmToken');
       if ((this.userStatus === UserStatuses.Unconfirmed || !this.userAddress) && confirmToken) {
@@ -456,7 +505,7 @@ export default {
 
 <style lang="scss" scoped>
 .auth {
-  &__back {
+  &__back-btn {
     cursor: pointer;
     display: table-cell;
     color: $black700;
