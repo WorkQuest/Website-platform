@@ -184,7 +184,7 @@
         <div class="btn__create">
           <base-btn
             selector="CREATE-A-QUEST"
-            @click="handleSubmit(toCreateQuest(invalid))"
+            @click="handleSubmit(toCreateQuest)"
           >
             {{ $t('meta.createAQuest') }}
           </base-btn>
@@ -368,12 +368,6 @@ export default {
         this.isNotChooseSpec = false;
       }
     },
-    cardStatus(item) {
-      if (item.code === 1) return 'level__card_gold';
-      if (item.code === 3) return 'card__level_reliable';
-      if (item.code === 4) return 'card__level_checked';
-      return '';
-    },
     periods(period) {
       if (period === 1) return this.days;
       if (period === 2) return this.weeks;
@@ -395,15 +389,15 @@ export default {
         console.error('Geo look up is failed', e);
       }
     },
-    async toCreateQuest(invalid) {
+    async toCreateQuest() {
       this.SetLoader(true);
-      if (!this.isCheckedEditAfter || !this.selectedSpecAndSkills.length || invalid) {
+      if (!this.isCheckedEditAfter || !this.selectedSpecAndSkills.length) {
         this.isNotChooseSpec = true;
         this.ScrollToTop();
         this.SetLoader(false);
         return;
       }
-
+      console.log('after check');
       const tokenAddress = TokenMap[TokenSymbols.WUSD];
       const spenderAddress = process.env.WORKNET_WQ_FACTORY;
       const [allowance] = await Promise.all([
