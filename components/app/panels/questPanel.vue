@@ -135,7 +135,7 @@ export default {
       );
     },
     showProfile() {
-      this.$router.push(`/${Path.PROFILE}/${this.questData.userId}`);
+      this.$router.push(`${Path.PROFILE}/${this.questData.userId}`);
     },
   },
 };
