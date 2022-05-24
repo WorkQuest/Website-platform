@@ -171,108 +171,29 @@
           data-selector="PAGE-MY-QUESTS-STEP-2"
           class="page"
         >
-          <div class="page btn-container btn-container__left">
-            <div class="btn-container__btn_back">
-              <base-btn
-                data-selector="PREVIOUS-STEP"
-                mode="back"
-                @click="clickBackBtnHandler"
-              >
-                {{ $t('meta.btns.back') }}
-                <template v-slot:left>
-                  <span class="icon-chevron_big_left btn-container__icon" />
-                </template>
-              </base-btn>
-            </div>
-          </div>
-          <div class="page page__raising">
-            {{ $t('raising-views.raisingViews') }}
-          </div>
-          <div class="page period">
-            <h3 class="period__choose">
-              {{ $t('raising-views.choosePeriod') }}
-            </h3>
-            <div class="period__container">
-              <div
-                v-for="(item, i) in periodTabs"
-                :key="i"
-                class="period__period"
-                :class="{'period__period_active': period === item.number}"
-                @click="switchPeriod(item, i)"
-              >
-                <h2
-                  class="period__title"
-                  :class="{'period__title_active': period === item.number}"
-                >
-                  {{ item.title }}
-                </h2>
-              </div>
-            </div>
-
-            <div class="period level">
-              <div class="level__title">
-                {{ $t('raising-views.chooseLevel') }}
-              </div>
-              <div
-                v-if="period"
-                class="level__container"
-              >
-                <div
-                  v-for="(item, i) in periods(period)"
-                  :key="i"
-                  class="level__card"
-                  @click="selectRadio(i)"
-                >
-                  <div class="level__option">
-                    <input
-                      :ref="`radio${i}`"
-                      name="higherLevel"
-                      type="radio"
-                      class="radio__input"
-                      :value="item.cost"
-                      @input="selectRadio(i)"
-                    >
-                  </div>
-                  <div class="level card">
-                    <div
-                      class="card__level"
-                      :class="cardStatus(item)"
-                    >
-                      {{ item.level }}
-                    </div>
-                    <div class="card__desc">
-                      {{ item.desc }}
-                    </div>
-                  </div>
-                  <div class="cost__container">
-                    <div class="card__cost">
-                      {{ item.cost }}$
-                    </div>
-                  </div>
+          <raise-views-panel>
+            <template #actions>
+              <div class="btn-container">
+                <div class="btn-container__btn">
+                  <base-btn
+                    data-selector="EDIT-QUEST"
+                    mode="outline"
+                    @click="toEditQuest"
+                  >
+                    {{ $t('meta.skipAndEnd') }}
+                  </base-btn>
+                </div>
+                <div class="btn-container__btn">
+                  <base-btn
+                    data-selector="SHOW-PAYMENT-MODAl"
+                    @click="showPaymentModal"
+                  >
+                    {{ $t('meta.pay') }}
+                  </base-btn>
                 </div>
               </div>
-            </div>
-            <div class="btn-container">
-              <div class="btn-container__btn">
-                <base-btn
-                  data-selector="EDIT-QUEST"
-                  mode="outline"
-                  @click="toEditQuest"
-                >
-                  {{ $t('meta.skipAndEnd') }}
-                </base-btn>
-              </div>
-              <div class="btn-container__btn">
-                <base-btn
-                  data-selector="SHOW-PAYMENT-MODAl"
-                  :disabled="ads.currentAdPrice === ''"
-                  @click="showPaymentModal"
-                >
-                  {{ $t('meta.pay') }}
-                </base-btn>
-              </div>
-            </div>
-          </div>
+            </template>
+          </raise-views-panel>
         </div>
       </validation-observer>
     </div>
@@ -781,106 +702,6 @@ export default {
   }
 }
 
-.level {
-  &__title {
-    @extend .period__title;
-  }
-  &__card {
-    background: $white;
-    border-radius: 6px;
-    padding: 20px 0;
-    display: grid;
-    grid-template-columns: 1fr 15fr 1fr;
-    margin: 20px 0 0 0;
-    transition: 0.5s;
-    &:hover {
-      cursor: pointer;
-      box-shadow: 0 0 10px 2px rgba(34, 60, 80, 0.09);
-    }
-    &_gold {
-      border: 1px solid #F7CF00;
-    }
-  }
-  &__option {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-}
-
-.radio {
-  &__input {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border-radius: 50%;
-    width: 25px;
-    height: 25px;
-    border: 1px solid $blue;
-    cursor: pointer;
-    &:checked {
-      background: radial-gradient($blue 50%, rgba(255, 0, 0, 0) 55%);
-    }
-  }
-}
-
-.period {
-  &__choose {
-    @extend .period__title;
-    margin: 20px 0 0 0;
-  }
-  &__title {
-    @include text-simple;
-    font-weight: 400;
-    font-size: 16px;
-    color: $black800;
-    &_active {
-      color: $white;
-    }
-  }
-  &__container {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    max-width: 1180px;
-    width: 100%;
-    margin: 10px 0 20px 0;
-  }
-  &__period {
-    color: $black800;
-    background: $white;
-    padding: 12px 88px;
-    border-radius: 6px;
-    transition: .5s;
-    text-align: center;
-    width: inherit;
-    margin: 0 20px 0 0;
-    &:last-child {
-      margin: 0;
-    }
-    &:hover {
-      cursor: pointer;
-      box-shadow: 0 0 10px 2px rgba(34, 60, 80, 0.09);
-    }
-    &_active {
-      background: $blue;
-      color: $white;
-      &:hover {
-        cursor: pointer;
-        box-shadow: 0 0 10px 2px rgba(34, 60, 80, 0.09);
-      }
-    }
-    &:last-child {
-      margin: 0;
-    }
-    &__title {
-      color: $black800;
-      font-weight: 500;
-      font-size: 16px;
-    }
-  }
-}
-
 .main {
   @include main;
   &-white {
@@ -1163,18 +984,10 @@ export default {
     max-width: 1180px;
     width: 100%;
     justify-content: flex-start;
-    //padding: 0 20px 0 0;
   }
   &__title {
     @include text-simple;
     margin: 30px 0 0 0;
-  }
-  &__raising {
-    @include text-simple;
-    font-weight: 500;
-    font-size: 20px;
-    color: $black800;
-    margin: 0 0 20px 0;
   }
   &__page {
     font-weight: 500;

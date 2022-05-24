@@ -123,6 +123,7 @@ export default {
     font-weight: 400;
     font-size: 16px;
     line-height: 130%;
+    display: inline-block;
 
     &_icon {
       color: $black800;
