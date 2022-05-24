@@ -210,6 +210,7 @@
     "alpha_num": "{_field_} ঘরে শুধুমাত্র বর্ণ-সংখ্যাসূচক অক্ষর বসতে পারে",
     "alpha_dash": "{_field_} ঘরে বর্ণ-সংখ্যাসূচক অক্ষরের পাশাপাশি ড্যাশ এবং আন্ডারস্কোর বসতে পারে",
     "alpha_spaces": "{_field_} ঘরে বর্ণসূচক অক্ষরের পাশাপাশি কেবল স্পেস বসতে পারে",
+    "alpha_spaces_dash": "The {_field_} field may only contain alphabetic characters as well as spaces, dashes and underscores",
     "between": "{_field_} ঘরের মান {min} এবং {max} এর মধ্যবর্তী হতে হবে",
     "confirmed": "{_field_} ঘরের নিশ্চিতকরণ মিলছে না",
     "digits": "{_field_} ঘর অবশ্যই সংখ্যাসূচক হতে হবে এবং ঠিক {length} টি ডিজিট থাকতে হবে",

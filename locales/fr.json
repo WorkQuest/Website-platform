@@ -210,6 +210,7 @@
     "alpha_num": "Le champ {_field_} ne peut contenir que des caractères alphanumériques",
     "alpha_dash": "Le champ {_field_} peut contenir des caractères alphanumériques ainsi que des traits d’union et des traits de soulignement",
     "alpha_spaces": "Le champ {_field_} ne peut contenir que des caractères alphabétiques ainsi que des espaces",
+    "alpha_spaces_dash": "The {_field_} field may only contain alphabetic characters as well as spaces, dashes and underscores",
     "between": "La valeur du champ {_field_} doit être comprise entre {min} et {max}",
     "confirmed": "La confirmation du champ {_field_} ne correspond pas",
     "digits": "Le champ {_field_} doit contenir une valeur numérique composée exactement de {length} chiffres",
