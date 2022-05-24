@@ -266,7 +266,7 @@ extend('max_percent', {
 
 extend('alpha_spaces_dash', {
   validate(value) {
-    const regex = /[\p{L}\-_\s]+$/u;
+    const regex = /^[\p{L}\-_\s]+$/u;
     return {
       valid: regex.test(value),
     };
