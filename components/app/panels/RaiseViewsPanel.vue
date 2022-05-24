@@ -8,7 +8,7 @@
       >
         {{ $t('meta.btns.back') }}
         <template v-slot:left>
-          <span class="icon-chevron_big_left" />
+          <span class="icon-chevron_big_left raising__back_icon" />
         </template>
       </base-btn>
     </div>
@@ -74,6 +74,9 @@
         </div>
       </label>
     </div>
+    <div class="raising__actions">
+      <slot name="actions" />
+    </div>
   </div>
 </template>
 
@@ -116,12 +119,23 @@ export default {
 <style lang="scss" scoped>
 
 .raising {
+  &__back {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130%;
+
+    &_icon {
+      color: $black800;
+      font-size: 25px;
+    }
+  }
   &__header {
     margin: 0 0 20px 0;
     color: $black800;
     font-weight: 500;
     font-size: 20px;
   }
+
   &__block-label {
     color: $black800;
     font-style: normal;
@@ -129,8 +143,13 @@ export default {
     font-size: 16px;
     line-height: 130%;
   }
+
   &__level {
     margin-top: 10px;
+  }
+
+  &__actions {
+    float: right;
   }
 }
 
@@ -169,6 +188,7 @@ export default {
 }
 
 .level {
+  border: 1px solid transparent;
   background: $white;
   min-height: 133px;
   border-radius: 6px;
@@ -182,8 +202,9 @@ export default {
   &:not(:last-child) {
     margin-bottom: 10px;
   }
+
   &:hover {
-    box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
+    box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.15);
   }
 
   &_active {
@@ -193,9 +214,11 @@ export default {
   &_gold {
     border-color: $yellow;
   }
+
   &_silver {
     border-color: $grey200;
   }
+
   &_bronze {
     border-color: $brown;
   }
@@ -208,6 +231,7 @@ export default {
     &_radio {
       height: 25px;
       width: 25px;
+      border-color: $black400;
     }
   }
 
@@ -215,6 +239,7 @@ export default {
     flex-shrink: 0;
     display: flex;
     align-self: center;
+
     &_price {
       user-select: none;
       font-weight: 500;
@@ -227,27 +252,61 @@ export default {
   &__info {
     user-select: none;
     margin-right: 20px;
+
     &_title {
-      padding: 2px;
+      padding: 2px 5px;
       display: inline-block;
       color: $white;
       border-radius: 6px;
+      font-weight: 500;
+      line-height: 130%;
     }
+
     &_gold {
       background: $yellow;
     }
+
     &_silver {
       background: $grey200;
     }
+
     &_bronze {
       background: $brown;
     }
+
     &_description {
       margin-top: 10px;
       color: $black500;
       font-weight: 400;
       font-size: 16px;
       line-height: 130%;
+    }
+  }
+}
+
+@include _767 {
+  .period {
+    flex-direction: column;
+
+    &-item {
+      width: 100%;
+
+      &:not(:last-child) {
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
+
+@include _480 {
+  .level {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    &__right {
+      margin-top: 10px;
     }
   }
 }
