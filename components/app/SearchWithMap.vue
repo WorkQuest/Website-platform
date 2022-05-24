@@ -115,7 +115,9 @@ export default {
       const keys = Object.keys(this.$t('quests.distance'));
       return keys.map((d) => this.$t(`quests.distance.${d}`));
     },
-    isPageQuests() { return this.$route.name === 'quests'; },
+    isPageQuests() {
+      return this.$route.name === 'quests';
+    },
     searchPlaceholder() {
       if (this.isShowMap) return this.$t('quests.ui.searchWithMap');
       return this.isPageQuests ? this.$t('quests.ui.searchOnQuestsPage') : this.$t('quests.ui.searchOnWorkersPage');
@@ -141,9 +143,13 @@ export default {
       lang: this.$i18n?.localeProperties?.code || 'en-US',
     });
   },
-  beforeDestroy() { this.geoCode = null; },
+  beforeDestroy() {
+    this.geoCode = null;
+  },
   methods: {
-    deFocus() { this.isSearchFocus = false; },
+    deFocus() {
+      this.isSearchFocus = false;
+    },
     searchHandler() {
       if (!this.search || !this.coordinates) return;
       this.$store.dispatch('google-map/setNewCenter', this.coordinates);
@@ -166,7 +172,6 @@ export default {
         }
       } catch (e) {
         console.error('Geo look up is failed', e);
-        await this.$store.dispatch('main/showToast', { text: 'Address is not correct' });
       }
       this.clearSearchResult();
     },
@@ -182,6 +187,7 @@ export default {
 
 .search-with-map__map-block {
   height: 435px;
+
   &_hidden {
     display: none;
   }
@@ -203,6 +209,7 @@ export default {
     grid-template-columns: 160px 1fr 155px 260px;
 
     @include box;
+
     &_without-map {
       grid-template-columns: 160px 1fr;
     }
@@ -229,7 +236,7 @@ export default {
 .selector {
   @include box;
   max-height: 300px;
-  overflow: hidden scroll;
+  overflow: hidden auto;
   overscroll-behavior: contain;
 
   &_hide {
@@ -257,6 +264,7 @@ export default {
 
     &__block {
       grid-template-columns: 160px 1fr 155px 220px;
+
       &_without-map {
         grid-template-columns: 160px 1fr;
       }
@@ -272,6 +280,7 @@ export default {
 
     &__block {
       grid-template-columns: 1fr 180px;
+
       &_without-map {
         grid-template-columns: 160px 1fr;
       }
@@ -279,6 +288,7 @@ export default {
 
     &__checkbox {
       display: none !important;
+
       &_without-map {
         display: flex !important;
       }
@@ -312,6 +322,7 @@ export default {
 
     &__block {
       grid-template-columns: 1fr 143px;
+
       &_without-map {
         grid-template-columns: 135px 1fr;
       }
@@ -325,5 +336,7 @@ export default {
       margin-top: 10px;
     }
   }
-};
+}
+
+;
 </style>

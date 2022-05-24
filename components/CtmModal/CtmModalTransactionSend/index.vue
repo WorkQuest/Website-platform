@@ -5,17 +5,17 @@
   >
     <div class="transaction__content">
       <img
-        src="~assets/img/ui/transactionSend.svg"
+        :src="options.mode ==='error' ? require('assets/img/ui/warning.svg') : require('assets/img/ui/transactionSend.svg')"
         alt="Transaction send"
         class="transaction__image"
       >
       <div class="transaction__title">
-        {{ $t('modals.transactionSent') }}
+        {{ options.mode ==='error' ? $t('modals.transactionError') : $t('modals.transactionSent') }}
       </div>
       <base-btn
         class="transaction__action"
         data-selector="OK"
-        @click="hide"
+        @click="CloseModal"
       >
         {{ $t('meta.btns.ok') }}
       </base-btn>
@@ -33,11 +33,6 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
-  },
-  methods: {
-    hide() {
-      this.CloseModal();
-    },
   },
 };
 </script>

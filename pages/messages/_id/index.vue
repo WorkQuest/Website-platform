@@ -11,7 +11,9 @@
             @click="goBackToChatsList()"
           >
             <span class="icon-short_left" />
-            <span>{{ $t('chat.chat') }}</span>
+            <span>
+              {{ $t('chat.chat') }}
+            </span>
           </div>
           <div class="chat-container__chat-name">
             <template v-if="currChat">
@@ -84,12 +86,14 @@
               :auto-focus="true"
               :placeholder="$t('chat.writeYouMessage')"
               :on-enter-press="handleSendMessage"
+              :disabled="isDisabledSendMessage"
               data-selector="INPUT-MESSAGE"
             />
             <button
               class="chat-container__send-btn"
-              :class="{'chat-container__send-btn_active' : messageText}"
+              :class="{'chat-container__send-btn_active' : messageText || files}"
               data-selector="SEND-MESSAGE"
+              :disabled="isDisabledSendMessage"
               @click="handleSendMessage"
             >
               <span class="icon-send" />
@@ -149,7 +153,10 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import ChatMenu from '~/components/ui/ChatMenu';
-import { ChatType, QuestChatStatus } from '~/utils/enums';
+import { InfoModeWorker, QuestStatuses } from '~/utils/сonstants/quests';
+import {
+  ChatType, QuestChatStatus, Path,
+} from '~/utils/enums';
 
 export default {
   name: 'Messages',
@@ -161,12 +168,14 @@ export default {
       messageText: '',
       files: [],
       chatId: this.$route.params.id,
+      isDisabledSendMessage: false,
     };
   },
   computed: {
     ...mapGetters({
       userData: 'user/getUserData',
       currChat: 'chat/getCurrChatInfo',
+      infoDataMode: 'quests/getInfoDataMode',
     }),
     ChatType() {
       return ChatType;
@@ -180,7 +189,8 @@ export default {
         || (isGroupChat && !amIOwner) : false;
     },
     isClosedQuestChat() {
-      return this.currChat?.questChat?.status === QuestChatStatus.Closed;
+      return ((this.currChat?.questChat?.status === QuestChatStatus.Closed)
+        || [QuestStatuses.Done, QuestStatuses.Closed, QuestStatuses.Rejected].includes(+this.$route.query.status));
     },
     canLeave() {
       return this.isGroupChat && !this.amIOwner;
@@ -303,14 +313,15 @@ export default {
       if (window.history.length > 2) {
         this.$router.go(-1);
       } else {
-        this.$router.push('/messages');
+        this.$router.push(`${Path.MESSAGES}`);
       }
     },
     async handleSendMessage() {
       const {
         messageText, files, chatId,
       } = this;
-      if (!messageText) return;
+      this.isDisabledSendMessage = true;
+      if (!messageText && !files.length) return;
 
       const text = messageText;
 
@@ -329,7 +340,6 @@ export default {
         msgFiles.push({
           url, id: i + 1, type,
         });
-
         await this.$store.dispatch('chat/setImage', cData);
       }));
 
@@ -343,8 +353,8 @@ export default {
         },
         chatId,
       };
-
       await this.$store.dispatch('chat/handleSendMessage', payload);
+      this.isDisabledSendMessage = false;
     },
     onEnter(e, callback) {
       if (!e.ctrlKey) {
@@ -413,11 +423,17 @@ export default {
 
   &__chat-name {
     justify-self: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 50%;
   }
 
   &__quest-link {
     color: #0083C7;
     cursor: pointer;
+    justify-self: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     &_small {
       font-size: 14px;
@@ -437,7 +453,7 @@ export default {
 
   &__file-button {
     height: 40px;
-    background: #F7F8FA;
+    background: $black0;
     color: #fff;
     font-size: 1.125rem;
     font-weight: 700;

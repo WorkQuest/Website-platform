@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="claim"
-    :title="options.type === 1 ? $t('modals.titles.stake') : $t('modals.titles.unstake')"
+    :title="options.type === 1 ? $tc('modals.titles.stake') : $tc('modals.titles.unstake')"
   >
     <div class="claim__content content">
       <validation-observer
@@ -14,9 +14,9 @@
           type="number"
           data-selector="INPUT-AMOUNT"
           :placeholder="3500"
-          :label="$t('modals.amount')"
+          :label="$tc('modals.amount')"
           :rules="`required|decimal|decimalPlaces:18${getInputRules()}`"
-          :name="$t('modals.amount')"
+          :name="$tc('modals.amount')"
         >
           <template
             v-slot:right-absolute
@@ -37,7 +37,7 @@
             mode="outline"
             data-selector="CANCEL"
             :disabled="statusBusy"
-            @click="hide()"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -79,7 +79,6 @@ export default {
       userBalance: 'web3/getUserBalance',
       userStake: 'web3/getUserStake',
       isConnected: 'web3/isConnected',
-
       stakingPoolsData: 'wallet/getStakingPoolsData',
       stakingUserData: 'wallet/getStakingUserData',
     }),
@@ -87,14 +86,21 @@ export default {
       const { stakingType, isConnected, statusBusy } = this;
       return !statusBusy || !(stakingType === StakingTypes.WUSD && stakingType !== StakingTypes.WQT && !isConnected);
     },
-    stakingType() { return this.options.stakingType; },
-    userInfo() { return this.stakingUserData[this.stakingType]; },
-    poolData() { return this.stakingPoolsData[this.stakingType]; },
-    poolAddress() { return this.poolData?.poolAddress ? this.poolData.poolAddress.toLowerCase() : ''; },
+    stakingType() {
+      return this.options.stakingType;
+    },
+    userInfo() {
+      return this.stakingUserData[this.stakingType];
+    },
+    poolData() {
+      return this.stakingPoolsData[this.stakingType];
+    },
+    poolAddress() {
+      return this.poolData?.poolAddress ? this.poolData.poolAddress.toLowerCase() : '';
+    },
   },
   mounted() { this.balance = this.options.balance; },
   methods: {
-    hide() { this.CloseModal(); },
     getInputRules() {
       const {
         staked, minStake, maxStake, type,
@@ -111,12 +117,8 @@ export default {
           const max = new BigNumber(this.options.maxStake).minus(this.options.staked).toString();
           this.amount = new BigNumber(this.options.balance).isGreaterThanOrEqualTo(max)
             ? max : this.options.balance;
-        } else {
-          this.amount = this.options.staked;
-        }
-      } else {
-        this.amount = this.options.type === 1 ? this.userBalance : this.userStake;
-      }
+        } else this.amount = this.options.staked;
+      } else this.amount = this.options.type === 1 ? this.userBalance : this.userStake;
     },
     checkAmount() {
       if (this.stakingType !== StakingTypes.MINING) {
@@ -134,7 +136,7 @@ export default {
       await this.checkMetamaskStatus();
       if (this.checkAmount()) {
         const { decimals, stakingType, updateMethod } = this.options;
-        this.hide();
+        this.CloseModal();
         await this.$store.dispatch('web3/stake', {
           decimals,
           amount: this.amount,
@@ -142,7 +144,7 @@ export default {
         });
         if (updateMethod) await updateMethod();
       } else {
-        this.hide();
+        this.CloseModal();
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/warning.svg'),
@@ -158,7 +160,7 @@ export default {
       const { options: { updateMethod, stakingType, decimals }, poolAddress, amount } = this;
       if (stakingType !== StakingTypes.WQT && stakingType !== StakingTypes.WUSD) await this.checkMetamaskStatus();
       if (this.checkAmount()) {
-        this.hide();
+        this.CloseModal();
         if (stakingType === StakingTypes.WQT || stakingType === StakingTypes.WUSD) {
           const [txFee] = await Promise.all([
             this.$store.dispatch('wallet/getStakingUnstakeFeeData', {
@@ -207,7 +209,7 @@ export default {
         });
         if (updateMethod) await updateMethod();
       } else {
-        this.hide();
+        this.CloseModal();
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/warning.svg'),
@@ -219,9 +221,7 @@ export default {
       this.SetLoader(false);
     },
     async connectToMetamask() {
-      if (!this.isConnected) {
-        await this.$store.dispatch('web3/connect');
-      }
+      if (!this.isConnected) await this.$store.dispatch('web3/connect');
     },
     async checkMetamaskStatus() {
       if (typeof window.ethereum === 'undefined') {
@@ -247,7 +247,6 @@ export default {
   },
 };
 </script>
-
 <style lang="scss" scoped>
 .max {
   &__button {

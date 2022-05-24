@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.titles.cardAdd')"
+    :title="$tc('modals.titles.cardAdd')"
   >
     <div class="ctm-modal__content">
       <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
@@ -9,7 +9,7 @@
           <base-field
             v-model="cardNumberInput"
             placeholder="0000 0000 0000 0000"
-            :label="$t('modals.numberOfCard')"
+            :label="$tc('modals.numberOfCard')"
             data-selector="CARD-NUMBER"
             rules="required|numberOfCard"
             name="Card number"
@@ -19,7 +19,7 @@
           <base-field
             v-model="nameInput"
             placeholder="John Doe"
-            :label="$t('modals.cardholderName')"
+            :label="$tc('modals.cardholderName')"
             data-selector="CARDHOLDER-NAME"
             name="cardholder name"
             rules="required|alpha_spaces"
@@ -31,7 +31,7 @@
               v-model="dateInput"
               placeholder="02/24"
               data-selector="CARD-DATE"
-              :label="$t('modals.expirationDate')"
+              :label="$tc('modals.expirationDate')"
               name="date"
               rules="required"
             />
@@ -41,7 +41,7 @@
               v-model="cvvInput"
               placeholder="242"
               data-selector="CARD-CVV"
-              :label="$t('modals.cvv')"
+              :label="$tc('modals.cvv')"
               rules="required|cvv"
               name="CVV"
             />
@@ -63,7 +63,7 @@
               mode="outline"
               data-selector="CANCEL"
               class="message__action"
-              @click="hide()"
+              @click="CloseModal"
             >
               {{ $t('meta.btns.cancel') }}
             </base-btn>
@@ -77,6 +77,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { images } from '~/utils/images';
 
 export default {
   name: 'ModalAddCard',
@@ -94,12 +95,12 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     showCardHasBeenAddedModal() {
       this.ShowModal({
-        key: modals.cardHasBeenAdded,
+        key: modals.status,
+        img: images.CARD_ADDED,
+        title: this.$t('modals.cardHasBeenAdded'),
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
       });
     },
   },

@@ -1,59 +1,37 @@
-import BigNumber from 'bignumber.js';
 import {
   getWalletAddress,
   GetWalletProvider,
   sendWalletTransaction,
-  setTokenPrice,
   setTokenPrices,
+  getContractFeeData,
 } from '~/utils/wallet';
 import {
   fetchContractData,
   success,
   error,
 } from '~/utils/web3';
-import * as abi from '~/abi/abi';
+import { WQBorrowing, WQLending } from '~/abi/index';
 
 export default {
-  async getFunds({ commit }) {
-    const res = await fetchContractData(
-      'getFunds',
-      abi.WQBorrowing,
-      process.env.BORROWING,
-      [],
-      GetWalletProvider(),
-    );
-    commit('setFunds', res);
-  },
   async getCreditData({ commit }) {
-    const address = await getWalletAddress();
     const res = await fetchContractData(
       'borrowers',
-      abi.WQBorrowing,
-      process.env.BORROWING,
-      [address],
+      WQBorrowing,
+      process.env.WORKNET_BORROWING,
+      [getWalletAddress()],
       GetWalletProvider(),
     );
     commit('setCreditData', res);
   },
   async getWalletsData({ commit }) {
-    const address = await getWalletAddress();
     const res = await fetchContractData(
       'wallets',
-      abi.WQLending,
-      process.env.LENDING,
-      [address],
+      WQLending,
+      process.env.WORKNET_LENDING,
+      [getWalletAddress()],
       GetWalletProvider(),
     );
     commit('setWalletsData', res);
-  },
-  async setTokenPrice({ dispatch, rootGetters }, payload) {
-    try {
-      await setTokenPrice(payload[0], payload[1]);
-      return { ok: true };
-    } catch (e) {
-      console.log('can not refresh prices');
-      return { ok: false };
-    }
   },
   async setTokenPrices({ dispatch, rootGetters }, payload) {
     try {
@@ -65,40 +43,42 @@ export default {
     }
   },
   async getRewards({ commit }) {
-    const address = await getWalletAddress();
     const res = await fetchContractData(
       'getRewards',
-      abi.WQLending,
-      process.env.LENDING,
-      [address],
+      WQLending,
+      process.env.WORKNET_LENDING,
+      [getWalletAddress()],
       GetWalletProvider(),
     );
     commit('setRewards', res);
   },
   async getCurrentFee({ commit }) {
-    const address = await getWalletAddress();
     const res = await fetchContractData(
       'getCurrentFee',
-      abi.WQBorrowing,
-      process.env.BORROWING,
-      [address],
+      WQBorrowing,
+      process.env.WORKNET_BORROWING,
+      [getWalletAddress()],
       GetWalletProvider(),
     );
     commit('setCurrentFee', res);
+    return res;
   },
-  async sendMethod({ commit }, payload) {
-    const payloadSend = {
-      address: payload.type === 'borrowing' ? process.env.BORROWING : process.env.LENDING,
-      abi: payload.type === 'borrowing' ? abi.WQBorrowing : abi.WQLending,
-      data: payload.data,
-      value: payload.value,
-    };
-    try {
-      await sendWalletTransaction(payload.method, payloadSend);
-      return success();
-    } catch (err) {
-      console.log('sendMethod:', payload.method, err);
-      return error();
-    }
+  async sendMethod({ commit }, {
+    method, address, abi, data, value,
+  }) {
+    const result = await sendWalletTransaction(method, {
+      address,
+      abi,
+      data,
+      value,
+    });
+    // TODO fix it, sendWalletTransaction have to return object with keys ok and result
+    if (result.ok === false) return error(result);
+    return success(result);
+  },
+  async getMethodFee({ commit }, {
+    method, abi, address, data,
+  }) {
+    return await getContractFeeData(method, abi, address, data);
   },
 };

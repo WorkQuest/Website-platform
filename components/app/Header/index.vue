@@ -148,7 +148,7 @@
                   <img
                     id="userAvatarDesktop"
                     class="profile__img"
-                    :src="imageData || EmptyAvatar()"
+                    :src="imageData || $options.images.EMPTY_AVATAR"
                     alt=""
                   >
                 </div>
@@ -210,7 +210,7 @@
               <img
                 id="userAvatarMobile"
                 class="profile__img"
-                :src="imageData || EmptyAvatar()"
+                :src="imageData || $options.images.EMPTY_AVATAR"
                 alt=""
               >
             </div>
@@ -310,14 +310,14 @@
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import moment from 'moment';
-import {
-  MessageAction, UserRole, Path,
-} from '~/utils/enums';
+import { images } from '~/utils/images';
+import { MessageAction, UserRole, Path } from '~/utils/enums';
 
 export default {
   name: 'Header',
   middleware: 'auth',
   UserRole,
+  images,
   directives: {
     ClickOutside,
   },
@@ -337,10 +337,10 @@ export default {
       userData: 'user/getUserData',
       imageData: 'user/getImageData',
       token: 'user/accessToken',
-      connections: 'data/notificationsConnectionStatus',
+      connections: 'main/notificationsConnectionStatus',
       chatId: 'chat/getCurrChatId',
       messagesFilter: 'chat/getMessagesFilter',
-      unreadMessagesCount: 'user/getUnreadChatsCount',
+      unreadMessagesCount: 'chat/getUnreadChatsCount',
       chats: 'chat/getChats',
       searchValue: 'chat/getSearchValue',
       currentLocale: 'user/getCurrentLang',
@@ -373,7 +373,7 @@ export default {
         {
           title: this.$t('ui.menu.pension.title'),
           desc: this.$t('ui.menu.pension.desc'),
-          path: Path.PENSION,
+          path: Path.RETIREMENT,
         },
         {
           title: this.$t('ui.menu.referral.title'),
@@ -393,7 +393,7 @@ export default {
         {
           title: this.$t('ui.menu.crediting.title'),
           desc: this.$t('ui.menu.crediting.desc'),
-          path: Path.CREDITING,
+          path: Path.LENDING,
         },
         {
           title: this.$t('ui.menu.mining.title'),
@@ -401,9 +401,9 @@ export default {
           path: Path.MINING,
         },
         {
-          title: this.$t('ui.menu.crosschain.title'),
-          desc: this.$t('ui.menu.crosschain.desc'),
-          path: Path.CROSSCHAIN,
+          title: this.$t('ui.menu.bridge.title'),
+          desc: this.$t('ui.menu.bridge.desc'),
+          path: Path.BRIDGE,
         },
         {
           title: this.$t('ui.menu.staking.title'),
@@ -440,14 +440,15 @@ export default {
     window.addEventListener('resize', this.userWindowChange);
   },
   async mounted() {
-    await this.initWSListeners();
+    await Promise.all([
+      this.$store.dispatch('wallet/fetchCommonTokenInfo'), // Get Symbol & Decimals for worknet tokens
+      this.initWSListeners(),
+    ]);
     this.GetLocation();
     this.$store.commit('user/setLang', this.$i18n.localeProperties.code);
   },
   destroyed() {
     window.removeEventListener('resize', this.userWindowChange);
-    this.$wsNotifs.disconnect();
-    this.$wsChatActions.disconnect();
   },
   methods: {
     async chatAction({ data, action }) {
@@ -465,7 +466,7 @@ export default {
           data.isUnread = true;
           data.userMembers = data.userMembers.filter((member) => member.id !== this.userData.id);
           this.$store.commit('chat/addChatToList', data);
-          this.$store.commit('user/changeUnreadChatsCount', { needAdd: true, count: 1 });
+          this.$store.commit('chat/changeUnreadChatsCount', { needAdd: true, count: 1 });
         } else if (action === MessageAction.NEW_MESSAGE) {
           await this.$store.dispatch('chat/getCurrChatData', data.chatId);
           await this.getStatistic();
@@ -477,6 +478,12 @@ export default {
 
       if (data.chatId === this.chatId && !this.messagesFilter.canLoadToBottom) {
         if (action === MessageAction.MESSAGE_READ_BY_RECIPIENT) return;
+
+        data.medias.forEach((file) => {
+          // eslint-disable-next-line prefer-destructuring
+          file.type = file.contentType.split('/')[0];
+        });
+
         this.$store.commit('chat/addMessageToList', data);
         this.$store.commit('chat/setChatAsUnread');
 
@@ -491,17 +498,25 @@ export default {
         }
       }
     },
+    /**
+     * @property $wsNotifs
+     * @property $wsChatActions
+     * @return {Promise<void>}
+     */
     async initWSListeners() {
       const { chatActionsConnection, notifsConnection } = this.connections;
+      const {
+        $wsNotifs, $wsChatActions, $store, token,
+      } = this;
       if (!notifsConnection) {
-        await this.$wsNotifs.connect(this.token);
-        const subscribes = ['chat', 'quest'];
-        await Promise.all(subscribes.map((path) => this.$wsNotifs.subscribe(`${Path.NOTIFICATIONS}/${path}`, async (ev) => {
+        await $wsNotifs.connect(token);
+        const subscribes = ['chat', 'quest', 'dao'];
+        await Promise.all(subscribes.map((path) => $wsNotifs.subscribe(`${Path.NOTIFICATIONS}/${path}`, async (ev) => {
           if (path === 'chat') await this.chatAction(ev);
-          else await this.$store.dispatch('user/addNotification', ev);
+          else await $store.dispatch('notifications/addNotification', ev);
         })));
       }
-      if (!chatActionsConnection) await this.$wsChatActions.connect(this.token);
+      if (!chatActionsConnection) await $wsChatActions.connect(token);
     },
     async getStatistic() {
       await this.$store.dispatch('user/getStatistic');
@@ -556,7 +571,7 @@ export default {
       }
     },
     goToMessages() {
-      this.$router.push('/messages');
+      this.$router.push(Path.MESSAGES);
       this.closeAll();
     },
     showProfile() {
@@ -932,7 +947,7 @@ export default {
   }
 
   &__header {
-    border-bottom: 1px solid #F7F8FA;
+    border-bottom: 1px solid $black0;
     display: grid;
     grid-template-columns: 40px 1fr;
     padding: 15px;

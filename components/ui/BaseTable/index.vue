@@ -31,7 +31,7 @@
         <span
           :class="{table__success: el.item.status, table__failed: !el.item.status}"
         >
-          {{ el.item.status ? $t('meta.success') : $t('modals.failed') }}
+          {{ el.item.status ? $t('meta.success') : $t('meta.fail') }}
         </span>
       </template>
       <template #cell(block)="el">
@@ -49,7 +49,7 @@
           target="_blank"
           class="table__url"
         >
-          {{ CutTxn(el.item.from_address, 4, 4) }}
+          {{ CutTxn(convertToBech32('wq', el.item.from_address), 4, 4) }}
         </a>
       </template>
       <template #cell(to_address)="el">
@@ -58,7 +58,7 @@
           target="_blank"
           class="table__url"
         >
-          {{ CutTxn(el.item.to_address, 4, 4) }}
+          {{ CutTxn(convertToBech32('wq', el.item.to_address), 4, 4) }}
         </a>
       </template>
       <template #cell(transaction_fee)="el">
@@ -69,6 +69,8 @@
 </template>
 
 <script>
+import { ExplorerUrl } from '~/utils/enums';
+
 export default {
   props: {
     title: {
@@ -84,23 +86,18 @@ export default {
       default: () => [],
     },
   },
-  data() {
-    return {
-      isProd: process.env.PROD === 'true',
-    };
-  },
   methods: {
     getTransactionUrl(hash) {
-      if (this.isProd) {
-        return `https://dev-explorer.workquest.co/tx/${hash}`;
+      if (this.IsProd) {
+        return `${ExplorerUrl}/tx/${hash}`;
       }
-      return `https://dev-explorer.workquest.co/tx/${hash}`;
+      return `${ExplorerUrl}/tx/${hash}`;
     },
     getAddressUrl(address) {
-      if (this.isProd) {
-        return `https://dev-explorer.workquest.co/address/${address}`;
+      if (this.IsProd) {
+        return `${ExplorerUrl}/address/${address}`;
       }
-      return `https://dev-explorer.workquest.co/address/${address}`;
+      return `${ExplorerUrl}/address/${address}`;
     },
   },
 };
@@ -113,22 +110,28 @@ export default {
   line-height: 130%;
   background: #FFFFFF;
   border-radius: 6px;
+
   &__title {
     margin: 10px;
     color: $black800;
   }
+
   &__success {
     color: $green;
   }
+
   &__failed {
     color: $red;
   }
+
   &__grey {
     color: $black500;
   }
+
   &__url:hover {
     text-decoration: none;
   }
+
   &__header {
     @include text-simple;
     background: rgba(0, 131, 199, 0.1);
@@ -139,6 +142,7 @@ export default {
     font-size: 12px;
     word-break: break-word;
   }
+
   &__row {
     line-height: 40px;
   }

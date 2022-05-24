@@ -17,7 +17,7 @@
           <div class="mining-page__table">
             <b-table
               :items="pools"
-              :fields="testFields"
+              :fields="tableFields"
               borderless
               caption-top
               thead-class="table__header"
@@ -94,6 +94,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'Pools',
@@ -105,8 +106,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      options: 'modals/getOptions',
-      userData: 'user/getUserData',
+      isAuth: 'user/isAuth',
     }),
     pools() {
       return [
@@ -135,7 +135,7 @@ export default {
         },
       ];
     },
-    testFields() {
+    tableFields() {
       return [
         {
           key: 'poolAddress',
@@ -176,14 +176,12 @@ export default {
       ];
     },
   },
-  async mounted() {
-    this.SetLoader(true);
-    this.$nuxt.setLayout(this.userData.id ? 'default' : 'guest');
-    this.SetLoader(false);
+  beforeMount() {
+    if (this.isAuth) this.$nuxt.setLayout('default');
   },
   methods: {
     handleOpenPool(el) {
-      this.$router.push(`/mining/${el.item.id}`);
+      this.$router.push(`${Path.MINING}/${el.item.id}`);
     },
   },
 };

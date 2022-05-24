@@ -15,7 +15,7 @@
         <div class="block__avatar avatar">
           <img
             class="avatar__img"
-            :src="userData.avatar && userData.avatar.url ? userData.avatar.url : EmptyAvatar()"
+            :src="userData.avatar && userData.avatar.url ? userData.avatar.url : $options.images.EMPTY_AVATAR"
             :alt="userData.avatar && userData.avatar.url ? userData.avatar.url : 'avatar_empty'"
             loading="lazy"
           >
@@ -199,15 +199,18 @@ import {
   UserRole, UserRating, Path, RaiseViewStatus,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
+import { images } from '~/utils/images';
 
 export default {
   name: 'UserInfo',
+  images,
   computed: {
     ...mapGetters({
       mainUser: 'user/getUserData',
       tags: 'ui/getTags',
       mainUserData: 'user/getUserData',
       anotherUserData: 'user/getAnotherUserData',
+      availableQuests: 'quests/getAvailableQuests',
     }),
     isEmptyUserData() {
       return !this.userData.id;
@@ -346,10 +349,14 @@ export default {
       }
     },
     sendInvite() {
-      if (this.isHaveOpenQuests) {
+      if (this.availableQuests.length > 0) {
         this.ShowModal({
           key: modals.invitation,
           userId: this.userData.id,
+          avatar: this.userData.avatar,
+          firstName: this.userData.firstName,
+          lastName: this.userData.lastName,
+          ratingStatistic: this.userData.ratingStatistic,
         });
       } else {
         this.ShowModal({

@@ -8,6 +8,8 @@
         class="absence__img"
         src="~/assets/img/temp/smile_sad.svg"
         alt="empty-icon"
+        width="110"
+        height="110"
       >
       <div
         v-if="description !== ''"

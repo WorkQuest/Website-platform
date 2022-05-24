@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="password"
-    :title="$t('modals.titles.changePass')"
+    :title="$tc('modals.titles.changePass')"
   >
     <div class="password__content content">
       <div class="content__error">
@@ -13,7 +13,7 @@
           :is-hide-error="true"
           placeholder="******"
           data-selector="CURRENT-PASSWORD"
-          :label="$t('modals.currentPassword')"
+          :label="$tc('modals.currentPassword')"
           mode="icon"
           :type="isVisibleCurrent ? 'text': 'password'"
           class="field__input"
@@ -25,21 +25,15 @@
             <span class="icon-Lock field__picture" />
           </template>
           <template
+            v-if="currentPasswordInput"
             v-slot:right-absolute
             class="field__block"
           >
-            <base-btn
-              mode="max"
+            <btn-password-visibility
               :data-selector="`IS-VISIBLE-CURRENT-PASS-${isVisibleCurrent}`"
-              class="field__button"
-              :disabled="currentPasswordInput===''"
-              @click="isVisibleCurrent=!isVisibleCurrent"
-            >
-              <span
-                class="field__picture"
-                :class="{'icon-show': isVisibleCurrent, 'icon-hide': !isVisibleCurrent }"
-              />
-            </base-btn>
+              :is-password-visible="isVisibleCurrent"
+              @toggleVisibility="isVisibleCurrent = $event"
+            />
           </template>
         </base-field>
       </div>
@@ -48,7 +42,7 @@
         :is-hide-error="true"
         placeholder="******"
         data-selector="NEW-PASSWORD"
-        :label="$t('modals.newPassword')"
+        :label="$tc('modals.newPassword')"
         mode="icon"
         :type="isVisible ? 'text': 'password'"
         class="field__input"
@@ -60,21 +54,15 @@
           <span class="icon-Lock field__picture" />
         </template>
         <template
+          v-if="newPasswordInput"
           v-slot:right-absolute
           class="field__block"
         >
-          <base-btn
-            mode="max"
+          <btn-password-visibility
             :data-selector="`IS-VISIBLE-PASS-${isVisible}`"
-            class="field__button"
-            :disabled="newPasswordInput===''"
-            @click="isVisible=!isVisible"
-          >
-            <span
-              class="field__picture"
-              :class="{'icon-show': isVisible, 'icon-hide': !isVisible }"
-            />
-          </base-btn>
+            :is-password-visible="isVisible"
+            @toggleVisibility="isVisible = $event"
+          />
         </template>
       </base-field>
       <base-field
@@ -82,7 +70,7 @@
         :is-hide-error="true"
         placeholder="******"
         data-selector="CONFIRM-NEW-PASSWORD"
-        :label="$t('modals.confirmNewPassword')"
+        :label="$tc('modals.confirmNewPassword')"
         mode="icon"
         :type="isVisibleConfirm ? 'text': 'password'"
       >
@@ -90,21 +78,15 @@
           <span class="icon-Lock" />
         </template>
         <template
+          v-if="confirmNewPasswordInput"
           v-slot:right-absolute
           class="field__block"
         >
-          <base-btn
-            mode="max"
-            :data-selector="`IS-VISIBLE-CONFIRM-PASS-${isVisibleConfirm}`"
-            class="field__button"
-            :disabled="confirmNewPasswordInput===''"
-            @click="isVisibleConfirm=!isVisibleConfirm"
-          >
-            <span
-              class="field__picture"
-              :class="{'icon-show': isVisibleConfirm, 'icon-hide': !isVisibleConfirm }"
-            />
-          </base-btn>
+          <btn-password-visibility
+            :data-selector="`IS-VISIBLE-PASS-${isVisibleConfirm}`"
+            :is-password-visible="isVisibleConfirm"
+            @toggleVisibility="isVisibleConfirm = $event"
+          />
         </template>
       </base-field>
       <div class="content__buttons buttons">
@@ -164,7 +146,9 @@ export default {
             password: this.confirmNewPasswordInput,
           });
           this.ShowModal({
-            key: modals.changePassword,
+            key: modals.status,
+            img: require('assets/img/ui/password_changed.svg'),
+            title: this.$t('restore.modal'),
           });
         }
       } catch (e) {
@@ -191,15 +175,6 @@ export default {
   &__error {
     color:red;
   }
-}
-.icon-show, .icon-hide {
-  color: $blue;
-  font-size: 25px;
-}
-.icon-Lock:before {
-    content: "\ea24";
-    color: $blue;
-    font-size: 25px;
 }
 
 .buttons {

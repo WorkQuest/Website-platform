@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="check"
-    :title="$t('modals.titles.securityCheckBig')"
+    :title="$tc('modals.titles.securityCheckBig')"
   >
     <div class="check__content">
       <validation-observer
@@ -17,11 +17,13 @@
           </div>
           <base-field
             v-model="securityCode"
+            :disabled="inProgress"
             data-selector="SECURITY-CODE"
             :placeholder="$t('securityCheck.placeholder')"
-            :name="$t('meta.securityCheckSmall')"
+            :name="$tc('meta.securityCheckSmall')"
             rules="required|alpha_num|length:6"
             class="content__input"
+            @enter="handleSubmit(hide)"
           />
           <div class="content__body">
             {{ $t('meta.googleConfCodeDesc') }}
@@ -30,7 +32,7 @@
         <div class="content__buttons buttons">
           <base-btn
             class="buttons__button"
-            :disabled="!validated || !passed || invalid"
+            :disabled="!validated || !passed || invalid || inProgress"
             data-selector="SEND"
             @click="handleSubmit(hide)"
           >
@@ -52,6 +54,7 @@ export default {
     return {
       securityCode: '',
       errorMsg: false,
+      inProgress: false,
     };
   },
   computed: {
@@ -61,8 +64,11 @@ export default {
   },
   methods: {
     async hide() {
-      const { actionMethod, action } = this.options;
+      if (this.inProgress) return;
+      const { actionMethod } = this.options;
+      this.inProgress = true;
       const result = await this.$store.dispatch('user/validateTOTP', { token: this.securityCode });
+      this.inProgress = false;
       if (result) {
         await this.CloseModal();
         await this.$store.dispatch('user/getMainData');

@@ -8,8 +8,8 @@
       "title": "الأولوية",
       "all": "جميع درجات الأولوية",
       "fixedDelivery": "موعد تسليم ثابت",
-      "shortTerm": "فترة قصيرة",
-      "urgent": "عاجلة",
+      "shortTerm": "فترة قصيرة أسبوع",
+      "urgent": "عاجلة 24-72 ساعة",
       "employee": {
         "urgent": "Urgent execution"
       }
@@ -46,10 +46,12 @@
       "mb": "{count} م.ب",
       "kb": "{count} KB",
       "percentsCount": "{count}%",
-      "minutes": "{count} minutes",
-      "hours": "{count} الساعات",
-      "years": "{count} years",
-      "days": "{count} يوم",
+      "seconds": "{count} second | {count} seconds | {count} seconds",
+      "minutes": "{count} minute | count} minutes | {count} minutes",
+      "hours": "{count} hour | {count} الساعات | {count} الساعات",
+      "years": "{count} year | {count} years | {count} years ",
+      "days": "{count} day | {count} يوم | {count} يوم",
+      "daysLeft": "{count} days left",
       "votesCount": "{count} صوت",
       "distance": {
         "m": "م"
@@ -87,8 +89,8 @@
       "resendSMS": "SMS إعادة إرسال",
       "registration": "التسجيل",
       "leave": "Leave",
-      "completeWorkOnQuest": "Complete work on Quest",
-      "acceptCompletedWorkOnQuest": "Accept completed work on quest",
+      "completeWorkOnQuest": "Complete work",
+      "acceptCompletedWorkOnQuest": "Accept work",
       "closeQuest": "Close quest",
       "goToChat": "الانتقال إلى الدردشة",
       "view": "عرض",
@@ -98,7 +100,10 @@
     "placeholders": {
       "default": "",
       "mail": "your@mail.com",
-      "email": "عنوان البريد الإلكتروني"
+      "email": "عنوان البريد الإلكتروني",
+      "specialization": "Enter specialization",
+      "skill": "Enter skill",
+      "searchSpecSkill": "Enter specialization or skill"
     },
     "worker": {
       "cost": {
@@ -177,7 +182,7 @@
     "aml": "سياسة مكافحة غسل الأموال وتمويل الإرهاب",
     "createAQuest": "إنشاء طلب عمل",
     "completed": "طلبات العمل المكتملة",
-    "typeOfJob": "نوع العمل",
+    "typeOfJob": "Type of employment",
     "choosePeriod": "اختيار الفترة",
     "verified": "Verified",
     "dispute": "النزاع",
@@ -191,7 +196,8 @@
     "settings": "الإعدادات",
     "costPerHour": "التكلفة في الساعة",
     "disputes": "النزاعات",
-    "success": "تم بنجاح"
+    "success": "تم بنجاح",
+    "fail": "Fail"
   },
   "info": {
     "yourMessage": " Your message:",
@@ -227,7 +233,7 @@
     "size": "يجب ألا تزيد قيمة الحقل {_field_} عن {size} كيلوبايت",
     "decimal": "يجب ألا يحتوي الحقل {_field_} إلا على قيم عشرية",
     "decimalPlaces": "The {_field_} field must contain maximum {places} decimal places",
-    "invalidPhone":"Invalid phone number",
+    "invalidPhone": "Invalid phone number",
     "formError": "Fill in all required fields",
     "is": "The values do not match",
     "is_not": "Incorrect value",
@@ -329,8 +335,12 @@
     "employer": {
       "usersNotResponded": "Users not responded"
     },
+    "impossibleEditAfterCreation": "I understand that editing the title and the description of this quest will be impossible after its creation",
+    "deleteQuest": "Delete quest",
     "invite": "Invite",
     "decline": "Decline",
+    "declinedTheInvitation": "Declined the invitation",
+    "acceptedTheInvitation": "Accepted the invitation",
     "questTitle": "Quest title",
     "questDesc": "Quest description",
     "closed": "Closed",
@@ -369,20 +379,37 @@
       "title": "Rating",
       "verified": "Verified",
       "reliable": "Reliable",
-      "topRanked": "Top ranked"
+      "topRanked": "Top ranked",
+      "noStatus": "Not rated"
     },
     "distantWork": {
-      "title": "عمل بالخارج",
+      "title": "Workplace",
       "allWorkplaces": "All workplaces",
-      "distantWork": "عمل بالخارج",
-      "workInOffice": "عمل بالداخل",
-      "bothVariant": "كلا الخيارين"
+      "distantWork": "Remote work",
+      "workInOffice": "In-office",
+      "bothVariant": "Hybrid workplace"
+    },
+    "payPeriods": {
+      "title": "Pay periods",
+      "Hourly": "Hourly",
+      "Daily": "Daily",
+      "Weekly": "Weekly",
+      "BiWeekly":"Bi-weekly ",
+      "SemiMonthly": "Semi-monthly",
+      "Monthly": "Monthly",
+      "Quarterly": "Quarterly",
+      "SemiAnnually": "Semi-annually",
+      "Annually": "Annually",
+      "FixedPeriod":"Fixed period",
+      "ByAgreement":"By agreement"
     },
     "employment": {
       "employment": "Employment",
-      "fullTime": "دوام كامل",
-      "partTime": "Part time",
-      "fixedTerm": "Fixed term"
+      "FullTime": "Full time",
+      "PartTime": "Part time",
+      "FixedTerm": "Fixed term",
+      "EmploymentContract": "Employment contract",
+      "RemoteWork": "Remote work"
     },
     "runtime": "Runtime",
     "active": "نشطة",
@@ -426,7 +453,7 @@
       "1": "التخصُّص",
       "2": "طلبات العمل",
       "3": "عاجلة",
-      "4": "نوع العمل",
+      "4": "Type of employment",
       "5": "جميع درجات الأولوية",
       "6": "السعر",
       "7": "الوقت المضاف"
@@ -889,6 +916,7 @@
       "filters": {
         "titleAll": "جميع عوامل التصفية"
       },
+      "disputePayment": "Dispute payment",
       "saved": "Saved successfully",
       "cardAdd": "Add card",
       "addCase": "Add Case",
@@ -935,22 +963,26 @@
       "signWorkQuest": "شبكة WorkQuest الاجتماعية",
       "skills": "Skills",
       "smsVerification": "التحقُّق برسالة نصية قصيرة",
-      "swapTitle": "Crosschain exchange",
+      "swapTitle": "Cross-chain exchange",
       "swapInfo": "Swap info",
       "swapTokens": "Swap tokens",
       "withdrawal": "Withdrawal",
       "withdraw": "Withdraw",
       "sendTo": "إرسال إلى",
       "withdrawCard": "السحب على بطاقة مصرفية",
-      "withdrawInfo": "Withdrawal info"
+      "withdrawInfo": "Withdrawal info",
+      "downloadApp": "Download App",
+      "downloadWallet": "Download Wallet App"
     },
     "errors": {
       "errorQuests": "Error with quests",
       "emptyOpenQuests": "You don't have open quests, please create",
       "errorSmsVer": "Error SMS verification",
       "error": "Error",
+      "errorNetwork": "Error, you use not correct network. Switch to {network}",
       "youCan’tDeleteActiveQuest": "You can’t delete active quest",
-      "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
+      "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest",
+      "dontHavePeople": "You don't have people to chat"
     },
     "chatCreate": {
       "title": "Create chat",
@@ -961,12 +993,12 @@
       "addMember": "Add member"
     },
     "disputes": {
-      "thereIsNoResponseFromTheEmployerOrEmployee": "There is no response from the employer / employee",
-      "badlyDoneWork": "Badly done work",
-      "additionalRequirementsHaveBeenPutForward": "Additional requirements have been put forward",
-      "inconsistenciesInTheRequirementsForTheDescriptionOfTheQuest": "Inconsistencies in the requirements for the description of the quest",
-      "theQuestIsCompletedButTheEmployeeOrEmployerHasNotConfirmedItsCompletion": "The quest is completed but the employee / employer has not confirmed its completion",
-      "anotherReason": "Another reason"
+      "NoAnswer": "There is no response from the employer / employee",
+      "AnotherReason": "Another reason",
+      "PoorlyDoneJob": "Poorly done work",
+      "AdditionalRequirement": "Additional requirements have been put forward",
+      "RequirementDoesNotMatch": "Inconsistencies in the requirements for the description of the quest",
+      "NoConfirmationOfComplete": "The quest is completed but the employee / employer has not confirmed its completion"
     },
     "2FA": {
       "enabled": "2FA enabled successfully!",
@@ -983,12 +1015,23 @@
       "depositInfo": "Deposit info",
       "withdrawInfo": "Withdrawal info"
     },
+    "draft": {
+      "youHaveAQuestDraft": "You have a quest draft. Cleat it?",
+      "saveQuestDraft": "Save quest draft?"
+    },
+    "payForDispute": "You need to pay to open a dispute",
+    "tryLater": "Please, try later...",
+    "checkExplorer": "You can check a transaction status on Explorer",
+    "transactionError": "Transaction error",
+    "fromAddress": "from",
+    "toAddress": "to",
+    "codeFromSms": "Code from sms",
+    "saved": "Saved",
     "phoneNumber": "Phone Number",
     "value": "Value",
     "generatedWUSD": "???",
     "choosePeriod": "???",
     "smallDescriptionForLoan": "???",
-    "recipient": "Recipient address",
     "successBuyWUSD": "Successfully purchased WUSD",
     "setTokenPrice": "Setting up {token} price",
     "approveRouter": "Approve {token} to Router",
@@ -1110,7 +1153,7 @@
     "tempForRemove2": "1 BNB = ... WQT",
     "currentPoolSize": "حجم التجمُّع الحالي",
     "yourPoolShare": "حصتك في التجمُّع",
-    "howMuchTokensWouldYouLikeToLock": "How much {token} would you like to lock into your account?",
+    "howMuchTokensWouldYouLikeToLock": "ما مقدار{token} الذي تريد تأمينه في حسابك؟",
     "collateralization": "الضمانات",
     "liquidationPrice": "سعر التصفية",
     "currentPrice": "السعر الحالي",
@@ -1143,7 +1186,6 @@
     "chooseCard": "Choose card",
     "maximum": "Max",
     "transfer": "Transfer",
-    "recepient": "Recepient address",
     "currencyDetails": "Currency",
     "generatingDetails": "Generating",
     "collateralizationRatio": "Collateralization ratio",
@@ -1155,14 +1197,13 @@
     "choose": "Choose",
     "chooseCurrency": "Choose currency",
     "coinpaymebts": "Сoinpaymebts",
-    "swapTitle": "Crosschain exchange",
+    "swapTitle": "Cross-chain exchange",
     "coin": "Coin",
-    "recepientBinance": "Recipient binance address",
     "createSwap": "Create swap",
-    "crosschain": "WorkQuest Bridge",
-    "crosschainText": "Eth > Binance",
+    "bridge": "WorkQuest Bridge",
+    "bridgeText": "Eth > Binance",
     "senderAddress": "Sender address",
-    "recepientAddress": "Recepient address",
+    "recipientAddress": "Recipient address",
     "worknetFee": "Eth fee",
     "binanceFee": "Binance fee",
     "welcomeText": "Please, tell us about your skills below",
@@ -1187,7 +1228,6 @@
     "priceOfAClickField": "price of a click",
     "cityField": "city",
     "cardHolderField": "card holder",
-    "recepientAddressField": "recepient address",
     "walletAddressField": "wallet address",
     "thanksText": "",
     "emailVerificationCodeField": "email verification",
@@ -1198,7 +1238,18 @@
     "txInfo": "Transaction info",
     "registration": "Are you sure to registration this users?",
     "claimConfirm": "Are you confirm the action of the claim?",
-    "until": "Until"
+    "until": "Until",
+    "scanQrCode": "You just need to scan the QR-code",
+    "downOnSmartphone": "Download Work Quest app on your smartphone",
+    "downWalletOnSmartphone": "Download Work Quest Wallet app on your smartphone",
+    "wouldReviewEmployee": "Would you like to add a review to the employee?",
+    "wouldReviewEmployer": "Would you like to add a review to the employer?",
+    "successfulMethods": {
+      "claim": "Successful claim",
+      "refund": "Successful refund",
+      "withdraw": "Successful withdrawal",
+      "deposit": "Successful deposit"
+    }
   },
   "ui": {
     "jobQuestors": "أصحاب الوظائف",
@@ -1227,7 +1278,7 @@
     },
     "menu": {
       "unauthorized": "Not logged",
-      "crosschain": {
+      "bridge": {
         "title": "WorkQuest Bridge",
         "desc": "Secure and fast way to bring cross-chain assets between WorkNet, Ethereum and Binance Smart Chain."
       },
@@ -1275,8 +1326,33 @@
       }
     }
   },
+  "localNotifications": {
+    "messages": {
+      "inviteFriends": "Invite your friends and get rewarded!",
+      "wiki": "You can get acquainted with all the functionality of the platform on the WorkQuest Wiki page!",
+      "kyc": "You can enable KYC on Sumsub page.",
+      "twoFA": "You can enable 2FA in settings.",
+      "fillSettingsData": "You can fill your profile data in settings.",
+      "questDraft": "You have a saved draft of the quest.",
+      "rateTheQuest": "Please rate the completed work on the quest.",
+      "reviewEmp": "Please, review your Employer!",
+      "reviewWorker": "Please, review your Employee!"
+    },
+    "btns": {
+      "inviteFriends": "Get Reward",
+      "wiki": "Go to Wiki",
+      "kyc": "Enable KYC",
+      "toSettings": "Go to Settings",
+      "questDraft": "Go to Create Quest page",
+      "rateTheQuest": "Go to Quest page",
+      "reviewEmp": "Go to Employer Profile",
+      "reviewWorker": "Go to Employee Profile"
+    }
+  },
   "notifications": {
+    "QuestEditedOnContract": "Quest edited on contract",
     "title": "Notifications",
+    "OpenDispute": "نزاع مفتوح",
     "openDispute": "نزاع مفتوح",
     "invite": "Invites you to complete the quest",
     "questStarted": "Invites you to start a quest",
@@ -1290,6 +1366,7 @@
     "workerAcceptedInvitationToQuest": "Accepted the invitation to the quest",
     "workerRejectedInvitationToQuest": "Declined the invitation to the quest",
     "employerRejectedWorkersResponse": "Declined your response to the quest",
+    "QuestStatusUpdated": "Quest status updated",
     "userLeftReviewAboutQuest": "Left review about quest",
     "registrationError": "No users found for registration. Please contact to developers",
     "waitWorker": "The quest is pending",
@@ -1301,6 +1378,7 @@
     "newDiscussionLike": "New like on discussion"
   },
   "wallet": {
+    "frozen": "Frozen balance",
     "WUSD": "محفظة WUSD",
     "cryptoWallet": "محفظة العملات المشفرة",
     "send": "إرسال",
@@ -1371,20 +1449,26 @@
     },
     "leaveChat": "Leave chat",
     "loadMore": "Load more",
-    "searchTitle": "Name/Quest/Group"
+    "searchTitle": "Name/Quest/Group",
+    "menu": {
+      "giveAQuest": "Give a quest",
+      "removeFromChat": "Remove from the chat"
+    }
   },
   "settings": {
     "additionalPhoneNumber": "Additional phone number",
     "mainPhoneNumber": "Main phone number",
-    "workProposals": "Filter all work proposals",
+    "whoCouldIInvite": "Who can respond to my quests?",
+    "whoCouldInviteMe": "Who can invite me to a quest?",
+    "interactOnly": "Interact only with:",
     "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
     "twitter": "twitter",
     "instagram": "instagram",
-    "companyName":"company",
-    "ceoName":"ceo",
-    "websiteName":"website",
+    "companyName": "company",
+    "ceoName": "ceo",
+    "websiteName": "website",
     "enterPhoneNumber": "Please enter your phone number",
     "enterCurrentLocation": "Please select current location",
     "placeOfStudying": "مكان الدراسة",
@@ -1408,9 +1492,6 @@
     "workExps": {
       "companyName": "اسم الشركة"
     },
-    "urgentJobOffers": "عروض عمل عاجلة",
-    "shortTermJobOffers": "عروض عمل قصيرة المدى",
-    "fixedDeliveryJobOffers": "عروض ذات موعد تسليم ثابت",
     "addInfo": "يمكنك إضافة معلومات عنك، وتحميل صورة الملف التعريفي والخضوع لإجراء \"اعرف عميلك\" (KYC) لزيادة تقييمك. يعتمد التقييم على بيانات ملفك التعريفي والمراجعات.",
     "alsoRating": "كلما ارتفع ترتيبك، كان من الأسهل العثور عليك في عمليات البحث.",
     "dontShow": "عدم الإظهار مرة أخرى",
@@ -1425,7 +1506,8 @@
     "linkedInUsername": "اسم مستخدم LinkedIn",
     "facebookUsername": "اسم مستخدم Facebook",
     "skills": "المهارات:",
-    "whoCanSee": "من يمكنه رؤية ملفي التعريفي؟",
+    "whoAppearsInMyListEmployees": "Who appears in my list of employees?",
+    "whoAppearsInMyListEmployers": "Who appears in my list of employers?",
     "allUsers": "جميع المستخدمين المسجَّلين",
     "allInternet": "مستخدمو الإنترنت في جميع أنحاء العالم",
     "onlyWhenSubmittedWork": "عند تقديم عروض العمل فقط",
@@ -1443,10 +1525,11 @@
       "title": "Workplace",
       "select": "Select distant work",
       "allWorkplaces": "All workplaces",
-      "distantWork": "Distant work",
-      "workInOffice": "Work in office",
-      "bothVariant": "Both variants"
-    }
+      "distantWork": "Remote work",
+      "workInOffice": "In-office",
+      "bothVariant": "Hybrid workplace"
+    },
+    "selectPayPeriod": "Select pay period"
   },
   "raising-views": {
     "raisingViews": "زيادة المشاهدات",
@@ -1518,8 +1601,8 @@
       "event": "Event"
     },
     "event": {
-      "paid": "Paid",
-      "claimed": "Claimed"
+      "PaidReferral": "Paid",
+      "ClaimedReferral": "Claimed"
     }
   },
   "pension": {
@@ -1701,6 +1784,7 @@
     "description": "???",
     "currentLoan": "???",
     "currentCredit": "???",
+    "dueDate": "Due date",
     "chooseSource": "Choose the source",
     "chosenSource": "Chosen source",
     "marketSize": "حجم السوق",
@@ -1820,6 +1904,7 @@
     "transaction": {
       "notEnoughFunds": "Not enough funds"
     },
+    "selectSpec": "Please select a specialization",
     "incorrectPass": "عذرًا، حدث خطأ ما. تحقَّق من البيانات وحاول مرة أخرى.",
     "emptyData": {
       "emptyQuests": "Oops, there's no quests here yet",
@@ -1853,7 +1938,7 @@
     "socialText": "المشاركة على وسائل التواصل الاجتماعي",
     "share": "رابط المشاركة"
   },
-  "crosschain": {
+  "bridge": {
     "pageName": "WorkQuest Bridge",
     "pageAbout": "Secure and fast way to bring cross-chain assets between WorkNet, Ethereum and Binance Smart Chain.",
     "sourceBlockchain": "Source blockchain",
@@ -1927,7 +2012,8 @@
       "requested": "تم طلبها",
       "completed": "طلبات العمل المكتملة",
       "active": "طلبات العمل النشطة",
-      "invited": "طلبات العمل المدعو إليها"
+      "invited": "طلبات العمل المدعو إليها",
+      "created": "المهام التي تم إنشاؤها"
     }
   },
   "footer": {
@@ -2059,9 +2145,9 @@
             "title": "Liquidity mining",
             "subtitle": "Providing liquidity to pools to receive rewards based on your amount of liquidity in the pool."
           },
-          "crosschain": {
-            "title": "Crosschain",
-            "subtitle": "Most secure and fast way to bring crosschain assets between WorkNet, ETH and BSC."
+          "bridge": {
+            "title": "Bridge",
+            "subtitle": "Most secure and fast way to bring cross-chain assets between WorkNet, ETH and BSC."
           },
           "staking": {
             "title": "Staking",
@@ -2176,7 +2262,7 @@
             "subtitle": "Quest delivery time: Urgent, Short term, Fixed delivery."
           },
           "job": {
-            "title": "Type of job",
+            "title": "Type of employment",
             "subtitle": "Select the type of employment: Full-time, Part-time, Fixed term, Contract."
           },
           "distant": {
@@ -2268,8 +2354,8 @@
   "workPlaces": {
     "title": "Workplace",
     "all": "All workplaces",
-    "distant": "Distant work",
-    "office": "Work in office",
-    "both": "Both variants"
+    "Remote": "Remote work",
+    "InOffice": "In-office",
+    "Hybrid": "Hybrid workplace"
   }
 }

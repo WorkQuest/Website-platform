@@ -5,12 +5,13 @@
         <div class="wallet__nav">
           <span class="wallet__title">{{ $t('meta.wallet') }}</span>
           <div class="wallet__address">
-            <span class="user__wallet">{{ CutTxn(userWalletAddress, 8, 8) }}</span>
+            <span class="user__wallet">{{ shortWqAddress }}</span>
             <button
-              v-clipboard:copy="userWalletAddress"
+              v-clipboard:copy="wqAddress"
               v-clipboard:success="ClipboardSuccessHandler"
               v-clipboard:error="ClipboardErrorHandler"
               type="button"
+              data-selector="COPY"
             >
               <span class="icon-copy wallet__icon" />
             </button>
@@ -24,24 +25,39 @@
             <div class="balance__top">
               <span class="balance__title">{{ $t('meta.balance') }}</span>
               <span class="balance__currency">
-                <span class="balance__currency-text">
-                  {{ balance[selectedToken].balance + ' ' + selectedToken }}
+                <span
+                  class="balance__currency-text"
+                  :class="{'balance__currency-text_light': isFetchingBalance}"
+                >
+                  {{ selectedTokenBalanceInfo }}
                 </span>
-                <span class="balance__usd_mobile">
-                  <span v-if="selectedToken === tokenSymbols.WUSD">
-                    {{ `$ ${balance[tokenSymbols.WUSD].balance}` }}
+                <span
+                  v-if="selectedToken === $options.TokenSymbols.WQT"
+                  class="balance__usd-mobile"
+                >
+                  <span class="balance__usd-mobile_blue">
+                    {{ $t('wallet.frozen') }}
                   </span>
+                  {{ $t('meta.coins.count.WQTCount', {count: Floor(frozenBalance)}) }}
                 </span>
                 <base-dd
                   v-model="ddValue"
                   class="balance__token"
                   :items="tokenSymbolsDd"
+                  :placeholder="$options.TokenSymbols.WQT"
                   data-selector="TOKENS"
+                  type="border"
                 />
               </span>
-              <span class="balance__usd">
-                <span v-if="selectedToken === tokenSymbols.WUSD">
-                  {{ `$ ${balance[tokenSymbols.WUSD].balance}` }}
+              <span :class="[{'balance__currency__margin-bottom' : selectedToken !== $options.TokenSymbols.WQT}]">
+                <span
+                  v-if="selectedToken === $options.TokenSymbols.WQT"
+                  class="balance__usd balance__usd_blue"
+                >
+                  <span class="balance__usd">
+                    {{ $t('wallet.frozen') }}
+                  </span>
+                  {{ $t('meta.coins.count.WQTCount', {count: Floor(frozenBalance)}) }}
                 </span>
               </span>
             </div>
@@ -51,7 +67,7 @@
                 mode="outline"
                 class="balance__btn"
                 :disabled="true"
-                @click="showDepositModal()"
+                @click="showModal({key: 'deposit'})"
               >
                 {{ $t('wallet.receive') }}
               </base-btn>
@@ -60,7 +76,7 @@
                 mode="outline"
                 class="balance__btn"
                 :disabled="true"
-                @click="showWithdrawModal()"
+                @click="showModal({key: 'withdraw', branchText: 'withdraw' })"
               >
                 {{ $t('meta.withdraw') }}
               </base-btn>
@@ -87,7 +103,7 @@
               class="card__btn"
               mode="outline"
               :disabled="true"
-              @click="showAddCardModal()"
+              @click="showModal({key: 'addCard', branchText: 'adding' })"
             >
               {{ $t('wallet.addCard') }}
             </base-btn>
@@ -95,12 +111,14 @@
         </div>
         <div class="wallet__switch-table">
           <base-btn
+            data-selector="SWITCH-ALL"
             :mode="getSwitchButtonMode(walletTables.TXS)"
             @click="selectedWalletTable = walletTables.TXS"
           >
             {{ $t('meta.allTransactions') }}
           </base-btn>
           <base-btn
+            data-selector="SWITCH-COLLATERAL"
             :mode="getSwitchButtonMode(walletTables.COLLATERAL)"
             @click="selectedWalletTable = walletTables.COLLATERAL"
           >
@@ -114,13 +132,13 @@
           <div class="wallet__table table">
             <base-table
               class="table__txs"
-              :title="$t('wallet.table.trx')"
+              :title="$tc('wallet.table.trx')"
               :items="styledTransactions"
               :fields="walletTableFields"
             />
             <empty-data
               v-if="!totalPages"
-              :description="$t('wallet.table.empty')"
+              :description="$tc('wallet.table.empty')"
               class="table__empty"
             />
           </div>
@@ -145,15 +163,20 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { TokenSymbolByContract, TokenSymbols, WalletTables } from '~/utils/enums';
+import { ERC20 } from '~/abi/index';
+import {
+  TokenMap, TokenSymbolByContract, TokenSymbols, WalletTables, WorknetTokenAddresses,
+} from '~/utils/enums';
 import { getStyledAmount } from '~/utils/wallet';
 import EmptyData from '~/components/app/info/emptyData';
 import CollateralTable from '~/components/app/pages/wallet/CollateralTable';
+import { error, success } from '~/utils/web3';
 
 export default {
   name: 'Wallet',
   middleware: 'auth',
   components: { EmptyData, CollateralTable },
+  TokenSymbols,
   data() {
     return {
       cardClosed: false,
@@ -161,21 +184,34 @@ export default {
       txsPerPage: 10,
       currentPage: 1,
       selectedWalletTable: WalletTables.TXS,
+      tokenSymbolsDd: [],
+      isFetchingBalance: false,
     };
   },
   computed: {
     ...mapGetters({
-      tags: 'ui/getTags',
       userRole: 'user/getUserRole',
-      userData: 'user/getUserData',
-      userInfo: 'data/getUserInfo',
-      transactions: 'wallet/getTransactions',
-      transactionsCount: 'wallet/getTransactionsCount',
-      isWalletConnected: 'wallet/getIsWalletConnected',
       userWalletAddress: 'user/getUserWalletAddress',
       balance: 'wallet/getBalanceData',
+      transactions: 'wallet/getTransactions',
       selectedToken: 'wallet/getSelectedToken',
+      frozenBalance: 'wallet/getFrozenBalance',
+      transactionsCount: 'wallet/getTransactionsCount',
+      isWalletConnected: 'wallet/getIsWalletConnected',
     }),
+    selectedTokenData() {
+      return this.balance[this.selectedToken];
+    },
+    selectedTokenBalanceInfo() {
+      if (!this.selectedTokenData) return this.selectedToken;
+      return `${this.selectedTokenData?.balance || '0'} ${this.selectedToken}`;
+    },
+    wqAddress() {
+      return this.convertToBech32('wq', this.userWalletAddress);
+    },
+    shortWqAddress() {
+      return this.CutTxn(this.wqAddress, 8, 8);
+    },
     walletTables() {
       return WalletTables;
     },
@@ -184,30 +220,23 @@ export default {
       return Math.ceil(this.transactionsCount / this.txsPerPage);
     },
     styledTransactions() {
-      const txs = this.transactions;
-      const res = [];
-      this.$moment.locale(this.$i18n.locale);
-      // eslint-disable-next-line no-restricted-syntax
-      for (const t of txs) {
-        const symbol = TokenSymbolByContract[t.to_address_hash.hex] || TokenSymbols.WUSD;
-        res.push({
+      return this.transactions.map((t) => {
+        const symbol = TokenSymbolByContract[t.to_address_hash.hex] || TokenSymbols.WQT;
+        const decimals = this.balance[symbol].decimals || 18;
+        return {
           tx_hash: t.hash,
           block: t.block_number,
           timestamp: this.$moment(t.block.timestamp).format('lll'),
           status: !!t.status,
-          value: `${getStyledAmount(t.tokenTransfers[0]?.amount || t.value)} ${symbol}`,
-          transaction_fee: new BigNumber(t.gas_price).multipliedBy(t.gas_used),
+          value: `${getStyledAmount(t.tokenTransfers[0]?.amount || t.value, false, decimals)} ${symbol}`,
+          transaction_fee: t.transaction_fee || new BigNumber(t.gas_price).multipliedBy(t.gas_used),
           from_address: t.from_address_hash.hex,
           to_address: t.to_address_hash.hex,
-        });
-      }
-      return res;
+        };
+      });
     },
-    tokenSymbolsDd() {
-      return Object.keys(TokenSymbols);
-    },
-    tokenSymbols() {
-      return TokenSymbols;
+    tokenAddresses() {
+      return WorknetTokenAddresses;
     },
     walletTableFields() {
       return [
@@ -223,15 +252,16 @@ export default {
     },
   },
   watch: {
-    ddValue(val) {
-      this.$store.dispatch('wallet/setSelectedToken', TokenSymbols[this.tokenSymbolsDd[val]]);
+    balance() {
+      this.tokenSymbolsDd = Object.keys(this.balance);
     },
-    selectedToken() {
+    ddValue(newVal) {
+      this.$store.dispatch('wallet/setSelectedToken', this.tokenSymbolsDd[newVal]);
+    },
+    async selectedToken() {
       const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
       this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
-    },
-    isConnected(newVal) {
-      if (!newVal) this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+      await this.loadData();
     },
     currentPage() {
       this.getTransactions();
@@ -241,10 +271,25 @@ export default {
     this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
   async mounted() {
+    if (!this.$cookies.get('isWalletAppShowed')) {
+      this.ShowModal({
+        key: modals.downloadApp,
+        title: this.$tc('modals.titles.downloadWallet'),
+        subtitle: this.$t('modals.downWalletOnSmartphone'),
+        app: 'isWalletAppShowed',
+      });
+    }
     if (!this.isWalletConnected) return;
-    const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
-    this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
+
+    await this.$store.dispatch('wallet/subscribeWS', {
+      hexAddress: this.userWalletAddress,
+      timestamp: this.$moment(),
+      updateWalletData: this.loadData,
+    });
     await this.loadData();
+  },
+  async beforeDestroy() {
+    await this.$store.dispatch('wallet/unsubscribeWS');
   },
   methods: {
     getSwitchButtonMode(btn) {
@@ -258,44 +303,88 @@ export default {
       });
     },
     async loadData() {
-      this.SetLoader(true);
-      await Promise.all([
-        this.updateBalanceWQT(),
-        this.updateBalanceWUSD(),
-        this.getTransactions(),
-      ]);
-      this.SetLoader(false);
-    },
-    async updateBalanceWQT() {
-      await this.$store.dispatch('wallet/getBalanceWQT', this.userWalletAddress);
-    },
-    async updateBalanceWUSD() {
-      await this.$store.dispatch('wallet/getBalance');
+      this.isFetchingBalance = true;
+      const { selectedToken, userWalletAddress } = this;
+      if (selectedToken === TokenSymbols.WQT) {
+        await Promise.all([
+          this.$store.dispatch('wallet/getBalance'),
+          this.$store.dispatch('wallet/updateFrozenBalance'),
+        ]);
+      } else {
+        const payload = { address: userWalletAddress, abi: ERC20 };
+        await this.$store.dispatch('wallet/fetchWalletData', {
+          method: 'balanceOf', ...payload, token: this.tokenAddresses[this.tokenSymbolsDd.indexOf(selectedToken) - 1], symbol: selectedToken,
+        });
+      }
+      await this.getTransactions();
+      this.isFetchingBalance = false;
     },
     closeCard() {
       this.cardClosed = true;
     },
+    showModal({ key, branch }) {
+      this.ShowModal({
+        key: modals[key],
+        branch,
+      });
+    },
     showTransferModal() {
+      if (this.isFetchingBalance) return;
       this.ShowModal({
         key: modals.giveTransfer,
-        callback: async () => await this.loadData(),
-      });
-    },
-    showDepositModal() {
-      this.ShowModal({
-        key: modals.giveDeposit,
-      });
-    },
-    showWithdrawModal() {
-      this.ShowModal({
-        key: modals.takeWithdraw,
-        branch: 'withdraw',
-      });
-    },
-    showAddCardModal() {
-      this.ShowModal({
-        key: modals.addingCard,
-        branch: 'adding',
+        submit: async ({ recipient, amount, selectedToken }) => {
+          const { wqAddress, convertToHex, convertToBech32 } = this;
+          recipient = convertToHex('wq', recipient);
+          const value = new BigNumber(amount).shiftedBy(Number(this.selectedTokenData.decimals)).toString();
+          let feeRes;
+          if (selectedToken === TokenSymbols.WQT) {
+            feeRes = await this.$store.dispatch('wallet/getTransferFeeData', {
+              recipient,
+              value: amount,
+            });
+          } else {
+            feeRes = await this.$store.dispatch('wallet/getContractFeeData', {
+              method: 'transfer',
+              abi: ERC20,
+              contractAddress: TokenMap[selectedToken],
+              data: [recipient, value],
+            });
+          }
+          this.ShowModal({
+            key: modals.transactionReceipt,
+            fields: {
+              from: { name: this.$t('modals.fromAddress'), value: wqAddress },
+              to: { name: this.$t('modals.toAddress'), value: convertToBech32('wq', recipient) },
+              amount: {
+                name: this.$t('modals.amount'),
+                value: amount,
+                symbol: selectedToken, // REQUIRED!
+              },
+              fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
+            },
+            submitMethod: async () => {
+              this.CloseModal();
+              this.SetLoader(true);
+              const action = selectedToken === TokenSymbols.WQT ? 'transfer' : 'transferToken';
+              const payload = selectedToken === TokenSymbols.WQT
+                ? { recipient, value: amount }
+                : {
+                  abi: ERC20,
+                  address: TokenMap[selectedToken],
+                  data: [recipient, value],
+                };
+              const res = await this.$store.dispatch(`wallet/${action}`, payload);
+              this.SetLoader(false);
+              if (res.ok) {
+                await this.ShowModal({ key: 'transactionSend' });
+                await this.loadData();
+                return success();
+              }
+              await this.ShowModal({ key: 'transactionSend', mode: 'error' });
+              return error();
+            },
+          });
+        },
       });
     },
   },
@@ -316,6 +405,7 @@ export default {
     font-size: 16px;
     color: $black800;
   }
+
   &__date {
     font-weight: 400;
     font-size: 14px;
@@ -337,22 +427,27 @@ export default {
     display: flex;
     justify-content: center;
   }
+
   &__card {
     box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
   }
+
   &__balance {
     box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
   }
+
   &__body {
     max-width: 1180px;
     width: calc(100vw - 40px);
   }
+
   &__nav {
     margin-top: 20px;
     display: flex;
     justify-content: space-between;
     font-size: 16px;
   }
+
   &__address {
     @include text-simple;
     display: flex;
@@ -364,6 +459,7 @@ export default {
   &__icon {
     margin-left: 22px;
     font-size: 24px;
+
     &::before {
       color: $blue;
     }
@@ -381,6 +477,7 @@ export default {
     display: grid;
     grid-template-columns: 1fr 479px;
     grid-gap: 20px;
+
     &_full {
       grid-template-columns: 1fr;
     }
@@ -416,11 +513,13 @@ export default {
     font-size: 14px;
     color: $black300;
   }
+
   &__number {
     font-weight: 700;
     font-size: 25px;
     color: $blue;
   }
+
   &__title {
     font-weight: 400;
     font-size: 16px;
@@ -450,10 +549,13 @@ export default {
     font-weight: 600;
     font-size: 35px;
     line-height: 130%;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    &__margin-bottom {
+      margin-bottom: 25px;
+    }
 
     @include _767 {
       font-size: 26px;
@@ -464,26 +566,36 @@ export default {
       text-overflow: ellipsis;
       max-width: 1000px;
       padding-right: 20px;
+      &_light {
+        color: $black500;
+      }
     }
   }
 
   &__token {
     height: 49px;
-    border: 1px solid $black100;
-    border-radius: 6px;
     box-sizing: border-box;
   }
 
   &__usd {
     @include text-simple;
-    color: $blue;
     height: 24px;
-    &_mobile {
+    color: $black800;
+
+    &_blue {
+      color: $blue;
+    }
+
+    &-mobile {
       display: none;
       height: 33px;
-      color: $blue;
+      color: $black800;
       font-size: 18px;
       font-weight: normal;
+
+      &_blue {
+        color: $blue;
+      }
     }
   }
 }
@@ -544,10 +656,12 @@ export default {
 
 .table {
   background: #FFFFFF;
+
   &__txs {
     margin: 0 !important;
     border-radius: 6px !important;
   }
+
   &__empty {
     background: #FFFFFF !important;
     margin: 10px 0 !important;
@@ -567,6 +681,7 @@ export default {
     height: 240px;
   }
 }
+
 @include _991 {
   .wallet {
     &__table {
@@ -578,6 +693,7 @@ export default {
     width: 1180px;
   }
 }
+
 @include _767 {
   .card {
     grid-template-columns: repeat(2, 1fr);
@@ -586,6 +702,7 @@ export default {
     gap: 10px;
   }
 }
+
 @include _480 {
   .balance {
     &__currency {
@@ -593,12 +710,14 @@ export default {
       flex-direction: column;
       align-items: unset;
     }
+
     &__token {
       margin-top: 5px;
     }
   }
   .balance__usd {
     display: none;
+
     &_mobile {
       display: block;
     }
@@ -607,6 +726,7 @@ export default {
     grid-template-columns: 1fr;
   }
 }
+
 @include _350 {
   .wallet {
     &__nav {

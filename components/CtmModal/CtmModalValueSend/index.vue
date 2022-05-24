@@ -1,11 +1,11 @@
 <template>
   <ctm-modal-box
     class="claim"
-    :title="modalName"
+    :title="options.title"
   >
     <div class="claim__content content">
       <validation-observer
-        v-slot="{handleSubmit, valid}"
+        v-slot="{handleSubmit, invalid}"
       >
         <base-field
           id="amount"
@@ -14,9 +14,9 @@
           type="number"
           data-selector="INPUT_AMOUNT"
           placeholder="3500"
-          :label="$t('modals.amount')"
-          rules="required|decimal|decimalPlaces:18"
-          :name="$t('modals.amount')"
+          :label="$tc('modals.amount')"
+          :rules="`required|decimalPlaces:18|min_value:0.0001|${maxValue ? `max_value:${maxValue}` : ''}`"
+          :name="$tc('modals.amount')"
         >
           <template
             v-if="maxValue"
@@ -29,7 +29,9 @@
               class="max__button"
               @click="maxBalance()"
             >
-              <span class="max__text">{{ $t('modals.maximum') }}</span>
+              <span class="max__text">
+                {{ $t('modals.maximum') }}
+              </span>
             </base-btn>
           </template>
         </base-field>
@@ -37,13 +39,13 @@
           <base-btn
             mode="outline"
             data-selector="CANCEL"
-            @click="hide()"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             data-selector="SUBMIT"
-            :disabled="!valid"
+            :disabled="invalid || amount <= 0"
             @click="send()"
           >
             {{ $t('meta.btns.submit') }}
@@ -56,8 +58,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import BigNumber from 'bignumber.js';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'CtmModalValueSend',
@@ -70,32 +70,14 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
-    modalName() {
-      switch (this.options.mode) {
-        case 'refund':
-          return this.$t('crediting.refund');
-        case 'withdraw':
-          return this.$t('meta.withdraw');
-        case 'deposit':
-          return this.$t('meta.deposit');
-        case 'claim':
-          return this.$t('modals.claim');
-        default:
-          return this.$t('modals.amount');
-      }
-    },
     maxValue() {
       return this.options.maxValue;
     },
   },
   methods: {
-    hide() { this.CloseModal(); },
     async send() {
-      this.SetLoader(true);
-      const { callback } = this.options;
-      this.hide();
-      await callback(this.amount);
-      this.SetLoader(false);
+      const { amount, options: { submit } } = this;
+      await submit(amount);
     },
     maxBalance() {
       this.amount = this.maxValue;
@@ -112,23 +94,28 @@ export default {
     background-color: transparent !important;
   }
 }
+
 .claim {
-  max-width: 487px!important;
+  max-width: 487px !important;
+
   &__content {
-    padding: 22px 28px 30px 28px!important;
+    padding: 22px 28px 30px 28px !important;
   }
 }
+
 .content {
   &__subtitle {
     @include text-simple;
     font-weight: 400;
     font-size: 14px;
     color: $black500;
+
     &_blue {
       @extend .content__subtitle;
       color: $blue;
     }
   }
+
   &__container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

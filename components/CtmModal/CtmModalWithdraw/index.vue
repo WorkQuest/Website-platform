@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="withdrawal"
-    :title="$t('modals.titles.withdrawCard')"
+    :title="$tc('modals.titles.withdrawCard')"
   >
     <div class="ctm-modal__content">
       <validation-observer v-slot="{ handleSubmit, validated, passed, invalid }">
@@ -11,7 +11,7 @@
               id="amount_input"
               v-model="amount"
               data-selector="AMOUNT-WUSD"
-              :label="$t('modals.amount')"
+              :label="$tc('modals.amount')"
               placeholder="0 WUSD"
               rules="min_value:0|required"
               name="Amount"
@@ -31,7 +31,7 @@
             id="cardNumber_input"
             v-model="cardNumber"
             data-selector="CARD-NUMBER"
-            :label="$t('modals.numberOfCard')"
+            :label="$tc('modals.numberOfCard')"
             placeholder="1234 1234 1234 1234"
             rules="required|numberOfCard"
             name="Card number"
@@ -42,7 +42,7 @@
             <base-field
               id="date_input"
               v-model="date"
-              :label="$t('modals.cardDate')"
+              :label="$tc('modals.cardDate')"
               data-selector="CARD-DATE"
               placeholder="02/24"
               name="date"
@@ -53,7 +53,7 @@
             <base-field
               id="cvv_input"
               v-model="cvv"
-              :label="$t('modals.cvv')"
+              :label="$tc('modals.cvv')"
               data-selector="CARD-CVV"
               placeholder="242"
               rules="required|cvv"
@@ -65,7 +65,7 @@
           <base-checkbox
             v-model="isSavedCard"
             name="map"
-            :label="$t('modals.saveCardForNextPayment')"
+            :label="$tc('modals.saveCardForNextPayment')"
           />
         </div>
         <div class="ctm-modal__content-btns">
@@ -73,7 +73,7 @@
             <base-btn
               class="btn"
               data-selector="CANCEL"
-              @click="hide()"
+              @click="CloseModal"
             >
               {{ $t('meta.btns.cancel') }}
             </base-btn>
@@ -114,9 +114,6 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     showTransactionSendModal() {
       this.ShowModal({
         key: modals.transactionSend,
@@ -163,7 +160,7 @@ export default {
   }
 
   &__gray-zone {
-    background-color: #F7F8FA;
+    background-color: $black0;
     border-radius: 5px;
     margin-top: 15px;
     padding: 0 20px 20px 20px;
@@ -247,7 +244,7 @@ export default {
     color: #B1B3B8;
     background: #FFFFFF;
     border-radius: 6px;
-    border: 1px solid #F3F7FA;
+    border: 1px solid $black0;
     margin-bottom: 23px;
   }
 }

@@ -5,7 +5,7 @@
       :class="{role_hidden: step !== walletState.Default}"
     >
       <div
-        v-if="step === walletState.ImportOrCreate || step === walletState.Default"
+        v-if="step === walletState.Default"
         class="role__back"
         @click="toSign"
       >
@@ -153,21 +153,15 @@ export default {
     window.addEventListener('beforeunload', this.clearCookies);
   },
   async beforeMount() {
-    const access = this.$cookies.get('access');
-    const refresh = this.$cookies.get('refresh');
     const userStatus = this.$cookies.get('userStatus');
-    if (!access || !refresh || !userStatus) {
-      await this.$router.push(Path.SIGN_IN);
-      return;
-    }
-    if (!this.userData.id) await this.$store.dispatch('user/getUserData');
+    if (!this.userData.id && +userStatus === UserStatuses.Confirmed) await this.$store.dispatch('user/getUserData');
     if (this.userData.wallet?.address && userStatus === UserStatuses.Confirmed) {
       this.isWalletAssigned = true;
       this.isClearOnDestroy = false;
       await this.redirectUser();
       return;
     }
-    if (userStatus === UserStatuses.Confirmed && !this.userData?.wallet?.address) {
+    if (+userStatus === UserStatuses.Confirmed && !this.userData?.wallet?.address) {
       this.step = WalletState.ImportOrCreate;
       if (getCipherKey() == null && !this.isLoginWithSocialNetwork) {
         this.isClearOnDestroy = false;
@@ -184,7 +178,7 @@ export default {
   },
   beforeDestroy() {
     if (!this.isClearOnDestroy || this.isWalletAssigned) return;
-    this.$store.dispatch('user/logout');
+    this.$store.dispatch('user/logout', false);
   },
   methods: {
     clearCookies() {
@@ -207,6 +201,7 @@ export default {
     showPrivacy(role) {
       this.ShowModal({
         key: modals.privacy,
+        isSocialNetwork: this.isLoginWithSocialNetwork,
         callback: () => this.goToAssignWallet(),
         role,
       });

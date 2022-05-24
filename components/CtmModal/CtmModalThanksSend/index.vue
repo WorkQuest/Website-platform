@@ -19,7 +19,7 @@
           <base-btn
             class="email__action"
             data-selector="OK"
-            @click="hide()"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.ok') }}
           </base-btn>
@@ -33,11 +33,6 @@
 
 export default {
   name: 'ModalThanksSend',
-  methods: {
-    hide() {
-      this.CloseModal();
-    },
-  },
 };
 </script>
 

@@ -1,16 +1,20 @@
 <template>
   <div
+    v-if="infoDataMode !== $options.QuestStatuses.Pending"
     class="info"
     :class="infoClass"
   >
     <div
-      v-if="userRole === $options.UserRole.EMPLOYER && infoDataMode !== $options.InfoModeEmployer.Created"
+      v-if="userRole === $options.UserRole.EMPLOYER
+        && infoDataMode !== $options.InfoModeEmployer.Created"
       class="info__body"
     >
       <div class="info__left">
         <div
           class="info__text"
-          :class="[{'info__text_white': ![$options.InfoModeEmployer.Created, $options.InfoModeEmployer.WaitConfirm].includes(infoDataMode)}]"
+          :class="[{'info__text_white': ![
+            $options.InfoModeEmployer.Created,
+          ].includes(infoDataMode)}]"
         >
           {{ infoStatusText }}
         </div>
@@ -65,9 +69,8 @@
 
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import {
-  InfoModeEmployer, InfoModeWorker, ResponseStatus, UserRole,
-} from '~/utils/enums';
+import { ResponseStatus, UserRole } from '~/utils/enums';
+import { QuestStatuses, InfoModeEmployer, InfoModeWorker } from '~/utils/сonstants/quests';
 
 export default {
   name: 'InfoVue',
@@ -76,6 +79,7 @@ export default {
   InfoModeEmployer,
   InfoModeWorker,
   ResponseStatus,
+  QuestStatuses,
   data() {
     return {
       isShowMessage: false,
@@ -95,12 +99,12 @@ export default {
     infoStatusText() {
       if (this.userRole === UserRole.EMPLOYER) {
         const obj = {
-          [InfoModeEmployer.Active]: 'quests.activeQuest',
-          [InfoModeEmployer.WaitWorker]: 'quests.waitWorker',
-          [InfoModeEmployer.WaitConfirm]: 'quests.pendingConsideration',
+          [InfoModeEmployer.WaitWorker]: 'quests.activeQuest',
+          [InfoModeEmployer.WaitWorkerOnAssign]: 'quests.waitWorker',
+          [InfoModeEmployer.WaitEmployerConfirm]: 'quests.pendingConsideration',
           [InfoModeEmployer.Dispute]: 'meta.dispute',
           [InfoModeEmployer.Closed]: 'quests.closed',
-          [InfoModeEmployer.Done]: 'meta.performed',
+          [InfoModeEmployer.Done]: 'meta.completed',
         };
         return this.$t(`${obj[this.infoDataMode]}`);
       }
@@ -108,12 +112,13 @@ export default {
         const { response } = this.questData;
         const { awaiting, accepted } = ResponseStatus;
         const obj = {
+          [InfoModeWorker.Pending]: '',
           [InfoModeWorker.Created]: '',
           [InfoModeWorker.ADChat]: 'meta.invited',
-          [InfoModeWorker.Active]: 'quests.activeQuest',
+          [InfoModeWorker.WaitWorker]: 'quests.activeQuest',
           [InfoModeWorker.Rejected]: 'quests.requested',
-          [InfoModeWorker.WaitWorker]: 'quests.pendingConsideration',
-          [InfoModeWorker.WaitConfirm]: 'quests.pendingConsideration',
+          [InfoModeWorker.WaitWorkerOnAssign]: 'quests.pendingConsideration',
+          [InfoModeWorker.WaitEmployerConfirm]: 'quests.pendingConsideration',
           [InfoModeWorker.Dispute]: 'meta.dispute',
           [InfoModeWorker.Closed]: 'quests.questClosed',
           [InfoModeWorker.Done]: 'meta.completed',
@@ -134,20 +139,19 @@ export default {
         return [
           { 'info-hide': infoDataMode === InfoModeWorker.Created },
           { 'info_bg-yellow': [InfoModeWorker.ADChat, InfoModeWorker.Invited].includes(infoDataMode) },
-          { 'info_bg-green': infoDataMode === InfoModeWorker.Active || (InfoModeWorker.Invited && response?.status === ResponseStatus.accepted) },
+          { 'info_bg-green': infoDataMode === InfoModeWorker.WaitWorker || response?.status === ResponseStatus.accepted },
           { 'info_bg-grey': infoDataMode === InfoModeWorker.Rejected },
-          { 'info_bg-blue': [InfoModeWorker.WaitWorker, InfoModeWorker.WaitConfirm, InfoModeWorker.Done, InfoModeWorker.Responded].includes(infoDataMode) },
-          { 'info_bg-red': [InfoModeWorker.Dispute, InfoModeWorker.Closed].includes(infoDataMode) || (InfoModeWorker.Invited && response?.status === ResponseStatus.rejected) },
+          { 'info_bg-blue': [InfoModeWorker.WaitWorkerOnAssign, InfoModeWorker.WaitEmployerConfirm, InfoModeWorker.Done, InfoModeWorker.Responded].includes(infoDataMode) },
+          { 'info_bg-red': [InfoModeWorker.Dispute, InfoModeWorker.Closed].includes(infoDataMode) || response?.status === ResponseStatus.rejected },
         ];
       }
       if (this.userRole === UserRole.EMPLOYER) {
         return [
           { 'info-hide': infoDataMode === InfoModeEmployer.Created },
-          { 'info_bg-yellow': infoDataMode === InfoModeEmployer.WaitWorker },
-          { 'info_bg-green': infoDataMode === InfoModeEmployer.Active },
-          { 'info_bg-grey': infoDataMode === InfoModeEmployer.WaitConfirm },
-          { 'info_bg-red': infoDataMode === InfoModeEmployer.Dispute },
-          { 'info_bg-blue': [InfoModeEmployer.Closed, InfoModeEmployer.Done].includes(infoDataMode) },
+          { 'info_bg-yellow': infoDataMode === InfoModeEmployer.WaitWorkerOnAssign },
+          { 'info_bg-green': infoDataMode === InfoModeEmployer.WaitWorker },
+          { 'info_bg-red': [InfoModeEmployer.Closed, InfoModeEmployer.Dispute].includes(infoDataMode) },
+          { 'info_bg-blue': [InfoModeEmployer.WaitEmployerConfirm, InfoModeEmployer.Done].includes(infoDataMode) },
         ];
       }
       return '';

@@ -186,11 +186,11 @@ export default {
     }),
     dates() {
       return [
-        this.$tc('meta.units.days', 7),
-        this.$tc('meta.units.days', 14),
-        this.$tc('meta.units.days', 30),
-        this.$tc('meta.units.days', 90),
-        this.$tc('meta.units.days', 180),
+        this.$tc('meta.units.days', this.DeclOfNum(7), { count: 7 }),
+        this.$tc('meta.units.days', this.DeclOfNum(14), { count: 14 }),
+        this.$tc('meta.units.days', this.DeclOfNum(30), { count: 30 }),
+        this.$tc('meta.units.days', this.DeclOfNum(90), { count: 90 }),
+        this.$tc('meta.units.days', this.DeclOfNum(180), { count: 180 }),
       ];
     },
     FAQs() {
@@ -245,36 +245,36 @@ export default {
         return [
           {
             perc: this.$tc('meta.units.percentsCount', this.interestRate[7]),
-            date: this.$tc('meta.units.days', 7),
+            date: this.$tc('meta.units.days', this.DeclOfNum(7), { count: 7 }),
           },
           {
             perc: this.$tc('meta.units.percentsCount', this.interestRate[14]),
-            date: this.$tc('meta.units.days', 14),
+            date: this.$tc('meta.units.days', this.DeclOfNum(14), { count: 14 }),
           },
           {
             perc: this.$tc('meta.units.percentsCount', this.interestRate[30]),
-            date: this.$tc('meta.units.days', 30),
+            date: this.$tc('meta.units.days', this.DeclOfNum(30), { count: 30 }),
           },
         ];
       }
       return [
         {
           perc: this.$tc('meta.units.percentsCount', this.interestRate[7]),
-          date: this.$tc('meta.units.days', 7),
+          date: this.$tc('meta.units.days', this.DeclOfNum(7), { count: 7 }),
         },
         {
           perc: 'line',
         },
         {
           perc: this.$tc('meta.units.percentsCount', this.interestRate[14]),
-          date: this.$tc('meta.units.days', 14),
+          date: this.$tc('meta.units.days', this.DeclOfNum(14), { count: 14 }),
         },
         {
           perc: 'line',
         },
         {
           perc: this.$tc('meta.units.percentsCount', this.interestRate[30]),
-          date: this.$tc('meta.units.days', 30),
+          date: this.$tc('meta.units.days', this.DeclOfNum(30), { count: 30 }),
         },
       ];
     },
@@ -287,21 +287,21 @@ export default {
           },
           {
             perc: this.$tc('meta.units.percentsCount', this.interestRate[180]),
-            date: this.$tc('meta.units.days', 180),
+            date: this.$tc('meta.units.days', this.DeclOfNum(180), { count: 180 }),
           },
         ];
       }
       return [
         {
           perc: this.$tc('meta.units.percentsCount', this.interestRate[90]),
-          date: this.$tc('meta.units.days', 90),
+          date: this.$tc('meta.units.days', this.DeclOfNum(90), { count: 90 }),
         },
         {
           perc: 'line',
         },
         {
           perc: this.$tc('meta.units.percentsCount', this.interestRate[180]),
-          date: this.$tc('meta.units.days', 180),
+          date: this.$tc('meta.units.days', this.DeclOfNum(180), { count: 180 }),
         },
       ];
     },
@@ -565,7 +565,7 @@ export default {
       }
       &__data {
         display: grid;
-        background-color: #F7F8FA;
+        background-color: $black0;
         padding: 20px;
         border-radius: 6px;
       }
@@ -618,7 +618,7 @@ export default {
       &__faq {
         border-radius: 5px;
         padding: 20px 60px 20px 20px;
-        background-color: #F7F8FA;
+        background-color: $black0;
         text-align: left;
         position: relative;
         transition: 300ms;

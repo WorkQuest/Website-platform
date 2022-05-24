@@ -7,14 +7,15 @@ import {
   error,
   fetchContractData,
 } from '~/utils/web3';
-import * as abi from '~/abi/abi';
+import { WQReferral } from '~/abi/index';
+import { REFERRAL_EVENTS } from '~/utils/сonstants/referral';
 
 export default {
   async fetchRewardBalance({ commit }, userWalletAddress) {
     try {
       const res = await fetchContractData(
         'getRewards',
-        abi.WQReferral,
+        WQReferral,
         process.env.WORKNET_REFERRAL,
         [userWalletAddress],
         GetWalletProvider(),
@@ -29,7 +30,7 @@ export default {
   async claimReferralReward(_, userAddress) {
     try {
       const payload = {
-        abi: abi.WQReferral,
+        abi: WQReferral,
         address: process.env.WORKNET_REFERRAL,
         userAddress,
       };
@@ -42,7 +43,7 @@ export default {
   async fetchPaidEventsList({ commit }, config) {
     try {
       const currConfig = config || { params: { limit: 6, offset: 0 } };
-      const { data: { result, ok } } = await this.$axios.get('v1/user/me/referral-program/claimed-paid-events', currConfig);
+      const { result, ok } = await this.$axios.$get('v1/user/me/referral-program/claimed-paid-events', currConfig);
 
       if (result.events.length) {
         commit('setPaidEventsList', result.events);
@@ -55,7 +56,7 @@ export default {
   },
   async fetchReferralsList({ commit }) {
     try {
-      const { data: { result, ok } } = await this.$axios.get('v1/user/me/referral-program/referrals');
+      const { result, ok } = await this.$axios.$get('v1/user/me/referral-program/referrals');
 
       if (result.referrals.length) {
         const isNeedRegistration = result.referrals.some((item) => item.referralUser.referralStatus === 'created');
@@ -72,7 +73,7 @@ export default {
   },
   async fetchCreatedReferralList({ commit }) {
     try {
-      const { data: { result, ok } } = await this.$axios.get('v1/user/me/referral-program/referral/signature/created-referrals');
+      const { result, ok } = await this.$axios.$get('v1/user/me/referral-program/referral/signature/created-referrals');
 
       if (result) {
         const signature = {};
@@ -82,7 +83,6 @@ export default {
         commit('setCreatedReferralList', result.addresses);
         commit('setReferralSignature', signature);
       }
-
       return ok;
     } catch (e) {
       return false;
@@ -93,7 +93,7 @@ export default {
     const addresses = getters.getCreatedReferralList;
     try {
       const payload = {
-        abi: abi.WQReferral,
+        abi: WQReferral,
         address: process.env.WORKNET_REFERRAL,
         data: [signature.v, signature.r, signature.s, addresses],
         userAddress,
@@ -108,33 +108,38 @@ export default {
     try {
       await this.$wsNotifs.subscribe(`/notifications/referral/${userAddress}`, async (msg) => {
         console.log('subscribeToReferralEvents massage', msg);
-
+        const { data: dataMessage } = msg;
         const paidEventsList = JSON.parse(JSON.stringify(getters.getPaidEventsList));
         const referralsList = JSON.parse(JSON.stringify(getters.getReferralsList));
         let referralsListCount = JSON.parse(JSON.stringify(getters.getReferralsListCount));
         const currentPage = getters.getCurrentPage;
 
         if (msg.action === 'RegisteredAffiliar') {
-          console.log('RegisteredAffiliar');
-          referralsList.unshift(msg.data);
-          referralsListCount = msg.data.count;
+          referralsList.unshift(dataMessage);
+          referralsListCount = dataMessage.count;
 
           const isNeedRegistration = referralsList.some((item) => item.referralUser.referralStatus === 'created');
           commit('setReferralsListCount', referralsListCount);
           commit('setReferralsList', referralsList);
           commit('setIsNeedRegistration', isNeedRegistration);
-        } else if (msg.action === 'RewardClaimed' && currentPage === 1) {
-          paidEventsList.unshift(msg.data);
+        } else if ((msg.action === REFERRAL_EVENTS.RewardClaimed || msg.action === REFERRAL_EVENTS.PaidReferral) && currentPage === 1) {
+          paidEventsList.unshift({
+            blockNumber: dataMessage.blockNumber,
+            transactionHash: dataMessage.transactionHash,
+            referral: dataMessage.referral,
+            affiliate: dataMessage.affiliate,
+            amount: dataMessage.returnValues.affiliat,
+            timestamp: dataMessage.timestamp,
+            event: dataMessage.event,
+            'referralUser.id': dataMessage['referralUser.id'] || '-',
+            'referralUser.firstName': dataMessage['referralUser.firstName'] || '-',
+            'referralUser.lastName': dataMessage['referralUser.lastName'] || '-',
+            'referralUser.avatar.url': dataMessage['referralUser.lastName'],
+          });
           if (paidEventsList.length > 10) {
             paidEventsList.pop();
           }
           commit('setPaidEventsList', paidEventsList);
-        } else if (msg.action === 'PaidReferral' && currentPage === 1) {
-          console.log('PaidReferral');
-          paidEventsList.unshift(msg.data);
-          if (paidEventsList.length > 10) {
-            paidEventsList.pop();
-          }
         }
       });
     } catch (err) {

@@ -4,7 +4,7 @@
       <div class="template__left">
         <div
           class="template__logo"
-          @click="toMain()"
+          @click="$router.push($options.Path.SIGN_IN)"
         >
           <img
             src="~assets/img/app/logo.svg"
@@ -37,34 +37,52 @@
 <script>
 import { mapGetters } from 'vuex';
 import { Path, UserRole, UserStatuses } from '~/utils/enums';
-import { getIsWalletConnected } from '~/utils/wallet';
 
 export default {
   name: 'AuthLayout',
+  Path,
   computed: {
     ...mapGetters({
       isLoading: 'main/getIsLoading',
       userData: 'user/getUserData',
     }),
   },
-  async beforeMount() {
+  async created() {
+    const accessTokenCookies = this.$cookies.get('access');
+    if (!accessTokenCookies) return;
+    const refreshCookies = this.$cookies.get('refresh');
+    const userStatusCookies = this.$cookies.get('userStatus');
+    await this.$store.commit('user/setTokens', {
+      access: accessTokenCookies,
+      refresh: refreshCookies,
+      userStatus: userStatusCookies,
+    });
+
+    if (this.userData.status === UserStatuses.Confirmed) {
+      await this.$store.dispatch('user/getUserData');
+
+      if (this.userData.role === UserRole.EMPLOYER) {
+        await this.$router.push(Path.WORKERS);
+      } else if (this.userData.role === UserRole.WORKER) {
+        await this.$router.push(Path.QUESTS);
+      }
+    }
+  },
+  async beforeMount() { // Handle social network auth
     const { access, refresh, userStatus } = this.$route.query;
     if (access && refresh && userStatus) {
       this.$store.commit('user/setTokens', {
         access, refresh, userStatus, social: true,
       });
       await this.$store.dispatch('user/getUserData');
+
       // To set role or assign wallet
       if (+userStatus === UserStatuses.NeedSetRole || !this.userData?.wallet?.address) {
         this.$cookies.set('userLogin', true, { path: '/' });
         await this.$router.push(Path.ROLE);
         return;
       }
-      // To import mnemonic for login
-      if (+userStatus === UserStatuses.Confirmed && !getIsWalletConnected()) {
-        await this.$router.push(Path.SIGN_IN);
-        return;
-      }
+
       await this.$store.dispatch('user/getStatistic');
       await this.$store.dispatch('user/getNotifications');
 
@@ -74,11 +92,6 @@ export default {
         await this.$router.push(Path.QUESTS);
       }
     }
-  },
-  methods: {
-    toMain() {
-      this.$router.push('/sign-in');
-    },
   },
 };
 </script>

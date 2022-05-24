@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="price"
-    :title="$t('modals.titles.price')"
+    :title="options.title"
   >
     <div class="price__content content">
       <validation-observer
@@ -43,7 +43,7 @@
                 data-selector="PRICE-TO"
                 :placeholder="$tc('meta.coins.count.WUSDCount', 10000)"
                 :rules="`decimal${priceFrom ? '|min_value:'+priceFrom : ''}|max_value:99999999999999`"
-                :name="$t('meta.toBig')"
+                :name="$tc('meta.toBig')"
               />
               <span
                 class="icon-off_outline_close input__clear"
@@ -57,7 +57,7 @@
             mode="outline"
             class="buttons__action"
             data-selector="CANCEL"
-            @click="hide"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -97,14 +97,11 @@ export default {
     if (this.selectedPriceFilter.to) this.priceTo = this.selectedPriceFilter.to;
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     submit() {
       if (this.priceFrom <= 0) this.priceFrom = '';
       if (this.priceTo <= 0) this.priceTo = '';
       this.$store.dispatch('quests/setSelectedPriceFilter', { from: this.priceFrom, to: this.priceTo });
-      this.hide();
+      this.CloseModal();
     },
   },
 };
@@ -155,7 +152,8 @@ export default {
     grid-gap: 10px;
   }
   &__buttons{
-    margin-top: 30px;
+    margin-top: 40px;
+    pointer-events: auto;
   }
   &__title{
     color: $black600;
@@ -168,9 +166,6 @@ export default {
     margin:20px 0 4px;
   }
   &__input{
-    height: 100px;
-  }
-  &__field{
     height: 100px;
   }
 }

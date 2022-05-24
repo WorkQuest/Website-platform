@@ -46,7 +46,7 @@
               <div class="user__info">
                 <img
                   class="ava"
-                  :src="paidEventsList[0]['referralUser.avatar.url'] ? paidEventsList[0]['referralUser.avatar.url'] : EmptyAvatar()"
+                  :src="paidEventsList[0]['referralUser.avatar.url'] ? paidEventsList[0]['referralUser.avatar.url'] : $options.images.EMPTY_AVATAR"
                   alt="avatar"
                 >
                 <div class="user__name">
@@ -85,7 +85,7 @@
               >
                 <img
                   class="ava_list"
-                  :src="(item.avatar && item.avatar.url) ? item.avatar.url : EmptyAvatar()"
+                  :src="(item.avatar && item.avatar.url) ? item.avatar.url : $options.images.EMPTY_AVATAR"
                   alt=""
                 >
               </div>
@@ -170,11 +170,11 @@
                 <div class="user__name">
                   <nuxt-link
                     class="user__link"
-                    :to="`profile/${el.item.id}`"
+                    :to="`profile/${el.item['referralUser.id']}`"
                   >
                     <img
                       class="ava"
-                      :src="el.item['referralUser.avatar.url'] ? el.item['referralUser.avatar.url'] : EmptyAvatar()"
+                      :src="el.item['referralUser.avatar.url'] ? el.item['referralUser.avatar.url'] : $options.images.EMPTY_AVATAR"
                       alt=""
                     >
                     <span>
@@ -239,12 +239,14 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { STATUS_INFO } from '~/utils/referral-constants';
 import modals from '~/store/modals/modals';
 import { getStyledAmount } from '~/utils/wallet';
+import { images } from '~/utils/images';
+import { REFERRAL_EVENTS } from '~/utils/сonstants/referral';
 
 export default {
   name: 'Referral',
+  images,
   async asyncData({ store }) {
     const userAddress = store.getters['user/getUserWalletAddress'];
     await Promise.all([
@@ -347,7 +349,7 @@ export default {
         {
           key: 'event',
           label: this.$t('referral.tableHead.event'),
-          formatter: (value) => STATUS_INFO[value](this),
+          formatter: (value) => this.$t(`referral.event.${REFERRAL_EVENTS[value]}`),
           thStyle: {
             padding: '0',
             height: '27px',
@@ -574,6 +576,9 @@ export default {
           font-size: 16px;
           text-transform: capitalize;
         }
+        &__name-table {
+          max-width: 90px;
+        }
 
         &__value {
           font-size: 16px;
@@ -616,6 +621,8 @@ export default {
         }
 
         &__link {
+          display: flex;
+          align-items: center;
           position: relative;
           text-decoration: none;
           color: $black500;

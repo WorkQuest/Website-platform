@@ -5,96 +5,7 @@
       class="ctm-modal"
       @mousedown.self="backgroundClick"
     >
-      <ctm-modal-box
-        v-if="modals.default === currentModalKey"
-      >
-        <div class="ctm-modal__content ctm-modal__text">
-          {{ options.text }}
-        </div>
-      </ctm-modal-box>
-      <CtmModalConfirmEmail v-if="modals.emailConfirm === currentModalKey" />
-      <CtmModalRestore v-if="modals.restore === currentModalKey" />
-      <CtmModalChangePassword v-if="modals.changePassword === currentModalKey" />
-      <CtmModalPrivacy v-if="modals.privacy === currentModalKey" />
-      <CtmModalSkills v-if="modals.skills === currentModalKey" />
-      <CtmModalMessageSend v-if="modals.messageSend === currentModalKey" />
-      <CtmModalSendARequest v-if="modals.sendARequest === currentModalKey" />
-      <CtmModalRequestSend v-if="modals.requestSend === currentModalKey" />
-      <CtmModalThanksSend v-if="modals.thanks === currentModalKey" />
-      <CtmModalQuestAgreed v-if="modals.questAgreed === currentModalKey" />
-      <CtmModalTransactionSend v-if="modals.transactionSend === currentModalKey" />
-      <CtmModalCardHasBeenAdded v-if="modals.cardHasBeenAdded === currentModalKey" />
-      <CtmModalDeposit v-if="modals.deposit === currentModalKey" />
-      <CtmModalAddCard v-if="modals.addCard === currentModalKey" />
-      <CtmModalWithdraw v-if="modals.withdraw === currentModalKey" />
-      <CtmModalReviewEmployer v-if="modals.review === currentModalKey" />
-      <CtmModalInviteSend v-if="modals.inviteSend === currentModalKey" />
-      <CtmModalQuestCreated v-if="modals.questCreated === currentModalKey" />
-      <CtmModalRaiseViews v-if="modals.raiseViews === currentModalKey" />
-      <CtmModalInvitation v-if="modals.invitation === currentModalKey" />
-      <CtmModalApplyForAPension v-if="modals.applyForAPension === currentModalKey" />
-      <CtmModalMakeDeposit v-if="modals.makeDeposit === currentModalKey" />
-      <CtmModalChangePercent v-if="modals.changePercent === currentModalKey" />
-      <CtmModalOpenADeposit v-if="modals.openADeposit === currentModalKey" />
-      <CtmModalStatus v-if="modals.status === currentModalKey" />
-      <CtmModalAddLiquidity v-if="modals.addLiquidity === currentModalKey" />
-      <CtmModalRemoveLiquidity v-if="modals.removeLiquidity === currentModalKey" />
-      <CtmModalCreditingDeposit v-if="modals.creditingDeposit === currentModalKey" />
-      <CtmModalConfirmDetails v-if="modals.confirmDetails === currentModalKey" />
-      <CtmModalInsureCase v-if="modals.insureCase === currentModalKey" />
-      <CtmModalWithdrawAbout v-if="modals.withdrawAbout === currentModalKey" />
-      <CtmModalAddCase v-if="modals.addCase === currentModalKey" />
-      <CtmModalOpenADispute v-if="modals.openADispute === currentModalKey" />
-      <CtmModalNotice v-if="modals.notice === currentModalKey" />
-      <CtmModalNoticeChat v-if="modals.noticeChat === currentModalKey" />
-      <CtmModalTransfer v-if="modals.transfer === currentModalKey" />
-      <CtmModalChangePassInSettings v-if="modals.changePassInSettings === currentModalKey" />
-      <CtmModalTwoFAAuth v-if="modals.twoFAAuth === currentModalKey" />
-      <CtmModalSignWorkQuest v-if="modals.signWorkQuest === currentModalKey" />
-      <CtmModalSecurityCheck v-if="modals.securityCheck === currentModalKey" />
-      <CtmModalSharing v-if="modals.sharingQuest === currentModalKey" />
-      <CtmModalCopiedSuccess v-if="modals.copiedSuccess === currentModalKey" />
-      <CtmModalChangeRoleWarning v-if="modals.changeRoleWarning === currentModalKey" />
-      <CtmModalChangeRoleReason v-if="modals.changeRoleReason === currentModalKey" />
-      <CtmModalChooseNecessarySkills v-if="modals.chooseNecessarySkills === currentModalKey" />
-      <CtmModalCreditingLoan v-if="modals.creditingLoan === currentModalKey" />
-      <CtmModalConfirmLoanDetails v-if="modals.confirmLoanDetails === currentModalKey" />
-      <CtmModalSmsVerification v-if="modals.smsVerification === currentModalKey" />
-      <CtmModalReviewDetails v-if="modals.reviewDetails === currentModalKey" />
-      <CtmModalChatCreate v-if="modals.chatCreate === currentModalKey" />
-      <CtmModalPayment v-if="modals.payment === currentModalKey" />
-      <CtmModalDisable2FA v-if="modals.disable2FA === currentModalKey" />
-      <CtmModalQuestFilterFull v-if="modals.questFilterFull === currentModalKey" />
-      <CtmModalShowImage v-if="modals.showImage === currentModalKey" />
-      <CtmModalPriceSearch v-if="modals.priceSearch === currentModalKey" />
-      <CtmModalGiveDeposit v-if="modals.giveDeposit === currentModalKey" />
-      <CtmModalAddingCard v-if="modals.addingCard === currentModalKey" />
-      <CtmModalDepositOptions v-if="modals.depositOptions === currentModalKey" />
-      <CtmModalCardAdded v-if="modals.cardAdded === currentModalKey" />
-      <CtmModalTakeWithdraw v-if="modals.takeWithdraw === currentModalKey" />
-      <CtmModalWithdrawInfo v-if="modals.withdrawInfo === currentModalKey" />
-      <CtmModalWithdrawOptions v-if="modals.withdrawOptions === currentModalKey" />
-      <CtmModalGiveTransfer v-if="modals.giveTransfer === currentModalKey" />
-      <CtmModalPaymentOptions v-if="modals.paymentOptions === currentModalKey" />
-      <CtmModalAreYouSureDelete v-if="modals.areYouSureDelete === currentModalKey" />
-      <CtmModalAreYouSureNotification v-if="modals.areYouSureNotification === currentModalKey" />
-      <CtmModalSwap v-if="modals.swap === currentModalKey" />
-      <CtmModalSwapInfo v-if="modals.swapInfo === currentModalKey" />
-      <CtmModalClaim v-if="modals.claim === currentModalKey" />
-      <CtmModalEditCase v-if="modals.editCase === currentModalKey" />
-      <CtmModalDeleteCase v-if="modals.deleteCase === currentModalKey" />
-      <CtmModalClaimRewards v-if="modals.claimRewards === currentModalKey" />
-      <CtmModalSwapTokens v-if="modals.swapTokens === currentModalKey" />
-      <CtmModalGallery v-if="modals.gallery === currentModalKey" />
-      <CtmModalTransactionReceipt v-if="modals.transactionReceipt === currentModalKey" />
-      <CtmModalAreYouSure v-if="modals.areYouSure === currentModalKey" />
-      <CtmModalStake v-if="modals.stake === currentModalKey" />
-      <CtmModalCollateralTransaction v-if="modals.collateralTransaction === currentModalKey" />
-      <CtmModalNeededToEnable2FA v-if="modals.neededToEnable2FA === currentModalKey" />
-      <CtmModalGetWUSD v-if="modals.getWUSD === currentModalKey" />
-      <CtmModalBuyAuction v-if="modals.buyAuction === currentModalKey" />
-      <CtmModalReferralClaim v-if="modals.referralClaim === currentModalKey" />
-      <CtmModalValueSend v-if="modals.valueSend === currentModalKey" />
+      <component :is="currentModalKey" />
     </div>
   </transition>
 </template>
@@ -102,180 +13,88 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '@/store/modals/modals';
-import CtmModalCollateralTransaction from './CtmModalCollateralTransaction';
-import CtmModalStake from './CtmModalStake';
-import CtmModalTransactionReceipt from './CtmModalTransactionReceipt';
-import CtmModalConfirmEmail from './CtmModalConfirmEmail';
-import CtmModalChangePassword from './CtmModalChangePassword';
-import CtmModalRestore from './CtmModalRestore';
-import CtmModalPrivacy from './CtmModalPrivacy';
-import CtmModalSkills from './CtmModalSkills';
-import CtmModalMessageSend from './CtmModalMessageSend';
-import CtmModalSendARequest from './CtmModalSendARequest';
-import CtmModalRequestSend from './CtmModalRequestSend';
-import CtmModalThanksSend from './CtmModalThanksSend';
-import CtmModalQuestAgreed from './CtmModalQuestAgreed';
-import CtmModalReviewEmployer from './CtmModalReviewEmployer';
-import CtmModalTransactionSend from './CtmModalTransactionSend';
-import CtmModalCardHasBeenAdded from './CtmModalCardHasBeenAdded';
-import CtmModalDeposit from './CtmModalDeposit';
-import CtmModalAddCard from './CtmModalAddCard';
-import CtmModalWithdraw from './CtmModalWithdraw';
-import CtmModalInvitation from './CtmModalInvitation';
-import CtmModalInviteSend from './CtmModalInviteSend';
-import CtmModalQuestCreated from './CtmModalQuestCreated';
-import CtmModalRaiseViews from './CtmModalRaiseViews';
-import CtmModalApplyForAPension from './CtmModalApplyForAPension';
-import CtmModalMakeDeposit from './CtmModalMakeDeposit';
-import CtmModalChangePercent from './CtmModalChangePercent';
-import CtmModalOpenADeposit from './CtmModalOpenADeposit';
-import CtmModalStatus from './CtmModalStatus';
-import CtmModalAddLiquidity from './CtmModalAddLiquidity';
-import CtmModalRemoveLiquidity from './CtmModalRemoveLiquidity';
-import CtmModalCreditingDeposit from './CtmModalCreditingDeposit';
-import CtmModalConfirmDetails from './CtmModalConfirmDetails';
-import CtmModalInsureCase from './CtmModalInsureCase';
-import CtmModalWithdrawAbout from './CtmModalWithdrawAbout';
-import CtmModalAddCase from './CtmModalAddCase';
-import CtmModalOpenADispute from './CtmModalOpenADispute';
-import CtmModalNotice from './CtmModalNotice';
-import CtmModalNoticeChat from './CtmModalNoticeChat';
-import CtmModalTransfer from './CtmModalTransfer';
-import CtmModalChangePassInSettings from './CtmModalChangePassInSettings';
-import CtmModalTwoFAAuth from './CtmModalTwoFAAuth';
-import CtmModalCreditingLoan from './CtmModalCreditingLoan';
-import CtmModalConfirmLoanDetails from './CtmModalConfirmLoanDetails';
-import CtmModalSignWorkQuest from './CtmModalSignWorkQuest';
-import CtmModalSecurityCheck from './CtmModalSecurityCheck';
-import CtmModalSharing from './CtmModalSharing';
-import CtmModalCopiedSuccess from './CtmModalCopiedSuccess';
-import CtmModalChatCreate from './CtmModalChatCreate';
-import CtmModalChangeRoleWarning from './CtmModalChangeRoleWarning';
-import CtmModalChangeRoleReason from './CtmModalChangeRoleReason';
-import CtmModalChooseNecessarySkills from './CtmModalChooseNecessarySkills';
-import CtmModalSmsVerification from './CtmModalSmsVerification';
-import CtmModalReviewDetails from './CtmModalReviewDetails';
-import CtmModalPayment from './CtmModalPayment';
-import CtmModalDisable2FA from './CtmModalDisable2FA';
-import CtmModalQuestFilterFull from './CtmModalQuestFilterFull';
-import CtmModalShowImage from './CtmModalShowImage';
-import CtmModalGiveDeposit from './CtmModalGiveDeposit';
-import CtmModalAddingCard from './CtmModalAddingCard';
-import CtmModalDepositOptions from './CtmModalDepositOptions';
-import CtmModalCardAdded from './CtmModalCardAdded';
-import CtmModalTakeWithdraw from './CtmModalTakeWithdraw';
-import CtmModalWithdrawInfo from './CtmModalWithdrawInfo';
-import CtmModalWithdrawOptions from './CtmModalWithdrawOptions';
-import CtmModalGiveTransfer from './CtmModalGiveTransfer';
-import CtmModalPaymentOptions from './CtmModalPaymentOptions';
-import CtmModalAreYouSureDelete from './CtmModalAreYouSureDelete';
-import CtmModalSwap from './CtmModalSwap';
-import CtmModalSwapInfo from './CtmModalSwapInfo';
-import CtmModalAreYouSureNotification from './CtmModalAreYouSureNotification';
-import CtmModalClaim from './CtmModalClaim';
-import CtmModalPriceSearch from './CtmModalPrice';
-import CtmModalEditCase from './CtmModalEditCase';
-import CtmModalDeleteCase from './CtmModalDeleteCase';
-import CtmModalClaimRewards from './CtmModalClaimRewards';
-import CtmModalSwapTokens from './CtmModalSwapTokens';
-import CtmModalGallery from './CtmModalGallery';
-import CtmModalAreYouSure from './CtmModalAreYouSure';
-import CtmModalGetWUSD from './CtmModalGetWUSD';
-import CtmModalBuyAuction from './CtmModalBuyAuction';
-import CtmModalNeededToEnable2FA from './CtmModalNeededToEnable2FA';
-import CtmModalReferralClaim from './CtmModalReferralClaim';
-import CtmModalValueSend from '~/components/CtmModal/CtmModalValueSend';
 
 export default {
   name: 'ModalBox',
   components: {
-    CtmModalCollateralTransaction,
-    CtmModalNeededToEnable2FA,
-    CtmModalGetWUSD,
-    CtmModalBuyAuction,
-    CtmModalStake,
-    CtmModalTransactionReceipt,
-    CtmModalQuestFilterFull,
-    CtmModalConfirmEmail,
-    CtmModalRestore,
-    CtmModalChangePassword,
-    CtmModalPrivacy,
-    CtmModalSkills,
-    CtmModalMessageSend,
-    CtmModalSendARequest,
-    CtmModalRequestSend,
-    CtmModalQuestAgreed,
-    CtmModalTransactionSend,
-    CtmModalCardHasBeenAdded,
-    CtmModalDeposit,
-    CtmModalAddCard,
-    CtmModalWithdraw,
-    CtmModalReviewEmployer,
-    CtmModalThanksSend,
-    CtmModalInvitation,
-    CtmModalInviteSend,
-    CtmModalQuestCreated,
-    CtmModalRaiseViews,
-    CtmModalApplyForAPension,
-    CtmModalMakeDeposit,
-    CtmModalChangePercent,
-    CtmModalOpenADeposit,
-    CtmModalStatus,
-    CtmModalAddLiquidity,
-    CtmModalRemoveLiquidity,
-    CtmModalCreditingDeposit,
-    CtmModalConfirmDetails,
-    CtmModalInsureCase,
-    CtmModalWithdrawAbout,
-    CtmModalAddCase,
-    CtmModalOpenADispute,
-    CtmModalNotice,
-    CtmModalNoticeChat,
-    CtmModalTransfer,
-    CtmModalChangePassInSettings,
-    CtmModalTwoFAAuth,
-    CtmModalCreditingLoan,
-    CtmModalConfirmLoanDetails,
-    CtmModalSignWorkQuest,
-    CtmModalSecurityCheck,
-    CtmModalSharing,
-    CtmModalCopiedSuccess,
-    CtmModalChangeRoleWarning,
-    CtmModalChangeRoleReason,
-    CtmModalChooseNecessarySkills,
-    CtmModalSmsVerification,
-    CtmModalReviewDetails,
-    CtmModalChatCreate,
-    CtmModalPayment,
-    CtmModalDisable2FA,
-    CtmModalShowImage,
-    CtmModalGiveDeposit,
-    CtmModalAddingCard,
-    CtmModalDepositOptions,
-    CtmModalCardAdded,
-    CtmModalTakeWithdraw,
-    CtmModalWithdrawInfo,
-    CtmModalWithdrawOptions,
-    CtmModalGiveTransfer,
-    CtmModalPaymentOptions,
-    CtmModalAreYouSureDelete,
-    CtmModalSwap,
-    CtmModalSwapInfo,
-    CtmModalAreYouSureNotification,
-    CtmModalClaim,
-    CtmModalPriceSearch,
-    CtmModalEditCase,
-    CtmModalDeleteCase,
-    CtmModalClaimRewards,
-    CtmModalSwapTokens,
-    CtmModalGallery,
-    CtmModalAreYouSure,
-    CtmModalReferralClaim,
-    CtmModalValueSend,
+    [modals.questAgreed]: () => import('./CtmModalQuestAgreed'),
+    [modals.inviteSend]: () => import('./CtmModalInviteSend'),
+    [modals.cardAdded]: () => import('./CtmModalCardAdded'),
+    [modals.thanks]: () => import('./CtmModalThanksSend'),
+    [modals.transactionSend]: () => import('./CtmModalTransactionSend'),
+    [modals.emailConfirm]: () => import('./CtmModalConfirmEmail'),
+    [modals.neededToEnable2FA]: () => import('./CtmModalNeededToEnable2FA'),
+    [modals.messageSend]: () => import('./CtmModalMessageSend'),
+    [modals.status]: () => import('./CtmModalStatus'),
+    [modals.skills]: () => import('./CtmModalSkills'),
+    [modals.downloadApp]: () => import('./CtmModalDownloadApp'),
+    [modals.collateralTransaction]: () => import('./CtmModalCollateralTransaction'),
+    [modals.getWUSD]: () => import('./CtmModalGetWUSD'),
+    [modals.buyAuction]: () => import('./CtmModalBuyAuction'),
+    [modals.stake]: () => import('./CtmModalStake'),
+    [modals.transactionReceipt]: () => import('./CtmModalTransactionReceipt'),
+    [modals.questFilterFull]: () => import('./CtmModalQuestFilterFull'),
+    [modals.restore]: () => import('./CtmModalRestore'),
+    [modals.privacy]: () => import('./CtmModalPrivacy'),
+    [modals.sendARequest]: () => import('./CtmModalSendARequest'),
+    [modals.deposit]: () => import('./CtmModalDeposit'),
+    [modals.addCard]: () => import('./CtmModalAddCard'),
+    [modals.withdraw]: () => import('./CtmModalWithdraw'),
+    [modals.review]: () => import('./CtmModalReviewEmployer'),
+    [modals.invitation]: () => import('./CtmModalInvitation'),
+    [modals.raiseViews]: () => import('./CtmModalRaiseViews'),
+    [modals.applyForAPension]: () => import('./CtmModalApplyForAPension'),
+    [modals.changePercent]: () => import('./CtmModalChangePercent'),
+    [modals.openADeposit]: () => import('./CtmModalOpenADeposit'),
+    [modals.addLiquidity]: () => import('./CtmModalAddLiquidity'),
+    [modals.removeLiquidity]: () => import('./CtmModalRemoveLiquidity'),
+    [modals.creditingDeposit]: () => import('./CtmModalCreditingDeposit'),
+    [modals.confirmDetails]: () => import('./CtmModalConfirmDetails'),
+    [modals.insureCase]: () => import('./CtmModalInsureCase'),
+    [modals.withdrawAbout]: () => import('./CtmModalWithdrawAbout'),
+    [modals.addCase]: () => import('./CtmModalAddCase'),
+    [modals.openADispute]: () => import('./CtmModalOpenADispute'),
+    [modals.notice]: () => import('./CtmModalNotice'),
+    [modals.noticeChat]: () => import('./CtmModalNoticeChat'),
+    [modals.transfer]: () => import('./CtmModalTransfer'),
+    [modals.changePassInSettings]: () => import('./CtmModalChangePassInSettings'),
+    [modals.twoFAAuth]: () => import('./CtmModalTwoFAAuth'),
+    [modals.creditingLoan]: () => import('./CtmModalCreditingLoan'),
+    [modals.signWorkQuest]: () => import('./CtmModalSignWorkQuest'),
+    [modals.securityCheck]: () => import('./CtmModalSecurityCheck'),
+    [modals.sharingQuest]: () => import('./CtmModalSharing'),
+    [modals.changeRoleWarning]: () => import('./CtmModalChangeRoleWarning'),
+    [modals.changeRoleReason]: () => import('./CtmModalChangeRoleReason'),
+    [modals.chooseNecessarySkills]: () => import('./CtmModalChooseNecessarySkills'),
+    [modals.smsVerification]: () => import('./CtmModalSmsVerification'),
+    [modals.reviewDetails]: () => import('./CtmModalReviewDetails'),
+    [modals.chatCreate]: () => import('./CtmModalChatCreate'),
+    [modals.payment]: () => import('./CtmModalPayment'),
+    [modals.disable2FA]: () => import('./CtmModalDisable2FA'),
+    [modals.showImage]: () => import('./CtmModalShowImage'),
+    [modals.giveDeposit]: () => import('./CtmModalGiveDeposit'),
+    [modals.addingCard]: () => import('./CtmModalAddingCard'),
+    [modals.depositOptions]: () => import('./CtmModalDepositOptions'),
+    [modals.takeWithdraw]: () => import('./CtmModalTakeWithdraw'),
+    [modals.withdrawInfo]: () => import('./CtmModalWithdrawInfo'),
+    [modals.withdrawOptions]: () => import('./CtmModalWithdrawOptions'),
+    [modals.giveTransfer]: () => import('./CtmModalGiveTransfer'),
+    [modals.paymentOptions]: () => import('./CtmModalPaymentOptions'),
+    [modals.areYouSureDelete]: () => import('./CtmModalAreYouSureDelete'),
+    [modals.swap]: () => import('./CtmModalSwap'),
+    [modals.swapInfo]: () => import('./CtmModalSwapInfo'),
+    [modals.areYouSureNotification]: () => import('./CtmModalAreYouSureNotification'),
+    [modals.priceSearch]: () => import('./CtmModalPrice'),
+    [modals.editCase]: () => import('./CtmModalEditCase'),
+    [modals.deleteCase]: () => import('./CtmModalDeleteCase'),
+    [modals.swapTokens]: () => import('./CtmModalSwapTokens'),
+    [modals.gallery]: () => import('./CtmModalGallery'),
+    [modals.areYouSure]: () => import('./CtmModalAreYouSure'),
+    [modals.referralClaim]: () => import('./CtmModalReferralClaim'),
+    [modals.valueSend]: () => import('./CtmModalValueSend'),
+    [modals.claimRewards]: () => import('./CtmModalClaimRewards'),
   },
-  data: () => ({
-    modals,
-  }),
+  data: () => ({ modals }),
   computed: {
     ...mapGetters({
       isShow: 'modals/getIsShow',
@@ -285,12 +104,7 @@ export default {
   },
   methods: {
     backgroundClick() {
-      if (!this.options.isUnclosable) {
-        this.close();
-      }
-    },
-    close() {
-      this.$store.dispatch('modals/hide');
+      if (!this.options.isUnclosable) this.$store.dispatch('modals/hide');
     },
   },
 };

@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="review"
-    :title="$t('modals.titles.reviewOnEmployer')"
+    :title="$tc('modals.titles.reviewOnEmployer')"
   >
     <div class="review__body body">
       <div class="body__rating">
@@ -50,7 +50,7 @@
                 data-selector="CANCEL"
                 class="buttons__action"
                 mode="outline"
-                @click="hide"
+                @click="CloseModal"
               >
                 {{ $t('meta.btns.cancel') }}
               </base-btn>
@@ -85,9 +85,6 @@ export default {
     changeReview(value) {
       this.rating = value;
     },
-    hide() {
-      this.CloseModal();
-    },
     async sendReviewForUser() {
       const { questId, callback, questMode } = this.options;
       await callback({
@@ -96,7 +93,6 @@ export default {
         message: this.textArea,
         mark: this.rating,
       });
-      this.hide();
     },
   },
 };
@@ -122,6 +118,7 @@ export default {
     padding: 15px 30px 15px 30px;
   }
 }
+
 .content {
   &__wrapper {
     margin: 0 0 25px 0;

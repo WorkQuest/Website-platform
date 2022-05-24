@@ -1,4 +1,7 @@
 export default {
+  setFrozenBalance(state, data) {
+    state.frozenBalance = data;
+  },
   setTransactions(state, transactions) {
     state.transactions = transactions;
   },
@@ -14,22 +17,24 @@ export default {
   setIsOnlyConfirm(state, value) {
     state.isOnlyConfirm = value;
   },
+  setCommonTokenData(state, [symbol, decimals]) {
+    state.balance = {
+      ...state.balance,
+      [symbol]: { decimals },
+    };
+  },
   setBalance(state, { symbol, balance, fullBalance }) {
-    state.balance[symbol].balance = balance;
-    state.balance[symbol].fullBalance = fullBalance;
+    state.balance = {
+      ...state.balance,
+      [symbol]: {
+        ...state.balance[symbol],
+        balance,
+        fullBalance,
+      },
+    };
   },
   setSelectedToken(state, token) {
     state.selectedToken = token;
-  },
-  setPensionWallet(state, pensionWallet) {
-    state.pensionWallet = pensionWallet;
-  },
-  setPensionHistory(state, pensionHistory) {
-    state.pensionHistory = pensionHistory.sort((a, b) => b.timestamp - a.timestamp);
-  },
-  setPensionHistoryData(state, { method, txs, count }) {
-    state.pensionHistory[method].txs = txs;
-    state.pensionHistory[method].count = count;
   },
   setStakingPoolData(state, { pool, data }) {
     state.stakingPoolsData[pool] = data;

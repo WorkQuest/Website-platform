@@ -86,7 +86,7 @@
               </template>
               <template #cell(time)="el">
                 <div class="user__value_gray">
-                  {{ el.item.time }}
+                  {{ $moment(el.item.time).locale($i18n.locale).format('Do MMM YY') }}
                 </div>
               </template>
               <template #cell(status)="el">
@@ -446,7 +446,7 @@ export default {
       }
 
       &__small {
-        background-color: #F7F8FA;
+        background-color: $black0;
         display: grid;
         grid-template-rows: repeat(2, 1fr);
         width: 115px;
@@ -543,7 +543,7 @@ export default {
 
     &_last-reward {
       display: grid;
-      background-color: #F7F8FA;
+      background-color: $black0;
       border-radius: 5px;
       height: 50px;
       line-height: 50px;

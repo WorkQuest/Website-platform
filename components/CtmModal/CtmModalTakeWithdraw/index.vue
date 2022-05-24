@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="withdrawal"
-    :title="$t('modals.titles.withdrawal')"
+    :title="$tc('modals.titles.withdrawal')"
   >
     <div class="withdrawal__content content">
       <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
@@ -37,7 +37,7 @@
               :disabled="true"
               data-selector="WALLET-ADDRESS"
               placeholder="Enter address"
-              :name="$t('modals.walletAddressField')"
+              :name="$tc('modals.walletAddressField')"
             />
           </div>
           <div class="content__input input">
@@ -50,7 +50,7 @@
               data-selector="AMOUNT"
               placeholder="Enter amount"
               :rules="`required|decimal|is_not:0${maxValue ? '|max_value:' + maxValue : ''}|decimalPlaces:18`"
-              :name="$t('modals.amountField')"
+              :name="$tc('modals.amountField')"
               @input="replaceDot"
             >
               >
@@ -90,7 +90,7 @@
             mode="outline"
             class="buttons__action"
             data-selector="CANCEL"
-            @click="hide"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -99,7 +99,7 @@
             class="buttons__action"
             :disabled="invalid"
             data-selector="SHOW-WITHDRAW-INFO"
-            @click="handleSubmit(showWithdrawInfo)"
+            @click="handleSubmit(send)"
           >
             {{ $t('meta.btns.confirm') }}
           </base-btn>
@@ -119,11 +119,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { TokenSymbols } from '~/utils/enums';
-import { WQPensionFund } from '~/abi/abi';
-import { error, success } from '~/utils/web3';
 
 export default {
   name: 'ModalTakeWithdrawal',
@@ -148,60 +144,15 @@ export default {
     this.withdrawType = this.options.withdrawType;
   },
   methods: {
+    async send() {
+      const { amount, options: { submit } } = this;
+      await submit(amount);
+    },
     replaceDot() {
       this.amount = this.amount.replace(/,/g, '.');
     },
-    hide() {
-      this.CloseModal();
-    },
     handleMaxValue() {
       this.amount = this.maxValue;
-    },
-    async showWithdrawInfo() {
-      if (this.withdrawType === 'pension') {
-        const { callback } = this.options;
-        this.hide();
-        this.SetLoader(true);
-        const [txFee] = await Promise.all([
-          this.$store.dispatch('wallet/getContractFeeData', {
-            _abi: WQPensionFund,
-            contractAddress: process.env.WORKNET_PENSION_FUND,
-            method: 'withdraw',
-            data: [new BigNumber(this.amount).shiftedBy(18).toString()],
-          }),
-          this.$store.dispatch('wallet/getBalance'),
-        ]);
-        this.SetLoader(false);
-        if (!txFee?.ok || +this.balanceData.WUSD.fullBalance === 0) {
-          await this.$store.dispatch('main/showToast', {
-            text: this.$t('errors.transaction.notEnoughFunds'),
-          });
-          return;
-        }
-        this.ShowModal({
-          key: modals.transactionReceipt,
-          title: this.$t('modals.info.withdrawInfo'),
-          fields: {
-            to: { name: this.$t('meta.toBig'), value: this.walletAddress },
-            amount: { name: this.$t('modals.amount'), value: this.amount, symbol: TokenSymbols.WUSD },
-            fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
-          },
-          submitMethod: async () => {
-            const res = await this.$store.dispatch('wallet/pensionWithdraw', this.amount);
-            if (res.ok) return success();
-            await this.$store.dispatch('main/showToast', {
-              text: this.$t('modals.transactionFail'),
-            });
-            return error();
-          },
-          callback: () => {
-            Promise.all([
-              callback(),
-              this.$store.dispatch('wallet/getBalance'),
-            ]);
-          },
-        });
-      }
     },
     showAddingCard() {
       this.ShowModal({
@@ -223,68 +174,79 @@ export default {
 
 <style lang="scss" scoped>
 
-.withdrawal{
+.withdrawal {
   max-width: 616px !important;
-  padding: 0!important;
-  &__content{
-    padding: 22px 28px 30px 28px!important;
-  }
-}
-.buttons {
-  display: flex;
-  justify-content: space-between;
-  &__action{
-    width: 271px!important;
+  padding: 0 !important;
+
+  &__content {
+    padding: 22px 28px 30px 28px !important;
   }
 }
 
-.input{
-  &__field{
+.buttons {
+  display: flex;
+  justify-content: space-between;
+
+  &__action {
+    width: 271px !important;
+  }
+}
+
+.input {
+  &__field {
     margin-top: 5px;
   }
 }
-.content{
+
+.content {
   &__step {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
   }
-  &__panel{
+
+  &__panel {
     @include text-simple;
     font-weight: 400;
     font-size: 16px;
     color: $black500;
     margin: 0 20px 15px 0;
     cursor: pointer;
+
     &_active {
       color: $black800;
       border-bottom: 2px solid $blue;
       padding: 0 0 12px 0;
     }
   }
-  &__buttons{
+
+  &__buttons {
     margin-top: 2px;
   }
-  &__card{
+
+  &__card {
     margin: 25px auto 40px;
   }
+
   &__text {
-      font-size: 16px;
-      line-height: 130%;
-      color: #D8DFE3;
-      text-align: center;
-      margin-bottom: 25px;
+    font-size: 16px;
+    line-height: 130%;
+    color: #D8DFE3;
+    text-align: center;
+    margin-bottom: 25px;
   }
 }
-.grid{
-  &__title{
+
+.grid {
+  &__title {
     margin: 15px 5px 0 0;
   }
 }
-.max{
-  &__button{
-    margin-right: 10px!important;
-    background-color: transparent!important;
+
+.max {
+  &__button {
+    margin-right: 10px !important;
+    background-color: transparent !important;
   }
 }
 </style>

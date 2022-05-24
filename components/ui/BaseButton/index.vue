@@ -107,6 +107,7 @@ export default {
         { 'base-btn_portfolio-close': mode === 'portfolioClose' },
         { 'base-btn_share-user-info': mode === 'share-btn' },
         { 'base-btn_active-tab': mode === 'activeTab' },
+        { 'base-btn_filter': mode === 'filter' },
         { 'base-btn_padding': this.padding },
       ];
     },
@@ -318,16 +319,16 @@ export default {
   &_outline {
     width: 100%;
     border: 1px solid rgba(0, 131, 199, 0.1);
-    background: #FFFFFF;
+    background: $white;
     color: $blue;
     padding: 0;
     &:hover {
-      background: #F7F8FA;
+      background: $black0;
       color: $blue;
     }
   }
   &_borderless {
-    background: #FFFFFF;
+    background: $white;
     color: $blue;
     &-left {
       @extend .base-btn_borderless;
@@ -370,6 +371,14 @@ export default {
     &:hover {
       background: $blue;
       cursor: unset;
+    }
+  }
+  &_filter {
+    color: $black800 !important;
+    background-color: $white !important;
+    border: 1px solid transparent;
+    &:hover {
+      border: 1px solid $black100;
     }
   }
 }

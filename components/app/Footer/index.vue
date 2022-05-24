@@ -165,7 +165,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { Path } from '~/utils/enums';
-import { URLS, LEGAL_INFO, COMPANY } from '~/utils/footer-constants';
+import { URLS, LEGAL_INFO, COMPANY } from '~/utils/сonstants/footer';
 
 export default {
   name: 'Footer',
@@ -200,15 +200,15 @@ export default {
     DeFiLinks() {
       return {
         firstColumn: [
-          { title: this.$t('footer.DeFi.retirement'), path: Path.PENSION },
+          { title: this.$t('footer.DeFi.retirement'), path: Path.RETIREMENT },
           { title: this.$t('footer.DeFi.referral'), path: Path.REFERRAL },
           { title: this.$t('footer.DeFi.P2P'), path: Path.INSURING },
           { title: this.$t('footer.DeFi.savingsProduct'), path: Path.SAVINGS },
-          { title: this.$t('footer.DeFi.lending'), path: Path.CREDITING },
+          { title: this.$t('footer.DeFi.lending'), path: Path.LENDING },
         ],
         secondColumn: [
           { title: this.$t('meta.liquidityMining'), path: Path.MINING },
-          { title: this.$t('footer.DeFi.wqBridge'), path: Path.CROSSCHAIN },
+          { title: this.$t('footer.DeFi.wqBridge'), path: Path.BRIDGE },
           { title: this.$t('footer.DeFi.staking'), path: Path.STAKING },
           { title: this.$t('footer.DeFi.wqDAO'), path: URLS.DAO },
         ],

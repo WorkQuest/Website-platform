@@ -1,7 +1,8 @@
 <template>
   <ctm-modal-box
     class="dispute"
-    :title="$t('modals.titles.openADispute')"
+    :is-unclosable="true"
+    :title="$tc('modals.titles.openADispute')"
   >
     <div class="dispute__content content">
       <div class="content__subtitle">
@@ -10,8 +11,10 @@
       <base-dd
         v-model="drop"
         type="gray"
-        :items="items"
+        data-type="object"
+        :items="reasons"
         class="content__drop"
+        data-selector="REASON"
         :placeholder="$t('chat.reason')"
       />
       <div class="content__subtitle">
@@ -22,6 +25,7 @@
         :placeholder="$t('modals.description')"
         :error-text="$tc('modals.textLengthExceeded', 1000)"
         :is-hide-error="!isMoreCharacters"
+        data-selector="DESCRIPTION"
         rules="required|text-desc"
       />
       <div class="content__buttons buttons">
@@ -29,7 +33,7 @@
           class="buttons__button"
           :disabled="!drop || isMoreCharacters"
           data-selector="SHOW-REQUEST-SEND"
-          @click="showRequestSendModal"
+          @click="onSubmit"
         >
           {{ $t('meta.btns.send') }}
         </base-btn>
@@ -37,7 +41,7 @@
           mode="outline"
           class="buttons__button"
           data-selector="CANCEL"
-          @click="hide"
+          @click="CloseModal"
         >
           {{ $t('meta.btns.cancel') }}
         </base-btn>
@@ -62,24 +66,14 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
-    items() {
+    reasons() {
       return [
-        this.$t('modals.disputes.thereIsNoResponseFromTheEmployerOrEmployee'),
-        this.$t('modals.disputes.badlyDoneWork'),
-        this.$t('modals.disputes.additionalRequirementsHaveBeenPutForward'),
-        this.$t('modals.disputes.inconsistenciesInTheRequirementsForTheDescriptionOfTheQuest'),
-        this.$t('modals.disputes.theQuestIsCompletedButTheEmployeeOrEmployerHasNotConfirmedItsCompletion'),
-        this.$t('modals.disputes.anotherReason'),
-      ];
-    },
-    itemsForPayload() {
-      return [
-        'noAnswer',
-        'poorlyDoneJob',
-        'additionalRequirement',
-        'requirementDoesNotMatch',
-        'noConfirmationOfComplete',
-        'anotherReason',
+        { title: this.$t('modals.disputes.NoAnswer'), key: 'NoAnswer' },
+        { title: this.$t('modals.disputes.PoorlyDoneJob'), key: 'PoorlyDoneJob' },
+        { title: this.$t('modals.disputes.AdditionalRequirement'), key: 'AdditionalRequirement' },
+        { title: this.$t('modals.disputes.RequirementDoesNotMatch'), key: 'RequirementDoesNotMatch' },
+        { title: this.$t('modals.disputes.NoConfirmationOfComplete'), key: 'NoConfirmationOfComplete' },
+        { title: this.$t('modals.disputes.AnotherReason'), key: 'AnotherReason' },
       ];
     },
     isMoreCharacters() {
@@ -87,27 +81,22 @@ export default {
     },
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
-    async showRequestSendModal() {
-      const payload = {
-        questId: this.options.questId,
-        reason: this.itemsForPayload[this.drop],
-        problemDescription: this.description,
-      };
-      const response = await this.$store.dispatch('disputes/createDispute', payload);
-      this.hide();
-      if (response.ok) {
-        await this.$router.push(`/disputes/${response.result.id}`);
-      } else {
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/warning.svg'),
-          title: this.$t('modals.errors.error'),
-          subtitle: this.$t('errors.incorrectPass'),
+    async onSubmit() {
+      const {
+        callback,
+        submitMethod,
+      } = this.options;
+      this.SetLoader(true);
+      if (submitMethod) {
+        const res = await submitMethod({
+          reason: this.reasons[this.drop].key,
+          problemDescription: this.description,
         });
+        if (res?.ok) {
+          if (callback) await callback();
+        }
       }
+      this.SetLoader(false);
     },
   },
 };

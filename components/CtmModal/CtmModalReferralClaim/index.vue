@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="info"
-    :title="$t('modals.claim')"
+    :title="$tc('modals.claim')"
   >
     <div class="info__content content">
       <div
@@ -36,7 +36,7 @@
             class="buttons__button"
             mode="outline"
             selector="CANCEL"
-            @click="hide"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -55,6 +55,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { TokenSymbols } from '~/utils/enums';
 
 export default {
   name: 'ReferralClaim',
@@ -64,10 +65,13 @@ export default {
       userAddress: 'user/getUserWalletAddress',
     }),
   },
+  beforeMount() {
+    this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+  },
   methods: {
-    hide() { this.CloseModal(); },
     async handleSubmit() {
-      this.hide();
+      this.CloseModal();
+      await this.$store.dispatch('oracle/setCurrentPriceToken', { symbol: TokenSymbols.WQT });
       await this.$store.dispatch('referral/claimReferralReward', this.userAddress);
     },
   },

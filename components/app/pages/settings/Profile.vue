@@ -82,7 +82,7 @@
                     :key="i"
                     :data-selector="`ADDRESS-SELECTOR-ADDRESS-${i}`"
                     class="selector__item"
-                    @click="selectAddress(item, i)"
+                    @click="selectAddress(item)"
                   >
                     {{ item.formatted }}
                   </div>
@@ -507,32 +507,19 @@ export default {
     },
 
     // GEOPOSITION METHODS
-    selectAddress(address, i) {
-      this.selectedAddressIndex = i;
+    selectAddress(address) {
       this.profile.locationFull.locationPlaceName = address.formatted;
       this.addresses = [];
-      this.$emit('updateCoordinates', this.coordinates);
+      this.$emit('updateFullAddress', address);
     },
-    async getAddressInfo(address) {
+    async getAddressInfo(keyword) {
       try {
-        if (address.length) {
-          this.addresses = await this.geoCode.geolookup(address);
-          if (this.selectedAddressIndex) {
-            this.coordinates = {
-              lng: this.addresses[this.selectedAddressIndex].lng,
-              lat: this.addresses[this.selectedAddressIndex].lat,
-              address: this.addresses[this.selectedAddressIndex].formatted,
-            };
-          } else {
-            this.coordinates = { lng: this.addresses[0].lng, lat: this.addresses[0].lat, address: this.addresses[0].formatted };
-          }
+        if (keyword.length) {
+          this.addresses = await this.geoCode.geolookup(keyword);
         } else this.addresses = [];
       } catch (e) {
         this.addresses = [];
         console.error('Geo look up is failed', e);
-        await this.$store.dispatch('main/showToast', {
-          text: 'Address is not correct',
-        });
       }
     },
     hideSearchDD() {
@@ -660,7 +647,7 @@ export default {
     }
   }
   &__error {
-    color: #bb5151;
+    color: $errorText;
     font-size: 12px;
     min-height: 23px;
   }
@@ -678,7 +665,7 @@ export default {
     justify-content: flex-end;
     align-items: flex-end;
     span {
-      color: #bb5151;
+      color: $errorText;
       font-size: 14px;
       min-height: 23px;
       width: 250px;
@@ -689,12 +676,29 @@ export default {
     max-width: 250px;
   }
   .selector {
+    @include box;
+    width: 100%;
+    z-index: 140;
     &__items {
-      padding: 10px;
-      background-color: $black0;
-      border-radius: 5px;
-      border: 1px solid $blue;
+      background: #FFFFFF;
+      display: grid;
+      grid-template-columns: 1fr;
+      width: 100%;
+    }
+
+    &__item {
+      @include text-simple;
+      padding: 15px 20px;
+      background: #FFFFFF;
+      font-weight: 500;
+      font-size: 16px;
+      color: $black800;
       cursor: pointer;
+      transition: .3s;
+
+      &:hover {
+        background: $black0;
+      }
     }
   }
 }

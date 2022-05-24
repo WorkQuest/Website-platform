@@ -1,407 +1,246 @@
 <template>
   <div
-    class="main"
+    class="main main-white"
     data-selector="PAGE-CREATE-QUEST"
-    :class="{'main-white': step === 1}"
   >
-    <div class="main__body page">
-      <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
+    <validation-observer
+      v-slot="{handleSubmit, validated, invalid}"
+      class="main__body page"
+    >
+      <h2 class="page__title">
+        {{ $t('meta.createAQuest') }}
+      </h2>
+      <div class="page__category">
+        <div class="page runtime">
+          <div class="runtime__container">
+            <div class="runtime page__dd">
+              <base-dd
+                v-model="runtimeIndex"
+                :items="runtime"
+                type="gray"
+                :label="$tc('quests.runtime')"
+                :name="$t('quests.runtime')"
+                data-selector="RUNTIME"
+                rules="required"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="page__input">
+          <base-field
+            v-model="price"
+            type="number"
+            data-selector="PRICE-FIELD"
+            :label="$tc('meta.price')"
+            placeholder="0 WUSD"
+            rules="required|decimal|decimalPlaces:16|min_value:1"
+            :name="$tc('meta.price')"
+          />
+        </div>
+        <div class="page__dd">
+          <base-dd
+            v-model="employmentIndex"
+            :label="$tc('quests.employment.employment')"
+            type="gray"
+            :items="employment"
+            rules="required"
+            :name="$t('quests.employment.employment')"
+            data-selector="EMPLOYMENT"
+          />
+        </div>
+        <div class="page__dd">
+          <base-dd
+            v-model="workplaceIndex"
+            :label="$tc('quests.distantWork.distantWork')"
+            type="gray"
+            :items="distantWork"
+            rules="required"
+            :name="$t('quests.distantWork.distantWork')"
+            data-selector="DISTANT"
+          />
+        </div>
+        <div class="page__dd">
+          <base-dd
+            v-model="payPeriodsIndex"
+            :label="$tc('quests.payPeriods.title')"
+            type="gray"
+            :items="payPeriods"
+            rules="required"
+            :name="$t('quests.payPeriods.title')"
+            data-selector="DISTANT"
+          />
+        </div>
+      </div>
+      <specializations-selector
+        :skills="selectedSpecAndSkills"
+        :is-clear-data="isClearData"
+        @changeSkills="updateSelectedSkills"
+      />
+      <div
+        v-if="validated && !selectedSpecAndSkills.length || !invalid && !selectedSpecAndSkills.length"
+        class="page__error"
       >
-        <div
-          v-if="step === 1"
-          data-selector="PAGE-CREATE-QUEST-STEP-1"
-          class="page"
+        {{ $t('errors.selectSpec') }}
+      </div>
+      <div class="page__address">
+        <base-field
+          v-model="address"
+          :label="$tc('quests.address')"
+          :placeholder="$t('quests.address')"
+          data-selector="ADDRESS-FIELD"
+          mode="icon"
+          :selector="true"
+          rules="required"
+          :name="$tc('quests.address')"
+          @selector="getAddressInfo(address)"
         >
-          <h2 class="page__title">
-            {{ $t('meta.createAQuest') }}
-          </h2>
-          <div class="page__category">
-            <div class="page runtime">
-              <div class="runtime__container">
-                <div class="runtime page__dd">
-                  <base-dd
-                    v-model="runtimeIndex"
-                    :items="runtime"
-                    type="gray"
-                    :label="$t('quests.runtime')"
-                    :name="$t('quests.runtime')"
-                    data-selector="RUNTIME"
-                    rules="required"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="page__input">
-              <base-field
-                v-model="price"
-                type="number"
-                data-selector="PRICE-FIELD"
-                :label="$t('meta.price')"
-                :placeholder="+0 + currency"
-                rules="required|decimal"
-                :name="$t('meta.price')"
-              />
-            </div>
-            <div class="page__dd">
-              <base-dd
-                v-model="employmentIndex"
-                :label="$t('quests.employment.employment')"
-                type="gray"
-                :items="employment"
-                rules="required"
-                :name="$t('quests.employment.employment')"
-                data-selector="EMPLOYMENT"
-              />
-            </div>
-            <div class="page__dd">
-              <base-dd
-                v-model="workplaceIndex"
-                :label="$t('quests.distantWork.distantWork')"
-                type="gray"
-                :items="distantWork"
-                rules="required"
-                :name="$t('quests.distantWork.distantWork')"
-                data-selector="DISTANT"
-              />
-            </div>
-          </div>
-          <specializations-selector @changeSkills="updateSelectedSkills" />
-          <div class="page__address">
-            <base-field
-              v-model="address"
-              :label="$t('quests.address')"
-              :placeholder="$t('quests.address')"
-              data-selector="ADDRESS-FIELD"
-              mode="icon"
-              :selector="true"
-              rules="required"
-              :name="$t('quests.address')"
-              @selector="getAddressInfo(address)"
+          <template v-slot:left>
+            <span class="icon-map" />
+          </template>
+          <template v-slot:selector>
+            <div
+              v-if="addresses.length"
+              data-selector="ADDRESS-SELECTOR"
+              class="selector"
             >
-              <template v-slot:left>
-                <span class="icon-map" />
-              </template>
-              <template v-slot:selector>
+              <div class="selector__items">
                 <div
-                  v-if="addresses.length"
-                  data-selector="ADDRESS-SELECTOR"
-                  class="selector"
-                >
-                  <div class="selector__items">
-                    <div
-                      v-for="(item, i) in addresses"
-                      :key="i"
-                      class="selector__item"
-                      :data-selector="`ACTION-BTN-SELECT-ADDRESS-${item.id}`"
-                      @click="selectAddress(item)"
-                    >
-                      {{ item.formatted }}
-                    </div>
-                  </div>
-                </div>
-              </template>
-            </base-field>
-          </div>
-          <div class="page__input">
-            <base-field
-              v-model="questTitle"
-              data-selector="QUEST-TITLE-FIELD"
-              rules="required"
-              :name="$t('quests.questTitle')"
-              :placeholder="$t('quests.questTitle')"
-            />
-          </div>
-          <div class="page__input">
-            <textarea
-              id="textarea"
-              v-model="textarea"
-              rules="required"
-              data-selector="QUEST-DESC-TEXTAREA"
-              class="page__textarea"
-              :placeholder="$t('quests.questDesc')"
-            />
-          </div>
-          <div class="page upload__container">
-            <div class="upload__title">
-              {{ $t('quests.uploadMaterials') }}
-            </div>
-            <files-uploader
-              :multiple="true"
-              :limit="10"
-              :limit-bytes="10485760"
-              :limit-bytes-video="10485760"
-              :accept="'image/png, image/jpg, image/jpeg, video/mp4'"
-              @change="updateFiles"
-            />
-          </div>
-          <div class="upload btn btn__container btn__container_right">
-            <div class="btn__create">
-              <base-btn
-                data-selector="CREATE-A-QUEST"
-                :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
-                @click="handleSubmit(toRiseViews)"
-              >
-                {{ $t('meta.createAQuest') }}
-              </base-btn>
-            </div>
-          </div>
-        </div>
-        <div
-          v-if="step === 2"
-          data-selector="PAGE-CREATE-QUEST-STEP-2"
-          class="page"
-        >
-          <div class="page btn-container btn-container__left">
-            <div class="btn-container__btn_back">
-              <base-btn
-                mode="back"
-                data-selector="PREVIOUS-STEP"
-                @click="goBack"
-              >
-                {{ $t('meta.btns.back') }}
-                <template v-slot:left>
-                  <span class="icon-chevron_big_left" />
-                </template>
-              </base-btn>
-            </div>
-          </div>
-          <div class="page page__raising">
-            {{ $t('raising-views.raisingViews') }}
-          </div>
-          <div class="page period">
-            <h3 class="period__choose">
-              {{ $t('raising-views.choosePeriod') }}
-            </h3>
-            <div class="period__container">
-              <div
-                v-for="(item, i) in periodTabs"
-                :key="i"
-                :data-selector="`ACTION-BTN-SWITCH-PERIOD-${i}`"
-                class="period__period"
-                :class="{'period__period_active': period === item.number}"
-                @click="switchPeriod(item, i)"
-              >
-                <h2
-                  class="period__title"
-                  :class="{'period__title_active': period === item.number}"
-                >
-                  {{ item.title }}
-                </h2>
-              </div>
-            </div>
-
-            <div class="period level">
-              <div class="level__title">
-                {{ $t('raising-views.chooseLevel') }}
-              </div>
-              <div
-                v-if="period"
-                class="level__container"
-              >
-                <div
-                  v-for="(item, i) in periods(period)"
+                  v-for="(item, i) in addresses"
                   :key="i"
-                  :data-selector="`ACTION-BTN-SWITCH-PERIOD-LEVEL-${i}`"
-                  class="level__card"
-                  @click="selectRadio(i)"
+                  class="selector__item"
+                  :data-selector="`ACTION-BTN-SELECT-ADDRESS-${item.id}`"
+                  @click="selectAddress(item)"
                 >
-                  <div class="level__option">
-                    <input
-                      :ref="`radio${i}`"
-                      name="higherLevel"
-                      type="radio"
-                      class="radio__input"
-                      :value="item.cost"
-                      @input="selectRadio(i)"
-                    >
-                  </div>
-                  <div class="level card">
-                    <div
-                      class="card__level"
-                      :class="cardStatus(item)"
-                    >
-                      {{ item.level }}
-                    </div>
-                    <div class="card__desc">
-                      {{ item.desc }}
-                    </div>
-                  </div>
-                  <div class="cost__container">
-                    <div class="card__cost">
-                      {{ item.cost }}$
-                    </div>
-                  </div>
+                  {{ item.formatted }}
                 </div>
               </div>
             </div>
-            <div class="btn-container">
-              <div class="btn-container__btn">
-                <base-btn
-                  mode="outline"
-                  data-selector="ACTION-BTN-SKIP-AND-END"
-                  @click="createQuest"
-                >
-                  {{ $t('meta.skipAndEnd') }}
-                </base-btn>
-              </div>
-              <div class="btn-container__btn">
-                <base-btn
-                  :disabled="ads.currentAdPrice === ''"
-                  data-selector="ACTION-BTN-PAY"
-                  @click="showPaymentModal"
-                >
-                  {{ $t('meta.pay') }}
-                </base-btn>
-              </div>
-            </div>
-          </div>
+          </template>
+        </base-field>
+      </div>
+      <div class="page__input">
+        <base-field
+          v-model="questTitle"
+          data-selector="QUEST-TITLE-FIELD"
+          rules="required"
+          :name="$tc('quests.questTitle')"
+          :placeholder="$t('quests.questTitle')"
+        />
+      </div>
+      <div class="page__input">
+        <validation-provider rules="required">
+          <base-textarea
+            id="textarea"
+            v-model="textarea"
+            rules="required"
+            data-selector="QUEST-DESC-TEXTAREA"
+            class="page__textarea"
+            :placeholder="$t('quests.questDesc')"
+          />
+        </validation-provider>
+      </div>
+      <validation-provider
+        v-slot="{ errors }"
+        :rules="{ required: { allowFalse: false } }"
+        class="page__edit-check"
+        tag="div"
+        name=" "
+      >
+        <div class="edit-check">
+          <input
+            id="understand"
+            v-model="isCheckedEditAfter"
+            class="edit-check__box"
+            data-selector="I_UNDERSTAND"
+            type="checkbox"
+          >
+          <label
+            class="edit-check__text"
+            for="understand"
+          >
+            {{ $t('quests.impossibleEditAfterCreation') }}
+          </label>
         </div>
-      </validation-observer>
-    </div>
+        <div class="page__error">
+          {{ errors[0] }}
+        </div>
+      </validation-provider>
+      <div class="page upload__container">
+        <div class="upload__title">
+          {{ $t('quests.uploadMaterials') }}
+        </div>
+        <files-uploader
+          :multiple="true"
+          :limit="10"
+          :limit-bytes="10485760"
+          :limit-bytes-video="10485760"
+          accept="image/png, image/jpg, image/jpeg, video/mp4"
+          :preloaded-files="files"
+          :is-clear-data="isClearData"
+          @change="updateFiles"
+        />
+      </div>
+      <div class="upload btn btn__container btn__container_right">
+        <div class="btn__create">
+          <base-btn
+            selector="CREATE-A-QUEST"
+            @click="handleSubmit(toCreateQuest(invalid))"
+          >
+            {{ $t('meta.createAQuest') }}
+          </base-btn>
+        </div>
+      </div>
+    </validation-observer>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { PriorityFilter, WorkplaceIndex, TypeOfJobFilter } from '~/utils/enums';
+import {
+  PriorityFilter, TokenMap, TokenSymbols, TypeOfEmployments, PayPeriodsIndex, WorkplaceIndex,
+} from '~/utils/enums';
+import { LocalNotificationAction } from '~/utils/notifications';
+import { CommissionForCreatingAQuest } from '~/utils/сonstants/quests';
+import { ERC20 } from '~/abi';
 
 const { GeoCode } = require('geo-coder');
 
 export default {
   name: 'CreateQuest',
-  middleware: ['employer-role'],
+  middleware: 'employer-role',
   data() {
     return {
-      ads: {
-        currentAdPrice: '',
-      },
       period: 1,
       selectedSpecAndSkills: [],
       employmentIndex: 0,
       workplaceIndex: 0,
+      payPeriodsIndex: 0,
       runtimeIndex: 0,
-      periodIndex: 0,
       questTitle: '',
       address: '',
       textarea: '',
       price: '',
-      priceOfClick: '',
-      city: '',
       coordinates: {},
-      currency: ' WUSD',
       addresses: [],
       files: [],
       geoCode: null,
+      isClearData: false,
+      isNotChooseSpec: false,
+      isCheckedEditAfter: false,
     };
   },
   computed: {
     ...mapGetters({
+      isWalletConnected: 'wallet/getIsWalletConnected',
+      balanceData: 'wallet/getBalanceData',
       userData: 'user/getUserData',
+      userWalletAddress: 'user/getUserWalletAddress',
+
       step: 'quests/getCurrentStepCreateQuest',
       filters: 'quests/getFilters',
     }),
-    days() {
-      return [
-        {
-          level: this.$t('quests.levels.1.title'),
-          code: 1,
-          desc: this.$t('quests.levels.1.desc'),
-          cost: '10',
-        },
-        {
-          level: this.$t('quests.levels.2.title'),
-          code: 2,
-          desc: this.$t('quests.levels.2.desc'),
-          cost: '10',
-        },
-        {
-          level: this.$t('quests.levels.3.title'),
-          code: 3,
-          desc: this.$t('quests.levels.3.desc'),
-          cost: '10',
-        },
-        {
-          level: this.$t('quests.levels.4.title'),
-          code: 4,
-          desc: this.$t('quests.levels.4.desc'),
-          cost: '10',
-        },
-      ];
-    },
-    weeks() {
-      return [
-        {
-          level: this.$t('quests.levels.1.title'),
-          code: 1,
-          desc: this.$t('quests.levels.1.desc'),
-          cost: '40',
-        },
-        {
-          level: this.$t('quests.levels.2.title'),
-          code: 2,
-          desc: this.$t('quests.levels.2.desc'),
-          cost: '10',
-        },
-        {
-          level: this.$t('quests.levels.3.title'),
-          code: 3,
-          desc: this.$t('quests.levels.3.desc'),
-          cost: '40',
-        },
-        {
-          level: this.$t('quests.levels.4.title'),
-          code: 4,
-          desc: this.$t('quests.levels.4.desc'),
-          cost: '40',
-        },
-      ];
-    },
-    months() {
-      return [
-        {
-          level: this.$t('quests.levels.1.title'),
-          code: 1,
-          desc: this.$t('quests.levels.1.desc'),
-          cost: '70',
-        },
-        {
-          level: this.$t('quests.levels.2.title'),
-          code: 2,
-          desc: this.$t('quests.levels.2.desc'),
-          cost: '10',
-        },
-        {
-          level: this.$t('quests.levels.3.title'),
-          code: 3,
-          desc: this.$t('quests.levels.3.desc'),
-          cost: '70',
-        },
-        {
-          level: this.$t('quests.levels.4.title'),
-          code: 4,
-          desc: this.$t('quests.levels.4.desc'),
-          cost: '70',
-        },
-      ];
-    },
-    periodTabs() {
-      return [
-        {
-          number: 1,
-          title: this.$t('raising-views.forOneDay'),
-        },
-        {
-          number: 2,
-          title: this.$t('raising-views.forOneWeek'),
-        },
-        {
-          number: 3,
-          title: this.$t('raising-views.forOneMonth'),
-        },
-      ];
-    },
     runtime() {
       return [
         this.$t('meta.priority.urgent'),
@@ -410,11 +249,7 @@ export default {
       ];
     },
     employment() {
-      return [
-        this.$t('quests.employment.fullTime'),
-        this.$t('quests.employment.partTime'),
-        this.$t('quests.employment.fixedTerm'),
-      ];
+      return TypeOfEmployments.map((item) => this.$t(`quests.employment.${item}`));
     },
     distantWork() {
       return [
@@ -423,8 +258,31 @@ export default {
         this.$t('quests.distantWork.bothVariant'),
       ];
     },
+    payPeriods() {
+      return PayPeriodsIndex.map((item) => this.$t(`quests.payPeriods.${item}`));
+    },
+    depositAmount() {
+      if (!this.price) return '0';
+      return new BigNumber(this.price).multipliedBy(1 + CommissionForCreatingAQuest).toString();
+    },
+  },
+  async beforeCreate() {
+    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+  },
+  async beforeMount() {
+    const questDraft = this.$cookies.get('questDraft');
+    await this.fillQuestFromQuestDraft(questDraft);
+    if (questDraft) {
+      this.ShowModal({
+        key: modals.areYouSure,
+        text: this.$t('modals.draft.youHaveAQuestDraft'),
+        okBtnTitle: this.$t('meta.btns.delete'),
+        okBtnFunc: this.clearData,
+      });
+    }
   },
   async mounted() {
+    if (!this.isWalletConnected) return;
     this.SetLoader(true);
     this.geoCode = new GeoCode('google', {
       key: process.env.GMAPKEY,
@@ -432,12 +290,83 @@ export default {
     });
     this.SetLoader(false);
   },
+  async beforeDestroy() {
+    await this.setQuestDraft();
+  },
   methods: {
+    async clearData() {
+      this.$cookies.remove('questDraft');
+      this.isClearData = true;
+      this.selectedSpecAndSkills = [];
+      this.questTitle = '';
+      this.textarea = '';
+      this.price = '';
+      this.employmentIndex = 0;
+      this.workplaceIndex = 0;
+      this.payPeriodsIndex = 0;
+      this.runtimeIndex = 0;
+      this.address = '';
+      this.coordinates = { lng: 0, lat: 0 };
+    },
+    async setQuestDraft() {
+      this.SetLoader(true);
+      const {
+        workplaceIndex, payPeriodsIndex, runtimeIndex, employmentIndex, questTitle,
+        textarea, price, selectedSpecAndSkills, address, coordinates: { lng, lat }, clearData,
+      } = this;
+      if (!questTitle && !textarea && !price && !address) await clearData();
+      else {
+        this.$cookies.set('questDraft', {
+          workplace: WorkplaceIndex[workplaceIndex],
+          payPeriod: PayPeriodsIndex[payPeriodsIndex],
+          priority: PriorityFilter[runtimeIndex + 1].value,
+          typeOfEmployment: TypeOfEmployments[employmentIndex],
+          title: questTitle,
+          description: textarea,
+          price,
+          specializationKeys: selectedSpecAndSkills,
+          locationFull: {
+            location: {
+              longitude: lng,
+              latitude: lat,
+            },
+            locationPlaceName: address,
+          },
+        });
+        await this.$store.dispatch('notifications/createLocalNotification', {
+          action: LocalNotificationAction.QUEST_DRAFT,
+          message: this.$t('localNotifications.messages.questDraft'),
+          actionBtn: this.$t('localNotifications.btns.questDraft'),
+        });
+      }
+      this.SetLoader(false);
+    },
+    async fillQuestFromQuestDraft(questDraft) {
+      this.SetLoader(true);
+      if (questDraft) {
+        this.selectedSpecAndSkills = questDraft?.specializationKeys || [];
+        this.questTitle = questDraft?.title || '';
+        this.textarea = questDraft?.description || '';
+        this.price = questDraft?.price || '';
+        this.employmentIndex = TypeOfEmployments.indexOf(questDraft?.typeOfEmployment) || 0;
+        this.workplaceIndex = WorkplaceIndex.indexOf(questDraft?.workplace) || 0;
+        this.payPeriodsIndex = PayPeriodsIndex.indexOf(questDraft?.payPeriod) || 0;
+        this.runtimeIndex = PriorityFilter[questDraft?.priority + 1]?.value || 0;
+        this.address = questDraft?.locationFull.locationPlaceName ?? '';
+        this.coordinates = {
+          lng: questDraft?.locationFull.location.longitude,
+          lat: questDraft?.locationFull.location.latitude,
+        };
+      }
+    },
     updateFiles(files) {
       this.files = files;
     },
     updateSelectedSkills(specAndSkills) {
       this.selectedSpecAndSkills = specAndSkills;
+      if (this.selectedSpecAndSkills.length > 0) {
+        this.isNotChooseSpec = false;
+      }
     },
     cardStatus(item) {
       if (item.code === 1) return 'level__card_gold';
@@ -451,40 +380,6 @@ export default {
       if (period === 3) return this.months;
       return '';
     },
-    selectRadio(idx) {
-      const radio = this.$refs[`radio${idx}`];
-      for (let i = 0; i < Object.keys(this.$refs[`radio${i}`]).length; i += 1) {
-        if (radio[i].checked) {
-          radio[i].checked = false;
-          this.ads.currentAdPrice = '';
-        } else if (!radio[i].checked) {
-          radio[i].checked = true;
-          this.ads.currentAdPrice = radio[i].value;
-        }
-      }
-    },
-    switchPeriod(item) {
-      for (let idx = 0; idx < Object.keys(this.$refs).length - 1; idx += 1) {
-        const radio = this.$refs[`radio${idx}`];
-        for (let i = 0; i < Object.keys(radio).length; i += 1) {
-          radio[0].checked = false;
-        }
-        this.period = item.number;
-        this.ads.currentAdPrice = '';
-      }
-    },
-    toRiseViews() {
-      this.$store.dispatch('quests/getCurrentStepCreateQuest', 2);
-    },
-    showPaymentModal() {
-      this.ShowModal({
-        key: modals.paymentOptions,
-        step: 1,
-      });
-    },
-    goBack() {
-      this.$store.dispatch('quests/getCurrentStepCreateQuest', 1);
-    },
     selectAddress(address) {
       this.addresses = [];
       this.address = address.formatted;
@@ -493,33 +388,122 @@ export default {
       try {
         if (address.length) {
           this.addresses = await this.geoCode.geolookup(address);
-          this.coordinates = {
-            lng: this.addresses[0].lng,
-            lat: this.addresses[0].lat,
-          };
+          this.coordinates = { lng: this.addresses[0].lng, lat: this.addresses[0].lat };
         } else this.addresses = [];
       } catch (e) {
         this.addresses = [];
         console.error('Geo look up is failed', e);
-        await this.$store.dispatch('main/showToast', {
-          text: 'Address is not correct',
+      }
+    },
+    async toCreateQuest(invalid) {
+      this.SetLoader(true);
+      if (!this.isCheckedEditAfter || !this.selectedSpecAndSkills.length || invalid) {
+        this.isNotChooseSpec = true;
+        this.ScrollToTop();
+        this.SetLoader(false);
+        return;
+      }
+
+      const tokenAddress = TokenMap[TokenSymbols.WUSD];
+      const spenderAddress = process.env.WORKNET_WQ_FACTORY;
+      const [allowance] = await Promise.all([
+        this.$store.dispatch('wallet/getAllowance', {
+          tokenAddress,
+          spenderAddress,
+        }),
+        this.$store.dispatch('wallet/fetchWalletData', {
+          method: 'balanceOf',
+          address: this.userWalletAddress,
+          abi: ERC20,
+          token: tokenAddress,
+          symbol: TokenSymbols.WUSD,
+        }),
+        this.$store.dispatch('wallet/getBalance'),
+      ]);
+      // Not enough WUSD
+      if (new BigNumber(this.depositAmount).isGreaterThan(this.balanceData.WUSD.fullBalance)) {
+        this.ShowToast(`${this.$t('errors.transaction.notEnoughFunds')} (${TokenSymbols.WUSD})`);
+        this.SetLoader(false);
+        return;
+      }
+      if (new BigNumber(allowance).isLessThan(this.depositAmount)) {
+        const approveFee = await this.$store.dispatch('wallet/getContractFeeData', {
+          method: 'approve',
+          abi: ERC20,
+          contractAddress: tokenAddress,
+          data: [tokenAddress, new BigNumber(this.depositAmount).shiftedBy(18).toString()],
         });
+        if (!approveFee.ok) {
+          this.ShowToast(approveFee.msg);
+          this.SetLoader(false);
+          return;
+        }
+        this.SetLoader(false);
+        this.ShowModal({
+          key: modals.transactionReceipt,
+          title: this.$t('meta.approve'),
+          fields: {
+            from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
+            to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_WQ_FACTORY },
+            amount: { name: this.$t('modals.amount'), value: this.depositAmount, symbol: TokenSymbols.WUSD },
+            fee: { name: this.$t('wallet.table.trxFee'), value: approveFee.result.fee, symbol: TokenSymbols.WQT },
+          },
+          submitMethod: async () => {
+            this.ShowToast('Approving...', 'Approve');
+            const approveOk = await this.$store.dispatch('wallet/approve', {
+              tokenAddress,
+              spenderAddress,
+              amount: this.depositAmount,
+            });
+            if (!approveOk) {
+              this.ShowToast('Approve error');
+              this.SetLoader(false);
+              return;
+            }
+            this.ShowToast('Approving done', 'Approve');
+            await this.createQuest();
+          },
+        });
+      } else {
+        await this.createQuest();
       }
     },
     async createQuest() {
-      this.SetLoader(true);
+      // Check balance before send data to backend
+      // eslint-disable-next-line no-unreachable
+      const [feeRes] = await Promise.all([
+        this.$store.dispatch('quests/getCreateQuestFeeData', {
+          cost: this.price,
+          description: this.textarea,
+          nonce: '123',
+        }),
+        this.$store.dispatch('wallet/fetchWalletData', {
+          method: 'balanceOf',
+          address: this.userWalletAddress,
+          abi: ERC20,
+          token: TokenMap[TokenSymbols.WUSD],
+          symbol: TokenSymbols.WUSD,
+        }),
+        this.$store.dispatch('wallet/getBalance'),
+      ]);
+
+      // Check: not enough funds to create quest
+      if (!feeRes.ok) {
+        this.ShowToast(feeRes.msg);
+        this.SetLoader(false);
+        return;
+      }
+
       const medias = await this.uploadFiles(this.files);
       const payload = {
-        // TODO Это быстрый фикс ошибки, при рефакторе исправить
         workplace: WorkplaceIndex[this.workplaceIndex],
+        payPeriod: PayPeriodsIndex[this.payPeriodsIndex],
         priority: PriorityFilter[this.runtimeIndex + 1].value,
-        employment: TypeOfJobFilter[this.employmentIndex],
+        typeOfEmployment: TypeOfEmployments[this.employmentIndex],
         title: this.questTitle,
         description: this.textarea,
-        price: this.price,
+        price: new BigNumber(this.price).shiftedBy(18).toString(),
         medias,
-        // TODO интегрировать продвижение
-        // adType: 0,
         specializationKeys: this.selectedSpecAndSkills,
         locationFull: {
           location: {
@@ -529,34 +513,39 @@ export default {
           locationPlaceName: this.address,
         },
       };
-      const response = await this.$store.dispatch('quests/questCreate', payload);
+      const questRes = await this.$store.dispatch('quests/questCreate', payload);
       this.SetLoader(false);
-      if (response.ok) {
-        this.showModalCreatedQuest();
-        this.showToastCreated();
-        await this.$router.push(`/quests/${response.result.id}`);
-        await this.$store.dispatch('quests/getCurrentStepCreateQuest', 1);
+      if (questRes.ok) {
+        const { nonce } = questRes.result;
+        this.ShowModal({
+          key: modals.transactionReceipt,
+          fields: {
+            from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
+            to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_WQ_FACTORY },
+            amount: { name: this.$t('modals.amount'), value: this.depositAmount, symbol: TokenSymbols.WUSD },
+            fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
+          },
+          submitMethod: async () => {
+            const txRes = await this.$store.dispatch('quests/createQuest', {
+              cost: this.price,
+              description: this.textarea,
+              nonce,
+            });
+            if (txRes?.ok === false) {
+              this.ShowToast(txRes.msg);
+              return;
+            }
+            await this.clearData();
+            this.ShowModal({
+              key: modals.status,
+              img: require('assets/img/ui/questCreated.svg'),
+              title: this.$t('modals.questCreated'),
+            });
+            this.ShowToast(this.$t('toasts.questCreated'), this.$t('toasts.questCreated'));
+            await this.$router.push(`/quests/${questRes.result.id}`);
+          },
+        });
       }
-    },
-    showModalCreatedQuest() {
-      this.ShowModal({
-        key: modals.questCreated,
-        title: this.$t('modals.questCreated'),
-      });
-    },
-    showToastCreated() {
-      return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.questCreated'),
-        variant: 'success',
-        text: this.$t('toasts.questCreated'),
-      });
-    },
-    showToastError(e) {
-      return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.error'),
-        variant: 'warning',
-        text: e.response?.data?.msg,
-      });
     },
   },
 };
@@ -594,6 +583,19 @@ export default {
     &:last-child {
       margin: 0;
     }
+  }
+}
+
+.edit-check {
+  display: flex;
+  align-items: center;
+  &__box {
+    width: 16px;
+    height: 16px;
+  }
+  &__text {
+    margin: 0 0 0 10px;
+    user-select: none;
   }
 }
 
@@ -840,32 +842,8 @@ export default {
     transition: .3s;
 
     &:hover {
-      background: #F3F7FA;
+      background: $black0;
     }
-  }
-}
-
-.payment {
-  &__container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-  }
-
-  &__title {
-    @include text-simple;
-    color: $black500;
-    font-weight: 400;
-    font-size: 16px;
-  }
-
-  &__cost {
-    @include text-simple;
-    color: $blue;
-    font-weight: 500;
-    font-size: 16px;
-    padding: 0 0 0 5px;
   }
 }
 
@@ -894,7 +872,7 @@ export default {
     color: $blue;
 
     &:hover {
-      background: #F7F8FA;
+      background: $black0;
       color: $blue;
     }
   }
@@ -1020,19 +998,15 @@ export default {
 }
 
 .page {
+  &__error {
+    color: $errorText;
+    font-size: 12px;
+    min-height: 23px;
+  }
   &__title {
     @include text-simple;
     margin: 30px 0 0 0;
   }
-
-  &__raising {
-    @include text-simple;
-    font-weight: 500;
-    font-size: 20px;
-    color: $black800;
-    margin: 0 0 20px 0;
-  }
-
   &__page {
     font-weight: 500;
     font-size: 25px;
@@ -1047,7 +1021,7 @@ export default {
     align-items: flex-start;
     margin: 20px 0 0 0;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     grid-gap: 20px;
   }
 
@@ -1060,11 +1034,8 @@ export default {
   &__textarea {
     @include text-simple;
     border-radius: 6px;
-    padding: 11px 20px 11px 15px;
-    height: 214px;
     width: 100%;
     border: 0;
-    background-color: #F3F7FA;
     resize: none;
 
     &::placeholder {

@@ -45,7 +45,9 @@
                   <label
                     :for="specIdx"
                     class="sub__label"
-                  >{{ $t('filters.commonSub.selectAll') }}</label>
+                  >
+                    {{ $t('filters.commonSub.selectAll') }}
+                  </label>
                 </div>
                 <div
                   v-for="(sub, skillIdx) in item.items"
@@ -68,7 +70,9 @@
                     <label
                       :for="sub.id"
                       class="sub__label"
-                    >{{ sub.title }}</label>
+                    >
+                      {{ sub.title }}
+                    </label>
                   </div>
                 </div>
               </div>
@@ -144,9 +148,6 @@ export default {
     if (!this.filters) await this.$store.dispatch('quests/getFilters');
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     handleSubmit() {
       const queryKeys = Object.keys(this.selected);
       const query = [];
@@ -163,7 +164,7 @@ export default {
         visible: this.visible,
       };
       this.$store.dispatch('quests/setSelectedSpecializationsFilters', data);
-      this.hide();
+      this.CloseModal();
     },
     getPath(specIdx, skillIdx) {
       return `${this.searchFilters[specIdx].index}.${this.searchFilters[specIdx].items[skillIdx].index}`;

@@ -1,4 +1,4 @@
-import { ChatType } from '~/utils/enums';
+import { ChatType, Path } from '~/utils/enums';
 
 export default {
   async getChatsList({ commit, rootState, state: { chatsFilter } }) {
@@ -21,7 +21,7 @@ export default {
     config, chatId, direction, offset, isHideFooter,
   }) {
     try {
-      const method = `/v1/user/me/chat/${chatId === 'starred' ? 'messages/star' : `${chatId}/messages`}`;
+      const method = `/v1/user/me/chat/${chatId === 'starred' ? 'messages/star' : `${chatId}${Path.MESSAGES}`}`;
       const { result, ok } = await this.$axios.$get(method, config);
       const myId = user.userData.id;
 
@@ -114,7 +114,6 @@ export default {
             file.type = file.contentType.split('/')[0];
           });
         }
-
         await commit('addMessageToList', message);
       }
       return payload.ok;
@@ -139,7 +138,7 @@ export default {
       const { ok } = await this.$axios.$post(`/v1/read/message/${chatId}`, config);
 
       commit('setChatAsRead');
-      commit('user/changeUnreadChatsCount', { needAdd: true, count: -1 }, { root: true });
+      commit('chat/changeUnreadChatsCount', { needAdd: true, count: -1 }, { root: true });
       return ok;
     } catch (e) {
       return false;

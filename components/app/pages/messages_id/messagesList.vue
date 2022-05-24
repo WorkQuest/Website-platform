@@ -388,7 +388,7 @@ export default {
     goToCurrChat(message) {
       if (this.chatId !== 'starred') return;
       localStorage.setItem('selStarredMessageNumber', JSON.stringify(message.number));
-      this.$router.push(`/messages/${message.chatId}`);
+      this.$router.push(`${Path.MESSAGES}/${message.chatId}`);
     },
     selFile(ev, files, fileUrl) {
       ev.preventDefault();
@@ -498,7 +498,7 @@ export default {
     cursor: pointer;
 
     &:hover {
-      background-color: #F7F8FA;
+      background-color: $black0;
       opacity: .8;
       box-shadow: 0 0 10px 2px rgba(34, 60, 80, 0.3);
     }
@@ -511,7 +511,6 @@ export default {
 }
 
 .message {
-  width: 70%;
   display: grid;
   grid-template-columns: 43px minmax(auto, max-content) max-content;
   gap: 20px;
@@ -538,7 +537,6 @@ export default {
   &_right {
     grid-template-columns: max-content minmax(auto, max-content);
     justify-content: flex-end;
-    margin-left: 30%;
   }
 
   &__star-cont {
@@ -577,6 +575,9 @@ export default {
     &_white {
       color: #fff;
     }
+    &_user-text {
+      word-break: break-all
+    }
   }
 
   &__avatar {
@@ -600,7 +601,7 @@ export default {
     gap: 10px;
     padding: 15px;
     border-radius: 6px;
-    background-color: #F7F8FA;
+    background-color: $black0;
 
     &_bl {
       background-color: #0083C7;
@@ -615,18 +616,32 @@ export default {
 
 .info-message {
   display: grid;
-  grid-template-columns: repeat(3, max-content);
+  grid-template-columns: 1fr auto 1fr;
   gap: 5px;
+  grid-template-areas: "owner system sender";
 
   &__link {
     text-decoration: underline #1D2127;
     color: #1D2127;
     cursor: pointer;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: start;
+    grid-area: sender;
 
     &_left {
       grid-column: 1;
       grid-row: 1;
+      text-align: end;
+      grid-area: owner;
     }
+  }
+
+  &__title {
+    white-space: nowrap;
+    text-align: center;
+    grid-area: system;
   }
 }
 
@@ -720,8 +735,6 @@ export default {
 
 @include _1199 {
   .info-message {
-    grid-template-columns: repeat(3, auto);
-
     &__title {
       white-space: nowrap;
       color: $black600;
@@ -734,16 +747,17 @@ export default {
     }
   }
   .message {
+    &__bubble{
+      width: 100%;
+    }
     &__title {
       &_name {
-        width: calc(100vw - 180px);
         text-overflow: ellipsis;
         overflow: hidden;
       }
 
       &_user-text {
-        width: calc(100vw - 180px);
-        word-wrap: break-word;
+        word-break: break-all
       }
     }
   }
@@ -751,8 +765,15 @@ export default {
 
 @include _767 {
   .info-message {
-    grid-template-columns: unset;
-    grid-template-rows: repeat(3, auto);
+    &__title {
+      white-space: nowrap;
+    }
+
+    &__link {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
   }
 }
 </style>

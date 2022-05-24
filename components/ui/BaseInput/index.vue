@@ -50,6 +50,7 @@
         :value="mode === 'convertDate' ? convertDate(value) : value"
         :type="type"
         :autocomplete="autocomplete"
+        :disabled="disabled"
         @input="input"
         @keyup.enter="enter"
         @keypress.enter="onEnterPress"
@@ -192,6 +193,7 @@ export default {
     },
     clear() {
       this.$emit('input', '');
+      this.$emit('clear', event);
     },
     convertDate(date) {
       return this.$moment(date).format('DD.MM.YYYY');
@@ -258,7 +260,7 @@ export default {
     }
   }
   &__err {
-    color: #bb5151;
+    color: $errorText;
     font-size: 12px;
     min-height: 23px;
   }
@@ -306,7 +308,7 @@ export default {
   &_default {
     .ctm-field__input {
       color: $black700;
-      background: #F3F7FA;
+      background: $black0;
       border-radius: 6px;
       border: 1px solid transparent;
       &::placeholder {
@@ -323,7 +325,7 @@ export default {
       color: $black700;
       background: #FFFFFF;
       border-radius: 6px;
-      border: 1px solid #F3F7FA;
+      border: 1px solid $black0;
       &::placeholder {
         color: $black300;
       }
@@ -336,7 +338,7 @@ export default {
   &_chat {
     .ctm-field__input {
       height: 40px;
-      background: #F7F8FA;
+      background: $black0;
     }
   }
   &_icon {

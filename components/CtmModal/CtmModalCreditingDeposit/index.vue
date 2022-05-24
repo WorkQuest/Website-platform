@@ -1,156 +1,155 @@
 <template>
   <ctm-modal-box
     class="deposit"
-    :title="$t('modals.titles.deposit')"
+    :title="$tc('modals.titles.deposit')"
   >
-    <div class="deposit__content content">
-      <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
-        tag="div"
-      >
-        <div class="content__grid">
-          <div class="content__body">
-            <div class="content__checkpoints checkpoints">
-              <div class="checkpoints__block">
-                <label
-                  for="checkpoints__main"
-                  class="checkpoints__label"
-                >
-                  {{ $t('modals.chooseTheCurrency') }}
-                </label>
+    <validation-observer
+      v-slot="{handleSubmit, validated, passed, invalid}"
+      class="deposit__content content"
+      tag="div"
+    >
+      <div class="content__grid">
+        <div class="content__body">
+          <div class="content__checkpoints checkpoints">
+            <div class="checkpoints__block">
+              <label
+                for="checkpoints__main"
+                class="checkpoints__label"
+              >
+                {{ $t('modals.chooseTheCurrency') }}
+              </label>
+              <div
+                id="checkpoints__main"
+                class="checkpoints__main"
+              >
                 <div
-                  id="checkpoints__main"
-                  class="checkpoints__main"
+                  v-for="(item, i) in checkpoints"
+                  :key="i"
+                  class="checkpoints__array"
                 >
-                  <div
-                    v-for="(item, i) in checkpoints"
-                    :key="i"
-                    class="checkpoints__array"
+                  <input
+                    :id="item.name"
+                    v-model="selCurrencyID"
+                    type="radio"
+                    class="checkpoints__item"
+                    :value="item.id"
                   >
-                    <input
-                      :id="item.name"
-                      v-model="selCurrencyID"
-                      type="radio"
-                      class="checkpoints__item"
-                      :value="item.id"
-                    >
-                    <label
-                      class="checkpoints__name"
-                      :for="item.name"
-                    >
-                      {{ item.name }}
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div class="checkpoints__block">
-                <label
-                  for="checkpoints__field"
-                  class="checkpoints__label"
-                >
-                  {{ $t('crediting.chooseSource') }}
-                </label>
-                <div
-                  id="checkpoints__field"
-                  class="checkpoints__main"
-                >
-                  <div
-                    v-for="(item, i) in fundsSource"
-                    :key="i"
-                    class="checkpoints__array"
+                  <label
+                    class="checkpoints__name"
+                    :for="item.name"
                   >
-                    <input
-                      :id="item.name"
-                      v-model="selFundID"
-                      type="radio"
-                      class="checkpoints__item"
-                      :value="item.id"
-                    >
-                    <label
-                      class="checkpoints__name"
-                      :for="item.name"
-                    >
-                      {{ item.name }}
-                    </label>
-                  </div>
+                    {{ item.name }}
+                  </label>
                 </div>
               </div>
             </div>
-            <div class="content__field">
-              <div class="content__label">
-                {{ $t('modals.howMuchTokensWouldYouLikeToLock', { token: checkpoints[selCurrencyID - 1].name }) }}
-              </div>
-              <base-field
-                v-model="quantity"
-                class="content__input"
-                data-selector="TOKEN-VALUE"
-                placeholder="1000 ETH"
-                rules="required|decimal"
-                :name="$t('modals.quantityField')"
-              />
-            </div>
-            <div class="content__field">
-              <div class="content__label">
-                {{ $t('modals.choosePeriod') }}
-              </div>
-              <base-dd
-                v-model="date"
-                type="gray"
-                class="grid__drop"
-                data-selector="DATE-DD"
-                :items="dates"
-              />
-            </div>
-            <div class="content__field">
-              <div class="content__text">
-                {{ $t('modals.tipAbout') }}
-              </div>
-            </div>
-          </div>
-          <div class="content__zone zone">
             <div
-              v-for="(item, i) in abouts"
-              :key="i"
+              v-if="options.mode !== 'borrow'"
+              class="checkpoints__block"
             >
-              <div class="zone__title">
-                {{ item.title }}
-              </div>
-              <div class="zone__subtitle">
-                {{ item.subtitle }}
+              <label
+                for="checkpoints__field"
+                class="checkpoints__label"
+              >
+                {{ $t('crediting.chooseSource') }}
+              </label>
+              <div
+                id="checkpoints__field"
+                class="checkpoints__main"
+              >
+                <div
+                  v-for="(item, i) in fundsSource"
+                  :key="i"
+                  class="checkpoints__array"
+                >
+                  <input
+                    :id="item.name"
+                    v-model="selFundID"
+                    type="radio"
+                    class="checkpoints__item"
+                    :value="item.id"
+                  >
+                  <label
+                    class="checkpoints__name"
+                    :for="item.name"
+                  >
+                    {{ item.name }}
+                  </label>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="content__buttons buttons">
-          <base-btn
-            class="buttons__button"
-            mode="outline"
-            data-selector="CANCEL"
-            @click="hide"
+          <div
+            v-if="options.mode !== 'borrow'"
+            class="content__field"
           >
-            {{ $t('meta.btns.cancel') }}
-          </base-btn>
-          <base-btn
-            class="buttons__button"
-            data-selector="SUBMIT"
-            :disabled="!validated || !passed || invalid"
-            @click="handleSubmit(openConfirmDetailsModal)"
+            <div class="content__label">
+              {{ $t('modals.howMuchTokensWouldYouLikeToLock', { token: checkpoints[selCurrencyID - 1].name }) }}
+            </div>
+            <base-field
+              v-model="quantity"
+              class="content__input"
+              data-selector="TOKEN-VALUE"
+              :placeholder="`100 ${checkpoints[selCurrencyID - 1].name}`"
+              rules="required|decimal"
+              :name="$tc('modals.quantityField')"
+            />
+          </div>
+          <div
+            v-if="options.mode !== 'borrow'"
+            class="content__field"
           >
-            {{ $t('meta.btns.submit') }}
-          </base-btn>
+            <div class="content__label">
+              {{ $t('modals.choosePeriod') }}
+            </div>
+            <base-dd
+              v-model="date"
+              type="gray"
+              class="grid__drop"
+              data-selector="DATE-DD"
+              :items="dates"
+            />
+          </div>
+          <div class="content__field">
+            <div class="content__text">
+              {{ $t('modals.tipAbout') }}
+            </div>
+          </div>
         </div>
-      </validation-observer>
-    </div>
+      </div>
+      <div class="content__buttons buttons">
+        <base-btn
+          class="buttons__button"
+          mode="outline"
+          data-selector="CANCEL"
+          @click="CloseModal"
+        >
+          {{ $t('meta.btns.cancel') }}
+        </base-btn>
+        <base-btn
+          v-if="options.mode !== 'borrow'"
+          class="buttons__button"
+          data-selector="SUBMIT"
+          :disabled="!validated || !passed || invalid"
+          @click="handleSubmit(openConfirmDetailsModal)"
+        >
+          {{ $t('meta.btns.submit') }}
+        </base-btn>
+        <base-btn
+          v-if="options.mode === 'borrow'"
+          class="buttons__button"
+          data-selector="SUBMIT"
+          @click="openConfirmDetailsModal()"
+        >
+          {{ $t('meta.btns.submit') }}
+        </base-btn>
+      </div>
+    </validation-observer>
   </ctm-modal-box>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import moment from 'moment';
-import BigNumber from 'bignumber.js';
-import modals from '~/store/modals/modals';
-import { getGasPrice } from '~/utils/wallet';
-import * as abi from '~/abi/abi';
 
 export default {
   name: 'ModalTakeCreditingDeposit',
@@ -159,36 +158,17 @@ export default {
       selCurrencyID: 1,
       selFundID: 1,
       quantity: '',
-      generate: '',
       date: 0,
       datesNumber: [7, 14, 30, 90, 180],
       checkpoints: [
-        {
-          name: this.$t('meta.coins.bnb'),
-          id: 1,
-        },
-        {
-          name: this.$t('meta.coins.eth'),
-          id: 2,
-        },
-        {
-          name: this.$t('meta.coins.wqt'),
-          id: 3,
-        },
+        { name: this.$t('meta.coins.bnb'), id: 1 },
+        { name: this.$t('meta.coins.eth'), id: 2 },
+        { name: this.$t('meta.coins.wqt'), id: 3 },
       ],
       fundsSource: [
-        {
-          name: this.$t('footer.DeFi.lending'),
-          id: 1,
-        },
-        {
-          name: this.$t('footer.DeFi.retirement'),
-          id: 2,
-        },
-        {
-          name: this.$t('ui.menu.savings.title'),
-          id: 3,
-        },
+        { name: this.$t('footer.DeFi.lending'), id: 1 },
+        { name: this.$t('footer.DeFi.retirement'), id: 2 },
+        { name: this.$t('ui.menu.savings.title'), id: 3 },
       ],
       abouts: [
         {
@@ -225,10 +205,6 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
-      userRole: 'user/getUserRole',
-      funds: 'crediting/getFunds',
-      currentPrice: 'oracle/getCurrentPrice',
-      securityRatio: 'oracle/getSecurityRatio',
     }),
     dates() {
       return [
@@ -240,98 +216,22 @@ export default {
       ];
     },
   },
-  async mounted() {
-    await this.$store.dispatch('crediting/getFunds');
-    await this.$store.dispatch('oracle/getCurrentPrice');
-    await this.$store.dispatch('oracle/getSecurityRatio');
-  },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     async openConfirmDetailsModal() {
-      const receiptData = [
-        {
-          title: this.$t('crediting.chosenSource'),
-          subtitle: this.fundsSource[this.selFundID - 1].name,
-        },
-        {
-          title: this.$t('modals.depositing'),
-          subtitle: this.$tc(`meta.coins.count.${this.checkpoints[this.selCurrencyID - 1].name}Count`, this.quantity),
-        },
-        {
-          title: this.$t('crediting.dueDate'),
-          subtitle: moment().add(this.datesNumber[this.date], 'days').format('DD.MM.YYYY'),
-        },
-      ];
-      const valueWithDecimals = new BigNumber(this.quantity).shiftedBy(18).toString();
-      const symbol = this.checkpoints[this.selCurrencyID - 1].name;
-      const duration = this.datesNumber[this.date];
-      const callback = async () => {
-        const checkTokenPrice = await this.setTokenPrice();
-        const approveAllowed = await this.$store.dispatch('wallet/approveRouter', {
-          symbol,
-          spenderAddress: process.env.BORROWING,
-          value: valueWithDecimals,
-        });
-        let res = false;
-        if (checkTokenPrice && approveAllowed) {
-          res = await this.$store.dispatch('crediting/sendMethod', {
-            valueWithDecimals,
-            data: [
-              1,
-              valueWithDecimals,
-              this.selFundID - 1,
-              duration,
-              symbol,
-            ],
-            method: 'borrow',
-            type: 'borrowing',
-          });
-        }
-        if (res.ok) {
-          this.ShowModal({
-            key: modals.status,
-            img: require('~/assets/img/ui/transactionSend.svg'),
-            title: this.$t('modals.depositIsOpened'),
-            subtitle: '',
-            path: 'crediting/1',
-          });
-        } else {
-          this.ShowModal({
-            key: modals.status,
-            img: require('~/assets/img/ui/warning.svg'),
-            title: this.$t('modals.transactionFail'),
-            recipient: '',
-            subtitle: this.$t('modals.errors.error'),
-          });
-        }
-      };
-      this.ShowModal({
-        key: modals.confirmDetails,
-        receiptData,
-        callback,
-      });
-    },
-    async setTokenPrice() {
+      const { submit } = this.options;
       const {
-        nonce, prices, v, r, s, symbols,
-      } = this.currentPrice; // TODO price
-      const resultGasSetTokenPrices = await getGasPrice(abi.WQOracle, process.env.WORKNET_ORACLE, 'setTokenPricesUSD', [nonce, v, r, s, prices, symbols]);
-      if (resultGasSetTokenPrices.gas && resultGasSetTokenPrices.gasPrice) {
-        const { ok } = await this.$store.dispatch('crediting/setTokenPrices', {
-          gasPrice: resultGasSetTokenPrices.gasPrice,
-          gas: resultGasSetTokenPrices.gas,
-          timestamp: nonce,
-          v,
-          r,
-          s,
-          prices,
-          symbols,
-        });
-        return ok;
-      }
-      return false;
+        fundsSource, selFundID, checkpoints, selCurrencyID, datesNumber, date, quantity,
+      } = this;
+      this.CloseModal();
+      await submit({
+        fundsSource,
+        selFundID,
+        checkpoints,
+        selCurrencyID,
+        datesNumber,
+        date,
+        quantity,
+      });
     },
   },
 };
@@ -339,7 +239,6 @@ export default {
 
 <style lang="scss" scoped>
 .deposit {
-  max-width: 943px !important;
   height: auto !important;
   padding: 0!important;
   &__content{
@@ -372,7 +271,7 @@ export default {
   }
   &__grid{
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: auto;
     gap: 25px;
   }
   &__checkpoints {
@@ -384,7 +283,7 @@ export default {
     }
   }
   &__zone {
-    background-color: #F7F8FA;
+    background-color: $black0;
     border-radius: 5px;
     margin-top: 15px;
     padding: 0 20px 20px 20px;

@@ -3,7 +3,7 @@
     class="change-role"
     :class="[{'change-role_wide': step === 1}]"
     :is-unclosable="true"
-    :title="step === 1 ? $t('modals.titles.reason') : $t('modals.titles.securityCheckBig')"
+    :title="step === 1 ? $tc('modals.titles.reason') : $tc('modals.titles.securityCheckBig')"
   >
     <validation-observer
       v-slot="{invalid, handleSubmit}"
@@ -37,7 +37,7 @@
                 mode="outline"
                 class="message__action"
                 data-selector="CANCEL"
-                @click="hide()"
+                @click="CloseModal"
               >
                 {{ $t('meta.btns.cancel') }}
               </base-btn>
@@ -51,12 +51,12 @@
           <form @submit.prevent="handleSubmit(changeRole)">
             <base-field
               v-model="totp"
-              :label="$t('meta.googleConfCode')"
+              :label="$tc('meta.googleConfCode')"
               class="change-role__action"
               data-selector="GOOGLE-CONF-CODE"
               :placeholder="$t('meta.googleConfCode')"
               rules="min:6|numeric|max:6|required"
-              :name="$t('meta.googleConfCode')"
+              :name="$tc('meta.googleConfCode')"
             />
             <div class="change-role__sub">
               {{ $t('meta.googleConfCodeDesc') }}
@@ -80,6 +80,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { images } from '~/utils/images';
 
 export default {
   name: 'CtmModalChangeRoleReason',
@@ -99,13 +100,10 @@ export default {
     nextStep() {
       this.step += 1;
     },
-    hide() {
-      this.CloseModal();
-    },
     async changeRole() {
       const result = await this.$store.dispatch('user/changeRole', { totp: this.totp });
       if (result.ok) {
-        this.hide();
+        this.CloseModal();
         this.success();
       } else {
         const date = new Date(result.response.data.data.endDateOfTimeout);
@@ -123,7 +121,7 @@ export default {
     success() {
       this.$root.$emit('roleChanged');
       this.ShowModal({
-        key: modals.status, img: require('~/assets/img/ui/success.svg'), title: 'Success', subtitle: 'Your role has been changed', isRoleChanged: true,
+        key: modals.status, img: images.SUCCESS, title: 'Success', subtitle: 'Your role has been changed', isRoleChanged: true,
       });
     },
   },

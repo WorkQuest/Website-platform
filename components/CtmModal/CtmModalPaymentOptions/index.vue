@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="payment"
-    :title="$t('modals.titles.payment')"
+    :title="$tc('modals.titles.payment')"
   >
     <div class="payment__content сontent">
       <div class="content__step">
@@ -97,7 +97,7 @@
             class="buttons__button"
             mode="outline"
             data-selector="CANCEL"
-            @click="hide"
+            @click="CloseModal"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -144,16 +144,10 @@ export default {
       ];
     },
     items() {
-      return [
-        'Visa *0000',
-        'Visa *0000',
-      ];
+      return ['Visa *0000', 'Visa *0000'];
     },
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     nextStep() {
       this.$store.commit('modals/setOptions', { ...this.options, step: 2 });
     },
@@ -161,15 +155,12 @@ export default {
       this.$store.commit('modals/setOptions', { ...this.options, step: 1 });
     },
     showAddingCard() {
-      this.ShowModal({
-        key: modals.addingCard,
-        branch: 'payment',
-      });
+      this.ShowModal({ key: modals.addingCard, branch: 'payment' });
     },
     async showRaiseLevel() {
       const { submit } = this.options;
       if (submit) submit();
-      this.hide();
+      this.CloseModal();
     },
   },
 };

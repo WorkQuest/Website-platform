@@ -20,7 +20,7 @@
           </div>
           <div class="link-cont">
             <div class="link-cont__link link-cont__link_gray">
-              {{ poolAddress }}
+              {{ convertToBech32('wq', poolAddress) }}
             </div>
             <button
               type="button"
@@ -274,17 +274,17 @@ export default {
         if (minutes <= 60) {
           data.push({
             name: this.$t('staking.stakingCards.duration'),
-            about: this.$t('meta.units.minutes', { count: minutes >= 0 ? minutes : 0 }),
+            about: this.$tc('meta.units.minutes', this.DeclOfNum(minutes >= 0 ? minutes : 0), { count: minutes >= 0 ? minutes : 0 }),
           });
         } else if (hours <= 24) {
           data.push({
             name: this.$t('staking.stakingCards.duration'),
-            about: this.$t('meta.units.hours', { count: hours >= 0 ? hours : 0 }),
+            about: this.$tc('meta.units.hours', this.DeclOfNum(hours >= 0 ? hours : 0), { count: hours >= 0 ? hours : 0 }),
           });
         } else {
           data.push({
             name: this.$t('staking.stakingCards.duration'),
-            about: this.$t('meta.units.days', { count: days >= 0 ? days : 0 }),
+            about: this.$tc('meta.units.days', this.DeclOfNum(days >= 0 ? days : 0), { count: days >= 0 ? days : 0 }),
           });
         }
       }
@@ -322,9 +322,9 @@ export default {
   methods: {
     getTimeFromMin(min) {
       if (!min) return '';
-      if (Math.floor(min / 60 / 24) > 0) return this.$t('meta.units.days', { count: min / 60 / 24 });
-      if (Math.floor(min / 60) > 0) return this.$t('meta.units.hours', { count: Math.floor(min / 60) });
-      return this.$t('meta.units.hours', { count: min });
+      if (Math.floor(min / 60 / 24) > 0) return this.$tc('meta.units.days', this.DeclOfNum(min / 60 / 24), { count: min / 60 / 24 });
+      if (Math.floor(min / 60) > 0) return this.$tc('meta.units.hours', this.DeclOfNum(Math.floor(min / 60)), { count: Math.floor(min / 60) });
+      return this.$tc('meta.units.hours', this.DeclOfNum(min), { count: min });
     },
     async loadData() {
       this.SetLoader(true);
@@ -584,7 +584,7 @@ export default {
         color: #fff;
 
         &_gray {
-          color: #F7F8FA;
+          color: $black0;
           font-weight: 400;
         }
       }
@@ -651,7 +651,7 @@ export default {
         .info-card {
           display: grid;
           grid-template-rows: repeat(2, 1fr);
-          background-color: #F7F8FA;
+          background-color: $black0;
           height: 104px;
           padding: 20px;
           gap: 10px;

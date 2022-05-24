@@ -1,63 +1,83 @@
 <template>
-  <div class="icon-more">
+  <div
+    class="icon-more chat__button_menu"
+    :class="{'invisible':isInvisible}"
+  >
     <button
       v-click-outside="closeChatMenu"
-      class="chat__button chat__button_menu"
+      class="chat__button "
       @click="toggleChatMenu"
     >
       <span class="icon-more_horizontal" />
-      <transition name="fade">
-        <div
-          v-if="isShowChatMenu"
-          class="chat-menu"
-        >
-          <div class="chat-menu__items">
-            <template v-if="$route.name === 'messages'">
-              <div
-                class="chat-menu__item"
-                @click="getStarredMessages"
-              >
-                {{ $t('chat.starredMessages') }}
-              </div>
-              <div
-                class="chat-menu__item"
-                @click="changeStarredVal"
-              >
-                {{ $t(`chat.${starred ? 'allChats' : 'starredChats'}`) }}
-              </div>
-              <div
-                class="chat-menu__item"
-                @click="showCreateChatModal()"
-              >
-                {{ $t('chat.createGroupChat') }}
-              </div>
-            </template>
-            <template v-else>
-              <div
-                v-if="!canILeave"
-                class="chat-menu__item"
-                @click="showOpenADisputeModal()"
-              >
-                {{ $t('meta.openDispute') }}
-              </div>
-              <div
-                v-if="canILeave"
-                class="chat-menu__item"
-                @click="tryLeaveChat"
-              >
-                {{ $t('chat.leaveChat') }}
-              </div>
-            </template>
-          </div>
-        </div>
-      </transition>
     </button>
+    <transition name="fade">
+      <div
+        v-if="isShowChatMenu"
+        class="chat-menu"
+        :class="menuItems.length?'chat-menu-secondary-position':'chat-menu-main-position'"
+      >
+        <div
+          class="chat-menu__items"
+        >
+          <template v-if="menuItems.length">
+            <div
+              v-for="(item, index) in menuItems"
+              :key="index"
+              class="chat-menu__item"
+              @click="$emit(item)"
+            >
+              {{ $t(`chat.menu.${item}`) }}
+            </div>
+          </template>
+          <template v-if="$route.name === 'messages'">
+            <div
+              class="chat-menu__item"
+              @click="getStarredMessages"
+            >
+              {{ $t('chat.starredMessages') }}
+            </div>
+            <div
+              class="chat-menu__item"
+              @click="changeStarredVal"
+            >
+              {{ $t(`chat.${starred ? 'allChats' : 'starredChats'}`) }}
+            </div>
+            <div
+              class="chat-menu__item"
+              @click="showCreateChatModal()"
+            >
+              {{ $t('chat.createGroupChat') }}
+            </div>
+          </template>
+          <template v-else>
+            <div
+              v-if="isOpenDispute"
+              class="chat-menu__item"
+              @click="showOpenADisputeModal()"
+            >
+              {{ $t('meta.openDispute') }}
+            </div>
+            <div
+              v-if="canILeave"
+              class="chat-menu__item"
+              @click="tryLeaveChat"
+            >
+              {{ $t('chat.leaveChat') }}
+            </div>
+          </template>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
 import ClickOutside from 'vue-click-outside';
 import { mapGetters } from 'vuex';
+import {
+  ChatType, Path,
+} from '~/utils/enums';
+import { QuestStatuses } from '~/utils/сonstants/quests';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -74,6 +94,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    menuItems: {
+      type: Array,
+      default: () => ([]),
+    },
   },
   data() {
     return {
@@ -83,22 +107,33 @@ export default {
   computed: {
     ...mapGetters({
       currChat: 'chat/getCurrChatInfo',
+      chats: 'chat/getChats',
     }),
+    isOpenDispute() {
+      return !this.canILeave && this.$route.query.type === ChatType.QUEST;
+    },
+    isInvisible() {
+      const { type, status } = this.$route.query;
+      return type === ChatType.QUEST && ![QuestStatuses.WaitWorker, QuestStatuses.Dispute].includes(+status);
+    },
   },
   methods: {
     changeStarredVal() {
       this.$emit('change');
     },
     getStarredMessages() {
-      this.$router.push('/messages/starred');
+      this.$router.push(`${Path.MESSAGES}/starred`);
     },
     showOpenADisputeModal() {
       this.closeChatMenu();
-      // TODO: добавить вывод окна, на добавление диспута, после завершения логики на странице чата
-      // this.ShowModal({
-      //   key: modals.openADispute,
-      //   questId: this.questId,
-      // });
+      if (!this.$route.query.disputeStatus) {
+        this.ShowModal({
+          key: modals.openADispute,
+          questId: this.questId,
+        });
+      } else {
+        this.$router.push(`${Path.DISPUTES}/${this.$route.query.id}`);
+      }
     },
     toggleChatMenu() {
       this.isShowChatMenu = !this.isShowChatMenu;
@@ -110,25 +145,34 @@ export default {
       this.closeChatMenu();
       this.ShowModal({
         key: modals.areYouSure,
-        title: this.$t('modals.sureLeaveChatText'),
+        text: this.$t('modals.sureLeaveChatText'),
         okBtnTitle: this.$t('meta.btns.leave'),
         okBtnFunc: async () => await this.leaveChat(),
       });
     },
     async leaveChat() {
-      if (await this.$store.dispatch('chat/leaveFromChat', this.currChat.id)) this.$router.push('/messages');
+      if (await this.$store.dispatch('chat/leaveFromChat', this.currChat.id)) this.$router.push(`${Path.MESSAGES}`);
 
       this.CloseModal();
     },
     showCreateChatModal() {
       this.closeChatMenu();
-      this.ShowModal({
-        key: modals.chatCreate,
-        isCreating: true,
-        itsOwner: true,
-        isMembersList: false,
-        isAdding: false,
-      });
+      if (this.chats.count) {
+        this.ShowModal({
+          key: modals.chatCreate,
+          isCreating: true,
+          itsOwner: true,
+          isMembersList: false,
+          isAdding: false,
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.errors.error'),
+          subtitle: this.$t('modals.errors.dontHavePeople'),
+        });
+      }
     },
   },
 };
@@ -168,14 +212,20 @@ export default {
 
 .chat-menu {
   position: absolute;
-  top: 55px;
   background: #FFFFFF;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   border-radius: 6px;
   min-width: 86px;
   z-index: 1;
-  margin: 0 90px 0 0;
   width: max-content;
+  &-main-position{
+    margin: 0 90px 0 0;
+    top: 55px;
+  }
+  &-secondary-position{
+    bottom: 0;
+    left: 0;
+  }
   &__items {
     padding: 10px;
     display: grid;
@@ -190,10 +240,14 @@ export default {
     color: $black500;
     transition: .5s;
     text-align: left;
+    cursor: pointer;
     &:hover {
       color: $black800;
     }
   }
+}
+.invisible{
+  opacity: 0;
 }
 @include _991 {
   .chat {

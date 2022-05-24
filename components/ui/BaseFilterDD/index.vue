@@ -4,23 +4,18 @@
     data-selector="COMPONENT-BASE-FILTER-DD"
     class="dd"
   >
-    <div
-      class="dd dd__container"
-    >
+    <div class="dd dd__container">
+      <div
+        ref="sort"
+        class="dd__anchor"
+      />
       <button
-        class="dd__btn"
+        class="dd__btn dd__btn_sort"
         data-selector="ACTION-BTN-TOGGLE-DD"
         @click="toggleDd"
       >
         {{ $t('filters.dd.1') }}
-        <span
-          v-if="isOpenDD"
-          class="icon-caret_down"
-        />
-        <span
-          v-else
-          class="icon-caret_up"
-        />
+        <span :class="isOpenDD ? 'icon-caret_down' : 'icon-caret_up'" />
       </button>
       <transition name="fade">
         <div
@@ -41,24 +36,32 @@
                 {{ $t('filters.filterBtn') }}
               </base-btn>
             </div>
+            <base-field
+              v-model="searchLine"
+              class="filter__search"
+              data-selector="INPUT-SEARCH"
+              :placeholder="$t('meta.placeholders.searchSpecSkill')"
+              :is-search="true"
+              :is-hide-error="true"
+              @clear.stop
+            />
             <div class="filter__body">
               <div
                 v-for="(item, specIdx) in searchFilters"
                 :id="specIdx"
                 :key="specIdx"
                 :data-selector="`SEARCH-FILTERS-${specIdx}`"
+                :class="{'item__hidden' : !isMatchedSpec(item, specIdx)}"
               >
-                <div
-                  class="filter__item item"
-                >
+                <div class="filter__item item">
                   <div
-                    class="item"
+                    class="item__head"
                     :data-selector="`ACTION-BTN-TOGGLE-CATEGORY-${specIdx}`"
                     @click="toggleCategory(specIdx)"
                   >
-                    <span
-                      class="item__title"
-                    >{{ item.title }}</span>
+                    <span class="item__title">
+                      {{ item.title }}
+                    </span>
                     <span
                       v-if="!visible[specIdx]"
                       class="icon-caret_down"
@@ -74,6 +77,7 @@
                       :class="[{'hide': !visible[specIdx]}]"
                     >
                       <div
+                        v-if="searchLine.length === 0"
                         class="sub__item checkbox"
                         :data-selector="`ACTION-BTN-SELECT-ALL-${specIdx}`"
                         @click="selectAll(specIdx)"
@@ -97,6 +101,7 @@
                         :id="skillIdx"
                         :key="skillIdx"
                         class="sub__item"
+                        :class="{'item__hidden' : !isMatchedSkill(sub)}"
                         :data-selector="`ACTION-BTN-SELECT-SUB-${skillIdx}`"
                         @click="selectSub(specIdx, skillIdx)"
                       >
@@ -111,7 +116,9 @@
                         <label
                           :id="skillIdx"
                           class="sub__label"
-                        >{{ sub.title }}</label>
+                        >
+                          {{ sub.title }}
+                        </label>
                       </div>
                     </div>
                   </div>
@@ -139,7 +146,7 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'Dd',
+  name: 'FilterDD',
   directives: {
     ClickOutside,
   },
@@ -149,6 +156,7 @@ export default {
       selected: {},
       selectedAll: [],
       visible: {},
+      searchLine: '',
     };
   },
   computed: {
@@ -240,6 +248,7 @@ export default {
       };
     },
     toggleDd() {
+      if (this.isOpenDD) this.$refs.sort.scrollIntoView();
       this.isOpenDD = !this.isOpenDD;
     },
     toggleCategory(index) {
@@ -248,6 +257,18 @@ export default {
         [index]: !this.visible[index],
       };
     },
+    isMatchedSpec(spec, specIdx) {
+      const matches = Object.values(spec.items).filter((skill) => (skill.title.toLowerCase().includes(this.searchLine.toLowerCase())));
+      if (this.searchLine.length > 0 && matches.length > 0) {
+        this.visible[specIdx] = true;
+      } else if (matches.length === 0) {
+        this.visible[specIdx] = false;
+      }
+      return matches.length > 0;
+    },
+    isMatchedSkill(skill) {
+      return skill.title.toLowerCase().includes(this.searchLine.toLowerCase());
+    },
   },
 };
 </script>
@@ -255,7 +276,7 @@ export default {
 <style scoped lang="scss">
 .icon {
   cursor: pointer;
-  font-size: 25px;
+  font-size: 23px;
   color: $blue !important;
   &-caret_up::before {
     @extend .icon;
@@ -288,18 +309,29 @@ export default {
     overflow-x: hidden;
     overscroll-behavior-y: contain;
     height: 400px;
-    margin: 10px 0 0 0;
-    padding: 10px 0 0 0;
+    min-width: 358px;
   }
-  &__item {
-    &:hover {
-      cursor: pointer;
-    }
+  &__search {
+    margin: 10px 0;
   }
 }
 
 .item {
   width: 100%;
+  padding: 5px 15px;
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__hidden {
+    display: none;
+  }
+  &:hover {
+    background-color: #7c838d17;
+    border-radius: 6px;
+    cursor: pointer;
+  }
 }
 
 .sub {
@@ -310,6 +342,9 @@ export default {
       text-shadow: 0px -1px 10px -3px rgba(34, 60, 80, 0.4);
       cursor: pointer;
     }
+  }
+  &__body {
+    padding-top: 5px;
   }
   &__item {
     width: 100%;
@@ -326,6 +361,9 @@ export default {
 }
 
 .dd {
+  &__anchor {
+    @include anchor;
+  }
   &__container {
     display: flex;
     align-items: center;
@@ -344,21 +382,27 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
     width: 100%;
     max-width: 400px;
-    background: #FFFFFF;
+    background: $white;
     border-radius: 6px;
     justify-items: center;
+    border: 1px solid transparent;
     &_gray {
       background-color: $black0;
+    }
+    &_sort {
+      padding: 0 20px;
+    }
+    &:hover {
+      border: 1px solid $black100;
     }
   }
   &__list {
     @include box;
     width: 400px;
     position: absolute;
-    background: #FFFFFF;
+    background: $white;
     top: calc(100% + 4px);
     display: grid;
     align-items: center;

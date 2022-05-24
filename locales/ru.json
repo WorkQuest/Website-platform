@@ -8,8 +8,8 @@
       "title": "Выберите приоритет",
       "all": "Все приоритеты",
       "fixedDelivery": "Фиксированная доставка",
-      "shortTerm": "В ближайшем будущем",
-      "urgent": "Срочный",
+      "shortTerm": "В ближайшем будущем 1 неделя",
+      "urgent": "Срочный 24-72 часа",
       "employee": {
         "urgent": "Срочное исполнение"
       }
@@ -46,11 +46,12 @@
       "mb": "{count} MB",
       "kb": "{count} KB",
       "percentsCount": "{count}%",
-      "minutes": "{count} минуты",
-      "hours": "{count} часы",
-      "years": "{count} годы",
-      "days": "{count} дни",
-      "daysLeft": "{count} дней осталось",
+      "seconds": "{count} секунда | {count} секунды | {count} секунд",
+      "minutes": "{count} минута | {count} минуты | {count} минут",
+      "hours": "{count} час | {count} часа | {count} часов",
+      "years": "{count} год | {count} года | {count} лет",
+      "days": "{count} день | {count} дня  | {count} дней",
+      "daysLeft": "{count} days left",
       "votesCount": "{count} голоса",
       "distance": {
         "m": "m"
@@ -88,8 +89,8 @@
       "resendSMS": "Переотправить СМС",
       "registration": "Регистрация",
       "leave": "Покинуть",
-      "completeWorkOnQuest": "Завершить работу над квестом",
-      "acceptCompletedWorkOnQuest": "Принять выполненную работу по квесту",
+      "completeWorkOnQuest": "Завершить работу",
+      "acceptCompletedWorkOnQuest": "Принять работу",
       "closeQuest": "Закрыть квест",
       "goToChat": "Перейти в чат",
       "view": "View",
@@ -99,7 +100,10 @@
     "placeholders": {
       "default": "",
       "mail": "your@mail.com",
-      "email": "Email address"
+      "email": "Email address",
+      "specialization": "Введите специализацию",
+      "skill": "Введите навык",
+      "searchSpecSkill": "Введите специализацию или навык"
     },
     "worker": {
       "cost": {
@@ -178,7 +182,7 @@
     "aml": "AML & CTF Policy",
     "createAQuest": "Создать квест",
     "completed": "Completed",
-    "typeOfJob": "Тип работы",
+    "typeOfJob": "Type of employment",
     "choosePeriod": "Выберите период",
     "verified": "Подтвержден",
     "dispute": "Спор",
@@ -192,7 +196,8 @@
     "settings": "Настройки",
     "costPerHour": "Цена за час",
     "disputes": "Споры",
-    "success": "Успешно"
+    "success": "Успешно",
+    "fail": "Неудача"
   },
   "info": {
     "yourMessage": " Ваше сообщение:",
@@ -228,7 +233,7 @@
     "size": "The {_field_} field size must be less than {size}KB",
     "decimal": "The {_field_} field must contain only decimal values",
     "decimalPlaces": "The {_field_} field must contain maximum {places} decimal places",
-    "invalidPhone":"Неверный формат телефона",
+    "invalidPhone": "Неверный формат телефона",
     "formError": "Заполните все обязательные поля",
     "is": "The values do not match",
     "is_not": "Incorrect value",
@@ -330,8 +335,12 @@
     "employer": {
       "usersNotResponded": "Users not responded"
     },
+    "impossibleEditAfterCreation": "Я понимаю что редактирование заголовка и описания для этого квеста будет невозможным после создания",
+    "deleteQuest": "Удалить квест",
     "invite": "Пригласить",
     "decline": "Отклонить",
+    "declinedTheInvitation": "Отклонил приглашение",
+    "acceptedTheInvitation": "Принял приглашение",
     "questTitle": "Заголовок квеста",
     "questDesc": "Описание квеста",
     "closed": "Закрыт",
@@ -370,20 +379,37 @@
       "title": "Рейтинг",
       "verified": "Подтвержденный",
       "reliable": "Надежный",
-      "topRanked": "Топовый"
+      "topRanked": "Топовый",
+      "noStatus": "Без статуса"
     },
     "distantWork": {
       "title": "Рабочее место",
       "allWorkplaces": "Все рабочие места",
       "distantWork": "Удаленная работа",
-      "workInOffice": "Работа в офисе",
-      "bothVariant": "Оба варианта"
+      "workInOffice": "В офисе",
+      "bothVariant": "Гибридное рабочее место"
+    },
+    "payPeriods": {
+      "title": "Pay periods",
+      "Hourly": "Ежечасно",
+      "Daily": "Еженедельно",
+      "Weekly": "Раз в две недели",
+      "BiWeekly":"Bi-weekly ",
+      "SemiMonthly": "Раз в полмесяца",
+      "Monthly": "Ежемесячно",
+      "Quarterly": "Ежеквартальный",
+      "SemiAnnually": "Раз в полгода",
+      "Annually": "Ежегодно",
+      "FixedPeriod":"Фиксированная длина",
+      "ByAgreement":"По соглашению"
     },
     "employment": {
       "employment": "Занятость",
-      "fullTime": "Полная",
-      "partTime": "Частичная",
-      "fixedTerm": "Установленный срок"
+      "FullTime": "Полная",
+      "PartTime": "Частичная",
+      "FixedTerm": "Установленный срок",
+      "EmploymentContract": "Контракт",
+      "RemoteWork": "Удаленная работа"
     },
     "runtime": "Runtime",
     "active": "Active",
@@ -427,7 +453,7 @@
       "1": "Специализация",
       "2": "Квесты",
       "3": "Срочность",
-      "4": "Тип работ",
+      "4": "Тип занятости",
       "5": "Приоритет",
       "6": "Цена",
       "7": "Время добавления"
@@ -890,6 +916,7 @@
       "filters": {
         "titleAll": "Все фильтры"
       },
+      "disputePayment": "Оплата Спора",
       "saved": "Saved successfully",
       "cardAdd": "Add card",
       "addCase": "Add Case",
@@ -936,22 +963,26 @@
       "signWorkQuest": "Социальная сеть WorkQuest",
       "skills": "Skills",
       "smsVerification": "SMS verification",
-      "swapTitle": "Crosschain exchange",
+      "swapTitle": "Обмен между сетями",
       "swapInfo": "Swap info",
       "swapTokens": "Swap tokens",
       "withdrawal": "Withdrawal",
       "withdraw": "Withdraw",
       "sendTo": "Send To",
       "withdrawCard": "Withdraw to bank card",
-      "withdrawInfo": "Withdrawal info"
+      "withdrawInfo": "Withdrawal info",
+      "downloadApp": "Скачайте приложение",
+      "downloadWallet": "Download Wallet App"
     },
     "errors": {
       "errorQuests": "Error with quests",
       "errorSmsVer": "Error SMS verification",
       "emptyOpenQuests": "You don't have open quests, please create",
       "error": "Ошибка",
+      "errorNetwork": "Ошибка, Вы используете не правильную сеть. Переключитесь на {network}",
       "youCan’tDeleteActiveQuest": "Вы не можете удалить активный квест",
-      "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest"
+      "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest",
+      "dontHavePeople": "У вас нет пользователей для создания группового чата"
     },
     "chatCreate": {
       "title": "Create chat",
@@ -962,12 +993,12 @@
       "addMember": "Add member"
     },
     "disputes": {
-      "thereIsNoResponseFromTheEmployerOrEmployee": "There is no response from the employer / employee",
-      "badlyDoneWork": "Badly done work",
-      "additionalRequirementsHaveBeenPutForward": "Additional requirements have been put forward",
-      "inconsistenciesInTheRequirementsForTheDescriptionOfTheQuest": "Inconsistencies in the requirements for the description of the quest",
-      "theQuestIsCompletedButTheEmployeeOrEmployerHasNotConfirmedItsCompletion": "The quest is completed but the employee / employer has not confirmed its completion",
-      "anotherReason": "Другая причина"
+      "NoAnswer": "Нет ответа от работодателя / работника",
+      "AnotherReason": "Другая причина",
+      "PoorlyDoneJob": "Плохо выполненная работа",
+      "AdditionalRequirement": "Выдвинуты дополнительные требования",
+      "RequirementDoesNotMatch": "Несоответствия в требованиях к описанию квеста",
+      "NoConfirmationOfComplete": "Квест выполнен, но работник / работодатель не подтвердил его выполнение"
     },
     "2FA": {
       "enabled": "2FA enabled successfully!",
@@ -984,12 +1015,23 @@
       "depositInfo": "Deposit info",
       "withdrawInfo": "Withdrawal info"
     },
+    "draft": {
+      "youHaveAQuestDraft": "У вас есть черновик квеста. Очистить?",
+      "saveQuestDraft": "Сохранить черновик квеста?"
+    },
+    "payForDispute": "Вам нужно оплатить открытие спора",
+    "tryLater": "Пожалуйста, попробуйте позже...",
+    "checkExplorer": "Вы можете проверить статус транзакции на Explorer",
+    "transactionError": "Ошибка транзакции",
+    "fromAddress": "с",
+    "toAddress": "на",
+    "codeFromSms": "Код из СМС",
+    "saved": "Сохранено",
     "phoneNumber": "Phone Number",
     "value": "Value",
     "generatedWUSD": "WUSD будет сгенерировано",
     "choosePeriod": "Выберите срок кредита",
     "smallDescriptionForLoan": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    "recipient": "Recipient address",
     "successBuyWUSD": "Successfully purchased WUSD",
     "setTokenPrice": "Setting up {token} price",
     "approveRouter": "Approve {token} to Router",
@@ -1144,7 +1186,6 @@
     "chooseCard": "Choose card",
     "maximum": "Max",
     "transfer": "Transfer",
-    "recepient": "Recepient address",
     "currencyDetails": "Currency",
     "generatingDetails": "Generating",
     "collateralizationRatio": "Collateralization ratio",
@@ -1156,14 +1197,13 @@
     "choose": "Выбрать",
     "chooseCurrency": "Choose currency",
     "coinpaymebts": "Сoinpaymebts",
-    "swapTitle": "Crosschain exchange",
+    "swapTitle": "Обмен между сетями",
     "coin": "Coin",
-    "recepientBinance": "Recipient binance address",
     "createSwap": "Create swap",
-    "crosschain": "WorkQuest Bridge",
-    "crosschainText": "Eth > Binance",
-    "senderAddress": "Sender address",
-    "recepientAddress": "Recepient address",
+    "bridge": "WorkQuest Мост",
+    "bridgeText": "Eth > Binance",
+    "senderAddress": "Адрес отправителя",
+    "recipientAddress": "Адрес получателя",
     "worknetFee": "Eth fee",
     "binanceFee": "Binance fee",
     "welcomeText": "Please, tell us about your skills below",
@@ -1188,7 +1228,6 @@
     "priceOfAClickField": "price of a click",
     "cityField": "город",
     "cardHolderField": "card holder",
-    "recepientAddressField": "recepient address",
     "walletAddressField": "wallet address",
     "thanksText": "",
     "emailVerificationCodeField": "email verification",
@@ -1199,7 +1238,18 @@
     "txInfo": "Transaction info",
     "registration": "Вы верены что хотите зарегистрировать данных пользователей?",
     "claimConfirm": "Вы потдверждаете дейсвие клейм?",
-    "until": "До"
+    "until": "До",
+    "scanQrCode": "Просто отсканируйте QR-код",
+    "downOnSmartphone": "Скачайте Work Quest приложение на свой телефон",
+    "downWalletOnSmartphone": "Download Work Quest Wallet app on your smartphone",
+    "wouldReviewEmployee": "Добавить отзыв о сотруднике?",
+    "wouldReviewEmployer": "Добавить отзыв о работодателе?",
+    "successfulMethods": {
+      "claim": "Successful claim",
+      "refund": "Successful refund",
+      "withdraw": "Successful withdrawal",
+      "deposit": "Successful deposit"
+    }
   },
   "ui": {
     "jobQuestors": "В поиске работы",
@@ -1228,7 +1278,7 @@
     },
     "menu": {
       "unauthorized": "Not logged",
-      "crosschain": {
+      "bridge": {
         "title": "WorkQuest Bridge",
         "desc": "Secure and fast way to bring cross-chain assets between WorkNet, Ethereum and Binance Smart Chain."
       },
@@ -1276,9 +1326,34 @@
       }
     }
   },
+  "localNotifications": {
+    "messages": {
+      "inviteFriends": "Пригласите ваших друзей и получите награду!",
+      "wiki": "Ознакомиться со всем функционалом платформы можно на странице WorkQuest Wiki!",
+      "kyc": "Вы можете включить KYC на странице Sumsub.",
+      "twoFA": "Вы можете включить 2FA в настройках.",
+      "fillSettingsData": "Вы можете информацию о себе в настройках.",
+      "questDraft": "У вас есть сохраненный черновик квеста.",
+      "rateTheQuest": "Пожалуйста, оцените завершенную работу по квесту!",
+      "reviewEmp": "Пожалуйста, оцените своего Работодателя!",
+      "reviewWorker": "Пожалуйста, оцените своего Работника!"
+    },
+    "btns": {
+      "inviteFriends": "Получить награду",
+      "wiki": "Перейти в Wiki",
+      "kyc": "Включить KYC",
+      "toSettings": "Перейти в Настройки",
+      "questDraft": "Перейти на Создание квеста",
+      "rateTheQuest": "Перейти на Квест",
+      "reviewEmp": "Перейти в профиль Работодателя",
+      "reviewWorker": "Перейти в профиль Работника"
+    }
+  },
   "notifications": {
+    "QuestEditedOnContract": "Квест отредактирован на контракте",
     "title": "Уведомления",
     "invite": "Приглашаем вас завершить квест",
+    "OpenDispute": "Открыт спор",
     "openDispute": "Открыт спор",
     "questStarted": "Приглашает вас начать квест",
     "workerRejectedQuest": "Отказался от квеста",
@@ -1291,6 +1366,7 @@
     "workerAcceptedInvitationToQuest": "Принял приглашение на квест",
     "workerRejectedInvitationToQuest": "Отклонил приглашение на квест",
     "employerRejectedWorkersResponse": "Отклонил приглашение на квест",
+    "QuestStatusUpdated": "Статус квеста обновлен",
     "userLeftReviewAboutQuest": "Оставил отзыв о квесте",
     "waitWorker": "Квест ожидает",
     "disputeDecision": "Решение спора",
@@ -1302,17 +1378,18 @@
     "newDiscussionLike": "Новый лайк на дискуссии"
   },
   "wallet": {
+    "frozen": "Замороженный баланс",
     "WUSD": "WUSD wallet",
     "cryptoWallet": "Crypto wallet",
-    "send": "Send",
-    "toThisAddress": "to this address",
+    "send": "Отправить",
+    "toThisAddress": "на этот адрес",
     "receive": "Receive",
     "transfer": "Buy / Send",
-    "addCardProposal": "Add bank card for easy withdrawal",
-    "addCard": "Add card",
+    "addCardProposal": "Добавьте банковскую карту для удобного вывода",
+    "addCard": "Добавить карту",
     "collateral": {
-      "balance": "Collateral balance",
-      "coin": "coin",
+      "balance": "Залоговый баланс",
+      "coin": "монета",
       "sum": "sum",
       "amountInDollars": "amount in dollars",
       "attentionQuotient": "attention quotient",
@@ -1320,10 +1397,10 @@
       "takeTitle": "Take collateral"
     },
     "table": {
-      "trx": "Transactions",
-      "txHash": "Txn Hash",
-      "status": "Status",
-      "block": "Block",
+      "trx": "Транзакции",
+      "txHash": "Txn Хэш",
+      "status": "Статус",
+      "block": "Блок",
       "timestamp": "Timestamp",
       "transferred": "Tokens Transferred",
       "value": "Quantity",
@@ -1372,20 +1449,25 @@
     },
     "leaveChat": "Покинуть беседу",
     "loadMore": "Показать больше",
-    "searchTitle": "Имя/Квест/Группа"
+    "searchTitle": "Имя/Квест/Группа",
+    "menu": {
+      "giveAQuest": "Дать квест",
+      "removeFromChat": "Удалить из чата"
+    }
   },
   "settings": {
     "additionalPhoneNumber": "Дополнительный номер телефона",
     "mainPhoneNumber": "Основной номер телефона",
-    "workProposals": "Filter all work proposals",
+    "whoCouldIInvite": "Кто может откликаться на мои квесты?",
+    "whoCouldInviteMe": "Кто может приглашать меня на квесты?",
     "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
     "twitter": "twitter",
     "instagram": "instagram",
-    "companyName":"company",
-    "ceoName":"ceo",
-    "websiteName":"website",
+    "companyName": "компания",
+    "ceoName": "ген.дир.",
+    "websiteName": "website",
     "enterPhoneNumber": "Please enter your phone number",
     "enterCurrentLocation": "Please select current location",
     "placeOfStudying": "Место учебы",
@@ -1409,9 +1491,6 @@
     "workExps": {
       "companyName": "Название компании"
     },
-    "urgentJobOffers": "Urgent job offers",
-    "shortTermJobOffers": "Short term job offers",
-    "fixedDeliveryJobOffers": "Fixed delivery job offers",
     "addInfo": "You can add information about yourself, upload a profile photo and go through the KYC procedure to increase your rating. The rating depends on your profile data and reviews.",
     "alsoRating": "The higher your ranking, the easier it is to find you in searches.",
     "dontShow": "Don’t show again",
@@ -1426,7 +1505,8 @@
     "linkedInUsername": "LinkedIn username",
     "facebookUsername": "Facebook username",
     "skills": "Навыки:",
-    "whoCanSee": "Кто может видеть мой профиль?",
+    "whoAppearsInMyListEmployees": "Кто отображается в моём списке работников?",
+    "whoAppearsInMyListEmployers": "Кто отображается в моём списке работодателей?",
     "allUsers": "All registered users",
     "allInternet": "Internet users worldwide",
     "onlyWhenSubmittedWork": "Only when submitting job offers",
@@ -1444,10 +1524,11 @@
       "title": "Workplace",
       "select": "Select distant work",
       "allWorkplaces": "All workplaces",
-      "distantWork": "Distant work",
-      "workInOffice": "Work in office",
-      "bothVariant": "Both variants"
-    }
+      "distantWork": "Remote work",
+      "workInOffice": "In-office",
+      "bothVariant": "Hybrid workplace"
+    },
+    "selectPayPeriod": "Выберите период оплаты"
   },
   "raising-views": {
     "raisingViews": "Увеличение просмотров",
@@ -1519,8 +1600,8 @@
       "event": "Событие"
     },
     "event": {
-      "claimed": "Получено",
-      "paid": "Выплачено"
+      "PaidReferral": "Выплачено",
+      "RewardClaimed": "Получено"
     }
   },
   "pension": {
@@ -1821,6 +1902,7 @@
     "transaction": {
       "notEnoughFunds": "Not enough funds"
     },
+    "selectSpec": "Пожалуйста, выберите специализацию",
     "incorrectPass": "Oops, something went wrong. Check the data and try again.",
     "emptyData": {
       "emptyQuests": "Oops, there's no quests here yet",
@@ -1854,7 +1936,7 @@
     "socialText": "Share in socials",
     "share": "Share link"
   },
-  "crosschain": {
+  "bridge": {
     "pageName": "WorkQuest Bridge",
     "pageAbout": "Secure and fast way to bring cross-chain assets between WorkNet, Ethereum and Binance Smart Chain.",
     "sourceBlockchain": "Source blockchain",
@@ -1928,7 +2010,8 @@
       "responded": "Responded quests",
       "performed": "Performed quests",
       "active": "Активные квесты",
-      "invited": "Invited quests"
+      "invited": "Invited quests",
+      "created": "Созданные квесты"
     }
   },
   "footer": {
@@ -2060,9 +2143,9 @@
             "title": "Liquidity mining",
             "subtitle": "Providing liquidity to pools to receive rewards based on your amount of liquidity in the pool."
           },
-          "crosschain": {
-            "title": "Crosschain",
-            "subtitle": "Most secure and fast way to bring crosschain assets between WorkNet, ETH and BSC."
+          "bridge": {
+            "title": "Мост",
+            "subtitle": "Самый безопасный и быстрый способ переноса активов между сетями WorkNet, ETH and BSC."
           },
           "staking": {
             "title": "Staking",
@@ -2177,7 +2260,7 @@
             "subtitle": "Quest delivery time: Urgent, Short term, Fixed delivery."
           },
           "job": {
-            "title": "Type of job",
+            "title": "Type of employment",
             "subtitle": "Select the type of employment: Full-time, Part-time, Fixed term, Contract."
           },
           "distant": {
@@ -2267,10 +2350,11 @@
     }
   },
   "workPlaces": {
-    "title": "Workplace",
+    "title": "Рабочее место",
     "all": "All workplaces",
-    "distant": "Distant work",
-    "office": "Work in office",
-    "both": "Both variants"
+    "Remote": "Удаленная работа",
+    "InOffice": "В офисе",
+    "Hybrid": "Гибридное рабочее место"
   }
 }
+

@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="withdraw"
-    :title="$t('modals.titles.withdraw')"
+    :title="$tc('modals.titles.withdraw')"
   >
     <div class="withdraw__content content">
       <div class="content__desc">
@@ -12,7 +12,7 @@
           class="buttons__button"
           mode="outline"
           data-selector="CANCEL"
-          @click="hide"
+          @click="CloseModal"
         >
           {{ $t('meta.btns.cancel') }}
         </base-btn>
@@ -40,9 +40,6 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     openModal() {
       const receiptData = [
         {

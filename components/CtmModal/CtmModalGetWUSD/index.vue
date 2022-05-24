@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="getWUSD"
-    :title="$t('modals.titles.buyWUSD')"
+    :title="$tc('modals.titles.buyWUSD')"
   >
     <div class="getWUSD__content content">
       <validation-observer
@@ -54,7 +54,7 @@
                 class="content__input"
                 placeholder="10 WUSD"
                 rules="required|decimal"
-                :name="$t('modals.fieldCountOf', { countOf: 'WUSD' })"
+                :name="$tc('modals.fieldCountOf', { countOf: 'WUSD' })"
                 type="number"
                 data-selector="WUSD"
                 @input="onChangeWUSD"
@@ -70,7 +70,7 @@
                 class="content__input"
                 :placeholder="`10 ${currentCurrency}`"
                 rules="required|decimal"
-                :name="$t('modals.fieldCountOf', { countOf: `${ currentCurrency } collateral` })"
+                :name="$tc('modals.fieldCountOf', { countOf: `${ currentCurrency } collateral` })"
                 type="number"
                 data-selector="TOKEN"
                 @input="onChangeCollateral"
@@ -78,7 +78,7 @@
             </div>
             <div
               class="content__field"
-              @keydown.delete="changeCaretPosition"
+              @keydown.delete="ChangeCaretPosition( $refs.percentInput)"
             >
               <div class="content__label">
                 {{ $t('modals.percentageConversion') }}
@@ -88,13 +88,13 @@
                 :value="collateralPercent"
                 class="content__input"
                 placeholder="150 %"
-                rules="required|min_percent:150"
-                :name="$t('modals.fieldPercentConversion')"
+                rules="required|min_percent:150|zeroFail"
+                :name="$tc('modals.fieldPercentConversion')"
                 data-selector="PERCENT"
                 @input="calcCollateralPercent"
               />
               <div class="content__text">
-                {{ $t('modals.conversionAdditionalInfo', {risks:getRisksGrade}) }}
+                {{ $t('modals.conversionAdditionalInfo', {risks: getRisksGrade}) }}
               </div>
             </div>
           </div>
@@ -127,23 +127,23 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { getGasPrice, getWalletAddress } from '~/utils/wallet';
-import * as abi from '~/abi/abi';
-import { tokenMap, TokenSymbols } from '~/utils/enums';
+import { WQOracle, WQRouter, ERC20 } from '~/abi/index';
+import { TokenMap, TokenSymbols } from '~/utils/enums';
 
 export default {
   name: 'ModalGetWUSD',
   data() {
     return {
-      selCurrencyID: tokenMap.BNB,
+      selCurrencyID: TokenMap.BNB,
       amountWUSD: '',
       amountCollateral: '',
       collateralPercent: '',
       currentCurrencyPrice: 0,
       optimalCollateralRatio: 0,
       checkpoints: [
-        { name: this.$t('meta.coins.bnb'), id: tokenMap.BNB },
-        { name: this.$t('meta.coins.eth'), id: tokenMap.ETH },
-        { name: this.$t('meta.coins.wqt'), id: tokenMap.WQT },
+        { name: this.$t('meta.coins.bnb'), id: TokenMap.BNB },
+        { name: this.$t('meta.coins.eth'), id: TokenMap.ETH },
+        // { name: this.$t('meta.coins.wqt'), id: TokenMap.WQT }, // TODO: wqt native now, fix it
       ],
     };
   },
@@ -199,12 +199,16 @@ export default {
     onChangeWUSD(value) {
       this.amountWUSD = value;
       this.calculateCollateral();
-      this.$nextTick(() => { this.$refs.form.validate(); });
+      this.$nextTick(() => {
+        this.$refs.form.validate();
+      });
     },
     onChangeCollateral(value) {
       this.amountCollateral = value;
       this.calculateWUSD();
-      this.$nextTick(() => { this.$refs.form.validate(); });
+      this.$nextTick(() => {
+        this.$refs.form.validate();
+      });
     },
     calculateWUSD() {
       if (+this.amountCollateral > 0 && +this.collateralPercentClear > 0 && +this.currentCurrencyPrice > 0) {
@@ -252,7 +256,7 @@ export default {
       const v = '0x25';
       const r = '0x4f4c17305743700648bc4f6cd3038ec6f6af0df73e31757007b7f59df7bee88d';
       const s = '0x7e1941b264348e80c78c4027afc65a87b0a5e43e86742b8ca0823584c6788fd0';
-      const resultGasSetTokenPrice = await getGasPrice(abi.WQOracle, process.env.WORKNET_ORACLE, 'setTokenPriceUSD', [timestamp, price, v, r, s, payload.currency]);
+      const resultGasSetTokenPrice = await getGasPrice(WQOracle, process.env.WORKNET_ORACLE, 'setTokenPriceUSD', [timestamp, price, v, r, s, payload.currency]);
 
       if (resultGasSetTokenPrice.gas && resultGasSetTokenPrice.gasPrice) {
         const setTokenPriceData = {
@@ -270,42 +274,60 @@ export default {
           title: this.$t('modals.setTokenPrice', { token: payload.currency }),
           fields: {
             from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-            fee: { name: this.$t('wallet.table.trxFee'), value: new BigNumber(setTokenPriceData.gasPrice).multipliedBy(setTokenPriceData.gas).shiftedBy(-18).toFixed(), symbol: TokenSymbols.WUSD },
+            fee: {
+              name: this.$t('wallet.table.trxFee'),
+              value: new BigNumber(setTokenPriceData.gasPrice).multipliedBy(setTokenPriceData.gas).shiftedBy(-18).toFixed(),
+              symbol: TokenSymbols.WUSD,
+            },
           },
-          submitMethod: async () => await this.$store.dispatch('collateral/setTokenPrice', { payload, setTokenPriceData }),
-          callback: async () => { await this.approveRouter(payload); },
+          submitMethod: async () => await this.$store.dispatch('collateral/setTokenPrice', {
+            payload,
+            setTokenPriceData,
+          }),
+          callback: async () => {
+            await this.approveRouter(payload);
+          },
         });
       } else {
         await this.approveRouter(payload);
       }
     },
     async approveRouter(payload) {
-      const allowance = await this.$store.dispatch('wallet/getAllowance', { tokenAddress: tokenMap[payload.currency], spenderAddress: process.env.WORKNET_ROUTER });
+      const allowance = await this.$store.dispatch('wallet/getAllowance', {
+        tokenAddress: TokenMap[payload.currency],
+        spenderAddress: process.env.WORKNET_ROUTER,
+      });
       if (+allowance < +payload.collateral) {
-        const resultGasApprove = await getGasPrice(abi.ERC20, tokenMap[payload.currency], 'approve', [process.env.WORKNET_ROUTER, payload.collateralBN]);
+        const resultGasApprove = await getGasPrice(ERC20, TokenMap[payload.currency], 'approve', [process.env.WORKNET_ROUTER, payload.collateralBN]);
         this.ShowModal({
           key: modals.transactionReceipt,
           title: this.$t('modals.approveRouter', { token: payload.currency }),
           fields: {
             from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-            fee: { name: this.$t('wallet.table.trxFee'), value: new BigNumber(resultGasApprove.gasPrice).multipliedBy(resultGasApprove.gas).shiftedBy(-18).toFixed(), symbol: TokenSymbols.WUSD },
+            fee: {
+              name: this.$t('wallet.table.trxFee'),
+              value: new BigNumber(resultGasApprove.gasPrice).multipliedBy(resultGasApprove.gas).shiftedBy(-18).toFixed(),
+              symbol: TokenSymbols.WUSD,
+            },
           },
           submitMethod: async () => {
             await this.$store.dispatch('wallet/approve', {
-              tokenAddress: tokenMap[payload.currency],
+              tokenAddress: TokenMap[payload.currency],
               spenderAddress: process.env.WORKNET_ROUTER,
               amount: payload.collateral,
             });
             return { ok: true };
           },
-          callback: async () => { await this.getWUSD(payload); },
+          callback: async () => {
+            await this.getWUSD(payload);
+          },
         });
       } else {
         await this.getWUSD(payload);
       }
     },
     async getWUSD(payload) {
-      const resultGasBuyWUSD = await getGasPrice(abi.WQRouter, process.env.WORKNET_ROUTER, 'produceWUSD', [payload.collateralBN, payload.ratioBN, payload.currency]);
+      const resultGasBuyWUSD = await getGasPrice(WQRouter, process.env.WORKNET_ROUTER, 'produceWUSD', [payload.collateralBN, payload.ratioBN, payload.currency]);
       const buyWUSDData = {
         gasPrice: resultGasBuyWUSD.gasPrice,
         gas: resultGasBuyWUSD.gas,
@@ -322,7 +344,11 @@ export default {
             value: payload.collateral,
             symbol: payload.currency,
           },
-          fee: { name: this.$t('wallet.table.trxFee'), value: new BigNumber(resultGasBuyWUSD.gasPrice).multipliedBy(resultGasBuyWUSD.gas).shiftedBy(-18).toFixed(), symbol: TokenSymbols.WUSD },
+          fee: {
+            name: this.$t('wallet.table.trxFee'),
+            value: new BigNumber(resultGasBuyWUSD.gasPrice).multipliedBy(resultGasBuyWUSD.gas).shiftedBy(-18).toFixed(),
+            symbol: TokenSymbols.WUSD,
+          },
         },
         submitMethod: async () => await this.$store.dispatch('collateral/buyWUSD', { payload, buyWUSDData }),
         callback: async () => {
@@ -331,39 +357,9 @@ export default {
       });
     },
     calcCollateralPercent(value) {
-      const valueWithoutWords = value.replace(/[^0-9,.]/g, '');
-      const isEmpty = valueWithoutWords.length === 0;
-      const isDotFirst = valueWithoutWords[0] === '.' || valueWithoutWords[0] === ',';
-      if (isEmpty) {
-        this.collateralPercent = '';
-      } else if (isDotFirst) {
-        const memo = valueWithoutWords.split('');
-        memo.unshift('0');
-        if (memo[memo.length - 1] !== '%') { memo.push('%'); }
-        this.collateralPercent = memo.join('');
-      } else {
-        this.collateralPercent = `${valueWithoutWords}%`;
-      }
-      this.collateralPercent = this.collateralPercent.replace(/,/g, '.');
-      if (this.collateralPercent.includes('.')) {
-        const withoutDotsArray = this.collateralPercent.split('.');
-        if (withoutDotsArray.length > 2) {
-          withoutDotsArray.splice(1, 0, '.');
-          this.collateralPercent = withoutDotsArray.join('');
-        }
-      }
+      this.collateralPercent = this.CalcPercent(value, this.collateralPercent);
       this.calculateCollateral();
-      this.changeCaretPosition();
-    },
-    changeCaretPosition() {
-      const input = this.$refs.percentInput?.$refs.input;
-      this.$nextTick(() => {
-        const { length } = input.value;
-        if (input.value[length - 1] === '%' && input.selectionStart === length) {
-          input.selectionStart = length - 1;
-          input.selectionEnd = length - 1;
-        }
-      });
+      this.ChangeCaretPosition(this.$refs.percentInput);
     },
   },
 };
@@ -374,68 +370,80 @@ export default {
 .getWUSD {
   max-width: 490px !important;
   height: auto !important;
-  padding: 0!important;
-  &__content{
+  padding: 0 !important;
+
+  &__content {
     padding: 25px 28px 30px 28px;
   }
 }
-  .buttons{
-    display: grid;
-    grid-template-columns: repeat(2, calc(50% - 10px));
-    grid-gap: 20px;
-    gap: 20px;
-    margin-top: 40px;
-  }
-.content{
-  &__field{
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(2, calc(50% - 10px));
+  grid-gap: 20px;
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.content {
+  &__field {
     margin-top: 3px;
   }
+
   &__label {
     margin-bottom: 5px;
   }
+
   &__text {
     color: #7C838D;
     font-weight: 400;
     font-size: 14px;
     margin-top: 3px;
   }
+
   &__checkpoints {
     margin-bottom: 25px;
+
     &_label {
       margin-bottom: 10px;
     }
   }
 }
-.checkpoints{
+
+.checkpoints {
   &__label {
     margin-bottom: 15px;
     font-weight: 500;
     font-size: 16px;
     line-height: 130%;
   }
-  &__main{
+
+  &__main {
     display: grid;
     grid-template-rows: repeat(3, 1fr);
     text-align: left;
     justify-content: flex-start;
     gap: 13px;
   }
+
   &__array {
     display: grid;
     grid-template-columns: repeat(2, auto);
     gap: 10px;
+
     > label {
       margin: unset;
     }
   }
-  &__item{
-   font-size: 16px;
-   font-weight: 400;
-   border-radius: 50%;
-   width: 25px;
-   height: 25px;
-   border: 1px solid #0083C7;
-   cursor: pointer;
- }
+
+  &__item {
+    font-size: 16px;
+    font-weight: 400;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    border: 1px solid #0083C7;
+    cursor: pointer;
+  }
 }
 </style>

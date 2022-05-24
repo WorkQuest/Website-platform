@@ -20,7 +20,7 @@
       <form
         class="auth__fields"
         action=""
-        @submit.prevent="signUp"
+        @submit.prevent="handleSubmit(signUp)"
       >
         <base-field
           v-model="model.firstName"
@@ -76,7 +76,7 @@
           :placeholder="$t('signUp.password')"
           rules="required_if|min:8"
           autocomplete="current-password"
-          type="password"
+          :type="isPasswordVisible?'text':'password'"
           vid="confirmation"
           data-selector="PASSWORD"
         >
@@ -86,6 +86,16 @@
               alt=""
             >
           </template>
+          <template
+            v-if="model.password"
+            v-slot:right-absolute
+            class="field__block"
+          >
+            <btn-password-visibility
+              :is-password-visible="isPasswordVisible"
+              @toggleVisibility="isPasswordVisible = $event"
+            />
+          </template>
         </base-field>
         <base-field
           v-model="model.passwordConfirm"
@@ -93,7 +103,7 @@
           :name="$t('signUp.confirmPassword')"
           :placeholder="$t('signUp.confirmPassword')"
           rules="required_if|min:8|confirmed:confirmation"
-          type="password"
+          :type="isPasswordConfirmVisible?'text':'password'"
           data-selector="CONFIRM_PASSWORD"
         >
           <template v-slot:left>
@@ -101,6 +111,16 @@
               src="~assets/img/icons/password.svg"
               alt=""
             >
+          </template>
+          <template
+            v-if="model.passwordConfirm"
+            v-slot:right-absolute
+            class="field__block"
+          >
+            <btn-password-visibility
+              :is-password-visible="isPasswordConfirmVisible"
+              @toggleVisibility="isPasswordConfirmVisible = $event"
+            />
           </template>
         </base-field>
         <div class="auth__action">
@@ -134,6 +154,8 @@ export default {
         password: '',
         passwordConfirm: '',
       },
+      isPasswordVisible: false,
+      isPasswordConfirmVisible: false,
     };
   },
   computed: {

@@ -72,12 +72,14 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { InfoModeEmployer, InfoModeWorker, QuestStatuses } from '~/utils/enums';
+import { Path } from '~/utils/enums';
+import { QuestStatuses, InfoModeEmployer } from '~/utils/сonstants/quests';
 import skills from '~/components/app/pages/common/skills';
 import modals from '~/store/modals/modals';
 
 export default {
   name: 'QuestPanel',
+  QuestStatuses,
   components: {
     skills,
   },
@@ -97,13 +99,10 @@ export default {
       questData: 'quests/getQuest',
     }),
     questDDMode() {
-      return ![InfoModeEmployer.Dispute, InfoModeEmployer.Done].includes(this.questData.status);
-    },
-    InfoModeEmployer() {
-      return InfoModeEmployer;
-    },
-    InfoModeWorker() {
-      return InfoModeWorker;
+      return [
+        QuestStatuses.Created,
+        QuestStatuses.Rejected,
+      ].includes(this.questData.status);
     },
     questStatuses() {
       return QuestStatuses;
@@ -136,7 +135,7 @@ export default {
       );
     },
     showProfile() {
-      this.$router.push(`/profile/${this.questData.userId}`);
+      this.$router.push(`/${Path.PROFILE}/${this.questData.userId}`);
     },
   },
 };
