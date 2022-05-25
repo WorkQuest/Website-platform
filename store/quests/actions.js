@@ -146,7 +146,7 @@ export default {
       const { result } = await this.$axios.$get(`/v1/quest/${questId}/responses`);
       const responded = result.responses.filter((response) => response.status === 0 && response.type === ResponsesType.Responded) || [];
       const invited = result.responses.filter((response) => response.status >= 0 && response.type === ResponsesType.Invited) || [];
-      commit('setResponses', { result, responded, invited });
+      commit('setResponses', { responded, invited });
       return result;
     } catch (e) {
       console.error('quests/responsesToQuest');
@@ -156,7 +156,7 @@ export default {
   async setResponseToQuest({ commit }, { data: response }) {
     const responded = response.status === 0 && response.type === ResponsesType.Responded ? response : '';
     const invited = response.status >= 0 && response.type === ResponsesType.Invited ? response : '';
-    commit('setResponseToQuest', { response, responded, invited });
+    commit('setResponseToQuest', { responded, invited });
   },
   async inviteOnQuest({ commit }, { questId, payload }) {
     try {
