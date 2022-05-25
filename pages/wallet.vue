@@ -7,7 +7,9 @@
             {{ $t('wallet.buyWQT.title') }}
           </div>
           <div class="buy-wqt__sub">
-            <div>{{ $t('wallet.buyWQT.sub') }}</div>
+            <div class="buy-wqt__sub_text">
+              {{ $t('wallet.buyWQT.sub') }}
+            </div>
             <base-btn
               mode="outline"
               @click="showBuyWQTModal"
