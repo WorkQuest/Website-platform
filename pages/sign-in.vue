@@ -99,10 +99,10 @@
       <base-btn
         class="auth__resend"
         data-selector="RESEND-LETTER"
-        :disabled="!model.email || isStartedTimer"
+        :disabled="disableResend"
         @click="resendLetter"
       >
-        {{ `${$t('meta.btns.resendEmail')} ${counter > 0 ? $tc('meta.units.seconds', counter ) : ''}` }}
+        {{ `${$t('meta.btns.resendEmail')} ${isStartedTimer ? $tc('meta.units.seconds', 0,{count:seconds} ) : ''}` }}
       </base-btn>
       <div class="auth__text auth__text_wrap">
         {{ $t('signIn.or') }}
@@ -180,6 +180,8 @@ import {
 } from '~/utils/enums';
 import { images } from '~/utils/images';
 
+const timerDefaultValue = 50;
+
 export default {
   name: 'SignIn',
   layout: 'auth',
@@ -190,6 +192,9 @@ export default {
   },
   data() {
     return {
+      disableResend: true,
+      timerValue: timerDefaultValue,
+
       isShowBtnResend: false,
       isStartedTimer: false,
       timer: 60,
@@ -215,6 +220,10 @@ export default {
     walletState() {
       return WalletState;
     },
+    seconds() {
+      console.log(this.timerValue);
+      return this.timerValue;
+    },
   },
   watch: {
     counter(time) {
@@ -223,17 +232,19 @@ export default {
     },
   },
   created() {
-    window.addEventListener('beforeunload', this.clearCookies);
+    window.addEventListener('beforeunload', this.beforeunload);
     const { token } = this.$route.query;
     if (token) sessionStorage.setItem('confirmToken', String(token));
   },
   async mounted() {
     this.continueTimer();
-    this.isLoginWithSocial = this.$cookies.get('socialNetwork');
+
     const access = this.$cookies.get('access');
     const refresh = this.$cookies.get('refresh');
     const userStatus = this.$cookies.get('userStatus');
     if (+userStatus === UserStatuses.Confirmed && access) await this.redirectUser();
+
+    this.isLoginWithSocial = this.$cookies.get('socialNetwork');
     if (this.isLoginWithSocial && access && refresh && +userStatus === UserStatuses.Confirmed) {
       this.SetLoader(true);
       await this.$store.dispatch('user/getUserData');
@@ -248,7 +259,9 @@ export default {
         social: this.isLoginWithSocial,
       });
     }
+
     if (sessionStorage.getItem('confirmToken')) this.ShowToast(this.$t('messages.loginToContinue'), ' ');
+
     const isRef = this.$router.history._startLocation.includes('ref');
     if (isRef) {
       const ref = this.$router.history._startLocation.replace('/?ref=', '');
@@ -263,28 +276,68 @@ export default {
         sessionStorage.setItem('referralId', refId);
       }
     }
-    this.$cookies.set('timerCookie', {
-      timer: this.counter > 0 && this.counter < 60 ? this.counter : this.counter = 60,
-    }, { maxAge: 60 });
+    this.$cookies.remove('timer');
+
+    // this.$cookies.set('timerCookie', {
+    //   timer: this.counter > 0 && this.counter < 60 ? this.counter : this.counter = 60,
+    // }, { maxAge: 60 });
   },
   methods: {
+    beforeunload() {
+      if (this.isStartedTimer) {
+        this.$cookies.set('timer', {
+          timerValue: this.timerValue,
+          createdAt: Date.now(),
+        });
+      } else this.$cookies.remove('timer');
+      this.clearCookies();
+    },
+
     resetTimer() {
       this.counter = 60;
       this.isStartedTimer = false;
     },
     continueTimer() {
-      const { timer } = this.$cookies.get('timerCookie');
-      this.isShowBtnResend = true;
-      this.isStartedTimer = true;
-      this.counter = timer;
+      const timer = this.$cookies.get('timer');
+      if (!timer) return;
+      const spendSecs = (this.$moment().diff(timer.createdAt) / 1000).toFixed(0);
+      console.log(spendSecs);
+      if (timer.timerValue < spendSecs) {
+        this.timerValue = timerDefaultValue;
+        this.disableResend = false;
+        this.isStartedTimer = false;
+        clearInterval(this.timerId);
+        return;
+      }
+      this.timerValue = timer.timerValue;
       this.startTimer();
+      // this.isShowBtnResend = true;
+      // this.isStartedTimer = true;
+      // this.counter = timer;
+      // this.startTimer();
     },
     startTimer() {
-      this.$cookies.set('timerCookie', { timer: 60 });
-      if (this.counter > 0 && this.counter <= 60) {
+      if (!this.isStartedTimer) {
+        this.timerId = setInterval(() => {
+          if (this.timerId && this.timerValue === 0) {
+            this.timerValue = timerDefaultValue;
+            this.disableResend = false;
+            this.isStartedTimer = false;
+            clearInterval(this.timerId);
+            return;
+          }
+          this.timerValue -= 1;
+        }, 1000);
+
         this.isStartedTimer = true;
-        this.timer = setInterval(() => { this.counter -= 1; }, 1000);
-      } else this.resetTimer();
+        this.disableResend = true;
+      }
+
+      // this.$cookies.set('timerCookie', { timer: 60 });
+      // if (this.timerValue > 0 && this.timerValue <= 60) {
+      //   this.isStartedTimer = true;
+      //   this.timer = setInterval(() => { this.counter -= 1; }, 1000);
+      // } else this.resetTimer();
     },
     clearCookies() {
       if (this.userData.id) return;
@@ -327,15 +380,16 @@ export default {
       this.SetLoader(true);
       this.model.email = this.model.email.trim();
       if (this.model.email) {
-        await this.$store.dispatch('user/resendEmail', { email: this.model.email });
+        // await this.$store.dispatch('user/resendEmail', { email: this.model.email });
         await this.$store.dispatch('main/showToast', {
           title: this.$t('registration.emailConfirmTitle'),
           text: this.$t('registration.emailConfirm'),
         });
-        if (!this.isStartedTimer) {
-          this.resetTimer();
-          this.startTimer();
-        }
+        this.startTimer();
+        // if (!this.isStartedTimer) {
+        // this.resetTimer();
+
+        // }
       }
       this.SetLoader(false);
     },
@@ -368,6 +422,7 @@ export default {
       const confirmToken = sessionStorage.getItem('confirmToken');
       // Unconfirmed account w/o confirm token
       if (this.userStatus === UserStatuses.Unconfirmed && !confirmToken) {
+        this.disableResend = false;
         await this.$store.dispatch('main/showToast', {
           title: this.$t('registration.emailConfirmTitle'),
           text: this.$t('registration.emailConfirm'),
