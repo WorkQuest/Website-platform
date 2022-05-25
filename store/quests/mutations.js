@@ -44,6 +44,12 @@ export default {
     state.responded = responded;
     state.invited = invited;
   },
+  setResponseToQuest(state, { response, responded, invited }) {
+    state.responses.responses.push(response);
+    state.responses.count += 1;
+    if (responded) state.responded.push(responded);
+    if (invited) state.invited.push(invited);
+  },
   setResponsesMy(state, data) {
     state.responsesMy = data;
   },

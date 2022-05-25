@@ -1,6 +1,5 @@
 import BigNumber from 'bignumber.js';
-import Vue from 'vue';
-import { ResponsesType, TokenSymbols, UserRole } from '~/utils/enums';
+import { ResponsesType, UserRole } from '~/utils/enums';
 
 import {
   QuestMethods,
@@ -21,7 +20,6 @@ import {
 } from '~/utils/wallet';
 
 import { error, success } from '~/utils/web3';
-import modals from '~/store/modals/modals';
 
 export default {
   async getWorkerData({ commit }, userId) {
@@ -163,6 +161,11 @@ export default {
       console.error('quests/responsesToQuest');
       return error();
     }
+  },
+  async setResponseToQuest({ commit }, { data: response }) {
+    const responded = response.status === 0 && response.type === ResponsesType.Responded ? response : '';
+    const invited = response.status >= 0 && response.type === ResponsesType.Invited ? response : '';
+    commit('setResponseToQuest', { response, responded, invited });
   },
   async inviteOnQuest({ commit }, { questId, payload }) {
     try {

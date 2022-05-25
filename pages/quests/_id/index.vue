@@ -261,7 +261,12 @@ export default {
     },
     notifications: {
       handler() {
-        const { notification } = this.notifications[0];
+        const notification = this.notifications[0];
+        if (this.mounted && notification && notification.data.questId === this.$route.params.id && (notification.action === NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST
+          || notification.action === NotificationAction.WORKER_RESPONDED_TO_QUEST)) {
+          this.$store.dispatch('quests/setResponseToQuest', notification);
+          return;
+        }
         if (this.mounted && notification
           && !this.isEmployer
           && notification.data.questId === this.$route.params.id
