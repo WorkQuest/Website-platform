@@ -402,9 +402,9 @@ export default {
    * @param _
    * @param data - from promoteQuest abi
    */
-  async promoteQuest(_, data) {
+  async promote(_, { method, data }) {
     try {
-      const res = await sendWalletTransaction('promoteQuest', {
+      const res = await sendWalletTransaction(method, {
         address: process.env.WORKNET_PROMOTION,
         abi: WQPromotion,
         data,

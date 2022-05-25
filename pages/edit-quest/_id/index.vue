@@ -499,7 +499,7 @@ export default {
             fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WQT },
           },
           submitMethod: async () => {
-            const res = await this.$store.dispatch('quests/promoteQuest', data);
+            const res = await this.$store.dispatch('quests/promote', { method: 'promoteQuest', data });
             if (!res.ok) {
               this.ShowToast(res.msg);
               return error();
