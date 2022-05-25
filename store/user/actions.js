@@ -21,6 +21,7 @@ import {
 } from '~/utils/enums';
 
 import { WQPromotion } from '~/abi/index';
+import { PaidTariff } from '~/utils/сonstants/quests';
 
 const { WORKNET_PROMOTION } = process.env;
 
@@ -356,7 +357,49 @@ export default {
       return false;
     }
   },
-  async getRaiseViewPrice({ commit }, { type }) {
+  /**
+   *
+   * @param commit
+   * @param type - string: questsTariff || usersTariff
+   * @returns {Promise<{msg: string, code: number, data: null, ok: boolean}|{result: *, ok: boolean}>}
+   */
+  async fetchRaiseViewPrice({ commit }, { type }) { // new method
+    try {
+      const periods = RaiseViewTariffPeriods[type];
+      const tariffByIndex = {
+        0: PaidTariff.GoldPlus,
+        1: PaidTariff.Gold,
+        2: PaidTariff.Silver,
+        3: PaidTariff.Bronze,
+      };
+      const tariffs = ['0', '1', '2', '3'];
+      let result;
+      const toFetch = [];
+      for (let i = 0; i < periods.length; i += 1) {
+        for (let j = 0; j < tariffs.length; j += 1) {
+          toFetch.push(async () => {
+            const cost = await fetchContractData(
+              type,
+              WQPromotion,
+              WORKNET_PROMOTION,
+              [tariffs[j], periods[i]],
+              GetWalletProvider(),
+            );
+            console.log(cost);
+            result[tariffByIndex[j]][i] = new BigNumber(+cost).shiftedBy(-18).toString();
+            return success();
+          });
+        }
+      }
+      await Promise.all(toFetch);
+      console.log('prices', result);
+      return success(result);
+    } catch (e) {
+      console.log('user/fetchRaiseViewPrice', e);
+      return error();
+    }
+  },
+  async getRaiseViewPrice({ commit }, { type }) { // todo: del
     try {
       const periods = RaiseViewTariffPeriods[type];
       const tariffs = ['1', '2', '3', '4'];
@@ -366,7 +409,7 @@ export default {
         for (let j = 0; j < periods.length; j += 1) {
           const data = [tariffs[i], periods[j]];
           /* eslint-disable no-await-in-loop */
-          const cost = await fetchContractData(
+          const cost = await fetchContractData( // TODO: refactor to promise all
             type,
             WQPromotion,
             WORKNET_PROMOTION,
