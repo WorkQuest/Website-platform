@@ -34,7 +34,7 @@ export default {
   },
   async questListForInvitation({ commit }, userId) {
     try {
-      const response = await this.$axios.$get(`/v1/employer/${userId}/quests`);
+      const response = await this.$axios.$get(`/v1/employer/${userId}/get-quests`);
       commit('setQuestListForInvitation', response.result);
       return response.result;
     } catch (e) {
