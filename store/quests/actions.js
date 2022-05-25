@@ -1,6 +1,5 @@
 import BigNumber from 'bignumber.js';
-import Vue from 'vue';
-import { ResponsesType, TokenSymbols, UserRole } from '~/utils/enums';
+import { ResponsesType, UserRole } from '~/utils/enums';
 
 import {
   QuestMethods,
@@ -21,7 +20,6 @@ import {
 } from '~/utils/wallet';
 
 import { error, success } from '~/utils/web3';
-import modals from '~/store/modals/modals';
 
 export default {
   async getWorkerData({ commit }, userId) {
@@ -34,16 +32,7 @@ export default {
       return error();
     }
   },
-  async questListForInvitation({ commit }, userId) {
-    try {
-      const response = await this.$axios.$get(`/v1/employer/${userId}/quests`);
-      commit('setQuestListForInvitation', response.result);
-      return response.result;
-    } catch (e) {
-      console.error('quests/questListForInvitation');
-      return error();
-    }
-  },
+
   async employeeList({ commit }, { query, specFilter }) {
     try {
       if (query.q === '') delete query.q;
@@ -157,12 +146,17 @@ export default {
       const { result } = await this.$axios.$get(`/v1/quest/${questId}/responses`);
       const responded = result.responses.filter((response) => response.status === 0 && response.type === ResponsesType.Responded) || [];
       const invited = result.responses.filter((response) => response.status >= 0 && response.type === ResponsesType.Invited) || [];
-      commit('setResponses', { result, responded, invited });
+      commit('setResponses', { responded, invited });
       return result;
     } catch (e) {
       console.error('quests/responsesToQuest');
       return error();
     }
+  },
+  async setResponseToQuest({ commit }, { data: response }) {
+    const responded = response.status === 0 && response.type === ResponsesType.Responded ? response : '';
+    const invited = response.status >= 0 && response.type === ResponsesType.Invited ? response : '';
+    commit('setResponseToQuest', { responded, invited });
   },
   async inviteOnQuest({ commit }, { questId, payload }) {
     try {
