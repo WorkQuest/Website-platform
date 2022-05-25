@@ -1,5 +1,6 @@
 <template>
   <div class="container__status status">
+    {{ rating }}
     <img
       v-if="isActiveRaiseView"
       src="~assets/img/ui/arrow-worker-profile.svg"
@@ -9,7 +10,7 @@
     <span
       v-if="ratingStr !== $options.Ratings.NO_STATUS"
       class="status__level"
-      :class="`status__level_${ratingStr}`"
+      :class="styles"
     >
       {{ statusTitle }}
     </span>
@@ -33,13 +34,27 @@ export default {
       default: () => {
       },
     },
+    isQuestRating: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
+    styles() {
+      if (!this.isQuestRating) return `status__level_${this.ratingStr}`;
+      return `status__level_${{
+        0: 'topRanked',
+        1: 'topRanked',
+        2: 'reliable',
+        3: 'verified',
+      }[this.rating]}`;
+    },
     ratingStr() {
       return UserRating[this.rating] || Ratings.NO_STATUS;
     },
     statusTitle() {
-      return this.rating !== null ? this.$t(`rating.${this.ratingStr}.title`) : '';
+      if (!this.isQuestRating) return this.rating !== null ? this.$t(`rating.${this.ratingStr}.title`) : '';
+      return this.$t(`quests.levels.${+this.rating + 1}.shortTitle`);
     },
     isActiveRaiseView() {
       return this.raiseView && RaiseViewStatus[this.raiseView.status];

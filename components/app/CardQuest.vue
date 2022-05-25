@@ -16,6 +16,11 @@
       </div>
     </div>
     <div class="card-quest__right">
+      <item-rating
+        v-if="quest.raiseView.duration"
+        :is-quest-rating="true"
+        :rating="quest.raiseView.type"
+      />
       <div class="card-quest__head">
         <div
           class="card-quest__title"
