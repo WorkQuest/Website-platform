@@ -212,6 +212,7 @@ export default {
     },
     async redirectUser() {
       await this.$store.dispatch('user/getUserData');
+      window.removeEventListener('beforeunload', this.clearCookies);
       if (this.userData.role === UserRole.EMPLOYER) await this.$router.push(Path.WORKERS);
       else if (this.userData.role === UserRole.WORKER) await this.$router.push(Path.QUESTS);
     },
