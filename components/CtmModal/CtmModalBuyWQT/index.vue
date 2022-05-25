@@ -75,7 +75,7 @@
       </div>
       <div class="content__wqt">
         <span v-if="wqtAmount">
-          {{ $t('meta.amount.amountOfWQT') }}: {{ wqtAmount }}
+          {{ $t('meta.amount.amountOfWQT') }} ≈ {{ wqtAmount }}
         </span>
       </div>
       <base-btn
@@ -174,7 +174,7 @@ export default {
         await this.$store.dispatch('oracle/getCurrentPrices');
         const priceWQT = new BigNumber(this.oraclePrices[this.oracleSymbols.indexOf(TokenSymbols.WQT)]).shiftedBy(-18);
         const decimalAmount = new BigNumber(this.amount).multipliedBy(1 - WQTBuyCommission);
-        this.wqtAmount = decimalAmount.dividedBy(priceWQT);
+        this.wqtAmount = decimalAmount.dividedBy(priceWQT).decimalPlaces(3);
         this.inProgressWQT = false;
       },
       400);

@@ -247,7 +247,7 @@ export default {
           block: t.block_number,
           timestamp: this.$moment(t.block.timestamp).format('lll'),
           status: !!t.status,
-          value: `${getStyledAmount(t.tokenTransfers[0]?.amount || t.value, false, decimals)} ${symbol}`,
+          value: `${getStyledAmount(t.value || t.tokenTransfers[0]?.amount, false, decimals)} ${symbol}`,
           transaction_fee: t.transaction_fee || new BigNumber(t.gas_price).multipliedBy(t.gas_used),
           from_address: t.from_address_hash.hex,
           to_address: t.to_address_hash.hex,
