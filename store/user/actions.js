@@ -27,8 +27,7 @@ const { WORKNET_PROMOTION } = process.env;
 export default {
   async resendEmail({ commit }, { email }) {
     try {
-      const { result } = await this.$axios.$get('/v1/auth/mail/resend-email');
-      console.log('res', result);
+      const { result } = await this.$axios.$post('/v1/auth/main/resend-email', { email });
       return result;
     } catch (e) {
       return error();

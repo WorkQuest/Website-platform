@@ -97,11 +97,13 @@
         </div>
       </form>
       <base-btn
+        v-if="isShowBtnResend"
+        class="auth__resend"
         data-selector="RESEND-LETTER"
         :disabled="timeLeft > 0"
         @click="resendLetter"
       >
-        {{ `Resend the letter ${timeLeft}` }}
+        {{ `Resend the letter ${timeLeft > 0 ? timeLeft : ''}` }}
       </base-btn>
       <div class="auth__text auth__text_wrap">
         {{ $t('signIn.or') }}
@@ -188,6 +190,7 @@ export default {
   },
   data() {
     return {
+      isShowBtnResend: false,
       timer: null,
       timeLeft: 60,
       addressAssigned: false,
@@ -216,10 +219,6 @@ export default {
     timeLeft(time) {
       if (time === 0) this.stopTimer();
     },
-    userStatus() {
-      // TODO: Добавить в дату
-      if (this.userStatus === 0) this.startTimer();
-    },
   },
   created() {
     window.addEventListener('beforeunload', this.clearCookies);
@@ -227,6 +226,7 @@ export default {
     if (token) sessionStorage.setItem('confirmToken', String(token));
   },
   async mounted() {
+    this.continueTimer();
     this.isLoginWithSocial = this.$cookies.get('socialNetwork');
     const access = this.$cookies.get('access');
     const refresh = this.$cookies.get('refresh');
@@ -263,13 +263,36 @@ export default {
     }
   },
   methods: {
+    stopTimer() {
+      clearTimeout(this.timer);
+      this.$cookies.remove('timerSec');
+      this.$cookies.remove('isStartedTimer');
+    },
+    resetTimer() {
+      this.timeLeft = 60;
+    },
+    continueTimer() {
+      const currentSec = Date.now() / 1000;
+      const timerSec = this.$cookies.get('timerSec');
+      const isStartedTimer = this.$cookies.get('isStartedTimer');
+      if (isStartedTimer && currentSec && timerSec) {
+        if (timerSec > currentSec) this.stopTimer();
+        else if (currentSec && timerSec) {
+          const timeDifference = currentSec - timerSec;
+          if (timeDifference >= 0 <= 60) this.timeLeft = timeDifference.toFixed();
+          else if (timeDifference > 60) this.resetTimer();
+        }
+        this.startTimer();
+      }
+    },
     startTimer() {
+      const timerSec = this.$cookies.get('timerSec');
+      if (!timerSec) this.$cookies.set('timerSec', Date.now() / 1000);
+      this.isShowBtnResend = true;
+      this.$cookies.set('isStartedTimer', true, { maxAge: 60 });
       this.timer = setInterval(() => {
         this.timeLeft -= 1;
       }, 1000);
-    },
-    stopTimer() {
-      clearTimeout(this.timer);
     },
     clearCookies() {
       if (this.userData.id) return;
@@ -311,7 +334,15 @@ export default {
     async resendLetter() {
       this.SetLoader(true);
       this.model.email = this.model.email.trim();
-      if (this.model.email) await this.$store.dispatch('user/resendEmail', { email: this.model.email });
+      if (this.model.email) {
+        this.resetTimer();
+        await this.$store.dispatch('user/resendEmail', { email: this.model.email });
+        await this.$store.dispatch('main/showToast', {
+          title: this.$t('registration.emailConfirmTitle'),
+          text: this.$t('registration.emailConfirm'),
+        });
+        this.startTimer();
+      }
       this.SetLoader(false);
     },
     async signIn() {
@@ -343,6 +374,7 @@ export default {
       const confirmToken = sessionStorage.getItem('confirmToken');
       // Unconfirmed account w/o confirm token
       if (this.userStatus === UserStatuses.Unconfirmed && !confirmToken) {
+        this.startTimer();
         await this.$store.dispatch('main/showToast', {
           title: this.$t('registration.emailConfirmTitle'),
           text: this.$t('registration.emailConfirm'),
@@ -505,6 +537,9 @@ export default {
 
 <style lang="scss" scoped>
 .auth {
+  &__resend {
+    margin-top: 10px;
+  }
   &__back-btn {
     cursor: pointer;
     display: table-cell;
