@@ -97,13 +97,12 @@
         </div>
       </form>
       <base-btn
-        v-if="isShowBtnResend"
         class="auth__resend"
         data-selector="RESEND-LETTER"
-        :disabled="timeLeft > 0"
+        :disabled="!model.email || isStartedTimer"
         @click="resendLetter"
       >
-        {{ `Resend the letter ${timeLeft > 0 ? timeLeft : ''}` }}
+        {{ `${$t('meta.btns.resendEmail')} ${counter > 0 ? $tc('meta.units.seconds', counter ) : ''}` }}
       </base-btn>
       <div class="auth__text auth__text_wrap">
         {{ $t('signIn.or') }}
@@ -170,6 +169,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import moment from 'moment';
 import modals from '~/store/modals/modals';
 import {
   createWallet, decryptStringWitheKey, encryptStringWithKey, initWallet, setCipherKey,
@@ -191,8 +191,9 @@ export default {
   data() {
     return {
       isShowBtnResend: false,
-      timer: null,
-      timeLeft: 60,
+      isStartedTimer: false,
+      timer: 60,
+      counter: 0,
       addressAssigned: false,
       userWalletAddress: null,
       step: WalletState.Default,
@@ -216,8 +217,9 @@ export default {
     },
   },
   watch: {
-    timeLeft(time) {
-      if (time === 0) this.stopTimer();
+    counter(time) {
+      console.log('time', time);
+      if (time === 0) this.isStartedTimer = false;
     },
   },
   created() {
@@ -232,7 +234,7 @@ export default {
     const refresh = this.$cookies.get('refresh');
     const userStatus = this.$cookies.get('userStatus');
     if (+userStatus === UserStatuses.Confirmed && access) await this.redirectUser();
-    if (this.isLoginWithSocial && access && +userStatus === UserStatuses.Confirmed) {
+    if (this.isLoginWithSocial && access && refresh && +userStatus === UserStatuses.Confirmed) {
       this.SetLoader(true);
       await this.$store.dispatch('user/getUserData');
       this.userWalletAddress = this.userData?.wallet?.address;
@@ -261,38 +263,28 @@ export default {
         sessionStorage.setItem('referralId', refId);
       }
     }
+    this.$cookies.set('timerCookie', {
+      timer: this.counter > 0 && this.counter < 60 ? this.counter : this.counter = 60,
+    }, { maxAge: 60 });
   },
   methods: {
-    stopTimer() {
-      clearTimeout(this.timer);
-      this.$cookies.remove('timerSec');
-      this.$cookies.remove('isStartedTimer');
-    },
     resetTimer() {
-      this.timeLeft = 60;
+      this.counter = 60;
+      this.isStartedTimer = false;
     },
     continueTimer() {
-      const currentSec = Date.now() / 1000;
-      const timerSec = this.$cookies.get('timerSec');
-      const isStartedTimer = this.$cookies.get('isStartedTimer');
-      if (isStartedTimer && currentSec && timerSec) {
-        if (timerSec > currentSec) this.stopTimer();
-        else if (currentSec && timerSec) {
-          const timeDifference = currentSec - timerSec;
-          if (timeDifference >= 0 <= 60) this.timeLeft = timeDifference.toFixed();
-          else if (timeDifference > 60) this.resetTimer();
-        }
-        this.startTimer();
-      }
+      const { timer } = this.$cookies.get('timerCookie');
+      this.isShowBtnResend = true;
+      this.isStartedTimer = true;
+      this.counter = timer;
+      this.startTimer();
     },
     startTimer() {
-      const timerSec = this.$cookies.get('timerSec');
-      if (!timerSec) this.$cookies.set('timerSec', Date.now() / 1000);
-      this.isShowBtnResend = true;
-      this.$cookies.set('isStartedTimer', true, { maxAge: 60 });
-      this.timer = setInterval(() => {
-        this.timeLeft -= 1;
-      }, 1000);
+      this.$cookies.set('timerCookie', { timer: 60 });
+      if (this.counter > 0 && this.counter <= 60) {
+        this.isStartedTimer = true;
+        this.timer = setInterval(() => { this.counter -= 1; }, 1000);
+      } else this.resetTimer();
     },
     clearCookies() {
       if (this.userData.id) return;
@@ -335,13 +327,15 @@ export default {
       this.SetLoader(true);
       this.model.email = this.model.email.trim();
       if (this.model.email) {
-        this.resetTimer();
         await this.$store.dispatch('user/resendEmail', { email: this.model.email });
         await this.$store.dispatch('main/showToast', {
           title: this.$t('registration.emailConfirmTitle'),
           text: this.$t('registration.emailConfirm'),
         });
-        this.startTimer();
+        if (!this.isStartedTimer) {
+          this.resetTimer();
+          this.startTimer();
+        }
       }
       this.SetLoader(false);
     },
@@ -374,7 +368,6 @@ export default {
       const confirmToken = sessionStorage.getItem('confirmToken');
       // Unconfirmed account w/o confirm token
       if (this.userStatus === UserStatuses.Unconfirmed && !confirmToken) {
-        this.startTimer();
         await this.$store.dispatch('main/showToast', {
           title: this.$t('registration.emailConfirmTitle'),
           text: this.$t('registration.emailConfirm'),

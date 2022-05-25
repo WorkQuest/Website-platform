@@ -58,6 +58,7 @@
       }
     },
     "btns": {
+      "resendEmail": "Resend email with code",
       "back": "Kembali",
       "edit": "Edit",
       "ok": "Oke",

@@ -58,6 +58,7 @@
       }
     },
     "btns": {
+      "resendEmail": "Resend email with code",
       "back": "后退",
       "edit": "编辑",
       "ok": "确定",

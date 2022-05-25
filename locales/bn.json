@@ -58,6 +58,7 @@
       }
     },
     "btns": {
+      "resendEmail": "Resend email with code",
       "back": "পিছনে",
       "edit": "সম্পাদনা করুন",
       "ok": "ঠিক আছে",
