@@ -24,7 +24,7 @@ export default async function ({ app, store }) {
     if (userData.id === '') {
       await store.dispatch('user/getUserData');
       await store.dispatch('user/getStatistic');
-      await store.dispatch('user/getNotifications');
+      await store.dispatch('notifications/getNotifications', { root: true });
     }
   } catch (e) {
     console.error('Middleware guest', e);

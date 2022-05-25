@@ -46,6 +46,7 @@
       "mb": "{count} MB",
       "kb": "{count} KB",
       "percentsCount": "{count}%",
+      "seconds": "{count} second | {count} seconds | {count} seconds",
       "minutes": "{count} minute | {count} minutes | {count} minutes",
       "hours": "{count} minute | {count} minutes | {count} hours",
       "years": "{count} year | {count} years | {count} years",
@@ -99,7 +100,10 @@
     "placeholders": {
       "default": "",
       "mail": "your@mail.com",
-      "email": "电子邮件地址"
+      "email": "电子邮件地址",
+      "specialization": "Enter specialization",
+      "skill": "Enter skill",
+      "searchSpecSkill": "Enter specialization or skill"
     },
     "worker": {
       "cost": {
@@ -178,7 +182,7 @@
     "aml": "反洗钱和反恐融资政策",
     "createAQuest": "创建 Quest",
     "completed": "Completed",
-    "typeOfJob": "工作类型",
+    "typeOfJob": "Type of employment",
     "choosePeriod": "选择期限",
     "verified": "Verified",
     "dispute": "发起争议",
@@ -206,6 +210,7 @@
     "alpha_num": "“{_field_}”字段只能包含字母数字字符",
     "alpha_dash": "“{_field_}”字段可包含字母数字字符以及短划线和下划线",
     "alpha_spaces": "“{_field_}”字段只能包含字母字符和空格",
+    "alpha_spaces_dash": "The {_field_} field may only contain alphabetic characters as well as spaces, dashes and underscores",
     "between": "“{_field_}”字段必须介于 {min} 和 {max}",
     "confirmed": "“{_field_}”字段确认不匹配",
     "digits": "“{_field_}”字段必须是数字且恰好包含 {length} 位数字",
@@ -331,6 +336,7 @@
     "employer": {
       "usersNotResponded": "Users not responded"
     },
+    "impossibleEditAfterCreation": "I understand that editing the title and the description of this quest will be impossible after its creation",
     "deleteQuest": "Delete quest",
     "invite": "Invite",
     "decline": "Decline",
@@ -378,17 +384,33 @@
       "noStatus": "Not rated"
     },
     "distantWork": {
-      "title": "远程工作",
+      "title": "Workplace",
       "allWorkplaces": "All workplaces",
-      "distantWork": "远程工作",
-      "workInOffice": "在办公室工作",
-      "bothVariant": "两种选择"
+      "distantWork": "Remote work",
+      "workInOffice": "In-office",
+      "bothVariant": "Hybrid workplace"
+    },
+    "payPeriods": {
+      "title": "Pay periods",
+      "Hourly": "Hourly",
+      "Daily": "Daily",
+      "Weekly": "Weekly",
+      "BiWeekly":"Bi-weekly ",
+      "SemiMonthly": "Semi-monthly",
+      "Monthly": "Monthly",
+      "Quarterly": "Quarterly",
+      "SemiAnnually": "Semi-annually",
+      "Annually": "Annually",
+      "FixedPeriod":"Fixed period",
+      "ByAgreement":"By agreement"
     },
     "employment": {
       "employment": "Employment",
-      "fullTime": "Full time",
-      "partTime": "Part time",
-      "fixedTerm": "Fixed term"
+      "FullTime": "Full time",
+      "PartTime": "Part time",
+      "FixedTerm": "Fixed term",
+      "EmploymentContract": "Employment contract",
+      "RemoteWork": "Remote work"
     },
     "runtime": "Runtime",
     "active": "有效",
@@ -432,7 +454,7 @@
       "1": "专业",
       "2": "Quest",
       "3": "紧急",
-      "4": "工作类型",
+      "4": "Type of employment",
       "5": "所有优先级",
       "6": "价格",
       "7": "添加时间"
@@ -895,6 +917,7 @@
       "filters": {
         "titleAll": "所有筛选器"
       },
+      "disputePayment": "Dispute payment",
       "saved": "Saved successfully",
       "cardAdd": "Add card",
       "addCase": "Add Case",
@@ -971,12 +994,12 @@
       "addMember": "Add member"
     },
     "disputes": {
-      "thereIsNoResponseFromTheEmployerOrEmployee": "There is no response from the employer / employee",
-      "badlyDoneWork": "Badly done work",
-      "additionalRequirementsHaveBeenPutForward": "Additional requirements have been put forward",
-      "inconsistenciesInTheRequirementsForTheDescriptionOfTheQuest": "Inconsistencies in the requirements for the description of the quest",
-      "theQuestIsCompletedButTheEmployeeOrEmployerHasNotConfirmedItsCompletion": "The quest is completed but the employee / employer has not confirmed its completion",
-      "anotherReason": "Another reason"
+      "NoAnswer": "There is no response from the employer / employee",
+      "AnotherReason": "Another reason",
+      "PoorlyDoneJob": "Poorly done work",
+      "AdditionalRequirement": "Additional requirements have been put forward",
+      "RequirementDoesNotMatch": "Inconsistencies in the requirements for the description of the quest",
+      "NoConfirmationOfComplete": "The quest is completed but the employee / employer has not confirmed its completion"
     },
     "2FA": {
       "enabled": "2FA enabled successfully!",
@@ -999,6 +1022,9 @@
     },
     "token": "Token",
     "network": "Network",
+    "payForDispute": "You need to pay to open a dispute",
+    "tryLater": "Please, try later...",
+    "checkExplorer": "You can check a transaction status on Explorer",
     "transactionError": "Transaction error",
     "fromAddress": "from",
     "toAddress": "to",
@@ -1303,8 +1329,33 @@
       }
     }
   },
+  "localNotifications": {
+    "messages": {
+      "inviteFriends": "Invite your friends and get rewarded!",
+      "wiki": "You can get acquainted with all the functionality of the platform on the WorkQuest Wiki page!",
+      "kyc": "You can enable KYC on Sumsub page.",
+      "twoFA": "You can enable 2FA in settings.",
+      "fillSettingsData": "You can fill your profile data in settings.",
+      "questDraft": "You have a saved draft of the quest.",
+      "rateTheQuest": "Please rate the completed work on the quest.",
+      "reviewEmp": "Please, review your Employer!",
+      "reviewWorker": "Please, review your Employee!"
+    },
+    "btns": {
+      "inviteFriends": "Get Reward",
+      "wiki": "Go to Wiki",
+      "kyc": "Enable KYC",
+      "toSettings": "Go to Settings",
+      "questDraft": "Go to Create Quest page",
+      "rateTheQuest": "Go to Quest page",
+      "reviewEmp": "Go to Employer Profile",
+      "reviewWorker": "Go to Employee Profile"
+    }
+  },
   "notifications": {
+    "QuestEditedOnContract": "Quest edited on contract",
     "title": "Notifications",
+    "OpenDispute": "发起争议",
     "openDispute": "发起争议",
     "invite": "Invites you to complete the quest",
     "questStarted": "Invites you to start a quest",
@@ -1318,6 +1369,7 @@
     "workerAcceptedInvitationToQuest": "Accepted the invitation to the quest",
     "workerRejectedInvitationToQuest": "Declined the invitation to the quest",
     "employerRejectedWorkersResponse": "Declined your response to the quest",
+    "QuestStatusUpdated": "Quest status updated",
     "userLeftReviewAboutQuest": "Left review about quest",
     "registrationError": "No users found for registration. Please contact to developers",
     "waitWorker": "The quest is pending",
@@ -1405,7 +1457,11 @@
     },
     "leaveChat": "Leave chat",
     "loadMore": "Load more",
-    "searchTitle": "Name/Quest/Group"
+    "searchTitle": "Name/Quest/Group",
+    "menu": {
+      "giveAQuest": "Give a quest",
+      "removeFromChat": "Remove from the chat"
+    }
   },
   "settings": {
     "additionalPhoneNumber": "Additional phone number",
@@ -1476,10 +1532,11 @@
       "title": "Workplace",
       "select": "Select distant work",
       "allWorkplaces": "All workplaces",
-      "distantWork": "Distant work",
-      "workInOffice": "Work in office",
-      "bothVariant": "Both variants"
-    }
+      "distantWork": "Remote work",
+      "workInOffice": "In-office",
+      "bothVariant": "Hybrid workplace"
+    },
+    "selectPayPeriod": "Select pay period"
   },
   "raising-views": {
     "raisingViews": "提高浏览量",
@@ -1551,8 +1608,8 @@
       "event": "Event"
     },
     "event": {
-      "paid": "Paid",
-      "claimed": "Claimed"
+      "PaidReferral": "Paid",
+      "RewardClaimed": "Claimed"
     }
   },
   "pension": {
@@ -2212,7 +2269,7 @@
             "subtitle": "Quest delivery time: Urgent, Short term, Fixed delivery."
           },
           "job": {
-            "title": "Type of job",
+            "title": "Type of employment",
             "subtitle": "Select the type of employment: Full-time, Part-time, Fixed term, Contract."
           },
           "distant": {
@@ -2304,8 +2361,8 @@
   "workPlaces": {
     "title": "Workplace",
     "all": "All workplaces",
-    "distant": "Distant work",
-    "office": "Work in office",
-    "both": "Both variants"
+    "Remote": "Remote work",
+    "InOffice": "In-office",
+    "Hybrid": "Hybrid workplace"
   }
 }

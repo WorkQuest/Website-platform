@@ -57,6 +57,7 @@ export default {
     this.$cookies.remove('userLogin');
     this.$cookies.remove('socialNetwork');
     this.$cookies.remove('questDraft');
+    this.$cookies.remove('notificationPage');
     sessionStorage.clear();
     state.userData = {};
     state.tokens = { access: null, refresh: null };
@@ -87,38 +88,7 @@ export default {
   },
   setStatisticData(state, data) {
     state.statisticData = data;
-    this.commit('user/changeUnreadChatsCount', { count: data.chatsStatistic?.unreadCountChats || 0, needAdd: false });
-  },
-  changeUnreadChatsCount(state, { count, needAdd }) {
-    state.unreadChatsCount = needAdd ? state.unreadChatsCount + count : count;
-  },
-  setReducedNotifications(state, notifications) {
-    state.reducedNotifications = notifications;
-  },
-  setNotifications(state, { result: { notifications, count }, needPush }) {
-    state.notifications.list = needPush ? state.notifications.list.concat(notifications) : notifications;
-
-    state.notifications.count = count;
-  },
-  removeNotification(state, notificationId) {
-    state.notifications.list = state.notifications.list.filter(({ id }) => notificationId !== id);
-  },
-  setUnreadNotifsCount(state, count) {
-    state.unreadNotifsCount += count;
-  },
-  setNotificationsAsRead(state, ids) {
-    state.notifications.list.forEach((notif) => {
-      if (ids.indexOf(notif.id) >= 0) notif.seen = true;
-      return notif;
-    });
-    this.commit('user/setUnreadNotifsCount', 0 - ids.length);
-  },
-  addNotification(state, notification) {
-    state.notifications.list.push(notification);
-    state.reducedNotifications.unshift(notification);
-    state.reducedNotifications.length = state.reducedNotifications.length === 1 ? 1 : 2;
-    state.notifications.count += 1;
-    this.commit('user/setUnreadNotifsCount', 1);
+    this.commit('chat/changeUnreadChatsCount', { count: data.chatsStatistic?.unreadCountChats || 0, needAdd: false }, { root: true });
   },
   setRememberMe(state, payload) {
     state.isRememberMeChecked = payload;

@@ -33,6 +33,7 @@ export default {
   plugins: [
     { src: '@plugins/ws', mode: 'client' },
     { src: '@plugins/axios.js' },
+    { src: '@plugins/axiosOracle.js' },
     { src: '@plugins/main.js' },
     { src: '@plugins/vee-validate.js' },
     { src: '@plugins/clipboard.js' },
@@ -129,18 +130,17 @@ export default {
     ETHEREUM_LP_TOKEN: process.env.ETHEREUM_LP_TOKEN,
     ETHEREUM_MINING: process.env.ETHEREUM_MINING,
     ETHEREUM_RPC_URL: process.env.ETHEREUM_RPC_URL,
+    ETHEREUM_USDT_TOKEN: process.env.ETHEREUM_USDT_TOKEN,
     ETHEREUM_WQT_TOKEN: process.env.ETHEREUM_WQT_TOKEN,
 
     BSC_BRIDGE: process.env.BSC_BRIDGE,
     BSC_LP_TOKEN: process.env.BSC_LP_TOKEN,
     BSC_MINING: process.env.BSC_MINING,
     BSC_OLD_WQT_TOKEN: process.env.BSC_OLD_WQT_TOKEN,
+    BSC_USDT_TOKEN: process.env.BSC_USDT_TOKEN,
     BSC_WQT_EXCHANGE: process.env.BSC_WQT_EXCHANGE,
     BSC_WQT_TOKEN: process.env.BSC_WQT_TOKEN,
     BSC_RPC_URL: process.env.BSC_RPC_URL,
-
-    WETH_TOKEN: process.env.WETH_TOKEN,
-    WBNB_TOKEN: process.env.WBNB_TOKEN,
 
     WORKNET_BORROWING: process.env.WORKNET_BORROWING,
     WORKNET_BRIDGE: process.env.WORKNET_BRIDGE,
@@ -158,5 +158,6 @@ export default {
     WORKNET_WETH_TOKEN: process.env.WORKNET_WETH_TOKEN,
     WORKNET_WUSD_TOKEN: process.env.WORKNET_WUSD_TOKEN,
     WORKNET_WQ_FACTORY: process.env.WORKNET_WQ_FACTORY,
+    WORKNET_VOTING: process.env.WORKNET_VOTING,
   },
 };

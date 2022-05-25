@@ -1,5 +1,5 @@
 export default {
-  getFrozenBalance: (state) => state.balance.WQT.frozenBalance,
+  getFrozenBalance: (state) => state.frozenBalance,
   getTransactions: (state) => state.transactions,
   getTransactionsCount: (state) => state.transactionsCount,
   getIsWalletConnected: (state) => state.isWalletConnected,
@@ -7,8 +7,6 @@ export default {
   getIsOnlyConfirm: (state) => state.isOnlyConfirm,
   getBalanceData: (state) => state.balance,
   getSelectedToken: (state) => state.selectedToken,
-  getPensionWallet: (state) => state.pensionWallet,
-  getPensionHistory: (state) => state.pensionHistory,
   getStakingPoolsData: (state) => state.stakingPoolsData,
   getStakingUserData: (state) => state.stakingUserData,
 };

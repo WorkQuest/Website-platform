@@ -178,7 +178,7 @@ export default {
   },
   beforeDestroy() {
     if (!this.isClearOnDestroy || this.isWalletAssigned) return;
-    this.$store.dispatch('user/logout');
+    this.$store.dispatch('user/logout', false);
   },
   methods: {
     clearCookies() {
@@ -201,6 +201,7 @@ export default {
     showPrivacy(role) {
       this.ShowModal({
         key: modals.privacy,
+        isSocialNetwork: this.isLoginWithSocialNetwork,
         callback: () => this.goToAssignWallet(),
         role,
       });
@@ -211,6 +212,7 @@ export default {
     },
     async redirectUser() {
       await this.$store.dispatch('user/getUserData');
+      window.removeEventListener('beforeunload', this.clearCookies);
       if (this.userData.role === UserRole.EMPLOYER) await this.$router.push(Path.WORKERS);
       else if (this.userData.role === UserRole.WORKER) await this.$router.push(Path.QUESTS);
     },

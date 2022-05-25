@@ -193,6 +193,7 @@ export default {
     },
     clear() {
       this.$emit('input', '');
+      this.$emit('clear', event);
     },
     convertDate(date) {
       return this.$moment(date).format('DD.MM.YYYY');

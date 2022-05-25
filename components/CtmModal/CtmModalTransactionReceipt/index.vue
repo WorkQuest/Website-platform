@@ -96,7 +96,9 @@ export default {
   methods: {
     async handleSubmit() {
       if (!this.canSend) return;
-      const { callback, submitMethod, isShowSuccess } = this.options;
+      const {
+        callback, submitMethod, isShowSuccess, isDontOffLoader,
+      } = this.options;
       this.CloseModal();
       this.SetLoader(true);
       if (submitMethod) {
@@ -110,7 +112,7 @@ export default {
           }
         }
       }
-      this.SetLoader(false);
+      if (!isDontOffLoader) this.SetLoader(false);
     },
   },
 };

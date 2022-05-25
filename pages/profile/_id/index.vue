@@ -411,6 +411,7 @@ export default {
     async changeQuestsData(limit) {
       const payload = {
         role: this.userData.role,
+        userId: this.userData.id,
         query: {
           limit: limit || this.perPagerQuests,
           offset: (this.pageQuests - 1) * this.perPagerQuests,
@@ -423,11 +424,13 @@ export default {
       await this.$store.dispatch('quests/getUserQuests', payload);
     },
     async changeReviewsData(limit) {
-      const payload = {
+      await this.$store.dispatch('user/getAllUserReviews', {
         userId: this.userId,
-        query: limit ? `limit=${limit}` : `limit=${this.perPagerReviews}&offset=${(this.pageReviews - 1) * this.perPagerReviews}`,
-      };
-      await this.$store.dispatch('user/getAllUserReviews', payload);
+        params: {
+          limit: limit || this.perPagerReviews,
+          offset: (this.pageReviews - 1) * this.perPagerReviews,
+        },
+      });
       this.reviewsObject = this.reviews;
     },
     async changePortfoliosData(limit) {

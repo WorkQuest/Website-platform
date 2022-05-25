@@ -350,7 +350,7 @@ export default {
       mainInputs: [
         {
           model: 'firstName',
-          rules: 'required||max:50',
+          rules: 'required||max:15||alpha_spaces_dash',
           placeholder: 'settings.nameInput',
           name: 'meta.firstNameSmall',
           icon: 'icon-user',
@@ -358,7 +358,7 @@ export default {
         },
         {
           model: 'lastName',
-          rules: 'required||max:50',
+          rules: 'required||max:15||alpha_spaces_dash',
           placeholder: 'settings.lastNameInput',
           name: 'meta.lastNameSmall',
           icon: 'icon-user',

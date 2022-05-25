@@ -127,11 +127,12 @@ export default {
       return false;
     }
   },
-  async getUserQuests({ commit }, { role, query }) {
+  async getUserQuests({ commit }, { role, query, userId }) {
     try {
       const specializations = query.specializations || [];
       if (query.specializations) delete query.specializations;
-      const response = await this.$axios.$post(`/v1/me/${role}/get-quests`, { specializations }, {
+      const url = !userId ? `/v1/me/${role}/get-quests` : `/v1/${role}/${userId}/get-quests`;
+      const response = await this.$axios.$post(url, { specializations }, {
         params: { ...query },
       });
       commit('setAllQuests', response.result);
@@ -166,8 +167,8 @@ export default {
   async inviteOnQuest({ commit }, { questId, payload }) {
     try {
       const response = await this.$axios.$post(`/v1/quest/${questId}/invite`, payload);
-      const { chat } = response.result;
-      commit('setChatInviteOnQuest', chat);
+      const { questChat } = response.result;
+      commit('setChatInviteOnQuest', questChat);
       return response.result;
     } catch (e) {
       console.error('quests/inviteOnQuest');
@@ -270,7 +271,7 @@ export default {
     try {
       const response = await this.$axios.$get(`/v1/worker/${data}/available-quests?limit=100`);
       commit('setAvailableQuests', response.result.quests);
-      return response.ok;
+      return response.result;
     } catch (e) {
       console.error('quests/getAvailableQuests');
       return false;
@@ -350,17 +351,21 @@ export default {
 
   /** Work Quest */
   async getFeeDataJobMethod({ commit }, {
-    method, contractAddress, data,
+    method, abi, contractAddress, data,
   }) {
-    return await getContractFeeData(method, WorkQuest, contractAddress, data);
+    return await getContractFeeData(method, abi, contractAddress, data);
   },
-  async sendQuestTransaction({ commit }, { contractAddress, method, params = [] }) {
+  async sendQuestTransaction({ commit }, {
+    contractAddress, method, params = [], value,
+  }) {
     try {
-      const res = await sendWalletTransaction(method, {
+      const payload = {
         abi: WorkQuest,
         address: contractAddress,
         data: params,
-      });
+      };
+      if (value) payload.value = value;
+      const res = await sendWalletTransaction(method, payload);
       return success(res);
     } catch (e) {
       console.error('quests/sendQuestTransaction');
@@ -383,8 +388,8 @@ export default {
     return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.AcceptJobResult });
   },
   // employer отменил (reject) результат работы или прошло 3 дня с момента начала verification
-  async arbitration({ dispatch }, contractAddress) {
-    return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.Arbitration });
+  async arbitration({ dispatch }, { contractAddress, value }) {
+    return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.Arbitration, value });
   },
 
   /** WORKER */

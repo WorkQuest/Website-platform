@@ -64,6 +64,7 @@ import {
 import { QuestMethods } from '~/utils/сonstants/quests';
 import modals from '~/store/modals/modals';
 import { error, success } from '~/utils/web3';
+import { WorkQuest } from '~/abi';
 
 export default {
   name: 'WorkersList',
@@ -127,6 +128,7 @@ export default {
       const [feeRes] = await Promise.all([
         this.$store.dispatch('quests/getFeeDataJobMethod', {
           method: QuestMethods.AssignJob,
+          abi: WorkQuest,
           contractAddress,
           data: [workerAddress],
         }),
@@ -140,7 +142,7 @@ export default {
       this.ShowModal({
         key: modals.transactionReceipt,
         title: this.$t('quests.startQuest'),
-        isShowSuccess: true,
+        isDontOffLoader: true,
         fields: {
           from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
           to: { name: this.$t('meta.toBig'), value: contractAddress },
@@ -151,12 +153,15 @@ export default {
           },
         },
         submitMethod: async () => {
+          this.$store.commit('notifications/setWaitForUpdateQuest', {
+            id: this.questData.id,
+            callback: () => this.$store.dispatch('modals/show', { key: modals.transactionSend }),
+          });
           const txRes = await this.$store.dispatch('quests/assignJob', {
             contractAddress,
             workerAddress,
           });
           if (txRes.ok) {
-            await this.getQuest();
             return success();
           }
           return error();

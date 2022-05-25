@@ -12,14 +12,15 @@
       <h2 class="quests__title">
         {{ $t('meta.questsBig') }}
       </h2>
-      <filters-panel
+      <panel-filters
         class="quests__filters"
         @sortSpec="sortBySpec"
         @sortTime="sortByTime"
         @sortPrice="sortByPrice"
         @sortPriority="sortByPriority"
         @sortWorkplace="sortByWorkplace"
-        @sortTypeOfJob="sortTypeOfJob"
+        @sortTypeOfEmployment="sortTypeOfEmployment"
+        @sortPayPeriod="sortPayPeriod"
       />
       <div
         v-if="questsCount"
@@ -177,8 +178,8 @@ export default {
     },
     async sortByPrice(value) {
       if (!Object.keys(value).length) {
-        delete this.query['betweenWagePerHour[from]'];
-        delete this.query['betweenWagePerHour[to]'];
+        delete this.query['priceBetween[from]'];
+        delete this.query['priceBetween[to]'];
       } else this.query = { ...this.query, ...value };
       await this.fetchQuestsList(true);
     },
@@ -192,11 +193,17 @@ export default {
       else this.query = { ...this.query, ...value };
       await this.fetchQuestsList(true);
     },
-    async sortTypeOfJob(value) {
-      if (!Object.keys(value).length) delete this.query['employments[0]'];
+    async sortTypeOfEmployment(value) {
+      if (!Object.keys(value).length) delete this.query['typeOfEmployments[0]'];
       else this.query = { ...this.query, ...value };
       await this.fetchQuestsList(true);
     },
+    async sortPayPeriod(value) {
+      if (!Object.keys(value).length) delete this.query['payPeriods[0]'];
+      else this.query = { ...this.query, ...value };
+      await this.fetchQuestsList(true);
+    },
+
     showDetails(quest) {
       this.$router.push(`${Path.QUESTS}/${quest.id}`);
     },

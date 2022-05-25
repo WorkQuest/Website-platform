@@ -35,6 +35,7 @@ export const SwapAddresses = new Map([
       nativeSymbol: TokenSymbols.ETH,
       tokenAddress: {
         [TokenSymbols.WQT]: process.env.ETHEREUM_WQT_TOKEN,
+        [TokenSymbols.USDT]: process.env.ETHEREUM_USDT_TOKEN,
       },
       explorer: `https://${isProd ? '' : 'rinkeby.'}etherscan.io`,
     },
@@ -49,6 +50,7 @@ export const SwapAddresses = new Map([
       nativeSymbol: TokenSymbols.BNB,
       tokenAddress: {
         [TokenSymbols.WQT]: process.env.BSC_WQT_TOKEN,
+        [TokenSymbols.USDT]: process.env.BSC_USDT_TOKEN,
       },
       explorer: `https://${isProd ? '' : 'testnet.'}bscscan.com`,
     },
@@ -60,11 +62,12 @@ export const SwapAddresses = new Map([
       title: Chains.WORKNET,
       chain: Chains.WORKNET,
       index: BlockchainIndex.WORKNET,
-      nativeSymbol: TokenSymbols.WUSD,
+      nativeSymbol: TokenSymbols.WQT,
       tokenAddress: {
         [TokenSymbols.WQT]: process.env.WORKNET_WQT_TOKEN, // TODO fix it, this secret was deleted
         [TokenSymbols.ETH]: process.env.WORKNET_WETH_TOKEN,
         [TokenSymbols.BNB]: process.env.WORKNET_WBNB_TOKEN,
+        [TokenSymbols.USDT]: process.env.WORKNET_USDT_TOKEN,
       },
       explorer: `https://${isProd ? 'dev-' : 'dev-'}explorer.workquest.co`,
     },

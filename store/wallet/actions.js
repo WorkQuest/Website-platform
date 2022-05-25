@@ -29,38 +29,15 @@ import {
 } from '~/abi/index';
 
 import {
-  tokenMap,
+  TokenMap,
   TokenSymbols,
   StakingTypes,
-  PensionHistoryMethods,
+  PensionHistoryMethods, WorknetTokenAddresses,
 } from '~/utils/enums';
-import {
-  getPensionWallet,
-  pensionsWithdraw,
-  pensionUpdateFee,
-  pensionContribute,
-  pensionExtendLockTime,
-  getPensionDefaultData,
-} from '~/utils/wallet.js';
 
 let connectionWS = null;
 
 export default {
-  async getPensionTransactions({ commit, getters }, { method, limit, offset }) {
-    try {
-      const path = method === PensionHistoryMethods.Update ? 'wallet-update' : method.toLowerCase();
-      const res = await this.$axios.get(`/v1/pension-fund/${path}`, {
-        params: {
-          userAddress: getWalletAddress(),
-          limit,
-          offset,
-        },
-      });
-      commit('setPensionHistoryData', { method, txs: res.data.result.events, count: res.data.result.count });
-    } catch (e) {
-      console.error('wallet/getPensionTransactions');
-    }
-  },
   async getTransactions({ commit }, params) {
     try {
       const { data } = await this.$axios({
@@ -86,7 +63,7 @@ export default {
   confirmPassword({ commit, getters }, { nuxt, callbackLayout }) {
     if (callbackLayout) commit('setCallbackLayout', callbackLayout);
     commit('setIsOnlyConfirm', true);
-    nuxt.setLayout('confirmPassword');
+    nuxt.setLayout('confirm');
   },
   /**
    * Check wallet is connected
@@ -97,7 +74,7 @@ export default {
     commit('setIsOnlyConfirm', false);
     if (!connected) {
       if (callbackLayout) commit('setCallbackLayout', callbackLayout);
-      nuxt.setLayout('confirmPassword');
+      nuxt.setLayout('confirm');
     } else {
       commit('setIsWalletConnected', true);
     }
@@ -129,7 +106,35 @@ export default {
       fullBalance: res.ok ? res.result.fullBalance : 0,
     });
   },
-  async fetchWalletData({ commit }, {
+  async fetchCommonTokenInfo({ commit }) {
+    try {
+      const tokens = await Promise.all(WorknetTokenAddresses.map(async (address) => await Promise.all([
+        fetchContractData('symbol', ERC20, address, [], GetWalletProvider()),
+        fetchContractData('decimals', ERC20, address, [], GetWalletProvider()),
+      ])));
+      tokens.forEach((item) => commit('setCommonTokenData', item));
+    } catch (e) {
+      console.error('wallet/fetchCommonTokenInfo');
+    }
+  },
+  async updateFrozenBalance({ commit, rootGetters }) {
+    try {
+      const res = await fetchContractData(
+        'frozed',
+        ERC20,
+        process.env.WORKNET_VOTING,
+        [rootGetters['user/getUserWalletAddress']],
+        GetWalletProvider(),
+      );
+      commit('wallet/setFrozenBalance', res
+        ? new BigNumber(res).shiftedBy(-18).toString()
+        : '0', { root: true });
+      return success(res);
+    } catch (e) {
+      return error(-1, e.message, e);
+    }
+  },
+  async fetchWalletData({ commit, getters }, {
     method, address, abi, token, symbol,
   }) {
     try {
@@ -140,25 +145,23 @@ export default {
         [address],
         GetWalletProvider(),
       );
-      if (method === 'freezed') commit('wallet/setFrozenBalance', new BigNumber(res).shiftedBy(-18), { root: true });
-      else {
-        commit('setBalance', {
-          symbol,
-          balance: res ? getStyledAmount(res) : 0,
-          fullBalance: res ? getStyledAmount(res, true) : 0,
-        });
-      }
+      const { decimals } = getters.getBalanceData[symbol];
+      commit('setBalance', {
+        symbol,
+        balance: res ? getStyledAmount(res, false, decimals) : 0,
+        fullBalance: res ? getStyledAmount(res, true, decimals) : 0,
+      });
       return success(res);
     } catch (e) {
       return error(e.message, e);
     }
   },
   /**
-   * Send transfer
+   * Send transfer of native token
    * @param recipient
    * @param value
    */
-  async transfer({ commit }, { recipient, value }) {
+  async transfer({ _ }, { recipient, value }) {
     return await transfer(recipient, value);
   },
   async getTransferFeeData({ commit }, { recipient, value }) {
@@ -166,11 +169,10 @@ export default {
   },
   /**
    * Send transfer for WQT token
-   * @param commit
    * @param payload
    * @param recipient
    */
-  async transferToken({ commit }, payload) {
+  async transferToken({ _ }, payload) {
     const res = await sendWalletTransaction('transfer', payload);
     // TODO fix it, sendWalletTransaction should return object with keys ok and result
     if (res.ok === false) return error(res);
@@ -213,44 +215,6 @@ export default {
     const res = await fetchContractData('allowance', ERC20, tokenAddress, [getWalletAddress(), spenderAddress], GetWalletProvider());
     if (!res) return false;
     return new BigNumber(res.toString()).shiftedBy(-18).toString();
-  },
-
-  /** PENSION PROGRAM */
-  /** Get default lockTime & fee */
-  async pensionGetDefaultData() {
-    return await getPensionDefaultData();
-  },
-  async pensionGetWalletInfo({ commit }) {
-    const res = await getPensionWallet();
-    if (res.ok === false) {
-      commit('setPensionWallet', null);
-      return;
-    }
-    commit('setPensionWallet', res.result);
-  },
-  async pensionUpdateFee({ commit }, fee) {
-    return await pensionUpdateFee(fee);
-  },
-  async pensionContribute({ commit }, amount) {
-    return await pensionContribute(amount);
-  },
-  async pensionWithdraw({ commit }, amount) {
-    return await pensionsWithdraw(amount);
-  },
-  async pensionStartProgram({ commit }, payload) {
-    const { firstDeposit, fee, defaultFee } = payload;
-    let feeOk = true;
-    let depositOk = false;
-    const equalsFee = new BigNumber(defaultFee).shiftedBy(-18).isEqualTo(new BigNumber(fee).shiftedBy(-18));
-    if (!firstDeposit || !equalsFee) {
-      feeOk = await pensionUpdateFee(fee);
-    }
-    if (firstDeposit) depositOk = await pensionContribute(firstDeposit);
-    else return feeOk;
-    return depositOk && feeOk;
-  },
-  async pensionExtendLockTime() {
-    return await pensionExtendLockTime();
   },
 
   /** Staking */
@@ -421,7 +385,7 @@ export default {
     }
   },
   async approveRouter({ commit, dispatch }, { symbol, spenderAddress, value }) {
-    const tokenAddress = tokenMap[symbol];
+    const tokenAddress = TokenMap[symbol];
     try {
       const allowance = await dispatch('getAllowance', { tokenAddress, spenderAddress });
       if (new BigNumber(allowance).isLessThanOrEqualTo(value)) {

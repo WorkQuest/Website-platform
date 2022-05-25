@@ -194,6 +194,7 @@ export default {
     },
   },
   created() {
+    window.addEventListener('beforeunload', this.clearCookies);
     const { token } = this.$route.query;
     if (token) sessionStorage.setItem('confirmToken', String(token));
   },
@@ -224,16 +225,23 @@ export default {
       sessionStorage.setItem('referralId', ref);
     }
   },
-  beforeDestroy() {
-    const refId = sessionStorage.getItem('referralId');
+  async beforeDestroy() {
     if (!this.addressAssigned && !this.$cookies.get('access') && !this.$cookies.get('userStatus')) {
-      this.$store.dispatch('user/logout');
+      const refId = sessionStorage.getItem('referralId');
+      await this.$store.dispatch('user/logout', false);
       if (refId?.length) {
         sessionStorage.setItem('referralId', refId);
       }
     }
   },
   methods: {
+    clearCookies() {
+      if (this.userData.id) return;
+      this.$cookies.remove('access');
+      this.$cookies.remove('refresh');
+      this.$cookies.remove('userLogin');
+      this.$cookies.remove('userStatus');
+    },
     back() {
       if (this.step === WalletState.ImportOrCreate) {
         this.step = WalletState.Default;
