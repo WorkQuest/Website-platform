@@ -1,6 +1,5 @@
 <template>
   <div class="container__status status">
-    {{ rating }}
     <img
       v-if="isActiveRaiseView"
       src="~assets/img/ui/arrow-worker-profile.svg"
@@ -8,7 +7,7 @@
       class="status__img"
     >
     <span
-      v-if="ratingStr !== $options.Ratings.NO_STATUS"
+      v-if="isQuestRating || ratingStr !== $options.Ratings.NO_STATUS"
       class="status__level"
       :class="styles"
     >

@@ -409,7 +409,6 @@ export default {
         abi: WQPromotion,
         data,
       });
-      console.log('promote res', res);
       return success(res);
     } catch (e) {
       console.error('quests/promoteQuest', e);
