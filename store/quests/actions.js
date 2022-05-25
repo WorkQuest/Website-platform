@@ -32,16 +32,7 @@ export default {
       return error();
     }
   },
-  async questListForInvitation({ commit }, userId) {
-    try {
-      const response = await this.$axios.$get(`/v1/employer/${userId}/get-quests`);
-      commit('setQuestListForInvitation', response.result);
-      return response.result;
-    } catch (e) {
-      console.error('quests/questListForInvitation');
-      return error();
-    }
-  },
+
   async employeeList({ commit }, { query, specFilter }) {
     try {
       if (query.q === '') delete query.q;

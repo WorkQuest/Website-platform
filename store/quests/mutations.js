@@ -5,9 +5,6 @@ export default {
   setChatInviteOnQuest(state, data) {
     state.chatInfoInviteOnQuest = data;
   },
-  setQuestListForInvitation(state, data) {
-    state.questListForInvitation = data;
-  },
   setEmployeeList(state, { count, users }) {
     state.employeeList = users;
     state.employeeCount = count;
