@@ -38,7 +38,7 @@
           <div class="worker__message">
             {{ response.message }}
           </div>
-          <div v-if="response.medias.length">
+          <div v-if="response.medias && response.medias.length">
             <files-preview
               :medias="response.medias"
               small

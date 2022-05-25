@@ -142,7 +142,7 @@ export default {
       assignedWorker, message, toUserId, discussion, problemDescription, openDisputeUser, reason, number, status,
     } = data;
     const currentUserId = userData.id;
-    const userRole = rootGetters.getUserRole;
+    const userRole = rootGetters['user/getUserRole'];
 
     /** Set common params */
     notification.actionNameKey = `notifications.${action}`;
@@ -225,7 +225,6 @@ export default {
           externalBase: DaoUrl,
         };
         break;
-
       case [...notificationsQuestsActions, NotificationAction.QUEST_STATUS_UPDATED].includes(action):
         notification.params = {
           ...notification.params,
@@ -266,8 +265,7 @@ export default {
         const params = quest?.id || id;
         await dispatch('quests/getQuest', params, { root: true });
         if (userRole === UserRole.EMPLOYER && currentUserId && quest?.user?.id === currentUserId) {
-          await dispatch('quests/responsesToQuest', params, { root: true });
-          await dispatch('quests/questListForInvitation', currentUserId, { root: true });
+          await dispatch('quests/setResponseToQuest', notification.notification, { root: true });
         }
       }
     }
