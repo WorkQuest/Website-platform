@@ -161,7 +161,7 @@
                 :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
                 @click="handleSubmit(setCurrentStepEditQuest($options.EditQuestState.RAISE_VIEWS))"
               >
-                {{ $t('quests.editAQuest') }}
+                {{ $t('meta.btns.next') }}
               </base-btn>
             </div>
           </div>
@@ -184,6 +184,7 @@
               <div class="btn-container">
                 <div class="btn-container__btn">
                   <base-btn
+                    v-if="mode !== 'raise'"
                     data-selector="EDIT-QUEST"
                     mode="outline"
                     @click="toEditQuest"
@@ -219,9 +220,7 @@ import {
 import {
   QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses, CommissionForCreatingAQuest, PaidTariff,
 } from '~/utils/сonstants/quests';
-import { ERC20, WQPromotion } from '~/abi';
-import { GetWalletProvider } from '~/utils/wallet';
-import { fetchContractData } from '~/utils/web3';
+import { ERC20 } from '~/abi';
 
 const { GeoCode } = require('geo-coder');
 
@@ -232,6 +231,7 @@ export default {
     return {
       period: 0,
       level: -1,
+      levelPrices: null,
 
       selectedSpecAndSkills: [],
       priorityIndex: 1,
@@ -301,13 +301,6 @@ export default {
       }
       return months;
     },
-    periodTabs() {
-      return [
-        this.$t('raising-views.forOneDay'),
-        this.$t('raising-views.forOneWeek'),
-        this.$t('raising-views.forOneMonth'),
-      ];
-    },
     runtime() {
       return [
         this.$t('meta.priority.urgent'),
@@ -328,13 +321,12 @@ export default {
         this.$t('quests.distantWork.bothVariant'),
       ];
     },
-    levelPrices() {
-      return {
-        [PaidTariff.GoldPlus]: [20, 30, 45],
-        [PaidTariff.Gold]: [12, 23, 30],
-        [PaidTariff.Silver]: [9, 18, 24],
-        [PaidTariff.Bronze]: [7, 12, 18],
-      };
+    periodTabs() {
+      return [
+        this.$t('raising-views.forOneDay'),
+        this.$t('raising-views.forOneWeek'),
+        this.$t('raising-views.forOneMonth'),
+      ];
     },
     levelTabs() {
       return [
@@ -342,25 +334,25 @@ export default {
           title: this.$t('quests.levels.1.title'),
           description: this.$t('quests.levels.1.desc'),
           color: 'gold',
-          price: this.levelPrices[PaidTariff.GoldPlus][this.period],
+          price: this.levelPrices ? this.levelPrices[PaidTariff.GoldPlus][this.period] : '',
         },
         {
           title: this.$t('quests.levels.2.title'),
           description: this.$t('quests.levels.2.desc'),
           color: 'gold',
-          price: this.levelPrices[PaidTariff.Gold][this.period],
+          price: this.levelPrices ? this.levelPrices[PaidTariff.Gold][this.period] : '',
         },
         {
           title: this.$t('quests.levels.3.title'),
           description: this.$t('quests.levels.3.desc'),
           color: 'silver',
-          price: this.levelPrices[PaidTariff.Silver][this.period],
+          price: this.levelPrices ? this.levelPrices[PaidTariff.Silver][this.period] : '',
         },
         {
           title: this.$t('quests.levels.4.title'),
           description: this.$t('quests.levels.4.desc'),
           color: 'bronze',
-          price: this.levelPrices[PaidTariff.Bronze][this.period],
+          price: this.levelPrices ? this.levelPrices[PaidTariff.Bronze][this.period] : '',
         },
 
       ];
@@ -372,7 +364,8 @@ export default {
   async mounted() {
     if (!this.isWalletConnected) return;
 
-    const res = await this.$store.dispatch('user/fetchRaiseViewPrice', { type: 'questTariff' });
+    const levelPricesRes = await this.$store.dispatch('user/fetchRaiseViewPrice', { type: 'questTariff' });
+    this.levelPrices = levelPricesRes?.result;
 
     this.SetLoader(true);
     await this.$store.dispatch('quests/getQuest', this.$route.params.id);
@@ -403,12 +396,6 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    async fetchRaiseViewPrice() {
-      const res = await this.$store.dispatch('user/getRaiseViewPrice', {
-        type: 'questTariff',
-      });
-      console.log(res);
-    },
     setPeriod(i) {
       this.period = i;
     },
@@ -442,6 +429,7 @@ export default {
         key: modals.paymentOptions,
         step: 1,
       });
+      // TODO: then to edit quest
     },
     clickBackBtnHandler() {
       if (this.mode === 'raise') {

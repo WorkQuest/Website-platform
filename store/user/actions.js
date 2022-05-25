@@ -373,11 +373,16 @@ export default {
         3: PaidTariff.Bronze,
       };
       const tariffs = ['0', '1', '2', '3'];
-      let result;
+      const result = {
+        [PaidTariff.GoldPlus]: [],
+        [PaidTariff.Gold]: [],
+        [PaidTariff.Silver]: [],
+        [PaidTariff.Bronze]: [],
+      };
       const toFetch = [];
       for (let i = 0; i < periods.length; i += 1) {
         for (let j = 0; j < tariffs.length; j += 1) {
-          toFetch.push(async () => {
+          toFetch.push((async () => {
             const cost = await fetchContractData(
               type,
               WQPromotion,
@@ -385,14 +390,11 @@ export default {
               [tariffs[j], periods[i]],
               GetWalletProvider(),
             );
-            console.log(cost);
             result[tariffByIndex[j]][i] = new BigNumber(+cost).shiftedBy(-18).toString();
-            return success();
-          });
+          })());
         }
       }
       await Promise.all(toFetch);
-      console.log('prices', result);
       return success(result);
     } catch (e) {
       console.log('user/fetchRaiseViewPrice', e);
