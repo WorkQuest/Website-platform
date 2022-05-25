@@ -742,6 +742,10 @@ export default {
   .balance__bottom {
     gap: 10px;
   }
+  .buy-wqt__sub {
+    grid-template-columns: 1fr;
+    grid-gap: 10px
+  }
 }
 
 @include _480 {
