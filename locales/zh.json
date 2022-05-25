@@ -1535,6 +1535,7 @@
     "raisingViews": "提高浏览量",
     "choosePeriod": "选择期限",
     "forOneDay": "1 天",
+    "forDays": "For {n} days",
     "forOneWeek": "1 周",
     "forOneMonth": "1 个月",
     "chooseLevel": "选择级别"

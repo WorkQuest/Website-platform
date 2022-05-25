@@ -406,16 +406,14 @@ export default {
   /**
    * Raise view quest
    * @param _
-   * @param address - quest contract address
-   * @param tariff - [0, 1, 2, 3] // GoldPlus, Gold, Silver, Bronze
-   * @param period - days
+   * @param data - from promoteQuest abi
    */
-  async promoteQuest(_, { address, tariff, period }) {
+  async promoteQuest(_, data) {
     try {
       const res = await sendWalletTransaction('promoteQuest', {
         address: process.env.WORKNET_PROMOTION,
         abi: WQPromotion,
-        data: [address, tariff, period],
+        data,
       });
       console.log('promote res', res);
       return success(res);

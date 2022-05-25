@@ -1535,6 +1535,7 @@
     "raisingViews": "व्यू बढ़ाएं",
     "choosePeriod": "अवधि चुनें",
     "forOneDay": "1 दिन के लिए",
+    "forDays": "For {n} days",
     "forOneWeek": "1 सप्ताह के लिए",
     "forOneMonth": "1 माह के लिए",
     "chooseLevel": "लेवल चुनें"

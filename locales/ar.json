@@ -1536,6 +1536,7 @@
     "raisingViews": "زيادة المشاهدات",
     "choosePeriod": "اختيار الفترة",
     "forOneDay": "لمدة يوم واحد",
+    "forDays": "For {n} days",
     "forOneWeek": "لمدة أسبوع واحد",
     "forOneMonth": "لمدة شهر واحد",
     "chooseLevel": "اختيار المستوى"

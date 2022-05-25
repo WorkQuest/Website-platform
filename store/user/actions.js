@@ -17,7 +17,7 @@ import {
 import {
   UserStatuses,
   QuestModeReview,
-  RaiseViewTariffPeriods,
+  RaiseViewTariffPeriods, TariffByIndex,
 } from '~/utils/enums';
 
 import { WQPromotion } from '~/abi/index';
@@ -366,12 +366,6 @@ export default {
   async fetchRaiseViewPrice({ commit }, { type }) { // new method
     try {
       const periods = RaiseViewTariffPeriods[type];
-      const tariffByIndex = {
-        0: PaidTariff.GoldPlus,
-        1: PaidTariff.Gold,
-        2: PaidTariff.Silver,
-        3: PaidTariff.Bronze,
-      };
       const tariffs = ['0', '1', '2', '3'];
       const result = {
         [PaidTariff.GoldPlus]: [],
@@ -390,7 +384,7 @@ export default {
               [tariffs[j], periods[i]],
               GetWalletProvider(),
             );
-            result[tariffByIndex[j]][i] = new BigNumber(+cost).shiftedBy(-18).toString();
+            result[TariffByIndex[j]][i] = new BigNumber(+cost).shiftedBy(-18).toString();
           })());
         }
       }

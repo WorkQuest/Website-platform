@@ -215,12 +215,20 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import {
-  Path, PayPeriodsIndex, TokenMap, TokenSymbols, TypeOfEmployments, WorkplaceIndex,
+  Path,
+  PayPeriodsIndex,
+  RaiseViewTariffPeriods,
+  TariffByIndex,
+  TokenMap,
+  TokenSymbols,
+  TypeOfEmployments,
+  WorkplaceIndex,
 } from '~/utils/enums';
 import {
   QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses, CommissionForCreatingAQuest, PaidTariff,
 } from '~/utils/сonstants/quests';
-import { ERC20 } from '~/abi';
+import { ERC20, WorkQuest, WQPromotion } from '~/abi';
+import { error, success } from '~/utils/web3';
 
 const { GeoCode } = require('geo-coder');
 
@@ -324,8 +332,8 @@ export default {
     periodTabs() {
       return [
         this.$t('raising-views.forOneDay'),
-        this.$t('raising-views.forOneWeek'),
-        this.$t('raising-views.forOneMonth'),
+        this.$t('raising-views.forDays', { n: 5 }),
+        this.$t('raising-views.forDays', { n: 7 }),
       ];
     },
     levelTabs() {
@@ -423,13 +431,88 @@ export default {
     setCurrentStepEditQuest(step) {
       this.$store.commit('quests/setCurrentStepEditQuest', step);
     },
-    showPaymentModal() {
-      // TODO: raise views here
-      this.ShowModal({
-        key: modals.paymentOptions,
-        step: 1,
+    async showPaymentModal() {
+      if (!this.levelPrices) return;
+      this.SetLoader(true);
+
+      const tokenAddress = process.env.WORKNET_WUSD_TOKEN;
+      const promotionAddress = process.env.WORKNET_PROMOTION;
+      const { contractAddress } = this.questData;
+      const levelPrice = this.levelPrices[TariffByIndex[this.level]][this.period];
+
+      new Promise(async (resolve, reject) => {
+        await this.$store.dispatch('wallet/fetchWalletData', {
+          method: 'balanceOf',
+          address: this.userWalletAddress,
+          abi: ERC20,
+          token: tokenAddress,
+          symbol: TokenSymbols.WUSD,
+        });
+        if (new BigNumber(this.balanceData.WUSD.fullBalance).isLessThan(levelPrice)) {
+          this.ShowToast(`${this.$t('errors.transaction.notEnoughFunds')} (${TokenSymbols.WUSD})`);
+          this.SetLoader(false);
+          reject();
+          return;
+        }
+        await this.makeApprove({
+          wusdAddress: tokenAddress,
+          contractAddress: promotionAddress,
+          depositAmount: levelPrice,
+          approveTitle: `${this.$t('meta.raiseViews')} ${this.$t('meta.approve')}`,
+        }).then(async () => {
+          await resolve();
+        }).catch((err) => {
+          this.SetLoader(false);
+          reject(err);
+        });
+      }).then(async () => {
+        const data = [contractAddress, this.level, RaiseViewTariffPeriods.questTariff[this.period]];
+        const [feeRes] = await Promise.all([
+          this.$store.dispatch('wallet/getContractFeeData', {
+            method: 'promoteQuest',
+            abi: WQPromotion,
+            contractAddress: promotionAddress,
+            data,
+          }),
+          this.$store.dispatch('wallet/getBalance'),
+          this.$store.dispatch('wallet/fetchWalletData', {
+            method: 'balanceOf',
+            address: this.userWalletAddress,
+            abi: ERC20,
+            token: tokenAddress,
+            symbol: TokenSymbols.WUSD,
+          }),
+        ]);
+        this.SetLoader(false);
+        if (!feeRes.ok) {
+          this.ShowToast(feeRes.msg);
+          return;
+        }
+        this.ShowModal({
+          key: modals.transactionReceipt,
+          title: this.$t('meta.raiseViews'),
+          isShowSuccess: this.mode === 'raise',
+          fields: {
+            from: { name: this.$t('meta.fromBig'), value: this.$store.getters['user/getUserWalletAddress'] },
+            to: { name: this.$t('meta.toBig'), value: promotionAddress },
+            amount: { name: this.$t('modals.amount'), value: levelPrice, symbol: TokenSymbols.WUSD },
+            fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WQT },
+          },
+          submitMethod: async () => {
+            const res = await this.$store.dispatch('quests/promoteQuest', data);
+            if (!res.ok) {
+              this.ShowToast(res.msg);
+              return error();
+            }
+            if (this.mode === 'raise') {
+              await this.$router.push(`${Path.QUESTS}/${this.questData.id}`);
+              return success();
+            }
+            await this.toEditQuest();
+            return success();
+          },
+        });
       });
-      // TODO: then to edit quest
     },
     clickBackBtnHandler() {
       if (this.mode === 'raise') {
@@ -489,13 +572,17 @@ export default {
             reject();
             return;
           }
-          await this.makeApprove({ wusdAddress, contractAddress, depositAmount })
-            .then(async (result) => {
-              await resolve(result);
-            }).catch((error) => {
-              this.SetLoader(false);
-              reject(error);
-            });
+          await this.makeApprove({
+            wusdAddress,
+            contractAddress,
+            depositAmount,
+            approveTitle: `${this.$t('meta.btns.edit')} ${this.$t('meta.approve')}`,
+          }).then(async (result) => {
+            await resolve(result);
+          }).catch((err) => {
+            this.SetLoader(false);
+            reject(err);
+          });
         } else { // Quest cost decrease
           await resolve();
         }
@@ -504,8 +591,10 @@ export default {
       });
     },
 
-    // Approve to quest contract if cost increased
-    async makeApprove({ wusdAddress, contractAddress, depositAmount }) {
+    // Approve to address
+    async makeApprove({
+      wusdAddress, contractAddress, depositAmount, approveTitle = this.$t('meta.approve'),
+    }) {
       return new Promise(async (resolve, reject) => {
         const allowance = await this.$store.dispatch('wallet/getAllowance', {
           tokenAddress: wusdAddress,
@@ -531,7 +620,7 @@ export default {
 
           this.ShowModal({
             key: modals.transactionReceipt,
-            title: this.$t('meta.approve'),
+            title: approveTitle,
             fields: {
               from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
               to: { name: this.$t('meta.toBig'), value: contractAddress },
@@ -602,6 +691,7 @@ export default {
       const [feeRes] = await Promise.all([
         this.$store.dispatch('quests/getFeeDataJobMethod', {
           contractAddress,
+          abi: WorkQuest,
           method: QuestMethods.EditJob,
           data: [new BigNumber(this.price).shiftedBy(18).toString()],
         }),
@@ -620,15 +710,19 @@ export default {
         fields.amount = { name: this.$t('modals.amount'), value: depositAmount, symbol: TokenSymbols.WUSD };
       }
       await this.$store.dispatch('wallet/getBalance');
+      this.$store.commit('notifications/setWaitForUpdateQuest', {
+        id: this.questData.id,
+        callback: async () => await this.editQuest(),
+      });
       this.ShowModal({
         key: modals.transactionReceipt,
+        isDontOffLoader: true,
         fields,
         submitMethod: async () => {
-          const res = await this.$store.dispatch('quests/editQuestOnContract', {
+          await this.$store.dispatch('quests/editQuestOnContract', {
             contractAddress,
             cost: this.price,
           });
-          if (res.ok) await this.editQuest();
         },
       });
     },

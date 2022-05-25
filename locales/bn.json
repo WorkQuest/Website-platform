@@ -1535,6 +1535,7 @@
     "raisingViews": "মতামত উত্থাপন",
     "choosePeriod": "মেয়াদ চয়ন করুন",
     "forOneDay": "1 দিনের জন্য",
+    "forDays": "For {n} days",
     "forOneWeek": "1 সপ্তাহের জন্য",
     "forOneMonth": "1 মাসের জন্য",
     "chooseLevel": "লেভেল নির্বাচন করুন"

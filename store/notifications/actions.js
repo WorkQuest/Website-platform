@@ -149,6 +149,14 @@ export default {
     notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
     notification.params = { isLocal: false };
 
+    const handleWaitForUpdateQuest = async () => {
+      dispatch('main/setLoading', false, { root: true });
+      if (getters.getWaitForUpdateQuest?.callback) {
+        await getters.getWaitForUpdateQuest.callback();
+      }
+      commit('setWaitForUpdateQuest', null);
+    };
+
     switch (action) {
       case NotificationAction.QUEST_STATUS_UPDATED:
         notification.sender = userRole === UserRole.EMPLOYER ? assignedWorker
@@ -160,11 +168,7 @@ export default {
         };
 
         if (getters.getWaitForUpdateQuest?.id === data?.id) {
-          dispatch('main/setLoading', false, { root: true });
-          if (getters.getWaitForUpdateQuest?.callback) {
-            await getters.getWaitForUpdateQuest.callback();
-          }
-          commit('setWaitForUpdateQuest', null);
+          await handleWaitForUpdateQuest();
         }
 
         await dispatch('updateProfile');
@@ -181,6 +185,9 @@ export default {
           title,
           path: `${Path.QUESTS}/${quest?.id || id}`,
         };
+        if (getters.getWaitForUpdateQuest?.id === data?.id) {
+          await handleWaitForUpdateQuest();
+        }
         break;
 
       case NotificationAction.DISPUTE_DECISION:

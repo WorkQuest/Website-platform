@@ -1535,6 +1535,7 @@
     "raisingViews": "Увеличение просмотров",
     "choosePeriod": "Выберите период",
     "forOneDay": "На 1 день",
+    "forDays": "На {n} дней",
     "forOneWeek": "На 1 неделю",
     "forOneMonth": "На 1 месяц",
     "chooseLevel": "Выберите уровень"

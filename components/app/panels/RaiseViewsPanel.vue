@@ -240,6 +240,7 @@ export default {
     flex-shrink: 0;
     display: flex;
     align-self: center;
+    min-width: 40px;
 
     &_price {
       user-select: none;

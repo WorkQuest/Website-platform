@@ -1535,6 +1535,7 @@
     "raisingViews": "Meningkatkan tampilan",
     "choosePeriod": "Pilih periode",
     "forOneDay": "Selama 1 hari",
+    "forDays": "For {n} days",
     "forOneWeek": "Selama 1 minggu",
     "forOneMonth": "Selama 1 bulan",
     "chooseLevel": "Pilih level"

@@ -1,4 +1,6 @@
 // eslint-disable-next-line import/prefer-default-export
+import { PaidTariff } from '~/utils/сonstants/quests';
+
 export const isProd = process.env.PROD === 'true';
 
 export const ChainsId = {
@@ -282,10 +284,16 @@ export const PensionHistoryMethods = Object.freeze({
   Receive: 'Receive',
 });
 
-export const RaiseViewTariffPeriods = {
+export const RaiseViewTariffPeriods = Object.freeze({
   usersTariff: ['1', '7', '30'],
   questTariff: ['1', '5', '7'],
-};
+});
+export const TariffByIndex = Object.freeze({
+  0: PaidTariff.GoldPlus,
+  1: PaidTariff.Gold,
+  2: PaidTariff.Silver,
+  3: PaidTariff.Bronze,
+});
 export const RaiseViewStatus = {
   0: true,
   1: false,

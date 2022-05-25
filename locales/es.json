@@ -1535,6 +1535,7 @@
     "raisingViews": "Aumentar visualizaciones",
     "choosePeriod": "Seleccionar período",
     "forOneDay": "Durante 1 día",
+    "forDays": "For {n} days",
     "forOneWeek": "Durante 1 semana",
     "forOneMonth": "Durante 1 mes",
     "chooseLevel": "Seleccionar nivel"
