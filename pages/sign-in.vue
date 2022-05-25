@@ -169,7 +169,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import moment from 'moment';
 import modals from '~/store/modals/modals';
 import {
   createWallet, decryptStringWitheKey, encryptStringWithKey, initWallet, setCipherKey,
@@ -180,7 +179,7 @@ import {
 } from '~/utils/enums';
 import { images } from '~/utils/images';
 
-const timerDefaultValue = 50;
+const timerDefaultValue = 60;
 
 export default {
   name: 'SignIn',
@@ -194,11 +193,7 @@ export default {
     return {
       disableResend: true,
       timerValue: timerDefaultValue,
-
-      isShowBtnResend: false,
       isStartedTimer: false,
-      timer: 60,
-      counter: 0,
       addressAssigned: false,
       userWalletAddress: null,
       step: WalletState.Default,
@@ -221,14 +216,7 @@ export default {
       return WalletState;
     },
     seconds() {
-      console.log(this.timerValue);
       return this.timerValue;
-    },
-  },
-  watch: {
-    counter(time) {
-      console.log('time', time);
-      if (time === 0) this.isStartedTimer = false;
     },
   },
   created() {
@@ -277,10 +265,6 @@ export default {
       }
     }
     this.$cookies.remove('timer');
-
-    // this.$cookies.set('timerCookie', {
-    //   timer: this.counter > 0 && this.counter < 60 ? this.counter : this.counter = 60,
-    // }, { maxAge: 60 });
   },
   methods: {
     beforeunload() {
@@ -292,16 +276,10 @@ export default {
       } else this.$cookies.remove('timer');
       this.clearCookies();
     },
-
-    resetTimer() {
-      this.counter = 60;
-      this.isStartedTimer = false;
-    },
     continueTimer() {
       const timer = this.$cookies.get('timer');
       if (!timer) return;
       const spendSecs = (this.$moment().diff(timer.createdAt) / 1000).toFixed(0);
-      console.log(spendSecs);
       if (timer.timerValue < spendSecs) {
         this.timerValue = timerDefaultValue;
         this.disableResend = false;
@@ -311,10 +289,6 @@ export default {
       }
       this.timerValue = timer.timerValue;
       this.startTimer();
-      // this.isShowBtnResend = true;
-      // this.isStartedTimer = true;
-      // this.counter = timer;
-      // this.startTimer();
     },
     startTimer() {
       if (!this.isStartedTimer) {
@@ -332,12 +306,6 @@ export default {
         this.isStartedTimer = true;
         this.disableResend = true;
       }
-
-      // this.$cookies.set('timerCookie', { timer: 60 });
-      // if (this.timerValue > 0 && this.timerValue <= 60) {
-      //   this.isStartedTimer = true;
-      //   this.timer = setInterval(() => { this.counter -= 1; }, 1000);
-      // } else this.resetTimer();
     },
     clearCookies() {
       if (this.userData.id) return;
@@ -380,16 +348,12 @@ export default {
       this.SetLoader(true);
       this.model.email = this.model.email.trim();
       if (this.model.email) {
-        // await this.$store.dispatch('user/resendEmail', { email: this.model.email });
+        await this.$store.dispatch('user/resendEmail', { email: this.model.email });
         await this.$store.dispatch('main/showToast', {
           title: this.$t('registration.emailConfirmTitle'),
-          text: this.$t('registration.emailConfirm'),
+          text: this.$t('registration.emailConfirmNewLetter'),
         });
         this.startTimer();
-        // if (!this.isStartedTimer) {
-        // this.resetTimer();
-
-        // }
       }
       this.SetLoader(false);
     },
