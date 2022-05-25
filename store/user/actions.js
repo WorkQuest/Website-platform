@@ -395,57 +395,6 @@ export default {
       return error();
     }
   },
-  async getRaiseViewPrice({ commit }, { type, tariffsArr }) { // todo: del
-    try {
-      const periods = RaiseViewTariffPeriods[type];
-      const tariffs = tariffsArr ?? ['1', '2', '3', '4'];
-      const price = {};
-      for (let i = 0; i < tariffs.length; i += 1) {
-        price[tariffs[i]] = {};
-        for (let j = 0; j < periods.length; j += 1) {
-          const data = [tariffs[i], periods[j]];
-          /* eslint-disable no-await-in-loop */
-          const cost = await fetchContractData( // TODO: refactor to promise all
-            type,
-            WQPromotion,
-            WORKNET_PROMOTION,
-            data,
-            GetWalletProvider(),
-          );
-          price[tariffs[i]][periods[j]] = new BigNumber(+cost).shiftedBy(-18).toString();
-        }
-      }
-      return success(price);
-    } catch (e) {
-      console.log('user/getRaiseViewPrice');
-      return error(e.code, 'Error in get raise view price', e);
-    }
-  },
-  async promoteUserOnContract({ commit }, { cost, tariff, period }) {
-    try {
-      const inst = createInstance(WQPromotion, WORKNET_PROMOTION);
-      const value = new BigNumber(cost).shiftedBy(18).toString();
-      const { gas, gasPrice } = await getGasPrice(
-        WQPromotion,
-        WORKNET_PROMOTION,
-        'promoteUser',
-        [tariff, period],
-        value,
-      );
-      const params = {
-        from: getWalletAddress(),
-        gasPrice,
-        gas,
-        value,
-      };
-      const response = await inst.methods.promoteUser(tariff, period).send(params);
-      return success(response);
-    } catch (e) {
-      console.log('user/buyRaiseView');
-      showToast('Promote user error:', `${e.message}`, 'danger');
-      return error(e.code, 'Error in method promote user', e);
-    }
-  },
   setRememberMe({ commit }, payload) {
     commit('setRememberMe', payload);
   },

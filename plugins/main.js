@@ -2,11 +2,12 @@ import Vue from 'vue';
 import moment from 'moment';
 import VueTippy, { TippyComponent } from 'vue-tippy';
 import converter from 'bech32-converting';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { TokenSymbols } from '~/utils/enums';
 import { QuestMethods, QuestStatuses } from '~/utils/сonstants/quests';
 import { images } from '~/utils/images';
-import { WorkQuest } from '~/abi';
+import { ERC20, WorkQuest } from '~/abi';
 
 Vue.use(VueTippy);
 Vue.component('tippy', TippyComponent);
@@ -291,6 +292,62 @@ Vue.mixin({
       ];
 
       return toMatch.some((toMatchItem) => navigator.userAgent.match(toMatchItem));
+    },
+    async MakeApprove({
+      tokenAddress, contractAddress, amount, approveTitle = this.$t('meta.approve'),
+    }) {
+      return new Promise(async (resolve, reject) => {
+        const allowance = await this.$store.dispatch('wallet/getAllowance', {
+          tokenAddress,
+          spenderAddress: contractAddress,
+        });
+        if (new BigNumber(allowance).isLessThan(amount)) {
+          const [approveFee] = await Promise.all([
+            this.$store.dispatch('wallet/getContractFeeData', {
+              method: 'approve',
+              abi: ERC20,
+              contractAddress: tokenAddress,
+              data: [contractAddress, new BigNumber(amount).shiftedBy(18).toString()],
+            }),
+            this.$store.dispatch('wallet/getBalance'),
+          ]);
+
+          this.SetLoader(false);
+          if (!approveFee.ok) {
+            this.ShowToast('Approve error');
+            reject();
+            return;
+          }
+
+          this.ShowModal({
+            key: modals.transactionReceipt,
+            title: approveTitle,
+            fields: {
+              from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
+              to: { name: this.$t('meta.toBig'), value: contractAddress },
+              amount: { name: this.$t('modals.amount'), value: amount, symbol: TokenSymbols.WUSD },
+              fee: { name: this.$t('wallet.table.trxFee'), value: approveFee.result.fee, symbol: TokenSymbols.WQT },
+            },
+            submitMethod: async () => {
+              this.ShowToast('Approving...', 'Approve');
+              const approveOk = await this.$store.dispatch('wallet/approve', {
+                tokenAddress,
+                spenderAddress: contractAddress,
+                amount,
+              });
+              if (!approveOk) {
+                this.ShowToast('Approve error');
+                reject();
+                return;
+              }
+              this.ShowToast('Approving done', 'Approve');
+              await resolve(amount);
+            },
+          });
+        } else {
+          await resolve(amount);
+        }
+      });
     },
   },
 });

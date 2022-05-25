@@ -454,10 +454,10 @@ export default {
           reject();
           return;
         }
-        await this.makeApprove({
-          wusdAddress: tokenAddress,
+        await this.MakeApprove({
+          tokenAddress,
           contractAddress: promotionAddress,
-          depositAmount: levelPrice,
+          amount: levelPrice,
           approveTitle: `${this.$t('meta.raiseViews')} ${this.$t('meta.approve')}`,
         }).then(async () => {
           await resolve();
@@ -590,65 +590,6 @@ export default {
         await this.editWithCostChange(contractAddress, deposit);
       });
     },
-
-    // Approve to address
-    async makeApprove({
-      wusdAddress, contractAddress, depositAmount, approveTitle = this.$t('meta.approve'),
-    }) {
-      return new Promise(async (resolve, reject) => {
-        const allowance = await this.$store.dispatch('wallet/getAllowance', {
-          tokenAddress: wusdAddress,
-          spenderAddress: contractAddress,
-        });
-        if (new BigNumber(allowance).isLessThan(depositAmount)) {
-          const [approveFee] = await Promise.all([
-            this.$store.dispatch('wallet/getContractFeeData', {
-              method: 'approve',
-              abi: ERC20,
-              contractAddress: wusdAddress,
-              data: [contractAddress, new BigNumber(depositAmount).shiftedBy(18).toString()],
-            }),
-            this.$store.dispatch('wallet/getBalance'),
-          ]);
-
-          this.SetLoader(false);
-          if (!approveFee.ok) {
-            this.ShowToast('Approve error');
-            reject();
-            return;
-          }
-
-          this.ShowModal({
-            key: modals.transactionReceipt,
-            title: approveTitle,
-            fields: {
-              from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
-              to: { name: this.$t('meta.toBig'), value: contractAddress },
-              amount: { name: this.$t('modals.amount'), value: depositAmount, symbol: TokenSymbols.WUSD },
-              fee: { name: this.$t('wallet.table.trxFee'), value: approveFee.result.fee, symbol: TokenSymbols.WQT },
-            },
-            submitMethod: async () => {
-              this.ShowToast('Approving...', 'Approve');
-              const approveOk = await this.$store.dispatch('wallet/approve', {
-                tokenAddress: wusdAddress,
-                spenderAddress: contractAddress,
-                amount: depositAmount,
-              });
-              if (!approveOk) {
-                this.ShowToast('Approve error');
-                reject();
-                return;
-              }
-              this.ShowToast('Approving done', 'Approve');
-              await resolve(depositAmount);
-            },
-          });
-        } else {
-          await resolve(depositAmount);
-        }
-      });
-    },
-
     //  Send new data to backend
     async editQuest() {
       if (this.mode === 'raise') {
