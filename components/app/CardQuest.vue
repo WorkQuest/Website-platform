@@ -734,7 +734,7 @@ export default {
       align-items: flex-start;
       justify-content: flex-end;
       gap: 5px;
-      // todo: here to top
+      margin-bottom: auto;
     }
   }
 
