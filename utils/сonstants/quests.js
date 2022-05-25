@@ -57,3 +57,10 @@ export const QuestMethods = Object.freeze({
   AcceptJob: 'acceptJob',
   VerificationJob: 'verificationJob',
 });
+
+export const PaidTariff = Object.freeze({
+  GoldPlus: 'GoldPlus',
+  Gold: 'Gold',
+  Silver: 'Silver',
+  Bronze: 'Bronze',
+});

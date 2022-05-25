@@ -399,10 +399,10 @@ export default {
       return error();
     }
   },
-  async getRaiseViewPrice({ commit }, { type }) { // todo: del
+  async getRaiseViewPrice({ commit }, { type, tariffsArr }) { // todo: del
     try {
       const periods = RaiseViewTariffPeriods[type];
-      const tariffs = ['1', '2', '3', '4'];
+      const tariffs = tariffsArr ?? ['1', '2', '3', '4'];
       const price = {};
       for (let i = 0; i < tariffs.length; i += 1) {
         price[tariffs[i]] = {};

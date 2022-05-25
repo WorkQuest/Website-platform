@@ -169,9 +169,17 @@
         <div
           v-if="step === $options.EditQuestState.RAISE_VIEWS"
           data-selector="PAGE-MY-QUESTS-STEP-2"
-          class="page"
+          class="page page__raise"
         >
-          <raise-views-panel>
+          <raise-views-panel
+            :period="period"
+            :level="level"
+            :period-tabs="periodTabs"
+            :level-tabs="levelTabs"
+            :back-button-callback="clickBackBtnHandler"
+            @switchPeriod="setPeriod"
+            @switchLevel="setLevel"
+          >
             <template #actions>
               <div class="btn-container">
                 <div class="btn-container__btn">
@@ -185,6 +193,7 @@
                 </div>
                 <div class="btn-container__btn">
                   <base-btn
+                    :disabled="level < 0"
                     data-selector="SHOW-PAYMENT-MODAl"
                     @click="showPaymentModal"
                   >
@@ -208,9 +217,11 @@ import {
   Path, PayPeriodsIndex, TokenMap, TokenSymbols, TypeOfEmployments, WorkplaceIndex,
 } from '~/utils/enums';
 import {
-  QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses, CommissionForCreatingAQuest,
+  QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses, CommissionForCreatingAQuest, PaidTariff,
 } from '~/utils/сonstants/quests';
-import { ERC20 } from '~/abi';
+import { ERC20, WQPromotion } from '~/abi';
+import { GetWalletProvider } from '~/utils/wallet';
+import { fetchContractData } from '~/utils/web3';
 
 const { GeoCode } = require('geo-coder');
 
@@ -219,10 +230,9 @@ export default {
   EditQuestState,
   data() {
     return {
-      ads: {
-        currentAdPrice: '',
-      },
-      period: 1,
+      period: 0,
+      level: -1,
+
       selectedSpecAndSkills: [],
       priorityIndex: 1,
       employmentIndex: 0,
@@ -293,9 +303,9 @@ export default {
     },
     periodTabs() {
       return [
-        { number: 1, title: this.$t('raising-views.forOneDay') },
-        { number: 2, title: this.$t('raising-views.forOneWeek') },
-        { number: 3, title: this.$t('raising-views.forOneMonth') },
+        this.$t('raising-views.forOneDay'),
+        this.$t('raising-views.forOneWeek'),
+        this.$t('raising-views.forOneMonth'),
       ];
     },
     runtime() {
@@ -308,6 +318,9 @@ export default {
     employment() {
       return TypeOfEmployments.map((item) => this.$t(`quests.employment.${item}`));
     },
+    payPeriods() {
+      return PayPeriodsIndex.map((item) => this.$t(`quests.payPeriods.${item}`));
+    },
     distantWork() {
       return [
         this.$t('quests.distantWork.distantWork'),
@@ -315,8 +328,42 @@ export default {
         this.$t('quests.distantWork.bothVariant'),
       ];
     },
-    payPeriods() {
-      return PayPeriodsIndex.map((item) => this.$t(`quests.payPeriods.${item}`));
+    levelPrices() {
+      return {
+        [PaidTariff.GoldPlus]: [20, 30, 45],
+        [PaidTariff.Gold]: [12, 23, 30],
+        [PaidTariff.Silver]: [9, 18, 24],
+        [PaidTariff.Bronze]: [7, 12, 18],
+      };
+    },
+    levelTabs() {
+      return [
+        {
+          title: this.$t('quests.levels.1.title'),
+          description: this.$t('quests.levels.1.desc'),
+          color: 'gold',
+          price: this.levelPrices[PaidTariff.GoldPlus][this.period],
+        },
+        {
+          title: this.$t('quests.levels.2.title'),
+          description: this.$t('quests.levels.2.desc'),
+          color: 'gold',
+          price: this.levelPrices[PaidTariff.Gold][this.period],
+        },
+        {
+          title: this.$t('quests.levels.3.title'),
+          description: this.$t('quests.levels.3.desc'),
+          color: 'silver',
+          price: this.levelPrices[PaidTariff.Silver][this.period],
+        },
+        {
+          title: this.$t('quests.levels.4.title'),
+          description: this.$t('quests.levels.4.desc'),
+          color: 'bronze',
+          price: this.levelPrices[PaidTariff.Bronze][this.period],
+        },
+
+      ];
     },
   },
   beforeCreate() {
@@ -324,6 +371,9 @@ export default {
   },
   async mounted() {
     if (!this.isWalletConnected) return;
+
+    const res = await this.$store.dispatch('user/fetchRaiseViewPrice', { type: 'questTariff' });
+
     this.SetLoader(true);
     await this.$store.dispatch('quests/getQuest', this.$route.params.id);
     this.geoCode = new GeoCode('google', {
@@ -353,6 +403,18 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    async fetchRaiseViewPrice() {
+      const res = await this.$store.dispatch('user/getRaiseViewPrice', {
+        type: 'questTariff',
+      });
+      console.log(res);
+    },
+    setPeriod(i) {
+      this.period = i;
+    },
+    setLevel(i) {
+      this.level = i;
+    },
     updateFiles(files) {
       this.files = files;
     },
@@ -371,32 +433,11 @@ export default {
       if (period === 3) return this.months;
       return '';
     },
-    selectRadio(idx) {
-      const radio = this.$refs[`radio${idx}`];
-      for (let i = 0; i < Object.keys(this.$refs[`radio${i}`]).length; i += 1) {
-        if (radio[i].checked) {
-          radio[i].checked = false;
-          this.ads.currentAdPrice = '';
-        } else if (!radio[i].checked) {
-          radio[i].checked = true;
-          this.ads.currentAdPrice = radio[i].value;
-        }
-      }
-    },
-    switchPeriod(item) {
-      for (let idx = 0; idx < Object.keys(this.$refs).length - 1; idx += 1) {
-        const radio = this.$refs[`radio${idx}`];
-        for (let i = 0; i < Object.keys(radio).length; i += 1) {
-          radio[0].checked = false;
-        }
-        this.period = item.number;
-        this.ads.currentAdPrice = '';
-      }
-    },
     setCurrentStepEditQuest(step) {
       this.$store.commit('quests/setCurrentStepEditQuest', step);
     },
     showPaymentModal() {
+      // TODO: raise views here
       this.ShowModal({
         key: modals.paymentOptions,
         step: 1,
@@ -1021,6 +1062,9 @@ export default {
     &::placeholder {
       color: $black300;
     }
+  }
+  &__raise {
+    margin-top: 20px;
   }
 }
 .specialization {

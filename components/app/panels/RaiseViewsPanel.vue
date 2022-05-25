@@ -96,20 +96,20 @@ export default {
       type: Function,
       default: () => {},
     },
-  },
-  data() {
-    return {
-      period: 0,
-      level: 0,
-    };
+    period: {
+      type: Number,
+      default: 0,
+    },
+    level: {
+      type: Number,
+      default: -1,
+    },
   },
   methods: {
     switchPeriod(i) {
-      this.period = i;
       this.$emit('switchPeriod', i);
     },
     switchLevel(i) {
-      this.level = i;
       this.$emit('switchLevel', i);
     },
   },
@@ -213,7 +213,7 @@ export default {
   }
 
   &_gold {
-    border-color: $yellow;
+    border-color: $yellow100;
   }
 
   &_silver {
@@ -264,7 +264,7 @@ export default {
     }
 
     &_gold {
-      background: $yellow;
+      background: $yellow100;
     }
 
     &_silver {
