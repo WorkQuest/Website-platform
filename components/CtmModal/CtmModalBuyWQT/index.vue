@@ -267,4 +267,9 @@ export default {
     color: $black500;
   }
 }
+.max {
+  &__text {
+    padding: 0 10px;
+  }
+}
 </style>
