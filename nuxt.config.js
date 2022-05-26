@@ -61,7 +61,7 @@ export default {
     '@nuxtjs/google-gtag',
   ],
   'google-gtag': {
-    id: 'G-D9LYH4QCFW',
+    id: 'G-1NQ8BHKM4F',
   },
   build: {
     productionSourceMap: false,
