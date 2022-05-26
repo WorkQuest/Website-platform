@@ -22,8 +22,6 @@ import {
 
 import { WQPromotion } from '~/abi/index';
 
-const { WORKNET_PROMOTION } = process.env;
-
 export default {
   async changeRole({ commit }, { totp }) {
     try {
@@ -369,7 +367,7 @@ export default {
           const cost = await fetchContractData(
             type,
             WQPromotion,
-            WORKNET_PROMOTION,
+            this.ENV.WORKNET_PROMOTION,
             data,
             GetWalletProvider(),
           );
@@ -384,11 +382,11 @@ export default {
   },
   async promoteUserOnContract({ commit }, { cost, tariff, period }) {
     try {
-      const inst = createInstance(WQPromotion, WORKNET_PROMOTION);
+      const inst = createInstance(WQPromotion, this.ENV.WORKNET_PROMOTION);
       const value = new BigNumber(cost).shiftedBy(18).toString();
       const { gas, gasPrice } = await getGasPrice(
         WQPromotion,
-        WORKNET_PROMOTION,
+        this.ENV.WORKNET_PROMOTION,
         'promoteUser',
         [tariff, period],
         value,

@@ -1,5 +1,8 @@
 // eslint-disable-next-line import/prefer-default-export
-export const isProd = process.env.PROD === 'true';
+
+import { IS_PROD } from '~/utils/adresses';
+
+export const isProd = IS_PROD;
 
 export const ChainsId = {
   ETH_MAIN: '0x1',
@@ -211,10 +214,10 @@ export const WorknetTokenAddresses = Object.freeze([
 ]);
 
 export const TokenSymbolByContract = Object.freeze({
-  [process.env.WORKNET_WUSD_TOKEN.toLowerCase()]: TokenSymbols.WUSD,
-  [process.env.WORKNET_WBNB_TOKEN.toLowerCase()]: TokenSymbols.BNB,
-  [process.env.WORKNET_WETH_TOKEN.toLowerCase()]: TokenSymbols.ETH,
-  [process.env.WORKNET_USDT_TOKEN.toLowerCase()]: TokenSymbols.USDT,
+  [process.env.WORKNET_WUSD_TOKEN?.toLowerCase()]: TokenSymbols.WUSD,
+  [process.env.WORKNET_WBNB_TOKEN?.toLowerCase()]: TokenSymbols.BNB,
+  [process.env.WORKNET_WETH_TOKEN?.toLowerCase()]: TokenSymbols.ETH,
+  [process.env.WORKNET_USDT_TOKEN?.toLowerCase()]: TokenSymbols.USDT,
 });
 
 export const TokenMap = {

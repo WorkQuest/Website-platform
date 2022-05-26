@@ -9,6 +9,7 @@ import {
   NetworksData,
   ChainsIdByChainNumber,
 } from '~/utils/enums';
+import { IS_PROD } from '~/utils/adresses';
 
 let web3 = null;
 let account = {};
@@ -23,7 +24,6 @@ if (process.browser) {
     axios = $axios;
   });
 }
-const isProd = process.env.PROD === 'true';
 
 export const getAccountAddress = () => account?.address;
 export const getAccount = () => account;
@@ -49,10 +49,10 @@ export const error = (code = 90000, msg = '', data = null) => ({
 export const getChainIdByChain = (chain) => {
   switch (chain) {
     case Chains.ETHEREUM:
-      if (!isProd) return ChainsId.ETH_TEST;
+      if (!IS_PROD) return ChainsId.ETH_TEST;
       return ChainsId.ETH_MAIN;
     case Chains.BINANCE:
-      if (!isProd) return ChainsId.BSC_TEST;
+      if (!IS_PROD) return ChainsId.BSC_TEST;
       return ChainsId.BSC_MAIN;
     case Chains.WORKNET:
       return ChainsId.WORKNET_TEST;
@@ -66,9 +66,9 @@ export const addedNetwork = async (chain) => {
   try {
     let networkParams = {};
     if (chain === Chains.ETHEREUM || [1, 4].includes(+chain)) {
-      networkParams = isProd ? NetworksData.ETH_MAIN : NetworksData.ETH_TEST;
+      networkParams = IS_PROD ? NetworksData.ETH_MAIN : NetworksData.ETH_TEST;
     } else if (chain === Chains.BINANCE || [56, 97].includes(+chain)) {
-      networkParams = isProd ? NetworksData.BSC_MAIN : NetworksData.BSC_TEST;
+      networkParams = IS_PROD ? NetworksData.BSC_MAIN : NetworksData.BSC_TEST;
     } else if (chain === Chains.WORKNET || chain === 20220112) {
       networkParams = NetworksData.WORKNET_TEST;
     }
@@ -179,7 +179,7 @@ export const initProvider = async (payload) => {
   const { chain } = payload;
   try {
     let walletOptions;
-    if (!isProd) {
+    if (!IS_PROD) {
       if (chain === Chains.ETHEREUM) {
         walletOptions = {
           rpc: {
@@ -203,7 +203,7 @@ export const initProvider = async (payload) => {
         };
       }
     }
-    if (isProd) {
+    if (IS_PROD) {
       if (chain === Chains.ETHEREUM) {
         walletOptions = {
           rpc: {

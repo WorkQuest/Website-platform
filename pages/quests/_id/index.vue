@@ -577,7 +577,7 @@ export default {
             key: modals.status,
             title: this.$t('modals.transactionSent'),
             subtitle: this.$t('modals.checkExplorer'),
-            link: `${process.env.WQ_EXPLORER_TX}/${result.transactionHash}`,
+            link: `${this.ENV.WQ_EXPLORER}/transactions/${result.transactionHash}`, // TODO [!!!]: CHECK WORKS?
             img: images.SUCCESS,
             callback: await $router.push(`${Path.DISPUTES}/${currentQuest.openDispute?.id}`),
           });
@@ -587,7 +587,7 @@ export default {
         const feeTx = await fetchContractData(
           'feeTx',
           WQFactory,
-          process.env.WORKNET_WQ_FACTORY,
+          this.ENV.WORKNET_WQ_FACTORY,
           null,
           GetWalletProvider(),
         );

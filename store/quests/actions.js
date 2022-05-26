@@ -277,7 +277,7 @@ export default {
     cost, description, nonce,
   }) {
     try {
-      const address = process.env.WORKNET_WQ_FACTORY;
+      const address = this.ENV.WORKNET_WQ_FACTORY;
       const walletAddress = getWalletAddress();
       const hash = hashText(description);
       cost = new BigNumber(cost).shiftedBy(18).toString();
@@ -315,7 +315,7 @@ export default {
   }) {
     try {
       const hash = hashText(description);
-      const address = process.env.WORKNET_WQ_FACTORY;
+      const address = this.ENV.WORKNET_WQ_FACTORY;
       cost = new BigNumber(cost).shiftedBy(18).toString();
       return await getContractFeeData(
         'newWorkQuest',

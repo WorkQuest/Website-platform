@@ -24,53 +24,11 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo PROD=${{ secrets.PROD }} >> .env
-          echo BASE_URL=${{ secrets.BASE_URL }} >> .env
+          echo BRANCH=${{ secrets.BRANCH }} >> .env
           echo GMAPKEY=${{ secrets.GMAPKEY }} >> .env
           echo SECRET_SUMSUB=${{ secrets.SECRET_SUMSUB }} >> .env
 
-          echo WQ_PROVIDER=${{ secrets.WQ_PROVIDER }} >> .env
-          echo WQ_EXPLORER=${{ secrets.WQ_EXPLORER }} >> .env
-          echo WQ_ORACLE_URL=${{ secrets.WQ_ORACLE_URL }} >> .env
-
-          echo NOTIFS_URL=${{ secrets.NOTIFS_URL }} >> .env
-          echo WS_NOTIFS_URL=${{ secrets.WS_NOTIFS_URL }} >> .env
-          echo WS_CHAT_ACTIONS_URL=${{ secrets.WS_CHAT_ACTIONS_URL }} >> .env
-          echo WS_WQ_PROVIDER=${{ secrets.WS_WQ_PROVIDER }} >> .env
-
-          echo ETHEREUM_BRIDGE=${{ secrets.ETHEREUM_BRIDGE }} >> .env
-          echo ETHEREUM_LP_TOKEN=${{ secrets.ETHEREUM_LP_TOKEN }} >> .env
-          echo ETHEREUM_MINING=${{ secrets.ETHEREUM_MINING }} >> .env
           echo ETHEREUM_RPC_URL=${{ secrets.ETHEREUM_RPC_URL }} >> .env
-          echo ETHEREUM_USDT_TOKEN=${{ secrets.ETHEREUM_USDT_TOKEN }} >> .env
-          echo ETHEREUM_WQT_TOKEN=${{ secrets.ETHEREUM_WQT_TOKEN }} >> .env
-
-          echo BSC_BRIDGE=${{ secrets.BSC_BRIDGE }} >> .env
-          echo BSC_LP_TOKEN=${{ secrets.BSC_LP_TOKEN }} >> .env
-          echo BSC_MINING=${{ secrets.BSC_MINING }} >> .env
-          echo BSC_OLD_WQT_TOKEN=${{ secrets.BSC_OLD_WQT_TOKEN }} >> .env
-          echo BSC_USDT_TOKEN=${{ secrets.BSC_USDT_TOKEN }} >> .env
-          echo BSC_WQT_EXCHANGE=${{ secrets.BSC_WQT_EXCHANGE }} >> .env
-          echo BSC_WQT_TOKEN=${{ secrets.BSC_WQT_TOKEN }} >> .env
-          echo BSC_RPC_URL=${{ secrets.BSC_RPC_URL }} >> .env
-
-          echo WORKNET_BORROWING=${{ secrets.WORKNET_BORROWING }} >> .env
-          echo WORKNET_BRIDGE=${{ secrets.WORKNET_BRIDGE }} >> .env
-          echo WORKNET_LENDING=${{ secrets.WORKNET_LENDING }} >> .env
-          echo WORKNET_ORACLE=${{ secrets.WORKNET_ORACLE }} >> .env
-          echo WORKNET_PENSION_FUND=${{ secrets.WORKNET_PENSION_FUND }} >> .env
-          echo WORKNET_PROMOTION=${{ secrets.WORKNET_PROMOTION }} >> .env
-          echo WORKNET_REFERRAL=${{ secrets.WORKNET_REFERRAL }} >> .env
-          echo WORKNET_ROUTER=${{ secrets.WORKNET_ROUTER }} >> .env
-          echo WORKNET_SAVING_PRODUCT=${{ secrets.WORKNET_SAVING_PRODUCT }} >> .env
-          echo WORKNET_STAKING_WQT=${{ secrets.WORKNET_STAKING_WQT }} >> .env
-          echo WORKNET_STAKING_WUSD=${{ secrets.WORKNET_STAKING_WUSD }} >> .env
-          echo WORKNET_USDT_TOKEN=${{ secrets.WORKNET_USDT_TOKEN }} >> .env
-          echo WORKNET_WBNB_TOKEN=${{ secrets.WORKNET_WBNB_TOKEN }} >> .env
-          echo WORKNET_WETH_TOKEN=${{ secrets.WORKNET_WETH_TOKEN }} >> .env
-          echo WORKNET_WUSD_TOKEN=${{ secrets.WORKNET_WUSD_TOKEN }} >> .env
-          echo WORKNET_WQ_FACTORY=${{ secrets.WORKNET_WQ_FACTORY }} >> .env
-          echo WORKNET_VOTING=${{ secrets.WORKNET_VOTING }} >> .env
 
       - name: Run generate static task
         run: npm run generate
@@ -104,53 +62,11 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo PROD=${{ secrets.PROD }} >> .env
-          echo BASE_URL=${{ secrets.BASE_URL }} >> .env
+          echo BRANCH=${{ secrets.BRANCH }} >> .env
           echo GMAPKEY=${{ secrets.GMAPKEY }} >> .env
           echo SECRET_SUMSUB=${{ secrets.SECRET_SUMSUB }} >> .env
 
-          echo WQ_PROVIDER=${{ secrets.WQ_PROVIDER }} >> .env
-          echo WQ_EXPLORER=${{ secrets.WQ_EXPLORER }} >> .env
-          echo WQ_ORACLE_URL=${{ secrets.WQ_ORACLE_URL }} >> .env
-
-          echo NOTIFS_URL=${{ secrets.NOTIFS_URL }} >> .env
-          echo WS_NOTIFS_URL=${{ secrets.WS_NOTIFS_URL }} >> .env
-          echo WS_CHAT_ACTIONS_URL=${{ secrets.WS_CHAT_ACTIONS_URL }} >> .env
-          echo WS_WQ_PROVIDER=${{ secrets.WS_WQ_PROVIDER }} >> .env
-
-          echo ETHEREUM_BRIDGE=${{ secrets.ETHEREUM_BRIDGE }} >> .env
-          echo ETHEREUM_LP_TOKEN=${{ secrets.ETHEREUM_LP_TOKEN }} >> .env
-          echo ETHEREUM_MINING=${{ secrets.ETHEREUM_MINING }} >> .env
           echo ETHEREUM_RPC_URL=${{ secrets.ETHEREUM_RPC_URL }} >> .env
-          echo ETHEREUM_USDT_TOKEN=${{ secrets.ETHEREUM_USDT_TOKEN }} >> .env
-          echo ETHEREUM_WQT_TOKEN=${{ secrets.ETHEREUM_WQT_TOKEN }} >> .env
-
-          echo BSC_BRIDGE=${{ secrets.BSC_BRIDGE }} >> .env
-          echo BSC_LP_TOKEN=${{ secrets.BSC_LP_TOKEN }} >> .env
-          echo BSC_MINING=${{ secrets.BSC_MINING }} >> .env
-          echo BSC_OLD_WQT_TOKEN=${{ secrets.BSC_OLD_WQT_TOKEN }} >> .env
-          echo BSC_USDT_TOKEN=${{ secrets.BSC_USDT_TOKEN }} >> .env
-          echo BSC_WQT_EXCHANGE=${{ secrets.BSC_WQT_EXCHANGE }} >> .env
-          echo BSC_WQT_TOKEN=${{ secrets.BSC_WQT_TOKEN }} >> .env
-          echo BSC_RPC_URL=${{ secrets.BSC_RPC_URL }} >> .env
-
-          echo WORKNET_BORROWING=${{ secrets.WORKNET_BORROWING }} >> .env
-          echo WORKNET_BRIDGE=${{ secrets.WORKNET_BRIDGE }} >> .env
-          echo WORKNET_LENDING=${{ secrets.WORKNET_LENDING }} >> .env
-          echo WORKNET_ORACLE=${{ secrets.WORKNET_ORACLE }} >> .env
-          echo WORKNET_PENSION_FUND=${{ secrets.WORKNET_PENSION_FUND }} >> .env
-          echo WORKNET_PROMOTION=${{ secrets.WORKNET_PROMOTION }} >> .env
-          echo WORKNET_REFERRAL=${{ secrets.WORKNET_REFERRAL }} >> .env
-          echo WORKNET_ROUTER=${{ secrets.WORKNET_ROUTER }} >> .env
-          echo WORKNET_SAVING_PRODUCT=${{ secrets.WORKNET_SAVING_PRODUCT }} >> .env
-          echo WORKNET_STAKING_WQT=${{ secrets.WORKNET_STAKING_WQT }} >> .env
-          echo WORKNET_STAKING_WUSD=${{ secrets.WORKNET_STAKING_WUSD }} >> .env
-          echo WORKNET_USDT_TOKEN=${{ secrets.WORKNET_USDT_TOKEN }} >> .env
-          echo WORKNET_WBNB_TOKEN=${{ secrets.WORKNET_WBNB_TOKEN }} >> .env
-          echo WORKNET_WETH_TOKEN=${{ secrets.WORKNET_WETH_TOKEN }} >> .env
-          echo WORKNET_WUSD_TOKEN=${{ secrets.WORKNET_WUSD_TOKEN }} >> .env
-          echo WORKNET_WQ_FACTORY=${{ secrets.WORKNET_WQ_FACTORY }} >> .env
-          echo WORKNET_VOTING=${{ secrets.WORKNET_VOTING }} >> .env
 
       - name: Run generate static task
         run: npm run generate
@@ -184,53 +100,11 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo PROD=${{ secrets.PROD }} >> .env
-          echo BASE_URL=${{ secrets.BASE_URL }} >> .env
+          echo BRANCH=${{ secrets.BRANCH }} >> .env
           echo GMAPKEY=${{ secrets.GMAPKEY }} >> .env
           echo SECRET_SUMSUB=${{ secrets.SECRET_SUMSUB }} >> .env
 
-          echo WQ_PROVIDER=${{ secrets.WQ_PROVIDER }} >> .env
-          echo WQ_EXPLORER=${{ secrets.WQ_EXPLORER }} >> .env
-          echo WQ_ORACLE_URL=${{ secrets.WQ_ORACLE_URL }} >> .env
-
-          echo NOTIFS_URL=${{ secrets.NOTIFS_URL }} >> .env
-          echo WS_NOTIFS_URL=${{ secrets.WS_NOTIFS_URL }} >> .env
-          echo WS_CHAT_ACTIONS_URL=${{ secrets.WS_CHAT_ACTIONS_URL }} >> .env
-          echo WS_WQ_PROVIDER=${{ secrets.WS_WQ_PROVIDER }} >> .env
-
-          echo ETHEREUM_BRIDGE=${{ secrets.ETHEREUM_BRIDGE }} >> .env
-          echo ETHEREUM_LP_TOKEN=${{ secrets.ETHEREUM_LP_TOKEN }} >> .env
-          echo ETHEREUM_MINING=${{ secrets.ETHEREUM_MINING }} >> .env
           echo ETHEREUM_RPC_URL=${{ secrets.ETHEREUM_RPC_URL }} >> .env
-          echo ETHEREUM_USDT_TOKEN=${{ secrets.ETHEREUM_USDT_TOKEN }} >> .env
-          echo ETHEREUM_WQT_TOKEN=${{ secrets.ETHEREUM_WQT_TOKEN }} >> .env
-
-          echo BSC_BRIDGE=${{ secrets.BSC_BRIDGE }} >> .env
-          echo BSC_LP_TOKEN=${{ secrets.BSC_LP_TOKEN }} >> .env
-          echo BSC_MINING=${{ secrets.BSC_MINING }} >> .env
-          echo BSC_OLD_WQT_TOKEN=${{ secrets.BSC_OLD_WQT_TOKEN }} >> .env
-          echo BSC_USDT_TOKEN=${{ secrets.BSC_USDT_TOKEN }} >> .env
-          echo BSC_WQT_EXCHANGE=${{ secrets.BSC_WQT_EXCHANGE }} >> .env
-          echo BSC_WQT_TOKEN=${{ secrets.BSC_WQT_TOKEN }} >> .env
-          echo BSC_RPC_URL=${{ secrets.BSC_RPC_URL }} >> .env
-
-          echo WORKNET_BORROWING=${{ secrets.WORKNET_BORROWING }} >> .env
-          echo WORKNET_BRIDGE=${{ secrets.WORKNET_BRIDGE }} >> .env
-          echo WORKNET_LENDING=${{ secrets.WORKNET_LENDING }} >> .env
-          echo WORKNET_ORACLE=${{ secrets.WORKNET_ORACLE }} >> .env
-          echo WORKNET_PENSION_FUND=${{ secrets.WORKNET_PENSION_FUND }} >> .env
-          echo WORKNET_PROMOTION=${{ secrets.WORKNET_PROMOTION }} >> .env
-          echo WORKNET_REFERRAL=${{ secrets.WORKNET_REFERRAL }} >> .env
-          echo WORKNET_ROUTER=${{ secrets.WORKNET_ROUTER }} >> .env
-          echo WORKNET_SAVING_PRODUCT=${{ secrets.WORKNET_SAVING_PRODUCT }} >> .env
-          echo WORKNET_STAKING_WQT=${{ secrets.WORKNET_STAKING_WQT }} >> .env
-          echo WORKNET_STAKING_WUSD=${{ secrets.WORKNET_STAKING_WUSD }} >> .env
-          echo WORKNET_USDT_TOKEN=${{ secrets.WORKNET_USDT_TOKEN }} >> .env
-          echo WORKNET_WBNB_TOKEN=${{ secrets.WORKNET_WBNB_TOKEN }} >> .env
-          echo WORKNET_WETH_TOKEN=${{ secrets.WORKNET_WETH_TOKEN }} >> .env
-          echo WORKNET_WUSD_TOKEN=${{ secrets.WORKNET_WUSD_TOKEN }} >> .env
-          echo WORKNET_WQ_FACTORY=${{ secrets.WORKNET_WQ_FACTORY }} >> .env
-          echo WORKNET_VOTING=${{ secrets.WORKNET_VOTING }} >> .env
 
       - name: Run generate static task
         run: npm run generate

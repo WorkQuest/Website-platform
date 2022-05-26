@@ -5,19 +5,21 @@ import { getWalletAddress, GetWalletProvider } from '~/utils/wallet';
 import { PensionHistoryMethods } from '~/utils/enums';
 import { WQPensionFund } from '~/abi';
 import { error, fetchContractData, success } from '~/utils/web3';
+import ENV from '~/utils/adresses/index';
 
 const web3 = GetWalletProvider();
 
 const min = Object.freeze(new BigNumber(0.0001));
 
-const inst = new web3.eth.Contract(WQPensionFund, process.env.WORKNET_PENSION_FUND);
+console.log('TODO: [!!!] test in retirement/actions', ENV.WORKNET_PENSION_FUND);
+const inst = new web3.eth.Contract(WQPensionFund, ENV.WORKNET_PENSION_FUND);
 
 export default {
   async getPensionWallet({ _ }) {
     try {
       const {
         unlockDate, fee, amount, createdAt, rewardAllowed, rewardDebt, rewardDistributed,
-      } = await fetchContractData('wallets', WQPensionFund, process.env.WORKNET_PENSION_FUND, [getWalletAddress()], web3);
+      } = await fetchContractData('wallets', WQPensionFund, this.ENV.WORKNET_PENSION_FUND, [getWalletAddress()], web3);
       const _amount = new BigNumber(amount).shiftedBy(-18);
       let _fee = new BigNumber(fee).shiftedBy(-18);
       if (_fee.isGreaterThan('0') && _fee.isLessThan('0.0000001')) {
@@ -56,8 +58,8 @@ export default {
   async pensionGetDefaultData() {
     try {
       const [lockTime, defaultFee] = await Promise.all([
-        fetchContractData('lockTime', WQPensionFund, process.env.WORKNET_PENSION_FUND, null, web3),
-        fetchContractData('defaultFee', WQPensionFund, process.env.WORKNET_PENSION_FUND, null, web3),
+        fetchContractData('lockTime', WQPensionFund, this.ENV.WORKNET_PENSION_FUND, null, web3),
+        fetchContractData('defaultFee', WQPensionFund, this.ENV.WORKNET_PENSION_FUND, null, web3),
       ]);
       return success({
         defaultFee: new BigNumber(defaultFee.toString()).shiftedBy(-18).toString(),
@@ -99,7 +101,7 @@ export default {
       const data = [getWalletAddress(), amount];
       const [gasPrice, gasEstimate] = await Promise.all([
         web3.eth.getGasPrice(),
-        inst.methods.contribute.apply(null, data).estimateGas({ from: getWalletAddress(), to: process.env.WORKNET_PENSION_FUND }),
+        inst.methods.contribute.apply(null, data).estimateGas({ from: getWalletAddress(), to: this.ENV.WORKNET_PENSION_FUND }),
       ]);
       const res = await inst.methods.contribute(...data).send({
         from: getWalletAddress(),
@@ -115,7 +117,7 @@ export default {
   },
   async feeContributeWUSD() {
     try {
-      const res = await fetchContractData('feePerMonth', WQPensionFund, process.env.WORKNET_PENSION_FUND, null, web3);
+      const res = await fetchContractData('feePerMonth', WQPensionFund, this.ENV.WORKNET_PENSION_FUND, null, web3);
       return success(res);
     } catch (e) {
       console.error(`Contribute: ${e}`);
@@ -142,7 +144,7 @@ export default {
   },
   async feeWithdrawWUSD() {
     try {
-      const res = await fetchContractData('feeWithdraw', WQPensionFund, process.env.WORKNET_PENSION_FUND, null, web3);
+      const res = await fetchContractData('feeWithdraw', WQPensionFund, this.ENV.WORKNET_PENSION_FUND, null, web3);
       return success(res);
     } catch (e) {
       console.error(`Contribute: ${e}`);

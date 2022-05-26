@@ -6,6 +6,7 @@ import {
   error,
   success,
 } from '~/utils/web3';
+import * as env from '~/utils/adresses/index';
 
 import {
   WQOracle,
