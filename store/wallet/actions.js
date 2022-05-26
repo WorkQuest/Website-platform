@@ -18,11 +18,12 @@ import {
 import {
   error,
   success,
-  fetchContractData,
+  fetchContractData, getTransactionCount, getAccountAddress, createInstance, showToast, getGasPrice, getEstimateGas,
 } from '~/utils/web3';
 
 import {
-  ERC20,
+  BuyWQT,
+  ERC20, WQBridge,
   WQStaking,
   WQStakingNative,
 } from '~/abi/index';
@@ -449,5 +450,62 @@ export default {
   },
   async unsubscribeWS({ _ }) {
     connectionWS = null;
+  },
+
+  /** BuyWQT */
+  async swap({ commit, dispatch, rootGetters }, {
+    amount, tokenAddress, bridgeAddress, isNative, symbol, toChainIndex, decimals,
+  }) {
+    try {
+      const userId = rootGetters['user/getUserData'].id;
+      const nonce = await getTransactionCount();
+      const accountAddress = await getAccountAddress();
+      const value = new BigNumber(amount).shiftedBy(Number(decimals)).toString();
+      const data = [nonce, toChainIndex, value, accountAddress, userId, symbol];
+      const bridgeInstance = await createInstance(BuyWQT, bridgeAddress);
+
+      if (isNative) {
+        showToast('Swapping', 'Swapping...', 'success');
+        const [gasPrice, gas] = await Promise.all([
+          getGasPrice(),
+          getEstimateGas(null, null, bridgeInstance, 'swap', data, value),
+        ]);
+        const swapRes = await bridgeInstance.methods.swap(...data).send({
+          from: accountAddress,
+          value,
+          gasPrice,
+          gas,
+        });
+        showToast('Swapping', 'Swapping done', 'success');
+        return success(swapRes);
+      }
+
+      const allowance = await fetchContractData('allowance', ERC20, tokenAddress, [accountAddress, bridgeAddress]);
+      if (new BigNumber(value).isGreaterThan(+allowance)) {
+        showToast('Swapping', 'Approving...', 'success');
+        const tokenInstance = await createInstance(ERC20, tokenAddress);
+        const { status } = await tokenInstance.methods.approve(bridgeAddress, value).send({ from: accountAddress });
+        if (!status) return error(500, 'Approve was failed');
+        showToast('Swapping', 'Approving done', 'success');
+      }
+
+      showToast('Swapping', 'Swapping...', 'success');
+      const [gasPrice, gas] = await Promise.all([
+        getGasPrice(),
+        getEstimateGas(null, null, bridgeInstance, 'swap', data),
+      ]);
+      const swapRes = await bridgeInstance.methods.swap(...data).send({
+        from: accountAddress,
+        gasPrice,
+        gas,
+      });
+      showToast('Swapping', 'Swapping done', 'success');
+
+      return success(swapRes);
+    } catch (e) {
+      console.error('Error in swap:', e);
+      showToast('Swapping error', e.message, 'danger');
+      return error(e.code, 'Error in swap action', e.data);
+    }
   },
 };
