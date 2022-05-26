@@ -28,8 +28,9 @@ export default {
   async resendEmail({ commit }, { email }) {
     try {
       const { result } = await this.$axios.$post('/v1/auth/main/resend-email', { email });
-      return result;
+      return success(result);
     } catch (e) {
+      console.error('Error in user/resendEmail: ', e);
       return error();
     }
   },

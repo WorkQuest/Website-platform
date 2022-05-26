@@ -280,18 +280,20 @@ export default {
     clearTimer() {
       this.$cookies.remove('resend-timer');
       this.timerValue = timerDefaultValue;
-      this.disableResend = false;
-      this.isStartedTimer = false;
       clearInterval(this.timerId);
+      this.isStartedTimer = false;
+      this.disableResend = false;
     },
     continueTimer() {
       const timer = this.$cookies.get('resend-timer');
       if (!timer) return;
+
       const spendSecs = (this.$moment().diff(timer.createdAt) / 1000).toFixed(0);
       if (timer.timerValue < spendSecs) {
         this.clearTimer();
         return;
       }
+
       this.timerValue = timer.timerValue;
       this.startTimer();
     },
