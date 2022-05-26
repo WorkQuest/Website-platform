@@ -21,6 +21,8 @@ import {
 
 import { error, success } from '~/utils/web3';
 
+import ENV from '~/utils/adresses/index';
+
 export default {
   async getWorkerData({ commit }, userId) {
     try {
@@ -277,7 +279,7 @@ export default {
     cost, description, nonce,
   }) {
     try {
-      const address = this.ENV.WORKNET_WQ_FACTORY;
+      const address = ENV.WORKNET_WQ_FACTORY;
       const walletAddress = getWalletAddress();
       const hash = hashText(description);
       cost = new BigNumber(cost).shiftedBy(18).toString();
@@ -315,7 +317,7 @@ export default {
   }) {
     try {
       const hash = hashText(description);
-      const address = this.ENV.WORKNET_WQ_FACTORY;
+      const address = ENV.WORKNET_WQ_FACTORY;
       cost = new BigNumber(cost).shiftedBy(18).toString();
       return await getContractFeeData(
         'newWorkQuest',

@@ -22,6 +22,8 @@ import {
   WQTExchange,
 } from '~/abi';
 
+import ENV from '~/utils/adresses/index';
+
 BigNumber.config({ EXPONENTIAL_AT: 60 });
 
 const pools = {
@@ -236,14 +238,14 @@ export default {
 
   async swapOldTokens({ _ }, { amount, decimals }) {
     try {
-      const tokenInstance = await createInstance(ERC20, this.ENV.BSC_OLD_WQT_TOKEN);
-      const exchangeInstance = await createInstance(WQTExchange, this.ENV.BSC_WQT_EXCHANGE);
+      const tokenInstance = await createInstance(ERC20, ENV.BSC_OLD_WQT_TOKEN);
+      const exchangeInstance = await createInstance(WQTExchange, ENV.BSC_WQT_EXCHANGE);
 
       const value = new BigNumber(amount).shiftedBy(+decimals).toString();
-      const allowance = await getAllowance(getAccountAddress(), this.ENV.BSC_WQT_EXCHANGE, tokenInstance);
+      const allowance = await getAllowance(getAccountAddress(), ENV.BSC_WQT_EXCHANGE, tokenInstance);
       if (new BigNumber(allowance).isLessThan(value)) {
         showToast('Swapping', 'Approving...', 'success');
-        await makeApprove(this.ENV.BSC_WQT_EXCHANGE, value, tokenInstance);
+        await makeApprove(ENV.BSC_WQT_EXCHANGE, value, tokenInstance);
         showToast('Swapping', 'Approving done', 'success');
       }
 

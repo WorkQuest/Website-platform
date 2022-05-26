@@ -1,3 +1,5 @@
+import ENV from '~/utils/adresses/index';
+
 export default {
   async createAccessTokenBackend({ commit }) {
     const response = await this.$axios.$get('/v1/sumsub/create-access-token');
@@ -5,7 +7,7 @@ export default {
     return response.result;
   },
   async verifySumsubSender() {
-    const response = await this.$axios.$post(`/resources/inspectionCallbacks/testDigest?secretKey=${this.ENV.SECRET_SUMSUB}`);
+    const response = await this.$axios.$post(`/resources/inspectionCallbacks/testDigest?secretKey=${ENV.SECRET_SUMSUB}`);
     return response.result;
   },
   async applicantStatus({ commit }, id) {

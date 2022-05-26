@@ -11,13 +11,14 @@ import {
   error,
 } from '~/utils/web3';
 import { WQBorrowing, WQLending } from '~/abi/index';
+import ENV from '~/utils/adresses/index';
 
 export default {
   async getCreditData({ commit }) {
     const res = await fetchContractData(
       'borrowers',
       WQBorrowing,
-      this.ENV.WORKNET_BORROWING,
+      ENV.WORKNET_BORROWING,
       [getWalletAddress()],
       GetWalletProvider(),
     );
@@ -27,7 +28,7 @@ export default {
     const res = await fetchContractData(
       'wallets',
       WQLending,
-      this.ENV.WORKNET_LENDING,
+      ENV.WORKNET_LENDING,
       [getWalletAddress()],
       GetWalletProvider(),
     );
@@ -46,7 +47,7 @@ export default {
     const res = await fetchContractData(
       'getRewards',
       WQLending,
-      this.ENV.WORKNET_LENDING,
+      ENV.WORKNET_LENDING,
       [getWalletAddress()],
       GetWalletProvider(),
     );
@@ -56,7 +57,7 @@ export default {
     const res = await fetchContractData(
       'getCurrentFee',
       WQBorrowing,
-      this.ENV.WORKNET_BORROWING,
+      ENV.WORKNET_BORROWING,
       [getWalletAddress()],
       GetWalletProvider(),
     );

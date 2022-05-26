@@ -1,5 +1,5 @@
-import { Chains, TokenSymbols, isProd } from '~/utils/enums';
-import ENV from '~/utils/adresses/index';
+import { Chains, TokenSymbols } from '~/utils/enums';
+import ENV, { IS_PROD } from '~/utils/adresses/index';
 
 export const BlockchainIndex = Object.freeze({
   [Chains.WORKNET]: 1,
@@ -38,7 +38,7 @@ export const SwapAddresses = new Map([
         [TokenSymbols.WQT]: ENV.ETHEREUM_WQT_TOKEN,
         [TokenSymbols.USDT]: ENV.ETHEREUM_USDT_TOKEN,
       },
-      explorer: `https://${isProd ? '' : 'rinkeby.'}etherscan.io`,
+      explorer: `https://${IS_PROD ? '' : 'rinkeby.'}etherscan.io`,
     },
   ],
   [
@@ -53,7 +53,7 @@ export const SwapAddresses = new Map([
         [TokenSymbols.WQT]: ENV.BSC_WQT_TOKEN,
         [TokenSymbols.USDT]: ENV.BSC_USDT_TOKEN,
       },
-      explorer: `https://${isProd ? '' : 'testnet.'}bscscan.com`,
+      explorer: `https://${IS_PROD ? '' : 'testnet.'}bscscan.com`,
     },
   ],
   [
@@ -70,7 +70,7 @@ export const SwapAddresses = new Map([
         [TokenSymbols.BNB]: ENV.WORKNET_WBNB_TOKEN,
         [TokenSymbols.USDT]: ENV.WORKNET_USDT_TOKEN,
       },
-      explorer: `https://${isProd ? 'dev-' : 'dev-'}explorer.workquest.co`,
+      explorer: `https://${IS_PROD ? 'dev-' : 'dev-'}explorer.workquest.co`,
     },
   ],
 ]);

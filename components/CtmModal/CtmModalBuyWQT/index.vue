@@ -97,6 +97,7 @@ import { WQTBuyCommission } from '~/utils/сonstants/commission';
 import { getStyledAmount } from '~/utils/wallet';
 import { getChainIdByChain } from '~/utils/web3';
 import modals from '~/store/modals/modals';
+import { ERC20 } from '~/abi';
 
 export default {
   name: 'ModalBuyWQT',
@@ -114,6 +115,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      userWalletAddress: 'user/getUserWalletAddress',
       isMetamaskConnected: 'web3/isConnected',
       web3Account: 'web3/getAccount',
       oraclePrices: 'oracle/getPrices',
@@ -174,8 +176,14 @@ export default {
       this.updatePriceId = setTimeout(async () => {
         await this.$store.dispatch('oracle/getCurrentPrices');
         const priceWQT = new BigNumber(this.oraclePrices[this.oracleSymbols.indexOf(TokenSymbols.WQT)]).shiftedBy(-18);
-        const decimalAmount = new BigNumber(this.amount).multipliedBy(1 - WQTBuyCommission);
-        this.wqtAmount = decimalAmount.dividedBy(priceWQT).decimalPlaces(3);
+        const decimalAmount = new BigNumber(this.amount);
+        const receiveWithCommission = decimalAmount.dividedBy(priceWQT).multipliedBy(1 - WQTBuyCommission).decimalPlaces(18);
+        const res = await this.$store.dispatch('wallet/getTransferFeeData', {
+          recipient: this.userWalletAddress,
+          value: receiveWithCommission.toString(),
+        });
+        const txPrice = res.result.fee;
+        this.wqtAmount = receiveWithCommission.minus(txPrice).decimalPlaces(3);
         this.inProgressWQT = false;
       },
       400);

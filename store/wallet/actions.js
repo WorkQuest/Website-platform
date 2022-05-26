@@ -23,7 +23,7 @@ import {
 
 import {
   BuyWQT,
-  ERC20, WQBridge,
+  ERC20,
   WQStaking,
   WQStakingNative,
 } from '~/abi/index';
@@ -32,8 +32,10 @@ import {
   TokenMap,
   TokenSymbols,
   StakingTypes,
-  PensionHistoryMethods, WorknetTokenAddresses,
+  WorknetTokenAddresses,
 } from '~/utils/enums';
+
+import ENV from '~/utils/adresses/index';
 
 let connectionWS = null;
 
@@ -42,7 +44,7 @@ export default {
     try {
       const { data } = await this.$axios({
         url: `/account/${getWalletAddress()}/transactions`,
-        baseURL: this.ENV.WQ_EXPLORER,
+        baseURL: ENV.WQ_EXPLORER,
         params,
       });
       commit('setTransactions', data.result.transactions);
@@ -122,7 +124,7 @@ export default {
       const res = await fetchContractData(
         'frozed',
         ERC20,
-        this.ENV.WORKNET_VOTING,
+        ENV.WORKNET_VOTING,
         [rootGetters['user/getUserWalletAddress']],
         GetWalletProvider(),
       );
@@ -223,10 +225,10 @@ export default {
     let contractAddress = null;
     if (pool === StakingTypes.WQT) {
       abi = WQStaking;
-      contractAddress = this.ENV.WORKNET_STAKING_WQT;
+      contractAddress = ENV.WORKNET_STAKING_WQT;
     } else if (pool === StakingTypes.WUSD) {
       abi = WQStakingNative;
-      contractAddress = this.ENV.WORKNET_STAKING_WUSD;
+      contractAddress = ENV.WORKNET_STAKING_WUSD;
     } else {
       console.error(`Wrong pool: ${pool}`);
       return;
@@ -277,7 +279,7 @@ export default {
   async getStakingUserInfo({ commit }, pool) {
     const decimals = 18;
     const abi = pool === StakingTypes.WUSD ? WQStakingNative : WQStaking;
-    const contractAddress = pool === StakingTypes.WUSD ? this.ENV.WORKNET_STAKING_WUSD : this.ENV.WORKNET_STAKING_WQT;
+    const contractAddress = pool === StakingTypes.WUSD ? ENV.WORKNET_STAKING_WUSD : ENV.WORKNET_STAKING_WQT;
     const [userInfo, stakes] = await Promise.all([
       fetchContractData('getInfoByAddress', abi, contractAddress, [getWalletAddress()], GetWalletProvider()),
       fetchContractData('stakes', abi, contractAddress, [getWalletAddress()], GetWalletProvider()),
@@ -405,7 +407,7 @@ export default {
     commit, dispatch, rootGetters, getters,
   }, { hexAddress, timestamp, updateWalletData }) {
     try {
-      connectionWS = new WebSocket(this.ENV.WS_WQ_PROVIDER);
+      connectionWS = new WebSocket(ENV.WS_WQ_PROVIDER);
       connectionWS.onopen = () => {
         const request = {
           jsonrpc: '2.0',
