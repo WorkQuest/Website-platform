@@ -143,6 +143,7 @@ export default {
         if (!this.isChainCompareToCurrent()) {
           this.isNeedToChangeNetwork = true;
           this.clearData();
+          this.SetLoader(false);
         } else {
           this.isNeedToChangeNetwork = false;
           await this.updateTokenData();
@@ -205,15 +206,19 @@ export default {
     // Updates balance by current network & token
     async updateTokenData() {
       if (!this.isChainCompareToCurrent()) return;
+      this.SetLoader(true);
       const res = await this.$store.dispatch('web3/fetchTokenInfo', this.tokenList[this.selectedToken].tokenAddress);
-      if (res.ok) {
-        const r = res.result;
-        this.tokenData = {
-          ...r,
-          balance: getStyledAmount(r.balance, false, r.decimals),
-          fullBalance: getStyledAmount(r.balance, true, r.decimals),
-        };
-      } else this.tokenData = null;
+      this.SetLoader(false);
+      if (!res.ok || !res.result.decimals) {
+        this.tokenData = null;
+        return;
+      }
+      const r = res.result;
+      this.tokenData = {
+        ...r,
+        balance: getStyledAmount(r.balance, false, r.decimals),
+        fullBalance: getStyledAmount(r.balance, true, r.decimals),
+      };
     },
     async submit() {
       if (this.inProgressWQT || !this.tokenData || this.isNeedToChangeNetwork) return;

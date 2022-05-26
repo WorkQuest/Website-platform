@@ -68,12 +68,14 @@ export const getChainIdByChain = (chain) => {
 export const addedNetwork = async (chain) => {
   try {
     let networkParams = {};
-    if (chain === Chains.ETHEREUM || [1, 4].includes(+chain)) {
+    if (chain === Chains.ETHEREUM || [+ChainsId.ETH_MAIN, +ChainsId.ETH_TEST].includes(+chain)) {
       networkParams = isProd ? NetworksData.ETH_MAIN : NetworksData.ETH_TEST;
-    } else if (chain === Chains.BINANCE || [56, 97].includes(+chain)) {
+    } else if (chain === Chains.BINANCE || [+ChainsId.BSC_MAIN, +ChainsId.BSC_TEST].includes(+chain)) {
       networkParams = isProd ? NetworksData.BSC_MAIN : NetworksData.BSC_TEST;
-    } else if (chain === Chains.WORKNET || chain === 20220112) {
+    } else if (chain === Chains.WORKNET || chain === +ChainsId.WORKNET_TEST) {
       networkParams = NetworksData.WORKNET_TEST;
+    } else if (chain === Chains.POLYGON || [+ChainsId.MUMBAI_TEST, +ChainsId.MATIC_MAIN].includes(+chain)) {
+      networkParams = isProd ? NetworksData.MATIC_MAIN : NetworksData.MUMBAI_TEST;
     }
     await window.ethereum.request({
       method: 'wallet_addEthereumChain',
