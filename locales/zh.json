@@ -58,6 +58,7 @@
       }
     },
     "btns": {
+      "resendEmail": "Resend email with code",
       "back": "后退",
       "edit": "编辑",
       "ok": "确定",
@@ -210,6 +211,7 @@
     "alpha_num": "“{_field_}”字段只能包含字母数字字符",
     "alpha_dash": "“{_field_}”字段可包含字母数字字符以及短划线和下划线",
     "alpha_spaces": "“{_field_}”字段只能包含字母字符和空格",
+    "alpha_spaces_dash": "The {_field_} field may only contain alphabetic characters as well as spaces, dashes and underscores",
     "between": "“{_field_}”字段必须介于 {min} 和 {max}",
     "confirmed": "“{_field_}”字段确认不匹配",
     "digits": "“{_field_}”字段必须是数字且恰好包含 {length} 位数字",
@@ -241,12 +243,27 @@
     "attemptsExceeded": "Number of attempts exceeded",
     "loginWithSecret": "Please login with secret phrase",
     "invalidPassword": "Invalid password",
-    "loginToContinue": "Please login to continue"
+    "loginToContinue": "Please login to continue",
+    "numberOfCard": "Please enter correct {_field_}",
+    "cvv": "Please enter correct {_field_}",
+    "date": "Please enter correct {_field_}",
+    "between-date": "Invalid date range",
+    "from-to": "The field 'To' is greater than the field 'From'",
+    "address": "Address invalid",
+    "addressBech32": "Please enter correct {_field_}",
+    "text-title": "Please enter correct {_field_}",
+    "text-desc": "Please enter correct {_field_}",
+    "percent": "Please enter correct {_field_},",
+    "greaterThanZero": "Please enter correct {_field_}, can't be zero",
+    "zeroFail": "Please enter correct {_field_}, can't be zero",
+    "notMoreDecimalPlaces": "Please enter correct {_field_}, no more than 2 decimal places",
+    "max_percent": "Please enter correct {_field_}, reduce the percentage"
   },
   "about": {
     "text": "WorkQuest 是一个基于区块链技术的社交项目，可以在 Quest 模式下提供工作机会和解决雇主方面的任务。您在找工作吗？WorkQuest 将帮助您找到附近的 Quest。您需要工作者实现目标吗？只需在 WorkQuest 站点创建 Quest 即可。服务承担执行 Quest 的保证义务。雇主资金由我方保管，雇员在确认工作执行情况后将在帐户中收到资金。由评分、评价和已完成 Quest 列表组成的系统将有助于轻松寻找合适的人员和最优秀的专家。\n\n          我们的目标是简化雇主与雇员之间的沟通，帮助数百万人就业，改善人们的财务状况，解决在各行各业寻找可靠专业人士的终身问题，以信任、相互尊重和所有参与者的福祉为基础创造进步的数字经济。"
   },
   "registration": {
+    "emailConfirmNewLetter": "A new letter has been sent to your email address",
     "emailConfirm": "邮件已发送到您的电子邮件地址",
     "emailConfirmTitle": "查看您的邮件"
   },

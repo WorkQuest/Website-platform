@@ -261,7 +261,7 @@ export default {
     },
     notifications: {
       handler() {
-        const { notification } = this.notifications[0];
+        const notification = this.notifications[0];
         if (this.mounted && notification
           && !this.isEmployer
           && notification.data.questId === this.$route.params.id

@@ -58,6 +58,7 @@
       }
     },
     "btns": {
+      "resendEmail": "Resend email with code",
       "back": "Volver",
       "edit": "Editar",
       "ok": "Aceptar",
@@ -210,6 +211,7 @@
     "alpha_num": "El campo {_field_} solo puede contener caracteres alfanuméricos",
     "alpha_dash": "El campo {_field_} solo puede contener caracteres alfanuméricos, guiones y caracteres de subrayado",
     "alpha_spaces": "El campo {_field_} solo puede contener caracteres alfabéticos y espacios",
+    "alpha_spaces_dash": "The {_field_} field may only contain alphabetic characters as well as spaces, dashes and underscores",
     "between": "El campo {_field_} debe tener entre {min} y {max} caracteres",
     "confirmed": "La confirmación del campo {_field_} no coincide",
     "digits": "El campo {_field_} debe ser numérico y contener exactamente {length} dígitos",
@@ -241,12 +243,27 @@
     "attemptsExceeded": "Number of attempts exceeded",
     "loginWithSecret": "Please login with secret phrase",
     "invalidPassword": "Invalid password",
-    "loginToContinue": "Please login to continue"
+    "loginToContinue": "Please login to continue",
+    "numberOfCard": "Please enter correct {_field_}",
+    "cvv": "Please enter correct {_field_}",
+    "date": "Please enter correct {_field_}",
+    "between-date": "Invalid date range",
+    "from-to": "The field 'To' is greater than the field 'From'",
+    "address": "Address invalid",
+    "addressBech32": "Please enter correct {_field_}",
+    "text-title": "Please enter correct {_field_}",
+    "text-desc": "Please enter correct {_field_}",
+    "percent": "Please enter correct {_field_},",
+    "greaterThanZero": "Please enter correct {_field_}, can't be zero",
+    "zeroFail": "Please enter correct {_field_}, can't be zero",
+    "notMoreDecimalPlaces": "Please enter correct {_field_}, no more than 2 decimal places",
+    "max_percent": "Please enter correct {_field_}, reduce the percentage"
   },
   "about": {
     "text": "WorkQuest es un proyecto social basado en la tecnología de cadena de bloques para encontrar trabajo y solucionar cualquier tarea por parte de la empresa en el modo de oferta. ¿Está buscando empleo? Una oferta de empleo le ayudará a encontrar trabajo cerca de su ciudad. ¿Necesita trabajadores para alcanzar sus objetivos? Solo tiene que crear una oferta en la ubicación correspondiente. El servicio asume las obligaciones de garantía para realizar ofertas. Guardamos los fondos del empleador y, cuando el empleado confirme el desempeño del trabajo, recibirá un ingreso de fondos en su cuenta. Mediante el sistema de calificaciones, opiniones y una lista de ofertas completadas, podrá encontrar a personas de confianza y a los mejores especialistas.\n\n          Nuestro objetivo es simplificar la comunicación entre el empleador y el empleado para ayudar a conseguir un empleo a millones de personas, mejorar la situación financiera, solucionar el gran problema de encontrar profesionales fiables en todos los sectores para crear una economía digital progresiva basada en los principios de confianza, respeto mutuo y el bienestar de todos sus participantes."
   },
   "registration": {
+    "emailConfirmNewLetter": "A new letter has been sent to your email address",
     "emailConfirm": "Hemos enviado un mensaje a su dirección de correo electrónico",
     "emailConfirmTitle": "Consulte su correo electrónico"
   },

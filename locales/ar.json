@@ -58,6 +58,7 @@
       }
     },
     "btns": {
+      "resendEmail": "Resend email with code",
       "back": "العودة",
       "edit": "تعديل",
       "ok": "موافق",
@@ -210,6 +211,7 @@
     "alpha_num": "لا يمكن أن يحتوي الحقل {_field_} إلا على أحرف أبجدية رقمية",
     "alpha_dash": "لا يمكن أن يحتوي الحقل {_field_} إلا على أحرف أبجدية رقمية وشرط وشرط سفلية",
     "alpha_spaces": "لا يمكن أن يحتوي الحقل {_field_} إلا على أحرف أبجدية ومسافات",
+    "alpha_spaces_dash": "The {_field_} field may only contain alphabetic characters as well as spaces, dashes and underscores",
     "between": "يجب أن تقع قيمة الحقل {_field_} بين {min} و{max}",
     "confirmed": "قيمة تأكيد الحقل {_field_} غير متطابقة",
     "digits": "يجب أن تكون قيمة الحقل {_field_} رقمية وأن تحتوي على {length} رقم بالضبط",
@@ -241,12 +243,27 @@
     "attemptsExceeded": "Number of attempts exceeded",
     "loginWithSecret": "Please login with secret phrase",
     "invalidPassword": "Invalid password",
-    "loginToContinue": "Please login to continue"
+    "loginToContinue": "Please login to continue",
+    "numberOfCard": "Please enter correct {_field_}",
+    "cvv": "Please enter correct {_field_}",
+    "date": "Please enter correct {_field_}",
+    "between-date": "Invalid date range",
+    "from-to": "The field 'To' is greater than the field 'From'",
+    "address": "Address invalid",
+    "addressBech32": "Please enter correct {_field_}",
+    "text-title": "Please enter correct {_field_}",
+    "text-desc": "Please enter correct {_field_}",
+    "percent": "Please enter correct {_field_},",
+    "greaterThanZero": "Please enter correct {_field_}, can't be zero",
+    "zeroFail": "Please enter correct {_field_}, can't be zero",
+    "notMoreDecimalPlaces": "Please enter correct {_field_}, no more than 2 decimal places",
+    "max_percent": "Please enter correct {_field_}, reduce the percentage"
   },
   "about": {
     "text": "WorkQuest هو مشروع اجتماعي قائم على تكنولوجيا سلسلة الكتل ويهدف إلى إيجاد عمل وتنفيذ أي مهام من جانب صاحب العمل في وضع طلبات العمل. هل تبحث عن وظيفة؟ سيساعدك WorkQuest في العثور على طلب عمل بالقرب منك ومن مدينتك. هل تحتاج إلى موظفين لتحقيق الأهداف؟ ما عليك سوى إنشاء طلب عمل على موقع WorkQuest. تلتزم الخدمة بضمان تنفيذ طلبات العمل. يتم الاحتفاظ بأموال صاحب العمل لدينا، وعندما يؤكد الموظف أنه أدى عمله، فإنه يتلقى إيداعًا بالأموال في حسابه. سيساعد نظام التقييمات والمراجعات وقائمة طلبات العمل المكتملة في العثور على أشخاص صادقين وأفضل المتخصصين بكل سهولة.\n\n          هدفنا هو تبسيط التواصل بين صاحب العمل والموظف للمساعدة في توظيف ملايين الأشخاص، وتحسين موقفهم المالي، وحل المشكلة الدائمة المتمثلة في العثور على متخصصين موثوقين في جميع القطاعات، وبناء اقتصاد رقمي تقدمي قائم على أسس الثقة والاحترام المتبادل ورفاهية جميع المشاركين فيه."
   },
   "registration": {
+    "emailConfirmNewLetter": "A new letter has been sent to your email address",
     "emailConfirm": "تم إرسال رسالة إلى عنوان بريدك الإلكتروني",
     "emailConfirmTitle": "التحقُّق من البريد الإلكتروني"
   },

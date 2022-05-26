@@ -58,6 +58,7 @@
       }
     },
     "btns": {
+      "resendEmail": "Resend email with code",
       "back": "পিছনে",
       "edit": "সম্পাদনা করুন",
       "ok": "ঠিক আছে",
@@ -210,6 +211,7 @@
     "alpha_num": "{_field_} ঘরে শুধুমাত্র বর্ণ-সংখ্যাসূচক অক্ষর বসতে পারে",
     "alpha_dash": "{_field_} ঘরে বর্ণ-সংখ্যাসূচক অক্ষরের পাশাপাশি ড্যাশ এবং আন্ডারস্কোর বসতে পারে",
     "alpha_spaces": "{_field_} ঘরে বর্ণসূচক অক্ষরের পাশাপাশি কেবল স্পেস বসতে পারে",
+    "alpha_spaces_dash": "The {_field_} field may only contain alphabetic characters as well as spaces, dashes and underscores",
     "between": "{_field_} ঘরের মান {min} এবং {max} এর মধ্যবর্তী হতে হবে",
     "confirmed": "{_field_} ঘরের নিশ্চিতকরণ মিলছে না",
     "digits": "{_field_} ঘর অবশ্যই সংখ্যাসূচক হতে হবে এবং ঠিক {length} টি ডিজিট থাকতে হবে",
@@ -241,12 +243,27 @@
     "attemptsExceeded": "Number of attempts exceeded",
     "loginWithSecret": "Please login with secret phrase",
     "invalidPassword": "Invalid password",
-    "loginToContinue": "Please login to continue"
+    "loginToContinue": "Please login to continue",
+    "numberOfCard": "Please enter correct {_field_}",
+    "cvv": "Please enter correct {_field_}",
+    "date": "Please enter correct {_field_}",
+    "between-date": "Invalid date range",
+    "from-to": "The field 'To' is greater than the field 'From'",
+    "address": "Address invalid",
+    "addressBech32": "Please enter correct {_field_}",
+    "text-title": "Please enter correct {_field_}",
+    "text-desc": "Please enter correct {_field_}",
+    "percent": "Please enter correct {_field_},",
+    "greaterThanZero": "Please enter correct {_field_}, can't be zero",
+    "zeroFail": "Please enter correct {_field_}, can't be zero",
+    "notMoreDecimalPlaces": "Please enter correct {_field_}, no more than 2 decimal places",
+    "max_percent": "Please enter correct {_field_}, reduce the percentage"
   },
   "about": {
     "text": "Work Quest হলো ব্লকচেইন প্রযুক্তির উপর ভিত্তি করে কাজ খোঁজার এবং নিয়োগকর্তার পক্ষ থেকে quest মোডে যেকোনো কাজ সমাধানের জন্য একটি সামাজিক প্রকল্প। অপনি কি চাকুরি খুজছেন? একটি work quest আপনাকে আপনার এবং আপনার শহরের পাশে কোনো quest খুঁজে পেতে সাহায্য করবে। লক্ষ্য পূরণ করতে আপনার কি কর্মী প্রয়োজন? শুধুমাত্র work quest সাইটে একটি অনুসন্ধান তৈরি করুন। এই সেবা quest সম্পাদনের বাধ্যবাধকতার নিশ্চয়তা প্রদান করে। নিয়োগকর্তার তহবিল আমাদের কাছে গচ্ছিত রাখা হয়, কর্মচারী কাজ সম্পাদনের নিশ্চয়তা দিলে তার অ্যাকাউন্টে তহবিল জমা করা হয়। রেটিং, পর্যালোচনা এবং সম্পন্ন quest তালিকা সম্বলিত ব্যবস্থার সহায়তায় সহজেই সৎ মানুষ এবং সেরা বিশেষজ্ঞদের খুঁজে পাওয়া যাবে।\n\n          আমাদের লক্ষ্য হলো নিয়োগকর্তা এবং কর্মচারীর মধ্যে যোগাযোগ সহজ করে তোলা, লক্ষ লক্ষ মানুষকে কর্মসংস্থানে সাহায্য করা, তাদের আর্থিক অবস্থার উন্নয়ন করা, সমস্ত খাতে নির্ভরযোগ্য পেশাদার খোঁজার আজীবন সমস্যার সমাধান করে বিশ্বাস, পারস্পরিক শ্রদ্ধা এবং সকল অংশগ্রহণকারীর কল্যাণের ভিত্তিতে প্রগতিশীল ডিজিটাল অর্থনীতি গড়ে তোলা। "
   },
   "registration": {
+    "emailConfirmNewLetter": "A new letter has been sent to your email address",
     "emailConfirm": "আপনার ইমেল ঠিকানায় একটি চিঠি পাঠানো হয়েছে",
     "emailConfirmTitle": "আপনার ইমেইল চেক করুন"
   },

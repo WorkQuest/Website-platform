@@ -340,13 +340,15 @@ export default {
             });
           }
           this.inProgress = true;
-          const equalsFee = new BigNumber(this.percent).shiftedBy(-18).isEqualTo(new BigNumber(depositPercentFromAQuest.substr(0, depositPercentFromAQuest.length - 1)).shiftedBy(-18));
+          const newDepositPercent = new BigNumber(depositPercentFromAQuest.substr(0, depositPercentFromAQuest.length - 1) / 100).shiftedBy(18).toString();
+          const equalsFee = new BigNumber(this.percent).isEqualTo(depositPercentFromAQuest.substr(0, depositPercentFromAQuest.length - 1));
+
           if (!equalsFee) {
             const { result: { fee } } = await this.$store.dispatch('wallet/getContractFeeData', {
               method: 'updateFee',
               abi: WQPensionFund,
               contractAddress: process.env.WORKNET_PENSION_FUND,
-              data: [new BigNumber(depositPercentFromAQuest.substr(0, depositPercentFromAQuest.length - 1)).shiftedBy(18).toString()],
+              data: [newDepositPercent],
             });
             txFee = new BigNumber(txFee).plus(fee);
           }
@@ -396,9 +398,9 @@ export default {
             fields,
             submitMethod: async () => {
               const ok = await this.$store.dispatch('retirement/pensionStartProgram', {
-                fee: depositPercentFromAQuest.substr(0, depositPercentFromAQuest.length - 1),
+                fee: newDepositPercent,
+                equalsFee,
                 firstDeposit: firstDepositAmount,
-                defaultFee: this.percent,
               });
               if (ok) this.showPensionIsRegisteredModal();
             },

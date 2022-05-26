@@ -25,7 +25,7 @@
           class="content__input"
           :name="$tc('modals.currentPercentErr')"
           data-selector="PENSION-PERCENT"
-          rules="required|min_percent:1|max_percent:99|zeroFail|notMoreDecimalPlaces"
+          rules="required|min_percent:0.01|max_percent:99|zeroFail|notMoreDecimalPlaces"
           @input="calcPensionPercent"
         />
       </div>
