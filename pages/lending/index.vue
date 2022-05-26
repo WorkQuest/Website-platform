@@ -289,7 +289,7 @@ export default {
                   this.SetLoader(true);
                   const approveAllowed = await this.$store.dispatch('wallet/approveRouter', {
                     symbol,
-                    spenderAddress: process.env.WORKNET_BORROWING,
+                    spenderAddress: this.ENV.WORKNET_BORROWING,
                     value: valueWithDecimals,
                   });
                   this.SetLoader(false);
@@ -302,7 +302,7 @@ export default {
                   }
                   this.SetLoader(true);
                   const res = await this.$store.dispatch('crediting/sendMethod', {
-                    address: process.env.WORKNET_BORROWING,
+                    address: this.ENV.WORKNET_BORROWING,
                     method: 'borrow',
                     abi: WQBorrowing,
                     data: [
@@ -335,7 +335,7 @@ export default {
           this.SetLoader(true);
           const { ok } = await this.$store.dispatch('crediting/sendMethod', {
             value: new BigNumber(quantity).shiftedBy(18).toString(),
-            address: process.env.WORKNET_LENDING,
+            address: this.ENV.WORKNET_LENDING,
             method: 'deposit',
             abi: WQLending,
             data: [],
@@ -359,7 +359,7 @@ export default {
 
       const { gas, gasPrice } = await getGasPrice(
         WQOracle,
-        process.env.WORKNET_ORACLE,
+        this.ENV.WORKNET_ORACLE,
         'setTokenPricesUSD',
         [...Object.keys(this.currentPrices).map((key) => this.currentPrices[key]), prices, symbols],
       );

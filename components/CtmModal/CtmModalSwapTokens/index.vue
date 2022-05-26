@@ -95,7 +95,7 @@ export default {
     },
   },
   async mounted() {
-    this.oldToken = await this.fetchTokenInfo(process.env.BSC_OLD_WQT_TOKEN);
+    this.oldToken = await this.fetchTokenInfo(this.ENV.BSC_OLD_WQT_TOKEN);
   },
   methods: {
     ...mapActions({

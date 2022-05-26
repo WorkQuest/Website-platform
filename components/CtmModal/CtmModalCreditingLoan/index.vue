@@ -103,7 +103,7 @@ export default {
     },
     async maxBalance() {
       const balance = this.balance.fullBalance;
-      const { result: { fee } } = await getContractFeeData('deposit', WQLending, process.env.WORKNET_LENDING, [], null, this.balance.fullBalance);
+      const { result: { fee } } = await getContractFeeData('deposit', WQLending, this.ENV.WORKNET_LENDING, [], null, this.balance.fullBalance);
       this.quantity = new BigNumber(balance).minus(fee).toString();
     },
   },
