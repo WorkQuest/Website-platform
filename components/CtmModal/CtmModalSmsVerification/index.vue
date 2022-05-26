@@ -79,7 +79,7 @@
           data-selector="CODE-FROM-SMS"
           :placeholder="$t('meta.codeFromSMS')"
           mode="icon"
-          rules="numeric|max:6|min:6"
+          :rules="`numeric|max:${confirmCodeLength}|min:${confirmCodeLength}`"
           :name="$tc('meta.codeFromSMS')"
         >
           <template
@@ -123,7 +123,6 @@ import { UserRole } from '~/utils/enums';
 import { images } from '~/utils/images';
 
 const timerDefaultValue = 60;
-const confirmCodeLength = 6;
 
 export default {
   name: 'CtmModalSmsVerification',
@@ -132,6 +131,7 @@ export default {
     return {
       isStartedTimer: false,
       timerValue: timerDefaultValue,
+      confirmCodeLength: 6,
       confirmCode: '',
       step: 1,
     };
@@ -147,7 +147,7 @@ export default {
       return isStartedTimer ? this.$tc('meta.units.seconds', this.DeclOfNum(timerValue), { count: timerValue }) : '';
     },
     codeLength() {
-      return this.confirmCode?.length < confirmCodeLength;
+      return this.confirmCode?.length < this.confirmCodeLength;
     },
     UserRole() {
       return UserRole;
