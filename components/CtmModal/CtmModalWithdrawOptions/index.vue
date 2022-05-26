@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="withdraw"
-    :title="$t('modals.withdrawal')"
+    :title="$tc('meta.withdrawal')"
   >
     <div class="withdraw__content content">
       <validation-observer v-slot="{handleSubmit, invalid}">
@@ -13,7 +13,7 @@
             {{ $t('modals.walletAddress') }}
           </div>
           <div class="content__panel_active">
-            {{ $t('wallet.bankCard') }}
+            {{ $t('meta.bankCard') }}
           </div>
         </div>
         <div class="content__grid grid">
@@ -23,10 +23,11 @@
           <div class="grid__body">
             <base-field
               v-model="amount"
-              :placeholder="'0 WUSD'"
+              placeholder="0 WUSD"
+              data-selector="AMOUNT"
               class="grid__input"
               rules="required|decimal"
-              :name="$t('modals.amountField')"
+              :name="$tc('modals.amountField')"
             />
             <div class="grid__equal">
               =
@@ -34,6 +35,7 @@
             <div class="grid__field">
               <base-field
                 v-model="dollars"
+                data-selector="DOLLARS"
                 mode="white"
                 :disabled="true"
               />
@@ -47,6 +49,7 @@
             </div>
             <base-field
               v-model="fee"
+              data-selector="FEE"
               mode="white"
               class="body__input"
               :disabled="true"
@@ -73,6 +76,7 @@
               <base-btn
                 mode="add"
                 class="drop__button button"
+                data-selector="SHOW-ADDING-CARD"
                 @click="showAddingCard"
               >
                 <span class="icon-plus_circle_outline button__icon" />
@@ -86,19 +90,19 @@
         <div class="content__buttons buttons">
           <base-btn
             class="buttons__button"
-            selector="CANCEL"
+            data-selector="CANCEL"
             mode="outline"
-            @click="hide"
+            @click="CloseModal"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
-            selector="SUBMIT"
+            data-selector="SUBMIT"
             :disabled="invalid||items.length===0"
             @click="handleSubmit(showTransactionSendModal)"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.btns.submit') }}
           </base-btn>
         </div>
       </validation-observer>
@@ -126,33 +130,23 @@ export default {
       options: 'modals/getOptions',
     }),
     items() {
-      return [
-        'Visa *0000',
-        'Visa *0000',
-      ];
+      return ['Visa *0000', 'Visa *0000'];
     },
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     showTransactionSendModal() {
       this.ShowModal({
         key: modals.withdrawInfo,
-        title: this.$t('modals.withdrawInfo'),
+        title: this.$t('modals.info.withdrawInfo'),
         cardNumber: this.options.cardNumber || '0000000000000000',
       });
     },
+    // TODO: Зарефакторить!
     showTakeWithdraw() {
-      this.ShowModal({
-        key: modals.takeWithdraw,
-      });
+      this.ShowModal({ key: modals.takeWithdraw });
     },
     showAddingCard() {
-      this.ShowModal({
-        key: modals.addingCard,
-        branch: 'withdraw',
-      });
+      this.ShowModal({ key: modals.addingCard, branch: 'withdraw' });
     },
   },
 };
@@ -194,7 +188,7 @@ export default {
 }
 .drop{
   &__field{
-    border: 1px solid #F7F8FA;
+    border: 1px solid $black0;
     border-radius: 6px;
   }
   &__title{

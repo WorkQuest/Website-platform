@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="claim"
-    :title="options.type === 1 ? $t('mining.stake') : $t('mining.unstake')"
+    :title="options.type === 1 ? $tc('modals.titles.stake') : $tc('modals.titles.unstake')"
   >
     <div class="claim__content content">
       <validation-observer
@@ -12,10 +12,11 @@
           v-model="amount"
           class="content__field"
           type="number"
+          data-selector="INPUT-AMOUNT"
           :placeholder="3500"
-          :label="$t('modals.amount')"
+          :label="$tc('modals.amount')"
           :rules="`required|decimal|decimalPlaces:18${getInputRules()}`"
-          :name="$t('modals.amount')"
+          :name="$tc('modals.amount')"
         >
           <template
             v-slot:right-absolute
@@ -23,7 +24,7 @@
           >
             <base-btn
               mode="max"
-              selector="MAX-BALANCE"
+              data-selector="MAX-BALANCE"
               class="max__button"
               @click="maxBalance()"
             >
@@ -34,18 +35,18 @@
         <div class="content__container">
           <base-btn
             mode="outline"
-            selector="CANCEL"
+            data-selector="CANCEL"
             :disabled="statusBusy"
-            @click="hide()"
+            @click="CloseModal"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
-            selector="SUBMIT"
+            data-selector="SUBMIT"
             :disabled="!valid || !canSubmit"
             @click="handleSubmit(options.type === 1 ? staking : unstaking)"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.btns.submit') }}
           </base-btn>
         </div>
       </validation-observer>
@@ -78,7 +79,6 @@ export default {
       userBalance: 'web3/getUserBalance',
       userStake: 'web3/getUserStake',
       isConnected: 'web3/isConnected',
-
       stakingPoolsData: 'wallet/getStakingPoolsData',
       stakingUserData: 'wallet/getStakingUserData',
     }),
@@ -86,14 +86,21 @@ export default {
       const { stakingType, isConnected, statusBusy } = this;
       return !statusBusy || !(stakingType === StakingTypes.WUSD && stakingType !== StakingTypes.WQT && !isConnected);
     },
-    stakingType() { return this.options.stakingType; },
-    userInfo() { return this.stakingUserData[this.stakingType]; },
-    poolData() { return this.stakingPoolsData[this.stakingType]; },
-    poolAddress() { return this.poolData?.poolAddress ? this.poolData.poolAddress.toLowerCase() : ''; },
+    stakingType() {
+      return this.options.stakingType;
+    },
+    userInfo() {
+      return this.stakingUserData[this.stakingType];
+    },
+    poolData() {
+      return this.stakingPoolsData[this.stakingType];
+    },
+    poolAddress() {
+      return this.poolData?.poolAddress ? this.poolData.poolAddress.toLowerCase() : '';
+    },
   },
   mounted() { this.balance = this.options.balance; },
   methods: {
-    hide() { this.CloseModal(); },
     getInputRules() {
       const {
         staked, minStake, maxStake, type,
@@ -110,12 +117,8 @@ export default {
           const max = new BigNumber(this.options.maxStake).minus(this.options.staked).toString();
           this.amount = new BigNumber(this.options.balance).isGreaterThanOrEqualTo(max)
             ? max : this.options.balance;
-        } else {
-          this.amount = this.options.staked;
-        }
-      } else {
-        this.amount = this.options.type === 1 ? this.userBalance : this.userStake;
-      }
+        } else this.amount = this.options.staked;
+      } else this.amount = this.options.type === 1 ? this.userBalance : this.userStake;
     },
     checkAmount() {
       if (this.stakingType !== StakingTypes.MINING) {
@@ -133,7 +136,7 @@ export default {
       await this.checkMetamaskStatus();
       if (this.checkAmount()) {
         const { decimals, stakingType, updateMethod } = this.options;
-        this.hide();
+        this.CloseModal();
         await this.$store.dispatch('web3/stake', {
           decimals,
           amount: this.amount,
@@ -141,7 +144,7 @@ export default {
         });
         if (updateMethod) await updateMethod();
       } else {
-        this.hide();
+        this.CloseModal();
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/warning.svg'),
@@ -157,7 +160,7 @@ export default {
       const { options: { updateMethod, stakingType, decimals }, poolAddress, amount } = this;
       if (stakingType !== StakingTypes.WQT && stakingType !== StakingTypes.WUSD) await this.checkMetamaskStatus();
       if (this.checkAmount()) {
-        this.hide();
+        this.CloseModal();
         if (stakingType === StakingTypes.WQT || stakingType === StakingTypes.WUSD) {
           const [txFee] = await Promise.all([
             this.$store.dispatch('wallet/getStakingUnstakeFeeData', {
@@ -169,22 +172,22 @@ export default {
           ]);
           this.SetLoader(false);
           if (!txFee.ok) {
-            this.ShowToast(this.$t('modals.failed'), this.$t('mining.unstake'));
+            this.ShowToast(this.$t('modals.failed'), this.$t('meta.btns.unstake'));
             return;
           }
           this.ShowModal({
             key: modals.transactionReceipt,
-            title: this.$t('mining.unstake'),
+            title: this.$t('meta.btns.unstake'),
             fields: {
-              from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-              to: { name: this.$t('modals.toAddress'), value: poolAddress },
+              from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+              to: { name: this.$t('meta.toBig'), value: poolAddress },
               unstakeAmount: { name: this.$t('modals.amount'), value: amount },
               fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: stakingType },
             },
             submitMethod: async () => {
               const res = await this.$store.dispatch('wallet/stakingUnstake', { amount, stakingType, poolAddress });
               if (!res.ok && res.msg.includes('insufficient funds: insufficient funds')) {
-                this.ShowToast(this.$t('errors.transaction.notEnoughFunds'), this.$t('mining.unstake'));
+                this.ShowToast(this.$t('errors.transaction.notEnoughFunds'), this.$t('meta.btns.unstake'));
               }
               return res;
             },
@@ -206,7 +209,7 @@ export default {
         });
         if (updateMethod) await updateMethod();
       } else {
-        this.hide();
+        this.CloseModal();
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/warning.svg'),
@@ -218,9 +221,7 @@ export default {
       this.SetLoader(false);
     },
     async connectToMetamask() {
-      if (!this.isConnected) {
-        await this.$store.dispatch('web3/connect');
-      }
+      if (!this.isConnected) await this.$store.dispatch('web3/connect');
     },
     async checkMetamaskStatus() {
       if (typeof window.ethereum === 'undefined') {
@@ -231,7 +232,7 @@ export default {
           title: 'Please install Metamask!',
           subtitle: 'Please click install...',
           button: 'Install',
-          type: 'installMetamask',
+          callback: () => window.open('https://metamask.io/download.html'),
         });
       } else {
         localStorage.setItem('metamaskStatus', 'installed');
@@ -246,7 +247,6 @@ export default {
   },
 };
 </script>
-
 <style lang="scss" scoped>
 .max {
   &__button {

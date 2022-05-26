@@ -1,6 +1,6 @@
 <template>
   <ctm-modal-box
-    :title="!phone ? $t('modals.errorSmsVer') : $t('modals.smsVerification')"
+    :title="!phone ? $tc('modals.errors.errorSmsVer') : $t('modals.titles.smsVerification')"
     class="verification"
   >
     <div class="verification__content content">
@@ -14,15 +14,15 @@
           class="content__picture"
         >
         <div class="content__subtitle content__subtitle_error">
-          {{ this.$t('modals.fillNumber') }}
+          {{ $t('modals.fillNumber') }}
         </div>
         <div class="content__buttons buttons">
           <base-btn
             class="buttons__button"
-            selector="CONFIRM-1"
-            @click="hide"
+            data-selector="CONFIRM-1"
+            @click="CloseModal"
           >
-            {{ $t('meta.confirm') }}
+            {{ $t('meta.btns.confirm') }}
           </base-btn>
         </div>
       </div>
@@ -34,16 +34,17 @@
           {{ step === 1 ? $t('modals.enterPhone') : $t('modals.enterSMSCode') }}
         </div>
         <span class="content__top">
-          {{ step === 1 ? $t('modals.phoneNumber') : $t('modals.codeFromSMS') }}
+          {{ step === 1 ? $t('modals.phoneNumber') : $t('meta.codeFromSMS') }}
         </span>
         <base-field
           v-if="step === 1"
           v-model="phone"
+          data-selector="PHONE-NUMBER"
           class="content__action"
           :placeholder="$t('modals.phoneNumber')"
           mode="icon"
           :disabled="true"
-          :name="$t('modals.phoneNumberField')"
+          :name="$tc('modals.phoneNumberField')"
         >
           <template
             v-slot:left
@@ -56,10 +57,11 @@
           v-if="step === 2"
           v-model="confirmCode"
           class="content__action"
-          :placeholder="$t('modals.codeFromSMSField')"
+          data-selector="CODE-FROM-SMS"
+          :placeholder="$t('meta.codeFromSMS')"
           mode="icon"
           rules="required|alpha_num"
-          :name="$t('modals.codeFromSMS')"
+          :name="$tc('modals.codeFromSMS')"
         >
           <template
             v-slot:left
@@ -78,26 +80,26 @@
             data-selector="RESEND-SMS"
             @click="getCodeFromSms()"
           >
-            {{ $t('meta.resendSMS') }}
+            {{ $t('meta.btns.resendSMS') }}
           </button>
         </div>
         <div class="content__buttons buttons">
           <base-btn
             v-if="step === 1"
-            selector="NEXT-STEP"
+            data-selector="NEXT-STEP"
             class="buttons__button"
             @click="handleSubmit(nextStep)"
           >
-            {{ $t('meta.next') }}
+            {{ $t('meta.btns.next') }}
           </base-btn>
           <base-btn
             v-if="step === 2"
             class="buttons__button"
-            selector="CONFIRM-2"
+            data-selector="CONFIRM-2"
             :disabled="!validated || !passed || invalid"
             @click="handleSubmit(success)"
           >
-            {{ $t('meta.confirm') }}
+            {{ $t('meta.btns.confirm') }}
           </base-btn>
         </div>
       </validation-observer>
@@ -116,7 +118,6 @@ export default {
     return {
       confirmCode: '',
       step: 1,
-      phone: null,
     };
   },
   computed: {
@@ -128,26 +129,33 @@ export default {
     UserRole() {
       return UserRole;
     },
+    phone() {
+      return this.userData?.tempPhone?.fullPhone;
+    },
   },
   async beforeMount() {
-    if (this.userData?.tempPhone) this.phone = this.userData?.tempPhone?.fullPhone;
     this.confirmCode = this.currentConfirmCode;
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     async confirmPhone() {
-      await this.$store.dispatch('user/confirmPhone', { confirmCode: this.confirmCode });
+      return await this.$store.dispatch('user/confirmPhone', { confirmCode: this.confirmCode });
     },
-    success() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/success.svg'),
-        title: this.$t('modals.success'),
-        subtitle: this.$t('modals.SMSVerConnected'),
-      });
-      this.confirmPhone();
+    async success() {
+      const phoneResult = await this.confirmPhone();
+      if (phoneResult) {
+        await this.$store.dispatch('user/getUserData');
+        this.ShowModalSuccess({
+          title: this.$t('meta.success'),
+          subtitle: this.$t('modals.SMSVerConnected'),
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/error.svg'),
+          title: this.$t('modals.error'),
+          subtitle: this.$t('errors.incorrectPass'),
+        });
+      }
     },
     async getCodeFromSms() {
       if (this.phone) await this.$store.dispatch('user/sendPhone');
@@ -157,7 +165,7 @@ export default {
         await this.getCodeFromSms();
         this.step += 1;
       }
-      if (!this.userData.tempPhone) this.hide();
+      if (!this.userData.tempPhone) this.CloseModal();
     },
   },
 };

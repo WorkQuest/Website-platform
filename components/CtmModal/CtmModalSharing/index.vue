@@ -1,13 +1,16 @@
 <template>
-  <ctm-modal-box :title="$t('sharing.title')">
+  <ctm-modal-box :title="$tc('modals.titles.sharing')">
     <div class="ctm-modal__content share">
       <span class="share__text">{{ $t('sharing.socialText') }}</span>
       <div class="share__socials">
-        <button
+        <a
           v-for="(link,idx) in socialLinks"
           :key="idx"
           class="socials__btn"
           :class="`socials__btn-${link.icon}`"
+          target="_blank"
+          rel="noopener noreferrer"
+          :href="makeHref(link)"
         >
           <img
             v-if="link.icon === 'telegram'"
@@ -20,7 +23,7 @@
             class="socials__icon"
             :class="`icon-${link.icon}`"
           />
-        </button>
+        </a>
       </div>
       <span class="share__text">{{ $t('sharing.share') }}</span>
       <div class="share__link">
@@ -32,6 +35,7 @@
           v-clipboard:success="ClipboardSuccessHandler"
           v-clipboard:error="ClipboardErrorHandler"
           class="share__copy"
+          data-selector="COPY-BTN"
           type="button"
         >
           <span class="icon-copy" />
@@ -53,10 +57,10 @@ export default {
     }),
     socialLinks() {
       return [
-        { icon: 'telegram', url: '' },
-        { icon: 'twitter', url: '' },
-        { icon: 'facebook', url: '' },
-        { icon: 'LinkedIn', url: '' },
+        { icon: 'telegram', url: 'https://telegram.me/share/url?url=' },
+        { icon: 'twitter', url: 'https://twitter.com/intent/tweet?url=' },
+        { icon: 'facebook', url: 'https://www.facebook.com/sharer/sharer.php?u=' },
+        { icon: 'LinkedIn', url: 'https://www.linkedin.com/sharing/share-offsite/?url=' },
       ];
     },
     sharingLink() {
@@ -65,6 +69,24 @@ export default {
       if (this.options.mode === 'quest') return `${url}${Path.QUESTS}/${itemId}`;
       if (this.options.mode === 'profile') return `${url}${Path.PROFILE}/${itemId}`;
       return 'error';
+    },
+  },
+  methods: {
+    makeHref(item) {
+      switch (item.icon) {
+        case 'telegram':
+        case 'twitter':
+        case 'facebook': {
+          return `${item.url}${this.sharingLink}`;
+        }
+        case 'LinkedIn': {
+          const encodedURI = encodeURIComponent(this.sharingLink).replace(/[!'()*]/g, (c) => `%${c.charCodeAt(0).toString(16)}`);
+          return `${item.url}${encodedURI}`;
+        }
+        default: {
+          return '';
+        }
+      }
     },
   },
 };
@@ -112,14 +134,15 @@ export default {
     justify-content: center;
     border-radius: 6px;
     background: $black0;
+    text-decoration: none;
+    transition: ease-out .2s;
     &:hover {
       background: $blue;
       & span {
         color: $white;
       }
       & img {
-        transition: 0.5s;
-        filter: brightness(1000%) grayscale(100%);
+        filter: brightness(1000%) grayscale(0%);
       }
     }
   }

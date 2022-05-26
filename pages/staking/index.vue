@@ -29,7 +29,7 @@
                   target="_blank"
                   class="table__value table__value_gray"
                 >
-                  {{ CutTxn(el.item.poolAddress, 8, 4) }}
+                  {{ !!el.item.poolAddress ? CutTxn(convertToBech32('wq', el.item.poolAddress), 8, 4) : '' }}
                 </a>
               </template>
               <template #cell(totalStaked)="el">
@@ -48,7 +48,9 @@
                   target="_blank"
                   class="table__value table__value_blue"
                 >
-                  {{ CutTxn(el.item.rewardTokenAddress, 8, 4) }}
+                  {{
+                    !!el.item.rewardTokenAddress ? CutTxn(convertToBech32('wq', el.item.rewardTokenAddress), 8, 4) : ''
+                  }}
                 </a>
               </template>
               <template #cell(rewardTokenAddress)="el">
@@ -58,13 +60,16 @@
                     target="_blank"
                     class="table__value table__value_blue"
                   >
-                    {{ CutTxn(el.item.rewardTokenAddress, 8, 4) }}
+                    {{
+                      !!el.item.rewardTokenAddress ? CutTxn(convertToBech32('wq', el.item.rewardTokenAddress), 8, 4) : ''
+                    }}
                   </a>
                 </div>
               </template>
               <template #cell(open)="el">
                 <base-btn
                   class="btn_bl"
+                  data-selector="OPEN-STAKING"
                   @click="handleOpenPool(el)"
                 >
                   {{ $t('staking.open') }}
@@ -80,9 +85,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 import {
-  Chains, ExplorerUrl, NativeTokenSymbolByChainId, Path, StakingTypes,
+  ExplorerUrl, Path, StakingTypes,
 } from '~/utils/enums';
 
 export default {
@@ -168,7 +172,9 @@ export default {
         },
       ];
     },
-    poolsData() { return [this.stakingPoolsData.WUSD, this.stakingPoolsData.WQT]; },
+    poolsData() {
+      return [this.stakingPoolsData.WUSD, this.stakingPoolsData.WQT];
+    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -188,8 +194,12 @@ export default {
         this.$store.dispatch('wallet/getStakingPoolsData', StakingTypes.WUSD),
       ]);
     },
-    handleOpenPool(el) { this.$router.push(`${Path.STAKING}/${el.item.link.toLowerCase()}`); },
-    getFormattedAddress(address) { return !address ? '' : `${address.slice(0, 8)}...${address.slice(-4)}`; },
+    handleOpenPool(el) {
+      this.$router.push(`${Path.STAKING}/${el.item.link.toLowerCase()}`);
+    },
+    getFormattedAddress(address) {
+      return !address ? '' : `${address.slice(0, 8)}...${address.slice(-4)}`;
+    },
   },
 };
 </script>
@@ -326,6 +336,7 @@ export default {
         font-size: 38px;
         margin-bottom: 15px;
         width: 100%;
+
         &_sub {
           font-size: 16px;
           max-width: 400px;

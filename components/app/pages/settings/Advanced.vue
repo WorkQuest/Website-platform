@@ -5,43 +5,37 @@
   >
     <div class="advanced__left">
       <div class="advanced__title">
-        {{ $t('settings.settings') }}
+        {{ $t('meta.settings') }}
       </div>
       <div
-        v-for="(radio) in radioButtons"
-        :key="radio.index"
-        data-selector="ADVANCED-RADIOS"
+        v-for="(checkBox) in checkBoxButtons"
+        :key="checkBox.index"
+        data-selector="ADVANCED-CHECKBOX"
         class="advanced__options advanced__options_left"
       >
         <div class="advanced__subtitle">
-          {{ radio[0].id === 'allUsers' ? $t('settings.whoCanSee') : $t('settings.workProposals') }}
+          {{ checkBox[0].title }}
         </div>
         <div
-          v-for="input in radio"
+          v-for="input in checkBox"
           :key="input.index"
-          data-selector="ADVANCED-WHO-CAN-SEE-RADIO"
-          class="advanced__option"
+          data-selector="ADVANCED-WHO-CAN-SEE-CHECKBox"
+          class="advanced__option advanced__checkBox"
+          @click="setSelectedCheckboxByBlock(input.name, input.value)"
         >
-          <input
+          <base-checkbox
             :id="input.id"
-            :name="input.name"
-            :data-selector="`ADVANCED-WHO-CAN-SEE-RADIO-${input.id}`"
-            type="radio"
-            class="advanced__input"
-            :value="input.value"
-          >
-          <label
-            class="advanced__label"
-            :for="input.id"
-          >
-            {{ $t(input.local) }}
-          </label>
+            :name="String(input.id)"
+            :value="isCheckboxChecked(input.name, input.value)"
+            :data-selector="`ADVANCED-WHO-CAN-SEE-CHECKBOX-${input.id}`"
+            :label="String($t(input.local))"
+          />
         </div>
       </div>
     </div>
     <div class="advanced__right">
       <div class="advanced__title">
-        {{ $t('settings.settings') }}
+        {{ $t('meta.settings') }}
       </div>
       <div class="advanced__options">
         <div
@@ -55,8 +49,8 @@
           </div>
           <base-btn
             v-if="!button.isSwitcher"
-            :disabled="button.enable"
-            :selector="`RIGHT-SIDE-BTN-${index}`"
+            :disabled="button.disabled"
+            :data-selector="button.modal"
             @click="showModalKey(button.modal)"
           >
             {{ $t(button.buttonName) }}
@@ -66,7 +60,7 @@
             class="advanced__option-buttons"
           >
             <base-btn
-              :selector="`${!statusTotp} ? ${$t(button.secondButtonName)}-${index} : ${$t(button.firstButtonName)}-${index}`"
+              :data-selector="!statusTotp ? button.secondModal : button.firstModal"
               @click="!statusTotp ? showModalKey(button.secondModal) : showModalKey(button.firstModal)"
             >
               {{ !statusTotp ? $t(button.secondButtonName) : $t(button.firstButtonName) }}
@@ -81,63 +75,42 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { UserRole, RatingFilter, RatingStatus } from '~/utils/enums';
 
 export default {
   name: 'Advanced',
   data() {
     return {
-      radioButtons: {
-        whoCanSeeInputs: [
-          {
-            id: 'allUsers',
-            value: 'allUsers',
-            local: 'settings.allUsers',
-            name: 'whoCanSee',
-          },
-          {
-            id: 'allInternet',
-            value: 'allInternet',
-            local: 'settings.allInternet',
-            name: 'whoCanSee',
-          },
-          {
-            id: 'onlyWhenSubmittedWork',
-            value: 'onlyWhenSubmittedWork',
-            local: 'settings.onlyWhenSubmittedWork',
-            name: 'whoCanSee',
-          },
-        ],
-        employeeProfilesInputs: [
-          {
-            id: 'urgentProposals',
-            value: 'urgentJobOffers',
-            local: 'settings.urgentJobOffers',
-            name: 'filterAllWorkProposals',
-          },
-          {
-            id: 'onlyImplementation',
-            value: 'shortTermJobOffers',
-            local: 'settings.shortTermJobOffers',
-            name: 'filterAllWorkProposals',
-          },
-          {
-            id: 'onlyReady',
-            value: 'fixedDeliveryJobOffers',
-            local: 'settings.fixedDeliveryJobOffers',
-            name: 'filterAllWorkProposals',
-          },
-        ],
+      mounted: false,
+      checkboxBlocks: {
+        visibilityUser: [],
+        restrictionRankingStatus: [],
       },
-      rightSideButtons: [
+      checkBoxButtons: {
+        visibilityUser: [],
+        restrictionRankingStatus: [],
+      },
+    };
+  },
+  computed: {
+    ...mapGetters({
+      userRole: 'user/getUserRole',
+      statusTotp: 'user/getStatusTotp',
+      status2FA: 'user/getStatus2FA',
+      secondNumber: 'user/getUserSecondMobileNumber',
+      userData: 'user/getUserData',
+    }),
+    rightSideButtons() {
+      return [
         {
           title: 'settings.changePass',
-          buttonName: 'settings.change',
+          buttonName: 'meta.btns.change',
           modal: 'changePassInSettings',
           isSwitcher: false,
         },
         {
           title: 'settings.enableTwoStepAuth',
-          firstButtonName: 'meta.disable',
+          firstButtonName: 'meta.btns.disable',
           secondButtonName: 'settings.enable',
           firstModal: 'disable2FA',
           secondModal: 'twoFAAuth',
@@ -145,27 +118,50 @@ export default {
         },
         {
           title: 'settings.smsVerification',
-          buttonName: 'settings.enable',
+          buttonName: this.userData?.phone?.fullPhone ? 'meta.verified' : 'settings.enable',
           modal: 'smsVerification',
           isSwitcher: false,
-          enable: this.userData?.tempPhone?.fullPhone,
+          disabled: !!this.userData?.phone?.fullPhone,
         },
         {
           title: 'settings.changeRole',
-          buttonName: 'settings.change',
-          modal: 'changeRoleWarning',
-          isSwitcher: false,
+          firstButtonName: 'meta.btns.change',
+          secondButtonName: 'meta.btns.change',
+          firstModal: 'changeRoleWarning',
+          secondModal: 'neededToEnable2FA',
+          isSwitcher: true,
         },
-      ],
-    };
+      ];
+    },
   },
-  computed: {
-    ...mapGetters({
-      statusTotp: 'user/getStatusTotp',
-      status2FA: 'user/getStatus2FA',
-      secondNumber: 'user/getUserSecondMobileNumber',
-      userData: 'user/getUserData',
-    }),
+  beforeMount() {
+    this.checkBoxButtons.restrictionRankingStatus = RatingFilter.map((item, i) => ({
+      title: this.$t(`settings.${this.userRole === UserRole.EMPLOYER ? 'whoCouldIInvite' : 'whoCouldInviteMe'}`),
+      id: item.key,
+      value: item.value,
+      local: i === 0 ? 'settings.allUsers' : `quests.rating.${item.key}`,
+      name: 'restrictionRankingStatus',
+    }));
+    this.checkBoxButtons.visibilityUser = RatingFilter.map((item, i) => ({
+      title: this.$t(`settings.${this.userRole === UserRole.EMPLOYER ? 'whoAppearsInMyListEmployees' : 'whoAppearsInMyListEmployers'}`),
+      id: item.key,
+      value: item.value,
+      local: i === 0 ? 'settings.allUsers' : `quests.rating.${item.key}`,
+      name: 'visibilityUser',
+    }));
+  },
+  created() {
+    const { employerProfileVisibilitySetting, workerProfileVisibilitySetting } = JSON.parse(JSON.stringify(this.userData));
+    if (this.userRole === UserRole.EMPLOYER && employerProfileVisibilitySetting) {
+      const { arrayRatingStatusCanRespondToQuest, arrayRatingStatusInMySearch } = employerProfileVisibilitySetting;
+      this.checkboxBlocks.visibilityUser = arrayRatingStatusCanRespondToQuest;
+      this.checkboxBlocks.restrictionRankingStatus = arrayRatingStatusInMySearch;
+    } else if (workerProfileVisibilitySetting) {
+      const { arrayRatingStatusCanInviteMeOnQuest, arrayRatingStatusInMySearch } = workerProfileVisibilitySetting;
+      this.checkboxBlocks.visibilityUser = arrayRatingStatusCanInviteMeOnQuest;
+      this.checkboxBlocks.restrictionRankingStatus = arrayRatingStatusInMySearch;
+    }
+    this.checkMaskAllUser();
   },
   methods: {
     async showModalKey(modalKey) {
@@ -174,12 +170,48 @@ export default {
     smsVerErrorModal() {
       this.ShowModal({
         key: modals.status,
-        title: this.$t('modals.errorSmsVer'),
+        title: this.$t('modals.errors.errorSmsVer'),
         subtitle: this.$t('modals.fillNumber'),
       });
     },
-  },
+    setSelectedCheckboxByBlock(checkBoxBlockName, value) {
+      const isHas = this.checkboxBlocks[checkBoxBlockName].includes(value);
+      const isAllStatuses = value === RatingStatus.AllStatuses;
 
+      if (isHas && isAllStatuses) {
+        this.checkboxBlocks[checkBoxBlockName] = [];
+      } else if (isHas) {
+        this.checkboxBlocks[checkBoxBlockName] = this.checkboxBlocks[checkBoxBlockName].filter((e) => e !== value);
+      } else if (isAllStatuses) {
+        this.checkboxBlocks[checkBoxBlockName] = [RatingStatus.AllStatuses];
+      } else {
+        this.checkboxBlocks[checkBoxBlockName] = this.checkboxBlocks[checkBoxBlockName].filter((e) => e !== RatingStatus.AllStatuses);
+        this.checkboxBlocks[checkBoxBlockName].push(value);
+        this.checkMaskAllUser();
+      }
+
+      this.$emit('updateVisibility', this.checkboxBlocks);
+      return null;
+    },
+    isCheckboxChecked(checkBoxBlockName, value) {
+      const checkboxes = this.checkboxBlocks[checkBoxBlockName];
+      return checkboxes.includes(value) || checkboxes.includes(RatingStatus.AllStatuses);
+    },
+    checkMaskAllUser() {
+      const ratingStatus = [
+        RatingStatus.NoStatus,
+        RatingStatus.Verified,
+        RatingStatus.Reliable,
+        RatingStatus.TopRanked,
+      ];
+      if (JSON.stringify(this.checkboxBlocks.visibilityUser.sort()) === JSON.stringify(ratingStatus.sort())) {
+        this.checkboxBlocks.visibilityUser = [RatingStatus.AllStatuses];
+      }
+      if (JSON.stringify(this.checkboxBlocks.restrictionRankingStatus.sort()) === JSON.stringify(ratingStatus.sort())) {
+        this.checkboxBlocks.restrictionRankingStatus = [RatingStatus.AllStatuses];
+      }
+    },
+  },
 };
 </script>
 
@@ -233,6 +265,8 @@ export default {
     row-gap: 20px;
     &_left {
       row-gap: 12px;
+    }
+    &_left:not(:last-child) {
       margin-bottom: 20px;
     }
   }
@@ -251,6 +285,9 @@ export default {
         max-width: 220px;
       }
     }
+  }
+  &__checkBox {
+    width: fit-content;
   }
   &__option-buttons {
     min-width: 220px;
@@ -278,7 +315,7 @@ export default {
     &__option_blue {
       flex-direction: column;
       button {
-        min-width: none;
+        min-width: auto;
         max-width: none;
         width: 100%;
       }

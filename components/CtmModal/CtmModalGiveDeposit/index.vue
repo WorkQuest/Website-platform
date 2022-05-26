@@ -2,15 +2,15 @@
   <ctm-modal-box
     class="deposit"
     :class="{'deposit_small': step === 2}"
-    :title="$t('modals.depositTitle')"
+    :title="$tc('modals.titles.deposit')"
   >
-    <div class="deposit__content сontent">
+    <div class="deposit__content content">
       <div class="content__step">
         <div
           class="content__panel"
           :class="{'content__panel_active': step === 1}"
           data-selector="PREVIOUS-STEP"
-          @click="previousStep"
+          @click="setStep(1)"
         >
           {{ $t('modals.walletAddress') }}
         </div>
@@ -18,9 +18,9 @@
           class="content__panel"
           :class="{'content__panel_active': step === 2}"
           data-selector="NEXT-STEP"
-          @click="nextStep"
+          @click="setStep(2)"
         >
-          {{ $t('wallet.bankCard') }}
+          {{ $t('meta.bankCard') }}
         </div>
       </div>
       <div
@@ -57,7 +57,7 @@
           <base-btn
             class="code__share"
             mode="share"
-            selector="SHOW-SHARE-MODAL"
+            data-selector="SHOW-SHARE-MODAL"
             @click="showShareModal"
           >
             <span class="icon-share_outline code__chain" />
@@ -81,6 +81,7 @@
       </div>
       <div class="content_buttons buttons">
         <div class="buttons__container">
+          <!--          TODO: Зарефакторить!-->
           <div class="buttons__wrapper">
             <span
               v-if="step === 1"
@@ -88,10 +89,10 @@
             >
               <base-btn
                 class="buttons__action"
-                selector="CLOSE"
+                data-selector="CLOSE"
                 @click="hide"
               >
-                {{ $t('modals.close') }}
+                {{ $t('meta.btns.close') }}
               </base-btn>
             </span>
             <span
@@ -101,17 +102,17 @@
               <base-btn
                 class="buttons__button"
                 mode="outline"
-                selector="CANCEL"
+                data-selector="CANCEL"
                 @click="hide"
               >
-                {{ $t('meta.cancel') }}
+                {{ $t('meta.btns.cancel') }}
               </base-btn>
               <base-btn
                 class="buttons__button"
-                selector="CARD-ADD"
+                data-selector="CARD-ADD"
                 @click="showAddingCard"
               >
-                {{ $t('modals.cardAdd') }}
+                {{ $t('meta.cardAdd') }}
               </base-btn>
             </span>
           </div>
@@ -136,15 +137,15 @@ export default {
     hide() {
       this.CloseModal();
     },
-    nextStep() {
-      this.step = 2;
+    setStep(step) {
+      this.step = step;
     },
-    previousStep() {
-      this.step = 1;
-    },
+    // TODO: Зарефакторить
     showSuccessCopied() {
       this.ShowModal({
-        key: modals.copiedSuccess,
+        key: modals.status,
+        img: require('assets/img/ui/questAgreed.svg'),
+        title: this.$t('modals.textCopy'),
       });
     },
     showShareModal() {

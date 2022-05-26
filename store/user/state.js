@@ -1,14 +1,10 @@
 export default () => ({
+  currentLang: '',
   twoFACode: '',
   verificationCode: '',
-  currentReviewMarkOnQuest: {
-    questId: '',
-    message: '',
-    mark: 0,
-  },
   tokens: {
-    access: '',
-    refresh: '',
+    access: null,
+    refresh: null,
   },
   userData: {
     statusKYC: false,
@@ -70,18 +66,16 @@ export default () => ({
       userId: '',
       reviewCount: 0,
       averageMark: 0,
-      status: '',
+      status: null,
     },
     questsStatistic: {
       completed: 0,
       opened: 0,
     },
-    chatStatistic: {
-      id: '',
-      userId: '',
-      unreadCountChats: 0,
-    },
     userSpecializations: [],
+    affiliateUser: {
+      referralCodeId: '',
+    },
   },
   currentUserPosition: null,
   userRole: {},
@@ -128,4 +122,5 @@ export default () => ({
     count: 0,
   },
   reducedNotifications: [],
+  isRememberMeChecked: null,
 });

@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="views"
-    :title="$t('modals.raiseViews')"
+    :title="$tc('modals.titles.raiseViews')"
   >
     <div class="views__content content">
       <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
@@ -11,22 +11,24 @@
           </div>
           <base-field
             v-model="priceOfAClick"
-            :placeholder="'0 WUSD'"
+            placeholder="0 WUSD"
+            data-selector="PRICE-FOR-CLICK"
             class="field__input"
             mode="white"
             rules="required|decimal"
-            :name="$t('modals.priceOfAClickField')"
+            :name="$tc('modals.priceOfAClickField')"
           />
           <div class="field__subtitle">
             {{ $t('modals.city') }}
           </div>
           <base-field
             v-model="city"
-            :placeholder="'Moscow'"
+            placeholder="Moscow"
+            data-selector="CITY"
             class="field__input"
             mode="white"
             rules="required|alpha_spaces"
-            :name="$t('modals.cityField')"
+            :name="$tc('modals.cityField')"
           />
           <div class="field__subtitle">
             {{ $t('modals.period') }}
@@ -35,7 +37,7 @@
             v-model="period"
             class="field__drop"
             :items="items"
-            :placeholder="$t('placeholders.default')"
+            :placeholder="$t('meta.placeholders.default')"
           />
         </div>
         <div class="content__container container">
@@ -43,25 +45,25 @@
             {{ $t('modals.estimatedPayment') }}
           </div>
           <div class="container__cost">
-            {{ $t('modals.estimatedPaymentField') }}
+            {{ $tc('meta.coins.count.WUSDCount', 120) }}
           </div>
         </div>
         <div class="content__buttons buttons">
           <base-btn
             class="buttons__action"
-            selector="OK"
+            data-selector="OK"
             :disabled="!validated || !passed || invalid || period===''"
             @click="handleSubmit(showTransactionSendModal)"
           >
-            {{ $t('meta.ok') }}
+            {{ $t('meta.btns.ok') }}
           </base-btn>
           <base-btn
             mode="outline"
-            selector="CANCEL"
+            data-selector="CANCEL"
             class="buttons__action"
-            @click="hide"
+            @click="CloseModal"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
         </div>
       </validation-observer>
@@ -97,9 +99,6 @@ export default {
     },
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     showTransactionSendModal() {
       this.ShowModal({
         key: modals.transactionSend,
@@ -161,7 +160,7 @@ export default {
     margin-right: auto;
   }
   &__drop{
-    border: 1px solid #F7F8FA;
+    border: 1px solid $black0;
     border-radius: 6px;
     color: $black800!important;
   }

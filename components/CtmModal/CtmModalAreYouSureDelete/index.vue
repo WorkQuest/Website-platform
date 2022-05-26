@@ -17,19 +17,19 @@
       </div>
       <div class="content__action action">
         <base-btn
-          selector="CANCEL"
+          data-selector="CANCEL"
           class="action__button"
           mode="outline"
-          @click="hide()"
+          @click="CloseModal"
         >
-          {{ $t('meta.cancel') }}
+          {{ $t('meta.btns.cancel') }}
         </base-btn>
         <base-btn
-          selector="DELETE"
+          data-selector="DELETE"
           class="action__button"
           @click="showErrorModal"
         >
-          {{ $t('meta.delete') }}
+          {{ $t('meta.btns.delete') }}
         </base-btn>
       </div>
     </div>
@@ -42,25 +42,19 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalAreYouSureDelete',
-  data() {
-    return {};
-  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     showErrorModal() {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/deleteError.svg'),
-        title: this.$t('modals.error'),
-        subtitle: this.$t('modals.youCan’tDeleteActiveQuest'),
-        button: this.$t('modals.close'),
+        title: this.$t('modals.errors.error'),
+        subtitle: this.$t('modals.errors.youCan’tDeleteActiveQuest'),
+        button: this.$t('meta.btns.close'),
       });
     },
   },

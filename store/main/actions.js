@@ -33,6 +33,8 @@ export default {
       solid: true,
       toaster: 'b-toaster-bottom-right',
       appendToast: true,
+      toastClass: 'custom-toast-width',
+      bodyClass: 'custom-toast-width',
     });
   },
 };

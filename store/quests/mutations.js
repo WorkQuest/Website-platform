@@ -5,9 +5,6 @@ export default {
   setChatInviteOnQuest(state, data) {
     state.chatInfoInviteOnQuest = data;
   },
-  setQuestListForInvitation(state, data) {
-    state.questListForInvitation = data;
-  },
   setEmployeeList(state, { count, users }) {
     state.employeeList = users;
     state.employeeCount = count;
@@ -39,10 +36,13 @@ export default {
   setStarredQuests(state, data) {
     state.starredQuests = data;
   },
-  setResponses(state, { result, responded, invited }) {
-    state.responses = result;
+  setResponses(state, { responded, invited }) {
     state.responded = responded;
     state.invited = invited;
+  },
+  setResponseToQuest(state, { responded, invited }) {
+    if (responded) state.responded.push(responded);
+    if (invited) state.invited.push(invited);
   },
   setResponsesMy(state, data) {
     state.responsesMy = data;
@@ -58,5 +58,13 @@ export default {
   },
   setAvailableQuests(state, data) {
     state.availableQuests = data;
+  },
+  setMarkOnQuestInList(state, result) {
+    state.allQuests.quests.forEach((item) => {
+      if (item.id === result.questId) item.yourReview = result;
+    });
+  },
+  setMarkOnQuestSingle(state, result) {
+    state.quest.yourReview = result;
   },
 };

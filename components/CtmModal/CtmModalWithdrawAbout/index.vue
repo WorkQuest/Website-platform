@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="withdraw"
-    :title="$t('saving.withdraw')"
+    :title="$tc('modals.titles.withdraw')"
   >
     <div class="withdraw__content content">
       <div class="content__desc">
@@ -11,17 +11,17 @@
         <base-btn
           class="buttons__button"
           mode="outline"
-          selector="CANCEL"
-          @click="hide"
+          data-selector="CANCEL"
+          @click="CloseModal"
         >
-          {{ $t('meta.cancel') }}
+          {{ $t('meta.btns.cancel') }}
         </base-btn>
         <base-btn
           class="buttons__button"
-          selector="SUBMIT"
-          @click="hide"
+          data-selector="SUBMIT"
+          @click="openModal"
         >
-          {{ $t('meta.submit') }}
+          {{ $t('meta.btns.submit') }}
         </base-btn>
       </div>
     </div>
@@ -30,6 +30,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalWithdrawAbout',
@@ -39,8 +40,25 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
+    openModal() {
+      const receiptData = [
+        {
+          title: this.$t('modals.lockedSavingsField'),
+          subtitle: this.$tc('meta.coins.count.WUSDCount', 1),
+        },
+        {
+          title: this.$t('modals.durationDaysField'),
+          subtitle: 180,
+        },
+        {
+          title: this.$t('saving.annualizedInterestRate'),
+          subtitle: this.$tc('meta.units.percentsCount', 16),
+        },
+      ];
+      this.ShowModal({
+        key: modals.confirmDetails,
+        receiptData,
+      });
     },
   },
 };
@@ -50,7 +68,7 @@ export default {
 .withdraw {
   max-width: 390px !important;
   &__content {
-  padding: 0px 28px 30px 28px;
+  padding: 0 28px 30px 28px;
   }
 }
 .content{

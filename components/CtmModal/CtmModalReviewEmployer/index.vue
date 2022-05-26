@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="review"
-    :title="$t('modals.reviewOnEmployer')"
+    :title="$tc('modals.titles.reviewOnEmployer')"
   >
     <div class="review__body body">
       <div class="body__rating">
@@ -27,7 +27,8 @@
               <base-textarea
                 v-model="textArea"
                 class="content__textarea"
-                :placeholder="$t('modals.hello')"
+                data-selector="MESSAGE"
+                :placeholder="$t('meta.typeYourMessage')"
                 rules="required|min:1|max:600"
                 name="review"
               />
@@ -37,21 +38,21 @@
             <div class="buttons__wrapper">
               <base-btn
                 class="buttons__action"
-                selector="SEND-REVIEW-FOR-USER"
+                data-selector="SEND-REVIEW-FOR-USER"
                 :disabled="!valid"
                 @click="handleSubmit(sendReviewForUser)"
               >
-                {{ $t('meta.send') }}
+                {{ $t('meta.btns.send') }}
               </base-btn>
             </div>
             <div class="buttons__wrapper">
               <base-btn
-                selector="CANCEL"
+                data-selector="CANCEL"
                 class="buttons__action"
                 mode="outline"
-                @click="hide"
+                @click="CloseModal"
               >
-                {{ $t('meta.cancel') }}
+                {{ $t('meta.btns.cancel') }}
               </base-btn>
             </div>
           </div>
@@ -62,9 +63,7 @@
 </template>
 
 <script>
-/* eslint-disable object-shorthand,no-var */
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalSendARequest',
@@ -80,30 +79,19 @@ export default {
     }),
   },
   mounted() {
-    this.getQuestRating();
+    this.rating = this.options.rating;
   },
   methods: {
     changeReview(value) {
       this.rating = value;
     },
-    getQuestRating() {
-      this.rating = this.options.rating;
-    },
-    hide() {
-      this.CloseModal();
-    },
     async sendReviewForUser() {
-      const { ok } = await this.$store.dispatch('user/sendReviewForUser', {
-        questId: this.options.item.id,
+      const { questId, callback, questMode } = this.options;
+      await callback({
+        questId,
+        questMode,
         message: this.textArea,
         mark: this.rating,
-      });
-      this.hide();
-      if (ok) this.showThanksModal();
-    },
-    showThanksModal() {
-      this.ShowModal({
-        key: modals.thanks,
       });
     },
   },
@@ -130,6 +118,7 @@ export default {
     padding: 15px 30px 15px 30px;
   }
 }
+
 .content {
   &__wrapper {
     margin: 0 0 25px 0;

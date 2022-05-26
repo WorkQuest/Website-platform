@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="check"
-    :title="$t('securityCheck.title')"
+    :title="$tc('modals.titles.securityCheckBig')"
   >
     <div class="check__content">
       <validation-observer
@@ -13,27 +13,30 @@
         </div>
         <div class="content__field">
           <div class="content__title">
-            {{ $t('securityCheck.confCode') }}
+            {{ $t('meta.googleConfCode') }}
           </div>
           <base-field
             v-model="securityCode"
+            :disabled="inProgress"
+            data-selector="SECURITY-CODE"
             :placeholder="$t('securityCheck.placeholder')"
-            :name="$t('modals.securityCheckField')"
+            :name="$tc('meta.securityCheckSmall')"
             rules="required|alpha_num|length:6"
             class="content__input"
+            @enter="handleSubmit(hide)"
           />
           <div class="content__body">
-            {{ $t('securityCheck.confCodeDesc') }}
+            {{ $t('meta.googleConfCodeDesc') }}
           </div>
         </div>
         <div class="content__buttons buttons">
           <base-btn
             class="buttons__button"
-            :disabled="!validated || !passed || invalid"
-            selector="SEND"
+            :disabled="!validated || !passed || invalid || inProgress"
+            data-selector="SEND"
             @click="handleSubmit(hide)"
           >
-            {{ $t('meta.send') }}
+            {{ $t('meta.btns.send') }}
           </base-btn>
         </div>
       </validation-observer>
@@ -43,13 +46,15 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalSecurityCheck',
   data() {
     return {
       securityCode: '',
-      errorMsg: '',
+      errorMsg: false,
+      inProgress: false,
     };
   },
   computed: {
@@ -59,7 +64,18 @@ export default {
   },
   methods: {
     async hide() {
-      this.CloseModal();
+      if (this.inProgress) return;
+      const { actionMethod } = this.options;
+      this.inProgress = true;
+      const result = await this.$store.dispatch('user/validateTOTP', { token: this.securityCode });
+      this.inProgress = false;
+      if (result) {
+        await this.CloseModal();
+        await this.$store.dispatch('user/getMainData');
+        await actionMethod();
+      } else {
+        this.errorMsg = true;
+      }
     },
   },
 };

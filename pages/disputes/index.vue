@@ -6,7 +6,7 @@
     <div class="main__body">
       <div class="page">
         <h2 class="page__title">
-          {{ $t('disputes.disputes') }}
+          {{ $t('meta.disputes') }}
         </h2>
         <div
           v-if="disputesCount > 0"
@@ -33,7 +33,7 @@
               </div>
               <div class="page__text">
                 {{ $t('disputes.status') }}
-                <span class="page__text_yellow">
+                <span :class="[colorDisputeStatus[item.status]]">
                   {{ disputeStatus(item.status) }}
                 </span>
               </div>
@@ -51,7 +51,7 @@
         </div>
         <emptyData
           v-else
-          :description="$t(`errors.emptyData.emptyDisputes`)"
+          :description="$tc(`errors.emptyData.emptyDisputes`)"
         />
       </div>
     </div>
@@ -62,7 +62,7 @@
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 import emptyData from '~/components/app/info/emptyData';
-import { DisputeStatues } from '~/utils/enums';
+import { DisputeStatues, Path } from '~/utils/enums';
 
 export default {
   name: 'Disputes',
@@ -77,6 +77,13 @@ export default {
       disputes: 'disputes/getUserDisputes',
       disputesCount: 'disputes/getUserDisputesCount',
     }),
+    colorDisputeStatus() {
+      return {
+        [DisputeStatues.PENDING]: 'page__text_blue',
+        [DisputeStatues.IN_PROGRESS]: 'page__text_yellow',
+        [DisputeStatues.COMPLETED]: 'page__text_green',
+      };
+    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -88,7 +95,7 @@ export default {
       return [
         {
           title: this.$t('disputes.dispute'),
-          value: item.disputeNumber,
+          value: item.number,
         },
         {
           title: this.$t('disputes.quest'),
@@ -108,8 +115,8 @@ export default {
         },
       ];
     },
-    toDisputes(item) {
-      this.$router.push({ path: `/disputes/${item}` });
+    toDisputes(itemId) {
+      this.$router.push(`${Path.DISPUTES}/${itemId}`);
     },
     convertDate(createdAt) {
       return createdAt ? moment(createdAt).format('MMMM Do YYYY, h:mm') : '';
@@ -118,7 +125,7 @@ export default {
       const obj = {
         [DisputeStatues.PENDING]: this.$t('disputes.pending'),
         [DisputeStatues.IN_PROGRESS]: this.$t('disputes.inProgress'),
-        [DisputeStatues.COMPLETED]: this.$t('disputes.completed'),
+        [DisputeStatues.COMPLETED]: this.$t('meta.completed'),
       };
       return obj[status];
     },

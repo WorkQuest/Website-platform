@@ -20,12 +20,13 @@
         <div class="menu menu__items">
           <div class="menu__container">
             <div
+              v-if="canRaiseViews"
               class="menu__item"
               :data-selector="`ACTION-BTN-TO-RAISING-VIEWS-${questIndex}`"
               @click="toRaisingViews"
             >
               <div class="menu__text">
-                {{ $t('modals.raiseViews') }}
+                {{ $t('meta.raiseViews') }}
               </div>
             </div>
             <div
@@ -38,21 +39,23 @@
               </div>
             </div>
             <div
+              v-if="canEditOrDelete"
               class="menu__item"
               :data-selector="`ACTION-BTN-TO-EDIT-QUEST-${questIndex}`"
               @click="toEditQuest"
             >
               <div class="menu__text">
-                {{ $t('modals.edit') }}
+                {{ $t('meta.btns.edit') }}
               </div>
             </div>
             <div
+              v-if="canEditOrDelete"
               class="menu__item"
               :data-selector="`ACTION-BTN-DELETE-QUEST-${questIndex}`"
               @click="showAreYouSureDeleteQuestModal"
             >
               <div class="menu__text">
-                {{ $t('modals.delete') }}
+                {{ $t('meta.btns.delete') }}
               </div>
             </div>
           </div>
@@ -65,12 +68,14 @@
 <script>
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import { QuestStatuses, Path } from '~/utils/enums';
+import { Path } from '~/utils/enums';
+import { QuestStatuses } from '~/utils/сonstants/quests';
 import modals from '~/store/modals/modals';
 
 export default {
   name: 'QuestDD',
   directives: { ClickOutside },
+  QuestStatuses,
   props: {
     mode: {
       type: String,
@@ -92,31 +97,60 @@ export default {
   },
   computed: {
     ...mapGetters({
+      userData: 'user/getUserData',
       userRole: 'user/getUserRole',
       questData: 'quests/getQuest',
     }),
+    canRaiseViews() {
+      return [QuestStatuses.Created, QuestStatuses.WaitWorkerOnAssign].includes(this.item.status || this.questData.status);
+    },
+    canEditOrDelete() {
+      return this.item ? this.item.status === QuestStatuses.Created : this.questData.status === QuestStatuses.Created;
+    },
   },
   methods: {
     toEditQuest() {
-      const { status, id } = this.item;
+      if (!this.userData.totpIsActive) {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/deleteError.svg'),
+          title: this.$t('modals.errors.error'),
+          subtitle: this.$t('modals.2FA.youCan’tEditQuest'),
+          button: this.$t('meta.btns.close'),
+        });
+        return;
+      }
 
+      this.ShowModal({
+        key: modals.securityCheck,
+        actionMethod: async () => this.editAction(),
+      });
+    },
+    editAction() {
+      const { status, id } = this.item;
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(status)) {
         this.$router.push(`${Path.EDIT_QUEST}/${id}`);
         this.setCurrentStepEditQuest(1);
       } else this.showToastWrongStatusEdit();
     },
     showAreYouSureDeleteQuestModal() {
+      if (!this.userData.totpIsActive) {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/deleteError.svg'),
+          title: this.$t('modals.errors.error'),
+          subtitle: this.$t('modals.2FA.youCan’tDeleteQuest'),
+          button: this.$t('meta.btns.close'),
+        });
+        return;
+      }
       this.ShowModal({
-        key: modals.areYouSure,
-        title: this.$t('modals.sureDeleteNotification'),
-        okBtnTitle: this.$t('meta.delete'),
-        okBtnFunc: () => this.deleteQuest(),
+        key: modals.securityCheck,
+        actionMethod: () => {
+          this.CloseModal();
+          this.DeleteQuest(this.item);
+        },
       });
-    },
-    deleteQuest() {
-      this.CloseModal();
-
-      this.DeleteQuest(this.item);
     },
     toRaisingViews() {
       const { status, id } = this.item;
@@ -131,14 +165,14 @@ export default {
     },
     showToastWrongStatusEdit() {
       return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.questInfo'),
+        title: this.$t('meta.questInfo'),
         variant: 'warning',
         text: this.$t('toasts.questCantEdit'),
       });
     },
     showToastWrongStatusRaisingViews() {
       return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.questInfo'),
+        title: this.$t('meta.questInfo'),
         variant: 'warning',
         text: this.$t('toasts.questCantRaisingViews'),
       });

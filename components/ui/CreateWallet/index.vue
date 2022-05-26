@@ -17,32 +17,26 @@
         <div class="wallet__mnemonic">
           <input
             v-model="mnemonic"
-            :type="inputType"
+            :type="isShowMnemonic?'text':'password'"
             disabled
             class="wallet__phrase-input"
+            :class="{'wallet__phrase-input--icon': isShowMnemonic}"
           >
-          <button
-            v-clipboard:copy="mnemonic"
-            v-clipboard:error="ClipboardErrorHandler"
-            type="button"
-            @click="showCopySuccess"
-          >
-            <span class="icon-copy wallet__mnemonic_copy" />
-          </button>
-        </div>
-        <div class="wallet__confirm-phrase">
-          <input
-            id="showMnemonic"
-            v-model="isShowMnemonic"
-            type="checkbox"
-            class="wallet__confirm-phrase_box"
-          >
-          <label
-            for="showMnemonic"
-            class="wallet__confirm-phrase_label"
-          >
-            {{ $t('createWallet.showSecretPhrase') }}
-          </label>
+          <div class="wallet__mnemonic_btns">
+            <button
+              v-clipboard:copy="mnemonic"
+              v-clipboard:error="ClipboardErrorHandler"
+              class="wallet__mnemonic_copy-btn"
+              type="button"
+              @click="showCopySuccess"
+            >
+              <span class="icon-copy wallet__mnemonic_copy" />
+            </button>
+            <btn-password-visibility
+              :is-password-visible="isShowMnemonic"
+              @toggleVisibility="isShowMnemonic = $event"
+            />
+          </div>
         </div>
         <div class="wallet__confirm-phrase">
           <input
@@ -61,7 +55,7 @@
 
         <div class="wallet__action">
           <base-btn :disabled="!savedMnemonicValue">
-            {{ $t('meta.next') }}
+            {{ $t('meta.btns.next') }}
           </base-btn>
         </div>
       </form>
@@ -83,15 +77,37 @@
           :rules="`required|is:${confirmMnemonicData.first}`"
           :placeholder="$t('createWallet.typeSecret', { a: confirmMnemonicData.firstIndex })"
           :name="$t('createWallet.secret', { a: confirmMnemonicData.firstIndex })"
-          type="password"
-        />
+          :type="isConfirmMnemonicFirst?'text':'password'"
+          data-selector="FIRST_MNEMONIC"
+        >
+          <template
+            v-if="confirmMnemonic.first"
+            v-slot:right-absolute
+          >
+            <btn-password-visibility
+              :is-password-visible="isConfirmMnemonicFirst"
+              @toggleVisibility="isConfirmMnemonicFirst = $event"
+            />
+          </template>
+        </base-field>
         <base-field
           v-model="confirmMnemonic.second"
           :rules="`required|is:${confirmMnemonicData.second}`"
           :placeholder="$t('createWallet.typeSecret', { a: confirmMnemonicData.secondIndex })"
           :name="$t('createWallet.secret', { a: confirmMnemonicData.secondIndex })"
-          type="password"
-        />
+          :type="isConfirmMnemonicSecond?'text':'password'"
+          data-selector="SECOND_MNEMONIC"
+        >
+          <template
+            v-if="confirmMnemonic.second"
+            v-slot:right-absolute
+          >
+            <btn-password-visibility
+              :is-password-visible="isConfirmMnemonicSecond"
+              @toggleVisibility="isConfirmMnemonicSecond = $event"
+            />
+          </template>
+        </base-field>
         <div class="wallet__action">
           <base-btn :disabled="!valid || isLoading">
             <slot name="actionText">
@@ -140,22 +156,20 @@
           rules="required|mnemonic"
           :placeholder="$t('createWallet.typeSecretPhrase')"
           :name="$t('createWallet.secretPhrase')"
-          :type="inputType"
-        />
-        <div class="wallet__confirm-phrase">
-          <input
-            id="showMnemonicImport"
-            v-model="isShowMnemonic"
-            type="checkbox"
-            class="wallet__confirm-phrase_box"
+          :type="isShowMnemonic?'text':'password'"
+          data-selector="MNEMONIC"
+        >
+          <template
+            v-if="mnemonicInput"
+            v-slot:right-absolute
+            class="field__block"
           >
-          <label
-            for="showMnemonicImport"
-            class="wallet__confirm-phrase_label"
-          >
-            {{ $t('createWallet.showSecretPhrase') }}
-          </label>
-        </div>
+            <btn-password-visibility
+              :is-password-visible="isShowMnemonic"
+              @toggleVisibility="isShowMnemonic = $event"
+            />
+          </template>
+        </base-field>
         <div class="wallet__action">
           <base-btn :disabled="!valid || isLoading">
             <slot name="actionText">
@@ -185,6 +199,8 @@ export default {
   data() {
     return {
       isShowMnemonic: false,
+      isConfirmMnemonicFirst: false,
+      isConfirmMnemonicSecond: false,
       savedMnemonicValue: false,
       mnemonic: '',
       mnemonicInput: '',
@@ -198,7 +214,6 @@ export default {
         first: '',
         second: '',
       },
-      inputType: 'password',
     };
   },
   computed: {
@@ -215,9 +230,6 @@ export default {
         this.generate();
         this.mnemonicInput = '';
       }
-    },
-    isShowMnemonic(newVal) {
-      this.inputType = newVal ? 'text' : 'password';
     },
   },
   mounted() {
@@ -309,12 +321,12 @@ export default {
     grid-template-columns: 1fr;
   }
   &__action {
-    padding-top: 30px;
+    padding-top: 15px;
   }
   &__mnemonic {
     position: relative;
     padding: 10px 40px 10px 10px;
-    background: #F3F7FA;
+    background: $black0;
     border-radius: 6px;
     font-weight: 500;
     height: 50px;
@@ -323,15 +335,24 @@ export default {
       color: $black600;
     }
     &_copy {
-      position: absolute;
-      right: 10px;
-      top: 25%;
       height: 100%;
-      font-size: 28px;
+      font-size: 25px;
       cursor: pointer;
       &:hover::before {
         color: $blue;
       }
+    }
+    &_btns {
+      right: 10px;
+      top: 0;
+      height: 100%;
+      position: absolute;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    &_copy-btn {
+      padding-top: 4px
     }
   }
   &__phrase-input {
@@ -340,6 +361,9 @@ export default {
     height: 100%;
     padding: 0 12px;
     background: none;
+    &--icon{
+      padding-right: 35px;
+    }
   }
   &__confirm-phrase {
     display: flex;

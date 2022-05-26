@@ -34,12 +34,12 @@
           />
         </ValidationProvider>
         <div class="profile__personal-info">
-          <verified class="profile__status" />
+          <StatusKYC class="profile__status" />
           <base-field
             v-for="main in mainInputs"
             :key="main.index"
             v-model="profile[main.model]"
-            :data-selector="`PROFILE-FIELD-${main.index}`"
+            :data-selector="main.model"
             :rules="main.rules"
             :placeholder="$t(main.placeholder)"
             mode="icon"
@@ -55,11 +55,11 @@
             v-model="profile.locationFull.locationPlaceName"
             v-click-outside="hideSearchDD"
             :placeholder="$t('settings.addressInput')"
-            :data-selector="`PROFILE-FIELD-${$t('settings.address')}`"
+            data-selector="ADDRESS"
             rules="max:100|required"
             mode="icon"
             :selector="isSearchDDStatus"
-            :name="$t('settings.address')"
+            :name="$t('meta.addressSmall')"
             @focus="isSearchDDStatus = true"
             @blur="checkValidate"
             @selector="getAddressInfo(profile.locationFull.locationPlaceName)"
@@ -82,7 +82,7 @@
                     :key="i"
                     :data-selector="`ADDRESS-SELECTOR-ADDRESS-${i}`"
                     class="selector__item"
-                    @click="selectAddress(item, i)"
+                    @click="selectAddress(item)"
                   >
                     {{ item.formatted }}
                   </div>
@@ -155,7 +155,7 @@
             v-for="company in companyInputs"
             :key="company.index"
             v-model="profile.additionalInfo[company.model]"
-            :data-selector="`COMPANY-INPUT-${$t(company.name)}`"
+            :data-selector="company.model"
             :rules="company.rules"
             :placeholder="$t(company.placeholder)"
             mode="icon"
@@ -191,11 +191,11 @@
         class="profile__knowledge"
       >
         <div
-          :data-selector="`PROFILE-EDUCATION`"
+          data-selector="PROFILE-EDUCATION"
           class="profile__knowledge-container"
         >
           <div class="profile__knowledge-title">
-            {{ $t("settings.educations") }}
+            {{ $t("meta.educations") }}
           </div>
           <div
             v-if="getEducation"
@@ -206,7 +206,6 @@
               :key="education.id"
               :item="education"
               :is-adding="false"
-              :data-selector="`ACTION-BTN-DELETE-EDUCATION-${index}`"
               @click="deleteKnowledge(profile.additionalInfo.educations, index)"
             />
           </div>
@@ -265,13 +264,13 @@
       </div>
       <div
         class="profile__socials"
-        :data-selector="`SOCIALS`"
+        data-selector="SOCIALS"
       >
         <base-field
           v-for="social in socials"
           :key="social.index"
           v-model="profile.additionalInfo.socialNetwork[social.model]"
-          :data-selector="`SOCIALS-SOCIAL-${$t(social.name)}`"
+          :data-selector="social.model"
           :rules="social.rules"
           :placeholder="$t(social.placeholder)"
           mode="icon"
@@ -288,10 +287,10 @@
       >
         <base-btn
           class="profile__btn"
-          selector="SAVE-CHANGES"
+          data-selector="SAVE-CHANGES"
           @click="$emit('click')"
         >
-          {{ $t("settings.save") }}
+          {{ $t("meta.btns.save") }}
         </base-btn>
         <span v-if="validationError">
           {{ $t('messages.formError') }}
@@ -305,13 +304,13 @@
 import { GeoCode } from 'geo-coder';
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import Verified from '~/components/app/pages/settings/Verified.vue';
+import StatusKYC from './StatusKYC.vue';
 import AddForm from './AddForm.vue';
 import { UserRole } from '~/utils/enums';
 
 export default {
   name: 'SettingsProfile',
-  components: { Verified, AddForm },
+  components: { StatusKYC, AddForm },
   directives: {
     ClickOutside,
   },
@@ -351,25 +350,25 @@ export default {
       mainInputs: [
         {
           model: 'firstName',
-          rules: 'required||max:50',
+          rules: 'required||max:15||alpha_spaces_dash',
           placeholder: 'settings.nameInput',
-          name: 'settings.firstName',
+          name: 'meta.firstNameSmall',
           icon: 'icon-user',
           isDisabled: false,
         },
         {
           model: 'lastName',
-          rules: 'required||max:50',
+          rules: 'required||max:15||alpha_spaces_dash',
           placeholder: 'settings.lastNameInput',
-          name: 'settings.lastName',
+          name: 'meta.lastNameSmall',
           icon: 'icon-user',
           isDisabled: false,
         },
         {
           model: 'email',
-          name: 'placeholders.email',
+          name: 'meta.placeholders.email',
           rules: 'max:100||email',
-          placeholder: 'placeholders.mail',
+          placeholder: 'meta.placeholders.mail',
           icon: 'icon-mail',
           isDisabled: true,
         },
@@ -508,32 +507,19 @@ export default {
     },
 
     // GEOPOSITION METHODS
-    selectAddress(address, i) {
-      this.selectedAddressIndex = i;
+    selectAddress(address) {
       this.profile.locationFull.locationPlaceName = address.formatted;
       this.addresses = [];
-      this.$emit('updateCoordinates', this.coordinates);
+      this.$emit('updateFullAddress', address);
     },
-    async getAddressInfo(address) {
+    async getAddressInfo(keyword) {
       try {
-        if (address.length) {
-          this.addresses = await this.geoCode.geolookup(address);
-          if (this.selectedAddressIndex) {
-            this.coordinates = {
-              lng: this.addresses[this.selectedAddressIndex].lng,
-              lat: this.addresses[this.selectedAddressIndex].lat,
-              address: this.addresses[this.selectedAddressIndex].formatted,
-            };
-          } else {
-            this.coordinates = { lng: this.addresses[0].lng, lat: this.addresses[0].lat, address: this.addresses[0].formatted };
-          }
+        if (keyword.length) {
+          this.addresses = await this.geoCode.geolookup(keyword);
         } else this.addresses = [];
       } catch (e) {
         this.addresses = [];
         console.error('Geo look up is failed', e);
-        await this.$store.dispatch('main/showToast', {
-          text: 'Address is not correct',
-        });
       }
     },
     hideSearchDD() {
@@ -626,15 +612,6 @@ export default {
   &__status {
     grid-column-start: 1;
     grid-column-end: 3;
-    max-width: 159px;
-    padding: 8px 13px;
-    display: flex;
-    background: $blue;
-    color: $white;
-    border-radius: 36px;
-    max-height: 34px;
-    justify-content: center;
-    align-items: center;
     margin-bottom: 10px;
   }
   &__row-data {
@@ -670,7 +647,7 @@ export default {
     }
   }
   &__error {
-    color: #bb5151;
+    color: $errorText;
     font-size: 12px;
     min-height: 23px;
   }
@@ -688,7 +665,7 @@ export default {
     justify-content: flex-end;
     align-items: flex-end;
     span {
-      color: #bb5151;
+      color: $errorText;
       font-size: 14px;
       min-height: 23px;
       width: 250px;
@@ -699,12 +676,29 @@ export default {
     max-width: 250px;
   }
   .selector {
+    @include box;
+    width: 100%;
+    z-index: 140;
     &__items {
-      padding: 10px;
-      background-color: $black0;
-      border-radius: 5px;
-      border: 1px solid $blue;
+      background: #FFFFFF;
+      display: grid;
+      grid-template-columns: 1fr;
+      width: 100%;
+    }
+
+    &__item {
+      @include text-simple;
+      padding: 15px 20px;
+      background: #FFFFFF;
+      font-weight: 500;
+      font-size: 16px;
+      color: $black800;
       cursor: pointer;
+      transition: .3s;
+
+      &:hover {
+        background: $black0;
+      }
     }
   }
 }

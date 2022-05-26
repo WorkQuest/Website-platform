@@ -29,6 +29,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import loaderModes from '~/store/main/loaderModes';
+import { Path, TokenSymbols } from '~/utils/enums';
 
 export default {
   props: {
@@ -51,10 +52,10 @@ export default {
   methods: {
     checkPage() {
       return [
-        '/mining/BNB', '/mining/ETH',
-        '/crosschain',
-        '/staking', '/staking/WQT', '/staking/WUSD',
-        '/pension', '/pension/my',
+        `${Path.MINING}/${TokenSymbols.BNB}`, `${Path.MINING}/${TokenSymbols.ETH}`,
+        Path.BRIDGE,
+        Path.STAKING, `${Path.STAKING}/${TokenSymbols.WQT}`, `${Path.STAKING}/${TokenSymbols.WUSD}`,
+        Path.RETIREMENT, `${Path.RETIREMENT}/my`,
       ].includes(this.$route.path);
     },
   },
@@ -74,14 +75,17 @@ export default {
   align-items: center;
   justify-content: center;
   display: flex;
+
   &_hider {
-    background: #F7F8FA;
+    background: $black0;
   }
+
   &__body {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
+
   &__modal {
     width: 200px;
     position: relative;
@@ -94,6 +98,7 @@ export default {
     align-items: center;
     justify-content: center;
   }
+
   &__text {
     font-family: 'Inter', sans-serif;
     font-size: 23px;
@@ -135,33 +140,73 @@ export default {
   animation: sk-chase-dot-before 2.0s infinite ease-in-out both;
 }
 
-.sk-chase-dot:nth-child(1) { animation-delay: -1.1s; }
-.sk-chase-dot:nth-child(2) { animation-delay: -1.0s; }
-.sk-chase-dot:nth-child(3) { animation-delay: -0.9s; }
-.sk-chase-dot:nth-child(4) { animation-delay: -0.8s; }
-.sk-chase-dot:nth-child(5) { animation-delay: -0.7s; }
-.sk-chase-dot:nth-child(6) { animation-delay: -0.6s; }
-.sk-chase-dot:nth-child(1):before { animation-delay: -1.1s; }
-.sk-chase-dot:nth-child(2):before { animation-delay: -1.0s; }
-.sk-chase-dot:nth-child(3):before { animation-delay: -0.9s; }
-.sk-chase-dot:nth-child(4):before { animation-delay: -0.8s; }
-.sk-chase-dot:nth-child(5):before { animation-delay: -0.7s; }
-.sk-chase-dot:nth-child(6):before { animation-delay: -0.6s; }
+.sk-chase-dot:nth-child(1) {
+  animation-delay: -1.1s;
+}
+
+.sk-chase-dot:nth-child(2) {
+  animation-delay: -1.0s;
+}
+
+.sk-chase-dot:nth-child(3) {
+  animation-delay: -0.9s;
+}
+
+.sk-chase-dot:nth-child(4) {
+  animation-delay: -0.8s;
+}
+
+.sk-chase-dot:nth-child(5) {
+  animation-delay: -0.7s;
+}
+
+.sk-chase-dot:nth-child(6) {
+  animation-delay: -0.6s;
+}
+
+.sk-chase-dot:nth-child(1):before {
+  animation-delay: -1.1s;
+}
+
+.sk-chase-dot:nth-child(2):before {
+  animation-delay: -1.0s;
+}
+
+.sk-chase-dot:nth-child(3):before {
+  animation-delay: -0.9s;
+}
+
+.sk-chase-dot:nth-child(4):before {
+  animation-delay: -0.8s;
+}
+
+.sk-chase-dot:nth-child(5):before {
+  animation-delay: -0.7s;
+}
+
+.sk-chase-dot:nth-child(6):before {
+  animation-delay: -0.6s;
+}
 
 @keyframes sk-chase {
-  100% { transform: rotate(360deg); }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes sk-chase-dot {
-  80%, 100% { transform: rotate(360deg); }
+  80%, 100% {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes sk-chase-dot-before {
   50% {
     transform: scale(0.4);
-  } 100%, 0% {
-      transform: scale(1.0);
-    }
+  }
+  100%, 0% {
+    transform: scale(1.0);
+  }
 }
 
 </style>

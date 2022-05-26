@@ -27,17 +27,15 @@
               <base-btn
                 class="portfolio__close"
                 mode="portfolioClose"
-                :selector="`DELETE-PORTFOLIO-CASE-${i}`"
+                :data-selector="`DELETE-PORTFOLIO-CASE-${i}`"
                 @click="showDeleteCaseModal(item.id)"
               >
-                <span
-                  class="icon-close_big"
-                />
+                <span class="icon-close_big" />
               </base-btn>
               <base-btn
                 class="portfolio__edit"
                 mode="portfolioEdit"
-                :selector="`EDIT-PORTFOLIO-CASE-${i}`"
+                :data-selector="`EDIT-PORTFOLIO-CASE-${i}`"
                 @click="showEditCaseModal(item)"
               >
                 <span class="icon-edit" />
@@ -196,9 +194,10 @@ export default {
     border-radius: 6px;
     cursor: pointer;
     position: relative;
-    transition: 0.3s;
+    transition: .5s;
+    border: 1px solid $white;
     &:hover {
-      box-shadow: 0 0 10px 2px rgba(34, 60, 80, 0.3);
+      border: 1px solid $black100;
     }
   }
   &__items {
@@ -209,7 +208,7 @@ export default {
   &__image {
     height: 350px;
     width: 100%;
-    border-radius: 6px;
+    border-radius: 8px;
     object-fit: cover;
   }
   &__footer {

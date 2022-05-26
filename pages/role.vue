@@ -5,11 +5,11 @@
       :class="{role_hidden: step !== walletState.Default}"
     >
       <div
-        v-if="step === walletState.ImportOrCreate || step === walletState.Default"
+        v-if="step === walletState.Default"
         class="role__back"
         @click="toSign"
       >
-        <span class="icon-chevron_big_left" /><span>{{ $t('meta.back') }}</span>
+        <span class="icon-chevron_big_left" /><span>{{ $t('meta.btns.back') }}</span>
       </div>
       <div class="role__title">
         {{ $t('role.choose') }}
@@ -90,11 +90,11 @@
       class="wallet-step"
     >
       <div
-        v-if="step !== walletState.ImportOrCreate || step === walletState.Default"
+        v-if="step !== walletState.ImportOrCreate && step !== walletState.Default"
         class="wallet-step__back"
-        @click="goStep(step - 1)"
+        @click="stepBack"
       >
-        <span class="icon-chevron_big_left" /><span>{{ $t('meta.back') }}</span>
+        <span class="icon-chevron_big_left" /><span>{{ $t('meta.btns.back') }}</span>
       </div>
       <CreateWallet
         :step="step"
@@ -153,21 +153,15 @@ export default {
     window.addEventListener('beforeunload', this.clearCookies);
   },
   async beforeMount() {
-    const access = this.$cookies.get('access');
-    const refresh = this.$cookies.get('refresh');
     const userStatus = this.$cookies.get('userStatus');
-    if (!access || !refresh || !userStatus) {
-      await this.$router.push(Path.SIGN_IN);
-      return;
-    }
-    if (!this.userData.id) await this.$store.dispatch('user/getUserData');
+    if (!this.userData.id && +userStatus === UserStatuses.Confirmed) await this.$store.dispatch('user/getUserData');
     if (this.userData.wallet?.address && userStatus === UserStatuses.Confirmed) {
       this.isWalletAssigned = true;
       this.isClearOnDestroy = false;
       await this.redirectUser();
       return;
     }
-    if (userStatus === UserStatuses.Confirmed && !this.userData?.wallet?.address) {
+    if (+userStatus === UserStatuses.Confirmed && !this.userData?.wallet?.address) {
       this.step = WalletState.ImportOrCreate;
       if (getCipherKey() == null && !this.isLoginWithSocialNetwork) {
         this.isClearOnDestroy = false;
@@ -183,11 +177,11 @@ export default {
     right.addEventListener('mouseleave', () => left.classList.remove('role__card_minimized'));
   },
   beforeDestroy() {
-    if (!this.isClearOnDestroy && this.isWalletAssigned) return;
-    this.$store.dispatch('user/logout');
+    if (!this.isClearOnDestroy || this.isWalletAssigned) return;
+    this.$store.dispatch('user/logout', false);
   },
   methods: {
-    clearCookies(event) {
+    clearCookies() {
       this.$cookies.remove('access');
       this.$cookies.remove('refresh');
       this.$cookies.remove('userLogin');
@@ -197,14 +191,17 @@ export default {
       this.$store.dispatch('user/logout');
       this.$router.push(Path.SIGN_IN);
     },
-    goStep(step) {
-      if (this.step === WalletState.ImportMnemonic) this.step = WalletState.ImportOrCreate;
-      else if (this.step === WalletState.SaveMnemonic) this.step = WalletState.ImportOrCreate;
-      else this.step = step;
+    goStep(nextStep) {
+      this.step = nextStep;
+    },
+    stepBack() {
+      if (this.step === WalletState.ImportMnemonic || this.step === WalletState.SaveMnemonic) this.step = WalletState.ImportOrCreate;
+      else this.step -= 1;
     },
     showPrivacy(role) {
       this.ShowModal({
         key: modals.privacy,
+        isSocialNetwork: this.isLoginWithSocialNetwork,
         callback: () => this.goToAssignWallet(),
         role,
       });
@@ -215,6 +212,7 @@ export default {
     },
     async redirectUser() {
       await this.$store.dispatch('user/getUserData');
+      window.removeEventListener('beforeunload', this.clearCookies);
       if (this.userData.role === UserRole.EMPLOYER) await this.$router.push(Path.WORKERS);
       else if (this.userData.role === UserRole.WORKER) await this.$router.push(Path.QUESTS);
     },
@@ -225,8 +223,8 @@ export default {
         address: wallet.address.toLowerCase(),
         publicKey: wallet.publicKey,
       });
-      this.SetLoader(false);
       if (!res.ok) {
+        this.SetLoader(false);
         if (res.msg.includes('Wallet already exists')) {
           return;
         }

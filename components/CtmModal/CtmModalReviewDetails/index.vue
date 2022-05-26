@@ -1,6 +1,6 @@
 <template>
   <ctm-modal-box
-    :title="$t('modals.review')"
+    :title="$tc('modals.titles.review')"
   >
     <div class="ctm-modal__content content">
       <div class="content__review review">
@@ -56,7 +56,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalReviewDetails',
@@ -74,20 +73,11 @@ export default {
         { rating__star_half: (a >= 0.3 && a <= 0.7) },
       ];
     },
-    hide() {
-      this.CloseModal();
-    },
     success() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/success.svg'),
-        title: this.$t('modals.success'),
-        subtitle: this.$t('modals.SMSVerConnected'),
-      });
+      this.ShowModalSuccess({ title: this.$t('meta.success'), subtitle: this.$t('modals.SMSVerConnected') });
     },
     nextStep() {
-      // eslint-disable-next-line no-plusplus
-      this.step++;
+      this.step += 1;
     },
   },
 };
@@ -111,8 +101,10 @@ export default {
   font-size: 12px;
   color: $black600;
   &__img {
-    width: 50px;
+    max-width: 50px;
+    max-height: 50px;
     height: 50px;
+    width: 50px;
     border-radius: 50%;
     object-fit: cover;
   }
@@ -127,6 +119,10 @@ export default {
     font-weight: 500;
     font-size: 20px;
     color: $black800;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+    white-space: nowrap;
   }
   &__title {
     @include text-simple;
@@ -137,6 +133,9 @@ export default {
   }
   &__avatar {
     margin-right: 15px;
+  }
+  &__text {
+    width: 200px;
   }
 }
 
@@ -224,6 +223,29 @@ export default {
       margin: 0 0 0 10px;
       font-weight: 400;
       color: #7C838D;
+    }
+  }
+}
+@include _575() {
+  .review {
+    &__user-data {
+      display: grid;
+      grid-template-columns: 50px 280px;
+    }
+    &__header {
+      flex-direction: column;
+    }
+  }
+  .user-data {
+    &__name, &__text {
+      width: 100%;
+    }
+  }
+}
+@include _380() {
+  .review {
+    &__user-data {
+      grid-template-columns: 50px 200px;
     }
   }
 }

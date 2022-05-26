@@ -1,19 +1,16 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.addCard')"
+    :title="$tc('modals.titles.cardAdd')"
   >
     <div class="ctm-modal__content">
-      <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
-      >
-        <div
-          class="ctm-modal__content-field"
-        >
+      <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
+        <div class="ctm-modal__content-field">
           <base-field
             v-model="cardNumberInput"
-            :placeholder="'0000 0000 0000 0000'"
-            :label="$t('modals.numberOfCard')"
+            placeholder="0000 0000 0000 0000"
+            :label="$tc('modals.numberOfCard')"
+            data-selector="CARD-NUMBER"
             rules="required|numberOfCard"
             name="Card number"
           />
@@ -22,7 +19,8 @@
           <base-field
             v-model="nameInput"
             placeholder="John Doe"
-            :label="$t('modals.cardholderName')"
+            :label="$tc('modals.cardholderName')"
+            data-selector="CARDHOLDER-NAME"
             name="cardholder name"
             rules="required|alpha_spaces"
           />
@@ -31,8 +29,9 @@
           <div class="ctm-modal__content-field">
             <base-field
               v-model="dateInput"
-              :placeholder="'02/24'"
-              :label="$t('modals.expirationDate')"
+              placeholder="02/24"
+              data-selector="CARD-DATE"
+              :label="$tc('modals.expirationDate')"
               name="date"
               rules="required"
             />
@@ -41,7 +40,8 @@
             <base-field
               v-model="cvvInput"
               placeholder="242"
-              :label="$t('modals.cvv')"
+              data-selector="CARD-CVV"
+              :label="$tc('modals.cvv')"
               rules="required|cvv"
               name="CVV"
             />
@@ -51,21 +51,21 @@
           <div class="btn__wrapper">
             <base-btn
               class="message__action"
-              selector="CONFIRM"
+              data-selector="CONFIRM"
               :disabled="!validated || !passed || invalid"
               @click="handleSubmit(showCardHasBeenAddedModal)"
             >
-              {{ $t('meta.confirm') }}
+              {{ $t('meta.btns.confirm') }}
             </base-btn>
           </div>
           <div class="btn__wrapper">
             <base-btn
               mode="outline"
-              selector="CANCEL"
+              data-selector="CANCEL"
               class="message__action"
-              @click="hide()"
+              @click="CloseModal"
             >
-              {{ $t('meta.cancel') }}
+              {{ $t('meta.btns.cancel') }}
             </base-btn>
           </div>
         </div>
@@ -77,6 +77,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { images } from '~/utils/images';
 
 export default {
   name: 'ModalAddCard',
@@ -94,12 +95,12 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     showCardHasBeenAddedModal() {
       this.ShowModal({
-        key: modals.cardHasBeenAdded,
+        key: modals.status,
+        img: images.CARD_ADDED,
+        title: this.$t('modals.cardHasBeenAdded'),
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
       });
     },
   },

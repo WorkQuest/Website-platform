@@ -8,6 +8,8 @@
         class="absence__img"
         src="~/assets/img/temp/smile_sad.svg"
         alt="empty-icon"
+        width="110"
+        height="110"
       >
       <div
         v-if="description !== ''"
@@ -18,8 +20,8 @@
       <base-btn
         v-if="link !== ''"
         class="absence__button"
-        selector="CREATE-QUEST"
-        @click="toCreateQuest"
+        data-selector="CREATE-QUEST"
+        @click="toLink"
       >
         {{ btnText }}
       </base-btn>
@@ -45,7 +47,7 @@ export default {
     },
   },
   methods: {
-    toCreateQuest() {
+    toLink() {
       this.$router.push(this.link);
     },
   },

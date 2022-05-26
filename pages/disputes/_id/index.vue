@@ -11,10 +11,12 @@
           @click="backToDisputes()"
         >
           <span class="icon-chevron_big_left" />
-          <span class="dispute__back_text">{{ $t('disputes.Dispute') }}</span>
+          <span class="dispute__back_text">
+            {{ $t('meta.dispute') }}
+          </span>
         </div>
         <div class="dispute__number">
-          {{ `№ ${disputeData.disputeNumber}` }}
+          {{ `№ ${disputeData.number}` }}
         </div>
         <div class="dispute__status">
           {{ disputeStatus }}
@@ -52,20 +54,18 @@ import { DisputeStatues, InfoModeWorker } from '~/utils/enums';
 
 export default {
   name: 'Index',
-  data() {
-    return {
-      disputeId: this.$route.params.id,
-    };
-  },
   computed: {
     ...mapGetters({
       disputeData: 'disputes/getDispute',
     }),
+    disputeId() {
+      return this.$route.params.id;
+    },
     disputeStatus() {
       const obj = {
         [DisputeStatues.PENDING]: this.$t('disputes.pending'),
         [DisputeStatues.IN_PROGRESS]: this.$t('disputes.inProgress'),
-        [DisputeStatues.COMPLETED]: this.$t('disputes.completed'),
+        [DisputeStatues.COMPLETED]: this.$t('meta.completed'),
       };
       return obj[this.disputeData.status];
     },

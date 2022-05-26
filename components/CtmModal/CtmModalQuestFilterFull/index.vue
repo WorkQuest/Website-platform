@@ -1,6 +1,6 @@
 <template>
   <ctm-modal-box
-    :title="$t('filters.titleAll')"
+    :title="$t('modals.titles.filters.titleAll')"
     class="filter"
   >
     <div class="filter__container">
@@ -45,7 +45,9 @@
                   <label
                     :for="specIdx"
                     class="sub__label"
-                  >{{ $t('filters.commonSub.selectAll') }}</label>
+                  >
+                    {{ $t('filters.commonSub.selectAll') }}
+                  </label>
                 </div>
                 <div
                   v-for="(sub, skillIdx) in item.items"
@@ -68,7 +70,9 @@
                     <label
                       :for="sub.id"
                       class="sub__label"
-                    >{{ sub.title }}</label>
+                    >
+                      {{ sub.title }}
+                    </label>
                   </div>
                 </div>
               </div>
@@ -79,16 +83,16 @@
       <div class="filter__btns">
         <base-btn
           mode="outline"
-          selector="CLEAN-UP"
+          data-selector="CLEAN-UP"
           @click="cleanUp()"
         >
           {{ $t('meta.cleanUp') }}
         </base-btn>
         <base-btn
-          selector="APPLY"
+          data-selector="APPLY"
           @click="handleSubmit"
         >
-          {{ $t('meta.apply') }}
+          {{ $t('meta.btns.apply') }}
         </base-btn>
       </div>
     </div>
@@ -120,7 +124,7 @@ export default {
       for (let i = 0; i < specsKeys.length; i += 1) {
         const spec = this.filters[specsKeys[i]];
         f[i] = {
-          title: this.$t(`filters.items.${spec.id}.title`),
+          title: this.$t(`filters.skills.${spec.id}.title`),
           index: spec.id,
           items: {},
         };
@@ -129,7 +133,7 @@ export default {
           const index = spec.skills[skillsKeys[j]];
           f[i].items[j] = {
             index,
-            title: this.$t(`filters.items.${spec.id}.sub.${index}`),
+            title: this.$t(`filters.skills.${spec.id}.sub.${index}`),
           };
         }
       }
@@ -144,9 +148,6 @@ export default {
     if (!this.filters) await this.$store.dispatch('quests/getFilters');
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     handleSubmit() {
       const queryKeys = Object.keys(this.selected);
       const query = [];
@@ -163,7 +164,7 @@ export default {
         visible: this.visible,
       };
       this.$store.dispatch('quests/setSelectedSpecializationsFilters', data);
-      this.hide();
+      this.CloseModal();
     },
     getPath(specIdx, skillIdx) {
       return `${this.searchFilters[specIdx].index}.${this.searchFilters[specIdx].items[skillIdx].index}`;

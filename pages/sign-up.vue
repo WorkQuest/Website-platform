@@ -6,7 +6,7 @@
       class="auth__container"
     >
       <div class="auth__text auth__text_title">
-        <span>{{ $t('signUp.title') }}</span>
+        <span>{{ $t('meta.signUp') }}</span>
       </div>
       <div class="auth__text auth__text_simple">
         <span>{{ $t('signUp.haveAccount') }}</span>
@@ -20,15 +20,16 @@
       <form
         class="auth__fields"
         action=""
-        @submit.prevent="signUp"
+        @submit.prevent="handleSubmit(signUp)"
       >
         <base-field
           v-model="model.firstName"
-          :placeholder="$t('signUp.firstName')"
-          :mode="'icon'"
+          mode="icon"
+          :name="$t('meta.firstNameBig')"
+          :placeholder="$t('meta.firstNameBig')"
+          rules="required_if|alpha_spaces_dash|max:15"
           autocomplete="off"
-          :name="$t('signUp.firstName')"
-          rules="required_if|alpha_spaces"
+          data-selector="FIRST_NAME"
         >
           <template v-slot:left>
             <img
@@ -39,10 +40,11 @@
         </base-field>
         <base-field
           v-model="model.lastName"
-          :placeholder="$t('signUp.lastName')"
-          :mode="'icon'"
-          :name="$t('signUp.lastName')"
-          rules="required_if|alpha_spaces"
+          mode="icon"
+          :name="$t('meta.lastNameBig')"
+          :placeholder="$t('meta.lastNameBig')"
+          rules="required_if|alpha_spaces_dash|max:15"
+          data-selector="LAST_NAME"
         >
           <template v-slot:left>
             <img
@@ -53,11 +55,12 @@
         </base-field>
         <base-field
           v-model="model.email"
-          rules="required|email"
+          mode="icon"
           :name="$t('signUp.email')"
           :placeholder="$t('signUp.email')"
-          :mode="'icon'"
+          rules="required|email"
           autocomplete="username"
+          data-selector="EMAIL"
         >
           <template v-slot:left>
             <img
@@ -68,28 +71,40 @@
         </base-field>
         <base-field
           v-model="model.password"
-          :placeholder="$t('signUp.password')"
-          :mode="'icon'"
+          mode="icon"
           :name="$t('signUp.password')"
-          autocomplete="current-password"
+          :placeholder="$t('signUp.password')"
           rules="required_if|min:8"
-          type="password"
+          autocomplete="current-password"
+          :type="isPasswordVisible?'text':'password'"
           vid="confirmation"
+          data-selector="PASSWORD"
         >
           <template v-slot:left>
             <img
               src="~assets/img/icons/password.svg"
               alt=""
             >
+          </template>
+          <template
+            v-if="model.password"
+            v-slot:right-absolute
+            class="field__block"
+          >
+            <btn-password-visibility
+              :is-password-visible="isPasswordVisible"
+              @toggleVisibility="isPasswordVisible = $event"
+            />
           </template>
         </base-field>
         <base-field
           v-model="model.passwordConfirm"
-          :placeholder="$t('signUp.confirmPassword')"
-          :mode="'icon'"
-          type="password"
+          mode="icon"
           :name="$t('signUp.confirmPassword')"
+          :placeholder="$t('signUp.confirmPassword')"
           rules="required_if|min:8|confirmed:confirmation"
+          :type="isPasswordConfirmVisible?'text':'password'"
+          data-selector="CONFIRM_PASSWORD"
         >
           <template v-slot:left>
             <img
@@ -97,9 +112,22 @@
               alt=""
             >
           </template>
+          <template
+            v-if="model.passwordConfirm"
+            v-slot:right-absolute
+            class="field__block"
+          >
+            <btn-password-visibility
+              :is-password-visible="isPasswordConfirmVisible"
+              @toggleVisibility="isPasswordConfirmVisible = $event"
+            />
+          </template>
         </base-field>
         <div class="auth__action">
-          <base-btn :disabled="!valid || isLoading">
+          <base-btn
+            :disabled="!valid || isLoading"
+            data-selector="CREATE"
+          >
             {{ $t('signUp.create') }}
           </base-btn>
         </div>
@@ -126,6 +154,8 @@ export default {
         password: '',
         passwordConfirm: '',
       },
+      isPasswordVisible: false,
+      isPasswordConfirmVisible: false,
     };
   },
   computed: {
@@ -139,11 +169,13 @@ export default {
       this.model.email = this.model.email.trim();
       this.model.firstName = this.model.firstName.trim();
       this.model.lastName = this.model.lastName.trim();
+      const referralId = sessionStorage.getItem('referralId');
       const payload = {
         firstName: this.model.firstName,
         lastName: this.model.lastName,
         email: this.model.email,
         password: this.model.password,
+        ...referralId && { referralId },
       };
       const response = await this.$store.dispatch('user/signUp', payload);
       if (response.ok) {

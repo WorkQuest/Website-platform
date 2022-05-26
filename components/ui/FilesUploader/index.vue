@@ -111,15 +111,15 @@ export default {
       acceptedTypes: [],
     };
   },
-  mounted() {
+  async created() {
     this.acceptedTypes = this.accept.replace(/\s/g, '').split(',');
     // eslint-disable-next-line no-restricted-syntax
     for (const file of this.preloadedFiles) {
       this.files.push({
         id: this.id,
-        mediaId: file.id,
-        src: file.url,
-        type: file.contentType.split('/')[0],
+        mediaId: file?.id,
+        src: file?.url,
+        type: file?.contentType.split('/')[0],
       });
       this.id += 1;
     }
@@ -127,9 +127,7 @@ export default {
   },
   methods: {
     uploaderStyles() {
-      return [
-        { uploader__preview: !this.files.length },
-      ];
+      return [{ uploader__preview: !this.files.length }];
     },
     openExplorer() {
       this.$refs.input.click();
@@ -172,28 +170,22 @@ export default {
         if (type === 'image' && this.limitBytes && file.size >= this.limitBytes) {
           const kb = Math.ceil(this.limitBytes / 1024);
           const mb = Math.ceil(this.limitBytes / 1024 / 1024);
-          if (mb >= 1) {
-            this.showError(this.$t('uploader.errors.fileSizeLimit', { n: mb }) + this.$t('uploader.mb'));
-          } else {
-            this.showError(this.$t('uploader.errors.fileSizeLimit', { n: kb }) + this.$t('uploader.kb'));
-          }
+          if (mb >= 1) this.showError(this.$t('uploader.errors.fileSizeLimit'), this.$tc('meta.units.mb', { count: mb }));
+          else this.showError(this.$t('uploader.errors.fileSizeLimit'), this.$tc('meta.units.kb', { count: kb }));
           // eslint-disable-next-line no-continue
           continue;
         }
         if (type === 'video' && this.limitBytesVideo && file.size >= this.limitBytesVideo) {
           const kb = Math.ceil(this.limitBytesVideo / 1024);
           const mb = Math.ceil(this.limitBytesVideo / 1024 / 1024);
-          if (mb >= 1) {
-            this.showError(this.$t('uploader.errors.fileSizeLimit', { n: mb }) + this.$t('uploader.mb'));
-          } else {
-            this.showError(this.$t('uploader.errors.fileSizeLimit', { n: kb }) + this.$t('uploader.kb'));
-          }
+          if (mb >= 1) this.showError(this.$t('uploader.errors.fileSizeLimit'), this.$tc('meta.units.mb', { count: mb }));
+          else this.showError(this.$t('uploader.errors.fileSizeLimit'), this.$tc('meta.units.kb', { count: kb }));
           // eslint-disable-next-line no-continue
           continue;
         }
-        if (!this.acceptDuplicates && this.files.filter((item) => !item.mediaId && item.file.size === file.size
-          && item.file.lastModified === file.lastModified
-          && item.file.name === file.name).length) {
+        if (!this.acceptDuplicates && this.files?.filter((item) => !item.mediaId && item.file?.size === file?.size
+          && item.file?.lastModified === file?.lastModified
+          && item.file?.name === file?.name).length) {
           // eslint-disable-next-line no-continue
           continue;
         }
@@ -333,7 +325,9 @@ export default {
   border-radius: 6px;
   cursor: auto;
 }
-
+.icon-add_to_queue {
+  color: $blue;
+}
 @include _575 {
   .file {
     width: 70vw;

@@ -11,7 +11,7 @@
     >
       <template v-if="notificationsCount">
         <img
-          v-if="unreadNotifsCount"
+          v-if="unreadNotifsCount > 0"
           src="~assets/img/ui/notification_outline_red_dot.svg"
           alt=""
         >
@@ -43,37 +43,41 @@
         <template v-if="notificationsCount">
           <div class="reduced-notifications__list">
             <div
-              v-for="notification in notifications"
+              v-for="(notification) in notifications"
               :key="notification.id"
               :data-selector="`NOTIFICATION-BUTTONS-NOTIFICATION-${notification.id}`"
               class="notify notify__content"
             >
               <div class="notify__top">
                 <div
-                  v-if="notification.sender"
+                  v-if="notification.params"
                   class="notify__user"
                 >
                   <img
                     class="notify__avatar"
-                    :src="notification.sender.avatar && notification.sender.avatar.url ? notification.sender.avatar.url : EmptyAvatar()"
+                    :src="avatar(notification)"
                     alt="avatar"
                   >
-                  <div class="notify__info">
-                    <div class="notify__text notify__text_name">
+                  <div
+                    v-if="notification.sender"
+                    class="notify__info"
+                  >
+                    <a
+                      :href="`/profile/${senderId(notification)}`"
+                      class="notify__text notify__text_name"
+                    >
                       {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
-                    </div>
-                    <!--                  <div class="notify__text notify__text_grey">-->
-                    <!--                    CEO from Amazon-->
-                    <!--                  </div>-->
+                    </a>
                   </div>
                 </div>
                 <div class="notify__text notify__text_date">
-                  {{ notification.creatingDate }}
+                  {{ $moment(notification.createdAt).format('Do MMMM YYYY, hh:mm a') }}
                 </div>
               </div>
               <div class="notify__reason">
                 <div class="notify__text notify__text_blue">
-                  {{ $t(notification.actionNameKey) }}:
+                  {{ notification.params && notification.params.isLocal
+                    ? notification.data.message : $t(notification.actionNameKey) }}
                 </div>
               </div>
               <div class="notify__action">
@@ -82,7 +86,11 @@
                   @click="goToEvent(notification.params ? notification.params.path : '')"
                 >
                   <div class="notify__text notify__text_btn">
-                    {{ notification.params ? notification.params.title : '' }}
+                    {{
+                      notification.params && notification.params.isLocal
+                        ? notification.data.message
+                        : $t(notification.actionNameKey)
+                    }}
                   </div>
                   <span class="icon icon-chevron_right" />
                 </base-btn>
@@ -95,13 +103,13 @@
             data-selector="ACTION-BTN-GO-TO-NOTIFICATION-PAGE"
             @click="goToNotifsPage"
           >
-            {{ $t('meta.showAll') }}
+            {{ $t('meta.btns.showAll') }}
           </base-btn>
         </template>
         <empty-data
           v-else
           class="reduced-notifications__no-content"
-          :description="$t('ui.notifications.noNotifications')"
+          :description="$tc('ui.notifications.noNotifications')"
         />
       </div>
     </transition>
@@ -111,6 +119,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
+import { images } from '~/utils/images';
 
 export default {
   name: 'NotificationsButtonContainer',
@@ -124,12 +133,21 @@ export default {
   },
   computed: {
     ...mapGetters({
-      unreadNotifsCount: 'user/getUnreadNotifsCount',
-      notifications: 'user/getReducedNotifications',
-      notificationsCount: 'user/getNotificationsCount',
+      unreadNotifsCount: 'notifications/getUnreadNotifsCount',
+      notifications: 'notifications/getReducedNotifications',
+      notificationsCount: 'notifications/getNotificationsCount',
     }),
   },
+  async beforeMount() {
+    await this.$store.dispatch('notifications/getNotifications');
+  },
   methods: {
+    senderId(notification) {
+      return notification.sender?.id || '';
+    },
+    avatar(notification) {
+      return notification.sender?.avatar?.url || images.EMPTY_AVATAR;
+    },
     goToNotifsPage() {
       this.closePopUp();
       this.$router.push('/notifications');
@@ -139,7 +157,6 @@ export default {
         this.goToNotifsPage();
         return;
       }
-
       this.isShowNotify = !this.isShowNotify;
       this.$emit('closeAnotherPopUp');
     },
@@ -241,7 +258,7 @@ export default {
 
   &__content {
     padding: 20px 20px 0;
-    border-top: 1px solid #F7F8FA;
+    border-top: 1px solid $black0;
     display: grid;
     gap: 12px;
   }
@@ -249,7 +266,7 @@ export default {
   &__btn {
     display: grid;
     grid-template-columns: 1fr max-content;
-    background: #F7F8FA;
+    background: $black0;
     border-radius: 3px;
     height: 44px;
     align-items: center;
@@ -267,10 +284,19 @@ export default {
     &_date {
       font-size: 12px;
       color: $black300;
+      flex-shrink: 0;
     }
     &_name {
       font-size: 16px;
       color: $black800;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      margin-right: 5px;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
     }
     &_grey {
       font-size: 12px;

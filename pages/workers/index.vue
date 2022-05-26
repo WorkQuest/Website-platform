@@ -12,7 +12,7 @@
       <h2 class="employees__title">
         {{ $t('workers.topWorkers') }}
       </h2>
-      <filters-panel
+      <panel-filters
         class="employees__filters"
         @sortSpec="sortBySpec"
         @sortTime="sortByTime"
@@ -20,12 +20,13 @@
         @sortRating="sortByRating"
         @sortPriority="sortByPriority"
         @sortWorkplace="sortByWorkplace"
+        @sortPayPeriod="sortPayPeriod"
       />
       <div
         v-if="employeeCount"
         class="employees__cards"
       >
-        <employee-card
+        <card-employee
           v-for="(user,id) in employeeList"
           :key="id"
           :data-selector="`TO-WORKER-PROFILE-${user.id}`"
@@ -75,10 +76,14 @@ export default {
       employeeList: 'quests/getEmployeeList',
       employeeCount: 'quests/getEmployeeCount',
     }),
-    totalPages() { return Math.ceil(this.employeeCount / this.query.limit); },
+    totalPages() {
+      return Math.ceil(this.employeeCount / this.query.limit);
+    },
   },
   watch: {
-    async isShowMap() { await this.fetchEmployeeList(true); },
+    async isShowMap() {
+      await this.fetchEmployeeList(true);
+    },
     async mapBounds(newV, oldV) {
       if (!this.isShowMap) return;
       if (
@@ -112,11 +117,16 @@ export default {
   methods: {
     async setPage(newPage) {
       this.page = newPage;
+      this.ScrollToTop();
       await this.fetchEmployeeList();
     },
     async fetchEmployeeList(isResetPage = false) {
       if (this.isFetching) return;
       this.isFetching = true;
+
+      if (isResetPage) this.page = 1;
+      const { query: { limit }, page } = this;
+      this.query.offset = (page - 1) * limit;
 
       if (this.isShowMap) {
         if (!this.mapBounds.northEast.lng) {
@@ -129,25 +139,27 @@ export default {
         this.query['northAndSouthCoordinates[south][longitude]'] = this.mapBounds.southWest.lng;
         this.query['northAndSouthCoordinates[south][latitude]'] = this.mapBounds.southWest.lat;
 
-        await this.$store.dispatch('google-map/employeesPoints', {
-          query: { ...this.query },
-          specFilter: this.specFilter,
-        });
+        await Promise.all([
+          this.$store.dispatch('google-map/employeesPoints', {
+            query: { ...this.query },
+            specFilter: this.specFilter,
+          }),
+          this.$store.dispatch('quests/employeeList', {
+            query: this.query,
+            specFilter: this.specFilter,
+          }),
+        ]);
       } else {
         delete this.query['northAndSouthCoordinates[north][longitude]'];
         delete this.query['northAndSouthCoordinates[north][latitude]'];
         delete this.query['northAndSouthCoordinates[south][longitude]'];
         delete this.query['northAndSouthCoordinates[south][latitude]'];
+
+        await this.$store.dispatch('quests/employeeList', {
+          query: this.query,
+          specFilter: this.specFilter,
+        });
       }
-
-      if (isResetPage) this.page = 1;
-      const { query: { limit }, page } = this;
-      this.query.offset = (page - 1) * limit;
-
-      await this.$store.dispatch('quests/employeeList', {
-        query: this.query,
-        specFilter: this.specFilter,
-      });
 
       this.isFetching = false;
     },
@@ -161,8 +173,8 @@ export default {
     },
     async sortByPrice(value) {
       if (!Object.keys(value).length) {
-        delete this.query['betweenWagePerHour[from]'];
-        delete this.query['betweenWagePerHour[to]'];
+        delete this.query['betweenCostPerHour[from]'];
+        delete this.query['betweenCostPerHour[to]'];
       } else this.query = { ...this.query, ...value };
       await this.fetchEmployeeList(true);
     },
@@ -178,6 +190,11 @@ export default {
     },
     async sortByWorkplace(value) {
       if (!Object.keys(value).length) delete this.query['workplaces[0]'];
+      else this.query = { ...this.query, ...value };
+      await this.fetchEmployeeList(true);
+    },
+    async sortPayPeriod(value) {
+      if (!Object.keys(value).length) delete this.query['payPeriods[0]'];
       else this.query = { ...this.query, ...value };
       await this.fetchEmployeeList(true);
     },
@@ -228,6 +245,7 @@ export default {
     &__content {
       padding: 0 20px;
     }
+
     &__cards {
       grid-template-columns: repeat(3, 1fr);
     }

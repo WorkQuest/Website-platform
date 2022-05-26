@@ -1,137 +1,121 @@
 <template>
   <ctm-modal-box
     class="claim"
-    :title="$t('mining.swapTokens.title')"
+    :title="$tc('modals.titles.swapTokens')"
   >
-    <div class="claim__content content">
-      <validation-observer v-slot="{handleSubmit}">
-        <base-field
-          v-model="oldTokens"
-          class="content__field"
-          :placeholder="3500"
-          :type="'number'"
-          :label="$t('mining.swapTokens.oldTokens')"
-          rules="required|decimal|min_value:0.00001"
-          :name="$t('mining.swapTokens.oldTokens')"
+    <validation-observer
+      v-slot="{handleSubmit, invalid}"
+      class="claim__content content"
+      tag="div"
+    >
+      <base-field
+        v-model="amount"
+        type="number"
+        placeholder="3500"
+        class="content__field"
+        data-selector="OLD-TOKENS"
+        :name="$tc('mining.swapTokens.oldTokens')"
+        :label="$tc('mining.swapTokens.oldTokens')"
+        :rules="`required|decimal|min_value:0.00001|max_value:${balance}`"
+      >
+        <template
+          v-slot:right-absolute
+          class="content__max max"
         >
-          <template
-            v-slot:right-absolute
-            class="content__max max"
-          >
-            <base-btn
-              mode="max"
-              class="max__button"
-              :disabled="balance === 0"
-              @click="maxBalance()"
-            >
-              <span class="max__text">{{ $t('modals.maximum') }}</span>
-            </base-btn>
-          </template>
-        </base-field>
-        <div class="content__subtitle">
-          {{ $t('mining.swapTokens.balance') }}
-          <span class="content__subtitle_blue">
-            {{ balance }} {{ currency }}
-          </span>
-        </div>
-        <base-field
-          v-model="newTokens"
-          class="content__field"
-          :placeholder="3500"
-          :label="$t('mining.swapTokens.newTokens')"
-          :disabled="true"
-          :name="$t('mining.swapTokens.newTokens')"
-        />
-        <div class="content__container">
           <base-btn
-            mode="outline"
-            selector="CANCEL"
-            :disabled="statusBusy"
-            @click="hide()"
+            mode="max"
+            class="max__button"
+            data-selector="MAX"
+            :disabled="!oldToken.balance"
+            @click="maxBalance"
           >
-            {{ $t('meta.cancel') }}
+            <span class="max__text">
+              {{ $t('modals.maximum') }}
+            </span>
           </base-btn>
-          <base-btn
-            :disabled="statusBusy || !isConnected"
-            selector="SWAP"
-            @click="handleSubmit(initSwap)"
-          >
-            {{ $t('mining.swapTokens.swap') }}
-          </base-btn>
-        </div>
-      </validation-observer>
-    </div>
+        </template>
+      </base-field>
+      <div class="content__subtitle">
+        {{ $t('mining.swapTokens.balance') }}
+        <span class="content__subtitle_blue">
+          {{ Floor(balance) }} {{ oldToken.symbol }}
+        </span>
+      </div>
+      <base-field
+        :value="amount"
+        class="content__field"
+        placeholder="3500"
+        data-selector="NEW-TOKENS"
+        :label="$tc('mining.swapTokens.newTokens')"
+        :disabled="true"
+        :name="$tc('mining.swapTokens.newTokens')"
+      />
+      <div class="content__container">
+        <base-btn
+          mode="outline"
+          data-selector="CANCEL"
+          @click="CloseModal"
+        >
+          {{ $t('meta.btns.cancel') }}
+        </base-btn>
+        <base-btn
+          :disabled="invalid"
+          data-selector="SWAP"
+          @click="handleSubmit(initSwap)"
+        >
+          {{ $t('mining.swapTokens.swap') }}
+        </base-btn>
+      </div>
+    </validation-observer>
   </ctm-modal-box>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
+import { mapActions, mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 
 export default {
   name: 'CtmModalSwapTokens',
   data() {
     return {
-      oldTokens: '',
-      newTokens: '',
-      balance: 0,
-      currency: 'WQT',
+      amount: 0,
+      oldToken: {
+        balance: 0,
+        decimals: 0,
+        symbol: '',
+      },
     };
   },
   computed: {
     ...mapGetters({
-      tokensData: 'web3/getBSCTokensData',
       options: 'modals/getOptions',
-      statusBusy: 'web3/getStatusBusy',
-      isConnected: 'web3/isConnected',
     }),
-  },
-  watch: {
-    oldTokens() {
-      this.newTokens = this.oldTokens;
-    },
-    async tokensData() {
-      await this.initBalanceAndCurrency();
+    balance() {
+      return new BigNumber(this.oldToken.balance).shiftedBy(-this.oldToken.decimals).toString();
     },
   },
   async mounted() {
-    await this.$store.dispatch('web3/initTokensData');
+    this.oldToken = await this.fetchTokenInfo(process.env.BSC_OLD_WQT_TOKEN);
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
+    ...mapActions({
+      fetchTokenInfo: 'mining/fetchTokenInfo',
+    }),
     maxBalance() {
-      this.oldTokens = this.tokensData.userPurse.oldTokenBalance;
-    },
-    initBalanceAndCurrency() {
-      this.balance = parseInt((this.tokensData.userPurse.oldTokenBalance) * 10000, 10) / 10000;
-      this.currency = this.tokensData.userPurse.oldTokenSymbol;
-    },
-    checkAmount() {
-      const maxAmount = this.tokensData.userPurse.oldTokenBalance;
-      return +maxAmount >= +this.oldTokens;
+      this.amount = this.balance;
     },
     async initSwap() {
-      this.SetLoader(true);
-      if (this.checkAmount()) {
-        this.hide();
-        await this.$store.dispatch('web3/swap', {
-          decimals: this.tokensData.decimals.oldTokenDecimal,
-          amount: this.oldTokens,
-        });
-        await this.$store.dispatch('web3/initTokensData');
+      const {
+        amount, balance, oldToken: { decimals }, options: { submit },
+      } = this;
+      if (new BigNumber(balance).isGreaterThanOrEqualTo(amount)) {
+        await submit(amount, decimals);
       } else {
-        this.hide();
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/warning.svg'),
+        this.ShowModalFail({
           title: this.$t('modals.transactionFail'),
-          recipient: '',
           subtitle: this.$t('modals.incorrectAmount'),
         });
       }
-      this.SetLoader(false);
     },
   },
 };
@@ -144,12 +128,15 @@ export default {
     background: transparent !important;
   }
 }
+
 .claim {
-  max-width: 487px!important;
+  max-width: 487px !important;
+
   &__content {
-    padding: 22px 28px 30px 28px!important;
+    padding: 22px 28px 30px 28px !important;
   }
 }
+
 .content {
   &__subtitle {
     @include text-simple;
@@ -157,11 +144,13 @@ export default {
     font-size: 14px;
     color: $black500;
     margin-bottom: 10px;
+
     &_blue {
       @extend .content__subtitle;
       color: $blue;
     }
   }
+
   &__container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

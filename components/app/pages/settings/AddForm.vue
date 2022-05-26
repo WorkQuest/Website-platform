@@ -7,13 +7,13 @@
   >
     <base-field
       v-model="item.from"
-      :name="$t('settings.workExps.from')"
+      :name="$t('meta.fromBig')"
       :type="isAdding ? 'date' : 'gray'"
       :mode="isAdding ? '': 'convertDate'"
       data-selector="ADD-FORM-FROM-FIELD"
       :disabled="!isAdding"
       class="knowledge__data"
-      :placeholder="$t('settings.workExps.from')"
+      :placeholder="$t('meta.fromBig')"
       :rules="`from-to:${item.from},${item.to}|between-date:${$moment().add(-100, 'years').format('yyyy/MM/DD')},${item.to}`"
       :validation-mode="validationMode"
       @blur="$emit('blur')"
@@ -23,13 +23,13 @@
     </span>
     <base-field
       v-model="item.to"
-      :name="$t('settings.workExps.to')"
+      :name="$t('meta.toBig')"
       :type="isAdding ? 'date' : 'gray'"
       :mode="isAdding ? '': 'convertDate'"
       data-selector="ADD-FORM-TO-FIELD"
       :disabled="!isAdding"
       class="knowledge__data"
-      :placeholder="$t('settings.workExps.to')"
+      :placeholder="$t('meta.toBig')"
       :rules="`from-to:${item.from},${item.to}|between-date:${item.from},${$moment().add(10, 'years').format('yyyy/MM/DD')}`"
       :validation-mode="validationMode"
       @blur="$emit('blur')"
@@ -48,11 +48,11 @@
     />
     <base-btn
       class="knowledge__btn"
-      :selector="`${isAdding} ? ${$t('settings.add')} : ${$t('settings.delete')}`"
+      :data-selector="`${isAdding} ? ${$t('meta.btns.add')} : ${$t('meta.btns.delete')}`"
       :disabled="!item.from || !item.to || !item.place || invalid"
       @click="$emit('click')"
     >
-      {{ isAdding ? $t('settings.add') : $t('settings.delete') }}
+      {{ isAdding ? $t('meta.btns.add') : $t('meta.btns.delete') }}
     </base-btn>
   </validation-observer>
 </template>

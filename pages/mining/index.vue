@@ -3,7 +3,7 @@
     <div class="mining-page__container">
       <div class="mining-page__header">
         <div class="title">
-          {{ $t('mining.liquidityMining') }}
+          {{ $t('meta.liquidityMining') }}
         </div>
         <div class="title_sub">
           {{ $t('mining.liquidityMiningSub') }}
@@ -17,7 +17,7 @@
           <div class="mining-page__table">
             <b-table
               :items="pools"
-              :fields="testFields"
+              :fields="tableFields"
               borderless
               caption-top
               thead-class="table__header"
@@ -36,7 +36,7 @@
               <template #cell(choose)="el">
                 <base-btn
                   class="btn_bl"
-                  :selector="`${el.item.chooseBtn}`"
+                  :data-selector="`${el.item.chooseBtn}`"
                   :disabled="el.item.disabled"
                   @click="handleOpenPool(el)"
                 >
@@ -51,7 +51,7 @@
           class="info-block"
         >
           <div class="info-block__name_bold">
-            {{ $t("mining.information") }}
+            {{ $t("meta.information") }}
           </div>
           <div class="info-block__documents">
             <div
@@ -77,7 +77,7 @@
                 target="_blank"
                 class="btn__doc"
               >
-                {{ $t('pension.download') }}
+                {{ $t('meta.btns.download') }}
                 <img
                   class="download"
                   src="~/assets/img/ui/download.svg"
@@ -94,6 +94,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'Pools',
@@ -105,22 +106,21 @@ export default {
   },
   computed: {
     ...mapGetters({
-      options: 'modals/getOptions',
-      userData: 'user/getUserData',
+      isAuth: 'user/isAuth',
     }),
     pools() {
       return [
         {
           id: 'ETH',
           poolAddress: '0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf',
-          assets: this.$t('mining.table.assets'),
+          assets: '50% WQT / 50% ETH',
           chooseBtn: this.$t('mining.choose'),
           disabled: false,
         },
         {
           id: 'BNB',
           poolAddress: '0xe89508D74579A06A65B907c91F697CF4F8D9Fac7',
-          assets: this.$t('mining.table.assets2'),
+          assets: '50% WQT / 50% BNB',
           chooseBtn: this.$t('mining.choose'),
           disabled: false,
         },
@@ -130,12 +130,12 @@ export default {
       return [
         {
           name: this.$t('mining.agreement'),
-          size: this.$tc('mining.kb', '47'),
+          size: this.$tc('meta.units.kb', 47),
           url: '/docs/agreement.pdf',
         },
       ];
     },
-    testFields() {
+    tableFields() {
       return [
         {
           key: 'poolAddress',
@@ -176,18 +176,12 @@ export default {
       ];
     },
   },
-  async mounted() {
-    this.SetLoader(true);
-    this.$nuxt.setLayout(this.userData.id ? 'default' : 'guest');
-    this.SetLoader(false);
+  beforeMount() {
+    if (this.isAuth) this.$nuxt.setLayout('default');
   },
   methods: {
-    cropTxt(str) {
-      if (str.length > 40) str = `${str.slice(0, 10)}...${str.slice(-10)}`;
-      return str;
-    },
     handleOpenPool(el) {
-      this.$router.push(`/mining/${el.item.id}`);
+      this.$router.push(`${Path.MINING}/${el.item.id}`);
     },
   },
 };

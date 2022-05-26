@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="info"
-    :title="options.title || 'Withdrawal info'"
+    :title="options.title || $tc('modals.titles.withdrawInfo')"
   >
     <div class="info__content content">
       <div class="content__field field">
@@ -10,7 +10,7 @@
           class="field__header header"
         >
           <div class="header__title">
-            {{ $t('modals.bankCard') }}
+            {{ $t('meta.bankCard') }}
           </div>
           <div
             class="header__subtitle"
@@ -20,6 +20,7 @@
             {{ getCardNumber }}
             <base-btn
               mode="max"
+              data-selector="MAX"
               class="header__button"
             >
               <div
@@ -30,11 +31,11 @@
           </div>
         </div>
         <div
-          v-if="options.recepientAddress"
+          v-if="options.recipientAddress"
           class="field__header header"
         >
           <div class="header__title">
-            {{ $t(options.recepientAddress) }}
+            {{ $t(options.recipientAddress) }}
           </div>
           <div class="header__subtitle">
             {{ walletAddress }}
@@ -69,17 +70,17 @@
           <base-btn
             class="buttons__button"
             mode="outline"
-            selector="CANCEL"
-            @click="hide"
+            data-selector="CANCEL"
+            @click="CloseModal"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
-            selector="CONFIRM"
+            data-selector="CONFIRM"
             @click="handleSubmit"
           >
-            {{ $t('meta.confirm') }}
+            {{ $t('meta.btns.confirm') }}
           </base-btn>
         </div>
       </div>
@@ -98,14 +99,8 @@ export default {
       isCardNumberVisible: false,
       walletAddress: null,
       items: [
-        {
-          title: this.$t('modals.amount'),
-          subtitle: 'WUSD',
-        },
-        {
-          title: this.$t('modals.totalFee'),
-          subtitle: '$ 0,15',
-        },
+        { title: this.$t('modals.amount'), subtitle: 'WUSD' },
+        { title: this.$t('modals.totalFee'), subtitle: '$ 0,15' },
       ],
     };
   },
@@ -135,16 +130,8 @@ export default {
     this.items[1].subtitle = this.options.txFee;
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     async handleSubmit() {
-      this.showTransactionSend();
-    },
-    showTransactionSend() {
-      this.ShowModal({
-        key: modals.transactionSend,
-      });
+      this.ShowModal({ key: modals.transactionSend });
     },
     showNumber() {
       this.isCardNumberVisible = !this.isCardNumberVisible;
@@ -178,7 +165,7 @@ export default {
   padding: 0 28px 30px 28px!important;
   &__field{
     padding: 20px 20px 20px;
-    background-color: #F7F8FA;
+    background-color: $black0;
     border-radius: 5px;
     margin-top: 25px;
     margin-right: 13px;

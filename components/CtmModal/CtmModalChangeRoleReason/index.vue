@@ -3,9 +3,13 @@
     class="change-role"
     :class="[{'change-role_wide': step === 1}]"
     :is-unclosable="true"
-    :title="step === 1 ? $t('modals.reason') : $t('modals.securityCheck')"
+    :title="step === 1 ? $tc('modals.titles.reason') : $tc('modals.titles.securityCheckBig')"
   >
-    <div class="ctm-modal__content">
+    <validation-observer
+      v-slot="{invalid, handleSubmit}"
+      tag="div"
+      class="ctm-modal__content"
+    >
       <div class="change-role">
         <div
           v-if="step === 1"
@@ -13,7 +17,8 @@
         >
           <span class="change-role__describe">{{ $t('modals.pleaseDescribe') }}</span>
           <base-field
-            v-model="reasonInput"
+            v-model="reason"
+            data-selector="REASON"
             class="change-role__action"
             :placeholder="$t('modals.reason')"
           />
@@ -21,20 +26,20 @@
             <div class="btn__wrapper">
               <base-btn
                 class="message__action"
-                selector="NEXT-STEP"
+                data-selector="NEXT-STEP"
                 @click="nextStep()"
               >
-                {{ $t('meta.change') }}
+                {{ $t('meta.btns.change') }}
               </base-btn>
             </div>
             <div class="btn__wrapper">
               <base-btn
                 mode="outline"
                 class="message__action"
-                selector="CANCEL"
-                @click="hide()"
+                data-selector="CANCEL"
+                @click="CloseModal"
               >
-                {{ $t('meta.cancel') }}
+                {{ $t('meta.btns.cancel') }}
               </base-btn>
             </div>
           </div>
@@ -43,41 +48,47 @@
           v-if="step === 2"
           class="change-role__content"
         >
-          <base-field
-            v-model="codeInput"
-            :label="$t('modals.googleConfCode')"
-            class="change-role__action"
-            :placeholder="$t('modals.googleConfCode')"
-          />
-          <div class="change-role__sub">
-            {{ $t('modals.enterCode') }}
-          </div>
-          <div class="btn__container">
-            <base-btn
-              class="message__action"
-              selector="SEND"
-              @click="success()"
-            >
-              {{ $t('meta.send') }}
-            </base-btn>
-          </div>
+          <form @submit.prevent="handleSubmit(changeRole)">
+            <base-field
+              v-model="totp"
+              :label="$tc('meta.googleConfCode')"
+              class="change-role__action"
+              data-selector="GOOGLE-CONF-CODE"
+              :placeholder="$t('meta.googleConfCode')"
+              rules="min:6|numeric|max:6|required"
+              :name="$tc('meta.googleConfCode')"
+            />
+            <div class="change-role__sub">
+              {{ $t('meta.googleConfCodeDesc') }}
+            </div>
+            <div class="btn__container">
+              <base-btn
+                class="message__action"
+                data-selector="CHANGE-ROLE"
+                :disabled="invalid"
+              >
+                {{ $t('meta.btns.send') }}
+              </base-btn>
+            </div>
+          </form>
         </div>
       </div>
-    </div>
+    </validation-observer>
   </ctm-modal-box>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { images } from '~/utils/images';
 
 export default {
   name: 'CtmModalChangeRoleReason',
   data() {
     return {
-      step: 1,
-      reasonInput: '',
-      codeInput: '',
+      step: 2,
+      reason: '',
+      totp: '',
     };
   },
   computed: {
@@ -89,17 +100,28 @@ export default {
     nextStep() {
       this.step += 1;
     },
-    hide() {
-      this.CloseModal();
-    },
     async changeRole() {
-      // TODO: Сделать смену роли
-      const response = await this.$store.dispatch('user/setUserRole');
-      if (response?.ok) this.success();
+      const result = await this.$store.dispatch('user/changeRole', { totp: this.totp });
+      if (result.ok) {
+        this.CloseModal();
+        this.success();
+      } else {
+        const date = new Date(result.response.data.data.endDateOfTimeout);
+        if (result.response.data.code === 403000) {
+          this.ShowModal({
+            key: modals.status,
+            img: require('~/assets/img/ui/error.svg'),
+            title: this.$t('modals.warning'),
+            subtitle: this.$t('modals.waitRoleCooldown', { date: date.toLocaleDateString(this.$i18n.locale), time: date.toLocaleTimeString(this.$i18n.locale) }),
+            button: this.$t('meta.btns.close'),
+          });
+        }
+      }
     },
     success() {
+      this.$root.$emit('roleChanged');
       this.ShowModal({
-        key: modals.status, img: require('~/assets/img/ui/success.svg'), title: 'Success', subtitle: 'Your role has been changed',
+        key: modals.status, img: images.SUCCESS, title: 'Success', subtitle: 'Your role has been changed', isRoleChanged: true,
       });
     },
   },

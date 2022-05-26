@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="info"
-    :title="$t('modals.swapInfo')"
+    :title="$tc('modals.titles.swapInfo')"
   >
     <div class="info__content content">
       <div class="content__field field">
@@ -23,17 +23,17 @@
           <base-btn
             class="buttons__button"
             mode="outline"
-            selector="CANCEL"
-            @click="hide"
+            data-selector="CANCEL"
+            @click="CloseModal"
           >
-            {{ $t('meta.cancel') }}
+            {{ $t('meta.btns.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
-            selector="CONFIRM"
-            @click="showTransactionSend"
+            data-selector="CONFIRM"
+            @click="sendTransaction"
           >
-            {{ $t('meta.confirm') }}
+            {{ $t('meta.btns.confirm') }}
           </base-btn>
         </div>
       </div>
@@ -43,31 +43,20 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
+import { Chains } from '~/utils/enums';
 
 export default {
   name: 'ModalSwapInfo',
-  data() {
-    return {
-      miningPoolId: localStorage.getItem('miningPoolId'),
-      metamaskStatus: localStorage.getItem('metamaskStatus'),
-      sourceAddressInd: 0,
-      targetAddressInd: 1,
-    };
-  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
       isConnected: 'web3/isConnected',
     }),
-    getCardNumber() {
-      return (this.options.cardNumber);
-    },
     info() {
       return [
         {
-          title: this.$t('modals.crosschain'),
-          subtitle: this.options.crosschain,
+          title: this.$t('modals.bridge'),
+          subtitle: this.options.networks,
         },
         {
           title: this.$t('modals.amount'),
@@ -75,15 +64,17 @@ export default {
         },
         {
           title: this.$t('modals.senderAddress'),
-          subtitle: this.options.recepient,
+          subtitle: this.options.fromNetwork === Chains.WORKNET
+            ? this.convertToBech32('wq', this.options.recipient) : this.options.recipient,
         },
         {
-          title: this.$t('modals.recepientAddress'),
-          subtitle: this.options.recepient,
+          title: this.$t('modals.recipientAddress'),
+          subtitle: this.options.toNetwork === Chains.WORKNET
+            ? this.convertToBech32('wq', this.options.recipient) : this.options.recipient,
         },
         // {
         //   title: this.$t('modals.worknetFee'),
-        //   subtitle: this.options.worknetFee,
+        //   subtitle: this.options.fee,
         // },
         // {
         //   title: this.$t('modals.binanceFee'),
@@ -93,53 +84,12 @@ export default {
     },
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
-    async showTransactionSend() {
-      this.SetLoader(true);
-      const switchChainStatus = await this.checkPool();
-      await this.connectToMetamask();
-      let chainTo = 0;
-      if (this.options.chain === 'ETH') {
-        chainTo = 3;
-      } else {
-        chainTo = 2;
-      }
-      const optionsData = this.options;
-      this.hide();
-      let swapObj;
-      if (switchChainStatus.ok) {
-        swapObj = await this.$store.dispatch('web3/swapWithBridge', {
-          _decimals: 18,
-          _amount: optionsData.amountInt,
-          chain: optionsData.chain,
-          chainTo,
-          userAddress: optionsData.recepientFull,
-          recipient: optionsData.recepientFull,
-          symbol: 'WQT',
-        });
-      } else {
-        swapObj = { code: 500 };
-      }
-      this.ShowModal({
-        key: modals.status,
-        img: swapObj.code === 500 ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
-        title: swapObj.code === 500 ? this.$t('modals.transactionFail') : this.$t('modals.transactionSent'),
-        recipient: '',
-        txHash: swapObj.tx,
-        chainTo,
-        subtitle: '',
-      });
-      this.SetLoader(false);
-    },
-    async connectToMetamask() {
-      if (!this.isConnected) {
-        await this.$store.dispatch('web3/connect');
-      }
-    },
-    async checkPool() {
-      return await this.$store.dispatch('web3/goToChain', { chain: this.options.chain });
+    async sendTransaction() {
+      // TODO need it?
+      if (!this.isConnected) await this.$store.dispatch('web3/connect');
+
+      const { submit } = this.options;
+      await submit();
     },
   },
 };
@@ -170,7 +120,7 @@ export default {
   padding: 0 28px 30px 28px!important;
   &__field{
     padding: 20px 20px 20px;
-    background-color: #F7F8FA;
+    background-color: $black0;
     border-radius: 5px;
     margin-top: 25px;
   }

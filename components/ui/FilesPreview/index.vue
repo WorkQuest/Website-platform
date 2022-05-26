@@ -43,13 +43,11 @@ export default {
   },
   methods: {
     openFile(file) {
-      if (window.innerWidth >= 761) {
-        this.ShowModal({
-          key: modals.showImage,
-          contentType: file.contentType.split('/')[0],
-          url: file.url,
-        });
-      }
+      this.ShowModal({
+        key: modals.showImage,
+        contentType: file.contentType.split('/')[0],
+        url: file.url,
+      });
     },
   },
 };

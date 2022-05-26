@@ -115,7 +115,9 @@ export default {
       const keys = Object.keys(this.$t('quests.distance'));
       return keys.map((d) => this.$t(`quests.distance.${d}`));
     },
-    isPageQuests() { return this.$route.name === 'quests'; },
+    isPageQuests() {
+      return this.$route.name === 'quests';
+    },
     searchPlaceholder() {
       if (this.isShowMap) return this.$t('quests.ui.searchWithMap');
       return this.isPageQuests ? this.$t('quests.ui.searchOnQuestsPage') : this.$t('quests.ui.searchOnWorkersPage');
@@ -141,9 +143,13 @@ export default {
       lang: this.$i18n?.localeProperties?.code || 'en-US',
     });
   },
-  beforeDestroy() { this.geoCode = null; },
+  beforeDestroy() {
+    this.geoCode = null;
+  },
   methods: {
-    deFocus() { this.isSearchFocus = false; },
+    deFocus() {
+      this.isSearchFocus = false;
+    },
     searchHandler() {
       if (!this.search || !this.coordinates) return;
       this.$store.dispatch('google-map/setNewCenter', this.coordinates);
@@ -166,7 +172,6 @@ export default {
         }
       } catch (e) {
         console.error('Geo look up is failed', e);
-        await this.$store.dispatch('main/showToast', { text: 'Address is not correct' });
       }
       this.clearSearchResult();
     },
@@ -182,6 +187,7 @@ export default {
 
 .search-with-map__map-block {
   height: 435px;
+
   &_hidden {
     display: none;
   }
@@ -200,11 +206,12 @@ export default {
 
   &__block {
     display: grid;
-    grid-template-columns: 155px 1fr 143px 260px;
+    grid-template-columns: 160px 1fr 155px 260px;
 
     @include box;
+
     &_without-map {
-      grid-template-columns: 155px 1fr;
+      grid-template-columns: 160px 1fr;
     }
   }
 
@@ -229,7 +236,7 @@ export default {
 .selector {
   @include box;
   max-height: 300px;
-  overflow: hidden scroll;
+  overflow: hidden auto;
   overscroll-behavior: contain;
 
   &_hide {
@@ -256,9 +263,10 @@ export default {
     padding: 0 20px;
 
     &__block {
-      grid-template-columns: 155px 1fr 143px 220px;
+      grid-template-columns: 160px 1fr 155px 220px;
+
       &_without-map {
-        grid-template-columns: 155px 1fr;
+        grid-template-columns: 160px 1fr;
       }
     }
   }
@@ -272,13 +280,15 @@ export default {
 
     &__block {
       grid-template-columns: 1fr 180px;
+
       &_without-map {
-        grid-template-columns: 155px 1fr;
+        grid-template-columns: 160px 1fr;
       }
     }
 
     &__checkbox {
       display: none !important;
+
       &_without-map {
         display: flex !important;
       }
@@ -290,7 +300,7 @@ export default {
 
     &__filters {
       display: grid;
-      grid-template-columns: 143px 143px;
+      grid-template-columns: 150px 150px;
       justify-content: space-between;
 
       margin-top: 20px;
@@ -312,6 +322,7 @@ export default {
 
     &__block {
       grid-template-columns: 1fr 143px;
+
       &_without-map {
         grid-template-columns: 135px 1fr;
       }
@@ -325,5 +336,7 @@ export default {
       margin-top: 10px;
     }
   }
-};
+}
+
+;
 </style>

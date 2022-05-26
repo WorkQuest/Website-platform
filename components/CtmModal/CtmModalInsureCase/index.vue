@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="insure"
-    :title="$t('modals.insureCase')"
+    :title="$tc('modals.titles.insureCase')"
   >
     <div class="insure__content content">
       <div class="content__user user">
@@ -11,14 +11,11 @@
           alt="user avatar"
         >
         <span class="user__name">
-          {{ $t('insuring.userNameCase') }}
+          Cody Fisher :
         </span>
         <span class="user__text">
           {{ $t('insuring.paymentOfInsurance') }}
         </span>
-      </div>
-      <div class="content__text">
-        {{ $t('insuring.insureCaseText') }}
       </div>
       <div class="content__pictures">
         <img
@@ -33,10 +30,10 @@
         <base-btn
           class="buttons__button"
           mode="outline"
-          selector="CANCEL"
-          @click="hide"
+          data-selector="CANCEL"
+          @click="CloseModal"
         >
-          {{ $t('meta.cancel') }}
+          {{ $t('meta.btns.cancel') }}
         </base-btn>
       </div>
     </div>
@@ -61,11 +58,6 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
-  },
-  methods: {
-    hide() {
-      this.CloseModal();
-    },
   },
 };
 </script>

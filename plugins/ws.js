@@ -15,13 +15,13 @@ export default async ({ store, $axios }, inject) => {
     async initConnection(_connection) {
       const connection = new Connection(_connection.url, _connection.name);
       connection.onConnect = () => {
-        store.commit('data/updateConnectionsStatus', { name: _connection.verboseName, value: true });
+        store.commit('main/updateConnectionsStatus', { name: _connection.verboseName, value: true });
       };
       connection.onDisconnect = () => {
-        store.commit('data/updateConnectionsStatus', { name: _connection.verboseName, value: false });
+        store.commit('main/updateConnectionsStatus', { name: _connection.verboseName, value: false });
       };
       connection.onError = () => {
-        store.commit('data/updateConnectionsStatus', { name: _connection.verboseName, value: false });
+        store.commit('main/updateConnectionsStatus', { name: _connection.verboseName, value: false });
       };
       this.availableConnections.push(connection);
       inject(_connection.name, connection);

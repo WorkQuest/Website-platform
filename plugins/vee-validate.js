@@ -43,7 +43,6 @@ extend('numberOfCard', {
       valid: checkCardNumber(cardNumber),
     };
   },
-  message: 'Please enter correct {_field_}',
 });
 
 extend('cvv', {
@@ -54,8 +53,8 @@ extend('cvv', {
       valid: regex.test(value),
     };
   },
-  message: 'Please enter correct {_field_}',
 });
+
 extend('date', {
   validate(value) {
     const regex = /(?:0[1-9]|1[0-2])\/[0-9]{2}/;
@@ -64,7 +63,6 @@ extend('date', {
       valid: regex.test(value),
     };
   },
-  message: 'Please enter correct {_field_}',
 });
 
 extend('between-date', {
@@ -87,7 +85,6 @@ extend('between-date', {
       valid: f <= t,
     };
   },
-  message: 'Invalid date range',
 });
 
 extend('from-to', {
@@ -110,7 +107,6 @@ extend('from-to', {
       valid: f <= t,
     };
   },
-  message: 'The field "To" is greater than the field "From"',
 });
 
 extend('decimal', {
@@ -121,7 +117,16 @@ extend('decimal', {
       valid: regex.test(value),
     };
   },
-  message: 'Please enter correct {_field_}',
+});
+
+extend('numeric', {
+  validate(value) {
+    const regex = /^\d+$/;
+    return {
+      required: true,
+      valid: regex.test(value),
+    };
+  },
 });
 
 extend('decimalPlaces', {
@@ -133,7 +138,6 @@ extend('decimalPlaces', {
     };
   },
   params: ['places'],
-  message: 'Max decimal places: {places}',
 });
 
 extend('mnemonic', {
@@ -143,18 +147,26 @@ extend('mnemonic', {
       valid: validateMnemonic(value),
     };
   },
-  message: 'Incorrect secret phrase',
 });
 
-extend('max_bn', {
+extend('max_value', {
   validate(value, { max }) {
     return {
       required: true,
-      valid: new BigNumber(value).isLessThanOrEqualTo(new BigNumber(max)),
+      valid: new BigNumber(value).isLessThanOrEqualTo(max),
     };
   },
   params: ['max'],
-  message: 'Value must be less than or equal {max}',
+});
+
+extend('min_value', {
+  validate(value, { min }) {
+    return {
+      required: true,
+      valid: new BigNumber(value).isGreaterThanOrEqualTo(min),
+    };
+  },
+  params: ['min'],
 });
 
 extend('address', {
@@ -164,7 +176,15 @@ extend('address', {
       valid: utils.isAddress(value),
     };
   },
-  message: 'Type correct address',
+});
+extend('addressBech32', {
+  validate(value) {
+    const regex = /wq1[a-z-0-9]{3,41}$/;
+    return {
+      required: true,
+      valid: regex.test(value),
+    };
+  },
 });
 
 extend('text-title', {
@@ -175,7 +195,6 @@ extend('text-title', {
       valid: regex.test(value),
     };
   },
-  message: 'Please enter correct {_field_}',
 });
 extend('text-desc', {
   validate(value) {
@@ -185,8 +204,8 @@ extend('text-desc', {
       valid: regex.test(value),
     };
   },
-  message: 'Please enter correct {_field_}',
 });
+
 extend('percent', {
   validate(value) {
     const regex = /^100%?$|^\s*(\d{0,2})((\.|,)(\d*))?\s*%?\s*$/;
@@ -195,8 +214,52 @@ extend('percent', {
       valid: regex.test(value),
     };
   },
-  message: 'Please enter correct {_field_}',
 });
+
+extend('greaterThanZero', {
+  validate(value) {
+    return (value > 0);
+  },
+});
+
+extend('zeroFail', {
+  validate(value) {
+    const regex = /^[0][0-9]/;
+    return {
+      valid: !regex.test(value),
+    };
+  },
+});
+
+extend('notMoreDecimalPlaces', {
+  validate(value) {
+    return (((value.toString().includes('.')) ? (value.toString().split('.').pop().length) : (0)) < 4);
+  },
+});
+
+extend('min_percent', {
+  validate(value, { min }) {
+    return +value.replace(/%/g, '') >= +min;
+  },
+  params: ['min'],
+});
+
+extend('max_percent', {
+  validate(value, { max }) {
+    return +value.replace(/%/g, '') <= +max;
+  },
+  params: ['max'],
+});
+
+extend('alpha_spaces_dash', {
+  validate(value) {
+    const regex = /^[\p{L}\-_\s]+$/u;
+    return {
+      valid: regex.test(value),
+    };
+  },
+});
+
 export default ({ app }) => {
   configure({
     defaultMessage: (_field_, values) => app.i18n.t(`messages.${values._rule_}`, values),

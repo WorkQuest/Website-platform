@@ -1,60 +1,64 @@
 <template>
   <ctm-modal-box
     class="deposit"
-    :title="$t('saving.openADeposit')"
+    :title="$tc('modals.titles.openADeposit')"
   >
-    <div class="deposit__content content">
-      <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
-        <div class="content__field">
-          <label
-            for="deposit__input"
-            class="content__label"
-          >{{ $t("modals.lockedSavings") }}
-          </label>
-          <base-field
-            id="deposit__input"
-            v-model="saving"
-            :placeholder="'3 500'"
-            class="content__input"
-            rules="required|decimal"
-            :name="$t('modals.lockedSavingsField')"
-          />
-        </div>
-        <div class="content__field">
-          <label
-            for="amount__input"
-            class="content__label"
-          >{{ $t("modals.durationDays") }}
-          </label>
-          <base-field
-            id="amount__input"
-            v-model="duration"
-            :placeholder="'180'"
-            class="content__input"
-            rules="required|numeric"
-            :name="$t('modals.durationDaysField')"
-          />
-        </div>
-        <div class="content__buttons buttons">
-          <base-btn
-            class="buttons__button"
-            mode="outline"
-            selector="CANCEL"
-            @click="hide"
-          >
-            {{ $t('meta.cancel') }}
-          </base-btn>
-          <base-btn
-            class="buttons__button"
-            selector="SUBMIT"
-            :disabled="!validated || !passed || invalid"
-            @click="handleSubmit(showDepositIsOpenedModal)"
-          >
-            {{ $t('meta.submit') }}
-          </base-btn>
-        </div>
-      </validation-observer>
-    </div>
+    <validation-observer
+      v-slot="{handleSubmit, validated, passed, invalid}"
+      class="deposit__content content"
+      tag="div"
+    >
+      <div class="content__field">
+        <label
+          for="deposit__input"
+          class="content__label"
+        >{{ $t("modals.lockedSavings") }}
+        </label>
+        <base-field
+          id="deposit__input"
+          v-model="saving"
+          data-selector="LOCKED-SAVINGS"
+          placeholder="3 500"
+          class="content__input"
+          rules="required|decimal"
+          :name="$tc('modals.lockedSavingsField')"
+        />
+      </div>
+      <div class="content__field">
+        <label
+          for="amount__input"
+          class="content__label"
+        >{{ $t("modals.durationDays") }}
+        </label>
+        <base-field
+          id="amount__input"
+          v-model="duration"
+          placeholder="180"
+          data-selector="DURATION-DAYS"
+          class="content__input"
+          rules="required|numeric"
+          :name="$tc('modals.durationDaysField')"
+        />
+      </div>
+      <div class="content__buttons buttons">
+        <base-btn
+          class="buttons__button"
+          mode="outline"
+          data-selector="CANCEL"
+          @click="CloseModal"
+        >
+          {{ $t('meta.btns.cancel') }}
+        </base-btn>
+        <base-btn
+          class="buttons__button"
+          data-selector="SUBMIT"
+          :disabled="!validated || !passed || invalid"
+          @click="handleSubmit(showDepositIsOpenedModal)"
+        >
+          {{ $t('meta.btns.submit') }}
+        </base-btn>
+      </div>
+    </validation-observer>
   </ctm-modal-box>
 </template>
 
@@ -76,16 +80,24 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     showDepositIsOpenedModal() {
+      const receiptData = [
+        {
+          title: this.$t('modals.currencyDetails'),
+          subtitle: this.$t('meta.coins.eth'),
+        },
+        {
+          title: this.$t('modals.depositing'),
+          subtitle: this.$tc('meta.coins.count.ETHCount', 1),
+        },
+        {
+          title: this.$t('modals.generatingDetails'),
+          subtitle: this.$tc('meta.coins.count.WUSDCount', 1000),
+        },
+      ];
       this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/transactionSend.svg'),
-        title: this.$t('modals.depositIsOpened'),
-        subtitle: this.$t('saving.depositIsOpenedText'),
-        path: '/savings/1',
+        key: modals.confirmDetails,
+        receiptData,
       });
     },
   },

@@ -41,14 +41,16 @@
       </div>
       <input
         ref="input"
+        :step="step"
         class="ctm-field__input"
         :class="[{'ctm-field__input_error': errors[0]},
-                 {'ctm-field__input_padding-r' : hasLoader}]"
+                 {'ctm-field__input_padding-r' : $slots['right-absolute'] || (value && isSearch && !isBusySearch)}]"
         :placeholder="placeholder"
-        data-selector="BASE-INPUT-FIELD"
+        :data-selector="`BASE-INPUT-FIELD-${dataSelector.toUpperCase()}`"
         :value="mode === 'convertDate' ? convertDate(value) : value"
         :type="type"
         :autocomplete="autocomplete"
+        :disabled="disabled"
         @input="input"
         @keyup.enter="enter"
         @keypress.enter="onEnterPress"
@@ -58,7 +60,7 @@
       <div
         v-if="value && isSearch && !isBusySearch"
         class="ctm-field__clear"
-        data-selector="ACTION-BTN-CLEAR"
+        :data-selector="`ACTION-BTN-CLEAR-${dataSelector.toUpperCase()}`"
         @click="clear()"
       >
         <span class="icon-close_small" />
@@ -88,6 +90,10 @@ export default {
     autoFocus: {
       type: Boolean,
       default: () => false,
+    },
+    step: {
+      type: String,
+      default: 'any',
     },
     onEnterPress: {
       type: Function,
@@ -163,9 +169,10 @@ export default {
       type: String,
       default: 'aggressive',
     },
-    hasLoader: {
-      type: Boolean,
-      default: false,
+    dataSelector: {
+      type: String,
+      default: 'NON_SELECTOR',
+      required: true,
     },
   },
   mounted() {
@@ -186,6 +193,7 @@ export default {
     },
     clear() {
       this.$emit('input', '');
+      this.$emit('clear', event);
     },
     convertDate(date) {
       return this.$moment(date).format('DD.MM.YYYY');
@@ -252,7 +260,7 @@ export default {
     }
   }
   &__err {
-    color: #bb5151;
+    color: $errorText;
     font-size: 12px;
     min-height: 23px;
   }
@@ -277,7 +285,7 @@ export default {
       border: 1px solid red !important
     }
     &_padding-r {
-      padding-right: 40px !important;
+      padding-right: 45px !important;
     }
   }
   &_disabled {
@@ -300,7 +308,7 @@ export default {
   &_default {
     .ctm-field__input {
       color: $black700;
-      background: #F3F7FA;
+      background: $black0;
       border-radius: 6px;
       border: 1px solid transparent;
       &::placeholder {
@@ -317,7 +325,7 @@ export default {
       color: $black700;
       background: #FFFFFF;
       border-radius: 6px;
-      border: 1px solid #F3F7FA;
+      border: 1px solid $black0;
       &::placeholder {
         color: $black300;
       }
@@ -330,7 +338,7 @@ export default {
   &_chat {
     .ctm-field__input {
       height: 40px;
-      background: #F7F8FA;
+      background: $black0;
     }
   }
   &_icon {
