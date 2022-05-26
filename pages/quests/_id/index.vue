@@ -264,7 +264,7 @@ export default {
         const notification = this.notifications[0];
         if (this.mounted && notification
           && !this.isEmployer
-          && notification.data.questId === this.$route.params.id
+          && notification.data?.questId === this.$route.params.id
           && notification.action === NotificationAction.QUEST_STATUS_UPDATED
           && notification.data.status === QuestStatuses.Done
           && this.userData.id === notification.data.assignedWorkerId
@@ -554,18 +554,15 @@ export default {
     },
     async openDispute() {
       const {
-        $router, checkAvailabilityDisputeTime, $store, ShowModal, ShowModalFail, quest: {
+        checkAvailabilityDisputeTime, ShowModal, ShowModalFail, quest: {
           status, openDispute, id, contractAddress,
         },
       } = this;
-      if (status === QuestStatuses.Dispute) return await $router.push(`${Path.DISPUTES}/${openDispute.id}`);
+      if (status === QuestStatuses.Dispute) return await this.$router.push(`${Path.DISPUTES}/${openDispute.id}`);
       async function payment({ reason = '', problemDescription = '', feeTx }) {
         const currentQuest = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
         if (!openDispute) await this.$store.dispatch('disputes/createDispute', { reason, problemDescription, questId: id });
-        const { result } = await $store.dispatch('quests/arbitration', {
-          contractAddress,
-          value: feeTx,
-        });
+        const { result } = await this.$store.dispatch('quests/arbitration', { contractAddress, value: feeTx });
         if (!result.status) {
           ShowModalFail({
             title: this.$t('modals.transactionError'),
@@ -579,7 +576,7 @@ export default {
             subtitle: this.$t('modals.checkExplorer'),
             link: `${process.env.WQ_EXPLORER_TX}/${result.transactionHash}`,
             img: images.SUCCESS,
-            callback: await $router.push(`${Path.DISPUTES}/${currentQuest.openDispute?.id}`),
+            callback: await this.$router.push(`${Path.DISPUTES}/${currentQuest.openDispute?.id}`),
           });
         }
       }
@@ -592,31 +589,31 @@ export default {
           GetWalletProvider(),
         );
         if (openDispute) {
+          console.log('is openDispute');
           /** Флоу, если сознан диспут и не было оплаты */
           await payment({ feeTx });
         } else {
+          console.log('is notPaid');
           /** Флоу, если не сознан диспут и не было оплаты */
           return ShowModal({
             key: modals.openADispute,
-            submitMethod: async ({ reason, problemDescription }) => {
-              ShowModal({
-                key: modals.transactionReceipt,
-                isDontOffLoader: true,
-                fields: {
-                  from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
-                  to: { name: this.$t('meta.toBig'), value: contractAddress },
-                  fee: { name: this.$t('wallet.table.trxFee'), value: 0 },
-                  amount: {
-                    name: this.$t('wallet.table.value'),
-                    value: new BigNumber(feeTx).shiftedBy(-18).toString(),
-                    symbol: TokenSymbols.WUSD,
-                  },
+            submitMethod: async ({ reason, problemDescription }) => ShowModal({
+              key: modals.transactionReceipt,
+              isDontOffLoader: true,
+              fields: {
+                from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+                to: { name: this.$t('meta.toBig'), value: contractAddress },
+                fee: { name: this.$t('wallet.table.trxFee'), value: 0 },
+                amount: {
+                  name: this.$t('wallet.table.value'),
+                  value: new BigNumber(feeTx).shiftedBy(-18).toString(),
+                  symbol: TokenSymbols.WUSD,
                 },
-                title: this.$t('modals.titles.disputePayment'),
-                text: this.$t('modals.payForDispute'),
-                submitMethod: await payment({ reason, problemDescription, feeTx }),
-              });
-            },
+              },
+              title: this.$t('modals.titles.disputePayment'),
+              text: this.$t('modals.payForDispute'),
+              submitMethod: await payment({ reason, problemDescription, feeTx }),
+            }),
           });
         }
       }

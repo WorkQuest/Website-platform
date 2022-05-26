@@ -23,10 +23,8 @@
       <base-textarea
         v-model="description"
         :placeholder="$t('modals.description')"
-        :error-text="$tc('modals.textLengthExceeded', 1000)"
-        :is-hide-error="!isMoreCharacters"
         data-selector="DESCRIPTION"
-        rules="required|text-desc"
+        rules="min:30|max:1000"
       />
       <div class="content__buttons buttons">
         <base-btn
