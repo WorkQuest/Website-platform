@@ -10,6 +10,8 @@ import {
   ChainsIdByChainNumber,
 } from '~/utils/enums';
 
+import { IS_PROD } from '~/utils/adresses';
+
 let web3 = null;
 let account = {};
 
@@ -23,7 +25,6 @@ if (process.browser) {
     axios = $axios;
   });
 }
-const isProd = process.env.PROD === 'true';
 
 export const getAccountAddress = () => account?.address;
 export const getAccount = () => account;
@@ -49,15 +50,15 @@ export const error = (code = 90000, msg = '', data = null) => ({
 export const getChainIdByChain = (chain) => {
   switch (chain) {
     case Chains.ETHEREUM:
-      if (!isProd) return ChainsId.ETH_TEST;
+      if (!IS_PROD) return ChainsId.ETH_TEST;
       return ChainsId.ETH_MAIN;
     case Chains.BINANCE:
-      if (!isProd) return ChainsId.BSC_TEST;
+      if (!IS_PROD) return ChainsId.BSC_TEST;
       return ChainsId.BSC_MAIN;
     case Chains.WORKNET:
       return ChainsId.WORKNET_TEST;
     case Chains.POLYGON:
-      if (!isProd) return ChainsId.MUMBAI_TEST;
+      if (!IS_PROD) return ChainsId.MUMBAI_TEST;
       return ChainsId.MATIC_MAIN;
     default:
       console.log(chain);
@@ -69,13 +70,13 @@ export const addedNetwork = async (chain) => {
   try {
     let networkParams = {};
     if (chain === Chains.ETHEREUM || [+ChainsId.ETH_MAIN, +ChainsId.ETH_TEST].includes(+chain)) {
-      networkParams = isProd ? NetworksData.ETH_MAIN : NetworksData.ETH_TEST;
+      networkParams = IS_PROD ? NetworksData.ETH_MAIN : NetworksData.ETH_TEST;
     } else if (chain === Chains.BINANCE || [+ChainsId.BSC_MAIN, +ChainsId.BSC_TEST].includes(+chain)) {
-      networkParams = isProd ? NetworksData.BSC_MAIN : NetworksData.BSC_TEST;
+      networkParams = IS_PROD ? NetworksData.BSC_MAIN : NetworksData.BSC_TEST;
     } else if (chain === Chains.WORKNET || chain === +ChainsId.WORKNET_TEST) {
       networkParams = NetworksData.WORKNET_TEST;
     } else if (chain === Chains.POLYGON || [+ChainsId.MUMBAI_TEST, +ChainsId.MATIC_MAIN].includes(+chain)) {
-      networkParams = isProd ? NetworksData.MATIC_MAIN : NetworksData.MUMBAI_TEST;
+      networkParams = IS_PROD ? NetworksData.MATIC_MAIN : NetworksData.MUMBAI_TEST;
     }
     await window.ethereum.request({
       method: 'wallet_addEthereumChain',
@@ -188,7 +189,7 @@ export const initProvider = async (payload) => {
   const { chain } = payload;
   try {
     let walletOptions;
-    if (!isProd) {
+    if (!IS_PROD) {
       if (chain === Chains.ETHEREUM) {
         walletOptions = {
           rpc: {
@@ -212,7 +213,7 @@ export const initProvider = async (payload) => {
         };
       }
     }
-    if (isProd) {
+    if (IS_PROD) {
       if (chain === Chains.ETHEREUM) {
         walletOptions = {
           rpc: {

@@ -467,7 +467,7 @@ export default {
   },
   mounted() {
     this.geoCode = new GeoCode('google', {
-      key: process.env.GMAPKEY,
+      key: this.ENV.GMAPKEY,
       lang: this.$i18n?.localeProperties?.code || 'en-US',
     });
     this.validationRefs();

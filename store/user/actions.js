@@ -22,7 +22,7 @@ import {
 
 import { WQPromotion } from '~/abi/index';
 
-const { WORKNET_PROMOTION } = process.env;
+import ENV from '~/utils/adresses/index';
 
 export default {
   async resendEmail({ commit }, { email }) {
@@ -328,11 +328,11 @@ export default {
     }
   },
 
-  async sendPhone({ commit }, payload) {
+  async sendSMSCode({ commit }) {
     try {
-      const response = await this.$axios.$post('/v1/profile/phone/send-code', payload);
+      const response = await this.$axios.$post('/v1/profile/phone/send-code');
       commit('setVerificationCode', response.result);
-      return response.result;
+      return success(response.result);
     } catch (e) {
       return console.log(e);
     }
@@ -378,7 +378,7 @@ export default {
           const cost = await fetchContractData(
             type,
             WQPromotion,
-            WORKNET_PROMOTION,
+            ENV.WORKNET_PROMOTION,
             data,
             GetWalletProvider(),
           );
@@ -393,11 +393,11 @@ export default {
   },
   async promoteUserOnContract({ commit }, { cost, tariff, period }) {
     try {
-      const inst = createInstance(WQPromotion, WORKNET_PROMOTION);
+      const inst = createInstance(WQPromotion, ENV.WORKNET_PROMOTION);
       const value = new BigNumber(cost).shiftedBy(18).toString();
       const { gas, gasPrice } = await getGasPrice(
         WQPromotion,
-        WORKNET_PROMOTION,
+        ENV.WORKNET_PROMOTION,
         'promoteUser',
         [tariff, period],
         value,

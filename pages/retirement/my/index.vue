@@ -498,7 +498,7 @@ export default {
           const [txFee] = await Promise.all([
             this.$store.dispatch('wallet/getContractFeeData', {
               abi: WQPensionFund,
-              contractAddress: process.env.WORKNET_PENSION_FUND,
+              contractAddress: this.ENV.WORKNET_PENSION_FUND,
               method: 'withdraw',
               data: [new BigNumber(amount).shiftedBy(18).toString()],
             }),
@@ -545,7 +545,7 @@ export default {
           const [txFee] = await Promise.all([
             this.getContractFeeData({
               abi: WQPensionFund,
-              contractAddress: process.env.WORKNET_PENSION_FUND,
+              contractAddress: this.ENV.WORKNET_PENSION_FUND,
               method: 'extendLockTime',
             }),
             this.getBalanceWQT(),
@@ -561,7 +561,7 @@ export default {
             key: modals.transactionReceipt,
             fields: {
               from: { name: this.$t('meta.fromBig'), value: this.convertToBech32('wq', this.walletAddress) },
-              to: { name: this.$t('meta.toBig'), value: this.convertToBech32('wq', process.env.WORKNET_PENSION_FUND) },
+              to: { name: this.$t('meta.toBig'), value: this.convertToBech32('wq', this.ENV.WORKNET_PENSION_FUND) },
               fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WQT },
             },
             isDontOffLoader: true,
@@ -590,12 +590,12 @@ export default {
           this.SetLoader(true);
           const allowance = await this.$store.dispatch('wallet/getAllowance', {
             tokenAddress: TokenMap[TokenSymbols.WUSD],
-            spenderAddress: process.env.WORKNET_PENSION_FUND,
+            spenderAddress: this.ENV.WORKNET_PENSION_FUND,
           });
           if (new BigNumber(allowance).isLessThan(newAmount)) {
             await this.$store.dispatch('wallet/approve', {
               tokenAddress: TokenMap[TokenSymbols.WUSD],
-              spenderAddress: process.env.WORKNET_PENSION_FUND,
+              spenderAddress: this.ENV.WORKNET_PENSION_FUND,
               amount: newAmount,
             });
           }
@@ -603,9 +603,9 @@ export default {
             this.$store.dispatch('wallet/getContractFeeData', {
               method: 'contribute',
               abi: WQPensionFund,
-              contractAddress: process.env.WORKNET_PENSION_FUND,
+              contractAddress: this.ENV.WORKNET_PENSION_FUND,
               data: [this.walletAddress, newAmount],
-              recipient: process.env.WORKNET_PENSION_FUND,
+              recipient: this.ENV.WORKNET_PENSION_FUND,
             }),
             this.getWallet(),
           ]);
@@ -619,7 +619,7 @@ export default {
 
           const fields = {
             from: { name: this.$t('meta.fromBig'), value: this.convertToBech32('wq', this.walletAddress) },
-            to: { name: this.$t('meta.toBig'), value: this.convertToBech32('wq', process.env.WORKNET_PENSION_FUND) },
+            to: { name: this.$t('meta.toBig'), value: this.convertToBech32('wq', this.ENV.WORKNET_PENSION_FUND) },
             fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WQT },
             amount: { name: this.$t('modals.amount'), value: amount, symbol: TokenSymbols.WUSD },
           };
@@ -647,7 +647,7 @@ export default {
             this.$store.dispatch('wallet/getContractFeeData', {
               method: 'updateFee',
               abi: WQPensionFund,
-              contractAddress: process.env.WORKNET_PENSION_FUND,
+              contractAddress: this.ENV.WORKNET_PENSION_FUND,
               data: [newAmount],
             }),
             this.getWallet(),
@@ -663,7 +663,7 @@ export default {
 
           const fields = {
             from: { name: this.$t('meta.fromBig'), value: this.convertToBech32('wq', this.walletAddress) },
-            to: { name: this.$t('meta.toBig'), value: this.convertToBech32('wq', process.env.WORKNET_PENSION_FUND) },
+            to: { name: this.$t('meta.toBig'), value: this.convertToBech32('wq', this.ENV.WORKNET_PENSION_FUND) },
             fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WQT },
           };
           this.ShowModal({

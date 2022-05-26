@@ -5,7 +5,7 @@
   >
     <div class="advanced__left">
       <div class="advanced__title">
-        {{ $t('meta.settings') }}
+        {{ $t('settings.visabilitySettings') }}
       </div>
       <div
         v-for="(checkBox) in checkBoxButtons"
@@ -35,7 +35,7 @@
     </div>
     <div class="advanced__right">
       <div class="advanced__title">
-        {{ $t('meta.settings') }}
+        {{ $t('settings.securitySettings') }}
       </div>
       <div class="advanced__options">
         <div
