@@ -2,7 +2,6 @@
   <ctm-modal-box
     :title="!phone ? $tc('modals.errors.errorSmsVer') : $t('modals.titles.smsVerification')"
     class="verification"
-    :is-unclosable="true"
   >
     <div class="verification__content content">
       <div
