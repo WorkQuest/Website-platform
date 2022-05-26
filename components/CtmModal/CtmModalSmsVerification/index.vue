@@ -122,7 +122,7 @@ import modals from '~/store/modals/modals';
 import { UserRole } from '~/utils/enums';
 import { images } from '~/utils/images';
 
-const timerDefaultValue = 5;
+const timerDefaultValue = 60;
 const confirmCodeLength = 6;
 
 export default {
@@ -158,16 +158,52 @@ export default {
       return this.userData?.tempPhone?.fullPhone;
     },
   },
+  created() {
+    window.addEventListener('beforeunload', this.beforeunload);
+  },
   async beforeMount() {
     this.confirmCode = this.currentConfirmCode;
   },
+  mounted() {
+    this.continueTimer();
+  },
+  beforeDestroy() {
+    if (this.isStartedTimer) {
+      this.$cookies.set('resend-timer', {
+        timerValue: this.timerValue,
+        createdAt: Date.now(),
+      });
+    }
+  },
   methods: {
+    beforeunload() {
+      if (this.isStartedTimer) {
+        this.$cookies.set('resend-timer', {
+          timerValue: this.timerValue,
+          createdAt: Date.now(),
+        });
+      } else this.$cookies.remove('resend-timer');
+      this.clearCookies();
+    },
     clearTimer() {
       this.$cookies.remove('resend-timer');
       this.timerValue = timerDefaultValue;
       clearInterval(this.timerId);
       this.isStartedTimer = false;
       this.disableResend = false;
+    },
+    continueTimer() {
+      const timer = this.$cookies.get('resend-timer');
+      if (!timer) return;
+
+      const spendSecs = (this.$moment().diff(timer.createdAt) / 1000).toFixed(0);
+      if (timer.timerValue < spendSecs) {
+        this.clearTimer();
+        return;
+      }
+
+      this.timerValue = timer.timerValue;
+      this.startTimer();
     },
     startTimer() {
       if (!this.isStartedTimer) {
