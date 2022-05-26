@@ -383,6 +383,7 @@ export default {
         Dispute,
         Created,
         WaitEmployerConfirm,
+        WaitWorker,
       } = InfoModeEmployer;
       let arr = [];
       switch (this.infoDataMode) {
@@ -414,6 +415,7 @@ export default {
           }];
           break;
         }
+        case WaitWorker:
         case Dispute: {
           arr = [{
             name: this.$t('meta.openDispute'),
