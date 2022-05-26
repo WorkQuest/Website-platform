@@ -58,6 +58,7 @@
       }
     },
     "btns": {
+      "connectSMSVer": "Connect SMS Verification",
       "resendEmail": "Resend email with code",
       "back": "পিছনে",
       "edit": "সম্পাদনা করুন",

@@ -108,7 +108,7 @@
             :disabled="invalid || codeLength"
             @click="handleSubmit(success)"
           >
-            {{ $t('meta.btns.confirm') }}
+            {{ $t('meta.btns.connectSMSVer') }}
           </base-btn>
         </div>
       </validation-observer>
