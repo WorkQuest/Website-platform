@@ -241,7 +241,7 @@ export default {
     styledTransactions() {
       return this.transactions.map((t) => {
         const symbol = TokenSymbolByContract[t.to_address_hash.hex] || TokenSymbols.WQT;
-        const decimals = this.balance[symbol]?.decimals || 18;
+        const decimals = this.balance[symbol].decimals || 18;
         const amount = t.tokenTransfers?.length ? t.tokenTransfers[0]?.amount : t.value;
         return {
           tx_hash: t.hash,
