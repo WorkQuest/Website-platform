@@ -58,7 +58,11 @@ export default {
     '@nuxtjs/i18n',
     'bootstrap-vue/nuxt',
     'cookie-universal-nuxt',
+    '@nuxtjs/google-gtag',
   ],
+  'google-gtag': {
+    id: 'G-D9LYH4QCFW',
+  },
   build: {
     productionSourceMap: false,
     productionGzip: true,
