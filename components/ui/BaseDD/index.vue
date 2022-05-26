@@ -26,6 +26,7 @@
           class="dd__icon"
         >
           <img
+            v-if="items[value].icon"
             :src="items[value].icon"
             :alt="items[value].title"
           >
@@ -76,6 +77,7 @@
             @click="selectItem(i)"
           >
             <img
+              v-if="item.icon"
               :src="item.icon"
               :alt="item.title"
             >

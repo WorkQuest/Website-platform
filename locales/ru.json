@@ -58,6 +58,7 @@
       }
     },
     "btns": {
+      "resendEmail": "Переотправить письмо с кодом",
       "back": "Назад",
       "edit": "Редактировать",
       "ok": "Ok",
@@ -210,6 +211,7 @@
     "alpha_num": "The {_field_} field may only contain alpha-numeric characters",
     "alpha_dash": "The {_field_} field may contain alpha-numeric characters as well as dashes and underscores",
     "alpha_spaces": "The {_field_} field may only contain alphabetic characters as well as spaces",
+    "alpha_spaces_dash": "Поле {_field_} может содержать только буквы алфавита, а также пробелы и дефисы",
     "between": "The {_field_} field must be between {min} and {max}",
     "confirmed": "The {_field_} field confirmation does not match",
     "digits": "The {_field_} field must be numeric and exactly contain {length} digits",
@@ -241,13 +243,28 @@
     "attemptsExceeded": "Number of attempts exceeded",
     "loginWithSecret": "Please login with secret phrase",
     "invalidPassword": "Invalid password",
-    "loginToContinue": "Please login to continue"
+    "loginToContinue": "Пожалуйста, войдите, чтобы продолжить",
+    "numberOfCard": "Введите правильное {_field_}",
+    "cvv": "Введите правильное {_field_}",
+    "date": "Введите правильное {_field_}",
+    "between-date": "Недопустимый диапазон дат",
+    "from-to": "Поле \"До\" больше, чем поле \"От\"",
+    "address": "Неверный адрес",
+    "addressBech32": "Введите правильное {_field_}",
+    "text-title": "Введите правильное {_field_}",
+    "text-desc": "Введите правильное {_field_}",
+    "percent": "Введите правильное {_field_},",
+    "greaterThanZero": "Введите правильное {_field_}, не может быть нулевым",
+    "zeroFail": "Введите правильное {_field_}, не может быть нулевым",
+    "notMoreDecimalPlaces": "Введите правильное {_field_}, не более 2 знаков после запятой",
+    "max_percent": "Введите правильное {_field_}, уменьшите процент"
   },
   "about": {
     "text": "Work Quest — это социальный проект на основе технологии блокчейн для поиска работы и решения любых задач со стороны работодателя в режиме квеста. Вы ищете работу? Work Quest поможет найти квест рядом с вами и вашим городом. Нужны ли вам рабочие для выполнения целей? Просто создайте квест на сайте Work Quest. Сервис берет на себя гарантийные обязательства по выполнению квестов. Средства работодателя хранятся у нас, если работник дает подтверждение о выполнении работы, он получает задаток денежных средств на свой счет. Система рейтингов, обзоров и список выполненных квестов помогут легко найти честных людей и лучших специалистов.\n Наша цель – упростить коммуникацию между работодателем и работником, помочь трудоустроить миллионы людей, улучшить их материальное положение, решить проблему поиска надежных профессионалов во всех отраслях, создать прогрессивную цифровую экономику, построенную на принципах доверия, взаимного уважения и благополучия всех его участников."
   },
   "registration": {
-    "emailConfirm": "A letter has been sent to your email address",
+    "emailConfirmNewLetter": "Новое письмо отправлено на ваш почтовый адрес",
+    "emailConfirm": "Письмо уже было отправлено на ваш почтовый ящик",
     "emailConfirmTitle": "Проверьте свою почту"
   },
   "profile": {
@@ -1019,6 +1036,8 @@
       "youHaveAQuestDraft": "У вас есть черновик квеста. Очистить?",
       "saveQuestDraft": "Сохранить черновик квеста?"
     },
+    "token": "Токен",
+    "network": "Сеть",
     "payForDispute": "Вам нужно оплатить открытие спора",
     "tryLater": "Пожалуйста, попробуйте позже...",
     "checkExplorer": "Вы можете проверить статус транзакции на Explorer",
@@ -1387,6 +1406,11 @@
     "transfer": "Buy / Send",
     "addCardProposal": "Добавьте банковскую карту для удобного вывода",
     "addCard": "Добавить карту",
+    "buyWQT": {
+      "buyButton": "Купить WQT",
+      "title": "Купить первые WQT!",
+      "sub": "Donec rutrum congue leo eget malesuada. Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem."
+    },
     "collateral": {
       "balance": "Залоговый баланс",
       "coin": "монета",
@@ -1528,7 +1552,9 @@
       "workInOffice": "In-office",
       "bothVariant": "Hybrid workplace"
     },
-    "selectPayPeriod": "Выберите период оплаты"
+    "selectPayPeriod": "Выберите период оплаты",
+    "visabilitySettings": "Настройки видимости",
+    "securitySettings": "Настройки безопасности"
   },
   "raising-views": {
     "raisingViews": "Увеличение просмотров",

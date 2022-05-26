@@ -43,7 +43,6 @@ extend('numberOfCard', {
       valid: checkCardNumber(cardNumber),
     };
   },
-  message: 'Please enter correct {_field_}',
 });
 
 extend('cvv', {
@@ -54,8 +53,8 @@ extend('cvv', {
       valid: regex.test(value),
     };
   },
-  message: 'Please enter correct {_field_}',
 });
+
 extend('date', {
   validate(value) {
     const regex = /(?:0[1-9]|1[0-2])\/[0-9]{2}/;
@@ -64,7 +63,6 @@ extend('date', {
       valid: regex.test(value),
     };
   },
-  message: 'Please enter correct {_field_}',
 });
 
 extend('between-date', {
@@ -87,7 +85,6 @@ extend('between-date', {
       valid: f <= t,
     };
   },
-  message: 'Invalid date range',
 });
 
 extend('from-to', {
@@ -110,7 +107,6 @@ extend('from-to', {
       valid: f <= t,
     };
   },
-  message: 'The field "To" is greater than the field "From"',
 });
 
 extend('decimal', {
@@ -121,7 +117,6 @@ extend('decimal', {
       valid: regex.test(value),
     };
   },
-  message: 'Please enter correct {_field_}',
 });
 
 extend('numeric', {
@@ -132,7 +127,6 @@ extend('numeric', {
       valid: regex.test(value),
     };
   },
-  message: 'Please enter correct {_field_}',
 });
 
 extend('decimalPlaces', {
@@ -144,7 +138,6 @@ extend('decimalPlaces', {
     };
   },
   params: ['places'],
-  message: 'Max decimal places: {places}',
 });
 
 extend('mnemonic', {
@@ -154,7 +147,6 @@ extend('mnemonic', {
       valid: validateMnemonic(value),
     };
   },
-  message: 'Incorrect secret phrase',
 });
 
 extend('max_value', {
@@ -165,7 +157,6 @@ extend('max_value', {
     };
   },
   params: ['max'],
-  message: 'Value must be less than or equal {max}',
 });
 
 extend('min_value', {
@@ -176,7 +167,6 @@ extend('min_value', {
     };
   },
   params: ['min'],
-  message: 'Value must be greater than or equal {min}',
 });
 
 extend('address', {
@@ -186,7 +176,6 @@ extend('address', {
       valid: utils.isAddress(value),
     };
   },
-  message: 'Type correct address',
 });
 extend('addressBech32', {
   validate(value) {
@@ -196,7 +185,6 @@ extend('addressBech32', {
       valid: regex.test(value),
     };
   },
-  message: 'Please enter correct {_field_}',
 });
 
 extend('text-title', {
@@ -207,7 +195,6 @@ extend('text-title', {
       valid: regex.test(value),
     };
   },
-  message: 'Please enter correct {_field_}',
 });
 extend('text-desc', {
   validate(value) {
@@ -217,8 +204,8 @@ extend('text-desc', {
       valid: regex.test(value),
     };
   },
-  message: 'Please enter correct {_field_}',
 });
+
 extend('percent', {
   validate(value) {
     const regex = /^100%?$|^\s*(\d{0,2})((\.|,)(\d*))?\s*%?\s*$/;
@@ -227,14 +214,14 @@ extend('percent', {
       valid: regex.test(value),
     };
   },
-  message: 'Please enter correct {_field_}',
 });
+
 extend('greaterThanZero', {
   validate(value) {
     return (value > 0);
   },
-  message: "Please enter correct {_field_}, can't be zero",
 });
+
 extend('zeroFail', {
   validate(value) {
     const regex = /^[0][0-9]/;
@@ -242,27 +229,37 @@ extend('zeroFail', {
       valid: !regex.test(value),
     };
   },
-  message: "Please enter correct {_field_}, can't be zero",
 });
+
 extend('notMoreDecimalPlaces', {
   validate(value) {
     return (((value.toString().includes('.')) ? (value.toString().split('.').pop().length) : (0)) < 4);
   },
-  message: 'Please enter correct {_field_}, no more than 2 decimal places',
 });
+
 extend('min_percent', {
   validate(value, { min }) {
     return +value.replace(/%/g, '') >= +min;
   },
   params: ['min'],
 });
+
 extend('max_percent', {
   validate(value, { max }) {
     return +value.replace(/%/g, '') <= +max;
   },
-  message: 'Please enter correct {_field_}, reduce the percentage',
   params: ['max'],
 });
+
+extend('alpha_spaces_dash', {
+  validate(value) {
+    const regex = /^[\p{L}\-_\s]+$/u;
+    return {
+      valid: regex.test(value),
+    };
+  },
+});
+
 export default ({ app }) => {
   configure({
     defaultMessage: (_field_, values) => app.i18n.t(`messages.${values._rule_}`, values),
