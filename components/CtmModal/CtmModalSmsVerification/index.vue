@@ -43,7 +43,7 @@
           :placeholder="$t('modals.phoneNumber')"
           mode="icon"
           :disabled="true"
-          :name="$tc('modals.phoneNumberField')"
+          :name="$tc('modals.phoneNumber')"
         >
           <template
             v-slot:left
