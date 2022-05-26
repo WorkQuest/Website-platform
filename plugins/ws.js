@@ -1,4 +1,5 @@
 import Connection from '~/plugins/connection';
+import ENV from '~/utils/adresses/index';
 
 export default async ({ store, $axios }, inject) => {
   const connectionManager = {
@@ -6,10 +7,10 @@ export default async ({ store, $axios }, inject) => {
     // privateConnections: [],
     connections: [
       {
-        name: 'wsNotifs', url: process.env.WS_NOTIFS_URL, verboseName: 'notifsConnection',
+        name: 'wsNotifs', url: ENV.WS_NOTIFS_URL, verboseName: 'notifsConnection',
       },
       {
-        name: 'wsChatActions', url: process.env.WS_CHAT_ACTIONS_URL, verboseName: 'chatActionsConnection',
+        name: 'wsChatActions', url: ENV.WS_CHAT_ACTIONS_URL, verboseName: 'chatActionsConnection',
       },
     ],
     async initConnection(_connection) {
