@@ -1,7 +1,7 @@
 <template>
   <div class="auth">
     <ValidationObserver
-      v-if="step === walletState.Default"
+      v-if="step === $options.WalletState.Default"
       v-slot="{ handleSubmit }"
       class="auth__container"
       data-selector="PAGE-SIGN-IN"
@@ -98,11 +98,12 @@
       </form>
       <base-btn
         class="auth__resend"
+        :class="{auth__resend_hidden : disableResend && hiddenResend}"
         data-selector="RESEND-LETTER"
         :disabled="disableResend"
         @click="resendLetter"
       >
-        {{ `${$t('meta.btns.resendEmail')} ${isStartedTimer ? $tc('meta.units.seconds', 0,{count:seconds} ) : ''}` }}
+        {{ `${$t('meta.btns.resendEmail')} ${isStartedTimer ? $tc('meta.units.seconds', 0,{count:timerValue} ) : ''}` }}
       </base-btn>
       <div class="auth__text auth__text_wrap">
         {{ $t('signIn.or') }}
@@ -149,7 +150,7 @@
       </div>
     </ValidationObserver>
     <div
-      v-if="step > walletState.Default"
+      v-if="step > $options.WalletState.Default"
       class="auth__back"
       @click="back"
     >
@@ -184,6 +185,7 @@ const timerDefaultValue = 60;
 export default {
   name: 'SignIn',
   layout: 'auth',
+  WalletState,
   images,
   Path,
   components: {
@@ -194,6 +196,8 @@ export default {
       disableResend: true,
       timerValue: timerDefaultValue,
       isStartedTimer: false,
+      hiddenResend: true,
+
       addressAssigned: false,
       userWalletAddress: null,
       step: WalletState.Default,
@@ -212,12 +216,6 @@ export default {
 
       connections: 'main/notificationsConnectionStatus',
     }),
-    walletState() {
-      return WalletState;
-    },
-    seconds() {
-      return this.timerValue;
-    },
   },
   created() {
     window.addEventListener('beforeunload', this.beforeunload);
@@ -276,15 +274,18 @@ export default {
       } else this.$cookies.remove('timer');
       this.clearCookies();
     },
+    clearTimer() {
+      this.timerValue = timerDefaultValue;
+      this.disableResend = false;
+      this.isStartedTimer = false;
+      clearInterval(this.timerId);
+    },
     continueTimer() {
       const timer = this.$cookies.get('timer');
       if (!timer) return;
       const spendSecs = (this.$moment().diff(timer.createdAt) / 1000).toFixed(0);
       if (timer.timerValue < spendSecs) {
-        this.timerValue = timerDefaultValue;
-        this.disableResend = false;
-        this.isStartedTimer = false;
-        clearInterval(this.timerId);
+        this.clearTimer();
         return;
       }
       this.timerValue = timer.timerValue;
@@ -293,13 +294,7 @@ export default {
     startTimer() {
       if (!this.isStartedTimer) {
         this.timerId = setInterval(() => {
-          if (this.timerId && this.timerValue === 0) {
-            this.timerValue = timerDefaultValue;
-            this.disableResend = false;
-            this.isStartedTimer = false;
-            clearInterval(this.timerId);
-            return;
-          }
+          if (this.timerId && this.timerValue === 0) this.clearTimer();
           this.timerValue -= 1;
         }, 1000);
 
@@ -345,9 +340,8 @@ export default {
     },
 
     async resendLetter() {
-      this.SetLoader(true);
       this.model.email = this.model.email.trim();
-      if (this.model.email) {
+      if (this.model.email && !this.disableResend) {
         await this.$store.dispatch('user/resendEmail', { email: this.model.email });
         await this.$store.dispatch('main/showToast', {
           title: this.$t('registration.emailConfirmTitle'),
@@ -355,7 +349,6 @@ export default {
         });
         this.startTimer();
       }
-      this.SetLoader(false);
     },
     async signIn() {
       if (this.isLoading) return;
@@ -386,7 +379,8 @@ export default {
       const confirmToken = sessionStorage.getItem('confirmToken');
       // Unconfirmed account w/o confirm token
       if (this.userStatus === UserStatuses.Unconfirmed && !confirmToken) {
-        this.disableResend = false;
+        if (!this.isStartedTimer) this.disableResend = false;
+        this.hiddenResend = false;
         await this.$store.dispatch('main/showToast', {
           title: this.$t('registration.emailConfirmTitle'),
           text: this.$t('registration.emailConfirm'),
@@ -551,6 +545,9 @@ export default {
 .auth {
   &__resend {
     margin-top: 10px;
+    &_hidden {
+      display: none;
+    }
   }
   &__back-btn {
     cursor: pointer;
