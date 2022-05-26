@@ -560,7 +560,6 @@ export default {
           status, openDispute, id, contractAddress,
         },
       } = this;
-      const explorerRef = this.ENV.WQ_EXPLORER;
       if (status === QuestStatuses.Dispute) return await this.$router.push(`${Path.DISPUTES}/${openDispute.id}`);
       const payment = async ({ reason = '', problemDescription = '', feeTx }) => {
         const currentQuest = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
@@ -575,6 +574,7 @@ export default {
             img: images.ERROR,
           });
         } else {
+          const explorerRef = this.ENV.WQ_EXPLORER;
           ShowModal({
             key: modals.status,
             title: this.$t('modals.transactionSent'),
