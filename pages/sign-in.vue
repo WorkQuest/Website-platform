@@ -103,7 +103,7 @@
         :disabled="disableResend"
         @click="resendLetter"
       >
-        {{ `${$t('meta.btns.resendEmail')} ${isStartedTimer ? $tc('meta.units.seconds', 0,{count:timerValue} ) : ''}` }}
+        {{ `${$t('meta.btns.resendEmail')} ${resendTimer}` }}
       </base-btn>
       <div class="auth__text auth__text_wrap">
         {{ $t('signIn.or') }}
@@ -193,10 +193,10 @@ export default {
   },
   data() {
     return {
-      disableResend: true,
-      timerValue: timerDefaultValue,
-      isStartedTimer: false,
       hiddenResend: true,
+      disableResend: true,
+      isStartedTimer: false,
+      timerValue: timerDefaultValue,
 
       addressAssigned: false,
       userWalletAddress: null,
@@ -204,8 +204,8 @@ export default {
       model: { email: '', password: '', totp: '' },
       remember: false,
       userStatus: null,
-      isLoginWithSocial: false,
       userAddress: '',
+      isLoginWithSocial: false,
       isPasswordVisible: false,
     };
   },
@@ -216,6 +216,10 @@ export default {
 
       connections: 'main/notificationsConnectionStatus',
     }),
+    resendTimer() {
+      const { timerValue, isStartedTimer } = this;
+      return isStartedTimer ? this.$tc('meta.units.seconds', this.DeclOfNum(timerValue), { count: timerValue }) : '';
+    },
   },
   created() {
     window.addEventListener('beforeunload', this.beforeunload);
@@ -262,26 +266,26 @@ export default {
         sessionStorage.setItem('referralId', refId);
       }
     }
-    this.$cookies.remove('timer');
   },
   methods: {
     beforeunload() {
       if (this.isStartedTimer) {
-        this.$cookies.set('timer', {
+        this.$cookies.set('resend-timer', {
           timerValue: this.timerValue,
           createdAt: Date.now(),
         });
-      } else this.$cookies.remove('timer');
+      } else this.$cookies.remove('resend-timer');
       this.clearCookies();
     },
     clearTimer() {
+      this.$cookies.remove('resend-timer');
       this.timerValue = timerDefaultValue;
       this.disableResend = false;
       this.isStartedTimer = false;
       clearInterval(this.timerId);
     },
     continueTimer() {
-      const timer = this.$cookies.get('timer');
+      const timer = this.$cookies.get('resend-timer');
       if (!timer) return;
       const spendSecs = (this.$moment().diff(timer.createdAt) / 1000).toFixed(0);
       if (timer.timerValue < spendSecs) {
