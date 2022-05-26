@@ -97,7 +97,6 @@ import { WQTBuyCommission } from '~/utils/сonstants/commission';
 import { getStyledAmount } from '~/utils/wallet';
 import { getChainIdByChain } from '~/utils/web3';
 import modals from '~/store/modals/modals';
-import { ERC20 } from '~/abi';
 
 export default {
   name: 'ModalBuyWQT',
