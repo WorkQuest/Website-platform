@@ -1545,7 +1545,9 @@
       "workInOffice": "In-office",
       "bothVariant": "Hybrid workplace"
     },
-    "selectPayPeriod": "Выберите период оплаты"
+    "selectPayPeriod": "Выберите период оплаты",
+    "visabilitySettings": "Настройки видимости",
+    "securitySettings": "Настройки безопасности"
   },
   "raising-views": {
     "raisingViews": "Увеличение просмотров",
