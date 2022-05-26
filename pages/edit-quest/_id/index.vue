@@ -225,10 +225,11 @@ import {
   WorkplaceIndex,
 } from '~/utils/enums';
 import {
-  QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses, CommissionForCreatingAQuest, PaidTariff,
+  QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses, PaidTariff,
 } from '~/utils/сonstants/quests';
 import { ERC20, WorkQuest, WQPromotion } from '~/abi';
 import { error, success } from '~/utils/web3';
+import { CommissionForCreatingAQuest } from '~/utils/сonstants/commission';
 
 const { GeoCode } = require('geo-coder');
 
@@ -378,7 +379,7 @@ export default {
     this.SetLoader(true);
     await this.$store.dispatch('quests/getQuest', this.$route.params.id);
     this.geoCode = new GeoCode('google', {
-      key: process.env.GMAPKEY,
+      key: this.ENV.GMAPKEY,
       lang: this.$i18n?.localeProperties?.code || 'en-US',
     });
     const {

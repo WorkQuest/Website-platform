@@ -8,11 +8,17 @@ import { TokenSymbols } from '~/utils/enums';
 import { QuestMethods, QuestStatuses } from '~/utils/сonstants/quests';
 import { images } from '~/utils/images';
 import { ERC20, WorkQuest } from '~/abi';
+import ENV, { IS_PROD } from '~/utils/adresses/index';
 
 Vue.use(VueTippy);
 Vue.component('tippy', TippyComponent);
 
 Vue.mixin({
+  data() {
+    return {
+      ENV,
+    };
+  },
   methods: {
     convertToBech32(prefix, address) {
       return converter(prefix).toBech32(address);
@@ -256,7 +262,7 @@ Vue.mixin({
       return 2;
     },
     ScrollToTop: () => window.scrollTo(0, 0),
-    IsProd: () => process.env.PROD === 'true',
+    IsProd: () => IS_PROD,
     ShowModalSuccess({
       title, subtitle, img, path,
     }) {

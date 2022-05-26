@@ -558,6 +558,7 @@ export default {
           status, openDispute, id, contractAddress,
         },
       } = this;
+      const explorerRef = this.ENV.WQ_EXPLORER;
       if (status === QuestStatuses.Dispute) return await $router.push(`${Path.DISPUTES}/${openDispute.id}`);
       async function payment({ reason = '', problemDescription = '', feeTx }) {
         const currentQuest = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
@@ -577,7 +578,7 @@ export default {
             key: modals.status,
             title: this.$t('modals.transactionSent'),
             subtitle: this.$t('modals.checkExplorer'),
-            link: `${process.env.WQ_EXPLORER_TX}/${result.transactionHash}`,
+            link: `${explorerRef}/tx/${result.transactionHash}`,
             img: images.SUCCESS,
             callback: await $router.push(`${Path.DISPUTES}/${currentQuest.openDispute?.id}`),
           });
@@ -587,7 +588,7 @@ export default {
         const feeTx = await fetchContractData(
           'feeTx',
           WQFactory,
-          process.env.WORKNET_WQ_FACTORY,
+          this.ENV.WORKNET_WQ_FACTORY,
           null,
           GetWalletProvider(),
         );

@@ -23,9 +23,18 @@ import {
 import { WQPromotion } from '~/abi/index';
 import { PaidTariff } from '~/utils/сonstants/quests';
 
-const { WORKNET_PROMOTION } = process.env;
+import ENV from '~/utils/adresses/index';
 
 export default {
+  async resendEmail({ commit }, { email }) {
+    try {
+      const { result } = await this.$axios.$post('/v1/auth/main/resend-email', { email });
+      return success(result);
+    } catch (e) {
+      console.error('Error in user/resendEmail: ', e);
+      return error();
+    }
+  },
   async changeRole({ commit }, { totp }) {
     try {
       return await this.$axios.$put('/v1/profile/change-role', { totp });
@@ -347,16 +356,6 @@ export default {
       return false;
     }
   },
-  // TODO delete, waiting when backend will be catch all this events
-  async payUserRaisedView({ commit }, payload) {
-    try {
-      const response = await this.$axios.$post('/v1/profile/worker/me/raise-view/pay', payload);
-      return response.ok;
-    } catch (e) {
-      console.log('profile/worker/me/raise-view/pay');
-      return false;
-    }
-  },
   /**
    *
    * @param commit
@@ -380,7 +379,7 @@ export default {
             const cost = await fetchContractData(
               type,
               WQPromotion,
-              WORKNET_PROMOTION,
+              ENV.WORKNET_PROMOTION,
               [tariffs[j], periods[i]],
               GetWalletProvider(),
             );

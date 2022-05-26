@@ -58,6 +58,7 @@
       }
     },
     "btns": {
+      "resendEmail": "Resend email with code",
       "back": "Back",
       "edit": "Edit",
       "ok": "Ok",
@@ -262,6 +263,7 @@
     "text": "Work Quest is a social project based on the blockchain technology for finding work and solving any tasks from the employer's side in quest mode. Are you looking for a job? A work quest will help you find a quest next to you and your city. Do you need workers to carry out the goals? Just create a quest on the site of the work quest. The service assumes the warranty obligations for performing quests. Employer funds are kept with us , if the employee gives a confirmation of the performance of work, he receives a deposit of funds on his account. The system of ratings, reviews and a list of completed quests will help to easily find honest people and the best specialists.\n\n          Our goal is to simplify the communication between the employer and the employee, to help employ millions of people, to improve their financial situation, to solve the lifelong problem of finding reliable professionals in all sectors to create a progressive digital economy built on the principles of trust, mutual respect and the well-being of all its participants."
   },
   "registration": {
+    "emailConfirmNewLetter": "A new letter has been sent to your email address",
     "emailConfirm": "A letter has been sent to your email address",
     "emailConfirmTitle": "Check your email"
   },
@@ -1038,6 +1040,8 @@
       "youHaveAQuestDraft": "You have a quest draft. Cleat it?",
       "saveQuestDraft": "Save quest draft?"
     },
+    "token": "Token",
+    "network": "Network",
     "payForDispute": "You need to pay to open a dispute",
     "tryLater": "Please, try later...",
     "checkExplorer": "You can check a transaction status on Explorer",
@@ -1406,6 +1410,11 @@
     "transfer": "Buy / Send",
     "addCardProposal": "Add bank card for easy withdrawal",
     "addCard": "Add card",
+    "buyWQT": {
+      "buyButton": "Buy WQT",
+      "title": "Buy first WQT!",
+      "sub": "Donec rutrum congue leo eget malesuada. Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem."
+    },
     "collateral": {
       "balance": "Collateral balance",
       "coin": "coin",
@@ -1547,7 +1556,9 @@
       "workInOffice": "In-office",
       "bothVariant": "Hybrid workplace"
     },
-    "selectPayPeriod": "Select pay period"
+    "selectPayPeriod": "Select pay period",
+    "visabilitySettings": "Visability settings",
+    "securitySettings": "Security settings"
   },
   "raising-views": {
     "raisingViews": "Raising views",

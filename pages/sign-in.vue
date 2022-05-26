@@ -1,21 +1,25 @@
 <template>
   <div class="auth">
     <ValidationObserver
-      v-if="step === walletState.Default"
+      v-if="step === $options.WalletState.Default"
       v-slot="{ handleSubmit }"
       class="auth__container"
       data-selector="PAGE-SIGN-IN"
       tag="div"
     >
       <div class="auth__text auth__text_title">
-        <span>{{ $t('meta.signIn') }}</span>
+        <span>
+          {{ $t('meta.signIn') }}
+        </span>
       </div>
       <div class="auth__text auth__text_simple">
-        <span>{{ $t('meta.account') }}</span>
+        <span>
+          {{ $t('meta.account') }}
+        </span>
         <nuxt-link
           class="auth__text auth__text_link"
           data-selector="ACTION-BTN-TO-REGISTRATION"
-          to="/sign-up"
+          :to="$options.Path.SIGN_UP"
         >
           {{ $t('meta.btns.registration') }}
         </nuxt-link>
@@ -28,7 +32,7 @@
         <base-field
           v-model="model.email"
           mode="icon"
-          :name="$t('signUp.email')"
+          :name="$tc('signUp.email')"
           :placeholder="$t('signUp.email')"
           rules="required|email"
           autocomplete="username"
@@ -36,7 +40,7 @@
         >
           <template v-slot:left>
             <img
-              src="~assets/img/icons/email.svg"
+              :src="$options.images.EMAIL"
               alt=""
             >
           </template>
@@ -44,7 +48,7 @@
         <base-field
           v-model="model.password"
           mode="icon"
-          :name="$t('signUp.password')"
+          :name="$tc('signUp.password')"
           :placeholder="$t('signUp.password')"
           rules="required_if|min:8"
           autocomplete="current-password"
@@ -54,7 +58,7 @@
         >
           <template v-slot:left>
             <img
-              src="~assets/img/icons/password.svg"
+              :src="$options.images.PASSWORD"
               alt=""
             >
           </template>
@@ -72,7 +76,7 @@
           <base-checkbox
             v-model="remember"
             name="remember"
-            :label="$t('signIn.remember')"
+            :label="$tc('signIn.remember')"
             @input="$store.dispatch('user/setRememberMe', remember)"
           />
           <div
@@ -91,10 +95,19 @@
             {{ $t('meta.login') }}
           </base-btn>
         </div>
-        <div class="auth__text auth__text_wrap">
-          {{ $t('signIn.or') }}
-        </div>
       </form>
+      <base-btn
+        class="auth__resend"
+        :class="{auth__resend_hidden : disableResend && hiddenResend}"
+        data-selector="RESEND-LETTER"
+        :disabled="disableResend"
+        @click="resendLetter"
+      >
+        {{ `${$t('meta.btns.resendEmail')} ${resendTimer}` }}
+      </base-btn>
+      <div class="auth__text auth__text_wrap">
+        {{ $t('signIn.or') }}
+      </div>
       <div class="auth__social">
         <div class="auth__text auth__text_dark">
           {{ $t('signIn.loginWith') }}
@@ -105,7 +118,7 @@
             @click="showSignWorkQuest()"
           >
             <img
-              src="~assets/img/app/logo.svg"
+              :src="$options.images.WQ_LOGO"
               alt="WorkQuest"
             >
           </button>
@@ -137,11 +150,14 @@
       </div>
     </ValidationObserver>
     <div
-      v-if="step > walletState.Default"
+      v-if="step > $options.WalletState.Default"
       class="auth__back"
       @click="back"
     >
-      <span class="icon-chevron_big_left" /> <span>{{ $t('meta.btns.back') }}</span>
+      <span class="icon-chevron_big_left" />
+      <span>
+        {{ $t('meta.btns.back') }}
+      </span>
     </div>
     <CreateWallet
       :step="step"
@@ -162,23 +178,34 @@ import CreateWallet from '~/components/ui/CreateWallet';
 import {
   Path, UserRole, UserStatuses, WalletState,
 } from '~/utils/enums';
+import { images } from '~/utils/images';
+
+const timerDefaultValue = 60;
 
 export default {
   name: 'SignIn',
   layout: 'auth',
+  WalletState,
+  images,
+  Path,
   components: {
     CreateWallet,
   },
   data() {
     return {
+      hiddenResend: true,
+      disableResend: true,
+      isStartedTimer: false,
+      timerValue: timerDefaultValue,
+
       addressAssigned: false,
       userWalletAddress: null,
       step: WalletState.Default,
       model: { email: '', password: '', totp: '' },
       remember: false,
       userStatus: null,
-      isLoginWithSocial: false,
       userAddress: '',
+      isLoginWithSocial: false,
       isPasswordVisible: false,
     };
   },
@@ -189,22 +216,26 @@ export default {
 
       connections: 'main/notificationsConnectionStatus',
     }),
-    walletState() {
-      return WalletState;
+    resendTimer() {
+      const { timerValue, isStartedTimer } = this;
+      return isStartedTimer ? this.$tc('meta.units.seconds', this.DeclOfNum(timerValue), { count: timerValue }) : '';
     },
   },
   created() {
-    window.addEventListener('beforeunload', this.clearCookies);
+    window.addEventListener('beforeunload', this.beforeunload);
     const { token } = this.$route.query;
     if (token) sessionStorage.setItem('confirmToken', String(token));
   },
   async mounted() {
-    this.isLoginWithSocial = this.$cookies.get('socialNetwork');
+    this.continueTimer();
+
     const access = this.$cookies.get('access');
     const refresh = this.$cookies.get('refresh');
     const userStatus = this.$cookies.get('userStatus');
     if (+userStatus === UserStatuses.Confirmed && access) await this.redirectUser();
-    if (this.isLoginWithSocial && access && +userStatus === UserStatuses.Confirmed) {
+
+    this.isLoginWithSocial = this.$cookies.get('socialNetwork');
+    if (this.isLoginWithSocial && access && refresh && +userStatus === UserStatuses.Confirmed) {
       this.SetLoader(true);
       await this.$store.dispatch('user/getUserData');
       this.userWalletAddress = this.userData?.wallet?.address;
@@ -218,7 +249,9 @@ export default {
         social: this.isLoginWithSocial,
       });
     }
+
     if (sessionStorage.getItem('confirmToken')) this.ShowToast(this.$t('messages.loginToContinue'), ' ');
+
     const isRef = this.$router.history._startLocation.includes('ref');
     if (isRef) {
       const ref = this.$router.history._startLocation.replace('/?ref=', '');
@@ -235,6 +268,46 @@ export default {
     }
   },
   methods: {
+    beforeunload() {
+      if (this.isStartedTimer) {
+        this.$cookies.set('resend-timer', {
+          timerValue: this.timerValue,
+          createdAt: Date.now(),
+        });
+      } else this.$cookies.remove('resend-timer');
+      this.clearCookies();
+    },
+    clearTimer() {
+      this.$cookies.remove('resend-timer');
+      this.timerValue = timerDefaultValue;
+      clearInterval(this.timerId);
+      this.isStartedTimer = false;
+      this.disableResend = false;
+    },
+    continueTimer() {
+      const timer = this.$cookies.get('resend-timer');
+      if (!timer) return;
+
+      const spendSecs = (this.$moment().diff(timer.createdAt) / 1000).toFixed(0);
+      if (timer.timerValue < spendSecs) {
+        this.clearTimer();
+        return;
+      }
+
+      this.timerValue = timer.timerValue;
+      this.startTimer();
+    },
+    startTimer() {
+      if (!this.isStartedTimer) {
+        this.timerId = setInterval(() => {
+          if (this.timerId && this.timerValue === 0) this.clearTimer();
+          this.timerValue -= 1;
+        }, 1000);
+
+        this.isStartedTimer = true;
+        this.disableResend = true;
+      }
+    },
     clearCookies() {
       if (this.userData.id) return;
       this.$cookies.remove('access');
@@ -265,6 +338,24 @@ export default {
     goStep(step) {
       this.step = step;
     },
+
+    showConfirmEmailModal() {
+      this.ShowModal({
+        key: modals.emailConfirm,
+      });
+    },
+
+    async resendLetter() {
+      this.model.email = this.model.email.trim();
+      if (this.model.email && !this.disableResend) {
+        await this.$store.dispatch('user/resendEmail', { email: this.model.email });
+        await this.$store.dispatch('main/showToast', {
+          title: this.$t('registration.emailConfirmTitle'),
+          text: this.$t('registration.emailConfirmNewLetter'),
+        });
+        this.startTimer();
+      }
+    },
     async signIn() {
       if (this.isLoading) return;
       this.SetLoader(true);
@@ -294,6 +385,8 @@ export default {
       const confirmToken = sessionStorage.getItem('confirmToken');
       // Unconfirmed account w/o confirm token
       if (this.userStatus === UserStatuses.Unconfirmed && !confirmToken) {
+        if (!this.isStartedTimer) this.disableResend = false;
+        this.hiddenResend = false;
         await this.$store.dispatch('main/showToast', {
           title: this.$t('registration.emailConfirmTitle'),
           text: this.$t('registration.emailConfirm'),
@@ -313,7 +406,7 @@ export default {
       // Wallet is not assigned to this account
       if (!this.userAddress) {
         setCipherKey(this.model.password);
-        this.$cookies.set('userLogin', true, { path: '/' });
+        this.$cookies.set('userLogin', true, { path: Path.ROOT });
         await this.$router.push(Path.ROLE);
         this.SetLoader(false);
         return;
@@ -420,7 +513,7 @@ export default {
     },
     async redirectUser() {
       this.addressAssigned = true;
-      this.$cookies.set('userLogin', true, { path: '/' });
+      this.$cookies.set('userLogin', true, { path: Path.ROOT });
       // redirect to confirm access if token exists & unconfirmed account
       const confirmToken = sessionStorage.getItem('confirmToken');
       if ((this.userStatus === UserStatuses.Unconfirmed || !this.userAddress) && confirmToken) {
@@ -438,7 +531,7 @@ export default {
       else if (this.userData.role === UserRole.WORKER) await this.$router.push(Path.QUESTS);
     },
     async redirectSocialLink(socialNetwork) {
-      window.location = `${process.env.BASE_URL}v1/auth/login/main/${socialNetwork}`;
+      window.location = `${this.ENV.BASE_URL}v1/auth/login/main/${socialNetwork}`;
     },
     showRestoreModal() {
       this.ShowModal({
@@ -456,7 +549,13 @@ export default {
 
 <style lang="scss" scoped>
 .auth {
-  &__back {
+  &__resend {
+    margin-top: 10px;
+    &_hidden {
+      display: none;
+    }
+  }
+  &__back-btn {
     cursor: pointer;
     display: table-cell;
     color: $black700;

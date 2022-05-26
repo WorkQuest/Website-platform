@@ -58,6 +58,7 @@
       }
     },
     "btns": {
+      "resendEmail": "Resend email with code",
       "back": "Volver",
       "edit": "Editar",
       "ok": "Aceptar",
@@ -262,6 +263,7 @@
     "text": "WorkQuest es un proyecto social basado en la tecnología de cadena de bloques para encontrar trabajo y solucionar cualquier tarea por parte de la empresa en el modo de oferta. ¿Está buscando empleo? Una oferta de empleo le ayudará a encontrar trabajo cerca de su ciudad. ¿Necesita trabajadores para alcanzar sus objetivos? Solo tiene que crear una oferta en la ubicación correspondiente. El servicio asume las obligaciones de garantía para realizar ofertas. Guardamos los fondos del empleador y, cuando el empleado confirme el desempeño del trabajo, recibirá un ingreso de fondos en su cuenta. Mediante el sistema de calificaciones, opiniones y una lista de ofertas completadas, podrá encontrar a personas de confianza y a los mejores especialistas.\n\n          Nuestro objetivo es simplificar la comunicación entre el empleador y el empleado para ayudar a conseguir un empleo a millones de personas, mejorar la situación financiera, solucionar el gran problema de encontrar profesionales fiables en todos los sectores para crear una economía digital progresiva basada en los principios de confianza, respeto mutuo y el bienestar de todos sus participantes."
   },
   "registration": {
+    "emailConfirmNewLetter": "A new letter has been sent to your email address",
     "emailConfirm": "Hemos enviado un mensaje a su dirección de correo electrónico",
     "emailConfirmTitle": "Consulte su correo electrónico"
   },
@@ -1038,6 +1040,8 @@
       "youHaveAQuestDraft": "You have a quest draft. Cleat it?",
       "saveQuestDraft": "Save quest draft?"
     },
+    "token": "Token",
+    "network": "Network",
     "payForDispute": "You need to pay to open a dispute",
     "tryLater": "Please, try later...",
     "checkExplorer": "You can check a transaction status on Explorer",
@@ -1406,6 +1410,11 @@
     "transfer": "Comprar/enviar",
     "addCardProposal": "Añada su propia tarjeta para retirar fácilmente",
     "addCard": "Añadir tarjeta",
+    "buyWQT": {
+      "buyButton": "Buy WQT",
+      "title": "Buy first WQT!",
+      "sub": "Donec rutrum congue leo eget malesuada. Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem."
+    },
     "collateral": {
       "balance": "Collateral balance",
       "coin": "coin",
@@ -1547,7 +1556,9 @@
       "workInOffice": "In-office",
       "bothVariant": "Hybrid workplace"
     },
-    "selectPayPeriod": "Select pay period"
+    "selectPayPeriod": "Select pay period",
+    "visabilitySettings": "Visability settings",
+    "securitySettings": "Security settings"
   },
   "raising-views": {
     "raisingViews": "Aumentar visualizaciones",
