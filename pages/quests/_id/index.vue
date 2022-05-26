@@ -578,7 +578,7 @@ export default {
             key: modals.status,
             title: this.$t('modals.transactionSent'),
             subtitle: this.$t('modals.checkExplorer'),
-            link: `${explorerRef}/transactions/${result.transactionHash}`,
+            link: `${explorerRef}/tx/${result.transactionHash}`,
             img: images.SUCCESS,
             callback: await $router.push(`${Path.DISPUTES}/${currentQuest.openDispute?.id}`),
           });
