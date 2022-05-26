@@ -24,7 +24,7 @@
         v-model="description"
         :placeholder="$t('modals.description')"
         data-selector="DESCRIPTION"
-        rules="min:30|max:1000"
+        rules="min:10|max:1000"
       />
       <div class="content__buttons buttons">
         <base-btn

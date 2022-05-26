@@ -559,9 +559,11 @@ export default {
         },
       } = this;
       if (status === QuestStatuses.Dispute) return await this.$router.push(`${Path.DISPUTES}/${openDispute.id}`);
-      async function payment({ reason = '', problemDescription = '', feeTx }) {
+      const payment = async ({ reason = '', problemDescription = '', feeTx }) => {
         const currentQuest = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
-        if (!openDispute) await this.$store.dispatch('disputes/createDispute', { reason, problemDescription, questId: id });
+        if (!openDispute) {
+          await this.$store.dispatch('disputes/createDispute', { reason, problemDescription, questId: id });
+        }
         const { result } = await this.$store.dispatch('quests/arbitration', { contractAddress, value: feeTx });
         if (!result.status) {
           ShowModalFail({
@@ -576,10 +578,10 @@ export default {
             subtitle: this.$t('modals.checkExplorer'),
             link: `${process.env.WQ_EXPLORER_TX}/${result.transactionHash}`,
             img: images.SUCCESS,
-            callback: await this.$router.push(`${Path.DISPUTES}/${currentQuest.openDispute?.id}`),
+            callback: await this.$router.push(`${Path.DISPUTES}/${currentQuest.openDispute.id}`),
           });
         }
-      }
+      };
       if (checkAvailabilityDisputeTime) {
         const feeTx = await fetchContractData(
           'feeTx',
@@ -589,11 +591,9 @@ export default {
           GetWalletProvider(),
         );
         if (openDispute) {
-          console.log('is openDispute');
           /** Флоу, если сознан диспут и не было оплаты */
           await payment({ feeTx });
         } else {
-          console.log('is notPaid');
           /** Флоу, если не сознан диспут и не было оплаты */
           return ShowModal({
             key: modals.openADispute,
@@ -612,7 +612,11 @@ export default {
               },
               title: this.$t('modals.titles.disputePayment'),
               text: this.$t('modals.payForDispute'),
-              submitMethod: await payment({ reason, problemDescription, feeTx }),
+              submitMethod: async () => await payment({
+                reason,
+                problemDescription,
+                feeTx,
+              }),
             }),
           });
         }
