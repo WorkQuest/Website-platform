@@ -23,6 +23,15 @@ import {
 import { WQPromotion } from '~/abi/index';
 
 export default {
+  async resendEmail({ commit }, { email }) {
+    try {
+      const { result } = await this.$axios.$post('/v1/auth/main/resend-email', { email });
+      return success(result);
+    } catch (e) {
+      console.error('Error in user/resendEmail: ', e);
+      return error();
+    }
+  },
   async changeRole({ commit }, { totp }) {
     try {
       return await this.$axios.$put('/v1/profile/change-role', { totp });
