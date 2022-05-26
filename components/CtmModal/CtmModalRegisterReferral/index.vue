@@ -92,13 +92,18 @@ export default {
       this.CloseModal();
     },
     async handleSubmit() {
-      if (this.isLoading) return;
-      this.SetLoader(true);
-      if (this.options.callback) await this.options.callback();
-      if (!this.options.isNotClose) this.hide();
-      await this.$store.dispatch('referral/addReferrals', this.userAddress);
-      await this.$store.dispatch('referral/fetchReferralsList');
-      this.SetLoader(false);
+      try {
+        if (this.isLoading) return;
+        this.SetLoader(true);
+        if (this.options.callback) await this.options.callback();
+        if (!this.options.isNotClose) this.hide();
+        await this.$store.dispatch('referral/addReferrals', this.userAddress);
+        await this.$store.dispatch('referral/setIsNeedRegistration', false);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        this.SetLoader(false);
+      }
     },
   },
 };

@@ -156,4 +156,7 @@ export default {
   updateCurrentPage({ commit }, page) {
     commit('setCurrentPage', page);
   },
+  setIsNeedRegistration({ commit }, payload) {
+    commit('setIsNeedRegistration', payload);
+  },
 };
