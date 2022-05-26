@@ -58,7 +58,7 @@ export const getChainIdByChain = (chain) => {
     case Chains.WORKNET:
       return ChainsId.WORKNET_TEST;
     case Chains.POLYGON:
-      if (!isProd) return ChainsId.MUMBAI_TEST;
+      if (!IS_PROD) return ChainsId.MUMBAI_TEST;
       return ChainsId.MATIC_MAIN;
     default:
       console.log(chain);
