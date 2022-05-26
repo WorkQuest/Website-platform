@@ -139,10 +139,10 @@ jobs:
       - name: Create .env file
         run: |
           echo BRANCH=${{ secrets.BRANCH }} >> .env
-                    echo GMAPKEY=${{ secrets.GMAPKEY }} >> .env
-                    echo SECRET_SUMSUB=${{ secrets.SECRET_SUMSUB }} >> .env
+          echo GMAPKEY=${{ secrets.GMAPKEY }} >> .env
+          echo SECRET_SUMSUB=${{ secrets.SECRET_SUMSUB }} >> .env
 
-                    echo ETHEREUM_RPC_URL=${{ secrets.ETHEREUM_RPC_URL }} >> .env
+          echo ETHEREUM_RPC_URL=${{ secrets.ETHEREUM_RPC_URL }} >> .env
 
       - name: Run generate static task
         run: npm run generate
