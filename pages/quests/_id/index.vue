@@ -556,11 +556,13 @@ export default {
     },
     async openDispute() {
       const {
-        checkAvailabilityDisputeTime, ShowModal, ShowModalFail, quest: {
+        quest: {
           status, openDispute, id, contractAddress,
         },
       } = this;
+
       if (status === QuestStatuses.Dispute) return await this.$router.push(`${Path.DISPUTES}/${openDispute.id}`);
+
       const payment = async ({ reason = '', problemDescription = '', feeTx }) => {
         const currentQuest = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
         if (!openDispute) {
@@ -568,24 +570,24 @@ export default {
         }
         const { result } = await this.$store.dispatch('quests/arbitration', { contractAddress, value: feeTx });
         if (!result.status) {
-          ShowModalFail({
+          this.ShowModalFail({
             title: this.$t('modals.transactionError'),
             subtitle: this.$t('modals.tryLater'),
             img: images.ERROR,
           });
         } else {
-          const explorerRef = this.ENV.WQ_EXPLORER;
-          ShowModal({
+          this.ShowModal({
             key: modals.status,
             title: this.$t('modals.transactionSent'),
             subtitle: this.$t('modals.checkExplorer'),
-            link: `${explorerRef}/tx/${result.transactionHash}`,
+            link: `${this.ENV.WQ_EXPLORER}/tx/${result.transactionHash}`,
             img: images.SUCCESS,
             callback: await this.$router.push(`${Path.DISPUTES}/${currentQuest.openDispute.id}`),
           });
         }
       };
-      if (checkAvailabilityDisputeTime) {
+
+      if (this.checkAvailabilityDisputeTime) {
         const feeTx = await fetchContractData(
           'feeTx',
           WQFactory,
@@ -593,14 +595,15 @@ export default {
           null,
           GetWalletProvider(),
         );
+
         if (openDispute) {
           /** Флоу, если сознан диспут и не было оплаты */
           await payment({ feeTx });
         } else {
           /** Флоу, если не сознан диспут и не было оплаты */
-          return ShowModal({
+          return this.ShowModal({
             key: modals.openADispute,
-            submitMethod: async ({ reason, problemDescription }) => ShowModal({
+            submitMethod: async ({ reason, problemDescription }) => this.ShowModal({
               key: modals.transactionReceipt,
               isDontOffLoader: true,
               fields: {
@@ -624,7 +627,7 @@ export default {
           });
         }
       }
-      return ShowModal({
+      return this.ShowModal({
         key: modals.status,
         img: images.ERROR,
         title: this.$t('modals.errors.error'),
