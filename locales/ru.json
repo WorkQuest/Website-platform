@@ -1037,6 +1037,8 @@
       "youHaveAQuestDraft": "У вас есть черновик квеста. Очистить?",
       "saveQuestDraft": "Сохранить черновик квеста?"
     },
+    "token": "Токен",
+    "network": "Сеть",
     "payForDispute": "Вам нужно оплатить открытие спора",
     "tryLater": "Пожалуйста, попробуйте позже...",
     "checkExplorer": "Вы можете проверить статус транзакции на Explorer",
@@ -1405,6 +1407,11 @@
     "transfer": "Buy / Send",
     "addCardProposal": "Добавьте банковскую карту для удобного вывода",
     "addCard": "Добавить карту",
+    "buyWQT": {
+      "buyButton": "Купить WQT",
+      "title": "Купить первые WQT!",
+      "sub": "Donec rutrum congue leo eget malesuada. Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem."
+    },
     "collateral": {
       "balance": "Залоговый баланс",
       "coin": "монета",
@@ -1546,7 +1553,9 @@
       "workInOffice": "In-office",
       "bothVariant": "Hybrid workplace"
     },
-    "selectPayPeriod": "Выберите период оплаты"
+    "selectPayPeriod": "Выберите период оплаты",
+    "visabilitySettings": "Настройки видимости",
+    "securitySettings": "Настройки безопасности"
   },
   "raising-views": {
     "raisingViews": "Увеличение просмотров",

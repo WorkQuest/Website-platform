@@ -322,7 +322,7 @@ export default {
           this.SetLoader(true);
           const allowance = await this.$store.dispatch('wallet/getAllowance', {
             tokenAddress: TokenMap[TokenSymbols.WUSD],
-            spenderAddress: process.env.WORKNET_PENSION_FUND,
+            spenderAddress: this.ENV.WORKNET_PENSION_FUND,
           });
           let txFee = 0;
           if (new BigNumber(allowance).isLessThan(firstDepositAmount)) {
@@ -330,12 +330,12 @@ export default {
               method: 'approve',
               abi: ERC20,
               contractAddress: TokenMap[TokenSymbols.WUSD],
-              data: [process.env.WORKNET_PENSION_FUND, new BigNumber(firstDepositAmount).shiftedBy(18).toString()],
+              data: [this.ENV.WORKNET_PENSION_FUND, new BigNumber(firstDepositAmount).shiftedBy(18).toString()],
             });
             txFee = fee;
             await this.$store.dispatch('wallet/approve', {
               tokenAddress: TokenMap[TokenSymbols.WUSD],
-              spenderAddress: process.env.WORKNET_PENSION_FUND,
+              spenderAddress: this.ENV.WORKNET_PENSION_FUND,
               amount: firstDepositAmount,
             });
           }
@@ -347,7 +347,7 @@ export default {
             const { result: { fee } } = await this.$store.dispatch('wallet/getContractFeeData', {
               method: 'updateFee',
               abi: WQPensionFund,
-              contractAddress: process.env.WORKNET_PENSION_FUND,
+              contractAddress: this.ENV.WORKNET_PENSION_FUND,
               data: [newDepositPercent],
             });
             txFee = new BigNumber(txFee).plus(fee);
@@ -356,9 +356,9 @@ export default {
             const { result: { fee } } = await this.$store.dispatch('wallet/getContractFeeData', {
               method: 'contribute',
               abi: WQPensionFund,
-              contractAddress: process.env.WORKNET_PENSION_FUND,
+              contractAddress: this.ENV.WORKNET_PENSION_FUND,
               data: [getWalletAddress(), new BigNumber(firstDepositAmount).shiftedBy(18).toString()],
-              recipient: process.env.WORKNET_PENSION_FUND,
+              recipient: this.ENV.WORKNET_PENSION_FUND,
             });
             txFee = new BigNumber(txFee).plus(fee);
           }
@@ -377,7 +377,7 @@ export default {
             },
             to: {
               name: this.$t('meta.toBig'),
-              value: this.convertToBech32('wq', process.env.WORKNET_PENSION_FUND),
+              value: this.convertToBech32('wq', this.ENV.WORKNET_PENSION_FUND),
             },
             fee: {
               name: this.$t('wallet.table.trxFee'),
