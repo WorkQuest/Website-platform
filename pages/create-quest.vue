@@ -202,7 +202,7 @@ import {
   PriorityFilter, TokenMap, TokenSymbols, TypeOfEmployments, PayPeriodsIndex, WorkplaceIndex,
 } from '~/utils/enums';
 import { LocalNotificationAction } from '~/utils/notifications';
-import { CommissionForCreatingAQuest } from '~/utils/сonstants/quests';
+import { CommissionForCreatingAQuest } from '~/utils/сonstants/commission';
 import { ERC20 } from '~/abi';
 
 const { GeoCode } = require('geo-coder');

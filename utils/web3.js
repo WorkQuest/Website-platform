@@ -9,6 +9,7 @@ import {
   NetworksData,
   ChainsIdByChainNumber,
 } from '~/utils/enums';
+
 import { IS_PROD } from '~/utils/adresses';
 
 let web3 = null;
@@ -56,6 +57,9 @@ export const getChainIdByChain = (chain) => {
       return ChainsId.BSC_MAIN;
     case Chains.WORKNET:
       return ChainsId.WORKNET_TEST;
+    case Chains.POLYGON:
+      if (!isProd) return ChainsId.MUMBAI_TEST;
+      return ChainsId.MATIC_MAIN;
     default:
       console.log(chain);
       throw error(-1, `wrong chain name: ${chain} ${Chains.BINANCE} ${Chains.ETHEREUM}`);
@@ -65,12 +69,14 @@ export const getChainIdByChain = (chain) => {
 export const addedNetwork = async (chain) => {
   try {
     let networkParams = {};
-    if (chain === Chains.ETHEREUM || [1, 4].includes(+chain)) {
+    if (chain === Chains.ETHEREUM || [+ChainsId.ETH_MAIN, +ChainsId.ETH_TEST].includes(+chain)) {
       networkParams = IS_PROD ? NetworksData.ETH_MAIN : NetworksData.ETH_TEST;
-    } else if (chain === Chains.BINANCE || [56, 97].includes(+chain)) {
+    } else if (chain === Chains.BINANCE || [+ChainsId.BSC_MAIN, +ChainsId.BSC_TEST].includes(+chain)) {
       networkParams = IS_PROD ? NetworksData.BSC_MAIN : NetworksData.BSC_TEST;
-    } else if (chain === Chains.WORKNET || chain === 20220112) {
+    } else if (chain === Chains.WORKNET || chain === +ChainsId.WORKNET_TEST) {
       networkParams = NetworksData.WORKNET_TEST;
+    } else if (chain === Chains.POLYGON || [+ChainsId.MUMBAI_TEST, +ChainsId.MATIC_MAIN].includes(+chain)) {
+      networkParams = IS_PROD ? NetworksData.MATIC_MAIN : NetworksData.MUMBAI_TEST;
     }
     await window.ethereum.request({
       method: 'wallet_addEthereumChain',
@@ -95,16 +101,20 @@ export const goToChain = async (chain) => {
       netId: +chainIdParam,
     };
     await store.dispatch('web3/updateAccount', account);
-    return { ok: true };
+    return success();
   } catch (e) {
     if (e.code === 4902) {
       return await addedNetwork(chain);
+    }
+    if (e.code === -32002) {
+      showToast('Please open Metamask to change network');
+      return error(e.code, 'switch chain error', e);
     }
     if (typeof window.ethereum !== 'undefined') {
       showToast('Switch chain error:', `${e.message}`, 'danger');
       return error(500, 'switch chain error', e);
     }
-    return { ok: false };
+    return error(e.code);
   }
 };
 

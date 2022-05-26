@@ -254,7 +254,7 @@ export const sendWalletTransaction = async (_method, {
  * @param _contractAddress
  * @param data - array
  * @param recipient
- * @param amount - WUSD
+ * @param amount - WQT
  * @returns {Promise<{msg: string, code: number, data: null, ok: boolean}|{result: *, ok: boolean}>}
  */
 export const getContractFeeData = async (_method, _abi, _contractAddress, data, recipient = null, amount = 0) => {

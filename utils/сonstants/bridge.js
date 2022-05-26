@@ -17,6 +17,7 @@ export const BridgeAddresses = Object.freeze({
   [Chains.WORKNET]: ENV.WORKNET_BRIDGE,
   [Chains.ETHEREUM]: ENV.ETHEREUM_BRIDGE,
   [Chains.BINANCE]: ENV.BSC_BRIDGE,
+  [Chains.POLYGON]: ENV.POLYGON_STABLE_BRIDGE, // TODO [!!!] бы POLYGON_BRIDGE
 });
 
 export const BridgeEvents = Object.freeze({
@@ -70,6 +71,56 @@ export const SwapAddresses = new Map([
         [TokenSymbols.USDT]: ENV.WORKNET_USDT_TOKEN,
       },
       explorer: `https://${isProd ? 'dev-' : 'dev-'}explorer.workquest.co`,
+    },
+  ],
+]);
+
+// TODO [!!!] change .env
+/** Buy WQT Modal */
+export const BuyWQTTokensData = new Map([
+  [
+    Chains.ETHEREUM,
+    {
+      title: Chains.ETHEREUM,
+      chain: Chains.ETHEREUM,
+      icon: require('~/assets/img/ui/ethereum.svg'),
+      bridgeAddress: process.env.ETHEREUM_STABLE_BRIDGE,
+      tokens: [
+        {
+          title: TokenSymbols.USDT,
+          tokenAddress: process.env.ETHEREUM_USDT_TOKEN,
+        },
+      ],
+    },
+  ],
+  [
+    Chains.BINANCE,
+    {
+      title: Chains.BINANCE,
+      chain: Chains.BINANCE,
+      icon: require('~/assets/img/ui/bnb_yellow.svg'),
+      bridgeAddress: process.env.BSC_STABLE_BRIDGE,
+      tokens: [
+        {
+          title: TokenSymbols.USDT,
+          tokenAddress: process.env.BSC_USDT_TOKEN,
+        },
+      ],
+    },
+  ],
+  [
+    Chains.POLYGON,
+    {
+      title: Chains.POLYGON,
+      chain: Chains.POLYGON,
+      icon: require('~/assets/img/ui/Polygon.svg'),
+      bridgeAddress: process.env.POLYGON_STABLE_BRIDGE,
+      tokens: [
+        {
+          title: TokenSymbols.USDT,
+          tokenAddress: process.env.POLYGON_USDT_TOKEN,
+        },
+      ],
     },
   ],
 ]);

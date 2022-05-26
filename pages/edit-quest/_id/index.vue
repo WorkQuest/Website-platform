@@ -287,8 +287,9 @@ import {
   Path, PayPeriodsIndex, TokenMap, TokenSymbols, TypeOfEmployments, WorkplaceIndex,
 } from '~/utils/enums';
 import {
-  QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses, CommissionForCreatingAQuest,
+  QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses,
 } from '~/utils/сonstants/quests';
+import { CommissionForCreatingAQuest } from '~/utils/сonstants/commission';
 import { ERC20 } from '~/abi';
 
 const { GeoCode } = require('geo-coder');

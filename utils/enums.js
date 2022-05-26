@@ -9,28 +9,30 @@ export const ChainsId = {
   ETH_TEST: '0x4',
   BSC_MAIN: '0x38',
   BSC_TEST: '0x61',
-  MATIC_MAIN: '0x13881',
-  MUMBAI_TEST: '0x89',
+  MATIC_MAIN: '0x89',
+  MUMBAI_TEST: '0x13881',
   WORKNET_TEST: '0x13488D0',
 };
 
-export const QuestModeReview = {
-  QUEST_LIST: 'QuestList',
-  QUEST_SINGLE: 'QuestSingle',
-};
-
 export const ChainsIdByChainNumber = {
-  1: '0x1',
-  4: '0x4',
-  56: '0x38',
-  97: '0x61',
-  20220112: '0x13488D0',
+  1: [ChainsId.ETH_MAIN],
+  4: [ChainsId.ETH_TEST],
+  56: [ChainsId.BSC_MAIN],
+  137: [ChainsId.MATIC_MAIN],
+  80001: [ChainsId.MUMBAI_TEST],
+  20220112: [ChainsId.WORKNET_TEST],
 };
 
 export const Chains = {
   ETHEREUM: 'ETH',
   BINANCE: 'BSC',
   WORKNET: 'WORKNET',
+  POLYGON: 'POLYGON',
+};
+
+export const QuestModeReview = {
+  QUEST_LIST: 'QuestList',
+  QUEST_SINGLE: 'QuestSingle',
 };
 
 export const StakingTypes = {
@@ -238,17 +240,17 @@ export const ExplorerUrl = Object.freeze('https://dev-explorer.workquest.co');
 
 export const NetworksData = {
   ETH_MAIN: {
-    chainId: '0x1',
+    chainId: ChainsId.ETH_MAIN,
     chainName: 'Ethereum Mainnet',
     rpcUrls: ['https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
   },
   ETH_TEST: {
-    chainId: '0x4',
+    chainId: ChainsId.ETH_TEST,
     chainName: 'Ethereum Testnet',
     rpcUrls: ['https://rinkey.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
   },
   BSC_MAIN: {
-    chainId: '0x38',
+    chainId: ChainsId.BSC_MAIN,
     chainName: 'BSC Mainnet',
     rpcUrls: ['https://bsc-dataseed1.binance.org/'],
     nativeCurrency: {
@@ -258,7 +260,7 @@ export const NetworksData = {
     },
   },
   BSC_TEST: {
-    chainId: '0x61',
+    chainId: ChainsId.BSC_TEST,
     chainName: 'BSC Testnet',
     rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
     nativeCurrency: {
@@ -268,12 +270,32 @@ export const NetworksData = {
     },
   },
   WORKNET_TEST: {
-    chainId: '0x13488D0',
+    chainId: ChainsId.WORKNET_TEST,
     chainName: 'WorkQuest DEV',
     rpcUrls: ['https://dev-node-nyc3.workquest.co'],
     nativeCurrency: {
       name: 'WUSD',
       symbol: 'WUSD',
+      decimals: 18,
+    },
+  },
+  MATIC_MAIN: { // Polygon main
+    chainId: ChainsId.MATIC_MAIN,
+    chainName: 'Polygon Mainnet',
+    rpcUrls: ['https://rpc-mainnet.matic.network'],
+    nativeCurrency: {
+      name: 'MATIC',
+      symbol: 'MATIC',
+      decimals: 18,
+    },
+  },
+  MUMBAI_TEST: { // Polygon test
+    chainId: ChainsId.MUMBAI_TEST,
+    chainName: 'Mumbai Testnet',
+    rpcUrls: ['https://rpc-mumbai.matic.today'],
+    nativeCurrency: {
+      name: 'TMATIC',
+      symbol: 'TMATIC',
       decimals: 18,
     },
   },
