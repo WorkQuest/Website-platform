@@ -91,7 +91,7 @@ export default {
       );
     }
     try {
-      if (!params.isLocal) await this.$axios.$delete(`${process.env.NOTIFS_URL}notifications/delete/${id}`);
+      if (!params.isLocal) await this.$axios.$delete(`${this.ENV.NOTIFS_URL}notifications/delete/${id}`);
       await commit('removeNotification', id);
       await dispatch('getNotifications', config);
       return success();
@@ -102,7 +102,7 @@ export default {
 
   async readNotifications({ commit }, payload) {
     try {
-      const { ok } = await this.$axios.$put(`${process.env.NOTIFS_URL}notifications/mark-read`, payload);
+      const { ok } = await this.$axios.$put(`${this.ENV.NOTIFS_URL}notifications/mark-read`, payload);
       commit('setNotificationsAsRead', payload.notificationIds);
       return ok;
     } catch (e) {
@@ -113,7 +113,7 @@ export default {
   async getNotifications({ commit, dispatch }, config) {
     try {
       const currConfig = config || { params: { limit: 2, offset: 0 } };
-      const { data: { result, ok } } = await this.$axios.get(`${process.env.NOTIFS_URL}notifications`, currConfig);
+      const { data: { result, ok } } = await this.$axios.get(`${this.ENV.NOTIFS_URL}notifications`, currConfig);
       const { notifications, count } = result;
       notifications.map(async (notification) => await dispatch('setCurrNotificationObject', notification));
 

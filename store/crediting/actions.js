@@ -17,7 +17,7 @@ export default {
     const res = await fetchContractData(
       'borrowers',
       WQBorrowing,
-      process.env.WORKNET_BORROWING,
+      this.ENV.WORKNET_BORROWING,
       [getWalletAddress()],
       GetWalletProvider(),
     );
@@ -27,7 +27,7 @@ export default {
     const res = await fetchContractData(
       'wallets',
       WQLending,
-      process.env.WORKNET_LENDING,
+      this.ENV.WORKNET_LENDING,
       [getWalletAddress()],
       GetWalletProvider(),
     );
@@ -46,7 +46,7 @@ export default {
     const res = await fetchContractData(
       'getRewards',
       WQLending,
-      process.env.WORKNET_LENDING,
+      this.ENV.WORKNET_LENDING,
       [getWalletAddress()],
       GetWalletProvider(),
     );
@@ -56,7 +56,7 @@ export default {
     const res = await fetchContractData(
       'getCurrentFee',
       WQBorrowing,
-      process.env.WORKNET_BORROWING,
+      this.ENV.WORKNET_BORROWING,
       [getWalletAddress()],
       GetWalletProvider(),
     );

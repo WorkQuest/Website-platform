@@ -16,7 +16,7 @@ export default {
       const res = await fetchContractData(
         'getRewards',
         WQReferral,
-        process.env.WORKNET_REFERRAL,
+        this.ENV.WORKNET_REFERRAL,
         [userWalletAddress],
         GetWalletProvider(),
       );
@@ -31,7 +31,7 @@ export default {
     try {
       const payload = {
         abi: WQReferral,
-        address: process.env.WORKNET_REFERRAL,
+        address: this.ENV.WORKNET_REFERRAL,
         userAddress,
       };
       return await sendWalletTransaction('claim', payload);
@@ -94,7 +94,7 @@ export default {
     try {
       const payload = {
         abi: WQReferral,
-        address: process.env.WORKNET_REFERRAL,
+        address: this.ENV.WORKNET_REFERRAL,
         data: [signature.v, signature.r, signature.s, addresses],
         userAddress,
       };

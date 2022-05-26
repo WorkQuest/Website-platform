@@ -42,7 +42,7 @@ export default {
       r: res.r,
       s: res.s,
     };
-    const { gas, gasPrice } = await getGasPrice(WQOracle, process.env.WORKNET_ORACLE, 'setTokenPriceUSD', [...Object.values(params), symbol]);
+    const { gas, gasPrice } = await getGasPrice(WQOracle, this.ENV.WORKNET_ORACLE, 'setTokenPriceUSD', [...Object.values(params), symbol]);
     if (gas && gasPrice) {
       await setTokenPrice({ currency: symbol }, { gasPrice, gas, ...params });
     }
@@ -58,7 +58,7 @@ export default {
       timestamp, v, r, s, prices, symbols,
     };
 
-    const { gas, gasPrice } = await getGasPrice(WQOracle, process.env.WORKNET_ORACLE, 'setTokenPricesUSD', Object.values(params));
+    const { gas, gasPrice } = await getGasPrice(WQOracle, this.ENV.WORKNET_ORACLE, 'setTokenPricesUSD', Object.values(params));
     if (gas && gasPrice) {
       await setTokenPrices({
         gasPrice,

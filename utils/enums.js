@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/prefer-default-export
 
-import { IS_PROD } from '~/utils/adresses';
+import ENV, { IS_PROD } from '~/utils/adresses';
 
 export const isProd = IS_PROD;
 
@@ -207,24 +207,24 @@ export const TokenSymbols = Object.freeze({
 
 // wallet balance
 export const WorknetTokenAddresses = Object.freeze([
-  process.env.WORKNET_WUSD_TOKEN,
-  process.env.WORKNET_WBNB_TOKEN,
-  process.env.WORKNET_WETH_TOKEN,
-  process.env.WORKNET_USDT_TOKEN,
+  ENV.WORKNET_WUSD_TOKEN,
+  ENV.WORKNET_WBNB_TOKEN,
+  ENV.WORKNET_WETH_TOKEN,
+  ENV.WORKNET_WUSD_TOKEN,
 ]);
 
 export const TokenSymbolByContract = Object.freeze({
-  [process.env.WORKNET_WUSD_TOKEN?.toLowerCase()]: TokenSymbols.WUSD,
-  [process.env.WORKNET_WBNB_TOKEN?.toLowerCase()]: TokenSymbols.BNB,
-  [process.env.WORKNET_WETH_TOKEN?.toLowerCase()]: TokenSymbols.ETH,
-  [process.env.WORKNET_USDT_TOKEN?.toLowerCase()]: TokenSymbols.USDT,
+  [ENV.WORKNET_WUSD_TOKEN?.toLowerCase()]: TokenSymbols.WUSD,
+  [ENV.WORKNET_WBNB_TOKEN?.toLowerCase()]: TokenSymbols.BNB,
+  [ENV.WORKNET_WETH_TOKEN?.toLowerCase()]: TokenSymbols.ETH,
+  [ENV.WORKNET_USDT_TOKEN?.toLowerCase()]: TokenSymbols.USDT,
 });
 
 export const TokenMap = {
-  [TokenSymbols.BNB]: process.env.WORKNET_WBNB_TOKEN,
-  [TokenSymbols.ETH]: process.env.WORKNET_WETH_TOKEN,
-  [TokenSymbols.WUSD]: process.env.WORKNET_WUSD_TOKEN,
-  [TokenSymbols.USDT]: process.env.WORKNET_USDT_TOKEN,
+  [TokenSymbols.BNB]: ENV.WORKNET_WBNB_TOKEN,
+  [TokenSymbols.ETH]: ENV.WORKNET_WETH_TOKEN,
+  [TokenSymbols.WUSD]: ENV.WORKNET_WUSD_TOKEN,
+  [TokenSymbols.USDT]: ENV.WORKNET_USDT_TOKEN,
 };
 
 export const WalletTables = Object.freeze({

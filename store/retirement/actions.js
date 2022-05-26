@@ -11,7 +11,6 @@ const web3 = GetWalletProvider();
 
 const min = Object.freeze(new BigNumber(0.0001));
 
-console.log('TODO: [!!!] test in retirement/actions', ENV.WORKNET_PENSION_FUND);
 const inst = new web3.eth.Contract(WQPensionFund, ENV.WORKNET_PENSION_FUND);
 
 export default {

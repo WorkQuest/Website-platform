@@ -41,7 +41,7 @@ export default {
     try {
       const { data } = await this.$axios({
         url: `/account/${getWalletAddress()}/transactions`,
-        baseURL: process.env.WQ_EXPLORER,
+        baseURL: this.ENV.WQ_EXPLORER,
         params,
       });
       commit('setTransactions', data.result.transactions);
@@ -121,7 +121,7 @@ export default {
       const res = await fetchContractData(
         'frozed',
         ERC20,
-        process.env.WORKNET_VOTING,
+        this.ENV.WORKNET_VOTING,
         [rootGetters['user/getUserWalletAddress']],
         GetWalletProvider(),
       );
@@ -222,10 +222,10 @@ export default {
     let contractAddress = null;
     if (pool === StakingTypes.WQT) {
       abi = WQStaking;
-      contractAddress = process.env.WORKNET_STAKING_WQT;
+      contractAddress = this.ENV.WORKNET_STAKING_WQT;
     } else if (pool === StakingTypes.WUSD) {
       abi = WQStakingNative;
-      contractAddress = process.env.WORKNET_STAKING_WUSD;
+      contractAddress = this.ENV.WORKNET_STAKING_WUSD;
     } else {
       console.error(`Wrong pool: ${pool}`);
       return;
@@ -276,7 +276,7 @@ export default {
   async getStakingUserInfo({ commit }, pool) {
     const decimals = 18;
     const abi = pool === StakingTypes.WUSD ? WQStakingNative : WQStaking;
-    const contractAddress = pool === StakingTypes.WUSD ? process.env.WORKNET_STAKING_WUSD : process.env.WORKNET_STAKING_WQT;
+    const contractAddress = pool === StakingTypes.WUSD ? this.ENV.WORKNET_STAKING_WUSD : this.ENV.WORKNET_STAKING_WQT;
     const [userInfo, stakes] = await Promise.all([
       fetchContractData('getInfoByAddress', abi, contractAddress, [getWalletAddress()], GetWalletProvider()),
       fetchContractData('stakes', abi, contractAddress, [getWalletAddress()], GetWalletProvider()),
@@ -404,7 +404,7 @@ export default {
     commit, dispatch, rootGetters, getters,
   }, { hexAddress, timestamp, updateWalletData }) {
     try {
-      connectionWS = new WebSocket(process.env.WS_WQ_PROVIDER);
+      connectionWS = new WebSocket(this.ENV.WS_WQ_PROVIDER);
       connectionWS.onopen = () => {
         const request = {
           jsonrpc: '2.0',
