@@ -223,8 +223,8 @@ export default {
     top: 55px;
   }
   &-secondary-position{
-    bottom: 0;
-    left: 0;
+    top: 0;
+    right: 0;
   }
   &__items {
     padding: 10px;
@@ -250,10 +250,13 @@ export default {
   opacity: 0;
 }
 @include _991 {
-  .chat {
-    &-menu {
+  .chat-menu {
       width: max-content;
+    &-main-position{
+      margin: 0 0 0 0;
+      top: 55px;
+      right:0;
+    }
     }
   }
-}
 </style>
