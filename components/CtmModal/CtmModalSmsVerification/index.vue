@@ -2,6 +2,7 @@
   <ctm-modal-box
     :title="!phone ? $tc('modals.errors.errorSmsVer') : $t('modals.titles.smsVerification')"
     class="verification"
+    :is-unclosable="true"
   >
     <div class="verification__content content">
       <div
@@ -9,7 +10,7 @@
         class="content__verified"
       >
         <img
-          src="~assets/img/ui/warning.svg"
+          :src="$options.images.WARNING"
           alt="Please fill phone number!"
           class="content__picture"
         >
@@ -27,17 +28,16 @@
         </div>
       </div>
       <validation-observer
-        v-if="phone"
-        v-slot="{handleSubmit, validated, passed, invalid}"
+        v-if="phone && step === 1"
+        v-slot="{handleSubmit}"
       >
         <div class="content__subtitle">
-          {{ step === 1 ? $t('modals.enterPhone') : $t('modals.enterSMSCode') }}
+          {{ $t('modals.enterPhone') }}
         </div>
         <span class="content__top">
-          {{ step === 1 ? $t('modals.phoneNumber') : $t('meta.codeFromSMS') }}
+          {{ $t('modals.phoneNumber') }}
         </span>
         <base-field
-          v-if="step === 1"
           v-model="phone"
           data-selector="PHONE-NUMBER"
           class="content__action"
@@ -53,15 +53,35 @@
             <div class="icon-phone_outline content__icon" />
           </template>
         </base-field>
+        <div class="content__buttons buttons">
+          <base-btn
+            data-selector="NEXT-STEP"
+            class="buttons__button"
+            @click="handleSubmit(nextStep)"
+          >
+            {{ $t('meta.btns.next') }}
+          </base-btn>
+        </div>
+      </validation-observer>
+      <validation-observer
+        v-if="step === 2"
+        v-slot="{handleSubmit, invalid}"
+      >
+        <div class="content__subtitle">
+          {{ $t('modals.enterSMSCode') }}
+        </div>
+        <span class="content__top">
+          {{ $t('meta.codeFromSMS') }}
+        </span>
         <base-field
-          v-if="step === 2"
           v-model="confirmCode"
+          :auto-focus="true"
           class="content__action"
           data-selector="CODE-FROM-SMS"
           :placeholder="$t('meta.codeFromSMS')"
           mode="icon"
-          rules="required|alpha_num"
-          :name="$tc('modals.codeFromSMS')"
+          rules="numeric|max:6|min:6"
+          :name="$tc('meta.codeFromSMS')"
         >
           <template
             v-slot:left
@@ -70,33 +90,23 @@
             <span class="icon-Lock content__icon" />
           </template>
         </base-field>
-        <div
-          v-if="step === 2"
-          class="content__bottom"
-        >
+        <div class="content__bottom">
           {{ $t('modals.haventSMS') }}
           <button
             class="content__resend"
+            :class="{'content__resend_disabled': isStartedTimer}"
             data-selector="RESEND-SMS"
+            :disabled="isStartedTimer"
             @click="getCodeFromSms()"
           >
-            {{ $t('meta.btns.resendSMS') }}
+            {{ `${$t('meta.btns.resendSMS')} ${resendTimer}` }}
           </button>
         </div>
         <div class="content__buttons buttons">
           <base-btn
-            v-if="step === 1"
-            data-selector="NEXT-STEP"
-            class="buttons__button"
-            @click="handleSubmit(nextStep)"
-          >
-            {{ $t('meta.btns.next') }}
-          </base-btn>
-          <base-btn
-            v-if="step === 2"
             class="buttons__button"
             data-selector="CONFIRM-2"
-            :disabled="!validated || !passed || invalid"
+            :disabled="invalid || codeLength"
             @click="handleSubmit(success)"
           >
             {{ $t('meta.btns.confirm') }}
@@ -111,11 +121,20 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import { UserRole } from '~/utils/enums';
+import { images } from '~/utils/images';
+
+const timerDefaultValue = 5;
+const confirmCodeLength = 6;
 
 export default {
   name: 'CtmModalSmsVerification',
+  images,
   data() {
     return {
+      hiddenResend: true,
+      disableResend: true,
+      isStartedTimer: false,
+      timerValue: timerDefaultValue,
       confirmCode: '',
       step: 1,
     };
@@ -126,6 +145,13 @@ export default {
       userData: 'user/getUserData',
       currentConfirmCode: 'user/getVerificationCode',
     }),
+    resendTimer() {
+      const { timerValue, isStartedTimer } = this;
+      return isStartedTimer ? this.$tc('meta.units.seconds', this.DeclOfNum(timerValue), { count: timerValue }) : '';
+    },
+    codeLength() {
+      return this.confirmCode?.length < confirmCodeLength;
+    },
     UserRole() {
       return UserRole;
     },
@@ -137,6 +163,23 @@ export default {
     this.confirmCode = this.currentConfirmCode;
   },
   methods: {
+    clearTimer() {
+      this.$cookies.remove('resend-timer');
+      this.timerValue = timerDefaultValue;
+      clearInterval(this.timerId);
+      this.isStartedTimer = false;
+      this.disableResend = false;
+    },
+    startTimer() {
+      if (!this.isStartedTimer) {
+        this.timerId = setInterval(() => {
+          if (this.timerId && this.timerValue === 0) this.clearTimer();
+          this.timerValue -= 1;
+        }, 1000);
+        this.isStartedTimer = true;
+        this.disableResend = true;
+      }
+    },
     async confirmPhone() {
       return await this.$store.dispatch('user/confirmPhone', { confirmCode: this.confirmCode });
     },
@@ -151,18 +194,22 @@ export default {
       } else {
         this.ShowModal({
           key: modals.status,
-          img: require('~/assets/img/ui/error.svg'),
-          title: this.$t('modals.error'),
+          img: images.ERROR2,
+          title: this.$t('modals.errors.error'),
           subtitle: this.$t('errors.incorrectPass'),
         });
       }
     },
     async getCodeFromSms() {
-      if (this.phone) await this.$store.dispatch('user/sendPhone');
+      if (this.phone) {
+        await this.$store.dispatch('user/sendSMSCode');
+        this.startTimer();
+      }
     },
     async nextStep() {
       if (this.phone) {
         await this.getCodeFromSms();
+        this.startTimer();
         this.step += 1;
       }
       if (!this.userData.tempPhone) this.CloseModal();
@@ -226,6 +273,9 @@ export default {
     color: $blue;
     font-size: 14px;
     margin: 0 0 0 5px;
+    &_disabled {
+      color: $grey200;
+    }
   }
 }
 
