@@ -433,7 +433,6 @@ export default {
           button: this.$t('meta.btns.submit'),
           submit: async () => {
             this.SetLoader(true);
-            this.CloseModal();
             await this.$store.dispatch('referral/addReferrals', this.userAddress);
             await this.$store.dispatch('referral/setIsNeedRegistration', false);
             this.SetLoader(false);

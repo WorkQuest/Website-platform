@@ -35,7 +35,7 @@
           >
             <img
               class="registration-ref__img"
-              :src="item['referralUser.avatar.url'] ? item['referralUser.avatar.url'] : $options.images.EMPTY_AVATAR"
+              :src="item.avatar && item.avatar.url ? item.avatar.url : $options.images.EMPTY_AVATAR"
               alt=""
             >
             <span :class="{'registration-ref__name': options.status}">
@@ -102,6 +102,7 @@ export default {
   methods: {
     async handleSubmit() {
       if (this.options?.submit) this.options.submit();
+      this.CloseModal();
     },
     redirectToProfile(id) {
       this.CloseModal();
@@ -180,6 +181,8 @@ export default {
   &__item {
     display: grid;
     grid-template-columns: 1fr auto;
+    align-items: center;
+    padding-bottom: 5px;
     &--created {
       color: $red;
     }
