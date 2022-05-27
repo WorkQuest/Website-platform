@@ -258,8 +258,8 @@ export default {
         const notification = this.notifications[0];
         if (this.mounted && notification
           && !this.isEmployer
-          && notification.data?.questId === this.$route.params.id
           && notification.action === NotificationAction.QUEST_STATUS_UPDATED
+          && notification.data?.questId === this.$route.params.id
           && notification.data.status === QuestStatuses.Done
           && this.userData.id === notification.data.assignedWorkerId
           && !this.quest.yourReview) this.suggestToAddReview();
