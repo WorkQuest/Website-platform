@@ -4,7 +4,8 @@
     data-selector="PAGE-CREATE-QUEST"
   >
     <validation-observer
-      v-slot="{handleSubmit, validated, invalid}"
+      ref="validate"
+      v-slot="{handleSubmit}"
       class="main__body page"
     >
       <h2 class="page__title">
@@ -71,17 +72,21 @@
           />
         </div>
       </div>
-      <specializations-selector
-        :skills="selectedSpecAndSkills"
-        :is-clear-data="isClearData"
-        @changeSkills="updateSelectedSkills"
-      />
-      <div
-        v-if="validated && !selectedSpecAndSkills.length || !invalid && !selectedSpecAndSkills.length"
-        class="page__error"
+      <validation-provider
+        v-slot="{ errors }"
+        rules="required|notEmptyArray"
+        :name="$t('settings.specialization')"
       >
-        {{ $t('errors.selectSpec') }}
-      </div>
+        <specializations-selector
+          v-model="selectedSpecAndSkills"
+          :skills="selectedSpecAndSkills"
+          :is-clear-data="isClearData"
+          @changeSkills="updateSelectedSkills"
+        />
+        <p class="page__error">
+          {{ errors[0] }}
+        </p>
+      </validation-provider>
       <div class="page__address">
         <base-field
           v-model="address"
@@ -227,7 +232,6 @@ export default {
       files: [],
       geoCode: null,
       isClearData: false,
-      isNotChooseSpec: false,
       isCheckedEditAfter: false,
     };
   },
@@ -364,9 +368,6 @@ export default {
     },
     updateSelectedSkills(specAndSkills) {
       this.selectedSpecAndSkills = specAndSkills;
-      if (this.selectedSpecAndSkills.length > 0) {
-        this.isNotChooseSpec = false;
-      }
     },
     periods(period) {
       if (period === 1) return this.days;
@@ -391,8 +392,7 @@ export default {
     },
     async toCreateQuest() {
       this.SetLoader(true);
-      if (!this.isCheckedEditAfter || !this.selectedSpecAndSkills.length) {
-        this.isNotChooseSpec = true;
+      if (this.$refs.validate.flags.invalid) {
         this.ScrollToTop();
         this.SetLoader(false);
         return;
