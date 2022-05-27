@@ -31,7 +31,7 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import {
-  Path, RaiseViewTariffPeriods, TariffByIndex, TokenSymbols, UserRole,
+  Path, RaiseViewTariffPeriods, TariffByIndex, TokenSymbols,
 } from '~/utils/enums';
 import { PaidTariff } from '~/utils/сonstants/quests';
 import { ERC20, WQPromotion } from '~/abi';
