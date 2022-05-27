@@ -112,10 +112,12 @@ export default {
       this.CloseModal();
     },
     async handleSubmit() {
+      const { submitMethod, callback, isNotClose } = this.options;
       if (this.isLoading) return;
       this.SetLoader(true);
-      if (this.options.callback) await this.options.callback();
-      if (!this.options.isNotClose) this.hide();
+      if (submitMethod) await submitMethod();
+      if (callback) await callback();
+      if (!isNotClose) this.hide();
       this.SetLoader(false);
     },
   },
