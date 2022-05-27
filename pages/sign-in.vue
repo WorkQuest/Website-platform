@@ -209,8 +209,6 @@ export default {
       userAddress: '',
       isLoginWithSocial: false,
       isPasswordVisible: false,
-      emailRef: null,
-      passwordRef: null,
     };
   },
   computed: {
@@ -227,7 +225,7 @@ export default {
   },
   watch: {
     userStatus() {
-      if (this.userStatus === 0) {
+      if (this.userStatus === UserStatuses.Unconfirmed) {
         this.hiddenResend = false;
         if (!this.isStartedTimer) this.disableResend = false;
       }
@@ -240,8 +238,6 @@ export default {
   },
   async mounted() {
     this.continueTimer();
-    this.emailRef = this.$refs.email;
-    this.passwordRef = this.$refs.password;
     const access = this.$cookies.get('access');
     const refresh = this.$cookies.get('refresh');
     this.userStatus = this.$cookies.get('userStatus');
@@ -299,6 +295,7 @@ export default {
       this.disableResend = false;
     },
     continueTimer() {
+      this.hiddenResend = false;
       const timer = this.$cookies.get('resend-timer');
       if (!timer) return;
 
