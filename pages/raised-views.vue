@@ -38,7 +38,7 @@ import { ERC20, WQPromotion } from '~/abi';
 
 export default {
   name: 'RaisedViews',
-  middleware: ['worker-role'],
+  middleware: 'worker-role',
   data() {
     return {
       period: 0,

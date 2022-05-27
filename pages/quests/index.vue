@@ -56,7 +56,7 @@ import { Path } from '~/utils/enums';
 
 export default {
   name: 'Quests',
-  middleware: ['worker-role'],
+  middleware: 'worker-role',
   data() {
     return {
       page: 1,
