@@ -35,7 +35,6 @@ import {
 } from '~/utils/enums';
 import { PaidTariff } from '~/utils/сonstants/quests';
 import { ERC20, WQPromotion } from '~/abi';
-import { error, success } from '~/utils/web3';
 
 export default {
   name: 'RaisedViews',
@@ -95,7 +94,7 @@ export default {
   },
   async mounted() {
     if (this.userRole === UserRole.EMPLOYER) {
-      await this.$router.push(Path.QUESTS);
+      await this.$router.push(Path.MY_QUESTS);
       return;
     }
     if (!this.isWalletConnected) return;

@@ -2,14 +2,10 @@ import BigNumber from 'bignumber.js';
 import {
   error,
   success,
-  showToast,
   fetchContractData,
 } from '~/utils/web3';
 
 import {
-  getGasPrice,
-  createInstance,
-  getWalletAddress,
   GetWalletProvider,
   connectWithMnemonic,
 } from '~/utils/wallet';
@@ -17,7 +13,8 @@ import {
 import {
   UserStatuses,
   QuestModeReview,
-  RaiseViewTariffPeriods, TariffByIndex,
+  RaiseViewTariffPeriods,
+  TariffByIndex,
 } from '~/utils/enums';
 
 import { WQPromotion } from '~/abi/index';

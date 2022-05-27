@@ -245,7 +245,7 @@ export default {
   methods: {
     raiseCardStyle() {
       if (!this.quest.raiseView.endedAt) return '';
-      const res = [{ 'card-quest__raise': true }];
+      const res = ['card-quest__raise'];
       res.push({
         0: 'card-quest__raise_gold',
         1: 'card-quest__raise_gold',

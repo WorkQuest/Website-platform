@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/prefer-default-export
 import { PaidTariff } from '~/utils/сonstants/quests';
 import ENV, { IS_PROD } from '~/utils/adresses';
 
