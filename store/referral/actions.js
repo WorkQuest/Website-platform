@@ -133,7 +133,7 @@ export default {
             transactionHash: dataMessage.transactionHash,
             affiliate: dataMessage.returnValues.affiliat,
             amount: dataMessage.returnValues.amount,
-            timestamp: dataMessage.timestamp,
+            timestamp: dataMessage.timestamp || (new Date() / 1000),
             event: dataMessage.event,
             referral: dataMessage.referral || userData.wallet?.address,
             'referralUser.id': dataMessage['referralUser.id'] || userData.id,
