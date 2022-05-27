@@ -1613,7 +1613,7 @@
   "referral": {
     "inviteFriendsHead": "دعوة الأصدقاء",
     "earnCryptoTogether": "ربح العملات المشفرة معًا",
-    "headerSubtitle": "اربح ما يصل إلى 35 دولارًا في WQT في كل مرة يسجِّل فيها أصدقاؤك ويؤدون أول طلب عمل على منصة WorkQuest.",
+    "headerSubtitle": "اربح ما يصل إلى 20 دولارًا في WQT في كل مرة يسجِّل فيها أصدقاؤك ويؤدون أول طلب عمل على منصة WorkQuest.",
     "referralReward": "مكافأة الإحالة",
     "lastRefReward": "مكافأة آخر إحالة",
     "yourRefers": "إحالاتك",
@@ -1624,7 +1624,7 @@
     "inviteFriends": "دعوة الأصدقاء",
     "inviteYourFriends": "أرسل دعوة إلى أصدقائك للتسجيل من خلال رابط الإحالة واحصل على مكافآت عندما يكملون أول طلب عمل.",
     "earnCrypto": "ربح العملات المشفرة",
-    "everyTimeYourFriends": "ستحصل على ما يصل إلى 35 دولارًا من عمولة WQT في الوقت الفعلي في كل مرة يكمل فيها أصدقاؤك أول طلب عمل!",
+    "everyTimeYourFriends": "ستحصل على ما يصل إلى 20 دولارًا من عمولة WQT في الوقت الفعلي في كل مرة يكمل فيها أصدقاؤك أول طلب عمل!",
     "historyOfRewards": "سجل المكافآت",
     "tableHead": {
       "name": "الاسم",
@@ -1636,7 +1636,12 @@
     },
     "event": {
       "PaidReferral": "Paid",
-      "ClaimedReferral": "Claimed"
+      "RewardClaimed": "Claimed"
+    },
+    "referralStatus": {
+      "created": "Unregistered",
+      "registered": "Registered",
+      "paid": "Paid"
     }
   },
   "pension": {

@@ -44,7 +44,7 @@
           v-if="tokenData"
           class="content__field_label"
         >
-          {{ $t('meta.balance') }} {{ tokenData.balance }} {{ tokenData.symbol }}
+          {{ $t('meta.balance') }} {{ tokenData.fullBalance }} {{ tokenData.symbol }}
         </div>
         <div>
           <base-field
@@ -52,8 +52,9 @@
             :disabled="isNeedToChangeNetwork || !tokenData"
             :placeholder="$t('modals.amount')"
             :name="$t('modals.amount')"
-            :rules="`required|decimal|decimalPlaces:${tokenData ? tokenData.decimals : 0}|max_value:${maxUSDTValue}|min_value:5|is_not:0`"
+            :rules="`required|is_not:0|decimal|decimalPlaces:${tokenData ? tokenData.decimals : 0}|min_value:5|max_value:${maxUSDTValue}`"
             data-selector="AMOUNT"
+            @input="handleInput"
           >
             <template
               v-slot:right-absolute
@@ -198,6 +199,12 @@ export default {
     await this.updateTokenData();
   },
   methods: {
+    handleInput(val) {
+      if (!val || isNaN(val)) this.amount = val;
+      else if (!this.tokenData) this.amount = 0;
+      else if (new BigNumber(val).isGreaterThan(this.tokenData.fullBalance)) this.amount = this.tokenData.fullBalance;
+      else this.amount = val;
+    },
     clearData() {
       this.amount = null;
       this.tokenData = null;

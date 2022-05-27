@@ -1612,7 +1612,7 @@
   "referral": {
     "inviteFriendsHead": "दोस्तों को इन्वाइट करें",
     "earnCryptoTogether": "साथ-साथ क्रिप्टो कमाएं",
-    "headerSubtitle": "जब आपके दोस्त रजिस्टर हों और WorkQuest प्लेटफॉर्म पर पहला Quest करें तो आप WQT में हर बार 35$ तक कमाएं।",
+    "headerSubtitle": "जब आपके दोस्त रजिस्टर हों और WorkQuest प्लेटफॉर्म पर पहला Quest करें तो आप WQT में हर बार 20$ तक कमाएं।",
     "referralReward": "रेफरल पुरस्कार",
     "lastRefReward": "पिछला रेफरल पुरस्कार",
     "yourRefers": "आपके रेफरल",
@@ -1623,7 +1623,7 @@
     "inviteFriends": "दोस्तों को इन्वाइट करें",
     "inviteYourFriends": "अपने दोस्तों को रेफरल लिंक के जरिए रजिस्ट्रेशन करने के लिए इन्वाइट करें और जब वे अपनी पहली Quest पूरी करें तो आप पुरस्कार प्राप्त करें।",
     "earnCrypto": "क्रिप्टो कमाएं",
-    "everyTimeYourFriends": "हर बार जब भी आपके दोस्त पहली Quest करते हैं, तो आपको रियल टाइम में WQT कमीशन में $35 तक की राशि मिलेगी!",
+    "everyTimeYourFriends": "हर बार जब भी आपके दोस्त पहली Quest करते हैं, तो आपको रियल टाइम में WQT कमीशन में $20 तक की राशि मिलेगी!",
     "historyOfRewards": "पुरस्कार हिस्ट्री",
     "tableHead": {
       "name": "नाम",
@@ -1636,6 +1636,11 @@
     "event": {
       "PaidReferral": "Paid",
       "RewardClaimed": "Claimed"
+    },
+    "referralStatus": {
+      "created": "Unregistered",
+      "registered": "Registered",
+      "paid": "Paid"
     }
   },
   "pension": {

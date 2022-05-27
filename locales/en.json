@@ -1612,7 +1612,7 @@
   "referral": {
     "inviteFriendsHead": "Invite friends.",
     "earnCryptoTogether": "Earn crypto together",
-    "headerSubtitle": "Earn up to 35$ in WQT every time your friends register and make first Quest on Work Quest platform.",
+    "headerSubtitle": "Earn up to 20$ in WQT every time your friends register and make first Quest on Work Quest platform.",
     "referralReward": "Referral reward",
     "lastRefReward": "Last ref reward",
     "yourRefers": "Your referrals",
@@ -1623,7 +1623,7 @@
     "inviteFriends": "Invite Friends",
     "inviteYourFriends": "Invite your friends to register through the referral link and get rewards when they complete first Quest.",
     "earnCrypto": "Earn Crypto",
-    "everyTimeYourFriends": "Every time your friends make a first Quest, you'll get up to $35 in WQT commission in real time!",
+    "everyTimeYourFriends": "Every time your friends make a first Quest, you'll get up to $20 in WQT commission in real time!",
     "historyOfRewards": "History of rewards",
     "tableHead": {
       "name": "Name",
@@ -1636,6 +1636,11 @@
     "event": {
       "PaidReferral": "Paid",
       "RewardClaimed": "Claimed"
+    },
+    "referralStatus": {
+      "created": "Unregistered",
+      "registered": "Registered",
+      "paid": "Paid"
     }
   },
   "pension": {
