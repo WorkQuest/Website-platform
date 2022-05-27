@@ -1612,7 +1612,7 @@
   "referral": {
     "inviteFriendsHead": "বন্ধুদের আমন্ত্রণ জানান।",
     "earnCryptoTogether": "একসাথে ক্রিপ্টো উপার্জন করুন",
-    "headerSubtitle": "প্রতিবার আপনার বন্ধুরা নিবন্ধন করে Work Quest প্ল্যাটফর্মে প্রথম quest করার সময় WQT-এ 35$ উপার্জন করুন ।",
+    "headerSubtitle": "প্রতিবার আপনার বন্ধুরা নিবন্ধন করে Work Quest প্ল্যাটফর্মে প্রথম quest করার সময় WQT-এ 20$ উপার্জন করুন ।",
     "referralReward": "রেফারেল পুরস্কার",
     "lastRefReward": "শেষ রেফার পুরস্কার",
     "yourRefers": "আপনার রেফারেল",
@@ -1623,7 +1623,7 @@
     "inviteFriends": "বন্ধুদের আমন্ত্রণ জানান",
     "inviteYourFriends": "আপনার বন্ধুদের রেফারেল লিংকের মাধ্যমে নিবন্ধন করার আমন্ত্রণ জানান এবং তারা প্রথম quest সম্পন্ন করলে পুরস্কার অর্জন করুন।",
     "earnCrypto": "ক্রিপ্টো উপার্জন করুন",
-    "everyTimeYourFriends": "প্রতিবার আপনার বন্ধুরা প্রথম quest সম্পন্ন করলে আপনি তাৎক্ষণিকভাবে WQT কমিশন হিসাবে $35 পর্যন্ত পাবেন!",
+    "everyTimeYourFriends": "প্রতিবার আপনার বন্ধুরা প্রথম quest সম্পন্ন করলে আপনি তাৎক্ষণিকভাবে WQT কমিশন হিসাবে $20 পর্যন্ত পাবেন!",
     "historyOfRewards": "পুরস্কারের ইতিহাস",
     "tableHead": {
       "name": "নাম",
@@ -1636,6 +1636,11 @@
     "event": {
       "PaidReferral": "Paid",
       "RewardClaimed": "Claimed"
+    },
+    "referralStatus": {
+      "created": "Unregistered",
+      "registered": "Registered",
+      "paid": "Paid"
     }
   },
   "pension": {

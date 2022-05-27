@@ -20,5 +20,5 @@ export default {
   getUserPortfolio: (state) => state.medias,
   getAllUserReviews: (state) => state.userReviews,
   getUser2FA: (state) => state.userEnable2FA,
-  getUserReferralId: (state) => state.userData.affiliateUser.referralCodeId,
+  getUserReferralId: (state) => state.userData?.affiliateUser?.referralCodeId || ' ',
 };

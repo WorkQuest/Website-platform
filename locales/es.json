@@ -1612,7 +1612,7 @@
   "referral": {
     "inviteFriendsHead": "Invite a sus amigos.",
     "earnCryptoTogether": "Gane criptomonedas juntos",
-    "headerSubtitle": "Gane hasta 35 $ en WQT cada vez que sus amigos se registren y creen su primera oferta en la plataforma WorkQuest.",
+    "headerSubtitle": "Gane hasta 20 $ en WQT cada vez que sus amigos se registren y creen su primera oferta en la plataforma WorkQuest.",
     "referralReward": "Recompensa por recomendación",
     "lastRefReward": "Recompensa de la última recomendación",
     "yourRefers": "Sus recomendaciones",
@@ -1623,7 +1623,7 @@
     "inviteFriends": "Invitar a amigos",
     "inviteYourFriends": "Invite a sus amigos a registrarse a través del enlace de recomendación y obtenga recompensas cuando completen su primera oferta.",
     "earnCrypto": "Gane criptomonedas",
-    "everyTimeYourFriends": "Cada vez que sus amigos creen una oferta por primera vez, ¡recibirá una comisión de hasta 35 $ en WQT en tiempo real!",
+    "everyTimeYourFriends": "Cada vez que sus amigos creen una oferta por primera vez, ¡recibirá una comisión de hasta 20 $ en WQT en tiempo real!",
     "historyOfRewards": "Historial de recompensas",
     "tableHead": {
       "name": "Nombre",
@@ -1636,6 +1636,11 @@
     "event": {
       "PaidReferral": "Paid",
       "RewardClaimed": "Claimed"
+    },
+    "referralStatus": {
+      "created": "Unregistered",
+      "registered": "Registered",
+      "paid": "Paid"
     }
   },
   "pension": {

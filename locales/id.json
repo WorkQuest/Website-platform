@@ -1612,7 +1612,7 @@
   "referral": {
     "inviteFriendsHead": "Undang teman.",
     "earnCryptoTogether": "Hasilkan kripto bersama",
-    "headerSubtitle": "Hasilkan hingga $35 WQT setiap kali teman Anda mendaftar dan membuat Quest pertama di platform WorkQuest.",
+    "headerSubtitle": "Hasilkan hingga $20 WQT setiap kali teman Anda mendaftar dan membuat Quest pertama di platform WorkQuest.",
     "referralReward": "Hadiah referral",
     "lastRefReward": "Hadiah ref terakhir",
     "yourRefers": "Referral Anda",
@@ -1623,7 +1623,7 @@
     "inviteFriends": "Undang Teman",
     "inviteYourFriends": "Undang teman Anda untuk mendaftar melalui tautan referral dan dapatkan hadiah ketika mereka menyelesaikan Quest pertama.",
     "earnCrypto": "Hasilkan Kripto",
-    "everyTimeYourFriends": "Setiap kali teman Anda melakukan Quest pertama, Anda akan mendapatkan komisi WQT hingga $35 secara langsung!",
+    "everyTimeYourFriends": "Setiap kali teman Anda melakukan Quest pertama, Anda akan mendapatkan komisi WQT hingga $20 secara langsung!",
     "historyOfRewards": "Riwayat hadiah",
     "tableHead": {
       "name": "Nama",
@@ -1636,6 +1636,11 @@
     "event": {
       "PaidReferral": "Paid",
       "RewardClaimed": "Claimed"
+    },
+    "referralStatus": {
+      "created": "Unregistered",
+      "registered": "Registered",
+      "paid": "Paid"
     }
   },
   "pension": {
