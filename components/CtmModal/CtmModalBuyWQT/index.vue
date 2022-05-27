@@ -52,7 +52,7 @@
             :disabled="isNeedToChangeNetwork || !tokenData"
             :placeholder="$t('modals.amount')"
             :name="$t('modals.amount')"
-            :rules="`required|decimal|decimalPlaces:${tokenData ? tokenData.decimals : 0}|max_value:${maxUSDTValue}|min_value:5`"
+            :rules="`required|decimal|decimalPlaces:${tokenData ? tokenData.decimals : 0}|max_value:${maxUSDTValue}|min_value:5|is_not:0`"
             data-selector="AMOUNT"
           >
             <template
@@ -272,6 +272,11 @@ export default {
   }
   &__balance {
     color: $black500;
+  }
+}
+.max {
+  &__text {
+    padding: 0 10px;
   }
 }
 </style>

@@ -39,6 +39,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { images } from '~/utils/images';
 
 export default {
   name: 'ModalAreYouSureDelete',
@@ -51,7 +52,7 @@ export default {
     showErrorModal() {
       this.ShowModal({
         key: modals.status,
-        img: require('~/assets/img/ui/deleteError.svg'),
+        img: images.ERROR,
         title: this.$t('modals.errors.error'),
         subtitle: this.$t('modals.errors.youCan’tDeleteActiveQuest'),
         button: this.$t('meta.btns.close'),

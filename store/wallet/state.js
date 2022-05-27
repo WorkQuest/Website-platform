@@ -9,6 +9,10 @@ export default () => ({
   selectedToken: TokenSymbols.WQT,
   balance: {
     WQT: { balance: 0, fullBalance: 0, decimals: 18 },
+    WUSD: { balance: 0, fullBalance: 0, decimals: 18 },
+    BNB: { balance: 0, fullBalance: 0, decimals: 18 },
+    ETH: { balance: 0, fullBalance: 0, decimals: 18 },
+    USDT: { balance: 0, fullBalance: 0, decimals: 6 },
   },
   frozenBalance: 0,
   pensionWallet: null,
