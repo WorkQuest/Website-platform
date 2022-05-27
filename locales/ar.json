@@ -291,7 +291,8 @@
     "or": "أو",
     "loginWith": "تسجيل الدخول باستخدام \nحسابك على وسائل التواصل الاجتماعي",
     "workQuest": "WorkQuest",
-    "makingMoneyIsFast": "WorkQuest:\n سوق العمل\n اللامركزي\n العالمي"
+    "makingMoneyIsFast": "WorkQuest:\n سوق العمل\n اللامركزي\n العالمي",
+    "enterEmail": "Please enter correct email"
   },
   "signWorkQuest": {
     "description": "يمكنك استخدام بيانات تسجيل الدخول وكلمة المرور في WorkQuest DAO لتسجيل الدخول",

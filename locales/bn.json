@@ -291,7 +291,8 @@
     "or": "অথবা",
     "loginWith": "দিয়ে লগইন করুন",
     "workQuest": "WorkQuest",
-    "makingMoneyIsFast": "WorkQuest:\n বিশ্বের বিকেন্দ্রীভূত\n চাকরির বাজার"
+    "makingMoneyIsFast": "WorkQuest:\n বিশ্বের বিকেন্দ্রীভূত\n চাকরির বাজার",
+    "enterEmail": "Please enter correct email"
   },
   "signWorkQuest": {
     "description": "সাইন ইন করার জন্য আপনি আপনার WorkQuest DAO লগইন এবং পাসওয়ার্ড ব্যবহার করতে পারেন",

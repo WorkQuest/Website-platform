@@ -291,7 +291,8 @@
     "or": "Atau",
     "loginWith": "Masuk dengan",
     "workQuest": "WorkQuest",
-    "makingMoneyIsFast": "WorkQuest:\n Pasar Kerja\n Terdesentralisasi di Dunia"
+    "makingMoneyIsFast": "WorkQuest:\n Pasar Kerja\n Terdesentralisasi di Dunia",
+    "enterEmail": "Please enter correct email"
   },
   "signWorkQuest": {
     "description": "Anda dapat menggunakan login dan kata sandi WorkQuest DAO Anda untuk masuk",
