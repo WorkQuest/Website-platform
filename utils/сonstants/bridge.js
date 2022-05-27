@@ -1,4 +1,5 @@
-import { Chains, TokenSymbols, isProd } from '~/utils/enums';
+import { Chains, TokenSymbols } from '~/utils/enums';
+import ENV, { IS_PROD } from '~/utils/adresses/index';
 
 export const BlockchainIndex = Object.freeze({
   [Chains.WORKNET]: 1,
@@ -13,9 +14,10 @@ export const BlockchainByIndex = Object.freeze({
 });
 
 export const BridgeAddresses = Object.freeze({
-  [Chains.WORKNET]: process.env.WORKNET_BRIDGE,
-  [Chains.ETHEREUM]: process.env.ETHEREUM_BRIDGE,
-  [Chains.BINANCE]: process.env.BSC_BRIDGE,
+  [Chains.WORKNET]: ENV.WORKNET_BRIDGE,
+  [Chains.ETHEREUM]: ENV.ETHEREUM_BRIDGE,
+  [Chains.BINANCE]: ENV.BSC_BRIDGE,
+  [Chains.POLYGON]: ENV.POLYGON_STABLE_BRIDGE,
 });
 
 export const BridgeEvents = Object.freeze({
@@ -33,10 +35,10 @@ export const SwapAddresses = new Map([
       index: BlockchainIndex.ETH,
       nativeSymbol: TokenSymbols.ETH,
       tokenAddress: {
-        [TokenSymbols.WQT]: process.env.ETHEREUM_WQT_TOKEN,
-        [TokenSymbols.USDT]: process.env.ETHEREUM_USDT_TOKEN,
+        [TokenSymbols.WQT]: ENV.ETHEREUM_WQT_TOKEN,
+        [TokenSymbols.USDT]: ENV.ETHEREUM_USDT_TOKEN,
       },
-      explorer: `https://${isProd ? '' : 'rinkeby.'}etherscan.io`,
+      explorer: `https://${IS_PROD ? '' : 'rinkeby.'}etherscan.io`,
     },
   ],
   [
@@ -48,10 +50,10 @@ export const SwapAddresses = new Map([
       index: BlockchainIndex.BSC,
       nativeSymbol: TokenSymbols.BNB,
       tokenAddress: {
-        [TokenSymbols.WQT]: process.env.BSC_WQT_TOKEN,
-        [TokenSymbols.USDT]: process.env.BSC_USDT_TOKEN,
+        [TokenSymbols.WQT]: ENV.BSC_WQT_TOKEN,
+        [TokenSymbols.USDT]: ENV.BSC_USDT_TOKEN,
       },
-      explorer: `https://${isProd ? '' : 'testnet.'}bscscan.com`,
+      explorer: `https://${IS_PROD ? '' : 'testnet.'}bscscan.com`,
     },
   ],
   [
@@ -63,12 +65,61 @@ export const SwapAddresses = new Map([
       index: BlockchainIndex.WORKNET,
       nativeSymbol: TokenSymbols.WQT,
       tokenAddress: {
-        [TokenSymbols.WQT]: process.env.WORKNET_WQT_TOKEN, // TODO fix it, this secret was deleted
-        [TokenSymbols.ETH]: process.env.WORKNET_WETH_TOKEN,
-        [TokenSymbols.BNB]: process.env.WORKNET_WBNB_TOKEN,
-        [TokenSymbols.USDT]: process.env.WORKNET_USDT_TOKEN,
+        [TokenSymbols.WQT]: ENV.WORKNET_WQT_TOKEN, // TODO fix it, this secret was deleted
+        [TokenSymbols.ETH]: ENV.WORKNET_WETH_TOKEN,
+        [TokenSymbols.BNB]: ENV.WORKNET_WBNB_TOKEN,
+        [TokenSymbols.USDT]: ENV.WORKNET_USDT_TOKEN,
       },
-      explorer: `https://${isProd ? 'dev-' : 'dev-'}explorer.workquest.co`,
+      explorer: `https://${IS_PROD ? 'dev-' : 'dev-'}explorer.workquest.co`,
+    },
+  ],
+]);
+
+/** Buy WQT Modal */
+export const BuyWQTTokensData = new Map([
+  [
+    Chains.ETHEREUM,
+    {
+      title: Chains.ETHEREUM,
+      chain: Chains.ETHEREUM,
+      icon: require('~/assets/img/ui/ethereum.svg'),
+      bridgeAddress: ENV.ETHEREUM_STABLE_BRIDGE,
+      tokens: [
+        {
+          title: TokenSymbols.USDT,
+          tokenAddress: ENV.ETHEREUM_USDT_TOKEN,
+        },
+      ],
+    },
+  ],
+  [
+    Chains.BINANCE,
+    {
+      title: Chains.BINANCE,
+      chain: Chains.BINANCE,
+      icon: require('~/assets/img/ui/bnb_yellow.svg'),
+      bridgeAddress: ENV.BSC_STABLE_BRIDGE,
+      tokens: [
+        {
+          title: TokenSymbols.USDT,
+          tokenAddress: ENV.BSC_USDT_TOKEN,
+        },
+      ],
+    },
+  ],
+  [
+    Chains.POLYGON,
+    {
+      title: Chains.POLYGON,
+      chain: Chains.POLYGON,
+      icon: require('~/assets/img/ui/Polygon.svg'),
+      bridgeAddress: ENV.POLYGON_STABLE_BRIDGE,
+      tokens: [
+        {
+          title: TokenSymbols.USDT,
+          tokenAddress: ENV.POLYGON_USDT_TOKEN,
+        },
+      ],
     },
   ],
 ]);

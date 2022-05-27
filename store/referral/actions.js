@@ -9,6 +9,7 @@ import {
 } from '~/utils/web3';
 import { WQReferral } from '~/abi/index';
 import { REFERRAL_EVENTS } from '~/utils/сonstants/referral';
+import ENV from '~/utils/adresses/index';
 
 export default {
   async fetchRewardBalance({ commit }, userWalletAddress) {
@@ -16,7 +17,7 @@ export default {
       const res = await fetchContractData(
         'getRewards',
         WQReferral,
-        process.env.WORKNET_REFERRAL,
+        ENV.WORKNET_REFERRAL,
         [userWalletAddress],
         GetWalletProvider(),
       );
@@ -31,7 +32,7 @@ export default {
     try {
       const payload = {
         abi: WQReferral,
-        address: process.env.WORKNET_REFERRAL,
+        address: ENV.WORKNET_REFERRAL,
         userAddress,
       };
       return await sendWalletTransaction('claim', payload);
@@ -59,7 +60,7 @@ export default {
       const { result, ok } = await this.$axios.$get('v1/user/me/referral-program/referrals');
 
       if (result.referrals.length) {
-        const isNeedRegistration = result.referrals.some((item) => item.referralUser.referralStatus === 'created');
+        const isNeedRegistration = result.referrals.some((item) => item.referralUser.referralStatus === 'created' && item.ratingStatistic);
 
         commit('setReferralsListCount', result.count);
         commit('setReferralsList', result.referrals);
@@ -94,7 +95,7 @@ export default {
     try {
       const payload = {
         abi: WQReferral,
-        address: process.env.WORKNET_REFERRAL,
+        address: ENV.WORKNET_REFERRAL,
         data: [signature.v, signature.r, signature.s, addresses],
         userAddress,
       };
@@ -104,7 +105,9 @@ export default {
       return error();
     }
   },
-  async subscribeToReferralEvents({ getters, commit }, userAddress) {
+  async subscribeToReferralEvents({
+    getters, rootGetters, commit, dispatch,
+  }, userAddress) {
     try {
       await this.$wsNotifs.subscribe(`/notifications/referral/${userAddress}`, async (msg) => {
         console.log('subscribeToReferralEvents massage', msg);
@@ -118,23 +121,44 @@ export default {
           referralsList.unshift(dataMessage);
           referralsListCount = dataMessage.count;
 
-          const isNeedRegistration = referralsList.some((item) => item.referralUser.referralStatus === 'created');
+          const isNeedRegistration = referralsList.some((item) => item.referralUser.referralStatus === 'created' && item.ratingStatistic);
           commit('setReferralsListCount', referralsListCount);
           commit('setReferralsList', referralsList);
           commit('setIsNeedRegistration', isNeedRegistration);
-        } else if ((msg.action === REFERRAL_EVENTS.RewardClaimed || msg.action === REFERRAL_EVENTS.PaidReferral) && currentPage === 1) {
+        } else if (msg.action === REFERRAL_EVENTS.RewardClaimed && currentPage === 1) {
+          const userData = rootGetters['user/getUserData'];
+          dispatch('main/setLoading', false, { root: true });
           paidEventsList.unshift({
             blockNumber: dataMessage.blockNumber,
             transactionHash: dataMessage.transactionHash,
-            referral: dataMessage.referral,
-            affiliate: dataMessage.affiliate,
-            amount: dataMessage.returnValues.affiliat,
-            timestamp: dataMessage.timestamp,
+            affiliate: dataMessage.returnValues.affiliat,
+            amount: dataMessage.returnValues.amount,
+            timestamp: dataMessage.timestamp || (new Date() / 1000),
             event: dataMessage.event,
-            'referralUser.id': dataMessage['referralUser.id'] || '-',
-            'referralUser.firstName': dataMessage['referralUser.firstName'] || '-',
-            'referralUser.lastName': dataMessage['referralUser.lastName'] || '-',
-            'referralUser.avatar.url': dataMessage['referralUser.lastName'],
+            referral: dataMessage.referral || userData.wallet?.address,
+            'referralUser.id': dataMessage['referralUser.id'] || userData.id,
+            'referralUser.firstName': dataMessage['referralUser.firstName'] || userData.firstName,
+            'referralUser.lastName': dataMessage['referralUser.lastName'] || userData.lastName,
+            'referralUser.avatar.url': dataMessage['referralUser.avatar.url'] || (userData.avatar && userData.avatar.url),
+          });
+          if (paidEventsList.length > 10) {
+            paidEventsList.pop();
+          }
+          commit('setPaidEventsList', paidEventsList);
+        } else if (msg.action === REFERRAL_EVENTS.PaidReferral && currentPage === 1) {
+          const eventData = dataMessage.event;
+          paidEventsList.unshift({
+            blockNumber: eventData.blockNumber,
+            transactionHash: eventData.transactionHash,
+            affiliate: eventData.returnValues.affiliat,
+            amount: eventData.returnValues.amount,
+            timestamp: eventData.timestamp,
+            event: eventData.event,
+            referral: eventData.returnValues.referral,
+            'referralUser.id': dataMessage.referral.id,
+            'referralUser.firstName': dataMessage.referral.firstName,
+            'referralUser.lastName': dataMessage.referral.lastName,
+            'referralUser.avatar.url': dataMessage.referral?.avatar?.url,
           });
           if (paidEventsList.length > 10) {
             paidEventsList.pop();
@@ -155,5 +179,8 @@ export default {
   },
   updateCurrentPage({ commit }, page) {
     commit('setCurrentPage', page);
+  },
+  setIsNeedRegistration({ commit }, payload) {
+    commit('setIsNeedRegistration', payload);
   },
 };

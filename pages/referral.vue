@@ -20,7 +20,7 @@
                   {{ $t('referral.referralReward') }}
                 </div>
                 <div class="info-block__tokens">
-                  {{ $tc('meta.coins.count.WQTCount', referralReward) }}
+                  {{ $tc('meta.coins.count.USDCount', referralReward) }}
                 </div>
               </div>
               <div class="info-block__btn-wrap">
@@ -55,7 +55,7 @@
               </div>
               <div class="user__value_green">
                 {{
-                  $tc('meta.units.plusCount', $tc('meta.coins.count.WQTCount', getStyledAmount(paidEventsList[0].amount)))
+                  $tc('meta.units.plusCount', $tc(`meta.coins.count.${currencyReward(paidEventsList[0]['referralUser.id'])}`, getStyledAmount(paidEventsList[0].amount)))
                 }}
               </div>
             </div>
@@ -77,14 +77,18 @@
                 </base-btn>
               </div>
             </div>
-            <div class="info-block__refers">
+            <div
+              class="info-block__refers"
+            >
               <div
                 v-for="(item) in referralItems()"
                 :key="`${item.id}`"
                 class="info-block__avatar"
+                @click="showReferralsList"
               >
                 <img
                   class="ava_list"
+                  :class="{'ava_list--empty': !item.avatar}"
                   :src="(item.avatar && item.avatar.url) ? item.avatar.url : $options.images.EMPTY_AVATAR"
                   alt=""
                 >
@@ -92,6 +96,7 @@
               <div
                 v-if="referralsListCount > referralCount"
                 class="info-block__more"
+                @click="showReferralsList"
               >
                 {{ $tc('meta.units.plusCount', referralsListCount - referralCount) }}
               </div>
@@ -211,7 +216,10 @@
               </template>
               <template #cell(amount)="el">
                 <div class="user__value_gray">
-                  {{ getStyledAmount(el.value) }}
+                  {{
+                    $tc(`meta.coins.count.${currencyReward(el.item['referralUser.id'])}`,
+                        getStyledAmount(el.value))
+                  }}
                 </div>
               </template>
               <template #cell(event)="el">
@@ -243,6 +251,7 @@ import modals from '~/store/modals/modals';
 import { getStyledAmount } from '~/utils/wallet';
 import { images } from '~/utils/images';
 import { REFERRAL_EVENTS } from '~/utils/сonstants/referral';
+import { IS_PROD } from '~/utils/adresses';
 
 export default {
   name: 'Referral',
@@ -260,8 +269,8 @@ export default {
     return {
       page: 1,
       perPage: 10,
-      referLink: process.env.PROD === 'true' ? 'https://app-ver1.workquest.co/?ref=' : 'https://app.workquest.co/?ref=',
-      isProd: process.env.PROD,
+      referLink: IS_PROD ? 'https://app-ver1.workquest.co/?ref=' : 'https://app.workquest.co/?ref=',
+      isProd: IS_PROD,
       referralCount: 5,
     };
   },
@@ -275,6 +284,7 @@ export default {
       referralSignature: 'referral/getReferralSignature',
       userAddress: 'user/getUserWalletAddress',
       userReferralId: 'user/getUserReferralId',
+      userData: 'user/getUserData',
       isNeedRegistration: 'referral/getIsNeedRegistration',
       createdReferralsList: 'referral/getCreatedReferralList',
     }),
@@ -282,7 +292,7 @@ export default {
       return Math.ceil(this.paidEventsList.length / this.perPage);
     },
     filterCreatedReferralsList() {
-      return this.referralsList.filter((item) => item.referralUser.referralStatus === 'created');
+      return this.referralsList.filter((item) => item.referralUser.referralStatus === 'created' && item.ratingStatistic);
     },
     tableFields() {
       return [
@@ -389,10 +399,6 @@ export default {
       },
     },
   },
-  async mounted() {
-    this.SetLoader(true);
-    this.SetLoader(false);
-  },
   beforeDestroy() {
     this.$store.dispatch('referral/unsubscribeToReferralEvents', this.userAddress);
   },
@@ -401,10 +407,17 @@ export default {
       this.ShowModal({
         key: modals.referralClaim,
         fields: {
-          to: { name: this.$t('meta.toBig'), value: this.userAddress },
+          to: { name: this.$t('meta.toBig'), value: this.convertToBech32('wq', this.userAddress) },
           amount: { name: this.$t('modals.amount'), value: this.referralReward },
         },
+
         desc: this.$t('modals.claimConfirm'),
+        claim: async () => {
+          this.SetLoader(true);
+          this.CloseModal();
+          await this.$store.dispatch('oracle/setCurrentPriceTokens');
+          await this.$store.dispatch('referral/claimReferralReward', this.userAddress);
+        },
       });
     },
     async clickRegistrationBtnHandler() {
@@ -413,13 +426,18 @@ export default {
       this.SetLoader(false);
       if (res && this.createdReferralsList.length) {
         this.ShowModal({
-          key: modals.status,
+          key: modals.referralRegistration,
           title: this.$t('meta.btns.registration'),
           subtitle: this.$t('modals.registration'),
           cancel: this.$t('meta.btns.cancel'),
           button: this.$t('meta.btns.submit'),
+          submit: async () => {
+            this.SetLoader(true);
+            await this.$store.dispatch('referral/addReferrals', this.userAddress);
+            await this.$store.dispatch('referral/setIsNeedRegistration', false);
+            this.SetLoader(false);
+          },
           itemList: this.filterCreatedReferralsList,
-          callback: async () => await this.$store.dispatch('referral/addReferrals', this.userAddress),
         });
       } else {
         this.ShowModal({
@@ -428,6 +446,14 @@ export default {
           subtitle: this.$t('notifications.registrationError'),
         });
       }
+    },
+    showReferralsList() {
+      this.ShowModal({
+        key: modals.referralRegistration,
+        title: this.$t('referral.yourRefers'),
+        itemList: this.referralsList,
+        status: true,
+      });
     },
     referralItems() {
       const referralsList = [];
@@ -447,6 +473,10 @@ export default {
     },
     getStyledAmount(value) {
       return getStyledAmount(value);
+    },
+    currencyReward(userId) {
+      if (userId === this.userData.id) return 'WQTCount';
+      return 'dollarsCount';
     },
   },
 };
@@ -551,6 +581,9 @@ export default {
         &_list {
           @extend .ava;
           position: absolute;
+          &--empty{
+            border: 1px solid $black200;
+          }
         }
       }
 
@@ -645,6 +678,7 @@ export default {
       }
 
       &__avatar {
+        cursor: pointer;
         width: 25px;
       }
 
@@ -658,6 +692,7 @@ export default {
         line-height: 33px;
         margin-left: -5px;
         z-index: 2;
+        cursor: pointer;
       }
 
       &__link {

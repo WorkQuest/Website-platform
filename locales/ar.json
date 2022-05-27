@@ -58,6 +58,7 @@
       }
     },
     "btns": {
+      "connectSMSVer": "Connect SMS Verification",
       "resendEmail": "Resend email with code",
       "back": "العودة",
       "edit": "تعديل",
@@ -257,7 +258,8 @@
     "greaterThanZero": "Please enter correct {_field_}, can't be zero",
     "zeroFail": "Please enter correct {_field_}, can't be zero",
     "notMoreDecimalPlaces": "Please enter correct {_field_}, no more than 2 decimal places",
-    "max_percent": "Please enter correct {_field_}, reduce the percentage"
+    "max_percent": "Please enter correct {_field_}, reduce the percentage",
+    "notEmptyArray": "Please select a {_field_}"
   },
   "about": {
     "text": "WorkQuest هو مشروع اجتماعي قائم على تكنولوجيا سلسلة الكتل ويهدف إلى إيجاد عمل وتنفيذ أي مهام من جانب صاحب العمل في وضع طلبات العمل. هل تبحث عن وظيفة؟ سيساعدك WorkQuest في العثور على طلب عمل بالقرب منك ومن مدينتك. هل تحتاج إلى موظفين لتحقيق الأهداف؟ ما عليك سوى إنشاء طلب عمل على موقع WorkQuest. تلتزم الخدمة بضمان تنفيذ طلبات العمل. يتم الاحتفاظ بأموال صاحب العمل لدينا، وعندما يؤكد الموظف أنه أدى عمله، فإنه يتلقى إيداعًا بالأموال في حسابه. سيساعد نظام التقييمات والمراجعات وقائمة طلبات العمل المكتملة في العثور على أشخاص صادقين وأفضل المتخصصين بكل سهولة.\n\n          هدفنا هو تبسيط التواصل بين صاحب العمل والموظف للمساعدة في توظيف ملايين الأشخاص، وتحسين موقفهم المالي، وحل المشكلة الدائمة المتمثلة في العثور على متخصصين موثوقين في جميع القطاعات، وبناء اقتصاد رقمي تقدمي قائم على أسس الثقة والاحترام المتبادل ورفاهية جميع المشاركين فيه."
@@ -289,7 +291,8 @@
     "or": "أو",
     "loginWith": "تسجيل الدخول باستخدام \nحسابك على وسائل التواصل الاجتماعي",
     "workQuest": "WorkQuest",
-    "makingMoneyIsFast": "WorkQuest:\n سوق العمل\n اللامركزي\n العالمي"
+    "makingMoneyIsFast": "WorkQuest:\n سوق العمل\n اللامركزي\n العالمي",
+    "enterEmail": "Please enter correct email"
   },
   "signWorkQuest": {
     "description": "يمكنك استخدام بيانات تسجيل الدخول وكلمة المرور في WorkQuest DAO لتسجيل الدخول",
@@ -372,18 +375,22 @@
     "levels": {
       "1": {
         "title": "Gold Plus Package",
+        "shortTitle": "Gold Plus",
         "desc": "Notifications for employees who were looking for quests, via an offer to review the quest that has been promoted by the employer. The employee will be invited to complete the quest in based on the most recent search categories of the employee. Plus the ability to choose any category and any location to promote the quest."
       },
       "2": {
         "title": "Gold Package",
+        "shortTitle": "Gold",
         "desc": "Notifications for employees who were looking for quests with a direct offer to review the promoted quest based on the most recent search categories of the employee. Plus the ability to choose three categories and three locations to promote the quest."
       },
       "3": {
         "title": "Silver Package",
+        "shortTitle": "Silver",
         "desc": "Pin quest on the main page for three hours, with the ability to choose two categories and two locations for promotion the quest."
       },
       "4": {
         "title": "Bronze Package",
+        "shortTitle": "Bronze",
         "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
       }
     },
@@ -1036,6 +1043,8 @@
       "youHaveAQuestDraft": "You have a quest draft. Cleat it?",
       "saveQuestDraft": "Save quest draft?"
     },
+    "token": "Token",
+    "network": "Network",
     "payForDispute": "You need to pay to open a dispute",
     "tryLater": "Please, try later...",
     "checkExplorer": "You can check a transaction status on Explorer",
@@ -1404,6 +1413,11 @@
     "transfer": "الشراء/الإرسال",
     "addCardProposal": "أضِف بطاقتك الخاصة للسحب بسهولة",
     "addCard": "إضافة بطاقة",
+    "buyWQT": {
+      "buyButton": "Buy WQT",
+      "title": "Buy first WQT!",
+      "sub": "Donec rutrum congue leo eget malesuada. Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem."
+    },
     "collateral": {
       "balance": "Collateral balance",
       "coin": "coin",
@@ -1546,12 +1560,15 @@
       "workInOffice": "In-office",
       "bothVariant": "Hybrid workplace"
     },
-    "selectPayPeriod": "Select pay period"
+    "selectPayPeriod": "Select pay period",
+    "visabilitySettings": "Visability settings",
+    "securitySettings": "Security settings"
   },
   "raising-views": {
     "raisingViews": "زيادة المشاهدات",
     "choosePeriod": "اختيار الفترة",
     "forOneDay": "لمدة يوم واحد",
+    "forDays": "For {n} days",
     "forOneWeek": "لمدة أسبوع واحد",
     "forOneMonth": "لمدة شهر واحد",
     "chooseLevel": "اختيار المستوى"
@@ -1596,7 +1613,7 @@
   "referral": {
     "inviteFriendsHead": "دعوة الأصدقاء",
     "earnCryptoTogether": "ربح العملات المشفرة معًا",
-    "headerSubtitle": "اربح ما يصل إلى 35 دولارًا في WQT في كل مرة يسجِّل فيها أصدقاؤك ويؤدون أول طلب عمل على منصة WorkQuest.",
+    "headerSubtitle": "اربح ما يصل إلى 20 دولارًا في WQT في كل مرة يسجِّل فيها أصدقاؤك ويؤدون أول طلب عمل على منصة WorkQuest.",
     "referralReward": "مكافأة الإحالة",
     "lastRefReward": "مكافأة آخر إحالة",
     "yourRefers": "إحالاتك",
@@ -1607,7 +1624,7 @@
     "inviteFriends": "دعوة الأصدقاء",
     "inviteYourFriends": "أرسل دعوة إلى أصدقائك للتسجيل من خلال رابط الإحالة واحصل على مكافآت عندما يكملون أول طلب عمل.",
     "earnCrypto": "ربح العملات المشفرة",
-    "everyTimeYourFriends": "ستحصل على ما يصل إلى 35 دولارًا من عمولة WQT في الوقت الفعلي في كل مرة يكمل فيها أصدقاؤك أول طلب عمل!",
+    "everyTimeYourFriends": "ستحصل على ما يصل إلى 20 دولارًا من عمولة WQT في الوقت الفعلي في كل مرة يكمل فيها أصدقاؤك أول طلب عمل!",
     "historyOfRewards": "سجل المكافآت",
     "tableHead": {
       "name": "الاسم",
@@ -1619,7 +1636,12 @@
     },
     "event": {
       "PaidReferral": "Paid",
-      "ClaimedReferral": "Claimed"
+      "RewardClaimed": "Claimed"
+    },
+    "referralStatus": {
+      "created": "Unregistered",
+      "registered": "Registered",
+      "paid": "Paid"
     }
   },
   "pension": {

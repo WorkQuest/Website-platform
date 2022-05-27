@@ -2,6 +2,22 @@
   <div class="wallet">
     <div class="wallet__container">
       <div class="wallet__body">
+        <div class="buy-wqt">
+          <div class="buy-wqt__title">
+            {{ $t('wallet.buyWQT.title') }}
+          </div>
+          <div class="buy-wqt__sub">
+            <div class="buy-wqt__sub_text">
+              {{ $t('wallet.buyWQT.sub') }}
+            </div>
+            <base-btn
+              mode="outline"
+              @click="showBuyWQTModal"
+            >
+              {{ $t('wallet.buyWQT.buyButton') }}
+            </base-btn>
+          </div>
+        </div>
         <div class="wallet__nav">
           <span class="wallet__title">{{ $t('meta.wallet') }}</span>
           <div class="wallet__address">
@@ -165,7 +181,7 @@ import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { ERC20 } from '~/abi/index';
 import {
-  TokenMap, TokenSymbolByContract, TokenSymbols, WalletTables, WorknetTokenAddresses,
+  TokenMap, TokenSymbolByContract, TokenSymbols, WalletTables, WorknetTokenAddresses, Chains,
 } from '~/utils/enums';
 import { getStyledAmount } from '~/utils/wallet';
 import EmptyData from '~/components/app/info/emptyData';
@@ -198,6 +214,9 @@ export default {
       frozenBalance: 'wallet/getFrozenBalance',
       transactionsCount: 'wallet/getTransactionsCount',
       isWalletConnected: 'wallet/getIsWalletConnected',
+
+      // buy wqt logic
+      isMetamaskConnected: 'web3/isConnected',
     }),
     selectedTokenData() {
       return this.balance[this.selectedToken];
@@ -223,12 +242,13 @@ export default {
       return this.transactions.map((t) => {
         const symbol = TokenSymbolByContract[t.to_address_hash.hex] || TokenSymbols.WQT;
         const decimals = this.balance[symbol].decimals || 18;
+        const amount = t.tokenTransfers?.length ? t.tokenTransfers[0]?.amount : t.value;
         return {
           tx_hash: t.hash,
           block: t.block_number,
           timestamp: this.$moment(t.block.timestamp).format('lll'),
           status: !!t.status,
-          value: `${getStyledAmount(t.tokenTransfers[0]?.amount || t.value, false, decimals)} ${symbol}`,
+          value: `${getStyledAmount(amount, false, decimals)} ${symbol}`,
           transaction_fee: t.transaction_fee || new BigNumber(t.gas_price).multipliedBy(t.gas_used),
           from_address: t.from_address_hash.hex,
           to_address: t.to_address_hash.hex,
@@ -292,6 +312,14 @@ export default {
     await this.$store.dispatch('wallet/unsubscribeWS');
   },
   methods: {
+    async showBuyWQTModal() {
+      if (!this.isMetamaskConnected) {
+        if (await this.$store.dispatch('web3/connect', { chain: Chains.ETHEREUM }) === false) {
+          return;
+        }
+      }
+      this.ShowModal({ key: modals.buyWQT });
+    },
     getSwitchButtonMode(btn) {
       if (btn === this.selectedWalletTable) return '';
       return 'outline';
@@ -392,6 +420,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.buy-wqt {
+  margin-top: 20px;
+  border-radius: 6px;
+  padding: 20px;
+  background: $blue;
+  color: $white100;
+  &__title {
+    font-size: 22px;
+    font-weight: 500;
+  }
+  &__sub {
+    display: grid;
+    grid-template-columns: 80% 1fr;
+  }
+}
 
 .table {
   &__container {
@@ -700,6 +744,10 @@ export default {
   }
   .balance__bottom {
     gap: 10px;
+  }
+  .buy-wqt__sub {
+    grid-template-columns: 1fr;
+    grid-gap: 10px
   }
 }
 

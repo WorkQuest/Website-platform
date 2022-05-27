@@ -58,6 +58,7 @@
       }
     },
     "btns": {
+      "connectSMSVer": "Connect SMS Verification",
       "resendEmail": "Resend email with code",
       "back": "后退",
       "edit": "编辑",
@@ -257,7 +258,8 @@
     "greaterThanZero": "Please enter correct {_field_}, can't be zero",
     "zeroFail": "Please enter correct {_field_}, can't be zero",
     "notMoreDecimalPlaces": "Please enter correct {_field_}, no more than 2 decimal places",
-    "max_percent": "Please enter correct {_field_}, reduce the percentage"
+    "max_percent": "Please enter correct {_field_}, reduce the percentage",
+    "notEmptyArray": "Please select a {_field_}"
   },
   "about": {
     "text": "WorkQuest 是一个基于区块链技术的社交项目，可以在 Quest 模式下提供工作机会和解决雇主方面的任务。您在找工作吗？WorkQuest 将帮助您找到附近的 Quest。您需要工作者实现目标吗？只需在 WorkQuest 站点创建 Quest 即可。服务承担执行 Quest 的保证义务。雇主资金由我方保管，雇员在确认工作执行情况后将在帐户中收到资金。由评分、评价和已完成 Quest 列表组成的系统将有助于轻松寻找合适的人员和最优秀的专家。\n\n          我们的目标是简化雇主与雇员之间的沟通，帮助数百万人就业，改善人们的财务状况，解决在各行各业寻找可靠专业人士的终身问题，以信任、相互尊重和所有参与者的福祉为基础创造进步的数字经济。"
@@ -289,7 +291,8 @@
     "or": "或者",
     "loginWith": "使用以下方式登录",
     "workQuest": "WorkQuest",
-    "makingMoneyIsFast": "WorkQuest：\n 全球去中心化\n 就业市场"
+    "makingMoneyIsFast": "WorkQuest：\n 全球去中心化\n 就业市场",
+    "enterEmail": "Please enter correct email"
   },
   "signWorkQuest": {
     "description": "您可以使用您的 WorkQuest DAO 登录名和密码登录",
@@ -372,18 +375,22 @@
     "levels": {
       "1": {
         "title": "Gold Plus Package",
+        "shortTitle": "Gold Plus",
         "desc": "Notifications for employees who were looking for quests, via an offer to review the quest that has been promoted by the employer. The employee will be invited to complete the quest in based on the most recent search categories of the employee. Plus the ability to choose any category and any location to promote the quest."
       },
       "2": {
         "title": "Gold Package",
+        "shortTitle": "Gold",
         "desc": "Notifications for employees who were looking for quests with a direct offer to review the promoted quest based on the most recent search categories of the employee. Plus the ability to choose three categories and three locations to promote the quest."
       },
       "3": {
         "title": "Silver Package",
+        "shortTitle": "Silver",
         "desc": "Pin quest on the main page for three hours, with the ability to choose two categories and two locations for promotion the quest."
       },
       "4": {
         "title": "Bronze Package",
+        "shortTitle": "Bronze",
         "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
       }
     },
@@ -1036,6 +1043,8 @@
       "youHaveAQuestDraft": "You have a quest draft. Cleat it?",
       "saveQuestDraft": "Save quest draft?"
     },
+    "token": "Token",
+    "network": "Network",
     "payForDispute": "You need to pay to open a dispute",
     "tryLater": "Please, try later...",
     "checkExplorer": "You can check a transaction status on Explorer",
@@ -1404,6 +1413,11 @@
     "transfer": "购买/发送",
     "addCardProposal": "添加您自己的银行卡，轻松提款",
     "addCard": "添加银行卡",
+    "buyWQT": {
+      "buyButton": "Buy WQT",
+      "title": "Buy first WQT!",
+      "sub": "Donec rutrum congue leo eget malesuada. Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem."
+    },
     "collateral": {
       "balance": "Collateral balance",
       "coin": "coin",
@@ -1545,12 +1559,15 @@
       "workInOffice": "In-office",
       "bothVariant": "Hybrid workplace"
     },
-    "selectPayPeriod": "Select pay period"
+    "selectPayPeriod": "Select pay period",
+    "visabilitySettings": "Visability settings",
+    "securitySettings": "Security settings"
   },
   "raising-views": {
     "raisingViews": "提高浏览量",
     "choosePeriod": "选择期限",
     "forOneDay": "1 天",
+    "forDays": "For {n} days",
     "forOneWeek": "1 周",
     "forOneMonth": "1 个月",
     "chooseLevel": "选择级别"
@@ -1595,7 +1612,7 @@
   "referral": {
     "inviteFriendsHead": "邀请朋友。",
     "earnCryptoTogether": "共同赚取加密货币",
-    "headerSubtitle": "您的朋友在 WorkQuest 平台注册并完成第一个 Quest 后，您最多可以赚取 35 美元的 WQT。",
+    "headerSubtitle": "您的朋友在 WorkQuest 平台注册并完成第一个 Quest 后，您最多可以赚取 20 美元的 WQT。",
     "referralReward": "推荐奖励",
     "lastRefReward": "上一次推荐奖励",
     "yourRefers": "您的推荐",
@@ -1606,7 +1623,7 @@
     "inviteFriends": "邀请朋友",
     "inviteYourFriends": "邀请您的朋友通过推荐链接注册，在其完成第一个 Quest 后获得奖励。",
     "earnCrypto": "赚取加密货币",
-    "everyTimeYourFriends": "每当您有朋友完成第一个 Quest，您都会实时获得最高可达 35 美元的 WQT 佣金！",
+    "everyTimeYourFriends": "每当您有朋友完成第一个 Quest，您都会实时获得最高可达 20 美元的 WQT 佣金！",
     "historyOfRewards": "奖励历史",
     "tableHead": {
       "name": "名称",
@@ -1619,6 +1636,11 @@
     "event": {
       "PaidReferral": "Paid",
       "RewardClaimed": "Claimed"
+    },
+    "referralStatus": {
+      "created": "Unregistered",
+      "registered": "Registered",
+      "paid": "Paid"
     }
   },
   "pension": {

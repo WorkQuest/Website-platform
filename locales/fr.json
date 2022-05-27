@@ -58,6 +58,7 @@
       }
     },
     "btns": {
+      "connectSMSVer": "Connect SMS Verification",
       "resendEmail": "Resend email with code",
       "back": "Back",
       "edit": "Éditer",
@@ -257,7 +258,8 @@
     "greaterThanZero": "Please enter correct {_field_}, can't be zero",
     "zeroFail": "Please enter correct {_field_}, can't be zero",
     "notMoreDecimalPlaces": "Please enter correct {_field_}, no more than 2 decimal places",
-    "max_percent": "Please enter correct {_field_}, reduce the percentage"
+    "max_percent": "Please enter correct {_field_}, reduce the percentage",
+    "notEmptyArray": "Please select a {_field_}"
   },
   "about": {
     "text": "WorkQuest est un projet social basé sur la technologie blockchain visant à faciliter la recherche d’emploi et résoudre toutes les tâches des employeurs en mode quête. Cherchez-vous un emploi ? WorkQuest vous aidera à trouver une quête à côté de chez vous ou dans votre ville. Avez-vous besoin de travailleurs pour réaliser certains objectifs ? Il suffit de créer une quête sur le site de WorkQuest. Le service assume les obligations de garantie pour l'exécution des quêtes. Les fonds des employeurs sont conservés auprès de nous. Si l'employé(e) fournit une confirmation de l'exécution du travail, les fonds sont reversés sur son compte. Le système d'évaluations, de notes et la liste des quêtes accomplies aideront à trouver facilement des personnes honnêtes et des spécialistes fiables.\n\n          Notre objectif est de simplifier la communication entre les employeurs et les employés, d'aider des millions de personnes à trouver des emplois, d'améliorer leur situation financière, de résoudre le problème permanent de recherche de professionnels fiables dans tous les secteurs pour créer une économie numérique progressive fondée sur les principes de confiance, de respect mutuel et de bien-être de tous ses participants."
@@ -289,7 +291,8 @@
     "or": "Ou",
     "loginWith": "Se connecter avec",
     "workQuest": "WorkQuest",
-    "makingMoneyIsFast": "WorkQuest :\n Le marché du travail\n décentralisé mondial"
+    "makingMoneyIsFast": "WorkQuest :\n Le marché du travail\n décentralisé mondial",
+    "enterEmail": "Please enter correct email"
   },
   "signWorkQuest": {
     "description": "Vous pouvez utiliser votre identifiant et votre mot de passe de DAO WorkQuest pour vous connecter",
@@ -372,18 +375,22 @@
     "levels": {
       "1": {
         "title": "Gold Plus Package",
+        "shortTitle": "Gold Plus",
         "desc": "Notifications for employees who were looking for quests, via an offer to review the quest that has been promoted by the employer. The employee will be invited to complete the quest in based on the most recent search categories of the employee. Plus the ability to choose any category and any location to promote the quest."
       },
       "2": {
         "title": "Gold Package",
+        "shortTitle": "Gold",
         "desc": "Notifications for employees who were looking for quests with a direct offer to review the promoted quest based on the most recent search categories of the employee. Plus the ability to choose three categories and three locations to promote the quest."
       },
       "3": {
         "title": "Silver Package",
+        "shortTitle": "Silver",
         "desc": "Pin quest on the main page for three hours, with the ability to choose two categories and two locations for promotion the quest."
       },
       "4": {
         "title": "Bronze Package",
+        "shortTitle": "Bronze",
         "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
       }
     },
@@ -1036,6 +1043,8 @@
       "youHaveAQuestDraft": "You have a quest draft. Cleat it?",
       "saveQuestDraft": "Save quest draft?"
     },
+    "token": "Token",
+    "network": "Network",
     "payForDispute": "You need to pay to open a dispute",
     "tryLater": "Please, try later...",
     "checkExplorer": "You can check a transaction status on Explorer",
@@ -1404,6 +1413,11 @@
     "transfer": "Acheter/Envoyer",
     "addCardProposal": "Ajoutez votre propre carte pour assurer un retrait facile",
     "addCard": "Ajouter une carte",
+    "buyWQT": {
+      "buyButton": "Buy WQT",
+      "title": "Buy first WQT!",
+      "sub": "Donec rutrum congue leo eget malesuada. Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem."
+    },
     "collateral": {
       "balance": "Collateral balance",
       "coin": "coin",
@@ -1545,12 +1559,15 @@
       "workInOffice": "In-office",
       "bothVariant": "Hybrid workplace"
     },
-    "selectPayPeriod": "Select pay period"
+    "selectPayPeriod": "Select pay period",
+    "visabilitySettings": "Visability settings",
+    "securitySettings": "Security settings"
   },
   "raising-views": {
     "raisingViews": "Augmenter les vues",
     "choosePeriod": "Choisir la période",
     "forOneDay": "Pour 1 jour",
+    "forDays": "For {n} days",
     "forOneWeek": "Pour 1 semaine",
     "forOneMonth": "Pour 1 mois",
     "chooseLevel": "Choisir le niveau"
@@ -1595,7 +1612,7 @@
   "referral": {
     "inviteFriendsHead": "Inviter des amis.",
     "earnCryptoTogether": "Gagnez des cryptomonnaies ensemble",
-    "headerSubtitle": "Gagnez jusqu'à 35 USD en WQT chaque fois que vos amis s'inscrivent et réalisent leur première quête sur la plateforme WorkQuest.",
+    "headerSubtitle": "Gagnez jusqu'à 20 USD en WQT chaque fois que vos amis s'inscrivent et réalisent leur première quête sur la plateforme WorkQuest.",
     "referralReward": "Récompense de parrainage",
     "lastRefReward": "Dernière récompense de parrainage",
     "yourRefers": "Vos parrainages",
@@ -1606,7 +1623,7 @@
     "inviteFriends": "Inviter des amis",
     "inviteYourFriends": "Invitez vos amis à s'inscrire via le lien de parrainage et obtenez des récompenses lorsqu'ils accomplissent leur première quête.",
     "earnCrypto": "Gagnez des cryptomonnaies",
-    "everyTimeYourFriends": "Chaque fois que vos amis réalisent une première quête, vous recevez jusqu'à 35 USD de commission en WQT en temps réel !",
+    "everyTimeYourFriends": "Chaque fois que vos amis réalisent une première quête, vous recevez jusqu'à 20 USD de commission en WQT en temps réel !",
     "historyOfRewards": "Historique des récompenses",
     "tableHead": {
       "name": "Nom",
@@ -1619,6 +1636,11 @@
     "event": {
       "PaidReferral": "Paid",
       "RewardClaimed": "Claimed"
+    },
+    "referralStatus": {
+      "created": "Unregistered",
+      "registered": "Registered",
+      "paid": "Paid"
     }
   },
   "pension": {

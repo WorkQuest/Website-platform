@@ -2,14 +2,10 @@ import BigNumber from 'bignumber.js';
 import {
   error,
   success,
-  showToast,
   fetchContractData,
 } from '~/utils/web3';
 
 import {
-  getGasPrice,
-  createInstance,
-  getWalletAddress,
   GetWalletProvider,
   connectWithMnemonic,
 } from '~/utils/wallet';
@@ -18,11 +14,13 @@ import {
   UserStatuses,
   QuestModeReview,
   RaiseViewTariffPeriods,
+  TariffByIndex,
 } from '~/utils/enums';
 
 import { WQPromotion } from '~/abi/index';
+import { PaidTariff } from '~/utils/сonstants/quests';
 
-const { WORKNET_PROMOTION } = process.env;
+import ENV from '~/utils/adresses/index';
 
 export default {
   async resendEmail({ commit }, { email }) {
@@ -328,11 +326,11 @@ export default {
     }
   },
 
-  async sendPhone({ commit }, payload) {
+  async sendSMSCode({ commit }) {
     try {
-      const response = await this.$axios.$post('/v1/profile/phone/send-code', payload);
+      const response = await this.$axios.$post('/v1/profile/phone/send-code');
       commit('setVerificationCode', response.result);
-      return response.result;
+      return success(response.result);
     } catch (e) {
       return console.log(e);
     }
@@ -355,65 +353,42 @@ export default {
       return false;
     }
   },
-  // TODO delete, waiting when backend will be catch all this events
-  async payUserRaisedView({ commit }, payload) {
-    try {
-      const response = await this.$axios.$post('/v1/profile/worker/me/raise-view/pay', payload);
-      return response.ok;
-    } catch (e) {
-      console.log('profile/worker/me/raise-view/pay');
-      return false;
-    }
-  },
-  async getRaiseViewPrice({ commit }, { type }) {
+  /**
+   *
+   * @param commit
+   * @param type - string: questsTariff || usersTariff
+   * @returns {Promise<{msg: string, code: number, data: null, ok: boolean}|{result: *, ok: boolean}>}
+   */
+  async fetchRaiseViewPrice({ commit }, { type }) { // new method
     try {
       const periods = RaiseViewTariffPeriods[type];
-      const tariffs = ['1', '2', '3', '4'];
-      const price = {};
-      for (let i = 0; i < tariffs.length; i += 1) {
-        price[tariffs[i]] = {};
-        for (let j = 0; j < periods.length; j += 1) {
-          const data = [tariffs[i], periods[j]];
-          /* eslint-disable no-await-in-loop */
-          const cost = await fetchContractData(
-            type,
-            WQPromotion,
-            WORKNET_PROMOTION,
-            data,
-            GetWalletProvider(),
-          );
-          price[tariffs[i]][periods[j]] = new BigNumber(+cost).shiftedBy(-18).toString();
+      const tariffs = ['0', '1', '2', '3'];
+      const result = {
+        [PaidTariff.GoldPlus]: [],
+        [PaidTariff.Gold]: [],
+        [PaidTariff.Silver]: [],
+        [PaidTariff.Bronze]: [],
+      };
+      const toFetch = [];
+      for (let i = 0; i < periods.length; i += 1) {
+        for (let j = 0; j < tariffs.length; j += 1) {
+          toFetch.push((async () => {
+            const cost = await fetchContractData(
+              type,
+              WQPromotion,
+              ENV.WORKNET_PROMOTION,
+              [tariffs[j], periods[i]],
+              GetWalletProvider(),
+            );
+            result[TariffByIndex[j]][i] = new BigNumber(+cost).shiftedBy(-18).toString();
+          })());
         }
       }
-      return success(price);
+      await Promise.all(toFetch);
+      return success(result);
     } catch (e) {
-      console.log('user/getRaiseViewPrice');
-      return error(e.code, 'Error in get raise view price', e);
-    }
-  },
-  async promoteUserOnContract({ commit }, { cost, tariff, period }) {
-    try {
-      const inst = createInstance(WQPromotion, WORKNET_PROMOTION);
-      const value = new BigNumber(cost).shiftedBy(18).toString();
-      const { gas, gasPrice } = await getGasPrice(
-        WQPromotion,
-        WORKNET_PROMOTION,
-        'promoteUser',
-        [tariff, period],
-        value,
-      );
-      const params = {
-        from: getWalletAddress(),
-        gasPrice,
-        gas,
-        value,
-      };
-      const response = await inst.methods.promoteUser(tariff, period).send(params);
-      return success(response);
-    } catch (e) {
-      console.log('user/buyRaiseView');
-      showToast('Promote user error:', `${e.message}`, 'danger');
-      return error(e.code, 'Error in method promote user', e);
+      console.log('user/fetchRaiseViewPrice', e);
+      return error();
     }
   },
   setRememberMe({ commit }, payload) {

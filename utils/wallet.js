@@ -6,6 +6,7 @@ import {
   error,
   success,
 } from '~/utils/web3';
+import ENV from '~/utils/adresses/index';
 
 import {
   WQOracle,
@@ -37,7 +38,7 @@ export const getCipherKey = () => cipherKey;
 // eslint-disable-next-line no-return-assign
 export const setCipherKey = (key) => cipherKey = key;
 
-let web3 = new Web3(process.env.WQ_PROVIDER);
+let web3 = new Web3(ENV.WQ_PROVIDER);
 export const getProvider = () => web3;
 export const createInstance = (_abi, _address) => new web3.eth.Contract(_abi, _address);
 
@@ -46,7 +47,7 @@ const wallet = {
   address: null,
   privateKey: null,
   init(address, privateKey) {
-    if (!web3) web3 = new Web3(process.env.WQ_PROVIDER);
+    if (!web3) web3 = new Web3(ENV.WQ_PROVIDER);
     this.address = address.toLowerCase();
     this.privateKey = privateKey;
     if (privateKey) {
@@ -253,7 +254,7 @@ export const sendWalletTransaction = async (_method, {
  * @param _contractAddress
  * @param data - array
  * @param recipient
- * @param amount - WUSD
+ * @param amount - WQT
  * @returns {Promise<{msg: string, code: number, data: null, ok: boolean}|{result: *, ok: boolean}>}
  */
 export const getContractFeeData = async (_method, _abi, _contractAddress, data, recipient = null, amount = 0) => {
@@ -338,7 +339,7 @@ export const setTokenPrice = async ({ currency }, {
   gasPrice, gas, timestamp, price, v, r, s,
 }) => {
   try {
-    const inst = new web3.eth.Contract(WQOracle, process.env.WORKNET_ORACLE);
+    const inst = new web3.eth.Contract(WQOracle, ENV.WORKNET_ORACLE);
     await inst.methods.setTokenPriceUSD(timestamp, price, v, r, s, currency).send({
       from: wallet.address,
       gas,
@@ -354,7 +355,7 @@ export const setTokenPrices = async ({
   gasPrice, gas, timestamp, prices, v, r, s, symbols,
 }) => {
   try {
-    const inst = new web3.eth.Contract(WQOracle, process.env.WORKNET_ORACLE);
+    const inst = new web3.eth.Contract(WQOracle, ENV.WORKNET_ORACLE);
     await inst.methods.setTokenPricesUSD(timestamp, v, r, s, prices, symbols).send({
       from: wallet.address,
       gas,
@@ -368,7 +369,7 @@ export const setTokenPrices = async ({
 
 export const buyWUSD = async ({ collateralBN, ratioBN, currency }, { gasPrice, gas }) => {
   try {
-    const inst = new web3.eth.Contract(WQRouter, process.env.WORKNET_ROUTER);
+    const inst = new web3.eth.Contract(WQRouter, ENV.WORKNET_ROUTER);
     await inst.methods.produceWUSD(collateralBN, ratioBN, currency).send({
       from: wallet.address,
       gas,

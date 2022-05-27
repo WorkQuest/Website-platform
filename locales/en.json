@@ -58,6 +58,7 @@
       }
     },
     "btns": {
+      "connectSMSVer": "Connect SMS Verification",
       "resendEmail": "Resend email with code",
       "back": "Back",
       "edit": "Edit",
@@ -257,7 +258,8 @@
     "greaterThanZero": "Please enter correct {_field_}, can't be zero",
     "zeroFail": "Please enter correct {_field_}, can't be zero",
     "notMoreDecimalPlaces": "Please enter correct {_field_}, no more than 2 decimal places",
-    "max_percent": "Please enter correct {_field_}, reduce the percentage"
+    "max_percent": "Please enter correct {_field_}, reduce the percentage",
+    "notEmptyArray": "Please select a {_field_}"
   },
   "about": {
     "text": "Work Quest is a social project based on the blockchain technology for finding work and solving any tasks from the employer's side in quest mode. Are you looking for a job? A work quest will help you find a quest next to you and your city. Do you need workers to carry out the goals? Just create a quest on the site of the work quest. The service assumes the warranty obligations for performing quests. Employer funds are kept with us , if the employee gives a confirmation of the performance of work, he receives a deposit of funds on his account. The system of ratings, reviews and a list of completed quests will help to easily find honest people and the best specialists.\n\n          Our goal is to simplify the communication between the employer and the employee, to help employ millions of people, to improve their financial situation, to solve the lifelong problem of finding reliable professionals in all sectors to create a progressive digital economy built on the principles of trust, mutual respect and the well-being of all its participants."
@@ -289,7 +291,8 @@
     "or": "Or",
     "loginWith": "Login with",
     "workQuest": "WorkQuest",
-    "makingMoneyIsFast": "WorkQuest:\n The World's\n Decentralized\n Job Market"
+    "makingMoneyIsFast": "WorkQuest:\n The World's\n Decentralized\n Job Market",
+    "enterEmail": "Please enter correct email"
   },
   "signWorkQuest": {
     "description": "You can use your WorkQuest DAO login and password to sign in",
@@ -372,18 +375,22 @@
     "levels": {
       "1": {
         "title": "Gold Plus Package",
+        "shortTitle": "Gold Plus",
         "desc": "Notifications for employees who were looking for quests, via an offer to review the quest that has been promoted by the employer. The employee will be invited to complete the quest in based on the most recent search categories of the employee. Plus the ability to choose any category and any location to promote the quest."
       },
       "2": {
         "title": "Gold Package",
+        "shortTitle": "Gold",
         "desc": "Notifications for employees who were looking for quests with a direct offer to review the promoted quest based on the most recent search categories of the employee. Plus the ability to choose three categories and three locations to promote the quest."
       },
       "3": {
         "title": "Silver Package",
+        "shortTitle": "Silver",
         "desc": "Pin quest on the main page for three hours, with the ability to choose two categories and two locations for promotion the quest."
       },
       "4": {
         "title": "Bronze Package",
+        "shortTitle": "Bronze",
         "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
       }
     },
@@ -1036,6 +1043,8 @@
       "youHaveAQuestDraft": "You have a quest draft. Cleat it?",
       "saveQuestDraft": "Save quest draft?"
     },
+    "token": "Token",
+    "network": "Network",
     "payForDispute": "You need to pay to open a dispute",
     "tryLater": "Please, try later...",
     "checkExplorer": "You can check a transaction status on Explorer",
@@ -1404,6 +1413,11 @@
     "transfer": "Buy / Send",
     "addCardProposal": "Add bank card for easy withdrawal",
     "addCard": "Add card",
+    "buyWQT": {
+      "buyButton": "Buy WQT",
+      "title": "Buy first WQT!",
+      "sub": "Donec rutrum congue leo eget malesuada. Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem."
+    },
     "collateral": {
       "balance": "Collateral balance",
       "coin": "coin",
@@ -1545,12 +1559,15 @@
       "workInOffice": "In-office",
       "bothVariant": "Hybrid workplace"
     },
-    "selectPayPeriod": "Select pay period"
+    "selectPayPeriod": "Select pay period",
+    "visabilitySettings": "Visability settings",
+    "securitySettings": "Security settings"
   },
   "raising-views": {
     "raisingViews": "Raising views",
     "choosePeriod": "Choose period",
     "forOneDay": "For 1 day",
+    "forDays": "For {n} days",
     "forOneWeek": "For 1 week",
     "forOneMonth": "For 1 month",
     "chooseLevel": "Choose level"
@@ -1595,7 +1612,7 @@
   "referral": {
     "inviteFriendsHead": "Invite friends.",
     "earnCryptoTogether": "Earn crypto together",
-    "headerSubtitle": "Earn up to 35$ in WQT every time your friends register and make first Quest on Work Quest platform.",
+    "headerSubtitle": "Earn up to 20$ in WQT every time your friends register and make first Quest on Work Quest platform.",
     "referralReward": "Referral reward",
     "lastRefReward": "Last ref reward",
     "yourRefers": "Your referrals",
@@ -1606,7 +1623,7 @@
     "inviteFriends": "Invite Friends",
     "inviteYourFriends": "Invite your friends to register through the referral link and get rewards when they complete first Quest.",
     "earnCrypto": "Earn Crypto",
-    "everyTimeYourFriends": "Every time your friends make a first Quest, you'll get up to $35 in WQT commission in real time!",
+    "everyTimeYourFriends": "Every time your friends make a first Quest, you'll get up to $20 in WQT commission in real time!",
     "historyOfRewards": "History of rewards",
     "tableHead": {
       "name": "Name",
@@ -1619,6 +1636,11 @@
     "event": {
       "PaidReferral": "Paid",
       "RewardClaimed": "Claimed"
+    },
+    "referralStatus": {
+      "created": "Unregistered",
+      "registered": "Registered",
+      "paid": "Paid"
     }
   },
   "pension": {

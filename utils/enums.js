@@ -1,34 +1,37 @@
-export const isProd = process.env.PROD === 'true';
+import { PaidTariff } from '~/utils/сonstants/quests';
+import ENV, { IS_PROD } from '~/utils/adresses';
 
-// test commit
+export const isProd = IS_PROD;
 
 export const ChainsId = {
   ETH_MAIN: '0x1',
   ETH_TEST: '0x4',
   BSC_MAIN: '0x38',
   BSC_TEST: '0x61',
-  MATIC_MAIN: '0x13881',
-  MUMBAI_TEST: '0x89',
+  MATIC_MAIN: '0x89',
+  MUMBAI_TEST: '0x13881',
   WORKNET_TEST: '0x13488D0',
 };
 
-export const QuestModeReview = {
-  QUEST_LIST: 'QuestList',
-  QUEST_SINGLE: 'QuestSingle',
-};
-
 export const ChainsIdByChainNumber = {
-  1: '0x1',
-  4: '0x4',
-  56: '0x38',
-  97: '0x61',
-  20220112: '0x13488D0',
+  1: [ChainsId.ETH_MAIN],
+  4: [ChainsId.ETH_TEST],
+  56: [ChainsId.BSC_MAIN],
+  137: [ChainsId.MATIC_MAIN],
+  80001: [ChainsId.MUMBAI_TEST],
+  20220112: [ChainsId.WORKNET_TEST],
 };
 
 export const Chains = {
   ETHEREUM: 'ETH',
   BINANCE: 'BSC',
   WORKNET: 'WORKNET',
+  POLYGON: 'POLYGON',
+};
+
+export const QuestModeReview = {
+  QUEST_LIST: 'QuestList',
+  QUEST_SINGLE: 'QuestSingle',
 };
 
 export const StakingTypes = {
@@ -205,24 +208,24 @@ export const TokenSymbols = Object.freeze({
 
 // wallet balance
 export const WorknetTokenAddresses = Object.freeze([
-  process.env.WORKNET_WUSD_TOKEN,
-  process.env.WORKNET_WBNB_TOKEN,
-  process.env.WORKNET_WETH_TOKEN,
-  process.env.WORKNET_USDT_TOKEN,
+  ENV.WORKNET_WUSD_TOKEN,
+  ENV.WORKNET_WBNB_TOKEN,
+  ENV.WORKNET_WETH_TOKEN,
+  ENV.WORKNET_USDT_TOKEN,
 ]);
 
 export const TokenSymbolByContract = Object.freeze({
-  [process.env.WORKNET_WUSD_TOKEN.toLowerCase()]: TokenSymbols.WUSD,
-  [process.env.WORKNET_WBNB_TOKEN.toLowerCase()]: TokenSymbols.BNB,
-  [process.env.WORKNET_WETH_TOKEN.toLowerCase()]: TokenSymbols.ETH,
-  [process.env.WORKNET_USDT_TOKEN.toLowerCase()]: TokenSymbols.USDT,
+  [ENV.WORKNET_WUSD_TOKEN?.toLowerCase()]: TokenSymbols.WUSD,
+  [ENV.WORKNET_WBNB_TOKEN?.toLowerCase()]: TokenSymbols.BNB,
+  [ENV.WORKNET_WETH_TOKEN?.toLowerCase()]: TokenSymbols.ETH,
+  [ENV.WORKNET_USDT_TOKEN?.toLowerCase()]: TokenSymbols.USDT,
 });
 
 export const TokenMap = {
-  [TokenSymbols.BNB]: process.env.WORKNET_WBNB_TOKEN,
-  [TokenSymbols.ETH]: process.env.WORKNET_WETH_TOKEN,
-  [TokenSymbols.WUSD]: process.env.WORKNET_WUSD_TOKEN,
-  [TokenSymbols.USDT]: process.env.WORKNET_USDT_TOKEN,
+  [TokenSymbols.BNB]: ENV.WORKNET_WBNB_TOKEN,
+  [TokenSymbols.ETH]: ENV.WORKNET_WETH_TOKEN,
+  [TokenSymbols.WUSD]: ENV.WORKNET_WUSD_TOKEN,
+  [TokenSymbols.USDT]: ENV.WORKNET_USDT_TOKEN,
 };
 
 export const WalletTables = Object.freeze({
@@ -236,17 +239,17 @@ export const ExplorerUrl = Object.freeze('https://dev-explorer.workquest.co');
 
 export const NetworksData = {
   ETH_MAIN: {
-    chainId: '0x1',
+    chainId: ChainsId.ETH_MAIN,
     chainName: 'Ethereum Mainnet',
-    rpcUrls: ['https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
+    rpcUrls: ['https://mainnet.infura.io/v3/'],
   },
   ETH_TEST: {
-    chainId: '0x4',
+    chainId: ChainsId.ETH_TEST,
     chainName: 'Ethereum Testnet',
-    rpcUrls: ['https://rinkey.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
+    rpcUrls: ['https://rinkey.infura.io/v3/'],
   },
   BSC_MAIN: {
-    chainId: '0x38',
+    chainId: ChainsId.BSC_MAIN,
     chainName: 'BSC Mainnet',
     rpcUrls: ['https://bsc-dataseed1.binance.org/'],
     nativeCurrency: {
@@ -256,7 +259,7 @@ export const NetworksData = {
     },
   },
   BSC_TEST: {
-    chainId: '0x61',
+    chainId: ChainsId.BSC_TEST,
     chainName: 'BSC Testnet',
     rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
     nativeCurrency: {
@@ -266,12 +269,32 @@ export const NetworksData = {
     },
   },
   WORKNET_TEST: {
-    chainId: '0x13488D0',
+    chainId: ChainsId.WORKNET_TEST,
     chainName: 'WorkQuest DEV',
     rpcUrls: ['https://dev-node-nyc3.workquest.co'],
     nativeCurrency: {
       name: 'WUSD',
       symbol: 'WUSD',
+      decimals: 18,
+    },
+  },
+  MATIC_MAIN: { // Polygon main
+    chainId: ChainsId.MATIC_MAIN,
+    chainName: 'Polygon Mainnet',
+    rpcUrls: ['https://rpc-mainnet.matic.network'],
+    nativeCurrency: {
+      name: 'MATIC',
+      symbol: 'MATIC',
+      decimals: 18,
+    },
+  },
+  MUMBAI_TEST: { // Polygon test
+    chainId: ChainsId.MUMBAI_TEST,
+    chainName: 'Mumbai Testnet',
+    rpcUrls: ['https://rpc-mumbai.matic.today'],
+    nativeCurrency: {
+      name: 'TMATIC',
+      symbol: 'TMATIC',
       decimals: 18,
     },
   },
@@ -283,10 +306,16 @@ export const PensionHistoryMethods = Object.freeze({
   Receive: 'Receive',
 });
 
-export const RaiseViewTariffPeriods = {
+export const RaiseViewTariffPeriods = Object.freeze({
   usersTariff: ['1', '7', '30'],
   questTariff: ['1', '5', '7'],
-};
+});
+export const TariffByIndex = Object.freeze({
+  0: PaidTariff.GoldPlus,
+  1: PaidTariff.Gold,
+  2: PaidTariff.Silver,
+  3: PaidTariff.Bronze,
+});
 export const RaiseViewStatus = {
   0: true,
   1: false,

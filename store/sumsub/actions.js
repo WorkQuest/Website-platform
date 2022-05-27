@@ -1,3 +1,5 @@
+import ENV from '~/utils/adresses/index';
+
 export default {
   async createAccessTokenBackend({ commit }) {
     const response = await this.$axios.$get('/v1/sumsub/create-access-token');

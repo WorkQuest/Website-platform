@@ -58,6 +58,7 @@
       }
     },
     "btns": {
+      "connectSMSVer": "Подключить СМС Верификацию",
       "resendEmail": "Переотправить письмо с кодом",
       "back": "Назад",
       "edit": "Редактировать",
@@ -257,7 +258,8 @@
     "greaterThanZero": "Введите правильное {_field_}, не может быть нулевым",
     "zeroFail": "Введите правильное {_field_}, не может быть нулевым",
     "notMoreDecimalPlaces": "Введите правильное {_field_}, не более 2 знаков после запятой",
-    "max_percent": "Введите правильное {_field_}, уменьшите процент"
+    "max_percent": "Введите правильное {_field_}, уменьшите процент",
+    "notEmptyArray": "Выберите {_field_}"
   },
   "about": {
     "text": "Work Quest — это социальный проект на основе технологии блокчейн для поиска работы и решения любых задач со стороны работодателя в режиме квеста. Вы ищете работу? Work Quest поможет найти квест рядом с вами и вашим городом. Нужны ли вам рабочие для выполнения целей? Просто создайте квест на сайте Work Quest. Сервис берет на себя гарантийные обязательства по выполнению квестов. Средства работодателя хранятся у нас, если работник дает подтверждение о выполнении работы, он получает задаток денежных средств на свой счет. Система рейтингов, обзоров и список выполненных квестов помогут легко найти честных людей и лучших специалистов.\n Наша цель – упростить коммуникацию между работодателем и работником, помочь трудоустроить миллионы людей, улучшить их материальное положение, решить проблему поиска надежных профессионалов во всех отраслях, создать прогрессивную цифровую экономику, построенную на принципах доверия, взаимного уважения и благополучия всех его участников."
@@ -289,7 +291,8 @@
     "or": "Или",
     "loginWith": "Зайдите, используя",
     "workQuest": "WorkQuest",
-    "makingMoneyIsFast": "WorkQuest:\n Мировой\n Децентрализованный\n Рынок труда"
+    "makingMoneyIsFast": "WorkQuest:\n Мировой\n Децентрализованный\n Рынок труда",
+    "enterEmail": "Пожалуйста, введите корректный email"
   },
   "signWorkQuest": {
     "description": "You can use your WorkQuest DAO login and password to sign in",
@@ -372,18 +375,22 @@
     "levels": {
       "1": {
         "title": "Gold Plus Package",
+        "shortTitle": "Gold Plus",
         "desc": "Notifications for employees who were looking for quests, via an offer to review the quest that has been promoted by the employer. The employee will be invited to complete the quest in based on the most recent search categories of the employee. Plus the ability to choose any category and any location to promote the quest."
       },
       "2": {
         "title": "Gold Package",
+        "shortTitle": "Gold",
         "desc": "Notifications for employees who were looking for quests with a direct offer to review the promoted quest based on the most recent search categories of the employee. Plus the ability to choose three categories and three locations to promote the quest."
       },
       "3": {
         "title": "Silver Package",
+        "shortTitle": "Silver",
         "desc": "Pin quest on the main page for three hours, with the ability to choose two categories and two locations for promotion the quest."
       },
       "4": {
         "title": "Bronze Package",
+        "shortTitle": "Bronze",
         "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
       }
     },
@@ -1036,6 +1043,8 @@
       "youHaveAQuestDraft": "У вас есть черновик квеста. Очистить?",
       "saveQuestDraft": "Сохранить черновик квеста?"
     },
+    "token": "Токен",
+    "network": "Сеть",
     "payForDispute": "Вам нужно оплатить открытие спора",
     "tryLater": "Пожалуйста, попробуйте позже...",
     "checkExplorer": "Вы можете проверить статус транзакции на Explorer",
@@ -1404,6 +1413,11 @@
     "transfer": "Buy / Send",
     "addCardProposal": "Добавьте банковскую карту для удобного вывода",
     "addCard": "Добавить карту",
+    "buyWQT": {
+      "buyButton": "Купить WQT",
+      "title": "Купить первые WQT!",
+      "sub": "Donec rutrum congue leo eget malesuada. Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem."
+    },
     "collateral": {
       "balance": "Залоговый баланс",
       "coin": "монета",
@@ -1545,12 +1559,15 @@
       "workInOffice": "In-office",
       "bothVariant": "Hybrid workplace"
     },
-    "selectPayPeriod": "Выберите период оплаты"
+    "selectPayPeriod": "Выберите период оплаты",
+    "visabilitySettings": "Настройки видимости",
+    "securitySettings": "Настройки безопасности"
   },
   "raising-views": {
     "raisingViews": "Увеличение просмотров",
     "choosePeriod": "Выберите период",
     "forOneDay": "На 1 день",
+    "forDays": "На {n} дней",
     "forOneWeek": "На 1 неделю",
     "forOneMonth": "На 1 месяц",
     "chooseLevel": "Выберите уровень"
@@ -1595,7 +1612,7 @@
   "referral": {
     "inviteFriendsHead": "Invite friends.",
     "earnCryptoTogether": "Earn crypto together",
-    "headerSubtitle": "Earn up to 35$ in WQT every time your friends register and make first Quest on Work Quest platform.",
+    "headerSubtitle": "Earn up to 20$ in WQT every time your friends register and make first Quest on Work Quest platform.",
     "referralReward": "Referral reward",
     "lastRefReward": "Last ref reward",
     "yourRefers": "Your referrals",
@@ -1606,7 +1623,7 @@
     "inviteFriends": "Invite Friends",
     "inviteYourFriends": "Invite your friends to register through the referral link and get rewards when they complete first Quest.",
     "earnCrypto": "Earn Crypto",
-    "everyTimeYourFriends": "Every time your friends make a first Quest, you'll get up to $35 in WQT commission in real time!",
+    "everyTimeYourFriends": "Каждый раз, когда ваши друзья выполняют первый квест, вы получаете комиссию WQT до $20 в режиме реального времени!",
     "historyOfRewards": "History of rewards",
     "tableHead": {
       "name": "Имя",
@@ -1619,6 +1636,11 @@
     "event": {
       "PaidReferral": "Выплачено",
       "RewardClaimed": "Получено"
+    },
+    "referralStatus": {
+      "created": "Незарегистрированный",
+      "registered": "Зарегистрированный",
+      "paid": "Выплачено"
     }
   },
   "pension": {

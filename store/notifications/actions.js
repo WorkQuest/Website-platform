@@ -20,6 +20,8 @@ import { error, success } from '~/utils/web3';
 
 import { images } from '~/utils/images';
 
+import ENV from '~/utils/adresses/index';
+
 export default {
 
   async updateProfile({ rootGetters, dispatch }) {
@@ -91,7 +93,7 @@ export default {
       );
     }
     try {
-      if (!params.isLocal) await this.$axios.$delete(`${process.env.NOTIFS_URL}notifications/delete/${id}`);
+      if (!params.isLocal) await this.$axios.$delete(`${ENV.NOTIFS_URL}notifications/delete/${id}`);
       await commit('removeNotification', id);
       await dispatch('getNotifications', config);
       return success();
@@ -102,7 +104,7 @@ export default {
 
   async readNotifications({ commit }, payload) {
     try {
-      const { ok } = await this.$axios.$put(`${process.env.NOTIFS_URL}notifications/mark-read`, payload);
+      const { ok } = await this.$axios.$put(`${ENV.NOTIFS_URL}notifications/mark-read`, payload);
       commit('setNotificationsAsRead', payload.notificationIds);
       return ok;
     } catch (e) {
@@ -113,7 +115,7 @@ export default {
   async getNotifications({ commit, dispatch }, config) {
     try {
       const currConfig = config || { params: { limit: 2, offset: 0 } };
-      const { data: { result, ok } } = await this.$axios.get(`${process.env.NOTIFS_URL}notifications`, currConfig);
+      const { data: { result, ok } } = await this.$axios.get(`${ENV.NOTIFS_URL}notifications`, currConfig);
       const { notifications, count } = result;
       notifications.map(async (notification) => await dispatch('setCurrNotificationObject', notification));
 
@@ -149,6 +151,14 @@ export default {
     notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
     notification.params = { isLocal: false };
 
+    const handleWaitForUpdateQuest = async () => {
+      dispatch('main/setLoading', false, { root: true });
+      if (getters.getWaitForUpdateQuest?.callback) {
+        await getters.getWaitForUpdateQuest.callback();
+      }
+      commit('setWaitForUpdateQuest', null);
+    };
+
     switch (action) {
       case NotificationAction.QUEST_STATUS_UPDATED:
         notification.sender = userRole === UserRole.EMPLOYER ? assignedWorker
@@ -160,11 +170,7 @@ export default {
         };
 
         if (getters.getWaitForUpdateQuest?.id === data?.id) {
-          dispatch('main/setLoading', false, { root: true });
-          if (getters.getWaitForUpdateQuest?.callback) {
-            await getters.getWaitForUpdateQuest.callback();
-          }
-          commit('setWaitForUpdateQuest', null);
+          await handleWaitForUpdateQuest();
         }
 
         await dispatch('updateProfile');
@@ -181,6 +187,9 @@ export default {
           title,
           path: `${Path.QUESTS}/${quest?.id || id}`,
         };
+        if (getters.getWaitForUpdateQuest?.id === data?.id) {
+          await handleWaitForUpdateQuest();
+        }
         break;
 
       case NotificationAction.DISPUTE_DECISION:

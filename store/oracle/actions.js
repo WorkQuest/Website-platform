@@ -1,8 +1,10 @@
 import { error } from '~/utils/web3';
 import {
-  getGasPrice, setTokenPrice, setTokenPrices,
+  getGasPrice, setTokenPrices,
 } from '~/utils/wallet';
 import { WQOracle } from '~/abi';
+
+import ENV from '~/utils/adresses/index';
 
 export default {
   async getCurrentPrices({ commit }) {
@@ -32,21 +34,6 @@ export default {
       return error();
     }
   },
-  async setCurrentPriceToken({ dispatch }, { symbol }) {
-    const { result: price } = await this.$axiosOracle.$get(`/oracle/${symbol}/price`);
-    const res = await dispatch('getCurrentPrices');
-    const params = {
-      timestamp: res.nonce,
-      price,
-      v: res.v,
-      r: res.r,
-      s: res.s,
-    };
-    const { gas, gasPrice } = await getGasPrice(WQOracle, process.env.WORKNET_ORACLE, 'setTokenPriceUSD', [...Object.values(params), symbol]);
-    if (gas && gasPrice) {
-      await setTokenPrice({ currency: symbol }, { gasPrice, gas, ...params });
-    }
-  },
   async setCurrentPriceTokens() {
     const {
       result: {
@@ -58,7 +45,7 @@ export default {
       timestamp, v, r, s, prices, symbols,
     };
 
-    const { gas, gasPrice } = await getGasPrice(WQOracle, process.env.WORKNET_ORACLE, 'setTokenPricesUSD', Object.values(params));
+    const { gas, gasPrice } = await getGasPrice(WQOracle, ENV.WORKNET_ORACLE, 'setTokenPricesUSD', Object.values(params));
     if (gas && gasPrice) {
       await setTokenPrices({
         gasPrice,

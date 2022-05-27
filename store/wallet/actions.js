@@ -18,10 +18,11 @@ import {
 import {
   error,
   success,
-  fetchContractData,
+  fetchContractData, getTransactionCount, getAccountAddress, createInstance, showToast, getGasPrice, getEstimateGas,
 } from '~/utils/web3';
 
 import {
+  BuyWQT,
   ERC20,
   WQStaking,
   WQStakingNative,
@@ -31,8 +32,10 @@ import {
   TokenMap,
   TokenSymbols,
   StakingTypes,
-  PensionHistoryMethods, WorknetTokenAddresses,
+  WorknetTokenAddresses,
 } from '~/utils/enums';
+
+import ENV from '~/utils/adresses/index';
 
 let connectionWS = null;
 
@@ -41,7 +44,7 @@ export default {
     try {
       const { data } = await this.$axios({
         url: `/account/${getWalletAddress()}/transactions`,
-        baseURL: process.env.WQ_EXPLORER,
+        baseURL: ENV.WQ_EXPLORER,
         params,
       });
       commit('setTransactions', data.result.transactions);
@@ -121,7 +124,7 @@ export default {
       const res = await fetchContractData(
         'frozed',
         ERC20,
-        process.env.WORKNET_VOTING,
+        ENV.WORKNET_VOTING,
         [rootGetters['user/getUserWalletAddress']],
         GetWalletProvider(),
       );
@@ -222,10 +225,10 @@ export default {
     let contractAddress = null;
     if (pool === StakingTypes.WQT) {
       abi = WQStaking;
-      contractAddress = process.env.WORKNET_STAKING_WQT;
+      contractAddress = ENV.WORKNET_STAKING_WQT;
     } else if (pool === StakingTypes.WUSD) {
       abi = WQStakingNative;
-      contractAddress = process.env.WORKNET_STAKING_WUSD;
+      contractAddress = ENV.WORKNET_STAKING_WUSD;
     } else {
       console.error(`Wrong pool: ${pool}`);
       return;
@@ -276,7 +279,7 @@ export default {
   async getStakingUserInfo({ commit }, pool) {
     const decimals = 18;
     const abi = pool === StakingTypes.WUSD ? WQStakingNative : WQStaking;
-    const contractAddress = pool === StakingTypes.WUSD ? process.env.WORKNET_STAKING_WUSD : process.env.WORKNET_STAKING_WQT;
+    const contractAddress = pool === StakingTypes.WUSD ? ENV.WORKNET_STAKING_WUSD : ENV.WORKNET_STAKING_WQT;
     const [userInfo, stakes] = await Promise.all([
       fetchContractData('getInfoByAddress', abi, contractAddress, [getWalletAddress()], GetWalletProvider()),
       fetchContractData('stakes', abi, contractAddress, [getWalletAddress()], GetWalletProvider()),
@@ -404,7 +407,7 @@ export default {
     commit, dispatch, rootGetters, getters,
   }, { hexAddress, timestamp, updateWalletData }) {
     try {
-      connectionWS = new WebSocket(process.env.WS_WQ_PROVIDER);
+      connectionWS = new WebSocket(ENV.WS_WQ_PROVIDER);
       connectionWS.onopen = () => {
         const request = {
           jsonrpc: '2.0',
@@ -449,5 +452,62 @@ export default {
   },
   async unsubscribeWS({ _ }) {
     connectionWS = null;
+  },
+
+  /** BuyWQT */
+  async swap({ commit, dispatch, rootGetters }, {
+    amount, tokenAddress, bridgeAddress, isNative, symbol, toChainIndex, decimals,
+  }) {
+    try {
+      const userId = rootGetters['user/getUserData'].id;
+      const nonce = await getTransactionCount();
+      const accountAddress = await getAccountAddress();
+      const value = new BigNumber(amount).shiftedBy(Number(decimals)).toString();
+      const data = [nonce, toChainIndex, value, accountAddress, userId, symbol];
+      const bridgeInstance = await createInstance(BuyWQT, bridgeAddress);
+
+      if (isNative) {
+        showToast('Swapping', 'Swapping...', 'success');
+        const [gasPrice, gas] = await Promise.all([
+          getGasPrice(),
+          getEstimateGas(null, null, bridgeInstance, 'swap', data, value),
+        ]);
+        const swapRes = await bridgeInstance.methods.swap(...data).send({
+          from: accountAddress,
+          value,
+          gasPrice,
+          gas,
+        });
+        showToast('Swapping', 'Swapping done', 'success');
+        return success(swapRes);
+      }
+
+      const allowance = await fetchContractData('allowance', ERC20, tokenAddress, [accountAddress, bridgeAddress]);
+      if (new BigNumber(value).isGreaterThan(+allowance)) {
+        showToast('Swapping', 'Approving...', 'success');
+        const tokenInstance = await createInstance(ERC20, tokenAddress);
+        const { status } = await tokenInstance.methods.approve(bridgeAddress, value).send({ from: accountAddress });
+        if (!status) return error(500, 'Approve was failed');
+        showToast('Swapping', 'Approving done', 'success');
+      }
+
+      showToast('Swapping', 'Swapping...', 'success');
+      const [gasPrice, gas] = await Promise.all([
+        getGasPrice(),
+        getEstimateGas(null, null, bridgeInstance, 'swap', data),
+      ]);
+      const swapRes = await bridgeInstance.methods.swap(...data).send({
+        from: accountAddress,
+        gasPrice,
+        gas,
+      });
+      showToast('Swapping', 'Swapping done', 'success');
+
+      return success(swapRes);
+    } catch (e) {
+      console.error('Error in swap:', e);
+      showToast('Swapping error', e.message, 'danger');
+      return error(e.code, 'Error in swap action', e.data);
+    }
   },
 };

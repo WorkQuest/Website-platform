@@ -260,6 +260,12 @@ extend('alpha_spaces_dash', {
   },
 });
 
+extend('notEmptyArray', {
+  validate(value) {
+    return (value.length > 0);
+  },
+});
+
 export default ({ app }) => {
   configure({
     defaultMessage: (_field_, values) => app.i18n.t(`messages.${values._rule_}`, values),

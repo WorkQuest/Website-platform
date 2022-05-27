@@ -4,7 +4,8 @@
     data-selector="PAGE-CREATE-QUEST"
   >
     <validation-observer
-      v-slot="{handleSubmit, validated, invalid}"
+      ref="validate"
+      v-slot="{handleSubmit}"
       class="main__body page"
     >
       <h2 class="page__title">
@@ -71,17 +72,21 @@
           />
         </div>
       </div>
-      <specializations-selector
-        :skills="selectedSpecAndSkills"
-        :is-clear-data="isClearData"
-        @changeSkills="updateSelectedSkills"
-      />
-      <div
-        v-if="validated && !selectedSpecAndSkills.length || !invalid && !selectedSpecAndSkills.length"
-        class="page__error"
+      <validation-provider
+        v-slot="{ errors }"
+        rules="required|notEmptyArray"
+        :name="$t('settings.specialization')"
       >
-        {{ $t('errors.selectSpec') }}
-      </div>
+        <specializations-selector
+          v-model="selectedSpecAndSkills"
+          :skills="selectedSpecAndSkills"
+          :is-clear-data="isClearData"
+          @changeSkills="updateSelectedSkills"
+        />
+        <p class="page__error">
+          {{ errors[0] }}
+        </p>
+      </validation-provider>
       <div class="page__address">
         <base-field
           v-model="address"
@@ -184,7 +189,7 @@
         <div class="btn__create">
           <base-btn
             selector="CREATE-A-QUEST"
-            @click="handleSubmit(toCreateQuest(invalid))"
+            @click="checkValid(handleSubmit(toCreateQuest))"
           >
             {{ $t('meta.createAQuest') }}
           </base-btn>
@@ -202,7 +207,7 @@ import {
   PriorityFilter, TokenMap, TokenSymbols, TypeOfEmployments, PayPeriodsIndex, WorkplaceIndex,
 } from '~/utils/enums';
 import { LocalNotificationAction } from '~/utils/notifications';
-import { CommissionForCreatingAQuest } from '~/utils/сonstants/quests';
+import { CommissionForCreatingAQuest } from '~/utils/сonstants/commission';
 import { ERC20 } from '~/abi';
 
 const { GeoCode } = require('geo-coder');
@@ -227,7 +232,6 @@ export default {
       files: [],
       geoCode: null,
       isClearData: false,
-      isNotChooseSpec: false,
       isCheckedEditAfter: false,
     };
   },
@@ -364,15 +368,6 @@ export default {
     },
     updateSelectedSkills(specAndSkills) {
       this.selectedSpecAndSkills = specAndSkills;
-      if (this.selectedSpecAndSkills.length > 0) {
-        this.isNotChooseSpec = false;
-      }
-    },
-    cardStatus(item) {
-      if (item.code === 1) return 'level__card_gold';
-      if (item.code === 3) return 'card__level_reliable';
-      if (item.code === 4) return 'card__level_checked';
-      return '';
     },
     periods(period) {
       if (period === 1) return this.days;
@@ -395,17 +390,18 @@ export default {
         console.error('Geo look up is failed', e);
       }
     },
-    async toCreateQuest(invalid) {
-      this.SetLoader(true);
-      if (!this.isCheckedEditAfter || !this.selectedSpecAndSkills.length || invalid) {
-        this.isNotChooseSpec = true;
+    checkValid(func) {
+      if (this.$refs.validate.flags.invalid) {
         this.ScrollToTop();
         this.SetLoader(false);
         return;
       }
-
+      func();
+    },
+    async toCreateQuest() {
+      this.SetLoader(true);
       const tokenAddress = TokenMap[TokenSymbols.WUSD];
-      const spenderAddress = process.env.WORKNET_WQ_FACTORY;
+      const spenderAddress = this.ENV.WORKNET_WQ_FACTORY;
       const [allowance] = await Promise.all([
         this.$store.dispatch('wallet/getAllowance', {
           tokenAddress,
@@ -444,7 +440,7 @@ export default {
           title: this.$t('meta.approve'),
           fields: {
             from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
-            to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_WQ_FACTORY },
+            to: { name: this.$t('meta.toBig'), value: this.ENV.WORKNET_WQ_FACTORY },
             amount: { name: this.$t('modals.amount'), value: this.depositAmount, symbol: TokenSymbols.WUSD },
             fee: { name: this.$t('wallet.table.trxFee'), value: approveFee.result.fee, symbol: TokenSymbols.WQT },
           },
@@ -470,7 +466,6 @@ export default {
     },
     async createQuest() {
       // Check balance before send data to backend
-      // eslint-disable-next-line no-unreachable
       const [feeRes] = await Promise.all([
         this.$store.dispatch('quests/getCreateQuestFeeData', {
           cost: this.price,
@@ -494,45 +489,46 @@ export default {
         return;
       }
 
-      const medias = await this.uploadFiles(this.files);
-      const payload = {
-        workplace: WorkplaceIndex[this.workplaceIndex],
-        payPeriod: PayPeriodsIndex[this.payPeriodsIndex],
-        priority: PriorityFilter[this.runtimeIndex + 1].value,
-        typeOfEmployment: TypeOfEmployments[this.employmentIndex],
-        title: this.questTitle,
-        description: this.textarea,
-        price: new BigNumber(this.price).shiftedBy(18).toString(),
-        medias,
-        specializationKeys: this.selectedSpecAndSkills,
-        locationFull: {
-          location: {
-            longitude: this.coordinates.lng,
-            latitude: this.coordinates.lat,
-          },
-          locationPlaceName: this.address,
-        },
-      };
-      const questRes = await this.$store.dispatch('quests/questCreate', payload);
       this.SetLoader(false);
-      if (questRes.ok) {
-        const { nonce } = questRes.result;
-        this.ShowModal({
-          key: modals.transactionReceipt,
-          fields: {
-            from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
-            to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_WQ_FACTORY },
-            amount: { name: this.$t('modals.amount'), value: this.depositAmount, symbol: TokenSymbols.WUSD },
-            fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
-          },
-          submitMethod: async () => {
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        fields: {
+          from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
+          to: { name: this.$t('meta.toBig'), value: this.ENV.WORKNET_WQ_FACTORY },
+          amount: { name: this.$t('modals.amount'), value: this.depositAmount, symbol: TokenSymbols.WUSD },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
+        },
+        submitMethod: async () => {
+          this.SetLoader(true);
+          const medias = await this.uploadFiles(this.files);
+          const payload = {
+            workplace: WorkplaceIndex[this.workplaceIndex],
+            payPeriod: PayPeriodsIndex[this.payPeriodsIndex],
+            priority: PriorityFilter[this.runtimeIndex + 1].value,
+            typeOfEmployment: TypeOfEmployments[this.employmentIndex],
+            title: this.questTitle,
+            description: this.textarea,
+            price: new BigNumber(this.price).shiftedBy(18).toString(),
+            medias,
+            specializationKeys: this.selectedSpecAndSkills,
+            locationFull: {
+              location: {
+                longitude: this.coordinates.lng,
+                latitude: this.coordinates.lat,
+              },
+              locationPlaceName: this.address,
+            },
+          };
+          const questRes = await this.$store.dispatch('quests/questCreate', payload);
+          if (questRes.ok) {
             const txRes = await this.$store.dispatch('quests/createQuest', {
               cost: this.price,
               description: this.textarea,
-              nonce,
+              nonce: questRes.result.nonce,
             });
             if (txRes?.ok === false) {
               this.ShowToast(txRes.msg);
+              this.SetLoader(false);
               return;
             }
             await this.clearData();
@@ -543,9 +539,10 @@ export default {
             });
             this.ShowToast(this.$t('toasts.questCreated'), this.$t('toasts.questCreated'));
             await this.$router.push(`/quests/${questRes.result.id}`);
-          },
-        });
-      }
+          }
+          this.SetLoader(false);
+        },
+      });
     },
   },
 };

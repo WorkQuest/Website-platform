@@ -1,8 +1,5 @@
 // eslint-disable-next-line import/prefer-default-export
 
-// 1% комиссии за создание или редактирование (при повышении цены) квеста
-export const CommissionForCreatingAQuest = Object.freeze(0.025);
-
 export const EditQuestState = Object.freeze({
   EDITING: 1,
   RAISE_VIEWS: 2,
@@ -56,4 +53,11 @@ export const QuestMethods = Object.freeze({
   // Worker
   AcceptJob: 'acceptJob',
   VerificationJob: 'verificationJob',
+});
+
+export const PaidTariff = Object.freeze({
+  GoldPlus: 'GoldPlus',
+  Gold: 'Gold',
+  Silver: 'Silver',
+  Bronze: 'Bronze',
 });

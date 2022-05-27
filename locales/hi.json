@@ -58,6 +58,7 @@
       }
     },
     "btns": {
+      "connectSMSVer": "Connect SMS Verification",
       "resendEmail": "Resend email with code",
       "back": "वापस",
       "edit": "एडिट करें",
@@ -257,7 +258,8 @@
     "greaterThanZero": "Please enter correct {_field_}, can't be zero",
     "zeroFail": "Please enter correct {_field_}, can't be zero",
     "notMoreDecimalPlaces": "Please enter correct {_field_}, no more than 2 decimal places",
-    "max_percent": "Please enter correct {_field_}, reduce the percentage"
+    "max_percent": "Please enter correct {_field_}, reduce the percentage",
+    "notEmptyArray": "Please select a {_field_}"
   },
   "about": {
     "text": "WorkQuest एक सोशल प्रोजेक्ट है जो ब्लॉकचेन तकनीक पर आधारित है, यह काम खोजने और quest मोड में एंप्लॉयर यानी नियोक्ता वाले टास्क पूरे करने के लिए है। क्या आप जॉब की तलाश में हैं? WorkQuest आपको अपने करीब या अपने शहर के बगल में quest ढूंढ़ने में मदद करेगा। क्या आपको अपने काम पूरे करने के लिए वर्कर चाहिए? बस यह करें कि WorkQuest की साइट पर एक quest बनाएं। यह सेवा quests को पूरा करने के लिए वारंटी दायित्वों को अपने ऊपर लेती है। एंप्लॉयर हमारे पास पैसा जमा करता है, यदि कर्मचारी काम पूरा करने की पुष्टि कर देता है, तो उसके अपने खाते में पैसा जमा कर दिया जाता है। रेटिंग, रिव्यू और पूरे किए गए quests की सूची का सिस्टम सही व ईमानदार लोगों और बेहतरीन विशेषज्ञों को आसानी से खोजने में मदद करता है।\n\n          हमारा लक्ष्य एंप्लॉयर और कर्मचारी के बीच कम्युनिकेशन को सरल बनाना है, लाखों लोगों को रोजगार देने में मदद करना, उनकी वित्तीय स्थिति में सुधार करना, सभी सेक्टर में भरोसेमंद प्रोफेशनल खोजने की हमेशा की दिक्कत को हल करना है ताकि एक लगातार प्रगति करती डिजिटल अर्थव्यवस्था बनाई जा सके जो विश्वास, आपसी सम्मान और इसके सभी प्रतिभागियों की भलाई के सिद्धांतों पर आधारित हो।"
@@ -289,7 +291,8 @@
     "or": "या",
     "loginWith": "इससे लॉगिन करें:",
     "workQuest": "WorkQuest",
-    "makingMoneyIsFast": "WorkQuest:\n दुनिया का \nविकेंद्रीकृत\n जॉब मार्केट"
+    "makingMoneyIsFast": "WorkQuest:\n दुनिया का \nविकेंद्रीकृत\n जॉब मार्केट",
+    "enterEmail": "Please enter correct email"
   },
   "signWorkQuest": {
     "description": "साइन इन करने के लिए आप अपने WorkQuest DAO लॉगिन व पासवर्ड का प्रयोग कर सकते हैं",
@@ -372,18 +375,22 @@
     "levels": {
       "1": {
         "title": "Gold Plus Package",
+        "shortTitle": "Gold Plus",
         "desc": "Notifications for employees who were looking for quests, via an offer to review the quest that has been promoted by the employer. The employee will be invited to complete the quest in based on the most recent search categories of the employee. Plus the ability to choose any category and any location to promote the quest."
       },
       "2": {
         "title": "Gold Package",
+        "shortTitle": "Gold",
         "desc": "Notifications for employees who were looking for quests with a direct offer to review the promoted quest based on the most recent search categories of the employee. Plus the ability to choose three categories and three locations to promote the quest."
       },
       "3": {
         "title": "Silver Package",
+        "shortTitle": "Silver",
         "desc": "Pin quest on the main page for three hours, with the ability to choose two categories and two locations for promotion the quest."
       },
       "4": {
         "title": "Bronze Package",
+        "shortTitle": "Bronze",
         "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
       }
     },
@@ -1036,6 +1043,8 @@
       "youHaveAQuestDraft": "You have a quest draft. Cleat it?",
       "saveQuestDraft": "Save quest draft?"
     },
+    "token": "Token",
+    "network": "Network",
     "payForDispute": "You need to pay to open a dispute",
     "tryLater": "Please, try later...",
     "checkExplorer": "You can check a transaction status on Explorer",
@@ -1404,6 +1413,11 @@
     "transfer": "खरीदें / भेजें",
     "addCardProposal": "आसान निकासी के लिए अपना कार्ड जोड़ें",
     "addCard": "कार्ड जोड़ें",
+    "buyWQT": {
+      "buyButton": "Buy WQT",
+      "title": "Buy first WQT!",
+      "sub": "Donec rutrum congue leo eget malesuada. Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem."
+    },
     "collateral": {
       "balance": "Collateral balance",
       "coin": "coin",
@@ -1545,12 +1559,15 @@
       "workInOffice": "In-office",
       "bothVariant": "Hybrid workplace"
     },
-    "selectPayPeriod": "Select pay period"
+    "selectPayPeriod": "Select pay period",
+    "visabilitySettings": "Visability settings",
+    "securitySettings": "Security settings"
   },
   "raising-views": {
     "raisingViews": "व्यू बढ़ाएं",
     "choosePeriod": "अवधि चुनें",
     "forOneDay": "1 दिन के लिए",
+    "forDays": "For {n} days",
     "forOneWeek": "1 सप्ताह के लिए",
     "forOneMonth": "1 माह के लिए",
     "chooseLevel": "लेवल चुनें"
@@ -1595,7 +1612,7 @@
   "referral": {
     "inviteFriendsHead": "दोस्तों को इन्वाइट करें",
     "earnCryptoTogether": "साथ-साथ क्रिप्टो कमाएं",
-    "headerSubtitle": "जब आपके दोस्त रजिस्टर हों और WorkQuest प्लेटफॉर्म पर पहला Quest करें तो आप WQT में हर बार 35$ तक कमाएं।",
+    "headerSubtitle": "जब आपके दोस्त रजिस्टर हों और WorkQuest प्लेटफॉर्म पर पहला Quest करें तो आप WQT में हर बार 20$ तक कमाएं।",
     "referralReward": "रेफरल पुरस्कार",
     "lastRefReward": "पिछला रेफरल पुरस्कार",
     "yourRefers": "आपके रेफरल",
@@ -1606,7 +1623,7 @@
     "inviteFriends": "दोस्तों को इन्वाइट करें",
     "inviteYourFriends": "अपने दोस्तों को रेफरल लिंक के जरिए रजिस्ट्रेशन करने के लिए इन्वाइट करें और जब वे अपनी पहली Quest पूरी करें तो आप पुरस्कार प्राप्त करें।",
     "earnCrypto": "क्रिप्टो कमाएं",
-    "everyTimeYourFriends": "हर बार जब भी आपके दोस्त पहली Quest करते हैं, तो आपको रियल टाइम में WQT कमीशन में $35 तक की राशि मिलेगी!",
+    "everyTimeYourFriends": "हर बार जब भी आपके दोस्त पहली Quest करते हैं, तो आपको रियल टाइम में WQT कमीशन में $20 तक की राशि मिलेगी!",
     "historyOfRewards": "पुरस्कार हिस्ट्री",
     "tableHead": {
       "name": "नाम",
@@ -1619,6 +1636,11 @@
     "event": {
       "PaidReferral": "Paid",
       "RewardClaimed": "Claimed"
+    },
+    "referralStatus": {
+      "created": "Unregistered",
+      "registered": "Registered",
+      "paid": "Paid"
     }
   },
   "pension": {
