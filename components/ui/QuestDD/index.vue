@@ -71,6 +71,7 @@ import ClickOutside from 'vue-click-outside';
 import { Path } from '~/utils/enums';
 import { QuestStatuses } from '~/utils/сonstants/quests';
 import modals from '~/store/modals/modals';
+import { images } from '~/utils/images';
 
 export default {
   name: 'QuestDD',
@@ -113,7 +114,7 @@ export default {
       if (!this.userData.totpIsActive) {
         this.ShowModal({
           key: modals.status,
-          img: require('~/assets/img/ui/deleteError.svg'),
+          img: images.ERROR,
           title: this.$t('modals.errors.error'),
           subtitle: this.$t('modals.2FA.youCan’tEditQuest'),
           button: this.$t('meta.btns.close'),
@@ -137,7 +138,7 @@ export default {
       if (!this.userData.totpIsActive) {
         this.ShowModal({
           key: modals.status,
-          img: require('~/assets/img/ui/deleteError.svg'),
+          img: images.ERROR,
           title: this.$t('modals.errors.error'),
           subtitle: this.$t('modals.2FA.youCan’tDeleteQuest'),
           button: this.$t('meta.btns.close'),

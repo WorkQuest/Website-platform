@@ -211,7 +211,7 @@ export const WorknetTokenAddresses = Object.freeze([
   ENV.WORKNET_WUSD_TOKEN,
   ENV.WORKNET_WBNB_TOKEN,
   ENV.WORKNET_WETH_TOKEN,
-  ENV.WORKNET_WUSD_TOKEN,
+  ENV.WORKNET_USDT_TOKEN,
 ]);
 
 export const TokenSymbolByContract = Object.freeze({

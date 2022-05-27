@@ -326,11 +326,11 @@ export default {
     }
   },
 
-  async sendPhone({ commit }, payload) {
+  async sendSMSCode({ commit }) {
     try {
-      const response = await this.$axios.$post('/v1/profile/phone/send-code', payload);
+      const response = await this.$axios.$post('/v1/profile/phone/send-code');
       commit('setVerificationCode', response.result);
-      return response.result;
+      return success(response.result);
     } catch (e) {
       return console.log(e);
     }
