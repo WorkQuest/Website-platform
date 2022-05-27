@@ -30,6 +30,7 @@
         @submit.prevent="handleSubmit(signIn)"
       >
         <base-field
+          ref="email"
           v-model="model.email"
           mode="icon"
           :name="$tc('signUp.email')"
@@ -46,6 +47,7 @@
           </template>
         </base-field>
         <base-field
+          ref="password"
           v-model="model.password"
           mode="icon"
           :name="$tc('signUp.password')"
@@ -207,6 +209,8 @@ export default {
       userAddress: '',
       isLoginWithSocial: false,
       isPasswordVisible: false,
+      emailRef: null,
+      passwordRef: null,
     };
   },
   computed: {
@@ -221,6 +225,14 @@ export default {
       return isStartedTimer ? this.$tc('meta.units.seconds', this.DeclOfNum(timerValue), { count: timerValue }) : '';
     },
   },
+  watch: {
+    userStatus() {
+      if (this.userStatus === 0) {
+        this.hiddenResend = false;
+        if (!this.isStartedTimer) this.disableResend = false;
+      }
+    },
+  },
   created() {
     window.addEventListener('beforeunload', this.beforeunload);
     const { token } = this.$route.query;
@@ -228,14 +240,15 @@ export default {
   },
   async mounted() {
     this.continueTimer();
-
+    this.emailRef = this.$refs.email;
+    this.passwordRef = this.$refs.password;
     const access = this.$cookies.get('access');
     const refresh = this.$cookies.get('refresh');
-    const userStatus = this.$cookies.get('userStatus');
-    if (+userStatus === UserStatuses.Confirmed && access) await this.redirectUser();
+    this.userStatus = this.$cookies.get('userStatus');
+    if (+this.userStatus === UserStatuses.Confirmed && access) await this.redirectUser();
 
     this.isLoginWithSocial = this.$cookies.get('socialNetwork');
-    if (this.isLoginWithSocial && access && refresh && +userStatus === UserStatuses.Confirmed) {
+    if (this.isLoginWithSocial && access && refresh && +this.userStatus === UserStatuses.Confirmed) {
       this.SetLoader(true);
       await this.$store.dispatch('user/getUserData');
       this.userWalletAddress = this.userData?.wallet?.address;
@@ -245,7 +258,7 @@ export default {
       this.$store.commit('user/setTokens', {
         access,
         refresh,
-        userStatus,
+        userStatus: this.userStatus,
         social: this.isLoginWithSocial,
       });
     }
@@ -274,6 +287,7 @@ export default {
           timerValue: this.timerValue,
           createdAt: Date.now(),
         });
+        this.hiddenResend = false;
       } else this.$cookies.remove('resend-timer');
       this.clearCookies();
     },
@@ -313,7 +327,6 @@ export default {
       this.$cookies.remove('access');
       this.$cookies.remove('refresh');
       this.$cookies.remove('userLogin');
-      this.$cookies.remove('userStatus');
     },
     back() {
       if (this.step === WalletState.ImportOrCreate) {
@@ -347,7 +360,11 @@ export default {
 
     async resendLetter() {
       this.model.email = this.model.email.trim();
-      if (this.model.email && !this.disableResend) {
+      if (!this.model.email && !this.model.password) {
+        await this.$store.dispatch('main/showToast', {
+          text: this.$tc('signIn.enderEmailAndPass'),
+        });
+      } else if (this.model.email && !this.disableResend) {
         await this.$store.dispatch('user/resendEmail', { email: this.model.email });
         await this.$store.dispatch('main/showToast', {
           title: this.$t('registration.emailConfirmTitle'),
@@ -385,8 +402,6 @@ export default {
       const confirmToken = sessionStorage.getItem('confirmToken');
       // Unconfirmed account w/o confirm token
       if (this.userStatus === UserStatuses.Unconfirmed && !confirmToken) {
-        if (!this.isStartedTimer) this.disableResend = false;
-        this.hiddenResend = false;
         await this.$store.dispatch('main/showToast', {
           title: this.$t('registration.emailConfirmTitle'),
           text: this.$t('registration.emailConfirm'),

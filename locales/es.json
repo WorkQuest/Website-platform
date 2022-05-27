@@ -290,7 +290,8 @@
     "or": "O",
     "loginWith": "Iniciar sesión con",
     "workQuest": "WorkQuest",
-    "makingMoneyIsFast": "WorkQuest:\n El mercado de trabajo\n descentralizado\n del mundo"
+    "makingMoneyIsFast": "WorkQuest:\n El mercado de trabajo\n descentralizado\n del mundo",
+    "enderEmailAndPass": "Please enter correct email and password"
   },
   "signWorkQuest": {
     "description": "Puede usar su nombre de usuario y contraseña de WorkQuest DAO para iniciar sesión",
