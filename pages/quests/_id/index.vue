@@ -555,7 +555,7 @@ export default {
       // TODO fixme Вернуть, нужно для тестов Роме
       // const unlockTime = this.$moment(this.quest.startedAt).add(1, 'day').valueOf();
 
-      if (currentTime < unlockTime) {
+      if (currentTime <= unlockTime) {
         return this.ShowModal({
           key: modals.status,
           img: images.ERROR,
@@ -606,27 +606,32 @@ export default {
         await payment({ feeTx });
       } else {
         /** Флоу, если не сознан диспут и не было оплаты */
-        return this.ShowModal({
-          key: modals.openADispute,
-          submitMethod: async ({ reason, problemDescription }) => this.ShowModal({
-            key: modals.transactionReceipt,
-            isDontOffLoader: true,
-            fields: {
-              from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
-              to: { name: this.$t('meta.toBig'), value: contractAddress },
-              fee: { name: this.$t('wallet.table.trxFee'), value: 0 },
-              amount: {
-                name: this.$t('wallet.table.value'),
-                value: new BigNumber(feeTx).shiftedBy(-18).toString(),
-                symbol: TokenSymbols.WUSD,
+        this.ShowModal({
+          key: modals.status,
+          img: images.WARNING,
+          title: this.$t('modals.titles.disputePayment'),
+          text: this.$t('modals.payForDispute'),
+          isNotClose: true,
+          submitMethod: async () => this.ShowModal({
+            key: modals.openADispute,
+            submitMethod: async ({ reason, problemDescription }) => this.ShowModal({
+              key: modals.transactionReceipt,
+              isDontOffLoader: true,
+              fields: {
+                from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+                to: { name: this.$t('meta.toBig'), value: contractAddress },
+                fee: { name: this.$t('wallet.table.trxFee'), value: 0 },
+                amount: {
+                  name: this.$t('wallet.table.value'),
+                  value: new BigNumber(feeTx).shiftedBy(-18).toString(),
+                  symbol: TokenSymbols.WUSD,
+                },
               },
-            },
-            title: this.$t('modals.titles.disputePayment'),
-            text: this.$t('modals.payForDispute'),
-            submitMethod: async () => await payment({
-              reason,
-              problemDescription,
-              feeTx,
+              submitMethod: async () => await payment({
+                reason,
+                problemDescription,
+                feeTx,
+              }),
             }),
           }),
         });
