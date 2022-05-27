@@ -229,6 +229,7 @@ export default {
             title: this.$t('meta.success'),
             subtitle: this.$t('modals.SMSVerConnected'),
           });
+          this.clearTimer();
         } else {
           this.ShowModal({
             key: modals.status,
@@ -242,10 +243,8 @@ export default {
     },
     async getCodeFromSms() {
       this.SetLoader(true);
-      if (this.confirmCode) {
-        await this.$store.dispatch('user/sendSMSCode');
-        this.startTimer();
-      }
+      await this.$store.dispatch('user/sendSMSCode');
+      this.startTimer();
       this.SetLoader(false);
     },
     async nextStep() {
