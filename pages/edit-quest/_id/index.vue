@@ -161,7 +161,7 @@
                 :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
                 @click="handleSubmit(setCurrentStepEditQuest($options.EditQuestState.RAISE_VIEWS))"
               >
-                {{ $t('quests.editAQuest') }}
+                {{ $t('meta.btns.next') }}
               </base-btn>
             </div>
           </div>
@@ -169,110 +169,41 @@
         <div
           v-if="step === $options.EditQuestState.RAISE_VIEWS"
           data-selector="PAGE-MY-QUESTS-STEP-2"
-          class="page"
+          class="page page__raise"
         >
-          <div class="page btn-container btn-container__left">
-            <div class="btn-container__btn_back">
-              <base-btn
-                data-selector="PREVIOUS-STEP"
-                mode="back"
-                @click="clickBackBtnHandler"
-              >
-                {{ $t('meta.btns.back') }}
-                <template v-slot:left>
-                  <span class="icon-chevron_big_left btn-container__icon" />
-                </template>
-              </base-btn>
-            </div>
-          </div>
-          <div class="page page__raising">
-            {{ $t('raising-views.raisingViews') }}
-          </div>
-          <div class="page period">
-            <h3 class="period__choose">
-              {{ $t('raising-views.choosePeriod') }}
-            </h3>
-            <div class="period__container">
-              <div
-                v-for="(item, i) in periodTabs"
-                :key="i"
-                class="period__period"
-                :class="{'period__period_active': period === item.number}"
-                @click="switchPeriod(item, i)"
-              >
-                <h2
-                  class="period__title"
-                  :class="{'period__title_active': period === item.number}"
-                >
-                  {{ item.title }}
-                </h2>
-              </div>
-            </div>
-
-            <div class="period level">
-              <div class="level__title">
-                {{ $t('raising-views.chooseLevel') }}
-              </div>
-              <div
-                v-if="period"
-                class="level__container"
-              >
-                <div
-                  v-for="(item, i) in periods(period)"
-                  :key="i"
-                  class="level__card"
-                  @click="selectRadio(i)"
-                >
-                  <div class="level__option">
-                    <input
-                      :ref="`radio${i}`"
-                      name="higherLevel"
-                      type="radio"
-                      class="radio__input"
-                      :value="item.cost"
-                      @input="selectRadio(i)"
-                    >
-                  </div>
-                  <div class="level card">
-                    <div
-                      class="card__level"
-                      :class="cardStatus(item)"
-                    >
-                      {{ item.level }}
-                    </div>
-                    <div class="card__desc">
-                      {{ item.desc }}
-                    </div>
-                  </div>
-                  <div class="cost__container">
-                    <div class="card__cost">
-                      {{ item.cost }}$
-                    </div>
-                  </div>
+          <raise-views-panel
+            :period="period"
+            :level="level"
+            :period-tabs="periodTabs"
+            :level-tabs="levelTabs"
+            :back-button-callback="clickBackBtnHandler"
+            @switchPeriod="setPeriod"
+            @switchLevel="setLevel"
+          >
+            <template #actions>
+              <div class="btn-container">
+                <div class="btn-container__btn">
+                  <base-btn
+                    v-if="mode !== 'raise'"
+                    data-selector="EDIT-QUEST"
+                    mode="outline"
+                    @click="toEditQuest"
+                  >
+                    {{ $t('meta.skipAndEnd') }}
+                  </base-btn>
+                </div>
+                <div class="btn-container__btn">
+                  <base-btn
+                    :disabled="level < 0"
+                    data-selector="SHOW-PAYMENT-MODAl"
+                    @click="showPaymentModal"
+                  >
+                    {{ $t('meta.pay') }}
+                  </base-btn>
                 </div>
               </div>
-            </div>
-            <div class="btn-container">
-              <div class="btn-container__btn">
-                <base-btn
-                  data-selector="EDIT-QUEST"
-                  mode="outline"
-                  @click="toEditQuest"
-                >
-                  {{ $t('meta.skipAndEnd') }}
-                </base-btn>
-              </div>
-              <div class="btn-container__btn">
-                <base-btn
-                  data-selector="SHOW-PAYMENT-MODAl"
-                  :disabled="ads.currentAdPrice === ''"
-                  @click="showPaymentModal"
-                >
-                  {{ $t('meta.pay') }}
-                </base-btn>
-              </div>
-            </div>
-          </div>
+            </template>
+          </raise-views-panel>
         </div>
       </validation-observer>
     </div>
@@ -284,13 +215,21 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import {
-  Path, PayPeriodsIndex, TokenMap, TokenSymbols, TypeOfEmployments, WorkplaceIndex,
+  Path,
+  PayPeriodsIndex,
+  RaiseViewTariffPeriods,
+  TariffByIndex,
+  TokenMap,
+  TokenSymbols,
+  TypeOfEmployments,
+  WorkplaceIndex,
 } from '~/utils/enums';
 import {
-  QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses,
+  QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses, PaidTariff,
 } from '~/utils/сonstants/quests';
+import { ERC20, WorkQuest, WQPromotion } from '~/abi';
+import { error, success } from '~/utils/web3';
 import { CommissionForCreatingAQuest } from '~/utils/сonstants/commission';
-import { ERC20 } from '~/abi';
 
 const { GeoCode } = require('geo-coder');
 
@@ -299,10 +238,10 @@ export default {
   EditQuestState,
   data() {
     return {
-      ads: {
-        currentAdPrice: '',
-      },
-      period: 1,
+      period: 0,
+      level: -1,
+      levelPrices: null,
+
       selectedSpecAndSkills: [],
       priorityIndex: 1,
       employmentIndex: 0,
@@ -371,13 +310,6 @@ export default {
       }
       return months;
     },
-    periodTabs() {
-      return [
-        { number: 1, title: this.$t('raising-views.forOneDay') },
-        { number: 2, title: this.$t('raising-views.forOneWeek') },
-        { number: 3, title: this.$t('raising-views.forOneMonth') },
-      ];
-    },
     runtime() {
       return [
         this.$t('meta.priority.urgent'),
@@ -388,6 +320,9 @@ export default {
     employment() {
       return TypeOfEmployments.map((item) => this.$t(`quests.employment.${item}`));
     },
+    payPeriods() {
+      return PayPeriodsIndex.map((item) => this.$t(`quests.payPeriods.${item}`));
+    },
     distantWork() {
       return [
         this.$t('quests.distantWork.distantWork'),
@@ -395,8 +330,41 @@ export default {
         this.$t('quests.distantWork.bothVariant'),
       ];
     },
-    payPeriods() {
-      return PayPeriodsIndex.map((item) => this.$t(`quests.payPeriods.${item}`));
+    periodTabs() {
+      return [
+        this.$t('raising-views.forOneDay'),
+        this.$t('raising-views.forDays', { n: 5 }),
+        this.$t('raising-views.forDays', { n: 7 }),
+      ];
+    },
+    levelTabs() {
+      return [
+        {
+          title: this.$t('quests.levels.1.title'),
+          description: this.$t('quests.levels.1.desc'),
+          color: 'gold',
+          price: this.levelPrices ? this.levelPrices[PaidTariff.GoldPlus][this.period] : '',
+        },
+        {
+          title: this.$t('quests.levels.2.title'),
+          description: this.$t('quests.levels.2.desc'),
+          color: 'gold',
+          price: this.levelPrices ? this.levelPrices[PaidTariff.Gold][this.period] : '',
+        },
+        {
+          title: this.$t('quests.levels.3.title'),
+          description: this.$t('quests.levels.3.desc'),
+          color: 'silver',
+          price: this.levelPrices ? this.levelPrices[PaidTariff.Silver][this.period] : '',
+        },
+        {
+          title: this.$t('quests.levels.4.title'),
+          description: this.$t('quests.levels.4.desc'),
+          color: 'bronze',
+          price: this.levelPrices ? this.levelPrices[PaidTariff.Bronze][this.period] : '',
+        },
+
+      ];
     },
   },
   beforeCreate() {
@@ -404,6 +372,10 @@ export default {
   },
   async mounted() {
     if (!this.isWalletConnected) return;
+
+    const levelPricesRes = await this.$store.dispatch('user/fetchRaiseViewPrice', { type: 'questTariff' });
+    this.levelPrices = levelPricesRes?.result;
+
     this.SetLoader(true);
     await this.$store.dispatch('quests/getQuest', this.$route.params.id);
     this.geoCode = new GeoCode('google', {
@@ -433,6 +405,12 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    setPeriod(i) {
+      this.period = i;
+    },
+    setLevel(i) {
+      this.level = i;
+    },
     updateFiles(files) {
       this.files = files;
     },
@@ -451,35 +429,90 @@ export default {
       if (period === 3) return this.months;
       return '';
     },
-    selectRadio(idx) {
-      const radio = this.$refs[`radio${idx}`];
-      for (let i = 0; i < Object.keys(this.$refs[`radio${i}`]).length; i += 1) {
-        if (radio[i].checked) {
-          radio[i].checked = false;
-          this.ads.currentAdPrice = '';
-        } else if (!radio[i].checked) {
-          radio[i].checked = true;
-          this.ads.currentAdPrice = radio[i].value;
-        }
-      }
-    },
-    switchPeriod(item) {
-      for (let idx = 0; idx < Object.keys(this.$refs).length - 1; idx += 1) {
-        const radio = this.$refs[`radio${idx}`];
-        for (let i = 0; i < Object.keys(radio).length; i += 1) {
-          radio[0].checked = false;
-        }
-        this.period = item.number;
-        this.ads.currentAdPrice = '';
-      }
-    },
     setCurrentStepEditQuest(step) {
       this.$store.commit('quests/setCurrentStepEditQuest', step);
     },
-    showPaymentModal() {
-      this.ShowModal({
-        key: modals.paymentOptions,
-        step: 1,
+    async showPaymentModal() {
+      if (!this.levelPrices) return;
+      this.SetLoader(true);
+
+      const tokenAddress = this.ENV.WORKNET_WUSD_TOKEN;
+      const promotionAddress = this.ENV.WORKNET_PROMOTION;
+      const { contractAddress } = this.questData;
+      const levelPrice = this.levelPrices[TariffByIndex[this.level]][this.period];
+
+      new Promise(async (resolve, reject) => {
+        await this.$store.dispatch('wallet/fetchWalletData', {
+          method: 'balanceOf',
+          address: this.userWalletAddress,
+          abi: ERC20,
+          token: tokenAddress,
+          symbol: TokenSymbols.WUSD,
+        });
+        if (new BigNumber(this.balanceData.WUSD.fullBalance).isLessThan(levelPrice)) {
+          this.ShowToast(`${this.$t('errors.transaction.notEnoughFunds')} (${TokenSymbols.WUSD})`);
+          this.SetLoader(false);
+          reject();
+          return;
+        }
+        await this.MakeApprove({
+          tokenAddress,
+          contractAddress: promotionAddress,
+          amount: levelPrice,
+          approveTitle: `${this.$t('meta.raiseViews')} ${this.$t('meta.approve')}`,
+        }).then(async () => {
+          await resolve();
+        }).catch((err) => {
+          this.SetLoader(false);
+          reject(err);
+        });
+      }).then(async () => {
+        const data = [contractAddress, this.level, RaiseViewTariffPeriods.questTariff[this.period]];
+        const [feeRes] = await Promise.all([
+          this.$store.dispatch('wallet/getContractFeeData', {
+            method: 'promoteQuest',
+            abi: WQPromotion,
+            contractAddress: promotionAddress,
+            data,
+          }),
+          this.$store.dispatch('wallet/getBalance'),
+          this.$store.dispatch('wallet/fetchWalletData', {
+            method: 'balanceOf',
+            address: this.userWalletAddress,
+            abi: ERC20,
+            token: tokenAddress,
+            symbol: TokenSymbols.WUSD,
+          }),
+        ]);
+        this.SetLoader(false);
+        if (!feeRes.ok) {
+          this.ShowToast(feeRes.msg);
+          return;
+        }
+        this.ShowModal({
+          key: modals.transactionReceipt,
+          title: this.$t('meta.raiseViews'),
+          isShowSuccess: this.mode === 'raise',
+          fields: {
+            from: { name: this.$t('meta.fromBig'), value: this.$store.getters['user/getUserWalletAddress'] },
+            to: { name: this.$t('meta.toBig'), value: promotionAddress },
+            amount: { name: this.$t('modals.amount'), value: levelPrice, symbol: TokenSymbols.WUSD },
+            fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WQT },
+          },
+          submitMethod: async () => {
+            const res = await this.$store.dispatch('quests/promote', { method: 'promoteQuest', data });
+            if (!res.ok) {
+              this.ShowToast(res.msg);
+              return error();
+            }
+            if (this.mode === 'raise') {
+              await this.$router.push(`${Path.QUESTS}/${this.questData.id}`);
+              return success();
+            }
+            await this.toEditQuest();
+            return success();
+          },
+        });
       });
     },
     clickBackBtnHandler() {
@@ -540,13 +573,17 @@ export default {
             reject();
             return;
           }
-          await this.makeApprove({ wusdAddress, contractAddress, depositAmount })
-            .then(async (result) => {
-              await resolve(result);
-            }).catch((error) => {
-              this.SetLoader(false);
-              reject(error);
-            });
+          await this.makeApprove({
+            wusdAddress,
+            contractAddress,
+            depositAmount,
+            approveTitle: `${this.$t('meta.btns.edit')} ${this.$t('meta.approve')}`,
+          }).then(async (result) => {
+            await resolve(result);
+          }).catch((err) => {
+            this.SetLoader(false);
+            reject(err);
+          });
         } else { // Quest cost decrease
           await resolve();
         }
@@ -554,63 +591,6 @@ export default {
         await this.editWithCostChange(contractAddress, deposit);
       });
     },
-
-    // Approve to quest contract if cost increased
-    async makeApprove({ wusdAddress, contractAddress, depositAmount }) {
-      return new Promise(async (resolve, reject) => {
-        const allowance = await this.$store.dispatch('wallet/getAllowance', {
-          tokenAddress: wusdAddress,
-          spenderAddress: contractAddress,
-        });
-        if (new BigNumber(allowance).isLessThan(depositAmount)) {
-          const [approveFee] = await Promise.all([
-            this.$store.dispatch('wallet/getContractFeeData', {
-              method: 'approve',
-              abi: ERC20,
-              contractAddress: wusdAddress,
-              data: [contractAddress, new BigNumber(depositAmount).shiftedBy(18).toString()],
-            }),
-            this.$store.dispatch('wallet/getBalance'),
-          ]);
-
-          this.SetLoader(false);
-          if (!approveFee.ok) {
-            this.ShowToast('Approve error');
-            reject();
-            return;
-          }
-
-          this.ShowModal({
-            key: modals.transactionReceipt,
-            title: this.$t('meta.approve'),
-            fields: {
-              from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
-              to: { name: this.$t('meta.toBig'), value: contractAddress },
-              amount: { name: this.$t('modals.amount'), value: depositAmount, symbol: TokenSymbols.WUSD },
-              fee: { name: this.$t('wallet.table.trxFee'), value: approveFee.result.fee, symbol: TokenSymbols.WQT },
-            },
-            submitMethod: async () => {
-              this.ShowToast('Approving...', 'Approve');
-              const approveOk = await this.$store.dispatch('wallet/approve', {
-                tokenAddress: wusdAddress,
-                spenderAddress: contractAddress,
-                amount: depositAmount,
-              });
-              if (!approveOk) {
-                this.ShowToast('Approve error');
-                reject();
-                return;
-              }
-              this.ShowToast('Approving done', 'Approve');
-              await resolve(depositAmount);
-            },
-          });
-        } else {
-          await resolve(depositAmount);
-        }
-      });
-    },
-
     //  Send new data to backend
     async editQuest() {
       if (this.mode === 'raise') {
@@ -653,6 +633,7 @@ export default {
       const [feeRes] = await Promise.all([
         this.$store.dispatch('quests/getFeeDataJobMethod', {
           contractAddress,
+          abi: WorkQuest,
           method: QuestMethods.EditJob,
           data: [new BigNumber(this.price).shiftedBy(18).toString()],
         }),
@@ -671,15 +652,19 @@ export default {
         fields.amount = { name: this.$t('modals.amount'), value: depositAmount, symbol: TokenSymbols.WUSD };
       }
       await this.$store.dispatch('wallet/getBalance');
+      this.$store.commit('notifications/setWaitForUpdateQuest', {
+        id: this.questData.id,
+        callback: async () => await this.editQuest(),
+      });
       this.ShowModal({
         key: modals.transactionReceipt,
+        isDontOffLoader: true,
         fields,
         submitMethod: async () => {
-          const res = await this.$store.dispatch('quests/editQuestOnContract', {
+          await this.$store.dispatch('quests/editQuestOnContract', {
             contractAddress,
             cost: this.price,
           });
-          if (res.ok) await this.editQuest();
         },
       });
     },
@@ -779,106 +764,6 @@ export default {
     font-size: 20px;
     display: flex;
     justify-content: center;
-  }
-}
-
-.level {
-  &__title {
-    @extend .period__title;
-  }
-  &__card {
-    background: $white;
-    border-radius: 6px;
-    padding: 20px 0;
-    display: grid;
-    grid-template-columns: 1fr 15fr 1fr;
-    margin: 20px 0 0 0;
-    transition: 0.5s;
-    &:hover {
-      cursor: pointer;
-      box-shadow: 0 0 10px 2px rgba(34, 60, 80, 0.09);
-    }
-    &_gold {
-      border: 1px solid #F7CF00;
-    }
-  }
-  &__option {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-}
-
-.radio {
-  &__input {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border-radius: 50%;
-    width: 25px;
-    height: 25px;
-    border: 1px solid $blue;
-    cursor: pointer;
-    &:checked {
-      background: radial-gradient($blue 50%, rgba(255, 0, 0, 0) 55%);
-    }
-  }
-}
-
-.period {
-  &__choose {
-    @extend .period__title;
-    margin: 20px 0 0 0;
-  }
-  &__title {
-    @include text-simple;
-    font-weight: 400;
-    font-size: 16px;
-    color: $black800;
-    &_active {
-      color: $white;
-    }
-  }
-  &__container {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    max-width: 1180px;
-    width: 100%;
-    margin: 10px 0 20px 0;
-  }
-  &__period {
-    color: $black800;
-    background: $white;
-    padding: 12px 88px;
-    border-radius: 6px;
-    transition: .5s;
-    text-align: center;
-    width: inherit;
-    margin: 0 20px 0 0;
-    &:last-child {
-      margin: 0;
-    }
-    &:hover {
-      cursor: pointer;
-      box-shadow: 0 0 10px 2px rgba(34, 60, 80, 0.09);
-    }
-    &_active {
-      background: $blue;
-      color: $white;
-      &:hover {
-        cursor: pointer;
-        box-shadow: 0 0 10px 2px rgba(34, 60, 80, 0.09);
-      }
-    }
-    &:last-child {
-      margin: 0;
-    }
-    &__title {
-      color: $black800;
-      font-weight: 500;
-      font-size: 16px;
-    }
   }
 }
 
@@ -1164,18 +1049,10 @@ export default {
     max-width: 1180px;
     width: 100%;
     justify-content: flex-start;
-    //padding: 0 20px 0 0;
   }
   &__title {
     @include text-simple;
     margin: 30px 0 0 0;
-  }
-  &__raising {
-    @include text-simple;
-    font-weight: 500;
-    font-size: 20px;
-    color: $black800;
-    margin: 0 0 20px 0;
   }
   &__page {
     font-weight: 500;
@@ -1209,6 +1086,9 @@ export default {
     &::placeholder {
       color: $black300;
     }
+  }
+  &__raise {
+    margin-top: 20px;
   }
 }
 .specialization {

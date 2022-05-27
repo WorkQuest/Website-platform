@@ -8,7 +8,7 @@ import {
   InfoModeEmployer,
 } from '~/utils/сonstants/quests';
 
-import { WQFactory, WorkQuest } from '~/abi/index';
+import { WQFactory, WorkQuest, WQPromotion } from '~/abi/index';
 
 import {
   hashText,
@@ -396,5 +396,26 @@ export default {
   // Отправить результат работы на проверку employer'у
   async verificationJob({ dispatch }, contractAddress) {
     return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.VerificationJob });
+  },
+
+  /** RAISE VIEWS */
+  /**
+   * Raise view quest
+   * @param _
+   * @param method
+   * @param data - from promoteQuest abi
+   */
+  async promote(_, { method, data }) {
+    try {
+      const res = await sendWalletTransaction(method, {
+        address: ENV.WORKNET_PROMOTION,
+        abi: WQPromotion,
+        data,
+      });
+      return success(res);
+    } catch (e) {
+      console.error('quests/promoteQuest', e);
+      return error(-1, e.msg, e);
+    }
   },
 };
