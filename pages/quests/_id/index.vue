@@ -166,18 +166,18 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import {
-  Path,
-  UserRole,
-  ResponseStatus,
-  questPriority,
-  QuestModeReview,
-  TokenSymbols,
+  ExplorerUrl,
+  Path, QuestModeReview, questPriority, ResponseStatus, TokenSymbols, UserRole,
 } from '~/utils/enums';
 
 import { NotificationAction } from '~/utils/notifications';
 import modals from '~/store/modals/modals';
 import {
-  QuestMethods, EditQuestState, QuestStatuses, InfoModeWorker, InfoModeEmployer,
+  EditQuestState,
+  InfoModeEmployer,
+  InfoModeWorker,
+  QuestMethods,
+  QuestStatuses,
 } from '~/utils/сonstants/quests';
 import { images } from '~/utils/images';
 import { WorkQuest, WQFactory } from '~/abi';
@@ -415,7 +415,6 @@ export default {
           }];
           break;
         }
-        case WaitWorker:
         case Dispute: {
           arr = [{
             name: this.$t('meta.openDispute'),
@@ -466,11 +465,6 @@ export default {
         case WaitWorker: {
           if (assignedWorkerId !== userData.id) break;
           arr = [{
-            name: this.$t('meta.openDispute'),
-            funcKey: 'openDispute',
-            disabled: false,
-          },
-          {
             name: this.$t('meta.btns.completeWorkOnQuest'),
             funcKey: 'completeWorkOnQuest',
             disabled: false,
@@ -557,16 +551,30 @@ export default {
     async openDispute() {
       const {
         quest: {
-          status, openDispute, id, contractAddress,
+          status, openDispute, contractAddress,
         },
       } = this;
 
       if (status === QuestStatuses.Dispute) return await this.$router.push(`${Path.DISPUTES}/${openDispute.id}`);
+      console.log('checkAvailabilityDisputeTime', this.checkAvailabilityDisputeTime);
+      if (!this.checkAvailabilityDisputeTime) {
+        return this.ShowModal({
+          key: modals.status,
+          img: images.ERROR,
+          title: this.$t('modals.errors.error'),
+          subtitle: this.$t('modals.errors.youCantCreateDispute'),
+          button: this.$t('meta.btns.close'),
+        });
+      }
 
       const payment = async ({ reason = '', problemDescription = '', feeTx }) => {
-        const currentQuest = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
+        let currentDispute;
         if (!openDispute) {
-          await this.$store.dispatch('disputes/createDispute', { reason, problemDescription, questId: id });
+          currentDispute = await this.$store.dispatch('disputes/createDispute', {
+            reason,
+            problemDescription,
+            questId: this.quest?.id,
+          });
         }
         const { result } = await this.$store.dispatch('quests/arbitration', { contractAddress, value: feeTx });
         if (!result.status) {
@@ -580,60 +588,52 @@ export default {
             key: modals.status,
             title: this.$t('modals.transactionSent'),
             subtitle: this.$t('modals.checkExplorer'),
-            link: `${this.ENV.WQ_EXPLORER}/tx/${result.transactionHash}`,
+            link: `${ExplorerUrl}/tx/${result.transactionHash}`,
             img: images.SUCCESS,
-            callback: await this.$router.push(`${Path.DISPUTES}/${currentQuest.openDispute.id}`),
+            callback: await this.$router.push(`${Path.DISPUTES}/${currentDispute.result.id}`),
           });
         }
       };
 
-      if (this.checkAvailabilityDisputeTime) {
-        const feeTx = await fetchContractData(
-          'feeTx',
-          WQFactory,
-          this.ENV.WORKNET_WQ_FACTORY,
-          null,
-          GetWalletProvider(),
-        );
+      const feeTx = await fetchContractData(
+        'feeTx',
+        WQFactory,
+        this.ENV.WORKNET_WQ_FACTORY,
+        null,
+        GetWalletProvider(),
+      );
 
-        if (openDispute) {
-          /** Флоу, если сознан диспут и не было оплаты */
-          await payment({ feeTx });
-        } else {
-          /** Флоу, если не сознан диспут и не было оплаты */
-          return this.ShowModal({
-            key: modals.openADispute,
-            submitMethod: async ({ reason, problemDescription }) => this.ShowModal({
-              key: modals.transactionReceipt,
-              isDontOffLoader: true,
-              fields: {
-                from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
-                to: { name: this.$t('meta.toBig'), value: contractAddress },
-                fee: { name: this.$t('wallet.table.trxFee'), value: 0 },
-                amount: {
-                  name: this.$t('wallet.table.value'),
-                  value: new BigNumber(feeTx).shiftedBy(-18).toString(),
-                  symbol: TokenSymbols.WUSD,
-                },
+      if (openDispute) {
+        /** Флоу, если сознан диспут и не было оплаты */
+        await payment({ feeTx });
+      } else {
+        /** Флоу, если не сознан диспут и не было оплаты */
+        return this.ShowModal({
+          key: modals.openADispute,
+          submitMethod: async ({ reason, problemDescription }) => this.ShowModal({
+            key: modals.transactionReceipt,
+            isDontOffLoader: true,
+            fields: {
+              from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+              to: { name: this.$t('meta.toBig'), value: contractAddress },
+              fee: { name: this.$t('wallet.table.trxFee'), value: 0 },
+              amount: {
+                name: this.$t('wallet.table.value'),
+                value: new BigNumber(feeTx).shiftedBy(-18).toString(),
+                symbol: TokenSymbols.WUSD,
               },
-              title: this.$t('modals.titles.disputePayment'),
-              text: this.$t('modals.payForDispute'),
-              submitMethod: async () => await payment({
-                reason,
-                problemDescription,
-                feeTx,
-              }),
+            },
+            title: this.$t('modals.titles.disputePayment'),
+            text: this.$t('modals.payForDispute'),
+            submitMethod: async () => await payment({
+              reason,
+              problemDescription,
+              feeTx,
             }),
-          });
-        }
+          }),
+        });
       }
-      return this.ShowModal({
-        key: modals.status,
-        img: images.ERROR,
-        title: this.$t('modals.errors.error'),
-        subtitle: this.$t('modals.errors.youCantCreateDispute'),
-        button: this.$t('meta.btns.close'),
-      });
+      return '';
     },
     async acceptCompletedWorkOnQuest() {
       this.SetLoader(true);
