@@ -52,7 +52,7 @@
             :disabled="isNeedToChangeNetwork || !tokenData"
             :placeholder="$t('modals.amount')"
             :name="$t('modals.amount')"
-            :rules="`required|decimal|decimalPlaces:${tokenData ? tokenData.decimals : 0}|max_value:${maxUSDTValue}|min_value:5`"
+            :rules="`required|decimal|decimalPlaces:${tokenData ? tokenData.decimals : 0}|max_value:${maxUSDTValue}|min_value:5|is_not:0`"
             data-selector="AMOUNT"
           >
             <template
@@ -114,6 +114,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      userWalletAddress: 'user/getUserWalletAddress',
       isMetamaskConnected: 'web3/isConnected',
       web3Account: 'web3/getAccount',
       oraclePrices: 'oracle/getPrices',
@@ -174,8 +175,14 @@ export default {
       this.updatePriceId = setTimeout(async () => {
         await this.$store.dispatch('oracle/getCurrentPrices');
         const priceWQT = new BigNumber(this.oraclePrices[this.oracleSymbols.indexOf(TokenSymbols.WQT)]).shiftedBy(-18);
-        const decimalAmount = new BigNumber(this.amount).multipliedBy(1 - WQTBuyCommission);
-        this.wqtAmount = decimalAmount.dividedBy(priceWQT).decimalPlaces(3);
+        const decimalAmount = new BigNumber(this.amount);
+        const receiveWithCommission = decimalAmount.dividedBy(priceWQT).multipliedBy(1 - WQTBuyCommission).decimalPlaces(18);
+        const res = await this.$store.dispatch('wallet/getTransferFeeData', {
+          recipient: this.userWalletAddress,
+          value: receiveWithCommission.toString(),
+        });
+        const txPrice = res.result.fee;
+        this.wqtAmount = receiveWithCommission.minus(txPrice).decimalPlaces(3);
         this.inProgressWQT = false;
       },
       400);
@@ -265,6 +272,11 @@ export default {
   }
   &__balance {
     color: $black500;
+  }
+}
+.max {
+  &__text {
+    padding: 0 10px;
   }
 }
 </style>

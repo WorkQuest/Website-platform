@@ -1,4 +1,7 @@
-export const isProd = process.env.PROD === 'true';
+import { PaidTariff } from '~/utils/сonstants/quests';
+import ENV, { IS_PROD } from '~/utils/adresses';
+
+export const isProd = IS_PROD;
 
 export const ChainsId = {
   ETH_MAIN: '0x1',
@@ -205,24 +208,24 @@ export const TokenSymbols = Object.freeze({
 
 // wallet balance
 export const WorknetTokenAddresses = Object.freeze([
-  process.env.WORKNET_WUSD_TOKEN,
-  process.env.WORKNET_WBNB_TOKEN,
-  process.env.WORKNET_WETH_TOKEN,
-  process.env.WORKNET_USDT_TOKEN,
+  ENV.WORKNET_WUSD_TOKEN,
+  ENV.WORKNET_WBNB_TOKEN,
+  ENV.WORKNET_WETH_TOKEN,
+  ENV.WORKNET_USDT_TOKEN,
 ]);
 
 export const TokenSymbolByContract = Object.freeze({
-  [process.env.WORKNET_WUSD_TOKEN.toLowerCase()]: TokenSymbols.WUSD,
-  [process.env.WORKNET_WBNB_TOKEN.toLowerCase()]: TokenSymbols.BNB,
-  [process.env.WORKNET_WETH_TOKEN.toLowerCase()]: TokenSymbols.ETH,
-  [process.env.WORKNET_USDT_TOKEN.toLowerCase()]: TokenSymbols.USDT,
+  [ENV.WORKNET_WUSD_TOKEN?.toLowerCase()]: TokenSymbols.WUSD,
+  [ENV.WORKNET_WBNB_TOKEN?.toLowerCase()]: TokenSymbols.BNB,
+  [ENV.WORKNET_WETH_TOKEN?.toLowerCase()]: TokenSymbols.ETH,
+  [ENV.WORKNET_USDT_TOKEN?.toLowerCase()]: TokenSymbols.USDT,
 });
 
 export const TokenMap = {
-  [TokenSymbols.BNB]: process.env.WORKNET_WBNB_TOKEN,
-  [TokenSymbols.ETH]: process.env.WORKNET_WETH_TOKEN,
-  [TokenSymbols.WUSD]: process.env.WORKNET_WUSD_TOKEN,
-  [TokenSymbols.USDT]: process.env.WORKNET_USDT_TOKEN,
+  [TokenSymbols.BNB]: ENV.WORKNET_WBNB_TOKEN,
+  [TokenSymbols.ETH]: ENV.WORKNET_WETH_TOKEN,
+  [TokenSymbols.WUSD]: ENV.WORKNET_WUSD_TOKEN,
+  [TokenSymbols.USDT]: ENV.WORKNET_USDT_TOKEN,
 };
 
 export const WalletTables = Object.freeze({
@@ -238,12 +241,12 @@ export const NetworksData = {
   ETH_MAIN: {
     chainId: ChainsId.ETH_MAIN,
     chainName: 'Ethereum Mainnet',
-    rpcUrls: ['https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
+    rpcUrls: ['https://mainnet.infura.io/v3/'],
   },
   ETH_TEST: {
     chainId: ChainsId.ETH_TEST,
     chainName: 'Ethereum Testnet',
-    rpcUrls: ['https://rinkey.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
+    rpcUrls: ['https://rinkey.infura.io/v3/'],
   },
   BSC_MAIN: {
     chainId: ChainsId.BSC_MAIN,
@@ -303,10 +306,16 @@ export const PensionHistoryMethods = Object.freeze({
   Receive: 'Receive',
 });
 
-export const RaiseViewTariffPeriods = {
+export const RaiseViewTariffPeriods = Object.freeze({
   usersTariff: ['1', '7', '30'],
   questTariff: ['1', '5', '7'],
-};
+});
+export const TariffByIndex = Object.freeze({
+  0: PaidTariff.GoldPlus,
+  1: PaidTariff.Gold,
+  2: PaidTariff.Silver,
+  3: PaidTariff.Bronze,
+});
 export const RaiseViewStatus = {
   0: true,
   1: false,

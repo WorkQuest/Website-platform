@@ -58,6 +58,7 @@
       }
     },
     "btns": {
+      "connectSMSVer": "Connect SMS Verification",
       "resendEmail": "Resend email with code",
       "back": "वापस",
       "edit": "एडिट करें",
@@ -373,18 +374,22 @@
     "levels": {
       "1": {
         "title": "Gold Plus Package",
+        "shortTitle": "Gold Plus",
         "desc": "Notifications for employees who were looking for quests, via an offer to review the quest that has been promoted by the employer. The employee will be invited to complete the quest in based on the most recent search categories of the employee. Plus the ability to choose any category and any location to promote the quest."
       },
       "2": {
         "title": "Gold Package",
+        "shortTitle": "Gold",
         "desc": "Notifications for employees who were looking for quests with a direct offer to review the promoted quest based on the most recent search categories of the employee. Plus the ability to choose three categories and three locations to promote the quest."
       },
       "3": {
         "title": "Silver Package",
+        "shortTitle": "Silver",
         "desc": "Pin quest on the main page for three hours, with the ability to choose two categories and two locations for promotion the quest."
       },
       "4": {
         "title": "Bronze Package",
+        "shortTitle": "Bronze",
         "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
       }
     },
@@ -1561,6 +1566,7 @@
     "raisingViews": "व्यू बढ़ाएं",
     "choosePeriod": "अवधि चुनें",
     "forOneDay": "1 दिन के लिए",
+    "forDays": "For {n} days",
     "forOneWeek": "1 सप्ताह के लिए",
     "forOneMonth": "1 माह के लिए",
     "chooseLevel": "लेवल चुनें"

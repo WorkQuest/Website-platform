@@ -8,7 +8,7 @@ import {
   InfoModeEmployer,
 } from '~/utils/сonstants/quests';
 
-import { WQFactory, WorkQuest } from '~/abi/index';
+import { WQFactory, WorkQuest, WQPromotion } from '~/abi/index';
 
 import {
   hashText,
@@ -20,6 +20,8 @@ import {
 } from '~/utils/wallet';
 
 import { error, success } from '~/utils/web3';
+
+import ENV from '~/utils/adresses/index';
 
 export default {
   async getWorkerData({ commit }, userId) {
@@ -277,7 +279,7 @@ export default {
     cost, description, nonce,
   }) {
     try {
-      const address = process.env.WORKNET_WQ_FACTORY;
+      const address = ENV.WORKNET_WQ_FACTORY;
       const walletAddress = getWalletAddress();
       const hash = hashText(description);
       cost = new BigNumber(cost).shiftedBy(18).toString();
@@ -315,7 +317,7 @@ export default {
   }) {
     try {
       const hash = hashText(description);
-      const address = process.env.WORKNET_WQ_FACTORY;
+      const address = ENV.WORKNET_WQ_FACTORY;
       cost = new BigNumber(cost).shiftedBy(18).toString();
       return await getContractFeeData(
         'newWorkQuest',
@@ -394,5 +396,26 @@ export default {
   // Отправить результат работы на проверку employer'у
   async verificationJob({ dispatch }, contractAddress) {
     return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.VerificationJob });
+  },
+
+  /** RAISE VIEWS */
+  /**
+   * Raise view quest
+   * @param _
+   * @param method
+   * @param data - from promoteQuest abi
+   */
+  async promote(_, { method, data }) {
+    try {
+      const res = await sendWalletTransaction(method, {
+        address: ENV.WORKNET_PROMOTION,
+        abi: WQPromotion,
+        data,
+      });
+      return success(res);
+    } catch (e) {
+      console.error('quests/promoteQuest', e);
+      return error(-1, e.msg, e);
+    }
   },
 };

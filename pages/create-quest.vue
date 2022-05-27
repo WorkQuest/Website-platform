@@ -398,7 +398,7 @@ export default {
         return;
       }
       const tokenAddress = TokenMap[TokenSymbols.WUSD];
-      const spenderAddress = process.env.WORKNET_WQ_FACTORY;
+      const spenderAddress = this.ENV.WORKNET_WQ_FACTORY;
       const [allowance] = await Promise.all([
         this.$store.dispatch('wallet/getAllowance', {
           tokenAddress,
@@ -437,7 +437,7 @@ export default {
           title: this.$t('meta.approve'),
           fields: {
             from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
-            to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_WQ_FACTORY },
+            to: { name: this.$t('meta.toBig'), value: this.ENV.WORKNET_WQ_FACTORY },
             amount: { name: this.$t('modals.amount'), value: this.depositAmount, symbol: TokenSymbols.WUSD },
             fee: { name: this.$t('wallet.table.trxFee'), value: approveFee.result.fee, symbol: TokenSymbols.WQT },
           },
@@ -514,7 +514,7 @@ export default {
           key: modals.transactionReceipt,
           fields: {
             from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
-            to: { name: this.$t('meta.toBig'), value: process.env.WORKNET_WQ_FACTORY },
+            to: { name: this.$t('meta.toBig'), value: this.ENV.WORKNET_WQ_FACTORY },
             amount: { name: this.$t('modals.amount'), value: this.depositAmount, symbol: TokenSymbols.WUSD },
             fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
           },
