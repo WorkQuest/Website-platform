@@ -1629,6 +1629,11 @@
     "event": {
       "PaidReferral": "Выплачено",
       "RewardClaimed": "Получено"
+    },
+    "referralStatus": {
+      "created": "Незарегистрированный",
+      "registered": "Зарегистрированный",
+      "paid": "Выплачено"
     }
   },
   "pension": {

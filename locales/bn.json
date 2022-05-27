@@ -1629,6 +1629,11 @@
     "event": {
       "PaidReferral": "Paid",
       "RewardClaimed": "Claimed"
+    },
+    "referralStatus": {
+      "created": "Unregistered",
+      "registered": "Registered",
+      "paid": "Paid"
     }
   },
   "pension": {

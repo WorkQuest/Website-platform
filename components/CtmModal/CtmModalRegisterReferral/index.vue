@@ -27,15 +27,27 @@
         <div
           v-for="(item, index) in options.itemList"
           :key="index"
+          class="registration-ref__item"
         >
-          <img
-            class="registration-ref__img"
-            :src="item['referralUser.avatar.url'] ? item['referralUser.avatar.url'] : $options.images.EMPTY_AVATAR"
-            alt=""
+          <div
+            class="registration-ref__avatar"
+            @click="redirectToProfile(item.id)"
           >
-          <span>
-            {{ item.firstName }} {{ item.lastName }}
-          </span>
+            <img
+              class="registration-ref__img"
+              :src="item['referralUser.avatar.url'] ? item['referralUser.avatar.url'] : $options.images.EMPTY_AVATAR"
+              alt=""
+            >
+            <span :class="{'registration-ref__name': options.status}">
+              {{ item.firstName }} {{ item.lastName }}
+            </span>
+          </div>
+          <div
+            v-if="options.status"
+            :class="`registration-ref__item--${item.referralUser.referralStatus}`"
+          >
+            {{ $t(`referral.referralStatus.${item.referralUser.referralStatus}`) }}
+          </div>
         </div>
       </div>
       <div class="registration-ref__wrap">
@@ -44,7 +56,7 @@
             class="registration-ref__btn"
             mode="outline"
             selector="CANCEL"
-            @click="hide()"
+            @click="CloseModal"
           >
             <span class="registration-ref__text">
               {{ options.cancel }}
@@ -75,6 +87,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { images } from '~/utils/images';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'ModalRegisterReferral',
@@ -87,23 +100,12 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      if (this.options.path) this.$router.push(this.options.path);
-      this.CloseModal();
-    },
     async handleSubmit() {
-      try {
-        if (this.isLoading) return;
-        this.SetLoader(true);
-        if (this.options.callback) await this.options.callback();
-        if (!this.options.isNotClose) this.hide();
-        await this.$store.dispatch('referral/addReferrals', this.userAddress);
-        await this.$store.dispatch('referral/setIsNeedRegistration', false);
-      } catch (e) {
-        console.error(e);
-      } finally {
-        this.SetLoader(false);
-      }
+      if (this.options?.submit) this.options.submit();
+    },
+    redirectToProfile(id) {
+      this.CloseModal();
+      this.$router.push(`${Path.PROFILE}/${id}`);
     },
   },
 };
@@ -170,15 +172,46 @@ export default {
   &__btn {
     padding: 0 10px;
   }
-
-  &__list {
+  &__list{
     width: 100%;
+    max-height:500px;
+    overflow: auto;
+  }
+  &__item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    &--created {
+      color: $red;
+    }
+    &--registered {
+      color: $yellow100;
+    }
+    &--paid {
+      color: $green;
+    }
 
     span {
       font-size: 14px;
     }
   }
 
+  &__avatar{
+    display: flex;
+    width:fit-content;
+    gap: 10px;
+    justify-content: flex-start;
+    align-items: center;
+    cursor: pointer;
+    &:hover{
+      text-decoration: underline;
+    }
+  }
+  &__name{
+    max-width:130px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
   &__img {
     display: inline;
     width: 33px;
