@@ -4,7 +4,11 @@
     :is-unclosable="true"
     :title="$tc('modals.titles.openADispute')"
   >
-    <div class="dispute__content content">
+    <validation-observer
+      v-slot="{handleSubmit, passed}"
+      class="dispute__content content"
+      tag="div"
+    >
       <div class="content__subtitle">
         {{ $t('modals.reason') }}
       </div>
@@ -23,17 +27,15 @@
       <base-textarea
         v-model="description"
         :placeholder="$t('modals.description')"
-        :error-text="$tc('modals.textLengthExceeded', 1000)"
-        :is-hide-error="!isMoreCharacters"
         data-selector="DESCRIPTION"
-        rules="required|text-desc"
+        rules="min:10|max:1000"
       />
       <div class="content__buttons buttons">
         <base-btn
           class="buttons__button"
-          :disabled="!drop || isMoreCharacters"
+          :disabled="!drop || !passed"
           data-selector="SHOW-REQUEST-SEND"
-          @click="onSubmit"
+          @click="handleSubmit(onSubmit)"
         >
           {{ $t('meta.btns.send') }}
         </base-btn>
@@ -46,7 +48,7 @@
           {{ $t('meta.btns.cancel') }}
         </base-btn>
       </div>
-    </div>
+    </validation-observer>
   </ctm-modal-box>
 </template>
 
@@ -110,32 +112,32 @@ export default {
 
 <style lang="scss" scoped>
 
-.dispute{
+.dispute {
   max-width: 382px!important;
-  &__content{
+  &__content {
   padding: 0 28px 30px 28px!important;
   }
 }
-.content{
-  &__subtitle{
+.content {
+  &__subtitle {
     font-size: 16px;
     line-height: 130%;
     margin: 25px 0 4px 0;
   }
-  &__buttons{
+  &__buttons {
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
     margin: 25px 0 0 0;
   }
-  &__choose{
+  &__choose {
     color: #D8DFE3;
     font-size: 16px;
     line-height: 130%;
     margin-right: auto;
   }
 }
-.buttons{
+.buttons {
   &__button {
     max-width: 153px!important;
   }
