@@ -9,7 +9,7 @@
         class="content__verified"
       >
         <img
-          src="~assets/img/ui/warning.svg"
+          :src="$options.images.WARNING"
           alt="Please fill phone number!"
           class="content__picture"
         >
@@ -27,24 +27,23 @@
         </div>
       </div>
       <validation-observer
-        v-if="phone"
-        v-slot="{handleSubmit, validated, passed, invalid}"
+        v-if="phone && step === 1"
+        v-slot="{handleSubmit}"
       >
         <div class="content__subtitle">
-          {{ step === 1 ? $t('modals.enterPhone') : $t('modals.enterSMSCode') }}
+          {{ $t('modals.enterPhone') }}
         </div>
         <span class="content__top">
-          {{ step === 1 ? $t('modals.phoneNumber') : $t('meta.codeFromSMS') }}
+          {{ $t('modals.phoneNumber') }}
         </span>
         <base-field
-          v-if="step === 1"
           v-model="phone"
           data-selector="PHONE-NUMBER"
           class="content__action"
           :placeholder="$t('modals.phoneNumber')"
           mode="icon"
           :disabled="true"
-          :name="$tc('modals.phoneNumberField')"
+          :name="$tc('modals.phoneNumber')"
         >
           <template
             v-slot:left
@@ -53,15 +52,35 @@
             <div class="icon-phone_outline content__icon" />
           </template>
         </base-field>
+        <div class="content__buttons buttons">
+          <base-btn
+            data-selector="NEXT-STEP"
+            class="buttons__button"
+            @click="handleSubmit(nextStep)"
+          >
+            {{ $t('meta.btns.next') }}
+          </base-btn>
+        </div>
+      </validation-observer>
+      <validation-observer
+        v-if="step === 2"
+        v-slot="{handleSubmit, passed}"
+      >
+        <div class="content__subtitle">
+          {{ $t('modals.enterSMSCode') }}
+        </div>
+        <span class="content__top">
+          {{ $t('meta.codeFromSMS') }}
+        </span>
         <base-field
-          v-if="step === 2"
+          ref="confirmCodeField"
           v-model="confirmCode"
           class="content__action"
           data-selector="CODE-FROM-SMS"
           :placeholder="$t('meta.codeFromSMS')"
           mode="icon"
-          rules="required|alpha_num"
-          :name="$tc('modals.codeFromSMS')"
+          :rules="`numeric|max:${confirmCodeLength}|min:${confirmCodeLength}`"
+          :name="$tc('meta.codeFromSMS')"
         >
           <template
             v-slot:left
@@ -70,36 +89,26 @@
             <span class="icon-Lock content__icon" />
           </template>
         </base-field>
-        <div
-          v-if="step === 2"
-          class="content__bottom"
-        >
+        <div class="content__bottom">
           {{ $t('modals.haventSMS') }}
           <button
             class="content__resend"
+            :class="{'content__resend_disabled': isStartedTimer}"
             data-selector="RESEND-SMS"
+            :disabled="isStartedTimer"
             @click="getCodeFromSms()"
           >
-            {{ $t('meta.btns.resendSMS') }}
+            {{ `${$t('meta.btns.resendSMS')} ${resendTimer}` }}
           </button>
         </div>
         <div class="content__buttons buttons">
           <base-btn
-            v-if="step === 1"
-            data-selector="NEXT-STEP"
-            class="buttons__button"
-            @click="handleSubmit(nextStep)"
-          >
-            {{ $t('meta.btns.next') }}
-          </base-btn>
-          <base-btn
-            v-if="step === 2"
             class="buttons__button"
             data-selector="CONFIRM-2"
-            :disabled="!validated || !passed || invalid"
-            @click="handleSubmit(success)"
+            :disabled="!passed || codeLength"
+            @click="handleSubmit(sendConfirmCode)"
           >
-            {{ $t('meta.btns.confirm') }}
+            {{ $t('meta.btns.connectSMSVer') }}
           </base-btn>
         </div>
       </validation-observer>
@@ -111,11 +120,18 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import { UserRole } from '~/utils/enums';
+import { images } from '~/utils/images';
+
+const timerDefaultValue = 60;
 
 export default {
   name: 'CtmModalSmsVerification',
+  images,
   data() {
     return {
+      isStartedTimer: false,
+      timerValue: timerDefaultValue,
+      confirmCodeLength: 6,
       confirmCode: '',
       step: 1,
     };
@@ -126,6 +142,13 @@ export default {
       userData: 'user/getUserData',
       currentConfirmCode: 'user/getVerificationCode',
     }),
+    resendTimer() {
+      const { timerValue, isStartedTimer } = this;
+      return isStartedTimer ? this.$tc('meta.units.seconds', this.DeclOfNum(timerValue), { count: timerValue }) : '';
+    },
+    codeLength() {
+      return this.confirmCode?.length < this.confirmCodeLength;
+    },
     UserRole() {
       return UserRole;
     },
@@ -133,37 +156,103 @@ export default {
       return this.userData?.tempPhone?.fullPhone;
     },
   },
+  watch: {
+    step() {
+      if (this.step === 2 && this.isStartedTimer) this.$refs.confirmCodeField?.validate();
+    },
+    isStartedTimer() {
+      this.step = 2;
+    },
+  },
+  created() {
+    window.addEventListener('beforeunload', this.beforeunload);
+  },
   async beforeMount() {
     this.confirmCode = this.currentConfirmCode;
   },
+  mounted() {
+    this.continueTimer();
+  },
+  beforeDestroy() {
+    if (this.isStartedTimer) {
+      this.$cookies.set('resend-timer', {
+        timerValue: this.timerValue,
+        createdAt: Date.now(),
+      });
+    }
+  },
   methods: {
-    async confirmPhone() {
-      return await this.$store.dispatch('user/confirmPhone', { confirmCode: this.confirmCode });
+    beforeunload() {
+      if (this.isStartedTimer) {
+        this.$cookies.set('resend-timer', {
+          timerValue: this.timerValue,
+          createdAt: Date.now(),
+        });
+      } else this.$cookies.remove('resend-timer');
+      this.clearCookies();
     },
-    async success() {
-      const phoneResult = await this.confirmPhone();
-      if (phoneResult) {
-        await this.$store.dispatch('user/getUserData');
-        this.ShowModalSuccess({
-          title: this.$t('meta.success'),
-          subtitle: this.$t('modals.SMSVerConnected'),
-        });
-      } else {
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/error.svg'),
-          title: this.$t('modals.error'),
-          subtitle: this.$t('errors.incorrectPass'),
-        });
+    clearTimer() {
+      this.$cookies.remove('resend-timer');
+      this.timerValue = timerDefaultValue;
+      clearInterval(this.timerId);
+      this.isStartedTimer = false;
+    },
+    continueTimer() {
+      const timer = this.$cookies.get('resend-timer');
+      if (!timer) return;
+
+      const spendSecs = (this.$moment().diff(timer.createdAt) / 1000).toFixed(0);
+      if (timer.timerValue < spendSecs) {
+        this.clearTimer();
+        return;
+      }
+
+      this.timerValue = timer.timerValue;
+      this.startTimer();
+    },
+    startTimer() {
+      if (!this.isStartedTimer) {
+        this.timerId = setInterval(() => {
+          if (this.timerId && this.timerValue === 0) this.clearTimer();
+          this.timerValue -= 1;
+        }, 1000);
+        this.isStartedTimer = true;
       }
     },
+    async sendConfirmCode() {
+      this.SetLoader(true);
+      if (this.codeLength) {
+        const phoneResult = await this.$store.dispatch('user/confirmPhone', { confirmCode: this.confirmCode });
+        if (phoneResult) {
+          await this.$store.dispatch('user/getUserData');
+          this.ShowModalSuccess({
+            title: this.$t('meta.success'),
+            subtitle: this.$t('modals.SMSVerConnected'),
+          });
+        } else {
+          this.ShowModal({
+            key: modals.status,
+            img: images.ERROR,
+            title: this.$t('modals.errors.error'),
+            subtitle: this.$t('errors.incorrectPass'),
+          });
+        }
+      }
+      this.SetLoader(false);
+    },
     async getCodeFromSms() {
-      if (this.phone) await this.$store.dispatch('user/sendPhone');
+      this.SetLoader(true);
+      if (this.phone) {
+        await this.$store.dispatch('user/sendSMSCode');
+        this.startTimer();
+      }
+      this.SetLoader(false);
     },
     async nextStep() {
       if (this.phone) {
-        await this.getCodeFromSms();
-        this.step += 1;
+        if (!this.isStartedTimer) await this.getCodeFromSms();
+        this.startTimer();
+        this.step = 2;
       }
       if (!this.userData.tempPhone) this.CloseModal();
     },
@@ -226,6 +315,10 @@ export default {
     color: $blue;
     font-size: 14px;
     margin: 0 0 0 5px;
+    &_disabled {
+      color: $grey200;
+      cursor: default;
+    }
   }
 }
 

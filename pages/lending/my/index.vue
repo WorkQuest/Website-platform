@@ -222,7 +222,7 @@ export default {
         data: [1, this.creditData.credit],
         method: 'refund',
         abi: WQBorrowing,
-        address: process.env.WORKNET_BORROWING,
+        address: this.ENV.WORKNET_BORROWING,
       };
     },
     withdraw(amount) {
@@ -231,7 +231,7 @@ export default {
         data: [value],
         method: 'withdraw',
         abi: WQLending,
-        address: process.env.WORKNET_LENDING,
+        address: this.ENV.WORKNET_LENDING,
       };
     },
     deposit(amount) {
@@ -241,14 +241,14 @@ export default {
         data: [],
         method: 'deposit',
         abi: WQLending,
-        address: process.env.WORKNET_LENDING,
+        address: this.ENV.WORKNET_LENDING,
       };
     },
     claim() {
       return {
         method: 'claim',
         abi: WQLending,
-        address: process.env.WORKNET_LENDING,
+        address: this.ENV.WORKNET_LENDING,
       };
     },
     maxValue(action) {

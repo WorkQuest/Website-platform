@@ -4,6 +4,8 @@ import {
 } from '~/utils/wallet';
 import { WQOracle } from '~/abi';
 
+import ENV from '~/utils/adresses/index';
+
 export default {
   async getCurrentPrices({ commit }) {
     try {
@@ -43,7 +45,7 @@ export default {
       timestamp, v, r, s, prices, symbols,
     };
 
-    const { gas, gasPrice } = await getGasPrice(WQOracle, process.env.WORKNET_ORACLE, 'setTokenPricesUSD', Object.values(params));
+    const { gas, gasPrice } = await getGasPrice(WQOracle, ENV.WORKNET_ORACLE, 'setTokenPricesUSD', Object.values(params));
     if (gas && gasPrice) {
       await setTokenPrices({
         gasPrice,

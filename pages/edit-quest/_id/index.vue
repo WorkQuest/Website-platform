@@ -287,8 +287,9 @@ import {
   Path, PayPeriodsIndex, TokenMap, TokenSymbols, TypeOfEmployments, WorkplaceIndex,
 } from '~/utils/enums';
 import {
-  QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses, CommissionForCreatingAQuest,
+  QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses,
 } from '~/utils/сonstants/quests';
+import { CommissionForCreatingAQuest } from '~/utils/сonstants/commission';
 import { ERC20 } from '~/abi';
 
 const { GeoCode } = require('geo-coder');
@@ -406,7 +407,7 @@ export default {
     this.SetLoader(true);
     await this.$store.dispatch('quests/getQuest', this.$route.params.id);
     this.geoCode = new GeoCode('google', {
-      key: process.env.GMAPKEY,
+      key: this.ENV.GMAPKEY,
       lang: this.$i18n?.localeProperties?.code || 'en-US',
     });
     const {

@@ -9,6 +9,7 @@ import {
 } from '~/utils/web3';
 import { WQReferral } from '~/abi/index';
 import { REFERRAL_EVENTS } from '~/utils/сonstants/referral';
+import ENV from '~/utils/adresses/index';
 
 export default {
   async fetchRewardBalance({ commit }, userWalletAddress) {
@@ -16,7 +17,7 @@ export default {
       const res = await fetchContractData(
         'getRewards',
         WQReferral,
-        process.env.WORKNET_REFERRAL,
+        ENV.WORKNET_REFERRAL,
         [userWalletAddress],
         GetWalletProvider(),
       );
@@ -31,7 +32,7 @@ export default {
     try {
       const payload = {
         abi: WQReferral,
-        address: process.env.WORKNET_REFERRAL,
+        address: ENV.WORKNET_REFERRAL,
         userAddress,
       };
       return await sendWalletTransaction('claim', payload);
@@ -94,7 +95,7 @@ export default {
     try {
       const payload = {
         abi: WQReferral,
-        address: process.env.WORKNET_REFERRAL,
+        address: ENV.WORKNET_REFERRAL,
         data: [signature.v, signature.r, signature.s, addresses],
         userAddress,
       };
