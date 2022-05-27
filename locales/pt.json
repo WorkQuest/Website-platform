@@ -291,7 +291,7 @@
     "loginWith": "Iniciar sessão com",
     "workQuest": "WorkQuest",
     "makingMoneyIsFast": "WorkQuest:\n Mercado de Trabalho\n Mundial\n Descentralizado",
-    "enderEmailAndPass": "Please enter correct email"
+    "enterEmail": "Please enter correct email"
   },
   "signWorkQuest": {
     "description": "Pode utilizar os seus dados do WorkQuest DAO para iniciar sessão",

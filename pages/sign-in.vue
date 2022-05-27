@@ -199,7 +199,7 @@ export default {
       disableResend: true,
       isStartedTimer: false,
       timerValue: timerDefaultValue,
-
+      timer: null,
       addressAssigned: false,
       userWalletAddress: null,
       step: WalletState.Default,
@@ -225,10 +225,10 @@ export default {
   },
   watch: {
     userStatus() {
-      if (this.userStatus === UserStatuses.Unconfirmed) {
+      if (this.userStatus === UserStatuses.Unconfirmed || this.timer) {
         this.hiddenResend = false;
         if (!this.isStartedTimer) this.disableResend = false;
-      }
+      } else this.hiddenResend = true;
     },
   },
   created() {
@@ -296,16 +296,16 @@ export default {
     },
     continueTimer() {
       this.hiddenResend = false;
-      const timer = this.$cookies.get('resend-timer');
-      if (!timer) return;
+      this.timer = this.$cookies.get('resend-timer');
+      if (!this.timer) return;
 
-      const spendSecs = (this.$moment().diff(timer.createdAt) / 1000).toFixed(0);
-      if (timer.timerValue < spendSecs) {
+      const spendSecs = (this.$moment().diff(this.timer.createdAt) / 1000).toFixed(0);
+      if (this.timer.timerValue < spendSecs) {
         this.clearTimer();
         return;
       }
 
-      this.timerValue = timer.timerValue;
+      this.timerValue = this.timer.timerValue;
       this.startTimer();
     },
     startTimer() {
@@ -359,7 +359,7 @@ export default {
       this.model.email = this.model.email.trim();
       if (!this.model.email && !this.model.password) {
         await this.$store.dispatch('main/showToast', {
-          text: this.$tc('signIn.enderEmailAndPass'),
+          text: this.$tc('signIn.enterEmail'),
         });
       } else if (this.model.email && !this.disableResend) {
         await this.$store.dispatch('user/resendEmail', { email: this.model.email });

@@ -291,7 +291,7 @@
     "loginWith": "इससे लॉगिन करें:",
     "workQuest": "WorkQuest",
     "makingMoneyIsFast": "WorkQuest:\n दुनिया का \nविकेंद्रीकृत\n जॉब मार्केट",
-    "enderEmailAndPass": "Please enter correct email"
+    "enterEmail": "Please enter correct email"
   },
   "signWorkQuest": {
     "description": "साइन इन करने के लिए आप अपने WorkQuest DAO लॉगिन व पासवर्ड का प्रयोग कर सकते हैं",
