@@ -379,7 +379,7 @@ export default {
     this.SetLoader(true);
     await this.$store.dispatch('quests/getQuest', this.$route.params.id);
     this.geoCode = new GeoCode('google', {
-      key: this.ENV.GMAPKEY,
+      key: process.env.GMAPKEY,
       lang: this.$i18n?.localeProperties?.code || 'en-US',
     });
     const {

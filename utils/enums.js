@@ -241,12 +241,12 @@ export const NetworksData = {
   ETH_MAIN: {
     chainId: ChainsId.ETH_MAIN,
     chainName: 'Ethereum Mainnet',
-    rpcUrls: ['https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
+    rpcUrls: ['https://mainnet.infura.io/v3/'],
   },
   ETH_TEST: {
     chainId: ChainsId.ETH_TEST,
     chainName: 'Ethereum Testnet',
-    rpcUrls: ['https://rinkey.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
+    rpcUrls: ['https://rinkey.infura.io/v3/'],
   },
   BSC_MAIN: {
     chainId: ChainsId.BSC_MAIN,

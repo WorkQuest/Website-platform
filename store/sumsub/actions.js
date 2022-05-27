@@ -7,7 +7,7 @@ export default {
     return response.result;
   },
   async verifySumsubSender() {
-    const response = await this.$axios.$post(`/resources/inspectionCallbacks/testDigest?secretKey=${ENV.SECRET_SUMSUB}`);
+    const response = await this.$axios.$post(`/resources/inspectionCallbacks/testDigest?secretKey=${process.env.SECRET_SUMSUB}`);
     return response.result;
   },
   async applicantStatus({ commit }, id) {
