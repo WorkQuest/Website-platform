@@ -405,7 +405,9 @@ export default {
         });
         this.SetLoader(false);
         return;
-      } this.clearTimer();
+      }
+
+      this.clearTimer();
 
       // Redirect to confirm account
       if (confirmToken) {
