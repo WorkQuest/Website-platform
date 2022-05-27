@@ -436,8 +436,8 @@ export default {
       if (!this.levelPrices) return;
       this.SetLoader(true);
 
-      const tokenAddress = process.env.WORKNET_WUSD_TOKEN;
-      const promotionAddress = process.env.WORKNET_PROMOTION;
+      const tokenAddress = this.ENV.WORKNET_WUSD_TOKEN;
+      const promotionAddress = this.ENV.WORKNET_PROMOTION;
       const { contractAddress } = this.questData;
       const levelPrice = this.levelPrices[TariffByIndex[this.level]][this.period];
 

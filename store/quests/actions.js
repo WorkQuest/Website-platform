@@ -402,12 +402,13 @@ export default {
   /**
    * Raise view quest
    * @param _
+   * @param method
    * @param data - from promoteQuest abi
    */
   async promote(_, { method, data }) {
     try {
       const res = await sendWalletTransaction(method, {
-        address: process.env.WORKNET_PROMOTION,
+        address: ENV.WORKNET_PROMOTION,
         abi: WQPromotion,
         data,
       });
