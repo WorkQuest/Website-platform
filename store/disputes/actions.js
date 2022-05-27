@@ -1,7 +1,10 @@
+import { success } from '~/utils/web3';
+
 export default {
   async createDispute({ commit }, { reason, problemDescription, questId }) {
     try {
-      return await this.$axios.$post(`/v1/quest/${questId}/dispute`, { reason, problemDescription });
+      const { result } = await this.$axios.$post(`/v1/quest/${questId}/dispute`, { reason, problemDescription });
+      return success(result);
     } catch (e) {
       return console.log(e);
     }
