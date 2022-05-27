@@ -11,7 +11,8 @@
       class="settings__body"
       tag="div"
     >
-      <verification-card v-if="userData.statusKYC === 0" />
+      <!--     TODO FOR BOUNTY 30.05, DELETE AFTER-->
+      <!--      <verification-card v-if="userData.statusKYC === 0" />-->
       <profile
         :profile="profile"
         :new-education="newEducation"
@@ -61,7 +62,9 @@ export default {
   name: 'Settings',
   UserRole,
   components: {
-    VerificationCard, Profile, Skills, Advanced,
+    // TODO FOR BOUNTY 30.05, DELETE AFTER
+    // VerificationCard, Profile, Skills, Advanced,
+    Profile, Skills, Advanced,
   },
   data() {
     return {

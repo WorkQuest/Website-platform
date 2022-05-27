@@ -541,6 +541,10 @@ export default {
       // $wsNotifs was connected on guest layout without token, it will be reconnect in header with token
       if (this.connections.notifsConnection) await this.$wsNotifs.disconnect();
 
+      // TODO FOR BOUNTY 30.05, DELETE AFTER
+      await this.$router.push(Path.SETTINGS);
+      return;
+      // eslint-disable-next-line no-unreachable
       if (this.userData.role === UserRole.EMPLOYER) await this.$router.push(Path.WORKERS);
       else if (this.userData.role === UserRole.WORKER) await this.$router.push(Path.QUESTS);
     },

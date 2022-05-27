@@ -168,24 +168,39 @@
           v-if="mainUser.role === UserRole.WORKER && userId === mainUserData.id"
           class="contact__btn"
         >
+          <!--          TODO FOR BOUNTY 30.05, DELETE AFTER-->
           <base-btn
             data-selector="TO-RAISE-VIEWS"
-            @click="toRaisedViews()"
+            @click="ComingSoon"
           >
             {{ $t('meta.raiseViews') }}
           </base-btn>
+          <!--          <base-btn-->
+          <!--            data-selector="TO-RAISE-VIEWS"-->
+          <!--            @click="toRaisedViews()"-->
+          <!--          >-->
+          <!--            {{ $t('meta.raiseViews') }}-->
+          <!--          </base-btn>-->
         </div>
         <div
           v-else-if="mainUser.role === UserRole.EMPLOYER && userData.role === UserRole.WORKER"
           class="contact__btn"
         >
+          <!--          TODO FOR BOUNTY 30.05, DELETE AFTER-->
           <base-btn
             mode="approve"
             data-selector="GIVE-A-QUEST"
-            @click="sendInvite()"
+            @click="ComingSoon"
           >
             {{ $t('workers.giveAQuest') }}
           </base-btn>
+          <!--          <base-btn-->
+          <!--            mode="approve"-->
+          <!--            data-selector="GIVE-A-QUEST"-->
+          <!--            @click="sendInvite()"-->
+          <!--          >-->
+          <!--            {{ $t('workers.giveAQuest') }}-->
+          <!--          </base-btn>-->
         </div>
       </div>
     </div>

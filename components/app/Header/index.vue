@@ -20,16 +20,27 @@
         <div
           class="header__links"
         >
-          <nuxt-link
+          <!--          TODO FOR BOUNTY 30.05, DELETE AFTER-->
+          <div
             v-for="(item, i) in headerLinks"
             :key="i"
-            :to="item.path"
             class="header__link"
+            style="cursor: pointer"
             :data-selector="`HEADER-LINKS-${i}`"
-            :exact-active-class="'header__link_active'"
+            @click="ComingSoon"
           >
             {{ item.title }}
-          </nuxt-link>
+          </div>
+          <!--          <nuxt-link-->
+          <!--            v-for="(item, i) in headerLinks"-->
+          <!--            :key="i"-->
+          <!--            :to="item.path"-->
+          <!--            class="header__link"-->
+          <!--            :data-selector="`HEADER-LINKS-${i}`"-->
+          <!--            :exact-active-class="'header__link_active'"-->
+          <!--          >-->
+          <!--            {{ item.title }}-->
+          <!--          </nuxt-link>-->
           <div
             class="header__link header__link_menu"
             :class="{'header__link_active': isShowAdditionalMenu}"
@@ -44,12 +55,14 @@
                 class="menu"
               >
                 <div class="menu__items">
-                  <nuxt-link
+                  <!--          TODO FOR BOUNTY 30.05, DELETE AFTER-->
+                  <div
                     v-for="(item, i) in additionalMenuLinks"
-                    :key="`item-${item.title}`"
-                    :data-selector="`ADDITIONAL-MENU-LINKS-${i}`"
-                    :to="item.path"
+                    :key="i"
                     class="menu__item"
+                    style="cursor: pointer"
+                    :data-selector="`HEADER-LINKS-${i}`"
+                    @click="additionalRedirect(item.path)"
                   >
                     <div class="menu__top">
                       <div class="menu__text menu__text_header">
@@ -62,7 +75,26 @@
                         {{ kitcutDescription(item.desc) }}
                       </div>
                     </div>
-                  </nuxt-link>
+                  </div>
+                  <!--                  <nuxt-link-->
+                  <!--                    v-for="(item, i) in additionalMenuLinks"-->
+                  <!--                    :key="`item-${item.title}`"-->
+                  <!--                    :data-selector="`ADDITIONAL-MENU-LINKS-${i}`"-->
+                  <!--                    :to="item.path"-->
+                  <!--                    class="menu__item"-->
+                  <!--                  >-->
+                  <!--                    <div class="menu__top">-->
+                  <!--                      <div class="menu__text menu__text_header">-->
+                  <!--                        {{ item.title }}-->
+                  <!--                      </div>-->
+                  <!--                      <span class="icon icon-chevron_right" />-->
+                  <!--                    </div>-->
+                  <!--                    <div class="menu__bottom">-->
+                  <!--                      <div class="menu__text menu__text_grey">-->
+                  <!--                        {{ kitcutDescription(item.desc) }}-->
+                  <!--                      </div>-->
+                  <!--                    </div>-->
+                  <!--                  </nuxt-link>-->
                 </div>
               </div>
             </transition>
@@ -104,25 +136,44 @@
             </ul>
           </transition>
         </div>
+        <!--          TODO FOR BOUNTY 30.05, DELETE AFTER-->
         <div
           class="header__button"
           data-selector="ACTION-BTN-GO-TO-MESSAGES"
-          @click="goToMessages()"
+          @click="ComingSoon"
         >
-          <img
-            v-if="unreadMessagesCount"
-            src="~assets/img/ui/message_unread.svg"
-            alt=""
-          >
-          <span
-            v-else
-            class="icon icon-message"
-          />
+          <span class="icon icon-message" />
         </div>
-        <notifications-button
-          data-selector="ACTION-BTN-NOTIF-CLOSE-ALL"
-          @closeAnotherPopUp="closeAll()"
-        />
+        <!--        <div-->
+        <!--          class="header__button"-->
+        <!--          data-selector="ACTION-BTN-GO-TO-MESSAGES"-->
+        <!--          @click="goToMessages()"-->
+        <!--        >-->
+        <!--          <img-->
+        <!--            v-if="unreadMessagesCount"-->
+        <!--            src="~assets/img/ui/message_unread.svg"-->
+        <!--            alt=""-->
+        <!--          >-->
+        <!--          <span-->
+        <!--            v-else-->
+        <!--            class="icon icon-message"-->
+        <!--          />-->
+        <!--        </div>-->
+        <button
+          class="reduced-notifications__button"
+          data-selector="ACTION-BTN-TOGGLE-POP-UP"
+          style="margin-top: 4px"
+          @click="ComingSoon"
+        >
+          <span
+            class="icon-notification_outline"
+            style="color: #8D96A2; font-size: 24px"
+          />
+        </button>
+        <!--        <notifications-button-->
+        <!--          data-selector="ACTION-BTN-NOTIF-CLOSE-ALL"-->
+        <!--          @closeAnotherPopUp="closeAll()"-->
+        <!--        />-->
         <div
           class="ctm-menu__toggle"
           data-selector="ACTION-BTN-TOGGLE-MOBILE-MENU"
@@ -143,7 +194,10 @@
               v-if="isShowProfile"
               class="profile"
             >
-              <div class="profile__header">
+              <div
+                class="profile__header"
+                @click="$router.push(`/profile/${userData.id}`)"
+              >
                 <div class="profile__avatar">
                   <img
                     id="userAvatarDesktop"
@@ -362,10 +416,11 @@ export default {
           title: this.$t('meta.settings'),
           path: Path.SETTINGS,
         },
-        {
-          title: this.$t('meta.disputes'),
-          path: Path.DISPUTES,
-        },
+        // TODO FOR BOUNTY 30.05, DELETE AFTER
+        // {
+        //   title: this.$t('meta.disputes'),
+        //   path: Path.DISPUTES,
+        // },
       ];
     },
     additionalMenuLinks() {
@@ -451,6 +506,11 @@ export default {
     window.removeEventListener('resize', this.userWindowChange);
   },
   methods: {
+    // TODO FOR BOUNTY 30.05, DELETE AFTER
+    additionalRedirect(path) {
+      if ([Path.BRIDGE, Path.MINING].includes(path)) this.$router.push(path);
+      else this.ComingSoon();
+    },
     async chatAction({ data, action }) {
       if (this.$route.name === 'messages') {
         if (action === MessageAction.GROUP_CHAT_CREATE) {
@@ -557,6 +617,10 @@ export default {
       this.closeAnother('mobile');
     },
     toMain() {
+      // TODO FOR BOUNTY 30.05, DELETE AFTER
+      this.$router.push(Path.SETTINGS);
+      return;
+      // eslint-disable-next-line no-unreachable
       if (this.userData.role === 'worker') {
         this.$router.push('/quests');
       }
@@ -565,6 +629,10 @@ export default {
       }
     },
     createNewQuest(platform) {
+      // TODO TODO FOR BOUNTY 30.05, DELETE AFTER
+      this.ComingSoon();
+      return;
+      // eslint-disable-next-line no-unreachable
       this.$router.push('/create-quest');
       if (platform === 'mobile') {
         this.toggleMobileMenu();
@@ -936,7 +1004,6 @@ export default {
   border-radius: 6px;
   min-width: 223px;
   width: 100%;
-  min-height: 235px;
   z-index: 10000000;
 
   &__img {

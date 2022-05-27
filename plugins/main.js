@@ -20,6 +20,12 @@ Vue.mixin({
     };
   },
   methods: {
+    ComingSoon() {
+      this.ShowModal({
+        key: modals.status,
+        title: 'Coming soon',
+      });
+    },
     convertToBech32(prefix, address) {
       return converter(prefix).toBech32(address);
     },
