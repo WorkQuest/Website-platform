@@ -463,7 +463,6 @@ export default {
     },
     async createQuest() {
       // Check balance before send data to backend
-      // eslint-disable-next-line no-unreachable
       const [feeRes] = await Promise.all([
         this.$store.dispatch('quests/getCreateQuestFeeData', {
           cost: this.price,
@@ -487,45 +486,46 @@ export default {
         return;
       }
 
-      const medias = await this.uploadFiles(this.files);
-      const payload = {
-        workplace: WorkplaceIndex[this.workplaceIndex],
-        payPeriod: PayPeriodsIndex[this.payPeriodsIndex],
-        priority: PriorityFilter[this.runtimeIndex + 1].value,
-        typeOfEmployment: TypeOfEmployments[this.employmentIndex],
-        title: this.questTitle,
-        description: this.textarea,
-        price: new BigNumber(this.price).shiftedBy(18).toString(),
-        medias,
-        specializationKeys: this.selectedSpecAndSkills,
-        locationFull: {
-          location: {
-            longitude: this.coordinates.lng,
-            latitude: this.coordinates.lat,
-          },
-          locationPlaceName: this.address,
-        },
-      };
-      const questRes = await this.$store.dispatch('quests/questCreate', payload);
       this.SetLoader(false);
-      if (questRes.ok) {
-        const { nonce } = questRes.result;
-        this.ShowModal({
-          key: modals.transactionReceipt,
-          fields: {
-            from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
-            to: { name: this.$t('meta.toBig'), value: this.ENV.WORKNET_WQ_FACTORY },
-            amount: { name: this.$t('modals.amount'), value: this.depositAmount, symbol: TokenSymbols.WUSD },
-            fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
-          },
-          submitMethod: async () => {
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        fields: {
+          from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
+          to: { name: this.$t('meta.toBig'), value: this.ENV.WORKNET_WQ_FACTORY },
+          amount: { name: this.$t('modals.amount'), value: this.depositAmount, symbol: TokenSymbols.WUSD },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
+        },
+        submitMethod: async () => {
+          this.SetLoader(true);
+          const medias = await this.uploadFiles(this.files);
+          const payload = {
+            workplace: WorkplaceIndex[this.workplaceIndex],
+            payPeriod: PayPeriodsIndex[this.payPeriodsIndex],
+            priority: PriorityFilter[this.runtimeIndex + 1].value,
+            typeOfEmployment: TypeOfEmployments[this.employmentIndex],
+            title: this.questTitle,
+            description: this.textarea,
+            price: new BigNumber(this.price).shiftedBy(18).toString(),
+            medias,
+            specializationKeys: this.selectedSpecAndSkills,
+            locationFull: {
+              location: {
+                longitude: this.coordinates.lng,
+                latitude: this.coordinates.lat,
+              },
+              locationPlaceName: this.address,
+            },
+          };
+          const questRes = await this.$store.dispatch('quests/questCreate', payload);
+          if (questRes.ok) {
             const txRes = await this.$store.dispatch('quests/createQuest', {
               cost: this.price,
               description: this.textarea,
-              nonce,
+              nonce: questRes.result.nonce,
             });
             if (txRes?.ok === false) {
               this.ShowToast(txRes.msg);
+              this.SetLoader(false);
               return;
             }
             await this.clearData();
@@ -536,9 +536,10 @@ export default {
             });
             this.ShowToast(this.$t('toasts.questCreated'), this.$t('toasts.questCreated'));
             await this.$router.push(`/quests/${questRes.result.id}`);
-          },
-        });
-      }
+          }
+          this.SetLoader(false);
+        },
+      });
     },
   },
 };
