@@ -60,7 +60,7 @@
                     >
                       <img
                         class="chat__avatar"
-                        :src="user.avatar ? user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                        :src="user.avatar ? user.avatar.url : $options.images.EMPTY_AVATAR"
                         alt=""
                       >
                     </div>
@@ -152,9 +152,11 @@ import ChatMenu from '~/components/ui/ChatMenu';
 import {
   Path, ChatType, MessageType, MessageAction,
 } from '~/utils/enums';
+import { images } from '~/utils/images';
 
 export default {
   name: 'Messages',
+  images,
   components: {
     ChatMenu,
   },
