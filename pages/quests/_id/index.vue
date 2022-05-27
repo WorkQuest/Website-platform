@@ -556,7 +556,6 @@ export default {
       } = this;
 
       if (status === QuestStatuses.Dispute) return await this.$router.push(`${Path.DISPUTES}/${openDispute.id}`);
-      console.log('checkAvailabilityDisputeTime', this.checkAvailabilityDisputeTime);
       if (!this.checkAvailabilityDisputeTime) {
         return this.ShowModal({
           key: modals.status,
