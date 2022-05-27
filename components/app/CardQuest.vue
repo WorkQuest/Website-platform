@@ -20,7 +20,7 @@
       <div class="card-quest__head">
         <div>
           <item-rating
-            v-if="quest.raiseView.endedAt"
+            v-if="quest.raiseView && quest.raiseView.endedAt"
             :is-quest-rating="true"
             :rating="quest.raiseView.type"
           />
@@ -244,7 +244,7 @@ export default {
   },
   methods: {
     raiseCardStyle() {
-      if (!this.quest.raiseView.endedAt) return '';
+      if (!this.quest.raiseView?.endedAt) return '';
       const res = ['card-quest__raise'];
       res.push({
         0: 'card-quest__raise_gold',
