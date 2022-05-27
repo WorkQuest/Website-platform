@@ -291,7 +291,7 @@
     "loginWith": "Login with",
     "workQuest": "WorkQuest",
     "makingMoneyIsFast": "WorkQuest:\n The World's\n Decentralized\n Job Market",
-    "enderEmailAndPass": "Please enter correct email and password"
+    "enderEmailAndPass": "Please enter correct email"
   },
   "signWorkQuest": {
     "description": "You can use your WorkQuest DAO login and password to sign in",

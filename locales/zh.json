@@ -291,7 +291,7 @@
     "loginWith": "使用以下方式登录",
     "workQuest": "WorkQuest",
     "makingMoneyIsFast": "WorkQuest：\n 全球去中心化\n 就业市场",
-    "enderEmailAndPass": "Please enter correct email and password"
+    "enderEmailAndPass": "Please enter correct email"
   },
   "signWorkQuest": {
     "description": "您可以使用您的 WorkQuest DAO 登录名和密码登录",
