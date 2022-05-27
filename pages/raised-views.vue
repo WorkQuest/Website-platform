@@ -112,8 +112,8 @@ export default {
       if (!this.levelPrices) return;
 
       const levelPrice = this.levelPrices[TariffByIndex[this.level]][this.period];
-      const promotionAddress = process.env.WORKNET_PROMOTION;
-      const tokenAddress = process.env.WORKNET_WUSD_TOKEN;
+      const promotionAddress = this.ENV.WORKNET_PROMOTION;
+      const tokenAddress = this.ENV.WORKNET_WUSD_TOKEN;
 
       new Promise(async (resolve, reject) => {
         this.SetLoader(true);
