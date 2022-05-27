@@ -64,7 +64,7 @@
       </validation-observer>
       <validation-observer
         v-if="step === 2"
-        v-slot="{handleSubmit, passed}"
+        v-slot="{handleSubmit}"
       >
         <div class="content__subtitle">
           {{ $t('modals.enterSMSCode') }}
@@ -105,7 +105,7 @@
           <base-btn
             class="buttons__button"
             data-selector="CONFIRM-2"
-            :disabled="!passed || codeLength"
+            :disabled="codeLength"
             @click="handleSubmit(sendConfirmCode)"
           >
             {{ $t('meta.btns.connectSMSVer') }}
@@ -221,7 +221,7 @@ export default {
     },
     async sendConfirmCode() {
       this.SetLoader(true);
-      if (this.codeLength) {
+      if (this.confirmCode) {
         const phoneResult = await this.$store.dispatch('user/confirmPhone', { confirmCode: this.confirmCode });
         if (phoneResult) {
           await this.$store.dispatch('user/getUserData');
@@ -229,6 +229,7 @@ export default {
             title: this.$t('meta.success'),
             subtitle: this.$t('modals.SMSVerConnected'),
           });
+          this.clearTimer();
         } else {
           this.ShowModal({
             key: modals.status,
@@ -242,10 +243,8 @@ export default {
     },
     async getCodeFromSms() {
       this.SetLoader(true);
-      if (this.phone) {
-        await this.$store.dispatch('user/sendSMSCode');
-        this.startTimer();
-      }
+      await this.$store.dispatch('user/sendSMSCode');
+      this.startTimer();
       this.SetLoader(false);
     },
     async nextStep() {
