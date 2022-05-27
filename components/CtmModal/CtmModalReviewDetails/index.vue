@@ -72,7 +72,8 @@ export default {
   },
   methods: {
     toUserProfile(options) {
-      this.$router.push(`${Path.PROFILE}/${options.userId}`);
+      this.$router.push(`${Path.PROFILE}/${options.assignedWorkerId}`);
+      this.CloseModal();
     },
     initStarClass(star) {
       const { reviewMark } = this.options;
@@ -132,6 +133,11 @@ export default {
     overflow: hidden;
     width: 100%;
     white-space: nowrap;
+    cursor: pointer;
+    transition: .3s;
+    &:hover {
+      color: $blue;
+    }
   }
   &__title {
     @include text-simple;
@@ -142,6 +148,7 @@ export default {
   }
   &__avatar {
     margin-right: 15px;
+    cursor: pointer;
   }
   &__text {
     width: 200px;

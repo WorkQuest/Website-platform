@@ -130,7 +130,7 @@ export default {
         reviewMark: data.mark,
         reviewMessage: data.message,
         questTitle: data.quest.title,
-        userId: data.quest.user.id,
+        assignedWorkerId: data.quest.assignedWorkerId,
       });
     },
   },
