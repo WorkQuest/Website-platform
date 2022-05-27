@@ -189,7 +189,7 @@
         <div class="btn__create">
           <base-btn
             selector="CREATE-A-QUEST"
-            @click="handleSubmit(toCreateQuest)"
+            @click="checkValid(handleSubmit(toCreateQuest))"
           >
             {{ $t('meta.createAQuest') }}
           </base-btn>
@@ -390,13 +390,16 @@ export default {
         console.error('Geo look up is failed', e);
       }
     },
-    async toCreateQuest() {
-      this.SetLoader(true);
+    checkValid(func) {
       if (this.$refs.validate.flags.invalid) {
         this.ScrollToTop();
         this.SetLoader(false);
         return;
       }
+      func();
+    },
+    async toCreateQuest() {
+      this.SetLoader(true);
       const tokenAddress = TokenMap[TokenSymbols.WUSD];
       const spenderAddress = this.ENV.WORKNET_WQ_FACTORY;
       const [allowance] = await Promise.all([
