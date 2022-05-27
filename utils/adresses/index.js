@@ -16,8 +16,8 @@ export const IS_PROD = ['main', 'stage'].includes(process.env.BRANCH);
  * @property BRANCH - ENV
  * @property WQ_EXPLORER
  * @property BASE_URL
- * @property GMAPKEY - ENV,
- * @property SECRET_SUMSUB - ENV
+ * @property GMAPKEY - use process.env on project,
+ * @property SECRET_SUMSUB - use process.env on project
 
  * @property WQ_PROVIDER
  * @property WQ_EXPLORER
@@ -28,7 +28,7 @@ export const IS_PROD = ['main', 'stage'].includes(process.env.BRANCH);
  * @property WS_CHAT_ACTIONS_URL
  * @property WS_WQ_PROVIDER
 
- * @property ETHEREUM_RPC_URL - ENV
+  * @property ETHEREUM_RPC_URL - use process.env on project
  * @property ETHEREUM_BRIDGE
  * @property ETHEREUM_LP_TOKEN
  * @property ETHEREUM_MINING

@@ -1,8 +1,8 @@
 export default {
   BRANCH: process.env.BRANCH,
   BASE_URL: 'https://app.workquest.co/api/',
-  GMAPKEY: process.env.GMAPKEY,
-  SECRET_SUMSUB: process.env.SECRET_SUMSUB,
+  // GMAPKEY: process.env.GMAPKEY,
+  // SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
   WQ_PROVIDER: 'https://dev-node-ams3.workquest.co/',
   WQ_EXPLORER: 'https://dev-explorer.workquest.co/api/v1',
@@ -17,7 +17,7 @@ export default {
   ETHEREUM_LP_TOKEN: '0x6dc948fF7AC50B60ecFd208974aE79f9A444Fe18',
   ETHEREUM_MINING: '0x917dc1a9E858deB0A5bDCb44C7601F655F728DfE',
   ETHEREUM_WQT_TOKEN: '0xe21D8B17CF2550DE4bC80779486BDC68Cb3a379E',
-  ETHEREUM_RPC_URL: process.env.ETHEREUM_RPC_URL,
+  // ETHEREUM_RPC_URL: process.env.ETHEREUM_RPC_URL,
 
   BSC_BRIDGE: '0xd24ae80b2b1d6338d141979C223Ef6EBDD46dF01',
   BSC_LP_TOKEN: '0x64326F459a5a0135FD95B50c07916faF101f9F29',

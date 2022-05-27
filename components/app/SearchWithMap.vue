@@ -139,7 +139,7 @@ export default {
     const isShow = JSON.parse(localStorage.getItem('isShowMap'));
     if (typeof isShow === 'boolean') this.isShowMap = isShow;
     this.geoCode = new GeoCode('google', {
-      key: this.ENV.GMAPKEY,
+      key: process.env.GMAPKEY,
       lang: this.$i18n?.localeProperties?.code || 'en-US',
     });
   },

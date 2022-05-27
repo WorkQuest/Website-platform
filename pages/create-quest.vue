@@ -285,7 +285,7 @@ export default {
     if (!this.isWalletConnected) return;
     this.SetLoader(true);
     this.geoCode = new GeoCode('google', {
-      key: this.ENV.GMAPKEY,
+      key: process.env.GMAPKEY,
       lang: this.$i18n?.localeProperties?.code || 'en-US',
     });
     this.SetLoader(false);

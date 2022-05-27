@@ -1,7 +1,7 @@
 export default {
   BASE_URL: 'https://app.workquest.co/api/',
-  GMAPKEY: process.env.GMAPKEY,
-  SECRET_SUMSUB: process.env.SECRET_SUMSUB,
+  // GMAPKEY: process.env.GMAPKEY,
+  // SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
   WQ_PROVIDER: 'https://dev-node-ams3.workquest.co/',
   WQ_EXPLORER: 'https://dev-explorer.workquest.co/api/v1',
@@ -12,7 +12,7 @@ export default {
   WS_CHAT_ACTIONS_URL: 'wss://app.workquest.co/api/v1/notifications/chat',
   WS_WQ_PROVIDER: 'wss://dev-node-nyc3.workquest.co/tendermint-rpc/websocket',
 
-  ETHEREUM_RPC_URL: process.env.ETHEREUM_RPC_URL,
+  // ETHEREUM_RPC_URL: process.env.ETHEREUM_RPC_URL,
   ETHEREUM_BRIDGE: '0x03883AE9F07D71a1b67b89fD4af83B9A81e3f8C4',
   ETHEREUM_LP_TOKEN: '0x6dc948fF7AC50B60ecFd208974aE79f9A444Fe18',
   ETHEREUM_MINING: '0x917dc1a9E858deB0A5bDCb44C7601F655F728DfE',

@@ -1,6 +1,7 @@
 <template>
   <div
     class="card-quest"
+    :class="raiseCardStyle()"
     :data-selector="`COMPONENT-CARD-QUEST-${questIndex}`"
   >
     <div
@@ -17,20 +18,27 @@
     </div>
     <div class="card-quest__right">
       <div class="card-quest__head">
-        <div
-          class="card-quest__title"
-          :data-selector="`ACTION-BTN-TO-CREATOR-QUEST-PROFILE-${questIndex}`"
-          @click="showProfile(quest.userId)"
-        >
-          <div class="card-quest__avatar avatar">
-            <img
-              class="avatar__image"
-              :alt="`${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}`"
-              :src="quest.user && quest.user.avatar ? quest.user.avatar.url : $options.images.EMPTY_AVATAR"
-            >
-          </div>
-          <div class="card-quest__text card-quest__text_title">
-            {{ `${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}` }}
+        <div>
+          <item-rating
+            v-if="quest.raiseView.endedAt"
+            :is-quest-rating="true"
+            :rating="quest.raiseView.type"
+          />
+          <div
+            class="card-quest__title"
+            :data-selector="`ACTION-BTN-TO-CREATOR-QUEST-PROFILE-${questIndex}`"
+            @click="showProfile(quest.userId)"
+          >
+            <div class="card-quest__avatar avatar">
+              <img
+                class="avatar__image"
+                :alt="`${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}`"
+                :src="quest.user && quest.user.avatar ? quest.user.avatar.url : $options.images.EMPTY_AVATAR"
+              >
+            </div>
+            <div class="card-quest__text card-quest__text_title">
+              {{ `${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}` }}
+            </div>
           </div>
         </div>
         <div class="card-quest__head-right">
@@ -235,6 +243,17 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    raiseCardStyle() {
+      if (!this.quest.raiseView.endedAt) return '';
+      const res = ['card-quest__raise'];
+      res.push({
+        0: 'card-quest__raise_gold',
+        1: 'card-quest__raise_gold',
+        2: 'card-quest__raise_silver',
+        3: 'card-quest__raise_bronze',
+      }[this.quest.raiseView.type]);
+      return res;
+    },
     showDistance(location) {
       if (!location?.latitude && !location?.longitude) return 0;
       return this.getDistanceFromLatLonInKm(location.latitude, location.longitude, this.userLat, this.userLng);
@@ -503,6 +522,19 @@ export default {
   display: grid;
   grid-template-columns: 210px 1fr;
 
+  &__raise {
+    border: 1px solid !important;
+    &_gold {
+      border-color: $yellow100 !important;
+    }
+    &_silver {
+      border-color: $grey200 !important;
+    }
+    &_bronze {
+      border-color: $brown !important;
+    }
+  }
+
   &:hover {
     border: 1px solid $black100;
   }
@@ -702,6 +734,7 @@ export default {
       align-items: flex-start;
       justify-content: flex-end;
       gap: 5px;
+      margin-bottom: auto;
     }
   }
 
@@ -819,6 +852,7 @@ export default {
     font-size: 25px;
     line-height: 130%;
     color: $black800;
+    margin-top: 5px;
   }
 
   &__cards {

@@ -18,7 +18,7 @@ export const Pool = new Map([
       stakingAddress: ENV.ETHEREUM_MINING,
       stakingAbi: WQLiquidityMining,
       icon: images.ETH,
-      provider: ENV.ETHEREUM_RPC_URL,
+      provider: process.env.ETHEREUM_RPC_URL,
       // need only for testnet, in mainnet we can use stakingToken
       lpToken: isProd ? ENV.ETHEREUM_LP_TOKEN : '0xf1fE852fCA1b5a869ef1FE06a2799E1F38B70B84',
       miningAddress: isProd ? ENV.ETHEREUM_MINING : '0x85fCeFe4b3646E74218793e8721275D3448b76F4',
