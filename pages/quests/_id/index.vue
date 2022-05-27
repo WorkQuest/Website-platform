@@ -247,12 +247,6 @@ export default {
       if (!questSpecializations.length) return '';
       return Math.floor(questSpecializations[Math.floor(Math.random() * questSpecializations.length)].path);
     },
-    checkAvailabilityDisputeTime() {
-      const now = this.$moment().valueOf();
-      // TODO fixme Вернуть, нужно для тестов Роме
-      // this.$moment(this.quest.startedAt).add(1, 'day').valueOf();
-      return now >= this.$moment(this.quest.startedAt).add(1, 'm').valueOf();
-    },
   },
   watch: {
     infoDataMode(newVal, oldVal) {
@@ -383,7 +377,6 @@ export default {
         Dispute,
         Created,
         WaitEmployerConfirm,
-        WaitWorker,
       } = InfoModeEmployer;
       let arr = [];
       switch (this.infoDataMode) {
@@ -554,9 +547,13 @@ export default {
           status, openDispute, contractAddress,
         },
       } = this;
+      const currentTime = this.$moment().valueOf();
+      const unlockTime = this.$moment(this.quest.startedAt).add(1, 'm').valueOf();
+      // TODO fixme Вернуть, нужно для тестов Роме
+      // const unlockTime = this.$moment(this.quest.startedAt).add(1, 'day').valueOf();
 
       if (status === QuestStatuses.Dispute) return await this.$router.push(`${Path.DISPUTES}/${openDispute.id}`);
-      if (!this.checkAvailabilityDisputeTime) {
+      if (currentTime >= unlockTime) {
         return this.ShowModal({
           key: modals.status,
           img: images.ERROR,
