@@ -38,6 +38,7 @@ import { ERC20, WQPromotion } from '~/abi';
 
 export default {
   name: 'RaisedViews',
+  middleware: ['worker-role'],
   data() {
     return {
       period: 0,
@@ -93,10 +94,6 @@ export default {
     this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
   async mounted() {
-    if (this.userRole === UserRole.EMPLOYER) {
-      await this.$router.push(Path.MY_QUESTS);
-      return;
-    }
     if (!this.isWalletConnected) return;
     const pricesRes = await this.$store.dispatch('user/fetchRaiseViewPrice', { type: 'usersTariff' });
     this.levelPrices = pricesRes?.result;
