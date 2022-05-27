@@ -547,13 +547,15 @@ export default {
           status, openDispute, contractAddress,
         },
       } = this;
+
+      if (status === QuestStatuses.Dispute) return await this.$router.push(`${Path.DISPUTES}/${openDispute.id}`);
+
       const currentTime = this.$moment().valueOf();
       const unlockTime = this.$moment(this.quest.startedAt).add(1, 'm').valueOf();
       // TODO fixme Вернуть, нужно для тестов Роме
       // const unlockTime = this.$moment(this.quest.startedAt).add(1, 'day').valueOf();
 
-      if (status === QuestStatuses.Dispute) return await this.$router.push(`${Path.DISPUTES}/${openDispute.id}`);
-      if (currentTime >= unlockTime) {
+      if (currentTime < unlockTime) {
         return this.ShowModal({
           key: modals.status,
           img: images.ERROR,
