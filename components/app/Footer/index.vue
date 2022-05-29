@@ -55,14 +55,15 @@
                     {{ $t('footer.company.title') }}
                   </div>
                   <div class="footer__items footer__items_links">
-                    <a
+                    <!--          TODO FOR BOUNTY 30.05, DELETE AFTER-->
+                    <!--                    :href="item.path"-->
+                    <span
                       v-for="(item,key) in companyLinks"
                       :key="key"
-                      :href="item.path"
                       class="footer__text footer__text_grey"
                     >
                       {{ item.title }}
-                    </a>
+                    </span>
                   </div>
                 </div>
                 <div class="footer__item">
@@ -70,16 +71,17 @@
                     {{ $t('footer.legalInfo.title') }}
                   </div>
                   <div class="footer__items footer__items_links">
-                    <a
+                    <!--          TODO FOR BOUNTY 30.05, DELETE AFTER-->
+                    <!--                    target="_blank"-->
+                    <!--                    type="link"-->
+                    <!--                    :href="item.path"-->
+                    <span
                       v-for="(item,key) in legalInfoLinks"
                       :key="key"
-                      target="_blank"
-                      type="link"
-                      :href="item.path"
                       class="footer__text footer__text_grey"
                     >
                       {{ item.title }}
-                    </a>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -89,14 +91,27 @@
                     {{ $t('footer.DeFi.title') }}
                   </div>
                   <div class="footer__items footer__items_links">
-                    <a
-                      v-for="(item,key) in DeFiLinks.firstColumn"
+                    <!--          TODO FOR BOUNTY 30.05, DELETE AFTER-->
+                    <!--          put only <a> tag -->
+                    <div
+                      v-for="(item, key) in DeFiLinks.firstColumn"
                       :key="key"
-                      :href="item.path"
-                      class="footer__text footer__text_grey"
                     >
-                      {{ item.title }}
-                    </a>
+                      <span
+                        v-if="![$options.Path.BRIDGE, $options.Path.MINING].includes(item.path)"
+                        class="footer__text footer__text_grey"
+                      >
+                        {{ item.title }}
+                      </span>
+                      <a
+                        v-else
+                        :key="key"
+                        :href="item.path"
+                        class="footer__text footer__text_grey"
+                      >
+                        {{ item.title }}
+                      </a>
+                    </div>
                   </div>
                 </div>
                 <div class="footer__item">
@@ -169,6 +184,7 @@ import { URLS, LEGAL_INFO, COMPANY } from '~/utils/сonstants/footer';
 
 export default {
   name: 'Footer',
+  Path,
   props: {
     isTopHidden: {
       type: Boolean,
