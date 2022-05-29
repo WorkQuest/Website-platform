@@ -29,6 +29,9 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/img/app/favicon.svg' },
     ],
   },
+  router: {
+    middleware: ['locker'],
+  },
   css: [
     '@/assets/scss/main.scss',
   ],
