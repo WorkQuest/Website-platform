@@ -40,11 +40,13 @@
         </div>
         <div class="ctm-modal__content-field grid__field">
           <label for="message_input">{{ $t('modals.message') }}</label>
-          <textarea
+          <base-textarea
             id="message_input"
             v-model="message_input"
+            rules="required"
             data-selector="MESSAGE"
             class="message__textarea"
+            :name="$t('modals.message')"
             :placeholder="$t('meta.typeYourMessage')"
           />
         </div>
@@ -173,13 +175,8 @@ export default {
 
 .message {
   &__textarea {
-    border-radius: 6px;
-    padding: 11px 20px 11px 15px;
     height: 214px;
     width: 100%;
-    border: 0;
-    background-color: $black0;
-    resize: none;
     &::placeholder {
       color: $black200;
     }
