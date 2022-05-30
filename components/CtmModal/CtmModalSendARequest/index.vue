@@ -17,12 +17,13 @@
                   {{ $t('modals.message') }}
                 </label>
                 <div>
-                  <textarea
+                  <base-textarea
                     id="textarea"
                     v-model="text"
                     data-selector="MESSAGE"
                     class="message__textarea"
                     rules="required"
+                    :name="$t('modals.message')"
                     :placeholder="$t('meta.typeYourMessage')"
                   />
                 </div>
@@ -168,14 +169,8 @@ export default {
   }
 
   &__textarea {
-    border-radius: 6px;
-    padding: 11px 20px 11px 15px;
     height: 214px;
     width: 100%;
-    border: 0;
-    background-color: $black0;
-    resize: none;
-
     &::placeholder {
       color: $black200;
     }
