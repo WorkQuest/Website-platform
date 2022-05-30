@@ -302,8 +302,7 @@ export default {
     },
     goToQuest(ev, questId) {
       ev.stopPropagation();
-
-      this.$router.push(`/quests/${questId}`);
+      this.$router.push(`${Path.QUESTS}/${questId}`);
     },
     async handleSortedChats() {
       const { starred } = this.filter;
@@ -316,8 +315,8 @@ export default {
 
       this.searchValue = '';
 
-      this.$router.push(`?starred=${!starred}`);
-      this.getChats();
+      await this.$router.push(`?starred=${!starred}`);
+      await this.getChats();
     },
     handleChangeStarVal(ev, chat) {
       ev.stopPropagation();
