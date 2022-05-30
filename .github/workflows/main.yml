@@ -2,7 +2,7 @@ name: Node-CI
 
 on:
   push:
-    branches: [ master, stage, develop, TestNetwork ]
+    branches: [ master, stage, develop, testnet ]
 
 jobs:
   deploy-prod:
@@ -120,7 +120,7 @@ jobs:
           TARGET: ${{ secrets.REMOTE_TARGET }}
 
   deploy-TestNetwork:
-    if: github.ref == 'refs/heads/TestNetwork'
+    if: github.ref == 'refs/heads/testnet'
     environment: TestNetwork
     runs-on: ubuntu-latest
 

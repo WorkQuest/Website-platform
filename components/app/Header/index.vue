@@ -143,7 +143,10 @@
               v-if="isShowProfile"
               class="profile"
             >
-              <div class="profile__header">
+              <div
+                class="profile__header"
+                @click="redirectToProfile"
+              >
                 <div class="profile__avatar">
                   <img
                     id="userAvatarDesktop"
@@ -608,6 +611,9 @@ export default {
         default:
           break;
       }
+    },
+    redirectToProfile() {
+      this.$router.push(`${Path.PROFILE}/${this.userData.id}`);
     },
     async logout() {
       await this.$store.dispatch('user/logout');
