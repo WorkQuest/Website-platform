@@ -1,19 +1,20 @@
 import { Path } from '~/utils/enums';
 
 const availablePages = [
-  Path.ROLE,
-  Path.SIGN_UP,
-  Path.SIGN_IN,
-  Path.BRIDGE,
-  Path.MINING,
-  Path.PROFILE,
-  Path.SETTINGS,
+  'role',
+  'sign-up',
+  'sign-in',
+  'bridge',
+  'mining',
+  'mining-id',
+  'profile-id',
+  'settings',
+  'index',
 ];
 
 // eslint-disable-next-line func-names
 export default async function ({ redirect, route }) {
-  console.log(!availablePages.includes(route.path), route.path);
-  if (!availablePages.includes(route.path)) {
+  if (!availablePages.includes(route.name)) {
     redirect(Path.SETTINGS);
   }
   return null;
