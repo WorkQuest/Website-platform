@@ -22,11 +22,20 @@
                 {{ $t('footer.download') }}
               </div>
               <div class="links__big">
+                <!--                <a-->
+                <!--                  v-for="item in marketLinks"-->
+                <!--                  :key="item.key"-->
+                <!--                  class="links_store"-->
+                <!--                  :class="`links__store_${item.key}`"-->
+                <!--                  :href="item.href"-->
+                <!--                />-->
+                <!--          TODO FOR BOUNTY 30.05, DELETE AFTER-->
                 <a
                   v-for="item in marketLinks"
                   :key="item.key"
-                  :class="`links__store links__store_${item.key}`"
-                  :href="item.href"
+                  class="links__store"
+                  :class="`links__store_${item.key}`"
+                  @click="ComingSoon"
                 />
               </div>
             </div>
@@ -55,11 +64,20 @@
                     {{ $t('footer.company.title') }}
                   </div>
                   <div class="footer__items footer__items_links">
+                    <!--                    <a-->
+                    <!--                      v-for="(item,key) in companyLinks"-->
+                    <!--                      :key="key"-->
+                    <!--                      class="footer__text footer__text_grey"-->
+                    <!--                      :href="item.path"-->
+                    <!--                    >-->
+                    <!--                      {{ item.title }}-->
+                    <!--                    </a>-->
+                    <!--          TODO FOR BOUNTY 30.05, DELETE AFTER-->
                     <a
                       v-for="(item,key) in companyLinks"
                       :key="key"
-                      :href="item.path"
                       class="footer__text footer__text_grey"
+                      @click="ComingSoon"
                     >
                       {{ item.title }}
                     </a>
@@ -70,13 +88,22 @@
                     {{ $t('footer.legalInfo.title') }}
                   </div>
                   <div class="footer__items footer__items_links">
+                    <!--                    <a-->
+                    <!--                      v-for="(item,key) in legalInfoLinks"-->
+                    <!--                      :key="key"-->
+                    <!--                      target="_blank"-->
+                    <!--                      type="link"-->
+                    <!--                      :href="item.path"-->
+                    <!--                      class="footer__text footer__text_grey"-->
+                    <!--                    >-->
+                    <!--                      {{ item.title }}-->
+                    <!--                    </a>-->
+                    <!--          TODO FOR BOUNTY 30.05, DELETE AFTER-->
                     <a
                       v-for="(item,key) in legalInfoLinks"
                       :key="key"
-                      target="_blank"
-                      type="link"
-                      :href="item.path"
                       class="footer__text footer__text_grey"
+                      @click="ComingSoon"
                     >
                       {{ item.title }}
                     </a>
@@ -89,11 +116,20 @@
                     {{ $t('footer.DeFi.title') }}
                   </div>
                   <div class="footer__items footer__items_links">
+                    <!--                    <a-->
+                    <!--                      v-for="(item, key) in DeFiLinks.firstColumn"-->
+                    <!--                      :key="key"-->
+                    <!--                      :href="item.path"-->
+                    <!--                      class="footer__text footer__text_grey"-->
+                    <!--                    >-->
+                    <!--                      {{ item.title }}-->
+                    <!--                    </a>-->
+                    <!--          TODO FOR BOUNTY 30.05, DELETE AFTER-->
                     <a
-                      v-for="(item,key) in DeFiLinks.firstColumn"
+                      v-for="(item, key) in DeFiLinks.firstColumn"
                       :key="key"
-                      :href="item.path"
                       class="footer__text footer__text_grey"
+                      @click="ComingSoon"
                     >
                       {{ item.title }}
                     </a>
@@ -102,14 +138,35 @@
                 <div class="footer__item">
                   <div class="footer__text footer__text_black" />
                   <div class="footer__items footer__items_links footer__items_last-column">
-                    <a
-                      v-for="(item,key) in DeFiLinks.secondColumn"
+                    <!--                    <a-->
+                    <!--                      v-for="(item,key) in DeFiLinks.secondColumn"-->
+                    <!--                      :key="key"-->
+                    <!--                      :href="item.path"-->
+                    <!--                      class="footer__text footer__text_grey"-->
+                    <!--                    >-->
+                    <!--                      {{ item.title }}-->
+                    <!--                    </a>-->
+                    <!--          TODO FOR BOUNTY 30.05, DELETE AFTER-->
+                    <div
+                      v-for="(item, key) in DeFiLinks.secondColumn"
                       :key="key"
-                      :href="item.path"
-                      class="footer__text footer__text_grey"
                     >
-                      {{ item.title }}
-                    </a>
+                      <a
+                        v-if="![$options.Path.BRIDGE, $options.Path.MINING].includes(item.path)"
+                        class="footer__text footer__text_grey"
+                        @click="ComingSoon"
+                      >
+                        {{ item.title }}
+                      </a>
+                      <a
+                        v-else
+                        :key="key"
+                        :href="item.path"
+                        class="footer__text footer__text_grey"
+                      >
+                        {{ item.title }}
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -169,6 +226,7 @@ import { URLS, LEGAL_INFO, COMPANY } from '~/utils/сonstants/footer';
 
 export default {
   name: 'Footer',
+  Path,
   props: {
     isTopHidden: {
       type: Boolean,
@@ -317,6 +375,9 @@ export default {
   &__text {
     @include text-simple;
     &_grey {
+      // TODO FOR BOUNTY 30.05, DELETE AFTER (cursor-pointer)
+      cursor: pointer;
+
       font-weight: normal;
       font-size: 16px;
       color: $black500;
@@ -377,6 +438,9 @@ export default {
       justify-content: space-between;
     }
     &__store {
+      // TODO FOR BOUNTY 30.05, DELETE AFTER (cursor-pointer)
+      cursor: pointer;
+
       width: 170px;
       height: 56px;
       &_app-store {
