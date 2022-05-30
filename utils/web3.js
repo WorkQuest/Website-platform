@@ -355,7 +355,8 @@ export const getTransactionFee = async (_abi, _contractAddress, method, data = n
     if (!method) console.error('getTransactionFee undefined method');
     const inst = new web3.eth.Contract(_abi, _contractAddress);
     const gasPrice = await web3.eth.getGasPrice();
-    const gasEstimate = await inst.methods[method].apply(null, data).estimateGas({ from: account.address, value });
+    const address = await web3.eth.getCoinbase();
+    const gasEstimate = await inst.methods[method].apply(null, data).estimateGas({ from: address, value });
     return new BigNumber(gasPrice * gasEstimate).shiftedBy(-18).toString();
   } catch (e) {
     return error(500, 'Get transaction fee error', e);

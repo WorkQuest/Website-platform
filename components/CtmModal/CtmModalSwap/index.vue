@@ -135,6 +135,7 @@ export default {
     },
     async handlerFetchBalance(symbol) {
       const { to, from } = this.options;
+
       await this.fetchBalance({
         symbol,
         toChainIndex: to.index,
