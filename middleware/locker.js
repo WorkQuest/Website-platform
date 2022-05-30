@@ -6,25 +6,14 @@ const availablePages = [
   Path.SIGN_IN,
   Path.BRIDGE,
   Path.MINING,
-  Path.WALLET,
-  Path.QUESTS,
-  Path.CREATE_QUEST,
-  Path.EDIT_QUEST,
-  Path.RAISED_VIEWS,
   Path.PROFILE,
   Path.SETTINGS,
-  Path.MY_QUESTS,
-  Path.WORKERS,
-  Path.NOTIFICATIONS,
-  Path.MESSAGES,
-  Path.SUMSUB,
 ];
 
 // eslint-disable-next-line func-names
-export default async function ({ redirect, route, store }) {
-  console.log(route.path);
+export default async function ({ redirect, route }) {
   if (!availablePages.includes(route.path)) {
-    redirect(Path.WALLET);
+    redirect(Path.SETTINGS);
   }
   return null;
 }
