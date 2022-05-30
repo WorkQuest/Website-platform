@@ -11,9 +11,9 @@
       <div
         v-if="quest.status"
         class="card-quest__state"
-        :class="getStatusClass(quest.status)"
+        :class="questStatusesData[quest.status].class"
       >
-        {{ getStatusCard(quest.status) }}
+        {{ questStatusesData[quest.status].title }}
       </div>
     </div>
     <div class="card-quest__right">
@@ -85,7 +85,7 @@
         class="card-quest__progress progress"
       >
         <div class="progress__title">
-          {{ progressQuestText(quest.status) }}
+          {{ questStatusesData[quest.status].progressText }}
         </div>
         <div class="progress__container container">
           <div
@@ -234,6 +234,65 @@ export default {
     questReward() {
       return new BigNumber(this.quest.price).shiftedBy(-18).toString();
     },
+    questStatusesData() {
+      return {
+        [QuestStatuses.Pending]: {
+          title: '',
+          progressText: '',
+          class: '',
+        },
+        [QuestStatuses.Created]: {
+          title: '',
+          progressText: this.$t('quests.questActive'),
+          class: 'info_hide',
+        },
+        [QuestStatuses.WaitWorker]: {
+          title: this.$t('quests.active'),
+          progressText: this.$t('quests.inProgressBy'),
+          class: 'card-quest__cards_green',
+        },
+        [QuestStatuses.Rejected]: {
+          title: this.$t('quests.rejected'),
+          progressText: '',
+          class: 'card-quest__cards_red',
+        },
+        [QuestStatuses.WaitWorkerOnAssign]: {
+          title: this.$t('meta.invited'),
+          progressText: '',
+          class: 'card-quest__cards_yellow',
+        },
+        [QuestStatuses.WaitEmployerConfirm]: {
+          title: this.$t('quests.pendingConsideration'),
+          progressText: this.$t('quests.questWaitConfirm'),
+          class: 'card-quest__cards_blue',
+        },
+        [QuestStatuses.Dispute]: {
+          title: this.$t('meta.dispute'),
+          progressText: this.$t('quests.questDispute'),
+          class: 'card-quest__cards_red',
+        },
+        [QuestStatuses.Closed]: {
+          title: this.$t('quests.closed'),
+          progressText: this.$t('quests.questClosed'),
+          class: 'card-quest__cards_red',
+        },
+        [QuestStatuses.Done]: {
+          title: this.$t('meta.performed'),
+          progressText: this.$t('quests.finishedBy'),
+          class: 'card-quest__cards_blue',
+        },
+        [QuestStatuses.Responded]: {
+          title: '',
+          progressText: '',
+          class: 'info_bg-grey',
+        },
+        [QuestStatuses.Invited]: {
+          title: '',
+          progressText: '',
+          class: 'info_bg-yellow',
+        },
+      };
+    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -283,18 +342,6 @@ export default {
     clickFavoriteStar(item) {
       this.$emit('clickFavoriteStar', item);
     },
-    progressQuestText(status) {
-      if (!this.userRole) return '';
-      switch (status) {
-        case QuestStatuses.Created: return this.$t('quests.questActive');
-        case QuestStatuses.Closed: return this.$t('quests.questClosed');
-        case QuestStatuses.Dispute: return this.$t('quests.questDispute');
-        case QuestStatuses.WaitWorker: return this.$t('quests.inProgressBy');
-        case QuestStatuses.WaitEmployerConfirm: return this.$t('quests.questWaitConfirm');
-        case QuestStatuses.Done: return this.$t('quests.finishedBy');
-        default: return '';
-      }
-    },
     showProfile(profileId) {
       this.$router.push(`${Path.PROFILE}/${profileId}`);
     },
@@ -314,30 +361,6 @@ export default {
           } else this.CloseModal();
         },
       });
-    },
-    getStatusCard(index) {
-      const questStatus = {
-        [QuestStatuses.Dispute]: this.$t('meta.dispute'),
-        [QuestStatuses.Rejected]: this.$t('quests.rejected'),
-        [QuestStatuses.WaitWorker]: this.$t('quests.active'),
-        [QuestStatuses.Done]: this.$t('meta.performed'),
-        [QuestStatuses.WaitWorkerOnAssign]: this.$t('meta.invited'),
-        [QuestStatuses.WaitEmployerConfirm]: this.$t('quests.requested'),
-        [QuestStatuses.Closed]: this.$t('quests.closed'),
-      };
-      return questStatus[index] || '';
-    },
-    getStatusClass(index) {
-      const questStatus = {
-        [QuestStatuses.Dispute]: 'card-quest__cards-state-dis',
-        [QuestStatuses.Rejected]: 'card-quest__cards-state-clo',
-        [QuestStatuses.WaitWorker]: 'card-quest__cards-state-act',
-        [QuestStatuses.Done]: 'card-quest__cards-state-per',
-        [QuestStatuses.WaitWorkerOnAssign]: 'card-quest__cards-state-inv',
-        [QuestStatuses.WaitEmployerConfirm]: 'card-quest__cards-state-req',
-        [QuestStatuses.Closed]: 'card-quest__cards-state-clo',
-      };
-      return questStatus[index] || '';
     },
     getPriority(index) {
       const priority = {
@@ -856,28 +879,24 @@ export default {
   }
 
   &__cards {
-    &-state-clo {
+    &_red {
       background: $red;
     }
 
-    &-state-dis {
-      background-color: $red;
-    }
-
-    &-state-req {
+    &_gray {
       background: $grey;
       color: $black600 !important;
     }
 
-    &-state-per {
+    &_blue {
       background: $blue;
     }
 
-    &-state-act {
+    &_green{
       background: $green;
     }
 
-    &-state-inv {
+    &_yellow {
       background: $yellow;
     }
   }

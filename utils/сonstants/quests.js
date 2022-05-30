@@ -15,6 +15,10 @@ export const QuestStatuses = {
   WaitWorker: 3,
   WaitEmployerConfirm: 4,
   Done: 5,
+
+  ADChat: 9,
+  Responded: 10,
+  Invited: 11,
 };
 export const InfoModeEmployer = Object.freeze({
   Closed: -3,
