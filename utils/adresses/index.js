@@ -1,16 +1,16 @@
-import * as dev from './dev';
-import * as test from './test';
+import * as develop from './develop';
+import * as testnet from './testnet';
 import * as stage from './stage';
-import * as main from './main';
+import * as master from './master';
 
 const keysByBranch = {
-  main: main.default,
+  master: master.default,
+  testnet: testnet.default,
   stage: stage.default,
-  test: test.default,
-  dev: dev.default,
+  develop: develop.default,
 }[process.env.BRANCH];
 
-export const IS_PROD = ['main', 'stage'].includes(process.env.BRANCH);
+export const IS_PROD = ['master', 'stage'].includes(process.env.BRANCH);
 
 /**
  * @property BRANCH - ENV

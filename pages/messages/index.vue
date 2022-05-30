@@ -55,18 +55,31 @@
                   >
                     <div
                       v-for="user in chat.userMembers.slice(0, 3)"
-                      :key="user.userId"
+                      :key="user.id"
                       class="chat__ava-cont"
                     >
                       <img
                         class="chat__avatar"
-                        :src="user.avatar ? user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                        :src="user.avatar ? user.avatar.url : $options.images.EMPTY_AVATAR"
                         alt=""
+                        @click="isGroupChat(chat.type) ? '' : toUserProfile($event, user.id)"
                       >
                     </div>
                   </div>
-                  <div class="chat__title chat__title_bold">
-                    {{ isGroupChat(chat.type) ? chat.name : (chat.userMembers[0].firstName || '') + ' ' + (chat.userMembers[0].lastName || '') }}
+
+                  <div
+                    v-if="isGroupChat(chat.type)"
+                    class="chat__title chat__title_bold"
+                  >
+                    {{ chat.name }}
+                  </div>
+
+                  <div
+                    v-if="!isGroupChat(chat.type)"
+                    class="chat__title chat__title_bold chat__title_hov"
+                    @click="toUserProfile($event, chat.userMembers[0].id)"
+                  >
+                    {{ (chat.userMembers[0].firstName || '') + ' ' + (chat.userMembers[0].lastName || '') }}
                   </div>
                   <div
                     v-if="isGroupChat(chat.type) || isQuestChat(chat.type)"
@@ -152,9 +165,11 @@ import ChatMenu from '~/components/ui/ChatMenu';
 import {
   Path, ChatType, MessageType, MessageAction,
 } from '~/utils/enums';
+import { images } from '~/utils/images';
 
 export default {
   name: 'Messages',
+  images,
   components: {
     ChatMenu,
   },
@@ -193,6 +208,10 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    toUserProfile(ev, userId) {
+      ev.stopPropagation();
+      this.$router.push(`${Path.PROFILE}/${userId}`);
+    },
     handleSetSearchValue() {
       this.isChatsSearching = true;
 
@@ -283,8 +302,7 @@ export default {
     },
     goToQuest(ev, questId) {
       ev.stopPropagation();
-
-      this.$router.push(`/quests/${questId}`);
+      this.$router.push(`${Path.QUESTS}/${questId}`);
     },
     async handleSortedChats() {
       const { starred } = this.filter;
@@ -297,8 +315,8 @@ export default {
 
       this.searchValue = '';
 
-      this.$router.push(`?starred=${!starred}`);
-      this.getChats();
+      await this.$router.push(`?starred=${!starred}`);
+      await this.getChats();
     },
     handleChangeStarVal(ev, chat) {
       ev.stopPropagation();
@@ -454,6 +472,7 @@ export default {
     flex: none;
     position: absolute;
     object-fit: cover;
+    z-index: 1500;
   }
   &__title {
     font-weight: 400;
@@ -461,6 +480,14 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    z-index: 1500;
+    transition: .3s;
+    color: $black800;
+    &_hov {
+      &:hover {
+        color:$blue
+      }
+    }
 
     &_bold {
       font-weight: 500;
@@ -471,7 +498,7 @@ export default {
     }
 
     &_link {
-      color: #0083C7;
+      color: $blue;
       cursor: pointer;
       overflow: hidden;
       text-overflow: ellipsis;

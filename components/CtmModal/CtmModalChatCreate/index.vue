@@ -34,7 +34,10 @@
             :key="user.id"
             class="participants__contact"
           >
-            <div class="friends__data">
+            <div
+              class="friends__data"
+              @click="toUserProfile(user)"
+            >
               <img
                 class="friends__img"
                 alt=""
@@ -145,6 +148,10 @@ export default {
     else await this.getUsers();
   },
   methods: {
+    toUserProfile(user) {
+      this.$router.push(`${Path.PROFILE}/${user.id}`);
+      this.CloseModal();
+    },
     async addNewMembers() {
       this.members = [];
       const optionsArr = [
@@ -278,9 +285,16 @@ export default {
             border-radius: 50%;
             -o-object-fit: cover;
             object-fit: cover;
+            cursor: pointer;
           }
           &__name {
+            color: $black800;
             font-size: 18px;
+            cursor: pointer;
+            transition: .3s;
+            &:hover {
+              color: $blue;
+            }
           }
         }
       }

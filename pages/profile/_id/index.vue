@@ -83,7 +83,7 @@
           </div>
           <empty-data
             v-else
-            :description="$t('errors.emptyData.emptyQuests')"
+            :description="$tc('errors.emptyData.emptyQuests')"
           />
           <div class="quests__pager pager">
             <div class="pager__block">
