@@ -93,7 +93,8 @@ export default {
           [nonce, toChainIndex, balance, accountAddress, symbol],
           balance,
         );
-        commit('setToken', { amount: new BigNumber(balance).shiftedBy(symbol === TokenSymbols.USDT ? -6 : -18).toNumber() || 0 });
+
+        commit('setToken', { amount: new BigNumber(balance).shiftedBy(symbol === TokenSymbols.USDT ? -6 : -18).minus(+txFee).toNumber() || 0 });
       } else {
         const [decimal, amount] = await Promise.all([
           fetchContractData('decimals', ERC20, tokenAddress),
