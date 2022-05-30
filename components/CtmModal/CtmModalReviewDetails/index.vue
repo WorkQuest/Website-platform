@@ -6,11 +6,14 @@
       <div class="content__review review">
         <div class="review__block">
           <div class="review__header">
-            <div class="review__user-data user-data">
+            <div
+              class="review__user-data user-data"
+              @click="toUserProfile(options)"
+            >
               <div class="user-data__avatar">
                 <img
                   class="user-data__img"
-                  :src="options.userAvatar"
+                  :src="options.userAvatar ? options.userAvatar: $options.images.EMPTY_AVATAR"
                   alt=""
                 >
               </div>
@@ -56,15 +59,22 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { Path } from '~/utils/enums';
+import { images } from '~/utils/images';
 
 export default {
   name: 'ModalReviewDetails',
+  images,
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
   },
   methods: {
+    toUserProfile(options) {
+      this.$router.push(`${Path.PROFILE}/${options.assignedWorkerId}`);
+      this.CloseModal();
+    },
     initStarClass(star) {
       const { reviewMark } = this.options;
       const a = this.Floor(star - reviewMark, 2);
@@ -123,6 +133,11 @@ export default {
     overflow: hidden;
     width: 100%;
     white-space: nowrap;
+    cursor: pointer;
+    transition: .3s;
+    &:hover {
+      color: $blue;
+    }
   }
   &__title {
     @include text-simple;
@@ -133,6 +148,7 @@ export default {
   }
   &__avatar {
     margin-right: 15px;
+    cursor: pointer;
   }
   &__text {
     width: 200px;

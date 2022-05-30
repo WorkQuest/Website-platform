@@ -84,6 +84,8 @@
 
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { images } from '~/utils/images';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'ReviewsTab',
@@ -107,7 +109,7 @@ export default {
   },
   methods: {
     goToProfile(id) {
-      this.$router.push(`/profile/${id}`);
+      this.$router.push(`${Path.PROFILE}/${id}`);
     },
     initStarClass(star, reviewMark) {
       const a = this.Floor(star - reviewMark, 2);
@@ -117,7 +119,7 @@ export default {
       ];
     },
     initAvatar(userData) {
-      return userData?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
+      return userData?.avatar?.url || images.EMPTY_AVATAR;
     },
     showReviewDetails(data) {
       this.ShowModal({
@@ -128,6 +130,7 @@ export default {
         reviewMark: data.mark,
         reviewMessage: data.message,
         questTitle: data.quest.title,
+        assignedWorkerId: data.quest.assignedWorkerId,
       });
     },
   },
