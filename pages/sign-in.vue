@@ -228,7 +228,10 @@ export default {
       if (this.userStatus === UserStatuses.Unconfirmed || this.timer) {
         this.hiddenResend = false;
         if (!this.isStartedTimer) this.disableResend = false;
-      } else this.hiddenResend = true;
+      } else {
+        this.hiddenResend = true;
+        this.disableResend = true;
+      }
     },
   },
   created() {
@@ -333,8 +336,10 @@ export default {
       if (this.step === WalletState.ImportMnemonic) {
         if (this.isLoginWithSocial) {
           this.step = WalletState.Default;
-          this.$store.dispatch('user/logout');
-        } else this.step = !this.userWalletAddress ? WalletState.ImportOrCreate : WalletState.Default;
+        } else {
+          this.step = !this.userWalletAddress ? WalletState.ImportOrCreate : WalletState.Default;
+        }
+        this.$store.dispatch('user/logout');
         return;
       }
       if (this.step === WalletState.SaveMnemonic) {
@@ -573,7 +578,7 @@ export default {
       display: none;
     }
   }
-  &__back-btn {
+  &__back {
     cursor: pointer;
     display: table-cell;
     color: $black700;
