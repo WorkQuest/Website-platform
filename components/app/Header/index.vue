@@ -496,7 +496,8 @@ export default {
   },
   async mounted() {
     await Promise.all([
-      this.$store.dispatch('wallet/fetchCommonTokenInfo'), // Get Symbol & Decimals for worknet tokens
+      // TODO FOR BOUNTY 30.05, DELETE AFTER
+      // this.$store.dispatch('wallet/fetchCommonTokenInfo'), // Get Symbol & Decimals for worknet tokens
       this.initWSListeners(),
     ]);
     this.GetLocation();
