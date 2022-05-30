@@ -22,11 +22,20 @@
                 {{ $t('footer.download') }}
               </div>
               <div class="links__big">
+                <!--                <a-->
+                <!--                  v-for="item in marketLinks"-->
+                <!--                  :key="item.key"-->
+                <!--                  class="links_store"-->
+                <!--                  :class="`links__store_${item.key}`"-->
+                <!--                  :href="item.href"-->
+                <!--                />-->
+                <!--          TODO FOR BOUNTY 30.05, DELETE AFTER-->
                 <a
                   v-for="item in marketLinks"
                   :key="item.key"
-                  :class="`links__store links__store_${item.key}`"
-                  :href="item.href"
+                  class="links__store"
+                  :class="`links__store_${item.key}`"
+                  @click="ComingSoon"
                 />
               </div>
             </div>
@@ -366,7 +375,9 @@ export default {
   &__text {
     @include text-simple;
     &_grey {
+      // TODO FOR BOUNTY 30.05, DELETE AFTER (cursor-pointer)
       cursor: pointer;
+
       font-weight: normal;
       font-size: 16px;
       color: $black500;
@@ -427,6 +438,9 @@ export default {
       justify-content: space-between;
     }
     &__store {
+      // TODO FOR BOUNTY 30.05, DELETE AFTER (cursor-pointer)
+      cursor: pointer;
+
       width: 170px;
       height: 56px;
       &_app-store {
