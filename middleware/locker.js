@@ -12,6 +12,7 @@ const availablePages = [
 
 // eslint-disable-next-line func-names
 export default async function ({ redirect, route }) {
+  console.log(!availablePages.includes(route.path), route.path);
   if (!availablePages.includes(route.path)) {
     redirect(Path.SETTINGS);
   }
