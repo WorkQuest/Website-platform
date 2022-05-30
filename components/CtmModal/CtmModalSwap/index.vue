@@ -134,7 +134,6 @@ export default {
       else this.accountAddress = this.account.address;
     },
     async handlerFetchBalance(symbol) {
-      console.log('handlerFetchBalance');
       const { to, from } = this.options;
 
       await this.fetchBalance({
@@ -146,7 +145,6 @@ export default {
       });
     },
     setMaxValue() {
-      console.log(this.options.from.nativeSymbol === this.tokens[this.tokenId], this.currentToken);
       this.amount = this.currentToken.amount;
     },
     async showSwapInfoModal() {

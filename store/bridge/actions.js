@@ -78,7 +78,6 @@ export default {
   }) {
     try {
       const accountAddress = await getAccountAddress();
-      console.log(isNative);
       if (isNative) {
         const balance = await getNativeBalance();
         const nonce = await getTransactionCount();
@@ -94,8 +93,6 @@ export default {
           [nonce, toChainIndex, balance, accountAddress, symbol],
           balance,
         );
-        console.log(bridgeAddress, nonce, toChainIndex, balance, accountAddress, symbol);
-        console.log(new BigNumber(balance).shiftedBy(symbol === TokenSymbols.USDT ? -6 : -18).minus(+txFee).toNumber(), balance, symbol, txFee);
         commit('setToken', { amount: new BigNumber(balance).shiftedBy(symbol === TokenSymbols.USDT ? -6 : -18).toNumber() || 0 });
       } else {
         const [decimal, amount] = await Promise.all([

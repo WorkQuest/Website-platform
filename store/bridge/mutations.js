@@ -8,7 +8,6 @@ export default {
     state.swapsCount = null;
   },
   setToken(state, payload) {
-    console.log('setToken', payload);
     state.token = { ...payload };
   },
   resetToken(state) {
