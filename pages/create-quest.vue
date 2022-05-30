@@ -390,13 +390,11 @@ export default {
         console.error('Geo look up is failed', e);
       }
     },
-    checkValid(func) {
+    checkValid() {
       if (this.$refs.validate.flags.invalid) {
         this.ScrollToTop();
         this.SetLoader(false);
-        return;
       }
-      func();
     },
     async toCreateQuest() {
       this.SetLoader(true);
