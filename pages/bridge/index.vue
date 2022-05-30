@@ -255,7 +255,8 @@ export default {
       return [
         SwapAddresses.get(Chains.ETHEREUM),
         SwapAddresses.get(Chains.BINANCE),
-        SwapAddresses.get(Chains.WORKNET),
+        // TODO TODO FOR BOUNTY 30.05, DELETE AFTER
+        // SwapAddresses.get(Chains.WORKNET),
       ];
     },
     totalPages() {
