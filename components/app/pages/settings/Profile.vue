@@ -166,24 +166,20 @@
             </template>
           </base-field>
         </div>
-        <ValidationProvider
-          v-slot="{ errors }"
-          tag="div"
+        <div
           class="profile__description"
-          rules="max:650"
         >
-          <textarea
+          <base-textarea
             id="textarea"
             v-model="profile.additionalInfo.description"
+            rules="max:650"
             :placeholder="$t('settings.userDesc')"
             data-selector="DESCRIPTION-FIELD"
+            :name="$t('modals.description')"
             class="profile__description-textarea"
-            :class="{ 'profile__description-textarea_error': errors[0] }"
           />
-          <span class="profile__error">
-            {{ errors[0] }}
-          </span>
-        </ValidationProvider>
+          <span class="profile__error" />
+        </div>
       </div>
       <div
         v-show="userRole === UserRole.WORKER"
@@ -630,20 +626,11 @@ export default {
     display: grid;
     grid-column-start: 1;
     grid-column-end: 3;
-    &::placeholder {
-      color: $black200;
-    }
-  }
-  &__description-textarea {
-    background-color: $black0;
-    resize: none;
-    padding: 10px 10px 0 10px;
-    margin: 0;
-    border-radius: 6px;
     height: 114px;
-    border: 1px solid transparent;
-    &_error {
-      border: 1px solid red
+  }
+  &__description-textarea::v-deep {
+    .ctm-field__textarea {
+      height: 114px;
     }
   }
   &__error {

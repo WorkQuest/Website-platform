@@ -133,16 +133,15 @@
         />
       </div>
       <div class="page__input">
-        <validation-provider rules="required">
-          <base-textarea
-            id="textarea"
-            v-model="textarea"
-            rules="required"
-            data-selector="QUEST-DESC-TEXTAREA"
-            class="page__textarea"
-            :placeholder="$t('quests.questDesc')"
-          />
-        </validation-provider>
+        <base-textarea
+          id="textarea"
+          v-model="textarea"
+          rules="required"
+          data-selector="QUEST-DESC-TEXTAREA"
+          class="page__textarea"
+          :placeholder="$t('quests.questDesc')"
+          :name="$t('modals.description')"
+        />
       </div>
       <validation-provider
         v-slot="{ errors }"
