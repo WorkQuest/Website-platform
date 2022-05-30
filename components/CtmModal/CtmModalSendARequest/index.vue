@@ -14,7 +14,7 @@
                   for="textarea"
                   class="modal__labelMessage"
                 >
-                  {{ $t('modals.message') }}??
+                  {{ $t('modals.message') }}
                 </label>
                 <div>
                   <base-textarea
