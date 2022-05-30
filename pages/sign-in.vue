@@ -564,9 +564,11 @@ export default {
       });
     },
     showSignWorkQuest() {
-      this.ShowModal({
-        key: modals.signWorkQuest,
-      });
+      // TODO FOR BOUNTY 30.05, DELETE AFTER
+      this.ComingSoon();
+      // this.ShowModal({
+      //   key: modals.signWorkQuest,
+      // });
     },
   },
 };
