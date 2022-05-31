@@ -274,7 +274,7 @@ export default {
         const params = quest?.id || id;
         await dispatch('quests/getQuest', params, { root: true });
         if (userRole === UserRole.EMPLOYER && currentUserId && quest?.user?.id === currentUserId) {
-          await dispatch('quests/setResponseToQuest', notification.notification, { root: true });
+          await dispatch('quests/responsesToQuest', params, { root: true });
         }
       }
     }
