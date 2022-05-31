@@ -225,7 +225,7 @@ import {
   WorkplaceIndex,
 } from '~/utils/enums';
 import {
-  QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses, PaidTariff,
+  QuestMethods, EditQuestState, QuestStatuses, PaidTariff,
 } from '~/utils/сonstants/quests';
 import { ERC20, WorkQuest, WQPromotion } from '~/abi';
 import { error, success } from '~/utils/web3';
@@ -386,7 +386,7 @@ export default {
       title, locationPlaceName, price, description, location, typeOfEmployment, id, status, payPeriod, workplace,
     } = this.questData;
 
-    if ([QuestStatuses.Pending, InfoModeEmployer.Dispute, InfoModeEmployer.Done, InfoModeEmployer.Closed].includes(status)) {
+    if ([QuestStatuses.Pending, QuestStatuses.Dispute, QuestStatuses.Done, QuestStatuses.Closed].includes(status)) {
       await this.$router.push(`${Path.QUESTS}/${id}`);
     }
 

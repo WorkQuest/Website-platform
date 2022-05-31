@@ -17,7 +17,7 @@
         </div>
       </div>
       <div
-        v-if="infoDataMode === $options.QuestStatuses.Responded || infoDataMode === $options.QuestStatuses.Rejected"
+        v-if="infoDataMode === $options.QuestStatuses.Responded"
         class="info__right"
       >
         <base-btn
@@ -72,10 +72,6 @@ export default {
     }),
     questStatusesData() {
       return {
-        [QuestStatuses.Pending]: {
-          text: '',
-          class: '',
-        },
         [QuestStatuses.Created]: {
           text: '',
           class: 'info_hide',
@@ -89,12 +85,12 @@ export default {
           class: 'info_bg-green',
         },
         [QuestStatuses.Rejected]: {
-          text: this.$t('quests.requested'),
-          class: 'info_bg-grey',
+          text: this.$t('quests.rejected'),
+          class: 'info_bg-red',
         },
         [QuestStatuses.WaitWorkerOnAssign]: {
-          text: this.$t('quests.pendingConsideration'),
-          class: 'info_bg-blue',
+          text: this.$t('meta.invited'),
+          class: 'info_bg-yellow',
         },
         [QuestStatuses.WaitEmployerConfirm]: {
           text: this.$t('quests.pendingConsideration'),
@@ -109,7 +105,7 @@ export default {
           class: 'info_bg-red',
         },
         [QuestStatuses.Done]: {
-          text: this.$t('meta.performed'),
+          text: this.$t('meta.completed'),
           class: 'info_bg-blue',
         },
         [QuestStatuses.Responded]: {
@@ -123,12 +119,9 @@ export default {
       };
     },
     infoStatusTextColor() {
-      if ([QuestStatuses.Rejected, QuestStatuses.Responded].includes(this.infoDataMode)) return 'info__text_black';
+      if ([QuestStatuses.Responded].includes(this.infoDataMode)) return 'info__text_black';
       return 'info__text_white';
     },
-  },
-  mounted() {
-    console.log(this.respondOnQuest);
   },
   methods: {
     closeMessage() {

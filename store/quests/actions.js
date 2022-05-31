@@ -4,8 +4,6 @@ import { ResponsesType, UserRole } from '~/utils/enums';
 import {
   QuestMethods,
   QuestStatuses,
-  InfoModeWorker,
-  InfoModeEmployer,
 } from '~/utils/сonstants/quests';
 
 import { WQFactory, WorkQuest, WQPromotion } from '~/abi/index';
@@ -84,32 +82,20 @@ export default {
   async getQuest({ commit, rootState }, payload) {
     try {
       const { result } = await this.$axios.$get(`/v1/quest/${payload}`);
-      const { role } = rootState.user.userData;
       let currStat = 0;
       const { status, response } = result;
 
       const questStatuses = Object.entries(QuestStatuses);
-
-      if (role === UserRole.EMPLOYER) {
-        questStatuses.some(([key, val]) => {
-          if (val === status) {
-            currStat = InfoModeEmployer[key];
-            return true;
+      questStatuses.some(([key, val]) => {
+        if (val === status) {
+          if (val === QuestStatuses.Created && response) {
+            key = response.type ? 'Invited' : 'Responded';
           }
-          return false;
-        });
-      } else if (role === UserRole.WORKER) {
-        questStatuses.some(([key, val]) => {
-          if (val === status) {
-            if (val === QuestStatuses.Created && response) {
-              key = response.type ? 'Invited' : 'Responded';
-            }
-            currStat = InfoModeWorker[key];
-            return true;
-          }
-          return false;
-        });
-      }
+          currStat = QuestStatuses[key];
+          return true;
+        }
+        return false;
+      });
 
       commit('setInfoDataMode', currStat);
       commit('setQuest', result);
@@ -122,7 +108,8 @@ export default {
     try {
       const specializations = query.specializations || [];
       if (query.specializations) delete query.specializations;
-      const url = !userId ? `/v1/me/${role}/get-quests` : `/v1/${role}/${userId}/get-quests`;
+      let url = !userId ? `/v1/me/${role}/get-quests` : `/v1/${role}/${userId}/get-quests`;
+      if (query.starred) url = '/v1/get-quests';
       const response = await this.$axios.$post(url, { specializations }, {
         params: { ...query },
       });
@@ -196,16 +183,6 @@ export default {
       return response.result;
     } catch (e) {
       console.error('quests/takeAwayStarOnQuest');
-      return error();
-    }
-  },
-  async getStarredQuests({ commit }) {
-    try {
-      const { data } = await this.$axios.$get('/v1/quests/starred');
-      commit('setStarredQuests', data.result);
-      return data.result;
-    } catch (e) {
-      console.error('quests/getStarredQuests');
       return error();
     }
   },
