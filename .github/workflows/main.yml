@@ -141,17 +141,11 @@ jobs:
           echo BRANCH=${{ secrets.BRANCH }} >> .env
           echo GMAPKEY=${{ secrets.GMAPKEY }} >> .env
           echo SECRET_SUMSUB=${{ secrets.SECRET_SUMSUB }} >> .env
-          echo BASE_URL=${{ secrets.BASE_URL }} >> .env
+
           echo ETHEREUM_RPC_URL=${{ secrets.ETHEREUM_RPC_URL }} >> .env
 
       - name: Run generate static task
         run: npm run generate
-        env:
-          BRANCH: ${{ secrets.BRANCH }}
-          GMAPKEY: ${{ secrets.GMAPKEY }}
-          SECRET_SUMSUB: ${{ secrets.SECRET_SUMSUB }}
-          BASE_URL: ${{ secrets.BASE_URL }}
-          ETHEREUM_RPC_URL: ${{ secrets.ETHEREUM_RPC_URL }}
 
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@v2.2.11
