@@ -121,8 +121,8 @@ jobs:
 
   deploy-TestNetwork:
     if: github.ref == 'refs/heads/testnet'
-    environment: TestNetwork
     runs-on: ubuntu-latest
+    environment: TestNetwork
 
     steps:
       - name: Copy code files to container
