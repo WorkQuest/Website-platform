@@ -2,7 +2,7 @@ name: Node-CI
 
 on:
   push:
-    branches: [ master, stage, develop, TestNetwork ]
+    branches: [ master, stage, develop, testnet ]
 
 jobs:
   deploy-prod:
@@ -55,7 +55,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '12.x'
+          node-version: '14.x'
 
       - name: Install npm dependencies
         run: npm install
@@ -93,7 +93,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '12.x'
+          node-version: '14.x'
 
       - name: Install npm dependencies
         run: npm install
@@ -120,7 +120,7 @@ jobs:
           TARGET: ${{ secrets.REMOTE_TARGET }}
 
   deploy-TestNetwork:
-    if: github.ref == 'refs/heads/TestNetwork'
+    if: github.ref == 'refs/heads/testnet'
     environment: TestNetwork
     runs-on: ubuntu-latest
 
@@ -131,7 +131,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '12.x'
+          node-version: '14.x'
 
       - name: Install npm dependencies
         run: npm install
