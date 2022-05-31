@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     toUserProfile(options) {
-      this.$router.push(`${Path.PROFILE}/${options?.assignedWorkerId || options?.employerId}`);
+      this.$router.push(`${Path.PROFILE}/${this.userRole === UserRole.EMPLOYER ? options?.assignedWorkerId : options?.employerId}`);
       this.CloseModal();
     },
     initStarClass(star) {

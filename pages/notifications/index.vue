@@ -407,11 +407,9 @@ export default {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  &_hov {
-    &:hover {
+  &_hov:hover {
       cursor: pointer;
     }
-  }
 }
 .inviter {
   &__name {
@@ -425,12 +423,10 @@ export default {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    &_hov {
-      &:hover {
+    &_hov:hover {
         cursor: pointer;
         color: $blue;
       }
-    }
   }
   &__company {
     flex: 0 0 15%;
@@ -470,12 +466,10 @@ export default {
     box-orient: vertical;
     -webkit-box-orient: vertical;
     transition: .5s;
-    &_hov {
-      &:hover {
+    &_hov:hover {
         cursor: pointer;
         color: $black300;
       }
-    }
   }
 }
 
