@@ -291,14 +291,15 @@ export default {
     this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
   async mounted() {
-    if (!this.$cookies.get('isWalletAppShowed')) {
-      this.ShowModal({
-        key: modals.downloadApp,
-        title: this.$tc('modals.titles.downloadWallet'),
-        subtitle: this.$t('modals.downWalletOnSmartphone'),
-        app: 'isWalletAppShowed',
-      });
-    }
+    // TODO FOR BOUNTY 30.05, UNCOMMENT AFTER
+    // if (!this.$cookies.get('isWalletAppShowed')) {
+    //   this.ShowModal({
+    //     key: modals.downloadApp,
+    //     title: this.$tc('modals.titles.downloadWallet'),
+    //     subtitle: this.$t('modals.downWalletOnSmartphone'),
+    //     app: 'isWalletAppShowed',
+    //   });
+    // }
     if (!this.isWalletConnected) return;
 
     await this.$store.dispatch('wallet/subscribeWS', {
