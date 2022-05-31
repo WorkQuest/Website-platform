@@ -131,7 +131,7 @@
             />
           </div>
           <div class="page__input">
-            <textarea
+            <base-textarea
               id="textarea"
               v-model="textarea"
               disabled
@@ -1077,15 +1077,9 @@ export default {
   &__textarea {
     @include text-simple;
     border-radius: 6px;
-    padding: 11px 20px 11px 15px;
     height: 214px;
     width: 100%;
     border: 0;
-    background-color: $black0;
-    resize: none;
-    &::placeholder {
-      color: $black300;
-    }
   }
   &__raise {
     margin-top: 20px;

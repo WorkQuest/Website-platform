@@ -15,10 +15,13 @@
         :key="response.worker.id"
         class="worker__container"
       >
-        <div class="worker user-data">
+        <div
+          class="worker user-data"
+          @click="toUserProfile(response)"
+        >
           <img
             class="worker__avatar"
-            :src="response.worker.avatar ? response.worker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+            :src="response.worker.avatar ? response.worker.avatar.url : $options.images.EMPTY_AVATAR"
             alt=""
           >
           <div class="worker__name">
@@ -65,9 +68,12 @@ import { QuestMethods } from '~/utils/сonstants/quests';
 import modals from '~/store/modals/modals';
 import { error, success } from '~/utils/web3';
 import { WorkQuest } from '~/abi';
+import { images } from '~/utils/images';
 
 export default {
   name: 'WorkersList',
+  Path,
+  images,
   props: {
     isInvited: {
       type: Boolean,
@@ -104,6 +110,9 @@ export default {
     this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
   methods: {
+    toUserProfile(response) {
+      this.$router.push(`${Path.PROFILE}/${response.worker.id}`);
+    },
     userActionsArr({ worker }) {
       if (this.questData?.assignedWorker?.id === worker?.id) {
         return this.ddUserActions;
@@ -224,9 +233,16 @@ export default {
     border-radius: 50%;
     width: 40px;
     height: 40px;
+    cursor: pointer;
  }
   &__name {
     @extend .worker;
+    color: $black800;
+    cursor: pointer;
+    transition: .3s;
+    &:hover {
+      color: $blue;
+    }
   }
  &__title {
     font-size: 18px;

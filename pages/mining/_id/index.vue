@@ -446,11 +446,9 @@ export default {
     }),
 
     async toggleConnection() {
-      this.SetLoader(true);
       const { isConnected, chain } = this;
       if (isConnected) await this.disconnectWallet();
       else await this.connectWallet({ chain });
-      this.SetLoader(false);
     },
 
     async checkNetwork(chain) {
