@@ -29,7 +29,7 @@ import { WQBridge, ERC20 } from '~/abi/index';
 export default {
   async fetchMySwaps({ commit }, { recipientAddress, query }) {
     try {
-      const { result } = await this.$axios.$get(`/v1/bridge/recipient/${recipientAddress}/swaps`, {
+      const { result } = await this.$axios.$get(`https://app-ver1.workquest.co/api/v1/bridge/recipient/${recipientAddress}/swaps`, {
         params: { ...query },
       });
       const swaps = result.swaps.map((swap) => ({
