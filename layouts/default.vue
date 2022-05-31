@@ -49,14 +49,15 @@ export default {
     }),
   },
   async mounted() {
-    if (!this.$cookies.get('isWorkQuestsAppShowed') && this.$route.path !== Path.WALLET) {
-      this.ShowModal({
-        key: modals.downloadApp,
-        title: this.$tc('modals.titles.downloadApp'),
-        subtitle: this.$t('modals.downOnSmartphone'),
-        app: 'isWorkQuestsAppShowed',
-      });
-    }
+    // TODO FOR BOUNTY 30.05, UNCOMMENT AFTER
+    // if (!this.$cookies.get('isWorkQuestsAppShowed') && this.$route.path !== Path.WALLET) {
+    //   this.ShowModal({
+    //     key: modals.downloadApp,
+    //     title: this.$tc('modals.titles.downloadApp'),
+    //     subtitle: this.$t('modals.downOnSmartphone'),
+    //     app: 'isWorkQuestsAppShowed',
+    //   });
+    // }
     this.GetLocation();
   },
   methods: {
