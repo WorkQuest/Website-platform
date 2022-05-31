@@ -28,6 +28,7 @@
               <div class="notification__avatar">
                 <img
                   class="avatar"
+                  :class="{'avatar_hov': !notification.params.isLocal}"
                   :src="avatar(notification)"
                   alt=""
                   @click="toUserProfile(notification)"
@@ -36,7 +37,8 @@
               <div class="notification__inviter inviter">
                 <span
                   class="inviter__name"
-                  @click="toUserProfile(notification)"
+                  :class="{'inviter__name_hov': !notification.params.isLocal }"
+                  @click="notification.params.isLocal ? '' : toUserProfile(notification)"
                 >
                   {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
                 </span>
@@ -63,6 +65,8 @@
               <span
                 v-if="notification.params"
                 class="quest__title"
+                :class="{'quest__title_hov': !notification.params.isLocal}"
+                @click="notification.params.isLocal ? '' : goToEvent(notification.params.path)"
               >
                 {{ notification.params.title }}
               </span>
@@ -73,7 +77,7 @@
             <img
               v-if="!notification.params.isLocal"
               class="notification__remove"
-              src="~assets/img/ui/close.svg"
+              :src="$options.images.CLOSE"
               alt="x"
               @click="tryRemoveNotification($event, notification)"
             >
@@ -122,6 +126,7 @@ import { images } from '~/utils/images';
 export default {
   name: 'Notifications',
   UserRole,
+  images,
   data() {
     return {
       filter: {
@@ -402,7 +407,11 @@ export default {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  cursor: pointer;
+  &_hov {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
 .inviter {
   &__name {
@@ -413,12 +422,14 @@ export default {
     color: $black800;
     letter-spacing: 0.02em;
     transition: .5s;
-    cursor: pointer;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    &:hover {
-      color: $blue;
+    &_hov {
+      &:hover {
+        cursor: pointer;
+        color: $blue;
+      }
     }
   }
   &__company {
@@ -458,6 +469,13 @@ export default {
     -webkit-line-clamp: 3;
     box-orient: vertical;
     -webkit-box-orient: vertical;
+    transition: .5s;
+    &_hov {
+      &:hover {
+        cursor: pointer;
+        color: $black300;
+      }
+    }
   }
 }
 
