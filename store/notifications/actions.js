@@ -304,7 +304,6 @@ export default {
         path: `${Path.DISPUTES}/${data.id}`,
       };
     }
-    console.log(notification.notification);
     return notification.notification;
   },
 
