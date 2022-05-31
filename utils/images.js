@@ -14,4 +14,7 @@ export const images = Object.freeze({
   WQ_LOGO: require('assets/img/app/logo.svg'),
   EMAIL: require('assets/img/icons/email.svg'),
   PASSWORD: require('assets/img/icons/password.svg'),
+  CLOSE: require('assets/img/ui/close.svg'),
+  MESSAGE_UNREAD: require('assets/img/ui/message_unread.svg'),
+  NOTIFICATION_OUTLINE_RED_DOT: require('assets/img/ui/notification_outline_red_dot.svg'),
 });

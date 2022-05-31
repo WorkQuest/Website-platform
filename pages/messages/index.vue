@@ -483,8 +483,7 @@ export default {
     z-index: 1500;
     transition: .3s;
     color: $black800;
-    &_hov {
-      &:hover {
+    &_hov:hover {
         color:$blue
       }
     }
@@ -515,7 +514,6 @@ export default {
       white-space: nowrap;
     }
   }
-}
 
 .star {
   &__default {
