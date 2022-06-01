@@ -127,7 +127,7 @@
         <base-field
           v-model="questTitle"
           data-selector="QUEST-TITLE-FIELD"
-          rules="required"
+          rules="required|min:2|max:250"
           :name="$tc('quests.questTitle')"
           :placeholder="$t('quests.questTitle')"
         />
@@ -136,7 +136,7 @@
         <base-textarea
           id="textarea"
           v-model="textarea"
-          rules="required"
+          rules="required|min:6|max:2000"
           data-selector="QUEST-DESC-TEXTAREA"
           class="page__textarea"
           :placeholder="$t('quests.questDesc')"
