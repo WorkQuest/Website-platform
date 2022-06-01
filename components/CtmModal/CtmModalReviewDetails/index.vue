@@ -59,7 +59,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { Path } from '~/utils/enums';
+import { Path, UserRole } from '~/utils/enums';
 import { images } from '~/utils/images';
 
 export default {
@@ -68,11 +68,12 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      userRole: 'user/getUserRole',
     }),
   },
   methods: {
     toUserProfile(options) {
-      this.$router.push(`${Path.PROFILE}/${options.assignedWorkerId}`);
+      this.$router.push(`${Path.PROFILE}/${this.userRole === UserRole.EMPLOYER ? options?.assignedWorkerId : options?.employerId}`);
       this.CloseModal();
     },
     initStarClass(star) {

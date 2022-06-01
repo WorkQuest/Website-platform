@@ -12,7 +12,7 @@
       <template v-if="notificationsCount">
         <img
           v-if="unreadNotifsCount > 0"
-          src="~assets/img/ui/notification_outline_red_dot.svg"
+          :src="$options.images.NOTIFICATION_OUTLINE_RED_DOT"
           alt=""
         >
         <span
@@ -63,7 +63,7 @@
                     class="notify__info"
                   >
                     <a
-                      :href="`/profile/${senderId(notification)}`"
+                      :href="`${$options.Path.PROFILE}/${senderId(notification)}`"
                       class="notify__text notify__text_name"
                     >
                       {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
@@ -120,9 +120,12 @@
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import { images } from '~/utils/images';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'NotificationsButtonContainer',
+  Path,
+  images,
   directives: {
     ClickOutside,
   },

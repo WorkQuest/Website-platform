@@ -131,6 +131,7 @@ export default {
         reviewMessage: data.message,
         questTitle: data.quest.title,
         assignedWorkerId: data.quest.assignedWorkerId,
+        employerId: data.quest.userId,
       });
     },
   },
