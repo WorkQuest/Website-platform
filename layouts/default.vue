@@ -76,7 +76,6 @@ export default {
       }
     },
     CheckMnemonic() {
-      console.log(localStorage.getItem('mnemonic'), this.userWalletAddress);
       const mnemonicInLocalStorage = JSON.parse(localStorage.getItem('mnemonic'));
       const isWalletInMnemonicList = mnemonicInLocalStorage && mnemonicInLocalStorage[this.userWalletAddress];
       if (!isWalletInMnemonicList || !localStorage.getItem('mnemonic')) {
