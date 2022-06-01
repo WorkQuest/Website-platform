@@ -46,9 +46,13 @@ export default {
       userData: 'user/getUserData',
       isChatOpened: 'chat/isChatOpened',
       isShow: 'modals/getIsShow',
+      userWalletAddress: 'user/getUserWalletAddress',
     }),
   },
-  async mounted() {
+  created() {
+    this.CheckMnemonic();
+  },
+  mounted() {
     if (!this.$cookies.get('isWorkQuestsAppShowed') && this.$route.path !== Path.WALLET) {
       this.ShowModal({
         key: modals.downloadApp,
@@ -69,6 +73,17 @@ export default {
       }
       if (this.userData.role === 'employer') {
         this.$router.push('/workers');
+      }
+    },
+    CheckMnemonic() {
+      console.log(localStorage.getItem('mnemonic'), this.userWalletAddress);
+      const mnemonicInLocalStorage = JSON.parse(localStorage.getItem('mnemonic'));
+      const isWalletInMnemonicList = mnemonicInLocalStorage && mnemonicInLocalStorage[this.userWalletAddress];
+      if (!isWalletInMnemonicList || !localStorage.getItem('mnemonic')) {
+        this.$cookies.remove('access');
+        this.$cookies.remove('refresh');
+        this.$cookies.remove('userLogin');
+        this.$router.push(Path.SIGN_IN);
       }
     },
   },
