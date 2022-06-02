@@ -63,6 +63,12 @@
                     >
                       {{ item.title }}
                     </a>
+                    <div
+                      class="footer__text footer__text_grey"
+                      @click="showSupportModal"
+                    >
+                      {{ $t('footer.company.support') }}
+                    </div>
                   </div>
                 </div>
                 <div class="footer__item">
@@ -164,6 +170,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 import { Path } from '~/utils/enums';
 import { URLS, LEGAL_INFO, COMPANY } from '~/utils/сonstants/footer';
 
@@ -194,7 +201,6 @@ export default {
         { title: this.$t('meta.aboutUs'), path: COMPANY.ABOUT_US },
         { title: this.$t('footer.company.leadership'), path: COMPANY.LEADERSHIP },
         { title: this.$t('meta.contactUs'), path: COMPANY.CONTACT_US },
-        { title: this.$t('footer.company.support'), path: COMPANY.SUPPORT },
       ];
     },
     DeFiLinks() {
@@ -235,6 +241,11 @@ export default {
   methods: {
     clickLogoHandler() {
       this.$emit('clickOnLogo');
+    },
+    showSupportModal() {
+      this.ShowModal({
+        key: modals.support,
+      });
     },
   },
 };
@@ -320,6 +331,10 @@ export default {
       font-weight: normal;
       font-size: 16px;
       color: $black500;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
     }
     &_black {
       height: 24px;
