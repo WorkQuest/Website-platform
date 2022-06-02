@@ -97,7 +97,8 @@
       "goToChat": "চ্যাটে যান",
       "view": "দেখুন",
       "add": "যোগ করুন",
-      "take": "Take"
+      "take": "Take",
+      "report": "Report"
     },
     "placeholders": {
       "default": "",

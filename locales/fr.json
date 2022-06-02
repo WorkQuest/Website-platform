@@ -97,7 +97,8 @@
       "goToChat": "Accéder à la messagerie instantanée",
       "view": "Afficher",
       "add": "Ajouter",
-      "take": "Take"
+      "take": "Take",
+      "report": "Report"
     },
     "placeholders": {
       "default": "",

@@ -137,6 +137,18 @@
             </div>
           </div>
         </div>
+        <div
+          v-if="mainUser.id !== userId"
+          class="info-grid__report"
+        >
+          <base-btn
+            data-selector="TO-REPORT-MODAL-VIEW"
+            mode="goToChat"
+            @click="showReportModal"
+          >
+            {{ $t('meta.btns.report') }}
+          </base-btn>
+        </div>
       </div>
     </div>
     <div class="info-grid__right right">
@@ -366,6 +378,17 @@ export default {
           subtitle: this.$t('modals.errors.emptyOpenQuests'),
         });
       }
+    },
+    showReportModal() {
+      console.log('MAIN_USER', this.mainUser);
+      console.log('ANOTHER_USER', this.anotherUserData);
+
+      const { firstName, lastName } = this.anotherUserData;
+
+      this.ShowModal({
+        key: modals.report,
+        userName: `${firstName} ${lastName}`,
+      });
     },
   },
 };

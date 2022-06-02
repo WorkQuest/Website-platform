@@ -97,7 +97,8 @@
       "goToChat": "Kunjungi obrolan",
       "view": "Lihat",
       "add": "Tambahkan",
-      "take": "Take"
+      "take": "Take",
+      "report": "Report"
     },
     "placeholders": {
       "default": "",

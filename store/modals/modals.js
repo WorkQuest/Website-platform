@@ -80,4 +80,5 @@ export default {
   downloadApp: 'downloadApp',
   claimRewards: 'claimRewards',
   buyWQT: 'buyWQT',
+  report: 'report',
 };

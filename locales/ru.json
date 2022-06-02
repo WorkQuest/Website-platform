@@ -97,7 +97,8 @@
       "goToChat": "Перейти в чат",
       "view": "View",
       "add": "Добавить",
-      "take": "Take"
+      "take": "Take",
+      "report": "Пожаловаться"
     },
     "placeholders": {
       "default": "",

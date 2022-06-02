@@ -97,7 +97,8 @@
       "goToChat": "Go to chat",
       "view": "View",
       "add": "Add",
-      "take": "Take"
+      "take": "Take",
+      "report": "Report"
     },
     "placeholders": {
       "default": "",

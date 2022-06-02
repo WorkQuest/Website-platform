@@ -97,7 +97,8 @@
       "goToChat": "转到聊天",
       "view": "查看",
       "add": "添加",
-      "take": "Take"
+      "take": "Take",
+      "report": "Report"
     },
     "placeholders": {
       "default": "",

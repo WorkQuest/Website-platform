@@ -97,7 +97,8 @@
       "goToChat": "الانتقال إلى الدردشة",
       "view": "عرض",
       "add": "إضافة",
-      "take": "Take"
+      "take": "Take",
+      "report": "Report"
     },
     "placeholders": {
       "default": "",
