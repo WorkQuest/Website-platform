@@ -929,7 +929,9 @@
     "caseDeleted": "Case deleted!",
     "caseAdded": "Case added!",
     "caseEdited": "Case edited!",
-    "error": "Ошибка!"
+    "error": "Ошибка!",
+    "sendToSupport": "Сообщение было отправлено в поддерку",
+    "sent": "Отправлено"
   },
   "modals": {
     "titles": {

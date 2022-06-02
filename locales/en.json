@@ -929,7 +929,9 @@
     "caseDeleted": "Case deleted!",
     "caseAdded": "Case added!",
     "caseEdited": "Case edited!",
-    "error": "Error!"
+    "error": "Error!",
+    "sendToSupport": "A message has been sent to support",
+    "sent": "Sent"
   },
   "modals": {
     "titles": {
