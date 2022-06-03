@@ -15,13 +15,9 @@
             :key="i"
             :ref="`${notification.id}|${notification.seen}`"
             v-observe-visibility="(isVisible) =>
-              checkUnseenNotifs(isVisible, {
-                id: notification.id,
-                seen: notification.seen,
-                isLocal: notification.params.isLocal
-              })"
+              checkUnseenNotifs(isVisible, notification)"
             class="notification"
-            :class="{'notification_gray' : !notification.seen}"
+            :class="{'notification_gray' : notification.seen}"
             @click="goToEvent(notification.params ? notification.params.path : '', true)"
           >
             <template v-if="notification.sender">
@@ -134,7 +130,7 @@ export default {
         offset: 0,
       },
       page: 1,
-      notificationIdsForRead: [],
+      notificationIdsForRead: {},
       delayId: null,
       profileFilled: false,
     };
@@ -250,19 +246,20 @@ export default {
       });
       this.SetLoader(false);
     },
-    async checkUnseenNotifs(isVisible, { id, seen, isLocal }) {
-      if (isLocal && isVisible && seen) this.$store.commit('notifications/setUnreadNotifsCount', this.unreadNotifsCount > 0 ? -1 : 0);
-      else if (!isLocal && id && !seen) return;
-      if (!isLocal) {
-        this.$store.commit('notifications/setUnreadNotifsCount', this.unreadNotifsCount > 0 ? -1 : 0);
-        this.notificationIdsForRead.push(id);
-        this.delayId = this.SetDelay(async () => {
-          await this.$store.dispatch('notifications/readNotifications', {
-            notificationIds: this.notificationIdsForRead,
-          });
-          this.notificationIdsForRead = [];
-        }, 3000, this.delayId);
-      }
+    async checkUnseenNotifs(isVisible, notification) {
+      const { id, seen } = notification;
+      const { isLocal } = notification.params;
+
+      if (isLocal || seen) return;
+
+      this.notificationIdsForRead[id] = id;
+
+      this.delayId = this.SetDelay(async () => {
+        await this.$store.dispatch('notifications/readNotifications', {
+          notificationIds: Object.keys(this.notificationIdsForRead),
+        });
+        this.notificationIdsForRead = [];
+      }, 2000, this.delayId);
     },
     async setPage() {
       this.filter.offset = (this.page - 1) * this.filter.limit;

@@ -581,15 +581,15 @@ export default {
 }
 
 .edit-check {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   &__box {
+    cursor: pointer;
     width: 16px;
     height: 16px;
   }
   &__text {
     margin: 0 0 0 10px;
-    user-select: none;
   }
 }
 

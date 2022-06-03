@@ -1301,7 +1301,9 @@
       "title": "বিজ্ঞপ্তি",
       "invite": "আপনাকে quest সম্পন্ন করার আমন্ত্রণ জানাচ্ছে",
       "noNotifications": "No notifications",
-      "workquestInfo": "Workquest info"
+      "workquestInfo": "Workquest info",
+      "respondedQuestEdited": "Quest that you responded to is edited. Please check it once again.",
+      "invitedQuestEdited": "The quest you were invited to has been edited. Please check it once again."
     },
     "menu": {
       "unauthorized": "Not logged",

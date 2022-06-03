@@ -174,6 +174,18 @@ export default {
           title,
           path: `${Path.QUESTS}/${quest?.id || id}`,
         };
+
+        // TODO: проверка на то были ли мы приглашены на квест или мы сами подали на него
+        // ui.notifications.respondedQuestEdited - u responded
+        // ui.notifications.invitedQuestEdited - that u invited
+        if (userRole === UserRole.WORKER) {
+          notification.params.isLocal = true;
+          notification.data = {
+            ...notification.data,
+            message: $nuxt.$t('ui.notifications.respondedQuestEdited'),
+          };
+        }
+
         break;
 
       case NotificationAction.DISPUTE_DECISION:

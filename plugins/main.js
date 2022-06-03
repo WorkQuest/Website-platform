@@ -299,6 +299,15 @@ Vue.mixin({
 
       return toMatch.some((toMatchItem) => navigator.userAgent.match(toMatchItem));
     },
+    /**
+     * Check allowance and making approve
+     * @param tokenAddress - token
+     * @param contractAddress - recipient
+     * @param amount - token amount
+     * @param approveTitle - title for modal
+     * @returns {Promise<unknown>}
+     * @constructor
+     */
     async MakeApprove({
       tokenAddress, contractAddress, amount, approveTitle = this.$t('meta.approve'),
     }) {

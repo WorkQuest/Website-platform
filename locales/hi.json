@@ -1301,7 +1301,9 @@
       "title": "नोटिफिकेशन",
       "invite": "आपको Quest पूरी करने के लिए इन्वाइट कर रहे हैं",
       "noNotifications": "No notifications",
-      "workquestInfo": "Workquest info"
+      "workquestInfo": "Workquest info",
+      "respondedQuestEdited": "Quest that you responded to is edited. Please check it once again.",
+      "invitedQuestEdited": "The quest you were invited to has been edited. Please check it once again."
     },
     "menu": {
       "unauthorized": "Not logged",
