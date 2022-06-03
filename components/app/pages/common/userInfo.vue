@@ -208,7 +208,7 @@
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 import {
-  UserRole, UserRating, Path, RaiseViewStatus,
+  UserRole, UserRating, Path, RaiseViewStatus, EntityType,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 import { images } from '~/utils/images';
@@ -383,11 +383,13 @@ export default {
       console.log('MAIN_USER', this.mainUser);
       console.log('ANOTHER_USER', this.anotherUserData);
 
-      const { firstName, lastName } = this.anotherUserData;
+      const { firstName, lastName, id } = this.anotherUserData;
 
       this.ShowModal({
         key: modals.report,
         userName: `${firstName} ${lastName}`,
+        entityId: id,
+        entityType: EntityType.USER,
       });
     },
   },

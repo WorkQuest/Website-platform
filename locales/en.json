@@ -97,8 +97,7 @@
       "goToChat": "Go to chat",
       "view": "View",
       "add": "Add",
-      "take": "Take",
-      "report": "Report"
+      "take": "Take"
     },
     "placeholders": {
       "default": "",
@@ -2396,5 +2395,14 @@
     "Remote": "Remote work",
     "InOffice": "In-office",
     "Hybrid": "Hybrid workplace"
+  },
+  "report": {
+    "btn": {
+      "send": "Send"
+    },
+    "title": "Title",
+    "titlePlaceholder": "Add a post title",
+    "message": "Message",
+    "messagePlaceholder": "Add message"
   }
 }

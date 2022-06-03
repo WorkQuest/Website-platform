@@ -1,37 +1,40 @@
 <template>
   <ctm-modal-box
-    class="buy-wqt"
+    class="report"
     :title="`Complain about ${options.userName}`"
   >
     <validation-observer
       v-slot="{handleSubmit, invalid}"
-      class="buy-wqt__content content"
+      class="report__content content"
       tag="div"
     >
       <div class="content__field">
         <div class="content__field_label">
-          Subject
+          {{ $t('report.title') }}
         </div>
         <base-field
-          v-model="amount"
-          placeholder="Subject of the post"
-          :name="$t('modals.amount')"
-          :rules="`required`"
+          v-model="title"
+          :placeholder="$t('report.titlePlaceholder')"
+          :name="$t('report.title')"
+          rules="required"
           data-selector="SUBJECT"
           @input="handleInput"
         />
       </div>
       <div class="content__field">
         <div class="content__field_label">
-          Message
+          {{ $t('report.message') }}
         </div>
-        <base-textarea />
+        <base-textarea
+          v-model="message"
+          :placeholder="$t('report.messagePlaceholder')"
+        />
       </div>
       <base-btn
         :disabled="invalid"
         @click="handleSubmit(submit)"
       >
-        {{ $t('meta.btns.send') }}
+        {{ $t('report.btn.send') }}
       </base-btn>
     </validation-observer>
   </ctm-modal-box>
@@ -45,7 +48,8 @@ export default {
   name: 'ModalReport',
   data() {
     return {
-      amount: '',
+      title: '',
+      message: '',
     };
   },
   computed: {
@@ -67,7 +71,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.buy-wqt {
+.report {
   &__content {
     padding: 20px 28px 30px 28px !important;
   }
