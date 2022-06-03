@@ -325,10 +325,9 @@ export default {
   },
 
   async addNotification({ commit, dispatch }, notification) {
-    const [newNotification] = await Promise.all([
-      dispatch('setCurrNotificationObject', { notification }),
-      dispatch('handleUpdateDataFromWS', { notification }),
-    ]);
-    commit('addNotification', newNotification);
+    const buffer = { notification };
+    await dispatch('setCurrNotificationObject', buffer);
+    await dispatch('handleUpdateDataFromWS', buffer);
+    commit('addNotification', buffer);
   },
 };
