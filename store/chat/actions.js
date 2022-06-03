@@ -6,7 +6,7 @@ export default {
       const { result, ok } = await this.$axios.$get('/v1/user/me/chats', { params: chatsFilter });
 
       result.chats.forEach((chat) => {
-        chat.userMembers = chat.userMembers.filter((member) => member.id !== rootState.user.userData.id);
+        // chat.userMembers = chat.userMembers.filter((member) => member.id !== rootState.user.userData.id);
         chat.isUnread = chat.meMember.unreadCountMessages > 0;
       });
       if (chatsFilter.offset) result.chats = rootState.chat.chats.list.concat(result.chats);
@@ -14,6 +14,7 @@ export default {
       commit('setChatsList', result);
       return ok;
     } catch (e) {
+      console.error(e);
       return false;
     }
   },

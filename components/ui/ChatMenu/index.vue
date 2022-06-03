@@ -157,7 +157,7 @@ export default {
     },
     showCreateChatModal() {
       this.closeChatMenu();
-      if (this.chats.count) {
+      if (!this.chats.count) {
         this.ShowModal({
           key: modals.chatCreate,
           isCreating: true,

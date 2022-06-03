@@ -51,20 +51,23 @@
                 <div class="chat__row">
                   <div
                     class="chat__avas-cont"
-                    :class="[{'chat__avas-cont_couple' : chat.userMembers.length === 2 }, {'chat__avas-cont_triplet' : chat.userMembers.length > 2 }]"
+                    :class="[{'chat__avas-cont_couple' : chat.type === 'Quest' || chat.type === 'Private' },
+                             {'chat__avas-cont_triplet' :
+                               chat.type === 'Groupe' }]"
                   >
-                    <div
-                      v-for="user in chat.userMembers.slice(0, 3)"
-                      :key="user.id"
-                      class="chat__ava-cont"
-                    >
-                      <img
-                        class="chat__avatar"
-                        :src="user.avatar ? user.avatar.url : $options.images.EMPTY_AVATAR"
-                        alt=""
-                        @click="isGroupChat(chat.type) ? '' : toUserProfile($event, user.id)"
-                      >
-                    </div>
+                    // TODO
+                    <!--                    <div-->
+                    <!--                      v-for="user in chat.userMembers.slice(0, 3)"-->
+                    <!--                      :key="user.id"-->
+                    <!--                      class="chat__ava-cont"-->
+                    <!--                    >-->
+                    <!--                      <img-->
+                    <!--                        class="chat__avatar"-->
+                    <!--                        :src="user.avatar ? user.avatar.url : $options.images.EMPTY_AVATAR"-->
+                    <!--                        alt=""-->
+                    <!--                        @click="isGroupChat(chat.type) ? '' : toUserProfile($event, user.id)"-->
+                    <!--                      >-->
+                    <!--                    </div>-->
                   </div>
 
                   <div
@@ -79,7 +82,7 @@
                     class="chat__title chat__title_bold chat__title_hov"
                     @click="toUserProfile($event, chat.userMembers[0].id)"
                   >
-                    {{ (chat.userMembers[0].firstName || '') + ' ' + (chat.userMembers[0].lastName || '') }}
+                    <!--                    {{ (chat.userMembers[0].firstName || '') + ' ' + (chat.userMembers[0].lastName || '') }}--> TODO
                   </div>
                   <div
                     v-if="isGroupChat(chat.type) || isQuestChat(chat.type)"
@@ -95,13 +98,15 @@
                 </div>
                 <div class="chat__row">
                   <div
-                    v-if="isItMyLastMessage(chat.lastMessage.sender.id) || isGroupChat(chat.type)"
+                    v-if="isItMyLastMessage(chat.chatData.lastMessage.memberId) || isGroupChat(chat.type)"
                     class="chat__title"
                   >
-                    {{ isItMyLastMessage(chat.lastMessage.sender.id) ? $t('chat.you') : `${chat.lastMessage.sender.firstName || ''} ${chat.lastMessage.sender.lastName || ''}:` }}
+                    {{ isItMyLastMessage(chat.chatData.lastMessage.memberId) ? $t('chat.you') :
+                      `${chat.lastMessage.sender.firstName || ''} ${chat.lastMessage.sender.lastName || ''}:` }}
                   </div>
                   <div class="chat__title chat__title_gray chat__title_ellipsis">
-                    {{ setCurrMessageText(chat.lastMessage, userData.id === chat.lastMessage.sender.id) }}
+                    {{ setCurrMessageText(chat.chatData.lastMessage, userData.id ===
+                      chat.chatData.lastMessage.memberId) }}
                   </div>
                 </div>
               </div>
