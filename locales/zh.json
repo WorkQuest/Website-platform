@@ -1300,7 +1300,8 @@
     "notifications": {
       "title": "通知",
       "invite": "邀请您完成 Quest",
-      "noNotifications": "No notifications"
+      "noNotifications": "No notifications",
+      "workquestInfo": "Workquest info"
     },
     "menu": {
       "unauthorized": "Not logged",

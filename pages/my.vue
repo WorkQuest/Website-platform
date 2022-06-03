@@ -132,9 +132,8 @@ export default {
   methods: {
     async getQuests() {
       const { requestParams } = this;
-
       sessionStorage.setItem('questsListFilter', JSON.stringify(requestParams));
-
+      requestParams.userId = this.userData.id;
       await this.$store.dispatch('quests/getUserQuests', requestParams);
     },
     async updateQuests(item) {

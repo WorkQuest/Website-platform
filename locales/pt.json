@@ -1300,7 +1300,8 @@
     "notifications": {
       "title": "Notificações",
       "invite": "Convida-o para completar a busca",
-      "noNotifications": "No notifications"
+      "noNotifications": "No notifications",
+      "workquestInfo": "Workquest info"
     },
     "menu": {
       "unauthorized": "Not logged",

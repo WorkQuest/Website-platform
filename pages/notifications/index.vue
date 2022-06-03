@@ -120,7 +120,7 @@ import {
   UserRole, Path, SumSubStatuses, TwoFAStatuses,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
-import { LocalNotificationAction } from '~/utils/notifications';
+import { LocalNotificationAction, NotificationAction, notificationCommonFilterAction2 } from '~/utils/notifications';
 import { images } from '~/utils/images';
 
 export default {
@@ -220,6 +220,10 @@ export default {
       return `${this.$t(notification.actionNameKey)}${symbol}`;
     },
     toUserProfile(notification) {
+      if (notification?.params?.path && notification?.notification?.action === NotificationAction.QUEST_STATUS_UPDATED) {
+        this.$router.push(notification.params.path);
+        return;
+      }
       this.$router.push(`${Path.PROFILE}/${notification.sender.id}`);
     },
     tryRemoveNotification(ev, notification) {
@@ -299,7 +303,7 @@ export default {
 }
 
 .info-block {
-  background: #fff;
+  background: $white;
   border-radius: 6px;
 
   &__no-content {
@@ -353,7 +357,7 @@ export default {
   min-width: 0;
 
   &_gray {
-    background: #f7f8fabd;
+    background: $wheat;
   }
 
   &:not(:last-child) {

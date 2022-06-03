@@ -1300,7 +1300,8 @@
     "notifications": {
       "title": "الإشعارات",
       "invite": "يدعوك لإكمال طلب العمل",
-      "noNotifications": "No notifications"
+      "noNotifications": "No notifications",
+      "workquestInfo": "Workquest info"
     },
     "menu": {
       "unauthorized": "Not logged",

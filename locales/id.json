@@ -1300,7 +1300,8 @@
     "notifications": {
       "title": "Pemberitahuan",
       "invite": "Mengundang Anda untuk menyelesaikan quest",
-      "noNotifications": "No notifications"
+      "noNotifications": "No notifications",
+      "workquestInfo": "Workquest info"
     },
     "menu": {
       "unauthorized": "Not logged",

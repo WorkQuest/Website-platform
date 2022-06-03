@@ -153,7 +153,7 @@ export default {
     await dispatch('getUserData');
     await Promise.all([
       dispatch('getStatistic'),
-      dispatch('notifications/getNotifications', '', { root: true }),
+      dispatch('notifications/getNotifications', null, { root: true }),
     ]);
   },
   async logout({ commit }, isValidToken = true) {

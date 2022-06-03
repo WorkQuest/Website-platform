@@ -1300,7 +1300,8 @@
     "notifications": {
       "title": "Уведомления",
       "invite": "Invites you to complete the quest",
-      "noNotifications": "Нет уведомлений"
+      "noNotifications": "Нет уведомлений",
+      "workquestInfo": "Workquest информация"
     },
     "menu": {
       "unauthorized": "Not logged",

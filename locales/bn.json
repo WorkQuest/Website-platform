@@ -1300,7 +1300,8 @@
     "notifications": {
       "title": "বিজ্ঞপ্তি",
       "invite": "আপনাকে quest সম্পন্ন করার আমন্ত্রণ জানাচ্ছে",
-      "noNotifications": "No notifications"
+      "noNotifications": "No notifications",
+      "workquestInfo": "Workquest info"
     },
     "menu": {
       "unauthorized": "Not logged",
