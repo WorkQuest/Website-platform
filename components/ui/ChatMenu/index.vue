@@ -38,12 +38,6 @@
             </div>
             <div
               class="chat-menu__item"
-              @click="changeStarredVal"
-            >
-              {{ $t(`chat.${starred ? 'allChats' : 'starredChats'}`) }}
-            </div>
-            <div
-              class="chat-menu__item"
               @click="showCreateChatModal()"
             >
               {{ $t('chat.createGroupChat') }}
@@ -118,9 +112,6 @@ export default {
     },
   },
   methods: {
-    changeStarredVal() {
-      this.$emit('change');
-    },
     getStarredMessages() {
       this.$router.push(`${Path.MESSAGES}/starred`);
     },
@@ -157,7 +148,7 @@ export default {
     },
     showCreateChatModal() {
       this.closeChatMenu();
-      if (!this.chats.count) {
+      if (this.chats.count) {
         this.ShowModal({
           key: modals.chatCreate,
           isCreating: true,
@@ -249,14 +240,15 @@ export default {
 .invisible{
   opacity: 0;
 }
-@include _991 {
+@include _1400 {
   .chat-menu {
-      width: max-content;
+    width: max-content;
     &-main-position{
       margin: 0 0 0 0;
       top: 55px;
       right:0;
     }
-    }
   }
+}
+
 </style>

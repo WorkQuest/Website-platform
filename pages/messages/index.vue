@@ -9,8 +9,20 @@
           <div>{{ $t('chat.chat') }}</div>
           <chat-menu
             :starred="filter.starred"
-            @change="handleSortedChats"
           />
+        </div>
+        <div
+          class="chat-tab-filters"
+        >
+          <base-btn
+            v-for="(item, i) in filterTabs"
+            :key="i"
+            :data-selector="`${item.name}`"
+            :mode="selectedTab === item.value ? '' : 'outline'"
+            @click="setFilterTabs(item.value)"
+          >
+            {{ item.name }}
+          </base-btn>
         </div>
         <div class="chats-container__search">
           <base-field
@@ -53,36 +65,35 @@
                     class="chat__avas-cont"
                     :class="[{'chat__avas-cont_couple' : chat.type === 'Quest' || chat.type === 'Private' },
                              {'chat__avas-cont_triplet' :
-                               chat.type === 'Groupe' }]"
+                               chat.type === 'Group' }]"
                   >
-                    // TODO
-                    <!--                    <div-->
-                    <!--                      v-for="user in chat.userMembers.slice(0, 3)"-->
-                    <!--                      :key="user.id"-->
-                    <!--                      class="chat__ava-cont"-->
-                    <!--                    >-->
-                    <!--                      <img-->
-                    <!--                        class="chat__avatar"-->
-                    <!--                        :src="user.avatar ? user.avatar.url : $options.images.EMPTY_AVATAR"-->
-                    <!--                        alt=""-->
-                    <!--                        @click="isGroupChat(chat.type) ? '' : toUserProfile($event, user.id)"-->
-                    <!--                      >-->
-                    <!--                    </div>-->
+                    <div
+                      v-for="(user, i) in chat.members.slice(0, 3)"
+                      :key="`avatar-${i}`"
+                      class="chat__ava-cont"
+                    >
+                      <img
+                        class="chat__avatar"
+                        :src="user.avatar ? user.avatar.url : $options.images.EMPTY_AVATAR"
+                        alt=""
+                        @click="isGroupChat(chat.type) ? '' : toUserProfile($event, user.userId)"
+                      >
+                    </div>
                   </div>
 
                   <div
                     v-if="isGroupChat(chat.type)"
                     class="chat__title chat__title_bold"
                   >
-                    {{ chat.name }}
+                    {{ chat.groupChat.name }}
                   </div>
 
                   <div
                     v-if="!isGroupChat(chat.type)"
                     class="chat__title chat__title_bold chat__title_hov"
-                    @click="toUserProfile($event, chat.userMembers[0].id)"
+                    @click="toUserProfile($event, chat.members[0].userId)"
                   >
-                    <!--                    {{ (chat.userMembers[0].firstName || '') + ' ' + (chat.userMembers[0].lastName || '') }}--> TODO
+                    {{ (chat.members[0].user.firstName || '') + ' ' + (chat.members[0].user.lastName || '') }}
                   </div>
                   <div
                     v-if="isGroupChat(chat.type) || isQuestChat(chat.type)"
@@ -93,16 +104,16 @@
                     ]"
                     @click="isQuestChat(chat.type) ? goToQuest($event, chat.questChat.questId) : handleSelChat(chat.id)"
                   >
-                    {{ isGroupChat(chat.type) ? $t('chat.group') : (chat.questChat && chat.questChat.quest.title) }}
+                    {{ isGroupChat(chat.type) ? $t('chat.group') : ` ${$t('chat.quest')} ${(chat.questChat && chat.questChat.quest.title)} ` }}
                   </div>
                 </div>
                 <div class="chat__row">
                   <div
-                    v-if="isItMyLastMessage(chat.chatData.lastMessage.memberId) || isGroupChat(chat.type)"
+                    v-if="isItMyLastMessage(chat.chatData.lastMessage.sender.userId) || isGroupChat(chat.type)"
                     class="chat__title"
                   >
-                    {{ isItMyLastMessage(chat.chatData.lastMessage.memberId) ? $t('chat.you') :
-                      `${chat.lastMessage.sender.firstName || ''} ${chat.lastMessage.sender.lastName || ''}:` }}
+                    {{ isItMyLastMessage(chat.chatData.lastMessage.sender.userId) ? $t('chat.you') :
+                      `${chat.chatData.lastMessage.sender.user.firstName || ''} ${chat.chatData.lastMessage.sender.user.lastName || ''}:` }}
                   </div>
                   <div class="chat__title chat__title_gray chat__title_ellipsis">
                     {{ setCurrMessageText(chat.chatData.lastMessage, userData.id ===
@@ -168,7 +179,7 @@
 import { mapGetters } from 'vuex';
 import ChatMenu from '~/components/ui/ChatMenu';
 import {
-  Path, ChatType, MessageType, MessageAction,
+  Path, ChatType, MessageType, MessageAction, QuestChatStatus,
 } from '~/utils/enums';
 import { images } from '~/utils/images';
 
@@ -183,6 +194,7 @@ export default {
       searchValue: '',
       isChatsSearching: false,
       delayId: null,
+      selectedTab: undefined,
     };
   },
   computed: {
@@ -199,16 +211,31 @@ export default {
 
       return count > list.length;
     },
+    filterTabs() {
+      return [
+        { name: 'All', value: undefined },
+        { name: 'Private', value: ChatType.PRIVATE },
+        { name: 'Groups', value: ChatType.GROUP },
+        { name: 'Active Quests', value: QuestChatStatus.Active },
+        { name: 'Completed Quests', value: QuestChatStatus.Closed },
+        { name: 'Starred', value: 'starred' },
+      ];
+    },
+    isFilterChatQuestStatus() {
+      return +this.selectedTab === QuestChatStatus.Closed || +this.selectedTab === QuestChatStatus.Active;
+    },
   },
   destroyed() {
     this.$store.commit('chat/changeChatsFilterValue', [
       { key: 'offset', val: 0 },
       { key: 'q', val: undefined },
       { key: 'starred', val: false },
+      { key: 'type', val: undefined },
+      { key: 'questChatStatus', val: undefined },
+
     ]);
   },
   async mounted() {
-    await this.$store.commit('chat/changeChatsFilterValue', [{ key: 'starred', val: this.$route.query.starred === 'true' }]);
     await this.getChats();
     this.SetLoader(false);
   },
@@ -309,20 +336,6 @@ export default {
       ev.stopPropagation();
       this.$router.push(`${Path.QUESTS}/${questId}`);
     },
-    async handleSortedChats() {
-      const { starred } = this.filter;
-
-      await this.$store.commit('chat/changeChatsFilterValue', [
-        { key: 'offset', val: 0 },
-        { key: 'q', val: undefined },
-        { key: 'starred', val: !starred },
-      ]);
-
-      this.searchValue = '';
-
-      await this.$router.push(`?starred=${!starred}`);
-      await this.getChats();
-    },
     handleChangeStarVal(ev, chat) {
       ev.stopPropagation();
       const chatId = chat.id;
@@ -337,7 +350,7 @@ export default {
       const openDispute = questChat?.quest.openDispute;
       const disputeStatus = openDispute?.status;
       const disputeId = openDispute?.id;
-      if (type === 'quest') {
+      if (type === ChatType.QUEST) {
         const status = questChat?.quest.status;
         this.$router.push({
           path: `${Path.MESSAGES}/${id}`,
@@ -350,6 +363,29 @@ export default {
           path: `${Path.MESSAGES}/${id}`,
         });
       }
+    },
+    async setFilterTabs(val) {
+      this.selectedTab = val;
+      if (val === 'starred') {
+        await this.$store.commit('chat/changeChatsFilterValue',
+          [
+            { key: 'offset', val: 0 },
+            { key: 'q', val: undefined },
+            { key: 'type', val: undefined },
+            { key: 'starred', val: true },
+          ]);
+      } else {
+        await this.$store.commit('chat/changeChatsFilterValue',
+          [
+            { key: 'offset', val: 0 },
+            { key: 'q', val: undefined },
+            { key: 'type', val: this.isFilterChatQuestStatus ? ChatType.QUEST : val },
+            { key: 'questChatStatus', val: this.isFilterChatQuestStatus ? +val : undefined },
+            { key: 'starred', val: false },
+          ]);
+      }
+      this.searchValue = '';
+      await this.getChats();
     },
   },
 };
@@ -384,6 +420,13 @@ export default {
     position: absolute !important;
     background: transparent !important;
   }
+}
+.chat-tab-filters{
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(6, auto);
+  grid-gap: 10px;
+  margin: 10px 20px 20px;
 }
 
 .chats-container {
@@ -575,6 +618,9 @@ export default {
   }
 }
 @include _991 {
+  .chat-tab-filters{
+    grid-template-columns: repeat(3, auto);
+  }
 }
 
 @include _575 {

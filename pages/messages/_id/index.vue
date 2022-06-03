@@ -209,7 +209,7 @@ export default {
     if (!isChatNotificationShown) this.showNoticeModal();
   },
   destroyed() {
-    this.$store.commit('chat/setIsChatOpened', false);
+    // this.$store.commit('chat/setIsChatOpened', false);
   },
   methods: {
     goToMembersList() {
@@ -349,7 +349,7 @@ export default {
       const payload = {
         config: {
           text,
-          medias,
+          mediaIds: medias,
         },
         chatId,
       };

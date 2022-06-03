@@ -6,7 +6,7 @@ export default {
       const { result, ok } = await this.$axios.$get('/v1/user/me/chats', { params: chatsFilter });
 
       result.chats.forEach((chat) => {
-        // chat.userMembers = chat.userMembers.filter((member) => member.id !== rootState.user.userData.id);
+        chat.members = chat.members.filter((member) => member.id !== rootState.user.userData.id);
         chat.isUnread = chat.meMember.unreadCountMessages > 0;
       });
       if (chatsFilter.offset) result.chats = rootState.chat.chats.list.concat(result.chats);
@@ -24,12 +24,13 @@ export default {
     try {
       const method = `/v1/user/me/chat/${chatId === 'starred' ? 'messages/star' : `${chatId}${Path.MESSAGES}`}`;
       const { result, ok } = await this.$axios.$get(method, config);
+      const { result: { members } } = await this.$axios.$get(`/v1/user/me/chat/group/${chatId}/members`);
       const myId = user.userData.id;
 
       result.messages.forEach((message) => {
-        message.itsMe = message.sender.id === myId;
+        // message.itsMe = message.sender.id === myId;
 
-        if (message.medias.length) {
+        if (message.medias && message.medias.length) {
           message.medias.forEach((file) => {
             // eslint-disable-next-line prefer-destructuring
             file.type = file.contentType.split('/')[0];
@@ -38,8 +39,8 @@ export default {
       });
 
       if (result.chat) {
-        result.chat.members = result.chat.userMembers.filter((member) => member.id !== myId);
-        result.chat.isUnread = result.chat.meMember.unreadCountMessages > 0;
+        result.chat.members = members;
+        // result.chat.isUnread = members.meMember.unreadCountMessages > 0;
       }
 
       if (direction) {
@@ -60,6 +61,7 @@ export default {
       if (isHideFooter) commit('setIsChatOpened', true);
       return result;
     } catch (e) {
+      console.error(e);
       return false;
     }
   },
@@ -109,16 +111,17 @@ export default {
         const message = payload.result;
         message.itsMe = true;
 
-        if (message.medias.length) {
+        if (message.medias && message.medias.length) {
           message.medias.forEach((file) => {
             // eslint-disable-next-line prefer-destructuring
             file.type = file.contentType.split('/')[0];
           });
-        }
+        } else message.medias = [];
         await commit('addMessageToList', message);
       }
       return payload.ok;
     } catch (e) {
+      console.error(e);
       await dispatch('main/showToast', {
         title: 'Error',
         text: e.data.msg,

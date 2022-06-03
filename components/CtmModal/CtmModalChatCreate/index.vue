@@ -213,9 +213,9 @@ export default {
         name, memberUserIds, chatId, options: { isCreating, isAdding },
       } = this;
       if (isCreating) {
-        const config = { name, memberUserIds };
+        const config = { name, userIds: memberUserIds };
         const { ok, result } = await this.$store.dispatch('chat/handleCreateGroupChat', config);
-        if (ok) await this.$router.push(`${Path.MESSAGES}/${result.id}`);
+        if (ok) await this.$router.push(`${Path.MESSAGES}/${result.chat.id}`);
       } else if (isAdding && memberUserIds.length) {
         const payload = { config: { userIds: memberUserIds }, chatId };
         this.memberUserIds = [];

@@ -11,6 +11,7 @@ export default {
   setMessagesList(state, {
     messages, count, chat, direction, offset, canLoadToBottom, canLoadToTop,
   }) {
+    console.log(messages, count, chat, direction, offset, canLoadToBottom, canLoadToTop);
     state.messagesFilter[direction ? 'bottomOffset' : 'topOffset'] = offset;
 
     state.messagesFilter.canLoadToBottom = canLoadToBottom;
