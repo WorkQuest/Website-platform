@@ -79,11 +79,7 @@ export default {
           text: this.$t('toasts.sendToSupport'),
         });
       } catch (e) {
-        await this.$store.dispatch('main/showToast', {
-          title: this.$t('toasts.error'),
-          variant: 'warning',
-          text: `${e}`,
-        });
+        console.log(e);
       }
       this.SetLoader(false);
     },
