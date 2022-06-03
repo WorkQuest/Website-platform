@@ -150,8 +150,8 @@ export default {
     }
   },
   async getMainData({ dispatch }) {
+    await dispatch('getUserData');
     await Promise.all([
-      dispatch('getUserData'),
       dispatch('getStatistic'),
       dispatch('notifications/getNotifications', '', { root: true }),
     ]);

@@ -32,7 +32,7 @@
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import modals from '~/store/modals/modals';
-import { Path } from '~/utils/enums';
+import { Path, UserRole } from '~/utils/enums';
 
 export default {
   name: 'DefaultLayout',
@@ -60,15 +60,12 @@ export default {
     this.GetLocation();
   },
   methods: {
-    async getStatistic() {
-      await this.$store.dispatch('user/getStatistic');
-    },
     toMain() {
-      if (this.userData.role === 'worker') {
-        this.$router.push('/quests');
+      if (this.userData.role === UserRole.WORKER) {
+        this.$router.push(Path.QUESTS);
       }
-      if (this.userData.role === 'employer') {
-        this.$router.push('/workers');
+      if (this.userData.role === UserRole.EMPLOYER) {
+        this.$router.push(Path.WORKERS);
       }
     },
   },

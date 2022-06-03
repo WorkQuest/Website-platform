@@ -21,10 +21,8 @@ export default async function ({ app, store }) {
       store.commit('user/setTokens', payload);
     }
 
-    if (userData.id === '') {
-      await store.dispatch('user/getUserData');
-      await store.dispatch('user/getStatistic');
-      await store.dispatch('notifications/getNotifications', { root: true });
+    if (!userData.id) {
+      await store.dispatch('user/getMainData');
     }
   } catch (e) {
     console.error('Middleware guest', e);
