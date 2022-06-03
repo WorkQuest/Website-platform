@@ -79,6 +79,8 @@ export default {
         notification.params.path = Path.SETTINGS;
       } else if (action === LocalNotificationAction.TWOFA) {
         notification.params.path = `${Path.SETTINGS}#2FA`;
+      } else if (action === LocalNotificationAction.QUESTS_SPECS) {
+        notification.params.path = `${Path.QUESTS}`;
       }
       await dispatch('addNotification', notification);
     }
@@ -138,6 +140,7 @@ export default {
   async setCurrNotificationObject({
     getters, rootGetters, dispatch, commit,
   }, notification) {
+    console.log(notification);
     const { data, action } = notification.notification;
     const {
       id, title, quest, user, worker, comment, employer, fromUser, rootComment,

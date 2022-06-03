@@ -56,6 +56,7 @@ import Advanced from '~/components/app/pages/settings/Advanced.vue';
 import {
   PayPeriodsIndex, RatingStatus, UserRole, WorkplaceIndex,
 } from '~/utils/enums';
+import { LocalNotificationAction } from '~/utils/notifications';
 
 export default {
   name: 'Settings',
@@ -421,6 +422,15 @@ export default {
           website: addInfo.website || null,
         },
       });
+      // Уведомление: предложение по квестам
+      if (!this.isEmployer) {
+        console.log('here?', this.skills.selectedSpecAndSkills);
+        await this.$store.dispatch('notifications/createLocalNotification', {
+          message: this.$t('ui.notifications.viewOffersBySpecs'),
+          actionBtn: this.$t('meta.btns.view'),
+          action: LocalNotificationAction.QUESTS_SPECS,
+        });
+      }
       await this.$store.dispatch('user/getUserData');
     },
 

@@ -33,6 +33,7 @@ export const LocalNotificationAction = {
   PROFILE_FILLED: 'filled',
   RATE_THE_QUEST: 'quest',
   QUEST_DRAFT: 'questDraft',
+  QUESTS_SPECS: 'questsSpecs',
 };
 
 export const notificationsQuestsActions = Object.freeze([
