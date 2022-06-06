@@ -37,6 +37,7 @@
         <base-field
           v-else
           v-model="mnemonic"
+          class="confirm__mnemonic"
           rules="required|mnemonic"
           data-selector="MNEMONIC"
           :placeholder="$t('createWallet.secretPhrase')"
@@ -54,23 +55,6 @@
             />
           </template>
         </base-field>
-        <div
-          v-if="isImportWallet"
-          class="confirm__visibility"
-        >
-          <input
-            id="showMnemonic"
-            v-model="isShowMnemonic"
-            type="checkbox"
-            class="confirm__visibility_box"
-          >
-          <label
-            for="showMnemonic"
-            class="confirm__visibility_label"
-          >
-            {{ $t('createWallet.showSecretPhrase') }}
-          </label>
-        </div>
         <base-btn
           class="confirm__submit"
           data-selector="SUBMIT"
@@ -247,21 +231,10 @@ export default {
   &__submit {
     margin-top: 20px;
   }
-
-  &__visibility {
-    display: flex;
-    align-items: center;
-    &_label {
-      color: $black700;
-      margin: 0 0 0 10px !important;
-      user-select: none;
-    }
-    &_box {
-      width: 20px !important;
-      height: 20px !important;
-      cursor: pointer;
-    }
+  &__mnemonic{
+    margin-top: 20px;
   }
+
 }
 @include _767 {
   .page {
