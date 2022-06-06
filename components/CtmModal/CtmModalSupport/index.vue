@@ -13,19 +13,19 @@
         :label="$t('modals.email')"
         data-selector="SUPPORT-MODAL-EMAIL"
         rules="email|required|max:50"
-        name="Email"
+        :name="$t('meta.email')"
       />
       <base-field
         v-model="title"
         :label="$t('modals.title')"
         data-selector="SUPPORT-MODAL-TITLE"
         rules="required|max:50"
-        name="Title"
+        :name="$t('meta.title')"
       />
       <base-textarea
         v-model="description"
         :label="$t('modals.description')"
-        name="Description"
+        :name="$t('meta.description')"
         rules="required|max:1000"
       />
       <div class="support__buttons">
@@ -65,22 +65,20 @@ export default {
     }),
     async submit() {
       this.SetLoader(true);
-      try {
-        const payload = {
-          email: this.email,
-          title: this.title,
-          description: this.description,
-        };
-        await this.sendSupportMessage(payload);
-        await this.CloseModal();
-        await this.$store.dispatch('main/showToast', {
+      const payload = {
+        email: this.email,
+        title: this.title,
+        description: this.description,
+      };
+      const r = await this.sendSupportMessage(payload);
+      if (r && r.ok) {
+        this.$store.dispatch('main/showToast', {
           title: this.$t('toasts.sent'),
           variant: 'success',
           text: this.$t('toasts.sendToSupport'),
         });
-      } catch (e) {
-        console.log(e);
       }
+      this.CloseModal();
       this.SetLoader(false);
     },
   },
