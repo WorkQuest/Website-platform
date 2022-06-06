@@ -2398,11 +2398,13 @@
   },
   "report": {
     "btn": {
-      "send": "Send"
+      "report": "Report",
+      "send": "Send report"
     },
     "title": "Title",
     "titlePlaceholder": "Add a post title",
     "message": "Message",
-    "messagePlaceholder": "Add message"
+    "messagePlaceholder": "Add message",
+    "sent": "Report sent"
   }
 }

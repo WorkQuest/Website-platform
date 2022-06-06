@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="report"
-    :title="`Complain about ${options.userName}`"
+    :title="`Complain about ${options.title}`"
   >
     <validation-observer
       v-slot="{handleSubmit, invalid}"
@@ -16,9 +16,8 @@
           v-model="title"
           :placeholder="$t('report.titlePlaceholder')"
           :name="$t('report.title')"
-          rules="required"
+          rules="required|max:255"
           data-selector="SUBJECT"
-          @input="handleInput"
         />
       </div>
       <div class="content__field">
@@ -26,12 +25,13 @@
           {{ $t('report.message') }}
         </div>
         <base-textarea
-          v-model="message"
+          v-model="description"
           :placeholder="$t('report.messagePlaceholder')"
+          rules="required|min:50|max:1000"
         />
       </div>
       <base-btn
-        :disabled="invalid"
+        :disabled="invalid || isDisabledReportBtn"
         @click="handleSubmit(submit)"
       >
         {{ $t('report.btn.send') }}
@@ -42,14 +42,15 @@
 
 <script>
 
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'ModalReport',
   data() {
     return {
       title: '',
-      message: '',
+      description: '',
+      isDisabledReportBtn: false,
     };
   },
   computed: {
@@ -57,14 +58,29 @@ export default {
       options: 'modals/getOptions',
     }),
   },
-  watch: {
-  },
   methods: {
-    submit() {
-      console.log('Submit');
-    },
-    handleInput() {
-      console.log('Handle Input');
+    ...mapActions({
+      sendReport: 'user/sendReport',
+    }),
+    async submit() {
+      this.isDisabledReportBtn = true;
+      const resultOk = await this.sendReport({
+        entityType: this.options.entityType,
+        entityId: this.options.entityId,
+        title: this.title,
+        description: this.description,
+        mediaIds: [],
+      });
+      if (resultOk) {
+        await this.$store.dispatch('main/showToast', {
+          title: this.$t('report.sent'),
+          variant: 'success',
+          text: this.$t('report.sent'),
+        });
+        this.CloseModal();
+      } else {
+        this.isDisabledReportBtn = false;
+      }
     },
   },
 };

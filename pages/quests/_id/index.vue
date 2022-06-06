@@ -76,6 +76,18 @@
                 </template>
               </base-btn>
             </div>
+            <div
+              v-if="isShowReportBtn"
+              class="worker-data__button"
+            >
+              <base-btn
+                data-selector="TO-REPORT-MODAL-VIEW"
+                mode="goToChat"
+                @click="showReportModal"
+              >
+                {{ $t('report.btn.report') }}
+              </base-btn>
+            </div>
           </div>
           <div class="worker-data__priority">
             <star-rating
@@ -166,6 +178,7 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import {
+  EntityType,
   ExplorerUrl,
   Path, QuestModeReview, questPriority, ResponseStatus, TokenSymbols, UserRole,
 } from '~/utils/enums';
@@ -246,6 +259,9 @@ export default {
       const { questSpecializations } = this.quest;
       if (!questSpecializations.length) return '';
       return Math.floor(questSpecializations[Math.floor(Math.random() * questSpecializations.length)].path);
+    },
+    isShowReportBtn() {
+      return this.quest.userId !== this.userData.id;
     },
   },
   watch: {
@@ -820,6 +836,15 @@ export default {
         okBtnTitle: this.$t('meta.btns.ok'),
         isNotClose: true,
         okBtnFunc: () => this.showReviewModal(0, this.quest.id),
+      });
+    },
+    showReportModal() {
+      const { title, id } = this.quest;
+      this.ShowModal({
+        key: modals.report,
+        title,
+        entityId: id,
+        entityType: EntityType.QUEST,
       });
     },
   },

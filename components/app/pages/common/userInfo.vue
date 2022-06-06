@@ -146,7 +146,7 @@
             mode="goToChat"
             @click="showReportModal"
           >
-            {{ $t('meta.btns.report') }}
+            {{ $t('report.btn.report') }}
           </base-btn>
         </div>
       </div>
@@ -380,14 +380,11 @@ export default {
       }
     },
     showReportModal() {
-      console.log('MAIN_USER', this.mainUser);
-      console.log('ANOTHER_USER', this.anotherUserData);
-
       const { firstName, lastName, id } = this.anotherUserData;
 
       this.ShowModal({
         key: modals.report,
-        userName: `${firstName} ${lastName}`,
+        title: `${firstName} ${lastName}`,
         entityId: id,
         entityType: EntityType.USER,
       });
