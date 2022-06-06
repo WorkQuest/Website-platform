@@ -6,7 +6,6 @@ export default {
       const { result, ok } = await this.$axios.$get('/v1/user/me/chats', { params: chatsFilter });
 
       result.chats.forEach((chat) => {
-        chat.members = chat.members.filter((member) => member.id !== rootState.user.userData.id);
         chat.isUnread = chat.meMember.unreadCountMessages > 0;
       });
       if (chatsFilter.offset) result.chats = rootState.chat.chats.list.concat(result.chats);
@@ -28,8 +27,7 @@ export default {
       const myId = user.userData.id;
 
       result.messages.forEach((message) => {
-        // message.itsMe = message.sender.id === myId;
-
+        message.itsMe = message.sender.user.id === myId;
         if (message.medias && message.medias.length) {
           message.medias.forEach((file) => {
             // eslint-disable-next-line prefer-destructuring

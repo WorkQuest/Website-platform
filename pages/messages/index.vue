@@ -256,9 +256,7 @@ export default {
             { key: 'offset', val: 0 },
           ]);
 
-        this.SetLoader(true);
         await this.getChats();
-        this.SetLoader(false);
       }, 500, this.delayId);
     },
     isItMyLastMessage(senderId) {
@@ -343,7 +341,9 @@ export default {
       this.$store.dispatch(`chat/${chat.star ? 'removeStarForChat' : 'setStarForChat'}`, chatId);
     },
     async getChats() {
+      this.SetLoader(true);
       await this.$store.dispatch('chat/getChatsList');
+      this.SetLoader(false);
     },
     handleSelChat(chat) {
       const { id, type, questChat } = chat;
@@ -463,24 +463,29 @@ export default {
 
 .chat {
   cursor: pointer;
+
   &:not(:last-child) {
     border-bottom: 1px solid #E9EDF2;
   }
+
   &__body {
     padding: 20px 30px;
     display: grid;
     grid-template-columns: 1fr max-content;
     gap: 30px;
   }
+
   &__data {
     display: grid;
     gap: 15px;
   }
+
   &__status {
     display: grid;
     align-content: space-around;
     justify-items: center;
   }
+
   &__unread-dot {
     height: 8px;
     width: 8px;
@@ -488,6 +493,7 @@ export default {
     background-color: #0083C7;
     top: 0;
   }
+
   &__row {
     display: grid;
     grid-auto-flow: column;
@@ -495,6 +501,7 @@ export default {
     justify-content: start;
     align-items: center;
   }
+
   &__avas-cont {
     display: flex;
     flex-wrap: wrap;
@@ -510,9 +517,11 @@ export default {
       width: 93px;
     }
   }
+
   &__ava-cont {
     width: 25px;
   }
+
   &__avatar {
     width: 43px;
     height: 43px;
@@ -522,6 +531,7 @@ export default {
     object-fit: cover;
     z-index: 1500;
   }
+
   &__title {
     font-weight: 400;
     font-size: 16px;
@@ -531,9 +541,9 @@ export default {
     z-index: 1500;
     transition: .3s;
     color: $black800;
+
     &_hov:hover {
-        color:$blue
-      }
+      color: $blue
     }
 
     &_bold {
@@ -562,6 +572,7 @@ export default {
       white-space: nowrap;
     }
   }
+}
 
 .star {
   &__default {

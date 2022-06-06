@@ -29,13 +29,14 @@
                 class="chat-container__group-chat-cont"
               >
                 <div class="chat-container__group-name">
-                  {{ currChat.name }}
+                  {{ currChat.groupChat && currChat.groupChat.name }}
                 </div>
                 <div
+                  v-if="currChat.members"
                   class="chat-container__quest-link chat-container__quest-link_small"
                   @click="goToMembersList"
                 >
-                  {{ $tc('chat.membersNum', currChat.userMembers.length) }}
+                  {{ $tc('chat.membersNum', currChat.members.length) }}
                 </div>
               </div>
             </template>
@@ -203,13 +204,12 @@ export default {
     this.SetLoader(true);
 
     if (this.currChat?.questChat?.status === QuestChatStatus.Closed) this.isClosedQuestChat = true;
-    this.SetLoader(false);
 
     const isChatNotificationShown = !!localStorage.getItem('isChatNotificationShown');
     if (!isChatNotificationShown) this.showNoticeModal();
   },
   destroyed() {
-    // this.$store.commit('chat/setIsChatOpened', false);
+    this.$store.commit('chat/setIsChatOpened', false);
   },
   methods: {
     goToMembersList() {
@@ -321,7 +321,11 @@ export default {
         messageText, files, chatId,
       } = this;
       this.isDisabledSendMessage = true;
-      if (!messageText && !files.length) return;
+
+      if (!messageText && !files.length) {
+        this.isDisabledSendMessage = false;
+        return;
+      }
 
       const text = messageText;
 
@@ -426,6 +430,7 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 50%;
+    white-space: nowrap;
   }
 
   &__quest-link {
@@ -434,6 +439,7 @@ export default {
     justify-self: center;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
 
     &_small {
       font-size: 14px;

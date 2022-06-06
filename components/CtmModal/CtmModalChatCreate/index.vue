@@ -36,12 +36,13 @@
           >
             <div
               class="friends__data"
-              @click="toUserProfile(user)"
+              @click="toUserProfile(user.userId)"
             >
               <img
                 class="friends__img"
                 alt=""
-                :src="user.avatar && user.avatar.url ? user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                :src="user.avatar && user.avatar.url ? user.avatar.url :
+                require('~/assets/img/app/avatar_empty.png')"
               >
               <span class="friends__name">
                 {{ (user.firstName || '') + ' ' + (user.lastName || '') }}
@@ -144,12 +145,12 @@ export default {
   },
   async mounted() {
     const { options: { isMembersList }, chatMembers } = this;
-    if (isMembersList) this.members = chatMembers;
+    if (isMembersList) this.members = chatMembers.map((mem)=> {return {...mem, ...mem.user}});
     else await this.getUsers();
   },
   methods: {
-    toUserProfile(user) {
-      this.$router.push(`${Path.PROFILE}/${user.id}`);
+    toUserProfile(userId) {
+      this.$router.push(`${Path.PROFILE}/${userId}`);
       this.CloseModal();
     },
     async addNewMembers() {
