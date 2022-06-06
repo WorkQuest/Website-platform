@@ -311,7 +311,7 @@ export default {
   },
   methods: {
     raiseCardStyle() {
-      if (!RaiseViewStatus[this.quest.raiseView.status]) return '';
+      if (!RaiseViewStatus[this.quest.raiseView?.status]) return '';
       const res = ['card-quest__raise'];
       res.push({
         0: 'card-quest__raise_gold',
