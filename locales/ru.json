@@ -97,8 +97,7 @@
       "goToChat": "Перейти в чат",
       "view": "View",
       "add": "Добавить",
-      "take": "Take",
-      "report": "Пожаловаться"
+      "take": "Take"
     },
     "placeholders": {
       "default": "",
@@ -2395,6 +2394,17 @@
     "Remote": "Удаленная работа",
     "InOffice": "В офисе",
     "Hybrid": "Гибридное рабочее место"
+  },
+  "report": {
+    "btn": {
+      "report": "Жалоба",
+      "send": "Отправить жалобу"
+    },
+    "title": "Заголовок",
+    "titlePlaceholder": "Добавьте заголовок",
+    "message": "Сообщение",
+    "messagePlaceholder": "Добавьте сообщение",
+    "sent": "Отправить"
   }
 }
 

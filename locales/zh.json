@@ -97,8 +97,7 @@
       "goToChat": "转到聊天",
       "view": "查看",
       "add": "添加",
-      "take": "Take",
-      "report": "Report"
+      "take": "Take"
     },
     "placeholders": {
       "default": "",
@@ -2396,5 +2395,16 @@
     "Remote": "Remote work",
     "InOffice": "In-office",
     "Hybrid": "Hybrid workplace"
+  },
+  "report": {
+    "btn": {
+      "report": "Report",
+      "send": "Send report"
+    },
+    "title": "Title",
+    "titlePlaceholder": "Add a post title",
+    "message": "Message",
+    "messagePlaceholder": "Add message",
+    "sent": "Report sent"
   }
 }
