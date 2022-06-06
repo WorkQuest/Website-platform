@@ -230,16 +230,17 @@ export default {
           externalBase: DaoUrl,
         };
         break;
-      case notificationsQuestsActions.includes(action):
-        notification.params = {
-          ...notification.params,
-          title: title || quest?.title,
-          path: `${Path.QUESTS}/${quest?.id || id}`,
-        };
-        break;
 
       default:
         break;
+    }
+
+    if (notificationsQuestsActions.includes(action)) {
+      notification.params = {
+        ...notification.params,
+        title: quest?.title || title,
+        path: `${Path.QUESTS}/${quest?.id || id}`,
+      };
     }
 
     /** Set sender if it need */
