@@ -120,6 +120,8 @@
     "claimRewards": "Claim rewards",
     "percent": "Percentagem",
     "deposit": "Deposit",
+    "description": "Description",
+    "email": "Email",
     "withdraw": "Retirar",
     "withdrawal": "Retirar",
     "information": "Informação",
@@ -145,6 +147,7 @@
     "questsSmall": "buscas",
     "questsBig": "Buscas",
     "codeFromSMS": "Código de SMS",
+    "title": "Title",
     "toBig": "Para",
     "toSmall": "para",
     "fromBig": "De",
@@ -929,7 +932,9 @@
     "caseDeleted": "Case deleted!",
     "caseAdded": "Case added!",
     "caseEdited": "Case edited!",
-    "error": "Error!"
+    "error": "Error!",
+    "sendToSupport": "A message has been sent to support",
+    "sent": "Sent"
   },
   "modals": {
     "titles": {
@@ -986,6 +991,7 @@
       "sharing": "Partilha",
       "signWorkQuest": "Rede social WorkQuest",
       "skills": "Skills",
+      "support": "Support",
       "smsVerification": "Verificação de SMS",
       "swapTitle": "Cross-chain exchange",
       "swapInfo": "Swap info",
@@ -1114,6 +1120,7 @@
     "switchOnGoogleAuth": "Ative o Google Authenticator",
     "emailVerificationCode": "Código de verificação de e-mail",
     "emailPlaceholder": "Introduza o código de verificação de e-mail",
+    "email": "Email",
     "googleVerificationCode": "Código de verificação do Google",
     "codePlaceholder": "Introduza o código de verificação do Google",
     "useYourGoogleAuth": "Utilize a sua App Google Authenticator para digitalizar o código QR.",

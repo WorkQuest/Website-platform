@@ -20,7 +20,7 @@
       <div class="card-quest__head">
         <div>
           <item-rating
-            v-if="quest.raiseView && quest.raiseView.endedAt"
+            v-if="quest.raiseView && $options.RaiseViewStatus[quest.raiseView.status]"
             :is-quest-rating="true"
             :rating="quest.raiseView.type"
           />
@@ -187,7 +187,7 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import {
-  questPriority, UserRole, Path, TokenSymbols, QuestModeReview,
+  questPriority, UserRole, Path, TokenSymbols, QuestModeReview, RaiseViewStatus,
 } from '~/utils/enums';
 import { QuestStatuses } from '~/utils/сonstants/quests';
 import modals from '~/store/modals/modals';
@@ -199,6 +199,7 @@ export default {
   UserRole,
   TokenSymbols,
   QuestStatuses,
+  RaiseViewStatus,
   props: {
     disputeId: {
       type: String,
@@ -310,7 +311,7 @@ export default {
   },
   methods: {
     raiseCardStyle() {
-      if (!this.quest.raiseView?.endedAt) return '';
+      if (!RaiseViewStatus[this.quest.raiseView.status]) return '';
       const res = ['card-quest__raise'];
       res.push({
         0: 'card-quest__raise_gold',

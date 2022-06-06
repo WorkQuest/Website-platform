@@ -141,7 +141,7 @@ export default {
     const { data, action } = notification.notification;
     const {
       id, title, quest, user, worker, comment, employer, fromUser, rootComment,
-      assignedWorker, message, toUserId, discussion, problemDescription, openDisputeUser, reason, number, status,
+      assignedWorker, message, toUserId, discussion, problemDescription, openDisputeUser, reason, number,
     } = data;
     const currentUserId = userData.id;
     const userRole = rootGetters['user/getUserRole'];
@@ -225,6 +225,14 @@ export default {
         };
         break;
 
+      case NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST:
+        notification.params = {
+          ...notification.params,
+          title: title || quest?.title,
+          path: `${Path.QUESTS}/${quest?.id || id}`,
+        };
+        break;
+
       case [NotificationAction.NEW_COMMENT_IN_DISCUSSION, NotificationAction.NEW_DISCUSSION_LIKE].includes(action):
         notification.params = {
           ...notification.params,
@@ -237,7 +245,7 @@ export default {
       case [...notificationsQuestsActions, NotificationAction.QUEST_STATUS_UPDATED].includes(action):
         notification.params = {
           ...notification.params,
-          title: quest?.title || title,
+          title: title || quest?.title,
           path: `${Path.QUESTS}/${quest?.id || id}`,
         };
         break;
@@ -274,7 +282,7 @@ export default {
         const params = quest?.id || id;
         await dispatch('quests/getQuest', params, { root: true });
         if (userRole === UserRole.EMPLOYER && currentUserId && quest?.user?.id === currentUserId) {
-          await dispatch('quests/setResponseToQuest', notification.notification, { root: true });
+          await dispatch('quests/responsesToQuest', params, { root: true });
         }
       }
     }

@@ -12,7 +12,7 @@
           @click="toMain()"
         >
           <img
-            src="~assets/img/app/logo.svg"
+            :src="$options.images.WQ_LOGO"
             alt="WorkQuest"
           >
           <span class="header__text">WorkQuest</span>
@@ -111,7 +111,7 @@
         >
           <img
             v-if="unreadMessagesCount"
-            src="~assets/img/ui/message_unread.svg"
+            :src="$options.images.MESSAGE_UNREAD"
             alt=""
           >
           <span
@@ -359,7 +359,7 @@ export default {
       return [
         {
           title: this.$t('ui.profile.myProfile'),
-          path: `/profile/${this.userData.id}`,
+          path: `${Path.PROFILE}/${this.userData.id}`,
         },
         {
           title: this.$t('meta.settings'),
@@ -560,15 +560,15 @@ export default {
       this.closeAnother('mobile');
     },
     toMain() {
-      if (this.userData.role === 'worker') {
-        this.$router.push('/quests');
+      if (this.userData.role === UserRole.WORKER) {
+        this.$router.push(Path.QUESTS);
       }
-      if (this.userData.role === 'employer') {
-        this.$router.push('/workers');
+      if (this.userData.role === UserRole.EMPLOYER) {
+        this.$router.push(Path.WORKERS);
       }
     },
     createNewQuest(platform) {
-      this.$router.push('/create-quest');
+      this.$router.push(Path.CREATE_QUEST);
       if (platform === 'mobile') {
         this.toggleMobileMenu();
       }
@@ -617,7 +617,7 @@ export default {
     },
     async logout() {
       await this.$store.dispatch('user/logout');
-      await this.$router.push('/');
+      await this.$router.push(Path.ROOT);
     },
     closeAll() {
       this.isShowProfile = false;
