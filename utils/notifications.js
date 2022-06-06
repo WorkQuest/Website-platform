@@ -34,6 +34,7 @@ export const LocalNotificationAction = {
   RATE_THE_QUEST: 'quest',
   QUEST_DRAFT: 'questDraft',
   QUESTS_SPECS: 'questsSpecs',
+  WALLET_UPDATE: 'walletUpdate',
 };
 
 export const notificationsQuestsActions = Object.freeze([

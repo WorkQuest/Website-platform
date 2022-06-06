@@ -23,7 +23,7 @@
                 class="grid__input"
                 data-selector="PRICE-FROM"
                 :placeholder="$tc('meta.coins.count.WUSDCount', 0)"
-                rules="decimal|max_value:99999999999999"
+                rules="decimal|max_value:99999999999999|decimalPlaces:18"
                 :name="$t('meta.fromBig')"
               />
               <span
@@ -42,7 +42,7 @@
                 class="grid__field"
                 data-selector="PRICE-TO"
                 :placeholder="$tc('meta.coins.count.WUSDCount', 10000)"
-                :rules="`decimal${priceFrom ? '|min_value:'+priceFrom : ''}|max_value:99999999999999`"
+                :rules="`decimal${priceFrom ? '|min_value:'+priceFrom : ''}|max_value:99999999999999|decimalPlaces:18`"
                 :name="$tc('meta.toBig')"
               />
               <span

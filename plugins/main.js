@@ -21,11 +21,19 @@ Vue.mixin({
   },
   methods: {
     convertToBech32(prefix, address) {
-      return converter(prefix).toBech32(address);
+      try {
+        return converter(prefix).toBech32(address);
+      } catch (e) {
+        return address;
+      }
     },
     convertToHex(prefix, address) {
-      if (address.startsWith(prefix)) return converter(prefix).toHex(address);
-      return address;
+      try {
+        if (address.startsWith(prefix)) return converter(prefix).toHex(address);
+        return address;
+      } catch (e) {
+        return address;
+      }
     },
     async uploadFiles(files) {
       if (!files.length) return [];

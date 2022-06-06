@@ -14,10 +14,8 @@
             v-for="(notification, i) in notifications"
             :key="i"
             :ref="`${notification.id}|${notification.seen}`"
-            v-observe-visibility="(isVisible) =>
-              checkUnseenNotifs(isVisible, notification)"
             class="notification"
-            :class="{'notification_gray' : notification.seen}"
+            :class="{'notification_gray' : !notification.seen}"
             @click="goToEvent(notification.params ? notification.params.path : '', true)"
           >
             <template v-if="notification.sender">
@@ -130,8 +128,6 @@ export default {
         offset: 0,
       },
       page: 1,
-      notificationIdsForRead: {},
-      delayId: null,
       profileFilled: false,
     };
   },
@@ -246,20 +242,17 @@ export default {
       });
       this.SetLoader(false);
     },
-    async checkUnseenNotifs(isVisible, notification) {
-      const { id, seen } = notification;
-      const { isLocal } = notification.params;
-
-      if (isLocal || seen) return;
-
-      this.notificationIdsForRead[id] = id;
-
-      this.delayId = this.SetDelay(async () => {
+    checkUnseenNotifs() {
+      const toRead = [];
+      // eslint-disable-next-line no-restricted-syntax
+      for (const item of this.notifications) {
+        if (!item.seen && !item.params?.isLocal) toRead.push(item.id);
+      }
+      setTimeout(async () => {
         await this.$store.dispatch('notifications/readNotifications', {
-          notificationIds: Object.keys(this.notificationIdsForRead),
+          notificationIds: toRead,
         });
-        this.notificationIdsForRead = [];
-      }, 2000, this.delayId);
+      }, 3000);
     },
     async setPage() {
       this.filter.offset = (this.page - 1) * this.filter.limit;
@@ -267,6 +260,7 @@ export default {
       this.ScrollToTop();
       await this.getNotifications();
       await this.setLocalNotifications();
+      this.checkUnseenNotifs();
       this.SetLoader(false);
     },
     async getNotifications() {

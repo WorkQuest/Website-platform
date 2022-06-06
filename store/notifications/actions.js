@@ -43,47 +43,45 @@ export default {
   }) {
     if (!action && !message && !title) return;
     const notificationList = getters.getNotificationsList;
-    const isAdded = !!notificationList.some((n) => Object.entries(LocalNotificationAction).includes(n.actionNameKey));
-    if (!isAdded) {
-      const notification = {
-        actionNameKey: `notifications.${action}`,
-        seen: true,
-        id,
-        action,
-        actionBtn,
-        sender: {
-          avatar: { url: images.WQ_LOGO },
-          firstName: $nuxt.$t('ui.notifications.workquestInfo'),
-        },
-        params: {
-          title,
-          isLocal: true,
-        },
-        data: {
-          title,
-          questId,
-          userId,
-          createdAt: moment(date || Date.now()).format('MMMM Do YYYY, h:mm'),
-          message,
-        },
-      };
-      if (action === LocalNotificationAction.GET_REWARD) {
-        notification.params.path = Path.REFERRAL;
-      } else if (action === LocalNotificationAction.QUEST_DRAFT) {
-        notification.params.path = Path.CREATE_QUEST;
-      } else if (action === LocalNotificationAction.WIKI) {
-        notification.params.path = Path.WIKI;
-      } else if (action === LocalNotificationAction.KYC) {
-        notification.params.path = Path.SUMSUB;
-      } else if (action === LocalNotificationAction.PROFILE_FILLED) {
-        notification.params.path = Path.SETTINGS;
-      } else if (action === LocalNotificationAction.TWOFA) {
-        notification.params.path = `${Path.SETTINGS}#2FA`;
-      } else if (action === LocalNotificationAction.QUESTS_SPECS) {
-        notification.params.path = `${Path.QUESTS}`;
-      }
-      await dispatch('addNotification', notification);
-    }
+
+    // isAdded
+    if (notificationList.some((n) => Object.entries(LocalNotificationAction).includes(n.actionNameKey))) return;
+
+    const path = {
+      [LocalNotificationAction.GET_REWARD]: Path.REFERRAL,
+      [LocalNotificationAction.QUEST_DRAFT]: Path.CREATE_QUEST,
+      [LocalNotificationAction.WIKI]: Path.WIKI,
+      [LocalNotificationAction.KYC]: Path.SUMSUB,
+      [LocalNotificationAction.PROFILE_FILLED]: Path.SETTINGS,
+      [LocalNotificationAction.TWOFA]: `${Path.SETTINGS}#2FA`,
+      [LocalNotificationAction.QUESTS_SPECS]: `${Path.QUESTS}?mySpecs=true`,
+      [LocalNotificationAction.WALLET_UPDATE]: Path.WALLET,
+    }[action];
+
+    const notification = {
+      actionNameKey: `notifications.${action}`,
+      seen: true,
+      id,
+      action,
+      actionBtn,
+      sender: {
+        avatar: { url: images.WQ_LOGO },
+        firstName: $nuxt.$t('ui.notifications.workquestInfo'),
+      },
+      params: {
+        title,
+        path,
+        isLocal: true,
+      },
+      data: {
+        title,
+        questId,
+        userId,
+        createdAt: moment(date || Date.now()).format('MMMM Do YYYY, h:mm'),
+        message,
+      },
+    };
+    commit('addNotification', notification);
   },
 
   async removeNotification({ dispatch, commit, rootGetters }, { config, notification: { params, actionNameKey, id } }) {
@@ -182,7 +180,7 @@ export default {
         // ui.notifications.respondedQuestEdited - u responded
         // ui.notifications.invitedQuestEdited - that u invited
         if (userRole === UserRole.WORKER) {
-          notification.params.isLocal = true;
+          notification.params.isLocal = false;
           notification.data = {
             ...notification.data,
             message: $nuxt.$t('ui.notifications.respondedQuestEdited'),
