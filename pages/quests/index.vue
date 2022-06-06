@@ -52,6 +52,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import { Path } from '~/utils/enums';
 
 export default {
@@ -181,7 +182,11 @@ export default {
       if (!Object.keys(value).length) {
         delete this.query['priceBetween[from]'];
         delete this.query['priceBetween[to]'];
-      } else this.query = { ...this.query, ...value };
+      } else {
+        const from = new BigNumber(value['priceBetween[from]']).shiftedBy(18).toString();
+        const to = new BigNumber(value['priceBetween[to]']).shiftedBy(18).toString();
+        this.query = { ...this.query, 'priceBetween[from]': from, 'priceBetween[to]': to };
+      }
       await this.fetchQuestsList(true);
     },
     async sortByPriority(value) {
