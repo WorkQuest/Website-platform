@@ -138,7 +138,6 @@ export default {
   async setCurrNotificationObject({
     getters, rootGetters, dispatch, commit,
   }, notification) {
-    console.log(notification);
     const { data, action } = notification.notification;
     const {
       id, title, quest, user, worker, comment, employer, fromUser, rootComment,

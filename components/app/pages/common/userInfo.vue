@@ -302,10 +302,10 @@ export default {
     },
     raiseViewsName() {
       return {
-        0: 'Gold Plus',
-        1: 'Gold',
-        2: 'Silver',
-        3: 'Bronze',
+        0: this.$t('quests.levels.1.title'),
+        1: this.$t('quests.levels.2.title'),
+        2: this.$t('quests.levels.3.title'),
+        3: this.$t('quests.levels.4.title'),
       };
     },
   },
@@ -341,7 +341,7 @@ export default {
           key: modals.status,
           img: require('~/assets/img/ui/questAgreed.svg'),
           title: this.$t('quests.active'),
-          text: `${this.raiseViewsName[this.userData.raiseView.type]} Package`,
+          text: this.raiseViewsName[this.userData.raiseView.type],
           subtitle: `${this.$t('modals.until')} ${moment(this.userData.raiseView.entedAt).format('Do MMMM YYYY, hh:mm a')}`,
         });
       } else {
