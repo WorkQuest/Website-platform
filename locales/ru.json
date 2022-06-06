@@ -120,6 +120,8 @@
     "claimRewards": "Claim rewards",
     "percent": "Percent",
     "deposit": "Deposit",
+    "description": "Описание",
+    "email": "Эл. Почта",
     "withdraw": "Withdraw",
     "withdrawal": "Снятие",
     "information": "Information",
@@ -145,6 +147,7 @@
     "questsSmall": "квесты",
     "questsBig": "Квесты",
     "codeFromSMS": "Код из СМС",
+    "title": "Название",
     "toBig": "До",
     "toSmall": "до",
     "fromBig": "От",
@@ -929,7 +932,9 @@
     "caseDeleted": "Case deleted!",
     "caseAdded": "Case added!",
     "caseEdited": "Case edited!",
-    "error": "Ошибка!"
+    "error": "Ошибка!",
+    "sendToSupport": "Сообщение было отправлено в поддерку",
+    "sent": "Отправлено"
   },
   "modals": {
     "titles": {
@@ -986,6 +991,7 @@
       "sharing": "Sharing",
       "signWorkQuest": "Социальная сеть WorkQuest",
       "skills": "Skills",
+      "support": "Поддержка",
       "smsVerification": "SMS verification",
       "swapTitle": "Обмен между сетями",
       "swapInfo": "Swap info",
@@ -1114,6 +1120,7 @@
     "switchOnGoogleAuth": "Switch on Google Authenticator",
     "emailVerificationCode": "Email verification code",
     "emailPlaceholder": "Please enter Email verification code",
+    "email": "Email",
     "googleVerificationCode": "Google verification code",
     "codePlaceholder": "Please enter Google verification code",
     "useYourGoogleAuth": "Use your Google Authenticator App to scan QR code.",

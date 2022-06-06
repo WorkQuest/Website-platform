@@ -120,6 +120,8 @@
     "claimRewards": "Claim rewards",
     "percent": "Persen",
     "deposit": "Deposit",
+    "description": "Description",
+    "email": "Email",
     "withdraw": "Tarik",
     "withdrawal": "Penarikan",
     "information": "Informasi",
@@ -145,6 +147,7 @@
     "questsSmall": "quests",
     "questsBig": "Quests",
     "codeFromSMS": "Kode dari SMS",
+    "title": "Title",
     "toBig": "To",
     "toSmall": "to",
     "fromBig": "From",
@@ -929,7 +932,9 @@
     "caseDeleted": "Case deleted!",
     "caseAdded": "Case added!",
     "caseEdited": "Case edited!",
-    "error": "Error!"
+    "error": "Error!",
+    "sendToSupport": "A message has been sent to support",
+    "sent": "Sent"
   },
   "modals": {
     "titles": {
@@ -986,6 +991,7 @@
       "sharing": "Berbagi",
       "signWorkQuest": "Jejaring sosial WorkQuest",
       "skills": "Skills",
+      "support": "Support",
       "smsVerification": "Verifikasi SMS",
       "swapTitle": "Cross-chain exchange",
       "swapInfo": "Swap info",
@@ -1114,6 +1120,7 @@
     "switchOnGoogleAuth": "Aktifkan Google Authenticator",
     "emailVerificationCode": "Email verification code",
     "emailPlaceholder": "Silakan masukkan kode verifikasi email",
+    "email": "Email",
     "googleVerificationCode": "Kode verifikasi Google",
     "codePlaceholder": "Silakan masukkan kode verifikasi Google",
     "useYourGoogleAuth": "Gunakan Aplikasi Google Authenticator Anda untuk memindai kode QR.",

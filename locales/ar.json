@@ -120,6 +120,8 @@
     "claimRewards": "Claim rewards",
     "percent": "النسبة المئوية",
     "deposit": "إيداع",
+    "description": "Description",
+    "email": "Email",
     "withdraw": "سحب",
     "withdrawal": "السحب",
     "information": "المعلومات",
@@ -146,6 +148,7 @@
     "questsBig": "طلبات العمل",
     "codeFromSMS": "الرمز من الرسالة النصية القصيرة",
     "toBig": "إلى",
+    "title": "Title",
     "toSmall": "إلى",
     "fromBig": "من",
     "fromSmall": "من",
@@ -929,7 +932,9 @@
     "caseDeleted": "Case deleted!",
     "caseAdded": "Case added!",
     "caseEdited": "Case edited!",
-    "error": "Error!"
+    "error": "Error!",
+    "sendToSupport": "A message has been sent to support",
+    "sent": "Sent"
   },
   "modals": {
     "titles": {
@@ -986,6 +991,7 @@
       "sharing": "المشاركة",
       "signWorkQuest": "شبكة WorkQuest الاجتماعية",
       "skills": "Skills",
+      "support": "Support",
       "smsVerification": "التحقُّق برسالة نصية قصيرة",
       "swapTitle": "Cross-chain exchange",
       "swapInfo": "Swap info",
@@ -1114,6 +1120,7 @@
     "switchOnGoogleAuth": "Google تشغيل تطبيق مصادقة",
     "emailVerificationCode": "رمز التحقُّق عبر البريد الإلكتروني",
     "emailPlaceholder": "يُرجى إدخال رمز التحقُّق من البريد الإلكتروني",
+    "email": "Email",
     "googleVerificationCode": "Google رمز التحقُّق من",
     "codePlaceholder": "Google يُرجى إدخال رمز التحقُّق من",
     "useYourGoogleAuth": "استخدم تطبيق مصادقة Google لمسح رمز الاستجابة السريعة ضوئيًا.",

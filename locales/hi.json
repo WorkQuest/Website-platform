@@ -120,6 +120,8 @@
     "claimRewards": "Claim rewards",
     "percent": "प्रतिशत",
     "deposit": "Deposit",
+    "description": "Description",
+    "email": "Email",
     "withdraw": "निकासी",
     "withdrawal": "निकासी",
     "information": "जानकारी",
@@ -145,6 +147,7 @@
     "questsSmall": "quests",
     "questsBig": "Quests",
     "codeFromSMS": "SMS से कोड",
+    "title": "Title",
     "toBig": "To",
     "toSmall": "to",
     "fromBig": "From",
@@ -929,7 +932,9 @@
     "caseDeleted": "Case deleted!",
     "caseAdded": "Case added!",
     "caseEdited": "Case edited!",
-    "error": "Error!"
+    "error": "Error!",
+    "sendToSupport": "A message has been sent to support",
+    "sent": "Sent"
   },
   "modals": {
     "titles": {
@@ -986,6 +991,7 @@
       "sharing": "शेयरिंग",
       "signWorkQuest": "WorkQuest सोशल नेटवर्क",
       "skills": "Skills",
+      "support": "Support",
       "smsVerification": "SMS वेरिफिकेशन",
       "swapTitle": "Cross-chain exchange",
       "swapInfo": "Swap info",
@@ -1114,6 +1120,7 @@
     "switchOnGoogleAuth": "Google Authenticator चालू करें",
     "emailVerificationCode": "ईमेल वेरिफिकेशन कोड",
     "emailPlaceholder": "कृपया ईमेल वेरिफिकेशन कोड दर्ज करें",
+    "email": "Email",
     "googleVerificationCode": "Google वेरिफिकेशन कोड",
     "codePlaceholder": "कृपया Google वेरिफिकेशन कोड दर्ज करें",
     "useYourGoogleAuth": "QR कोड स्कैन करने के लिए अपने Google Authenticator ऐप का उपयोग करें।",
