@@ -238,7 +238,7 @@ export default {
           externalBase: DaoUrl,
         };
         break;
-      case [...notificationsQuestsActions, NotificationAction.QUEST_STATUS_UPDATED].includes(action):
+      case notificationsQuestsActions.includes(action):
         notification.params = {
           ...notification.params,
           title: title || quest?.title,
