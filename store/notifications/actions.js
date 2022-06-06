@@ -221,14 +221,6 @@ export default {
         };
         break;
 
-      case NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST:
-        notification.params = {
-          ...notification.params,
-          title: title || quest?.title,
-          path: `${Path.QUESTS}/${quest?.id || id}`,
-        };
-        break;
-
       case [NotificationAction.NEW_COMMENT_IN_DISCUSSION, NotificationAction.NEW_DISCUSSION_LIKE].includes(action):
         notification.params = {
           ...notification.params,
