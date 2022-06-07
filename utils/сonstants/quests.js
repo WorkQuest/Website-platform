@@ -20,32 +20,6 @@ export const QuestStatuses = {
   Responded: 10,
   Invited: 11,
 };
-export const InfoModeEmployer = Object.freeze({
-  Closed: -3,
-  Dispute: -2,
-  Rejected: -1, // Blocked by admin
-  Pending: 0,
-  Created: 1, // Waiting worker to start quest
-  WaitWorkerOnAssign: 2, // Waiting for worker accept assign to quest
-  WaitWorker: 3, // Work in progress
-  WaitEmployerConfirm: 4, // Accepting or decline worker job
-  Done: 5,
-});
-export const InfoModeWorker = Object.freeze({
-  Closed: -3,
-  Dispute: -2,
-  Pending: 0,
-  Created: 1,
-  WaitWorkerOnAssign: 2,
-  WaitWorker: 3,
-  WaitEmployerConfirm: 4,
-  Done: 5,
-
-  ADChat: 9,
-  Responded: 10,
-  Invited: 11,
-  Rejected: 12,
-});
 
 export const QuestMethods = Object.freeze({
   Arbitration: 'arbitration',
