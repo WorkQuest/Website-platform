@@ -248,6 +248,7 @@ export default {
       for (const item of this.notifications) {
         if (!item.seen && !item.params?.isLocal) toRead.push(item.id);
       }
+      if (!toRead.length) return;
       setTimeout(async () => {
         await this.$store.dispatch('notifications/readNotifications', {
           notificationIds: toRead,
@@ -260,11 +261,11 @@ export default {
       this.ScrollToTop();
       await this.getNotifications();
       await this.setLocalNotifications();
-      this.checkUnseenNotifs();
       this.SetLoader(false);
     },
     async getNotifications() {
       await this.$store.dispatch('notifications/getNotifications', { params: this.filter });
+      this.checkUnseenNotifs();
     },
     goToEvent(path, isNotifCont) {
       if (isNotifCont && document.body.offsetWidth > 767) return;
