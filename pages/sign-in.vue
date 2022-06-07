@@ -99,6 +99,7 @@
         </div>
       </form>
       <base-btn
+        v-if="!hiddenResend"
         class="auth__resend"
         :class="{auth__resend_hidden : disableResend && hiddenResend}"
         data-selector="RESEND-LETTER"
@@ -205,7 +206,7 @@ export default {
       step: WalletState.Default,
       model: { email: '', password: '', totp: '' },
       remember: false,
-      userStatus: null,
+      userStatus: '',
       userAddress: '',
       isLoginWithSocial: false,
       isPasswordVisible: false,
@@ -285,7 +286,7 @@ export default {
           timerValue: this.timerValue,
           createdAt: Date.now(),
         });
-        this.hiddenResend = false;
+        this.hiddenResend = true;
       } else this.$cookies.remove('resend-timer');
       this.clearCookies();
     },
@@ -297,7 +298,7 @@ export default {
       this.disableResend = false;
     },
     continueTimer() {
-      this.hiddenResend = false;
+      if (this.userStatus === UserStatuses.Unconfirmed) this.hiddenResend = false;
       this.timer = this.$cookies.get('resend-timer');
       if (!this.timer) return;
 
