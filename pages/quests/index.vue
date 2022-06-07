@@ -187,9 +187,7 @@ export default {
         delete this.query['priceBetween[from]'];
         delete this.query['priceBetween[to]'];
       } else {
-        const from = new BigNumber(value['priceBetween[from]']).shiftedBy(18).toString();
-        const to = new BigNumber(value['priceBetween[to]']).shiftedBy(18).toString();
-        this.query = { ...this.query, 'priceBetween[from]': from, 'priceBetween[to]': to };
+        this.query = { ...this.query, ...value };
       }
       await this.fetchQuestsList(true);
     },

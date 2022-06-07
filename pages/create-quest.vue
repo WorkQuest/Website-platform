@@ -266,7 +266,7 @@ export default {
     },
     depositAmount() {
       if (!this.price) return '0';
-      return new BigNumber(this.price).multipliedBy(1 + CommissionForCreatingAQuest).toString();
+      return new BigNumber(this.price).multipliedBy(1 + CommissionForCreatingAQuest).toFixed(18).toString();
     },
   },
   async beforeCreate() {

@@ -7,7 +7,8 @@
       <validation-observer
         v-slot="{handleSubmit, validated, passed, invalid}"
         class="content__observer"
-        tag="div"
+        tag="form"
+        @submit.prevent="submit"
       >
         <div class="content__title">
           {{ $t('modals.enterPriceRange') }}

@@ -145,14 +145,14 @@
         :class="userData.role === UserRole.WORKER ? 'right__header_employee' : ''"
       >
         <div
-          v-if="userData.role === UserRole.WORKER && userData.wagePerHour"
+          v-if="userData.role === UserRole.WORKER && userData.costPerHour"
           class="right__price"
         >
           <div class="price__text">
             {{ $t('meta.costPerHour') }}
           </div>
           <div class="price__value">
-            {{ $tc('meta.coins.count.WUSDCount', userData.wagePerHour) }}
+            {{ $tc('meta.coins.count.WUSDCount', userData.costPerHour) }}
           </div>
         </div>
         <div class="right__share-btn">
