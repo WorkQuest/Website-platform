@@ -550,7 +550,7 @@ export default {
       }
 
       const currentTime = this.$moment().valueOf();
-      const unlockTime = this.$moment(this.quest.startedAt).add(0.5, 'm').valueOf();
+      const unlockTime = this.$moment(this.quest.startedAt).add(1, 'm').valueOf();
       // TODO: fixme Вернуть, нужно для тестов Роме
       // const unlockTime = this.$moment(this.quest.startedAt).add(1, 'day').valueOf();
 
