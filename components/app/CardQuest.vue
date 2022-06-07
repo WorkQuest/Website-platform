@@ -647,6 +647,10 @@ export default {
     &_yellow {
       background-color: $yellow100;
     }
+
+    &_red {
+      background-color: $red;
+    }
   }
 
   &__progress {
