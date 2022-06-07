@@ -10,7 +10,6 @@ export default () => ({
   },
   quest: null,
   infoDataMode: 0,
-  starredQuests: {},
   responded: [],
   invited: [],
   currentStepCreateQuest: 1,

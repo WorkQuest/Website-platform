@@ -114,7 +114,7 @@
       <div class="main__body main__body_30gap">
         <template
           v-if="userRole === $options.UserRole.EMPLOYER
-            && (infoDataMode === $options.InfoModeEmployer.Created || infoDataMode === $options.InfoModeEmployer.WaitWorkerOnAssign)"
+            && (infoDataMode === $options.QuestStatuses.Created || infoDataMode === $options.QuestStatuses.WaitWorkerOnAssign)"
         >
           <workers-list is-invited />
           <workers-list />
@@ -174,8 +174,6 @@ import { NotificationAction } from '~/utils/notifications';
 import modals from '~/store/modals/modals';
 import {
   EditQuestState,
-  InfoModeEmployer,
-  InfoModeWorker,
   QuestMethods,
   QuestStatuses,
 } from '~/utils/сonstants/quests';
@@ -188,7 +186,6 @@ export default {
   name: 'Quests',
   UserRole,
   QuestStatuses,
-  InfoModeEmployer,
   Path,
   data() {
     return {
@@ -377,7 +374,7 @@ export default {
         Dispute,
         Created,
         WaitEmployerConfirm,
-      } = InfoModeEmployer;
+      } = QuestStatuses;
       let arr = [];
       switch (this.infoDataMode) {
         case Created: {
@@ -438,7 +435,7 @@ export default {
         Invited,
         WaitWorkerOnAssign,
         WaitEmployerConfirm,
-      } = InfoModeWorker;
+      } = QuestStatuses;
       let arr = [];
       switch (infoDataMode) {
         case ADChat: {
@@ -534,7 +531,7 @@ export default {
       }
     },
     async closeQuest() {
-      if (this.quest.status !== InfoModeEmployer.WaitWorker) {
+      if (this.quest.status !== QuestStatuses.WaitWorker) {
         this.ShowModal({
           key: modals.securityCheck,
           actionMethod: async () => await this.DeleteQuest(this.quest),

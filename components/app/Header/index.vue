@@ -1146,6 +1146,12 @@ export default {
 
 @include _1199 {
   .ctm-menu {
+    &__user {
+      cursor: pointer;
+    }
+    &__dropdown {
+      cursor: pointer;
+    }
     &__toggle {
       display: flex;
     }
