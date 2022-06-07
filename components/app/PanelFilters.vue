@@ -173,8 +173,7 @@ export default {
       if (this.isEmployer) {
         query['betweenCostPerHour[from]'] = from || 0;
         query['betweenCostPerHour[to]'] = to || 99999999999999;
-      }
-      if (from || to) {
+      } else {
         query['priceBetween[from]'] = from ? new BigNumber(from).shiftedBy(18).toString() : '0';
         query['priceBetween[to]'] = to ? new BigNumber(to).shiftedBy(18).toString()
           : new BigNumber('99999999999999').shiftedBy(18).toString();
