@@ -32,7 +32,8 @@ import {
   TokenMap,
   TokenSymbols,
   StakingTypes,
-  WorknetTokenAddresses, TokenSymbolByContract,
+  WorknetTokenAddresses,
+  TokenSymbolByContract,
 } from '~/utils/enums';
 
 import ENV from '~/utils/adresses/index';
