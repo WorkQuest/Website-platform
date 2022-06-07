@@ -266,7 +266,7 @@ export default {
     },
     depositAmount() {
       if (!this.price) return '0';
-      return new BigNumber(this.price).multipliedBy(1 + CommissionForCreatingAQuest).toString();
+      return new BigNumber(this.price).multipliedBy(1 + CommissionForCreatingAQuest).toFixed(18).toString();
     },
   },
   async beforeCreate() {
@@ -581,15 +581,15 @@ export default {
 }
 
 .edit-check {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   &__box {
+    cursor: pointer;
     width: 16px;
     height: 16px;
   }
   &__text {
     margin: 0 0 0 10px;
-    user-select: none;
   }
 }
 

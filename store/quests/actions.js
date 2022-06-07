@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { ResponsesType, UserRole } from '~/utils/enums';
+import { ResponsesType } from '~/utils/enums';
 
 import {
   QuestMethods,
@@ -104,12 +104,14 @@ export default {
       return false;
     }
   },
-  async getUserQuests({ commit }, { role, query, userId }) {
+  async getUserQuests({ commit, rootGetters }, { role, query, userId }) {
     try {
       const specializations = query.specializations || [];
       if (query.specializations) delete query.specializations;
-      let url = !userId ? `/v1/me/${role}/get-quests` : `/v1/${role}/${userId}/get-quests`;
-      if (query.starred) url = '/v1/get-quests';
+      // Fetch my quests or quests for special user
+      const url = userId === rootGetters['user/getUserData'].id
+        ? `/v1/me/${role}/get-quests`
+        : `/v1/${role}/${userId}/get-quests`;
       const response = await this.$axios.$post(url, { specializations }, {
         params: { ...query },
       });

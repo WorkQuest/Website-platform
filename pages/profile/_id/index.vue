@@ -228,6 +228,7 @@ export default {
   },
   data() {
     return {
+      userId: null,
       selectedTab: 'commonInfo',
       reviewsObject: {},
       userStatistics: {
@@ -321,9 +322,6 @@ export default {
         },
       ];
     },
-    userId() {
-      return this.$route.params.id;
-    },
   },
   watch: {
     async selectedTab() {
@@ -367,6 +365,7 @@ export default {
     sessionStorage.removeItem('questsListFilter');
   },
   async mounted() {
+    this.userId = this.$route.params.id;
     if (this.userId !== this.mainUser.id) {
       await this.$store.dispatch('user/getAnotherUserData', this.userId);
       this.userData = this.anotherUserData;

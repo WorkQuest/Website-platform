@@ -1307,7 +1307,12 @@
     "notifications": {
       "title": "Уведомления",
       "invite": "Invites you to complete the quest",
-      "noNotifications": "Нет уведомлений"
+      "noNotifications": "Нет уведомлений",
+      "workquestInfo": "Workquest информация",
+      "respondedQuestEdited": "Квест, на который Вы откликнулись, отредактирован. Пожалуйста, изучите условия повторно.",
+      "invitedQuestEdited": "Квест, на который Вас пригласили, отредактирован. Пожалуйста, изучите условия повторно.",
+      "viewOffersBySpecs": "Посмотрите предложения по выбранным специализациям",
+      "balanceUpdated": "Пополнение баланса {token}"
     },
     "menu": {
       "unauthorized": "Not logged",

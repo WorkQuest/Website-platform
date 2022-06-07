@@ -123,7 +123,7 @@
           </div>
           <div class="page__input">
             <base-field
-              v-model="questTitle"
+              :value="questTitle"
               data-selector="QUEST-TITLE-FIELD"
               rules="required|min:2|max:250"
               :name="$tc('quests.questTitle')"
@@ -133,7 +133,7 @@
           <div class="page__input">
             <base-textarea
               id="textarea"
-              v-model="textarea"
+              :value="textarea"
               disabled
               rules="required|min:6|max:2000"
               data-selector="QUEST-DESC-TEXTAREA"
@@ -574,10 +574,10 @@ export default {
             reject();
             return;
           }
-          await this.makeApprove({
-            wusdAddress,
+          await this.MakeApprove({
+            tokenAddress: wusdAddress,
             contractAddress,
-            depositAmount,
+            amount: depositAmount,
             approveTitle: `${this.$t('meta.btns.edit')} ${this.$t('meta.approve')}`,
           }).then(async (result) => {
             await resolve(result);
@@ -642,6 +642,7 @@ export default {
       ]);
       if (!feeRes.ok) {
         this.ShowToast(this.$t('errors.transaction.notEnoughFunds'));
+        this.SetLoader(false);
         return;
       }
       const fields = {

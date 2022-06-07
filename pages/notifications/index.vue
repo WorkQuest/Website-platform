@@ -14,12 +14,6 @@
             v-for="(notification, i) in notifications"
             :key="i"
             :ref="`${notification.id}|${notification.seen}`"
-            v-observe-visibility="(isVisible) =>
-              checkUnseenNotifs(isVisible, {
-                id: notification.id,
-                seen: notification.seen,
-                isLocal: notification.params.isLocal
-              })"
             class="notification"
             :class="{'notification_gray' : !notification.seen}"
             @click="goToEvent(notification.params ? notification.params.path : '', true)"
@@ -120,7 +114,7 @@ import {
   UserRole, Path, SumSubStatuses, TwoFAStatuses,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
-import { LocalNotificationAction } from '~/utils/notifications';
+import { LocalNotificationAction, NotificationAction, notificationCommonFilterAction2 } from '~/utils/notifications';
 import { images } from '~/utils/images';
 
 export default {
@@ -134,8 +128,6 @@ export default {
         offset: 0,
       },
       page: 1,
-      notificationIdsForRead: [],
-      delayId: null,
       profileFilled: false,
     };
   },
@@ -220,6 +212,10 @@ export default {
       return `${this.$t(notification.actionNameKey)}${symbol}`;
     },
     toUserProfile(notification) {
+      if (notification?.params?.path && notification?.notification?.action === NotificationAction.QUEST_STATUS_UPDATED) {
+        this.$router.push(notification.params.path);
+        return;
+      }
       this.$router.push(`${Path.PROFILE}/${notification.sender.id}`);
     },
     tryRemoveNotification(ev, notification) {
@@ -246,19 +242,18 @@ export default {
       });
       this.SetLoader(false);
     },
-    async checkUnseenNotifs(isVisible, { id, seen, isLocal }) {
-      if (isLocal && isVisible && seen) this.$store.commit('notifications/setUnreadNotifsCount', this.unreadNotifsCount > 0 ? -1 : 0);
-      else if (!isLocal && id && !seen) return;
-      if (!isLocal) {
-        this.$store.commit('notifications/setUnreadNotifsCount', this.unreadNotifsCount > 0 ? -1 : 0);
-        this.notificationIdsForRead.push(id);
-        this.delayId = this.SetDelay(async () => {
-          await this.$store.dispatch('notifications/readNotifications', {
-            notificationIds: this.notificationIdsForRead,
-          });
-          this.notificationIdsForRead = [];
-        }, 3000, this.delayId);
+    checkUnseenNotifs() {
+      const toRead = [];
+      // eslint-disable-next-line no-restricted-syntax
+      for (const item of this.notifications) {
+        if (!item.seen && !item.params?.isLocal) toRead.push(item.id);
       }
+      if (!toRead.length) return;
+      setTimeout(async () => {
+        await this.$store.dispatch('notifications/readNotifications', {
+          notificationIds: toRead,
+        });
+      }, 3000);
     },
     async setPage() {
       this.filter.offset = (this.page - 1) * this.filter.limit;
@@ -270,6 +265,7 @@ export default {
     },
     async getNotifications() {
       await this.$store.dispatch('notifications/getNotifications', { params: this.filter });
+      this.checkUnseenNotifs();
     },
     goToEvent(path, isNotifCont) {
       if (isNotifCont && document.body.offsetWidth > 767) return;
@@ -299,7 +295,7 @@ export default {
 }
 
 .info-block {
-  background: #fff;
+  background: $white;
   border-radius: 6px;
 
   &__no-content {
@@ -353,7 +349,7 @@ export default {
   min-width: 0;
 
   &_gray {
-    background: #f7f8fabd;
+    background: $wheat;
   }
 
   &:not(:last-child) {

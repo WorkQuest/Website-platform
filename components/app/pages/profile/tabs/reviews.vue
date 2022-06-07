@@ -158,6 +158,10 @@ export default {
     font-weight: 500;
     font-size: 20px;
     color: $black800;
+    transition: 0.3s color;
+    &:hover {
+      color: $blue;
+    }
   }
   &__title {
     @include text-simple;

@@ -83,8 +83,10 @@ export default {
         return;
       }
 
-      await this.$store.dispatch('user/getStatistic');
-      await this.$store.dispatch('user/getNotifications');
+      await Promise.all([
+        this.$store.dispatch('user/getStatistic'),
+        this.$store.dispatch('user/getNotifications'),
+      ]);
 
       if (this.userData.role === UserRole.EMPLOYER) {
         await this.$router.push(Path.WORKERS);

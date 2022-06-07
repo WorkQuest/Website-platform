@@ -32,7 +32,7 @@
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import modals from '~/store/modals/modals';
-import { Path } from '~/utils/enums';
+import { Path, UserRole } from '~/utils/enums';
 
 export default {
   name: 'DefaultLayout',
@@ -46,9 +46,13 @@ export default {
       userData: 'user/getUserData',
       isChatOpened: 'chat/isChatOpened',
       isShow: 'modals/getIsShow',
+      userWalletAddress: 'user/getUserWalletAddress',
     }),
   },
-  async mounted() {
+  created() {
+    this.CheckMnemonic();
+  },
+  mounted() {
     if (!this.$cookies.get('isWorkQuestsAppShowed') && this.$route.path !== Path.WALLET) {
       this.ShowModal({
         key: modals.downloadApp,
@@ -60,15 +64,22 @@ export default {
     this.GetLocation();
   },
   methods: {
-    async getStatistic() {
-      await this.$store.dispatch('user/getStatistic');
-    },
     toMain() {
-      if (this.userData.role === 'worker') {
-        this.$router.push('/quests');
+      if (this.userData.role === UserRole.WORKER) {
+        this.$router.push(Path.QUESTS);
       }
-      if (this.userData.role === 'employer') {
-        this.$router.push('/workers');
+      if (this.userData.role === UserRole.EMPLOYER) {
+        this.$router.push(Path.WORKERS);
+      }
+    },
+    CheckMnemonic() {
+      const mnemonicInLocalStorage = JSON.parse(localStorage.getItem('mnemonic'));
+      const isWalletInMnemonicList = mnemonicInLocalStorage && mnemonicInLocalStorage[this.userWalletAddress];
+      if (!isWalletInMnemonicList || !localStorage.getItem('mnemonic')) {
+        this.$cookies.remove('access');
+        this.$cookies.remove('refresh');
+        this.$cookies.remove('userLogin');
+        this.$router.push(Path.SIGN_IN);
       }
     },
   },
