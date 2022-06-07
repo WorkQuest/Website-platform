@@ -64,7 +64,7 @@
                   >
                     <div
                       class="notify__text notify__text_name"
-                      :class="{'notify__text_hover': notification.params && !notification.params.isLocal}"
+                      :class="{'notify__text_hover': !checkLocalOrSystemNotif(notification)}"
                       @click="openNotification(notification)"
                     >
                       {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
@@ -143,10 +143,12 @@ export default {
     }),
   },
   methods: {
+    checkLocalOrSystemNotif(notification) {
+      return notification?.params?.isLocal || !notification?.sender?.id;
+    },
     openNotification(notification) {
       if (notification.params?.isLocal) return;
       if (notification?.sender?.id) this.$router.push(`${Path.PROFILE}/${notification?.sender?.id}`);
-      else this.$router.push(notification.params.path);
     },
     avatar(notification) {
       return notification.sender?.avatar?.url || images.EMPTY_AVATAR;
