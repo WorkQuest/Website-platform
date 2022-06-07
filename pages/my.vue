@@ -115,6 +115,7 @@ export default {
     this.requestParams = {
       role: this.userRole,
       specializations: null,
+      userId: this.userData.id,
       query: {
         limit: 10,
         offset: 0,
@@ -133,7 +134,6 @@ export default {
     async getQuests() {
       const { requestParams } = this;
       sessionStorage.setItem('questsListFilter', JSON.stringify(requestParams));
-      requestParams.userId = this.userData.id;
       await this.$store.dispatch('quests/getUserQuests', requestParams);
     },
     async updateQuests(item) {
