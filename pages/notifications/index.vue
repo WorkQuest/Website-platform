@@ -212,7 +212,9 @@ export default {
       return `${this.$t(notification.actionNameKey)}${symbol}`;
     },
     toUserProfile(notification) {
-      if (notification?.params?.path && notification?.notification?.action === NotificationAction.QUEST_STATUS_UPDATED) {
+      if (notification?.params?.isLocal) return;
+      if (!notification?.sender?.id && notification?.params?.path
+        && [NotificationAction.QUEST_STATUS_UPDATED, NotificationAction.DISPUTE_DECISION].includes(notification?.notification?.action)) {
         this.$router.push(notification.params.path);
         return;
       }
@@ -402,6 +404,7 @@ export default {
   width: 50px;
   height: 50px;
   border-radius: 50%;
+  object-fit: cover;
   &_hov:hover {
       cursor: pointer;
     }

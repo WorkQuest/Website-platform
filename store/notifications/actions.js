@@ -188,7 +188,16 @@ export default {
 
         break;
 
+      case NotificationAction.OPENED_DISPUTE:
+        notification.params = {
+          ...notification.params,
+          title: problemDescription,
+          path: `${Path.QUESTS}/${quest?.id || id}`,
+        };
+        break;
+
       case NotificationAction.DISPUTE_DECISION:
+        notification.sender = { avatar: { url: images.WQ_LOGO }, firstName: $nuxt.$t('ui.notifications.workquestInfo') };
         notification.params = {
           ...notification.params,
           title: problemDescription,

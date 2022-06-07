@@ -16,7 +16,7 @@ export const NotificationAction = {
   EMPLOYER_REJECTED_WORKERS_RESPONSE: 'employerRejectedWorkersResponse',
   WAIT_WORKER: 'waitWorker',
   USER_LEFT_REVIEW_ABOUT_QUEST: 'userLeftReviewAboutQuest',
-  DISPUTE_DECISION: 'disputeDecision',
+  DISPUTE_DECISION: 'DisputeDecision',
   QUEST_EDITED: 'questEdited',
   QUEST_END_SOON: 'questEndSoon',
   COMMENT_LIKED: 'commentLiked',
@@ -52,7 +52,6 @@ export const notificationsQuestsActions = Object.freeze([
   NotificationAction.WAIT_WORKER,
   NotificationAction.QUEST_EDITED,
   NotificationAction.QUEST_END_SOON,
-  NotificationAction.OPENED_DISPUTE,
 ]);
 
 export const notificationCommonFilterActions = Object.freeze([

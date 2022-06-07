@@ -62,12 +62,13 @@
                     v-if="notification.sender"
                     class="notify__info"
                   >
-                    <a
-                      :href="`${$options.Path.PROFILE}/${senderId(notification)}`"
+                    <div
                       class="notify__text notify__text_name"
+                      :class="{'notify__text_hover': notification.params && !notification.params.isLocal}"
+                      @click="openNotification(notification)"
                     >
                       {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
-                    </a>
+                    </div>
                   </div>
                 </div>
                 <div class="notify__text notify__text_date">
@@ -142,8 +143,10 @@ export default {
     }),
   },
   methods: {
-    senderId(notification) {
-      return notification.sender?.id || '';
+    openNotification(notification) {
+      if (notification.params?.isLocal) return;
+      if (notification?.sender?.id) this.$router.push(`${Path.PROFILE}/${notification?.sender?.id}`);
+      else this.$router.push(notification.params.path);
     },
     avatar(notification) {
       return notification.sender?.avatar?.url || images.EMPTY_AVATAR;
@@ -293,6 +296,8 @@ export default {
       white-space: nowrap;
       text-overflow: ellipsis;
       margin-right: 5px;
+    }
+    &_hover {
       cursor: pointer;
       &:hover {
         text-decoration: underline;
