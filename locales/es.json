@@ -1406,7 +1406,7 @@
     "employerRejectedWorkersResponse": "Declined your response to the quest",
     "QuestStatusUpdated": "Quest status updated",
     "userLeftReviewAboutQuest": "Left review about quest",
-    "disputeDecision": "Dispute decision",
+    "DisputeDecision": "Dispute decision",
     "waitWorker": "The quest is pending",
     "registrationError": "No users found for registration. Please contact to developers",
     "newCommentInDiscussion": "New comment in Discussion",

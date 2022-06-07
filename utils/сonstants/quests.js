@@ -48,12 +48,12 @@ export const InfoModeWorker = Object.freeze({
 });
 
 export const QuestMethods = Object.freeze({
+  Arbitration: 'arbitration',
   // Employer
   EditJob: 'editJob',
   CancelJob: 'cancelJob',
   AssignJob: 'assignJob',
   AcceptJobResult: 'acceptJobResult',
-  Arbitration: 'arbitration',
   // Worker
   AcceptJob: 'acceptJob',
   VerificationJob: 'verificationJob',

@@ -153,6 +153,7 @@ export default {
       delete this.requestParams.query.invited;
       delete this.requestParams.query['statuses[0]'];
       delete this.requestParams.query['statuses[1]'];
+      delete this.requestParams.query['statuses[2]'];
 
       switch (id) {
         case 0:
@@ -167,6 +168,7 @@ export default {
         case 3:
           this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorker;
           this.requestParams.query['statuses[1]'] = QuestStatuses.WaitEmployerConfirm;
+          this.requestParams.query['statuses[2]'] = QuestStatuses.Dispute;
           break;
         case 4:
           this.requestParams.query.invited = true;

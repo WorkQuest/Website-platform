@@ -326,9 +326,9 @@ export default {
 
   /** Work Quest */
   async getFeeDataJobMethod({ commit }, {
-    method, abi, contractAddress, data,
+    method, abi, contractAddress, data, amount,
   }) {
-    return await getContractFeeData(method, abi, contractAddress, data);
+    return await getContractFeeData(method, abi, contractAddress, data, null, amount);
   },
   async sendQuestTransaction({ commit }, {
     contractAddress, method, params = [], value,
@@ -362,7 +362,7 @@ export default {
   async acceptJobResult({ dispatch }, contractAddress) {
     return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.AcceptJobResult });
   },
-  // employer отменил (reject) результат работы или прошло 3 дня с момента начала verification
+  // Открытие диспута
   async arbitration({ dispatch }, { contractAddress, value }) {
     return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.Arbitration, value });
   },

@@ -1407,7 +1407,7 @@
     "QuestStatusUpdated": "Статус квеста обновлен",
     "userLeftReviewAboutQuest": "Оставил отзыв о квесте",
     "waitWorker": "Квест ожидает",
-    "disputeDecision": "Решение спора",
+    "DisputeDecision": "Решение спора",
     "registrationError": "Нет пользователей для  регистрации. Пожалуйста свяжитесь с разработчиками",
     "newCommentInDiscussion": "Новый комментарий в дискуссии",
     "commentLiked": "Комментарий лайкнут",
