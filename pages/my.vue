@@ -152,12 +152,14 @@ export default {
       this.requestParams.query.starred = id === 1;
       delete this.requestParams.query.invited;
       delete this.requestParams.query['statuses[0]'];
+      delete this.requestParams.query['statuses[1]'];
 
-      if (id === null) delete this.requestParams.query['statuses[0]'];
-      else if (id === 0) this.requestParams.query['statuses[0]'] = QuestStatuses.Created;
+      if (id === 0) this.requestParams.query['statuses[0]'] = QuestStatuses.Created;
       else if (id === 2) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitEmployerConfirm;
-      else if (id === 3) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorker;
-      else if (id === 4) this.requestParams.query.invited = true;
+      else if (id === 3) {
+        this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorker;
+        this.requestParams.query['statuses[1]'] = QuestStatuses.Dispute;
+      } else if (id === 4) this.requestParams.query.invited = true;
       else if (id === 5) this.requestParams.query['statuses[0]'] = QuestStatuses.Done;
 
       await this.getQuests();
