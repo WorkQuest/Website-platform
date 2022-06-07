@@ -66,14 +66,15 @@
               </label>
             </div>
             <div
-              v-if="options.isMembersList && options.itsOwner"
+              v-if="options.isMembersList && options.itsOwner && arrayMenu(user).length"
               class="friends__menu"
             >
               <chat-menu
                 class="friends__btn-menu"
-                :menu-items="isCurrentUserEmployer?['giveAQuest','removeFromChat']:['removeFromChat']"
+                :menu-items="arrayMenu(user)"
                 @giveAQuest="sendInvite(user)"
                 @removeFromChat="tryRemoveUser(user.id)"
+                @private="addToPrivate(user.id)"
               />
             </div>
           </div>
@@ -104,7 +105,6 @@
     </div>
   </ctm-modal-box>
 </template>
-
 <script>
 import { mapGetters } from 'vuex';
 import { Path, UserRole } from '~/utils/enums';
@@ -149,6 +149,11 @@ export default {
     else await this.getUsers();
   },
   methods: {
+    // Thw same name for emit when the item will be clicked
+    arrayMenu(user){
+      if  (this.currentUser.id !== user.id) return  this.isCurrentUserEmployer?['giveAQuest','private','removeFromChat']:['private', 'removeFromChat']
+      return this.isCurrentUserEmployer?['giveAQuest','private']:[]
+    },
     toUserProfile(userId) {
       this.$router.push(`${Path.PROFILE}/${userId}`);
       this.CloseModal();
@@ -204,7 +209,7 @@ export default {
           { key: 'isMembersList', val: true },
         ];
         this.changeOptions(optionsArr);
-        this.members = chatMembers;
+        this.members = chatMembers.map((mem)=> {return {...mem, ...mem.user}});
         return;
       }
       this.CloseModal();
@@ -243,6 +248,24 @@ export default {
           subtitle: this.$t('modals.errors.emptyOpenQuests'),
         });
       }
+    },
+
+    async addToPrivate(userId){
+      this.ShowModal({
+        key: modals.sendMessage,
+        callback: async (files, text)=> {
+          const medias = await this.uploadFiles(files);
+          const { userId } = this.options;
+          const { ok: isChatCreated, result } = await this.$store.dispatch('chat/handleCreatePrivateChat', { userId, medias, text: text });
+          this.isRespondActionInProgress = false;
+          if (isChatCreated) await this.$router.push(`${Path.MESSAGES}/${result.chat.id}`);.
+        },
+        userId
+      });
+      return ;
+      const { ok, result } = await this.$store.dispatch('chat/handleCreatePrivateChat', userId);
+      if (ok) await this.$router.push(`${Path.MESSAGES}/${result.chat.id}`);
+      this.CloseModal();
     },
   },
 };
@@ -393,6 +416,7 @@ export default {
     cursor: pointer;
   }
 }
+
 .checkbox-field {
   position: relative;
   display: flex;

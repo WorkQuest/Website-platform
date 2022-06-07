@@ -63,18 +63,24 @@
                 <div class="chat__row">
                   <div
                     class="chat__avas-cont"
-                    :class="[{'chat__avas-cont_couple' : chat.type === 'Quest' || chat.type === 'Private' },
-                             {'chat__avas-cont_triplet' :
-                               chat.type === 'Group' }]"
+                    :class="[{'chat__avas-cont_couple' : chat.type === ChatType.QUEST || chat.type === ChatType.PRIVATE }]"
                   >
                     <div
-                      v-for="(user, i) in chat.members.slice(0, 3)"
+                      v-if="chat.type === 'Group'"
+                      class="chat__avatar-group"
+                    >
+                      {{ chat.groupChat.name.charAt(0).toUpperCase() }}
+                    </div>
+                    <div
+                      v-for="(user, i) in chat.members"
+                      v-else
                       :key="`avatar-${i}`"
                       class="chat__ava-cont"
                     >
                       <img
+                        v-if="i<2"
                         class="chat__avatar"
-                        :src="user.avatar ? user.avatar.url : $options.images.EMPTY_AVATAR"
+                        :src="user.user.avatar ? user.user.avatar.url : $options.images.EMPTY_AVATAR"
                         alt=""
                         @click="isGroupChat(chat.type) ? '' : toUserProfile($event, user.userId)"
                       >
@@ -530,6 +536,18 @@ export default {
     position: absolute;
     object-fit: cover;
     z-index: 1500;
+    &-group{
+      color: $blue;
+      background-color: $black100;
+      border: 1px solid $black200;
+      font-weight: 500;
+      width: 43px;
+      height: 43px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 
   &__title {

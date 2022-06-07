@@ -6,7 +6,8 @@ export default {
       const { result, ok } = await this.$axios.$get('/v1/user/me/chats', { params: chatsFilter });
 
       result.chats.forEach((chat) => {
-        chat.isUnread = chat.meMember.unreadCountMessages > 0;
+        chat.members.push(chat.meMember);
+        chat.isUnread = chat.meMember?.chatMemberData?.unreadCountMessages > 0;
       });
       if (chatsFilter.offset) result.chats = rootState.chat.chats.list.concat(result.chats);
 
@@ -38,7 +39,7 @@ export default {
 
       if (result.chat) {
         result.chat.members = members;
-        // result.chat.isUnread = members.meMember.unreadCountMessages > 0;
+        result.chat.isUnread = members.chatMemberData?.unreadCountMessages > 0;
       }
 
       if (direction) {
@@ -99,6 +100,14 @@ export default {
         text: e.data.msg,
       }, { root: true });
       return { ok: false };
+    }
+  },
+  async handleCreatePrivateChat({ commit }, { userId, text, medias }) {
+    try {
+      const { payload } = await this.$wsChatActions.$post(`/api/v1/user/${userId}/send-message`, { text, mediaIds: medias });
+      return payload;
+    } catch (e) {
+      return (e);
     }
   },
   async handleSendMessage({ commit, state, dispatch }, { chatId, config }) {

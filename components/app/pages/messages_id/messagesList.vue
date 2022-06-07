@@ -251,7 +251,6 @@ export default {
   methods: {
     canShowActionUsers(messageAction, itsMe) {
       const isGroupChatCreateAction = messageAction === MessageAction.GROUP_CHAT_CREATE;
-
       return !isGroupChatCreateAction || (isGroupChatCreateAction && !itsMe);
     },
     isPrevMessageSameSender(i, message) {
@@ -384,7 +383,7 @@ export default {
     setFullName({ itsMe, infoMessage: { user }, sender }) {
       return itsMe
         ? `${user?.firstName || ''} ${user?.lastName || ''}`
-        : `${sender?.firstName || ''} ${sender?.lastName || ''}`;
+        : `${sender?.user?.firstName || ''} ${sender?.user?.lastName || ''}`;
     },
     goToCurrChat(message) {
       if (this.chatId !== 'starred') return;

@@ -25,6 +25,13 @@
                 {{ currChat && currChat.questChat && currChat.questChat.quest.title }}
               </div>
               <div
+                v-if="currChat.type === ChatType.PRIVATE"
+                class="chat-container__quest-link"
+                @click="$router.push(`${Path.PROFILE}/${privateSecondMember.user.id}`)"
+              >
+                {{ `${privateSecondMember.user.firstName}  ${privateSecondMember.user.lastName}` }}
+              </div>
+              <div
                 v-if="isGroupChat"
                 class="chat-container__group-chat-cont"
               >
@@ -181,6 +188,9 @@ export default {
     ChatType() {
       return ChatType;
     },
+    Path() {
+      return Path;
+    },
     isGroupChat() {
       return this.currChat?.type === ChatType.GROUP;
     },
@@ -197,7 +207,12 @@ export default {
       return this.isGroupChat && !this.amIOwner;
     },
     amIOwner() {
-      return this.currChat?.owner?.id === this.userData.id;
+      const currMemeberData = this.currChat?.members && this.currChat?.members.find((el) => el.userId === this.userData.id);
+      if (!currMemeberData) return false;
+      return this.currChat?.groupChat?.ownerMemberId === currMemeberData.id;
+    },
+    privateSecondMember() {
+      return this.currChat?.members && this.currChat?.members.find((el) => el.userId !== this.userData.id);
     },
   },
   async mounted() {
