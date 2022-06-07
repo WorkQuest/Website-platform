@@ -22,7 +22,7 @@
               <div class="notification__avatar">
                 <img
                   class="avatar"
-                  :class="{'avatar_hov': !notification.params.isLocal}"
+                  :class="{'avatar_hov': !checkLocalOrSystemNotif(notification)}"
                   :src="avatar(notification)"
                   alt=""
                   @click="toUserProfile(notification)"
@@ -31,7 +31,7 @@
               <div class="notification__inviter inviter">
                 <span
                   class="inviter__name"
-                  :class="{'inviter__name_hov': !notification.params.isLocal }"
+                  :class="{'inviter__name_hov': !checkLocalOrSystemNotif(notification) }"
                   @click="notification.params.isLocal ? '' : toUserProfile(notification)"
                 >
                   {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
@@ -156,6 +156,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    checkLocalOrSystemNotif(notification) {
+      return notification?.params?.isLocal || !notification?.sender?.id;
+    },
     async setLocalNotifications() {
       const { $cookies, page, totalPages } = this;
       if (page === totalPages) {
@@ -213,12 +216,7 @@ export default {
     },
     toUserProfile(notification) {
       if (notification?.params?.isLocal) return;
-      if (!notification?.sender?.id && notification?.params?.path
-        && [NotificationAction.QUEST_STATUS_UPDATED, NotificationAction.DISPUTE_DECISION].includes(notification?.notification?.action)) {
-        this.$router.push(notification.params.path);
-        return;
-      }
-      this.$router.push(`${Path.PROFILE}/${notification.sender.id}`);
+      if (notification?.sender?.id) this.$router.push(`${Path.PROFILE}/${notification.sender.id}`);
     },
     tryRemoveNotification(ev, notification) {
       ev.stopPropagation();
