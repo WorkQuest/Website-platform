@@ -339,8 +339,8 @@ export default {
           method: 'balanceOf', ...payload, token: this.tokenAddresses[this.tokenSymbolsDd.indexOf(selectedToken) - 1], symbol: selectedToken,
         });
       }
-      await this.getTransactions();
       this.isFetchingBalance = false;
+      await this.getTransactions();
     },
     closeCard() {
       this.cardClosed = true;
