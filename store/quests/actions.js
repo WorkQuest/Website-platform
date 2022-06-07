@@ -118,11 +118,14 @@ export default {
       return false;
     }
   },
-  async getUserQuests({ commit }, { role, query, userId }) {
+  async getUserQuests({ commit, rootGetters }, { role, query, userId }) {
     try {
       const specializations = query.specializations || [];
       if (query.specializations) delete query.specializations;
-      const url = !userId ? `/v1/me/${role}/get-quests` : `/v1/${role}/${userId}/get-quests`;
+      // Fetch my quests or quests for special user
+      const url = userId === rootGetters['user/getUserData'].id
+        ? `/v1/me/${role}/get-quests`
+        : `/v1/${role}/${userId}/get-quests`;
       const response = await this.$axios.$post(url, { specializations }, {
         params: { ...query },
       });

@@ -141,9 +141,6 @@ export default {
       notificationsCount: 'notifications/getNotificationsCount',
     }),
   },
-  async beforeMount() {
-    await this.$store.dispatch('notifications/getNotifications');
-  },
   methods: {
     senderId(notification) {
       return notification.sender?.id || '';
