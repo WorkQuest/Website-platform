@@ -10,7 +10,7 @@ export default {
 
   NOTIFS_URL: 'https://notifications.workquest.co/api/',
   WS_NOTIFS_URL: 'wss://notifications.workquest.co/api/v1/notifications',
-  WS_CHAT_ACTIONS_URL: 'wss://app.workquest.co/api/v1/notifications/chat',
+  WS_CHAT_ACTIONS_URL: 'wss://dev-app.workquest.co/api/v1/notifications/chat',
   WS_WQ_PROVIDER: 'wss://dev-node-nyc3.workquest.co/tendermint-rpc/websocket',
 
   ETHEREUM_BRIDGE: '0x03883AE9F07D71a1b67b89fD4af83B9A81e3f8C4',
