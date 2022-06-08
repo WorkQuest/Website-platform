@@ -15,17 +15,18 @@
         :key="response.worker.id"
         class="worker__container"
       >
-        <div
-          class="worker user-data"
-          @click="toUserProfile(response)"
-        >
+        <div class="worker user-data">
           <img
             class="worker__avatar"
             :src="response.worker.avatar ? response.worker.avatar.url : $options.images.EMPTY_AVATAR"
             alt=""
+            @click="toUserProfile(response)"
           >
           <div class="worker__user">
-            <div class="worker__name">
+            <div
+              class="worker__name"
+              @click="toUserProfile(response)"
+            >
               {{ `${response.worker.firstName} ${response.worker.lastName}` }}
             </div>
             <div
@@ -219,8 +220,7 @@ export default {
   }
 }
 .user-data {
-  display: grid;
-  grid-template-columns: 40px 1fr max-content;
+  display: flex;
   align-items: center;
   gap: 10px;
 }
@@ -230,6 +230,7 @@ export default {
   color: $black800;
   &__menu {
     align-self: center;
+    flex-shrink: 0;
   }
    &__card {
     background: $white;
@@ -253,13 +254,16 @@ export default {
     width: 40px;
     height: 40px;
     cursor: pointer;
+    object-fit: cover;
  }
   &__status {
-    background: $yellow;
+    background: $green;
     border-radius: 6px;
     display: inline-block;
     font-size: 14px;
     padding: 1px 4px;
+    user-select: none;
+    color: $white;
   }
   &__name {
     @extend .worker;
@@ -273,6 +277,13 @@ export default {
  &__title {
     font-size: 18px;
     margin-bottom: 20px;
+  }
+}
+
+@include _575 {
+  .user-data {
+    display: grid;
+    grid-template-columns: 40px 1fr max-content;
   }
 }
 </style>
