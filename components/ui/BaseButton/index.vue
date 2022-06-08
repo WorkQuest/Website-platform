@@ -392,7 +392,7 @@ export default {
     }
     &:hover {
       & span {
-        color: #bb5151;
+        color: $errorText;
       }
     }
   }
