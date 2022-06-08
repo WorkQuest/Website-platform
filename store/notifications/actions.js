@@ -290,19 +290,12 @@ export default {
       }
       commit('setWaitForUpdateQuest', null);
     };
-
-    // eslint-disable-next-line default-case
-    switch (action) {
-      case NotificationAction.QUEST_STATUS_UPDATED:
-        if (getters.getWaitForUpdateQuest?.id === data?.id) {
-          await handleWaitForUpdateQuest();
-        }
-        break;
-      case NotificationAction.QUEST_EDITED_ON_CONTRACT:
-        if (getters.getWaitForUpdateQuest?.id === data?.id) {
-          await handleWaitForUpdateQuest();
-        }
-        break;
+    if ([
+      NotificationAction.QUEST_EDITED_ON_CONTRACT,
+      NotificationAction.QUEST_STATUS_UPDATED,
+    ].includes(action)
+    && getters.getWaitForUpdateQuest?.id === data?.id) {
+      await handleWaitForUpdateQuest();
     }
 
     // For update quest & quest lists

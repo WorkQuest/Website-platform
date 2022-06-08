@@ -112,6 +112,7 @@
         "notIndicated": "Not indicated..."
       }
     },
+    "accepted": "Accepted",
     "allTransactions": "All transactions",
     "collateralTransactions": "Collateral transactions",
     "operation": "Operation",
@@ -447,6 +448,7 @@
     "questBig": "Quest",
     "activeQuest": "সক্রিয় quest",
     "waitWorker": "Wait worker",
+    "waitWorkerOnAssign": "Waiting for employee response:",
     "pendingConsideration": "Pending consideration",
     "questClosed": "Quest Closed",
     "dontHaveSpec": "Doesn`t have specializations...",
@@ -2057,10 +2059,10 @@
   },
   "myQuests": {
     "statuses": {
-      "all": "সমস্ত quest",
+      "all": "সমস্ত quests",
       "fav": "প্রিয়",
       "requested": "অনুরোধ করা হয়েছে",
-      "completed": "সম্পন্ন quest",
+      "completed": "সম্পন্ন quests",
       "active": "সক্রিয় quest",
       "invited": "আমন্ত্রিত quest",
       "created": "Created quests"

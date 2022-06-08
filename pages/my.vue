@@ -10,7 +10,7 @@
         </div>
         <div
           class="quests__content"
-          :class="{'quests__content-wide': userRole === UserRole.WORKER }"
+          :class="{'quests__content-wide': userRole === $options.UserRole.WORKER }"
         >
           <base-btn
             v-for="(item, i) in filterTabs"
@@ -61,6 +61,7 @@ import { QuestStatuses } from '~/utils/сonstants/quests';
 
 export default {
   name: 'My',
+  UserRole,
   data() {
     return {
       selectedTab: null,
@@ -77,9 +78,6 @@ export default {
       quests: 'quests/getAllQuests',
       questsCount: 'quests/getAllQuestsCount',
     }),
-    UserRole() {
-      return UserRole;
-    },
     filterTabs() {
       const tabs = [
         { name: this.$t('myQuests.statuses.all'), id: null },
@@ -88,7 +86,12 @@ export default {
         { name: this.$t('myQuests.statuses.responded'), id: 2 },
         { name: this.$t('myQuests.statuses.invited'), id: 4 },
         { name: this.$t('myQuests.statuses.active'), id: 3 },
-        { name: this.$t('myQuests.statuses.performed'), id: 5 },
+        {
+          name: this.userRole === UserRole.WORKER
+            ? this.$t('myQuests.statuses.performed')
+            : this.$t('myQuests.statuses.completed'),
+          id: 5,
+        },
       ];
       return this.userRole === UserRole.EMPLOYER
         ? tabs.filter((tab) => (tab.id !== 2 && tab.id !== 4))

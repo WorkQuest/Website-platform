@@ -282,7 +282,7 @@ export default {
   }
   &_show-messages {
     background-color: transparent !important;
-    color: $blue !important;
+    color: $white !important;
   }
   &_messages {
     background-color: $white !important;

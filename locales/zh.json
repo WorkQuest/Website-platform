@@ -112,6 +112,7 @@
         "notIndicated": "Not indicated..."
       }
     },
+    "accepted": "Accepted",
     "allTransactions": "All transactions",
     "collateralTransactions": "Collateral transactions",
     "operation": "Operation",
@@ -447,6 +448,7 @@
     "questBig": "Quest",
     "activeQuest": "有效 Quest",
     "waitWorker": "Wait worker",
+    "waitWorkerOnAssign": "Waiting for employee response:",
     "pendingConsideration": "Pending consideration",
     "questClosed": "Quest Closed",
     "dontHaveSpec": "Doesn`t have specializations...",
@@ -2061,6 +2063,7 @@
       "favorites": "Favorites",
       "responded": "Responded quests",
       "performed": "Performed quests",
+      "completed": "Completed quests",
       "active": "Active quests",
       "invited": "Invited quests",
       "created": "Created quests"
