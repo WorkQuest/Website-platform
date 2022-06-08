@@ -33,11 +33,14 @@ import {
   TokenSymbols,
   StakingTypes,
   WorknetTokenAddresses,
+  TokenSymbolByContract,
 } from '~/utils/enums';
 
 import ENV from '~/utils/adresses/index';
+import { LocalNotificationAction } from '~/utils/notifications';
 
 let connectionWS = null;
+let callbackWS = null;
 
 export default {
   async getTransactions({ commit }, params) {
@@ -405,8 +408,9 @@ export default {
   },
   async subscribeWS({
     commit, dispatch, rootGetters, getters,
-  }, { hexAddress, timestamp, updateWalletData }) {
+  }, { hexAddress, timestamp }) {
     try {
+      const userWalletAddress = rootGetters['user/getUserWalletAddress'].toLowerCase();
       connectionWS = new WebSocket(ENV.WS_WQ_PROVIDER);
       connectionWS.onopen = () => {
         const request = {
@@ -425,8 +429,20 @@ export default {
       };
       connectionWS.onmessage = async (ev) => {
         const { events } = JSON.parse(ev.data).result;
-        const recipient = events ? events['ethereum_tx.recipient'][0].toLowerCase() : null;
-        if (recipient === hexAddress) {
+        const recipient = events ? events['ethereum_tx.recipient'][0] : null;
+
+        const sender = events && events['message.sender'] ? events['message.sender'][3]?.toLowerCase() : null;
+        if (recipient && sender !== userWalletAddress) {
+          await dispatch('notifications/createLocalNotification', {
+            message: $nuxt.$t('ui.notifications.balanceUpdated', {
+              token: TokenSymbolByContract[recipient?.toLowerCase()] || TokenSymbols.WQT,
+            }),
+            actionBtn: $nuxt.$t('meta.btns.view'),
+            action: LocalNotificationAction.WALLET_UPDATE,
+          }, { root: true });
+        }
+
+        if (recipient?.toLowerCase() === hexAddress) {
           const transactions = JSON.parse(JSON.stringify(getters.getTransactions));
           if (transactions.length === 10) transactions.splice(9, 1);
           transactions.unshift({
@@ -436,10 +452,10 @@ export default {
             status: true,
             value: events['ethereum_tx.amount'][0],
             transaction_fee: +(events['tx.fee'][0].split('a')[0]),
-            from_address_hash: { hex: events['message.sender'][3] },
+            from_address_hash: { hex: sender },
             to_address_hash: { hex: recipient },
           });
-          await updateWalletData();
+          if (callbackWS) await callbackWS();
           commit('setTransactions', transactions);
           commit('setTransactionsCount', getters.getTransactionsCount + 1);
         }
@@ -452,6 +468,9 @@ export default {
   },
   async unsubscribeWS({ _ }) {
     connectionWS = null;
+  },
+  async setCallbackWS({ _ }, callback) {
+    callbackWS = callback;
   },
 
   /** BuyWQT */

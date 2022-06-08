@@ -338,6 +338,7 @@ export default {
   computed: {
     ...mapGetters({
       userData: 'user/getUserData',
+      userWalletAddress: 'user/getUserWalletAddress',
       imageData: 'user/getImageData',
       token: 'user/accessToken',
       connections: 'main/notificationsConnectionStatus',
@@ -520,6 +521,12 @@ export default {
         })));
       }
       if (!chatActionsConnection) await $wsChatActions.connect(token);
+
+      // wallet txs
+      await this.$store.dispatch('wallet/subscribeWS', {
+        hexAddress: this.userWalletAddress,
+        timestamp: this.$moment(),
+      });
     },
     async getStatistic() {
       await this.$store.dispatch('user/getStatistic');
@@ -1139,6 +1146,12 @@ export default {
 
 @include _1199 {
   .ctm-menu {
+    &__user {
+      cursor: pointer;
+    }
+    &__dropdown {
+      cursor: pointer;
+    }
     &__toggle {
       display: flex;
     }

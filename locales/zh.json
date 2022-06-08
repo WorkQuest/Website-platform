@@ -120,6 +120,8 @@
     "claimRewards": "Claim rewards",
     "percent": "百分比",
     "deposit": "Deposit",
+    "description": "Description",
+    "email": "Email",
     "withdraw": "提款",
     "withdrawal": "提款",
     "information": "信息",
@@ -145,6 +147,7 @@
     "questsSmall": "quest",
     "questsBig": "Quest",
     "codeFromSMS": "短信代码",
+    "title": "Title",
     "toBig": "To",
     "toSmall": "to",
     "fromBig": "来自",
@@ -929,7 +932,9 @@
     "caseDeleted": "Case deleted!",
     "caseAdded": "Case added!",
     "caseEdited": "Case edited!",
-    "error": "Error!"
+    "error": "Error!",
+    "sendToSupport": "A message has been sent to support",
+    "sent": "Sent"
   },
   "modals": {
     "titles": {
@@ -986,6 +991,7 @@
       "sharing": "分享",
       "signWorkQuest": "WorkQuest 社交网络",
       "skills": "Skills",
+      "support": "Support",
       "smsVerification": "短信验证",
       "swapTitle": "Cross-chain exchange",
       "swapInfo": "Swap info",
@@ -1114,6 +1120,7 @@
     "switchOnGoogleAuth": "开启 Google 身份验证器",
     "emailVerificationCode": "电子邮件验证码",
     "emailPlaceholder": "请输入电子邮件验证码",
+    "email": "Email",
     "googleVerificationCode": "Google 验证码",
     "codePlaceholder": "请输入 Google 验证码",
     "useYourGoogleAuth": "使用您的 Google 身份验证器应用扫描 QR 码。",
@@ -1300,7 +1307,12 @@
     "notifications": {
       "title": "通知",
       "invite": "邀请您完成 Quest",
-      "noNotifications": "No notifications"
+      "noNotifications": "No notifications",
+      "workquestInfo": "Workquest info",
+      "respondedQuestEdited": "Quest that you responded to is edited. Please check it once again.",
+      "invitedQuestEdited": "The quest you were invited to has been edited. Please check it once again.",
+      "viewOffersBySpecs": "View offers for selected specializations",
+      "balanceUpdated": "Balance replenishment {token}"
     },
     "menu": {
       "unauthorized": "Not logged",
@@ -1396,7 +1408,7 @@
     "userLeftReviewAboutQuest": "Left review about quest",
     "registrationError": "No users found for registration. Please contact to developers",
     "waitWorker": "The quest is pending",
-    "disputeDecision": "Dispute decision",
+    "DisputeDecision": "Dispute decision",
     "newCommentInDiscussion": "New comment in Discussion",
     "commentLiked": "Comment liked",
     "questEdited": "Quest edited",

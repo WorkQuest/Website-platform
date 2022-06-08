@@ -120,6 +120,8 @@
     "claimRewards": "Claim rewards",
     "percent": "Pourcent",
     "deposit": "Deposit",
+    "description": "Description",
+    "email": "Email",
     "withdraw": "Retirer",
     "withdrawal": "Retrait",
     "information": "Informations",
@@ -145,6 +147,7 @@
     "questsSmall": "quêtes",
     "questsBig": "Quêtes",
     "codeFromSMS": "Code du SMS",
+    "title": "Title",
     "toBig": "À",
     "toSmall": "À",
     "fromBig": "De",
@@ -929,7 +932,9 @@
     "caseDeleted": "Case deleted!",
     "caseAdded": "Case added!",
     "caseEdited": "Case edited!",
-    "error": "Error!"
+    "error": "Error!",
+    "sendToSupport": "A message has been sent to support",
+    "sent": "Sent"
   },
   "modals": {
     "titles": {
@@ -986,6 +991,7 @@
       "sharing": "Partage",
       "signWorkQuest": "Réseau social WorkQuest",
       "skills": "Skills",
+      "support": "Support",
       "smsVerification": "SMS verification",
       "swapTitle": "Cross-chain exchange",
       "swapInfo": "Swap info",
@@ -1114,6 +1120,7 @@
     "switchOnGoogleAuth": "Activer Google Authenticator",
     "emailVerificationCode": "Code de vérification de l'e-mail",
     "emailPlaceholder": "Veuillez saisir le code de vérification de l'e-mail",
+    "email": "Email",
     "googleVerificationCode": "Code de vérification Google",
     "codePlaceholder": "Veuillez saisir le code de vérification Google",
     "useYourGoogleAuth": "Utilisez votre application Google Authenticator pour scanner le code QR.",
@@ -1300,7 +1307,12 @@
     "notifications": {
       "title": "Notifications",
       "invite": "Vous invite à terminer la quête",
-      "noNotifications": "No notifications"
+      "noNotifications": "No notifications",
+      "workquestInfo": "Workquest info",
+      "respondedQuestEdited": "Quest that you responded to is edited. Please check it once again.",
+      "invitedQuestEdited": "The quest you were invited to has been edited. Please check it once again.",
+      "viewOffersBySpecs": "View offers for selected specializations",
+      "balanceUpdated": "Balance replenishment {token}"
     },
     "menu": {
       "unauthorized": "Not logged",
@@ -1396,7 +1408,7 @@
     "userLeftReviewAboutQuest": "Left review about quest",
     "registrationError": "No users found for registration. Please contact to developers",
     "waitWorker": "The quest is pending",
-    "disputeDecision": "Dispute decision",
+    "DisputeDecision": "Dispute decision",
     "newCommentInDiscussion": "New comment in Discussion",
     "commentLiked": "Comment liked",
     "questEdited": "Quest edited",
