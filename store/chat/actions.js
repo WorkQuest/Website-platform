@@ -7,6 +7,7 @@ export default {
 
       result.chats.forEach((chat) => {
         chat.members.push(chat.meMember);
+        chat.members.reverse();
         chat.isUnread = chat.meMember?.chatMemberData?.unreadCountMessages > 0;
       });
       if (chatsFilter.offset) result.chats = rootState.chat.chats.list.concat(result.chats);
@@ -24,7 +25,7 @@ export default {
     try {
       const method = `/v1/user/me/chat/${chatId === 'starred' ? 'messages/star' : `${chatId}${Path.MESSAGES}`}`;
       const { result, ok } = await this.$axios.$get(method, config);
-      const { result: { members } } = await this.$axios.$get(`/v1/user/me/chat/group/${chatId}/members`);
+
       const myId = user.userData.id;
 
       result.messages.forEach((message) => {
@@ -38,6 +39,7 @@ export default {
       });
 
       if (result.chat) {
+        const { result: { members } } = await this.$axios.$get(`/v1/user/me/chat/group/${chatId}/members`);
         result.chat.members = members;
         result.chat.isUnread = members.chatMemberData?.unreadCountMessages > 0;
       }

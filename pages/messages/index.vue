@@ -219,12 +219,12 @@ export default {
     },
     filterTabs() {
       return [
-        { name: 'All', value: undefined },
-        { name: 'Private', value: ChatType.PRIVATE },
-        { name: 'Groups', value: ChatType.GROUP },
-        { name: 'Active Quests', value: QuestChatStatus.Active },
-        { name: 'Completed Quests', value: QuestChatStatus.Closed },
-        { name: 'Starred', value: 'starred' },
+        { name: this.$t('chat.tabs.all'), value: undefined },
+        { name: this.$t('chat.tabs.private'), value: ChatType.PRIVATE },
+        { name: this.$t('chat.tabs.groups'), value: ChatType.GROUP },
+        { name: this.$t('chat.tabs.activeQuests'), value: QuestChatStatus.Active },
+        { name: this.$t('chat.tabs.completedQuests'), value: QuestChatStatus.Closed },
+        { name: this.$t('chat.tabs.starred'), value: 'starred' },
       ];
     },
     isFilterChatQuestStatus() {
@@ -238,7 +238,6 @@ export default {
       { key: 'starred', val: false },
       { key: 'type', val: undefined },
       { key: 'questChatStatus', val: undefined },
-
     ]);
   },
   async mounted() {

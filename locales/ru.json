@@ -1493,6 +1493,15 @@
       "giveAQuest": "Дать квест",
       "removeFromChat": "Удалить из чата",
       "private": "Приватный чат"
+    },
+    "tabs": {
+      "all": "All",
+      "private": "Private",
+      "groups": "Groups",
+      "quests": "Quests",
+      "activeQuests" : "Active Quests",
+      "completedQuests": "Completed Quests",
+      "starred": "Starred"
     }
   },
   "settings": {

@@ -809,6 +809,7 @@ export default {
     async sendARequestOnQuest() {
       this.ShowModal({
         key: modals.sendARequest,
+        title: this.$tc('modals.titles.sendARequest'),
         questId: this.quest.id,
       });
     },

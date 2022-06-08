@@ -41,8 +41,7 @@
               <img
                 class="friends__img"
                 alt=""
-                :src="user.avatar && user.avatar.url ? user.avatar.url :
-                require('~/assets/img/app/avatar_empty.png')"
+                :src="user.avatar && user.avatar.url ? user.avatar.url : images.EMPTY_AVATAR"
               >
               <span class="friends__name">
                 {{ (user.firstName || '') + ' ' + (user.lastName || '') }}
@@ -110,6 +109,7 @@ import { mapGetters } from 'vuex';
 import { Path, UserRole } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 import ChatMenu from '~/components/ui/ChatMenu';
+import { images } from '~/utils/images';
 
 export default {
   name: 'ModalChatUsers',
@@ -142,17 +142,22 @@ export default {
     isCurrentUserEmployer() {
       return this.currentUser.role === UserRole.EMPLOYER;
     },
+    images() {
+      return images;
+    },
   },
   async mounted() {
     const { options: { isMembersList }, chatMembers } = this;
-    if (isMembersList) this.members = chatMembers.map((mem)=> {return {...mem, ...mem.user}});
+    if (isMembersList) this.members = chatMembers.map((mem) => ({ ...mem, ...mem.user }));
     else await this.getUsers();
   },
   methods: {
     // Thw same name for emit when the item will be clicked
-    arrayMenu(user){
-      if  (this.currentUser.id !== user.id) return  this.isCurrentUserEmployer?['giveAQuest','private','removeFromChat']:['private', 'removeFromChat']
-      return this.isCurrentUserEmployer?['giveAQuest','private']:[]
+    arrayMenu(user) {
+      if (this.currentUser.id !== user.id) {
+        return this.isCurrentUserEmployer ? ['giveAQuest', 'private', 'removeFromChat'] : ['private', 'removeFromChat'];
+      }
+      return this.isCurrentUserEmployer ? ['giveAQuest', 'private'] : [];
     },
     toUserProfile(userId) {
       this.$router.push(`${Path.PROFILE}/${userId}`);
@@ -209,7 +214,7 @@ export default {
           { key: 'isMembersList', val: true },
         ];
         this.changeOptions(optionsArr);
-        this.members = chatMembers.map((mem)=> {return {...mem, ...mem.user}});
+        this.members = chatMembers.map((mem) => ({ ...mem, ...mem.user }));
         return;
       }
       this.CloseModal();
@@ -250,22 +255,18 @@ export default {
       }
     },
 
-    async addToPrivate(userId){
+    async addToPrivate(userId) {
       this.ShowModal({
-        key: modals.sendMessage,
-        callback: async (files, text)=> {
+        key: modals.sendARequest,
+        title: this.$tc('modals.titles.sendPrivateMessage'),
+        callbackSend: async (files, text) => {
           const medias = await this.uploadFiles(files);
-          const { userId } = this.options;
-          const { ok: isChatCreated, result } = await this.$store.dispatch('chat/handleCreatePrivateChat', { userId, medias, text: text });
+          const { ok: isChatCreated, result } = await this.$store.dispatch('chat/handleCreatePrivateChat', { userId, medias, text });
           this.isRespondActionInProgress = false;
-          if (isChatCreated) await this.$router.push(`${Path.MESSAGES}/${result.chat.id}`);.
+          if (isChatCreated) await this.$router.push(`${Path.MESSAGES}/${result.chat.id}`);
+          this.CloseModal();
         },
-        userId
       });
-      return ;
-      const { ok, result } = await this.$store.dispatch('chat/handleCreatePrivateChat', userId);
-      if (ok) await this.$router.push(`${Path.MESSAGES}/${result.chat.id}`);
-      this.CloseModal();
     },
   },
 };

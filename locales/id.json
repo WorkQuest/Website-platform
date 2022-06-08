@@ -1493,6 +1493,15 @@
       "giveAQuest": "Give a quest",
       "removeFromChat": "Remove from the chat",
       "private": "Private chat"
+    },
+    "tabs": {
+      "all": "All",
+      "private": "Private",
+      "groups": "Groups",
+      "quests": "Quests",
+      "activeQuests" : "Active Quests",
+      "completedQuests": "Completed Quests",
+      "starred": "Starred"
     }
   },
   "settings": {
