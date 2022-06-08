@@ -1,15 +1,15 @@
 export default {
-  BASE_URL: 'https://test-app.workquest.co/api/',
+  BASE_URL: 'https://testnet-app.workquest.co/api/',
   // GMAPKEY: process.env.GMAPKEY,
   // SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
   WQ_PROVIDER: 'https://test-gate-01.workquest.co/',
-  WQ_EXPLORER: 'https://test-explorer.workquest.co/api/v1',
-  WQ_ORACLE_URL: 'https://test-oracle.workquest.co/api/v1',
+  WQ_EXPLORER: 'https://testnet-explorer.workquest.co/api/v1',
+  WQ_ORACLE_URL: 'https://testnet-oracle.workquest.co/api/v1',
 
   NOTIFS_URL: 'https://notifications.workquest.co/api/',
   WS_NOTIFS_URL: 'wss://notifications.workquest.co/api/v1/notifications',
-  WS_CHAT_ACTIONS_URL: 'wss://test-app.workquest.co/api/v1/notifications/chat',
+  WS_CHAT_ACTIONS_URL: 'wss://testnet-app.workquest.co/api/v1/notifications/chat',
   WS_WQ_PROVIDER: 'wss://test-gate-01.workquest.co/tendermint-rpc/websocket',
 
   ETHEREUM_BRIDGE: '0xd65815dA812C6eAEC0186215E43A12D76F5deCBc',
