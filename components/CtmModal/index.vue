@@ -63,6 +63,7 @@ export default {
     [modals.signWorkQuest]: () => import('./CtmModalSignWorkQuest'),
     [modals.securityCheck]: () => import('./CtmModalSecurityCheck'),
     [modals.sharingQuest]: () => import('./CtmModalSharing'),
+    [modals.support]: () => import('./CtmModalSupport'),
     [modals.changeRoleWarning]: () => import('./CtmModalChangeRoleWarning'),
     [modals.changeRoleReason]: () => import('./CtmModalChangeRoleReason'),
     [modals.chooseNecessarySkills]: () => import('./CtmModalChooseNecessarySkills'),

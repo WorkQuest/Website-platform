@@ -89,6 +89,7 @@
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import moment from 'moment';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'GuestLayout',
@@ -136,7 +137,7 @@ export default {
       this.isShowLocale = false;
     },
     toMain() {
-      this.$router.push('/sign-in');
+      this.$router.push(Path.SIGN_IN);
     },
     showLocale() {
       this.isShowLocale = !this.isShowLocale;

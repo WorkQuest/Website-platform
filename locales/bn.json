@@ -120,6 +120,8 @@
     "claimRewards": "Claim rewards",
     "percent": "শতাংশ",
     "deposit": "Deposit",
+    "description": "Description",
+    "email": "Email",
     "withdraw": "উত্তোলন করুন",
     "withdrawal": "উত্তোলন",
     "information": "তথ্য",
@@ -146,6 +148,7 @@
     "questsBig": "Quests",
     "codeFromSMS": "্ষুদে বার্তা থেকে কোড",
     "toBig": "প্রতি",
+    "title": "Title",
     "toSmall": "প্রতি",
     "fromBig": "থেকে",
     "fromSmall": "থেকে",
@@ -929,7 +932,9 @@
     "caseDeleted": "Case deleted!",
     "caseAdded": "Case added!",
     "caseEdited": "Case edited!",
-    "error": "Error!"
+    "error": "Error!",
+    "sendToSupport": "A message has been sent to support",
+    "sent": "Sent"
   },
   "modals": {
     "titles": {
@@ -986,6 +991,7 @@
       "sharing": "শেয়ার করা",
       "signWorkQuest": "WorkQuest সামাজিক নেটওয়ার্ক",
       "skills": "Skills",
+      "support": "Support",
       "smsVerification": "্ষুদে বার্তা যাচাইকরণ",
       "swapTitle": "Cross-chain exchange",
       "swapInfo": "Swap info",
@@ -1114,6 +1120,7 @@
     "switchOnGoogleAuth": "Google প্রমাণীকরণ চালু করুন",
     "emailVerificationCode": "যাচাইকরণ কোড ইমেইল করুন",
     "emailPlaceholder": "অনুগ্রহ করে ইমেইল যাচাইকরণ কোড লিখুন",
+    "email": "Email",
     "googleVerificationCode": "গুগল যাচাইকরণ কোড",
     "codePlaceholder": "অনুগ্রহ করে Google যাচাইকরণ কোড লিখুন",
     "useYourGoogleAuth": "QR কোড স্ক্যান করতে আপনার Google প্রমাণীকরণ অ্যাপ ব্যবহার করুন।",
@@ -1300,7 +1307,12 @@
     "notifications": {
       "title": "বিজ্ঞপ্তি",
       "invite": "আপনাকে quest সম্পন্ন করার আমন্ত্রণ জানাচ্ছে",
-      "noNotifications": "No notifications"
+      "noNotifications": "No notifications",
+      "workquestInfo": "Workquest info",
+      "respondedQuestEdited": "Quest that you responded to is edited. Please check it once again.",
+      "invitedQuestEdited": "The quest you were invited to has been edited. Please check it once again.",
+      "viewOffersBySpecs": "View offers for selected specializations",
+      "balanceUpdated": "Balance replenishment {token}"
     },
     "menu": {
       "unauthorized": "Not logged",
@@ -1396,7 +1408,7 @@
     "userLeftReviewAboutQuest": "Left review about quest",
     "registrationError": "No users found for registration. Please contact to developers",
     "waitWorker": "The quest is pending",
-    "disputeDecision": "Dispute decision",
+    "DisputeDecision": "Dispute decision",
     "newCommentInDiscussion": "New comment in Discussion",
     "commentLiked": "Comment liked",
     "questEdited": "Quest edited",

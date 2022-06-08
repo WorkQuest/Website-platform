@@ -20,12 +20,25 @@ Vue.mixin({
     };
   },
   methods: {
+    EqualsArrays(a, b) {
+      if (a.length !== b.length) return false;
+      for (let i = 0; i < a.length; i += 1) if (a[i] !== b[i]) return false;
+      return true;
+    },
     convertToBech32(prefix, address) {
-      return converter(prefix).toBech32(address);
+      try {
+        return converter(prefix).toBech32(address);
+      } catch (e) {
+        return address;
+      }
     },
     convertToHex(prefix, address) {
-      if (address.startsWith(prefix)) return converter(prefix).toHex(address);
-      return address;
+      try {
+        if (address.startsWith(prefix)) return converter(prefix).toHex(address);
+        return address;
+      } catch (e) {
+        return address;
+      }
     },
     async uploadFiles(files) {
       if (!files.length) return [];
@@ -299,6 +312,15 @@ Vue.mixin({
 
       return toMatch.some((toMatchItem) => navigator.userAgent.match(toMatchItem));
     },
+    /**
+     * Check allowance and making approve
+     * @param tokenAddress - token
+     * @param contractAddress - recipient
+     * @param amount - token amount
+     * @param approveTitle - title for modal
+     * @returns {Promise<unknown>}
+     * @constructor
+     */
     async MakeApprove({
       tokenAddress, contractAddress, amount, approveTitle = this.$t('meta.approve'),
     }) {

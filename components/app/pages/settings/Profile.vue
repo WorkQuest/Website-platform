@@ -643,7 +643,7 @@ export default {
   }
   &__socials {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
     column-gap: 20px;
   }
   &__save {
@@ -695,6 +695,12 @@ export default {
   &::before {
     color: $blue;
     align-items: center;
+  }
+}
+
+@include _1199 {
+  .profile__socials {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 

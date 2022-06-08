@@ -157,14 +157,14 @@
         :class="userData.role === UserRole.WORKER ? 'right__header_employee' : ''"
       >
         <div
-          v-if="userData.role === UserRole.WORKER && userData.wagePerHour"
+          v-if="userData.role === UserRole.WORKER && userData.costPerHour"
           class="right__price"
         >
           <div class="price__text">
             {{ $t('meta.costPerHour') }}
           </div>
           <div class="price__value">
-            {{ $tc('meta.coins.count.WUSDCount', userData.wagePerHour) }}
+            {{ $tc('meta.coins.count.WUSDCount', userData.costPerHour) }}
           </div>
         </div>
         <div class="right__share-btn">
@@ -314,10 +314,10 @@ export default {
     },
     raiseViewsName() {
       return {
-        0: 'Gold Plus',
-        1: 'Gold',
-        2: 'Silver',
-        3: 'Bronze',
+        0: this.$t('quests.levels.1.title'),
+        1: this.$t('quests.levels.2.title'),
+        2: this.$t('quests.levels.3.title'),
+        3: this.$t('quests.levels.4.title'),
       };
     },
   },
@@ -353,7 +353,7 @@ export default {
           key: modals.status,
           img: require('~/assets/img/ui/questAgreed.svg'),
           title: this.$t('quests.active'),
-          text: `${this.raiseViewsName[this.userData.raiseView.type]} Package`,
+          text: this.raiseViewsName[this.userData.raiseView.type],
           subtitle: `${this.$t('modals.until')} ${moment(this.userData.raiseView.entedAt).format('Do MMMM YYYY, hh:mm a')}`,
         });
       } else {

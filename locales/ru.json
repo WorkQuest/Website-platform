@@ -120,6 +120,8 @@
     "claimRewards": "Claim rewards",
     "percent": "Percent",
     "deposit": "Deposit",
+    "description": "Описание",
+    "email": "Эл. Почта",
     "withdraw": "Withdraw",
     "withdrawal": "Снятие",
     "information": "Information",
@@ -145,6 +147,7 @@
     "questsSmall": "квесты",
     "questsBig": "Квесты",
     "codeFromSMS": "Код из СМС",
+    "title": "Название",
     "toBig": "До",
     "toSmall": "до",
     "fromBig": "От",
@@ -929,7 +932,9 @@
     "caseDeleted": "Case deleted!",
     "caseAdded": "Case added!",
     "caseEdited": "Case edited!",
-    "error": "Ошибка!"
+    "error": "Ошибка!",
+    "sendToSupport": "Сообщение было отправлено в поддерку",
+    "sent": "Отправлено"
   },
   "modals": {
     "titles": {
@@ -986,6 +991,7 @@
       "sharing": "Sharing",
       "signWorkQuest": "Социальная сеть WorkQuest",
       "skills": "Skills",
+      "support": "Поддержка",
       "smsVerification": "SMS verification",
       "swapTitle": "Обмен между сетями",
       "swapInfo": "Swap info",
@@ -1114,6 +1120,7 @@
     "switchOnGoogleAuth": "Switch on Google Authenticator",
     "emailVerificationCode": "Email verification code",
     "emailPlaceholder": "Please enter Email verification code",
+    "email": "Email",
     "googleVerificationCode": "Google verification code",
     "codePlaceholder": "Please enter Google verification code",
     "useYourGoogleAuth": "Use your Google Authenticator App to scan QR code.",
@@ -1300,7 +1307,12 @@
     "notifications": {
       "title": "Уведомления",
       "invite": "Invites you to complete the quest",
-      "noNotifications": "Нет уведомлений"
+      "noNotifications": "Нет уведомлений",
+      "workquestInfo": "Workquest информация",
+      "respondedQuestEdited": "Квест, на который Вы откликнулись, отредактирован. Пожалуйста, изучите условия повторно.",
+      "invitedQuestEdited": "Квест, на который Вас пригласили, отредактирован. Пожалуйста, изучите условия повторно.",
+      "viewOffersBySpecs": "Посмотрите предложения по выбранным специализациям",
+      "balanceUpdated": "Пополнение баланса {token}"
     },
     "menu": {
       "unauthorized": "Not logged",
@@ -1395,7 +1407,7 @@
     "QuestStatusUpdated": "Статус квеста обновлен",
     "userLeftReviewAboutQuest": "Оставил отзыв о квесте",
     "waitWorker": "Квест ожидает",
-    "disputeDecision": "Решение спора",
+    "DisputeDecision": "Решение спора",
     "registrationError": "Нет пользователей для  регистрации. Пожалуйста свяжитесь с разработчиками",
     "newCommentInDiscussion": "Новый комментарий в дискуссии",
     "commentLiked": "Комментарий лайкнут",

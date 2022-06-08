@@ -153,7 +153,7 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import ChatMenu from '~/components/ui/ChatMenu';
-import { InfoModeWorker, QuestStatuses } from '~/utils/сonstants/quests';
+import { QuestStatuses } from '~/utils/сonstants/quests';
 import {
   ChatType, QuestChatStatus, Path,
 } from '~/utils/enums';

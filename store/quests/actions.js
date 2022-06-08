@@ -1,11 +1,9 @@
 import BigNumber from 'bignumber.js';
-import { ResponsesType, UserRole } from '~/utils/enums';
+import { ResponsesType } from '~/utils/enums';
 
 import {
   QuestMethods,
   QuestStatuses,
-  InfoModeWorker,
-  InfoModeEmployer,
 } from '~/utils/сonstants/quests';
 
 import { WQFactory, WorkQuest, WQPromotion } from '~/abi/index';
@@ -84,32 +82,20 @@ export default {
   async getQuest({ commit, rootState }, payload) {
     try {
       const { result } = await this.$axios.$get(`/v1/quest/${payload}`);
-      const { role } = rootState.user.userData;
       let currStat = 0;
       const { status, response } = result;
 
       const questStatuses = Object.entries(QuestStatuses);
-
-      if (role === UserRole.EMPLOYER) {
-        questStatuses.some(([key, val]) => {
-          if (val === status) {
-            currStat = InfoModeEmployer[key];
-            return true;
+      questStatuses.some(([key, val]) => {
+        if (val === status) {
+          if (val === QuestStatuses.Created && response) {
+            key = response.type ? 'Invited' : 'Responded';
           }
-          return false;
-        });
-      } else if (role === UserRole.WORKER) {
-        questStatuses.some(([key, val]) => {
-          if (val === status) {
-            if (val === QuestStatuses.Created && response) {
-              key = response.type ? 'Invited' : 'Responded';
-            }
-            currStat = InfoModeWorker[key];
-            return true;
-          }
-          return false;
-        });
-      }
+          currStat = QuestStatuses[key];
+          return true;
+        }
+        return false;
+      });
 
       commit('setInfoDataMode', currStat);
       commit('setQuest', result);
@@ -118,11 +104,14 @@ export default {
       return false;
     }
   },
-  async getUserQuests({ commit }, { role, query, userId }) {
+  async getUserQuests({ commit, rootGetters }, { role, query, userId }) {
     try {
       const specializations = query.specializations || [];
       if (query.specializations) delete query.specializations;
-      const url = !userId ? `/v1/me/${role}/get-quests` : `/v1/${role}/${userId}/get-quests`;
+      // Fetch my quests or quests for special user
+      const url = userId === rootGetters['user/getUserData'].id
+        ? `/v1/me/${role}/get-quests`
+        : `/v1/${role}/${userId}/get-quests`;
       const response = await this.$axios.$post(url, { specializations }, {
         params: { ...query },
       });
@@ -196,16 +185,6 @@ export default {
       return response.result;
     } catch (e) {
       console.error('quests/takeAwayStarOnQuest');
-      return error();
-    }
-  },
-  async getStarredQuests({ commit }) {
-    try {
-      const { data } = await this.$axios.$get('/v1/quests/starred');
-      commit('setStarredQuests', data.result);
-      return data.result;
-    } catch (e) {
-      console.error('quests/getStarredQuests');
       return error();
     }
   },
@@ -347,9 +326,9 @@ export default {
 
   /** Work Quest */
   async getFeeDataJobMethod({ commit }, {
-    method, abi, contractAddress, data,
+    method, abi, contractAddress, data, amount,
   }) {
-    return await getContractFeeData(method, abi, contractAddress, data);
+    return await getContractFeeData(method, abi, contractAddress, data, null, amount);
   },
   async sendQuestTransaction({ commit }, {
     contractAddress, method, params = [], value,
@@ -383,7 +362,7 @@ export default {
   async acceptJobResult({ dispatch }, contractAddress) {
     return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.AcceptJobResult });
   },
-  // employer отменил (reject) результат работы или прошло 3 дня с момента начала verification
+  // Открытие диспута
   async arbitration({ dispatch }, { contractAddress, value }) {
     return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.Arbitration, value });
   },

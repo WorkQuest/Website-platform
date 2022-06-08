@@ -123,7 +123,7 @@
           </div>
           <div class="page__input">
             <base-field
-              v-model="questTitle"
+              :value="questTitle"
               data-selector="QUEST-TITLE-FIELD"
               rules="required|min:2|max:250"
               :name="$tc('quests.questTitle')"
@@ -133,7 +133,7 @@
           <div class="page__input">
             <base-textarea
               id="textarea"
-              v-model="textarea"
+              :value="textarea"
               disabled
               rules="required|min:6|max:2000"
               data-selector="QUEST-DESC-TEXTAREA"
@@ -226,7 +226,7 @@ import {
   WorkplaceIndex,
 } from '~/utils/enums';
 import {
-  QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses, PaidTariff,
+  QuestMethods, EditQuestState, QuestStatuses, PaidTariff,
 } from '~/utils/сonstants/quests';
 import { ERC20, WorkQuest, WQPromotion } from '~/abi';
 import { error, success } from '~/utils/web3';
@@ -387,7 +387,7 @@ export default {
       title, locationPlaceName, price, description, location, typeOfEmployment, id, status, payPeriod, workplace,
     } = this.questData;
 
-    if ([QuestStatuses.Pending, InfoModeEmployer.Dispute, InfoModeEmployer.Done, InfoModeEmployer.Closed].includes(status)) {
+    if ([QuestStatuses.Pending, QuestStatuses.Dispute, QuestStatuses.Done, QuestStatuses.Closed].includes(status)) {
       await this.$router.push(`${Path.QUESTS}/${id}`);
     }
 
@@ -574,10 +574,10 @@ export default {
             reject();
             return;
           }
-          await this.makeApprove({
-            wusdAddress,
+          await this.MakeApprove({
+            tokenAddress: wusdAddress,
             contractAddress,
-            depositAmount,
+            amount: depositAmount,
             approveTitle: `${this.$t('meta.btns.edit')} ${this.$t('meta.approve')}`,
           }).then(async (result) => {
             await resolve(result);
@@ -642,6 +642,7 @@ export default {
       ]);
       if (!feeRes.ok) {
         this.ShowToast(this.$t('errors.transaction.notEnoughFunds'));
+        this.SetLoader(false);
         return;
       }
       const fields = {
