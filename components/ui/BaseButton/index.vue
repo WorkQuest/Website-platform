@@ -109,6 +109,7 @@ export default {
         { 'base-btn_active-tab': mode === 'activeTab' },
         { 'base-btn_filter': mode === 'filter' },
         { 'base-btn_padding': this.padding },
+        { 'base-btn_messages base-btn_report': mode === 'report' },
       ];
     },
   },
@@ -380,6 +381,19 @@ export default {
     border: 1px solid transparent;
     &:hover {
       border: 1px solid $black100;
+    }
+  }
+  &_report {
+    width: 24px;
+    height: 24px;
+    & span {
+      color: $black500;
+      font-size: 20px;
+    }
+    &:hover {
+      & span {
+        color: rgba(223, 51, 51, 0.5);
+      }
     }
   }
 }

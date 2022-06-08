@@ -137,18 +137,6 @@
             </div>
           </div>
         </div>
-        <div
-          v-if="mainUser.id !== userId"
-          class="info-grid__report"
-        >
-          <base-btn
-            data-selector="TO-REPORT-MODAL-VIEW"
-            mode="goToChat"
-            @click="showReportModal"
-          >
-            {{ $t('report.btn.report') }}
-          </base-btn>
-        </div>
       </div>
     </div>
     <div class="info-grid__right right">
@@ -167,12 +155,20 @@
             {{ $tc('meta.coins.count.WUSDCount', userData.costPerHour) }}
           </div>
         </div>
-        <div class="right__share-btn">
+        <div class="right__btn-list">
           <base-btn
             data-selector="SHARE-MODAL"
             mode="share-btn"
             @click="shareModal()"
           />
+          <base-btn
+            v-if="mainUser.id !== userId"
+            mode="report"
+            data-selector="OPEN-MODAL-REPORT"
+            @click="showReportModal"
+          >
+            <span class="icon-warning_outline" />
+          </base-btn>
         </div>
       </div>
       <div class="right__footer">
@@ -463,6 +459,10 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+  }
+  &__btn-list {
+    display: flex;
+    gap: 10px;
   }
 }
 
