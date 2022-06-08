@@ -163,10 +163,11 @@ export default {
   },
   /**
    * Send transfer of native token
+   * @param _
    * @param recipient
    * @param value
    */
-  async transfer({ _ }, { recipient, value }) {
+  async transfer(_, { recipient, value }) {
     return await transfer(recipient, value);
   },
   async getTransferFeeData({ commit }, { recipient, value }) {
@@ -202,7 +203,7 @@ export default {
 
   async approve({ commit }, { tokenAddress, spenderAddress, amount }) {
     try {
-      amount = new BigNumber(amount).shiftedBy(18).toString();
+      amount = new BigNumber(amount).shiftedBy(18).toFixed(0).toString();
       return await sendWalletTransaction(
         'approve',
         {

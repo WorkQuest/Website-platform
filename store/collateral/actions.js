@@ -1,22 +1,30 @@
-import { buyWUSD, setTokenPrice } from '~/utils/wallet';
+import {
+  createInstance,
+  getWalletAddress,
+} from '~/utils/wallet';
+import { success, error } from '~/utils/web3';
+import { WQRouter } from '~/abi';
+import ENV from '~/utils/adresses';
 
 export default {
-  async setTokenPrice({ dispatch, rootGetters }, { payload, setTokenPriceData }) {
+  async sendProduceWUSD(_, {
+    collateral, ratio, currency, fee: { gas, gasPrice },
+  }) {
     try {
-      await setTokenPrice(payload, setTokenPriceData);
-      return { ok: true };
+      /**
+       * @property produceWUSD - method of router
+       */
+      const inst = await createInstance(WQRouter, ENV.WORKNET_ROUTER);
+      await inst.methods.produceWUSD(collateral, ratio, currency).send({
+        from: getWalletAddress(),
+        gasPrice,
+        gas,
+      });
+
+      return success();
     } catch (e) {
-      console.log('can not refresh prices');
-      return { ok: false };
-    }
-  },
-  async buyWUSD(ctx, { payload, buyWUSDData }) {
-    try {
-      await buyWUSD(payload, buyWUSDData);
-      return { ok: true };
-    } catch (e) {
-      console.log('can not buy WUSD');
-      return { ok: false };
+      console.error('collateral/sendProduceWUSD', e);
+      return error();
     }
   },
 };

@@ -89,7 +89,7 @@
               :value="collateralPercent"
               class="content__input"
               placeholder="150 %"
-              rules="required|min_percent:150|zeroFail"
+              :rules="`required|min_percent:${optimalCollateralRatio || 150}|zeroFail`"
               :name="$tc('modals.fieldPercentConversion')"
               data-selector="PERCENT"
               @input="calcCollateralPercent"
@@ -195,8 +195,6 @@ export default {
   },
   async beforeMount() {
     await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
-    await this.getCollateralData();
-    this.setActualCollateralPercent();
   },
   async mounted() {
     await this.$store.dispatch('wallet/fetchWalletData', {
@@ -206,6 +204,8 @@ export default {
       token: TokenMap[this.currentCurrency],
       symbol: TokenSymbols[this.currentCurrency],
     });
+    await this.getCollateralData();
+    this.setActualCollateralPercent();
   },
   methods: {
     ...mapActions({

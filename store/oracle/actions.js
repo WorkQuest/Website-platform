@@ -1,17 +1,24 @@
-import { error } from '~/utils/web3';
+import { error, success } from '~/utils/web3';
+
 import {
-  getGasPrice, setTokenPrices,
+  getGasPrice,
+  createInstance,
+  getWalletAddress,
 } from '~/utils/wallet';
+
 import { WQOracle } from '~/abi';
 
 import ENV from '~/utils/adresses/index';
 
+/**
+ * @property $axiosOracle - axios instance of oracle
+ */
 export default {
-  async getCurrentPrices({ commit }) {
+  async getCurrentTokensPrices({ commit }) {
     try {
       const { result } = await this.$axiosOracle.$get('/oracle/sign-price/tokens');
       commit('setCurrentPrices', result);
-      return result;
+      return success(result);
     } catch (e) {
       return error();
     }
@@ -34,24 +41,61 @@ export default {
       return error();
     }
   },
-  async setCurrentPriceTokens() {
-    const {
-      result: {
-        nonce: timestamp, v, r, s, prices, symbols,
-      },
-    } = await this.$axiosOracle.$get('/oracle/sign-price/tokens');
 
-    const params = {
-      timestamp, v, r, s, prices, symbols,
-    };
+  async feeSetTokensPrices({ getters, dispatch }) {
+    try {
+      await dispatch('getCurrentTokensPrices');
 
-    const { gas, gasPrice } = await getGasPrice(WQOracle, ENV.WORKNET_ORACLE, 'setTokenPricesUSD', Object.values(params));
-    if (gas && gasPrice) {
-      await setTokenPrices({
-        gasPrice,
-        gas,
-        ...params,
-      });
+      const {
+        nonce: timestamp, v, r, s,
+      } = getters.getCurrentPrices;
+      const [prices, symbols] = [getters.getPrices, getters.getSymbols];
+
+      const fee = await getGasPrice(
+        WQOracle,
+        ENV.WORKNET_ORACLE,
+        'setTokenPricesUSD',
+        [timestamp, v, r, s, prices, symbols],
+      );
+      return success(fee);
+    } catch (e) {
+      console.error('oracle/feeSetTokenPrices', e);
+      return error();
+    }
+  },
+
+  async setCurrentPriceTokens({ getters, dispatch }) {
+    try {
+      const { result: { gas, gasPrice } } = await dispatch('feeSetTokensPrices');
+      await dispatch('getCurrentTokensPrices');
+
+      const {
+        nonce: timestamp, v, r, s,
+      } = getters.getCurrentPrices;
+      const [prices, symbols] = [getters.getPrices, getters.getSymbols];
+
+      if (gas && gasPrice) {
+        /**
+         * @property setTokenPricesUSD - method of oracle
+         */
+        const inst = await createInstance(WQOracle, ENV.WORKNET_ORACLE);
+        await inst.methods.setTokenPricesUSD(timestamp, v, r, s, prices, symbols).send({
+          from: getWalletAddress(),
+          gasPrice,
+          gas,
+        });
+        return success();
+      }
+
+      // TODO add locales
+      dispatch('main/showToast', {
+        title: this.$t('error'),
+        text: this.$t('noGas'),
+      }, { root: true });
+      return error();
+    } catch (e) {
+      console.error('oracle/setCurrentPriceTokens', e);
+      return error();
     }
   },
 };
