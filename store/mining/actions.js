@@ -44,7 +44,7 @@ export default {
    */
   async fetchChartData({ commit }, pool) {
     try {
-      const { ok, result: { data } } = await this.$axios.$get(`/v1/pool-liquidity/${pools[pool]}/token-day?limit=10`);
+      const { ok, result: { data } } = await this.$axios.$get(`https://dev-app.workquest.co/api/v1/pool-liquidity/${pools[pool]}/token-day?limit=10`);
       const { usdPriceWQT, reserveUSD } = data[0];
 
       commit('setTotalLiquidityUSD', reserveUSD);
@@ -63,7 +63,7 @@ export default {
 
   async fetchSwaps({ commit }, { pool, params }) {
     try {
-      const { ok, result: { data } } = await this.$axios.$get(`/v1/pool-liquidity/${pools[pool]}/swaps`, {
+      const { ok, result: { data } } = await this.$axios.$get(`https://dev-app.workquest.co/api/v1/pool-liquidity/${pools[pool]}/swaps`, {
         params,
       });
 
