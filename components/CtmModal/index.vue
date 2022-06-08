@@ -96,6 +96,7 @@ export default {
     [modals.claimRewards]: () => import('./CtmModalClaimRewards'),
     [modals.buyWQT]: () => import('./CtmModalBuyWQT'),
     [modals.referralRegistration]: () => import('./CtmModalRegisterReferral'),
+    [modals.report]: () => import('./CtmModalReport'),
   },
   data: () => ({ modals }),
   computed: {

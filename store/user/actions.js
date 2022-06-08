@@ -394,4 +394,14 @@ export default {
   setRememberMe({ commit }, payload) {
     commit('setRememberMe', payload);
   },
+
+  async sendReport(_, payload) {
+    try {
+      const { ok } = await this.$axios.$post('/v1/report/send', payload);
+      return success(ok);
+    } catch (e) {
+      console.log('user/sendReport');
+      return error();
+    }
+  },
 };

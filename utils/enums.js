@@ -175,6 +175,7 @@ export const Path = {
   NOTIFICATIONS: '/notifications',
   RETIREMENT: '/retirement',
   SUMSUB: '/sumsub',
+  REPORT: '/report',
 };
 
 export const PathDAO = {
@@ -319,4 +320,10 @@ export const TariffByIndex = Object.freeze({
 export const RaiseViewStatus = {
   0: true,
   1: false,
+};
+
+export const EntityType = {
+  USER: 'User',
+  QUEST: 'Quest',
+  DISCUSSION_COMMENT: 'DiscussionComment',
 };
