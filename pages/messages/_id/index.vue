@@ -194,10 +194,15 @@ export default {
     isGroupChat() {
       return this.currChat?.type === ChatType.GROUP;
     },
+    isPrivateChat() {
+      return this.currChat?.type === ChatType.PRIVATE;
+    },
     canShowMenu() {
-      const { isClosedQuestChat, isGroupChat, amIOwner } = this;
-      return !isClosedQuestChat ? !isGroupChat
-        || (isGroupChat && !amIOwner) : false;
+      const {
+        isClosedQuestChat, isGroupChat, amIOwner, isPrivateChat,
+      } = this;
+      return (!isClosedQuestChat ? (!isGroupChat && !isPrivateChat)
+        || (isGroupChat && !amIOwner) : false);
     },
     isClosedQuestChat() {
       return ((this.currChat?.questChat?.status === QuestChatStatus.Closed)

@@ -6,8 +6,8 @@ export default {
       const { result, ok } = await this.$axios.$get('/v1/user/me/chats', { params: chatsFilter });
 
       result.chats.forEach((chat) => {
-        chat.members.push(chat.meMember);
-        chat.members.reverse();
+        [chat.correspondent] = chat.members;
+        chat.members.unshift(chat.meMember);
         chat.isUnread = chat.meMember?.chatMemberData?.unreadCountMessages > 0;
       });
       if (chatsFilter.offset) result.chats = rootState.chat.chats.list.concat(result.chats);
@@ -39,9 +39,8 @@ export default {
       });
 
       if (result.chat) {
-        const { result: { members } } = await this.$axios.$get(`/v1/user/me/chat/group/${chatId}/members`);
-        result.chat.members = members;
-        result.chat.isUnread = members.chatMemberData?.unreadCountMessages > 0;
+        const curMemeber = result.chat.members.find((el) => el.userId === myId);
+        result.chat.isUnread = curMemeber && curMemeber.chatMemberData?.unreadCountMessages > 0;
       }
 
       if (direction) {

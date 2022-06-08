@@ -303,10 +303,12 @@ export default {
             display: flex;
             align-items: center;
             grid-gap: 10px;
+            overflow: hidden;
           }
           &__img {
             height: 50px;
             width: 50px;
+            flex: none;
             border-radius: 50%;
             -o-object-fit: cover;
             object-fit: cover;
@@ -317,6 +319,9 @@ export default {
             font-size: 18px;
             cursor: pointer;
             transition: .3s;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             &:hover {
               color: $blue;
             }

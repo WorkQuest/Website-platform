@@ -97,9 +97,10 @@
                   <div
                     v-if="!isGroupChat(chat.type)"
                     class="chat__title chat__title_bold chat__title_hov"
-                    @click="toUserProfile($event, chat.members[0].userId)"
+                    @click="toUserProfile($event, chat.correspondent.userId)"
                   >
-                    {{ (chat.members[0].user.firstName || '') + ' ' + (chat.members[0].user.lastName || '') }}
+                    {{ (chat.correspondent.user.firstName || '') + ' ' +
+                      (chat.correspondent.user.lastName || '') }}
                   </div>
                   <div
                     v-if="isGroupChat(chat.type) || isQuestChat(chat.type)"
