@@ -2418,6 +2418,7 @@
     "titlePlaceholder": "Add a post title",
     "message": "Message",
     "messagePlaceholder": "Add message",
-    "sent": "Report sent"
+    "sent": "Report sent",
+    "complainAbout": "Complain about"
   }
 }

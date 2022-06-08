@@ -166,7 +166,6 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import {
-  EntityType,
   ExplorerUrl,
   Path, QuestModeReview, questPriority, ResponseStatus, TokenSymbols, UserRole,
 } from '~/utils/enums';

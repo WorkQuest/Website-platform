@@ -2416,7 +2416,8 @@
     "titlePlaceholder": "Добавьте заголовок",
     "message": "Сообщение",
     "messagePlaceholder": "Добавьте сообщение",
-    "sent": "Отправить"
+    "sent": "Отправить",
+    "complainAbout": "Пожаловаться на"
   }
 }
 

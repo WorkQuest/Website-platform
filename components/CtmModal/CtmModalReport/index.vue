@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="report"
-    :title="`Complain about ${options.title}`"
+    :title="`${$t('report.complainAbout')} ${options.title}`"
   >
     <validation-observer
       v-slot="{handleSubmit, invalid}"

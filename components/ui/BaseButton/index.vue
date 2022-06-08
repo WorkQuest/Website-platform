@@ -388,11 +388,11 @@ export default {
     height: 24px;
     & span {
       color: $black500;
-      font-size: 20px;
+      font-size: 24px;
     }
     &:hover {
       & span {
-        color: rgba(223, 51, 51, 0.5);
+        color: #bb5151;
       }
     }
   }
