@@ -253,17 +253,17 @@ export default {
 
           await this.$store.dispatch('oracle/getCurrentPrices');
           const pricesData = {
-            timestamp: this.oracleCurrentPrices.nonce,
-            prices: this.oraclePrices,
+            timestamp: this.oracleCurrentPrices.nonce.toString(),
             v: this.oracleCurrentPrices.v,
             r: this.oracleCurrentPrices.r,
             s: this.oracleCurrentPrices.s,
+            prices: this.oraclePrices,
             symbols: this.oracleSymbols,
           };
           const { gas, gasPrice } = await getGasPrice(
             WQOracle,
             this.ENV.WORKNET_ORACLE,
-            'setTokenPriceUSD',
+            'setTokenPricesUSD',
             [...Object.keys(pricesData).map((key) => pricesData[key])],
           );
 
