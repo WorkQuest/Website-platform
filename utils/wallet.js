@@ -330,7 +330,7 @@ export const getGasPrice = async (contractAbi, address, method, attr, value = nu
     ]);
     return { gas: gasEstimate, gasPrice };
   } catch (e) {
-    console.error('getGasPriceError', e);
+    console.error('wallet/getGasPrice', e);
     return { gas: false, gasPrice: false };
   }
 };

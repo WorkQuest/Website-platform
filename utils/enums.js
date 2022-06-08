@@ -175,6 +175,7 @@ export const Path = {
   NOTIFICATIONS: '/notifications',
   RETIREMENT: '/retirement',
   SUMSUB: '/sumsub',
+  AUCTION: '/auction',
 };
 
 export const PathDAO = {
