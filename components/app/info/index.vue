@@ -97,7 +97,7 @@ export default {
         },
         [QuestStatuses.WaitEmployerConfirm]: {
           text: this.$t('quests.pendingConsideration'),
-          class: 'info_bg-blue',
+          class: 'info_bg-green',
         },
         [QuestStatuses.Dispute]: {
           text: this.$t('meta.dispute'),
@@ -113,7 +113,7 @@ export default {
         },
         [QuestStatuses.Responded]: {
           text: this.$t('meta.responded'),
-          class: 'info_bg-blue',
+          class: 'info_bg-grey',
         },
         [QuestStatuses.Invited]: {
           text: this.$t('meta.invited'),
@@ -122,7 +122,8 @@ export default {
       };
     },
     infoStatusTextColor() {
-      return 'info__text_white';
+      if (this.infoDataMode !== QuestStatuses.Responded) return 'info__text_white';
+      return 'info__text_black';
     },
   },
   methods: {
@@ -150,7 +151,7 @@ export default {
   }
   &__caret {
     &::before {
-      color: $white !important;
+      color: $black800 !important;
     }
   }
   &__btn {

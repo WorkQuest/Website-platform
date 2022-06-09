@@ -265,7 +265,7 @@ export default {
         [QuestStatuses.WaitEmployerConfirm]: {
           title: this.$t('quests.pendingConsideration'),
           progressText: this.$t('quests.waitWorkerOnAssign'),
-          class: 'card-quest__state_blue',
+          class: 'card-quest__state_green',
         },
         [QuestStatuses.Dispute]: {
           title: this.$t('meta.dispute'),
@@ -285,7 +285,7 @@ export default {
         [QuestStatuses.Responded]: {
           title: this.$t('meta.responded'),
           progressText: '',
-          class: 'card-quest__state_blue',
+          class: 'card-quest__state_gray',
         },
         [QuestStatuses.Invited]: {
           title: this.$t('meta.invited'),
