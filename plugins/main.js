@@ -399,6 +399,7 @@ Vue.mixin({
               symbol: TokenSymbols.WQT,
             },
           },
+          isDontOffLoader: true,
           submitMethod: async () => await resolve(),
           cancel: async () => await reject(new Error('Cancel')),
         });

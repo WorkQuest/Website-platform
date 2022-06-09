@@ -255,7 +255,7 @@ export default {
                 from: { name: this.$t('modals.fromAddress'), value: this.convertToBech32('wq1', getWalletAddress()) },
                 fee: {
                   name: this.$t('wallet.table.trxFee'),
-                  value: new BigNumber(gasPrice).multipliedBy(gas).shiftedBy(-(this.currentBalance[currency].decimal) || -18).toFixed(),
+                  value: new BigNumber(gasPrice).multipliedBy(gas).shiftedBy(-18).toFixed(),
                   symbol: TokenSymbols.WQT,
                 },
               },
@@ -268,12 +268,9 @@ export default {
                   amount: collateral,
                   approveTitle: this.$t('modals.approveRouter', { token: currency }),
                 }).then(async () => {
-                  const collateralBN = new BigNumber(collateral).shiftedBy(this.currentBalance[currency].decimal || 18).toFixed(0);
+                  const collateralBN = new BigNumber(collateral).shiftedBy(+this.currentBalance[currency].decimals || 18).toFixed(0);
                   const ratioBN = new BigNumber(percent).dividedBy(100).shiftedBy(18).toFixed(0);
 
-                  console.log(collateralBN, ratioBN, currency);
-                  console.log('WORKNET_ROUTER', this.ENV.WORKNET_ROUTER);
-                  console.log('WORKNET_USDT_TOKEN', this.ENV.WORKNET_USDT_TOKEN);
                   const fee = await getGasPrice(
                     WQRouter,
                     this.ENV.WORKNET_ROUTER,
@@ -282,8 +279,7 @@ export default {
                   );
 
                   this.SetLoader(false);
-                  if (fee.ok) {
-                    console.log('before tx receipt');
+                  if (fee.gas && fee.gasPrice) {
                     await this.ShowTxReceipt({
                       from: this.convertToBech32('wq1', getWalletAddress()),
                       to: this.ENV.WORKNET_ROUTER,
@@ -292,20 +288,15 @@ export default {
                       fee,
                       title: this.$t('modals.takeWUSD'),
                     }).then(async () => {
-                      console.log('success receipt');
-                      this.SetLoader(true);
-                      await this.$store.dispatch('collateral/sendProduceWUSD', {
+                      const res = await this.$store.dispatch('collateral/sendProduceWUSD', {
                         collateral: collateralBN,
                         ratio: ratioBN,
                         currency,
                         fee,
                       });
-                    }).finally(() => {
-                      this.SetLoader(false);
-                      this.ShowToast(this.$t('modals.successBuyWUSD'), this.$t('modals.success'));
+                      if (res.ok) this.ShowToast(this.$t('modals.successBuyWUSD'), this.$t('meta.success'));
                     });
                   }
-                  console.log('err');
                 }).finally(() => {
                   this.SetLoader(false);
                 });

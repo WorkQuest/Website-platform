@@ -197,6 +197,7 @@ export default {
     await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
   async mounted() {
+    this.SetLoader(true);
     await this.$store.dispatch('wallet/fetchWalletData', {
       method: 'balanceOf',
       address: this.userWalletAddress,
@@ -206,6 +207,7 @@ export default {
     });
     await this.getCollateralData();
     this.setActualCollateralPercent();
+    this.SetLoader(false);
   },
   methods: {
     ...mapActions({
