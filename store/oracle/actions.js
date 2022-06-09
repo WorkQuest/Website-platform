@@ -1,12 +1,18 @@
-import { error, success } from '~/utils/web3';
+import BigNumber from 'bignumber.js';
+import {
+  error,
+  success,
+  fetchContractData,
+} from '~/utils/web3';
 
 import {
   getGasPrice,
+  getProvider,
   createInstance,
   getWalletAddress,
 } from '~/utils/wallet';
 
-import { WQOracle } from '~/abi';
+import { WQOracle, WQRouter } from '~/abi';
 
 import ENV from '~/utils/adresses/index';
 
@@ -29,6 +35,7 @@ export default {
       commit('setSecurityRatio', result);
       return result;
     } catch (e) {
+      console.error('oracle/getSecurityRatio', e);
       return error();
     }
   },
@@ -87,15 +94,28 @@ export default {
         return success();
       }
 
-      // TODO add locales
       dispatch('main/showToast', {
-        title: this.$t('error'),
-        text: this.$t('noGas'),
+        title: $nuxt.$t('toasts.error'),
+        text: $nuxt.$t('toasts.errorGetFee'),
       }, { root: true });
       return error();
     } catch (e) {
       console.error('oracle/setCurrentPriceTokens', e);
       return error();
+    }
+  },
+  async getCurrencyInfo({ commit }, { currency }) {
+    try {
+      const { minRatio } = await fetchContractData(
+        'tokens',
+        WQRouter,
+        ENV.WORKNET_ROUTER,
+        [currency],
+        getProvider(),
+      );
+      commit('setMinRatio', new BigNumber(minRatio).shiftedBy(-18).multipliedBy(100).toNumber());
+    } catch (e) {
+      console.error('collateral/getCollateralInfo', e);
     }
   },
 };

@@ -66,7 +66,7 @@
               {{ $t('modals.countOfCollateral') }}
             </div>
             <base-field
-              id="amountOfPercents_input"
+              id="amount_input"
               :value="amountCollateral"
               class="content__input"
               :placeholder="`10 ${currentCurrency}`"
@@ -89,7 +89,7 @@
               :value="collateralPercent"
               class="content__input"
               placeholder="150 %"
-              :rules="`required|min_percent:${optimalCollateralRatio || 150}|zeroFail`"
+              :rules="`required|min_percent:${minRatio}|zeroFail|min:2|max:4`"
               :name="$tc('modals.fieldPercentConversion')"
               data-selector="PERCENT"
               @input="calcCollateralPercent"
@@ -150,7 +150,10 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+
+      minRatio: 'oracle/getMinRatio',
       ratio: 'oracle/getSecurityRatio',
+
       userWalletAddress: 'user/getUserWalletAddress',
       currentBalance: 'wallet/getBalanceData',
     }),
@@ -198,20 +201,28 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    await this.$store.dispatch('wallet/fetchWalletData', {
-      method: 'balanceOf',
-      address: this.userWalletAddress,
-      abi: ERC20,
-      token: TokenMap[this.currentCurrency],
-      symbol: TokenSymbols[this.currentCurrency],
-    });
+
+    await Promise.all([
+      this.fetchWalletData({
+        method: 'balanceOf',
+        address: this.userWalletAddress,
+        abi: ERC20,
+        token: TokenMap[this.currentCurrency],
+        symbol: TokenSymbols[this.currentCurrency],
+      }),
+      this.fetchMinRatio({ currency: this.currentCurrency }),
+    ]);
+
     await this.getCollateralData();
     this.setActualCollateralPercent();
     this.SetLoader(false);
   },
   methods: {
     ...mapActions({
+      fetchWalletData: 'wallet/fetchWalletData',
+
       fetchRatio: 'oracle/getSecurityRatio',
+      fetchMinRatio: 'oracle/getCurrencyInfo',
     }),
     onChangeWUSD(value) {
       this.amountWUSD = value;

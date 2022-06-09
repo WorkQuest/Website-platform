@@ -278,24 +278,24 @@ export default {
                   );
 
                   this.SetLoader(false);
-                  if (fee.gas && fee.gasPrice) {
-                    await this.ShowTxReceipt({
-                      from: this.convertToBech32('wq', getWalletAddress()),
-                      to: this.ENV.WORKNET_ROUTER,
-                      amount,
+                  if (!fee.gas || !fee.gasPrice) return;
+
+                  await this.ShowTxReceipt({
+                    from: this.convertToBech32('wq', getWalletAddress()),
+                    to: this.ENV.WORKNET_ROUTER,
+                    amount,
+                    currency,
+                    fee,
+                    title: this.$t('modals.takeWUSD'),
+                  }).then(async () => {
+                    const res = await this.$store.dispatch('collateral/sendProduceWUSD', {
+                      collateral: collateralBN,
+                      ratio: ratioBN,
                       currency,
                       fee,
-                      title: this.$t('modals.takeWUSD'),
-                    }).then(async () => {
-                      const res = await this.$store.dispatch('collateral/sendProduceWUSD', {
-                        collateral: collateralBN,
-                        ratio: ratioBN,
-                        currency,
-                        fee,
-                      });
-                      if (res.ok) this.ShowToast(this.$t('modals.successBuyWUSD'), this.$t('meta.success'));
                     });
-                  }
+                    if (res.ok) this.ShowToast(this.$t('modals.successBuyWUSD'), this.$t('meta.success'));
+                  });
                 }).finally(() => {
                   this.SetLoader(false);
                 });

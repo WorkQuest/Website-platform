@@ -401,7 +401,7 @@ Vue.mixin({
           },
           isDontOffLoader: true,
           submitMethod: async () => await resolve(),
-          cancel: async () => await reject(new Error('Cancel')),
+          cancelMethod: async () => await reject(new Error('Cancel')),
         });
       });
     },

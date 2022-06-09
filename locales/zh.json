@@ -934,7 +934,8 @@
     "caseEdited": "Case edited!",
     "error": "Error!",
     "sendToSupport": "A message has been sent to support",
-    "sent": "Sent"
+    "sent": "Sent",
+    "errorGetFee": "Something wrong with get fee, check console"
   },
   "modals": {
     "titles": {

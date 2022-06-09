@@ -115,9 +115,9 @@ export default {
       if (!isDontOffLoader) this.SetLoader(false);
     },
     async handleCancel() {
-      const { cancel } = this.options;
+      const { cancelMethod } = this.options;
       this.CloseModal();
-      if (cancel) cancel();
+      if (cancelMethod) cancelMethod();
     },
   },
 };
