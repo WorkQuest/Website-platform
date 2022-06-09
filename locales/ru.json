@@ -1505,6 +1505,7 @@
     "mainPhoneNumber": "Основной номер телефона",
     "whoCouldIInvite": "Кто может откликаться на мои квесты?",
     "whoCouldInviteMe": "Кто может приглашать меня на квесты?",
+    "interactOnly": "Interact only with:",
     "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
@@ -1836,6 +1837,7 @@
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
     "currentLoan": "Текущий заем",
     "currentCredit": "Текущий кредит",
+    "dueDate": "Due date",
     "chooseSource": "Выбрать источник",
     "chosenSource": "Выбранный источник",
     "marketSize": "Market size",
@@ -2423,4 +2425,3 @@
     "complainAbout": "Пожаловаться на"
   }
 }
-
