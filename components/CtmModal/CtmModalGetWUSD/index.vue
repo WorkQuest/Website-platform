@@ -4,7 +4,7 @@
     :title="$tc('modals.titles.buyWUSD')"
   >
     <validation-observer
-      v-slot="{handleSubmit, validated, passed, invalid}"
+      v-slot="{handleSubmit, invalid}"
       ref="form"
       tag="div"
       class="getWUSD__content content"
@@ -48,7 +48,7 @@
           </div>
           <div class="content__field">
             <div class="content__label">
-              {{ $t('modals.countOfRecievedWUSD') }}
+              {{ $t('modals.countOfReceivedWUSD') }}
             </div>
             <base-field
               :value="amountWUSD"
@@ -112,7 +112,7 @@
           <base-btn
             class="buttons__button"
             data-selector="SUBMIT"
-            :disabled="!validated || !passed || invalid"
+            :disabled="invalid"
           >
             {{ $t('meta.btns.submit') }}
           </base-btn>

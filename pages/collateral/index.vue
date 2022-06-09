@@ -239,7 +239,6 @@ export default {
       await this.$store.dispatch('wallet/getBalance');
       this.ShowModal({
         key: modals.getWUSD,
-        needChangeModal: 1,
         submit: async ({
           amount, collateral, percent, currency,
         }) => {
@@ -252,7 +251,7 @@ export default {
               key: modals.transactionReceipt,
               title: this.$t('modals.setTokenPrice', { token: currency }),
               fields: {
-                from: { name: this.$t('modals.fromAddress'), value: this.convertToBech32('wq1', getWalletAddress()) },
+                from: { name: this.$t('modals.fromAddress'), value: this.convertToBech32('wq', getWalletAddress()) },
                 fee: {
                   name: this.$t('wallet.table.trxFee'),
                   value: new BigNumber(gasPrice).multipliedBy(gas).shiftedBy(-18).toFixed(),
@@ -281,7 +280,7 @@ export default {
                   this.SetLoader(false);
                   if (fee.gas && fee.gasPrice) {
                     await this.ShowTxReceipt({
-                      from: this.convertToBech32('wq1', getWalletAddress()),
+                      from: this.convertToBech32('wq', getWalletAddress()),
                       to: this.ENV.WORKNET_ROUTER,
                       amount,
                       currency,
