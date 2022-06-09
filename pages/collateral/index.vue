@@ -239,9 +239,7 @@ export default {
       await this.$store.dispatch('wallet/getBalance');
       this.ShowModal({
         key: modals.getWUSD,
-        submit: async ({
-          amount, collateral, percent, currency,
-        }) => {
+        submit: async ({ collateral, percent, currency }) => {
           this.SetLoader(true);
 
           const { result: { gas, gasPrice } } = await this.$store.dispatch('oracle/feeSetTokensPrices');
@@ -251,7 +249,7 @@ export default {
               key: modals.transactionReceipt,
               title: this.$t('modals.setTokenPrice', { token: currency }),
               fields: {
-                from: { name: this.$t('modals.fromAddress'), value: this.convertToBech32('wq', getWalletAddress()) },
+                from: { name: this.$t('modals.fromBig'), value: this.convertToBech32('wq', getWalletAddress()) },
                 fee: {
                   name: this.$t('wallet.table.trxFee'),
                   value: new BigNumber(gasPrice).multipliedBy(gas).shiftedBy(-18).toFixed(),

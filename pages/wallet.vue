@@ -376,8 +376,8 @@ export default {
           this.ShowModal({
             key: modals.transactionReceipt,
             fields: {
-              from: { name: this.$t('modals.fromAddress'), value: wqAddress },
-              to: { name: this.$t('modals.toAddress'), value: convertToBech32('wq', recipient) },
+              from: { name: this.$t('modals.fromBig'), value: wqAddress },
+              to: { name: this.$t('modals.toBig'), value: convertToBech32('wq', recipient) },
               amount: {
                 name: this.$t('modals.amount'),
                 value: amount,
