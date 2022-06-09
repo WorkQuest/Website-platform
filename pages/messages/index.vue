@@ -11,15 +11,23 @@
             :starred="filter.starred"
           />
         </div>
+        <base-dd
+          v-model="selectedTabIndex"
+          :items="filterDD"
+          type="gray"
+          class="show-on-mobile chat-tab-dd"
+          data-selector="FILTER-MOB"
+          @input="setFilterTabs(filterTabs[$event].value,$event)"
+        />
         <div
-          class="chat-tab-filters"
+          class="chat-tab-filters show-on-desktop"
         >
           <base-btn
             v-for="(item, i) in filterTabs"
             :key="i"
             :data-selector="`${item.name}`"
-            :mode="selectedTab === item.value ? '' : 'outline'"
-            @click="setFilterTabs(item.value)"
+            :mode="selectedTabIndex === i ? '' : 'outline'"
+            @click="setFilterTabs(item.value, i)"
           >
             {{ item.name }}
           </base-btn>
@@ -202,6 +210,7 @@ export default {
       isChatsSearching: false,
       delayId: null,
       selectedTab: undefined,
+      selectedTabIndex: 0,
     };
   },
   computed: {
@@ -226,6 +235,16 @@ export default {
         { name: this.$t('chat.tabs.activeQuests'), value: QuestChatStatus.Active },
         { name: this.$t('chat.tabs.completedQuests'), value: QuestChatStatus.Closed },
         { name: this.$t('chat.tabs.starred'), value: 'starred' },
+      ];
+    },
+    filterDD() {
+      return [
+        this.$t('chat.tabs.all'),
+        this.$t('chat.tabs.private'),
+        this.$t('chat.tabs.groups'),
+        this.$t('chat.tabs.activeQuests'),
+        this.$t('chat.tabs.completedQuests'),
+        this.$t('chat.tabs.starred'),
       ];
     },
     isFilterChatQuestStatus() {
@@ -370,8 +389,9 @@ export default {
         });
       }
     },
-    async setFilterTabs(val) {
+    async setFilterTabs(val, i) {
       this.selectedTab = val;
+      this.selectedTabIndex = i;
       if (val === 'starred') {
         await this.$store.commit('chat/changeChatsFilterValue',
           [
@@ -393,6 +413,7 @@ export default {
       this.searchValue = '';
       await this.getChats();
     },
+
   },
 };
 </script>
@@ -434,7 +455,11 @@ export default {
   grid-gap: 10px;
   margin: 10px 20px 20px;
 }
-
+.chat-tab-dd{
+  display: grid;
+  grid-template-columns: 100%;
+  margin: 10px 20px 20px;
+}
 .chats-container {
   background-color: $white;
   border: 1px solid #E9EDF2;
@@ -535,7 +560,7 @@ export default {
     flex: none;
     position: absolute;
     object-fit: cover;
-    z-index: 1500;
+    z-index: 3;
     &-group{
       color: $blue;
       background-color: $black100;
@@ -556,7 +581,6 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    z-index: 1500;
     transition: .3s;
     color: $black800;
 
@@ -651,7 +675,12 @@ export default {
     grid-template-columns: repeat(3, auto);
   }
 }
-
+@include _767 {
+  .show-on-desktop { display: none !important; }
+}
+@media (min-width: 767px) {
+  .show-on-mobile { display: none !important; }
+}
 @include _575 {
   .chat {
     &__row {
@@ -669,4 +698,5 @@ export default {
 
 @include _380 {
 }
+
 </style>

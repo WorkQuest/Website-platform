@@ -1,4 +1,5 @@
 import { ChatType, Path } from '~/utils/enums';
+import { error, success } from '~/utils/web3';
 
 export default {
   async getChatsList({ commit, rootState, state: { chatsFilter } }) {
@@ -105,10 +106,10 @@ export default {
   },
   async handleCreatePrivateChat({ commit }, { userId, text, medias }) {
     try {
-      const { payload } = await this.$wsChatActions.$post(`/api/v1/user/${userId}/send-message`, { text, mediaIds: medias });
-      return payload;
+      const { payload: { result } } = await this.$wsChatActions.$post(`/api/v1/user/${userId}/send-message`, { text, mediaIds: medias });
+      return success(result);
     } catch (e) {
-      return (e);
+      return error();
     }
   },
   async handleSendMessage({ commit, state, dispatch }, { chatId, config }) {

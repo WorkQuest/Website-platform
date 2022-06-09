@@ -27,7 +27,7 @@
               <div
                 v-if="currChat.type === ChatType.PRIVATE"
                 class="chat-container__quest-link"
-                @click="$router.push(`${Path.PROFILE}/${privateSecondMember.user.id}`)"
+                @click="$router.push(`${$options.Path.PROFILE}/${privateSecondMember.user.id}`)"
               >
                 {{ `${privateSecondMember.user.firstName}  ${privateSecondMember.user.lastName}` }}
               </div>
@@ -184,12 +184,10 @@ export default {
       userData: 'user/getUserData',
       currChat: 'chat/getCurrChatInfo',
       infoDataMode: 'quests/getInfoDataMode',
+      isLoading: 'main/getIsLoading',
     }),
     ChatType() {
       return ChatType;
-    },
-    Path() {
-      return Path;
     },
     isGroupChat() {
       return this.currChat?.type === ChatType.GROUP;
@@ -239,6 +237,23 @@ export default {
         isCreating: false,
         isMembersList: true,
         isAdding: false,
+        sendPrivateMsg: (userId) => {
+          this.ShowModal({
+            key: modals.sendARequest,
+            title: this.$tc('modals.titles.sendPrivateMessage'),
+            callbackSend: async (files, text) => {
+              if (this.isLoading) return;
+              this.SetLoader(true);
+              const medias = await this.uploadFiles(files);
+              const { ok: isChatCreated, result } = await this.$store.dispatch('chat/handleCreatePrivateChat', { userId, medias, text });
+              this.SetLoader(false);
+              if (isChatCreated) {
+                await this.$router.push(`${Path.MESSAGES}/${result.chat.id}`);
+                this.CloseModal();
+              }
+            },
+          });
+        },
       });
     },
     goToQuest() {

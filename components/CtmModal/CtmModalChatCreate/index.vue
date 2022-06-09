@@ -41,7 +41,7 @@
               <img
                 class="friends__img"
                 alt=""
-                :src="user.avatar && user.avatar.url ? user.avatar.url : images.EMPTY_AVATAR"
+                :src="user.avatar && user.avatar.url ? user.avatar.url : $options.images.EMPTY_AVATAR"
               >
               <span class="friends__name">
                 {{ (user.firstName || '') + ' ' + (user.lastName || '') }}
@@ -72,8 +72,8 @@
                 class="friends__btn-menu"
                 :menu-items="arrayMenu(user)"
                 @giveAQuest="sendInvite(user)"
-                @removeFromChat="tryRemoveUser(user.id)"
-                @private="addToPrivate(user.id)"
+                @removeFromChat="tryRemoveUser(user.userId)"
+                @private="options.sendPrivateMsg(user.userId)"
               />
             </div>
           </div>
@@ -114,6 +114,7 @@ import { images } from '~/utils/images';
 export default {
   name: 'ModalChatUsers',
   components: { ChatMenu },
+  images,
   data() {
     return {
       name: '',
@@ -142,9 +143,6 @@ export default {
     isCurrentUserEmployer() {
       return this.currentUser.role === UserRole.EMPLOYER;
     },
-    images() {
-      return images;
-    },
   },
   async mounted() {
     const { options: { isMembersList }, chatMembers } = this;
@@ -154,7 +152,7 @@ export default {
   methods: {
     // Thw same name for emit when the item will be clicked
     arrayMenu(user) {
-      if (this.currentUser.id !== user.id) {
+      if (this.currentUser.id !== user.userId) {
         return this.isCurrentUserEmployer ? ['giveAQuest', 'private', 'removeFromChat'] : ['private', 'removeFromChat'];
       }
       return this.isCurrentUserEmployer ? ['giveAQuest', 'private'] : [];
@@ -235,11 +233,11 @@ export default {
       this.hide();
     },
     async sendInvite(user) {
-      const { count } = await this.$store.dispatch('quests/getAvailableQuests', user.id);
+      const { count } = await this.$store.dispatch('quests/getAvailableQuests', user.userId);
       if (count > 0) {
         this.ShowModal({
           key: modals.invitation,
-          userId: user.id,
+          userId: user.userId,
           avatar: user.avatar,
           firstName: user.firstName,
           lastName: user.lastName,
@@ -253,20 +251,6 @@ export default {
           subtitle: this.$t('modals.errors.emptyOpenQuests'),
         });
       }
-    },
-
-    async addToPrivate(userId) {
-      this.ShowModal({
-        key: modals.sendARequest,
-        title: this.$tc('modals.titles.sendPrivateMessage'),
-        callbackSend: async (files, text) => {
-          const medias = await this.uploadFiles(files);
-          const { ok: isChatCreated, result } = await this.$store.dispatch('chat/handleCreatePrivateChat', { userId, medias, text });
-          this.isRespondActionInProgress = false;
-          if (isChatCreated) await this.$router.push(`${Path.MESSAGES}/${result.chat.id}`);
-          this.CloseModal();
-        },
-      });
     },
   },
 };
