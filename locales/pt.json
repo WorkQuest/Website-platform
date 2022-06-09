@@ -112,6 +112,7 @@
         "notIndicated": "Not indicated..."
       }
     },
+    "accepted": "Accepted",
     "allTransactions": "All transactions",
     "collateralTransactions": "Collateral transactions",
     "operation": "Operation",
@@ -447,6 +448,7 @@
     "questBig": "Busca",
     "activeQuest": "Busca ativa",
     "waitWorker": "Wait worker",
+    "waitWorkerOnAssign": "Waiting for employee response:",
     "pendingConsideration": "Pending consideration",
     "questClosed": "Quest Closed",
     "dontHaveSpec": "Doesn`t have specializations...",
@@ -1003,7 +1005,8 @@
       "withdrawCard": "Levantar para cartão bancário",
       "withdrawInfo": "Withdrawal info",
       "downloadApp": "Download App",
-      "downloadWallet": "Download Wallet App"
+      "downloadWallet": "Download Wallet App",
+      "sendPrivateMessage": "Send a private message"
     },
     "errors": {
       "errorQuests": "Error with quests",
@@ -1496,7 +1499,17 @@
     "searchTitle": "Name/Quest/Group",
     "menu": {
       "giveAQuest": "Give a quest",
-      "removeFromChat": "Remove from the chat"
+      "removeFromChat": "Remove from the chat",
+      "private": "Private chat"
+    },
+    "tabs": {
+      "all": "All",
+      "private": "Private",
+      "groups": "Groups",
+      "quests": "Quests",
+      "activeQuests" : "Active Quests",
+      "completedQuests": "Completed Quests",
+      "starred": "Starred"
     }
   },
   "settings": {
@@ -1504,6 +1517,7 @@
     "mainPhoneNumber": "Main phone number",
     "whoCouldIInvite": "Who can respond to my quests?",
     "whoCouldInviteMe": "Who can invite me to a quest?",
+    "interactOnly": "Interact only with:",
     "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
@@ -2062,6 +2076,7 @@
       "favorites": "Favorito",
       "responded": "Solicitado",
       "performed": "Buscas concluídas",
+      "completed": "Completed quests",
       "active": "Buscas ativas",
       "invited": "Buscas convidadas",
       "created": "Missões criadas"
@@ -2408,5 +2423,17 @@
     "Remote": "Remote work",
     "InOffice": "In-office",
     "Hybrid": "Hybrid workplace"
+  },
+  "report": {
+    "btn": {
+      "report": "Report",
+      "send": "Send report"
+    },
+    "title": "Title",
+    "titlePlaceholder": "Add a post title",
+    "message": "Message",
+    "messagePlaceholder": "Add message",
+    "sent": "Report sent",
+    "complainAbout": "Complain about"
   }
 }

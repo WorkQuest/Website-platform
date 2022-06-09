@@ -36,12 +36,12 @@
           >
             <div
               class="friends__data"
-              @click="toUserProfile(user)"
+              @click="toUserProfile(user.userId)"
             >
               <img
                 class="friends__img"
                 alt=""
-                :src="user.avatar && user.avatar.url ? user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                :src="user.avatar && user.avatar.url ? user.avatar.url : $options.images.EMPTY_AVATAR"
               >
               <span class="friends__name">
                 {{ (user.firstName || '') + ' ' + (user.lastName || '') }}
@@ -65,14 +65,15 @@
               </label>
             </div>
             <div
-              v-if="options.isMembersList && options.itsOwner"
+              v-if="options.isMembersList && options.itsOwner && arrayMenu(user).length"
               class="friends__menu"
             >
               <chat-menu
                 class="friends__btn-menu"
-                :menu-items="isCurrentUserEmployer?['giveAQuest','removeFromChat']:['removeFromChat']"
+                :menu-items="arrayMenu(user)"
                 @giveAQuest="sendInvite(user)"
-                @removeFromChat="tryRemoveUser(user.id)"
+                @removeFromChat="tryRemoveUser(user.userId)"
+                @private="options.sendPrivateMsg(user.userId)"
               />
             </div>
           </div>
@@ -103,16 +104,17 @@
     </div>
   </ctm-modal-box>
 </template>
-
 <script>
 import { mapGetters } from 'vuex';
 import { Path, UserRole } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 import ChatMenu from '~/components/ui/ChatMenu';
+import { images } from '~/utils/images';
 
 export default {
   name: 'ModalChatUsers',
   components: { ChatMenu },
+  images,
   data() {
     return {
       name: '',
@@ -144,12 +146,19 @@ export default {
   },
   async mounted() {
     const { options: { isMembersList }, chatMembers } = this;
-    if (isMembersList) this.members = chatMembers;
+    if (isMembersList) this.members = chatMembers.map((mem) => ({ ...mem, ...mem.user }));
     else await this.getUsers();
   },
   methods: {
-    toUserProfile(user) {
-      this.$router.push(`${Path.PROFILE}/${user.id}`);
+    // Thw same name for emit when the item will be clicked
+    arrayMenu(user) {
+      if (this.currentUser.id !== user.userId) {
+        return this.isCurrentUserEmployer ? ['giveAQuest', 'private', 'removeFromChat'] : ['private', 'removeFromChat'];
+      }
+      return this.isCurrentUserEmployer ? ['giveAQuest', 'private'] : [];
+    },
+    toUserProfile(userId) {
+      this.$router.push(`${Path.PROFILE}/${userId}`);
       this.CloseModal();
     },
     async addNewMembers() {
@@ -203,7 +212,7 @@ export default {
           { key: 'isMembersList', val: true },
         ];
         this.changeOptions(optionsArr);
-        this.members = chatMembers;
+        this.members = chatMembers.map((mem) => ({ ...mem, ...mem.user }));
         return;
       }
       this.CloseModal();
@@ -213,9 +222,9 @@ export default {
         name, memberUserIds, chatId, options: { isCreating, isAdding },
       } = this;
       if (isCreating) {
-        const config = { name, memberUserIds };
+        const config = { name, userIds: memberUserIds };
         const { ok, result } = await this.$store.dispatch('chat/handleCreateGroupChat', config);
-        if (ok) await this.$router.push(`${Path.MESSAGES}/${result.id}`);
+        if (ok) await this.$router.push(`${Path.MESSAGES}/${result.chat.id}`);
       } else if (isAdding && memberUserIds.length) {
         const payload = { config: { userIds: memberUserIds }, chatId };
         this.memberUserIds = [];
@@ -224,11 +233,11 @@ export default {
       this.hide();
     },
     async sendInvite(user) {
-      const { count } = await this.$store.dispatch('quests/getAvailableQuests', user.id);
+      const { count } = await this.$store.dispatch('quests/getAvailableQuests', user.userId);
       if (count > 0) {
         this.ShowModal({
           key: modals.invitation,
-          userId: user.id,
+          userId: user.userId,
           avatar: user.avatar,
           firstName: user.firstName,
           lastName: user.lastName,
@@ -278,10 +287,12 @@ export default {
             display: flex;
             align-items: center;
             grid-gap: 10px;
+            overflow: hidden;
           }
           &__img {
             height: 50px;
             width: 50px;
+            flex: none;
             border-radius: 50%;
             -o-object-fit: cover;
             object-fit: cover;
@@ -292,6 +303,9 @@ export default {
             font-size: 18px;
             cursor: pointer;
             transition: .3s;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             &:hover {
               color: $blue;
             }
@@ -392,6 +406,7 @@ export default {
     cursor: pointer;
   }
 }
+
 .checkbox-field {
   position: relative;
   display: flex;

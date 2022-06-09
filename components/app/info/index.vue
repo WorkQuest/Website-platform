@@ -25,11 +25,12 @@
           v-click-outside="closeMessage"
           data-selector="TOGGLE-SHOW-MESSAGE"
           class="message message__btn"
+          :class="infoStatusTextColor"
           mode="showYourMessage"
           @click="toggleShowMessage"
         >
           <template v-slot:right>
-            <span class="icon-caret_down" />
+            <span class="icon-caret_down message__caret" />
           </template>
           {{ isShowMessage ? $t('info.hideYourMessage') : $t('info.showYourMessage') }}
           <div
@@ -54,6 +55,7 @@
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import { QuestStatuses } from '~/utils/сonstants/quests';
+import { UserRole } from '~/utils/enums';
 
 export default {
   name: 'InfoVue',
@@ -68,6 +70,7 @@ export default {
     ...mapGetters({
       respondOnQuest: 'quests/getRespondOnQuest',
       questData: 'quests/getQuest',
+      userRole: 'user/getUserRole',
       infoDataMode: 'quests/getInfoDataMode',
     }),
     questStatusesData() {
@@ -94,7 +97,7 @@ export default {
         },
         [QuestStatuses.WaitEmployerConfirm]: {
           text: this.$t('quests.pendingConsideration'),
-          class: 'info_bg-blue',
+          class: 'info_bg-green',
         },
         [QuestStatuses.Dispute]: {
           text: this.$t('meta.dispute'),
@@ -105,7 +108,7 @@ export default {
           class: 'info_bg-red',
         },
         [QuestStatuses.Done]: {
-          text: this.$t('meta.completed'),
+          text: this.userRole === UserRole.WORKER ? this.$t('meta.performed') : this.$t('meta.completed'),
           class: 'info_bg-blue',
         },
         [QuestStatuses.Responded]: {
@@ -119,8 +122,8 @@ export default {
       };
     },
     infoStatusTextColor() {
-      if ([QuestStatuses.Responded].includes(this.infoDataMode)) return 'info__text_black';
-      return 'info__text_white';
+      if (this.infoDataMode !== QuestStatuses.Responded) return 'info__text_white';
+      return 'info__text_black';
     },
   },
   methods: {
@@ -139,12 +142,17 @@ export default {
   &__container {
     z-index: 2;
     position: absolute;
-    top: 45px;
+    top: 42px;
     right: 0;
     background: $white;
     box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.0325794), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
     border-radius: 6px;
     width: 320px;
+  }
+  &__caret {
+    &::before {
+      color: $black800 !important;
+    }
   }
   &__btn {
     position: relative;

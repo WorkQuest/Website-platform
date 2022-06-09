@@ -1,8 +1,8 @@
 import BigNumber from 'bignumber.js';
-import { ResponsesType } from '~/utils/enums';
+import { ResponsesType, UserRole } from '~/utils/enums';
 
 import {
-  QuestMethods,
+  QuestMethods, QuestsResponseStatus,
   QuestStatuses,
 } from '~/utils/сonstants/quests';
 
@@ -79,17 +79,26 @@ export default {
       return false;
     }
   },
-  async getQuest({ commit, rootState }, payload) {
+  async getQuest({ commit, rootGetters }, payload) {
     try {
       const { result } = await this.$axios.$get(`/v1/quest/${payload}`);
       let currStat = 0;
       const { status, response } = result;
+      const userData = rootGetters['user/getUserData'];
 
       const questStatuses = Object.entries(QuestStatuses);
       questStatuses.some(([key, val]) => {
         if (val === status) {
           if (val === QuestStatuses.Created && response) {
-            key = response.type ? 'Invited' : 'Responded';
+            // Check if user was invited and rejected the invitation
+            if (userData.role === UserRole.WORKER
+              && response.status === QuestsResponseStatus.Rejected
+              && response.workerId === userData.id
+            ) {
+              key = 'Rejected';
+            } else {
+              key = response.type ? 'Invited' : 'Responded';
+            }
           }
           currStat = QuestStatuses[key];
           return true;
@@ -135,7 +144,7 @@ export default {
   async responsesToQuest({ commit }, questId) {
     try {
       const { result } = await this.$axios.$get(`/v1/quest/${questId}/responses`);
-      const responded = result.responses.filter((response) => response.status === 0 && response.type === ResponsesType.Responded) || [];
+      const responded = result.responses.filter((response) => response.status === QuestsResponseStatus.Open && response.type === ResponsesType.Responded) || [];
       const invited = result.responses.filter((response) => response.status >= 0 && response.type === ResponsesType.Invited) || [];
       commit('setResponses', { responded, invited });
       return result;
@@ -145,7 +154,7 @@ export default {
     }
   },
   async setResponseToQuest({ commit }, { data: response }) {
-    const responded = response.status === 0 && response.type === ResponsesType.Responded ? response : '';
+    const responded = response.status === QuestsResponseStatus.Open && response.type === ResponsesType.Responded ? response : '';
     const invited = response.status >= 0 && response.type === ResponsesType.Invited ? response : '';
     commit('setResponseToQuest', { responded, invited });
   },

@@ -279,7 +279,7 @@ export default {
     justify-content: flex-start;
     grid-gap: 15px;
     padding: 15px 20px;
-    z-index: 1;
+    z-index: 4;
     &_small {
       max-height: 200px;
       grid-gap: 10px;

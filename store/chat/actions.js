@@ -1,4 +1,5 @@
 import { ChatType, Path } from '~/utils/enums';
+import { error, success } from '~/utils/web3';
 
 export default {
   async getChatsList({ commit, rootState, state: { chatsFilter } }) {
@@ -6,14 +7,16 @@ export default {
       const { result, ok } = await this.$axios.$get('/v1/user/me/chats', { params: chatsFilter });
 
       result.chats.forEach((chat) => {
-        chat.userMembers = chat.userMembers.filter((member) => member.id !== rootState.user.userData.id);
-        chat.isUnread = chat.meMember.unreadCountMessages > 0;
+        [chat.correspondent] = chat.members;
+        chat.members.unshift(chat.meMember);
+        chat.isUnread = chat.meMember?.chatMemberData?.unreadCountMessages > 0;
       });
       if (chatsFilter.offset) result.chats = rootState.chat.chats.list.concat(result.chats);
 
       commit('setChatsList', result);
       return ok;
     } catch (e) {
+      console.error(e);
       return false;
     }
   },
@@ -23,12 +26,12 @@ export default {
     try {
       const method = `/v1/user/me/chat/${chatId === 'starred' ? 'messages/star' : `${chatId}${Path.MESSAGES}`}`;
       const { result, ok } = await this.$axios.$get(method, config);
+
       const myId = user.userData.id;
 
       result.messages.forEach((message) => {
-        message.itsMe = message.sender.id === myId;
-
-        if (message.medias.length) {
+        message.itsMe = message.sender.user.id === myId;
+        if (message.medias && message.medias.length) {
           message.medias.forEach((file) => {
             // eslint-disable-next-line prefer-destructuring
             file.type = file.contentType.split('/')[0];
@@ -37,8 +40,8 @@ export default {
       });
 
       if (result.chat) {
-        result.chat.members = result.chat.userMembers.filter((member) => member.id !== myId);
-        result.chat.isUnread = result.chat.meMember.unreadCountMessages > 0;
+        const curMemeber = result.chat.members.find((el) => el.userId === myId);
+        result.chat.isUnread = curMemeber && curMemeber.chatMemberData?.unreadCountMessages > 0;
       }
 
       if (direction) {
@@ -59,6 +62,7 @@ export default {
       if (isHideFooter) commit('setIsChatOpened', true);
       return result;
     } catch (e) {
+      console.error(e);
       return false;
     }
   },
@@ -100,6 +104,14 @@ export default {
       return { ok: false };
     }
   },
+  async handleCreatePrivateChat({ commit }, { userId, text, medias }) {
+    try {
+      const { payload: { result } } = await this.$wsChatActions.$post(`/api/v1/user/${userId}/send-message`, { text, mediaIds: medias });
+      return success(result);
+    } catch (e) {
+      return error();
+    }
+  },
   async handleSendMessage({ commit, state, dispatch }, { chatId, config }) {
     try {
       const { payload } = await this.$wsChatActions.$post(`/api/v1/chat/${chatId}/send-message`, config);
@@ -108,16 +120,17 @@ export default {
         const message = payload.result;
         message.itsMe = true;
 
-        if (message.medias.length) {
+        if (message.medias && message.medias.length) {
           message.medias.forEach((file) => {
             // eslint-disable-next-line prefer-destructuring
             file.type = file.contentType.split('/')[0];
           });
-        }
+        } else message.medias = [];
         await commit('addMessageToList', message);
       }
       return payload.ok;
     } catch (e) {
+      console.error(e);
       await dispatch('main/showToast', {
         title: 'Error',
         text: e.data.msg,
