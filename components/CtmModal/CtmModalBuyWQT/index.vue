@@ -174,7 +174,7 @@ export default {
       this.inProgressWQT = true;
       this.wqtAmount = `${this.$t('modals.pleaseWait')}...`;
       this.updatePriceId = setTimeout(async () => {
-        await this.$store.dispatch('oracle/getCurrentPrices');
+        await this.$store.dispatch('oracle/getCurrentTokensPrices');
         const priceWQT = new BigNumber(this.oraclePrices[this.oracleSymbols.indexOf(TokenSymbols.WQT)]).shiftedBy(-18);
         const decimalAmount = new BigNumber(this.amount);
         const receiveWithCommission = decimalAmount.dividedBy(priceWQT).multipliedBy(1 - WQTBuyCommission).decimalPlaces(18);

@@ -180,6 +180,7 @@ export const Path = {
   RETIREMENT: '/retirement',
   SUMSUB: '/sumsub',
   REPORT: '/report',
+  AUCTION: '/auction',
 };
 
 export const PathDAO = {
