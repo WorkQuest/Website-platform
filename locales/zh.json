@@ -1004,7 +1004,8 @@
       "withdrawCard": "提款到银行卡",
       "withdrawInfo": "Withdrawal info",
       "downloadApp": "Download App",
-      "downloadWallet": "Download Wallet App"
+      "downloadWallet": "Download Wallet App",
+      "sendPrivateMessage": "Send a private message"
     },
     "errors": {
       "errorQuests": "Error with quests",
@@ -1497,7 +1498,17 @@
     "searchTitle": "Name/Quest/Group",
     "menu": {
       "giveAQuest": "Give a quest",
-      "removeFromChat": "Remove from the chat"
+      "removeFromChat": "Remove from the chat",
+      "private": "Private chat"
+    },
+    "tabs": {
+      "all": "All",
+      "private": "Private",
+      "groups": "Groups",
+      "quests": "Quests",
+      "activeQuests" : "Active Quests",
+      "completedQuests": "Completed Quests",
+      "starred": "Starred"
     }
   },
   "settings": {

@@ -1004,7 +1004,8 @@
       "withdrawCard": "Withdraw to bank card",
       "withdrawInfo": "Withdrawal info",
       "downloadApp": "Скачайте приложение",
-      "downloadWallet": "Download Wallet App"
+      "downloadWallet": "Download Wallet App",
+      "sendPrivateMessage": "Отправить личное сообщение"
     },
     "errors": {
       "errorQuests": "Error with quests",
@@ -1497,7 +1498,17 @@
     "searchTitle": "Имя/Квест/Группа",
     "menu": {
       "giveAQuest": "Дать квест",
-      "removeFromChat": "Удалить из чата"
+      "removeFromChat": "Удалить из чата",
+      "private": "Приватный чат"
+    },
+    "tabs": {
+      "all": "All",
+      "private": "Private",
+      "groups": "Groups",
+      "quests": "Quests",
+      "activeQuests" : "Active Quests",
+      "completedQuests": "Completed Quests",
+      "starred": "Starred"
     }
   },
   "settings": {
