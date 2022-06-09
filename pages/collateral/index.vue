@@ -283,7 +283,7 @@ export default {
                   await this.ShowTxReceipt({
                     from: this.convertToBech32('wq', getWalletAddress()),
                     to: this.ENV.WORKNET_ROUTER,
-                    amount,
+                    amount: collateral,
                     currency,
                     fee,
                     title: this.$t('modals.takeWUSD'),
