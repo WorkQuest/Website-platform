@@ -11,9 +11,9 @@
       <div
         v-if="quest.status"
         class="card-quest__state"
-        :class="getStatusClass"
+        :class="statusClass"
       >
-        {{ questStatusesData[quest.status].title }}
+        {{ questStatusesData[questStatus].title }}
       </div>
     </div>
     <div class="card-quest__right">
@@ -85,7 +85,7 @@
         class="card-quest__progress progress"
       >
         <div class="progress__title">
-          {{ questStatusesData[quest.status].progressText }}
+          {{ questStatusesData[questStatus].progressText }}
         </div>
         <div class="progress__container container">
           <div
@@ -259,13 +259,13 @@ export default {
         },
         [QuestStatuses.WaitWorkerOnAssign]: {
           title: this.$t('meta.invited'),
-          progressText: '',
+          progressText: this.$t('quests.questWaitConfirm'),
           class: 'card-quest__state_yellow',
         },
         [QuestStatuses.WaitEmployerConfirm]: {
           title: this.$t('quests.pendingConsideration'),
-          progressText: this.$t('quests.questWaitConfirm'),
-          class: 'card-quest__state_blue',
+          progressText: this.$t('quests.waitWorkerOnAssign'),
+          class: 'card-quest__state_green',
         },
         [QuestStatuses.Dispute]: {
           title: this.$t('meta.dispute'),
@@ -278,28 +278,37 @@ export default {
           class: 'card-quest__state_red',
         },
         [QuestStatuses.Done]: {
-          title: this.$t('meta.completed'),
+          title: this.userRole === UserRole.WORKER ? this.$t('meta.performed') : this.$t('meta.completed'),
           progressText: this.$t('quests.finishedBy'),
           class: 'card-quest__state_blue',
         },
         [QuestStatuses.Responded]: {
-          title: this.$t('meta.dispute'),
+          title: this.$t('meta.responded'),
           progressText: '',
-          class: 'info_bg-grey',
+          class: 'card-quest__state_gray',
         },
         [QuestStatuses.Invited]: {
-          title: '',
-          progressText: '',
-          class: 'info_bg-yellow',
+          title: this.$t('meta.invited'),
+          progressText: this.$t('quests.waitWorkerOnAssign'),
+          class: 'card-quest__state_yellow',
         },
       };
     },
-    getStatusClass() {
-      const { quest } = this;
-      if (quest.status !== QuestStatuses.Created) {
-        return this.questStatusesData[quest.status].class;
+    questStatus() {
+      if (this.quest.status === QuestStatuses.Rejected) return QuestStatuses.Rejected;
+      if (this.userRole === UserRole.WORKER) {
+        if (this.quest.responded) {
+          if (this.quest.status === QuestStatuses.WaitWorkerOnAssign) return QuestStatuses.Invited;
+          return QuestStatuses.Responded;
+        }
+        if (this.quest.invited) {
+          return QuestStatuses.Invited;
+        }
       }
-      return quest?.responded?.workerId === this.userData.id ? 'card-quest__state_blue' : 'info_hide';
+      return this.quest.status;
+    },
+    statusClass() {
+      return this.questStatusesData[this.questStatus].class;
     },
   },
   async mounted() {

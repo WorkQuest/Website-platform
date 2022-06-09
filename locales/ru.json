@@ -112,6 +112,7 @@
         "notIndicated": "Не указана"
       }
     },
+    "accepted": "Accepted",
     "allTransactions": "All transactions",
     "collateralTransactions": "Collateral transactions",
     "operation": "Operation",
@@ -447,6 +448,7 @@
     "questBig": "Квест",
     "activeQuest": "Активный квест",
     "waitWorker": "Ожидает работника",
+    "waitWorkerOnAssign": "Ожидание ответа работника:",
     "pendingConsideration": "Ожидает рассмотрения",
     "questClosed": "Квест закрыт",
     "dontHaveSpec": "Doesn`t have specializations...",
@@ -1503,6 +1505,7 @@
     "mainPhoneNumber": "Основной номер телефона",
     "whoCouldIInvite": "Кто может откликаться на мои квесты?",
     "whoCouldInviteMe": "Кто может приглашать меня на квесты?",
+    "interactOnly": "Interact only with:",
     "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
@@ -1834,6 +1837,7 @@
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
     "currentLoan": "Текущий заем",
     "currentCredit": "Текущий кредит",
+    "dueDate": "Due date",
     "chooseSource": "Выбрать источник",
     "chosenSource": "Выбранный источник",
     "marketSize": "Market size",
@@ -2060,6 +2064,7 @@
       "favorites": "Избранные",
       "responded": "Responded quests",
       "performed": "Performed quests",
+      "completed": "Completed quests",
       "active": "Активные квесты",
       "invited": "Invited quests",
       "created": "Созданные квесты"
@@ -2420,4 +2425,3 @@
     "complainAbout": "Пожаловаться на"
   }
 }
-

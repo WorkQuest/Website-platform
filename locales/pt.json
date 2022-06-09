@@ -112,6 +112,7 @@
         "notIndicated": "Not indicated..."
       }
     },
+    "accepted": "Accepted",
     "allTransactions": "All transactions",
     "collateralTransactions": "Collateral transactions",
     "operation": "Operation",
@@ -447,6 +448,7 @@
     "questBig": "Busca",
     "activeQuest": "Busca ativa",
     "waitWorker": "Wait worker",
+    "waitWorkerOnAssign": "Waiting for employee response:",
     "pendingConsideration": "Pending consideration",
     "questClosed": "Quest Closed",
     "dontHaveSpec": "Doesn`t have specializations...",
@@ -1503,6 +1505,7 @@
     "mainPhoneNumber": "Main phone number",
     "whoCouldIInvite": "Who can respond to my quests?",
     "whoCouldInviteMe": "Who can invite me to a quest?",
+    "interactOnly": "Interact only with:",
     "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
@@ -2061,6 +2064,7 @@
       "favorites": "Favorito",
       "responded": "Solicitado",
       "performed": "Buscas concluídas",
+      "completed": "Completed quests",
       "active": "Buscas ativas",
       "invited": "Buscas convidadas",
       "created": "Missões criadas"
