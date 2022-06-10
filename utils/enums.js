@@ -239,9 +239,19 @@ export const WalletTables = Object.freeze({
   COLLATERAL: 'COLLATERAL',
 });
 
-export const DaoUrl = Object.freeze('https://dev-dao.workquest.co');
+export const DaoUrl = {
+  master: 'https://testnet-dao.workquest.co',
+  testnet: 'https://testnet-dao.workquest.co',
+  stage: 'https://stage-dao.workquest.co',
+  develop: 'https://dev-dao.workquest.co',
+}[process.env.BRANCH];
 
-export const ExplorerUrl = Object.freeze('https://dev-explorer.workquest.co');
+export const ExplorerUrl = {
+  master: 'https://testnet-explorer.workquest.co',
+  testnet: 'https://testnet-explorer.workquest.co',
+  stage: 'https://stage-explorer.workquest.co',
+  develop: 'https://dev-explorer.workquest.co',
+}[process.env.BRANCH];
 
 export const NetworksData = {
   ETH_MAIN: {
