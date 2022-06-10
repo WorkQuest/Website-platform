@@ -49,7 +49,7 @@
       {{ user.additionalInfo.description ? user.additionalInfo.description : $t('quests.nothingAboutMe') }}
     </div>
     <div class="card__address">
-      {{ user.additionalInfo.address ? user.additionalInfo.address : $t('quests.unknownAddress') }}
+      {{ user.locationPlaceName || $t('quests.unknownAddress') }}
     </div>
     <div class="card__cost cost">
       <div class="cost__title">

@@ -242,8 +242,8 @@ export default {
     contactData() {
       if (this.isEmptyUserData) return [];
       const {
-        email, tempPhone, phone, additionalInfo: {
-          secondMobileNumber, address, company, website,
+        email, tempPhone, phone, locationPlaceName, additionalInfo: {
+          secondMobileNumber, company, website,
         },
       } = this.userData;
       const userData = [];
@@ -269,11 +269,11 @@ export default {
           href: `tel:${secondMobileNumber.fullPhone}`,
         });
       }
-      if (address) {
+      if (locationPlaceName) {
         userData.push({
-          name: address,
+          name: locationPlaceName,
           icon: 'icon-location',
-          href: `https://maps.google.com/?q=${address}`,
+          href: `https://maps.google.com/?q=${locationPlaceName}`,
         });
       }
       if (company) {
