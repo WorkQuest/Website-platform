@@ -202,7 +202,7 @@
               </template>
               <template #cell(txHash)="el">
                 <a
-                  :href="`https://${isProd ? 'dev' : 'test'}-explorer.workquest.co/tx/${el.item.transactionHash}`"
+                  :href="`${$options.ExplorerUrl}/tx/${el.item.transactionHash}`"
                   target="_blank"
                   class="user__value_gray"
                 >
@@ -249,10 +249,12 @@ import { getStyledAmount } from '~/utils/wallet';
 import { images } from '~/utils/images';
 import { REFERRAL_EVENTS } from '~/utils/сonstants/referral';
 import { IS_PROD } from '~/utils/adresses';
+import { ExplorerUrl } from '~/utils/enums';
 
 export default {
   name: 'Referral',
   images,
+  ExplorerUrl,
   async asyncData({ store }) {
     const userAddress = store.getters['user/getUserWalletAddress'];
     await Promise.all([
