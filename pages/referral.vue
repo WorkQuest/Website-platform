@@ -216,10 +216,7 @@
               </template>
               <template #cell(amount)="el">
                 <div class="user__value_gray">
-                  {{
-                    $tc(`meta.coins.count.${currencyReward(el.item['referralUser.id'])}`,
-                        getStyledAmount(el.value))
-                  }}
+                  {{ $tc(`meta.coins.count.${currencyReward(el.item['referralUser.id'])}`, getStyledAmount(el.value)) }}
                 </div>
               </template>
               <template #cell(event)="el">
@@ -269,7 +266,6 @@ export default {
     return {
       page: 1,
       perPage: 10,
-      referLink: IS_PROD ? 'https://app-ver1.workquest.co/?ref=' : 'https://app.workquest.co/?ref=',
       isProd: IS_PROD,
       referralCount: 5,
     };
@@ -288,6 +284,10 @@ export default {
       isNeedRegistration: 'referral/getIsNeedRegistration',
       createdReferralsList: 'referral/getCreatedReferralList',
     }),
+    referLink() {
+      const url = window.location.origin;
+      return `${url}/?ref=`;
+    },
     totalPages() {
       return Math.ceil(this.paidEventsList.length / this.perPage);
     },
