@@ -386,8 +386,8 @@ Vue.mixin({
           key: modals.transactionReceipt,
           title: title || this.$t('modals.takeWUSD'),
           fields: {
-            from: { name: this.$t('modals.fromBig'), value: from },
-            to: { name: this.$t('modals.toBig'), value: to },
+            from: { name: this.$t('meta.fromBig'), value: from },
+            to: { name: this.$t('meta.toBig'), value: to },
             amount: {
               name: this.$t('modals.amount'),
               value: amount,

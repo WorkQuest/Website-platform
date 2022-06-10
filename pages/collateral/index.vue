@@ -249,7 +249,7 @@ export default {
               key: modals.transactionReceipt,
               title: this.$t('modals.setTokenPrice', { token: currency }),
               fields: {
-                from: { name: this.$t('modals.fromBig'), value: this.convertToBech32('wq', getWalletAddress()) },
+                from: { name: this.$t('meta.fromBig'), value: this.convertToBech32('wq', getWalletAddress()) },
                 fee: {
                   name: this.$t('wallet.table.trxFee'),
                   value: new BigNumber(gasPrice).multipliedBy(gas).shiftedBy(-18).toFixed(),
