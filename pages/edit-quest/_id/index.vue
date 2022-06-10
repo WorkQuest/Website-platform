@@ -31,6 +31,7 @@
                     data-selector="RUNTIME"
                     :name="$t('quests.runtime')"
                     rules="required"
+                    disabled
                   />
                 </div>
               </div>
@@ -128,6 +129,7 @@
               rules="required|min:2|max:250"
               :name="$tc('quests.questTitle')"
               :placeholder="$t('quests.questTitle')"
+              disabled
             />
           </div>
           <div class="page__input">
@@ -495,7 +497,7 @@ export default {
           title: this.$t('meta.raiseViews'),
           isShowSuccess: this.mode === 'raise',
           fields: {
-            from: { name: this.$t('meta.fromBig'), value: this.$store.getters['user/getUserWalletAddress'] },
+            from: { name: this.$t('meta.fromBig'), value: this.convertToBech32('wq', this.$store.getters['user/getUserWalletAddress']) },
             to: { name: this.$t('meta.toBig'), value: promotionAddress },
             amount: { name: this.$t('modals.amount'), value: levelPrice, symbol: TokenSymbols.WUSD },
             fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WQT },
@@ -601,10 +603,10 @@ export default {
       this.SetLoader(true);
       const medias = await this.uploadFiles(this.files);
       const payload = {
+        payPeriod: PayPeriodsIndex[this.payPeriodIndex],
         workplace: WorkplaceIndex[this.workplaceIndex],
         priority: this.priorityIndex,
         typeOfEmployment: TypeOfEmployments[this.employmentIndex],
-        title: this.questTitle,
         medias,
         specializationKeys: this.selectedSpecAndSkills,
         locationFull: {
@@ -646,7 +648,7 @@ export default {
         return;
       }
       const fields = {
-        from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
+        from: { name: this.$t('meta.fromBig'), value: this.convertToBech32('wq', this.userWalletAddress) },
         to: { name: this.$t('meta.toBig'), value: contractAddress },
         fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
       };
@@ -667,6 +669,9 @@ export default {
             contractAddress,
             cost: this.price,
           });
+          await this.editQuest();
+          this.SetLoader(false);
+          await this.$router.push(`${Path.QUESTS}/${this.questData.id}`);
         },
       });
     },

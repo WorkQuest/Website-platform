@@ -351,7 +351,7 @@ Vue.mixin({
             key: modals.transactionReceipt,
             title: approveTitle,
             fields: {
-              from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
+              from: { name: this.$t('meta.fromBig'), value: this.convertToBech32('wq', this.userWalletAddress) },
               to: { name: this.$t('meta.toBig'), value: contractAddress },
               amount: { name: this.$t('modals.amount'), value: amount, symbol: TokenSymbols.WUSD },
               fee: { name: this.$t('wallet.table.trxFee'), value: approveFee.result.fee, symbol: TokenSymbols.WQT },
