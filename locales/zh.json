@@ -112,6 +112,7 @@
         "notIndicated": "Not indicated..."
       }
     },
+    "accepted": "Accepted",
     "allTransactions": "All transactions",
     "collateralTransactions": "Collateral transactions",
     "operation": "Operation",
@@ -447,6 +448,7 @@
     "questBig": "Quest",
     "activeQuest": "有效 Quest",
     "waitWorker": "Wait worker",
+    "waitWorkerOnAssign": "Waiting for employee response:",
     "pendingConsideration": "Pending consideration",
     "questClosed": "Quest Closed",
     "dontHaveSpec": "Doesn`t have specializations...",
@@ -934,7 +936,8 @@
     "caseEdited": "Case edited!",
     "error": "Error!",
     "sendToSupport": "A message has been sent to support",
-    "sent": "Sent"
+    "sent": "Sent",
+    "errorGetFee": "Something wrong with get fee, check console"
   },
   "modals": {
     "titles": {
@@ -1002,7 +1005,8 @@
       "withdrawCard": "提款到银行卡",
       "withdrawInfo": "Withdrawal info",
       "downloadApp": "Download App",
-      "downloadWallet": "Download Wallet App"
+      "downloadWallet": "Download Wallet App",
+      "sendPrivateMessage": "Send a private message"
     },
     "errors": {
       "errorQuests": "Error with quests",
@@ -1072,7 +1076,7 @@
     "settingsInfo": "Settings Info",
     "pleaseEnable2FA": "Please, enable TWO-Step authentication",
     "errorGetWUSD": "Something went wrong",
-    "countOfRecievedWUSD": "How many WUSD do you want to receive",
+    "countOfReceivedWUSD": "How many WUSD do you want to receive",
     "fieldCountOf": "{countOf} amount",
     "countOfCollateral": "How much collateral to leave?",
     "percentageConversion": "Percentage conversion",
@@ -1081,7 +1085,7 @@
     "mediumRisk": "Medium",
     "lowRisk": "Low",
     "fieldPercentConversion": "Percentage conversion",
-    "countOfRecievedWUSDDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+    "countOfReceivedWUSDDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "countOfCollateralDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "conversionPercentDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "fillNumber": "Please fill phone number in settings page...",
@@ -1495,7 +1499,17 @@
     "searchTitle": "Name/Quest/Group",
     "menu": {
       "giveAQuest": "Give a quest",
-      "removeFromChat": "Remove from the chat"
+      "removeFromChat": "Remove from the chat",
+      "private": "Private chat"
+    },
+    "tabs": {
+      "all": "All",
+      "private": "Private",
+      "groups": "Groups",
+      "quests": "Quests",
+      "activeQuests" : "Active Quests",
+      "completedQuests": "Completed Quests",
+      "starred": "Starred"
     }
   },
   "settings": {
@@ -2061,6 +2075,7 @@
       "favorites": "Favorites",
       "responded": "Responded quests",
       "performed": "Performed quests",
+      "completed": "Completed quests",
       "active": "Active quests",
       "invited": "Invited quests",
       "created": "Created quests"
@@ -2407,5 +2422,17 @@
     "Remote": "Remote work",
     "InOffice": "In-office",
     "Hybrid": "Hybrid workplace"
+  },
+  "report": {
+    "btn": {
+      "report": "Report",
+      "send": "Send report"
+    },
+    "title": "Title",
+    "titlePlaceholder": "Add a post title",
+    "message": "Message",
+    "messagePlaceholder": "Add message",
+    "sent": "Report sent",
+    "complainAbout": "Complain about"
   }
 }

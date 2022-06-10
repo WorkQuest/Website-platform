@@ -41,7 +41,7 @@
             class="buttons__button"
             mode="outline"
             data-selector="CANCEL"
-            @click="CloseModal"
+            @click="handleCancel"
           >
             {{ $t('meta.btns.cancel') }}
           </base-btn>
@@ -113,6 +113,11 @@ export default {
         }
       }
       if (!isDontOffLoader) this.SetLoader(false);
+    },
+    async handleCancel() {
+      const { cancelMethod } = this.options;
+      this.CloseModal();
+      if (cancelMethod) cancelMethod();
     },
   },
 };

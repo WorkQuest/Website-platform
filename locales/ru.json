@@ -112,6 +112,7 @@
         "notIndicated": "Не указана"
       }
     },
+    "accepted": "Accepted",
     "allTransactions": "All transactions",
     "collateralTransactions": "Collateral transactions",
     "operation": "Operation",
@@ -447,6 +448,7 @@
     "questBig": "Квест",
     "activeQuest": "Активный квест",
     "waitWorker": "Ожидает работника",
+    "waitWorkerOnAssign": "Ожидание ответа работника:",
     "pendingConsideration": "Ожидает рассмотрения",
     "questClosed": "Квест закрыт",
     "dontHaveSpec": "Doesn`t have specializations...",
@@ -934,7 +936,8 @@
     "caseEdited": "Case edited!",
     "error": "Ошибка!",
     "sendToSupport": "Сообщение было отправлено в поддерку",
-    "sent": "Отправлено"
+    "sent": "Отправлено",
+    "errorGetFee": "Что-то произошло с получением комиссии, проверьте консоль"
   },
   "modals": {
     "titles": {
@@ -1002,7 +1005,8 @@
       "withdrawCard": "Withdraw to bank card",
       "withdrawInfo": "Withdrawal info",
       "downloadApp": "Скачайте приложение",
-      "downloadWallet": "Download Wallet App"
+      "downloadWallet": "Download Wallet App",
+      "sendPrivateMessage": "Отправить личное сообщение"
     },
     "errors": {
       "errorQuests": "Error with quests",
@@ -1072,7 +1076,7 @@
     "settingsInfo": "Settings Info",
     "pleaseEnable2FA": "Please, enable TWO-Step authentication",
     "errorGetWUSD": "Something went wrong",
-    "countOfRecievedWUSD": "How many WUSD do you want to receive",
+    "countOfReceivedWUSD": "How many WUSD do you want to receive",
     "fieldCountOf": "{countOf} amount",
     "countOfCollateral": "How much collateral to leave?",
     "percentageConversion": "Percentage conversion",
@@ -1081,7 +1085,7 @@
     "mediumRisk": "Medium",
     "lowRisk": "Low",
     "fieldPercentConversion": "Percentage conversion",
-    "countOfRecievedWUSDDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+    "countOfReceivedWUSDDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "countOfCollateralDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "conversionPercentDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "fillNumber": "Please fill phone number in settings page...",
@@ -1495,7 +1499,17 @@
     "searchTitle": "Имя/Квест/Группа",
     "menu": {
       "giveAQuest": "Дать квест",
-      "removeFromChat": "Удалить из чата"
+      "removeFromChat": "Удалить из чата",
+      "private": "Приватный чат"
+    },
+    "tabs": {
+      "all": "All",
+      "private": "Private",
+      "groups": "Groups",
+      "quests": "Quests",
+      "activeQuests" : "Active Quests",
+      "completedQuests": "Completed Quests",
+      "starred": "Starred"
     }
   },
   "settings": {
@@ -1503,6 +1517,7 @@
     "mainPhoneNumber": "Основной номер телефона",
     "whoCouldIInvite": "Кто может откликаться на мои квесты?",
     "whoCouldInviteMe": "Кто может приглашать меня на квесты?",
+    "interactOnly": "Interact only with:",
     "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
@@ -1834,6 +1849,7 @@
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
     "currentLoan": "Текущий заем",
     "currentCredit": "Текущий кредит",
+    "dueDate": "Due date",
     "chooseSource": "Выбрать источник",
     "chosenSource": "Выбранный источник",
     "marketSize": "Market size",
@@ -2060,6 +2076,7 @@
       "favorites": "Избранные",
       "responded": "Responded quests",
       "performed": "Performed quests",
+      "completed": "Completed quests",
       "active": "Активные квесты",
       "invited": "Invited quests",
       "created": "Созданные квесты"
@@ -2406,6 +2423,17 @@
     "Remote": "Удаленная работа",
     "InOffice": "В офисе",
     "Hybrid": "Гибридное рабочее место"
+  },
+  "report": {
+    "btn": {
+      "report": "Жалоба",
+      "send": "Отправить жалобу"
+    },
+    "title": "Заголовок",
+    "titlePlaceholder": "Добавьте заголовок",
+    "message": "Сообщение",
+    "messagePlaceholder": "Добавьте сообщение",
+    "sent": "Отправить",
+    "complainAbout": "Пожаловаться на"
   }
 }
-

@@ -10,7 +10,7 @@ const keysByBranch = {
   develop: develop.default,
 }[process.env.BRANCH];
 
-export const IS_PROD = ['master', 'stage'].includes(process.env.BRANCH);
+export const IS_PROD = ['master', 'stage', 'testnet'].includes(process.env.BRANCH);
 
 /**
  * @property BRANCH - ENV
@@ -28,7 +28,7 @@ export const IS_PROD = ['master', 'stage'].includes(process.env.BRANCH);
  * @property WS_CHAT_ACTIONS_URL
  * @property WS_WQ_PROVIDER
 
-  * @property ETHEREUM_RPC_URL - use process.env on project
+ * @property ETHEREUM_RPC_URL - use process.env on project
  * @property ETHEREUM_BRIDGE
  * @property ETHEREUM_LP_TOKEN
  * @property ETHEREUM_MINING

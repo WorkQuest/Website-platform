@@ -237,7 +237,7 @@ export default {
     if (!this.isWalletConnected) return;
     await Promise.all([
       this.$store.dispatch('crediting/getCreditData'),
-      this.$store.dispatch('oracle/getCurrentPrices'),
+      this.$store.dispatch('oracle/getCurrentTokensPrices'),
       this.$store.dispatch('crediting/getWalletsData'),
     ]);
     this.SetLoader(false);
@@ -353,7 +353,7 @@ export default {
       });
     },
     async setTokenPrice() {
-      await this.$store.dispatch('oracle/getCurrentPrices');
+      await this.$store.dispatch('oracle/getCurrentTokensPrices');
       const { nonce } = this.currentPrices;
       const { prices, symbols } = this;
 
@@ -638,7 +638,7 @@ export default {
         .calendar-img {
           grid-area: sd;
           position: absolute;
-          right: 0px;
+          right: 0;
           bottom: 0;
         }
 

@@ -3,8 +3,8 @@ export default {
   // GMAPKEY: process.env.GMAPKEY,
   // SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
-  WQ_PROVIDER: 'https://test-gate-01.workquest.co/',
-  WQ_EXPLORER: 'https://testnet-explorer.workquest.co/api/v1',
+  WQ_PROVIDER: 'https://testnet-gate.workquest.co/rpc/',
+  WQ_EXPLORER: 'https://testnet-explorer-api.workquest.co/api/v1',
   WQ_ORACLE_URL: 'https://testnet-oracle.workquest.co/api/v1',
 
   NOTIFS_URL: 'https://notifications.workquest.co/api/',

@@ -3,146 +3,146 @@
     class="getWUSD"
     :title="$tc('modals.titles.buyWUSD')"
   >
-    <div class="getWUSD__content content">
-      <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
-        ref="form"
+    <validation-observer
+      v-slot="{handleSubmit, invalid}"
+      ref="form"
+      tag="div"
+      class="getWUSD__content content"
+    >
+      <form
+        action=""
+        @submit.prevent="handleSubmit(requestGetWUSD)"
       >
-        <form
-          action=""
-          @submit.prevent="handleSubmit(requestGetWUSD)"
-        >
-          <div class="content__body">
-            <div class="content__checkpoints checkpoints">
-              <label
-                for="checkpoints__main"
-                class="checkpoints__label"
-              >
-                {{ $t('modals.chooseTheCurrency') }}
-              </label>
-              <div
-                id="checkpoints__main"
-                class="checkpoints__main"
-              >
-                <div
-                  v-for="(item, i) in checkpoints"
-                  :key="i"
-                  class="checkpoints__array"
-                >
-                  <input
-                    :id="item.name"
-                    v-model="selCurrencyID"
-                    type="radio"
-                    class="checkpoints__item"
-                    :value="item.id"
-                  >
-                  <label
-                    class="checkpoints__name"
-                    :for="item.name"
-                  >
-                    {{ item.name }}
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="content__field">
-              <div class="content__label">
-                {{ $t('modals.countOfRecievedWUSD') }}
-              </div>
-              <base-field
-                :value="amountWUSD"
-                class="content__input"
-                placeholder="10 WUSD"
-                rules="required|decimal"
-                :name="$tc('modals.fieldCountOf', { countOf: 'WUSD' })"
-                type="number"
-                data-selector="WUSD"
-                @input="onChangeWUSD"
-              />
-            </div>
-            <div class="content__field">
-              <div class="content__label">
-                {{ $t('modals.countOfCollateral') }}
-              </div>
-              <base-field
-                id="amountOfPercents_input"
-                :value="amountCollateral"
-                class="content__input"
-                :placeholder="`10 ${currentCurrency}`"
-                rules="required|decimal"
-                :name="$tc('modals.fieldCountOf', { countOf: `${ currentCurrency } collateral` })"
-                type="number"
-                data-selector="TOKEN"
-                @input="onChangeCollateral"
-              />
-            </div>
+        <div class="content__body">
+          <div class="content__checkpoints checkpoints">
+            <label
+              for="checkpoints__main"
+              class="checkpoints__label"
+            >
+              {{ $t('modals.chooseTheCurrency') }}
+            </label>
             <div
-              class="content__field"
-              @keydown.delete="ChangeCaretPosition( $refs.percentInput)"
+              id="checkpoints__main"
+              class="checkpoints__main"
             >
-              <div class="content__label">
-                {{ $t('modals.percentageConversion') }}
-              </div>
-              <base-field
-                ref="percentInput"
-                :value="collateralPercent"
-                class="content__input"
-                placeholder="150 %"
-                rules="required|min_percent:150|zeroFail"
-                :name="$tc('modals.fieldPercentConversion')"
-                data-selector="PERCENT"
-                @input="calcCollateralPercent"
-              />
-              <div class="content__text">
-                {{ $t('modals.conversionAdditionalInfo', {risks: getRisksGrade}) }}
+              <div
+                v-for="(item, i) in checkpoints"
+                :key="i"
+                class="checkpoints__array"
+              >
+                <input
+                  :id="item.name"
+                  v-model="selCurrencyID"
+                  type="radio"
+                  class="checkpoints__item"
+                  :value="item.id"
+                >
+                <label
+                  class="checkpoints__name"
+                  :for="item.name"
+                >
+                  {{ item.name }}
+                </label>
               </div>
             </div>
           </div>
-          <div class="content__buttons buttons">
-            <base-btn
-              class="buttons__button"
-              mode="outline"
-              data-selector="CANCEL"
-              :is-submit="false"
-              @click="CloseModal"
-            >
-              {{ $t('meta.btns.cancel') }}
-            </base-btn>
-            <base-btn
-              class="buttons__button"
-              data-selector="SUBMIT"
-              :disabled="!validated || !passed || invalid"
-            >
-              {{ $t('meta.btns.submit') }}
-            </base-btn>
+          <div class="content__field">
+            <div class="content__label">
+              {{ $t('modals.countOfReceivedWUSD') }}
+            </div>
+            <base-field
+              :value="amountWUSD"
+              class="content__input"
+              placeholder="10 WUSD"
+              rules="required|decimal"
+              :name="$tc('modals.fieldCountOf', { countOf: $options.TokenSymbols.WUSD })"
+              type="number"
+              data-selector="WUSD"
+              @input="onChangeWUSD"
+            />
           </div>
-        </form>
-      </validation-observer>
-    </div>
+          <div class="content__field">
+            <div class="content__label">
+              {{ $t('modals.countOfCollateral') }}
+            </div>
+            <base-field
+              id="amount_input"
+              :value="amountCollateral"
+              class="content__input"
+              :placeholder="`10 ${currentCurrency}`"
+              :rules="`required|decimal|max_value:${currentBalance[currentCurrency].fullBalance}`"
+              :name="$tc('modals.fieldCountOf', { countOf: `${ currentCurrency } collateral` })"
+              type="number"
+              data-selector="TOKEN"
+              @input="onChangeCollateral"
+            />
+          </div>
+          <div
+            class="content__field"
+            @keydown.delete="ChangeCaretPosition( $refs.percentInput)"
+          >
+            <div class="content__label">
+              {{ $t('modals.percentageConversion') }}
+            </div>
+            <base-field
+              ref="percentInput"
+              :value="collateralPercent"
+              class="content__input"
+              placeholder="150 %"
+              :rules="`required|min_percent:${minRatio}|zeroFail|min:2|max:4`"
+              :name="$tc('modals.fieldPercentConversion')"
+              data-selector="PERCENT"
+              @input="calcCollateralPercent"
+            />
+            <div class="content__text">
+              {{ $t('modals.conversionAdditionalInfo', {risks: getRisksGrade}) }}
+            </div>
+          </div>
+        </div>
+        <div class="content__buttons buttons">
+          <base-btn
+            class="buttons__button"
+            mode="outline"
+            data-selector="CANCEL"
+            :is-submit="false"
+            @click="CloseModal"
+          >
+            {{ $t('meta.btns.cancel') }}
+          </base-btn>
+          <base-btn
+            class="buttons__button"
+            data-selector="SUBMIT"
+            :disabled="invalid"
+          >
+            {{ $t('meta.btns.submit') }}
+          </base-btn>
+        </div>
+      </form>
+    </validation-observer>
   </ctm-modal-box>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
-import modals from '~/store/modals/modals';
-import { getGasPrice, getWalletAddress } from '~/utils/wallet';
-import { WQOracle, WQRouter, ERC20 } from '~/abi/index';
 import { TokenMap, TokenSymbols } from '~/utils/enums';
+import { ERC20 } from '~/abi';
 
 export default {
   name: 'ModalGetWUSD',
+  TokenSymbols,
   data() {
     return {
-      selCurrencyID: TokenMap.BNB,
+      selCurrencyID: TokenMap.USDT,
       amountWUSD: '',
       amountCollateral: '',
       collateralPercent: '',
       currentCurrencyPrice: 0,
       optimalCollateralRatio: 0,
       checkpoints: [
-        { name: this.$t('meta.coins.bnb'), id: TokenMap.BNB },
-        { name: this.$t('meta.coins.eth'), id: TokenMap.ETH },
+        { name: TokenSymbols.USDT, id: TokenMap.USDT },
+        // { name: this.$t('meta.coins.bnb'), id: TokenMap.BNB },
+        // { name: this.$t('meta.coins.eth'), id: TokenMap.ETH },
         // { name: this.$t('meta.coins.wqt'), id: TokenMap.WQT }, // TODO: wqt native now, fix it
       ],
     };
@@ -150,6 +150,12 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+
+      minRatio: 'oracle/getMinRatio',
+      ratio: 'oracle/getSecurityRatio',
+
+      userWalletAddress: 'user/getUserWalletAddress',
+      currentBalance: 'wallet/getBalanceData',
     }),
     optimalCollateralPercent() {
       return new BigNumber(this.optimalCollateralRatio).multipliedBy(100).toFixed();
@@ -192,10 +198,32 @@ export default {
   },
   async beforeMount() {
     await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+  },
+  async mounted() {
+    this.SetLoader(true);
+
+    await Promise.all([
+      this.fetchWalletData({
+        method: 'balanceOf',
+        address: this.userWalletAddress,
+        abi: ERC20,
+        token: TokenMap[this.currentCurrency],
+        symbol: TokenSymbols[this.currentCurrency],
+      }),
+      this.fetchMinRatio({ currency: this.currentCurrency }),
+    ]);
+
     await this.getCollateralData();
     this.setActualCollateralPercent();
+    this.SetLoader(false);
   },
   methods: {
+    ...mapActions({
+      fetchWalletData: 'wallet/fetchWalletData',
+
+      fetchRatio: 'oracle/getSecurityRatio',
+      fetchMinRatio: 'oracle/getCurrencyInfo',
+    }),
     onChangeWUSD(value) {
       this.amountWUSD = value;
       this.calculateCollateral();
@@ -212,17 +240,34 @@ export default {
     },
     calculateWUSD() {
       if (+this.amountCollateral > 0 && +this.collateralPercentClear > 0 && +this.currentCurrencyPrice > 0) {
-        this.amountWUSD = new BigNumber(this.amountCollateral).multipliedBy(this.currentCurrencyPrice).dividedBy(this.currentCollateralRatio).toFixed();
+        this.amountWUSD = new BigNumber(this.amountCollateral)
+          .multipliedBy(this.currentCurrencyPrice)
+          .dividedBy(this.currentCollateralRatio)
+          .toFixed();
       }
     },
     calculateCollateral() {
       if (+this.amountWUSD > 0 && +this.collateralPercentClear > 0 && +this.currentCurrencyPrice > 0) {
-        this.amountCollateral = new BigNumber(this.amountWUSD).multipliedBy(this.currentCollateralRatio).dividedBy(this.currentCurrencyPrice).toFixed();
+        this.amountCollateral = new BigNumber(this.amountWUSD)
+          .multipliedBy(this.currentCollateralRatio)
+          .dividedBy(this.currentCurrencyPrice)
+          .toFixed();
       }
     },
     async getCollateralData() {
-      this.currentCurrencyPrice = 10000; // TODO backend
-      this.optimalCollateralRatio = 2; // TODO backend
+      await this.fetchRatio();
+      /**
+       * @property price - current price for selected token
+       * @property coefficient - coefficient of optimal risk
+       */
+      this.ratio.some((item) => {
+        if (item.coin === this.currentCurrency) {
+          this.currentCurrencyPrice = item.price;
+          this.optimalCollateralRatio = new BigNumber(item.coefficient).dividedBy(100).toNumber();
+          return true;
+        }
+        return false;
+      });
     },
     setActualCollateralPercent() {
       this.collateralPercent = `${this.optimalCollateralPercent}%`;
@@ -233,133 +278,19 @@ export default {
       this.collateralPercent = '';
       this.$refs.form.reset();
     },
-    async requestGetWUSD() {
-      await this.$store.dispatch('wallet/getBalance');
-      const payload = {
-        amount: this.amountWUSD,
-        collateral: this.amountCollateral,
-        percent: this.collateralPercent.substr(0, this.collateralPercent.length - 1),
-        currency: this.currentCurrency,
-        amountBN: new BigNumber(this.amountWUSD).shiftedBy(18).toFixed(),
-        collateralBN: new BigNumber(this.amountCollateral).shiftedBy(18).toFixed(),
-        ratioBN: new BigNumber(this.collateralPercent.substr(0, this.collateralPercent.length - 1)).shiftedBy(16).toFixed(),
-      };
-      this.SetLoader(true);
-      this.CloseModal();
-      await this.setTokenPrice(payload);
-      this.SetLoader(false);
-    },
-    async setTokenPrice(payload) {
-      const date = Date.now().toString();
-      const timestamp = date.substr(0, date.length - 3);
-      const price = '10000000000000000000000'; // TODO price
-      const v = '0x25';
-      const r = '0x4f4c17305743700648bc4f6cd3038ec6f6af0df73e31757007b7f59df7bee88d';
-      const s = '0x7e1941b264348e80c78c4027afc65a87b0a5e43e86742b8ca0823584c6788fd0';
-      const resultGasSetTokenPrice = await getGasPrice(WQOracle, this.ENV.WORKNET_ORACLE, 'setTokenPriceUSD', [timestamp, price, v, r, s, payload.currency]);
-
-      if (resultGasSetTokenPrice.gas && resultGasSetTokenPrice.gasPrice) {
-        const setTokenPriceData = {
-          gasPrice: resultGasSetTokenPrice.gasPrice,
-          gas: resultGasSetTokenPrice.gas,
-          timestamp,
-          price,
-          v,
-          r,
-          s,
-        };
-
-        this.ShowModal({
-          key: modals.transactionReceipt,
-          title: this.$t('modals.setTokenPrice', { token: payload.currency }),
-          fields: {
-            from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-            fee: {
-              name: this.$t('wallet.table.trxFee'),
-              value: new BigNumber(setTokenPriceData.gasPrice).multipliedBy(setTokenPriceData.gas).shiftedBy(-18).toFixed(),
-              symbol: TokenSymbols.WUSD,
-            },
-          },
-          submitMethod: async () => await this.$store.dispatch('collateral/setTokenPrice', {
-            payload,
-            setTokenPriceData,
-          }),
-          callback: async () => {
-            await this.approveRouter(payload);
-          },
-        });
-      } else {
-        await this.approveRouter(payload);
-      }
-    },
-    async approveRouter(payload) {
-      const allowance = await this.$store.dispatch('wallet/getAllowance', {
-        tokenAddress: TokenMap[payload.currency],
-        spenderAddress: this.ENV.WORKNET_ROUTER,
-      });
-      if (+allowance < +payload.collateral) {
-        const resultGasApprove = await getGasPrice(ERC20, TokenMap[payload.currency], 'approve', [this.ENV.WORKNET_ROUTER, payload.collateralBN]);
-        this.ShowModal({
-          key: modals.transactionReceipt,
-          title: this.$t('modals.approveRouter', { token: payload.currency }),
-          fields: {
-            from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-            fee: {
-              name: this.$t('wallet.table.trxFee'),
-              value: new BigNumber(resultGasApprove.gasPrice).multipliedBy(resultGasApprove.gas).shiftedBy(-18).toFixed(),
-              symbol: TokenSymbols.WUSD,
-            },
-          },
-          submitMethod: async () => {
-            await this.$store.dispatch('wallet/approve', {
-              tokenAddress: TokenMap[payload.currency],
-              spenderAddress: this.ENV.WORKNET_ROUTER,
-              amount: payload.collateral,
-            });
-            return { ok: true };
-          },
-          callback: async () => {
-            await this.getWUSD(payload);
-          },
-        });
-      } else {
-        await this.getWUSD(payload);
-      }
-    },
-    async getWUSD(payload) {
-      const resultGasBuyWUSD = await getGasPrice(WQRouter, this.ENV.WORKNET_ROUTER, 'produceWUSD', [payload.collateralBN, payload.ratioBN, payload.currency]);
-      const buyWUSDData = {
-        gasPrice: resultGasBuyWUSD.gasPrice,
-        gas: resultGasBuyWUSD.gas,
-      };
-
-      this.ShowModal({
-        key: modals.transactionReceipt,
-        title: this.$t('modals.takeWUSD'),
-        fields: {
-          from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-          to: { name: this.$t('modals.toAddress'), value: this.ENV.WORKNET_ROUTER },
-          amount: {
-            name: this.$t('modals.amount'),
-            value: payload.collateral,
-            symbol: payload.currency,
-          },
-          fee: {
-            name: this.$t('wallet.table.trxFee'),
-            value: new BigNumber(resultGasBuyWUSD.gasPrice).multipliedBy(resultGasBuyWUSD.gas).shiftedBy(-18).toFixed(),
-            symbol: TokenSymbols.WUSD,
-          },
-        },
-        submitMethod: async () => await this.$store.dispatch('collateral/buyWUSD', { payload, buyWUSDData }),
-        callback: async () => {
-          this.ShowToast(this.$t('modals.successBuyWUSD'), this.$t('modals.success'));
-        },
-      });
-    },
     calcCollateralPercent(value) {
       this.collateralPercent = this.CalcPercent(value, this.collateralPercent);
       this.calculateCollateral();
       this.ChangeCaretPosition(this.$refs.percentInput);
+    },
+    async requestGetWUSD() {
+      const { submit } = this.options;
+      this.CloseModal();
+      await submit({
+        collateral: this.amountCollateral,
+        percent: this.collateralPercent.substr(0, this.collateralPercent.length - 1),
+        currency: this.currentCurrency,
+      });
     },
   },
 };
@@ -420,7 +351,8 @@ export default {
 
   &__main {
     display: grid;
-    grid-template-rows: repeat(3, 1fr);
+    //grid-template-rows: repeat(3, 1fr);
+    grid-template-rows: 1fr;
     text-align: left;
     justify-content: flex-start;
     gap: 13px;

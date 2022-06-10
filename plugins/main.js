@@ -335,7 +335,7 @@ Vue.mixin({
               method: 'approve',
               abi: ERC20,
               contractAddress: tokenAddress,
-              data: [contractAddress, new BigNumber(amount).shiftedBy(18).toString()],
+              data: [contractAddress, new BigNumber(amount).shiftedBy(18).toFixed(0).toString()],
             }),
             this.$store.dispatch('wallet/getBalance'),
           ]);
@@ -351,7 +351,7 @@ Vue.mixin({
             key: modals.transactionReceipt,
             title: approveTitle,
             fields: {
-              from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
+              from: { name: this.$t('meta.fromBig'), value: this.convertToBech32('wq', this.userWalletAddress) },
               to: { name: this.$t('meta.toBig'), value: contractAddress },
               amount: { name: this.$t('modals.amount'), value: amount, symbol: TokenSymbols.WUSD },
               fee: { name: this.$t('wallet.table.trxFee'), value: approveFee.result.fee, symbol: TokenSymbols.WQT },
@@ -371,10 +371,38 @@ Vue.mixin({
               this.ShowToast('Approving done', 'Approve');
               await resolve(amount);
             },
+            cancel: async () => await reject(new Error('Cancel')),
           });
         } else {
           await resolve(amount);
         }
+      });
+    },
+    async ShowTxReceipt({
+      from, to, amount, currency, fee, title,
+    }) {
+      return new Promise(async (resolve, reject) => {
+        this.ShowModal({
+          key: modals.transactionReceipt,
+          title: title || this.$t('modals.takeWUSD'),
+          fields: {
+            from: { name: this.$t('meta.fromBig'), value: from },
+            to: { name: this.$t('meta.toBig'), value: to },
+            amount: {
+              name: this.$t('modals.amount'),
+              value: amount,
+              symbol: currency,
+            },
+            fee: {
+              name: this.$t('wallet.table.trxFee'),
+              value: new BigNumber(fee.gasPrice).multipliedBy(fee.gas).shiftedBy(-18).toFixed(),
+              symbol: TokenSymbols.WQT,
+            },
+          },
+          isDontOffLoader: true,
+          submitMethod: async () => await resolve(),
+          cancelMethod: async () => await reject(new Error('Cancel')),
+        });
       });
     },
   },
