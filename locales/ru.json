@@ -1420,9 +1420,6 @@
     "newDiscussionLike": "Новый лайк на дискуссии"
   },
   "wallet": {
-    "testTokens": {
-      "getTestTokens": "Получить тестовые токены"
-    },
     "frozen": "Замороженный баланс",
     "WUSD": "WUSD wallet",
     "cryptoWallet": "Crypto wallet",
