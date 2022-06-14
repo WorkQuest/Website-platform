@@ -19,7 +19,7 @@
               href="/docs/privacy.pdf"
               target="_blank"
             >
-              {{ $t('meta.privacyPolicy') }}
+              {{ $t('modals.titles.privacyPolicy') }}
             </a>
           </template>
         </base-checkbox>
