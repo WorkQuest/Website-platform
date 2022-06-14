@@ -77,6 +77,18 @@
                 </span>
               </span>
             </div>
+            <div class="balance__test">
+              <base-btn
+                data-selector="GET_TEST_TOKENS"
+                class="balance__btn balance__btn_test"
+                :disabled="testTokensClaimed"
+                @click="handleGetTestTokens"
+              >
+                {{ $t('wallet.testTokens.getTestTokens') }}
+              </base-btn>
+              <div />
+              <div />
+            </div>
             <div class="balance__bottom">
               <base-btn
                 data-selector="SHOW-DEPOSIT-MODAL"
@@ -202,6 +214,8 @@ export default {
       selectedWalletTable: WalletTables.TXS,
       tokenSymbolsDd: [],
       isFetchingBalance: false,
+
+      testTokensClaimed: false,
     };
   },
   computed: {
@@ -287,6 +301,9 @@ export default {
     },
   },
   beforeMount() {
+    const claimed = JSON.parse(localStorage.getItem('testClaimed'));
+    this.testTokensClaimed = claimed && !!claimed[this.userWalletAddress];
+
     this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
   async mounted() {
@@ -307,6 +324,21 @@ export default {
     await this.$store.dispatch('wallet/setCallbackWS', null);
   },
   methods: {
+    async handleGetTestTokens() {
+      if (this.testTokensClaimed) return;
+      this.SetLoader(true);
+      const res = await this.$store.dispatch('wallet/getTestTokens');
+      if (!res.ok) {
+        this.ShowToast(this.$t('wallet.testTokens.prevSend'));
+      }
+
+      localStorage.setItem('testClaimed', JSON.stringify({
+        ...JSON.parse(localStorage.getItem('testClaimed')),
+        [this.userWalletAddress]: true,
+      }));
+      this.testTokensClaimed = true;
+      this.SetLoader(false);
+    },
     async showBuyWQTModal() {
       if (!this.isMetamaskConnected) {
         if (await this.$store.dispatch('web3/connect', { chain: Chains.ETHEREUM }) === false) {
@@ -547,6 +579,17 @@ export default {
   padding: 20px 20px 0 20px;
   margin: 0 0 20px 0;
 
+  &__test {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px
+  }
+  &__btn {
+    &_test {
+      margin-top: 10px;
+    }
+  }
+
   &__dollar {
     font-weight: 400;
     font-size: 14px;
@@ -743,6 +786,10 @@ export default {
   .buy-wqt__sub {
     grid-template-columns: 1fr;
     grid-gap: 10px
+  }
+  .balance__test {
+    grid-template-columns: 1fr;
+    grid-gap: 0;
   }
 }
 

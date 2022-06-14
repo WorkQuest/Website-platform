@@ -530,4 +530,26 @@ export default {
       return error(e.code, 'Error in swap action', e.data);
     }
   },
+
+  async getTestTokens() {
+    try {
+      const access = this.$cookies.get('access');
+      const faucetApi = this.$axios.create({ baseURL: 'https://testnet-app.workquest.co/api/v1/user/me/faucet' });
+      await Promise.all([
+        faucetApi.$get('/wqt', {
+          headers: {
+            authorization: `Bearer ${access}`,
+          },
+        }),
+        faucetApi.$get('/wusd', {
+          headers: {
+            authorization: `Bearer ${access}`,
+          },
+        }),
+      ]);
+      return success();
+    } catch (e) {
+      return error(-1, e.request.response);
+    }
+  },
 };

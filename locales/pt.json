@@ -1420,6 +1420,10 @@
     "newDiscussionLike": "New like on discussion"
   },
   "wallet": {
+    "testTokens": {
+      "getTestTokens": "Get test tokens",
+      "prevSend": "Test tokens previously send"
+    },
     "frozen": "Frozen balance",
     "WUSD": "Carteira WUSD",
     "cryptoWallet": "Carteira cripto",
