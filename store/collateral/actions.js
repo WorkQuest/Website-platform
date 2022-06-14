@@ -5,7 +5,7 @@ import {
 
 import { success, error } from '~/utils/web3';
 import { WQRouter } from '~/abi';
-import ENV from '~/utils/adresses';
+import ENV from '~/utils/addresses';
 
 export default {
   async sendProduceWUSD(_, {

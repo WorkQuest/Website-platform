@@ -1,5 +1,5 @@
 import { PaidTariff } from '~/utils/сonstants/quests';
-import ENV, { IS_PROD } from '~/utils/adresses';
+import ENV, { IS_PROD } from '~/utils/addresses';
 
 export const isProd = IS_PROD;
 

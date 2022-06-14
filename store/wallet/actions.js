@@ -36,7 +36,7 @@ import {
   TokenSymbolByContract,
 } from '~/utils/enums';
 
-import ENV from '~/utils/adresses/index';
+import ENV from '~/utils/addresses/index';
 import { LocalNotificationAction } from '~/utils/notifications';
 
 let connectionWS = null;

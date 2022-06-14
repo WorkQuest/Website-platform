@@ -10,7 +10,7 @@ import {
   ChainsIdByChainNumber,
 } from '~/utils/enums';
 
-import { IS_PROD } from '~/utils/adresses';
+import { IS_PROD } from '~/utils/addresses';
 
 let web3 = null;
 let account = {};

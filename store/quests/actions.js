@@ -19,7 +19,7 @@ import {
 
 import { error, success } from '~/utils/web3';
 
-import ENV from '~/utils/adresses/index';
+import ENV from '~/utils/addresses/index';
 
 export default {
   async getWorkerData({ commit }, userId) {

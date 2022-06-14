@@ -20,7 +20,7 @@ import {
 import { WQPromotion } from '~/abi/index';
 import { PaidTariff } from '~/utils/сonstants/quests';
 
-import ENV from '~/utils/adresses/index';
+import ENV from '~/utils/addresses/index';
 
 export default {
   async resendEmail({ commit }, { email }) {

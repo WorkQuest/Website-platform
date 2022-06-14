@@ -1,7 +1,7 @@
 import { Chains, isProd } from '~/utils/enums';
 import { WQLiquidityMining } from '~/abi/index';
 import { images } from '~/utils/images';
-import ENV from '~/utils/adresses/index';
+import ENV from '~/utils/addresses/index';
 
 export const PoolURL = Object.freeze({
   BNB: 'https://pancakeswap.finance/add/BNB/0xe89508D74579A06A65B907c91F697CF4F8D9Fac7',

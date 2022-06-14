@@ -9,7 +9,7 @@ import {
 } from '~/utils/web3';
 import { WQReferral } from '~/abi/index';
 import { REFERRAL_EVENTS } from '~/utils/сonstants/referral';
-import ENV from '~/utils/adresses/index';
+import ENV from '~/utils/addresses/index';
 
 export default {
   async fetchRewardBalance({ commit }, userWalletAddress) {

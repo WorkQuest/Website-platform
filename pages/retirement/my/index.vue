@@ -410,9 +410,6 @@ export default {
       return '';
     },
     getExplorerRef(hash) {
-      if (this.IsProd) {
-        return `${ExplorerUrl}/tx/${hash ? hash.toLowerCase() : ''}`;
-      }
       return `${ExplorerUrl}/tx/${hash ? hash.toLowerCase() : ''}`;
     },
     checkIsDeadLine() {

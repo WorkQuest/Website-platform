@@ -14,7 +14,7 @@ import {
 
 import { WQOracle, WQRouter } from '~/abi';
 
-import ENV from '~/utils/adresses/index';
+import ENV from '~/utils/addresses/index';
 
 /**
  * @property $axiosOracle - axios instance of oracle

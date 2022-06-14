@@ -22,7 +22,7 @@ import {
   WQTExchange,
 } from '~/abi';
 
-import ENV from '~/utils/adresses/index';
+import ENV from '~/utils/addresses/index';
 
 BigNumber.config({ EXPONENTIAL_AT: 60 });
 

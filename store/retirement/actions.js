@@ -5,7 +5,7 @@ import { getWalletAddress, GetWalletProvider } from '~/utils/wallet';
 import { PensionHistoryMethods } from '~/utils/enums';
 import { WQPensionFund } from '~/abi';
 import { error, fetchContractData, success } from '~/utils/web3';
-import ENV from '~/utils/adresses/index';
+import ENV from '~/utils/addresses/index';
 
 const web3 = GetWalletProvider();
 

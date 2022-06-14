@@ -1,5 +1,5 @@
 import Connection from '~/plugins/connection';
-import ENV from '~/utils/adresses/index';
+import ENV from '~/utils/addresses/index';
 
 export default async ({ store, $axios }, inject) => {
   const connectionManager = {

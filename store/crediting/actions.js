@@ -11,7 +11,7 @@ import {
   error,
 } from '~/utils/web3';
 import { WQBorrowing, WQLending } from '~/abi/index';
-import ENV from '~/utils/adresses/index';
+import ENV from '~/utils/addresses/index';
 
 export default {
   async getCreditData({ commit }) {

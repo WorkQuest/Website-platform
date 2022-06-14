@@ -20,7 +20,7 @@ import { error, success } from '~/utils/web3';
 
 import { images } from '~/utils/images';
 
-import ENV from '~/utils/adresses/index';
+import ENV from '~/utils/addresses/index';
 
 export default {
 

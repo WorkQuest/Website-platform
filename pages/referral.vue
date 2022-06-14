@@ -248,7 +248,7 @@ import modals from '~/store/modals/modals';
 import { getStyledAmount } from '~/utils/wallet';
 import { images } from '~/utils/images';
 import { REFERRAL_EVENTS } from '~/utils/сonstants/referral';
-import { IS_PROD } from '~/utils/adresses';
+import { IS_PROD } from '~/utils/addresses';
 import { ExplorerUrl } from '~/utils/enums';
 
 export default {

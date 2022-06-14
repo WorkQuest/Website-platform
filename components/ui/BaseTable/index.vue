@@ -88,15 +88,9 @@ export default {
   },
   methods: {
     getTransactionUrl(hash) {
-      if (this.IsProd) {
-        return `${ExplorerUrl}/tx/${hash}`;
-      }
       return `${ExplorerUrl}/tx/${hash}`;
     },
     getAddressUrl(address) {
-      if (this.IsProd) {
-        return `${ExplorerUrl}/address/${address}`;
-      }
       return `${ExplorerUrl}/address/${address}`;
     },
   },

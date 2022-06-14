@@ -1,4 +1,4 @@
-import ENV from '~/utils/adresses/index';
+import ENV from '~/utils/addresses/index';
 // eslint-disable-next-line
 export default function ({ $axios, store }, inject) {
   const axiosOracle = $axios.create({ baseURL: ENV.WQ_ORACLE_URL });

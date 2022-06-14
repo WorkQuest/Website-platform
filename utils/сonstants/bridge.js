@@ -1,5 +1,5 @@
 import { Chains, TokenSymbols, ExplorerUrl } from '~/utils/enums';
-import ENV, { IS_PROD } from '~/utils/adresses/index';
+import ENV, { IS_PROD } from '~/utils/addresses/index';
 
 export const BlockchainIndex = Object.freeze({
   [Chains.WORKNET]: 1,
