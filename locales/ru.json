@@ -1421,7 +1421,7 @@
   },
   "wallet": {
     "testTokens": {
-      "getTestTokens": "Получить тестовые токены",
+      "getTestTokens": "Получить тестовые токены"
     },
     "frozen": "Замороженный баланс",
     "WUSD": "WUSD wallet",

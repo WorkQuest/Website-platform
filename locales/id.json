@@ -1421,7 +1421,7 @@
   },
   "wallet": {
     "testTokens": {
-      "getTestTokens": "Get test tokens",
+      "getTestTokens": "Get test tokens"
     },
     "frozen": "Frozen balance",
     "WUSD": "Dompet WUSD",
