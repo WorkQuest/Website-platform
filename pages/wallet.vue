@@ -337,6 +337,10 @@ export default {
       this.SetLoader(false);
     },
     async showBuyWQTModal() {
+      // TODO FOR BOUNTY 30.05, UNCOMMENT AFTER
+      this.ComingSoon();
+      return;
+      // eslint-disable-next-line no-unreachable
       if (!this.isMetamaskConnected) {
         if (await this.$store.dispatch('web3/connect', { chain: Chains.ETHEREUM }) === false) {
           return;
