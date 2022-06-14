@@ -201,6 +201,7 @@ export default {
   computed: {
     ...mapGetters({
       isAuth: 'user/isAuth',
+      token: 'user/accessToken',
 
       account: 'web3/getAccount',
       isConnected: 'web3/isConnected',
