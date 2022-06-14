@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="message"
-    :title="$tc('modals.titles.sendARequest')"
+    :title="options.title"
   >
     <div class="ctm-modal__content">
       <validation-observer v-slot="{handleSubmit}">
@@ -43,7 +43,7 @@
                     data-selector="SEND"
                     class="message__action"
                     :disabled="!text || isRespondActionInProgress"
-                    @click="handleSubmit(showRequestSendModal)"
+                    @click="handleSubmit(handleSend)"
                   >
                     {{ $t('meta.btns.send') }}
                   </base-btn>
@@ -91,6 +91,16 @@ export default {
     updateFiles(files) {
       this.files = files;
     },
+    async handleSend() {
+      if (this.isRespondActionInProgress) return;
+      this.isRespondActionInProgress = true;
+      if (this.options.callbackSend) {
+        await this.options.callbackSend(this.files, this.text);
+      } else {
+        await this.showRequestSendModal();
+      }
+      this.isRespondActionInProgress = false;
+    },
     async respondOnQuest() {
       const medias = await this.uploadFiles(this.files);
       const { questId } = this.options;
@@ -108,8 +118,6 @@ export default {
       return false;
     },
     async showRequestSendModal() {
-      if (this.isRespondActionInProgress) return;
-      this.isRespondActionInProgress = true;
       const ok = await this.respondOnQuest();
       if (ok) {
         await this.$store.dispatch('quests/getQuest', this.$route.params.id);

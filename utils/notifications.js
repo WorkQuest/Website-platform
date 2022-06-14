@@ -16,7 +16,7 @@ export const NotificationAction = {
   EMPLOYER_REJECTED_WORKERS_RESPONSE: 'employerRejectedWorkersResponse',
   WAIT_WORKER: 'waitWorker',
   USER_LEFT_REVIEW_ABOUT_QUEST: 'userLeftReviewAboutQuest',
-  DISPUTE_DECISION: 'disputeDecision',
+  DISPUTE_DECISION: 'DisputeDecision',
   QUEST_EDITED: 'questEdited',
   QUEST_END_SOON: 'questEndSoon',
   COMMENT_LIKED: 'commentLiked',
@@ -33,6 +33,8 @@ export const LocalNotificationAction = {
   PROFILE_FILLED: 'filled',
   RATE_THE_QUEST: 'quest',
   QUEST_DRAFT: 'questDraft',
+  QUESTS_SPECS: 'questsSpecs',
+  WALLET_UPDATE: 'walletUpdate',
 };
 
 export const notificationsQuestsActions = Object.freeze([

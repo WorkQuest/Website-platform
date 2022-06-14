@@ -150,10 +150,10 @@ export default {
     }
   },
   async getMainData({ dispatch }) {
+    await dispatch('getUserData');
     await Promise.all([
-      dispatch('getUserData'),
       dispatch('getStatistic'),
-      dispatch('notifications/getNotifications', '', { root: true }),
+      dispatch('notifications/getNotifications', null, { root: true }),
     ]);
   },
   async logout({ commit }, isValidToken = true) {
@@ -393,5 +393,15 @@ export default {
   },
   setRememberMe({ commit }, payload) {
     commit('setRememberMe', payload);
+  },
+
+  async sendReport(_, payload) {
+    try {
+      const { ok } = await this.$axios.$post('/v1/report/send', payload);
+      return success(ok);
+    } catch (e) {
+      console.log('user/sendReport');
+      return error();
+    }
   },
 };

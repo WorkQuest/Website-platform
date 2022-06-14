@@ -30,6 +30,7 @@
         class="ctm-field__textarea"
         :class="{'ctm-field__textarea_error' : (isHideError || errors[0])}"
         :placeholder="placeholder"
+        :disabled="disabled"
         @input="input"
         @focus="$emit('focus')"
         @blur="$emit('blur')"

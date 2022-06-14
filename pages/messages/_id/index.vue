@@ -25,17 +25,25 @@
                 {{ currChat && currChat.questChat && currChat.questChat.quest.title }}
               </div>
               <div
+                v-if="currChat.type === ChatType.PRIVATE"
+                class="chat-container__quest-link"
+                @click="$router.push(`${$options.Path.PROFILE}/${privateSecondMember.user.id}`)"
+              >
+                {{ `${privateSecondMember.user.firstName}  ${privateSecondMember.user.lastName}` }}
+              </div>
+              <div
                 v-if="isGroupChat"
                 class="chat-container__group-chat-cont"
               >
                 <div class="chat-container__group-name">
-                  {{ currChat.name }}
+                  {{ currChat.groupChat && currChat.groupChat.name }}
                 </div>
                 <div
+                  v-if="currChat.members"
                   class="chat-container__quest-link chat-container__quest-link_small"
                   @click="goToMembersList"
                 >
-                  {{ $tc('chat.membersNum', currChat.userMembers.length) }}
+                  {{ $tc('chat.membersNum', currChat.members.length) }}
                 </div>
               </div>
             </template>
@@ -153,7 +161,7 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import ChatMenu from '~/components/ui/ChatMenu';
-import { InfoModeWorker, QuestStatuses } from '~/utils/сonstants/quests';
+import { QuestStatuses } from '~/utils/сonstants/quests';
 import {
   ChatType, QuestChatStatus, Path,
 } from '~/utils/enums';
@@ -176,6 +184,7 @@ export default {
       userData: 'user/getUserData',
       currChat: 'chat/getCurrChatInfo',
       infoDataMode: 'quests/getInfoDataMode',
+      isLoading: 'main/getIsLoading',
     }),
     ChatType() {
       return ChatType;
@@ -183,10 +192,15 @@ export default {
     isGroupChat() {
       return this.currChat?.type === ChatType.GROUP;
     },
+    isPrivateChat() {
+      return this.currChat?.type === ChatType.PRIVATE;
+    },
     canShowMenu() {
-      const { isClosedQuestChat, isGroupChat, amIOwner } = this;
-      return !isClosedQuestChat ? !isGroupChat
-        || (isGroupChat && !amIOwner) : false;
+      const {
+        isClosedQuestChat, isGroupChat, amIOwner, isPrivateChat,
+      } = this;
+      return (!isClosedQuestChat ? (!isGroupChat && !isPrivateChat)
+        || (isGroupChat && !amIOwner) : false);
     },
     isClosedQuestChat() {
       return ((this.currChat?.questChat?.status === QuestChatStatus.Closed)
@@ -196,14 +210,18 @@ export default {
       return this.isGroupChat && !this.amIOwner;
     },
     amIOwner() {
-      return this.currChat?.owner?.id === this.userData.id;
+      const currMemeberData = this.currChat?.members && this.currChat?.members.find((el) => el.userId === this.userData.id);
+      if (!currMemeberData) return false;
+      return this.currChat?.groupChat?.ownerMemberId === currMemeberData.id;
+    },
+    privateSecondMember() {
+      return this.currChat?.members && this.currChat?.members.find((el) => el.userId !== this.userData.id);
     },
   },
   async mounted() {
     this.SetLoader(true);
 
     if (this.currChat?.questChat?.status === QuestChatStatus.Closed) this.isClosedQuestChat = true;
-    this.SetLoader(false);
 
     const isChatNotificationShown = !!localStorage.getItem('isChatNotificationShown');
     if (!isChatNotificationShown) this.showNoticeModal();
@@ -219,6 +237,23 @@ export default {
         isCreating: false,
         isMembersList: true,
         isAdding: false,
+        sendPrivateMsg: (userId) => {
+          this.ShowModal({
+            key: modals.sendARequest,
+            title: this.$tc('modals.titles.sendPrivateMessage'),
+            callbackSend: async (files, text) => {
+              if (this.isLoading) return;
+              this.SetLoader(true);
+              const medias = await this.uploadFiles(files);
+              const { ok: isChatCreated, result } = await this.$store.dispatch('chat/handleCreatePrivateChat', { userId, medias, text });
+              this.SetLoader(false);
+              if (isChatCreated) {
+                await this.$router.push(`${Path.MESSAGES}/${result.chat.id}`);
+                this.CloseModal();
+              }
+            },
+          });
+        },
       });
     },
     goToQuest() {
@@ -321,7 +356,11 @@ export default {
         messageText, files, chatId,
       } = this;
       this.isDisabledSendMessage = true;
-      if (!messageText && !files.length) return;
+
+      if (!messageText && !files.length) {
+        this.isDisabledSendMessage = false;
+        return;
+      }
 
       const text = messageText;
 
@@ -349,7 +388,7 @@ export default {
       const payload = {
         config: {
           text,
-          medias,
+          mediaIds: medias,
         },
         chatId,
       };
@@ -426,6 +465,7 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 50%;
+    white-space: nowrap;
   }
 
   &__quest-link {
@@ -434,6 +474,7 @@ export default {
     justify-self: center;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
 
     &_small {
       font-size: 14px;

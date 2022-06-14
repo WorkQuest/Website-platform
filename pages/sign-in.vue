@@ -99,6 +99,7 @@
         </div>
       </form>
       <base-btn
+        v-if="!hiddenResend"
         class="auth__resend"
         :class="{auth__resend_hidden : disableResend && hiddenResend}"
         data-selector="RESEND-LETTER"
@@ -215,7 +216,6 @@ export default {
     ...mapGetters({
       userData: 'user/getUserData',
       isLoading: 'main/getIsLoading',
-
       connections: 'main/notificationsConnectionStatus',
     }),
     resendTimer() {
@@ -286,7 +286,7 @@ export default {
           timerValue: this.timerValue,
           createdAt: Date.now(),
         });
-        this.hiddenResend = false;
+        this.hiddenResend = true;
       } else this.$cookies.remove('resend-timer');
       this.clearCookies();
     },
@@ -298,7 +298,7 @@ export default {
       this.disableResend = false;
     },
     continueTimer() {
-      this.hiddenResend = false;
+      if (this.userStatus === UserStatuses.Unconfirmed) this.hiddenResend = false;
       this.timer = this.$cookies.get('resend-timer');
       if (!this.timer) return;
 
@@ -323,10 +323,13 @@ export default {
       }
     },
     clearCookies() {
-      if (this.userData.id) return;
+      const mnemonicInLocalStorage = JSON.parse(localStorage.getItem('mnemonic'));
+      const isWalletInMnemonicList = mnemonicInLocalStorage && mnemonicInLocalStorage[this.userWalletAddress];
+      if (this.userData.id && (isWalletInMnemonicList || localStorage.getItem('mnemonic'))) return;
       this.$cookies.remove('access');
       this.$cookies.remove('refresh');
       this.$cookies.remove('userLogin');
+      this.$cookies.remove('userStatus');
     },
     back() {
       if (this.step === WalletState.ImportOrCreate) {
@@ -545,6 +548,9 @@ export default {
       // this is necessary for the case when the user was in the guest layout and then decided to log in
       // $wsNotifs was connected on guest layout without token, it will be reconnect in header with token
       if (this.connections.notifsConnection) await this.$wsNotifs.disconnect();
+      const mnemonicInLocalStorage = JSON.parse(localStorage.getItem('mnemonic'));
+      const isWalletInMnemonicList = mnemonicInLocalStorage && mnemonicInLocalStorage[this.userData.wallet.address];
+      if (!isWalletInMnemonicList) return;
 
       // TODO FOR BOUNTY 30.05, DELETE AFTER
       await this.$router.push(Path.SETTINGS);

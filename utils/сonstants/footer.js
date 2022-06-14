@@ -1,4 +1,5 @@
-// eslint-disable-next-line import/prefer-default-export
+import { DaoUrl } from '~/utils/enums';
+
 export const URLS = Object.freeze({
   SOCIALS: {
     TWITTER: 'https://twitter.com/workquest_co',
@@ -13,7 +14,7 @@ export const URLS = Object.freeze({
     APP_STORE: '/',
     PLAY_MARKET: '/',
   },
-  DAO: 'https://dev-dao.workquest.co',
+  DAO: DaoUrl,
 });
 
 export const LEGAL_INFO = Object.freeze({

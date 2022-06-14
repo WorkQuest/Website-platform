@@ -127,7 +127,7 @@
         <base-field
           v-model="questTitle"
           data-selector="QUEST-TITLE-FIELD"
-          rules="required"
+          rules="required|min:2|max:250"
           :name="$tc('quests.questTitle')"
           :placeholder="$t('quests.questTitle')"
         />
@@ -136,7 +136,7 @@
         <base-textarea
           id="textarea"
           v-model="textarea"
-          rules="required"
+          rules="required|min:6|max:2000"
           data-selector="QUEST-DESC-TEXTAREA"
           class="page__textarea"
           :placeholder="$t('quests.questDesc')"
@@ -266,7 +266,7 @@ export default {
     },
     depositAmount() {
       if (!this.price) return '0';
-      return new BigNumber(this.price).multipliedBy(1 + CommissionForCreatingAQuest).toString();
+      return new BigNumber(this.price).multipliedBy(1 + CommissionForCreatingAQuest).toFixed(18).toString();
     },
   },
   async beforeCreate() {
@@ -581,15 +581,15 @@ export default {
 }
 
 .edit-check {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   &__box {
+    cursor: pointer;
     width: 16px;
     height: 16px;
   }
   &__text {
     margin: 0 0 0 10px;
-    user-select: none;
   }
 }
 

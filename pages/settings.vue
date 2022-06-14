@@ -57,6 +57,7 @@ import Advanced from '~/components/app/pages/settings/Advanced.vue';
 import {
   PayPeriodsIndex, RatingStatus, UserRole, WorkplaceIndex,
 } from '~/utils/enums';
+import { LocalNotificationAction } from '~/utils/notifications';
 
 export default {
   name: 'Settings',
@@ -117,6 +118,8 @@ export default {
       newWorkExp: [],
       valRefs: {},
       profileVisibilitySetting: {},
+
+      prevSkills: [],
     };
   },
   computed: {
@@ -143,6 +146,7 @@ export default {
     const { userData, secondNumber, scrollToId } = this;
     scrollToId();
     const { employerProfileVisibilitySetting, workerProfileVisibilitySetting } = userData;
+    this.prevSkills = userData.userSpecializations?.map((item) => item.path) || [];
     this.profile = {
       avatarId: userData.avatarId,
       firstName: userData.firstName,
@@ -424,6 +428,16 @@ export default {
           website: addInfo.website || null,
         },
       });
+
+      // Notification: offers by selected new skills
+      if (!this.isEmployer && !this.EqualsArrays(this.skills.selectedSpecAndSkills, this.prevSkills)) {
+        await this.$store.dispatch('notifications/createLocalNotification', {
+          message: this.$t('ui.notifications.viewOffersBySpecs'),
+          actionBtn: this.$t('meta.btns.view'),
+          action: LocalNotificationAction.QUESTS_SPECS,
+        });
+      }
+
       await this.$store.dispatch('user/getUserData');
     },
 

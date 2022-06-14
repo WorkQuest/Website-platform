@@ -50,7 +50,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { DisputeStatues, InfoModeWorker } from '~/utils/enums';
+import { DisputeStatues } from '~/utils/enums';
 
 export default {
   name: 'Index',

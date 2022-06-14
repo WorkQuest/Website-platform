@@ -62,12 +62,13 @@
                     v-if="notification.sender"
                     class="notify__info"
                   >
-                    <a
-                      :href="`${$options.Path.PROFILE}/${senderId(notification)}`"
+                    <div
                       class="notify__text notify__text_name"
+                      :class="{'notify__text_hover': !checkLocalOrSystemNotif(notification)}"
+                      @click="openNotification(notification)"
                     >
                       {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
-                    </a>
+                    </div>
                   </div>
                 </div>
                 <div class="notify__text notify__text_date">
@@ -141,12 +142,13 @@ export default {
       notificationsCount: 'notifications/getNotificationsCount',
     }),
   },
-  async beforeMount() {
-    await this.$store.dispatch('notifications/getNotifications');
-  },
   methods: {
-    senderId(notification) {
-      return notification.sender?.id || '';
+    checkLocalOrSystemNotif(notification) {
+      return notification?.params?.isLocal || !notification?.sender?.id;
+    },
+    openNotification(notification) {
+      if (notification.params?.isLocal) return;
+      if (notification?.sender?.id) this.$router.push(`${Path.PROFILE}/${notification?.sender?.id}`);
     },
     avatar(notification) {
       return notification.sender?.avatar?.url || images.EMPTY_AVATAR;
@@ -296,6 +298,8 @@ export default {
       white-space: nowrap;
       text-overflow: ellipsis;
       margin-right: 5px;
+    }
+    &_hover {
       cursor: pointer;
       &:hover {
         text-decoration: underline;

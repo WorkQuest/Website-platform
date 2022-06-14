@@ -255,15 +255,14 @@ export default {
     styledTransactions() {
       return this.transactions.map((t) => {
         const symbol = TokenSymbolByContract[t.to_address_hash.hex] || TokenSymbols.WQT;
-        const decimals = this.balance[symbol].decimals || 18;
         const amount = t.tokenTransfers?.length ? t.tokenTransfers[0]?.amount : t.value;
         return {
           tx_hash: t.hash,
           block: t.block_number,
           timestamp: this.$moment(t.block.timestamp).format('lll'),
           status: !!t.status,
-          value: `${getStyledAmount(amount, false, decimals)} ${symbol}`,
-          transaction_fee: t.transaction_fee || new BigNumber(t.gas_price).multipliedBy(t.gas_used),
+          value: `${getStyledAmount(amount, false, this.balance[symbol].decimals || 18)} ${symbol}`,
+          transaction_fee: t.transaction_fee || new BigNumber(t.gas_price).multipliedBy(t.gas_used).toString(),
           from_address: t.from_address_hash.hex,
           to_address: t.to_address_hash.hex,
         };
@@ -319,15 +318,11 @@ export default {
     // }
     if (!this.isWalletConnected) return;
 
-    await this.$store.dispatch('wallet/subscribeWS', {
-      hexAddress: this.userWalletAddress,
-      timestamp: this.$moment(),
-      updateWalletData: this.loadData,
-    });
+    await this.$store.dispatch('wallet/setCallbackWS', this.loadData);
     await this.loadData();
   },
   async beforeDestroy() {
-    await this.$store.dispatch('wallet/unsubscribeWS');
+    await this.$store.dispatch('wallet/setCallbackWS', null);
   },
   methods: {
     async handleGetTestTokens() {
@@ -373,8 +368,8 @@ export default {
           method: 'balanceOf', ...payload, token: this.tokenAddresses[this.tokenSymbolsDd.indexOf(selectedToken) - 1], symbol: selectedToken,
         });
       }
-      await this.getTransactions();
       this.isFetchingBalance = false;
+      await this.getTransactions();
     },
     closeCard() {
       this.cardClosed = true;
@@ -410,8 +405,8 @@ export default {
           this.ShowModal({
             key: modals.transactionReceipt,
             fields: {
-              from: { name: this.$t('modals.fromAddress'), value: wqAddress },
-              to: { name: this.$t('modals.toAddress'), value: convertToBech32('wq', recipient) },
+              from: { name: this.$t('meta.fromBig'), value: wqAddress },
+              to: { name: this.$t('meta.toBig'), value: convertToBech32('wq', recipient) },
               amount: {
                 name: this.$t('modals.amount'),
                 value: amount,

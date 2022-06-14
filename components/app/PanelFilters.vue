@@ -82,6 +82,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import {
   UserRole,
   RatingFilter,
@@ -169,10 +170,13 @@ export default {
     selectedPrice() {
       const { selectedPrice: { from, to } } = this;
       const query = {};
-      const queryName = this.isEmployer ? 'betweenCostPerHour' : 'priceBetween';
-      if (from || to) {
-        query[`${queryName}[from]`] = from || 0;
-        query[`${queryName}[to]`] = to || 99999999999999;
+      if (this.isEmployer) {
+        query['betweenCostPerHour[from]'] = from || 0;
+        query['betweenCostPerHour[to]'] = to || 99999999999999;
+      } else {
+        query['priceBetween[from]'] = from ? new BigNumber(from).shiftedBy(18).toString() : '0';
+        query['priceBetween[to]'] = to ? new BigNumber(to).shiftedBy(18).toString()
+          : new BigNumber('99999999999999').shiftedBy(18).toString();
       }
       this.$emit('sortPrice', query);
     },

@@ -1,3 +1,5 @@
+import { QuestsResponseStatus } from '~/utils/сonstants/quests';
+
 export default {
   setRespondOnQuest(state, data) {
     state.respondOnQuest = data;
@@ -33,16 +35,18 @@ export default {
   setQuestData(state, data) {
     state.questData = data;
   },
-  setStarredQuests(state, data) {
-    state.starredQuests = data;
-  },
   setResponses(state, { responded, invited }) {
     state.responded = responded;
     state.invited = invited;
   },
   setResponseToQuest(state, { responded, invited }) {
-    if (responded) state.responded.push(responded);
-    if (invited) state.invited.push(invited);
+    if (responded) {
+      state.responded = state.responded.filter((item) => item.id !== responded.id);
+      state.responded.push(responded);
+    } else if (invited) {
+      state.invited = state.invited.filter((item) => item.id !== invited.id);
+      if (invited.status === QuestsResponseStatus.Accepted) state.invited.push(invited);
+    }
   },
   setResponsesMy(state, data) {
     state.responsesMy = data;

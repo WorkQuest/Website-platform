@@ -1,55 +1,40 @@
 // eslint-disable-next-line import/prefer-default-export
 
+export const QuestsResponseStatus = Object.freeze({
+  Rejected: -1,
+  Open: 0,
+  Accepted: 1,
+  Closed: 2,
+});
+
 export const EditQuestState = Object.freeze({
   EDITING: 1,
   RAISE_VIEWS: 2,
 });
 
 export const QuestStatuses = {
-  Closed: -3,
+  Closed: -3, // Employer closed quest on contract
   Dispute: -2,
-  Rejected: -1,
-  Pending: 0,
-  Created: 1,
-  WaitWorkerOnAssign: 2,
-  WaitWorker: 3,
-  WaitEmployerConfirm: 4,
-  Done: 5,
-};
-export const InfoModeEmployer = Object.freeze({
-  Closed: -3,
-  Dispute: -2,
-  Rejected: -1,
+  Rejected: -1, // Blocked by admin
   Pending: 0,
   Created: 1, // Waiting worker to start quest
   WaitWorkerOnAssign: 2, // Waiting for worker accept assign to quest
   WaitWorker: 3, // Work in progress
   WaitEmployerConfirm: 4, // Accepting or decline worker job
   Done: 5,
-});
-export const InfoModeWorker = Object.freeze({
-  Closed: -3,
-  Dispute: -2,
-  Pending: 0,
-  Created: 1,
-  WaitWorkerOnAssign: 2,
-  WaitWorker: 3,
-  WaitEmployerConfirm: 4,
-  Done: 5,
 
   ADChat: 9,
   Responded: 10,
   Invited: 11,
-  Rejected: 12,
-});
+};
 
 export const QuestMethods = Object.freeze({
+  Arbitration: 'arbitration',
   // Employer
   EditJob: 'editJob',
   CancelJob: 'cancelJob',
   AssignJob: 'assignJob',
   AcceptJobResult: 'acceptJobResult',
-  Arbitration: 'arbitration',
   // Worker
   AcceptJob: 'acceptJob',
   VerificationJob: 'verificationJob',

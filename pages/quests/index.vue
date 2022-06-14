@@ -52,7 +52,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { Path } from '~/utils/enums';
+import BigNumber from 'bignumber.js';
+import { Path, UserRole } from '~/utils/enums';
 
 export default {
   name: 'Quests',
@@ -78,6 +79,7 @@ export default {
       mapBounds: 'google-map/getBounds',
       questsList: 'quests/getAllQuests',
       questsCount: 'quests/getAllQuestsCount',
+      userData: 'user/getUserData',
     }),
     totalPages() { return Math.ceil(this.questsCount / this.query.limit); },
   },
@@ -105,7 +107,10 @@ export default {
     this.SetLoader(true);
     const isShow = JSON.parse(localStorage.getItem('isShowMap'));
     if (typeof isShow === 'boolean') this.isShowMap = isShow;
-    await this.fetchQuestsList();
+
+    if (this.userData.role === UserRole.WORKER && this.$route.query.mySpecs) {
+      await this.sortBySpec(this.userData.userSpecializations.map((item) => item.path));
+    } else await this.fetchQuestsList();
     this.SetLoader(false);
   },
   async beforeDestroy() {
@@ -181,7 +186,9 @@ export default {
       if (!Object.keys(value).length) {
         delete this.query['priceBetween[from]'];
         delete this.query['priceBetween[to]'];
-      } else this.query = { ...this.query, ...value };
+      } else {
+        this.query = { ...this.query, ...value };
+      }
       await this.fetchQuestsList(true);
     },
     async sortByPriority(value) {

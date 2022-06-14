@@ -202,7 +202,7 @@
               </template>
               <template #cell(txHash)="el">
                 <a
-                  :href="`https://${isProd ? 'dev' : 'test'}-explorer.workquest.co/tx/${el.item.transactionHash}`"
+                  :href="`${$options.ExplorerUrl}/tx/${el.item.transactionHash}`"
                   target="_blank"
                   class="user__value_gray"
                 >
@@ -216,10 +216,7 @@
               </template>
               <template #cell(amount)="el">
                 <div class="user__value_gray">
-                  {{
-                    $tc(`meta.coins.count.${currencyReward(el.item['referralUser.id'])}`,
-                        getStyledAmount(el.value))
-                  }}
+                  {{ $tc(`meta.coins.count.${currencyReward(el.item['referralUser.id'])}`, getStyledAmount(el.value)) }}
                 </div>
               </template>
               <template #cell(event)="el">
@@ -252,10 +249,12 @@ import { getStyledAmount } from '~/utils/wallet';
 import { images } from '~/utils/images';
 import { REFERRAL_EVENTS } from '~/utils/сonstants/referral';
 import { IS_PROD } from '~/utils/adresses';
+import { ExplorerUrl } from '~/utils/enums';
 
 export default {
   name: 'Referral',
   images,
+  ExplorerUrl,
   async asyncData({ store }) {
     const userAddress = store.getters['user/getUserWalletAddress'];
     await Promise.all([
@@ -269,7 +268,6 @@ export default {
     return {
       page: 1,
       perPage: 10,
-      referLink: IS_PROD ? 'https://app-ver1.workquest.co/?ref=' : 'https://app.workquest.co/?ref=',
       isProd: IS_PROD,
       referralCount: 5,
     };
@@ -288,6 +286,10 @@ export default {
       isNeedRegistration: 'referral/getIsNeedRegistration',
       createdReferralsList: 'referral/getCreatedReferralList',
     }),
+    referLink() {
+      const url = window.location.origin;
+      return `${url}/?ref=`;
+    },
     totalPages() {
       return Math.ceil(this.paidEventsList.length / this.perPage);
     },

@@ -43,45 +43,45 @@ export default {
   }) {
     if (!action && !message && !title) return;
     const notificationList = getters.getNotificationsList;
-    const isAdded = !!notificationList.some((n) => Object.entries(LocalNotificationAction).includes(n.actionNameKey));
-    if (!isAdded) {
-      const notification = {
-        actionNameKey: `notifications.${action}`,
-        seen: true,
-        id,
-        action,
-        actionBtn,
-        sender: {
-          avatar: { url: images.WQ_LOGO },
-          firstName: 'Workquest info',
-        },
-        params: {
-          title,
-          isLocal: true,
-        },
-        data: {
-          title,
-          questId,
-          userId,
-          createdAt: moment(date || Date.now()).format('MMMM Do YYYY, h:mm'),
-          message,
-        },
-      };
-      if (action === LocalNotificationAction.GET_REWARD) {
-        notification.params.path = Path.REFERRAL;
-      } else if (action === LocalNotificationAction.QUEST_DRAFT) {
-        notification.params.path = Path.CREATE_QUEST;
-      } else if (action === LocalNotificationAction.WIKI) {
-        notification.params.path = Path.WIKI;
-      } else if (action === LocalNotificationAction.KYC) {
-        notification.params.path = Path.SUMSUB;
-      } else if (action === LocalNotificationAction.PROFILE_FILLED) {
-        notification.params.path = Path.SETTINGS;
-      } else if (action === LocalNotificationAction.TWOFA) {
-        notification.params.path = `${Path.SETTINGS}#2FA`;
-      }
-      await dispatch('addNotification', notification);
-    }
+
+    // isAdded
+    if (notificationList.some((n) => Object.entries(LocalNotificationAction).includes(n.actionNameKey))) return;
+
+    const path = {
+      [LocalNotificationAction.GET_REWARD]: Path.REFERRAL,
+      [LocalNotificationAction.QUEST_DRAFT]: Path.CREATE_QUEST,
+      [LocalNotificationAction.WIKI]: Path.WIKI,
+      [LocalNotificationAction.KYC]: Path.SUMSUB,
+      [LocalNotificationAction.PROFILE_FILLED]: Path.SETTINGS,
+      [LocalNotificationAction.TWOFA]: `${Path.SETTINGS}#2FA`,
+      [LocalNotificationAction.QUESTS_SPECS]: `${Path.QUESTS}?mySpecs=true`,
+      [LocalNotificationAction.WALLET_UPDATE]: Path.WALLET,
+    }[action];
+
+    const notification = {
+      actionNameKey: `notifications.${action}`,
+      seen: true,
+      id,
+      action,
+      actionBtn,
+      sender: {
+        avatar: { url: images.WQ_LOGO },
+        firstName: $nuxt.$t('ui.notifications.workquestInfo'),
+      },
+      params: {
+        title,
+        path,
+        isLocal: true,
+      },
+      data: {
+        title,
+        questId,
+        userId,
+        createdAt: moment(date || Date.now()).format('MMMM Do YYYY, h:mm'),
+        message,
+      },
+    };
+    commit('addNotification', notification);
   },
 
   async removeNotification({ dispatch, commit, rootGetters }, { config, notification: { params, actionNameKey, id } }) {
@@ -117,7 +117,8 @@ export default {
       const currConfig = config || { params: { limit: 2, offset: 0 } };
       const { data: { result, ok } } = await this.$axios.get(`${ENV.NOTIFS_URL}notifications`, currConfig);
       const { notifications, count } = result;
-      notifications.map(async (notification) => await dispatch('setCurrNotificationObject', notification));
+
+      await Promise.all(notifications.map(async (notification) => await dispatch('setCurrNotificationObject', notification)));
 
       if (!config) {
         commit('setReducedNotifications', notifications);
@@ -137,13 +138,11 @@ export default {
   async setCurrNotificationObject({
     getters, rootGetters, dispatch, commit,
   }, notification) {
-    const userData = rootGetters['user/getUserData'];
     const { data, action } = notification.notification;
     const {
       id, title, quest, user, worker, comment, employer, fromUser, rootComment,
       assignedWorker, message, toUserId, discussion, problemDescription, openDisputeUser, reason, number,
     } = data;
-    const currentUserId = userData.id;
     const userRole = rootGetters['user/getUserRole'];
 
     /** Set common params */
@@ -151,27 +150,15 @@ export default {
     notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
     notification.params = { isLocal: false };
 
-    const handleWaitForUpdateQuest = async () => {
-      dispatch('main/setLoading', false, { root: true });
-      if (getters.getWaitForUpdateQuest?.callback) {
-        await getters.getWaitForUpdateQuest.callback();
-      }
-      commit('setWaitForUpdateQuest', null);
-    };
-
     switch (action) {
       case NotificationAction.QUEST_STATUS_UPDATED:
         notification.sender = userRole === UserRole.EMPLOYER ? assignedWorker
-          || { avatar: { url: images.WQ_LOGO }, firstName: 'Workquest info' } : user;
+          || { avatar: { url: images.WQ_LOGO }, firstName: $nuxt.$t('ui.notifications.workquestInfo') } : user;
         notification.params = {
           ...notification.params,
           title,
           path: `${Path.QUESTS}/${data.id}`,
         };
-
-        if (getters.getWaitForUpdateQuest?.id === data?.id) {
-          await handleWaitForUpdateQuest();
-        }
 
         await dispatch('updateProfile');
         break;
@@ -187,12 +174,30 @@ export default {
           title,
           path: `${Path.QUESTS}/${quest?.id || id}`,
         };
-        if (getters.getWaitForUpdateQuest?.id === data?.id) {
-          await handleWaitForUpdateQuest();
+
+        // TODO: проверка на то были ли мы приглашены на квест или мы сами подали на него
+        // ui.notifications.respondedQuestEdited - u responded
+        // ui.notifications.invitedQuestEdited - that u invited
+        if (userRole === UserRole.WORKER) {
+          notification.params.isLocal = false;
+          notification.data = {
+            ...notification.data,
+            message: $nuxt.$t('ui.notifications.respondedQuestEdited'),
+          };
         }
+
+        break;
+
+      case NotificationAction.OPENED_DISPUTE:
+        notification.params = {
+          ...notification.params,
+          title: problemDescription,
+          path: `${Path.QUESTS}/${quest?.id || id}`,
+        };
         break;
 
       case NotificationAction.DISPUTE_DECISION:
+        notification.sender = { avatar: { url: images.WQ_LOGO }, firstName: $nuxt.$t('ui.notifications.workquestInfo') };
         notification.params = {
           ...notification.params,
           title: problemDescription,
@@ -225,14 +230,6 @@ export default {
         };
         break;
 
-      case NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST:
-        notification.params = {
-          ...notification.params,
-          title: title || quest?.title,
-          path: `${Path.QUESTS}/${quest?.id || id}`,
-        };
-        break;
-
       case [NotificationAction.NEW_COMMENT_IN_DISCUSSION, NotificationAction.NEW_DISCUSSION_LIKE].includes(action):
         notification.params = {
           ...notification.params,
@@ -242,25 +239,71 @@ export default {
           externalBase: DaoUrl,
         };
         break;
-      case [...notificationsQuestsActions, NotificationAction.QUEST_STATUS_UPDATED].includes(action):
-        notification.params = {
-          ...notification.params,
-          title: title || quest?.title,
-          path: `${Path.QUESTS}/${quest?.id || id}`,
-        };
-        break;
 
       default:
         break;
     }
 
-    /* For update quest & quest lists */
+    if (notificationsQuestsActions.includes(action)) {
+      notification.params = {
+        ...notification.params,
+        title: quest?.title || title,
+        path: `${Path.QUESTS}/${quest?.id || id}`,
+      };
+    }
+
+    /** Set sender if it need */
+    if (quest?.user && notificationCommonFilterActions.includes(action) && !notification.sender) {
+      notification.sender = quest.user;
+    } else if (notificationCommonFilterAction2.includes(action && !notification.sender)) {
+      if (userRole === UserRole.WORKER) notification.sender = user;
+      else if (employer) notification.sender = employer;
+    } else if (notificationEmployerFilterActions.includes(action) && !notification.sender) {
+      if (assignedWorker) notification.sender = assignedWorker;
+      else if (worker) notification.sender = worker;
+    } else if (action === NotificationAction.OPENED_DISPUTE) {
+      notification.sender = openDisputeUser;
+      notification.params = {
+        ...notification.params,
+        title: `№${number}, ${$nuxt.$t('modals.titles.reason')}: ${reason}, ${$nuxt.$t('quests.questBig')}: ${quest?.title}`,
+        path: `${Path.DISPUTES}/${data.id}`,
+      };
+    }
+    return notification.notification;
+  },
+
+  async handleUpdateDataFromWS({
+    getters, rootGetters, dispatch, commit,
+  }, notification) { // Fetching data if it needs
+    const userData = rootGetters['user/getUserData'];
+    const userRole = rootGetters['user/getUserRole'];
+    const { action, data } = notification.notification;
+    const { id, quest } = data;
+    const currentPath = this.$router.history.current.path;
+    const currentUserId = userData.id;
+
+    // Disabling loader after sending txs (transactionReceipt modal) and calling callback
+    const handleWaitForUpdateQuest = async () => {
+      dispatch('main/setLoading', false, { root: true });
+      if (getters.getWaitForUpdateQuest?.callback) {
+        await getters.getWaitForUpdateQuest.callback();
+      }
+      commit('setWaitForUpdateQuest', null);
+    };
+    if ([
+      NotificationAction.QUEST_EDITED_ON_CONTRACT,
+      NotificationAction.QUEST_STATUS_UPDATED,
+    ].includes(action)
+    && getters.getWaitForUpdateQuest?.id === data?.id) {
+      await handleWaitForUpdateQuest();
+    }
+
+    // For update quest & quest lists
     if ([
       ...notificationsQuestsActions,
       NotificationAction.QUEST_STATUS_UPDATED,
       NotificationAction.DISPUTE_DECISION,
     ].includes(action)) {
-      const currentPath = this.$router.history.current.path;
       const questListPathArray = [
         Path.MY_QUESTS,
         Path.QUESTS,
@@ -282,33 +325,16 @@ export default {
         const params = quest?.id || id;
         await dispatch('quests/getQuest', params, { root: true });
         if (userRole === UserRole.EMPLOYER && currentUserId && quest?.user?.id === currentUserId) {
-          await dispatch('quests/responsesToQuest', params, { root: true });
+          await dispatch('quests/setResponseToQuest', notification.notification, { root: true });
         }
       }
     }
-
-    /** Set sender if it need */
-    if (quest?.user && notificationCommonFilterActions.includes(action) && !notification.sender) {
-      notification.sender = quest.user;
-    } else if (notificationCommonFilterAction2.includes(action && !notification.sender)) {
-      if (userRole === UserRole.WORKER) notification.sender = user;
-      else if (employer) notification.sender = employer;
-    } else if (notificationEmployerFilterActions.includes(action) && !notification.sender) {
-      if (assignedWorker) notification.sender = assignedWorker;
-      else if (worker) notification.sender = worker;
-    } else if (action === NotificationAction.OPENED_DISPUTE) {
-      notification.sender = openDisputeUser;
-      notification.params = {
-        ...notification.params,
-        title: `№${number}, Reason: ${reason}, Quest: ${quest?.title}`,
-        path: `${Path.DISPUTES}/${data.id}`,
-      };
-    }
-    return notification.notification;
   },
 
   async addNotification({ commit, dispatch }, notification) {
-    const newNotification = await dispatch('setCurrNotificationObject', { notification });
-    commit('addNotification', newNotification);
+    const buffer = { notification };
+    await dispatch('setCurrNotificationObject', buffer);
+    await dispatch('handleUpdateDataFromWS', buffer);
+    commit('addNotification', buffer);
   },
 };

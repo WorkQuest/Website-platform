@@ -15,17 +15,26 @@
         :key="response.worker.id"
         class="worker__container"
       >
-        <div
-          class="worker user-data"
-          @click="toUserProfile(response)"
-        >
+        <div class="worker user-data">
           <img
             class="worker__avatar"
             :src="response.worker.avatar ? response.worker.avatar.url : $options.images.EMPTY_AVATAR"
             alt=""
+            @click="toUserProfile(response)"
           >
-          <div class="worker__name">
-            {{ `${response.worker.firstName} ${response.worker.lastName}` }}
+          <div class="worker__user">
+            <div
+              class="worker__name"
+              @click="toUserProfile(response)"
+            >
+              {{ `${response.worker.firstName} ${response.worker.lastName}` }}
+            </div>
+            <div
+              v-if="isInvited && response.status === $options.QuestsResponseStatus.Accepted"
+              class="worker__status"
+            >
+              {{ $t('meta.accepted') }}
+            </div>
           </div>
           <item-rating :rating="response.worker.ratingStatistic.status" />
         </div>
@@ -64,7 +73,7 @@ import { mapGetters } from 'vuex';
 import {
   Path, TokenSymbols, ChatType,
 } from '~/utils/enums';
-import { QuestMethods } from '~/utils/сonstants/quests';
+import { QuestMethods, QuestsResponseStatus } from '~/utils/сonstants/quests';
 import modals from '~/store/modals/modals';
 import { error, success } from '~/utils/web3';
 import { WorkQuest } from '~/abi';
@@ -73,24 +82,13 @@ import { images } from '~/utils/images';
 export default {
   name: 'WorkersList',
   Path,
+  QuestsResponseStatus,
   images,
   props: {
     isInvited: {
       type: Boolean,
       default: false,
     },
-  },
-  data() {
-    return {
-      ddUserActions: [
-        this.$t('meta.btns.goToChat'),
-      ],
-      ddUserFullActions: [
-        this.$t('meta.btns.goToChat'),
-        this.$t('quests.startQuest'),
-        this.$t('quests.decline'),
-      ],
-    };
   },
   computed: {
     ...mapGetters({
@@ -105,6 +103,22 @@ export default {
       const { isInvited, invited, responded } = this;
       return isInvited ? invited : responded;
     },
+    ddUserChatActions() {
+      return [this.$t('meta.btns.goToChat')]; // WaitWorkerOnAssign state
+    },
+    ddUserInvitedActions() { // Worker accepted invitation
+      return [
+        this.$t('meta.btns.goToChat'),
+        this.$t('quests.startQuest'),
+      ];
+    },
+    ddUserRespondedActions() { // Responds from worker
+      return [
+        this.$t('meta.btns.goToChat'),
+        this.$t('quests.startQuest'),
+        this.$t('quests.decline'),
+      ];
+    },
   },
   beforeCreate() {
     this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
@@ -113,11 +127,17 @@ export default {
     toUserProfile(response) {
       this.$router.push(`${Path.PROFILE}/${response.worker.id}`);
     },
-    userActionsArr({ worker }) {
-      if (this.questData?.assignedWorker?.id === worker?.id) {
-        return this.ddUserActions;
+    userActionsArr(response) {
+      const { worker } = response;
+      if (this.questData?.assignedWorker?.id === worker?.id
+        // Waiting for worker (dis)agree invitation
+        || (this.isInvited && response.status === QuestsResponseStatus.Open)) {
+        return this.ddUserChatActions;
       }
-      return this.ddUserFullActions;
+      if (this.isInvited && response.status === QuestsResponseStatus.Accepted) {
+        return this.ddUserInvitedActions;
+      }
+      return this.ddUserRespondedActions;
     },
     handleUserAction(index, response) {
       const funcKey = ['goToChat', 'startQuest', 'reject'][index];
@@ -200,8 +220,7 @@ export default {
   }
 }
 .user-data {
-  display: grid;
-  grid-template-columns: 40px 1fr max-content;
+  display: flex;
   align-items: center;
   gap: 10px;
 }
@@ -211,6 +230,7 @@ export default {
   color: $black800;
   &__menu {
     align-self: center;
+    flex-shrink: 0;
   }
    &__card {
     background: $white;
@@ -234,7 +254,17 @@ export default {
     width: 40px;
     height: 40px;
     cursor: pointer;
+    object-fit: cover;
  }
+  &__status {
+    background: $green;
+    border-radius: 6px;
+    display: inline-block;
+    font-size: 14px;
+    padding: 1px 4px;
+    user-select: none;
+    color: $white;
+  }
   &__name {
     @extend .worker;
     color: $black800;
@@ -247,6 +277,13 @@ export default {
  &__title {
     font-size: 18px;
     margin-bottom: 20px;
+  }
+}
+
+@include _575 {
+  .user-data {
+    display: grid;
+    grid-template-columns: 40px 1fr max-content;
   }
 }
 </style>

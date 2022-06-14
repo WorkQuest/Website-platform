@@ -113,32 +113,36 @@ export const RatingStatus = {
 };
 
 export const MessageAction = {
-  GROUP_CHAT_CREATE: 'groupChatCreate',
-  NEW_MESSAGE: 'newMessage',
-  MESSAGE_READ_BY_RECIPIENT: 'messageReadByRecipient',
-  GROUP_CHAT_ADD_USERS: 'groupChatAddUser',
-  GROUP_CHAT_LEAVE_USER: 'groupChatLeaveUser',
-  GROUP_CHAT_DELETE_USER: 'groupChatDeleteUser',
-  EMPLOYER_INVITE_ON_QUEST: 'employerInviteOnQuest',
-  WORKER_RESPONSE_ON_QUEST: 'workerResponseOnQuest',
-  EMPLOYER_REJECT_RESPONSE_ON_QUEST: 'employerRejectResponseOnQuest',
-  WORKER_REJECT_INVITE_ON_QUEST: 'workerRejectInviteOnQuest',
-  WORKER_ACCEPT_INVITE_ON_QUEST: 'workerAcceptInviteOnQuest',
+  GROUP_CHAT_CREATE: 'GroupChatCreate',
+  NEW_MESSAGE: 'NewMessage',
+  MESSAGE_READ_BY_RECIPIENT: 'MessageReadByRecipient',
+  GROUP_CHAT_ADD_USERS: 'GroupChatAddMember',
+  GROUP_CHAT_LEAVE_USER: 'GroupChatLeaveMember',
+  GROUP_CHAT_DELETE_USER: 'GroupChatDeleteMember',
+  GROUP_CHAT_RESTORED_USER: 'GroupChatMemberRestored',
+  EMPLOYER_INVITE_ON_QUEST: 'EmployerInviteOnQuest',
+  WORKER_RESPONSE_ON_QUEST: 'WorkerResponseOnQuest',
+  EMPLOYER_REJECT_RESPONSE_ON_QUEST: 'EmployerRejectResponseOnQuest',
+  WORKER_REJECT_INVITE_ON_QUEST: 'WorkerRejectInviteOnQuest',
+  WORKER_ACCEPT_INVITE_ON_QUEST: 'WorkerAcceptInviteOnQuest',
+  QUEST_CHAT_ADD_DISPUTE_ADMIN: 'QuestChatAddDisputeAdmin',
+  QUEST_CHAT_LEAVE_DISPUTE_ADMIN: 'QuestChatLeaveDisputeAdmin',
 };
 
 export const ChatType = {
-  GROUP: 'group',
-  QUEST: 'quest',
+  GROUP: 'Group',
+  QUEST: 'Quest',
+  PRIVATE: 'Private',
 };
 
 export const MessageType = {
-  INFO: 'info',
-  MESSAGE: 'message',
+  INFO: 'Info',
+  MESSAGE: 'Message',
 };
 
 export const QuestChatStatus = {
   Active: 0,
-  Closed: 1,
+  Closed: -1,
 };
 
 export const UserRole = {
@@ -175,6 +179,8 @@ export const Path = {
   NOTIFICATIONS: '/notifications',
   RETIREMENT: '/retirement',
   SUMSUB: '/sumsub',
+  REPORT: '/report',
+  AUCTION: '/auction',
 };
 
 export const PathDAO = {
@@ -233,9 +239,19 @@ export const WalletTables = Object.freeze({
   COLLATERAL: 'COLLATERAL',
 });
 
-export const DaoUrl = Object.freeze('https://dev-dao.workquest.co');
+export const DaoUrl = {
+  master: 'https://testnet-dao.workquest.co',
+  testnet: 'https://testnet-dao.workquest.co',
+  stage: 'https://stage-dao.workquest.co',
+  develop: 'https://dev-dao.workquest.co',
+}[process.env.BRANCH];
 
-export const ExplorerUrl = Object.freeze('https://dev-explorer.workquest.co');
+export const ExplorerUrl = {
+  master: 'https://testnet-explorer.workquest.co',
+  testnet: 'https://testnet-explorer.workquest.co',
+  stage: 'https://stage-explorer.workquest.co',
+  develop: 'https://dev-explorer.workquest.co',
+}[process.env.BRANCH];
 
 export const NetworksData = {
   ETH_MAIN: {
@@ -319,4 +335,10 @@ export const TariffByIndex = Object.freeze({
 export const RaiseViewStatus = {
   0: true,
   1: false,
+};
+
+export const EntityType = {
+  USER: 'User',
+  QUEST: 'Quest',
+  DISCUSSION_COMMENT: 'DiscussionComment',
 };

@@ -1,4 +1,4 @@
-import { Chains, TokenSymbols } from '~/utils/enums';
+import { Chains, TokenSymbols, ExplorerUrl } from '~/utils/enums';
 import ENV, { IS_PROD } from '~/utils/adresses/index';
 
 export const BlockchainIndex = Object.freeze({
@@ -65,12 +65,12 @@ export const SwapAddresses = new Map([
       index: BlockchainIndex.WORKNET,
       nativeSymbol: TokenSymbols.WQT,
       tokenAddress: {
-        [TokenSymbols.WQT]: ENV.WORKNET_WQT_TOKEN, // TODO fix it, this secret was deleted
+        // [TokenSymbols.WQT]: ENV.WORKNET_WQT_TOKEN, // TODO fix it, this secret was deleted
         [TokenSymbols.ETH]: ENV.WORKNET_WETH_TOKEN,
         [TokenSymbols.BNB]: ENV.WORKNET_WBNB_TOKEN,
         [TokenSymbols.USDT]: ENV.WORKNET_USDT_TOKEN,
       },
-      explorer: `https://${IS_PROD ? 'dev-' : 'dev-'}explorer.workquest.co`,
+      explorer: ExplorerUrl,
     },
   ],
 ]);

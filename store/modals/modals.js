@@ -39,6 +39,7 @@ export default {
   signWorkQuest: 'signWorkQuest',
   securityCheck: 'securityCheck',
   sharingQuest: 'sharingQuest',
+  support: 'support',
   changeRoleWarning: 'changeRoleWarning',
   changeRoleReason: 'changeRoleReason',
   changeRoleSecureCheck: 'changeRoleSecureCheck',
@@ -80,4 +81,5 @@ export default {
   downloadApp: 'downloadApp',
   claimRewards: 'claimRewards',
   buyWQT: 'buyWQT',
+  report: 'report',
 };

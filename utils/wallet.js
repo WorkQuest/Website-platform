@@ -10,7 +10,6 @@ import ENV from '~/utils/adresses/index';
 
 import {
   WQOracle,
-  WQRouter,
   WQStaking,
   WQStakingNative,
 } from '~/abi/index';
@@ -328,9 +327,9 @@ export const getGasPrice = async (contractAbi, address, method, attr, value = nu
         ? inst.methods[method](...attr).estimateGas({ from: wallet.address, value })
         : inst.methods[method](...attr).estimateGas({ from: wallet.address }),
     ]);
-    return { gas: gasEstimate, gasPrice };
+    return { gas: Number(gasEstimate), gasPrice: Number(gasPrice) };
   } catch (e) {
-    console.error('getGasPriceError', e);
+    console.error('wallet/getGasPrice', e);
     return { gas: false, gasPrice: false };
   }
 };
@@ -351,6 +350,7 @@ export const setTokenPrice = async ({ currency }, {
   }
 };
 
+// TODO check and del
 export const setTokenPrices = async ({
   gasPrice, gas, timestamp, prices, v, r, s, symbols,
 }) => {
@@ -363,20 +363,6 @@ export const setTokenPrices = async ({
     });
   } catch (e) {
     console.error('setTokenPricesError', e);
-    throw error();
-  }
-};
-
-export const buyWUSD = async ({ collateralBN, ratioBN, currency }, { gasPrice, gas }) => {
-  try {
-    const inst = new web3.eth.Contract(WQRouter, ENV.WORKNET_ROUTER);
-    await inst.methods.produceWUSD(collateralBN, ratioBN, currency).send({
-      from: wallet.address,
-      gas,
-      gasPrice,
-    });
-  } catch (e) {
-    console.error('setTokenPriceError', e);
     throw error();
   }
 };

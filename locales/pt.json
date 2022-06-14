@@ -112,6 +112,7 @@
         "notIndicated": "Not indicated..."
       }
     },
+    "accepted": "Accepted",
     "allTransactions": "All transactions",
     "collateralTransactions": "Collateral transactions",
     "operation": "Operation",
@@ -120,6 +121,8 @@
     "claimRewards": "Claim rewards",
     "percent": "Percentagem",
     "deposit": "Deposit",
+    "description": "Description",
+    "email": "Email",
     "withdraw": "Retirar",
     "withdrawal": "Retirar",
     "information": "Informação",
@@ -145,6 +148,7 @@
     "questsSmall": "buscas",
     "questsBig": "Buscas",
     "codeFromSMS": "Código de SMS",
+    "title": "Title",
     "toBig": "Para",
     "toSmall": "para",
     "fromBig": "De",
@@ -444,6 +448,7 @@
     "questBig": "Busca",
     "activeQuest": "Busca ativa",
     "waitWorker": "Wait worker",
+    "waitWorkerOnAssign": "Waiting for employee response:",
     "pendingConsideration": "Pending consideration",
     "questClosed": "Quest Closed",
     "dontHaveSpec": "Doesn`t have specializations...",
@@ -929,7 +934,10 @@
     "caseDeleted": "Case deleted!",
     "caseAdded": "Case added!",
     "caseEdited": "Case edited!",
-    "error": "Error!"
+    "error": "Error!",
+    "sendToSupport": "A message has been sent to support",
+    "sent": "Sent",
+    "errorGetFee": "Something wrong with get fee, check console"
   },
   "modals": {
     "titles": {
@@ -986,6 +994,7 @@
       "sharing": "Partilha",
       "signWorkQuest": "Rede social WorkQuest",
       "skills": "Skills",
+      "support": "Support",
       "smsVerification": "Verificação de SMS",
       "swapTitle": "Cross-chain exchange",
       "swapInfo": "Swap info",
@@ -996,7 +1005,8 @@
       "withdrawCard": "Levantar para cartão bancário",
       "withdrawInfo": "Withdrawal info",
       "downloadApp": "Download App",
-      "downloadWallet": "Download Wallet App"
+      "downloadWallet": "Download Wallet App",
+      "sendPrivateMessage": "Send a private message"
     },
     "errors": {
       "errorQuests": "Error with quests",
@@ -1066,7 +1076,7 @@
     "settingsInfo": "Settings Info",
     "pleaseEnable2FA": "Please, enable TWO-Step authentication",
     "errorGetWUSD": "Something went wrong",
-    "countOfRecievedWUSD": "How many WUSD do you want to receive",
+    "countOfReceivedWUSD": "How many WUSD do you want to receive",
     "fieldCountOf": "{countOf} amount",
     "countOfCollateral": "How much collateral to leave?",
     "percentageConversion": "Percentage conversion",
@@ -1075,7 +1085,7 @@
     "mediumRisk": "Medium",
     "lowRisk": "Low",
     "fieldPercentConversion": "Percentage conversion",
-    "countOfRecievedWUSDDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+    "countOfReceivedWUSDDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "countOfCollateralDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "conversionPercentDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "fillNumber": "Please fill phone number in settings page...",
@@ -1114,6 +1124,7 @@
     "switchOnGoogleAuth": "Ative o Google Authenticator",
     "emailVerificationCode": "Código de verificação de e-mail",
     "emailPlaceholder": "Introduza o código de verificação de e-mail",
+    "email": "Email",
     "googleVerificationCode": "Código de verificação do Google",
     "codePlaceholder": "Introduza o código de verificação do Google",
     "useYourGoogleAuth": "Utilize a sua App Google Authenticator para digitalizar o código QR.",
@@ -1300,7 +1311,12 @@
     "notifications": {
       "title": "Notificações",
       "invite": "Convida-o para completar a busca",
-      "noNotifications": "No notifications"
+      "noNotifications": "No notifications",
+      "workquestInfo": "Workquest info",
+      "respondedQuestEdited": "Quest that you responded to is edited. Please check it once again.",
+      "invitedQuestEdited": "The quest you were invited to has been edited. Please check it once again.",
+      "viewOffersBySpecs": "View offers for selected specializations",
+      "balanceUpdated": "Balance replenishment {token}"
     },
     "menu": {
       "unauthorized": "Not logged",
@@ -1396,7 +1412,7 @@
     "userLeftReviewAboutQuest": "Left review about quest",
     "registrationError": "No users found for registration. Please contact to developers",
     "waitWorker": "The quest is pending",
-    "disputeDecision": "Dispute decision",
+    "DisputeDecision": "Dispute decision",
     "newCommentInDiscussion": "New comment in Discussion",
     "commentLiked": "Comment liked",
     "questEdited": "Quest edited",
@@ -1486,7 +1502,17 @@
     "searchTitle": "Name/Quest/Group",
     "menu": {
       "giveAQuest": "Give a quest",
-      "removeFromChat": "Remove from the chat"
+      "removeFromChat": "Remove from the chat",
+      "private": "Private chat"
+    },
+    "tabs": {
+      "all": "All",
+      "private": "Private",
+      "groups": "Groups",
+      "quests": "Quests",
+      "activeQuests" : "Active Quests",
+      "completedQuests": "Completed Quests",
+      "starred": "Starred"
     }
   },
   "settings": {
@@ -1494,6 +1520,7 @@
     "mainPhoneNumber": "Main phone number",
     "whoCouldIInvite": "Who can respond to my quests?",
     "whoCouldInviteMe": "Who can invite me to a quest?",
+    "interactOnly": "Interact only with:",
     "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
@@ -2052,6 +2079,7 @@
       "favorites": "Favorito",
       "responded": "Solicitado",
       "performed": "Buscas concluídas",
+      "completed": "Completed quests",
       "active": "Buscas ativas",
       "invited": "Buscas convidadas",
       "created": "Missões criadas"
@@ -2398,5 +2426,17 @@
     "Remote": "Remote work",
     "InOffice": "In-office",
     "Hybrid": "Hybrid workplace"
+  },
+  "report": {
+    "btn": {
+      "report": "Report",
+      "send": "Send report"
+    },
+    "title": "Title",
+    "titlePlaceholder": "Add a post title",
+    "message": "Message",
+    "messagePlaceholder": "Add message",
+    "sent": "Report sent",
+    "complainAbout": "Complain about"
   }
 }

@@ -112,6 +112,7 @@
         "notIndicated": "Not indicated..."
       }
     },
+    "accepted": "Accepted",
     "allTransactions": "All transactions",
     "collateralTransactions": "Collateral transactions",
     "operation": "Operation",
@@ -120,6 +121,8 @@
     "claimRewards": "Claim rewards",
     "percent": "प्रतिशत",
     "deposit": "Deposit",
+    "description": "Description",
+    "email": "Email",
     "withdraw": "निकासी",
     "withdrawal": "निकासी",
     "information": "जानकारी",
@@ -145,6 +148,7 @@
     "questsSmall": "quests",
     "questsBig": "Quests",
     "codeFromSMS": "SMS से कोड",
+    "title": "Title",
     "toBig": "To",
     "toSmall": "to",
     "fromBig": "From",
@@ -444,6 +448,7 @@
     "questBig": "Quest",
     "activeQuest": "एक्टिव Quest",
     "waitWorker": "Wait worker",
+    "waitWorkerOnAssign": "Waiting for employee response:",
     "pendingConsideration": "Pending consideration",
     "questClosed": "Quest Closed",
     "dontHaveSpec": "Doesn`t have specializations...",
@@ -929,7 +934,10 @@
     "caseDeleted": "Case deleted!",
     "caseAdded": "Case added!",
     "caseEdited": "Case edited!",
-    "error": "Error!"
+    "error": "Error!",
+    "sendToSupport": "A message has been sent to support",
+    "sent": "Sent",
+    "errorGetFee": "Something wrong with get fee, check console"
   },
   "modals": {
     "titles": {
@@ -986,6 +994,7 @@
       "sharing": "शेयरिंग",
       "signWorkQuest": "WorkQuest सोशल नेटवर्क",
       "skills": "Skills",
+      "support": "Support",
       "smsVerification": "SMS वेरिफिकेशन",
       "swapTitle": "Cross-chain exchange",
       "swapInfo": "Swap info",
@@ -996,7 +1005,8 @@
       "withdrawCard": "बैंक कार्ड पर निकासी",
       "withdrawInfo": "Withdrawal info",
       "downloadApp": "Download App",
-      "downloadWallet": "Download Wallet App"
+      "downloadWallet": "Download Wallet App",
+      "sendPrivateMessage": "Send a private message"
     },
     "errors": {
       "errorQuests": "Error with quests",
@@ -1066,7 +1076,7 @@
     "settingsInfo": "Settings Info",
     "pleaseEnable2FA": "Please, enable TWO-Step authentication",
     "errorGetWUSD": "Something went wrong",
-    "countOfRecievedWUSD": "How many WUSD do you want to receive",
+    "countOfReceivedWUSD": "How many WUSD do you want to receive",
     "fieldCountOf": "{countOf} amount",
     "countOfCollateral": "How much collateral to leave?",
     "percentageConversion": "Percentage conversion",
@@ -1075,7 +1085,7 @@
     "mediumRisk": "Medium",
     "lowRisk": "Low",
     "fieldPercentConversion": "Percentage conversion",
-    "countOfRecievedWUSDDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+    "countOfReceivedWUSDDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "countOfCollateralDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "conversionPercentDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "fillNumber": "Please fill phone number in settings page...",
@@ -1114,6 +1124,7 @@
     "switchOnGoogleAuth": "Google Authenticator चालू करें",
     "emailVerificationCode": "ईमेल वेरिफिकेशन कोड",
     "emailPlaceholder": "कृपया ईमेल वेरिफिकेशन कोड दर्ज करें",
+    "email": "Email",
     "googleVerificationCode": "Google वेरिफिकेशन कोड",
     "codePlaceholder": "कृपया Google वेरिफिकेशन कोड दर्ज करें",
     "useYourGoogleAuth": "QR कोड स्कैन करने के लिए अपने Google Authenticator ऐप का उपयोग करें।",
@@ -1300,7 +1311,12 @@
     "notifications": {
       "title": "नोटिफिकेशन",
       "invite": "आपको Quest पूरी करने के लिए इन्वाइट कर रहे हैं",
-      "noNotifications": "No notifications"
+      "noNotifications": "No notifications",
+      "workquestInfo": "Workquest info",
+      "respondedQuestEdited": "Quest that you responded to is edited. Please check it once again.",
+      "invitedQuestEdited": "The quest you were invited to has been edited. Please check it once again.",
+      "viewOffersBySpecs": "View offers for selected specializations",
+      "balanceUpdated": "Balance replenishment {token}"
     },
     "menu": {
       "unauthorized": "Not logged",
@@ -1396,7 +1412,7 @@
     "userLeftReviewAboutQuest": "Left review about quest",
     "registrationError": "No users found for registration. Please contact to developers",
     "waitWorker": "The quest is pending",
-    "disputeDecision": "Dispute decision",
+    "DisputeDecision": "Dispute decision",
     "newCommentInDiscussion": "New comment in Discussion",
     "commentLiked": "Comment liked",
     "questEdited": "Quest edited",
@@ -1486,7 +1502,17 @@
     "searchTitle": "Name/Quest/Group",
     "menu": {
       "giveAQuest": "Give a quest",
-      "removeFromChat": "Remove from the chat"
+      "removeFromChat": "Remove from the chat",
+      "private": "Private chat"
+    },
+    "tabs": {
+      "all": "All",
+      "private": "Private",
+      "groups": "Groups",
+      "quests": "Quests",
+      "activeQuests" : "Active Quests",
+      "completedQuests": "Completed Quests",
+      "starred": "Starred"
     }
   },
   "settings": {
@@ -2048,11 +2074,12 @@
   },
   "myQuests": {
     "statuses": {
-      "all": "सभी Quest",
+      "all": "सभी quests",
       "favorites": "पसंदीदा",
       "responded": "अनुरोध किया",
-      "performed": "पूरी हुई Quests",
-      "active": "एक्टिव Quest",
+      "performed": "पूरी हुई quests",
+      "completed": "Completed quests",
+      "active": "एक्टिव quest",
       "invited": "इन्वाइट किए quests",
       "created": "निर्मित खोज"
     }
@@ -2398,5 +2425,17 @@
     "Remote": "Remote work",
     "InOffice": "In-office",
     "Hybrid": "Hybrid workplace"
+  },
+  "report": {
+    "btn": {
+      "report": "Report",
+      "send": "Send report"
+    },
+    "title": "Title",
+    "titlePlaceholder": "Add a post title",
+    "message": "Message",
+    "messagePlaceholder": "Add message",
+    "sent": "Report sent",
+    "complainAbout": "Complain about"
   }
 }

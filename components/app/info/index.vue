@@ -2,26 +2,10 @@
   <div
     v-if="infoDataMode !== $options.QuestStatuses.Pending"
     class="info"
-    :class="infoClass"
+    :class="questStatusesData[infoDataMode].class"
   >
     <div
-      v-if="userRole === $options.UserRole.EMPLOYER
-        && infoDataMode !== $options.InfoModeEmployer.Created"
-      class="info__body"
-    >
-      <div class="info__left">
-        <div
-          class="info__text"
-          :class="[{'info__text_white': ![
-            $options.InfoModeEmployer.Created,
-          ].includes(infoDataMode)}]"
-        >
-          {{ infoStatusText }}
-        </div>
-      </div>
-    </div>
-    <div
-      v-if="userRole === $options.UserRole.WORKER"
+      v-if="infoDataMode !== $options.QuestStatuses.Created"
       class="info__body"
     >
       <div class="info__left">
@@ -29,11 +13,11 @@
           class="info__text"
           :class="infoStatusTextColor"
         >
-          {{ infoStatusText }}
+          {{ questStatusesData[infoDataMode].text }}
         </div>
       </div>
       <div
-        v-if="infoDataMode === $options.InfoModeWorker.Rejected"
+        v-if="infoDataMode === $options.QuestStatuses.Responded"
         class="info__right"
       >
         <base-btn
@@ -41,11 +25,12 @@
           v-click-outside="closeMessage"
           data-selector="TOGGLE-SHOW-MESSAGE"
           class="message message__btn"
+          :class="infoStatusTextColor"
           mode="showYourMessage"
           @click="toggleShowMessage"
         >
           <template v-slot:right>
-            <span class="icon-caret_down" />
+            <span class="icon-caret_down message__caret" />
           </template>
           {{ isShowMessage ? $t('info.hideYourMessage') : $t('info.showYourMessage') }}
           <div
@@ -56,7 +41,7 @@
               {{ $t('info.yourMessage') }}
             </div>
             <div class="message__body">
-              {{ respondOnQuest.message || questData.response.message }}
+              {{ questData.response.message || respondOnQuest.message }}
             </div>
           </div>
         </base-btn>
@@ -69,16 +54,12 @@
 
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import { ResponseStatus, UserRole } from '~/utils/enums';
-import { QuestStatuses, InfoModeEmployer, InfoModeWorker } from '~/utils/сonstants/quests';
+import { QuestStatuses } from '~/utils/сonstants/quests';
+import { UserRole } from '~/utils/enums';
 
 export default {
   name: 'InfoVue',
   directives: { ClickOutside },
-  UserRole,
-  InfoModeEmployer,
-  InfoModeWorker,
-  ResponseStatus,
   QuestStatuses,
   data() {
     return {
@@ -92,69 +73,57 @@ export default {
       userRole: 'user/getUserRole',
       infoDataMode: 'quests/getInfoDataMode',
     }),
+    questStatusesData() {
+      return {
+        [QuestStatuses.Created]: {
+          text: '',
+          class: 'info_hide',
+        },
+        [QuestStatuses.ADChat]: {
+          text: this.$t('meta.invited'),
+          class: 'info_bg-yellow',
+        },
+        [QuestStatuses.WaitWorker]: {
+          text: this.$t('quests.activeQuest'),
+          class: 'info_bg-green',
+        },
+        [QuestStatuses.Rejected]: {
+          text: this.$t('quests.rejected'),
+          class: 'info_bg-red',
+        },
+        [QuestStatuses.WaitWorkerOnAssign]: {
+          text: this.$t('meta.invited'),
+          class: 'info_bg-yellow',
+        },
+        [QuestStatuses.WaitEmployerConfirm]: {
+          text: this.$t('quests.pendingConsideration'),
+          class: 'info_bg-green',
+        },
+        [QuestStatuses.Dispute]: {
+          text: this.$t('meta.dispute'),
+          class: 'info_bg-red',
+        },
+        [QuestStatuses.Closed]: {
+          text: this.$t('quests.questClosed'),
+          class: 'info_bg-red',
+        },
+        [QuestStatuses.Done]: {
+          text: this.userRole === UserRole.WORKER ? this.$t('meta.performed') : this.$t('meta.completed'),
+          class: 'info_bg-blue',
+        },
+        [QuestStatuses.Responded]: {
+          text: this.$t('meta.responded'),
+          class: 'info_bg-grey',
+        },
+        [QuestStatuses.Invited]: {
+          text: this.$t('meta.invited'),
+          class: 'info_bg-yellow',
+        },
+      };
+    },
     infoStatusTextColor() {
-      if ([InfoModeWorker.Rejected].includes(this.infoDataMode)) return 'info__text_black';
-      return 'info__text_white';
-    },
-    infoStatusText() {
-      if (this.userRole === UserRole.EMPLOYER) {
-        const obj = {
-          [InfoModeEmployer.WaitWorker]: 'quests.activeQuest',
-          [InfoModeEmployer.WaitWorkerOnAssign]: 'quests.waitWorker',
-          [InfoModeEmployer.WaitEmployerConfirm]: 'quests.pendingConsideration',
-          [InfoModeEmployer.Dispute]: 'meta.dispute',
-          [InfoModeEmployer.Closed]: 'quests.closed',
-          [InfoModeEmployer.Done]: 'meta.completed',
-        };
-        return this.$t(`${obj[this.infoDataMode]}`);
-      }
-      if (this.userRole === UserRole.WORKER) {
-        const { response } = this.questData;
-        const { awaiting, accepted } = ResponseStatus;
-        const obj = {
-          [InfoModeWorker.Pending]: '',
-          [InfoModeWorker.Created]: '',
-          [InfoModeWorker.ADChat]: 'meta.invited',
-          [InfoModeWorker.WaitWorker]: 'quests.activeQuest',
-          [InfoModeWorker.Rejected]: 'quests.requested',
-          [InfoModeWorker.WaitWorkerOnAssign]: 'quests.pendingConsideration',
-          [InfoModeWorker.WaitEmployerConfirm]: 'quests.pendingConsideration',
-          [InfoModeWorker.Dispute]: 'meta.dispute',
-          [InfoModeWorker.Closed]: 'quests.questClosed',
-          [InfoModeWorker.Done]: 'meta.completed',
-          [InfoModeWorker.Responded]: 'meta.responded',
-          [InfoModeWorker.Invited]: 'meta.invited',
-        };
-        if (this.infoDataMode === InfoModeWorker.Invited && response.status !== awaiting) {
-          return this.$t(`quests.${response.status === accepted ? 'acceptedTheInvitation' : 'declinedTheInvitation'}`);
-        }
-        return this.$t(`${obj[this.infoDataMode]}`);
-      }
-      return '';
-    },
-    infoClass() {
-      const { infoDataMode } = this;
-      if (this.userRole === UserRole.WORKER) {
-        const { response } = this.questData;
-        return [
-          { 'info-hide': infoDataMode === InfoModeWorker.Created },
-          { 'info_bg-yellow': [InfoModeWorker.ADChat, InfoModeWorker.Invited].includes(infoDataMode) },
-          { 'info_bg-green': infoDataMode === InfoModeWorker.WaitWorker || response?.status === ResponseStatus.accepted },
-          { 'info_bg-grey': infoDataMode === InfoModeWorker.Rejected },
-          { 'info_bg-blue': [InfoModeWorker.WaitWorkerOnAssign, InfoModeWorker.WaitEmployerConfirm, InfoModeWorker.Done, InfoModeWorker.Responded].includes(infoDataMode) },
-          { 'info_bg-red': [InfoModeWorker.Dispute, InfoModeWorker.Closed].includes(infoDataMode) || response?.status === ResponseStatus.rejected },
-        ];
-      }
-      if (this.userRole === UserRole.EMPLOYER) {
-        return [
-          { 'info-hide': infoDataMode === InfoModeEmployer.Created },
-          { 'info_bg-yellow': infoDataMode === InfoModeEmployer.WaitWorkerOnAssign },
-          { 'info_bg-green': infoDataMode === InfoModeEmployer.WaitWorker },
-          { 'info_bg-red': [InfoModeEmployer.Closed, InfoModeEmployer.Dispute].includes(infoDataMode) },
-          { 'info_bg-blue': [InfoModeEmployer.WaitEmployerConfirm, InfoModeEmployer.Done].includes(infoDataMode) },
-        ];
-      }
-      return '';
+      if (this.infoDataMode !== QuestStatuses.Responded) return 'info__text_white';
+      return 'info__text_black';
     },
   },
   methods: {
@@ -171,15 +140,19 @@ export default {
 <style lang="scss" scoped>
 .message {
   &__container {
+    z-index: 2;
     position: absolute;
-    top: 45px;
+    top: 42px;
     right: 0;
     background: $white;
     box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.0325794), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
     border-radius: 6px;
-    max-width: 220px;
-    min-width: 200px;
-    z-index: 2;
+    width: 320px;
+  }
+  &__caret {
+    &::before {
+      color: $black800 !important;
+    }
   }
   &__btn {
     position: relative;
@@ -211,7 +184,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  &-hide {
+  &_hide {
     display: none;
   }
   &_bg-yellow {
@@ -276,6 +249,12 @@ export default {
     &__text {
       margin-left: 18px;
     }
+  }
+}
+@include _575 {
+  .message__container {
+    right: 0;
+    width: 80vw !important;
   }
 }
 </style>

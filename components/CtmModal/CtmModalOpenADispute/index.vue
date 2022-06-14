@@ -33,7 +33,7 @@
       <div class="content__buttons buttons">
         <base-btn
           class="buttons__button"
-          :disabled="!drop || !passed"
+          :disabled="!passed"
           data-selector="SHOW-REQUEST-SEND"
           @click="handleSubmit(onSubmit)"
         >
@@ -54,13 +54,12 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalOpenADispute',
   data() {
     return {
-      drop: '',
+      drop: 0,
       description: '',
     };
   },

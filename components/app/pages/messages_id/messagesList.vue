@@ -37,16 +37,16 @@
             <div
               class="info-message__link"
               :class="{'info-message__link_left' : !message.itsMe}"
-              @click="openProfile( message.itsMe ? message.infoMessage.userId : message.senderUserId)"
+              @click="openProfile( message.sender.user.id)"
             >
               {{ setFullName(message) }}
             </div>
             <div
               v-if="!message.itsMe && [MessageAction.GROUP_CHAT_ADD_USERS, MessageAction.GROUP_CHAT_DELETE_USER].includes(message.infoMessage.messageAction) && message.infoMessage.user"
               class="info-message__link"
-              @click="openProfile(message.infoMessage.userId)"
+              @click="openProfile(message.sender.user.id)"
             >
-              {{ (message.infoMessage.user.firstName || '') + ' ' + (message.infoMessage.user.lastName || '') }}
+              {{ (message.sender.user.firstName || '') + ' ' + (message.sende.user.lastName || '') }}
             </div>
           </template>
         </div>
@@ -63,7 +63,7 @@
               v-if="!message.itsMe && !isPrevMessageSameSender(i, message)"
               class="message__title message__title_name"
             >
-              {{ message.sender.firstName + ' ' + message.sender.lastName }}
+              {{ message.sender.user.firstName + ' ' + message.sender.user.lastName }}
             </div>
             <div
               class="message__bubble"
@@ -77,7 +77,7 @@
                 {{ message.text }}
               </div>
               <div
-                v-if="message.medias.length"
+                v-if="message.medias && message.medias.length"
                 class="message__media"
               >
                 <div
@@ -226,6 +226,7 @@ export default {
       if (newVal && this.lastMessageId) this.readMessages();
     },
   },
+
   async mounted() {
     const selStarredMessageNumber = +localStorage.getItem('selStarredMessageNumber');
 
@@ -250,17 +251,16 @@ export default {
   methods: {
     canShowActionUsers(messageAction, itsMe) {
       const isGroupChatCreateAction = messageAction === MessageAction.GROUP_CHAT_CREATE;
-
       return !isGroupChatCreateAction || (isGroupChatCreateAction && !itsMe);
     },
     isPrevMessageSameSender(i, message) {
       const { list } = this.messages;
       const prevMessage = i ? list[i - 1] : null;
 
-      return prevMessage?.senderUserId === message.senderUserId && prevMessage?.type !== MessageType.INFO;
+      return prevMessage?.sender?.user?.id === message.sender?.user?.id && prevMessage?.type !== MessageType.INFO;
     },
     setSenderAvatar({ sender }) {
-      return sender?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
+      return sender?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
     },
     async getMessages(direction, currBottomOffset) {
       const {
@@ -285,8 +285,8 @@ export default {
         offset,
         isHideFooter: this.isHideFooter,
       };
-
       await this.$store.dispatch('chat/getMessagesList', payload);
+      this.SetLoader(false);
     },
     scrollToBottom(isInit) {
       setTimeout(() => {
@@ -383,7 +383,7 @@ export default {
     setFullName({ itsMe, infoMessage: { user }, sender }) {
       return itsMe
         ? `${user?.firstName || ''} ${user?.lastName || ''}`
-        : `${sender?.firstName || ''} ${sender?.lastName || ''}`;
+        : `${sender?.user?.firstName || ''} ${sender?.user?.lastName || ''}`;
     },
     goToCurrChat(message) {
       if (this.chatId !== 'starred') return;

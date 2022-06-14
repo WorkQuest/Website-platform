@@ -10,7 +10,7 @@
         </div>
         <div
           class="quests__content"
-          :class="{'quests__content-wide': userRole === UserRole.WORKER }"
+          :class="{'quests__content-wide': userRole === $options.UserRole.WORKER }"
         >
           <base-btn
             v-for="(item, i) in filterTabs"
@@ -61,6 +61,7 @@ import { QuestStatuses } from '~/utils/сonstants/quests';
 
 export default {
   name: 'My',
+  UserRole,
   data() {
     return {
       selectedTab: null,
@@ -77,9 +78,6 @@ export default {
       quests: 'quests/getAllQuests',
       questsCount: 'quests/getAllQuestsCount',
     }),
-    UserRole() {
-      return UserRole;
-    },
     filterTabs() {
       const tabs = [
         { name: this.$t('myQuests.statuses.all'), id: null },
@@ -88,7 +86,12 @@ export default {
         { name: this.$t('myQuests.statuses.responded'), id: 2 },
         { name: this.$t('myQuests.statuses.invited'), id: 4 },
         { name: this.$t('myQuests.statuses.active'), id: 3 },
-        { name: this.$t('myQuests.statuses.performed'), id: 5 },
+        {
+          name: this.userRole === UserRole.WORKER
+            ? this.$t('myQuests.statuses.performed')
+            : this.$t('myQuests.statuses.completed'),
+          id: 5,
+        },
       ];
       return this.userRole === UserRole.EMPLOYER
         ? tabs.filter((tab) => (tab.id !== 2 && tab.id !== 4))
@@ -115,10 +118,10 @@ export default {
     this.requestParams = {
       role: this.userRole,
       specializations: null,
+      userId: this.userData.id,
       query: {
         limit: 10,
         offset: 0,
-        starred: false,
         'sort[createdAt]': 'desc',
       },
     };
@@ -132,9 +135,7 @@ export default {
   methods: {
     async getQuests() {
       const { requestParams } = this;
-
       sessionStorage.setItem('questsListFilter', JSON.stringify(requestParams));
-
       await this.$store.dispatch('quests/getUserQuests', requestParams);
     },
     async updateQuests(item) {
@@ -150,16 +151,37 @@ export default {
       this.page = 1;
       this.selectedTab = id;
       this.requestParams.query.offset = 0;
-      this.requestParams.query.starred = id === 1;
+      delete this.requestParams.query.responded;
+      delete this.requestParams.query.starred;
       delete this.requestParams.query.invited;
       delete this.requestParams.query['statuses[0]'];
+      delete this.requestParams.query['statuses[1]'];
+      delete this.requestParams.query['statuses[2]'];
 
-      if (id === null) delete this.requestParams.query['statuses[0]'];
-      else if (id === 0) this.requestParams.query['statuses[0]'] = QuestStatuses.Created;
-      else if (id === 2) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitEmployerConfirm;
-      else if (id === 3) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorker;
-      else if (id === 4) this.requestParams.query.invited = true;
-      else if (id === 5) this.requestParams.query['statuses[0]'] = QuestStatuses.Done;
+      switch (id) {
+        case 0:
+          this.requestParams.query['statuses[0]'] = QuestStatuses.Created;
+          break;
+        case 1:
+          this.requestParams.query.starred = true;
+          break;
+        case 2:
+          this.requestParams.query.responded = true;
+          break;
+        case 3:
+          this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorker;
+          this.requestParams.query['statuses[1]'] = QuestStatuses.WaitEmployerConfirm;
+          this.requestParams.query['statuses[2]'] = QuestStatuses.Dispute;
+          break;
+        case 4:
+          this.requestParams.query.invited = true;
+          break;
+        case 5:
+          this.requestParams.query['statuses[0]'] = QuestStatuses.Done;
+          break;
+        default:
+          break;
+      }
 
       await this.getQuests();
       this.SetLoader(false);

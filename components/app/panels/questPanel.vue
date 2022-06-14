@@ -42,6 +42,14 @@
               data-selector="SHARE-USER-PROFILE"
               @click="shareModal()"
             />
+            <base-btn
+              v-if="isShowReportBtn"
+              mode="report"
+              data-selector="OPEN-MODAL-REPORT"
+              @click="showReportModal"
+            >
+              <span class="icon-warning_outline" />
+            </base-btn>
           </div>
         </div>
         <div
@@ -72,8 +80,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { Path } from '~/utils/enums';
-import { QuestStatuses, InfoModeEmployer } from '~/utils/сonstants/quests';
+import { EntityType, Path } from '~/utils/enums';
+import { QuestStatuses } from '~/utils/сonstants/quests';
 import skills from '~/components/app/pages/common/skills';
 import modals from '~/store/modals/modals';
 
@@ -112,6 +120,9 @@ export default {
       this.$moment.locale(this.$i18n.locale);
       return createdAt ? this.$moment(createdAt).format('MMMM Do YYYY, h:mm') : '';
     },
+    isShowReportBtn() {
+      return this.questData.userId !== this.userData.id;
+    },
   },
   methods: {
     shareModal() {
@@ -136,6 +147,15 @@ export default {
     },
     showProfile() {
       this.$router.push(`${Path.PROFILE}/${this.questData.userId}`);
+    },
+    showReportModal() {
+      const { title, id } = this.questData;
+      this.ShowModal({
+        key: modals.report,
+        title,
+        entityId: id,
+        entityType: EntityType.QUEST,
+      });
     },
   },
 };
@@ -224,7 +244,6 @@ export default {
     font-style: normal;
     font-weight: normal;
     font-size: 12px;
-    margin: auto 10px auto auto;
   }
   &__img {
     width:30px;
@@ -259,6 +278,8 @@ export default {
   &__right {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    gap: 10px;
   }
   &__company {
     @extend .user;

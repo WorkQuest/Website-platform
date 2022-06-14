@@ -16,7 +16,7 @@
         >
           <img
             id="userAvatar"
-            :src="imageData ? imageData : require('~/assets/img/app/avatar_empty.png')"
+            :src="imageData ? imageData : $options.images.EMPTY_AVATAR"
             alt="avatar-image"
             class="profile__avatar-img"
           >
@@ -303,9 +303,11 @@ import ClickOutside from 'vue-click-outside';
 import StatusKYC from './StatusKYC.vue';
 import AddForm from './AddForm.vue';
 import { UserRole } from '~/utils/enums';
+import { images } from '~/utils/images';
 
 export default {
   name: 'SettingsProfile',
+  images,
   components: { StatusKYC, AddForm },
   directives: {
     ClickOutside,
@@ -643,7 +645,7 @@ export default {
   }
   &__socials {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
     column-gap: 20px;
   }
   &__save {
@@ -695,6 +697,12 @@ export default {
   &::before {
     color: $blue;
     align-items: center;
+  }
+}
+
+@include _1199 {
+  .profile__socials {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 

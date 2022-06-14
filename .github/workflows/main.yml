@@ -55,7 +55,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '12.x'
+          node-version: '14.x'
 
       - name: Install npm dependencies
         run: npm install
@@ -93,7 +93,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '12.x'
+          node-version: '14.x'
 
       - name: Install npm dependencies
         run: npm install
@@ -131,7 +131,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '12.x'
+          node-version: '14.x'
 
       - name: Install npm dependencies
         run: npm install

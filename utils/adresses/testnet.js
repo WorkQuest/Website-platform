@@ -3,14 +3,14 @@ export default {
   // GMAPKEY: process.env.GMAPKEY,
   // SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
-  WQ_PROVIDER: 'https://testnet-gate-01.workquest.co/',
-  WQ_EXPLORER: 'https://testnet-explorer.workquest.co/api/v1',
+  WQ_PROVIDER: 'https://testnet-gate.workquest.co/rpc/',
+  WQ_EXPLORER: 'https://testnet-explorer-api.workquest.co/api/v1',
   WQ_ORACLE_URL: 'https://testnet-oracle.workquest.co/api/v1',
 
   NOTIFS_URL: 'https://notifications.workquest.co/api/',
   WS_NOTIFS_URL: 'wss://notifications.workquest.co/api/v1/notifications',
   WS_CHAT_ACTIONS_URL: 'wss://testnet-app.workquest.co/api/v1/notifications/chat',
-  WS_WQ_PROVIDER: 'wss://testnet-gate-01.workquest.co/tendermint-rpc/websocket',
+  WS_WQ_PROVIDER: 'wss://testnet-gate.workquest.co/tendermint-rpc/websocket',
 
   ETHEREUM_BRIDGE: '0xd65815dA812C6eAEC0186215E43A12D76F5deCBc',
   ETHEREUM_LP_TOKEN: '0xf1fE852fCA1b5a869ef1FE06a2799E1F38B70B84',

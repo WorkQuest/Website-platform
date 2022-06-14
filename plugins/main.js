@@ -20,6 +20,11 @@ Vue.mixin({
     };
   },
   methods: {
+    EqualsArrays(a, b) {
+      if (a.length !== b.length) return false;
+      for (let i = 0; i < a.length; i += 1) if (a[i] !== b[i]) return false;
+      return true;
+    },
     ComingSoon() {
       this.ShowModal({
         key: modals.status,
@@ -27,11 +32,19 @@ Vue.mixin({
       });
     },
     convertToBech32(prefix, address) {
-      return converter(prefix).toBech32(address);
+      try {
+        return converter(prefix).toBech32(address);
+      } catch (e) {
+        return address;
+      }
     },
     convertToHex(prefix, address) {
-      if (address.startsWith(prefix)) return converter(prefix).toHex(address);
-      return address;
+      try {
+        if (address.startsWith(prefix)) return converter(prefix).toHex(address);
+        return address;
+      } catch (e) {
+        return address;
+      }
     },
     async uploadFiles(files) {
       if (!files.length) return [];
@@ -305,6 +318,15 @@ Vue.mixin({
 
       return toMatch.some((toMatchItem) => navigator.userAgent.match(toMatchItem));
     },
+    /**
+     * Check allowance and making approve
+     * @param tokenAddress - token
+     * @param contractAddress - recipient
+     * @param amount - token amount
+     * @param approveTitle - title for modal
+     * @returns {Promise<unknown>}
+     * @constructor
+     */
     async MakeApprove({
       tokenAddress, contractAddress, amount, approveTitle = this.$t('meta.approve'),
     }) {
@@ -319,7 +341,7 @@ Vue.mixin({
               method: 'approve',
               abi: ERC20,
               contractAddress: tokenAddress,
-              data: [contractAddress, new BigNumber(amount).shiftedBy(18).toString()],
+              data: [contractAddress, new BigNumber(amount).shiftedBy(18).toFixed(0).toString()],
             }),
             this.$store.dispatch('wallet/getBalance'),
           ]);
@@ -335,7 +357,7 @@ Vue.mixin({
             key: modals.transactionReceipt,
             title: approveTitle,
             fields: {
-              from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
+              from: { name: this.$t('meta.fromBig'), value: this.convertToBech32('wq', this.userWalletAddress) },
               to: { name: this.$t('meta.toBig'), value: contractAddress },
               amount: { name: this.$t('modals.amount'), value: amount, symbol: TokenSymbols.WUSD },
               fee: { name: this.$t('wallet.table.trxFee'), value: approveFee.result.fee, symbol: TokenSymbols.WQT },
@@ -355,10 +377,38 @@ Vue.mixin({
               this.ShowToast('Approving done', 'Approve');
               await resolve(amount);
             },
+            cancel: async () => await reject(new Error('Cancel')),
           });
         } else {
           await resolve(amount);
         }
+      });
+    },
+    async ShowTxReceipt({
+      from, to, amount, currency, fee, title,
+    }) {
+      return new Promise(async (resolve, reject) => {
+        this.ShowModal({
+          key: modals.transactionReceipt,
+          title: title || this.$t('modals.takeWUSD'),
+          fields: {
+            from: { name: this.$t('meta.fromBig'), value: from },
+            to: { name: this.$t('meta.toBig'), value: to },
+            amount: {
+              name: this.$t('modals.amount'),
+              value: amount,
+              symbol: currency,
+            },
+            fee: {
+              name: this.$t('wallet.table.trxFee'),
+              value: new BigNumber(fee.gasPrice).multipliedBy(fee.gas).shiftedBy(-18).toFixed(),
+              symbol: TokenSymbols.WQT,
+            },
+          },
+          isDontOffLoader: true,
+          submitMethod: async () => await resolve(),
+          cancelMethod: async () => await reject(new Error('Cancel')),
+        });
       });
     },
   },

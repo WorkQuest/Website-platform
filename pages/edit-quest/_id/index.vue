@@ -31,6 +31,7 @@
                     data-selector="RUNTIME"
                     :name="$t('quests.runtime')"
                     rules="required"
+                    disabled
                   />
                 </div>
               </div>
@@ -123,18 +124,20 @@
           </div>
           <div class="page__input">
             <base-field
-              v-model="questTitle"
+              :value="questTitle"
               data-selector="QUEST-TITLE-FIELD"
-              rules="required"
+              rules="required|min:2|max:250"
               :name="$tc('quests.questTitle')"
               :placeholder="$t('quests.questTitle')"
+              disabled
             />
           </div>
           <div class="page__input">
             <base-textarea
               id="textarea"
-              v-model="textarea"
+              :value="textarea"
               disabled
+              rules="required|min:6|max:2000"
               data-selector="QUEST-DESC-TEXTAREA"
               class="page__textarea"
               :placeholder="$t('quests.questDesc')"
@@ -225,7 +228,7 @@ import {
   WorkplaceIndex,
 } from '~/utils/enums';
 import {
-  QuestMethods, EditQuestState, InfoModeEmployer, QuestStatuses, PaidTariff,
+  QuestMethods, EditQuestState, QuestStatuses, PaidTariff,
 } from '~/utils/сonstants/quests';
 import { ERC20, WorkQuest, WQPromotion } from '~/abi';
 import { error, success } from '~/utils/web3';
@@ -386,7 +389,7 @@ export default {
       title, locationPlaceName, price, description, location, typeOfEmployment, id, status, payPeriod, workplace,
     } = this.questData;
 
-    if ([QuestStatuses.Pending, InfoModeEmployer.Dispute, InfoModeEmployer.Done, InfoModeEmployer.Closed].includes(status)) {
+    if ([QuestStatuses.Pending, QuestStatuses.Dispute, QuestStatuses.Done, QuestStatuses.Closed].includes(status)) {
       await this.$router.push(`${Path.QUESTS}/${id}`);
     }
 
@@ -494,7 +497,7 @@ export default {
           title: this.$t('meta.raiseViews'),
           isShowSuccess: this.mode === 'raise',
           fields: {
-            from: { name: this.$t('meta.fromBig'), value: this.$store.getters['user/getUserWalletAddress'] },
+            from: { name: this.$t('meta.fromBig'), value: this.convertToBech32('wq', this.$store.getters['user/getUserWalletAddress']) },
             to: { name: this.$t('meta.toBig'), value: promotionAddress },
             amount: { name: this.$t('modals.amount'), value: levelPrice, symbol: TokenSymbols.WUSD },
             fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WQT },
@@ -573,10 +576,10 @@ export default {
             reject();
             return;
           }
-          await this.makeApprove({
-            wusdAddress,
+          await this.MakeApprove({
+            tokenAddress: wusdAddress,
             contractAddress,
-            depositAmount,
+            amount: depositAmount,
             approveTitle: `${this.$t('meta.btns.edit')} ${this.$t('meta.approve')}`,
           }).then(async (result) => {
             await resolve(result);
@@ -600,10 +603,10 @@ export default {
       this.SetLoader(true);
       const medias = await this.uploadFiles(this.files);
       const payload = {
+        payPeriod: PayPeriodsIndex[this.payPeriodIndex],
         workplace: WorkplaceIndex[this.workplaceIndex],
         priority: this.priorityIndex,
         typeOfEmployment: TypeOfEmployments[this.employmentIndex],
-        title: this.questTitle,
         medias,
         specializationKeys: this.selectedSpecAndSkills,
         locationFull: {
@@ -641,10 +644,11 @@ export default {
       ]);
       if (!feeRes.ok) {
         this.ShowToast(this.$t('errors.transaction.notEnoughFunds'));
+        this.SetLoader(false);
         return;
       }
       const fields = {
-        from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
+        from: { name: this.$t('meta.fromBig'), value: this.convertToBech32('wq', this.userWalletAddress) },
         to: { name: this.$t('meta.toBig'), value: contractAddress },
         fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
       };
@@ -665,6 +669,9 @@ export default {
             contractAddress,
             cost: this.price,
           });
+          await this.editQuest();
+          this.SetLoader(false);
+          await this.$router.push(`${Path.QUESTS}/${this.questData.id}`);
         },
       });
     },

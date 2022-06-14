@@ -389,6 +389,7 @@ export default {
   computed: {
     ...mapGetters({
       userData: 'user/getUserData',
+      userWalletAddress: 'user/getUserWalletAddress',
       imageData: 'user/getImageData',
       token: 'user/accessToken',
       connections: 'main/notificationsConnectionStatus',
@@ -519,7 +520,7 @@ export default {
     },
     async chatAction({ data, action }) {
       if (this.$route.name === 'messages') {
-        if (action === MessageAction.GROUP_CHAT_CREATE) {
+        if (action.toLowerCase() === MessageAction.GROUP_CHAT_CREATE.toLowerCase()) {
           const { searchValue } = this;
 
           const isSearchValIncluded = (value) => value.toLowerCase().includes(searchValue);
@@ -533,7 +534,7 @@ export default {
           data.userMembers = data.userMembers.filter((member) => member.id !== this.userData.id);
           this.$store.commit('chat/addChatToList', data);
           this.$store.commit('chat/changeUnreadChatsCount', { needAdd: true, count: 1 });
-        } else if (action === MessageAction.NEW_MESSAGE) {
+        } else if (action.toLowerCase() === MessageAction.NEW_MESSAGE.toLowerCase()) {
           await this.$store.dispatch('chat/getCurrChatData', data.chatId);
           await this.getStatistic();
         }
@@ -545,10 +546,12 @@ export default {
       if (data.chatId === this.chatId && !this.messagesFilter.canLoadToBottom) {
         if (action === MessageAction.MESSAGE_READ_BY_RECIPIENT) return;
 
-        data.medias.forEach((file) => {
+        if (data.medias) {
+          data.medias.forEach((file) => {
           // eslint-disable-next-line prefer-destructuring
-          file.type = file.contentType.split('/')[0];
-        });
+            file.type = file.contentType.split('/')[0];
+          });
+        }
 
         this.$store.commit('chat/addMessageToList', data);
         this.$store.commit('chat/setChatAsUnread');
@@ -583,6 +586,12 @@ export default {
         })));
       }
       if (!chatActionsConnection) await $wsChatActions.connect(token);
+
+      // wallet txs
+      await this.$store.dispatch('wallet/subscribeWS', {
+        hexAddress: this.userWalletAddress,
+        timestamp: this.$moment(),
+      });
     },
     async getStatistic() {
       await this.$store.dispatch('user/getStatistic');
@@ -1206,6 +1215,12 @@ export default {
 
 @include _1199 {
   .ctm-menu {
+    &__user {
+      cursor: pointer;
+    }
+    &__dropdown {
+      cursor: pointer;
+    }
     &__toggle {
       display: flex;
     }
