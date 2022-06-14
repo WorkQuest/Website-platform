@@ -6,20 +6,29 @@ export const isProd = IS_PROD;
 export const ChainsId = {
   ETH_MAIN: '0x1',
   ETH_TEST: '0x4',
+
   BSC_MAIN: '0x38',
   BSC_TEST: '0x61',
+
   MATIC_MAIN: '0x89',
   MUMBAI_TEST: '0x13881',
-  WORKNET_TEST: '0x13488D0',
+
+  WORKNET_DEV: '0x13488D0',
+  WORKNET_TEST: '0x7C7',
 };
 
 export const ChainsIdByChainNumber = {
   1: [ChainsId.ETH_MAIN],
   4: [ChainsId.ETH_TEST],
+
   56: [ChainsId.BSC_MAIN],
+  97: [ChainsId.BSC_TEST],
+
   137: [ChainsId.MATIC_MAIN],
   80001: [ChainsId.MUMBAI_TEST],
-  20220112: [ChainsId.WORKNET_TEST],
+
+  20220112: [ChainsId.WORKNET_DEV],
+  1991: [ChainsId.WORKNET_TEST],
 };
 
 export const Chains = {
@@ -286,11 +295,21 @@ export const NetworksData = {
   },
   WORKNET_TEST: {
     chainId: ChainsId.WORKNET_TEST,
-    chainName: 'WorkQuest DEV',
-    rpcUrls: ['https://dev-node-nyc3.workquest.co'],
+    chainName: 'WorkQuest Testnet',
+    rpcUrls: ['https://testnet-gate.workquest.co/'],
     nativeCurrency: {
-      name: 'WUSD',
-      symbol: 'WUSD',
+      name: 'WorkQuest',
+      symbol: 'WQT',
+      decimals: 18,
+    },
+  },
+  WORKNET_DEV: {
+    chainId: ChainsId.WORKNET_DEV,
+    chainName: 'WorkQuest Devnet',
+    rpcUrls: ['https://dev-node-nyc3.workquest.co/'],
+    nativeCurrency: {
+      name: 'WorkQuest',
+      symbol: 'WQT',
       decimals: 18,
     },
   },

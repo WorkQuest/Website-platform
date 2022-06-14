@@ -268,7 +268,6 @@ export default {
     return {
       page: 1,
       perPage: 10,
-      isProd: IS_PROD,
       referralCount: 5,
     };
   },
