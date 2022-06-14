@@ -1,5 +1,4 @@
 export default {
-  BRANCH: process.env.BRANCH,
   BASE_URL: 'https://dev-app.workquest.co/api/',
   // GMAPKEY: process.env.GMAPKEY,
   // SECRET_SUMSUB: process.env.SECRET_SUMSUB,
