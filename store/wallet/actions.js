@@ -534,14 +534,13 @@ export default {
   async getTestTokens() {
     try {
       const access = this.$cookies.get('access');
-      const faucetApi = this.$axios.create({ baseURL: 'https://testnet-app.workquest.co/api/v1/user/me/faucet' });
       await Promise.all([
-        faucetApi.$get('/wqt', {
+        this.$axios.$get('/v1/user/me/faucet/wqt', {
           headers: {
             authorization: `Bearer ${access}`,
           },
         }),
-        faucetApi.$get('/wusd', {
+        this.$axios.$get('/v1/user/me/faucet/wusd', {
           headers: {
             authorization: `Bearer ${access}`,
           },
