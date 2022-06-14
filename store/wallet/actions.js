@@ -533,18 +533,9 @@ export default {
 
   async getTestTokens() {
     try {
-      const access = this.$cookies.get('access');
       await Promise.all([
-        this.$axios.$get('/v1/user/me/faucet/wqt', {
-          headers: {
-            authorization: `Bearer ${access}`,
-          },
-        }),
-        this.$axios.$get('/v1/user/me/faucet/wusd', {
-          headers: {
-            authorization: `Bearer ${access}`,
-          },
-        }),
+        this.$axios.$get('/v1/user/me/faucet/wqt'),
+        this.$axios.$get('/v1/user/me/faucet/wusd'),
       ]);
       return success();
     } catch (e) {
