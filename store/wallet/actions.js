@@ -510,4 +510,16 @@ export default {
       return error(e.code, 'Error in swap action', e.data);
     }
   },
+
+  async getTestTokens() {
+    try {
+      await Promise.all([
+        this.$axios.$get('/v1/user/me/faucet/wqt'),
+        this.$axios.$get('/v1/user/me/faucet/wusd'),
+      ]);
+      return success();
+    } catch (e) {
+      return error(-1, e.request.response);
+    }
+  },
 };

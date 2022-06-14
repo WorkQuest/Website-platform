@@ -1404,6 +1404,9 @@
     "newDiscussionLike": "New like on discussion"
   },
   "wallet": {
+    "testTokens": {
+      "getTestTokens": "Get test tokens"
+    },
     "frozen": "Frozen balance",
     "WUSD": "WUSD ওয়ালেট",
     "cryptoWallet": "ক্রিপ্টো ওয়ালেট",

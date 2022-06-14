@@ -27,7 +27,7 @@
             class="header__link"
             style="cursor: pointer"
             :data-selector="`HEADER-LINKS-${i}`"
-            @click="ComingSoon"
+            @click="handleLink(item.path)"
           >
             {{ item.title }}
           </div>
@@ -507,6 +507,11 @@ export default {
     window.removeEventListener('resize', this.userWindowChange);
   },
   methods: {
+    // TODO FOR BOUNTY 30.05, DELETE AFTER
+    handleLink(path) {
+      if ([Path.WALLET].includes(path)) this.$router.push(path);
+      else this.ComingSoon();
+    },
     // TODO FOR BOUNTY 30.05, DELETE AFTER
     additionalRedirect(path) {
       if ([Path.BRIDGE, Path.MINING].includes(path)) this.$router.push(path);

@@ -10,6 +10,7 @@ const availablePages = [
   'profile-id',
   'settings',
   'index',
+  'wallet',
 ];
 
 // eslint-disable-next-line func-names
