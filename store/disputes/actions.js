@@ -18,9 +18,9 @@ export default {
       return console.log(e);
     }
   },
-  async getUserDisputes({ commit }) {
+  async getUserDisputes({ commit }, params) {
     try {
-      const { result } = await this.$axios.$get('v1/user/me/quest/disputes');
+      const { result } = await this.$axios.$get('v1/user/me/quest/disputes', { params });
       commit('setUserDisputes', result);
       return result.ok;
     } catch (e) {

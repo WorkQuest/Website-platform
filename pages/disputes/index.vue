@@ -48,16 +48,16 @@
               </div>
             </div>
           </div>
-          <base-pager
-            v-if="totalPages > 1"
-            v-model="page"
-            :total-pages="totalPages"
-            class="mining-page__pager"
-          />
         </div>
         <emptyData
           v-else
           :description="$tc(`errors.emptyData.emptyDisputes`)"
+        />
+        <base-pager
+          v-if="totalPages > 1"
+          v-model="currentPage"
+          :total-pages="totalPages"
+          class="page__pager"
         />
       </div>
     </div>
@@ -71,11 +71,20 @@ import BigNumber from 'bignumber.js';
 import emptyData from '~/components/app/info/emptyData';
 import { DisputeStatues, Path, TokenSymbols } from '~/utils/enums';
 
+const LIMIT = 10;
+
 export default {
   name: 'Disputes',
   components: {
     emptyData,
   },
+  data: () => ({
+    currentPage: 1,
+    query: {
+      limit: LIMIT,
+      offset: 0,
+    },
+  }),
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
@@ -93,12 +102,18 @@ export default {
       };
     },
     totalPages() {
-      return Math.ceil(this.disputesCount / this.offset);
+      return Math.ceil(this.disputesCount / this.query.limit);
+    },
+  },
+  watch: {
+    async currentPage() {
+      this.query.offset = (this.currentPage - 1) * LIMIT;
+      await this.$store.dispatch('disputes/getUserDisputes', this.query);
     },
   },
   async mounted() {
     this.SetLoader(true);
-    await this.$store.dispatch('disputes/getUserDisputes');
+    await this.$store.dispatch('disputes/getUserDisputes', this.query);
     this.SetLoader(false);
   },
   methods: {
@@ -180,7 +195,7 @@ export default {
   }
   &__title {
     @include text-simple;
-    margin: 20px 0 0 0;
+    margin: 20px 0;
     font-size: 25px;
     color: $black800;
     text-align: left;
@@ -200,7 +215,6 @@ export default {
     display: grid;
     grid-template-columns: 10fr 0.5fr 10fr;
     width: 100%;
-    margin: 20px 10px 10px 0;
     height: 100%;
     transition: .5s;
     &:hover {
@@ -226,6 +240,9 @@ export default {
     border-left: 1px solid $black0;
     height: auto;
   }
+  .pager {
+    margin-top: 20px;
+  }
 }
 @include _1199 {
   .main {
@@ -237,8 +254,6 @@ export default {
     &__dispute-cards {
       grid-template-columns: 1fr;
       grid-gap: 15px;
-    }
-    &__title {
     }
   }
 }
