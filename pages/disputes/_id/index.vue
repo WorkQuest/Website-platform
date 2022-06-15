@@ -8,7 +8,7 @@
         <div
           class="dispute__back"
           data-selector="ACTION-DISPUTE-BACK-BTN"
-          @click="backToDisputes()"
+          @click="backToDisputes"
         >
           <span class="icon-chevron_big_left" />
           <span class="dispute__back_text">
@@ -18,7 +18,10 @@
         <div class="dispute__number">
           {{ `№ ${disputeData.number}` }}
         </div>
-        <div class="dispute__status">
+        <div
+          class="dispute__status"
+          :class="colorDisputeStatus"
+        >
           {{ disputeStatus }}
         </div>
       </div>
@@ -65,9 +68,18 @@ export default {
       const obj = {
         [DisputeStatues.PENDING]: this.$t('disputes.pending'),
         [DisputeStatues.IN_PROGRESS]: this.$t('disputes.inProgress'),
-        [DisputeStatues.COMPLETED]: this.$t('meta.completed'),
+        [DisputeStatues.PENDING_CLOSED]: this.$t('meta.completed'),
+        [DisputeStatues.CLOSED]: this.$t('meta.completed'),
       };
       return obj[this.disputeData.status];
+    },
+    colorDisputeStatus() {
+      return {
+        [DisputeStatues.PENDING]: 'dispute__status_blue',
+        [DisputeStatues.IN_PROGRESS]: 'dispute__status_yellow',
+        [DisputeStatues.PENDING_CLOSED]: 'dispute__status_green',
+        [DisputeStatues.CLOSED]: 'dispute__status_green',
+      }[this.disputeData.status];
     },
   },
   async created() {
@@ -154,7 +166,15 @@ export default {
     @include text-simple;
     font-weight: 500;
     font-size: 16px;
-    color: #E8D20D;
+    &_blue {
+      color: $blue;
+    }
+    &_yellow {
+      color: $yellow;
+    }
+    &_green {
+      color: $green;
+    }
   }
   &__chat-history {
     background: $white;

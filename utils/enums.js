@@ -53,8 +53,10 @@ export const SumSubStatuses = { NOT_VERIFIED: 0, VERIFIED: 1 };
 
 export const DisputeStatues = {
   PENDING: 0,
-  IN_PROGRESS: 1,
-  COMPLETED: 2,
+  CREATED: 1,
+  IN_PROGRESS: 2,
+  PENDING_CLOSED: 3,
+  CLOSED: 4,
 };
 export const questPriority = {
   Low: 1,

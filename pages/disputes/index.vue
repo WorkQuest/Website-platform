@@ -53,6 +53,12 @@
           v-else
           :description="$tc(`errors.emptyData.emptyDisputes`)"
         />
+        <base-pager
+          v-if="totalPages > 1"
+          v-model="currentPage"
+          :total-pages="totalPages"
+          class="page__pager"
+        />
       </div>
     </div>
   </div>
@@ -61,14 +67,24 @@
 <script>
 import { mapGetters } from 'vuex';
 import moment from 'moment';
+import BigNumber from 'bignumber.js';
 import emptyData from '~/components/app/info/emptyData';
-import { DisputeStatues, Path } from '~/utils/enums';
+import { DisputeStatues, Path, TokenSymbols } from '~/utils/enums';
+
+const LIMIT = 10;
 
 export default {
   name: 'Disputes',
   components: {
     emptyData,
   },
+  data: () => ({
+    currentPage: 1,
+    query: {
+      limit: LIMIT,
+      offset: 0,
+    },
+  }),
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
@@ -81,13 +97,23 @@ export default {
       return {
         [DisputeStatues.PENDING]: 'page__text_blue',
         [DisputeStatues.IN_PROGRESS]: 'page__text_yellow',
-        [DisputeStatues.COMPLETED]: 'page__text_green',
+        [DisputeStatues.PENDING_CLOSED]: 'page__text_green',
+        [DisputeStatues.CLOSED]: 'page__text_green',
       };
+    },
+    totalPages() {
+      return Math.ceil(this.disputesCount / this.query.limit);
+    },
+  },
+  watch: {
+    async currentPage() {
+      this.query.offset = (this.currentPage - 1) * LIMIT;
+      await this.$store.dispatch('disputes/getUserDisputes', this.query);
     },
   },
   async mounted() {
     this.SetLoader(true);
-    await this.$store.dispatch('disputes/getUserDisputes');
+    await this.$store.dispatch('disputes/getUserDisputes', this.query);
     this.SetLoader(false);
   },
   methods: {
@@ -107,7 +133,7 @@ export default {
         },
         {
           title: this.$t('disputes.questSalary'),
-          value: item.quest.price,
+          value: `${new BigNumber(item.quest.price).shiftedBy(-18).toString()} ${TokenSymbols.WUSD}`,
         },
         {
           title: this.$t('disputes.disputeTime'),
@@ -125,7 +151,8 @@ export default {
       const obj = {
         [DisputeStatues.PENDING]: this.$t('disputes.pending'),
         [DisputeStatues.IN_PROGRESS]: this.$t('disputes.inProgress'),
-        [DisputeStatues.COMPLETED]: this.$t('meta.completed'),
+        [DisputeStatues.PENDING_CLOSED]: this.$t('meta.completed'),
+        [DisputeStatues.CLOSED]: this.$t('meta.completed'),
       };
       return obj[status];
     },
@@ -155,10 +182,20 @@ export default {
     font-weight: 400;
     font-size: 16px;
     color: $black500;
+
+    line-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: initial;
+    display: -webkit-box;
+    line-clamp: 10;
+    -webkit-line-clamp: 10;
+    box-orient: vertical;
+    -webkit-box-orient: vertical;
   }
   &__title {
     @include text-simple;
-    margin: 20px 0 0 0;
+    margin: 20px 0;
     font-size: 25px;
     color: $black800;
     text-align: left;
@@ -176,9 +213,8 @@ export default {
     background-color: $white;
     border-radius: 6px;
     display: grid;
-    grid-template-columns: 5fr 1fr 5fr;
+    grid-template-columns: 10fr 0.5fr 10fr;
     width: 100%;
-    margin: 20px 10px 10px 0;
     height: 100%;
     transition: .5s;
     &:hover {
@@ -200,9 +236,12 @@ export default {
     }
   }
   &__vl {
-    margin: 20px 0 0 0;
+    margin: 20px 0;
     border-left: 1px solid $black0;
-    height: 110px;
+    height: auto;
+  }
+  .pager {
+    margin-top: 20px;
   }
 }
 @include _1199 {
@@ -215,8 +254,6 @@ export default {
     &__dispute-cards {
       grid-template-columns: 1fr;
       grid-gap: 15px;
-    }
-    &__title {
     }
   }
 }

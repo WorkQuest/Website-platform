@@ -39,15 +39,6 @@ export default {
       return error();
     }
   },
-  async setDesiredSecurityRatio({ commit }, payload) {
-    try {
-      const { result } = await this.$axiosOracle.post('/oracle/risk-ratio/status', payload);
-      commit('setDesiredSecurityRatio', result);
-      return result;
-    } catch (e) {
-      return error();
-    }
-  },
 
   async feeSetTokensPrices({ getters, dispatch }) {
     try {
