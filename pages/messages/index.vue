@@ -417,8 +417,8 @@ export default {
       return this.$t('chat.workquestAdmin');
     },
     getUserAvatar(user) {
-      if (user.type === 'Admin') return this.$options.images.WQ_LOGO;
-      return user.user?.avatar ? user.user?.avatar.url : this.$options.images.EMPTY_AVATAR;
+      if (user.type === 'Admin') return images.WQ_LOGO;
+      return user.user?.avatar ? user.user?.avatar.url : images.EMPTY_AVATAR;
     },
 
   },
