@@ -67,8 +67,9 @@ export default {
       });
       return success(response);
     } catch (e) {
-      console.log(e);
-      showToast('Redeeming', `${e.message}`, 'warning');
+      console.error('bridge/redeem', e);
+      const isAlreadyRedeemed = e.message.includes('Swap is not empty state or duplicate transaction');
+      showToast('Redeeming', isAlreadyRedeemed ? $nuxt.$t('toasts.alreadyRedeemed') : `${e.message}`, 'warning');
       return error(500, 'redeem error', e);
     }
   },

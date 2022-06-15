@@ -937,7 +937,8 @@
     "error": "Error!",
     "sendToSupport": "A message has been sent to support",
     "sent": "Sent",
-    "errorGetFee": "Something wrong with get fee, check console"
+    "errorGetFee": "Something wrong with get fee, check console",
+    "alreadyRedeemed": "You already redeemed, wait!"
   },
   "modals": {
     "titles": {
