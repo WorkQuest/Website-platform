@@ -286,7 +286,7 @@ export const initWeb3 = async (payload) => {
     };
     return success(account);
   } catch (e) {
-    return error(500, '', 'Connected error');
+    return error(500, '', 'Connected error:');
   }
 };
 
