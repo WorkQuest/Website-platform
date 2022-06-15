@@ -1473,6 +1473,7 @@
     "noChats": "Нет бесед",
     "noMessages": "Нет сообщений",
     "membersNum": "{n} участников",
+    "workquestAdmin": "Workquest Админ",
     "systemMessages": {
       "employerInvitedWorkerToQuest": "Пригласил вас на квест",
       "youInvitedToTheQuest": "You invited to the quest",

@@ -247,7 +247,7 @@ export default {
             commit('addMessageToList', message);
           }
 
-          commit('addUserToChat', message.infoMessage.user);
+          commit('addUserToChat', message.infoMessage.member);
         });
       }
 

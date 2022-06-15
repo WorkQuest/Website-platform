@@ -179,6 +179,7 @@ import moment from 'moment';
 import { async } from 'vue-phone-number-input';
 import modals from '~/store/modals/modals';
 import { MessageAction, MessageType, Path } from '~/utils/enums';
+import { images } from '~/utils/images';
 
 export default {
   name: 'MessagesList',
@@ -261,7 +262,8 @@ export default {
       return prevMessage?.sender?.user?.id === message.sender?.user?.id && prevMessage?.type !== MessageType.INFO;
     },
     setSenderAvatar({ sender }) {
-      return sender?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
+      if (sender.type === 'Admin') return images.WQ_LOGO;
+      return sender.user?.avatar ? sender.user?.avatar.url : images.EMPTY_AVATAR;
     },
     async getMessages(direction, currBottomOffset) {
       const {
@@ -450,7 +452,8 @@ export default {
     senderFullNameById(userId) {
       const sender = this.getSenderInfoById(userId);
       if (!sender) return '-';
-      return `${sender.user?.firstName || ''} ${sender.user?.lastName || ''}`;
+      if (sender.type === 'User') return `${sender.user?.firstName || ''} ${sender.user?.lastName || ''}`;
+      return this.$t('chat.workquestAdmin');
     },
   },
 };

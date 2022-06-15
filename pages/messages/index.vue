@@ -88,7 +88,7 @@
                       <img
                         v-if="i<2"
                         class="chat__avatar"
-                        :src="user.user.avatar ? user.user.avatar.url : $options.images.EMPTY_AVATAR"
+                        :src="getUserAvatar(user)"
                         alt=""
                         @click="isGroupChat(chat.type) ? '' : toUserProfile($event, user.userId)"
                       >
@@ -123,11 +123,10 @@
                 </div>
                 <div class="chat__row">
                   <div
-                    v-if="isItMyLastMessage(chat.chatData.lastMessage.sender.userId) || isGroupChat(chat.type)"
+                    v-if="isItMyLastMessage(chat.chatData.lastMessage.sender.userId) || chat.chatData.lastMessage.sender.type === 'Admin' || isGroupChat(chat.type)"
                     class="chat__title"
                   >
-                    {{ isItMyLastMessage(chat.chatData.lastMessage.sender.userId) ? $t('chat.you') :
-                      `${chat.chatData.lastMessage.sender.user.firstName || ''} ${chat.chatData.lastMessage.sender.user.lastName || ''}:` }}
+                    {{ isItMyLastMessage(chat.chatData.lastMessage.sender.userId) ? $t('chat.you') : getFullName(chat.chatData.lastMessage.sender)+':' }}
                   </div>
                   <div class="chat__title chat__title_gray chat__title_ellipsis">
                     {{ setCurrMessageText(chat.chatData.lastMessage, userData.id ===
@@ -414,7 +413,12 @@ export default {
     },
     getFullName(user) {
       if (!user) return '-';
-      return `${user.user?.firstName || ''} ${user.user?.lastName || ''}`;
+      if (user.type === 'User') return `${user.user?.firstName || ''} ${user.user?.lastName || ''}`;
+      return this.$t('chat.workquestAdmin');
+    },
+    getUserAvatar(user) {
+      if (user.type === 'Admin') return images.WQ_LOGO;
+      return user.user?.avatar ? user.user?.avatar.url : images.EMPTY_AVATAR;
     },
 
   },
