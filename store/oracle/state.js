@@ -4,5 +4,4 @@ export default () => ({
   symbols: [],
   minRatio: null,
   securityRatio: {},
-  desiredSecurityRatio: {},
 });

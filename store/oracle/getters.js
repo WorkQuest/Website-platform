@@ -4,5 +4,4 @@ export default {
   getSymbols: (state) => state.symbols,
   getMinRatio: (state) => state.minRatio,
   getSecurityRatio: (state) => state.securityRatio,
-  getDesiredSecurityRatio: (state) => state.desiredSecurityRatio,
 };
