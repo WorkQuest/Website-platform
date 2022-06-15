@@ -37,16 +37,16 @@
             <div
               class="info-message__link"
               :class="{'info-message__link_left' : !message.itsMe}"
-              @click="openProfile( message.sender.user.id)"
+              @click="openProfile( message.sender.userId)"
             >
               {{ setFullName(message) }}
             </div>
             <div
               v-if="!message.itsMe && [MessageAction.GROUP_CHAT_ADD_USERS, MessageAction.GROUP_CHAT_DELETE_USER].includes(message.infoMessage.messageAction) && message.infoMessage.user"
               class="info-message__link"
-              @click="openProfile(message.sender.user.id)"
+              @click="openProfile(message.sender.userId)"
             >
-              {{ (message.sender.user.firstName || '') + ' ' + (message.sende.user.lastName || '') }}
+              {{ senderFullNameById(message.sender.userId) }}
             </div>
           </template>
         </div>
@@ -63,7 +63,7 @@
               v-if="!message.itsMe && !isPrevMessageSameSender(i, message)"
               class="message__title message__title_name"
             >
-              {{ message.sender.user.firstName + ' ' + message.sender.user.lastName }}
+              {{ senderFullNameById(message.sender.userId) }}
             </div>
             <div
               class="message__bubble"
@@ -176,6 +176,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import moment from 'moment';
+import { async } from 'vue-phone-number-input';
 import modals from '~/store/modals/modals';
 import { MessageAction, MessageType, Path } from '~/utils/enums';
 
@@ -442,6 +443,14 @@ export default {
       };
 
       await this.$store.dispatch('chat/setMessageAsRead', payload);
+    },
+    getSenderInfoById(userId) {
+      return this.currChat.members.find((el) => el.userId === userId);
+    },
+    senderFullNameById(userId) {
+      const sender = this.getSenderInfoById(userId);
+      if (!sender) return '-';
+      return `${sender.user?.firstName || ''} ${sender.user?.lastName || ''}`;
     },
   },
 };

@@ -36,7 +36,7 @@
           >
             <div
               class="friends__data"
-              @click="toUserProfile(user.userId)"
+              @click="toUserProfile(user)"
             >
               <img
                 class="friends__img"
@@ -157,8 +157,8 @@ export default {
       }
       return this.isCurrentUserEmployer ? ['giveAQuest', 'private'] : [];
     },
-    toUserProfile(userId) {
-      this.$router.push(`${Path.PROFILE}/${userId}`);
+    toUserProfile(user) {
+      this.$router.push(`${Path.PROFILE}/${this.options.isMembersList ? user.userId : user.id}`);
       this.CloseModal();
     },
     async addNewMembers() {
@@ -182,15 +182,19 @@ export default {
       });
     },
     async removeMember(userId) {
-      await this.$store.dispatch('chat/removeMember', { userId, chatId: this.chatId });
-      this.CloseModal();
-      this.ShowModal({
-        key: modals.chatCreate,
-        itsOwner: true,
-        isCreating: false,
-        isMembersList: true,
-        isAdding: false,
-      });
+      try {
+        await this.$store.dispatch('chat/removeMember', { userId, chatId: this.chatId });
+        this.CloseModal();
+        this.ShowModal({
+          key: modals.chatCreate,
+          itsOwner: true,
+          isCreating: false,
+          isMembersList: true,
+          isAdding: false,
+        });
+      } catch (e) {
+        console.error(e);
+      }
     },
     changeSelStatus({ target }, { id }) {
       if (target.checked) this.memberUserIds.push(id);
