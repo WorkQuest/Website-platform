@@ -368,6 +368,7 @@ export default {
     showReviewModal(rating, id) {
       this.ShowModal({
         key: modals.review,
+        title: this.$tc('modals.titles.reviewOnEmployer'),
         questMode: QuestModeReview.QUEST_LIST,
         questId: id,
         rating,

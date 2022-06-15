@@ -46,6 +46,18 @@
                   {{ item.decisionDescription ? item.decisionDescription : '-' }}
                 </div>
               </div>
+              <div
+                class="page__review"
+              >
+                <star-rating
+                  class="card-quest__star"
+                  :stars-number="5"
+                  :data-selector="`ACTION-BTN-SHOW-REVIEW-MODAL-${item.id}`"
+                  :rating="0"
+                  :is-disabled="!!0"
+                  @input="showReviewModal($event, item.id)"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -69,7 +81,10 @@ import { mapGetters } from 'vuex';
 import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import emptyData from '~/components/app/info/emptyData';
-import { DisputeStatues, Path, TokenSymbols } from '~/utils/enums';
+import {
+  DisputeStatues, Path, QuestModeReview, TokenSymbols,
+} from '~/utils/enums';
+import modals from '~/store/modals/modals';
 
 const LIMIT = 10;
 
@@ -155,6 +170,16 @@ export default {
         [DisputeStatues.CLOSED]: this.$t('meta.completed'),
       };
       return obj[status];
+    },
+    showReviewModal(rating, id) {
+      this.ShowModal({
+        key: modals.review,
+        title: this.$tc('modals.titles.reviewOnEmployer'),
+        questId: id,
+        rating,
+        callback: async () => {
+        },
+      });
     },
   },
 };
