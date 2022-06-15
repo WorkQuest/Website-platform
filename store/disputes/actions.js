@@ -1,4 +1,4 @@
-import { success } from '~/utils/web3';
+import { error, success } from '~/utils/web3';
 
 export default {
   async createDispute({ commit }, { reason, problemDescription, questId }) {
@@ -22,10 +22,10 @@ export default {
     try {
       const { result } = await this.$axios.$get('v1/user/me/quest/disputes', { params });
       commit('setUserDisputes', result);
-      return result.ok;
+      return success();
     } catch (e) {
-      console.log(e);
-      return false;
+      console.error('disputes/getUserDisputes', e);
+      return error();
     }
   },
 };
