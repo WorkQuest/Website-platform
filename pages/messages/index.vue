@@ -414,8 +414,7 @@ export default {
     },
     getFullName(user) {
       if (!user) return '-';
-      return `${user.user?.firstName || ''} ${
-        user.user?.lastName || ''}`;
+      return `${user.user?.firstName || ''} ${user.user?.lastName || ''}`;
     },
 
   },
