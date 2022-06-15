@@ -77,6 +77,10 @@
               />
             </div>
           </div>
+          <empty-data
+            v-if="!members.length"
+            :description="$t('meta.listIsEmpty')"
+          />
         </div>
       </div>
       <div

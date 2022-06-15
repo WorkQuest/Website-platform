@@ -450,7 +450,12 @@ export default {
     senderFullNameById(userId) {
       const sender = this.getSenderInfoById(userId);
       if (!sender) return '-';
-      return `${sender.user?.firstName || ''} ${sender.user?.lastName || ''}`;
+      if (sender.type === 'User') return `${sender.user?.firstName || ''} ${sender.user?.lastName || ''}`;
+      return this.$t('chat.workquestAdmin');
+    },
+    getSenderAvatar(user) {
+      if (user.type === 'Admin') return this.$options.images.WQ_LOGO;
+      return user.user?.avatar ? user.user?.avatar.url : this.$options.images.EMPTY_AVATAR;
     },
   },
 };

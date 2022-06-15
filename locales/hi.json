@@ -1472,6 +1472,7 @@
     "noChats": "No chats",
     "noMessages": "No messages",
     "membersNum": "{n} members",
+    "workquestAdmin": "Workquest Admin",
     "systemMessages": {
       "employerInvitedWorkerToQuest": "invited you to a quest",
       "youInvitedToTheQuest": "You invited to the quest",

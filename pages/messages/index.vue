@@ -88,7 +88,7 @@
                       <img
                         v-if="i<2"
                         class="chat__avatar"
-                        :src="user.user.avatar ? user.user.avatar.url : $options.images.EMPTY_AVATAR"
+                        :src="getUserAvatar(user)"
                         alt=""
                         @click="isGroupChat(chat.type) ? '' : toUserProfile($event, user.userId)"
                       >
@@ -414,7 +414,12 @@ export default {
     },
     getFullName(user) {
       if (!user) return '-';
-      return `${user.user?.firstName || ''} ${user.user?.lastName || ''}`;
+      if (user.type === 'User') return `${user.user?.firstName || ''} ${user.user?.lastName || ''}`;
+      return this.$t('chat.workquestAdmin');
+    },
+    getUserAvatar(user) {
+      if (user.type === 'Admin') return this.$options.images.WQ_LOGO;
+      return user.user?.avatar ? user.user?.avatar.url : this.$options.images.EMPTY_AVATAR;
     },
 
   },
