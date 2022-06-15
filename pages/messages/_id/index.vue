@@ -27,9 +27,9 @@
               <div
                 v-if="currChat.type === ChatType.PRIVATE"
                 class="chat-container__quest-link"
-                @click="$router.push(`${$options.Path.PROFILE}/${privateSecondMember.user.id}`)"
+                @click="$router.push(`${$options.Path.PROFILE}/${privateCorrespondentMember.user.id}`)"
               >
-                {{ `${privateSecondMember.user.firstName}  ${privateSecondMember.user.lastName}` }}
+                {{ privateCorrespondentFullName || '-' }}
               </div>
               <div
                 v-if="isGroupChat"
@@ -214,9 +214,14 @@ export default {
       if (!currMemeberData) return false;
       return this.currChat?.groupChat?.ownerMemberId === currMemeberData.id;
     },
-    privateSecondMember() {
+    privateCorrespondentMember() {
       return this.currChat?.members && this.currChat?.members.find((el) => el.userId !== this.userData.id);
     },
+    privateCorrespondentFullName() {
+      if (!this.privateCorrespondentMember.user) return '-';
+      return `${this.privateCorrespondentMember.user?.firstName} ${this.privateCorrespondentMember.user?.lastName}`;
+    },
+
   },
   async mounted() {
     this.SetLoader(true);

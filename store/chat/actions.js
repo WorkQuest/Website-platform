@@ -28,9 +28,8 @@ export default {
       const { result, ok } = await this.$axios.$get(method, config);
 
       const myId = user.userData.id;
-
       result.messages.forEach((message) => {
-        message.itsMe = message.sender.user.id === myId;
+        message.itsMe = message.sender?.user?.id === myId;
         if (message.medias && message.medias.length) {
           message.medias.forEach((file) => {
             // eslint-disable-next-line prefer-destructuring
@@ -228,8 +227,7 @@ export default {
 
           await commit('addMessageToList', message);
         }
-
-        await commit('removeUserFromChat', message.infoMessage.user.id);
+        await commit('removeUserFromChat', userId);
       }
 
       return ok;

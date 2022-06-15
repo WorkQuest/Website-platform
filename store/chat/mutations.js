@@ -72,9 +72,8 @@ export default {
   },
   removeUserFromChat(state, userId) {
     const { members, userMembers } = state.currChat;
-
-    state.currChat.members = members.filter((member) => member.id !== userId);
-    state.currChat.userMembers = userMembers.filter((member) => member.id !== userId);
+    state.currChat.members = members.filter((member) => member.userId !== userId);
+    state.currChat.userMembers = userMembers.filter((member) => member.userId !== userId);
   },
   addUserToChat(state, user) {
     state.currChat.members.push(user);

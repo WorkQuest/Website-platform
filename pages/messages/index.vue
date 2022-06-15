@@ -105,10 +105,9 @@
                   <div
                     v-if="!isGroupChat(chat.type)"
                     class="chat__title chat__title_bold chat__title_hov"
-                    @click="toUserProfile($event, chat.correspondent.userId)"
+                    @click="toUserProfile($event, chat.correspondent)"
                   >
-                    {{ (chat.correspondent.user.firstName || '') + ' ' +
-                      (chat.correspondent.user.lastName || '') }}
+                    {{ getFullName(chat.correspondent) }}
                   </div>
                   <div
                     v-if="isGroupChat(chat.type) || isQuestChat(chat.type)"
@@ -265,9 +264,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    toUserProfile(ev, userId) {
+    toUserProfile(ev, user) {
       ev.stopPropagation();
-      this.$router.push(`${Path.PROFILE}/${userId}`);
+      this.$router.push(`${Path.PROFILE}/${user.userId}`);
     },
     handleSetSearchValue() {
       this.isChatsSearching = true;
@@ -277,7 +276,7 @@ export default {
 
         await this.$store.commit('chat/changeChatsFilterValue',
           [
-            { key: 'q', val: this.searchValue || undefined },
+            { key: 'q', val: this.searchValue.trim() || undefined },
             { key: 'offset', val: 0 },
           ]);
 
@@ -412,6 +411,10 @@ export default {
       }
       this.searchValue = '';
       await this.getChats();
+    },
+    getFullName(user) {
+      if (!user) return '-';
+      return `${user.user?.firstName || ''} ${user.user?.lastName || ''}`;
     },
 
   },
