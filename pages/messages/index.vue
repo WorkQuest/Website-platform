@@ -123,11 +123,10 @@
                 </div>
                 <div class="chat__row">
                   <div
-                    v-if="isItMyLastMessage(chat.chatData.lastMessage.sender.userId) || isGroupChat(chat.type)"
+                    v-if="isItMyLastMessage(chat.chatData.lastMessage.sender.userId) || chat.chatData.lastMessage.sender.type === 'Admin' || isGroupChat(chat.type)"
                     class="chat__title"
                   >
-                    {{ isItMyLastMessage(chat.chatData.lastMessage.sender.userId) ? $t('chat.you') :
-                      `${chat.chatData.lastMessage.sender.user.firstName || ''} ${chat.chatData.lastMessage.sender.user.lastName || ''}:` }}
+                    {{ isItMyLastMessage(chat.chatData.lastMessage.sender.userId) ? $t('chat.you') : getFullName(chat.chatData.lastMessage.sender) }}
                   </div>
                   <div class="chat__title chat__title_gray chat__title_ellipsis">
                     {{ setCurrMessageText(chat.chatData.lastMessage, userData.id ===
