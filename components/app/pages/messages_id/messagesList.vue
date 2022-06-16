@@ -92,18 +92,34 @@
                     alt=""
                     @click="selFile($event, message.medias, file.url)"
                   >
+                  <div
+                    v-else-if="file.type === 'video'"
+                  >
+                    <video
+                      preload="metadata"
+                      class="image-cont image-cont__other-media"
+                      @click="selFile($event, message.medias, file.url)"
+                    >
+                      <source
+                        :src="file.url"
+                        :type="file.contentType"
+                      >
+                    </video>
+                    <span
+                      class="icon-play_circle_outline "
+                      @click="selFile($event, message.medias, file.url)"
+                    />
+                  </div>
+
                   <a
                     v-else
                     :href="file.url"
                     target="_blank"
                     class="image-cont image-cont__other-media"
-                    @click="file.type === 'video' ? selFile($event, message.medias, file.url) : openFile"
+                    @click="openFile"
                   >
                     <span
-                      :class="[
-                        {'icon-play_circle_outline' : file.type === 'video'},
-                        {'icon-file_blank_outline' : file.type !== 'video'}
-                      ]"
+                      class="icon-file_blank_outline"
                     />
                   </a>
                 </div>
@@ -176,7 +192,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import moment from 'moment';
-import { async } from 'vue-phone-number-input';
 import modals from '~/store/modals/modals';
 import { MessageAction, MessageType, Path } from '~/utils/enums';
 import { images } from '~/utils/images';
@@ -704,7 +719,12 @@ export default {
     font-size: 60px;
   }
 }
-
+.icon-play_circle_outline{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 .star {
   cursor: pointer;
 
