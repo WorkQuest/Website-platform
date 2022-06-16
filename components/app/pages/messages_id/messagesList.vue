@@ -612,7 +612,8 @@ export default {
     width: 43px;
     border-radius: 50%;
     object-fit: cover;
-
+    background-color: $black100;
+    border: 1px solid $black200;
     &_hidden {
       visibility: hidden;
     }

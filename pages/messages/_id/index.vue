@@ -25,11 +25,16 @@
                 {{ currChat && currChat.questChat && currChat.questChat.quest.title }}
               </div>
               <div
-                v-if="currChat.type === ChatType.PRIVATE"
+                v-if="currChat.type === ChatType.PRIVATE && privateCorrespondentMember.type === 'User'"
                 class="chat-container__quest-link"
-                @click="$router.push(`${$options.Path.PROFILE}/${privateCorrespondentMember.user.id}`)"
+                @click="$router.push(`${$options.Path.PROFILE}/${privateCorrespondentMember.userId}`)"
               >
                 {{ privateCorrespondentFullName || '-' }}
+              </div>
+              <div v-else-if="currChat.type === ChatType.PRIVATE && privateCorrespondentMember.type === 'Admin'">
+                <div class="chat-container__group-name">
+                  {{ $t('chat.workquestAdmin') }}
+                </div>
               </div>
               <div
                 v-if="isGroupChat"
@@ -131,6 +136,16 @@
                 :title="file.file.name"
                 @click="openFile"
               >
+                <video
+                  v-if="file.type === 'video'"
+                  preload="metadata"
+                  class="image-cont__video"
+                >
+                  <source
+                    :src="file.url"
+                    :type="file.contentType"
+                  >
+                </video>
                 <span
                   :class="[
                     {'icon-play_circle_outline' : file.type === 'video'},
@@ -171,6 +186,7 @@ export default {
   components: {
     ChatMenu,
   },
+  Path,
   data() {
     return {
       messageText: '',
@@ -199,6 +215,7 @@ export default {
       const {
         isClosedQuestChat, isGroupChat, amIOwner, isPrivateChat,
       } = this;
+      if (this.chatId === 'starred') return false;
       return (!isClosedQuestChat ? (!isGroupChat && !isPrivateChat)
         || (isGroupChat && !amIOwner) : false);
     },
@@ -603,6 +620,12 @@ export default {
     text-decoration: unset;
   }
 
+  &__video{
+    position: relative;
+    height: 73px;
+    width: 105px;
+  }
+
   &__title {
     white-space: nowrap;
     overflow: hidden;
@@ -653,7 +676,12 @@ export default {
     font-size: 60px;
   }
 }
-
+.icon-play_circle_outline{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 .styles {
   &__between {
     display: flex;
