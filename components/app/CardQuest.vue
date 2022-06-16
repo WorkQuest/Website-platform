@@ -369,11 +369,14 @@ export default {
       this.ShowModal({
         key: modals.review,
         title: this.$tc('modals.titles.reviewOnEmployer'),
-        questMode: QuestModeReview.QUEST_LIST,
-        questId: id,
         rating,
-        callback: async (payload) => {
-          const ok = await this.$store.dispatch('user/sendReviewForUser', payload);
+        callback: async (message, mark) => {
+          const ok = await this.$store.dispatch('user/sendReviewForUser', {
+            message,
+            mark,
+            questId: id,
+            questMode: QuestModeReview.QUEST_LIST,
+          });
           if (ok) {
             this.ShowModal({ key: modals.thanks });
           } else this.CloseModal();

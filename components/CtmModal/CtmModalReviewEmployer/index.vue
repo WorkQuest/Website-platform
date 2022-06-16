@@ -40,7 +40,7 @@
                 class="buttons__action"
                 data-selector="SEND-REVIEW-FOR-USER"
                 :disabled="!valid"
-                @click="handleSubmit(sendReviewForUser)"
+                @click="handleSubmit(sendReview)"
               >
                 {{ $t('meta.btns.send') }}
               </base-btn>
@@ -85,14 +85,9 @@ export default {
     changeReview(value) {
       this.rating = value;
     },
-    async sendReviewForUser() {
-      const { questId, callback, questMode } = this.options;
-      await callback({
-        questId,
-        questMode,
-        message: this.textArea,
-        mark: this.rating,
-      });
+    async sendReview() {
+      const { callback } = this.options;
+      await callback(this.textArea, this.rating);
     },
   },
 };

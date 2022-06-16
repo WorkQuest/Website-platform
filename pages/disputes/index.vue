@@ -47,14 +47,14 @@
                 </div>
               </div>
               <div
+                v-if="item.status === $options.DisputeStatues.CLOSED"
                 class="page__review"
               >
                 <star-rating
-                  class="card-quest__star"
                   :stars-number="5"
                   :data-selector="`ACTION-BTN-SHOW-REVIEW-MODAL-${item.id}`"
-                  :rating="0"
-                  :is-disabled="!!0"
+                  :rating="item.currentUserDisputeReview.mark"
+                  :is-disabled="!!item.currentUserDisputeReview.mark"
                   @input="showReviewModal($event, item.id)"
                 />
               </div>
@@ -93,6 +93,7 @@ export default {
   components: {
     emptyData,
   },
+  DisputeStatues,
   data: () => ({
     currentPage: 1,
     query: {
@@ -171,13 +172,15 @@ export default {
       };
       return obj[status];
     },
-    showReviewModal(rating, id) {
+    showReviewModal(rating, disputeId) {
       this.ShowModal({
         key: modals.review,
-        title: this.$tc('modals.titles.reviewOnEmployer'),
-        questId: id,
+        title: this.$tc('modals.titles.review'),
         rating,
-        callback: async () => {
+        callback: async (message, mark) => {
+          const { ok } = await this.$store.dispatch('user/sendReviewDispute', { disputeId, message, mark });
+          console.log(ok);
+          if (ok) this.ShowModal({ key: modals.thanks });
         },
       });
     },
@@ -226,15 +229,16 @@ export default {
     text-align: left;
   }
   &__card-body {
+    height: 100%;
     margin: 20px;
   }
   &__dispute-cards {
     display: grid;
-    width: 100%;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 15px;
   }
   &__card {
+    position:relative;
     background-color: $white;
     border-radius: 6px;
     display: grid;
@@ -246,6 +250,13 @@ export default {
       box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.1);
       cursor: pointer;
     }
+  }
+  &__review{
+    position: absolute;
+    width:96px;
+    bottom: 20px;
+    right: 20px;
+    margin-top:20px;
   }
   &__text {
     @include text-simple;

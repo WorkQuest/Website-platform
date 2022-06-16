@@ -118,6 +118,17 @@ export default {
       return false;
     }
   },
+  async sendReviewDispute({ commit }, {
+    disputeId, message, mark,
+  }) {
+    try {
+      const { ok } = await this.$axios.$post(`/v1/quest/dispute/${disputeId}/review/send`, { message, mark });
+      return ok;
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+  },
   async registerWallet({ commit }, payload) {
     try {
       return await this.$axios.$post('/v1/auth/register/wallet', payload);

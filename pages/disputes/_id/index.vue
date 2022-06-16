@@ -25,11 +25,38 @@
           {{ disputeStatus }}
         </div>
       </div>
-      <card-quest
-        :quest="disputeData.quest"
-        :data-selector="`QUEST-CARD-${disputeData.quest.id}`"
-        :dispute-id="disputeData.id"
-      />
+      <div
+        :class="disputeData.status === $options.DisputeStatues.CLOSED ? 'container-quest-decision' :'container-quest'"
+      >
+        <card-quest
+          class="container-quest-decision__card-quest"
+          :quest="disputeData.quest"
+          :data-selector="`QUEST-CARD-${disputeData.quest.id}`"
+          :dispute-id="disputeData.id"
+        />
+        <div
+          v-if="disputeData.status === $options.DisputeStatues.CLOSED"
+          class="decision"
+        >
+          <div class="decision__v-spacer" />
+          <div class="decision__block">
+            <div class="decision__title">
+              {{ $t('disputes.decision') }}
+            </div>
+            <div class="decision__text">
+              {{ disputeData.decisionDescription ? disputeData.decisionDescription : '-' }}
+            </div>
+          </div>
+          <star-rating
+            class="decision__review"
+            :stars-number="5"
+            data-selector="ACTION-BTN-SHOW-REVIEW-MODAL-DISPUTE"
+            :rating="disputeMark"
+            :is-disabled="!!disputeMark"
+            @input="showReviewModal($event, disputeId)"
+          />
+        </div>
+      </div>
       <div class="dispute__chat-history">
         <div class="chat-history__container">
           <div class="chat-history__title">
@@ -54,9 +81,11 @@
 <script>
 import { mapGetters } from 'vuex';
 import { DisputeStatues } from '~/utils/enums';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'Index',
+  DisputeStatues,
   computed: {
     ...mapGetters({
       disputeData: 'disputes/getDispute',
@@ -81,6 +110,9 @@ export default {
         [DisputeStatues.CLOSED]: 'dispute__status_green',
       }[this.disputeData.status];
     },
+    disputeMark() {
+      return this.disputeData.currentUserDisputeReview?.mark || 0;
+    },
   },
   async created() {
     await this.$store.dispatch('disputes/getDispute', this.disputeId);
@@ -91,6 +123,18 @@ export default {
   methods: {
     backToDisputes() {
       this.$router.back();
+    },
+    showReviewModal(rating, disputeId) {
+      this.ShowModal({
+        key: modals.review,
+        title: this.$tc('modals.titles.review'),
+        rating,
+        callback: async (message, mark) => {
+          const { ok } = await this.$store.dispatch('user/sendReviewDispute', { disputeId, message, mark });
+          console.log(ok);
+          if (ok) this.ShowModal({ key: modals.thanks });
+        },
+      });
     },
   },
 };
@@ -182,6 +226,53 @@ export default {
     margin: 20px 0 0 0;
   }
 }
+.container-quest {
+  grid-template-columns: 100%;
+}
+.container-quest-decision{
+  width:100%;
+  display:grid;
+  grid-template-columns: 70% 30%;
+  &__quest-card{
+    width:100%;
+    height:100%;
+  }
+}
+.decision{
+  position: relative;
+  display:flex;
+  width:100%;
+  height:100%;
+  background-color: $white;
+  &__v-spacer {
+    width: 1px;
+    background-color: $black0;
+    margin: 0 20px;
+    height: 100%;
+  }
+  &__block{
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 30px;
+  }
+  &__review{
+   position: absolute;
+    bottom: 20px;
+    right: 20px;
+  }
+  &__title{
+    @include text-simple;
+    font-weight: 500;
+    font-size: 18px;
+    color: $black800;
+    margin: 15px;
+  }
+}
 @include _1199() {
   .dispute {
     &__quests {
@@ -189,6 +280,20 @@ export default {
     }
     &__chat-history {
       padding: 0 10px;
+    }
+  }
+  .container-quest-decision{
+    width:100%;
+    display:grid;
+    grid-template-columns: 100%;
+    grid-template-rows: auto auto;
+  }
+  .decision{
+    flex-direction:column;
+    &__v-spacer {
+      height:1px;
+      width: 100%;
+      margin-top: 10px;
     }
   }
 }
