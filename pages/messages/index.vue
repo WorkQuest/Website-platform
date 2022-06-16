@@ -123,7 +123,7 @@
                 </div>
                 <div class="chat__row">
                   <div
-                    v-if="isItMyLastMessage(chat.chatData.lastMessage.sender.userId) || chat.chatData.lastMessage.sender.type === 'Admin' || isGroupChat(chat.type)"
+                    v-if="isItMyLastMessage(chat.chatData.lastMessage.sender.userId) || chat.chatData.lastMessage.sender.type === $options.UserRoles.ADMIN || isGroupChat(chat.type)"
                     class="chat__title"
                   >
                     {{ isItMyLastMessage(chat.chatData.lastMessage.sender.userId) ? $t('chat.you') : getFullName(chat.chatData.lastMessage.sender)+':' }}
@@ -192,13 +192,14 @@
 import { mapGetters } from 'vuex';
 import ChatMenu from '~/components/ui/ChatMenu';
 import {
-  Path, ChatType, MessageType, MessageAction, QuestChatStatus,
+  Path, ChatType, MessageType, MessageAction, QuestChatStatus, UserRoles,
 } from '~/utils/enums';
 import { images } from '~/utils/images';
 
 export default {
   name: 'Messages',
   images,
+  UserRoles,
   components: {
     ChatMenu,
   },
@@ -264,7 +265,7 @@ export default {
   },
   methods: {
     toUserProfile(ev, user) {
-      if (user.type === 'Admin') return;
+      if (user.type === UserRoles.ADMIN) return;
       ev.stopPropagation();
       this.$router.push(`${Path.PROFILE}/${user.userId}`);
     },
@@ -414,11 +415,11 @@ export default {
     },
     getFullName(user) {
       if (!user) return '-';
-      if (user.type === 'User') return `${user.user?.firstName || ''} ${user.user?.lastName || ''}`;
+      if (user.type === UserRoles.USER) return `${user.user?.firstName || ''} ${user.user?.lastName || ''}`;
       return this.$t('chat.workquestAdmin');
     },
     getUserAvatar(user) {
-      if (user.type === 'Admin') return images.WQ_LOGO;
+      if (user.type === UserRoles.ADMIN) return images.WQ_LOGO;
       return user.user?.avatar ? user.user?.avatar.url : images.EMPTY_AVATAR;
     },
 

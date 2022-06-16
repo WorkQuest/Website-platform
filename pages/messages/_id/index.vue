@@ -25,13 +25,13 @@
                 {{ currChat && currChat.questChat && currChat.questChat.quest.title }}
               </div>
               <div
-                v-if="currChat.type === ChatType.PRIVATE && privateCorrespondentMember.type === 'User'"
+                v-if="currChat.type === ChatType.PRIVATE && privateCorrespondentMember.type === $options.UserRoles.USER"
                 class="chat-container__quest-link"
                 @click="$router.push(`${$options.Path.PROFILE}/${privateCorrespondentMember.userId}`)"
               >
                 {{ privateCorrespondentFullName || '-' }}
               </div>
-              <div v-else-if="currChat.type === ChatType.PRIVATE && privateCorrespondentMember.type === 'Admin'">
+              <div v-else-if="currChat.type === ChatType.PRIVATE && privateCorrespondentMember.type === $options.UserRoles.ADMIN">
                 <div class="chat-container__group-name">
                   {{ $t('chat.workquestAdmin') }}
                 </div>
@@ -178,7 +178,7 @@ import modals from '~/store/modals/modals';
 import ChatMenu from '~/components/ui/ChatMenu';
 import { QuestStatuses } from '~/utils/сonstants/quests';
 import {
-  ChatType, QuestChatStatus, Path,
+  ChatType, QuestChatStatus, Path, UserRoles,
 } from '~/utils/enums';
 
 export default {
@@ -187,6 +187,7 @@ export default {
     ChatMenu,
   },
   Path,
+  UserRoles,
   data() {
     return {
       messageText: '',

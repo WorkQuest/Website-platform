@@ -86,14 +86,14 @@
                   class="image-cont image-cont_margin"
                 >
                   <img
-                    v-if="file.type === 'image'"
+                    v-if="file.type === $options.FileTypes.IMAGE"
                     :src="file.url"
                     class="image-cont__image"
                     alt=""
                     @click="selFile($event, message.medias, file.url)"
                   >
                   <div
-                    v-else-if="file.type === 'video'"
+                    v-else-if="file.type === $options.FileTypes.VIDEO"
                   >
                     <video
                       preload="metadata"
@@ -193,11 +193,14 @@
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 import modals from '~/store/modals/modals';
-import { MessageAction, MessageType, Path } from '~/utils/enums';
+import {
+  MessageAction, MessageType, Path, FileTypes, UserRoles,
+} from '~/utils/enums';
 import { images } from '~/utils/images';
 
 export default {
   name: 'MessagesList',
+  FileTypes,
   props: {
     chatId: {
       type: String,
@@ -277,7 +280,7 @@ export default {
       return prevMessage?.sender?.user?.id === message.sender?.user?.id && prevMessage?.type !== MessageType.INFO;
     },
     setSenderAvatar({ sender }) {
-      if (sender.type === 'Admin') return images.WQ_LOGO;
+      if (sender.type === UserRoles.ADMIN) return images.WQ_LOGO;
       return sender.user?.avatar ? sender.user?.avatar.url : images.EMPTY_AVATAR;
     },
     async getMessages(direction, currBottomOffset) {
@@ -412,7 +415,7 @@ export default {
       ev.preventDefault();
       ev.stopPropagation();
 
-      files = files.filter((file) => file.type === 'image' || file.type === 'video');
+      files = files.filter((file) => file.type === FileTypes.IMAGE || file.type === FileTypes.VIDEO);
       const index = files.findIndex((file) => file.url === fileUrl);
 
       this.ShowModal({
@@ -467,7 +470,7 @@ export default {
     senderFullNameById(userId) {
       const sender = this.getSenderInfoById(userId);
       if (!sender) return '-';
-      if (sender.type === 'User') return `${sender.user?.firstName || ''} ${sender.user?.lastName || ''}`;
+      if (sender.type === UserRoles.USER) return `${sender.user?.firstName || ''} ${sender.user?.lastName || ''}`;
       return this.$t('chat.workquestAdmin');
     },
   },

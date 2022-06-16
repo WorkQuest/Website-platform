@@ -363,3 +363,13 @@ export const EntityType = {
   QUEST: 'Quest',
   DISCUSSION_COMMENT: 'DiscussionComment',
 };
+
+export const UserRoles = {
+  USER: 'User',
+  ADMIN: 'Admin',
+};
+
+export const FileTypes = {
+  IMAGE: 'image',
+  VIDEO: 'video',
+};
