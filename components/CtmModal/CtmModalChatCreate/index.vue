@@ -65,7 +65,7 @@
               </label>
             </div>
             <div
-              v-if="options.isMembersList && options.itsOwner && arrayMenu(user).length"
+              v-if="options.isMembersList && options.itsOwner && arrayMenu(user).length && user.userId !== currentUser.id"
               class="friends__menu"
             >
               <chat-menu
