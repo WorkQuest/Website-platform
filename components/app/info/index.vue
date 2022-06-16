@@ -87,8 +87,9 @@ export default {
           text: this.$t('quests.activeQuest'),
           class: 'info_bg-green',
         },
-        [QuestStatuses.Rejected]: {
-          text: this.$t('quests.rejected'),
+        // TODO blocked
+        [QuestStatuses.Blocked]: {
+          text: this.$t('quests.blocked'),
           class: 'info_bg-red',
         },
         [QuestStatuses.WaitWorkerOnAssign]: {

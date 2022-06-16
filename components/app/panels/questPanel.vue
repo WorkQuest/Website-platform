@@ -109,7 +109,8 @@ export default {
     questDDMode() {
       return [
         QuestStatuses.Created,
-        QuestStatuses.Rejected,
+        // TODO blocked
+        QuestStatuses.Blocked,
       ].includes(this.questData.status);
     },
     questStatuses() {

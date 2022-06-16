@@ -203,8 +203,11 @@ export default {
         || (isGroupChat && !amIOwner) : false);
     },
     isClosedQuestChat() {
-      return ((this.currChat?.questChat?.status === QuestChatStatus.Closed)
-        || [QuestStatuses.Done, QuestStatuses.Closed, QuestStatuses.Rejected].includes(+this.$route.query.status));
+      return (
+        (this.currChat?.questChat?.status === QuestChatStatus.Closed)
+        //  TODO blocked
+        || [QuestStatuses.Done, QuestStatuses.Closed, QuestStatuses.Blocked].includes(+this.$route.query.status)
+      );
     },
     canLeave() {
       return this.isGroupChat && !this.amIOwner;

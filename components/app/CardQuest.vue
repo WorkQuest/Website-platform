@@ -8,6 +8,7 @@
       class="card-quest__left"
       :style="`background: url(${getQuestPreview(quest).url}) no-repeat`"
     >
+      {{ quest.status }}
       <div
         v-if="quest.status"
         class="card-quest__state"
@@ -236,7 +237,7 @@ export default {
       return new BigNumber(this.quest.price).shiftedBy(-18).toString();
     },
     questStatusesData() {
-      return {
+      const statuses = {
         [QuestStatuses.Pending]: {
           title: '',
           progressText: '',
@@ -251,11 +252,6 @@ export default {
           title: this.$t('quests.active'),
           progressText: this.$t('quests.inProgressBy'),
           class: 'card-quest__state_green',
-        },
-        [QuestStatuses.Rejected]: {
-          title: this.$t('quests.rejected'),
-          progressText: '',
-          class: 'card-quest__state_red',
         },
         [QuestStatuses.WaitWorkerOnAssign]: {
           title: this.$t('meta.invited'),
@@ -293,9 +289,24 @@ export default {
           class: 'card-quest__state_yellow',
         },
       };
+      if (this.UserRole === UserRole.EMPLOYER) {
+        statuses[QuestStatuses.Blocked] = {
+          title: this.$t('quests.blocked'),
+          progressText: '',
+          class: 'card-quest__state_red',
+        };
+      } else {
+        statuses[QuestStatuses.Rejected] = {
+          title: this.$t('quests.rejected'),
+          progressText: '',
+          class: 'card-quest__state_red',
+        };
+      }
+      return statuses;
     },
     questStatus() {
-      if (this.quest.status === QuestStatuses.Rejected) return QuestStatuses.Rejected;
+      // TODO blocked
+      if (this.quest.status === QuestStatuses.Blocked) return QuestStatuses.Blocked;
       if (this.userRole === UserRole.WORKER) {
         if (this.quest.responded) {
           if (this.quest.status === QuestStatuses.WaitWorkerOnAssign) return QuestStatuses.Invited;

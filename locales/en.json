@@ -369,6 +369,7 @@
     "questDesc": "Quest description",
     "closed": "Closed",
     "rejected": "Rejected",
+    "blocked": "Blocked",
     "completedWorkAccepted": "Completed work on quest accepted!",
     "completedWorkRejected": "Completed work on quest rejected!",
     "workOnQuestAccepted": "Work on quest accepted!",

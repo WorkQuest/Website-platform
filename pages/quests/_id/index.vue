@@ -355,8 +355,11 @@ export default {
       } = this;
       const arr = isEmployer ? this.setEmployerBtnsArr() : this.setWorkerBtnsArr();
 
-      if ((questChat?.workerId === id || (questChat?.employerId === id && assignedWorkerId))
-        && ![QuestStatuses.Closed, QuestStatuses.Rejected, QuestStatuses.Done].includes(status)) {
+      if (
+        (questChat?.workerId === id || (questChat?.employerId === id && assignedWorkerId))
+        // TODO blocked
+        && ![QuestStatuses.Closed, QuestStatuses.Blocked, QuestStatuses.Done].includes(status)
+      ) {
         arr.push({
           name: this.$t('meta.btns.goToChat'),
           class: 'base-btn_goToChat',

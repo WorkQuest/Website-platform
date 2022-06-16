@@ -108,6 +108,7 @@ export default {
         message: this.text,
         medias,
       };
+      // TODO blocked
       if (QuestStatuses.Rejected) {
         const res = await this.$store.dispatch('quests/respondOnQuest', { data, questId });
         if (res.ok) {
