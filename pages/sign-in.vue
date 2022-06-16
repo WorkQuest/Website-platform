@@ -271,6 +271,12 @@ export default {
     }
   },
   async beforeDestroy() {
+    if (this.isStartedTimer) {
+      this.$cookies.set('resend-timer', {
+        timerValue: this.timerValue,
+        createdAt: Date.now(),
+      });
+    }
     if (!this.addressAssigned && !this.$cookies.get('access') && !this.$cookies.get('userStatus')) {
       const refId = sessionStorage.getItem('referralId');
       await this.$store.dispatch('user/logout', false);
@@ -301,13 +307,11 @@ export default {
       if (this.userStatus === UserStatuses.Unconfirmed) this.hiddenResend = false;
       this.timer = this.$cookies.get('resend-timer');
       if (!this.timer) return;
-
-      const spendSecs = (this.$moment().diff(this.timer.createdAt) / 1000).toFixed(0);
-      if (this.timer.timerValue < spendSecs) {
+      this.timer.timerValue -= (this.$moment().diff(this.timer.createdAt) / 1000).toFixed(0);
+      if (this.timer.timerValue <= 0) {
         this.clearTimer();
         return;
       }
-
       this.timerValue = this.timer.timerValue;
       this.startTimer();
     },
