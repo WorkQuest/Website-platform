@@ -264,6 +264,7 @@ export default {
   },
   methods: {
     toUserProfile(ev, user) {
+      if (user.type === 'Admin') return;
       ev.stopPropagation();
       this.$router.push(`${Path.PROFILE}/${user.userId}`);
     },
@@ -568,6 +569,8 @@ export default {
     position: absolute;
     object-fit: cover;
     z-index: 3;
+    background-color: $black100;
+    border: 1px solid $black200;
     &-group{
       color: $blue;
       background-color: $black100;
