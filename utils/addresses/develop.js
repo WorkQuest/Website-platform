@@ -3,6 +3,9 @@ export default {
   // GMAPKEY: process.env.GMAPKEY,
   // SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
+  ETH_PROVIDER: '',
+  BSC_PROVIDER: '',
+
   WQ_PROVIDER: 'https://dev-node-ams3.workquest.co/',
   WQ_EXPLORER: 'https://dev-explorer.workquest.co/api/v1',
   WQ_ORACLE_URL: 'https://dev-oracle.workquest.co/api/v1',

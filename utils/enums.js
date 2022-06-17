@@ -363,3 +363,10 @@ export const EntityType = {
   QUEST: 'Quest',
   DISCUSSION_COMMENT: 'DiscussionComment',
 };
+
+// For switch wallet providers
+export const ProviderTypes = {
+  WQ_PROVIDER: 'WQ_PROVIDER',
+  ETH_PROVIDER: 'ETH_PROVIDER',
+  BSC_PROVIDER: 'BSC_PROVIDER',
+};

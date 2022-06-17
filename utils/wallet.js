@@ -60,6 +60,16 @@ const wallet = {
     this.privateKey = null;
   },
 };
+export const connectWalletToProvider = (providerType) => {
+  const provider = !ENV[providerType];
+  if (!providerType || provider) {
+    console.error('Wrong provider type: ', providerType);
+    return error();
+  }
+  web3 = new Web3(provider);
+  return success();
+};
+
 export const getIsWalletConnected = () => !!wallet.address && !!wallet.privateKey;
 export const getWalletAddress = () => wallet.address;
 // Метод нужен для вызова метода wallet не затрагивая другие данные
