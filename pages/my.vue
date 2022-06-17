@@ -162,6 +162,7 @@ export default {
         case 0:
           this.requestParams.query['statuses[0]'] = QuestStatuses.Created;
           this.requestParams.query['statuses[1]'] = QuestStatuses.Blocked;
+          this.requestParams.query['statuses[2]'] = QuestStatuses.WaitWorkerOnAssign;
           break;
         case 1:
           this.requestParams.query.starred = true;

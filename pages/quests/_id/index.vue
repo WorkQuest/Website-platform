@@ -578,6 +578,7 @@ export default {
             problemDescription,
             questId: this.quest?.id,
           });
+          this.SetLoader(false);
           this.ShowModal({
             key: modals.status,
             title: this.$t('modals.transactionSent'),

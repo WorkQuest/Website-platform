@@ -97,7 +97,7 @@ export default {
           class: 'info_bg-green',
         },
         [QuestStatuses.Dispute]: {
-          text: this.$t('meta.dispute'),
+          text: this.$t('meta.disputeReview'),
           class: 'info_bg-red',
         },
         [QuestStatuses.Closed]: {

@@ -262,7 +262,7 @@ export default {
           class: 'card-quest__state_green',
         },
         [QuestStatuses.Dispute]: {
-          title: this.$t('meta.dispute'),
+          title: this.$t('meta.disputeReview'),
           progressText: this.$t('quests.questDispute'),
           class: 'card-quest__state_red',
         },
