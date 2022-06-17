@@ -1610,7 +1610,8 @@
     "pending": "En attente",
     "chatHistory": "Historique des discussions",
     "disputeTime": "Heure d'ouverture du litige :",
-    "inProgress": "In progress"
+    "inProgress": "In progress",
+    "created": "Created"
   },
   "workers": {
     "searchQuests": "Rechercher des quêtes",

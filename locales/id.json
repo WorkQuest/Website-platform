@@ -1610,7 +1610,8 @@
     "pending": "Tertunda",
     "chatHistory": "Riwayat obrolan",
     "disputeTime": "Waktu pembukaan sengketa:",
-    "inProgress": "In progress"
+    "inProgress": "In progress",
+    "created": "Created"
   },
   "workers": {
     "searchQuests": "Cari quest",

@@ -96,6 +96,7 @@ export default {
     disputeStatus() {
       const obj = {
         [DisputeStatues.PENDING]: this.$t('disputes.pending'),
+        [DisputeStatues.CREATED]: this.$t('disputes.created'),
         [DisputeStatues.IN_PROGRESS]: this.$t('disputes.inProgress'),
         [DisputeStatues.PENDING_CLOSED]: this.$t('meta.completed'),
         [DisputeStatues.CLOSED]: this.$t('meta.completed'),
@@ -130,9 +131,10 @@ export default {
         title: this.$tc('modals.titles.review'),
         rating,
         callback: async (message, mark) => {
-          const { ok } = await this.$store.dispatch('user/sendReviewDispute', { disputeId, message, mark });
-          console.log(ok);
-          if (ok) this.ShowModal({ key: modals.thanks });
+          const ok = await this.$store.dispatch('user/sendReviewDispute', { disputeId, message, mark });
+          if (ok) {
+            this.ShowModal({ key: modals.thanks });
+          }
         },
       });
     },
@@ -247,7 +249,7 @@ export default {
   &__v-spacer {
     width: 1px;
     background-color: $black0;
-    margin: 0 20px;
+    margin: 0 5px;
     height: 100%;
   }
   &__block{
@@ -256,9 +258,8 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-bottom: 30px;
+    padding: 0 5px 35px;
+    word-break: break-word;
   }
   &__review{
    position: absolute;

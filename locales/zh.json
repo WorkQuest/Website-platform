@@ -1610,7 +1610,8 @@
     "pending": "待办",
     "chatHistory": "聊天记录",
     "disputeTime": "争议提交时间：",
-    "inProgress": "In progress"
+    "inProgress": "In progress",
+    "created": "Created"
   },
   "workers": {
     "searchQuests": "搜索 Quest",

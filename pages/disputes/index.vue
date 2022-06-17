@@ -49,12 +49,13 @@
               <div
                 v-if="item.status === $options.DisputeStatues.CLOSED"
                 class="page__review"
+                @click.stop.prevent
               >
                 <star-rating
                   :stars-number="5"
                   :data-selector="`ACTION-BTN-SHOW-REVIEW-MODAL-${item.id}`"
-                  :rating="item.currentUserDisputeReview.mark"
-                  :is-disabled="!!item.currentUserDisputeReview.mark"
+                  :rating="item.currentUserDisputeReview && item.currentUserDisputeReview.mark"
+                  :is-disabled="item.currentUserDisputeReview && !!item.currentUserDisputeReview.mark"
                   @input="showReviewModal($event, item.id)"
                 />
               </div>
@@ -178,9 +179,10 @@ export default {
         title: this.$tc('modals.titles.review'),
         rating,
         callback: async (message, mark) => {
-          const { ok } = await this.$store.dispatch('user/sendReviewDispute', { disputeId, message, mark });
-          console.log(ok);
-          if (ok) this.ShowModal({ key: modals.thanks });
+          const ok = await this.$store.dispatch('user/sendReviewDispute', { disputeId, message, mark });
+          if (ok) {
+            this.ShowModal({ key: modals.thanks });
+          }
         },
       });
     },
@@ -220,6 +222,7 @@ export default {
     -webkit-line-clamp: 10;
     box-orient: vertical;
     -webkit-box-orient: vertical;
+    word-break: break-word;
   }
   &__title {
     @include text-simple;
@@ -227,14 +230,16 @@ export default {
     font-size: 25px;
     color: $black800;
     text-align: left;
+    word-break: break-word;
   }
   &__card-body {
     height: 100%;
     margin: 20px;
+    padding-bottom: 20px;
   }
   &__dispute-cards {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 50%);
     grid-gap: 15px;
   }
   &__card {
@@ -261,6 +266,7 @@ export default {
   &__text {
     @include text-simple;
     font-size: 16px;
+    word-break: break-all;
     &_blue {
       color: $blue;
     }
