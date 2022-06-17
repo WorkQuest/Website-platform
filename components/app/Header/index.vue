@@ -314,7 +314,8 @@ import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import moment from 'moment';
 import { images } from '~/utils/images';
-import { MessageAction, UserRole, Path } from '~/utils/enums';
+import { UserRole, Path } from '~/utils/enums';
+import { MessageAction } from '~/utils/сonstants/chat';
 
 export default {
   name: 'Header',

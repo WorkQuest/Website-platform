@@ -193,9 +193,10 @@
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 import modals from '~/store/modals/modals';
+import { Path } from '~/utils/enums';
 import {
-  MessageAction, MessageType, Path, FileTypes, UserRoles,
-} from '~/utils/enums';
+  MessageAction, MessageType, UserRoles, FileTypes,
+} from '~/utils/сonstants/chat';
 import { images } from '~/utils/images';
 
 export default {
