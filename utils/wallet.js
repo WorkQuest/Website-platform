@@ -60,21 +60,31 @@ const wallet = {
     this.privateKey = null;
   },
 };
-export const connectWalletToProvider = (providerType) => {
-  const provider = !ENV[providerType];
-  if (!providerType || provider) {
-    console.error('Wrong provider type: ', providerType);
-    return error();
-  }
-  web3 = new Web3(provider);
-  return success();
-};
-
 export const getIsWalletConnected = () => !!wallet.address && !!wallet.privateKey;
 export const getWalletAddress = () => wallet.address;
 // Метод нужен для вызова метода wallet не затрагивая другие данные
 export const initWallet = (address, key) => {
   wallet.init(address, key);
+};
+
+export const connectWalletToProvider = (providerType) => {
+  if (!getIsWalletConnected()) {
+    console.error('Wallet is not connected');
+    return error();
+  }
+  const provider = !ENV[providerType];
+  if (!providerType || provider) {
+    console.error('Wrong provider type: ', providerType);
+    return error();
+  }
+  // TODO: need to unsubscribe from WEB3 listeners!
+  web3 = new Web3(provider);
+  if (wallet.privateKey) {
+    const account = web3.eth.accounts.privateKeyToAccount(wallet.privateKey);
+    web3.eth.accounts.wallet.add(account);
+    web3.eth.defaultAccount = account.address;
+  }
+  return success();
 };
 
 /**
