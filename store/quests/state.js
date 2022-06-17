@@ -1,7 +1,6 @@
 export default () => ({
   respondOnQuest: null,
   chatInfoInviteOnQuest: {},
-  currentWorker: null,
   employeeList: [],
   employeeCount: null,
   allQuests: {
@@ -12,7 +11,6 @@ export default () => ({
   infoDataMode: 0,
   responded: [],
   invited: [],
-  currentStepCreateQuest: 1,
   currentStepEditQuest: 1,
   filters: null,
   selectedSpecializationsFilters: {

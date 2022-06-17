@@ -2,7 +2,7 @@
   <div
     v-if="infoDataMode !== $options.QuestStatuses.Pending"
     class="info"
-    :class="questStatusesData[infoDataMode].class"
+    :class="questState.class"
   >
     <div
       v-if="infoDataMode !== $options.QuestStatuses.Created"
@@ -13,7 +13,7 @@
           class="info__text"
           :class="infoStatusTextColor"
         >
-          {{ questStatusesData[infoDataMode].text }}
+          {{ questState.text }}
         </div>
       </div>
       <div
@@ -54,7 +54,7 @@
 
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import { QuestStatuses } from '~/utils/сonstants/quests';
+import { QuestsResponseStatus, QuestStatuses } from '~/utils/сonstants/quests';
 import { UserRole } from '~/utils/enums';
 
 export default {
@@ -70,11 +70,12 @@ export default {
     ...mapGetters({
       respondOnQuest: 'quests/getRespondOnQuest',
       questData: 'quests/getQuest',
+      userData: 'user/getUserData',
       userRole: 'user/getUserRole',
       infoDataMode: 'quests/getInfoDataMode',
     }),
     questStatusesData() {
-      return {
+      const statuses = {
         [QuestStatuses.Created]: {
           text: '',
           class: 'info_hide',
@@ -86,11 +87,6 @@ export default {
         [QuestStatuses.WaitWorker]: {
           text: this.$t('quests.activeQuest'),
           class: 'info_bg-green',
-        },
-        // TODO blocked
-        [QuestStatuses.Blocked]: {
-          text: this.$t('quests.blocked'),
-          class: 'info_bg-red',
         },
         [QuestStatuses.WaitWorkerOnAssign]: {
           text: this.$t('meta.invited'),
@@ -121,10 +117,38 @@ export default {
           class: 'info_bg-yellow',
         },
       };
+      if (this.userRole === UserRole.EMPLOYER) {
+        statuses[QuestStatuses.Blocked] = {
+          text: this.$t('quests.blocked'),
+          class: 'info_bg-red',
+        };
+      } else {
+        statuses[QuestStatuses.Rejected] = {
+          text: this.$t('quests.rejected'),
+          class: 'info_bg-red',
+        };
+      }
+      return statuses;
     },
     infoStatusTextColor() {
       if (this.infoDataMode !== QuestStatuses.Responded) return 'info__text_white';
       return 'info__text_black';
+    },
+    questState() {
+      const {
+        questData: { questChat },
+        userData: { id: myId },
+        infoDataMode,
+      } = this;
+
+      if (questChat && infoDataMode === QuestStatuses.Created && myId === questChat.workerId && questChat.status === QuestsResponseStatus.Rejected) {
+        // Case when user requested to the quest but employer was rejected you
+        return this.questStatusesData[QuestStatuses.Rejected];
+      }
+
+      if (infoDataMode === QuestStatuses.Blocked) return this.questStatusesData[QuestStatuses.Blocked];
+
+      return this.questStatusesData[infoDataMode];
     },
   },
   methods: {

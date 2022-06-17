@@ -8,13 +8,11 @@
       class="card-quest__left"
       :style="`background: url(${getQuestPreview(quest).url}) no-repeat`"
     >
-      {{ quest.status }}
       <div
-        v-if="quest.status"
         class="card-quest__state"
-        :class="statusClass"
+        :class="questState.class"
       >
-        {{ questStatusesData[questStatus].title }}
+        {{ questState.title }}
       </div>
     </div>
     <div class="card-quest__right">
@@ -86,7 +84,7 @@
         class="card-quest__progress progress"
       >
         <div class="progress__title">
-          {{ questStatusesData[questStatus].progressText }}
+          {{ questState.progressText }}
         </div>
         <div class="progress__container container">
           <div
@@ -190,7 +188,7 @@ import BigNumber from 'bignumber.js';
 import {
   questPriority, UserRole, Path, TokenSymbols, QuestModeReview, RaiseViewStatus,
 } from '~/utils/enums';
-import { QuestStatuses } from '~/utils/сonstants/quests';
+import { QuestsResponseStatus, QuestStatuses } from '~/utils/сonstants/quests';
 import modals from '~/store/modals/modals';
 import { images } from '~/utils/images';
 
@@ -241,7 +239,7 @@ export default {
         [QuestStatuses.Pending]: {
           title: '',
           progressText: '',
-          class: '',
+          class: 'info_hide',
         },
         [QuestStatuses.Created]: {
           title: this.quest?.responded?.workerId === this.userData.id ? this.$t('meta.responded') : '',
@@ -289,7 +287,7 @@ export default {
           class: 'card-quest__state_yellow',
         },
       };
-      if (this.UserRole === UserRole.EMPLOYER) {
+      if (this.userRole === UserRole.EMPLOYER) {
         statuses[QuestStatuses.Blocked] = {
           title: this.$t('quests.blocked'),
           progressText: '',
@@ -304,22 +302,31 @@ export default {
       }
       return statuses;
     },
-    questStatus() {
-      // TODO blocked
-      if (this.quest.status === QuestStatuses.Blocked) return QuestStatuses.Blocked;
+    questState() {
+      const {
+        quest: {
+          questChat, status: questStatus, invited, responded,
+        },
+        userData: { id: myId },
+      } = this;
+
+      if (questChat && questStatus === QuestStatuses.Created && myId === questChat.workerId && questChat.status === QuestsResponseStatus.Rejected) {
+        // Case when user requested to the quest but employer was rejected you
+        return this.questStatusesData[QuestStatuses.Rejected];
+      }
+
+      if (questStatus === QuestStatuses.Blocked) return this.questStatusesData[QuestStatuses.Blocked];
+
       if (this.userRole === UserRole.WORKER) {
-        if (this.quest.responded) {
-          if (this.quest.status === QuestStatuses.WaitWorkerOnAssign) return QuestStatuses.Invited;
-          return QuestStatuses.Responded;
+        if (responded) {
+          if (questStatus === QuestStatuses.WaitWorkerOnAssign) return this.questStatusesData[QuestStatuses.Invited];
+          return this.questStatusesData[QuestStatuses.Responded];
         }
-        if (this.quest.invited) {
-          return QuestStatuses.Invited;
+        if (invited) {
+          return this.questStatusesData[QuestStatuses.Invited];
         }
       }
-      return this.quest.status;
-    },
-    statusClass() {
-      return this.questStatusesData[this.questStatus].class;
+      return this.questStatusesData[questStatus || 0];
     },
   },
   async mounted() {

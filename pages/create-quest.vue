@@ -241,7 +241,6 @@ export default {
       userData: 'user/getUserData',
       userWalletAddress: 'user/getUserWalletAddress',
 
-      step: 'quests/getCurrentStepCreateQuest',
       filters: 'quests/getFilters',
     }),
     runtime() {
