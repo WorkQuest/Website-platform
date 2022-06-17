@@ -92,9 +92,7 @@
                     alt=""
                     @click="selFile($event, message.medias, file.url)"
                   >
-                  <div
-                    v-else-if="file.type === $options.FileTypes.VIDEO"
-                  >
+                  <div v-else-if="file.type === $options.FileTypes.VIDEO">
                     <video
                       preload="metadata"
                       class="image-cont image-cont__other-media"
@@ -118,9 +116,7 @@
                     class="image-cont image-cont__other-media"
                     @click="openFile"
                   >
-                    <span
-                      class="icon-file_blank_outline"
-                    />
+                    <span class="icon-file_blank_outline" />
                   </a>
                 </div>
               </div>

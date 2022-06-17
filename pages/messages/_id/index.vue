@@ -95,6 +95,7 @@
               </label>
             </div>
             <base-field
+              ref="chatInput"
               v-model="messageText"
               mode="chat"
               rules="max:1600"
@@ -422,6 +423,7 @@ export default {
       };
       await this.$store.dispatch('chat/handleSendMessage', payload);
       this.isDisabledSendMessage = false;
+      this.$nextTick(() => this.$refs.chatInput.focus());
     },
     onEnter(e, callback) {
       if (!e.ctrlKey) {
