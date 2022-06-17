@@ -73,6 +73,7 @@
             v-for="(item, i) in items"
             :key="`dd__item-${i}`"
             :data-selector="`ACTION-BTN-SELECT-ITEM-${dataSelector.toUpperCase()}-${i}`"
+            :disabled="disabledIndexes.includes(i)"
             class="dd__item dd__item_icon"
             @click="selectItem(i)"
           >
@@ -102,6 +103,7 @@
           <button
             v-for="(item, i) in items"
             :key="`dd__item-${i}`"
+            :disabled="disabledIndexes.includes(i)"
             class="dd__item"
             :data-selector="`ACTION-BTN-SELECT-ITEM-${dataSelector.toUpperCase()}-${i}`"
             :class="{'dd__item_hide': isSelected(i) || (isSearch && !isSearchMatched(item))}"
@@ -128,6 +130,10 @@ export default {
     dataType: {
       type: String,
       default: () => 'array',
+    },
+    disabledIndexes: {
+      type: Array,
+      default: () => [],
     },
     items: {
       type: [Array, Object],
@@ -212,7 +218,7 @@ export default {
       this.isShown = false;
     },
     selectItem(i) {
-      if (this.hideSelected.includes(i)) return;
+      if (this.hideSelected.includes(i) || this.disabledIndexes.includes(i)) return;
       this.isShown = false;
       this.$emit('input', i);
     },
