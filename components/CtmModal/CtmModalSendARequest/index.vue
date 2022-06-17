@@ -69,8 +69,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
-import { images } from '~/utils/images';
 
 export default {
   name: 'ModalSendARequest',
