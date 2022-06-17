@@ -78,6 +78,7 @@ export const connectWalletToProvider = (providerType) => {
     return error();
   }
   // TODO: need to unsubscribe from WEB3 listeners!
+  // TODO: можно сделать хранение предыдущей сети в LocalStorage и подключать автоматически к нужной сети, если нужно
   web3 = new Web3(provider);
   if (wallet.privateKey) {
     const account = web3.eth.accounts.privateKeyToAccount(wallet.privateKey);
