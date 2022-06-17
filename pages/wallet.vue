@@ -251,7 +251,7 @@ export default {
       return WalletTokensData[this.selectedNetwork].tokenList[0];
     },
     selectedTokenAddress() {
-      return WalletTokensData[this.selectedNetwork].tokenAddresses[this.tokenSymbolsDd.indexOf(this.selectedToken) - 1];
+      return this.tokenAddresses[this.tokenSymbolsDd.indexOf(this.selectedToken) - 1];
     },
     networkList() {
       return [
@@ -260,6 +260,9 @@ export default {
         BuyWQTTokensData.get(Chains.BINANCE),
         BuyWQTTokensData.get(Chains.POLYGON),
       ];
+    },
+    tokenAddresses() {
+      return WalletTokensData[this.selectedNetwork].tokenAddresses;
     },
     selectedTokenData() {
       return this.balance[this.selectedToken];
@@ -296,9 +299,6 @@ export default {
           to_address: t.to_address_hash.hex,
         };
       });
-    },
-    tokenAddresses() {
-      return WalletTokensData[this.selectedNetwork].tokenAddresses;
     },
     walletTableFields() {
       return [
@@ -386,7 +386,6 @@ export default {
 
       // 0 token is always native token for current network!
       if (this.nativeTokenSymbol === selectedToken) {
-        // console.log('FETCHING NATIVE TOKEN', selectedToken);
         const toFetch = [this.$store.dispatch('wallet/getBalance')];
         if (this.selectedNetwork === Chains.WORKNET) {
           toFetch.push(this.$store.dispatch('wallet/updateFrozenBalance'));
@@ -394,8 +393,6 @@ export default {
         await Promise.all(toFetch);
       } else {
         const payload = { address: userWalletAddress, abi: ERC20 };
-        // console.log('fetch', this.tokenAddresses[this.tokenSymbolsDd.indexOf(selectedToken) - 1]);
-        // console.log('addresses >>', this.tokenAddresses);
         await this.$store.dispatch('wallet/fetchWalletData', {
           method: 'balanceOf', ...payload, token: this.tokenAddresses[this.tokenSymbolsDd.indexOf(selectedToken) - 1], symbol: selectedToken,
         });
