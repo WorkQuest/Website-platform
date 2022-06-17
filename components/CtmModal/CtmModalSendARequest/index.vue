@@ -68,10 +68,9 @@
 </template>
 
 <script>
-/* eslint-disable object-shorthand,no-var */
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { QuestStatuses } from '~/utils/сonstants/quests';
+import { images } from '~/utils/images';
 
 export default {
   name: 'ModalSendARequest',
@@ -94,41 +93,11 @@ export default {
     async handleSend() {
       if (this.isRespondActionInProgress) return;
       this.isRespondActionInProgress = true;
-      if (this.options.callbackSend) {
-        await this.options.callbackSend(this.files, this.text);
-      } else {
-        await this.showRequestSendModal();
-      }
+
+      const { submit } = this.options;
+      await submit(this.files, this.text);
+
       this.isRespondActionInProgress = false;
-    },
-    async respondOnQuest() {
-      const medias = await this.uploadFiles(this.files);
-      const { questId } = this.options;
-      const data = {
-        message: this.text,
-        medias,
-      };
-      // TODO blocked
-      if (QuestStatuses.Rejected) {
-        const res = await this.$store.dispatch('quests/respondOnQuest', { data, questId });
-        if (res.ok) {
-          await this.$store.dispatch('quests/getQuest', questId);
-          return true;
-        }
-      }
-      return false;
-    },
-    async showRequestSendModal() {
-      const ok = await this.respondOnQuest();
-      if (ok) {
-        await this.$store.dispatch('quests/getQuest', this.$route.params.id);
-        this.ShowModal({
-          key: modals.status,
-          img: require('assets/img/ui/message.svg'),
-          title: this.$t('modals.titles.requestSend'),
-          subtitle: this.$t('modals.waitResponseFromEmployer'),
-        });
-      } else this.CloseModal();
     },
   },
 };

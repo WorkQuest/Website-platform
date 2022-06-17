@@ -248,17 +248,21 @@ export default {
         sendPrivateMsg: (userId) => {
           this.ShowModal({
             key: modals.sendARequest,
-            title: this.$tc('modals.titles.sendPrivateMessage'),
-            callbackSend: async (files, text) => {
-              if (this.isLoading) return;
+            title: this.$t('modals.titles.sendPrivateMessage'),
+            submit: async (files, text) => {
+              this.CloseModal();
               this.SetLoader(true);
               const medias = await this.uploadFiles(files);
-              const { ok: isChatCreated, result } = await this.$store.dispatch('chat/handleCreatePrivateChat', { userId, medias, text });
+              const { ok, result } = await this.$store.dispatch('chat/handleCreatePrivateChat', {
+                userId,
+                medias,
+                text,
+              });
+
+              if (ok) await this.$router.push(`${Path.MESSAGES}/${result.chat.id}`);
+              else this.ShowModalFail({});
+
               this.SetLoader(false);
-              if (isChatCreated) {
-                await this.$router.push(`${Path.MESSAGES}/${result.chat.id}`);
-                this.CloseModal();
-              }
             },
           });
         },
@@ -266,7 +270,7 @@ export default {
     },
     goToQuest() {
       const { questId } = this.currChat.questChat;
-      this.$router.push(`/quests/${questId}`);
+      this.$router.push(`${Path.QUESTS}/${questId}`);
     },
     openFile(ev) {
       ev.stopPropagation();

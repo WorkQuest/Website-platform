@@ -815,7 +815,31 @@ export default {
       this.ShowModal({
         key: modals.sendARequest,
         title: this.$tc('modals.titles.sendARequest'),
-        questId: this.quest.id,
+        submit: async (files, message) => {
+          this.CloseModal();
+          this.SetLoader(true);
+          const questId = this.quest.id;
+          const medias = await this.uploadFiles(files);
+          const { ok } = await this.$store.dispatch('quests/respondOnQuest', {
+            data: {
+              message,
+              medias,
+            },
+            questId,
+          });
+
+          if (ok) {
+            await this.$store.dispatch('quests/getQuest', questId);
+            this.ShowModal({
+              key: modals.status,
+              img: images.MESSAGE,
+              title: this.$t('modals.titles.requestSend'),
+              subtitle: this.$t('modals.waitResponseFromEmployer'),
+            });
+          } else this.ShowModalFail({});
+
+          this.SetLoader(false);
+        },
       });
     },
     async suggestToAddReview() {
