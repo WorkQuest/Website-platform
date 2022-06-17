@@ -3,8 +3,9 @@ export default {
   // GMAPKEY: process.env.GMAPKEY,
   // SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
-  ETH_PROVIDER: 'https://rinkeby.infura.io/v3/',
-  BSC_PROVIDER: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
+  ETH_PROVIDER: 'https://rinkeby.infura.io/v3/44ca23c0e48243ba920ca8b0c1ef2d93',
+  BSC_PROVIDER: 'https://data-seed-prebsc-1-s1.binance.org:8545',
+  POLYGON_PROVIDER: 'https://rpc-mumbai.maticvigil.com',
 
   WQ_PROVIDER: 'https://dev-node-ams3.workquest.co/',
   WQ_EXPLORER: 'https://dev-explorer.workquest.co/api/v1',

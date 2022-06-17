@@ -9,4 +9,6 @@ export default {
   getSelectedToken: (state) => state.selectedToken,
   getStakingPoolsData: (state) => state.stakingPoolsData,
   getStakingUserData: (state) => state.stakingUserData,
+
+  getSelectedNetwork: (state) => state.selectedNetwork,
 };

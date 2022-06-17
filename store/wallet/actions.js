@@ -12,7 +12,7 @@ import {
   getTransferFeeData,
   getContractFeeData,
   getIsWalletConnected,
-  sendWalletTransaction,
+  sendWalletTransaction, connectWalletToProvider,
 } from '~/utils/wallet';
 
 import {
@@ -33,7 +33,7 @@ import {
   TokenSymbols,
   StakingTypes,
   WorknetTokenAddresses,
-  TokenSymbolByContract,
+  TokenSymbolByContract, ProviderTypesByChain, WalletTokensData,
 } from '~/utils/enums';
 
 import ENV from '~/utils/addresses/index';
@@ -103,17 +103,20 @@ export default {
   setSelectedToken({ commit }, token) {
     commit('setSelectedToken', token);
   },
-  async getBalance({ commit }) {
+  async getBalance({ commit, getters }) {
+    const chain = getters.getSelectedNetwork;
+    const token = WalletTokensData[chain].tokenList[0];
     const res = await getBalance();
     commit('setBalance', {
-      symbol: TokenSymbols.WQT,
+      symbol: token,
       balance: res.ok ? res.result.balance : 0,
       fullBalance: res.ok ? res.result.fullBalance : 0,
     });
   },
-  async fetchCommonTokenInfo({ commit }) {
+  async fetchCommonTokenInfo({ commit, getters }) {
     try {
-      const tokens = await Promise.all(WorknetTokenAddresses.map(async (address) => await Promise.all([
+      const chain = getters.getSelectedNetwork;
+      const tokens = await Promise.all(WalletTokensData[chain].tokenAddresses.map(async (address) => await Promise.all([
         fetchContractData('symbol', ERC20, address, [], GetWalletProvider()),
         fetchContractData('decimals', ERC20, address, [], GetWalletProvider()),
       ])));
@@ -529,5 +532,19 @@ export default {
       showToast('Swapping error', e.message, 'danger');
       return error(e.code, 'Error in swap action', e.data);
     }
+  },
+
+  /** SWITCH NETWORK */
+  async connectToProvider({ commit, dispatch }, chain) {
+    const res = await connectWalletToProvider(ProviderTypesByChain[chain]);
+    console.log(res);
+    if (res.ok) {
+      commit('setSelectedNetwork', chain);
+      commit('setSelectedToken', WalletTokensData[chain].tokenList[0]);
+
+      await dispatch('fetchCommonTokenInfo');
+      // TODO: fetch tokens balance
+    }
+    return res;
   },
 };

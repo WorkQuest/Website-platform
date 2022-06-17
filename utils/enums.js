@@ -221,15 +221,8 @@ export const TokenSymbols = Object.freeze({
   WBNB: 'WBNB',
   WETH: 'WETH',
   USDT: 'USDT',
+  MATIC: 'MATIC',
 });
-
-// wallet balance
-export const WorknetTokenAddresses = Object.freeze([
-  ENV.WORKNET_WUSD_TOKEN,
-  ENV.WORKNET_WBNB_TOKEN,
-  ENV.WORKNET_WETH_TOKEN,
-  ENV.WORKNET_USDT_TOKEN,
-]);
 
 export const TokenSymbolByContract = Object.freeze({
   [ENV.WORKNET_WUSD_TOKEN?.toLowerCase()]: TokenSymbols.WUSD,
@@ -364,9 +357,65 @@ export const EntityType = {
   DISCUSSION_COMMENT: 'DiscussionComment',
 };
 
+/** WALLET */
+
 // For switch wallet providers
-export const ProviderTypes = {
-  WQ_PROVIDER: 'WQ_PROVIDER',
-  ETH_PROVIDER: 'ETH_PROVIDER',
-  BSC_PROVIDER: 'BSC_PROVIDER',
+export const ProviderTypesByChain = {
+  [Chains.WORKNET]: 'WQ_PROVIDER',
+  [Chains.ETHEREUM]: 'ETH_PROVIDER',
+  [Chains.BINANCE]: 'BSC_PROVIDER',
+  [Chains.POLYGON]: 'POLYGON_PROVIDER',
 };
+
+// wallet balance
+export const WorknetTokenAddresses = Object.freeze([
+  ENV.WORKNET_WUSD_TOKEN,
+  ENV.WORKNET_WBNB_TOKEN,
+  ENV.WORKNET_WETH_TOKEN,
+  ENV.WORKNET_USDT_TOKEN,
+]);
+
+export const WalletTokensData = Object.freeze({
+  [Chains.WORKNET]: {
+    tokenAddresses: [
+      ENV.WORKNET_WUSD_TOKEN,
+      ENV.WORKNET_WBNB_TOKEN,
+      ENV.WORKNET_WETH_TOKEN,
+      ENV.WORKNET_USDT_TOKEN,
+    ],
+    tokenList: [
+      TokenSymbols.WQT,
+      TokenSymbols.WUSD,
+      TokenSymbols.BNB,
+      TokenSymbols.ETH,
+      TokenSymbols.USDT,
+    ],
+  },
+  [Chains.ETHEREUM]: {
+    tokenAddresses: [
+      ENV.ETHEREUM_USDT_TOKEN,
+    ],
+    tokenList: [
+      TokenSymbols.ETH,
+      TokenSymbols.USDT,
+    ],
+  },
+  [Chains.BINANCE]: {
+    tokenAddresses: [
+      ENV.BSC_USDT_TOKEN,
+    ],
+    tokenList: [
+      TokenSymbols.BNB,
+      TokenSymbols.USDT,
+    ],
+  },
+  [Chains.POLYGON]: {
+    tokenAddresses: [
+      ENV.POLYGON_USDT_TOKEN,
+    ],
+    tokenList: [
+      TokenSymbols.MATIC,
+      TokenSymbols.USDT,
+    ],
+  },
+});

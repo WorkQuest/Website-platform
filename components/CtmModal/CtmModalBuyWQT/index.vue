@@ -92,7 +92,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
-import { BlockchainIndex, BuyWQTTokensData } from '~/utils/сonstants/bridge';
+import { BlockchainIndex, BuyWQTTokensData, NetworkTokensData } from '~/utils/сonstants/bridge';
 import { Chains, TokenSymbols } from '~/utils/enums';
 import { WQTBuyCommission } from '~/utils/сonstants/commission';
 import { getStyledAmount } from '~/utils/wallet';
@@ -123,6 +123,7 @@ export default {
     }),
     networkList() {
       return [
+        BuyWQTTokensData.get(Chains.WORKNET),
         BuyWQTTokensData.get(Chains.ETHEREUM),
         BuyWQTTokensData.get(Chains.BINANCE),
         BuyWQTTokensData.get(Chains.POLYGON),

@@ -70,12 +70,14 @@ export const initWallet = (address, key) => {
 export const connectWalletToProvider = (providerType) => {
   if (!getIsWalletConnected()) {
     console.error('Wallet is not connected');
-    return error();
+    return error(-1, 'Wallet is not connected');
   }
-  const provider = !ENV[providerType];
-  if (!providerType || provider) {
-    console.error('Wrong provider type: ', providerType);
-    return error();
+
+  const provider = ENV[providerType];
+  console.log('provider', provider);
+  if (!providerType || !provider) {
+    console.error(`Wrong provider type: ${providerType}`);
+    return error(-2, `Wrong provider type: ${providerType}`);
   }
   // TODO: need to unsubscribe from WEB3 listeners!
   // TODO: можно сделать хранение предыдущей сети в LocalStorage и подключать автоматически к нужной сети, если нужно

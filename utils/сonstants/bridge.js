@@ -78,6 +78,14 @@ export const SwapAddresses = new Map([
 /** Buy WQT Modal */
 export const BuyWQTTokensData = new Map([
   [
+    Chains.WORKNET,
+    {
+      title: Chains.WORKNET,
+      chain: Chains.WORKNET,
+      icon: require('~/assets/img/ui/WQT.png'),
+    },
+  ],
+  [
     Chains.ETHEREUM,
     {
       title: Chains.ETHEREUM,
