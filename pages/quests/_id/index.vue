@@ -350,14 +350,13 @@ export default {
           assignedWorkerId,
           status,
         },
-        userData: { id },
+        userData: { id: myId },
         isEmployer,
       } = this;
       const arr = isEmployer ? this.setEmployerBtnsArr() : this.setWorkerBtnsArr();
 
       if (
-        (questChat?.workerId === id || (questChat?.employerId === id && assignedWorkerId))
-        // TODO blocked
+        (questChat?.workerId === myId || (questChat?.employerId === myId && assignedWorkerId))
         && ![QuestStatuses.Closed, QuestStatuses.Blocked, QuestStatuses.Done].includes(status)
       ) {
         arr.push({
