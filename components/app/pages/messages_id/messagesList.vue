@@ -86,25 +86,37 @@
                   class="image-cont image-cont_margin"
                 >
                   <img
-                    v-if="file.type === 'image'"
+                    v-if="file.type === $options.FileTypes.IMAGE"
                     :src="file.url"
                     class="image-cont__image"
                     alt=""
                     @click="selFile($event, message.medias, file.url)"
                   >
+                  <div v-else-if="file.type === $options.FileTypes.VIDEO">
+                    <video
+                      preload="metadata"
+                      class="image-cont image-cont__other-media"
+                      @click="selFile($event, message.medias, file.url)"
+                    >
+                      <source
+                        :src="file.url"
+                        :type="file.contentType"
+                      >
+                    </video>
+                    <span
+                      class="icon-play_circle_outline "
+                      @click="selFile($event, message.medias, file.url)"
+                    />
+                  </div>
+
                   <a
                     v-else
                     :href="file.url"
                     target="_blank"
                     class="image-cont image-cont__other-media"
-                    @click="file.type === 'video' ? selFile($event, message.medias, file.url) : openFile"
+                    @click="openFile"
                   >
-                    <span
-                      :class="[
-                        {'icon-play_circle_outline' : file.type === 'video'},
-                        {'icon-file_blank_outline' : file.type !== 'video'}
-                      ]"
-                    />
+                    <span class="icon-file_blank_outline" />
                   </a>
                 </div>
               </div>
@@ -176,13 +188,16 @@
 <script>
 import { mapGetters } from 'vuex';
 import moment from 'moment';
-import { async } from 'vue-phone-number-input';
 import modals from '~/store/modals/modals';
-import { MessageAction, MessageType, Path } from '~/utils/enums';
+import { Path } from '~/utils/enums';
+import {
+  MessageAction, MessageType, UserRoles, FileTypes,
+} from '~/utils/сonstants/chat';
 import { images } from '~/utils/images';
 
 export default {
   name: 'MessagesList',
+  FileTypes,
   props: {
     chatId: {
       type: String,
@@ -262,7 +277,7 @@ export default {
       return prevMessage?.sender?.user?.id === message.sender?.user?.id && prevMessage?.type !== MessageType.INFO;
     },
     setSenderAvatar({ sender }) {
-      if (sender.type === 'Admin') return images.WQ_LOGO;
+      if (sender.type === UserRoles.ADMIN) return images.WQ_LOGO;
       return sender.user?.avatar ? sender.user?.avatar.url : images.EMPTY_AVATAR;
     },
     async getMessages(direction, currBottomOffset) {
@@ -397,7 +412,7 @@ export default {
       ev.preventDefault();
       ev.stopPropagation();
 
-      files = files.filter((file) => file.type === 'image' || file.type === 'video');
+      files = files.filter((file) => file.type === FileTypes.IMAGE || file.type === FileTypes.VIDEO);
       const index = files.findIndex((file) => file.url === fileUrl);
 
       this.ShowModal({
@@ -452,7 +467,7 @@ export default {
     senderFullNameById(userId) {
       const sender = this.getSenderInfoById(userId);
       if (!sender) return '-';
-      if (sender.type === 'User') return `${sender.user?.firstName || ''} ${sender.user?.lastName || ''}`;
+      if (sender.type === UserRoles.USER) return `${sender.user?.firstName || ''} ${sender.user?.lastName || ''}`;
       return this.$t('chat.workquestAdmin');
     },
   },
@@ -597,7 +612,8 @@ export default {
     width: 43px;
     border-radius: 50%;
     object-fit: cover;
-
+    background-color: $black100;
+    border: 1px solid $black200;
     &_hidden {
       visibility: hidden;
     }
@@ -704,7 +720,12 @@ export default {
     font-size: 60px;
   }
 }
-
+.icon-play_circle_outline{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 .star {
   cursor: pointer;
 
