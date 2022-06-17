@@ -68,9 +68,8 @@
 <script>
 import ClickOutside from 'vue-click-outside';
 import { mapGetters } from 'vuex';
-import {
-  ChatType, Path,
-} from '~/utils/enums';
+import { Path } from '~/utils/enums';
+import { ChatType } from '~/utils/сonstants/chat';
 import { QuestStatuses } from '~/utils/сonstants/quests';
 import modals from '~/store/modals/modals';
 

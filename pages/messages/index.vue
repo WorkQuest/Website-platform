@@ -191,9 +191,10 @@
 <script>
 import { mapGetters } from 'vuex';
 import ChatMenu from '~/components/ui/ChatMenu';
+import { Path } from '~/utils/enums';
 import {
-  Path, ChatType, MessageType, MessageAction, QuestChatStatus, UserRoles,
-} from '~/utils/enums';
+  ChatType, MessageType, MessageAction, QuestChatStatus, UserRoles,
+} from '~/utils/сonstants/chat';
 import { images } from '~/utils/images';
 
 export default {
