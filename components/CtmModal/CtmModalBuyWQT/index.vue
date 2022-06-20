@@ -244,12 +244,15 @@ export default {
 
         const nonce = await getWalletTransactionCount();
         const BNValue = new BigNumber(amount).shiftedBy(Number(decimals)).toString();
-        const feeRes = await this.$store.dispatch('wallet/getContractFeeData', {
-          method: 'swap',
-          abi: BuyWQT,
-          contractAddress: bridgeAddress,
-          data: [nonce, BlockchainIndex[Chains.WORKNET], BNValue, userWalletAddress, this.userData.id, symbol],
-        });
+        const [feeRes] = await Promise.all([
+          this.$store.dispatch('wallet/getContractFeeData', {
+            method: 'swap',
+            abi: BuyWQT,
+            contractAddress: bridgeAddress,
+            data: [nonce, BlockchainIndex[Chains.WORKNET], BNValue, userWalletAddress, this.userData.id, symbol],
+          }),
+          this.$store.dispatch('wallet/getBalance'),
+        ]);
 
         this.SetLoader(true);
         if (!feeRes.ok) {
