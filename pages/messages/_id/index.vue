@@ -229,7 +229,6 @@ export default {
     isClosedQuestChat() {
       return (
         (this.currChat?.questChat?.status === QuestChatStatus.Closed)
-        //  TODO blocked
         || [QuestStatuses.Done, QuestStatuses.Closed, QuestStatuses.Blocked].includes(+this.$route.query.status)
       );
     },
@@ -237,9 +236,9 @@ export default {
       return this.isGroupChat && !this.amIOwner;
     },
     amIOwner() {
-      const currMemeberData = this.currChat?.members && this.currChat?.members.find((el) => el.userId === this.userData.id);
-      if (!currMemeberData) return false;
-      return this.currChat?.groupChat?.ownerMemberId === currMemeberData.id;
+      const currMemberData = this.currChat?.members && this.currChat?.members.find((el) => el.userId === this.userData.id);
+      if (!currMemberData) return false;
+      return this.currChat?.groupChat?.ownerMemberId === currMemberData.id;
     },
     privateCorrespondentMember() {
       return this.currChat?.members && this.currChat?.members.find((el) => el.userId !== this.userData.id);
