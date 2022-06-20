@@ -126,7 +126,7 @@ export default {
         selectedToken, balance, maxFeeForNativeToken,
       } = this;
       const fullBalance = new BigNumber(balance[selectedToken].fullBalance);
-      if (selectedToken === TokenSymbols.WQT) return fullBalance.minus(maxFeeForNativeToken).toString();
+      if (selectedToken === this.nativeTokenSymbol) return fullBalance.minus(maxFeeForNativeToken).toString();
       return fullBalance.toString();
     },
   },

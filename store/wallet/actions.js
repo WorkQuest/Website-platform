@@ -438,6 +438,7 @@ export default {
         connectionWS.send(JSON.stringify(request));
       };
       connectionWS.onmessage = async (ev) => {
+        console.log(ev);
         const { events } = JSON.parse(ev.data).result;
         const recipient = events ? events['ethereum_tx.recipient'][0] : null;
 
