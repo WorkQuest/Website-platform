@@ -3,10 +3,10 @@ export default {
   // GMAPKEY: process.env.GMAPKEY,
   // SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
-  WQ_PROVIDER: 'https://dev-node-ams3.workquest.co/',
-  ETH_PROVIDER: 'https://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/eth/rinkeby', // https://rinkeby.infura.io/v3/44ca23c0e48243ba920ca8b0c1ef2d93',
-  BSC_PROVIDER: 'https://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/bsc/testnet', // 'https://data-seed-prebsc-1-s1.binance.org:8545',
-  POLYGON_PROVIDER: 'https://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/polygon/mumbai', // 'https://rpc-mumbai.maticvigil.com',
+  WQ_PROVIDER: 'https://dev-node-ams3.workquest.co/rpc/',
+  ETH_PROVIDER: 'https://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/eth/rinkeby',
+  BSC_PROVIDER: 'https://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/bsc/testnet',
+  POLYGON_PROVIDER: 'https://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/polygon/mumbai',
 
   WQ_WS_PROVIDER: 'wss://dev-node-nyc3.workquest.co/tendermint-rpc/websocket',
   ETH_WS_PROVIDER: 'wss://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/eth/rinkeby/ws',
