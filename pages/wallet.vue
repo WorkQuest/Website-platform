@@ -319,6 +319,7 @@ export default {
   watch: {
     selectedNetwork() {
       this.tokenSymbolsDd = WalletTokensData[this.selectedNetwork].tokenList;
+      this.updateWQAddress();
     },
     ddValue(newVal) {
       this.$store.dispatch('wallet/setSelectedToken', this.tokenSymbolsDd[newVal]);
@@ -346,6 +347,7 @@ export default {
     }
     if (!this.isWalletConnected) return;
 
+    this.updateWQAddress();
     window.addEventListener('resize', this.updateWQAddress);
 
     this.tokenSymbolsDd = WalletTokensData[this.selectedNetwork].tokenList;
