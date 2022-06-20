@@ -621,7 +621,7 @@ export default {
                     subtitle: this.$t('modals.checkExplorer'),
                     link: `${ExplorerUrl}/tx/${result.transactionHash}`,
                     img: images.SUCCESS,
-                    callback: await this.$router.push(`${Path.DISPUTES}/${dispute.id}`),
+                    callback: async () => await this.$router.push(`${Path.DISPUTES}/${dispute.id}`),
                   });
                 } else {
                   this.ShowModalFail({
