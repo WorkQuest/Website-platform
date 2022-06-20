@@ -476,7 +476,8 @@
       "searchWithMap": "المدينة/الشارع/المكان"
     },
     "worker": "الموظف",
-    "startQuest": "بدء طلب العمل"
+    "startQuest": "بدء طلب العمل",
+    "pending": "Pending"
   },
   "filters": {
     "dd": {

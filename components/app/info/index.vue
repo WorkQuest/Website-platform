@@ -81,16 +81,16 @@ export default {
           class: 'info_hide',
         },
         [QuestStatuses.ADChat]: {
-          text: this.$t('meta.invited'),
-          class: 'info_bg-yellow',
+          text: this.userRole === UserRole.WORKER ? this.$t('quests.pending') : '',
+          class: this.userRole === UserRole.WORKER ? 'info_bg-yellow' : 'info_hide',
         },
         [QuestStatuses.WaitWorker]: {
           text: this.$t('quests.activeQuest'),
           class: 'info_bg-green',
         },
         [QuestStatuses.WaitWorkerOnAssign]: {
-          text: this.$t('meta.invited'),
-          class: 'info_bg-yellow',
+          text: this.userRole === UserRole.WORKER ? this.$t('meta.invited') : '',
+          class: this.userRole === UserRole.WORKER ? 'info_bg-yellow' : 'info_hide',
         },
         [QuestStatuses.WaitEmployerConfirm]: {
           text: this.$t('quests.pendingConsideration'),
@@ -113,8 +113,8 @@ export default {
           class: 'info_bg-grey',
         },
         [QuestStatuses.Invited]: {
-          text: this.$t('meta.invited'),
-          class: 'info_bg-yellow',
+          text: this.userRole === UserRole.WORKER ? this.$t('quests.pending') : '',
+          class: this.userRole === UserRole.WORKER ? 'info_bg-yellow' : 'info_hide',
         },
       };
       if (this.userRole === UserRole.EMPLOYER) {

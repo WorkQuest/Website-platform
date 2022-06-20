@@ -476,7 +476,8 @@
       "searchWithMap": "Ville / Rue / Emplacement"
     },
     "worker": "Travailleur(se)",
-    "startQuest": "Commencer la quête"
+    "startQuest": "Commencer la quête",
+    "pending": "Pending"
   },
   "filters": {
     "dd": {

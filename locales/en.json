@@ -476,7 +476,8 @@
       "searchWithMap": "City / Street / Place"
     },
     "worker": "Worker",
-    "startQuest": "Start quest"
+    "startQuest": "Start quest",
+    "pending": "Pending"
   },
   "filters": {
     "dd": {

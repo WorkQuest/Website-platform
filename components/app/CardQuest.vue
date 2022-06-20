@@ -252,9 +252,9 @@ export default {
           class: 'card-quest__state_green',
         },
         [QuestStatuses.WaitWorkerOnAssign]: {
-          title: this.$t('meta.invited'),
+          title: this.userRole === UserRole.WORKER ? this.$t('meta.invited') : '',
           progressText: this.$t('quests.questWaitConfirm'),
-          class: 'card-quest__state_yellow',
+          class: this.userRole === UserRole.WORKER ? 'card-quest__state_yellow' : '',
         },
         [QuestStatuses.WaitEmployerConfirm]: {
           title: this.$t('quests.pendingConsideration'),
@@ -282,7 +282,7 @@ export default {
           class: 'card-quest__state_gray',
         },
         [QuestStatuses.Invited]: {
-          title: this.$t('meta.invited'),
+          title: this.$t('quests.pending'),
           progressText: this.$t('quests.waitWorkerOnAssign'),
           class: 'card-quest__state_yellow',
         },
@@ -319,7 +319,7 @@ export default {
 
       if (this.userRole === UserRole.WORKER) {
         if (responded) {
-          if (questStatus === QuestStatuses.WaitWorkerOnAssign) return this.questStatusesData[QuestStatuses.Invited];
+          if (questStatus === QuestStatuses.WaitWorkerOnAssign) return this.questStatusesData[QuestStatuses.WaitWorkerOnAssign];
           return this.questStatusesData[QuestStatuses.Responded];
         }
         if (invited) {

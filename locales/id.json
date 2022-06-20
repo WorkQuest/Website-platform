@@ -476,7 +476,8 @@
       "searchWithMap": "Kota / Jalan / Tempat"
     },
     "worker": "Pekerja",
-    "startQuest": "Mulai quest"
+    "startQuest": "Mulai quest",
+    "pending": "Pending"
   },
   "filters": {
     "dd": {
