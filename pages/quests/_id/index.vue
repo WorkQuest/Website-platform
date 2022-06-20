@@ -543,7 +543,9 @@ export default {
     async openDispute() {
       const { quest: { status, openDispute, contractAddress } } = this;
 
-      if (status === QuestStatuses.Dispute) {
+      if (status === QuestStatuses.Dispute || openDispute?.id) {
+        // sometimes can be delay on contracts, but dispute on backend already created and has status pending
+        // for this case we are checking openDispute?.id
         await this.$router.push(`${Path.DISPUTES}/${openDispute.id}`);
         return;
       }
