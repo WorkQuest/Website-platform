@@ -56,8 +56,11 @@ export const getChainIdByChain = (chain) => {
       if (!IS_PROD) return ChainsId.BSC_TEST;
       return ChainsId.BSC_MAIN;
     case Chains.WORKNET:
-      if (!IS_PROD) return ChainsId.WORKNET_DEV;
-      return ChainsId.WORKNET_TEST;
+      if (!IS_PROD) {
+        if (process.env.BRANCH === 'develop') return ChainsId.WORKNET_DEV;
+        return ChainsId.WORKNET_TEST;
+      }
+      return ChainsId.WORKNET_TEST; // TODO: mainnet chainid
     case Chains.POLYGON:
       if (!IS_PROD) return ChainsId.MUMBAI_TEST;
       return ChainsId.MATIC_MAIN;
