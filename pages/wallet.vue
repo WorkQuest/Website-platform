@@ -245,7 +245,7 @@ export default {
       return [
         BuyWQTTokensData.get(Chains.WORKNET),
         BuyWQTTokensData.get(Chains.ETHEREUM),
-        // BuyWQTTokensData.get(Chains.BINANCE), // TODO [!!!]: вернуть как появится моралис
+        BuyWQTTokensData.get(Chains.BINANCE),
         BuyWQTTokensData.get(Chains.POLYGON),
       ];
     },
@@ -276,7 +276,8 @@ export default {
       return `${this.selectedTokenData?.balance || '0'} ${this.selectedToken}`;
     },
     wqAddress() {
-      return this.convertToBech32('wq', this.userWalletAddress);
+      if (this.selectedNetwork === Chains.WORKNET) return this.convertToBech32('wq', this.userWalletAddress);
+      return this.userWalletAddress;
     },
     shortWqAddress() {
       return this.CutTxn(this.wqAddress, 8, 8);

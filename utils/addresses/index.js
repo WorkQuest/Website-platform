@@ -21,6 +21,12 @@ export const IS_PROD = ['master', 'stage', 'testnet'].includes(process.env.BRANC
 
  * @property ETH_PROVIDER
  * @property BSC_PROVIDER
+ * @property POLYGON_PROVIDER
+
+ * @property WQ_WS_PROVIDER
+ * @property ETH_WS_PROVIDER
+ * @property WQ_WS_PROVIDER
+ * @property POLYGON_WS_PROVIDER
 
  * @property WQ_PROVIDER
  * @property WQ_EXPLORER
@@ -29,7 +35,6 @@ export const IS_PROD = ['master', 'stage', 'testnet'].includes(process.env.BRANC
  * @property NOTIFS_URL
  * @property WS_NOTIFS_URL
  * @property WS_CHAT_ACTIONS_URL
- * @property WS_WQ_PROVIDER
 
  * @property ETHEREUM_RPC_URL - use process.env on project
  * @property ETHEREUM_BRIDGE

@@ -88,12 +88,13 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import { BlockchainIndex, BuyWQTTokensData, NetworkTokensData } from '~/utils/сonstants/bridge';
-import { Chains, TokenSymbols } from '~/utils/enums';
+import { Chains, TokenSymbols, WalletTokensData } from '~/utils/enums';
 import { WQTBuyCommission } from '~/utils/сonstants/commission';
-import { getStyledAmount, GetWalletProvider } from '~/utils/wallet';
+import { getStyledAmount, GetWalletProvider, getWalletTransactionCount } from '~/utils/wallet';
 import { fetchContractData, getAccountAddress, getChainIdByChain } from '~/utils/web3';
 import modals from '~/store/modals/modals';
-import { ERC20 } from '~/abi';
+import { BuyWQT, ERC20 } from '~/abi';
+import { images } from '~/utils/images';
 
 export default {
   name: 'ModalBuyWQT',
@@ -111,6 +112,7 @@ export default {
     ...mapGetters({
       selectedNetwork: 'wallet/getSelectedNetwork',
       userWalletAddress: 'user/getUserWalletAddress',
+      userData: 'user/getUserData',
       oraclePrices: 'oracle/getPrices',
       oracleSymbols: 'oracle/getSymbols',
     }),
@@ -118,7 +120,7 @@ export default {
       return [
         BuyWQTTokensData.get(Chains.WORKNET),
         BuyWQTTokensData.get(Chains.ETHEREUM),
-        // BuyWQTTokensData.get(Chains.BINANCE), // TODO [!!!]: вернуть как появится моралис
+        BuyWQTTokensData.get(Chains.BINANCE),
         BuyWQTTokensData.get(Chains.POLYGON),
       ];
     },
@@ -219,20 +221,80 @@ export default {
     },
     async submit() {
       if (this.inProgressWQT || !this.tokenData || this.insufficientFunds) return;
+
       this.SetLoader(true);
-      const res = await this.$store.dispatch('wallet/swap', {
-        amount: this.amount,
-        tokenAddress: this.tokenList[this.selectedToken].tokenAddress,
-        bridgeAddress: this.networkList[this.selectedNetworkIndex].bridgeAddress,
-        isNative: false,
-        symbol: this.tokenData.symbol,
-        toChainIndex: BlockchainIndex[Chains.WORKNET],
-        decimals: this.tokenData.decimals,
+
+      const { tokenAddress } = this.tokenList[this.selectedToken];
+      const { bridgeAddress } = this.networkList[this.selectedNetworkIndex];
+      const nativeTokenSymbol = WalletTokensData[this.selectedNetwork].tokenList[0];
+      const { decimals, symbol } = this.tokenData;
+      const { amount, userWalletAddress } = this;
+
+      const explorerRef = `${WalletTokensData[this.selectedNetwork].explorer}/tx/`;
+
+      const BNValue = new BigNumber(amount).shiftedBy(Number(decimals)).toString();
+
+      await this.MakeApprove({
+        title: 'BuyWQT Approve',
+        contractAddress: bridgeAddress,
+        tokenAddress,
+        amount,
+        decimals,
+        symbol,
+        nativeTokenSymbol,
+        isHexUserWalletAddress: true,
+      }).then(async () => {
+        this.SetLoader(true);
+
+        const nonce = await getWalletTransactionCount();
+        const feeRes = await this.$store.dispatch('wallet/getContractFeeData', {
+          method: 'swap',
+          abi: BuyWQT,
+          contractAddress: bridgeAddress,
+          data: [nonce, BlockchainIndex[Chains.WORKNET], BNValue, userWalletAddress, this.userData.id, symbol],
+        });
+
+        this.SetLoader(true);
+        if (!feeRes.ok) {
+          this.ShowToast(feeRes.msg, 'Approve error');
+          return;
+        }
+
+        this.ShowModal({
+          key: modals.transactionReceipt,
+          title: 'BuyWQT Swap',
+          fields: {
+            from: { name: this.$t('meta.fromBig'), value: userWalletAddress },
+            to: { name: this.$t('meta.toBig'), value: bridgeAddress },
+            fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: nativeTokenSymbol },
+          },
+          submitMethod: async () => {
+            const res = await this.$store.dispatch('wallet/swap', {
+              toChainIndex: BlockchainIndex[Chains.WORKNET],
+              isNative: false,
+              bridgeAddress,
+              amount,
+              symbol,
+              decimals,
+              isHexUserWalletAddress: true,
+            });
+            this.SetLoader(false);
+            if (res.ok) {
+              const { transactionHash } = res.result;
+              this.ShowModal({
+                key: modals.status,
+                img: images.TRANSACTION_SEND,
+                title: this.$t('modals.transactionSent'),
+                link: explorerRef + transactionHash,
+              });
+            }
+          },
+        });
+      }).catch((err) => {
+        console.error(err);
+      }).finally(() => {
+        this.SetLoader(false);
       });
-      this.SetLoader(false);
-      if (res.ok) {
-        this.ShowModal({ key: modals.transactionSend });
-      }
     },
   },
 };

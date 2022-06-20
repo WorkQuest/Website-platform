@@ -3,18 +3,21 @@ export default {
   // GMAPKEY: process.env.GMAPKEY,
   // SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
-  ETH_PROVIDER: 'https://rinkeby.infura.io/v3/44ca23c0e48243ba920ca8b0c1ef2d93',
-  BSC_PROVIDER: 'https://data-seed-prebsc-1-s1.binance.org:8545',
-  POLYGON_PROVIDER: 'https://rpc-mumbai.maticvigil.com',
-
   WQ_PROVIDER: 'https://dev-node-ams3.workquest.co/',
+  ETH_PROVIDER: 'https://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/eth/rinkeby', // https://rinkeby.infura.io/v3/44ca23c0e48243ba920ca8b0c1ef2d93',
+  BSC_PROVIDER: 'https://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/bsc/testnet', // 'https://data-seed-prebsc-1-s1.binance.org:8545',
+  POLYGON_PROVIDER: 'https://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/polygon/mumbai', // 'https://rpc-mumbai.maticvigil.com',
+
+  WQ_WS_PROVIDER: 'wss://dev-node-nyc3.workquest.co/tendermint-rpc/websocket',
+  ETH_WS_PROVIDER: 'wss://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/eth/rinkeby/ws',
+  BSC_WS_PROVIDER: 'wss://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/bsc/testnet/ws',
+  POLYGON_WS_PROVIDER: 'wss://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/polygon/mumbai/ws',
+
   WQ_EXPLORER: 'https://dev-explorer.workquest.co/api/v1',
   WQ_ORACLE_URL: 'https://dev-oracle.workquest.co/api/v1',
-
   NOTIFS_URL: 'https://notifications.workquest.co/api/',
   WS_NOTIFS_URL: 'wss://notifications.workquest.co/api/v1/notifications',
   WS_CHAT_ACTIONS_URL: 'wss://dev-app.workquest.co/api/v1/notifications/chat',
-  WS_WQ_PROVIDER: 'wss://dev-node-nyc3.workquest.co/tendermint-rpc/websocket',
 
   ETHEREUM_BRIDGE: '0x03883AE9F07D71a1b67b89fD4af83B9A81e3f8C4',
   ETHEREUM_LP_TOKEN: '0x6dc948fF7AC50B60ecFd208974aE79f9A444Fe18',
