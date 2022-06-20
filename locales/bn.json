@@ -192,6 +192,7 @@
     "choosePeriod": "মেয়াদ চয়ন করুন",
     "verified": "Verified",
     "dispute": "রোধ নং",
+    "disputeReview": "Dispute Review",
     "approve": "অনুমোদন করুন",
     "openedQuests": "খোলা quest",
     "addLiquidity": "তারল্য যোগ করুন",
@@ -369,6 +370,7 @@
     "questDesc": "Quest description",
     "closed": "Closed",
     "rejected": "Rejected",
+    "blocked": "Blocked",
     "completedWorkAccepted": "Completed work on quest accepted!",
     "completedWorkRejected": "Completed work on quest rejected!",
     "workOnQuestAccepted": "Work on quest accepted!",
@@ -1511,7 +1513,7 @@
       "quests": "Quests",
       "activeQuests" : "Active Quests",
       "completedQuests": "Completed Quests",
-      "starred": "Starred"
+      "starred": "Favorites"
     }
   },
   "settings": {

@@ -192,6 +192,7 @@
     "choosePeriod": "اختيار الفترة",
     "verified": "Verified",
     "dispute": "النزاع",
+    "disputeReview": "Dispute Review",
     "approve": "الموافقة",
     "openedQuests": "طلبات العمل المفتوحة",
     "addLiquidity": "إضافة سيولة",
@@ -369,6 +370,7 @@
     "questDesc": "Quest description",
     "closed": "Closed",
     "rejected": "Rejected",
+    "blocked": "Blocked",
     "completedWorkAccepted": "Completed work on quest accepted!",
     "completedWorkRejected": "Completed work on quest rejected!",
     "workOnQuestAccepted": "Work on quest accepted!",
@@ -1511,7 +1513,7 @@
       "quests": "Quests",
       "activeQuests" : "Active Quests",
       "completedQuests": "Completed Quests",
-      "starred": "Starred"
+      "starred": "Favorites"
     }
   },
   "settings": {

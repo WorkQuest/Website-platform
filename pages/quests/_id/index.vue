@@ -350,13 +350,15 @@ export default {
           assignedWorkerId,
           status,
         },
-        userData: { id },
+        userData: { id: myId },
         isEmployer,
       } = this;
       const arr = isEmployer ? this.setEmployerBtnsArr() : this.setWorkerBtnsArr();
 
-      if ((questChat?.workerId === id || (questChat?.employerId === id && assignedWorkerId))
-        && ![QuestStatuses.Closed, QuestStatuses.Rejected, QuestStatuses.Done].includes(status)) {
+      if (
+        (questChat?.workerId === myId || (questChat?.employerId === myId && assignedWorkerId))
+        && ![QuestStatuses.Closed, QuestStatuses.Blocked, QuestStatuses.Done].includes(status)
+      ) {
         arr.push({
           name: this.$t('meta.btns.goToChat'),
           class: 'base-btn_goToChat',
@@ -541,7 +543,9 @@ export default {
     async openDispute() {
       const { quest: { status, openDispute, contractAddress } } = this;
 
-      if (status === QuestStatuses.Dispute) {
+      if (status === QuestStatuses.Dispute || openDispute?.id) {
+        // sometimes can be delay on contracts, but dispute on backend already created and has status pending
+        // for this case we are checking openDispute?.id
         await this.$router.push(`${Path.DISPUTES}/${openDispute.id}`);
         return;
       }
@@ -576,6 +580,7 @@ export default {
             problemDescription,
             questId: this.quest?.id,
           });
+          this.SetLoader(false);
           this.ShowModal({
             key: modals.status,
             title: this.$t('modals.transactionSent'),
@@ -812,7 +817,31 @@ export default {
       this.ShowModal({
         key: modals.sendARequest,
         title: this.$tc('modals.titles.sendARequest'),
-        questId: this.quest.id,
+        submit: async (files, message) => {
+          this.CloseModal();
+          this.SetLoader(true);
+          const questId = this.quest.id;
+          const medias = await this.uploadFiles(files);
+          const { ok } = await this.$store.dispatch('quests/respondOnQuest', {
+            data: {
+              message,
+              medias,
+            },
+            questId,
+          });
+
+          if (ok) {
+            await this.$store.dispatch('quests/getQuest', questId);
+            this.ShowModal({
+              key: modals.status,
+              img: images.MESSAGE,
+              title: this.$t('modals.titles.requestSend'),
+              subtitle: this.$t('modals.waitResponseFromEmployer'),
+            });
+          } else this.ShowModalFail({});
+
+          this.SetLoader(false);
+        },
       });
     },
     async suggestToAddReview() {

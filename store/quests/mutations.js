@@ -11,17 +11,11 @@ export default {
     state.employeeList = users;
     state.employeeCount = count;
   },
-  setCurrentWorker(state, data) {
-    state.currentWorker = data;
-  },
   setInfoDataMode(state, data) {
     state.infoDataMode = data;
   },
   setCurrentStepEditQuest(state, data) {
     state.currentStepEditQuest = data;
-  },
-  setCurrentStepCreateQuest(state, data) {
-    state.currentStepCreateQuest = data;
   },
   setAllQuests(state, data) {
     state.allQuests = data;
@@ -47,9 +41,6 @@ export default {
       state.invited = state.invited.filter((item) => item.id !== invited.id);
       if (invited.status === QuestsResponseStatus.Accepted) state.invited.push(invited);
     }
-  },
-  setResponsesMy(state, data) {
-    state.responsesMy = data;
   },
   setFilters(state, data) {
     state.filters = data;

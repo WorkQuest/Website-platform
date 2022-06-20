@@ -25,11 +25,16 @@
                 {{ currChat && currChat.questChat && currChat.questChat.quest.title }}
               </div>
               <div
-                v-if="currChat.type === ChatType.PRIVATE"
+                v-if="currChat.type === ChatType.PRIVATE && privateCorrespondentMember.type === $options.UserRoles.USER"
                 class="chat-container__quest-link"
-                @click="$router.push(`${$options.Path.PROFILE}/${privateCorrespondentMember.user.id}`)"
+                @click="$router.push(`${$options.Path.PROFILE}/${privateCorrespondentMember.userId}`)"
               >
                 {{ privateCorrespondentFullName || '-' }}
+              </div>
+              <div v-else-if="currChat.type === ChatType.PRIVATE && privateCorrespondentMember.type === $options.UserRoles.ADMIN">
+                <div class="chat-container__group-name">
+                  {{ $t('chat.workquestAdmin') }}
+                </div>
               </div>
               <div
                 v-if="isGroupChat"
@@ -61,8 +66,10 @@
             {'chat-container__body_big' : chatId === 'starred' || isClosedQuestChat}]"
         />
         <div class="chat-container__footer footer">
-          <div
+          <validation-observer
             v-show="chatId !== 'starred' && !isClosedQuestChat"
+            v-slot="{ invalid }"
+            tag="div"
             class="footer__controls"
           >
             <div class="chat-container__file-cont">
@@ -88,9 +95,11 @@
               </label>
             </div>
             <base-field
+              ref="chatInput"
               v-model="messageText"
               mode="chat"
-              is-hide-error
+              rules="max:1600"
+              :name="$t('modals.message')"
               :auto-focus="true"
               :placeholder="$t('chat.writeYouMessage')"
               :on-enter-press="handleSendMessage"
@@ -101,12 +110,12 @@
               class="chat-container__send-btn"
               :class="{'chat-container__send-btn_active' : messageText || files}"
               data-selector="SEND-MESSAGE"
-              :disabled="isDisabledSendMessage"
+              :disabled="isDisabledSendMessage || invalid"
               @click="handleSendMessage"
             >
               <span class="icon-send" />
             </button>
-          </div>
+          </validation-observer>
           <div
             v-if="files.length"
             class="footer__medias"
@@ -117,7 +126,7 @@
               class="image-cont"
             >
               <img
-                v-if="file.type === 'image'"
+                v-if="file.type === $options.FileTypes.IMAGE"
                 :src="file.url"
                 class="image-cont__image"
                 alt=""
@@ -131,10 +140,20 @@
                 :title="file.file.name"
                 @click="openFile"
               >
+                <video
+                  v-if="file.type === $options.FileTypes.VIDEO"
+                  preload="metadata"
+                  class="image-cont__video"
+                >
+                  <source
+                    :src="file.url"
+                    :type="file.contentType"
+                  >
+                </video>
                 <span
                   :class="[
-                    {'icon-play_circle_outline' : file.type === 'video'},
-                    {'icon-file_blank_outline' : file.type !== 'video'}
+                    {'icon-play_circle_outline' : file.type === $options.FileTypes.VIDEO},
+                    {'icon-file_blank_outline' : file.type !== $options.FileTypes.VIDEO}
                   ]"
                 />
                 <div class="image-cont__title">
@@ -162,15 +181,19 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import ChatMenu from '~/components/ui/ChatMenu';
 import { QuestStatuses } from '~/utils/сonstants/quests';
+import { Path } from '~/utils/enums';
 import {
-  ChatType, QuestChatStatus, Path,
-} from '~/utils/enums';
+  ChatType, QuestChatStatus, UserRoles, FileTypes,
+} from '~/utils/сonstants/chat';
 
 export default {
   name: 'Messages',
   components: {
     ChatMenu,
   },
+  Path,
+  UserRoles,
+  FileTypes,
   data() {
     return {
       messageText: '',
@@ -199,20 +222,23 @@ export default {
       const {
         isClosedQuestChat, isGroupChat, amIOwner, isPrivateChat,
       } = this;
+      if (this.chatId === 'starred') return false;
       return (!isClosedQuestChat ? (!isGroupChat && !isPrivateChat)
         || (isGroupChat && !amIOwner) : false);
     },
     isClosedQuestChat() {
-      return ((this.currChat?.questChat?.status === QuestChatStatus.Closed)
-        || [QuestStatuses.Done, QuestStatuses.Closed, QuestStatuses.Rejected].includes(+this.$route.query.status));
+      return (
+        (this.currChat?.questChat?.status === QuestChatStatus.Closed)
+        || [QuestStatuses.Done, QuestStatuses.Closed, QuestStatuses.Blocked].includes(+this.$route.query.status)
+      );
     },
     canLeave() {
       return this.isGroupChat && !this.amIOwner;
     },
     amIOwner() {
-      const currMemeberData = this.currChat?.members && this.currChat?.members.find((el) => el.userId === this.userData.id);
-      if (!currMemeberData) return false;
-      return this.currChat?.groupChat?.ownerMemberId === currMemeberData.id;
+      const currMemberData = this.currChat?.members && this.currChat?.members.find((el) => el.userId === this.userData.id);
+      if (!currMemberData) return false;
+      return this.currChat?.groupChat?.ownerMemberId === currMemberData.id;
     },
     privateCorrespondentMember() {
       return this.currChat?.members && this.currChat?.members.find((el) => el.userId !== this.userData.id);
@@ -245,17 +271,21 @@ export default {
         sendPrivateMsg: (userId) => {
           this.ShowModal({
             key: modals.sendARequest,
-            title: this.$tc('modals.titles.sendPrivateMessage'),
-            callbackSend: async (files, text) => {
-              if (this.isLoading) return;
+            title: this.$t('modals.titles.sendPrivateMessage'),
+            submit: async (files, text) => {
+              this.CloseModal();
               this.SetLoader(true);
               const medias = await this.uploadFiles(files);
-              const { ok: isChatCreated, result } = await this.$store.dispatch('chat/handleCreatePrivateChat', { userId, medias, text });
+              const { ok, result } = await this.$store.dispatch('chat/handleCreatePrivateChat', {
+                userId,
+                medias,
+                text,
+              });
+
+              if (ok) await this.$router.push(`${Path.MESSAGES}/${result.chat.id}`);
+              else this.ShowModalFail({});
+
               this.SetLoader(false);
-              if (isChatCreated) {
-                await this.$router.push(`${Path.MESSAGES}/${result.chat.id}`);
-                this.CloseModal();
-              }
             },
           });
         },
@@ -263,7 +293,7 @@ export default {
     },
     goToQuest() {
       const { questId } = this.currChat.questChat;
-      this.$router.push(`/quests/${questId}`);
+      this.$router.push(`${Path.QUESTS}/${questId}`);
     },
     openFile(ev) {
       ev.stopPropagation();
@@ -272,7 +302,7 @@ export default {
       ev.preventDefault();
       ev.stopPropagation();
 
-      files = files.filter((file) => file.type === 'image' || file.type === 'video');
+      files = files.filter((file) => file.type === FileTypes.IMAGE || file.type === FileTypes.VIDEO);
       const index = files.findIndex((file) => file.url === fileUrl);
 
       this.ShowModal({
@@ -399,6 +429,7 @@ export default {
       };
       await this.$store.dispatch('chat/handleSendMessage', payload);
       this.isDisabledSendMessage = false;
+      this.$nextTick(() => this.$refs.chatInput.focus());
     },
     onEnter(e, callback) {
       if (!e.ctrlKey) {
@@ -561,12 +592,12 @@ export default {
 
   &__controls {
     height: 70px;
-    padding: 0 15px;
+    padding: 20px 15px 0;
     border-top: 1px solid #E9EDF2;
     display: grid;
     grid-template-columns: 40px 1fr 40px;
     gap: 10px;
-    align-items: center;
+    align-items: start;
   }
 
   &__medias {
@@ -601,6 +632,12 @@ export default {
     grid-template-rows: 1fr 20px;
     border: 1px solid #E9EDF2;
     text-decoration: unset;
+  }
+
+  &__video{
+    position: relative;
+    height: 73px;
+    width: 105px;
   }
 
   &__title {
@@ -653,7 +690,12 @@ export default {
     font-size: 60px;
   }
 }
-
+.icon-play_circle_outline{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 .styles {
   &__between {
     display: flex;

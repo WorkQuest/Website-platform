@@ -70,9 +70,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import {
-  Path, TokenSymbols, ChatType,
-} from '~/utils/enums';
+import { Path, TokenSymbols } from '~/utils/enums';
+import { ChatType } from '~/utils/сonstants/chat';
 import { QuestMethods, QuestsResponseStatus } from '~/utils/сonstants/quests';
 import modals from '~/store/modals/modals';
 import { error, success } from '~/utils/web3';
@@ -94,7 +93,6 @@ export default {
     ...mapGetters({
       isWalletConnected: 'wallet/getIsWalletConnected',
       userWalletAddress: 'user/getUserWalletAddress',
-      currentWorker: 'quests/getCurrentWorker',
       questData: 'quests/getQuest',
       invited: 'quests/getInvited',
       responded: 'quests/getResponded',
