@@ -10,7 +10,7 @@ const keysByBranch = {
   develop: develop.default,
 }[process.env.BRANCH];
 
-export const IS_PROD = ['master', 'stage', 'testnet'].includes(process.env.BRANCH);
+export const IS_PROD = ['master', 'stage'].includes(process.env.BRANCH);
 
 /**
  * @property BRANCH - ENV
