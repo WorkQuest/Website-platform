@@ -224,11 +224,13 @@ export default {
 
       this.SetLoader(true);
 
-      const { decimals, symbol, selectedNetwork } = this.tokenData;
+      const {
+        amount, userWalletAddress, selectedNetwork, userData: { id: userId },
+      } = this;
+      const { decimals, symbol } = this.tokenData;
       const { tokenAddress } = this.tokenList[this.selectedToken];
       const { bridgeAddress } = this.networkList[this.selectedNetworkIndex];
       const nativeTokenSymbol = WalletTokensData[selectedNetwork].tokenList[0];
-      const { amount, userWalletAddress } = this;
 
       await this.MakeApprove({
         title: 'BuyWQT Approve',
@@ -249,7 +251,7 @@ export default {
             method: 'swap',
             abi: BuyWQT,
             contractAddress: bridgeAddress,
-            data: [nonce, BlockchainIndex[Chains.WORKNET], BNValue, userWalletAddress, this.userData.id, symbol],
+            data: [nonce, BlockchainIndex[Chains.WORKNET], BNValue, userWalletAddress, userId, symbol],
           }),
           this.$store.dispatch('wallet/getBalance'),
         ]);
