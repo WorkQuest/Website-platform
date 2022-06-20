@@ -1,5 +1,6 @@
 import { PaidTariff } from '~/utils/сonstants/quests';
 import ENV, { IS_PROD } from '~/utils/addresses';
+import { images } from '~/utils/images';
 
 export const isProd = IS_PROD;
 
@@ -364,6 +365,7 @@ export const WalletTokensData = Object.freeze({
     WSProvider: ENV.ETH_WS_PROVIDER,
     chain: Chains.ETHEREUM,
     explorer: `https://${IS_PROD ? '' : 'rinkeby.'}etherscan.io`,
+    explorerIcon: images.ETH,
     tokenAddresses: [
       ENV.ETHEREUM_USDT_TOKEN,
     ],
@@ -376,6 +378,7 @@ export const WalletTokensData = Object.freeze({
     WSProvider: ENV.BSC_WS_PROVIDER,
     chain: Chains.BINANCE,
     explorer: `https://${IS_PROD ? '' : 'testnet.'}bscscan.com`,
+    explorerIcon: images.BNB,
     tokenAddresses: [
       ENV.BSC_USDT_TOKEN,
     ],
@@ -388,6 +391,7 @@ export const WalletTokensData = Object.freeze({
     WSProvider: ENV.POLYGON_WS_PROVIDER,
     chain: Chains.POLYGON,
     explorer: `https://${IS_PROD ? '' : 'mumbai.'}polygonscan.com`,
+    explorerIcon: images.POLYGON,
     tokenAddresses: [
       ENV.POLYGON_USDT_TOKEN,
     ],

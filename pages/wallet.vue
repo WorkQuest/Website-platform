@@ -136,27 +136,42 @@
             </base-btn>
           </div>
         </div>
-        <div class="wallet__switch-table">
-          <base-btn
-            data-selector="SWITCH-ALL"
-            :mode="getSwitchButtonMode(walletTables.TXS)"
-            @click="selectedWalletTable = walletTables.TXS"
-          >
-            {{ $t('meta.allTransactions') }}
-          </base-btn>
-          <base-btn
-            data-selector="SWITCH-COLLATERAL"
-            :mode="getSwitchButtonMode(walletTables.COLLATERAL)"
-            @click="selectedWalletTable = walletTables.COLLATERAL"
-          >
-            {{ $t('meta.collateralTransactions') }}
-          </base-btn>
-        </div>
-        <div
-          v-if="selectedWalletTable === walletTables.TXS"
-          class="wallet__txs"
+        <a
+          v-if="selectedNetwork !== $options.Chains.WORKNET"
+          :href="selectedNetworkExplorer.url"
+          target="_blank"
+          class="wallet__explorer-ref"
         >
-          <div v-if="selectedNetwork === $options.Chains.WORKNET">
+          <img
+            :src="selectedNetworkExplorer.icon"
+            :alt="selectedNetwork"
+          >
+          {{ selectedNetwork }} explorer
+        </a>
+        <div
+          v-else
+          class="wallet__table-wrapper"
+        >
+          <div class="wallet__switch-table">
+            <base-btn
+              data-selector="SWITCH-ALL"
+              :mode="getSwitchButtonMode(walletTables.TXS)"
+              @click="selectedWalletTable = walletTables.TXS"
+            >
+              {{ $t('meta.allTransactions') }}
+            </base-btn>
+            <base-btn
+              data-selector="SWITCH-COLLATERAL"
+              :mode="getSwitchButtonMode(walletTables.COLLATERAL)"
+              @click="selectedWalletTable = walletTables.COLLATERAL"
+            >
+              {{ $t('meta.collateralTransactions') }}
+            </base-btn>
+          </div>
+          <div
+            v-if="selectedWalletTable === walletTables.TXS"
+            class="wallet__txs"
+          >
             <div class="wallet__table table">
               <base-table
                 class="table__txs"
@@ -176,18 +191,12 @@
               :total-pages="totalPages"
             />
           </div>
-          <div v-else>
-            <a
-              :href="selectedNetworkExplorer"
-              target="_blank"
-            >{{ selectedNetwork }} explorer</a>
+          <div
+            v-else
+            class="wallet__txs"
+          >
+            <CollateralTable />
           </div>
-        </div>
-        <div
-          v-else
-          class="wallet__txs"
-        >
-          <CollateralTable />
         </div>
       </div>
     </div>
@@ -258,7 +267,11 @@ export default {
       return 0;
     },
     selectedNetworkExplorer() {
-      return `${WalletTokensData[this.selectedNetwork].explorer}/address/${this.userWalletAddress}`;
+      const net = WalletTokensData[this.selectedNetwork];
+      return {
+        url: `${net.explorer}/address/${this.userWalletAddress}`,
+        icon: net.explorerIcon,
+      };
     },
     nativeTokenSymbol() {
       return WalletTokensData[this.selectedNetwork].tokenList[0];
@@ -594,6 +607,27 @@ export default {
 
     &_full {
       grid-template-columns: 1fr;
+    }
+  }
+
+  &__explorer-ref {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 5px 15px;
+    background: $white;
+    border-radius: 6px;
+    border: 1px solid $black100;
+    text-decoration: none;
+    font-size: 20px;
+    line-height: 20px;
+    color: $black800;
+
+    & img {
+      margin-right: 5px;
+      border: 1px solid $black100;
+      border-radius: 50%;
     }
   }
 
