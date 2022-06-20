@@ -1613,7 +1613,8 @@
     "pending": "Pendente",
     "chatHistory": "Histórico de chat",
     "disputeTime": "Hora de abertura da disputa:",
-    "inProgress": "In progress"
+    "inProgress": "In progress",
+    "created": "Created"
   },
   "workers": {
     "searchQuests": "Pesquisa de buscas",

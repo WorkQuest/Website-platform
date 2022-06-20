@@ -1612,7 +1612,8 @@
     "pending": "অনিষ্পন্ন",
     "chatHistory": "চ্যাটের ইতিহাস",
     "disputeTime": "খোলার সময় নিয়ে বিরোধ :",
-    "inProgress": "In progress"
+    "inProgress": "In progress",
+    "created": "Created"
   },
   "workers": {
     "searchQuests": "Quest অনুসন্ধান করুন",

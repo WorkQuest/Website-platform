@@ -1612,7 +1612,8 @@
     "pending": "पेंडिंग",
     "chatHistory": "चैट हिस्ट्री",
     "disputeTime": "विवाद खुलने का समय:",
-    "inProgress": "In progress"
+    "inProgress": "In progress",
+    "created": "Created"
   },
   "workers": {
     "searchQuests": "Quest खोजें",

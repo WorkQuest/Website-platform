@@ -1613,7 +1613,8 @@
     "pending": "Pending",
     "chatHistory": "Chat history",
     "disputeTime": "Dispute opening time:",
-    "inProgress": "In progress"
+    "inProgress": "In progress",
+    "created": "Created"
   },
   "workers": {
     "searchQuests": "Поиск квестов",

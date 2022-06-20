@@ -1612,7 +1612,8 @@
     "pending": "Pendiente",
     "chatHistory": "Historial de chats",
     "disputeTime": "Hora de apertura de la disputa:",
-    "inProgress": "In progress"
+    "inProgress": "In progress",
+    "created": "Created"
   },
   "workers": {
     "searchQuests": "Buscar ofertas",

@@ -46,6 +46,19 @@
                   {{ item.decisionDescription ? item.decisionDescription : '-' }}
                 </div>
               </div>
+              <div
+                v-if="item.status === $options.DisputeStatues.CLOSED"
+                class="page__review"
+                @click.stop.prevent
+              >
+                <star-rating
+                  :stars-number="5"
+                  :data-selector="`ACTION-BTN-SHOW-REVIEW-MODAL-${item.id}`"
+                  :rating="item.currentUserDisputeReview && item.currentUserDisputeReview.mark"
+                  :is-disabled="item.currentUserDisputeReview && !!item.currentUserDisputeReview.mark"
+                  @input="showReviewModal($event, item.id)"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -70,6 +83,7 @@ import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import emptyData from '~/components/app/info/emptyData';
 import { DisputeStatues, Path, TokenSymbols } from '~/utils/enums';
+import modals from '~/store/modals/modals';
 
 const LIMIT = 10;
 
@@ -78,6 +92,7 @@ export default {
   components: {
     emptyData,
   },
+  DisputeStatues,
   data: () => ({
     currentPage: 1,
     query: {
@@ -108,15 +123,19 @@ export default {
   watch: {
     async currentPage() {
       this.query.offset = (this.currentPage - 1) * LIMIT;
-      await this.$store.dispatch('disputes/getUserDisputes', this.query);
+      await this.getUserDisputes();
     },
   },
   async mounted() {
-    this.SetLoader(true);
-    await this.$store.dispatch('disputes/getUserDisputes', this.query);
-    this.SetLoader(false);
+    await this.getUserDisputes();
   },
   methods: {
+    async getUserDisputes() {
+      this.ScrollToTop();
+      this.SetLoader(true);
+      await this.$store.dispatch('disputes/getUserDisputes', this.query);
+      this.SetLoader(false);
+    },
     cardData(item) {
       return [
         {
@@ -156,6 +175,24 @@ export default {
       };
       return obj[status];
     },
+    showReviewModal(rating, disputeId) {
+      this.ShowModal({
+        key: modals.review,
+        title: this.$tc('modals.titles.review'),
+        rating,
+        callback: async (message, mark) => {
+          this.CloseModal();
+          this.SetLoader(true);
+          const { ok, msg } = await this.$store.dispatch('user/sendReviewDispute', { disputeId, message, mark });
+          if (ok) {
+            this.ShowModal({ key: modals.thanks });
+          } else {
+            await this.ShowToast(msg || ' ');
+          }
+          this.SetLoader(false);
+        },
+      });
+    },
   },
 };
 
@@ -192,6 +229,7 @@ export default {
     -webkit-line-clamp: 10;
     box-orient: vertical;
     -webkit-box-orient: vertical;
+    word-break: break-word;
   }
   &__title {
     @include text-simple;
@@ -199,32 +237,44 @@ export default {
     font-size: 25px;
     color: $black800;
     text-align: left;
+    word-break: break-word;
   }
   &__card-body {
+    height: fit-content;
+    max-height: 400px;
     margin: 20px;
+    padding-bottom: 35px;
   }
   &__dispute-cards {
     display: grid;
-    width: 100%;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 50%);
+    grid-template-rows: auto;
     grid-gap: 15px;
   }
   &__card {
+    position:relative;
     background-color: $white;
     border-radius: 6px;
     display: grid;
     grid-template-columns: 10fr 0.5fr 10fr;
     width: 100%;
-    height: 100%;
     transition: .5s;
     &:hover {
       box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.1);
       cursor: pointer;
     }
   }
+  &__review{
+    position: absolute;
+    width:96px;
+    bottom: 20px;
+    right: 20px;
+    margin-top:20px;
+  }
   &__text {
     @include text-simple;
     font-size: 16px;
+    word-break: break-all;
     &_blue {
       color: $blue;
     }

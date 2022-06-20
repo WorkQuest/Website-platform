@@ -1613,7 +1613,8 @@
     "pending": "قيد الانتظار",
     "chatHistory": "سجل الدردشة",
     "disputeTime": "وقت فتح النزاع:",
-    "inProgress": "In progress"
+    "inProgress": "In progress",
+    "created": "Created"
   },
   "workers": {
     "searchQuests": "البحث في طلبات العمل",

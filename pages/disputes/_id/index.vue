@@ -25,11 +25,35 @@
           {{ disputeStatus }}
         </div>
       </div>
-      <card-quest
-        :quest="disputeData.quest"
-        :data-selector="`QUEST-CARD-${disputeData.quest.id}`"
-        :dispute-id="disputeData.id"
-      />
+      <div :class="disputeData.status >= $options.DisputeStatues.PENDING_CLOSED ? 'container-quest-decision' :'container-quest'">
+        <card-quest
+          class="container-quest-decision__card-quest"
+          :quest="disputeData.quest"
+          :data-selector="`QUEST-CARD-${disputeData.quest.id}`"
+          :dispute-id="disputeData.id"
+        />
+        <div
+          v-if="disputeData.status >= $options.DisputeStatues.PENDING_CLOSED"
+          class="decision"
+        >
+          <div class="decision__block">
+            <div class="decision__title">
+              {{ $t('disputes.decision') }}
+            </div>
+            <div class="decision__text">
+              {{ disputeData.decisionDescription ? disputeData.decisionDescription : '-' }}
+            </div>
+          </div>
+          <star-rating
+            class="decision__review"
+            :stars-number="5"
+            data-selector="ACTION-BTN-SHOW-REVIEW-MODAL-DISPUTE"
+            :rating="disputeMark"
+            :is-disabled="!!disputeMark"
+            @input="showReviewModal($event, disputeId)"
+          />
+        </div>
+      </div>
       <div class="dispute__chat-history">
         <div class="chat-history__container">
           <div class="chat-history__title">
@@ -54,9 +78,11 @@
 <script>
 import { mapGetters } from 'vuex';
 import { DisputeStatues } from '~/utils/enums';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'Index',
+  DisputeStatues,
   computed: {
     ...mapGetters({
       disputeData: 'disputes/getDispute',
@@ -67,6 +93,7 @@ export default {
     disputeStatus() {
       const obj = {
         [DisputeStatues.PENDING]: this.$t('disputes.pending'),
+        [DisputeStatues.CREATED]: this.$t('disputes.created'),
         [DisputeStatues.IN_PROGRESS]: this.$t('disputes.inProgress'),
         [DisputeStatues.PENDING_CLOSED]: this.$t('meta.completed'),
         [DisputeStatues.CLOSED]: this.$t('meta.completed'),
@@ -81,6 +108,9 @@ export default {
         [DisputeStatues.CLOSED]: 'dispute__status_green',
       }[this.disputeData.status];
     },
+    disputeMark() {
+      return this.disputeData.currentUserDisputeReview?.mark || 0;
+    },
   },
   async created() {
     await this.$store.dispatch('disputes/getDispute', this.disputeId);
@@ -91,6 +121,24 @@ export default {
   methods: {
     backToDisputes() {
       this.$router.back();
+    },
+    showReviewModal(rating, disputeId) {
+      this.ShowModal({
+        key: modals.review,
+        title: this.$tc('modals.titles.review'),
+        rating,
+        callback: async (message, mark) => {
+          this.CloseModal();
+          this.SetLoader(true);
+          const { ok, msg } = await this.$store.dispatch('user/sendReviewDispute', { disputeId, message, mark });
+          if (ok) {
+            this.ShowModal({ key: modals.thanks });
+          } else {
+            await this.ShowToast(msg || ' ');
+          }
+          this.SetLoader(false);
+        },
+      });
     },
   },
 };
@@ -135,6 +183,9 @@ export default {
 }
 
 .dispute {
+  &:hover {
+    border: 1px solid $black100;
+  }
   &__top {
     margin: 20px 0 20px 0;
     display: flex;
@@ -182,6 +233,63 @@ export default {
     margin: 20px 0 0 0;
   }
 }
+.container-quest {
+  grid-template-columns: 100%;
+}
+.container-quest-decision{
+  width:100%;
+  display:grid;
+  grid-template-columns: 69% 30%;
+  gap: 1%;
+  &__quest-card{
+    width:100%;
+    height:100%;
+  }
+}
+.decision{
+  position: relative;
+  display:flex;
+  width:100%;
+  height:100%;
+  background-color: $white;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  &:hover{
+    border: 1px solid $black100;
+  }
+  &__v-spacer {
+    width: 1px;
+    background-color: $black0;
+    margin: 0 20px;
+    height: 100%;
+  }
+  &__block{
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 10px 55px;
+    word-break: break-word;
+  }
+  &__review{
+   position: absolute;
+    bottom: 23px;
+    right: 20px;
+  }
+  &__title{
+    @include text-simple;
+    font-weight: 500;
+    font-size: 18px;
+    color: $black800;
+  }
+  &__text{
+    color: $black600;
+    padding-top: 3px;
+    max-height: 250px;
+    word-wrap: break-word;
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+}
 @include _1199() {
   .dispute {
     &__quests {
@@ -189,6 +297,20 @@ export default {
     }
     &__chat-history {
       padding: 0 10px;
+    }
+  }
+  .container-quest-decision{
+    width:100%;
+    display:grid;
+    grid-template-columns: 100%;
+    grid-template-rows: auto auto;
+  }
+  .decision{
+    flex-direction:column;
+    &__v-spacer {
+      height:1px;
+      width: 100%;
+      margin-top: 10px;
     }
   }
 }
