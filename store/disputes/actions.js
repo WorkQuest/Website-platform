@@ -6,7 +6,8 @@ export default {
       const { result } = await this.$axios.$post(`/v1/quest/${questId}/dispute`, { reason, problemDescription });
       return success(result);
     } catch (e) {
-      return console.log(e);
+      console.error('disputes/createDispute', e);
+      return error();
     }
   },
   async getDispute({ commit }, disputeId) {
