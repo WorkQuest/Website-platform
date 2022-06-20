@@ -25,9 +25,7 @@
           {{ disputeStatus }}
         </div>
       </div>
-      <div
-        :class="disputeData.status === $options.DisputeStatues.CLOSED ? 'container-quest-decision' :'container-quest'"
-      >
+      <div :class="disputeData.status >= $options.DisputeStatues.PENDING_CLOSED ? 'container-quest-decision' :'container-quest'">
         <card-quest
           class="container-quest-decision__card-quest"
           :quest="disputeData.quest"
@@ -35,7 +33,7 @@
           :dispute-id="disputeData.id"
         />
         <div
-          v-if="disputeData.status === $options.DisputeStatues.CLOSED"
+          v-if="disputeData.status >= $options.DisputeStatues.PENDING_CLOSED"
           class="decision"
         >
           <div class="decision__block">
@@ -79,7 +77,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import color from 'color';
 import { DisputeStatues } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
@@ -137,11 +134,7 @@ export default {
           if (ok) {
             this.ShowModal({ key: modals.thanks });
           } else {
-            await this.$store.dispatch('main/showToast', {
-              title: this.$t('toasts.error'),
-              variant: 'warning',
-              text: msg,
-            });
+            await this.ShowToast(msg || ' ');
           }
           this.SetLoader(false);
         },
@@ -259,10 +252,10 @@ export default {
   width:100%;
   height:100%;
   background-color: $white;
-  border: 1px solid $white;
   border-radius: 6px;
+  border: 1px solid transparent;
   &:hover{
-    box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
+    border: 1px solid $black100;
   }
   &__v-spacer {
     width: 1px;
@@ -274,12 +267,12 @@ export default {
     width:100%;
     display: flex;
     flex-direction: column;
-    padding: 20px 10px 45px;
+    padding: 20px 10px 55px;
     word-break: break-word;
   }
   &__review{
    position: absolute;
-    bottom: 20px;
+    bottom: 23px;
     right: 20px;
   }
   &__title{
@@ -290,9 +283,11 @@ export default {
   }
   &__text{
     color: $black600;
-    max-height: 280px;
+    padding-top: 3px;
+    max-height: 250px;
     word-wrap: break-word;
     overflow: auto;
+    overscroll-behavior: contain;
   }
 }
 @include _1199() {

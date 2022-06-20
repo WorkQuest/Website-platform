@@ -82,9 +82,7 @@ import { mapGetters } from 'vuex';
 import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import emptyData from '~/components/app/info/emptyData';
-import {
-  DisputeStatues, Path, QuestModeReview, TokenSymbols,
-} from '~/utils/enums';
+import { DisputeStatues, Path, TokenSymbols } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 const LIMIT = 10;
@@ -125,15 +123,19 @@ export default {
   watch: {
     async currentPage() {
       this.query.offset = (this.currentPage - 1) * LIMIT;
-      await this.$store.dispatch('disputes/getUserDisputes', this.query);
+      await this.getUserDisputes();
     },
   },
   async mounted() {
-    this.SetLoader(true);
-    await this.$store.dispatch('disputes/getUserDisputes', this.query);
-    this.SetLoader(false);
+    await this.getUserDisputes();
   },
   methods: {
+    async getUserDisputes() {
+      this.ScrollToTop();
+      this.SetLoader(true);
+      await this.$store.dispatch('disputes/getUserDisputes', this.query);
+      this.SetLoader(false);
+    },
     cardData(item) {
       return [
         {
@@ -185,11 +187,7 @@ export default {
           if (ok) {
             this.ShowModal({ key: modals.thanks });
           } else {
-            await this.$store.dispatch('main/showToast', {
-              title: this.$t('toasts.error'),
-              variant: 'warning',
-              text: msg,
-            });
+            await this.ShowToast(msg || ' ');
           }
           this.SetLoader(false);
         },
