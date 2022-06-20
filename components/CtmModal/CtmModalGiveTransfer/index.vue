@@ -86,7 +86,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
-import { TokenMap, TokenSymbols } from '~/utils/enums';
+import { TokenMap, TokenSymbols, WalletTokensData } from '~/utils/enums';
 import { ERC20 } from '~/abi/index';
 
 export default {
@@ -109,19 +109,24 @@ export default {
       userData: 'user/getUserData',
       isConnected: 'wallet/getIsWalletConnected',
       frozenBalance: 'wallet/getFrozenBalance',
+
+      selectedNetwork: 'wallet/getSelectedNetwork',
     }),
+    nativeTokenSymbol() {
+      return this.tokenSymbolsDd[0];
+    },
     tokenDecimals() {
       return this.balance[this.selectedToken].decimals;
     },
     tokenSymbolsDd() {
-      return Object.keys(this.balance);
+      return WalletTokensData[this.selectedNetwork].tokenList;
     },
     maxAmount() {
       const {
-        selectedToken, balance, maxFeeForNativeToken, frozenBalance,
+        selectedToken, balance, maxFeeForNativeToken,
       } = this;
       const fullBalance = new BigNumber(balance[selectedToken].fullBalance);
-      if (selectedToken === TokenSymbols.WQT) return fullBalance.minus(maxFeeForNativeToken).toString();
+      if (selectedToken === this.nativeTokenSymbol) return fullBalance.minus(maxFeeForNativeToken).toString();
       return fullBalance.toString();
     },
   },
@@ -154,21 +159,24 @@ export default {
       if (!this.isConnected) return;
       this.isCanSubmit = false;
       const {
-        selectedToken, amount, userData, balance,
+        selectedToken, amount, userData, balance, nativeTokenSymbol,
       } = this;
-      if (selectedToken === TokenSymbols.WQT) {
+
+      // 0 token is always native token for current network!
+      if (nativeTokenSymbol === selectedToken) {
         const nativeTokenFee = await this.$store.dispatch('wallet/getTransferFeeData', {
           recipient: userData.wallet.address,
-          value: balance.WQT.fullBalance,
+          value: balance[nativeTokenSymbol].fullBalance,
         });
         if (nativeTokenFee.ok) this.maxFeeForNativeToken = nativeTokenFee.result.fee;
         else this.maxFeeForNativeToken = 0;
       } else {
+        const contractAddress = WalletTokensData[this.selectedNetwork].tokenAddresses[this.tokenSymbolsDd.indexOf(selectedToken) - 1];
         const feeTokens = await this.$store.dispatch('wallet/getContractFeeData', {
           method: 'transfer',
           abi: ERC20,
-          contractAddress: TokenMap[selectedToken],
-          data: [TokenMap[selectedToken], amount],
+          contractAddress,
+          data: [contractAddress, amount],
         });
         if (feeTokens.ok) this.maxFeeForNativeToken = feeTokens.result.fee;
         else this.maxFeeForNativeToken = 0;

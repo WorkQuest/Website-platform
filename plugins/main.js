@@ -318,11 +318,20 @@ Vue.mixin({
      * @param contractAddress - recipient
      * @param amount - token amount
      * @param approveTitle - title for modal
+     * @param decimals - approve token decimals
+     * @param symbol - approve token symbol
+     * @param nativeTokenSymbol - true -> WQT/ETH etc.
+     * @param isHexUserWalletAddress - display from address as hex address
      * @returns {Promise<unknown>}
      * @constructor
      */
     async MakeApprove({
-      tokenAddress, contractAddress, amount, approveTitle = this.$t('meta.approve'),
+      tokenAddress, contractAddress, amount,
+      approveTitle = this.$t('meta.approve'),
+      decimals = 18,
+      symbol = TokenSymbols.WUSD,
+      nativeTokenSymbol = TokenSymbols.WQT,
+      isHexUserWalletAddress,
     }) {
       return new Promise(async (resolve, reject) => {
         const allowance = await this.$store.dispatch('wallet/getAllowance', {
@@ -335,7 +344,7 @@ Vue.mixin({
               method: 'approve',
               abi: ERC20,
               contractAddress: tokenAddress,
-              data: [contractAddress, new BigNumber(amount).shiftedBy(18).toFixed(0).toString()],
+              data: [contractAddress, new BigNumber(amount).shiftedBy(Number(decimals)).toFixed(0).toString()],
             }),
             this.$store.dispatch('wallet/getBalance'),
           ]);
@@ -351,10 +360,13 @@ Vue.mixin({
             key: modals.transactionReceipt,
             title: approveTitle,
             fields: {
-              from: { name: this.$t('meta.fromBig'), value: this.convertToBech32('wq', this.userWalletAddress) },
+              from: {
+                name: this.$t('meta.fromBig'),
+                value: isHexUserWalletAddress ? this.userWalletAddress : this.convertToBech32('wq', this.userWalletAddress),
+              },
               to: { name: this.$t('meta.toBig'), value: contractAddress },
-              amount: { name: this.$t('modals.amount'), value: amount, symbol: TokenSymbols.WUSD },
-              fee: { name: this.$t('wallet.table.trxFee'), value: approveFee.result.fee, symbol: TokenSymbols.WQT },
+              amount: { name: this.$t('modals.amount'), value: amount, symbol },
+              fee: { name: this.$t('wallet.table.trxFee'), value: approveFee.result.fee, symbol: nativeTokenSymbol },
             },
             submitMethod: async () => {
               this.ShowToast('Approving...', 'Approve');

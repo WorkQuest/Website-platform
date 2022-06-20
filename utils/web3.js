@@ -56,8 +56,11 @@ export const getChainIdByChain = (chain) => {
       if (!IS_PROD) return ChainsId.BSC_TEST;
       return ChainsId.BSC_MAIN;
     case Chains.WORKNET:
-      if (!IS_PROD) return ChainsId.WORKNET_DEV;
-      return ChainsId.WORKNET_TEST;
+      if (!IS_PROD) {
+        if (process.env.BRANCH === 'develop') return ChainsId.WORKNET_DEV;
+        return ChainsId.WORKNET_TEST;
+      }
+      return ChainsId.WORKNET_TEST; // TODO: mainnet chainid
     case Chains.POLYGON:
       if (!IS_PROD) return ChainsId.MUMBAI_TEST;
       return ChainsId.MATIC_MAIN;
@@ -135,7 +138,7 @@ export const fetchContractData = async (_method, _abi, _address, _params, _provi
 
 export const sendTransaction = async (_method, payload, _provider = web3) => {
   if (!_provider) {
-    console.error('_provider is undefined');
+    console.error('sendTx _provider is undefined');
     return false;
   }
   let transactionData;

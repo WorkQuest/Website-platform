@@ -63,7 +63,7 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { TokenSymbols } from '~/utils/enums';
+import { TokenSymbols, WalletTokensData } from '~/utils/enums';
 
 export default {
   name: 'TransactionReceipt',
@@ -76,21 +76,26 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
       balance: 'wallet/getBalanceData',
+      selectedNetwork: 'wallet/getSelectedNetwork',
     }),
+    nativeTokenSymbol() {
+      return WalletTokensData[this.selectedNetwork].tokenList[0];
+    },
   },
   mounted() {
     const { fields } = this.options;
+    const { nativeTokenSymbol } = this;
     const amount = fields?.amount?.value;
     const symbol = fields?.amount?.symbol;
     const fee = fields?.fee?.value;
-    const wqtBalance = this.balance.WQT.fullBalance;
+    const nativeTokenBalance = this.balance[nativeTokenSymbol].fullBalance;
 
     // If we send WQT
-    if (fee && amount && symbol === TokenSymbols.WQT) {
-      this.canSend = new BigNumber(amount).plus(fee).isLessThanOrEqualTo(wqtBalance);
+    if (fee && amount && symbol === nativeTokenSymbol) {
+      this.canSend = new BigNumber(amount).plus(fee).isLessThanOrEqualTo(nativeTokenBalance);
     } else if (fee) {
       // Only need check transaction fee with user balance
-      this.canSend = new BigNumber(fee).isLessThanOrEqualTo(wqtBalance);
+      this.canSend = new BigNumber(fee).isLessThanOrEqualTo(nativeTokenBalance);
     }
   },
   methods: {

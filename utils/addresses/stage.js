@@ -3,14 +3,21 @@ export default {
   // GMAPKEY: process.env.GMAPKEY,
   // SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
-  WQ_PROVIDER: 'https://testnet-gate.workquest.co/rpc/',
+  WQ_PROVIDER: 'https://mainnet-gate.workquest.co',
+  ETH_PROVIDER: 'https://eth-mainnet.public.blastapi.io',
+  BSC_PROVIDER: 'https://bscrpc.com',
+  POLYGON_PROVIDER: 'https://polygon-mainnet.public.blastapi.io',
+
+  WQ_WS_PROVIDER: 'wss://testnet-gate.workquest.co/tendermint-rpc/websocket',
+  ETH_WS_PROVIDER: '',
+  BSC_WS_PROVIDER: '',
+  POLYGON_WS_PROVIDER: '',
+
   WQ_EXPLORER: 'https://testnet-explorer-api.workquest.co/api/v1',
   WQ_ORACLE_URL: 'https://testnet-oracle.workquest.co/api/v1',
-
   NOTIFS_URL: 'https://notifications.workquest.co/api/',
   WS_NOTIFS_URL: 'wss://notifications.workquest.co/api/v1/notifications',
   WS_CHAT_ACTIONS_URL: 'wss://testnet-app.workquest.co/api/v1/notifications/chat',
-  WS_WQ_PROVIDER: 'wss://testnet-gate.workquest.co/tendermint-rpc/websocket',
 
   ETHEREUM_BRIDGE: '0xd65815dA812C6eAEC0186215E43A12D76F5deCBc',
   ETHEREUM_LP_TOKEN: '0xf1fE852fCA1b5a869ef1FE06a2799E1F38B70B84',
@@ -32,7 +39,7 @@ export default {
   POLYGON_USDT_TOKEN: '0x631E327EA88C37D4238B5c559A715332266e7Ec1',
   POLYGON_STABLE_BRIDGE: '0xE2e7518080a0097492087E652E8dEB1f6b96B62b',
 
-  ETHEREUM_USDT_TOKEN: '0xD92E713d051C37EbB2561803a3b5FBAbc4962431',
+  ETHEREUM_USDT_TOKEN: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
   ETHEREUM_STABLE_BRIDGE: '0x9870a749Ae5CdbC4F96E3D0C067eB212779a8FA1',
 
   WBNB_TOKEN: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',

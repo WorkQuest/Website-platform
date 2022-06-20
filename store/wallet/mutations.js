@@ -42,4 +42,8 @@ export default {
   setStakingUserData(state, { pool, data }) {
     state.stakingUserData[pool] = data;
   },
+
+  setSelectedNetwork(state, networkIndex) {
+    state.selectedNetwork = networkIndex;
+  },
 };

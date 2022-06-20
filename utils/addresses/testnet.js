@@ -3,14 +3,21 @@ export default {
   // GMAPKEY: process.env.GMAPKEY,
   // SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
-  WQ_PROVIDER: 'https://testnet-gate.workquest.co/',
+  WQ_PROVIDER: 'https://testnet-gate.workquest.co',
+  ETH_PROVIDER: 'https://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/eth/rinkeby',
+  BSC_PROVIDER: 'https://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/bsc/testnet',
+  POLYGON_PROVIDER: 'https://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/polygon/mumbai',
+
+  WQ_WS_PROVIDER: 'wss://dev-node-nyc3.workquest.co/tendermint-rpc/websocket',
+  ETH_WS_PROVIDER: 'wss://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/eth/rinkeby/ws',
+  BSC_WS_PROVIDER: 'wss://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/bsc/testnet/ws',
+  POLYGON_WS_PROVIDER: 'wss://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/polygon/mumbai/ws',
+
   WQ_EXPLORER: 'https://testnet-explorer-api.workquest.co/api/v1',
   WQ_ORACLE_URL: 'https://testnet-oracle.workquest.co/api/v1',
-
   NOTIFS_URL: 'https://notifications.workquest.co/api/',
   WS_NOTIFS_URL: 'wss://notifications.workquest.co/api/v1/notifications',
   WS_CHAT_ACTIONS_URL: 'wss://testnet-app.workquest.co/api/v1/notifications/chat',
-  WS_WQ_PROVIDER: 'wss://testnet-gate.workquest.co/tendermint-rpc/websocket',
 
   ETHEREUM_BRIDGE: '0xd65815dA812C6eAEC0186215E43A12D76F5deCBc',
   ETHEREUM_LP_TOKEN: '0xf1fE852fCA1b5a869ef1FE06a2799E1F38B70B84',

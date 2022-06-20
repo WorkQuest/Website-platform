@@ -12,13 +12,13 @@ import {
   getTransferFeeData,
   getContractFeeData,
   getIsWalletConnected,
-  sendWalletTransaction,
+  sendWalletTransaction, connectWalletToProvider,
 } from '~/utils/wallet';
 
 import {
   error,
   success,
-  fetchContractData, getTransactionCount, getAccountAddress, createInstance, showToast, getGasPrice, getEstimateGas,
+  fetchContractData, showToast, getEstimateGas,
 } from '~/utils/web3';
 
 import {
@@ -32,8 +32,9 @@ import {
   TokenMap,
   TokenSymbols,
   StakingTypes,
-  WorknetTokenAddresses,
   TokenSymbolByContract,
+  ProviderTypesByChain,
+  WalletTokensData,
 } from '~/utils/enums';
 
 import ENV from '~/utils/addresses/index';
@@ -103,17 +104,20 @@ export default {
   setSelectedToken({ commit }, token) {
     commit('setSelectedToken', token);
   },
-  async getBalance({ commit }) {
+  async getBalance({ commit, getters }) {
+    const chain = getters.getSelectedNetwork;
+    const token = WalletTokensData[chain].tokenList[0];
     const res = await getBalance();
     commit('setBalance', {
-      symbol: TokenSymbols.WQT,
+      symbol: token,
       balance: res.ok ? res.result.balance : 0,
       fullBalance: res.ok ? res.result.fullBalance : 0,
     });
   },
-  async fetchCommonTokenInfo({ commit }) {
+  async fetchCommonTokenInfo({ commit, getters }) {
     try {
-      const tokens = await Promise.all(WorknetTokenAddresses.map(async (address) => await Promise.all([
+      const chain = getters.getSelectedNetwork;
+      const tokens = await Promise.all(WalletTokensData[chain].tokenAddresses.map(async (address) => await Promise.all([
         fetchContractData('symbol', ERC20, address, [], GetWalletProvider()),
         fetchContractData('decimals', ERC20, address, [], GetWalletProvider()),
       ])));
@@ -180,7 +184,6 @@ export default {
    */
   async transferToken({ _ }, payload) {
     const res = await sendWalletTransaction('transfer', payload);
-    // TODO fix it, sendWalletTransaction should return object with keys ok and result
     if (res.ok === false) return error(res);
     return success(res);
   },
@@ -411,8 +414,15 @@ export default {
     commit, dispatch, rootGetters, getters,
   }, { hexAddress, timestamp }) {
     try {
+      const network = getters.getSelectedNetwork;
+      const { WSProvider } = WalletTokensData[network];
+      if (!WSProvider) {
+        console.error('WSProvider not found for:', network);
+        return error();
+      }
+
       const userWalletAddress = rootGetters['user/getUserWalletAddress'].toLowerCase();
-      connectionWS = new WebSocket(ENV.WS_WQ_PROVIDER);
+      connectionWS = new WebSocket(WSProvider);
       connectionWS.onopen = () => {
         const request = {
           jsonrpc: '2.0',
@@ -461,13 +471,14 @@ export default {
           commit('setTransactionsCount', getters.getTransactionsCount + 1);
         }
       };
-      return true;
+      return success();
     } catch (err) {
       console.error(err);
       return error();
     }
   },
   async unsubscribeWS({ _ }) {
+    connectionWS?.close();
     connectionWS = null;
   },
   async setCallbackWS({ _ }, callback) {
@@ -476,20 +487,22 @@ export default {
 
   /** BuyWQT */
   async swap({ commit, dispatch, rootGetters }, {
-    amount, tokenAddress, bridgeAddress, isNative, symbol, toChainIndex, decimals,
+    amount, bridgeAddress, isNative, symbol, toChainIndex, decimals,
   }) {
     try {
+      const provider = GetWalletProvider();
+
       const userId = rootGetters['user/getUserData'].id;
-      const nonce = await getTransactionCount();
-      const accountAddress = await getAccountAddress();
+      const accountAddress = getWalletAddress();
+      const nonce = await provider.eth.getTransactionCount(accountAddress);
+      const bridgeInstance = await new provider.eth.Contract(BuyWQT, bridgeAddress);
       const value = new BigNumber(amount).shiftedBy(Number(decimals)).toString();
       const data = [nonce, toChainIndex, value, accountAddress, userId, symbol];
-      const bridgeInstance = await createInstance(BuyWQT, bridgeAddress);
 
       if (isNative) {
         showToast('Swapping', 'Swapping...', 'success');
         const [gasPrice, gas] = await Promise.all([
-          getGasPrice(),
+          provider.eth.getGasPrice(),
           getEstimateGas(null, null, bridgeInstance, 'swap', data, value),
         ]);
         const swapRes = await bridgeInstance.methods.swap(...data).send({
@@ -502,18 +515,9 @@ export default {
         return success(swapRes);
       }
 
-      const allowance = await fetchContractData('allowance', ERC20, tokenAddress, [accountAddress, bridgeAddress]);
-      if (new BigNumber(value).isGreaterThan(+allowance)) {
-        showToast('Swapping', 'Approving...', 'success');
-        const tokenInstance = await createInstance(ERC20, tokenAddress);
-        const { status } = await tokenInstance.methods.approve(bridgeAddress, value).send({ from: accountAddress });
-        if (!status) return error(500, 'Approve was failed');
-        showToast('Swapping', 'Approving done', 'success');
-      }
-
       showToast('Swapping', 'Swapping...', 'success');
       const [gasPrice, gas] = await Promise.all([
-        getGasPrice(),
+        provider.eth.getGasPrice(),
         getEstimateGas(null, null, bridgeInstance, 'swap', data),
       ]);
       const swapRes = await bridgeInstance.methods.swap(...data).send({
@@ -529,5 +533,31 @@ export default {
       showToast('Swapping error', e.message, 'danger');
       return error(e.code, 'Error in swap action', e.data);
     }
+  },
+
+  /** SWITCH NETWORK */
+  async connectToProvider({ commit, dispatch, rootGetters }, chain) {
+    const res = await connectWalletToProvider(ProviderTypesByChain[chain]);
+    if (res.ok) {
+      commit('setSelectedNetwork', chain);
+      commit('setSelectedToken', WalletTokensData[chain].tokenList[0]);
+
+      await Promise.all([
+        dispatch('fetchCommonTokenInfo'),
+        dispatch('unsubscribeWS'),
+      ]);
+
+      const userWalletAddress = rootGetters['user/getUserWalletAddress'];
+      // subscribe to WS wallet txs
+      await dispatch('subscribeWS', {
+        hexAddress: userWalletAddress,
+        timestamp: $nuxt.$moment(),
+      });
+
+      $nuxt.ShowToast(`Current: ${chain}`, 'Network switched');
+    } else {
+      $nuxt.ShowToast(res.msg, 'Error on switch network');
+    }
+    return res;
   },
 };

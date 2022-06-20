@@ -67,6 +67,27 @@ export const initWallet = (address, key) => {
   wallet.init(address, key);
 };
 
+export const connectWalletToProvider = (providerType) => {
+  if (!getIsWalletConnected()) {
+    console.error('Wallet is not connected');
+    return error(-1, 'Wallet is not connected');
+  }
+
+  const provider = ENV[providerType];
+  if (!providerType || !provider) {
+    console.error(`Wrong provider type: ${providerType}`);
+    return error(-2, `Wrong provider type: ${providerType}`);
+  }
+  // TODO: need to unsubscribe from WEB3 listeners!
+  web3 = new Web3(provider);
+  if (wallet.privateKey) {
+    const account = web3.eth.accounts.privateKeyToAccount(wallet.privateKey);
+    web3.eth.accounts.wallet.add(account);
+    web3.eth.defaultAccount = account.address;
+  }
+  return success();
+};
+
 /**
  * * Check wallet for current address
  * @param userAddress
@@ -143,6 +164,8 @@ export const getStyledAmount = (amount, full = false, decimals = 18) => {
 
 // web3.eth.net.getId() - если нужно будет получить chainId
 
+export const getWalletTransactionCount = () => web3.eth.getTransactionCount(wallet.address);
+
 // WQT
 export const getBalance = async () => {
   try {
@@ -198,7 +221,7 @@ export const getTransferFeeData = async (recipient, value) => {
     });
   } catch (e) {
     console.error('txFee error', e);
-    return error();
+    return error(-1, e.message, e);
   }
 };
 

@@ -1,5 +1,6 @@
 import { Chains, TokenSymbols, ExplorerUrl } from '~/utils/enums';
 import ENV, { IS_PROD } from '~/utils/addresses/index';
+import { images } from '~/utils/images';
 
 export const BlockchainIndex = Object.freeze({
   [Chains.WORKNET]: 1,
@@ -29,7 +30,7 @@ export const SwapAddresses = new Map([
   [
     Chains.ETHEREUM,
     {
-      icon: require('~/assets/img/ui/ethereum.svg'),
+      icon: images.ETH_BLACK,
       title: Chains.ETHEREUM,
       chain: Chains.ETHEREUM,
       index: BlockchainIndex.ETH,
@@ -44,7 +45,7 @@ export const SwapAddresses = new Map([
   [
     Chains.BINANCE,
     {
-      icon: require('~/assets/img/ui/bnb_yellow.svg'),
+      icon: images.BNB,
       title: Chains.BINANCE,
       chain: Chains.BINANCE,
       index: BlockchainIndex.BSC,
@@ -59,7 +60,7 @@ export const SwapAddresses = new Map([
   [
     Chains.WORKNET,
     {
-      icon: require('~/assets/img/ui/WQT.png'),
+      icon: images.WQT,
       title: Chains.WORKNET,
       chain: Chains.WORKNET,
       index: BlockchainIndex.WORKNET,
@@ -78,11 +79,20 @@ export const SwapAddresses = new Map([
 /** Buy WQT Modal */
 export const BuyWQTTokensData = new Map([
   [
+    Chains.WORKNET,
+    {
+      title: Chains.WORKNET,
+      chain: Chains.WORKNET,
+      icon: images.WQT,
+      tokens: [],
+    },
+  ],
+  [
     Chains.ETHEREUM,
     {
       title: Chains.ETHEREUM,
       chain: Chains.ETHEREUM,
-      icon: require('~/assets/img/ui/ethereum.svg'),
+      icon: images.ETH_BLACK,
       bridgeAddress: ENV.ETHEREUM_STABLE_BRIDGE,
       tokens: [
         {
@@ -97,7 +107,7 @@ export const BuyWQTTokensData = new Map([
     {
       title: Chains.BINANCE,
       chain: Chains.BINANCE,
-      icon: require('~/assets/img/ui/bnb_yellow.svg'),
+      icon: images.BNB,
       bridgeAddress: ENV.BSC_STABLE_BRIDGE,
       tokens: [
         {
@@ -112,7 +122,7 @@ export const BuyWQTTokensData = new Map([
     {
       title: Chains.POLYGON,
       chain: Chains.POLYGON,
-      icon: require('~/assets/img/ui/Polygon.svg'),
+      icon: images.POLYGON,
       bridgeAddress: ENV.POLYGON_STABLE_BRIDGE,
       tokens: [
         {

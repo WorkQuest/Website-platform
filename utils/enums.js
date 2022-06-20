@@ -1,5 +1,6 @@
 import { PaidTariff } from '~/utils/сonstants/quests';
 import ENV, { IS_PROD } from '~/utils/addresses';
+import { images } from '~/utils/images';
 
 export const isProd = IS_PROD;
 
@@ -188,15 +189,8 @@ export const TokenSymbols = Object.freeze({
   WBNB: 'WBNB',
   WETH: 'WETH',
   USDT: 'USDT',
+  MATIC: 'MATIC',
 });
-
-// wallet balance
-export const WorknetTokenAddresses = Object.freeze([
-  ENV.WORKNET_WUSD_TOKEN,
-  ENV.WORKNET_WBNB_TOKEN,
-  ENV.WORKNET_WETH_TOKEN,
-  ENV.WORKNET_USDT_TOKEN,
-]);
 
 export const TokenSymbolByContract = Object.freeze({
   [ENV.WORKNET_WUSD_TOKEN?.toLowerCase()]: TokenSymbols.WUSD,
@@ -330,3 +324,80 @@ export const EntityType = {
   QUEST: 'Quest',
   DISCUSSION_COMMENT: 'DiscussionComment',
 };
+
+/** WALLET */
+
+// For switch wallet providers
+export const ProviderTypesByChain = {
+  [Chains.WORKNET]: 'WQ_PROVIDER',
+  [Chains.ETHEREUM]: 'ETH_PROVIDER',
+  [Chains.BINANCE]: 'BSC_PROVIDER',
+  [Chains.POLYGON]: 'POLYGON_PROVIDER',
+};
+
+// wallet balance
+export const WorknetTokenAddresses = Object.freeze([
+  ENV.WORKNET_WUSD_TOKEN,
+  ENV.WORKNET_WBNB_TOKEN,
+  ENV.WORKNET_WETH_TOKEN,
+  ENV.WORKNET_USDT_TOKEN,
+]);
+
+export const WalletTokensData = Object.freeze({
+  [Chains.WORKNET]: {
+    WSProvider: ENV.WQ_WS_PROVIDER,
+    chain: Chains.WORKNET,
+    tokenAddresses: [
+      ENV.WORKNET_WUSD_TOKEN,
+      ENV.WORKNET_WBNB_TOKEN,
+      ENV.WORKNET_WETH_TOKEN,
+      ENV.WORKNET_USDT_TOKEN,
+    ],
+    tokenList: [
+      TokenSymbols.WQT,
+      TokenSymbols.WUSD,
+      TokenSymbols.BNB,
+      TokenSymbols.ETH,
+      TokenSymbols.USDT,
+    ],
+  },
+  [Chains.ETHEREUM]: {
+    WSProvider: ENV.ETH_WS_PROVIDER,
+    chain: Chains.ETHEREUM,
+    explorer: `https://${IS_PROD ? '' : 'rinkeby.'}etherscan.io`,
+    explorerIcon: images.ETH,
+    tokenAddresses: [
+      ENV.ETHEREUM_USDT_TOKEN,
+    ],
+    tokenList: [
+      TokenSymbols.ETH,
+      TokenSymbols.USDT,
+    ],
+  },
+  [Chains.BINANCE]: {
+    WSProvider: ENV.BSC_WS_PROVIDER,
+    chain: Chains.BINANCE,
+    explorer: `https://${IS_PROD ? '' : 'testnet.'}bscscan.com`,
+    explorerIcon: images.BNB,
+    tokenAddresses: [
+      ENV.BSC_USDT_TOKEN,
+    ],
+    tokenList: [
+      TokenSymbols.BNB,
+      TokenSymbols.USDT,
+    ],
+  },
+  [Chains.POLYGON]: {
+    WSProvider: ENV.POLYGON_WS_PROVIDER,
+    chain: Chains.POLYGON,
+    explorer: `https://${IS_PROD ? '' : 'mumbai.'}polygonscan.com`,
+    explorerIcon: images.POLYGON,
+    tokenAddresses: [
+      ENV.POLYGON_USDT_TOKEN,
+    ],
+    tokenList: [
+      TokenSymbols.MATIC,
+      TokenSymbols.USDT,
+    ],
+  },
+});

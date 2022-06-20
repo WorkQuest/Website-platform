@@ -39,6 +39,17 @@
         >
           <div class="wallet__balance balance">
             <div class="balance__top">
+              <div class="wallet__switch-network switch-network">
+                <base-dd
+                  :value="selectedNetworkIndex"
+                  data-selector="NETWORK"
+                  type="border"
+                  class="switch-network__dropdown"
+                  :items="networkList"
+                  is-icon
+                  @input="handleSwitchNetwork"
+                />
+              </div>
               <span class="balance__title">{{ $t('meta.balance') }}</span>
               <span class="balance__currency">
                 <span
@@ -125,50 +136,67 @@
             </base-btn>
           </div>
         </div>
-        <div class="wallet__switch-table">
-          <base-btn
-            data-selector="SWITCH-ALL"
-            :mode="getSwitchButtonMode(walletTables.TXS)"
-            @click="selectedWalletTable = walletTables.TXS"
-          >
-            {{ $t('meta.allTransactions') }}
-          </base-btn>
-          <base-btn
-            data-selector="SWITCH-COLLATERAL"
-            :mode="getSwitchButtonMode(walletTables.COLLATERAL)"
-            @click="selectedWalletTable = walletTables.COLLATERAL"
-          >
-            {{ $t('meta.collateralTransactions') }}
-          </base-btn>
-        </div>
-        <div
-          v-if="selectedWalletTable === walletTables.TXS"
-          class="wallet__txs"
+        <a
+          v-if="selectedNetwork !== $options.Chains.WORKNET"
+          :href="selectedNetworkExplorer.url"
+          target="_blank"
+          class="wallet__explorer-ref"
         >
-          <div class="wallet__table table">
-            <base-table
-              class="table__txs"
-              :title="$tc('wallet.table.trx')"
-              :items="styledTransactions"
-              :fields="walletTableFields"
-            />
-            <empty-data
-              v-if="!totalPages"
-              :description="$tc('wallet.table.empty')"
-              class="table__empty"
-            />
-          </div>
-          <base-pager
-            v-if="totalPages > 1"
-            v-model="currentPage"
-            :total-pages="totalPages"
-          />
-        </div>
+          <img
+            :src="selectedNetworkExplorer.icon"
+            :alt="selectedNetwork"
+          >
+          {{ selectedNetwork }} explorer
+        </a>
         <div
           v-else
-          class="wallet__txs"
+          class="wallet__table-wrapper"
         >
-          <CollateralTable />
+          <div class="wallet__switch-table">
+            <base-btn
+              data-selector="SWITCH-ALL"
+              :mode="getSwitchButtonMode(walletTables.TXS)"
+              @click="selectedWalletTable = walletTables.TXS"
+            >
+              {{ $t('meta.allTransactions') }}
+            </base-btn>
+            <base-btn
+              data-selector="SWITCH-COLLATERAL"
+              :mode="getSwitchButtonMode(walletTables.COLLATERAL)"
+              @click="selectedWalletTable = walletTables.COLLATERAL"
+            >
+              {{ $t('meta.collateralTransactions') }}
+            </base-btn>
+          </div>
+          <div
+            v-if="selectedWalletTable === walletTables.TXS"
+            class="wallet__txs"
+          >
+            <div class="wallet__table table">
+              <base-table
+                class="table__txs"
+                :title="$tc('wallet.table.trx')"
+                :items="styledTransactions"
+                :fields="walletTableFields"
+              />
+              <empty-data
+                v-if="!totalPages"
+                :description="$tc('wallet.table.empty')"
+                class="table__empty"
+              />
+            </div>
+            <base-pager
+              v-if="totalPages > 1"
+              v-model="currentPage"
+              :total-pages="totalPages"
+            />
+          </div>
+          <div
+            v-else
+            class="wallet__txs"
+          >
+            <CollateralTable />
+          </div>
         </div>
       </div>
     </div>
@@ -181,18 +209,24 @@ import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { ERC20 } from '~/abi/index';
 import {
-  TokenMap, TokenSymbolByContract, TokenSymbols, WalletTables, WorknetTokenAddresses, Chains,
+  TokenSymbolByContract,
+  TokenSymbols,
+  WalletTables,
+  Chains,
+  WalletTokensData,
 } from '~/utils/enums';
 import { getStyledAmount } from '~/utils/wallet';
 import EmptyData from '~/components/app/info/emptyData';
 import CollateralTable from '~/components/app/pages/wallet/CollateralTable';
 import { error, success } from '~/utils/web3';
+import { BuyWQTTokensData } from '~/utils/сonstants/bridge';
 
 export default {
   name: 'Wallet',
   middleware: 'auth',
   components: { EmptyData, CollateralTable },
   TokenSymbols,
+  Chains,
   data() {
     return {
       cardClosed: false,
@@ -202,6 +236,7 @@ export default {
       selectedWalletTable: WalletTables.TXS,
       tokenSymbolsDd: [],
       isFetchingBalance: false,
+      shortWqAddress: '',
     };
   },
   computed: {
@@ -214,10 +249,39 @@ export default {
       frozenBalance: 'wallet/getFrozenBalance',
       transactionsCount: 'wallet/getTransactionsCount',
       isWalletConnected: 'wallet/getIsWalletConnected',
-
-      // buy wqt logic
-      isMetamaskConnected: 'web3/isConnected',
+      selectedNetwork: 'wallet/getSelectedNetwork',
     }),
+    networkList() {
+      return [
+        BuyWQTTokensData.get(Chains.WORKNET),
+        BuyWQTTokensData.get(Chains.ETHEREUM),
+        BuyWQTTokensData.get(Chains.BINANCE),
+        BuyWQTTokensData.get(Chains.POLYGON),
+      ];
+    },
+    selectedNetworkIndex() {
+      for (let i = 0; i < this.networkList.length; i += 1) {
+        if (this.networkList[i].chain === this.selectedNetwork) return i;
+      }
+      console.error('Error on: selectedNetworkIndex', this.selectedNetwork);
+      return 0;
+    },
+    selectedNetworkExplorer() {
+      const net = WalletTokensData[this.selectedNetwork];
+      return {
+        url: `${net.explorer}/address/${this.userWalletAddress}`,
+        icon: net.explorerIcon,
+      };
+    },
+    nativeTokenSymbol() {
+      return WalletTokensData[this.selectedNetwork].tokenList[0];
+    },
+    selectedTokenAddress() {
+      return this.tokenAddresses[this.tokenSymbolsDd.indexOf(this.selectedToken) - 1];
+    },
+    tokenAddresses() {
+      return WalletTokensData[this.selectedNetwork].tokenAddresses;
+    },
     selectedTokenData() {
       return this.balance[this.selectedToken];
     },
@@ -226,10 +290,8 @@ export default {
       return `${this.selectedTokenData?.balance || '0'} ${this.selectedToken}`;
     },
     wqAddress() {
-      return this.convertToBech32('wq', this.userWalletAddress);
-    },
-    shortWqAddress() {
-      return this.CutTxn(this.wqAddress, 8, 8);
+      if (this.selectedNetwork === Chains.WORKNET) return this.convertToBech32('wq', this.userWalletAddress);
+      return this.userWalletAddress;
     },
     walletTables() {
       return WalletTables;
@@ -254,9 +316,6 @@ export default {
         };
       });
     },
-    tokenAddresses() {
-      return WorknetTokenAddresses;
-    },
     walletTableFields() {
       return [
         { key: 'tx_hash', label: this.$t('wallet.table.txHash'), sortable: true },
@@ -271,8 +330,9 @@ export default {
     },
   },
   watch: {
-    balance() {
-      this.tokenSymbolsDd = Object.keys(this.balance);
+    selectedNetwork() {
+      this.tokenSymbolsDd = WalletTokensData[this.selectedNetwork].tokenList;
+      this.updateWQAddress();
     },
     ddValue(newVal) {
       this.$store.dispatch('wallet/setSelectedToken', this.tokenSymbolsDd[newVal]);
@@ -300,16 +360,39 @@ export default {
     }
     if (!this.isWalletConnected) return;
 
+    this.updateWQAddress();
+    window.addEventListener('resize', this.updateWQAddress);
+
+    this.tokenSymbolsDd = WalletTokensData[this.selectedNetwork].tokenList;
+
     await this.$store.dispatch('wallet/setCallbackWS', this.loadData);
     await this.loadData();
   },
   async beforeDestroy() {
+    await this.$store.dispatch('wallet/connectToProvider', Chains.WORKNET);
     await this.$store.dispatch('wallet/setCallbackWS', null);
+
+    window.removeEventListener('resize', this.updateWQAddress);
   },
   methods: {
+    updateWQAddress() {
+      const w = window.innerWidth;
+      if (w > 600) this.shortWqAddress = this.wqAddress;
+      else this.shortWqAddress = this.CutTxn(this.wqAddress, 8, 8);
+    },
+    async handleSwitchNetwork(index) {
+      if (this.selectedNetworkIndex === index) return;
+      this.SetLoader(true);
+      await this.$store.dispatch('wallet/connectToProvider', this.networkList[index].chain);
+      this.SetLoader(false);
+    },
     async showBuyWQTModal() {
-      if (!this.isMetamaskConnected) {
-        if (await this.$store.dispatch('web3/connect', { chain: Chains.ETHEREUM }) === false) {
+      if (this.selectedNetwork === Chains.WORKNET) {
+        this.SetLoader(true);
+        const res = await this.$store.dispatch('wallet/connectToProvider', Chains.ETHEREUM);
+        this.SetLoader(false);
+        if (!res.ok) {
+          this.ShowModal(res.msg);
           return;
         }
       }
@@ -328,11 +411,14 @@ export default {
     async loadData() {
       this.isFetchingBalance = true;
       const { selectedToken, userWalletAddress } = this;
-      if (selectedToken === TokenSymbols.WQT) {
-        await Promise.all([
-          this.$store.dispatch('wallet/getBalance'),
-          this.$store.dispatch('wallet/updateFrozenBalance'),
-        ]);
+
+      // 0 token is always native token for current network!
+      if (this.nativeTokenSymbol === selectedToken) {
+        const toFetch = [this.$store.dispatch('wallet/getBalance')];
+        if (this.selectedNetwork === Chains.WORKNET) {
+          toFetch.push(this.$store.dispatch('wallet/updateFrozenBalance'));
+        }
+        await Promise.all(toFetch);
       } else {
         const payload = { address: userWalletAddress, abi: ERC20 };
         await this.$store.dispatch('wallet/fetchWalletData', {
@@ -356,11 +442,13 @@ export default {
       this.ShowModal({
         key: modals.giveTransfer,
         submit: async ({ recipient, amount, selectedToken }) => {
-          const { wqAddress, convertToHex, convertToBech32 } = this;
+          const {
+            wqAddress, convertToHex, convertToBech32, nativeTokenSymbol,
+          } = this;
           recipient = convertToHex('wq', recipient);
           const value = new BigNumber(amount).shiftedBy(Number(this.selectedTokenData.decimals)).toString();
           let feeRes;
-          if (selectedToken === TokenSymbols.WQT) {
+          if (nativeTokenSymbol === selectedToken) {
             feeRes = await this.$store.dispatch('wallet/getTransferFeeData', {
               recipient,
               value: amount,
@@ -369,7 +457,7 @@ export default {
             feeRes = await this.$store.dispatch('wallet/getContractFeeData', {
               method: 'transfer',
               abi: ERC20,
-              contractAddress: TokenMap[selectedToken],
+              contractAddress: this.selectedTokenAddress,
               data: [recipient, value],
             });
           }
@@ -383,17 +471,17 @@ export default {
                 value: amount,
                 symbol: selectedToken, // REQUIRED!
               },
-              fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
+              fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: nativeTokenSymbol },
             },
             submitMethod: async () => {
               this.CloseModal();
               this.SetLoader(true);
-              const action = selectedToken === TokenSymbols.WQT ? 'transfer' : 'transferToken';
-              const payload = selectedToken === TokenSymbols.WQT
+              const action = selectedToken === nativeTokenSymbol ? 'transfer' : 'transferToken';
+              const payload = selectedToken === nativeTokenSymbol
                 ? { recipient, value: amount }
                 : {
                   abi: ERC20,
-                  address: TokenMap[selectedToken],
+                  address: this.selectedTokenAddress,
                   data: [recipient, value],
                 };
               const res = await this.$store.dispatch(`wallet/${action}`, payload);
@@ -519,6 +607,27 @@ export default {
 
     &_full {
       grid-template-columns: 1fr;
+    }
+  }
+
+  &__explorer-ref {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 5px 15px;
+    background: $white;
+    border-radius: 6px;
+    border: 1px solid $black100;
+    text-decoration: none;
+    font-size: 20px;
+    line-height: 20px;
+    color: $black800;
+
+    & img {
+      margin-right: 5px;
+      border: 1px solid $black100;
+      border-radius: 50%;
     }
   }
 
@@ -704,6 +813,13 @@ export default {
   &__empty {
     background: #FFFFFF !important;
     margin: 10px 0 !important;
+  }
+}
+
+.switch-network {
+  &__dropdown {
+    margin-bottom: 10px;
+    width: 200px;
   }
 }
 
