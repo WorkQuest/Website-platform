@@ -326,7 +326,9 @@ Vue.mixin({
      * @constructor
      */
     async MakeApprove({
-      tokenAddress, contractAddress, amount, approveTitle = this.$t('meta.approve'), decimals = 18,
+      tokenAddress, contractAddress, amount,
+      approveTitle = this.$t('meta.approve'),
+      decimals = 18,
       symbol = TokenSymbols.WUSD,
       nativeTokenSymbol = TokenSymbols.WQT,
       isHexUserWalletAddress,
