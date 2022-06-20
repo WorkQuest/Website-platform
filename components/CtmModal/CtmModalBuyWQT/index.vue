@@ -224,15 +224,11 @@ export default {
 
       this.SetLoader(true);
 
+      const { decimals, symbol, selectedNetwork } = this.tokenData;
       const { tokenAddress } = this.tokenList[this.selectedToken];
       const { bridgeAddress } = this.networkList[this.selectedNetworkIndex];
-      const nativeTokenSymbol = WalletTokensData[this.selectedNetwork].tokenList[0];
-      const { decimals, symbol } = this.tokenData;
+      const nativeTokenSymbol = WalletTokensData[selectedNetwork].tokenList[0];
       const { amount, userWalletAddress } = this;
-
-      const explorerRef = `${WalletTokensData[this.selectedNetwork].explorer}/tx/`;
-
-      const BNValue = new BigNumber(amount).shiftedBy(Number(decimals)).toString();
 
       await this.MakeApprove({
         title: 'BuyWQT Approve',
@@ -247,6 +243,7 @@ export default {
         this.SetLoader(true);
 
         const nonce = await getWalletTransactionCount();
+        const BNValue = new BigNumber(amount).shiftedBy(Number(decimals)).toString();
         const feeRes = await this.$store.dispatch('wallet/getContractFeeData', {
           method: 'swap',
           abi: BuyWQT,
@@ -285,7 +282,7 @@ export default {
                 key: modals.status,
                 img: images.TRANSACTION_SEND,
                 title: this.$t('modals.transactionSent'),
-                link: explorerRef + transactionHash,
+                link: `${WalletTokensData[selectedNetwork].explorer}/tx/${transactionHash}`,
               });
             }
           },
