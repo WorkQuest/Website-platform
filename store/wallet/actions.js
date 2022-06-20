@@ -32,8 +32,9 @@ import {
   TokenMap,
   TokenSymbols,
   StakingTypes,
-  WorknetTokenAddresses,
-  TokenSymbolByContract, ProviderTypesByChain, WalletTokensData,
+  TokenSymbolByContract,
+  ProviderTypesByChain,
+  WalletTokensData,
 } from '~/utils/enums';
 
 import ENV from '~/utils/addresses/index';
@@ -438,7 +439,6 @@ export default {
         connectionWS.send(JSON.stringify(request));
       };
       connectionWS.onmessage = async (ev) => {
-        console.log(ev);
         const { events } = JSON.parse(ev.data).result;
         const recipient = events ? events['ethereum_tx.recipient'][0] : null;
 
@@ -478,6 +478,7 @@ export default {
     }
   },
   async unsubscribeWS({ _ }) {
+    connectionWS?.close();
     connectionWS = null;
   },
   async setCallbackWS({ _ }, callback) {
