@@ -28,7 +28,6 @@
     "coins": {
       "eth": "ETH",
       "bnb": "BNB",
-      "bsc": "BSC",
       "wqt": "WQT",
       "wusd": "WUSD",
       "count": {

@@ -10,14 +10,14 @@
       >
         <base-btn
           data-selector="SHOW-DELETE-CASE-MODAL"
-          class="content portfolio__close"
+          class="portfolio__close"
           mode="portfolioClose"
           @click="showDeleteCaseModal(options.id)"
         >
           <span class="icon-close_big" />
         </base-btn>
         <base-btn
-          class="content portfolio__edit"
+          class="portfolio__edit"
           data-selector="SHOW-EDIT-CASE-MODAL"
           mode="portfolioEdit"
           @click="showEditCaseModal(options.id)"
@@ -140,7 +140,7 @@ export default {
   &__btns {
     position: absolute;
     left: 25px;
-    top: -3px;
+    top: 5px;
     display: flex;
     align-items: center;
     justify-content: center;

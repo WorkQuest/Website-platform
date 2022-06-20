@@ -113,8 +113,11 @@ export default {
           const payload = { url, formData: file, type: file.type };
           await this.$store.dispatch('user/setCaseImage', payload);
         }
-        const payload = { title: caseTitle, description: caseDescription, medias: [mediaId] };
-        const { ok } = await this.$store.dispatch('user/setCaseData', payload);
+        const { ok } = await this.$store.dispatch('user/setCaseData', {
+          title: caseTitle,
+          description: caseDescription,
+          mediaIds: [mediaId],
+        });
         if (ok) {
           await this.$store.dispatch('main/showToast', {
             title: this.$t('toasts.caseAdded'),
