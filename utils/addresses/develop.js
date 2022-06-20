@@ -3,7 +3,7 @@ export default {
   // GMAPKEY: process.env.GMAPKEY,
   // SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
-  WQ_PROVIDER: 'https://dev-node-ams3.workquest.co/rpc/',
+  WQ_PROVIDER: 'https://dev-node-ams3.workquest.co',
   ETH_PROVIDER: 'https://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/eth/rinkeby',
   BSC_PROVIDER: 'https://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/bsc/testnet',
   POLYGON_PROVIDER: 'https://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/polygon/mumbai',

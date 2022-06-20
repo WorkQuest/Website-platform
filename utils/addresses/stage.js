@@ -3,7 +3,7 @@ export default {
   // GMAPKEY: process.env.GMAPKEY,
   // SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
-  WQ_PROVIDER: 'https://mainnet-gate.workquest.co/rpc/',
+  WQ_PROVIDER: 'https://mainnet-gate.workquest.co',
   ETH_PROVIDER: 'https://eth-mainnet.public.blastapi.io',
   BSC_PROVIDER: 'https://bscrpc.com',
   POLYGON_PROVIDER: 'https://polygon-mainnet.public.blastapi.io',
