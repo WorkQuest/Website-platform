@@ -135,7 +135,7 @@ export const fetchContractData = async (_method, _abi, _address, _params, _provi
 
 export const sendTransaction = async (_method, payload, _provider = web3) => {
   if (!_provider) {
-    console.error('_provider is undefined');
+    console.error('sendTx _provider is undefined');
     return false;
   }
   let transactionData;

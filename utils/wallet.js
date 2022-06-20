@@ -74,13 +74,11 @@ export const connectWalletToProvider = (providerType) => {
   }
 
   const provider = ENV[providerType];
-  console.log('provider', provider);
   if (!providerType || !provider) {
     console.error(`Wrong provider type: ${providerType}`);
     return error(-2, `Wrong provider type: ${providerType}`);
   }
   // TODO: need to unsubscribe from WEB3 listeners!
-  // TODO: можно сделать хранение предыдущей сети в LocalStorage и подключать автоматически к нужной сети, если нужно
   web3 = new Web3(provider);
   if (wallet.privateKey) {
     const account = web3.eth.accounts.privateKeyToAccount(wallet.privateKey);
@@ -221,7 +219,7 @@ export const getTransferFeeData = async (recipient, value) => {
     });
   } catch (e) {
     console.error('txFee error', e);
-    return error();
+    return error(-1, e.message, e);
   }
 };
 

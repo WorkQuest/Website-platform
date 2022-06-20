@@ -83,6 +83,7 @@ export const BuyWQTTokensData = new Map([
       title: Chains.WORKNET,
       chain: Chains.WORKNET,
       icon: require('~/assets/img/ui/WQT.png'),
+      tokens: [],
     },
   ],
   [

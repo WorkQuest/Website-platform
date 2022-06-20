@@ -377,6 +377,7 @@ export const WorknetTokenAddresses = Object.freeze([
 
 export const WalletTokensData = Object.freeze({
   [Chains.WORKNET]: {
+    chain: [Chains.WORKNET],
     tokenAddresses: [
       ENV.WORKNET_WUSD_TOKEN,
       ENV.WORKNET_WBNB_TOKEN,
@@ -392,6 +393,8 @@ export const WalletTokensData = Object.freeze({
     ],
   },
   [Chains.ETHEREUM]: {
+    chain: [Chains.ETHEREUM],
+    explorer: `https://${IS_PROD ? '' : 'rinkeby.'}etherscan.io`,
     tokenAddresses: [
       ENV.ETHEREUM_USDT_TOKEN,
     ],
@@ -401,6 +404,8 @@ export const WalletTokensData = Object.freeze({
     ],
   },
   [Chains.BINANCE]: {
+    chain: [Chains.BINANCE],
+    explorer: `https://${IS_PROD ? '' : 'testnet.'}bscscan.com`,
     tokenAddresses: [
       ENV.BSC_USDT_TOKEN,
     ],
@@ -410,6 +415,8 @@ export const WalletTokensData = Object.freeze({
     ],
   },
   [Chains.POLYGON]: {
+    chain: Chains.POLYGON,
+    explorer: `https://${IS_PROD ? '' : 'mumbai.'}polygonscan.com`,
     tokenAddresses: [
       ENV.POLYGON_USDT_TOKEN,
     ],

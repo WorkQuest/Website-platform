@@ -18,17 +18,6 @@
             </base-btn>
           </div>
         </div>
-        <div class="wallet__switch-network switch-network">
-          <base-dd
-            :value="selectedNetworkIndex"
-            data-selector="NETWORK"
-            type="border"
-            class="switch-network__dropdown"
-            :items="networkList"
-            is-icon
-            @input="handleSwitchNetwork"
-          />
-        </div>
         <div class="wallet__nav">
           <span class="wallet__title">{{ $t('meta.wallet') }}</span>
           <div class="wallet__address">
@@ -50,6 +39,17 @@
         >
           <div class="wallet__balance balance">
             <div class="balance__top">
+              <div class="wallet__switch-network switch-network">
+                <base-dd
+                  :value="selectedNetworkIndex"
+                  data-selector="NETWORK"
+                  type="border"
+                  class="switch-network__dropdown"
+                  :items="networkList"
+                  is-icon
+                  @input="handleSwitchNetwork"
+                />
+              </div>
               <span class="balance__title">{{ $t('meta.balance') }}</span>
               <span class="balance__currency">
                 <span
@@ -156,24 +156,32 @@
           v-if="selectedWalletTable === walletTables.TXS"
           class="wallet__txs"
         >
-          <div class="wallet__table table">
-            <base-table
-              class="table__txs"
-              :title="$tc('wallet.table.trx')"
-              :items="styledTransactions"
-              :fields="walletTableFields"
-            />
-            <empty-data
-              v-if="!totalPages"
-              :description="$tc('wallet.table.empty')"
-              class="table__empty"
+          <div v-if="selectedNetwork === $options.Chains.WORKNET">
+            <div class="wallet__table table">
+              <base-table
+                class="table__txs"
+                :title="$tc('wallet.table.trx')"
+                :items="styledTransactions"
+                :fields="walletTableFields"
+              />
+              <empty-data
+                v-if="!totalPages"
+                :description="$tc('wallet.table.empty')"
+                class="table__empty"
+              />
+            </div>
+            <base-pager
+              v-if="totalPages > 1"
+              v-model="currentPage"
+              :total-pages="totalPages"
             />
           </div>
-          <base-pager
-            v-if="totalPages > 1"
-            v-model="currentPage"
-            :total-pages="totalPages"
-          />
+          <div v-else>
+            <a
+              :href="selectedNetworkExplorer"
+              target="_blank"
+            >{{ selectedNetwork }} explorer</a>
+          </div>
         </div>
         <div
           v-else
@@ -192,14 +200,11 @@ import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { ERC20 } from '~/abi/index';
 import {
-  TokenMap,
   TokenSymbolByContract,
   TokenSymbols,
   WalletTables,
-  WorknetTokenAddresses,
   Chains,
   WalletTokensData,
-  ProviderTypesByChain,
 } from '~/utils/enums';
 import { getStyledAmount } from '~/utils/wallet';
 import EmptyData from '~/components/app/info/emptyData';
@@ -212,6 +217,7 @@ export default {
   middleware: 'auth',
   components: { EmptyData, CollateralTable },
   TokenSymbols,
+  Chains,
   data() {
     return {
       cardClosed: false,
@@ -233,33 +239,31 @@ export default {
       frozenBalance: 'wallet/getFrozenBalance',
       transactionsCount: 'wallet/getTransactionsCount',
       isWalletConnected: 'wallet/getIsWalletConnected',
-
       selectedNetwork: 'wallet/getSelectedNetwork',
-
-      // buy wqt logic
-      isMetamaskConnected: 'web3/isConnected',
     }),
+    networkList() {
+      return [
+        BuyWQTTokensData.get(Chains.WORKNET),
+        BuyWQTTokensData.get(Chains.ETHEREUM),
+        // BuyWQTTokensData.get(Chains.BINANCE), // TODO [!!!]: вернуть как появится моралис
+        BuyWQTTokensData.get(Chains.POLYGON),
+      ];
+    },
     selectedNetworkIndex() {
-      const keys = Object.keys(ProviderTypesByChain);
-      for (let i = 0; i < keys.length; i += 1) {
-        if (keys[i] === this.selectedNetwork) return i;
+      for (let i = 0; i < this.networkList.length; i += 1) {
+        if (this.networkList[i].chain === this.selectedNetwork) return i;
       }
       console.error('Error on: selectedNetworkIndex', this.selectedNetwork);
       return 0;
+    },
+    selectedNetworkExplorer() {
+      return `${WalletTokensData[this.selectedNetwork].explorer}/address/${this.userWalletAddress}`;
     },
     nativeTokenSymbol() {
       return WalletTokensData[this.selectedNetwork].tokenList[0];
     },
     selectedTokenAddress() {
       return this.tokenAddresses[this.tokenSymbolsDd.indexOf(this.selectedToken) - 1];
-    },
-    networkList() {
-      return [
-        BuyWQTTokensData.get(Chains.WORKNET),
-        BuyWQTTokensData.get(Chains.ETHEREUM),
-        BuyWQTTokensData.get(Chains.BINANCE),
-        BuyWQTTokensData.get(Chains.POLYGON),
-      ];
     },
     tokenAddresses() {
       return WalletTokensData[this.selectedNetwork].tokenAddresses;
@@ -349,22 +353,23 @@ export default {
     await this.loadData();
   },
   async beforeDestroy() {
+    await this.$store.dispatch('wallet/connectToProvider', Chains.WORKNET);
     await this.$store.dispatch('wallet/setCallbackWS', null);
   },
   methods: {
     async handleSwitchNetwork(index) {
+      if (this.selectedNetworkIndex === index) return;
       this.SetLoader(true);
-      const res = await this.$store.dispatch('wallet/connectToProvider', this.networkList[index].chain);
-      if (!res.ok) {
-        this.ShowToast(res.msg, 'Error on switch network');
-      } else {
-        this.ShowToast(`Current: ${this.networkList[index].title}`, 'Network switched');
-      }
+      await this.$store.dispatch('wallet/connectToProvider', this.networkList[index].chain);
       this.SetLoader(false);
     },
     async showBuyWQTModal() {
-      if (!this.isMetamaskConnected) {
-        if (await this.$store.dispatch('web3/connect', { chain: Chains.ETHEREUM }) === false) {
+      if (this.selectedNetwork === Chains.WORKNET) {
+        this.SetLoader(true);
+        const res = await this.$store.dispatch('wallet/connectToProvider', Chains.ETHEREUM);
+        this.SetLoader(false);
+        if (!res.ok) {
+          this.ShowModal(res.msg);
           return;
         }
       }
@@ -769,7 +774,7 @@ export default {
 
 .switch-network {
   &__dropdown {
-    margin-top: 20px;
+    margin-bottom: 10px;
     width: 200px;
   }
 }

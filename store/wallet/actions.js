@@ -18,7 +18,7 @@ import {
 import {
   error,
   success,
-  fetchContractData, getTransactionCount, getAccountAddress, createInstance, showToast, getGasPrice, getEstimateGas,
+  fetchContractData, showToast, getEstimateGas,
 } from '~/utils/web3';
 
 import {
@@ -183,7 +183,6 @@ export default {
    */
   async transferToken({ _ }, payload) {
     const res = await sendWalletTransaction('transfer', payload);
-    // TODO fix it, sendWalletTransaction should return object with keys ok and result
     if (res.ok === false) return error(res);
     return success(res);
   },
@@ -482,17 +481,21 @@ export default {
     amount, tokenAddress, bridgeAddress, isNative, symbol, toChainIndex, decimals,
   }) {
     try {
+      const provider = GetWalletProvider();
+
       const userId = rootGetters['user/getUserData'].id;
-      const nonce = await getTransactionCount();
-      const accountAddress = await getAccountAddress();
+      const accountAddress = getWalletAddress();
+      console.log(accountAddress);
+      const nonce = await provider.eth.getTransactionCount(accountAddress);
+      console.log(nonce);
+      const bridgeInstance = await new provider.eth.Contract(BuyWQT, bridgeAddress);
       const value = new BigNumber(amount).shiftedBy(Number(decimals)).toString();
       const data = [nonce, toChainIndex, value, accountAddress, userId, symbol];
-      const bridgeInstance = await createInstance(BuyWQT, bridgeAddress);
 
       if (isNative) {
         showToast('Swapping', 'Swapping...', 'success');
         const [gasPrice, gas] = await Promise.all([
-          getGasPrice(),
+          provider.eth.getGasPrice(),
           getEstimateGas(null, null, bridgeInstance, 'swap', data, value),
         ]);
         const swapRes = await bridgeInstance.methods.swap(...data).send({
@@ -505,18 +508,20 @@ export default {
         return success(swapRes);
       }
 
-      const allowance = await fetchContractData('allowance', ERC20, tokenAddress, [accountAddress, bridgeAddress]);
+      // TODO: юзать апрув который в миксинах и дальше просто вызывать свап!
+
+      const allowance = await fetchContractData('allowance', ERC20, tokenAddress, [accountAddress, bridgeAddress], provider);
       if (new BigNumber(value).isGreaterThan(+allowance)) {
         showToast('Swapping', 'Approving...', 'success');
-        const tokenInstance = await createInstance(ERC20, tokenAddress);
-        const { status } = await tokenInstance.methods.approve(bridgeAddress, value).send({ from: accountAddress });
+        const tokenInstance = await new provider.eth.Contract(ERC20, tokenAddress);
+        const { status } = await tokenInstance.methods.approve(bridgeAddress, value).send({ from: accountAddress, gasLimit: 100000 });
         if (!status) return error(500, 'Approve was failed');
         showToast('Swapping', 'Approving done', 'success');
       }
 
       showToast('Swapping', 'Swapping...', 'success');
       const [gasPrice, gas] = await Promise.all([
-        getGasPrice(),
+        provider.eth.getGasPrice(),
         getEstimateGas(null, null, bridgeInstance, 'swap', data),
       ]);
       const swapRes = await bridgeInstance.methods.swap(...data).send({
@@ -537,13 +542,14 @@ export default {
   /** SWITCH NETWORK */
   async connectToProvider({ commit, dispatch }, chain) {
     const res = await connectWalletToProvider(ProviderTypesByChain[chain]);
-    console.log(res);
     if (res.ok) {
       commit('setSelectedNetwork', chain);
       commit('setSelectedToken', WalletTokensData[chain].tokenList[0]);
 
       await dispatch('fetchCommonTokenInfo');
-      // TODO: fetch tokens balance
+      $nuxt.ShowToast(`Current: ${chain}`, 'Network switched');
+    } else {
+      $nuxt.ShowToast(res.msg, 'Error on switch network');
     }
     return res;
   },

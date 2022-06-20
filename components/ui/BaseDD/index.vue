@@ -75,6 +75,7 @@
             :data-selector="`ACTION-BTN-SELECT-ITEM-${dataSelector.toUpperCase()}-${i}`"
             :disabled="disabledIndexes.includes(i)"
             class="dd__item dd__item_icon"
+            :class="{dd__item_disabled: disabledIndexes.includes(i)}"
             @click="selectItem(i)"
           >
             <img
@@ -103,7 +104,6 @@
           <button
             v-for="(item, i) in items"
             :key="`dd__item-${i}`"
-            :disabled="disabledIndexes.includes(i)"
             class="dd__item"
             :data-selector="`ACTION-BTN-SELECT-ITEM-${dataSelector.toUpperCase()}-${i}`"
             :class="{'dd__item_hide': isSelected(i) || (isSearch && !isSearchMatched(item))}"
@@ -306,6 +306,13 @@ export default {
     color: $black500;
     &:hover {
       color: $black800;
+    }
+    &_disabled {
+      cursor: default;
+      color: $black300;
+      &:hover {
+        color: $black300;
+      }
     }
     &_icon {
       display: flex;
