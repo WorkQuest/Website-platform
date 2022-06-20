@@ -12,13 +12,16 @@ import {
   getTransferFeeData,
   getContractFeeData,
   getIsWalletConnected,
-  sendWalletTransaction, connectWalletToProvider,
+  sendWalletTransaction,
+  connectWalletToProvider,
 } from '~/utils/wallet';
 
 import {
   error,
   success,
-  fetchContractData, showToast, getEstimateGas,
+  showToast,
+  getEstimateGas,
+  fetchContractData,
 } from '~/utils/web3';
 
 import {
@@ -29,12 +32,13 @@ import {
 } from '~/abi/index';
 
 import {
+  Chains,
   TokenMap,
-  TokenSymbols,
   StakingTypes,
-  TokenSymbolByContract,
-  ProviderTypesByChain,
+  TokenSymbols,
   WalletTokensData,
+  ProviderTypesByChain,
+  TokenSymbolByContract,
 } from '~/utils/enums';
 
 import ENV from '~/utils/addresses/index';
@@ -416,15 +420,32 @@ export default {
     try {
       const network = getters.getSelectedNetwork;
       const { WSProvider } = WalletTokensData[network];
+
       if (!WSProvider) {
         console.error('WSProvider not found for:', network);
         return error();
       }
 
-      const userWalletAddress = rootGetters['user/getUserWalletAddress'].toLowerCase();
-      connectionWS = new WebSocket(WSProvider);
-      connectionWS.onopen = () => {
-        const request = {
+      const requestByNetwork = {
+        [Chains.ETHEREUM]: {
+          jsonrpc: '2.0',
+          method: 'eth_subscribe',
+          id: 1,
+          params: ['logs', { /* address: [hexAddress] */ }], // не вышло по адресу своему получать
+        },
+        [Chains.BINANCE]: {
+          jsonrpc: '2.0',
+          method: 'eth_subscribe',
+          id: 1,
+          params: ['logs'],
+        },
+        [Chains.POLYGON]: {
+          jsonrpc: '2.0',
+          method: 'eth_subscribe',
+          id: 1,
+          params: ['logs'],
+        },
+        [Chains.WORKNET]: {
           jsonrpc: '2.0',
           method: 'subscribe',
           id: 0,
@@ -434,16 +455,20 @@ export default {
             // Also need to find out what address type you need to enter Hex or convert to bech 32
             // query: `tm.event='Tx' AND ethereum_tx.recipient='${hexAddress}'`,
           },
-        };
+        },
+      };
+
+      connectionWS = new WebSocket(WSProvider);
+      connectionWS.onopen = () => {
         console.log('Successfully connected to the echo websocket server...');
-        connectionWS.send(JSON.stringify(request));
+        connectionWS.send(JSON.stringify(requestByNetwork[network]));
       };
       connectionWS.onmessage = async (ev) => {
-        const { events } = JSON.parse(ev.data).result;
+        const events = JSON.parse(ev.data)?.result?.events;
         const recipient = events ? events['ethereum_tx.recipient'][0] : null;
 
         const sender = events && events['message.sender'] ? events['message.sender'][3]?.toLowerCase() : null;
-        if (recipient && sender !== userWalletAddress) {
+        if (recipient && sender !== hexAddress) {
           await dispatch('notifications/createLocalNotification', {
             message: $nuxt.$t('ui.notifications.balanceUpdated', {
               token: TokenSymbolByContract[recipient?.toLowerCase()] || TokenSymbols.WQT,
@@ -454,6 +479,8 @@ export default {
         }
 
         if (recipient?.toLowerCase() === hexAddress) {
+          if (callbackWS) await callbackWS();
+          if (network !== Chains.WORKNET) return;
           const transactions = JSON.parse(JSON.stringify(getters.getTransactions));
           if (transactions.length === 10) transactions.splice(9, 1);
           transactions.unshift({
@@ -466,7 +493,6 @@ export default {
             from_address_hash: { hex: sender },
             to_address_hash: { hex: recipient },
           });
-          if (callbackWS) await callbackWS();
           commit('setTransactions', transactions);
           commit('setTransactionsCount', getters.getTransactionsCount + 1);
         }
