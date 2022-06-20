@@ -227,6 +227,7 @@ export default {
       selectedWalletTable: WalletTables.TXS,
       tokenSymbolsDd: [],
       isFetchingBalance: false,
+      shortWqAddress: '',
     };
   },
   computed: {
@@ -278,9 +279,6 @@ export default {
     wqAddress() {
       if (this.selectedNetwork === Chains.WORKNET) return this.convertToBech32('wq', this.userWalletAddress);
       return this.userWalletAddress;
-    },
-    shortWqAddress() {
-      return this.CutTxn(this.wqAddress, 8, 8);
     },
     walletTables() {
       return WalletTables;
@@ -348,6 +346,8 @@ export default {
     }
     if (!this.isWalletConnected) return;
 
+    window.addEventListener('resize', this.updateWQAddress);
+
     this.tokenSymbolsDd = WalletTokensData[this.selectedNetwork].tokenList;
 
     await this.$store.dispatch('wallet/setCallbackWS', this.loadData);
@@ -356,8 +356,15 @@ export default {
   async beforeDestroy() {
     await this.$store.dispatch('wallet/connectToProvider', Chains.WORKNET);
     await this.$store.dispatch('wallet/setCallbackWS', null);
+
+    window.removeEventListener('resize', this.updateWQAddress);
   },
   methods: {
+    updateWQAddress() {
+      const w = window.innerWidth;
+      if (w > 600) this.shortWqAddress = this.wqAddress;
+      else this.shortWqAddress = this.CutTxn(this.wqAddress, 8, 8);
+    },
     async handleSwitchNetwork(index) {
       if (this.selectedNetworkIndex === index) return;
       this.SetLoader(true);
