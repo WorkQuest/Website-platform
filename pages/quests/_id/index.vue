@@ -582,7 +582,10 @@ export default {
         amount: shiftedArbitrationFee,
       });
       if (!feeRes.ok) {
-        this.ShowToast(feeRes.msg);
+        // we can redirect to dispute because it means that request is pending to change status of current quest to dispute status
+        if (openDispute?.id) await this.$router.push(`${Path.DISPUTES}/${openDispute.id}`);
+        else this.ShowToast(feeRes.msg);
+
         this.SetLoader(false);
         return;
       }
