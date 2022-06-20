@@ -254,7 +254,7 @@ export default {
           this.$store.dispatch('wallet/getBalance'),
         ]);
 
-        this.SetLoader(true);
+        this.SetLoader(false);
         if (!feeRes.ok) {
           this.ShowToast(feeRes.msg, 'Approve error');
           return;
