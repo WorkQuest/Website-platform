@@ -123,10 +123,10 @@ export default {
   }) {
     try {
       const { ok } = await this.$axios.$post(`/v1/quest/dispute/${disputeId}/review/send`, { message, mark });
-      return ok;
+      return success(ok);
     } catch (e) {
-      console.error(e);
-      return false;
+      console.error('user/sendReviewDispute', e.response);
+      return error(e.response.code, e.response.msg);
     }
   },
   async registerWallet({ commit }, payload) {

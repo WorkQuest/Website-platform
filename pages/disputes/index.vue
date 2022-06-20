@@ -179,10 +179,19 @@ export default {
         title: this.$tc('modals.titles.review'),
         rating,
         callback: async (message, mark) => {
-          const ok = await this.$store.dispatch('user/sendReviewDispute', { disputeId, message, mark });
+          this.CloseModal();
+          this.SetLoader(true);
+          const { ok, msg } = await this.$store.dispatch('user/sendReviewDispute', { disputeId, message, mark });
           if (ok) {
             this.ShowModal({ key: modals.thanks });
+          } else {
+            await this.$store.dispatch('main/showToast', {
+              title: this.$t('toasts.error'),
+              variant: 'warning',
+              text: msg,
+            });
           }
+          this.SetLoader(false);
         },
       });
     },
@@ -233,13 +242,15 @@ export default {
     word-break: break-word;
   }
   &__card-body {
-    height: 100%;
+    height: fit-content;
+    max-height: 400px;
     margin: 20px;
-    padding-bottom: 20px;
+    padding-bottom: 35px;
   }
   &__dispute-cards {
     display: grid;
     grid-template-columns: repeat(2, 50%);
+    grid-template-rows: auto;
     grid-gap: 15px;
   }
   &__card {
@@ -249,7 +260,6 @@ export default {
     display: grid;
     grid-template-columns: 10fr 0.5fr 10fr;
     width: 100%;
-    height: 100%;
     transition: .5s;
     &:hover {
       box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.1);

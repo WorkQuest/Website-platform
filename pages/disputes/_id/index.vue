@@ -38,7 +38,6 @@
           v-if="disputeData.status === $options.DisputeStatues.CLOSED"
           class="decision"
         >
-          <div class="decision__v-spacer" />
           <div class="decision__block">
             <div class="decision__title">
               {{ $t('disputes.decision') }}
@@ -80,6 +79,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import color from 'color';
 import { DisputeStatues } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
@@ -131,10 +131,19 @@ export default {
         title: this.$tc('modals.titles.review'),
         rating,
         callback: async (message, mark) => {
-          const ok = await this.$store.dispatch('user/sendReviewDispute', { disputeId, message, mark });
+          this.CloseModal();
+          this.SetLoader(true);
+          const { ok, msg } = await this.$store.dispatch('user/sendReviewDispute', { disputeId, message, mark });
           if (ok) {
             this.ShowModal({ key: modals.thanks });
+          } else {
+            await this.$store.dispatch('main/showToast', {
+              title: this.$t('toasts.error'),
+              variant: 'warning',
+              text: msg,
+            });
           }
+          this.SetLoader(false);
         },
       });
     },
@@ -181,6 +190,9 @@ export default {
 }
 
 .dispute {
+  &:hover {
+    border: 1px solid $black100;
+  }
   &__top {
     margin: 20px 0 20px 0;
     display: flex;
@@ -234,7 +246,8 @@ export default {
 .container-quest-decision{
   width:100%;
   display:grid;
-  grid-template-columns: 70% 30%;
+  grid-template-columns: 69% 30%;
+  gap: 1%;
   &__quest-card{
     width:100%;
     height:100%;
@@ -246,19 +259,22 @@ export default {
   width:100%;
   height:100%;
   background-color: $white;
+  border: 1px solid $white;
+  border-radius: 6px;
+  &:hover{
+    box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
+  }
   &__v-spacer {
     width: 1px;
     background-color: $black0;
-    margin: 0 5px;
+    margin: 0 20px;
     height: 100%;
   }
   &__block{
     width:100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0 5px 35px;
+    padding: 20px 10px 45px;
     word-break: break-word;
   }
   &__review{
@@ -271,7 +287,12 @@ export default {
     font-weight: 500;
     font-size: 18px;
     color: $black800;
-    margin: 15px;
+  }
+  &__text{
+    color: $black600;
+    max-height: 280px;
+    word-wrap: break-word;
+    overflow: auto;
   }
 }
 @include _1199() {
