@@ -13,15 +13,15 @@
           >
             <img
               class="user__img"
-              :src="userAvatar || require('~/assets/img/app/avatar_empty.png')"
+              :src="userAvatar"
               alt=""
               loading="lazy"
             >
             <span class="user__username">
-              {{ `${userInfo.firstName} ${userInfo.lastName}` }}
+              {{ userName }}
             </span>
             <span
-              v-if="userRole === 'employer' && userCompany"
+              v-if="userRole === $options.UserRole.EMPLOYER && userCompany"
               class="user__company"
             >
               {{ $t('meta.fromSmall') }} {{ userCompany }}
@@ -80,13 +80,15 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { EntityType, Path } from '~/utils/enums';
+import { EntityType, Path, UserRole } from '~/utils/enums';
 import { QuestStatuses } from '~/utils/сonstants/quests';
 import skills from '~/components/app/pages/common/skills';
 import modals from '~/store/modals/modals';
+import { images } from '~/utils/images';
 
 export default {
   name: 'QuestPanel',
+  UserRole,
   QuestStatuses,
   components: {
     skills,
@@ -101,19 +103,22 @@ export default {
     ...mapGetters({
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
-      userInfo: 'quests/getQuestUser',
-      userAvatar: 'quests/getQuestUserAvatar',
-      userCompany: 'quests/getQuestUserCompany',
       questData: 'quests/getQuest',
     }),
+    userName() {
+      return this.UserName(this.questData?.user?.firstName, this.questData?.user?.lastName);
+    },
+    userAvatar() {
+      return this.questData?.user?.avatar?.url || images.EMPTY_AVATAR;
+    },
+    userCompany() {
+      return this.questData?.user?.additionalInfo?.company;
+    },
     questDDMode() {
       return [
         QuestStatuses.Created,
-        QuestStatuses.Rejected,
+        QuestStatuses.Blocked,
       ].includes(this.questData.status);
-    },
-    questStatuses() {
-      return QuestStatuses;
     },
     convertDate() {
       const { createdAt } = this.questData;

@@ -16,6 +16,7 @@ export const QuestStatuses = {
   Closed: -3, // Employer closed quest on contract
   Dispute: -2,
   Rejected: -1, // Blocked by admin
+  Blocked: -1, // Blocked by admin
   Pending: 0,
   Created: 1, // Waiting worker to start quest
   WaitWorkerOnAssign: 2, // Waiting for worker accept assign to quest

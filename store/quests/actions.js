@@ -22,17 +22,6 @@ import { error, success } from '~/utils/web3';
 import ENV from '~/utils/addresses/index';
 
 export default {
-  async getWorkerData({ commit }, userId) {
-    try {
-      const response = await this.$axios.$get(`/v1/profile/${userId}`);
-      commit('setCurrentWorker', response.result);
-      return response;
-    } catch (e) {
-      console.error('quests/getWorkerData');
-      return error();
-    }
-  },
-
   async employeeList({ commit }, { query, specFilter }) {
     try {
       if (query.q === '') delete query.q;
@@ -47,16 +36,7 @@ export default {
       return false;
     }
   },
-  async setCurrentWorker({ commit }, worker) {
-    commit('setCurrentWorker', worker);
-    return worker;
-  },
-  async setInfoDataMode({ commit }, mode) {
-    commit('setInfoDataMode', mode);
-  },
-  async getCurrentStepCreateQuest({ commit }, data) {
-    commit('setCurrentStepCreateQuest', data);
-  },
+
   async questCreate({ commit }, payload) {
     try {
       return await this.$axios.$post('/v1/quest/create', payload);
@@ -65,6 +45,7 @@ export default {
       return error();
     }
   },
+
   async getAllQuests({ commit }, { query, specFilter }) {
     try {
       if (query.q === '') delete query.q;
@@ -79,6 +60,7 @@ export default {
       return false;
     }
   },
+
   async getQuest({ commit, rootGetters }, payload) {
     try {
       const { result } = await this.$axios.$get(`/v1/quest/${payload}`);
@@ -113,6 +95,7 @@ export default {
       return false;
     }
   },
+
   async getUserQuests({ commit, rootGetters }, { role, query, userId }) {
     try {
       const specializations = query.specializations || [];
@@ -131,6 +114,7 @@ export default {
       return error();
     }
   },
+
   async editQuest({ commit }, { payload, questId }) {
     try {
       const response = await this.$axios.$put(`/v1/quest/${questId}/edit`, payload);
@@ -141,6 +125,7 @@ export default {
       return error();
     }
   },
+
   async responsesToQuest({ commit }, questId) {
     try {
       const { result } = await this.$axios.$get(`/v1/quest/${questId}/responses`);
@@ -153,11 +138,13 @@ export default {
       return error();
     }
   },
+
   async setResponseToQuest({ commit }, { data: response }) {
     const responded = response.status === QuestsResponseStatus.Open && response.type === ResponsesType.Responded ? response : '';
     const invited = response.status >= 0 && response.type === ResponsesType.Invited ? response : '';
     commit('setResponseToQuest', { responded, invited });
   },
+
   async inviteOnQuest({ commit }, { questId, payload }) {
     try {
       const response = await this.$axios.$post(`/v1/quest/${questId}/invite`, payload);
@@ -169,6 +156,7 @@ export default {
       return error();
     }
   },
+
   async respondOnQuest({ commit }, { data, questId }) {
     try {
       const response = await this.$axios.$post(`/v1/quest/${questId}/response`, data);
@@ -179,6 +167,7 @@ export default {
       return error();
     }
   },
+
   async setStarOnQuest({ commit }, id) {
     try {
       const response = await this.$axios.$post(`/v1/quest/${id}/star`);
@@ -188,22 +177,13 @@ export default {
       return error();
     }
   },
+
   async takeAwayStarOnQuest({ commit }, id) {
     try {
       const response = await this.$axios.$delete(`/v1/quest/${id}/star`);
       return response.result;
     } catch (e) {
       console.error('quests/takeAwayStarOnQuest');
-      return error();
-    }
-  },
-  async getResponsesToQuestForAuthUser({ commit }) {
-    try {
-      const response = await this.$axios.$get('/v1/quest/responses/my');
-      commit('setResponsesMy', response.result);
-      return response.result;
-    } catch (e) {
-      console.error('quests/getResponsesToQuestForAuthUser');
       return error();
     }
   },
@@ -217,6 +197,7 @@ export default {
       return error();
     }
   },
+
   async rejectQuestInvitation({ commit }, responseId) {
     try {
       const { ok } = await this.$axios.$post(`/v1/quest/response/${responseId}/reject`);
@@ -245,12 +226,15 @@ export default {
       console.error('quests/getFilters');
     }
   },
+
   setSelectedSpecializationsFilters({ commit }, data) {
     commit('setSelectedSpecializationsFilters', data);
   },
+
   setSelectedPriceFilter({ commit }, data) {
     commit('setSelectedPriceFilter', data);
   },
+
   async getAvailableQuests({ commit }, data) {
     try {
       const response = await this.$axios.$get(`/v1/worker/${data}/available-quests?limit=100`);
@@ -291,6 +275,7 @@ export default {
       return error(9000, e.message, e);
     }
   },
+
   /**
    * Get create quest tx fee
    * @param commit
@@ -318,6 +303,7 @@ export default {
       return error();
     }
   },
+
   async editQuestOnContract({ dispatch }, {
     contractAddress, cost,
   }) {
@@ -339,6 +325,7 @@ export default {
   }) {
     return await getContractFeeData(method, abi, contractAddress, data, null, amount);
   },
+
   async sendQuestTransaction({ commit }, {
     contractAddress, method, params = [], value,
   }) {
@@ -356,6 +343,7 @@ export default {
       return error(500, e.message, e);
     }
   },
+
   async cancelJob({ dispatch }, contractAddress) {
     return await dispatch('sendQuestTransaction', { contractAddress, method: QuestMethods.CancelJob });
   },

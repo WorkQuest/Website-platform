@@ -93,7 +93,6 @@ export default {
     ...mapGetters({
       isWalletConnected: 'wallet/getIsWalletConnected',
       userWalletAddress: 'user/getUserWalletAddress',
-      currentWorker: 'quests/getCurrentWorker',
       questData: 'quests/getQuest',
       invited: 'quests/getInvited',
       responded: 'quests/getResponded',

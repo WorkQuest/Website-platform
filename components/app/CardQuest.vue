@@ -9,11 +9,10 @@
       :style="`background: url(${getQuestPreview(quest).url}) no-repeat`"
     >
       <div
-        v-if="quest.status"
         class="card-quest__state"
-        :class="statusClass"
+        :class="questState.class"
       >
-        {{ questStatusesData[questStatus].title }}
+        {{ questState.title }}
       </div>
     </div>
     <div class="card-quest__right">
@@ -85,7 +84,7 @@
         class="card-quest__progress progress"
       >
         <div class="progress__title">
-          {{ questStatusesData[questStatus].progressText }}
+          {{ questState.progressText }}
         </div>
         <div class="progress__container container">
           <div
@@ -189,7 +188,7 @@ import BigNumber from 'bignumber.js';
 import {
   questPriority, UserRole, Path, TokenSymbols, QuestModeReview, RaiseViewStatus,
 } from '~/utils/enums';
-import { QuestStatuses } from '~/utils/сonstants/quests';
+import { QuestsResponseStatus, QuestStatuses } from '~/utils/сonstants/quests';
 import modals from '~/store/modals/modals';
 import { images } from '~/utils/images';
 
@@ -236,11 +235,11 @@ export default {
       return new BigNumber(this.quest.price).shiftedBy(-18).toString();
     },
     questStatusesData() {
-      return {
+      const statuses = {
         [QuestStatuses.Pending]: {
           title: '',
           progressText: '',
-          class: '',
+          class: 'info_hide',
         },
         [QuestStatuses.Created]: {
           title: this.quest?.responded?.workerId === this.userData.id ? this.$t('meta.responded') : '',
@@ -251,11 +250,6 @@ export default {
           title: this.$t('quests.active'),
           progressText: this.$t('quests.inProgressBy'),
           class: 'card-quest__state_green',
-        },
-        [QuestStatuses.Rejected]: {
-          title: this.$t('quests.rejected'),
-          progressText: '',
-          class: 'card-quest__state_red',
         },
         [QuestStatuses.WaitWorkerOnAssign]: {
           title: this.$t('meta.invited'),
@@ -268,7 +262,7 @@ export default {
           class: 'card-quest__state_green',
         },
         [QuestStatuses.Dispute]: {
-          title: this.$t('meta.dispute'),
+          title: this.$t('meta.disputeReview'),
           progressText: this.$t('quests.questDispute'),
           class: 'card-quest__state_red',
         },
@@ -293,22 +287,46 @@ export default {
           class: 'card-quest__state_yellow',
         },
       };
+      if (this.userRole === UserRole.EMPLOYER) {
+        statuses[QuestStatuses.Blocked] = {
+          title: this.$t('quests.blocked'),
+          progressText: '',
+          class: 'card-quest__state_red',
+        };
+      } else {
+        statuses[QuestStatuses.Rejected] = {
+          title: this.$t('quests.rejected'),
+          progressText: '',
+          class: 'card-quest__state_red',
+        };
+      }
+      return statuses;
     },
-    questStatus() {
-      if (this.quest.status === QuestStatuses.Rejected) return QuestStatuses.Rejected;
+    questState() {
+      const {
+        quest: {
+          questChat, status: questStatus, invited, responded,
+        },
+        userData: { id: myId },
+      } = this;
+
+      if (questChat && questStatus === QuestStatuses.Created && myId === questChat.workerId && questChat.status === QuestsResponseStatus.Rejected) {
+        // Case when user requested to the quest but employer was rejected you
+        return this.questStatusesData[QuestStatuses.Rejected];
+      }
+
+      if (questStatus === QuestStatuses.Blocked) return this.questStatusesData[QuestStatuses.Blocked];
+
       if (this.userRole === UserRole.WORKER) {
-        if (this.quest.responded) {
-          if (this.quest.status === QuestStatuses.WaitWorkerOnAssign) return QuestStatuses.Invited;
-          return QuestStatuses.Responded;
+        if (responded) {
+          if (questStatus === QuestStatuses.WaitWorkerOnAssign) return this.questStatusesData[QuestStatuses.Invited];
+          return this.questStatusesData[QuestStatuses.Responded];
         }
-        if (this.quest.invited) {
-          return QuestStatuses.Invited;
+        if (invited) {
+          return this.questStatusesData[QuestStatuses.Invited];
         }
       }
-      return this.quest.status;
-    },
-    statusClass() {
-      return this.questStatusesData[this.questStatus].class;
+      return this.questStatusesData[questStatus || 0];
     },
   },
   async mounted() {
