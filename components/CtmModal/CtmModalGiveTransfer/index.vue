@@ -113,7 +113,7 @@ export default {
       selectedNetwork: 'wallet/getSelectedNetwork',
     }),
     nativeTokenSymbol() {
-      return WalletTokensData[this.selectedNetwork].tokenList[0];
+      return this.tokenSymbolsDd[0];
     },
     tokenDecimals() {
       return this.balance[this.selectedToken].decimals;
