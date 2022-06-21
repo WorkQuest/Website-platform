@@ -26,6 +26,6 @@ export const LEGAL_INFO = Object.freeze({
 });
 
 export const COMPANY = Object.freeze({
-  ABOUT_US: 'https://workquest.co/ ',
-  LEADERSHIP: 'https://workquest.co/#Team ',
+  ABOUT_US: 'https://workquest.co/',
+  LEADERSHIP: 'https://workquest.co/#Team',
 });
