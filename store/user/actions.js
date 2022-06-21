@@ -167,11 +167,12 @@ export default {
       dispatch('notifications/getNotifications', null, { root: true }),
     ]);
   },
-  async logout({ commit }, isValidToken = true) {
+  async logout({ commit, dispatch }, isValidToken = true) {
     try {
       if (isValidToken) await this.$axios.$post('v1/auth/logout');
       await this.$wsChatActions.disconnect();
       await this.$wsNotifs.disconnect();
+      await dispatch('wallet/unsubscribeWS', null, { root: true });
       commit('logOut');
     } catch (e) {
       console.error('user/logout', e);
