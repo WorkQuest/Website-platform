@@ -60,9 +60,9 @@
                 </span>
                 <span
                   v-if="selectedToken === $options.TokenSymbols.WQT"
-                  class="balance__usd-mobile"
+                  class="balance__frozen-mobile"
                 >
-                  <span class="balance__usd-mobile_blue">
+                  <span class="balance__frozen-mobile_blue">
                     {{ $t('wallet.frozen') }}
                   </span>
                   {{ $t('meta.coins.count.WQTCount', {count: Floor(frozenBalance)}) }}
@@ -79,9 +79,9 @@
               <span :class="[{'balance__currency__margin-bottom' : selectedToken !== $options.TokenSymbols.WQT}]">
                 <span
                   v-if="selectedToken === $options.TokenSymbols.WQT"
-                  class="balance__usd balance__usd_blue"
+                  class="balance__frozen balance__frozen_blue"
                 >
-                  <span class="balance__usd">
+                  <span class="balance__frozen">
                     {{ $t('wallet.frozen') }}
                   </span>
                   {{ $t('meta.coins.count.WQTCount', {count: Floor(frozenBalance)}) }}
@@ -725,7 +725,7 @@ export default {
     box-sizing: border-box;
   }
 
-  &__usd {
+  &__frozen {
     @include text-simple;
     height: 24px;
     color: $black800;
@@ -874,7 +874,7 @@ export default {
       margin-top: 5px;
     }
   }
-  .balance__usd {
+  .balance__frozen {
     display: none;
 
     &_mobile {

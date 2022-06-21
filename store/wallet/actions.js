@@ -460,7 +460,6 @@ export default {
 
       connectionWS = new WebSocket(WSProvider);
       connectionWS.onopen = () => {
-        console.log('Successfully connected to the echo websocket server...');
         connectionWS.send(JSON.stringify(requestByNetwork[network]));
       };
       connectionWS.onmessage = async (ev) => {
