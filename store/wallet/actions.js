@@ -431,7 +431,7 @@ export default {
           jsonrpc: '2.0',
           method: 'eth_subscribe',
           id: 1,
-          params: ['logs', { /* address: [hexAddress] */ }], // не вышло по адресу своему получать
+          params: ['logs', { /* address: [hexAddress] */ }],
         },
         [Chains.BINANCE]: {
           jsonrpc: '2.0',
