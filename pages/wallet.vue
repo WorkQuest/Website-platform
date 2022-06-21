@@ -710,10 +710,10 @@ export default {
     }
 
     &-text {
-      overflow: hidden;
-      text-overflow: ellipsis;
       max-width: 1000px;
       padding-right: 20px;
+      word-break: break-word;
+      height: fit-content;
       &_light {
         color: $black500;
       }
@@ -736,10 +736,12 @@ export default {
 
     &-mobile {
       display: none;
-      height: 33px;
       color: $black800;
       font-size: 18px;
       font-weight: normal;
+
+      height: fit-content;
+      word-break: break-word;
 
       &_blue {
         color: $blue;
@@ -877,12 +879,15 @@ export default {
   .balance__frozen {
     display: none;
 
-    &_mobile {
+    &-mobile {
       display: block;
     }
   }
   .wallet__switch-table {
     grid-template-columns: 1fr;
+  }
+  .balance__bottom {
+    display: grid !important;
   }
 }
 
