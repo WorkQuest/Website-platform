@@ -20,7 +20,7 @@
       >
         <span class="row__user">
           <template v-if="$options.UserRole.WORKER === userRole">
-            {{ `${$t('quests.fromBig')} ${UserName(row.user.firstName, row.user.lastName)}` }}
+            {{ `${$t('meta.fromBig')} ${UserName(row.user.firstName, row.user.lastName)}` }}
           </template>
           <template v-else>
             {{ UserName(row.firstName, row.lastName) }}
@@ -28,7 +28,7 @@
         </span>
         <span class="row__price">
           <template v-if="$options.UserRole.WORKER === userRole">
-            {{ `${row.price} ${$options.TokenSymbols.WUSD}` }}
+            {{ getPrice(row.price, $options.TokenSymbols.WUSD) }}
           </template>
           <template v-else>
             {{
@@ -103,6 +103,7 @@
 </template>
 
 <script>
+import BigNumber from 'bignumber.js';
 import { mapGetters } from 'vuex';
 import {
   UserRole, TokenSymbols, Path, UserRating, Ratings,
@@ -146,6 +147,7 @@ export default {
   computed: {
     ...mapGetters({
       userRole: 'user/getUserRole',
+      tokenInfo: 'wallet/getBalanceData',
     }),
     content() {
       if (!Object.keys(this.item).length) return {};
@@ -158,7 +160,7 @@ export default {
           labelClass: this.getPriorityClass(this.item.priority),
           title: this.item.title,
           priceTitle: this.$t('meta.price'),
-          price: `${this.item.price} ${TokenSymbols.WUSD}`,
+          price: this.getPrice(this.item.price, TokenSymbols.WUSD),
         };
       }
       return {
@@ -173,6 +175,11 @@ export default {
     },
   },
   methods: {
+    getPrice(val, symbol) {
+      const decimals = this.tokenInfo[symbol]?.decimals || 18;
+      const price = val ? +(new BigNumber(val).shiftedBy(-decimals).toFixed(4)) : 0;
+      return `${price} ${TokenSymbols.WUSD}`;
+    },
     showDetails(id) {
       const path = this.userRole === UserRole.WORKER ? Path.QUESTS : Path.PROFILE;
       this.$router.push(`${path}/${id}`);
