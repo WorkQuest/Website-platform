@@ -2,11 +2,14 @@
   <div class="collateral-page">
     <div class="collateral-page__container">
       <div class="collateral-page__header">
-        <div class="title">
+        <div class="title_sub">
           {{ $t('collateral.lending') }}
         </div>
+        <div class="title">
+          {{ $t('collateral.collateral') }}:
+        </div>
         <div class="title_sub">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor
+          {{ $t('collateral.sub') }}
         </div>
       </div>
       <div class="collateral-page__content">
@@ -30,7 +33,7 @@
           </div>
           <div class="info-block__about">
             <div class="info-block__subtitle">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor
+              {{ $t('collateral.howToGetWUSD') }}
             </div>
             <img
               class="info-block-image"
@@ -54,7 +57,7 @@
           </div>
           <div class="info-block__about">
             <div class="info-block__subtitle">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor
+              {{ $t('collateral.auctionDescription') }}
             </div>
             <img
               class="info-block-image"
@@ -198,11 +201,11 @@ export default {
         },
         {
           title: this.$tc('meta.units.percentsCount', 4.31),
-          subtitle: this.$t('meta.deposit'),
+          subtitle: this.$t('collateral.availableAsset'),
         },
         {
           title: this.$tc('meta.units.percentsCount', 5),
-          subtitle: this.$t('meta.percent'),
+          subtitle: this.$t('collateral.minPercent'),
         },
       ];
     },
@@ -210,23 +213,39 @@ export default {
       return [
         {
           name: this.$t('collateral.faq1'),
-          about: this.$t('collateral.faq1'),
+          about: this.$t('collateral.res1'),
         },
         {
           name: this.$t('collateral.faq2'),
-          about: this.$t('collateral.ans2'),
+          about: this.$t('collateral.res2'),
         },
         {
           name: this.$t('collateral.faq3'),
-          about: this.$t('collateral.faq3'),
+          about: this.$t('collateral.res3'),
         },
         {
           name: this.$t('collateral.faq4'),
-          about: this.$t('collateral.faq4'),
+          about: this.$t('collateral.res4'),
         },
         {
           name: this.$t('collateral.faq5'),
-          about: this.$t('collateral.faq5'),
+          about: this.$t('collateral.res5'),
+        },
+        {
+          name: this.$t('collateral.faq6'),
+          about: this.$t('collateral.res6'),
+        },
+        {
+          name: this.$t('collateral.faq7'),
+          about: this.$t('collateral.res7'),
+        },
+        {
+          name: this.$t('collateral.faq8'),
+          about: this.$t('collateral.res8'),
+        },
+        {
+          name: this.$t('collateral.faq9'),
+          about: this.$t('collateral.res9'),
         },
       ];
     },
@@ -343,13 +362,15 @@ export default {
       max-width: 530px;
       font-size: 45px;
       line-height: 110%;
-      margin: 0 0 24px;
+      margin: 24px 0;
 
       &_sub {
         @extend .title;
         font-size: 16px;
         line-height: 100%;
         opacity: 0.5;
+        text-align: justify;
+        margin: 0 0 0px;
       }
     }
   }

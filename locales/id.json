@@ -346,6 +346,7 @@
     "chooseThis": "Pilih peran ini"
   },
   "privacy": {
+    "subTitle": "To complete the registration on the platform, you must carefully read the following documents and agree to the terms of use of the WorkQuest platform.",
     "agree": "Saya setuju dengan"
   },
   "layout": {
@@ -1434,8 +1435,9 @@
     "addCard": "Tambahkan Kartu",
     "buyWQT": {
       "buyButton": "Buy WQT",
-      "title": "Buy first WQT!",
-      "sub": "Donec rutrum congue leo eget malesuada. Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem."
+      "title": "Buy $WQT now!",
+      "sub": "The easiest way to buy $WQT is using $USDT.",
+      "networks": "Networks available for purchase: Ethereum, Binance Smart Chain and Polygon. After the purchase, $WQT will automatically deposit to your WorkNet network wallet, minus the transaction fee."
     },
     "collateral": {
       "balance": "Collateral balance",
@@ -1809,18 +1811,36 @@
     "connectWallet": "Connect wallet"
   },
   "collateral": {
-    "lending": "Collateral",
-    "marketSize": "Market size",
-    "wantToGetWUSDTitle": "Wanna get WUSD?",
+    "collateral": "Collateral",
+    "lending": "Algorithmic stablecoin $WUSD",
+    "marketSize": "Total circulation supply",
+    "sub": "Provide different types of collateral for issuing $WUSD stablecoin and use it in various Defi platform functionality: paying for Quests, receiving a salary, participating in retirement, insurance, lending&borrowing, staking, and savings programs.",
+    "availableAsset": "Available collateral asset",
+    "minPercent": "Minimum collateral percentage",
+    "wantToGetWUSDTitle": "Want to get $WUSD quickly?",
+    "howToGetWUSD": "You must select the collateral currency you want to deposit to purchase the stablecoin and the amount of collateral asset you are willing to keep. Follow a few simple steps to enjoy the WorkQuest platform's benefits.",
     "getWUSD": "Get WUSD",
-    "wantToGoAuctionTitle": "Auction",
+    "wantToGoAuctionTitle": "Liquidation auction.",
+    "auctionDescription": "The secure and easiest way to buy the crypto-assets is with a discount. Platform users have the opportunity to purchase lots from collateral at a discount on the market value. Buy discounted $ETH, $BNB, $WQT, $USDT, or $USDC using $WUSD stablecoin",
     "goAuction": "Go to the auction",
-    "faq1": "What are Locked Savings? Committed to holding your crypto?",
-    "faq2": "What happens to my funds on the day I subscribe to a Locked Savings product?",
-    "ans2": "On the day of subscription, WorkQuest Savings will deduct the funds for subscription from your WUSD wallet.\n",
-    "faq3": "What happens to my funds on the value date of a Locked Savings product?",
-    "faq4": "What happens to my funds on the redemption date of a Locked Savings product?",
-    "faq5": "How is the average annual return (APR) calculated?"
+    "faq1": "When can I return my collateral asset?",
+    "res1": "You can return $WUSD to collateral anytime and get back your collateral assets if they have not been liquidated.",
+    "faq2": "If the auction will liquidate my collateral asset, the whole amount at once?",
+    "res2": "No, the platform provides for partial liquidation of collateral. Only some part of the amount that needs to stabilize the price of $WUSD can be liquidated.",
+    "faq3": "What assets can be liquidated?",
+    "res3": "The assets that are already used in collateral pools in the form of collateral can be liquidated: $WQT, $BNB, $ETH, $USDT, and $USDC.",
+    "faq4": "I received a notification that my pledge may go into liquidation. What should I do?",
+    "res4": "In the wallet, you can add the required collateral assets to reduce the risk of liquidating your collateral. Adding more assets initially deposited as collateral will raise the liquidation threshold for your position and help keep funds in a volatile market.",
+    "faq5": "Suppose I received a notification that I could receive more $WUSD. Do I need to add more collateral?",
+    "res5": "You can additionally receive $WUSD if the price of the asset you left as collateral begins to grow. You will be able to receive additional $WUSD, which was mint due to the growth of your collateral. This action will not require additional collateral. However, it is essential to understand that the mechanism may liquidate your collateral if the price goes down again. But only if you do not deposit the required amount of the asset as collateral.",
+    "faq6": "How to issue/purchase $WUSD?",
+    "res6": "To receive $WUSD, you must select the asset and amount you want to leave as collateral. The minimum collateral for less volatile pools like USDT and USDC is 102%. For more volatile pools like WQT, BNB, and ETH, the minimum collateral is 150%",
+    "faq7": "How much collateral should I keep to ensure my position will not be liquidated?",
+    "res7": "When choosing a collateral asset, the system automatically calculates three types of risks: low, medium, and high, so that you can select the optimal percentage of security yourself. The higher the risk, the greater the chance your position will be liquidated.",
+    "faq8": "How is the liquidation process going?",
+    "res8": "Suppose the price of the asset you left as collateral starts to fall. In that case, your collateral may go into liquidation to stabilize the price of $WUSD. Liquidation for $USDT collateral begins if the collateral percentage drops to 101%, and liquidation of pools with other more volatile assets at 139%. All liquidated collateral goes to the auction to stabilize the price of $WUSD.",
+    "faq9": "How long does the auction last? At what discount can I purchase liquidated positions?",
+    "res9": "The sale of collateral assets at the auction can depend on the percentage of the fall in the price of the assets and can be up to 6 hours. After the lot is put for auction, all platform users will receive a notification about the creation of the lot in the liquidation auction. You can purchase collateral from WQT, ETH, BNB, USDT, and USDC pools at a 3% discount on the average asset price."
   },
   "auction": {
     "title": "Lots",
