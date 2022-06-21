@@ -369,14 +369,14 @@ export default {
 
     async resendLetter() {
       this.model.email = this.model.email.trim();
-      if (this.model.email === '' || this.model.password === '') {
+      const { email, password } = this.model;
+      if (!email || !password) {
         await this.$store.dispatch('main/showToast', {
           text: this.$tc('signIn.enterEmail'),
         });
         return;
       }
       if (!this.$cookies.get('access')) {
-        const { email, password } = this.model;
         const payload = {
           email,
           password,
