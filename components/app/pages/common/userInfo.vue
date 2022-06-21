@@ -4,13 +4,6 @@
     data-selector="COMPONENT-INFO-USER"
   >
     <div class="info-grid__left">
-      <div class="info-grid__share-left">
-        <base-btn
-          mode="share-btn"
-          data-selector="SHARE-USER-PROFILE"
-          @click="shareModal()"
-        />
-      </div>
       <div class="info-grid__block block block_left">
         <div class="block__avatar avatar">
           <img
@@ -433,10 +426,6 @@ export default {
     justify-content: space-between;
     align-items: flex-end;
   }
-
-  &__share-left {
-    display: none;
-  }
 }
 
 .right {
@@ -689,6 +678,7 @@ export default {
     flex-direction: column;
     align-items: center;
     grid-gap: 0;
+    position: relative;
 
     &__left {
       flex-direction: column;
@@ -698,12 +688,6 @@ export default {
     &__right {
       grid-gap: 20px;
       width: 100%;
-    }
-
-    &__share-left {
-      display: flex;
-      height: 0;
-      justify-content: flex-end;
     }
   }
   .block {
@@ -723,6 +707,9 @@ export default {
     }
 
     &__header {
+      position: absolute;
+      top: 15px;
+      right: 0;
       &_employee {
         grid-gap: 0;
         grid-template-columns: auto;
