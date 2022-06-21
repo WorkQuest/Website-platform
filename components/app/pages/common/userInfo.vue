@@ -675,9 +675,10 @@ export default {
 
 @include _991 {
   .info-grid {
-    flex-direction: column-reverse;
+    flex-direction: column;
     align-items: center;
     grid-gap: 0;
+    position: relative;
 
     &__left {
       flex-direction: column;
@@ -706,6 +707,9 @@ export default {
     }
 
     &__header {
+      position: absolute;
+      top: 15px;
+      right: 0;
       &_employee {
         grid-gap: 0;
         grid-template-columns: auto;
