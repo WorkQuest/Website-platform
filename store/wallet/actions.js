@@ -477,7 +477,7 @@ export default {
           }, { root: true });
         }
 
-        if (recipient?.toLowerCase() === hexAddress) {
+        if (events && recipient?.toLowerCase() === hexAddress) {
           if (callbackWS) await callbackWS();
           if (network !== Chains.WORKNET) return;
           const transactions = JSON.parse(JSON.stringify(getters.getTransactions));
@@ -503,6 +503,7 @@ export default {
     }
   },
   async unsubscribeWS({ _ }) {
+    console.log('UNSUB');
     connectionWS?.close();
     connectionWS = null;
   },
