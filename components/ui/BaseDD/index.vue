@@ -319,8 +319,8 @@ export default {
       align-items: center;
       img {
         margin-right: 5px;
-        height: 25px;
-        width: 25px;
+        height: 24px;
+        width: 24px;
       }
     }
     &_hide {
@@ -331,8 +331,8 @@ export default {
     display: flex;
     align-items: center;
     img {
-      height: 25px;
-      width: 25px;
+      height: 24px;
+      width: 24px;
       margin-right: 5px;
     }
     span {
