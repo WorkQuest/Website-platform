@@ -85,7 +85,7 @@ export default {
   },
   methods: {
     async sendTransaction() {
-      // TODO need it?
+      // TODO [!!!] need it?
       if (!this.isConnected) await this.$store.dispatch('web3/connect');
 
       const { submit } = this.options;

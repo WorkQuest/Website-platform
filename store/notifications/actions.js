@@ -29,7 +29,7 @@ export default {
     const { id } = rootGetters['user/getUserData'];
     const currentPath = this.$router.history.current.path;
     if (currentPath === `${Path.PROFILE}/${id}`) {
-      // TODO летят запросы если даже это была старая нотификация
+      // TODO [!!!] летят запросы если даже это была старая нотификация
       // как проверить: зайти на свой профиль, обновить страницу, смотреть в network
       await dispatch('user/getAllUserReviews', {
         userId: id,
@@ -176,6 +176,7 @@ export default {
         };
 
         // TODO: проверка на то были ли мы приглашены на квест или мы сами подали на него
+        // на бэке не хватает поля
         // ui.notifications.respondedQuestEdited - u responded
         // ui.notifications.invitedQuestEdited - that u invited
         if (userRole === UserRole.WORKER) {
