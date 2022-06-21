@@ -476,7 +476,8 @@
       "searchWithMap": "Город / Улица / Место"
     },
     "worker": "Работник",
-    "startQuest": "Начать квест"
+    "startQuest": "Начать квест",
+    "pending": "Ожидание"
   },
   "filters": {
     "dd": {

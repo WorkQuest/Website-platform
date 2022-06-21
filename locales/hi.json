@@ -476,7 +476,8 @@
       "searchWithMap": "शहर / मोहल्ला / स्थान"
     },
     "worker": "वर्कर",
-    "startQuest": "Quest शुरू करें"
+    "startQuest": "Quest शुरू करें",
+    "pending": "Pending"
   },
   "filters": {
     "dd": {

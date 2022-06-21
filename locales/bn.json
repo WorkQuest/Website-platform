@@ -476,7 +476,8 @@
       "searchWithMap": "শহর / রাস্তা / স্থান"
     },
     "worker": "কর্মী",
-    "startQuest": "Quest শুরু করুন"
+    "startQuest": "Quest শুরু করুন",
+    "pending": "Pending"
   },
   "filters": {
     "dd": {

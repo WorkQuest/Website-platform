@@ -476,7 +476,8 @@
       "searchWithMap": "Cidade / Rua / Lugar"
     },
     "worker": "Trabalhador",
-    "startQuest": "Começar busca"
+    "startQuest": "Começar busca",
+    "pending": "Pending"
   },
   "filters": {
     "dd": {

@@ -234,6 +234,9 @@ export default {
     questReward() {
       return new BigNumber(this.quest.price).shiftedBy(-18).toString();
     },
+    isWorker() {
+      return this.userRole === UserRole.WORKER;
+    },
     questStatusesData() {
       const statuses = {
         [QuestStatuses.Pending]: {
@@ -252,9 +255,9 @@ export default {
           class: 'card-quest__state_green',
         },
         [QuestStatuses.WaitWorkerOnAssign]: {
-          title: this.$t('meta.invited'),
+          title: this.isWorker ? this.$t('meta.invited') : '',
           progressText: this.$t('quests.questWaitConfirm'),
-          class: 'card-quest__state_yellow',
+          class: this.isWorker ? 'card-quest__state_yellow' : '',
         },
         [QuestStatuses.WaitEmployerConfirm]: {
           title: this.$t('quests.pendingConsideration'),
@@ -272,7 +275,7 @@ export default {
           class: 'card-quest__state_red',
         },
         [QuestStatuses.Done]: {
-          title: this.userRole === UserRole.WORKER ? this.$t('meta.performed') : this.$t('meta.completed'),
+          title: this.isWorker ? this.$t('meta.performed') : this.$t('meta.completed'),
           progressText: this.$t('quests.finishedBy'),
           class: 'card-quest__state_blue',
         },
@@ -282,20 +285,20 @@ export default {
           class: 'card-quest__state_gray',
         },
         [QuestStatuses.Invited]: {
-          title: this.$t('meta.invited'),
+          title: this.$t('quests.pending'),
           progressText: this.$t('quests.waitWorkerOnAssign'),
           class: 'card-quest__state_yellow',
         },
       };
-      if (this.userRole === UserRole.EMPLOYER) {
-        statuses[QuestStatuses.Blocked] = {
-          title: this.$t('quests.blocked'),
+      if (this.isWorker) {
+        statuses[QuestStatuses.Rejected] = {
+          title: this.$t('quests.rejected'),
           progressText: '',
           class: 'card-quest__state_red',
         };
       } else {
-        statuses[QuestStatuses.Rejected] = {
-          title: this.$t('quests.rejected'),
+        statuses[QuestStatuses.Blocked] = {
+          title: this.$t('quests.blocked'),
           progressText: '',
           class: 'card-quest__state_red',
         };
@@ -317,9 +320,9 @@ export default {
 
       if (questStatus === QuestStatuses.Blocked) return this.questStatusesData[QuestStatuses.Blocked];
 
-      if (this.userRole === UserRole.WORKER) {
+      if (this.isWorker) {
         if (responded) {
-          if (questStatus === QuestStatuses.WaitWorkerOnAssign) return this.questStatusesData[QuestStatuses.Invited];
+          if (questStatus === QuestStatuses.WaitWorkerOnAssign) return this.questStatusesData[QuestStatuses.WaitWorkerOnAssign];
           return this.questStatusesData[QuestStatuses.Responded];
         }
         if (invited) {

@@ -74,6 +74,9 @@ export default {
       userRole: 'user/getUserRole',
       infoDataMode: 'quests/getInfoDataMode',
     }),
+    isWorker() {
+      return this.userRole === UserRole.WORKER;
+    },
     questStatusesData() {
       const statuses = {
         [QuestStatuses.Created]: {
@@ -81,16 +84,16 @@ export default {
           class: 'info_hide',
         },
         [QuestStatuses.ADChat]: {
-          text: this.$t('meta.invited'),
-          class: 'info_bg-yellow',
+          text: this.isWorker ? this.$t('quests.pending') : '',
+          class: this.isWorker ? 'info_bg-yellow' : 'info_hide',
         },
         [QuestStatuses.WaitWorker]: {
           text: this.$t('quests.activeQuest'),
           class: 'info_bg-green',
         },
         [QuestStatuses.WaitWorkerOnAssign]: {
-          text: this.$t('meta.invited'),
-          class: 'info_bg-yellow',
+          text: this.isWorker ? this.$t('meta.invited') : '',
+          class: this.isWorker ? 'info_bg-yellow' : 'info_hide',
         },
         [QuestStatuses.WaitEmployerConfirm]: {
           text: this.$t('quests.pendingConsideration'),
@@ -105,7 +108,7 @@ export default {
           class: 'info_bg-red',
         },
         [QuestStatuses.Done]: {
-          text: this.userRole === UserRole.WORKER ? this.$t('meta.performed') : this.$t('meta.completed'),
+          text: this.isWorker ? this.$t('meta.performed') : this.$t('meta.completed'),
           class: 'info_bg-blue',
         },
         [QuestStatuses.Responded]: {
@@ -113,18 +116,18 @@ export default {
           class: 'info_bg-grey',
         },
         [QuestStatuses.Invited]: {
-          text: this.$t('meta.invited'),
-          class: 'info_bg-yellow',
+          text: this.isWorker ? this.$t('quests.pending') : '',
+          class: this.isWorker ? 'info_bg-yellow' : 'info_hide',
         },
       };
-      if (this.userRole === UserRole.EMPLOYER) {
-        statuses[QuestStatuses.Blocked] = {
-          text: this.$t('quests.blocked'),
+      if (this.isWorker) {
+        statuses[QuestStatuses.Rejected] = {
+          text: this.$t('quests.rejected'),
           class: 'info_bg-red',
         };
       } else {
-        statuses[QuestStatuses.Rejected] = {
-          text: this.$t('quests.rejected'),
+        statuses[QuestStatuses.Blocked] = {
+          text: this.$t('quests.blocked'),
           class: 'info_bg-red',
         };
       }

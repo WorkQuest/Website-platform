@@ -476,7 +476,8 @@
       "searchWithMap": "城市/街道/地点"
     },
     "worker": "工作者",
-    "startQuest": "开始 Quest"
+    "startQuest": "开始 Quest",
+    "pending": "Pending"
   },
   "filters": {
     "dd": {
