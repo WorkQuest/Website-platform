@@ -177,7 +177,7 @@ export default {
   methods: {
     getPrice(val, symbol) {
       const decimals = this.tokenInfo[symbol]?.decimals || 18;
-      const price = val ? new BigNumber(new BigNumber(val).shiftedBy(-decimals).toFixed(3)).toNumber() : 0;
+      const price = val ? +(new BigNumber(val).shiftedBy(-decimals).toFixed(4)) : 0;
       return `${price} ${TokenSymbols.WUSD}`;
     },
     showDetails(id) {
