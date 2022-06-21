@@ -17,7 +17,7 @@ export default {
       southWest: { lat: 0, lng: 0 },
     });
   },
-  async questsPoints({ commit, rootGetters }, { query, specFilter }) {
+  async questsPoints({ commit }, { query, specFilter }) {
     try {
       delete query.q;
       delete query.limit;
