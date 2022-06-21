@@ -590,65 +590,72 @@ export default {
         return;
       }
 
+      const payment = async (dispute) => {
+        const { ok, result } = await this.$store.dispatch('quests/arbitration', {
+          contractAddress,
+          value: arbitrationFee,
+        });
+
+        if (ok && result.status) {
+          this.ShowModal({
+            key: modals.status,
+            title: this.$t('modals.transactionSent'),
+            subtitle: this.$t('modals.checkExplorer'),
+            link: `${ExplorerUrl}/tx/${result.transactionHash}`,
+            img: images.SUCCESS,
+            callback: async () => await this.$router.push(`${Path.DISPUTES}/${dispute.id}`),
+          });
+        } else {
+          this.ShowModalFail({
+            title: this.$t('modals.transactionError'),
+            subtitle: this.$t('modals.tryLater'),
+            img: images.ERROR,
+          });
+        }
+      };
+
       this.ShowModal({
         key: modals.status,
         img: images.WARNING,
         title: this.$t('modals.titles.disputePayment'),
         text: this.$t('modals.payForDispute'),
         isNotClose: true,
-        submitMethod: async () => this.ShowModal({
-          key: modals.openADispute,
-          submitMethod: async ({ reason, problemDescription }) => this.ShowModal({
-            key: modals.transactionReceipt,
-            fields: {
-              from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
-              to: { name: this.$t('meta.toBig'), value: contractAddress },
-              fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
-              amount: {
-                name: this.$t('modals.amount'),
-                value: shiftedArbitrationFee,
-                symbol: TokenSymbols.WQT,
-              },
-            },
-            submitMethod: async () => {
-              const payment = async (dispute) => {
-                const { ok, result } = await this.$store.dispatch('quests/arbitration', { contractAddress, value: arbitrationFee });
-
-                if (ok && result.status) {
-                  this.ShowModal({
-                    key: modals.status,
-                    title: this.$t('modals.transactionSent'),
-                    subtitle: this.$t('modals.checkExplorer'),
-                    link: `${ExplorerUrl}/tx/${result.transactionHash}`,
-                    img: images.SUCCESS,
-                    callback: async () => await this.$router.push(`${Path.DISPUTES}/${dispute.id}`),
-                  });
-                } else {
-                  this.ShowModalFail({
-                    title: this.$t('modals.transactionError'),
-                    subtitle: this.$t('modals.tryLater'),
-                    img: images.ERROR,
-                  });
-                }
-              };
-
-              if (openDispute?.id && openDispute?.status === DisputeStatues.PENDING) {
-                // your tx can be failed, but dispute on backend already created and has status pending
-                // for this case we are checking openDispute?.id and status have to equal pending
-                await payment(openDispute);
-              } else {
-                const { ok: disputeCreated, result: dispute } = await this.$store.dispatch('disputes/createDispute', {
-                  reason,
-                  problemDescription,
-                  questId: this.quest?.id,
+        submitMethod: async () => {
+          if (openDispute?.id && openDispute?.status === DisputeStatues.PENDING) {
+            // your tx can be failed, but dispute on backend already created and has status pending
+            // for this case we are checking openDispute?.id and status have to equal pending
+            await payment(openDispute);
+          } else {
+            this.ShowModal({
+              key: modals.openADispute,
+              submitMethod: async ({ reason, problemDescription }) => {
+                this.ShowModal({
+                  key: modals.transactionReceipt,
+                  fields: {
+                    from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+                    to: { name: this.$t('meta.toBig'), value: contractAddress },
+                    fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
+                    amount: {
+                      name: this.$t('modals.amount'),
+                      value: shiftedArbitrationFee,
+                      symbol: TokenSymbols.WQT,
+                    },
+                  },
+                  submitMethod: async () => {
+                    const { ok: disputeCreated, result: dispute } = await this.$store.dispatch('disputes/createDispute', {
+                      reason,
+                      problemDescription,
+                      questId: this.quest?.id,
+                    });
+                    if (disputeCreated) {
+                      await payment(dispute);
+                    } else this.ShowModalFail({});
+                  },
                 });
-                if (disputeCreated) {
-                  await payment(dispute);
-                } else this.ShowModalFail({});
-              }
-            },
-          }),
-        }),
+              },
+            });
+          }
+        },
       });
     },
     async acceptCompletedWorkOnQuest() {
