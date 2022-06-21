@@ -67,6 +67,12 @@
                       class="footer__text footer__text_grey"
                       @click="showSupportModal"
                     >
+                      {{ $t('meta.contactUs') }}
+                    </div>
+                    <div
+                      class="footer__text footer__text_grey"
+                      @click="showSupportModal"
+                    >
                       {{ $t('footer.company.support') }}
                     </div>
                   </div>
@@ -200,7 +206,6 @@ export default {
         { title: this.$t('footer.company.wqWiki'), path: Path.WIKI },
         { title: this.$t('meta.aboutUs'), path: COMPANY.ABOUT_US },
         { title: this.$t('footer.company.leadership'), path: COMPANY.LEADERSHIP },
-        { title: this.$t('meta.contactUs'), path: COMPANY.CONTACT_US },
       ];
     },
     DeFiLinks() {
