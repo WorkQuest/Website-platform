@@ -296,7 +296,7 @@
     "loginWith": "使用以下方式登录",
     "workQuest": "WorkQuest",
     "makingMoneyIsFast": "WorkQuest：\n 全球去中心化\n 就业市场",
-    "enterEmail": "Please enter correct email"
+    "enterEmail": "Please enter correct email and password"
   },
   "signWorkQuest": {
     "description": "您可以使用您的 WorkQuest DAO 登录名和密码登录",
@@ -423,14 +423,14 @@
       "Hourly": "Hourly",
       "Daily": "Daily",
       "Weekly": "Weekly",
-      "BiWeekly":"Bi-weekly ",
+      "BiWeekly": "Bi-weekly ",
       "SemiMonthly": "Semi-monthly",
       "Monthly": "Monthly",
       "Quarterly": "Quarterly",
       "SemiAnnually": "Semi-annually",
       "Annually": "Annually",
-      "FixedPeriod":"Fixed period",
-      "ByAgreement":"By agreement"
+      "FixedPeriod": "Fixed period",
+      "ByAgreement": "By agreement"
     },
     "employment": {
       "employment": "Employment",
@@ -476,7 +476,8 @@
       "searchWithMap": "城市/街道/地点"
     },
     "worker": "工作者",
-    "startQuest": "开始 Quest"
+    "startQuest": "开始 Quest",
+    "pending": "Pending"
   },
   "filters": {
     "dd": {
@@ -541,11 +542,11 @@
         "title": "Admin Support",
         "sub": {
           "400": "Data Entry",
-          "406": "Other Admin Support",
           "402": "Personal / Virtual Assistance",
           "403": "Project Management",
           "404": "Transcription",
-          "405": "Web Research"
+          "405": "Web Research",
+          "406": "Other Admin Support"
         }
       },
       "5": {
@@ -558,8 +559,8 @@
       "6": {
         "title": "Data Science & Analytics",
         "sub": {
-          "601": "Data Extraction / ETL",
           "600": "A / B Testing",
+          "601": "Data Extraction / ETL",
           "602": "Data Mining & Management",
           "603": "Data Visualization",
           "604": "Machine Learning",
@@ -617,85 +618,85 @@
       "10": {
         "title": "Beauty, Fitness & Sport",
         "sub": {
-          "1007": "Beauty salon",
-          "1008": "Other Beauty, Fitness & Sport ",
-          "1005": "Physical Therapist",
-          "1004": "Occupational Therapist",
+          "1000": "Athletic Trainer",
+          "1001": "Exercise Physiologist",
           "1002": "Fitness Trainer",
           "1003": "Massage Therapist",
+          "1004": "Occupational Therapist",
+          "1005": "Physical Therapist",
           "1006": "Recreational Therapist",
-          "1001": "Exercise Physiologist",
-          "1000": "Athletic Trainer"
+          "1007": "Beauty salon",
+          "1008": "Other Beauty, Fitness & Sport "
         }
       },
       "11": {
         "title": "Education",
         "sub": {
-          "1105": "Other Education",
-          "1104": "Teaching Lanquages",
+          "1100": "Teaching",
+          "1101": "Education Administration",
           "1102": "School Counseling",
           "1103": "School Social Work",
-          "1101": "Education Administration",
-          "1100": "Teaching"
+          "1104": "Teaching Lanquages",
+          "1105": "Other Education"
         }
       },
       "12": {
         "title": "Culture & Arts",
         "sub": {
-          "1212": "Art Director",
-          "1203": "Dancer",
-          "1217": "Film Director",
-          "1202": "Choreographer",
-          "1213": "Museum Director",
-          "1206": "Music therapist",
           "1200": "Actor",
-          "1211": "Curator",
-          "1210": "Product Designer",
-          "1207": "Theatre director",
-          "1218": "Other Culture & Arts",
           "1201": "Community Arts Worker",
-          "1208": "Multimedia Specialist ",
+          "1202": "Choreographer",
+          "1203": "Dancer",
           "1204": "Dramatherapist",
-          "1215": "Art Therapist",
-          "1214": "Art Teacher",
-          "1209": "Systems Designer",
           "1205": "Music producer",
-          "1216": "Medical Illustrator"
+          "1206": "Music therapist",
+          "1207": "Theatre director",
+          "1208": "Multimedia Specialist ",
+          "1209": "Systems Designer",
+          "1210": "Product Designer",
+          "1211": "Curator",
+          "1212": "Art Director",
+          "1213": "Museum Director",
+          "1214": "Art Teacher",
+          "1215": "Art Therapist",
+          "1216": "Medical Illustrator",
+          "1217": "Film Director",
+          "1218": "Other Culture & Arts"
         }
       },
       "13": {
         "title": "IT / Networking",
         "sub": {
           "1300": "Database Administration",
+          "1301": "ERP / CRM Software",
           "1302": "Information Security",
           "1303": "Network & System Administration",
-          "1301": "ERP / CRM Software",
           "1304": "Other IT & Networking"
         }
       },
       "14": {
         "title": "Design",
         "sub": {
-          "1406": "Other Design",
-          "1405": "Interior & Exterior Design",
-          "1403": "Graphic, Editorial & Presentation Design",
-          "1404": "Product Design",
+          "1400": "Layout Design",
           "1401": "Branding",
           "1402": "Gaming & AR / VR",
-          "1400": "Layout Design"
+          "1403": "Graphic, Editorial & Presentation Design",
+          "1404": "Product Design",
+          "1405": "Interior & Exterior Design",
+          "1406": "Other Design"
         }
       },
       "15": {
         "title": "Creative Production",
         "sub": {
-          "1503": "Photography",
           "1500": "Art & Illustration",
           "1501": "Audio & Music Production",
-          "1505": "Voice Talent",
           "1502": "Performing Arts",
+          "1503": "Photography",
+          "1504": "Video & Animation",
+          "1505": "Voice Talent",
           "1506": "3D Visualization",
-          "1507": "Other Creative Production",
-          "1504": "Video & Animation"
+          "1507": "Other Creative Production"
         }
       },
       "16": {
@@ -1510,7 +1511,7 @@
       "private": "Private",
       "groups": "Groups",
       "quests": "Quests",
-      "activeQuests" : "Active Quests",
+      "activeQuests": "Active Quests",
       "completedQuests": "Completed Quests",
       "starred": "Favorites"
     }
