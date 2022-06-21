@@ -31,6 +31,7 @@
               >
                 <a
                   v-for="(item, index) of searched"
+                  v-show="item.id"
                   :key="index"
                   class="searched__item"
                   :href="item.id ? '#' + item.id : ''"
@@ -155,6 +156,7 @@ export default {
   methods: {
     selectTab(item) {
       this.currentTab = item;
+      window.scrollTo(0, 50);
     },
     moveItems(event, payload) {
       const x = event.changedTouches[0].pageX;
