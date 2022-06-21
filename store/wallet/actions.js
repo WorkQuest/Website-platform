@@ -503,7 +503,6 @@ export default {
     }
   },
   async unsubscribeWS({ _ }) {
-    console.log('UNSUB');
     connectionWS?.close();
     connectionWS = null;
   },
