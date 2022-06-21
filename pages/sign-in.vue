@@ -369,12 +369,22 @@ export default {
 
     async resendLetter() {
       this.model.email = this.model.email.trim();
-      if (!this.model.email && !this.model.password) {
+      const { email, password } = this.model;
+      if (!email.trim() || !password) {
         await this.$store.dispatch('main/showToast', {
           text: this.$tc('signIn.enterEmail'),
         });
-      } else if (this.model.email && !this.disableResend) {
-        await this.$store.dispatch('user/resendEmail', { email: this.model.email });
+        return;
+      }
+      if (!this.$cookies.get('access')) {
+        const payload = {
+          email,
+          password,
+        };
+        await this.$store.dispatch('user/signIn', payload);
+      }
+      if (this.$cookies.get('access')) {
+        await this.$store.dispatch('user/resendEmail', { email });
         await this.$store.dispatch('main/showToast', {
           title: this.$t('registration.emailConfirmTitle'),
           text: this.$t('registration.emailConfirmNewLetter'),
