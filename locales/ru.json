@@ -1435,7 +1435,7 @@
     "addCard": "Добавить карту",
     "buyWQT": {
       "buyButton": "Купить WQT",
-      "title": "Купить первые WQT!",
+      "title": "Buy $WQT now!",
       "sub": "The easiest way to buy $WQT is using $USDT.",
       "networks": "Networks available for purchase: Ethereum, Binance Smart Chain and Polygon. After the purchase, $WQT will automatically deposit to your WorkNet network wallet, minus the transaction fee."
     },
