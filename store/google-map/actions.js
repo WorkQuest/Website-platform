@@ -17,7 +17,7 @@ export default {
       southWest: { lat: 0, lng: 0 },
     });
   },
-  async questsPoints({ commit }, { query, specFilter }) {
+  async questsPoints({ commit, rootGetters }, { query, specFilter }) {
     try {
       delete query.q;
       delete query.limit;
@@ -27,6 +27,8 @@ export default {
       const { ok, result } = await this.$axios.$post('/v1/quest/map/get-points', { specializations }, {
         params: { ...query },
       });
+      console.log('QUESTS', result.quests);
+      console.log('GETTERS', rootGetters['wallet/getBalanceData']);
       commit('setPoints', result.quests);
       return { ok };
     } catch (e) {
@@ -44,6 +46,7 @@ export default {
       const { ok, result } = await this.$axios.$post('/v1/profile/workers/map/get-points', { specializations }, {
         params: { ...query },
       });
+      console.log('USERS', result.quests);
       commit('setPoints', result.users);
       return { ok };
     } catch (e) {
