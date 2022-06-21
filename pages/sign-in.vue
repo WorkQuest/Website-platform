@@ -370,7 +370,7 @@ export default {
     async resendLetter() {
       this.model.email = this.model.email.trim();
       const { email, password } = this.model;
-      if (!email || !password) {
+      if (!email.trim() || !password) {
         await this.$store.dispatch('main/showToast', {
           text: this.$tc('signIn.enterEmail'),
         });
@@ -384,7 +384,7 @@ export default {
         await this.$store.dispatch('user/signIn', payload);
       }
       if (this.$cookies.get('access')) {
-        await this.$store.dispatch('user/resendEmail', { email: this.model.email });
+        await this.$store.dispatch('user/resendEmail', { email });
         await this.$store.dispatch('main/showToast', {
           title: this.$t('registration.emailConfirmTitle'),
           text: this.$t('registration.emailConfirmNewLetter'),
