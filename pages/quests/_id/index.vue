@@ -590,29 +590,42 @@ export default {
         return;
       }
 
-      const payment = async (dispute) => {
-        const { ok, result } = await this.$store.dispatch('quests/arbitration', {
-          contractAddress,
-          value: arbitrationFee,
-        });
+      const payment = async (dispute) => this.ShowModal({
+        key: modals.transactionReceipt,
+        fields: {
+          from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
+          to: { name: this.$t('meta.toBig'), value: contractAddress },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
+          amount: {
+            name: this.$t('modals.amount'),
+            value: shiftedArbitrationFee,
+            symbol: TokenSymbols.WQT,
+          },
+        },
+        submitMethod: async () => {
+          const { ok, result } = await this.$store.dispatch('quests/arbitration', {
+            contractAddress,
+            value: arbitrationFee,
+          });
 
-        if (ok && result.status) {
-          this.ShowModal({
-            key: modals.status,
-            title: this.$t('modals.transactionSent'),
-            subtitle: this.$t('modals.checkExplorer'),
-            link: `${ExplorerUrl}/tx/${result.transactionHash}`,
-            img: images.SUCCESS,
-            callback: async () => await this.$router.push(`${Path.DISPUTES}/${dispute.id}`),
-          });
-        } else {
-          this.ShowModalFail({
-            title: this.$t('modals.transactionError'),
-            subtitle: this.$t('modals.tryLater'),
-            img: images.ERROR,
-          });
-        }
-      };
+          if (ok && result.status) {
+            this.ShowModal({
+              key: modals.status,
+              title: this.$t('modals.transactionSent'),
+              subtitle: this.$t('modals.checkExplorer'),
+              link: `${ExplorerUrl}/tx/${result.transactionHash}`,
+              img: images.SUCCESS,
+              callback: async () => await this.$router.push(`${Path.DISPUTES}/${dispute.id}`),
+            });
+          } else {
+            this.ShowModalFail({
+              title: this.$t('modals.transactionError'),
+              subtitle: this.$t('modals.tryLater'),
+              img: images.ERROR,
+            });
+          }
+        },
+      });
 
       this.ShowModal({
         key: modals.status,
@@ -629,29 +642,14 @@ export default {
             this.ShowModal({
               key: modals.openADispute,
               submitMethod: async ({ reason, problemDescription }) => {
-                this.ShowModal({
-                  key: modals.transactionReceipt,
-                  fields: {
-                    from: { name: this.$t('meta.fromBig'), value: getWalletAddress() },
-                    to: { name: this.$t('meta.toBig'), value: contractAddress },
-                    fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
-                    amount: {
-                      name: this.$t('modals.amount'),
-                      value: shiftedArbitrationFee,
-                      symbol: TokenSymbols.WQT,
-                    },
-                  },
-                  submitMethod: async () => {
-                    const { ok: disputeCreated, result: dispute } = await this.$store.dispatch('disputes/createDispute', {
-                      reason,
-                      problemDescription,
-                      questId: this.quest?.id,
-                    });
-                    if (disputeCreated) {
-                      await payment(dispute);
-                    } else this.ShowModalFail({});
-                  },
+                const { ok: disputeCreated, result: dispute } = await this.$store.dispatch('disputes/createDispute', {
+                  reason,
+                  problemDescription,
+                  questId: this.quest?.id,
                 });
+
+                if (disputeCreated) await payment(dispute);
+                else this.ShowModalFail({});
               },
             });
           }
