@@ -60,6 +60,7 @@
                       :key="key"
                       :href="item.path"
                       class="footer__text footer__text_grey"
+                      target="_blank"
                     >
                       {{ item.title }}
                     </a>
