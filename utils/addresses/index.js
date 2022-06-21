@@ -16,6 +16,7 @@ export const IS_PROD = ['master', 'stage'].includes(process.env.BRANCH);
  * @property BRANCH - ENV
  * @property WQ_EXPLORER
  * @property BASE_URL
+ * @property G_ANALYTIC - use process.env on project,
  * @property GMAPKEY - use process.env on project,
  * @property SECRET_SUMSUB - use process.env on project
 

@@ -25,6 +25,7 @@ jobs:
       - name: Create .env file
         run: |
           echo BRANCH=${{ secrets.BRANCH }} >> .env
+          echo G_ANALYTIC=${{ secrets.G_ANALYTIC }} >> .env
           echo GMAPKEY=${{ secrets.GMAPKEY }} >> .env
           echo SECRET_SUMSUB=${{ secrets.SECRET_SUMSUB }} >> .env
 
@@ -63,6 +64,7 @@ jobs:
       - name: Create .env file
         run: |
           echo BRANCH=${{ secrets.BRANCH }} >> .env
+          echo G_ANALYTIC=${{ secrets.G_ANALYTIC }} >> .env
           echo GMAPKEY=${{ secrets.GMAPKEY }} >> .env
           echo SECRET_SUMSUB=${{ secrets.SECRET_SUMSUB }} >> .env
 
@@ -101,6 +103,7 @@ jobs:
       - name: Create .env file
         run: |
           echo BRANCH=${{ secrets.BRANCH }} >> .env
+          echo G_ANALYTIC=${{ secrets.G_ANALYTIC }} >> .env
           echo GMAPKEY=${{ secrets.GMAPKEY }} >> .env
           echo SECRET_SUMSUB=${{ secrets.SECRET_SUMSUB }} >> .env
 
@@ -139,6 +142,7 @@ jobs:
       - name: Create .env file
         run: |
           echo BRANCH=${{ secrets.BRANCH }} >> .env
+          echo G_ANALYTIC=${{ secrets.G_ANALYTIC }} >> .env
           echo GMAPKEY=${{ secrets.GMAPKEY }} >> .env
           echo SECRET_SUMSUB=${{ secrets.SECRET_SUMSUB }} >> .env
 

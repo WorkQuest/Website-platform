@@ -63,7 +63,7 @@ export default {
     '@nuxtjs/google-gtag',
   ],
   'google-gtag': {
-    id: 'G-1NQ8BHKM4F',
+    id: process.env.G_ANALYTIC,
   },
   build: {
     productionSourceMap: false,
@@ -119,6 +119,7 @@ export default {
   },
   env: {
     BRANCH: process.env.BRANCH,
+    G_ANALYTIC: process.env.G_ANALYTIC,
     GMAPKEY: process.env.GMAPKEY,
     SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
