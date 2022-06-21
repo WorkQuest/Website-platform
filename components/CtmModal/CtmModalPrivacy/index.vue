@@ -16,7 +16,7 @@
           <template v-slot:sub>
             <a
               class="privacy__link"
-              href="/docs/privacy.pdf"
+              :href="$options.LEGAL_INFO.PRIVACY_POLICY"
               target="_blank"
             >
               {{ $t('modals.titles.privacyPolicy') }}
@@ -31,7 +31,7 @@
           <template v-slot:sub>
             <a
               class="privacy__link"
-              href="/docs/terms.pdf"
+              :href="$options.LEGAL_INFO.TERM_CONDITIONS"
               target="_blank"
             >
               {{ $t('meta.terms') }}
@@ -46,7 +46,7 @@
           <template v-slot:sub>
             <a
               class="privacy__link"
-              href="/docs/aml.pdf"
+              :href="$options.LEGAL_INFO.AML_POLICY"
               target="_blank"
             >
               {{ $t('meta.aml') }}
@@ -69,9 +69,11 @@
 <script>
 import { mapGetters } from 'vuex';
 import { Path, UserStatuses } from '~/utils/enums';
+import { LEGAL_INFO } from '~/utils/сonstants/footer';
 
 export default {
   name: 'PrivacyModal',
+  LEGAL_INFO,
   data() {
     return {
       privacy: false,
