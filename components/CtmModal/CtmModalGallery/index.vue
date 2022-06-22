@@ -109,9 +109,10 @@ export default {
 
 <style lang="scss" scoped>
 .gallery-modal {
-  width: 1180px !important;
-  height: 80vh !important;
-  max-width: unset !important;
+  width: auto;
+  max-width: 1180px !important;
+  max-height: 80vh !important;
+  min-width: 300px;
 
   &__pager {
     position: relative;
@@ -121,13 +122,12 @@ export default {
     align-items: center;
     justify-content: center;
     background-color: #C4C4C4;
-    width: 1180px;
+    width: 100%;
     height: 80vh;
   }
 
   &__image {
     border-radius: 6px;
-    max-width: 1180px;
     max-height: 80vh;
   }
 
