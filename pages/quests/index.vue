@@ -23,7 +23,7 @@
         @sortPayPeriod="sortPayPeriod"
       />
       <div
-        v-if="questsCount"
+        v-if="questsCount || isFetching"
         class="quests__cards"
       >
         <card-quest
