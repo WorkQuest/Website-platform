@@ -32,13 +32,13 @@ $avatar-offset: 52 + 16;
 
   &__avatar {
     border-radius: 50%;
-    animation: shine-lines $animation-duration infinite linear;
+    animation: shine-avatar $animation-duration infinite linear;
   }
 
   &__block {
     border-radius: 6px;
     min-width: 60px;
-    animation: shine-avatar $animation-duration infinite linear;
+    animation: shine-lines $animation-duration infinite linear;
   }
 }
 @keyframes shine-avatar {
@@ -46,7 +46,7 @@ $avatar-offset: 52 + 16;
     background-position: -100px + $avatar-offset
   }
   40%, 100% {
-    background-position: 1200px + $avatar-offset
+    background-position: 140px + $avatar-offset
   }
 }
 
@@ -55,7 +55,7 @@ $avatar-offset: 52 + 16;
     background-position: -100px
   }
   40%, 100% {
-    background-position: 280px
+    background-position: 1200px
   }
 }
 </style>

@@ -23,14 +23,11 @@
             {{ item.name }}
           </base-btn>
         </div>
-        <div
-          v-if="questsCount"
-          class="quests__cards"
-        >
+        <div class="quests__cards">
           <card-quest
             v-for="i of $options.QuestsLimit"
             v-show="isFetching"
-            :key="i"
+            :key="i + 'skeleton'"
             is-skeleton
           />
           <card-quest
@@ -43,7 +40,7 @@
           />
         </div>
         <empty-data
-          v-else
+          v-if="!questsCount"
           :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
           :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
           :link="getEmptyLink"
@@ -76,7 +73,7 @@ export default {
       page: 1,
       statuses: '',
       requestParams: {},
-      isFetching: false,
+      isFetching: true,
     };
   },
   computed: {

@@ -129,12 +129,10 @@ export default {
   },
   methods: {
     async updateQuests(item) {
-      this.SetLoader(true);
       if (!item?.star && item?.id) await this.$store.dispatch('quests/setStarOnQuest', item.id);
       else await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
 
       await this.fetchQuestsList();
-      this.SetLoader(false);
     },
     async setPage(newPage) {
       this.page = newPage;
