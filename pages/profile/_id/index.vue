@@ -436,6 +436,7 @@ export default {
           },
         };
       }
+      sessionStorage.setItem('questsListFilter', JSON.stringify(payload));
 
       await this.$store.dispatch('quests/getUserQuests', payload);
     },
