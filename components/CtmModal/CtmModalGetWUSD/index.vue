@@ -94,6 +94,13 @@
               data-selector="PERCENT"
               @input="calcCollateralPercent"
             />
+            <slider
+              :value="Number(collateralPercentClear)"
+              :mode="$options.SLIDER_MODE.BLUE"
+              :from="minRatio"
+              :to="maxRatio"
+              @change="calcCollateralPercent"
+            />
             <div class="content__text">
               {{ $t('modals.conversionAdditionalInfo', {risks: getRisksGrade}) }}
             </div>
@@ -127,10 +134,14 @@ import { mapActions, mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import { TokenMap, TokenSymbols } from '~/utils/enums';
 import { ERC20 } from '~/abi';
+import Slider from '~/components/ui/Slider';
+import { SLIDER_MODE } from '~/components/ui/Slider/model';
 
 export default {
   name: 'ModalGetWUSD',
+  SLIDER_MODE,
   TokenSymbols,
+  components: { Slider },
   data() {
     return {
       selCurrencyID: TokenMap.USDT,
@@ -157,6 +168,10 @@ export default {
       userWalletAddress: 'user/getUserWalletAddress',
       currentBalance: 'wallet/getBalanceData',
     }),
+    maxRatio() {
+      // TODO: take it from contract
+      return 106;
+    },
     optimalCollateralPercent() {
       return new BigNumber(this.optimalCollateralRatio).multipliedBy(100).toFixed();
     },

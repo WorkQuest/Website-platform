@@ -3,5 +3,5 @@ export default () => ({
   prices: [],
   symbols: [],
   minRatio: null,
-  securityRatio: {},
+  securityRatio: [],
 });
