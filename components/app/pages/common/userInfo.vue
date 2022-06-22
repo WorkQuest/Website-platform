@@ -6,7 +6,13 @@
     <div class="info-grid__left">
       <div class="info-grid__block block block_left">
         <div class="block__avatar avatar">
+          <skeleton-block
+            v-if="!userData.firstName"
+            is-avatar
+            class="avatar__img"
+          />
           <img
+            v-else
             class="avatar__img"
             :src="userData.avatar && userData.avatar.url ? userData.avatar.url : $options.images.EMPTY_AVATAR"
             :alt="userData.avatar && userData.avatar.url ? userData.avatar.url : 'avatar_empty'"
@@ -28,7 +34,15 @@
       </div>
       <div class="info-grid__block block block_right">
         <div class="block__data">
-          <div class="block__title">
+          <skeleton-block
+            v-if="!userData.firstName"
+            class="block__title"
+            style="width: 200px"
+          />
+          <div
+            v-else
+            class="block__title"
+          >
             {{ UserName(userData.firstName, userData.lastName) }}
           </div>
           <item-rating
@@ -42,8 +56,13 @@
         >
           {{ userData.company }}
         </div>
+        <skeleton-block
+          v-if="!userData.firstName"
+          style="width: 100px"
+          class="block__description"
+        />
         <div
-          v-if="userData.additionalInfo && userData.additionalInfo.description"
+          v-else-if="userData.additionalInfo && userData.additionalInfo.description"
           class="block__description"
         >
           {{ userData.additionalInfo.description }}

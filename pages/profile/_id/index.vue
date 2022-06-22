@@ -254,7 +254,7 @@ export default {
       perPagerReviews: 8,
       perPagerPortfolios: 6,
 
-      isFetching: false,
+      isFetching: true,
       questsSkeletonCount: 2,
     };
   },
