@@ -5,3 +5,7 @@ export const SLIDER_MODE = Object.freeze({
   GREEN: 'green',
   RED: 'red',
 });
+
+export default {
+  SLIDER_MODE,
+};
