@@ -72,22 +72,11 @@ export default {
           subtitle: this.options.toNetwork === Chains.WORKNET
             ? this.convertToBech32('wq', this.options.recipient) : this.options.recipient,
         },
-        // {
-        //   title: this.$t('modals.worknetFee'),
-        //   subtitle: this.options.fee,
-        // },
-        // {
-        //   title: this.$t('modals.binanceFee'),
-        //   subtitle: this.options.binanceFee,
-        // },
       ];
     },
   },
   methods: {
     async sendTransaction() {
-      // TODO [!!!] need it?
-      if (!this.isConnected) await this.$store.dispatch('web3/connect');
-
       const { submit } = this.options;
       await submit();
     },
