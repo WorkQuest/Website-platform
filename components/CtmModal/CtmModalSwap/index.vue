@@ -88,6 +88,7 @@
 import { mapActions, mapGetters } from 'vuex';
 import { Chains, TokenSymbols } from '~/utils/enums';
 import { BridgeAddresses } from '~/utils/сonstants/bridge';
+import { getChainIdByChain } from '~/utils/web3';
 
 export default {
   name: 'ModalSwap',
@@ -95,11 +96,11 @@ export default {
     return {
       amount: 0,
       tokenId: 0,
-      accountAddress: '',
     };
   },
   computed: {
     ...mapGetters({
+      isConnected: 'web3/isConnected',
       account: 'web3/getAccount',
       options: 'modals/getOptions',
       currentToken: 'bridge/getToken',
@@ -113,26 +114,35 @@ export default {
       }
       return availableTokens;
     },
+    accountAddress() {
+      const chain = this.options?.to?.chain;
+      if (!chain) return '';
+      if (chain === Chains.WORKNET) return this.convertToBech32('wq', this.account.address);
+      return this.account.address;
+    },
   },
   watch: {
     async tokenId(index) {
       this.amount = 0;
       await this.handlerFetchBalance(this.tokens[index]);
     },
+    async isConnected(val) {
+      const id = +getChainIdByChain(this.options?.from?.chain);
+      if (val && this.account.netId !== id) {
+        await this.CloseModal();
+        this.ShowToast(this.$t('modals.incorrectChain'));
+      }
+    },
   },
   async mounted() {
+    this.SetLoader(true);
     await this.handlerFetchBalance(this.tokens[0]);
-    await this.convertAccountAddress();
+    this.SetLoader(false);
   },
   methods: {
     ...mapActions({
       fetchBalance: 'bridge/fetchBalance',
     }),
-    async convertAccountAddress() {
-      const { chain } = this.options.to;
-      if (chain === 'WORKNET') this.accountAddress = this.convertToBech32('wq', this.account.address);
-      else this.accountAddress = this.account.address;
-    },
     async handlerFetchBalance(symbol) {
       const { to, from } = this.options;
 
@@ -148,6 +158,11 @@ export default {
       this.amount = this.currentToken.amount;
     },
     async showSwapInfoModal() {
+      if (!this.account?.netId) {
+        await this.CloseModal();
+        this.ShowToast(this.$t('meta.disconnect'));
+        return;
+      }
       this.amount = (this.amount.toString()).replace(/[,]/g, '.');
       const { submit, from } = this.options;
       await submit({
