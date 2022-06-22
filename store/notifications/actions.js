@@ -159,8 +159,6 @@ export default {
           title,
           path: `${Path.QUESTS}/${data.id}`,
         };
-
-        await dispatch('updateProfile');
         break;
 
       case NotificationAction.QUEST_EDITED_ON_CONTRACT:
@@ -213,7 +211,6 @@ export default {
           title: message,
           path: `${Path.PROFILE}/${userRole === UserRole.EMPLOYER ? toUserId : fromUser.id}`,
         };
-        await dispatch('updateProfile');
         break;
 
       case NotificationAction.NEW_COMMENT_IN_DISCUSSION:

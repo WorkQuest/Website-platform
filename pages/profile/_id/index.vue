@@ -370,7 +370,6 @@ export default {
       await this.$store.dispatch('user/getAnotherUserData', this.userId);
       this.userData = this.anotherUserData;
     } else {
-      await this.$store.dispatch('user/getMainData');
       this.userData = this.mainUser;
     }
     await this.changeQuestsData(2);
