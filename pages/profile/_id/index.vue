@@ -216,6 +216,7 @@ import userInfo from '~/components/app/pages/common/userInfo';
 import modals from '~/store/modals/modals';
 import skills from '~/components/app/pages/common/skills';
 import { UserRole } from '~/utils/enums';
+import { QuestStatuses } from '~/utils/сonstants/quests';
 
 export default {
   name: 'Index',
@@ -256,6 +257,9 @@ export default {
       reviews: 'user/getAllUserReviews',
       anotherUserData: 'user/getAnotherUserData',
     }),
+    isMineProfile() {
+      return this.userId === this.mainUser?.id;
+    },
     cardLevelClass(idx) {
       const { cards } = this;
       return [
@@ -407,7 +411,7 @@ export default {
       return number;
     },
     async changeQuestsData(limit) {
-      const payload = {
+      let payload = {
         role: this.userData.role,
         userId: this.userData.id,
         query: {
@@ -416,8 +420,22 @@ export default {
           'sort[createdAt]': 'desc',
         },
       };
-
-      sessionStorage.setItem('questsListFilter', JSON.stringify(payload));
+      if (!this.isMineProfile) {
+        payload = {
+          ...payload,
+          query: {
+            ...payload.query,
+            // all quests w/o disputes
+            'statuses[0]': QuestStatuses.Closed,
+            'statuses[1]': QuestStatuses.Blocked,
+            'statuses[2]': QuestStatuses.Created,
+            'statuses[3]': QuestStatuses.WaitWorkerOnAssign,
+            'statuses[4]': QuestStatuses.WaitWorker,
+            'statuses[5]': QuestStatuses.WaitEmployerConfirm,
+            'statuses[6]': QuestStatuses.Done,
+          },
+        };
+      }
 
       await this.$store.dispatch('quests/getUserQuests', payload);
     },
