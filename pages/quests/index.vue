@@ -27,7 +27,14 @@
         class="quests__cards"
       >
         <card-quest
+          v-for="i of $options.QuestsLimit"
+          v-show="isFetching"
+          :key="i + 'skeleton'"
+          is-skeleton
+        />
+        <card-quest
           v-for="(quest,i) in questsList"
+          v-show="!isFetching"
           :key="i"
           :data-selector="`QUEST-CARD-${i}`"
           :quest-index="i"
@@ -54,16 +61,18 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import { Path, UserRole } from '~/utils/enums';
+import { QuestsLimit } from '~/utils/сonstants/quests';
 
 export default {
   name: 'Quests',
   middleware: 'worker-role',
+  QuestsLimit,
   data() {
     return {
       page: 1,
       search: '',
       query: {
-        limit: 5,
+        limit: QuestsLimit,
         offset: 0,
         'sort[createdAt]': 'desc',
         'statuses[0]': 1,

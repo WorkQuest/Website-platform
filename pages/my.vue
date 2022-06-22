@@ -28,7 +28,14 @@
           class="quests__cards"
         >
           <card-quest
+            v-for="i of $options.QuestsLimit"
+            v-show="isFetching"
+            :key="i"
+            is-skeleton
+          />
+          <card-quest
             v-for="(quest,i) in quests"
+            v-show="!isFetching"
             :key="i"
             :quest="quest"
             :quest-index="i"
@@ -57,18 +64,19 @@
 
 import { mapGetters } from 'vuex';
 import { UserRole, Path } from '~/utils/enums';
-import { QuestStatuses } from '~/utils/сonstants/quests';
+import { QuestsLimit, QuestStatuses } from '~/utils/сonstants/quests';
 
 export default {
   name: 'My',
   UserRole,
+  QuestsLimit,
   data() {
     return {
       selectedTab: null,
       page: 1,
-      offset: 10,
       statuses: '',
       requestParams: {},
+      isFetching: false,
     };
   },
   computed: {
@@ -98,7 +106,7 @@ export default {
         : tabs.filter((tab) => (tab.id !== 0));
     },
     totalPages() {
-      return Math.ceil(this.questsCount / this.offset);
+      return Math.ceil(this.questsCount / QuestsLimit);
     },
     getEmptyLink() {
       return this.userRole === UserRole.WORKER ? '' : Path.CREATE_QUEST;
@@ -106,27 +114,27 @@ export default {
   },
   watch: {
     async page() {
-      this.SetLoader(true);
-      this.requestParams.query.offset = (this.page - 1) * this.offset;
-      await this.getQuests();
+      this.isFetching = true;
+      this.requestParams.query.offset = (this.page - 1) * QuestsLimit;
       this.ScrollToTop();
-      this.SetLoader(false);
+      await this.getQuests();
+      this.isFetching = false;
     },
   },
   async mounted() {
-    this.SetLoader(true);
+    this.isFetching = true;
     this.requestParams = {
       role: this.userRole,
       specializations: null,
       userId: this.userData.id,
       query: {
-        limit: 10,
+        limit: QuestsLimit,
         offset: 0,
         'sort[createdAt]': 'desc',
       },
     };
     await this.getQuests();
-    this.SetLoader(false);
+    this.isFetching = false;
   },
   destroyed() {
     this.$store.commit('quests/setUserQuests', { count: 0, quests: [] });
@@ -139,15 +147,15 @@ export default {
       await this.$store.dispatch('quests/getUserQuests', requestParams);
     },
     async updateQuests(item) {
-      this.SetLoader(true);
+      this.isFetching = true;
       if (!item.star) await this.$store.dispatch('quests/setStarOnQuest', item.id);
       else await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
 
       await this.getQuests();
-      this.SetLoader(false);
+      this.isFetching = false;
     },
     async filterByStatus(id) {
-      this.SetLoader(true);
+      this.isFetching = true;
       this.page = 1;
       this.selectedTab = id;
       this.requestParams.query.offset = 0;
@@ -186,7 +194,7 @@ export default {
       }
 
       await this.getQuests();
-      this.SetLoader(false);
+      this.isFetching = false;
     },
   },
 };
