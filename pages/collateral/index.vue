@@ -354,15 +354,14 @@ export default {
   }
 
   &__header {
-    align-self: flex-end;
+    align-self: center;
 
     .title {
       font-weight: 500;
       color: #FFF;
-      max-width: 530px;
       font-size: 45px;
       line-height: 110%;
-      margin: 24px 0;
+      margin: 24px 0 0;
 
       &_sub {
         @extend .title;
@@ -370,7 +369,7 @@ export default {
         line-height: 100%;
         opacity: 0.5;
         text-align: justify;
-        margin: 0 0 0px;
+        margin: 0;
       }
     }
   }
@@ -691,7 +690,6 @@ export default {
         width: 100%;
         &_sub {
           font-size: 16px;
-          max-width: 400px;
         }
       }
     }
