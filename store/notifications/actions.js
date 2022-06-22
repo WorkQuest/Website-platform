@@ -314,10 +314,11 @@ export default {
           starred: false,
           'sort[createdAt]': 'desc',
         };
+        const payload = JSON.parse(sessionStorage.getItem('questsListFilter'));
         await dispatch('quests/getUserQuests', {
           userId: currentUserId,
           role: userRole,
-          query,
+          query: payload.query ? payload.query : query,
         }, { root: true });
       } else if (currentPath === `${Path.QUESTS}/${quest?.id || id}`) {
         const params = quest?.id || id;
