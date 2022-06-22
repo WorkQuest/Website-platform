@@ -29,8 +29,6 @@ export default {
     const { id } = rootGetters['user/getUserData'];
     const currentPath = this.$router.history.current.path;
     if (currentPath === `${Path.PROFILE}/${id}`) {
-      // TODO [!!!] летят запросы если даже это была старая нотификация
-      // как проверить: зайти на свой профиль, обновить страницу, смотреть в network
       await dispatch('user/getAllUserReviews', {
         userId: id,
         params: { limit: 8, offset: 0 },
