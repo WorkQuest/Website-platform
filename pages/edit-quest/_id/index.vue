@@ -224,7 +224,7 @@ import {
   TariffByIndex,
   TokenMap,
   TokenSymbols,
-  TypeOfEmployments,
+  TypeOfEmployments, UserRole,
   WorkplaceIndex,
 } from '~/utils/enums';
 import {
@@ -239,6 +239,7 @@ const { GeoCode } = require('geo-coder');
 export default {
   name: 'EditQuest',
   EditQuestState,
+  middleware: 'employer-role',
   data() {
     return {
       period: 0,
@@ -270,6 +271,7 @@ export default {
       balanceData: 'wallet/getBalanceData',
       questData: 'quests/getQuest',
       step: 'quests/getCurrentStepEditQuest',
+      userData: 'user/getUserData',
     }),
     days() {
       const days = [];
@@ -374,6 +376,12 @@ export default {
     this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
   async mounted() {
+    const check = this.$cookies.get('2fa');
+    if (!this.userData.totpIsActive || !check) {
+      await this.$router.push(`${Path.QUESTS}/${this.$route.params.id}`);
+      return;
+    }
+
     if (!this.isWalletConnected) return;
 
     const levelPricesRes = await this.$store.dispatch('user/fetchRaiseViewPrice', { type: 'questTariff' });
