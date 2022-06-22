@@ -382,9 +382,9 @@ export default {
     },
     async handleSwitchNetwork(index) {
       if (this.selectedNetworkIndex === index) return;
-      this.SetLoader(true);
+      this.isFetchingBalance = true;
       await this.$store.dispatch('wallet/connectToProvider', this.networkList[index].chain);
-      this.SetLoader(false);
+      this.isFetchingBalance = false;
     },
     async showBuyWQTModal() {
       if (this.selectedNetwork === Chains.WORKNET) {
