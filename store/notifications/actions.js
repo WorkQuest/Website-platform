@@ -318,7 +318,7 @@ export default {
         await dispatch('quests/getUserQuests', {
           userId: currentUserId,
           role: userRole,
-          query: payload.query ? payload.query : query,
+          query: payload && payload.query ? payload.query : query,
         }, { root: true });
       } else if (currentPath === `${Path.QUESTS}/${quest?.id || id}`) {
         const params = quest?.id || id;

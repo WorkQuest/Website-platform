@@ -69,7 +69,7 @@
             {{ $t('meta.questsBig') }}
           </div>
           <div
-            v-if="questsCount > 0"
+            v-if="questsCount > 0 || isFetching"
             class="quests__cards"
           >
             <card-quest
