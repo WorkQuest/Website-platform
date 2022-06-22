@@ -70,7 +70,7 @@
               :value="amountCollateral"
               class="content__input"
               :placeholder="`10 ${currentCurrency}`"
-              :rules="`required|decimal|max_value:${currentBalance[currentCurrency].fullBalance}`"
+              :rules="`required|decimal|not_enough_funds:${currentBalance[currentCurrency].fullBalance}|max_value:${currentBalance[currentCurrency].fullBalance}`"
               :name="$tc('modals.fieldCountOf', { countOf: `${ currentCurrency } collateral` })"
               type="number"
               data-selector="TOKEN"

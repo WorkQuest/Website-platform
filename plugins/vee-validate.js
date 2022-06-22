@@ -266,6 +266,15 @@ extend('notEmptyArray', {
   },
 });
 
+extend('not_enough_funds', {
+  validate(value, { balance }) {
+    return {
+      valid: new BigNumber(balance).isGreaterThan(0),
+    };
+  },
+  params: ['balance'],
+});
+
 export default ({ app }) => {
   configure({
     defaultMessage: (_field_, values) => app.i18n.t(`messages.${values._rule_}`, values),
