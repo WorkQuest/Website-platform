@@ -73,7 +73,7 @@ export default {
       data,
       value,
     });
-    // TODO fix it, sendWalletTransaction have to return object with keys ok and result
+    // TODO [!!!] fix it, sendWalletTransaction have to return object with keys ok and result
     if (result.ok === false) return error(result);
     return success(result);
   },

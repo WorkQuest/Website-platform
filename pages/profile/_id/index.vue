@@ -69,11 +69,18 @@
             {{ $t('meta.questsBig') }}
           </div>
           <div
-            v-if="questsCount > 0"
+            v-if="questsCount > 0 || isFetching"
             class="quests__cards"
           >
             <card-quest
+              v-for="i of questsSkeletonCount"
+              v-show="isFetching"
+              :key="i + 'skeleton'"
+              is-skeleton
+            />
+            <card-quest
               v-for="(quest,i) in quests"
+              v-show="!isFetching"
               :key="i"
               :data-selector="`QUEST-CARD-${i}`"
               :quest-index="i"
@@ -216,6 +223,7 @@ import userInfo from '~/components/app/pages/common/userInfo';
 import modals from '~/store/modals/modals';
 import skills from '~/components/app/pages/common/skills';
 import { UserRole } from '~/utils/enums';
+import { QuestsLimit, QuestStatuses } from '~/utils/сonstants/quests';
 
 export default {
   name: 'Index',
@@ -242,9 +250,12 @@ export default {
       pageQuests: 1,
       pageReviews: 1,
       pagePortfolios: 1,
-      perPagerQuests: 11,
+      perPagerQuests: QuestsLimit,
       perPagerReviews: 8,
       perPagerPortfolios: 6,
+
+      isFetching: true,
+      questsSkeletonCount: 2,
     };
   },
   computed: {
@@ -256,6 +267,9 @@ export default {
       reviews: 'user/getAllUserReviews',
       anotherUserData: 'user/getAnotherUserData',
     }),
+    isMineProfile() {
+      return this.userId === this.mainUser?.id;
+    },
     cardLevelClass(idx) {
       const { cards } = this;
       return [
@@ -343,10 +357,8 @@ export default {
       this.SetLoader(false);
     },
     async pageQuests() {
-      this.SetLoader(true);
-      await this.changeQuestsData();
       this.ScrollToTop();
-      this.SetLoader(false);
+      await this.changeQuestsData();
     },
     async pageReviews() {
       this.SetLoader(true);
@@ -370,7 +382,6 @@ export default {
       await this.$store.dispatch('user/getAnotherUserData', this.userId);
       this.userData = this.anotherUserData;
     } else {
-      await this.$store.dispatch('user/getMainData');
       this.userData = this.mainUser;
     }
     await this.changeQuestsData(2);
@@ -407,20 +418,38 @@ export default {
       if (number - fixedNumber !== 0) return fixedNumber;
       return number;
     },
-    async changeQuestsData(limit) {
-      const payload = {
+    async changeQuestsData(limit = QuestsLimit) {
+      this.questsSkeletonCount = limit;
+      this.isFetching = true;
+      let payload = {
         role: this.userData.role,
         userId: this.userData.id,
         query: {
-          limit: limit || this.perPagerQuests,
+          limit,
           offset: (this.pageQuests - 1) * this.perPagerQuests,
           'sort[createdAt]': 'desc',
         },
       };
-
+      if (!this.isMineProfile) {
+        payload = {
+          ...payload,
+          query: {
+            ...payload.query,
+            // all quests w/o disputes
+            'statuses[0]': QuestStatuses.Closed,
+            'statuses[1]': QuestStatuses.Blocked,
+            'statuses[2]': QuestStatuses.Created,
+            'statuses[3]': QuestStatuses.WaitWorkerOnAssign,
+            'statuses[4]': QuestStatuses.WaitWorker,
+            'statuses[5]': QuestStatuses.WaitEmployerConfirm,
+            'statuses[6]': QuestStatuses.Done,
+          },
+        };
+      }
       sessionStorage.setItem('questsListFilter', JSON.stringify(payload));
 
       await this.$store.dispatch('quests/getUserQuests', payload);
+      this.isFetching = false;
     },
     async changeReviewsData(limit) {
       await this.$store.dispatch('user/getAllUserReviews', {

@@ -4,7 +4,13 @@
     :class="raiseCardStyle()"
     :data-selector="`COMPONENT-CARD-QUEST-${questIndex}`"
   >
+    <skeleton-block
+      v-if="isSkeleton"
+      class="card-quest__left"
+      style="min-height: 200px"
+    />
     <div
+      v-else
       class="card-quest__left"
       :style="`background: url(${getQuestPreview(quest).url}) no-repeat`"
     >
@@ -19,7 +25,7 @@
       <div class="card-quest__head">
         <div>
           <item-rating
-            v-if="quest.raiseView && $options.RaiseViewStatus[quest.raiseView.status]"
+            v-if="!isSkeleton && quest.raiseView && $options.RaiseViewStatus[quest.raiseView.status]"
             :is-quest-rating="true"
             :rating="quest.raiseView.type"
           />
@@ -29,18 +35,30 @@
             @click="showProfile(quest.userId)"
           >
             <div class="card-quest__avatar avatar">
+              <skeleton-block
+                v-if="isSkeleton"
+                is-avatar
+                class="avatar__image"
+              />
               <img
+                v-else
                 class="avatar__image"
                 :alt="`${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}`"
                 :src="quest.user && quest.user.avatar ? quest.user.avatar.url : $options.images.EMPTY_AVATAR"
               >
             </div>
-            <div class="card-quest__text card-quest__text_title">
+            <div
+              v-if="!isSkeleton"
+              class="card-quest__text card-quest__text_title"
+            >
               {{ `${quest.user ? UserName(quest.user.firstName, quest.user.lastName) : ''}` }}
             </div>
           </div>
         </div>
-        <div class="card-quest__head-right">
+        <div
+          v-if="!isSkeleton"
+          class="card-quest__head-right"
+        >
           <span
             v-if="quest.adType > 0"
             class="icon-circle_up"
@@ -80,7 +98,7 @@
         </div>
       </div>
       <div
-        v-if="quest.assignedWorkerId"
+        v-if="!isSkeleton && quest.assignedWorkerId"
         class="card-quest__progress progress"
       >
         <div class="progress__title">
@@ -104,52 +122,68 @@
           <item-rating :rating="quest.assignedWorker.ratingStatistic.status" />
         </div>
       </div>
-      <div class="card-quest__locate">
+      <div
+        v-if="!isSkeleton"
+        class="card-quest__locate"
+      >
         <span class="icon-location" />
         <span class="card-quest__text card-quest__text_locate">
           {{ showDistance(quest.location) }}
           {{ `${$t('meta.units.distance.m')} ${$t('meta.fromYou')}` }}
         </span>
       </div>
+      <skeleton-block v-if="isSkeleton" />
       <div
-        v-if="quest.title"
+        v-else-if="quest.title"
         class="card-quest__text card-quest__text_blue"
       >
         {{ CropTxt(quest.title, 68) }}
       </div>
+      <skeleton-block v-if="isSkeleton" />
       <div
-        v-if="quest.description"
+        v-else-if="quest.description"
         class="card-quest__text card-quest__text-description"
       >
         {{ CropTxt(quest.description, 98) }}
       </div>
-      <div class="card-quest__text card-quest__publication">
+      <skeleton-block v-if="isSkeleton" />
+      <div
+        v-else
+        class="card-quest__text card-quest__publication"
+      >
         <span class="card-quest__publication_bold">{{ $t('quests.publicationDate') }}</span>
         <span class="card-quest__publication_thin">{{ $moment(quest.createdAt).format('Do MMMM YYYY, hh:mm a') }}</span>
       </div>
       <div class="card-quest__actions">
         <div class="card-quest__status">
+          <skeleton-block v-if="isSkeleton" />
           <div
-            v-if="quest.priority !== 0 && quest.status !== $options.QuestStatuses.Done"
+            v-else-if="quest.priority !== 0 && quest.status !== $options.QuestStatuses.Done"
             class="card-quest__priority"
             :class="getPriorityClass(quest.priority)"
           >
             {{ getPriority(quest.priority) }}
           </div>
+          <skeleton-block v-if="isSkeleton" />
           <div
-            v-if="quest.payPeriod"
+            v-else-if="quest.payPeriod"
             class="card-quest__payPeriod"
           >
             {{ $tc(`quests.payPeriods.${quest.payPeriod}`) }}
           </div>
+          <skeleton-block v-if="isSkeleton" />
           <div
+            v-else
             class="card-quest__amount"
             :class="getAmountStyles(quest)"
           >
             {{ `${questReward}  ${$options.TokenSymbols.WUSD}` }}
           </div>
         </div>
-        <div class="card-quest__details">
+        <div
+          v-if="!isSkeleton"
+          class="card-quest__details"
+        >
           <base-btn
             v-if="quest.type !== 3"
             class="card-quest__btn-details"
@@ -211,6 +245,10 @@ export default {
     quest: {
       type: Object,
       default: () => {},
+    },
+    isSkeleton: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -341,7 +379,7 @@ export default {
   },
   methods: {
     raiseCardStyle() {
-      if (!RaiseViewStatus[this.quest.raiseView?.status]) return '';
+      if (this.isSkeleton || !RaiseViewStatus[this.quest.raiseView?.status]) return '';
       const res = ['card-quest__raise'];
       res.push({
         0: 'card-quest__raise_gold',

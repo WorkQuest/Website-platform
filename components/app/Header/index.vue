@@ -960,6 +960,7 @@ export default {
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
+    flex-shrink: 0;
   }
 
   &__header {

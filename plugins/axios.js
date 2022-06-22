@@ -3,7 +3,7 @@
 import { Path } from '~/utils/enums';
 
 // eslint-disable-next-line
-export default function ({ $axios, store, redirect }, inject) {
+export default function ({ $axios, store, redirect, app }, inject) {
   $axios.onRequest((config) => {
     if (store.getters['user/isAuth'] && !config.url.includes('digitaloceanspaces.com')) {
       const urlName = config.url.split('/').pop();
@@ -60,14 +60,13 @@ export default function ({ $axios, store, redirect }, inject) {
           .then(() => { isRefreshing = false; });
       }));
     } else if (error.response.data.code === 403000) {
-      // TODO add this message to locales
       await store.dispatch('main/showToast', {
-        title: 'Error',
+        title: app.i18n.t('toasts.error'),
         text: error.response.data.msg,
       });
     } else if (error.response.data.code !== 400010) {
       await store.dispatch('main/showToast', {
-        title: 'Error',
+        title: app.i18n.t('toasts.error'),
         text: error.response.data.msg,
       });
     }

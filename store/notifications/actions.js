@@ -29,8 +29,6 @@ export default {
     const { id } = rootGetters['user/getUserData'];
     const currentPath = this.$router.history.current.path;
     if (currentPath === `${Path.PROFILE}/${id}`) {
-      // TODO летят запросы если даже это была старая нотификация
-      // как проверить: зайти на свой профиль, обновить страницу, смотреть в network
       await dispatch('user/getAllUserReviews', {
         userId: id,
         params: { limit: 8, offset: 0 },
@@ -159,8 +157,6 @@ export default {
           title,
           path: `${Path.QUESTS}/${data.id}`,
         };
-
-        await dispatch('updateProfile');
         break;
 
       case NotificationAction.QUEST_EDITED_ON_CONTRACT:
@@ -176,6 +172,7 @@ export default {
         };
 
         // TODO: проверка на то были ли мы приглашены на квест или мы сами подали на него
+        // на бэке не хватает поля
         // ui.notifications.respondedQuestEdited - u responded
         // ui.notifications.invitedQuestEdited - that u invited
         if (userRole === UserRole.WORKER) {
@@ -212,7 +209,6 @@ export default {
           title: message,
           path: `${Path.PROFILE}/${userRole === UserRole.EMPLOYER ? toUserId : fromUser.id}`,
         };
-        await dispatch('updateProfile');
         break;
 
       case NotificationAction.NEW_COMMENT_IN_DISCUSSION:
@@ -316,10 +312,11 @@ export default {
           starred: false,
           'sort[createdAt]': 'desc',
         };
+        const payload = JSON.parse(sessionStorage.getItem('questsListFilter'));
         await dispatch('quests/getUserQuests', {
           userId: currentUserId,
           role: userRole,
-          query,
+          query: payload && payload.query ? payload.query : query,
         }, { root: true });
       } else if (currentPath === `${Path.QUESTS}/${quest?.id || id}`) {
         const params = quest?.id || id;

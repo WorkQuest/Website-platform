@@ -1,5 +1,8 @@
 // eslint-disable-next-line import/prefer-default-export
 
+// fetch limits
+export const QuestsLimit = 10;
+
 export const QuestsResponseStatus = Object.freeze({
   Rejected: -1,
   Open: 0,

@@ -78,7 +78,7 @@ export const connectWalletToProvider = (providerType) => {
     console.error(`Wrong provider type: ${providerType}`);
     return error(-2, `Wrong provider type: ${providerType}`);
   }
-  // TODO: need to unsubscribe from WEB3 listeners!
+
   web3 = new Web3(provider);
   if (wallet.privateKey) {
     const account = web3.eth.accounts.privateKeyToAccount(wallet.privateKey);
