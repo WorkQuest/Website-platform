@@ -153,12 +153,20 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { Path, TokenMap, TokenSymbols } from '~/utils/enums';
+import {
+  Path,
+  Layout,
+  TokenMap,
+  TokenSymbols,
+} from '~/utils/enums';
 import { getGasPrice, getWalletAddress } from '~/utils/wallet';
 import { WQRouter } from '~/abi';
 
 export default {
   name: 'Collateral',
+  layout({ store }) {
+    return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
+  },
   data() {
     return {
       indexFAQ: [],
@@ -166,6 +174,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      isAuth: 'user/isAuth',
       userData: 'user/getUserData',
 
       oraclePrices: 'oracle/getPrices',
@@ -250,11 +259,12 @@ export default {
       ];
     },
   },
-  beforeMount() {
-    this.$nuxt.setLayout(this.userData.id ? 'default' : 'guest');
-  },
   methods: {
     async openModalGetWUSD() {
+      if (!this.isAuth) {
+        this.ShowToast(this.$t('messages.loginToContinue'));
+        return;
+      }
       await this.$store.dispatch('wallet/getBalance');
       this.ShowModal({
         key: modals.getWUSD,

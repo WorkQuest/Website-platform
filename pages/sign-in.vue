@@ -179,7 +179,11 @@ import {
 } from '~/utils/wallet';
 import CreateWallet from '~/components/ui/CreateWallet';
 import {
-  Path, UserRole, UserStatuses, WalletState,
+  Path,
+  Layout,
+  UserRole,
+  WalletState,
+  UserStatuses,
 } from '~/utils/enums';
 import { images } from '~/utils/images';
 
@@ -187,7 +191,7 @@ const timerDefaultValue = 60;
 
 export default {
   name: 'SignIn',
-  layout: 'auth',
+  layout: Layout.AUTH,
   WalletState,
   images,
   Path,

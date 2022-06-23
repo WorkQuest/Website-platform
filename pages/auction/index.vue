@@ -89,9 +89,13 @@
 <script>
 import { mapGetters } from 'vuex';
 import AuctionCard from '~/components/app/pages/auction/AuctionCard';
+import { Layout } from '~/utils/enums';
 
 export default {
   name: 'Auction',
+  layout({ store }) {
+    return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
+  },
   components: {
     AuctionCard,
   },
@@ -273,9 +277,6 @@ export default {
         }
       },
     },
-  },
-  mounted() {
-    this.$nuxt.setLayout(this.userData.id ? 'default' : 'guest');
   },
   methods: {
     goSearch() {
