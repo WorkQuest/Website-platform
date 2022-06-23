@@ -308,6 +308,9 @@ export default {
     &__container {
       padding-top: 5px;
     }
+    &__left{
+      margin-right: 30px;
+    }
     &__head{
       display: block;
     }
@@ -315,5 +318,11 @@ export default {
       margin-left: auto;
     }
   }
+  .quest::v-deep{
+    .quest__button_menu{
+      transform: translateY(-28px)
+    }
+  }
+
 }
 </style>
