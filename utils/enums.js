@@ -401,3 +401,11 @@ export const WalletTokensData = Object.freeze({
     ],
   },
 });
+
+export const Layout = Object.freeze({
+  DEFAULT: 'default',
+  GUEST: 'guest', // has access to bridge and mining
+  AUTH: 'auth',
+  CONFIRM: 'confirm', // if mnemonic not decoded
+  ROLE: 'role',
+});

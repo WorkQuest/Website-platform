@@ -94,11 +94,13 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { Path } from '~/utils/enums';
+import { Layout, Path } from '~/utils/enums';
 
 export default {
   name: 'Pools',
-  layout: 'guest',
+  layout({ store }) {
+    return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
+  },
   data() {
     return {
       poolAddress: '',
@@ -175,9 +177,6 @@ export default {
         },
       ];
     },
-  },
-  beforeMount() {
-    if (this.isAuth) this.$nuxt.setLayout('default');
   },
   methods: {
     handleOpenPool(el) {

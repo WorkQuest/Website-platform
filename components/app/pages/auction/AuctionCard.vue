@@ -77,6 +77,7 @@
 
 <script>
 import BigNumber from 'bignumber.js';
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -92,6 +93,9 @@ export default {
     },
   },
   computed: {
+    ...mapGetters({
+      isAuth: 'user/isAuth',
+    }),
     auctionDuration() {
       let durationInSec = this.auction.endsIn - this.auction.startTime;
       const returnedValue = {};
@@ -139,6 +143,10 @@ export default {
   },
   methods: {
     openModalBuyAuction() {
+      if (!this.isAuth) {
+        this.ShowToast(this.$t('messages.loginToContinue'));
+        return;
+      }
       this.ShowModal({
         key: modals.buyAuction,
         auction: this.auction,

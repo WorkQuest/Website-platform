@@ -177,14 +177,16 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import modals from '~/store/modals/modals';
-import { Chains } from '~/utils/enums';
+import { Chains, Layout } from '~/utils/enums';
 import { BridgeAddresses, SwapAddresses } from '~/utils/сonstants/bridge';
 import { getChainIdByChain } from '~/utils/web3';
 import { images } from '~/utils/images';
 
 export default {
   name: 'Bridge',
-  layout: 'guest',
+  layout({ store }) {
+    return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
+  },
   data() {
     return {
       metamaskStatus: localStorage.getItem('metamaskStatus'),
@@ -278,9 +280,6 @@ export default {
       this.query.offset = (this.page - 1) * this.query.limit;
       await this.swapsTableData();
     },
-  },
-  beforeMount() {
-    if (this.isAuth) this.$nuxt.setLayout('default');
   },
   async beforeDestroy() {
     this.$store.commit('bridge/resetToken');

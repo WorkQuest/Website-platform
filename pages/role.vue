@@ -116,7 +116,11 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import {
-  Path, UserRole, UserStatuses, WalletState,
+  Path,
+  Layout,
+  UserRole,
+  WalletState,
+  UserStatuses,
 } from '~/utils/enums';
 import CreateWallet from '~/components/ui/CreateWallet';
 import {
@@ -125,7 +129,7 @@ import {
 
 export default {
   name: 'Role',
-  layout: 'role',
+  layout: Layout.ROLE,
   middleware: 'auth',
   components: {
     CreateWallet,
@@ -165,7 +169,7 @@ export default {
       this.step = WalletState.ImportOrCreate;
       if (getCipherKey() == null && !this.isLoginWithSocialNetwork) {
         this.isClearOnDestroy = false;
-        await this.$store.dispatch('wallet/confirmPassword', { nuxt: this.$nuxt, callbackLayout: 'role' });
+        await this.$store.dispatch('wallet/confirmPassword', { nuxt: this.$nuxt, callbackLayout: Layout.ROLE });
       }
     }
   },

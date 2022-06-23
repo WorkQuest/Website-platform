@@ -70,7 +70,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { connectWithMnemonic, setCipherKey } from '~/utils/wallet';
-import { Path } from '~/utils/enums';
+import { Layout, Path } from '~/utils/enums';
 
 export default {
   name: 'Confirm',
@@ -195,7 +195,7 @@ export default {
       if (showMnemonicError) this.ShowToast(this.$t('messages.loginWithSecret'));
       this.$store.dispatch('user/logout');
       this.$store.dispatch('wallet/disconnect');
-      this.$nuxt.setLayout('auth');
+      this.$nuxt.setLayout(Layout.AUTH);
       this.$router.push(Path.SIGN_IN);
     },
   },
