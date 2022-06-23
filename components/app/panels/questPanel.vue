@@ -31,25 +31,27 @@
             <span class="user__date">
               {{ convertDate }}
             </span>
-            <quest-dd
-              v-if="userData.id === questData.user.id && questDDMode"
-              :data-selector="`QUEST-DD-${questData.id}`"
-              :item="questData"
-            />
-            <base-btn
-              v-else
-              mode="share-btn"
-              data-selector="SHARE-USER-PROFILE"
-              @click="shareModal()"
-            />
-            <base-btn
-              v-if="isShowReportBtn"
-              mode="report"
-              data-selector="OPEN-MODAL-REPORT"
-              @click="showReportModal"
-            >
-              <span class="icon-warning_outline" />
-            </base-btn>
+            <div class="user__btn">
+              <quest-dd
+                v-if="userData.id === questData.user.id && questDDMode"
+                :data-selector="`QUEST-DD-${questData.id}`"
+                :item="questData"
+              />
+              <base-btn
+                v-else
+                mode="share-btn"
+                data-selector="SHARE-USER-PROFILE"
+                @click="shareModal()"
+              />
+              <base-btn
+                v-if="isShowReportBtn"
+                mode="report"
+                data-selector="OPEN-MODAL-REPORT"
+                @click="showReportModal"
+              >
+                <span class="icon-warning_outline" />
+              </base-btn>
+            </div>
           </div>
         </div>
         <div
@@ -305,6 +307,12 @@ export default {
   .user {
     &__container {
       padding-top: 5px;
+    }
+    &__head{
+      display: block;
+    }
+    &__btn{
+      margin-left: auto;
     }
   }
 }
