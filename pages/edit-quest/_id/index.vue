@@ -191,7 +191,6 @@
                 >
                   <base-btn
                     data-selector="EDIT-QUEST"
-                    mode="outline"
                     @click="toEditQuest"
                   >
                     {{ $t('meta.skipAndEnd') }}
@@ -237,6 +236,7 @@ import {
 import { ERC20, WorkQuest, WQPromotion } from '~/abi';
 import { error, success } from '~/utils/web3';
 import { CommissionForCreatingAQuest } from '~/utils/сonstants/commission';
+import { images } from '~/utils/images';
 
 const { GeoCode } = require('geo-coder');
 
@@ -562,6 +562,8 @@ export default {
       // Edit only quest info w/o sending tx
       if (this.prevPrice === this.price) {
         await this.editQuest();
+        await this.$router.push(`${Path.QUESTS}/${this.questData.id}`);
+        this.ShowModalSuccess({ title: this.$t('modals.questUpdated'), img: images.QUEST_CREATED });
         return;
       }
 
@@ -630,13 +632,10 @@ export default {
         },
       };
       const questId = await this.questData.id;
-      const response = await this.$store.dispatch('quests/editQuest', { payload, questId });
-      this.SetLoader(false);
-      if (response.ok) {
-        this.showModalEditQuest();
-        this.showToastEdited();
-        await this.$router.push(`/quests/${questId}`);
-        this.setCurrentStepEditQuest(EditQuestState.EDITING);
+      const { ok } = await this.$store.dispatch('quests/editQuest', { payload, questId });
+      if (!ok) {
+        this.$store.commit('notifications/setWaitForUpdateQuest', null);
+        this.ShowModalFail({});
       }
     },
     /**
@@ -667,45 +666,28 @@ export default {
       if (depositAmount) {
         fields.amount = { name: this.$t('modals.amount'), value: depositAmount, symbol: TokenSymbols.WUSD };
       }
+
       await this.$store.dispatch('wallet/getBalance');
-      this.$store.commit('notifications/setWaitForUpdateQuest', {
-        id: this.questData.id,
-        callback: async () => await this.editQuest(),
-      });
       this.ShowModal({
         key: modals.transactionReceipt,
         isDontOffLoader: true,
         fields,
         submitMethod: async () => {
+          this.$store.commit('notifications/setWaitForUpdateQuest', {
+            id: this.questData.id,
+            callback: async () => {
+              await this.$router.push(`${Path.QUESTS}/${this.questData.id}`);
+              this.ShowModalSuccess({ title: this.$t('modals.questUpdated'), img: images.QUEST_CREATED });
+            },
+          });
+
           await this.$store.dispatch('quests/editQuestOnContract', {
             contractAddress,
             cost: this.price,
           });
+
           await this.editQuest();
-          this.SetLoader(false);
-          await this.$router.push(`${Path.QUESTS}/${this.questData.id}`);
         },
-      });
-    },
-    showModalEditQuest() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('assets/img/ui/questCreated.svg'),
-        title: this.$t('modals.questUpdated'),
-      });
-    },
-    showToastEdited() {
-      return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.questEdited'),
-        variant: 'success',
-        text: this.$t('toasts.questEdited'),
-      });
-    },
-    showToastError(e) {
-      return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.error'),
-        variant: 'warning',
-        text: e.response?.data?.msg,
       });
     },
   },

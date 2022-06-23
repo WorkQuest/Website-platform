@@ -7,6 +7,7 @@ export const images = Object.freeze({
   BNB: require('~/assets/img/ui/bnb_yellow.svg'),
   EMPTY_AVATAR: require('~/assets/img/app/avatar_empty.png'),
   ERROR: require('~/assets/img/ui/error.svg'),
+  QUEST_CREATED: require('assets/img/ui/questCreated.svg'),
   QUEST_AGREED: require('~/assets/img/ui/questAgreed.svg'),
   SUCCESS: require('~/assets/img/ui/success.svg'),
   WARNING: require('~/assets/img/ui/warning.svg'),
