@@ -157,11 +157,6 @@ export default {
       this.amount = this.currentToken.amount;
     },
     async showSwapInfoModal() {
-      if (!this.account?.netId) {
-        await this.CloseModal();
-        this.ShowToast(this.$t('meta.disconnect'));
-        return;
-      }
       this.amount = (this.amount.toString()).replace(/[,]/g, '.');
       const { submit, from } = this.options;
       await submit({
