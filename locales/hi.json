@@ -263,7 +263,8 @@
     "zeroFail": "Please enter correct {_field_}, can't be zero",
     "notMoreDecimalPlaces": "Please enter correct {_field_}, no more than 2 decimal places",
     "max_percent": "Please enter correct {_field_}, reduce the percentage",
-    "notEmptyArray": "Please select a {_field_}"
+    "notEmptyArray": "Please select a {_field_}",
+    "not_enough_funds": "Not enough funds"
   },
   "about": {
     "text": "WorkQuest एक सोशल प्रोजेक्ट है जो ब्लॉकचेन तकनीक पर आधारित है, यह काम खोजने और quest मोड में एंप्लॉयर यानी नियोक्ता वाले टास्क पूरे करने के लिए है। क्या आप जॉब की तलाश में हैं? WorkQuest आपको अपने करीब या अपने शहर के बगल में quest ढूंढ़ने में मदद करेगा। क्या आपको अपने काम पूरे करने के लिए वर्कर चाहिए? बस यह करें कि WorkQuest की साइट पर एक quest बनाएं। यह सेवा quests को पूरा करने के लिए वारंटी दायित्वों को अपने ऊपर लेती है। एंप्लॉयर हमारे पास पैसा जमा करता है, यदि कर्मचारी काम पूरा करने की पुष्टि कर देता है, तो उसके अपने खाते में पैसा जमा कर दिया जाता है। रेटिंग, रिव्यू और पूरे किए गए quests की सूची का सिस्टम सही व ईमानदार लोगों और बेहतरीन विशेषज्ञों को आसानी से खोजने में मदद करता है।\n\n          हमारा लक्ष्य एंप्लॉयर और कर्मचारी के बीच कम्युनिकेशन को सरल बनाना है, लाखों लोगों को रोजगार देने में मदद करना, उनकी वित्तीय स्थिति में सुधार करना, सभी सेक्टर में भरोसेमंद प्रोफेशनल खोजने की हमेशा की दिक्कत को हल करना है ताकि एक लगातार प्रगति करती डिजिटल अर्थव्यवस्था बनाई जा सके जो विश्वास, आपसी सम्मान और इसके सभी प्रतिभागियों की भलाई के सिद्धांतों पर आधारित हो।"
@@ -1084,7 +1085,7 @@
     "fieldCountOf": "{countOf} amount",
     "countOfCollateral": "How much collateral to leave?",
     "percentageConversion": "Percentage conversion",
-    "conversionAdditionalInfo": "Information about 150% + {risks} risks",
+    "conversionAdditionalInfo": "Information about {min_percent}% + {risks} risks",
     "highRisk": "High",
     "mediumRisk": "Medium",
     "lowRisk": "Low",

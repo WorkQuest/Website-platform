@@ -717,6 +717,10 @@ export default {
           grid-template-rows: repeat(3, 1fr);
         }
 
+        &__subtitle {
+          margin-bottom: 20px;
+        }
+
         &__about {
           grid-template-areas:
             "hd"
@@ -727,6 +731,7 @@ export default {
           width: 100%;
           margin: 0;
           padding: 0 20px;
+          grid-gap: 0;
 
           .info-block-image {
             position: relative;

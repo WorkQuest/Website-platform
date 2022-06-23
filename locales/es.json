@@ -263,7 +263,8 @@
     "zeroFail": "Please enter correct {_field_}, can't be zero",
     "notMoreDecimalPlaces": "Please enter correct {_field_}, no more than 2 decimal places",
     "max_percent": "Please enter correct {_field_}, reduce the percentage",
-    "notEmptyArray": "Please select a {_field_}"
+    "notEmptyArray": "Please select a {_field_}",
+    "not_enough_funds": "Not enough funds"
   },
   "about": {
     "text": "WorkQuest es un proyecto social basado en la tecnología de cadena de bloques para encontrar trabajo y solucionar cualquier tarea por parte de la empresa en el modo de oferta. ¿Está buscando empleo? Una oferta de empleo le ayudará a encontrar trabajo cerca de su ciudad. ¿Necesita trabajadores para alcanzar sus objetivos? Solo tiene que crear una oferta en la ubicación correspondiente. El servicio asume las obligaciones de garantía para realizar ofertas. Guardamos los fondos del empleador y, cuando el empleado confirme el desempeño del trabajo, recibirá un ingreso de fondos en su cuenta. Mediante el sistema de calificaciones, opiniones y una lista de ofertas completadas, podrá encontrar a personas de confianza y a los mejores especialistas.\n\n          Nuestro objetivo es simplificar la comunicación entre el empleador y el empleado para ayudar a conseguir un empleo a millones de personas, mejorar la situación financiera, solucionar el gran problema de encontrar profesionales fiables en todos los sectores para crear una economía digital progresiva basada en los principios de confianza, respeto mutuo y el bienestar de todos sus participantes."
@@ -1084,7 +1085,7 @@
     "fieldCountOf": "{countOf} amount",
     "countOfCollateral": "How much collateral to leave?",
     "percentageConversion": "Percentage conversion",
-    "conversionAdditionalInfo": "Information about 150% + {risks} risks",
+    "conversionAdditionalInfo": "Information about {min_percent}% + {risks} risks",
     "highRisk": "High",
     "mediumRisk": "Medium",
     "lowRisk": "Low",

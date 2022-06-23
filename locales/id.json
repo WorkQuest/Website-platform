@@ -263,7 +263,8 @@
     "zeroFail": "Please enter correct {_field_}, can't be zero",
     "notMoreDecimalPlaces": "Please enter correct {_field_}, no more than 2 decimal places",
     "max_percent": "Please enter correct {_field_}, reduce the percentage",
-    "notEmptyArray": "Please select a {_field_}"
+    "notEmptyArray": "Please select a {_field_}",
+    "not_enough_funds": "Not enough funds"
   },
   "about": {
     "text": "WorkQuest adalah sebuah proyek sosial berbasis teknologi blockchain untuk menemukan pekerjaan dan menyelesaikan tugas yang diberikan oleh pihak pemberi kerja dalam mode quest. Apakah Anda sedang mencari pekerjaan? WorkQuest akan membantu Anda menemukan quest di dekat Anda dan kota Anda. Apakah Anda membutuhkan pekerja untuk melaksanakan tujuan Anda? Cukup buat quest di situs WorkQuest. Layanan ini menanggung kewajiban garansi untuk melaksanakan quest. Dana pihak pemberi kerja disimpan di kami , jika karyawan mengonfirmasi pelaksanaan kerja, ia akan menerima setoran dana di akunnya. Sistem penilaian, ulasan, dan daftar quest yang diselesaikan akan membantu menemukan orang-orang jujur dan spesialis terbaik dengan mudah.\n\n          Tujuan kami adalah menyederhanakan komunikasi antara pihak pemberi kerja dan karyawan, membantu mempekerjakan jutaan orang, memperbaiki kondisi keuangan mereka, memecahkan masalah lama menemukan profesional yang dapat diandalkan di semua sektor demi menciptakan ekonomi digital progresif yang dibangun di atas prinsip-prinsip kepercayaan, saling menghormati dan kesejahteraan semua pesertanya."
@@ -1084,7 +1085,7 @@
     "fieldCountOf": "{countOf} amount",
     "countOfCollateral": "How much collateral to leave?",
     "percentageConversion": "Percentage conversion",
-    "conversionAdditionalInfo": "Information about 150% + {risks} risks",
+    "conversionAdditionalInfo": "Information about {min_percent}% + {risks} risks",
     "highRisk": "High",
     "mediumRisk": "Medium",
     "lowRisk": "Low",

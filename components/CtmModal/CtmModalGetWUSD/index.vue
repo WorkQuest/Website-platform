@@ -70,7 +70,7 @@
               :value="amountCollateral"
               class="content__input"
               :placeholder="`10 ${currentCurrency}`"
-              :rules="`required|decimal|max_value:${currentBalance[currentCurrency].fullBalance}`"
+              :rules="`required|decimal|not_enough_funds:${currentBalance[currentCurrency].fullBalance}|max_value:${currentBalance[currentCurrency].fullBalance}`"
               :name="$tc('modals.fieldCountOf', { countOf: `${ currentCurrency } collateral` })"
               type="number"
               data-selector="TOKEN"
@@ -89,13 +89,20 @@
               :value="collateralPercent"
               class="content__input"
               placeholder="150 %"
-              :rules="`required|min_percent:${minRatio}|zeroFail|min:2|max:4`"
-              :name="$tc('modals.fieldPercentConversion')"
+              :rules="`required|min_percent:${minRatio}|max_percent:${maxRatio}|zeroFail|min:2|max:4`"
+              :name="$tc('modals.fieldPercentConversion').toLowerCase()"
               data-selector="PERCENT"
               @input="calcCollateralPercent"
             />
+            <slider
+              :value="Number(collateralPercentClear)"
+              :mode="$options.SLIDER_MODE.BLUE"
+              :from="minRatio"
+              :to="maxRatio"
+              @change="calcCollateralPercent"
+            />
             <div class="content__text">
-              {{ $t('modals.conversionAdditionalInfo', {risks: getRisksGrade}) }}
+              {{ $t('modals.conversionAdditionalInfo', {min_percent: collateralPercentClear, risks: getRisksGrade}) }}
             </div>
           </div>
         </div>
@@ -127,10 +134,14 @@ import { mapActions, mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import { TokenMap, TokenSymbols } from '~/utils/enums';
 import { ERC20 } from '~/abi';
+import Slider from '~/components/ui/Slider';
+import { SLIDER_MODE } from '~/components/ui/Slider/model';
 
 export default {
   name: 'ModalGetWUSD',
+  SLIDER_MODE,
   TokenSymbols,
+  components: { Slider },
   data() {
     return {
       selCurrencyID: TokenMap.USDT,
@@ -157,6 +168,10 @@ export default {
       userWalletAddress: 'user/getUserWalletAddress',
       currentBalance: 'wallet/getBalanceData',
     }),
+    maxRatio() {
+      // TODO: take it from contract
+      return 106;
+    },
     optimalCollateralPercent() {
       return new BigNumber(this.optimalCollateralRatio).multipliedBy(100).toFixed();
     },
@@ -170,7 +185,9 @@ export default {
       return new BigNumber(this.collateralPercentClear).dividedBy(100).toFixed();
     },
     mediumRiskPoint() {
-      return new BigNumber(this.optimalCollateralPercent).plus(150).dividedBy(2).toFixed();
+      const { maxRatio, minRatio } = this;
+      const averageRatio = new BigNumber(maxRatio).plus(minRatio).dividedBy(2).toNumber();
+      return new BigNumber(this.optimalCollateralPercent).plus(averageRatio).dividedBy(2).toFixed();
     },
     getRisksGrade() {
       if (new BigNumber(this.collateralPercentClear).isGreaterThanOrEqualTo(this.optimalCollateralPercent)) {
