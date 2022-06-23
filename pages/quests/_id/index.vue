@@ -539,12 +539,21 @@ export default {
       }
     },
     async closeQuest() {
-      if (this.quest.status !== QuestStatuses.WaitWorker) {
+      if (this.quest.status === QuestStatuses.WaitWorker) return;
+      if (!this.userData.totpIsActive) {
         this.ShowModal({
-          key: modals.securityCheck,
-          actionMethod: async () => await this.DeleteQuest(this.quest),
+          key: modals.status,
+          img: images.ERROR,
+          title: this.$t('modals.errors.error'),
+          subtitle: this.$t('modals.2FA.youCan’tEditQuest'),
+          button: this.$t('meta.btns.close'),
         });
+        return;
       }
+      this.ShowModal({
+        key: modals.securityCheck,
+        actionMethod: async () => await this.DeleteQuest(this.quest),
+      });
     },
     async openDispute() {
       const { quest: { status, openDispute, contractAddress } } = this;

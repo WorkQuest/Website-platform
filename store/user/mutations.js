@@ -58,6 +58,7 @@ export default {
     this.$cookies.remove('socialNetwork');
     this.$cookies.remove('questDraft');
     this.$cookies.remove('notificationPage');
+    this.$cookies.remove('2fa');
     sessionStorage.clear();
     state.userData = {};
     state.tokens = { access: null, refresh: null };

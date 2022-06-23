@@ -3,7 +3,7 @@ import { UserRole, Path } from '~/utils/enums';
 export default function ({ store, redirect }) {
   const currentUserRole = store.getters['user/getUserRole'];
   if (currentUserRole !== UserRole.EMPLOYER) {
-    return redirect(Path.WORKERS);
+    return redirect(Path.MY_QUESTS);
   }
   return null;
 }
