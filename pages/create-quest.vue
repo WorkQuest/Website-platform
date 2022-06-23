@@ -588,6 +588,7 @@ export default {
     height: 16px;
   }
   &__text {
+    flex-shrink: 10;
     margin: 0 0 0 10px;
   }
 }
