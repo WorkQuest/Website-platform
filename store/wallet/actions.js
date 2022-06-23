@@ -561,7 +561,10 @@ export default {
   },
 
   /** SWITCH NETWORK */
-  async connectToProvider({ commit, dispatch, rootGetters }, chain) {
+  async connectToProvider({
+    commit, dispatch, rootGetters, getters,
+  }, chain) {
+    if (getters.getSelectedNetwork === chain) return success();
     const res = await connectWalletToProvider(ProviderTypesByChain[chain]);
     if (res.ok) {
       commit('setSelectedNetwork', chain);

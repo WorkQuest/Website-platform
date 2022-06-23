@@ -362,7 +362,6 @@ export default {
         if (ok) this.ShowModalSuccess({ title: this.$t('modals.redeem.success') });
         else this.ShowModalFail({ title: this.$t('modals.redeem.fail') });
       }
-
       this.SetLoader(false);
     },
 
