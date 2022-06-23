@@ -185,9 +185,11 @@
           >
             <template #actions>
               <div class="btn-container">
-                <div class="btn-container__btn">
+                <div
+                  v-if="mode !== 'raise'"
+                  class="btn-container__btn"
+                >
                   <base-btn
-                    v-if="mode !== 'raise'"
                     data-selector="EDIT-QUEST"
                     mode="outline"
                     @click="toEditQuest"
@@ -195,9 +197,11 @@
                     {{ $t('meta.skipAndEnd') }}
                   </base-btn>
                 </div>
-                <div class="btn-container__btn">
+                <div
+                  :disabled="level < 0"
+                  class="btn-container__btn"
+                >
                   <base-btn
-                    :disabled="level < 0"
                     data-selector="SHOW-PAYMENT-MODAl"
                     @click="showPaymentModal"
                   >
@@ -1252,6 +1256,11 @@ export default {
   }
   .page__category {
     grid-template-columns: auto;
+  }
+}
+@include _480{
+  .btn-container{
+    justify-content: center;
   }
 }
 </style>
