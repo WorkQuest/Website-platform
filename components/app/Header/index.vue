@@ -452,6 +452,9 @@ export default {
     this.GetLocation();
     this.$store.commit('user/setLang', this.$i18n.localeProperties.code);
   },
+  beforeDestroy() {
+    this.$store.dispatch('wallet/unsubscribeWS');
+  },
   destroyed() {
     window.removeEventListener('resize', this.userWindowChange);
   },
