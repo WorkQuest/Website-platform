@@ -116,7 +116,6 @@ export default {
     },
     accountAddress() {
       const chain = this.options?.to?.chain;
-      if (!chain) return '';
       if (chain === Chains.WORKNET) return this.convertToBech32('wq', this.account.address);
       return this.account.address;
     },
