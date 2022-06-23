@@ -1043,8 +1043,8 @@
       "enabled": "2FA enabled successfully!",
       "disabled": "2FA disabled successfully!",
       "status": "2FA Status",
-      "youCan’tEditQuest": "You can’t edit quest without connected 2FA",
-      "youCan’tDeleteQuest": "You can’t delete quest without connected 2FA"
+      "youCantEditQuest": "You can’t edit quest without connected 2FA",
+      "youCantCloseQuest": "You can’t close quest without connected 2FA"
     },
     "redeem": {
       "success": "Redeem success!",

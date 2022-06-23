@@ -55,7 +55,7 @@
               @click="showAreYouSureDeleteQuestModal"
             >
               <div class="menu__text">
-                {{ $t('meta.btns.delete') }}
+                {{ $t('meta.btns.closeQuest') }}
               </div>
             </div>
           </div>
@@ -116,7 +116,7 @@ export default {
           key: modals.status,
           img: images.ERROR,
           title: this.$t('modals.errors.error'),
-          subtitle: this.$t('modals.2FA.youCan’tEditQuest'),
+          subtitle: this.$t('modals.2FA.youCantEditQuest'),
           button: this.$t('meta.btns.close'),
         });
         return;
@@ -140,7 +140,7 @@ export default {
           key: modals.status,
           img: images.ERROR,
           title: this.$t('modals.errors.error'),
-          subtitle: this.$t('modals.2FA.youCan’tDeleteQuest'),
+          subtitle: this.$t('modals.2FA.youCantCloseQuest'),
           button: this.$t('meta.btns.close'),
         });
         return;
