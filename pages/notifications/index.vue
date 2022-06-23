@@ -576,6 +576,12 @@ export default {
       align-self: center;
     }
   }
+  .info-block{
+    &__pager {
+      margin: 20px 0;
+      justify-self: center;
+    }
+  }
 }
 @include _380 {
   .notification {
