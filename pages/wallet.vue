@@ -470,7 +470,7 @@ export default {
             key: modals.transactionReceipt,
             fields: {
               from: { name: this.$t('meta.fromBig'), value: wqAddress },
-              to: { name: this.$t('meta.toBig'), value: convertToBech32('wq', recipient) },
+              to: { name: this.$t('meta.toBig'), value: recipient },
               amount: {
                 name: this.$t('modals.amount'),
                 value: amount,
