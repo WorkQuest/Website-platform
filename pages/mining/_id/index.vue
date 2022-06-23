@@ -273,6 +273,7 @@ export default {
 
       account: 'web3/getAccount',
       isConnected: 'web3/isConnected',
+      isShowModal: 'modals/getIsShow',
 
       isAuth: 'user/isAuth',
     }),
@@ -382,9 +383,10 @@ export default {
   watch: {
     async isConnected(status) {
       if (!status) await this.resetPoolData();
-      else if (await this.checkNetwork(this.chain)) {
-        await this.tokensDataUpdate();
-      }
+      else if (this.isShowModal && this.account?.netId !== +getChainIdByChain(this.chain)) {
+        await this.CloseModal();
+        this.ShowToast(this.$t('modals.incorrectChain'));
+      } else if (await this.checkNetwork(this.chain)) await this.tokensDataUpdate();
     },
     async totalLiquidityUSD(newVal, oldVal) {
       if (this.page === 1 && oldVal) {
@@ -451,6 +453,14 @@ export default {
       else await this.connectWallet({ chain });
     },
 
+    checkChain() {
+      if (!this.account?.netId) {
+        this.CloseModal();
+        this.ShowToast(this.$t('meta.disconnect'));
+        return false;
+      }
+      return true;
+    },
     async checkNetwork(chain) {
       if (!this.isConnected) {
         await this.connectWallet({ chain });
@@ -508,6 +518,7 @@ export default {
         this.ShowModal({
           key: modals.swapTokens,
           submit: async (amount, decimals) => {
+            if (!this.checkChain()) return;
             this.SetLoader(true);
             this.CloseModal();
 
@@ -529,6 +540,7 @@ export default {
           title: this.$t('modals.titles.stake'),
           maxValue: this.balance,
           submit: async (amount) => {
+            if (!this.checkChain()) return;
             this.CloseModal();
 
             this.SetLoader(true);
@@ -554,6 +566,7 @@ export default {
           title: this.$t('modals.titles.unstake'),
           maxValue: this.staked,
           submit: async (amount) => {
+            if (!this.checkChain()) return;
             this.CloseModal();
 
             this.SetLoader(true);
