@@ -44,6 +44,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { Chains } from '~/utils/enums';
+import { getChainIdByChain } from '~/utils/web3';
 
 export default {
   name: 'ModalSwapInfo',
@@ -51,6 +52,7 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
       isConnected: 'web3/isConnected',
+      account: 'web3/getAccount',
     }),
     info() {
       return [
@@ -73,6 +75,15 @@ export default {
             ? this.convertToBech32('wq', this.options.recipient) : this.options.recipient,
         },
       ];
+    },
+  },
+  watch: {
+    async isConnected(val) {
+      const id = +getChainIdByChain(this.options?.from?.chain);
+      if (val && this.account.netId !== id) {
+        await this.CloseModal();
+        this.ShowToast(this.$t('modals.incorrectChain'));
+      }
     },
   },
   methods: {

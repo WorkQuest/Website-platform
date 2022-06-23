@@ -380,6 +380,7 @@ export default {
               key: modals.swapInfo,
               amount,
               symbol,
+              from,
               chain: from.chain,
               recipient: this.account.address,
               networks: `${from.chain} > ${to.chain}`,
@@ -387,6 +388,10 @@ export default {
               toNetwork: to.chain,
               submit: async () => {
                 this.CloseModal();
+                if (!this.account?.netId) {
+                  this.ShowToast(this.$t('meta.disconnect'));
+                  return;
+                }
                 this.SetLoader(true);
                 this.page = 1;
                 const { ok, result } = await this.swap({
