@@ -586,6 +586,7 @@ export default {
     cursor: pointer;
     width: 16px;
     height: 16px;
+    flex-shrink: 0;
   }
   &__text {
     margin: 0 0 0 10px;
