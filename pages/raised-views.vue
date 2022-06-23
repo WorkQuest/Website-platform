@@ -169,7 +169,7 @@ export default {
           title: this.$t('meta.raiseViews'),
           isShowSuccess: this.mode === 'raise',
           fields: {
-            from: { name: this.$t('meta.fromBig'), value: this.$store.getters['user/getUserWalletAddress'] },
+            from: { name: this.$t('meta.fromBig'), value: this.convertToBech32('wq', this.$store.getters['user/getUserWalletAddress']) },
             to: { name: this.$t('meta.toBig'), value: promotionAddress },
             amount: { name: this.$t('modals.amount'), value: levelPrice, symbol: TokenSymbols.WUSD },
             fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WQT },
