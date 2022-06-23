@@ -31,25 +31,27 @@
             <span class="user__date">
               {{ convertDate }}
             </span>
-            <quest-dd
-              v-if="userData.id === questData.user.id && questDDMode"
-              :data-selector="`QUEST-DD-${questData.id}`"
-              :item="questData"
-            />
-            <base-btn
-              v-else
-              mode="share-btn"
-              data-selector="SHARE-USER-PROFILE"
-              @click="shareModal()"
-            />
-            <base-btn
-              v-if="isShowReportBtn"
-              mode="report"
-              data-selector="OPEN-MODAL-REPORT"
-              @click="showReportModal"
-            >
-              <span class="icon-warning_outline" />
-            </base-btn>
+            <div class="user__btn">
+              <quest-dd
+                v-if="userData.id === questData.user.id && questDDMode"
+                :data-selector="`QUEST-DD-${questData.id}`"
+                :item="questData"
+              />
+              <base-btn
+                v-else
+                mode="share-btn"
+                data-selector="SHARE-USER-PROFILE"
+                @click="shareModal()"
+              />
+              <base-btn
+                v-if="isShowReportBtn"
+                mode="report"
+                data-selector="OPEN-MODAL-REPORT"
+                @click="showReportModal"
+              >
+                <span class="icon-warning_outline" />
+              </base-btn>
+            </div>
           </div>
         </div>
         <div
@@ -262,7 +264,9 @@ export default {
     font-size: 16px;
     color: $black800;
     padding-left: 10px;
-    word-break: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     &:hover {
       color: $black600;
     }
@@ -291,6 +295,10 @@ export default {
     margin: 0 0 0 10px;
     color: $black500;
   }
+  &__btn{
+    display: flex;
+    gap: 2px;
+  }
 }
 
 @include _991 {
@@ -306,6 +314,17 @@ export default {
     &__container {
       padding-top: 5px;
     }
+    &__left{
+      margin-right: 60px;
+    }
+    &__head{
+      display: block;
+    }
+    &__btn{
+      margin-left: auto;
+      transform: translateY(-28px)
+    }
   }
+
 }
 </style>
