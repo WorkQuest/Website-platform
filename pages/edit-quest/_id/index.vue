@@ -224,7 +224,7 @@ import {
   TariffByIndex,
   TokenMap,
   TokenSymbols,
-  TypeOfEmployments, UserRole,
+  TypeOfEmployments,
   WorkplaceIndex,
 } from '~/utils/enums';
 import {
