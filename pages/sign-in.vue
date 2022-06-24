@@ -333,7 +333,10 @@ export default {
     clearCookies() {
       const mnemonicInLocalStorage = JSON.parse(localStorage.getItem('mnemonic'));
       const isWalletInMnemonicList = mnemonicInLocalStorage && mnemonicInLocalStorage[this.userWalletAddress];
-      if (this.userData.id && (isWalletInMnemonicList || localStorage.getItem('mnemonic'))) return;
+      if (this.$cookies.get('socialNetwork')
+        || (this.userData.id && (isWalletInMnemonicList || localStorage.getItem('mnemonic')))) {
+        return;
+      }
       this.$cookies.remove('access');
       this.$cookies.remove('refresh');
       this.$cookies.remove('userLogin');
