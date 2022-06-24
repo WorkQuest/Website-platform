@@ -261,7 +261,7 @@ export default {
       this.$store.commit('user/setTokens', {
         access,
         refresh,
-        userStatus: this.userStatus,
+        userStatus: +this.userStatus,
         social: this.isLoginWithSocial,
       });
     }
@@ -333,7 +333,7 @@ export default {
     clearCookies() {
       const mnemonicInLocalStorage = JSON.parse(localStorage.getItem('mnemonic'));
       const isWalletInMnemonicList = mnemonicInLocalStorage && mnemonicInLocalStorage[this.userWalletAddress];
-      if (this.$cookies.get('socialNetwork')
+      if (this.isLoginWithSocial
         || (this.userData.id && (isWalletInMnemonicList || localStorage.getItem('mnemonic')))) {
         return;
       }
@@ -571,7 +571,7 @@ export default {
       if (this.connections.notifsConnection) await this.$wsNotifs.disconnect();
       const mnemonicInLocalStorage = JSON.parse(localStorage.getItem('mnemonic'));
       const isWalletInMnemonicList = mnemonicInLocalStorage && mnemonicInLocalStorage[this.userData.wallet.address];
-      if (!isWalletInMnemonicList) return;
+      if (!isWalletInMnemonicList && !this.isLoginWithSocial) return;
       if (this.userData.role === UserRole.EMPLOYER) await this.$router.push(Path.WORKERS);
       else if (this.userData.role === UserRole.WORKER) await this.$router.push(Path.QUESTS);
     },
