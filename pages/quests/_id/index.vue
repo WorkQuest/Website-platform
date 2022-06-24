@@ -89,9 +89,7 @@
             <span class="worker-data__price">
               {{ questReward }} {{ $t('meta.coins.wusd') }}
             </span>
-            <div
-              class="worker-data__payPeriod"
-            >
+            <div class="worker-data__payPeriod">
               {{ $tc(`quests.payPeriods.${quest.payPeriod}`) }}
             </div>
             <div
@@ -1140,8 +1138,7 @@ export default {
 }
 
 @include _1199 {
-  .main__body,
-  .main {
+  .main__body {
     padding: 10px;
   }
   .map {
@@ -1192,6 +1189,10 @@ export default {
         height: 100%;
       }
     }
+    &__payPeriod {
+      height: 100%;
+      font-size: 16px;
+    }
   }
 }
 
@@ -1203,6 +1204,11 @@ export default {
 
     &__btns {
       grid-auto-flow: row;
+      margin-bottom: 20px;
+    }
+
+    &__priority {
+      flex-direction: column;
     }
 
     &__more-data {
