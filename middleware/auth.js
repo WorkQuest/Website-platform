@@ -34,7 +34,7 @@ export default async function ({
 
     return true;
   } catch (e) {
-    console.error(e);
+    console.error('middleware/auth', e);
     await store.dispatch('user/logout', false);
     return redirect(Path.SIGN_IN);
   }
