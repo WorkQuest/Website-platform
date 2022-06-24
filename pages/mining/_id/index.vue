@@ -378,8 +378,11 @@ export default {
   },
   watch: {
     async isConnected(status) {
-      if (!status) await this.resetPoolData();
-      else if (this.isShowModal && this.isWrongChain) {
+      if (!status) {
+        await this.resetPoolData();
+        return;
+      }
+      if (this.isShowModal && this.isWrongChain) {
         await this.CloseModal();
         this.ShowToast(this.$t('modals.incorrectChain'));
       } else if (await this.checkNetwork(this.chain)) await this.tokensDataUpdate();
@@ -475,7 +478,6 @@ export default {
       if (!this.isConnected) {
         await this.connectWallet({ chain });
         if (!this.isConnected) return false;
-        return await this.checkNetwork(chain);
       }
 
       const isMetaMask = localStorage.getItem('isMetaMask') === 'true';
