@@ -329,5 +329,11 @@ export default {
     }
   }
 
+  .quest {
+    &__location {
+      margin-right: 0;
+    }
+  }
+
 }
 </style>
