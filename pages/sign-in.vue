@@ -337,7 +337,6 @@ export default {
         || (this.userData.id && (isWalletInMnemonicList || localStorage.getItem('mnemonic')))) {
         return;
       }
-      console.error('CLEAR COOKIES!!!');
       this.$cookies.remove('access');
       this.$cookies.remove('refresh');
       this.$cookies.remove('userLogin');
@@ -554,7 +553,6 @@ export default {
         [wallet.address.toLowerCase()]: wallet.mnemonic.phrase,
       }));
       this.$store.dispatch('wallet/connectWallet', { userWalletAddress: wallet.address, userPassword: this.model.password });
-      console.log('занесли мнемоник в сессию', this.$cookies.get('access'));
     },
     async redirectUser() {
       this.addressAssigned = true;

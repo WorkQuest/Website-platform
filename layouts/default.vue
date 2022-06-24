@@ -53,7 +53,6 @@ export default {
     this.CheckMnemonic();
   },
   mounted() {
-    console.log(this.$route.path, this.$cookies.get('access'), this.$cookies.get('socialNetwork'));
     if (!this.$cookies.get('isWorkQuestsAppShowed') && this.$route.path !== Path.WALLET) {
       this.ShowModal({
         key: modals.downloadApp,

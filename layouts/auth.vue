@@ -87,12 +87,6 @@ export default {
         this.$store.dispatch('user/getStatistic'),
         this.$store.dispatch('notifications/getNotifications'),
       ]);
-
-      // if (this.userData.role === UserRole.EMPLOYER) {
-      //   await this.$router.push(Path.WORKERS);
-      // } else if (this.userData.role === UserRole.WORKER) {
-      //   await this.$router.push(Path.QUESTS);
-      // }
     }
   },
 };
