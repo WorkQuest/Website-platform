@@ -85,7 +85,7 @@ export default {
 
       await Promise.all([
         this.$store.dispatch('user/getStatistic'),
-        this.$store.dispatch('user/getNotifications'),
+        this.$store.dispatch('notifications/getNotifications'),
       ]);
 
       if (this.userData.role === UserRole.EMPLOYER) {
