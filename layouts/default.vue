@@ -76,8 +76,8 @@ export default {
     CheckMnemonic() {
       const mnemonicInLocalStorage = JSON.parse(localStorage.getItem('mnemonic'));
       const isWalletInMnemonicList = mnemonicInLocalStorage && mnemonicInLocalStorage[this.userWalletAddress];
-      if (this.$cookies.get('socialNetwork')
-        || (!isWalletInMnemonicList || !localStorage.getItem('mnemonic'))) {
+      if (!this.$cookies.get('socialNetwork')
+        && (!isWalletInMnemonicList || !localStorage.getItem('mnemonic'))) {
         this.$cookies.remove('access');
         this.$cookies.remove('refresh');
         this.$cookies.remove('userLogin');

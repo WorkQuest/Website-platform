@@ -258,13 +258,12 @@ export default {
       this.SetLoader(false);
       if (!this.userWalletAddress) return;
       this.step = WalletState.ImportMnemonic;
-      console.log('import mnemonic', access, this.userStatus, this.isLoginWithSocial);
-      // this.$store.commit('user/setTokens', {
-      //   access,
-      //   refresh,
-      //   userStatus: +this.userStatus,
-      //   social: this.isLoginWithSocial,
-      // });
+      this.$store.commit('user/setTokens', {
+        access,
+        refresh,
+        userStatus: +this.userStatus,
+        social: this.isLoginWithSocial,
+      });
     }
 
     if (sessionStorage.getItem('confirmToken')) this.ShowToast(this.$t('messages.loginToContinue'), ' ');
