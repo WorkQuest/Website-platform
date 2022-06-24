@@ -1043,8 +1043,8 @@
       "enabled": "2FA enabled successfully!",
       "disabled": "2FA disabled successfully!",
       "status": "Статус 2FA",
-      "youCan’tEditQuest": "You can’t edit quest without connected 2FA",
-      "youCan’tDeleteQuest": "You can’t delete quest without connected 2FA"
+      "youCantEditQuest": "Вы не можете редактировать квест без подключенного 2FA",
+      "youCantCloseQuest": "Вы не можете закрыть квест без подключенного 2FA"
     },
     "redeem": {
       "success": "Redeem success!",

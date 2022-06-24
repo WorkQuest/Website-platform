@@ -238,7 +238,10 @@
 import { mapActions, mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import {
-  Path, TokenSymbols, Chains,
+  Path,
+  Chains,
+  Layout,
+  TokenSymbols,
 } from '~/utils/enums';
 import { getChainIdByChain } from '~/utils/web3';
 import { Pool, PoolURL } from '~/utils/сonstants/mining';
@@ -246,7 +249,9 @@ import { images } from '~/utils/images';
 
 export default {
   name: 'Pool',
-  layout: 'guest',
+  layout({ store }) {
+    return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
+  },
   middleware: 'mining',
   Path,
   Chains,

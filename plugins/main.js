@@ -192,7 +192,7 @@ Vue.mixin({
         }
         this.ShowModal({
           key: modals.transactionReceipt,
-          title: this.$t('quests.deleteQuest'),
+          title: this.$t('meta.btns.closeQuest'),
           fields: {
             from: { name: this.$t('meta.fromBig'), value: this.$store.getters['user/getUserWalletAddress'] },
             to: { name: this.$t('meta.toBig'), value: contractAddress },

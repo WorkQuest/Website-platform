@@ -311,6 +311,14 @@ export default {
       margin-top: 10px;
     }
   }
+  .raising{
+    &__actions{
+      width: 100%;
+      display: flex;
+      margin-top: 10px;
+      justify-content: center;
+    }
+  }
 }
 
 </style>

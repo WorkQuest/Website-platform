@@ -139,11 +139,11 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { Path } from '~/utils/enums';
+import { Layout, Path } from '~/utils/enums';
 
 export default {
   name: 'SignUp',
-  layout: 'auth',
+  layout: Layout.AUTH,
   data() {
     return {
       error: '',

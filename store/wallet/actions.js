@@ -33,6 +33,7 @@ import {
 
 import {
   Chains,
+  Layout,
   TokenMap,
   StakingTypes,
   TokenSymbols,
@@ -73,7 +74,7 @@ export default {
   confirmPassword({ commit, getters }, { nuxt, callbackLayout }) {
     if (callbackLayout) commit('setCallbackLayout', callbackLayout);
     commit('setIsOnlyConfirm', true);
-    nuxt.setLayout('confirm');
+    nuxt.setLayout(Layout.CONFIRM);
   },
   /**
    * Check wallet is connected
@@ -84,7 +85,7 @@ export default {
     commit('setIsOnlyConfirm', false);
     if (!connected) {
       if (callbackLayout) commit('setCallbackLayout', callbackLayout);
-      nuxt.setLayout('confirm');
+      nuxt.setLayout(Layout.CONFIRM);
     } else {
       commit('setIsWalletConnected', true);
     }

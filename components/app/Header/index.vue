@@ -678,6 +678,9 @@ export default {
     font-weight: 500;
     font-size: 16px;
     color: $black800;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__role {
