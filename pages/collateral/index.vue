@@ -367,6 +367,7 @@ export default {
     align-self: center;
 
     .title {
+      max-width: 530px;
       font-weight: 500;
       color: #FFF;
       font-size: 45px;
