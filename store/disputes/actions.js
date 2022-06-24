@@ -29,4 +29,10 @@ export default {
       return error();
     }
   },
+  async setMarkInDisputes({ commit, state }, payload) {
+    const indexDispute = state.userDisputes?.disputes.findIndex(((dispute) => dispute.id === payload.disputeId));
+    const dispute = { ...state.userDisputes?.disputes[indexDispute] };
+    dispute.currentUserDisputeReview = { mark: payload.mark };
+    commit('setMarkInDisputes', { indexDispute, dispute });
+  },
 };

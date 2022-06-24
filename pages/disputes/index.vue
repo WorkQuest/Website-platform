@@ -186,6 +186,7 @@ export default {
           const { ok, msg } = await this.$store.dispatch('user/sendReviewDispute', { disputeId, message, mark });
           if (ok) {
             this.ShowModal({ key: modals.thanks });
+            await this.$store.dispatch('disputes/setMarkInDisputes', { disputeId, mark });
           } else {
             await this.ShowToast(msg || ' ');
           }

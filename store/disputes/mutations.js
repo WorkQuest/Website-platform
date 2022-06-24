@@ -1,3 +1,5 @@
+import Vue from 'vue';
+
 export default {
   setDispute(state, data) {
     state.dispute = data;
@@ -114,5 +116,8 @@ export default {
   },
   setUserDisputes(state, data) {
     state.userDisputes = data;
+  },
+  setMarkInDisputes(state, payload) {
+    Vue.set(state.userDisputes.disputes, payload.indexDispute, payload.dispute);
   },
 };

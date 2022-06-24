@@ -83,6 +83,9 @@ import modals from '~/store/modals/modals';
 export default {
   name: 'Index',
   DisputeStatues,
+  data: () => ({
+    disputeMark: 0,
+  }),
   computed: {
     ...mapGetters({
       disputeData: 'disputes/getDispute',
@@ -108,12 +111,11 @@ export default {
         [DisputeStatues.CLOSED]: 'dispute__status_green',
       }[this.disputeData.status];
     },
-    disputeMark() {
-      return this.disputeData.currentUserDisputeReview?.mark || 0;
-    },
+
   },
   async created() {
     await this.$store.dispatch('disputes/getDispute', this.disputeId);
+    this.disputeMark = this.disputeData.currentUserDisputeReview?.mark;
   },
   async beforeDestroy() {
     await this.$store.commit('disputes/resetDisputeCard');
@@ -133,6 +135,7 @@ export default {
           const { ok, msg } = await this.$store.dispatch('user/sendReviewDispute', { disputeId, message, mark });
           if (ok) {
             this.ShowModal({ key: modals.thanks });
+            this.disputeMark = mark;
           } else {
             await this.ShowToast(msg || ' ');
           }
