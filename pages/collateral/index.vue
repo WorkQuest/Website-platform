@@ -367,16 +367,17 @@ export default {
     align-self: center;
 
     .title {
+      max-width: 530px;
       font-weight: 500;
       color: #FFF;
       font-size: 45px;
       line-height: 110%;
-      margin: 24px 0 0;
+      margin: 24px 0;
 
       &_sub {
         @extend .title;
         font-size: 16px;
-        line-height: 100%;
+        line-height: 115%;
         opacity: 0.5;
         text-align: justify;
         margin: 0;
@@ -696,7 +697,6 @@ export default {
     &__header {
       .title {
         font-size: 38px;
-        margin-bottom: 15px;
         width: 100%;
         &_sub {
           font-size: 16px;
@@ -730,7 +730,6 @@ export default {
         &__subtitle {
           margin-bottom: 20px;
         }
-
         &__about {
           grid-template-areas:
             "hd"
@@ -771,6 +770,14 @@ export default {
           border: 0;
           width: 23px;
           font-size: 0;
+        }
+      }
+    }
+    &__header {
+      .title {
+        margin: 15px 0;
+        &_sub {
+          margin-top: 3px;
         }
       }
     }
