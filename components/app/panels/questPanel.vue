@@ -195,7 +195,6 @@ export default {
 }
 .quest {
   &__location {
-    margin-right: 20px;
     display: flex;
     align-items: center;
   }
@@ -328,12 +327,5 @@ export default {
       right: 0;
     }
   }
-
-  .quest {
-    &__location {
-      margin-right: 0;
-    }
-  }
-
 }
 </style>
