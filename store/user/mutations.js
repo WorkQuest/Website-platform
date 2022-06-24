@@ -21,6 +21,7 @@ export default {
     state.portfolio = data;
   },
   setTokens(state, payload) {
+    console.log('SET TOKENS', payload);
     state.tokens.access = payload.access;
     state.tokens.refresh = payload.refresh;
     if (state.isRememberMeChecked || state.tokens.refresh) {

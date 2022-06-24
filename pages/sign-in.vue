@@ -258,12 +258,13 @@ export default {
       this.SetLoader(false);
       if (!this.userWalletAddress) return;
       this.step = WalletState.ImportMnemonic;
-      this.$store.commit('user/setTokens', {
-        access,
-        refresh,
-        userStatus: this.userStatus,
-        social: this.isLoginWithSocial,
-      });
+      console.log('import mnemonic', access, this.userStatus, this.isLoginWithSocial);
+      // this.$store.commit('user/setTokens', {
+      //   access,
+      //   refresh,
+      //   userStatus: +this.userStatus,
+      //   social: this.isLoginWithSocial,
+      // });
     }
 
     if (sessionStorage.getItem('confirmToken')) this.ShowToast(this.$t('messages.loginToContinue'), ' ');
@@ -333,10 +334,11 @@ export default {
     clearCookies() {
       const mnemonicInLocalStorage = JSON.parse(localStorage.getItem('mnemonic'));
       const isWalletInMnemonicList = mnemonicInLocalStorage && mnemonicInLocalStorage[this.userWalletAddress];
-      if (this.$cookies.get('socialNetwork')
+      if (this.isLoginWithSocial
         || (this.userData.id && (isWalletInMnemonicList || localStorage.getItem('mnemonic')))) {
         return;
       }
+      console.error('CLEAR COOKIES!!!');
       this.$cookies.remove('access');
       this.$cookies.remove('refresh');
       this.$cookies.remove('userLogin');
@@ -553,6 +555,7 @@ export default {
         [wallet.address.toLowerCase()]: wallet.mnemonic.phrase,
       }));
       this.$store.dispatch('wallet/connectWallet', { userWalletAddress: wallet.address, userPassword: this.model.password });
+      console.log('занесли мнемоник в сессию', this.$cookies.get('access'));
     },
     async redirectUser() {
       this.addressAssigned = true;
@@ -571,7 +574,7 @@ export default {
       if (this.connections.notifsConnection) await this.$wsNotifs.disconnect();
       const mnemonicInLocalStorage = JSON.parse(localStorage.getItem('mnemonic'));
       const isWalletInMnemonicList = mnemonicInLocalStorage && mnemonicInLocalStorage[this.userData.wallet.address];
-      if (!isWalletInMnemonicList) return;
+      if (!isWalletInMnemonicList && !this.isLoginWithSocial) return;
       if (this.userData.role === UserRole.EMPLOYER) await this.$router.push(Path.WORKERS);
       else if (this.userData.role === UserRole.WORKER) await this.$router.push(Path.QUESTS);
     },

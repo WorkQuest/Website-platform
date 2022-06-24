@@ -10,11 +10,10 @@ export default async function ({
     const refresh = app.$cookies.get('refresh');
     const userStatus = app.$cookies.get('userStatus');
     const social = app.$cookies.get('socialNetwork');
-    const userData = store.getters['user/getUserData'];
     const payload = {
       access,
       refresh,
-      userData,
+      userStatus,
       social,
     };
 
@@ -25,7 +24,7 @@ export default async function ({
       await store.dispatch('user/logout', false);
       return redirect(Path.SIGN_IN);
     }
-    if (!userData.id && +userStatus === UserStatuses.Confirmed) {
+    if (!store.getters['user/getUserData'].id && +userStatus === UserStatuses.Confirmed) {
       await store.dispatch('user/getMainData');
     }
     if ((+userStatus === UserStatuses.NeedSetRole || !store.getters['user/getUserWalletAddress']) && route.path !== Path.ROLE) {

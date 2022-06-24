@@ -169,6 +169,7 @@ export default {
   },
   async logout({ commit, dispatch }, isValidToken = true) {
     try {
+      console.error('lgout');
       if (isValidToken) await this.$axios.$post('v1/auth/logout');
       await this.$wsChatActions.disconnect();
       await this.$wsNotifs.disconnect();

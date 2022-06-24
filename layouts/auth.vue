@@ -55,7 +55,7 @@ export default {
     await this.$store.commit('user/setTokens', {
       access: accessTokenCookies,
       refresh: refreshCookies,
-      userStatus: userStatusCookies,
+      userStatus: +userStatusCookies,
     });
 
     if (this.userData.status === UserStatuses.Confirmed) {
@@ -72,7 +72,7 @@ export default {
     const { access, refresh, userStatus } = this.$route.query;
     if (access && refresh && userStatus) {
       this.$store.commit('user/setTokens', {
-        access, refresh, userStatus, social: true,
+        access, refresh, userStatus: +userStatus, social: true,
       });
       await this.$store.dispatch('user/getUserData');
 
@@ -88,11 +88,11 @@ export default {
         this.$store.dispatch('notifications/getNotifications'),
       ]);
 
-      if (this.userData.role === UserRole.EMPLOYER) {
-        await this.$router.push(Path.WORKERS);
-      } else if (this.userData.role === UserRole.WORKER) {
-        await this.$router.push(Path.QUESTS);
-      }
+      // if (this.userData.role === UserRole.EMPLOYER) {
+      //   await this.$router.push(Path.WORKERS);
+      // } else if (this.userData.role === UserRole.WORKER) {
+      //   await this.$router.push(Path.QUESTS);
+      // }
     }
   },
 };
