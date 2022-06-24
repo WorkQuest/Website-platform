@@ -239,7 +239,7 @@ export default {
     flex-wrap: wrap;
   }
   &__container {
-    padding: 34px 0 25px 0;
+    padding: 25px 0 25px 0;
   }
   &__wrapper {
     display: flex;
@@ -301,28 +301,31 @@ export default {
   }
 }
 
-@include _991 {
+@include _1199 {
   .user {
     &__container {
-      padding-top: 20px;
+      padding-top: 15px;
     }
   }
 }
 
 @include _767 {
   .user {
-    &__container {
-      padding-top: 5px;
-    }
     &__left{
-      margin-right: 60px;
+      width: 80%;
     }
     &__head{
-      display: block;
+      position: relative;
+      gap: 10px;
+    }
+    &__date {
+      display: inline-block;
+      padding-right: 40px;
     }
     &__btn{
-      margin-left: auto;
-      transform: translateY(-28px)
+      position: absolute;
+      top: 0;
+      right: 0;
     }
   }
 
