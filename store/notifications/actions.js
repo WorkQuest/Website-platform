@@ -79,7 +79,7 @@ export default {
         message,
       },
     };
-    commit('addNotification', notification);
+    commit('addLocalNotification', notification);
   },
 
   async removeNotification({ dispatch, commit, rootGetters }, { config, notification: { params, actionNameKey, id } }) {
@@ -132,7 +132,9 @@ export default {
       return false;
     }
   },
-
+  async setCounterNotifications({ commit }, number) {
+    commit('setCounterNotifications', number);
+  },
   async setCurrNotificationObject({
     getters, rootGetters, dispatch, commit,
   }, notification) {

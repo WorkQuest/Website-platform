@@ -123,6 +123,7 @@ export default {
   images,
   data() {
     return {
+      notifications: [],
       filter: {
         limit: 10,
         offset: 0,
@@ -137,9 +138,10 @@ export default {
       userData: 'user/getUserData',
       statusKYC: 'user/getStatusKYC',
       status2FA: 'user/getStatus2FA',
-      notifications: 'notifications/getNotificationsList',
+      notificationsList: 'notifications/getNotificationsList',
       notifsCount: 'notifications/getNotificationsCount',
       unreadNotifsCount: 'notifications/getUnreadNotifsCount',
+      localNotificationsLastPage: 'notifications/getLocalNotificationInLastPage',
     }),
     totalPages() {
       return Math.ceil(this.notifsCount / this.filter.limit);
@@ -161,6 +163,7 @@ export default {
     },
     async setLocalNotifications() {
       const { $cookies, page, totalPages } = this;
+
       if (page === totalPages) {
         await this.$store.dispatch('notifications/createLocalNotification', {
           id: '1',
@@ -264,7 +267,12 @@ export default {
       this.SetLoader(false);
     },
     async getNotifications() {
+      if (this.page === this.totalPages && this.localNotificationsLastPage.length) {
+        this.notifications = this.localNotificationsLastPage;
+        return;
+      }
       await this.$store.dispatch('notifications/getNotifications', { params: this.filter });
+      this.notifications = this.notificationsList;
       this.checkUnseenNotifs();
     },
     goToEvent(path, isNotifCont) {

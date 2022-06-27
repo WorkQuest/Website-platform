@@ -5,4 +5,5 @@ export default {
   getReducedNotifications: (state) => state.reducedNotifications,
   getLocalNotifications: (state) => state.localNotifications,
   getWaitForUpdateQuest: (state) => state.waitForUpdateQuest,
+  getLocalNotificationInLastPage: (state) => state.localNotificationsInLastPage,
 };

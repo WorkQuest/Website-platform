@@ -6,4 +6,7 @@ export default () => ({
   },
   reducedNotifications: [],
   waitForUpdateQuest: null,
+  counterNotificationsInLastPage: 0,
+  limitInNotificationPage: 10,
+  localNotificationsInLastPage: [],
 });
