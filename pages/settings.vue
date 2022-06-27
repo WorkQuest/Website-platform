@@ -361,10 +361,6 @@ export default {
       }
     },
 
-    editProfileRoute() {
-      return this.isEmployer ? 'editEmployerData' : 'editWorkerData';
-    },
-
     async editProfile(checkAvatarID) {
       const addInfo = this.profile.additionalInfo;
       const {
@@ -402,7 +398,28 @@ export default {
         profileVisibility: { ...this.profileVisibilitySetting },
       };
       if (!this.updatedSecondPhone.fullPhone) payload.additionalInfo.secondMobileNumber = null;
-      await this.editProfileResponse(`user/${this.editProfileRoute()}`, !this.isEmployer ? {
+
+      if (this.isEmployer) await this.editEmployerData(payload, addInfo);
+      else await this.editWorkerData(payload, addInfo);
+    },
+
+    async editEmployerData(payload, addInfo) {
+      const { ok } = await this.$store.dispatch('user/editEmployerData', {
+        ...payload,
+        additionalInfo: {
+          ...payload.additionalInfo,
+          description: addInfo.description || null,
+          company: addInfo.company || null,
+          CEO: addInfo.CEO || null,
+          website: addInfo.website || null,
+        },
+      });
+
+      this.showModalStatus(ok ? 'saved' : 'error');
+    },
+
+    async editWorkerData(payload, addInfo) {
+      const { ok } = await this.$store.dispatch('user/editWorkerData', {
         ...payload,
         additionalInfo: {
           ...payload.additionalInfo,
@@ -415,33 +432,20 @@ export default {
         priority: this.skills.priorityIndex,
         costPerHour: this.skills.perHour || this.userData.costPerHour,
         specializationKeys: this.skills.selectedSpecAndSkills || [],
-      } : {
-        ...payload,
-        additionalInfo: {
-          ...payload.additionalInfo,
-          description: addInfo.description || null,
-          company: addInfo.company || null,
-          CEO: addInfo.CEO || null,
-          website: addInfo.website || null,
-        },
       });
 
+      this.showModalStatus(ok ? 'saved' : 'error');
+
       // Notification: offers by selected new skills
-      if (!this.isEmployer && !this.EqualsArrays(this.skills.selectedSpecAndSkills, this.prevSkills)) {
+      if (!this.EqualsArrays(this.skills.selectedSpecAndSkills, this.prevSkills)) {
         await this.$store.dispatch('notifications/createLocalNotification', {
           message: this.$t('ui.notifications.viewOffersBySpecs'),
           actionBtn: this.$t('meta.btns.view'),
           action: LocalNotificationAction.QUESTS_SPECS,
         });
       }
-
-      await this.$store.dispatch('user/getUserData');
     },
 
-    async editProfileResponse(action, payload) {
-      const result = await this.$store.dispatch(action, payload);
-      this.showModalStatus(result ? 'saved' : 'error');
-    },
   },
 };
 </script>
