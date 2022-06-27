@@ -144,6 +144,7 @@ export default {
   components: { Slider },
   data() {
     return {
+      maxRatio: 0,
       selCurrencyID: TokenMap.USDT,
       amountWUSD: '',
       amountCollateral: '',
@@ -168,12 +169,8 @@ export default {
       userWalletAddress: 'user/getUserWalletAddress',
       currentBalance: 'wallet/getBalanceData',
     }),
-    maxRatio() {
-      // TODO: take it from contract
-      return 106;
-    },
     optimalCollateralPercent() {
-      return new BigNumber(this.optimalCollateralRatio).multipliedBy(100).toFixed();
+      return new BigNumber(this.optimalCollateralRatio).toFixed(0);
     },
     currentCurrency() {
       return this.checkpoints.find((el) => el.id === this.selCurrencyID).name;
@@ -187,16 +184,24 @@ export default {
     mediumRiskPoint() {
       const { maxRatio, minRatio } = this;
       const averageRatio = new BigNumber(maxRatio).plus(minRatio).dividedBy(2).toNumber();
-      return new BigNumber(this.optimalCollateralPercent).plus(averageRatio).dividedBy(2).toFixed();
+      return new BigNumber(this.optimalCollateralPercent)
+        .plus(averageRatio)
+        .dividedBy(2)
+        .dp(0, 6)
+        .toNumber();
     },
     getRisksGrade() {
-      if (new BigNumber(this.collateralPercentClear).isGreaterThanOrEqualTo(this.optimalCollateralPercent)) {
-        return this.$t('modals.lowRisk');
-      }
-      if (new BigNumber(this.collateralPercentClear).isGreaterThanOrEqualTo(this.mediumRiskPoint)) {
-        return this.$t('modals.mediumRisk');
-      }
-      return this.$t('modals.highRisk');
+      if (
+        new BigNumber(this.collateralPercentClear).isGreaterThanOrEqualTo(this.minRatio)
+        && new BigNumber(this.collateralPercentClear).isLessThan(this.optimalCollateralPercent)
+      ) return this.$t('modals.highRisk');
+
+      if (
+        new BigNumber(this.collateralPercentClear).isGreaterThanOrEqualTo(this.optimalCollateralPercent)
+        && new BigNumber(this.collateralPercentClear).isLessThan(this.mediumRiskPoint)
+      ) return this.$t('modals.mediumRisk');
+
+      return this.$t('modals.lowRisk');
     },
   },
   watch: {
@@ -275,12 +280,14 @@ export default {
       await this.fetchRatio();
       /**
        * @property price - current price for selected token
-       * @property coefficient - coefficient of optimal risk
+       * @property recommendedPercent - percent of optimal risk
+       * @property maxPercent - maximum percent available for collateral
        */
       this.ratio.some((item) => {
-        if (item.coin === this.currentCurrency) {
+        if (item.symbol === this.currentCurrency) {
+          this.maxRatio = item.maxPercent;
           this.currentCurrencyPrice = item.price;
-          this.optimalCollateralRatio = new BigNumber(item.coefficient).dividedBy(100).toNumber();
+          this.optimalCollateralRatio = new BigNumber(item.recommendedPercent).toNumber();
           return true;
         }
         return false;

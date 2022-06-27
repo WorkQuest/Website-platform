@@ -1098,6 +1098,7 @@
     "incorrectAmount": "Incorrect amount, your wallet does not have enough funds",
     "nothingToClaim": "Nothing to claim",
     "pleaseWait": "Пожалуйста, подождите",
+    "pleaseWaitTx": "Пожалуйста подождите, пока ваша транзакция выполняется",
     "deletePortfolio": "Are you sure delete portfolio?",
     "addTitle": "Please add title...",
     "addDesc": "Please add description...",

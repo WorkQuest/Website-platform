@@ -220,22 +220,22 @@ export default {
   },
   async editEmployerData({ commit }, payload) {
     try {
-      const response = await this.$axios.$put('/v1/employer/profile/edit', payload);
-      commit('setUserData', response.result);
-      return response.ok;
+      const { result } = await this.$axios.$put('/v1/employer/profile/edit', payload);
+      commit('setUserData', result);
+      return success();
     } catch (e) {
-      console.log(e);
-      return false;
+      console.log('user/editEmployerData', e);
+      return error();
     }
   },
   async editWorkerData({ commit }, payload) {
     try {
-      const response = await this.$axios.$put('/v1/worker/profile/edit', payload);
-      commit('setUserData', response.result);
-      return response.ok;
+      const { result } = await this.$axios.$put('/v1/worker/profile/edit', payload);
+      commit('setUserData', result);
+      return success();
     } catch (e) {
-      console.log(e);
-      return false;
+      console.log('user/editWorkerData', e);
+      return error();
     }
   },
   async refreshTokens({ commit }) {

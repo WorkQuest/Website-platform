@@ -9,7 +9,17 @@
         class="loader__modal"
       >
         <div class="loader__text">
-          {{ $t('modals.pleaseWait') }}
+          {{ $t('modals.pleaseWaitTx') }}
+        </div>
+        <div
+          class="sk-chase"
+          :class="{'sk-chase_small' : isMiniLoader}"
+        >
+          <div
+            v-for="(item, i) in ['', '', '', '', '', '']"
+            :key="i"
+            class="sk-chase-dot"
+          />
         </div>
       </div>
       <div
@@ -52,11 +62,12 @@ export default {
   methods: {
     checkPage() {
       return [
-        `${Path.MINING}/${TokenSymbols.BNB}`, `${Path.MINING}/${TokenSymbols.ETH}`,
+        Path.WALLET,
         Path.BRIDGE,
-        Path.STAKING, `${Path.STAKING}/${TokenSymbols.WQT}`, `${Path.STAKING}/${TokenSymbols.WUSD}`,
         Path.RETIREMENT, `${Path.RETIREMENT}/my`,
-      ].includes(this.$route.path);
+        `${Path.MINING}/:id`,
+        Path.STAKING, `${Path.STAKING}/:id`,
+      ].includes(this.$route.matched[0].path);
     },
   },
 };
@@ -87,16 +98,20 @@ export default {
   }
 
   &__modal {
-    width: 200px;
     position: relative;
-    display: flex;
-    height: 100px;
+
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+
+    width: fit-content;
+    height: fit-content;
+    padding: 25px;
+
     text-align: center;
     background: #FFFFFF;
-    box-shadow: 0 85px 147px rgba(10, 27, 61, 0.17), 0 47.1676px 61.4131px rgba(10, 27, 61, 0.078707), 0 26.7219px 32.8344px rgba(10, 27, 61, 0.0629546), 0 14.4955px 18.4067px rgba(10, 27, 61, 0.0598272), 0 6.96225px 9.77565px rgba(10, 27, 61, 0.0584222), 0 2.43911px 4.06787px rgba(10, 27, 61, 0.0492837);
     border-radius: 6px;
-    align-items: center;
-    justify-content: center;
+    box-shadow: 0 85px 147px rgba(10, 27, 61, 0.17), 0 47.1676px 61.4131px rgba(10, 27, 61, 0.078707), 0 26.7219px 32.8344px rgba(10, 27, 61, 0.0629546), 0 14.4955px 18.4067px rgba(10, 27, 61, 0.0598272), 0 6.96225px 9.77565px rgba(10, 27, 61, 0.0584222), 0 2.43911px 4.06787px rgba(10, 27, 61, 0.0492837);
   }
 
   &__text {
@@ -111,6 +126,9 @@ export default {
 .sk-chase {
   width: 40px;
   height: 40px;
+
+  margin-top: 15px;
+
   position: relative;
   z-index: 1500;
   animation: sk-chase 2.5s infinite linear both;

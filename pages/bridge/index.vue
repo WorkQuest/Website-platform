@@ -407,7 +407,7 @@ export default {
                   key: modals.status,
                   img: !ok ? images.WARNING : images.SUCCESS,
                   title: !ok ? this.$t('modals.transactionFail') : this.$t('modals.transactionSent'),
-                  link: `${from.explorer}/tx/${result?.transactionHash}`,
+                  link: !ok ? '' : `${from.explorer}/tx/${result?.transactionHash}`,
                 });
               },
             });

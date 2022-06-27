@@ -263,6 +263,7 @@ export default {
       page: 1,
       limit: 10,
       isUpdatingData: false,
+      chain: null,
       metamaskStatus: localStorage.getItem('metamaskStatus'),
     };
   },
@@ -278,21 +279,12 @@ export default {
 
       account: 'web3/getAccount',
       isConnected: 'web3/isConnected',
+      isShowModal: 'modals/getIsShow',
 
       isAuth: 'user/isAuth',
     }),
-    chain() {
-      const symbol = this.$route.params.id;
-      switch (symbol) {
-        case TokenSymbols.ETH:
-          return Chains.ETHEREUM;
-        case TokenSymbols.BNB:
-          return Chains.BINANCE;
-        default:
-          if (this.$route.path === Path.MINING) return '';
-          console.error('Unknown pool:', symbol);
-          return '';
-      }
+    isWrongChain() {
+      return this.account?.netId !== +getChainIdByChain(this.chain);
     },
     tableHeaders() {
       return [
@@ -386,10 +378,14 @@ export default {
   },
   watch: {
     async isConnected(status) {
-      if (!status) await this.resetPoolData();
-      else if (await this.checkNetwork(this.chain)) {
-        await this.tokensDataUpdate();
+      if (!status) {
+        await this.resetPoolData();
+        return;
       }
+      if (this.isShowModal && this.isWrongChain) {
+        await this.CloseModal();
+        this.ShowToast(this.$t('modals.incorrectChain'));
+      } else if (await this.checkNetwork(this.chain)) await this.tokensDataUpdate();
     },
     async totalLiquidityUSD(newVal, oldVal) {
       if (this.page === 1 && oldVal) {
@@ -407,6 +403,23 @@ export default {
         },
       });
     },
+  },
+  beforeMount() {
+    if (this.isAuth) this.$nuxt.setLayout('default');
+  },
+  created() {
+    const symbol = this.$route.params.id;
+    switch (symbol) {
+      case TokenSymbols.ETH:
+        this.chain = Chains.ETHEREUM;
+        break;
+      case TokenSymbols.BNB:
+        this.chain = Chains.BINANCE;
+        break;
+      default:
+        console.error('Unknown pool:', symbol);
+        break;
+    }
   },
   async mounted() {
     this.SetLoader(true);
@@ -453,11 +466,18 @@ export default {
       else await this.connectWallet({ chain });
     },
 
+    checkChain() {
+      if (!this.account?.netId) {
+        this.CloseModal();
+        this.ShowToast(this.$t('meta.disconnect'));
+        return false;
+      }
+      return true;
+    },
     async checkNetwork(chain) {
       if (!this.isConnected) {
         await this.connectWallet({ chain });
         if (!this.isConnected) return false;
-        return await this.checkNetwork(chain);
       }
 
       const isMetaMask = localStorage.getItem('isMetaMask') === 'true';
@@ -510,6 +530,7 @@ export default {
         this.ShowModal({
           key: modals.swapTokens,
           submit: async (amount, decimals) => {
+            if (!this.checkChain()) return;
             this.SetLoader(true);
             this.CloseModal();
 
@@ -531,6 +552,7 @@ export default {
           title: this.$t('modals.titles.stake'),
           maxValue: this.balance,
           submit: async (amount) => {
+            if (!this.checkChain()) return;
             this.CloseModal();
 
             this.SetLoader(true);
@@ -556,6 +578,7 @@ export default {
           title: this.$t('modals.titles.unstake'),
           maxValue: this.staked,
           submit: async (amount) => {
+            if (!this.checkChain()) return;
             this.CloseModal();
 
             this.SetLoader(true);
@@ -575,6 +598,11 @@ export default {
     },
 
     async claimRewards() {
+      const { chain } = this;
+      if (await this.checkNetwork(chain) === false) {
+        return;
+      }
+
       if (+this.claim === 0) {
         this.ShowModalFail({
           title: this.$t('modals.transactionFail'),
@@ -583,17 +611,14 @@ export default {
         return;
       }
 
-      const { chain } = this;
-      if (await this.checkNetwork(chain)) {
-        this.SetLoader(true);
-        const { ok } = await this.claimTokens({ chain });
-        this.SetLoader(false);
+      this.SetLoader(true);
+      const { ok } = await this.claimTokens({ chain });
+      this.SetLoader(false);
 
-        if (ok) {
-          this.ShowModalSuccess({});
-          await this.tokensDataUpdate();
-        } else this.ShowModalFail({});
-      }
+      if (ok) {
+        this.ShowModalSuccess({});
+        await this.tokensDataUpdate();
+      } else this.ShowModalFail({});
     },
 
   },
