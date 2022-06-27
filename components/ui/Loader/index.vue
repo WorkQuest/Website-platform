@@ -57,13 +57,13 @@ export default {
         Path.BRIDGE,
         Path.STAKING, `${Path.STAKING}/${TokenSymbols.WQT}`, `${Path.STAKING}/${TokenSymbols.WUSD}`,
         Path.RETIREMENT, `${Path.RETIREMENT}/my`,
-      ].includes(this.$route.path));
+      ].indexOf(this.$route.path));
       return [
         `${Path.MINING}/${TokenSymbols.BNB}`, `${Path.MINING}/${TokenSymbols.ETH}`,
         Path.BRIDGE,
         Path.STAKING, `${Path.STAKING}/${TokenSymbols.WQT}`, `${Path.STAKING}/${TokenSymbols.WUSD}`,
         Path.RETIREMENT, `${Path.RETIREMENT}/my`,
-      ].includes(this.$route.path);
+      ].indexOf(this.$route.path);
     },
   },
 };
