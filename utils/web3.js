@@ -72,13 +72,15 @@ export const getChainIdByChain = (chain) => {
 
 export const addedNetwork = async (chain) => {
   try {
+    // TODO: refactor
     let networkParams = {};
     if (chain === Chains.ETHEREUM || [+ChainsId.ETH_MAIN, +ChainsId.ETH_TEST].includes(+chain)) {
       networkParams = IS_PROD ? NetworksData.ETH_MAIN : NetworksData.ETH_TEST;
     } else if (chain === Chains.BINANCE || [+ChainsId.BSC_MAIN, +ChainsId.BSC_TEST].includes(+chain)) {
       networkParams = IS_PROD ? NetworksData.BSC_MAIN : NetworksData.BSC_TEST;
-    } else if (chain === Chains.WORKNET || chain === +ChainsId.WORKNET_TEST) {
-      networkParams = NetworksData.WORKNET_TEST;
+    } else if (chain === Chains.WORKNET || [+ChainsId.WORKNET_DEV, +ChainsId.WORKNET_TEST, +ChainsId.WORKNET_MAIN].includes(+chain)) {
+      if (IS_PROD) networkParams = NetworksData.WORKNET_MAIN;
+      else networkParams = process.env.BRANCH === 'develop' ? NetworksData.WORKNET_DEV : NetworksData.WORKNET_TEST;
     } else if (chain === Chains.POLYGON || [+ChainsId.MUMBAI_TEST, +ChainsId.MATIC_MAIN].includes(+chain)) {
       networkParams = IS_PROD ? NetworksData.MATIC_MAIN : NetworksData.MUMBAI_TEST;
     }
@@ -193,6 +195,7 @@ export const initProvider = async (payload) => {
   const { chain } = payload;
   try {
     let walletOptions;
+    // TODO refactor, need to get network params by chain and branch
     if (!IS_PROD) {
       if (chain === Chains.ETHEREUM) {
         walletOptions = {
@@ -209,12 +212,21 @@ export const initProvider = async (payload) => {
           // network: 'binance',
         };
       } else if (chain === Chains.WORKNET) {
-        walletOptions = {
-          rpc: {
-            20211224: 'https://dev-node-nyc3.workquest.co',
-          },
-          // network: 'worknet',
-        };
+        if (process.env.BRANCH === 'develop') {
+          walletOptions = {
+            rpc: {
+              20220112: 'https://dev-node-nyc3.workquest.co',
+            },
+            // network: 'worknet',
+          };
+        } else {
+          walletOptions = {
+            rpc: {
+              1991: 'https://testnet-gate.workquest.co/',
+            },
+            // network: 'worknet',
+          };
+        }
       }
     }
     if (IS_PROD) {
@@ -235,7 +247,7 @@ export const initProvider = async (payload) => {
       } else if (chain === Chains.WORKNET) {
         walletOptions = {
           rpc: {
-            20211224: 'https://dev-node-nyc3.workquest.co',
+            2009: 'https://mainnet-gate.workquest.co/',
           },
           // network: 'worknet',
         };

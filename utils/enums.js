@@ -214,14 +214,14 @@ export const WalletTables = Object.freeze({
 });
 
 export const DaoUrl = {
-  master: 'https://testnet-dao.workquest.co',
+  master: 'https://dao.workquest.co',
   testnet: 'https://testnet-dao.workquest.co',
   stage: 'https://stage-dao.workquest.co',
   develop: 'https://dev-dao.workquest.co',
 }[process.env.BRANCH];
 
 export const ExplorerUrl = {
-  master: 'https://testnet-explorer.workquest.co',
+  master: 'https://explorer.workquest.co',
   testnet: 'https://testnet-explorer.workquest.co',
   stage: 'https://stage-explorer.workquest.co',
   develop: 'https://dev-explorer.workquest.co',
@@ -262,6 +262,8 @@ export const NetworksData = {
     chainId: ChainsId.WORKNET_MAIN,
     chainName: 'WorkNet',
     rpcUrls: ['https://mainnet-gate.workquest.co/'],
+    blockExplorerUrls: [ExplorerUrl],
+    // iconUrls:[] TODO: add icon url
     nativeCurrency: {
       name: 'WorkQuest',
       symbol: 'WQT',
@@ -272,6 +274,8 @@ export const NetworksData = {
     chainId: ChainsId.WORKNET_TEST,
     chainName: 'WorkNet Testnet',
     rpcUrls: ['https://testnet-gate.workquest.co/'],
+    blockExplorerUrls: [ExplorerUrl],
+    // iconUrls:[] TODO: add icon url
     nativeCurrency: {
       name: 'WorkQuest',
       symbol: 'WQT',
@@ -282,6 +286,8 @@ export const NetworksData = {
     chainId: ChainsId.WORKNET_DEV,
     chainName: 'WorkNet Devnet',
     rpcUrls: ['https://dev-node-nyc3.workquest.co/'],
+    blockExplorerUrls: [ExplorerUrl],
+    // iconUrls:[] TODO: add icon url
     nativeCurrency: {
       name: 'WorkQuest',
       symbol: 'WQT',
