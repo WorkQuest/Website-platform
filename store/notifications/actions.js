@@ -92,8 +92,6 @@ export default {
     }
     try {
       if (!params.isLocal) await this.$axios.$delete(`${ENV.NOTIFS_URL}notifications/delete/${id}`);
-      await commit('removeNotification', id);
-      await dispatch('getNotifications', config);
       return success();
     } catch (e) {
       return error(e);
