@@ -1,9 +1,8 @@
-/* eslint-disable no-param-reassign,consistent-return */
-// eslint-disable-next-line func-names
 import { Path } from '~/utils/enums';
 
-// eslint-disable-next-line
-export default function ({ $axios, store, redirect, app }, inject) {
+export default ({
+  $axios, store, redirect, app,
+}) => {
   let isRefreshing = false;
   let isStopRequests = false;
   let refreshRequests = [];
@@ -85,6 +84,4 @@ export default function ({ $axios, store, redirect, app }, inject) {
     }
     throw error;
   });
-}
-
-// $axios.onRequest((config) => {
+};
