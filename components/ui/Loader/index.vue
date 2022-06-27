@@ -51,6 +51,13 @@ export default {
   },
   methods: {
     checkPage() {
+      console.log(this.$route.path);
+      console.log([
+        `${Path.MINING}/${TokenSymbols.BNB}`, `${Path.MINING}/${TokenSymbols.ETH}`,
+        Path.BRIDGE,
+        Path.STAKING, `${Path.STAKING}/${TokenSymbols.WQT}`, `${Path.STAKING}/${TokenSymbols.WUSD}`,
+        Path.RETIREMENT, `${Path.RETIREMENT}/my`,
+      ].includes(this.$route.path));
       return [
         `${Path.MINING}/${TokenSymbols.BNB}`, `${Path.MINING}/${TokenSymbols.ETH}`,
         Path.BRIDGE,
