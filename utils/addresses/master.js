@@ -1,5 +1,5 @@
 export default {
-  BASE_URL: 'https://testnet-app.workquest.co/api/',
+  BASE_URL: 'https://app.workquest.co/api/',
   // GMAPKEY: process.env.GMAPKEY,
   // SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
@@ -8,16 +8,16 @@ export default {
   BSC_PROVIDER: 'https://bscrpc.com',
   POLYGON_PROVIDER: 'https://polygon-mainnet.public.blastapi.io',
 
-  WQ_WS_PROVIDER: 'wss://testnet-gate.workquest.co/tendermint-rpc/websocket',
+  WQ_WS_PROVIDER: 'wss://mainnet-gate.workquest.co/tendermint-rpc/websocket',
   ETH_WS_PROVIDER: '',
   BSC_WS_PROVIDER: '',
   POLYGON_WS_PROVIDER: '',
 
-  WQ_EXPLORER: 'https://testnet-explorer-api.workquest.co/api/v1',
-  WQ_ORACLE_URL: 'https://testnet-oracle.workquest.co/api/v1',
+  WQ_EXPLORER: 'https://mainnet-explorer-api.workquest.co/api/v1',
+  WQ_ORACLE_URL: 'https://oracle.workquest.co/api/v1',
   NOTIFS_URL: 'https://notifications.workquest.co/api/',
   WS_NOTIFS_URL: 'wss://notifications.workquest.co/api/v1/notifications',
-  WS_CHAT_ACTIONS_URL: 'wss://testnet-app.workquest.co/api/v1/notifications/chat',
+  WS_CHAT_ACTIONS_URL: 'wss://app.workquest.co/api/v1/notifications/chat',
 
   ETHEREUM_BRIDGE: '0xd65815dA812C6eAEC0186215E43A12D76F5deCBc',
   ETHEREUM_LP_TOKEN: '0xf1fE852fCA1b5a869ef1FE06a2799E1F38B70B84',

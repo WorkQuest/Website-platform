@@ -16,6 +16,7 @@ export const ChainsId = {
 
   WORKNET_DEV: '0x13488D0',
   WORKNET_TEST: '0x7C7',
+  WORKNET_MAIN: '0x7D9',
 };
 
 export const ChainsIdByChainNumber = {
@@ -30,6 +31,7 @@ export const ChainsIdByChainNumber = {
 
   20220112: [ChainsId.WORKNET_DEV],
   1991: [ChainsId.WORKNET_TEST],
+  2009: [ChainsId.WORKNET_MAIN],
 };
 
 export const Chains = {
@@ -256,9 +258,19 @@ export const NetworksData = {
       decimals: 18,
     },
   },
+  WORKNET_MAIN: {
+    chainId: ChainsId.WORKNET_MAIN,
+    chainName: 'WorkNet',
+    rpcUrls: ['https://mainnet-gate.workquest.co/'],
+    nativeCurrency: {
+      name: 'WorkQuest',
+      symbol: 'WQT',
+      decimals: 18,
+    },
+  },
   WORKNET_TEST: {
     chainId: ChainsId.WORKNET_TEST,
-    chainName: 'WorkQuest Testnet',
+    chainName: 'WorkNet Testnet',
     rpcUrls: ['https://testnet-gate.workquest.co/'],
     nativeCurrency: {
       name: 'WorkQuest',
@@ -268,7 +280,7 @@ export const NetworksData = {
   },
   WORKNET_DEV: {
     chainId: ChainsId.WORKNET_DEV,
-    chainName: 'WorkQuest Devnet',
+    chainName: 'WorkNet Devnet',
     rpcUrls: ['https://dev-node-nyc3.workquest.co/'],
     nativeCurrency: {
       name: 'WorkQuest',

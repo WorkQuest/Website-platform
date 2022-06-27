@@ -8,6 +8,7 @@ export default {
   BSC_PROVIDER: 'https://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/bsc/testnet',
   POLYGON_PROVIDER: 'https://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/polygon/mumbai',
 
+  // TODO: need testnet
   WQ_WS_PROVIDER: 'wss://dev-node-nyc3.workquest.co/tendermint-rpc/websocket',
   ETH_WS_PROVIDER: 'wss://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/eth/rinkeby/ws',
   BSC_WS_PROVIDER: 'wss://speedy-nodes-nyc.moralis.io/b42d7d2a9baf055b2076cc12/bsc/testnet/ws',
