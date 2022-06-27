@@ -24,12 +24,10 @@ export default {
     state.tokens.access = payload.access;
     state.tokens.refresh = payload.refresh;
     if (state.isRememberMeChecked || state.tokens.refresh) {
-      const expireRefreshTokenInSeconds = JSON.parse(atob(payload.refresh
-        .split('.')[1])).exp - new Date().getTime() / 1000 || 86400 * 30;
-      this.$cookies.set('access', payload.access, { path: '/', maxAge: expireRefreshTokenInSeconds });
-      this.$cookies.set('refresh', payload.refresh, { path: '/', maxAge: expireRefreshTokenInSeconds });
+      this.$cookies.set('access', payload.access, { path: '/' });
+      this.$cookies.set('refresh', payload.refresh, { path: '/' });
       if (payload.userStatus) {
-        this.$cookies.set('userStatus', payload.userStatus, { path: '/', maxAge: expireRefreshTokenInSeconds });
+        this.$cookies.set('userStatus', payload.userStatus, { path: '/' });
       }
       state.isRememberMeChecked = false;
     } else {
