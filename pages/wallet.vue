@@ -307,15 +307,21 @@ export default {
     },
     styledTransactions() {
       return this.transactions.map((t) => {
+        /**
+         * @property gas_used
+         * @property gas_price
+         * @property tokenTransfers
+         */
         const symbol = TokenSymbolByContract[t.to_address_hash.hex] || TokenSymbols.WQT;
         const amount = t.tokenTransfers?.length ? t.tokenTransfers[0]?.amount : t.value;
+        const txFee = t.transaction_fee || new BigNumber(t.gas_price).multipliedBy(t.gas_used).toString();
         return {
           tx_hash: t.hash,
           block: t.block_number,
           timestamp: this.$moment(t.block.timestamp).format('lll'),
           status: !!t.status,
           value: `${getStyledAmount(amount, false, this.balance[symbol].decimals || 18)} ${symbol}`,
-          transaction_fee: t.transaction_fee || new BigNumber(t.gas_price).multipliedBy(t.gas_used).toString(),
+          transaction_fee: `${getStyledAmount(txFee, false, this.balance[TokenSymbols.WQT].decimals || 18)} ${TokenSymbols.WQT}`,
           from_address: t.from_address_hash.hex,
           to_address: t.to_address_hash.hex,
         };
