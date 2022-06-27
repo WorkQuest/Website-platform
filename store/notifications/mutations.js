@@ -8,6 +8,7 @@ export default {
   setNotifications(state, { notifications, count, needPush }) {
     state.notifications.list = needPush ? state.notifications.list.concat(notifications) : notifications;
     state.notifications.count = count;
+    state.notifications.backEndCounter = count;
     state.counterNotificationsInLastPage = state.notifications.list.length;
   },
   setCounterNotifications(state, number) {
@@ -30,14 +31,12 @@ export default {
     this.commit('notifications/setUnreadNotifsCount', 1);
   },
   addLocalNotification(state, notification) {
-    if (state.counterNotificationsInLastPage < state.limitInNotificationPage) {
+    if (state.notifications.list.length < state.limitInNotificationPage && state.counterNotificationsInLastPage < state.limitInNotificationPage) {
       state.notifications.list.push(notification);
       state.counterNotificationsInLastPage += 1;
-    }
-    if (state.notifications.count < 2) {
-      state.reducedNotifications.push(notification);
-      state.reducedNotifications.length = state.reducedNotifications.length === 1 ? 1 : 2;
-    }
+    } else state.queueNotificationLastPage.push(notification);
+    state.reducedNotifications.push(notification);
+    state.reducedNotifications.length = state.reducedNotifications.length === 1 ? 1 : 2;
     this.commit('notifications/setUnreadNotifsCount', 1);
   },
   setWaitForUpdateQuest(state, data) {

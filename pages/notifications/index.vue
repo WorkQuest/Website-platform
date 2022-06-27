@@ -141,7 +141,7 @@ export default {
       notificationsList: 'notifications/getNotificationsList',
       notifsCount: 'notifications/getNotificationsCount',
       unreadNotifsCount: 'notifications/getUnreadNotifsCount',
-      localNotificationsLastPage: 'notifications/getLocalNotificationInLastPage',
+      queueNotificationLastPage: 'notifications/getQueueNotificationLastPage',
     }),
     totalPages() {
       return Math.ceil(this.notifsCount / this.filter.limit);
@@ -273,9 +273,13 @@ export default {
     },
     async getNotifications() {
       await this.$store.dispatch('notifications/getNotifications', { params: this.filter });
+      const counterAddedLocalNotifBeforeNewPage = this.filter.limit - (this.notifsCount % this.filter.limit);
       await this.setTotalNotification();
       await this.setLocalNotifications();
       this.notifications = this.notificationsList;
+      if (this.page === this.totalPages && this.totalPages > 1) {
+        this.notifications = [...this.notifications].splice(1, counterAddedLocalNotifBeforeNewPage);
+      }
       this.checkUnseenNotifs();
     },
     goToEvent(path, isNotifCont) {
