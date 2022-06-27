@@ -154,17 +154,23 @@ export default {
     } = this.userData;
     this.profileFilled = !!avatar && !!firstName && !!lastName && !!locationPlaceName && !!description;
     await this.getNotifications();
-    await this.setLocalNotifications();
     this.SetLoader(false);
   },
   methods: {
     checkLocalOrSystemNotif(notification) {
       return notification?.params?.isLocal || !notification?.sender?.id;
     },
+    async setTotalNotification() {
+      // To set the total number of notifications (Pagination)
+      let counterLocalNotifications = 2;
+      if (this.statusKYC === SumSubStatuses.NOT_VERIFIED) counterLocalNotifications += 1;
+      if (this.status2FA === TwoFAStatuses.DISABLED) counterLocalNotifications += 1;
+      if (!this.profileFilled) counterLocalNotifications += 1;
+      await this.$store.dispatch('notifications/setCounterNotifications', this.notifsCount + counterLocalNotifications);
+    },
     async setLocalNotifications() {
       const { $cookies, page, totalPages } = this;
-
-      if (page === totalPages) {
+      if (page === totalPages || this.notificationsList.length < this.filter.limit) {
         await this.$store.dispatch('notifications/createLocalNotification', {
           id: '1',
           action: LocalNotificationAction.GET_REWARD,
@@ -263,15 +269,12 @@ export default {
       this.SetLoader(true);
       this.ScrollToTop();
       await this.getNotifications();
-      await this.setLocalNotifications();
       this.SetLoader(false);
     },
     async getNotifications() {
-      if (this.page === this.totalPages && this.localNotificationsLastPage.length) {
-        this.notifications = this.localNotificationsLastPage;
-        return;
-      }
       await this.$store.dispatch('notifications/getNotifications', { params: this.filter });
+      await this.setTotalNotification();
+      await this.setLocalNotifications();
       this.notifications = this.notificationsList;
       this.checkUnseenNotifs();
     },

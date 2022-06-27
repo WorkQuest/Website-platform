@@ -7,9 +7,10 @@ export default {
   },
   setNotifications(state, { notifications, count, needPush }) {
     state.notifications.list = needPush ? state.notifications.list.concat(notifications) : notifications;
+    state.notifications.count = count;
     state.counterNotificationsInLastPage = state.notifications.list.length;
   },
-  setCounterNotifications({ state }, number) {
+  setCounterNotifications(state, number) {
     state.notifications.count = number;
   },
   removeNotification(state, notificationId) {
@@ -30,11 +31,11 @@ export default {
   },
   addLocalNotification(state, notification) {
     if (state.counterNotificationsInLastPage < state.limitInNotificationPage) {
-      state.localNotificationsInLastPage.push(notification);
+      state.notifications.list.push(notification);
       state.counterNotificationsInLastPage += 1;
-    } else state.notifications.list.push(notification);
+    }
     if (state.notifications.count < 2) {
-      state.reducedNotifications.unshift(notification);
+      state.reducedNotifications.push(notification);
       state.reducedNotifications.length = state.reducedNotifications.length === 1 ? 1 : 2;
     }
     this.commit('notifications/setUnreadNotifsCount', 1);
