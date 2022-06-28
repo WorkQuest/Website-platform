@@ -1,6 +1,6 @@
 import { Path } from '~/utils/enums';
 
-export const IS_PLUG = ['master', 'testnet', 'develop'].includes(process.env.BRANCH);
+export const IS_PLUG = ['master', 'testnet'].includes(process.env.BRANCH);
 
 export const LockedPages = [
   'retirement',
