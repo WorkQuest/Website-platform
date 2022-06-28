@@ -17,7 +17,6 @@
           type="border"
           data-selector="NETWORK"
           :items="networkList"
-          :disabled-indexes="[0]"
           is-icon
           @input="handleSwitchNetwork"
         />
@@ -118,7 +117,7 @@ export default {
     }),
     networkList() {
       return [
-        BuyWQTTokensData.get(Chains.WORKNET),
+        // BuyWQTTokensData.get(Chains.WORKNET),
         BuyWQTTokensData.get(Chains.ETHEREUM),
         BuyWQTTokensData.get(Chains.BINANCE),
         BuyWQTTokensData.get(Chains.POLYGON),
