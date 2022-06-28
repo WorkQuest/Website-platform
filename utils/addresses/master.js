@@ -15,9 +15,9 @@ export default {
   POLYGON_WS_PROVIDER: 'wss://speedy-nodes-nyc.moralis.io/74820919f33fda869d12e3ec/polygon/mainnet/ws',
 
   WQ_EXPLORER: 'https://mainnet-explorer-api.workquest.co/api/v1',
-  WQ_ORACLE_URL: 'https://oracle.workquest.co/api/v1',
-  NOTIFS_URL: 'https://notifications.workquest.co/api/',
-  WS_NOTIFS_URL: 'wss://notifications.workquest.co/api/v1/notifications',
+  WQ_ORACLE_URL: 'https://mainnet-oracle.workquest.co/api/v1',
+  NOTIFS_URL: 'https://mainnet-notification.workquest.co/api/',
+  WS_NOTIFS_URL: 'wss://mainnet-notification.workquest.co/api/v1/notifications',
   WS_CHAT_ACTIONS_URL: 'wss://app.workquest.co/api/v1/notifications/chat',
 
   ETHEREUM_BRIDGE: '0xd65815dA812C6eAEC0186215E43A12D76F5deCBc',
