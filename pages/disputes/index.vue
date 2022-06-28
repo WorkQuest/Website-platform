@@ -16,49 +16,52 @@
             v-for="(item, i) in disputes"
             :key="i"
             :data-selector="`TO-DISPUTES-ROUTE-${i}`"
-            class="page__card"
-            @click="toDisputes(item.id)"
+            class="wrapperCard"
           >
-            <div class="page__card-body">
-              <div
-                v-for="(card, key) in cardData(item)"
-                :key="key"
-                :data-selector="`DISPUTES-${key}`"
-                class="page__text"
-              >
-                {{ card.title }}
-                <span class="page__text_blue">
-                  {{ card.value }}
-                </span>
-              </div>
-              <div class="page__text">
-                {{ $t('disputes.status') }}
-                <span :class="[colorDisputeStatus[item.status]]">
-                  {{ disputeStatus(item.status) }}
-                </span>
-              </div>
-            </div>
-            <div class="page__vl" />
-            <div class="page__card-body">
-              <div class="page__text">
-                {{ $t('disputes.decision') }}
-                <div class="page__decision">
-                  {{ item.decisionDescription ? item.decisionDescription : '-' }}
+            <div
+              class="page__card"
+              @click="toDisputes(item.id)"
+            >
+              <div class="page__card-body">
+                <div
+                  v-for="(card, key) in cardData(item)"
+                  :key="key"
+                  :data-selector="`DISPUTES-${key}`"
+                  class="page__text"
+                >
+                  {{ card.title }}
+                  <span class="page__text_blue">
+                    {{ card.value }}
+                  </span>
+                </div>
+                <div class="page__text">
+                  {{ $t('disputes.status') }}
+                  <span :class="[colorDisputeStatus[item.status]]">
+                    {{ disputeStatus(item.status) }}
+                  </span>
                 </div>
               </div>
-              <div
-                v-if="item.status === $options.DisputeStatues.CLOSED"
-                class="page__review"
-                @click.stop.prevent
-              >
-                <star-rating
-                  :stars-number="5"
-                  :data-selector="`ACTION-BTN-SHOW-REVIEW-MODAL-${item.id}`"
-                  :rating="item.currentUserDisputeReview && item.currentUserDisputeReview.mark"
-                  :is-disabled="item.currentUserDisputeReview && !!item.currentUserDisputeReview.mark"
-                  @input="showReviewModal($event, item.id)"
-                />
+              <div class="page__vl" />
+              <div class="page__card-body">
+                <div class="page__text">
+                  {{ $t('disputes.decision') }}
+                  <div class="page__decision">
+                    {{ item.decisionDescription ? item.decisionDescription : '-' }}
+                  </div>
+                </div>
               </div>
+            </div>
+            <div
+              v-if="item.status === $options.DisputeStatues.CLOSED"
+              class="page__review"
+            >
+              <star-rating
+                :stars-number="5"
+                :data-selector="`ACTION-BTN-SHOW-REVIEW-MODAL-${item.id}`"
+                :rating="item.currentUserDisputeReview && item.currentUserDisputeReview.mark"
+                :is-disabled="item.currentUserDisputeReview && !!item.currentUserDisputeReview.mark"
+                @input="showReviewModal($event, item.id)"
+              />
             </div>
           </div>
         </div>
@@ -294,6 +297,9 @@ export default {
   .pager {
     margin-top: 20px;
   }
+}
+.wrapperCard{
+  position: relative;
 }
 @include _1199 {
   .main {
