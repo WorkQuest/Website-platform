@@ -162,6 +162,7 @@ export const Path = {
   SUMSUB: '/sumsub',
   REPORT: '/report',
   AUCTION: '/auction',
+  BORROW: '/borrow',
 };
 
 export const PathDAO = {
