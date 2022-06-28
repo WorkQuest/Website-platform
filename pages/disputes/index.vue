@@ -229,8 +229,8 @@ export default {
     text-overflow: ellipsis;
     white-space: initial;
     display: -webkit-box;
-    line-clamp: 10;
-    -webkit-line-clamp: 10;
+    line-clamp: 8;
+    -webkit-line-clamp: 8;
     box-orient: vertical;
     -webkit-box-orient: vertical;
     word-break: break-word;
