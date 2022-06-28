@@ -165,7 +165,9 @@
             >
               {{ $t('meta.allTransactions') }}
             </base-btn>
+            <!-- TODO del v-show, this plug for release -->
             <base-btn
+              v-show="!$options.IS_PLUG"
               data-selector="SWITCH-COLLATERAL"
               :mode="getSwitchButtonMode(walletTables.COLLATERAL)"
               @click="selectedWalletTable = walletTables.COLLATERAL"
@@ -196,8 +198,9 @@
               :total-pages="totalPages"
             />
           </div>
+          <!-- TODO del v-if, remove this plug for release -->
           <div
-            v-else
+            v-if="selectedWalletTable === walletTables.COLLATERAL && !$options.IS_PLUG"
             class="wallet__txs"
           >
             <CollateralTable />
@@ -225,10 +228,12 @@ import EmptyData from '~/components/app/info/emptyData';
 import CollateralTable from '~/components/app/pages/wallet/CollateralTable';
 import { error, success } from '~/utils/web3';
 import { BuyWQTTokensData } from '~/utils/сonstants/bridge';
+import { IS_PLUG } from '~/utils/locker-data';
 
 export default {
   name: 'Wallet',
   middleware: 'auth',
+  IS_PLUG,
   components: { EmptyData, CollateralTable },
   TokenSymbols,
   Chains,
