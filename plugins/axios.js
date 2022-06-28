@@ -27,7 +27,7 @@ export default ({
     }
 
     if (isStopRequests) {
-      throw error;
+      throw new Error();
     }
   });
 

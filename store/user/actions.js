@@ -138,12 +138,12 @@ export default {
   },
   async signIn({ commit, dispatch, state }, payload) {
     try {
-      const response = await this.$axios.$post('/v1/auth/login', payload);
+      const { params, isRemember } = payload;
+      const response = await this.$axios.$post('/v1/auth/login', params);
       commit('setTokens', {
         access: response.result.access,
-        refresh: state.isRememberMeChecked ? response.result.refresh : null,
+        refresh: isRemember ? response.result.refresh : null,
       });
-      commit('setRememberMe', false);
       if (response.result.userStatus === 1 && !response.result.totpIsActive) {
         await dispatch('getMainData');
       }
@@ -402,9 +402,6 @@ export default {
       console.log('user/fetchRaiseViewPrice', e);
       return error();
     }
-  },
-  setRememberMe({ commit }, payload) {
-    commit('setRememberMe', payload);
   },
 
   async sendReport(_, payload) {

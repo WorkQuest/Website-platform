@@ -79,7 +79,6 @@
             v-model="remember"
             name="remember"
             :label="$tc('signIn.remember')"
-            @input="$store.dispatch('user/setRememberMe', remember)"
           />
           <div
             class="auth__text auth__text_link"
@@ -388,7 +387,7 @@ export default {
           email,
           password,
         };
-        await this.$store.dispatch('user/signIn', payload);
+        await this.$store.dispatch('user/signIn', { payload });
       }
       if (this.$cookies.get('access')) {
         await this.$store.dispatch('user/resendEmail', { email });
@@ -408,7 +407,10 @@ export default {
         email,
         password,
       };
-      const { ok, result } = await this.$store.dispatch('user/signIn', payload);
+      const { ok, result } = await this.$store.dispatch('user/signIn', {
+        params: payload,
+        isRemember: this.remember,
+      });
       if (ok) {
         this.$cookies.set('userStatus', result.userStatus);
         this.userStatus = result.userStatus;

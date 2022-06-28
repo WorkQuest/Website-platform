@@ -82,7 +82,4 @@ export default {
     state.statisticData = data;
     this.commit('chat/changeUnreadChatsCount', { count: data.chatsStatistic?.unreadCountChats || 0, needAdd: false }, { root: true });
   },
-  setRememberMe(state, payload) {
-    state.isRememberMeChecked = payload;
-  },
 };
