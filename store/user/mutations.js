@@ -32,7 +32,7 @@ export default {
     this.$cookies.set('socialNetwork', payload.social, { path: '/' });
   },
   setUserData(state, data) {
-    state.userData = data;
+    state.userData = { ...state.userData, ...data };
   },
   setAnotherUserData(state, data) {
     state.anotherUserData = data;
