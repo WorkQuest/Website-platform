@@ -225,7 +225,7 @@ export default {
     },
     async getNotifications() {
       await this.$store.dispatch('notifications/getNotifications', { params: this.filter });
-      const numberOfNotifAdded = await this.getCountLocalNotifications(this.notifsCount);
+      const numberOfNotifAdded = await this.getCountLocalNotifications();
       const notifAddedBeforeNewPage = numberOfNotifAdded - (this.filter.limit - (this.notifsCount % this.filter.limit));
       await this.setLocalNotifications(this.notifsCount);
       this.notifications = this.notificationsList;
@@ -420,16 +420,15 @@ export default {
     font-size: 16px;
     color: $blue;
     letter-spacing: 0.03em;
-    word-break: break-word;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: initial;
 
+    display: -webkit-box;
     line-clamp: 3;
     -webkit-line-clamp: 3;
     box-orient: vertical;
     -webkit-box-orient: vertical;
-    transition: .5s;
     &_hov:hover {
         cursor: pointer;
         color: $black300;

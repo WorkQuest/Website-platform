@@ -30,10 +30,9 @@ export default {
   methods: {
     /**
      * The total number of local notifications
-     * @param counterBackendNotifications: number
      * @returns {Promise<number>}
      */
-    async getCountLocalNotifications(counterBackendNotifications = 0) {
+    async getCountLocalNotifications() {
       let counterLocalNotifications = 2; // Starter counter notifications below without any condition
       if (this.statusKYC === SumSubStatuses.NOT_VERIFIED) counterLocalNotifications += 1;
       if (this.status2FA === TwoFAStatuses.DISABLED) counterLocalNotifications += 1;

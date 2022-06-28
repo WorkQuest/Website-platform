@@ -35,7 +35,7 @@ export default {
       state.notifications.list.push(notification);
       state.counterNotificationsInLastPage += 1;
     }
-    state.reducedNotifications.unshift(notification);
+    if (state.notifications.list.length < 2) state.reducedNotifications.unshift(notification);
     state.reducedNotifications.length = state.reducedNotifications.length === 1 ? 1 : 2;
     this.commit('notifications/setUnreadNotifsCount', 1);
   },
