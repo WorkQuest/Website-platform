@@ -23,18 +23,11 @@ export default {
   setTokens(state, payload) {
     state.tokens.access = payload.access;
     state.tokens.refresh = payload.refresh;
-    if (state.isRememberMeChecked || state.tokens.refresh) {
-      this.$cookies.set('access', payload.access, { path: '/' });
-      this.$cookies.set('refresh', payload.refresh, { path: '/' });
-      if (payload.userStatus) {
-        this.$cookies.set('userStatus', payload.userStatus, { path: '/' });
-      }
-      state.isRememberMeChecked = false;
-    } else {
-      this.$cookies.set('access', payload.access, { path: '/' });
-      if (payload.userStatus) {
-        this.$cookies.set('userStatus', payload.userStatus, { path: '/' });
-      }
+
+    this.$cookies.set('access', payload.access, { path: '/' });
+    this.$cookies.set('refresh', payload.refresh, { path: '/' });
+    if (payload.userStatus) {
+      this.$cookies.set('userStatus', payload.userStatus, { path: '/' });
     }
     this.$cookies.set('socialNetwork', payload.social, { path: '/' });
   },

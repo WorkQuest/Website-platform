@@ -48,7 +48,7 @@ export default ({
 
   $axios.onError(async (error) => {
     const originalRequest = error.config;
-    if (app.$cookies.get('refresh')) {
+    if (app.$cookies.get('refresh') || app.$cookies.get('refresh') === null) {
       if ((error.response.status === 401 && originalRequest.url.split('/').pop() === 'refresh-tokens')) {
         isRefreshing = false;
         isStopRequests = true;

@@ -141,8 +141,9 @@ export default {
       const response = await this.$axios.$post('/v1/auth/login', payload);
       commit('setTokens', {
         access: response.result.access,
-        refresh: response.result.refresh,
+        refresh: state.isRememberMeChecked ? response.result.refresh : null,
       });
+      commit('setRememberMe', false);
       if (response.result.userStatus === 1 && !response.result.totpIsActive) {
         await dispatch('getMainData');
       }

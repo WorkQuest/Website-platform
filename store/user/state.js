@@ -122,5 +122,5 @@ export default () => ({
     count: 0,
   },
   reducedNotifications: [],
-  isRememberMeChecked: null,
+  isRememberMeChecked: false,
 });
