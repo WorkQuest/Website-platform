@@ -90,10 +90,14 @@
 import { mapGetters } from 'vuex';
 import AuctionCard from '~/components/app/pages/auction/AuctionCard';
 import { Layout } from '~/utils/enums';
+import { IS_PLUG } from '~/utils/locker-data';
 
 export default {
   name: 'Auction',
   layout({ store }) {
+    // TODO plug for release
+    if (IS_PLUG) return Layout.DEFAULT;
+
     return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
   },
   components: {

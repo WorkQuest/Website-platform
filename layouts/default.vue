@@ -36,7 +36,7 @@ import { Path, UserRole } from '~/utils/enums';
 
 export default {
   name: 'DefaultLayout',
-  middleware: 'auth',
+  middleware: ['auth', 'locker'],
   directives: {
     ClickOutside,
   },

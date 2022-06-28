@@ -161,10 +161,14 @@ import {
 } from '~/utils/enums';
 import { getGasPrice, getWalletAddress } from '~/utils/wallet';
 import { WQRouter } from '~/abi';
+import { IS_PLUG } from '~/utils/locker-data';
 
 export default {
   name: 'Collateral',
   layout({ store }) {
+    // TODO plug for release
+    if (IS_PLUG) return Layout.DEFAULT;
+
     return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
   },
   data() {

@@ -44,12 +44,13 @@
                 class="menu"
               >
                 <div class="menu__items">
-                  <nuxt-link
+                  <!-- TODO plug for release -->
+                  <div
                     v-for="(item, i) in additionalMenuLinks"
                     :key="`item-${item.title}`"
                     :data-selector="`ADDITIONAL-MENU-LINKS-${i}`"
-                    :to="item.path"
                     class="menu__item"
+                    @click="toRoute(item.path)"
                   >
                     <div class="menu__top">
                       <div class="menu__text menu__text_header">
@@ -62,7 +63,27 @@
                         {{ kitcutDescription(item.desc) }}
                       </div>
                     </div>
-                  </nuxt-link>
+                  </div>
+                  <!--                  <nuxt-link-->
+                  <!--                    v-for="(item, i) in additionalMenuLinks"-->
+                  <!--                    :key="`item-${item.title}`"-->
+                  <!--                    :data-selector="`ADDITIONAL-MENU-LINKS-${i}`"-->
+                  <!--                    :to="$options.IS_PLUG ? '' : item.path"-->
+                  <!--                    class="menu__item"-->
+                  <!--                    @click="toRoute(item.path)"-->
+                  <!--                  >-->
+                  <!--                    <div class="menu__top">-->
+                  <!--                      <div class="menu__text menu__text_header">-->
+                  <!--                        {{ item.title }}-->
+                  <!--                      </div>-->
+                  <!--                      <span class="icon icon-chevron_right" />-->
+                  <!--                    </div>-->
+                  <!--                    <div class="menu__bottom">-->
+                  <!--                      <div class="menu__text menu__text_grey">-->
+                  <!--                        {{ kitcutDescription(item.desc) }}-->
+                  <!--                      </div>-->
+                  <!--                    </div>-->
+                  <!--                  </nuxt-link>-->
                 </div>
               </div>
             </transition>
@@ -316,6 +337,7 @@ import moment from 'moment';
 import { images } from '~/utils/images';
 import { UserRole, Path } from '~/utils/enums';
 import { MessageAction } from '~/utils/сonstants/chat';
+import { IS_PLUG, LockedPaths } from '~/utils/locker-data';
 
 export default {
   name: 'Header',
@@ -554,8 +576,17 @@ export default {
       this.closeAnother('mobile');
     },
     toRoute(path) {
+      // TODO plug for release
+      if (IS_PLUG && LockedPaths.includes(path)) {
+        this.ComingSoon();
+        return;
+      }
+
       this.$router.push(path);
-      this.toggleMobileMenu();
+      // TODO plug for release
+      this.isMobileMenu = false;
+      this.isNotFlexContainer = false;
+      // this.toggleMobileMenu()
     },
     toggleUserDD() {
       this.isUserDDOpened = !this.isUserDDOpened;

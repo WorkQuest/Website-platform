@@ -93,7 +93,7 @@ import { Path } from '~/utils/enums';
 
 export default {
   name: 'GuestLayout',
-  middleware: 'guest',
+  middleware: ['guest', 'locker'],
   directives: { ClickOutside },
   data() {
     return {
