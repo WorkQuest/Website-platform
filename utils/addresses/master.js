@@ -9,9 +9,10 @@ export default {
   POLYGON_PROVIDER: 'https://polygon-mainnet.public.blastapi.io',
 
   WQ_WS_PROVIDER: 'wss://mainnet-gate.workquest.co/tendermint-rpc/websocket',
-  ETH_WS_PROVIDER: '',
-  BSC_WS_PROVIDER: '',
-  POLYGON_WS_PROVIDER: '',
+  // TODO need rpc from owner
+  ETH_WS_PROVIDER: 'wss://speedy-nodes-nyc.moralis.io/74820919f33fda869d12e3ec/eth/mainnet/ws',
+  BSC_WS_PROVIDER: 'wss://speedy-nodes-nyc.moralis.io/74820919f33fda869d12e3ec/bsc/mainnet/ws',
+  POLYGON_WS_PROVIDER: 'wss://speedy-nodes-nyc.moralis.io/74820919f33fda869d12e3ec/polygon/mainnet/ws',
 
   WQ_EXPLORER: 'https://mainnet-explorer-api.workquest.co/api/v1',
   WQ_ORACLE_URL: 'https://oracle.workquest.co/api/v1',
