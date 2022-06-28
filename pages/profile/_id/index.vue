@@ -144,7 +144,7 @@
               class="reviews__button button"
             >
               <div
-                v-if="reviewsObject.count > 4"
+                v-if="reviewsObject.count > 2"
                 class="button__more"
                 data-selector="ACTION-BTN-SHOW-ALL-REVIEWS"
                 @click="selectTab('reviews')"
