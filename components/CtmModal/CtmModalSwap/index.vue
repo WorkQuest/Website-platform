@@ -32,7 +32,7 @@
               class="grid__input"
               data-selector="AMOUNT"
               :name="$tc('modals.amountField')"
-              :rules="`required|decimal|decimalPlaces:18|min_value:0.00001|max_value:${currentToken.amount}`"
+              :rules="`required|decimal|decimalPlaces:18|not_enough_funds:${currentToken.amount}|min_value:0.00001|max_value:${currentToken.amount}`"
             >
               <template
                 v-slot:right-absolute
