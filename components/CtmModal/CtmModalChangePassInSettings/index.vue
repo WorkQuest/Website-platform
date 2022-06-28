@@ -141,10 +141,11 @@ export default {
       try {
         const response = await this.$store.dispatch('user/editUserPassword', payload);
         if (response?.ok) {
-          await this.$store.dispatch('user/signIn', {
+          const params = {
             email: this.email,
             password: this.confirmNewPasswordInput,
-          });
+          };
+          await this.$store.dispatch('user/signIn', { params });
           this.ShowModal({
             key: modals.status,
             img: require('assets/img/ui/password_changed.svg'),

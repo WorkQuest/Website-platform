@@ -23,20 +23,11 @@ export default {
   setTokens(state, payload) {
     state.tokens.access = payload.access;
     state.tokens.refresh = payload.refresh;
-    if (state.isRememberMeChecked || state.tokens.refresh) {
-      const expireRefreshTokenInSeconds = JSON.parse(atob(payload.refresh
-        .split('.')[1])).exp - new Date().getTime() / 1000 || 86400 * 30;
-      this.$cookies.set('access', payload.access, { path: '/', maxAge: expireRefreshTokenInSeconds });
-      this.$cookies.set('refresh', payload.refresh, { path: '/', maxAge: expireRefreshTokenInSeconds });
-      if (payload.userStatus) {
-        this.$cookies.set('userStatus', payload.userStatus, { path: '/', maxAge: expireRefreshTokenInSeconds });
-      }
-      state.isRememberMeChecked = false;
-    } else {
-      this.$cookies.set('access', payload.access, { path: '/' });
-      if (payload.userStatus) {
-        this.$cookies.set('userStatus', payload.userStatus, { path: '/' });
-      }
+
+    this.$cookies.set('access', payload.access, { path: '/' });
+    this.$cookies.set('refresh', payload.refresh, { path: '/' });
+    if (payload.userStatus) {
+      this.$cookies.set('userStatus', payload.userStatus, { path: '/' });
     }
     this.$cookies.set('socialNetwork', payload.social, { path: '/' });
   },
@@ -90,8 +81,5 @@ export default {
   setStatisticData(state, data) {
     state.statisticData = data;
     this.commit('chat/changeUnreadChatsCount', { count: data.chatsStatistic?.unreadCountChats || 0, needAdd: false }, { root: true });
-  },
-  setRememberMe(state, payload) {
-    state.isRememberMeChecked = payload;
   },
 };

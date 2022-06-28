@@ -138,10 +138,11 @@ export default {
   },
   async signIn({ commit, dispatch, state }, payload) {
     try {
-      const response = await this.$axios.$post('/v1/auth/login', payload);
+      const { params, isRemember } = payload;
+      const response = await this.$axios.$post('/v1/auth/login', params);
       commit('setTokens', {
         access: response.result.access,
-        refresh: state.isRememberMeChecked ? response.result.refresh : '',
+        refresh: isRemember ? response.result.refresh : null,
       });
       if (response.result.userStatus === 1 && !response.result.totpIsActive) {
         await dispatch('getMainData');
@@ -239,13 +240,12 @@ export default {
     }
   },
   async refreshTokens({ commit }) {
-    // eslint-disable-next-line no-useless-catch
     try {
-      const response = await this.$axios.$post('/v1/auth/refresh-tokens');
-      commit('setTokens', response.result);
-      return response;
+      const res = await this.$axios.$post('/v1/auth/refresh-tokens');
+      commit('setTokens', res.result);
+      return success(res);
     } catch (e) {
-      throw e;
+      return error(e);
     }
   },
   async setCurrentPosition({ commit }, payload) {
@@ -402,9 +402,6 @@ export default {
       console.log('user/fetchRaiseViewPrice', e);
       return error();
     }
-  },
-  setRememberMe({ commit }, payload) {
-    commit('setRememberMe', payload);
   },
 
   async sendReport(_, payload) {
