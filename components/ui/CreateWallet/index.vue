@@ -389,4 +389,11 @@ export default {
     }
   }
 }
+@include _767 {
+  .wallet {
+    &__phrase-input {
+      padding: 0 35px 0 12px;
+    }
+  }
+}
 </style>
