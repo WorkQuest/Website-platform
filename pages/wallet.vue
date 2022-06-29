@@ -317,7 +317,7 @@ export default {
          * @property gas_price
          * @property tokenTransfers
          */
-        const symbol = TokenSymbolByContract[t.to_address_hash.hex] || TokenSymbols.WQT;
+        const symbol = TokenSymbolByContract[t.to_address_hash?.hex] || TokenSymbols.WQT;
         const amount = t.tokenTransfers?.length ? t.tokenTransfers[0]?.amount : t.value;
         const txFee = t.transaction_fee || new BigNumber(t.gas_price).multipliedBy(t.gas_used).toString();
         return {
