@@ -328,7 +328,7 @@ export default {
           value: `${getStyledAmount(amount, false, this.balance[symbol].decimals || 18)} ${symbol}`,
           transaction_fee: `${getStyledAmount(txFee, false, this.balance[TokenSymbols.WQT].decimals || 18)} ${TokenSymbols.WQT}`,
           from_address: t.from_address_hash.hex,
-          to_address: t.to_address_hash.hex,
+          to_address: t.to_address_hash?.hex || '',
         };
       });
     },
