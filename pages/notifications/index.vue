@@ -146,9 +146,6 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    const {
-      avatar, firstName, lastName, locationPlaceName, additionalInfo: { description },
-    } = this.userData;
     await this.getNotifications();
     this.SetLoader(false);
   },

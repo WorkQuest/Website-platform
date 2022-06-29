@@ -39,6 +39,7 @@ export default {
       if (!this.profileFilled) counterLocalNotifications += 1;
       return counterLocalNotifications;
     },
+
     /**
      * Adding the notifications below to the notification list from backend
      * @returns {Promise<void>}
