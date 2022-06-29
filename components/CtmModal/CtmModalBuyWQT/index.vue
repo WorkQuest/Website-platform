@@ -86,11 +86,12 @@
 <script>
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
-import { BlockchainIndex, BuyWQTTokensData, NetworkTokensData } from '~/utils/сonstants/bridge';
+import Web3 from 'web3';
+import { BlockchainIndex, BuyWQTTokensData } from '~/utils/сonstants/bridge';
 import { Chains, TokenSymbols, WalletTokensData } from '~/utils/enums';
 import { WQTBuyCommission } from '~/utils/сonstants/commission';
 import { getStyledAmount, GetWalletProvider, getWalletTransactionCount } from '~/utils/wallet';
-import { fetchContractData, getAccountAddress, getChainIdByChain } from '~/utils/web3';
+import { fetchContractData } from '~/utils/web3';
 import modals from '~/store/modals/modals';
 import { BuyWQT, ERC20 } from '~/abi';
 import { images } from '~/utils/images';
@@ -164,7 +165,19 @@ export default {
         const priceWQT = new BigNumber(this.oraclePrices[this.oracleSymbols.indexOf(TokenSymbols.WQT)]).shiftedBy(-18);
         const decimalAmount = new BigNumber(this.amount);
         const receiveWithCommission = decimalAmount.dividedBy(priceWQT).multipliedBy(1 - WQTBuyCommission).decimalPlaces(18);
-        this.wqtAmount = receiveWithCommission.decimalPlaces(3);
+
+        const value = new BigNumber(receiveWithCommission).shiftedBy(18).toString();
+        const provider = new Web3(this.ENV.WQ_PROVIDER);
+        const [gasPrice, gasEstimate] = await Promise.all([
+          provider.eth.getGasPrice(),
+          provider.eth.estimateGas({
+            from: this.userWalletAddress,
+            to: this.userWalletAddress,
+            value,
+          }),
+        ]);
+        const txFee = new BigNumber(gasPrice).multipliedBy(gasEstimate).shiftedBy(-18).toString();
+        this.wqtAmount = receiveWithCommission.decimalPlaces(3).minus(txFee).toFixed(0);
         this.inProgressWQT = false;
       },
       400);
