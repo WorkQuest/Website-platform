@@ -98,10 +98,9 @@
                 data-selector="SHOW-DEPOSIT-MODAL"
                 mode="outline"
                 class="balance__btn"
-                :disabled="true"
                 @click="showModal({key: 'deposit'})"
               >
-                {{ $t('wallet.receive') }}
+                {{ $t('wallet.deposit') }}
               </base-btn>
               <base-btn
                 data-selector="SHOW-WITHDRAW-MODAL"

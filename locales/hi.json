@@ -1427,11 +1427,11 @@
   },
   "wallet": {
     "frozen": "Frozen balance",
-    "WUSD": "WUSD वॉलेट",
+    "walletAddress": "Wallet address",
     "cryptoWallet": "क्रिप्टो वॉलेट",
     "send": "भेजें",
     "toThisAddress": "इस पते पर",
-    "receive": "प्राप्त करें",
+    "deposit": "Deposit",
     "transfer": "खरीदें / भेजें",
     "addCardProposal": "आसान निकासी के लिए अपना कार्ड जोड़ें",
     "addCard": "कार्ड जोड़ें",
@@ -1441,6 +1441,8 @@
       "sub": "The easiest way to buy $WQT is using $USDT.",
       "networks": "Networks available for purchase: Ethereum, Binance Smart Chain and Polygon. After the purchase, $WQT will automatically deposit to your WorkNet network wallet, minus the transaction fee."
     },
+    "scanQrCodeWallet": "Scan QR code or copy address to receive payment",
+    "walletCopied": "Wallet address copied successfully",
     "collateral": {
       "balance": "Collateral balance",
       "coin": "coin",

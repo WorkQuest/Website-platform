@@ -1427,11 +1427,11 @@
   },
   "wallet": {
     "frozen": "Frozen balance",
-    "WUSD": "WUSD wallet",
+    "walletAddress": "Wallet address",
     "cryptoWallet": "Crypto wallet",
     "send": "Send",
     "toThisAddress": "to this address",
-    "receive": "Receive",
+    "deposit": "Deposit",
     "transfer": "Buy / Send",
     "addCardProposal": "Add bank card for easy withdrawal",
     "addCard": "Add card",
@@ -1441,6 +1441,8 @@
       "sub": "The easiest way to buy $WQT is using $USDT.",
       "networks": "Networks available for purchase: Ethereum, Binance Smart Chain and Polygon. After the purchase, $WQT will automatically deposit to your WorkNet network wallet, minus the transaction fee."
     },
+    "scanQrCodeWallet": "Scan QR code or copy address to receive payment",
+    "walletCopied": "Wallet address copied successfully",
     "collateral": {
       "balance": "Collateral balance",
       "coin": "coin",

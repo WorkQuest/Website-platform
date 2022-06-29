@@ -1427,11 +1427,11 @@
   },
   "wallet": {
     "frozen": "Замороженный баланс",
-    "WUSD": "WUSD wallet",
+    "walletAddress": "Wallet address",
     "cryptoWallet": "Crypto wallet",
     "send": "Отправить",
     "toThisAddress": "на этот адрес",
-    "receive": "Receive",
+    "deposit": "Deposit",
     "transfer": "Buy / Send",
     "addCardProposal": "Добавьте банковскую карту для удобного вывода",
     "addCard": "Добавить карту",
@@ -1441,6 +1441,8 @@
       "sub": "The easiest way to buy $WQT is using $USDT.",
       "networks": "Networks available for purchase: Ethereum, Binance Smart Chain and Polygon. After the purchase, $WQT will automatically deposit to your WorkNet network wallet, minus the transaction fee."
     },
+    "scanQrCodeWallet": "Scan QR code or copy address to receive payment",
+    "walletCopied": "Wallet address copied successfully",
     "collateral": {
       "balance": "Залоговый баланс",
       "coin": "монета",
