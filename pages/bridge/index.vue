@@ -19,6 +19,15 @@
           >
             {{ !isConnected ? $t('mining.connectWallet') : $t('meta.disconnect') }}
           </base-btn>
+          <p
+            v-if="isConnected"
+            class="header__address"
+          >
+            {{ $t('info.yourWallet') }}
+            <span>
+              {{ userAddressShort }}
+            </span>
+          </p>
         </div>
       </div>
 
@@ -212,6 +221,8 @@ export default {
       swapsCount: 'bridge/getSwapsCount',
 
       connections: 'main/notificationsConnectionStatus',
+
+      userAddress: 'user/getUserWalletAddress',
     }),
     tableFields() {
       const cellStyle = {
@@ -262,6 +273,11 @@ export default {
     },
     totalPages() {
       return Math.ceil(this.swapsCount / this.query.limit);
+    },
+    userAddressShort() {
+      const startAddress = this.userAddress.slice(0, 5);
+      const endAddress = this.userAddress.slice(this.userAddress.length - 5);
+      return `${startAddress}...${endAddress}`;
     },
   },
   watch: {
@@ -462,6 +478,19 @@ export default {
     .header {
       &__btn {
         width: 200px;
+      }
+
+      &__address {
+        color: #AAB0B9;
+        margin-top: 10px;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 130%;
+        text-align: right;
+        span {
+          font-weight: 600;
+          color: #F7F8FA;
+        }
       }
     }
 
@@ -702,8 +731,14 @@ export default {
   }
 
   @include _575 {
+    &__container {
+      grid-template-rows: max-content auto;
+    }
     .header {
       flex-direction: column;
+      &__address {
+        text-align: left;
+      }
 
       &__right {
         width: 100%;
