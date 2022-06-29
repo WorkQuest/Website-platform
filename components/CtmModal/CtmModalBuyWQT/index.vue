@@ -166,13 +166,14 @@ export default {
         const decimalAmount = new BigNumber(this.amount);
         const receiveWithCommission = decimalAmount.dividedBy(priceWQT).multipliedBy(1 - WQTBuyCommission).decimalPlaces(18);
 
+        const address = this.convertToHex('wq', this.userWalletAddress);
         const value = new BigNumber(receiveWithCommission).shiftedBy(18).toString();
         const provider = new Web3(this.ENV.WQ_PROVIDER);
         const [gasPrice, gasEstimate] = await Promise.all([
           provider.eth.getGasPrice(),
           provider.eth.estimateGas({
-            from: this.userWalletAddress,
-            to: this.userWalletAddress,
+            from: address,
+            to: address,
             value,
           }),
         ]);
