@@ -4,12 +4,7 @@
       class="cardDispute"
       @click="toDisputes(dispute.id)"
     >
-      <skeleton-block
-        v-if="loading"
-        class="cardDispute__skeleton"
-      />
       <div
-        v-else
         class="cardDispute__left"
       >
         <div
@@ -18,12 +13,20 @@
           :data-selector="`DISPUTES-${key}`"
           class="cardDispute__text"
         >
-          {{ card.title }}
-          <span class="cardDispute__text_blue">
+          {{ loading? '' : card.title }}
+          <skeleton-block v-if="loading" />
+          <span
+            v-else
+            class="cardDispute__text_blue"
+          >
             {{ card.value }}
           </span>
         </div>
-        <div class="cardDispute__text">
+        <skeleton-block v-if="loading" />
+        <div
+          v-else
+          class="cardDispute__text"
+        >
           {{ $t('disputes.status') }}
           <span :class="[colorDisputeStatus[dispute.status]]">
             {{ disputeStatus(dispute.status) }}
@@ -31,15 +34,13 @@
         </div>
       </div>
       <div class="cardDispute__vl" />
-      <skeleton-block
-        v-if="loading"
-        class="cardDispute__skeleton"
-      />
-      <div
-        v-else
-        class="cardDispute__right"
-      >
-        <div class="cardDispute__text">
+
+      <div class="cardDispute__right">
+        <skeleton-block v-if="loading" />
+        <div
+          v-else
+          class="cardDispute__text"
+        >
           {{ $t('disputes.decision') }}
           <div class="cardDispute__decision">
             {{ dispute.decisionDescription ? dispute.decisionDescription : '-' }}
