@@ -426,6 +426,7 @@ export default {
     -webkit-line-clamp: 3;
     box-orient: vertical;
     -webkit-box-orient: vertical;
+    transition: .5s;
     &_hov:hover {
         cursor: pointer;
         color: $black300;
