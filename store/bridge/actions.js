@@ -74,7 +74,7 @@ export default {
     }
   },
 
-  async fetchBalance({ commit, dispatch }, {
+  async fetchBalance({ commit, dispatch, getters }, {
     symbol, toChainIndex, isNative, tokenAddress, bridgeAddress,
   }) {
     try {
@@ -82,7 +82,7 @@ export default {
       if (isNative) {
         const balance = await getNativeBalance();
         const nonce = await getTransactionCount();
-        if (!balance) {
+        if (new BigNumber(balance).isEqualTo(0)) {
           commit('setToken', { amount: 0 });
           return success();
         }
@@ -95,7 +95,7 @@ export default {
           balance,
         );
 
-        commit('setToken', { amount: new BigNumber(balance).shiftedBy(symbol === TokenSymbols.USDT ? -6 : -18).minus(+txFee).toNumber() || 0 });
+        commit('setToken', { amount: new BigNumber(balance).shiftedBy(-18).minus(+txFee).toNumber() || 0 });
       } else {
         const [decimal, amount] = await Promise.all([
           fetchContractData('decimals', ERC20, tokenAddress),
