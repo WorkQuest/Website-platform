@@ -15,7 +15,7 @@ export default {
   POLYGON_WS_PROVIDER: 'wss://speedy-nodes-nyc.moralis.io/74820919f33fda869d12e3ec/polygon/mainnet/ws',
 
   WQ_EXPLORER: 'https://mainnet-explorer-api.workquest.co/api/v1',
-  WQ_ORACLE_URL: 'https://dev-oracle.workquest.co/api/v1',
+  WQ_ORACLE_URL: 'https://mainnet-oracle.workquest.co/api/v1',
   NOTIFS_URL: 'https://mainnet-notification.workquest.co/api/',
   WS_NOTIFS_URL: 'wss://mainnet-notification.workquest.co/api/v1/notifications',
   WS_CHAT_ACTIONS_URL: 'wss://app.workquest.co/api/v1/notifications/chat',
