@@ -209,9 +209,11 @@ export default {
     return await getContractFeeData(method, abi, contractAddress, data, recipient, amount);
   },
 
-  async approve({ commit }, { tokenAddress, spenderAddress, amount }) {
+  async approve({ commit }, {
+    tokenAddress, spenderAddress, amount, decimals = 18,
+  }) {
     try {
-      amount = new BigNumber(amount).shiftedBy(18).toFixed(0).toString();
+      amount = new BigNumber(amount).shiftedBy(decimals).toFixed(0).toString();
       return await sendWalletTransaction(
         'approve',
         {
