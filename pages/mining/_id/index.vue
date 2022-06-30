@@ -21,6 +21,15 @@
           {{ !isConnected ? $t('mining.connectWallet') : $t('meta.disconnect') }}
         </base-btn>
       </div>
+      <p
+        v-if="isConnected"
+        class="mining-page__address"
+      >
+        {{ $t('info.yourWallet') }}
+        <span>
+          {{ CutTxn(userAddress, 5, 5) }}
+        </span>
+      </p>
       <div class="mining-page__content">
         <div
           class="info-block__grid"
@@ -282,6 +291,8 @@ export default {
       isShowModal: 'modals/getIsShow',
 
       isAuth: 'user/isAuth',
+
+      userAddress: 'user/getUserWalletAddress',
     }),
     isWrongChain() {
       return this.account?.netId !== +getChainIdByChain(this.chain);
@@ -646,7 +657,7 @@ export default {
     max-width: 1180px;
     grid-row-gap: 50px;
     width: 100%;
-    gap: 20px;
+    gap: 15px;
     padding: 10px;
     box-sizing: border-box;
   }
@@ -846,6 +857,18 @@ export default {
           font-weight: 400;
         }
       }
+    }
+  }
+
+  &__address {
+    color: $black200;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130%;
+    text-align: right;
+    span {
+      font-weight: 600;
+      color: $black0;
     }
   }
 

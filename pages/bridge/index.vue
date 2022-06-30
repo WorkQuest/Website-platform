@@ -25,7 +25,7 @@
           >
             {{ $t('info.yourWallet') }}
             <span>
-              {{ userAddressShort }}
+              {{ CutTxn(userAddress, 5, 5) }}
             </span>
           </p>
         </div>
@@ -274,11 +274,6 @@ export default {
     totalPages() {
       return Math.ceil(this.swapsCount / this.query.limit);
     },
-    userAddressShort() {
-      const startAddress = this.userAddress.slice(0, 5);
-      const endAddress = this.userAddress.slice(this.userAddress.length - 5);
-      return `${startAddress}...${endAddress}`;
-    },
   },
   watch: {
     sourceAddressInd(newIdx, oldIdx) {
@@ -481,7 +476,7 @@ export default {
       }
 
       &__address {
-        color: #AAB0B9;
+        color: $black200;
         margin-top: 10px;
         font-weight: 400;
         font-size: 16px;
@@ -489,7 +484,7 @@ export default {
         text-align: right;
         span {
           font-weight: 600;
-          color: #F7F8FA;
+          color: $black0;
         }
       }
     }
