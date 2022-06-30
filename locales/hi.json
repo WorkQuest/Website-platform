@@ -1299,7 +1299,8 @@
       "walletCopied": "Wallet address copied successfully",
       "uHaveToAddCard": "Please add a bank card to your account",
       "coming": "Coming soon",
-      "addCard": "Add card"
+      "addCard": "Add card",
+      "sharingText": "Hi, here is my wallet address:"
     }
   },
   "ui": {

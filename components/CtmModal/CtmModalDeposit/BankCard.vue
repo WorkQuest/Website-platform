@@ -20,6 +20,7 @@
       <base-btn
         data-selector="CONFIRM"
         :disabled="true"
+        @click="showModal({key: 'addCard', branchText: 'adding' })"
       >
         {{ $t('modals.deposit.coming') }}
       </base-btn>

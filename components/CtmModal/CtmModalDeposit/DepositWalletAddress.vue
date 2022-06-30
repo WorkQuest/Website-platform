@@ -68,6 +68,8 @@ export default {
     showShareModal() {
       this.ShowModal({
         key: modals.sharingQuest,
+        itemId: `${this.$t('modals.deposit.sharingText')} ${this.userWalletAddress}`,
+        mode: 'wallet',
       });
     },
   },

@@ -68,6 +68,7 @@ export default {
       const url = window.location.origin;
       if (this.options.mode === 'quest') return `${url}${Path.QUESTS}/${itemId}`;
       if (this.options.mode === 'profile') return `${url}${Path.PROFILE}/${itemId}`;
+      if (this.options.mode === 'wallet') return `${itemId}`;
       return 'error';
     },
   },
