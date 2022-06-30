@@ -380,7 +380,7 @@ Vue.mixin({
                 tokenAddress,
                 spenderAddress: contractAddress,
                 amount,
-                decimals,
+                decimals: +decimals,
               });
               if (!approveOk) {
                 this.ShowToast('Approve error');
