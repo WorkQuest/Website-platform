@@ -48,30 +48,31 @@ export default ({
 
   $axios.onError(async (error) => {
     const originalRequest = error.config;
-    if (app.$cookies.get('refresh') || app.$cookies.get('refresh') === null) {
-      if ((error.response.status === 401 && originalRequest.url.split('/').pop() === 'refresh-tokens')) {
-        isRefreshing = false;
-        isStopRequests = true;
-        refreshRequests = [];
-        store.commit('user/logOut');
-        redirect(Path.SIGN_IN);
-        throw error;
-      }
 
-      if (error.response.status === 401 && !originalRequest._retry && !isRefreshing) {
-        isRefreshing = true;
-        originalRequest._retry = true;
-        const responseRefresh = await store.dispatch('user/refreshTokens');
-        if (responseRefresh && responseRefresh.ok) {
-          return $axios(originalRequest);
-        }
-        return null;
-      }
+    if ((error.response.status === 401 && originalRequest.url.split('/').pop() === 'refresh-tokens')) {
+      isRefreshing = false;
+      isStopRequests = true;
+      refreshRequests = [];
+      store.commit('user/logOut');
+      redirect(Path.SIGN_IN);
+      throw error;
+    }
 
-      if (isRefreshing) {
-        refreshRequests.push(originalRequest);
+    if (error.response.status === 401 && !originalRequest._retry && !isRefreshing) {
+      isRefreshing = true;
+      originalRequest._retry = true;
+      const responseRefresh = await store.dispatch('user/refreshTokens');
+      if (responseRefresh && responseRefresh.ok) {
+        return $axios(originalRequest);
       }
-    } else if (error.response.data.code === 403000) {
+      return null;
+    }
+
+    if (isRefreshing) {
+      refreshRequests.push(originalRequest);
+    }
+
+    if (error.response.data.code === 403000) {
       await store.dispatch('main/showToast', {
         title: app.i18n.t('toasts.error'),
         text: error.response.data.msg,
