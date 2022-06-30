@@ -49,6 +49,16 @@ export default ({
   $axios.onError(async (error) => {
     const originalRequest = error.config;
 
+    // if request was not valid
+    if (!originalRequest) {
+      isRefreshing = false;
+      isStopRequests = true;
+      refreshRequests = [];
+      store.commit('user/logOut');
+      redirect(Path.SIGN_IN);
+      throw error;
+    }
+
     if (error.response.status === 401) {
       if (originalRequest.url.split('/').pop() === 'refresh-tokens') {
         isRefreshing = false;
@@ -68,10 +78,10 @@ export default ({
         }
         return null;
       }
-    }
 
-    if (isRefreshing) {
-      refreshRequests.push(originalRequest);
+      if (isRefreshing) {
+        refreshRequests.push(originalRequest);
+      }
     }
 
     if (error.response.data.code === 403000) {
