@@ -255,7 +255,7 @@ export default {
       if (this.isEmptyUserData) return [];
       const {
         email, tempPhone, phone, locationPlaceName, additionalInfo: {
-          secondMobileNumber, company, website,
+          secondMobileNumber, company, website, CEO,
         },
       } = this.userData;
       const userData = [];
@@ -292,6 +292,12 @@ export default {
         userData.push({
           name: company,
           icon: 'icon-Case',
+        });
+      }
+      if (CEO) {
+        userData.push({
+          name: CEO,
+          icon: 'icon-id_card',
         });
       }
       if (website) {
