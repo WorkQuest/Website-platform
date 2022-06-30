@@ -49,23 +49,25 @@ export default ({
   $axios.onError(async (error) => {
     const originalRequest = error.config;
 
-    if ((error.response.status === 401 && originalRequest.url.split('/').pop() === 'refresh-tokens')) {
-      isRefreshing = false;
-      isStopRequests = true;
-      refreshRequests = [];
-      store.commit('user/logOut');
-      redirect(Path.SIGN_IN);
-      throw error;
-    }
-
-    if (error.response.status === 401 && !originalRequest._retry && !isRefreshing) {
-      isRefreshing = true;
-      originalRequest._retry = true;
-      const responseRefresh = await store.dispatch('user/refreshTokens');
-      if (responseRefresh && responseRefresh.ok) {
-        return $axios(originalRequest);
+    if (error.response.status === 401) {
+      if (originalRequest.url.split('/').pop() === 'refresh-tokens') {
+        isRefreshing = false;
+        isStopRequests = true;
+        refreshRequests = [];
+        store.commit('user/logOut');
+        redirect(Path.SIGN_IN);
+        throw error;
       }
-      return null;
+
+      if (!originalRequest._retry && !isRefreshing) {
+        isRefreshing = true;
+        originalRequest._retry = true;
+        const responseRefresh = await store.dispatch('user/refreshTokens');
+        if (responseRefresh && responseRefresh.ok) {
+          return $axios(originalRequest);
+        }
+        return null;
+      }
     }
 
     if (isRefreshing) {
