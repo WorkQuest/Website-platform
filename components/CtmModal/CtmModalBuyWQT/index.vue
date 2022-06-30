@@ -168,16 +168,23 @@ export default {
         //  TODO: check it, if dont need to convert, del
         const address = this.convertToHex('wq', this.userWalletAddress);
         const value = new BigNumber(receiveWithCommission).shiftedBy(18).toString();
-        const provider = new Web3(this.ENV.WQ_PROVIDER);
-        const [gasPrice, gasEstimate] = await Promise.all([
-          provider.eth.getGasPrice(),
-          provider.eth.estimateGas({
-            from: address,
-            to: address,
-            value,
-          }),
-        ]);
-        const txFee = new BigNumber(gasPrice).multipliedBy(gasEstimate).shiftedBy(-18).toString();
+
+        let txFee;
+        try {
+          const provider = new Web3(this.ENV.WQ_PROVIDER);
+          const [gasPrice, gasEstimate] = await Promise.all([
+            provider.eth.getGasPrice(),
+            provider.eth.estimateGas({
+              from: address,
+              to: address,
+              value,
+            }),
+          ]);
+          txFee = new BigNumber(gasPrice).multipliedBy(gasEstimate).shiftedBy(-18).toString();
+        } catch (e) {
+          txFee = 18; // user doesnt has balance of wqt in worknet
+        }
+
         this.wqtAmount = receiveWithCommission.decimalPlaces(3).minus(txFee).toFixed(0);
         this.inProgressWQT = false;
       },
