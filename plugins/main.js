@@ -343,7 +343,9 @@ Vue.mixin({
         const allowance = await this.$store.dispatch('wallet/getAllowance', {
           tokenAddress,
           spenderAddress: contractAddress,
+          decimals: +decimals,
         });
+
         if (new BigNumber(allowance).isLessThan(amount)) {
           const [approveFee] = await Promise.all([
             this.$store.dispatch('wallet/getContractFeeData', {

@@ -227,10 +227,10 @@ export default {
       return false;
     }
   },
-  async getAllowance({ commit }, { tokenAddress, spenderAddress }) {
+  async getAllowance({ commit }, { tokenAddress, spenderAddress, decimals = 18 }) {
     const res = await fetchContractData('allowance', ERC20, tokenAddress, [getWalletAddress(), spenderAddress], GetWalletProvider());
     if (!res) return false;
-    return new BigNumber(res.toString()).shiftedBy(-18).toString();
+    return new BigNumber(res.toString()).shiftedBy(-decimals).toString();
   },
 
   /** Staking */
