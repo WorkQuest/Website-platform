@@ -96,7 +96,8 @@
       "goToChat": "Kunjungi obrolan",
       "view": "Lihat",
       "add": "Tambahkan",
-      "take": "Take"
+      "take": "Take",
+      "swap": "Swap"
     },
     "placeholders": {
       "default": "",
@@ -1292,6 +1293,13 @@
       "refund": "Successful refund",
       "withdraw": "Successful withdrawal",
       "deposit": "Successful deposit"
+    },
+    "deposit": {
+      "scanQrCodeWallet": "Scan QR code or copy address to receive payment",
+      "walletCopied": "Wallet address copied successfully",
+      "uHaveToAddCard": "Please add a bank card to your account",
+      "coming": "Coming soon",
+      "addCard": "Add card"
     }
   },
   "ui": {
@@ -1441,8 +1449,6 @@
       "sub": "The easiest way to buy $WQT is using $USDT.",
       "networks": "Networks available for purchase: Ethereum, Binance Smart Chain and Polygon. After the purchase, $WQT will automatically deposit to your WorkNet network wallet, minus the transaction fee."
     },
-    "scanQrCodeWallet": "Scan QR code or copy address to receive payment",
-    "walletCopied": "Wallet address copied successfully",
     "collateral": {
       "balance": "Collateral balance",
       "coin": "coin",

@@ -2,11 +2,23 @@
   <div class="wallet">
     <div class="wallet__container">
       <div class="wallet__body">
-        <div class="buy-wqt">
+        <div
+          v-if="!isShowedBuyWqtNotification"
+          class="buy-wqt"
+        >
           <div class="buy-wqt__title">
             {{ $t('wallet.buyWQT.title') }}
           </div>
           <div class="buy-wqt__sub">
+            <button
+              class="buy-wqt__close"
+              @click="closeBuyWqtNotification"
+            >
+              <img
+                src="~assets/img/ui/close.svg"
+                alt="x"
+              >
+            </button>
             <div>
               <div class="buy-wqt__sub_text">
                 {{ $t('wallet.buyWQT.sub') }}
@@ -96,20 +108,10 @@
             <div class="balance__bottom">
               <base-btn
                 data-selector="SHOW-DEPOSIT-MODAL"
-                mode="outline"
                 class="balance__btn"
                 @click="showModal({key: 'deposit'})"
               >
                 {{ $t('wallet.deposit') }}
-              </base-btn>
-              <base-btn
-                data-selector="SHOW-WITHDRAW-MODAL"
-                mode="outline"
-                class="balance__btn"
-                :disabled="true"
-                @click="showModal({key: 'withdraw', branchText: 'withdraw' })"
-              >
-                {{ $t('meta.withdraw') }}
               </base-btn>
               <base-btn
                 data-selector="SHOW-TRANSFER-MODAL"
@@ -117,6 +119,13 @@
                 @click="showTransferModal()"
               >
                 {{ $t('modals.transfer') }}
+              </base-btn>
+              <base-btn
+                data-selector="SHOW-WITHDRAW-MODAL"
+                class="balance__btn"
+                @click="showBuyWQTModal"
+              >
+                {{ $t('meta.btns.swap') }}
               </base-btn>
             </div>
           </div>
@@ -136,7 +145,7 @@
               :disabled="true"
               @click="showModal({key: 'addCard', branchText: 'adding' })"
             >
-              {{ $t('wallet.addCard') }}
+              {{ $t('modals.deposit.coming') }}
             </base-btn>
           </div>
         </div>
@@ -246,6 +255,7 @@ export default {
       tokenSymbolsDd: [],
       isFetchingBalance: false,
       shortWqAddress: '',
+      isShowedBuyWqtNotification: true,
     };
   },
   computed: {
@@ -382,6 +392,9 @@ export default {
 
     await this.$store.dispatch('wallet/setCallbackWS', this.loadData);
     await this.loadData();
+    if (this.selectedToken === TokenSymbols.WQT && this.selectedTokenData.balance <= 0) {
+      this.isShowedBuyWqtNotification = false;
+    }
   },
   async beforeDestroy() {
     await this.$store.dispatch('wallet/connectToProvider', Chains.WORKNET);
@@ -520,6 +533,7 @@ export default {
 <style lang="scss" scoped>
 
 .buy-wqt {
+  position: relative;
   margin-top: 20px;
   border-radius: 6px;
   padding: 20px;
@@ -532,6 +546,11 @@ export default {
   &__sub {
     display: grid;
     grid-template-columns: 80% 1fr;
+  }
+  &__close{
+    position: absolute;
+    top: 20px;
+    right: 20px;
   }
 }
 

@@ -8,7 +8,7 @@
       />
     </div>
     <p class="content__scanQrCode">
-      {{ $t('wallet.scanQrCodeWallet') }}
+      {{ $t('modals.deposit.scanQrCodeWallet') }}
     </p>
     <div class="content__wallet">
       <div class="wallet">
@@ -122,13 +122,14 @@ export default {
       border-radius: 6px;
       margin-left: 10px;
   }
+  &__share:hover &__chain::before {
+    color: $white!important;
+  }
   &__chain:before{
     color: $blue;
     font-size: 25px!important;
   }
-  &__chain:hover::before {
-    color: $white!important;
-  }
+
 }
 .icon {
   &-copy:before {
