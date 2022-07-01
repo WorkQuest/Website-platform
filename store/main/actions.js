@@ -1,18 +1,23 @@
-import loaderModes from '~/store/main/loaderModes';
+import { LoaderModes, LoaderStatusLocales } from '~/utils/loader';
 
 export default {
-  setLoading({ commit }, value) {
-    commit('setLoading', value);
-    commit('setStatusText', '');
-    commit('setLoaderMode', loaderModes.default);
-    commit('setLoaderProgress', 0);
-    commit('setIsLoaderBackgroundHider', false);
+  setLoading({ commit }, payload) {
+    if (typeof payload === 'boolean') {
+      commit('setLoading', payload);
+      commit('setStatusText', null);
+      return;
+    }
+    const {
+      isLoading, statusText, loaderMode, loaderProgress, isHiderBackground,
+    } = payload;
+    commit('setLoading', isLoading);
+    commit('setStatusText', statusText || $nuxt.$t(LoaderStatusLocales.pleaseWaitTx));
+    commit('setLoaderMode', loaderMode || LoaderModes.default);
+    commit('setLoaderProgress', loaderProgress || 0);
+    commit('setIsLoaderBackgroundHider', isHiderBackground);
   },
   setIsLoaderBackgroundHider({ commit }, value) {
     commit('setIsLoaderBackgroundHider', value);
-  },
-  setStatusText({ commit }, value) {
-    commit('setStatusText', value);
   },
   setLoaderMode({ commit }, value) {
     commit('setLoaderMode', value);
