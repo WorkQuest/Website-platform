@@ -4,9 +4,7 @@
       class="cardDispute"
       @click="toDisputes(dispute.id)"
     >
-      <div
-        class="cardDispute__left"
-      >
+      <div class="cardDispute__left">
         <div
           v-for="(card, key) in cardData(dispute)"
           :key="key"
@@ -48,18 +46,15 @@
         </div>
       </div>
     </div>
-    <div
+    <star-rating
       v-if="dispute.status === $options.DisputeStatues.CLOSED && !loading"
       class="cardDispute__review"
-    >
-      <star-rating
-        :stars-number="5"
-        :data-selector="`ACTION-BTN-SHOW-REVIEW-MODAL-${dispute.id}`"
-        :rating="dispute.currentUserDisputeReview && dispute.currentUserDisputeReview.mark"
-        :is-disabled="dispute.currentUserDisputeReview && !!dispute.currentUserDisputeReview.mark"
-        @input="showReviewModal($event, dispute.id)"
-      />
-    </div>
+      :stars-number="5"
+      :data-selector="`ACTION-BTN-SHOW-REVIEW-MODAL-${dispute.id}`"
+      :rating="dispute.currentUserDisputeReview && dispute.currentUserDisputeReview.mark"
+      :is-disabled="dispute.currentUserDisputeReview && !!dispute.currentUserDisputeReview.mark"
+      @input="showReviewModal($event, dispute.id)"
+    />
   </div>
 </template>
 <script>
@@ -177,6 +172,7 @@ export default {
   display: grid;
   grid-template-columns: 60% 1% 39%;
   width: 100%;
+  min-height: 247px;
   transition: .5s;
   &:hover {
     box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.1);
