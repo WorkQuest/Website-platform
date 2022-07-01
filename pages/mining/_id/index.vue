@@ -546,7 +546,13 @@ export default {
     },
 
     async openModalStaking() {
+      const needToFetch = this.isWrongChain;
       if (await this.checkNetwork(this.chain)) {
+        if (needToFetch) {
+          this.SetLoader(true);
+          await this.tokensDataUpdate();
+          this.SetLoader(false);
+        }
         this.ShowModal({
           key: modals.valueSend,
           title: this.$t('modals.titles.stake'),
