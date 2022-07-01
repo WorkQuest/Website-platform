@@ -208,7 +208,8 @@
   "info": {
     "yourMessage": " Ваше сообщение:",
     "showYourMessage": "Показать ваше сообщение",
-    "hideYourMessage": "Скрыть ваше сообщение"
+    "hideYourMessage": "Скрыть ваше сообщение",
+    "yourWallet": "Ваш кошелёк:"
   },
   "messages": {
     "min_percent": "The {_field_} field must be greater than {min}%",

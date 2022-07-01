@@ -19,6 +19,15 @@
           >
             {{ !isConnected ? $t('mining.connectWallet') : $t('meta.disconnect') }}
           </base-btn>
+          <p
+            v-if="isConnected"
+            class="header__address"
+          >
+            {{ $t('info.yourWallet') }}
+            <span>
+              {{ CutTxn(userAddress, 5, 5) }}
+            </span>
+          </p>
         </div>
       </div>
 
@@ -212,6 +221,8 @@ export default {
       swapsCount: 'bridge/getSwapsCount',
 
       connections: 'main/notificationsConnectionStatus',
+
+      userAddress: 'user/getUserWalletAddress',
     }),
     tableFields() {
       const cellStyle = {
@@ -463,6 +474,19 @@ export default {
       &__btn {
         width: 200px;
       }
+
+      &__address {
+        color: $black200;
+        margin-top: 10px;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 130%;
+        text-align: right;
+        span {
+          font-weight: 600;
+          color: $black0;
+        }
+      }
     }
 
     .title {
@@ -702,8 +726,14 @@ export default {
   }
 
   @include _575 {
+    &__container {
+      grid-template-rows: max-content auto;
+    }
     .header {
       flex-direction: column;
+      &__address {
+        text-align: left;
+      }
 
       &__right {
         width: 100%;
