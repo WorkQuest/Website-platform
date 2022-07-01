@@ -4,7 +4,9 @@
     :class="{'loader_hider': isLoaderBackgroundHider}"
   >
     <div class="loader__body">
-      <div class="loader__modal">
+      <div
+        :class="{'loader__modal': loaderStatusText }"
+      >
         <div
           v-if="loaderStatusText"
           class="loader__text"
