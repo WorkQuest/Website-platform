@@ -49,6 +49,8 @@ export default ({
   $axios.onError(async (error) => {
     const originalRequest = error.config;
 
+    console.log(error);
+
     // if request was not valid
     if (!originalRequest) {
       isRefreshing = false;
@@ -73,7 +75,7 @@ export default ({
         isRefreshing = true;
         originalRequest._retry = true;
         const responseRefresh = await store.dispatch('user/refreshTokens');
-        if (responseRefresh && responseRefresh.ok) {
+        if (responseRefresh?.ok) {
           return $axios(originalRequest);
         }
         return null;
@@ -84,12 +86,7 @@ export default ({
       }
     }
 
-    if (error.response.data.code === 403000) {
-      await store.dispatch('main/showToast', {
-        title: app.i18n.t('toasts.error'),
-        text: error.response.data.msg,
-      });
-    } else if (error.response.data.code !== 400010) {
+    if (error.response.data.code === 403000 || error.response.data.code !== 400010) {
       await store.dispatch('main/showToast', {
         title: app.i18n.t('toasts.error'),
         text: error.response.data.msg,
