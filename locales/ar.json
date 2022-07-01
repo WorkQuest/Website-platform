@@ -209,7 +209,8 @@
   "info": {
     "yourMessage": " Your message:",
     "showYourMessage": "عرض رسالتك",
-    "hideYourMessage": "Hide your message"
+    "hideYourMessage": "Hide your message",
+    "yourWallet": "Your wallet:"
   },
   "messages": {
     "min_percent": "The {_field_} field must be greater than {min}%",
@@ -1102,6 +1103,7 @@
     "nothingToClaim": "Nothing to claim",
     "pleaseWait": "Please, wait",
     "pleaseWaitTx": "Please wait while your transaction is being processed.",
+    "waitingForTxExternalApp": "Waiting for transaction in external app.",
     "deletePortfolio": "Are you sure delete portfolio?",
     "addTitle": "Please add title...",
     "addDesc": "Please add description...",

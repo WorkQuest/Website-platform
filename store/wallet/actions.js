@@ -209,9 +209,11 @@ export default {
     return await getContractFeeData(method, abi, contractAddress, data, recipient, amount);
   },
 
-  async approve({ commit }, { tokenAddress, spenderAddress, amount }) {
+  async approve({ commit }, {
+    tokenAddress, spenderAddress, amount, decimals = 18,
+  }) {
     try {
-      amount = new BigNumber(amount).shiftedBy(18).toFixed(0).toString();
+      amount = new BigNumber(amount).shiftedBy(decimals).toFixed(0).toString();
       return await sendWalletTransaction(
         'approve',
         {
@@ -225,10 +227,10 @@ export default {
       return false;
     }
   },
-  async getAllowance({ commit }, { tokenAddress, spenderAddress }) {
+  async getAllowance({ commit }, { tokenAddress, spenderAddress, decimals = 18 }) {
     const res = await fetchContractData('allowance', ERC20, tokenAddress, [getWalletAddress(), spenderAddress], GetWalletProvider());
     if (!res) return false;
-    return new BigNumber(res.toString()).shiftedBy(-18).toString();
+    return new BigNumber(res.toString()).shiftedBy(-decimals).toString();
   },
 
   /** Staking */

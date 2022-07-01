@@ -6,4 +6,5 @@ export default () => ({
   },
   reducedNotifications: [],
   waitForUpdateQuest: null,
+  limitInNotificationPage: 10,
 });

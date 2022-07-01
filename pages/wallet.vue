@@ -441,7 +441,10 @@ export default {
       } else {
         const payload = { address: userWalletAddress, abi: ERC20 };
         await this.$store.dispatch('wallet/fetchWalletData', {
-          method: 'balanceOf', ...payload, token: this.tokenAddresses[this.tokenSymbolsDd.indexOf(selectedToken) - 1], symbol: selectedToken,
+          method: 'balanceOf',
+          ...payload,
+          token: this.tokenAddresses[this.tokenSymbolsDd.indexOf(selectedToken) - 1],
+          symbol: selectedToken,
         });
       }
       this.isFetchingBalance = false;
@@ -462,7 +465,7 @@ export default {
         key: modals.giveTransfer,
         submit: async ({ recipient, amount, selectedToken }) => {
           const {
-            wqAddress, convertToHex, convertToBech32, nativeTokenSymbol,
+            wqAddress, convertToHex, nativeTokenSymbol,
           } = this;
           recipient = convertToHex('wq', recipient);
           const value = new BigNumber(amount).shiftedBy(Number(this.selectedTokenData.decimals)).toString();
@@ -494,7 +497,6 @@ export default {
             },
             submitMethod: async () => {
               this.CloseModal();
-              this.SetLoader(true);
               const action = selectedToken === nativeTokenSymbol ? 'transfer' : 'transferToken';
               const payload = selectedToken === nativeTokenSymbol
                 ? { recipient, value: amount }
@@ -504,7 +506,6 @@ export default {
                   data: [recipient, value],
                 };
               const res = await this.$store.dispatch(`wallet/${action}`, payload);
-              this.SetLoader(false);
               if (res.ok) {
                 await this.ShowModal({ key: 'transactionSend' });
                 await this.loadData();

@@ -19,6 +19,15 @@
           >
             {{ !isConnected ? $t('mining.connectWallet') : $t('meta.disconnect') }}
           </base-btn>
+          <p
+            v-if="isConnected"
+            class="header__address"
+          >
+            {{ $t('info.yourWallet') }}
+            <span>
+              {{ CutTxn(account.address, 5, 5) }}
+            </span>
+          </p>
         </div>
       </div>
 
@@ -181,6 +190,7 @@ import { Chains, Layout } from '~/utils/enums';
 import { BridgeAddresses, SwapAddresses } from '~/utils/сonstants/bridge';
 import { getChainIdByChain } from '~/utils/web3';
 import { images } from '~/utils/images';
+import { LoaderStatusLocales } from '~/utils/loader';
 
 export default {
   name: 'Bridge',
@@ -354,7 +364,7 @@ export default {
       return true;
     },
     async redeemAction({ chain, signData, chainTo }) {
-      this.SetLoader(true);
+      this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
       if (await this.checkNetwork(chain)) {
         const { ok } = await this.redeem({ signData, chainTo });
 
@@ -391,7 +401,7 @@ export default {
                   this.ShowToast(this.$t('meta.disconnect'));
                   return;
                 }
-                this.SetLoader(true);
+                this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
                 this.page = 1;
                 const { ok, result } = await this.swap({
                   amount,
@@ -462,6 +472,19 @@ export default {
     .header {
       &__btn {
         width: 200px;
+      }
+
+      &__address {
+        color: $black200;
+        margin-top: 10px;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 130%;
+        text-align: right;
+        span {
+          font-weight: 600;
+          color: $black0;
+        }
       }
     }
 
@@ -702,8 +725,14 @@ export default {
   }
 
   @include _575 {
+    &__container {
+      grid-template-rows: max-content auto;
+    }
     .header {
       flex-direction: column;
+      &__address {
+        text-align: left;
+      }
 
       &__right {
         width: 100%;

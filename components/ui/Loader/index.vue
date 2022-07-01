@@ -4,42 +4,30 @@
     :class="{'loader_hider': isLoaderBackgroundHider}"
   >
     <div class="loader__body">
-      <div
-        v-if="checkPage()"
-        class="loader__modal"
-      >
-        <div class="loader__text">
-          {{ $t('modals.pleaseWaitTx') }}
+      <div :class="{'loader__modal': loaderStatusText }">
+        <div
+          v-if="loaderStatusText"
+          class="loader__text"
+        >
+          {{ loaderStatusText }}
         </div>
         <div
           class="sk-chase"
           :class="{'sk-chase_small' : isMiniLoader}"
         >
           <div
-            v-for="(item, i) in ['', '', '', '', '', '']"
+            v-for="i of 6"
             :key="i"
             class="sk-chase-dot"
           />
         </div>
-      </div>
-      <div
-        v-else
-        class="sk-chase"
-        :class="{'sk-chase_small' : isMiniLoader}"
-      >
-        <div
-          v-for="(item, i) in ['', '', '', '', '', '']"
-          :key="i"
-          class="sk-chase-dot"
-        />
       </div>
     </div>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import loaderModes from '~/store/main/loaderModes';
-import { Path, TokenSymbols } from '~/utils/enums';
+import { LoaderModes } from '~/utils/loader';
 
 export default {
   props: {
@@ -49,7 +37,7 @@ export default {
     },
   },
   data: () => ({
-    loaderModes,
+    LoaderModes,
   }),
   computed: {
     ...mapGetters({
@@ -58,17 +46,6 @@ export default {
       loaderProgress: 'main/getLoaderProgress',
       isLoaderBackgroundHider: 'main/getIsLoaderBackgroundHider',
     }),
-  },
-  methods: {
-    checkPage() {
-      return [
-        Path.WALLET,
-        Path.BRIDGE,
-        Path.RETIREMENT, `${Path.RETIREMENT}/my`,
-        `${Path.MINING}/:id`,
-        Path.STAKING, `${Path.STAKING}/:id`,
-      ].includes(this.$route.matched[0].path);
-    },
   },
 };
 </script>

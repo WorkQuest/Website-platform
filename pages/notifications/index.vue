@@ -110,25 +110,24 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import {
-  UserRole, Path, SumSubStatuses, TwoFAStatuses,
-} from '~/utils/enums';
+import { UserRole, Path } from '~/utils/enums';
 import modals from '~/store/modals/modals';
-import { LocalNotificationAction, NotificationAction, notificationCommonFilterAction2 } from '~/utils/notifications';
 import { images } from '~/utils/images';
+import localNotifications from '~/plugins/mixins/localNotifications';
 
 export default {
   name: 'Notifications',
   UserRole,
   images,
+  mixins: [localNotifications],
   data() {
     return {
+      notifications: [],
       filter: {
         limit: 10,
         offset: 0,
       },
       page: 1,
-      profileFilled: false,
     };
   },
   computed: {
@@ -137,7 +136,7 @@ export default {
       userData: 'user/getUserData',
       statusKYC: 'user/getStatusKYC',
       status2FA: 'user/getStatus2FA',
-      notifications: 'notifications/getNotificationsList',
+      notificationsList: 'notifications/getNotificationsList',
       notifsCount: 'notifications/getNotificationsCount',
       unreadNotifsCount: 'notifications/getUnreadNotifsCount',
     }),
@@ -147,62 +146,12 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    const {
-      avatar, firstName, lastName, locationPlaceName, additionalInfo: { description },
-    } = this.userData;
-    this.profileFilled = !!avatar && !!firstName && !!lastName && !!locationPlaceName && !!description;
     await this.getNotifications();
-    await this.setLocalNotifications();
     this.SetLoader(false);
   },
   methods: {
     checkLocalOrSystemNotif(notification) {
       return notification?.params?.isLocal || !notification?.sender?.id;
-    },
-    async setLocalNotifications() {
-      const { $cookies, page, totalPages } = this;
-      if (page === totalPages) {
-        await this.$store.dispatch('notifications/createLocalNotification', {
-          id: '1',
-          action: LocalNotificationAction.GET_REWARD,
-          message: this.$t('localNotifications.messages.inviteFriends'),
-          actionBtn: this.$t('localNotifications.btns.inviteFriends'),
-        });
-        await this.$store.dispatch('notifications/createLocalNotification', {
-          id: '2',
-          action: LocalNotificationAction.WIKI,
-          message: this.$t('localNotifications.messages.wiki'),
-          actionBtn: this.$t('localNotifications.btns.wiki'),
-        });
-        if (this.statusKYC === SumSubStatuses.NOT_VERIFIED) {
-          const KYC = $cookies.get(LocalNotificationAction.TWOFA);
-          if (!KYC) this.$cookies.set(LocalNotificationAction.KYC, this.statusKYC !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
-          await this.$store.dispatch('notifications/createLocalNotification', {
-            id: '3',
-            action: LocalNotificationAction.KYC,
-            message: this.$t('localNotifications.messages.kyc'),
-            actionBtn: this.$t('localNotifications.btns.kyc'),
-          });
-        }
-        if (this.status2FA === TwoFAStatuses.DISABLED) {
-          const TWOFA = $cookies.get(LocalNotificationAction.KYC);
-          if (!TWOFA) this.$cookies.set(LocalNotificationAction.TWOFA, this.status2FA !== 0, { maxAge: 60 * 60 * 24 * 7, enabled: true });
-          await this.$store.dispatch('notifications/createLocalNotification', {
-            id: '4',
-            action: LocalNotificationAction.TWOFA,
-            message: this.$t('localNotifications.messages.twoFA'),
-            actionBtn: this.$t('localNotifications.btns.toSettings'),
-          });
-        }
-        if (!this.profileFilled) {
-          await this.$store.dispatch('notifications/createLocalNotification', {
-            id: '5',
-            action: LocalNotificationAction.PROFILE_FILLED,
-            message: this.$t('localNotifications.messages.fillSettingsData'),
-            actionBtn: this.$t('localNotifications.btns.toSettings'),
-          });
-        }
-      }
     },
     actionBtnText(notification) {
       return notification.actionBtn ?? this.$t('meta.btns.view');
@@ -231,7 +180,7 @@ export default {
       const { limit, offset } = this.filter;
       this.CloseModal();
       this.SetLoader(true);
-      await this.$store.dispatch('notifications/removeNotification', {
+      const { ok } = await this.$store.dispatch('notifications/removeNotification', {
         config: {
           params: {
             limit: 1,
@@ -240,6 +189,15 @@ export default {
         },
         notification,
       });
+      if (ok) {
+        await this.getNotifications();
+      } else {
+        await this.$store.dispatch('main/showToast', {
+          title: this.$t('toasts.error'),
+          variant: 'warning',
+          text: '',
+        });
+      }
       this.SetLoader(false);
     },
     checkUnseenNotifs() {
@@ -260,11 +218,17 @@ export default {
       this.SetLoader(true);
       this.ScrollToTop();
       await this.getNotifications();
-      await this.setLocalNotifications();
       this.SetLoader(false);
     },
     async getNotifications() {
       await this.$store.dispatch('notifications/getNotifications', { params: this.filter });
+      const numberOfNotifAdded = await this.getCountLocalNotifications();
+      const notifAddedBeforeNewPage = numberOfNotifAdded - (this.filter.limit - (this.notifsCount % this.filter.limit));
+      await this.setLocalNotifications(this.notifsCount);
+      this.notifications = this.notificationsList;
+      if (notifAddedBeforeNewPage > 0 && this.page === this.totalPages && this.totalPages > 1) {
+        this.notifications = [...this.notifications].splice(1, notifAddedBeforeNewPage);
+      }
       this.checkUnseenNotifs();
     },
     goToEvent(path, isNotifCont) {
@@ -453,11 +417,11 @@ export default {
     font-size: 16px;
     color: $blue;
     letter-spacing: 0.03em;
-
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: initial;
 
+    display: -webkit-box;
     line-clamp: 3;
     -webkit-line-clamp: 3;
     box-orient: vertical;

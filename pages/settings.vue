@@ -401,6 +401,8 @@ export default {
 
       if (this.isEmployer) await this.editEmployerData(payload, addInfo);
       else await this.editWorkerData(payload, addInfo);
+      // TODO del after fixes on back, need to check that all updated info is came
+      await this.$store.dispatch('user/getUserData');
     },
 
     async editEmployerData(payload, addInfo) {

@@ -21,6 +21,15 @@
           {{ !isConnected ? $t('mining.connectWallet') : $t('meta.disconnect') }}
         </base-btn>
       </div>
+      <p
+        v-if="isConnected"
+        class="mining-page__address"
+      >
+        {{ $t('info.yourWallet') }}
+        <span>
+          {{ CutTxn(account.address, 5, 5) }}
+        </span>
+      </p>
       <div class="mining-page__content">
         <div
           class="info-block__grid"
@@ -246,6 +255,7 @@ import {
 import { getChainIdByChain } from '~/utils/web3';
 import { Pool, PoolURL } from '~/utils/сonstants/mining';
 import { images } from '~/utils/images';
+import { LoaderStatusLocales } from '~/utils/loader';
 
 export default {
   name: 'Pool',
@@ -380,12 +390,13 @@ export default {
     async isConnected(status) {
       if (!status) {
         await this.resetPoolData();
+        if (this.isShowModal) this.CloseModal();
         return;
       }
-      if (this.isShowModal && this.isWrongChain) {
-        await this.CloseModal();
-        this.ShowToast(this.$t('modals.incorrectChain'));
-      } else if (await this.checkNetwork(this.chain)) await this.tokensDataUpdate();
+      if (this.isWrongChain) {
+        if (await this.checkNetwork(this.chain) === false) return;
+      }
+      await this.tokensDataUpdate();
     },
     async totalLiquidityUSD(newVal, oldVal) {
       if (this.page === 1 && oldVal) {
@@ -531,7 +542,7 @@ export default {
           key: modals.swapTokens,
           submit: async (amount, decimals) => {
             if (!this.checkChain()) return;
-            this.SetLoader(true);
+            this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
             this.CloseModal();
 
             const { ok } = await this.swapOldTokens({ amount, decimals });
@@ -546,7 +557,13 @@ export default {
     },
 
     async openModalStaking() {
+      const needToFetch = this.isWrongChain;
       if (await this.checkNetwork(this.chain)) {
+        if (needToFetch) {
+          this.SetLoader(true);
+          await this.tokensDataUpdate();
+          this.SetLoader(false);
+        }
         this.ShowModal({
           key: modals.valueSend,
           title: this.$t('modals.titles.stake'),
@@ -555,7 +572,7 @@ export default {
             if (!this.checkChain()) return;
             this.CloseModal();
 
-            this.SetLoader(true);
+            this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
             const { ok } = await this.stakeTokens({
               amount,
               chain: this.chain,
@@ -581,7 +598,7 @@ export default {
             if (!this.checkChain()) return;
             this.CloseModal();
 
-            this.SetLoader(true);
+            this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
             const { ok } = await this.unStakeTokens({
               amount,
               chain: this.chain,
@@ -611,7 +628,7 @@ export default {
         return;
       }
 
-      this.SetLoader(true);
+      this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
       const { ok } = await this.claimTokens({ chain });
       this.SetLoader(false);
 
@@ -646,7 +663,7 @@ export default {
     max-width: 1180px;
     grid-row-gap: 50px;
     width: 100%;
-    gap: 20px;
+    gap: 15px;
     padding: 10px;
     box-sizing: border-box;
   }
@@ -846,6 +863,18 @@ export default {
           font-weight: 400;
         }
       }
+    }
+  }
+
+  &__address {
+    color: $black200;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130%;
+    text-align: right;
+    span {
+      font-weight: 600;
+      color: $black0;
     }
   }
 

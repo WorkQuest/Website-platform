@@ -209,7 +209,8 @@
   "info": {
     "yourMessage": " Ваше сообщение:",
     "showYourMessage": "Показать ваше сообщение",
-    "hideYourMessage": "Скрыть ваше сообщение"
+    "hideYourMessage": "Скрыть ваше сообщение",
+    "yourWallet": "Ваш кошелёк:"
   },
   "messages": {
     "min_percent": "The {_field_} field must be greater than {min}%",
@@ -1102,6 +1103,7 @@
     "nothingToClaim": "Nothing to claim",
     "pleaseWait": "Пожалуйста, подождите",
     "pleaseWaitTx": "Пожалуйста подождите, пока ваша транзакция выполняется",
+    "waitingForTxExternalApp": "Ожидание транзакции во внешнем приложении.",
     "deletePortfolio": "Are you sure delete portfolio?",
     "addTitle": "Please add title...",
     "addDesc": "Please add description...",

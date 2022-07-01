@@ -79,8 +79,13 @@ Vue.mixin({
         ...payload,
       });
     },
-    SetLoader(value) {
-      this.$store.dispatch('main/setLoading', value);
+    /**
+     * Set loader params
+     * @param payload - boolean || { isLoading, statusText, loaderMode, loaderProgress, isHiderBackground }
+     * @constructor
+     */
+    SetLoader(payload) {
+      this.$store.dispatch('main/setLoading', payload);
     },
     CloseModal() {
       this.$store.dispatch('modals/hide');
@@ -343,7 +348,9 @@ Vue.mixin({
         const allowance = await this.$store.dispatch('wallet/getAllowance', {
           tokenAddress,
           spenderAddress: contractAddress,
+          decimals: +decimals,
         });
+
         if (new BigNumber(allowance).isLessThan(amount)) {
           const [approveFee] = await Promise.all([
             this.$store.dispatch('wallet/getContractFeeData', {
@@ -380,6 +387,7 @@ Vue.mixin({
                 tokenAddress,
                 spenderAddress: contractAddress,
                 amount,
+                decimals: +decimals,
               });
               if (!approveOk) {
                 this.ShowToast('Approve error');
