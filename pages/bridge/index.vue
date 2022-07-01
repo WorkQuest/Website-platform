@@ -292,6 +292,9 @@ export default {
       await this.swapsTableData();
     },
   },
+  async mounted() {
+    if (!this.isConnected) this.toggleConnection();
+  },
   async beforeDestroy() {
     this.$store.commit('bridge/resetToken');
     await this.unsubscribe(this.account.address);
