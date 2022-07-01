@@ -1,10 +1,10 @@
-import loaderModes from '~/store/main/loaderModes';
+import { LoaderModes } from '~/utils/loader';
 
 export default () => ({
   isLoading: false,
-  loaderStatusText: 'Loading',
-  loaderMode: loaderModes.default,
-  isLoaderBackgroundHider: true,
+  loaderStatusText: null,
+  loaderMode: LoaderModes.default,
+  isLoaderBackgroundHider: false,
   loaderProgress: 0,
   connections: {
     notifsConnection: false,

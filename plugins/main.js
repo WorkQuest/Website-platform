@@ -79,8 +79,13 @@ Vue.mixin({
         ...payload,
       });
     },
-    SetLoader(value) {
-      this.$store.dispatch('main/setLoading', value);
+    /**
+     * Set loader params
+     * @param payload - boolean || { isLoading, statusText, loaderMode, loaderProgress, isHiderBackground }
+     * @constructor
+     */
+    SetLoader(payload) {
+      this.$store.dispatch('main/setLoading', payload);
     },
     CloseModal() {
       this.$store.dispatch('modals/hide');
