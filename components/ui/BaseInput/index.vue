@@ -360,4 +360,23 @@ export default {
     }
   }
 }
+@include _480 {
+  .ctm-field {
+    &__input {
+      padding: 0 10px;
+      &::placeholder {
+        font-size: 14px;
+      }
+    }
+  }
+}
+@include _350 {
+  .ctm-field {
+    &__input {
+      &::placeholder {
+        font-size: 12px;
+      }
+    }
+  }
+}
 </style>

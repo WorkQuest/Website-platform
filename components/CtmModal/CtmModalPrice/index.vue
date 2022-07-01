@@ -171,4 +171,21 @@ export default {
   }
 }
 
+@include _380 {
+  .input{
+    &__clear {
+      font-size: 18px;
+      top: 6px;
+    }
+  }
+}
+
+@include _350 {
+  .input{
+    &__clear {
+      top: 8px;
+      right: 8px;
+    }
+  }
+}
 </style>
