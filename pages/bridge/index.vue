@@ -354,7 +354,7 @@ export default {
       return true;
     },
     async redeemAction({ chain, signData, chainTo }) {
-      this.SetLoader(true);
+      this.SetLoader({ isLoading: true });
       if (await this.checkNetwork(chain)) {
         const { ok } = await this.redeem({ signData, chainTo });
 
@@ -391,7 +391,7 @@ export default {
                   this.ShowToast(this.$t('meta.disconnect'));
                   return;
                 }
-                this.SetLoader(true);
+                this.SetLoader({ isLoading: true });
                 this.page = 1;
                 const { ok, result } = await this.swap({
                   amount,

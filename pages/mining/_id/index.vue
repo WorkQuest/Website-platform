@@ -531,7 +531,7 @@ export default {
           key: modals.swapTokens,
           submit: async (amount, decimals) => {
             if (!this.checkChain()) return;
-            this.SetLoader(true);
+            this.SetLoader({ isLoading: true });
             this.CloseModal();
 
             const { ok } = await this.swapOldTokens({ amount, decimals });
@@ -555,7 +555,7 @@ export default {
             if (!this.checkChain()) return;
             this.CloseModal();
 
-            this.SetLoader(true);
+            this.SetLoader({ isLoading: true });
             const { ok } = await this.stakeTokens({
               amount,
               chain: this.chain,
@@ -581,7 +581,7 @@ export default {
             if (!this.checkChain()) return;
             this.CloseModal();
 
-            this.SetLoader(true);
+            this.SetLoader({ isLoading: true });
             const { ok } = await this.unStakeTokens({
               amount,
               chain: this.chain,
@@ -611,7 +611,7 @@ export default {
         return;
       }
 
-      this.SetLoader(true);
+      this.SetLoader({ isLoading: true });
       const { ok } = await this.claimTokens({ chain });
       this.SetLoader(false);
 

@@ -105,15 +105,13 @@ export default {
         callback, submitMethod, isShowSuccess, isDontOffLoader,
       } = this.options;
       this.CloseModal();
-      this.SetLoader(true);
+      this.SetLoader({ isLoading: true });
       if (submitMethod) {
         const res = await submitMethod();
         if (res?.ok) {
           if (callback) await callback();
           if (isShowSuccess) {
-            await this.$store.dispatch('modals/show', {
-              key: modals.transactionSend,
-            });
+            this.ShowModal({ key: modals.transactionSend });
           }
         }
       }
