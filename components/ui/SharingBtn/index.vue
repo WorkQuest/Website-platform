@@ -39,12 +39,11 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 
 export default {
   name: 'SharingBtn',
   props: {
-    message: {
+    url: {
       type: String,
       default: '',
     },
@@ -55,9 +54,6 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({
-      options: 'modals/getOptions',
-    }),
     socialLinks() {
       return [
         { icon: 'telegram', url: 'https://telegram.me/share/url?url=' },
@@ -77,7 +73,11 @@ export default {
         case 'telegram':
         case 'twitter':
         case 'facebook': {
-          return `${item.url}${this.message}`;
+          return `${item.url}${this.url}`;
+        }
+        case 'LinkedIn': {
+          const encodedURI = encodeURIComponent(this.url).replace(/[!'()*]/g, (c) => `%${c.charCodeAt(0).toString(16)}`);
+          return `${item.url}${encodedURI}`;
         }
         default: {
           return '';

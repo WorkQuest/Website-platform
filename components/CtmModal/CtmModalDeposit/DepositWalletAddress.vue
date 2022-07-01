@@ -24,7 +24,7 @@
       </div>
       <sharing-btn
         class="wallet__sharing"
-        :message="`${$t('modals.deposit.sharingText')} ${userWalletAddress}`"
+        :url="urlToShare"
       />
     </div>
     <base-btn
@@ -49,6 +49,9 @@ export default {
     ...mapGetters({
       userWalletAddress: 'user/getUserWalletAddress',
     }),
+    urlToShare() {
+      return `${window.location.origin}${Path.QRCODE}?address=${this.userWalletAddress}`;
+    },
 
   },
   methods: {
@@ -63,7 +66,7 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('assets/img/ui/questAgreed.svg'),
-        title: this.$t('wallet.deposit.walletCopied'),
+        title: this.$t('modals.deposit.walletCopied'),
       });
     },
     showShareModal() {

@@ -2473,5 +2473,9 @@
     "messagePlaceholder": "Добавьте сообщение",
     "sent": "Отправить",
     "complainAbout": "Пожаловаться на"
+  },
+  "qrCodePage": {
+    "pageTitle": "Wallet address",
+    "subText": "Scan the QR code or copy the address to send me a payment"
   }
 }
