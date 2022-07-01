@@ -852,7 +852,7 @@ export default {
             },
             questId,
           });
-
+          this.SetLoader(false);
           if (ok) {
             await this.$store.dispatch('quests/getQuest', questId);
             this.ShowModal({
@@ -861,9 +861,7 @@ export default {
               title: this.$t('modals.titles.requestSend'),
               subtitle: this.$t('modals.waitResponseFromEmployer'),
             });
-          } else this.ShowModalFail({});
-
-          this.SetLoader(false);
+          }
         },
       });
     },
