@@ -48,8 +48,19 @@ export default ({
 
   $axios.onError(async (error) => {
     const originalRequest = error.config;
-    if (app.$cookies.get('refresh') || app.$cookies.get('refresh') === null) {
-      if ((error.response.status === 401 && originalRequest.url.split('/').pop() === 'refresh-tokens')) {
+
+    // if request was not valid
+    if (!originalRequest) {
+      isRefreshing = false;
+      isStopRequests = true;
+      refreshRequests = [];
+      store.commit('user/logOut');
+      redirect(Path.SIGN_IN);
+      throw error;
+    }
+
+    if (error.response.status === 401) {
+      if (originalRequest.url.split('/').pop() === 'refresh-tokens') {
         isRefreshing = false;
         isStopRequests = true;
         refreshRequests = [];
@@ -58,7 +69,7 @@ export default ({
         throw error;
       }
 
-      if (error.response.status === 401 && !originalRequest._retry && !isRefreshing) {
+      if (!originalRequest._retry && !isRefreshing) {
         isRefreshing = true;
         originalRequest._retry = true;
         const responseRefresh = await store.dispatch('user/refreshTokens');
@@ -71,7 +82,9 @@ export default ({
       if (isRefreshing) {
         refreshRequests.push(originalRequest);
       }
-    } else if (error.response.data.code === 403000) {
+    }
+
+    if (error.response.data.code === 403000) {
       await store.dispatch('main/showToast', {
         title: app.i18n.t('toasts.error'),
         text: error.response.data.msg,
