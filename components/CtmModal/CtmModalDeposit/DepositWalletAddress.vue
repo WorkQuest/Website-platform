@@ -22,14 +22,10 @@
           <span class="icon-copy wallet__icon" />
         </button>
       </div>
-      <base-btn
-        class="wallet__share"
-        mode="share"
-        data-selector="SHOW-SHARE-MODAL"
-        @click="showShareModal"
-      >
-        <span class="icon-share_outline wallet__chain" />
-      </base-btn>
+      <SharingBtn
+        class="wallet__sharing"
+        :message="`${$t('modals.deposit.sharingText')} ${userWalletAddress}`"
+      />
     </div>
     <base-btn
       data-selector="CONFIRM"
@@ -43,15 +39,20 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { Path } from '~/utils/enums';
+import SharingBtn from '~/components/ui/SharingBtn';
 
 export default {
   name: 'DepositWalletAddress',
+  components: { SharingBtn },
   computed: {
     ...mapGetters({
       userWalletAddress: 'user/getUserWalletAddress',
     }),
+
   },
   methods: {
+
     clipboardErrorHandler(value) {
       this.$store.dispatch('main/showToast', {
         title: 'Copy error',
@@ -118,18 +119,8 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  &__share{
-      width: 46px!important;
-      height: 46px!important;
-      border-radius: 6px;
-      margin-left: 10px;
-  }
-  &__share:hover &__chain::before {
-    color: $white!important;
-  }
-  &__chain:before{
-    color: $blue;
-    font-size: 25px!important;
+  &__sharing{
+    margin-left: 10px;
   }
 
 }
