@@ -1099,6 +1099,7 @@
     "nothingToClaim": "Nothing to claim",
     "pleaseWait": "Пожалуйста, подождите",
     "pleaseWaitTx": "Пожалуйста подождите, пока ваша транзакция выполняется",
+    "waitingForTxExternalApp": "Ожидание транзакции во внешнем приложении.",
     "deletePortfolio": "Are you sure delete portfolio?",
     "addTitle": "Please add title...",
     "addDesc": "Please add description...",

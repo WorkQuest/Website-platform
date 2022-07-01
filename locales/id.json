@@ -1099,6 +1099,7 @@
     "nothingToClaim": "Nothing to claim",
     "pleaseWait": "Please, wait",
     "pleaseWaitTx": "Please wait while your transaction is being processed.",
+    "waitingForTxExternalApp": "Waiting for transaction in external app.",
     "deletePortfolio": "Are you sure delete portfolio?",
     "addTitle": "Please add title...",
     "addDesc": "Please add description...",

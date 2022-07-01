@@ -181,6 +181,7 @@ import { Chains, Layout } from '~/utils/enums';
 import { BridgeAddresses, SwapAddresses } from '~/utils/сonstants/bridge';
 import { getChainIdByChain } from '~/utils/web3';
 import { images } from '~/utils/images';
+import { LoaderStatusLocales } from '~/utils/loader';
 
 export default {
   name: 'Bridge',
@@ -354,7 +355,7 @@ export default {
       return true;
     },
     async redeemAction({ chain, signData, chainTo }) {
-      this.SetLoader({ isLoading: true });
+      this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
       if (await this.checkNetwork(chain)) {
         const { ok } = await this.redeem({ signData, chainTo });
 
@@ -391,7 +392,7 @@ export default {
                   this.ShowToast(this.$t('meta.disconnect'));
                   return;
                 }
-                this.SetLoader({ isLoading: true });
+                this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
                 this.page = 1;
                 const { ok, result } = await this.swap({
                   amount,

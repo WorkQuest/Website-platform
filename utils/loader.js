@@ -4,5 +4,7 @@ export const LoaderModes = {
 };
 
 export const LoaderStatusLocales = {
+  pleaseWait: 'modals.pleaseWait',
   pleaseWaitTx: 'modals.pleaseWaitTx',
+  waitingForTxExternalApp: 'modals.waitingForTxExternalApp',
 };

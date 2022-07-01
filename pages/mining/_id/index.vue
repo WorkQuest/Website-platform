@@ -246,6 +246,7 @@ import {
 import { getChainIdByChain } from '~/utils/web3';
 import { Pool, PoolURL } from '~/utils/сonstants/mining';
 import { images } from '~/utils/images';
+import { LoaderStatusLocales } from '~/utils/loader';
 
 export default {
   name: 'Pool',
@@ -531,7 +532,7 @@ export default {
           key: modals.swapTokens,
           submit: async (amount, decimals) => {
             if (!this.checkChain()) return;
-            this.SetLoader({ isLoading: true });
+            this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
             this.CloseModal();
 
             const { ok } = await this.swapOldTokens({ amount, decimals });
@@ -555,7 +556,7 @@ export default {
             if (!this.checkChain()) return;
             this.CloseModal();
 
-            this.SetLoader({ isLoading: true });
+            this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
             const { ok } = await this.stakeTokens({
               amount,
               chain: this.chain,
@@ -581,7 +582,7 @@ export default {
             if (!this.checkChain()) return;
             this.CloseModal();
 
-            this.SetLoader({ isLoading: true });
+            this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
             const { ok } = await this.unStakeTokens({
               amount,
               chain: this.chain,
@@ -611,7 +612,7 @@ export default {
         return;
       }
 
-      this.SetLoader({ isLoading: true });
+      this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
       const { ok } = await this.claimTokens({ chain });
       this.SetLoader(false);
 
