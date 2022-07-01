@@ -11,7 +11,7 @@ export default {
       isLoading, statusText, loaderMode, loaderProgress, isHiderBackground,
     } = payload;
     commit('setLoading', isLoading);
-    commit('setStatusText', statusText || $nuxt.$t(LoaderStatusLocales.pleaseWaitTx));
+    commit('setStatusText', $nuxt.$t(statusText) || $nuxt.$t(LoaderStatusLocales.pleaseWaitTx));
     commit('setLoaderMode', loaderMode || LoaderModes.default);
     commit('setLoaderProgress', loaderProgress || 0);
     commit('setIsLoaderBackgroundHider', isHiderBackground);
