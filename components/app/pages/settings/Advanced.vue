@@ -140,14 +140,14 @@ export default {
       id: item.key,
       value: item.value,
       local: i === 0 ? 'settings.allUsers' : `quests.rating.${item.key}`,
-      name: 'restrictionRankingStatus',
+      name: 'visibilityUser',
     }));
     this.checkBoxButtons.visibilityUser = RatingFilter.map((item, i) => ({
       title: this.$t(`settings.${this.userRole === UserRole.EMPLOYER ? 'whoAppearsInMyListEmployees' : 'whoAppearsInMyListEmployers'}`),
       id: item.key,
       value: item.value,
       local: i === 0 ? 'settings.allUsers' : `quests.rating.${item.key}`,
-      name: 'visibilityUser',
+      name: 'restrictionRankingStatus',
     }));
   },
   created() {
@@ -178,6 +178,10 @@ export default {
       const isHas = this.checkboxBlocks[checkBoxBlockName].includes(value);
       const isAllStatuses = value === RatingStatus.AllStatuses;
 
+      if (isHas && this.checkboxBlocks[checkBoxBlockName].length === 1) {
+        return;
+      }
+
       if (isHas && isAllStatuses) {
         this.checkboxBlocks[checkBoxBlockName] = [];
       } else if (isHas) {
@@ -191,7 +195,6 @@ export default {
       }
 
       this.$emit('updateVisibility', this.checkboxBlocks);
-      return null;
     },
     isCheckboxChecked(checkBoxBlockName, value) {
       const checkboxes = this.checkboxBlocks[checkBoxBlockName];
