@@ -380,12 +380,13 @@ export default {
     async isConnected(status) {
       if (!status) {
         await this.resetPoolData();
+        if (this.isShowModal) this.CloseModal();
         return;
       }
-      if (this.isShowModal && this.isWrongChain) {
-        await this.CloseModal();
-        this.ShowToast(this.$t('modals.incorrectChain'));
-      } else if (await this.checkNetwork(this.chain)) await this.tokensDataUpdate();
+      if (this.isWrongChain) {
+        if (await this.checkNetwork(this.chain) === false) return;
+      }
+      await this.tokensDataUpdate();
     },
     async totalLiquidityUSD(newVal, oldVal) {
       if (this.page === 1 && oldVal) {
