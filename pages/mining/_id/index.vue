@@ -27,7 +27,7 @@
       >
         {{ $t('info.yourWallet') }}
         <span>
-          {{ CutTxn(userAddress, 5, 5) }}
+          {{ CutTxn(account.address, 5, 5) }}
         </span>
       </p>
       <div class="mining-page__content">
@@ -292,8 +292,6 @@ export default {
       isShowModal: 'modals/getIsShow',
 
       isAuth: 'user/isAuth',
-
-      userAddress: 'user/getUserWalletAddress',
     }),
     isWrongChain() {
       return this.account?.netId !== +getChainIdByChain(this.chain);
@@ -392,12 +390,13 @@ export default {
     async isConnected(status) {
       if (!status) {
         await this.resetPoolData();
+        if (this.isShowModal) this.CloseModal();
         return;
       }
-      if (this.isShowModal && this.isWrongChain) {
-        await this.CloseModal();
-        this.ShowToast(this.$t('modals.incorrectChain'));
-      } else if (await this.checkNetwork(this.chain)) await this.tokensDataUpdate();
+      if (this.isWrongChain) {
+        if (await this.checkNetwork(this.chain) === false) return;
+      }
+      await this.tokensDataUpdate();
     },
     async totalLiquidityUSD(newVal, oldVal) {
       if (this.page === 1 && oldVal) {
@@ -558,7 +557,13 @@ export default {
     },
 
     async openModalStaking() {
+      const needToFetch = this.isWrongChain;
       if (await this.checkNetwork(this.chain)) {
+        if (needToFetch) {
+          this.SetLoader(true);
+          await this.tokensDataUpdate();
+          this.SetLoader(false);
+        }
         this.ShowModal({
           key: modals.valueSend,
           title: this.$t('modals.titles.stake'),
