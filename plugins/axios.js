@@ -49,8 +49,6 @@ export default ({
   $axios.onError(async (error) => {
     const originalRequest = error.config;
 
-    console.log(error);
-
     // if request was not valid
     if (!originalRequest) {
       isRefreshing = false;
