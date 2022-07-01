@@ -27,7 +27,7 @@
       >
         {{ $t('info.yourWallet') }}
         <span>
-          {{ CutTxn(userAddress, 5, 5) }}
+          {{ CutTxn(account.address, 5, 5) }}
         </span>
       </p>
       <div class="mining-page__content">
@@ -292,8 +292,6 @@ export default {
       isShowModal: 'modals/getIsShow',
 
       isAuth: 'user/isAuth',
-
-      userAddress: 'user/getUserWalletAddress',
     }),
     isWrongChain() {
       return this.account?.netId !== +getChainIdByChain(this.chain);

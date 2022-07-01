@@ -25,7 +25,7 @@
           >
             {{ $t('info.yourWallet') }}
             <span>
-              {{ CutTxn(userAddress, 5, 5) }}
+              {{ CutTxn(account.address, 5, 5) }}
             </span>
           </p>
         </div>
@@ -222,8 +222,6 @@ export default {
       swapsCount: 'bridge/getSwapsCount',
 
       connections: 'main/notificationsConnectionStatus',
-
-      userAddress: 'user/getUserWalletAddress',
     }),
     tableFields() {
       const cellStyle = {
