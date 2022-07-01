@@ -24,7 +24,7 @@
                 class="icon-caret_down"
               />
               <span
-                v-show="item.visible"
+                v-show="visible[specIdx]"
                 class="icon-caret_up"
               />
             </div>
@@ -327,9 +327,9 @@ export default {
 }
 
 .icon-caret {
-  &_down {
+  &_down, &_up {
     &::before {
-      color: #0083C7;
+      color: $blue;
     }
   }
 }

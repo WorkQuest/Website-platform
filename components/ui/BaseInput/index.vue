@@ -278,7 +278,7 @@ export default {
     height: 46px;
     border-radius: 6px;
     border: 2px solid transparent;
-    padding: 0 20px;
+    padding: 0 40px 0 10px;
     transition: .3s;
     width: 100%;
     &_error {
@@ -363,7 +363,7 @@ export default {
 @include _480 {
   .ctm-field {
     &__input {
-      padding: 0 10px;
+      padding: 0 40px 0 10px;
       &::placeholder {
         font-size: 14px;
       }

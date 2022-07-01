@@ -742,4 +742,17 @@ export default {
     }
   }
 }
+
+@include _350 {
+  .price {
+    //&__text {
+    //  font-size: 14px;
+    //  color: #353C47;
+    //}
+
+    &__value {
+      font-size: 15px;
+    }
+  }
+}
 </style>

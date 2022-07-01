@@ -153,7 +153,7 @@ export default {
     grid-gap: 10px;
   }
   &__buttons{
-    margin-top: 40px;
+    margin-top: 55px;
     pointer-events: auto;
   }
   &__title{
@@ -171,20 +171,49 @@ export default {
   }
 }
 
-@include _380 {
-  .input{
+@include _480 {
+  .buttons {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 55px;
+    justify-content: space-between;
+    min-height: 100px;
+  }
+
+  .content {
+    &__grid {
+      display: block;
+    }
+  }
+
+  .grid__field {
+    &:nth-child(2) {
+      margin-top: 40px;
+    }
+  }
+
+  .input {
     &__clear {
-      font-size: 18px;
-      top: 6px;
+      padding: 10px 0 0 0;
+    }
+  }
+}
+
+@include _380 {
+  .input {
+    &__clear {
+    }
+  }
+
+  .grid {
+    &__field {
     }
   }
 }
 
 @include _350 {
-  .input{
+  .input {
     &__clear {
-      top: 8px;
-      right: 8px;
     }
   }
 }
