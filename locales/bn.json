@@ -208,7 +208,8 @@
   "info": {
     "yourMessage": " Your message:",
     "showYourMessage": "আপনার বার্তা দেখান",
-    "hideYourMessage": "Hide your message"
+    "hideYourMessage": "Hide your message",
+    "yourWallet": "Your wallet:"
   },
   "messages": {
     "min_percent": "The {_field_} field must be greater than {min}%",
