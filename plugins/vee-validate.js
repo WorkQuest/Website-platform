@@ -169,6 +169,26 @@ extend('min_value', {
   params: ['min'],
 });
 
+extend('max_value_swap', {
+  validate(value, { max }) {
+    return {
+      required: true,
+      valid: new BigNumber(value).isLessThanOrEqualTo(max),
+    };
+  },
+  params: ['max'],
+});
+
+extend('min_value_swap', {
+  validate(value, { min }) {
+    return {
+      required: true,
+      valid: new BigNumber(value).isGreaterThanOrEqualTo(min),
+    };
+  },
+  params: ['min'],
+});
+
 extend('address', {
   validate(value) {
     return {

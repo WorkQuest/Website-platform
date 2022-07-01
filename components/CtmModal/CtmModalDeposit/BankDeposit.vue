@@ -59,10 +59,64 @@
 <script>
 export default {
   name: 'BankDeposit',
-
+  data() {
+    return {
+      amountInput: '',
+      cardNumberInput: '',
+      dateInput: '',
+      cvvInput: '',
+    };
+  },
 };
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.ctm-modal {
+  &__content-field {
+    margin: 15px 0 0 0;
+  }
+  &__equal {
+    margin: 0 0 35px 10px;
+  }
+  &__fake-input {
+    font: inherit;
+    height: 46px;
+    padding: 10px 20px;
+    width: 100%;
+    color: #B1B3B8;
+    background: #FFFFFF;
+    border-radius: 6px;
+    border: 1px solid $black0;
+    margin-bottom: 23px;
+  }
+}
+.grid {
+&__2col {
+   display: grid;
+   grid-template-columns: repeat(2, 1fr);
+   justify-content: space-between;
+   align-items: flex-end;
+   grid-gap: 10px;
+ }
+&__3col {
+   display: grid;
+   grid-template-columns: 6fr 1fr 6fr;
+   justify-content: space-between;
+   align-items: flex-end;
+ }
+}
+.input {
+  &_white {
+    border-radius: 6px;
+    border: 1px solid $black0;
+    padding: 11px 20px 11px 15px;
+    height: 46px;
+    width: 100%;
+    background-color: $white;
+    resize: none;
+    &::placeholder {
+      color: $black800;
+    }
+  }
+}
 </style>

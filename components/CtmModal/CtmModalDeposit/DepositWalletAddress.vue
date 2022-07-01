@@ -22,7 +22,7 @@
           <span class="icon-copy wallet__icon" />
         </button>
       </div>
-      <SharingBtn
+      <sharing-btn
         class="wallet__sharing"
         :message="`${$t('modals.deposit.sharingText')} ${userWalletAddress}`"
       />
@@ -63,7 +63,7 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('assets/img/ui/questAgreed.svg'),
-        title: this.$t('wallet.walletCopied'),
+        title: this.$t('wallet.deposit.walletCopied'),
       });
     },
     showShareModal() {
@@ -98,7 +98,7 @@ export default {
     margin-bottom: 25px;
     align-self: flex-start;
     display: grid;
-    grid-template-columns: 82% 18%;
+    grid-template-columns: 83% 17%;
     width: 100%;
   }
 }
@@ -109,6 +109,7 @@ export default {
   border-radius: 6px;
   gap: 12px;
   justify-content: space-between;
+  align-items: center;
   &__address{
     @include text-simple;
     display: flex;
@@ -120,6 +121,8 @@ export default {
     text-overflow: ellipsis;
   }
   &__sharing{
+    width: 46px;
+    height: 46px;
     margin-left: 10px;
   }
 

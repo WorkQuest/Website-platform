@@ -10,15 +10,6 @@
             {{ $t('wallet.buyWQT.title') }}
           </div>
           <div class="buy-wqt__sub">
-            <button
-              class="buy-wqt__close"
-              @click="closeBuyWqtNotification"
-            >
-              <img
-                src="~assets/img/ui/close.svg"
-                alt="x"
-              >
-            </button>
             <div>
               <div class="buy-wqt__sub_text">
                 {{ $t('wallet.buyWQT.sub') }}
@@ -546,11 +537,6 @@ export default {
   &__sub {
     display: grid;
     grid-template-columns: 80% 1fr;
-  }
-  &__close{
-    position: absolute;
-    top: 20px;
-    right: 20px;
   }
 }
 

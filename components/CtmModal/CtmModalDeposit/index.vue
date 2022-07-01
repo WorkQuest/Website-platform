@@ -1,6 +1,6 @@
 <template>
   <ctm-modal-box
-    class="messageSend"
+    class="walletDeposit"
     :title="$tc('modals.titles.deposit')"
   >
     <div class="ctm-modal__content">
@@ -41,7 +41,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 import DepositWalletAddress from '~/components/CtmModal/CtmModalDeposit/DepositWalletAddress';
 import bankCard from '~/components/CtmModal/CtmModalDeposit/BankCard';
 
@@ -62,24 +61,6 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
-  },
-  methods: {
-    nextStep() {
-      this.step += 1;
-    },
-    // TODO: Зарефакторить!
-    showSuccessCopied() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('assets/img/ui/questAgreed.svg'),
-        title: this.$t('modals.textCopy'),
-      });
-    },
-    showTransactionSendModal() {
-      this.ShowModal({
-        key: modals.transactionSend,
-      });
-    },
   },
 };
 </script>
@@ -112,22 +93,6 @@ export default {
 
 .hide {
   display: none;
-}
-
-.grid {
-  &__2col {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    justify-content: space-between;
-    align-items: flex-end;
-    grid-gap: 10px;
-  }
-  &__3col {
-    display: grid;
-    grid-template-columns: 6fr 1fr 6fr;
-    justify-content: space-between;
-    align-items: flex-end;
-  }
 }
 
 .step {
@@ -171,42 +136,7 @@ export default {
 }
 
 .ctm-modal {
-  &__content-field {
-    margin: 15px 0 0 0;
-  }
-  &__equal {
-    margin: 0 0 35px 10px;
-  }
-  &__fake-input {
-    font: inherit;
-    height: 46px;
-    padding: 10px 20px;
-    width: 100%;
-    color: #B1B3B8;
-    background: #FFFFFF;
-    border-radius: 6px;
-    border: 1px solid $black0;
-    margin-bottom: 23px;
-  }
-}
-
-.ctm-modal {
   @include modalKit;
-}
-
-.input {
-  &_white {
-    border-radius: 6px;
-    border: 1px solid $black0;
-    padding: 11px 20px 11px 15px;
-    height: 46px;
-    width: 100%;
-    background-color: $white;
-    resize: none;
-    &::placeholder {
-      color: $black800;
-    }
-  }
 }
 .btn {
   &__container {
@@ -219,7 +149,7 @@ export default {
   }
 }
 
-.messageSend {
+.walletDeposit {
   max-width: 380px !important;
   &__content {
     display: grid;

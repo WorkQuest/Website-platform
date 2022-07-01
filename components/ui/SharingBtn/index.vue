@@ -2,8 +2,8 @@
   <base-btn
     class="sharingBtn"
     mode="share"
-    data-selector="SHOW-SHARE-MODAL"
-    @click="isShowMenu=!isShowMenu"
+    data-selector="SHOW-SHARE-BUTTON"
+    @click="toggleMenu"
   >
     <span class="icon-share_outline sharingBtn__chain" />
     <div
@@ -15,6 +15,7 @@
         :key="idx"
         class="socials__links"
         :class="`socials__btn-${link.icon}`"
+        :data-selector="`SOCIALS-LINK-BUTTON-${link.icon}`"
         target="_blank"
         rel="noopener noreferrer"
         :href="makeHref(link)"
@@ -22,12 +23,14 @@
         <img
           v-if="link.icon === 'telegram'"
           class="socials__btn-telegram"
+          :data-selector="`SOCIALS-LINK-ICON-${link.icon}`"
           alt=""
           src="~assets/img/icons/telegram.png"
         >
         <span
           v-else
           class="socials__icon"
+          :data-selector="`SOCIALS-LINK-ICON-${link.icon}`"
           :class="`icon-${link.icon}`"
         />
       </a>
@@ -59,14 +62,23 @@ export default {
       return [
         { icon: 'telegram', url: 'https://telegram.me/share/url?url=' },
         { icon: 'twitter', url: 'https://twitter.com/intent/tweet?url=' },
+        { icon: 'facebook', url: 'https://www.facebook.com/sharer/sharer.php?u=' },
+        { icon: 'LinkedIn', url: 'https://www.linkedin.com/sharing/share-offsite/?url=' },
+
       ];
     },
   },
   methods: {
+    toggleMenu() {
+      this.isShowMenu = !this.isShowMenu;
+    },
     makeHref(item) {
       switch (item.icon) {
         case 'telegram':
         case 'twitter':
+        case 'facebook': {
+          return `${item.url}${this.message}`;
+        }
         default: {
           return '';
         }
@@ -79,7 +91,7 @@ export default {
 <style lang="scss" scoped>
 .sharingBtn{
     position: relative;
-    width: 46px;
+    width: 46px !important;
     height: 46px;
     border-radius: 6px;
   &:hover &__chain::before {
