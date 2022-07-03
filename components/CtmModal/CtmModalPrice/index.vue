@@ -198,23 +198,4 @@ export default {
     }
   }
 }
-
-@include _380 {
-  .input {
-    &__clear {
-    }
-  }
-
-  .grid {
-    &__field {
-    }
-  }
-}
-
-@include _350 {
-  .input {
-    &__clear {
-    }
-  }
-}
 </style>

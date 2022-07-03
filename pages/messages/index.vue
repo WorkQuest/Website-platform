@@ -708,7 +708,4 @@ export default {
   }
 }
 
-@include _380 {
-}
-
 </style>
