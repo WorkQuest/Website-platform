@@ -77,7 +77,7 @@
           <div>
             <img
               alt="card"
-              src="~assets/img/ui/creditCard.svg"
+              :src="$options.images.CREDIT_CARD"
               class="content__card"
             >
           </div>
@@ -120,9 +120,11 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { images } from '~/utils/images';
 
 export default {
   name: 'ModalTakeWithdrawal',
+  images,
   data() {
     return {
       walletAddress: '',

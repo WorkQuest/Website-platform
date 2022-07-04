@@ -1,5 +1,6 @@
 <template>
   <base-btn
+    v-click-outside="hideIcons"
     class="sharingBtn"
     mode="share"
     data-selector="SHOW-SHARE-BUTTON"
@@ -39,9 +40,11 @@
 </template>
 
 <script>
+import ClickOutside from 'vue-click-outside';
 
 export default {
   name: 'SharingBtn',
+  directives: { ClickOutside },
   props: {
     url: {
       type: String,
@@ -68,6 +71,9 @@ export default {
     toggleMenu() {
       this.isShowMenu = !this.isShowMenu;
     },
+    hideIcons() {
+      this.isShowMenu = false;
+    },
     makeHref(item) {
       switch (item.icon) {
         case 'telegram':
@@ -91,7 +97,7 @@ export default {
 <style lang="scss" scoped>
 .sharingBtn{
     position: relative;
-    width: 46px !important;
+    width: 46px ;
     height: 46px;
     border-radius: 6px;
   &:hover &__chain::before {
@@ -99,17 +105,20 @@ export default {
   }
   &__chain:before{
     color: $blue;
-    font-size: 25px!important;
+    font-size: 25px;
   }
   &__socials{
     position : absolute;
     display : flex;
     top: -40px;
-    gap: 3px;
+    gap: 10px;
   }
 }
 .socials {
   &__links {
+    display : flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 6px;
     padding: 3px;
     background: $black0;
@@ -134,8 +143,8 @@ export default {
     height: 34px;
   }
   &__btn-telegram img {
-    width: 25px;
     height: 25px;
+    width: 25px;
   }
   &__btn-twitter span {
     color: #24CAFF;
@@ -145,6 +154,13 @@ export default {
   }
   &__btn-LinkedIn span {
     color: $lightblue;
+  }
+}
+@include _480 {
+  .sharingBtn{
+    &__socials{
+      right: -25px;
+    }
   }
 }
 </style>
