@@ -131,9 +131,7 @@ export default {
     margin-top: 20px;
   }
 }
-.wrapperCard{
-  position: relative;
-}
+
 @include _1199 {
   .main {
     &__body {

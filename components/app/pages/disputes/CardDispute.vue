@@ -164,7 +164,9 @@ export default {
     @include main-white;
   }
 }
-
+.wrapperCard{
+  position: relative;
+}
 .cardDispute {
   position:relative;
   background-color: $white;
