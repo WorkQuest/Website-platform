@@ -7,7 +7,7 @@
       <div class="info-grid__block block block_left">
         <div class="block__avatar avatar">
           <skeleton-block
-            v-if="!userData.firstName"
+            v-if="!userData.email"
             is-avatar
             class="avatar__img"
           />
@@ -35,7 +35,7 @@
       <div class="info-grid__block block block_right">
         <div class="block__data">
           <skeleton-block
-            v-if="!userData.firstName"
+            v-if="!userData.email"
             class="block__title"
             style="width: 200px"
           />
@@ -57,7 +57,7 @@
           {{ userData.company }}
         </div>
         <skeleton-block
-          v-if="!userData.firstName"
+          v-if="!userData.email"
           style="width: 100px"
           class="block__description"
         />
