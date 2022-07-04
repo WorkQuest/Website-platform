@@ -108,7 +108,6 @@
               clearable
               show-code-on-list
               required
-              size="sm"
               color="#ccc"
               @update="updateFirstPhone($event)"
             />
@@ -136,7 +135,6 @@
               error-color="#EB5757"
               clearable
               show-code-on-list
-              size="sm"
               @update="updateSecondPhone($event)"
             />
             <span
@@ -712,9 +710,6 @@ export default {
       display: flex;
       flex-direction: column;
       gap: 0;
-    }
-    &__phone-input {
-      margin-bottom: 20px;
     }
   }
 }
