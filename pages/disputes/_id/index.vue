@@ -109,6 +109,7 @@ export default {
         [DisputeStatues.IN_PROGRESS]: 'dispute__status_yellow',
         [DisputeStatues.PENDING_CLOSED]: 'dispute__status_green',
         [DisputeStatues.CLOSED]: 'dispute__status_green',
+        [DisputeStatues.CREATED]: 'dispute__status_darkblue',
       }[this.disputeData.status];
     },
 
@@ -228,6 +229,9 @@ export default {
     }
     &_green {
       color: $green;
+    }
+    &_darkblue {
+      color: $darkblue;
     }
   }
   &__chat-history {

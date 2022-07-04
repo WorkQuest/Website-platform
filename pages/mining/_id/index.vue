@@ -439,6 +439,7 @@ export default {
     await this.fetchChartData(pool);
     await this.fetchSwaps({ pool, params: { limit, offset: 0 } });
     this.SetLoader(false);
+    await this.toggleConnection();
   },
   async beforeDestroy() {
     await this.disconnectWallet();

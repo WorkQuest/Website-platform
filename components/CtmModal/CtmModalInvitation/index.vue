@@ -14,8 +14,7 @@
                 alt="avatar"
               >
               <div class="user-data__name">
-                {{ options.firstName ? options.firstName : "" }}
-                {{ options.lastName ? options.lastName : "" }}
+                {{ UserName(options.firstName, options.lastName) }}
               </div>
               <item-rating
                 class="user-data__status"

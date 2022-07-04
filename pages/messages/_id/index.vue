@@ -245,7 +245,7 @@ export default {
     },
     privateCorrespondentFullName() {
       if (!this.privateCorrespondentMember.user) return '-';
-      return `${this.privateCorrespondentMember.user?.firstName} ${this.privateCorrespondentMember.user?.lastName}`;
+      return this.UserName(this.privateCorrespondentMember.user?.firstName, this.privateCorrespondentMember.user?.lastName);
     },
 
   },
