@@ -164,7 +164,7 @@ export default {
       return success(response);
     } catch (e) {
       console.error('quests/respondOnQuest');
-      return error();
+      return error(e.code, e.msg);
     }
   },
 

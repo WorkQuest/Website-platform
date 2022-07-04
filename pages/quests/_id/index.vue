@@ -845,7 +845,7 @@ export default {
           this.SetLoader(true);
           const questId = this.quest.id;
           const medias = await this.uploadFiles(files);
-          const { ok } = await this.$store.dispatch('quests/respondOnQuest', {
+          const { ok, msg } = await this.$store.dispatch('quests/respondOnQuest', {
             data: {
               message,
               medias,
@@ -860,6 +860,13 @@ export default {
               img: images.MESSAGE,
               title: this.$t('modals.titles.requestSend'),
               subtitle: this.$t('modals.waitResponseFromEmployer'),
+            });
+          } else if (msg.includes('Worker rating does not match employer')) {
+            this.ShowModal({
+              key: modals.status,
+              img: images.ERROR,
+              title: this.$t('toasts.error'),
+              subtitle: msg,
             });
           }
         },
