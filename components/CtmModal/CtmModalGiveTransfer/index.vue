@@ -39,6 +39,7 @@
               data-selector="AMOUNT"
               :placeholder="$t('modals.amount')"
               :rules="`required|decimal|is_not:0|max_value:${maxAmount}|decimalPlaces:${tokenDecimals}`"
+              :name="$tc('modals.amountField')"
               @input="replaceDot"
             >
               <template
