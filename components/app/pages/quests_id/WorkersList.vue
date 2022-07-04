@@ -27,7 +27,7 @@
               class="worker__name"
               @click="toUserProfile(response)"
             >
-              {{ `${response.worker.firstName} ${response.worker.lastName}` }}
+              {{ UserName(response.worker.firstName, response.worker.lastName) }}
             </div>
             <div
               v-if="isInvited && response.status === $options.QuestsResponseStatus.Accepted"

@@ -44,7 +44,7 @@
                 :src="user.avatar && user.avatar.url ? user.avatar.url : $options.images.EMPTY_AVATAR"
               >
               <span class="friends__name">
-                {{ (user.firstName || '') + ' ' + (user.lastName || '') }}
+                {{ UserName(user.firstName, user.lastName) }}
               </span>
             </div>
             <div

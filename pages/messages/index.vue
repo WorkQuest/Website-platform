@@ -416,7 +416,7 @@ export default {
     },
     getFullName(user) {
       if (!user) return '-';
-      if (user.type === UserRoles.USER) return `${user.user?.firstName || ''} ${user.user?.lastName || ''}`;
+      if (user.type === UserRoles.USER) return this.UserName(user.user?.firstName, user.user?.lastName);
       return this.$t('chat.workquestAdmin');
     },
     getUserAvatar(user) {
