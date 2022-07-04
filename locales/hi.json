@@ -930,6 +930,7 @@
     }
   },
   "toasts": {
+    "ratingDoesNotMatch": "Your rating does not match with employer's profile visibility settings",
     "questCantDelete": "You can't delete this quest on this stage!",
     "questCantEdit": "You can't edit this quest on this stage!",
     "questCantRaisingViews": "You can't go to raising views on this stage!",

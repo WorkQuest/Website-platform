@@ -845,14 +845,14 @@ export default {
           this.SetLoader(true);
           const questId = this.quest.id;
           const medias = await this.uploadFiles(files);
-          const { ok } = await this.$store.dispatch('quests/respondOnQuest', {
+          const { ok, msg } = await this.$store.dispatch('quests/respondOnQuest', {
             data: {
               message,
               medias,
             },
             questId,
           });
-
+          this.SetLoader(false);
           if (ok) {
             await this.$store.dispatch('quests/getQuest', questId);
             this.ShowModal({
@@ -861,9 +861,14 @@ export default {
               title: this.$t('modals.titles.requestSend'),
               subtitle: this.$t('modals.waitResponseFromEmployer'),
             });
-          } else this.ShowModalFail({});
-
-          this.SetLoader(false);
+          } else if (msg.includes('Worker rating does not match employer')) {
+            this.ShowModal({
+              key: modals.status,
+              img: images.ERROR,
+              title: this.$t('toasts.error'),
+              subtitle: this.$t('toasts.ratingDoesNotMatch'),
+            });
+          }
         },
       });
     },
