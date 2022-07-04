@@ -742,4 +742,10 @@ export default {
     }
   }
 }
+
+@include _350 {
+  &__value {
+    font-size: 15px;
+  }
+}
 </style>

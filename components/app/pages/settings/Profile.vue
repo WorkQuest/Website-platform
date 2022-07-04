@@ -108,7 +108,7 @@
               clearable
               show-code-on-list
               required
-              size="lg"
+              size="sm"
               color="#ccc"
               @update="updateFirstPhone($event)"
             />
@@ -136,7 +136,7 @@
               error-color="#EB5757"
               clearable
               show-code-on-list
-              size="lg"
+              size="sm"
               @update="updateSecondPhone($event)"
             />
             <span

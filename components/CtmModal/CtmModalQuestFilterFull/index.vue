@@ -24,7 +24,7 @@
                 class="icon-caret_down"
               />
               <span
-                v-show="item.visible"
+                v-show="visible[specIdx]"
                 class="icon-caret_up"
               />
             </div>
@@ -326,6 +326,14 @@ export default {
   }
 }
 
+.icon-caret {
+  &_down, &_up {
+    &::before {
+      color: $blue;
+    }
+  }
+}
+
 @include _1300 {
  .filter {
    &__body {
@@ -345,7 +353,43 @@ export default {
     &__body {
       grid-template-columns: repeat(1, 1fr);
     }
+    &__btns {
+      margin: 20px auto;
+    }
   }
 }
-
+@include _575 {
+  .filter {
+    &__body {
+      display: grid;
+    }
+  }
+}
+@include _380 {
+  .filter {
+    &__items {
+      word-break: break-word;
+      padding: 15px 5px;
+    }
+    &__btns {
+      margin: 10px;
+    }
+  }
+}
+@include _350 {
+  .filter {
+    padding: 5px;
+    &__container {
+      margin: 0;
+    }
+    &__items {
+      word-break: break-word;
+    }
+    &__btns {
+      margin: 0 auto;
+      flex-direction: column;
+      max-width: 288px;
+    }
+  }
+}
 </style>

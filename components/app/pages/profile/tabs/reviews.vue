@@ -306,4 +306,11 @@ export default {
     }
   }
 }
+@include _350 {
+  .reviews-item {
+    &__header {
+      overflow: hidden;
+    }
+  }
+}
 </style>
