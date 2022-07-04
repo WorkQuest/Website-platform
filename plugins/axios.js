@@ -90,6 +90,6 @@ export default ({
         text: error.response.data.msg,
       });
     }
-    throw error.response.data;
+    throw error?.response?.data;
   });
 };
