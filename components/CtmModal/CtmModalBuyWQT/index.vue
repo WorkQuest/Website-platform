@@ -95,9 +95,11 @@ import { fetchContractData } from '~/utils/web3';
 import modals from '~/store/modals/modals';
 import { BuyWQT, ERC20 } from '~/abi';
 import { images } from '~/utils/images';
+import walletOperations from '~/plugins/mixins/walletOperations';
 
 export default {
   name: 'ModalBuyWQT',
+  mixins: [walletOperations],
   data() {
     return {
       selectedToken: 0,

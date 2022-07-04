@@ -72,11 +72,13 @@ import { Path } from '~/utils/enums';
 import { QuestStatuses } from '~/utils/сonstants/quests';
 import modals from '~/store/modals/modals';
 import { images } from '~/utils/images';
+import walletOperations from '~/plugins/mixins/walletOperations';
 
 export default {
   name: 'QuestDD',
   directives: { ClickOutside },
   QuestStatuses,
+  mixins: [walletOperations],
   props: {
     mode: {
       type: String,
