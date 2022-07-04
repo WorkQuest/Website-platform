@@ -4,15 +4,14 @@ export default {
   // SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
   WQ_PROVIDER: 'https://mainnet-gate.workquest.co',
-  ETH_PROVIDER: 'https://eth-mainnet.public.blastapi.io',
-  BSC_PROVIDER: 'https://bscrpc.com',
-  POLYGON_PROVIDER: 'https://polygon-mainnet.public.blastapi.io',
+  ETH_PROVIDER: 'https://speedy-nodes-nyc.moralis.io/a4b1a749a870bbd413acd4f0/eth/mainnet',
+  BSC_PROVIDER: 'https://speedy-nodes-nyc.moralis.io/a4b1a749a870bbd413acd4f0/bsc/mainnet',
+  POLYGON_PROVIDER: 'https://speedy-nodes-nyc.moralis.io/a4b1a749a870bbd413acd4f0/polygon/mainnet',
 
   WQ_WS_PROVIDER: 'wss://mainnet-gate.workquest.co/tendermint-rpc/websocket',
-  // TODO need rpc from owner
-  ETH_WS_PROVIDER: 'wss://speedy-nodes-nyc.moralis.io/74820919f33fda869d12e3ec/eth/mainnet/ws',
-  BSC_WS_PROVIDER: 'wss://speedy-nodes-nyc.moralis.io/74820919f33fda869d12e3ec/bsc/mainnet/ws',
-  POLYGON_WS_PROVIDER: 'wss://speedy-nodes-nyc.moralis.io/74820919f33fda869d12e3ec/polygon/mainnet/ws',
+  ETH_WS_PROVIDER: 'wss://speedy-nodes-nyc.moralis.io/a4b1a749a870bbd413acd4f0/eth/mainnet/ws',
+  BSC_WS_PROVIDER: 'wss://speedy-nodes-nyc.moralis.io/a4b1a749a870bbd413acd4f0/bsc/mainnet/ws',
+  POLYGON_WS_PROVIDER: 'wss://speedy-nodes-nyc.moralis.io/a4b1a749a870bbd413acd4f0/polygon/mainnet/ws',
 
   WQ_EXPLORER: 'https://mainnet-explorer-api.workquest.co/api/v1',
   WQ_ORACLE_URL: 'https://mainnet-oracle.workquest.co/api/v1',
