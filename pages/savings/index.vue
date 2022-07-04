@@ -17,7 +17,7 @@
           <div class="info-block__double">
             <div class="info-block__send-block">
               <base-field
-                v-model="address"
+                v-model="amount"
                 data-selector="ADDRESS"
                 :label="$t('modals.lockedSavings')"
               />
@@ -157,7 +157,9 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import moment from 'moment';
 import modals from '~/store/modals/modals';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'SavingProduct',
@@ -165,12 +167,23 @@ export default {
     return {
       selCardID: -1,
       indexFAQ: [],
+      interestRate: {
+        7: 5.31,
+        14: 5.48,
+        30: 5.66,
+        90: 6,
+        180: 6.5,
+      },
       date: 0,
       windowSize: window.innerWidth,
-      address: '',
+      amount: '',
+      datesNumber: [7, 14, 30, 90, 180],
     };
   },
   computed: {
+    ...mapGetters({
+      walletData: 'savings/getWalletData',
+    }),
     dates() {
       return [
         this.$tc('meta.units.days', this.DeclOfNum(7), { count: 7 }),
@@ -208,30 +221,6 @@ export default {
         },
       ];
     },
-    cards() {
-      return [
-        {
-          text: this.$tc('saving.card', { rate: 4.51, duration: 7 }),
-          sel: false,
-        },
-        {
-          text: this.$t('saving.card', { rate: 4.67, duration: 14 }),
-          sel: false,
-        },
-        {
-          text: this.$t('saving.card', { rate: 4.82, duration: 30 }),
-          sel: false,
-        },
-        {
-          text: this.$t('saving.card', { rate: 5.11, duration: 90 }),
-          sel: false,
-        },
-        {
-          text: this.$t('saving.card', { rate: 5.23, duration: 180 }),
-          sel: false,
-        },
-      ];
-    },
     documents() {
       return [
         {
@@ -255,36 +244,36 @@ export default {
       if (this.windowSize < 575) {
         return [
           {
-            perc: this.$tc('meta.units.percentsCount', 5.31),
+            perc: this.$tc('meta.units.percentsCount', this.interestRate[7]),
             date: this.$tc('meta.units.days', this.DeclOfNum(7), { count: 7 }),
           },
           {
-            perc: this.$tc('meta.units.percentsCount', 5.48),
+            perc: this.$tc('meta.units.percentsCount', this.interestRate[14]),
             date: this.$tc('meta.units.days', this.DeclOfNum(14), { count: 14 }),
           },
           {
-            perc: this.$tc('meta.units.percentsCount', 5.66),
+            perc: this.$tc('meta.units.percentsCount', this.interestRate[30]),
             date: this.$tc('meta.units.days', this.DeclOfNum(30), { count: 30 }),
           },
         ];
       }
       return [
         {
-          perc: this.$tc('meta.units.percentsCount', 5.31),
+          perc: this.$tc('meta.units.percentsCount', this.interestRate[7]),
           date: this.$tc('meta.units.days', this.DeclOfNum(7), { count: 7 }),
         },
         {
           perc: 'line',
         },
         {
-          perc: this.$tc('meta.units.percentsCount', 5.48),
+          perc: this.$tc('meta.units.percentsCount', this.interestRate[14]),
           date: this.$tc('meta.units.days', this.DeclOfNum(14), { count: 14 }),
         },
         {
           perc: 'line',
         },
         {
-          perc: this.$tc('meta.units.percentsCount', 5.66),
+          perc: this.$tc('meta.units.percentsCount', this.interestRate[30]),
           date: this.$tc('meta.units.days', this.DeclOfNum(30), { count: 30 }),
         },
       ];
@@ -293,25 +282,25 @@ export default {
       if (this.windowSize < 575) {
         return [
           {
-            perc: this.$tc('meta.units.percentsCount', 6),
+            perc: this.$tc('meta.units.percentsCount', this.interestRate[90]),
             date: this.$tc('meta.units.days', 90),
           },
           {
-            perc: this.$tc('meta.units.percentsCount', 6.5),
+            perc: this.$tc('meta.units.percentsCount', this.interestRate[180]),
             date: this.$tc('meta.units.days', this.DeclOfNum(180), { count: 180 }),
           },
         ];
       }
       return [
         {
-          perc: this.$tc('meta.units.percentsCount', 6),
+          perc: this.$tc('meta.units.percentsCount', this.interestRate[90]),
           date: this.$tc('meta.units.days', this.DeclOfNum(90), { count: 90 }),
         },
         {
           perc: 'line',
         },
         {
-          perc: this.$tc('meta.units.percentsCount', 6.5),
+          perc: this.$tc('meta.units.percentsCount', this.interestRate[180]),
           date: this.$tc('meta.units.days', this.DeclOfNum(180), { count: 180 }),
         },
       ];
@@ -324,6 +313,10 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    await this.$store.dispatch('savings/getWalletsData');
+    if (this.walletData.amount > 0) {
+      await this.$router.push('savings/my');
+    }
     this.SetLoader(false);
   },
   beforeDestroy() {
@@ -338,34 +331,47 @@ export default {
       }
     },
     openOpenADepositModal() {
-      const receiptData = [
-        {
-          title: this.$t('modals.currencyDetails'),
-          subtitle: this.$t('meta.coins.eth'),
-        },
-        {
-          title: this.$t('modals.depositing'),
-          subtitle: this.$tc('meta.coins.count.ETHCount', 1),
-        },
-        {
-          title: this.$t('modals.generatingDetails'),
-          subtitle: this.$tc('meta.coins.count.WUSDCount', 1000),
-        },
-      ];
-      const dataForStatusModal = {
-        img: require('~/assets/img/ui/transactionSend.svg'),
-        title: this.$t('modals.depositIsOpened'),
-        subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam',
-        path: 'savings/1',
-      };
       this.ShowModal({
         key: modals.confirmDetails,
-        receiptData,
-        dataForStatusModal,
+        receiptData: [
+          {
+            title: this.$t('modals.percentage'),
+            subtitle: this.$tc('meta.units.percentsCount', this.interestRate[this.datesNumber[this.date]]),
+          },
+          {
+            title: this.$t('modals.depositing'),
+            subtitle: this.$tc('meta.coins.count.WUSDCount', this.amount),
+          },
+          {
+            title: this.$t('crediting.dueDate'),
+            subtitle: moment().add(this.datesNumber[this.date], 'days').format('DD.MM.YYYY'),
+          },
+        ],
+        callback: async () => {
+          const res = await this.$store.dispatch('savings/sendMethod', {
+            value: this.amount,
+            data: [this.datesNumber[this.date]],
+            method: 'deposit',
+          });
+          if (res.ok) {
+            this.ShowModal({
+              key: modals.status,
+              img: require('~/assets/img/ui/transactionSend.svg'),
+              title: this.$t('modals.depositIsOpened'),
+              subtitle: '',
+              path: 'savings/my',
+            });
+          } else {
+            this.ShowModal({
+              key: modals.status,
+              img: require('~/assets/img/ui/warning.svg'),
+              title: this.$t('modals.transactionFail'),
+              recipient: '',
+              subtitle: this.$t('modals.errors.error'),
+            });
+          }
+        },
       });
-    },
-    handleClickCard(i) {
-      this.selCardID = this.selCardID === i ? -1 : i;
     },
   },
 };

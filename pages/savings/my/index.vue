@@ -16,7 +16,7 @@
               {{ $t('saving.depositAmount') }}
             </div>
             <div class="info-block__tokens">
-              {{ $tc('meta.coins.count.WUSDCount', "4 562") }}
+              {{ $tc('meta.coins.count.WUSDCount', convertValue) }}
             </div>
           </div>
           <div class="info-block__small_right">
@@ -32,32 +32,20 @@
               {{ $t('pension.timeRemainsUntilTheEndOfThePeriod') }}
             </div>
             <div class="info-block__subtitle_black">
-              {{ $tc('meta.units.days', DeclOfNum(152), {count: 152}) }}
+              {{ convertDate }}
             </div>
           </div>
           <div class="btn-group_exp">
             <base-btn
+              v-for="(item, key) in buttonsData"
+              :key="key"
+              :mode="item.mode"
               class="btn_bl"
-              data-selector="OPEN-WITHDRAW"
-              @click="openModal($options.modals.withdrawAbout)"
+              :disabled="item.disabled"
+              :data-selector="`OPEN-${item.type}`"
+              @click="openModal(item.type)"
             >
-              {{ $t('meta.deposit') }}
-            </base-btn>
-            <base-btn
-              class="btn_bl"
-              mode="outline"
-              data-selector="OPEN-DEPOSIT"
-              @click="openModal($options.modals.openADeposit)"
-            >
-              {{ $t('meta.deposit') }}
-            </base-btn>
-            <base-btn
-              class="btn_bl"
-              mode="outline"
-              data-selector="OPEN-CLAIM"
-              @click="openModal($options.modals.openADeposit)"
-            >
-              {{ $t('modals.claim') }}
+              {{ item.name }}
             </base-btn>
           </div>
         </div>
@@ -116,6 +104,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
+import moment from 'moment';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -222,15 +212,112 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      rewards: 'savings/getRewards',
+      walletData: 'savings/getWalletData',
+      apys: 'savings/getAPY',
     }),
+    buttonsData() {
+      return [
+        {
+          mode: '',
+          type: 'WITHDRAW',
+          disabled: !this.isAfterPeriod,
+          name: this.$t('meta.withdraw'),
+        },
+        {
+          mode: 'outline',
+          type: 'DEPOSIT',
+          disabled: false,
+          name: this.$t('meta.deposit'),
+        },
+        {
+          mode: 'outline',
+          type: 'CLAIM',
+          disabled: !this.isAfterPeriod,
+          name: this.$t('modals.claim'),
+        },
+      ];
+    },
+    convertDate() {
+      return moment.unix(this.walletData.unlockDate).format('DD.MM.YYYY');
+    },
+    convertValue() {
+      return new BigNumber(this.walletData.amount).shiftedBy(-18).toString();
+    },
+    isAfterPeriod() {
+      return moment().isAfter(moment.unix(this.walletData.unlockDate));
+    },
   },
   async mounted() {
     this.SetLoader(true);
+    await Promise.all([
+      this.$store.dispatch('savings/getWalletsData'),
+      this.$store.dispatch('savings/getRewards'),
+      this.$store.dispatch('savings/getAPY'),
+    ]);
     this.SetLoader(false);
   },
   methods: {
-    openModal(key) {
-      this.ShowModal({ key });
+    async openModal(key) {
+      const action = key.toLowerCase();
+      if (action !== 'claim') {
+        this.ShowModal({
+          key: modals.valueSend,
+          mode: action,
+          callback: async (amount) => {
+            let payload = {};
+            const value = new BigNumber(amount).shiftedBy(18).toString();
+            switch (action) {
+              case 'withdraw':
+                payload = {
+                  data: [value],
+                  method: 'withdraw',
+                };
+                break;
+              case 'deposit':
+                payload = {
+                  value,
+                  data: [7],
+                  method: 'deposit',
+                };
+                break;
+              default:
+                console.log('another method');
+            }
+            const res = await this.$store.dispatch('savings/sendMethod', payload);
+            if (res.ok) {
+              this.ShowModal({
+                key: modals.status,
+                img: require('~/assets/img/ui/transactionSend.svg'),
+                title: this.$t(`modals.successfulMethods.${action}`),
+              });
+            } else {
+              this.ShowModal({
+                key: modals.status,
+                img: require('~/assets/img/ui/warning.svg'),
+                title: this.$t('modals.transactionFail'),
+              });
+            }
+          },
+        });
+      } else {
+        const res = await this.$store.dispatch('crediting/sendMethod', {
+          method: 'claim',
+        });
+        if (res.ok) {
+          this.ShowModal({
+            key: modals.status,
+            img: require('~/assets/img/ui/transactionSend.svg'),
+            title: this.$t('modals.successfulMethod.claim'),
+          });
+        } else {
+          this.ShowModal({
+            key: modals.status,
+            img: require('~/assets/img/ui/warning.svg'),
+            title: this.$t('modals.transactionFail'),
+          });
+        }
+      }
     },
   },
 };
@@ -289,17 +376,6 @@ export default {
       &:hover {
         background-color: #0083C71A;
         border: 0;
-      }
-
-      &_bl {
-        @extend .btn;
-        background-color: #0083C7;
-        border: unset;
-        color: #fff;
-
-        &:hover {
-          background-color: #103d7c;
-        }
       }
     }
 
