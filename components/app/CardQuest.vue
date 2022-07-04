@@ -841,7 +841,6 @@ export default {
       align-items: flex-start;
       justify-content: flex-end;
       gap: 5px;
-      margin-bottom: auto;
     }
   }
 
