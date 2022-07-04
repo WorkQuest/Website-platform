@@ -48,7 +48,7 @@
             alt=""
           >
           <span>
-            {{ item.firstName }} {{ item.lastName }}
+            {{ UserName(item.firstName, item.lastName) }}
           </span>
         </div>
       </div>

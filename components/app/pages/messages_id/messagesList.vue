@@ -400,8 +400,8 @@ export default {
     },
     setFullName({ itsMe, infoMessage: { user }, sender }) {
       return itsMe
-        ? `${user?.firstName || ''} ${user?.lastName || ''}`
-        : `${sender?.user?.firstName || ''} ${sender?.user?.lastName || ''}`;
+        ? this.UserName(user.firstName, user?.lastName)
+        : this.UserName(sender.user.firstName, sender.user?.lastName);
     },
     goToCurrChat(message) {
       if (this.chatId !== 'starred') return;
@@ -467,7 +467,7 @@ export default {
     senderFullNameById(userId) {
       const sender = this.getSenderInfoById(userId);
       if (!sender) return '-';
-      if (sender.type === UserRoles.USER) return `${sender.user?.firstName || ''} ${sender.user?.lastName || ''}`;
+      if (sender.type === UserRoles.USER) return this.UserName(sender.user?.firstName, sender.user?.lastName);
       return this.$t('chat.workquestAdmin');
     },
   },

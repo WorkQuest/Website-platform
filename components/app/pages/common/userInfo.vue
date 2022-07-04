@@ -398,7 +398,7 @@ export default {
 
       this.ShowModal({
         key: modals.report,
-        title: `${firstName} ${lastName}`,
+        title: this.UserName(firstName, lastName),
         entityId: id,
         entityType: EntityType.USER,
       });
