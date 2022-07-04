@@ -866,7 +866,7 @@ export default {
               key: modals.status,
               img: images.ERROR,
               title: this.$t('toasts.error'),
-              subtitle: msg,
+              subtitle: this.$t('toasts.ratingDoesNotMatch'),
             });
           }
         },
