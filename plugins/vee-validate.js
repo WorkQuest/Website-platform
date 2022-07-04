@@ -169,24 +169,24 @@ extend('min_value', {
   params: ['min'],
 });
 
-extend('max_value_swap', {
+extend('max_buy_wqt', {
   validate(value, { max }) {
     return {
       required: true,
       valid: new BigNumber(value).isLessThanOrEqualTo(max),
     };
   },
-  params: ['max'],
+  params: ['max', 'symbol'],
 });
 
-extend('min_value_swap', {
+extend('min_buy_wqt', {
   validate(value, { min }) {
     return {
       required: true,
       valid: new BigNumber(value).isGreaterThanOrEqualTo(min),
     };
   },
-  params: ['min'],
+  params: ['min', 'symbol'],
 });
 
 extend('address', {
