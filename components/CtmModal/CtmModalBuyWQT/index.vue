@@ -43,8 +43,8 @@
         </div>
         <div>
           <base-field
+            ref="amount"
             v-model="amount"
-            type="number"
             :disabled="!tokenData"
             :placeholder="$t('modals.amount')"
             :name="$t('modals.amount')"
@@ -103,7 +103,7 @@ export default {
   data() {
     return {
       selectedToken: 0,
-      amount: null,
+      amount: 0,
       tokenData: null,
       updatePriceId: null,
       wqtAmount: null, // Сколько мы получим wqt
@@ -120,7 +120,6 @@ export default {
     }),
     networkList() {
       return [
-        // BuyWQTTokensData.get(Chains.WORKNET),
         BuyWQTTokensData.get(Chains.ETHEREUM),
         BuyWQTTokensData.get(Chains.BINANCE),
         BuyWQTTokensData.get(Chains.POLYGON),
@@ -151,12 +150,10 @@ export default {
   watch: {
     async selectedNetwork() {
       this.clearData();
-      if (this.selectedNetwork === Chains.WORKNET) return;
       await this.updateTokenData();
     },
     // Определение сколько приблизительно WQT мы получим
     amount() {
-      if (this.selectedNetwork === Chains.WORKNET) return;
       clearTimeout(this.updatePriceId);
       this.$refs.buyWQT.validate().then((success) => {
         if (!success) return;
@@ -208,6 +205,7 @@ export default {
       if (!val || isNaN(val)) this.amount = val;
       else if (!this.tokenData) this.amount = 0;
       else this.amount = val;
+      this.amount = this.amount.replace(/,/g, '.');
     },
     clearData() {
       this.amount = null;
@@ -218,6 +216,8 @@ export default {
     maxValue() {
       if (!this.tokenData) return;
       this.amount = this.maxUSDTValue;
+      this.$refs.amount.$refs.input.focus();
+      this.$refs.amount.$refs.input.blur();
     },
     // Updates balance by current network & token
     async updateTokenData() {
