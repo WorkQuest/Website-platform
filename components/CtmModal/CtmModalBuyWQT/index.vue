@@ -5,6 +5,7 @@
   >
     <validation-observer
       v-slot="{handleSubmit, invalid}"
+      ref="buyWQT"
       class="buy-wqt__content content"
       tag="div"
     >
@@ -42,11 +43,12 @@
         </div>
         <div>
           <base-field
+            ref="amount"
             v-model="amount"
             :disabled="!tokenData"
             :placeholder="$t('modals.amount')"
             :name="$t('modals.amount')"
-            :rules="`required|is_not:0|decimal|decimalPlaces:${tokenData ? tokenData.decimals : 0}|min_value:5|max_value:${maxUSDTValue}`"
+            :rules="`required|is_not:0|decimal|decimalPlaces:${tokenData ? tokenData.decimals : 0}|min_buy_wqt:5,${selectedSymbol}|max_buy_wqt:100,${selectedSymbol}|not_enough_funds:${tokenData && tokenData.fullBalance}`"
             data-selector="AMOUNT"
             @input="handleInput"
           >
@@ -69,7 +71,7 @@
         </div>
       </div>
       <div class="content__wqt">
-        <span v-if="wqtAmount">
+        <span v-if="wqtAmount && !invalid">
           {{ $t('meta.amount.amountOfWQT') }} ≈ {{ wqtAmount }}
         </span>
       </div>
@@ -101,7 +103,7 @@ export default {
   data() {
     return {
       selectedToken: 0,
-      amount: null,
+      amount: 0,
       tokenData: null,
       updatePriceId: null,
       wqtAmount: null, // Сколько мы получим wqt
@@ -118,7 +120,6 @@ export default {
     }),
     networkList() {
       return [
-        // BuyWQTTokensData.get(Chains.WORKNET),
         BuyWQTTokensData.get(Chains.ETHEREUM),
         BuyWQTTokensData.get(Chains.BINANCE),
         BuyWQTTokensData.get(Chains.POLYGON),
@@ -142,53 +143,52 @@ export default {
       }
       return this.tokenData.fullBalance;
     },
+    selectedSymbol() {
+      return this.tokenData && this.tokenData.symbol;
+    },
   },
   watch: {
     async selectedNetwork() {
       this.clearData();
-      if (this.selectedNetwork === Chains.WORKNET) return;
       await this.updateTokenData();
     },
     // Определение сколько приблизительно WQT мы получим
-    amount(newVal) {
-      if (this.selectedNetwork === Chains.WORKNET) return;
+    amount() {
       clearTimeout(this.updatePriceId);
-      const val = new BigNumber(newVal);
-      if (!newVal || isNaN(newVal) || val.isGreaterThan(100) || new BigNumber(newVal).isLessThan(5)) {
-        this.wqtAmount = null;
-        return;
-      }
-      this.inProgressWQT = true;
-      this.wqtAmount = `${this.$t('modals.pleaseWait')}...`;
-      this.updatePriceId = setTimeout(async () => {
-        await this.$store.dispatch('oracle/getCurrentTokensPrices');
-        const priceWQT = new BigNumber(this.oraclePrices[this.oracleSymbols.indexOf(TokenSymbols.WQT)]).shiftedBy(-18);
-        const decimalAmount = new BigNumber(this.amount);
-        const receiveWithCommission = decimalAmount.dividedBy(priceWQT).multipliedBy(1 - WQTBuyCommission).decimalPlaces(18);
-        //  TODO: check it, if dont need to convert, del
-        const address = this.convertToHex('wq', this.userWalletAddress);
-        const value = new BigNumber(receiveWithCommission).shiftedBy(18).toString();
+      this.$refs.buyWQT.validate().then((success) => {
+        if (!success) return;
+        this.inProgressWQT = true;
+        this.wqtAmount = `${this.$t('modals.pleaseWait')}...`;
+        this.updatePriceId = setTimeout(async () => {
+          await this.$store.dispatch('oracle/getCurrentTokensPrices');
+          const priceWQT = new BigNumber(this.oraclePrices[this.oracleSymbols.indexOf(TokenSymbols.WQT)]).shiftedBy(-18);
+          const decimalAmount = new BigNumber(this.amount);
+          const receiveWithCommission = decimalAmount.dividedBy(priceWQT).multipliedBy(1 - WQTBuyCommission).decimalPlaces(18);
+          //  TODO: check it, if dont need to convert, del
+          const address = this.convertToHex('wq', this.userWalletAddress);
+          const value = new BigNumber(receiveWithCommission).shiftedBy(18).toString();
 
-        let txFee;
-        try {
-          const provider = new Web3(this.ENV.WQ_PROVIDER);
-          const [gasPrice, gasEstimate] = await Promise.all([
-            provider.eth.getGasPrice(),
-            provider.eth.estimateGas({
-              from: address,
-              to: address,
-              value,
-            }),
-          ]);
-          txFee = new BigNumber(gasPrice).multipliedBy(gasEstimate).shiftedBy(-18).toString();
-        } catch (e) {
-          txFee = 18; // user doesnt has balance of wqt in worknet
-        }
+          let txFee;
+          try {
+            const provider = new Web3(this.ENV.WQ_PROVIDER);
+            const [gasPrice, gasEstimate] = await Promise.all([
+              provider.eth.getGasPrice(),
+              provider.eth.estimateGas({
+                from: address,
+                to: address,
+                value,
+              }),
+            ]);
+            txFee = new BigNumber(gasPrice).multipliedBy(gasEstimate).shiftedBy(-18).toString();
+          } catch (e) {
+            txFee = 18; // user doesnt has balance of wqt in worknet
+          }
 
-        this.wqtAmount = receiveWithCommission.decimalPlaces(3).minus(txFee).toFixed(0);
-        this.inProgressWQT = false;
-      },
-      400);
+          this.wqtAmount = receiveWithCommission.decimalPlaces(3).minus(txFee).toFixed(0);
+          this.inProgressWQT = false;
+        },
+        400);
+      });
     },
   },
   async beforeMount() {
@@ -204,8 +204,8 @@ export default {
     handleInput(val) {
       if (!val || isNaN(val)) this.amount = val;
       else if (!this.tokenData) this.amount = 0;
-      else if (new BigNumber(val).isGreaterThan(this.tokenData.fullBalance)) this.amount = this.tokenData.fullBalance;
       else this.amount = val;
+      this.amount = this.amount.replace(/,/g, '.');
     },
     clearData() {
       this.amount = null;
@@ -216,6 +216,8 @@ export default {
     maxValue() {
       if (!this.tokenData) return;
       this.amount = this.maxUSDTValue;
+      this.$refs.amount.$refs.input.focus();
+      this.$refs.amount.$refs.input.blur();
     },
     // Updates balance by current network & token
     async updateTokenData() {

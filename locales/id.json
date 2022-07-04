@@ -96,7 +96,8 @@
       "goToChat": "Kunjungi obrolan",
       "view": "Lihat",
       "add": "Tambahkan",
-      "take": "Take"
+      "take": "Take",
+      "swap": "Swap"
     },
     "placeholders": {
       "default": "",
@@ -265,7 +266,9 @@
     "notMoreDecimalPlaces": "Please enter correct {_field_}, no more than 2 decimal places",
     "max_percent": "Please enter correct {_field_}, reduce the percentage",
     "notEmptyArray": "Please select a {_field_}",
-    "not_enough_funds": "Not enough funds"
+    "not_enough_funds": "Not enough funds",
+    "min_buy_wqt" : "To avoid unnecessary fees and network slippage, the minimum amount for this pair is ${min} {symbol}",
+    "max_buy_wqt": "To avoid unnecessary fees and network slippage, the maximum amount for this pair is ${max} {symbol}"
   },
   "about": {
     "text": "WorkQuest adalah sebuah proyek sosial berbasis teknologi blockchain untuk menemukan pekerjaan dan menyelesaikan tugas yang diberikan oleh pihak pemberi kerja dalam mode quest. Apakah Anda sedang mencari pekerjaan? WorkQuest akan membantu Anda menemukan quest di dekat Anda dan kota Anda. Apakah Anda membutuhkan pekerja untuk melaksanakan tujuan Anda? Cukup buat quest di situs WorkQuest. Layanan ini menanggung kewajiban garansi untuk melaksanakan quest. Dana pihak pemberi kerja disimpan di kami , jika karyawan mengonfirmasi pelaksanaan kerja, ia akan menerima setoran dana di akunnya. Sistem penilaian, ulasan, dan daftar quest yang diselesaikan akan membantu menemukan orang-orang jujur dan spesialis terbaik dengan mudah.\n\n          Tujuan kami adalah menyederhanakan komunikasi antara pihak pemberi kerja dan karyawan, membantu mempekerjakan jutaan orang, memperbaiki kondisi keuangan mereka, memecahkan masalah lama menemukan profesional yang dapat diandalkan di semua sektor demi menciptakan ekonomi digital progresif yang dibangun di atas prinsip-prinsip kepercayaan, saling menghormati dan kesejahteraan semua pesertanya."
@@ -1295,6 +1298,14 @@
       "refund": "Successful refund",
       "withdraw": "Successful withdrawal",
       "deposit": "Successful deposit"
+    },
+    "deposit": {
+      "scanQrCodeWallet": "Scan QR code or copy address to receive payment",
+      "walletCopied": "Wallet address copied successfully",
+      "uHaveToAddCard": "Please add a bank card to your account",
+      "coming": "Coming soon",
+      "addCard": "Add card",
+      "sharingText": "Hi, here is my wallet address:"
     }
   },
   "ui": {
@@ -1430,11 +1441,11 @@
   },
   "wallet": {
     "frozen": "Frozen balance",
-    "WUSD": "Dompet WUSD",
+    "walletAddress": "Wallet address",
     "cryptoWallet": "Dompet kripto",
     "send": "Kirim",
     "toThisAddress": "ke alamat ini",
-    "receive": "Terima",
+    "deposit": "Deposit",
     "transfer": "Beli / Kirim",
     "addCardProposal": "Tambahkan kartu Anda sendiri untuk penarikan mudah",
     "addCard": "Tambahkan Kartu",
@@ -2465,5 +2476,9 @@
     "messagePlaceholder": "Add message",
     "sent": "Report sent",
     "complainAbout": "Complain about"
+  },
+  "qrCodePage": {
+    "pageTitle": "Wallet address",
+    "subText": "Scan the QR code or copy the address to send me a payment"
   }
 }

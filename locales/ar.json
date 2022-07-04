@@ -96,7 +96,8 @@
       "goToChat": "الانتقال إلى الدردشة",
       "view": "عرض",
       "add": "إضافة",
-      "take": "Take"
+      "take": "Take",
+      "swap": "Swap"
     },
     "placeholders": {
       "default": "",
@@ -265,7 +266,9 @@
     "notMoreDecimalPlaces": "Please enter correct {_field_}, no more than 2 decimal places",
     "max_percent": "Please enter correct {_field_}, reduce the percentage",
     "notEmptyArray": "Please select a {_field_}",
-    "not_enough_funds": "Not enough funds"
+    "not_enough_funds": "Not enough funds",
+    "min_buy_wqt" : "To avoid unnecessary fees and network slippage, the minimum amount for this pair is ${min} {symbol}",
+    "max_buy_wqt": "To avoid unnecessary fees and network slippage, the maximum amount for this pair is ${max} {symbol}"
   },
   "about": {
     "text": "WorkQuest هو مشروع اجتماعي قائم على تكنولوجيا سلسلة الكتل ويهدف إلى إيجاد عمل وتنفيذ أي مهام من جانب صاحب العمل في وضع طلبات العمل. هل تبحث عن وظيفة؟ سيساعدك WorkQuest في العثور على طلب عمل بالقرب منك ومن مدينتك. هل تحتاج إلى موظفين لتحقيق الأهداف؟ ما عليك سوى إنشاء طلب عمل على موقع WorkQuest. تلتزم الخدمة بضمان تنفيذ طلبات العمل. يتم الاحتفاظ بأموال صاحب العمل لدينا، وعندما يؤكد الموظف أنه أدى عمله، فإنه يتلقى إيداعًا بالأموال في حسابه. سيساعد نظام التقييمات والمراجعات وقائمة طلبات العمل المكتملة في العثور على أشخاص صادقين وأفضل المتخصصين بكل سهولة.\n\n          هدفنا هو تبسيط التواصل بين صاحب العمل والموظف للمساعدة في توظيف ملايين الأشخاص، وتحسين موقفهم المالي، وحل المشكلة الدائمة المتمثلة في العثور على متخصصين موثوقين في جميع القطاعات، وبناء اقتصاد رقمي تقدمي قائم على أسس الثقة والاحترام المتبادل ورفاهية جميع المشاركين فيه."
@@ -1295,6 +1298,14 @@
       "refund": "Successful refund",
       "withdraw": "Successful withdrawal",
       "deposit": "Successful deposit"
+    },
+    "deposit": {
+      "scanQrCodeWallet": "Scan QR code or copy address to receive payment",
+      "walletCopied": "Wallet address copied successfully",
+      "uHaveToAddCard": "Please add a bank card to your account",
+      "coming": "Coming soon",
+      "addCard": "Add card",
+      "sharingText": "Hi, here is my wallet address:"
     }
   },
   "ui": {
@@ -1430,11 +1441,11 @@
   },
   "wallet": {
     "frozen": "Frozen balance",
-    "WUSD": "محفظة WUSD",
+    "walletAddress": "Wallet address",
     "cryptoWallet": "محفظة العملات المشفرة",
     "send": "إرسال",
     "toThisAddress": "إلى هذا العنوان",
-    "receive": "الاستلام",
+    "deposit": "Deposit",
     "transfer": "الشراء/الإرسال",
     "addCardProposal": "أضِف بطاقتك الخاصة للسحب بسهولة",
     "addCard": "إضافة بطاقة",
@@ -2464,5 +2475,9 @@
     "messagePlaceholder": "Add message",
     "sent": "Report sent",
     "complainAbout": "Complain about"
+  },
+  "qrCodePage": {
+    "pageTitle": "Wallet address",
+    "subText": "Scan the QR code or copy the address to send me a payment"
   }
 }

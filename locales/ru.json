@@ -96,7 +96,8 @@
       "goToChat": "Перейти в чат",
       "view": "View",
       "add": "Добавить",
-      "take": "Take"
+      "take": "Take",
+      "swap": "Swap"
     },
     "placeholders": {
       "default": "",
@@ -265,7 +266,9 @@
     "notMoreDecimalPlaces": "Введите правильное {_field_}, не более 2 знаков после запятой",
     "max_percent": "Введите правильное {_field_}, уменьшите процент",
     "notEmptyArray": "Выберите {_field_}",
-    "not_enough_funds": "Не достаточно средств"
+    "not_enough_funds": "Не достаточно средств",
+    "min_buy_wqt" : "To avoid unnecessary fees and network slippage, the minimum amount for this pair is ${min} {symbol}",
+    "max_buy_wqt": "To avoid unnecessary fees and network slippage, the maximum amount for this pair is ${max} {symbol}"
   },
   "about": {
     "text": "Work Quest — это социальный проект на основе технологии блокчейн для поиска работы и решения любых задач со стороны работодателя в режиме квеста. Вы ищете работу? Work Quest поможет найти квест рядом с вами и вашим городом. Нужны ли вам рабочие для выполнения целей? Просто создайте квест на сайте Work Quest. Сервис берет на себя гарантийные обязательства по выполнению квестов. Средства работодателя хранятся у нас, если работник дает подтверждение о выполнении работы, он получает задаток денежных средств на свой счет. Система рейтингов, обзоров и список выполненных квестов помогут легко найти честных людей и лучших специалистов.\n Наша цель – упростить коммуникацию между работодателем и работником, помочь трудоустроить миллионы людей, улучшить их материальное положение, решить проблему поиска надежных профессионалов во всех отраслях, создать прогрессивную цифровую экономику, построенную на принципах доверия, взаимного уважения и благополучия всех его участников."
@@ -1295,6 +1298,14 @@
       "refund": "Successful refund",
       "withdraw": "Successful withdrawal",
       "deposit": "Successful deposit"
+    },
+    "deposit": {
+      "scanQrCodeWallet": "Scan QR code or copy address to receive payment",
+      "walletCopied": "Wallet address copied successfully",
+      "uHaveToAddCard": "Please add a bank card to your account",
+      "coming": "Coming soon",
+      "addCard": "Add card",
+      "sharingText": "Hi, here is my wallet address:"
     }
   },
   "ui": {
@@ -1430,11 +1441,11 @@
   },
   "wallet": {
     "frozen": "Замороженный баланс",
-    "WUSD": "WUSD wallet",
+    "walletAddress": "Wallet address",
     "cryptoWallet": "Crypto wallet",
     "send": "Отправить",
     "toThisAddress": "на этот адрес",
-    "receive": "Receive",
+    "deposit": "Deposit",
     "transfer": "Buy / Send",
     "addCardProposal": "Добавьте банковскую карту для удобного вывода",
     "addCard": "Добавить карту",
@@ -2465,5 +2476,9 @@
     "messagePlaceholder": "Добавьте сообщение",
     "sent": "Отправить",
     "complainAbout": "Пожаловаться на"
+  },
+  "qrCodePage": {
+    "pageTitle": "Wallet address",
+    "subText": "Scan the QR code or copy the address to send me a payment"
   }
 }

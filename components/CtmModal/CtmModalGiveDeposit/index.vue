@@ -71,7 +71,7 @@
         <div>
           <img
             alt="card"
-            src="~assets/img/ui/creditCard.svg"
+            :src="$options.images.CREDIT_CARD"
             class="content__card"
           >
         </div>
@@ -124,9 +124,11 @@
 
 <script>
 import modals from '~/store/modals/modals';
+import { images } from '~/utils/images';
 
 export default {
   name: 'ModalGiveDeposit',
+  images,
   data() {
     return {
       step: 1,

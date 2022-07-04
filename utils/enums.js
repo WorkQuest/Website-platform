@@ -163,6 +163,7 @@ export const Path = {
   REPORT: '/report',
   AUCTION: '/auction',
   BORROW: '/borrow',
+  QRCODE: '/qrcode',
 };
 
 export const PathDAO = {

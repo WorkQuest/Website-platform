@@ -96,7 +96,8 @@
       "goToChat": "चैट पर जाएं",
       "view": "देखें",
       "add": "जोड़ें",
-      "take": "Take"
+      "take": "Take",
+      "swap": "Swap"
     },
     "placeholders": {
       "default": "प्लेसहोल्डर",
@@ -265,7 +266,9 @@
     "notMoreDecimalPlaces": "Please enter correct {_field_}, no more than 2 decimal places",
     "max_percent": "Please enter correct {_field_}, reduce the percentage",
     "notEmptyArray": "Please select a {_field_}",
-    "not_enough_funds": "Not enough funds"
+    "not_enough_funds": "Not enough funds",
+    "min_buy_wqt" : "To avoid unnecessary fees and network slippage, the minimum amount for this pair is ${min} {symbol}",
+    "max_buy_wqt": "To avoid unnecessary fees and network slippage, the maximum amount for this pair is ${max} {symbol}"
   },
   "about": {
     "text": "WorkQuest एक सोशल प्रोजेक्ट है जो ब्लॉकचेन तकनीक पर आधारित है, यह काम खोजने और quest मोड में एंप्लॉयर यानी नियोक्ता वाले टास्क पूरे करने के लिए है। क्या आप जॉब की तलाश में हैं? WorkQuest आपको अपने करीब या अपने शहर के बगल में quest ढूंढ़ने में मदद करेगा। क्या आपको अपने काम पूरे करने के लिए वर्कर चाहिए? बस यह करें कि WorkQuest की साइट पर एक quest बनाएं। यह सेवा quests को पूरा करने के लिए वारंटी दायित्वों को अपने ऊपर लेती है। एंप्लॉयर हमारे पास पैसा जमा करता है, यदि कर्मचारी काम पूरा करने की पुष्टि कर देता है, तो उसके अपने खाते में पैसा जमा कर दिया जाता है। रेटिंग, रिव्यू और पूरे किए गए quests की सूची का सिस्टम सही व ईमानदार लोगों और बेहतरीन विशेषज्ञों को आसानी से खोजने में मदद करता है।\n\n          हमारा लक्ष्य एंप्लॉयर और कर्मचारी के बीच कम्युनिकेशन को सरल बनाना है, लाखों लोगों को रोजगार देने में मदद करना, उनकी वित्तीय स्थिति में सुधार करना, सभी सेक्टर में भरोसेमंद प्रोफेशनल खोजने की हमेशा की दिक्कत को हल करना है ताकि एक लगातार प्रगति करती डिजिटल अर्थव्यवस्था बनाई जा सके जो विश्वास, आपसी सम्मान और इसके सभी प्रतिभागियों की भलाई के सिद्धांतों पर आधारित हो।"
@@ -1295,6 +1298,14 @@
       "refund": "Successful refund",
       "withdraw": "Successful withdrawal",
       "deposit": "Successful deposit"
+    },
+    "deposit": {
+      "scanQrCodeWallet": "Scan QR code or copy address to receive payment",
+      "walletCopied": "Wallet address copied successfully",
+      "uHaveToAddCard": "Please add a bank card to your account",
+      "coming": "Coming soon",
+      "addCard": "Add card",
+      "sharingText": "Hi, here is my wallet address:"
     }
   },
   "ui": {
@@ -1430,11 +1441,11 @@
   },
   "wallet": {
     "frozen": "Frozen balance",
-    "WUSD": "WUSD वॉलेट",
+    "walletAddress": "Wallet address",
     "cryptoWallet": "क्रिप्टो वॉलेट",
     "send": "भेजें",
     "toThisAddress": "इस पते पर",
-    "receive": "प्राप्त करें",
+    "deposit": "Deposit",
     "transfer": "खरीदें / भेजें",
     "addCardProposal": "आसान निकासी के लिए अपना कार्ड जोड़ें",
     "addCard": "कार्ड जोड़ें",
@@ -2465,5 +2476,9 @@
     "messagePlaceholder": "Add message",
     "sent": "Report sent",
     "complainAbout": "Complain about"
+  },
+  "qrCodePage": {
+    "pageTitle": "Wallet address",
+    "subText": "Scan the QR code or copy the address to send me a payment"
   }
 }
