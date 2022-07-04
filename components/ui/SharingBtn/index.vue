@@ -26,7 +26,7 @@
           class="socials__btn-telegram"
           :data-selector="`SOCIALS-LINK-ICON-${link.icon}`"
           alt=""
-          src="~assets/img/icons/telegram.png"
+          :src="$options.images.TELEGRAM"
         >
         <span
           v-else
@@ -41,10 +41,12 @@
 
 <script>
 import ClickOutside from 'vue-click-outside';
+import { images } from '~/utils/images';
 
 export default {
   name: 'SharingBtn',
   directives: { ClickOutside },
+  images,
   props: {
     url: {
       type: String,
