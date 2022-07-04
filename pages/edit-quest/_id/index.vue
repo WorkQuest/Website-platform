@@ -383,7 +383,7 @@ export default {
   },
   async mounted() {
     const check = this.$cookies.get('2fa');
-    if (this.mode !== 'raise' && !this.userData.totpIsActive && !check) {
+    if (this.mode !== 'raise' && (!this.userData.totpIsActive || !check)) {
       await this.$router.push(`${Path.QUESTS}/${this.$route.params.id}`);
       return;
     }
