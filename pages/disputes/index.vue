@@ -39,7 +39,7 @@
 import { mapGetters } from 'vuex';
 import emptyData from '~/components/app/info/emptyData';
 import { DisputeStatues } from '~/utils/enums';
-import CardDispute from '~/components/app/pages/disputes/CardDispute';
+import CardDispute from '~/components/app/CardDispute';
 
 const LIMIT = 10;
 
@@ -98,19 +98,9 @@ export default {
 
 .main {
   @include main;
-&-white {
-   @include main-white;
- }
 }
 
 .page {
-  &__none {
-    display: grid;
-    width: 100%;
-    align-items: center;
-    justify-items: center;
-  }
-
   &__title {
     @include text-simple;
     margin: 20px 0;
@@ -155,12 +145,6 @@ export default {
   .page {
     &__dispute-cards {
       grid-gap: 15px;
-    }
-    &__text {
-      font-size: 12px;
-    }
-    &__decision {
-      font-size: 12px;
     }
   }
 }
