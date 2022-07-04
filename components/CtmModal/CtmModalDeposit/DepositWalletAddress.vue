@@ -101,7 +101,8 @@ export default {
     margin-bottom: 25px;
     align-self: flex-start;
     display: grid;
-    grid-template-columns: 83% 17%;
+    grid-template-columns: auto 46px;
+    gap: 10px;
     width: 100%;
   }
 }
@@ -124,12 +125,6 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  &__sharing{
-    width: 46px;
-    height: 46px;
-    margin-left: 10px;
-  }
-
 }
 .icon {
   &-copy:before {

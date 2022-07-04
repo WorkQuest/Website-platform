@@ -99,8 +99,6 @@ export default {
 <style lang="scss" scoped>
 .sharingBtn{
     position: relative;
-    width: 46px ;
-    height: 46px;
     border-radius: 6px;
   &:hover &__chain::before {
     color: $white;
@@ -122,7 +120,11 @@ export default {
     justify-content: center;
     align-items: center;
     border-radius: 6px;
+    width: 34px;
+    height: 34px;
     padding: 3px;
+    box-shadow: 0 0 10px 2px rgba(34, 60, 80, 0.3);
+    border: 1px solid $black100;
     background: $black0;
     text-decoration: none;
     transition: ease-out .2s;
@@ -141,7 +143,7 @@ export default {
   }
   &__btn-telegram{
     padding: 3px;
-    width: 31px;
+    width: 34px;
     height: 34px;
   }
   &__btn-telegram img {
