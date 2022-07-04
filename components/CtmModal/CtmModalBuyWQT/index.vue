@@ -5,6 +5,7 @@
   >
     <validation-observer
       v-slot="{handleSubmit, invalid}"
+      ref="buyWQT"
       class="buy-wqt__content content"
       tag="div"
     >
@@ -43,10 +44,11 @@
         <div>
           <base-field
             v-model="amount"
+            type="number"
             :disabled="!tokenData"
             :placeholder="$t('modals.amount')"
             :name="$t('modals.amount')"
-            :rules="`required|is_not:0|decimal|decimalPlaces:${tokenData ? tokenData.decimals : 0}|min_value:5|max_value:${maxUSDTValue}`"
+            :rules="`required|is_not:0|decimal|decimalPlaces:${tokenData ? tokenData.decimals : 0}|min_buy_wqt:5,${selectedSymbol}|max_buy_wqt:100,${selectedSymbol}|not_enough_funds:${tokenData && tokenData.fullBalance}`"
             data-selector="AMOUNT"
             @input="handleInput"
           >
@@ -69,7 +71,7 @@
         </div>
       </div>
       <div class="content__wqt">
-        <span v-if="wqtAmount">
+        <span v-if="wqtAmount && !invalid">
           {{ $t('meta.amount.amountOfWQT') }} ≈ {{ wqtAmount }}
         </span>
       </div>
@@ -142,6 +144,9 @@ export default {
       }
       return this.tokenData.fullBalance;
     },
+    selectedSymbol() {
+      return this.tokenData && this.tokenData.symbol;
+    },
   },
   watch: {
     async selectedNetwork() {
@@ -150,45 +155,43 @@ export default {
       await this.updateTokenData();
     },
     // Определение сколько приблизительно WQT мы получим
-    amount(newVal) {
+    amount() {
       if (this.selectedNetwork === Chains.WORKNET) return;
       clearTimeout(this.updatePriceId);
-      const val = new BigNumber(newVal);
-      if (!newVal || isNaN(newVal) || val.isGreaterThan(100) || new BigNumber(newVal).isLessThan(5)) {
-        this.wqtAmount = null;
-        return;
-      }
-      this.inProgressWQT = true;
-      this.wqtAmount = `${this.$t('modals.pleaseWait')}...`;
-      this.updatePriceId = setTimeout(async () => {
-        await this.$store.dispatch('oracle/getCurrentTokensPrices');
-        const priceWQT = new BigNumber(this.oraclePrices[this.oracleSymbols.indexOf(TokenSymbols.WQT)]).shiftedBy(-18);
-        const decimalAmount = new BigNumber(this.amount);
-        const receiveWithCommission = decimalAmount.dividedBy(priceWQT).multipliedBy(1 - WQTBuyCommission).decimalPlaces(18);
-        //  TODO: check it, if dont need to convert, del
-        const address = this.convertToHex('wq', this.userWalletAddress);
-        const value = new BigNumber(receiveWithCommission).shiftedBy(18).toString();
+      this.$refs.buyWQT.validate().then((success) => {
+        if (!success) return;
+        this.inProgressWQT = true;
+        this.wqtAmount = `${this.$t('modals.pleaseWait')}...`;
+        this.updatePriceId = setTimeout(async () => {
+          await this.$store.dispatch('oracle/getCurrentTokensPrices');
+          const priceWQT = new BigNumber(this.oraclePrices[this.oracleSymbols.indexOf(TokenSymbols.WQT)]).shiftedBy(-18);
+          const decimalAmount = new BigNumber(this.amount);
+          const receiveWithCommission = decimalAmount.dividedBy(priceWQT).multipliedBy(1 - WQTBuyCommission).decimalPlaces(18);
+          //  TODO: check it, if dont need to convert, del
+          const address = this.convertToHex('wq', this.userWalletAddress);
+          const value = new BigNumber(receiveWithCommission).shiftedBy(18).toString();
 
-        let txFee;
-        try {
-          const provider = new Web3(this.ENV.WQ_PROVIDER);
-          const [gasPrice, gasEstimate] = await Promise.all([
-            provider.eth.getGasPrice(),
-            provider.eth.estimateGas({
-              from: address,
-              to: address,
-              value,
-            }),
-          ]);
-          txFee = new BigNumber(gasPrice).multipliedBy(gasEstimate).shiftedBy(-18).toString();
-        } catch (e) {
-          txFee = 18; // user doesnt has balance of wqt in worknet
-        }
+          let txFee;
+          try {
+            const provider = new Web3(this.ENV.WQ_PROVIDER);
+            const [gasPrice, gasEstimate] = await Promise.all([
+              provider.eth.getGasPrice(),
+              provider.eth.estimateGas({
+                from: address,
+                to: address,
+                value,
+              }),
+            ]);
+            txFee = new BigNumber(gasPrice).multipliedBy(gasEstimate).shiftedBy(-18).toString();
+          } catch (e) {
+            txFee = 18; // user doesnt has balance of wqt in worknet
+          }
 
-        this.wqtAmount = receiveWithCommission.decimalPlaces(3).minus(txFee).toFixed(0);
-        this.inProgressWQT = false;
-      },
-      400);
+          this.wqtAmount = receiveWithCommission.decimalPlaces(3).minus(txFee).toFixed(0);
+          this.inProgressWQT = false;
+        },
+        400);
+      });
     },
   },
   async beforeMount() {
@@ -204,7 +207,6 @@ export default {
     handleInput(val) {
       if (!val || isNaN(val)) this.amount = val;
       else if (!this.tokenData) this.amount = 0;
-      else if (new BigNumber(val).isGreaterThan(this.tokenData.fullBalance)) this.amount = this.tokenData.fullBalance;
       else this.amount = val;
     },
     clearData() {
