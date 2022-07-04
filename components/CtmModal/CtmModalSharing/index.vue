@@ -164,4 +164,9 @@ export default {
   }
 }
 
+@include _380 {
+  .share {
+    min-width: 300px !important;
+  }
+}
 </style>

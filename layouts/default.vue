@@ -131,4 +131,10 @@ export default {
     }
   }
 }
+
+@include _350 {
+  .template {
+    width: fit-content;
+  }
+}
 </style>

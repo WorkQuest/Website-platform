@@ -278,7 +278,7 @@ export default {
     height: 46px;
     border-radius: 6px;
     border: 2px solid transparent;
-    padding: 0 20px;
+    padding: 0 40px 0 10px;
     transition: .3s;
     width: 100%;
     &_error {
@@ -356,6 +356,25 @@ export default {
         font-weight: normal;
         font-size: 25px;
         height: 84px;
+      }
+    }
+  }
+}
+@include _480 {
+  .ctm-field {
+    &__input {
+      padding: 0 40px 0 10px;
+      &::placeholder {
+        font-size: 14px;
+      }
+    }
+  }
+}
+@include _350 {
+  .ctm-field {
+    &__input {
+      &::placeholder {
+        font-size: 12px;
       }
     }
   }

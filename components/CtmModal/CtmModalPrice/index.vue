@@ -153,7 +153,7 @@ export default {
     grid-gap: 10px;
   }
   &__buttons{
-    margin-top: 40px;
+    margin-top: 55px;
     pointer-events: auto;
   }
   &__title{
@@ -171,4 +171,31 @@ export default {
   }
 }
 
+@include _480 {
+  .buttons {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 55px;
+    justify-content: space-between;
+    min-height: 100px;
+  }
+
+  .content {
+    &__grid {
+      display: block;
+    }
+  }
+
+  .grid__field {
+    &:nth-child(2) {
+      margin-top: 40px;
+    }
+  }
+
+  .input {
+    &__clear {
+      padding: 10px 0 0 0;
+    }
+  }
+}
 </style>
