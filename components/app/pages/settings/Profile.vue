@@ -129,6 +129,7 @@
               v-if="userRole === UserRole.EMPLOYER"
               id="phone2"
               v-model="secondPhoneNumber.fullPhone"
+              class="profile__phone-input"
               data-selector="SECOND-PHONE-FIELD"
               :error="!isValidSecondPhoneNumber"
               :default-country-code="secondPhoneNumber.codeRegion"
@@ -710,6 +711,9 @@ export default {
       display: flex;
       flex-direction: column;
       gap: 0;
+    }
+    &__phone-input {
+      margin-bottom: 10px;
     }
   }
 }
