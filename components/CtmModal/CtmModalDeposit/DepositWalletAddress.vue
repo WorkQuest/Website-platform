@@ -107,6 +107,7 @@ export default {
 }
 .wallet{
   display: flex;
+  height: 46px;
   padding: 13px;
   border: 1px solid $black0;
   border-radius: 6px;
@@ -132,7 +133,6 @@ export default {
 }
 .icon {
   &-copy:before {
-    content: "\e996";
     color: $blue;
     font-size: 20px;
   }

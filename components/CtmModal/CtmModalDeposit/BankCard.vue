@@ -2,7 +2,7 @@
   <div class="cardBank">
     <img
       class="cCard"
-      src="~assets/img/ui/creditCard.svg"
+      :src="$options.images.CREDIT_CARD"
       alt="credit card"
     >
     <p class="cardBank__text">
@@ -29,8 +29,11 @@
 </template>
 
 <script>
+import { images } from '~/utils/images';
+
 export default {
   name: 'BankCard',
+  images,
   props: {
     cardList: {
       type: Array,
@@ -47,7 +50,7 @@ export default {
   justify-content: center;
   align-items: center;
   &__text{
-  align-self: flex-start;
+    align-self: flex-start;
     color:$black200;
    }
 }

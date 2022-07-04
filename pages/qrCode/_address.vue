@@ -1,35 +1,37 @@
 <template>
-  <div class="container">
-    <div class="header">
-      <div
-        class="header__logo"
-        @click="toMain()"
-      >
-        <img
-          src="~assets/img/app/logo.svg"
-          alt="WorkQuest"
+  <div class="page">
+    <div class="container">
+      <div class="header">
+        <div
+          class="header__logo"
+          @click="toMain()"
         >
-        <span class="header__text">WorkQuest</span>
+          <img
+            src="~assets/img/app/logo.svg"
+            alt="WorkQuest"
+          >
+          <span class="header__text">WorkQuest</span>
+        </div>
       </div>
-    </div>
-    <div class="qrCodeCard">
-      <h1>{{ $t('qrCodePage.pageTitle') }}</h1>
-      <p>{{ $t('qrCodePage.subText') }}</p>
-      <qrcode
-        v-if="$route.query.address"
-        :value="$route.query.address"
-        :options="{ width: 300 }"
-      />
-      <div class="wallet">
-        <span class="wallet__address">{{ CutTxn($route.query.address) }}</span>
-        <button
-          v-clipboard:copy="$route.query.address"
-          v-clipboard:success="showSuccessCopied"
-          v-clipboard:error="clipboardErrorHandler"
-          type="button"
-        >
-          <span class="icon-copy" />
-        </button>
+      <div class="qrCodeCard">
+        <h1>{{ $t('qrCodePage.pageTitle') }}</h1>
+        <p>{{ $t('qrCodePage.subText') }}</p>
+        <qrcode
+          v-if="$route.query.address"
+          :value="$route.query.address"
+          :options="{ width: 300 }"
+        />
+        <div class="wallet">
+          <span class="wallet__address">{{ CutTxn($route.query.address) }}</span>
+          <button
+            v-clipboard:copy="$route.query.address"
+            v-clipboard:success="showSuccessCopied"
+            v-clipboard:error="clipboardErrorHandler"
+            type="button"
+          >
+            <span class="icon-copy" />
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -77,8 +79,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.page {
+  background: $black0 ;
+  height: 100vh ;
+  width: 100vw ;
+}
+.container {
+  border: 1px solid $blue;
+  box-shadow: 0 4px 9px rgba(0, 0, 0, 0.15);
+  background: white;
+  max-width: 500px;
+  padding: 20px;
+  margin: 25px auto 0;
+  border-radius: 16px;
+}
 .header {
-  margin-top: 25px;
   &__logo {
     display: grid;
     align-items: center;
@@ -91,6 +106,7 @@ export default {
       font-size: 23px;
       line-height: 130%;
       color: $black700;
+      text-align: justify;
     }
   }
 }
@@ -119,5 +135,15 @@ export default {
 }
 .icon-copy {
   color: $blue;
+}
+@include _767 {
+  .page {
+    padding: 30px;
+  }
+}
+@include _380 {
+  .page {
+    padding: 5px;
+  }
 }
 </style>
