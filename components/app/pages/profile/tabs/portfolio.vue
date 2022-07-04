@@ -256,7 +256,7 @@ export default {
 @include _575 {
   .portfolio__items {
     grid-template-columns: auto;
-    margin: 0 20px 0 0;
+    margin: 0;
   }
 }
 

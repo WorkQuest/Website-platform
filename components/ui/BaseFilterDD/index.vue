@@ -412,4 +412,31 @@ export default {
     z-index: 1;
   }
 }
+@include _380 {
+  .dd {
+    &__list {
+      width: 355px;
+    }
+  }
+
+  .filter {
+    &__body {
+      min-width: 320px;
+    }
+  }
+}
+@include _350 {
+  .dd {
+    &__list {
+      width: 330px;
+    }
+  }
+
+  .filter {
+    padding: 5px;
+    &__body {
+      min-width: 280px;
+    }
+  }
+}
 </style>

@@ -33,6 +33,7 @@ import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import modals from '~/store/modals/modals';
 import { Path, UserRole } from '~/utils/enums';
+import localNotifications from '~/plugins/mixins/localNotifications';
 
 export default {
   name: 'DefaultLayout',
@@ -40,6 +41,7 @@ export default {
   directives: {
     ClickOutside,
   },
+  mixins: [localNotifications],
   computed: {
     ...mapGetters({
       isLoading: 'main/getIsLoading',
@@ -62,6 +64,7 @@ export default {
       });
     }
     this.GetLocation();
+    this.setLocalNotifications();
   },
   methods: {
     toMain() {
@@ -126,6 +129,12 @@ export default {
     &__content {
       grid-template-rows: 72px 1fr auto;
     }
+  }
+}
+
+@include _350 {
+  .template {
+    width: fit-content;
   }
 }
 </style>

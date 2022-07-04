@@ -79,7 +79,7 @@ export default {
         message,
       },
     };
-    commit('addNotification', notification);
+    commit('addLocalNotification', notification);
   },
 
   async removeNotification({ dispatch, commit, rootGetters }, { config, notification: { params, actionNameKey, id } }) {
@@ -92,8 +92,6 @@ export default {
     }
     try {
       if (!params.isLocal) await this.$axios.$delete(`${ENV.NOTIFS_URL}notifications/delete/${id}`);
-      await commit('removeNotification', id);
-      await dispatch('getNotifications', config);
       return success();
     } catch (e) {
       return error(e);
@@ -132,7 +130,9 @@ export default {
       return false;
     }
   },
-
+  async setCounterNotifications({ commit }, number) {
+    commit('setCounterNotifications', number);
+  },
   async setCurrNotificationObject({
     getters, rootGetters, dispatch, commit,
   }, notification) {
