@@ -292,7 +292,7 @@ export default {
     },
   },
   async mounted() {
-    if (!this.isConnected) this.toggleConnection();
+    if (!this.isConnected) await this.toggleConnection();
   },
   async beforeDestroy() {
     this.$store.commit('bridge/resetToken');
