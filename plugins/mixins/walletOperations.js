@@ -87,9 +87,10 @@ export default {
         });
 
         if (new BigNumber(allowance).isLessThan(amount)) {
-          const [approveFee] = await Promise.all([
+          const needApprove = new BigNumber(allowance).isZero(); // or need increaseAllowance
+          const [txFee] = await Promise.all([
             this.$store.dispatch('wallet/getContractFeeData', {
-              method: 'approve',
+              method: needApprove ? 'approve' : 'increaseAllowance',
               abi: ERC20,
               contractAddress: tokenAddress,
               data: [contractAddress, new BigNumber(amount).shiftedBy(Number(decimals)).toFixed(0).toString()],
@@ -98,8 +99,8 @@ export default {
           ]);
 
           this.SetLoader(false);
-          if (!approveFee.ok) {
-            this.ShowToast('Approve error');
+          if (!txFee.ok) {
+            this.ShowToast(needApprove);
             reject();
             return;
           }
@@ -114,7 +115,7 @@ export default {
               },
               to: { name: this.$t('meta.toBig'), value: contractAddress },
               amount: { name: this.$t('modals.amount'), value: amount, symbol },
-              fee: { name: this.$t('wallet.table.trxFee'), value: approveFee.result.fee, symbol: nativeTokenSymbol },
+              fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: nativeTokenSymbol },
             },
             submitMethod: async () => {
               this.ShowToast('Approving...', 'Approve');
@@ -134,9 +135,7 @@ export default {
             },
             cancel: async () => await reject(new Error('Cancel')),
           });
-        } else {
-          await resolve(amount);
-        }
+        } else await resolve(amount);
       });
     },
   },
