@@ -48,7 +48,7 @@
             :disabled="!tokenData"
             :placeholder="$t('modals.amount')"
             :name="$t('modals.amount')"
-            :rules="`required|is_not:0|decimal|decimalPlaces:${tokenData ? tokenData.decimals : 0}|min_buy_wqt:5,${selectedSymbol}|max_buy_wqt:100,${selectedSymbol}|not_enough_funds:${tokenData && tokenData.fullBalance}`"
+            :rules="`required|decimal|decimalPlaces:${tokenData ? tokenData.decimals : 0}|min_buy_wqt:5,${selectedSymbol}|max_buy_wqt:100,${selectedSymbol}|have_funds:${tokenData && tokenData.fullBalance},${amount}`"
             data-selector="AMOUNT"
             @input="handleInput"
           >
@@ -72,7 +72,7 @@
       </div>
       <div class="content__wqt">
         <span v-if="wqtAmount && !invalid">
-          {{ $t('meta.amount.amountOfWQT') }} ≈ {{ wqtAmount }}
+          {{ $t('meta.amount.amountOfWQTToReceive') }} ≈ {{ wqtAmount }}
         </span>
       </div>
       <base-btn

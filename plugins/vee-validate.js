@@ -295,6 +295,15 @@ extend('not_enough_funds', {
   params: ['balance'],
 });
 
+extend('have_funds', {
+  validate(value, { balance, amount }) {
+    return {
+      valid: new BigNumber(balance).isGreaterThanOrEqualTo(amount),
+    };
+  },
+  params: ['balance', 'amount'],
+});
+
 export default ({ app }) => {
   configure({
     defaultMessage: (_field_, values) => app.i18n.t(`messages.${values._rule_}`, values),
