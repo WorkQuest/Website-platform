@@ -71,7 +71,15 @@ export const GetInfoMessageText = (action, itsMe) => {
     case MessageAction.GROUP_CHAT_LEAVE_USER:
       text += itsMe ? 'youLeftTheChat' : 'leftTheChat';
       break;
-      // GROUP_CHAT_RESTORED_USER
+    case MessageAction.QUEST_CHAT_ADD_DISPUTE_ADMIN:
+      text += 'adminAddedToChat';
+      break;
+    case MessageAction.QUEST_CHAT_LEAVE_DISPUTE_ADMIN:
+      text += 'adminLeaveFromChat';
+      break;
+    case MessageAction.GROUP_CHAT_RESTORED_USER:
+      text += 'restoredToChat';
+      break;
     default:
       text = '';
       break;
