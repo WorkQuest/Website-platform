@@ -309,46 +309,42 @@ export default {
       if (type === MessageType.INFO) {
         text = 'chat.systemMessages.';
         switch (infoMessage.messageAction) {
-          case MessageAction.EMPLOYER_INVITE_ON_QUEST: {
+          case MessageAction.QUEST_CHAT_ADD_DISPUTE_ADMIN:
+            text += 'adminAddedToChat';
+            break;
+          case MessageAction.QUEST_CHAT_LEAVE_DISPUTE_ADMIN:
+            text += 'adminLeaveFromChat';
+            break;
+          case MessageAction.EMPLOYER_INVITE_ON_QUEST:
             text += itsMe ? 'youInvitedToTheQuest' : 'employerInvitedWorkerToQuest';
             break;
-          }
-          case MessageAction.WORKER_RESPONSE_ON_QUEST: {
+          case MessageAction.WORKER_RESPONSE_ON_QUEST:
             text += itsMe ? 'youHaveRespondedToTheQuest' : 'respondedToTheQuest';
             break;
-          }
-          case MessageAction.EMPLOYER_REJECT_RESPONSE_ON_QUEST: {
+          case MessageAction.EMPLOYER_REJECT_RESPONSE_ON_QUEST:
             text += itsMe ? 'youRejectTheResponseOnQuest' : 'rejectedTheResponseToTheQuest';
             break;
-          }
-          case MessageAction.WORKER_REJECT_INVITE_ON_QUEST: {
+          case MessageAction.WORKER_REJECT_INVITE_ON_QUEST:
             text += itsMe ? 'youRejectedTheInviteToTheQuest' : 'rejectedTheInviteToTheQuest';
             break;
-          }
-          case MessageAction.WORKER_ACCEPT_INVITE_ON_QUEST: {
+          case MessageAction.WORKER_ACCEPT_INVITE_ON_QUEST:
             text += itsMe ? 'youAcceptedTheInviteToTheQuest' : 'acceptedTheInviteToTheQuest';
             break;
-          }
-          case MessageAction.GROUP_CHAT_CREATE: {
+          case MessageAction.GROUP_CHAT_CREATE:
             text += 'createdAGroupChat';
             break;
-          }
-          case MessageAction.GROUP_CHAT_DELETE_USER: {
+          case MessageAction.GROUP_CHAT_DELETE_USER:
             text += 'userRemovedFromChat';
             break;
-          }
-          case MessageAction.GROUP_CHAT_ADD_USERS: {
+          case MessageAction.GROUP_CHAT_ADD_USERS:
             text += 'userAddedToChat';
             break;
-          }
-          case MessageAction.GROUP_CHAT_LEAVE_USER: {
+          case MessageAction.GROUP_CHAT_LEAVE_USER:
             text += 'leftTheChat';
             break;
-          }
-          default: {
+          default:
             text = '';
             break;
-          }
         }
 
         return this.$t(text);

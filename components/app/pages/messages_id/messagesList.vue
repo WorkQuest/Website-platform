@@ -30,25 +30,31 @@
           v-if="message.type === MessageType.INFO && message.infoMessage"
           class="info-message"
         >
-          <div class="info-message__title">
-            {{ setInfoMessageText(message.infoMessage.messageAction, message.itsMe) }}
-          </div>
           <template v-if="canShowActionUsers(message.infoMessage.messageAction, message.itsMe)">
-            <div
+            <span
               class="info-message__link"
               :class="{'info-message__link_left' : !message.itsMe}"
               @click="openProfile( message.sender.userId)"
             >
               {{ setFullName(message) }}
-            </div>
-            <div
+            </span>
+            <span class="info-message__title">
+              {{ setInfoMessageText(message.infoMessage.messageAction, message.itsMe) }}
+            </span>
+            <span
               v-if="!message.itsMe && [MessageAction.GROUP_CHAT_ADD_USERS, MessageAction.GROUP_CHAT_DELETE_USER].includes(message.infoMessage.messageAction) && message.infoMessage.user"
               class="info-message__link"
               @click="openProfile(message.sender.userId)"
             >
               {{ senderFullNameById(message.sender.userId) }}
-            </div>
+            </span>
           </template>
+          <div
+            v-else
+            class="info-message__title"
+          >
+            {{ setInfoMessageText(message.infoMessage.messageAction, message.itsMe) }}
+          </div>
         </div>
         <template v-else>
           <img
@@ -397,7 +403,7 @@ export default {
     setFullName({
       itsMe, infoMessage: { user }, sender, type,
     }) {
-      if (type === MessageType.INFO && sender.adminId) return '';
+      if (itsMe || (type === MessageType.INFO && sender.adminId)) return '';
       return itsMe
         ? this.UserName(user?.firstName, user?.lastName)
         : this.UserName(sender.user?.firstName, sender.user?.lastName);
@@ -642,10 +648,8 @@ export default {
 }
 
 .info-message {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: 5px;
-  grid-template-areas: "owner system sender";
+  font-size: 14px;
+  text-align: center;
 
   &__link {
     text-decoration: underline #1D2127;
@@ -797,6 +801,7 @@ export default {
 
 @include _767 {
   .info-message {
+    font-size: 12px;
     &__title {
       white-space: nowrap;
     }
@@ -806,6 +811,12 @@ export default {
       text-overflow: ellipsis;
       overflow: hidden;
     }
+  }
+}
+
+@include _480 {
+  .info-message {
+    font-size: 10px;
   }
 }
 </style>
