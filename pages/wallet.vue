@@ -109,7 +109,7 @@
                 class="balance__btn"
                 @click="showTransferModal()"
               >
-                {{ $t('modals.transfer') }}
+                {{ $t('modals.titles.withdraw') }}
               </base-btn>
               <base-btn
                 data-selector="SHOW-WITHDRAW-MODAL"

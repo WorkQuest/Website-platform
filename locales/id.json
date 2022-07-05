@@ -270,8 +270,8 @@
     "notEmptyArray": "Please select a {_field_}",
     "not_enough_funds": "Not enough funds",
     "have_funds": "Your balance less than amount",
-    "min_buy_wqt" : "To avoid unnecessary fees and network slippage, the minimum amount for this pair is ${min} {symbol}",
-    "max_buy_wqt": "To avoid unnecessary fees and network slippage, the maximum amount for this pair is ${max} {symbol}"
+    "min_buy_wqt" : "Insufficient tokens, min amount ${min} {symbol}",
+    "max_buy_wqt": "Max amount of tokens ${max} {symbol}"
   },
   "about": {
     "text": "WorkQuest adalah sebuah proyek sosial berbasis teknologi blockchain untuk menemukan pekerjaan dan menyelesaikan tugas yang diberikan oleh pihak pemberi kerja dalam mode quest. Apakah Anda sedang mencari pekerjaan? WorkQuest akan membantu Anda menemukan quest di dekat Anda dan kota Anda. Apakah Anda membutuhkan pekerja untuk melaksanakan tujuan Anda? Cukup buat quest di situs WorkQuest. Layanan ini menanggung kewajiban garansi untuk melaksanakan quest. Dana pihak pemberi kerja disimpan di kami , jika karyawan mengonfirmasi pelaksanaan kerja, ia akan menerima setoran dana di akunnya. Sistem penilaian, ulasan, dan daftar quest yang diselesaikan akan membantu menemukan orang-orang jujur dan spesialis terbaik dengan mudah.\n\n          Tujuan kami adalah menyederhanakan komunikasi antara pihak pemberi kerja dan karyawan, membantu mempekerjakan jutaan orang, memperbaiki kondisi keuangan mereka, memecahkan masalah lama menemukan profesional yang dapat diandalkan di semua sektor demi menciptakan ekonomi digital progresif yang dibangun di atas prinsip-prinsip kepercayaan, saling menghormati dan kesejahteraan semua pesertanya."
@@ -1457,7 +1457,8 @@
       "buyButton": "Buy WQT",
       "title": "Buy $WQT now!",
       "sub": "The easiest way to buy $WQT is using $USDT.",
-      "networks": "Networks available for purchase: Ethereum, Binance Smart Chain and Polygon. After the purchase, $WQT will automatically deposit to your WorkNet network wallet, minus the transaction fee."
+      "networks": "Networks available for purchase: Ethereum, Binance Smart Chain and Polygon. After the purchase, $WQT will automatically deposit to your WorkNet network wallet, minus the transaction fee.",
+      "worknetFee": "Includes a WorkNet network fee."
     },
     "collateral": {
       "balance": "Collateral balance",

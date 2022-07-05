@@ -1,10 +1,32 @@
 <template>
   <ctm-modal-box
     class="transfer"
-    :title="$tc('modals.titles.transfer')"
+    :title="$tc('modals.titles.withdraw')"
   >
     <div class="transfer__content content">
-      <validation-observer v-slot="{handleSubmit, invalid}">
+      <div
+        class="step-panel"
+        :class="{'step-panel_hide': step === 'addCard'}"
+      >
+        <div
+          class="step-panel__step"
+          :class="[{'step-panel__step_active': step === 'wallet'}, {'hide': step === 'addCard'}]"
+          @click="step = 'wallet'"
+        >
+          {{ $t('wallet.walletAddress') }}
+        </div>
+        <div
+          class="step-panel__step"
+          :class="[{'step-panel__step_active': step === 'bank'}, {'hide': step === 'addCard'}]"
+          @click="step = 'bank'"
+        >
+          {{ $t('meta.bankCard') }}
+        </div>
+      </div>
+      <validation-observer
+        v-if="step === 'wallet'"
+        v-slot="{handleSubmit, invalid}"
+      >
         <div class="content__container">
           <div class="content__input input">
             <span class="input__title">
@@ -79,6 +101,9 @@
           </base-btn>
         </div>
       </validation-observer>
+      <div v-else>
+        <bank-card />
+      </div>
     </div>
   </ctm-modal-box>
 </template>
@@ -88,9 +113,11 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import { TokenMap, TokenSymbols, WalletTokensData } from '~/utils/enums';
 import { ERC20 } from '~/abi/index';
+import BankCard from '~/components/CtmModal/CtmModalDeposit/BankCard';
 
 export default {
   name: 'ModalTakeTransfer',
+  components: { BankCard },
   data() {
     return {
       recipient: '',
@@ -98,6 +125,8 @@ export default {
       ddValue: 0,
       maxFeeForNativeToken: 0,
       isCanSubmit: false,
+
+      step: 'wallet',
     };
   },
   computed: {
@@ -221,6 +250,9 @@ export default {
 }
 
 .content {
+  &__container {
+    margin-top: 10px;
+  }
   &__step {
     display: flex;
     flex-direction: row;
@@ -264,6 +296,28 @@ export default {
   &__button {
     margin-right: 10px !important;
     background-color: transparent !important;
+  }
+}
+
+.step-panel {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  &_hide {
+    display: none;
+  }
+  &__step {
+    @include text-simple;
+    font-weight: 400;
+    font-size: 16px;
+    color: $black500;
+    margin: 0 10px 0 0;
+    cursor: pointer;
+    &_active {
+      color: $black800;
+      border-bottom: 1px solid $blue;
+      padding: 0 0 12px 0;
+    }
   }
 }
 </style>

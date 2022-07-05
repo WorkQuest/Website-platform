@@ -71,9 +71,14 @@
         </div>
       </div>
       <div class="content__wqt">
-        <span v-if="wqtAmount && !invalid">
-          {{ $t('meta.amount.amountOfWQTToReceive') }} ≈ {{ wqtAmount }}
-        </span>
+        <template v-if="wqtAmount && !invalid">
+          <div class="content__wqt-amount">
+            {{ $t('meta.amount.amountOfWQTToReceive') }}: {{ wqtAmount }}
+          </div>
+          <div class="content__wqt-fee">
+            {{ $t('wallet.buyWQT.worknetFee') }}
+          </div>
+        </template>
       </div>
       <base-btn
         :disabled="invalid || inProgressWQT"
@@ -155,40 +160,36 @@ export default {
     // Определение сколько приблизительно WQT мы получим
     amount() {
       clearTimeout(this.updatePriceId);
-      this.$refs.buyWQT.validate().then((success) => {
-        if (!success) return;
-        this.inProgressWQT = true;
-        this.wqtAmount = `${this.$t('modals.pleaseWait')}...`;
-        this.updatePriceId = setTimeout(async () => {
-          await this.$store.dispatch('oracle/getCurrentTokensPrices');
-          const priceWQT = new BigNumber(this.oraclePrices[this.oracleSymbols.indexOf(TokenSymbols.WQT)]).shiftedBy(-18);
-          const decimalAmount = new BigNumber(this.amount);
-          const receiveWithCommission = decimalAmount.dividedBy(priceWQT).multipliedBy(1 - WQTBuyCommission).decimalPlaces(18);
-          //  TODO: check it, if dont need to convert, del
-          const address = this.convertToHex('wq', this.userWalletAddress);
-          const value = new BigNumber(receiveWithCommission).shiftedBy(18).toString();
+      this.inProgressWQT = true;
+      this.wqtAmount = `${this.$t('modals.pleaseWait')}...`;
+      this.updatePriceId = setTimeout(async () => {
+        await this.$store.dispatch('oracle/getCurrentTokensPrices');
+        const priceWQT = new BigNumber(this.oraclePrices[this.oracleSymbols.indexOf(TokenSymbols.WQT)]).shiftedBy(-18);
+        const decimalAmount = new BigNumber(this.amount);
+        const receiveWithCommission = decimalAmount.dividedBy(priceWQT).multipliedBy(1 - WQTBuyCommission).decimalPlaces(18);
+        //  TODO: check it, if dont need to convert, del
+        const address = this.convertToHex('wq', this.userWalletAddress);
+        const value = new BigNumber(receiveWithCommission).shiftedBy(18).toString();
 
-          let txFee;
-          try {
-            const provider = new Web3(this.ENV.WQ_PROVIDER);
-            const [gasPrice, gasEstimate] = await Promise.all([
-              provider.eth.getGasPrice(),
-              provider.eth.estimateGas({
-                from: address,
-                to: address,
-                value,
-              }),
-            ]);
-            txFee = new BigNumber(gasPrice).multipliedBy(gasEstimate).shiftedBy(-18).toString();
-          } catch (e) {
-            txFee = 18; // user doesnt has balance of wqt in worknet
-          }
+        let txFee;
+        try {
+          const provider = new Web3(this.ENV.WQ_PROVIDER);
+          const [gasPrice, gasEstimate] = await Promise.all([
+            provider.eth.getGasPrice(),
+            provider.eth.estimateGas({
+              from: address,
+              to: address,
+              value,
+            }),
+          ]);
+          txFee = new BigNumber(gasPrice).multipliedBy(gasEstimate).shiftedBy(-18).toString();
+        } catch (e) {
+          txFee = 18; // user doesnt has balance of wqt in worknet
+        }
 
-          this.wqtAmount = receiveWithCommission.decimalPlaces(3).minus(txFee).toFixed(0);
-          this.inProgressWQT = false;
-        },
-        400);
-      });
+        this.wqtAmount = receiveWithCommission.decimalPlaces(3).minus(txFee).toFixed(0);
+        this.inProgressWQT = false;
+      }, 400);
     },
   },
   async beforeMount() {
@@ -344,7 +345,7 @@ export default {
     }
   }
   &__wqt {
-    min-height: 24px;
+    min-height: 48px;
   }
   &__balance {
     color: $black500;
