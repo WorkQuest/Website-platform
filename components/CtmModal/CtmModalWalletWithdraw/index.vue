@@ -4,20 +4,17 @@
     :title="$tc('modals.titles.withdraw')"
   >
     <div class="transfer__content content">
-      <div
-        class="step-panel"
-        :class="{'step-panel_hide': step === 'addCard'}"
-      >
+      <div class="step-panel">
         <div
           class="step-panel__step"
-          :class="[{'step-panel__step_active': step === 'wallet'}, {'hide': step === 'addCard'}]"
+          :class="[{'step-panel__step_active': step === 'wallet'}]"
           @click="step = 'wallet'"
         >
           {{ $t('wallet.walletAddress') }}
         </div>
         <div
           class="step-panel__step"
-          :class="[{'step-panel__step_active': step === 'bank'}, {'hide': step === 'addCard'}]"
+          :class="[{'step-panel__step_active': step === 'bank'}]"
           @click="step = 'bank'"
         >
           {{ $t('meta.bankCard') }}
@@ -26,6 +23,7 @@
       <validation-observer
         v-if="step === 'wallet'"
         v-slot="{handleSubmit, invalid}"
+        tag="div"
       >
         <div class="content__container">
           <div class="content__input input">
@@ -101,9 +99,9 @@
           </base-btn>
         </div>
       </validation-observer>
-      <div v-else>
+      <template v-else>
         <bank-card />
-      </div>
+      </template>
     </div>
   </ctm-modal-box>
 </template>
@@ -303,9 +301,6 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  &_hide {
-    display: none;
-  }
   &__step {
     @include text-simple;
     font-weight: 400;
