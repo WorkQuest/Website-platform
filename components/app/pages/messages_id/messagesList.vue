@@ -239,7 +239,7 @@ export default {
     lastMessageId(newVal, oldVal) {
       if (!this.isScrollBtnVis && oldVal) this.scrollToBottom();
     },
-    currChatIsUnread(newVal, oldVal) {
+    currChatIsUnread(newVal) {
       if (newVal && this.lastMessageId) this.readMessages();
     },
   },
@@ -316,7 +316,7 @@ export default {
             behavior: 'smooth',
           });
         }
-        if (!this.minScrollDifference) this.minScrollDifference = (HandleScrollContainer.scrollHeight - HandleScrollContainer.scrollTop) * 2;
+        if (!this.minScrollDifference) this.minScrollDifference = (HandleScrollContainer?.scrollHeight - HandleScrollContainer?.scrollTop) * 2;
 
         if (starredMessage && isInit) HandleScrollContainer.scrollTo(0, starredMessage[0].offsetTop - HandleScrollContainer.offsetTop - 20);
       }, 200);
@@ -399,7 +399,7 @@ export default {
     }) {
       if (type === MessageType.INFO && sender.adminId) return '';
       return itsMe
-        ? this.UserName(user.firstName, user?.lastName)
+        ? this.UserName(user?.firstName, user?.lastName)
         : this.UserName(sender.user?.firstName, sender.user?.lastName);
     },
     goToCurrChat(message) {
@@ -465,7 +465,7 @@ export default {
     },
     senderFullNameById(userId) {
       const sender = this.getSenderInfoById(userId);
-      if (!sender) return '-';
+      if (!sender) return this.$t('profile.defaultNme');
       if (sender.type === UserRoles.USER) return this.UserName(sender.user?.firstName, sender.user?.lastName);
       return this.$t('chat.workquestAdmin');
     },
