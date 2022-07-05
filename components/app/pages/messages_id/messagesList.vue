@@ -471,7 +471,7 @@ export default {
     },
     senderFullNameById(userId) {
       const sender = this.getSenderInfoById(userId);
-      if (!sender) return this.$t('profile.defaultNme');
+      if (!sender) return this.$t('profile.defaultName');
       if (sender.type === UserRoles.USER) return this.UserName(sender.user?.firstName, sender.user?.lastName);
       return this.$t('chat.workquestAdmin');
     },
