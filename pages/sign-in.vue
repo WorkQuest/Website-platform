@@ -578,6 +578,11 @@ export default {
       else if (this.userData.role === UserRole.WORKER) await this.$router.push(Path.QUESTS);
     },
     async redirectSocialLink(socialNetwork) {
+      // TODO while not fixed twitter
+      if (socialNetwork === 'twitter' && process.env.BRANCH !== 'develop') {
+        this.ComingSoon();
+        return;
+      }
       window.location = `${this.ENV.BASE_URL}v1/auth/login/main/${socialNetwork}`;
     },
     showRestoreModal() {
