@@ -20,7 +20,7 @@ export default {
 <style scoped lang="scss">
 $base-color: #ddd;
 $shine-color: #e8e8e8;
-$animation-duration: 1.6s;
+$animation-duration: 4s;
 $avatar-offset: 52 + 16;
 .skeleton {
   display: inline-block;
@@ -28,7 +28,7 @@ $avatar-offset: 52 + 16;
   min-height: 20px;
   height: 100%;
   background-image: linear-gradient(90deg, $base-color 0px, $shine-color 40px, $base-color 80px);
-  background-size: 1200px;
+  background-size: 1300px;
 
   &__avatar {
     border-radius: 50%;
@@ -55,7 +55,7 @@ $avatar-offset: 52 + 16;
     background-position: -100px
   }
   40%, 100% {
-    background-position: 1200px
+    background-position: 1200px;
   }
 }
 </style>

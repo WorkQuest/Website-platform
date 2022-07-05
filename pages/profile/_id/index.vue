@@ -656,15 +656,11 @@ export default {
 @include _1199 {
   .container {
     width: 100%;
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 }
 @include _575 {
-  .container {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
   .block__statistic {
     grid-template-columns: repeat(2, auto);
   }
