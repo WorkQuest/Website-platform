@@ -201,8 +201,13 @@ export default {
   },
   async beforeMount() {
     await this.updateTokenData();
+    this.focusBlurAmount();
   },
   methods: {
+    focusBlurAmount() {
+      this.$refs.amount.$refs.input.focus();
+      this.$refs.amount.$refs.input.blur();
+    },
     async handleSwitchNetwork(index) {
       if (this.selectedNetworkIndex === index) return;
       this.SetLoader(true);
@@ -224,8 +229,7 @@ export default {
     maxValue() {
       if (!this.tokenData) return;
       this.amount = this.maxUSDTValue;
-      this.$refs.amount.$refs.input.focus();
-      this.$refs.amount.$refs.input.blur();
+      this.focusBlurAmount();
     },
     // Updates balance by current network & token
     async updateTokenData() {
