@@ -109,7 +109,7 @@
                 class="balance__btn"
                 @click="showTransferModal()"
               >
-                {{ $t('modals.transfer') }}
+                {{ $t('modals.titles.withdraw') }}
               </base-btn>
               <base-btn
                 data-selector="SHOW-WITHDRAW-MODAL"
@@ -136,7 +136,7 @@
               :disabled="true"
               @click="showModal({key: 'addCard', branchText: 'adding' })"
             >
-              {{ $t('modals.deposit.coming') }}
+              {{ $t('modals.coming') }}
             </base-btn>
           </div>
         </div>
@@ -462,7 +462,7 @@ export default {
     showTransferModal() {
       if (this.isFetchingBalance) return;
       this.ShowModal({
-        key: modals.giveTransfer,
+        key: modals.walletWithdraw,
         submit: async ({ recipient, amount, selectedToken }) => {
           const {
             wqAddress, convertToHex, nativeTokenSymbol,

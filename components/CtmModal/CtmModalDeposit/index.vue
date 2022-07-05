@@ -4,20 +4,17 @@
     :title="$tc('modals.titles.deposit')"
   >
     <div class="ctm-modal__content">
-      <div
-        class="step-panel"
-        :class="{'hide': step === 'addCard'}"
-      >
+      <div class="step-panel">
         <div
           class="step-panel__step"
-          :class="[{'step-panel__step_active': step === 'wallet'}, {'hide': step === 'addCard'}]"
+          :class="[{'step-panel__step_active': step === 'wallet'}]"
           @click="step = 'wallet'"
         >
           {{ $t('wallet.walletAddress') }}
         </div>
         <div
           class="step-panel__step"
-          :class="[{'step-panel__step_active': step === 'bank'}, {'hide': step === 'addCard'}]"
+          :class="[{'step-panel__step_active': step === 'bank'}]"
           @click="step = 'bank'"
         >
           {{ $t('meta.bankCard') }}
@@ -49,12 +46,7 @@ export default {
   components: { bankCard, DepositWalletAddress },
   data() {
     return {
-      amountInput: '',
-      cardNumberInput: '',
-      dateInput: '',
-      cvvInput: '',
       step: 'wallet',
-      code: '0xf376g...G7f3g8b',
     };
   },
   computed: {
@@ -89,10 +81,6 @@ export default {
     font-size: 16px;
     color: $black800;
   }
-}
-
-.hide {
-  display: none;
 }
 
 .step {

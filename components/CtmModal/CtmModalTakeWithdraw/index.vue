@@ -121,6 +121,7 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import { images } from '~/utils/images';
+import { IS_PLUG } from '~/utils/locker-data';
 
 export default {
   name: 'ModalTakeWithdrawal',
@@ -157,6 +158,11 @@ export default {
       this.amount = this.maxValue;
     },
     showAddingCard() {
+      // TODO plug for release
+      if (IS_PLUG) {
+        this.ComingSoon();
+        return;
+      }
       this.ShowModal({
         key: modals.addingCard,
         branch: 'withdraw',

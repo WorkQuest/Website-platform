@@ -41,39 +41,42 @@
         >
           {{ $t('meta.balance') }} {{ tokenData.fullBalance }} {{ tokenData.symbol }}
         </div>
-        <div>
-          <base-field
-            ref="amount"
-            v-model="amount"
-            :disabled="!tokenData"
-            :placeholder="$t('modals.amount')"
-            :name="$t('modals.amount')"
-            :rules="`required|is_not:0|decimal|decimalPlaces:${tokenData ? tokenData.decimals : 0}|min_buy_wqt:5,${selectedSymbol}|max_buy_wqt:100,${selectedSymbol}|not_enough_funds:${tokenData && tokenData.fullBalance}`"
-            data-selector="AMOUNT"
-            @input="handleInput"
+        <base-field
+          ref="amount"
+          v-model="amount"
+          :disabled="!tokenData"
+          :placeholder="$t('modals.amount')"
+          :name="$t('modals.amount')"
+          :rules="amountRules"
+          data-selector="AMOUNT"
+          @input="handleInput"
+        >
+          <template
+            v-slot:right-absolute
+            class="content__max max"
           >
-            <template
-              v-slot:right-absolute
-              class="content__max max"
+            <base-btn
+              mode="max"
+              class="max__button"
+              data-selector="MAX"
+              @click="maxValue"
             >
-              <base-btn
-                mode="max"
-                class="max__button"
-                data-selector="MAX"
-                @click="maxValue"
-              >
-                <span class="max__text">
-                  {{ $t('modals.maximum') }}
-                </span>
-              </base-btn>
-            </template>
-          </base-field>
-        </div>
+              <span class="max__text">
+                {{ $t('modals.maximum') }}
+              </span>
+            </base-btn>
+          </template>
+        </base-field>
       </div>
       <div class="content__wqt">
-        <span v-if="wqtAmount && !invalid">
-          {{ $t('meta.amount.amountOfWQT') }} ≈ {{ wqtAmount }}
-        </span>
+        <template v-if="wqtAmount && !invalid">
+          <div class="content__wqt-amount">
+            {{ $t('meta.amount.amountOfWQTToReceive') }}: {{ wqtAmount }}
+          </div>
+          <div class="content__wqt-fee">
+            {{ $t('wallet.buyWQT.worknetFee') }}
+          </div>
+        </template>
       </div>
       <base-btn
         :disabled="invalid || inProgressWQT"
@@ -118,6 +121,15 @@ export default {
       oraclePrices: 'oracle/getPrices',
       oracleSymbols: 'oracle/getSymbols',
     }),
+    amountRules() {
+      const { tokenData, selectedSymbol, amount } = this;
+      const minTokensAmount = `min_tokens_amount:${tokenData && tokenData.fullBalance},${5},${tokenData && tokenData.symbol}`;
+      const haveFounds = `have_funds:${tokenData && tokenData.fullBalance},${amount}`;
+      const decimalPlaces = `decimalPlaces:${tokenData ? tokenData.decimals : 0}`;
+      const minBuy = `min_buy_wqt:5,${selectedSymbol}`;
+      const maxBuy = `max_buy_wqt:100,${selectedSymbol}`;
+      return `required|decimal|${minTokensAmount}|${decimalPlaces}|${minBuy}|${maxBuy}|${haveFounds}`;
+    },
     networkList() {
       return [
         BuyWQTTokensData.get(Chains.ETHEREUM),
@@ -155,46 +167,47 @@ export default {
     // Определение сколько приблизительно WQT мы получим
     amount() {
       clearTimeout(this.updatePriceId);
-      this.$refs.buyWQT.validate().then((success) => {
-        if (!success) return;
-        this.inProgressWQT = true;
-        this.wqtAmount = `${this.$t('modals.pleaseWait')}...`;
-        this.updatePriceId = setTimeout(async () => {
-          await this.$store.dispatch('oracle/getCurrentTokensPrices');
-          const priceWQT = new BigNumber(this.oraclePrices[this.oracleSymbols.indexOf(TokenSymbols.WQT)]).shiftedBy(-18);
-          const decimalAmount = new BigNumber(this.amount);
-          const receiveWithCommission = decimalAmount.dividedBy(priceWQT).multipliedBy(1 - WQTBuyCommission).decimalPlaces(18);
-          //  TODO: check it, if dont need to convert, del
-          const address = this.convertToHex('wq', this.userWalletAddress);
-          const value = new BigNumber(receiveWithCommission).shiftedBy(18).toString();
+      this.inProgressWQT = true;
+      this.wqtAmount = `${this.$t('modals.pleaseWait')}...`;
+      this.updatePriceId = setTimeout(async () => {
+        await this.$store.dispatch('oracle/getCurrentTokensPrices');
+        const priceWQT = new BigNumber(this.oraclePrices[this.oracleSymbols.indexOf(TokenSymbols.WQT)]).shiftedBy(-18);
+        const decimalAmount = new BigNumber(this.amount);
+        const receiveWithCommission = decimalAmount.dividedBy(priceWQT).multipliedBy(1 - WQTBuyCommission).decimalPlaces(18);
+        //  TODO: check it, if dont need to convert, del
+        const address = this.convertToHex('wq', this.userWalletAddress);
+        const value = new BigNumber(receiveWithCommission).shiftedBy(18).toString();
 
-          let txFee;
-          try {
-            const provider = new Web3(this.ENV.WQ_PROVIDER);
-            const [gasPrice, gasEstimate] = await Promise.all([
-              provider.eth.getGasPrice(),
-              provider.eth.estimateGas({
-                from: address,
-                to: address,
-                value,
-              }),
-            ]);
-            txFee = new BigNumber(gasPrice).multipliedBy(gasEstimate).shiftedBy(-18).toString();
-          } catch (e) {
-            txFee = 18; // user doesnt has balance of wqt in worknet
-          }
+        let txFee;
+        try {
+          const provider = new Web3(this.ENV.WQ_PROVIDER);
+          const [gasPrice, gasEstimate] = await Promise.all([
+            provider.eth.getGasPrice(),
+            provider.eth.estimateGas({
+              from: address,
+              to: address,
+              value,
+            }),
+          ]);
+          txFee = new BigNumber(gasPrice).multipliedBy(gasEstimate).shiftedBy(-18).toString();
+        } catch (e) {
+          txFee = 18; // user doesnt has balance of wqt in worknet
+        }
 
-          this.wqtAmount = receiveWithCommission.decimalPlaces(3).minus(txFee).toFixed(0);
-          this.inProgressWQT = false;
-        },
-        400);
-      });
+        this.wqtAmount = receiveWithCommission.decimalPlaces(3).minus(txFee).toFixed(0);
+        this.inProgressWQT = false;
+      }, 400);
     },
   },
   async beforeMount() {
     await this.updateTokenData();
+    this.focusBlurAmount();
   },
   methods: {
+    focusBlurAmount() {
+      this.$refs.amount.$refs.input.focus();
+      this.$refs.amount.$refs.input.blur();
+    },
     async handleSwitchNetwork(index) {
       if (this.selectedNetworkIndex === index) return;
       this.SetLoader(true);
@@ -205,7 +218,7 @@ export default {
       if (!val || isNaN(val)) this.amount = val;
       else if (!this.tokenData) this.amount = 0;
       else this.amount = val;
-      this.amount = this.amount.replace(/,/g, '.');
+      this.amount = this.amount.toString().replace(/,/g, '.');
     },
     clearData() {
       this.amount = null;
@@ -216,8 +229,7 @@ export default {
     maxValue() {
       if (!this.tokenData) return;
       this.amount = this.maxUSDTValue;
-      this.$refs.amount.$refs.input.focus();
-      this.$refs.amount.$refs.input.blur();
+      this.focusBlurAmount();
     },
     // Updates balance by current network & token
     async updateTokenData() {
@@ -344,7 +356,7 @@ export default {
     }
   }
   &__wqt {
-    min-height: 24px;
+    min-height: 48px;
   }
   &__balance {
     color: $black500;
