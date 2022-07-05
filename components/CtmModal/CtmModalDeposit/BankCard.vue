@@ -19,10 +19,9 @@
       </base-btn>
       <base-btn
         data-selector="CONFIRM"
-        :disabled="true"
-        @click="showModal({key: 'addCard', branchText: 'adding' })"
+        @click="handleConfirm"
       >
-        {{ $t('modals.coming') }}
+        {{ $t('meta.btns.addNow') }}
       </base-btn>
     </div>
   </div>
@@ -30,6 +29,7 @@
 
 <script>
 import { images } from '~/utils/images';
+import { IS_PLUG } from '~/utils/locker-data';
 
 export default {
   name: 'BankCard',
@@ -38,6 +38,16 @@ export default {
     cardList: {
       type: Array,
       default: () => [],
+    },
+  },
+  methods: {
+    handleConfirm() {
+      // TODO plug for release
+      if (IS_PLUG) {
+        this.ComingSoon();
+        return;
+      }
+      this.ShowModal({ key: 'addCard', branchText: 'adding' });
     },
   },
 };
