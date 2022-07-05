@@ -23,7 +23,8 @@ Vue.mixin({
     ComingSoon() {
       this.ShowModal({
         key: modals.status,
-        title: 'Coming soon',
+        title: this.$t('modals.coming'),
+        text: this.$t('modals.stillUnderConstruction'),
       });
     },
     EqualsArrays(a, b) {

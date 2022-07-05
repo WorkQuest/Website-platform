@@ -136,7 +136,7 @@
               :disabled="true"
               @click="showModal({key: 'addCard', branchText: 'adding' })"
             >
-              {{ $t('modals.deposit.coming') }}
+              {{ $t('modals.coming') }}
             </base-btn>
           </div>
         </div>

@@ -950,6 +950,8 @@
     "alreadyRedeemed": "You already redeemed, wait!"
   },
   "modals": {
+    "coming": "Coming soon",
+    "stillUnderConstruction": "Still under construction",
     "titles": {
       "2FA": {
         "disable": "إيقاف المصادقة الثنائية",
@@ -1303,7 +1305,6 @@
       "scanQrCodeWallet": "Scan QR code or copy address to receive payment",
       "walletCopied": "Wallet address copied successfully",
       "uHaveToAddCard": "Please add a bank card to your account",
-      "coming": "Coming soon",
       "addCard": "Add card",
       "sharingText": "Hi, here is my wallet address:"
     }
