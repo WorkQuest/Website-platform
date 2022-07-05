@@ -1,0 +1,11 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "4J92V5G344.com.company.workquestapp",
+                "paths": [ "*" ]
+            }
+        ]
+    }
+}
