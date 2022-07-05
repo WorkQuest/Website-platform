@@ -191,7 +191,7 @@ import moment from 'moment';
 import modals from '~/store/modals/modals';
 import { Path } from '~/utils/enums';
 import {
-  MessageAction, MessageType, UserRoles, FileTypes,
+  MessageAction, MessageType, UserRoles, FileTypes, GetInfoMessageText,
 } from '~/utils/сonstants/chat';
 import { images } from '~/utils/images';
 
@@ -349,51 +349,7 @@ export default {
       }
     },
     setInfoMessageText(action, itsMe) {
-      let text = 'chat.systemMessages.';
-      switch (action) {
-        case MessageAction.EMPLOYER_INVITE_ON_QUEST: {
-          text += itsMe ? 'youInvitedToTheQuest' : 'employerInvitedWorkerToQuest';
-          break;
-        }
-        case MessageAction.WORKER_RESPONSE_ON_QUEST: {
-          text += itsMe ? 'youHaveRespondedToTheQuest' : 'respondedToTheQuest';
-          break;
-        }
-        case MessageAction.EMPLOYER_REJECT_RESPONSE_ON_QUEST: {
-          text += itsMe ? 'youRejectTheResponseOnQuest' : 'rejectedTheResponseToTheQuest';
-          break;
-        }
-        case MessageAction.WORKER_REJECT_INVITE_ON_QUEST: {
-          text += itsMe ? 'youRejectedTheInviteToTheQuest' : 'rejectedTheInviteToTheQuest';
-          break;
-        }
-        case MessageAction.WORKER_ACCEPT_INVITE_ON_QUEST: {
-          text += itsMe ? 'youAcceptedTheInviteToTheQuest' : 'acceptedTheInviteToTheQuest';
-          break;
-        }
-        case MessageAction.GROUP_CHAT_CREATE: {
-          text += itsMe ? 'youCreatedAGroupChat' : 'createdAGroupChat';
-          break;
-        }
-        case MessageAction.GROUP_CHAT_DELETE_USER: {
-          text += itsMe ? 'youHaveRemovedFromChat' : 'removedFromChat';
-          break;
-        }
-        case MessageAction.GROUP_CHAT_ADD_USERS: {
-          text += itsMe ? 'youAddedToChat' : 'addedToChat';
-          break;
-        }
-        case MessageAction.GROUP_CHAT_LEAVE_USER: {
-          text += itsMe ? 'youLeftTheChat' : 'leftTheChat';
-          break;
-        }
-        default: {
-          text = '';
-          break;
-        }
-      }
-
-      return this.$t(text);
+      return this.$t(GetInfoMessageText(action, itsMe));
     },
     openProfile(userId) {
       this.$router.push(`${Path.PROFILE}/${userId}`);

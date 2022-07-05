@@ -193,7 +193,7 @@ import { mapGetters } from 'vuex';
 import ChatMenu from '~/components/ui/ChatMenu';
 import { Path } from '~/utils/enums';
 import {
-  ChatType, MessageType, MessageAction, QuestChatStatus, UserRoles,
+  ChatType, MessageType, MessageAction, QuestChatStatus, UserRoles, GetInfoMessageText,
 } from '~/utils/сonstants/chat';
 import { images } from '~/utils/images';
 
@@ -307,51 +307,7 @@ export default {
       text, type, infoMessage, sender,
     }, itsMe) {
       if (type === MessageType.INFO) {
-        text = 'chat.systemMessages.';
-        switch (infoMessage.messageAction) {
-          case MessageAction.EMPLOYER_INVITE_ON_QUEST: {
-            text += itsMe ? 'youInvitedToTheQuest' : 'employerInvitedWorkerToQuest';
-            break;
-          }
-          case MessageAction.WORKER_RESPONSE_ON_QUEST: {
-            text += itsMe ? 'youHaveRespondedToTheQuest' : 'respondedToTheQuest';
-            break;
-          }
-          case MessageAction.EMPLOYER_REJECT_RESPONSE_ON_QUEST: {
-            text += itsMe ? 'youRejectTheResponseOnQuest' : 'rejectedTheResponseToTheQuest';
-            break;
-          }
-          case MessageAction.WORKER_REJECT_INVITE_ON_QUEST: {
-            text += itsMe ? 'youRejectedTheInviteToTheQuest' : 'rejectedTheInviteToTheQuest';
-            break;
-          }
-          case MessageAction.WORKER_ACCEPT_INVITE_ON_QUEST: {
-            text += itsMe ? 'youAcceptedTheInviteToTheQuest' : 'acceptedTheInviteToTheQuest';
-            break;
-          }
-          case MessageAction.GROUP_CHAT_CREATE: {
-            text += 'createdAGroupChat';
-            break;
-          }
-          case MessageAction.GROUP_CHAT_DELETE_USER: {
-            text += 'userRemovedFromChat';
-            break;
-          }
-          case MessageAction.GROUP_CHAT_ADD_USERS: {
-            text += 'userAddedToChat';
-            break;
-          }
-          case MessageAction.GROUP_CHAT_LEAVE_USER: {
-            text += 'leftTheChat';
-            break;
-          }
-          default: {
-            text = '';
-            break;
-          }
-        }
-
-        return this.$t(text);
+        return this.$t(GetInfoMessageText(infoMessage.messageAction, itsMe));
       }
 
       return text;
