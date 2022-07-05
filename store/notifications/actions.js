@@ -149,6 +149,17 @@ export default {
     notification.params = { isLocal: false };
 
     switch (action) {
+      case NotificationAction.UPDATE_RATING_STATISTIC:
+        notification.sender = {
+          avatar: { url: images.WQ_LOGO },
+          firstName: $nuxt.$t('ui.notifications.workquestInfo'),
+        };
+        notification.params = {
+          ...notification.params,
+          title: ['NoStatus', 'Verified', 'Reliable', 'TopRanked'][data.status],
+          path: `${Path.PROFILE}/${user.id}`,
+        };
+        break;
       case NotificationAction.QUEST_STATUS_UPDATED:
         notification.sender = userRole === UserRole.EMPLOYER ? assignedWorker
           || { avatar: { url: images.WQ_LOGO }, firstName: $nuxt.$t('ui.notifications.workquestInfo') } : user;

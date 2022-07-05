@@ -1437,7 +1437,8 @@
     "commentLiked": "Comment liked",
     "questEdited": "Quest edited",
     "questEndSoon": "Quest end soon",
-    "newDiscussionLike": "New like on discussion"
+    "newDiscussionLike": "New like on discussion",
+    "updateRatingStatistic": "New rating statistic"
   },
   "wallet": {
     "frozen": "Frozen balance",
