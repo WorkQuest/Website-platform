@@ -58,7 +58,7 @@
               class="input__field"
               data-selector="AMOUNT"
               :placeholder="$t('modals.amount')"
-              :rules="`required|decimal|is_not:0|max_value:${maxAmount}|decimalPlaces:${tokenDecimals}`"
+              :rules="`required|decimal|is_not:0|max_value:${maxAmount}|decimalPlaces:${tokenDecimals}|not_enough_funds:${tokenBalance}`"
               :name="$tc('modals.amountField')"
               @input="replaceDot"
             >
@@ -145,6 +145,9 @@ export default {
     tokenDecimals() {
       return this.balance[this.selectedToken].decimals;
     },
+    tokenBalance() {
+      return this.balance[this.selectedToken].fullBalance;
+    },
     tokenSymbolsDd() {
       return WalletTokensData[this.selectedNetwork].tokenList;
     },
@@ -153,7 +156,7 @@ export default {
         selectedToken, balance, maxFeeForNativeToken,
       } = this;
       const fullBalance = new BigNumber(balance[selectedToken].fullBalance);
-      if (selectedToken === this.nativeTokenSymbol) return fullBalance.minus(maxFeeForNativeToken).toString();
+      if (selectedToken === this.nativeTokenSymbol) return fullBalance > 0 ? fullBalance.minus(maxFeeForNativeToken).toString() : 0;
       return fullBalance.toString();
     },
   },
