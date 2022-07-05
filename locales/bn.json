@@ -1514,7 +1514,9 @@
       "userAddedToChat": "Added user to chat",
       "userRemovedFromChat": "Removed user from chat",
       "leftTheChat": "left the chat",
-      "youLeftTheChat": "You left the chat"
+      "youLeftTheChat": "You left the chat",
+      "adminAddedToChat": "Added admin to chat",
+      "adminLeaveFromChat": "Admin leave from chat"
     },
     "leaveChat": "Leave chat",
     "loadMore": "Load more",

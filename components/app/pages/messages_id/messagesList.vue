@@ -351,46 +351,42 @@ export default {
     setInfoMessageText(action, itsMe) {
       let text = 'chat.systemMessages.';
       switch (action) {
-        case MessageAction.EMPLOYER_INVITE_ON_QUEST: {
+        case MessageAction.EMPLOYER_INVITE_ON_QUEST:
           text += itsMe ? 'youInvitedToTheQuest' : 'employerInvitedWorkerToQuest';
           break;
-        }
-        case MessageAction.WORKER_RESPONSE_ON_QUEST: {
+        case MessageAction.WORKER_RESPONSE_ON_QUEST:
           text += itsMe ? 'youHaveRespondedToTheQuest' : 'respondedToTheQuest';
           break;
-        }
-        case MessageAction.EMPLOYER_REJECT_RESPONSE_ON_QUEST: {
+        case MessageAction.EMPLOYER_REJECT_RESPONSE_ON_QUEST:
           text += itsMe ? 'youRejectTheResponseOnQuest' : 'rejectedTheResponseToTheQuest';
           break;
-        }
-        case MessageAction.WORKER_REJECT_INVITE_ON_QUEST: {
+        case MessageAction.WORKER_REJECT_INVITE_ON_QUEST:
           text += itsMe ? 'youRejectedTheInviteToTheQuest' : 'rejectedTheInviteToTheQuest';
           break;
-        }
-        case MessageAction.WORKER_ACCEPT_INVITE_ON_QUEST: {
+        case MessageAction.WORKER_ACCEPT_INVITE_ON_QUEST:
           text += itsMe ? 'youAcceptedTheInviteToTheQuest' : 'acceptedTheInviteToTheQuest';
           break;
-        }
-        case MessageAction.GROUP_CHAT_CREATE: {
+        case MessageAction.GROUP_CHAT_CREATE:
           text += itsMe ? 'youCreatedAGroupChat' : 'createdAGroupChat';
           break;
-        }
-        case MessageAction.GROUP_CHAT_DELETE_USER: {
+        case MessageAction.GROUP_CHAT_DELETE_USER:
           text += itsMe ? 'youHaveRemovedFromChat' : 'removedFromChat';
           break;
-        }
-        case MessageAction.GROUP_CHAT_ADD_USERS: {
+        case MessageAction.GROUP_CHAT_ADD_USERS:
           text += itsMe ? 'youAddedToChat' : 'addedToChat';
           break;
-        }
-        case MessageAction.GROUP_CHAT_LEAVE_USER: {
+        case MessageAction.GROUP_CHAT_LEAVE_USER:
           text += itsMe ? 'youLeftTheChat' : 'leftTheChat';
           break;
-        }
-        default: {
+        case MessageAction.QUEST_CHAT_ADD_DISPUTE_ADMIN:
+          text += 'adminAddedToChat';
+          break;
+        case MessageAction.QUEST_CHAT_LEAVE_DISPUTE_ADMIN:
+          text += 'adminLeaveFromChat';
+          break;
+        default:
           text = '';
           break;
-        }
       }
 
       return this.$t(text);
@@ -398,10 +394,13 @@ export default {
     openProfile(userId) {
       this.$router.push(`${Path.PROFILE}/${userId}`);
     },
-    setFullName({ itsMe, infoMessage: { user }, sender }) {
+    setFullName({
+      itsMe, infoMessage: { user }, sender, type,
+    }) {
+      if (type === MessageType.INFO && sender.adminId) return '';
       return itsMe
         ? this.UserName(user.firstName, user?.lastName)
-        : this.UserName(sender.user.firstName, sender.user?.lastName);
+        : this.UserName(sender.user?.firstName, sender.user?.lastName);
     },
     goToCurrChat(message) {
       if (this.chatId !== 'starred') return;
