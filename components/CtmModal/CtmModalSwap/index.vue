@@ -5,6 +5,7 @@
   >
     <validation-observer
       v-slot="{handleSubmit, invalid}"
+      ref="observer"
       tag="div"
       class="swap__content content"
     >
@@ -155,6 +156,7 @@ export default {
     },
     setMaxValue() {
       this.amount = this.currentToken.amount;
+      this.$refs.observer.validate();
     },
     async showSwapInfoModal() {
       this.amount = (this.amount.toString()).replace(/[,]/g, '.');
