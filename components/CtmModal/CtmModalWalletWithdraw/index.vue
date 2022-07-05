@@ -109,7 +109,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
-import { TokenMap, TokenSymbols, WalletTokensData } from '~/utils/enums';
+import { TokenSymbols, WalletTokensData } from '~/utils/enums';
 import { ERC20 } from '~/abi/index';
 import BankCard from '~/components/CtmModal/CtmModalDeposit/BankCard';
 

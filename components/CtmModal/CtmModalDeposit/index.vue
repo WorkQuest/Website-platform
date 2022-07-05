@@ -46,12 +46,7 @@ export default {
   components: { bankCard, DepositWalletAddress },
   data() {
     return {
-      amountInput: '',
-      cardNumberInput: '',
-      dateInput: '',
-      cvvInput: '',
       step: 'wallet',
-      code: '0xf376g...G7f3g8b',
     };
   },
   computed: {
