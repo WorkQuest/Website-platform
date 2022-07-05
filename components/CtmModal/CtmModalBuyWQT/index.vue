@@ -41,34 +41,32 @@
         >
           {{ $t('meta.balance') }} {{ tokenData.fullBalance }} {{ tokenData.symbol }}
         </div>
-        <div>
-          <base-field
-            ref="amount"
-            v-model="amount"
-            :disabled="!tokenData"
-            :placeholder="$t('modals.amount')"
-            :name="$t('modals.amount')"
-            :rules="`required|decimal|decimalPlaces:${tokenData ? tokenData.decimals : 0}|min_buy_wqt:5,${selectedSymbol}|max_buy_wqt:100,${selectedSymbol}|have_funds:${tokenData && tokenData.fullBalance},${amount}`"
-            data-selector="AMOUNT"
-            @input="handleInput"
+        <base-field
+          ref="amount"
+          v-model="amount"
+          :disabled="!tokenData"
+          :placeholder="$t('modals.amount')"
+          :name="$t('modals.amount')"
+          :rules="amountRules"
+          data-selector="AMOUNT"
+          @input="handleInput"
+        >
+          <template
+            v-slot:right-absolute
+            class="content__max max"
           >
-            <template
-              v-slot:right-absolute
-              class="content__max max"
+            <base-btn
+              mode="max"
+              class="max__button"
+              data-selector="MAX"
+              @click="maxValue"
             >
-              <base-btn
-                mode="max"
-                class="max__button"
-                data-selector="MAX"
-                @click="maxValue"
-              >
-                <span class="max__text">
-                  {{ $t('modals.maximum') }}
-                </span>
-              </base-btn>
-            </template>
-          </base-field>
-        </div>
+              <span class="max__text">
+                {{ $t('modals.maximum') }}
+              </span>
+            </base-btn>
+          </template>
+        </base-field>
       </div>
       <div class="content__wqt">
         <template v-if="wqtAmount && !invalid">
@@ -123,6 +121,15 @@ export default {
       oraclePrices: 'oracle/getPrices',
       oracleSymbols: 'oracle/getSymbols',
     }),
+    amountRules() {
+      const { tokenData, selectedSymbol, amount } = this;
+      const minTokensAmount = `min_tokens_amount:${tokenData && tokenData.fullBalance},${5},${tokenData && tokenData.symbol}`;
+      const haveFounds = `have_funds:${tokenData && tokenData.fullBalance},${amount}`;
+      const decimalPlaces = `decimalPlaces:${tokenData ? tokenData.decimals : 0}`;
+      const minBuy = `min_buy_wqt:5,${selectedSymbol}`;
+      const maxBuy = `max_buy_wqt:100,${selectedSymbol}`;
+      return `required|decimal|${minTokensAmount}|${decimalPlaces}|${minBuy}|${maxBuy}|${haveFounds}`;
+    },
     networkList() {
       return [
         BuyWQTTokensData.get(Chains.ETHEREUM),
@@ -206,7 +213,7 @@ export default {
       if (!val || isNaN(val)) this.amount = val;
       else if (!this.tokenData) this.amount = 0;
       else this.amount = val;
-      this.amount = this.amount.replace(/,/g, '.');
+      this.amount = this.amount.toString().replace(/,/g, '.');
     },
     clearData() {
       this.amount = null;

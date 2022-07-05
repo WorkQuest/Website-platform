@@ -295,6 +295,15 @@ extend('not_enough_funds', {
   params: ['balance'],
 });
 
+extend('min_tokens_amount', {
+  validate(value, { balance, min, symbol }) {
+    return {
+      valid: new BigNumber(balance).isGreaterThan(0),
+    };
+  },
+  params: ['balance', 'min', 'symbol'],
+});
+
 extend('have_funds', {
   validate(value, { balance, amount }) {
     return {
