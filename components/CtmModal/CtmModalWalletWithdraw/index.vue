@@ -156,7 +156,10 @@ export default {
         selectedToken, balance, maxFeeForNativeToken,
       } = this;
       const fullBalance = new BigNumber(balance[selectedToken].fullBalance);
-      if (selectedToken === this.nativeTokenSymbol) return fullBalance > 0 ? fullBalance.minus(maxFeeForNativeToken).toString() : 0;
+      if (selectedToken === this.nativeTokenSymbol) {
+        const balanceMinusFee = fullBalance.minus(maxFeeForNativeToken).isGreaterThan(0);
+        return balanceMinusFee ? fullBalance.minus(maxFeeForNativeToken).toString() : 0;
+      }
       return fullBalance.toString();
     },
   },
