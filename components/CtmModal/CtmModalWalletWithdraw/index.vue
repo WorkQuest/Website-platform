@@ -49,7 +49,7 @@
               :items="tokenSymbolsDd"
             />
           </div>
-          <div class="content__input input">
+          <div class="content__input input input__field">
             <span class="input__title">
               {{ $t('modals.amount') }}
             </span>
@@ -242,6 +242,7 @@ export default {
 }
 
 .input {
+  margin-top: 10px;
   &__field {
     margin-top: 5px;
   }
