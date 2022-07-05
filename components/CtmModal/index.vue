@@ -79,7 +79,7 @@ export default {
     [modals.takeWithdraw]: () => import('./CtmModalTakeWithdraw'),
     [modals.withdrawInfo]: () => import('./CtmModalWithdrawInfo'),
     [modals.withdrawOptions]: () => import('./CtmModalWithdrawOptions'),
-    [modals.giveTransfer]: () => import('./CtmModalGiveTransfer'),
+    [modals.walletWithdraw]: () => import('./CtmModalWalletWithdraw'),
     [modals.paymentOptions]: () => import('./CtmModalPaymentOptions'),
     [modals.areYouSureDelete]: () => import('./CtmModalAreYouSureDelete'),
     [modals.swap]: () => import('./CtmModalSwap'),

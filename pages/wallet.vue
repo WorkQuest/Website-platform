@@ -462,7 +462,7 @@ export default {
     showTransferModal() {
       if (this.isFetchingBalance) return;
       this.ShowModal({
-        key: modals.giveTransfer,
+        key: modals.walletWithdraw,
         submit: async ({ recipient, amount, selectedToken }) => {
           const {
             wqAddress, convertToHex, nativeTokenSymbol,

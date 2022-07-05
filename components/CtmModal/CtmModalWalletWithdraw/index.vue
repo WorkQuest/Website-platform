@@ -116,7 +116,7 @@ import { ERC20 } from '~/abi/index';
 import BankCard from '~/components/CtmModal/CtmModalDeposit/BankCard';
 
 export default {
-  name: 'ModalTakeTransfer',
+  name: 'ModalWalletWithdraw',
   components: { BankCard },
   data() {
     return {
