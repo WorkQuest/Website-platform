@@ -9,13 +9,19 @@
           {{ $t('meta.disputes') }}
         </h2>
         <div
-          v-if="disputesCount > 0"
+          v-if="disputesCount > 0 || isFetching"
           class="page__dispute-cards"
         >
           <card-dispute
+            v-for="i in 10"
+            v-show="isFetching"
+            :key="'skeleton' + i"
+            is-skeleton
+          />
+          <card-dispute
             v-for="(item, i) in disputes"
+            v-show="!isFetching"
             :key="i"
-            :loading="loading"
             :dispute="item"
             :data-selector="`TO-DISPUTES-ROUTE-${i}`"
           />
@@ -56,7 +62,7 @@ export default {
       limit: LIMIT,
       offset: 0,
     },
-    loading: false,
+    isFetching: true,
   }),
   computed: {
     ...mapGetters({
@@ -82,12 +88,10 @@ export default {
   },
   methods: {
     async getUserDisputes() {
-      this.loading = true;
+      this.isFetching = true;
       this.ScrollToTop();
-      this.SetLoader(true);
       await this.$store.dispatch('disputes/getUserDisputes', this.query);
-      this.loading = false;
-      this.SetLoader(false);
+      this.isFetching = false;
     },
   },
 };
