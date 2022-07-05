@@ -661,8 +661,6 @@ export default {
   }
 }
 @include _575 {
-  .container {
-  }
   .block__statistic {
     grid-template-columns: repeat(2, auto);
   }

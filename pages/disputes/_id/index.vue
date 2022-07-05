@@ -15,15 +15,22 @@
             {{ $t('meta.dispute') }}
           </span>
         </div>
-        <div class="dispute__number">
-          {{ `№ ${disputeData.number}` }}
-        </div>
-        <div
-          class="dispute__status"
-          :class="colorDisputeStatus"
-        >
-          {{ disputeStatus }}
-        </div>
+        <skeleton-block
+          v-if="isFetching"
+          class="dispute__number"
+          style="width: 120px"
+        />
+        <template v-else>
+          <div class="dispute__number">
+            {{ `№ ${disputeData.number}` }}
+          </div>
+          <div
+            class="dispute__status"
+            :class="colorDisputeStatus"
+          >
+            {{ disputeStatus }}
+          </div>
+        </template>
       </div>
       <div :class="disputeData.status >= $options.DisputeStatues.PENDING_CLOSED ? 'container-quest-decision' :'container-quest'">
         <card-quest
@@ -31,6 +38,7 @@
           :quest="disputeData.quest"
           :data-selector="`QUEST-CARD-${disputeData.quest.id}`"
           :dispute-id="disputeData.id"
+          :is-skeleton="isFetching"
         />
         <div
           v-if="disputeData.status >= $options.DisputeStatues.PENDING_CLOSED"
@@ -85,6 +93,7 @@ export default {
   DisputeStatues,
   data: () => ({
     disputeMark: 0,
+    isFetching: true,
   }),
   computed: {
     ...mapGetters({
@@ -117,6 +126,7 @@ export default {
   async created() {
     await this.$store.dispatch('disputes/getDispute', this.disputeId);
     this.disputeMark = this.disputeData.currentUserDisputeReview?.mark;
+    this.isFetching = false;
   },
   async beforeDestroy() {
     await this.$store.commit('disputes/resetDisputeCard');
