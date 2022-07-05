@@ -6,7 +6,6 @@
   >
     <skeleton-block
       v-if="isSkeleton"
-      class="card-quest__left"
       style="min-height: 200px"
     />
     <div
