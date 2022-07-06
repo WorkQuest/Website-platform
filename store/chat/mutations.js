@@ -10,7 +10,6 @@ export default {
   },
   removeChatFromListById(state, chatId) {
     const chatIndex = state.chats.list.findIndex((item) => item.id === chatId);
-    console.log(chatIndex);
     if (chatIndex >= 0) {
       const { list } = state.chats;
       const newList = list.filter((item) => item.id !== chatId);

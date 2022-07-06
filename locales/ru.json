@@ -1502,6 +1502,7 @@
     "noMessages": "Нет сообщений",
     "membersNum": "{n} участников",
     "workquestAdmin": "Workquest Админ",
+    "delete": "Удалить чат",
     "deleteChat": "Вы действительно хотите удалить этот чат из списка чатов?",
     "systemMessages": {
       "employerInvitedWorkerToQuest": "Пригласил вас на квест",

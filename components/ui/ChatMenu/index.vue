@@ -59,6 +59,12 @@
               {{ $t('chat.leaveChat') }}
             </div>
           </template>
+          <div
+            class="chat-menu__item"
+            @click="deleteChat"
+          >
+            {{ $t('chat.delete') }}
+          </div>
         </div>
       </div>
     </transition>
@@ -101,6 +107,7 @@ export default {
     ...mapGetters({
       currChat: 'chat/getCurrChatInfo',
       chats: 'chat/getChats',
+      userData: 'user/getUserData',
     }),
     isOpenDispute() {
       return !this.canILeave && this.$route.query.type === ChatType.QUEST;
@@ -111,6 +118,18 @@ export default {
     },
   },
   methods: {
+    deleteChat() {
+      this.ShowModal({
+        key: modals.areYouSureNotification,
+        title: this.$t('chat.deleteChat'),
+        callback: async () => {
+          this.SetLoader(true);
+          await this.$store.dispatch('chat/removeChat', this.currChat.id);
+          await this.$router.push(Path.MESSAGES);
+          this.SetLoader(false);
+        },
+      });
+    },
     getStarredMessages() {
       this.$router.push(`${Path.MESSAGES}/starred`);
     },

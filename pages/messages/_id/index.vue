@@ -218,12 +218,12 @@ export default {
       return this.currChat?.type === ChatType.PRIVATE;
     },
     canShowMenu() {
-      const {
-        isCantSendMessages, isGroupChat, amIOwner, isPrivateChat,
-      } = this;
-      if (this.chatId === 'starred') return false;
-      return (!isCantSendMessages ? (!isGroupChat && !isPrivateChat)
-        || (isGroupChat && !amIOwner) : false);
+      return this.chatId !== 'starred';
+      // const {
+      //   isCantSendMessages, isGroupChat, amIOwner, isPrivateChat,
+      // } = this;
+      // return (!isCantSendMessages ? (!isGroupChat && !isPrivateChat)
+      //   || (isGroupChat && !amIOwner) : false);
     },
     isCantSendMessages() {
       const lastMsg = this.messages.list[this.messages.list.length - 1];
@@ -236,7 +236,10 @@ export default {
       );
     },
     canLeave() {
-      return this.isGroupChat && !this.amIOwner;
+      return this.isGroupChat && !this.amIOwner && this.isMeChatMember;
+    },
+    isMeChatMember() {
+      return this.currChat.members.indexOf((item) => item.userId === this.userData.id) >= 0;
     },
     amIOwner() {
       const currMemberData = this.currChat?.members && this.currChat?.members.find((el) => el.userId === this.userData.id);
