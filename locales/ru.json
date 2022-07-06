@@ -253,6 +253,7 @@
     "loginWithSecret": "Please login with secret phrase",
     "invalidPassword": "Invalid password",
     "loginToContinue": "Пожалуйста, войдите, чтобы продолжить",
+    "loginAfterRegistration": "Ваша учетная запись была успешно создана. Пожалуйста, войдите, чтобы продолжить",
     "numberOfCard": "Введите правильное {_field_}",
     "cvv": "Введите правильное {_field_}",
     "date": "Введите правильное {_field_}",
