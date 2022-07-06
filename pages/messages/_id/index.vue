@@ -8,7 +8,7 @@
         <div class="chat-container__header">
           <div
             class="chat-container__arrow-back"
-            @click="goBackToChatsList()"
+            @click="goBackToChatsList"
           >
             <span class="icon-short_left" />
             <span>
@@ -214,16 +214,8 @@ export default {
     isGroupChat() {
       return this.currChat?.type === ChatType.GROUP;
     },
-    isPrivateChat() {
-      return this.currChat?.type === ChatType.PRIVATE;
-    },
     canShowMenu() {
       return this.chatId !== 'starred';
-      // const {
-      //   isCantSendMessages, isGroupChat, amIOwner, isPrivateChat,
-      // } = this;
-      // return (!isCantSendMessages ? (!isGroupChat && !isPrivateChat)
-      //   || (isGroupChat && !amIOwner) : false);
     },
     isCantSendMessages() {
       const lastMsg = this.messages.list[this.messages.list.length - 1];

@@ -58,13 +58,14 @@
             >
               {{ $t('chat.leaveChat') }}
             </div>
+            <div
+              v-if="!hideDeleteChat"
+              class="chat-menu__item"
+              @click="deleteChat"
+            >
+              {{ $t('chat.delete') }}
+            </div>
           </template>
-          <div
-            class="chat-menu__item"
-            @click="deleteChat"
-          >
-            {{ $t('chat.delete') }}
-          </div>
         </div>
       </div>
     </transition>
@@ -90,6 +91,10 @@ export default {
       default: false,
     },
     canILeave: {
+      type: Boolean,
+      default: false,
+    },
+    hideDeleteChat: {
       type: Boolean,
       default: false,
     },
@@ -160,8 +165,7 @@ export default {
       });
     },
     async leaveChat() {
-      if (await this.$store.dispatch('chat/leaveFromChat', this.currChat.id)) this.$router.push(`${Path.MESSAGES}`);
-
+      if (await this.$store.dispatch('chat/leaveFromChat', this.currChat.id)) await this.$router.push(`${Path.MESSAGES}`);
       this.CloseModal();
     },
     showCreateChatModal() {

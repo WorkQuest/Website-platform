@@ -57,8 +57,6 @@ export default {
 <style lang="scss" scoped>
 .absence {
   width: 100%;
-  background-color: #f6f8fa;
-  margin-top: 60px;
   display: flex;
   justify-content: center;
   &__content {

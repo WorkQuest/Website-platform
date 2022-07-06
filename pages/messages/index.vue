@@ -86,7 +86,7 @@
                       class="chat__ava-cont"
                     >
                       <img
-                        v-if="i<2"
+                        v-if="i < 2"
                         class="chat__avatar"
                         :src="getUserAvatar(user)"
                         alt=""

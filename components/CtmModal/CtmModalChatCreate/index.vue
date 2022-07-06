@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <template>
   <ctm-modal-box
     class="messageSend"
@@ -71,6 +72,7 @@
               <chat-menu
                 class="friends__btn-menu"
                 :menu-items="arrayMenu(user)"
+                :hide-delete-chat="true"
                 @giveAQuest="sendInvite(user)"
                 @removeFromChat="tryRemoveUser(user.userId)"
                 @private="options.sendPrivateMsg(user.userId)"
@@ -205,12 +207,14 @@ export default {
       else this.memberUserIds = this.memberUserIds.filter((userId) => userId !== id);
     },
     async getUsers() {
+      this.SetLoader(true);
       const { filter, chatId, users } = this;
       const config = {
         params: { ...filter, excludeMembersChatId: chatId || undefined },
       };
       await this.$store.dispatch('chat/getUsersForGroupChat', config);
       this.members = users.list;
+      this.SetLoader(false);
     },
     hide() {
       const { options: { isAdding }, chatMembers } = this;

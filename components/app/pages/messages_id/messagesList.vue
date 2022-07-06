@@ -34,7 +34,7 @@
             <span
               class="info-message__link"
               :class="{'info-message__link_left' : !message.itsMe}"
-              @click="openProfile( message.sender.userId)"
+              @click="openProfile(message.sender.userId)"
             >
               {{ setFullName(message) }}
             </span>
@@ -240,6 +240,15 @@ export default {
     MessageType() {
       return MessageType;
     },
+    chatMembers() {
+      const res = {};
+      if (!this.currChat?.members) return res;
+      // eslint-disable-next-line no-restricted-syntax
+      for (const item of this.currChat.members) {
+        res[item.userId] = item;
+      }
+      return res;
+    },
   },
   watch: {
     lastMessageId(newVal, oldVal) {
@@ -369,10 +378,11 @@ export default {
       this.$router.push(`${Path.PROFILE}/${userId}`);
     },
     setFullName({
-      itsMe, infoMessage: { user }, sender, type,
+      itsMe, infoMessage, sender, type,
     }) {
-      if (itsMe || (type === MessageType.INFO && sender?.adminId)) return '';
-      return itsMe
+      const user = infoMessage?.user;
+      if (itsMe || (type === MessageType.INFO && sender?.adminId) || (!itsMe && !sender?.user)) return '';
+      return itsMe && user
         ? this.UserName(user?.firstName, user?.lastName)
         : this.UserName(sender.user?.firstName, sender.user?.lastName);
     },
@@ -434,11 +444,8 @@ export default {
 
       await this.$store.dispatch('chat/setMessageAsRead', payload);
     },
-    getSenderInfoById(userId) {
-      return this.currChat.members.find((el) => el.userId === userId);
-    },
     senderFullNameById(userId) {
-      const sender = this.getSenderInfoById(userId);
+      const sender = this.chatMembers[userId];
       if (!sender) return this.$t('profile.defaultName');
       if (sender.type === UserRoles.USER) return this.UserName(sender.user?.firstName, sender.user?.lastName);
       return this.$t('chat.workquestAdmin');
