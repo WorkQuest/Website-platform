@@ -41,7 +41,7 @@
           </div>
           <div class="content__input input">
             <span class="input__title">
-              {{ $t('modals.selectToken') }}
+              {{ $t('modals.chooseToken') }}
             </span>
             <base-dd
               v-model="ddValue"

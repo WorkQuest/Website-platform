@@ -1290,7 +1290,7 @@
     "youCanAttachUpToNFiles": "You can attach up to {n} files",
     "youTryToAttachUnsupportedFileFormat": "You try to attach unsupported file format",
     "incorrectChain": "You choose incorrect chain !",
-    "selectToken": "Select token",
+    "chooseToken": "Choose token",
     "txInfo": "Transaction info",
     "registration": "Вы верены что хотите зарегистрировать данных пользователей?",
     "claimConfirm": "Вы потдверждаете дейсвие клейм?",
