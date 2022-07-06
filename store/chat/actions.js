@@ -1,5 +1,5 @@
 import { Path } from '~/utils/enums';
-import { ChatType } from '~/utils/сonstants/chat';
+import { ChatType, QuestChatStatus } from '~/utils/сonstants/chat';
 import { error, success } from '~/utils/web3';
 
 export default {

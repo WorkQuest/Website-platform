@@ -63,11 +63,11 @@
           class="chat-container__body"
           :class="[
             {'chat-container__body_small' : files.length},
-            {'chat-container__body_big' : chatId === 'starred' || isClosedQuestChat}]"
+            {'chat-container__body_big' : chatId === 'starred' || isCantSendMessages}]"
         />
         <div class="chat-container__footer footer">
           <validation-observer
-            v-show="chatId !== 'starred' && !isClosedQuestChat"
+            v-show="chatId !== 'starred' && !isCantSendMessages"
             v-slot="{ invalid }"
             tag="div"
             class="footer__controls"
@@ -183,7 +183,7 @@ import ChatMenu from '~/components/ui/ChatMenu';
 import { QuestStatuses } from '~/utils/сonstants/quests';
 import { Path } from '~/utils/enums';
 import {
-  ChatType, QuestChatStatus, UserRoles, FileTypes,
+  ChatType, QuestChatStatus, UserRoles, FileTypes, MessageAction,
 } from '~/utils/сonstants/chat';
 
 export default {
@@ -208,6 +208,7 @@ export default {
       currChat: 'chat/getCurrChatInfo',
       infoDataMode: 'quests/getInfoDataMode',
       isLoading: 'main/getIsLoading',
+      messages: 'chat/getMessages',
     }),
     ChatType() {
       return ChatType;
@@ -220,16 +221,20 @@ export default {
     },
     canShowMenu() {
       const {
-        isClosedQuestChat, isGroupChat, amIOwner, isPrivateChat,
+        isCantSendMessages, isGroupChat, amIOwner, isPrivateChat,
       } = this;
       if (this.chatId === 'starred') return false;
-      return (!isClosedQuestChat ? (!isGroupChat && !isPrivateChat)
+      return (!isCantSendMessages ? (!isGroupChat && !isPrivateChat)
         || (isGroupChat && !amIOwner) : false);
     },
-    isClosedQuestChat() {
+    isCantSendMessages() {
+      const lastMsg = this.messages.list[this.messages.list.length - 1];
+      const wasKicked = lastMsg?.infoMessage?.messageAction === MessageAction.GROUP_CHAT_DELETE_USER
+      && lastMsg?.infoMessage?.member?.user?.id === this.userData.id;
       return (
         (this.currChat?.questChat?.status === QuestChatStatus.Closed)
         || [QuestStatuses.Done, QuestStatuses.Closed, QuestStatuses.Blocked].includes(+this.$route.query.status)
+        || wasKicked
       );
     },
     canLeave() {
@@ -252,7 +257,7 @@ export default {
   async mounted() {
     this.SetLoader(true);
 
-    if (this.currChat?.questChat?.status === QuestChatStatus.Closed) this.isClosedQuestChat = true;
+    if (this.currChat?.questChat?.status === QuestChatStatus.Closed) this.isCantSendMessages = true;
 
     const isChatNotificationShown = !!localStorage.getItem('isChatNotificationShown');
     if (!isChatNotificationShown) this.showNoticeModal();
