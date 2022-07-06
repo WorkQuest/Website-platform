@@ -357,8 +357,16 @@ export default {
   watch: {
     selectedNetwork() {
       this.ddValue = 0;
-      // this.tokenSymbolsDd = WalletTokensData[this.selectedNetwork].tokenList;
       this.updateWQAddress();
+    },
+    async selectedToken() {
+      this.tokens.some((token, i) => {
+        if (token.title === this.selectedToken) {
+          this.ddValue = i;
+          return true;
+        }
+        return false;
+      });
     },
     async ddValue(newVal) {
       await this.$store.dispatch('wallet/setSelectedToken', this.tokens[newVal].title);

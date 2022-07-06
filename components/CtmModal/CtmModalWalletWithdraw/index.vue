@@ -47,6 +47,7 @@
               v-model="ddValue"
               data-selector="TOKEN"
               :items="tokenSymbolsDd"
+              is-icon
             />
           </div>
           <div class="content__input input input__amount">
@@ -140,7 +141,7 @@ export default {
       selectedNetwork: 'wallet/getSelectedNetwork',
     }),
     nativeTokenSymbol() {
-      return this.tokenSymbolsDd[0];
+      return this.tokenSymbolsDd[0].title;
     },
     tokenDecimals() {
       return this.balance[this.selectedToken].decimals;
@@ -165,13 +166,11 @@ export default {
   },
   watch: {
     ddValue(val) {
-      this.$store.dispatch('wallet/setSelectedToken', TokenSymbols[this.tokenSymbolsDd[val]]);
+      this.$store.dispatch('wallet/setSelectedToken', this.tokenSymbolsDd[val].title);
       this.amount = 0;
     },
   },
   async mounted() {
-    const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
-    this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
     await this.updateMaxFee();
   },
   methods: {
@@ -204,7 +203,15 @@ export default {
         if (nativeTokenFee.ok) this.maxFeeForNativeToken = nativeTokenFee.result.fee;
         else this.maxFeeForNativeToken = 0;
       } else {
-        const contractAddress = WalletTokensData[this.selectedNetwork].tokenAddresses[this.tokenSymbolsDd.indexOf(selectedToken) - 1];
+        let contractAddress;
+        this.tokenSymbolsDd.some((token) => {
+          if (token.title === this.selectedToken) {
+            contractAddress = token.tokenAddress;
+            return true;
+          }
+          return false;
+        });
+
         const feeTokens = await this.$store.dispatch('wallet/getContractFeeData', {
           method: 'transfer',
           abi: ERC20,
