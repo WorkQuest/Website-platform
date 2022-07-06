@@ -21,6 +21,7 @@
     "amount": {
       "amountOfBNB": "Amount of BNB",
       "amountOfWQT": "Amount of WQT",
+      "amountOfWQTToReceive": "Amount of WQT to receive",
       "amountOfETH": "Amount of ETH",
       "amountETHPerWQT": "Amount ETH per WQT",
       "amountBNBPerWQT": "Amount BNB per WQT"
@@ -96,7 +97,9 @@
       "goToChat": "Ir al chat",
       "view": "Ver",
       "add": "Añadir",
-      "take": "Take"
+      "addNow": "Add now",
+      "take": "Take",
+      "swap": "Swap"
     },
     "placeholders": {
       "default": "",
@@ -250,6 +253,7 @@
     "loginWithSecret": "Please login with secret phrase",
     "invalidPassword": "Invalid password",
     "loginToContinue": "Please login to continue",
+    "loginAfterRegistration": "Your account has been successfully created. Please login to continue",
     "numberOfCard": "Please enter correct {_field_}",
     "cvv": "Please enter correct {_field_}",
     "date": "Please enter correct {_field_}",
@@ -265,7 +269,11 @@
     "notMoreDecimalPlaces": "Please enter correct {_field_}, no more than 2 decimal places",
     "max_percent": "Please enter correct {_field_}, reduce the percentage",
     "notEmptyArray": "Please select a {_field_}",
-    "not_enough_funds": "Not enough funds"
+    "not_enough_funds": "Not enough funds",
+    "have_funds": "Your balance less than amount",
+    "min_buy_wqt" : "To avoid unnecessary fees and network slippage, the minimum amount for this pair is ${min} {symbol}",
+    "max_buy_wqt": "To avoid unnecessary fees and network slippage, the maximum amount for this pair is ${max} {symbol}",
+    "min_tokens_amount": "Insufficient tokens, min amount {min} {symbol}."
   },
   "about": {
     "text": "WorkQuest es un proyecto social basado en la tecnología de cadena de bloques para encontrar trabajo y solucionar cualquier tarea por parte de la empresa en el modo de oferta. ¿Está buscando empleo? Una oferta de empleo le ayudará a encontrar trabajo cerca de su ciudad. ¿Necesita trabajadores para alcanzar sus objetivos? Solo tiene que crear una oferta en la ubicación correspondiente. El servicio asume las obligaciones de garantía para realizar ofertas. Guardamos los fondos del empleador y, cuando el empleado confirme el desempeño del trabajo, recibirá un ingreso de fondos en su cuenta. Mediante el sistema de calificaciones, opiniones y una lista de ofertas completadas, podrá encontrar a personas de confianza y a los mejores especialistas.\n\n          Nuestro objetivo es simplificar la comunicación entre el empleador y el empleado para ayudar a conseguir un empleo a millones de personas, mejorar la situación financiera, solucionar el gran problema de encontrar profesionales fiables en todos los sectores para crear una economía digital progresiva basada en los principios de confianza, respeto mutuo y el bienestar de todos sus participantes."
@@ -947,6 +955,8 @@
     "alreadyRedeemed": "You already redeemed, wait!"
   },
   "modals": {
+    "coming": "Coming soon",
+    "stillUnderConstruction": "Still under construction",
     "titles": {
       "2FA": {
         "disable": "Disable 2FA",
@@ -1295,6 +1305,13 @@
       "refund": "Successful refund",
       "withdraw": "Successful withdrawal",
       "deposit": "Successful deposit"
+    },
+    "deposit": {
+      "scanQrCodeWallet": "Scan QR code or copy address to receive payment",
+      "walletCopied": "Wallet address copied successfully",
+      "uHaveToAddCard": "Please add a bank card to your account",
+      "addCard": "Add card",
+      "sharingText": "Hi, here is my wallet address:"
     }
   },
   "ui": {
@@ -1430,11 +1447,11 @@
   },
   "wallet": {
     "frozen": "Frozen balance",
-    "WUSD": "Cartera de WUSD",
+    "walletAddress": "Wallet address",
     "cryptoWallet": "Cartera de criptomonedas",
     "send": "Enviar",
     "toThisAddress": "a esta dirección",
-    "receive": "Recibir",
+    "deposit": "Deposit",
     "transfer": "Comprar/enviar",
     "addCardProposal": "Añada su propia tarjeta para retirar fácilmente",
     "addCard": "Añadir tarjeta",
@@ -1442,7 +1459,8 @@
       "buyButton": "Buy WQT",
       "title": "Buy $WQT now!",
       "sub": "The easiest way to buy $WQT is using $USDT.",
-      "networks": "Networks available for purchase: Ethereum, Binance Smart Chain and Polygon. After the purchase, $WQT will automatically deposit to your WorkNet network wallet, minus the transaction fee."
+      "networks": "Networks available for purchase: Ethereum, Binance Smart Chain and Polygon. After the purchase, $WQT will automatically deposit to your WorkNet network wallet, minus the transaction fee.",
+      "worknetFee": "Includes a WorkNet network fee."
     },
     "collateral": {
       "balance": "Collateral balance",
@@ -1503,7 +1521,9 @@
       "userAddedToChat": "Added user to chat",
       "userRemovedFromChat": "Removed user from chat",
       "leftTheChat": "left the chat",
-      "youLeftTheChat": "You left the chat"
+      "youLeftTheChat": "You left the chat",
+      "adminAddedToChat": "Added admin to chat",
+      "adminLeaveFromChat": "Admin leave from chat"
     },
     "leaveChat": "Leave chat",
     "loadMore": "Load more",
@@ -2464,5 +2484,9 @@
     "messagePlaceholder": "Add message",
     "sent": "Report sent",
     "complainAbout": "Complain about"
+  },
+  "qrCodePage": {
+    "pageTitle": "Wallet address",
+    "subText": "Scan the QR code or copy the address to send me a payment"
   }
 }

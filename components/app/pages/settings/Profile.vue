@@ -108,7 +108,6 @@
               clearable
               show-code-on-list
               required
-              size="sm"
               color="#ccc"
               @update="updateFirstPhone($event)"
             />
@@ -130,13 +129,13 @@
               v-if="userRole === UserRole.EMPLOYER"
               id="phone2"
               v-model="secondPhoneNumber.fullPhone"
+              class="profile__phone-input"
               data-selector="SECOND-PHONE-FIELD"
               :error="!isValidSecondPhoneNumber"
               :default-country-code="secondPhoneNumber.codeRegion"
               error-color="#EB5757"
               clearable
               show-code-on-list
-              size="sm"
               @update="updateSecondPhone($event)"
             />
             <span
@@ -714,7 +713,7 @@ export default {
       gap: 0;
     }
     &__phone-input {
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
   }
 }

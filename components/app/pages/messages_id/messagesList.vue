@@ -30,25 +30,31 @@
           v-if="message.type === MessageType.INFO && message.infoMessage"
           class="info-message"
         >
-          <div class="info-message__title">
-            {{ setInfoMessageText(message.infoMessage.messageAction, message.itsMe) }}
-          </div>
           <template v-if="canShowActionUsers(message.infoMessage.messageAction, message.itsMe)">
-            <div
+            <span
               class="info-message__link"
               :class="{'info-message__link_left' : !message.itsMe}"
               @click="openProfile( message.sender.userId)"
             >
               {{ setFullName(message) }}
-            </div>
-            <div
+            </span>
+            <span class="info-message__title">
+              {{ setInfoMessageText(message.infoMessage.messageAction, message.itsMe) }}
+            </span>
+            <span
               v-if="!message.itsMe && [MessageAction.GROUP_CHAT_ADD_USERS, MessageAction.GROUP_CHAT_DELETE_USER].includes(message.infoMessage.messageAction) && message.infoMessage.user"
               class="info-message__link"
               @click="openProfile(message.sender.userId)"
             >
               {{ senderFullNameById(message.sender.userId) }}
-            </div>
+            </span>
           </template>
+          <div
+            v-else
+            class="info-message__title"
+          >
+            {{ setInfoMessageText(message.infoMessage.messageAction, message.itsMe) }}
+          </div>
         </div>
         <template v-else>
           <img
@@ -239,7 +245,7 @@ export default {
     lastMessageId(newVal, oldVal) {
       if (!this.isScrollBtnVis && oldVal) this.scrollToBottom();
     },
-    currChatIsUnread(newVal, oldVal) {
+    currChatIsUnread(newVal) {
       if (newVal && this.lastMessageId) this.readMessages();
     },
   },
@@ -316,7 +322,7 @@ export default {
             behavior: 'smooth',
           });
         }
-        if (!this.minScrollDifference) this.minScrollDifference = (HandleScrollContainer.scrollHeight - HandleScrollContainer.scrollTop) * 2;
+        if (!this.minScrollDifference) this.minScrollDifference = (HandleScrollContainer?.scrollHeight - HandleScrollContainer?.scrollTop) * 2;
 
         if (starredMessage && isInit) HandleScrollContainer.scrollTo(0, starredMessage[0].offsetTop - HandleScrollContainer.offsetTop - 20);
       }, 200);
@@ -351,46 +357,42 @@ export default {
     setInfoMessageText(action, itsMe) {
       let text = 'chat.systemMessages.';
       switch (action) {
-        case MessageAction.EMPLOYER_INVITE_ON_QUEST: {
+        case MessageAction.EMPLOYER_INVITE_ON_QUEST:
           text += itsMe ? 'youInvitedToTheQuest' : 'employerInvitedWorkerToQuest';
           break;
-        }
-        case MessageAction.WORKER_RESPONSE_ON_QUEST: {
+        case MessageAction.WORKER_RESPONSE_ON_QUEST:
           text += itsMe ? 'youHaveRespondedToTheQuest' : 'respondedToTheQuest';
           break;
-        }
-        case MessageAction.EMPLOYER_REJECT_RESPONSE_ON_QUEST: {
+        case MessageAction.EMPLOYER_REJECT_RESPONSE_ON_QUEST:
           text += itsMe ? 'youRejectTheResponseOnQuest' : 'rejectedTheResponseToTheQuest';
           break;
-        }
-        case MessageAction.WORKER_REJECT_INVITE_ON_QUEST: {
+        case MessageAction.WORKER_REJECT_INVITE_ON_QUEST:
           text += itsMe ? 'youRejectedTheInviteToTheQuest' : 'rejectedTheInviteToTheQuest';
           break;
-        }
-        case MessageAction.WORKER_ACCEPT_INVITE_ON_QUEST: {
+        case MessageAction.WORKER_ACCEPT_INVITE_ON_QUEST:
           text += itsMe ? 'youAcceptedTheInviteToTheQuest' : 'acceptedTheInviteToTheQuest';
           break;
-        }
-        case MessageAction.GROUP_CHAT_CREATE: {
+        case MessageAction.GROUP_CHAT_CREATE:
           text += itsMe ? 'youCreatedAGroupChat' : 'createdAGroupChat';
           break;
-        }
-        case MessageAction.GROUP_CHAT_DELETE_USER: {
+        case MessageAction.GROUP_CHAT_DELETE_USER:
           text += itsMe ? 'youHaveRemovedFromChat' : 'removedFromChat';
           break;
-        }
-        case MessageAction.GROUP_CHAT_ADD_USERS: {
+        case MessageAction.GROUP_CHAT_ADD_USERS:
           text += itsMe ? 'youAddedToChat' : 'addedToChat';
           break;
-        }
-        case MessageAction.GROUP_CHAT_LEAVE_USER: {
+        case MessageAction.GROUP_CHAT_LEAVE_USER:
           text += itsMe ? 'youLeftTheChat' : 'leftTheChat';
           break;
-        }
-        default: {
+        case MessageAction.QUEST_CHAT_ADD_DISPUTE_ADMIN:
+          text += 'adminAddedToChat';
+          break;
+        case MessageAction.QUEST_CHAT_LEAVE_DISPUTE_ADMIN:
+          text += 'adminLeaveFromChat';
+          break;
+        default:
           text = '';
           break;
-        }
       }
 
       return this.$t(text);
@@ -398,10 +400,13 @@ export default {
     openProfile(userId) {
       this.$router.push(`${Path.PROFILE}/${userId}`);
     },
-    setFullName({ itsMe, infoMessage: { user }, sender }) {
+    setFullName({
+      itsMe, infoMessage: { user }, sender, type,
+    }) {
+      if (itsMe || (type === MessageType.INFO && sender.adminId)) return '';
       return itsMe
-        ? this.UserName(user.firstName, user?.lastName)
-        : this.UserName(sender.user.firstName, sender.user?.lastName);
+        ? this.UserName(user?.firstName, user?.lastName)
+        : this.UserName(sender.user?.firstName, sender.user?.lastName);
     },
     goToCurrChat(message) {
       if (this.chatId !== 'starred') return;
@@ -466,7 +471,7 @@ export default {
     },
     senderFullNameById(userId) {
       const sender = this.getSenderInfoById(userId);
-      if (!sender) return '-';
+      if (!sender) return this.$t('profile.defaultName');
       if (sender.type === UserRoles.USER) return this.UserName(sender.user?.firstName, sender.user?.lastName);
       return this.$t('chat.workquestAdmin');
     },
@@ -643,10 +648,8 @@ export default {
 }
 
 .info-message {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: 5px;
-  grid-template-areas: "owner system sender";
+  font-size: 14px;
+  text-align: center;
 
   &__link {
     text-decoration: underline #1D2127;
@@ -798,6 +801,7 @@ export default {
 
 @include _767 {
   .info-message {
+    font-size: 12px;
     &__title {
       white-space: nowrap;
     }
@@ -807,6 +811,12 @@ export default {
       text-overflow: ellipsis;
       overflow: hidden;
     }
+  }
+}
+
+@include _480 {
+  .info-message {
+    font-size: 10px;
   }
 }
 </style>

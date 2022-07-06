@@ -1,10 +1,30 @@
 <template>
   <ctm-modal-box
     class="transfer"
-    :title="$tc('modals.titles.transfer')"
+    :title="$tc('modals.titles.withdraw')"
   >
     <div class="transfer__content content">
-      <validation-observer v-slot="{handleSubmit, invalid}">
+      <div class="step-panel">
+        <div
+          class="step-panel__step"
+          :class="[{'step-panel__step_active': step === 'wallet'}]"
+          @click="step = 'wallet'"
+        >
+          {{ $t('wallet.walletAddress') }}
+        </div>
+        <div
+          class="step-panel__step"
+          :class="[{'step-panel__step_active': step === 'bank'}]"
+          @click="step = 'bank'"
+        >
+          {{ $t('meta.bankCard') }}
+        </div>
+      </div>
+      <validation-observer
+        v-if="step === 'wallet'"
+        v-slot="{handleSubmit, invalid}"
+        tag="div"
+      >
         <div class="content__container">
           <div class="content__input input">
             <span class="input__title">
@@ -29,7 +49,7 @@
               :items="tokenSymbolsDd"
             />
           </div>
-          <div class="content__input input">
+          <div class="content__input input input__amount">
             <span class="input__title">
               {{ $t('modals.amount') }}
             </span>
@@ -38,7 +58,7 @@
               class="input__field"
               data-selector="AMOUNT"
               :placeholder="$t('modals.amount')"
-              :rules="`required|decimal|is_not:0|max_value:${maxAmount}|decimalPlaces:${tokenDecimals}`"
+              :rules="`required|decimal|is_not:0|max_value:${maxAmount}|decimalPlaces:${tokenDecimals}|not_enough_funds:${tokenBalance}`"
               :name="$tc('modals.amountField')"
               @input="replaceDot"
             >
@@ -79,6 +99,9 @@
           </base-btn>
         </div>
       </validation-observer>
+      <template v-else>
+        <bank-card />
+      </template>
     </div>
   </ctm-modal-box>
 </template>
@@ -86,11 +109,13 @@
 <script>
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
-import { TokenMap, TokenSymbols, WalletTokensData } from '~/utils/enums';
+import { TokenSymbols, WalletTokensData } from '~/utils/enums';
 import { ERC20 } from '~/abi/index';
+import BankCard from '~/components/CtmModal/CtmModalDeposit/BankCard';
 
 export default {
-  name: 'ModalTakeTransfer',
+  name: 'ModalWalletWithdraw',
+  components: { BankCard },
   data() {
     return {
       recipient: '',
@@ -98,6 +123,8 @@ export default {
       ddValue: 0,
       maxFeeForNativeToken: 0,
       isCanSubmit: false,
+
+      step: 'wallet',
     };
   },
   computed: {
@@ -118,6 +145,9 @@ export default {
     tokenDecimals() {
       return this.balance[this.selectedToken].decimals;
     },
+    tokenBalance() {
+      return this.balance[this.selectedToken].fullBalance;
+    },
     tokenSymbolsDd() {
       return WalletTokensData[this.selectedNetwork].tokenList;
     },
@@ -126,7 +156,10 @@ export default {
         selectedToken, balance, maxFeeForNativeToken,
       } = this;
       const fullBalance = new BigNumber(balance[selectedToken].fullBalance);
-      if (selectedToken === this.nativeTokenSymbol) return fullBalance.minus(maxFeeForNativeToken).toString();
+      if (selectedToken === this.nativeTokenSymbol) {
+        const balanceMinusFee = fullBalance.minus(maxFeeForNativeToken).isGreaterThan(0);
+        return balanceMinusFee ? fullBalance.minus(maxFeeForNativeToken).toString() : 0;
+      }
       return fullBalance.toString();
     },
   },
@@ -215,12 +248,19 @@ export default {
 }
 
 .input {
+  margin-top: 10px;
+  &__amount {
+    margin-top: 30px !important;
+  }
   &__field {
     margin-top: 5px;
   }
 }
 
 .content {
+  &__container {
+    margin-top: 10px;
+  }
   &__step {
     display: flex;
     flex-direction: row;
@@ -264,6 +304,25 @@ export default {
   &__button {
     margin-right: 10px !important;
     background-color: transparent !important;
+  }
+}
+
+.step-panel {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  &__step {
+    @include text-simple;
+    font-weight: 400;
+    font-size: 16px;
+    color: $black500;
+    margin: 0 10px 0 0;
+    cursor: pointer;
+    &_active {
+      color: $black800;
+      border-bottom: 1px solid $blue;
+      padding: 0 0 12px 0;
+    }
   }
 }
 </style>

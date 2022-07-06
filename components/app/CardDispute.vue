@@ -2,31 +2,35 @@
   <div class="wrapperCard">
     <div
       class="cardDispute"
-      @click="toDisputes(dispute.id)"
+      @click="toDispute"
     >
       <div class="cardDispute__left">
+        <skeleton-block
+          v-for="i of 3"
+          v-show="isSkeleton"
+          :key="'skeleton'+i"
+        />
         <div
           v-for="(card, key) in cardData(dispute)"
+          v-show="!isSkeleton"
           :key="key"
           :data-selector="`DISPUTES-${key}`"
           class="cardDispute__text"
         >
-          {{ loading? '' : card.title }}
-          <skeleton-block v-if="loading" />
+          {{ card.title }}
           <span
-            v-else
             class="cardDispute__text_blue"
           >
             {{ card.value }}
           </span>
         </div>
-        <skeleton-block v-if="loading" />
+        <skeleton-block v-if="isSkeleton" />
         <div
           v-else
           class="cardDispute__text"
         >
           {{ $t('disputes.status') }}
-          <span :class="[colorDisputeStatus[dispute.status]]">
+          <span :class="[dispute && colorDisputeStatus[dispute.status]]">
             {{ disputeStatus(dispute.status) }}
           </span>
         </div>
@@ -34,7 +38,7 @@
       <div class="cardDispute__vl" />
 
       <div class="cardDispute__right">
-        <skeleton-block v-if="loading" />
+        <skeleton-block v-if="isSkeleton" />
         <div
           v-else
           class="cardDispute__text"
@@ -47,7 +51,7 @@
       </div>
     </div>
     <star-rating
-      v-if="dispute.status === $options.DisputeStatues.CLOSED && !loading"
+      v-if="!isSkeleton && dispute.status === $options.DisputeStatues.CLOSED"
       class="cardDispute__review"
       :stars-number="5"
       :data-selector="`ACTION-BTN-SHOW-REVIEW-MODAL-${dispute.id}`"
@@ -74,9 +78,9 @@ export default {
       default: () => {
       },
     },
-    loading: {
+    isSkeleton: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   computed: {
@@ -95,6 +99,7 @@ export default {
   },
   methods: {
     cardData(item) {
+      if (this.isSkeleton) return [];
       return [
         {
           title: this.$t('disputes.dispute'),
@@ -118,8 +123,9 @@ export default {
         },
       ];
     },
-    toDisputes(itemId) {
-      this.$router.push(`${Path.DISPUTES}/${itemId}`);
+    toDispute() {
+      if (this.isSkeleton) return;
+      this.$router.push(`${Path.DISPUTES}/${this.dispute.id}`);
     },
     convertDate(createdAt) {
       return createdAt ? moment(createdAt).format('MMMM Do YYYY, h:mm') : '';

@@ -1,0 +1,15 @@
+[
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "workquest",
+            "package_name": "com.company.workquestap",
+            "sha256_cert_fingerprints": [
+                "B4:01:0C:7E:E0:D4:23:FF:8A:FA:43:66:3D:06:7E:76:A8:C6:DC:63:8C:BC:24:90:2E:67:45:0D:77:F0:B0:81",
+                "7B:33:C3:C8:A1:33:1E:10:ED:A8:CA:16:B7:D3:75:A6:CB:27:82:1E:47:4F:55:FB:00:BE:FC:8B:DB:53:EA:34"
+            ]
+        }
+    }
+]

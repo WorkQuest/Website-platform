@@ -6,7 +6,6 @@
   >
     <skeleton-block
       v-if="isSkeleton"
-      class="card-quest__left"
       style="min-height: 200px"
     />
     <div
@@ -841,7 +840,6 @@ export default {
       align-items: flex-start;
       justify-content: flex-end;
       gap: 5px;
-      margin-bottom: auto;
     }
   }
 

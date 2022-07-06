@@ -240,6 +240,10 @@ export default {
   .pager {
     margin: 0 auto;
     width: auto;
+    &_icon {
+      width: 20px;
+      height: 20px;
+    }
   }
 }
 
