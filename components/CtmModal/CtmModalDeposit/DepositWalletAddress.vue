@@ -12,9 +12,9 @@
     </p>
     <div class="content__wallet">
       <div class="wallet">
-        <span class="wallet__address">{{ CutTxn(userWalletAddress) }}</span>
+        <span class="wallet__address">{{ CutTxn(convertedAddress) }}</span>
         <button
-          v-clipboard:copy="userWalletAddress"
+          v-clipboard:copy="convertedAddress"
           v-clipboard:success="showSuccessCopied"
           v-clipboard:error="clipboardErrorHandler"
           type="button"
@@ -39,7 +39,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { Path } from '~/utils/enums';
+import { Chains, Path } from '~/utils/enums';
 import SharingBtn from '~/components/ui/SharingBtn';
 
 export default {
@@ -48,14 +48,18 @@ export default {
   computed: {
     ...mapGetters({
       userWalletAddress: 'user/getUserWalletAddress',
+      selectedNetwork: 'wallet/getSelectedNetwork',
     }),
+    convertedAddress() {
+      if (this.selectedNetwork === Chains.WORKNET) return this.convertToBech32('wq', this.userWalletAddress);
+      return this.userWalletAddress;
+    },
     urlToShare() {
-      return `${window.location.origin}${Path.QRCODE}?address=${this.userWalletAddress}`;
+      return `${window.location.origin}${Path.QRCODE}?address=${this.convertedAddress}`;
     },
 
   },
   methods: {
-
     clipboardErrorHandler(value) {
       this.$store.dispatch('main/showToast', {
         title: 'Copy error',
@@ -72,7 +76,7 @@ export default {
     showShareModal() {
       this.ShowModal({
         key: modals.sharingQuest,
-        itemId: `${this.$t('modals.deposit.sharingText')} ${this.userWalletAddress}`,
+        itemId: `${this.$t('modals.deposit.sharingText')} ${this.convertedAddress}`,
         mode: 'wallet',
       });
     },

@@ -95,7 +95,8 @@ export default {
           balance,
         );
 
-        commit('setToken', { amount: new BigNumber(balance).shiftedBy(-18).minus(+txFee).toNumber() || 0 });
+        const tokenBalance = new BigNumber(balance).shiftedBy(-18).minus(+txFee);
+        commit('setToken', { amount: tokenBalance.isLessThan(0) ? 0 : tokenBalance.toNumber() });
       } else {
         const [decimal, amount] = await Promise.all([
           fetchContractData('decimals', ERC20, tokenAddress),

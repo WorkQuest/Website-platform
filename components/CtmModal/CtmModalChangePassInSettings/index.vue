@@ -75,7 +75,7 @@
         :type="isVisibleConfirm ? 'text': 'password'"
       >
         <template v-slot:left>
-          <span class="icon-Lock" />
+          <span class="icon-Lock field__picture" />
         </template>
         <template
           v-if="confirmNewPasswordInput"
@@ -189,6 +189,10 @@ export default {
 .field {
   &__button {
     background-color: transparent !important;
+  }
+  &__picture {
+    color: $blue;
+    font-size: 24px;
   }
 }
 

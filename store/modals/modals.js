@@ -57,7 +57,7 @@ export default {
   takeWithdraw: 'takeWithdraw',
   withdrawInfo: 'withdrawInfo',
   withdrawOptions: 'withdrawOptions',
-  giveTransfer: 'giveTransfer',
+  walletWithdraw: 'walletWithdraw',
   paymentOptions: 'paymentOptions',
   areYouSureDelete: 'areYouSureDelete',
   swap: 'swap',

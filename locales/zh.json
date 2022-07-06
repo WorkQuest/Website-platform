@@ -21,6 +21,7 @@
     "amount": {
       "amountOfBNB": "Amount of BNB",
       "amountOfWQT": "Amount of WQT",
+      "amountOfWQTToReceive": "Amount of WQT to receive",
       "amountOfETH": "Amount of ETH",
       "amountETHPerWQT": "Amount ETH per WQT",
       "amountBNBPerWQT": "Amount BNB per WQT"
@@ -96,6 +97,7 @@
       "goToChat": "转到聊天",
       "view": "查看",
       "add": "添加",
+      "addNow": "Add now",
       "take": "Take",
       "swap": "Swap"
     },
@@ -251,6 +253,7 @@
     "loginWithSecret": "Please login with secret phrase",
     "invalidPassword": "Invalid password",
     "loginToContinue": "Please login to continue",
+    "loginAfterRegistration": "Your account has been successfully created. Please login to continue",
     "numberOfCard": "Please enter correct {_field_}",
     "cvv": "Please enter correct {_field_}",
     "date": "Please enter correct {_field_}",
@@ -267,8 +270,10 @@
     "max_percent": "Please enter correct {_field_}, reduce the percentage",
     "notEmptyArray": "Please select a {_field_}",
     "not_enough_funds": "Not enough funds",
+    "have_funds": "Your balance less than amount",
     "min_buy_wqt" : "To avoid unnecessary fees and network slippage, the minimum amount for this pair is ${min} {symbol}",
-    "max_buy_wqt": "To avoid unnecessary fees and network slippage, the maximum amount for this pair is ${max} {symbol}"
+    "max_buy_wqt": "To avoid unnecessary fees and network slippage, the maximum amount for this pair is ${max} {symbol}",
+    "min_tokens_amount": "Insufficient tokens, min amount {min} {symbol}."
   },
   "about": {
     "text": "WorkQuest 是一个基于区块链技术的社交项目，可以在 Quest 模式下提供工作机会和解决雇主方面的任务。您在找工作吗？WorkQuest 将帮助您找到附近的 Quest。您需要工作者实现目标吗？只需在 WorkQuest 站点创建 Quest 即可。服务承担执行 Quest 的保证义务。雇主资金由我方保管，雇员在确认工作执行情况后将在帐户中收到资金。由评分、评价和已完成 Quest 列表组成的系统将有助于轻松寻找合适的人员和最优秀的专家。\n\n          我们的目标是简化雇主与雇员之间的沟通，帮助数百万人就业，改善人们的财务状况，解决在各行各业寻找可靠专业人士的终身问题，以信任、相互尊重和所有参与者的福祉为基础创造进步的数字经济。"
@@ -950,6 +955,8 @@
     "alreadyRedeemed": "You already redeemed, wait!"
   },
   "modals": {
+    "coming": "Coming soon",
+    "stillUnderConstruction": "Still under construction",
     "titles": {
       "2FA": {
         "disable": "Disable 2FA",
@@ -1303,7 +1310,6 @@
       "scanQrCodeWallet": "Scan QR code or copy address to receive payment",
       "walletCopied": "Wallet address copied successfully",
       "uHaveToAddCard": "Please add a bank card to your account",
-      "coming": "Coming soon",
       "addCard": "Add card",
       "sharingText": "Hi, here is my wallet address:"
     }
@@ -1454,7 +1460,8 @@
       "buyButton": "Buy WQT",
       "title": "Buy $WQT now!",
       "sub": "The easiest way to buy $WQT is using $USDT.",
-      "networks": "Networks available for purchase: Ethereum, Binance Smart Chain and Polygon. After the purchase, $WQT will automatically deposit to your WorkNet network wallet, minus the transaction fee."
+      "networks": "Networks available for purchase: Ethereum, Binance Smart Chain and Polygon. After the purchase, $WQT will automatically deposit to your WorkNet network wallet, minus the transaction fee.",
+      "worknetFee": "Includes a WorkNet network fee."
     },
     "collateral": {
       "balance": "Collateral balance",

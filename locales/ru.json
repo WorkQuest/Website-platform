@@ -21,6 +21,7 @@
     "amount": {
       "amountOfBNB": "Amount of BNB",
       "amountOfWQT": "Amount of WQT",
+      "amountOfWQTToReceive": "Amount of WQT to receive",
       "amountOfETH": "Amount of ETH",
       "amountETHPerWQT": "Amount ETH per WQT",
       "amountBNBPerWQT": "Amount BNB per WQT"
@@ -96,6 +97,7 @@
       "goToChat": "Перейти в чат",
       "view": "View",
       "add": "Добавить",
+      "addNow": "Добавить сейчас",
       "take": "Take",
       "swap": "Swap"
     },
@@ -251,6 +253,7 @@
     "loginWithSecret": "Please login with secret phrase",
     "invalidPassword": "Invalid password",
     "loginToContinue": "Пожалуйста, войдите, чтобы продолжить",
+    "loginAfterRegistration": "Ваша учетная запись была успешно создана. Пожалуйста, войдите, чтобы продолжить",
     "numberOfCard": "Введите правильное {_field_}",
     "cvv": "Введите правильное {_field_}",
     "date": "Введите правильное {_field_}",
@@ -267,8 +270,10 @@
     "max_percent": "Введите правильное {_field_}, уменьшите процент",
     "notEmptyArray": "Выберите {_field_}",
     "not_enough_funds": "Не достаточно средств",
+    "have_funds": "Ваш баланс меньше введенного значения",
     "min_buy_wqt" : "To avoid unnecessary fees and network slippage, the minimum amount for this pair is ${min} {symbol}",
-    "max_buy_wqt": "To avoid unnecessary fees and network slippage, the maximum amount for this pair is ${max} {symbol}"
+    "max_buy_wqt": "To avoid unnecessary fees and network slippage, the maximum amount for this pair is ${max} {symbol}",
+    "min_tokens_amount": "Insufficient tokens, min amount {min} {symbol}."
   },
   "about": {
     "text": "Work Quest — это социальный проект на основе технологии блокчейн для поиска работы и решения любых задач со стороны работодателя в режиме квеста. Вы ищете работу? Work Quest поможет найти квест рядом с вами и вашим городом. Нужны ли вам рабочие для выполнения целей? Просто создайте квест на сайте Work Quest. Сервис берет на себя гарантийные обязательства по выполнению квестов. Средства работодателя хранятся у нас, если работник дает подтверждение о выполнении работы, он получает задаток денежных средств на свой счет. Система рейтингов, обзоров и список выполненных квестов помогут легко найти честных людей и лучших специалистов.\n Наша цель – упростить коммуникацию между работодателем и работником, помочь трудоустроить миллионы людей, улучшить их материальное положение, решить проблему поиска надежных профессионалов во всех отраслях, создать прогрессивную цифровую экономику, построенную на принципах доверия, взаимного уважения и благополучия всех его участников."
@@ -950,6 +955,8 @@
     "alreadyRedeemed": "Вы уже выкупили токены, ожидайте!"
   },
   "modals": {
+    "coming": "Coming soon",
+    "stillUnderConstruction": "Still under construction",
     "titles": {
       "2FA": {
         "disable": "Отключить 2FA",
@@ -1303,7 +1310,6 @@
       "scanQrCodeWallet": "Scan QR code or copy address to receive payment",
       "walletCopied": "Wallet address copied successfully",
       "uHaveToAddCard": "Please add a bank card to your account",
-      "coming": "Coming soon",
       "addCard": "Add card",
       "sharingText": "Hi, here is my wallet address:"
     }
@@ -1454,7 +1460,8 @@
       "buyButton": "Купить WQT",
       "title": "Buy $WQT now!",
       "sub": "The easiest way to buy $WQT is using $USDT.",
-      "networks": "Networks available for purchase: Ethereum, Binance Smart Chain and Polygon. After the purchase, $WQT will automatically deposit to your WorkNet network wallet, minus the transaction fee."
+      "networks": "Networks available for purchase: Ethereum, Binance Smart Chain and Polygon. After the purchase, $WQT will automatically deposit to your WorkNet network wallet, minus the transaction fee.",
+      "worknetFee": "Includes a WorkNet network fee."
     },
     "collateral": {
       "balance": "Залоговый баланс",

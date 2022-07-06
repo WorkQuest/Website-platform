@@ -265,7 +265,7 @@ export default {
       });
     }
 
-    if (sessionStorage.getItem('confirmToken')) this.ShowToast(this.$t('messages.loginToContinue'), ' ');
+    if (sessionStorage.getItem('confirmToken')) this.ShowToast(this.$t('messages.loginAfterRegistration'), ' ');
 
     const isRef = this.$router.history._startLocation.includes('ref');
     if (isRef) {
