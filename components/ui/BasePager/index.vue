@@ -83,6 +83,11 @@ export default {
       default: 1,
     },
   },
+  data() {
+    return {
+      windowSize: window.innerWidth,
+    };
+  },
   computed: {
     formedPages() {
       const { totalPages, value } = this;
@@ -92,20 +97,26 @@ export default {
           array.push(i);
         }
         let medium = [];
+        const deleteCount = this.windowSize < 450 ? 3 : 4;
         if (value >= totalPages - 2) {
-          medium = array.splice(totalPages - 5, 4) || [];
+          medium = array.splice(totalPages - 5, deleteCount) || [];
           medium = [-1, ...medium];
         } else if (value > 4) {
           medium = array.splice(value - 2, 3) || [];
           medium = [-1, ...medium, -1];
         } else {
-          medium = array.splice(1, 4) || [];
+          medium = array.splice(1, deleteCount) || [];
           medium = [...medium, -1];
         }
         return [1, ...medium, totalPages];
       }
       return totalPages;
     },
+  },
+  beforeMount() {
+    window.addEventListener('resize', () => {
+      this.windowSize = window.innerWidth;
+    });
   },
   methods: {
     setPage(value) {
