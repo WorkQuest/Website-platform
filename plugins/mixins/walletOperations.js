@@ -100,7 +100,7 @@ export default {
 
           this.SetLoader(false);
           if (!txFee.ok) {
-            this.ShowToast(needApprove);
+            this.ShowToast(txFee.msg);
             reject();
             return;
           }
