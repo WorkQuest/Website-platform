@@ -1,10 +1,16 @@
 // eslint-disable-next-line import/prefer-default-export
 export const images = Object.freeze({
+  // tokens
   WQT: require('~/assets/img/ui/wqt-logo.svg'),
-  POLYGON: require('~/assets/img/ui/Polygon.svg'),
   ETH: require('~/assets/img/ui/eth_white.svg'),
   ETH_BLACK: require('~/assets/img/ui/ethereum.svg'),
   BNB: require('~/assets/img/ui/bnb_yellow.svg'),
+  POLYGON: require('~/assets/img/ui/Polygon.svg'),
+  USDT: require('~/assets/img/ui/tether-usdt.svg'),
+  WUSD: require('~/assets/img/ui/wusd.svg'),
+
+  WQ_LOGO: require('assets/img/app/logo.svg'),
+
   EMPTY_AVATAR: require('~/assets/img/app/avatar_empty.png'),
   ERROR: require('~/assets/img/ui/error.svg'),
   QUEST_CREATED: require('assets/img/ui/questCreated.svg'),
@@ -14,7 +20,6 @@ export const images = Object.freeze({
   DOCUMENT: require('~/assets/img/ui/document.svg'),
   CARD_ADDED: require('assets/img/ui/cardHasBeenAdded.svg'),
   TRANSACTION_SEND: require('~/assets/img/ui/transactionSend.svg'),
-  WQ_LOGO: require('assets/img/app/logo.svg'),
   EMAIL: require('assets/img/icons/email.svg'),
   PASSWORD: require('assets/img/icons/password.svg'),
   CLOSE: require('assets/img/ui/close.svg'),

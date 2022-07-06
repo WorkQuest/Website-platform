@@ -76,12 +76,14 @@
                   {{ $t('meta.coins.count.WQTCount', {count: Floor(frozenBalance)}) }}
                 </span>
                 <base-dd
+                  v-if="tokens.length"
                   v-model="ddValue"
                   class="balance__token"
-                  :items="tokenSymbolsDd"
+                  :items="tokens"
                   :placeholder="$options.TokenSymbols.WQT"
                   data-selector="TOKENS"
                   type="border"
+                  is-icon
                 />
               </span>
               <span :class="[{'balance__currency__margin-bottom' : selectedToken !== $options.TokenSymbols.WQT}]">
@@ -243,7 +245,6 @@ export default {
       txsPerPage: 10,
       currentPage: 1,
       selectedWalletTable: WalletTables.TXS,
-      tokenSymbolsDd: [],
       isFetchingBalance: false,
       shortWqAddress: '',
       isShowedBuyWqtNotification: true,
@@ -261,6 +262,9 @@ export default {
       isWalletConnected: 'wallet/getIsWalletConnected',
       selectedNetwork: 'wallet/getSelectedNetwork',
     }),
+    tokens() {
+      return WalletTokensData[this.selectedNetwork].tokenList || [];
+    },
     networkList() {
       return [
         BuyWQTTokensData.get(Chains.WORKNET),
@@ -284,13 +288,18 @@ export default {
       };
     },
     nativeTokenSymbol() {
-      return WalletTokensData[this.selectedNetwork].tokenList[0];
+      return WalletTokensData[this.selectedNetwork].tokenList[0].title;
     },
     selectedTokenAddress() {
-      return this.tokenAddresses[this.tokenSymbolsDd.indexOf(this.selectedToken) - 1];
-    },
-    tokenAddresses() {
-      return WalletTokensData[this.selectedNetwork].tokenAddresses;
+      let tokenAddress;
+      this.tokens.some((token) => {
+        if (token.title === this.selectedToken) {
+          tokenAddress = token.tokenAddress;
+          return true;
+        }
+        return false;
+      });
+      return tokenAddress;
     },
     selectedTokenData() {
       return this.balance[this.selectedToken];
@@ -347,15 +356,12 @@ export default {
   },
   watch: {
     selectedNetwork() {
-      this.tokenSymbolsDd = WalletTokensData[this.selectedNetwork].tokenList;
+      this.ddValue = 0;
+      // this.tokenSymbolsDd = WalletTokensData[this.selectedNetwork].tokenList;
       this.updateWQAddress();
     },
-    ddValue(newVal) {
-      this.$store.dispatch('wallet/setSelectedToken', this.tokenSymbolsDd[newVal]);
-    },
-    async selectedToken() {
-      const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
-      this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
+    async ddValue(newVal) {
+      await this.$store.dispatch('wallet/setSelectedToken', this.tokens[newVal].title);
       await this.loadData();
     },
     currentPage() {
@@ -378,8 +384,6 @@ export default {
 
     this.updateWQAddress();
     window.addEventListener('resize', this.updateWQAddress);
-
-    this.tokenSymbolsDd = WalletTokensData[this.selectedNetwork].tokenList;
 
     await this.$store.dispatch('wallet/setCallbackWS', this.loadData);
     await this.loadData();
@@ -430,7 +434,6 @@ export default {
     async loadData() {
       this.isFetchingBalance = true;
       const { selectedToken, userWalletAddress } = this;
-
       // 0 token is always native token for current network!
       if (this.nativeTokenSymbol === selectedToken) {
         const toFetch = [this.$store.dispatch('wallet/getBalance')];
@@ -443,7 +446,7 @@ export default {
         await this.$store.dispatch('wallet/fetchWalletData', {
           method: 'balanceOf',
           ...payload,
-          token: this.tokenAddresses[this.tokenSymbolsDd.indexOf(selectedToken) - 1],
+          token: this.selectedTokenAddress,
           symbol: selectedToken,
         });
       }
