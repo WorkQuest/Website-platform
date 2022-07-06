@@ -373,6 +373,7 @@ export default {
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
+  border: 1px solid $black0;
   &_hov:hover {
       cursor: pointer;
     }
