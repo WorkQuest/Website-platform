@@ -57,7 +57,7 @@
           </base-field>
         </div>
         <div
-          v-if="chats.list.length"
+          v-if="chats.list && chats.list.length"
           class="chats-container__list"
         >
           <div
@@ -143,10 +143,16 @@
                 </div>
               </div>
               <div class="chat__status">
-                <div
-                  v-if="chat.isUnread"
-                  class="chat__unread-dot"
-                />
+                <div class="chat__status_flex">
+                  <span
+                    class="icon-close_big chat__delete"
+                    @click="deleteChat($event, chat)"
+                  />
+                  <div
+                    v-if="chat.isUnread"
+                    class="chat__unread-dot"
+                  />
+                </div>
                 <div
                   class="block__icon block__icon_fav star"
                   @click="handleChangeStarVal($event, chat)"
@@ -204,6 +210,7 @@ import {
   ChatType, MessageType, MessageAction, QuestChatStatus, UserRoles, GetInfoMessageText,
 } from '~/utils/сonstants/chat';
 import { images } from '~/utils/images';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'Messages',
@@ -233,7 +240,7 @@ export default {
     canLoadMoreChats() {
       const { count, list } = this.chats;
 
-      return count > list.length;
+      return count > list?.length;
     },
     filterTabs() {
       return [
@@ -273,6 +280,18 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    deleteChat(ev, chat) {
+      ev.stopPropagation();
+      this.ShowModal({
+        key: modals.areYouSureNotification,
+        title: this.$t('chat.deleteChat'),
+        callback: async () => {
+          this.SetLoader(true);
+          await this.$store.dispatch('chat/removeChat', chat.id);
+          this.SetLoader(false);
+        },
+      });
+    },
     toUserProfile(ev, user) {
       if (user.type === UserRoles.ADMIN) return;
       ev.stopPropagation();
@@ -490,14 +509,29 @@ export default {
     display: grid;
     align-content: space-around;
     justify-items: center;
+
+    &_flex {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &__delete {
+    color: $black300;
+    font-size: 22px;
+    &:hover {
+      color: $red;
+    }
   }
 
   &__unread-dot {
     height: 8px;
     width: 8px;
     border-radius: 50%;
-    background-color: #0083C7;
-    top: 0;
+    background-color: $blue;
+    margin-left: 30px;
+    margin-bottom: 40px;
+    position: absolute;
   }
 
   &__row {
@@ -660,6 +694,9 @@ export default {
 }
 @include _575 {
   .chat {
+    &__unread-dot {
+      margin-left: 25px;
+    }
     &__row {
       gap: 10px;
       width: calc(100vw - 120px);

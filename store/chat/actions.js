@@ -92,6 +92,17 @@ export default {
       return false;
     }
   },
+  async removeChat({ commit }, chatId) {
+    try {
+      const { ok } = await this.$axios.$delete(`/v1/user/me/chat/${chatId}/remove`);
+      if (ok) {
+        commit('removeChatFromListById', chatId);
+      }
+      return success();
+    } catch (e) {
+      return error(-1, e);
+    }
+  },
   async handleCreateGroupChat({ commit, dispatch }, config) {
     try {
       const { payload } = await this.$wsChatActions.$post('/api/v1/user/me/chat/group/create', config);

@@ -8,6 +8,18 @@ export default {
     state.chats.list = chats;
     state.chats.count = count;
   },
+  removeChatFromListById(state, chatId) {
+    const chatIndex = state.chats.list.findIndex((item) => item.id === chatId);
+    console.log(chatIndex);
+    if (chatIndex >= 0) {
+      const { list } = state.chats;
+      const newList = list.filter((item) => item.id !== chatId);
+      state.chats = {
+        list: newList,
+        count: state.chats.count - 1,
+      };
+    }
+  },
   setMessagesList(state, {
     messages, count, chat, direction, offset, canLoadToBottom, canLoadToTop,
   }) {

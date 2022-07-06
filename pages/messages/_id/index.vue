@@ -164,9 +164,7 @@
                 class="image-cont__remove"
                 @click="handleRemoveFile(i)"
               >
-                <span
-                  class="icon-close_big"
-                />
+                <span class="icon-close_big" />
               </div>
             </div>
           </div>
