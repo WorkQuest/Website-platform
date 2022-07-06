@@ -253,7 +253,7 @@
     "loginWithSecret": "Please login with secret phrase",
     "invalidPassword": "Invalid password",
     "loginToContinue": "Please login to continue",
-    "loginAfterRegistration": "Your account has been successfully created. Please login to continue",
+    "loginAfterEmailConfirm": "Your account has been successfully created. Please login to continue",
     "numberOfCard": "Please enter correct {_field_}",
     "cvv": "Please enter correct {_field_}",
     "date": "Please enter correct {_field_}",
