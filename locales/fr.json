@@ -270,7 +270,7 @@
     "max_percent": "Please enter correct {_field_}, reduce the percentage",
     "notEmptyArray": "Please select a {_field_}",
     "not_enough_funds": "Not enough funds",
-    "have_funds": "Your balance less than amount",
+    "have_funds": "Not enough {symbol} to complete this transaction",
     "min_buy_wqt" : "To avoid unnecessary fees and network slippage, the minimum amount for this pair is ${min} {symbol}",
     "max_buy_wqt": "To avoid unnecessary fees and network slippage, the maximum amount for this pair is ${max} {symbol}",
     "min_tokens_amount": "Insufficient tokens, min amount {min} {symbol}."

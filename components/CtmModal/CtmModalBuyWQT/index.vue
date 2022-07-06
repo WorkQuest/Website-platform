@@ -101,6 +101,9 @@ import modals from '~/store/modals/modals';
 import { BuyWQT, ERC20 } from '~/abi';
 import { images } from '~/utils/images';
 
+const MIN_AMOUNT = 5;
+const MAX_AMOUNT = 100;
+
 export default {
   name: 'ModalBuyWQT',
   data() {
@@ -123,11 +126,11 @@ export default {
     }),
     amountRules() {
       const { tokenData, selectedSymbol, amount } = this;
-      const minTokensAmount = `min_tokens_amount:${tokenData && tokenData.fullBalance},${5},${tokenData && tokenData.symbol}`;
-      const haveFounds = `have_funds:${tokenData && tokenData.fullBalance},${amount}`;
+      const minTokensAmount = `min_tokens_amount:${tokenData && tokenData.fullBalance},${MIN_AMOUNT},${selectedSymbol}`;
+      const haveFounds = `have_funds:${tokenData && tokenData.fullBalance},${amount},${selectedSymbol}`;
       const decimalPlaces = `decimalPlaces:${tokenData ? tokenData.decimals : 0}`;
-      const minBuy = `min_buy_wqt:5,${selectedSymbol}`;
-      const maxBuy = `max_buy_wqt:100,${selectedSymbol}`;
+      const minBuy = `min_buy_wqt:${MIN_AMOUNT},${selectedSymbol}`;
+      const maxBuy = `max_buy_wqt:${MAX_AMOUNT},${selectedSymbol}`;
       return `required|decimal|${minTokensAmount}|${decimalPlaces}|${minBuy}|${maxBuy}|${haveFounds}`;
     },
     networkList() {
@@ -165,17 +168,24 @@ export default {
       await this.updateTokenData();
     },
     // Определение сколько приблизительно WQT мы получим
-    amount() {
+    amount(nV) {
       clearTimeout(this.updatePriceId);
+
+      // что бы не слать запросы на оракул и ноду, если нет баланса или значение не валидное
+      if (
+        nV === ''
+        || new BigNumber(nV).isLessThan(MIN_AMOUNT)
+        || new BigNumber(nV).isGreaterThan(MAX_AMOUNT)
+        || (this.tokenData?.fullBalance && new BigNumber(this.tokenData?.fullBalance).isLessThan(nV))
+      ) return;
+
       this.inProgressWQT = true;
       this.wqtAmount = `${this.$t('modals.pleaseWait')}...`;
       this.updatePriceId = setTimeout(async () => {
         await this.$store.dispatch('oracle/getCurrentTokensPrices');
         const priceWQT = new BigNumber(this.oraclePrices[this.oracleSymbols.indexOf(TokenSymbols.WQT)]).shiftedBy(-18);
-        const decimalAmount = new BigNumber(this.amount);
+        const decimalAmount = new BigNumber(nV);
         const receiveWithCommission = decimalAmount.dividedBy(priceWQT).multipliedBy(1 - WQTBuyCommission).decimalPlaces(18);
-        //  TODO: check it, if dont need to convert, del
-        const address = this.convertToHex('wq', this.userWalletAddress);
         const value = new BigNumber(receiveWithCommission).shiftedBy(18).toString();
 
         let txFee;
@@ -217,7 +227,10 @@ export default {
     handleInput(val) {
       if (!val || isNaN(val)) this.amount = val;
       else if (!this.tokenData) this.amount = 0;
-      else this.amount = val;
+      else {
+        const isNeedClear = val.startsWith('0') && !(val.startsWith('0,') || val.startsWith('0.'));
+        this.amount = isNeedClear ? val.substr(1, val.length) : val;
+      }
       this.amount = this.amount.toString().replace(/,/g, '.');
     },
     clearData() {
