@@ -16,7 +16,7 @@
             :ref="`${notification.id}|${notification.seen}`"
             class="notification"
             :class="{'notification_gray' : !notification.seen}"
-            @click="goToEvent(notification.params ? notification.params.path : '', true)"
+            @click="goToEvent(notification)"
           >
             <template v-if="notification.sender">
               <div class="notification__avatar">
@@ -49,21 +49,21 @@
               </div>
             </template>
             <div class="notification__quest quest">
-              <span class="quest__invitation">
+              <div class="quest__invitation">
                 {{
                   notification.params.isLocal
                     ? notification.data.message
                     : notificationActionKey(notification)
                 }}
-              </span>
-              <span
+              </div>
+              <div
                 v-if="notification.params"
                 class="quest__title"
                 :class="{'quest__title_hov': !notification.params.isLocal}"
-                @click="notification.params.isLocal ? '' : goToEvent(notification.params.path)"
+                @click="notification.params.isLocal ? '' : goToEvent(notification, true)"
               >
                 {{ notification.params.title }}
-              </span>
+              </div>
             </div>
             <div class="notification__date">
               {{ $moment(notification.createdAt).format('MMMM Do YYYY, h:mm') }}
@@ -84,7 +84,7 @@
                 :link="notification.params.isExternalLink ? `${notification.params.externalBase}${notification.params.path}` : ''"
                 class="button__view"
                 data-selector="NOTIFICATION-VIEW"
-                @click="notification.params.isExternalLink ? '' : goToEvent(notification.params.path)"
+                @click="notification.params.isExternalLink ? '' : goToEvent(notification, true)"
               >
                 {{ actionBtnText(notification) }}
               </base-btn>
@@ -231,8 +231,13 @@ export default {
       }
       this.checkUnseenNotifs();
     },
-    goToEvent(path, isNotifCont) {
-      if (isNotifCont && document.body.offsetWidth > 767) return;
+    goToEvent(notification, isRefBtn) {
+      if (!notification.params || (document.body.offsetWidth > 767 && !isRefBtn)) return;
+      const { path } = notification.params;
+      if (notification.params.isExternalLink) {
+        window.open(notification.params.externalBase + path, '_blank');
+        return;
+      }
       this.$router.push(path);
     },
   },
@@ -421,7 +426,7 @@ export default {
     text-overflow: ellipsis;
     white-space: initial;
 
-    display: -webkit-box;
+    display: inline-block;
     line-clamp: 3;
     -webkit-line-clamp: 3;
     box-orient: vertical;
