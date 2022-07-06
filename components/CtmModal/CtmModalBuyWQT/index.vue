@@ -323,6 +323,7 @@ export default {
                 title: this.$t('modals.transactionSent'),
                 link: `${WalletTokensData[selectedNetwork].explorer}/tx/${transactionHash}`,
               });
+              await this.$store.dispatch('wallet/connectToProvider', Chains.WORKNET);
             }
           },
         });
