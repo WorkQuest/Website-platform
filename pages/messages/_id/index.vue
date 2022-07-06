@@ -387,11 +387,11 @@ export default {
       }
     },
     async handleSendMessage() {
-      const {
-        messageText, files, chatId,
-      } = this;
+      const { files, chatId } = this;
       this.isDisabledSendMessage = true;
 
+      this.messageText = this.messageText.trim();
+      const { messageText } = this;
       if (!messageText && !files.length) {
         this.isDisabledSendMessage = false;
         return;

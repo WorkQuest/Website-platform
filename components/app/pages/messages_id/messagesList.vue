@@ -42,11 +42,11 @@
               {{ setInfoMessageText(message.infoMessage.messageAction, message.itsMe) }}
             </span>
             <span
-              v-if="!message.itsMe && [MessageAction.GROUP_CHAT_ADD_USERS, MessageAction.GROUP_CHAT_DELETE_USER].includes(message.infoMessage.messageAction) && message.infoMessage.user"
+              v-if="isNeedToShowInfoMessageMember(message)"
               class="info-message__link"
-              @click="openProfile(message.sender.userId)"
+              @click="openProfile(message.infoMessage.member.user.id)"
             >
-              {{ senderFullNameById(message.sender.userId) }}
+              {{ UserName(message.infoMessage.member.user.firstName, message.infoMessage.member.user.lastName) }}
             </span>
           </template>
           <div
@@ -197,7 +197,7 @@ import moment from 'moment';
 import modals from '~/store/modals/modals';
 import { Path } from '~/utils/enums';
 import {
-  MessageAction, MessageType, UserRoles, FileTypes, GetInfoMessageText,
+  MessageAction, MessageType, UserRoles, FileTypes, GetInfoMessageText, ChatType,
 } from '~/utils/сonstants/chat';
 import { images } from '~/utils/images';
 
@@ -272,6 +272,14 @@ export default {
     this.$store.commit('chat/clearMessagesFilter');
   },
   methods: {
+    isNeedToShowInfoMessageMember(message) {
+      return message?.infoMessage?.member?.user
+        && [MessageAction.GROUP_CHAT_ADD_USERS,
+          MessageAction.GROUP_CHAT_DELETE_USER,
+          MessageAction.GROUP_CHAT_RESTORED_USER,
+          MessageAction.GROUP_CHAT_DELETE_USER,
+        ].includes(message.infoMessage.messageAction);
+    },
     canShowActionUsers(messageAction, itsMe) {
       const isGroupChatCreateAction = messageAction === MessageAction.GROUP_CHAT_CREATE;
       return !isGroupChatCreateAction || (isGroupChatCreateAction && !itsMe);
@@ -363,7 +371,7 @@ export default {
     setFullName({
       itsMe, infoMessage: { user }, sender, type,
     }) {
-      if (itsMe || (type === MessageType.INFO && sender.adminId)) return '';
+      if (itsMe || (type === MessageType.INFO && sender?.adminId)) return '';
       return itsMe
         ? this.UserName(user?.firstName, user?.lastName)
         : this.UserName(sender.user?.firstName, sender.user?.lastName);
@@ -577,8 +585,8 @@ export default {
     width: 43px;
     border-radius: 50%;
     object-fit: cover;
-    background-color: $black100;
-    border: 1px solid $black200;
+    background-color: $black0;
+    border: 1px solid $black100;
     &_hidden {
       visibility: hidden;
     }
@@ -753,6 +761,7 @@ export default {
       }
 
       &_user-text {
+        width: 100%;
         word-break: break-all
       }
     }
@@ -771,12 +780,6 @@ export default {
       text-overflow: ellipsis;
       overflow: hidden;
     }
-  }
-}
-
-@include _480 {
-  .info-message {
-    font-size: 10px;
   }
 }
 </style>

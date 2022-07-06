@@ -121,16 +121,24 @@
                     {{ isGroupChat(chat.type) ? $t('chat.group') : ` ${$t('chat.quest')} ${(chat.questChat && chat.questChat.quest.title)} ` }}
                   </div>
                 </div>
-                <div class="chat__row">
+                <div
+                  v-if="chat.meMember && chat.meMember.deletionData"
+                  class="chat__row"
+                >
+                  {{ $t('chat.systemMessages.youHaveRemovedFromChat') }}
+                </div>
+                <div
+                  v-else-if="chat.chatData.lastMessage"
+                  class="chat__row"
+                >
                   <div
-                    v-if="isItMyLastMessage(chat.chatData.lastMessage.sender.userId) || chat.chatData.lastMessage.sender.type === $options.UserRoles.ADMIN || isGroupChat(chat.type)"
+                    v-if=" isItMyLastMessage(chat.chatData.lastMessage.sender.userId) || chat.chatData.lastMessage.sender.type === $options.UserRoles.ADMIN || isGroupChat(chat.type)"
                     class="chat__title"
                   >
                     {{ isItMyLastMessage(chat.chatData.lastMessage.sender.userId) ? $t('chat.you') : getFullName(chat.chatData.lastMessage.sender)+':' }}
                   </div>
                   <div class="chat__title chat__title_gray chat__title_ellipsis">
-                    {{ setCurrMessageText(chat.chatData.lastMessage, userData.id ===
-                      chat.chatData.lastMessage.memberId) }}
+                    {{ setCurrMessageText(chat.chatData.lastMessage, userData.id === chat.chatData.lastMessage.memberId) }}
                   </div>
                 </div>
               </div>
@@ -325,6 +333,7 @@ export default {
     async getChats() {
       this.SetLoader(true);
       await this.$store.dispatch('chat/getChatsList');
+
       this.SetLoader(false);
     },
     handleSelChat(chat) {
@@ -527,12 +536,12 @@ export default {
     position: absolute;
     object-fit: cover;
     z-index: 3;
-    background-color: $black100;
-    border: 1px solid $black200;
+    background-color: $black0;
+    border: 1px solid $black100;
     &-group{
       color: $blue;
-      background-color: $black100;
-      border: 1px solid $black200;
+      background-color: $black0;
+      border: 1px solid $black100;
       font-weight: 500;
       width: 43px;
       height: 43px;
