@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="buy-wqt"
-    :title="$t('wallet.buyWQT.buyButton')"
+    :title="$t('modals.titles.swap')"
   >
     <validation-observer
       v-slot="{handleSubmit, invalid}"
