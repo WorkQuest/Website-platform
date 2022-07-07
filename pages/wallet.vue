@@ -118,7 +118,7 @@
               <base-btn
                 data-selector="SHOW-DEPOSIT-MODAL"
                 class="balance__btn"
-                @click="showModal({key: 'deposit'})"
+                @click="showDepositModal"
               >
                 {{ $t('wallet.deposit') }}
               </base-btn>
@@ -145,14 +145,14 @@
             <span class="card__title">{{ $t('wallet.addCardProposal') }}</span>
             <span
               class="icon-close_big card__icon"
-              @click="closeCard()"
+              @click="cardClosed = true"
             />
             <base-btn
               data-selector="SHOW-ADD-CARD-MODAL"
               class="card__btn"
               mode="outline"
               :disabled="true"
-              @click="showModal({key: 'addCard', branchText: 'adding' })"
+              @click="ShowModal({key: 'addCard', branchText: 'adding' })"
             >
               {{ $t('modals.coming') }}
             </base-btn>
@@ -483,13 +483,10 @@ export default {
       this.isFetchingBalance = false;
       await this.getTransactions();
     },
-    closeCard() {
-      this.cardClosed = true;
-    },
-    showModal({ key, branch }) {
+    showDepositModal() {
       this.ShowModal({
-        key: modals[key],
-        branch,
+        key: modals.deposit,
+        addressType: this.addressType,
       });
     },
     showTransferModal() {

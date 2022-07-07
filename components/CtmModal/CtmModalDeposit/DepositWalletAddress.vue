@@ -54,9 +54,15 @@ export default {
   name: 'DepositWalletAddress',
   components: { SharingBtn },
   Chains,
+  props: {
+    addressTypeDefault: {
+      type: Number,
+      default: 0,
+    },
+  },
   data() {
     return {
-      addressType: 0,
+      addressType: this.addressTypeDefault,
     };
   },
   computed: {
