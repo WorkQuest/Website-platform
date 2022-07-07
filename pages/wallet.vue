@@ -33,7 +33,6 @@
               v-if="selectedNetwork === $options.Chains.WORKNET"
               class="wallet__address-wrapper"
             >
-              {{ $t('wallet.addressType') }}:
               <base-dd
                 v-model="addressType"
                 :items="addressTypesDd"
@@ -433,8 +432,9 @@ export default {
   methods: {
     updateWQAddress() {
       const w = window.innerWidth;
-      if (w > 600) this.shortWqAddress = this.wqAddress;
-      else this.shortWqAddress = this.CutTxn(this.wqAddress, 8, 8);
+      if (w > 678) this.shortWqAddress = this.wqAddress;
+      if (w > 400) this.shortWqAddress = this.CutTxn(this.wqAddress, 8, 8);
+      else this.shortWqAddress = this.CutTxn(this.wqAddress, 4, 8);
     },
     async handleSwitchNetwork(index) {
       if (this.selectedNetworkIndex === index) return;
@@ -632,14 +632,13 @@ export default {
   &__address {
     @include text-simple;
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
     font-weight: 500;
     font-size: 16px;
   }
 
   &__address-wrapper {
     margin-bottom: 5px;
+    margin-right: 10px;
   }
 
   &__address-type {
@@ -946,22 +945,19 @@ export default {
       display: block;
     }
   }
-  .wallet__switch-table {
-    grid-template-columns: 1fr;
-  }
-  .balance__bottom {
-    display: grid !important;
-  }
-}
-
-@include _350 {
-  .wallet {
+  .wallet{
+    &__switch-table {
+      grid-template-columns: 1fr;
+    }
     &__nav {
       flex-direction: column;
     }
     &__title {
       margin-right: 0;
     }
+  }
+  .balance__bottom {
+    display: grid !important;
   }
 }
 </style>

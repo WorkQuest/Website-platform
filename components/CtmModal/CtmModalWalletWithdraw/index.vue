@@ -154,9 +154,9 @@ export default {
     },
     maxAmount() {
       const {
-        selectedToken, balance, maxFeeForNativeToken,
+        selectedToken, tokenBalance, maxFeeForNativeToken,
       } = this;
-      const fullBalance = new BigNumber(balance[selectedToken].fullBalance);
+      const fullBalance = new BigNumber(tokenBalance);
       if (selectedToken === this.nativeTokenSymbol) {
         const balanceMinusFee = fullBalance.minus(maxFeeForNativeToken).isGreaterThan(0);
         return balanceMinusFee ? fullBalance.minus(maxFeeForNativeToken).toString() : 0;
@@ -197,7 +197,7 @@ export default {
       } = this;
 
       // 0 token is always native token for current network!
-      if (nativeTokenSymbol === selectedToken) {
+      if (selectedToken === nativeTokenSymbol) {
         const nativeTokenFee = await this.$store.dispatch('wallet/getTransferFeeData', {
           recipient: userData.wallet.address,
           value: balance[nativeTokenSymbol].fullBalance,

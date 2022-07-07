@@ -79,7 +79,7 @@ export default {
       selectedNetwork: 'wallet/getSelectedNetwork',
     }),
     nativeTokenSymbol() {
-      return WalletTokensData[this.selectedNetwork].tokenList[0];
+      return WalletTokensData[this.selectedNetwork].tokenList[0].title;
     },
   },
   mounted() {

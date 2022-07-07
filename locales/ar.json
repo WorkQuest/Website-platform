@@ -1447,7 +1447,6 @@
     "newDiscussionLike": "New like on discussion"
   },
   "wallet": {
-    "addressType": "Address type",
     "frozen": "Frozen balance",
     "walletAddress": "Wallet address",
     "cryptoWallet": "محفظة العملات المشفرة",

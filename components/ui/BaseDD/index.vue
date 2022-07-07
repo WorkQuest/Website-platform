@@ -398,9 +398,11 @@ export default {
       min-height: 26px;
       padding-right: 0;
       padding-left: 0;
+      margin-top: 5px;
 
       .dd__title {
-        border-bottom: 1px solid $black800 !important;
+        border-bottom: 1px solid $blue !important;
+        color: $blue !important;
       }
 
       &:hover {
