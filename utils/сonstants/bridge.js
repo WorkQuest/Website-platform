@@ -98,6 +98,7 @@ export const BuyWQTTokensData = new Map([
         {
           title: TokenSymbols.USDT,
           tokenAddress: ENV.ETHEREUM_USDT_TOKEN,
+          icon: images.USDT,
         },
       ],
     },
@@ -113,6 +114,7 @@ export const BuyWQTTokensData = new Map([
         {
           title: TokenSymbols.USDT,
           tokenAddress: ENV.BSC_USDT_TOKEN,
+          icon: images.USDT,
         },
       ],
     },
@@ -128,6 +130,7 @@ export const BuyWQTTokensData = new Map([
         {
           title: TokenSymbols.USDT,
           tokenAddress: ENV.POLYGON_USDT_TOKEN,
+          icon: images.USDT,
         },
       ],
     },
