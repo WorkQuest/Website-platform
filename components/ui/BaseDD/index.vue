@@ -9,7 +9,7 @@
     <div
       v-click-outside="hideDd"
       class="dd"
-      :class="[{'dd__top': mode === 'top' }, {'dd_small' : isDotsView}]"
+      :class="[{'dd__top': mode === 'top' }, {'dd_small' : isDotsView}, { 'dd_min-width': type !== 'underline' }]"
     >
       <slot name="card" />
       <button
@@ -250,9 +250,12 @@ export default {
   font-size: 16px;
   line-height: 130%;
   color: $black500;
-  min-width: 131px;
   position: relative;
   text-align: left;
+
+  &_min-width {
+    min-width: 131px;
+  }
 
   &_small {
   min-width: unset;
@@ -387,9 +390,12 @@ export default {
       background: none;
       min-height: 33px !important;
       padding-right: 0;
+      padding-left: 0;
+
       .dd__title {
         border-bottom: 1px solid $black800 !important;
       }
+
       &:hover {
         border: none;
       }
