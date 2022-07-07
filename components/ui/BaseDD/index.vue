@@ -67,7 +67,7 @@
         <div
           v-if="isShown && isIcon"
           class="dd__items"
-          :class="{'dd__items_small' : mode === 'small'}"
+          :class="[{'dd__items_small' : mode === 'small'}, { 'dd__items_underline-type': type === 'underline' }]"
         >
           <button
             v-for="(item, i) in items"
@@ -90,7 +90,7 @@
         <div
           v-if="isShown && !isIcon"
           class="dd__items"
-          :class="[{'dd__items_small' : mode === 'small'}, {'dd__items_wide' : isDotsView}]"
+          :class="[{'dd__items_small' : mode === 'small'}, {'dd__items_wide' : isDotsView}, { 'dd__items_underline-type': type === 'underline' } ]"
         >
           <base-field
             v-if="isSearch"
@@ -290,6 +290,13 @@ export default {
     grid-gap: 15px;
     padding: 15px 20px;
     z-index: 4;
+
+    &_underline-type {
+      width: fit-content;
+      min-width: fit-content;
+      right: 0;
+    }
+
     &_small {
       max-height: 200px;
       grid-gap: 10px;
