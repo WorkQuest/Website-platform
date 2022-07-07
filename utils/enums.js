@@ -387,10 +387,12 @@ export const WalletTokensData = Object.freeze({
     explorer: `https://${IS_PROD ? '' : 'rinkeby.'}etherscan.io`,
     explorerIcon: images.ETH,
     tokenAddresses: [
+      ENV.ETHEREUM_WQT_TOKEN,
       ENV.ETHEREUM_USDT_TOKEN,
     ],
     tokenList: [
       { title: TokenSymbols.ETH, icon: images.ETH_BLACK },
+      { title: TokenSymbols.WQT, icon: images.WQT, tokenAddress: ENV.ETHEREUM_WQT_TOKEN },
       { title: TokenSymbols.USDT, icon: images.USDT, tokenAddress: ENV.ETHEREUM_USDT_TOKEN },
     ],
   },
@@ -400,10 +402,12 @@ export const WalletTokensData = Object.freeze({
     explorer: `https://${IS_PROD ? '' : 'testnet.'}bscscan.com`,
     explorerIcon: images.BNB,
     tokenAddresses: [
+      ENV.BSC_WQT_TOKEN,
       ENV.BSC_USDT_TOKEN,
     ],
     tokenList: [
       { title: TokenSymbols.BNB, icon: images.BNB },
+      { title: TokenSymbols.WQT, icon: images.WQT, tokenAddress: ENV.BSC_WQT_TOKEN },
       { title: TokenSymbols.USDT, icon: images.USDT, tokenAddress: ENV.BSC_USDT_TOKEN },
     ],
   },

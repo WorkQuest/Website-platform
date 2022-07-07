@@ -83,7 +83,7 @@
                   {{ selectedTokenBalanceInfo }}
                 </span>
                 <span
-                  v-if="selectedToken === $options.TokenSymbols.WQT"
+                  v-if="selectedNetwork === $options.Chains.WORKNET && selectedToken === $options.TokenSymbols.WQT"
                   class="balance__frozen-mobile"
                 >
                   <span class="balance__frozen-mobile_blue">
@@ -91,6 +91,10 @@
                   </span>
                   {{ $t('meta.coins.count.WQTCount', {count: Floor(frozenBalance)}) }}
                 </span>
+                <span
+                  v-else
+                  class="balance__currency__margin-bottom"
+                />
                 <base-dd
                   v-if="tokens.length"
                   v-model="ddValue"
@@ -102,9 +106,9 @@
                   is-icon
                 />
               </span>
-              <span :class="[{'balance__currency__margin-bottom' : selectedToken !== $options.TokenSymbols.WQT}]">
+              <span :class="[{'balance__currency__margin-bottom' : !(selectedNetwork === $options.Chains.WORKNET && selectedToken === $options.TokenSymbols.WQT)}]">
                 <span
-                  v-if="selectedToken === $options.TokenSymbols.WQT"
+                  v-if="selectedNetwork === $options.Chains.WORKNET && selectedToken === $options.TokenSymbols.WQT"
                   class="balance__frozen balance__frozen_blue"
                 >
                   <span class="balance__frozen">
@@ -434,9 +438,7 @@ export default {
     },
     async handleSwitchNetwork(index) {
       if (this.selectedNetworkIndex === index) return;
-      this.isFetchingBalance = true;
       await this.$store.dispatch('wallet/connectToProvider', this.networkList[index].chain);
-      this.isFetchingBalance = false;
     },
     async showBuyWQTModal() {
       if (this.selectedNetwork === Chains.WORKNET) {
