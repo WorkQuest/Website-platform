@@ -130,6 +130,7 @@ export default {
     transition: ease-out .2s;
     &:hover {
       background: $blue;
+      border-color: $blue;
       & span {
         color: $white;
       }

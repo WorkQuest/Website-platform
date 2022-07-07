@@ -23,8 +23,8 @@
         <span class="wallet__address">{{ CutTxn(convertedAddress) }}</span>
         <button
           v-clipboard:copy="convertedAddress"
-          v-clipboard:success="showSuccessCopied"
-          v-clipboard:error="clipboardErrorHandler"
+          v-clipboard:success="ClipboardSuccessHandler"
+          v-clipboard:error="ClipboardErrorHandler"
           type="button"
         >
           <span class="icon-copy wallet__icon" />
@@ -81,28 +81,6 @@ export default {
     },
     addressTypesDd() {
       return [AddressType.BECH32, AddressType.HEX];
-    },
-  },
-  methods: {
-    clipboardErrorHandler(value) {
-      this.$store.dispatch('main/showToast', {
-        title: 'Copy error',
-        text: value,
-      });
-    },
-    showSuccessCopied() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('assets/img/ui/questAgreed.svg'),
-        title: this.$t('modals.deposit.walletCopied'),
-      });
-    },
-    showShareModal() {
-      this.ShowModal({
-        key: modals.sharingQuest,
-        itemId: `${this.$t('modals.deposit.sharingText')} ${this.convertedAddress}`,
-        mode: 'wallet',
-      });
     },
   },
 };
