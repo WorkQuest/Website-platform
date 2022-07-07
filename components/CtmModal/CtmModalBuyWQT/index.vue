@@ -227,12 +227,7 @@ export default {
     handleInput(val) {
       if (!val || isNaN(val)) this.amount = val;
       else if (!this.tokenData) this.amount = 0;
-      else {
-        while (val.startsWith('0') && val.length > 1 && !(val.startsWith('0,') || val.startsWith('0.'))) {
-          val = val.substr(1, val.length);
-        }
-        this.amount = val;
-      }
+      else this.amount = this.ClearZero(val);
       this.amount = this.amount.toString().replace(/,/g, '.');
     },
     clearData() {
