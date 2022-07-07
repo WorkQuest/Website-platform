@@ -2,8 +2,8 @@
   <div class="content">
     <div class="content__qr">
       <qrcode
-        v-if="userWalletAddress"
-        :value="userWalletAddress"
+        v-if="convertedAddress"
+        :value="convertedAddress"
         :options="{ width: 206 }"
       />
     </div>
