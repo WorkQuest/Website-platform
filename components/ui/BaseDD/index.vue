@@ -387,6 +387,9 @@ export default {
       background: none;
       min-height: 33px !important;
       padding-right: 0;
+      .dd__title {
+        border-bottom: 1px solid $black800 !important;
+      }
       &:hover {
         border: none;
       }
