@@ -429,3 +429,8 @@ export const Layout = Object.freeze({
   CONFIRM: 'confirm', // if mnemonic not decoded
   ROLE: 'role',
 });
+
+export const AddressType = Object.freeze({
+  BECH32: 'BECH32',
+  HEX: 'HEX',
+});

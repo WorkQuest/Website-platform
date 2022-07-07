@@ -10,6 +10,14 @@
     <p class="content__scanQrCode">
       {{ $t('modals.deposit.scanQrCodeWallet') }}
     </p>
+    <base-dd
+      v-if="selectedNetwork === $options.Chains.WORKNET"
+      v-model="addressType"
+      :items="addressTypesDd"
+      data-selector="ADDRESS-TYPE"
+      class="content__address-type"
+      type="border"
+    />
     <div class="content__wallet">
       <div class="wallet">
         <span class="wallet__address">{{ CutTxn(convertedAddress) }}</span>
@@ -39,25 +47,35 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { Chains, Path } from '~/utils/enums';
+import { AddressType, Chains, Path } from '~/utils/enums';
 import SharingBtn from '~/components/ui/SharingBtn';
 
 export default {
   name: 'DepositWalletAddress',
   components: { SharingBtn },
+  Chains,
+  data() {
+    return {
+      addressType: 0,
+    };
+  },
   computed: {
     ...mapGetters({
       userWalletAddress: 'user/getUserWalletAddress',
       selectedNetwork: 'wallet/getSelectedNetwork',
     }),
     convertedAddress() {
-      if (this.selectedNetwork === Chains.WORKNET) return this.convertToBech32('wq', this.userWalletAddress);
+      if (this.selectedNetwork === Chains.WORKNET) {
+        if (this.addressType === 0) return this.convertToBech32('wq', this.userWalletAddress);
+      }
       return this.userWalletAddress;
     },
     urlToShare() {
       return `${window.location.origin}${Path.QRCODE}?address=${this.convertedAddress}`;
     },
-
+    addressTypesDd() {
+      return [AddressType.BECH32, AddressType.HEX];
+    },
   },
   methods: {
     clipboardErrorHandler(value) {
@@ -99,6 +117,10 @@ export default {
     color: $black500;
     line-height: 130%;
     align-self: flex-start;
+  }
+  &__address-type {
+    width: 100%;
+    margin-top: 10px;
   }
   &__wallet{
     margin-top: 10px;

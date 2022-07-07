@@ -29,16 +29,32 @@
         <div class="wallet__nav">
           <span class="wallet__title">{{ $t('meta.wallet') }}</span>
           <div class="wallet__address">
-            <span class="user__wallet">{{ shortWqAddress }}</span>
-            <button
-              v-clipboard:copy="wqAddress"
-              v-clipboard:success="ClipboardSuccessHandler"
-              v-clipboard:error="ClipboardErrorHandler"
-              type="button"
-              data-selector="COPY"
+            <div
+              v-if="selectedNetwork === $options.Chains.WORKNET"
+              class="wallet__address-wrapper"
             >
-              <span class="icon-copy wallet__icon" />
-            </button>
+              {{ $t('wallet.addressType') }}:
+              <base-dd
+                v-model="addressType"
+                :items="addressTypesDd"
+                data-selector="ADDRESS-TYPE"
+                class="wallet__address-type"
+                type="underline"
+                mode="blackFont"
+              />
+            </div>
+            <div class="user">
+              <span class="user__wallet">{{ shortWqAddress }}</span>
+              <button
+                v-clipboard:copy="wqAddress"
+                v-clipboard:success="ClipboardSuccessHandler"
+                v-clipboard:error="ClipboardErrorHandler"
+                type="button"
+                data-selector="COPY"
+              >
+                <span class="icon-copy wallet__icon" />
+              </button>
+            </div>
           </div>
         </div>
         <div
@@ -223,6 +239,7 @@ import {
   WalletTables,
   Chains,
   WalletTokensData,
+  AddressType,
 } from '~/utils/enums';
 import { getStyledAmount } from '~/utils/wallet';
 import EmptyData from '~/components/app/info/emptyData';
@@ -248,6 +265,7 @@ export default {
       isFetchingBalance: false,
       shortWqAddress: '',
       isShowedBuyWqtNotification: true,
+      addressType: 0,
     };
   },
   computed: {
@@ -307,8 +325,13 @@ export default {
       if (!this.selectedTokenData) return this.selectedToken;
       return `${this.selectedTokenData?.balance || '0'} ${this.selectedToken}`;
     },
+    addressTypesDd() {
+      return [AddressType.BECH32, AddressType.HEX];
+    },
     wqAddress() {
-      if (this.selectedNetwork === Chains.WORKNET) return this.convertToBech32('wq', this.userWalletAddress);
+      if (this.selectedNetwork === Chains.WORKNET) {
+        if (this.addressType === 0) return this.convertToBech32('wq', this.userWalletAddress);
+      }
       return this.userWalletAddress;
     },
     walletTables() {
@@ -354,8 +377,12 @@ export default {
     },
   },
   watch: {
+    addressType() {
+      this.updateWQAddress();
+    },
     async selectedNetwork() {
       this.ddValue = 0;
+      this.addressType = this.selectedNetwork === Chains.WORKNET ? 0 : 1;
       await this.loadData();
       this.updateWQAddress();
     },
@@ -600,14 +627,24 @@ export default {
     display: flex;
     justify-content: space-between;
     font-size: 16px;
+    align-items: center;
   }
 
   &__address {
     @include text-simple;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-end;
     font-weight: 500;
     font-size: 16px;
+  }
+
+  &__address-wrapper {
+    margin-bottom: 5px;
+  }
+
+  &__address-type {
+    display: inline-block;
   }
 
   &__icon {
@@ -922,6 +959,9 @@ export default {
   .wallet {
     &__nav {
       flex-direction: column;
+    }
+    &__title {
+      margin-right: 0;
     }
   }
 }
