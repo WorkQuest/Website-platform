@@ -265,7 +265,7 @@ export default {
     } catch (e) {
       console.error('Error in mining/swapOldTokens:', e);
       showToast('Swapping error', `${e.message}`, 'danger');
-      return error(500, 'Swap error', e);
+      return error(500, e.message, e);
     }
   },
 
@@ -299,7 +299,7 @@ export default {
     } catch (e) {
       console.error('Error in mining/stake:', e);
       showToast('Staking error', `${e.message}`, 'danger');
-      return error(e.code, 'Stake error', e);
+      return error(e.code, e.message, e);
     }
   },
 
@@ -332,7 +332,7 @@ export default {
     } catch (e) {
       console.error('Error in mining/unStake:', e);
       showToast('Unstaking error', `${e.message}`, 'danger');
-      return error(e.code, 'Stake error', e);
+      return error(e.code, e.message, e);
     }
   },
 
@@ -357,7 +357,7 @@ export default {
     } catch (e) {
       console.error('Error in mining/claim:', e);
       showToast('Claim error', `${e.message}`, 'danger');
-      return error(e.code, 'Error with claim', e);
+      return error(e.code, e.message, e);
     }
   },
 

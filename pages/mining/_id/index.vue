@@ -546,10 +546,10 @@ export default {
             this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
             this.CloseModal();
 
-            const { ok } = await this.swapOldTokens({ amount, decimals });
+            const { ok, msg } = await this.swapOldTokens({ amount, decimals });
 
             if (ok) this.ShowModalSuccess({});
-            else this.ShowModalFail({});
+            else this.ShowModalFail({ subtitle: msg });
 
             this.SetLoader(false);
           },
@@ -574,7 +574,7 @@ export default {
             this.CloseModal();
 
             this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
-            const { ok } = await this.stakeTokens({
+            const { ok, msg } = await this.stakeTokens({
               amount,
               chain: this.chain,
             });
@@ -583,7 +583,7 @@ export default {
             if (ok) {
               this.ShowModalSuccess({});
               await this.tokensDataUpdate();
-            } else this.ShowModalFail({});
+            } else this.ShowModalFail({ subtitle: msg });
           },
         });
       }
@@ -600,7 +600,7 @@ export default {
             this.CloseModal();
 
             this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
-            const { ok } = await this.unStakeTokens({
+            const { ok, msg } = await this.unStakeTokens({
               amount,
               chain: this.chain,
             });
@@ -609,7 +609,7 @@ export default {
             if (ok) {
               this.ShowModalSuccess({});
               await this.tokensDataUpdate();
-            } else this.ShowModalFail({});
+            } else this.ShowModalFail({ subtitle: msg });
           },
         });
       }
@@ -630,13 +630,13 @@ export default {
       }
 
       this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
-      const { ok } = await this.claimTokens({ chain });
+      const { ok, msg } = await this.claimTokens({ chain });
       this.SetLoader(false);
 
       if (ok) {
         this.ShowModalSuccess({});
         await this.tokensDataUpdate();
-      } else this.ShowModalFail({});
+      } else this.ShowModalFail({ subtitle: msg });
     },
 
   },
