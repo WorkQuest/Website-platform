@@ -69,7 +69,7 @@
               v-if="!message.itsMe && !isPrevMessageSameSender(i, message)"
               class="message__title message__title_name"
             >
-              {{ senderFullNameById(message.sender.userId) }}
+              {{ senderFullName(message) }}
             </div>
             <div
               class="message__bubble"
@@ -444,9 +444,15 @@ export default {
 
       await this.$store.dispatch('chat/setMessageAsRead', payload);
     },
-    senderFullNameById(userId) {
+    senderFullName(message) {
+      const { userId } = message?.sender;
       const sender = this.chatMembers[userId];
-      if (!sender) return this.$t('profile.defaultName');
+      if (!sender) {
+        if (!message.sender.id) return this.$t('profile.defaultName');
+        if (message.sender.type === UserRoles.USER) {
+          return this.UserName(message.sender.user?.firstName, message.sender.user?.lastName);
+        }
+      }
       if (sender.type === UserRoles.USER) return this.UserName(sender.user?.firstName, sender.user?.lastName);
       return this.$t('chat.workquestAdmin');
     },
