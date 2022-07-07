@@ -33,7 +33,6 @@
               v-if="selectedNetwork === $options.Chains.WORKNET"
               class="wallet__address-wrapper"
             >
-              {{ $t('wallet.addressType') }}:
               <base-dd
                 v-model="addressType"
                 :items="addressTypesDd"
@@ -433,7 +432,7 @@ export default {
   methods: {
     updateWQAddress() {
       const w = window.innerWidth;
-      if (w > 600) this.shortWqAddress = this.wqAddress;
+      if (w > 678) this.shortWqAddress = this.wqAddress;
       else this.shortWqAddress = this.CutTxn(this.wqAddress, 8, 8);
     },
     async handleSwitchNetwork(index) {
@@ -632,14 +631,13 @@ export default {
   &__address {
     @include text-simple;
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
     font-weight: 500;
     font-size: 16px;
   }
 
   &__address-wrapper {
     margin-bottom: 5px;
+    margin-right: 10px;
   }
 
   &__address-type {
