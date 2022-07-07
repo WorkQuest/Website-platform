@@ -374,7 +374,7 @@ export const WalletTokensData = Object.freeze({
       ENV.WORKNET_USDT_TOKEN,
     ],
     tokenList: [
-      { title: TokenSymbols.WQT, icon: images.WQT },
+      { title: TokenSymbols.WQT, icon: images.WQT }, // FIRST IS NATIVE TOKEN!
       { title: TokenSymbols.WUSD, icon: images.WUSD, tokenAddress: ENV.WORKNET_WUSD_TOKEN },
       { title: TokenSymbols.BNB, icon: images.BNB, tokenAddress: ENV.WORKNET_WBNB_TOKEN },
       { title: TokenSymbols.ETH, icon: images.ETH_BLACK, tokenAddress: ENV.WORKNET_WETH_TOKEN },
@@ -391,7 +391,7 @@ export const WalletTokensData = Object.freeze({
       ENV.ETHEREUM_USDT_TOKEN,
     ],
     tokenList: [
-      { title: TokenSymbols.ETH, icon: images.ETH_BLACK },
+      { title: TokenSymbols.ETH, icon: images.ETH_BLACK }, // FIRST IS NATIVE TOKEN!
       { title: TokenSymbols.WQT, icon: images.WQT, tokenAddress: ENV.ETHEREUM_WQT_TOKEN },
       { title: TokenSymbols.USDT, icon: images.USDT, tokenAddress: ENV.ETHEREUM_USDT_TOKEN },
     ],
@@ -406,7 +406,7 @@ export const WalletTokensData = Object.freeze({
       ENV.BSC_USDT_TOKEN,
     ],
     tokenList: [
-      { title: TokenSymbols.BNB, icon: images.BNB },
+      { title: TokenSymbols.BNB, icon: images.BNB }, // FIRST IS NATIVE TOKEN!
       { title: TokenSymbols.WQT, icon: images.WQT, tokenAddress: ENV.BSC_WQT_TOKEN },
       { title: TokenSymbols.USDT, icon: images.USDT, tokenAddress: ENV.BSC_USDT_TOKEN },
     ],
@@ -420,7 +420,7 @@ export const WalletTokensData = Object.freeze({
       ENV.POLYGON_USDT_TOKEN,
     ],
     tokenList: [
-      { title: TokenSymbols.MATIC, icon: images.POLYGON },
+      { title: TokenSymbols.MATIC, icon: images.POLYGON }, // FIRST IS NATIVE TOKEN!
       { title: TokenSymbols.USDT, icon: images.USDT, tokenAddress: ENV.POLYGON_USDT_TOKEN },
     ],
   },
