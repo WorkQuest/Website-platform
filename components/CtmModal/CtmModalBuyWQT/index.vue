@@ -274,7 +274,7 @@ export default {
       const { decimals, symbol } = this.tokenData;
       const { tokenAddress } = this.tokenList[this.selectedToken];
       const { bridgeAddress } = this.networkList[this.selectedNetworkIndex];
-      const nativeTokenSymbol = WalletTokensData[selectedNetwork].tokenList[0];
+      const nativeTokenSymbol = WalletTokensData[selectedNetwork].tokenList[0].title;
 
       await this.MakeApprove({
         title: 'BuyWQT Approve',
