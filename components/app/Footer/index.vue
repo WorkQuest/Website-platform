@@ -27,6 +27,7 @@
                   :key="item.key"
                   :class="`links__store links__store_${item.key}`"
                   :href="item.href"
+                  target="_blank"
                 />
               </div>
             </div>
@@ -139,6 +140,7 @@
                   :key="item.key"
                   :class="`links__store links__store_${item.key}`"
                   :href="item.href"
+                  target="_blank"
                 />
               </div>
             </div>
