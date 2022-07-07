@@ -29,7 +29,10 @@
         <div class="wallet__nav">
           <span class="wallet__title">{{ $t('meta.wallet') }}</span>
           <div class="wallet__address">
-            <div v-if="selectedNetwork === $options.Chains.WORKNET">
+            <div
+              v-if="selectedNetwork === $options.Chains.WORKNET"
+              class="wallet__address-wrapper"
+            >
               {{ $t('wallet.addressType') }}:
               <base-dd
                 v-model="addressType"
@@ -636,6 +639,10 @@ export default {
     font-size: 16px;
   }
 
+  &__address-wrapper {
+    margin-bottom: 5px;
+  }
+
   &__address-type {
     display: inline-block;
   }
@@ -952,6 +959,9 @@ export default {
   .wallet {
     &__nav {
       flex-direction: column;
+    }
+    &__title {
+      margin-right: 0;
     }
   }
 }

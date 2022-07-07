@@ -395,7 +395,7 @@ export default {
     &_underline {
       border: none;
       background: none;
-      min-height: 33px !important;
+      min-height: 26px;
       padding-right: 0;
       padding-left: 0;
 
