@@ -89,12 +89,14 @@
                   {{ $t('meta.coins.count.WQTCount', {count: Floor(frozenBalance)}) }}
                 </span>
                 <base-dd
+                  v-if="tokens.length"
                   v-model="ddValue"
                   class="balance__token"
-                  :items="tokenSymbolsDd"
+                  :items="tokens"
                   :placeholder="$options.TokenSymbols.WQT"
                   data-selector="TOKENS"
                   type="border"
+                  is-icon
                 />
               </span>
               <span :class="[{'balance__currency__margin-bottom' : selectedToken !== $options.TokenSymbols.WQT}]">
@@ -233,7 +235,8 @@ import {
   TokenSymbols,
   WalletTables,
   Chains,
-  WalletTokensData, AddressType,
+  WalletTokensData,
+  AddressType,
 } from '~/utils/enums';
 import { getStyledAmount } from '~/utils/wallet';
 import EmptyData from '~/components/app/info/emptyData';
@@ -256,7 +259,6 @@ export default {
       txsPerPage: 10,
       currentPage: 1,
       selectedWalletTable: WalletTables.TXS,
-      tokenSymbolsDd: [],
       isFetchingBalance: false,
       shortWqAddress: '',
       isShowedBuyWqtNotification: true,
@@ -275,6 +277,16 @@ export default {
       isWalletConnected: 'wallet/getIsWalletConnected',
       selectedNetwork: 'wallet/getSelectedNetwork',
     }),
+    tokens() {
+      return WalletTokensData[this.selectedNetwork].tokenList || [];
+    },
+    tokensMap() {
+      const res = {};
+      this.tokens.forEach((token, i) => {
+        res[token.title] = { ...token, index: i };
+      });
+      return res;
+    },
     networkList() {
       return [
         BuyWQTTokensData.get(Chains.WORKNET),
@@ -298,13 +310,10 @@ export default {
       };
     },
     nativeTokenSymbol() {
-      return WalletTokensData[this.selectedNetwork].tokenList[0];
+      return WalletTokensData[this.selectedNetwork].tokenList[0].title;
     },
     selectedTokenAddress() {
-      return this.tokenAddresses[this.tokenSymbolsDd.indexOf(this.selectedToken) - 1];
-    },
-    tokenAddresses() {
-      return WalletTokensData[this.selectedNetwork].tokenAddresses;
+      return this.tokensMap[this.selectedToken]?.tokenAddress;
     },
     selectedTokenData() {
       return this.balance[this.selectedToken];
@@ -365,20 +374,17 @@ export default {
     },
   },
   watch: {
-    addressType() {
-      this.updateWQAddress();
-    },
-    selectedNetwork() {
-      this.tokenSymbolsDd = WalletTokensData[this.selectedNetwork].tokenList;
+    async selectedNetwork() {
+      this.ddValue = 0;
       this.addressType = this.selectedNetwork === Chains.WORKNET ? 0 : 1;
+      await this.loadData();
       this.updateWQAddress();
-    },
-    ddValue(newVal) {
-      this.$store.dispatch('wallet/setSelectedToken', this.tokenSymbolsDd[newVal]);
     },
     async selectedToken() {
-      const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
-      this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
+      this.ddValue = this.tokensMap[this.selectedToken].index;
+    },
+    async ddValue(newVal) {
+      await this.$store.dispatch('wallet/setSelectedToken', this.tokens[newVal].title);
       await this.loadData();
     },
     currentPage() {
@@ -401,8 +407,6 @@ export default {
 
     this.updateWQAddress();
     window.addEventListener('resize', this.updateWQAddress);
-
-    this.tokenSymbolsDd = WalletTokensData[this.selectedNetwork].tokenList;
 
     await this.$store.dispatch('wallet/setCallbackWS', this.loadData);
     await this.loadData();
@@ -451,9 +455,9 @@ export default {
       });
     },
     async loadData() {
+      if (this.isFetchingBalance) return;
       this.isFetchingBalance = true;
       const { selectedToken, userWalletAddress } = this;
-
       // 0 token is always native token for current network!
       if (this.nativeTokenSymbol === selectedToken) {
         const toFetch = [this.$store.dispatch('wallet/getBalance')];
@@ -466,7 +470,7 @@ export default {
         await this.$store.dispatch('wallet/fetchWalletData', {
           method: 'balanceOf',
           ...payload,
-          token: this.tokenAddresses[this.tokenSymbolsDd.indexOf(selectedToken) - 1],
+          token: this.selectedTokenAddress,
           symbol: selectedToken,
         });
       }
