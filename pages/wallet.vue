@@ -374,6 +374,9 @@ export default {
     },
   },
   watch: {
+    addressType() {
+      this.updateWQAddress();
+    },
     async selectedNetwork() {
       this.ddValue = 0;
       this.addressType = this.selectedNetwork === Chains.WORKNET ? 0 : 1;
