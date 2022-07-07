@@ -83,6 +83,7 @@
               </div>
               <div class="notify__action">
                 <base-btn
+                  v-if="!notification.params.isExternalLink"
                   class="notify__btn"
                   @click="goToEvent(notification.params ? notification.params.path : '')"
                 >
@@ -95,6 +96,21 @@
                   </div>
                   <span class="icon icon-chevron_right" />
                 </base-btn>
+                <a
+                  v-else
+                  :href="notification.params.externalBase + notification.params.path"
+                  target="_blank"
+                  class="notify__btn"
+                >
+                  <div class="notify__text notify__text_btn">
+                    {{
+                      notification.params && notification.params.isLocal
+                        ? notification.data.message
+                        : $t(notification.actionNameKey)
+                    }}
+                  </div>
+                  <span class="icon icon-chevron_right" />
+                </a>
               </div>
             </div>
           </div>
@@ -169,6 +185,7 @@ export default {
       this.isShowNotify = false;
     },
     goToEvent(path) {
+      if (!path) return;
       this.closePopUp();
       this.$router.push(path);
     },
@@ -255,6 +272,7 @@ export default {
 .icon {
   cursor: pointer;
   font-size: 24px;
+  text-decoration: none;
 }
 
 .notify {
@@ -277,6 +295,7 @@ export default {
     align-items: center;
     padding: 0 10px;
     transition: .5s;
+    text-decoration: none;
     &:hover {
       background: #dadade;
     }
