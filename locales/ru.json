@@ -1446,6 +1446,7 @@
     "newDiscussionLike": "Новый лайк на дискуссии"
   },
   "wallet": {
+    "addressType": "Тип адреса",
     "frozen": "Замороженный баланс",
     "walletAddress": "Wallet address",
     "cryptoWallet": "Crypto wallet",

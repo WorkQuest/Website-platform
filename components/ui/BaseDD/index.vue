@@ -209,6 +209,7 @@ export default {
         { dd__btn_gray: type === 'gray' },
         { dd__btn_blue: type === 'blue' },
         { dd__btn_border: type === 'border' },
+        { dd__btn_underline: type === 'underline' },
         { 'dd__dots-btn': isDotsView },
       ];
     },
@@ -380,6 +381,15 @@ export default {
     }
     &_border {
       border: 1px solid $black0;
+    }
+    &_underline {
+      border: none;
+      background: none;
+      min-height: 33px !important;
+      padding-right: 0;
+      &:hover {
+        border: none;
+      }
     }
   }
 
