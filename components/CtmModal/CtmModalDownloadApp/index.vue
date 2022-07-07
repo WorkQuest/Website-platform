@@ -22,11 +22,13 @@
         </div>
       </div>
       <div
+        v-else-if="options.title === this.$tc('modals.titles.downloadApp')"
+        class="qrCode app"
+      />
+      <div
         v-else
-        class="qrCode"
-      >
-        <div class="qrCode__pic" />
-      </div>
+        class="qrCode wallet"
+      />
     </div>
   </ctm-modal-box>
 </template>
@@ -67,15 +69,15 @@ export default {
 
 <style lang="scss" scoped>
 .ctm-modal-download {
- &-mobile {
-   max-width: 343px !important;
- }
+  &-mobile {
+    max-width: 343px !important;
+  }
   &-desktop{
     max-width: 382px !important;
   }
   &::v-deep{
     .ctm-modal__content{
-    padding-top: 10px;
+      padding-top: 10px;
     }
     .ctm-modal__title{
       margin: 0 auto;
@@ -116,7 +118,15 @@ export default {
   padding: 10px;
   border-radius: 12px;
   border: 1px solid $black200;
-  background-image: url('/img/app/qrcode.png');
-  background-size: 100% 100%;
+  background-position: center;
+  background-size: 150px 150px;
+  background-repeat: no-repeat;
+  z-index: 100;
+  &.app {
+    background-image: url('../../../assets/img/app/qrCodeApp.png');
+  }
+  &.wallet {
+    background-image: url('../../../assets/img/app/qrCodeWallet.png');
+  }
 }
 </style>
