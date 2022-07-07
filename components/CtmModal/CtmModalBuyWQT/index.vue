@@ -228,8 +228,10 @@ export default {
       if (!val || isNaN(val)) this.amount = val;
       else if (!this.tokenData) this.amount = 0;
       else {
-        const isNeedClearFirstSymbol = val.startsWith('0') && !(val.startsWith('0,') || val.startsWith('0.'));
-        this.amount = isNeedClearFirstSymbol ? val.substr(1, val.length) : val;
+        while (val.startsWith('0') && val.length > 1 && !(val.startsWith('0,') || val.startsWith('0.'))) {
+          val = val.substr(1, val.length);
+        }
+        this.amount = val;
       }
       this.amount = this.amount.toString().replace(/,/g, '.');
     },
@@ -247,7 +249,6 @@ export default {
     // Updates balance by current network & token
     async updateTokenData() {
       this.SetLoader(true);
-      console.log(this.selectedToken);
       const { tokenAddress } = this.tokenList[this.selectedToken];
       const provider = GetWalletProvider();
       const [balance, decimals, symbol] = await Promise.all([

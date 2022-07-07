@@ -265,6 +265,13 @@ export default {
     tokens() {
       return WalletTokensData[this.selectedNetwork].tokenList || [];
     },
+    tokensMap() {
+      const res = {};
+      this.tokens.forEach((token, i) => {
+        res[token.title] = { ...token, index: i };
+      });
+      return res;
+    },
     networkList() {
       return [
         BuyWQTTokensData.get(Chains.WORKNET),
@@ -291,15 +298,7 @@ export default {
       return WalletTokensData[this.selectedNetwork].tokenList[0].title;
     },
     selectedTokenAddress() {
-      let tokenAddress;
-      this.tokens.some((token) => {
-        if (token.title === this.selectedToken) {
-          tokenAddress = token.tokenAddress;
-          return true;
-        }
-        return false;
-      });
-      return tokenAddress;
+      return this.tokensMap[this.selectedToken]?.tokenAddress;
     },
     selectedTokenData() {
       return this.balance[this.selectedToken];
@@ -360,13 +359,7 @@ export default {
       this.updateWQAddress();
     },
     async selectedToken() {
-      this.tokens.some((token, i) => {
-        if (token.title === this.selectedToken) {
-          this.ddValue = i;
-          return true;
-        }
-        return false;
-      });
+      this.ddValue = this.tokensMap[this.selectedToken].index;
     },
     async ddValue(newVal) {
       await this.$store.dispatch('wallet/setSelectedToken', this.tokens[newVal].title);
