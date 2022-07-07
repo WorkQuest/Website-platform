@@ -433,7 +433,8 @@ export default {
     updateWQAddress() {
       const w = window.innerWidth;
       if (w > 678) this.shortWqAddress = this.wqAddress;
-      else this.shortWqAddress = this.CutTxn(this.wqAddress, 8, 8);
+      if (w > 400) this.shortWqAddress = this.CutTxn(this.wqAddress, 8, 8);
+      else this.shortWqAddress = this.CutTxn(this.wqAddress, 4, 8);
     },
     async handleSwitchNetwork(index) {
       if (this.selectedNetworkIndex === index) return;
@@ -944,22 +945,19 @@ export default {
       display: block;
     }
   }
-  .wallet__switch-table {
-    grid-template-columns: 1fr;
-  }
-  .balance__bottom {
-    display: grid !important;
-  }
-}
-
-@include _350 {
-  .wallet {
+  .wallet{
+    &__switch-table {
+      grid-template-columns: 1fr;
+    }
     &__nav {
       flex-direction: column;
     }
     &__title {
       margin-right: 0;
     }
+  }
+  .balance__bottom {
+    display: grid !important;
   }
 }
 </style>
