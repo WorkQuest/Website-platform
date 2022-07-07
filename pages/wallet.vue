@@ -354,8 +354,9 @@ export default {
     },
   },
   watch: {
-    selectedNetwork() {
+    async selectedNetwork() {
       this.ddValue = 0;
+      await this.loadData();
       this.updateWQAddress();
     },
     async selectedToken() {
@@ -433,6 +434,7 @@ export default {
       });
     },
     async loadData() {
+      if (this.isFetchingBalance) return;
       this.isFetchingBalance = true;
       const { selectedToken, userWalletAddress } = this;
       // 0 token is always native token for current network!
