@@ -23,6 +23,7 @@ export const NotificationAction = {
   NEW_COMMENT_IN_DISCUSSION: 'newCommentInDiscussion',
   NEW_DISCUSSION_LIKE: 'newDiscussionLike',
   QUEST_EDITED_ON_CONTRACT: 'QuestEditedOnContract',
+  UPDATE_RATING_STATISTIC: 'updateRatingStatistic',
 };
 
 export const LocalNotificationAction = {

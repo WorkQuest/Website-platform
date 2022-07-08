@@ -63,7 +63,7 @@ export default {
       action,
       actionBtn,
       sender: {
-        avatar: { url: images.WQ_LOGO },
+        avatar: { url: images.WQ_LOGO_ROUNDED },
         firstName: $nuxt.$t('ui.notifications.workquestInfo'),
       },
       params: {
@@ -148,10 +148,20 @@ export default {
     notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
     notification.params = { isLocal: false };
 
+    const wqInfoSender = { avatar: { url: images.WQ_LOGO_ROUNDED }, firstName: $nuxt.$t('ui.notifications.workquestInfo') };
+
     switch (action) {
+      case NotificationAction.UPDATE_RATING_STATISTIC:
+        notification.sender = wqInfoSender;
+        notification.params = {
+          ...notification.params,
+          title: ['NoStatus', 'Verified', 'Reliable', 'TopRanked'][data.status],
+          path: `${Path.PROFILE}/${user.id}`,
+        };
+        break;
       case NotificationAction.QUEST_STATUS_UPDATED:
         notification.sender = userRole === UserRole.EMPLOYER ? assignedWorker
-          || { avatar: { url: images.WQ_LOGO }, firstName: $nuxt.$t('ui.notifications.workquestInfo') } : user;
+          || wqInfoSender : user;
         notification.params = {
           ...notification.params,
           title,
@@ -194,7 +204,7 @@ export default {
         break;
 
       case NotificationAction.DISPUTE_DECISION:
-        notification.sender = { avatar: { url: images.WQ_LOGO }, firstName: $nuxt.$t('ui.notifications.workquestInfo') };
+        notification.sender = wqInfoSender;
         notification.params = {
           ...notification.params,
           title: problemDescription,
@@ -212,7 +222,27 @@ export default {
         break;
 
       case NotificationAction.NEW_COMMENT_IN_DISCUSSION:
-        if (rootComment?.author && !notification.sender) notification.sender = rootComment.author;
+        if (data?.user) notification.sender = data.user;
+        else notification.sender = wqInfoSender;
+        notification.params = {
+          ...notification.params,
+          title: data?.text,
+          path: `${PathDAO.DISCUSSIONS}/${data.discussionId}`,
+          isExternalLink: true,
+          externalBase: DaoUrl,
+        };
+        break;
+
+      case NotificationAction.NEW_DISCUSSION_LIKE:
+        if (data?.user) notification.sender = data.user;
+        else notification.sender = wqInfoSender;
+        notification.params = {
+          ...notification.params,
+          title: data?.text,
+          path: `${PathDAO.DISCUSSIONS}/${data.discussionId}`,
+          isExternalLink: true,
+          externalBase: DaoUrl,
+        };
         break;
 
       case NotificationAction.COMMENT_LIKED:
@@ -251,7 +281,7 @@ export default {
     /** Set sender if it need */
     if (quest?.user && notificationCommonFilterActions.includes(action) && !notification.sender) {
       notification.sender = quest.user;
-    } else if (notificationCommonFilterAction2.includes(action && !notification.sender)) {
+    } else if (notificationCommonFilterAction2.includes(action) && !notification.sender) {
       if (userRole === UserRole.WORKER) notification.sender = user;
       else if (employer) notification.sender = employer;
     } else if (notificationEmployerFilterActions.includes(action) && !notification.sender) {

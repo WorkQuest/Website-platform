@@ -42,11 +42,11 @@
               {{ setInfoMessageText(message.infoMessage.messageAction, message.itsMe) }}
             </span>
             <span
-              v-if="!message.itsMe && [MessageAction.GROUP_CHAT_ADD_USERS, MessageAction.GROUP_CHAT_DELETE_USER].includes(message.infoMessage.messageAction) && message.infoMessage.user"
+              v-if="isNeedToShowInfoMessageMember(message)"
               class="info-message__link"
-              @click="openProfile(message.sender.userId)"
+              @click="openProfile(message.infoMessage.member.user.id)"
             >
-              {{ senderFullNameById(message.sender.userId) }}
+              {{ UserName(message.infoMessage.member.user.firstName, message.infoMessage.member.user.lastName) }}
             </span>
           </template>
           <div
@@ -197,7 +197,7 @@ import moment from 'moment';
 import modals from '~/store/modals/modals';
 import { Path } from '~/utils/enums';
 import {
-  MessageAction, MessageType, UserRoles, FileTypes,
+  MessageAction, MessageType, UserRoles, FileTypes, GetInfoMessageText, ChatType,
 } from '~/utils/сonstants/chat';
 import { images } from '~/utils/images';
 
@@ -272,6 +272,14 @@ export default {
     this.$store.commit('chat/clearMessagesFilter');
   },
   methods: {
+    isNeedToShowInfoMessageMember(message) {
+      return message?.infoMessage?.member?.user
+        && [MessageAction.GROUP_CHAT_ADD_USERS,
+          MessageAction.GROUP_CHAT_DELETE_USER,
+          MessageAction.GROUP_CHAT_RESTORED_USER,
+          MessageAction.GROUP_CHAT_DELETE_USER,
+        ].includes(message.infoMessage.messageAction);
+    },
     canShowActionUsers(messageAction, itsMe) {
       const isGroupChatCreateAction = messageAction === MessageAction.GROUP_CHAT_CREATE;
       return !isGroupChatCreateAction || (isGroupChatCreateAction && !itsMe);
@@ -283,7 +291,7 @@ export default {
       return prevMessage?.sender?.user?.id === message.sender?.user?.id && prevMessage?.type !== MessageType.INFO;
     },
     setSenderAvatar({ sender }) {
-      if (sender.type === UserRoles.ADMIN) return images.WQ_LOGO;
+      if (sender.type === UserRoles.ADMIN) return images.WQ_LOGO_ROUNDED;
       return sender.user?.avatar ? sender.user?.avatar.url : images.EMPTY_AVATAR;
     },
     async getMessages(direction, currBottomOffset) {
@@ -355,47 +363,7 @@ export default {
       }
     },
     setInfoMessageText(action, itsMe) {
-      let text = 'chat.systemMessages.';
-      switch (action) {
-        case MessageAction.EMPLOYER_INVITE_ON_QUEST:
-          text += itsMe ? 'youInvitedToTheQuest' : 'employerInvitedWorkerToQuest';
-          break;
-        case MessageAction.WORKER_RESPONSE_ON_QUEST:
-          text += itsMe ? 'youHaveRespondedToTheQuest' : 'respondedToTheQuest';
-          break;
-        case MessageAction.EMPLOYER_REJECT_RESPONSE_ON_QUEST:
-          text += itsMe ? 'youRejectTheResponseOnQuest' : 'rejectedTheResponseToTheQuest';
-          break;
-        case MessageAction.WORKER_REJECT_INVITE_ON_QUEST:
-          text += itsMe ? 'youRejectedTheInviteToTheQuest' : 'rejectedTheInviteToTheQuest';
-          break;
-        case MessageAction.WORKER_ACCEPT_INVITE_ON_QUEST:
-          text += itsMe ? 'youAcceptedTheInviteToTheQuest' : 'acceptedTheInviteToTheQuest';
-          break;
-        case MessageAction.GROUP_CHAT_CREATE:
-          text += itsMe ? 'youCreatedAGroupChat' : 'createdAGroupChat';
-          break;
-        case MessageAction.GROUP_CHAT_DELETE_USER:
-          text += itsMe ? 'youHaveRemovedFromChat' : 'removedFromChat';
-          break;
-        case MessageAction.GROUP_CHAT_ADD_USERS:
-          text += itsMe ? 'youAddedToChat' : 'addedToChat';
-          break;
-        case MessageAction.GROUP_CHAT_LEAVE_USER:
-          text += itsMe ? 'youLeftTheChat' : 'leftTheChat';
-          break;
-        case MessageAction.QUEST_CHAT_ADD_DISPUTE_ADMIN:
-          text += 'adminAddedToChat';
-          break;
-        case MessageAction.QUEST_CHAT_LEAVE_DISPUTE_ADMIN:
-          text += 'adminLeaveFromChat';
-          break;
-        default:
-          text = '';
-          break;
-      }
-
-      return this.$t(text);
+      return this.$t(GetInfoMessageText(action, itsMe));
     },
     openProfile(userId) {
       this.$router.push(`${Path.PROFILE}/${userId}`);
@@ -403,7 +371,7 @@ export default {
     setFullName({
       itsMe, infoMessage: { user }, sender, type,
     }) {
-      if (itsMe || (type === MessageType.INFO && sender.adminId)) return '';
+      if (itsMe || (type === MessageType.INFO && sender?.adminId)) return '';
       return itsMe
         ? this.UserName(user?.firstName, user?.lastName)
         : this.UserName(sender.user?.firstName, sender.user?.lastName);
@@ -617,8 +585,8 @@ export default {
     width: 43px;
     border-radius: 50%;
     object-fit: cover;
-    background-color: $black100;
-    border: 1px solid $black200;
+    background-color: $black0;
+    border: 1px solid $black100;
     &_hidden {
       visibility: hidden;
     }
@@ -793,6 +761,7 @@ export default {
       }
 
       &_user-text {
+        width: 100%;
         word-break: break-all
       }
     }
@@ -811,12 +780,6 @@ export default {
       text-overflow: ellipsis;
       overflow: hidden;
     }
-  }
-}
-
-@include _480 {
-  .info-message {
-    font-size: 10px;
   }
 }
 </style>
