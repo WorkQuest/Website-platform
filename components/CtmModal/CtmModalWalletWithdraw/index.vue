@@ -182,7 +182,7 @@ export default {
         selectedToken, amount, userData, tokenDecimals, nativeTokenSymbol,
       } = this;
 
-      if (amount === null) {
+      if (amount === '' || amount === null) {
         this.currentFee = 0;
         return;
       }
