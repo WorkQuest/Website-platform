@@ -662,6 +662,7 @@ export default {
     async logout() {
       await this.$store.dispatch('user/logout');
       if ([Path.MINING, Path.BRIDGE, Path.COLLATERAL, Path.CREDITING].includes(this.$route.path)) {
+        sessionStorage.setItem('preventDisconnectWeb3', true);
         sessionStorage.setItem('redirectTo', this.$route.path);
         this.$nuxt.setLayout(Layout.GUEST);
       } else await this.$router.push(Path.ROOT);
