@@ -166,6 +166,14 @@ export const Path = {
   QRCODE: '/qrcode',
 };
 
+export const PreventLogoutPathNames = [
+  'mining',
+  'mining-id',
+  'bridge',
+  'crediting',
+  'collateral',
+];
+
 export const PathDAO = {
   DISCUSSIONS: '/discussions',
 };

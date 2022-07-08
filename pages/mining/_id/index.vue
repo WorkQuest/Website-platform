@@ -442,6 +442,10 @@ export default {
     await this.toggleConnection();
   },
   async beforeDestroy() {
+    const preventDisconnect = sessionStorage.getItem('preventDisconnectWeb3');
+    sessionStorage.removeItem('preventDisconnectWeb3');
+    if (preventDisconnect) return;
+
     await this.disconnectWallet();
     await Promise.all([
       this.resetPoolData(),
