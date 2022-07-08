@@ -433,7 +433,7 @@ export default {
     updateWQAddress() {
       const w = window.innerWidth;
       if (w > 678) this.shortWqAddress = this.wqAddress;
-      if (w > 400) this.shortWqAddress = this.CutTxn(this.wqAddress, 8, 8);
+      else if (w > 400) this.shortWqAddress = this.CutTxn(this.wqAddress, 8, 8);
       else this.shortWqAddress = this.CutTxn(this.wqAddress, 4, 8);
     },
     async handleSwitchNetwork(index) {
