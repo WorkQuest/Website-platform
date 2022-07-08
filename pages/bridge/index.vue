@@ -295,8 +295,10 @@ export default {
     if (!this.isConnected) await this.toggleConnection();
   },
   async beforeDestroy() {
-    if (sessionStorage.getItem('preventDisconnectWeb3')) return;
-    sessionStorage.removeItem('preventDisconnectWeb3');
+    if (sessionStorage.getItem('preventDisconnectWeb3')) {
+      sessionStorage.removeItem('preventDisconnectWeb3');
+      return;
+    }
     this.$store.commit('bridge/resetToken');
     await this.unsubscribe(this.account.address);
     await this.handlerDisconnect();
