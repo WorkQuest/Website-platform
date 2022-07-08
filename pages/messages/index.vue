@@ -385,7 +385,7 @@ export default {
       return this.$t('chat.workquestAdmin');
     },
     getUserAvatar(user) {
-      if (user.type === UserRoles.ADMIN) return images.WQ_LOGO;
+      if (user.type === UserRoles.ADMIN) return images.WQ_LOGO_ROUNDED;
       return user.user?.avatar ? user.user?.avatar.url : images.EMPTY_AVATAR;
     },
 

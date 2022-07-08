@@ -291,7 +291,7 @@ export default {
       return prevMessage?.sender?.user?.id === message.sender?.user?.id && prevMessage?.type !== MessageType.INFO;
     },
     setSenderAvatar({ sender }) {
-      if (sender.type === UserRoles.ADMIN) return images.WQ_LOGO;
+      if (sender.type === UserRoles.ADMIN) return images.WQ_LOGO_ROUNDED;
       return sender.user?.avatar ? sender.user?.avatar.url : images.EMPTY_AVATAR;
     },
     async getMessages(direction, currBottomOffset) {

@@ -63,7 +63,7 @@ export default {
       action,
       actionBtn,
       sender: {
-        avatar: { url: images.WQ_LOGO },
+        avatar: { url: images.WQ_LOGO_ROUNDED },
         firstName: $nuxt.$t('ui.notifications.workquestInfo'),
       },
       params: {
@@ -148,14 +148,11 @@ export default {
     notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
     notification.params = { isLocal: false };
 
-    const wqInfoSender = { avatar: { url: images.WQ_LOGO }, firstName: $nuxt.$t('ui.notifications.workquestInfo') };
+    const wqInfoSender = { avatar: { url: images.WQ_LOGO_ROUNDED }, firstName: $nuxt.$t('ui.notifications.workquestInfo') };
 
     switch (action) {
       case NotificationAction.UPDATE_RATING_STATISTIC:
-        notification.sender = {
-          avatar: { url: images.WQ_LOGO },
-          firstName: $nuxt.$t('ui.notifications.workquestInfo'),
-        };
+        notification.sender = wqInfoSender;
         notification.params = {
           ...notification.params,
           title: ['NoStatus', 'Verified', 'Reliable', 'TopRanked'][data.status],
