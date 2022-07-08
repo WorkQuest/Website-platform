@@ -366,6 +366,7 @@ export const WorknetTokenAddresses = Object.freeze([
 export const WalletTokensData = Object.freeze({
   [Chains.WORKNET]: {
     WSProvider: ENV.WQ_WS_PROVIDER,
+    explorer: ExplorerUrl,
     chain: Chains.WORKNET,
     tokenAddresses: [
       ENV.WORKNET_WUSD_TOKEN,

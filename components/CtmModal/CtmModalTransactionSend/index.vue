@@ -12,6 +12,13 @@
       <div class="transaction__title">
         {{ options.mode ==='error' ? $t('modals.transactionError') : $t('modals.transactionSent') }}
       </div>
+      <a
+        v-if="options.txUrl"
+        :href="options.txUrl"
+        target="_blank"
+      >
+        {{ $t('modals.transactionCheck') }}
+      </a>
       <base-btn
         class="transaction__action"
         data-selector="OK"
