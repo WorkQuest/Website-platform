@@ -41,6 +41,11 @@ let web3 = new Web3(ENV.WQ_PROVIDER);
 export const getProvider = () => web3;
 export const createInstance = (_abi, _address) => new web3.eth.Contract(_abi, _address);
 
+let isEthNetwork = false;
+export const ethBoost = 1.1;
+// eslint-disable-next-line no-return-assign
+export const setIsEthNetWork = (isEthNetworkSelected) => isEthNetwork = isEthNetworkSelected;
+
 export const GetWalletProvider = () => web3;
 const wallet = {
   address: null,
@@ -182,7 +187,8 @@ export const getBalance = async () => {
 export const transfer = async (recipient, value) => {
   try {
     value = new BigNumber(value).shiftedBy(18).toString();
-    const [gasPrice, gasEstimate] = await Promise.all([
+    // eslint-disable-next-line prefer-const
+    let [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
       web3.eth.estimateGas({
         from: wallet.address,
@@ -190,6 +196,7 @@ export const transfer = async (recipient, value) => {
         value,
       }),
     ]);
+    if (isEthNetwork) gasPrice = new BigNumber(gasPrice).multipliedBy(ethBoost).toFixed(0);
     const txRes = await web3.eth.sendTransaction({
       from: wallet.address,
       to: recipient,
@@ -206,7 +213,8 @@ export const transfer = async (recipient, value) => {
 export const getTransferFeeData = async (recipient, value) => {
   try {
     value = new BigNumber(value).shiftedBy(18).toString();
-    const [gasPrice, gasEstimate] = await Promise.all([
+    // eslint-disable-next-line prefer-const
+    let [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
       web3.eth.estimateGas({
         from: wallet.address,
@@ -214,6 +222,7 @@ export const getTransferFeeData = async (recipient, value) => {
         value,
       }),
     ]);
+    if (isEthNetwork) gasPrice = new BigNumber(gasPrice).multipliedBy(ethBoost).toFixed(0);
     return success({
       gasPrice,
       gasEstimate,
@@ -235,7 +244,8 @@ export const sendWalletTransaction = async (_method, {
   }
   try {
     const inst = new web3.eth.Contract(abi, address);
-    const gasPrice = await web3.eth.getGasPrice();
+    let gasPrice = await web3.eth.getGasPrice();
+    if (isEthNetwork) gasPrice = new BigNumber(gasPrice).multipliedBy(ethBoost).toFixed(0);
     const accountAddress = getWalletAddress();
     const txData = inst.methods[_method].apply(null, data).encodeABI();
     if (value) {
@@ -290,10 +300,12 @@ export const getContractFeeData = async (_method, _abi, _contractAddress, data, 
       amount = new BigNumber(amount).shiftedBy(18).toString();
       tx.value = amount;
     }
-    const [gasPrice, gasEstimate] = await Promise.all([
+    // eslint-disable-next-line prefer-const
+    let [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
       inst.methods[_method].apply(null, data).estimateGas(tx),
     ]);
+    if (isEthNetwork) gasPrice = new BigNumber(gasPrice.toString()).multipliedBy(ethBoost).toFixed(0);
     return success({
       gasPrice,
       gasEstimate,
