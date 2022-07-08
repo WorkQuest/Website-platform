@@ -311,6 +311,7 @@ export default {
     selectedNetworkExplorer() {
       const net = WalletTokensData[this.selectedNetwork];
       return {
+        txUrl: `${net.explorer}/tx/`,
         url: `${net.explorer}/address/${this.userWalletAddress}`,
         icon: net.explorerIcon,
       };
@@ -537,13 +538,16 @@ export default {
                   address: this.selectedTokenAddress,
                   data: [recipient, value],
                 };
-              const res = await this.$store.dispatch(`wallet/${action}`, payload);
-              if (res.ok) {
-                await this.ShowModal({ key: 'transactionSend' });
+              const { ok, result } = await this.$store.dispatch(`wallet/${action}`, payload);
+              if (ok) {
+                await this.ShowModal({
+                  key: modals.transactionSend,
+                  txUrl: `${this.selectedNetworkExplorer.txUrl}${result.transactionHash}`,
+                });
                 await this.loadData();
                 return success();
               }
-              await this.ShowModal({ key: 'transactionSend', mode: 'error' });
+              await this.ShowModal({ key: modals.transactionSend, mode: 'error' });
               return error();
             },
           });
