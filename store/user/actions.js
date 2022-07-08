@@ -365,6 +365,7 @@ export default {
       return false;
     }
   },
+  // TODO: после добавления на бэке этого роута использовать его на Check2FA с активной сессией (EditQuest/DeleteQuest)
   async validateSessionTOTP({ _ }, payload) {
     try {
       const response = await this.$axios.$post('/v1/auth/current-session/validate-totp', payload);
