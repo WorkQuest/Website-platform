@@ -35,10 +35,12 @@ import {
 } from '~/utils/enums';
 import { PaidTariff } from '~/utils/сonstants/quests';
 import { ERC20, WQPromotion } from '~/abi';
+import walletOperations from '~/plugins/mixins/walletOperations';
 
 export default {
   name: 'RaisedViews',
   middleware: 'worker-role',
+  mixins: [walletOperations],
   data() {
     return {
       period: 0,
