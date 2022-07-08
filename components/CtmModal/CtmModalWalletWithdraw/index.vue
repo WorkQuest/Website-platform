@@ -22,6 +22,7 @@
       </div>
       <validation-observer
         v-if="step === 'wallet'"
+        ref="observer"
         v-slot="{handleSubmit, invalid}"
         tag="div"
       >
@@ -171,6 +172,7 @@ export default {
   watch: {
     ddValue(val) {
       this.$store.dispatch('wallet/setSelectedToken', this.tokenSymbolsDd[val].title);
+      this.$refs.observer.reset();
       this.amount = null;
     },
     async amount() {
@@ -180,7 +182,7 @@ export default {
         selectedToken, amount, userData, tokenDecimals, nativeTokenSymbol,
       } = this;
 
-      if (!amount) {
+      if (amount === null) {
         this.currentFee = 0;
         return;
       }
