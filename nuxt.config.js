@@ -64,6 +64,10 @@ export default {
   ],
   'google-gtag': {
     id: process.env.G_ANALYTIC,
+    config: {
+      send_page_view: false, // might be necessary to avoid duplicated page track on page reload
+    },
+    disableAutoPageTrack: false, // disable if you don't want to track each page route with router.afterEach(...).
   },
   build: {
     productionSourceMap: false,

@@ -206,9 +206,10 @@ export default {
         else this.maxFeeForNativeToken = 0;
       } else {
         let contractAddress;
-        this.tokenSymbolsDd.some((token) => {
+        this.tokenSymbolsDd.some((token, i) => {
           if (token.title === this.selectedToken) {
             contractAddress = token.tokenAddress;
+            this.ddValue = i;
             return true;
           }
           return false;
