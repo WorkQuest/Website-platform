@@ -335,7 +335,7 @@ import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import moment from 'moment';
 import { images } from '~/utils/images';
-import { UserRole, Path } from '~/utils/enums';
+import { UserRole, Path, Layout } from '~/utils/enums';
 import { MessageAction } from '~/utils/сonstants/chat';
 import { IS_PLUG, LockedPaths } from '~/utils/locker-data';
 
@@ -661,7 +661,10 @@ export default {
     },
     async logout() {
       await this.$store.dispatch('user/logout');
-      await this.$router.push(Path.ROOT);
+      if ([Path.MINING, Path.BRIDGE, Path.COLLATERAL, Path.CREDITING].includes(this.$route.path)) {
+        sessionStorage.setItem('redirectTo', this.$route.path);
+        this.$nuxt.setLayout(Layout.GUEST);
+      } else await this.$router.push(Path.ROOT);
     },
     closeAll() {
       this.isShowProfile = false;
