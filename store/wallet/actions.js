@@ -111,7 +111,7 @@ export default {
   },
   async getBalance({ commit, getters }) {
     const chain = getters.getSelectedNetwork;
-    const token = WalletTokensData[chain].tokenList[0];
+    const token = WalletTokensData[chain].tokenList[0].title;
     const res = await getBalance();
     commit('setBalance', {
       symbol: token,
@@ -571,7 +571,7 @@ export default {
     const res = await connectWalletToProvider(ProviderTypesByChain[chain]);
     if (res.ok) {
       commit('setSelectedNetwork', chain);
-      commit('setSelectedToken', WalletTokensData[chain].tokenList[0]);
+      commit('setSelectedToken', WalletTokensData[chain].tokenList[0].title);
 
       await Promise.all([
         dispatch('fetchCommonTokenInfo'),

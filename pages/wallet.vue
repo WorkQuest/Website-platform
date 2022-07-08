@@ -29,16 +29,31 @@
         <div class="wallet__nav">
           <span class="wallet__title">{{ $t('meta.wallet') }}</span>
           <div class="wallet__address">
-            <span class="user__wallet">{{ shortWqAddress }}</span>
-            <button
-              v-clipboard:copy="wqAddress"
-              v-clipboard:success="ClipboardSuccessHandler"
-              v-clipboard:error="ClipboardErrorHandler"
-              type="button"
-              data-selector="COPY"
+            <div
+              v-if="selectedNetwork === $options.Chains.WORKNET"
+              class="wallet__address-wrapper"
             >
-              <span class="icon-copy wallet__icon" />
-            </button>
+              <base-dd
+                v-model="addressType"
+                :items="addressTypesDd"
+                data-selector="ADDRESS-TYPE"
+                class="wallet__address-type"
+                type="underline"
+                mode="blackFont"
+              />
+            </div>
+            <div class="user">
+              <span class="user__wallet">{{ shortWqAddress }}</span>
+              <button
+                v-clipboard:copy="wqAddress"
+                v-clipboard:success="ClipboardSuccessHandler"
+                v-clipboard:error="ClipboardErrorHandler"
+                type="button"
+                data-selector="COPY"
+              >
+                <span class="icon-copy wallet__icon" />
+              </button>
+            </div>
           </div>
         </div>
         <div
@@ -67,7 +82,7 @@
                   {{ selectedTokenBalanceInfo }}
                 </span>
                 <span
-                  v-if="selectedToken === $options.TokenSymbols.WQT"
+                  v-if="selectedNetwork === $options.Chains.WORKNET && selectedToken === $options.TokenSymbols.WQT"
                   class="balance__frozen-mobile"
                 >
                   <span class="balance__frozen-mobile_blue">
@@ -75,18 +90,24 @@
                   </span>
                   {{ $t('meta.coins.count.WQTCount', {count: Floor(frozenBalance)}) }}
                 </span>
+                <span
+                  v-else
+                  class="balance__currency__margin-bottom"
+                />
                 <base-dd
+                  v-if="tokens.length"
                   v-model="ddValue"
                   class="balance__token"
-                  :items="tokenSymbolsDd"
+                  :items="tokens"
                   :placeholder="$options.TokenSymbols.WQT"
                   data-selector="TOKENS"
                   type="border"
+                  is-icon
                 />
               </span>
-              <span :class="[{'balance__currency__margin-bottom' : selectedToken !== $options.TokenSymbols.WQT}]">
+              <span :class="[{'balance__currency__margin-bottom' : !(selectedNetwork === $options.Chains.WORKNET && selectedToken === $options.TokenSymbols.WQT)}]">
                 <span
-                  v-if="selectedToken === $options.TokenSymbols.WQT"
+                  v-if="selectedNetwork === $options.Chains.WORKNET && selectedToken === $options.TokenSymbols.WQT"
                   class="balance__frozen balance__frozen_blue"
                 >
                   <span class="balance__frozen">
@@ -100,7 +121,7 @@
               <base-btn
                 data-selector="SHOW-DEPOSIT-MODAL"
                 class="balance__btn"
-                @click="showModal({key: 'deposit'})"
+                @click="showDepositModal"
               >
                 {{ $t('wallet.deposit') }}
               </base-btn>
@@ -127,14 +148,14 @@
             <span class="card__title">{{ $t('wallet.addCardProposal') }}</span>
             <span
               class="icon-close_big card__icon"
-              @click="closeCard()"
+              @click="cardClosed = true"
             />
             <base-btn
               data-selector="SHOW-ADD-CARD-MODAL"
               class="card__btn"
               mode="outline"
               :disabled="true"
-              @click="showModal({key: 'addCard', branchText: 'adding' })"
+              @click="ShowModal({key: 'addCard', branchText: 'adding' })"
             >
               {{ $t('modals.coming') }}
             </base-btn>
@@ -221,6 +242,7 @@ import {
   WalletTables,
   Chains,
   WalletTokensData,
+  AddressType,
 } from '~/utils/enums';
 import { getStyledAmount } from '~/utils/wallet';
 import EmptyData from '~/components/app/info/emptyData';
@@ -243,10 +265,10 @@ export default {
       txsPerPage: 10,
       currentPage: 1,
       selectedWalletTable: WalletTables.TXS,
-      tokenSymbolsDd: [],
       isFetchingBalance: false,
       shortWqAddress: '',
       isShowedBuyWqtNotification: true,
+      addressType: 0,
     };
   },
   computed: {
@@ -261,6 +283,16 @@ export default {
       isWalletConnected: 'wallet/getIsWalletConnected',
       selectedNetwork: 'wallet/getSelectedNetwork',
     }),
+    tokens() {
+      return WalletTokensData[this.selectedNetwork].tokenList || [];
+    },
+    tokensMap() {
+      const res = {};
+      this.tokens.forEach((token, i) => {
+        res[token.title] = { ...token, index: i };
+      });
+      return res;
+    },
     networkList() {
       return [
         BuyWQTTokensData.get(Chains.WORKNET),
@@ -284,13 +316,10 @@ export default {
       };
     },
     nativeTokenSymbol() {
-      return WalletTokensData[this.selectedNetwork].tokenList[0];
+      return WalletTokensData[this.selectedNetwork].tokenList[0].title;
     },
     selectedTokenAddress() {
-      return this.tokenAddresses[this.tokenSymbolsDd.indexOf(this.selectedToken) - 1];
-    },
-    tokenAddresses() {
-      return WalletTokensData[this.selectedNetwork].tokenAddresses;
+      return this.tokensMap[this.selectedToken]?.tokenAddress;
     },
     selectedTokenData() {
       return this.balance[this.selectedToken];
@@ -299,8 +328,13 @@ export default {
       if (!this.selectedTokenData) return this.selectedToken;
       return `${this.selectedTokenData?.balance || '0'} ${this.selectedToken}`;
     },
+    addressTypesDd() {
+      return [AddressType.BECH32, AddressType.HEX];
+    },
     wqAddress() {
-      if (this.selectedNetwork === Chains.WORKNET) return this.convertToBech32('wq', this.userWalletAddress);
+      if (this.selectedNetwork === Chains.WORKNET) {
+        if (this.addressType === 0) return this.convertToBech32('wq', this.userWalletAddress);
+      }
       return this.userWalletAddress;
     },
     walletTables() {
@@ -346,16 +380,20 @@ export default {
     },
   },
   watch: {
-    selectedNetwork() {
-      this.tokenSymbolsDd = WalletTokensData[this.selectedNetwork].tokenList;
+    addressType() {
       this.updateWQAddress();
     },
-    ddValue(newVal) {
-      this.$store.dispatch('wallet/setSelectedToken', this.tokenSymbolsDd[newVal]);
+    async selectedNetwork() {
+      this.ddValue = 0;
+      this.addressType = this.selectedNetwork === Chains.WORKNET ? 0 : 1;
+      await this.loadData();
+      this.updateWQAddress();
     },
     async selectedToken() {
-      const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
-      this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
+      this.ddValue = this.tokensMap[this.selectedToken].index;
+    },
+    async ddValue(newVal) {
+      await this.$store.dispatch('wallet/setSelectedToken', this.tokens[newVal].title);
       await this.loadData();
     },
     currentPage() {
@@ -379,8 +417,6 @@ export default {
     this.updateWQAddress();
     window.addEventListener('resize', this.updateWQAddress);
 
-    this.tokenSymbolsDd = WalletTokensData[this.selectedNetwork].tokenList;
-
     await this.$store.dispatch('wallet/setCallbackWS', this.loadData);
     await this.loadData();
     if (this.selectedToken === TokenSymbols.WQT && this.selectedTokenData.balance <= 0) {
@@ -396,14 +432,13 @@ export default {
   methods: {
     updateWQAddress() {
       const w = window.innerWidth;
-      if (w > 600) this.shortWqAddress = this.wqAddress;
-      else this.shortWqAddress = this.CutTxn(this.wqAddress, 8, 8);
+      if (w > 678) this.shortWqAddress = this.wqAddress;
+      else if (w > 400) this.shortWqAddress = this.CutTxn(this.wqAddress, 8, 8);
+      else this.shortWqAddress = this.CutTxn(this.wqAddress, 4, 8);
     },
     async handleSwitchNetwork(index) {
       if (this.selectedNetworkIndex === index) return;
-      this.isFetchingBalance = true;
       await this.$store.dispatch('wallet/connectToProvider', this.networkList[index].chain);
-      this.isFetchingBalance = false;
     },
     async showBuyWQTModal() {
       if (this.selectedNetwork === Chains.WORKNET) {
@@ -428,9 +463,9 @@ export default {
       });
     },
     async loadData() {
+      if (this.isFetchingBalance) return;
       this.isFetchingBalance = true;
       const { selectedToken, userWalletAddress } = this;
-
       // 0 token is always native token for current network!
       if (this.nativeTokenSymbol === selectedToken) {
         const toFetch = [this.$store.dispatch('wallet/getBalance')];
@@ -443,20 +478,17 @@ export default {
         await this.$store.dispatch('wallet/fetchWalletData', {
           method: 'balanceOf',
           ...payload,
-          token: this.tokenAddresses[this.tokenSymbolsDd.indexOf(selectedToken) - 1],
+          token: this.selectedTokenAddress,
           symbol: selectedToken,
         });
       }
       this.isFetchingBalance = false;
       await this.getTransactions();
     },
-    closeCard() {
-      this.cardClosed = true;
-    },
-    showModal({ key, branch }) {
+    showDepositModal() {
       this.ShowModal({
-        key: modals[key],
-        branch,
+        key: modals.deposit,
+        addressType: this.addressType,
       });
     },
     showTransferModal() {
@@ -594,14 +626,23 @@ export default {
     display: flex;
     justify-content: space-between;
     font-size: 16px;
+    align-items: center;
   }
 
   &__address {
     @include text-simple;
     display: flex;
-    align-items: center;
     font-weight: 500;
     font-size: 16px;
+  }
+
+  &__address-wrapper {
+    margin-bottom: 5px;
+    margin-right: 10px;
+  }
+
+  &__address-type {
+    display: inline-block;
   }
 
   &__icon {
@@ -904,19 +945,19 @@ export default {
       display: block;
     }
   }
-  .wallet__switch-table {
-    grid-template-columns: 1fr;
-  }
-  .balance__bottom {
-    display: grid !important;
-  }
-}
-
-@include _350 {
-  .wallet {
+  .wallet{
+    &__switch-table {
+      grid-template-columns: 1fr;
+    }
     &__nav {
       flex-direction: column;
     }
+    &__title {
+      margin-right: 0;
+    }
+  }
+  .balance__bottom {
+    display: grid !important;
   }
 }
 </style>

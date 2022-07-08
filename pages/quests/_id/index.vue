@@ -180,12 +180,14 @@ import { images } from '~/utils/images';
 import { WorkQuest, WQFactory } from '~/abi';
 import { fetchContractData } from '~/utils/web3';
 import { getWalletAddress, GetWalletProvider } from '~/utils/wallet';
+import walletOperations from '~/plugins/mixins/walletOperations';
 
 export default {
   name: 'Quests',
   UserRole,
   QuestStatuses,
   Path,
+  mixins: [walletOperations],
   data() {
     return {
       questLocation: { lat: 0, lng: 0 },

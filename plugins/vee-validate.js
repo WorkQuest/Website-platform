@@ -310,7 +310,7 @@ extend('have_funds', {
       valid: new BigNumber(balance).isGreaterThanOrEqualTo(amount),
     };
   },
-  params: ['balance', 'amount'],
+  params: ['balance', 'amount', 'symbol'],
 });
 
 export default ({ app }) => {

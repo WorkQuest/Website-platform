@@ -24,7 +24,7 @@
         v-if="step === 'wallet'"
         class="step__container"
       >
-        <deposit-wallet-address />
+        <deposit-wallet-address :address-type-default="options.addressType" />
       </div>
       <div
         v-if="step === 'bank'"

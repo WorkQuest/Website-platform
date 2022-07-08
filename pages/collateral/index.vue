@@ -162,9 +162,11 @@ import {
 import { getGasPrice, getWalletAddress } from '~/utils/wallet';
 import { WQRouter } from '~/abi';
 import { IS_PLUG } from '~/utils/locker-data';
+import walletOperations from '~/plugins/mixins/walletOperations';
 
 export default {
   name: 'Collateral',
+  mixins: [walletOperations],
   layout({ store }) {
     // TODO plug for release
     if (IS_PLUG) return Layout.DEFAULT;

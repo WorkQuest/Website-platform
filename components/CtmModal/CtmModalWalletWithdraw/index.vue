@@ -41,12 +41,13 @@
           </div>
           <div class="content__input input">
             <span class="input__title">
-              {{ $t('modals.selectToken') }}
+              {{ $t('modals.chooseToken') }}
             </span>
             <base-dd
               v-model="ddValue"
               data-selector="TOKEN"
               :items="tokenSymbolsDd"
+              is-icon
             />
           </div>
           <div class="content__input input input__amount">
@@ -60,7 +61,7 @@
               :placeholder="$t('modals.amount')"
               :rules="`required|decimal|is_not:0|max_value:${maxAmount}|decimalPlaces:${tokenDecimals}|not_enough_funds:${tokenBalance}`"
               :name="$tc('modals.amountField')"
-              @input="replaceDot"
+              @input="handleInput"
             >
               <template
                 v-slot:right-absolute
@@ -140,7 +141,7 @@ export default {
       selectedNetwork: 'wallet/getSelectedNetwork',
     }),
     nativeTokenSymbol() {
-      return this.tokenSymbolsDd[0];
+      return this.tokenSymbolsDd[0].title;
     },
     tokenDecimals() {
       return this.balance[this.selectedToken].decimals;
@@ -153,9 +154,9 @@ export default {
     },
     maxAmount() {
       const {
-        selectedToken, balance, maxFeeForNativeToken,
+        selectedToken, tokenBalance, maxFeeForNativeToken,
       } = this;
-      const fullBalance = new BigNumber(balance[selectedToken].fullBalance);
+      const fullBalance = new BigNumber(tokenBalance);
       if (selectedToken === this.nativeTokenSymbol) {
         const balanceMinusFee = fullBalance.minus(maxFeeForNativeToken).isGreaterThan(0);
         return balanceMinusFee ? fullBalance.minus(maxFeeForNativeToken).toString() : 0;
@@ -165,13 +166,11 @@ export default {
   },
   watch: {
     ddValue(val) {
-      this.$store.dispatch('wallet/setSelectedToken', TokenSymbols[this.tokenSymbolsDd[val]]);
+      this.$store.dispatch('wallet/setSelectedToken', this.tokenSymbolsDd[val].title);
       this.amount = 0;
     },
   },
   async mounted() {
-    const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
-    this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
     await this.updateMaxFee();
   },
   methods: {
@@ -184,8 +183,10 @@ export default {
       const { recipient, amount, selectedToken } = this;
       submit({ recipient, amount, selectedToken });
     },
-    replaceDot() {
-      this.amount = this.amount.replace(/,/g, '.');
+    handleInput(val) {
+      if (!val || isNaN(val)) this.amount = val;
+      else this.amount = this.ClearZero(val);
+      this.amount = this.amount.toString().replace(/,/g, '.');
     },
     // Для просчета максимальной суммы транзакции от комиссии
     async updateMaxFee() {
@@ -196,7 +197,7 @@ export default {
       } = this;
 
       // 0 token is always native token for current network!
-      if (nativeTokenSymbol === selectedToken) {
+      if (selectedToken === nativeTokenSymbol) {
         const nativeTokenFee = await this.$store.dispatch('wallet/getTransferFeeData', {
           recipient: userData.wallet.address,
           value: balance[nativeTokenSymbol].fullBalance,
@@ -204,7 +205,15 @@ export default {
         if (nativeTokenFee.ok) this.maxFeeForNativeToken = nativeTokenFee.result.fee;
         else this.maxFeeForNativeToken = 0;
       } else {
-        const contractAddress = WalletTokensData[this.selectedNetwork].tokenAddresses[this.tokenSymbolsDd.indexOf(selectedToken) - 1];
+        let contractAddress;
+        this.tokenSymbolsDd.some((token) => {
+          if (token.title === this.selectedToken) {
+            contractAddress = token.tokenAddress;
+            return true;
+          }
+          return false;
+        });
+
         const feeTokens = await this.$store.dispatch('wallet/getContractFeeData', {
           method: 'transfer',
           abi: ERC20,
