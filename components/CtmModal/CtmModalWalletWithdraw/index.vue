@@ -59,7 +59,7 @@
               class="input__field"
               data-selector="AMOUNT"
               :placeholder="$t('modals.amount')"
-              :rules="`required|decimal|is_not:0|max_value:${maxAmount}|decimalPlaces:${tokenDecimals}|not_enough_funds:${tokenBalance}`"
+              :rules="`required|decimal|max_value:${maxAmount}|decimalPlaces:${tokenDecimals}|not_enough_funds:${tokenBalance}`"
               :name="$tc('modals.amountField')"
               @input="handleInput"
             >
@@ -79,6 +79,9 @@
                 </base-btn>
               </template>
             </base-field>
+          </div>
+          <div class="content__txFee">
+            {{ `${$t('wallet.table.trxFee')}: ${currentFee}` }}
           </div>
         </div>
         <div class="content__buttons buttons">
@@ -120,8 +123,9 @@ export default {
   data() {
     return {
       recipient: '',
-      amount: 0,
+      amount: null,
       ddValue: 0,
+      currentFee: 0,
       maxFeeForNativeToken: 0,
       isCanSubmit: false,
 
@@ -144,7 +148,7 @@ export default {
       return this.tokenSymbolsDd[0].title;
     },
     tokenDecimals() {
-      return this.balance[this.selectedToken].decimals;
+      return +this.balance[this.selectedToken].decimals;
     },
     tokenBalance() {
       return this.balance[this.selectedToken].fullBalance;
@@ -167,7 +171,49 @@ export default {
   watch: {
     ddValue(val) {
       this.$store.dispatch('wallet/setSelectedToken', this.tokenSymbolsDd[val].title);
-      this.amount = 0;
+      this.amount = null;
+    },
+    async amount() {
+      if (!this.isConnected) return;
+      this.isCanSubmit = false;
+      const {
+        selectedToken, amount, userData, tokenDecimals, nativeTokenSymbol,
+      } = this;
+
+      if (!amount) {
+        this.currentFee = 0;
+        return;
+      }
+
+      // 0 token is always native token for current network!
+      if (selectedToken === nativeTokenSymbol) {
+        const nativeTokenFee = await this.$store.dispatch('wallet/getTransferFeeData', {
+          recipient: userData.wallet.address,
+          value: amount,
+        });
+        if (nativeTokenFee.ok) this.currentFee = nativeTokenFee.result.fee;
+        else this.currentFee = 0;
+      } else {
+        let contractAddress;
+        this.tokenSymbolsDd.some((token, i) => {
+          if (token.title === this.selectedToken) {
+            contractAddress = token.tokenAddress;
+            this.ddValue = i;
+            return true;
+          }
+          return false;
+        });
+
+        const feeTokens = await this.$store.dispatch('wallet/getContractFeeData', {
+          method: 'transfer',
+          abi: ERC20,
+          contractAddress,
+          data: [contractAddress, new BigNumber(amount).shiftedBy(tokenDecimals).toString()],
+        });
+        if (feeTokens.ok) this.currentFee = feeTokens.result.fee;
+        else this.currentFee = 0;
+      }
+      this.isCanSubmit = true;
     },
   },
   async mounted() {
@@ -193,7 +239,7 @@ export default {
       if (!this.isConnected) return;
       this.isCanSubmit = false;
       const {
-        selectedToken, amount, userData, balance, nativeTokenSymbol,
+        selectedToken, tokenDecimals, userData, balance, nativeTokenSymbol,
       } = this;
 
       // 0 token is always native token for current network!
@@ -219,7 +265,7 @@ export default {
           method: 'transfer',
           abi: ERC20,
           contractAddress,
-          data: [contractAddress, amount],
+          data: [contractAddress, new BigNumber(balance[selectedToken].fullBalance).shiftedBy(tokenDecimals).toString()],
         });
         if (feeTokens.ok) this.maxFeeForNativeToken = feeTokens.result.fee;
         else this.maxFeeForNativeToken = 0;
@@ -301,6 +347,10 @@ export default {
     line-height: 130%;
     color: #D8DFE3;
     text-align: center;
+  }
+
+  &__txFee {
+    margin-bottom: 15px;
   }
 }
 
