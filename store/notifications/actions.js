@@ -88,7 +88,7 @@ export default {
       this.$cookies.set(
         actionNameKey.substr('notifications.'.length, actionNameKey.length),
         rootGetters['user/getStatus2FA'] !== 0,
-        { maxAge: notificationLifetime, enabled: false },
+        { maxAge: notificationLifetime },
       );
     }
     try {

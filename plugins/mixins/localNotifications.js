@@ -66,7 +66,6 @@ export default {
         if (!KYC) {
           this.$cookies.set(LocalNotificationAction.KYC, this.statusKYC !== 0, {
             maxAge: notificationLifetime,
-            enabled: true,
           });
         }
         await this.$store.dispatch('notifications/createLocalNotification', {
@@ -81,7 +80,6 @@ export default {
         if (!TWOFA) {
           this.$cookies.set(LocalNotificationAction.TWOFA, this.status2FA !== 0, {
             maxAge: notificationLifetime,
-            enabled: true,
           });
         }
         await this.$store.dispatch('notifications/createLocalNotification', {
