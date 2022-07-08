@@ -70,6 +70,7 @@
 import { mapGetters } from 'vuex';
 import { Path, UserStatuses } from '~/utils/enums';
 import { LEGAL_INFO } from '~/utils/сonstants/footer';
+import { accessLifetime } from '~/utils/сonstants/cookiesLifetime';
 
 export default {
   name: 'PrivacyModal',
@@ -106,8 +107,8 @@ export default {
       }
 
       if (response?.ok) {
-        this.$cookies.set('userLogin', true, { path: Path.ROOT });
-        this.$cookies.set('userStatus', UserStatuses.Confirmed, { path: Path.ROOT });
+        this.$cookies.set('userLogin', true, { path: Path.ROOT, maxAge: accessLifetime });
+        this.$cookies.set('userStatus', UserStatuses.Confirmed, { path: Path.ROOT, maxAge: accessLifetime });
         sessionStorage.removeItem('confirmToken');
         this.ShowToast(this.$t('modals.yourAccountVerified'), this.$t('meta.success'));
         await this.options.callback();
