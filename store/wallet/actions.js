@@ -14,6 +14,7 @@ import {
   getIsWalletConnected,
   sendWalletTransaction,
   connectWalletToProvider,
+  ethBoost, setIsEthNetWork,
 } from '~/utils/wallet';
 
 import {
@@ -514,7 +515,9 @@ export default {
   },
 
   /** BuyWQT */
-  async swap({ commit, dispatch, rootGetters }, {
+  async swap({
+    commit, dispatch, rootGetters, getters,
+  }, {
     amount, bridgeAddress, isNative, symbol, toChainIndex, decimals,
   }) {
     try {
@@ -529,10 +532,12 @@ export default {
 
       if (isNative) {
         showToast('Swapping', 'Swapping...', 'success');
-        const [gasPrice, gas] = await Promise.all([
+        // eslint-disable-next-line prefer-const
+        let [gasPrice, gas] = await Promise.all([
           provider.eth.getGasPrice(),
           getEstimateGas(null, null, bridgeInstance, 'swap', data, value),
         ]);
+        if (getters.getSelectedNetwork === Chains.ETHEREUM) gasPrice = new BigNumber(gasPrice.toString()).multipliedBy(ethBoost).toFixed(0);
         const swapRes = await bridgeInstance.methods.swap(...data).send({
           from: accountAddress,
           value,
@@ -584,7 +589,7 @@ export default {
         hexAddress: userWalletAddress,
         timestamp: $nuxt.$moment(),
       });
-
+      setIsEthNetWork(chain === Chains.ETHEREUM);
       $nuxt.ShowToast(`Current: ${chain}`, 'Network switched');
     } else {
       $nuxt.ShowToast(res.msg, 'Error on switch network');

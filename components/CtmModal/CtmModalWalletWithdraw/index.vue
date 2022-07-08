@@ -96,7 +96,7 @@
             :disabled="invalid||!isCanSubmit"
             @click="handleSubmit(showWithdrawInfo)"
           >
-            {{ $t('meta.btns.send') }}
+            {{ $t('meta.btns.next') }}
           </base-btn>
         </div>
       </validation-observer>
