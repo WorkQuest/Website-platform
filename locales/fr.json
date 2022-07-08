@@ -1444,7 +1444,8 @@
     "commentLiked": "Comment liked",
     "questEdited": "Quest edited",
     "questEndSoon": "Quest end soon",
-    "newDiscussionLike": "New like on discussion"
+    "newDiscussionLike": "New like on discussion",
+    "updateRatingStatistic": "New rating statistic"
   },
   "wallet": {
     "frozen": "Frozen balance",
@@ -1501,7 +1502,7 @@
     "noChats": "No chats",
     "noMessages": "No messages",
     "membersNum": "{n} members",
-    "workquestAdmin": "Workquest Admin",
+    "workquestAdmin": "WorkQuest Admin",
     "systemMessages": {
       "employerInvitedWorkerToQuest": "invited you to a quest",
       "youInvitedToTheQuest": "You invited to the quest",
@@ -1516,6 +1517,7 @@
       "createdAGroupChat": "created a group chat",
       "youCreatedAGroupChat": "You created a group chat",
       "removedFromChat": "removed from chat",
+      "restoredToChat": "restored to chat",
       "youHaveRemovedFromChat": "You have removed from the chat",
       "addedToChat": "added to chat",
       "youAddedToChat": "You added to chat",
@@ -1524,7 +1526,7 @@
       "leftTheChat": "left the chat",
       "youLeftTheChat": "You left the chat",
       "adminAddedToChat": "Added admin to chat",
-      "adminLeaveFromChat": "Admin leave from chat"
+      "adminLeaveFromChat": "Admin removed from chat"
     },
     "leaveChat": "Leave chat",
     "loadMore": "Load more",

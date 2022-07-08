@@ -1444,7 +1444,8 @@
     "commentLiked": "Комментарий лайкнут",
     "questEdited": "Квест отредактирован",
     "questEndSoon": "Квест скоро закончится",
-    "newDiscussionLike": "Новый лайк на дискуссии"
+    "newDiscussionLike": "Новый лайк на дискуссии",
+    "updateRatingStatistic": "Новый рейтинг статистики"
   },
   "wallet": {
     "addressType": "Тип адреса",
@@ -1517,6 +1518,7 @@
       "createdAGroupChat": "created a group chat",
       "youCreatedAGroupChat": "You created a group chat",
       "removedFromChat": "removed from chat",
+      "restoredToChat": "restored to chat",
       "youHaveRemovedFromChat": "You have removed from the chat",
       "addedToChat": "added to chat",
       "youAddedToChat": "You added to chat",
