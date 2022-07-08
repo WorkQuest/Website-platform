@@ -50,7 +50,11 @@ export default {
     this.$cookies.remove('questDraft');
     this.$cookies.remove('notificationPage');
     this.$cookies.remove('2fa');
+
+    const redirectTo = sessionStorage.getItem('redirectTo');
     sessionStorage.clear();
+    if (redirectTo) sessionStorage.setItem('redirectTo', redirectTo);
+
     state.userData = {};
     state.tokens = { access: null, refresh: null };
   },
