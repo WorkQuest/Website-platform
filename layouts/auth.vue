@@ -37,6 +37,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { Path, UserRole, UserStatuses } from '~/utils/enums';
+import { accessLifetime } from '~/utils/сonstants/cookiesLifetime';
 
 export default {
   name: 'AuthLayout',
@@ -78,7 +79,7 @@ export default {
 
       // To set role or assign wallet
       if (+userStatus === UserStatuses.NeedSetRole || !this.userData?.wallet?.address) {
-        this.$cookies.set('userLogin', true, { path: '/' });
+        this.$cookies.set('userLogin', true, { path: Path.ROOT, maxAge: accessLifetime });
         await this.$router.push(Path.ROLE);
         return;
       }

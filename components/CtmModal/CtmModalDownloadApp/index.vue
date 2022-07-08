@@ -36,6 +36,8 @@
 <script>
 import { mapGetters } from 'vuex';
 import { URLS } from '~/utils/сonstants/footer';
+import { notificationLifetime } from '~/utils/сonstants/cookiesLifetime';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'CtmModalDownloadApp',
@@ -61,7 +63,7 @@ export default {
     },
   },
   mounted() {
-    this.$cookies.set(this.options.app, true);
+    this.$cookies.set(this.options.app, true, { path: Path.ROOT, maxAge: notificationLifetime });
   },
 
 };

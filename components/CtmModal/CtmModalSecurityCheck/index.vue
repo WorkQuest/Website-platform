@@ -47,6 +47,8 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { lifetime2FA } from '~/utils/сonstants/cookiesLifetime';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'ModalSecurityCheck',
@@ -70,7 +72,7 @@ export default {
       const result = await this.$store.dispatch('user/validateTOTP', { token: this.securityCode });
       this.inProgress = false;
       if (result) {
-        this.$cookies.set('2fa', true, { path: '/', maxAge: 30 });
+        this.$cookies.set('2fa', true, { path: Path.ROOT, maxAge: lifetime2FA });
         await this.CloseModal();
         await this.$store.dispatch('user/getMainData');
         await actionMethod();

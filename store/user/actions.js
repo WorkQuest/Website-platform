@@ -14,13 +14,14 @@ import {
   UserStatuses,
   QuestModeReview,
   RaiseViewTariffPeriods,
-  TariffByIndex,
+  TariffByIndex, Path,
 } from '~/utils/enums';
 
 import { WQPromotion } from '~/abi/index';
 import { PaidTariff } from '~/utils/сonstants/quests';
 
 import ENV from '~/utils/addresses/index';
+import { accessLifetime } from '~/utils/сonstants/cookiesLifetime';
 
 export default {
   async resendEmail({ commit }, { email }) {
@@ -186,7 +187,7 @@ export default {
         refresh: this.$cookies.get('refresh'),
         userStatus: UserStatuses.Confirmed,
       });
-      this.$cookies.set('role', payload.role, { path: '/' });
+      this.$cookies.set('role', payload.role, { path: Path.ROOT, maxAge: accessLifetime });
       return await this.$axios.$post('/v1/auth/confirm-email', payload);
     } catch (e) {
       return false;

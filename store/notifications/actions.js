@@ -21,6 +21,7 @@ import { error, success } from '~/utils/web3';
 import { images } from '~/utils/images';
 
 import ENV from '~/utils/addresses/index';
+import { notificationLifetime } from '~/utils/сonstants/cookiesLifetime';
 
 export default {
 
@@ -87,7 +88,7 @@ export default {
       this.$cookies.set(
         actionNameKey.substr('notifications.'.length, actionNameKey.length),
         rootGetters['user/getStatus2FA'] !== 0,
-        { maxAge: 60 * 60 * 24 * 7, enabled: false },
+        { maxAge: notificationLifetime },
       );
     }
     try {
