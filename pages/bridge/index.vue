@@ -126,15 +126,11 @@
               <template #cell(transactionHash)="el">
                 <div class="table__value">
                   {{ CutTxn(el.item.transactionHash) }}
-                  <button
-                    v-clipboard:copy="el.item.transactionHash"
-                    v-clipboard:success="ClipboardSuccessHandler"
-                    v-clipboard:error="ClipboardErrorHandler"
-                    type="button"
-                    data-selector="COPY-BTN"
+                  <button-copy
+                    :copy-value="el.item.transactionHash"
                   >
                     <span class="icon-copy" />
-                  </button>
+                  </button-copy>
                 </div>
               </template>
               <template #cell(amount)="el">

@@ -44,15 +44,11 @@
             </div>
             <div class="user">
               <span class="user__wallet">{{ shortWqAddress }}</span>
-              <button
-                v-clipboard:copy="wqAddress"
-                v-clipboard:success="ClipboardSuccessHandler"
-                v-clipboard:error="ClipboardErrorHandler"
-                type="button"
-                data-selector="COPY"
+              <button-copy
+                :copy-value="wqAddress"
               >
                 <span class="icon-copy wallet__icon" />
-              </button>
+              </button-copy>
             </div>
           </div>
         </div>
