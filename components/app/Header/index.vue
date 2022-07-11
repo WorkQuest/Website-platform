@@ -335,9 +335,7 @@ import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import moment from 'moment';
 import { images } from '~/utils/images';
-import {
-  UserRole, Path, Layout, PreventLogoutPathNames,
-} from '~/utils/enums';
+import { UserRole, Path } from '~/utils/enums';
 import { MessageAction } from '~/utils/сonstants/chat';
 import { IS_PLUG, LockedPaths } from '~/utils/locker-data';
 
@@ -662,13 +660,8 @@ export default {
       this.$router.push(`${Path.PROFILE}/${this.userData.id}`);
     },
     async logout() {
-      const preventRedirect = PreventLogoutPathNames.includes(this.$route.name);
       await this.$store.dispatch('user/logout');
-      if (preventRedirect) {
-        sessionStorage.setItem('preventDisconnectWeb3', 'yep');
-        sessionStorage.setItem('redirectTo', this.$route.path);
-        this.$nuxt.setLayout(Layout.GUEST);
-      } else await this.$router.push(Path.ROOT);
+      await this.$router.push(Path.ROOT);
     },
     closeAll() {
       this.isShowProfile = false;
