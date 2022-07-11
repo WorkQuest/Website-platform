@@ -1,7 +1,6 @@
 <template>
   <div
     class="icon-more chat__button_menu"
-    :class="{'invisible':isInvisible}"
   >
     <button
       v-click-outside="closeChatMenu"
@@ -45,7 +44,7 @@
           </template>
           <template v-else>
             <div
-              v-if="isOpenDispute"
+              v-if="isCanOpenDispute && isOpenDispute"
               class="chat-menu__item"
               @click="showOpenADisputeModal()"
             >
@@ -117,9 +116,9 @@ export default {
     isOpenDispute() {
       return !this.canILeave && this.$route.query.type === ChatType.QUEST;
     },
-    isInvisible() {
+    isCanOpenDispute() {
       const { type, status } = this.$route.query;
-      return type === ChatType.QUEST && ![QuestStatuses.WaitWorker, QuestStatuses.Dispute].includes(+status);
+      return type === ChatType.QUEST && [QuestStatuses.WaitEmployerConfirm, QuestStatuses.WaitWorker].includes(+status);
     },
   },
   methods: {
@@ -258,9 +257,6 @@ export default {
       color: $black800;
     }
   }
-}
-.invisible{
-  opacity: 0;
 }
 @include _1400 {
   .chat-menu {
