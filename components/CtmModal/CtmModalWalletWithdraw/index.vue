@@ -23,7 +23,7 @@
       <validation-observer
         v-if="step === 'wallet'"
         ref="observer"
-        v-slot="{handleSubmit, invalid}"
+        v-slot="{handleSubmit}"
         tag="div"
       >
         <div class="content__container">
@@ -48,6 +48,7 @@
               v-model="ddValue"
               data-selector="TOKEN"
               :items="tokenSymbolsDd"
+              type="border"
               is-icon
             />
           </div>
@@ -82,8 +83,25 @@
               </template>
             </base-field>
           </div>
-          <div class="content__txFee">
-            {{ `${$t('wallet.table.trxFee')}: ${currentFee}` }}
+          <div class="content__txFee txFee">
+            <div class="txFee__title">
+              {{ $t('wallet.table.trxFee') }}:
+            </div>
+            <div
+              v-if="!isCanSubmit"
+              class="txFee__loader-wrapper"
+            >
+              <loader
+                is-mini-loader
+                class="txFee__loader"
+              />
+            </div>
+            <div
+              v-else
+              class="txFee__amount"
+            >
+              {{ currentFee }} {{ nativeTokenSymbol }}
+            </div>
           </div>
         </div>
         <div class="content__buttons buttons">
@@ -98,7 +116,7 @@
           <base-btn
             class="buttons__action"
             data-selector="SEND"
-            :disabled="invalid||!isCanSubmit"
+            :disabled="!isCanSubmit"
             @click="handleSubmit(showWithdrawInfo)"
           >
             {{ $t('meta.btns.next') }}
@@ -130,6 +148,7 @@ export default {
       currentFee: 0,
       maxFeeForNativeToken: 0,
       isCanSubmit: false,
+      timeoutId: null,
 
       step: 'wallet',
     };
@@ -179,44 +198,47 @@ export default {
     async amount() {
       if (!this.isConnected) return;
       this.isCanSubmit = false;
-      const {
-        selectedToken, amount, userData, tokenDecimals, nativeTokenSymbol,
-      } = this;
+      this.currentFee = '...';
+      clearTimeout(this.timeoutId);
+      this.timeoutId = setTimeout(async () => {
+        const {
+          selectedToken, amount, userData, tokenDecimals, nativeTokenSymbol, maxAmount,
+        } = this;
 
-      if (amount === '' || amount === null) {
-        this.currentFee = 0;
-        return;
-      }
+        if (amount === '' || amount === null || new BigNumber(maxAmount).isLessThan(amount)) {
+          this.currentFee = 0;
+          this.isCanSubmit = true;
+          return;
+        }
 
-      // 0 token is always native token for current network!
-      if (selectedToken === nativeTokenSymbol) {
-        const nativeTokenFee = await this.$store.dispatch('wallet/getTransferFeeData', {
-          recipient: userData.wallet.address,
-          value: amount,
-        });
-        if (nativeTokenFee.ok) this.currentFee = nativeTokenFee.result.fee;
-        else this.currentFee = 0;
-      } else {
-        let contractAddress;
-        this.tokenSymbolsDd.some((token, i) => {
-          if (token.title === this.selectedToken) {
-            contractAddress = token.tokenAddress;
-            this.ddValue = i;
-            return true;
-          }
-          return false;
-        });
+        // 0 token is always native token for current network!
+        if (selectedToken === nativeTokenSymbol) {
+          const nativeTokenFee = await this.$store.dispatch('wallet/getTransferFeeData', {
+            recipient: userData.wallet.address,
+            value: amount,
+          });
+          this.currentFee = nativeTokenFee.ok ? nativeTokenFee.result.fee : 0;
+        } else {
+          let contractAddress;
+          this.tokenSymbolsDd.some((token, i) => {
+            if (token.title === this.selectedToken) {
+              contractAddress = token.tokenAddress;
+              this.ddValue = i;
+              return true;
+            }
+            return false;
+          });
 
-        const feeTokens = await this.$store.dispatch('wallet/getContractFeeData', {
-          method: 'transfer',
-          abi: ERC20,
-          contractAddress,
-          data: [contractAddress, new BigNumber(amount).shiftedBy(tokenDecimals).toString()],
-        });
-        if (feeTokens.ok) this.currentFee = feeTokens.result.fee;
-        else this.currentFee = 0;
-      }
-      this.isCanSubmit = true;
+          const feeTokens = await this.$store.dispatch('wallet/getContractFeeData', {
+            method: 'transfer',
+            abi: ERC20,
+            contractAddress,
+            data: [contractAddress, new BigNumber(amount).shiftedBy(tokenDecimals).toString()],
+          });
+          this.currentFee = feeTokens.ok ? feeTokens.result.fee : 0;
+        }
+        this.isCanSubmit = true;
+      }, 300);
     },
   },
   async mounted() {
@@ -353,7 +375,27 @@ export default {
   }
 
   &__txFee {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    position: relative;
+    display: flex;
+  }
+}
+
+.txFee {
+  &__loader-wrapper {
+    width: 10px;
+    margin-left: 10px;
+    position: relative;
+  }
+
+  &__loader {
+    position: absolute;
+    top: -10px;
+    background: none;
+  }
+
+  &__amount {
+    margin-left: 10px;
   }
 }
 
