@@ -48,6 +48,7 @@
               v-model="ddValue"
               data-selector="TOKEN"
               :items="tokenSymbolsDd"
+              type="border"
               is-icon
             />
           </div>
@@ -82,8 +83,25 @@
               </template>
             </base-field>
           </div>
-          <div class="content__txFee">
-            {{ `${$t('wallet.table.trxFee')}: ${currentFee}` }}
+          <div class="content__txFee txFee">
+            <div class="txFee__title">
+              {{ $t('wallet.table.trxFee') }}:
+            </div>
+            <div
+              v-if="!isCanSubmit"
+              class="txFee__loader-wrapper"
+            >
+              <loader
+                is-mini-loader
+                class="txFee__loader"
+              />
+            </div>
+            <div
+              v-else
+              class="txFee__amount"
+            >
+              {{ currentFee }} {{ nativeTokenSymbol }}
+            </div>
           </div>
         </div>
         <div class="content__buttons buttons">
@@ -357,7 +375,27 @@ export default {
   }
 
   &__txFee {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    position: relative;
+    display: flex;
+  }
+}
+
+.txFee {
+  &__loader-wrapper {
+    width: 10px;
+    margin-left: 10px;
+    position: relative;
+  }
+
+  &__loader {
+    position: absolute;
+    top: -10px;
+    background: none;
+  }
+
+  &__amount {
+    margin-left: 10px;
   }
 }
 
