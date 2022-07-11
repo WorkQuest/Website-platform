@@ -1,6 +1,6 @@
 {
   "name": "workquest",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "private": true,
   "scripts": {
     "dev": "cross-env NUXT_HOST=0.0.0.0 NUXT_PORT=3000 nuxt",
