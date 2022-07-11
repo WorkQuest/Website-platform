@@ -439,7 +439,8 @@ export default {
     await this.fetchChartData(pool);
     await this.fetchSwaps({ pool, params: { limit, offset: 0 } });
     this.SetLoader(false);
-    await this.toggleConnection();
+
+    await this.connectWallet({ chain: this.chain, isReconnection: this.isConnected });
   },
   async beforeDestroy() {
     const preventDisconnect = sessionStorage.getItem('preventDisconnectWeb3');
