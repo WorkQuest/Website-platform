@@ -662,7 +662,6 @@ export default {
       this.$router.push(`${Path.PROFILE}/${this.userData.id}`);
     },
     async logout() {
-      console.log(this.$route);
       await this.$store.dispatch('user/logout');
       if (PreventLogoutPathNames.includes(this.$route.name)) {
         sessionStorage.setItem('preventDisconnectWeb3', 'yep');
