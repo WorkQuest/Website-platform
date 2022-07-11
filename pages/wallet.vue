@@ -269,6 +269,8 @@ export default {
       shortWqAddress: '',
       isShowedBuyWqtNotification: true,
       addressType: 0,
+
+      prevSelectedTokenBalance: null,
     };
   },
   computed: {
@@ -465,8 +467,11 @@ export default {
     },
     async loadData(isFirstLoading) {
       if (this.isFetchingBalance) return;
-      this.isFetchingBalance = true;
+
+      if (isFirstLoading) this.isFetchingBalance = true;
+
       const { selectedToken, userWalletAddress } = this;
+
       // 0 token is always native token for current network!
       if (this.nativeTokenSymbol === selectedToken) {
         const toFetch = [this.$store.dispatch('wallet/getBalance')];
@@ -483,8 +488,15 @@ export default {
           symbol: selectedToken,
         });
       }
+
       this.isFetchingBalance = false;
-      if (isFirstLoading) await this.getTransactions();
+      if (isFirstLoading) {
+        await this.getTransactions();
+      } else if (this.prevSelectedTokenBalance !== this.selectedTokenData.fullBalance) {
+        await this.getTransactions();
+        this.ShowToast(`Balance update (${this.selectedToken})`, 'Wallet');
+      }
+      this.prevSelectedTokenBalance = this.selectedTokenData.fullBalance;
     },
     showDepositModal() {
       this.ShowModal({

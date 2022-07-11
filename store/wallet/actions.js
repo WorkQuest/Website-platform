@@ -442,15 +442,11 @@ export default {
             },
           }));
         };
-        connectionWS.onmessage = async () => {
-          console.log(network);
-          if (callbackWS) await callbackWS();
-        };
+        connectionWS.onmessage = async () => { if (callbackWS) await callbackWS(); };
       } else {
         web3Listener = new Web3(WSProvider);
         web3Listener.eth.subscribe('newBlockHeaders', async (err, res) => {
-          console.log(network, res);
-          if (callbackWS) await callbackWS();
+          if (!err && callbackWS) await callbackWS();
         });
       }
 
