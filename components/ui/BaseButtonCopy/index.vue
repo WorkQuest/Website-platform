@@ -5,8 +5,11 @@
     v-clipboard:error="ClipboardErrorHandler"
     data-selector="COPY-BTN"
     type="button"
+    :class="classByMode"
   >
-    <slot />
+    <span
+      class="icon-copy"
+    />
   </button>
 </template>
 
@@ -18,6 +21,43 @@ export default {
       type: String,
       default: '',
     },
+    mode: {
+      type: String,
+      default: '',
+    },
+  },
+  computed: {
+    classByMode() {
+      switch (this.mode) {
+        case 'twoFA':
+          return 'two-auth';
+        case 'wallet':
+          return 'wallet';
+        default: {
+          return '';
+        }
+      }
+    },
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.icon-copy {
+  font-size: 24px;
+  &::before {
+    color: $blue;
+  }
+}
+
+.two-auth {
+  background: $white;
+  border: 1px solid $black0;
+  padding: 11px;
+  border-radius: 6px;
+}
+
+.wallet {
+  margin-left: 22px;
+}
+</style>

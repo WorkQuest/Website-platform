@@ -83,10 +83,9 @@
             />
             <button-copy
               :copy-value="twoFACode"
+              :mode="'twoFA'"
               class="content-field__btn-copy"
-            >
-              <span class="icon-copy" />
-            </button-copy>
+            />
           </div>
         </div>
       </div>
@@ -104,10 +103,9 @@
             />
             <button-copy
               :copy-value="twoFACode"
+              :mode="'twoFA'"
               class="content-field__btn-copy"
-            >
-              <span class="icon-copy" />
-            </button-copy>
+            />
           </div>
         </div>
       </div>
@@ -437,11 +435,7 @@ export default {
     width: 47%;
   }
   &__btn-copy {
-    background: $white;
-    border: 1px solid $black0;
-    padding: 11px;
-    border-radius: 6px;
-    height: 46px;
+    height: 46px !important;
   }
   &__text {
     @include text-simple;

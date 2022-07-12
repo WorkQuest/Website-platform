@@ -33,9 +33,7 @@
         <button-copy
           :copy-value="sharingLink"
           class="share__copy"
-        >
-          <span class="icon-copy" />
-        </button-copy>
+        />
       </div>
     </div>
   </ctm-modal-box>

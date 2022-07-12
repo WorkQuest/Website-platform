@@ -32,9 +32,7 @@
             </button>
             <!--<button-copy-->
             <!--@click="doCopy" -->
-            <!-- >-->
-            <!--<span class="icon-copy link-cont__icon" />-->
-            <!--</button-copy>-->
+            <!-- />-->
           </div>
         </div>
         <div

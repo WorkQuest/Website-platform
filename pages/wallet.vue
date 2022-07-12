@@ -46,9 +46,8 @@
               <span class="user__wallet">{{ shortWqAddress }}</span>
               <button-copy
                 :copy-value="wqAddress"
-              >
-                <span class="icon-copy wallet__icon" />
-              </button-copy>
+                :mode="'wallet'"
+              />
             </div>
           </div>
         </div>
@@ -602,6 +601,11 @@ export default {
   }
 }
 
+.user {
+  display: flex;
+  align-items: center;
+}
+
 .wallet {
   &__container {
     display: flex;
@@ -645,14 +649,14 @@ export default {
     display: inline-block;
   }
 
-  &__icon {
-    margin-left: 22px;
-    font-size: 24px;
-
-    &::before {
-      color: $blue;
-    }
-  }
+  //&__icon {
+  //  margin-left: 22px;
+  //  font-size: 24px;
+  //
+  //  &::before {
+  //    color: $blue;
+  //  }
+  //}
 
   &__title {
     @include text-simple;

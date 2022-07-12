@@ -128,9 +128,8 @@
                   {{ CutTxn(el.item.transactionHash) }}
                   <button-copy
                     :copy-value="el.item.transactionHash"
-                  >
-                    <span class="icon-copy" />
-                  </button-copy>
+                    :mode="'hash'"
+                  />
                 </div>
               </template>
               <template #cell(amount)="el">
