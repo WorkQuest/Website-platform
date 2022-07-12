@@ -419,6 +419,7 @@ export default {
         if (result.totpIsActive) {
           await this.ShowModal({
             key: modals.securityCheck,
+            isForLogin: true,
             actionMethod: async () => await this.nextStepAction(),
           });
         } else {
