@@ -46,7 +46,7 @@
               <span class="user__wallet">{{ shortWqAddress }}</span>
               <button-copy
                 :copy-value="wqAddress"
-                :mode="'wallet'"
+                mode="wallet"
               />
             </div>
           </div>
@@ -648,15 +648,6 @@ export default {
   &__address-type {
     display: inline-block;
   }
-
-  //&__icon {
-  //  margin-left: 22px;
-  //  font-size: 24px;
-  //
-  //  &::before {
-  //    color: $blue;
-  //  }
-  //}
 
   &__title {
     @include text-simple;

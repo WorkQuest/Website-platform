@@ -45,9 +45,7 @@ export default {
 <style lang="scss" scoped>
 .icon-copy {
   font-size: 24px;
-  &::before {
-    color: $blue;
-  }
+  color: $blue;
 }
 
 .two-auth {

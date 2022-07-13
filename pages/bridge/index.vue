@@ -128,7 +128,6 @@
                   {{ CutTxn(el.item.transactionHash) }}
                   <button-copy
                     :copy-value="el.item.transactionHash"
-                    :mode="'hash'"
                   />
                 </div>
               </template>

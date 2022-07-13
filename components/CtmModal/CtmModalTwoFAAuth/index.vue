@@ -83,7 +83,7 @@
             />
             <button-copy
               :copy-value="twoFACode"
-              :mode="'twoFA'"
+              mode="twoFA"
               class="content-field__btn-copy"
             />
           </div>
@@ -103,7 +103,7 @@
             />
             <button-copy
               :copy-value="twoFACode"
-              :mode="'twoFA'"
+              mode="twoFA"
               class="content-field__btn-copy"
             />
           </div>
