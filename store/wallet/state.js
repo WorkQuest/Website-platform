@@ -26,4 +26,6 @@ export default () => ({
   stakingUserData: { WQT: {}, WUSD: {} },
 
   selectedNetwork: Chains.WORKNET,
+
+  pendingHashLink: null,
 });

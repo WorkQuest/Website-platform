@@ -93,7 +93,9 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import Web3 from 'web3';
 import { BlockchainIndex, BuyWQTTokensData } from '~/utils/сonstants/bridge';
-import { Chains, TokenSymbols, WalletTokensData } from '~/utils/enums';
+import {
+  Chains, Path, TokenSymbols, WalletTokensData,
+} from '~/utils/enums';
 import { WQTBuyCommission } from '~/utils/сonstants/commission';
 import { getStyledAmount, GetWalletProvider, getWalletTransactionCount } from '~/utils/wallet';
 import { fetchContractData } from '~/utils/web3';
@@ -271,7 +273,7 @@ export default {
       this.SetLoader(true);
 
       const {
-        amount, userWalletAddress, selectedNetwork, userData: { id: userId },
+        amount, userWalletAddress, selectedNetwork, userData: { id: userId }, buyWQTHash,
       } = this;
       const { decimals, symbol } = this.tokenData;
       const { tokenAddress } = this.tokenList[this.selectedToken];
@@ -289,7 +291,6 @@ export default {
         isHexUserWalletAddress: true,
       }).then(async () => {
         this.SetLoader(true);
-
         const nonce = await getWalletTransactionCount();
         const BNValue = new BigNumber(amount).shiftedBy(Number(decimals)).toString();
         const [feeRes] = await Promise.all([
@@ -328,12 +329,8 @@ export default {
             });
             this.SetLoader(false);
             if (res.ok) {
-              const { transactionHash } = res.result;
               this.ShowModal({
-                key: modals.status,
-                img: images.TRANSACTION_SEND,
-                title: this.$t('modals.transactionSent'),
-                link: `${WalletTokensData[selectedNetwork].explorer}/tx/${transactionHash}`,
+                key: modals.pendingHash,
               });
               await this.$store.dispatch('wallet/connectToProvider', Chains.WORKNET);
             }

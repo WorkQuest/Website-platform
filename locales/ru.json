@@ -955,6 +955,7 @@
     "alreadyRedeemed": "Вы уже выкупили токены, ожидайте!"
   },
   "modals": {
+    "txIsPending": "Transaction is pending",
     "coming": "Coming soon",
     "stillUnderConstruction": "Still under construction",
     "titles": {
