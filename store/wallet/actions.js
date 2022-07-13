@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js';
 
+import Web3 from 'web3';
 import {
   stake,
   transfer,
@@ -22,7 +23,7 @@ import {
   success,
   showToast,
   getEstimateGas,
-  fetchContractData,
+  fetchContractData, fetchContractAction,
 } from '~/utils/web3';
 
 import {
@@ -48,6 +49,7 @@ import { LocalNotificationAction } from '~/utils/notifications';
 
 let connectionWS = null;
 let callbackWS = null;
+let web3Listener = null;
 
 export default {
   async getTransactions({ commit }, params) {
@@ -418,9 +420,7 @@ export default {
       return error();
     }
   },
-  async subscribeWS({
-    commit, dispatch, rootGetters, getters,
-  }, { hexAddress, timestamp }) {
+  async subscribeWS({ getters }) {
     try {
       const network = getters.getSelectedNetwork;
       const { WSProvider } = WalletTokensData[network];
@@ -430,76 +430,26 @@ export default {
         return error();
       }
 
-      const requestByNetwork = {
-        [Chains.ETHEREUM]: {
-          jsonrpc: '2.0',
-          method: 'eth_subscribe',
-          id: 1,
-          params: ['logs', { /* address: [hexAddress] */ }],
-        },
-        [Chains.BINANCE]: {
-          jsonrpc: '2.0',
-          method: 'eth_subscribe',
-          id: 1,
-          params: ['logs'],
-        },
-        [Chains.POLYGON]: {
-          jsonrpc: '2.0',
-          method: 'eth_subscribe',
-          id: 1,
-          params: ['logs'],
-        },
-        [Chains.WORKNET]: {
-          jsonrpc: '2.0',
-          method: 'subscribe',
-          id: 0,
-          params: {
-            query: "tm.event='Tx'",
-            // When the backend adds a new websocket you need to switch to this query to find the specific user's tx correctly.
-            // Also need to find out what address type you need to enter Hex or convert to bech 32
-            // query: `tm.event='Tx' AND ethereum_tx.recipient='${hexAddress}'`,
-          },
-        },
-      };
+      if (network === Chains.WORKNET) {
+        connectionWS = new WebSocket(WSProvider);
+        connectionWS.onopen = () => {
+          connectionWS.send(JSON.stringify({
+            jsonrpc: '2.0',
+            method: 'subscribe',
+            id: 0,
+            params: {
+              query: "tm.event='NewBlockHeader'",
+            },
+          }));
+        };
+        connectionWS.onmessage = async () => { if (callbackWS) await callbackWS(); };
+      } else {
+        web3Listener = new Web3(WSProvider);
+        web3Listener.eth.subscribe('newBlockHeaders', async (err, res) => {
+          if (!err && callbackWS) await callbackWS();
+        });
+      }
 
-      connectionWS = new WebSocket(WSProvider);
-      connectionWS.onopen = () => {
-        connectionWS.send(JSON.stringify(requestByNetwork[network]));
-      };
-      connectionWS.onmessage = async (ev) => {
-        const events = JSON.parse(ev.data)?.result?.events;
-        const recipient = events ? events['ethereum_tx.recipient'][0] : null;
-
-        const sender = events && events['message.sender'] ? events['message.sender'][3]?.toLowerCase() : null;
-        if (recipient && sender !== hexAddress) {
-          await dispatch('notifications/createLocalNotification', {
-            message: $nuxt.$t('ui.notifications.balanceUpdated', {
-              token: TokenSymbolByContract[recipient?.toLowerCase()] || TokenSymbols.WQT,
-            }),
-            actionBtn: $nuxt.$t('meta.btns.view'),
-            action: LocalNotificationAction.WALLET_UPDATE,
-          }, { root: true });
-        }
-
-        if (events && recipient?.toLowerCase() === hexAddress) {
-          if (callbackWS) await callbackWS();
-          if (network !== Chains.WORKNET) return;
-          const transactions = JSON.parse(JSON.stringify(getters.getTransactions));
-          if (transactions.length === 10) transactions.splice(9, 1);
-          transactions.unshift({
-            hash: events['tx.hash'][0].toLowerCase(),
-            block_number: events['tx.height'][0],
-            block: { timestamp },
-            status: true,
-            value: events['ethereum_tx.amount'][0],
-            transaction_fee: +(events['tx.fee'][0].split('a')[0]),
-            from_address_hash: { hex: sender },
-            to_address_hash: { hex: recipient },
-          });
-          commit('setTransactions', transactions);
-          commit('setTransactionsCount', getters.getTransactionsCount + 1);
-        }
-      };
       return success();
     } catch (err) {
       console.error(err);
@@ -509,6 +459,8 @@ export default {
   async unsubscribeWS({ _ }) {
     connectionWS?.close();
     connectionWS = null;
+    web3Listener?.eth?.clearSubscriptions(null);
+    web3Listener = null;
   },
   async setCallbackWS({ _ }, callback) {
     callbackWS = callback;
@@ -583,12 +535,8 @@ export default {
         dispatch('unsubscribeWS'),
       ]);
 
-      const userWalletAddress = rootGetters['user/getUserWalletAddress'];
       // subscribe to WS wallet txs
-      await dispatch('subscribeWS', {
-        hexAddress: userWalletAddress,
-        timestamp: $nuxt.$moment(),
-      });
+      await dispatch('subscribeWS');
       setIsEthNetWork(chain === Chains.ETHEREUM);
       $nuxt.ShowToast(`Current: ${chain}`, 'Network switched');
     } else {

@@ -269,6 +269,8 @@ export default {
       shortWqAddress: '',
       isShowedBuyWqtNotification: true,
       addressType: 0,
+
+      prevSelectedTokenBalance: null,
     };
   },
   computed: {
@@ -387,7 +389,7 @@ export default {
     async selectedNetwork() {
       this.ddValue = 0;
       this.addressType = this.selectedNetwork === Chains.WORKNET ? 0 : 1;
-      await this.loadData();
+      await this.loadData(true);
       this.updateWQAddress();
     },
     async selectedToken() {
@@ -395,7 +397,7 @@ export default {
     },
     async ddValue(newVal) {
       await this.$store.dispatch('wallet/setSelectedToken', this.tokens[newVal].title);
-      await this.loadData();
+      await this.loadData(true);
     },
     currentPage() {
       this.getTransactions();
@@ -419,7 +421,7 @@ export default {
     window.addEventListener('resize', this.updateWQAddress);
 
     await this.$store.dispatch('wallet/setCallbackWS', this.loadData);
-    await this.loadData();
+    await this.loadData(true);
     if (this.selectedToken === TokenSymbols.WQT && this.selectedTokenData.balance <= 0) {
       this.isShowedBuyWqtNotification = false;
     }
@@ -463,10 +465,13 @@ export default {
         offset: this.txsPerPage * (this.currentPage - 1),
       });
     },
-    async loadData() {
+    async loadData(isFirstLoading) {
       if (this.isFetchingBalance) return;
-      this.isFetchingBalance = true;
+
+      if (isFirstLoading) this.isFetchingBalance = true;
+
       const { selectedToken, userWalletAddress } = this;
+
       // 0 token is always native token for current network!
       if (this.nativeTokenSymbol === selectedToken) {
         const toFetch = [this.$store.dispatch('wallet/getBalance')];
@@ -483,8 +488,15 @@ export default {
           symbol: selectedToken,
         });
       }
+
       this.isFetchingBalance = false;
-      await this.getTransactions();
+      if (isFirstLoading) {
+        await this.getTransactions();
+      } else if (this.prevSelectedTokenBalance !== this.selectedTokenData.fullBalance) {
+        await this.getTransactions();
+        this.ShowToast(`Balance update (${this.selectedToken})`, 'Wallet');
+      }
+      this.prevSelectedTokenBalance = this.selectedTokenData.fullBalance;
     },
     showDepositModal() {
       this.ShowModal({
