@@ -41,7 +41,7 @@ export default {
   data() {
     return {
       title: this.$t('modals.txIsPending'),
-      img: images.WARNING,
+      img: images.TRANSACTION_SEND,
     };
   },
   computed: {
@@ -55,7 +55,6 @@ export default {
     hashLink(val) {
       if (!val) return;
       this.title = this.$t('modals.transactionSent');
-      this.img = images.TRANSACTION_SEND;
     },
   },
   methods: {
