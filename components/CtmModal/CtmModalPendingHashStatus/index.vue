@@ -15,6 +15,15 @@
       <div class="status__title">
         {{ title }}
       </div>
+      <div
+        v-if="!hashLink"
+        class="status__loader-wrapper"
+      >
+        <loader
+          is-mini-loader
+          class="status__loader"
+        />
+      </div>
       <div class="status__desc">
         <span v-if="options.subtitle">
           {{ options.subtitle }}
@@ -27,6 +36,21 @@
       >
         {{ $t('modals.transactionCheck') }}
       </a>
+
+      <base-btn
+        class="status__btn"
+        :mode="options.submitMode"
+        selector="SUBMIT"
+        :disabled="isLoading"
+        @click="handleSubmit()"
+      >
+        <span v-if="options.button">
+          {{ options.button }}
+        </span>
+        <span v-else>
+          {{ $t('meta.btns.close') }}
+        </span>
+      </base-btn>
     </div>
   </ctm-modal-box>
 </template>
@@ -117,6 +141,7 @@ export default {
   }
 
   &__btn {
+    width: 100%;
     padding: 0 10px;
   }
 
@@ -125,6 +150,18 @@ export default {
     width: 33px;
     height: 33px;
     border-radius: 50%;
+  }
+
+  &__loader-wrapper {
+    margin-top: 4px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  &__loader {
+    position: absolute !important;
+    background: none !important;
+    left: -12px !important;;
   }
 }
 </style>

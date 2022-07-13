@@ -16,7 +16,7 @@ export default {
   WQ_EXPLORER: 'https://testnet-explorer-api.workquest.co/api/v1',
   WQ_ORACLE_URL: 'https://testnet-oracle.workquest.co/api/v1',
   NOTIFS_URL: 'https://notifications.workquest.co/api/',
-  WS_NOTIFS_URL: 'wss://notifications.workquest.co/api/v1/notifications',
+  WS_NOTIFS_URL: 'wss://testnet-notification.workquest.co/api/v1/notifications',
   WS_CHAT_ACTIONS_URL: 'wss://testnet-app.workquest.co/api/v1/notifications/chat',
 
   ETHEREUM_BRIDGE: '0x03883AE9F07D71a1b67b89fD4af83B9A81e3f8C4',
