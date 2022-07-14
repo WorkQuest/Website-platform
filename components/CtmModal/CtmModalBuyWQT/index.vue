@@ -329,8 +329,10 @@ export default {
             });
             this.SetLoader(false);
             if (res.ok) {
+              const { transactionHash } = res.result;
               this.ShowModal({
                 key: modals.pendingHash,
+                firstTxLink: `${WalletTokensData[selectedNetwork].explorer}/tx/${transactionHash}`,
               });
               await this.$store.dispatch('wallet/connectToProvider', Chains.WORKNET);
             }

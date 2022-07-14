@@ -13,20 +13,28 @@
         height="90"
       >
       <div class="status__title">
-        {{ title }}
+        {{ $t('modals.transactionSent') }}
       </div>
+      <a
+        v-if="options.firstTxLink"
+        :href="options.firstTxLink"
+        target="_blank"
+      >
+        {{ $t('modals.transactionCheck') }}
+      </a>
+
       <div
         v-if="!hashLink"
-        class="status__loader-wrapper"
+        class="status__loader loader"
       >
-        <loader
-          is-mini-loader
-          class="status__loader"
-        />
-      </div>
-      <div class="status__desc">
-        <span v-if="options.subtitle">
-          {{ options.subtitle }}
+        <span class="loader__text">
+          {{ $t('modals.txIsPending') }}
+        </span>
+        <span class="loader__wrapper">
+          <loader
+            is-mini-loader
+            class="loader__points"
+          />
         </span>
       </div>
       <a
@@ -64,7 +72,6 @@ export default {
   images,
   data() {
     return {
-      title: this.$t('modals.txIsPending'),
       img: images.TRANSACTION_SEND,
     };
   },
@@ -74,12 +81,6 @@ export default {
       isLoading: 'main/getIsLoading',
       hashLink: 'wallet/getPendingHashLink',
     }),
-  },
-  watch: {
-    hashLink(val) {
-      if (!val) return;
-      this.title = this.$t('modals.transactionSent');
-    },
   },
   methods: {
     hide() {
@@ -151,17 +152,19 @@ export default {
     height: 33px;
     border-radius: 50%;
   }
-
-  &__loader-wrapper {
+}
+.loader {
+  &__wrapper {
     margin-top: 4px;
     margin-bottom: 20px;
     position: relative;
   }
 
-  &__loader {
+  &__points {
     position: absolute !important;
     background: none !important;
-    left: -12px !important;;
+    left: 12px !important;;
+    top: -12px !important;
   }
 }
 </style>
