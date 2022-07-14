@@ -273,7 +273,7 @@ export default {
       this.SetLoader(true);
 
       const {
-        amount, userWalletAddress, selectedNetwork, userData: { id: userId }, buyWQTHash,
+        amount, userWalletAddress, selectedNetwork, userData: { id: userId },
       } = this;
       const { decimals, symbol } = this.tokenData;
       const { tokenAddress } = this.tokenList[this.selectedToken];
