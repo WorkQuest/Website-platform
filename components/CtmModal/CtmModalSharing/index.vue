@@ -30,16 +30,10 @@
         <div class="share__text share__text_hidden">
           {{ sharingLink }}
         </div>
-        <button
-          v-clipboard:copy="sharingLink"
-          v-clipboard:success="ClipboardSuccessHandler"
-          v-clipboard:error="ClipboardErrorHandler"
+        <button-copy
+          :copy-value="sharingLink"
           class="share__copy"
-          data-selector="COPY-BTN"
-          type="button"
-        >
-          <span class="icon-copy" />
-        </button>
+        />
       </div>
     </div>
   </ctm-modal-box>

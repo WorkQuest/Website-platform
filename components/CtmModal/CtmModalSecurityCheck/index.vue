@@ -17,6 +17,7 @@
           </div>
           <base-field
             v-model="securityCode"
+            auto-focus
             :disabled="inProgress"
             data-selector="SECURITY-CODE"
             :placeholder="$t('securityCheck.placeholder')"
@@ -67,9 +68,10 @@ export default {
   methods: {
     async hide() {
       if (this.inProgress) return;
-      const { actionMethod } = this.options;
+      const { actionMethod, isForLogin } = this.options;
       this.inProgress = true;
-      const result = await this.$store.dispatch('user/validateTOTP', { token: this.securityCode });
+      const result = await this.$store.dispatch(`user/${isForLogin ? 'validateTOTP' : 'validateSessionTOTP'}`,
+        { token: this.securityCode });
       this.inProgress = false;
       if (result) {
         this.$cookies.set('2fa', true, { path: Path.ROOT, maxAge: lifetime2FA });

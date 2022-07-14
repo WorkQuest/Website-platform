@@ -359,17 +359,16 @@ export default {
   },
   async validateTOTP({ commit }, payload) {
     try {
-      const response = await this.$axios.$post('/v1/auth/validate-totp', payload);
+      const response = await this.$axios.$post('/v1/auth/session/current/validate-totp', payload);
       return response.result.isValid;
     } catch (e) {
       console.log('user/validateTOTP');
       return false;
     }
   },
-  // TODO: после добавления на бэке этого роута использовать его на Check2FA с активной сессией (EditQuest/DeleteQuest)
   async validateSessionTOTP({ _ }, payload) {
     try {
-      const response = await this.$axios.$post('/v1/auth/current-session/validate-totp', payload);
+      const response = await this.$axios.$post('/v1/totp/validate', payload);
       return response.result.isValid;
     } catch (e) {
       console.log('user/validateSessionTOTP');

@@ -1193,6 +1193,35 @@ export default {
 }
 
 @include _1199 {
+  .header {
+    &__body {
+      margin: 0 20px;
+    }
+  }
+}
+
+@include _1099 {
+  .header {
+    &__links {
+      grid-gap: 15px;
+    }
+
+    &__left {
+      grid-gap: 15px;
+    }
+
+    &__right {
+      grid-gap: 0;
+    }
+
+    &__btn {
+      margin-left: 5px;
+      min-width: 135px;
+    }
+  }
+}
+
+@include _991 {
   .ctm-menu {
     &__user {
       cursor: pointer;
@@ -1227,9 +1256,6 @@ export default {
       display: none !important;
     }
   }
-}
-
-@include _991 {
   .template {
     &__content {
       grid-template-rows: 72px 1fr auto;
