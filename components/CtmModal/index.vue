@@ -97,6 +97,7 @@ export default {
     [modals.buyWQT]: () => import('./CtmModalBuyWQT'),
     [modals.referralRegistration]: () => import('./CtmModalRegisterReferral'),
     [modals.report]: () => import('./CtmModalReport'),
+    [modals.pendingHash]: () => import('./CtmModalPendingHashStatus'),
   },
   data: () => ({ modals }),
   computed: {

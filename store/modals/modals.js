@@ -82,4 +82,5 @@ export default {
   claimRewards: 'claimRewards',
   buyWQT: 'buyWQT',
   report: 'report',
+  pendingHash: 'pendingHash',
 };
