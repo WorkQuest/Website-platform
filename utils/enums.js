@@ -166,6 +166,14 @@ export const Path = {
   QRCODE: '/qrcode',
 };
 
+export const PreventLogoutPathNames = [
+  'mining',
+  'mining-id',
+  'bridge',
+  'crediting',
+  'collateral',
+];
+
 export const PathDAO = {
   DISCUSSIONS: '/discussions',
 };
@@ -366,6 +374,7 @@ export const WorknetTokenAddresses = Object.freeze([
 export const WalletTokensData = Object.freeze({
   [Chains.WORKNET]: {
     WSProvider: ENV.WQ_WS_PROVIDER,
+    explorer: ExplorerUrl,
     chain: Chains.WORKNET,
     tokenAddresses: [
       ENV.WORKNET_WUSD_TOKEN,
@@ -374,11 +383,11 @@ export const WalletTokensData = Object.freeze({
       ENV.WORKNET_USDT_TOKEN,
     ],
     tokenList: [
-      TokenSymbols.WQT,
-      TokenSymbols.WUSD,
-      TokenSymbols.BNB,
-      TokenSymbols.ETH,
-      TokenSymbols.USDT,
+      { title: TokenSymbols.WQT, icon: images.WQT }, // FIRST IS NATIVE TOKEN!
+      { title: TokenSymbols.WUSD, icon: images.WUSD, tokenAddress: ENV.WORKNET_WUSD_TOKEN },
+      { title: TokenSymbols.BNB, icon: images.BNB, tokenAddress: ENV.WORKNET_WBNB_TOKEN },
+      { title: TokenSymbols.ETH, icon: images.ETH_BLACK, tokenAddress: ENV.WORKNET_WETH_TOKEN },
+      { title: TokenSymbols.USDT, icon: images.USDT, tokenAddress: ENV.WORKNET_USDT_TOKEN },
     ],
   },
   [Chains.ETHEREUM]: {
@@ -387,11 +396,13 @@ export const WalletTokensData = Object.freeze({
     explorer: `https://${IS_PROD ? '' : 'rinkeby.'}etherscan.io`,
     explorerIcon: images.ETH,
     tokenAddresses: [
+      ENV.ETHEREUM_WQT_TOKEN,
       ENV.ETHEREUM_USDT_TOKEN,
     ],
     tokenList: [
-      TokenSymbols.ETH,
-      TokenSymbols.USDT,
+      { title: TokenSymbols.ETH, icon: images.ETH_BLACK }, // FIRST IS NATIVE TOKEN!
+      { title: TokenSymbols.WQT, icon: images.WQT, tokenAddress: ENV.ETHEREUM_WQT_TOKEN },
+      { title: TokenSymbols.USDT, icon: images.USDT, tokenAddress: ENV.ETHEREUM_USDT_TOKEN },
     ],
   },
   [Chains.BINANCE]: {
@@ -400,11 +411,13 @@ export const WalletTokensData = Object.freeze({
     explorer: `https://${IS_PROD ? '' : 'testnet.'}bscscan.com`,
     explorerIcon: images.BNB,
     tokenAddresses: [
+      ENV.BSC_WQT_TOKEN,
       ENV.BSC_USDT_TOKEN,
     ],
     tokenList: [
-      TokenSymbols.BNB,
-      TokenSymbols.USDT,
+      { title: TokenSymbols.BNB, icon: images.BNB }, // FIRST IS NATIVE TOKEN!
+      { title: TokenSymbols.WQT, icon: images.WQT, tokenAddress: ENV.BSC_WQT_TOKEN },
+      { title: TokenSymbols.USDT, icon: images.USDT, tokenAddress: ENV.BSC_USDT_TOKEN },
     ],
   },
   [Chains.POLYGON]: {
@@ -416,8 +429,8 @@ export const WalletTokensData = Object.freeze({
       ENV.POLYGON_USDT_TOKEN,
     ],
     tokenList: [
-      TokenSymbols.MATIC,
-      TokenSymbols.USDT,
+      { title: TokenSymbols.MATIC, icon: images.POLYGON }, // FIRST IS NATIVE TOKEN!
+      { title: TokenSymbols.USDT, icon: images.USDT, tokenAddress: ENV.POLYGON_USDT_TOKEN },
     ],
   },
 });
@@ -428,4 +441,9 @@ export const Layout = Object.freeze({
   AUTH: 'auth',
   CONFIRM: 'confirm', // if mnemonic not decoded
   ROLE: 'role',
+});
+
+export const AddressType = Object.freeze({
+  BECH32: 'BECH32',
+  HEX: 'HEX',
 });

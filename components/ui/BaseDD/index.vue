@@ -9,7 +9,7 @@
     <div
       v-click-outside="hideDd"
       class="dd"
-      :class="[{'dd__top': mode === 'top' }, {'dd_small' : isDotsView}]"
+      :class="[{'dd__top': mode === 'top' }, {'dd_small' : isDotsView}, { 'dd_min-width': type !== 'underline' }]"
     >
       <slot name="card" />
       <button
@@ -67,7 +67,7 @@
         <div
           v-if="isShown && isIcon"
           class="dd__items"
-          :class="{'dd__items_small' : mode === 'small'}"
+          :class="[{'dd__items_small' : mode === 'small'}, { 'dd__items_underline-type': type === 'underline' }]"
         >
           <button
             v-for="(item, i) in items"
@@ -90,7 +90,7 @@
         <div
           v-if="isShown && !isIcon"
           class="dd__items"
-          :class="[{'dd__items_small' : mode === 'small'}, {'dd__items_wide' : isDotsView}]"
+          :class="[{'dd__items_small' : mode === 'small'}, {'dd__items_wide' : isDotsView}, { 'dd__items_underline-type': type === 'underline' } ]"
         >
           <base-field
             v-if="isSearch"
@@ -209,6 +209,7 @@ export default {
         { dd__btn_gray: type === 'gray' },
         { dd__btn_blue: type === 'blue' },
         { dd__btn_border: type === 'border' },
+        { dd__btn_underline: type === 'underline' },
         { 'dd__dots-btn': isDotsView },
       ];
     },
@@ -249,9 +250,12 @@ export default {
   font-size: 16px;
   line-height: 130%;
   color: $black500;
-  min-width: 131px;
   position: relative;
   text-align: left;
+
+  &_min-width {
+    min-width: 131px;
+  }
 
   &_small {
   min-width: unset;
@@ -286,6 +290,13 @@ export default {
     grid-gap: 15px;
     padding: 15px 20px;
     z-index: 4;
+
+    &_underline-type {
+      width: fit-content;
+      min-width: fit-content;
+      right: 0;
+    }
+
     &_small {
       max-height: 200px;
       grid-gap: 10px;
@@ -380,6 +391,23 @@ export default {
     }
     &_border {
       border: 1px solid $black0;
+    }
+    &_underline {
+      border: none;
+      background: none;
+      min-height: 26px;
+      padding-right: 0;
+      padding-left: 0;
+      margin-top: 5px;
+
+      .dd__title {
+        border-bottom: 1px solid $blue !important;
+        color: $blue !important;
+      }
+
+      &:hover {
+        border: none;
+      }
     }
   }
 

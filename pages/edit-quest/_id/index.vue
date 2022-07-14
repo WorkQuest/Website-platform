@@ -237,6 +237,7 @@ import { ERC20, WorkQuest, WQPromotion } from '~/abi';
 import { error, success } from '~/utils/web3';
 import { CommissionForCreatingAQuest } from '~/utils/сonstants/commission';
 import { images } from '~/utils/images';
+import walletOperations from '~/plugins/mixins/walletOperations';
 
 const { GeoCode } = require('geo-coder');
 
@@ -244,6 +245,7 @@ export default {
   name: 'EditQuest',
   EditQuestState,
   middleware: 'employer-role',
+  mixins: [walletOperations],
   data() {
     return {
       period: 0,
@@ -381,7 +383,7 @@ export default {
   },
   async mounted() {
     const check = this.$cookies.get('2fa');
-    if ((!this.userData.totpIsActive || !check) && this.mode !== 'raise') {
+    if (this.mode !== 'raise' && (!this.userData.totpIsActive || !check)) {
       await this.$router.push(`${Path.QUESTS}/${this.$route.params.id}`);
       return;
     }

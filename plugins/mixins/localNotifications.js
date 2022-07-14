@@ -1,6 +1,7 @@
 import { mapGetters } from 'vuex';
 import { LocalNotificationAction } from '~/utils/notifications';
 import { SumSubStatuses, TwoFAStatuses } from '~/utils/enums';
+import { notificationLifetime } from '~/utils/сonstants/cookiesLifetime';
 
 export default {
   data() {
@@ -64,8 +65,7 @@ export default {
         const KYC = $cookies.get(LocalNotificationAction.TWOFA);
         if (!KYC) {
           this.$cookies.set(LocalNotificationAction.KYC, this.statusKYC !== 0, {
-            maxAge: 60 * 60 * 24 * 7,
-            enabled: true,
+            maxAge: notificationLifetime,
           });
         }
         await this.$store.dispatch('notifications/createLocalNotification', {
@@ -79,8 +79,7 @@ export default {
         const TWOFA = $cookies.get(LocalNotificationAction.KYC);
         if (!TWOFA) {
           this.$cookies.set(LocalNotificationAction.TWOFA, this.status2FA !== 0, {
-            maxAge: 60 * 60 * 24 * 7,
-            enabled: true,
+            maxAge: notificationLifetime,
           });
         }
         await this.$store.dispatch('notifications/createLocalNotification', {

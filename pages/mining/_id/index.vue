@@ -439,9 +439,14 @@ export default {
     await this.fetchChartData(pool);
     await this.fetchSwaps({ pool, params: { limit, offset: 0 } });
     this.SetLoader(false);
-    await this.toggleConnection();
+
+    await this.connectWallet({ chain: this.chain, isReconnection: this.isConnected });
   },
   async beforeDestroy() {
+    const preventDisconnect = sessionStorage.getItem('preventDisconnectWeb3');
+    sessionStorage.removeItem('preventDisconnectWeb3');
+    if (preventDisconnect) return;
+
     await this.disconnectWallet();
     await Promise.all([
       this.resetPoolData(),
@@ -546,10 +551,10 @@ export default {
             this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
             this.CloseModal();
 
-            const { ok } = await this.swapOldTokens({ amount, decimals });
+            const { ok, msg } = await this.swapOldTokens({ amount, decimals });
 
             if (ok) this.ShowModalSuccess({});
-            else this.ShowModalFail({});
+            else this.ShowModalFail({ subtitle: msg });
 
             this.SetLoader(false);
           },
@@ -574,7 +579,7 @@ export default {
             this.CloseModal();
 
             this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
-            const { ok } = await this.stakeTokens({
+            const { ok, msg } = await this.stakeTokens({
               amount,
               chain: this.chain,
             });
@@ -583,7 +588,7 @@ export default {
             if (ok) {
               this.ShowModalSuccess({});
               await this.tokensDataUpdate();
-            } else this.ShowModalFail({});
+            } else this.ShowModalFail({ subtitle: msg });
           },
         });
       }
@@ -600,7 +605,7 @@ export default {
             this.CloseModal();
 
             this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
-            const { ok } = await this.unStakeTokens({
+            const { ok, msg } = await this.unStakeTokens({
               amount,
               chain: this.chain,
             });
@@ -609,7 +614,7 @@ export default {
             if (ok) {
               this.ShowModalSuccess({});
               await this.tokensDataUpdate();
-            } else this.ShowModalFail({});
+            } else this.ShowModalFail({ subtitle: msg });
           },
         });
       }
@@ -630,13 +635,13 @@ export default {
       }
 
       this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
-      const { ok } = await this.claimTokens({ chain });
+      const { ok, msg } = await this.claimTokens({ chain });
       this.SetLoader(false);
 
       if (ok) {
         this.ShowModalSuccess({});
         await this.tokensDataUpdate();
-      } else this.ShowModalFail({});
+      } else this.ShowModalFail({ subtitle: msg });
     },
 
   },

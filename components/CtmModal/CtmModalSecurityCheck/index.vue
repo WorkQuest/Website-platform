@@ -17,6 +17,7 @@
           </div>
           <base-field
             v-model="securityCode"
+            auto-focus
             :disabled="inProgress"
             data-selector="SECURITY-CODE"
             :placeholder="$t('securityCheck.placeholder')"
@@ -47,6 +48,8 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { lifetime2FA } from '~/utils/сonstants/cookiesLifetime';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'ModalSecurityCheck',
@@ -65,12 +68,13 @@ export default {
   methods: {
     async hide() {
       if (this.inProgress) return;
-      const { actionMethod } = this.options;
+      const { actionMethod, isForLogin } = this.options;
       this.inProgress = true;
-      const result = await this.$store.dispatch('user/validateTOTP', { token: this.securityCode });
+      const result = await this.$store.dispatch(`user/${isForLogin ? 'validateTOTP' : 'validateSessionTOTP'}`,
+        { token: this.securityCode });
       this.inProgress = false;
       if (result) {
-        this.$cookies.set('2fa', true, { path: '/', maxAge: 30 });
+        this.$cookies.set('2fa', true, { path: Path.ROOT, maxAge: lifetime2FA });
         await this.CloseModal();
         await this.$store.dispatch('user/getMainData');
         await actionMethod();

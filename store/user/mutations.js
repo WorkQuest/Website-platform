@@ -1,3 +1,6 @@
+import { accessLifetime, refreshLifetime } from '~/utils/сonstants/cookiesLifetime';
+import { Path } from '~/utils/enums';
+
 export default {
   setLang(state, data) {
     state.currentLang = data;
@@ -24,12 +27,12 @@ export default {
     state.tokens.access = payload.access;
     state.tokens.refresh = payload.refresh;
 
-    this.$cookies.set('access', payload.access, { path: '/' });
-    this.$cookies.set('refresh', payload.refresh, { path: '/' });
+    this.$cookies.set('access', payload.access, { path: Path.ROOT, maxAge: accessLifetime });
+    this.$cookies.set('refresh', payload.refresh, { path: Path.ROOT, maxAge: refreshLifetime });
     if (payload.userStatus) {
-      this.$cookies.set('userStatus', payload.userStatus, { path: '/' });
+      this.$cookies.set('userStatus', payload.userStatus, { path: Path.ROOT, maxAge: accessLifetime });
     }
-    this.$cookies.set('socialNetwork', payload.social, { path: '/' });
+    this.$cookies.set('socialNetwork', payload.social, { path: Path.ROOT, maxAge: accessLifetime });
   },
   setUserData(state, data) {
     state.userData = { ...state.userData, ...data };
@@ -50,7 +53,11 @@ export default {
     this.$cookies.remove('questDraft');
     this.$cookies.remove('notificationPage');
     this.$cookies.remove('2fa');
+
+    const redirectTo = sessionStorage.getItem('redirectTo');
     sessionStorage.clear();
+    if (redirectTo) sessionStorage.setItem('redirectTo', redirectTo);
+
     state.userData = {};
     state.tokens = { access: null, refresh: null };
   },

@@ -278,14 +278,14 @@ export default {
     height: 46px;
     border-radius: 6px;
     border: 2px solid transparent;
-    padding: 0 40px 0 10px;
-    transition: .3s;
+    padding: 0 10px 0 10px;
+    transition: width .3s;
     width: 100%;
     &_error {
       border: 1px solid red !important
     }
     &_padding-r {
-      padding-right: 45px !important;
+      padding-right: 50px !important;
     }
   }
   &_disabled {

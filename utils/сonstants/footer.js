@@ -11,8 +11,8 @@ export const URLS = Object.freeze({
     TELEGRAM: 'https://t.me/WorkQuest',
   },
   STORES: {
-    APP_STORE: '/',
-    PLAY_MARKET: '/',
+    APP_STORE: 'https://apps.apple.com/ru/app/workquest/id1571442820',
+    PLAY_MARKET: 'https://play.google.com/store/apps/details?id=com.company.workquestapp&hl=ru&gl=US',
   },
   DAO: DaoUrl,
 });

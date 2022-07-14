@@ -22,7 +22,8 @@
       </div>
       <validation-observer
         v-if="step === 'wallet'"
-        v-slot="{handleSubmit, invalid}"
+        ref="observer"
+        v-slot="{handleSubmit}"
         tag="div"
       >
         <div class="content__container">
@@ -41,12 +42,14 @@
           </div>
           <div class="content__input input">
             <span class="input__title">
-              {{ $t('modals.selectToken') }}
+              {{ $t('modals.chooseToken') }}
             </span>
             <base-dd
               v-model="ddValue"
               data-selector="TOKEN"
               :items="tokenSymbolsDd"
+              type="border"
+              is-icon
             />
           </div>
           <div class="content__input input input__amount">
@@ -55,12 +58,13 @@
             </span>
             <base-field
               v-model="amount"
+              type="number"
               class="input__field"
               data-selector="AMOUNT"
               :placeholder="$t('modals.amount')"
-              :rules="`required|decimal|is_not:0|max_value:${maxAmount}|decimalPlaces:${tokenDecimals}|not_enough_funds:${tokenBalance}`"
+              :rules="`required|decimal|max_value:${maxAmount}|decimalPlaces:${tokenDecimals}|not_enough_funds:${tokenBalance}`"
               :name="$tc('modals.amountField')"
-              @input="replaceDot"
+              @input="handleInput"
             >
               <template
                 v-slot:right-absolute
@@ -79,6 +83,26 @@
               </template>
             </base-field>
           </div>
+          <div class="content__txFee txFee">
+            <div class="txFee__title">
+              {{ $t('wallet.table.trxFee') }}:
+            </div>
+            <div
+              v-if="!isCanSubmit"
+              class="txFee__loader-wrapper"
+            >
+              <loader
+                is-mini-loader
+                class="txFee__loader"
+              />
+            </div>
+            <div
+              v-else
+              class="txFee__amount"
+            >
+              {{ currentFee }} {{ nativeTokenSymbol }}
+            </div>
+          </div>
         </div>
         <div class="content__buttons buttons">
           <base-btn
@@ -92,10 +116,10 @@
           <base-btn
             class="buttons__action"
             data-selector="SEND"
-            :disabled="invalid||!isCanSubmit"
+            :disabled="!isCanSubmit"
             @click="handleSubmit(showWithdrawInfo)"
           >
-            {{ $t('meta.btns.send') }}
+            {{ $t('meta.btns.next') }}
           </base-btn>
         </div>
       </validation-observer>
@@ -119,10 +143,12 @@ export default {
   data() {
     return {
       recipient: '',
-      amount: 0,
+      amount: null,
       ddValue: 0,
+      currentFee: 0,
       maxFeeForNativeToken: 0,
       isCanSubmit: false,
+      timeoutId: null,
 
       step: 'wallet',
     };
@@ -140,10 +166,10 @@ export default {
       selectedNetwork: 'wallet/getSelectedNetwork',
     }),
     nativeTokenSymbol() {
-      return this.tokenSymbolsDd[0];
+      return this.tokenSymbolsDd[0].title;
     },
     tokenDecimals() {
-      return this.balance[this.selectedToken].decimals;
+      return +this.balance[this.selectedToken].decimals;
     },
     tokenBalance() {
       return this.balance[this.selectedToken].fullBalance;
@@ -153,9 +179,9 @@ export default {
     },
     maxAmount() {
       const {
-        selectedToken, balance, maxFeeForNativeToken,
+        selectedToken, tokenBalance, maxFeeForNativeToken,
       } = this;
-      const fullBalance = new BigNumber(balance[selectedToken].fullBalance);
+      const fullBalance = new BigNumber(tokenBalance);
       if (selectedToken === this.nativeTokenSymbol) {
         const balanceMinusFee = fullBalance.minus(maxFeeForNativeToken).isGreaterThan(0);
         return balanceMinusFee ? fullBalance.minus(maxFeeForNativeToken).toString() : 0;
@@ -165,13 +191,57 @@ export default {
   },
   watch: {
     ddValue(val) {
-      this.$store.dispatch('wallet/setSelectedToken', TokenSymbols[this.tokenSymbolsDd[val]]);
-      this.amount = 0;
+      this.$store.dispatch('wallet/setSelectedToken', this.tokenSymbolsDd[val].title);
+      this.$refs.observer.reset();
+      this.amount = null;
+    },
+    async amount() {
+      if (!this.isConnected) return;
+      this.isCanSubmit = false;
+      this.currentFee = '...';
+      clearTimeout(this.timeoutId);
+      this.timeoutId = setTimeout(async () => {
+        const {
+          selectedToken, amount, userData, tokenDecimals, nativeTokenSymbol, maxAmount,
+        } = this;
+
+        if (amount === '' || amount === null || new BigNumber(maxAmount).isLessThan(amount)) {
+          this.currentFee = 0;
+          this.isCanSubmit = true;
+          return;
+        }
+
+        // 0 token is always native token for current network!
+        if (selectedToken === nativeTokenSymbol) {
+          const nativeTokenFee = await this.$store.dispatch('wallet/getTransferFeeData', {
+            recipient: userData.wallet.address,
+            value: amount,
+          });
+          this.currentFee = nativeTokenFee.ok ? nativeTokenFee.result.fee : 0;
+        } else {
+          let contractAddress;
+          this.tokenSymbolsDd.some((token, i) => {
+            if (token.title === this.selectedToken) {
+              contractAddress = token.tokenAddress;
+              this.ddValue = i;
+              return true;
+            }
+            return false;
+          });
+
+          const feeTokens = await this.$store.dispatch('wallet/getContractFeeData', {
+            method: 'transfer',
+            abi: ERC20,
+            contractAddress,
+            data: [contractAddress, new BigNumber(amount).shiftedBy(tokenDecimals).toString()],
+          });
+          this.currentFee = feeTokens.ok ? feeTokens.result.fee : 0;
+        }
+        this.isCanSubmit = true;
+      }, 300);
     },
   },
   async mounted() {
-    const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
-    this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
     await this.updateMaxFee();
   },
   methods: {
@@ -184,19 +254,21 @@ export default {
       const { recipient, amount, selectedToken } = this;
       submit({ recipient, amount, selectedToken });
     },
-    replaceDot() {
-      this.amount = this.amount.replace(/,/g, '.');
+    handleInput(val) {
+      if (!val || isNaN(val)) this.amount = val;
+      else this.amount = this.ClearZero(val);
+      this.amount = this.amount.toString().replace(/,/g, '.');
     },
     // Для просчета максимальной суммы транзакции от комиссии
     async updateMaxFee() {
       if (!this.isConnected) return;
       this.isCanSubmit = false;
       const {
-        selectedToken, amount, userData, balance, nativeTokenSymbol,
+        selectedToken, tokenDecimals, userData, balance, nativeTokenSymbol,
       } = this;
 
       // 0 token is always native token for current network!
-      if (nativeTokenSymbol === selectedToken) {
+      if (selectedToken === nativeTokenSymbol) {
         const nativeTokenFee = await this.$store.dispatch('wallet/getTransferFeeData', {
           recipient: userData.wallet.address,
           value: balance[nativeTokenSymbol].fullBalance,
@@ -204,12 +276,21 @@ export default {
         if (nativeTokenFee.ok) this.maxFeeForNativeToken = nativeTokenFee.result.fee;
         else this.maxFeeForNativeToken = 0;
       } else {
-        const contractAddress = WalletTokensData[this.selectedNetwork].tokenAddresses[this.tokenSymbolsDd.indexOf(selectedToken) - 1];
+        let contractAddress;
+        this.tokenSymbolsDd.some((token, i) => {
+          if (token.title === this.selectedToken) {
+            contractAddress = token.tokenAddress;
+            this.ddValue = i;
+            return true;
+          }
+          return false;
+        });
+
         const feeTokens = await this.$store.dispatch('wallet/getContractFeeData', {
           method: 'transfer',
           abi: ERC20,
           contractAddress,
-          data: [contractAddress, amount],
+          data: [contractAddress, new BigNumber(balance[selectedToken].fullBalance).shiftedBy(tokenDecimals).toString()],
         });
         if (feeTokens.ok) this.maxFeeForNativeToken = feeTokens.result.fee;
         else this.maxFeeForNativeToken = 0;
@@ -291,6 +372,30 @@ export default {
     line-height: 130%;
     color: #D8DFE3;
     text-align: center;
+  }
+
+  &__txFee {
+    margin-bottom: 20px;
+    position: relative;
+    display: flex;
+  }
+}
+
+.txFee {
+  &__loader-wrapper {
+    width: 10px;
+    margin-left: 10px;
+    position: relative;
+  }
+
+  &__loader {
+    position: absolute;
+    top: -10px;
+    background: none;
+  }
+
+  &__amount {
+    margin-left: 10px;
   }
 }
 

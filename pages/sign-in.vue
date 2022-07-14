@@ -185,6 +185,7 @@ import {
   UserStatuses,
 } from '~/utils/enums';
 import { images } from '~/utils/images';
+import { accessLifetime } from '~/utils/сonstants/cookiesLifetime';
 
 const timerDefaultValue = 60;
 
@@ -412,12 +413,13 @@ export default {
         isRemember: this.remember,
       });
       if (ok) {
-        this.$cookies.set('userStatus', result.userStatus);
+        this.$cookies.set('userStatus', result.userStatus, { path: Path.ROOT, maxAge: accessLifetime });
         this.userStatus = result.userStatus;
         this.userAddress = result.address;
         if (result.totpIsActive) {
           await this.ShowModal({
             key: modals.securityCheck,
+            isForLogin: true,
             actionMethod: async () => await this.nextStepAction(),
           });
         } else {
@@ -451,7 +453,7 @@ export default {
       // Wallet is not assigned to this account
       if (!this.userAddress) {
         setCipherKey(this.model.password);
-        this.$cookies.set('userLogin', true, { path: Path.ROOT });
+        this.$cookies.set('userLogin', true, { path: Path.ROOT, maxAge: accessLifetime });
         await this.$router.push(Path.ROLE);
         this.SetLoader(false);
         return;
@@ -558,7 +560,7 @@ export default {
     },
     async redirectUser() {
       this.addressAssigned = true;
-      this.$cookies.set('userLogin', true, { path: Path.ROOT });
+      this.$cookies.set('userLogin', true, { path: Path.ROOT, maxAge: accessLifetime });
       // redirect to confirm access if token exists & unconfirmed account
       const confirmToken = sessionStorage.getItem('confirmToken');
       if ((this.userStatus === UserStatuses.Unconfirmed || !this.userAddress) && confirmToken) {
@@ -574,6 +576,12 @@ export default {
       const mnemonicInLocalStorage = JSON.parse(localStorage.getItem('mnemonic'));
       const isWalletInMnemonicList = mnemonicInLocalStorage && mnemonicInLocalStorage[this.userData.wallet.address];
       if (!isWalletInMnemonicList && !this.isLoginWithSocial) return;
+      const redirectTo = sessionStorage.getItem('redirectTo');
+      if (redirectTo) {
+        await this.$router.push(redirectTo);
+        sessionStorage.removeItem('redirectTo');
+        return;
+      }
       if (this.userData.role === UserRole.EMPLOYER) await this.$router.push(Path.WORKERS);
       else if (this.userData.role === UserRole.WORKER) await this.$router.push(Path.QUESTS);
     },

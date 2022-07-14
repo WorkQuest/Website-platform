@@ -21,6 +21,7 @@ import { error, success } from '~/utils/web3';
 import { images } from '~/utils/images';
 
 import ENV from '~/utils/addresses/index';
+import { notificationLifetime } from '~/utils/сonstants/cookiesLifetime';
 
 export default {
 
@@ -63,7 +64,7 @@ export default {
       action,
       actionBtn,
       sender: {
-        avatar: { url: images.WQ_LOGO },
+        avatar: { url: images.WQ_LOGO_ROUNDED },
         firstName: $nuxt.$t('ui.notifications.workquestInfo'),
       },
       params: {
@@ -87,7 +88,7 @@ export default {
       this.$cookies.set(
         actionNameKey.substr('notifications.'.length, actionNameKey.length),
         rootGetters['user/getStatus2FA'] !== 0,
-        { maxAge: 60 * 60 * 24 * 7, enabled: false },
+        { maxAge: notificationLifetime },
       );
     }
     try {
@@ -148,14 +149,11 @@ export default {
     notification.creatingDate = moment(notification.createdAt).format('MMMM Do YYYY, hh:mm a');
     notification.params = { isLocal: false };
 
-    const wqInfoSender = { avatar: { url: images.WQ_LOGO }, firstName: $nuxt.$t('ui.notifications.workquestInfo') };
+    const wqInfoSender = { avatar: { url: images.WQ_LOGO_ROUNDED }, firstName: $nuxt.$t('ui.notifications.workquestInfo') };
 
     switch (action) {
       case NotificationAction.UPDATE_RATING_STATISTIC:
-        notification.sender = {
-          avatar: { url: images.WQ_LOGO },
-          firstName: $nuxt.$t('ui.notifications.workquestInfo'),
-        };
+        notification.sender = wqInfoSender;
         notification.params = {
           ...notification.params,
           title: ['NoStatus', 'Verified', 'Reliable', 'TopRanked'][data.status],

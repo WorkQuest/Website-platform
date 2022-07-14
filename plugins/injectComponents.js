@@ -40,6 +40,7 @@ import Info from '~/components/app/info';
 import BtnPasswordVisibility from '~/components/app/BtnPasswordVisibility';
 import RaiseViewsPanel from '~/components/app/panels/RaiseViewsPanel';
 import SkeletonBlock from '~/components/app/SkeletonBlock';
+import ButtonCopy from '~/components/ui/BaseButtonCopy/index';
 
 Vue.component('Header', Header);
 Vue.component('Footer', Footer);
@@ -80,3 +81,4 @@ Vue.component('search-with-map', SearchWithMap);
 Vue.component('btn-password-visibility', BtnPasswordVisibility);
 Vue.component('raise-views-panel', RaiseViewsPanel);
 Vue.component('skeleton-block', SkeletonBlock);
+Vue.component('button-copy', ButtonCopy);
