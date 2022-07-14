@@ -29,7 +29,7 @@
                   :placeholder="$t('modals.addTitle')"
                   mode="gray"
                   data-selector="CASE-TITLE"
-                  rules="required|text-title"
+                  rules="required|text-title|max:70"
                   :name="$tc('modals.title')"
                 />
               </div>
@@ -41,7 +41,7 @@
                   class="message__textarea"
                   data-selector="CASE-DESCRIPTION"
                   :placeholder="$t('modals.addDesc')"
-                  rules="required|text-desc"
+                  rules="required|text-desc|max:350"
                   :name="$tc('modals.description')"
                 />
               </div>

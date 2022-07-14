@@ -98,7 +98,7 @@ export default {
         this.SetLoader(true);
         const medias = await this.uploadFiles(this.files);
         if (medias.length) {
-          const payload = { title: this.caseTitle, description: this.caseDescription, medias };
+          const payload = { title: this.caseTitle, description: this.caseDescription, mediaIds: medias };
           await this.$store.dispatch('user/editCaseData', { payload, id });
           this.CloseModal();
           await this.$store.dispatch('main/showToast', {

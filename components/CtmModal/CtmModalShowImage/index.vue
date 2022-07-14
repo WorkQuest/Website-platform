@@ -117,7 +117,8 @@ export default {
   &__box {
     max-width: 1200px !important;
     width: 100% !important;
-    height: auto !important;
+    max-height: 80vh !important;
+    height: auto;
     padding: 0 !important;
   }
   &__content {
@@ -134,7 +135,7 @@ export default {
 .content {
   margin-top: 28px;
   max-height: 800px;
-  height: 100vh;
+  height: 50vh;
   max-width: 1200px;
   width: 100%;
   &__btns {
