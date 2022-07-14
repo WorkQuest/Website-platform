@@ -44,15 +44,10 @@
             </div>
             <div class="user">
               <span class="user__wallet">{{ shortWqAddress }}</span>
-              <button
-                v-clipboard:copy="wqAddress"
-                v-clipboard:success="ClipboardSuccessHandler"
-                v-clipboard:error="ClipboardErrorHandler"
-                type="button"
-                data-selector="COPY"
-              >
-                <span class="icon-copy wallet__icon" />
-              </button>
+              <button-copy
+                :copy-value="wqAddress"
+                mode="wallet"
+              />
             </div>
           </div>
         </div>
@@ -618,6 +613,11 @@ export default {
   }
 }
 
+.user {
+  display: flex;
+  align-items: center;
+}
+
 .wallet {
   &__container {
     display: flex;
@@ -659,15 +659,6 @@ export default {
 
   &__address-type {
     display: inline-block;
-  }
-
-  &__icon {
-    margin-left: 22px;
-    font-size: 24px;
-
-    &::before {
-      color: $blue;
-    }
   }
 
   &__title {
