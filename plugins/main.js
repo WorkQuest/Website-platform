@@ -20,6 +20,17 @@ Vue.mixin({
     };
   },
   methods: {
+    async HEICConvertTo(file, toType = 'images/jpeg') {
+      try {
+        return await heic2any({
+          blob: file,
+          toType,
+        });
+      } catch (e) {
+        console.error('main/heicConvert', e);
+        return null;
+      }
+    },
     ComingSoon() {
       this.ShowModal({
         key: modals.status,
