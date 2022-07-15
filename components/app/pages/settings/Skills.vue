@@ -34,7 +34,7 @@
             :placeholder="skills.perHour || $t('meta.costPerHour')"
             :label="$t('meta.costPerHour')"
             :name="$t('meta.costPerHour')"
-            type="gray"
+            type="number"
           />
         </div>
         <div class="skills__save">
