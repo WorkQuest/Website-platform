@@ -28,7 +28,7 @@
           />
           <base-field
             v-model="skills.perHour"
-            rules="max:7|check_dot|decimal"
+            rules="max:7|decimal"
             class="skills__cost"
             data-selector="COST-PER-HOUR"
             :placeholder="skills.perHour || $t('meta.costPerHour')"

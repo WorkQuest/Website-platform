@@ -186,6 +186,10 @@ export default {
       this.$emit('enter', $event.target.value);
     },
     input($event) {
+      const exceptionSymbols = ['.', ','];
+      if (exceptionSymbols.includes($event.target.value[0]) && this.type === 'number') {
+        $event.target.value = `${0}${$event.target.value}`;
+      }
       this.$emit('input', $event.target.value);
       if (this.selector) {
         this.$emit('selector', $event.target.value);

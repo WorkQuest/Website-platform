@@ -273,8 +273,7 @@
     "have_funds": "Not enough {symbol} to complete this transaction",
     "min_buy_wqt" : "To avoid unnecessary fees and network slippage, the minimum amount for this pair is ${min} {symbol}",
     "max_buy_wqt": "To avoid unnecessary fees and network slippage, the maximum amount for this pair is ${max} {symbol}",
-    "min_tokens_amount": "Insufficient tokens, min amount {min} {symbol}.",
-    "check_dot": "The first character cannot be a dot or common"
+    "min_tokens_amount": "Insufficient tokens, min amount {min} {symbol}."
   },
   "about": {
     "text": "WorkQuest est un projet social basé sur la technologie blockchain visant à faciliter la recherche d’emploi et résoudre toutes les tâches des employeurs en mode quête. Cherchez-vous un emploi ? WorkQuest vous aidera à trouver une quête à côté de chez vous ou dans votre ville. Avez-vous besoin de travailleurs pour réaliser certains objectifs ? Il suffit de créer une quête sur le site de WorkQuest. Le service assume les obligations de garantie pour l'exécution des quêtes. Les fonds des employeurs sont conservés auprès de nous. Si l'employé(e) fournit une confirmation de l'exécution du travail, les fonds sont reversés sur son compte. Le système d'évaluations, de notes et la liste des quêtes accomplies aideront à trouver facilement des personnes honnêtes et des spécialistes fiables.\n\n          Notre objectif est de simplifier la communication entre les employeurs et les employés, d'aider des millions de personnes à trouver des emplois, d'améliorer leur situation financière, de résoudre le problème permanent de recherche de professionnels fiables dans tous les secteurs pour créer une économie numérique progressive fondée sur les principes de confiance, de respect mutuel et de bien-être de tous ses participants."
