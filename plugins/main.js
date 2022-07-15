@@ -6,9 +6,7 @@ import BigNumber from 'bignumber.js';
 import heic2any from 'heic2any';
 import modals from '~/store/modals/modals';
 import { TokenSymbols } from '~/utils/enums';
-import { QuestMethods, QuestStatuses } from '~/utils/сonstants/quests';
 import { images } from '~/utils/images';
-import { ERC20, WorkQuest } from '~/abi';
 import ENV, { IS_PROD } from '~/utils/addresses/index';
 
 Vue.use(VueTippy);
