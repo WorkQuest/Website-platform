@@ -326,7 +326,6 @@ export default {
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < files.length; i++) {
         let file = files[i];
-        console.log(file.type);
 
         if (file.type === 'image/heic') {
           // eslint-disable-next-line no-await-in-loop
@@ -334,8 +333,6 @@ export default {
           // eslint-disable-next-line no-continue
           if (!file) continue;
         }
-
-        console.log(file.type, validate);
 
         // eslint-disable-next-line no-await-in-loop
         const isValid = await validate(file);
