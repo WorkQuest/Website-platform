@@ -1,4 +1,5 @@
 export default {
+  getTwoFAPassed: (state) => state.twoFAPassed,
   getStatusKYC: (state) => state.userData.statusKYC,
   getCurrentLang: (state) => state.currentLang,
   isAuth: (state) => !!state.tokens.access,

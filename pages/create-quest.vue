@@ -178,7 +178,7 @@
           :limit="10"
           :limit-bytes="10485760"
           :limit-bytes-video="10485760"
-          accept="image/png, image/jpg, image/jpeg, video/mp4"
+          accept="image/png, image/jpg, image/jpeg, video/mp4, image/heic"
           :preloaded-files="files"
           :is-clear-data="isClearData"
           @change="updateFiles"
