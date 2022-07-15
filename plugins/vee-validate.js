@@ -119,6 +119,15 @@ extend('decimal', {
   },
 });
 
+extend('check_dot', {
+  validate(value) {
+    const temp = ['.', ','];
+    return {
+      valid: !temp.includes(value[0]),
+    };
+  },
+});
+
 extend('numeric', {
   validate(value) {
     const regex = /^\d+$/;
