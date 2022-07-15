@@ -3,6 +3,7 @@ import moment from 'moment';
 import VueTippy, { TippyComponent } from 'vue-tippy';
 import converter from 'bech32-converting';
 import BigNumber from 'bignumber.js';
+import heic2any from 'heic2any';
 import modals from '~/store/modals/modals';
 import { TokenSymbols } from '~/utils/enums';
 import { QuestMethods, QuestStatuses } from '~/utils/сonstants/quests';

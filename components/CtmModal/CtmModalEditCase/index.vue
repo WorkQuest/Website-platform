@@ -36,7 +36,7 @@
           class="content__textarea"
           data-selector="CASE-DESCRIPTION"
           :placeholder="$t('modals.addDesc')"
-          rules="required|text-desc|max:350"
+          rules="text-desc|max:350"
           :name="$tc('modals.description')"
         />
         <div class="content__btn btn">
@@ -87,36 +87,30 @@ export default {
   },
   async mounted() {
     this.caseTitle = await this.options.title;
-    this.caseDescription = await this.options.desc;
+    this.caseDescription = await this.options.desc.trim();
   },
   methods: {
     updateFiles(files) {
       this.files = files;
     },
     async editUserCase(id) {
-      try {
-        this.SetLoader(true);
-        const medias = await this.uploadFiles(this.files);
-        if (medias.length) {
-          const payload = { title: this.caseTitle, description: this.caseDescription, mediaIds: medias };
-          await this.$store.dispatch('user/editCaseData', { payload, id });
-          this.CloseModal();
+      this.SetLoader(true);
+      const medias = await this.uploadFiles(this.files);
+      if (medias.length) {
+        const res = await this.$store.dispatch('user/editCaseData', {
+          payload: { title: this.caseTitle.trim(), description: this.caseDescription.trim() || ' ', mediaIds: medias }, id,
+        });
+        if (res.ok) {
+          await this.$store.dispatch('user/getUserPortfolios', { userId: this.userData.id });
           await this.$store.dispatch('main/showToast', {
             title: this.$t('toasts.caseEdited'),
             variant: 'success',
             text: this.$t('toasts.caseEdited'),
           });
         }
-        await this.$store.dispatch('user/getUserPortfolios', { userId: this.userData.id });
-        this.SetLoader(false);
-      } catch (e) {
-        await this.$store.dispatch('main/showToast', {
-          title: this.$t('toasts.error'),
-          variant: 'warning',
-          text: `${e}`,
-        });
-        this.SetLoader(false);
+        this.CloseModal();
       }
+      this.SetLoader(false);
     },
   },
 };

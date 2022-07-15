@@ -10,14 +10,14 @@
           <div class="modal__desc">
             <ValidationProvider
               v-slot="{ validate }"
-              rules="required|ext:png,jpeg,jpg,gif"
+              rules="required|ext:png,jpeg,jpg,gif,heic"
               tag="div"
             >
               <input
                 id="coverUpload"
                 class="edit__avatar"
                 type="file"
-                accept="image/*"
+                accept="image/png, image/jpeg, image/heic"
                 @change="processFile($event, validate)"
               >
             </ValidationProvider>
@@ -41,7 +41,7 @@
                   class="message__textarea"
                   data-selector="CASE-DESCRIPTION"
                   :placeholder="$t('modals.addDesc')"
-                  rules="required|text-desc|max:350"
+                  rules="text-desc|max:350"
                   :name="$tc('modals.description')"
                 />
               </div>
@@ -102,49 +102,44 @@ export default {
   },
   methods: {
     async addUserCase() {
-      try {
-        this.SetLoader(true);
-        const { caseTitle, caseDescription } = this;
-        const { file, data } = this.portfolio;
-        const { url, mediaId } = data.result;
-        const formData = new FormData();
-        formData.append('image', file);
-        if (data.ok) {
-          const payload = { url, formData: file, type: file.type };
-          await this.$store.dispatch('user/setCaseImage', payload);
-        }
-        const { ok } = await this.$store.dispatch('user/setCaseData', {
-          title: caseTitle,
-          description: caseDescription,
-          mediaIds: [mediaId],
-        });
-        if (ok) {
-          await this.$store.dispatch('main/showToast', {
-            title: this.$t('toasts.caseAdded'),
-            variant: 'success',
-            text: this.$t('toasts.caseAdded'),
-          });
-        }
-        await this.getPortfolios();
-        this.CloseModal();
-        this.SetLoader(false);
-      } catch (e) {
-        await this.getPortfolios();
-        this.CloseModal();
-        await this.$store.dispatch('main/showToast', {
-          title: this.$t('toasts.error'),
-          variant: 'warning',
-          text: `${e}`,
-        });
-        this.SetLoader(false);
+      this.SetLoader(true);
+      const { caseTitle, caseDescription } = this;
+      const { file, data } = this.portfolio;
+      const { url, mediaId } = data.result;
+      const formData = new FormData();
+      formData.append('image', file);
+      if (data.ok) {
+        const payload = { url, formData: file, type: file.type };
+        await this.$store.dispatch('user/setCaseImage', payload);
       }
+      const { ok } = await this.$store.dispatch('user/setCaseData', {
+        title: caseTitle,
+        description: caseDescription,
+        mediaIds: [mediaId],
+      });
+      if (ok) {
+        await this.getPortfolios();
+        await this.$store.dispatch('main/showToast', {
+          title: this.$t('toasts.caseAdded'),
+          variant: 'success',
+          text: this.$t('toasts.caseAdded'),
+        });
+      }
+      this.CloseModal();
+      this.SetLoader(false);
     },
     async getPortfolios() {
       return await this.$store.dispatch('user/getUserPortfolios', { userId: this.userData.id });
     },
     async processFile(e, validate) {
+      let file = e.target.files[0];
+
+      if (file.type === 'image/heic') {
+        file = await this.HEICConvertTo(file);
+        if (!file) return false;
+      }
+
       this.valid = await validate(e);
-      const file = e.target.files[0];
       if (this.valid.valid) {
         if (!file) return false;
         const reader = new FileReader();
