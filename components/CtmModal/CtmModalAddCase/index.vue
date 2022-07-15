@@ -3,36 +3,28 @@
     class="message"
     :title="$tc('modals.titles.addCase')"
   >
-    <!--    TODO: Поменять загрузчик-->
     <div class="ctm-modal__content">
       <div class="message">
         <div class="message__content">
           <div class="modal__desc">
-            <ValidationProvider
-              v-slot="{ validate }"
-              rules="required|ext:png,jpeg,jpg,gif,heic"
-              tag="div"
-            >
-              <input
-                id="coverUpload"
-                class="edit__avatar"
-                type="file"
-                accept="image/png, image/jpeg, image/heic"
-                @change="processFile($event, validate)"
-              >
-            </ValidationProvider>
-            <validation-observer v-slot="{ validated, passed, invalid }">
-              <div>
-                <base-field
-                  v-model="caseTitle"
-                  :label="$tc('modals.title')"
-                  :placeholder="$t('modals.addTitle')"
-                  mode="gray"
-                  data-selector="CASE-TITLE"
-                  rules="required|text-title|max:70"
-                  :name="$tc('modals.title')"
-                />
-              </div>
+            <files-uploader
+              :multiple="false"
+              :limit="1"
+              :limit-bytes="10485760"
+              :accept="'image/png, image/jpg, image/jpeg, image/heic'"
+              rules="required"
+              @change="updateFiles"
+            />
+            <validation-observer v-slot="{ invalid }">
+              <base-field
+                v-model="caseTitle"
+                :label="$tc('modals.title')"
+                :placeholder="$t('modals.addTitle')"
+                mode="gray"
+                data-selector="CASE-TITLE"
+                rules="required|text-title|max:70"
+                :name="$tc('modals.title')"
+              />
               <div class="message__wrapper">
                 <base-textarea
                   id="textarea"
@@ -50,7 +42,7 @@
                   <base-btn
                     class="message__action"
                     data-selector="ADD-USER-CASE"
-                    :disabled="!valid || !validated || !passed || invalid"
+                    :disabled="invalid || !files.length"
                     @click="addUserCase"
                   >
                     {{ $t('meta.btns.send') }}
@@ -84,13 +76,9 @@ export default {
   components: {},
   data() {
     return {
-      valid: '',
       caseTitle: '',
       caseDescription: '',
-      portfolio: {
-        data: {},
-        file: {},
-      },
+      files: [],
     };
   },
   computed: {
@@ -104,18 +92,15 @@ export default {
     async addUserCase() {
       this.SetLoader(true);
       const { caseTitle, caseDescription } = this;
-      const { file, data } = this.portfolio;
-      const { url, mediaId } = data.result;
-      const formData = new FormData();
-      formData.append('image', file);
-      if (data.ok) {
-        const payload = { url, formData: file, type: file.type };
-        await this.$store.dispatch('user/setCaseImage', payload);
+      const medias = await this.uploadFiles(this.files);
+      if (!medias.length) {
+        this.SetLoader(false);
+        return;
       }
       const { ok } = await this.$store.dispatch('user/setCaseData', {
         title: caseTitle,
-        description: caseDescription,
-        mediaIds: [mediaId],
+        description: caseDescription.trim() || ' ',
+        mediaIds: medias,
       });
       if (ok) {
         await this.getPortfolios();
@@ -131,23 +116,8 @@ export default {
     async getPortfolios() {
       return await this.$store.dispatch('user/getUserPortfolios', { userId: this.userData.id });
     },
-    async processFile(e, validate) {
-      let file = e.target.files[0];
-
-      if (file.type === 'image/heic') {
-        file = await this.HEICConvertTo(file);
-        if (!file) return false;
-      }
-
-      this.valid = await validate(e);
-      if (this.valid.valid) {
-        if (!file) return false;
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        this.portfolio.data = await this.$store.dispatch('user/imageType', { contentType: file.type });
-        this.portfolio.file = file;
-      }
-      return this.portfolio;
+    async updateFiles(files) {
+      this.files = files;
     },
   },
 };
@@ -165,11 +135,6 @@ export default {
   }
 }
 
-.file {
-  &__wrapper {
-    margin: 0 0 25px 0;
-  }
-}
 .uploader-message {
   &__container {
     margin: 0 0 0 10% !important;
@@ -184,21 +149,6 @@ export default {
     content: "\e995";
     color: #0083C7;
     font-size: 20px;
-  }
-}
-
-.input {
-  &_grey {
-    border-radius: 6px;
-    padding: 11px 20px 11px 15px;
-    height: 46px;
-    width: 100%;
-    border: 0;
-    background-color: $black0;
-    resize: none;
-    &::placeholder {
-      color: $black200;
-    }
   }
 }
 

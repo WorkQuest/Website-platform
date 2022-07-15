@@ -318,7 +318,8 @@ export default {
   }
   &:hover .file__remover {
     border-radius: 50%;
-    opacity: 100%;
+    opacity: 50%;
+    background: $black800;
   }
 }
 .error {
