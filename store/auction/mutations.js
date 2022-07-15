@@ -1,19 +1,6 @@
 export default {
-  setSwapsData(state, { swaps, count }) {
-    state.swaps = swaps;
-    state.swapsCount = count;
-  },
-  resetSwapsData(state) {
-    state.swaps = [];
-    state.swapsCount = null;
-  },
-  setToken(state, payload) {
-    state.token = { ...payload };
-  },
-  resetToken(state) {
-    state.token = {
-      amount: null,
-      decimals: null,
-    };
+  setLost(state, { collateral, count }) {
+    state.lots = collateral;
+    state.lotsCount = count;
   },
 };

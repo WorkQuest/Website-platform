@@ -15,7 +15,9 @@ export default {
 
   WQ_EXPLORER: 'https://dev-explorer.workquest.co/api/v1',
   WQ_ORACLE_URL: 'https://dev-oracle.workquest.co/api/v1',
+  WQ_LIQUIDATOR_URL: 'https://dev-liquidator.workquest.co/api/v1',
   NOTIFS_URL: 'https://notifications.workquest.co/api/',
+
   WS_NOTIFS_URL: 'wss://notifications.workquest.co/api/v1/notifications',
   WS_CHAT_ACTIONS_URL: 'wss://dev-app.workquest.co/api/v1/notifications/chat',
 
