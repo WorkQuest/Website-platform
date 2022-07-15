@@ -326,17 +326,15 @@ export default {
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < files.length; i++) {
         let file = files[i];
-
         if (file.type === 'image/heic') {
           // eslint-disable-next-line no-await-in-loop
           file = await this.HEICConvertTo(file);
-          // eslint-disable-next-line no-continue
-          if (!file) continue;
         }
-
-        // eslint-disable-next-line no-await-in-loop
-        const isValid = await validate(file);
-        if (isValid.valid) validFiles.push(file);
+        if (file) {
+          // eslint-disable-next-line no-await-in-loop
+          const isValid = await validate(ev);
+          if (isValid.valid) validFiles.push(file);
+        }
       }
 
       if (validFiles.length < files.length) {
