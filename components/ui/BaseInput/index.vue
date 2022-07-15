@@ -187,7 +187,7 @@ export default {
     },
     input($event) {
       const exceptionSymbols = ['.', ','];
-      if (exceptionSymbols.includes($event.target.value[0]) && this.type === 'number') {
+      if (this.type === 'number' && exceptionSymbols.includes($event.target.value[0])) {
         $event.target.value = `${0}${$event.target.value}`;
       }
       this.$emit('input', $event.target.value);
