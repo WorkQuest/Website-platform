@@ -121,7 +121,6 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #C4C4C4;
     width: 100%;
     height: 80vh;
   }
@@ -168,6 +167,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 
   &_bg {
     background-color: #FFFFFF59;
