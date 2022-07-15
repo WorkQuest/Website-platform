@@ -64,7 +64,6 @@
               :placeholder="$t('modals.amount')"
               :rules="`required|decimal|max_value:${maxAmount}|decimalPlaces:${tokenDecimals}|not_enough_funds:${tokenBalance}`"
               :name="$tc('modals.amountField')"
-              @input="handleInput"
             >
               <template
                 v-slot:right-absolute
@@ -253,11 +252,6 @@ export default {
       const { submit } = this.options;
       const { recipient, amount, selectedToken } = this;
       submit({ recipient, amount, selectedToken });
-    },
-    handleInput(val) {
-      if (!val || isNaN(val)) this.amount = val;
-      else this.amount = this.ClearZero(val);
-      this.amount = this.amount.toString().replace(/,/g, '.');
     },
     // Для просчета максимальной суммы транзакции от комиссии
     async updateMaxFee() {

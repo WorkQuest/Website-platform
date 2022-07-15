@@ -186,11 +186,15 @@ export default {
       this.$emit('enter', $event.target.value);
     },
     input($event) {
-      const exceptionSymbols = ['.', ','];
-      if (this.type === 'number' && exceptionSymbols.includes($event.target.value[0])) {
-        $event.target.value = `${0}${$event.target.value}`;
+      if (this.type === 'number') {
+        // if (['.', ','].includes($event.target.value[0])) {
+        //   $event.target.value = `${0}${$event.target.value}`.replace(/,/g, '.');
+        // }
+        $event.target.value = this.ClearZero($event.target.value);
       }
       this.$emit('input', $event.target.value);
+
+      // TODO: emit selector. проверка должна быть на самой странице дабы не перегружать emit вызовы. решение: хендлить @input и проверять на selector при нужде
       if (this.selector) {
         this.$emit('selector', $event.target.value);
       }
