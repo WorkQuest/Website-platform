@@ -37,7 +37,7 @@ export default {
   ConnectionTypes,
   computed: {
     ...mapGetters({
-      userData: 'user/getUserData',
+      access: 'user/accessToken',
       connectionType: 'web3/getConnectionType',
       isWalletConnected: 'wallet/getIsWalletConnected',
     }),
@@ -48,7 +48,7 @@ export default {
   methods: {
     async handleSelect(connectionType) {
       if (connectionType === ConnectionTypes.WQ_WALLET) {
-        if (!this.userData) {
+        if (!this.access) {
           this.ShowModal({
             key: modals.status,
             title: 'WorkQuest Wallet',
@@ -66,7 +66,6 @@ export default {
           await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
         }
       }
-      this.$emit('selectedType', connectionType);
       this.$store.commit('web3/setConnectionType', connectionType);
     },
   },

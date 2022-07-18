@@ -176,14 +176,16 @@ export default {
   async logout({ commit, dispatch }, isValidToken = true) {
     try {
       if (isValidToken) await this.$axios.$post('v1/auth/logout');
+
       await this.$wsChatActions.disconnect();
       await this.$wsNotifs.disconnect();
       await dispatch('wallet/unsubscribeWS', null, { root: true });
 
-      disconnect(); // disconnect wq wallet
-      commit('web3/setConnectionType', ConnectionTypes.WEB3, { root: true });
-
       commit('logOut');
+      commit('setTokens', { access: null, refresh: null });
+      commit('web3/setConnectionType', ConnectionTypes.WEB3, { root: true });
+      commit('wallet/setIsWalletConnected', false, { root: true });
+      disconnect(); // disconnect wq wallet
     } catch (e) {
       console.error('user/logout', e);
     }

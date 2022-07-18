@@ -145,41 +145,40 @@ export default {
 
       const bridgeInstance = new provider.eth.Contract(WQBridge, bridgeAddress);
 
+      let swapRes;
       if (isNative) {
         showToast('Swapping', 'Swapping...', 'success');
         const [gasPrice, gas] = await Promise.all([
           provider.eth.getGasPrice(),
           getEstimateGas(null, null, bridgeInstance, 'swap', data, value),
         ]);
-        const swapRes = await bridgeInstance.methods.swap(...data).send({
+        swapRes = await bridgeInstance.methods.swap(...data).send({
           from: accountAddress,
           value,
           gasPrice,
           gas,
         });
         showToast('Swapping', 'Swapping done', 'success');
-        return success(swapRes);
+      } else {
+        const allowance = await fetchContractData('allowance', ERC20, tokenAddress, [accountAddress, bridgeAddress], provider);
+        if (new BigNumber(value).isGreaterThan(+allowance)) {
+          showToast('Swapping', 'Approving...', 'success');
+          const tokenInstance = createInstance(ERC20, tokenAddress);
+          const { status } = await tokenInstance.methods.approve(bridgeAddress, value).send({ from: accountAddress });
+          if (!status) return error(500, 'Approve was failed');
+          showToast('Swapping', 'Approving done', 'success');
+        }
+        showToast('Swapping', 'Swapping...', 'success');
+        const [gasPrice, gas] = await Promise.all([
+          provider.eth.getGasPrice(),
+          getEstimateGas(null, null, bridgeInstance, 'swap', data),
+        ]);
+        swapRes = await bridgeInstance.methods.swap(...data).send({
+          from: accountAddress,
+          gasPrice,
+          gas,
+        });
       }
-
-      const allowance = await fetchContractData('allowance', ERC20, tokenAddress, [accountAddress, bridgeAddress], provider);
-      if (new BigNumber(value).isGreaterThan(+allowance)) {
-        showToast('Swapping', 'Approving...', 'success');
-        const tokenInstance = createInstance(ERC20, tokenAddress);
-        const { status } = await tokenInstance.methods.approve(bridgeAddress, value).send({ from: accountAddress });
-        if (!status) return error(500, 'Approve was failed');
-        showToast('Swapping', 'Approving done', 'success');
-      }
-
-      showToast('Swapping', 'Swapping...', 'success');
-      const [gasPrice, gas] = await Promise.all([
-        provider.eth.getGasPrice(),
-        getEstimateGas(null, null, bridgeInstance, 'swap', data),
-      ]);
-      const swapRes = await bridgeInstance.methods.swap(...data).send({
-        from: accountAddress,
-        gasPrice,
-        gas,
-      });
       showToast('Swapping', 'Swapping done', 'success');
 
       return success(swapRes);

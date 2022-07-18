@@ -348,7 +348,7 @@ export default {
       else {
         const { chain } = addresses[sourceAddressInd];
         if (isWeb3Connection) await this.connectWallet({ chain });
-        else await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+        else if (this.token) await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
         await Promise.all([
           this.subscribe(this.account.address),
           this.swapsTableData(),
