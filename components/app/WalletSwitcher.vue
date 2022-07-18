@@ -28,7 +28,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import { ConnectionTypes, Path } from '~/utils/enums';
-import { getIsWalletConnected } from '~/utils/wallet';
 import { images } from '~/utils/images';
 import modals from '~/store/modals/modals';
 
@@ -47,9 +46,6 @@ export default {
     if (this.isWalletConnected) this.$store.commit('web3/setConnectionType', ConnectionTypes.WQ_WALLET);
   },
   methods: {
-    isWalletConnected() {
-      return getIsWalletConnected();
-    },
     async handleSelect(connectionType) {
       if (connectionType === ConnectionTypes.WQ_WALLET) {
         if (!this.userData) {
