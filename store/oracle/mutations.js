@@ -11,6 +11,9 @@ export default {
   setSecurityRatio(state, data) {
     state.securityRatio = data;
   },
+  setMaxRatio(state, data) {
+    state.maxRatio = data;
+  },
   setMinRatio(state, data) {
     state.minRatio = data;
   },
