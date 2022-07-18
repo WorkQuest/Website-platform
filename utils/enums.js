@@ -4,6 +4,11 @@ import { images } from '~/utils/images';
 
 export const isProd = IS_PROD;
 
+export const ConnectionTypes = {
+  WEB3: 'WEB3',
+  WQ_WALLET: 'WQ_WALLET',
+};
+
 export const ChainsId = {
   ETH_MAIN: '0x1',
   ETH_TEST: '0x4',

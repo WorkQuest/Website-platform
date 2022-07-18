@@ -87,9 +87,10 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { Chains, TokenSymbols } from '~/utils/enums';
+import { Chains, ConnectionTypes, TokenSymbols } from '~/utils/enums';
 import { BridgeAddresses } from '~/utils/сonstants/bridge';
-import { getChainIdByChain } from '~/utils/web3';
+import { getChainIdByChain, GetWeb3Provider } from '~/utils/web3';
+import { getProvider } from '~/utils/wallet';
 
 export default {
   name: 'ModalSwap',
@@ -105,7 +106,13 @@ export default {
       account: 'web3/getAccount',
       options: 'modals/getOptions',
       currentToken: 'bridge/getToken',
+
+      connectionType: 'web3/getConnectionType',
     }),
+    getProviderByConnection() {
+      if (this.connectionType === ConnectionTypes.WEB3) return GetWeb3Provider;
+      return getProvider;
+    },
     tokens() {
       const availableTokens = [TokenSymbols.WQT];
       const { from, to } = this.options;
@@ -119,6 +126,15 @@ export default {
       const chain = this.options?.to?.chain;
       if (chain === Chains.WORKNET) return this.convertToBech32('wq', this.account.address);
       return this.account.address;
+    },
+    account() {
+      if (this.connectionType === ConnectionTypes.WEB3) {
+        return this.$store.getters['web3/getAccount'];
+      }
+      return {
+        address: this.$store.getters['user/getUserWalletAddress'],
+        netId: 4, // TODO: handle net id for wq wallet
+      };
     },
   },
   watch: {
@@ -147,11 +163,13 @@ export default {
       const { to, from } = this.options;
 
       await this.fetchBalance({
+        accountAddress: this.account.address,
         symbol,
         toChainIndex: to.index,
         tokenAddress: from.tokenAddress[symbol],
         bridgeAddress: BridgeAddresses[from.chain],
         isNative: from.nativeSymbol === symbol,
+        provider: this.getProviderByConnection(),
       });
     },
     setMaxValue() {

@@ -14,13 +14,14 @@
           <base-btn
             mode="light"
             class="header__btn"
+            :disabled="connectionType !== $options.ConnectionTypes.WEB3"
             :data-selector="!isConnected ? 'CONNECT-WALLET' : 'DISCONNECT-FROM-WALLET'"
             @click="toggleConnection"
           >
             {{ !isConnected ? $t('mining.connectWallet') : $t('meta.disconnect') }}
           </base-btn>
           <p
-            v-if="isConnected"
+            v-if="!isWeb3Connection || isConnected"
             class="header__address"
           >
             {{ $t('info.yourWallet') }}
@@ -30,6 +31,8 @@
           </p>
         </div>
       </div>
+
+      <wallet-switcher />
 
       <div class="bridge-page__content">
         <div class="info-block">
@@ -80,7 +83,7 @@
           <div class="info-block__btns-cont">
             <base-btn
               data-selector="SHOW-SWAP-MODAL"
-              :disabled="metamaskStatus === 'notInstalled' || !isConnected"
+              :disabled="isWeb3Connection && (metamaskStatus === 'notInstalled' || !isConnected)"
               @click="showSwapModal"
             >
               {{ $t('bridge.createSwap') }}
@@ -148,7 +151,7 @@
                     class="btn__redeem"
                     :class="!el.item.status ? 'btn__redeem_disabled' : ''"
                     mode="outline"
-                    :disabled="!el.item.status || !isConnected"
+                    :disabled="!el.item.status || (!isConnected && isWeb3Connection)"
                     @click="redeemAction(el.item)"
                   >
                     {{ el.item.status ? $t('meta.redeem') : $t('meta.redeemed') }}
@@ -180,14 +183,17 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import modals from '~/store/modals/modals';
-import { Chains, Layout } from '~/utils/enums';
+import { Chains, ConnectionTypes, Layout } from '~/utils/enums';
 import { BridgeAddresses, SwapAddresses } from '~/utils/сonstants/bridge';
 import { getChainIdByChain } from '~/utils/web3';
 import { images } from '~/utils/images';
 import { LoaderStatusLocales } from '~/utils/loader';
+import WalletSwitcher from '~/components/app/WalletSwitcher';
 
 export default {
   name: 'Bridge',
+  components: { WalletSwitcher },
+  ConnectionTypes,
   layout({ store }) {
     return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
   },
@@ -209,14 +215,26 @@ export default {
       isAuth: 'user/isAuth',
       token: 'user/accessToken',
 
-      account: 'web3/getAccount',
       isConnected: 'web3/isConnected',
 
       swaps: 'bridge/getSwaps',
       swapsCount: 'bridge/getSwapsCount',
 
       connections: 'main/notificationsConnectionStatus',
+
+      connectionType: 'web3/getConnectionType',
+      providerByConnection: 'web3/getProviderByConnection',
     }),
+    isWeb3Connection() {
+      return this.connectionType === ConnectionTypes.WEB3;
+    },
+    account() {
+      if (this.isWeb3Connection) return this.$store.getters['web3/getAccount'];
+      return {
+        address: this.$store.getters['user/getUserWalletAddress'],
+        netId: 4, // TODO: need to get netId
+      };
+    },
     tableFields() {
       const cellStyle = {
         thStyle: { padding: '0', height: '27px', lineHeight: '27px' },
@@ -269,16 +287,15 @@ export default {
     },
   },
   watch: {
+    connectionType() {
+      this.handlerDisconnect();
+      this.toggleConnection();
+    },
     sourceAddressInd(newIdx, oldIdx) {
       if (this.targetAddressInd === newIdx) this.targetAddressInd = oldIdx;
     },
     targetAddressInd(newIdx, oldIdx) {
       if (this.sourceAddressInd === newIdx) this.sourceAddressInd = oldIdx;
-    },
-    async isConnected() {
-      if (typeof this.account.address === 'string') {
-        await this.swapsTableData(this.account.address, this.isConnected);
-      }
     },
     async page() {
       this.query.offset = (this.page - 1) * this.query.limit;
@@ -286,9 +303,12 @@ export default {
     },
   },
   async mounted() {
-    if (!this.isConnected) await this.toggleConnection();
+    if (this.connectionType === ConnectionTypes.WEB3 && !this.isConnected) {
+      await this.toggleConnection();
+    }
   },
   async beforeDestroy() {
+    await this.$store.dispatch('wallet/connectToProvider', Chains.WORKNET);
     const preventDisconnect = sessionStorage.getItem('preventDisconnectWeb3');
     sessionStorage.removeItem('preventDisconnectWeb3');
     if (preventDisconnect) return;
@@ -317,23 +337,31 @@ export default {
       return CutTxn(recipient);
     },
     async toggleConnection() {
-      const { isConnected, addresses, sourceAddressInd } = this;
-      if (isConnected) await this.handlerDisconnect();
+      const {
+        isWeb3Connection, isConnected, addresses, sourceAddressInd,
+      } = this;
+      if (isWeb3Connection && isConnected) await this.handlerDisconnect();
       else {
         const { chain } = addresses[sourceAddressInd];
-        await this.connectWallet({ chain });
-        await this.subscribe(this.account.address);
+        if (isWeb3Connection) await this.connectWallet({ chain });
+        else await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+        await Promise.all([
+          this.subscribe(this.account.address),
+          this.swapsTableData(),
+        ]);
       }
     },
     async handlerDisconnect() {
       clearInterval(this.updateInterval);
       this.updateInterval = null;
-      await this.unsubscribe(this.account.address);
-      await this.disconnectWallet();
-      await this.resetSwaps();
+      await Promise.all([
+        this.unsubscribe(this.account.address),
+        this.resetSwaps(),
+        this.disconnectWallet(), // web3
+      ]);
     },
     async swapsTableData() {
-      if (!this.isConnected) return;
+      if (this.isWeb3Connection && !this.isConnected) return;
       const { account, query } = this;
       await this.fetchSwaps({
         recipientAddress: account.address,
@@ -364,7 +392,7 @@ export default {
       }
       return true;
     },
-    async redeemAction({ chain, signData, chainTo }) {
+    async redeemAction({ chain, signData, chainTo }) { // TODO: fix redeem!
       this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
       if (await this.checkNetwork(chain)) {
         const { ok } = await this.redeem({ signData, chainTo });
@@ -376,55 +404,62 @@ export default {
     },
 
     async showSwapModal() {
-      const { addresses, sourceAddressInd, targetAddressInd } = this;
+      const {
+        isWeb3Connection, addresses, sourceAddressInd, targetAddressInd,
+      } = this;
       const { chain } = addresses[sourceAddressInd];
-      if (await this.checkNetwork(chain)) {
-        const from = addresses[sourceAddressInd];
-        const to = addresses[targetAddressInd];
-        this.ShowModal({
-          key: modals.swap,
-          from,
-          to,
-          submit: async ({ amount, symbol, isNative }) => {
-            this.ShowModal({
-              key: modals.swapInfo,
-              amount,
-              symbol,
-              from,
-              chain: from.chain,
-              recipient: this.account.address,
-              networks: `${from.chain} > ${to.chain}`,
-              fromNetwork: from.chain,
-              toNetwork: to.chain,
-              submit: async () => {
-                this.CloseModal();
-                if (!this.account?.netId) {
-                  this.ShowToast(this.$t('meta.disconnect'));
-                  return;
-                }
-                this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
-                this.page = 1;
-                const { ok, result } = await this.swap({
-                  amount,
-                  symbol,
-                  isNative,
-                  toChainIndex: to.index,
-                  tokenAddress: from.tokenAddress[symbol],
-                  bridgeAddress: BridgeAddresses[from.chain],
-                });
-                this.SetLoader(false);
-
-                this.ShowModal({
-                  key: modals.status,
-                  img: !ok ? images.WARNING : images.SUCCESS,
-                  title: !ok ? this.$t('modals.transactionFail') : this.$t('modals.transactionSent'),
-                  link: !ok ? '' : `${from.explorer}/tx/${result?.transactionHash}`,
-                });
-              },
-            });
-          },
-        });
+      if (isWeb3Connection) await this.checkNetwork(chain);
+      else {
+        await this.$store.dispatch('wallet/connectToProvider', chain);
       }
+
+      const from = addresses[sourceAddressInd];
+      const to = addresses[targetAddressInd];
+
+      this.ShowModal({
+        key: modals.swap,
+        from,
+        to,
+        submit: async ({ amount, symbol, isNative }) => {
+          this.ShowModal({
+            key: modals.swapInfo,
+            amount,
+            symbol,
+            from,
+            chain: from.chain,
+            recipient: this.account.address,
+            networks: `${from.chain} > ${to.chain}`,
+            fromNetwork: from.chain,
+            toNetwork: to.chain,
+            submit: async () => {
+              this.CloseModal();
+              if (!this.account?.netId) {
+                this.ShowToast(this.$t('meta.disconnect'));
+                return;
+              }
+              this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
+              this.page = 1;
+              const { ok, result } = await this.swap({
+                amount,
+                symbol,
+                isNative,
+                toChainIndex: to.index,
+                tokenAddress: from.tokenAddress[symbol],
+                bridgeAddress: BridgeAddresses[from.chain],
+                provider: this.providerByConnection,
+              });
+              this.SetLoader(false);
+
+              this.ShowModal({
+                key: modals.status,
+                img: !ok ? images.WARNING : images.SUCCESS,
+                title: !ok ? this.$t('modals.transactionFail') : this.$t('modals.transactionSent'),
+                link: !ok ? '' : `${from.explorer}/tx/${result?.transactionHash}`,
+              });
+            },
+          });
+        },
+      });
     },
   },
 };

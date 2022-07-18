@@ -74,14 +74,21 @@ export default {
     }
   },
 
-  async fetchBalance({ commit, dispatch, getters }, {
-    symbol, toChainIndex, isNative, tokenAddress, bridgeAddress,
+  async fetchBalance({
+    commit, dispatch, getters,
+  }, {
+    accountAddress, symbol, toChainIndex, isNative, tokenAddress, bridgeAddress, provider,
   }) {
     try {
-      const accountAddress = await getAccountAddress();
+      if (!provider) {
+        console.error('web3/fetchBalance provider undefined');
+        return error();
+      }
       if (isNative) {
-        const balance = await getNativeBalance();
-        const nonce = await getTransactionCount();
+        const [balance, nonce] = await Promise.all([
+          getNativeBalance(accountAddress, provider),
+          getTransactionCount(accountAddress, provider),
+        ]);
         if (new BigNumber(balance).isEqualTo(0)) {
           commit('setToken', { amount: 0 });
           return success();
@@ -93,14 +100,15 @@ export default {
           'swap',
           [nonce, toChainIndex, balance, accountAddress, symbol],
           balance,
+          provider,
         );
 
         const tokenBalance = new BigNumber(balance).shiftedBy(-18).minus(+txFee);
         commit('setToken', { amount: tokenBalance.isLessThan(0) ? 0 : tokenBalance.toNumber() });
       } else {
         const [decimal, amount] = await Promise.all([
-          fetchContractData('decimals', ERC20, tokenAddress),
-          fetchContractData('balanceOf', ERC20, tokenAddress, [accountAddress]),
+          fetchContractData('decimals', ERC20, tokenAddress, [], provider),
+          fetchContractData('balanceOf', ERC20, tokenAddress, [accountAddress], provider),
         ]);
         commit('setToken', {
           decimal,
@@ -114,14 +122,19 @@ export default {
   },
 
   async swap({ commit, dispatch }, {
-    amount, tokenAddress, bridgeAddress, isNative, symbol, toChainIndex,
+    amount, tokenAddress, bridgeAddress, isNative, symbol, toChainIndex, provider,
   }) {
     try {
+      if (!provider) {
+        return error(-1, 'Provider is not connected');
+      }
+
       const nonce = await getTransactionCount();
       const accountAddress = await getAccountAddress();
       const value = new BigNumber(amount).shiftedBy(symbol === TokenSymbols.USDT ? 6 : 18).toString();
       const data = [nonce, toChainIndex, value, accountAddress, symbol];
-      const bridgeInstance = await createInstance(WQBridge, bridgeAddress);
+
+      const bridgeInstance = await new provider.eth.Contract(WQBridge, bridgeAddress);
 
       if (isNative) {
         showToast('Swapping', 'Swapping...', 'success');
@@ -139,10 +152,10 @@ export default {
         return success(swapRes);
       }
 
-      const allowance = await fetchContractData('allowance', ERC20, tokenAddress, [accountAddress, bridgeAddress]);
+      const allowance = await fetchContractData('allowance', ERC20, tokenAddress, [accountAddress, bridgeAddress], provider);
       if (new BigNumber(value).isGreaterThan(+allowance)) {
         showToast('Swapping', 'Approving...', 'success');
-        const tokenInstance = await createInstance(ERC20, tokenAddress);
+        const tokenInstance = createInstance(ERC20, tokenAddress);
         const { status } = await tokenInstance.methods.approve(bridgeAddress, value).send({ from: accountAddress });
         if (!status) return error(500, 'Approve was failed');
         showToast('Swapping', 'Approving done', 'success');
@@ -150,7 +163,7 @@ export default {
 
       showToast('Swapping', 'Swapping...', 'success');
       const [gasPrice, gas] = await Promise.all([
-        getGasPrice(),
+        provider.eth.getGasPrice(),
         getEstimateGas(null, null, bridgeInstance, 'swap', data),
       ]);
       const swapRes = await bridgeInstance.methods.swap(...data).send({
