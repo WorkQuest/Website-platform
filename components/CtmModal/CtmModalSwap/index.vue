@@ -27,6 +27,7 @@
               {{ $t('modals.amount') }}
             </div>
             <base-field
+              ref="amount"
               v-model.lazy="amount"
               type="number"
               placeholder="0,05"
@@ -174,7 +175,8 @@ export default {
     },
     setMaxValue() {
       this.amount = this.currentToken.amount;
-      this.$refs.observer.validate();
+      this.$refs.amount.$refs.input.focus();
+      this.$refs.amount.$refs.input.blur();
     },
     async showSwapInfoModal() {
       this.amount = (this.amount.toString()).replace(/[,]/g, '.');
