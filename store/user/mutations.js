@@ -2,6 +2,9 @@ import { accessLifetime, refreshLifetime } from '~/utils/сonstants/cookiesLifet
 import { Path } from '~/utils/enums';
 
 export default {
+  setTwoFAPassed(state, value) {
+    state.twoFAPassed = value;
+  },
   setLang(state, data) {
     state.currentLang = data;
   },
@@ -52,7 +55,6 @@ export default {
     this.$cookies.remove('socialNetwork');
     this.$cookies.remove('questDraft');
     this.$cookies.remove('notificationPage');
-    this.$cookies.remove('2fa');
 
     const redirectTo = sessionStorage.getItem('redirectTo');
     sessionStorage.clear();

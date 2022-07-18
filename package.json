@@ -28,6 +28,7 @@
     "cross-env": "^7.0.3",
     "crypto-js": "^4.1.1",
     "ethers": "^5.5.2",
+    "heic2any": "0.0.3",
     "nuxt": "^2.15.8",
     "ua-parser-js": "1.0.1",
     "vee-validate": "^3.4.5",

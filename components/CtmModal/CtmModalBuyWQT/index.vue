@@ -198,8 +198,8 @@ export default {
           const [gasPrice, gasEstimate] = await Promise.all([
             provider.eth.getGasPrice(),
             provider.eth.estimateGas({
-              from: address,
-              to: address,
+              from: this.userWalletAddress,
+              to: this.userWalletAddress,
               value,
             }),
           ]);

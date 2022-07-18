@@ -152,7 +152,7 @@
               :limit="10"
               :limit-bytes="10485760"
               :limit-bytes-video="10485760"
-              :accept="'image/png, image/jpg, image/jpeg, video/mp4'"
+              :accept="'image/png, image/jpg, image/jpeg, video/mp4, image/heic'"
               :preloaded-files="questData.medias"
               @change="updateFiles"
             />
@@ -278,6 +278,7 @@ export default {
       questData: 'quests/getQuest',
       step: 'quests/getCurrentStepEditQuest',
       userData: 'user/getUserData',
+      twoFAPassed: 'user/getTwoFAPassed',
     }),
     days() {
       const days = [];
@@ -382,11 +383,11 @@ export default {
     this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
   async mounted() {
-    const check = this.$cookies.get('2fa');
-    if (this.mode !== 'raise' && (!this.userData.totpIsActive || !check)) {
+    if (this.mode !== 'raise' && (!this.userData.totpIsActive || !this.twoFAPassed)) {
       await this.$router.push(`${Path.QUESTS}/${this.$route.params.id}`);
       return;
     }
+    this.$store.commit('user/setTwoFAPassed', false);
 
     if (!this.isWalletConnected) return;
 

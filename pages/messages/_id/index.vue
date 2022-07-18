@@ -75,7 +75,7 @@
             <div class="chat-container__file-cont">
               <ValidationProvider
                 v-slot="{validate}"
-                rules="required|ext:png,jpeg,jpg,mp4,pdf,doc"
+                rules="required|ext:png,jpeg,jpg,mp4,pdf,doc,heic"
               >
                 <input
                   id="input__file"
@@ -325,10 +325,16 @@ export default {
       const validFiles = [];
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        // eslint-disable-next-line no-await-in-loop
-        const isValid = await validate(file);
-        if (isValid.valid) validFiles.push(file);
+        let file = files[i];
+        if (file.type === 'image/heic') {
+          // eslint-disable-next-line no-await-in-loop
+          file = await this.HEICConvertTo(file);
+        }
+        if (file) {
+          // eslint-disable-next-line no-await-in-loop
+          const isValid = await validate(ev);
+          if (isValid.valid) validFiles.push(file);
+        }
       }
 
       if (validFiles.length < files.length) {
