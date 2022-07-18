@@ -34,6 +34,7 @@ export default {
     commit('setIsConnected', false);
     commit('setAccount', {});
     localStorage.removeItem('walletconnect');
+    return success();
   },
 
   async connect({ commit, dispatch, getters }, payload) {
