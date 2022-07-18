@@ -1468,10 +1468,11 @@
     },
     "collateral": {
       "balance": "Залоговый баланс",
-      "coin": "монета",
-      "sum": "sum",
-      "amountInDollars": "amount in dollars",
-      "attentionQuotient": "attention quotient",
+      "collateralToken": "Collateral token",
+      "colRatio": "WUSD collateralization ratio",
+      "generatedAmount": "WUSD generated amount",
+      "lockedAmount": "Locked amount",
+      "generationTime": "Generation time",
       "addTitle": "Add collateral",
       "takeTitle": "Take collateral"
     },

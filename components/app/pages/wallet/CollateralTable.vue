@@ -1,28 +1,32 @@
 <template>
   <div class="collateral">
-    <div class="collateral__content">
-      <div class="collateral__title">
-        {{ $t('wallet.collateral.balance') }}
-      </div>
+    <div class="collateral__title">
+      {{ $t('wallet.collateral.balance') }}
+    </div>
+    <div
+      v-if="collateralsCount"
+      class="collateral__content"
+    >
       <div class="collateral__header table_grid">
-        <div>{{ $t('wallet.collateral.coin') }}</div>
-        <div>{{ $t('wallet.collateral.attentionQuotient') }}</div>
-        <div>{{ $t('wallet.collateral.sum') }}</div>
-        <div>{{ $t('wallet.collateral.amountInDollars') }}</div>
-        <div>{{ $t('wallet.collateral.amountInDollars') }}</div>
+        <div>{{ $t('wallet.collateral.collateralToken') }}</div>
+        <div>{{ $t('wallet.collateral.lockedAmount') }}</div>
+        <div>{{ $t('wallet.collateral.colRatio') }}</div>
+        <div>{{ $t('wallet.collateral.generatedAmount') }}</div>
+        <div>{{ $t('wallet.table.txHash') }}</div>
+        <div>{{ $t('wallet.collateral.generationTime') }}</div>
       </div>
       <div
-        v-for="(item, i) of items"
+        v-for="(item, i) of collaterals"
         :key="i"
-        class="table_grid item"
+        class="collateral__table table_grid item"
       >
         <div class="item__coin">
           <img
-            :src="require('~/assets/img/ui/ethereum.svg')"
+            :src="getCollateralIcon(item.symbol)"
             alt=""
             class="item__coin-icon"
           >
-          {{ item.coin }}
+          {{ item.symbol }}
         </div>
         <div>{{ item.attentionQuotient }}</div>
         <div>{{ item.sum }}</div>
@@ -45,8 +49,8 @@
       </div>
     </div>
     <empty-data
-      v-if="!items.length"
-      :description="$t('meta.listIsEmpty')"
+      v-else
+      :description="$tc('meta.listIsEmpty')"
       class="table__empty"
     />
     <base-pager
@@ -59,10 +63,16 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { images } from '~/utils/images';
+import { TokenSymbols } from '~/utils/enums';
+
+const LIMIT = 5;
 
 export default {
   name: 'CollateralTable',
+  images,
   data() {
     return {
       page: 1,
@@ -77,13 +87,33 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      collaterals: 'collateral/getCollaterals',
+      collateralsCount: 'collateral/getCollateralsCount',
+
+      walletAddress: 'user/getUserWalletAddress',
+    }),
     totalPages() {
-      const len = this.items.length;
-      if (!len) return len;
-      return Math.ceil(len / this.itemsPerPage);
+      return Math.ceil(this.collateralsCount / LIMIT) || 0;
     },
   },
+  async mounted() {
+    await this.fetchCollaterals({
+      address: this.walletAddress,
+      params: { limit: LIMIT, offset: 0 },
+    });
+  },
   methods: {
+    ...mapActions({
+      fetchCollaterals: 'collateral/fetchCollaterals',
+    }),
+    getCollateralIcon(symbol) {
+      if (TokenSymbols.USDT === symbol) return images.USDT;
+      if (TokenSymbols.ETH === symbol) return images.ETH_BLACK;
+      if (TokenSymbols.BNB === symbol) return images.BNB;
+      return images.EMPTY_LOGO;
+    },
+
     handleAdd() {
       this.ShowModal({
         key: modals.collateralTransaction,
@@ -127,7 +157,7 @@ export default {
   &_grid {
     min-width: 1180px;
     display: grid;
-    grid-template-columns: 160px repeat(4, 1fr) 260px;
+    grid-template-columns: 160px repeat(5, 1fr) 260px;
     align-items: center;
     padding: 0 12px;
     margin-top: 12px;
