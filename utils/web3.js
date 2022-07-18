@@ -128,7 +128,6 @@ export const goToChain = async (chain) => {
 
 export const fetchContractData = async (_method, _abi, _address, _params, _provider = web3) => {
   try {
-    console.log(_method, _provider, _address);
     if (!_provider) {
       console.error('_provider is undefined');
       return false;
