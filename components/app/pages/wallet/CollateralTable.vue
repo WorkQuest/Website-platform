@@ -28,24 +28,25 @@
           >
           {{ item.symbol }}
         </div>
-        <div>{{ item.attentionQuotient }}</div>
-        <div>{{ item.sum }}</div>
-        <div>{{ item.amountInDollars1 }}</div>
-        <div>{{ item.amountInDollars2 }}</div>
-        <div class="item__actions">
-          <base-btn
-            data-selector="ADD"
-            @click="handleAdd"
-          >
-            {{ $t('meta.btns.add') }}
-          </base-btn>
-          <base-btn
-            data-selector="TAKE"
-            @click="handleTake"
-          >
-            {{ $t('meta.btns.take') }}
-          </base-btn>
-        </div>
+        <div>{{ item.lockedAmount }}</div>
+        <div>{{ item.collateralizationRatio }}</div>
+        <div>{{ item.wusdGenerated }}</div>
+        <div>{{ CutTxn(item.txHash || '0xdcfe0996e2f645809e011136aa6b77b353d67f66b543e7a503067f2d07b53645') }}</div>
+        <div>{{ item.time || $moment().format('MMMM Do YYYY, hh:mm a') }}</div>
+        <!--        <div class="item__actions">-->
+        <!--          <base-btn-->
+        <!--            data-selector="ADD"-->
+        <!--            @click="handleAdd"-->
+        <!--          >-->
+        <!--            {{ $t('meta.btns.add') }}-->
+        <!--          </base-btn>-->
+        <!--          <base-btn-->
+        <!--            data-selector="TAKE"-->
+        <!--            @click="handleTake"-->
+        <!--          >-->
+        <!--            {{ $t('meta.btns.take') }}-->
+        <!--          </base-btn>-->
+        <!--        </div>-->
       </div>
     </div>
     <empty-data
@@ -157,7 +158,7 @@ export default {
   &_grid {
     min-width: 1180px;
     display: grid;
-    grid-template-columns: 160px repeat(5, 1fr) 260px;
+    grid-template-columns: 160px repeat(5, 1fr);
     align-items: center;
     padding: 0 12px;
     margin-top: 12px;

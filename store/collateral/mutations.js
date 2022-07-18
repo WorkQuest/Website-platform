@@ -1,6 +1,6 @@
 export default {
-  setCollaterals(state, { collaterals, count }) {
-    state.collaterals = collaterals;
+  setCollaterals(state, { collateral, count }) {
+    state.collaterals = collateral;
     state.collateralsCount = count;
   },
 };
