@@ -190,10 +190,12 @@ import { images } from '~/utils/images';
 import { LoaderStatusLocales } from '~/utils/loader';
 import WalletSwitcher from '~/components/app/WalletSwitcher';
 import { GetWalletProvider } from '~/utils/wallet';
+import walletOperations from '~/plugins/mixins/walletOperations';
 
 export default {
   name: 'Bridge',
   components: { WalletSwitcher },
+  mixins: [walletOperations],
   ConnectionTypes,
   layout({ store }) {
     return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
@@ -477,7 +479,6 @@ export default {
             return;
           }
 
-          // todo: fix error  _this10.MakeApprove is not a function ON swapping !native token
           await this.MakeApprove({
             contractAddress: BridgeAddresses[from.chain],
             tokenAddress: from.tokenAddress[symbol],
