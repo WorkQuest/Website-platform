@@ -185,6 +185,7 @@ export default {
         amount: this.amount,
         symbol: this.tokens[this.tokenId],
         isNative: from.nativeSymbol === this.tokens[this.tokenId],
+        decimals: this.currentToken.decimals,
       });
     },
   },

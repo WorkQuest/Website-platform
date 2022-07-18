@@ -436,51 +436,114 @@ export default {
         key: modals.swap,
         from,
         to,
-        submit: async ({ amount, symbol, isNative }) => {
-          this.ShowModal({
-            key: modals.swapInfo,
+        submit: async ({
+          amount, symbol, isNative, decimals,
+        }) => {
+          if (this.isWeb3Connection) {
+            await this.swapWeb3(from, to, amount, symbol, isNative);
+            return;
+          }
+          await this.swapWQWallet(from, to, amount, symbol, isNative, decimals);
+        },
+      });
+    },
+
+    // Swap for work quest wallet
+    async swapWQWallet(from, to, amount, symbol, isNative, decimals) {
+      const nativeTokenSymbol = SwapAddresses.get(from.chain).nativeSymbol;
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        fields: {
+          bridge: { name: 'WorkQuest Bridge', value: `${from.chain} > ${to.chain}` },
+          amount: { name: 'Amount', value: amount, symbol },
+          sender: { name: 'Sender Address', value: this.account.address },
+          recipient: { name: 'Recipient Address', value: this.account.address },
+        },
+        submitMethod: async () => {
+          const swap = async () => {
+            console.log('swap receipt');
+            // TODO: нужноп получить swap fee и вызывать transaction receipt -> вызывать handleSwap
+            this.ShowModal({
+              key: modals.transactionReceipt,
+              title: 'Swap',
+              fields: {
+                todoFee: { name: 'fee', value: 'some value', symbol: nativeTokenSymbol }, // todo: fetch fee
+              },
+              submitMethod: async () => await this.handleSwap(from, to, amount, symbol, isNative),
+            });
+          };
+          if (isNative) {
+            await swap();
+            return;
+          }
+
+          // todo: fix error  _this10.MakeApprove is not a function ON swapping !native token
+          await this.MakeApprove({
+            contractAddress: BridgeAddresses[from.chain],
+            tokenAddress: from.tokenAddress[symbol],
             amount,
+            decimals,
             symbol,
-            from,
-            chain: from.chain,
-            recipient: this.account.address,
-            networks: `${from.chain} > ${to.chain}`,
-            fromNetwork: from.chain,
-            toNetwork: to.chain,
-            submit: async () => {
-              // TODO: for WQ wallet need to show tx receipt modal
-              this.CloseModal();
-              if (this.isWeb3Connection && !this.account?.netId) {
-                this.ShowToast(this.$t('meta.disconnect'));
-                return;
-              }
-              this.SetLoader({
-                isLoading: true,
-                statusText: this.isWeb3Connection ? LoaderStatusLocales.waitingForTxExternalApp : LoaderStatusLocales.pleaseWaitTx,
-              });
-              const { ok, result } = await this.swap({
-                amount,
-                symbol,
-                isNative,
-                toChainIndex: to.index,
-                tokenAddress: from.tokenAddress[symbol],
-                bridgeAddress: BridgeAddresses[from.chain],
-                provider: this.getProviderByConnection(),
-                accountAddress: this.account.address,
-              });
-              if (ok) {
-                this.page = 1;
-              }
-              this.SetLoader(false);
-              this.ShowModal({
-                key: modals.status,
-                img: !ok ? images.WARNING : images.SUCCESS,
-                title: !ok ? this.$t('modals.transactionFail') : this.$t('modals.transactionSent'),
-                link: !ok ? '' : `${from.explorer}/tx/${result?.transactionHash}`,
-              });
-            },
+            nativeTokenSymbol,
+            isHexUserWalletAddress: true,
+          }).then(async () => {
+            await swap();
+          }).catch((err) => {
+            console.error(err);
+          }).finally(() => {
+            this.SetLoader(false);
           });
         },
+      });
+    },
+    // Swap for metamask
+    async swapWeb3(from, to, amount, symbol, isNative) {
+      this.ShowModal({
+        key: modals.swapInfo,
+        amount,
+        symbol,
+        from,
+        chain: from.chain,
+        recipient: this.account.address,
+        networks: `${from.chain} > ${to.chain}`,
+        fromNetwork: from.chain,
+        toNetwork: to.chain,
+        submit: async () => {
+          this.CloseModal();
+          if (!this.account?.netId) {
+            this.ShowToast(this.$t('meta.disconnect'));
+            return;
+          }
+          await this.handleSwap(from, to, amount, symbol, isNative);
+        },
+      });
+    },
+
+    // sending swap transaction
+    async handleSwap(from, to, amount, symbol, isNative) {
+      this.SetLoader({
+        isLoading: true,
+        statusText: this.isWeb3Connection ? LoaderStatusLocales.waitingForTxExternalApp : LoaderStatusLocales.pleaseWaitTx,
+      });
+      const { ok, result } = await this.swap({
+        amount,
+        symbol,
+        isNative,
+        toChainIndex: to.index,
+        tokenAddress: from.tokenAddress[symbol],
+        bridgeAddress: BridgeAddresses[from.chain],
+        provider: this.getProviderByConnection(),
+        accountAddress: this.account.address,
+      });
+      if (ok) {
+        this.page = 1;
+      }
+      this.SetLoader(false);
+      this.ShowModal({
+        key: modals.status,
+        img: !ok ? images.WARNING : images.SUCCESS,
+        title: !ok ? this.$t('modals.transactionFail') : this.$t('modals.transactionSent'),
+        link: !ok ? '' : `${from.explorer}/tx/${result?.transactionHash}`,
       });
     },
   },
