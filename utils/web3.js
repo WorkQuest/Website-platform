@@ -31,7 +31,7 @@ if (process.browser) {
 export const getAccountAddress = () => account?.address;
 export const getAccount = () => account;
 
-export const showToast = (title, text, variant) => store.dispatch('main/showToast', {
+export const showToast = (title, text, variant) => store?.dispatch('main/showToast', {
   title,
   text,
   variant,
@@ -149,7 +149,7 @@ export const sendTransaction = async (_method, payload, _provider = web3) => {
   const inst = new _provider.eth.Contract(payload.abi, payload.address);
   const gasPrice = await _provider.eth.getGasPrice();
   const accountAddress = await web3.eth.getCoinbase();
-  if (_method === 'claim') {
+  if (_method === 'claim') { // TODO: вынести в стор места вызова
     const data = inst.methods[_method].apply(null).encodeABI();
     const gasEstimate = await inst.methods[_method].apply(null).estimateGas({ from: accountAddress });
     transactionData = {

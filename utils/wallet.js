@@ -38,7 +38,6 @@ export const getCipherKey = () => cipherKey;
 export const setCipherKey = (key) => cipherKey = key;
 
 let web3 = new Web3(ENV.WQ_PROVIDER);
-export const getProvider = () => web3;
 export const createInstance = (_abi, _address) => new web3.eth.Contract(_abi, _address);
 
 let isEthNetwork = false;

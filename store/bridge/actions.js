@@ -9,13 +9,11 @@ import {
   error,
   success,
   showToast,
-  getGasPrice,
   getEstimateGas,
   sendTransaction,
   getNativeBalance,
   getTransactionFee,
   fetchContractData,
-  getAccountAddress,
   createInstance,
   getTransactionCount,
 } from '~/utils/web3';
@@ -55,7 +53,9 @@ export default {
     commit('resetSwapsData');
   },
 
-  async redeemSwap({ commit }, { signData, chainTo }) {
+  async redeemSwap({ commit }, { signData, chainTo, provider }) {
+    console.log(await provider.eth.getCoinbase());
+    if (provider) return false;
     const bridgeAddress = BridgeAddresses[BlockchainByIndex[chainTo]];
     try {
       showToast('Redeeming', 'Redeem...', 'success');
@@ -64,8 +64,8 @@ export default {
         address: bridgeAddress,
         data: signData,
         userAddress: signData[3],
-      });
-      return success(response);
+      }, provider);
+      return response ? success(response) : error();
     } catch (e) {
       console.error('bridge/redeem', e);
       const isAlreadyRedeemed = e.message.includes('Swap is not empty state or duplicate transaction');
@@ -122,24 +122,23 @@ export default {
   },
 
   async swap({ commit, dispatch }, {
-    amount, tokenAddress, bridgeAddress, isNative, symbol, toChainIndex, provider,
+    amount, tokenAddress, bridgeAddress, isNative, symbol, toChainIndex, provider, accountAddress,
   }) {
     try {
       if (!provider) {
         return error(-1, 'Provider is not connected');
       }
 
-      const nonce = await getTransactionCount();
-      const accountAddress = await getAccountAddress();
+      const nonce = await getTransactionCount(accountAddress, provider);
       const value = new BigNumber(amount).shiftedBy(symbol === TokenSymbols.USDT ? 6 : 18).toString();
       const data = [nonce, toChainIndex, value, accountAddress, symbol];
 
-      const bridgeInstance = await new provider.eth.Contract(WQBridge, bridgeAddress);
+      const bridgeInstance = new provider.eth.Contract(WQBridge, bridgeAddress);
 
       if (isNative) {
         showToast('Swapping', 'Swapping...', 'success');
         const [gasPrice, gas] = await Promise.all([
-          getGasPrice(),
+          provider.eth.getGasPrice(),
           getEstimateGas(null, null, bridgeInstance, 'swap', data, value),
         ]);
         const swapRes = await bridgeInstance.methods.swap(...data).send({

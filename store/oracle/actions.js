@@ -7,9 +7,8 @@ import {
 
 import {
   getGasPrice,
-  getProvider,
   createInstance,
-  getWalletAddress,
+  getWalletAddress, GetWalletProvider,
 } from '~/utils/wallet';
 
 import { WQOracle, WQRouter } from '~/abi';
@@ -102,7 +101,7 @@ export default {
         WQRouter,
         ENV.WORKNET_ROUTER,
         [currency],
-        getProvider(),
+        GetWalletProvider(),
       );
       commit('setMinRatio', new BigNumber(minRatio).shiftedBy(-18).multipliedBy(100).toNumber());
     } catch (e) {

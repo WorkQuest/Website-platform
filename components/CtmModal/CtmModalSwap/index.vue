@@ -91,7 +91,7 @@ import { mapActions, mapGetters } from 'vuex';
 import { Chains, ConnectionTypes, TokenSymbols } from '~/utils/enums';
 import { BridgeAddresses } from '~/utils/сonstants/bridge';
 import { getChainIdByChain, GetWeb3Provider } from '~/utils/web3';
-import { getProvider } from '~/utils/wallet';
+import { getProvider, GetWalletProvider } from '~/utils/wallet';
 
 export default {
   name: 'ModalSwap',
@@ -112,7 +112,7 @@ export default {
     }),
     getProviderByConnection() {
       if (this.connectionType === ConnectionTypes.WEB3) return GetWeb3Provider;
-      return getProvider;
+      return GetWalletProvider;
     },
     tokens() {
       const availableTokens = [TokenSymbols.WQT];
@@ -134,7 +134,7 @@ export default {
       }
       return {
         address: this.$store.getters['user/getUserWalletAddress'],
-        netId: 4, // TODO: handle net id for wq wallet
+        netId: 4, // TODO: handle net id for wq wallet?
       };
     },
   },

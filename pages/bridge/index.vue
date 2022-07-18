@@ -185,10 +185,11 @@ import { mapGetters, mapActions } from 'vuex';
 import modals from '~/store/modals/modals';
 import { Chains, ConnectionTypes, Layout } from '~/utils/enums';
 import { BridgeAddresses, SwapAddresses } from '~/utils/сonstants/bridge';
-import { getChainIdByChain } from '~/utils/web3';
+import { getChainIdByChain, GetWeb3Provider } from '~/utils/web3';
 import { images } from '~/utils/images';
 import { LoaderStatusLocales } from '~/utils/loader';
 import WalletSwitcher from '~/components/app/WalletSwitcher';
+import { GetWalletProvider } from '~/utils/wallet';
 
 export default {
   name: 'Bridge',
@@ -223,16 +224,19 @@ export default {
       connections: 'main/notificationsConnectionStatus',
 
       connectionType: 'web3/getConnectionType',
-      providerByConnection: 'web3/getProviderByConnection',
     }),
     isWeb3Connection() {
       return this.connectionType === ConnectionTypes.WEB3;
+    },
+    getProviderByConnection() {
+      if (this.isWeb3Connection) return GetWeb3Provider;
+      return GetWalletProvider;
     },
     account() {
       if (this.isWeb3Connection) return this.$store.getters['web3/getAccount'];
       return {
         address: this.$store.getters['user/getUserWalletAddress'],
-        netId: 4, // TODO: need to get netId
+        netId: 4, // TODO: need to get netId?
       };
     },
     tableFields() {
@@ -303,7 +307,7 @@ export default {
     },
   },
   async mounted() {
-    if (this.connectionType === ConnectionTypes.WEB3 && !this.isConnected) {
+    if ((this.connectionType === ConnectionTypes.WEB3 && !this.isConnected) || !this.swapsCount) {
       await this.toggleConnection();
     }
   },
@@ -392,14 +396,19 @@ export default {
       }
       return true;
     },
-    async redeemAction({ chain, signData, chainTo }) { // TODO: fix redeem!
-      this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
-      if (await this.checkNetwork(chain)) {
-        const { ok } = await this.redeem({ signData, chainTo });
+    async redeemAction({ chain, signData, chainTo }) {
+      this.SetLoader({
+        isLoading: true,
+        statusText: this.isWeb3Connection ? LoaderStatusLocales.waitingForTxExternalApp : LoaderStatusLocales.pleaseWaitTx,
+      });
+      if (this.isWeb3Connection) await this.checkNetwork(chain);
+      else await this.$store.dispatch('wallet/connectToProvider', chain);
 
-        if (ok) this.ShowModalSuccess({ title: this.$t('modals.redeem.success') });
-        else this.ShowModalFail({ title: this.$t('modals.redeem.fail') });
-      }
+      // TODO: for WQ wallet need to show tx receipt modal
+      const res = await this.redeem({ signData, chainTo, provider: this.getProviderByConnection() });
+      if (res.ok) this.ShowModalSuccess({ title: this.$t('modals.redeem.success') });
+      else this.ShowModalFail({ title: this.$t('modals.redeem.fail') });
+
       this.SetLoader(false);
     },
 
@@ -432,13 +441,16 @@ export default {
             fromNetwork: from.chain,
             toNetwork: to.chain,
             submit: async () => {
+              // TODO: for WQ wallet need to show tx receipt modal
               this.CloseModal();
-              if (!this.account?.netId) {
+              if (this.isWeb3Connection && !this.account?.netId) {
                 this.ShowToast(this.$t('meta.disconnect'));
                 return;
               }
-              this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
-              this.page = 1;
+              this.SetLoader({
+                isLoading: true,
+                statusText: this.isWeb3Connection ? LoaderStatusLocales.waitingForTxExternalApp : LoaderStatusLocales.pleaseWaitTx,
+              });
               const { ok, result } = await this.swap({
                 amount,
                 symbol,
@@ -446,10 +458,13 @@ export default {
                 toChainIndex: to.index,
                 tokenAddress: from.tokenAddress[symbol],
                 bridgeAddress: BridgeAddresses[from.chain],
-                provider: this.providerByConnection,
+                provider: this.getProviderByConnection(),
+                accountAddress: this.account.address,
               });
+              if (ok) {
+                this.page = 1;
+              }
               this.SetLoader(false);
-
               this.ShowModal({
                 key: modals.status,
                 img: !ok ? images.WARNING : images.SUCCESS,

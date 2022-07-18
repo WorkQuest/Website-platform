@@ -38,30 +38,37 @@ export default {
   ConnectionTypes,
   computed: {
     ...mapGetters({
+      userData: 'user/getUserData',
       connectionType: 'web3/getConnectionType',
+      isWalletConnected: 'wallet/getIsWalletConnected',
     }),
   },
   beforeMount() {
-    if (this.isWalletConnected()) this.$store.commit('web3/setConnectionType', ConnectionTypes.WQ_WALLET);
+    if (this.isWalletConnected) this.$store.commit('web3/setConnectionType', ConnectionTypes.WQ_WALLET);
   },
   methods: {
     isWalletConnected() {
       return getIsWalletConnected();
     },
-    handleSelect(connectionType) {
-      if (connectionType === ConnectionTypes.WQ_WALLET && !this.isWalletConnected()) {
-        this.ShowModal({
-          key: modals.status,
-          title: 'WorkQuest Wallet',
-          img: images.WARNING,
-          text: 'For using WQ Wallet you need to login on platform',
-          cancel: this.$t('meta.btns.close'),
-          button: this.$t('meta.login'),
-          callback: () => {
-            this.$router.push(Path.SIGN_IN);
-          },
-        });
-        return;
+    async handleSelect(connectionType) {
+      if (connectionType === ConnectionTypes.WQ_WALLET) {
+        if (!this.userData) {
+          this.ShowModal({
+            key: modals.status,
+            title: 'WorkQuest Wallet',
+            img: images.WARNING,
+            text: 'For using WQ Wallet you need to login on platform',
+            cancel: this.$t('meta.btns.close'),
+            button: this.$t('meta.login'),
+            callback: () => {
+              this.$router.push(Path.SIGN_IN);
+            },
+          });
+          return;
+        }
+        if (!this.isWalletConnected) {
+          await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+        }
       }
       this.$emit('selectedType', connectionType);
       this.$store.commit('web3/setConnectionType', connectionType);
