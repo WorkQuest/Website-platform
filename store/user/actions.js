@@ -7,14 +7,14 @@ import {
 
 import {
   GetWalletProvider,
-  connectWithMnemonic,
+  connectWithMnemonic, disconnect,
 } from '~/utils/wallet';
 
 import {
   UserStatuses,
   QuestModeReview,
   RaiseViewTariffPeriods,
-  TariffByIndex, Path,
+  TariffByIndex, Path, ConnectionTypes,
 } from '~/utils/enums';
 
 import { WQPromotion } from '~/abi/index';
@@ -179,6 +179,10 @@ export default {
       await this.$wsChatActions.disconnect();
       await this.$wsNotifs.disconnect();
       await dispatch('wallet/unsubscribeWS', null, { root: true });
+
+      disconnect(); // disconnect wq wallet
+      commit('web3/setConnectionType', ConnectionTypes.WEB3, { root: true });
+
       commit('logOut');
     } catch (e) {
       console.error('user/logout', e);
