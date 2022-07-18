@@ -53,24 +53,34 @@ export default {
     commit('resetSwapsData');
   },
 
-  async redeemSwap({ commit }, { signData, chainTo, provider }) {
-    console.log(await provider.eth.getCoinbase());
-    if (provider) return false;
-    const bridgeAddress = BridgeAddresses[BlockchainByIndex[chainTo]];
+  async redeemSwap({ commit }, {
+    signData, chainTo, provider, accountAddress,
+  }) {
     try {
       showToast('Redeeming', 'Redeem...', 'success');
-      const response = await sendTransaction('redeem', {
-        abi: WQBridge,
-        address: bridgeAddress,
-        data: signData,
-        userAddress: signData[3],
-      }, provider);
-      return response ? success(response) : error();
+
+      const bridgeAddress = BridgeAddresses[BlockchainByIndex[chainTo]];
+      const inst = new provider.eth.Contract(WQBridge, bridgeAddress);
+      const data = inst.methods.redeem.apply(null, signData).encodeABI();
+      const [gasPrice, gasEstimate] = await Promise.all([
+        provider.eth.getGasPrice(),
+        inst.methods.redeem.apply(null, signData).estimateGas({ from: accountAddress }),
+      ]);
+
+      const res = await provider.eth.sendTransaction({
+        to: bridgeAddress,
+        from: accountAddress,
+        data,
+        gasPrice,
+        gas: gasEstimate,
+      });
+
+      return success(res);
     } catch (e) {
       console.error('bridge/redeem', e);
       const isAlreadyRedeemed = e.message.includes('Swap is not empty state or duplicate transaction');
       showToast('Redeeming', isAlreadyRedeemed ? $nuxt.$t('toasts.alreadyRedeemed') : `${e.message}`, 'warning');
-      return error(500, 'redeem error', e);
+      return error(500, e.message, e);
     }
   },
 

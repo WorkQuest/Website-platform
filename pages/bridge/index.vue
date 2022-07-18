@@ -405,9 +405,16 @@ export default {
       else await this.$store.dispatch('wallet/connectToProvider', chain);
 
       // TODO: for WQ wallet need to show tx receipt modal
-      const res = await this.redeem({ signData, chainTo, provider: this.getProviderByConnection() });
-      if (res.ok) this.ShowModalSuccess({ title: this.$t('modals.redeem.success') });
-      else this.ShowModalFail({ title: this.$t('modals.redeem.fail') });
+      const res = await this.redeem({
+        signData, chainTo, provider: this.getProviderByConnection(), accountAddress: this.account.address,
+      });
+      if (res.ok) {
+        const link = `${SwapAddresses.get(chain).explorer}/tx/${res.result.transactionHash}`;
+        this.ShowModalSuccess({ title: this.$t('modals.redeem.success'), link });
+      } else {
+        console.log(res);
+        this.ShowModalFail({ title: this.$t('modals.redeem.fail'), subtitle: res.msg });
+      }
 
       this.SetLoader(false);
     },
