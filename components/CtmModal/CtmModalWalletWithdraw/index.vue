@@ -58,7 +58,7 @@
             </span>
             <base-field
               v-model="amount"
-              type="number"
+              type="customNumber"
               class="input__field"
               data-selector="AMOUNT"
               :placeholder="$t('modals.amount')"
