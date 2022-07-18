@@ -1468,9 +1468,9 @@
     "collateral": {
       "balance": "Collateral balance",
       "collateralToken": "Collateral token",
-      "colRatio": "WUSD collateralization ratio",
-      "generatedAmount": "WUSD generated amount",
-      "lockedAmount": "Locked amount",
+      "colRatio": "Ratio (%)",
+      "generatedAmount": "WUSD generated",
+      "lockedAmount": "Locked",
       "generationTime": "Generation time",
       "addTitle": "Add collateral",
       "takeTitle": "Take collateral"

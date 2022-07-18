@@ -46,9 +46,9 @@ export default {
       commit('setCollaterals', {
         collateral: collateral.map((item) => ({
           ...item,
-          lockedAmount: Number(new BigNumber(item.collateral).shiftedBy(-6).toFixed(3, 1)),
+          lockedAmount: Number(new BigNumber(item.collateral).shiftedBy(-6).toFixed(4, 1)),
           collateralizationRatio: new BigNumber(item.deposit).shiftedBy(-18).multipliedBy(100).toString(),
-          wusdGenerated: Number(new BigNumber(item.debt).shiftedBy(-18).toFixed(3, 1)),
+          wusdGenerated: Number(new BigNumber(item.debt).shiftedBy(-18).toFixed(4, 1)),
         })),
         count,
       });
