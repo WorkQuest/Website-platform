@@ -416,7 +416,6 @@ export default {
           const link = `${SwapAddresses.get(chain).explorer}/tx/${res.result.transactionHash}`;
           this.ShowModalSuccess({ title: this.$t('modals.redeem.success'), link });
         } else {
-          console.log(res);
           this.ShowModalFail({ title: this.$t('modals.redeem.fail'), subtitle: res.msg });
         }
         this.SetLoader(false);
@@ -437,7 +436,6 @@ export default {
         }),
         this.$store.dispatch('wallet/getBalance'),
       ]);
-      console.log('redeem fee res', feeRes, chain, chainTo, signData);
       if (!feeRes.ok) {
         this.ShowToast(feeRes.msg);
         return;
@@ -474,11 +472,8 @@ export default {
         submit: async ({
           amount, symbol, isNative, decimals,
         }) => {
-          if (this.isWeb3Connection) {
-            await this.swapWeb3(from, to, amount, symbol, isNative);
-            return;
-          }
-          await this.swapWQWallet(from, to, amount, symbol, isNative, decimals);
+          if (this.isWeb3Connection) await this.swapWeb3(from, to, amount, symbol, isNative);
+          else await this.swapWQWallet(from, to, amount, symbol, isNative, decimals);
         },
       });
     },
