@@ -8,7 +8,7 @@
       class="loader__custom custom"
     >
       <img
-        :src="require('~/assets/img/ui/wq-loader.svg')"
+        :src="require('~/static/img/app/wq-loader.svg')"
         class="custom__logo"
         alt=""
       >
@@ -68,7 +68,16 @@ export default {
       loaderMode: 'main/getLoaderMode',
       loaderProgress: 'main/getLoaderProgress',
       isLoaderBackgroundHider: 'main/getIsLoaderBackgroundHider',
+      isLoading: 'main/getIsLoading',
     }),
+  },
+  watch: {
+    isLoading(newVal) {
+      if (!newVal) {
+        this.$refs.firstLine.classList.add('custom__line_stopped-anim');
+        this.$refs.secondLine.classList.add('custom__line_stopped-anim');
+      }
+    },
   },
   beforeDestroy() {
     this.$refs.firstLine.classList.add('custom__line_stopped-anim');
@@ -129,6 +138,7 @@ export default {
 
 .custom {
   width: 400px;
+  margin-left: 50px;
   position: relative;
 
   &__logo {
@@ -159,7 +169,6 @@ export default {
     &_stopped-anim {
       animation: none;
       width: 200px;
-      transition: ease 0s;
     }
 
     &_bottom {
