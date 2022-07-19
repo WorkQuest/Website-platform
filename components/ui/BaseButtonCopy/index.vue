@@ -1,7 +1,7 @@
 <template>
   <button
     v-clipboard:copy="copyValue"
-    v-clipboard:success="ClipboardSuccessHandler"
+    v-clipboard:success="isShowToastSuccess ? ClipboardSuccessHandler : () => ShowToast(this.$t('modals.textCopy'), this.$t('createWallet.secretPhrase'))"
     v-clipboard:error="ClipboardErrorHandler"
     data-selector="COPY-BTN"
     type="button"
@@ -25,6 +25,10 @@ export default {
       type: String,
       default: '',
     },
+    isShowToastSuccess: {
+      type: Boolean,
+      default: true,
+    },
   },
   computed: {
     classByMode() {
@@ -33,6 +37,10 @@ export default {
           return 'two-auth';
         case 'wallet':
           return 'wallet';
+        case 'reward':
+          return 'reward';
+        case 'mnemonic':
+          return 'mnemonic';
         default: {
           return '';
         }
@@ -57,5 +65,17 @@ export default {
 
 .wallet {
   margin-left: 22px;
+}
+
+.reward {
+  & .icon-copy {
+    font-size: 15px;
+  }
+}
+
+.mnemonic {
+  & .icon-copy:hover::before {
+    color: $blue;
+  }
 }
 </style>
