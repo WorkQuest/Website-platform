@@ -108,6 +108,8 @@ export default {
       options: 'modals/getOptions',
       currentToken: 'bridge/getToken',
 
+      web3Account: 'web3/getAccount',
+      userWalletAddress: 'user/getUserWalletAddress',
       connectionType: 'web3/getConnectionType',
     }),
     getProviderByConnection() {
@@ -129,13 +131,8 @@ export default {
       return this.account.address;
     },
     account() {
-      if (this.connectionType === ConnectionTypes.WEB3) {
-        return this.$store.getters['web3/getAccount'];
-      }
-      return {
-        address: this.$store.getters['user/getUserWalletAddress'],
-        netId: 4, // TODO: handle net id for wq wallet?
-      };
+      if (this.connectionType === ConnectionTypes.WEB3) return this.web3Account;
+      return { address: this.userWalletAddress };
     },
   },
   watch: {

@@ -145,21 +145,7 @@ export default {
 
       const bridgeInstance = new provider.eth.Contract(WQBridge, bridgeAddress);
 
-      let swapRes;
-      if (isNative) {
-        showToast('Swapping', 'Swapping...', 'success');
-        const [gasPrice, gas] = await Promise.all([
-          provider.eth.getGasPrice(),
-          getEstimateGas(null, null, bridgeInstance, 'swap', data, value),
-        ]);
-        swapRes = await bridgeInstance.methods.swap(...data).send({
-          from: accountAddress,
-          value,
-          gasPrice,
-          gas,
-        });
-        showToast('Swapping', 'Swapping done', 'success');
-      } else {
+      if (!isNative) {
         const allowance = await fetchContractData('allowance', ERC20, tokenAddress, [accountAddress, bridgeAddress], provider);
         if (new BigNumber(value).isGreaterThan(+allowance)) {
           showToast('Swapping', 'Approving...', 'success');
@@ -168,17 +154,20 @@ export default {
           if (!status) return error(500, 'Approve was failed');
           showToast('Swapping', 'Approving done', 'success');
         }
-        showToast('Swapping', 'Swapping...', 'success');
-        const [gasPrice, gas] = await Promise.all([
-          provider.eth.getGasPrice(),
-          getEstimateGas(null, null, bridgeInstance, 'swap', data),
-        ]);
-        swapRes = await bridgeInstance.methods.swap(...data).send({
-          from: accountAddress,
-          gasPrice,
-          gas,
-        });
       }
+
+      const [gasPrice, gas] = await Promise.all([
+        provider.eth.getGasPrice(),
+        getEstimateGas(null, null, bridgeInstance, 'swap', data, isNative ? value : null),
+      ]);
+
+      showToast('Swapping', 'Swapping...', 'success');
+      const swapRes = await bridgeInstance.methods.swap(...data).send({
+        from: accountAddress,
+        value: isNative ? value : null,
+        gasPrice,
+        gas,
+      });
       showToast('Swapping', 'Swapping done', 'success');
 
       return success(swapRes);

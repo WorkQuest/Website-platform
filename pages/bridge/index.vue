@@ -182,15 +182,21 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { Chains, ConnectionTypes, Layout } from '~/utils/enums';
-import { BridgeAddresses, SwapAddresses } from '~/utils/сonstants/bridge';
-import { getChainIdByChain, GetWeb3Provider } from '~/utils/web3';
+import {
+  Chains, ConnectionTypes, Layout, TokenSymbols,
+} from '~/utils/enums';
+import { BlockchainByIndex, BridgeAddresses, SwapAddresses } from '~/utils/сonstants/bridge';
+import {
+  getChainIdByChain, getEstimateGas, getTransactionCount, GetWeb3Provider,
+} from '~/utils/web3';
 import { images } from '~/utils/images';
 import { LoaderStatusLocales } from '~/utils/loader';
 import WalletSwitcher from '~/components/app/WalletSwitcher';
 import { GetWalletProvider } from '~/utils/wallet';
 import walletOperations from '~/plugins/mixins/walletOperations';
+import { WQBridge } from '~/abi';
 
 export default {
   name: 'Bridge',
@@ -225,6 +231,8 @@ export default {
 
       connections: 'main/notificationsConnectionStatus',
 
+      web3Account: 'web3/getAccount',
+      userWalletAddress: 'user/getUserWalletAddress',
       connectionType: 'web3/getConnectionType',
     }),
     isWeb3Connection() {
@@ -235,11 +243,8 @@ export default {
       return GetWalletProvider;
     },
     account() {
-      if (this.isWeb3Connection) return this.$store.getters['web3/getAccount'];
-      return {
-        address: this.$store.getters['user/getUserWalletAddress'],
-        netId: 4, // TODO: need to get netId?
-      };
+      if (this.isWeb3Connection) return this.web3Account;
+      return { address: this.userWalletAddress };
     },
     tableFields() {
       const cellStyle = {
@@ -399,26 +404,54 @@ export default {
       return true;
     },
     async redeemAction({ chain, signData, chainTo }) {
-      this.SetLoader({
-        isLoading: true,
-        statusText: this.isWeb3Connection ? LoaderStatusLocales.waitingForTxExternalApp : LoaderStatusLocales.pleaseWaitTx,
-      });
-      if (this.isWeb3Connection) await this.checkNetwork(chain);
-      else await this.$store.dispatch('wallet/connectToProvider', chain);
+      const makeRedeem = async () => {
+        this.SetLoader({
+          isLoading: true,
+          statusText: this.isWeb3Connection ? LoaderStatusLocales.waitingForTxExternalApp : LoaderStatusLocales.pleaseWaitTx,
+        });
+        const res = await this.redeem({
+          signData, chainTo, provider: this.getProviderByConnection(), accountAddress: this.account.address,
+        });
+        if (res.ok) {
+          const link = `${SwapAddresses.get(chain).explorer}/tx/${res.result.transactionHash}`;
+          this.ShowModalSuccess({ title: this.$t('modals.redeem.success'), link });
+        } else {
+          console.log(res);
+          this.ShowModalFail({ title: this.$t('modals.redeem.fail'), subtitle: res.msg });
+        }
+        this.SetLoader(false);
+      };
 
-      // TODO: for WQ wallet need to show tx receipt modal
-      const res = await this.redeem({
-        signData, chainTo, provider: this.getProviderByConnection(), accountAddress: this.account.address,
-      });
-      if (res.ok) {
-        const link = `${SwapAddresses.get(chain).explorer}/tx/${res.result.transactionHash}`;
-        this.ShowModalSuccess({ title: this.$t('modals.redeem.success'), link });
-      } else {
-        console.log(res);
-        this.ShowModalFail({ title: this.$t('modals.redeem.fail'), subtitle: res.msg });
+      if (this.isWeb3Connection && await this.checkNetwork(chain)) {
+        await makeRedeem();
+        return;
       }
 
-      this.SetLoader(false);
+      await this.$store.dispatch('wallet/connectToProvider', chain);
+      const [feeRes] = await Promise.all([
+        this.$store.dispatch('wallet/getContractFeeData', {
+          method: 'redeem',
+          abi: WQBridge,
+          contractAddress: BridgeAddresses[BlockchainByIndex[chainTo]],
+          data: signData,
+        }),
+        this.$store.dispatch('wallet/getBalance'),
+      ]);
+      console.log('redeem fee res', feeRes, chain, chainTo, signData);
+      if (!feeRes.ok) {
+        this.ShowToast(feeRes.msg);
+        return;
+      }
+      const nativeTokenSymbol = SwapAddresses.get(chain).nativeSymbol;
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        title: 'Redeem',
+        fields: {
+          chain: { name: 'Chain', value: chain },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: nativeTokenSymbol },
+        },
+        submitMethod: async () => await makeRedeem(),
+      });
     },
 
     async showSwapModal() {
@@ -463,17 +496,36 @@ export default {
         },
         submitMethod: async () => {
           const swap = async () => {
-            console.log('swap receipt');
-            // TODO: нужноп получить swap fee и вызывать transaction receipt -> вызывать handleSwap
+            const provider = this.getProviderByConnection();
+            const nonce = await getTransactionCount(this.account.address, provider);
+            const value = new BigNumber(amount).shiftedBy(symbol === TokenSymbols.USDT ? 6 : 18).toString();
+            const data = [nonce, to.index, value, this.account.address, symbol];
+            const inst = new provider.eth.Contract(WQBridge, BridgeAddresses[from.chain]);
+            const [gasPrice, estimateGas] = await Promise.all([
+              provider.eth.getGasPrice(),
+              getEstimateGas(null, null, inst, 'swap', data, isNative ? value : null),
+              this.$store.dispatch('wallet/getBalance'),
+            ]);
+
+            if (!gasPrice || !estimateGas) {
+              this.ShowToast('', 'Swap error');
+              return;
+            }
+
             this.ShowModal({
               key: modals.transactionReceipt,
               title: 'Swap',
               fields: {
-                todoFee: { name: 'fee', value: 'some value', symbol: nativeTokenSymbol }, // todo: fetch fee
+                fee: {
+                  name: this.$t('wallet.table.trxFee'),
+                  value: new BigNumber(gasPrice).multipliedBy(estimateGas).shiftedBy(-18).toString(),
+                  symbol: nativeTokenSymbol,
+                },
               },
               submitMethod: async () => await this.handleSwap(from, to, amount, symbol, isNative),
             });
           };
+
           if (isNative) {
             await swap();
             return;
@@ -486,7 +538,6 @@ export default {
             decimals,
             symbol,
             nativeTokenSymbol,
-            isHexUserWalletAddress: true,
           }).then(async () => {
             await swap();
           }).catch((err) => {
