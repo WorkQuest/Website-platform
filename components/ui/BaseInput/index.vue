@@ -186,15 +186,8 @@ export default {
       this.$emit('enter', $event.target.value);
     },
     input($event) {
-      if (this.type === 'customNumber') {
-        let val = $event.target.value.toString().replace(/,/g, '.').replace(/[^0-9.]/g, '');
-
-        const dotIndex = val.indexOf('.');
-        const dotIndexLast = val.lastIndexOf('.');
-        if (dotIndex !== dotIndexLast) {
-          const len = val.length;
-          val = val.substr(0, dotIndex + 1) + val.substr(dotIndex + 1, len).replace(/[.]/g, '');
-        }
+      if (this.type === 'number' && $event.target.value) {
+        let val = $event.target.value.toString().replace(',', '.').replace(/[^0-9.]/g, '');
 
         if (val[0] === '.') val = `${0}${val}`;
         while (val.startsWith('0') && val.length > 1 && !(val.startsWith('0,') || val.startsWith('0.'))) {
@@ -202,9 +195,8 @@ export default {
         }
         $event.target.value = val;
       }
-      this.$emit('input', $event.target.value);
 
-      // TODO: emit selector. проверка должна быть на самой странице дабы не перегружать emit вызовы. решение: хендлить @input и проверять на selector при нужде
+      this.$emit('input', $event.target.value);
       if (this.selector) {
         this.$emit('selector', $event.target.value);
       }

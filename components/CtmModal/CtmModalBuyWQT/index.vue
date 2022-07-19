@@ -48,7 +48,7 @@
           :placeholder="$t('modals.amount')"
           :name="$t('modals.amount')"
           :rules="amountRules"
-          type="customNumber"
+          type="number"
           data-selector="AMOUNT"
         >
           <template
