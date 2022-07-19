@@ -3,7 +3,30 @@
     class="loader"
     :class="{'loader_hider': isLoaderBackgroundHider}"
   >
-    <div class="loader__body">
+    <div
+      v-if="!loaderStatusText"
+      class="loader__custom custom"
+    >
+      <img
+        :src="require('~/assets/img/ui/wq-loader.svg')"
+        class="custom__logo"
+        alt=""
+      >
+      <div class="custom__line custom__line_top custom__line_background" />
+      <div
+        ref="firstLine"
+        class="custom__line custom__line_top custom__line_anim"
+      />
+      <div class="custom__line custom__line_bottom custom__line_background" />
+      <div
+        ref="secondLine"
+        class="custom__line custom__line_bottom custom__line_anim"
+      />
+    </div>
+    <div
+      v-else
+      class="loader__body"
+    >
       <div :class="{'loader__modal': loaderStatusText }">
         <div
           v-if="loaderStatusText"
@@ -47,6 +70,10 @@ export default {
       isLoaderBackgroundHider: 'main/getIsLoaderBackgroundHider',
     }),
   },
+  beforeDestroy() {
+    this.$refs.firstLine.classList.add('custom__line_stopped-anim');
+    this.$refs.secondLine.classList.add('custom__line_stopped-anim');
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -58,7 +85,7 @@ export default {
   bottom: 0;
   right: 0;
   left: 0;
-  background: rgba(#000000, .5);
+  background: rgba(#000000, .8);
   z-index: 1000000000;
   align-items: center;
   justify-content: center;
@@ -97,6 +124,68 @@ export default {
     color: $black800;
     font-weight: 500;
     line-height: 130%;
+  }
+}
+
+.custom {
+  width: 400px;
+  position: relative;
+
+  &__logo {
+    height: 150px;
+  }
+
+  &__line {
+    position: absolute;
+    width: 50px;
+    height: 16.75px;
+    background: linear-gradient(#019E7C, #01A667);
+    left: 150px;
+
+    &_background {
+      width: 200px;
+      background: rgba(0, 131, 199, 0.1);
+      animation: none;
+    }
+
+    &_top {
+      bottom: 27px;
+    }
+
+    &_anim {
+      animation: progress 30s ease 0s 1 normal forwards;
+    }
+
+    &_stopped-anim {
+      animation: none;
+      width: 200px;
+      transition: ease 0s;
+    }
+
+    &_bottom {
+      bottom: 0;
+    }
+  }
+}
+
+@keyframes progress {
+  0% {
+    width: 50px;
+  }
+  10% {
+    width: 80px;
+  }
+  20% {
+    width: 100px;
+  }
+  30% {
+    width: 115px;
+  }
+  50% {
+    width: 150px;
+  }
+  100% {
+    width: 200px;
   }
 }
 
