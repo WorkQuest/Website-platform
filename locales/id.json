@@ -99,7 +99,9 @@
       "add": "Tambahkan",
       "addNow": "Add now",
       "take": "Take",
-      "swap": "Swap"
+      "swap": "Swap",
+      "generate": "Generate",
+      "remove": "Remove"
     },
     "placeholders": {
       "default": "",
