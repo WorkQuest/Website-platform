@@ -104,7 +104,7 @@
     />
     <base-pager
       v-if="totalPages > 1"
-      :value="page"
+      v-model="page"
       :total-pages="totalPages"
       class="table__pages"
     />
@@ -118,7 +118,7 @@ import modals from '~/store/modals/modals';
 import { images } from '~/utils/images';
 import { TokenSymbols } from '~/utils/enums';
 
-const LIMIT = 10;
+const LIMIT = 2;
 const HISTORY_LIMIT = 5;
 
 export default {
@@ -151,6 +151,14 @@ export default {
     },
     totalHistoryPages() {
       return Math.ceil(this.historyParams.count / HISTORY_LIMIT) || 0;
+    },
+  },
+  watch: {
+    async page() {
+      await this.fetchCollaterals({
+        address: this.walletAddress,
+        params: { limit: LIMIT, offset: (this.page - 1) * LIMIT },
+      });
     },
   },
   async mounted() {
