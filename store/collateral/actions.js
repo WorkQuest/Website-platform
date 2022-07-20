@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js';
 import {
+  getGasPrice,
   createInstance,
   getWalletAddress,
 } from '~/utils/wallet';
@@ -58,4 +59,40 @@ export default {
       return error();
     }
   },
+
+  async fetchCollateralInfo({ commit }, { address, collateralId, params }) {
+    try {
+      const res = await this.$axiosLiquidator.$get(`/user/collateral/${address}/${collateralId}`, { params });
+      return success();
+    } catch (e) {
+      console.error('collateral/fetchCollateralInfo', e);
+      return error();
+    }
+  },
+
+  async collateralAction({ dispatch }, { index, symbol, method }) {
+    try {
+      await dispatch('oracle/setCurrentPriceTokens', null, { root: true });
+      const inst = await createInstance(WQRouter, ENV.WORKNET_ROUTER);
+
+      const { gasPrice, gas } = await getGasPrice(
+        WQRouter,
+        ENV.WORKNET_ROUTER,
+        method,
+        [index, symbol],
+      );
+
+      await inst.methods[method](index, symbol).send({
+        from: getWalletAddress(),
+        gasPrice,
+        gas,
+      });
+
+      return success();
+    } catch (e) {
+      console.error(`collateral/${method}`, e);
+      return error();
+    }
+  },
+
 };

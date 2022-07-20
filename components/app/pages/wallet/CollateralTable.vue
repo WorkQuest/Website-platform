@@ -18,27 +18,30 @@
       <div
         v-for="(item, i) of collaterals"
         :key="i"
-        class="collateral__table table_grid item"
-        @click.stop="toggleHistory(i)"
+        class="collateral__item item"
+        :class="{item_full: i === idxHistory}"
+        @click.stop="toggleHistory(i, item.id)"
       >
-        <div class="item__coin">
-          <img
-            :src="getCollateralIcon(item.symbol)"
-            alt=""
-            class="item__coin-icon"
+        <div class="item__wrapper table_grid">
+          <div class="item__coin">
+            <img
+              :src="getCollateralIcon(item.symbol)"
+              alt=""
+              class="item__coin-icon"
+            >
+            {{ item.symbol }}
+          </div>
+          <div>{{ item.lockedAmount }}</div>
+          <div>{{ item.collateralizationRatio }}</div>
+          <div>{{ item.wusdGenerated }}</div>
+          <div>{{ CutTxn(item.txHash || '0xdcfe0996e2f645809e011136aa6b77b353d67f66b543e7a503067f2d07b53645') }}</div>
+          <div>{{ item.time || $moment().format('MMMM Do YYYY, hh:mm a') }}</div>
+          <div
+            class="item__caret"
+            @click.stop="toggleHistory(i, item.id)"
           >
-          {{ item.symbol }}
-        </div>
-        <div>{{ item.lockedAmount }}</div>
-        <div>{{ item.collateralizationRatio }}</div>
-        <div>{{ item.wusdGenerated }}</div>
-        <div>{{ CutTxn(item.txHash || '0xdcfe0996e2f645809e011136aa6b77b353d67f66b543e7a503067f2d07b53645') }}</div>
-        <div>{{ item.time || $moment().format('MMMM Do YYYY, hh:mm a') }}</div>
-        <div
-          class="item__caret"
-          @click.stop="toggleHistory(i)"
-        >
-          <span :class="{'icon-caret_down': i !== idxHistory, 'icon-caret_up': i === idxHistory}" />
+            <span :class="{'icon-caret_down': i !== idxHistory, 'icon-caret_up': i === idxHistory}" />
+          </div>
         </div>
         <div
           v-show="i === idxHistory"
@@ -46,17 +49,50 @@
         >
           <div class="item__actions">
             <base-btn
-              data-selector="ADD"
-              @click="handleAdd"
+              class="item__btn"
+              data-selector="GENERATE"
+              @click.stop="handleCollateralAction(item, 'generate')"
             >
-              {{ $t('meta.btns.add') }}
+              {{ $t('meta.btns.generate') }}
             </base-btn>
             <base-btn
-              data-selector="TAKE"
-              @click="handleTake"
+              class="item__btn"
+              data-selector="DEPOSIT"
+              @click.stop="handleCollateralAction(item, 'deposit')"
             >
-              {{ $t('meta.btns.take') }}
+              {{ $t('meta.deposit') }}
             </base-btn>
+            <base-btn
+              class="item__btn"
+              data-selector="REVERT"
+              @click.stop="handleCollateralAction(item, 'remove')"
+            >
+              {{ $t('meta.btns.remove') }}
+            </base-btn>
+          </div>
+          <div class="history__wrapper">
+            <div class="history__header history__table">
+              <div>1</div>
+              <div>1</div>
+              <div>1</div>
+              <div>1</div>
+              <div>1</div>
+              <div>1</div>
+            </div>
+            <div class="history__rows history__table">
+              <div>1</div>
+              <div>1</div>
+              <div>1</div>
+              <div>1</div>
+              <div>1</div>
+              <div>1</div>
+            </div>
+            <base-pager
+              v-if="totalHistoryPages > 1"
+              :value="historyParams.page"
+              :total-pages="totalHistoryPages"
+              class="history__pages"
+            />
           </div>
         </div>
       </div>
@@ -77,11 +113,13 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { images } from '~/utils/images';
 import { TokenSymbols } from '~/utils/enums';
 
-const LIMIT = 5;
+const LIMIT = 10;
+const HISTORY_LIMIT = 5;
 
 export default {
   name: 'CollateralTable',
@@ -89,12 +127,20 @@ export default {
   data() {
     return {
       idxHistory: null,
+      historyParams: {
+        page: 1,
+        limit: HISTORY_LIMIT,
+        offset: 0,
+        count: 5,
+      },
       page: 1,
-      itemsPerPage: 10,
     };
   },
   computed: {
     ...mapGetters({
+      prices: 'oracle/getPrices',
+      symbols: 'oracle/getSymbols',
+
       collaterals: 'collateral/getCollaterals',
       collateralsCount: 'collateral/getCollateralsCount',
 
@@ -102,6 +148,9 @@ export default {
     }),
     totalPages() {
       return Math.ceil(this.collateralsCount / LIMIT) || 0;
+    },
+    totalHistoryPages() {
+      return Math.ceil(this.historyParams.count / HISTORY_LIMIT) || 0;
     },
   },
   async mounted() {
@@ -112,26 +161,59 @@ export default {
   },
   methods: {
     ...mapActions({
+      collateralAction: 'collateral/collateralAction',
       fetchCollaterals: 'collateral/fetchCollaterals',
+      fetchCollateralInfo: 'collateral/fetchCollateralInfo',
+
+      updatePrices: 'oracle/getCurrentTokensPrices',
     }),
     getCollateralIcon(symbol) {
       if (TokenSymbols.ETH === symbol) return images.ETH_BLACK;
       return images[symbol] || images.EMPTY_LOGO;
     },
-    toggleHistory(idx) {
-      this.idxHistory = this.idxHistory === idx ? null : idx;
+    async toggleHistory(idx, id) {
+      if (this.idxHistory === idx) this.idxHistory = null;
+      else {
+        this.idxHistory = idx;
+        await this.fetchCollateralInfo({
+          address: this.walletAddress,
+          collateralId: id,
+          params: {},
+        });
+      }
     },
 
-    handleAdd() {
+    async handleCollateralAction({
+      index, symbol, price, collateral, deposit,
+    }, mode) {
+      // (price - priceOracle) * collateral(USDT + 12 decimals) / deposit
+      await this.updatePrices();
+      const indexOfSymbol = this.symbols.indexOf(symbol);
+
+      if (symbol === TokenSymbols.USDT) collateral = new BigNumber(collateral).shiftedBy(12).toString();
+
+      const availableToClaim = new BigNumber(price)
+        .minus(this.prices[indexOfSymbol])
+        .multipliedBy(collateral)
+        .dividedBy(deposit)
+        .toString();
+      console.log(availableToClaim);
+
       this.ShowModal({
         key: modals.collateralTransaction,
-        mode: 'add',
-      });
-    },
-    handleTake() {
-      this.ShowModal({
-        key: modals.collateralTransaction,
-        mode: 'take',
+        mode,
+        submit: async (method) => {
+          this.SetLoader(true);
+          const { ok } = await this.collateralAction({
+            method,
+            symbol,
+            index,
+          });
+          this.SetLoader(false);
+
+          if (ok) this.ShowModalSuccess({});
+          else this.ShowModalFail({});
+        },
       });
     },
   },
@@ -190,8 +272,17 @@ export default {
   border-radius: 6px;
   cursor: pointer;
 
+  &__wrapper {
+    height: 72px;
+  }
+
+  &_full {
+    max-height: 350px;
+    height: auto;
+  }
+
   &:hover {
-    border: 1px solid $black100
+    box-shadow: -1px 1px 8px 0px $black100;
   }
 
   &:not(:last-child) {
@@ -221,12 +312,43 @@ export default {
   }
 
   &__actions {
+    display: flex;
+    padding: 0 12px;
+  }
+
+  &__btn {
+    width: 150px;
+    margin-right: 20px;
+  }
+
+}
+
+.history {
+  &__wrapper {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 6px;
-    & > div {
-      max-height: 43px !important;
-    }
+    grid-template-rows: auto auto;
+
+    margin-top: 12px;
+  }
+
+  &__table {
+    min-width: 1180px;
+    display: grid;
+    align-content: center;
+    align-items: center;
+    justify-items: center;
+    grid-template-columns: 115px repeat(3, 0.9fr) 1fr 1fr 36px;
+
+    text-align: center;
+
+    padding: 0 12px;
+  }
+
+  &__header {
+    background: rgba(0, 131, 199, 0.1);
+    color: $blue;
+    height: max-content;
+    padding: 3px 12px;
   }
 }
 </style>

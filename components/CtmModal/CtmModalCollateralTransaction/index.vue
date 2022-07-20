@@ -5,21 +5,27 @@
   >
     <div class="collateral__content content">
       <div class="content__header">
-        Lorem ipsum
+        {{ $t('wallet.collateral.generationSubTitle') }}
+      </div>
+      <div class="content__header">
+        {{ $t('wallet.collateral.tokenQuantity') }}
       </div>
       <div class="content__label">
-        {{ $t('meta.coins.eth') }}
+        {{ $t(`meta.coins.${options.symbol}`) }}
       </div>
       <base-field
-        data-selector="ETH"
-        placeholder="10"
+        data-selector="COLLATERAL-SYMBOL"
+        disabled
+        :value="options.collateral"
       />
       <div class="content__label">
-        {{ $t('meta.coins.wusd') }}
+        {{ $t('wallet.collateral.availableAmount') }}
       </div>
       <base-field
         data-selector="WUSD"
         placeholder="10"
+        disabled
+        :value="options.availableWUSD"
       />
       <div class="content__actions">
         <base-btn @click="handleSubmit">
@@ -40,23 +46,23 @@ export default {
       options: 'modals/getOptions',
     }),
     modalTitle() {
-      return this.options.mode === 'add' ? this.$t('wallet.collateral.addTitle') : this.$t('wallet.collateral.takeTitle');
+      return this.options.mode === 'generate' ? this.$t('meta.btns.generate') : this.$t('meta.deposit');
     },
     submitText() {
-      return this.options.mode === 'add' ? this.$t('meta.btns.add') : this.$t('meta.btns.take');
+      return this.options.mode === 'generate' ? this.$t('meta.btns.generate') : this.$t('meta.deposit');
     },
   },
   methods: {
     handleSubmit() {
+      const { submit } = this.options;
       this.CloseModal();
+      submit();
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.collateral {
-}
 .content {
   padding: 20px 28px 30px;
   &__header {
