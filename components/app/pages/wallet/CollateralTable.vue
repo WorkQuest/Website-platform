@@ -10,10 +10,10 @@
       <div class="collateral__header table_grid">
         <div>{{ $t('wallet.collateral.collateralToken') }}</div>
         <div>{{ $t('wallet.collateral.lockedAmount') }}</div>
-        <div>{{ $t('wallet.collateral.colRatio') }}</div>
         <div>{{ $t('wallet.collateral.generatedAmount') }}</div>
-        <div>{{ $t('wallet.table.txHash') }}</div>
-        <div>{{ $t('wallet.collateral.generationTime') }}</div>
+        <div>{{ $t('meta.price') }}</div>
+        <div>{{ $t('wallet.collateral.ratio') }}</div>
+        <div>{{ $t('wallet.table.index') }}</div>
       </div>
       <div
         v-for="(item, i) of collaterals"
@@ -32,10 +32,10 @@
             {{ item.symbol }}
           </div>
           <div>{{ item.lockedAmount }}</div>
-          <div>{{ item.collateralizationRatio }}</div>
           <div>{{ item.wusdGenerated }}</div>
-          <div>{{ CutTxn(item.txHash || '0xdcfe0996e2f645809e011136aa6b77b353d67f66b543e7a503067f2d07b53645') }}</div>
-          <div>{{ item.time || $moment().format('MMMM Do YYYY, hh:mm a') }}</div>
+          <div>{{ item._price }}</div>
+          <div>{{ item.colRatio }}</div>
+          <div>{{ item.index }}</div>
           <div
             class="item__caret"
             @click.stop="toggleHistory(i, item.id)"
@@ -51,41 +51,51 @@
             <base-btn
               class="item__btn"
               data-selector="GENERATE"
-              @click.stop="handleCollateralAction(item, 'generate')"
+              @click.stop="handleCollateralAction(item, 'claimExtraDebt')"
             >
               {{ $t('meta.btns.generate') }}
             </base-btn>
             <base-btn
               class="item__btn"
               data-selector="DEPOSIT"
-              @click.stop="handleCollateralAction(item, 'deposit')"
+              @click.stop="handleCollateralAction(item, 'disposeDebt')"
             >
               {{ $t('meta.deposit') }}
             </base-btn>
             <base-btn
               class="item__btn"
               data-selector="REVERT"
-              @click.stop="handleCollateralAction(item, 'remove')"
+              @click.stop="handleCollateralAction(item, 'removeCollateral')"
             >
               {{ $t('meta.btns.remove') }}
             </base-btn>
           </div>
           <div class="history__wrapper">
             <div class="history__header history__table">
-              <div>1</div>
-              <div>1</div>
-              <div>1</div>
-              <div>1</div>
-              <div>1</div>
-              <div>1</div>
+              <div>{{ $t('meta.type') }}</div>
+              <div>{{ $t('wallet.collateral.lockedAmount') }}</div>
+              <div>{{ $t('wallet.collateral.generatedAmount') }}</div>
+              <div>{{ $t('meta.price') }}</div>
+              <div>{{ $t('wallet.table.txHash') }}</div>
+              <div>{{ $t('wallet.collateral.generationTime') }}</div>
             </div>
-            <div class="history__rows history__table">
-              <div>1</div>
-              <div>1</div>
-              <div>1</div>
-              <div>1</div>
-              <div>1</div>
-              <div>1</div>
+            <div
+              v-for="(row, j) of history"
+              :key="`row-${j}`"
+              class="history__row history__table"
+            >
+              <div>type</div>
+              <div>{{ row.lockedAmount }}</div>
+              <div>{{ row.wusdGenerated }}</div>
+              <div>{{ row._price }}</div>
+              <a
+                class="item__hash"
+                :href="`${$options.ExplorerUrl}/tx/${item.txHash}`"
+                target="_blank"
+              >
+                {{ CutTxn( row.txHash || '0xdcfe0996e2f645809e011136aa6b77b353d67f66b543e7a503067f2d07b53645') }}
+              </a>
+              <div>{{ row.time || $moment().format('MMMM Do YYYY, hh:mm a') }}</div>
             </div>
             <base-pager
               v-if="totalHistoryPages > 1"
@@ -116,14 +126,15 @@ import { mapActions, mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { images } from '~/utils/images';
-import { TokenSymbols } from '~/utils/enums';
+import { TokenSymbols, ExplorerUrl } from '~/utils/enums';
 
-const LIMIT = 2;
+const LIMIT = 10;
 const HISTORY_LIMIT = 5;
 
 export default {
   name: 'CollateralTable',
   images,
+  ExplorerUrl,
   data() {
     return {
       idxHistory: null,
@@ -143,6 +154,8 @@ export default {
 
       collaterals: 'collateral/getCollaterals',
       collateralsCount: 'collateral/getCollateralsCount',
+      history: 'collateral/getHistoryCollateral',
+      historyCount: 'collateral/getHistoryCollateralCount',
 
       walletAddress: 'user/getUserWalletAddress',
     }),
@@ -150,7 +163,7 @@ export default {
       return Math.ceil(this.collateralsCount / LIMIT) || 0;
     },
     totalHistoryPages() {
-      return Math.ceil(this.historyParams.count / HISTORY_LIMIT) || 0;
+      return Math.ceil(this.historyCount / HISTORY_LIMIT) || 0;
     },
   },
   watch: {
@@ -180,8 +193,10 @@ export default {
       return images[symbol] || images.EMPTY_LOGO;
     },
     async toggleHistory(idx, id) {
-      if (this.idxHistory === idx) this.idxHistory = null;
-      else {
+      if (this.idxHistory === idx) {
+        this.idxHistory = null;
+        this.$store.commit('collateral/setHistoryCollateral', { rows: [], count: null });
+      } else {
         this.idxHistory = idx;
         await this.fetchCollateralInfo({
           address: this.walletAddress,
@@ -192,24 +207,24 @@ export default {
     },
 
     async handleCollateralAction({
-      index, symbol, price, collateral, deposit,
+      index, symbol, price, collateral, deposit, lockedAmount, id,
     }, mode) {
-      // (price - priceOracle) * collateral(USDT + 12 decimals) / deposit
-      await this.updatePrices();
-      const indexOfSymbol = this.symbols.indexOf(symbol);
-
       if (symbol === TokenSymbols.USDT) collateral = new BigNumber(collateral).shiftedBy(12).toString();
 
-      const availableToClaim = new BigNumber(price)
-        .minus(this.prices[indexOfSymbol])
-        .multipliedBy(collateral)
-        .dividedBy(deposit)
-        .toString();
-      console.log(availableToClaim);
+      // (price - priceOracle) * collateral(USDT + 12 decimals) / deposit
+      await this.updatePrices();
+      const oraclePrice = this.prices[this.symbols.indexOf(symbol)];
+      const coefficient = mode === 'claimExtraDebt'
+        ? new BigNumber(oraclePrice).minus(price)
+        : new BigNumber(price).minus(oraclePrice);
+      const availableAmount = coefficient.multipliedBy(collateral).dividedBy(deposit).shiftedBy(-18).toNumber();
 
       this.ShowModal({
         key: modals.collateralTransaction,
         mode,
+        symbol,
+        lockedAmount,
+        availableAmount,
         submit: async (method) => {
           this.SetLoader(true);
           const { ok } = await this.collateralAction({
@@ -259,7 +274,7 @@ export default {
     align-content: center;
     align-items: center;
     justify-items: center;
-    grid-template-columns: 115px repeat(3, 0.9fr) 1fr 1fr 36px;
+    grid-template-columns: repeat(6, 1fr) 36px;
 
     text-align: center;
 
@@ -285,7 +300,6 @@ export default {
   }
 
   &_full {
-    max-height: 350px;
     height: auto;
   }
 
@@ -309,6 +323,11 @@ export default {
       height: 30px;
       width: 30px;
     }
+  }
+
+  &__hash {
+    text-decoration-line: none;
+    color: $blue;
   }
 
   &__caret {
@@ -345,7 +364,7 @@ export default {
     align-content: center;
     align-items: center;
     justify-items: center;
-    grid-template-columns: 115px repeat(3, 0.9fr) 1fr 1fr 36px;
+    grid-template-columns: repeat(4, 0.7fr) repeat(2, 1fr);
 
     text-align: center;
 
@@ -357,6 +376,10 @@ export default {
     color: $blue;
     height: max-content;
     padding: 3px 12px;
+  }
+
+  &__row {
+    padding: 12px;
   }
 }
 </style>

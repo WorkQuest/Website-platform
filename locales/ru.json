@@ -205,6 +205,7 @@
     "settings": "Настройки",
     "costPerHour": "Цена за час",
     "disputes": "Споры",
+    "type": "Type",
     "success": "Успешно",
     "fail": "Неудача"
   },
@@ -1469,7 +1470,7 @@
     "collateral": {
       "balance": "Залоговый баланс",
       "collateralToken": "Collateral token",
-      "colRatio": "Ratio (%)",
+      "ratio": "Ratio (%)",
       "generatedAmount": "WUSD generated",
       "lockedAmount": "Locked",
       "generationTime": "Generation time",
@@ -1485,6 +1486,7 @@
       "transferred": "Tokens Transferred",
       "value": "Quantity",
       "trxFee": "Transaction fee",
+      "index": "Index",
       "empty": "Transactions list is empty"
     }
   },

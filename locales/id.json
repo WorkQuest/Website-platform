@@ -207,6 +207,7 @@
     "settings": "Pengaturan",
     "costPerHour": "Biaya per jam",
     "disputes": "Sengketa",
+    "type": "Type",
     "success": "Berhasil",
     "fail": "Fail"
   },
@@ -1470,7 +1471,7 @@
     "collateral": {
       "balance": "Collateral balance",
       "collateralToken": "Collateral token",
-      "colRatio": "Ratio (%)",
+      "ratio": "Ratio (%)",
       "generatedAmount": "WUSD generated",
       "lockedAmount": "Locked",
       "generationTime": "Generation time",
@@ -1486,6 +1487,7 @@
       "transferred": "Token Ditransfer",
       "value": "Jumlah",
       "trxFee": "Biaya transaksi",
+      "index": "Index",
       "empty": "Transactions list is empty"
     }
   },

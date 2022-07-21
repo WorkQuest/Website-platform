@@ -207,6 +207,7 @@
     "settings": "सेटिंग",
     "costPerHour": "कॉस्ट प्रति घंटा",
     "disputes": "विवाद",
+    "type": "Type",
     "success": "Success",
     "fail": "Fail"
   },
@@ -1470,7 +1471,7 @@
     "collateral": {
       "balance": "Collateral balance",
       "collateralToken": "Collateral token",
-      "colRatio": "Ratio (%)",
+      "ratio": "Ratio (%)",
       "generatedAmount": "WUSD generated",
       "lockedAmount": "Locked",
       "generationTime": "Generation time",
@@ -1486,6 +1487,7 @@
       "transferred": "टोकन स्थानांतरित",
       "value": "मात्रा",
       "trxFee": "ट्रांजेक्शन शुल्क",
+      "index": "Index",
       "empty": "Transactions list is empty"
     }
   },

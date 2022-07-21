@@ -11,12 +11,12 @@
         {{ $t('wallet.collateral.tokenQuantity') }}
       </div>
       <div class="content__label">
-        {{ $t(`meta.coins.${options.symbol}`) }}
+        {{ options.symbol }}
       </div>
       <base-field
         data-selector="COLLATERAL-SYMBOL"
         disabled
-        :value="options.collateral"
+        :value="options.lockedAmount"
       />
       <div class="content__label">
         {{ $t('wallet.collateral.availableAmount') }}
@@ -25,13 +25,14 @@
         data-selector="WUSD"
         placeholder="10"
         disabled
-        :value="options.availableWUSD"
+        :value="options.availableAmount"
       />
-      <div class="content__actions">
-        <base-btn @click="handleSubmit">
-          {{ submitText }}
-        </base-btn>
-      </div>
+      <base-btn
+        class="content__actions"
+        @click="handleSubmit"
+      >
+        {{ submitText }}
+      </base-btn>
     </div>
   </ctm-modal-box>
 </template>
@@ -41,22 +42,34 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'CollateralTransaction',
+  data() {
+    return {
+      currentDeposit: null,
+      selectedMethod: null,
+    };
+  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
+    isGenerate() {
+      return this.options.mode === 'claimExtraDebt';
+    },
     modalTitle() {
-      return this.options.mode === 'generate' ? this.$t('meta.btns.generate') : this.$t('meta.deposit');
+      return this.isGenerate ? this.$t('meta.btns.generate') : this.$t('meta.deposit');
     },
     submitText() {
-      return this.options.mode === 'generate' ? this.$t('meta.btns.generate') : this.$t('meta.deposit');
+      return this.isGenerate ? this.$t('meta.btns.generate') : this.$t('meta.deposit');
     },
+  },
+  mounted() {
+    this.selectedMethod = this.options.mode;
   },
   methods: {
     handleSubmit() {
       const { submit } = this.options;
       this.CloseModal();
-      submit();
+      submit(this.selectedMethod);
     },
   },
 };
@@ -76,9 +89,9 @@ export default {
     margin-bottom: 10px;
   }
   &__actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 10px;
+    display: flex;
+    max-width: 250px;
+    margin: 0 auto;
   }
 }
 </style>

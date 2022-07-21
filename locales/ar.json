@@ -207,6 +207,7 @@
     "settings": "الإعدادات",
     "costPerHour": "التكلفة في الساعة",
     "disputes": "النزاعات",
+    "type": "Type",
     "success": "تم بنجاح",
     "fail": "Fail"
   },
@@ -1470,7 +1471,7 @@
     "collateral": {
       "balance": "Collateral balance",
       "collateralToken": "Collateral token",
-      "colRatio": "Ratio (%)",
+      "ratio": "Ratio (%)",
       "generatedAmount": "WUSD generated",
       "lockedAmount": "Locked",
       "generationTime": "Generation time",
@@ -1486,6 +1487,7 @@
       "transferred": "الرموز المحوَّلة",
       "value": "الكمية",
       "trxFee": "رسوم المعاملة",
+      "index": "Index",
       "empty": "Transactions list is empty"
     }
   },

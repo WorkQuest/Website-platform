@@ -207,6 +207,7 @@
     "settings": "Definições",
     "costPerHour": "Custo por hora",
     "disputes": "Disputas",
+    "type": "Type",
     "success": "Sucesso",
     "fail": "Fail"
   },
@@ -1470,7 +1471,7 @@
     "collateral": {
       "balance": "Collateral balance",
       "collateralToken": "Collateral token",
-      "colRatio": "Ratio (%)",
+      "ratio": "Ratio (%)",
       "generatedAmount": "WUSD generated",
       "lockedAmount": "Locked",
       "generationTime": "Generation time",
@@ -1486,6 +1487,7 @@
       "transferred": "Tokens transferidos",
       "value": "Quantidade",
       "trxFee": "Montante da transação",
+      "index": "Index",
       "empty": "Transactions list is empty"
     }
   },
