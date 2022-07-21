@@ -7,7 +7,6 @@ export const LockedPages = [
   'retirement/my',
   'staking',
   'staking-id',
-  'referral',
   'auction',
   'collateral',
   'insuring',
@@ -22,7 +21,6 @@ export const LockedPages = [
 export const LockedPaths = [
   Path.RETIREMENT,
   Path.STAKING,
-  Path.REFERRAL,
   Path.AUCTION,
   Path.COLLATERAL,
   Path.INSURING,
