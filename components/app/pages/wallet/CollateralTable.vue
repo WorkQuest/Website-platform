@@ -20,7 +20,7 @@
         :key="i"
         class="collateral__item item"
         :class="{item_full: i === idxHistory}"
-        @click.stop="toggleHistory(i, item.id)"
+        @click.stop="toggleHistory(i, item)"
       >
         <div class="item__wrapper table_grid">
           <div class="item__coin">
@@ -38,7 +38,7 @@
           <div>{{ item.index }}</div>
           <div
             class="item__caret"
-            @click.stop="toggleHistory(i, item.id)"
+            @click.stop="toggleHistory(i, item)"
           >
             <span :class="{'icon-caret_down': i !== idxHistory, 'icon-caret_up': i === idxHistory}" />
           </div>
@@ -138,6 +138,12 @@ export default {
   data() {
     return {
       idxHistory: null,
+      availableToClaim: null,
+      isAvailableToClaim: false,
+      availableToDepositWUSD: null,
+      isAvailableToDepositWUSD: false,
+      availableToAddCollateral: null,
+      isAvailableToAddCollateral: false,
       historyParams: {
         page: 1,
         limit: HISTORY_LIMIT,
@@ -192,32 +198,63 @@ export default {
       if (TokenSymbols.ETH === symbol) return images.ETH_BLACK;
       return images[symbol] || images.EMPTY_LOGO;
     },
-    async toggleHistory(idx, id) {
+    async toggleHistory(idx, item) {
       if (this.idxHistory === idx) {
         this.idxHistory = null;
         this.$store.commit('collateral/setHistoryCollateral', { rows: [], count: null });
       } else {
         this.idxHistory = idx;
+        await this.checkActionsPossibilities(item);
         await this.fetchCollateralInfo({
           address: this.walletAddress,
-          collateralId: id,
+          collateralId: item.id,
           params: {},
         });
       }
     },
 
-    async handleCollateralAction({
-      index, symbol, price, collateral, deposit, lockedAmount, id,
-    }, mode) {
-      if (symbol === TokenSymbols.USDT) collateral = new BigNumber(collateral).shiftedBy(12).toString();
-
-      // (price - priceOracle) * collateral(USDT + 12 decimals) / deposit
+    async checkActionsPossibilities({
+      symbol, collateral, price, deposit, debt,
+    }) {
       await this.updatePrices();
       const oraclePrice = this.prices[this.symbols.indexOf(symbol)];
-      const coefficient = mode === 'claimExtraDebt'
-        ? new BigNumber(oraclePrice).minus(price)
-        : new BigNumber(price).minus(oraclePrice);
-      const availableAmount = coefficient.multipliedBy(collateral).dividedBy(deposit).shiftedBy(-18).toNumber();
+      if ([TokenSymbols.USDT, TokenSymbols.USDC].includes(symbol)) {
+        collateral = new BigNumber(collateral).shiftedBy(12).toString();
+      }
+
+      // available for claimExtraDebt
+      const availableToClaim = new BigNumber(oraclePrice).minus(price)
+        .multipliedBy(collateral)
+        .dividedBy(deposit)
+        .shiftedBy(-18)
+        .toNumber();
+
+      // available for disposeDebt
+      const availableToDepositWUSD = new BigNumber(price).minus(oraclePrice)
+        .multipliedBy(collateral)
+        .dividedBy(deposit)
+        .shiftedBy(-18)
+        .toNumber();
+
+      // available for addCollateral
+      // const divideOn = new BigNumber();
+      // const availableToAddCollateral = new BigNumber(price)
+      //   .multipliedBy(collateral)
+      //   .dividedBy(deposit)
+      //   .shiftedBy(-18)
+      //   .toNumber();
+
+      console.log('availableToClaim', availableToClaim);
+      console.log('availableToDepositWUSD', availableToDepositWUSD);
+      // console.log('availableToClaim',availableToClaim)
+    },
+
+    async handleCollateralAction({
+      index, symbol, price, collateral, deposit, lockedAmount, id, debt, _debt, pullValue,
+    }, mode) {
+      let availableAmount = this.availableToClaim;
+      if (mode === 'disposeDebt') availableAmount = this.availableToDepositWUSD;
+      else if (mode === 'removeCollateral') availableAmount = _debt;
 
       this.ShowModal({
         key: modals.collateralTransaction,
@@ -227,11 +264,17 @@ export default {
         availableAmount,
         submit: async (method) => {
           this.SetLoader(true);
-          const { ok } = await this.collateralAction({
-            method,
-            symbol,
-            index,
-          });
+
+          const payload = [index, symbol];
+          if (method === 'removeCollateral') {
+            // if ([TokenSymbols.USDT, TokenSymbols.USDC].includes(symbol)) {
+            //   pullValue = new BigNumber(pullValue).shiftedBy(-18).toString();
+            // }
+
+            payload.splice(1, 0, '11.76');
+          }
+
+          const { ok } = await this.collateralAction({ method, payload });
           this.SetLoader(false);
 
           if (ok) this.ShowModalSuccess({});

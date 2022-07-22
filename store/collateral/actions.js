@@ -127,25 +127,26 @@ export default {
     }
   },
 
-  async collateralAction({ dispatch }, { index, symbol, method }) {
+  async collateralAction({ dispatch }, { payload, method }) {
     try {
       await dispatch('oracle/setCurrentPriceTokens', null, { root: true });
       const inst = await createInstance(WQRouter, ENV.WORKNET_ROUTER);
+      console.log(payload);
 
       const { gasPrice, gas } = await getGasPrice(
         WQRouter,
         ENV.WORKNET_ROUTER,
         method,
-        [index, symbol],
+        [...payload],
       );
 
       if (!gasPrice || !gas) {
-        // TODO нужно будет как то выделить время и выяснить причину
+      //   TODO нужно будет как то выделить время и выяснить причину
         console.log(`Something wrong with calc fee for ${method}`);
         return error();
       }
 
-      await inst.methods[method](index, symbol).send({
+      await inst.methods[method](...payload).send({
         from: getWalletAddress(),
         gasPrice,
         gas,
