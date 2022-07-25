@@ -77,7 +77,7 @@ export default {
   &-desktop{
     max-width: 382px !important;
   }
-  &::v-deep{
+  &:deep {
     .ctm-modal__content{
       padding-top: 10px;
     }
