@@ -185,9 +185,7 @@ import {
   UserStatuses,
 } from '~/utils/enums';
 import { images } from '~/utils/images';
-import { accessLifetime } from '~/utils/сonstants/cookiesLifetime';
-
-const timerDefaultValue = 60;
+import { accessLifetime, resendEmailLifetime } from '~/utils/сonstants/cookiesLifetime';
 
 export default {
   name: 'SignIn',
@@ -203,7 +201,7 @@ export default {
       hiddenResend: true,
       disableResend: true,
       isStartedTimer: false,
-      timerValue: timerDefaultValue,
+      timerValue: resendEmailLifetime,
       timer: null,
       addressAssigned: false,
       userWalletAddress: null,
@@ -276,10 +274,10 @@ export default {
   },
   async beforeDestroy() {
     if (this.isStartedTimer) {
-      this.$cookies.set('resend-timer', {
+      sessionStorage.setItem('resend-timer', JSON.stringify({
         timerValue: this.timerValue,
         createdAt: Date.now(),
-      });
+      }));
     }
     if (!this.addressAssigned && !this.$cookies.get('access') && !this.$cookies.get('userStatus')) {
       const refId = sessionStorage.getItem('referralId');
@@ -292,16 +290,16 @@ export default {
   methods: {
     beforeunload() {
       if (this.isStartedTimer) {
-        this.$cookies.set('resend-timer', {
+        sessionStorage.setItem('resend-timer', JSON.stringify({
           timerValue: this.timerValue,
           createdAt: Date.now(),
-        });
+        }));
         this.hiddenResend = true;
-      } else this.$cookies.remove('resend-timer');
+      } else sessionStorage.removeItem('resend-timer');
       this.clearCookies();
     },
     clearTimer() {
-      this.$cookies.remove('resend-timer');
+      sessionStorage.removeItem('resend-timer');
       this.timerValue = timerDefaultValue;
       clearInterval(this.timerId);
       this.isStartedTimer = false;
@@ -309,7 +307,7 @@ export default {
     },
     continueTimer() {
       if (this.userStatus === UserStatuses.Unconfirmed) this.hiddenResend = false;
-      this.timer = this.$cookies.get('resend-timer');
+      this.timer = JSON.parse(sessionStorage.getItem('resend-timer'));
       if (!this.timer) return;
       this.timer.timerValue -= (this.$moment().diff(this.timer.createdAt) / 1000).toFixed(0);
       if (this.timer.timerValue <= 0) {
@@ -366,12 +364,6 @@ export default {
     },
     goStep(step) {
       this.step = step;
-    },
-
-    showConfirmEmailModal() {
-      this.ShowModal({
-        key: modals.emailConfirm,
-      });
     },
 
     async resendLetter() {
