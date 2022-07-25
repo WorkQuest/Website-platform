@@ -102,12 +102,12 @@
               </a>
               <div>{{ $moment(row.timestamp * 1000).format('MMMM Do YYYY, hh:mm a') }}</div>
             </div>
-            <base-pager
-              v-if="totalHistoryPages > 1"
-              :value="historyParams.page"
-              :total-pages="totalHistoryPages"
-              class="history__pages"
-            />
+            <!--            <base-pager-->
+            <!--              v-if="totalHistoryPages > 1"-->
+            <!--              :value="historyParams.page"-->
+            <!--              :total-pages="totalHistoryPages"-->
+            <!--              class="history__pages"-->
+            <!--            />-->
           </div>
         </div>
       </div>
